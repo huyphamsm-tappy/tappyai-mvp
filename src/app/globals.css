@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #007AFF;
+  --accent: #FF9500;
+}
+
+@layer base {
+  * { box-sizing: border-box; padding: 0; margin: 0; }
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100; font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; min-height: 100dvh; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-300 dark:bg-gray-700 rounded-full; }
+}
+
+@layer components {
+  .btn-primary { @apply bg-primary-500 hover:bg-primary-600 active:bg-primary-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-secondary { @apply bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 font-semibold py-3 px-6 rounded-2xl transition-all duration-150; }
+  .card { @apply bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm; }
+}
+
+.typing-dot { width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; animation: pulseDot 1.4s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulseDot { 0%, 80%, 100% { transform: scale(0); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
+.message-content p { margin-bottom: 0.5rem; }
+.message-content p:last-child { margin-bottom: 0; }
+.message-content ul, .message-content ol { padding-left: 1.25rem; margin-bottom: 0.5rem; }
+.message-content li { margin-bottom: 0.25rem; }
+.message-content strong { font-weight: 600; }
