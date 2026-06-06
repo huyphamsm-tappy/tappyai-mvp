@@ -17,7 +17,7 @@ export function createClient() {
               cookieStore.set(name, value, options as Parameters<typeof cookieStore.set>[2])
             )
           } catch {
-            // Server Component - cookies set in middleware
+            // Server Component
           }
         },
       },
