@@ -12,11 +12,11 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, options as Parameters<typeof supabaseResponse.cookies.set>[2])
           )
         },
       },
@@ -27,6 +27,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const isAuthPage = pathname.startsWith('/login')
   const isAuthCallback = pathname.startsWith('/auth')
+
   if (isAuthCallback) return supabaseResponse
   if (!user && !isAuthPage) {
     const url = request.nextUrl.clone()
@@ -40,6 +41,7 @@ export async function middleware(request: NextRequest) {
   }
   return supabaseResponse
 }
+
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 }
