@@ -18,10 +18,10 @@ export async function GET(request: NextRequest) {
             return request.cookies.getAll()
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) =>
+            cookiesToSet.forEach(({ name, value, options }) => {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               response.cookies.set(name, value, options as any)
-            )
+            })
           },
         },
       }
@@ -29,7 +29,12 @@ export async function GET(request: NextRequest) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) return response
+
+    // Log error for debugging
+    console.error('[auth/callback] error:', JSON.stringify(error))
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
   }
 
-  return NextResponse.redirect(`${origin}/login?error=auth_callback_failed`)
+  console.error('[auth/callback] No code in request')
+  return NextResponse.redirect(`${origin}/login?error=no_code`)
 }
