@@ -4,15 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/'
-
-  // Log all cookies for debugging
-  const allCookies = request.cookies.getAll()
-  const cookieNames = allCookies.map(c => c.name).join(', ')
-  const hasCodeVerifier = allCookies.some(c => c.name.includes('code-verifier') || c.name.includes('pkce'))
-  console.log('[auth/callback] cookies:', cookieNames)
-  console.log('[auth/callback] has code verifier:', hasCodeVerifier)
-  console.log('[auth/callback] code present:', !!code)
+  // After login, go directly to /chat
+  const next = searchParams.get('next') ?? '/chat'
 
   if (code) {
     const response = NextResponse.redirect(`${origin}${next}`)
@@ -36,12 +29,7 @@ export async function GET(request: NextRequest) {
     )
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
-      console.log('[auth/callback] success, redirecting to', next)
-      return response
-    }
-
-    console.error('[auth/callback] exchangeCodeForSession error:', JSON.stringify(error))
+    if (!error) return response
     return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
   }
 
