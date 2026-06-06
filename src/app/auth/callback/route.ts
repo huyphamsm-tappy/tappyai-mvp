@@ -4,7 +4,12 @@ import { NextResponse } from 'next/server'
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
+  const error_desc = searchParams.get('error_description')
   const next = searchParams.get('next') ?? '/'
+
+  if (error_desc) {
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error_desc)}`)
+  }
 
   if (code) {
     const supabase = createClient()
@@ -12,7 +17,8 @@ export async function GET(request: Request) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`)
     }
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
   }
 
-  return NextResponse.redirect(`${origin}/login?error=auth_callback_failed`)
+  return NextResponse.redirect(`${origin}/login?error=no_code`)
 }
