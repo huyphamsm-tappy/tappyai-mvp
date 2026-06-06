@@ -7,8 +7,6 @@ export async function GET(request: Request) {
   const next = searchParams.get('next') ?? '/'
 
   if (code) {
-    // Create the redirect response FIRST, then set cookies directly on it
-    // This ensures session cookies are included in the redirect response
     const response = NextResponse.redirect(`${origin}${next}`)
 
     const supabase = createServerClient(
@@ -19,9 +17,10 @@ export async function GET(request: Request) {
           getAll() {
             return request.cookies.getAll()
           },
-          setAll(cookiesToSet) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setAll(cookiesToSet: any[]) {
             cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options as Parameters<typeof response.cookies.set>[2])
+              response.cookies.set(name, value, options)
             )
           },
         },
