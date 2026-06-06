@@ -6,6 +6,14 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 
+  // Log all cookies for debugging
+  const allCookies = request.cookies.getAll()
+  const cookieNames = allCookies.map(c => c.name).join(', ')
+  const hasCodeVerifier = allCookies.some(c => c.name.includes('code-verifier') || c.name.includes('pkce'))
+  console.log('[auth/callback] cookies:', cookieNames)
+  console.log('[auth/callback] has code verifier:', hasCodeVerifier)
+  console.log('[auth/callback] code present:', !!code)
+
   if (code) {
     const response = NextResponse.redirect(`${origin}${next}`)
 
@@ -28,13 +36,14 @@ export async function GET(request: NextRequest) {
     )
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) return response
+    if (!error) {
+      console.log('[auth/callback] success, redirecting to', next)
+      return response
+    }
 
-    // Log error for debugging
-    console.error('[auth/callback] error:', JSON.stringify(error))
+    console.error('[auth/callback] exchangeCodeForSession error:', JSON.stringify(error))
     return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
   }
 
-  console.error('[auth/callback] No code in request')
   return NextResponse.redirect(`${origin}/login?error=no_code`)
 }
