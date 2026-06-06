@@ -2,53 +2,40 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-    let supabaseResponse = NextResponse.next({ request })
+  let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
-            cookies: {
-                      getAll() {
-                                  return request.cookies.getAll()
-                      },
-                      setAll(cookiesToSet) {
-                                  cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-                                  supabaseResponse = NextResponse.next({ request })
-                                  cookiesToSet.forEach(({ name, value, options }) =>
-                                                supabaseResponse.cookies.set(name, value, options)
-                                                                 )
-                      },
-            },
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
+        },
+      },
     }
-      )
+  )
 
-  // Use getSession() instead of getUser() to read session from cookies locally.
-  // getUser() makes a network call to Supabase which can return null immediately
-  // after the auth callback sets cookies, causing a false redirect to /login.
+  // Refresh session cookies — no auth redirects, app is open to all
   const { data: { session } } = await supabase.auth.getSession()
 
-  const { pathname } = request.nextUrl
-    const isAuthPage = pathname.startsWith('/login')
-    const isAuthCallback = pathname.startsWith('/auth')
-
-  if (isAuthCallback) return supabaseResponse
-
-  if (!session && !isAuthPage) {
-        const url = request.nextUrl.clone()
-        url.pathname = '/login'
-        return NextResponse.redirect(url)
-  }
-
-  if (session && isAuthPage) {
-        const url = request.nextUrl.clone()
-        url.pathname = '/'
-        return NextResponse.redirect(url)
+  // If logged in and on login page → redirect to /chat
+  if (request.nextUrl.pathname.startsWith('/login') && session) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/chat'
+    return NextResponse.redirect(url)
   }
 
   return supabaseResponse
 }
 
 export const config = {
-    matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 }
