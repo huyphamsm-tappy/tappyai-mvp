@@ -12,7 +12,7 @@ export default async function HomePage() {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) redirect('/login')
+  if (!user) redirect('/chat')
 
   // Fetch profile + conversations in parallel
   const [{ data: profile }, { data: conversations }] = await Promise.all([
