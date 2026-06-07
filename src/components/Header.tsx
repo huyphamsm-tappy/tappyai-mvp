@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronLeft } from 'lucide-react'
+import { Bell, ChevronLeft } from 'lucide-react'
 
 interface HeaderProps {
   user?: { full_name?: string | null; avatar_url?: string | null; email?: string | null }
@@ -12,9 +12,9 @@ interface HeaderProps {
 }
 
 export default function Header({ user, showBack, backHref = '/', title }: HeaderProps) {
-  const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'báº¡n'
+  const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'
   const hour = new Date().getHours()
-  const greeting = hour < 12 ? 'ChÃ o buá»i sÃ¡ng' : hour < 18 ? 'ChÃ o buá»i chiá»u' : 'ChÃ o buá»i tá»i'
+  const greeting = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
@@ -22,7 +22,7 @@ export default function Header({ user, showBack, backHref = '/', title }: Header
         {showBack ? (
           <Link href={backHref} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
             <ChevronLeft size={20} />
-            Quay láº¡i
+            Quay lại
           </Link>
         ) : (
           <Link href="/" className="flex items-center">
