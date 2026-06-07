@@ -12,9 +12,9 @@ interface HeaderProps {
 }
 
 export default function Header({ user, showBack, backHref = '/', title }: HeaderProps) {
-  const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'
+  const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'báº¡n'
   const hour = new Date().getHours()
-  const greeting = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
+  const greeting = hour < 12 ? 'ChÃ o buá»i sÃ¡ng' : hour < 18 ? 'ChÃ o buá»i chiá»u' : 'ChÃ o buá»i tá»i'
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
@@ -22,11 +22,11 @@ export default function Header({ user, showBack, backHref = '/', title }: Header
         {showBack ? (
           <Link href={backHref} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
             <ChevronLeft size={20} />
-            Quay lại
+            Quay láº¡i
           </Link>
         ) : (
           <Link href="/" className="flex items-center">
-            <Image src="/logo.svg" alt="TappyAI" width={120} height={40} className="h-9 w-auto" />
+            <Image src="/logo.png" alt="TappyAI" width={120} height={40} className="h-9 w-auto" />
           </Link>
         )}
 
