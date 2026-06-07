@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request })
+          supabaseResponse = NextResponse.next({ request })h
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )
@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
   // If logged in and on login page → redirect to /chat
   if (request.nextUrl.pathname.startsWith('/login') && session) {
     const url = request.nextUrl.clone()
-    url.pathname = '/chat'
+    url.pathname = '/'
     return NextResponse.redirect(url)
   }
 
