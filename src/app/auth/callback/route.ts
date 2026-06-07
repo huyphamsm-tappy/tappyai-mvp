@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  // After login, go directly to /chat
-  const next = searchParams.get('next') ?? '/chat'
+  // After login, go to home page
+  const next = searchParams.get('next') ?? '/'
 
   if (code) {
     const response = NextResponse.redirect(`${origin}${next}`)
