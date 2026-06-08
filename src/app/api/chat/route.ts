@@ -278,11 +278,6 @@ export async function POST(req: Request) {
       return { toolChoice: 'none' as const }
     },
     tools: {
-      general_chat: tool({
-        description: 'Dung khi user chao hoi hoac cau hoi tong quat khong can tim kiem dia diem/tin tuc/san pham',
-        parameters: z.object({ intent: z.string().describe('Y dinh cua user') }),
-        execute: async ({ intent }) => ({ intent, ready: true }),
-      }),
       search_places: tool({
         description: 'Tim kiem dia diem, nha hang, quan cafe, spa, khach san tai Viet Nam. Du lieu tu OpenStreetMap hoac Google Maps.',
         parameters: z.object({
