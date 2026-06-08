@@ -237,17 +237,17 @@ async function searchProducts(query: string) {
       }
     }
     if (results.length === 0) {
-      return { note: 'Tim "' + query + '" tren: Shopee.vn Â· Tiki.vn Â· Lazada.vn', results: [] }
+      return { note: 'Tim "' + query + '" tren: Shopee.vn ÃÂ· Tiki.vn ÃÂ· Lazada.vn', results: [] }
     }
     return { source: 'DuckDuckGo', query, results }
   } catch {
-    return { note: 'Tim "' + query + '" tren: Shopee.vn Â· Tiki.vn Â· Lazada.vn', results: [] }
+    return { note: 'Tim "' + query + '" tren: Shopee.vn ÃÂ· Tiki.vn ÃÂ· Lazada.vn', results: [] }
   }
 }
 
 const SYSTEM_PROMPT = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
 
-CHUYEN MON: An uong Â· Mua sam Â· Giai tri Â· Du lich Â· Spa & Lam dep Â· Tin tuc
+CHUYEN MON: An uong ÃÂ· Mua sam ÃÂ· Giai tri ÃÂ· Du lich ÃÂ· Spa & Lam dep ÃÂ· Tin tuc
 
 CONG CU REAL-TIME (luon dung khi user hoi):
 - search_places: Tim nha hang, quan cafe, spa, khach san, bar, gym, rap phim
@@ -272,13 +272,7 @@ export async function POST(req: Request) {
     messages,
     maxTokens: 2048,
     maxSteps: 5,
-    toolChoice: 'required',
     tools: {
-      general_chat: tool({
-        description: 'Dùng cho các câu hỏi thông thường không liên quan đến địa điểm, tin tức, hay sản phẩm cụ thể',
-        parameters: z.object({ topic: z.string().describe('Chủ đề câu hỏi') }),
-        execute: async () => ({ ok: true }),
-      }),
       search_places: tool({
         description: 'Tim kiem dia diem, nha hang, quan cafe, spa, khach san tai Viet Nam. Du lieu tu OpenStreetMap hoac Google Maps.',
         parameters: z.object({
