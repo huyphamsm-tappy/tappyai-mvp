@@ -10,8 +10,8 @@ const anthropic = createAnthropic({
 async function getNews(query: string) {
   const feeds = [
     { url: 'https://vnexpress.net/rss/tin-moi-nhat.rss', name: 'VnExpress' },
-    { url: 'https://tuoitre.vn/rss/tin-moi-nhat.rss', name: 'Tuoi Tre' },
-    { url: 'https://dantri.com.vn/rss/home.rss', name: 'Dan Tri' },
+    { url: 'https://tuoitre.vn/rss/tin-moi-nhat.rss', name: 'Tuổi Trẻ' },
+    { url: 'https://dantri.com.vn/rss/home.rss', name: 'Dân Trí' },
   ]
 
   try {
@@ -29,73 +29,94 @@ async function getNews(query: string) {
         try {
           const controller = new AbortController()
           const timer = setTimeout(() => controller.abort(), 5000)
+
           const resp = await fetch(feed.url, {
             signal: controller.signal,
             headers: { 'User-Agent': 'TappyAI/1.0' },
           })
           clearTimeout(timer)
+
           const xml = await resp.text()
           const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || []
 
           for (const item of items.slice(0, 30)) {
             if (articles.length >= 8) break
+
             const title = (
               item.match(/<title><!\[CDATA\[(.*?)\]\]>/)?.[1] ||
               item.match(/<title>(.*?)<\/title>/)?.[1] ||
               ''
             ).trim()
+
             const description = (
               item.match(/<description><!\[CDATA\[(.*?)\]\]>/)?.[1] ||
               item.match(/<description>(.*?)<\/description>/)?.[1] ||
               ''
-            ).replace(/<[^>]*>/g, '').trim()
+            )
+              .replace(/<[^>]*>/g, '')
+              .trim()
+
             const link = (
               item.match(/<link>(.*?)<\/link>/)?.[1] ||
               item.match(/<guid>(.*?)<\/guid>/)?.[1] ||
               ''
             ).trim()
+
             const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || ''
+
             if (!title) continue
+
             const titleLower = title.toLowerCase()
             const descLower = description.toLowerCase()
             const matches =
               queryTerms.length === 0 ||
               queryTerms.some(t => titleLower.includes(t) || descLower.includes(t))
+
             if (matches) {
               articles.push({
                 title,
                 description: description.slice(0, 200) + (description.length > 200 ? '...' : ''),
                 link,
                 source: feed.name,
-                published: pubDate ? new Date(pubDate).toLocaleDateString('vi-VN') : 'Moi nhat',
+                published: pubDate
+                  ? new Date(pubDate).toLocaleDateString('vi-VN')
+                  : 'Mới nhất',
               })
             }
           }
-        } catch { /* skip failed feed */ }
+        } catch {
+          // skip failed feed
+        }
       })
     )
 
     if (articles.length === 0) {
       return {
-        note: 'Khong tim thay tin tuc lien quan. Thu tim truc tiep tren vnexpress.net hoac tuoitre.vn',
+        note: `Không tìm thấy tin tức liên quan đến "${query}" lúc này. Thử tìm trực tiếp trên vnexpress.net hoặc tuoitre.vn`,
         articles: [],
       }
     }
+
     return { query, total: articles.length, articles: articles.slice(0, 5) }
   } catch {
-    return { error: 'Khong the tai tin tuc luc nay', articles: [] }
+    return { error: 'Không thể tải tin tức lúc này', articles: [] }
   }
 }
 
 // ===== PLACES: OpenStreetMap (free) + Google Places fallback =====
 async function searchPlaces(query: string, location?: string, type?: string) {
+  // Prefer Google Places if API key is available
   const googleKey = process.env.GOOGLE_PLACES_API_KEY
   if (googleKey) {
     try {
       const result = await searchPlacesGoogle(query, location, type, googleKey)
       if (result.results && result.results.length > 0) return result
-    } catch { /* fall through to OSM */ }
+    } catch {
+      // fall through to OSM
+    }
   }
+
+  // Free fallback: OpenStreetMap (Nominatim + Overpass)
   return searchPlacesOSM(query, location)
 }
 
@@ -105,102 +126,155 @@ async function searchPlacesGoogle(
   type: string | undefined,
   apiKey: string
 ) {
-  const searchQuery = location ? query + ' ' + location : query
-  const params = new URLSearchParams({ query: searchQuery, key: apiKey, language: 'vi', region: 'vn' })
+  const searchQuery = location ? `${query} ${location}` : query
+  const params = new URLSearchParams({
+    query: searchQuery,
+    key: apiKey,
+    language: 'vi',
+    region: 'vn',
+  })
   if (type) params.set('type', type)
-  const resp = await fetch('https://maps.googleapis.com/maps/api/place/textsearch/json?' + params)
+
+  const resp = await fetch(
+    `https://maps.googleapis.com/maps/api/place/textsearch/json?${params}`
+  )
   const data = await resp.json()
+
   if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
-    return { error: 'Google Places: ' + data.status, results: [] }
+    return { error: `Google Places: ${data.status}`, results: [] }
   }
+
   return {
     source: 'Google Maps',
-    results: (data.results || []).slice(0, 5).map((p: Record<string, unknown>) => ({
-      name: p.name,
-      address: p.formatted_address,
-      rating: p.rating ? p.rating + '/5 (' + (p.user_ratings_total) + ' danh gia)' : 'Chua co danh gia',
-      price_level: p.price_level ? 'D'.repeat(p.price_level as number) : null,
-      open_now: (p.opening_hours as Record<string, unknown>)?.open_now != null
-        ? ((p.opening_hours as Record<string, unknown>).open_now ? 'Dang mo cua' : 'Da dong cua')
-        : null,
-      google_maps: 'https://www.google.com/maps/place/?q=place_id:' + p.place_id,
-    })),
+    results: (data.results || [])
+      .slice(0, 5)
+      .map((p: Record<string, unknown>) => ({
+        name: p.name,
+        address: p.formatted_address,
+        rating: p.rating
+          ? `${p.rating}/5 (${p.user_ratings_total} đánh giá)`
+          : 'Chưa có đánh giá',
+        price_level: p.price_level ? '💰'.repeat(p.price_level as number) : null,
+        open_now:
+          (p.opening_hours as Record<string, unknown>)?.open_now != null
+            ? (p.opening_hours as Record<string, unknown>).open_now
+              ? '🟢 Đang mở cửa'
+              : '🔴 Đã đóng cửa'
+            : null,
+        google_maps: `https://www.google.com/maps/place/?q=place_id:${p.place_id}`,
+      })),
   }
 }
 
 async function searchPlacesOSM(query: string, location?: string) {
   try {
-    const geoLocation = location || 'Ha Noi'
+    // Step 1: Geocode location with Nominatim
+    const geoLocation = location || 'Hà Nội'
     const geocodeCtrl = new AbortController()
     const geocodeTimer = setTimeout(() => geocodeCtrl.abort(), 4000)
+
     const geoResp = await fetch(
-      'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(geoLocation + ' Viet Nam') + '&format=json&limit=1',
-      { signal: geocodeCtrl.signal, headers: { 'User-Agent': 'TappyAI/1.0' } }
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+        geoLocation + ' Việt Nam'
+      )}&format=json&limit=1`,
+      {
+        signal: geocodeCtrl.signal,
+        headers: { 'User-Agent': 'TappyAI/1.0 (contact@tappyai.vn)' },
+      }
     )
     clearTimeout(geocodeTimer)
     const geoData = await geoResp.json()
+
     const lat = parseFloat(geoData[0]?.lat ?? '21.0285')
     const lon = parseFloat(geoData[0]?.lon ?? '105.8542')
 
+    // Step 2: Determine OSM amenity type from query
     const queryLower = query.toLowerCase()
     let amenity = 'restaurant'
-    if (queryLower.match(/cafe|ca phe|coffee/)) amenity = 'cafe'
-    else if (queryLower.match(/spa|massage/)) amenity = 'spa'
-    else if (queryLower.match(/khach san|hotel|resort/)) amenity = 'hotel'
+    if (queryLower.match(/cafe|cà phê|coffee|quán nước/)) amenity = 'cafe'
+    else if (queryLower.match(/spa|massage|thư giãn/)) amenity = 'spa'
+    else if (queryLower.match(/khách sạn|hotel|resort/)) amenity = 'hotel'
     else if (queryLower.match(/bar|pub|bia/)) amenity = 'bar'
-    else if (queryLower.match(/gym|fitness/)) amenity = 'gym'
-    else if (queryLower.match(/rap|cinema|phim/)) amenity = 'cinema'
+    else if (queryLower.match(/gym|fitness|thể dục/)) amenity = 'gym'
+    else if (queryLower.match(/rạp|cinema|phim|cgv|lotte/)) amenity = 'cinema'
+    else if (queryLower.match(/bệnh viện|hospital|phòng khám/)) amenity = 'hospital'
+    else if (queryLower.match(/trường|school|đại học/)) amenity = 'school'
 
-    const oql = '[out:json][timeout:8];(node["amenity"="' + amenity + '"]["name"](around:3000,' + lat + ',' + lon + ');way["amenity"="' + amenity + '"]["name"](around:3000,' + lat + ',' + lon + '););out center 10;'
+    // Step 3: Overpass API query
+    const oql = `[out:json][timeout:8];(node["amenity"="${amenity}"]["name"](around:3000,${lat},${lon});way["amenity"="${amenity}"]["name"](around:3000,${lat},${lon}););out center 10;`
     const overpassCtrl = new AbortController()
     const overpassTimer = setTimeout(() => overpassCtrl.abort(), 8000)
+
     const overpassResp = await fetch(
-      'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(oql),
-      { signal: overpassCtrl.signal, headers: { 'User-Agent': 'TappyAI/1.0' } }
+      `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(oql)}`,
+      {
+        signal: overpassCtrl.signal,
+        headers: { 'User-Agent': 'TappyAI/1.0' },
+      }
     )
     clearTimeout(overpassTimer)
     const overpassData = await overpassResp.json()
 
-    type OsmElement = { tags?: Record<string, string>; lat?: number; lon?: number; center?: { lat: number; lon: number } }
+    type OsmElement = {
+      tags?: Record<string, string>
+      lat?: number
+      lon?: number
+      center?: { lat: number; lon: number }
+    }
+
     const elements = (overpassData.elements || []) as OsmElement[]
 
-    const results = elements.slice(0, 8).map(el => {
-      const tags = el.tags || {}
-      const elLat = el.lat ?? el.center?.lat
-      const elLon = el.lon ?? el.center?.lon
-      return {
-        name: tags['name:vi'] || tags.name || '',
-        address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || 'Xem tren ban do',
-        phone: tags.phone || tags['contact:phone'] || null,
-        website: tags.website || null,
-        opening_hours: tags.opening_hours || null,
-        cuisine: tags.cuisine?.replace(/;/g, ', ') || null,
-        maps_link: elLat && elLon ? 'https://www.google.com/maps?q=' + elLat + ',' + elLon : null,
-      }
-    }).filter(r => r.name)
+    const results = elements
+      .slice(0, 8)
+      .map(el => {
+        const tags = el.tags || {}
+        const elLat = el.lat ?? el.center?.lat
+        const elLon = el.lon ?? el.center?.lon
+        return {
+          name: tags['name:vi'] || tags.name || '',
+          address:
+            [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']]
+              .filter(Boolean)
+              .join(' ') || 'Xem trên bản đồ',
+          phone: tags.phone || tags['contact:phone'] || null,
+          website: tags.website || tags['contact:website'] || null,
+          opening_hours: tags.opening_hours || null,
+          cuisine: tags.cuisine?.replace(/;/g, ', ') || null,
+          maps_link:
+            elLat && elLon
+              ? `https://www.google.com/maps?q=${elLat},${elLon}`
+              : null,
+        }
+      })
+      .filter(r => r.name)
 
     return {
       location: geoLocation,
       amenity_type: amenity,
       source: 'OpenStreetMap',
       results,
-      note: results.length === 0
-        ? 'Khong tim thay "' + query + '" gan ' + geoLocation + '. Thu tim tren Google Maps.'
-        : 'Du lieu tu OpenStreetMap. Nhan link ban do de xem chi tiet va danh gia.',
+      note:
+        results.length === 0
+          ? `Không tìm thấy "${query}" gần ${geoLocation}. Thử mở rộng khu vực hoặc tìm trên Google Maps.`
+          : 'Dữ liệu từ OpenStreetMap. Nhấn link bản đồ để xem chi tiết và đánh giá.',
     }
   } catch {
-    return { error: 'Khong the tai dia diem. Thu tim tren Google Maps hoac Foody.vn.', results: [] }
+    return {
+      error: 'Không thể tải dữ liệu địa điểm. Thử tìm trên Google Maps hoặc Foody.vn.',
+      results: [],
+    }
   }
 }
 
 // ===== PRODUCTS: Google Custom Search + DuckDuckGo fallback =====
 async function searchProducts(query: string) {
+  // Try Google Custom Search if configured
   const apiKey = process.env.GOOGLE_SEARCH_API_KEY
   const cx = process.env.GOOGLE_SEARCH_CX
   if (apiKey && cx) {
     try {
       const params = new URLSearchParams({ q: query, key: apiKey, cx, num: '5' })
-      const resp = await fetch('https://www.googleapis.com/customsearch/v1?' + params)
+      const resp = await fetch(`https://www.googleapis.com/customsearch/v1?${params}`)
       const data = await resp.json()
       if (!data.error && data.items?.length) {
         return {
@@ -213,90 +287,165 @@ async function searchProducts(query: string) {
           })),
         }
       }
-    } catch { /* fall through */ }
+    } catch {
+      // fall through
+    }
   }
 
+  // Fallback: DuckDuckGo Instant Answers (free, no key)
   try {
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), 5000)
-    const params = new URLSearchParams({ q: query + ' mua online Viet Nam', format: 'json', no_html: '1', skip_disambig: '1' })
-    const resp = await fetch('https://api.duckduckgo.com/?' + params, {
+    const params = new URLSearchParams({
+      q: `${query} mua online Việt Nam`,
+      format: 'json',
+      no_html: '1',
+      skip_disambig: '1',
+    })
+    const resp = await fetch(`https://api.duckduckgo.com/?${params}`, {
       signal: controller.signal,
       headers: { 'User-Agent': 'TappyAI/1.0' },
     })
     clearTimeout(timer)
     const data = await resp.json()
+
     type DdgTopic = { Text?: string; FirstURL?: string }
+
     const results: Array<{ title: string; snippet: string; link: string; site: string }> = []
+
     if (data.AbstractText) {
-      results.push({ title: data.Heading || query, snippet: data.AbstractText, link: data.AbstractURL || '', site: data.AbstractSource || 'DuckDuckGo' })
+      results.push({
+        title: data.Heading || query,
+        snippet: data.AbstractText,
+        link: data.AbstractURL || '',
+        site: data.AbstractSource || 'DuckDuckGo',
+      })
     }
+
     for (const topic of ((data.RelatedTopics || []) as DdgTopic[]).slice(0, 4)) {
       if (topic.Text && topic.FirstURL) {
-        results.push({ title: topic.Text.split(' - ')[0], snippet: topic.Text, link: topic.FirstURL, site: 'DuckDuckGo' })
+        results.push({
+          title: topic.Text.split(' - ')[0] || topic.Text,
+          snippet: topic.Text,
+          link: topic.FirstURL,
+          site: 'DuckDuckGo',
+        })
       }
     }
+
     if (results.length === 0) {
-      return { note: 'Tim "' + query + '" tren: Shopee.vn ÃÂ· Tiki.vn ÃÂ· Lazada.vn', results: [] }
+      return {
+        note: `Gợi ý tìm "${query}" trực tiếp trên: Shopee.vn · Tiki.vn · Lazada.vn`,
+        results: [],
+      }
     }
+
     return { source: 'DuckDuckGo', query, results }
   } catch {
-    return { note: 'Tim "' + query + '" tren: Shopee.vn ÃÂ· Tiki.vn ÃÂ· Lazada.vn', results: [] }
+    return {
+      note: `Tìm "${query}" trực tiếp trên: Shopee.vn · Tiki.vn · Lazada.vn`,
+      results: [],
+    }
   }
 }
 
-const SYSTEM_PROMPT = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
+// ===== SYSTEM PROMPT =====
+const SYSTEM_PROMPT = `Bạn là TappyAI - trợ lý AI thuần Việt chuyên tư vấn dịch vụ tại Việt Nam.
 
-CHUYEN MON: An uong ÃÂ· Mua sam ÃÂ· Giai tri ÃÂ· Du lich ÃÂ· Spa & Lam dep ÃÂ· Tin tuc
+🎯 CHUYÊN MÔN: Ăn uống · Mua sắm · Giải trí · Du lệch· Spa & Là m đẹp · Tin tức
 
-CONG CU REAL-TIME (luon dung khi user hoi):
-- search_places: Tim nha hang, quan cafe, spa, khach san, bar, gym, rap phim
-- get_news: Lay tin tuc moi nhat tu VnExpress, Tuoi Tre, Dan Tri
-- search_products: Tim san pham tren Shopee, Tiki, Lazada
+🔧 CÔNG CỤ REAL-TIME (luôn dùng khi user hỏi):
+- search_places: Tìm nhà hàng, quán cafe, spa, khách sạn, bar, gym, rạp phim qua OpenStreetMap + Google Maps
+- get_news: Lấy tin tức mới nhất từ VnExpress, Tuổi Trẻ, Dân Trí
+- search_products: Tìm sản phẩm trên Shopee, Tiki, Lazada
 
-NGUYEN TAC:
-1. BAT BUOC dung tools khi user hoi ve dia diem, tin tuc, san pham - KHONG tu bia thong tin
-2. Tra loi bang tieng Viet, than thien nhu ban be
-3. Cung cap thong tin CU THE tu ket qua tool: ten dia diem, dia chi, link Maps
-4. Neu tool khong co du lieu, goi y nguon khac (Foody.vn, Google Maps, Shopee...)
-5. Voi tin tuc: tom tat noi dung va chu thich nguon (VnExpress, Tuoi Tre...)
-6. Voi dia diem tu OpenStreetMap: thong bao la du lieu cong dong, nhan link de xem rating day du`
+📌 NGUYÊN TẮC:
+1. BẮT BUỘC dùng tools khi user hỏi về địa điểm, tin tức, sản phẩm - KHÔNG tự bịa thông tin
+2. Trả lời bằng tiếng Việt, thân thiện như bạn bè
+3. Cung cấp thông tin CỤ THÂ từ kết quả tool: tên DMịA điểm, điịa chỉ, link Maps
+4. Nếu tool không có đủ dữ liệu, gợi ý nguồn khác (Foody.vn, Google Maps, Shopee...)
+5. Với tin tức: tóm tắt nội dung và chú thích nguồn (VnExpress, Tuổi Trẻ...)
+6. Với địa điểm từ OpenStreetMap: thông báo là dữ liệu cộng đồng, nhấn link để xem rating đầy đở`
 
 export const maxDuration = 60
 
 export async function POST(req: Request) {
   const { messages } = await req.json()
+
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
     system: SYSTEM_PROMPT,
     messages,
     maxTokens: 2048,
     maxSteps: 5,
+    // Step 0: force tool call. Step 1+: force text generation (prevents loop)
+    experimental_prepareStep: async ({ stepNumber }) => {
+      if (stepNumber === 0) return { toolChoice: 'required' as const }
+      return { toolChoice: 'none' as const }
+    },
     tools: {
-      search_places: tool({
-        description: 'Tim kiem dia diem, nha hang, quan cafe, spa, khach san tai Viet Nam. Du lieu tu OpenStreetMap hoac Google Maps.',
+      general_chat: tool({
+        description: 'Dùng khi user chào hỏi, hỏi về TappyAI, hoặc câu hỏi tổng quát không liên quan đến địa điểm/tin tức/sản phẩm',
         parameters: z.object({
-          query: z.string().describe('Loai dia diem can tim, vi du: "nha hang hai san", "quan cafe", "spa massage"'),
-          location: z.string().optional().describe('Khu vuc tim kiem, vi du: "Quan 1 TP.HCM", "Ha Noi", "Da Nang"'),
-          type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema']).optional(),
+          intent: z.string().describe('Tóm tắt ý định của user'),
+        }),
+        execute: async ({ intent }) => ({ intent, ready: true }),
+      }),
+      search_places: tool({
+        description:
+          'Tìm kiếm địa điểm, nhà hàng, quán cafe, spa, khách sạn, địhđiểm giải trí tại Việt Nam. Dữ liệu từ OpenStreetMap (free) hoặc Google Maps nếu có API key.',
+        parameters: z.object({
+          query: z
+            .string()
+            .describe(
+              'Loại địa điểm cần tìm, ví dụ: "nhà àng iải sản", "quán cafe", "spa massage"'
+            ),
+          location: z
+            .string()
+            .optional()
+            .describe('Khu vực tìm kiếm, ví dụ: "Quận 1 TP.HCM", "Hà Nội", "Đà Đång"'),
+          type: z
+            .enum([
+              'restaurant',
+              'cafe',
+              'spa',
+              'hotel',
+              'bar',
+              'gym',
+              'cinema',
+            ])
+            .optional()
+            .describe('Loại địa điểm OSM'),
         }),
         execute: async ({ query, location, type }) => searchPlaces(query, location, type),
       }),
+
       get_news: tool({
-        description: 'Lay tin tuc moi nhat tu VnExpress, Tuoi Tre, Dan Tri ve bat ky chu de nao',
+        description:
+          'Lấy tin tức mới nhất từ VnExpress, Tuổi Trẻ, Dân Trí về bất kỳ chử để nào',
         parameters: z.object({
-          query: z.string().describe('Tu khoa tim kiem tin tuc, vi du: "kinh te", "bong da", "cong nghe"'),
+          query: z
+            .string()
+            .describe(
+              'Từ khóa tìm kiếm tin tức, ví dụ: "kinh tế", "bóng āá", "thời t�ết", "công nghệ"'
+            ),
         }),
         execute: async ({ query }) => getNews(query),
       }),
+
       search_products: tool({
-        description: 'Tim kiem san pham de mua sam online tai Viet Nam (Shopee, Tiki, Lazada)',
+        description: 'Tìm kiếm sản phẩm để mua sắm online tại Việt Nam (Shopee, Tiki, Lazada)',
         parameters: z.object({
-          query: z.string().describe('Ten san pham can tim, vi du: "ao thun nam", "tai nghe bluetooth"'),
+          query: z
+            .string()
+            .describe(
+              'Tên sản phẩm cần tìm, ví dụ: "áo thun nam", "tai nghe bluetooth", "son môi"'
+            ),
         }),
         execute: async ({ query }) => searchProducts(query),
       }),
     },
   })
+
   return result.toDataStreamResponse()
 }
