@@ -23,10 +23,17 @@ function setCache(key: string, data: unknown, ttlMs: number) {
 }
 
 // ===== Phan loai nhanh: chitchat (khong can tool) vs can tool =====
+function normalizeVN(str: string): string {
+  return str
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+}
 function classifyIntent(text: string): 'chitchat' | 'tool' {
-  const t = text.toLowerCase().trim()
+  const t = normalizeVN(text.toLowerCase().trim())
   if (t.length === 0 || t.length > 40) return 'tool'
-  const chitchat = /^(chao|hi|hello|alo|xin chao|cam on|cảm ơn|thank|thanks|ok|oke|okie|uh|ừ|um|tam biet|tạm biệt|bye|haha|hehe|hihi|ban la ai|bạn là ai|ban ten gi|tappyai la gi|test)/i
+  const chitchat = /^(chao|hi|hello|alo|xin chao|cam on|thank|thanks|ok|oke|okie|uh|u|um|tam biet|bye|haha|hehe|hihi|ban la ai|ban ten gi|tappyai la gi|test)/i
   return chitchat.test(t) ? 'chitchat' : 'tool'
 }
 
