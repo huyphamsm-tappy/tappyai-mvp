@@ -181,8 +181,12 @@ async function searchPlaces(query: string, location?: string, type?: string) {
             maps_link: 'https://www.google.com/maps/place/?q=place_id:' + r.place_id
           }))
         }
+      } else {
+        console.log(JSON.stringify({ type: 'tappyai_places_debug', status: d.status, error_message: d.error_message || null }))
       }
-    } catch { /* fallback */ }
+    } catch (e) {
+      console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
+    }
   }
   if (!result) result = await searchPlacesOSM(query, location)
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
