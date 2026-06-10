@@ -4,12 +4,43 @@ import { z } from 'zod'
 
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
+// ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
+type CacheEntry = { data: unknown; expires: number }
+const cache = new Map<string, CacheEntry>()
+
+function getCache(key: string): unknown | null {
+  const hit = cache.get(key)
+  if (hit && hit.expires > Date.now()) return hit.data
+  if (hit) cache.delete(key)
+  return null
+}
+function setCache(key: string, data: unknown, ttlMs: number) {
+  if (cache.size > 300) {
+    const firstKey = cache.keys().next().value
+    if (firstKey !== undefined) cache.delete(firstKey)
+  }
+  cache.set(key, { data, expires: Date.now() + ttlMs })
+}
+
+// ===== Phan loai nhanh: chitchat (khong can tool) vs can tool =====
+function classifyIntent(text: string): 'chitchat' | 'tool' {
+  const t = text.toLowerCase().trim()
+  if (t.length === 0 || t.length > 40) return 'tool'
+  const chitchat = /^(chao|hi|hello|alo|xin chao|cam on|cảm ơn|thank|thanks|ok|oke|okie|uh|ừ|um|tam biet|tạm biệt|bye|haha|hehe|hihi|ban la ai|bạn là ai|ban ten gi|tappyai la gi|test)/i
+  return chitchat.test(t) ? 'chitchat' : 'tool'
+}
+
 async function getNews(query: string) {
+  const cacheKey = 'news:' + query.toLowerCase().trim()
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
   const feeds = [
     { url: 'https://vnexpress.net/rss/tin-moi-nhat.rss', name: 'VnExpress' },
     { url: 'https://tuoitre.vn/rss/tin-moi-nhat.rss', name: 'Tuoi Tre' },
     { url: 'https://dantri.com.vn/rss/home.rss', name: 'Dan Tri' },
   ]
+  let result: unknown
   try {
     const queryTerms = query.toLowerCase().split(' ').filter(t => t.length > 2)
     const articles: Array<{ title: string; description: string; link: string; source: string; published: string }> = []
@@ -34,9 +65,14 @@ async function getNews(query: string) {
         }
       } catch { /* skip feed */ }
     }))
-    if (articles.length === 0) return { note: 'Khong tim thay tin tuc lien quan', articles: [] }
-    return { query, total: articles.length, articles: articles.slice(0, 5) }
-  } catch { return { error: 'Khong the tai tin tuc', articles: [] } }
+    result = articles.length === 0
+      ? { note: 'Khong tim thay tin tuc lien quan', articles: [] }
+      : { query, total: articles.length, articles: articles.slice(0, 5) }
+  } catch {
+    result = { error: 'Khong the tai tin tuc', articles: [] }
+  }
+  setCache(cacheKey, result, 10 * 60 * 1000) // cache 10 phut, tin tuc cap nhat thuong xuyen
+  return result
 }
 
 async function searchPlacesOSM(query: string, location?: string) {
@@ -113,7 +149,12 @@ async function searchPlacesOSM(query: string, location?: string) {
 }
 
 async function searchPlaces(query: string, location?: string, type?: string) {
+  const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '')
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
   const key = process.env.GOOGLE_PLACES_API_KEY
+  let result: unknown = null
   if (key) {
     try {
       const sq = location ? query + ' ' + location : query
@@ -125,9 +166,9 @@ async function searchPlaces(query: string, location?: string, type?: string) {
       ])
       const d = await (resp as Response).json()
       if (d.status === 'OK' && d.results?.length) {
-        return {
+        result = {
           source: 'Google Maps', count: d.results.length,
-          results: d.results.slice(0, 5).map((r: Record<string, unknown>) => ({
+          results: d.results.slice(0, 8).map((r: Record<string, unknown>) => ({
             name: r.name, address: r.formatted_address,
             rating: r.rating ? r.rating + '/5 (' + r.user_ratings_total + ' danh gia)' : 'Chua co danh gia',
             maps_link: 'https://www.google.com/maps/place/?q=place_id:' + r.place_id
@@ -136,7 +177,9 @@ async function searchPlaces(query: string, location?: string, type?: string) {
       }
     } catch { /* fallback */ }
   }
-  return searchPlacesOSM(query, location)
+  if (!result) result = await searchPlacesOSM(query, location)
+  setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
+  return result
 }
 
 async function searchProducts(query: string) {
@@ -160,19 +203,27 @@ NGUYEN TAC BAT BUOC:
 3) Neu tool tra ve google_maps_search URL: LUON hien thi link do cho user
 4) Neu khong co du lieu OSM: van tra loi "Tim them tren Google Maps: [link]"
 5) Tra loi tieng Viet than thien, co link cu the de user click
-6) TUYET DOI KHONG noi "he thong gap su co" hay "toi khong co thong tin" khi da co google_maps link`
+6) TUYET DOI KHONG noi "he thong gap su co" hay "toi khong co thong tin" khi da co google_maps link
+7) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool`
 
 export const maxDuration = 60
 
 export async function POST(req: Request) {
+  const startTime = Date.now()
   const { messages } = await req.json()
+
+  const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
+  const lastText = typeof lastUserMsg?.content === 'string' ? lastUserMsg.content : ''
+  const intent = classifyIntent(lastText)
+
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
     system: SYSTEM,
     messages,
-    maxTokens: 2048,
-    maxSteps: 5,
+    maxTokens: intent === 'chitchat' ? 300 : 2048,
+    maxSteps: intent === 'chitchat' ? 1 : 5,
     experimental_prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
+      if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) return { toolChoice: 'required' as const }
       return { toolChoice: 'none' as const }
     },
@@ -196,6 +247,18 @@ export async function POST(req: Request) {
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => searchProducts(query)
       }),
+    },
+    onFinish: ({ usage, finishReason }) => {
+      console.log(JSON.stringify({
+        type: 'tappyai_usage',
+        intent,
+        finishReason,
+        promptTokens: usage?.promptTokens ?? null,
+        completionTokens: usage?.completionTokens ?? null,
+        totalTokens: usage?.totalTokens ?? null,
+        elapsedMs: Date.now() - startTime,
+        cacheSize: cache.size,
+      }))
     },
   })
   return result.toDataStreamResponse()
