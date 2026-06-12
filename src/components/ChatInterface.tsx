@@ -22,6 +22,22 @@ interface ChatInterfaceProps {
   onSave?: (messages: Array<{ role: string; content: string }>, title: string) => void
 }
 
+function formatMessage(content: string) {
+  return content
+    // Markdown links [text](url) -> clickable <a> that opens in new tab/app
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline font-medium break-all">$1</a>')
+    // Bare URLs (not already inside an href) -> clickable links
+    .replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline break-all">$2</a>')
+    // Headings
+    .replace(/^### (.+)$/gm, '<strong class="block mt-2">$1</strong>')
+    .replace(/^## (.+)$/gm, '<strong class="block mt-2 text-base">$1</strong>')
+    // Bold / italic
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    // List items
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+}
+
 export default function ChatInterface({
   initialMessage,
   initialCategory = 'general',
@@ -87,7 +103,7 @@ export default function ChatInterface({
           <div key={msg.id} className={cn('flex gap-2 animate-slide-up', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
             {msg.role === 'assistant' && (<div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-auto"><span className="text-white text-xs font-bold">T</span></div>)}
             <div className={cn('max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed', msg.role === 'user' ? 'bg-primary-500 text-white rounded-br-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-bl-md')}>
-              <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/^- (.+)$/gm, '<li>$1</li>') }} />
+              <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
             </div>
           </div>
         ))}
