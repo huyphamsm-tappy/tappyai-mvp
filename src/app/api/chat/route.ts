@@ -133,11 +133,13 @@ async function searchPlacesOSM(query: string, location?: string) {
       const tags = el.tags || {}
       const elat = el.lat ?? el.center?.lat
       const elon = el.lon ?? el.center?.lon
+      const name = tags['name:vi'] || tags.name || ''
       return {
-        name: tags['name:vi'] || tags.name || '',
+        name,
         address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || 'Xem ban do',
         phone: tags.phone || tags['contact:phone'] || null,
-        maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl
+        maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl,
+        ...(amenity === 'hotel' ? { booking_links: hotelBookingLinks(name, loc) } : {})
       }
     }).filter(r => r.name)
     return {
@@ -148,11 +150,21 @@ async function searchPlacesOSM(query: string, location?: string) {
   } catch (e) { return { error: String(e), results: [], google_maps_search: googleMapsUrl } }
 }
 
+function hotelBookingLinks(name: string, location?: string) {
+  const q = encodeURIComponent(name + (location ? ' ' + location : ''))
+  return {
+    booking_com: 'https://www.booking.com/searchresults.html?ss=' + q,
+    agoda: 'https://www.agoda.com/search?q=' + q,
+    traveloka: 'https://www.traveloka.com/vi-vn/hotel/search?spec=' + q,
+  }
+}
+
 async function searchPlaces(query: string, location?: string, type?: string) {
   const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '')
   const cached = getCache(cacheKey)
   if (cached) return cached
 
+  const isHotel = type === 'hotel' || /khach san|hotel|resort|homestay|villa|nha nghi|nghi duong/i.test(query + ' ' + (location || ''))
   const key = process.env.GOOGLE_PLACES_API_KEY
   let result: unknown = null
   if (key) {
@@ -191,11 +203,13 @@ async function searchPlaces(query: string, location?: string, type?: string) {
             } else if (r.priceLevel && priceLevelMap[r.priceLevel]) {
               price = priceLevelMap[r.priceLevel]
             }
+            const placeName = r.displayName?.text || ''
             return {
-              name: r.displayName?.text, address: r.formattedAddress,
+              name: placeName, address: r.formattedAddress,
               rating: r.rating ? r.rating + '/5 (' + (r.userRatingCount ?? 0) + ' danh gia)' : 'Chua co danh gia',
               price_range: price || 'Khong co thong tin gia tu Google Maps',
-              maps_link: r.googleMapsUri || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sq))
+              maps_link: r.googleMapsUri || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sq)),
+              ...(isHotel ? { booking_links: hotelBookingLinks(placeName, location) } : {})
             }
           })
         }
@@ -232,7 +246,8 @@ NGUYEN TAC BAT BUOC:
 5) Tra loi tieng Viet than thien, co link cu the de user click
 6) TUYET DOI KHONG noi "he thong gap su co" hay "toi khong co thong tin" khi da co google_maps link
 7) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool
-8) Ve gia ca (gia phong, gia ve, gia mon...): hien thi field price_range neu co. Neu price_range la "Khong co thong tin gia tu Google Maps", KHONG noi "khong the truy cap" - thay vao do tra loi: "Google Maps khong cung cap gia chi tiet cho dia diem nay, ban xem gia thuc te tai link Google Maps hoac cac trang dat phong nhu Booking.com, Agoda, Traveloka" va van hien thi day du ten/dia chi/link`
+8) Ve gia ca (gia phong, gia ve, gia mon...): hien thi field price_range neu co. Neu price_range la "Khong co thong tin gia tu Google Maps", KHONG noi "khong the truy cap" - thay vao do tra loi: "Google Maps khong cung cap gia chi tiet cho dia diem nay, ban xem gia thuc te tai link Google Maps hoac cac trang dat phong nhu Booking.com, Agoda, Traveloka" va van hien thi day du ten/dia chi/link
+9) Neu ket qua co field booking_links (danh sach khach san/resort/homestay): LUON hien thi 3 link "Xem gia & dat phong tren Booking.com / Agoda / Traveloka" (booking_com, agoda, traveloka) ngay sau thong tin cua tung khach san, de user bam vao xem gia thuc te va dat phong`
 
 export const maxDuration = 60
 
