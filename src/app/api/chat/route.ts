@@ -23,17 +23,10 @@ function setCache(key: string, data: unknown, ttlMs: number) {
 }
 
 // ===== Phan loai nhanh: chitchat (khong can tool) vs can tool =====
-function normalizeVN(str: string): string {
-  return str
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D')
-}
 function classifyIntent(text: string): 'chitchat' | 'tool' {
-  const t = normalizeVN(text.toLowerCase().trim())
+  const t = text.toLowerCase().trim()
   if (t.length === 0 || t.length > 40) return 'tool'
-  const chitchat = /^(chao|hi|hello|alo|xin chao|cam on|thank|thanks|ok|oke|okie|uh|u|um|tam biet|bye|haha|hehe|hihi|ban la ai|ban ten gi|tappyai la gi|test)/i
+  const chitchat = /^(chao|hi|hello|alo|xin chao|cam on|cảm ơn|thank|thanks|ok|oke|okie|uh|ừ|um|tam biet|tạm biệt|bye|haha|hehe|hihi|ban la ai|bạn là ai|ban ten gi|tappyai la gi|test)/i
   return chitchat.test(t) ? 'chitchat' : 'tool'
 }
 
@@ -165,28 +158,32 @@ async function searchPlaces(query: string, location?: string, type?: string) {
   if (key) {
     try {
       const sq = location ? query + ' ' + location : query
-      const p = new URLSearchParams({ query: sq, key, language: 'vi', region: 'vn' })
-      if (type) p.set('type', type)
       const resp = await Promise.race([
-        fetch('https://maps.googleapis.com/maps/api/place/textsearch/json?' + p),
+        fetch('https://places.googleapis.com/v1/places:searchText', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': key,
+            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri',
+          },
+          body: JSON.stringify({ textQuery: sq, languageCode: 'vi', regionCode: 'VN' })
+        }),
         new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
       ])
       const d = await (resp as Response).json()
-      if (d.status === 'OK' && d.results?.length) {
+      if (d.places?.length) {
         result = {
-          source: 'Google Maps', count: d.results.length,
-          results: d.results.slice(0, 8).map((r: Record<string, unknown>) => ({
-            name: r.name, address: r.formatted_address,
-            rating: r.rating ? r.rating + '/5 (' + r.user_ratings_total + ' danh gia)' : 'Chua co danh gia',
-            maps_link: 'https://www.google.com/maps/place/?q=place_id:' + r.place_id
+          source: 'Google Maps', count: d.places.length,
+          results: d.places.slice(0, 8).map((r: { displayName?: { text?: string }; formattedAddress?: string; rating?: number; userRatingCount?: number; googleMapsUri?: string }) => ({
+            name: r.displayName?.text, address: r.formattedAddress,
+            rating: r.rating ? r.rating + '/5 (' + (r.userRatingCount ?? 0) + ' danh gia)' : 'Chua co danh gia',
+            maps_link: r.googleMapsUri || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sq))
           }))
         }
       } else {
-        console.log(JSON.stringify({ type: 'tappyai_places_debug', status: d.status, error_message: d.error_message || null }))
+        console.log(JSON.stringify({ type: 'tappyai_places_debug', error: d.error || null }))
       }
-    } catch (e) {
-      console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
-    }
+    } catch (e) { console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) })) }
   }
   if (!result) result = await searchPlacesOSM(query, location)
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
