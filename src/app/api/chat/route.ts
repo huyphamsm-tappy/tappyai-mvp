@@ -232,6 +232,7 @@ async function webSearch(query: string) {
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
     ])
     const html = await (resp as Response).text()
+    console.log(JSON.stringify({ type: 'tappyai_websearch_debug', status: (resp as Response).status, htmlLen: html.length, htmlSample: html.slice(0, 300) }))
 
     const results: Array<{ title: string; link: string; snippet: string }> = []
     const blockRegex = /<a[^>]*class="result__a"[^>]*href="(.*?)"[^>]*>([\s\S]*?)<\/a>[\s\S]*?<a[^>]*class="result__snippet"[^>]*>([\s\S]*?)<\/a>/g
@@ -257,7 +258,8 @@ async function webSearch(query: string) {
     result = results.length === 0
       ? { note: 'Khong tim thay ket qua cho "' + query + '". Tim truc tiep: ' + fallbackUrl, results: [], search_url: fallbackUrl }
       : { query, source: 'DuckDuckGo', results, search_url: fallbackUrl }
-  } catch {
+  } catch (e) {
+    console.log(JSON.stringify({ type: 'tappyai_websearch_debug_error', error: String(e) }))
     result = { error: 'Khong the tim kiem luc nay', results: [], search_url: fallbackUrl, note: 'Tim truc tiep: ' + fallbackUrl }
   }
   setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
@@ -298,6 +300,7 @@ export async function POST(req: Request) {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) {
         const forced = detectForcedTool(lastText)
+        console.log(JSON.stringify({ type: 'tappyai_route_debug', lastText, forced }))
         if (forced) return { toolChoice: { type: 'tool' as const, toolName: forced } }
         return { toolChoice: 'required' as const }
       }
