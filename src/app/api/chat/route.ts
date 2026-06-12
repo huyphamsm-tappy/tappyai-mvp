@@ -164,7 +164,7 @@ async function searchPlaces(query: string, location?: string, type?: string) {
           headers: {
             'Content-Type': 'application/json',
             'X-Goog-Api-Key': key,
-            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri',
+            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.priceLevel,places.priceRange',
           },
           body: JSON.stringify({ textQuery: sq, languageCode: 'vi', regionCode: 'VN' })
         }),
@@ -172,13 +172,32 @@ async function searchPlaces(query: string, location?: string, type?: string) {
       ])
       const d = await (resp as Response).json()
       if (d.places?.length) {
+        const priceLevelMap: Record<string, string> = {
+          PRICE_LEVEL_FREE: 'Mien phi',
+          PRICE_LEVEL_INEXPENSIVE: 'Gia re',
+          PRICE_LEVEL_MODERATE: 'Gia trung binh',
+          PRICE_LEVEL_EXPENSIVE: 'Gia cao',
+          PRICE_LEVEL_VERY_EXPENSIVE: 'Rat cao',
+        }
         result = {
           source: 'Google Maps', count: d.places.length,
-          results: d.places.slice(0, 8).map((r: { displayName?: { text?: string }; formattedAddress?: string; rating?: number; userRatingCount?: number; googleMapsUri?: string }) => ({
-            name: r.displayName?.text, address: r.formattedAddress,
-            rating: r.rating ? r.rating + '/5 (' + (r.userRatingCount ?? 0) + ' danh gia)' : 'Chua co danh gia',
-            maps_link: r.googleMapsUri || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sq))
-          }))
+          results: d.places.slice(0, 8).map((r: { displayName?: { text?: string }; formattedAddress?: string; rating?: number; userRatingCount?: number; googleMapsUri?: string; priceLevel?: string; priceRange?: { startPrice?: { units?: string; currencyCode?: string }; endPrice?: { units?: string; currencyCode?: string } } }) => {
+            let price: string | null = null
+            if (r.priceRange?.startPrice || r.priceRange?.endPrice) {
+              const cur = r.priceRange.startPrice?.currencyCode || r.priceRange.endPrice?.currencyCode || ''
+              const lo = r.priceRange.startPrice?.units
+              const hi = r.priceRange.endPrice?.units
+              price = lo && hi ? lo + ' - ' + hi + ' ' + cur : (lo || hi || '') + ' ' + cur
+            } else if (r.priceLevel && priceLevelMap[r.priceLevel]) {
+              price = priceLevelMap[r.priceLevel]
+            }
+            return {
+              name: r.displayName?.text, address: r.formattedAddress,
+              rating: r.rating ? r.rating + '/5 (' + (r.userRatingCount ?? 0) + ' danh gia)' : 'Chua co danh gia',
+              price_range: price || 'Khong co thong tin gia tu Google Maps',
+              maps_link: r.googleMapsUri || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sq))
+            }
+          })
         }
       } else {
         console.log(JSON.stringify({ type: 'tappyai_places_debug', error: d.error || null }))
@@ -212,7 +231,8 @@ NGUYEN TAC BAT BUOC:
 4) Neu khong co du lieu OSM: van tra loi "Tim them tren Google Maps: [link]"
 5) Tra loi tieng Viet than thien, co link cu the de user click
 6) TUYET DOI KHONG noi "he thong gap su co" hay "toi khong co thong tin" khi da co google_maps link
-7) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool`
+7) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool
+8) Ve gia ca (gia phong, gia ve, gia mon...): hien thi field price_range neu co. Neu price_range la "Khong co thong tin gia tu Google Maps", KHONG noi "khong the truy cap" - thay vao do tra loi: "Google Maps khong cung cap gia chi tiet cho dia diem nay, ban xem gia thuc te tai link Google Maps hoac cac trang dat phong nhu Booking.com, Agoda, Traveloka" va van hien thi day du ten/dia chi/link`
 
 export const maxDuration = 60
 
