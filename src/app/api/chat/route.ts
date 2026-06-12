@@ -37,6 +37,16 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
   return chitchat.test(t) ? 'chitchat' : 'tool'
 }
 
+// ===== Chon san tool phu hop nhat de force goi (tranh model chon nham khi toolChoice=required) =====
+function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | null {
+  const t = normalizeVN(text.toLowerCase().trim())
+  if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b/.test(t)) return 'search_places'
+  if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
+  if (/\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
+  if (/gia vang|ty gia|hoi suat|gia xang|gia dau|thoi tiet|du bao|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
+  return null
+}
+
 async function getNews(query: string) {
   const cacheKey = 'news:' + query.toLowerCase().trim()
   const cached = getCache(cacheKey)
@@ -286,7 +296,11 @@ export async function POST(req: Request) {
     maxSteps: intent === 'chitchat' ? 1 : 5,
     experimental_prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
-      if (stepNumber === 0) return { toolChoice: 'required' as const }
+      if (stepNumber === 0) {
+        const forced = detectForcedTool(lastText)
+        if (forced) return { toolChoice: { type: 'tool' as const, toolName: forced } }
+        return { toolChoice: 'required' as const }
+      }
       return { toolChoice: 'none' as const }
     },
     tools: {
