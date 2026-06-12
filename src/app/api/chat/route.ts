@@ -224,14 +224,52 @@ async function searchPlaces(query: string, location?: string, type?: string) {
 }
 
 async function searchProducts(query: string) {
-  return {
-    note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam',
-    links: [
-      { name: 'Shopee', url: 'https://shopee.vn/search?keyword=' + encodeURIComponent(query) },
-      { name: 'Tiki', url: 'https://tiki.vn/search?q=' + encodeURIComponent(query) },
-      { name: 'Lazada', url: 'https://www.lazada.vn/catalog/?q=' + encodeURIComponent(query) },
-    ]
+  const cacheKey = 'products:' + query.toLowerCase().trim()
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
+  const links = [
+    { name: 'Shopee', url: 'https://shopee.vn/search?keyword=' + encodeURIComponent(query) },
+    { name: 'Tiki', url: 'https://tiki.vn/search?q=' + encodeURIComponent(query) },
+    { name: 'Lazada', url: 'https://www.lazada.vn/catalog/?q=' + encodeURIComponent(query) },
+  ]
+
+  type TikiProduct = {
+    name?: string; price?: number; original_price?: number; discount_rate?: number
+    rating_average?: number; review_count?: number; url_path?: string
   }
+  let products: Array<{ name?: string; price: string | null; original_price: string | null; discount: string | null; rating: string | null; link: string | null }> = []
+  try {
+    const resp = await Promise.race([
+      fetch('https://tiki.vn/api/v2/products?limit=8&q=' + encodeURIComponent(query), {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          'Accept': 'application/json',
+        }
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+    ])
+    if ((resp as Response).ok) {
+      const d = await (resp as Response).json()
+      products = ((d.data || []) as TikiProduct[]).slice(0, 6).map(p => ({
+        name: p.name,
+        price: p.price != null ? p.price.toLocaleString('vi-VN') + ' VND' : null,
+        original_price: (p.original_price != null && p.original_price !== p.price) ? p.original_price.toLocaleString('vi-VN') + ' VND' : null,
+        discount: p.discount_rate ? '-' + p.discount_rate + '%' : null,
+        rating: p.rating_average ? p.rating_average + '/5 (' + (p.review_count ?? 0) + ' danh gia)' : null,
+        link: p.url_path ? 'https://tiki.vn/' + p.url_path : null,
+      }))
+    }
+  } catch { /* fallback to links only */ }
+
+  const result = {
+    note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam',
+    source: products.length ? 'Tiki' : undefined,
+    products,
+    links
+  }
+  setCache(cacheKey, result, 15 * 60 * 1000)
+  return result
 }
 
 const SYSTEM = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
@@ -247,7 +285,8 @@ NGUYEN TAC BAT BUOC:
 6) TUYET DOI KHONG noi "he thong gap su co" hay "toi khong co thong tin" khi da co google_maps link
 7) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool
 8) Ve gia ca (gia phong, gia ve, gia mon...): hien thi field price_range neu co. Neu price_range la "Khong co thong tin gia tu Google Maps", KHONG noi "khong the truy cap" - thay vao do tra loi: "Google Maps khong cung cap gia chi tiet cho dia diem nay, ban xem gia thuc te tai link Google Maps hoac cac trang dat phong nhu Booking.com, Agoda, Traveloka" va van hien thi day du ten/dia chi/link
-9) Neu ket qua co field booking_links (danh sach khach san/resort/homestay): LUON hien thi 3 link "Xem gia & dat phong tren Booking.com / Agoda / Traveloka" (booking_com, agoda, traveloka) ngay sau thong tin cua tung khach san, de user bam vao xem gia thuc te va dat phong`
+9) Neu ket qua co field booking_links (danh sach khach san/resort/homestay): LUON hien thi 3 link "Xem gia & dat phong tren Booking.com / Agoda / Traveloka" (booking_com, agoda, traveloka) ngay sau thong tin cua tung khach san, de user bam vao xem gia thuc te va dat phong
+10) Voi search_products: neu ket qua co field products (du lieu gia thuc te tu Tiki) va khong rong, hien thi cho moi san pham: ten, gia (price), gia goc va % giam (original_price, discount) neu co, danh gia (rating), va link san pham (link) de user bam vao xem & dat hang ngay. Sau danh sach san pham, van hien thi them 3 link tim kiem Shopee/Tiki/Lazada (field links) de user so sanh gia tren cac san khac. Neu products rong, chi hien thi 3 link tim kiem do`
 
 export const maxDuration = 60
 
