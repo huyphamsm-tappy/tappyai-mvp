@@ -38,8 +38,9 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
 }
 
 // ===== Chon san tool phu hop nhat de force goi (tranh model chon nham khi toolChoice=required) =====
-function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | null {
+function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | null {
   const t = normalizeVN(text.toLowerCase().trim())
+  if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
   if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b/.test(t)) return 'search_places'
   if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
   if (/\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
@@ -356,6 +357,104 @@ async function getGoldPrice(query: string) {
   return result
 }
 
+// ===== FLIGHT PRICES: Travelpayouts Data API (free, can dang ky token) =====
+const TRAVELPAYOUTS_TOKEN = '3a9fbe93835239c550d2afb73554011f'
+
+const IATA_MAP: Record<string, string> = {
+  'ha noi': 'HAN', 'hanoi': 'HAN', 'hn': 'HAN',
+  'ho chi minh': 'SGN', 'tp ho chi minh': 'SGN', 'tp hcm': 'SGN', 'hcm': 'SGN', 'sai gon': 'SGN', 'saigon': 'SGN', 'tphcm': 'SGN',
+  'da nang': 'DAD', 'danang': 'DAD',
+  'phu quoc': 'PQC',
+  'nha trang': 'CXR', 'cam ranh': 'CXR',
+  'hue': 'HUI',
+  'can tho': 'VCA',
+  'hai phong': 'HPH',
+  'da lat': 'DLI', 'dalat': 'DLI',
+  'vinh': 'VII',
+  'buon ma thuot': 'BMV',
+  'quy nhon': 'UIH',
+  'pleiku': 'PXU',
+  'con dao': 'VCS',
+  'rach gia': 'VKG',
+  'ca mau': 'CAH',
+  'thanh hoa': 'THD',
+  'dong hoi': 'VDH',
+  'tuy hoa': 'TBB',
+  'bangkok': 'BKK', 'thai lan': 'BKK',
+  'singapore': 'SIN',
+  'seoul': 'ICN', 'han quoc': 'ICN',
+  'tokyo': 'NRT', 'nhat ban': 'NRT', 'nhat': 'NRT',
+  'osaka': 'KIX',
+  'kuala lumpur': 'KUL', 'malaysia': 'KUL',
+  'taipei': 'TPE', 'dai loan': 'TPE',
+  'hong kong': 'HKG',
+  'sydney': 'SYD',
+}
+
+const AIRLINE_NAMES: Record<string, string> = {
+  VN: 'Vietnam Airlines', VJ: 'VietJet Air', QH: 'Bamboo Airways', BL: 'Pacific Airlines',
+  '3K': 'Jetstar Asia', SQ: 'Singapore Airlines', TG: 'Thai Airways', TR: 'Scoot',
+  KE: 'Korean Air', OZ: 'Asiana Airlines', JL: 'Japan Airlines', NH: 'ANA',
+  CX: 'Cathay Pacific', MU: 'China Eastern', AK: 'AirAsia',
+}
+
+function cityToIATA(name: string): string | null {
+  const n = normalizeVN((name || '').toLowerCase().trim())
+  if (/^[a-z]{3}$/i.test(n)) return n.toUpperCase()
+  for (const [key, code] of Object.entries(IATA_MAP)) {
+    if (n.includes(key)) return code
+  }
+  return null
+}
+
+async function getFlightPrices(origin: string, destination: string) {
+  const cacheKey = 'flights:' + origin.toLowerCase().trim() + ':' + destination.toLowerCase().trim()
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
+  const originCode = cityToIATA(origin)
+  const destCode = cityToIATA(destination)
+  const searchUrl = 'https://www.aviasales.com/search/' + (originCode || '') + (destCode || '')
+
+  let result: unknown
+  if (!originCode || !destCode) {
+    result = { error: 'Khong nhan dien duoc san bay tu ten dia diem', note: 'Tim chuyen bay tai: ' + searchUrl, search_url: searchUrl }
+  } else {
+    try {
+      const params = new URLSearchParams({ origin: originCode, destination: destCode, currency: 'vnd', token: TRAVELPAYOUTS_TOKEN })
+      const resp = await Promise.race([
+        fetch('https://api.travelpayouts.com/v1/prices/cheap?' + params.toString(), { headers: { 'Accept': 'application/json' } }),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+      ])
+      const data = await (resp as Response).json()
+      const routeData = data?.data?.[destCode]
+      if (data?.success && routeData) {
+        type Fare = { price: number; airline: string; flight_number: number; departure_at?: string; return_at?: string }
+        const options = Object.values(routeData as Record<string, Fare>)
+        result = {
+          source: 'Travelpayouts (du lieu Aviasales)',
+          origin: originCode, destination: destCode, currency: 'VND',
+          flights: options.map(o => ({
+            price_vnd: o.price,
+            airline: AIRLINE_NAMES[o.airline] || o.airline,
+            flight_number: o.airline + o.flight_number,
+            departure_at: o.departure_at || null,
+            return_at: o.return_at || null,
+          })),
+          booking_link: 'https://www.aviasales.com/search/' + originCode + destCode,
+          note: 'Day la gia ve re gan nhat ma he thong tim duoc cho tuyen nay (khong chac dung ngay user hoi), gia co the da thay doi - bam link de xem gia chinh xac va dat ve theo ngay cu the.'
+        }
+      } else {
+        throw new Error('no data')
+      }
+    } catch {
+      result = { error: 'Khong lay duoc gia ve may bay luc nay', note: 'Tim chuyen bay tai: ' + searchUrl, search_url: searchUrl }
+    }
+  }
+  setCache(cacheKey, result, 60 * 60 * 1000) // cache 1 gio
+  return result
+}
+
 function buildSystem(): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -367,7 +466,7 @@ ${SYSTEM_BASE}`
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
 CHUYEN MON: An uong · Mua sam · Giai tri · Du lich · Spa & Lam dep · Tin tuc · Thoi tiet · Gia vang
-CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), web_search (tim kiem tong quat tren internet)
+CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), get_flight_prices (Travelpayouts/Aviasales - gia ve may bay), web_search (tim kiem tong quat tren internet)
 
 NGUYEN TAC BAT BUOC:
 1) LUON goi tool khi user hoi ve dia diem, tin tuc, san pham, thoi tiet, gia vang - khong tra loi tu bo nho
@@ -380,7 +479,8 @@ NGUYEN TAC BAT BUOC:
 8) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool
 9) Voi web_search: neu ket qua co 'results', tom tat 2-3 ket qua dau (title + snippet) roi cung cap link [Xem them ket qua tim kiem](search_url); neu khong co 'results' (chi co 'note'/'search_url'), PHAI tra loi bang link [Tim kiem truc tiep](search_url) ngay, khong duoc tu liet ke cac website khac thay cho link nay
 10) Voi get_weather: neu tool tra ve temp_C/condition (KHONG co 'error'), PHAI tra loi NGAY trong chat voi nhiet do hien tai, tinh trang troi (mua/nang/may...), do am, gio - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
-11) Voi get_gold_price: neu tool tra ve 'prices' (KHONG co 'error'), PHAI tra loi NGAY trong chat gia mua/ban (don vi VND/luong, ghi ro la gia 1 luong = 10 chi = 37.5g) cua loai vang user hoi, kem gio cap nhat - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'`
+11) Voi get_gold_price: neu tool tra ve 'prices' (KHONG co 'error'), PHAI tra loi NGAY trong chat gia mua/ban (don vi VND/luong, ghi ro la gia 1 luong = 10 chi = 37.5g) cua loai vang user hoi, kem gio cap nhat - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
+12) Voi get_flight_prices: neu tool tra ve 'flights' (KHONG co 'error'), PHAI liet ke NGAY trong chat vai chuyen bay tieu bieu (hang bay, gia VND, ngay bay) va noi ro day la gia re gan nhat he thong tim duoc (co the khong dung ngay user hoi va gia co the da thay doi), kem link [Xem va dat ve](booking_link) de user kiem tra gia chinh xac theo ngay; chi dua link [Tim chuyen bay](search_url) khi tool tra ve 'error'`
 
 export const maxDuration = 60
 
@@ -441,6 +541,14 @@ export async function POST(req: Request) {
         description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
         parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
         execute: async ({ query }) => getGoldPrice(query || '')
+      }),
+      get_flight_prices: tool({
+        description: 'Tim gia ve may bay re gan nhat giua 2 thanh pho/san bay, du lieu tu Travelpayouts (Aviasales)',
+        parameters: z.object({
+          origin: z.string().describe('Diem di (ten thanh pho hoac ma san bay IATA, vd: Ha Noi, HAN)'),
+          destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
+        }),
+        execute: async ({ origin, destination }) => getFlightPrices(origin, destination)
       }),
     },
     onFinish: ({ usage, finishReason }) => {
