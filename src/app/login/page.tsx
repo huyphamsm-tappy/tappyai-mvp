@@ -1,6 +1,7 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Loader2, ExternalLink, Copy, Check, Sparkles, MapPin, Zap } from 'lucide-react'
 
@@ -86,8 +87,8 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-primary-900/60 pointer-events-none" />
 
         <div className="relative z-10">
-          <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span className="text-4xl font-black text-white">T</span>
+          <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-lg p-3">
+            <Image src="/logo.png" alt="TappyAI" width={80} height={80} className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl font-black text-white drop-shadow-md">TappyAI</h1>
           <p className="text-white/90 mt-2 text-sm max-w-xs mx-auto drop-shadow">
