@@ -22,7 +22,11 @@ export default async function ProfilePage() {
     .select('id', { count: 'exact', head: true })
     .eq('user_id', user.id)
 
-  const userInfo = profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email }
+  const userInfo = {
+    full_name: profile?.full_name || user.user_metadata?.full_name,
+    avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url,
+    email: profile?.email || user.email,
+  }
   const firstName = userInfo.full_name?.split(' ').pop() || userInfo.email?.split('@')[0] || 'bạn'
 
   return (
