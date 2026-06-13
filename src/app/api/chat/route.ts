@@ -38,9 +38,10 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
 }
 
 // ===== Chon san tool phu hop nhat de force goi (tranh model chon nham khi toolChoice=required) =====
-function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | null {
+function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | null {
   const t = normalizeVN(text.toLowerCase().trim())
   if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
+  if (/gia phong|gia khach san|dat phong|booking\.com|\bagoda\b|(khach san|hotel|resort).*gia|gia.*(khach san|hotel|resort)/.test(t)) return 'get_hotel_prices'
   if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b/.test(t)) return 'search_places'
   if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
   if (/\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
@@ -455,6 +456,48 @@ async function getFlightPrices(origin: string, destination: string) {
   return result
 }
 
+// ===== HOTEL PRICES: web search (Booking.com/Agoda snippets) + OSM hotel list (free, no API key) =====
+async function getHotelPrices(location: string, checkIn?: string, checkOut?: string) {
+  const cacheKey = 'hotels:' + location.toLowerCase().trim() + ':' + (checkIn || '') + ':' + (checkOut || '')
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
+  const bookingUrl = 'https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(location)
+    + (checkIn ? '&checkin=' + checkIn : '') + (checkOut ? '&checkout=' + checkOut : '')
+  const searchQuery = 'khach san ' + location + ' gia phong dem nay booking.com agoda'
+
+  let result: unknown
+  try {
+    const [searchResult, places] = await Promise.all([
+      webSearch(searchQuery) as Promise<{ results?: Array<{ title: string; link: string; snippet: string }>; search_url?: string }>,
+      searchPlacesOSM('khach san', location) as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
+    ])
+    const hotelList = places?.results?.slice(0, 5) || []
+    if (searchResult?.results && searchResult.results.length > 0) {
+      result = {
+        location,
+        source: 'Tim kiem web (Booking.com/Agoda) + OpenStreetMap',
+        search_results: searchResult.results,
+        hotel_list: hotelList,
+        booking_link: bookingUrl,
+        note: 'Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.'
+      }
+    } else {
+      result = {
+        error: 'Khong tim duoc thong tin gia phong luc nay',
+        hotel_list: hotelList,
+        booking_link: bookingUrl,
+        note: 'Xem va dat phong tai: ' + bookingUrl,
+        search_url: bookingUrl,
+      }
+    }
+  } catch {
+    result = { error: 'Khong lay duoc gia phong khach san luc nay', booking_link: bookingUrl, note: 'Xem va dat phong tai: ' + bookingUrl, search_url: bookingUrl }
+  }
+  setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut
+  return result
+}
+
 function buildSystem(): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -466,7 +509,7 @@ ${SYSTEM_BASE}`
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
 CHUYEN MON: An uong · Mua sam · Giai tri · Du lich · Spa & Lam dep · Tin tuc · Thoi tiet · Gia vang
-CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), get_flight_prices (Travelpayouts/Aviasales - gia ve may bay), web_search (tim kiem tong quat tren internet)
+CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), get_flight_prices (Travelpayouts/Aviasales - gia ve may bay), get_hotel_prices (tim kiem web Booking.com/Agoda + OSM - gia phong khach san), web_search (tim kiem tong quat tren internet)
 
 NGUYEN TAC BAT BUOC:
 1) LUON goi tool khi user hoi ve dia diem, tin tuc, san pham, thoi tiet, gia vang - khong tra loi tu bo nho
@@ -480,7 +523,8 @@ NGUYEN TAC BAT BUOC:
 9) Voi web_search: neu ket qua co 'results', tom tat 2-3 ket qua dau (title + snippet) roi cung cap link [Xem them ket qua tim kiem](search_url); neu khong co 'results' (chi co 'note'/'search_url'), PHAI tra loi bang link [Tim kiem truc tiep](search_url) ngay, khong duoc tu liet ke cac website khac thay cho link nay
 10) Voi get_weather: neu tool tra ve temp_C/condition (KHONG co 'error'), PHAI tra loi NGAY trong chat voi nhiet do hien tai, tinh trang troi (mua/nang/may...), do am, gio - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
 11) Voi get_gold_price: neu tool tra ve 'prices' (KHONG co 'error'), PHAI tra loi NGAY trong chat gia mua/ban (don vi VND/luong, ghi ro la gia 1 luong = 10 chi = 37.5g) cua loai vang user hoi, kem gio cap nhat - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
-12) Voi get_flight_prices: neu tool tra ve 'flights' (KHONG co 'error'), PHAI liet ke NGAY trong chat vai chuyen bay tieu bieu (hang bay, gia VND, ngay bay) va noi ro day la gia re gan nhat he thong tim duoc (co the khong dung ngay user hoi va gia co the da thay doi), kem link [Xem va dat ve](booking_link) de user kiem tra gia chinh xac theo ngay; chi dua link [Tim chuyen bay](search_url) khi tool tra ve 'error'`
+12) Voi get_flight_prices: neu tool tra ve 'flights' (KHONG co 'error'), PHAI liet ke NGAY trong chat vai chuyen bay tieu bieu (hang bay, gia VND, ngay bay) va noi ro day la gia re gan nhat he thong tim duoc (co the khong dung ngay user hoi va gia co the da thay doi), kem link [Xem va dat ve](booking_link) de user kiem tra gia chinh xac theo ngay; chi dua link [Tim chuyen bay](search_url) khi tool tra ve 'error'
+13) Voi get_hotel_prices: neu tool tra ve 'search_results' (KHONG co 'error'), PHAI tom tat NGAY trong chat ten khach san va gia phong tim thay duoc tu cac ket qua tim kiem (Booking.com/Agoda...), neu co hotel_list thi nhac them vai ten/dia chi khach san cu the tai khu vuc do, va noi ro gia chi la tham khao tu tim kiem hien tai co the khac loai phong/ngay va da thay doi, kem link [Xem gia va dat phong](booking_link) de user kiem tra gia chinh xac realtime theo ngay; chi dua link [Tim khach san](booking_link hoac search_url) khi tool tra ve 'error'`
 
 export const maxDuration = 60
 
@@ -549,6 +593,15 @@ export async function POST(req: Request) {
           destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
         }),
         execute: async ({ origin, destination }) => getFlightPrices(origin, destination)
+      }),
+      get_hotel_prices: tool({
+        description: 'Tim gia phong khach san/resort tai mot dia diem, ket hop tim kiem web (Booking.com/Agoda) va danh sach khach san tu OpenStreetMap',
+        parameters: z.object({
+          location: z.string().describe('Dia diem/thanh pho can tim khach san (vd: Da Nang, Phu Quoc, Ha Noi)'),
+          checkIn: z.string().optional().describe('Ngay check-in dang YYYY-MM-DD (khong bat buoc)'),
+          checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
+        }),
+        execute: async ({ location, checkIn, checkOut }) => getHotelPrices(location, checkIn, checkOut)
       }),
     },
     onFinish: ({ usage, finishReason }) => {
