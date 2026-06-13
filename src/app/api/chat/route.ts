@@ -203,19 +203,57 @@ async function searchPlaces(query: string, location?: string, type?: string) {
     }
   }
   if (!result) result = await searchPlacesOSM(query, location)
+
+  // ===== Gia mon/menu tham khao tu Serper (cho an uong: nha hang, quan an, cafe) =====
+  const qNorm = normalizeVN(query.toLowerCase())
+  const isFood = type === 'restaurant' || type === 'cafe' || /nha hang|quan an|an gi|an ngon|mon an|thuc don|\bcafe\b|ca phe|coffee|quan nhau|bun|pho|com/.test(qNorm)
+  if (isFood) {
+    try {
+      const priceResults = await serperSearch(query + ' ' + (location || '') + ' gia menu thuc don')
+      if (priceResults && priceResults.length > 0 && result && typeof result === 'object') {
+        result = {
+          ...(result as Record<string, unknown>),
+          price_search_results: priceResults,
+          price_note: 'Gia mon/menu tham khao tu ket qua tim kiem hien tai, co the khac theo chi nhanh va da thay doi theo thoi gian.'
+        }
+      }
+    } catch { /* bo qua, van tra ve danh sach dia diem */ }
+  }
+
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
   return result
 }
 
 async function searchProducts(query: string) {
-  return {
-    note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam',
-    links: [
-      { name: 'Shopee', url: 'https://shopee.vn/search?keyword=' + encodeURIComponent(query) },
-      { name: 'Tiki', url: 'https://tiki.vn/search?q=' + encodeURIComponent(query) },
-      { name: 'Lazada', url: 'https://www.lazada.vn/catalog/?q=' + encodeURIComponent(query) },
-    ]
+  const cacheKey = 'products:' + query.toLowerCase().trim()
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
+  const links = [
+    { name: 'Shopee', url: 'https://shopee.vn/search?keyword=' + encodeURIComponent(query) },
+    { name: 'Tiki', url: 'https://tiki.vn/search?q=' + encodeURIComponent(query) },
+    { name: 'Lazada', url: 'https://www.lazada.vn/catalog/?q=' + encodeURIComponent(query) },
+  ]
+
+  let result: unknown
+  try {
+    const searchResults = await serperSearch(query + ' gia Shopee Tiki Lazada')
+    if (searchResults && searchResults.length > 0) {
+      result = {
+        query,
+        source: 'Google Search (Serper)',
+        search_results: searchResults,
+        links,
+        note: 'Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.'
+      }
+    } else {
+      result = { note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam', links }
+    }
+  } catch {
+    result = { note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam', links }
   }
+  setCache(cacheKey, result, 15 * 60 * 1000) // cache 15 phut
+  return result
 }
 
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
@@ -567,7 +605,9 @@ NGUYEN TAC BAT BUOC:
 10) Voi get_weather: neu tool tra ve temp_C/condition (KHONG co 'error'), PHAI tra loi NGAY trong chat voi nhiet do hien tai, tinh trang troi (mua/nang/may...), do am, gio - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
 11) Voi get_gold_price: neu tool tra ve 'prices' (KHONG co 'error'), PHAI tra loi NGAY trong chat gia mua/ban (don vi VND/luong, ghi ro la gia 1 luong = 10 chi = 37.5g) cua loai vang user hoi, kem gio cap nhat - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
 12) Voi get_flight_prices: neu tool tra ve 'flights' (KHONG co 'error'), PHAI liet ke NGAY trong chat vai chuyen bay tieu bieu (hang bay, gia VND, ngay bay) va noi ro day la gia re gan nhat he thong tim duoc (co the khong dung ngay user hoi va gia co the da thay doi), kem link [Xem va dat ve](booking_link) de user kiem tra gia chinh xac theo ngay; chi dua link [Tim chuyen bay](search_url) khi tool tra ve 'error'
-13) Voi get_hotel_prices: neu tool tra ve 'search_results' (KHONG co 'error'), PHAI tom tat NGAY trong chat ten khach san va gia phong tim thay duoc tu cac ket qua tim kiem (Booking.com/Agoda...), neu co hotel_list thi nhac them vai ten/dia chi khach san cu the tai khu vuc do, va noi ro gia chi la tham khao tu tim kiem hien tai co the khac loai phong/ngay va da thay doi, kem link [Xem gia va dat phong](booking_link) de user kiem tra gia chinh xac realtime theo ngay; chi dua link [Tim khach san](booking_link hoac search_url) khi tool tra ve 'error'`
+13) Voi get_hotel_prices: neu tool tra ve 'search_results' (KHONG co 'error'), PHAI tom tat NGAY trong chat ten khach san va gia phong tim thay duoc tu cac ket qua tim kiem (Booking.com/Agoda...), neu co hotel_list thi nhac them vai ten/dia chi khach san cu the tai khu vuc do, va noi ro gia chi la tham khao tu tim kiem hien tai co the khac loai phong/ngay va da thay doi, kem link [Xem gia va dat phong](booking_link) de user kiem tra gia chinh xac realtime theo ngay; chi dua link [Tim khach san](booking_link hoac search_url) khi tool tra ve 'error'
+14) Voi search_places: neu tool tra ve 'price_search_results' (gia mon/menu tham khao), PHAI tom tat NGAY trong chat gia mon/menu tim thay duoc tu cac ket qua tim kiem do, ben canh thong tin ten/dia chi/danh gia dia diem, va nhac 'price_note' rang gia co the khac theo chi nhanh va da thay doi
+15) Voi search_products: neu tool tra ve 'search_results' (gia san pham tu Google Search, KHONG co 'error'), PHAI tom tat NGAY trong chat ten san pham va gia tim thay duoc tu ket qua tim kiem, kem link Shopee/Tiki/Lazada de user mua hang va kiem tra gia chinh xac; neu khong co 'search_results' (chi co 'note'/'links'), gioi thieu cac link san thuong mai dien tu do`
 
 export const maxDuration = 60
 
@@ -596,7 +636,7 @@ export async function POST(req: Request) {
     },
     tools: {
       search_places: tool({
-        description: 'Tim dia diem, nha hang, cafe, spa, khach san, benh vien tai Viet Nam',
+        description: 'Tim dia diem, nha hang, cafe, spa, khach san, benh vien tai Viet Nam. Voi quan an/nha hang/cafe se kem gia mon/menu tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot)'),
           location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
@@ -610,7 +650,7 @@ export async function POST(req: Request) {
         execute: async ({ query }) => getNews(query)
       }),
       search_products: tool({
-        description: 'Tim san pham mua sam online tren Shopee, Tiki, Lazada',
+        description: 'Tim san pham mua sam online tren Shopee, Tiki, Lazada, kem gia tham khao tu Google Search (Serper)',
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => searchProducts(query)
       }),
