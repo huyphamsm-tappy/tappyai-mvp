@@ -226,6 +226,14 @@ async function webSearch(query: string) {
 
   const fallbackUrl = 'https://duckduckgo.com/?q=' + encodeURIComponent(query)
   let result: unknown
+
+  const serperResults = await serperSearch(query)
+  if (serperResults && serperResults.length > 0) {
+    result = { query, source: 'Google (Serper)', results: serperResults, search_url: fallbackUrl }
+    setCache(cacheKey, result, 5 * 60 * 1000)
+    return result
+  }
+
   try {
     const resp = await Promise.race([
       fetch('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), {
@@ -271,6 +279,32 @@ async function webSearch(query: string) {
   }
   setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
   return result
+}
+
+// ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====
+async function serperSearch(query: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
+  const apiKey = process.env.SERPER_API_KEY
+  if (!apiKey) return null
+  try {
+    const resp = await Promise.race([
+      fetch('https://google.serper.dev/search', {
+        method: 'POST',
+        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num: 8 })
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+    ])
+    if (!(resp as Response).ok) return null
+    const data = await (resp as Response).json()
+    const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string }>
+    const results = organic
+      .filter(r => r.title && r.link)
+      .slice(0, 6)
+      .map(r => ({ title: r.title as string, link: r.link as string, snippet: r.snippet || '' }))
+    return results
+  } catch {
+    return null
+  }
 }
 
 // ===== WEATHER: wttr.in (free, no API key) =====
@@ -468,16 +502,25 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
 
   let result: unknown
   try {
-    const [searchResult, places] = await Promise.all([
-      webSearch(searchQuery) as Promise<{ results?: Array<{ title: string; link: string; snippet: string }>; search_url?: string }>,
+    const [serperResults, places] = await Promise.all([
+      serperSearch(searchQuery),
       searchPlacesOSM('khach san', location) as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
     ])
     const hotelList = places?.results?.slice(0, 5) || []
-    if (searchResult?.results && searchResult.results.length > 0) {
+
+    let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined = serperResults || undefined
+    let source = 'Google Search (Serper) + OpenStreetMap'
+    if (!searchResults || searchResults.length === 0) {
+      const ddg = await webSearch(searchQuery) as { results?: Array<{ title: string; link: string; snippet: string }> }
+      searchResults = ddg?.results
+      source = 'Tim kiem web (DuckDuckGo) + OpenStreetMap'
+    }
+
+    if (searchResults && searchResults.length > 0) {
       result = {
         location,
-        source: 'Tim kiem web (Booking.com/Agoda) + OpenStreetMap',
-        search_results: searchResult.results,
+        source,
+        search_results: searchResults,
         hotel_list: hotelList,
         booking_link: bookingUrl,
         note: 'Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.'
