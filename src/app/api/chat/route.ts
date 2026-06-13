@@ -204,17 +204,20 @@ async function searchPlaces(query: string, location?: string, type?: string) {
   }
   if (!result) result = await searchPlacesOSM(query, location)
 
-  // ===== Gia mon/menu tham khao tu Serper (cho an uong: nha hang, quan an, cafe) =====
+  // ===== Gia tham khao tu Serper (an uong / spa / giai tri) =====
   const qNorm = normalizeVN(query.toLowerCase())
   const isFood = type === 'restaurant' || type === 'cafe' || /nha hang|quan an|an gi|an ngon|mon an|thuc don|\bcafe\b|ca phe|coffee|quan nhau|bun|pho|com/.test(qNorm)
-  if (isFood) {
+  const isSpa = type === 'spa' || /\bspa\b|massage|lam dep|tham my|nail|cham soc da|goi dau/.test(qNorm)
+  const isEntertainment = type === 'cinema' || type === 'bar' || type === 'gym' || /rap chieu|cinema|xem phim|ve phim|karaoke|cong vien|khu vui choi|giai tri|bowling|billiard|\bgym\b|fitness|\bbar\b|\bpub\b|ve vao cong/.test(qNorm)
+  if (isFood || isSpa || isEntertainment) {
     try {
-      const priceResults = await serperSearch(query + ' ' + (location || '') + ' gia menu thuc don')
+      const suffix = isFood ? 'gia menu thuc don' : isSpa ? 'gia dich vu bang gia spa massage' : 'gia ve dich vu'
+      const priceResults = await serperSearch(query + ' ' + (location || '') + ' ' + suffix)
       if (priceResults && priceResults.length > 0 && result && typeof result === 'object') {
         result = {
           ...(result as Record<string, unknown>),
           price_search_results: priceResults,
-          price_note: 'Gia mon/menu tham khao tu ket qua tim kiem hien tai, co the khac theo chi nhanh va da thay doi theo thoi gian.'
+          price_note: 'Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.'
         }
       }
     } catch { /* bo qua, van tra ve danh sach dia diem */ }
@@ -606,7 +609,7 @@ NGUYEN TAC BAT BUOC:
 11) Voi get_gold_price: neu tool tra ve 'prices' (KHONG co 'error'), PHAI tra loi NGAY trong chat gia mua/ban (don vi VND/luong, ghi ro la gia 1 luong = 10 chi = 37.5g) cua loai vang user hoi, kem gio cap nhat - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
 12) Voi get_flight_prices: neu tool tra ve 'flights' (KHONG co 'error'), PHAI liet ke NGAY trong chat vai chuyen bay tieu bieu (hang bay, gia VND, ngay bay) va noi ro day la gia re gan nhat he thong tim duoc (co the khong dung ngay user hoi va gia co the da thay doi), kem link [Xem va dat ve](booking_link) de user kiem tra gia chinh xac theo ngay; chi dua link [Tim chuyen bay](search_url) khi tool tra ve 'error'
 13) Voi get_hotel_prices: neu tool tra ve 'search_results' (KHONG co 'error'), PHAI tom tat NGAY trong chat ten khach san va gia phong tim thay duoc tu cac ket qua tim kiem (Booking.com/Agoda...), neu co hotel_list thi nhac them vai ten/dia chi khach san cu the tai khu vuc do, va noi ro gia chi la tham khao tu tim kiem hien tai co the khac loai phong/ngay va da thay doi, kem link [Xem gia va dat phong](booking_link) de user kiem tra gia chinh xac realtime theo ngay; chi dua link [Tim khach san](booking_link hoac search_url) khi tool tra ve 'error'
-14) Voi search_places: neu tool tra ve 'price_search_results' (gia mon/menu tham khao), PHAI tom tat NGAY trong chat gia mon/menu tim thay duoc tu cac ket qua tim kiem do, ben canh thong tin ten/dia chi/danh gia dia diem, va nhac 'price_note' rang gia co the khac theo chi nhanh va da thay doi
+14) Voi search_places: neu tool tra ve 'price_search_results' (gia mon/menu/dich vu/ve tham khao - ap dung cho an uong, spa, giai tri), PHAI tom tat NGAY trong chat gia tim thay duoc tu cac ket qua tim kiem do (menu, dich vu spa/massage, ve vao cong/xem phim...), ben canh thong tin ten/dia chi/danh gia dia diem, va nhac 'price_note' rang gia co the khac theo chi nhanh, thoi diem va da thay doi
 15) Voi search_products: neu tool tra ve 'search_results' (gia san pham tu Google Search, KHONG co 'error'), PHAI tom tat NGAY trong chat ten san pham va gia tim thay duoc tu ket qua tim kiem, kem link Shopee/Tiki/Lazada de user mua hang va kiem tra gia chinh xac; neu khong co 'search_results' (chi co 'note'/'links'), gioi thieu cac link san thuong mai dien tu do`
 
 export const maxDuration = 60
@@ -636,7 +639,7 @@ export async function POST(req: Request) {
     },
     tools: {
       search_places: tool({
-        description: 'Tim dia diem, nha hang, cafe, spa, khach san, benh vien tai Viet Nam. Voi quan an/nha hang/cafe se kem gia mon/menu tham khao tu Google Search (Serper)',
+        description: 'Tim dia diem, nha hang, cafe, spa, khach san, benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot)'),
           location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
