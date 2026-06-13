@@ -17,11 +17,11 @@ export default async function AccountPage() {
     .eq('id', user.id)
     .single()
 
-  const userInfo = profile || {
-    full_name: user.user_metadata?.full_name,
-    avatar_url: user.user_metadata?.avatar_url,
-    email: user.email,
-    created_at: user.created_at,
+  const userInfo = {
+    full_name: profile?.full_name || user.user_metadata?.full_name,
+    avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url,
+    email: profile?.email || user.email,
+    created_at: profile?.created_at || user.created_at,
   }
   const firstName = userInfo.full_name?.split(' ').pop() || userInfo.email?.split('@')[0] || 'bạn'
   const joinDate = userInfo.created_at ? new Date(userInfo.created_at).toLocaleDateString('vi-VN') : null
