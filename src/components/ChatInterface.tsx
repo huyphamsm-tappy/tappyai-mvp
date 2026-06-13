@@ -102,7 +102,7 @@ export default function ChatInterface({
         {messages.map((msg) => (
           <div key={msg.id} className={cn('flex gap-1.5 animate-slide-up', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
             {msg.role === 'assistant' && (<div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-auto"><span className="text-white text-[10px] font-bold">T</span></div>)}
-            <div className={cn('max-w-[80%] rounded-2xl px-3 py-1.5 text-sm leading-snug', msg.role === 'user' ? 'bg-primary-500 text-white rounded-br-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-bl-md')}>
+            <div className={cn('max-w-[80%] rounded-2xl px-3 py-1.5 text-sm leading-[1.4]', msg.role === 'user' ? 'bg-primary-500 text-white rounded-br-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-bl-md')}>
               <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
             </div>
           </div>
