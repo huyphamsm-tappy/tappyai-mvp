@@ -6,12 +6,12 @@ import { Send, Loader2, Sparkles } from 'lucide-react'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 
 const QUICK_PROMPTS: Record<string, string[]> = {
-  food: ['Quan bun bo ngon o TP.HCM?', 'Cafe view dep Ha Noi?', 'Nha hang hai san tuoi song?'],
-  shopping: ['Trung tam mua sam lon Sai Gon?', 'Mua do hieu uy tin?', 'Cho dem luu niem?'],
-  entertainment: ['Rap chieu phim IMAX?', 'Quan karaoke bao phong?', 'Bar rooftop view dep?'],
-  travel: ['Lich trinh Da Nang 3 ngay?', 'Khach san Phu Quoc 1 trieu?', 'Dia diem check-in Hoi An?'],
-  spa: ['Spa massage gia binh dan?', 'Nail salon gel tot?', 'Trung tam duong da uy tin?'],
-  general: ['An gi ngon hom nay?', 'Cuoi tuan di dau vui?', 'Quan cafe lam viec yen tinh?'],
+  food: ['Quán bún bò ngon ở TP.HCM?', 'Cafe view đẹp Hà Nội?', 'Nhà hàng hải sản tươi sống?'],
+  shopping: ['Trung tâm mua sắm lớn Sài Gòn?', 'Mua đồ hiệu uy tín?', 'Chợ đêm lưu niệm?'],
+  entertainment: ['Rạp chiếu phim IMAX?', 'Quán karaoke bao phòng?', 'Bar rooftop view đẹp?'],
+  travel: ['Lịch trình Đà Nẵng 3 ngày?', 'Khách sạn Phú Quốc 1 triệu?', 'Địa điểm check-in Hội An?'],
+  spa: ['Spa massage giá bình dân?', 'Nail salon gel tốt?', 'Trung tâm dưỡng da uy tín?'],
+  general: ['Ăn gì ngon hôm nay?', 'Cuối tuần đi đâu vui?', 'Quán cafe làm việc yên tĩnh?'],
 }
 
 interface ChatInterfaceProps {
@@ -91,7 +91,7 @@ export default function ChatInterface({
                   <span className="text-3xl">{catInfo?.emoji || '🤖'}</span>
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo?.label || 'TappyAI'}</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Toi co the giup ban tim thong tin chinh xac</p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Tôi có thể giúp bạn tìm thông tin chính xác</p>
               </div>
               <div className="w-full space-y-2">
                 {quickPrompts.map((prompt) => (
@@ -139,7 +139,7 @@ export default function ChatInterface({
       </div>
       <div className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
         <form id="chat-form" onSubmit={handleSubmit} className="max-w-2xl mx-auto w-full flex gap-2 items-end">
-          <input ref={inputRef} value={input} onChange={handleInputChange} placeholder="Nhan tin voi TappyAI..." disabled={isLoading} className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none transition-all" />
+          <input ref={inputRef} value={input} onChange={handleInputChange} placeholder="Nhắn tin với TappyAI..." disabled={isLoading} className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none transition-all" />
           <button type="submit" disabled={isLoading || !input.trim()} className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">{isLoading ? <Loader2 size={18} className="text-white animate-spin" /> : <Send size={18} className="text-white" />}</button>
         </form>
       </div>
