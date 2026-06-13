@@ -226,13 +226,17 @@ async function webSearch(query: string) {
     const resp = await Promise.race([
       fetch('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0 Safari/537.36'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7',
+          'Referer': 'https://duckduckgo.com/',
+          'Origin': 'https://duckduckgo.com',
+          'Sec-Fetch-Mode': 'navigate',
         }
       }),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
     ])
     const html = await (resp as Response).text()
-    console.log(JSON.stringify({ type: 'tappyai_websearch_debug', status: (resp as Response).status, htmlLen: html.length, htmlSample: html.slice(0, 300) }))
 
     const results: Array<{ title: string; link: string; snippet: string }> = []
     const blockRegex = /<a[^>]*class="result__a"[^>]*href="(.*?)"[^>]*>([\s\S]*?)<\/a>[\s\S]*?<a[^>]*class="result__snippet"[^>]*>([\s\S]*?)<\/a>/g
@@ -256,11 +260,10 @@ async function webSearch(query: string) {
     }
 
     result = results.length === 0
-      ? { note: 'Khong tim thay ket qua cho "' + query + '". Tim truc tiep: ' + fallbackUrl, results: [], search_url: fallbackUrl }
+      ? { note: 'Khong tim thay ket qua tu dong cho "' + query + '". HAY hien thi link sau cho user de tu tim: ' + fallbackUrl, results: [], search_url: fallbackUrl }
       : { query, source: 'DuckDuckGo', results, search_url: fallbackUrl }
-  } catch (e) {
-    console.log(JSON.stringify({ type: 'tappyai_websearch_debug_error', error: String(e) }))
-    result = { error: 'Khong the tim kiem luc nay', results: [], search_url: fallbackUrl, note: 'Tim truc tiep: ' + fallbackUrl }
+  } catch {
+    result = { note: 'Khong the tim kiem tu dong luc nay. HAY hien thi link sau cho user de tu tim: ' + fallbackUrl, results: [], search_url: fallbackUrl }
   }
   setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
   return result
@@ -274,11 +277,12 @@ NGUYEN TAC BAT BUOC:
 1) LUON goi tool khi user hoi ve dia diem, tin tuc, san pham - khong tra loi tu bo nho
 2) Voi cac cau hoi can thong tin moi/cap nhat khac ma 3 tool tren khong phu hop (gia ca, ty gia, thoi tiet, su kien, kien thuc can xac thuc...), LUON goi web_search - khong tra loi bang kien thuc cu trong dau
 3) Neu tool tra ve du lieu: hien thi ten, dia chi, link ban do cu the
-4) Neu tool tra ve google_maps_search hoac search_url: LUON hien thi link do cho user
+4) Neu tool tra ve google_maps_search hoac search_url: LUON hien thi link do, dat duoi dang [Xem ket qua](URL) ngay trong cau tra loi - day la yeu cau BAT BUOC, khong duoc bo qua du da goi y nguon khac
 5) Neu khong co du lieu OSM: van tra loi "Tim them tren Google Maps: [link]"
 6) Tra loi tieng Viet than thien, co link cu the de user click
 7) TUYET DOI KHONG noi "he thong gap su co" hay "toi khong co thong tin" khi da co link de tham khao
-8) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool`
+8) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool
+9) Voi web_search: neu ket qua co 'results', tom tat 2-3 ket qua dau (title + snippet) roi cung cap link [Xem them ket qua tim kiem](search_url); neu khong co 'results' (chi co 'note'/'search_url'), PHAI tra loi bang link [Tim kiem truc tiep](search_url) ngay, khong duoc tu liet ke cac website khac thay cho link nay`
 
 export const maxDuration = 60
 
@@ -300,7 +304,6 @@ export async function POST(req: Request) {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) {
         const forced = detectForcedTool(lastText)
-        console.log(JSON.stringify({ type: 'tappyai_route_debug', lastText, forced }))
         if (forced) return { toolChoice: { type: 'tool' as const, toolName: forced } }
         return { toolChoice: 'required' as const }
       }
