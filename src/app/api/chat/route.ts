@@ -38,12 +38,14 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
 }
 
 // ===== Chon san tool phu hop nhat de force goi (tranh model chon nham khi toolChoice=required) =====
-function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | null {
+function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | null {
   const t = normalizeVN(text.toLowerCase().trim())
   if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b/.test(t)) return 'search_places'
   if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
   if (/\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
-  if (/gia vang|ty gia|hoi suat|gia xang|gia dau|thoi tiet|du bao|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
+  if (/gia vang|vang sjc|vang 9999|vang mieng|vang nhan|gia vang the gioi|xau\s*\/?\s*usd/.test(t)) return 'get_gold_price'
+  if (/thoi tiet|du bao|nhiet do|troi mua|troi nang|troi co lanh|may co|nang khong|mua khong/.test(t)) return 'get_weather'
+  if (/ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
   return null
 }
 
@@ -269,20 +271,104 @@ async function webSearch(query: string) {
   return result
 }
 
+// ===== WEATHER: wttr.in (free, no API key) =====
+async function getWeather(location: string) {
+  const cacheKey = 'weather:' + (location || '').toLowerCase().trim()
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
+  const cityMap: Record<string, string> = {
+    'ha noi': 'Hanoi', 'hanoi': 'Hanoi', 'hn': 'Hanoi',
+    'ho chi minh': 'Ho Chi Minh City', 'tp hcm': 'Ho Chi Minh City', 'hcm': 'Ho Chi Minh City', 'sai gon': 'Ho Chi Minh City', 'saigon': 'Ho Chi Minh City', 'tphcm': 'Ho Chi Minh City',
+    'da nang': 'Da Nang', 'danang': 'Da Nang',
+    'hue': 'Hue', 'can tho': 'Can Tho', 'hai phong': 'Hai Phong',
+    'nha trang': 'Nha Trang', 'da lat': 'Da Lat', 'dalat': 'Da Lat',
+    'vung tau': 'Vung Tau', 'hoi an': 'Hoi An', 'phu quoc': 'Phu Quoc',
+  }
+  const norm = normalizeVN((location || '').toLowerCase().trim())
+  const place = cityMap[norm] || location || 'Hanoi'
+  const fallbackUrl = 'https://www.google.com/search?q=' + encodeURIComponent('thoi tiet ' + place)
+
+  let result: unknown
+  try {
+    const resp = await Promise.race([
+      fetch('https://wttr.in/' + encodeURIComponent(place) + '?format=j1', {
+        headers: { 'User-Agent': 'curl/8.0', 'Accept': 'application/json' }
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+    ])
+    const data = await (resp as Response).json()
+    const cur = data.current_condition?.[0]
+    const today = data.weather?.[0]
+    if (!cur) throw new Error('no data')
+    result = {
+      location: data.nearest_area?.[0]?.areaName?.[0]?.value || place,
+      temp_C: cur.temp_C,
+      feels_like_C: cur.FeelsLikeC,
+      condition: cur.weatherDesc?.[0]?.value?.trim(),
+      humidity_percent: cur.humidity,
+      wind_kmph: cur.windspeedKmph,
+      today_max_C: today?.maxtempC,
+      today_min_C: today?.mintempC,
+      chance_of_rain_percent: today?.hourly?.find((h: { time: string }) => h.time === '1200')?.chanceofrain ?? today?.hourly?.[4]?.chanceofrain,
+      source: 'wttr.in',
+    }
+  } catch {
+    result = { error: 'Khong lay duoc du lieu thoi tiet luc nay', note: 'Xem thoi tiet tai: ' + fallbackUrl, search_url: fallbackUrl }
+  }
+  setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut
+  return result
+}
+
+// ===== GOLD PRICE: vang.today (free, no API key) =====
+async function getGoldPrice(query: string) {
+  const cacheKey = 'gold:' + (query || '').toLowerCase().trim()
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
+  const fallbackUrl = 'https://www.vang.today'
+  let result: unknown
+  try {
+    const resp = await Promise.race([
+      fetch('https://www.vang.today/api/prices', { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' } }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+    ])
+    const data = await (resp as Response).json()
+    if (data?.success && Array.isArray(data.data) && data.data.length) {
+      const wanted = ['SJL1L10', 'SJ9999', 'PQHN24NTT', 'PQHNVM', 'DOHNL', 'XAUUSD']
+      const filtered = data.data.filter((d: { type_code: string }) => wanted.includes(d.type_code))
+      result = {
+        source: 'vang.today',
+        unit: 'VND/luong cho vang trong nuoc, USD/oz cho vang the gioi (XAUUSD)',
+        updated_time: data.time, updated_date: data.date,
+        prices: (filtered.length ? filtered : data.data).slice(0, 8),
+      }
+    } else {
+      throw new Error('no data')
+    }
+  } catch {
+    result = { error: 'Khong lay duoc gia vang luc nay', note: 'Xem gia vang tai: ' + fallbackUrl, search_url: fallbackUrl }
+  }
+  setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut, gia vang cap nhat thuong xuyen
+  return result
+}
+
 const SYSTEM = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
-CHUYEN MON: An uong · Mua sam · Giai tri · Du lich · Spa & Lam dep · Tin tuc
-CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), web_search (tim kiem tong quat tren internet)
+CHUYEN MON: An uong · Mua sam · Giai tri · Du lich · Spa & Lam dep · Tin tuc · Thoi tiet · Gia vang
+CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), web_search (tim kiem tong quat tren internet)
 
 NGUYEN TAC BAT BUOC:
-1) LUON goi tool khi user hoi ve dia diem, tin tuc, san pham - khong tra loi tu bo nho
-2) Voi cac cau hoi can thong tin moi/cap nhat khac ma 3 tool tren khong phu hop (gia ca, ty gia, thoi tiet, su kien, kien thuc can xac thuc...), LUON goi web_search - khong tra loi bang kien thuc cu trong dau
+1) LUON goi tool khi user hoi ve dia diem, tin tuc, san pham, thoi tiet, gia vang - khong tra loi tu bo nho
+2) Voi cac cau hoi can thong tin moi/cap nhat khac ma cac tool tren khong phu hop (ty gia, gia xang, su kien, kien thuc can xac thuc...), LUON goi web_search - khong tra loi bang kien thuc cu trong dau
 3) Neu tool tra ve du lieu: hien thi ten, dia chi, link ban do cu the
 4) Neu tool tra ve google_maps_search hoac search_url: LUON hien thi link do, dat duoi dang [Xem ket qua](URL) ngay trong cau tra loi - day la yeu cau BAT BUOC, khong duoc bo qua du da goi y nguon khac
 5) Neu khong co du lieu OSM: van tra loi "Tim them tren Google Maps: [link]"
 6) Tra loi tieng Viet than thien, co link cu the de user click
 7) TUYET DOI KHONG noi "he thong gap su co" hay "toi khong co thong tin" khi da co link de tham khao
 8) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool
-9) Voi web_search: neu ket qua co 'results', tom tat 2-3 ket qua dau (title + snippet) roi cung cap link [Xem them ket qua tim kiem](search_url); neu khong co 'results' (chi co 'note'/'search_url'), PHAI tra loi bang link [Tim kiem truc tiep](search_url) ngay, khong duoc tu liet ke cac website khac thay cho link nay`
+9) Voi web_search: neu ket qua co 'results', tom tat 2-3 ket qua dau (title + snippet) roi cung cap link [Xem them ket qua tim kiem](search_url); neu khong co 'results' (chi co 'note'/'search_url'), PHAI tra loi bang link [Tim kiem truc tiep](search_url) ngay, khong duoc tu liet ke cac website khac thay cho link nay
+10) Voi get_weather: neu tool tra ve temp_C/condition (KHONG co 'error'), PHAI tra loi NGAY trong chat voi nhiet do hien tai, tinh trang troi (mua/nang/may...), do am, gio - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
+11) Voi get_gold_price: neu tool tra ve 'prices' (KHONG co 'error'), PHAI tra loi NGAY trong chat gia mua/ban (don vi VND/luong, ghi ro la gia 1 luong = 10 chi = 37.5g) cua loai vang user hoi, kem gio cap nhat - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'`
 
 export const maxDuration = 60
 
@@ -330,9 +416,19 @@ export async function POST(req: Request) {
         execute: async ({ query }) => searchProducts(query)
       }),
       web_search: tool({
-        description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (gia ca, ty gia, thoi tiet, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
-        parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: gia vang hom nay, thoi tiet Ha Noi)') }),
+        description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
+        parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
         execute: async ({ query }) => webSearch(query)
+      }),
+      get_weather: tool({
+        description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
+        parameters: z.object({ location: z.string().describe('Ten thanh pho/tinh can xem thoi tiet (vd: Ha Noi, Da Nang, TP HCM)') }),
+        execute: async ({ location }) => getWeather(location)
+      }),
+      get_gold_price: tool({
+        description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
+        parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
+        execute: async ({ query }) => getGoldPrice(query || '')
       }),
     },
     onFinish: ({ usage, finishReason }) => {
