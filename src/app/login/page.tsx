@@ -76,18 +76,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500 flex flex-col">
+    <div className="min-h-dvh flex flex-col">
       {/* Hero section */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-6 text-center relative overflow-hidden">
-        <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-white/10 pointer-events-none" />
-        <div className="absolute -bottom-10 -left-12 w-44 h-44 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+      <div
+        className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-6 text-center relative overflow-hidden bg-cover bg-center"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')" }}
+      >
+        {/* Overlay gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-primary-900/60 pointer-events-none" />
 
-        <div className="relative">
+        <div className="relative z-10">
           <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-lg">
             <span className="text-4xl font-black text-white">T</span>
           </div>
-          <h1 className="text-3xl font-black text-white">TappyAI</h1>
-          <p className="text-primary-100 mt-2 text-sm max-w-xs mx-auto">
+          <h1 className="text-3xl font-black text-white drop-shadow-md">TappyAI</h1>
+          <p className="text-white/90 mt-2 text-sm max-w-xs mx-auto drop-shadow">
             Chạm đến mọi dịch vụ – AI Agent cá nhân hóa cho cuộc sống tại Việt Nam
           </p>
 
@@ -96,7 +99,7 @@ export default function LoginPage() {
             {EXPLORE_TAGS.map((tag) => (
               <span
                 key={tag.label}
-                className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full"
+                className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-sm"
               >
                 <span>{tag.emoji}</span>
                 {tag.label}
