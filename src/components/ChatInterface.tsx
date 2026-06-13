@@ -79,7 +79,7 @@ export default function ChatInterface({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full min-h-[300px] gap-6 animate-fade-in">
             <div className="text-center">
@@ -100,14 +100,14 @@ export default function ChatInterface({
           </div>
         )}
         {messages.map((msg) => (
-          <div key={msg.id} className={cn('flex gap-2 animate-slide-up', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
-            {msg.role === 'assistant' && (<div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-auto"><span className="text-white text-xs font-bold">T</span></div>)}
-            <div className={cn('max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed', msg.role === 'user' ? 'bg-primary-500 text-white rounded-br-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-bl-md')}>
+          <div key={msg.id} className={cn('flex gap-1.5 animate-slide-up', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
+            {msg.role === 'assistant' && (<div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-auto"><span className="text-white text-[10px] font-bold">T</span></div>)}
+            <div className={cn('max-w-[80%] rounded-2xl px-3 py-1.5 text-sm leading-snug', msg.role === 'user' ? 'bg-primary-500 text-white rounded-br-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-bl-md')}>
               <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
             </div>
           </div>
         ))}
-        {isLoading && (<div className="flex gap-2 justify-start animate-fade-in"><div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0"><span className="text-white text-xs font-bold">T</span></div><div className="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-bl-md px-4 py-3"><div className="flex gap-1 items-center h-4"><span className="typing-dot text-gray-400" /><span className="typing-dot text-gray-400" /><span className="typing-dot text-gray-400" /></div></div></div>)}
+        {isLoading && (<div className="flex gap-1.5 justify-start animate-fade-in"><div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0"><span className="text-white text-[10px] font-bold">T</span></div><div className="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-bl-md px-3 py-1.5"><div className="flex gap-1 items-center h-4"><span className="typing-dot text-gray-400" /><span className="typing-dot text-gray-400" /><span className="typing-dot text-gray-400" /></div></div></div>)}
         <div ref={bottomRef} />
       </div>
       <div className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
