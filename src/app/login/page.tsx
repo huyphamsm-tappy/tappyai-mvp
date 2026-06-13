@@ -90,8 +90,10 @@ export default function LoginPage() {
           <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-lg p-3">
             <Image src="/logo.png" alt="TappyAI" width={80} height={80} className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-3xl font-black text-amber-300 drop-shadow-md">TappyAI</h1>
-          <p className="text-amber-50 mt-2 text-sm max-w-xs mx-auto drop-shadow">
+          <div className="brand-title-wrap">
+            <h1 className="brand-title text-3xl">TappyAI</h1>
+          </div>
+          <p className="brand-slogan mt-3 text-sm max-w-xs mx-auto">
             Chạm đến mọi dịch vụ – AI Agent cá nhân hóa cho cuộc sống tại Việt Nam
           </p>
 
@@ -100,7 +102,7 @@ export default function LoginPage() {
             {EXPLORE_TAGS.map((tag) => (
               <span
                 key={tag.label}
-                className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-sm"
+                className="explore-tag inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full shadow-sm"
               >
                 <span>{tag.emoji}</span>
                 {tag.label}
