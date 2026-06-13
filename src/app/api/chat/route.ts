@@ -334,14 +334,17 @@ async function getGoldPrice(query: string) {
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
     ])
     const data = await (resp as Response).json()
-    if (data?.success && Array.isArray(data.data) && data.data.length) {
+    if (data?.success && data.prices && typeof data.prices === 'object') {
       const wanted = ['SJL1L10', 'SJ9999', 'PQHN24NTT', 'PQHNVM', 'DOHNL', 'XAUUSD']
-      const filtered = data.data.filter((d: { type_code: string }) => wanted.includes(d.type_code))
+      type GoldEntry = { name: string; buy: number; sell: number; change_buy: number; change_sell: number; currency: string }
+      const entries = Object.entries(data.prices as Record<string, GoldEntry>)
+      const filtered = entries.filter(([code]) => wanted.includes(code))
+      const list = (filtered.length ? filtered : entries).map(([code, v]) => ({ type_code: code, ...v }))
       result = {
         source: 'vang.today',
-        unit: 'VND/luong cho vang trong nuoc, USD/oz cho vang the gioi (XAUUSD)',
+        unit: 'VND/luong cho vang trong nuoc (1 luong = 10 chi = 37.5g), USD/oz cho vang the gioi (XAUUSD)',
         updated_time: data.time, updated_date: data.date,
-        prices: (filtered.length ? filtered : data.data).slice(0, 8),
+        prices: list,
       }
     } else {
       throw new Error('no data')
