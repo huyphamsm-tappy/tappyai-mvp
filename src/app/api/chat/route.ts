@@ -271,7 +271,34 @@ async function searchProducts(query: string) {
 
   let result: unknown
   try {
-    const searchResults = await serperSearch(query + ' gia Shopee Tiki Lazada')
+    const [searchResultsRaw, directResults] = await Promise.all([
+      serperSearch(query + ' gia Shopee Tiki Lazada'),
+      serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)'),
+    ])
+
+    // Uu tien cac link CU THE den 1 san pham (khong phai trang tim kiem) tren Shopee/Tiki/Lazada
+    const directProductLinks = (directResults || []).filter(r => {
+      try {
+        const u = new URL(r.link)
+        const host = u.hostname.replace(/^www\./, '')
+        const path = u.pathname.toLowerCase()
+        if (host.includes('shopee.vn')) return /-i\.\d+\.\d+/.test(path)
+        if (host.includes('tiki.vn')) return /-p\d+\.html/.test(path)
+        if (host.includes('lazada.vn')) return path.startsWith('/products/')
+        return false
+      } catch { return false }
+    })
+
+    let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined = searchResultsRaw || undefined
+    if (directProductLinks.length > 0) {
+      const seen = new Set<string>()
+      searchResults = [...directProductLinks, ...(searchResults || [])].filter(r => {
+        if (seen.has(r.link)) return false
+        seen.add(r.link)
+        return true
+      }).slice(0, 8)
+    }
+
     if (searchResults && searchResults.length > 0) {
       result = {
         query,
@@ -574,13 +601,31 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
 
   let result: unknown
   try {
-    const [serperResults, places] = await Promise.all([
+    const [serperResults, directResults, places] = await Promise.all([
       serperSearch(searchQuery),
+      serperSearch(location + ' khach san gia re (site:booking.com OR site:agoda.com OR site:traveloka.com)'),
       searchPlacesOSM('khach san', location) as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
     ])
     const hotelList = places?.results?.slice(0, 5) || []
 
+    // Uu tien cac link CU THE den 1 khach san (chua '/hotel/') tu cac OTA, gop voi ket qua chung
+    const directHotelLinks = (directResults || []).filter(r => {
+      try {
+        const u = new URL(r.link)
+        const host = u.hostname.replace(/^www\./, '')
+        const path = u.pathname.toLowerCase()
+        return (host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com')) && path.includes('/hotel/')
+      } catch { return false }
+    })
     let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined = serperResults || undefined
+    if (directHotelLinks.length > 0) {
+      const seen = new Set<string>()
+      searchResults = [...directHotelLinks, ...(searchResults || [])].filter(r => {
+        if (seen.has(r.link)) return false
+        seen.add(r.link)
+        return true
+      }).slice(0, 8)
+    }
     let source = 'Google Search (Serper) + OpenStreetMap'
     if (!searchResults || searchResults.length === 0) {
       const ddg = await webSearch(searchQuery) as { results?: Array<{ title: string; link: string; snippet: string }> }
