@@ -380,6 +380,11 @@ async function webSearch(query: string) {
   return result
 }
 
+// Encode ky tu '(' ')' trong URL de khong vo cu phap markdown link [text](url)
+function sanitizeUrlForMarkdown(link: string): string {
+  return link.replace(/\(/g, '%28').replace(/\)/g, '%29')
+}
+
 // ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====
 async function serperSearch(query: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
   const apiKey = process.env.SERPER_API_KEY
@@ -399,7 +404,7 @@ async function serperSearch(query: string): Promise<Array<{ title: string; link:
     const results = organic
       .filter(r => r.title && r.link)
       .slice(0, 6)
-      .map(r => ({ title: r.title as string, link: r.link as string, snippet: r.snippet || '' }))
+      .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '' }))
     return results
   } catch {
     return null
