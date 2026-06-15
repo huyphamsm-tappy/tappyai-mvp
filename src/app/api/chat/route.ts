@@ -176,22 +176,24 @@ const FOOD_DELIVERY_LINKS = [
   { name: 'BeFood', url: 'https://be.com.vn/' },
 ]
 
-const DELIVERY_DOMAIN_PATTERNS: Array<{ name: string; re: RegExp }> = [
-  { name: 'ShopeeFood', re: /shopeefood\.vn\/[^/?\s]+\/[^/?\s]+/i },
-  { name: 'GrabFood', re: /food\.grab\.com\/[a-z]{2}\/[a-z]{2}\/restaurant\/[^/?\s]+/i },
-  { name: 'Baemin', re: /baemin\.vn\/[^/?\s]+\/[^/?\s]+/i },
-]
-
-// Tim link dat hang online TRUC TIEP cho 1 quan cu the tren GrabFood/ShopeeFood/Baemin
+// Tim link dat hang online TRUC TIEP cho 1 quan cu the tren GrabFood/ShopeeFood/Baemin/BeFood
+// Dung site: filter de Serper uu tien tra ve dung trang cua quan tren cac platform nay
 async function findOrderLink(name: string, location?: string): Promise<{ platform: string; link: string } | null> {
   if (!name) return null
   try {
-    const results = await serperSearch(name + ' ' + (location || '') + ' dat do an online shopeefood grabfood baemin')
+    const results = await serperSearch('"' + name + '" ' + (location || '') + ' (site:shopeefood.vn OR site:food.grab.com OR site:baemin.vn OR site:be.com.vn)')
     if (!results) return null
     for (const r of results) {
-      for (const p of DELIVERY_DOMAIN_PATTERNS) {
-        if (p.re.test(r.link)) return { platform: p.name, link: r.link }
-      }
+      try {
+        const u = new URL(r.link)
+        const host = u.hostname.replace(/^www\./, '')
+        const path = u.pathname.replace(/\/+$/, '')
+        if (path.length <= 1) continue // bo qua link trang chu (khong cu the)
+        if (host.includes('shopeefood.vn')) return { platform: 'ShopeeFood', link: r.link }
+        if (host.includes('food.grab.com')) return { platform: 'GrabFood', link: r.link }
+        if (host.includes('baemin.vn')) return { platform: 'Baemin', link: r.link }
+        if (host.includes('be.com.vn')) return { platform: 'BeFood', link: r.link }
+      } catch { /* link khong hop le, bo qua */ }
     }
     return null
   } catch {
