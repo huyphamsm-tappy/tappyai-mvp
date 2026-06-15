@@ -608,18 +608,19 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
   try {
     const [serperResults, directResults, places] = await Promise.all([
       serperSearch(searchQuery),
-      serperSearch(location + ' khach san gia re (site:booking.com OR site:agoda.com OR site:traveloka.com)'),
+      serperSearch('khach san ' + location + ' (site:booking.com OR site:agoda.com OR site:traveloka.com)'),
       searchPlacesOSM('khach san', location) as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
     ])
     const hotelList = places?.results?.slice(0, 5) || []
 
-    // Uu tien cac link CU THE den 1 khach san (chua '/hotel/') tu cac OTA, gop voi ket qua chung
+    // Uu tien cac link CU THE den 1 khach san (khong phai trang tim kiem/danh sach chung) tu cac OTA, gop voi ket qua chung
     const directHotelLinks = (directResults || []).filter(r => {
       try {
         const u = new URL(r.link)
         const host = u.hostname.replace(/^www\./, '')
         const path = u.pathname.toLowerCase()
-        return (host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com')) && path.includes('/hotel/')
+        if (path.length <= 1 || path.includes('search') || path.includes('/region/') || path.includes('/city/')) return false
+        return host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com')
       } catch { return false }
     })
     let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined = serperResults || undefined
