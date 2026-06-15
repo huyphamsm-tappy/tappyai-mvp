@@ -176,6 +176,29 @@ const FOOD_DELIVERY_LINKS = [
   { name: 'BeFood', url: 'https://be.com.vn/' },
 ]
 
+const DELIVERY_DOMAIN_PATTERNS: Array<{ name: string; re: RegExp }> = [
+  { name: 'ShopeeFood', re: /shopeefood\.vn\/[^/?\s]+\/[^/?\s]+/i },
+  { name: 'GrabFood', re: /food\.grab\.com\/[a-z]{2}\/[a-z]{2}\/restaurant\/[^/?\s]+/i },
+  { name: 'Baemin', re: /baemin\.vn\/[^/?\s]+\/[^/?\s]+/i },
+]
+
+// Tim link dat hang online TRUC TIEP cho 1 quan cu the tren GrabFood/ShopeeFood/Baemin
+async function findOrderLink(name: string, location?: string): Promise<{ platform: string; link: string } | null> {
+  if (!name) return null
+  try {
+    const results = await serperSearch(name + ' ' + (location || '') + ' dat do an online shopeefood grabfood baemin')
+    if (!results) return null
+    for (const r of results) {
+      for (const p of DELIVERY_DOMAIN_PATTERNS) {
+        if (p.re.test(r.link)) return { platform: p.name, link: r.link }
+      }
+    }
+    return null
+  } catch {
+    return null
+  }
+}
+
 async function searchPlaces(query: string, location?: string, type?: string) {
   const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '')
   const cached = getCache(cacheKey)
@@ -219,9 +242,12 @@ async function searchPlaces(query: string, location?: string, type?: string) {
   if (isFood || isSpa || isEntertainment) {
     try {
       const suffix = isFood ? 'gia menu thuc don' : isSpa ? 'gia dich vu bang gia spa massage' : 'gia ve dich vu'
-      const [priceResults, orderResults] = await Promise.all([
+      const places = (result && typeof result === 'object') ? (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined : undefined
+      const topPlaces = isFood && places ? places.slice(0, 3) : []
+      const [priceResults, orderResults, orderLinkResults] = await Promise.all([
         serperSearch(query + ' ' + (location || '') + ' ' + suffix),
         isFood ? serperSearch(query + ' ' + (location || '') + ' dat do an online grabfood shopeefood baemin') : Promise.resolve(null),
+        Promise.all(topPlaces.map(p => findOrderLink(String(p.name || ''), location))),
       ])
       if (result && typeof result === 'object') {
         const extra: Record<string, unknown> = {}
@@ -232,6 +258,13 @@ async function searchPlaces(query: string, location?: string, type?: string) {
         if (isFood) {
           if (orderResults && orderResults.length > 0) extra.order_search_results = orderResults
           extra.order_links = FOOD_DELIVERY_LINKS
+          topPlaces.forEach((p, i) => {
+            const ol = orderLinkResults[i]
+            if (ol) {
+              p.order_link = ol.link
+              p.order_platform = ol.platform
+            }
+          })
         }
         if (Object.keys(extra).length > 0) {
           result = { ...(result as Record<string, unknown>), ...extra }
@@ -765,7 +798,7 @@ NGUYEN TAC BAT BUOC:
    - Cuoi cau tra loi: nhac ngan gon rang gia chi la tham khao tai thoi diem tim kiem, co the khac theo loai phong/ngay cu the va da thay doi, kem 1 link tong hop [Xem them lua chon & dat phong theo ngay](booking_link) de user tu loc
    - Chi dua link [Tim khach san](booking_link hoac search_url) lam link DUY NHAT khi tool tra ve 'error' hoac khong co search_results
 14) Voi search_places: neu tool tra ve 'price_search_results' (gia mon/menu/dich vu/ve tham khao - ap dung cho an uong, spa, giai tri), PHAI tom tat NGAY trong chat gia tim thay duoc tu cac ket qua tim kiem do (menu, dich vu spa/massage, ve vao cong/xem phim...), ben canh thong tin ten/dia chi/danh gia dia diem, va nhac 'price_note' rang gia co the khac theo chi nhanh, thoi diem va da thay doi. Neu mot 'price_search_results' item co 'link' rieng (website/fanpage/trang dat ve cua chinh dia diem do, khong phai trang tong hop), co the gan link do vao ten dia diem tuong ung de user xem chi tiet
-   - Voi an uong (isFood): neu tool tra ve 'order_search_results' (ket qua tim trang dat do an online), neu mot ket qua co 'link' tro toi DUNG trang cua quan do tren GrabFood/ShopeeFood/Baemin/Be (vd shopeefood.vn/..., food.grab.com/vn/vi/restaurant/..., baemin.vn/...), PHAI gioi thieu link do ngay sau thong tin quan duoi dang [Dat online tai day](link) - day la link dat hang online TRUC TIEP, uu tien cao. Neu khong co 'order_search_results' hoac khong co link cu the, dua 'order_links' (ShopeeFood/GrabFood/BeFood) de user tu mo app tim quan va dat hang
+   - Voi an uong (isFood): neu mot dia diem trong 'results' co san 'order_link' + 'order_platform' (link dat online TRUC TIEP cua DUNG quan do tren ShopeeFood/GrabFood/Baemin), PHAI gan ngay sau ten/thong tin quan do dang [Dat online qua {order_platform}](order_link) - day la link uu tien cao nhat. Neu khong co, va tool tra ve 'order_search_results' co ket qua voi 'link' tro toi DUNG trang cua quan do tren GrabFood/ShopeeFood/Baemin/Be (vd shopeefood.vn/..., food.grab.com/vn/vi/restaurant/..., baemin.vn/...), PHAI gioi thieu link do ngay sau thong tin quan duoi dang [Dat online tai day](link). Neu khong co link cu the nao, dua 'order_links' (ShopeeFood/GrabFood/BeFood) de user tu mo app tim quan va dat hang
 15) Voi search_products: neu tool tra ve 'search_results' (gia san pham tu Google Search, KHONG co 'error'), PHAI tom tat NGAY trong chat ten san pham va gia tim thay duoc tu ket qua tim kiem. Neu mot ket qua co 'link' tro toi dung trang san pham cu the (vd shopee.vn/...-i.xxx.yyy, tiki.vn/...-p123456.html, lazada.vn/products/...), PHAI gan ten san pham do thanh link markdown toi dung 'link' nay - day la link mua TRUC TIEP, uu tien hon link tim kiem chung; cac link Shopee/Tiki/Lazada con lai (tu mang 'links') dung lam "xem them lua chon" o cuoi. Neu khong co 'search_results' (chi co 'note'/'links'), gioi thieu cac link san thuong mai dien tu do
 16) Voi get_transport_options:
    - Neu type='intercity': neu co 'bus_search_results' hoac 'train_search_results' khong rong, PHAI tom tat NGAY cac lua chon xe khach/tau (nha xe/tuyen, gia, gio chay neu co trong tieu de/snippet) tu cac ket qua do. Neu mot ket qua co 'link' rieng den trang tuyen/nha xe cu the (vd vexere.com/..., futabus.vn/..., dsvn.vn/...), PHAI gan ten nha xe/chuyen do thanh link markdown toi 'link' nay - day la link xem/dat ve TRUC TIEP, uu tien cao nhat. Cuoi cau tra loi dua them link tong hop [Xem them ve xe tren Vexere](vexere_link) va [Dat ve tau](train_booking_link)
