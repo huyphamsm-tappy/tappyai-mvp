@@ -38,10 +38,11 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
 }
 
 // ===== Chon san tool phu hop nhat de force goi (tranh model chon nham khi toolChoice=required) =====
-function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | null {
+function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | null {
   const t = normalizeVN(text.toLowerCase().trim())
   if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
   if (/gia phong|gia khach san|dat phong|booking\.com|\bagoda\b|(khach san|hotel|resort).*gia|gia.*(khach san|hotel|resort)/.test(t)) return 'get_hotel_prices'
+  if (/xe khach|ve xe (khach|do)|limousine|tau hoa|tau lua|duong sat|\btaxi\b|\bgrab\b|xanh sm|\bxe om\b|di chuyen (tu|den|toi|trong|quanh)|gia ve xe|tu .* den .* (bao nhieu|het|gia|bang gi)/.test(t)) return 'get_transport_options'
   if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b/.test(t)) return 'search_places'
   if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
   if (/\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
@@ -582,6 +583,111 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
   return result
 }
 
+// ===== TRANSPORT: xe khach/tau lien tinh (Serper search) + uoc tinh taxi/xe cong nghe theo khoang cach =====
+const TRANSPORT_CITY_COORDS: Record<string, [number, number]> = {
+  'ha noi': [21.0285, 105.8542], 'hanoi': [21.0285, 105.8542], 'hn': [21.0285, 105.8542],
+  'ho chi minh': [10.7769, 106.7009], 'hcm': [10.7769, 106.7009], 'saigon': [10.7769, 106.7009], 'sai gon': [10.7769, 106.7009], 'tp hcm': [10.7769, 106.7009], 'tphcm': [10.7769, 106.7009],
+  'da nang': [16.0544, 108.2022], 'danang': [16.0544, 108.2022],
+  'hue': [16.4637, 107.5909], 'can tho': [10.0452, 105.7469],
+  'hai phong': [20.8449, 106.6881], 'nha trang': [12.2388, 109.1967],
+  'da lat': [11.9404, 108.4583], 'dalat': [11.9404, 108.4583], 'vung tau': [10.3460, 107.0843],
+  'hoi an': [15.8801, 108.3380], 'phu quoc': [10.2270, 103.9648], 'quy nhon': [13.7820, 109.2192],
+  'sa pa': [22.3364, 103.8438], 'sapa': [22.3364, 103.8438], 'ninh binh': [20.2506, 105.9745],
+}
+
+async function geocodeForTransport(loc: string): Promise<[number, number]> {
+  const locKey = normalizeVN(loc.toLowerCase())
+  const preset = Object.entries(TRANSPORT_CITY_COORDS).find(([k]) => locKey.includes(normalizeVN(k)))
+  if (preset) return preset[1]
+  try {
+    const geoResp = await Promise.race([
+      fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
+        headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' }
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
+    ])
+    const geoData = await (geoResp as Response).json()
+    if (geoData[0]) return [parseFloat(geoData[0].lat), parseFloat(geoData[0].lon)]
+  } catch { /* fallback */ }
+  return [21.0285, 105.8542]
+}
+
+function haversineKm(a: [number, number], b: [number, number]): number {
+  const R = 6371
+  const dLat = (b[0] - a[0]) * Math.PI / 180
+  const dLon = (b[1] - a[1]) * Math.PI / 180
+  const lat1 = a[0] * Math.PI / 180
+  const lat2 = b[0] * Math.PI / 180
+  const sinDLat = Math.sin(dLat / 2)
+  const sinDLon = Math.sin(dLon / 2)
+  const h = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon
+  return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h))
+}
+
+const RIDE_HAILING_APPS = [
+  { name: 'Grab', link: 'https://www.grab.com/vn/transport/car/' },
+  { name: 'Xanh SM', link: 'https://xanhsm.com/' },
+  { name: 'Be', link: 'https://be.com.vn/' },
+]
+
+// mode: 'taxi' = uoc tinh gia trong thanh pho/quang duong ngan; khac (hoac khong co) = xe khach/tau lien tinh
+async function getTransportOptions(origin: string, destination: string, mode?: string) {
+  const cacheKey = 'transport:' + origin.toLowerCase().trim() + ':' + destination.toLowerCase().trim() + ':' + (mode || 'auto')
+  const cached = getCache(cacheKey)
+  if (cached) return cached
+
+  const isTaxi = mode === 'taxi'
+  let result: unknown
+
+  if (!isTaxi) {
+    const vexereUrl = 'https://vexere.com/vi-VN/ket-qua-tim-kiem-ve-xe-khach?fromLocationName=' + encodeURIComponent(origin) + '&toLocationName=' + encodeURIComponent(destination)
+    const trainUrl = 'https://dsvn.vn/'
+    try {
+      const [busResults, trainResults] = await Promise.all([
+        serperSearch('ve xe khach tu ' + origin + ' di ' + destination + ' gia bao nhieu vexere futa phuong trang'),
+        serperSearch('ve tau ' + origin + ' ' + destination + ' duong sat viet nam gia'),
+      ])
+      if ((busResults && busResults.length > 0) || (trainResults && trainResults.length > 0)) {
+        result = {
+          type: 'intercity',
+          origin, destination,
+          bus_search_results: busResults || [],
+          train_search_results: trainResults || [],
+          vexere_link: vexereUrl,
+          train_booking_link: trainUrl,
+          note: 'Gia/chuyen xe-tau la tham khao tu ket qua tim kiem hien tai, co the khac theo gio chay, loai ghe va da thay doi.'
+        }
+      } else {
+        result = { error: 'Khong tim duoc ve xe khach/tau luc nay', vexere_link: vexereUrl, train_booking_link: trainUrl }
+      }
+    } catch {
+      result = { error: 'Khong tim duoc ve xe khach/tau luc nay', vexere_link: vexereUrl, train_booking_link: trainUrl }
+    }
+  } else {
+    try {
+      const [a, b] = await Promise.all([geocodeForTransport(origin), geocodeForTransport(destination)])
+      const distanceKm = Math.max(0.5, Math.round(haversineKm(a, b) * 10) / 10)
+      const lowRate = 11000, highRate = 16000
+      const baseFare = 13000
+      const estLow = Math.round((baseFare + distanceKm * lowRate) / 1000) * 1000
+      const estHigh = Math.round((baseFare + distanceKm * highRate) / 1000) * 1000
+      result = {
+        type: 'taxi',
+        origin, destination,
+        distance_km: distanceKm,
+        estimated_fare_vnd: { low: estLow, high: estHigh },
+        apps: RIDE_HAILING_APPS,
+        note: 'Day la gia UOC TINH theo khoang cach duong chim va don gia trung binh xe 4 cho, KHONG phai gia chinh xac tu app - mo app de xem gia thuc te (co the cong them phi gio cao diem, phi cau duong...) va dat xe.'
+      }
+    } catch {
+      result = { error: 'Khong uoc tinh duoc khoang cach/gia xe luc nay', apps: RIDE_HAILING_APPS }
+    }
+  }
+
+  setCache(cacheKey, result, 20 * 60 * 1000)
+  return result
+}
+
 function buildSystem(): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -592,8 +698,10 @@ ${SYSTEM_BASE}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
-CHUYEN MON: An uong · Mua sam · Giai tri · Du lich · Spa & Lam dep · Tin tuc · Thoi tiet · Gia vang
-CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), get_flight_prices (Travelpayouts/Aviasales - gia ve may bay), get_hotel_prices (tim kiem web Booking.com/Agoda + OSM - gia phong khach san), web_search (tim kiem tong quat tren internet)
+CHUYEN MON: An uong · Mua sam · Giai tri · Du lich · Van chuyen · Spa & Lam dep · Tin tuc · Thoi tiet · Gia vang
+CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), get_flight_prices (Travelpayouts/Aviasales - gia ve may bay), get_hotel_prices (tim kiem web Booking.com/Agoda + OSM - gia phong khach san), get_transport_options (tim kiem web - ve xe khach/tau lien tinh, hoac uoc tinh gia taxi/xe cong nghe theo khoang cach), web_search (tim kiem tong quat tren internet)
+
+PHONG CACH TRA LOI: Noi chuyen nhu ban be than thiet - chill, nhiet tinh, co the xung "minh/ban" hoac "may/tao" tuy theo cach user xung ho (mirror tone cua user; neu user lich su/trang trong thi dung minh/ban). Cau tra loi can CO CAU TRUC RO RANG: dung **bold** cho ten dia diem/san pham/gia/diem nhan manh quan trong, dung bullet list khi liet ke nhieu lua chon, dung 1-2 emoji phu hop dau dong/tieu de (khong spam emoji giua cau). Khi phu hop, ket thuc bang 1 cau hoi ngan goi mo de tiep tuc ho tro (vd hoi ngay di, so nguoi, ngan sach, khu vuc cu the...) - khong bat buoc voi cau chao hoi/cam on don gian.
 
 NGUYEN TAC BAT BUOC:
 1) LUON goi tool khi user hoi ve dia diem, tin tuc, san pham, thoi tiet, gia vang - khong tra loi tu bo nho
@@ -608,9 +716,19 @@ NGUYEN TAC BAT BUOC:
 10) Voi get_weather: neu tool tra ve temp_C/condition (KHONG co 'error'), PHAI tra loi NGAY trong chat voi nhiet do hien tai, tinh trang troi (mua/nang/may...), do am, gio - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
 11) Voi get_gold_price: neu tool tra ve 'prices' (KHONG co 'error'), PHAI tra loi NGAY trong chat gia mua/ban (don vi VND/luong, ghi ro la gia 1 luong = 10 chi = 37.5g) cua loai vang user hoi, kem gio cap nhat - tuyet doi KHONG chi dua link roi bao user tu xem; chi dua link [Xem them](search_url) khi tool tra ve 'error'
 12) Voi get_flight_prices: neu tool tra ve 'flights' (KHONG co 'error'), PHAI liet ke NGAY trong chat vai chuyen bay tieu bieu (hang bay, gia VND, ngay bay) va noi ro day la gia re gan nhat he thong tim duoc (co the khong dung ngay user hoi va gia co the da thay doi), kem link [Xem va dat ve](booking_link) de user kiem tra gia chinh xac theo ngay; chi dua link [Tim chuyen bay](search_url) khi tool tra ve 'error'
-13) Voi get_hotel_prices: neu tool tra ve 'search_results' (KHONG co 'error'), PHAI tom tat NGAY trong chat ten khach san va gia phong tim thay duoc tu cac ket qua tim kiem (Booking.com/Agoda...), neu co hotel_list thi nhac them vai ten/dia chi khach san cu the tai khu vuc do, va noi ro gia chi la tham khao tu tim kiem hien tai co the khac loai phong/ngay va da thay doi, kem link [Xem gia va dat phong](booking_link) de user kiem tra gia chinh xac realtime theo ngay; chi dua link [Tim khach san](booking_link hoac search_url) khi tool tra ve 'error'
-14) Voi search_places: neu tool tra ve 'price_search_results' (gia mon/menu/dich vu/ve tham khao - ap dung cho an uong, spa, giai tri), PHAI tom tat NGAY trong chat gia tim thay duoc tu cac ket qua tim kiem do (menu, dich vu spa/massage, ve vao cong/xem phim...), ben canh thong tin ten/dia chi/danh gia dia diem, va nhac 'price_note' rang gia co the khac theo chi nhanh, thoi diem va da thay doi
-15) Voi search_products: neu tool tra ve 'search_results' (gia san pham tu Google Search, KHONG co 'error'), PHAI tom tat NGAY trong chat ten san pham va gia tim thay duoc tu ket qua tim kiem, kem link Shopee/Tiki/Lazada de user mua hang va kiem tra gia chinh xac; neu khong co 'search_results' (chi co 'note'/'links'), gioi thieu cac link san thuong mai dien tu do`
+13) Voi get_hotel_prices: neu tool tra ve 'search_results' (KHONG co 'error'):
+   - PHAI tom tat NGAY trong chat ten khach san/homestay cu the va gia phong tim thay duoc tu cac ket qua tim kiem (Booking.com/Agoda/Traveloka...)
+   - QUAN TRONG - LINK TRUC TIEP: voi MOI khach san duoc nhac ten, neu ket qua tim kiem tuong ung co 'link' la trang RIENG cua khach san do (URL chua "/hotel/" hoac duong dan toi 1 cho cu the, vi du booking.com/hotel/vn/xxx.html, agoda.com/.../hotel/..., traveloka.com/.../hotel/...), PHAI gan ten khach san do thanh link markdown toi dung 'link' nay, vi du: **[TTR Skypool Boutique Hotel](https://www.booking.com/hotel/vn/...)**. Day la link dat phong TRUC TIEP, uu tien cao nhat.
+   - Neu mot ket qua chi la trang tim kiem/danh sach chung (vd .../searchresults.html?ss=...), KHONG dung lam link cho ten khach san cu the - chi dung 'booking_link' cho phan "xem them lua chon" o cuoi
+   - Neu co 'hotel_list' (OSM) thi co the nhac them 1-2 ten/dia chi khach san khac tai khu vuc, kem 'maps_link' cua chung
+   - Cuoi cau tra loi: nhac ngan gon rang gia chi la tham khao tai thoi diem tim kiem, co the khac theo loai phong/ngay cu the va da thay doi, kem 1 link tong hop [Xem them lua chon & dat phong theo ngay](booking_link) de user tu loc
+   - Chi dua link [Tim khach san](booking_link hoac search_url) lam link DUY NHAT khi tool tra ve 'error' hoac khong co search_results
+14) Voi search_places: neu tool tra ve 'price_search_results' (gia mon/menu/dich vu/ve tham khao - ap dung cho an uong, spa, giai tri), PHAI tom tat NGAY trong chat gia tim thay duoc tu cac ket qua tim kiem do (menu, dich vu spa/massage, ve vao cong/xem phim...), ben canh thong tin ten/dia chi/danh gia dia diem, va nhac 'price_note' rang gia co the khac theo chi nhanh, thoi diem va da thay doi. Neu mot 'price_search_results' item co 'link' rieng (website/fanpage/trang dat ve cua chinh dia diem do, khong phai trang tong hop), co the gan link do vao ten dia diem tuong ung de user xem chi tiet
+15) Voi search_products: neu tool tra ve 'search_results' (gia san pham tu Google Search, KHONG co 'error'), PHAI tom tat NGAY trong chat ten san pham va gia tim thay duoc tu ket qua tim kiem. Neu mot ket qua co 'link' tro toi dung trang san pham cu the (vd shopee.vn/...-i.xxx.yyy, tiki.vn/...-p123456.html, lazada.vn/products/...), PHAI gan ten san pham do thanh link markdown toi dung 'link' nay - day la link mua TRUC TIEP, uu tien hon link tim kiem chung; cac link Shopee/Tiki/Lazada con lai (tu mang 'links') dung lam "xem them lua chon" o cuoi. Neu khong co 'search_results' (chi co 'note'/'links'), gioi thieu cac link san thuong mai dien tu do
+16) Voi get_transport_options:
+   - Neu type='intercity': neu co 'bus_search_results' hoac 'train_search_results' khong rong, PHAI tom tat NGAY cac lua chon xe khach/tau (nha xe/tuyen, gia, gio chay neu co trong tieu de/snippet) tu cac ket qua do. Neu mot ket qua co 'link' rieng den trang tuyen/nha xe cu the (vd vexere.com/..., futabus.vn/..., dsvn.vn/...), PHAI gan ten nha xe/chuyen do thanh link markdown toi 'link' nay - day la link xem/dat ve TRUC TIEP, uu tien cao nhat. Cuoi cau tra loi dua them link tong hop [Xem them ve xe tren Vexere](vexere_link) va [Dat ve tau](train_booking_link)
+   - Neu type='taxi': PHAI tra loi NGAY khoang cach uoc tinh ('distance_km' km) va khoang gia tham khao ('estimated_fare_vnd', VND), noi ro day la GIA UOC TINH khong phai gia chinh xac tu app, kem link cac app dat xe (Grab/Xanh SM/Be tu 'apps') de user tu mo app xem gia thuc te va dat xe
+   - Neu tool tra ve 'error', dua cac link con lai ('vexere_link'/'train_booking_link'/'apps') va goi y user thu lai voi dia diem ro hon`
 
 export const maxDuration = 60
 
@@ -688,6 +806,15 @@ export async function POST(req: Request) {
           checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
         }),
         execute: async ({ location, checkIn, checkOut }) => getHotelPrices(location, checkIn, checkOut)
+      }),
+      get_transport_options: tool({
+        description: 'Tim phuong an di chuyen: ve xe khach/tau hoa giua 2 tinh/thanh pho (tim kiem web, kem link dat ve cu the), hoac uoc tinh khoang cach + gia taxi/xe cong nghe (Grab/Be/Xanh SM) cho di chuyen trong thanh pho/quang duong ngan',
+        parameters: z.object({
+          origin: z.string().describe('Diem di (ten tinh/thanh pho hoac dia diem cu the)'),
+          destination: z.string().describe('Diem den (ten tinh/thanh pho hoac dia diem cu the)'),
+          mode: z.enum(['intercity', 'taxi']).optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
+        }),
+        execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined)
       }),
     },
     onFinish: ({ usage, finishReason }) => {
