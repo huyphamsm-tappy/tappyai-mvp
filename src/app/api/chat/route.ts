@@ -595,8 +595,22 @@ const TRANSPORT_CITY_COORDS: Record<string, [number, number]> = {
   'sa pa': [22.3364, 103.8438], 'sapa': [22.3364, 103.8438], 'ninh binh': [20.2506, 105.9745],
 }
 
-async function geocodeForTransport(loc: string): Promise<[number, number]> {
+// San bay lon - khoang cach toi trung tam thanh pho thuong qua xa de dung toa do trung tam
+const AIRPORT_COORDS: Record<string, [number, number]> = {
+  'tan son nhat': [10.8188, 106.6520], 'sgn': [10.8188, 106.6520],
+  'noi bai': [21.2212, 105.8072],
+  'cam ranh': [11.9982, 109.2192],
+  'lien khuong': [11.7497, 108.3669],
+  'cat bi': [20.8197, 106.7247],
+  'phu bai': [16.4015, 107.7032],
+  'phu cat': [13.9550, 109.0420],
+  'tra noc': [10.0851, 105.7117],
+}
+
+async function geocodeForTransport(loc: string): Promise<[number, number] | null> {
   const locKey = normalizeVN(loc.toLowerCase())
+  const airportPreset = Object.entries(AIRPORT_COORDS).find(([k]) => locKey.includes(normalizeVN(k)))
+  if (airportPreset) return airportPreset[1]
   const preset = Object.entries(TRANSPORT_CITY_COORDS).find(([k]) => locKey.includes(normalizeVN(k)))
   if (preset) return preset[1]
   try {
@@ -604,12 +618,12 @@ async function geocodeForTransport(loc: string): Promise<[number, number]> {
       fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
         headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' }
       }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
     ])
     const geoData = await (geoResp as Response).json()
     if (geoData[0]) return [parseFloat(geoData[0].lat), parseFloat(geoData[0].lon)]
   } catch { /* fallback */ }
-  return [21.0285, 105.8542]
+  return null
 }
 
 function haversineKm(a: [number, number], b: [number, number]): number {
@@ -666,18 +680,29 @@ async function getTransportOptions(origin: string, destination: string, mode?: s
   } else {
     try {
       const [a, b] = await Promise.all([geocodeForTransport(origin), geocodeForTransport(destination)])
-      const distanceKm = Math.max(0.5, Math.round(haversineKm(a, b) * 10) / 10)
-      const lowRate = 11000, highRate = 16000
-      const baseFare = 13000
-      const estLow = Math.round((baseFare + distanceKm * lowRate) / 1000) * 1000
-      const estHigh = Math.round((baseFare + distanceKm * highRate) / 1000) * 1000
-      result = {
-        type: 'taxi',
-        origin, destination,
-        distance_km: distanceKm,
-        estimated_fare_vnd: { low: estLow, high: estHigh },
-        apps: RIDE_HAILING_APPS,
-        note: 'Day la gia UOC TINH theo khoang cach duong chim va don gia trung binh xe 4 cho, KHONG phai gia chinh xac tu app - mo app de xem gia thuc te (co the cong them phi gio cao diem, phi cau duong...) va dat xe.'
+      const rawKm = a && b ? haversineKm(a, b) : null
+      const sameLocation = normalizeVN(origin.toLowerCase()).trim() === normalizeVN(destination.toLowerCase()).trim()
+      if (rawKm === null || (rawKm < 0.3 && !sameLocation)) {
+        // Khong xac dinh duoc toa do cu the cho 1 hoac ca 2 dia diem - khong dua so lieu sai lech
+        result = {
+          error: 'Khong xac dinh duoc chinh xac khoang cach cho 2 dia diem nay luc nay',
+          apps: RIDE_HAILING_APPS,
+          note: 'Mo app Grab/Be/Xanh SM va nhap dia chi cu the de app tinh khoang cach + gia chinh xac tu vi tri thuc te.'
+        }
+      } else {
+        const distanceKm = Math.max(0.5, Math.round(rawKm * 10) / 10)
+        const lowRate = 11000, highRate = 16000
+        const baseFare = 13000
+        const estLow = Math.round((baseFare + distanceKm * lowRate) / 1000) * 1000
+        const estHigh = Math.round((baseFare + distanceKm * highRate) / 1000) * 1000
+        result = {
+          type: 'taxi',
+          origin, destination,
+          distance_km: distanceKm,
+          estimated_fare_vnd: { low: estLow, high: estHigh },
+          apps: RIDE_HAILING_APPS,
+          note: 'Day la gia UOC TINH theo khoang cach duong chim va don gia trung binh xe 4 cho, KHONG phai gia chinh xac tu app - mo app de xem gia thuc te (co the cong them phi gio cao diem, phi cau duong...) va dat xe.'
+        }
       }
     } catch {
       result = { error: 'Khong uoc tinh duoc khoang cach/gia xe luc nay', apps: RIDE_HAILING_APPS }
