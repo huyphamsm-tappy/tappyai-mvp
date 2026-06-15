@@ -189,6 +189,22 @@ function isDirectFoodOrderLink(link: string): boolean {
   }
 }
 
+// Kiem tra link co phai trang CU THE cua 1 khach san tren Booking.com/Agoda/Traveloka
+// (khong phai trang tim kiem/danh sach chung theo khu vuc/thanh pho)
+function isSpecificOtaHotelPage(link: string): boolean {
+  try {
+    const u = new URL(link)
+    const host = u.hostname.replace(/^www\./, '')
+    const path = u.pathname.toLowerCase()
+    if (!(host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com'))) return false
+    if (path.length <= 1) return false
+    if (path.includes('search') || path.includes('/region/') || path.includes('/city/') || path.includes('/budget/')) return false
+    return true
+  } catch {
+    return false
+  }
+}
+
 async function searchPlaces(query: string, location?: string, type?: string) {
   const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '')
   const cached = getCache(cacheKey)
@@ -614,15 +630,7 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
     const hotelList = places?.results?.slice(0, 5) || []
 
     // Uu tien cac link CU THE den 1 khach san (khong phai trang tim kiem/danh sach chung) tu cac OTA, gop voi ket qua chung
-    const directHotelLinks = (directResults || []).filter(r => {
-      try {
-        const u = new URL(r.link)
-        const host = u.hostname.replace(/^www\./, '')
-        const path = u.pathname.toLowerCase()
-        if (path.length <= 1 || path.includes('search') || path.includes('/region/') || path.includes('/city/')) return false
-        return host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com')
-      } catch { return false }
-    })
+    const directHotelLinks = (directResults || []).filter(r => isSpecificOtaHotelPage(r.link))
     let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined = serperResults || undefined
     if (directHotelLinks.length > 0) {
       const seen = new Set<string>()
@@ -631,6 +639,20 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
         seen.add(r.link)
         return true
       }).slice(0, 8)
+    }
+    // Neu mot ket qua tro toi trang OTA nhung KHONG phai trang rieng 1 khach san (vd trang city/budget chung),
+    // thay link bang bookingUrl de model khong gan nham cho ten khach san cu the
+    if (searchResults) {
+      searchResults = searchResults.map(r => {
+        try {
+          const u = new URL(r.link)
+          const host = u.hostname.replace(/^www\./, '')
+          if ((host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com')) && !isSpecificOtaHotelPage(r.link)) {
+            return { ...r, link: bookingUrl }
+          }
+          return r
+        } catch { return r }
+      })
     }
     let source = 'Google Search (Serper) + OpenStreetMap'
     if (!searchResults || searchResults.length === 0) {
