@@ -198,7 +198,7 @@ function isSpecificOtaHotelPage(link: string): boolean {
     const path = u.pathname.toLowerCase()
     if (!(host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com'))) return false
     if (path.length <= 1) return false
-    if (path.includes('search') || path.includes('/region/') || path.includes('/city/') || path.includes('/budget/')) return false
+    if (path.includes('search') || path.includes('/region/') || path.includes('/city/') || path.includes('/budget/') || path.includes('/country/') || path.includes('/maps/') || path.includes('/landmark/')) return false
     return true
   } catch {
     return false
@@ -622,15 +622,23 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
 
   let result: unknown
   try {
-    const [serperResults, directResults, places] = await Promise.all([
+    // Buoc 1: lay gia chung + danh sach khach san OSM song song
+    const [serperResults, places] = await Promise.all([
       serperSearch(searchQuery),
-      serperSearch('khach san ' + location + ' (site:booking.com OR site:agoda.com OR site:traveloka.com)'),
       searchPlacesOSM('khach san', location) as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
     ])
     const hotelList = places?.results?.slice(0, 5) || []
 
-    // Uu tien cac link CU THE den 1 khach san (khong phai trang tim kiem/danh sach chung) tu cac OTA, gop voi ket qua chung
-    const directHotelLinks = (directResults || []).filter(r => isSpecificOtaHotelPage(r.link))
+    // Buoc 2: tim trang rieng cua tung khach san tren OTA
+    // Neu co ten khach san tu OSM, dung ten do de tim chinh xac hon; neu khong, dung query chung
+    let directHotelLinks: Array<{ title: string; link: string; snippet: string }> = []
+    {
+      const otaQuery = hotelList.length > 0
+        ? hotelList.slice(0, 3).map(h => '"' + h.name + '"').join(' OR ') + ' ' + location + ' (site:booking.com OR site:agoda.com OR site:traveloka.com)'
+        : 'khach san ' + location + ' (site:booking.com OR site:agoda.com OR site:traveloka.com)'
+      const directResults = await serperSearch(otaQuery)
+      directHotelLinks = (directResults || []).filter(r => isSpecificOtaHotelPage(r.link))
+    }
     let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined = serperResults || undefined
     if (directHotelLinks.length > 0) {
       const seen = new Set<string>()
