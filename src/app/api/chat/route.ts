@@ -37,6 +37,179 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
   return chitchat.test(t) ? 'chitchat' : 'tool'
 }
 
+// ===== BUDGET: extract tu message va filter ket qua tool =====
+type Budget = { min: number; max: number; type: 'range' | 'under' | 'around' }
+
+function parseMoneyAmount(numStr: string, unit: string): number | null {
+  const n = parseFloat(numStr.replace(/\./g, '').replace(/,/g, '.'))
+  if (isNaN(n) || n <= 0) return null
+  const u = (unit || '').toLowerCase().trim()
+  if (u === 'k') return n * 1000
+  if (u === 'tr' || u.startsWith('tri') || u.startsWith('trieu')) return n * 1_000_000
+  if (u === 'ngan' || u.startsWith('nghin')) return n * 1000
+  if (!u && n > 0 && n <= 9999) return n * 1000 // "300" → 300.000đ heuristic
+  return n
+}
+
+function extractBudget(userMessage: string): Budget | null {
+  const t = normalizeVN(userMessage.toLowerCase())
+  const N = '([\\d][\\d.,]*)'
+  const U = '\\s*(k|tr|trieu|ngan|nghin)?'
+
+  // Range: "300k-500k" / "tu 300k den 500k" / "300.000-500.000"
+  const rangeRe = new RegExp(`(?:tu\\s+)?${N}${U}\\s*(?:den|toi|-)\\s*${N}${U}`)
+  let m = t.match(rangeRe)
+  if (m) {
+    const min = parseMoneyAmount(m[1], m[2] || '')
+    const max = parseMoneyAmount(m[3], m[4] || '')
+    if (min !== null && max !== null && max >= min && max > 0) return { min, max, type: 'range' as const }
+  }
+
+  // Under: "duoi / khong qua / toi da X"
+  const underRe = new RegExp(`(?:duoi|khong qua|toi da)\\s+${N}${U}`)
+  m = t.match(underRe)
+  if (m) {
+    const max = parseMoneyAmount(m[1], m[2] || '')
+    if (max !== null && max > 0) return { min: 0, max, type: 'under' as const }
+  }
+
+  // Around: "tam / khoang X" → ±20%
+  const aroundRe = new RegExp(`(?:tam|khoang|xap xi)\\s+${N}${U}`)
+  m = t.match(aroundRe)
+  if (m) {
+    const base = parseMoneyAmount(m[1], m[2] || '')
+    if (base !== null && base > 0) return { min: Math.round(base * 0.8), max: Math.round(base * 1.2), type: 'around' as const }
+  }
+
+  return null
+}
+
+const PROMO_KEYWORDS = ['tinh tien', 'khuyen mai', 'uu dai', 'giam gia', 'tang kem', 'mua tang', 'flash sale', 'sale off', 'giam con', 'chi con', 'chi tu']
+// Khach san/resort cao cap - luon uoc tinh > 1.5 trieu/dem, bat ke co gia trong snippet hay khong
+const LUXURY_KEYWORDS = ['5 sao', '5-sao', 'five star', 'pullman', 'intercontinental', 'marriott', 'sheraton', 'hilton', 'hyatt', 'novotel', 'sofitel', 'melia', 'movenpick', 'radisson', 'wyndham', 'imperial hotel', 'resort luxury', 'luxury resort']
+
+function extractPricesVND(text: string): number[] {
+  const t = normalizeVN(text.toLowerCase())
+  const prices: number[] = []
+  for (const m of t.matchAll(/(\d{1,3}(?:[.,]\d{3})+)\s*(?:d\b|dong|vnd)?/g)) {
+    const n = parseFloat(m[1].replace(/\./g, '').replace(/,/g, ''))
+    if (!isNaN(n) && n >= 5000) prices.push(n)
+  }
+  for (const m of t.matchAll(/(\d+(?:\.\d+)?)\s*k\b/g)) {
+    const n = parseFloat(m[1]) * 1000
+    if (!isNaN(n) && n >= 5000) prices.push(n)
+  }
+  for (const m of t.matchAll(/(\d+(?:[.,]\d+)?)\s*(?:trieu|tri\b)/g)) {
+    const n = parseFloat(m[1].replace(',', '.')) * 1_000_000
+    if (!isNaN(n) && n > 0) prices.push(n)
+  }
+  return prices
+}
+
+function extractRepresentativePriceVND(text: string): number | null {
+  const prices = extractPricesVND(text)
+  if (prices.length === 0) return null
+  // Neu co promo language → dung MAX price (gia goc cao hon), khong cho promo danh lua filter
+  const t = normalizeVN(text.toLowerCase())
+  const hasPromo = PROMO_KEYWORDS.some(k => t.includes(k))
+  return hasPromo ? Math.max(...prices) : Math.min(...prices)
+}
+
+const LUXURY_PRICE_FLOOR = 1_500_000 // uoc tinh gia toi thieu khach san 5 sao
+
+function filterResultsByBudget<T extends { title?: string; snippet?: string; price_vnd?: number }>(
+  items: T[], budget: Budget
+): T[] {
+  const tol = 1.1
+  const enforceMin = budget.type === 'range' && budget.min > 0
+  return items.filter(item => {
+    if (typeof item.price_vnd === 'number') {
+      const ok = item.price_vnd <= budget.max * tol
+      return enforceMin ? ok && item.price_vnd >= budget.min * 0.9 : ok
+    }
+    // QUAN TRONG: check ca 'link' vi URL co the chua ten thuong hieu (vd agoda.com/pullman-vung-tau/...)
+    const itemAny = item as Record<string, unknown>
+    const linkText = typeof itemAny.link === 'string' ? itemAny.link : ''
+    const text = normalizeVN(((item.title || '') + ' ' + (item.snippet || '') + ' ' + linkText).toLowerCase())
+    // Luxury check TRUOC price check: loai ngay bat ke co price trong snippet hay khong
+    const isLuxury = LUXURY_KEYWORDS.some(k => text.includes(k))
+    if (isLuxury && budget.max < LUXURY_PRICE_FLOOR) return false
+    const price = extractRepresentativePriceVND(text)
+    if (price !== null) {
+      const underMax = price <= budget.max * tol
+      const aboveMin = enforceMin ? price >= budget.min * 0.9 : true
+      return underMax && aboveMin
+    }
+    return true
+  })
+}
+
+function fmtBudget(budget: Budget): string {
+  const f = (n: number) => n >= 1_000_000
+    ? (n / 1_000_000 % 1 === 0 ? n / 1_000_000 : (n / 1_000_000).toFixed(1)) + ' triệu'
+    : n / 1000 + 'k'
+  return budget.min > 0 ? `${f(budget.min)}-${f(budget.max)}` : `dưới ${f(budget.max)}`
+}
+
+function fmtSuggest(n: number): string {
+  return n >= 1_000_000
+    ? (n / 1_000_000 % 1 === 0 ? n / 1_000_000 : (n / 1_000_000).toFixed(1)) + ' triệu'
+    : n / 1000 + 'k'
+}
+
+function applyBudgetFilter(result: unknown, budget: Budget, category: string): unknown {
+  if (!result || typeof result !== 'object') return result
+  const r = { ...(result as Record<string, unknown>) }
+
+  // Filter search_results (hotel, general)
+  if (Array.isArray(r.search_results)) {
+    const before = r.search_results as Array<{ title?: string; snippet?: string }>
+    const after = filterResultsByBudget(before, budget)
+    if (after.length === 0 && before.length > 0) {
+      const suggest = Math.round(budget.max * 1.2 / 1000) * 1000
+      return {
+        budget_filter_empty: true,
+        budget_range: fmtBudget(budget),
+        message: `Trong tầm ${fmtBudget(budget)} ở khu vực này mình chưa tìm được ${category} phù hợp. Bạn có muốn nới budget lên ${fmtSuggest(suggest)} không, hay mình tìm khu vực khác?`,
+      }
+    }
+    r.search_results = after
+    // hotel_list tu OSM khong co gia → xoa khi co budget de tranh Claude recommend sai
+    if (Array.isArray(r.hotel_list)) r.hotel_list = []
+  }
+
+  // Filter price_search_results (places - food/spa/entertainment)
+  if (Array.isArray(r.price_search_results)) {
+    r.price_search_results = filterResultsByBudget(
+      r.price_search_results as Array<{ title?: string; snippet?: string }>, budget
+    )
+  }
+
+  // Filter flights by price_vnd
+  if (Array.isArray(r.flights)) {
+    type FlightEntry = { price_vnd: number }
+    const before = r.flights as FlightEntry[]
+    const after = before.filter(f => f.price_vnd <= budget.max * 1.1)
+    if (after.length === 0 && before.length > 0) {
+      const suggest = Math.round(budget.max * 1.2 / 1000) * 1000
+      return {
+        budget_filter_empty: true,
+        budget_range: fmtBudget(budget),
+        message: `Trong tầm ${fmtBudget(budget)} mình chưa tìm được ${category} phù hợp. Bạn có muốn nới budget lên ${fmtSuggest(suggest)} không?`,
+      }
+    }
+    r.flights = after
+  }
+
+  // QUAN TRONG: Neu budget thap, inject lenh cam truc tiep vao tool result
+  // Haiku doc tool results rat ky - injection nay hieu qua hon system prompt
+  if (budget.max < LUXURY_PRICE_FLOOR) {
+    r._LENH_BAT_BUOC = `⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget ${fmtBudget(budget)} VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.`
+  }
+
+  return r
+}
+
 // ===== Chon san tool phu hop nhat de force goi (tranh model chon nham khi toolChoice=required) =====
 function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | null {
   const t = normalizeVN(text.toLowerCase().trim())
@@ -611,14 +784,17 @@ async function getFlightPrices(origin: string, destination: string) {
 }
 
 // ===== HOTEL PRICES: web search (Booking.com/Agoda snippets) + OSM hotel list (free, no API key) =====
-async function getHotelPrices(location: string, checkIn?: string, checkOut?: string) {
-  const cacheKey = 'hotels:' + location.toLowerCase().trim() + ':' + (checkIn || '') + ':' + (checkOut || '')
+async function getHotelPrices(location: string, checkIn?: string, checkOut?: string, maxBudgetVnd?: number) {
+  const cacheKey = 'hotels:' + location.toLowerCase().trim() + ':' + (checkIn || '') + ':' + (checkOut || '') + ':' + (maxBudgetVnd || '')
   const cached = getCache(cacheKey)
   if (cached) return cached
 
   const bookingUrl = 'https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(location)
     + (checkIn ? '&checkin=' + checkIn : '') + (checkOut ? '&checkout=' + checkOut : '')
-  const searchQuery = 'khach san ' + location + ' gia phong dem nay booking.com agoda'
+  const budgetTag = maxBudgetVnd && maxBudgetVnd < 1_500_000
+    ? ' gia re binh dan duoi ' + Math.round(maxBudgetVnd / 1000) + 'k -"5 sao" -pullman -marriott -hilton -sheraton -sofitel -intercontinental -novotel'
+    : ''
+  const searchQuery = 'khach san ' + location + ' gia phong dem nay booking.com agoda' + budgetTag
 
   let result: unknown
   try {
@@ -627,7 +803,14 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
       serperSearch(searchQuery),
       searchPlacesOSM('khach san', location) as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
     ])
-    const hotelList = places?.results?.slice(0, 5) || []
+    let hotelList = places?.results?.slice(0, 5) || []
+    // Filter luxury brands khoi OSM list neu co budget
+    if (maxBudgetVnd && maxBudgetVnd < 1_500_000) {
+      hotelList = hotelList.filter(h => {
+        const hn = normalizeVN(h.name.toLowerCase())
+        return !LUXURY_KEYWORDS.some(k => hn.includes(k))
+      })
+    }
 
     // Buoc 2: tim trang rieng cua tung khach san tren OTA
     // Neu co ten khach san tu OSM, dung ten do de tim chinh xac hon; neu khong, dung query chung
@@ -824,13 +1007,21 @@ async function getTransportOptions(origin: string, destination: string, mode?: s
   return result
 }
 
-function buildSystem(): string {
+function buildSystem(budget?: Budget | null): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) // YYYY-MM-DD
+  const budgetBlock = budget
+    ? `\n\n===== BUDGET FILTER - LUAT BAT BUOC =====
+User chi co budget ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND.
+LUAT 1: CHI DE CAP cac option co trong ket qua tool. CAM tuyet doi them tu kien thuc co san.
+LUAT 2: CAM HOAN TOAN de cap bat ky khach san thuong hieu quoc te hoac 4-5 sao nao (Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Imperial, Renaissance, Wyndham...) khi budget duoi 1.500.000 VND. Day la luat cung, khong co ngoai le, khong them ghi chu "co the cao hon tam".
+LUAT 3: Neu khong con option nao trong tam gia, tra loi: "Trong tam ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND minh chua tim duoc ket qua phu hop. Ban co muon noi budget len ${Math.round(budget.max * 1.2 / 1000) * 1000 >= 1000000 ? (Math.round(budget.max * 1.2 / 100000) / 10).toFixed(1) + ' trieu' : Math.round(budget.max * 1.2 / 1000) + 'k'} khong?"
+==========================================`
+    : ''
   return `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${SYSTEM_BASE}`
+${SYSTEM_BASE}${budgetBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
@@ -874,12 +1065,18 @@ export async function POST(req: Request) {
   const { messages } = await req.json()
 
   const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
-  const lastText = typeof lastUserMsg?.content === 'string' ? lastUserMsg.content : ''
+  const rawContent = lastUserMsg?.content
+  const lastText = typeof rawContent === 'string'
+    ? rawContent
+    : Array.isArray(rawContent)
+      ? rawContent.map((c: { text?: string }) => c.text || '').join(' ')
+      : ''
   const intent = classifyIntent(lastText)
+  const budget = extractBudget(lastText)
 
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
-    system: buildSystem(),
+    system: buildSystem(budget),
     messages,
     maxTokens: intent === 'chitchat' ? 300 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : 5,
@@ -900,7 +1097,10 @@ export async function POST(req: Request) {
           location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
           type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema']).optional()
         }),
-        execute: async ({ query, location, type }) => searchPlaces(query, location, type)
+        execute: async ({ query, location, type }) => {
+          const r = await searchPlaces(query, location, type)
+          return budget ? applyBudgetFilter(r, budget, query) : r
+        }
       }),
       get_news: tool({
         description: 'Lay tin tuc moi nhat tu VnExpress, Tuoi Tre, Dan Tri',
@@ -910,7 +1110,10 @@ export async function POST(req: Request) {
       search_products: tool({
         description: 'Tim san pham mua sam online tren Shopee, Tiki, Lazada, kem gia tham khao tu Google Search (Serper)',
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
-        execute: async ({ query }) => searchProducts(query)
+        execute: async ({ query }) => {
+          const r = await searchProducts(query)
+          return budget ? applyBudgetFilter(r, budget, query) : r
+        }
       }),
       web_search: tool({
         description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
@@ -933,16 +1136,23 @@ export async function POST(req: Request) {
           origin: z.string().describe('Diem di (ten thanh pho hoac ma san bay IATA, vd: Ha Noi, HAN)'),
           destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
         }),
-        execute: async ({ origin, destination }) => getFlightPrices(origin, destination)
+        execute: async ({ origin, destination }) => {
+          const r = await getFlightPrices(origin, destination)
+          return budget ? applyBudgetFilter(r, budget, 've may bay') : r
+        }
       }),
       get_hotel_prices: tool({
-        description: 'Tim gia phong khach san/resort tai mot dia diem, ket hop tim kiem web (Booking.com/Agoda) va danh sach khach san tu OpenStreetMap',
+        description: 'Tim gia phong khach san/resort tai mot dia diem, ket hop tim kiem web (Booking.com/Agoda) va danh sach khach san tu OpenStreetMap'
+          + (budget ? `. BUDGET FILTER: Chi duoc de cap khach san co gia duoi ${budget.max.toLocaleString('vi-VN')} VND. KHONG duoc de cap: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Imperial, hay bat ky khach san 4-5 sao nao (gia > 1.500.000 VND/dem). Chi lay tu search results, khong them tu kien thuc co san.` : ''),
         parameters: z.object({
           location: z.string().describe('Dia diem/thanh pho can tim khach san (vd: Da Nang, Phu Quoc, Ha Noi)'),
           checkIn: z.string().optional().describe('Ngay check-in dang YYYY-MM-DD (khong bat buoc)'),
           checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
         }),
-        execute: async ({ location, checkIn, checkOut }) => getHotelPrices(location, checkIn, checkOut)
+        execute: async ({ location, checkIn, checkOut }) => {
+          const r = await getHotelPrices(location, checkIn, checkOut, budget?.max)
+          return budget ? applyBudgetFilter(r, budget, 'khach san') : r
+        }
       }),
       get_transport_options: tool({
         description: 'Tim phuong an di chuyen: ve xe khach/tau hoa giua 2 tinh/thanh pho (tim kiem web, kem link dat ve cu the), hoac uoc tinh khoang cach + gia taxi/xe cong nghe (Grab/Be/Xanh SM) cho di chuyen trong thanh pho/quang duong ngan',
@@ -967,5 +1177,89 @@ export async function POST(req: Request) {
       }))
     },
   })
-  return result.toDataStreamResponse()
+  const baseResponse = result.toDataStreamResponse()
+  return (budget && budget.max < LUXURY_PRICE_FLOOR)
+    ? applyLuxuryStreamFilter(baseResponse)
+    : baseResponse
+}
+
+// ===== LUXURY STREAM FILTER: catch-all ngan luxury brand names leak qua Haiku =====
+// Dung split/join thay vi regex /g de tranh stateful bug
+const LUXURY_BRANDS_FILTER = [
+  'Pullman', 'pullman',
+  'Marriott', 'marriott',
+  'Hilton', 'hilton',
+  'Sheraton', 'sheraton',
+  'Intercontinental', 'intercontinental',
+  'Sofitel', 'sofitel',
+  'Novotel', 'novotel',
+  'Melia', 'melia',
+  'Hyatt', 'hyatt',
+  'Wyndham', 'wyndham',
+  'Movenpick', 'movenpick',
+  'Radisson', 'radisson',
+  'Renaissance', 'renaissance',
+  'Imperial Hotel', 'imperial hotel',
+]
+
+function filterLuxuryBrands(text: string): string {
+  let out = text
+  for (const brand of LUXURY_BRANDS_FILTER) {
+    if (out.includes(brand)) {
+      out = out.split(brand).join('khách sạn')
+    }
+  }
+  return out
+}
+
+function applyLuxuryStreamFilter(response: Response): Response {
+  const body = response.body
+  if (!body) return response
+
+  const decoder = new TextDecoder()
+  const encoder = new TextEncoder()
+  let lineRemainder = ''
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transform = new TransformStream<any, any>({
+    transform(chunk, controller) {
+      lineRemainder += decoder.decode(chunk, { stream: true })
+      const parts = lineRemainder.split('\n')
+      lineRemainder = parts.pop() ?? ''
+
+      for (const line of parts) {
+        if (line.startsWith('0:')) {
+          try {
+            const text = JSON.parse(line.slice(2)) as string
+            const filtered = filterLuxuryBrands(text)
+            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
+          } catch {
+            controller.enqueue(encoder.encode(line + '\n'))
+          }
+        } else {
+          controller.enqueue(encoder.encode(line + '\n'))
+        }
+      }
+    },
+    flush(controller) {
+      if (lineRemainder) {
+        if (lineRemainder.startsWith('0:')) {
+          try {
+            const text = JSON.parse(lineRemainder.slice(2)) as string
+            const filtered = filterLuxuryBrands(text)
+            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
+          } catch {
+            controller.enqueue(encoder.encode(lineRemainder + '\n'))
+          }
+        } else {
+          controller.enqueue(encoder.encode(lineRemainder + '\n'))
+        }
+      }
+    }
+  })
+
+  return new Response(body.pipeThrough(transform), {
+    status: response.status,
+    headers: response.headers,
+  })
 }
