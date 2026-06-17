@@ -1234,4 +1234,88 @@ export async function POST(req: Request) {
       }))
     },
   })
-  const baseRe
+  const baseResponse = result.toDataStreamResponse()
+  return (budget && budget.max < LUXURY_PRICE_FLOOR)
+    ? applyLuxuryStreamFilter(baseResponse)
+    : baseResponse
+}
+
+// ===== LUXURY STREAM FILTER =====
+const LUXURY_BRANDS_FILTER = [
+  'Pullman', 'pullman',
+  'Marriott', 'marriott',
+  'Hilton', 'hilton',
+  'Sheraton', 'sheraton',
+  'Intercontinental', 'intercontinental',
+  'Sofitel', 'sofitel',
+  'Novotel', 'novotel',
+  'Melia', 'melia',
+  'Hyatt', 'hyatt',
+  'Wyndham', 'wyndham',
+  'Movenpick', 'movenpick',
+  'Radisson', 'radisson',
+  'Renaissance', 'renaissance',
+  'Imperial Hotel', 'imperial hotel',
+]
+
+function filterLuxuryBrands(text: string): string {
+  let out = text
+  for (const brand of LUXURY_BRANDS_FILTER) {
+    if (out.includes(brand)) {
+      out = out.split(brand).join('khách sạn')
+    }
+  }
+  return out
+}
+
+function applyLuxuryStreamFilter(response: Response): Response {
+  const body = response.body
+  if (!body) return response
+
+  const decoder = new TextDecoder()
+  const encoder = new TextEncoder()
+  let lineRemainder = ''
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transform = new TransformStream<any, any>({
+    transform(chunk, controller) {
+      lineRemainder += decoder.decode(chunk, { stream: true })
+      const parts = lineRemainder.split('\n')
+      lineRemainder = parts.pop() ?? ''
+
+      for (const line of parts) {
+        if (line.startsWith('0:')) {
+          try {
+            const text = JSON.parse(line.slice(2)) as string
+            const filtered = filterLuxuryBrands(text)
+            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
+          } catch {
+            controller.enqueue(encoder.encode(line + '\n'))
+          }
+        } else {
+          controller.enqueue(encoder.encode(line + '\n'))
+        }
+      }
+    },
+    flush(controller) {
+      if (lineRemainder) {
+        if (lineRemainder.startsWith('0:')) {
+          try {
+            const text = JSON.parse(lineRemainder.slice(2)) as string
+            const filtered = filterLuxuryBrands(text)
+            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
+          } catch {
+            controller.enqueue(encoder.encode(lineRemainder + '\n'))
+          }
+        } else {
+          controller.enqueue(encoder.encode(lineRemainder + '\n'))
+        }
+      }
+    }
+  })
+
+  return new Response(body.pipeThrough(transform), {
+    status: response.status,
+    headers: response.headers,
+  })
+}
