@@ -1,6 +1,8 @@
 import { createAnthropic } from '@ai-sdk/anthropic'
 import { streamText, tool } from 'ai'
 import { z } from 'zod'
+import { createClient } from '@/lib/supabase/server'
+import { getMemory, buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
@@ -1048,7 +1050,7 @@ async function getTransportOptions(origin: string, destination: string, mode?: s
   return result
 }
 
-function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown'): string {
+function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) // YYYY-MM-DD
@@ -1060,19 +1062,51 @@ LUAT 2: CAM HOAN TOAN de cap bat ky khach san thuong hieu quoc te hoac 4-5 sao n
 LUAT 3: Neu khong con option nao trong tam gia, tra loi: "Trong tam ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND minh chua tim duoc ket qua phu hop. Ban co muon noi budget len ${Math.round(budget.max * 1.2 / 1000) * 1000 >= 1000000 ? (Math.round(budget.max * 1.2 / 100000) / 10).toFixed(1) + ' trieu' : Math.round(budget.max * 1.2 / 1000) + 'k'} khong?"
 ==========================================`
     : ''
+  const wordLimitBlock = isFirstReply
+    ? `\n\n===== WORD LIMIT - REPLY DAU TIEN =====\nDay la reply DAU TIEN trong conversation. GIOI HAN: toi da 150 tu. Viet ngan, chon loc, de hieu. Cau cuoi phai la follow-up question.\n==========================================`
+    : `\n\n===== WORD LIMIT - CO CONTEXT =====\nUser da tra loi follow-up. Duoc phep reply chi tiet hon, toi da 250 tu. Nhung van phai ngan gon, khong viet bao cao. Cau cuoi van nen co follow-up question neu con thong tin can lam ro.\n==========================================`
   const locationBlock = locationIntent === 'offline'
-    ? `\n\n===== VI TRI: TIM DIA DIEM VAT LY =====\nUser muon tim dia diem vat ly co the ghe truc tiep. UU TIEN recommend cua hang/dia diem co dia chi cu the (so nha, ten duong, quan/phuong). CHI de xuat mua online neu user hoi cu the. Su dung search_places thay vi search_products.`
+    ? `\n\n===== VI TRI: CUA HANG VAT LY - LUAT BAT BUOC =====\nBắt buộc: User đang tìm ĐỊA ĐIỂM VẬT LÝ để đến trực tiếp (dấu hiệu: "gần đây", "gần tôi", "gần nha", "ở Q.", địa chỉ cụ thể, "cửa hàng", "tiệm", v.v.). PHẢI dùng search_places NGAY ở bước đầu tiên. TUYỆT ĐỐI KHÔNG dùng search_products. search_places sẽ tìm cửa hàng có địa chỉ, giờ mở cửa, rating - user muốn đến tận nơi mua, không phải mua online.\n==========================================`
+    : locationIntent === 'unknown'
+    ? ''
     : ''
+  const ctaBlock = `\n\n===== CTA ACTION BUTTONS - BAT BUOC =====
+Sau moi response co goi y DIA DIEM / SAN PHAM / DICH VU cu the, PHAI them block nay o CUOI CUNG response (sau het text, tren dong moi):
+
+[CTA_BUTTONS]{"buttons":[{"label":"...","type":"maps","url":"...","primary":true}]}[/CTA_BUTTONS]
+
+Quy tac theo loai:
+AN UONG (nha hang/quan an/cafe): buttons=[{label:"📍 Xem trên Maps",type:"maps",url:"https://www.google.com/maps/search/{ten+dia+diem}",primary:true},{label:"📞 Gọi đặt bàn",type:"call",url:"tel:{so_dt_neu_co}",primary:false}]
+SPA / LAM DEP: buttons=[{label:"💬 Nhắn Zalo",type:"zalo",url:"https://zalo.me/{so_dt_neu_co}",primary:true},{label:"📍 Chỉ đường",type:"maps",url:"https://www.google.com/maps/search/{ten+spa}",primary:false}]
+PHIM / RAP CHIEU PHIM: buttons=[{label:"🎬 Đặt vé CGV",type:"website",url:"https://www.cgv.vn",primary:true},{label:"🎫 Beta Cinemas",type:"website",url:"https://betacinemas.vn",primary:false}]
+KARAOKE / BAR / GIAI TRI KHAC: buttons=[{label:"📍 Xem trên Maps",type:"maps",url:"https://www.google.com/maps/search/{ten+dia+diem}",primary:true},{label:"📞 Đặt chỗ",type:"call",url:"tel:{so_dt_neu_co}",primary:false}]
+DU LICH / KHACH SAN: buttons=[{label:"🏨 Tìm phòng Booking",type:"booking",url:"https://www.booking.com/search.html?ss={thanh+pho}",primary:true},{label:"🚌 Đặt vé xe",type:"website",url:"https://vexere.com",primary:false}]
+MUA SAM ONLINE: buttons=[{label:"🛒 Xem Shopee",type:"search",url:"https://shopee.vn/search?keyword={san+pham}",primary:true},{label:"🛍️ Xem Tiki",type:"search",url:"https://tiki.vn/search?q={san+pham}",primary:false}]
+MUA SAM OFFLINE (cua hang vat ly): buttons=[{label:"🗺️ Chỉ đường",type:"maps",url:"https://www.google.com/maps/search/{ten+cua+hang}",primary:true}]
+
+Luu y:
+- Thay khoang trang trong ten/san pham bang dau + (URL encode)
+- Neu co so dien thoai cu the tu tool → dung so do cho call/zalo URL
+- Neu khong co goi y cu the (chitchat, cau hoi chung) → KHONG output block CTA
+- Chi output 1 block [CTA_BUTTONS]...[/CTA_BUTTONS] duy nhat moi response
+==========================================`
   return `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${SYSTEM_BASE}${budgetBlock}${locationBlock}`
+${memoryBlock ? memoryBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${ctaBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
 CHUYEN MON: An uong · Mua sam · Giai tri · Du lich · Van chuyen · Spa & Lam dep · Tin tuc · Thoi tiet · Gia vang
 CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), get_flight_prices (Travelpayouts/Aviasales - gia ve may bay), get_hotel_prices (tim kiem web Booking.com/Agoda + OSM - gia phong khach san), get_transport_options (tim kiem web - ve xe khach/tau lien tinh, hoac uoc tinh gia taxi/xe cong nghe theo khoang cach), web_search (tim kiem tong quat tren internet)
 
-PHONG CACH TRA LOI: Noi chuyen nhu ban be than thiet - chill, nhiet tinh, co the xung "minh/ban" hoac "may/tao" tuy theo cach user xung ho (mirror tone cua user; neu user lich su/trang trong thi dung minh/ban). Cau tra loi can CO CAU TRUC RO RANG: dung **bold** cho ten dia diem/san pham/gia/diem nhan manh quan trong, dung bullet list khi liet ke nhieu lua chon, dung 1-2 emoji phu hop dau dong/tieu de (khong spam emoji giua cau). Khi phu hop, ket thuc bang 1 cau hoi ngan goi mo de tiep tuc ho tro (vd hoi ngay di, so nguoi, ngan sach, khu vuc cu the...) - khong bat buoc voi cau chao hoi/cam on don gian.
+PHONG CACH TRA LOI: Noi chuyen nhu ban be than thiet - chill, nhiet tinh, co the xung "minh/ban" hoac "may/tao" tuy theo cach user xung ho (mirror tone cua user; neu user lich su/trang trong thi dung minh/ban). Dung **bold** cho ten dia diem/san pham/gia quan trong. Dung 1-2 emoji phu hop (khong spam). KHONG dung header bold kieu **Ten muc:** hay ## tieu de - viet tu nhien nhu nhan tin.
+
+FORMAT RULES - LUAT CUNG KHONG DUOC VI PHAM:
+R1: Chi recommend 2-3 option tot nhat. KHONG liet ke 4-5-6 cai.
+R2: Toi da 3 bullet points trong 1 reply. Neu it hon duoc thi viet thanh cau.
+R3: KHONG dung header kieu "**Ten muc:**" hay "## Tieu de". Chi bold ten dia diem/gia/san pham.
+R4: Cau CUOI cua moi reply LA MOT follow-up question de hieu user hon (hoi ve muc dich, so nguoi, ngan sach, khu vuc, thoi gian...). Chi KHONG hoi voi cau chao hoi/cam on don gian.
+R5: Viet nhu dang nhan tin cho ban - ngan, tu nhien, khong viet bao cao.
 
 NGUYEN TAC BAT BUOC:
 1) LUON goi tool khi user hoi ve dia diem, tin tuc, san pham, thoi tiet, gia vang - khong tra loi tu bo nho
@@ -1118,10 +1152,26 @@ export async function POST(req: Request) {
   const intent = classifyIntent(lastText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
+  const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
+  const isFirstReply = userMessages.length <= 1
+
+  // Load user memory for personalization
+  let memoryBlock = ''
+  let authedUserId: string | null = null
+  let existingMemory: UserMemory | null = null
+  try {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      authedUserId = user.id
+      existingMemory = await getMemory(user.id)
+      if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory)
+    }
+  } catch { /* no-op if auth fails */ }
 
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
-    system: buildSystem(budget, locationIntent),
+    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock),
     messages,
     maxTokens: intent === 'chitchat' ? 300 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : 5,
@@ -1164,14 +1214,14 @@ export async function POST(req: Request) {
         parameters: z.object({ query: z.string().describe('Tu khoa tin tuc can tim') }),
         execute: async ({ query }) => getNews(query)
       }),
-      search_products: tool({
+      ...(locationIntent !== 'offline' ? { search_products: tool({
         description: 'Tim san pham mua sam online tren Shopee, Tiki, Lazada, kem gia tham khao tu Google Search (Serper)',
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
           const r = await searchProducts(query)
           return budget ? applyBudgetFilter(r, budget, query) : r
         }
-      }),
+      }) } : {}),
       web_search: tool({
         description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
         parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
@@ -1221,7 +1271,7 @@ export async function POST(req: Request) {
         execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined)
       }),
     },
-    onFinish: ({ usage, finishReason }) => {
+    onFinish: async ({ usage, finishReason, text }) => {
       console.log(JSON.stringify({
         type: 'tappyai_usage',
         intent,
@@ -1232,6 +1282,29 @@ export async function POST(req: Request) {
         elapsedMs: Date.now() - startTime,
         cacheSize: cache.size,
       }))
+      // Extract + save memory from this conversation (server-side, same auth context)
+      if (authedUserId) {
+        try {
+          const convMessages = [
+            ...messages.map((m: { role: string; content: unknown }) => ({
+              role: m.role,
+              content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
+            })),
+            { role: 'assistant', content: text },
+          ]
+          const extracted = await extractMemoryFromConversation(convMessages, existingMemory)
+          if (Object.keys(extracted).length > 0) {
+            await updateMemory(authedUserId, {
+              location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
+              preferences: { ...(existingMemory?.preferences || {}), ...(extracted.preferences || {}) },
+              budget: { ...(existingMemory?.budget || {}), ...(extracted.budget || {}) },
+              history: extracted.history ?? existingMemory?.history ?? [],
+            })
+          }
+        } catch (e) {
+          console.error('Memory extract/save error:', e)
+        }
+      }
     },
   })
   const baseResponse = result.toDataStreamResponse()

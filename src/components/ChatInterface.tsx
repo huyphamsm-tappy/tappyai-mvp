@@ -1,7 +1,7 @@
 'use client'
 
 import { useChat } from 'ai/react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Send, Loader2, Sparkles } from 'lucide-react'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 
@@ -14,6 +14,13 @@ const QUICK_PROMPTS: Record<string, string[]> = {
   general: ['Ăn gì ngon hôm nay?', 'Cuối tuần đi đâu vui?', 'Quán cafe làm việc yên tĩnh?'],
 }
 
+interface CTAButton {
+  label: string
+  type: 'maps' | 'call' | 'zalo' | 'website' | 'booking' | 'search'
+  url: string
+  primary: boolean
+}
+
 interface ChatInterfaceProps {
   initialMessage?: string
   initialCategory?: string
@@ -22,21 +29,42 @@ interface ChatInterfaceProps {
   onSave?: (messages: Array<{ role: string; content: string }>, title: string) => void
 }
 
+function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
+  const ctaMatch = content.match(/\[CTA_BUTTONS\]([\s\S]*?)\[\/CTA_BUTTONS\]/i)
+  if (!ctaMatch) return { text: content, buttons: [] }
+
+  const text = content
+    .replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/i, '')
+    .trimEnd()
+
+  try {
+    const parsed = JSON.parse(ctaMatch[1].trim())
+    const buttons: CTAButton[] = Array.isArray(parsed.buttons) ? parsed.buttons : []
+    return { text, buttons }
+  } catch {
+    return { text, buttons: [] }
+  }
+}
+
+function logCTAClick(button: CTAButton) {
+  try {
+    fetch('/api/cta-click', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: button.type, label: button.label, url: button.url, ts: Date.now() }),
+    }).catch(() => {})
+  } catch {}
+}
+
 function formatMessage(content: string) {
   return content
-    // Markdown links [text](url) -> clickable <a> that opens in new tab/app
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline font-medium break-all">$1</a>')
-    // Bare URLs (not already inside an href) -> clickable links
     .replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline break-all">$2</a>')
-    // Headings
     .replace(/^### (.+)$\n?/gm, '<div class="font-semibold mt-3 mb-1">$1</div>')
     .replace(/^## (.+)$\n?/gm, '<div class="font-semibold text-base mt-3 mb-1">$1</div>')
-    // Bold / italic
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    // Numbered list items "1. text"
     .replace(/^(\d+)\.\s+(.+)$\n?/gm, '<div class="flex gap-2 my-1"><span class="text-gray-400 dark:text-gray-500 tabular-nums flex-shrink-0">$1.</span><span>$2</span></div>')
-    // Bullet list items, grouped into <ul>
     .replace(/^- (.+)$\n?/gm, '<li>$1</li>')
     .replace(/(?:<li>.*?<\/li>)+/g, (m) => `<ul class="list-disc pl-5 my-2 space-y-1">${m}</ul>`)
 }
@@ -52,15 +80,28 @@ export default function ChatInterface({
   const inputRef = useRef<HTMLInputElement>(null)
   const category = initialCategory as CategoryId
   const catInfo = CATEGORIES.find(c => c.id === category)
+  const [hasMemory, setHasMemory] = useState(false)
+
+  useEffect(() => {
+    fetch('/api/memory')
+      .then(r => r.json())
+      .then(d => { if (d.memory) setHasMemory(true) })
+      .catch(() => {})
+  }, [])
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput } = useChat({
     api: '/api/chat',
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
+      const all = [...messages, message]
       if (onSave) {
-        const all = [...messages, message]
         await onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat')
       }
+      fetch('/api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: all.map(m => ({ role: m.role, content: m.content })) }),
+      }).then(() => setHasMemory(true)).catch(() => {})
     },
   })
 
@@ -92,6 +133,11 @@ export default function ChatInterface({
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo?.label || 'TappyAI'}</h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Tôi có thể giúp bạn tìm thông tin chính xác</p>
+                {hasMemory && (
+                  <span className="inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-xs font-medium">
+                    🎯 Đã cá nhân hóa cho bạn
+                  </span>
+                )}
               </div>
               <div className="w-full space-y-2">
                 {quickPrompts.map((prompt) => (
@@ -104,23 +150,51 @@ export default function ChatInterface({
             </div>
           )}
           <div className="space-y-6">
-            {messages.map((msg) => (
-              <div key={msg.id} className={cn('animate-slide-up flex', msg.role === 'user' ? 'justify-end' : 'gap-3')}>
-                {msg.role === 'assistant' && (
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-white text-[11px] font-bold">T</span>
+            {messages.map((msg) => {
+              if (msg.role === 'assistant') {
+                const { text, buttons } = parseCTA(msg.content)
+                return (
+                  <div key={msg.id} className="animate-slide-up flex gap-3">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-white text-[11px] font-bold">T</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[15px] leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
+                        <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(text) }} />
+                      </div>
+                      {buttons.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {buttons.map((btn, i) => (
+                            <a
+                              key={i}
+                              href={btn.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => logCTAClick(btn)}
+                              className={cn(
+                                'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all',
+                                btn.primary
+                                  ? 'bg-primary-500 hover:bg-primary-600 text-white shadow-sm shadow-primary-200 dark:shadow-primary-900/30'
+                                  : 'border border-primary-300 dark:border-primary-700 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20'
+                              )}
+                            >
+                              {btn.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
-                <div className={cn(
-                  'text-[15px] leading-[1.6]',
-                  msg.role === 'user'
-                    ? 'max-w-[85%] bg-primary-500 text-white rounded-2xl rounded-br-md px-4 py-2.5'
-                    : 'flex-1 min-w-0 text-gray-800 dark:text-gray-100 pt-0.5'
-                )}>
-                  <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
+                )
+              }
+              return (
+                <div key={msg.id} className="animate-slide-up flex justify-end">
+                  <div className="max-w-[85%] bg-primary-500 text-white rounded-2xl rounded-br-md px-4 py-2.5 text-[15px] leading-[1.6]">
+                    <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
             {isLoading && (
               <div className="flex gap-3 animate-fade-in">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
