@@ -812,15 +812,36 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
       })
     }
 
-    // Buoc 2: tim trang rieng cua tung khach san tren OTA
-    // Neu co ten khach san tu OSM, dung ten do de tim chinh xac hon; neu khong, dung query chung
+    // Buoc 2: tim trang dat phong TRUC TIEP tung khach san tren OTA (song song)
+    // Tim rieng tung ten → Google tra ve trang hotel cu the, khong phai trang search chung
     let directHotelLinks: Array<{ title: string; link: string; snippet: string }> = []
     {
-      const otaQuery = hotelList.length > 0
-        ? hotelList.slice(0, 3).map(h => '"' + h.name + '"').join(' OR ') + ' ' + location + ' (site:booking.com OR site:agoda.com OR site:traveloka.com)'
-        : 'khach san ' + location + ' (site:booking.com OR site:agoda.com OR site:traveloka.com)'
-      const directResults = await serperSearch(otaQuery)
-      directHotelLinks = (directResults || []).filter(r => isSpecificOtaHotelPage(r.link))
+      const hotelQueries = hotelList.slice(0, 3).map(h =>
+        '"' + h.name + '" ' + location + ' site:booking.com OR site:agoda.com'
+      )
+      // Neu khong co OSM hotel, dung query co path /hotel/ de ep Google tra trang cu the
+      const genericFallback = 'khach san ' + location + ' site:booking.com/hotel' + (budgetTag ? ' gia re binh dan' : '')
+      const queriesToRun = hotelQueries.length > 0 ? hotelQueries : [genericFallback]
+
+      const allResults = await Promise.all(queriesToRun.map(q => serperSearch(q)))
+      directHotelLinks = allResults
+        .flatMap(r => r || [])
+        .filter(r => isSpecificOtaHotelPage(r.link))
+        .filter((r, i, arr) => arr.findIndex(x => x.link === r.link) === i) // dedup
+
+      // Neu van it hon 2 direct link, thu them OR query + site:agoda.com
+      if (directHotelLinks.length < 2) {
+        const supplementQ = hotelList.length > 0
+          ? hotelList.slice(0, 3).map(h => '"' + h.name + '"').join(' OR ') + ' ' + location + ' (site:booking.com OR site:agoda.com)'
+          : genericFallback
+        const supplement = await serperSearch(supplementQ)
+        const seen = new Set(directHotelLinks.map(r => r.link))
+        directHotelLinks = [
+          ...directHotelLinks,
+          ...(supplement || []).filter(r => isSpecificOtaHotelPage(r.link) && !seen.has(r.link))
+        ]
+      }
+      directHotelLinks = directHotelLinks.slice(0, 8)
     }
     let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined = serperResults || undefined
     if (directHotelLinks.length > 0) {
@@ -859,6 +880,7 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
         search_results: searchResults,
         hotel_list: hotelList,
         booking_link: bookingUrl,
+        _debug_budget: maxBudgetVnd ? 'detected:' + maxBudgetVnd : 'null',
         note: 'Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.'
       }
     } else {
@@ -866,6 +888,7 @@ async function getHotelPrices(location: string, checkIn?: string, checkOut?: str
         error: 'Khong tim duoc thong tin gia phong luc nay',
         hotel_list: hotelList,
         booking_link: bookingUrl,
+        _debug_budget: maxBudgetVnd ? 'detected:' + maxBudgetVnd : 'null',
         note: 'Xem va dat phong tai: ' + bookingUrl,
         search_url: bookingUrl,
       }
