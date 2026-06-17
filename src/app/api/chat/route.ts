@@ -225,6 +225,24 @@ function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_
   return null
 }
 
+// ===== STEP 1.2: LOCATION INTENT DETECTION =====
+function detectLocationIntent(text: string): 'offline' | 'online' | 'unknown' {
+  const t = normalizeVN(text.toLowerCase().trim())
+  // Online signals
+  const onlineRe = /\bonline\b|ship\b|\border\b|giao\s*hang|free\s*ship|voucher|flash\s*sale|\bshopee\b|\blazada\b|\btiki\b|\bsendo\b|mua\s*tren|dat\s*hang\s*online|giao\s*tan\s*noi|\bcod\b|mua\s*online/
+  // Offline signals: district names, streets, nearby, physical store
+  const offlineRe = /\bq\.\s*\d+\b|\bq\.\s*[a-z]+|\bquan\s+\d+\b|\bquan\s+(binh|phu|go|tan|nha|hoc|can|cu|thu|ba|cau|dong|hai|hoan|tay|thanh)\b|\bphuong\s+\w+|\bhuyen\s+\w+|\bduong\s+[a-z]|\bpho\s+[a-z]|\bgan\s+(day|nha|minh)\b|\bkhu\s+vuc\b|\bo\s+dau\b|\bcho\s+nao\b|\bcua\s*hang\b|\btiem\b|\bchi\s*nhanh\b|\bsieu\s*thi\b|\btrung\s*tam\s*thuong\s*mai\b|\bmall\b|\bplaza\b|\bden\s+(mua|xem)\b|\bghe\s+(qua|toi|vao)\b/
+  if (offlineRe.test(t)) return 'offline'
+  if (onlineRe.test(t)) return 'online'
+  return 'unknown'
+}
+
+function isShoppingQuery(text: string): boolean {
+  const t = normalizeVN(text.toLowerCase())
+  return /\b(ao|giay|dep|tui\b|dien thoai|laptop|may tinh|tablet|my pham|son moi|nuoc hoa|dong ho|trang suc|kinh mat|balo|sandal|sneaker|boot|hoodie|jacket|legging|vay|dam|quan\s*jean|quan\s*short|do\s*the\s*thao|thoi\s*trang|phu\s*kien|tui\s*xach|vi\s*da|hang\s*hieu)\b/.test(t)
+}
+// ===== END STEP 1.2 =====
+
 async function getNews(query: string) {
   const cacheKey = 'news:' + query.toLowerCase().trim()
   const cached = getCache(cacheKey)
@@ -1030,7 +1048,7 @@ async function getTransportOptions(origin: string, destination: string, mode?: s
   return result
 }
 
-function buildSystem(budget?: Budget | null): string {
+function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown'): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) // YYYY-MM-DD
@@ -1042,9 +1060,12 @@ LUAT 2: CAM HOAN TOAN de cap bat ky khach san thuong hieu quoc te hoac 4-5 sao n
 LUAT 3: Neu khong con option nao trong tam gia, tra loi: "Trong tam ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND minh chua tim duoc ket qua phu hop. Ban co muon noi budget len ${Math.round(budget.max * 1.2 / 1000) * 1000 >= 1000000 ? (Math.round(budget.max * 1.2 / 100000) / 10).toFixed(1) + ' trieu' : Math.round(budget.max * 1.2 / 1000) + 'k'} khong?"
 ==========================================`
     : ''
+  const locationBlock = locationIntent === 'offline'
+    ? `\n\n===== VI TRI: TIM DIA DIEM VAT LY =====\nUser muon tim dia diem vat ly co the ghe truc tiep. UU TIEN recommend cua hang/dia diem co dia chi cu the (so nha, ten duong, quan/phuong). CHI de xuat mua online neu user hoi cu the. Su dung search_places thay vi search_products.`
+    : ''
   return `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${SYSTEM_BASE}${budgetBlock}`
+${SYSTEM_BASE}${budgetBlock}${locationBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
@@ -1096,10 +1117,11 @@ export async function POST(req: Request) {
       : ''
   const intent = classifyIntent(lastText)
   const budget = extractBudget(lastText)
+  const locationIntent = detectLocationIntent(lastText)
 
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
-    system: buildSystem(budget),
+    system: buildSystem(budget, locationIntent),
     messages,
     maxTokens: intent === 'chitchat' ? 300 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : 5,
@@ -1107,6 +1129,18 @@ export async function POST(req: Request) {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) {
         const forced = detectForcedTool(lastText)
+        // Offline location + product search → switch to search_places
+        if (forced === 'search_products' && locationIntent === 'offline') {
+          return { toolChoice: { type: 'tool' as const, toolName: 'search_places' } }
+        }
+        // No forced tool + offline location → search_places (user wants physical location)
+        if (!forced && locationIntent === 'offline') {
+          return { toolChoice: { type: 'tool' as const, toolName: 'search_places' } }
+        }
+        // Unknown intent + shopping keywords → no tool, ask clarification
+        if (!forced && locationIntent === 'unknown' && isShoppingQuery(lastText)) {
+          return { toolChoice: 'none' as const }
+        }
         if (forced) return { toolChoice: { type: 'tool' as const, toolName: forced } }
         return { toolChoice: 'required' as const }
       }
@@ -1200,89 +1234,4 @@ export async function POST(req: Request) {
       }))
     },
   })
-  const baseResponse = result.toDataStreamResponse()
-  return (budget && budget.max < LUXURY_PRICE_FLOOR)
-    ? applyLuxuryStreamFilter(baseResponse)
-    : baseResponse
-}
-
-// ===== LUXURY STREAM FILTER: catch-all ngan luxury brand names leak qua Haiku =====
-// Dung split/join thay vi regex /g de tranh stateful bug
-const LUXURY_BRANDS_FILTER = [
-  'Pullman', 'pullman',
-  'Marriott', 'marriott',
-  'Hilton', 'hilton',
-  'Sheraton', 'sheraton',
-  'Intercontinental', 'intercontinental',
-  'Sofitel', 'sofitel',
-  'Novotel', 'novotel',
-  'Melia', 'melia',
-  'Hyatt', 'hyatt',
-  'Wyndham', 'wyndham',
-  'Movenpick', 'movenpick',
-  'Radisson', 'radisson',
-  'Renaissance', 'renaissance',
-  'Imperial Hotel', 'imperial hotel',
-]
-
-function filterLuxuryBrands(text: string): string {
-  let out = text
-  for (const brand of LUXURY_BRANDS_FILTER) {
-    if (out.includes(brand)) {
-      out = out.split(brand).join('khách sạn')
-    }
-  }
-  return out
-}
-
-function applyLuxuryStreamFilter(response: Response): Response {
-  const body = response.body
-  if (!body) return response
-
-  const decoder = new TextDecoder()
-  const encoder = new TextEncoder()
-  let lineRemainder = ''
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transform = new TransformStream<any, any>({
-    transform(chunk, controller) {
-      lineRemainder += decoder.decode(chunk, { stream: true })
-      const parts = lineRemainder.split('\n')
-      lineRemainder = parts.pop() ?? ''
-
-      for (const line of parts) {
-        if (line.startsWith('0:')) {
-          try {
-            const text = JSON.parse(line.slice(2)) as string
-            const filtered = filterLuxuryBrands(text)
-            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
-          } catch {
-            controller.enqueue(encoder.encode(line + '\n'))
-          }
-        } else {
-          controller.enqueue(encoder.encode(line + '\n'))
-        }
-      }
-    },
-    flush(controller) {
-      if (lineRemainder) {
-        if (lineRemainder.startsWith('0:')) {
-          try {
-            const text = JSON.parse(lineRemainder.slice(2)) as string
-            const filtered = filterLuxuryBrands(text)
-            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
-          } catch {
-            controller.enqueue(encoder.encode(lineRemainder + '\n'))
-          }
-        } else {
-          controller.enqueue(encoder.encode(lineRemainder + '\n'))
-        }
-      }
-    }
-  })
-
-  return new Response(body.pipeThrough(transform), {
-    status: response.status,
-    headers: response.headers,
-  })
-}
+  const baseRe
