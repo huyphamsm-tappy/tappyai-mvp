@@ -1090,9 +1090,16 @@ Luu y:
 - Neu khong co goi y cu the (chitchat, cau hoi chung) → KHONG output block CTA
 - Chi output 1 block [CTA_BUTTONS]...[/CTA_BUTTONS] duy nhat moi response
 ==========================================`
+  const scopeBlock = `\n\n===== PHAM VI HOAT DONG - LUAT CUNG KHONG DUOC VI PHAM =====
+TappyAI CHI ho tro 5 linh vuc: an uong, mua sam, du lich, spa/lam dep, giai tri tai Viet Nam.
+Neu user hoi bat ky chu de nao NGOAI 5 linh vuc tren (vi du: toan hoc, lap trinh, y te, phap luat, chinh tri, tin tuc thoi su quoc te, thoi tiet, cach lam gi do, dich thuat, viet lach, giai thich khai niem...), HAY TU CHOI LICH SU va redirect nhu sau:
+"Minh la TappyAI, chuyen ho tro tim kiem an uong, spa, mua sam, du lich va giai tri tai Viet Nam thoi nha 😊 Ban can minh giup tim gi trong nhung linh vuc nay khong?"
+TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan hay giai thich ly do.
+=============================================================`
+
   return `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${memoryBlock ? memoryBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${ctaBlock}`
+${memoryBlock ? memoryBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${ctaBlock}${scopeBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
