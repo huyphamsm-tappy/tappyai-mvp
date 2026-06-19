@@ -5,7 +5,14 @@ import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { Send, Loader2, Sparkles, Mic, MicOff, Volume2, VolumeX, Smile } from 'lucide-react'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
-import { EMOTES } from '@/components/chat/emotes'
+
+const EMOJIS = [
+  '😀','😄','😂','🤣','😊','😍',
+  '🥰','😘','😎','🤩','😋','😅',
+  '😳','😬','🙈','🤭','🤔','😏',
+  '😢','😭','😞','😤','😡','😱',
+  '👍','❤️','🙏','🎉','🔥','💯',
+]
 
 const QUICK_PROMPTS: Record<string, string[]> = {
   food: ['Quán bún bò ngon ở TP.HCM?', 'Cafe view đẹp Hà Nội?', 'Nhà hàng hải sản tươi sống?'],
@@ -392,15 +399,14 @@ export default function ChatInterface({
               <div className="absolute bottom-14 right-0 z-20 w-64 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-xl shadow-gray-200/60 dark:shadow-black/40 p-3">
                 <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-0.5">Chọn biểu cảm</p>
                 <div className="grid grid-cols-6 gap-1">
-                  {EMOTES.map((emote) => (
+                  {EMOJIS.map((emoji) => (
                     <button
-                      key={emote.id}
+                      key={emoji}
                       type="button"
-                      title={emote.label}
-                      onClick={() => insertEmoji(emote.emoji)}
-                      className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:scale-90"
+                      onClick={() => insertEmoji(emoji)}
+                      className="w-9 h-9 flex items-center justify-center text-xl rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:scale-90"
                     >
-                      <emote.Component size={30} />
+                      {emoji}
                     </button>
                   ))}
                 </div>
