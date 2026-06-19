@@ -89,7 +89,7 @@ export default function ChatInterface({
       .catch(() => {})
   }, [])
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append } = useChat({
     api: '/api/chat',
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
@@ -155,7 +155,7 @@ export default function ChatInterface({
               </div>
               <div className="w-full space-y-2">
                 {quickPrompts.map((prompt) => (
-                  <button key={prompt} onClick={() => { setInput(prompt); inputRef.current?.focus() }} className="w-full text-left px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bo-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm transition-all border border-gray-100 dark:border-gray-700 flex items-center gap-2">
+                  <button key={prompt} onClick={() => append({ role: 'user', content: prompt })} className="w-full text-left px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm transition-all border border-gray-100 dark:border-gray-700 flex items-center gap-2">
                     <Sparkles size={14} className="text-primary-400 flex-shrink-0" />
                     {prompt}
                   </button>
