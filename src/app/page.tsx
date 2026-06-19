@@ -94,6 +94,31 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* Viết content */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900 dark:text-white">✍️ Viết content mạng xã hội</h3>
+            <Link href="/viet-content" className="text-sm text-primary-500 font-medium">Mở</Link>
+          </div>
+          <Link
+            href="/viet-content"
+            className="group flex items-center gap-4 rounded-2xl bg-gradient-to-br from-pink-500/15 to-orange-400/5 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+          >
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-100 to-orange-100 dark:from-pink-900/30 dark:to-orange-900/30 flex items-center justify-center text-3xl flex-shrink-0 shadow-sm">
+              ✍️
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                Caption Facebook, TikTok, Instagram
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
+                Nhập chủ đề, chọn tone và độ dài — AI viết caption + hashtag ngay.
+              </p>
+            </div>
+            <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
+          </Link>
+        </section>
+
         {/* AI Suggestions */}
         <section>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Gợi ý hôm nay</h3>
