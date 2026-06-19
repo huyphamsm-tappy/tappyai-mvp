@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Loader2, ExternalLink, Copy, Check, Sparkles, MapPin, Zap } from 'lucide-react'
 
 // Phát hiện trình duyệt nội bộ của các app chat (Google chặn OAuth trong các webview này)
@@ -193,9 +194,9 @@ export default function LoginPage() {
 
               <p className="text-center text-gray-400 text-xs mt-6">
                 Bằng cách tiếp tục, bạn đồng ý với{' '}
-                <span className="text-gray-600 dark:text-gray-300 underline cursor-pointer">Điều khoản dịch vụ</span>
+                <Link href="/terms" className="text-gray-600 dark:text-gray-300 underline">Điều khoản dịch vụ</Link>
                 {' '}và{' '}
-                <span className="text-gray-600 dark:text-gray-300 underline cursor-pointer">Chính sách bảo mật</span>
+                <Link href="/privacy" className="text-gray-600 dark:text-gray-300 underline">Chính sách bảo mật</Link>
               </p>
             </>
           )}
