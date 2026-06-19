@@ -1,10 +1,19 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { Heart, Briefcase, Coins, HeartPulse, Star, RotateCcw, CalendarDays, BookOpen, Calendar } from 'lucide-react'
+import {
+  Heart, Briefcase, Coins, HeartPulse, Star, RotateCcw,
+  CalendarDays, BookOpen, Calendar, ChevronDown, ChevronUp,
+  Sprout, Flame, TreePine, Sparkles, StickyNote,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getCanChiByYear, getNguHanhByYear, type CanChi } from '@/lib/boi/canChiData'
-import { generateFortune, generateYearFortune, type FortunePeriod, type FortuneReading, type YearFortuneReading, YEAR_ANIMALS } from '@/lib/boi/fortuneEngine'
+import {
+  generateFortune, generateYearFortune, generateMonthlyBreakdown, generateLifeStages,
+  type FortunePeriod, type FortuneReading, type YearFortuneReading,
+  type MonthlyFortune, type LifeStage,
+  YEAR_ANIMALS,
+} from '@/lib/boi/fortuneEngine'
 import { LIFETIME_READINGS, type LifetimeReading } from '@/lib/boi/lifetimeData'
 
 type ViewMode = FortunePeriod | 'lifetime' | 'year'
@@ -18,18 +27,40 @@ const PERIOD_TABS: { id: FortunePeriod; label: string }[] = [
 const VN_YEAR = new Date(Date.now() + 7 * 60 * 60 * 1000).getUTCFullYear()
 const YEAR_OPTIONS = Array.from({ length: 11 }, (_, i) => VN_YEAR - 5 + i)
 
+const STAGE_ICONS = {
+  'Thời niên thiếu': Sprout,
+  'Thanh niên': Flame,
+  'Trung niên': TreePine,
+  'Hậu vận': Sparkles,
+} as const
+
+interface ResultState {
+  canChi: CanChi
+  nguHanh: string
+  year: number
+  birthMonth: number
+  birthDay: number
+}
+
 export default function TuViForm() {
   const [birthDate, setBirthDate] = useState('')
-  const [result, setResult] = useState<{ canChi: CanChi; nguHanh: string; year: number } | null>(null)
+  const [result, setResult] = useState<ResultState | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('day')
   const [selectedYear, setSelectedYear] = useState<number>(VN_YEAR)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!birthDate) return
-    const year = new Date(birthDate).getFullYear()
+    const dt = new Date(birthDate)
+    const year = dt.getFullYear()
     if (!year || Number.isNaN(year)) return
-    setResult({ canChi: getCanChiByYear(year), nguHanh: getNguHanhByYear(year), year })
+    setResult({
+      canChi: getCanChiByYear(year),
+      nguHanh: getNguHanhByYear(year),
+      year,
+      birthMonth: dt.getMonth() + 1,
+      birthDay: dt.getDate(),
+    })
     setViewMode('day')
   }
 
@@ -86,7 +117,6 @@ export default function TuViForm() {
 
       {/* Mode selector */}
       <div className="space-y-2">
-        {/* Period tabs */}
         <div className="flex gap-2">
           {PERIOD_TABS.map((p) => (
             <button
@@ -104,14 +134,12 @@ export default function TuViForm() {
           ))}
         </div>
 
-        {/* Divider */}
         <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 px-1">
           <div className="flex-1 h-px bg-gray-100 dark:bg-gray-800" />
           <span>hoặc xem</span>
           <div className="flex-1 h-px bg-gray-100 dark:bg-gray-800" />
         </div>
 
-        {/* Special modes */}
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => setViewMode('lifetime')}
@@ -146,13 +174,19 @@ export default function TuViForm() {
       )}
 
       {viewMode === 'lifetime' && lifetime && (
-        <LifetimeCard lifetime={lifetime} animalVi={result.canChi.animalVi} />
+        <LifetimeCard
+          lifetime={lifetime}
+          animalVi={result.canChi.animalVi}
+          stages={generateLifeStages(result.canChi.id, result.birthMonth, result.birthDay)}
+        />
       )}
 
       {viewMode === 'year' && (
         <YearReadingSection
           canChi={result.canChi}
           birthYear={result.year}
+          birthMonth={result.birthMonth}
+          birthDay={result.birthDay}
           selectedYear={selectedYear}
           onYearChange={setSelectedYear}
         />
@@ -172,15 +206,7 @@ function PeriodReadingCard({ reading }: { reading: FortuneReading }) {
     <div className="card p-5 space-y-4">
       <div className="flex items-center justify-between">
         <p className="font-semibold text-gray-900 dark:text-white">{reading.periodLabel}</p>
-        <div className="flex items-center gap-0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              size={14}
-              className={i < reading.score ? 'text-accent-500 fill-accent-500' : 'text-gray-200 dark:text-gray-700'}
-            />
-          ))}
-        </div>
+        <StarRow score={reading.score} />
       </div>
 
       <FortuneRow icon={Heart} label="Tình duyên" text={reading.love} color="text-pink-500" />
@@ -202,33 +228,101 @@ function PeriodReadingCard({ reading }: { reading: FortuneReading }) {
 
 // ---- Lifetime reading ----
 
-function LifetimeCard({ lifetime, animalVi }: { lifetime: LifetimeReading; animalVi: string }) {
+function LifetimeCard({
+  lifetime,
+  animalVi,
+  stages,
+}: {
+  lifetime: LifetimeReading
+  animalVi: string
+  stages: LifeStage[]
+}) {
   return (
-    <div className="card p-5 space-y-5">
-      <div className="flex items-center gap-2">
-        <BookOpen size={16} className="text-violet-500" />
-        <p className="font-semibold text-gray-900 dark:text-white">Tử vi trọn đời — Tuổi {animalVi}</p>
+    <div className="space-y-3">
+      {/* Tổng quan */}
+      <div className="card p-5 space-y-4">
+        <div className="flex items-center gap-2">
+          <BookOpen size={16} className="text-violet-500" />
+          <p className="font-semibold text-gray-900 dark:text-white">Tử vi trọn đời — Tuổi {animalVi}</p>
+        </div>
+
+        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed italic border-l-2 border-violet-300 dark:border-violet-700 pl-3">
+          {lifetime.overview}
+        </p>
+
+        <div className="space-y-4">
+          <LifetimeRow icon={Briefcase} label="Sự nghiệp" text={lifetime.career} color="text-primary-500" />
+          <LifetimeRow icon={Heart} label="Tình duyên" text={lifetime.love} color="text-pink-500" />
+          <LifetimeRow icon={HeartPulse} label="Sức khỏe" text={lifetime.health} color="text-green-500" />
+        </div>
+
+        <div className="rounded-2xl bg-violet-50 dark:bg-violet-900/20 p-4">
+          <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1.5">✨ Lời khuyên trọn đời</p>
+          <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{lifetime.advice}</p>
+        </div>
       </div>
 
-      <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed italic border-l-2 border-violet-300 dark:border-violet-700 pl-3">
-        {lifetime.overview}
-      </p>
-
-      <div className="space-y-4">
-        <LifetimeRow icon={Briefcase} label="Sự nghiệp" text={lifetime.career} color="text-primary-500" />
-        <LifetimeRow icon={Heart} label="Tình duyên" text={lifetime.love} color="text-pink-500" />
-        <LifetimeRow icon={HeartPulse} label="Sức khỏe" text={lifetime.health} color="text-green-500" />
-      </div>
-
-      <div className="rounded-2xl bg-violet-50 dark:bg-violet-900/20 p-4">
-        <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1.5">✨ Lời khuyên trọn đời</p>
-        <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{lifetime.advice}</p>
+      {/* Giai đoạn cuộc đời */}
+      <div className="card p-5 space-y-4">
+        <p className="font-semibold text-gray-900 dark:text-white text-sm">Luận giải theo giai đoạn</p>
+        <div className="space-y-3">
+          {stages.map((stage) => (
+            <LifeStageCard key={stage.label} stage={stage} />
+          ))}
+        </div>
       </div>
     </div>
   )
 }
 
-function LifetimeRow({ icon: Icon, label, text, color }: { icon: typeof Heart; label: string; text: string; color: string }) {
+function LifeStageCard({ stage }: { stage: LifeStage }) {
+  const [open, setOpen] = useState(false)
+  const IconComp = STAGE_ICONS[stage.label as keyof typeof STAGE_ICONS]
+
+  return (
+    <div className="rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center gap-3 p-3.5 text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+      >
+        <span className="text-xl">{stage.emoji}</span>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-gray-900 dark:text-white text-sm">{stage.label}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">{stage.ageRange}</p>
+        </div>
+        {open ? (
+          <ChevronUp size={16} className="text-gray-400 flex-shrink-0" />
+        ) : (
+          <ChevronDown size={16} className="text-gray-400 flex-shrink-0" />
+        )}
+      </button>
+
+      {open && (
+        <div className="px-3.5 pb-4 space-y-3 border-t border-gray-100 dark:border-gray-800 pt-3">
+          {IconComp && (
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed italic border-l-2 border-violet-200 dark:border-violet-800 pl-3">
+              {stage.fate}
+            </p>
+          )}
+          <LifetimeRow icon={Briefcase} label="Sự nghiệp" text={stage.career} color="text-primary-500" />
+          <LifetimeRow icon={Heart} label="Tình duyên" text={stage.love} color="text-pink-500" />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function LifetimeRow({
+  icon: Icon,
+  label,
+  text,
+  color,
+}: {
+  icon: typeof Heart
+  label: string
+  text: string
+  color: string
+}) {
   return (
     <div className="flex items-start gap-3">
       <div className={cn('w-8 h-8 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0', color)}>
@@ -247,15 +341,20 @@ function LifetimeRow({ icon: Icon, label, text, color }: { icon: typeof Heart; l
 function YearReadingSection({
   canChi,
   birthYear,
+  birthMonth,
+  birthDay,
   selectedYear,
   onYearChange,
 }: {
   canChi: CanChi
   birthYear: number
+  birthMonth: number
+  birthDay: number
   selectedYear: number
   onYearChange: (y: number) => void
 }) {
   const reading = generateYearFortune(canChi.id, birthYear, selectedYear) as YearFortuneReading
+  const months = generateMonthlyBreakdown(canChi.id, birthYear, birthMonth, birthDay, selectedYear)
 
   return (
     <div className="space-y-3">
@@ -284,19 +383,11 @@ function YearReadingSection({
         <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{reading.compatNote}</p>
       </div>
 
-      {/* Year fortune card */}
+      {/* Year overview card */}
       <div className="card p-5 space-y-4">
         <div className="flex items-center justify-between">
-          <p className="font-semibold text-gray-900 dark:text-white">{reading.periodLabel}</p>
-          <div className="flex items-center gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                size={14}
-                className={i < reading.score ? 'text-accent-500 fill-accent-500' : 'text-gray-200 dark:text-gray-700'}
-              />
-            ))}
-          </div>
+          <p className="font-semibold text-gray-900 dark:text-white">{reading.periodLabel} — Tổng quan</p>
+          <StarRow score={reading.score} />
         </div>
 
         <FortuneRow icon={Heart} label="Tình duyên" text={reading.love} color="text-pink-500" />
@@ -306,20 +397,130 @@ function YearReadingSection({
 
         <div className="flex items-center gap-4 pt-2 border-t border-gray-100 dark:border-gray-800 text-sm">
           <span className="text-gray-500 dark:text-gray-400">
-            Số may mắn: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
+            Số may: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
           </span>
           <span className="text-gray-500 dark:text-gray-400">
             Màu hợp: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
           </span>
         </div>
       </div>
+
+      {/* Monthly breakdown */}
+      <div className="card p-5 space-y-3">
+        <p className="font-semibold text-gray-900 dark:text-white text-sm">Luận giải từng tháng</p>
+        <div className="space-y-2">
+          {months.map((m) => (
+            <MonthCard key={m.month} monthData={m} />
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
 
-// ---- Shared row component ----
+function MonthCard({ monthData }: { monthData: MonthlyFortune }) {
+  const [open, setOpen] = useState(false)
 
-function FortuneRow({ icon: Icon, label, text, color }: { icon: typeof Heart; label: string; text: string; color: string }) {
+  return (
+    <div className="rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+      >
+        <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center flex-shrink-0">
+          <span className="text-xs font-bold text-amber-600 dark:text-amber-400">T{monthData.month}</span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-medium text-gray-800 dark:text-gray-200 text-sm">{monthData.monthName}</p>
+        </div>
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <MiniStarRow score={monthData.score} />
+          {open ? (
+            <ChevronUp size={15} className="text-gray-400" />
+          ) : (
+            <ChevronDown size={15} className="text-gray-400" />
+          )}
+        </div>
+      </button>
+
+      {open && (
+        <div className="px-3 pb-4 space-y-3 border-t border-gray-100 dark:border-gray-800 pt-3">
+          <MonthRow icon={Heart} label="Tình duyên" text={monthData.love} color="text-pink-500" />
+          <MonthRow icon={Briefcase} label="Công việc" text={monthData.career} color="text-primary-500" />
+          <MonthRow icon={Coins} label="Tài lộc" text={monthData.money} color="text-accent-500" />
+          <MonthRow icon={HeartPulse} label="Sức khỏe" text={monthData.health} color="text-green-500" />
+          <MonthRow icon={StickyNote} label="Lưu ý" text={monthData.note} color="text-gray-500" />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function MonthRow({
+  icon: Icon,
+  label,
+  text,
+  color,
+}: {
+  icon: typeof Heart
+  label: string
+  text: string
+  color: string
+}) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <div className={cn('w-7 h-7 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0 mt-0.5', color)}>
+        <Icon size={13} />
+      </div>
+      <div>
+        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-0.5">{label}</p>
+        <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{text}</p>
+      </div>
+    </div>
+  )
+}
+
+// ---- Shared helpers ----
+
+function StarRow({ score }: { score: number }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          size={14}
+          className={i < score ? 'text-accent-500 fill-accent-500' : 'text-gray-200 dark:text-gray-700'}
+        />
+      ))}
+    </div>
+  )
+}
+
+function MiniStarRow({ score }: { score: number }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          size={11}
+          className={i < score ? 'text-amber-400 fill-amber-400' : 'text-gray-200 dark:text-gray-700'}
+        />
+      ))}
+    </div>
+  )
+}
+
+function FortuneRow({
+  icon: Icon,
+  label,
+  text,
+  color,
+}: {
+  icon: typeof Heart
+  label: string
+  text: string
+  color: string
+}) {
   return (
     <div className="flex items-start gap-3">
       <div className={cn('w-8 h-8 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0', color)}>
