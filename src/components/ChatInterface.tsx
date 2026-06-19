@@ -2,9 +2,17 @@
 
 import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
-import { Send, Loader2, Sparkles, Mic, MicOff, Volume2, VolumeX } from 'lucide-react'
+import { Send, Loader2, Sparkles, Mic, MicOff, Volume2, VolumeX, Smile } from 'lucide-react'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
+
+const EMOJIS = [
+  '😀','😄','😂','🤣','😊','😍',
+  '🥰','😘','😎','🤩','😋','😅',
+  '😳','😬','🙈','🤭','🤔','😏',
+  '😢','😭','😞','😤','😡','😱',
+  '👍','❤️','🙏','🎉','🔥','💯',
+]
 
 const QUICK_PROMPTS: Record<string, string[]> = {
   food: ['Quán bún bò ngon ở TP.HCM?', 'Cafe view đẹp Hà Nội?', 'Nhà hàng hải sản tươi sống?'],
@@ -83,6 +91,7 @@ export default function ChatInterface({
   const catInfo = CATEGORIES.find(c => c.id === category)
   const [hasMemory, setHasMemory] = useState(false)
   const [isListening, setIsListening] = useState(false)
+  const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append } = useChat({
@@ -203,6 +212,28 @@ export default function ChatInterface({
   useEffect(() => {
     inputRef.current?.focus()
   }, [conversationId])
+
+  const insertEmoji = (emoji: string) => {
+    const ta = inputRef.current
+    if (!ta) {
+      setInput(prev => prev + emoji)
+      setShowEmojiPanel(false)
+      return
+    }
+    const start = ta.selectionStart ?? input.length
+    const end = ta.selectionEnd ?? input.length
+    const newVal = input.slice(0, start) + emoji + input.slice(end)
+    setInput(newVal)
+    setShowEmojiPanel(false)
+    requestAnimationFrame(() => {
+      ta.focus()
+      const pos = start + emoji.length
+      ta.selectionStart = pos
+      ta.selectionEnd = pos
+      ta.style.height = 'auto'
+      ta.style.height = Math.min(ta.scrollHeight, 160) + 'px'
+    })
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -329,6 +360,10 @@ export default function ChatInterface({
         </div>
       </div>
       <div className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
+        {/* Emoji panel overlay — click outside to close */}
+        {showEmojiPanel && (
+          <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />
+        )}
         <form id="chat-form" onSubmit={handleSubmit} className="max-w-2xl mx-auto w-full flex gap-2 items-end">
           <textarea
               ref={inputRef}
@@ -344,6 +379,40 @@ export default function ChatInterface({
               rows={1}
               className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none transition-all overflow-hidden"
             />
+          {/* Nút emoji */}
+          <div className="relative flex-shrink-0">
+            <button
+              type="button"
+              onClick={() => setShowEmojiPanel(v => !v)}
+              className={cn(
+                'w-11 h-11 rounded-2xl flex items-center justify-center transition-all',
+                showEmojiPanel
+                  ? 'bg-accent-100 dark:bg-accent-900/30 text-accent-500'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-accent-50 dark:hover:bg-accent-900/20 hover:text-accent-500'
+              )}
+              aria-label="Chọn emoji"
+            >
+              <Smile size={20} />
+            </button>
+            {/* Emoji panel */}
+            {showEmojiPanel && (
+              <div className="absolute bottom-14 right-0 z-20 w-64 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-xl shadow-gray-200/60 dark:shadow-black/40 p-3">
+                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-0.5">Chọn biểu cảm</p>
+                <div className="grid grid-cols-6 gap-1">
+                  {EMOJIS.map((emoji) => (
+                    <button
+                      key={emoji}
+                      type="button"
+                      onClick={() => insertEmoji(emoji)}
+                      className="w-9 h-9 flex items-center justify-center text-xl rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:scale-90"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
           {/* Nút microphone màu cam #FF9500 */}
           <button
             type="button"
