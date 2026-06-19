@@ -155,3 +155,26 @@ alter table public.bookings enable row level security;
 drop policy if exists "Users can manage own bookings" on public.bookings;
 create policy "Users can manage own bookings" on public.bookings
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- =============================================
+-- 7. Bảng message_feedback (like/dislike/report cho tin nhắn AI)
+-- =============================================
+create table if not exists public.message_feedback (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade not null,
+  conversation_id uuid references public.conversations on delete cascade not null,
+  message_index integer not null,
+  type text not null check (type in ('like', 'dislike', 'report')),
+  reason text,
+  created_at timestamp with time zone default now(),
+  unique(user_id, conversation_id, message_index, type)
+);
+
+create index if not exists message_feedback_user_id_idx on public.message_feedback(user_id);
+create index if not exists message_feedback_conversation_id_idx on public.message_feedback(conversation_id);
+
+alter table public.message_feedback enable row level security;
+
+drop policy if exists "Users can manage own message feedback" on public.message_feedback;
+create policy "Users can manage own message feedback" on public.message_feedback
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);

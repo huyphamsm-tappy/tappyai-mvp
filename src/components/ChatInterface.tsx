@@ -2,7 +2,9 @@
 
 import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
-import { Send, Loader2, Sparkles, Mic, MicOff, Volume2, VolumeX, Smile } from 'lucide-react'
+import { Send, Loader2, Sparkles, Mic, MicOff, Smile } from 'lucide-react'
+import { useTTS } from '@/hooks/useTTS'
+import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 
@@ -94,7 +96,7 @@ export default function ChatInterface({
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload } = useChat({
     api: '/api/chat',
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
@@ -141,51 +143,8 @@ export default function ChatInterface({
     setIsListening(false)
   }, [])
 
-  // TTS — đọc tin nhắn AI bằng browser SpeechSynthesis
-  const [speakingId, setSpeakingId] = useState<string | null>(null)
-
-  const speak = useCallback((msgId: string, text: string) => {
-    if (!window.speechSynthesis) return
-    // Đang đọc msg này → dừng
-    if (speakingId === msgId) {
-      window.speechSynthesis.cancel()
-      setSpeakingId(null)
-      return
-    }
-    // Dừng msg cũ nếu đang đọc
-    window.speechSynthesis.cancel()
-
-    // Loại bỏ markdown và ký tự đặc biệt trước khi đọc
-    const clean = text
-      .replace(/\*\*(.*?)\*\*/g, '$1')
-      .replace(/\*(.*?)\*/g, '$1')
-      .replace(/#{1,3}\s/g, '')
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      .replace(/https?:\/\/\S+/g, '')
-      .replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/gi, '')
-      .trim()
-
-    const utter = new SpeechSynthesisUtterance(clean)
-    utter.lang = 'vi-VN'
-    utter.rate = 1.05
-    utter.pitch = 1
-
-    // Ưu tiên giọng Việt nếu có
-    const voices = window.speechSynthesis.getVoices()
-    const viVoice = voices.find(v => v.lang.startsWith('vi'))
-    if (viVoice) utter.voice = viVoice
-
-    utter.onstart = () => setSpeakingId(msgId)
-    utter.onend = () => setSpeakingId(null)
-    utter.onerror = () => setSpeakingId(null)
-
-    window.speechSynthesis.speak(utter)
-  }, [speakingId])
-
-  // Dừng TTS khi user navigate đi
-  useEffect(() => {
-    return () => { window.speechSynthesis?.cancel() }
-  }, [])
+  // TTS — managed by useTTS hook
+  const tts = useTTS()
 
   useEffect(() => {
     fetch('/api/memory')
@@ -283,7 +242,7 @@ export default function ChatInterface({
             </div>
           )}
           <div className="space-y-6">
-            {messages.map((msg) => {
+            {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
                 const { text, buttons } = parseCTA(msg.content)
                 return (
@@ -295,21 +254,25 @@ export default function ChatInterface({
                       <div className="text-[15px] leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(text) }} />
                       </div>
-                      {/* Nút loa TTS */}
-                      <button
-                        onClick={() => speak(msg.id, text)}
-                        className={cn(
-                          'mt-1.5 flex items-center gap-1 text-xs transition-colors',
-                          speakingId === msg.id
-                            ? 'text-primary-500'
-                            : 'text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400'
-                        )}
-                      >
-                        {speakingId === msg.id
-                          ? <><VolumeX size={13} /> Dừng đọc</>
-                          : <><Volume2 size={13} /> Đọc to</>
-                        }
-                      </button>
+                      {/* Action bar: copy, share, like, dislike, TTS, regenerate, more */}
+                      <MessageActionBar
+                        msgId={msg.id}
+                        messageIndex={msgIdx}
+                        conversationId={conversationId}
+                        text={text}
+                        isThisSpeaking={tts.speakingId === msg.id}
+                        isPaused={tts.isPaused}
+                        ttsElapsed={tts.elapsed}
+                        ttsTotal={tts.totalSecs}
+                        ttsSpeed={tts.speed}
+                        onSpeak={() => tts.speak(msg.id, text)}
+                        onTTSPause={tts.togglePause}
+                        onTTSSkipBack={tts.skipBack}
+                        onTTSSkipForward={tts.skipForward}
+                        onTTSSpeedChange={tts.changeSpeed}
+                        onTTSStop={tts.stop}
+                        onRegenerate={reload}
+                      />
                       {buttons.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
                           {buttons.map((btn, i) => (
