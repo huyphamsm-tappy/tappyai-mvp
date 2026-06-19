@@ -28,9 +28,20 @@ export async function GET(request: NextRequest) {
       }
     )
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) return response
-    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
+    const { data: { user }, error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error && user) {
+      // Kiểm tra user mới (profile chưa có full_name) → redirect onboarding
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('onboarded')
+        .eq('id', user.id)
+        .single()
+      if (!profile?.onboarded) {
+        return NextResponse.redirect(`${origin}/onboarding`)
+      }
+      return response
+    }
+    if (error) return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
   }
 
   return NextResponse.redirect(`${origin}/login?error=no_code`)

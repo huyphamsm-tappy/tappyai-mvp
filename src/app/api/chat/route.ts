@@ -1176,8 +1176,15 @@ export async function POST(req: Request) {
       existingMemory = await getMemory(user.id)
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory)
 
-      // Kiểm tra subscription (TODO: tích hợp Stripe sau)
-      // isPro = !!subscriptionData?.active
+      // Kiểm tra subscription từ DB
+      const { data: subData } = await supabase
+        .from('subscriptions')
+        .select('status, current_period_end')
+        .eq('user_id', user.id)
+        .single()
+      if (subData?.status === 'active' && subData?.current_period_end) {
+        isPro = new Date(subData.current_period_end) > new Date()
+      }
 
       if (!isPro) {
         // Đếm số tin nhắn user đã gửi hôm nay (theo giờ VN UTC+7)
@@ -1216,8 +1223,6 @@ export async function POST(req: Request) {
       }
     }
   } catch { /* no-op if auth fails */ }
-  void isPro // dùng sau khi tích hợp Stripe
-
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
     system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock),

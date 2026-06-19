@@ -39,4 +39,60 @@ create policy "Users can insert own profile" on public.profiles for insert with 
 drop policy if exists "Users can manage own conversations" on public.conversations;
 create policy "Users can manage own conversations" on public.conversations for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
-create or insert function public.handle_new_user() returns trigger language plpgsql security definer set search_path = public as $$ begin insert into public.profiles (id, email, full_name, avatar_url) values (new.id, new.email, new.raw_user_meta_data ->> 'full_name', new.raw_user_meta_data ->> 'avatar_url') on conflict (id) do update set email = excluded.email, full_name = coalesce(excluded.full_name, public.profiles.full_name), avatar_url = coalesce(excluded.avatar_url, public.profiles.avatar_url), updated_at = now(); return new; end; $$;
+create or replace function public.handle_new_user() returns trigger language plpgsql security definer set search_path = public as $$ begin insert into public.profiles (id, email, full_name, avatar_url) values (new.id, new.email, new.raw_user_meta_data ->> 'full_name', new.raw_user_meta_data ->> 'avatar_url') on conflict (id) do update set email = excluded.email, full_name = coalesce(excluded.full_name, public.profiles.full_name), avatar_url = coalesce(excluded.avatar_url, public.profiles.avatar_url), updated_at = now(); return new; end; $$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created after insert on auth.users for each row execute procedure public.handle_new_user();
+
+-- =============================================
+-- MIGRATION: Thêm cột onboarded + stripe_customer_id vào profiles
+-- =============================================
+alter table public.profiles
+  add column if not exists onboarded boolean default false,
+  add column if not exists stripe_customer_id text;
+
+-- =============================================
+-- 3. Bảng subscriptions (Stripe)
+-- =============================================
+create table if not exists public.subscriptions (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade not null unique,
+  stripe_subscription_id text,
+  stripe_customer_id text,
+  status text not null default 'inactive', -- active | canceled | past_due | inactive
+  price_id text,
+  current_period_end timestamp with time zone,
+  created_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now()
+);
+
+create index if not exists subscriptions_user_id_idx on public.subscriptions(user_id);
+create index if not exists subscriptions_status_idx on public.subscriptions(status);
+
+alter table public.subscriptions enable row level security;
+
+drop policy if exists "Users can view own subscription" on public.subscriptions;
+create policy "Users can view own subscription" on public.subscriptions
+  for select using (auth.uid() = user_id);
+
+-- Service role bypasses RLS, so webhook can write without policy
+
+-- =============================================
+-- 4. Bảng user_memory (AI memory)
+-- =============================================
+create table if not exists public.user_memory (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade not null unique,
+  location_base text,
+  preferences jsonb default '{}'::jsonb,
+  bookmarks jsonb default '[]'::jsonb,
+  recent_searches jsonb default '[]'::jsonb,
+  custom_facts jsonb default '[]'::jsonb,
+  updated_at timestamp with time zone default now()
+);
+
+alter table public.user_memory enable row level security;
+
+drop policy if exists "Users can manage own memory" on public.user_memory;
+create policy "Users can manage own memory" on public.user_memory
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);

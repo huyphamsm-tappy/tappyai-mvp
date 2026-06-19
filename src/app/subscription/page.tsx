@@ -3,7 +3,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
-import { Check, Zap, Crown, ArrowLeft } from 'lucide-react'
+import { Check, Crown, ArrowLeft } from 'lucide-react'
+import StripeCheckoutButton from '@/components/StripeCheckoutButton'
 
 const FREE_FEATURES = [
   '10 tin nhắn / ngày',
@@ -33,8 +34,16 @@ export default async function SubscriptionPage() {
 
   const userInfo = profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email }
 
-  // TODO: kiểm tra subscription status từ Stripe/DB
-  const isPro = false
+  // Kiểm tra subscription status
+  const { data: sub } = await supabase
+    .from('subscriptions')
+    .select('status, current_period_end')
+    .eq('user_id', user.id)
+    .single()
+
+  const isPro = sub?.status === 'active' && sub?.current_period_end
+    ? new Date(sub.current_period_end) > new Date()
+    : false
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
@@ -60,7 +69,11 @@ export default async function SubscriptionPage() {
               <Crown size={16} className="text-amber-500" />
               <span className="font-semibold text-amber-700 dark:text-amber-400 text-sm">Bạn đang dùng TappyAI Pro</span>
             </div>
-            <p className="text-amber-600 dark:text-amber-500 text-xs mt-1">Gia hạn: --/--/----</p>
+            <p className="text-amber-600 dark:text-amber-500 text-xs mt-1">
+              Gia hạn: {sub?.current_period_end
+                ? new Date(sub.current_period_end).toLocaleDateString('vi-VN')
+                : '--/--/----'}
+            </p>
           </div>
         ) : (
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
@@ -123,14 +136,14 @@ export default async function SubscriptionPage() {
                   </li>
                 ))}
               </ul>
-              {/* Stripe checkout placeholder */}
-              <button
-                disabled
-                className="w-full py-3.5 rounded-xl bg-white text-primary-600 font-bold text-sm flex items-center justify-center gap-2 opacity-80 cursor-not-allowed"
-              >
-                <Zap size={16} />
-                Nâng cấp Pro — Sắp ra mắt
-              </button>
+              {isPro ? (
+                <div className="w-full py-3.5 rounded-xl bg-white/20 text-white font-bold text-sm flex items-center justify-center gap-2">
+                  <Crown size={16} />
+                  Bạn đang dùng Pro ✓
+                </div>
+              ) : (
+                <StripeCheckoutButton />
+              )}
             </div>
           </div>
 

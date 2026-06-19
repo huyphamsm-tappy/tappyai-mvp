@@ -4,6 +4,18 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'TappyAI - Trợ lý AI thuần Việt',
   description: 'Chạm đến mọi dịch vụ – AI Agent cá nhân hóa',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'TappyAI',
+  },
+  formatDetection: { telephone: false },
+  openGraph: {
+    type: 'website',
+    title: 'TappyAI - Trợ lý AI thuần Việt',
+    description: 'Chạm đến mọi dịch vụ – AI Agent cá nhân hóa cho cuộc sống tại Việt Nam',
+  },
 }
 
 export const viewport: Viewport = {
