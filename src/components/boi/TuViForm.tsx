@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
+import posthog from 'posthog-js'
 import {
   Heart, Briefcase, Coins, HeartPulse, Star, RotateCcw,
   CalendarDays, BookOpen, Calendar, ChevronDown, ChevronUp,
@@ -48,12 +49,17 @@ export default function TuViForm() {
   const [viewMode, setViewMode] = useState<ViewMode>('day')
   const [selectedYear, setSelectedYear] = useState<number>(VN_YEAR)
 
+  useEffect(() => {
+    posthog.capture('boi_feature_opened', { feature: 'tu-vi' })
+  }, [])
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!birthDate) return
     const dt = new Date(birthDate)
     const year = dt.getFullYear()
     if (!year || Number.isNaN(year)) return
+    posthog.capture('boi_reading_generated', { feature: 'tu-vi', view_mode: 'day' })
     setResult({
       canChi: getCanChiByYear(year),
       nguHanh: getNguHanhByYear(year),
@@ -62,6 +68,11 @@ export default function TuViForm() {
       birthDay: dt.getDate(),
     })
     setViewMode('day')
+  }
+
+  const handleViewModeChange = (mode: ViewMode) => {
+    posthog.capture('boi_reading_generated', { feature: 'tu-vi', view_mode: mode })
+    setViewMode(mode)
   }
 
   const handleReset = () => {
@@ -121,7 +132,7 @@ export default function TuViForm() {
           {PERIOD_TABS.map((p) => (
             <button
               key={p.id}
-              onClick={() => setViewMode(p.id)}
+              onClick={() => handleViewModeChange(p.id)}
               className={cn(
                 'flex-1 py-2.5 rounded-2xl text-sm font-medium border-2 transition-all',
                 viewMode === p.id
@@ -142,7 +153,7 @@ export default function TuViForm() {
 
         <div className="grid grid-cols-2 gap-2">
           <button
-            onClick={() => setViewMode('lifetime')}
+            onClick={() => handleViewModeChange('lifetime')}
             className={cn(
               'flex items-center justify-center gap-2 py-2.5 rounded-2xl text-sm font-medium border-2 transition-all',
               viewMode === 'lifetime'
@@ -154,7 +165,7 @@ export default function TuViForm() {
             Trọn đời
           </button>
           <button
-            onClick={() => setViewMode('year')}
+            onClick={() => handleViewModeChange('year')}
             className={cn(
               'flex items-center justify-center gap-2 py-2.5 rounded-2xl text-sm font-medium border-2 transition-all',
               viewMode === 'year'

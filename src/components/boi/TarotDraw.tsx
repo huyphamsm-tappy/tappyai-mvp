@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Sparkles, RotateCcw } from 'lucide-react'
+import posthog from 'posthog-js'
 import { cn } from '@/lib/utils'
 import { getRandomCards, TarotCard } from '@/lib/boi/tarotData'
 
@@ -19,10 +20,14 @@ export default function TarotDraw() {
   const [drawn, setDrawn] = useState<DrawnCard[] | null>(null)
   const [revealing, setRevealing] = useState(false)
 
+  useEffect(() => {
+    posthog.capture('boi_feature_opened', { feature: 'tarot' })
+  }, [])
+
   const handleDraw = () => {
+    posthog.capture('boi_reading_generated', { feature: 'tarot', card_count: count })
     setRevealing(true)
     setDrawn(null)
-    // hiệu ứng xáo bài ngắn trước khi lật kết quả — thuần CSS/setTimeout, không gọi mạng
     window.setTimeout(() => {
       setDrawn(getRandomCards(count))
       setRevealing(false)

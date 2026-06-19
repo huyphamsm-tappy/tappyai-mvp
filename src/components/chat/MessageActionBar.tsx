@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import posthog from 'posthog-js'
 import {
   Copy, Share2, ThumbsUp, ThumbsDown, Volume2,
   RefreshCw, MoreHorizontal, Play, Pause,
@@ -93,11 +94,13 @@ export default function MessageActionBar({
       await navigator.clipboard.writeText(stripMd(text))
       setCopyState('copied')
       setTimeout(() => setCopyState('idle'), 2000)
+      posthog.capture('message_action', { action: 'copy' })
     } catch {}
   }
 
   const handleShare = async () => {
     const plain = stripMd(text)
+    posthog.capture('message_action', { action: 'share' })
     if (typeof navigator !== 'undefined' && navigator.share) {
       try { await navigator.share({ text: plain, title: 'TappyAI' }); return } catch {}
     }
@@ -112,10 +115,12 @@ export default function MessageActionBar({
     if (liked) {
       setLiked(false)
       deleteFeedback('like')
+      posthog.capture('message_action', { action: 'unlike' })
     } else {
       setLiked(true)
       if (disliked) { setDisliked(false); deleteFeedback('dislike') }
       saveFeedback('like')
+      posthog.capture('message_action', { action: 'like' })
     }
   }
 
@@ -123,10 +128,12 @@ export default function MessageActionBar({
     if (disliked) {
       setDisliked(false)
       deleteFeedback('dislike')
+      posthog.capture('message_action', { action: 'undislike' })
     } else {
       setDisliked(true)
       if (liked) { setLiked(false); deleteFeedback('like') }
       saveFeedback('dislike')
+      posthog.capture('message_action', { action: 'dislike' })
     }
   }
 
@@ -148,6 +155,7 @@ export default function MessageActionBar({
     saveFeedback('report', 'user_reported')
     setReportState('reported')
     setShowMore(false)
+    posthog.capture('message_action', { action: 'report' })
   }
 
   const btnBase = 'p-1.5 rounded-lg transition-colors text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -188,7 +196,7 @@ export default function MessageActionBar({
 
         {/* TTS Speaker */}
         <button
-          onClick={onSpeak}
+          onClick={() => { if (!isThisSpeaking) posthog.capture('message_action', { action: 'tts_played' }); onSpeak() }}
           className={cn(btnBase, isThisSpeaking && 'text-primary-500 bg-primary-50 dark:bg-primary-900/20 hover:text-primary-600 hover:bg-primary-100 dark:hover:bg-primary-900/30')}
           title={isThisSpeaking ? 'Dừng đọc' : 'Đọc to'}
         >
@@ -196,7 +204,7 @@ export default function MessageActionBar({
         </button>
 
         {/* Regenerate */}
-        <button onClick={onRegenerate} className={btnBase} title="Tạo lại">
+        <button onClick={() => { posthog.capture('message_action', { action: 'regenerate' }); onRegenerate() }} className={btnBase} title="Tạo lại">
           <RefreshCw size={14} />
         </button>
 

@@ -16,7 +16,7 @@ export default function PrivacyPage() {
 
       <main className="max-w-2xl mx-auto px-4 py-6">
         <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-          <p className="text-gray-400 dark:text-gray-500 text-xs">Cập nhật lần cuối: 13/06/2026</p>
+          <p className="text-gray-400 dark:text-gray-500 text-xs">Cập nhật lần cuối: 19/06/2026</p>
 
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-1">1. Thông tin chúng tôi thu thập</h3>
@@ -25,6 +25,36 @@ export default function PrivacyPage() {
               Google của bạn. Chúng tôi cũng lưu lịch sử trò chuyện với trợ lý AI để bạn có thể xem
               lại sau này.
             </p>
+            <p className="mt-2">
+              Ngoài ra, chúng tôi lưu trữ các thông tin sau:
+            </p>
+            <ul className="mt-1.5 space-y-1.5 list-none pl-0">
+              <li className="flex gap-2">
+                <span className="text-gray-400 flex-shrink-0">–</span>
+                <span>
+                  <strong className="text-gray-800 dark:text-gray-200">Sở thích và ngữ cảnh cá nhân hóa:</strong> AI có thể ghi nhớ
+                  thông tin bạn chia sẻ trong cuộc trò chuyện (ví dụ: vị trí, sở thích ăn uống, ngân sách)
+                  để cá nhân hóa phản hồi. Những thông tin này được lưu trong bảng dữ liệu nội bộ
+                  và chỉ được dùng để cải thiện trải nghiệm của bạn.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-gray-400 flex-shrink-0">–</span>
+                <span>
+                  <strong className="text-gray-800 dark:text-gray-200">Phản hồi tin nhắn:</strong> Khi bạn nhấn thích, không thích
+                  hoặc báo cáo một phản hồi của AI, hành động đó được ghi lại để cải thiện chất lượng
+                  dịch vụ.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-gray-400 flex-shrink-0">–</span>
+                <span>
+                  <strong className="text-gray-800 dark:text-gray-200">Thông tin đặt dịch vụ:</strong> Khi bạn đặt lịch qua TappyAI,
+                  chúng tôi thu thập tên và số điện thoại để liên hệ xác nhận. Thông tin này chỉ được
+                  dùng cho mục đích đặt lịch.
+                </span>
+              </li>
+            </ul>
           </div>
 
           <div>
@@ -46,7 +76,39 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">4. Bảo mật dữ liệu</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">4. Phân tích sản phẩm (PostHog)</h3>
+            <p>
+              Chúng tôi sử dụng PostHog — một nền tảng phân tích sản phẩm — để hiểu cách người dùng
+              tương tác với TappyAI. Dữ liệu được thu thập bao gồm:
+            </p>
+            <ul className="mt-1.5 space-y-1.5 list-none pl-0">
+              <li className="flex gap-2">
+                <span className="text-gray-400 flex-shrink-0">–</span>
+                <span>Lượt xem trang và điều hướng trong ứng dụng</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-gray-400 flex-shrink-0">–</span>
+                <span>Các tính năng bạn sử dụng (ví dụ: bói tarot, tử vi, viết content) — chỉ loại tính năng, không bao gồm nội dung bạn nhập</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-gray-400 flex-shrink-0">–</span>
+                <span>Hành động trong thanh công cụ tin nhắn (sao chép, chia sẻ, thích, không thích)</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-gray-400 flex-shrink-0">–</span>
+                <span>Các sự kiện tương tác giao diện (ví dụ: dùng micro, mở bảng emoji)</span>
+              </li>
+            </ul>
+            <p className="mt-2">
+              <strong className="text-gray-800 dark:text-gray-200">Quan trọng:</strong> PostHog <strong className="text-gray-800 dark:text-gray-200">không</strong> nhận
+              nội dung tin nhắn trò chuyện hay chủ đề bạn nhập trong công cụ viết content — chỉ có
+              siêu dữ liệu về loại tính năng được dùng. Nội dung trò chuyện chỉ được lưu trong hệ
+              thống Supabase của TappyAI.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">5. Bảo mật dữ liệu</h3>
             <p>
               Dữ liệu của bạn được lưu trữ trên Supabase với cơ chế xác thực và phân quyền theo tài
               khoản. Chỉ bạn mới có thể xem lịch sử trò chuyện và thông tin hồ sơ của chính mình.
@@ -54,7 +116,7 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">5. Quyền của bạn</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">6. Quyền của bạn</h3>
             <p>
               Bạn có thể yêu cầu xóa tài khoản và toàn bộ dữ liệu liên quan bất kỳ lúc nào thông qua
               phần Cài đặt tài khoản trong ứng dụng.
@@ -62,7 +124,7 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">6. Liên hệ</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">7. Liên hệ</h3>
             <p>
               Nếu có thắc mắc về chính sách bảo mật, vui lòng liên hệ:{' '}
               <span className="text-primary-500">huypham.sm@gmail.com</span>

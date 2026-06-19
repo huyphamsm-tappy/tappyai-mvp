@@ -3,6 +3,7 @@
 import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { Send, Loader2, Sparkles, Mic, MicOff, Smile } from 'lucide-react'
+import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
@@ -119,6 +120,7 @@ export default function ChatInterface({
       alert('Trình duyệt không hỗ trợ nhận giọng nói. Hãy dùng Chrome hoặc Edge.')
       return
     }
+    posthog.capture('mic_used')
     const recognition = new SpeechRecognition()
     recognition.lang = 'vi-VN'
     recognition.interimResults = false
@@ -131,7 +133,7 @@ export default function ChatInterface({
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = event.results[0][0].transcript
       if (transcript.trim()) {
-        // Auto-submit ngay sau khi nhận giọng
+        posthog.capture('chat_message_sent', { input_method: 'voice' })
         append({ role: 'user', content: transcript.trim() })
       }
     }
@@ -198,6 +200,7 @@ export default function ChatInterface({
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       if (input.trim() && !isLoading) {
+        posthog.capture('chat_message_sent', { input_method: 'keyboard' })
         handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>)
       }
     }
@@ -233,7 +236,7 @@ export default function ChatInterface({
               </div>
               <div className="w-full space-y-2">
                 {quickPrompts.map((prompt) => (
-                  <button key={prompt} onClick={() => append({ role: 'user', content: prompt })} className="w-full text-left px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm transition-all border border-gray-100 dark:border-gray-700 flex items-center gap-2">
+                  <button key={prompt} onClick={() => { posthog.capture('chat_message_sent', { input_method: 'quick_prompt' }); append({ role: 'user', content: prompt }) }} className="w-full text-left px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm transition-all border border-gray-100 dark:border-gray-700 flex items-center gap-2">
                     <Sparkles size={14} className="text-primary-400 flex-shrink-0" />
                     {prompt}
                   </button>
@@ -327,7 +330,7 @@ export default function ChatInterface({
         {showEmojiPanel && (
           <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />
         )}
-        <form id="chat-form" onSubmit={handleSubmit} className="max-w-2xl mx-auto w-full flex gap-2 items-end">
+        <form id="chat-form" onSubmit={(e) => { if (input.trim()) posthog.capture('chat_message_sent', { input_method: 'button' }); handleSubmit(e) }} className="max-w-2xl mx-auto w-full flex gap-2 items-end">
           <textarea
               ref={inputRef}
               value={input}
@@ -346,7 +349,7 @@ export default function ChatInterface({
           <div className="relative flex-shrink-0">
             <button
               type="button"
-              onClick={() => setShowEmojiPanel(v => !v)}
+              onClick={() => { if (!showEmojiPanel) posthog.capture('emoji_panel_opened'); setShowEmojiPanel(v => !v) }}
               className={cn(
                 'w-11 h-11 rounded-2xl flex items-center justify-center transition-all',
                 showEmojiPanel

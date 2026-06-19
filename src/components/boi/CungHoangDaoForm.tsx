@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { Heart, Briefcase, Coins, HeartPulse, Star, RotateCcw, CalendarDays } from 'lucide-react'
+import posthog from 'posthog-js'
 import { cn } from '@/lib/utils'
 import { getZodiacByDate, ZodiacSign } from '@/lib/boi/zodiacData'
 import { generateFortune, FortunePeriod } from '@/lib/boi/fortuneEngine'
@@ -17,11 +18,16 @@ export default function CungHoangDaoForm() {
   const [sign, setSign] = useState<ZodiacSign | null>(null)
   const [period, setPeriod] = useState<FortunePeriod>('day')
 
+  useEffect(() => {
+    posthog.capture('boi_feature_opened', { feature: 'cung-hoang-dao' })
+  }, [])
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!birthDate) return
     const d = new Date(birthDate)
     if (Number.isNaN(d.getTime())) return
+    posthog.capture('boi_reading_generated', { feature: 'cung-hoang-dao' })
     setSign(getZodiacByDate(d.getMonth() + 1, d.getDate()))
     setPeriod('day')
   }

@@ -2,6 +2,7 @@
 
 import { useState, useRef, type FormEvent } from 'react'
 import { PenLine, Copy, Check, Loader2, Hash, RefreshCw } from 'lucide-react'
+import posthog from 'posthog-js'
 import { cn } from '@/lib/utils'
 
 const PLATFORMS = [
@@ -49,6 +50,7 @@ export default function VietContentForm() {
     e.preventDefault()
     if (!topic.trim() || loading) return
 
+    posthog.capture('viet_content_used', { platform, tone, length })
     setLoading(true)
     setError('')
     setResult(null)
