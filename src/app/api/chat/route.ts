@@ -706,7 +706,9 @@ async function getGoldPrice(query: string) {
 }
 
 // ===== FLIGHT PRICES: Travelpayouts Data API (free, can dang ky token) =====
-const TRAVELPAYOUTS_TOKEN = '3a9fbe93835239c550d2afb73554011f'
+// Token is read from TRAVELPAYOUTS_TOKEN env var (set in Vercel / .env.local).
+// If missing, flight-price lookups are skipped and the AI falls back to the search link.
+const TRAVELPAYOUTS_TOKEN = process.env.TRAVELPAYOUTS_TOKEN || ''
 
 const IATA_MAP: Record<string, string> = {
   'ha noi': 'HAN', 'hanoi': 'HAN', 'hn': 'HAN',
@@ -767,6 +769,8 @@ async function getFlightPrices(origin: string, destination: string) {
   let result: unknown
   if (!originCode || !destCode) {
     result = { error: 'Khong nhan dien duoc san bay tu ten dia diem', note: 'Tim chuyen bay tai: ' + searchUrl, search_url: searchUrl }
+  } else if (!TRAVELPAYOUTS_TOKEN) {
+    result = { error: 'Chua cau hinh API gia ve may bay', note: 'Tim chuyen bay tai: ' + searchUrl, search_url: searchUrl }
   } else {
     try {
       const params = new URLSearchParams({ origin: originCode, destination: destCode, currency: 'vnd', token: TRAVELPAYOUTS_TOKEN })
