@@ -1,9 +1,10 @@
 'use client'
 
 import { useChat } from 'ai/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Send, Loader2, Sparkles } from 'lucide-react'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
+import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 
 const QUICK_PROMPTS: Record<string, string[]> = {
   food: ['Quán bún bò ngon ở TP.HCM?', 'Cafe view đẹp Hà Nội?', 'Nhà hàng hải sản tươi sống?'],
@@ -133,7 +134,15 @@ export default function ChatInterface({
     }
   }
 
-  const quickPrompts = QUICK_PROMPTS[category] || QUICK_PROMPTS.general
+  // Dynamic prompts cho 'general' (theo giờ VN), static cho các category cụ thể
+  const quickPrompts = useMemo(() => {
+    if (category === 'general' || !QUICK_PROMPTS[category]) {
+      const vnHour = (new Date().getUTCHours() + 7) % 24
+      const vnDay = new Date().getUTCDay()
+      return getDynamicPrompts(vnHour, vnDay, null, 3).map(p => p.text)
+    }
+    return QUICK_PROMPTS[category]
+  }, [category])
 
   return (
     <div className="flex flex-col h-full">
