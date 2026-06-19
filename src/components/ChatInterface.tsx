@@ -85,6 +85,22 @@ export default function ChatInterface({
   const [isListening, setIsListening] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
+  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append } = useChat({
+    api: '/api/chat',
+    initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
+    onFinish: async (message) => {
+      const all = [...messages, message]
+      if (onSave) {
+        await onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat')
+      }
+      fetch('/api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: all.map(m => ({ role: m.role, content: m.content })) }),
+      }).then(() => setHasMemory(true)).catch(() => {})
+    },
+  })
+
   // Khởi tạo SpeechRecognition (Web Speech API)
   const startVoice = useCallback(() => {
     const SpeechRecognition = window.SpeechRecognition || (window as unknown as { webkitSpeechRecognition: typeof SpeechRecognition }).webkitSpeechRecognition
@@ -168,22 +184,6 @@ export default function ChatInterface({
       .then(d => { if (d.memory) setHasMemory(true) })
       .catch(() => {})
   }, [])
-
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append } = useChat({
-    api: '/api/chat',
-    initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
-    onFinish: async (message) => {
-      const all = [...messages, message]
-      if (onSave) {
-        await onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat')
-      }
-      fetch('/api/memory', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: all.map(m => ({ role: m.role, content: m.content })) }),
-      }).then(() => setHasMemory(true)).catch(() => {})
-    },
-  })
 
   useEffect(() => {
     if (initialMessage && messages.length === 0) {
