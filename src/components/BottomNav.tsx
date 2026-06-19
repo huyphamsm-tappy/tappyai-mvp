@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, MessageCircle, User } from 'lucide-react'
+import { Home, MessageCircle, User, Gamepad2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const tabs = [
   { href: '/', icon: Home, label: 'Trang chủ' },
   { href: '/chat', icon: MessageCircle, label: 'Chat' },
+  { href: '/game', icon: Gamepad2, label: 'Game' },
   { href: '/profile', icon: User, label: 'Tôi' },
 ]
 
