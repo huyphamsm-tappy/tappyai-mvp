@@ -96,3 +96,59 @@ alter table public.user_memory enable row level security;
 drop policy if exists "Users can manage own memory" on public.user_memory;
 create policy "Users can manage own memory" on public.user_memory
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- =============================================
+-- 5. Bảng services (dịch vụ — tùy chọn, dùng cho sau)
+-- =============================================
+create table if not exists public.services (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  type text not null default 'food', -- food | spa | hotel | travel | shopping | entertainment
+  address text,
+  phone text,
+  price text,
+  rating text,
+  hours text,
+  maps_link text,
+  note text,
+  embedding vector(1536), -- OpenAI text-embedding-3-small
+  created_at timestamp with time zone default now()
+);
+
+create index if not exists services_type_idx on public.services(type);
+
+alter table public.services enable row level security;
+
+drop policy if exists "Services are public" on public.services;
+create policy "Services are public" on public.services
+  for select using (true);
+
+-- =============================================
+-- 6. Bảng bookings (đặt chỗ)
+-- =============================================
+create table if not exists public.bookings (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade not null,
+  service_id text, -- UUID hoặc external ID từ query param
+  service_name text not null,
+  service_type text default 'food',
+  date date not null,
+  time text, -- "08:00" | null
+  guests integer default 1,
+  customer_name text not null,
+  customer_phone text not null,
+  notes text,
+  status text not null default 'pending', -- pending | confirmed | cancelled
+  created_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now()
+);
+
+create index if not exists bookings_user_id_idx on public.bookings(user_id);
+create index if not exists bookings_service_id_idx on public.bookings(service_id);
+create index if not exists bookings_date_idx on public.bookings(date);
+
+alter table public.bookings enable row level security;
+
+drop policy if exists "Users can manage own bookings" on public.bookings;
+create policy "Users can manage own bookings" on public.bookings
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);

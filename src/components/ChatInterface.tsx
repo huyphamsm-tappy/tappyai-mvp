@@ -17,7 +17,7 @@ const QUICK_PROMPTS: Record<string, string[]> = {
 
 interface CTAButton {
   label: string
-  type: 'maps' | 'call' | 'zalo' | 'website' | 'booking' | 'search'
+  type: 'maps' | 'call' | 'zalo' | 'website' | 'booking' | 'search' | 'internal_booking'
   url: string
   primary: boolean
 }
@@ -285,8 +285,8 @@ export default function ChatInterface({
                             <a
                               key={i}
                               href={btn.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                              target={btn.type === 'internal_booking' ? undefined : '_blank'}
+                              rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
                               onClick={() => logCTAClick(btn)}
                               className={cn(
                                 'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all',

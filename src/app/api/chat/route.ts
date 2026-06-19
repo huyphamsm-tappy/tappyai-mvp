@@ -1075,18 +1075,19 @@ Sau moi response co goi y DIA DIEM / SAN PHAM / DICH VU cu the, PHAI them block 
 
 [CTA_BUTTONS]{"buttons":[{"label":"...","type":"maps","url":"...","primary":true}]}[/CTA_BUTTONS]
 
-Quy tac theo loai:
-AN UONG (nha hang/quan an/cafe): buttons=[{label:"📍 Xem trên Maps",type:"maps",url:"https://www.google.com/maps/search/{ten+dia+diem}",primary:true},{label:"📞 Gọi đặt bàn",type:"call",url:"tel:{so_dt_neu_co}",primary:false}]
-SPA / LAM DEP: buttons=[{label:"💬 Nhắn Zalo",type:"zalo",url:"https://zalo.me/{so_dt_neu_co}",primary:true},{label:"📍 Chỉ đường",type:"maps",url:"https://www.google.com/maps/search/{ten+spa}",primary:false}]
+Quy tac theo loai (LUON them nut "✅ Đặt chỗ qua TappyAI" type="internal_booking" lam nut PRIMARY dau tien cho AN UONG/SPA/KARAOKE-BAR/DU LICH-KHACH SAN, vi day la dat cho NGAY TRONG APP khong can goi dien):
+AN UONG (nha hang/quan an/cafe): buttons=[{label:"✅ Đặt chỗ qua TappyAI",type:"internal_booking",url:"/service/{slug}?name={ten}&address={dia_chi}&type=food&phone={so_dt_neu_co}",primary:true},{label:"📍 Xem trên Maps",type:"maps",url:"https://www.google.com/maps/search/{ten+dia+diem}",primary:false},{label:"📞 Gọi đặt bàn",type:"call",url:"tel:{so_dt_neu_co}",primary:false}]
+SPA / LAM DEP: buttons=[{label:"✅ Đặt chỗ qua TappyAI",type:"internal_booking",url:"/service/{slug}?name={ten}&address={dia_chi}&type=spa&phone={so_dt_neu_co}",primary:true},{label:"💬 Nhắn Zalo",type:"zalo",url:"https://zalo.me/{so_dt_neu_co}",primary:false},{label:"📍 Chỉ đường",type:"maps",url:"https://www.google.com/maps/search/{ten+spa}",primary:false}]
 PHIM / RAP CHIEU PHIM: buttons=[{label:"🎬 Đặt vé CGV",type:"website",url:"https://www.cgv.vn",primary:true},{label:"🎫 Beta Cinemas",type:"website",url:"https://betacinemas.vn",primary:false}]
-KARAOKE / BAR / GIAI TRI KHAC: buttons=[{label:"📍 Xem trên Maps",type:"maps",url:"https://www.google.com/maps/search/{ten+dia+diem}",primary:true},{label:"📞 Đặt chỗ",type:"call",url:"tel:{so_dt_neu_co}",primary:false}]
-DU LICH / KHACH SAN: buttons=[{label:"🏨 Tìm phòng Booking",type:"booking",url:"https://www.booking.com/search.html?ss={thanh+pho}",primary:true},{label:"🚌 Đặt vé xe",type:"website",url:"https://vexere.com",primary:false}]
+KARAOKE / BAR / GIAI TRI KHAC: buttons=[{label:"✅ Đặt chỗ qua TappyAI",type:"internal_booking",url:"/service/{slug}?name={ten}&address={dia_chi}&type=entertainment&phone={so_dt_neu_co}",primary:true},{label:"📍 Xem trên Maps",type:"maps",url:"https://www.google.com/maps/search/{ten+dia+diem}",primary:false}]
+DU LICH / KHACH SAN: buttons=[{label:"✅ Đặt phòng qua TappyAI",type:"internal_booking",url:"/service/{slug}?name={ten}&address={dia_chi}&type=hotel",primary:true},{label:"🏨 Tìm phòng Booking",type:"booking",url:"https://www.booking.com/search.html?ss={thanh+pho}",primary:false},{label:"🚌 Đặt vé xe",type:"website",url:"https://vexere.com",primary:false}]
 MUA SAM ONLINE: buttons=[{label:"🛒 Xem Shopee",type:"search",url:"https://shopee.vn/search?keyword={san+pham}",primary:true},{label:"🛍️ Xem Tiki",type:"search",url:"https://tiki.vn/search?q={san+pham}",primary:false}]
 MUA SAM OFFLINE (cua hang vat ly): buttons=[{label:"🗺️ Chỉ đường",type:"maps",url:"https://www.google.com/maps/search/{ten+cua+hang}",primary:true}]
 
 Luu y:
-- Thay khoang trang trong ten/san pham bang dau + (URL encode)
-- Neu co so dien thoai cu the tu tool → dung so do cho call/zalo URL
+- {slug}: tao slug ngan tu ten dia diem, viet thuong, khong dau, noi dau "-" (vd "pho-hanh-quan")
+- Thay khoang trang trong ten/dia chi/san pham bang dau + (URL encode), KHONG dung dau & trong gia tri (se vo cu phap query string)
+- Neu co so dien thoai cu the tu tool → dung so do cho call/zalo/internal_booking URL; neu khong co, bo qua param phone
 - Neu khong co goi y cu the (chitchat, cau hoi chung) → KHONG output block CTA
 - Chi output 1 block [CTA_BUTTONS]...[/CTA_BUTTONS] duy nhat moi response
 ==========================================`
