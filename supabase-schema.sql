@@ -3,6 +3,9 @@
 -- Chạy file này trong Supabase SQL Editor
 -- =============================================
 
+-- 0. Bật pgvector extension (cần cho cột embedding ở bảng services)
+create extension if not exists vector;
+
 -- 1. Bảng profiles (thông tin user)
 create table if not exists public.profiles (
   id uuid references auth.users on delete cascade primary key,

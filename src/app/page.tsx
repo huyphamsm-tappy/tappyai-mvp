@@ -72,6 +72,28 @@ export default async function HomePage() {
           <CategoryPills />
         </section>
 
+        {/* Xem bói online */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900 dark:text-white">🔮 Xem bói hôm nay</h3>
+            <Link href="/boi" className="text-sm text-primary-500 font-medium">Xem tất cả</Link>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            <Link href="/boi/tarot" className="flex flex-col items-center gap-1.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-3 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all text-center">
+              <span className="text-2xl">🔮</span>
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-200 leading-tight">Tarot</span>
+            </Link>
+            <Link href="/boi/tu-vi" className="flex flex-col items-center gap-1.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-3 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all text-center">
+              <span className="text-2xl">🧧</span>
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-200 leading-tight">Tử vi</span>
+            </Link>
+            <Link href="/boi/cung-hoang-dao" className="flex flex-col items-center gap-1.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-3 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all text-center">
+              <span className="text-2xl">✨</span>
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-200 leading-tight">Cung HĐ</span>
+            </Link>
+          </div>
+        </section>
+
         {/* AI Suggestions */}
         <section>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Gợi ý hôm nay</h3>
