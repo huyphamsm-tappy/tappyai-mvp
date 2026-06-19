@@ -1,8 +1,8 @@
 'use client'
 
 import { useChat } from 'ai/react'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { Send, Loader2, Sparkles } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { Send, Loader2, Sparkles, Mic, MicOff } from 'lucide-react'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 
@@ -82,6 +82,39 @@ export default function ChatInterface({
   const category = initialCategory as CategoryId
   const catInfo = CATEGORIES.find(c => c.id === category)
   const [hasMemory, setHasMemory] = useState(false)
+  const [isListening, setIsListening] = useState(false)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
+
+  // Khởi tạo SpeechRecognition (Web Speech API)
+  const startVoice = useCallback(() => {
+    const SpeechRecognition = window.SpeechRecognition || (window as unknown as { webkitSpeechRecognition: typeof SpeechRecognition }).webkitSpeechRecognition
+    if (!SpeechRecognition) {
+      alert('Trình duyệt không hỗ trợ nhận giọng nói. Hãy dùng Chrome hoặc Edge.')
+      return
+    }
+    const recognition = new SpeechRecognition()
+    recognition.lang = 'vi-VN'
+    recognition.interimResults = false
+    recognition.maxAlternatives = 1
+    recognitionRef.current = recognition
+
+    recognition.onstart = () => setIsListening(true)
+    recognition.onend = () => setIsListening(false)
+    recognition.onerror = () => setIsListening(false)
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript
+      if (transcript.trim()) {
+        // Auto-submit ngay sau khi nhận giọng
+        append({ role: 'user', content: transcript.trim() })
+      }
+    }
+    recognition.start()
+  }, [append])
+
+  const stopVoice = useCallback(() => {
+    recognitionRef.current?.stop()
+    setIsListening(false)
+  }, [])
 
   useEffect(() => {
     fetch('/api/memory')
@@ -250,6 +283,23 @@ export default function ChatInterface({
               rows={1}
               className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none transition-all overflow-hidden"
             />
+          {/* Nút microphone màu cam #FF9500 */}
+          <button
+            type="button"
+            onClick={isListening ? stopVoice : startVoice}
+            disabled={isLoading}
+            className={cn(
+              'w-11 h-11 rounded-2xl flex items-center justify-center transition-all flex-shrink-0 disabled:opacity-40',
+              isListening
+                ? 'bg-[#FF9500] animate-pulse shadow-lg shadow-orange-300/50'
+                : 'bg-gray-100 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-orange-900/20'
+            )}
+          >
+            {isListening
+              ? <MicOff size={18} className="text-white" />
+              : <Mic size={18} className="text-[#FF9500]" />
+            }
+          </button>
           <button type="submit" disabled={isLoading || !input.trim()} className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">{isLoading ? <Loader2 size={18} className="text-white animate-spin" /> : <Send size={18} className="text-white" />}</button>
         </form>
       </div>

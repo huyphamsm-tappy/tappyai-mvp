@@ -1162,10 +1162,12 @@ export async function POST(req: Request) {
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
 
-  // Load user memory for personalization
+  // Load user memory + kiểm tra freemium limit
+  const FREE_DAILY_LIMIT = 10
   let memoryBlock = ''
   let authedUserId: string | null = null
   let existingMemory: UserMemory | null = null
+  let isPro = false
   try {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -1173,8 +1175,48 @@ export async function POST(req: Request) {
       authedUserId = user.id
       existingMemory = await getMemory(user.id)
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory)
+
+      // Kiểm tra subscription (TODO: tích hợp Stripe sau)
+      // isPro = !!subscriptionData?.active
+
+      if (!isPro) {
+        // Đếm số tin nhắn user đã gửi hôm nay (theo giờ VN UTC+7)
+        const now = new Date()
+        const vnOffset = 7 * 60 * 60 * 1000
+        const vnMidnight = new Date(Math.floor((now.getTime() + vnOffset) / 86400000) * 86400000 - vnOffset)
+        const { count } = await supabase
+          .from('conversations')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .gte('updated_at', vnMidnight.toISOString())
+
+        // Ước tính số message từ conversations hôm nay — đơn giản: nếu > FREE_DAILY_LIMIT conversations thì chặn
+        // Cách chính xác hơn cần track message count riêng — dùng tạm cách này cho MVP
+        const { data: todayConvs } = await supabase
+          .from('conversations')
+          .select('messages')
+          .eq('user_id', user.id)
+          .gte('updated_at', vnMidnight.toISOString())
+
+        const totalMsgs = (todayConvs || []).reduce((sum, c) => {
+          const msgs = Array.isArray(c.messages) ? c.messages : []
+          return sum + msgs.filter((m: { role: string }) => m.role === 'user').length
+        }, 0)
+
+        if (totalMsgs >= FREE_DAILY_LIMIT) {
+          return new Response(
+            JSON.stringify({
+              error: 'free_limit_reached',
+              message: `Bạn đã dùng hết ${FREE_DAILY_LIMIT} tin nhắn miễn phí hôm nay. Nâng cấp Pro để nhắn không giới hạn! 🚀`,
+              upgradeUrl: '/subscription',
+            }),
+            { status: 429, headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+      }
     }
   } catch { /* no-op if auth fails */ }
+  void isPro // dùng sau khi tích hợp Stripe
 
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
