@@ -6,8 +6,33 @@ import CategoryPills from '@/components/CategoryPills'
 import SearchBar from '@/components/SearchBar'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { MessageCircle, Sparkles, ChevronRight } from 'lucide-react'
-import { getDynamicPrompts } from '@/lib/suggestedPrompts'
-import { getMemory } from '@/lib/memory/memoryService'
+
+const SUGGESTIONS = [
+  {
+    emoji: '🍜',
+    text: 'Quán phở ngon nhất Hà Nội bạn nên thử?',
+    category: 'food',
+    gradient: 'from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-900/10',
+  },
+  {
+    emoji: '✈️',
+    text: 'Top 5 điểm du lịch nổi tiếng dịp lễ?',
+    category: 'travel',
+    gradient: 'from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-900/10',
+  },
+  {
+    emoji: '💆',
+    text: 'Spa massage thư giãn giá bình dân TP.HCM?',
+    category: 'spa',
+    gradient: 'from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-900/10',
+  },
+  {
+    emoji: '🛍️',
+    text: 'Trung tâm mua sắm nào sầm uất nhất Sài Gòn?',
+    category: 'shopping',
+    gradient: 'from-pink-100 to-pink-50 dark:from-pink-900/30 dark:to-pink-900/10',
+  },
+]
 
 export default async function HomePage() {
   const supabase = createClient()
@@ -15,26 +40,19 @@ export default async function HomePage() {
 
   let profile = null
   let conversations: { id: string; title: string; category: string; updated_at: string; messages: unknown }[] | null = null
-  let memory = null
 
   if (user) {
-    const [{ data: profileData }, { data: convData }, mem] = await Promise.all([
+    const [{ data: profileData }, { data: convData }] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', user.id).single(),
       supabase.from('conversations')
         .select('id, title, category, updated_at, messages')
         .eq('user_id', user.id)
         .order('updated_at', { ascending: false })
         .limit(5),
-      getMemory(user.id),
     ])
     profile = profileData
     conversations = convData
-    memory = mem
   }
-
-  // Dynamic prompts — VN time UTC+7, shuffled fresh on each server render
-  const vnTime = new Date(Date.now() + 7 * 60 * 60 * 1000)
-  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory)
 
   const userInfo = user
     ? (profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email })
