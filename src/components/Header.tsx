@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ChevronLeft, Sun, Moon } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 interface HeaderProps {
   user?: { full_name?: string | null; avatar_url?: string | null; email?: string | null }
@@ -12,7 +13,8 @@ interface HeaderProps {
   title?: string
 }
 
-export default function Header({ user, showBack, backHref = '/', title }: HeaderProps) {
+export default function Header({ user, showBack, backHref, title }: HeaderProps) {
+  const router = useRouter()
   const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
@@ -37,10 +39,17 @@ export default function Header({ user, showBack, backHref = '/', title }: Header
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
       <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
         {showBack ? (
-          <Link href={backHref} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
-            <ChevronLeft size={20} />
-            Quay lại
-          </Link>
+          backHref ? (
+            <Link href={backHref} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
+              <ChevronLeft size={20} />
+              Quay lại
+            </Link>
+          ) : (
+            <button onClick={() => router.back()} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
+              <ChevronLeft size={20} />
+              Quay lại
+            </button>
+          )
         ) : (
           <Link href="/" className="flex items-center">
             <Image src="/logo.png" alt="TappyAI" width={120} height={40} className="h-9 w-auto" />
