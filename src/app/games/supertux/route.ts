@@ -79,8 +79,25 @@ const NEW_ONERROR = `    window.onerror = function (e, src, line, col, err) {
       var stack = (err && err.stack) ? err.stack.substring(0, 800) : '(no stack)';
       Module.setStatus("CRASH: " + e + "<br>src:" + src + " L" + line + ":C" + col + "<br>XHR log:<br>" + xhrLog + "<br><pre>" + stack + "</pre>");`
 
-// Inject before <script async src="supertux2.js"> to override asset URLs when
-// Vercel Blob env vars are set, and to register the caching service worker.
+// Replaces <script async src="supertux2.js"> entirely. Checks crossOriginIsolated
+// and SharedArrayBuffer availability first; if unavailable (e.g. Safari < 15.2, or
+// the parent failed to achieve isolation), skips loading supertux2.js so the page
+// doesn't crash with "Can't find variable: SharedArrayBuffer" and instead keeps the
+// overlay visible with the error message set by MOBILE_FIXES_SCRIPT.
+const SAB_CONDITIONAL_LOADER = `<script>
+(function(){
+  if (typeof SharedArrayBuffer !== 'undefined' && !!self.crossOriginIsolated) {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'supertux2.js';
+    (document.head || document.body).appendChild(s);
+  }
+  // If SAB not available: MOBILE_FIXES_SCRIPT already showed the error message.
+})();
+</script>`
+
+// Inject before supertux2.js to override asset URLs when Vercel Blob env vars are
+// set, and to register the caching service worker.
 function buildInjectScript(dataUrl: string, wasmUrl: string): string {
   const blobPatch = (dataUrl || wasmUrl) ? `
   // Redirect large assets to Vercel Blob CDN (faster, proper Range-request support)
@@ -121,8 +138,9 @@ export async function GET() {
   let html = raw
     .replace('<head>', '<head>' + DEBUG_SCRIPT + MOBILE_FIXES_SCRIPT + '<base href="/games/supertux/">')
     .replace(OLD_ONERROR, NEW_ONERROR)
-    // Inject blob URL override + SW registration just before the async loader
-    .replace('<script async src="supertux2.js"></script>', injectScript + '<script async src="supertux2.js"></script>')
+    // Inject blob URL override + SW registration, then the conditional loader
+    // (replaces the static <script async src="supertux2.js"> entirely)
+    .replace('<script async src="supertux2.js"></script>', injectScript + SAB_CONDITIONAL_LOADER)
 
   return new Response(html, {
     headers: {

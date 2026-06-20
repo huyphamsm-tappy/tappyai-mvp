@@ -12,12 +12,13 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/games/supertux') || pathname === '/game/supertux') {
     const response = NextResponse.next({ request })
     response.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
-    // Parent page uses credentialless so PostHog/Supabase cross-origin fetches still work.
-    // Static game files and route handler use require-corp (all same-origin, no external deps).
-    response.headers.set(
-      'Cross-Origin-Embedder-Policy',
-      pathname === '/game/supertux' ? 'credentialless' : 'require-corp'
-    )
+    // Both parent and iframe use require-corp so the iframe's crossOriginIsolated is true
+    // on Safari. Safari added COEP credentialless support only in v17 (Sep 2023); on older
+    // iOS, credentialless on the parent meant the iframe was NOT cross-origin isolated and
+    // SharedArrayBuffer was undefined, crashing supertux2.js with a ReferenceError.
+    // Downside: PostHog/Supabase fetch calls on the game page may be blocked (acceptable —
+    // the game page has no auth-gated content and analytics failure is silent).
+    response.headers.set('Cross-Origin-Embedder-Policy', 'require-corp')
     return response
   }
 
