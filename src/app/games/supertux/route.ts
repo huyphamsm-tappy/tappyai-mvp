@@ -1,6 +1,45 @@
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 
+// Mobile fixes injected before any game script:
+// 1. Viewport meta — without this, iOS/Android use the 980px default virtual viewport inside
+//    the iframe; window.innerWidth returns ~980 instead of device width → canvas wrong size,
+//    touch coordinates are off by the scale factor.
+// 2. touch-action:none on canvas — prevents OS scroll from eating touchmove events before
+//    SDL/Emscripten sees them (fixes "swipe scrolls the page instead of controlling game").
+// 3. alert() override — navigator.storage.persist() returns false on most iOS visits, which
+//    triggers a blocking alert("Your browser denied persistent storage...") that freezes the
+//    loading overlay inside the iframe. We redirect storage alerts to console.warn; all other
+//    alerts (e.g. WebGL context lost) still block as intended.
+// 4. SharedArrayBuffer feature check — if COOP/COEP didn't land (old browser, HTTPS miscfg),
+//    the game would hang on a black screen with no message; we show a readable error instead.
+const MOBILE_FIXES_SCRIPT = `<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<style>canvas.emscripten{touch-action:none;-webkit-tap-highlight-color:transparent;}</style>
+<script>
+(function(){
+  // 1. Silence blocking storage alerts — iOS almost always denies persist(), so the original
+  //    alert() would fire on every page load and freeze the loading screen inside the iframe.
+  var _alert = window.alert;
+  window.alert = function(msg) {
+    if (String(msg).indexOf('persistent storage') !== -1) {
+      console.warn('[ST] storage:', String(msg).substring(0, 140));
+      return;
+    }
+    _alert.call(window, msg);
+  };
+  // 2. SharedArrayBuffer / cross-origin isolation check — show a readable error instead of
+  //    a silent black screen when the browser can't run the WASM threads build.
+  if (typeof SharedArrayBuffer === 'undefined' || !self.crossOriginIsolated) {
+    document.addEventListener('DOMContentLoaded', function() {
+      var s = document.getElementById('status');
+      if (s) s.innerHTML = 'Trình duyệt không hỗ trợ <b>SharedArrayBuffer</b>.<br>Vui lòng dùng Chrome ≥ 67 hoặc Safari ≥ 15.2 (iOS ≥ 15.2).';
+      var sp = document.getElementById('spinner');
+      if (sp) sp.style.display = 'none';
+    });
+  }
+})();
+</script>`
+
 // Debug XHR interceptor injected into the page to capture HTTP status codes
 // and error sources without needing browser DevTools.
 const DEBUG_SCRIPT = `<script>
@@ -80,7 +119,7 @@ export async function GET() {
   const injectScript = buildInjectScript(dataUrl, wasmUrl)
 
   let html = raw
-    .replace('<head>', '<head>' + DEBUG_SCRIPT + '<base href="/games/supertux/">')
+    .replace('<head>', '<head>' + DEBUG_SCRIPT + MOBILE_FIXES_SCRIPT + '<base href="/games/supertux/">')
     .replace(OLD_ONERROR, NEW_ONERROR)
     // Inject blob URL override + SW registration just before the async loader
     .replace('<script async src="supertux2.js"></script>', injectScript + '<script async src="supertux2.js"></script>')
