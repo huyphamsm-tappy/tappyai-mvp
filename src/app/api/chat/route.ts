@@ -480,9 +480,10 @@ async function searchProducts(query: string) {
 
   let result: unknown
   try {
-    const [searchResultsRaw, directResults] = await Promise.all([
+    const [searchResultsRaw, directResults, shopInfoResults] = await Promise.all([
       serperSearch(query + ' gia Shopee Tiki Lazada'),
       serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)'),
+      serperSearch(query + ' shop website địa chỉ facebook tiktok'),
     ])
 
     // Uu tien cac link CU THE den 1 san pham (khong phai trang tim kiem) tren Shopee/Tiki/Lazada
@@ -508,16 +509,25 @@ async function searchProducts(query: string) {
       }).slice(0, 8)
     }
 
+    const tiktokShopLink = 'https://www.tiktok.com/search?q=' + encodeURIComponent(query)
+
     if (searchResults && searchResults.length > 0) {
       result = {
         query,
         source: 'Google Search (Serper)',
         search_results: searchResults,
+        shop_info_results: shopInfoResults || [],
         links,
+        tiktok_shop_link: tiktokShopLink,
         note: 'Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.'
       }
     } else {
-      result = { note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam', links }
+      result = {
+        note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam',
+        links,
+        shop_info_results: shopInfoResults || [],
+        tiktok_shop_link: tiktokShopLink,
+      }
     }
   } catch {
     result = { note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam', links }
@@ -1089,8 +1099,10 @@ KARAOKE / BAR / GIAI TRI KHAC - NEU CHI CO 1: buttons=[{label:"✅ Đặt chỗ 
 KARAOKE / BAR / GIAI TRI KHAC - NEU LIET KE NHIEU: tao 1 nut rieng cho tung dia diem voi dia chi chinh xac cua tung noi. Vi du: buttons=[{label:"✅ Đặt chỗ - {ten1}",type:"internal_booking",url:"/service/{slug1}?name={ten1}&address={dia_chi_1}&type=entertainment",primary:true},{label:"✅ Đặt chỗ - {ten2}",type:"internal_booking",url:"/service/{slug2}?name={ten2}&address={dia_chi_2}&type=entertainment",primary:false}]
 DU LICH / KHACH SAN - NEU CHI CO 1: buttons=[{label:"✅ Đặt phòng qua TappyAI",type:"internal_booking",url:"/service/{slug}?name={ten}&address={dia_chi}&type=hotel",primary:true},{label:"🏨 Tìm phòng Booking",type:"booking",url:"https://www.booking.com/search.html?ss={thanh+pho}",primary:false},{label:"🚌 Đặt vé xe",type:"website",url:"https://vexere.com",primary:false}]
 DU LICH / KHACH SAN - NEU LIET KE NHIEU: tao 1 nut rieng cho tung khach san voi dia chi chinh xac cua tung noi. Vi du: buttons=[{label:"✅ Đặt phòng - {ten1}",type:"internal_booking",url:"/service/{slug1}?name={ten1}&address={dia_chi_1}&type=hotel",primary:true},{label:"✅ Đặt phòng - {ten2}",type:"internal_booking",url:"/service/{slug2}?name={ten2}&address={dia_chi_2}&type=hotel",primary:false}]
-MUA SAM ONLINE: buttons=[{label:"🛒 Xem Shopee",type:"search",url:"https://shopee.vn/search?keyword={san+pham}",primary:true},{label:"🛍️ Xem Tiki",type:"search",url:"https://tiki.vn/search?q={san+pham}",primary:false}]
-MUA SAM OFFLINE (cua hang vat ly): buttons=[{label:"🗺️ Chỉ đường",type:"maps",url:"https://www.google.com/maps/search/{ten+cua+hang}",primary:true}]
+MUA SAM - SHOP CO WEBSITE RIENG (biet URL website rieng cua shop, khong phai Shopee/Tiki): buttons=[{label:"🌐 Website shop",type:"website",url:"{url_website_shop}",primary:true},{label:"🛒 Shopee",type:"search",url:"https://shopee.vn/search?keyword={ten+shop+hoac+san+pham}",primary:false},{label:"🎵 TikTok Shop",type:"website",url:"https://www.tiktok.com/search?q={ten+san+pham}",primary:false},{label:"📘 Facebook",type:"website",url:"{url_facebook_page_neu_co}",primary:false}]
+MUA SAM - SHOP CO DIA CHI VAT LY (biet dia chi cu the, co cua hang offline): buttons=[{label:"🗺️ Chỉ đường đến shop",type:"maps",url:"https://www.google.com/maps/search/{ten+shop}",primary:true},{label:"🛒 Shopee",type:"search",url:"https://shopee.vn/search?keyword={ten+shop+hoac+san+pham}",primary:false},{label:"🎵 TikTok Shop",type:"website",url:"https://www.tiktok.com/search?q={ten+san+pham}",primary:false}]
+MUA SAM - ONLINE ONLY (chi biet ten san pham, khong co dia chi hoac website rieng): buttons=[{label:"🛒 Tìm trên Shopee",type:"search",url:"https://shopee.vn/search?keyword={san+pham}",primary:true},{label:"🛍️ Tìm trên Tiki",type:"search",url:"https://tiki.vn/search?q={san+pham}",primary:false},{label:"📦 Tìm trên Lazada",type:"search",url:"https://www.lazada.vn/catalog/?q={san+pham}",primary:false}]
+Voi MUA SAM: chon 1 trong 3 mau tren phu hop nhat. Neu shop co ca dia chi vat ly VA website rieng → dung mau "CO WEBSITE RIENG" va gom ca nut Maps vao (toi da 4 nut). Bo qua bat ky nut nao ma khong co thong tin thuc te.
 
 Luu y:
 - {slug}: tao slug ngan tu ten dia diem, viet thuong, khong dau, noi dau "-" (vd "pho-hanh-quan")
@@ -1147,7 +1159,14 @@ NGUYEN TAC BAT BUOC:
    - Chi dua link [Tim khach san](booking_link hoac search_url) lam link DUY NHAT khi tool tra ve 'error' hoac khong co search_results
 14) Voi search_places: neu tool tra ve 'price_search_results' (gia mon/menu/dich vu/ve tham khao - ap dung cho an uong, spa, giai tri), PHAI tom tat NGAY trong chat gia tim thay duoc tu cac ket qua tim kiem do (menu, dich vu spa/massage, ve vao cong/xem phim...), ben canh thong tin ten/dia chi/danh gia dia diem, va nhac 'price_note' rang gia co the khac theo chi nhanh, thoi diem va da thay doi. Neu mot 'price_search_results' item co 'link' rieng (website/fanpage/trang dat ve cua chinh dia diem do, khong phai trang tong hop), co the gan link do vao ten dia diem tuong ung de user xem chi tiet
    - Voi an uong (isFood): neu tool tra ve 'order_search_results' (khong rong) - day la cac trang CU THE (khong phai trang chu) tren ShopeeFood/GrabFood/Baemin cho dung loai mon/khu vuc user hoi - PHAI gioi thieu 1-2 ket qua dau dang link markdown ngay sau danh sach quan, vi du [Dat online: {title}](link), va noi ro day la link dat hang online TRUC TIEP, uu tien cao. Neu 'order_search_results' rong/khong co, dua 'order_links' (ShopeeFood/GrabFood/BeFood) de user tu mo app tim quan va dat hang
-15) Voi search_products: neu tool tra ve 'search_results' (gia san pham tu Google Search, KHONG co 'error'), PHAI tom tat NGAY trong chat ten san pham va gia tim thay duoc tu ket qua tim kiem. Neu mot ket qua co 'link' tro toi dung trang san pham cu the (vd shopee.vn/...-i.xxx.yyy, tiki.vn/...-p123456.html, lazada.vn/products/...), PHAI gan ten san pham do thanh link markdown toi dung 'link' nay - day la link mua TRUC TIEP, uu tien hon link tim kiem chung; cac link Shopee/Tiki/Lazada con lai (tu mang 'links') dung lam "xem them lua chon" o cuoi. Neu khong co 'search_results' (chi co 'note'/'links'), gioi thieu cac link san thuong mai dien tu do
+15) Voi search_products: neu tool tra ve 'search_results' (gia san pham tu Google Search, KHONG co 'error'), PHAI tom tat NGAY trong chat ten san pham va gia tim thay duoc tu ket qua tim kiem. Neu mot ket qua co 'link' tro toi dung trang san pham cu the (vd shopee.vn/...-i.xxx.yyy, tiki.vn/...-p123456.html, lazada.vn/products/...), PHAI gan ten san pham do thanh link markdown toi dung 'link' nay - day la link mua TRUC TIEP, uu tien hon link tim kiem chung; cac link Shopee/Tiki/Lazada con lai (tu mang 'links') dung lam "xem them lua chon" o cuoi. Neu khong co 'search_results' (chi co 'note'/'links'), gioi thieu cac link san thuong mai dien tu do.
+   QUAN TRONG - THONG TIN DAY DU VE SHOP (ONLINE + OFFLINE): Neu tool tra ve 'shop_info_results' (ket qua search ve shop), HAY QUET qua va TRICH XUAT cac thong tin sau TU KET QUA THUC TE (TUYET DOI KHONG BAT - chi viet neu tim thay trong shop_info_results hoac search_results):
+   (a) Dia chi cua hang vat ly: neu snippet/title co dia chi cu the (so nha, ten duong, quan, TP) → ghi ro "Cua hang: [dia chi]" - TUYET DOI khong bịa dia chi khi khong co
+   (b) Website rieng cua shop: neu tim thay URL khong phai Shopee/Tiki/Lazada/Facebook/TikTok (vd .vn, .com rieng cua brand) → hien thi link do
+   (c) Facebook page cua shop: neu tim thay link facebook.com/[tenshop] → hien thi link va co the ghi "Fanpage Facebook: [link]"
+   (d) TikTok shop/profile: neu tim thay link tiktok.com/@[tenshop] hoac TikTok Shop → hien thi link
+   (e) Review mang xa hoi: neu snippet co noi den review tich cuc ("review", "danh gia tot", "chat luong", "uy tin") → co the ghi nhe "duoc nhieu khach review tich cuc tren TikTok/Facebook" - chi ghi neu co trong ket qua, khong phat minh
+   Phan thong tin shop viet tu nhien, nhan tin, khong liet ke cung nhu bao cao. Vi du: "Shop co cua hang tai [dia chi], ban tren [Shopee](link) va co [fanpage Facebook](link). Hang duoc nhieu nguoi review tich cuc lam 👍"
 16) Voi get_transport_options:
    - Neu type='intercity': neu co 'bus_search_results' hoac 'train_search_results' khong rong, PHAI tom tat NGAY cac lua chon xe khach/tau (nha xe/tuyen, gia, gio chay neu co trong tieu de/snippet) tu cac ket qua do. Neu mot ket qua co 'link' rieng den trang tuyen/nha xe cu the (vd vexere.com/..., futabus.vn/..., dsvn.vn/...), PHAI gan ten nha xe/chuyen do thanh link markdown toi 'link' nay - day la link xem/dat ve TRUC TIEP, uu tien cao nhat. Cuoi cau tra loi dua them link tong hop [Xem them ve xe tren Vexere](vexere_link) va [Dat ve tau](train_booking_link)
    - Neu type='taxi': PHAI tra loi NGAY khoang cach uoc tinh ('distance_km' km) va khoang gia tham khao ('estimated_fare_vnd', VND), noi ro day la GIA UOC TINH khong phai gia chinh xac tu app, kem link cac app dat xe (Grab/Xanh SM/Be tu 'apps') de user tu mo app xem gia thuc te va dat xe
@@ -1279,7 +1298,7 @@ export async function POST(req: Request) {
         execute: async ({ query }) => getNews(query)
       }),
       ...(locationIntent !== 'offline' ? { search_products: tool({
-        description: 'Tim san pham mua sam online tren Shopee, Tiki, Lazada, kem gia tham khao tu Google Search (Serper)',
+        description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook/TikTok cua shop - tat ca tu Google Search (Serper)',
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
           const r = await searchProducts(query)
