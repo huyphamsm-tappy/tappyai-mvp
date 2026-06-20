@@ -74,7 +74,13 @@ function logCTAClick(button: CTAButton) {
 }
 
 function formatMessage(content: string) {
-  return content
+  // Images first — render before link processing to avoid conflicts
+  const withImages = content.replace(
+    /\n?!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)\n?/g,
+    (_, alt, src) =>
+      `\n<div style="margin:8px 0;border-radius:12px;overflow:hidden;max-width:280px"><img src="${src}" alt="${alt}" style="width:100%;height:160px;object-fit:cover;display:block" loading="lazy" onerror="this.closest('div').style.display='none'"/></div>\n`
+  )
+  return withImages
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline font-medium break-all">$1</a>')
     .replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline break-all">$2</a>')
     .replace(/^### (.+)$\n?/gm, '<div class="font-semibold mt-3 mb-1">$1</div>')

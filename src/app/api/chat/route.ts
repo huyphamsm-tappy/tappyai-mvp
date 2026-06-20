@@ -2,6 +2,7 @@ import { createAnthropic } from '@ai-sdk/anthropic'
 import { streamText, tool } from 'ai'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { getMemory, buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
@@ -290,6 +291,58 @@ async function getNews(query: string) {
   return result
 }
 
+// ===== SUPABASE CACHE CLIENT (no-cookie, for place_photos table) =====
+let _cacheDb: ReturnType<typeof createSupabaseClient> | null | undefined = undefined
+function getCacheClient() {
+  if (_cacheDb !== undefined) return _cacheDb
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  _cacheDb = url && key ? createSupabaseClient(url, key) : null
+  return _cacheDb
+}
+
+// ===== GOOGLE PLACES PHOTO with Supabase persistent cache =====
+// Each unique place_id costs $0.007 once (Google Places Photos), then cached forever in DB.
+async function fetchPlacePhoto(placeId: string, photoRef: string): Promise<string | null> {
+  const db = getCacheClient()
+  // 1. Check Supabase cache first
+  if (db) {
+    try {
+      const { data } = await db
+        .from('place_photos')
+        .select('photo_url')
+        .eq('place_id', placeId)
+        .maybeSingle()
+      if (data?.photo_url) return data.photo_url as string
+    } catch { /* cache miss, fall through to API */ }
+  }
+  // 2. Call Google Places Photos API — follows redirect to CDN URL (key never exposed)
+  const key = process.env.GOOGLE_PLACES_API_KEY
+  if (!key || !photoRef) return null
+  const controller = new AbortController()
+  const tid = setTimeout(() => controller.abort(), 3000)
+  try {
+    const resp = await fetch(
+      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${encodeURIComponent(photoRef)}&key=${key}`,
+      { redirect: 'follow', signal: controller.signal }
+    )
+    clearTimeout(tid)
+    const finalUrl = resp.url
+    resp.body?.cancel().catch(() => {})
+    if (!resp.ok || !finalUrl || finalUrl.includes('maps.googleapis.com')) return null
+    // 3. Persist to Supabase (fire-and-forget)
+    if (db) {
+      db.from('place_photos')
+        .upsert({ place_id: placeId, photo_url: finalUrl })
+        .then(() => {}).catch(() => {})
+    }
+    return finalUrl
+  } catch {
+    clearTimeout(tid)
+    return null
+  }
+}
+
 async function searchPlacesOSM(query: string, location?: string) {
   const loc = location || 'Ha Noi'
   const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
@@ -416,12 +469,19 @@ async function searchPlaces(query: string, location?: string, type?: string) {
       ])
       const d = await (resp as Response).json()
       if (d.status === 'OK' && d.results?.length) {
+        // Fetch photo for top result (Supabase cache → Google Places Photos API)
+        const topPlaceId = d.results[0].place_id as string | undefined
+        const topPhotoRef = (d.results[0].photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
+        const topPhotoUrl = (topPlaceId && topPhotoRef)
+          ? await fetchPlacePhoto(topPlaceId, topPhotoRef)
+          : null
         result = {
           source: 'Google Maps', count: d.results.length,
-          results: d.results.slice(0, 8).map((r: Record<string, unknown>) => ({
+          results: d.results.slice(0, 8).map((r: Record<string, unknown>, idx: number) => ({
             name: r.name, address: r.formatted_address,
             rating: r.rating ? r.rating + '/5 (' + r.user_ratings_total + ' danh gia)' : 'Chua co danh gia',
-            maps_link: 'https://www.google.com/maps/place/?q=place_id:' + r.place_id
+            maps_link: 'https://www.google.com/maps/place/?q=place_id:' + r.place_id,
+            ...(idx === 0 && topPhotoUrl ? { photo_url: topPhotoUrl } : {})
           }))
         }
       } else {
@@ -1084,11 +1144,12 @@ LUAT 3: Neu khong con option nao trong tam gia, tra loi: "Trong tam ${budget.min
     : locationIntent === 'unknown'
     ? ''
     : ''
-  const reviewBlock = `\n\n===== DANH GIA & REVIEW - LUAT BAT BUOC (ap dung moi category) =====
+  const reviewBlock = `\n\n===== DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category) =====
 Voi BAT KY dia diem hoac san pham cu the nao duoc de cap trong response:
 1) RATING: Neu ket qua tool co truong 'rating' (vd "4.5/5 (234 danh gia)") → LUON viet kem ngay sau ten dia diem, vi du: "**Ten Quan** ⭐ 4.3/5 (120 luot)". Ap dung cho TAT CA loai: nha hang, cafe, spa, khach san, karaoke, rap phim, diem du lich, cua hang, resort...
 2) REVIEW SENTIMENT: Neu trong snippet, price_search_results, hoac shop_info_results co cum tu the hien cam nhan tich cuc ("view dep", "mon ngon", "dich vu tot", "nhieu nguoi ua chuong", "dong khach", "chat luong", "uy tin", "duoc review tot"...) → them 1 cum ngan (~10 chu) vao sau rating. Chi lay TU KET QUA THUC TE co trong du lieu, TUYET DOI KHONG phat minh rating hoac review khi khong co trong ket qua tool.
 3) KHONG CO RATING: Neu ket qua khong co truong rating va snippet khong de cap den danh gia → bo qua hoan toan, khong ghi "chua co danh gia" hay "khong du thong tin".
+4) ANH DAI DIEN: Neu ket qua dau tien co truong 'photo_url' → dat chinh xac dong sau tren 1 dong RIENG ngay SAU ten dia diem dau tien: \`![Ảnh địa điểm](GIA_TRI_PHOTO_URL)\` (thay GIA_TRI_PHOTO_URL bang gia tri CHINH XAC cua truong photo_url, copy nguyen ven khong sua doi). Chi them 1 anh duy nhat cho dia diem dau tien. Neu khong co photo_url → khong them bat ky dong anh nao.
 ==========================================`
   const ctaBlock = `\n\n===== CTA ACTION BUTTONS - BAT BUOC =====
 Sau moi response co goi y DIA DIEM / SAN PHAM / DICH VU cu the, PHAI them block nay o CUOI CUNG response (sau het text, tren dong moi):
