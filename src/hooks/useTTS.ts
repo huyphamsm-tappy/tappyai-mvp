@@ -12,6 +12,7 @@ export function stripMarkdownForTTS(text: string) {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/https?:\/\/\S+/g, '')
     .replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/gi, '')
+    .replace(/\[CTA_BUTTONS\]\{[\s\S]*\}\s*$/gi, '')
     .trim()
 }
 

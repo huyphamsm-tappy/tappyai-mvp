@@ -42,11 +42,16 @@ interface ChatInterfaceProps {
 }
 
 function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
-  const ctaMatch = content.match(/\[CTA_BUTTONS\]([\s\S]*?)\[\/CTA_BUTTONS\]/i)
+  // Match with closing tag, or fall back to bare [CTA_BUTTONS]{...} at end of content
+  const withTag = /\[CTA_BUTTONS\]([\s\S]*?)\[\/CTA_BUTTONS\]/i
+  const noTag   = /\[CTA_BUTTONS\](\{[\s\S]*\})\s*$/i
+
+  const ctaMatch = content.match(withTag) ?? content.match(noTag)
   if (!ctaMatch) return { text: content, buttons: [] }
 
   const text = content
-    .replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/i, '')
+    .replace(withTag, '')
+    .replace(noTag, '')
     .trimEnd()
 
   try {
