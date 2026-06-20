@@ -41,7 +41,11 @@ export async function GET(request: NextRequest) {
         const onboardingUrl = next && next !== '/'
           ? `${origin}/onboarding?next=${encodeURIComponent(next)}`
           : `${origin}/onboarding`
-        return NextResponse.redirect(onboardingUrl)
+        // Reuse `response` so its Set-Cookie headers (session tokens from
+        // exchangeCodeForSession) are preserved. A fresh NextResponse.redirect
+        // would have no cookies, leaving the user unauthenticated on /onboarding.
+        response.headers.set('Location', onboardingUrl)
+        return response
       }
       return response
     }

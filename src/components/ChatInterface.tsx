@@ -2,6 +2,7 @@
 
 import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { Send, Loader2, Sparkles, Mic, MicOff, Smile } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
@@ -38,7 +39,7 @@ interface ChatInterfaceProps {
   initialCategory?: string
   conversationId?: string
   savedMessages?: Array<{ role: 'user' | 'assistant'; content: string }>
-  onSave?: (messages: Array<{ role: string; content: string }>, title: string) => void
+  onSave?: (messages: Array<{ role: string; content: string }>, title: string) => void | Promise<void>
 }
 
 function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
@@ -99,8 +100,13 @@ export default function ChatInterface({
   savedMessages,
   onSave,
 }: ChatInterfaceProps) {
+  const router = useRouter()
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  // Tracks the in-flight save so internal_booking clicks can await it before
+  // navigating — prevents the race where the user clicks before router.replace
+  // fires, which would leave /chat (not /chat/{id}) as the Back target.
+  const savePromiseRef = useRef<Promise<void> | null>(null)
   const category = initialCategory as CategoryId
   const catInfo = CATEGORIES.find(c => c.id === category)
   const [hasMemory, setHasMemory] = useState(false)
@@ -114,7 +120,10 @@ export default function ChatInterface({
     onFinish: async (message) => {
       const all = [...messages, message]
       if (onSave) {
-        await onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat')
+        const p = Promise.resolve(onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat'))
+        savePromiseRef.current = p
+        await p
+        savePromiseRef.current = null
       }
       fetch('/api/memory', {
         method: 'POST',
@@ -295,7 +304,17 @@ export default function ChatInterface({
                               href={btn.url}
                               target={btn.type === 'internal_booking' ? undefined : '_blank'}
                               rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
-                              onClick={() => logCTAClick(btn)}
+                              onClick={async (e) => {
+                                logCTAClick(btn)
+                                if (btn.type === 'internal_booking') {
+                                  // Prevent the raw anchor navigation (full-page reload).
+                                  // Instead await any in-flight save so router.replace('/chat/{id}')
+                                  // fires first, then push — keeping /chat/{id} as the Back target.
+                                  e.preventDefault()
+                                  if (savePromiseRef.current) await savePromiseRef.current
+                                  router.push(btn.url)
+                                }
+                              }}
                               className={cn(
                                 'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all',
                                 btn.primary

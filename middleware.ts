@@ -46,10 +46,17 @@ export async function middleware(request: NextRequest) {
   // Refresh session cookies — no auth redirects, app is open to all
   const { data: { session } } = await supabase.auth.getSession()
 
-  // If logged in and on login page → redirect to /chat
+  // If logged in and on login page → redirect to returnTo (if safe) or home.
+  // This covers the common case where the browser Back button returns to
+  // /login?returnTo=... after OAuth; without this the user would stay on /login.
   if (request.nextUrl.pathname.startsWith('/login') && session) {
+    const returnTo = request.nextUrl.searchParams.get('returnTo')
+    if (returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')) {
+      return NextResponse.redirect(new URL(returnTo, request.url))
+    }
     const url = request.nextUrl.clone()
     url.pathname = '/'
+    url.search = ''
     return NextResponse.redirect(url)
   }
 
