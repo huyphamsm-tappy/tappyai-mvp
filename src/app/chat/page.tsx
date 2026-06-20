@@ -26,7 +26,7 @@ function ChatPageContent() {
       })
       if (res.ok) {
         const conv = await res.json()
-        window.history.replaceState(null, '', `/chat/${conv.id}`)
+        router.replace(`/chat/${conv.id}`)
       }
     } catch (e) { console.error('Save failed:', e) }
   }, [category])

@@ -4,8 +4,9 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  // After login, go to home page
-  const next = searchParams.get('next') ?? '/'
+  // Restrict to relative paths only to prevent open-redirect attacks
+  const rawNext = searchParams.get('next') ?? '/'
+  const next = rawNext.startsWith('/') ? rawNext : '/'
 
   if (code) {
     const response = NextResponse.redirect(`${origin}${next}`)

@@ -33,7 +33,13 @@ interface PageProps {
 export default async function ServiceDetailPage({ params, searchParams }: PageProps) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  if (!user) {
+    const qs = new URLSearchParams(
+      Object.entries(searchParams).filter((e): e is [string, string] => typeof e[1] === 'string')
+    ).toString()
+    const returnTo = `/service/${params.id}${qs ? `?${qs}` : ''}`
+    redirect(`/login?returnTo=${encodeURIComponent(returnTo)}`)
+  }
 
   const { data: profile } = await supabase
     .from('profiles')
