@@ -1,2 +1,2 @@
-# supertux2.data and supertux2.wasm removed from LFS — now stored in Vercel Blob storage.
-# See scripts/upload-supertux-blob.mjs to re-upload if needed.
+public/games/supertux/supertux2.data filter=lfs diff=lfs merge=lfs -text
+public/games/supertux/supertux2.wasm filter=lfs diff=lfs merge=lfs -text
