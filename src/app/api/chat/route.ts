@@ -466,9 +466,13 @@ function isSpecificOtaHotelPage(link: string): boolean {
 async function searchPlaces(query: string, location?: string, type?: string) {
   const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '')
   const cached = getCache(cacheKey)
-  if (cached) return cached
+  if (cached) {
+    console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'cache_hit', cacheKey }))
+    return cached
+  }
 
   const key = process.env.GOOGLE_PLACES_API_KEY
+  console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, type }))
   let result: unknown = null
   if (key) {
     try {
@@ -1376,6 +1380,7 @@ export async function POST(req: Request) {
           type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema']).optional()
         }),
         execute: async ({ query, location, type }) => {
+          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, type }))
           const r = await searchPlaces(query, location, type)
           return budget ? applyBudgetFilter(r, budget, query) : r
         }
