@@ -308,17 +308,25 @@ async function fetchPlacePhoto(placeId: string, photoRef: string): Promise<strin
   // 1. Check Supabase cache first
   if (db) {
     try {
-      const { data } = await db
+      const { data, error } = await db
         .from('place_photos')
         .select('photo_url')
         .eq('place_id', placeId)
         .maybeSingle()
+      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache', placeId, hit: !!data?.photo_url, dbError: error?.message || null }))
       if (data?.photo_url) return data.photo_url as string
-    } catch { /* cache miss, fall through to API */ }
+    } catch (e) {
+      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache_exception', placeId, error: String(e) }))
+    }
+  } else {
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache_skipped', reason: 'no_db_client' }))
   }
   // 2. Call Google Places Photos API — follows redirect to CDN URL (key never exposed)
   const key = process.env.GOOGLE_PLACES_API_KEY
-  if (!key || !photoRef) return null
+  if (!key || !photoRef) {
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', hasKey: !!key, hasPhotoRef: !!photoRef }))
+    return null
+  }
   const controller = new AbortController()
   const tid = setTimeout(() => controller.abort(), 3000)
   try {
@@ -328,17 +336,21 @@ async function fetchPlacePhoto(placeId: string, photoRef: string): Promise<strin
     )
     clearTimeout(tid)
     const finalUrl = resp.url
+    const safe = !finalUrl.includes('maps.googleapis.com')
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', status: resp.status, ok: resp.ok, finalUrlPrefix: finalUrl.slice(0, 60), safe }))
     resp.body?.cancel().catch(() => {})
-    if (!resp.ok || !finalUrl || finalUrl.includes('maps.googleapis.com')) return null
+    if (!resp.ok || !finalUrl || !safe) return null
     // 3. Persist to Supabase (fire-and-forget)
     if (db) {
       db.from('place_photos')
         .upsert({ place_id: placeId, photo_url: finalUrl })
-        .then(() => {}).catch(() => {})
+        .then(({ error: e }) => console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_write', placeId, ok: !e, dbError: e?.message || null })))
+        .catch(e => console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_write_exception', error: String(e) })))
     }
     return finalUrl
-  } catch {
+  } catch (e) {
     clearTimeout(tid)
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_exception', error: String(e) }))
     return null
   }
 }
@@ -472,6 +484,15 @@ async function searchPlaces(query: string, location?: string, type?: string) {
         // Fetch photo for top result (Supabase cache → Google Places Photos API)
         const topPlaceId = d.results[0].place_id as string | undefined
         const topPhotoRef = (d.results[0].photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
+        console.log(JSON.stringify({
+          type: 'tappyai_photo_debug', step: 'places_textsearch',
+          resultsCount: d.results.length,
+          topName: d.results[0].name || null,
+          topRating: d.results[0].rating ?? null,
+          topPlaceId: topPlaceId || null,
+          photosCount: (d.results[0].photos as unknown[])?.length ?? 0,
+          hasPhotoRef: !!topPhotoRef,
+        }))
         const topPhotoUrl = (topPlaceId && topPhotoRef)
           ? await fetchPlacePhoto(topPlaceId, topPhotoRef)
           : null
