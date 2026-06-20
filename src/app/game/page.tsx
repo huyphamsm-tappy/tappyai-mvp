@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { ChevronRight } from 'lucide-react'
+import { SupertuxPreload } from '@/components/SupertuxPreload'
 
 const GAMES = [
   {
@@ -55,8 +56,13 @@ const GAMES = [
 ]
 
 export default function GameHubPage() {
+  const stDataUrl = process.env.NEXT_PUBLIC_SUPERTUX_DATA_URL ?? ''
+  const stWasmUrl = process.env.NEXT_PUBLIC_SUPERTUX_WASM_URL ?? ''
+
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
+      {/* Invisible background preload — warms the cache for SuperTux assets */}
+      <SupertuxPreload dataUrl={stDataUrl} wasmUrl={stWasmUrl} />
       <Header showBack backHref="/" title="Mini Games" />
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-5">
