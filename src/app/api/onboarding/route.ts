@@ -10,11 +10,10 @@ export async function POST(req: Request) {
 
     const { interests, city } = await req.json()
 
-    // Lưu vào profiles.onboarded
+    // Lưu vào profiles.onboarded (upsert in case the profile row doesn't exist yet)
     await supabase
       .from('profiles')
-      .update({ onboarded: true })
-      .eq('id', user.id)
+      .upsert({ id: user.id, onboarded: true }, { onConflict: 'id' })
 
     // Lưu sở thích vào memory
     const preferences: Record<string, string[]> = {}

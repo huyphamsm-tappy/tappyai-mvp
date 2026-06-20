@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { MapPin, ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -19,6 +19,7 @@ const CITIES = ['TP. Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Cần Thơ', 
 
 export default function OnboardingPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [step, setStep] = useState(1)
   const [selected, setSelected] = useState<string[]>([])
   const [city, setCity] = useState('')
@@ -39,7 +40,8 @@ export default function OnboardingPage() {
         body: JSON.stringify({ interests: selected, city }),
       })
     } catch { /* no-op */ }
-    router.push('/')
+    const next = searchParams.get('next') || '/'
+    router.push(next)
   }
 
   return (

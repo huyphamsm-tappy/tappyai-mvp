@@ -38,7 +38,10 @@ export async function GET(request: NextRequest) {
         .eq('id', user.id)
         .single()
       if (!profile?.onboarded) {
-        return NextResponse.redirect(`${origin}/onboarding`)
+        const onboardingUrl = next && next !== '/'
+          ? `${origin}/onboarding?next=${encodeURIComponent(next)}`
+          : `${origin}/onboarding`
+        return NextResponse.redirect(onboardingUrl)
       }
       return response
     }
