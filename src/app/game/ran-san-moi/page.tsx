@@ -189,9 +189,11 @@ export default function SnakePage() {
   }, [draw, startGame])
 
   const onTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault()
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
   }
   const onTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault()
     if (!touchStart.current) return
     const dx = e.changedTouches[0].clientX - touchStart.current.x
     const dy = e.changedTouches[0].clientY - touchStart.current.y

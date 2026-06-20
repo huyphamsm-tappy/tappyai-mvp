@@ -289,6 +289,16 @@ export default function BanThienHaPage() {
     rafRef.current = requestAnimationFrame(loop)
   }, [loop])
 
+  const onCanvasTouch = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault()
+    if (!gs.current.running) return
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const rect = canvas.getBoundingClientRect()
+    const tx = (e.touches[0].clientX - rect.left) * (W / rect.width)
+    gs.current.px = Math.max(0, Math.min(W - PLAYER_W, tx - PLAYER_W / 2))
+  }, [])
+
   useEffect(() => {
     draw()
     const onKey = (e: KeyboardEvent) => { keys.current[e.key] = true; if (['ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault() }
@@ -306,7 +316,7 @@ export default function BanThienHaPage() {
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-3">
         <div className="relative">
-          <canvas ref={canvasRef} width={W} height={H} className="rounded-2xl border border-gray-800" style={{ maxWidth: '100%', maxHeight: '72vh', touchAction: 'none' }} />
+          <canvas ref={canvasRef} width={W} height={H} className="rounded-2xl border border-gray-800" style={{ maxWidth: '100%', maxHeight: '72vh', touchAction: 'none' }} onTouchMove={onCanvasTouch} onTouchStart={onCanvasTouch} />
           {phase === 'idle' && (
             <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-black/70 backdrop-blur-sm">
               <div className="text-5xl mb-3">🚀</div>

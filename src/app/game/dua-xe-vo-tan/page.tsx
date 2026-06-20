@@ -232,6 +232,16 @@ export default function DuaXeVoTanPage() {
     rafRef.current = requestAnimationFrame(loop)
   }, [loop])
 
+  const onCanvasTouch = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault()
+    if (!gs.current.running) return
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const rect = canvas.getBoundingClientRect()
+    const tx = (e.touches[0].clientX - rect.left) * (W / rect.width)
+    gs.current.targetX = Math.max(ROAD_LEFT + 4, Math.min(ROAD_RIGHT - PLAYER_W - 4, tx - PLAYER_W / 2))
+  }, [])
+
   useEffect(() => {
     draw()
     const onKey = (e: KeyboardEvent) => { keys.current[e.key] = true; if (['ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault() }
@@ -249,7 +259,7 @@ export default function DuaXeVoTanPage() {
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-3">
         <div className="relative">
-          <canvas ref={canvasRef} width={W} height={H} className="rounded-2xl border border-gray-800" style={{ maxWidth: '100%', maxHeight: '72vh', touchAction: 'none' }} />
+          <canvas ref={canvasRef} width={W} height={H} className="rounded-2xl border border-gray-800" style={{ maxWidth: '100%', maxHeight: '72vh', touchAction: 'none' }} onTouchMove={onCanvasTouch} onTouchStart={onCanvasTouch} />
           {phase === 'idle' && (
             <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-black/65 backdrop-blur-sm">
               <div className="text-5xl mb-3">🚗</div>

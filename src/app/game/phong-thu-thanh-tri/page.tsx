@@ -68,6 +68,7 @@ export default function TowerDefensePage() {
     gold: 120, lives: 20, wave: 0, waveTimer: 0, spawnIdx: 0, spawnTimer: 0, waveActive: false,
     towers: [] as Tower[], enemies: [] as Enemy[], projectiles: [] as Projectile[], floats: [] as FloatText[],
     frame: 0, selected: 'rapid' as TowerType, phase: 'idle' as string,
+    tapHighlight: null as { col: number; row: number; alpha: number } | null,
   })
   const selectedRef = useRef<TowerType>('rapid')
 
@@ -122,6 +123,13 @@ export default function TowerDefensePage() {
     ctx.fillText('▶', sc * CS + CS / 2, sr * CS + CS / 2 + 5)
     ctx.fillStyle = '#ef4444'
     ctx.fillText('⚑', ec * CS + CS / 2, er * CS + CS / 2 + 5)
+
+    // Tap-down highlight
+    if (g.tapHighlight && g.tapHighlight.alpha > 0) {
+      const { col, row, alpha } = g.tapHighlight
+      ctx.fillStyle = `rgba(255,255,255,${alpha * 0.28})`
+      ctx.beginPath(); ctx.roundRect(col * CS + 2, row * CS + 2, CS - 4, CS - 4, 4); ctx.fill()
+    }
 
     // Towers
     for (const t of g.towers) {
@@ -293,6 +301,12 @@ export default function TowerDefensePage() {
     for (const f of g.floats) { f.y -= 0.5; f.life -= 0.03 }
     g.floats = g.floats.filter(f => f.life > 0)
 
+    // Fade tap highlight
+    if (g.tapHighlight) {
+      g.tapHighlight.alpha -= 0.06
+      if (g.tapHighlight.alpha <= 0) g.tapHighlight = null
+    }
+
     // Wave management
     if (g.wave < WAVES.length && !g.waveActive) {
       g.waveTimer--
@@ -330,6 +344,22 @@ export default function TowerDefensePage() {
     g.waveActive = true
     rafRef.current = requestAnimationFrame(tick)
   }, [tick, spawnWave])
+
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    const g = gs.current
+    if (g.phase !== 'playing') return
+    const rect = (e.target as HTMLCanvasElement).getBoundingClientRect()
+    const scaleX = W / rect.width, scaleY = H / rect.height
+    const t = e.touches[0]
+    const cx = (t.clientX - rect.left) * scaleX
+    const cy = (t.clientY - rect.top) * scaleY
+    if (cy < GRID_H) {
+      const col = Math.floor(cx / CS), row = Math.floor(cy / CS)
+      if (!isPath(col, row) && !g.towers.some(tw => tw.col === col && tw.row === row)) {
+        g.tapHighlight = { col, row, alpha: 0.8 }
+      }
+    }
+  }, [])
 
   const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     const g = gs.current
@@ -398,6 +428,7 @@ export default function TowerDefensePage() {
             ref={canvasRef} width={W} height={H}
             className="w-full rounded-2xl border border-gray-800 touch-none"
             onClick={handleCanvasClick}
+            onTouchStart={handleTouchStart}
             onTouchEnd={e => { e.preventDefault(); handleTouchClick(e) }}
           />
 
