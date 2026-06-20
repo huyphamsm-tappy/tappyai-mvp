@@ -30,8 +30,9 @@ yarn-error.log*
 # vercel
 .vercel
 
-# SuperTux large binary assets — will be removed from git after Blob upload is complete
-# .blob-urls.env is generated locally by the upload script
+# SuperTux large binary assets — now in Vercel Blob, not tracked in git
+public/games/supertux/supertux2.data
+public/games/supertux/supertux2.wasm
 .blob-urls.env
 
 # typescript
