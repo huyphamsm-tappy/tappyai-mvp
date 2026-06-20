@@ -6,14 +6,17 @@ export async function middleware(request: NextRequest) {
 
   // SharedArrayBuffer (used by SuperTux WASM) requires COOP + COEP headers.
   // Static files in /public can't get headers from next.config.mjs, so we set them here.
-  if (pathname.startsWith('/games/supertux/') || pathname === '/game/supertux') {
+  // /games/supertux        — route handler (serves supertux2.html with COOP+COEP)
+  // /games/supertux/*      — static assets (supertux2.js, worker, images, SW)
+  // /game/supertux         — Next.js page (iframe wrapper, needs credentialless COEP)
+  if (pathname.startsWith('/games/supertux') || pathname === '/game/supertux') {
     const response = NextResponse.next({ request })
     response.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
     // Parent page uses credentialless so PostHog/Supabase cross-origin fetches still work.
-    // Static game files use require-corp (all same-origin, no external deps).
+    // Static game files and route handler use require-corp (all same-origin, no external deps).
     response.headers.set(
       'Cross-Origin-Embedder-Policy',
-      pathname.startsWith('/games/supertux/') ? 'require-corp' : 'credentialless'
+      pathname === '/game/supertux' ? 'credentialless' : 'require-corp'
     )
     return response
   }
