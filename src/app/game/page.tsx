@@ -5,36 +5,12 @@ import { ChevronRight } from 'lucide-react'
 
 const GAMES = [
   {
-    href: '/game/chay-vo-tan',
-    emoji: '🏃',
-    title: 'Chạy Vô Tận',
-    desc: 'Nhảy qua chướng ngại, né đá bay — chạy càng xa càng tốt!',
-    gradient: 'from-orange-500/20 to-amber-500/10',
-    color: 'bg-orange-500',
-  },
-  {
-    href: '/game/hanh-trinh-anh-hung',
-    emoji: '⚔️',
-    title: 'Hành Trình Anh Hùng',
-    desc: 'Nhảy qua hố, dẫm đầu quái, nhặt xu — tới đích giành chiến thắng!',
-    gradient: 'from-violet-500/20 to-purple-500/10',
-    color: 'bg-violet-500',
-  },
-  {
     href: '/game/ban-thien-ha',
     emoji: '🚀',
     title: 'Bắn Thiên Hà',
     desc: 'Phi thuyền tự động bắn — tiêu diệt 5 đợt địch và trùm cuối!',
     gradient: 'from-green-500/20 to-emerald-500/10',
     color: 'bg-green-500',
-  },
-  {
-    href: '/game/chien-binh-huyen-thoai',
-    emoji: '🔫',
-    title: 'Chiến Binh Huyền Thoại',
-    desc: 'Chạy, nhảy, bắn hạ 3 loại quái — tiến chiếm căn cứ địch!',
-    gradient: 'from-cyan-500/20 to-sky-500/10',
-    color: 'bg-cyan-500',
   },
   {
     href: '/game/dua-xe-vo-tan',
@@ -53,30 +29,6 @@ const GAMES = [
     color: 'bg-green-500',
   },
   {
-    href: '/game/rong-bay',
-    emoji: '🐉',
-    title: 'Rồng Bay',
-    desc: 'Chạm màn hình để giữ rồng bay, vượt qua chướng ngại vật.',
-    gradient: 'from-orange-500/20 to-red-500/10',
-    color: 'bg-orange-500',
-  },
-  {
-    href: '/game/ghep-boi',
-    emoji: '🔮',
-    title: 'Ghép Bói',
-    desc: 'Hoán đổi bài bói để ghép 3 — phá combo, giành điểm cao.',
-    gradient: 'from-purple-500/20 to-violet-500/10',
-    color: 'bg-purple-500',
-  },
-  {
-    href: '/game/nhay-vo-cuc',
-    emoji: '🌙',
-    title: 'Nhảy Vô Cực',
-    desc: 'Nhảy từ nền tảng này sang nền tảng khác, leo càng cao càng tốt.',
-    gradient: 'from-indigo-500/20 to-blue-500/10',
-    color: 'bg-indigo-500',
-  },
-  {
     href: '/game/dap-gach',
     emoji: '🧱',
     title: 'Đập Gạch',
@@ -93,77 +45,12 @@ const GAMES = [
     color: 'bg-amber-500',
   },
   {
-    href: '/game/xep-khoi',
-    emoji: '🟦',
-    title: 'Xếp Khối',
-    desc: 'Xếp các khối rơi xuống thành hàng ngang để ghi điểm.',
-    gradient: 'from-blue-500/20 to-sky-500/10',
-    color: 'bg-blue-500',
-  },
-  {
-    href: '/game/lat-the',
-    emoji: '🃏',
-    title: 'Lật Thẻ Ghi Nhớ',
-    desc: 'Lật 2 thẻ cùng lúc, ghi nhớ và tìm các cặp giống nhau.',
-    gradient: 'from-pink-500/20 to-rose-500/10',
-    color: 'bg-pink-500',
-  },
-  {
-    href: '/game/ban-bong',
-    emoji: '🫧',
-    title: 'Bắn Bóng',
-    desc: 'Nhắm và bắn bóng màu, ghép 3+ cùng màu để nổ tung.',
-    gradient: 'from-teal-500/20 to-cyan-500/10',
-    color: 'bg-teal-500',
-  },
-  {
-    href: '/game/doan-chu',
-    emoji: '🔤',
-    title: 'Đoán Chữ',
-    desc: 'Đoán từ tiếng Việt bí ẩn trong 6 lần thử — thử trí nhớ.',
-    gradient: 'from-lime-500/20 to-green-500/10',
-    color: 'bg-lime-600',
-  },
-  {
-    href: '/game/do-vui',
-    emoji: '⭐',
-    title: 'Đố Vui Bói Toán',
-    desc: 'Trắc nghiệm vui về chiêm tinh, con giáp và vận mệnh.',
-    gradient: 'from-violet-500/20 to-purple-500/10',
-    color: 'bg-violet-500',
-  },
-  // Phase 3
-  {
     href: '/game/phong-thu-thanh-tri',
     emoji: '🏰',
     title: 'Phòng Thủ Thành Trì',
     desc: 'Đặt tháp ngăn quái vật — 3 loại tháp, 7 đợt tấn công!',
     gradient: 'from-emerald-500/20 to-green-500/10',
     color: 'bg-emerald-500',
-  },
-  {
-    href: '/game/hang-dong-bi-an',
-    emoji: '⚔️',
-    title: 'Hang Động Bí Ẩn',
-    desc: 'Roguelike lưới: khám phá, chiến đấu, nhặt vật phẩm, tìm lối ra.',
-    gradient: 'from-violet-500/20 to-indigo-500/10',
-    color: 'bg-violet-600',
-  },
-  {
-    href: '/game/tap-de-giau',
-    emoji: '💰',
-    title: 'Tap Để Giàu',
-    desc: 'Idle clicker: chạm kiếm xu, nâng cấp tự động — lưu tiến trình!',
-    gradient: 'from-yellow-500/20 to-amber-500/10',
-    color: 'bg-yellow-500',
-  },
-  {
-    href: '/game/ban-cung-than-thanh',
-    emoji: '🏹',
-    title: 'Bắn Cung Thần Thánh',
-    desc: 'Kéo cung, thả bắn — phá đổ cấu trúc, hạ gục mục tiêu 5 màn!',
-    gradient: 'from-amber-500/20 to-orange-500/10',
-    color: 'bg-amber-500',
   },
 ]
 
@@ -183,7 +70,7 @@ export default function GameHubPage() {
               Chơi game ngay<br />trên TappyAI!
             </h1>
             <p className="text-white/70 text-sm mt-2">
-              20 game miễn phí — không cần cài đặt, chơi ngay trên trình duyệt.
+              7 game miễn phí — không cần cài đặt, chơi ngay trên trình duyệt.
             </p>
           </div>
         </div>
