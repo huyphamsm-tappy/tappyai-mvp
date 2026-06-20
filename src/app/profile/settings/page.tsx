@@ -29,7 +29,7 @@ export default async function SettingsPage() {
             Tùy chọn
           </h3>
           <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={Bell} label="Thông báo" description="Nhắc nhở và cập nhật" comingSoon />
+            <MenuItem icon={Bell} label="Thông báo" description="Nhắc nhở và cập nhật" href="/profile/notifications" />
             <MenuItem icon={Sliders} label="Hành vi ứng dụng" description="Tùy chỉnh trải nghiệm" comingSoon />
             <MenuItem icon={MessageSquareText} label="Phong cách trả lời" description="Giọng văn của trợ lý AI" comingSoon />
             <MenuItem icon={Brain} label="Trí nhớ" description="Quản lý thông tin AI ghi nhớ" comingSoon />
