@@ -132,6 +132,39 @@ const GAMES = [
     gradient: 'from-violet-500/20 to-purple-500/10',
     color: 'bg-violet-500',
   },
+  // Phase 3
+  {
+    href: '/game/phong-thu-thanh-tri',
+    emoji: '🏰',
+    title: 'Phòng Thủ Thành Trì',
+    desc: 'Đặt tháp ngăn quái vật — 3 loại tháp, 7 đợt tấn công!',
+    gradient: 'from-emerald-500/20 to-green-500/10',
+    color: 'bg-emerald-500',
+  },
+  {
+    href: '/game/hang-dong-bi-an',
+    emoji: '⚔️',
+    title: 'Hang Động Bí Ẩn',
+    desc: 'Roguelike lưới: khám phá, chiến đấu, nhặt vật phẩm, tìm lối ra.',
+    gradient: 'from-violet-500/20 to-indigo-500/10',
+    color: 'bg-violet-600',
+  },
+  {
+    href: '/game/tap-de-giau',
+    emoji: '💰',
+    title: 'Tap Để Giàu',
+    desc: 'Idle clicker: chạm kiếm xu, nâng cấp tự động — lưu tiến trình!',
+    gradient: 'from-yellow-500/20 to-amber-500/10',
+    color: 'bg-yellow-500',
+  },
+  {
+    href: '/game/ban-cung-than-thanh',
+    emoji: '🏹',
+    title: 'Bắn Cung Thần Thánh',
+    desc: 'Kéo cung, thả bắn — phá đổ cấu trúc, hạ gục mục tiêu 5 màn!',
+    gradient: 'from-amber-500/20 to-orange-500/10',
+    color: 'bg-amber-500',
+  },
 ]
 
 export default function GameHubPage() {
@@ -150,7 +183,7 @@ export default function GameHubPage() {
               Chơi game ngay<br />trên TappyAI!
             </h1>
             <p className="text-white/70 text-sm mt-2">
-              16 game miễn phí — không cần cài đặt, chơi ngay trên trình duyệt.
+              20 game miễn phí — không cần cài đặt, chơi ngay trên trình duyệt.
             </p>
           </div>
         </div>
