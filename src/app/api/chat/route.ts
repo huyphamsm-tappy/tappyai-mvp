@@ -1084,6 +1084,12 @@ LUAT 3: Neu khong con option nao trong tam gia, tra loi: "Trong tam ${budget.min
     : locationIntent === 'unknown'
     ? ''
     : ''
+  const reviewBlock = `\n\n===== DANH GIA & REVIEW - LUAT BAT BUOC (ap dung moi category) =====
+Voi BAT KY dia diem hoac san pham cu the nao duoc de cap trong response:
+1) RATING: Neu ket qua tool co truong 'rating' (vd "4.5/5 (234 danh gia)") → LUON viet kem ngay sau ten dia diem, vi du: "**Ten Quan** ⭐ 4.3/5 (120 luot)". Ap dung cho TAT CA loai: nha hang, cafe, spa, khach san, karaoke, rap phim, diem du lich, cua hang, resort...
+2) REVIEW SENTIMENT: Neu trong snippet, price_search_results, hoac shop_info_results co cum tu the hien cam nhan tich cuc ("view dep", "mon ngon", "dich vu tot", "nhieu nguoi ua chuong", "dong khach", "chat luong", "uy tin", "duoc review tot"...) → them 1 cum ngan (~10 chu) vao sau rating. Chi lay TU KET QUA THUC TE co trong du lieu, TUYET DOI KHONG phat minh rating hoac review khi khong co trong ket qua tool.
+3) KHONG CO RATING: Neu ket qua khong co truong rating va snippet khong de cap den danh gia → bo qua hoan toan, khong ghi "chua co danh gia" hay "khong du thong tin".
+==========================================`
   const ctaBlock = `\n\n===== CTA ACTION BUTTONS - BAT BUOC =====
 Sau moi response co goi y DIA DIEM / SAN PHAM / DICH VU cu the, PHAI them block nay o CUOI CUNG response (sau het text, tren dong moi):
 
@@ -1121,7 +1127,7 @@ TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan
 
   return `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${memoryBlock ? memoryBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${ctaBlock}${scopeBlock}`
+${memoryBlock ? memoryBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
