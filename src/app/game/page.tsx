@@ -5,6 +5,46 @@ import { ChevronRight } from 'lucide-react'
 
 const GAMES = [
   {
+    href: '/game/chay-vo-tan',
+    emoji: '🏃',
+    title: 'Chạy Vô Tận',
+    desc: 'Nhảy qua chướng ngại, né đá bay — chạy càng xa càng tốt!',
+    gradient: 'from-orange-500/20 to-amber-500/10',
+    color: 'bg-orange-500',
+  },
+  {
+    href: '/game/hanh-trinh-anh-hung',
+    emoji: '⚔️',
+    title: 'Hành Trình Anh Hùng',
+    desc: 'Nhảy qua hố, dẫm đầu quái, nhặt xu — tới đích giành chiến thắng!',
+    gradient: 'from-violet-500/20 to-purple-500/10',
+    color: 'bg-violet-500',
+  },
+  {
+    href: '/game/ban-thien-ha',
+    emoji: '🚀',
+    title: 'Bắn Thiên Hà',
+    desc: 'Phi thuyền tự động bắn — tiêu diệt 5 đợt địch và trùm cuối!',
+    gradient: 'from-green-500/20 to-emerald-500/10',
+    color: 'bg-green-500',
+  },
+  {
+    href: '/game/chien-binh-huyen-thoai',
+    emoji: '🔫',
+    title: 'Chiến Binh Huyền Thoại',
+    desc: 'Chạy, nhảy, bắn hạ 3 loại quái — tiến chiếm căn cứ địch!',
+    gradient: 'from-cyan-500/20 to-sky-500/10',
+    color: 'bg-cyan-500',
+  },
+  {
+    href: '/game/dua-xe-vo-tan',
+    emoji: '🚗',
+    title: 'Đua Xe Vô Tận',
+    desc: 'Né xe ngược chiều trên cao tốc — tốc độ tăng dần không ngừng!',
+    gradient: 'from-teal-500/20 to-emerald-500/10',
+    color: 'bg-teal-500',
+  },
+  {
     href: '/game/ran-san-moi',
     emoji: '🐍',
     title: 'Rắn Săn Mồi',
@@ -110,7 +150,7 @@ export default function GameHubPage() {
               Chơi game ngay<br />trên TappyAI!
             </h1>
             <p className="text-white/70 text-sm mt-2">
-              11 game miễn phí — không cần cài đặt, chơi ngay trên trình duyệt.
+              16 game miễn phí — không cần cài đặt, chơi ngay trên trình duyệt.
             </p>
           </div>
         </div>
