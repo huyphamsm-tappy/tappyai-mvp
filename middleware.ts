@@ -2,6 +2,22 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // SharedArrayBuffer (used by SuperTux WASM) requires COOP + COEP headers.
+  // Static files in /public can't get headers from next.config.mjs, so we set them here.
+  if (pathname.startsWith('/games/supertux/') || pathname === '/game/supertux') {
+    const response = NextResponse.next({ request })
+    response.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
+    // Parent page uses credentialless so PostHog/Supabase cross-origin fetches still work.
+    // Static game files use require-corp (all same-origin, no external deps).
+    response.headers.set(
+      'Cross-Origin-Embedder-Policy',
+      pathname.startsWith('/games/supertux/') ? 'require-corp' : 'credentialless'
+    )
+    return response
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
