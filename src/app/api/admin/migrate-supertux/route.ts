@@ -17,6 +17,16 @@ const GUARD_KEY = 'st-migrate-k7x9p2m4'
 // Allow up to 5 minutes — uploading 245 MB needs headroom even on fast internal network.
 export const maxDuration = 300
 
+// Vercel auto-provisions the token under one of these names depending on store count/name.
+function findBlobToken(): string | undefined {
+  // Primary store (only one store in project)
+  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN
+  // Named store: "tappyai-mvp-blob" → TAPPYAI_MVP_BLOB
+  if (process.env.BLOB_READ_WRITE_TOKEN_TAPPYAI_MVP_BLOB)
+    return process.env.BLOB_READ_WRITE_TOKEN_TAPPYAI_MVP_BLOB
+  return undefined
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
 
@@ -24,10 +34,17 @@ export async function GET(request: Request) {
     return Response.json({ error: 'Forbidden — pass ?key=...' }, { status: 403 })
   }
 
-  const token = process.env.BLOB_READ_WRITE_TOKEN
+  // Diagnostic: show which BLOB_* env vars exist (names only, never values)
+  const blobEnvKeys = Object.keys(process.env).filter(k => k.includes('BLOB'))
+
+  const token = findBlobToken()
   if (!token) {
     return Response.json(
-      { error: 'BLOB_READ_WRITE_TOKEN not available — is the Blob store linked to this project?' },
+      {
+        error: 'No BLOB_READ_WRITE_TOKEN found — Blob store may not be linked to this project yet.',
+        hint: 'Go to Vercel → Storage → tappyai-mvp-blob → Connect to Project, then redeploy.',
+        blobEnvKeysFound: blobEnvKeys,
+      },
       { status: 500 }
     )
   }
@@ -62,7 +79,7 @@ export async function GET(request: Request) {
         access: 'public',
         contentType: file.contentType,
         token,
-        addRandomSuffix: false,  // deterministic URL (safe to call again if needed)
+        addRandomSuffix: false,
       })
 
       envVars[file.envKey] = blob.url
