@@ -24,6 +24,13 @@ export async function middleware(request: NextRequest) {
 
   let supabaseResponse = NextResponse.next({ request })
 
+  // Collect any cookies set/refreshed during getSession (e.g. token rotation).
+  // We need these on hand so we can copy them onto any redirect response we
+  // create — otherwise a fresh NextResponse.redirect() would silently drop
+  // the rotated tokens, leaving the browser with stale cookies.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const refreshedCookies: Array<{ name: string; value: string; options: any }> = []
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -35,9 +42,11 @@ export async function middleware(request: NextRequest) {
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value, options }) => {
             supabaseResponse.cookies.set(name, value, options)
-          )
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            refreshedCookies.push({ name, value, options: options as any })
+          })
         },
       },
     }
@@ -51,13 +60,23 @@ export async function middleware(request: NextRequest) {
   // /login?returnTo=... after OAuth; without this the user would stay on /login.
   if (request.nextUrl.pathname.startsWith('/login') && session) {
     const returnTo = request.nextUrl.searchParams.get('returnTo')
-    if (returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')) {
-      return NextResponse.redirect(new URL(returnTo, request.url))
-    }
-    const url = request.nextUrl.clone()
-    url.pathname = '/'
-    url.search = ''
-    return NextResponse.redirect(url)
+    const dest =
+      returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
+        ? new URL(returnTo, request.url)
+        : (() => {
+            const u = request.nextUrl.clone()
+            u.pathname = '/'
+            u.search = ''
+            return u
+          })()
+
+    const redirect = NextResponse.redirect(dest)
+    // Copy any rotated session cookies onto the redirect so the browser
+    // receives the latest tokens even via this UX-only shortcut redirect.
+    refreshedCookies.forEach(({ name, value, options }) => {
+      redirect.cookies.set(name, value, options)
+    })
+    return redirect
   }
 
   return supabaseResponse
