@@ -41,9 +41,10 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
 }
 
 function detectLang(text: string): string {
-  // All numeric codepoint constants, zero literal Unicode in source
+  // normalize NFC so composed chars (e.g. ạ=U+1EA1) are single code points
+  const t = text.normalize('NFC')
   let hasViCandidate = false
-  for (const ch of text) {
+  for (const ch of t) {
     const cp = ch.codePointAt(0) ?? 0
     if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'  // hiragana + katakana
     if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'  // hangul syllables
