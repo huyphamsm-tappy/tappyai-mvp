@@ -486,14 +486,14 @@ async function searchPlaces(query: string, location?: string, type?: string) {
       const includedType = type ? (typeMap[type] || type) : undefined
       const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: 'vi', regionCode: 'VN' }
       if (includedType) bodyObj.includedType = includedType
-      const FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.photos.name,places.photos.widthPx,places.photos.heightPx,places.googleMapsUri'
+      const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
       const resp = await Promise.race([
         fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-Goog-Api-Key': key,
-            'X-Goog-FieldMask': FIELD_MASK,
+            'X-Goog-FieldMask': SEARCH_FIELD_MASK,
           },
           body: JSON.stringify(bodyObj),
         }),
@@ -501,25 +501,43 @@ async function searchPlaces(query: string, location?: string, type?: string) {
       ])
       const d = await (resp as Response).json()
       if ((resp as Response).ok && d.places?.length) {
-        // Fetch photo for top result (Supabase cache → Places API (New) photo media)
         const topPlace = d.places[0] as Record<string, unknown>
         const topPlaceId = topPlace.id as string | undefined
-        const rawPhotos = topPlace.photos
-        const topPhotoName = (rawPhotos as Array<{ name: string }>)?.[0]?.name
         console.log(JSON.stringify({
           type: 'tappyai_photo_debug', step: 'places_textsearch_new',
-          fieldMask: FIELD_MASK,
           placesCount: d.places.length,
           topName: (topPlace.displayName as { text?: string })?.text || null,
           topRating: topPlace.rating ?? null,
           topPlaceId: topPlaceId || null,
-          topPlaceKeys: Object.keys(topPlace),
-          photosType: typeof rawPhotos,
-          photosIsNull: rawPhotos === null,
-          photosCount: Array.isArray(rawPhotos) ? rawPhotos.length : -1,
-          hasPhotoName: !!topPhotoName,
-          firstPhotoRaw: Array.isArray(rawPhotos) && rawPhotos.length > 0 ? JSON.stringify(rawPhotos[0]).slice(0, 120) : null,
         }))
+
+        // Text Search (New) never returns photos — fetch photo name via Place Details (Basic SKU)
+        let topPhotoName: string | undefined
+        if (topPlaceId) {
+          try {
+            const detailResp = await Promise.race([
+              fetch(`https://places.googleapis.com/v1/places/${topPlaceId}`, {
+                headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'photos.name' },
+              }),
+              new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
+            ])
+            if ((detailResp as Response).ok) {
+              const detail = await (detailResp as Response).json()
+              topPhotoName = (detail.photos as Array<{ name: string }>)?.[0]?.name
+              console.log(JSON.stringify({
+                type: 'tappyai_photo_debug', step: 'place_details_photo',
+                placeId: topPlaceId,
+                photosCount: Array.isArray(detail.photos) ? detail.photos.length : -1,
+                hasPhotoName: !!topPhotoName,
+              }))
+            } else {
+              console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'place_details_photo', placeId: topPlaceId, httpStatus: (detailResp as Response).status }))
+            }
+          } catch (e) {
+            console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'place_details_exception', error: String(e) }))
+          }
+        }
+
         const topPhotoUrl = (topPlaceId && topPhotoName)
           ? await fetchPlacePhoto(topPlaceId, topPhotoName)
           : null
