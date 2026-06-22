@@ -41,7 +41,13 @@ export default function OnboardingPage() {
       })
     } catch { /* no-op */ }
     const next = searchParams.get('next') || '/'
-    router.push(next)
+    // replace() instead of push() so /onboarding is removed from history.
+    // After the full OAuth flow, history has one entry for /onboarding (the
+    // entire login chain was collapsed by window.location.replace). push()
+    // would leave it there, so pressing Back from the destination returns to
+    // the location-selection screen. replace() makes Back skip past onboarding
+    // entirely and go to whatever the user was doing before needing to log in.
+    router.replace(next)
   }
 
   return (
