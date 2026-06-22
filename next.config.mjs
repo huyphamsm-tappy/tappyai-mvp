@@ -6,6 +6,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    // By default Next.js keeps dynamic-page RSC payloads in the Router Cache
+    // (client-side in-memory) for 30 seconds. Back navigation within that window
+    // serves the stale snapshot instead of re-fetching from the server.
+    // For a chat app this causes conversations to appear empty: the snapshot was
+    // taken before the user chatted, so savedMessages is outdated.
+    // Setting dynamic to 0 forces every navigation (including Back) to re-fetch.
+    staleTimes: { dynamic: 0 },
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },

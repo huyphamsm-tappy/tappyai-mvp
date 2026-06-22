@@ -107,6 +107,10 @@ export default function ChatInterface({
   // navigating — prevents the race where the user clicks before router.replace
   // fires, which would leave /chat (not /chat/{id}) as the Back target.
   const savePromiseRef = useRef<Promise<void> | null>(null)
+  // Set to true from the moment onFinish starts until the save completes.
+  // Allows the CTA click handler to block even when savePromiseRef.current is
+  // momentarily null (between onFinish being queued and it actually running).
+  const savePendingRef = useRef(false)
   const category = initialCategory as CategoryId
   const catInfo = CATEGORIES.find(c => c.id === category)
   const [hasMemory, setHasMemory] = useState(false)
@@ -120,10 +124,12 @@ export default function ChatInterface({
     onFinish: async (message) => {
       const all = [...messages, message]
       if (onSave) {
+        savePendingRef.current = true
         const p = Promise.resolve(onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat'))
         savePromiseRef.current = p
         await p
         savePromiseRef.current = null
+        savePendingRef.current = false
       }
       fetch('/api/memory', {
         method: 'POST',
@@ -307,11 +313,22 @@ export default function ChatInterface({
                               onClick={async (e) => {
                                 logCTAClick(btn)
                                 if (btn.type === 'internal_booking') {
-                                  // Prevent the raw anchor navigation (full-page reload).
-                                  // Instead await any in-flight save so router.replace('/chat/{id}')
-                                  // fires first, then push — keeping /chat/{id} as the Back target.
                                   e.preventDefault()
-                                  if (savePromiseRef.current) await savePromiseRef.current
+                                  // savePendingRef catches the window between onFinish being
+                                  // queued and savePromiseRef.current being set (race where
+                                  // the user clicks the CTA before onFinish has run).
+                                  // Spin-wait for up to 2s so the save can start.
+                                  if (savePendingRef.current || savePromiseRef.current) {
+                                    const deadline = Date.now() + 2000
+                                    while (savePendingRef.current && !savePromiseRef.current && Date.now() < deadline) {
+                                      await new Promise(r => setTimeout(r, 20))
+                                    }
+                                    if (savePromiseRef.current) await savePromiseRef.current
+                                  }
+                                  // Invalidate the Router Cache for this chat page so that
+                                  // pressing Back re-fetches from Supabase and shows the
+                                  // latest saved messages rather than a stale RSC snapshot.
+                                  router.refresh()
                                   router.push(btn.url)
                                 }
                               }}

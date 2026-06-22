@@ -36,7 +36,7 @@ export default function ChatConversation({ conversation }: { conversation: Conve
         <ChatInterface
           initialCategory={conversation.category}
           conversationId={conversation.id}
-          savedMessages={conversation.messages}
+          savedMessages={conversation.messages ?? []}
           onSave={handleSave}
         />
       </div>
