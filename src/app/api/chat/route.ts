@@ -1220,7 +1220,51 @@ async function getTransportOptions(origin: string, destination: string, mode?: s
 
 const LANG_NAMES: Record<string, string> = { en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
 
-function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi'): string {
+interface UserPrefs {
+  budget_level?: string | null
+  cuisine_likes?: string[] | null
+  dietary_restrictions?: string | null
+  inferred_preferences?: Record<string, number> | null
+}
+
+function buildPrefBlock(prefs: UserPrefs): string {
+  const parts: string[] = []
+
+  if (prefs.budget_level) {
+    const budgetMap: Record<string, string> = {
+      cheap: 'Tiết kiệm (dưới 150k/người)',
+      mid: 'Trung bình (150k–500k/người)',
+      high: 'Cao cấp (500k+/người)',
+    }
+    parts.push(`Ngân sách ưa thích: ${budgetMap[prefs.budget_level] || prefs.budget_level}`)
+  }
+
+  if (prefs.cuisine_likes && prefs.cuisine_likes.length > 0) {
+    parts.push(`Ẩm thực yêu thích: ${prefs.cuisine_likes.join(', ')}`)
+  }
+
+  if (prefs.dietary_restrictions) {
+    parts.push(`Lưu ý thực phẩm: ${prefs.dietary_restrictions}`)
+  }
+
+  const inferred = prefs.inferred_preferences || {}
+  const topCats = Object.entries(inferred)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 3)
+    .map(([k, v]) => `${k}×${v}`)
+  if (topCats.length > 0) {
+    parts.push(`Thường đặt chỗ: ${topCats.join(', ')}`)
+  }
+
+  if (parts.length === 0) return ''
+
+  return `===== SỞ THÍCH NGƯỜI DÙNG (ĐỌC KHI GỢI Ý) =====
+${parts.join('\n')}
+Khi gợi ý ăn uống/spa/địa điểm: ƯU TIÊN phong cách & ngân sách đã biết. Không áp đặt nếu user hỏi thứ khác.
+=================================================`
+}
+
+function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi', prefBlock = ''): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) // YYYY-MM-DD
@@ -1296,7 +1340,7 @@ TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan
 
   return `${langBlock}THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${memoryBlock ? memoryBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
+${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
@@ -1370,6 +1414,7 @@ export async function POST(req: Request) {
   // Load user memory + kiểm tra freemium limit
   const FREE_DAILY_LIMIT = 10
   let memoryBlock = ''
+  let prefBlock = ''
   let authedUserId: string | null = null
   let existingMemory: UserMemory | null = null
   let isPro = false
@@ -1378,8 +1423,16 @@ export async function POST(req: Request) {
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
       authedUserId = user.id
-      existingMemory = await getMemory(user.id)
+      const [mem, prefResult] = await Promise.all([
+        getMemory(user.id),
+        supabase.from('user_preferences')
+          .select('budget_level, cuisine_likes, dietary_restrictions, inferred_preferences')
+          .eq('user_id', user.id)
+          .maybeSingle(),
+      ])
+      existingMemory = mem
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory)
+      if (prefResult.data) prefBlock = buildPrefBlock(prefResult.data as UserPrefs)
 
       // Kiểm tra subscription từ DB
       const { data: subData } = await supabase
@@ -1430,7 +1483,7 @@ export async function POST(req: Request) {
   } catch { /* no-op if auth fails */ }
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
-    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang),
+    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock),
     messages,
     maxTokens: intent === 'chitchat' ? 300 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : 5,

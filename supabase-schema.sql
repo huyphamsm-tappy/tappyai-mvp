@@ -178,3 +178,21 @@ alter table public.message_feedback enable row level security;
 drop policy if exists "Users can manage own message feedback" on public.message_feedback;
 create policy "Users can manage own message feedback" on public.message_feedback
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- =============================================
+-- 8. Bảng user_preferences (cá nhân hóa sở thích)
+-- =============================================
+create table if not exists public.user_preferences (
+  user_id uuid references auth.users on delete cascade primary key,
+  budget_level text check (budget_level in ('cheap', 'mid', 'high')),
+  cuisine_likes text[] default '{}',
+  dietary_restrictions text,
+  inferred_preferences jsonb default '{}'::jsonb, -- tự động từ lịch sử booking {food:3, spa:1}
+  updated_at timestamptz default now()
+);
+
+alter table public.user_preferences enable row level security;
+
+drop policy if exists "Users can manage own preferences" on public.user_preferences;
+create policy "Users can manage own preferences" on public.user_preferences
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);

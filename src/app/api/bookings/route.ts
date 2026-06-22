@@ -1,6 +1,30 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
+async function inferFromBooking(userId: string, serviceType: string | null) {
+  try {
+    const supabase = createClient()
+    const { data } = await supabase
+      .from('user_preferences')
+      .select('inferred_preferences')
+      .eq('user_id', userId)
+      .maybeSingle()
+
+    const current = ((data?.inferred_preferences as Record<string, number>) || {})
+    const key = serviceType || 'other'
+    current[key] = (current[key] || 0) + 1
+
+    await supabase
+      .from('user_preferences')
+      .upsert(
+        { user_id: userId, inferred_preferences: current, updated_at: new Date().toISOString() },
+        { onConflict: 'user_id' }
+      )
+  } catch (e) {
+    console.error('inferFromBooking error:', e)
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const supabase = createClient()
@@ -35,6 +59,9 @@ export async function POST(req: Request) {
       console.error('Booking insert error:', error)
       return NextResponse.json({ error: 'Không thể tạo booking' }, { status: 500 })
     }
+
+    // Fire-and-forget: cập nhật inferred_preferences từ lịch sử booking
+    inferFromBooking(user.id, serviceType || null)
 
     return NextResponse.json({ ok: true, bookingId: data.id })
   } catch (e) {
