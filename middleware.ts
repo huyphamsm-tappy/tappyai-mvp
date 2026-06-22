@@ -24,13 +24,6 @@ export async function middleware(request: NextRequest) {
 
   let supabaseResponse = NextResponse.next({ request })
 
-  // Collect any cookies set/refreshed during getSession (e.g. token rotation).
-  // We need these on hand so we can copy them onto any redirect response we
-  // create — otherwise a fresh NextResponse.redirect() would silently drop
-  // the rotated tokens, leaving the browser with stale cookies.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const refreshedCookies: Array<{ name: string; value: string; options: any }> = []
-
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -44,40 +37,18 @@ export async function middleware(request: NextRequest) {
           supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) => {
             supabaseResponse.cookies.set(name, value, options)
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            refreshedCookies.push({ name, value, options: options as any })
           })
         },
       },
     }
   )
 
-  // Refresh session cookies — no auth redirects, app is open to all
-  const { data: { session } } = await supabase.auth.getSession()
-
-  // If logged in and on login page → redirect to returnTo (if safe) or home.
-  // This covers the common case where the browser Back button returns to
-  // /login?returnTo=... after OAuth; without this the user would stay on /login.
-  if (request.nextUrl.pathname.startsWith('/login') && session) {
-    const returnTo = request.nextUrl.searchParams.get('returnTo')
-    const dest =
-      returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
-        ? new URL(returnTo, request.url)
-        : (() => {
-            const u = request.nextUrl.clone()
-            u.pathname = '/'
-            u.search = ''
-            return u
-          })()
-
-    const redirect = NextResponse.redirect(dest)
-    // Copy any rotated session cookies onto the redirect so the browser
-    // receives the latest tokens even via this UX-only shortcut redirect.
-    refreshedCookies.forEach(({ name, value, options }) => {
-      redirect.cookies.set(name, value, options)
-    })
-    return redirect
-  }
+  // Refresh session cookies — no auth redirects, app is open to all.
+  // The /login redirect-away is handled client-side in login/page.tsx using
+  // router.replace() so that the browser's Back button works correctly on
+  // iOS Safari (server-side 307 redirects during Back navigation add a new
+  // history entry on Safari, creating an infinite Back→login→service loop).
+  await supabase.auth.getSession()
 
   return supabaseResponse
 }

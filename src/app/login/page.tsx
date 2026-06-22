@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2, ExternalLink, Copy, Check, Sparkles, MapPin, Zap } from 'lucide-react'
 
@@ -43,9 +44,27 @@ export default function LoginPage() {
   const [inApp, setInApp] = useState<{ isInApp: boolean; name: string; isAndroid: boolean }>({ isInApp: false, name: '', isAndroid: false })
   const [copied, setCopied] = useState(false)
   const supabase = createClient()
+  const router = useRouter()
 
   useEffect(() => {
     setInApp(detectInAppBrowser())
+  }, [])
+
+  // If the user is already logged in (e.g. Back navigation to /login after OAuth),
+  // redirect them away using router.replace() so the login page is removed from
+  // history. This avoids the iOS Safari Back-button loop that a server-side 307
+  // redirect creates (Safari adds a new history entry instead of replacing the old one).
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return
+      const returnTo = new URLSearchParams(window.location.search).get('returnTo')
+      const dest =
+        returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
+          ? returnTo
+          : '/'
+      router.replace(dest)
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleGoogleLogin = async () => {
