@@ -14,7 +14,17 @@ import { join } from 'path'
 // 4. SharedArrayBuffer feature check — if COOP/COEP didn't land (old browser, HTTPS miscfg),
 //    the game would hang on a black screen with no message; we show a readable error instead.
 const MOBILE_FIXES_SCRIPT = `<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<style>canvas.emscripten{touch-action:none;-webkit-tap-highlight-color:transparent;}</style>
+<style>
+html,body{height:100%;overflow:hidden;}
+canvas.emscripten{
+  touch-action:none;
+  -webkit-tap-highlight-color:transparent;
+  width:100vw!important;
+  height:100vh!important;
+  margin:0!important;
+  display:block!important;
+}
+</style>
 <script>
 (function(){
   // 1. Silence blocking storage alerts — iOS almost always denies persist(), so the original
@@ -96,6 +106,33 @@ const SAB_CONDITIONAL_LOADER = `<script>
 })();
 </script>`
 
+// After DOMContentLoaded (body inline script has run so Module is defined):
+// 1. Hook Module.postRun to call set_resolution with the CORRECT 2-arg cwrap signature
+//    (supertux2.html's tryResize() only declares ['number'] so height was always 0).
+// 2. Fire the same resize on orientationchange (Samsung/Android landscape ↔ portrait).
+// 3. CSS above forces canvas to 100vw×100vh as a safety net for the initial frame before
+//    set_resolution fires, and for browsers where cwrap throws.
+const CANVAS_RESIZE_SCRIPT = `<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function stResize() {
+    try {
+      var sr = Module.cwrap('set_resolution', 'void', ['number', 'number']);
+      sr(window.innerWidth, window.innerHeight);
+      console.log('[ST] resize', window.innerWidth, 'x', window.innerHeight);
+    } catch(e) {
+      console.warn('[ST] resize fail:', e);
+    }
+  }
+  // Hook postRun so resize fires once WASM + game are fully initialised
+  if (window.Module && Array.isArray(Module.postRun)) {
+    Module.postRun.push(function() { setTimeout(stResize, 300); });
+  }
+  // Orientation change (e.g. Samsung rotates from portrait to landscape)
+  window.addEventListener('orientationchange', function() { setTimeout(stResize, 350); });
+  window.addEventListener('resize', function() { setTimeout(stResize, 100); });
+});
+</script>`
+
 // Inject before supertux2.js to override asset URLs when Vercel Blob env vars are
 // set, and to register the caching service worker.
 function buildInjectScript(dataUrl: string, wasmUrl: string): string {
@@ -136,7 +173,7 @@ export async function GET() {
   const injectScript = buildInjectScript(dataUrl, wasmUrl)
 
   let html = raw
-    .replace('<head>', '<head>' + DEBUG_SCRIPT + MOBILE_FIXES_SCRIPT + '<base href="/games/supertux/">')
+    .replace('<head>', '<head>' + DEBUG_SCRIPT + MOBILE_FIXES_SCRIPT + CANVAS_RESIZE_SCRIPT + '<base href="/games/supertux/">')
     .replace(OLD_ONERROR, NEW_ONERROR)
     // Inject blob URL override + SW registration, then the conditional loader
     // (replaces the static <script async src="supertux2.js"> entirely)

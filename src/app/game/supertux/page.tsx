@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function SuperTuxPage() {
   return (
-    <div className="h-dvh bg-black flex flex-col overflow-hidden">
+    <div className="h-screen h-dvh bg-black flex flex-col overflow-hidden">
       {/* Minimal header — no external resources (COEP-safe) */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-gray-900 border-b border-gray-800 flex-shrink-0">
         <Link
