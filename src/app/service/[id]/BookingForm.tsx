@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { CalendarDays, Clock, Users, MessageSquare, Loader2, CheckCircle2 } from 'lucide-react'
+import { CalendarDays, Clock, Users, MessageSquare, Loader2, CheckCircle2, Share2 } from 'lucide-react'
 
 interface Props {
   serviceId: string
@@ -35,6 +35,12 @@ export default function BookingForm({ serviceId, serviceName, serviceType }: Pro
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState('')
+  const [shared, setShared] = useState(false)
+  const autoBackTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => { if (autoBackTimer.current) clearTimeout(autoBackTimer.current) }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,8 +55,8 @@ export default function BookingForm({ serviceId, serviceName, serviceType }: Pro
       })
       if (res.ok) {
         setDone(true)
-        // Sau 3s quay lại trang trước
-        setTimeout(() => router.back(), 3000)
+        // Auto-back sau 8s — đủ thời gian user đọc + bấm chia sẻ
+        autoBackTimer.current = setTimeout(() => router.back(), 8000)
       } else {
         const d = await res.json()
         setError(d.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
@@ -59,6 +65,36 @@ export default function BookingForm({ serviceId, serviceName, serviceType }: Pro
       setError('Không thể kết nối. Vui lòng thử lại.')
     }
     setLoading(false)
+  }
+
+  const handleShare = async () => {
+    // Cancel auto-back khi user chủ động tương tác
+    if (autoBackTimer.current) { clearTimeout(autoBackTimer.current); autoBackTimer.current = null }
+
+    const lines = [
+      `📋 Xác nhận đặt chỗ — TappyAI`,
+      `🏠 ${serviceName}`,
+      `📅 Ngày: ${date}${time ? ` lúc ${time}` : ''}`,
+      `👤 ${name} | 📞 ${phone}`,
+      guests > 1 ? `👥 Số khách: ${guests}` : '',
+      notes ? `📝 ${notes}` : '',
+    ].filter(Boolean).join('\n')
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({ title: 'Xác nhận đặt chỗ — TappyAI', text: lines })
+      } catch {
+        // User huỷ share — không làm gì
+        return
+      }
+    } else {
+      // Fallback: mở mailto
+      window.location.href = `mailto:?subject=${encodeURIComponent('Xác nhận đặt chỗ — TappyAI')}&body=${encodeURIComponent(lines)}`
+    }
+
+    setShared(true)
+    // Sau khi share xong, back sau 2s
+    autoBackTimer.current = setTimeout(() => router.back(), 2000)
   }
 
   if (done) {
@@ -71,7 +107,30 @@ export default function BookingForm({ serviceId, serviceName, serviceType }: Pro
         <p className="text-sm text-gray-500 dark:text-gray-400">
           Chúng tôi sẽ liên hệ xác nhận với bạn sớm nhất.
         </p>
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">Đang quay lại...</p>
+
+        {/* Tóm tắt booking */}
+        <div className="mt-4 mb-4 text-left bg-gray-50 dark:bg-gray-800 rounded-xl px-4 py-3 text-sm space-y-1">
+          <p className="font-semibold text-gray-900 dark:text-white truncate">{serviceName}</p>
+          <p className="text-gray-500 dark:text-gray-400">📅 {date}{time ? ` lúc ${time}` : ''}</p>
+          <p className="text-gray-500 dark:text-gray-400">👤 {name} · 📞 {phone}</p>
+          {guests > 1 && <p className="text-gray-500 dark:text-gray-400">👥 {guests} khách</p>}
+          {notes && <p className="text-gray-500 dark:text-gray-400 line-clamp-2">📝 {notes}</p>}
+        </div>
+
+        {shared ? (
+          <p className="text-sm text-green-600 dark:text-green-400 font-medium">Đã chia sẻ! Đang quay lại...</p>
+        ) : (
+          <>
+            <button
+              onClick={handleShare}
+              className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 active:scale-95 text-white font-bold text-sm transition-all flex items-center justify-center gap-2"
+            >
+              <Share2 size={16} />
+              Chia sẻ xác nhận
+            </button>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">Tự động quay lại sau vài giây...</p>
+          </>
+        )}
       </div>
     )
   }
