@@ -40,6 +40,16 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
   return chitchat.test(t) ? 'chitchat' : 'tool'
 }
 
+function detectLang(text: string): string {
+  if (/[぀-ヿ]/.test(text)) return 'ja'
+  if (/[가-힯]/.test(text)) return 'ko'
+  if (/[一-鿿]/.test(text)) return 'zh'
+  if (/[؀-ۿ]/.test(text)) return 'ar'
+  if (/[฀-๿]/.test(text)) return 'th'
+  if (/[ăơưđĂƠƯĐ]/.test(text) || /[ạảấầẩẫậắặẳẵẻẽếềệổỗộớờởỡợụủứừửữựỳỵỷỹ]/.test(text)) return 'vi'
+  return 'en'
+}
+
 // ===== BUDGET: extract tu message va filter ket qua tool =====
 type Budget = { min: number; max: number; type: 'range' | 'under' | 'around' }
 
@@ -467,7 +477,7 @@ function isSpecificOtaHotelPage(link: string): boolean {
   }
 }
 
-async function searchPlaces(query: string, location?: string, type?: string) {
+async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi') {
   const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '')
   const cached = getCache(cacheKey)
   if (cached) {
@@ -484,7 +494,7 @@ async function searchPlaces(query: string, location?: string, type?: string) {
       // Map legacy type values to Places API (New) includedType names
       const typeMap: Record<string, string> = { hotel: 'lodging', cinema: 'movie_theater' }
       const includedType = type ? (typeMap[type] || type) : undefined
-      const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: 'vi', regionCode: 'VN' }
+      const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: lang, regionCode: 'VN' }
       if (includedType) bodyObj.includedType = includedType
       const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
       const resp = await Promise.race([
@@ -1195,10 +1205,19 @@ async function getTransportOptions(origin: string, destination: string, mode?: s
   return result
 }
 
-function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string): string {
+const LANG_NAMES: Record<string, string> = { en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
+
+function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi'): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) // YYYY-MM-DD
+  const langName = LANG_NAMES[lang] || 'English'
+  const langBlock = lang !== 'vi' ? `===== CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY) =====
+User is writing in ${langName}. OVERRIDE all Vietnamese language defaults below:
+1. Your ENTIRE response MUST be in ${langName} only — never switch to Vietnamese
+2. Every CTA button "label" MUST be in ${langName} — e.g. for English: "✅ Book - Place Name", "🛒 Find on Shopee", "🏨 Booking.com", "📍 View on Maps"
+3. Vietnamese label examples in the CTA rules below show STRUCTURE only — rewrite all label text in ${langName}
+==========================================================\n\n` : ''
   const budgetBlock = budget
     ? `\n\n===== BUDGET FILTER - LUAT BAT BUOC =====
 User chi co budget ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND.
@@ -1224,6 +1243,7 @@ Voi BAT KY dia diem hoac san pham cu the nao duoc de cap trong response:
 ==========================================`
   const ctaBlock = `\n\n===== CTA ACTION BUTTONS - BAT BUOC =====
 NGOAI LE WORD LIMIT: Block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh (KHONG hien thi cho user), TUYET DOI KHONG tinh vao gioi han 150/250 tu - phai viet day du moi luc du response co ngan den dau.
+NGON NGU NUT: Tat ca "label" trong CTA_BUTTONS PHAI viet bang cung ngon ngu voi response. Neu response = tieng Anh: "✅ Book - Name", "🛒 Find on Shopee", "🏨 Booking.com", "📍 View on Maps". Neu response = tieng Viet: "✅ Đặt chỗ - Tên", "🛒 Tìm trên Shopee". Neu response = tieng Nhat: dung tieng Nhat cho label text.
 
 Sau moi response co goi y DIA DIEM / SAN PHAM / DICH VU cu the, PHAI them block nay o CUOI CUNG response (sau het text, tren dong moi):
 
@@ -1261,7 +1281,7 @@ Neu user hoi bat ky chu de nao NGOAI 5 linh vuc tren (vi du: toan hoc, lap trinh
 TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan hay giai thich ly do.
 =============================================================`
 
-  return `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
+  return `${langBlock}THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
 ${memoryBlock ? memoryBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
 }
@@ -1285,7 +1305,7 @@ NGUYEN TAC BAT BUOC:
 3) Neu tool tra ve du lieu: hien thi ten, dia chi, link ban do cu the
 4) Neu tool tra ve google_maps_search hoac search_url: LUON hien thi link do, dat duoi dang [Xem ket qua](URL) ngay trong cau tra loi - day la yeu cau BAT BUOC, khong duoc bo qua du da goi y nguon khac
 5) Neu khong co du lieu OSM: van tra loi "Tim them tren Google Maps: [link]"
-6) Tra loi tieng Viet than thien, co link cu the de user click
+6) NGON NGU: Phat hien ngon ngu user dang dung va LUON tra loi DUNG NGON NGU DO (tieng Viet → tieng Viet, tieng Anh → tieng Anh, tieng Nhat → tieng Nhat...). Label trong CTA_BUTTONS cung phai dung ngon ngu tuong ung.
 7) TUYET DOI KHONG noi "he thong gap su co" hay "toi khong co thong tin" khi da co link de tham khao
 8) Voi cau chao hoi/cam on xa giao: tra loi ngan gon, than thien, khong can goi tool
 9) Voi web_search: neu ket qua co 'results', tom tat 2-3 ket qua dau (title + snippet) roi cung cap link [Xem them ket qua tim kiem](search_url); neu khong co 'results' (chi co 'note'/'search_url'), PHAI tra loi bang link [Tim kiem truc tiep](search_url) ngay, khong duoc tu liet ke cac website khac thay cho link nay
@@ -1330,6 +1350,7 @@ export async function POST(req: Request) {
   const intent = classifyIntent(lastText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
+  const lang = detectLang(lastText)
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
 
@@ -1396,7 +1417,7 @@ export async function POST(req: Request) {
   } catch { /* no-op if auth fails */ }
   const result = streamText({
     model: anthropic('claude-haiku-4-5-20251001'),
-    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock),
+    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang),
     messages,
     maxTokens: intent === 'chitchat' ? 300 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : 5,
@@ -1431,7 +1452,7 @@ export async function POST(req: Request) {
         }),
         execute: async ({ query, location, type }) => {
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type }))
-          const r = await searchPlaces(query, location, type)
+          const r = await searchPlaces(query, location, type, lang)
           return budget ? applyBudgetFilter(r, budget, query) : r
         }
       }),
