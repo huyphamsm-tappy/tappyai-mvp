@@ -517,22 +517,26 @@ async function searchPlaces(query: string, location?: string, type?: string) {
           try {
             const detailResp = await Promise.race([
               fetch(`https://places.googleapis.com/v1/places/${topPlaceId}`, {
-                headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'photos.name' },
+                headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'photos' },
               }),
               new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
             ])
-            if ((detailResp as Response).ok) {
-              const detail = await (detailResp as Response).json()
-              topPhotoName = (detail.photos as Array<{ name: string }>)?.[0]?.name
-              console.log(JSON.stringify({
-                type: 'tappyai_photo_debug', step: 'place_details_photo',
-                placeId: topPlaceId,
-                photosCount: Array.isArray(detail.photos) ? detail.photos.length : -1,
-                hasPhotoName: !!topPhotoName,
-              }))
-            } else {
-              console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'place_details_photo', placeId: topPlaceId, httpStatus: (detailResp as Response).status }))
-            }
+            const detailStatus = (detailResp as Response).status
+            const rawBody = await (detailResp as Response).text()
+            let detail: Record<string, unknown> = {}
+            try { detail = JSON.parse(rawBody) } catch { /* non-JSON */ }
+            topPhotoName = (detail.photos as Array<{ name: string }>)?.[0]?.name
+            console.log(JSON.stringify({
+              type: 'tappyai_photo_debug', step: 'place_details_photo',
+              placeId: topPlaceId,
+              httpStatus: detailStatus,
+              ok: (detailResp as Response).ok,
+              detailKeys: Object.keys(detail),
+              photosType: typeof detail.photos,
+              photosCount: Array.isArray(detail.photos) ? detail.photos.length : -1,
+              hasPhotoName: !!topPhotoName,
+              rawBodySlice: rawBody.slice(0, 200),
+            }))
           } catch (e) {
             console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'place_details_exception', error: String(e) }))
           }
