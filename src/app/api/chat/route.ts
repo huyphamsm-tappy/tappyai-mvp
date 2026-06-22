@@ -517,7 +517,7 @@ async function searchPlaces(query: string, location?: string, type?: string) {
           try {
             const detailResp = await Promise.race([
               fetch(`https://places.googleapis.com/v1/places/${topPlaceId}`, {
-                headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'photos' },
+                headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'id,photos' },
               }),
               new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
             ])
