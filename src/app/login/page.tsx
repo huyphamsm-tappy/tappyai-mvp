@@ -50,12 +50,13 @@ export default function LoginPage() {
     setInApp(detectInAppBrowser())
   }, [])
 
-  // If the user is already logged in (e.g. Back navigation to /login after OAuth),
-  // redirect them away using router.replace() so the login page is removed from
-  // history. This avoids the iOS Safari Back-button loop that a server-side 307
-  // redirect creates (Safari adds a new history entry instead of replacing the old one).
+  // If the user is already logged in, redirect them away from /login using
+  // router.replace() so the login page entry is removed from browser history.
+  // Also handles bfcache restoration (iOS Safari restores pages from memory
+  // without re-mounting React, so useEffect won't re-run — pageshow catches it).
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    const checkAndRedirect = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
       const returnTo = new URLSearchParams(window.location.search).get('returnTo')
       const dest =
@@ -63,7 +64,15 @@ export default function LoginPage() {
           ? returnTo
           : '/'
       router.replace(dest)
-    })
+    }
+
+    checkAndRedirect()
+
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) checkAndRedirect()
+    }
+    window.addEventListener('pageshow', handlePageShow)
+    return () => window.removeEventListener('pageshow', handlePageShow)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -71,16 +80,23 @@ export default function LoginPage() {
     setLoading(true)
     const urlParams = new URLSearchParams(window.location.search)
     const returnTo = urlParams.get('returnTo') || '/'
-    const { error } = await supabase.auth.signInWithOAuth({
+    // skipBrowserRedirect: true — we handle the navigation ourselves so we can
+    // use window.location.replace() instead of window.location.assign().
+    // replace() removes /login from the browser history stack before going to
+    // Google, so pressing Back after OAuth never lands on /login again.
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(returnTo)}`,
+        skipBrowserRedirect: true,
       },
     })
-    if (error) {
+    if (error || !data?.url) {
       console.error(error)
       setLoading(false)
+      return
     }
+    window.location.replace(data.url)
   }
 
   const handleOpenInChrome = () => {
