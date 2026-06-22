@@ -571,6 +571,7 @@ async function searchPlaces(query: string, location?: string, type?: string, lan
         result = {
           source: 'Google Maps', count: d.places.length,
           results: (d.places as Record<string, unknown>[]).slice(0, 8).map((r, idx) => ({
+            place_id: r.id as string,
             name: (r.displayName as { text?: string })?.text || '',
             address: r.formattedAddress,
             rating: r.rating ? r.rating + '/5 (' + r.userRatingCount + ' danh gia)' : 'Chua co danh gia',
@@ -615,6 +616,43 @@ async function searchPlaces(query: string, location?: string, type?: string, lan
         }
       }
     } catch { /* bo qua, van tra ve danh sach dia diem */ }
+  }
+
+  // Inject TappyAI community ratings (thu that nhanh, khong block ket qua chinh)
+  if (result && typeof result === 'object') {
+    const resultObj = result as Record<string, unknown>
+    const places = resultObj.results as Array<Record<string, unknown>> | undefined
+    if (Array.isArray(places)) {
+      const placeIds = places.filter(r => r.place_id).map(r => r.place_id as string)
+      if (placeIds.length > 0) {
+        try {
+          const supabaseR = createClient()
+          const { data: ratingRows } = await supabaseR
+            .from('reviews')
+            .select('place_id, rating')
+            .in('place_id', placeIds)
+            .eq('is_hidden', false)
+          if (ratingRows && ratingRows.length > 0) {
+            const rMap = new Map<string, { sum: number; count: number }>()
+            for (const row of ratingRows) {
+              const e = rMap.get(row.place_id) || { sum: 0, count: 0 }
+              e.sum += row.rating; e.count += 1
+              rMap.set(row.place_id, e)
+            }
+            result = {
+              ...resultObj,
+              results: places.map(r => {
+                if (!r.place_id) return r
+                const s = rMap.get(r.place_id as string)
+                if (!s) return r
+                const avg = Math.round((s.sum / s.count) * 10) / 10
+                return { ...r, tappy_rating: `${avg}/5 (${s.count} nguoi dung TappyAI da danh gia)` }
+              }),
+            }
+          }
+        } catch { /* bo qua, khong anh huong ket qua chinh */ }
+      }
+    }
   }
 
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
@@ -1323,6 +1361,8 @@ Voi MUA SAM: chon 1 trong 3 mau tren phu hop nhat. Neu shop co ca dia chi vat ly
 
 Luu y:
 - {slug}: tao slug ngan tu ten dia diem, viet thuong, khong dau, noi dau "-" (vd "pho-hanh-quan")
+- PLACE_ID (QUAN TRONG): Neu ket qua tool co truong 'place_id' (Google Place ID, bat dau bang "ChIJ") → PHAI them &placeId={gia_tri_place_id} vao cuoi URL cua MOI nut type="internal_booking". Vi du: url:"/service/ten-quan?name=Ten+Quan&address=Dia+Chi&type=food&placeId=ChIJxxx". Day la ID duy nhat de gan review sau nay. Neu khong co truong 'place_id' → bo qua param nay.
+- tappy_rating (neu co): Day la danh gia thuc te tu nguoi dung TappyAI da den trai nghiem. Hien thi ngay sau rating Google, tren dong rieng: "⭐ TappyAI: X.X/5 (Y nguoi dung)". Chi hien khi truong 'tappy_rating' ton tai trong ket qua tool.
 - Thay khoang trang trong ten/dia chi/san pham bang dau + (URL encode), KHONG dung dau & trong gia tri (se vo cu phap query string)
 - Neu co so dien thoai cu the tu tool → dung so do cho call/zalo/internal_booking URL; neu khong co, bo qua param phone
 - Neu khong co goi y cu the (chitchat, cau hoi chung) → KHONG output block CTA

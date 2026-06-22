@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { BookingShareButton } from './BookingShareButton'
+import { BookingReviewButton } from './BookingReviewButton'
 import { CalendarDays, Clock, Users, ChevronRight } from 'lucide-react'
 
 const SERVICE_EMOJI: Record<string, string> = {
@@ -52,12 +53,22 @@ export default async function BookingsPage() {
     email: user.email,
   }
 
+  const todayVN = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10)
+
   // RLS enforces user_id = auth.uid() automatically; explicit eq is belt-and-suspenders
-  const { data: bookings } = await supabase
-    .from('bookings')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+  const [{ data: bookings }, { data: existingReviews }] = await Promise.all([
+    supabase
+      .from('bookings')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('reviews')
+      .select('place_id')
+      .eq('user_id', user.id),
+  ])
+
+  const reviewedPlaceIds = new Set((existingReviews || []).map(r => r.place_id))
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
@@ -139,16 +150,24 @@ export default async function BookingsPage() {
             )}
 
             {/* Actions */}
-            <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-100 dark:border-gray-800">
-              <BookingShareButton
-                serviceName={b.service_name}
-                date={formatDate(b.date)}
-                time={b.time}
-                customerName={b.customer_name}
-                phone={b.customer_phone}
-                guests={b.guests}
-                notes={b.notes}
-              />
+            <div className="px-4 py-3 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <BookingShareButton
+                  serviceName={b.service_name}
+                  date={formatDate(b.date)}
+                  time={b.time}
+                  customerName={b.customer_name}
+                  phone={b.customer_phone}
+                  guests={b.guests}
+                  notes={b.notes}
+                />
+              </div>
+              {b.place_id && b.date < todayVN && !reviewedPlaceIds.has(b.place_id) && (
+                <BookingReviewButton
+                  placeId={b.place_id}
+                  placeName={b.service_name}
+                />
+              )}
             </div>
           </div>
         ))}

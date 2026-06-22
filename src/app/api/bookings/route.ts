@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { serviceId, serviceName, serviceType, date, time, guests, name, phone, notes } = await req.json()
+    const { serviceId, serviceName, serviceType, date, time, guests, name, phone, notes, placeId } = await req.json()
 
     if (!date || !name || !phone) {
       return NextResponse.json({ error: 'Thiếu thông tin bắt buộc' }, { status: 400 })
@@ -44,6 +44,7 @@ export async function POST(req: Request) {
         service_id: serviceId,
         service_name: serviceName,
         service_type: serviceType,
+        place_id: placeId || null,
         date,
         time: time || null,
         guests: guests || 1,

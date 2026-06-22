@@ -9,6 +9,7 @@ interface Props {
   serviceName: string
   serviceType: string
   userPhone: string
+  placeId?: string
 }
 
 // Tạo các khung giờ hợp lệ
@@ -24,7 +25,7 @@ function getTodayVN() {
   return now.toISOString().slice(0, 10)
 }
 
-export default function BookingForm({ serviceId, serviceName, serviceType }: Props) {
+export default function BookingForm({ serviceId, serviceName, serviceType, placeId }: Props) {
   const router = useRouter()
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
@@ -51,7 +52,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType }: Pro
       const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ serviceId, serviceName, serviceType, date, time, guests, name, phone, notes }),
+        body: JSON.stringify({ serviceId, serviceName, serviceType, date, time, guests, name, phone, notes, placeId: placeId || null }),
       })
       if (res.ok) {
         setDone(true)

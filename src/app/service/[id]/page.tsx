@@ -27,6 +27,7 @@ interface PageProps {
     hours?: string
     maps?: string
     note?: string
+    placeId?: string
   }
 }
 
@@ -76,14 +77,31 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
 
   const meta = CATEGORY_META[service.type] || CATEGORY_META.food
 
-  // Bookings của user cho dịch vụ này
-  const { data: myBookings } = await supabase
-    .from('bookings')
-    .select('id, date, time, guests, status, created_at')
-    .eq('user_id', user.id)
-    .eq('service_id', params.id)
-    .order('created_at', { ascending: false })
-    .limit(3)
+  // Bookings của user + TappyAI community reviews (parallel)
+  const placeId = searchParams.placeId || ''
+  const [{ data: myBookings }, { data: tappyReviewData }] = await Promise.all([
+    supabase
+      .from('bookings')
+      .select('id, date, time, guests, status, created_at')
+      .eq('user_id', user.id)
+      .eq('service_id', params.id)
+      .order('created_at', { ascending: false })
+      .limit(3),
+    placeId
+      ? supabase
+          .from('reviews')
+          .select('id, rating, body, created_at')
+          .eq('place_id', placeId)
+          .eq('is_hidden', false)
+          .order('created_at', { ascending: false })
+          .limit(8)
+      : Promise.resolve({ data: null }),
+  ])
+
+  const tappyReviews = tappyReviewData || []
+  const tappyAvg = tappyReviews.length > 0
+    ? Math.round((tappyReviews.reduce((s: number, r: { rating: number }) => s + r.rating, 0) / tappyReviews.length) * 10) / 10
+    : null
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
@@ -106,12 +124,21 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
               <h1 className="text-xl font-black text-gray-900 dark:text-white leading-tight flex-1">
                 {service.name}
               </h1>
-              {service.rating && (
-                <div className="flex items-center gap-1 bg-amber-50 dark:bg-amber-900/20 px-2.5 py-1.5 rounded-xl shrink-0">
-                  <Star size={13} className="text-amber-500 fill-amber-500" />
-                  <span className="text-sm font-bold text-amber-600 dark:text-amber-400">{service.rating}</span>
-                </div>
-              )}
+              <div className="flex flex-col items-end gap-1.5 shrink-0">
+                {service.rating && (
+                  <div className="flex items-center gap-1 bg-amber-50 dark:bg-amber-900/20 px-2.5 py-1.5 rounded-xl">
+                    <Star size={13} className="text-amber-500 fill-amber-500" />
+                    <span className="text-sm font-bold text-amber-600 dark:text-amber-400">{service.rating}</span>
+                  </div>
+                )}
+                {tappyAvg && (
+                  <div className="flex items-center gap-1 bg-purple-50 dark:bg-purple-900/20 px-2.5 py-1.5 rounded-xl">
+                    <Star size={13} className="text-purple-500 fill-purple-500" />
+                    <span className="text-sm font-bold text-purple-600 dark:text-purple-400">{tappyAvg}</span>
+                    <span className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">Tappy</span>
+                  </div>
+                )}
+              </div>
             </div>
             <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium mt-2 ${meta.color}`}>
               {meta.emoji} {meta.label}
@@ -206,12 +233,46 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
             </div>
           )}
 
+          {/* TappyAI Community Reviews */}
+          {tappyReviews.length > 0 && (
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-sm text-gray-700 dark:text-gray-200">
+                  Đánh giá từ TappyAI
+                </h3>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-amber-400 text-xs tracking-tight">
+                    {'★'.repeat(Math.round(tappyAvg!))}{'☆'.repeat(5 - Math.round(tappyAvg!))}
+                  </span>
+                  <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{tappyAvg}/5</span>
+                  <span className="text-[10px] text-gray-400">({tappyReviews.length})</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {(tappyReviews as Array<{ id: string; rating: number; body: string; created_at: string }>).map(r => (
+                  <div key={r.id} className="border-b border-gray-100 dark:border-gray-800 last:border-0 pb-3 last:pb-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-amber-400 text-xs tracking-tight">
+                        {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
+                      </span>
+                      <span className="text-[10px] text-gray-400 dark:text-gray-500">
+                        {new Date(r.created_at).toLocaleDateString('vi-VN')}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{r.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Booking form */}
           <BookingForm
             serviceId={params.id}
             serviceName={service.name}
             serviceType={service.type}
             userPhone={profile?.full_name || ''}
+            placeId={searchParams.placeId || ''}
           />
         </div>
       </main>
