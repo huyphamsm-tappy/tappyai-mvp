@@ -41,13 +41,23 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
 }
 
 function detectLang(text: string): string {
-  if (/[぀-ヿ]/.test(text)) return 'ja'
-  if (/[가-힯]/.test(text)) return 'ko'
-  if (/[一-鿿]/.test(text)) return 'zh'
-  if (/[؀-ۿ]/.test(text)) return 'ar'
-  if (/[฀-๿]/.test(text)) return 'th'
-  if (/[ăơưđĂƠƯĐ]/.test(text) || /[ạảấầẩẫậắặẳẵẻẽếềệổỗộớờởỡợụủứừửữựỳỵỷỹ]/.test(text)) return 'vi'
-  return 'en'
+  // All numeric codepoint constants, zero literal Unicode in source
+  let hasViCandidate = false
+  for (const ch of text) {
+    const cp = ch.codePointAt(0) ?? 0
+    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'  // hiragana + katakana
+    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'  // hangul syllables
+    if (cp >= 0x4E00 && cp <= 0x9FFF) return 'zh'  // CJK unified ideographs
+    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'  // Arabic
+    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'  // Thai
+    // Vietnamese: ă(0103) ơ(01A1) ư(01B0) đ(0111) + Latin Extended Additional (1E00-1EFF)
+    if (!hasViCandidate && (
+      cp === 0x0102 || cp === 0x0103 || cp === 0x01A0 || cp === 0x01A1 ||
+      cp === 0x01AF || cp === 0x01B0 || cp === 0x0110 || cp === 0x0111 ||
+      (cp >= 0x1E00 && cp <= 0x1EFF)
+    )) hasViCandidate = true
+  }
+  return hasViCandidate ? 'vi' : 'en'
 }
 
 // ===== BUDGET: extract tu message va filter ket qua tool =====
