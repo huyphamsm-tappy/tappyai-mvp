@@ -5,7 +5,7 @@ import BottomNav from '@/components/BottomNav'
 import CategoryPills from '@/components/CategoryPills'
 import SearchBar from '@/components/SearchBar'
 import { formatRelativeTime, cn } from '@/lib/utils'
-import { MessageCircle, Sparkles, ChevronRight } from 'lucide-react'
+import { MessageCircle, Sparkles, ChevronRight, ScanText } from 'lucide-react'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import { getMemory } from '@/lib/memory/memoryService'
 
@@ -92,6 +92,31 @@ export default async function HomePage() {
               <span className="text-xs font-medium text-gray-700 dark:text-gray-200 leading-tight">Cung HĐ</span>
             </Link>
           </div>
+        </section>
+
+        {/* Quét tài liệu */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900 dark:text-white">📷 Quét tài liệu</h3>
+            <Link href="/scan" className="text-sm text-primary-500 font-medium">Mở</Link>
+          </div>
+          <Link
+            href="/scan"
+            className="group flex items-center gap-4 rounded-2xl bg-gradient-to-br from-teal-500/15 to-cyan-400/5 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+          >
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 flex items-center justify-center flex-shrink-0 shadow-sm">
+              <ScanText size={28} className="text-teal-600 dark:text-teal-400" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-gray-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                Chụp ảnh → AI trích xuất văn bản
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
+                Quét tài liệu giấy, hóa đơn, thực đơn — xuất ra .TXT, .DOCX hoặc chia sẻ ngay.
+              </p>
+            </div>
+            <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
+          </Link>
         </section>
 
         {/* Viết content */}
