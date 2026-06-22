@@ -41,26 +41,26 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
 }
 
 function detectLang(text: string): string {
-  // NFC so composed chars (e.g. ạ=U+1EA1) are single code points
-  const t = text.normalize('NFC')
+  // Encoding-safe: any non-ASCII char that isn't a recognized Asian script
+  // sets hasNonAscii=true and continues scanning (never short-circuits to 'vi'
+  // mid-loop, so Chinese text with fullwidth punctuation still resolves to 'zh').
+  // Final result: hasCJK→'zh', hasNonAscii→'vi', pure ASCII→'en'.
   let hasCJK = false
-  let hasViCandidate = false
-  for (const ch of t) {
+  let hasNonAscii = false
+  for (const ch of text) {
     const cp = ch.codePointAt(0) ?? 0
-    // Kana is exclusive to Japanese — check before CJK so ja wins over zh
-    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'
-    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'
-    if (cp >= 0x4E00 && cp <= 0x9FFF) { hasCJK = true; continue }  // flag, don't short-circuit
-    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'
-    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'
-    if (!hasViCandidate && (
-      cp === 0x0102 || cp === 0x0103 || cp === 0x01A0 || cp === 0x01A1 ||
-      cp === 0x01AF || cp === 0x01B0 || cp === 0x0110 || cp === 0x0111 ||
-      (cp >= 0x1E00 && cp <= 0x1EFF)
-    )) hasViCandidate = true
+    if (cp <= 0x7F) continue
+    hasNonAscii = true
+    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'       // kana (exclusive to Japanese)
+    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'       // hangul
+    // CJK Unified + fullwidth block (fullwidth punct common in Chinese text)
+    if ((cp >= 0x4E00 && cp <= 0x9FFF) || (cp >= 0xFF00 && cp <= 0xFFEF)) { hasCJK = true; continue }
+    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'       // Arabic
+    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'       // Thai
+    // any other non-ASCII (Latin diacritics, etc.) — keep scanning
   }
   if (hasCJK) return 'zh'
-  return hasViCandidate ? 'vi' : 'en'
+  return hasNonAscii ? 'vi' : 'en'
 }
 
 // ===== BUDGET: extract tu message va filter ket qua tool =====
