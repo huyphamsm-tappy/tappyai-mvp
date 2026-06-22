@@ -486,13 +486,14 @@ async function searchPlaces(query: string, location?: string, type?: string) {
       const includedType = type ? (typeMap[type] || type) : undefined
       const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: 'vi', regionCode: 'VN' }
       if (includedType) bodyObj.includedType = includedType
+      const FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.photos.name,places.photos.widthPx,places.photos.heightPx,places.googleMapsUri'
       const resp = await Promise.race([
         fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-Goog-Api-Key': key,
-            'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.photos,places.googleMapsUri',
+            'X-Goog-FieldMask': FIELD_MASK,
           },
           body: JSON.stringify(bodyObj),
         }),
@@ -503,15 +504,21 @@ async function searchPlaces(query: string, location?: string, type?: string) {
         // Fetch photo for top result (Supabase cache → Places API (New) photo media)
         const topPlace = d.places[0] as Record<string, unknown>
         const topPlaceId = topPlace.id as string | undefined
-        const topPhotoName = (topPlace.photos as Array<{ name: string }>)?.[0]?.name
+        const rawPhotos = topPlace.photos
+        const topPhotoName = (rawPhotos as Array<{ name: string }>)?.[0]?.name
         console.log(JSON.stringify({
           type: 'tappyai_photo_debug', step: 'places_textsearch_new',
+          fieldMask: FIELD_MASK,
           placesCount: d.places.length,
           topName: (topPlace.displayName as { text?: string })?.text || null,
           topRating: topPlace.rating ?? null,
           topPlaceId: topPlaceId || null,
-          photosCount: (topPlace.photos as unknown[])?.length ?? 0,
+          topPlaceKeys: Object.keys(topPlace),
+          photosType: typeof rawPhotos,
+          photosIsNull: rawPhotos === null,
+          photosCount: Array.isArray(rawPhotos) ? rawPhotos.length : -1,
           hasPhotoName: !!topPhotoName,
+          firstPhotoRaw: Array.isArray(rawPhotos) && rawPhotos.length > 0 ? JSON.stringify(rawPhotos[0]).slice(0, 120) : null,
         }))
         const topPhotoUrl = (topPlaceId && topPhotoName)
           ? await fetchPlacePhoto(topPlaceId, topPhotoName)
