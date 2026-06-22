@@ -41,23 +41,25 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
 }
 
 function detectLang(text: string): string {
-  // normalize NFC so composed chars (e.g. ạ=U+1EA1) are single code points
+  // NFC so composed chars (e.g. ạ=U+1EA1) are single code points
   const t = text.normalize('NFC')
+  let hasCJK = false
   let hasViCandidate = false
   for (const ch of t) {
     const cp = ch.codePointAt(0) ?? 0
-    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'  // hiragana + katakana
-    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'  // hangul syllables
-    if (cp >= 0x4E00 && cp <= 0x9FFF) return 'zh'  // CJK unified ideographs
-    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'  // Arabic
-    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'  // Thai
-    // Vietnamese: ă(0103) ơ(01A1) ư(01B0) đ(0111) + Latin Extended Additional (1E00-1EFF)
+    // Kana is exclusive to Japanese — check before CJK so ja wins over zh
+    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'
+    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'
+    if (cp >= 0x4E00 && cp <= 0x9FFF) { hasCJK = true; continue }  // flag, don't short-circuit
+    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'
+    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'
     if (!hasViCandidate && (
       cp === 0x0102 || cp === 0x0103 || cp === 0x01A0 || cp === 0x01A1 ||
       cp === 0x01AF || cp === 0x01B0 || cp === 0x0110 || cp === 0x0111 ||
       (cp >= 0x1E00 && cp <= 0x1EFF)
     )) hasViCandidate = true
   }
+  if (hasCJK) return 'zh'
   return hasViCandidate ? 'vi' : 'en'
 }
 
