@@ -301,9 +301,10 @@ function getCacheClient() {
   return _cacheDb
 }
 
-// ===== GOOGLE PLACES PHOTO with Supabase persistent cache =====
-// Each unique place_id costs $0.007 once (Google Places Photos), then cached forever in DB.
-async function fetchPlacePhoto(placeId: string, photoRef: string): Promise<string | null> {
+// ===== GOOGLE PLACES (NEW) PHOTO with Supabase persistent cache =====
+// Each unique place_id costs $0.007 once (Places API New Photos), then cached forever in DB.
+// photoName is the full resource path returned by Places API (New), e.g. "places/ChIJ.../photos/AeZ..."
+async function fetchPlacePhoto(placeId: string, photoName: string): Promise<string | null> {
   const db = getCacheClient()
   // 1. Check Supabase cache first
   if (db) {
@@ -321,33 +322,36 @@ async function fetchPlacePhoto(placeId: string, photoRef: string): Promise<strin
   } else {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache_skipped', reason: 'no_db_client' }))
   }
-  // 2. Call Google Places Photos API — follows redirect to CDN URL (key never exposed)
+  // 2. Call Places API (New) photo media endpoint — returns JSON with photoUri (no redirect needed)
   const key = process.env.GOOGLE_PLACES_API_KEY
-  if (!key || !photoRef) {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', hasKey: !!key, hasPhotoRef: !!photoRef }))
+  if (!key || !photoName) {
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', hasKey: !!key, hasPhotoName: !!photoName }))
     return null
   }
   const controller = new AbortController()
   const tid = setTimeout(() => controller.abort(), 3000)
   try {
     const resp = await fetch(
-      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${encodeURIComponent(photoRef)}&key=${key}`,
-      { redirect: 'follow', signal: controller.signal }
+      `https://places.googleapis.com/v1/${photoName}/media?key=${key}&maxHeightPx=400&skipHttpRedirect=true`,
+      { signal: controller.signal }
     )
     clearTimeout(tid)
-    const finalUrl = resp.url
-    const safe = !finalUrl.includes('maps.googleapis.com')
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', status: resp.status, ok: resp.ok, finalUrlPrefix: finalUrl.slice(0, 60), safe }))
-    resp.body?.cancel().catch(() => {})
-    if (!resp.ok || !finalUrl || !safe) return null
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', status: resp.status, ok: resp.ok }))
+    if (!resp.ok) return null
+    const data = await resp.json()
+    const photoUri = data?.photoUri as string | undefined
+    // photoUri should be a CDN URL (lh3.googleusercontent.com), not a places.googleapis.com URL
+    const safe = !!photoUri && !photoUri.includes('places.googleapis.com')
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_photoUri', photoUriPrefix: photoUri?.slice(0, 60) || null, safe }))
+    if (!photoUri || !safe) return null
     // 3. Persist to Supabase (fire-and-forget)
     if (db) {
       db.from('place_photos')
-        .upsert({ place_id: placeId, photo_url: finalUrl })
+        .upsert({ place_id: placeId, photo_url: photoUri })
         .then(({ error: e }) => console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_write', placeId, ok: !e, dbError: e?.message || null })))
         .catch(e => console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_write_exception', error: String(e) })))
     }
-    return finalUrl
+    return photoUri
   } catch (e) {
     clearTimeout(tid)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_exception', error: String(e) }))
@@ -472,45 +476,58 @@ async function searchPlaces(query: string, location?: string, type?: string) {
   }
 
   const key = process.env.GOOGLE_PLACES_API_KEY
-  console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, type }))
+  console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, placeType: type }))
   let result: unknown = null
   if (key) {
     try {
       const sq = location ? query + ' ' + location : query
-      const p = new URLSearchParams({ query: sq, key, language: 'vi', region: 'vn' })
-      if (type) p.set('type', type)
+      // Map legacy type values to Places API (New) includedType names
+      const typeMap: Record<string, string> = { hotel: 'lodging', cinema: 'movie_theater' }
+      const includedType = type ? (typeMap[type] || type) : undefined
+      const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: 'vi', regionCode: 'VN' }
+      if (includedType) bodyObj.includedType = includedType
       const resp = await Promise.race([
-        fetch('https://maps.googleapis.com/maps/api/place/textsearch/json?' + p),
+        fetch('https://places.googleapis.com/v1/places:searchText', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': key,
+            'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.photos,places.googleMapsUri',
+          },
+          body: JSON.stringify(bodyObj),
+        }),
         new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
       ])
       const d = await (resp as Response).json()
-      if (d.status === 'OK' && d.results?.length) {
-        // Fetch photo for top result (Supabase cache → Google Places Photos API)
-        const topPlaceId = d.results[0].place_id as string | undefined
-        const topPhotoRef = (d.results[0].photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
+      if ((resp as Response).ok && d.places?.length) {
+        // Fetch photo for top result (Supabase cache → Places API (New) photo media)
+        const topPlace = d.places[0] as Record<string, unknown>
+        const topPlaceId = topPlace.id as string | undefined
+        const topPhotoName = (topPlace.photos as Array<{ name: string }>)?.[0]?.name
         console.log(JSON.stringify({
-          type: 'tappyai_photo_debug', step: 'places_textsearch',
-          resultsCount: d.results.length,
-          topName: d.results[0].name || null,
-          topRating: d.results[0].rating ?? null,
+          type: 'tappyai_photo_debug', step: 'places_textsearch_new',
+          placesCount: d.places.length,
+          topName: (topPlace.displayName as { text?: string })?.text || null,
+          topRating: topPlace.rating ?? null,
           topPlaceId: topPlaceId || null,
-          photosCount: (d.results[0].photos as unknown[])?.length ?? 0,
-          hasPhotoRef: !!topPhotoRef,
+          photosCount: (topPlace.photos as unknown[])?.length ?? 0,
+          hasPhotoName: !!topPhotoName,
         }))
-        const topPhotoUrl = (topPlaceId && topPhotoRef)
-          ? await fetchPlacePhoto(topPlaceId, topPhotoRef)
+        const topPhotoUrl = (topPlaceId && topPhotoName)
+          ? await fetchPlacePhoto(topPlaceId, topPhotoName)
           : null
         result = {
-          source: 'Google Maps', count: d.results.length,
-          results: d.results.slice(0, 8).map((r: Record<string, unknown>, idx: number) => ({
-            name: r.name, address: r.formatted_address,
-            rating: r.rating ? r.rating + '/5 (' + r.user_ratings_total + ' danh gia)' : 'Chua co danh gia',
-            maps_link: 'https://www.google.com/maps/place/?q=place_id:' + r.place_id,
+          source: 'Google Maps', count: d.places.length,
+          results: (d.places as Record<string, unknown>[]).slice(0, 8).map((r, idx) => ({
+            name: (r.displayName as { text?: string })?.text || '',
+            address: r.formattedAddress,
+            rating: r.rating ? r.rating + '/5 (' + r.userRatingCount + ' danh gia)' : 'Chua co danh gia',
+            maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
             ...(idx === 0 && topPhotoUrl ? { photo_url: topPhotoUrl } : {})
           }))
         }
       } else {
-        console.log(JSON.stringify({ type: 'tappyai_places_debug', status: d.status, error_message: d.error_message || null }))
+        console.log(JSON.stringify({ type: 'tappyai_places_debug', apiVersion: 'new', httpStatus: (resp as Response).status, errorMessage: (d.error as { message?: string })?.message || null }))
       }
     } catch (e) {
       console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
@@ -1380,7 +1397,7 @@ export async function POST(req: Request) {
           type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema']).optional()
         }),
         execute: async ({ query, location, type }) => {
-          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, type }))
+          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type }))
           const r = await searchPlaces(query, location, type)
           return budget ? applyBudgetFilter(r, budget, query) : r
         }
