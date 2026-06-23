@@ -566,7 +566,7 @@ async function searchPlaces(query: string, location?: string, type?: string, lan
             place_id: r.id as string,
             name: (r.displayName as { text?: string })?.text || '',
             address: r.formattedAddress,
-            rating: r.rating ? r.rating + '/5 (' + r.userRatingCount + ' danh gia)' : 'Chua co danh gia',
+            google_rating: r.rating ? `${r.rating}⭐ (${(r.userRatingCount as number | undefined)?.toLocaleString('vi-VN') ?? r.userRatingCount} đánh giá Google Maps)` : null,
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
             ...(photoUrls[idx] ? { photo_url: photoUrls[idx] } : {})
           }))
@@ -1323,10 +1323,11 @@ LUAT 3: Neu khong con option nao trong tam gia, tra loi: "Trong tam ${budget.min
     : ''
   const reviewBlock = `\n\n===== DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category) =====
 Voi BAT KY dia diem hoac san pham cu the nao duoc de cap trong response:
-1) RATING: Neu ket qua tool co truong 'rating' (vd "4.5/5 (234 danh gia)") → LUON viet kem ngay sau ten dia diem, vi du: "**Ten Quan** ⭐ 4.3/5 (120 luot)". Ap dung cho TAT CA loai: nha hang, cafe, spa, khach san, karaoke, rap phim, diem du lich, cua hang, resort...
-2) REVIEW SENTIMENT: Neu trong snippet, price_search_results, hoac shop_info_results co cum tu the hien cam nhan tich cuc ("view dep", "mon ngon", "dich vu tot", "nhieu nguoi ua chuong", "dong khach", "chat luong", "uy tin", "duoc review tot"...) → them 1 cum ngan (~10 chu) vao sau rating. Chi lay TU KET QUA THUC TE co trong du lieu, TUYET DOI KHONG phat minh rating hoac review khi khong co trong ket qua tool.
-3) KHONG CO RATING: Neu ket qua khong co truong rating va snippet khong de cap den danh gia → bo qua hoan toan, khong ghi "chua co danh gia" hay "khong du thong tin".
-4) ANH DAI DIEN: Neu ket qua dau tien co truong 'photo_url' → dat chinh xac dong sau tren 1 dong RIENG ngay SAU ten dia diem dau tien: \`![Ảnh địa điểm](GIA_TRI_PHOTO_URL)\` (thay GIA_TRI_PHOTO_URL bang gia tri CHINH XAC cua truong photo_url, copy nguyen ven khong sua doi). Chi them 1 anh duy nhat cho dia diem dau tien. Neu khong co photo_url → khong them bat ky dong anh nao.
+1) GOOGLE RATING: Neu ket qua tool co truong 'google_rating' (vd "4.5⭐ (2,847 đánh giá Google Maps)") → LUON in dam va dat NGAY TRUOC DIA CHI o dong RIENG, truoc moi thong tin khac: "**4.5⭐ (2,847 đánh giá Google Maps)**". Ap dung cho TAT CA loai: nha hang, cafe, spa, khach san, karaoke, rap phim, diem du lich, cua hang, resort...
+2) TAPPY RATING: Neu co truong 'tappy_rating' → hien thi RIENG o dong ke tiep sau google_rating: "⭐ TappyAI: X.X/5 (Y nguoi dung)". Day la danh gia thuc te tu nguoi dung TappyAI da den trai nghiem.
+3) REVIEW SENTIMENT: Neu trong snippet, price_search_results, hoac shop_info_results co cum tu the hien cam nhan tich cuc ("view dep", "mon ngon", "dich vu tot", "nhieu nguoi ua chuong", "dong khach", "chat luong", "uy tin", "duoc review tot"...) → them 1 cum ngan (~10 chu) vao sau rating. Chi lay TU KET QUA THUC TE co trong du lieu, TUYET DOI KHONG phat minh rating hoac review khi khong co trong ket qua tool.
+4) KHONG CO RATING: Neu ket qua khong co truong google_rating → bo qua hoan toan, khong ghi "chua co danh gia" hay "khong du thong tin".
+5) ANH DAI DIEN: Neu dia diem co truong 'photo_url' → dat chinh xac dong sau tren 1 dong RIENG ngay SAU ten dia diem: \`![Ảnh địa điểm](GIA_TRI_PHOTO_URL)\` (thay GIA_TRI_PHOTO_URL bang gia tri CHINH XAC cua truong photo_url, copy nguyen ven khong sua doi). Moi dia diem co photo_url deu duoc hien thi anh. Neu khong co photo_url → khong them bat ky dong anh nao.
 ==========================================`
   const ctaBlock = `\n\n===== CTA ACTION BUTTONS - BAT BUOC =====
 NGOAI LE WORD LIMIT: Block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh (KHONG hien thi cho user), TUYET DOI KHONG tinh vao gioi han 150/250 tu - phai viet day du moi luc du response co ngan den dau.
