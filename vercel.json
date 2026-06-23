@@ -16,6 +16,10 @@
     {
       "path": "/api/cron/travel-reminder",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/deal-notifications",
+      "schedule": "30 0 * * *"
     }
   ]
 }

@@ -98,6 +98,7 @@ export default function NotificationSettings() {
           </p>
           <ul className="space-y-2">
             {[
+              { emoji: '🛍️', text: 'Deal hôm nay gửi lúc 7:30 sáng' },
               { emoji: '🍜', text: 'Nhắc ăn trưa mỗi ngày lúc 11 giờ' },
               { emoji: '📅', text: 'Nhắc lịch đặt chỗ trước 3 ngày' },
               { emoji: '🎁', text: 'Ưu đãi & khuyến mãi đặc biệt từ Tappy' },
