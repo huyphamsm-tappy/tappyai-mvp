@@ -533,59 +533,42 @@ async function searchPlaces(query: string, location?: string, type?: string, lan
       ])
       const d = await (resp as Response).json()
       if ((resp as Response).ok && d.places?.length) {
-        const topPlace = d.places[0] as Record<string, unknown>
-        const topPlaceId = topPlace.id as string | undefined
+        const placesData = (d.places as Record<string, unknown>[]).slice(0, 8)
         console.log(JSON.stringify({
           type: 'tappyai_photo_debug', step: 'places_textsearch_new',
           placesCount: d.places.length,
-          topName: (topPlace.displayName as { text?: string })?.text || null,
-          topRating: topPlace.rating ?? null,
-          topPlaceId: topPlaceId || null,
+          topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
-        // Text Search (New) never returns photos — fetch photo name via Place Details (Basic SKU)
-        let topPhotoName: string | undefined
-        if (topPlaceId) {
-          try {
-            const detailResp = await Promise.race([
-              fetch(`https://places.googleapis.com/v1/places/${topPlaceId}`, {
-                headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'id,photos' },
-              }),
-              new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
-            ])
-            const detailStatus = (detailResp as Response).status
-            const rawBody = await (detailResp as Response).text()
-            let detail: Record<string, unknown> = {}
-            try { detail = JSON.parse(rawBody) } catch { /* non-JSON */ }
-            topPhotoName = (detail.photos as Array<{ name: string }>)?.[0]?.name
-            console.log(JSON.stringify({
-              type: 'tappyai_photo_debug', step: 'place_details_photo',
-              placeId: topPlaceId,
-              httpStatus: detailStatus,
-              ok: (detailResp as Response).ok,
-              detailKeys: Object.keys(detail),
-              photosType: typeof detail.photos,
-              photosCount: Array.isArray(detail.photos) ? detail.photos.length : -1,
-              hasPhotoName: !!topPhotoName,
-              rawBodySlice: rawBody.slice(0, 200),
-            }))
-          } catch (e) {
-            console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'place_details_exception', error: String(e) }))
-          }
-        }
+        // Fetch photos for all places in parallel via Place Details (Basic SKU)
+        const photoUrls = await Promise.all(
+          placesData.map(async (r) => {
+            const placeId = r.id as string
+            if (!placeId) return null
+            try {
+              const detailResp = await Promise.race([
+                fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+                  headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'id,photos' },
+                }),
+                new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
+              ])
+              const detail = await (detailResp as Response).json()
+              const photoName = (detail.photos as Array<{ name: string }>)?.[0]?.name
+              if (photoName) return fetchPlacePhoto(placeId, photoName)
+            } catch { /* skip on timeout or error */ }
+            return null
+          })
+        )
 
-        const topPhotoUrl = (topPlaceId && topPhotoName)
-          ? await fetchPlacePhoto(topPlaceId, topPhotoName)
-          : null
         result = {
           source: 'Google Maps', count: d.places.length,
-          results: (d.places as Record<string, unknown>[]).slice(0, 8).map((r, idx) => ({
+          results: placesData.map((r, idx) => ({
             place_id: r.id as string,
             name: (r.displayName as { text?: string })?.text || '',
             address: r.formattedAddress,
             rating: r.rating ? r.rating + '/5 (' + r.userRatingCount + ' danh gia)' : 'Chua co danh gia',
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
-            ...(idx === 0 && topPhotoUrl ? { photo_url: topPhotoUrl } : {})
+            ...(photoUrls[idx] ? { photo_url: photoUrls[idx] } : {})
           }))
         }
       } else {
