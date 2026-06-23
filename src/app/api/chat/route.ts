@@ -568,6 +568,7 @@ async function searchPlaces(query: string, location?: string, type?: string, lan
             address: r.formattedAddress,
             google_rating: r.rating ? `${r.rating}⭐ (${(r.userRatingCount as number | undefined)?.toLocaleString('vi-VN') ?? r.userRatingCount} đánh giá Google Maps)` : null,
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
+            tiktok_url: `https://www.tiktok.com/search?q=${encodeURIComponent(((r.displayName as { text?: string })?.text || '') + ' review')}`,
             ...(photoUrls[idx] ? { photo_url: photoUrls[idx] } : {})
           }))
         }
@@ -1328,6 +1329,7 @@ Voi BAT KY dia diem hoac san pham cu the nao duoc de cap trong response:
 3) REVIEW SENTIMENT: Neu trong snippet, price_search_results, hoac shop_info_results co cum tu the hien cam nhan tich cuc ("view dep", "mon ngon", "dich vu tot", "nhieu nguoi ua chuong", "dong khach", "chat luong", "uy tin", "duoc review tot"...) → them 1 cum ngan (~10 chu) vao sau rating. Chi lay TU KET QUA THUC TE co trong du lieu, TUYET DOI KHONG phat minh rating hoac review khi khong co trong ket qua tool.
 4) KHONG CO RATING: Neu ket qua khong co truong google_rating → bo qua hoan toan, khong ghi "chua co danh gia" hay "khong du thong tin".
 5) ANH DAI DIEN: Neu dia diem co truong 'photo_url' → dat chinh xac dong sau tren 1 dong RIENG ngay SAU ten dia diem: \`![Ảnh địa điểm](GIA_TRI_PHOTO_URL)\` (thay GIA_TRI_PHOTO_URL bang gia tri CHINH XAC cua truong photo_url, copy nguyen ven khong sua doi). Moi dia diem co photo_url deu duoc hien thi anh. Neu khong co photo_url → khong them bat ky dong anh nao.
+6) TIKTOK REVIEW LINK: Neu dia diem co truong 'tiktok_url' → them chinh xac dong sau vao cuoi mo ta dia diem do: \`🎵 [Xem review TikTok](TIKTOK_URL)\` (thay TIKTOK_URL bang gia tri CHINH XAC cua truong tiktok_url). Ap dung cho TUNG dia diem trong ket qua.
 ==========================================`
   const ctaBlock = `\n\n===== CTA ACTION BUTTONS - BAT BUOC =====
 NGOAI LE WORD LIMIT: Block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh (KHONG hien thi cho user), TUYET DOI KHONG tinh vao gioi han 150/250 tu - phai viet day du moi luc du response co ngan den dau.
