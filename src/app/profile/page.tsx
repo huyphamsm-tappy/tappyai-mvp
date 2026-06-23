@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
-import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart } from 'lucide-react'
+import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users } from 'lucide-react'
 
 export default async function ProfilePage() {
   const supabase = createClient()
@@ -73,6 +73,7 @@ export default async function ProfilePage() {
             <MenuItem icon={CalendarDays} label="Lịch đặt chỗ" description="Nhà hàng, spa, khách sạn đã đặt" href="/profile/bookings" />
             <MenuItem icon={Heart} label="Sở thích của tôi" description="Ngân sách, ẩm thực yêu thích, kiêng cữ" href="/profile/preferences" />
             <MenuItem icon={Bookmark} label="Đã lưu" description="Địa điểm yêu thích đã lưu từ chat" href="/profile/favorites" />
+            <MenuItem icon={Users} label="Đi nhóm" description="Cả team đi ăn gì? Để Tappy gợi ý" href="/group/new" />
             <MenuItem icon={Crown} label="Nâng cấp Pro" description="Không giới hạn tin nhắn & tính năng" href="/subscription" />
           </div>
         </section>
