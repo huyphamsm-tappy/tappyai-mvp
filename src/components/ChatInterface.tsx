@@ -2,6 +2,7 @@
 
 import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart } from 'lucide-react'
 import posthog from 'posthog-js'
@@ -168,8 +169,18 @@ export default function ChatInterface({
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
+  interface UserLocation { lat: number; lng: number; address: string; ts?: number }
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(() => {
+    if (typeof window === 'undefined') return null
+    try {
+      const s = localStorage.getItem('tappy_location')
+      return s ? (JSON.parse(s) as UserLocation) : null
+    } catch { return null }
+  })
+
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload } = useChat({
     api: '/api/chat',
+    body: userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {},
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
       const all = [...messages, message]
@@ -220,6 +231,46 @@ export default function ChatInterface({
     recognitionRef.current?.stop()
     setIsListening(false)
   }, [])
+
+  const handleNearbySearch = useCallback(() => {
+    const send = () => {
+      posthog.capture('nearby_search_clicked')
+      append({ role: 'user', content: 'Gợi ý quán ăn và địa điểm vui chơi gần mình nhé' })
+    }
+
+    if (userLocation) { send(); return }
+
+    // Try localStorage first (set by LocationProvider but not yet in state)
+    try {
+      const stored = localStorage.getItem('tappy_location')
+      if (stored) {
+        const loc = JSON.parse(stored) as UserLocation
+        flushSync(() => setUserLocation(loc))
+        send(); return
+      }
+    } catch {}
+
+    // Request fresh GPS
+    if (!navigator.geolocation) { send(); return }
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude: lat, longitude: lng } = pos.coords
+        let address = ''
+        try {
+          const resp = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+            { headers: { 'Accept-Language': 'vi', 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }
+          )
+          if (resp.ok) { const d = await resp.json(); address = (d?.display_name as string) || '' }
+        } catch {}
+        const loc: UserLocation = { lat, lng, address, ts: Date.now() }
+        localStorage.setItem('tappy_location', JSON.stringify(loc))
+        flushSync(() => setUserLocation(loc))
+        send()
+      },
+      () => send() // denied — send anyway
+    )
+  }, [userLocation, append])
 
   // TTS — managed by useTTS hook
   const tts = useTTS()
@@ -432,6 +483,17 @@ export default function ChatInterface({
         {showEmojiPanel && (
           <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />
         )}
+        {/* Nearby search chip */}
+        <div className="max-w-2xl mx-auto w-full flex gap-2 mb-2">
+          <button
+            type="button"
+            onClick={handleNearbySearch}
+            disabled={isLoading}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 border border-primary-200 dark:border-primary-800 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-all disabled:opacity-40"
+          >
+            📍 Tìm quanh đây
+          </button>
+        </div>
         <form id="chat-form" onSubmit={(e) => { if (input.trim()) posthog.capture('chat_message_sent', { input_method: 'button' }); handleSubmit(e) }} className="max-w-2xl mx-auto w-full flex gap-2 items-end">
           <textarea
               ref={inputRef}

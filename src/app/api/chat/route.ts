@@ -499,8 +499,9 @@ function isSpecificOtaHotelPage(link: string): boolean {
   }
 }
 
-async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi') {
-  const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '')
+async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi', locationBias?: { lat: number; lng: number } | null) {
+  const locBiasKey = locationBias ? `:${locationBias.lat.toFixed(2)},${locationBias.lng.toFixed(2)}` : ''
+  const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '') + locBiasKey
   const cached = getCache(cacheKey)
   if (cached) {
     console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'cache_hit', cacheKey }))
@@ -518,6 +519,11 @@ async function searchPlaces(query: string, location?: string, type?: string, lan
       const includedType = type ? (typeMap[type] || type) : undefined
       const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: lang, regionCode: 'VN' }
       if (includedType) bodyObj.includedType = includedType
+      if (locationBias) {
+        bodyObj.locationBias = {
+          circle: { center: { latitude: locationBias.lat, longitude: locationBias.lng }, radius: 5000.0 }
+        }
+      }
       const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
       const resp = await Promise.race([
         fetch('https://places.googleapis.com/v1/places:searchText', {
@@ -1295,7 +1301,7 @@ Khi gợi ý ăn uống/spa/địa điểm: ƯU TIÊN phong cách & ngân sách 
 =================================================`
 }
 
-function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi', prefBlock = ''): string {
+function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi', prefBlock = '', userLocation?: { lat: number; lng: number; address?: string } | null): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) // YYYY-MM-DD
@@ -1366,6 +1372,9 @@ Luu y:
 - KHI NAO BO QUA NUT DAT CHO: CHI bo qua nut "Dat cho" khi truong 'address' cua dia diem do la chuoi "Xem ban do" (OSM fallback, khong co dia chi thuc). Voi ket qua tu Google Maps (source: "Google Maps"), truong 'address' la dia chi thuc → LUON PHAI them nut dat cho, khong duoc bo qua du dia chi co dai den dau. ⚠️ TUYET DOI KHONG dung ly do "dia chi qua dai" hoac "gioi han tu" de bo nut dat cho.
 - KIEM TRA TRUOC KHI OUTPUT: truoc khi viet block [CTA_BUTTONS], kiem tra: (a) AN UONG/SPA/GIAI TRI - dem so dia diem da liet ke, phai co DUNG SO DO nut "Dat cho" type="internal_booking" tuong ung (vd 3 quan → 3 nut dat cho); (b) DU LICH/KHACH SAN - dem so khach san da liet ke, phai co DUNG SO DO nut "Dat phong" type="internal_booking" tuong ung (vd 3 khach san → 3 nut dat phong) + phai co them it nhat 1 nut Booking.com va 1 nut Agoda - viec da link khach san trong text KHONG the thay the cho nut internal_booking trong CTA; (c) MUA SAM - ONLINE ONLY - phai co nut TikTok Shop. Neu thieu bat ky nut nao, them vao truoc khi ket thuc.
 ==========================================`
+  const gpsBlock = userLocation
+    ? `\n\n===== VỊ TRÍ GPS NGƯỜI DÙNG (ĐỌC KHI GỢI Ý ĐỊA ĐIỂM) =====\nNgười dùng hiện đang ở tọa độ: lat=${userLocation.lat.toFixed(5)}, lng=${userLocation.lng.toFixed(5)}${userLocation.address ? ` (địa chỉ gần: ${userLocation.address.slice(0, 120)})` : ''}.\nNếu có thông tin vị trí này, hãy ưu tiên gợi ý địa điểm gần vị trí đó. Hiển thị khoảng cách nếu có thể ước tính. Nếu user không cung cấp quận/phường → KHÔNG cần hỏi lại vì đã có tọa độ GPS chính xác.\n==============================================`
+    : ''
   const scopeBlock = `\n\n===== PHAM VI HOAT DONG - LUAT CUNG KHONG DUOC VI PHAM =====
 TappyAI CHI ho tro 5 linh vuc: an uong, mua sam, du lich, spa/lam dep, giai tri tai Viet Nam.
 Neu user hoi bat ky chu de nao NGOAI 5 linh vuc tren (vi du: toan hoc, lap trinh, y te, phap luat, chinh tri, tin tuc thoi su quoc te, thoi tiet, cach lam gi do, dich thuat, viet lach, giai thich khai niem...), HAY TU CHOI LICH SU va redirect nhu sau:
@@ -1375,7 +1384,7 @@ TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan
 
   return `${langBlock}THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
+${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
@@ -1430,7 +1439,12 @@ export const maxDuration = 60
 
 export async function POST(req: Request) {
   const startTime = Date.now()
-  const { messages } = await req.json()
+  const { messages, userLocation: rawUserLocation } = await req.json()
+
+  const userLocation: { lat: number; lng: number; address?: string } | null =
+    rawUserLocation && typeof rawUserLocation.lat === 'number' && typeof rawUserLocation.lng === 'number'
+      ? { lat: rawUserLocation.lat, lng: rawUserLocation.lng, address: rawUserLocation.address || '' }
+      : null
 
   const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
   const rawContent = lastUserMsg?.content
@@ -1523,7 +1537,7 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: anthropic(chosenModel),
-    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock),
+    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation),
     experimental_providerMetadata: {
       anthropic: { cacheControl: { type: 'ephemeral' } },
     },
@@ -1560,8 +1574,8 @@ export async function POST(req: Request) {
           type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema']).optional()
         }),
         execute: async ({ query, location, type }) => {
-          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type }))
-          const r = await searchPlaces(query, location, type, lang)
+          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
+          const r = await searchPlaces(query, location, type, lang, userLocation)
           return budget ? applyBudgetFilter(r, budget, query) : r
         }
       }),
