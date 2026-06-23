@@ -1516,8 +1516,8 @@ export async function POST(req: Request) {
       }
     }
   } catch { /* no-op if auth fails */ }
-  const SIMPLE_MODEL = 'claude-haiku-3-5-20241022'
-  const DEFAULT_MODEL = 'claude-sonnet-4-5-20241022'
+  const SIMPLE_MODEL = 'claude-haiku-4-5'
+  const DEFAULT_MODEL = 'claude-sonnet-4-6'
   const chosenModel = isSimpleQuery(lastText, isFirstReply) ? SIMPLE_MODEL : DEFAULT_MODEL
   console.log(JSON.stringify({ type: 'tappyai_model', model: chosenModel }))
 
