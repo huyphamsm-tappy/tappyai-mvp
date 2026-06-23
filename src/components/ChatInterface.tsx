@@ -4,7 +4,7 @@ import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
-import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart } from 'lucide-react'
+import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart, X } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
@@ -77,6 +77,189 @@ function parsePlaceFromUrl(url: string) {
   } catch {
     return { placeId: '', name: '', address: '', type: '' }
   }
+}
+
+function detectFirstPlaceName(text: string, buttons: CTAButton[]): string {
+  const booking = buttons.find(b => b.type === 'internal_booking')
+  if (booking) {
+    const match = booking.url.match(/[?&]name=([^&]+)/)
+    if (match) return decodeURIComponent(match[1].replace(/\+/g, ' '))
+  }
+  const boldMatch = text.match(/\*\*([^*]{3,40})\*\*/)
+  if (boldMatch) return boldMatch[1]
+  return ''
+}
+
+function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[] }) {
+  const [open, setOpen] = useState(false)
+  const [placeName, setPlaceName] = useState('')
+  const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const detected = detectFirstPlaceName(text, buttons)
+
+  const handleSave = async () => {
+    if (!placeName.trim()) return
+    setSaving(true)
+    try {
+      await fetch('/api/favorites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          placeId: `manual_${Date.now()}`,
+          placeName: placeName.trim(),
+          placeAddress: '',
+          placeType: 'saved',
+        }),
+      })
+      setSaved(true)
+      setTimeout(() => { setOpen(false); setSaved(false) }, 1500)
+    } catch {}
+    setSaving(false)
+  }
+
+  if (open) {
+    return (
+      <div className="flex items-center gap-2 mt-2">
+        <input
+          autoFocus
+          value={placeName}
+          onChange={e => setPlaceName(e.target.value)}
+          placeholder="Tên địa điểm muốn lưu?"
+          className="flex-1 text-xs px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+          onKeyDown={e => { if (e.key === 'Enter') handleSave(); if (e.key === 'Escape') setOpen(false) }}
+        />
+        <button
+          onClick={handleSave}
+          disabled={saving || !placeName.trim()}
+          className="text-xs px-2.5 py-1.5 rounded-xl bg-primary-500 text-white disabled:opacity-50 hover:bg-primary-600 transition-colors"
+        >
+          {saved ? '✓' : saving ? '...' : 'Lưu'}
+        </button>
+        <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-0.5">
+          <X size={14} />
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <button
+      onClick={() => { setPlaceName(detected); setOpen(true) }}
+      className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 mt-1 px-1.5 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      title="Lưu địa điểm"
+    >
+      🔖 Lưu địa điểm
+    </button>
+  )
+}
+
+function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
+  const DISTRICTS = ['Quận 1', 'Quận 3', 'Bình Thạnh', 'Thủ Đức', 'Gò Vấp']
+  const BUDGETS = ['Dưới 50k', '50–100k', '100–200k', 'Trên 200k']
+  const DIETARY_OPTS = ['Ăn chay', 'Không hải sản', 'Không cay', 'Không gluten', 'Không có']
+  const [district, setDistrict] = useState('')
+  const [budget, setBudget] = useState('')
+  const [dietary, setDietary] = useState<string[]>([])
+  const [customDistrict, setCustomDistrict] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  const toggleDietary = (item: string) => {
+    if (item === 'Không có') { setDietary(['Không có']); return }
+    setDietary(prev => {
+      const without = prev.filter(d => d !== 'Không có')
+      return without.includes(item) ? without.filter(d => d !== item) : [...without, item]
+    })
+  }
+
+  const handleSubmit = async () => {
+    setSaving(true)
+    const prefs: string[] = []
+    const loc = district || (customDistrict.trim() ? customDistrict.trim() : '')
+    if (loc) prefs.push(`Hay ở khu vực ${loc}`)
+    if (budget) prefs.push(`Ngân sách ăn uống/bữa: ${budget}`)
+    dietary.filter(d => d !== 'Không có').forEach(d => prefs.push(d))
+    try {
+      await fetch('/api/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preferences: prefs }),
+      })
+    } catch {}
+    localStorage.setItem('tappy_onboarded', '1')
+    setSaving(false)
+    onClose(prefs)
+  }
+
+  const handleSkip = () => {
+    localStorage.setItem('tappy_onboarded', '1')
+    onClose([])
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={handleSkip} />
+      <div className="relative w-full max-w-md mx-auto bg-white dark:bg-gray-900 rounded-t-3xl sm:rounded-3xl shadow-2xl px-5 pt-6 pb-8 space-y-5">
+        <div className="text-center mb-1">
+          <div className="text-3xl mb-2">👋</div>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white">Tappy muốn hiểu bạn hơn!</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">3 câu hỏi nhanh để gợi ý chuẩn hơn.</p>
+        </div>
+
+        <div>
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">1. Bạn thường ở khu vực nào?</p>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {DISTRICTS.map(d => (
+              <button key={d} onClick={() => { setDistrict(prev => prev === d ? '' : d); setCustomDistrict('') }}
+                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${district === d ? 'border-primary-500 bg-primary-500 text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
+                {d}
+              </button>
+            ))}
+          </div>
+          <input
+            value={customDistrict}
+            onChange={e => { setCustomDistrict(e.target.value); setDistrict('') }}
+            placeholder="Hoặc nhập khu vực khác..."
+            className="w-full text-sm px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+          />
+        </div>
+
+        <div>
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">2. Ngân sách ăn uống/bữa?</p>
+          <div className="flex flex-wrap gap-2">
+            {BUDGETS.map(b => (
+              <button key={b} onClick={() => setBudget(prev => prev === b ? '' : b)}
+                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${budget === b ? 'border-primary-500 bg-primary-500 text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
+                {b}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">3. Có kiêng cữ gì không?</p>
+          <div className="flex flex-wrap gap-2">
+            {DIETARY_OPTS.map(d => (
+              <button key={d} onClick={() => toggleDietary(d)}
+                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${dietary.includes(d) ? 'border-primary-500 bg-primary-500 text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
+                {d}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={handleSubmit}
+          disabled={saving}
+          className="w-full py-3.5 rounded-2xl font-bold text-base bg-primary-500 hover:bg-primary-600 text-white transition-all disabled:opacity-60"
+        >
+          {saving ? '⌛ Đang lưu...' : '🎉 Bắt đầu khám phá!'}
+        </button>
+        <button onClick={handleSkip} className="w-full text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 py-1">
+          Bỏ qua
+        </button>
+      </div>
+    </div>
+  )
 }
 
 function FavoriteToggle({ placeId, placeName, placeAddress, placeType }: {
@@ -167,6 +350,8 @@ export default function ChatInterface({
   const [hasMemory, setHasMemory] = useState(false)
   const [isListening, setIsListening] = useState(false)
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
+  const [userPreferences, setUserPreferences] = useState<string[]>([])
+  const [showOnboarding, setShowOnboarding] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
   interface UserLocation { lat: number; lng: number; address: string; ts?: number }
@@ -180,7 +365,10 @@ export default function ChatInterface({
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload } = useChat({
     api: '/api/chat',
-    body: userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {},
+    body: {
+      ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
+      ...(userPreferences.length > 0 ? { userPreferences } : {}),
+    },
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
       const all = [...messages, message]
@@ -283,6 +471,17 @@ export default function ChatInterface({
   }, [])
 
   useEffect(() => {
+    fetch('/api/preferences')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d) return
+        if (Array.isArray(d.preferences)) setUserPreferences(d.preferences)
+        if (!localStorage.getItem('tappy_onboarded')) setShowOnboarding(true)
+      })
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => {
     if (initialMessage && messages.length === 0) {
       setInput(initialMessage)
       setTimeout(() => {
@@ -345,6 +544,14 @@ export default function ChatInterface({
 
   return (
     <div className="flex flex-col h-full">
+      {showOnboarding && (
+        <OnboardingModal
+          onClose={(prefs) => {
+            setShowOnboarding(false)
+            if (prefs.length > 0) setUserPreferences(prefs)
+          }}
+        />
+      )}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto w-full px-4 py-5">
           {messages.length === 0 && (
@@ -403,6 +610,7 @@ export default function ChatInterface({
                         onTTSStop={tts.stop}
                         onRegenerate={reload}
                       />
+                      <SavePlaceButton text={text} buttons={buttons} />
                       {buttons.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
                           {buttons.map((btn, i) => {

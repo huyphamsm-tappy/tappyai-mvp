@@ -1439,7 +1439,7 @@ export const maxDuration = 60
 
 export async function POST(req: Request) {
   const startTime = Date.now()
-  const { messages, userLocation: rawUserLocation } = await req.json()
+  const { messages, userLocation: rawUserLocation, userPreferences: rawUserPrefs } = await req.json()
 
   const userLocation: { lat: number; lng: number; address?: string } | null =
     rawUserLocation && typeof rawUserLocation.lat === 'number' && typeof rawUserLocation.lng === 'number'
@@ -1530,6 +1530,16 @@ export async function POST(req: Request) {
       }
     }
   } catch { /* no-op if auth fails */ }
+
+  // Inject freeform user preferences from client request body
+  const rawPrefsArr = Array.isArray(rawUserPrefs)
+    ? (rawUserPrefs as unknown[]).filter(p => typeof p === 'string').slice(0, 50) as string[]
+    : []
+  if (rawPrefsArr.length > 0) {
+    const freeformBlock = `\n\n===== SỞ THÍCH & THÔNG TIN CÁ NHÂN CỦA USER =====\n${rawPrefsArr.map(p => `- ${p}`).join('\n')}\nHãy luôn ghi nhớ và áp dụng những sở thích này khi gợi ý.\n==================================================`
+    prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
+  }
+
   const SIMPLE_MODEL = 'claude-haiku-4-5'
   const DEFAULT_MODEL = 'claude-sonnet-4-6'
   const chosenModel = isSimpleQuery(lastText, isFirstReply) ? SIMPLE_MODEL : DEFAULT_MODEL

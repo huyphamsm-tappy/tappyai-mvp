@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
-import { Check, Save, Loader2 } from 'lucide-react'
+import { Check, Save, Loader2, X, Plus } from 'lucide-react'
 
 const BUDGET_OPTIONS = [
   { value: 'cheap', label: 'Tiết kiệm', desc: 'Dưới 150k/người', emoji: '💚' },
@@ -19,6 +19,17 @@ const CUISINE_OPTIONS = [
   'Đồ ăn nhanh', 'Kem & Tráng miệng',
 ]
 
+const QUICK_PREF_CHIPS = [
+  'Ăn chay thứ 6',
+  'Ngân sách ăn trưa 60–80k',
+  'Thích spa kiểu Nhật',
+  'Dị ứng hải sản',
+  'Hay đi Quận 3',
+  'Không ăn được cay',
+  'Hay đi Bình Thạnh',
+  'Thích không gian yên tĩnh',
+]
+
 type BudgetLevel = 'cheap' | 'mid' | 'high' | null
 
 export default function PreferencesPage() {
@@ -26,6 +37,8 @@ export default function PreferencesPage() {
   const [budget, setBudget] = useState<BudgetLevel>(null)
   const [cuisines, setCuisines] = useState<string[]>([])
   const [dietary, setDietary] = useState('')
+  const [preferences, setPreferences] = useState<string[]>([])
+  const [newPref, setNewPref] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -33,12 +46,13 @@ export default function PreferencesPage() {
   useEffect(() => {
     fetch('/api/preferences')
       .then(r => r.json())
-      .then(({ preferences }) => {
-        if (preferences) {
-          setBudget((preferences.budget_level as BudgetLevel) || null)
-          setCuisines(preferences.cuisine_likes || [])
-          setDietary(preferences.dietary_restrictions || '')
+      .then(({ preferences: prefs, structured }) => {
+        if (structured) {
+          setBudget((structured.budget_level as BudgetLevel) || null)
+          setCuisines(structured.cuisine_likes || [])
+          setDietary(structured.dietary_restrictions || '')
         }
+        if (Array.isArray(prefs)) setPreferences(prefs)
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -50,15 +64,33 @@ export default function PreferencesPage() {
     )
   }, [])
 
+  const addPref = useCallback((text: string) => {
+    const trimmed = text.trim()
+    if (!trimmed || preferences.includes(trimmed) || preferences.length >= 50) return
+    setPreferences(prev => [...prev, trimmed])
+    setNewPref('')
+  }, [preferences])
+
+  const removePref = useCallback((pref: string) => {
+    setPreferences(prev => prev.filter(p => p !== pref))
+  }, [])
+
   const handleSave = async () => {
     setSaving(true)
     try {
-      const res = await fetch('/api/preferences', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ budget_level: budget, cuisine_likes: cuisines, dietary_restrictions: dietary }),
-      })
-      if (res.ok) {
+      const [r1, r2] = await Promise.all([
+        fetch('/api/preferences', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ budget_level: budget, cuisine_likes: cuisines, dietary_restrictions: dietary }),
+        }),
+        fetch('/api/preferences', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ preferences }),
+        }),
+      ])
+      if (r1.ok && r2.ok) {
         setSaved(true)
         setTimeout(() => { setSaved(false); router.push('/profile') }, 1200)
       }
@@ -86,6 +118,73 @@ export default function PreferencesPage() {
             ✨ TappyAI dùng thông tin này để gợi ý phù hợp hơn với bạn.
           </p>
         </div>
+
+        {/* Freeform preferences — "Tappy nhớ bạn" */}
+        <section>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+            🧠 Tappy nhớ bạn
+          </h3>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">
+            Thêm bất cứ thông tin nào để TappyAI gợi ý sát hơn — khu vực, ngân sách, dị ứng, thói quen...
+          </p>
+
+          {/* Quick-add chips */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            {QUICK_PREF_CHIPS.filter(c => !preferences.includes(c)).map(chip => (
+              <button
+                key={chip}
+                onClick={() => addPref(chip)}
+                className="px-3 py-1.5 rounded-full text-xs font-medium border border-dashed border-primary-300 dark:border-primary-700 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+              >
+                + {chip}
+              </button>
+            ))}
+          </div>
+
+          {/* Text input */}
+          <div className="flex gap-2 mb-3">
+            <input
+              value={newPref}
+              onChange={e => setNewPref(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addPref(newPref) } }}
+              placeholder="Thêm sở thích của bạn..."
+              maxLength={100}
+              className="flex-1 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
+            />
+            <button
+              onClick={() => addPref(newPref)}
+              disabled={!newPref.trim()}
+              className="flex items-center gap-1 px-3 py-2 rounded-xl bg-primary-500 text-white text-sm font-medium disabled:opacity-40 hover:bg-primary-600 transition-all"
+            >
+              <Plus size={15} />
+              Thêm
+            </button>
+          </div>
+
+          {/* Added preferences list */}
+          {preferences.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {preferences.map(pref => (
+                <span
+                  key={pref}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 text-xs font-medium"
+                >
+                  {pref}
+                  <button
+                    onClick={() => removePref(pref)}
+                    className="hover:text-red-500 transition-colors"
+                    aria-label={`Xóa ${pref}`}
+                  >
+                    <X size={12} />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+          {preferences.length === 0 && (
+            <p className="text-xs text-gray-400 dark:text-gray-500 italic">Chưa có sở thích nào. Thêm bằng chips bên trên hoặc tự nhập.</p>
+          )}
+        </section>
 
         {/* Budget */}
         <section>
