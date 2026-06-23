@@ -90,7 +90,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
     placeId
       ? supabase
           .from('reviews')
-          .select('id, rating, body, created_at')
+          .select('id, rating, body, created_at, photos')
           .eq('place_id', placeId)
           .eq('is_hidden', false)
           .order('created_at', { ascending: false })
@@ -249,7 +249,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
                 </div>
               </div>
               <div className="space-y-3">
-                {(tappyReviews as Array<{ id: string; rating: number; body: string; created_at: string }>).map(r => (
+                {(tappyReviews as Array<{ id: string; rating: number; body: string; created_at: string; photos?: string[] }>).map(r => (
                   <div key={r.id} className="border-b border-gray-100 dark:border-gray-800 last:border-0 pb-3 last:pb-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-amber-400 text-xs tracking-tight">
@@ -260,6 +260,20 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
                       </span>
                     </div>
                     <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{r.body}</p>
+                    {r.photos && r.photos.length > 0 && (
+                      <div className="mt-2 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+                        {r.photos.map((url, i) => (
+                          <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="shrink-0">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={url}
+                              alt=""
+                              className="h-20 w-20 rounded-lg object-cover border border-gray-100 dark:border-gray-800 hover:opacity-90 transition-opacity"
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

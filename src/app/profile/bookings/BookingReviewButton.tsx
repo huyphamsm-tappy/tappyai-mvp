@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { Star, Send, CheckCircle2, Loader2 } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Star, Send, CheckCircle2, Loader2, ImagePlus, X } from 'lucide-react'
 
 interface Props {
   placeId: string
@@ -14,9 +14,27 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
   const [body, setBody] = useState('')
+  const [photos, setPhotos] = useState<{ file: File; preview: string }[]>([])
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState('')
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  function handleFiles(files: FileList | null) {
+    if (!files) return
+    const allowed = Array.from(files)
+      .filter(f => f.type.startsWith('image/'))
+      .slice(0, 3 - photos.length)
+    const newItems = allowed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+    setPhotos(prev => [...prev, ...newItems].slice(0, 3))
+  }
+
+  function removePhoto(idx: number) {
+    setPhotos(prev => {
+      URL.revokeObjectURL(prev[idx].preview)
+      return prev.filter((_, i) => i !== idx)
+    })
+  }
 
   const handleSubmit = async () => {
     if (!rating) { setError('Vui lòng chọn số sao.'); return }
@@ -24,14 +42,26 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
     setError('')
     setLoading(true)
     try {
+      // Upload photos first
+      const uploadedUrls: string[] = []
+      for (const { file } of photos) {
+        const fd = new FormData()
+        fd.append('file', file)
+        const res = await fetch('/api/reviews/upload', { method: 'POST', body: fd })
+        const data = await res.json()
+        if (res.ok && data.url) uploadedUrls.push(data.url)
+        else { setError(data.error || 'Không thể tải ảnh lên.'); setLoading(false); return }
+      }
+
       const res = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ placeId, placeName, placeAddress, rating, body: body.trim() }),
+        body: JSON.stringify({ placeId, placeName, placeAddress, rating, body: body.trim(), photos: uploadedUrls }),
       })
       const data = await res.json()
       if (res.ok) {
         setDone(true)
+        photos.forEach(p => URL.revokeObjectURL(p.preview))
       } else {
         setError(data.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
       }
@@ -98,6 +128,46 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
             <span className="text-[10px] text-gray-400">{body.trim().length}/500</span>
           </div>
 
+          {/* Photo upload */}
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2 flex-wrap">
+              {photos.map((p, idx) => (
+                <div key={idx} className="relative w-16 h-16 shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.preview} alt="" className="w-16 h-16 rounded-lg object-cover border border-amber-200 dark:border-amber-800/40" />
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(idx)}
+                    className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-gray-800 text-white flex items-center justify-center"
+                  >
+                    <X size={10} />
+                  </button>
+                </div>
+              ))}
+              {photos.length < 3 && (
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  className="w-16 h-16 rounded-lg border-2 border-dashed border-amber-300 dark:border-amber-700 flex flex-col items-center justify-center gap-0.5 text-amber-500 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/20 transition-colors"
+                >
+                  <ImagePlus size={16} />
+                  <span className="text-[9px] font-medium">Thêm ảnh</span>
+                </button>
+              )}
+            </div>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={e => handleFiles(e.target.files)}
+            />
+            {photos.length > 0 && (
+              <p className="text-[10px] text-gray-400">Tối đa 3 ảnh · Mỗi ảnh dưới 5MB</p>
+            )}
+          </div>
+
           {error && <p className="text-xs text-red-500 dark:text-red-400">{error}</p>}
 
           <div className="flex gap-2">
@@ -110,7 +180,7 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
               Gửi đánh giá
             </button>
             <button
-              onClick={() => { setOpen(false); setError('') }}
+              onClick={() => { setOpen(false); setError(''); photos.forEach(p => URL.revokeObjectURL(p.preview)); setPhotos([]) }}
               className="px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
             >
               Huỷ

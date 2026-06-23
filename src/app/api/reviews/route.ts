@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập để đánh giá' }, { status: 401 })
 
-  let placeId: string, placeName: string, placeAddress: string, rating: number, body: string
+  let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   try {
     const b = await req.json()
     placeId = b.placeId?.trim()
@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
     placeAddress = b.placeAddress?.trim() || ''
     rating = Number(b.rating)
     body = b.body?.trim()
+    photos = Array.isArray(b.photos) ? b.photos.filter((u: unknown) => typeof u === 'string').slice(0, 3) : []
     if (!placeId || !placeName || !rating || !body) throw new Error('missing fields')
     if (rating < 1 || rating > 5 || !Number.isInteger(rating)) throw new Error('invalid rating')
     if (body.length < 20 || body.length > 500) throw new Error('body length')
@@ -103,6 +104,7 @@ export async function POST(req: NextRequest) {
       place_address: placeAddress,
       rating,
       body,
+      ...(photos.length > 0 ? { photos } : {}),
     })
 
   if (insertError) {
