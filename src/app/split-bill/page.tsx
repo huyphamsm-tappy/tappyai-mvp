@@ -139,6 +139,22 @@ export default function SplitBillPage() {
           </div>
         </div>
 
+        {/* Mode toggle */}
+        <div className="flex rounded-2xl bg-gray-100 dark:bg-gray-800 p-1 gap-1">
+          <button
+            onClick={() => setMode('equal')}
+            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === 'equal' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400'}`}
+          >
+            Chia đều
+          </button>
+          <button
+            onClick={() => setMode('custom')}
+            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === 'custom' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400'}`}
+          >
+            Chia theo món
+          </button>
+        </div>
+
         {/* Result — equal split */}
         {mode === 'equal' && (
           <div className="bg-gradient-to-br from-primary-500 to-accent-500 rounded-3xl p-6 shadow-lg shadow-primary-500/20 text-white">
@@ -171,22 +187,6 @@ export default function SplitBillPage() {
             )}
           </div>
         )}
-
-        {/* Mode toggle */}
-        <div className="flex rounded-2xl bg-gray-100 dark:bg-gray-800 p-1 gap-1">
-          <button
-            onClick={() => setMode('equal')}
-            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === 'equal' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400'}`}
-          >
-            Chia đều
-          </button>
-          <button
-            onClick={() => setMode('custom')}
-            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === 'custom' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400'}`}
-          >
-            Chia theo món
-          </button>
-        </div>
 
         {/* Custom split */}
         {mode === 'custom' && (
