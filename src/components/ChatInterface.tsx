@@ -3,7 +3,7 @@
 import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { Send, Loader2, Sparkles, Mic, MicOff, Smile } from 'lucide-react'
+import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
@@ -62,6 +62,56 @@ function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
   } catch {
     return { text, buttons: [] }
   }
+}
+
+function parsePlaceFromUrl(url: string) {
+  try {
+    const u = new URL(url, 'http://localhost')
+    return {
+      placeId: u.searchParams.get('placeId') || '',
+      name: u.searchParams.get('name') || '',
+      address: u.searchParams.get('address') || '',
+      type: u.searchParams.get('type') || '',
+    }
+  } catch {
+    return { placeId: '', name: '', address: '', type: '' }
+  }
+}
+
+function FavoriteToggle({ placeId, placeName, placeAddress, placeType }: {
+  placeId: string; placeName: string; placeAddress: string; placeType: string
+}) {
+  const [saved, setSaved] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const toggle = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (loading || !placeId) return
+    setLoading(true)
+    setSaved(s => !s)
+    try {
+      await fetch('/api/favorites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ placeId, placeName, placeAddress, placeType }),
+      })
+    } catch { setSaved(s => !s) }
+    setLoading(false)
+  }
+
+  if (!placeId) return null
+  return (
+    <button
+      onClick={toggle}
+      disabled={loading}
+      className="inline-flex items-center justify-center w-8 h-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-red-300 dark:hover:border-red-700 transition-colors flex-shrink-0 disabled:opacity-50"
+      aria-label={saved ? 'Đã lưu' : 'Lưu vào yêu thích'}
+      title={saved ? 'Đã lưu' : 'Lưu vào yêu thích'}
+    >
+      <Heart size={14} className={saved ? 'fill-red-400 text-red-400' : 'text-gray-400 dark:text-gray-500'} />
+    </button>
+  )
 }
 
 function logCTAClick(button: CTAButton) {
@@ -304,44 +354,49 @@ export default function ChatInterface({
                       />
                       {buttons.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
-                          {buttons.map((btn, i) => (
-                            <a
-                              key={i}
-                              href={btn.url}
-                              target={btn.type === 'internal_booking' ? undefined : '_blank'}
-                              rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
-                              onClick={async (e) => {
-                                logCTAClick(btn)
-                                if (btn.type === 'internal_booking') {
-                                  e.preventDefault()
-                                  // savePendingRef catches the window between onFinish being
-                                  // queued and savePromiseRef.current being set (race where
-                                  // the user clicks the CTA before onFinish has run).
-                                  // Spin-wait for up to 2s so the save can start.
-                                  if (savePendingRef.current || savePromiseRef.current) {
-                                    const deadline = Date.now() + 2000
-                                    while (savePendingRef.current && !savePromiseRef.current && Date.now() < deadline) {
-                                      await new Promise(r => setTimeout(r, 20))
+                          {buttons.map((btn, i) => {
+                            const place = btn.type === 'internal_booking' ? parsePlaceFromUrl(btn.url) : null
+                            return (
+                              <div key={i} className="inline-flex items-center gap-1">
+                                <a
+                                  href={btn.url}
+                                  target={btn.type === 'internal_booking' ? undefined : '_blank'}
+                                  rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
+                                  onClick={async (e) => {
+                                    logCTAClick(btn)
+                                    if (btn.type === 'internal_booking') {
+                                      e.preventDefault()
+                                      if (savePendingRef.current || savePromiseRef.current) {
+                                        const deadline = Date.now() + 2000
+                                        while (savePendingRef.current && !savePromiseRef.current && Date.now() < deadline) {
+                                          await new Promise(r => setTimeout(r, 20))
+                                        }
+                                        if (savePromiseRef.current) await savePromiseRef.current
+                                      }
+                                      router.refresh()
+                                      router.push(btn.url)
                                     }
-                                    if (savePromiseRef.current) await savePromiseRef.current
-                                  }
-                                  // Invalidate the Router Cache for this chat page so that
-                                  // pressing Back re-fetches from Supabase and shows the
-                                  // latest saved messages rather than a stale RSC snapshot.
-                                  router.refresh()
-                                  router.push(btn.url)
-                                }
-                              }}
-                              className={cn(
-                                'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all',
-                                btn.primary
-                                  ? 'bg-primary-500 hover:bg-primary-600 text-white shadow-sm shadow-primary-200 dark:shadow-primary-900/30'
-                                  : 'border border-primary-300 dark:border-primary-700 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20'
-                              )}
-                            >
-                              {btn.label}
-                            </a>
-                          ))}
+                                  }}
+                                  className={cn(
+                                    'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all',
+                                    btn.primary
+                                      ? 'bg-primary-500 hover:bg-primary-600 text-white shadow-sm shadow-primary-200 dark:shadow-primary-900/30'
+                                      : 'border border-primary-300 dark:border-primary-700 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20'
+                                  )}
+                                >
+                                  {btn.label}
+                                </a>
+                                {place?.placeId && (
+                                  <FavoriteToggle
+                                    placeId={place.placeId}
+                                    placeName={place.name}
+                                    placeAddress={place.address}
+                                    placeType={place.type}
+                                  />
+                                )}
+                              </div>
+                            )
+                          })}
                         </div>
                       )}
                     </div>

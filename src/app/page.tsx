@@ -5,7 +5,7 @@ import BottomNav from '@/components/BottomNav'
 import CategoryPills from '@/components/CategoryPills'
 import SearchBar from '@/components/SearchBar'
 import { formatRelativeTime, cn } from '@/lib/utils'
-import { MessageCircle, Sparkles, ChevronRight, ScanText } from 'lucide-react'
+import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator } from 'lucide-react'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import { getMemory } from '@/lib/memory/memoryService'
 
@@ -117,6 +117,47 @@ export default async function HomePage() {
             </div>
             <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
           </Link>
+        </section>
+
+        {/* Đổi tiền tệ + Chia tiền */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900 dark:text-white">🛠️ Công cụ tiện ích</h3>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Link
+              href="/currency"
+              className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 flex items-center justify-center shadow-sm">
+                <ArrowLeftRight size={20} className="text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  💱 Đổi tiền tệ
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">
+                  VND, USD, EUR, JPY... tỷ giá thực
+                </p>
+              </div>
+            </Link>
+            <Link
+              href="/split-bill"
+              className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-100 to-purple-100 dark:from-violet-900/30 dark:to-purple-900/30 flex items-center justify-center shadow-sm">
+                <Calculator size={20} className="text-violet-600 dark:text-violet-400" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                  🧮 Chia tiền
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">
+                  Chia đều hoặc theo món, có tip
+                </p>
+              </div>
+            </Link>
+          </div>
         </section>
 
         {/* Viết content */}

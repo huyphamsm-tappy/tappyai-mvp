@@ -72,7 +72,7 @@ export default async function ProfilePage() {
             <MenuItem icon={MessageCircle} label="Lịch sử chat" description="Xem các cuộc trò chuyện trước đây" href="/profile/history" />
             <MenuItem icon={CalendarDays} label="Lịch đặt chỗ" description="Nhà hàng, spa, khách sạn đã đặt" href="/profile/bookings" />
             <MenuItem icon={Heart} label="Sở thích của tôi" description="Ngân sách, ẩm thực yêu thích, kiêng cữ" href="/profile/preferences" />
-            <MenuItem icon={Bookmark} label="Đã lưu" description="Địa điểm yêu thích" comingSoon />
+            <MenuItem icon={Bookmark} label="Đã lưu" description="Địa điểm yêu thích đã lưu từ chat" href="/profile/favorites" />
             <MenuItem icon={Crown} label="Nâng cấp Pro" description="Không giới hạn tin nhắn & tính năng" href="/subscription" />
           </div>
         </section>
