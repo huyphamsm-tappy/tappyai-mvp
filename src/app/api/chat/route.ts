@@ -5,7 +5,10 @@ import { createClient } from '@/lib/supabase/server'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { getMemory, buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 
-const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+const anthropic = createAnthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY!,
+  headers: { 'anthropic-beta': 'prompt-caching-2024-07-31' },
+})
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
@@ -38,6 +41,12 @@ function classifyIntent(text: string): 'chitchat' | 'tool' {
   if (t.length === 0 || t.length > 40) return 'tool'
   const chitchat = /^(chao|hi|hello|alo|xin chao|cam on|thank|thanks|ok|oke|okie|uh|u|um|tam biet|bye|haha|hehe|hihi|ban la ai|ban ten gi|tappyai la gi|test)/i
   return chitchat.test(t) ? 'chitchat' : 'tool'
+}
+
+const COMPLEX_KW = /\b(restaurant|spa|hotel|nha hang|khach san|quan an|cafe|dat cho|goi y|tim kiem|san pham|mua|gia|review|danh gia|ban do|chi duong|lich trinh|tour|may bay|dat phong|booking|order|delivery|thoi tiet|tin tuc|vang|xe|taxi|shop|cua hang|tiem|quan|menu|dich vu|khu vuc|thanh pho|tinh|distric|street|road|duong|pho)\b/i
+
+function isSimpleQuery(text: string, isFirstMsg: boolean): boolean {
+  return text.trim().length < 80 && !COMPLEX_KW.test(normalizeVN(text)) && isFirstMsg
 }
 
 function detectLang(text: string): string {
@@ -1521,9 +1530,17 @@ export async function POST(req: Request) {
       }
     }
   } catch { /* no-op if auth fails */ }
+  const SIMPLE_MODEL = 'claude-haiku-3-5-20241022'
+  const DEFAULT_MODEL = 'claude-sonnet-4-5-20241022'
+  const chosenModel = isSimpleQuery(lastText, isFirstReply) ? SIMPLE_MODEL : DEFAULT_MODEL
+  console.log(JSON.stringify({ type: 'tappyai_model', model: chosenModel }))
+
   const result = streamText({
-    model: anthropic('claude-haiku-4-5-20251001'),
+    model: anthropic(chosenModel),
     system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock),
+    experimental_providerMetadata: {
+      anthropic: { cacheControl: { type: 'ephemeral' } },
+    },
     messages,
     maxTokens: intent === 'chitchat' ? 300 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : 5,
