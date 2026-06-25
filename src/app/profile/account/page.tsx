@@ -65,7 +65,7 @@ export default async function AccountPage() {
             Chỉnh sửa
           </h3>
           <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={Edit3} label="Chỉnh sửa hồ sơ" description="Đổi tên hiển thị, ảnh đại diện" comingSoon />
+            <MenuItem icon={Edit3} label="Chỉnh sửa hồ sơ" description="Đổi tên hiển thị, ảnh đại diện" href="/profile/edit" />
           </div>
         </section>
       </main>
