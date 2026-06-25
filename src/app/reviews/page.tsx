@@ -328,7 +328,7 @@ function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => v
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur border-t border-gray-800 flex items-center h-[60px]">
       {[
         { id: 'home', icon: <Home size={24} />, label: 'Trang chủ' },
-        { id: 'explore', icon: <Search size={24} />, label: 'Khám phá' },
+        { id: 'explore', icon: <Search size={24} />, label: 'Review' },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
           className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === item.id ? 'text-white' : 'text-gray-500'}`}>
@@ -362,7 +362,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
       <div className="text-white font-black text-2xl px-3 mb-4">TappyAI</div>
       {[
         { id: 'home', icon: <Home size={22} />, label: 'Trang chủ' },
-        { id: 'explore', icon: <Search size={22} />, label: 'Khám phá' },
+        { id: 'explore', icon: <Search size={22} />, label: 'Review' },
         { id: 'profile', icon: <User size={22} />, label: 'Hồ sơ & Bài của tôi' },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
@@ -489,4 +489,100 @@ export default function ReviewsPage() {
             <div className="h-dvh flex flex-col bg-black overflow-hidden">
               {/* Search bar */}
               <div className="flex-shrink-0 pt-12 px-4 pb-3 border-b border-gray-800">
-                <div classNam
+                <div className="flex items-center gap-2 bg-gray-900 rounded-2xl px-4 py-2.5">
+                  <Search size={18} className="text-gray-500 flex-shrink-0" />
+                  <input
+                    autoFocus
+                    value={searchQuery}
+                    onChange={e => { setSearchQuery(e.target.value); doSearch(e.target.value) }}
+                    placeholder="Tìm kiếm bài review, địa điểm..."
+                    className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
+                  />
+                  {searchQuery && (
+                    <button onClick={() => { setSearchQuery(''); setSearchResults([]) }}>
+                      <X size={16} className="text-gray-500" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Results */}
+              <div className="flex-1 overflow-y-auto">
+                {searching && (
+                  <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>
+                )}
+                {!searching && searchQuery && searchResults.length === 0 && (
+                  <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
+                    <Search size={36} className="opacity-20" />
+                    <p className="text-sm">Không tìm thấy kết quả cho &quot;{searchQuery}&quot;</p>
+                  </div>
+                )}
+                {!searching && searchResults.length > 0 && (
+                  <div>
+                    <p className="text-gray-500 text-xs px-4 py-3">{searchResults.length} kết quả</p>
+                    <div className="grid grid-cols-2 gap-px bg-gray-800">
+                      {searchResults.map(r => {
+                        const thumb = r.photos?.[0]
+                        return (
+                          <div key={r.id} className="relative aspect-[4/5] bg-gray-900">
+                            {thumb
+                              ? <Image src={thumb} alt="" fill className="object-cover" sizes="50vw" />
+                              : <div className="absolute inset-0 flex items-center justify-center p-3"><p className="text-white text-xs text-center line-clamp-5">{r.body}</p></div>}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 p-2">
+                              <p className="text-white text-xs font-semibold line-clamp-1">{r.place_name}</p>
+                              {r.body && <p className="text-gray-300 text-[10px] line-clamp-1 mt-0.5">{r.body}</p>}
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className="text-white text-[10px] flex items-center gap-0.5"><Heart size={9} className="fill-white" /> {r.like_count}</span>
+                                {r.rating > 0 && <span className="text-amber-400 text-[10px]">{'\u2605'.repeat(r.rating)}</span>}
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+                {!searchQuery && (
+                  <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
+                    <Search size={48} className="opacity-20" />
+                    <p className="text-sm">Tìm kiếm quán ăn, địa điểm hoặc nội dung bạn muốn xem</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Profile + My Posts */}
+          {tab === 'profile' && (
+            <div className="h-dvh flex flex-col bg-black overflow-hidden">
+              <div className="px-4 pt-14 pb-4 flex items-center gap-4 border-b border-gray-800 flex-shrink-0">
+                {me ? (
+                  <Link href="/profile" className="text-white text-sm font-semibold underline underline-offset-2">Hồ sơ đầy đủ →</Link>
+                ) : (
+                  <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">Đăng nhập để xem bài của bạn</Link>
+                )}
+              </div>
+              {me ? <MyPosts userId={me} /> : (
+                <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">Hãy đăng nhập trước</div>
+              )}
+            </div>
+          )}
+
+          {/* Inbox placeholder */}
+          {tab === 'inbox' && (
+            <div className="h-dvh flex flex-col items-center justify-center text-gray-500 gap-3">
+              <Bell size={40} className="opacity-30" />
+              <p className="text-sm">Chưa có thông báo</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <TikNav tab={tab} setTab={setTab} userId={me} />
+
+      {commentOf && <CommentDrawer review={commentOf} onClose={() => setCommentOf(null)} onAdded={addComment} />}
+      {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
+    </div>
+  )
+}
