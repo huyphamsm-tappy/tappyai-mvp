@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
       place_id: placeId,
       place_name: placeName,
       place_address: placeAddress,
-      rating: rating || null,
+      rating: rating || 0,
       body: body || '',
       is_verified: isVerified,
       ...(photos.length > 0 ? { photos } : {}),
