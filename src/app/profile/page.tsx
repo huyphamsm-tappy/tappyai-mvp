@@ -87,4 +87,13 @@ export default async function ProfilePage() {
           <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-1">
             Cài đặt
           </h3>
-        
+                  <div className="card divide-y divide-gray-100 dark:divide-gray-800">
+            <MenuItem icon={Settings} label="Cài đặt" description="Ngôn ngữ, thông báo, giao diện" href="/profile/settings" />
+          </div>
+        </section>
+      </main>
+
+      <BottomNav />
+    </div>
+  )
+}
