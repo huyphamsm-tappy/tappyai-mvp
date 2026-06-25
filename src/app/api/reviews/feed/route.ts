@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
       rating, body, photos, is_verified, like_count, comment_count, created_at,
       profiles(full_name, avatar_url)
     `)
-    .eq('is_hidden', false)
+    .or('is_hidden.is.null,is_hidden.eq.false')
     .range(offset, offset + limit - 1)
 
   if (filterUserId) query = query.eq('user_id', filterUserId)
