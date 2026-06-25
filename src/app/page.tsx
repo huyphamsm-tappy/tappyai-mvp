@@ -200,6 +200,27 @@ export default async function HomePage() {
           </Link>
         </section>
 
+        {/* Tappy Together */}
+        <section>
+          <Link
+            href="/group/new"
+            className="group flex items-center gap-4 rounded-2xl bg-gradient-to-br from-violet-500/15 to-pink-400/5 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+          >
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-100 to-pink-100 dark:from-violet-900/30 dark:to-pink-900/30 flex items-center justify-center shadow-sm flex-shrink-0">
+              <span className="text-2xl">👥</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                Tappy Together
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
+                Cùng nhóm chọn quán ăn — AI gợi ý hợp ý tất cả mọi người
+              </p>
+            </div>
+            <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
+          </Link>
+        </section>
+
         {/* Đổi tiền tệ + Chia tiền */}
         <section>
           <div className="flex items-center justify-between mb-3">
