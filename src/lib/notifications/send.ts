@@ -6,6 +6,7 @@ export interface NotificationPayload {
   body: string
   icon?: string
   badge?: string
+  image?: string
   data?: Record<string, unknown>
 }
 
@@ -29,6 +30,7 @@ async function dispatchWebPush(subData: WebPushSubscriptionData, payload: Notifi
       body: payload.body,
       icon: payload.icon ?? '/logo.png',
       badge: payload.badge ?? '/logo.png',
+      ...(payload.image ? { image: payload.image } : {}),
       data: payload.data ?? {},
     })
   )

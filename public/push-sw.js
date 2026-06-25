@@ -10,6 +10,7 @@ self.addEventListener('push', event => {
     body: data.body || '',
     icon: data.icon || '/logo.png',
     badge: '/logo.png',
+    image: data.image || undefined,
     data: data.data || {},
     vibrate: [200, 100, 200],
     requireInteraction: false,
