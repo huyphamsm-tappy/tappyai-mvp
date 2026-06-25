@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import BottomNav from '@/components/BottomNav'
-import { Heart, Star, MapPin, CheckCircle, MessageCircle, X, Send, Loader2 } from 'lucide-react'
+import { Heart, Star, MapPin, CheckCircle, MessageCircle, X, Send, Loader2, PenLine } from 'lucide-react'
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
@@ -321,7 +321,4 @@ export default function ReviewsPage() {
         />
       )}
 
-      <BottomNav />
-    </div>
-  )
-}
+      {/* FAB — Viết rev
