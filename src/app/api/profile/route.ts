@@ -24,33 +24,40 @@ export async function GET() {
 
 // PATCH /api/profile — update name and bio
 export async function PATCH(req: NextRequest) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  try {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const body = await req.json()
-  const full_name = typeof body.full_name === 'string' ? body.full_name.trim().slice(0, 100) : undefined
-  const bio = typeof body.bio === 'string' ? body.bio.trim().slice(0, 200) : undefined
+    let body: Record<string, unknown> = {}
+    try { body = await req.json() } catch { /* empty body is OK */ }
 
-  // Update profiles table (only columns that definitely exist)
-  if (full_name !== undefined) {
-    const { error } = await supabase
-      .from('profiles')
-      .update({ full_name })
-      .eq('id', user.id)
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    const full_name = typeof body.full_name === 'string' ? body.full_name.trim().slice(0, 100) : undefined
+    const bio = typeof body.bio === 'string' ? body.bio.trim().slice(0, 200) : undefined
+
+    // Update profiles table (only columns that definitely exist)
+    if (full_name !== undefined) {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ full_name })
+        .eq('id', user.id)
+      if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    // Save bio + name to auth metadata (no DB schema needed)
+    const metaUpdates: Record<string, string> = {}
+    if (full_name !== undefined) metaUpdates.full_name = full_name
+    if (bio !== undefined) metaUpdates.bio = bio
+
+    if (Object.keys(metaUpdates).length > 0) {
+      await supabase.auth.updateUser({ data: metaUpdates })
+    }
+
+    return NextResponse.json({ ok: true })
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Lỗi không xác định'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
-
-  // Save bio + name to auth metadata (no DB schema needed)
-  const metaUpdates: Record<string, string> = {}
-  if (full_name !== undefined) metaUpdates.full_name = full_name
-  if (bio !== undefined) metaUpdates.bio = bio
-
-  if (Object.keys(metaUpdates).length > 0) {
-    await supabase.auth.updateUser({ data: metaUpdates })
-  }
-
-  return NextResponse.json({ ok: true })
 }
 
 // POST /api/profile — upload avatar

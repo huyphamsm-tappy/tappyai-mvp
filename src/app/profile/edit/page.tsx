@@ -58,9 +58,10 @@ export default function EditProfilePage() {
 
     try {
       const res = await fetch('/api/profile', { method: 'POST', body: formData })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Upload thất bại')
-      setProfile(prev => ({ ...prev, avatar_url: data.avatar_url }))
+      let data: { avatar_url?: string; error?: string } = {}
+      try { data = await res.json() } catch { /* non-JSON response */ }
+      if (!res.ok) throw new Error(data.error || `Lỗi upload ${res.status}`)
+      if (data.avatar_url) setProfile(prev => ({ ...prev, avatar_url: data.avatar_url! }))
       setPreviewUrl(null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload thất bại')
@@ -79,8 +80,9 @@ export default function EditProfilePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ full_name: profile.full_name, bio: profile.bio }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Lưu thất bại')
+      let data: { ok?: boolean; error?: string } = {}
+      try { data = await res.json() } catch { /* non-JSON response */ }
+      if (!res.ok) throw new Error(data.error || `Lỗi ${res.status}`)
       setSaved(true)
       setTimeout(() => {
         setSaved(false)
