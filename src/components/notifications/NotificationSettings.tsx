@@ -111,4 +111,10 @@ export default function NotificationSettings() {
             ))}
           </ul>
           <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">
-            Âm thanh tuỳ chỉnh &quot;Tappy&quot; phát khi ứng dụng đang mở. Khi app đóng, âm thanh do hệ 
+            Âm thanh tuỳ chỉnh &quot;Tappy&quot; phát khi ứng dụng đang mở. Khi app đóng, âm thanh do hệ thống điều khiển.
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}

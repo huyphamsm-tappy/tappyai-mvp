@@ -1873,4 +1873,23 @@ function applyLuxuryStreamFilter(response: Response): Response {
           try {
             const text = JSON.parse(lineRemainder.slice(2)) as string
             const filtered = filterLuxuryBrands(text)
-            controller.enqu
+            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
+          } catch {
+            controller.enqueue(encoder.encode(lineRemainder + '\n'))
+          }
+        } else {
+          controller.enqueue(encoder.encode(lineRemainder + '\n'))
+        }
+      }
+    },
+  })
+
+  const readable = body.pipeThrough(transform)
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    },
+  })
+}
