@@ -74,10 +74,16 @@ export async function POST(req: NextRequest) {
   }
 
   const ext = file.name.split('.').pop() || 'jpg'
-  const blob = await put(`avatars/${user.id}.${ext}`, file, {
-    access: 'public',
-    addRandomSuffix: false,
-  })
+  let blob: { url: string }
+  try {
+    blob = await put(`avatars/${user.id}.${ext}`, file, {
+      access: 'public',
+      addRandomSuffix: false,
+    })
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Upload thất bại'
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
 
   // Update only avatar_url — a column that always exists in profiles
   const { error } = await supabase
