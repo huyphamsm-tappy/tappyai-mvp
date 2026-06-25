@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     title: 'TappyAI - Trợ lý AI thuần Việt',
     description: 'Chạm đến mọi dịch vụ – AI Agent cá nhân hóa cho cuộc sống tại Việt Nam',
   },
+  other: {
+    'zalo-platform-site-verification': 'HVAV9eNi1G9wp0nV_lesVJptXKFGWLyTDZWq',
+  },
 }
 
 export const viewport: Viewport = {
@@ -29,7 +32,4 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi" suppressHydrationWarning>
-      <body className="antialiased"><PostHogProvider><LocationProvider><TrackingProvider>{children}</TrackingProvider></LocationProvider></PostHogProvider></body>
-    </html>
-  )
-}
+      <body className="antialiased"><PostHogProvider><LocationProvider><TrackingPro
