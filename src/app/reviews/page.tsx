@@ -6,9 +6,10 @@ import Image from 'next/image'
 import {
   Heart, MessageCircle, Bookmark, Share2, Music2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
-  X, Send, Loader2, Home, Search, Plus, Bell, User, Grid3X3
+  X, Send, Loader2, Home, Search, Plus, Bell, User, Grid3X3, ArrowLeft
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { track } from '@/lib/tracking/tracker'
 
 /* ─── types ─── */
 interface Profile { full_name: string | null; avatar_url: string | null }
@@ -389,6 +390,12 @@ export default function ReviewsPage() {
   const hasMore = useRef(true)
   const supabase = createClient()
 
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<Review[]>([])
+  const [searching, setSearching] = useState(false)
+  const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null))
   }, [supabase])
@@ -403,6 +410,21 @@ export default function ReviewsPage() {
   }, [])
 
   useEffect(() => { fetch_(0) }, [fetch_])
+
+  // Debounced search
+  const doSearch = useCallback((q: string) => {
+    if (searchTimer.current) clearTimeout(searchTimer.current)
+    if (!q.trim()) { setSearchResults([]); return }
+    setSearching(true)
+    searchTimer.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/reviews/feed?search=${encodeURIComponent(q)}&limit=20`)
+        const data = await res.json()
+        setSearchResults((data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false })))
+        track('review_search', { query: q })
+      } finally { setSearching(false) }
+    }, 400)
+  }, [])
 
   // Infinite scroll
   useEffect(() => {
@@ -420,17 +442,25 @@ export default function ReviewsPage() {
   }, [loading, fetch_])
 
   const like = async (id: string) => {
+    const r = reviews.find(r => r.id === id)
     const res = await fetch(`/api/reviews/${id}/like`, { method: 'POST' })
     const { liked } = await res.json()
     setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: liked, like_count: r.like_count + (liked ? 1 : -1) } : r))
+    track('review_like', { review_id: id, place: r?.place_name, liked })
   }
   const save = async (id: string) => {
     const res = await fetch(`/api/reviews/${id}/save`, { method: 'POST' })
     const { saved } = await res.json()
     setReviews(p => p.map(r => r.id === id ? { ...r, saved_by_me: saved } : r))
+    track('place_save', { review_id: id })
   }
   const del = (id: string) => setReviews(p => p.filter(r => r.id !== id))
   const addComment = (id: string) => setReviews(p => p.map(r => r.id === id ? { ...r, comment_count: r.comment_count + 1 } : r))
+
+  const handleShare = (r: Review) => {
+    setShareOf(r)
+    track('review_share', { review_id: r.id, place: r.place_name })
+  }
 
   return (
     <div className="bg-black h-dvh overflow-hidden flex">
@@ -440,8 +470,8 @@ export default function ReviewsPage() {
       <div className="flex-1 md:ml-[240px] xl:ml-[260px] flex justify-center">
         <div className="w-full max-w-[390px] relative">
 
-          {/* Feed */}
-          {(tab === 'home' || tab === 'explore') && (
+          {/* Home Feed */}
+          {tab === 'home' && (
             loading
               ? <div className="h-dvh flex items-center justify-center"><Loader2 size={28} className="text-white animate-spin" /></div>
               : reviews.length === 0
@@ -450,42 +480,13 @@ export default function ReviewsPage() {
                   <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">Đăng ngay</Link>
                 </div>
               : <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                  {reviews.map(r => <Post key={r.id} r={r} me={me} onLike={like} onSave={save} onComment={setCommentOf} onShare={setShareOf} onDelete={del} />)}
+                  {reviews.map(r => <Post key={r.id} r={r} me={me} onLike={like} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
                 </div>
           )}
 
-          {/* Profile + My Posts */}
-          {tab === 'profile' && (
+          {/* Explore / Search */}
+          {tab === 'explore' && (
             <div className="h-dvh flex flex-col bg-black overflow-hidden">
-              <div className="px-4 pt-14 pb-4 flex items-center gap-4 border-b border-gray-800 flex-shrink-0">
-                {me ? (
-                  <>
-                    <Link href="/profile" className="text-white text-sm font-semibold underline underline-offset-2">Hồ sơ đầy đủ →</Link>
-                  </>
-                ) : (
-                  <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">Đăng nhập để xem bài của bạn</Link>
-                )}
-              </div>
-              {me ? <MyPosts userId={me} /> : (
-                <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">Hãy đăng nhập trước</div>
-              )}
-            </div>
-          )}
-
-          {/* Inbox placeholder */}
-          {tab === 'inbox' && (
-            <div className="h-dvh flex flex-col items-center justify-center text-gray-500 gap-3">
-              <Bell size={40} className="opacity-30" />
-              <p className="text-sm">Chưa có thông báo</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <TikNav tab={tab} setTab={setTab} userId={me} />
-
-      {commentOf && <CommentDrawer review={commentOf} onClose={() => setCommentOf(null)} onAdded={addComment} />}
-      {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
-    </div>
-  )
-}
+              {/* Search bar */}
+              <div className="flex-shrink-0 pt-12 px-4 pb-3 border-b border-gray-800">
+                <div classNam
