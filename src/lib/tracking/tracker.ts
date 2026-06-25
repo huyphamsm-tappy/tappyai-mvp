@@ -3,6 +3,7 @@
 
 export type EventType =
   | 'page_view'
+  | 'page_time'
   | 'chat_search'
   | 'category_click'
   | 'place_save'
@@ -27,6 +28,7 @@ class EventTracker {
   private readonly BATCH_SIZE = 10
 
   track(event: TrackEvent) {
+    // Only track in browser
     if (typeof window === 'undefined') return
     this.queue.push(event)
     if (this.queue.length >= this.BATCH_SIZE) {
@@ -45,11 +47,12 @@ class EventTracker {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ events }),
-        keepalive: true,
+        keepalive: true, // survives page unload
       })
-    } catch { /* silent fail */ }
+    } catch { /* silent fail — tracking is best-effort */ }
   }
 
+  // Call on page unload to flush remaining events
   flushSync() {
     if (!this.queue.length) return
     const events = this.queue.splice(0)
@@ -57,6 +60,7 @@ class EventTracker {
   }
 }
 
+// Singleton
 export const tracker = typeof window !== 'undefined' ? new EventTracker() : null
 
 export function track(event_type: EventType, metadata?: Record<string, unknown>) {
