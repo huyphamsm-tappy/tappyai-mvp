@@ -86,6 +86,7 @@ export async function POST(req: NextRequest) {
     blob = await put(`avatars/${user.id}.${ext}`, file, {
       access: 'public',
       addRandomSuffix: false,
+      allowOverwrite: true,
     })
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Upload thất bại'
