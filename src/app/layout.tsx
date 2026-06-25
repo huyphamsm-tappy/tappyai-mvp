@@ -32,4 +32,5 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi" suppressHydrationWarning>
-      <body className="antialiased"><PostHogProvider><LocationProvider><TrackingPro
+      <body className="antialiased">
+        <PostHogProvider>{children}</PostHogP
