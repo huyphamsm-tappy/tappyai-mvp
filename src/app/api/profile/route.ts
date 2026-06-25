@@ -92,11 +92,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: msg }, { status: 500 })
   }
 
-  // Update only avatar_url — a column that always exists in profiles
+  // Upsert avatar_url (creates row if not exists, updates if exists)
   const { error } = await supabase
     .from('profiles')
-    .update({ avatar_url: blob.url })
-    .eq('id', user.id)
+    .upsert({ id: user.id, avatar_url: blob.url }, { onConflict: 'id' })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 

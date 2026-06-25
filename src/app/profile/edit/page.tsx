@@ -61,7 +61,10 @@ export default function EditProfilePage() {
       let data: { avatar_url?: string; error?: string } = {}
       try { data = await res.json() } catch { /* non-JSON response */ }
       if (!res.ok) throw new Error(data.error || `Lỗi upload ${res.status}`)
-      if (data.avatar_url) setProfile(prev => ({ ...prev, avatar_url: data.avatar_url! }))
+      if (data.avatar_url) {
+        setProfile(prev => ({ ...prev, avatar_url: data.avatar_url! }))
+        router.refresh()  // invalidate Next.js router cache so account page re-fetches
+      }
       setPreviewUrl(null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload thất bại')
