@@ -1,0 +1,14 @@
+
+> tappyai-mvp@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3001
+
+ ✓ Starting...
+ ✓ Ready in 1773ms
+ ○ Compiling /boi/tu-vi ...
+ ✓ Compiled /boi/tu-vi in 2.8s (722 modules)
+ GET /boi/tu-vi 200 in 2976ms
+ ✓ Compiled in 286ms (309 modules)

@@ -20,6 +20,18 @@
     {
       "path": "/api/cron/deal-notifications",
       "schedule": "30 0 * * *"
+    },
+    {
+      "path": "/api/cron/morning-brief",
+      "schedule": "30 0 * * *"
+    },
+    {
+      "path": "/api/cron/price-check",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-recap",
+      "schedule": "0 13 * * 0"
     }
   ]
 }

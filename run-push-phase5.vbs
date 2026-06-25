@@ -1,0 +1,2 @@
+Set oShell = CreateObject("WScript.Shell")
+oShell.Run "cmd /k ""cd /d C:\Users\Admin\Claude\Projects\TappyAI\tappyai-mvp && git add src/app/service src/app/api/bookings src/app/profile/bookings src/app/profile/page.tsx src/app/api/chat/route.ts src/components/ChatInterface.tsx supabase-schema.sql && git commit -m ""feat: Phase 5 - Service detail + Booking page + chat CTA internal booking link"" && git push origin main && echo === PUSH THANH CONG ======"""

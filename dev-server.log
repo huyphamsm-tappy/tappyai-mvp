@@ -1,0 +1,58 @@
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 1595ms
+ ○ Compiling /game/supertux ...
+ ✓ Compiled /game/supertux in 3.4s (692 modules)
+ HEAD /game/supertux 200 in 3570ms
+ ✓ Compiled in 346ms (325 modules)
+ ✓ Compiled in 720ms (325 modules)
+ ✓ Compiled in 144ms (325 modules)
+ ✓ Compiled in 112ms (311 modules)
+ ✓ Compiled in 150ms (325 modules)
+ ✓ Compiled in 751ms (325 modules)
+ ⨯ ./src/app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./src/app/globals.css
+Error: ENOENT: no such file or directory, stat 'C:\Users\Admin\Claude\Projects\TappyAI\tappyai-mvp\src\app\game\chien-binh-huyen-thoai\page.tsx'
+Import trace for requested module:
+./src/app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./src/app/globals.css
+./src/app/globals.css
+ ✓ Compiled in 156ms (325 modules)
+ ✓ Compiled in 113ms (325 modules)
+ ✓ Compiled in 141ms (325 modules)
+ ✓ Compiled in 121ms (325 modules)
+ ✓ Compiled in 110ms (325 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Admin\Claude\Projects\TappyAI\tappyai-mvp\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Admin\Claude\Projects\TappyAI\tappyai-mvp\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack failed from C:\Users\Admin\Claude\Projects\TappyAI\tappyai-mvp\.next\cache\webpack\client-development.pack.gz: Error: incorrect header check
+ ✓ Compiled in 140ms (325 modules)
+ ✓ Compiled in 598ms (325 modules)
+ ✓ Compiled in 181ms (325 modules)
+ ✓ Compiled in 182ms (325 modules)
+ ✓ Compiled in 183ms (325 modules)
+ ✓ Compiled in 194ms (325 modules)
+ ✓ Compiled in 155ms (325 modules)
+ ✓ Compiled in 141ms (325 modules)
+ ✓ Compiled in 52ms (311 modules)
+ ✓ Compiled in 171ms (325 modules)
+ ✓ Compiled in 376ms (325 modules)
+ ✓ Compiled in 199ms (325 modules)
+ ✓ Compiled in 136ms (325 modules)
+ ✓ Compiled in 134ms (325 modules)
+ ✓ Compiled in 121ms (325 modules)
+ ✓ Compiled in 157ms (325 modules)
+ ✓ Compiled in 195ms (325 modules)
+ ✓ Compiled in 185ms (325 modules)
+ ✓ Compiled in 138ms (325 modules)
+ ✓ Compiled in 134ms (325 modules)
+ ✓ Compiled in 149ms (325 modules)
+ ✓ Compiled in 186ms (325 modules)
+ ✓ Compiled in 155ms (325 modules)
+ ✓ Compiled in 134ms (325 modules)
+ ✓ Compiled in 161ms (325 modules)
+ ✓ Compiled in 121ms (325 modules)
+ ✓ Compiled in 171ms (325 modules)
+ ✓ Compiled in 141ms (325 modules)
+ ✓ Compiled in 208ms (325 modules)
+ ✓ Compiled in 169ms (325 modules)
+ ✓ Compiled in 165ms (325 modules)
+ ✓ Compiled in 159ms (325 modules)

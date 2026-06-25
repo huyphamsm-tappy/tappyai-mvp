@@ -4,12 +4,22 @@ import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
-import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart, X } from 'lucide-react'
+import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart, X, Camera, ImagePlus } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
+import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
+
+const MOODS = [
+  { emoji: '😊', label: 'Vui', prompt: 'Mình đang vui, Tappy gợi ý chỗ ăn uống hoặc vui chơi gì vibe hay không?' },
+  { emoji: '😔', label: 'Buồn', prompt: 'Mình đang hơi buồn, Tappy gợi ý gì giúp mình cảm thấy tốt hơn không?' },
+  { emoji: '😤', label: 'Stress', prompt: 'Mình đang stress cần được relax. Gợi ý spa hoặc cafe yên tĩnh gần đây giúp mình?' },
+  { emoji: '😴', label: 'Mệt', prompt: 'Mình đang rất mệt, muốn đi đâu thư giãn nhẹ nhàng. Tappy gợi ý giúp mình nhé' },
+  { emoji: '🥱', label: 'Chán', prompt: 'Mình đang chán, không biết làm gì. Tappy gợi ý gì vui và mới lạ không?' },
+  { emoji: '🤩', label: 'Hứng', prompt: 'Mình đang rất hứng khởi, muốn làm gì đó thật đặc biệt. Tappy gợi ý không?' },
+]
 
 const EMOJIS = [
   '😀','😄','😂','🤣','😊','😍',
@@ -23,9 +33,9 @@ const QUICK_PROMPTS: Record<string, string[]> = {
   food: ['Quán bún bò ngon ở TP.HCM?', 'Cafe view đẹp Hà Nội?', 'Nhà hàng hải sản tươi sống?'],
   shopping: ['Trung tâm mua sắm lớn Sài Gòn?', 'Mua đồ hiệu uy tín?', 'Chợ đêm lưu niệm?'],
   entertainment: ['Rạp chiếu phim IMAX?', 'Quán karaoke bao phòng?', 'Bar rooftop view đẹp?'],
-  travel: ['Lịch trình Đà Nẵng 3 ngày?', 'Khách sạn Phú Quốc 1 triệu?', 'Địa điểm check-in Hội An?'],
+  travel: ['Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Lịch trình Phú Quốc 4 ngày 2 người budget 8 triệu', 'Lịch trình Hội An 2 ngày cuối tuần budget 3 triệu'],
   spa: ['Spa massage giá bình dân?', 'Nail salon gel tốt?', 'Trung tâm dưỡng da uy tín?'],
-  general: ['Ăn gì ngon hôm nay?', 'Cuối tuần đi đâu vui?', 'Quán cafe làm việc yên tĩnh?'],
+  general: ['🌙 Tối nay mình muốn spa + ăn tối ngon, 2 người budget 800k', 'Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Ăn gì ngon hôm nay gần đây?'],
 }
 
 interface CTAButton {
@@ -62,6 +72,19 @@ function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
     return { text, buttons }
   } catch {
     return { text, buttons: [] }
+  }
+}
+
+function parsePlan(content: string): { text: string; plan: TappyPlan | null } {
+  const planMatch = content.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/i)
+  if (!planMatch) return { text: content, plan: null }
+  const text = content.replace(/\[TAPPY_PLAN\][\s\S]*?\[\/TAPPY_PLAN\]/i, '').trimEnd()
+  try {
+    const plan = JSON.parse(planMatch[1].trim()) as TappyPlan
+    if (!plan.days || !Array.isArray(plan.days)) return { text: content, plan: null }
+    return { text, plan }
+  } catch {
+    return { text: content, plan: null }
   }
 }
 
@@ -352,6 +375,9 @@ export default function ChatInterface({
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const [userPreferences, setUserPreferences] = useState<string[]>([])
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
   interface UserLocation { lat: number; lng: number; address: string; ts?: number }
@@ -522,12 +548,50 @@ export default function ChatInterface({
     })
   }
 
+  const handleImageSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setImageFile(file)
+    const url = URL.createObjectURL(file)
+    setImagePreviewUrl(url)
+    // Reset so same file can be re-selected
+    e.target.value = ''
+  }, [])
+
+  const clearImage = useCallback(() => {
+    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl)
+    setImageFile(null)
+    setImagePreviewUrl(null)
+  }, [imagePreviewUrl])
+
+  const handleFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!input.trim() && !imageFile) return
+    posthog.capture('chat_message_sent', { input_method: 'button', has_image: !!imageFile })
+    if (imageFile) {
+      const dt = new DataTransfer()
+      dt.items.add(imageFile)
+      handleSubmit(e, { experimental_attachments: dt.files })
+      clearImage()
+    } else {
+      handleSubmit(e)
+    }
+  }, [input, imageFile, handleSubmit, clearImage])
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      if (input.trim() && !isLoading) {
-        posthog.capture('chat_message_sent', { input_method: 'keyboard' })
-        handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>)
+      if ((input.trim() || imageFile) && !isLoading) {
+        posthog.capture('chat_message_sent', { input_method: 'keyboard', has_image: !!imageFile })
+        const fakeForm = { preventDefault: () => {} } as React.FormEvent<HTMLFormElement>
+        if (imageFile) {
+          const dt = new DataTransfer()
+          dt.items.add(imageFile)
+          handleSubmit(fakeForm, { experimental_attachments: dt.files })
+          clearImage()
+        } else {
+          handleSubmit(fakeForm)
+        }
       }
     }
   }
@@ -568,6 +632,26 @@ export default function ChatInterface({
                   </span>
                 )}
               </div>
+              {/* Tappy Mood selector */}
+              <div className="w-full">
+                <p className="text-xs text-gray-400 dark:text-gray-500 text-center mb-2">Hôm nay bạn cảm thấy thế nào?</p>
+                <div className="flex justify-center gap-2 flex-wrap">
+                  {MOODS.map((mood) => (
+                    <button
+                      key={mood.label}
+                      type="button"
+                      onClick={() => {
+                        posthog.capture('mood_selected', { mood: mood.label })
+                        append({ role: 'user', content: mood.prompt })
+                      }}
+                      className="flex flex-col items-center gap-1 px-3 py-2 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-primary-50 dark:hover:bg-primary-900/20 border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-800 transition-all active:scale-95"
+                    >
+                      <span className="text-2xl">{mood.emoji}</span>
+                      <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400">{mood.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
               <div className="w-full space-y-2">
                 {quickPrompts.map((prompt) => (
                   <button key={prompt} onClick={() => { posthog.capture('chat_message_sent', { input_method: 'quick_prompt' }); append({ role: 'user', content: prompt }) }} className="w-full text-left px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm transition-all border border-gray-100 dark:border-gray-700 flex items-center gap-2">
@@ -581,7 +665,8 @@ export default function ChatInterface({
           <div className="space-y-6">
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
-                const { text, buttons } = parseCTA(msg.content)
+                const { text: textAfterPlan, plan } = parsePlan(msg.content)
+                const { text, buttons } = parseCTA(textAfterPlan)
                 return (
                   <div key={msg.id} className="animate-slide-up flex gap-3">
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -591,6 +676,7 @@ export default function ChatInterface({
                       <div className="text-[15px] leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(text) }} />
                       </div>
+                      {plan && <TripPlanCard plan={plan} />}
                       {/* Action bar: copy, share, like, dislike, TTS, regenerate, more */}
                       <MessageActionBar
                         msgId={msg.id}
@@ -662,10 +748,24 @@ export default function ChatInterface({
                   </div>
                 )
               }
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const msgAttachments = (msg as any).experimental_attachments as Array<{ url: string; name?: string; contentType?: string }> | undefined
               return (
                 <div key={msg.id} className="animate-slide-up flex justify-end">
-                  <div className="max-w-[85%] bg-primary-500 text-white rounded-2xl rounded-br-md px-4 py-2.5 text-[15px] leading-[1.6]">
-                    <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
+                  <div className="max-w-[85%] flex flex-col items-end gap-1.5">
+                    {msgAttachments?.filter(a => a.contentType?.startsWith('image/')).map((att, i) => (
+                      <img
+                        key={i}
+                        src={att.url}
+                        alt={att.name || 'Ảnh đính kèm'}
+                        className="rounded-2xl rounded-br-md max-w-[240px] max-h-[280px] object-cover border border-white/20 shadow"
+                      />
+                    ))}
+                    {(typeof msg.content === 'string' ? msg.content : '').trim() && (
+                      <div className="bg-primary-500 text-white rounded-2xl rounded-br-md px-4 py-2.5 text-[15px] leading-[1.6]">
+                        <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
+                      </div>
+                    )}
                   </div>
                 </div>
               )
@@ -691,18 +791,70 @@ export default function ChatInterface({
         {showEmojiPanel && (
           <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />
         )}
-        {/* Nearby search chip */}
-        <div className="max-w-2xl mx-auto w-full flex gap-2 mb-2">
+        {/* Action chips */}
+        <div className="max-w-2xl mx-auto w-full flex gap-2 mb-2 overflow-x-auto scrollbar-none">
           <button
             type="button"
             onClick={handleNearbySearch}
             disabled={isLoading}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 border border-primary-200 dark:border-primary-800 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-all disabled:opacity-40"
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 border border-primary-200 dark:border-primary-800 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-all disabled:opacity-40"
           >
             📍 Tìm quanh đây
           </button>
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'plan_chip' }); append({ role: 'user', content: 'Tối nay mình muốn spa thư giãn rồi ăn tối ngon, 2 người, budget khoảng 800k, gợi ý lịch trình giúp mình nhé' }) }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-accent-50 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400 border border-accent-200 dark:border-accent-800 hover:bg-accent-100 dark:hover:bg-accent-900/50 transition-all disabled:opacity-40"
+          >
+            🌙 Tappy Tối Nay
+          </button>
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'plan_chip' }); setInput('Lịch trình ') }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all disabled:opacity-40"
+          >
+            ✈️ Lên kế hoạch trip
+          </button>
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'price_watch_chip' }); setInput('Tappy theo dõi ') }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/50 transition-all disabled:opacity-40"
+          >
+            🎯 Theo dõi giá
+          </button>
         </div>
-        <form id="chat-form" onSubmit={(e) => { if (input.trim()) posthog.capture('chat_message_sent', { input_method: 'button' }); handleSubmit(e) }} className="max-w-2xl mx-auto w-full flex gap-2 items-end">
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="hidden"
+          onChange={handleImageSelect}
+        />
+        <form id="chat-form" onSubmit={handleFormSubmit} className="max-w-2xl mx-auto w-full flex flex-col gap-2">
+          {/* Image preview */}
+          {imagePreviewUrl && (
+            <div className="relative inline-flex self-start ml-1">
+              <img
+                src={imagePreviewUrl}
+                alt="Preview"
+                className="h-20 w-20 rounded-xl object-cover border border-gray-200 dark:border-gray-700 shadow"
+              />
+              <button
+                type="button"
+                onClick={clearImage}
+                className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gray-800 dark:bg-gray-600 text-white flex items-center justify-center hover:bg-red-500 transition-colors"
+                aria-label="Xóa ảnh"
+              >
+                <X size={10} />
+              </button>
+            </div>
+          )}
+          <div className="flex gap-2 items-end">
           <textarea
               ref={inputRef}
               value={input}
@@ -712,11 +864,26 @@ export default function ChatInterface({
                 e.target.style.height = Math.min(e.target.scrollHeight, 160) + 'px'
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Nhắn tin với TappyAI..."
+              placeholder={imageFile ? 'Hỏi Tappy về ảnh này...' : 'Nhắn tin với TappyAI...'}
               disabled={isLoading}
               rows={1}
               className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none transition-all overflow-hidden"
             />
+          {/* Nút camera */}
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isLoading}
+            className={cn(
+              'w-11 h-11 rounded-2xl flex items-center justify-center transition-all flex-shrink-0 disabled:opacity-40',
+              imageFile
+                ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-500'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-500'
+            )}
+            aria-label="Chụp / chọn ảnh"
+          >
+            {imageFile ? <ImagePlus size={18} /> : <Camera size={18} />}
+          </button>
           {/* Nút emoji */}
           <div className="relative flex-shrink-0">
             <button
@@ -768,7 +935,8 @@ export default function ChatInterface({
               : <Mic size={18} className="text-[#FF9500]" />
             }
           </button>
-          <button type="submit" disabled={isLoading || !input.trim()} className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">{isLoading ? <Loader2 size={18} className="text-white animate-spin" /> : <Send size={18} className="text-white" />}</button>
+          <button type="submit" disabled={isLoading || (!input.trim() && !imageFile)} className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">{isLoading ? <Loader2 size={18} className="text-white animate-spin" /> : <Send size={18} className="text-white" />}</button>
+          </div>
         </form>
       </div>
     </div>
