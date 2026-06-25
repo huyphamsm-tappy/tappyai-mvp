@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: 'Chạm đến mọi dịch vụ – AI Agent cá nhân hóa cho cuộc sống tại Việt Nam',
   },
   other: {
-    'zalo-platform-site-verification': 'HVAV9eNi1G9wp0nV_lesVJptXKFGWLyTDZWq',
+    'zalo-platform-site-verification': 'HVAV9eNi1G9wpOnV_lesVJptXKFGWLyTDZWq',
   },
 }
 
