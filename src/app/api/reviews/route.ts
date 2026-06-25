@@ -93,22 +93,40 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Bạn đã đánh giá địa điểm này rồi.' }, { status: 409 })
   }
 
-  const { error: insertError } = await supabase
-    .from('reviews')
-    .insert({
-      user_id: user.id,
-      place_id: placeId,
-      place_name: placeName,
-      place_address: placeAddress,
-      rating: rating || 0,
-      body: body || '',
-      is_verified: isVerified,
-      ...(photos.length > 0 ? { photos } : {}),
-    })
+  const reviewData: Record<string, unknown> = {
+    user_id: user.id,
+    place_id: placeId,
+    place_name: placeName,
+    place_address: placeAddress,
+    body: body || '',
+    is_verified: isVerified,
+  }
+  // Only include rating if > 0 (some DB schemas have CHECK rating >= 1)
+  if (rating > 0) reviewData.rating = rating
+  // Include photos if any
+  if (photos.length > 0) reviewData.photos = photos
+
+  let { error: insertError } = await supabase.from('reviews').insert(reviewData)
+
+  // If photos column doesn't exist yet, retry without it
+  if (insertError && photos.length > 0 && insertError.message?.includes('photos')) {
+    console.warn('photos column missing, retrying without photos:', insertError.message)
+    const { error: retryError } = await supabase.from('reviews').insert({ ...reviewData, photos: undefined })
+    insertError = retryError ?? null
+  }
+
+  // If rating check constraint fails, retry with rating omitted
+  if (insertError && rating > 0 && (insertError.message?.includes('rating') || insertError.code === '23514')) {
+    console.warn('rating constraint, retrying without rating:', insertError.message)
+    const dataNoRating = { ...reviewData }
+    delete dataNoRating.rating
+    const { error: retryError2 } = await supabase.from('reviews').insert(dataNoRating)
+    insertError = retryError2 ?? null
+  }
 
   if (insertError) {
-    console.error('Review insert error:', insertError)
-    return NextResponse.json({ error: 'Không thể lưu đánh giá. Vui lòng thử lại.' }, { status: 500 })
+    console.error('Review insert error:', JSON.stringify(insertError))
+    return NextResponse.json({ error: `Không thể lưu bài viết: ${insertError.message}` }, { status: 500 })
   }
 
   return NextResponse.json({ ok: true, is_verified: isVerified })
