@@ -98,11 +98,10 @@ export default function NotificationSettings() {
           </p>
           <ul className="space-y-2">
             {[
-              { emoji: '🌅', text: 'Morning brief cá nhân hóa lúc 7:30 sáng' },
-              { emoji: '🛍️', text: 'Deal & ưu đãi phù hợp sở thích của bạn' },
+              { emoji: '🛍️', text: 'Deal hôm nay gửi lúc 7:30 sáng' },
               { emoji: '🍜', text: 'Nhắc ăn trưa mỗi ngày lúc 11 giờ' },
               { emoji: '📅', text: 'Nhắc lịch đặt chỗ trước 3 ngày' },
-              { emoji: '📊', text: 'Tổng kết tuần mỗi Chủ nhật 20:00' },
+              { emoji: '🎁', text: 'Ưu đãi & khuyến mãi đặc biệt từ Tappy' },
             ].map(item => (
               <li key={item.emoji} className="flex items-center gap-2.5 text-sm text-gray-700 dark:text-gray-300">
                 <span className="text-base leading-none">{item.emoji}</span>
@@ -111,7 +110,7 @@ export default function NotificationSettings() {
             ))}
           </ul>
           <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">
-            Âm thanh tuỳ chỉnh &quot;Tappy&quot; phát khi ứng dụng đang mở. Khi app đóng, âm thanh do hệ thống điều khiển.
+            Âm thanh tuỳ chỉnh &quot;Tappy&quot; phát khi ứng dụng đang mở. Khi app đóng, âm thanh do hệ điều hành điều khiển.
           </p>
         </div>
       )}

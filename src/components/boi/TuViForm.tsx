@@ -288,7 +288,7 @@ function LifetimeCard({
 
 function LifeStageCard({ stage }: { stage: LifeStage }) {
   const [open, setOpen] = useState(false)
-  const IconComp = STAGE_ICONS[stage.label as keyof typeof STAGE_ICONS] as typeof Sprout | undefined
+  const IconComp = STAGE_ICONS[stage.label as keyof typeof STAGE_ICONS]
 
   return (
     <div className="rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
@@ -544,4 +544,3 @@ function FortuneRow({
     </div>
   )
 }
-

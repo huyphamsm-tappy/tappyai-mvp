@@ -246,9 +246,8 @@ function applyBudgetFilter(result: unknown, budget: Budget, category: string): u
 }
 
 // ===== Chon san tool phu hop nhat de force goi (tranh model chon nham khi toolChoice=required) =====
-function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | 'save_price_watch' | null {
+function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | null {
   const t = normalizeVN(text.toLowerCase().trim())
-  if (/theo doi gia|bao minh khi gia|alert gia|gia xuong|theo doi san pham|khi gia duoi|khi gia ve|when price|price alert/.test(t)) return 'save_price_watch'
   if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
   if (/gia phong|gia khach san|dat phong|booking\.com|\bagoda\b|(khach san|hotel|resort).*gia|gia.*(khach san|hotel|resort)/.test(t)) return 'get_hotel_prices'
   if (/xe khach|ve xe (khach|do)|limousine|tau hoa|tau lua|duong sat|\btaxi\b|\bgrab\b|xanh sm|\bxe om\b|di chuyen (tu|den|toi|trong|quanh)|gia ve xe|tu .* den .* (bao nhieu|het|gia|bang gi)/.test(t)) return 'get_transport_options'
@@ -259,58 +258,6 @@ function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_
   if (/thoi tiet|du bao|nhiet do|troi mua|troi nang|troi co lanh|may co|nang khong|mua khong/.test(t)) return 'get_weather'
   if (/ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
   return null
-}
-
-// ===== PLANNING INTENT DETECTION =====
-function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
-  const t = normalizeVN(text.toLowerCase())
-
-  // Evening: "tối nay" + multi-activity OR explicit plan request
-  const hasToiNay = t.includes('toi nay')
-  const hasEvening = t.includes('buoi toi') || t.includes('chieu toi')
-  const hasMultiActivity =
-    (t.includes('spa') || t.includes('massage') || t.includes('xem phim') || t.includes('phim') || t.includes('karaoke') || t.includes('bar') || t.includes('nhau')) &&
-    (t.includes('an') || t.includes('cafe') || t.includes('ca phe'))
-  const hasPlanKeyword = t.includes('lich trinh') || t.includes('ke hoach') || t.includes('lap ke') || t.includes('goi y lich')
-  if ((hasToiNay || hasEvening) && (hasMultiActivity || hasPlanKeyword)) return 'evening'
-
-  // Trip: destination + (days/nights pattern OR budget pattern OR trip keyword)
-  const hasDays = /\d+\s*(ngay|dem|night|day)/.test(t)
-  const hasBudget = t.includes('budget') || t.includes('ngan sach') || /\d+\s*(trieu|tr\b|million)/.test(t)
-  const hasDestination = /(da nang|danang|phu quoc|phuquoc|nha trang|hoi an|hoian|da lat|dalat|vung tau|ha long|halong|sapa|sa pa|ninh binh|hue|ha noi|hanoi|ho chi minh|saigon|can tho|mui ne|con dao|ly son|quy nhon|phan thiet|thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul)/.test(t)
-  const hasTripKw = t.includes('trip') || t.includes('du lich') || t.includes('di choi') || t.includes('chuyen di') || hasPlanKeyword
-
-  if (hasDays && (hasDestination || hasBudget || hasTripKw)) return 'trip'
-  if (hasTripKw && hasDestination) return 'trip'
-
-  return null
-}
-
-function buildPlanningBlock(planType: 'trip' | 'evening'): string {
-  const toolsNeeded = planType === 'trip'
-    ? `- get_hotel_prices → tìm khách sạn phù hợp budget\n- search_places (type=restaurant) → tìm nhà hàng ngon ở điểm đến\n- search_places → tìm điểm tham quan, hoạt động thú vị\n- get_weather → thời tiết nếu biết ngày đi`
-    : `- search_places (type=spa) → nếu user muốn spa\n- search_places (type=restaurant) → tìm nhà hàng cho tối\n- search_places (type=cinema hoặc bar) → tìm giải trí tùy nhu cầu`
-
-  return `\n\n===== CHẾ ĐỘ LÊN KẾ HOẠCH ${planType === 'trip' ? 'CHUYẾN ĐI' : 'TỐI NAY'} - BẮT BUỘC =====
-User đang yêu cầu lên KẾ HOẠCH HOÀN CHỈNH. Đây là nhiệm vụ QUAN TRỌNG NHẤT.
-
-BƯỚC 1 - GỌI TOOL (bắt buộc, gọi song song nếu có thể):
-${toolsNeeded}
-
-BƯỚC 2 - Sau khi có kết quả tool, output KẾ HOẠCH theo ĐÚNG format sau (không thêm text thừa trước block):
-
-[TAPPY_PLAN]
-{"type":"${planType}","title":"[tiêu đề ngắn, ví dụ: Tối nay Quận 1 - Spa & Ăn tối]","people":[số người hoặc 1],"budget_total":"[tổng budget ước tính]","days":[{"label":"${planType === 'trip' ? 'Ngày 1' : 'Tối nay'}","items":[{"time":"[HH:MM]","emoji":"[emoji phù hợp: 🏨🍜☕💆🎬🍺🚗]","category":"[hotel|food|spa|entertainment|transport]","name":"[tên địa điểm THỰC TẾ từ tool]","description":"[mô tả 1 câu ngắn]","price":"[giá ước tính]","address":"[địa chỉ từ tool, để trống nếu không có]","maps_link":"[google maps link từ tool]","booking_link":"[link đặt chỗ nếu có]","place_id":"[place_id từ tool nếu có, để trống nếu không]"}]}],"cost_breakdown":{"[Hạng mục]":"[giá]"},"share_text":"[câu chia sẻ ngắn hấp dẫn, dùng emoji, kèm #TappyAI ở cuối]"}
-[/TAPPY_PLAN]
-
-QUY TẮC BẮT BUỘC:
-1. Tên địa điểm PHẢI lấy từ kết quả tool (địa điểm có thực)
-2. maps_link phải là URL Google Maps thực từ tool (trường maps_link hoặc googleMapsUri)
-3. budget_total phải chia rõ trong cost_breakdown
-4. share_text phải hấp dẫn, ngắn, kèm emoji và #TappyAI
-5. Sau [/TAPPY_PLAN], viết 1 câu ngắn tóm tắt và CTA_BUTTONS như thường
-6. KHÔNG đặt word limit cho reply này — kế hoạch cần đầy đủ
-==========================================================`
 }
 
 // ===== STEP 1.2: LOCATION INTENT DETECTION =====
@@ -1354,7 +1301,7 @@ Khi gợi ý ăn uống/spa/địa điểm: ƯU TIÊN phong cách & ngân sách 
 =================================================`
 }
 
-function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi', prefBlock = '', userLocation?: { lat: number; lng: number; address?: string } | null, planningIntent?: 'trip' | 'evening' | null, hasImage?: boolean): string {
+function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi', prefBlock = '', userLocation?: { lat: number; lng: number; address?: string } | null): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) // YYYY-MM-DD
@@ -1435,22 +1382,9 @@ Neu user hoi bat ky chu de nao NGOAI 5 linh vuc tren (vi du: toan hoc, lap trinh
 TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan hay giai thich ly do.
 =============================================================`
 
-  const planningBlock = planningIntent ? buildPlanningBlock(planningIntent) : ''
-  const cameraBlock = hasImage ? `
-
-===== CAMERA AI MODE =====
-User vua gui mot hinh anh. Hay phan tich anh va tra loi theo cau hoi cua ho. Cac truong hop pho bien:
-- Chup MENU nha hang: Goi y mon ngon nhat, uoc tinh calo neu co the, so sanh voi gia trung binh khu vuc.
-- Chup HOA DON / RECEIPT: Tom tat chi tieu, tinh tong, goi y tiet kiem (dat o dau re hon neu biet).
-- Chup SAN PHAM / HANG HOA: Nhan dien san pham, goi y gia tot nhat tren Shopee/Tiki/Lazada (dung tool search_products neu can).
-- Chup QUE RAO / POSTER deal: Xac nhan thong tin deal, verify xem co hoi thuc su tot khong.
-- Chup KHAC: Mo ta noi dung anh va tra loi theo context cau hoi.
-Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool search_products.
-=========================` : ''
-
   return `${langBlock}THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
+${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
@@ -1519,16 +1453,9 @@ export async function POST(req: Request) {
     : Array.isArray(rawContent)
       ? rawContent.map((c: { text?: string }) => c.text || '').join(' ')
       : ''
-
-  // Detect if last message contains an image
-  const hasImage = Array.isArray(rawContent) && rawContent.some(
-    (c: { type?: string }) => c.type === 'image' || c.type === 'image_url'
-  )
-
   const intent = classifyIntent(lastText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
-  const planningIntent = detectPlanningIntent(lastText)
   const lang = detectLang(lastText)
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
@@ -1555,15 +1482,6 @@ export async function POST(req: Request) {
       existingMemory = mem
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory)
       if (prefResult.data) prefBlock = buildPrefBlock(prefResult.data as UserPrefs)
-
-      // Inject Google Calendar events if connected
-      try {
-        const { getUpcomingEvents, formatEventsForPrompt } = await import('@/lib/integrations/googleCalendar')
-        const calEvents = await getUpcomingEvents(user.id)
-        if (calEvents.length > 0) {
-          memoryBlock = (memoryBlock || '') + formatEventsForPrompt(calEvents)
-        }
-      } catch { /* calendar optional */ }
 
       // Kiểm tra subscription từ DB
       const { data: subData } = await supabase
@@ -1624,19 +1542,18 @@ export async function POST(req: Request) {
 
   const SIMPLE_MODEL = 'claude-haiku-4-5'
   const DEFAULT_MODEL = 'claude-sonnet-4-6'
-  // Planning + images always need Sonnet; simple chitchat uses Haiku
-  const chosenModel = (planningIntent || hasImage) ? DEFAULT_MODEL : isSimpleQuery(lastText, isFirstReply) ? SIMPLE_MODEL : DEFAULT_MODEL
-  console.log(JSON.stringify({ type: 'tappyai_model', model: chosenModel, planningIntent }))
+  const chosenModel = isSimpleQuery(lastText, isFirstReply) ? SIMPLE_MODEL : DEFAULT_MODEL
+  console.log(JSON.stringify({ type: 'tappyai_model', model: chosenModel }))
 
   const result = streamText({
     model: anthropic(chosenModel),
-    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage),
+    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation),
     experimental_providerMetadata: {
       anthropic: { cacheControl: { type: 'ephemeral' } },
     },
     messages,
-    maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 3000 : hasImage ? 1024 : 2048,
-    maxSteps: intent === 'chitchat' ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
+    maxTokens: intent === 'chitchat' ? 300 : 2048,
+    maxSteps: intent === 'chitchat' ? 1 : 5,
     experimental_prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) {
@@ -1733,37 +1650,6 @@ export async function POST(req: Request) {
         }),
         execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined)
       }),
-      ...(authedUserId ? {
-        save_price_watch: tool({
-          description: 'Lưu theo dõi giá sản phẩm để thông báo khi giá đạt mức mong muốn. Dùng khi user nói "theo dõi giá", "báo mình khi giá xuống", "alert giá", "Tappy theo dõi giá X khi dưới Y"',
-          parameters: z.object({
-            product_name: z.string().describe('Tên sản phẩm cần theo dõi, ví dụ: AirPods Pro, Samsung Galaxy S25'),
-            target_price: z.number().describe('Giá mục tiêu bằng VND (số nguyên), ví dụ: 2000000'),
-            search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
-          }),
-          execute: async ({ product_name, target_price, search_query }) => {
-            if (!authedUserId) return { error: 'Cần đăng nhập để theo dõi giá' }
-            try {
-              const supabaseW = createClient()
-              const { count } = await supabaseW
-                .from('price_watches')
-                .select('id', { count: 'exact', head: true })
-                .eq('user_id', authedUserId)
-                .eq('status', 'active')
-              if ((count ?? 0) >= 10) return { error: 'Bạn đã theo dõi tối đa 10 sản phẩm. Hủy bớt để thêm mới.' }
-              const { data, error } = await supabaseW
-                .from('price_watches')
-                .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
-                .select('id')
-                .single()
-              if (error) return { error: 'Lỗi lưu theo dõi: ' + error.message }
-              return { ok: true, id: data.id, product_name, target_price, message: `Đã lưu! Tappy sẽ kiểm tra giá ${product_name} mỗi 6 tiếng và báo bạn khi xuống dưới ${(target_price / 1000000).toFixed(1)} triệu.` }
-            } catch (e) {
-              return { error: String(e) }
-            }
-          }
-        }),
-      } : {}),
     },
     onFinish: async ({ usage, finishReason, text }) => {
       console.log(JSON.stringify({
@@ -1790,9 +1676,6 @@ export async function POST(req: Request) {
           if (Object.keys(extracted).length > 0) {
             await updateMemory(authedUserId, {
               location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
-              companions: extracted.companions ?? existingMemory?.companions ?? null,
-              timing: extracted.timing ?? existingMemory?.timing ?? null,
-              personality: extracted.personality ?? existingMemory?.personality ?? null,
               preferences: { ...(existingMemory?.preferences || {}), ...(extracted.preferences || {}) },
               budget: { ...(existingMemory?.budget || {}), ...(extracted.budget || {}) },
               history: extracted.history ?? existingMemory?.history ?? [],
@@ -1881,15 +1764,11 @@ function applyLuxuryStreamFilter(response: Response): Response {
           controller.enqueue(encoder.encode(lineRemainder + '\n'))
         }
       }
-    },
+    }
   })
 
-  const readable = body.pipeThrough(transform)
-  return new Response(readable, {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    },
+  return new Response(body.pipeThrough(transform), {
+    status: response.status,
+    headers: response.headers,
   })
 }

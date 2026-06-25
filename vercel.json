@@ -10,12 +10,16 @@
   ],
   "crons": [
     {
-      "path": "/api/cron/deal-notifications",
-      "schedule": "30 0 * * *"
+      "path": "/api/cron/lunch-reminder",
+      "schedule": "0 4 * * *"
     },
     {
-      "path": "/api/cron/morning-brief",
-      "schedule": "0 1 * * *"
+      "path": "/api/cron/travel-reminder",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/deal-notifications",
+      "schedule": "30 0 * * *"
     }
   ]
 }

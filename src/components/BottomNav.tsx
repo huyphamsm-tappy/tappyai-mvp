@@ -2,14 +2,15 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, MessageCircle, User, Compass, Tag } from 'lucide-react'
+import { Home, MessageCircle, User, Gamepad2, Languages, Tag } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const tabs = [
   { href: '/', icon: Home, label: 'Trang chủ' },
   { href: '/chat', icon: MessageCircle, label: 'Chat' },
-  { href: '/reviews', icon: Compass, label: 'Khám phá' },
+  { href: '/translate', icon: Languages, label: 'Dịch' },
   { href: '/deals', icon: Tag, label: 'Deals' },
+  { href: '/game', icon: Gamepad2, label: 'Game' },
   { href: '/profile', icon: User, label: 'Tôi' },
 ]
 

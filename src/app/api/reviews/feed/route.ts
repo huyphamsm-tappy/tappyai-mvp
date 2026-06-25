@@ -54,9 +54,22 @@ export async function GET(req: NextRequest) {
     likedIds = (likes || []).map(l => l.review_id)
   }
 
+  // Fetch saved IDs
+  let savedIds: string[] = []
+  if (user && reviews && reviews.length > 0) {
+    const ids = reviews.map(r => r.id)
+    const { data: saves } = await supabase
+      .from('review_saves')
+      .select('review_id')
+      .eq('user_id', user.id)
+      .in('review_id', ids)
+    savedIds = (saves || []).map(s => s.review_id)
+  }
+
   const enriched = (reviews || []).map(r => ({
     ...r,
     liked_by_me: likedIds.includes(r.id),
+    saved_by_me: savedIds.includes(r.id),
   }))
 
   return NextResponse.json({ reviews: enriched, page, limit })

@@ -4,19 +4,9 @@ import { createAnthropic } from '@ai-sdk/anthropic'
 
 export interface UserMemory {
   location_base: string | null
-  preferences: {
-    food?: string[]
-    spa?: string[]
-    entertainment?: string[]
-    shopping?: string[]
-    avoid?: string[]
-    [key: string]: string[] | undefined
-  }
+  preferences: Record<string, string[] | string>
   budget: Record<string, { min: number; max: number }>
   history: string[]
-  companions?: string | null       // "thường đi với bạn bè", "hay đi 2 người", "cặp đôi", "gia đình"
-  timing?: string | null           // "hay đi cuối tuần", "hay đi tối", "thường đi trưa"
-  personality?: string | null      // "thích local quán nhỏ", "ưa cao cấp", "thích thử đồ mới"
   updated_at?: string
 }
 
@@ -25,7 +15,7 @@ export async function getMemory(userId: string): Promise<UserMemory | null> {
     const supabase = createClient()
     const { data, error } = await supabase
       .from('user_memory')
-      .select('location_base, preferences, budget, history, companions, timing, personality, updated_at')
+      .select('location_base, preferences, budget, history, updated_at')
       .eq('user_id', userId)
       .single()
     if (error || !data) return null
@@ -47,31 +37,6 @@ export async function updateMemory(userId: string, newData: Partial<UserMemory>)
   }
 }
 
-export async function clearMemory(userId: string): Promise<void> {
-  try {
-    const supabase = createClient()
-    await supabase.from('user_memory').delete().eq('user_id', userId)
-  } catch (e) {
-    console.error('clearMemory error:', e)
-  }
-}
-
-export function countMemoryFacts(memory: UserMemory): number {
-  let count = 0
-  if (memory.location_base) count++
-  if (memory.companions) count++
-  if (memory.timing) count++
-  if (memory.personality) count++
-  const prefs = memory.preferences || {}
-  for (const v of Object.values(prefs)) {
-    if (v && v.length > 0) count += Math.min(v.length, 3)
-  }
-  const budgets = memory.budget || {}
-  count += Object.keys(budgets).length
-  count += Math.min((memory.history || []).length, 5)
-  return count
-}
-
 export function buildMemoryBlock(memory: UserMemory): string {
   const parts: string[] = []
 
@@ -79,30 +44,16 @@ export function buildMemoryBlock(memory: UserMemory): string {
     parts.push(`- Vi tri thuong dung: ${memory.location_base}`)
   }
 
-  if (memory.companions) {
-    parts.push(`- Hay di cung: ${memory.companions}`)
-  }
-
-  if (memory.timing) {
-    parts.push(`- Thoi gian hay di: ${memory.timing}`)
-  }
-
-  if (memory.personality) {
-    parts.push(`- Phong cach: ${memory.personality}`)
-  }
-
   const prefs = memory.preferences || {}
   const prefParts: string[] = []
-  if (prefs.food && prefs.food.length > 0)
-    prefParts.push(`an uong: ${prefs.food.join(', ')}`)
-  if (prefs.spa && prefs.spa.length > 0)
-    prefParts.push(`spa: ${prefs.spa.join(', ')}`)
-  if (prefs.entertainment && prefs.entertainment.length > 0)
-    prefParts.push(`giai tri: ${prefs.entertainment.join(', ')}`)
-  if (prefs.shopping && prefs.shopping.length > 0)
-    prefParts.push(`mua sam: ${prefs.shopping.join(', ')}`)
-  if (prefs.avoid && prefs.avoid.length > 0)
-    prefParts.push(`khong thich: ${prefs.avoid.join(', ')}`)
+  if (prefs.food && (prefs.food as string[]).length > 0)
+    prefParts.push(`an uong: ${(prefs.food as string[]).join(', ')}`)
+  if (prefs.spa && (prefs.spa as string[]).length > 0)
+    prefParts.push(`spa: ${(prefs.spa as string[]).join(', ')}`)
+  if (prefs.entertainment && (prefs.entertainment as string[]).length > 0)
+    prefParts.push(`giai tri: ${(prefs.entertainment as string[]).join(', ')}`)
+  if (prefs.avoid && (prefs.avoid as string[]).length > 0)
+    prefParts.push(`khong thich: ${(prefs.avoid as string[]).join(', ')}`)
   if (prefParts.length > 0) parts.push(`- So thich: ${prefParts.join('; ')}`)
 
   const budgets = memory.budget || {}
@@ -147,9 +98,6 @@ export async function extractMemoryFromConversation(
     const existingCtx = existingMemory
       ? JSON.stringify({
           location_base: existingMemory.location_base,
-          companions: existingMemory.companions,
-          timing: existingMemory.timing,
-          personality: existingMemory.personality,
           preferences: existingMemory.preferences,
           budget: existingMemory.budget,
           history: (existingMemory.history || []).slice(-5),
@@ -157,8 +105,8 @@ export async function extractMemoryFromConversation(
       : '{}'
 
     const { text: rawText } = await generateText({
-      model: anthropic('claude-haiku-4-5'),
-      maxTokens: 500,
+      model: anthropic('claude-haiku-4-5-20251001'),
+      maxTokens: 400,
       messages: [
         {
           role: 'user',
@@ -169,30 +117,17 @@ Memory hien tai: ${existingCtx}
 Cac tin nhan cua user:
 ${userTexts}
 
-Tra ve JSON (chi cac truong co du lieu RO RANG tu user):
+Tra ve JSON (chi cac truong co du lieu ro rang):
 {
-  "location_base": "quan/khu vuc user o hoac hay lui toi (vd: Quan 3, Binh Thanh, Ha Noi)",
-  "companions": "hay di voi ai (vd: ban be, cap doi, gia dinh, 1 minh)",
-  "timing": "thoi gian hay di (vd: cuoi tuan, buoi toi, gio trua)",
-  "personality": "phong cach (vd: thich quan nho local, ua sang trong, thich thu do moi)",
-  "preferences": {
-    "food": ["mon/kieu an ua thich"],
-    "spa": ["loai spa/massage thich"],
-    "entertainment": ["hoat dong giai tri ua thich"],
-    "shopping": ["thuong hieu/loai hang hay mua"],
-    "avoid": ["thu khong thich/di ung/kieng"]
-  },
-  "budget": {
-    "food": {"min": 0, "max": 200000},
-    "spa": {"min": 0, "max": 500000},
-    "trip": {"min": 0, "max": 5000000}
-  },
-  "history": ["chu de chinh cuoc hoi thoai nay (1-3 tu, vd: spa Binh Thanh, cafe Q3, trip Da Lat)"]
+  "location_base": "quan/khu vuc user o hoac thuong hay lui toi",
+  "preferences": {"food": ["so thich"], "spa": ["so thich"], "avoid": ["khong thich"]},
+  "budget": {"food": {"min": 0, "max": 200000}, "spa": {"min": 0, "max": 500000}},
+  "history": ["chu de cuoc hoi thoai nay (1-3 tu ngan gon)"]
 }
 
 Quy tac:
-- Chi dien truong neu co bang chung RO RANG tu user (khong suy doan)
-- history: ghi chu de chinh cua cuoc hoi thoai NAY, khong copy tu memory cu
+- Chi update truong neu co thong tin RO RANG tu user
+- history: ghi lai chu de chinh cua cuoc hoi thoai nay (vd "spa Binh Thanh", "cafe Q3")
 - Neu khong co thong tin gi moi, tra ve {}
 - Chi tra ve JSON, khong giai thich.`,
         },
@@ -205,33 +140,25 @@ Quy tac:
 
     const parsed = JSON.parse(jsonMatch[0])
 
-    // Merge history (deduplicate, keep latest 10)
+    // Merge history
     if (parsed.history?.length > 0 && existingMemory?.history?.length) {
       const combined = [...existingMemory.history, ...parsed.history]
       parsed.history = [...new Set(combined)].slice(-10)
     }
 
-    // Merge preferences (keep existing keys not in new extraction)
+    // Merge preferences
     if (parsed.preferences && existingMemory?.preferences) {
       for (const [k, v] of Object.entries(existingMemory.preferences)) {
         if (!parsed.preferences[k]) parsed.preferences[k] = v
       }
     }
 
-    // Merge budget (keep existing categories not overwritten)
+    // Merge budget
     if (parsed.budget && existingMemory?.budget) {
       for (const [k, v] of Object.entries(existingMemory.budget)) {
         if (!parsed.budget[k]) parsed.budget[k] = v
       }
     }
-
-    // Keep existing companions/timing/personality if not extracted
-    if (!parsed.companions && existingMemory?.companions)
-      parsed.companions = existingMemory.companions
-    if (!parsed.timing && existingMemory?.timing)
-      parsed.timing = existingMemory.timing
-    if (!parsed.personality && existingMemory?.personality)
-      parsed.personality = existingMemory.personality
 
     return parsed
   } catch (e) {
