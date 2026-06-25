@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
-// GET /api/reviews/feed?page=0&limit=12&sort=latest|trending&userId=xxx&search=query
+// GET /api/reviews/feed?page=0&limit=12&sort=latest|trending&userId=xxx
 export async function GET(req: NextRequest) {
   const page = Math.max(0, parseInt(req.nextUrl.searchParams.get('page') || '0'))
   const limit = Math.min(20, parseInt(req.nextUrl.searchParams.get('limit') || '12'))
@@ -37,21 +37,24 @@ export async function GET(req: NextRequest) {
   }
 
   const { data: reviews, error } = await query
-  if (error) return NextResponse.json({ error: 'Lỗi tải feed' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'Loi tai feed' }, { status: 500 })
 
   let likedIds: string[] = []
   if (user && reviews?.length) {
-    const { data: likes } = await supabase.from('review_likes').select('review_id').eq('user_id', user.id).in('review_id', reviews.map(r => r.id))
+    const ids = reviews.map(r => r.id)
+    const { data: likes } = await supabase.from('review_likes').select('review_id').eq('user_id', user.id).in('review_id', ids)
     likedIds = (likes || []).map(l => l.review_id)
   }
   let savedIds: string[] = []
   if (user && reviews?.length) {
-    const { data: saves } = await supabase.from('review_saves').select('review_id').eq('user_id', user.id).in('review_id', reviews.map(r => r.id))
+    const ids = reviews.map(r => r.id)
+    const { data: saves } = await supabase.from('review_saves').select('review_id').eq('user_id', user.id).in('review_id', ids)
     savedIds = (saves || []).map(s => s.review_id)
   }
 
   return NextResponse.json({
     reviews: (reviews || []).map(r => ({ ...r, liked_by_me: likedIds.includes(r.id), saved_by_me: savedIds.includes(r.id) })),
-    page, limit
+    page,
+    limit,
   })
 }
