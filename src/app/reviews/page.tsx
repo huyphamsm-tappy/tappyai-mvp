@@ -1,0 +1,290 @@
+'use client'
+
+import { useEffect, useState, useCallback, useRef } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import Header from '@/components/Header'
+import BottomNav from '@/components/BottomNav'
+import { Heart, Star, MapPin, CheckCircle, Plus, MessageCircle, X, Send, Loader2, Share2, Flame, Clock } from 'lucide-react'
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 1) return 'vừa xong'
+  if (mins < 60) return `${mins} phút trước`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs} giờ trước`
+  const days = Math.floor(hrs / 24)
+  if (days < 30) return `${days} ngày trước`
+  const months = Math.floor(days / 30)
+  if (months < 12) return `${months} tháng trước`
+  return `${Math.floor(months / 12)} năm trước`
+}
+
+interface ReviewProfile {
+  full_name: string | null
+  avatar_url: string | null
+}
+
+interface Comment {
+  id: string
+  body: string
+  created_at: string
+  user_id: string
+  profiles: ReviewProfile | null
+}
+
+interface Review {
+  id: string
+  user_id: string
+  place_id: string
+  place_name: string
+  place_address: string | null
+  rating: number
+  body: string
+  photos: string[] | null
+  is_verified: boolean
+  like_count: number
+  comment_count: number
+  created_at: string
+  liked_by_me: boolean
+  profiles: ReviewProfile | null
+}
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {[1, 2, 3, 4, 5].map(i => (
+        <Star key={i} size={12} className={i <= rating ? 'text-amber-400 fill-amber-400' : 'text-gray-200'} />
+      ))}
+    </div>
+  )
+}
+
+// --- Comment Drawer ---
+function CommentDrawer({
+  review,
+  onClose,
+  onCommentAdded,
+}: {
+  review: Review
+  onClose: () => void
+  onCommentAdded: (reviewId: string) => void
+}) {
+  const [comments, setComments] = useState<Comment[]>([])
+  const [loading, setLoading] = useState(true)
+  const [text, setText] = useState('')
+  const [sending, setSending] = useState(false)
+  const bottomRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    fetch(`/api/reviews/${review.id}/comments`)
+      .then(r => r.json())
+      .then(d => setComments(d.comments || []))
+      .finally(() => setLoading(false))
+  }, [review.id])
+
+  const handleSend = async () => {
+    if (!text.trim() || sending) return
+    setSending(true)
+    try {
+      const res = await fetch(`/api/reviews/${review.id}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ body: text.trim() }),
+      })
+      const data = await res.json()
+      if (res.ok && data.comment) {
+        setComments(prev => [...prev, data.comment])
+        setText('')
+        onCommentAdded(review.id)
+        setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
+      }
+    } finally {
+      setSending(false)
+    }
+  }
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/40 z-40"
+        onClick={onClose}
+      />
+
+      {/* Sheet */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-950 rounded-t-3xl max-h-[70vh] flex flex-col shadow-2xl">
+        {/* Handle */}
+        <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
+          <div className="w-10 h-1 bg-gray-200 dark:bg-gray-700 rounded-full" />
+        </div>
+
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 pb-3 border-b border-gray-100 dark:border-gray-800 flex-shrink-0">
+          <h3 className="font-semibold text-gray-900 dark:text-white">Bình luận ({comments.length})</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1">
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Comments list */}
+        <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4 min-h-0">
+          {loading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 size={20} className="text-primary-500 animate-spin" />
+            </div>
+          ) : comments.length === 0 ? (
+            <p className="text-center text-gray-400 text-sm py-8">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
+          ) : (
+            comments.map(c => {
+              const name = c.profiles?.full_name?.split(' ').pop() || 'Ẩn danh'
+              return (
+                <div key={c.id} className="flex gap-2.5">
+                  {c.profiles?.avatar_url ? (
+                    <Image src={c.profiles.avatar_url} alt={name} width={32} height={32} className="rounded-full flex-shrink-0 mt-0.5" />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-white text-xs font-bold">{name[0]?.toUpperCase()}</span>
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2">
+                      <Link href={`/users/${c.user_id}`} className="text-xs font-semibold text-gray-900 dark:text-white hover:underline">
+                        {name}
+                      </Link>
+                      <span className="text-[10px] text-gray-400">{timeAgo(c.created_at)}</span>
+                    </div>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mt-0.5 leading-relaxed">{c.body}</p>
+                  </div>
+                </div>
+              )
+            })
+          )}
+          <div ref={bottomRef} />
+        </div>
+
+        {/* Input */}
+        <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-100 dark:border-gray-800 flex-shrink-0 pb-safe">
+          <input
+            type="text"
+            value={text}
+            onChange={e => setText(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSend()}
+            placeholder="Viết bình luận..."
+            maxLength={300}
+            className="flex-1 px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 dark:text-white"
+          />
+          <button
+            onClick={handleSend}
+            disabled={!text.trim() || sending}
+            className="w-9 h-9 bg-primary-500 disabled:bg-gray-300 dark:disabled:bg-gray-700 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
+          >
+            {sending ? (
+              <Loader2 size={16} className="text-white animate-spin" />
+            ) : (
+              <Send size={16} className="text-white" />
+            )}
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// --- Review Card ---
+function ReviewCard({
+  review,
+  onLike,
+  onComment,
+}: {
+  review: Review
+  onLike: (id: string) => void
+  onComment: (review: Review) => void
+}) {
+  const author = review.profiles
+  const firstName = author?.full_name?.split(' ').pop() || 'Ẩn danh'
+  const ago = timeAgo(review.created_at)
+
+  return (
+    <article className="card overflow-hidden">
+      {/* Cover photo */}
+      {review.photos && review.photos.length > 0 && (
+        <div className="relative w-full aspect-video bg-gray-100 dark:bg-gray-800">
+          <Image
+            src={review.photos[0]}
+            alt={review.place_name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 672px) 100vw, 672px"
+          />
+          {review.photos.length > 1 && (
+            <span className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full">
+              +{review.photos.length - 1} ảnh
+            </span>
+          )}
+        </div>
+      )}
+
+      <div className="p-4 space-y-3">
+        {/* Place info */}
+        <div>
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-semibold text-gray-900 dark:text-white text-base leading-tight">
+              {review.place_name}
+            </h3>
+            <StarRating rating={review.rating} />
+          </div>
+          {review.place_address && (
+            <div className="flex items-center gap-1 mt-0.5">
+              <MapPin size={11} className="text-gray-400 flex-shrink-0" />
+              <span className="text-xs text-gray-400 truncate">{review.place_address}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Body */}
+        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{review.body}</p>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-1">
+          {/* Author — tap to go to profile */}
+          <Link href={`/users/${review.user_id}`} className="flex items-center gap-2 group">
+            {author?.avatar_url ? (
+              <Image src={author.avatar_url} alt={firstName} width={28} height={28} className="rounded-full" />
+            ) : (
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center flex-shrink-0">
+                <span className="text-white text-xs font-bold">{firstName[0]?.toUpperCase()}</span>
+              </div>
+            )}
+            <div>
+              <div className="flex items-center gap-1">
+                <span className="text-xs font-medium text-gray-700 dark:text-gray-300 group-hover:underline">{firstName}</span>
+                {review.is_verified && <CheckCircle size={11} className="text-blue-500" />}
+              </div>
+              <span className="text-[10px] text-gray-400">{ago}</span>
+            </div>
+          </Link>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => onLike(review.id)}
+              className="flex items-center gap-1.5 group"
+              aria-label={review.liked_by_me ? 'Bỏ thích' : 'Thích'}
+            >
+              <Heart
+                size={18}
+                className={`transition-all ${review.liked_by_me
+                  ? 'text-red-500 fill-red-500 scale-110'
+                  : 'text-gray-400 group-hover:text-red-400'
+                }`}
+              />
+              <span className={`text-xs font-medium ${review.liked_by_me ? 'text-red-500' : 'text-gray-400'}`}>
+                {review.like_count}
+              </span>
+            </button>
+            <button
+              onClick={() => onComment(review)}
+              className="flex items-center gap-1.5 text-gray-400 hover:text-primary-500 transition-colors"
+              aria-l

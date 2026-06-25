@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
-import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users, TrendingDown, Brain } from 'lucide-react'
+import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users, TrendingDown, Brain, Star, Plug } from 'lucide-react'
 
 export default async function ProfilePage() {
   const supabase = createClient()
@@ -75,6 +75,8 @@ export default async function ProfilePage() {
             <MenuItem icon={Bookmark} label="Đã lưu" description="Địa điểm yêu thích đã lưu từ chat" href="/profile/favorites" />
             <MenuItem icon={TrendingDown} label="Theo dõi giá" description="Tappy báo khi giá xuống mức mong muốn" href="/profile/price-watches" />
             <MenuItem icon={Brain} label="Tappy biết gì về bạn" description="Xem và quản lý bộ nhớ cá nhân của Tappy" href="/profile/tappy-knows" />
+            <MenuItem icon={Plug} label="Kết nối ứng dụng" description="Google Calendar, Zalo và nhiều hơn nữa" href="/profile/integrations" />
+            <MenuItem icon={Star} label="Review của tôi" description="Xem và quản lý các đánh giá đã đăng" href="/reviews" />
             <MenuItem icon={Users} label="Đi nhóm" description="Cả team đi ăn gì? Để Tappy gợi ý" href="/group/new" />
             <MenuItem icon={Crown} label="Nâng cấp Pro" description="Không giới hạn tin nhắn & tính năng" href="/subscription" />
           </div>
@@ -85,13 +87,4 @@ export default async function ProfilePage() {
           <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-1">
             Cài đặt
           </h3>
-          <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={Settings} label="Cài đặt chung" description="Thông báo, trợ lý, đăng xuất" href="/profile/settings" />
-          </div>
-        </section>
-      </main>
-
-      <BottomNav />
-    </div>
-  )
-}
+        

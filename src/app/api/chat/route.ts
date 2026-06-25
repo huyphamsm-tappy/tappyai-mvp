@@ -1556,6 +1556,15 @@ export async function POST(req: Request) {
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory)
       if (prefResult.data) prefBlock = buildPrefBlock(prefResult.data as UserPrefs)
 
+      // Inject Google Calendar events if connected
+      try {
+        const { getUpcomingEvents, formatEventsForPrompt } = await import('@/lib/integrations/googleCalendar')
+        const calEvents = await getUpcomingEvents(user.id)
+        if (calEvents.length > 0) {
+          memoryBlock = (memoryBlock || '') + formatEventsForPrompt(calEvents)
+        }
+      } catch { /* calendar optional */ }
+
       // Kiểm tra subscription từ DB
       const { data: subData } = await supabase
         .from('subscriptions')
@@ -1864,19 +1873,4 @@ function applyLuxuryStreamFilter(response: Response): Response {
           try {
             const text = JSON.parse(lineRemainder.slice(2)) as string
             const filtered = filterLuxuryBrands(text)
-            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
-          } catch {
-            controller.enqueue(encoder.encode(lineRemainder + '\n'))
-          }
-        } else {
-          controller.enqueue(encoder.encode(lineRemainder + '\n'))
-        }
-      }
-    }
-  })
-
-  return new Response(body.pipeThrough(transform), {
-    status: response.status,
-    headers: response.headers,
-  })
-}
+            controller.enqu
