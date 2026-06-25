@@ -33,4 +33,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className="antialiased">
-        <PostHogProvider>{children}</PostHogP
+        <PostHogProvider>{children}</PostHogProvider>
+        <LocationProvider />
+        <TrackingProvider />
+      </body>
+    </html>
+  )
+}
