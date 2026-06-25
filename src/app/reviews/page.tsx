@@ -328,7 +328,7 @@ function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => v
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur border-t border-gray-800 flex items-center h-[60px]">
       {[
         { id: 'home', icon: <Home size={24} />, label: 'Trang chủ' },
-        { id: 'explore', icon: <Search size={24} />, label: 'Review' },
+        { id: 'explore', icon: <Search size={24} />, label: 'Tìm Kiếm' },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
           className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === item.id ? 'text-white' : 'text-gray-500'}`}>
@@ -362,7 +362,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
       <div className="text-white font-black text-2xl px-3 mb-4">TappyAI</div>
       {[
         { id: 'home', icon: <Home size={22} />, label: 'Trang chủ' },
-        { id: 'explore', icon: <Search size={22} />, label: 'Review' },
+        { id: 'explore', icon: <Search size={22} />, label: 'Tìm Kiếm' },
         { id: 'profile', icon: <User size={22} />, label: 'Hồ sơ & Bài của tôi' },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
@@ -583,6 +583,4 @@ export default function ReviewsPage() {
 
       {commentOf && <CommentDrawer review={commentOf} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
-    </div>
-  )
-}
+    </d
