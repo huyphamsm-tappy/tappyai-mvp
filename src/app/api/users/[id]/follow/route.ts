@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
 
@@ -15,7 +14,6 @@ export async function POST(
 
   const targetId = params.id
 
-  // Check if already following
   const { data: existing } = await supabase
     .from('user_follows')
     .select('id')
@@ -24,7 +22,7 @@ export async function POST(
     .maybeSingle()
 
   if (existing) {
-    // Unfollow — no notification
+    // Unfollow
     await supabase
       .from('user_follows')
       .delete()
@@ -48,6 +46,23 @@ export async function POST(
 
     const { data: profile } = await supabase
       .from('profiles')
-      .select('follower_count')
+      .select('follower_count, full_name')
       .eq('id', targetId)
-      .sin
+      .single()
+
+    // Notify target user
+    const { data: follower } = await supabase
+      .from('profiles')
+      .select('full_name')
+      .eq('id', user.id)
+      .single()
+    const name = follower?.full_name?.split(' ').pop() || 'Ai đó'
+    sendNotificationToUser(targetId, {
+      title: `👤 ${name} đang theo dõi bạn`,
+      body: 'Xem trang cá nhân của họ',
+      data: { url: `/users/${user.id}` },
+    }).catch(() => {})
+
+    return NextResponse.json({ following: true, follower_count: profile?.follower_count ?? 0 })
+  }
+}

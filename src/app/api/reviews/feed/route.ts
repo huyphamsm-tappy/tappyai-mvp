@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
   if (filterUserId) query = query.eq('user_id', filterUserId)
 
   if (sort === 'trending') {
-    // Trending: high likes + recent (within last 30 days), ordered by like_count desc then recency
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
     query = query
       .gte('created_at', thirtyDaysAgo)
@@ -40,4 +39,25 @@ export async function GET(req: NextRequest) {
 
   if (error) {
     console.error('[reviews/feed] query error:', error)
-    return NextResponse.json({ error: 'Lỗi t
+    return NextResponse.json({ error: 'Lỗi tải feed' }, { status: 500 })
+  }
+
+  // Fetch liked review IDs for the current user
+  let likedIds: string[] = []
+  if (user && reviews && reviews.length > 0) {
+    const ids = reviews.map(r => r.id)
+    const { data: likes } = await supabase
+      .from('review_likes')
+      .select('review_id')
+      .eq('user_id', user.id)
+      .in('review_id', ids)
+    likedIds = (likes || []).map(l => l.review_id)
+  }
+
+  const enriched = (reviews || []).map(r => ({
+    ...r,
+    liked_by_me: likedIds.includes(r.id),
+  }))
+
+  return NextResponse.json({ reviews: enriched, page, limit })
+}

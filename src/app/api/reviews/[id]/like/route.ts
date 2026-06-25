@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
 
@@ -23,7 +22,7 @@ export async function POST(
     .maybeSingle()
 
   if (existing) {
-    // Unlike — no notification
+    // Unlike
     await supabase
       .from('review_likes')
       .delete()
@@ -34,4 +33,31 @@ export async function POST(
     // Like
     const { error } = await supabase
       .from('review_likes')
-      .insert({ review_id: reviewId, user_id: user.id }
+      .insert({ review_id: reviewId, user_id: user.id })
+
+    if (error) return NextResponse.json({ error: 'Không thể like' }, { status: 500 })
+
+    // Send notification to review owner
+    const { data: review } = await supabase
+      .from('reviews')
+      .select('user_id, place_name')
+      .eq('id', reviewId)
+      .single()
+
+    if (review && review.user_id !== user.id) {
+      const { data: liker } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .single()
+      const name = liker?.full_name?.split(' ').pop() || 'Ai đó'
+      sendNotificationToUser(review.user_id, {
+        title: `❤️ ${name} thích review của bạn`,
+        body: review.place_name || 'Xem ngay!',
+        data: { url: `/reviews/${reviewId}` },
+      }).catch(() => {})
+    }
+
+    return NextResponse.json({ liked: true })
+  }
+}
