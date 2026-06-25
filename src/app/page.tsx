@@ -258,4 +258,13 @@ export default async function HomePage() {
           <div className="text-center py-4">
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-3">Đăng nhập để lưu lịch sử trò chuyện của bạn</p>
             <Link href="/login" className="inline-block btn-primary text-sm py-2.5 px-6">
-   
+              Đăng nhập
+            </Link>
+          </div>
+        )}
+      </main>
+
+      <BottomNav />
+    </div>
+  )
+}

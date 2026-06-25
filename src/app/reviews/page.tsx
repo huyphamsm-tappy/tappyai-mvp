@@ -321,4 +321,16 @@ export default function ReviewsPage() {
         />
       )}
 
-      {/* FAB — Viết rev
+      {/* FAB — Viết review */}
+      <Link
+        href="/reviews/new"
+        className="fixed bottom-20 right-4 z-40 flex items-center gap-2 bg-primary-500 hover:bg-primary-600 active:scale-95 text-white font-semibold px-4 py-3 rounded-full shadow-lg transition-all"
+      >
+        <PenLine size={18} />
+        Viết review
+      </Link>
+
+      <BottomNav />
+    </div>
+  )
+}

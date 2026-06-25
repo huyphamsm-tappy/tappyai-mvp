@@ -85,7 +85,6 @@ export default function PreferencesPage() {
   const handleSave = async () => {
     setSaving(true)
     try {
-      const supabase = createClient()
       const [r1, r2] = await Promise.all([
         fetch('/api/preferences', {
           method: 'PUT',
@@ -98,13 +97,14 @@ export default function PreferencesPage() {
           body: JSON.stringify({ preferences }),
         }),
       ])
-      // Save gender to user metadata
-      if (gender) {
-        await supabase.auth.updateUser({ data: { gender } })
-      }
       if (r1.ok && r2.ok) {
         setSaved(true)
         setTimeout(() => { setSaved(false); router.push('/profile') }, 1200)
+      }
+      // Save gender to user metadata
+      if (gender !== null) {
+        const supabase = createClient()
+        await supabase.auth.updateUser({ data: { gender } })
       }
     } catch { /* network error */ }
     finally { setSaving(false) }
@@ -269,4 +269,56 @@ export default function PreferencesPage() {
                 onClick={() => toggleCuisine(item)}
                 className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
                   cuisines.includes(item)
-                    ? 'border-primary-
+                    ? 'border-primary-500 bg-primary-500 text-white'
+                    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:border-primary-300'
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Dietary restrictions */}
+        <section>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-1.5">
+            🚫 Dị ứng / kiêng cữ
+          </h3>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">
+            Ví dụ: không ăn thịt heo, dị ứng hải sản, thuần chay...
+          </p>
+          <textarea
+            value={dietary}
+            onChange={e => setDietary(e.target.value)}
+            maxLength={200}
+            rows={3}
+            placeholder="Ghi chú nếu có..."
+            className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-primary-400"
+          />
+        </section>
+
+        {/* Save button */}
+        <button
+          onClick={handleSave}
+          disabled={saving || saved}
+          className={`w-full py-4 rounded-2xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-2 ${
+            saved
+              ? 'bg-green-500 text-white'
+              : 'bg-primary-500 hover:bg-primary-600 active:scale-[0.98] text-white disabled:opacity-60'
+          }`}
+        >
+          {saving ? (
+            <><Loader2 size={18} className="animate-spin" /> Đang lưu...</>
+          ) : saved ? (
+            <><Check size={18} /> Đã lưu!</>
+          ) : (
+            <><Save size={18} /> Lưu sở thích</>
+          )}
+        </button>
+
+      </main>
+
+      <BottomNav />
+    </div>
+  )
+}
