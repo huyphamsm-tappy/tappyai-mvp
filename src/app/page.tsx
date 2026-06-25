@@ -37,6 +37,86 @@ export default async function HomePage() {
   const gender = user?.user_metadata?.gender === 'male' ? 'male' : user?.user_metadata?.gender === 'female' ? 'female' : null
   const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory, gender)
 
+  // Dynamic hero heading theo giờ VN
+  const vnHour = vnTime.getUTCHours()
+  const vnDay = vnTime.getUTCDay() // 0=CN, 6=T7
+  const isWeekend = vnDay === 0 || vnDay === 6
+
+  const HERO_TEXTS: { range: [number, number]; texts: string[] }[] = [
+    {
+      range: [0, 5],
+      texts: [
+        'Thức khuya à?<br />Tappy đây, cần gì không? 🌙',
+        'Đêm muộn rồi —<br />nhưng Tappy vẫn sẵn sàng 🌛',
+        'Còn thức à?<br />Đặt đồ ăn khuya hay cần gì? 🍜',
+      ],
+    },
+    {
+      range: [5, 9],
+      texts: isWeekend
+        ? [
+            'Sáng cuối tuần đây!<br />Nghỉ ngơi hay đi đâu vui? ☀️',
+            'Cuối tuần bắt đầu —<br />Tappy gợi ý chỗ brunch ngon nhé? 🥞',
+            'Chào buổi sáng!<br />Cuối tuần này kế hoạch gì? 🎉',
+          ]
+        : [
+            'Chào buổi sáng!<br />Hôm nay ăn gì ngon đây? ☀️',
+            'Ngày mới bắt đầu —<br />Tappy sẵn sàng giúp bạn! 🌅',
+            'Sáng sớm rồi,<br />cà phê hay bánh mì trước? ☕',
+            'Good morning!<br />Hôm nay Tappy lo hết cho bạn 😄',
+          ],
+    },
+    {
+      range: [9, 11],
+      texts: [
+        'Buổi sáng đang chạy —<br />bạn cần gì từ Tappy? ⚡',
+        'Mid-morning rồi,<br />trưa nay ăn gì nghĩ chưa? 🤔',
+        'Tappy đây!<br />Hỏi gì cũng được, trả lời liền 🚀',
+      ],
+    },
+    {
+      range: [11, 14],
+      texts: [
+        'Đói chưa?<br />Tappy tìm chỗ ăn trưa ngon ngay! 🍚',
+        'Giờ vàng ăn trưa —<br />để Tappy chọn chỗ hộ nhé 🥢',
+        'Cơm trưa chưa?<br />Hỏi Tappy trước khi Google nha 😄',
+        '12h rồi —<br />ra ngoài hay đặt đồ ăn? Tappy lo! 🛵',
+      ],
+    },
+    {
+      range: [14, 17],
+      texts: [
+        'Chiều rồi,<br />cà phê hay spa thư giãn nhé? ☕',
+        '3h chiều —<br />buồn ngủ hay đi đâu cho tỉnh? 😅',
+        'Buổi chiều của bạn<br />sẽ thú vị hơn với Tappy! ✨',
+        'Slump buổi chiều?<br />Tappy có mấy gợi ý hay đây 💡',
+      ],
+    },
+    {
+      range: [17, 20],
+      texts: [
+        'Tan làm rồi!<br />Tối nay ăn gì, đi đâu? 🎊',
+        'Giờ vàng buổi tối —<br />Tappy gợi ý quán ngon ngay! 🍜',
+        'Công việc xong rồi,<br />giờ là thời gian của bạn! 🥂',
+        'Tối nay có kế hoạch gì?<br />Tappy lo hết phần tìm kiếm! 😊',
+      ],
+    },
+    {
+      range: [20, 24],
+      texts: [
+        'Tối đẹp thế này<br />đi đâu cho đáng? Hỏi Tappy đi 🌃',
+        'Đêm xuống rồi —<br />ăn gì, làm gì, đi đâu? 🌙',
+        'Cuối ngày rồi,<br />Tappy giúp bạn thư giãn nhé! 🛁',
+        'Tối nay vui không?<br />Tappy có vài gợi ý hay đây ✨',
+      ],
+    },
+  ]
+
+  const slot = HERO_TEXTS.find(s => vnHour >= s.range[0] && vnHour < s.range[1]) ?? HERO_TEXTS[1]
+  // Dùng ngày trong tháng để chọn deterministically (không random server/client mismatch)
+  const dayOfMonth = vnTime.getUTCDate()
+  const heroText = slot.texts[dayOfMonth % slot.texts.length]
+
   const userInfo = user
     ? (profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email })
     : null
@@ -57,9 +137,9 @@ export default async function HomePage() {
             <p className="text-white/80 text-sm font-medium mb-1">
               {user ? `Xin chào, ${firstName} 👋` : 'Chào mừng đến với TappyAI 👋'}
             </p>
-            <h1 className="text-white text-2xl sm:text-3xl font-black leading-tight mb-5">
-              Hôm nay bạn cần<br />tìm gì?
-            </h1>
+            <h1 className="text-white text-2xl sm:text-3xl font-black leading-tight mb-5"
+              dangerouslySetInnerHTML={{ __html: heroText }}
+            />
             <SearchBar variant="hero" />
           </div>
         </div>
