@@ -10,7 +10,7 @@ export async function GET() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('*')
+    .select('full_name, avatar_url, email, created_at')
     .eq('id', user.id)
     .single()
 
@@ -18,12 +18,11 @@ export async function GET() {
     full_name: profile?.full_name || user.user_metadata?.full_name || '',
     avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url || '',
     email: profile?.email || user.email || '',
-    bio: profile?.bio || '',
-    phone: profile?.phone || '',
+    bio: user.user_metadata?.bio || '',
   })
 }
 
-// PATCH /api/profile — update name, bio, phone
+// PATCH /api/profile — update name and bio
 export async function PATCH(req: NextRequest) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -32,27 +31,23 @@ export async function PATCH(req: NextRequest) {
   const body = await req.json()
   const full_name = typeof body.full_name === 'string' ? body.full_name.trim().slice(0, 100) : undefined
   const bio = typeof body.bio === 'string' ? body.bio.trim().slice(0, 200) : undefined
-  const phone = typeof body.phone === 'string' ? body.phone.trim().slice(0, 20) : undefined
 
-  const updates: Record<string, string> = {}
-  if (full_name !== undefined) updates.full_name = full_name
-  if (bio !== undefined) updates.bio = bio
-  if (phone !== undefined) updates.phone = phone
-
-  if (Object.keys(updates).length === 0) {
-    return NextResponse.json({ error: 'Không có thay đổi' }, { status: 400 })
+  // Update profiles table (only columns that definitely exist)
+  if (full_name !== undefined) {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ full_name })
+      .eq('id', user.id)
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  const { error } = await supabase
-    .from('profiles')
-    .update({ ...updates, updated_at: new Date().toISOString() })
-    .eq('id', user.id)
+  // Save bio + name to auth metadata (no DB schema needed)
+  const metaUpdates: Record<string, string> = {}
+  if (full_name !== undefined) metaUpdates.full_name = full_name
+  if (bio !== undefined) metaUpdates.bio = bio
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-
-  // Also update Supabase auth metadata for name
-  if (full_name !== undefined) {
-    await supabase.auth.updateUser({ data: { full_name } })
+  if (Object.keys(metaUpdates).length > 0) {
+    await supabase.auth.updateUser({ data: metaUpdates })
   }
 
   return NextResponse.json({ ok: true })
@@ -84,13 +79,15 @@ export async function POST(req: NextRequest) {
     addRandomSuffix: false,
   })
 
+  // Update only avatar_url — a column that always exists in profiles
   const { error } = await supabase
     .from('profiles')
-    .update({ avatar_url: blob.url, updated_at: new Date().toISOString() })
+    .update({ avatar_url: blob.url })
     .eq('id', user.id)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
+  // Also save to auth metadata
   await supabase.auth.updateUser({ data: { avatar_url: blob.url } })
 
   return NextResponse.json({ avatar_url: blob.url })
