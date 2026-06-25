@@ -7,7 +7,7 @@ function checkRL(ip: string): boolean {
   const today = new Date().toISOString().slice(0, 10)
   const e = rlStore.get(ip)
   if (!e || e.date !== today) { rlStore.set(ip, { date: today, count: 1 }); return true }
-  if (e.count >= 5) return false
+  if (e.count >= 20) return false
   e.count++
   return true
 }
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
   if (error) return NextResponse.json({ error: 'Lỗi tải đánh giá' }, { status: 500 })
 
   const avg = data && data.length > 0
-    ? (data.reduce((s, r) => s + r.rating, 0) / data.length)
+    ? (() => { const rated = data.filter(r => r.rating > 0); return rated.length > 0 ? rated.reduce((s, r) => s + r.rating, 0) / rated.length : null })()
     : null
 
   return NextResponse.json({
@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
   if (!checkRL(ip)) {
-    return NextResponse.json({ error: 'Bạn đã gửi quá 5 đánh giá hôm nay. Thử lại vào ngày mai.' }, { status: 429 })
+    return NextResponse.json({ error: 'Bạn đã đăng quá 20 bài hôm nay. Thử lại vào ngày mai.' }, { status: 429 })
   }
 
   const supabase = createClient()
@@ -59,12 +59,13 @@ export async function POST(req: NextRequest) {
     placeAddress = b.placeAddress?.trim() || ''
     rating = Number(b.rating)
     body = b.body?.trim()
-    photos = Array.isArray(b.photos) ? b.photos.filter((u: unknown) => typeof u === 'string').slice(0, 3) : []
-    if (!placeId || !placeName || !rating || !body) throw new Error('missing fields')
-    if (rating < 1 || rating > 5 || !Number.isInteger(rating)) throw new Error('invalid rating')
-    if (body.length < 20 || body.length > 500) throw new Error('body length')
+    photos = Array.isArray(b.photos) ? b.photos.filter((u: unknown) => typeof u === 'string').slice(0, 6) : []
+    if (!placeId || !placeName) throw new Error('missing fields')
+    if (!body && photos.length === 0) throw new Error('need body or photos')
+    if (rating && (rating < 1 || rating > 5 || !Number.isInteger(rating))) throw new Error('invalid rating')
+    if (body.length > 1000) throw new Error('body too long')
   } catch {
-    return NextResponse.json({ error: 'Dữ liệu không hợp lệ. Đánh giá phải từ 20–500 ký tự.' }, { status: 400 })
+    return NextResponse.json({ error: 'Cần có nội dung hoặc ảnh để đăng bài.' }, { status: 400 })
   }
 
   // Check if user has a past booking here → verified badge
@@ -99,8 +100,8 @@ export async function POST(req: NextRequest) {
       place_id: placeId,
       place_name: placeName,
       place_address: placeAddress,
-      rating,
-      body,
+      rating: rating || null,
+      body: body || '',
       is_verified: isVerified,
       ...(photos.length > 0 ? { photos } : {}),
     })

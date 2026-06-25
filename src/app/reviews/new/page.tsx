@@ -4,22 +4,23 @@ import { useState, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import Header from '@/components/Header'
-import BottomNav from '@/components/BottomNav'
-import { Star, Camera, X, ArrowLeft, Loader2, CheckCircle } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
+import { Star, Camera, X, ArrowLeft, Loader2, CheckCircle, MapPin, Plus } from 'lucide-react'
 
-const MAX_PHOTOS = 3
+const MAX_PHOTOS = 6
 
 export default function NewReviewPage() {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const supabase = createClient()
 
-  const [placeName, setPlaceName] = useState('')
-  const [placeAddress, setPlaceAddress] = useState('')
+  const [body, setBody] = useState('')
+  const [photos, setPhotos] = useState<string[]>([])
   const [rating, setRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
-  const [body, setBody] = useState('')
-  const [photos, setPhotos] = useState<string[]>([]) // uploaded URLs
+  const [placeName, setPlaceName] = useState('')
+  const [showPlaceInput, setShowPlaceInput] = useState(false)
+  const [showRating, setShowRating] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -32,7 +33,6 @@ export default function NewReviewPage() {
       setError(`Tối đa ${MAX_PHOTOS} ảnh`)
       return
     }
-
     setUploading(true)
     setError('')
     try {
@@ -54,39 +54,38 @@ export default function NewReviewPage() {
     }
   }, [photos.length])
 
-  const removePhoto = (idx: number) => {
-    setPhotos(prev => prev.filter((_, i) => i !== idx))
-  }
+  const removePhoto = (idx: number) => setPhotos(prev => prev.filter((_, i) => i !== idx))
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const canPost = body.trim().length > 0 || photos.length > 0
+
+  const handleSubmit = async () => {
+    if (!canPost) return
     setError('')
-
-    if (!rating) { setError('Vui lòng chọn số sao'); return }
-    if (!placeName.trim()) { setError('Vui lòng nhập tên địa điểm'); return }
-    if (body.trim().length < 20) { setError('Đánh giá phải từ 20 ký tự trở lên'); return }
-
     setSubmitting(true)
     try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { router.push('/login?returnTo=/reviews/new'); return }
+
       const res = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          placeId: `community_${placeName.trim().toLowerCase().replace(/\s+/g, '_')}`,
-          placeName: placeName.trim(),
-          placeAddress: placeAddress.trim(),
-          rating,
+          placeId: placeName.trim()
+            ? `community_${placeName.trim().toLowerCase().replace(/\s+/g, '_')}`
+            : `post_${Date.now()}`,
+          placeName: placeName.trim() || 'Chia sẻ',
+          placeAddress: '',
+          rating: rating || 0,
           body: body.trim(),
           photos,
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Lỗi gửi đánh giá')
-
+      if (!res.ok) throw new Error(data.error || 'Lỗi đăng bài')
       setSuccess(true)
-      setTimeout(() => router.push('/reviews'), 1800)
+      setTimeout(() => router.push('/reviews'), 1500)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Lỗi gửi đánh giá')
+      setError(err instanceof Error ? err.message : 'Lỗi đăng bài')
     } finally {
       setSubmitting(false)
     }
@@ -100,187 +99,158 @@ export default function NewReviewPage() {
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <div className="text-center px-8">
           <CheckCircle size={56} className="text-green-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Đã đăng review!</h2>
-          <p className="text-gray-500">Cảm ơn bạn đã chia sẻ trải nghiệm 🙏</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Đã đăng bài!</h2>
+          <p className="text-gray-500">Cảm ơn bạn đã chia sẻ ✨</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header />
-
+    <div className="min-h-dvh bg-white dark:bg-gray-950 flex flex-col">
       {/* Top bar */}
-      <div className="sticky top-0 z-30 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-4 py-3">
-        <div className="max-w-2xl mx-auto flex items-center gap-3">
-          <Link href="/reviews" className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-            <ArrowLeft size={22} />
-          </Link>
-          <h1 className="font-bold text-gray-900 dark:text-white">Viết review</h1>
-        </div>
+      <div className="sticky top-0 z-30 bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800 px-4 py-3 flex items-center justify-between">
+        <Link href="/reviews" className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+          <ArrowLeft size={22} />
+        </Link>
+        <h1 className="font-bold text-gray-900 dark:text-white">Bài viết mới</h1>
+        <button
+          onClick={handleSubmit}
+          disabled={!canPost || submitting || uploading}
+          className="px-4 py-1.5 rounded-full bg-primary-500 hover:bg-primary-600 disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white text-sm font-semibold transition-all"
+        >
+          {submitting ? <Loader2 size={15} className="animate-spin" /> : 'Đăng'}
+        </button>
       </div>
 
-      <main className="max-w-2xl mx-auto px-4 py-6">
-        <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-4 space-y-4">
 
-          {/* Place name */}
-          <div className="card p-4 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Tên địa điểm <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="text"
-                value={placeName}
-                onChange={e => setPlaceName(e.target.value)}
-                placeholder="Quán cà phê, nhà hàng, spa..."
-                className="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 dark:text-white"
-                maxLength={100}
-              />
+        {/* Photo grid */}
+        <div>
+          {photos.length === 0 ? (
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="w-full aspect-square max-h-72 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-primary-500 hover:border-primary-300 transition-all"
+            >
+              {uploading ? (
+                <Loader2 size={32} className="animate-spin text-primary-400" />
+              ) : (
+                <>
+                  <Camera size={40} />
+                  <span className="text-sm font-medium">Thêm ảnh / video</span>
+                  <span className="text-xs text-gray-400">Tối đa {MAX_PHOTOS} ảnh</span>
+                </>
+              )}
+            </button>
+          ) : (
+            <div className={`grid gap-1.5 ${photos.length === 1 ? 'grid-cols-1' : photos.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+              {photos.map((url, i) => (
+                <div key={i} className="relative aspect-square rounded-xl overflow-hidden">
+                  <Image src={url} alt={`Ảnh ${i + 1}`} fill className="object-cover" sizes="33vw" />
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(i)}
+                    className="absolute top-1.5 right-1.5 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center"
+                  >
+                    <X size={13} className="text-white" />
+                  </button>
+                </div>
+              ))}
+              {photos.length < MAX_PHOTOS && (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="aspect-square rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-primary-500 hover:border-primary-300 transition-all disabled:opacity-50"
+                >
+                  {uploading ? <Loader2 size={20} className="animate-spin" /> : <Plus size={24} />}
+                </button>
+              )}
             </div>
+          )}
+          <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoSelect} />
+        </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Địa chỉ <span className="text-gray-400 text-xs font-normal">(tuỳ chọn)</span>
-              </label>
-              <input
-                type="text"
-                value={placeAddress}
-                onChange={e => setPlaceAddress(e.target.value)}
-                placeholder="Quận 1, TP.HCM..."
-                className="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 dark:text-white"
-                maxLength={200}
-              />
-            </div>
-          </div>
+        {/* Caption */}
+        <textarea
+          value={body}
+          onChange={e => setBody(e.target.value)}
+          placeholder="Chia sẻ trải nghiệm, cảm nhận của bạn..."
+          rows={4}
+          maxLength={1000}
+          className="w-full px-0 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 bg-transparent border-none outline-none resize-none text-[15px] leading-relaxed"
+        />
+        {body.length > 0 && (
+          <p className="text-right text-xs text-gray-400">{body.length}/1000</p>
+        )}
 
-          {/* Star rating */}
-          <div className="card p-4">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Đánh giá <span className="text-red-400">*</span>
-            </p>
-            <div className="flex items-center gap-1">
+        <div className="border-t border-gray-100 dark:border-gray-800" />
+
+        {/* Optional: Add location */}
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowPlaceInput(v => !v)}
+            className="flex items-center gap-2 text-sm text-primary-500 font-medium hover:text-primary-600 transition-colors"
+          >
+            <MapPin size={16} />
+            {placeName ? placeName : 'Thêm địa điểm'}
+            {placeName && <X size={14} className="text-gray-400" onClick={e => { e.stopPropagation(); setPlaceName(''); setShowPlaceInput(false) }} />}
+          </button>
+          {showPlaceInput && (
+            <input
+              type="text"
+              value={placeName}
+              onChange={e => setPlaceName(e.target.value)}
+              placeholder="Tên quán, nhà hàng, địa điểm..."
+              autoFocus
+              maxLength={100}
+              className="mt-2 w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+            />
+          )}
+        </div>
+
+        {/* Optional: Star rating */}
+        <div>
+          <button
+            type="button"
+            onClick={() => { setShowRating(v => !v); if (showRating) setRating(0) }}
+            className="flex items-center gap-2 text-sm text-primary-500 font-medium hover:text-primary-600 transition-colors"
+          >
+            <Star size={16} />
+            {rating > 0 ? `${rating} sao — ${ratingLabels[rating]}` : 'Thêm đánh giá sao'}
+            {rating > 0 && <X size={14} className="text-gray-400" onClick={e => { e.stopPropagation(); setRating(0) }} />}
+          </button>
+          {showRating && (
+            <div className="flex items-center gap-1 mt-2">
               {[1, 2, 3, 4, 5].map(i => (
                 <button
                   key={i}
                   type="button"
                   onMouseEnter={() => setHoverRating(i)}
                   onMouseLeave={() => setHoverRating(0)}
-                  onClick={() => setRating(i)}
-                  className="p-1 transition-transform hover:scale-110"
-                  aria-label={`${i} sao`}
+                  onClick={() => { setRating(i); setShowRating(false) }}
+                  className="p-0.5 transition-transform hover:scale-110"
                 >
-                  <Star
-                    size={32}
-                    className={`transition-colors ${i <= displayRating ? 'text-amber-400 fill-amber-400' : 'text-gray-200 dark:text-gray-700'}`}
-                  />
+                  <Star size={30} className={`transition-colors ${i <= displayRating ? 'text-amber-400 fill-amber-400' : 'text-gray-200 dark:text-gray-700'}`} />
                 </button>
               ))}
               {displayRating > 0 && (
-                <span className="ml-2 text-sm font-medium text-amber-500">{ratingLabels[displayRating]}</span>
+                <span className="ml-1 text-sm font-medium text-amber-500">{ratingLabels[displayRating]}</span>
               )}
-            </div>
-          </div>
-
-          {/* Review body */}
-          <div className="card p-4">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-              Trải nghiệm của bạn <span className="text-red-400">*</span>
-            </label>
-            <textarea
-              value={body}
-              onChange={e => setBody(e.target.value)}
-              placeholder="Chia sẻ cảm nhận thật của bạn về địa điểm này... (ít nhất 20 ký tự)"
-              rows={5}
-              maxLength={500}
-              className="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 resize-none dark:text-white"
-            />
-            <p className={`text-right text-xs mt-1 ${body.length > 480 ? 'text-red-400' : 'text-gray-400'}`}>
-              {body.length}/500
-            </p>
-          </div>
-
-          {/* Photos */}
-          <div className="card p-4">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Ảnh <span className="text-gray-400 text-xs font-normal">(tối đa {MAX_PHOTOS} ảnh)</span>
-            </p>
-
-            <div className="flex gap-2 flex-wrap">
-              {photos.map((url, i) => (
-                <div key={i} className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                  <Image src={url} alt={`Ảnh ${i + 1}`} fill className="object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => removePhoto(i)}
-                    className="absolute top-1 right-1 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center"
-                    aria-label="Xoá ảnh"
-                  >
-                    <X size={12} className="text-white" />
-                  </button>
-                </div>
-              ))}
-
-              {photos.length < MAX_PHOTOS && (
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={uploading}
-                  className="w-24 h-24 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-600 hover:border-gray-400 transition-colors disabled:opacity-50"
-                >
-                  {uploading ? (
-                    <Loader2 size={20} className="animate-spin" />
-                  ) : (
-                    <>
-                      <Camera size={20} />
-                      <span className="text-xs">Thêm ảnh</span>
-                    </>
-                  )}
-                </button>
-              )}
-            </div>
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              className="hidden"
-              onChange={handlePhotoSelect}
-            />
-          </div>
-
-          {/* Error */}
-          {error && (
-            <div className="bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">
-              {error}
             </div>
           )}
+        </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={submitting || uploading || !rating || !placeName || body.length < 20}
-            className="w-full py-3.5 bg-primary-500 hover:bg-primary-600 disabled:bg-gray-300 dark:disabled:bg-gray-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
-          >
-            {submitting ? (
-              <>
-                <Loader2 size={18} className="animate-spin" />
-                Đang đăng...
-              </>
-            ) : (
-              'Đăng review'
-            )}
-          </button>
-
-          <p className="text-center text-xs text-gray-400">
-            Review sẽ hiển thị công khai trên feed TappyAI
-          </p>
-        </form>
-      </main>
-
-      <BottomNav />
+        {/* Error */}
+        {error && (
+          <div className="bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">
+            ⚠️ {error}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
