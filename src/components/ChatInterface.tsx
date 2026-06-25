@@ -601,7 +601,7 @@ export default function ChatInterface({
     if (category === 'general' || !QUICK_PROMPTS[category]) {
       const vnHour = (new Date().getUTCHours() + 7) % 24
       const vnDay = new Date().getUTCDay()
-      return getDynamicPrompts(vnHour, vnDay, null, 3).map(p => p.text)
+      return getDynamicPrompts(vnHour, vnDay, null, null, 3).map(p => p.text)
     }
     return QUICK_PROMPTS[category]
   }, [category])
@@ -940,5 +940,4 @@ export default function ChatInterface({
         </form>
       </div>
     </div>
-  )
-}
+  

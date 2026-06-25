@@ -34,7 +34,8 @@ export default async function HomePage() {
 
   // Dynamic prompts — VN time UTC+7, shuffled fresh on each server render
   const vnTime = new Date(Date.now() + 7 * 60 * 60 * 1000)
-  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory)
+  const gender = user?.user_metadata?.gender === 'male' ? 'male' : user?.user_metadata?.gender === 'female' ? 'female' : null
+  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory, gender)
 
   const userInfo = user
     ? (profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email })
@@ -257,13 +258,4 @@ export default async function HomePage() {
           <div className="text-center py-4">
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-3">Đăng nhập để lưu lịch sử trò chuyện của bạn</p>
             <Link href="/login" className="inline-block btn-primary text-sm py-2.5 px-6">
-              Đăng nhập
-            </Link>
-          </div>
-        )}
-      </main>
-
-      <BottomNav />
-    </div>
-  )
-}
+   
