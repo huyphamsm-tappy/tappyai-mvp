@@ -39,7 +39,7 @@ Hãy gợi ý 3 địa điểm ăn uống phù hợp với TẤT CẢ mọi ngư
 
   try {
     const { text: suggestion } = await generateText({
-      model: anthropic('claude-sonnet-4-6'),
+      model: anthropic('claude-haiku-4-5-20251001'),
       messages: [{ role: 'user', content: prompt }],
       maxTokens: 1024,
     })
