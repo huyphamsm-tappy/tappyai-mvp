@@ -21,6 +21,7 @@ interface Review {
   liked_by_me: boolean; saved_by_me: boolean; profiles: Profile | null
 }
 
+interface Notification { id: string; type: string; actor_id: string; actor_name: string; actor_avatar: string | null; text: string; url: string; created_at: string }
 function ago(d: string) {
   const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000)
   if (m < 1) return 'vừa xong'
@@ -386,6 +387,8 @@ export default function ReviewsPage() {
   const [feedType, setFeedType] = useState<'for-you' | 'following'>('for-you')
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
+  const [notifs, setNotifs] = useState<Notification[]>([])
+  const [notifsLoading, setNotifsLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(0)
@@ -404,6 +407,13 @@ export default function ReviewsPage() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null))
   }, [supabase])
+
+  // Load notifications when inbox tab opens
+  useEffect(() => {
+    if (tab !== 'inbox') return
+    setNotifsLoading(true)
+    fetch('/api/notifications').then(r => r.json()).then(d => setNotifs(d.notifications || [])).finally(() => setNotifsLoading(false))
+  }, [tab])
 
   const fetch_ = useCallback(async (p: number, append = false, ft: 'for-you' | 'following' = 'for-you') => {
     const followingParam = ft === 'following' ? '&following=true' : ''
@@ -680,13 +690,43 @@ export default function ReviewsPage() {
             </div>
           )}
 
-          {/* Inbox placeholder */}
-          {tab === 'inbox' && (
-            <div className="h-dvh flex flex-col items-center justify-center text-gray-500 gap-3">
-              <Bell size={40} className="opacity-30" />
-              <p className="text-sm">Chưa có thông báo</p>
-            </div>
-          )}
+                {/* Inbox - notifications */}
+      {tab === 'inbox' && (
+        <div className="h-dvh flex flex-col bg-black overflow-hidden">
+          <div className="flex-shrink-0 pt-14 px-4 pb-3 border-b border-gray-800">
+            <h2 className="text-white font-bold text-lg">Thông báo</h2>
+          </div>
+          <div className="flex-1 overflow-y-auto">
+            {notifsLoading ? (
+              <div className="flex justify-center pt-16"><Loader2 size={22} className="text-white animate-spin" /></div>
+            ) : notifs.length === 0 ? (
+              <div className="flex flex-col items-center pt-20 text-gray-500 gap-3">
+                <Bell size={40} className="opacity-30" />
+                <p className="text-sm">Chưa có thông báo nào</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-800">
+                {notifs.map(n => {
+                  const firstName = n.actor_name.split(' ').pop() || 'Ẩn danh'
+                  return (
+                    <Link key={n.id} href={n.url} className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-900/50 transition-colors">
+                      {n.actor_avatar
+                        ? <Image src={n.actor_avatar} alt={firstName} width={44} height={44} className="rounded-full flex-shrink-0" />
+                        : <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">{firstName[0]?.toUpperCase()}</div>}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-sm"><span className="font-semibold">{n.actor_name}</span> {n.text}</p>
+                        <p className="text-gray-500 text-xs mt-0.5">{ago(n.created_at)}</p>
+                      </div>
+                      {n.type === 'follow' && <User size={16} className="text-gray-600 flex-shrink-0" />}
+                      {n.type === 'like' && <Heart size={16} className="text-red-500 flex-shrink-0" />}
+                    </Link>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
         </div>
       </div>
 
