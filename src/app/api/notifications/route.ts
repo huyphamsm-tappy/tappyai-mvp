@@ -22,6 +22,7 @@ export async function GET() {
     .from('reviews')
     .select('id, place_name')
     .eq('user_id', user.id)
+    .or('is_hidden.is.null,is_hidden.eq.false')
     .limit(50)
 
   const myReviewIds = (myReviews || []).map(r => r.id)
