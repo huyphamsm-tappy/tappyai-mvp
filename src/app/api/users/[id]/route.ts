@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 
 // GET /api/users/[id] → public profile info + follow status
@@ -8,11 +7,10 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const supabase = createClient()
-  const admin = createAdminClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Use admin client to bypass RLS — profiles are public info
-  const { data: profile, error } = await admin
+  // profiles table has public SELECT policy so regular client works
+  const { data: profile, error } = await supabase
     .from('profiles')
     .select('id, full_name, avatar_url, follower_count, following_count')
     .eq('id', params.id)
@@ -23,7 +21,7 @@ export async function GET(
   }
 
   // Check if current user follows this profile
-  let following_me = false
+  let is_following = false
   if (user && user.id !== params.id) {
     const { data: followRow } = await supabase
       .from('user_follows')
@@ -31,7 +29,7 @@ export async function GET(
       .eq('follower_id', user.id)
       .eq('following_id', params.id)
       .maybeSingle()
-    following_me = !!followRow
+    is_following = !!followRow
   }
 
   // Review count
@@ -44,7 +42,7 @@ export async function GET(
   return NextResponse.json({
     ...profile,
     review_count: reviewCount || 0,
-    is_following: following_me,
+    is_following,
     is_self: user?.id === params.id,
   })
 }
