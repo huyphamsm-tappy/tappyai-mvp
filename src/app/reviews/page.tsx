@@ -131,8 +131,9 @@ function ShareModal({ review, onClose }: { review: Review; onClose: () => void }
 }
 
 /* ─── Single post (TikTok style) ─── */
-function Post({ r, me, onLike, onSave, onComment, onShare, onDelete }: {
+function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, onShare, onDelete }: {
   r: Review; me: string | null
+  feedType: 'for-you' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'following') => void
   onLike: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
 }) {
@@ -150,8 +151,8 @@ function Post({ r, me, onLike, onSave, onComment, onShare, onDelete }: {
 
       {/* Top: for you / following */}
       <div className="absolute top-0 left-0 right-0 z-20 pt-12 px-4 flex items-center justify-center gap-6">
-        <span className="text-white/60 text-sm font-medium">Đang follow</span>
-        <span className="text-white text-sm font-bold border-b-2 border-white pb-0.5">Đề xuất</span>
+        <button onClick={() => onFeedTypeChange('following')} className={`text-sm font-medium ${feedType === 'following' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Đang follow</button>
+        <button onClick={() => onFeedTypeChange('for-you')} className={`text-sm font-medium ${feedType === 'for-you' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Đề xuất</button>
         {isMe && (
           <div className="absolute right-4 top-12">
             <button onClick={() => setMenu(v => !v)} className="w-8 h-8 flex items-center justify-center">
@@ -385,6 +386,7 @@ export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState('home')
+  const [feedType, setFeedType] = useState<'for-you' | 'following'>('for-you')
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [me, setMe] = useState<string | null>(null)
@@ -406,8 +408,9 @@ export default function ReviewsPage() {
     supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null))
   }, [supabase])
 
-  const fetch_ = useCallback(async (p: number, append = false) => {
-    const res = await fetch(`/api/reviews/feed?page=${p}&sort=latest`)
+  const fetch_ = useCallback(async (p: number, append = false, ft: 'for-you' | 'following' = 'for-you') => {
+    const followingParam = ft === 'following' ? '&following=true' : ''
+    const res = await fetch(`/api/reviews/feed?page=${p}&sort=latest${followingParam}`)
     const data = await res.json()
     const rows: Review[] = (data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false }))
     setReviews(prev => append ? [...prev, ...rows] : rows)
@@ -415,7 +418,15 @@ export default function ReviewsPage() {
     setLoading(false)
   }, [])
 
-  useEffect(() => { fetch_(0) }, [fetch_])
+  useEffect(() => { fetch_(0, false, feedType) }, [fetch_, feedType])
+
+  const handleFeedTypeChange = (ft: 'for-you' | 'following') => {
+    if (ft === feedType) return
+    setFeedType(ft)
+    setLoading(true)
+    pageRef.current = 0
+    hasMore.current = true
+  }
 
   // Debounced search
   const doSearch = useCallback((q: string) => {
@@ -467,12 +478,12 @@ export default function ReviewsPage() {
       if (hasMore.current && c.scrollTop + c.clientHeight >= c.scrollHeight - c.clientHeight * 0.5) {
         hasMore.current = false
         pageRef.current += 1
-        fetch_(pageRef.current, true)
+        fetch_(pageRef.current, true, feedType)
       }
     }
     c.addEventListener('scroll', onScroll, { passive: true })
     return () => c.removeEventListener('scroll', onScroll)
-  }, [loading, fetch_])
+  }, [loading, fetch_, feedType])
 
   const like = async (id: string) => {
     const r = reviews.find(r => r.id === id)
@@ -509,11 +520,14 @@ export default function ReviewsPage() {
               ? <div className="h-dvh flex items-center justify-center"><Loader2 size={28} className="text-white animate-spin" /></div>
               : reviews.length === 0
               ? <div className="h-dvh flex flex-col items-center justify-center text-white gap-3">
-                  <p className="text-4xl">📸</p><p className="font-semibold">Chưa có bài nào</p>
-                  <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">Đăng ngay</Link>
+                  <p className="text-4xl">{feedType === 'following' ? '👥' : '📸'}</p>
+                  <p className="font-semibold">{feedType === 'following' ? 'Chưa theo dõi ai hoặc họ chưa đăng bài' : 'Chưa có bài nào'}</p>
+                  {feedType === 'following'
+                    ? <button onClick={() => handleFeedTypeChange('for-you')} className="bg-white text-black px-6 py-2.5 rounded-full font-semibold">Xem Đề xuất</button>
+                    : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">Đăng ngay</Link>}
                 </div>
               : <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                  {reviews.map(r => <Post key={r.id} r={r} me={me} onLike={like} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
+                  {reviews.map(r => <Post key={r.id} r={r} me={me} feedType={feedType} onFeedTypeChange={handleFeedTypeChange} onLike={like} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
                 </div>
           )}
 
