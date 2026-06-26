@@ -1,26 +1,23 @@
 {
-  "name": "TappyAI – AI Agent Việt Nam",
+  "name": "TappyAI \u2013 AI Agent Vi\u1ec7t Nam",
   "short_name": "TappyAI",
-  "description": "Chạm đến mọi dịch vụ – AI Agent cá nhân hóa cho cuộc sống tại Việt Nam",
+  "description": "Ch\u1ea1m \u0111\u1ebfn m\u1ecdi d\u1ecbch v\u1ee5 \u2013 AI Agent c\u00e1 nh\u00e2n h\u00f3a cho cu\u1ed9c s\u1ed1ng t\u1ea1i Vi\u1ec7t Nam",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007AFF",
   "orientation": "portrait",
   "icons": [
-    {
-      "src": "/logo.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "/icons/icon-72x72.png",   "sizes": "72x72",   "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-96x96.png",   "sizes": "96x96",   "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-128x128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-144x144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-152x152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-384x384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "categories": ["lifestyle", "utilities"],
-  "lang": "vi-VN"
+  "lang": "vi-VN",
+  "prefer_related_applications": false
 }
