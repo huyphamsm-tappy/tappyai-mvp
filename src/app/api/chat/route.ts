@@ -1545,13 +1545,16 @@ export async function POST(req: Request) {
   const chosenModel = isSimpleQuery(lastText, isFirstReply) ? SIMPLE_MODEL : DEFAULT_MODEL
   console.log(JSON.stringify({ type: 'tappyai_model', model: chosenModel }))
 
+  // Truncate history to last 10 messages to control token costs
+  const trimmedMessages = messages.length > 10 ? messages.slice(-10) : messages
+
   const result = streamText({
     model: anthropic(chosenModel),
     system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation),
     experimental_providerMetadata: {
       anthropic: { cacheControl: { type: 'ephemeral' } },
     },
-    messages,
+    messages: trimmedMessages,
     maxTokens: intent === 'chitchat' ? 300 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : 5,
     experimental_prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
