@@ -673,21 +673,33 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   }
 
   if (g.type === 'follow') {
+    const profileUrl = g.actors[0]?.id ? `/users/${g.actors[0].id}` : '#'
     return (
-      <div className={rowBase} style={{ borderColor: color }}>
+      <Link href={profileUrl} className={rowBase} style={{ borderColor: color }}>
         {avatarStack}{mainText}
         <button
-          onClick={async e => { e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
+          onClick={async e => { e.preventDefault(); e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
           className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2 transition-all"
           style={{ background: followed ? 'rgba(255,255,255,0.08)' : `${color}22`, color: followed ? '#666' : color }}>
           {followed ? 'Đã theo' : 'Theo dõi lại'}
         </button>
-      </div>
+      </Link>
     )
   }
 
+  const safeUrl = g.url && g.url.startsWith('/') ? g.url : null
+  if (!safeUrl) {
+    return (
+      <div className={rowBase} style={{ borderColor: color }}>
+        {avatarStack}{mainText}
+        <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
+          <span className="text-base">🍽️</span>
+        </div>
+      </div>
+    )
+  }
   return (
-    <Link href={g.url} onClick={onNav} className={rowBase} style={{ borderColor: color }}>
+    <Link href={safeUrl} onClick={onNav} className={rowBase} style={{ borderColor: color }}>
       {avatarStack}{mainText}
       <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
         <span className="text-base">🍽️</span>
@@ -726,7 +738,7 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
           <>
             {/* AI Digest Banner */}
             <div className="px-4 mt-4 mb-1">
-              <button onClick={() => onSetTab('explore')} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
+              <button onClick={() => onSetTab('home')} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
                 style={{ background: 'linear-gradient(135deg, #1c0d00 0%, #2a1500 100%)', border: '1px solid rgba(255,107,53,0.28)' }}>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,53,0.15)' }}>
                   <span className="text-lg">✨</span>
