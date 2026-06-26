@@ -16,10 +16,13 @@ export default function BottomNav() {
   const pathname = usePathname()
   const router = useRouter()
 
+  // /reviews has its own TikNav — hide global nav to avoid duplicate "Trang chủ"
+  if (pathname.startsWith('/reviews')) return null
+
   function handleTabClick(href: string) {
     const isActive = href === '/' ? pathname === '/' : pathname.startsWith(href)
     if (isActive) {
-      // Already on this tab — scroll to top
+      // Already on this tab — scroll to top (reset to home of section)
       window.scrollTo({ top: 0, behavior: 'smooth' })
       if (pathname !== href) {
         // On a sub-page, navigate back to section root
