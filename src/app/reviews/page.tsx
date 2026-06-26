@@ -383,7 +383,12 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState('home')
+  const [tab, setTab] = useState<string>(() => {
+    if (typeof window === 'undefined') return 'home'
+    const saved = sessionStorage.getItem('reviews_tab')
+    if (saved) { sessionStorage.removeItem('reviews_tab'); return saved }
+    return 'home'
+  })
   const [feedType, setFeedType] = useState<'for-you' | 'following'>('for-you')
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
@@ -709,7 +714,7 @@ export default function ReviewsPage() {
                 {notifs.map(n => {
                   const firstName = n.actor_name.split(' ').pop() || 'Ẩn danh'
                   return (
-                    <Link key={n.id} href={n.url} className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-900/50 transition-colors">
+                    <Link key={n.id} href={n.url} onClick={() => sessionStorage.setItem('reviews_tab', 'inbox')} className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-900/50 transition-colors">
                       {n.actor_avatar
                         ? <Image src={n.actor_avatar} alt={firstName} width={44} height={44} className="rounded-full flex-shrink-0" />
                         : <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">{firstName[0]?.toUpperCase()}</div>}
