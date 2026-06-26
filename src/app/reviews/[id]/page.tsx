@@ -16,7 +16,11 @@ async function getReview(id: string) {
   const supabase = createAdminClient()
   const { data } = await supabase
     .from('reviews')
-    .select('id, user_id, place_name, place_address, rating, body, photos, is_verified, like_count, comment_count, created_at, profiles(full_name, avatar_url)')
+    .select(`
+      id, user_id, place_name, place_address, rating, body,
+      photos, is_verified, like_count, comment_count, created_at,
+      profiles(full_name, avatar_url)
+    `)
     .eq('id', id)
     .eq('is_hidden', false)
     .single()
@@ -27,21 +31,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const review = await getReview(params.id)
   if (!review) return { title: 'Review | TappyAI' }
 
-  const desc = review.body.slice(0, 150) + (review.body.length > 150 ? '...' : '')
+  const desc = `${review.body.slice(0, 150)}${review.body.length > 150 ? '...' : ''}`
   const stars = '⭐'.repeat(review.rating)
 
   return {
-    title: stars + ' ' + review.place_name + ' | TappyAI',
+    title: `${stars} ${review.place_name} | TappyAI`,
     description: desc,
     openGraph: {
-      title: review.place_name + ' - ' + review.rating + '/5 sao',
+      title: `${review.place_name} — ${review.rating}/5 sao`,
       description: desc,
       images: review.photos?.[0] ? [{ url: review.photos[0] }] : [],
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
-      title: review.place_name + ' - ' + review.rating + '/5 sao',
+      title: `${review.place_name} — ${review.rating}/5 sao`,
       description: desc,
       images: review.photos?.[0] ? [review.photos[0]] : [],
     },
@@ -61,13 +65,13 @@ function StarRating({ rating }: { rating: number }) {
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const mins = Math.floor(diff / 60000)
-  if (mins < 1) return 'vua xong'
-  if (mins < 60) return mins + ' phut truoc'
+  if (mins < 1) return 'vừa xong'
+  if (mins < 60) return `${mins} phút trước`
   const hrs = Math.floor(mins / 60)
-  if (hrs < 24) return hrs + ' gio truoc'
+  if (hrs < 24) return `${hrs} giờ trước`
   const days = Math.floor(hrs / 24)
-  if (days < 30) return days + ' ngay truoc'
-  return Math.floor(days / 30) + ' thang truoc'
+  if (days < 30) return `${days} ngày trước`
+  return `${Math.floor(days / 30)} tháng trước`
 }
 
 export default async function ReviewDetailPage({ params }: Props) {
@@ -75,12 +79,13 @@ export default async function ReviewDetailPage({ params }: Props) {
   if (!review) notFound()
 
   const author = review.profiles as { full_name: string | null; avatar_url: string | null } | null
-  const firstName = author?.full_name?.split(' ').pop() || 'An danh'
+  const firstName = author?.full_name?.split(' ').pop() || 'Ẩn danh'
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header />
+      <Header showBack backHref="/reviews" />
 
+      {/* Top bar */}
       <div className="sticky top-0 z-30 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -94,17 +99,20 @@ export default async function ReviewDetailPage({ params }: Props) {
       </div>
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+        {/* Photos */}
         {review.photos && review.photos.length > 0 && (
-          <div className={"grid gap-2 " + (review.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2')}>
-            {review.photos.map((url: string, i: number) => (
-              <div key={i} className={"relative rounded-2xl overflow-hidden bg-gray-100 " + (review.photos!.length === 1 ? 'aspect-video' : 'aspect-square') + (i === 0 && review.photos!.length === 3 ? ' col-span-2' : '')}>
-                <Image src={url} alt={"Anh " + (i + 1)} fill className="object-cover" sizes="(max-width: 672px) 50vw, 336px" />
+          <div className={`grid gap-2 ${review.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+            {review.photos.map((url, i) => (
+              <div key={i} className={`relative rounded-2xl overflow-hidden bg-gray-100 ${review.photos!.length === 1 ? 'aspect-video' : 'aspect-square'} ${i === 0 && review.photos!.length === 3 ? 'col-span-2' : ''}`}>
+                <Image src={url} alt={`Ảnh ${i + 1}`} fill className="object-cover" sizes="(max-width: 672px) 50vw, 336px" />
               </div>
             ))}
           </div>
         )}
 
+        {/* Review card */}
         <div className="card p-5 space-y-4">
+          {/* Place + rating */}
           <div>
             <div className="flex items-start justify-between gap-3">
               <h2 className="font-bold text-gray-900 dark:text-white text-xl leading-tight">{review.place_name}</h2>
@@ -118,16 +126,19 @@ export default async function ReviewDetailPage({ params }: Props) {
             )}
           </div>
 
+          {/* Body */}
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{review.body}</p>
 
+          {/* Stats */}
           <div className="flex items-center gap-4 text-sm text-gray-500 border-t border-gray-100 dark:border-gray-800 pt-3">
             <span className="flex items-center gap-1">
-              <Heart size={14} className="text-red-400" /> {review.like_count} luot thich
+              <Heart size={14} className="text-red-400" /> {review.like_count} lượt thích
             </span>
-            <span>💬 {review.comment_count ?? 0} binh luan</span>
+            <span>💬 {review.comment_count ?? 0} bình luận</span>
           </div>
 
-          <Link href={"/users/" + review.user_id} className="flex items-center gap-3 group">
+          {/* Author */}
+          <Link href={`/users/${review.user_id}`} className="flex items-center gap-3 group">
             {author?.avatar_url ? (
               <Image src={author.avatar_url} alt={firstName} width={40} height={40} className="rounded-full" />
             ) : (
@@ -137,11 +148,11 @@ export default async function ReviewDetailPage({ params }: Props) {
             )}
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-gray-900 dark:text-white group-hover:underline">{author?.full_name || 'An danh'}</span>
+                <span className="font-semibold text-gray-900 dark:text-white group-hover:underline">{author?.full_name || 'Ẩn danh'}</span>
                 {review.is_verified && (
                   <div className="flex items-center gap-1 bg-blue-50 dark:bg-blue-950/30 text-blue-500 text-xs px-2 py-0.5 rounded-full">
                     <CheckCircle size={11} />
-                    Da xac nhan
+                    Đã xác nhận
                   </div>
                 )}
               </div>
@@ -150,13 +161,14 @@ export default async function ReviewDetailPage({ params }: Props) {
           </Link>
         </div>
 
+        {/* CTA for non-users */}
         <div className="card p-4 text-center space-y-2">
-          <p className="text-sm text-gray-600 dark:text-gray-400">Tim quan ngon, spa xin, deal hot cung Tappy!</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Tìm quán ngon, spa xịn, deal hot cùng Tappy!</p>
           <Link
             href="/chat"
             className="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
           >
-            Mo TappyAI
+            🤖 Mở TappyAI
           </Link>
         </div>
       </main>
