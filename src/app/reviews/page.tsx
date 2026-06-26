@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { useRouter as useNextRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -326,14 +325,13 @@ function MyPosts({ userId }: { userId: string }) {
 
 /* ─── TikTok Bottom Nav ─── */
 function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => void; userId: string | null }) {
-  const router = useNextRouter()
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur border-t border-gray-800 flex items-center h-[60px]">
       {[
         { id: 'home', icon: <Home size={24} />, label: 'Trang chủ' },
         { id: 'explore', icon: <Search size={24} />, label: 'Tìm Kiếm' },
       ].map(item => (
-        <button key={item.id} onClick={() => item.id === 'home' ? router.push('/') : setTab(item.id)}
+        <button key={item.id} onClick={() => setTab(item.id)}
           className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === item.id ? 'text-white' : 'text-gray-500'}`}>
           {item.icon}<span className="text-[10px]">{item.label}</span>
         </button>
@@ -360,7 +358,6 @@ function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => v
 
 /* ─── Desktop sidebar ─── */
 function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) {
-  const router = useNextRouter()
   return (
     <aside className="hidden md:flex flex-col w-[240px] xl:w-[260px] fixed left-[max(0px,calc(50vw-500px))] top-0 h-screen py-6 px-4 gap-1 border-r border-gray-800">
       <div className="text-white font-black text-2xl px-3 mb-4">TappyAI</div>
@@ -369,7 +366,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
         { id: 'explore', icon: <Search size={22} />, label: 'Tìm Kiếm' },
         { id: 'profile', icon: <User size={22} />, label: 'Hồ sơ & Bài của tôi' },
       ].map(item => (
-        <button key={item.id} onClick={() => item.id === 'home' ? router.push('/') : setTab(item.id)}
+        <button key={item.id} onClick={() => setTab(item.id)}
           className={`flex items-center gap-4 px-3 py-2.5 rounded-xl text-[15px] font-${tab === item.id ? 'bold text-white bg-white/10' : 'medium text-gray-300 hover:bg-white/5'} transition-colors`}>
           {item.icon}{item.label}
         </button>
