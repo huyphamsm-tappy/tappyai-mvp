@@ -875,8 +875,6 @@ export default function ReviewsPage() {
             <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">Đăng nhập để xem hồ sơ</Link>
           </div>
         )}
-            </div>
-          )}
 
                 {/* Inbox - notifications */}
       {tab === 'inbox' && (
