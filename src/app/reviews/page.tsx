@@ -244,7 +244,7 @@ function MyPosts({ userId }: { userId: string }) {
         supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false }),
       ])
       setPosts((res1.reviews || []).map((r: Review) => ({ ...r, is_hidden: false })))
-      setHidden((res2.data || []).map((r: any) => ({ ...r } as Review)))
+      setHidden((res2.data || []).map((r: Review & { is_hidden: boolean }) => ({ ...r } as Review)))
       setLoading(false)
     }
     load()
@@ -583,4 +583,6 @@ export default function ReviewsPage() {
 
       {commentOf && <CommentDrawer review={commentOf} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
-    </d
+    </div>
+  )
+}
