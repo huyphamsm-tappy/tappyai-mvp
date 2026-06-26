@@ -1541,7 +1541,7 @@ export async function POST(req: Request) {
   }
 
   const SIMPLE_MODEL = 'claude-haiku-4-5'
-  const DEFAULT_MODEL = 'claude-sonnet-4-6'
+  const DEFAULT_MODEL = 'claude-haiku-4-5-20251001'
   const chosenModel = isSimpleQuery(lastText, isFirstReply) ? SIMPLE_MODEL : DEFAULT_MODEL
   console.log(JSON.stringify({ type: 'tappyai_model', model: chosenModel }))
 
