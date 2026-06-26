@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
+export const runtime = 'edge'
+
 // GET /api/users/[id] → public profile info + follow status
 export async function GET(
   req: NextRequest,
