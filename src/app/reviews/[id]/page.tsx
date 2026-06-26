@@ -1,4 +1,4 @@
-import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Image from 'next/image'
@@ -13,7 +13,7 @@ interface Props {
 }
 
 async function getReview(id: string) {
-  const supabase = createAdminClient()
+  const supabase = createClient()
   const { data } = await supabase
     .from('reviews')
     .select(`
