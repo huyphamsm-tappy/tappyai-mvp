@@ -90,6 +90,7 @@ export default function UserProfilePage() {
     if (!profile || profile.is_self || followLoading) return
     setFollowLoading(true)
 
+    // Optimistic
     setProfile(prev => prev ? {
       ...prev,
       is_following: !prev.is_following,
@@ -106,6 +107,7 @@ export default function UserProfilePage() {
           follower_count: data.follower_count,
         } : prev)
       } else {
+        // Revert
         setProfile(prev => prev ? {
           ...prev,
           is_following: !prev.is_following,
@@ -131,8 +133,9 @@ export default function UserProfilePage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header />
+      <Header showBack />
 
+      {/* Top bar */}
       <div className="sticky top-0 z-30 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
           <button onClick={() => router.back()} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
@@ -143,6 +146,7 @@ export default function UserProfilePage() {
       </div>
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-5">
+        {/* Profile card */}
         <div className="card p-5">
           <div className="flex items-start gap-4">
             {profile.avatar_url ? (
@@ -158,6 +162,7 @@ export default function UserProfilePage() {
                 {profile.full_name || 'Ẩn danh'}
               </h2>
 
+              {/* Stats */}
               <div className="flex gap-4 mt-2">
                 <div className="text-center">
                   <div className="font-bold text-gray-900 dark:text-white text-base">{profile.review_count}</div>
@@ -175,6 +180,7 @@ export default function UserProfilePage() {
             </div>
           </div>
 
+          {/* Follow button */}
           {!profile.is_self && (
             <button
               onClick={handleFollow}
@@ -207,6 +213,7 @@ export default function UserProfilePage() {
           )}
         </div>
 
+        {/* Reviews */}
         <section>
           <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3 px-1">
             Đánh giá ({profile.review_count})
@@ -220,6 +227,7 @@ export default function UserProfilePage() {
             <div className="space-y-3">
               {reviews.map(r => (
                 <div key={r.id} className="card p-4 space-y-2">
+                  {/* Photo strip */}
                   {r.photos && r.photos.length > 0 && (
                     <div className="flex gap-1.5">
                       {r.photos.slice(0, 3).map((url, i) => (
