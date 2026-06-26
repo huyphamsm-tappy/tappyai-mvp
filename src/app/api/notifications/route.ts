@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
+export const runtime = 'edge'
+
 // GET /api/notifications → returns recent activity (follows + likes) for current user
 export async function GET() {
   const supabase = createClient()
