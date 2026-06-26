@@ -22,7 +22,7 @@ async function getReview(id: string) {
       profiles(full_name, avatar_url)
     `)
     .eq('id', id)
-    .eq('is_hidden', false)
+    .or('is_hidden.is.null,is_hidden.eq.false')
     .single()
   return data
 }
