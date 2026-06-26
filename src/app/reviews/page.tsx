@@ -611,8 +611,6 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
-  const [toast, setToast] = useState('')
-  const notifRouter = useRouter()
   const actors = g.actors.slice(0, 3)
   const actorLabel = g.actors.length === 1
     ? g.actors[0].name
@@ -659,15 +657,7 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 
   const rowBase = "flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors"
 
-  const handleReviewNav = () => {
-    if (!g.url?.startsWith('/reviews/')) {
-      setToast('Bài viết không còn tồn tại')
-      setTimeout(() => setToast(''), 2500)
-      return
-    }
-    onNav()
-    try { notifRouter.push(g.url) } catch (e) { console.error('notif nav error', e) }
-  }
+  const handleReviewNav = () => { onNav() }
 
   if (g.type === 'profile_view') {
     return (
@@ -700,29 +690,23 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   }
 
   return (
-    <>
-      <div role="button" onClick={handleReviewNav} className={rowBase + ' cursor-pointer'} style={{ borderColor: color }}>
-        {avatarStack}{mainText}
-        <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
-          <span className="text-base">🍽️</span>
-        </div>
+    <div role="button" onClick={handleReviewNav} className={rowBase + ' cursor-pointer'} style={{ borderColor: color }}>
+      {avatarStack}{mainText}
+      <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
+        <span className="text-base">🍽️</span>
       </div>
-      {toast && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 bg-gray-800/95 text-white text-xs px-4 py-2 rounded-full z-50 pointer-events-none whitespace-nowrap">
-          {toast}
-        </div>
-      )}
-    </>
+    </div>
   )
 }
 
 /* ─── Inbox Tab ─── */
-function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab }: {
+function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange }: {
   notifs: Notification[]
   notifsLoading: boolean
   hotPlaces: HotPlace[]
   hotPlacesLoading: boolean
   onSetTab: (t: string) => void
+  onFeedTypeChange: (ft: 'for-you' | 'following') => void
 }) {
   const grouped = groupNotifs(notifs)
   const bySection = new Map<string, GroupedNotif[]>()
@@ -746,7 +730,7 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
           <>
             {/* AI Digest Banner */}
             <div className="px-4 mt-4 mb-1">
-              <button onClick={() => onSetTab('home')} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
+              <button onClick={() => { onFeedTypeChange('following'); onSetTab('home') }} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
                 style={{ background: 'linear-gradient(135deg, #1c0d00 0%, #2a1500 100%)', border: '1px solid rgba(255,107,53,0.28)' }}>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,53,0.15)' }}>
                   <span className="text-lg">✨</span>
@@ -794,7 +778,7 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
               sections.map(({ label, items }) => (
                 <div key={label}>
                   <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-1.5 tracking-widest">{label}</p>
-                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => sessionStorage.setItem('reviews_tab', 'inbox')} />)}
+                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => onSetTab('home')} />)}
                 </div>
               ))
             )}
@@ -1131,6 +1115,7 @@ export default function ReviewsPage() {
               hotPlaces={hotPlaces}
               hotPlacesLoading={hotPlacesLoading}
               onSetTab={handleSetTab}
+              onFeedTypeChange={handleFeedTypeChange}
             />
           )}
         </div>
