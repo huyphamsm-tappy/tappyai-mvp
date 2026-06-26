@@ -611,6 +611,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
+  const notifRouter = useRouter()
   const actors = g.actors.slice(0, 3)
   const actorLabel = g.actors.length === 1
     ? g.actors[0].name
@@ -657,7 +658,15 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 
   const rowBase = "flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors"
 
-  const handleReviewNav = () => { onNav() }
+  const handleReviewNav = () => {
+    const match = g.url?.match(/\/reviews\/([0-9a-f-]{36})/i)
+    const reviewId = match?.[1]
+    if (reviewId) {
+      notifRouter.push('/reviews/' + reviewId)
+    } else {
+      onNav()
+    }
+  }
 
   if (g.type === 'profile_view') {
     return (
