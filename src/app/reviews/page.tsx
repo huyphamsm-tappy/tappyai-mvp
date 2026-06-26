@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import {
   Heart, MessageCircle, Bookmark, Share2, Music2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
@@ -11,8 +11,6 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { track } from '@/lib/tracking/tracker'
-import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/lib/userMemory'
-import type { UserPreferences } from '@/lib/userMemory'
 
 /* ─── types ─── */
 interface Profile { full_name: string | null; avatar_url: string | null }
@@ -378,22 +376,19 @@ function ProfileTab({ userId }: { userId: string }) {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'liked'>('posts')
   const [sel, setSel] = useState<Review | null>(null)
-  const [prefs, setPrefs] = useState<UserPreferences | null>(null)
   const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
     const load = async () => {
       setLoading(true)
-      const [profileRes, reviewsRes, likedRes, savedRes, prefsRes] = await Promise.all([
+      const [profileRes, reviewsRes, likedRes, savedRes] = await Promise.all([
         fetch(`/api/users/${userId}`).then(r => r.json()),
         fetch(`/api/reviews/feed?userId=${userId}&limit=50`).then(r => r.json()),
         supabase.from('review_likes').select('review_id').eq('user_id', userId).then(r => r.data || []),
         supabase.from('review_saves').select('review_id').eq('user_id', userId).then(r => r.data || []),
-        getUserPreferences(userId),
       ])
       setProfile(profileRes)
-      setPrefs(prefsRes)
       const allPosts = (reviewsRes.reviews || []).map((r: Review) => ({ ...r, is_hidden: false }))
       setPosts(allPosts)
       const { data: hiddenData } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
@@ -477,26 +472,6 @@ function ProfileTab({ userId }: { userId: string }) {
           Chỉnh sửa hồ sơ
         </Link>
       </div>
-
-      {/* Tappy memory chip — only shown when preferences are inferred */}
-      {prefs && prefs.preferred_style && prefs.preferred_style.length > 0 && (
-        <div className="mx-4 mt-3 p-3.5 rounded-xl" style={{ background: 'rgba(255,107,53,0.06)', border: '1px solid rgba(255,107,53,0.18)' }}>
-          <p className="text-[11px] font-semibold mb-2.5" style={{ color: '#ff6b35' }}>✨ Sở thích của bạn</p>
-          <div className="flex flex-wrap gap-1.5">
-            {prefs.preferred_style.map((s: string) => (
-              <span key={s} className="text-[11px] px-2.5 py-1 rounded-full font-semibold"
-                style={{ background: 'rgba(255,107,53,0.18)', color: '#ff6b35', border: '1px solid rgba(255,107,53,0.3)' }}>
-                {s}
-              </span>
-            ))}
-          </div>
-          {(prefs.budget_min !== null || prefs.budget_max !== null) && (
-            <p className="text-xs mt-2" style={{ color: '#9ca3af' }}>
-              💰 {[prefs.budget_min, prefs.budget_max].filter(v => v !== null).map(n => `${n?.toLocaleString()}k`).join(' – ')} VND
-            </p>
-          )}
-        </div>
-      )}
 
       {/* 3-tab bar */}
       <div className="flex border-b border-gray-800">
@@ -636,7 +611,6 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
-  const notifRouter = useRouter()
   const actors = g.actors.slice(0, 3)
   const actorLabel = g.actors.length === 1
     ? g.actors[0].name
@@ -683,16 +657,6 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 
   const rowBase = "flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors"
 
-  const handleReviewNav = () => {
-    const match = g.url?.match(/\/reviews\/([0-9a-f-]{36})/i)
-    const reviewId = match?.[1]
-    if (reviewId) {
-      notifRouter.push('/reviews/' + reviewId)
-    } else {
-      onNav()
-    }
-  }
-
   if (g.type === 'profile_view') {
     return (
       <div className={rowBase} style={{ borderColor: color }}>
@@ -709,45 +673,38 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   }
 
   if (g.type === 'follow') {
-    const profileUrl = g.actors[0]?.id ? `/users/${g.actors[0].id}` : '#'
     return (
-      <Link href={profileUrl} className={rowBase} style={{ borderColor: color }}>
+      <div className={rowBase} style={{ borderColor: color }}>
         {avatarStack}{mainText}
         <button
-          onClick={async e => { e.preventDefault(); e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
+          onClick={async e => { e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
           className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2 transition-all"
           style={{ background: followed ? 'rgba(255,255,255,0.08)' : `${color}22`, color: followed ? '#666' : color }}>
           {followed ? 'Đã theo' : 'Theo dõi lại'}
         </button>
-      </Link>
+      </div>
     )
   }
 
   return (
-    <div role="button" onClick={handleReviewNav} className={rowBase + ' cursor-pointer'} style={{ borderColor: color }}>
+    <Link href={g.url} onClick={onNav} className={rowBase} style={{ borderColor: color }}>
       {avatarStack}{mainText}
       <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
         <span className="text-base">🍽️</span>
       </div>
-    </div>
+    </Link>
   )
 }
 
 /* ─── Inbox Tab ─── */
-function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange, userPrefs }: {
+function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab }: {
   notifs: Notification[]
   notifsLoading: boolean
   hotPlaces: HotPlace[]
   hotPlacesLoading: boolean
   onSetTab: (t: string) => void
-  onFeedTypeChange: (ft: 'for-you' | 'following') => void
-  userPrefs: UserPreferences | null
 }) {
   const grouped = groupNotifs(notifs)
-  const prefStyles = userPrefs?.preferred_style ?? []
-  const bannerSubtext = prefStyles.length > 0
-    ? `Gợi ý dựa trên sở thích ${prefStyles.slice(0, 2).join(', ')} của bạn`
-    : '3 quán bạn bè hay đến đang mở gần bạn'
   const bySection = new Map<string, GroupedNotif[]>()
   for (const g of grouped) {
     const s = notifSection(g.created_at)
@@ -769,14 +726,14 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
           <>
             {/* AI Digest Banner */}
             <div className="px-4 mt-4 mb-1">
-              <button onClick={() => { onFeedTypeChange('following'); onSetTab('home') }} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
+              <button onClick={() => onSetTab('explore')} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
                 style={{ background: 'linear-gradient(135deg, #1c0d00 0%, #2a1500 100%)', border: '1px solid rgba(255,107,53,0.28)' }}>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,53,0.15)' }}>
                   <span className="text-lg">✨</span>
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-xs mb-0.5" style={{ color: '#ff6b35' }}>Tappy gợi ý hôm nay</p>
-                  <p className="text-white text-sm leading-snug">{bannerSubtext}</p>
+                  <p className="text-white text-sm leading-snug">3 quán bạn bè hay đến đang mở gần bạn</p>
                 </div>
                 <ChevronRight size={16} className="text-gray-500 flex-shrink-0" />
               </button>
@@ -817,7 +774,7 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
               sections.map(({ label, items }) => (
                 <div key={label}>
                   <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-1.5 tracking-widest">{label}</p>
-                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => onSetTab('home')} />)}
+                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => sessionStorage.setItem('reviews_tab', 'inbox')} />)}
                 </div>
               ))
             )}
@@ -833,24 +790,12 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
-  const router = useRouter()
-  const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
     if (typeof window === 'undefined') return 'home'
-    const fromUrl = new URLSearchParams(window.location.search).get('tab')
-    if (fromUrl) return fromUrl
     const saved = sessionStorage.getItem('reviews_tab')
     if (saved) { sessionStorage.removeItem('reviews_tab'); return saved }
     return 'home'
   })
-  useEffect(() => {
-    const fromUrl = searchParams?.get('tab')
-    if (fromUrl) setTab(fromUrl)
-  }, [searchParams])
-  const handleSetTab = useCallback((t: string) => {
-    setTab(t)
-    router.replace(window.location.pathname + '?tab=' + t, { scroll: false })
-  }, [router])
   const [feedType, setFeedType] = useState<'for-you' | 'following'>('for-you')
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
@@ -859,7 +804,6 @@ export default function ReviewsPage() {
   const [hotPlaces, setHotPlaces] = useState<HotPlace[]>([])
   const [hotPlacesLoading, setHotPlacesLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
-  const [userPrefs, setUserPrefs] = useState<UserPreferences | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(0)
   const hasMore = useRef(true)
@@ -879,10 +823,6 @@ export default function ReviewsPage() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null))
   }, [supabase])
-  useEffect(() => {
-    if (!me) return
-    getUserPreferences(me).then(p => setUserPrefs(p))
-  }, [me])
 
   // Load notifications + hot places when inbox tab opens
   useEffect(() => {
@@ -993,12 +933,6 @@ export default function ReviewsPage() {
     const { liked } = await res.json()
     setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: liked, like_count: r.like_count + (liked ? 1 : -1) } : r))
     track('review_like', { review_id: id, place: r?.place_name, liked })
-    if (liked && me) {
-      logUserEvent(me, 'like', { review_id: id })
-      const count = parseInt(localStorage.getItem('tappy_like_count') || '0') + 1
-      localStorage.setItem('tappy_like_count', String(count))
-      if (count % 5 === 0) inferPreferencesFromEvents(me)
-    }
   }
   const save = async (id: string) => {
     const res = await fetch(`/api/reviews/${id}/save`, { method: 'POST' })
@@ -1016,7 +950,7 @@ export default function ReviewsPage() {
 
   return (
     <div className="bg-black h-dvh overflow-hidden flex">
-      <Sidebar tab={tab} setTab={handleSetTab} />
+      <Sidebar tab={tab} setTab={setTab} />
 
       {/* Content */}
       <div className="flex-1 md:ml-[240px] xl:ml-[260px] flex justify-center">
@@ -1164,15 +1098,13 @@ export default function ReviewsPage() {
               notifsLoading={notifsLoading}
               hotPlaces={hotPlaces}
               hotPlacesLoading={hotPlacesLoading}
-              onSetTab={handleSetTab}
-              onFeedTypeChange={handleFeedTypeChange}
-              userPrefs={userPrefs}
+              onSetTab={setTab}
             />
           )}
         </div>
       </div>
 
-      <TikNav tab={tab} setTab={handleSetTab} userId={me} />
+      <TikNav tab={tab} setTab={setTab} userId={me} />
 
       {commentOf && <CommentDrawer review={commentOf} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
