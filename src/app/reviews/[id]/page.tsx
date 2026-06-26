@@ -3,10 +3,9 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import Header from '@/components/Header'
-import BottomNav from '@/components/BottomNav'
-import { Star, MapPin, CheckCircle, Heart, ArrowLeft } from 'lucide-react'
+import { ArrowLeft, MapPin, MessageCircle } from 'lucide-react'
 import ReviewShareButton from './ReviewShareButton'
+import ReviewLikeButton from './ReviewLikeButton'
 
 interface Props {
   params: { id: string }
@@ -27,15 +26,27 @@ async function getReview(id: string) {
   return data
 }
 
+async function getLikeStatus(reviewId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return false
+  const { data } = await supabase
+    .from('review_likes')
+    .select('id')
+    .eq('review_id', reviewId)
+    .eq('user_id', user.id)
+    .maybeSingle()
+  return !!data
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const review = await getReview(params.id)
   if (!review) return { title: 'Review | TappyAI' }
 
   const desc = `${review.body.slice(0, 150)}${review.body.length > 150 ? '...' : ''}`
-  const stars = '⭐'.repeat(review.rating)
 
   return {
-    title: `${stars} ${review.place_name} | TappyAI`,
+    title: `${'★'.repeat(review.rating)} ${review.place_name} | TappyAI`,
     description: desc,
     openGraph: {
       title: `${review.place_name} — ${review.rating}/5 sao`,
@@ -52,16 +63,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {[1, 2, 3, 4, 5].map(i => (
-        <Star key={i} size={18} className={i <= rating ? 'text-amber-400 fill-amber-400' : 'text-gray-200'} />
-      ))}
-    </div>
-  )
-}
-
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const mins = Math.floor(diff / 60000)
@@ -74,106 +75,197 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(days / 30)} tháng trước`
 }
 
+const RATING_LABEL: Record<number, string> = {
+  1: 'Kém', 2: 'Tạm ổn', 3: 'Bình thường', 4: 'Ngon', 5: 'Xuất sắc',
+}
+
 export default async function ReviewDetailPage({ params }: Props) {
-  const review = await getReview(params.id)
+  const [review, initialLiked] = await Promise.all([
+    getReview(params.id),
+    getLikeStatus(params.id),
+  ])
   if (!review) notFound()
 
-  const author = review.profiles as { full_name: string | null; avatar_url: string | null } | null
+  const author = review.profiles as unknown as { full_name: string | null; avatar_url: string | null } | null
   const firstName = author?.full_name?.split(' ').pop() || 'Ẩn danh'
+  const heroPhoto = review.photos?.[0] ?? null
+  const extraPhotos = review.photos?.slice(1) ?? []
 
   return (
-    <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header showBack backHref="/reviews" />
+    <div className="min-h-dvh bg-[#0a0a0a]">
 
-      {/* Top bar */}
-      <div className="sticky top-0 z-30 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-4 py-3">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/reviews" className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-              <ArrowLeft size={22} />
-            </Link>
-            <h1 className="font-bold text-gray-900 dark:text-white truncate">{review.place_name}</h1>
+      {/* ─── Hero ─── */}
+      <div className="relative w-full h-[55vh]">
+        {heroPhoto ? (
+          <Image
+            src={heroPhoto}
+            alt={review.place_name}
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+        ) : (
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(135deg, #1c0d00 0%, #2a1500 50%, #0f0f0f 100%)' }}
+          />
+        )}
+
+        {/* Gradient overlay — dark at bottom, fades up */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.1) 70%, transparent 100%)' }}
+        />
+
+        {/* Back button */}
+        <Link
+          href="/reviews"
+          className="absolute top-12 left-4 z-20 w-10 h-10 rounded-full flex items-center justify-center active:scale-90 transition-transform"
+          style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+        >
+          <ArrowLeft size={20} className="text-white" />
+        </Link>
+
+        {/* Share — top right */}
+        <div className="absolute top-12 right-4 z-20">
+          <ReviewShareButton
+            reviewId={params.id}
+            placeName={review.place_name}
+            body={review.body}
+            className="w-10 h-10 rounded-full flex items-center justify-center text-white active:scale-90 transition-transform"
+            style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' } as React.CSSProperties}
+          />
+        </div>
+
+        {/* Bottom overlay: rating chips + name + address + author */}
+        <div className="absolute bottom-0 left-0 right-14 px-5 pb-7 z-10">
+          {/* Pills row */}
+          <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
+            <span
+              className="text-xs px-2.5 py-1 rounded-full font-bold text-white"
+              style={{ background: 'rgba(255,107,53,0.85)' }}
+            >
+              {'★'.repeat(review.rating)} {review.rating}/5
+            </span>
+            {RATING_LABEL[review.rating] && (
+              <span
+                className="text-xs px-2.5 py-1 rounded-full font-medium text-white"
+                style={{ background: 'rgba(255,255,255,0.15)' }}
+              >
+                {RATING_LABEL[review.rating]}
+              </span>
+            )}
+            {review.is_verified && (
+              <span
+                className="text-xs px-2.5 py-1 rounded-full font-semibold text-white"
+                style={{ background: 'rgba(29,158,117,0.8)' }}
+              >
+                ✓ Xác nhận
+              </span>
+            )}
           </div>
-          <ReviewShareButton reviewId={params.id} placeName={review.place_name} body={review.body} />
+
+          {/* Place name */}
+          <h1 className="text-white font-black text-2xl leading-tight mb-1.5" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
+            {review.place_name}
+          </h1>
+
+          {/* Address */}
+          {review.place_address && (
+            <div className="flex items-center gap-1.5 mb-3">
+              <MapPin size={12} className="text-gray-300 flex-shrink-0" />
+              <span className="text-gray-300 text-sm leading-snug">{review.place_address}</span>
+            </div>
+          )}
+
+          {/* Author row */}
+          <Link href={`/users/${review.user_id}`} className="inline-flex items-center gap-2">
+            {author?.avatar_url ? (
+              <Image
+                src={author.avatar_url}
+                alt={firstName}
+                width={28}
+                height={28}
+                className="rounded-full ring-1 ring-white/30 flex-shrink-0"
+              />
+            ) : (
+              <div
+                className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white"
+                style={{ background: 'linear-gradient(135deg, #ff6b35, #e91e8c)' }}
+              >
+                {firstName[0]?.toUpperCase()}
+              </div>
+            )}
+            <span className="text-white text-sm font-semibold leading-none">{author?.full_name || 'Ẩn danh'}</span>
+            <span className="text-gray-400 text-xs">· {timeAgo(review.created_at)}</span>
+          </Link>
         </div>
       </div>
 
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
-        {/* Photos */}
-        {review.photos && review.photos.length > 0 && (
-          <div className={`grid gap-2 ${review.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
-            {review.photos.map((url, i) => (
-              <div key={i} className={`relative rounded-2xl overflow-hidden bg-gray-100 ${review.photos!.length === 1 ? 'aspect-video' : 'aspect-square'} ${i === 0 && review.photos!.length === 3 ? 'col-span-2' : ''}`}>
-                <Image src={url} alt={`Ảnh ${i + 1}`} fill className="object-cover" sizes="(max-width: 672px) 50vw, 336px" />
+      {/* ─── Floating action bar (fixed right) ─── */}
+      <div className="fixed right-3 bottom-10 z-40 flex flex-col gap-5 items-center">
+        <ReviewLikeButton
+          reviewId={params.id}
+          initialLiked={initialLiked}
+          initialCount={review.like_count}
+        />
+        <div className="flex flex-col items-center gap-1.5">
+          <div
+            className="w-12 h-12 rounded-full flex items-center justify-center"
+            style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
+          >
+            <MessageCircle size={22} className="text-white" />
+          </div>
+          <span className="text-white text-xs font-bold" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
+            {review.comment_count ?? 0}
+          </span>
+        </div>
+      </div>
+
+      {/* ─── Content card — slides over hero ─── */}
+      <div className="relative z-10 -mt-6 rounded-t-[28px] bg-[#111111] min-h-[50vh] px-5 pt-6 pb-28">
+
+        {/* Review body */}
+        {review.body ? (
+          <p className="text-gray-200 text-base leading-[1.8] whitespace-pre-wrap pr-12">
+            {review.body}
+          </p>
+        ) : (
+          <p className="text-gray-600 text-sm italic pr-12">Không có nội dung mô tả.</p>
+        )}
+
+        {/* Extra photos grid */}
+        {extraPhotos.length > 0 && (
+          <div className="mt-6 grid grid-cols-2 gap-2">
+            {extraPhotos.map((url: string, i: number) => (
+              <div key={i} className="relative aspect-square rounded-2xl overflow-hidden">
+                <Image src={url} alt="" fill className="object-cover" sizes="45vw" />
               </div>
             ))}
           </div>
         )}
 
-        {/* Review card */}
-        <div className="card p-5 space-y-4">
-          {/* Place + rating */}
-          <div>
-            <div className="flex items-start justify-between gap-3">
-              <h2 className="font-bold text-gray-900 dark:text-white text-xl leading-tight">{review.place_name}</h2>
-              <StarRating rating={review.rating} />
-            </div>
-            {review.place_address && (
-              <div className="flex items-center gap-1.5 mt-1">
-                <MapPin size={13} className="text-gray-400 flex-shrink-0" />
-                <span className="text-sm text-gray-500">{review.place_address}</span>
-              </div>
-            )}
-          </div>
+        {/* Divider */}
+        <div className="mt-8 border-t border-white/6" />
 
-          {/* Body */}
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{review.body}</p>
-
-          {/* Stats */}
-          <div className="flex items-center gap-4 text-sm text-gray-500 border-t border-gray-100 dark:border-gray-800 pt-3">
-            <span className="flex items-center gap-1">
-              <Heart size={14} className="text-red-400" /> {review.like_count} lượt thích
-            </span>
-            <span>💬 {review.comment_count ?? 0} bình luận</span>
-          </div>
-
-          {/* Author */}
-          <Link href={`/users/${review.user_id}`} className="flex items-center gap-3 group">
-            {author?.avatar_url ? (
-              <Image src={author.avatar_url} alt={firstName} width={40} height={40} className="rounded-full" />
-            ) : (
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold">{firstName[0]?.toUpperCase()}</span>
-              </div>
-            )}
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-gray-900 dark:text-white group-hover:underline">{author?.full_name || 'Ẩn danh'}</span>
-                {review.is_verified && (
-                  <div className="flex items-center gap-1 bg-blue-50 dark:bg-blue-950/30 text-blue-500 text-xs px-2 py-0.5 rounded-full">
-                    <CheckCircle size={11} />
-                    Đã xác nhận
-                  </div>
-                )}
-              </div>
-              <span className="text-xs text-gray-400">{timeAgo(review.created_at)}</span>
-            </div>
-          </Link>
-        </div>
-
-        {/* CTA for non-users */}
-        <div className="card p-4 text-center space-y-2">
-          <p className="text-sm text-gray-600 dark:text-gray-400">Tìm quán ngon, spa xịn, deal hot cùng Tappy!</p>
+        {/* CTA */}
+        <div
+          className="mt-6 p-4 rounded-2xl"
+          style={{ background: 'rgba(255,107,53,0.08)', border: '1px solid rgba(255,107,53,0.18)' }}
+        >
+          <p className="text-gray-400 text-sm mb-3 leading-snug">
+            Muốn biết thêm về <span className="font-semibold text-white">{review.place_name}</span>?
+          </p>
           <Link
             href="/chat"
-            className="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
+            className="inline-flex items-center gap-2 text-white text-sm font-bold px-5 py-2.5 rounded-full"
+            style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #e91e8c 100%)' }}
           >
-            🤖 Mở TappyAI
+            🤖 Hỏi Tappy
           </Link>
         </div>
-      </main>
-
-      <BottomNav />
+      </div>
     </div>
   )
 }
