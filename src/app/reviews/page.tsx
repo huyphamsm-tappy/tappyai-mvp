@@ -394,6 +394,9 @@ export default function ReviewsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Review[]>([])
   const [searching, setSearching] = useState(false)
+  const [searchMode, setSearchMode] = useState<'review'|'user'>('review')
+  const [userResults, setUserResults] = useState<{id:string;full_name:string|null;avatar_url:string|null;follower_count:number;is_following:boolean}[]>([])
+  const [userSearching, setUserSearching] = useState(false)
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -425,6 +428,33 @@ export default function ReviewsPage() {
       } finally { setSearching(false) }
     }, 400)
   }, [])
+  const doUserSearch = async (q: string) => {
+    if (q.length < 2) { setUserResults([]); return }
+    setUserSearching(true)
+    try {
+      const res = await fetch('/api/users/search?q=' + encodeURIComponent(q))
+      const d = await res.json()
+      setUserResults(d.users || [])
+    } finally {
+      setUserSearching(false)
+    }
+  }
+
+  const toggleFollow = async (targetId: string) => {
+    setUserResults(prev => prev.map(u => u.id === targetId
+      ? { ...u, is_following: !u.is_following, follower_count: u.is_following ? u.follower_count - 1 : u.follower_count + 1 }
+      : u))
+    const res = await fetch('/api/users/' + targetId + '/follow', { method: 'POST' })
+    const d = await res.json()
+    if (res.ok) {
+      setUserResults(prev => prev.map(u => u.id === targetId ? { ...u, is_following: d.following, follower_count: d.follower_count } : u))
+    } else {
+      setUserResults(prev => prev.map(u => u.id === targetId
+        ? { ...u, is_following: !u.is_following, follower_count: u.is_following ? u.follower_count - 1 : u.follower_count + 1 }
+        : u))
+    }
+  }
+
 
   // Infinite scroll
   useEffect(() => {
@@ -494,60 +524,127 @@ export default function ReviewsPage() {
                   <input
                     autoFocus
                     value={searchQuery}
-                    onChange={e => { setSearchQuery(e.target.value); doSearch(e.target.value) }}
-                    placeholder="Tìm kiếm bài review, địa điểm..."
+                    onChange={e => {
+                      setSearchQuery(e.target.value)
+                      if (searchMode === 'review') doSearch(e.target.value)
+                      else doUserSearch(e.target.value)
+                    }}
+                    placeholder={searchMode === 'review' ? 'Tìm review, địa điểm...' : 'Tìm theo tên, email, SĐT...'}
                     className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
                   />
                   {searchQuery && (
-                    <button onClick={() => { setSearchQuery(''); setSearchResults([]) }}>
+                    <button onClick={() => { setSearchQuery(''); setSearchResults([]); setUserResults([]) }}>
                       <X size={16} className="text-gray-500" />
                     </button>
                   )}
+                </div>
+                {/* Mode toggle */}
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() => { setSearchMode('review'); if (searchQuery) doSearch(searchQuery) }}
+                    className={`flex-1 py-1.5 rounded-xl text-xs font-semibold transition-colors ${searchMode === 'review' ? 'bg-white text-black' : 'bg-gray-800 text-gray-400'}`}
+                  >📍 Địa điểm & Review</button>
+                  <button
+                    onClick={() => { setSearchMode('user'); if (searchQuery) doUserSearch(searchQuery) }}
+                    className={`flex-1 py-1.5 rounded-xl text-xs font-semibold transition-colors ${searchMode === 'user' ? 'bg-white text-black' : 'bg-gray-800 text-gray-400'}`}
+                  >👤 Người dùng</button>
                 </div>
               </div>
 
               {/* Results */}
               <div className="flex-1 overflow-y-auto">
-                {searching && (
-                  <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>
-                )}
-                {!searching && searchQuery && searchResults.length === 0 && (
-                  <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
-                    <Search size={36} className="opacity-20" />
-                    <p className="text-sm">Không tìm thấy kết quả cho &quot;{searchQuery}&quot;</p>
-                  </div>
-                )}
-                {!searching && searchResults.length > 0 && (
-                  <div>
-                    <p className="text-gray-500 text-xs px-4 py-3">{searchResults.length} kết quả</p>
-                    <div className="grid grid-cols-2 gap-px bg-gray-800">
-                      {searchResults.map(r => {
-                        const thumb = r.photos?.[0]
-                        return (
-                          <div key={r.id} className="relative aspect-[4/5] bg-gray-900">
-                            {thumb
-                              ? <Image src={thumb} alt="" fill className="object-cover" sizes="50vw" />
-                              : <div className="absolute inset-0 flex items-center justify-center p-3"><p className="text-white text-xs text-center line-clamp-5">{r.body}</p></div>}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                            <div className="absolute bottom-0 left-0 right-0 p-2">
-                              <p className="text-white text-xs font-semibold line-clamp-1">{r.place_name}</p>
-                              {r.body && <p className="text-gray-300 text-[10px] line-clamp-1 mt-0.5">{r.body}</p>}
-                              <div className="flex items-center gap-2 mt-1">
-                                <span className="text-white text-[10px] flex items-center gap-0.5"><Heart size={9} className="fill-white" /> {r.like_count}</span>
-                                {r.rating > 0 && <span className="text-amber-400 text-[10px]">{'\u2605'.repeat(r.rating)}</span>}
+                {/* Review search results */}
+                {searchMode === 'review' && (
+                  <>
+                    {searching && <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>}
+                    {!searching && searchQuery && searchResults.length === 0 && (
+                      <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
+                        <Search size={36} className="opacity-20" />
+                        <p className="text-sm">Không tìm thấy kết quả cho &quot;{searchQuery}&quot;</p>
+                      </div>
+                    )}
+                    {!searching && searchResults.length > 0 && (
+                      <div>
+                        <p className="text-gray-500 text-xs px-4 py-3">{searchResults.length} kết quả</p>
+                        <div className="grid grid-cols-2 gap-px bg-gray-800">
+                          {searchResults.map(r => {
+                            const thumb = r.photos?.[0]
+                            return (
+                              <div key={r.id} className="relative aspect-[4/5] bg-gray-900">
+                                {thumb
+                                  ? <Image src={thumb} alt="" fill className="object-cover" sizes="50vw" />
+                                  : <div className="absolute inset-0 flex items-center justify-center p-3"><p className="text-white text-xs text-center line-clamp-5">{r.body}</p></div>}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                                <div className="absolute bottom-0 left-0 right-0 p-2">
+                                  <p className="text-white text-xs font-semibold line-clamp-1">{r.place_name}</p>
+                                  {r.body && <p className="text-gray-300 text-[10px] line-clamp-1 mt-0.5">{r.body}</p>}
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <span className="text-white text-[10px] flex items-center gap-0.5"><Heart size={9} className="fill-white" /> {r.like_count}</span>
+                                    {r.rating > 0 && <span className="text-amber-400 text-[10px]">{'★'.repeat(r.rating)}</span>}
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+                    {!searchQuery && (
+                      <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
+                        <Search size={48} className="opacity-20" />
+                        <p className="text-sm">Tìm kiếm quán ăn, địa điểm hoặc nội dung bạn muốn xem</p>
+                      </div>
+                    )}
+                  </>
                 )}
-                {!searchQuery && (
-                  <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
-                    <Search size={48} className="opacity-20" />
-                    <p className="text-sm">Tìm kiếm quán ăn, địa điểm hoặc nội dung bạn muốn xem</p>
-                  </div>
+
+                {/* User search results */}
+                {searchMode === 'user' && (
+                  <>
+                    {userSearching && <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>}
+                    {!userSearching && searchQuery && userResults.length === 0 && (
+                      <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
+                        <Search size={36} className="opacity-20" />
+                        <p className="text-sm">Không tìm thấy người dùng nào</p>
+                      </div>
+                    )}
+                    {!userSearching && userResults.length > 0 && (
+                      <div className="divide-y divide-gray-800">
+                        {userResults.map(u => {
+                          const first = u.full_name?.split(' ').pop() || '?'
+                          return (
+                            <div key={u.id} className="flex items-center gap-3 px-4 py-3">
+                              <Link href={'/users/' + u.id} className="flex-shrink-0">
+                                {u.avatar_url
+                                  ? <Image src={u.avatar_url} alt={first} width={44} height={44} className="rounded-full" />
+                                  : <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-base">{first[0]?.toUpperCase()}</div>
+                                }
+                              </Link>
+                              <Link href={'/users/' + u.id} className="flex-1 min-w-0">
+                                <p className="text-white font-semibold text-sm truncate">{u.full_name || 'Ẩn danh'}</p>
+                                <p className="text-gray-500 text-xs">{u.follower_count} người theo dõi</p>
+                              </Link>
+                              <button
+                                onClick={() => toggleFollow(u.id)}
+                                className={u.is_following
+                                  ? 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-700 text-gray-300'
+                                  : 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-black'
+                                }
+                              >
+                                {u.is_following ? 'Đang theo dõi' : 'Theo dõi'}
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                    {!searchQuery && (
+                      <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
+                        <Search size={48} className="opacity-20" />
+                        <p className="text-sm">Tìm bạn bè theo tên, email hoặc số điện thoại</p>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
