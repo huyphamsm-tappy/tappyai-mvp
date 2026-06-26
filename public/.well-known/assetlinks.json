@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.tappyai.twa",
+    "sha256_cert_fingerprints": ["19:3F:97:CF:83:36:96:F7:DA:70:E1:8E:69:31:D3:E4:81:12:E3:EA:BD:FB:B1:64:56:12:8B:44:31:2F:C3:A4"]
+  }
+}]
