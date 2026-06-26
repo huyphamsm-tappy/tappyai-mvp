@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Heart, MessageCircle, Bookmark, Share2, Music2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
@@ -611,6 +611,8 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
+  const [toast, setToast] = useState('')
+  const notifRouter = useRouter()
   const actors = g.actors.slice(0, 3)
   const actorLabel = g.actors.length === 1
     ? g.actors[0].name
@@ -657,6 +659,16 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 
   const rowBase = "flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors"
 
+  const handleReviewNav = () => {
+    if (!g.url?.startsWith('/reviews/')) {
+      setToast('Bài viết không còn tồn tại')
+      setTimeout(() => setToast(''), 2500)
+      return
+    }
+    onNav()
+    try { notifRouter.push(g.url) } catch (e) { console.error('notif nav error', e) }
+  }
+
   if (g.type === 'profile_view') {
     return (
       <div className={rowBase} style={{ borderColor: color }}>
@@ -687,24 +699,20 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
     )
   }
 
-  const safeUrl = g.url && g.url.startsWith('/') ? g.url : null
-  if (!safeUrl) {
-    return (
-      <div className={rowBase} style={{ borderColor: color }}>
+  return (
+    <>
+      <div role="button" onClick={handleReviewNav} className={rowBase + ' cursor-pointer'} style={{ borderColor: color }}>
         {avatarStack}{mainText}
         <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
           <span className="text-base">🍽️</span>
         </div>
       </div>
-    )
-  }
-  return (
-    <Link href={safeUrl} onClick={onNav} className={rowBase} style={{ borderColor: color }}>
-      {avatarStack}{mainText}
-      <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
-        <span className="text-base">🍽️</span>
-      </div>
-    </Link>
+      {toast && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 bg-gray-800/95 text-white text-xs px-4 py-2 rounded-full z-50 pointer-events-none whitespace-nowrap">
+          {toast}
+        </div>
+      )}
+    </>
   )
 }
 
@@ -802,12 +810,24 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
     if (typeof window === 'undefined') return 'home'
+    const fromUrl = new URLSearchParams(window.location.search).get('tab')
+    if (fromUrl) return fromUrl
     const saved = sessionStorage.getItem('reviews_tab')
     if (saved) { sessionStorage.removeItem('reviews_tab'); return saved }
     return 'home'
   })
+  useEffect(() => {
+    const fromUrl = searchParams?.get('tab')
+    if (fromUrl) setTab(fromUrl)
+  }, [searchParams])
+  const handleSetTab = useCallback((t: string) => {
+    setTab(t)
+    router.replace(window.location.pathname + '?tab=' + t, { scroll: false })
+  }, [router])
   const [feedType, setFeedType] = useState<'for-you' | 'following'>('for-you')
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
@@ -962,7 +982,7 @@ export default function ReviewsPage() {
 
   return (
     <div className="bg-black h-dvh overflow-hidden flex">
-      <Sidebar tab={tab} setTab={setTab} />
+      <Sidebar tab={tab} setTab={handleSetTab} />
 
       {/* Content */}
       <div className="flex-1 md:ml-[240px] xl:ml-[260px] flex justify-center">
@@ -1110,13 +1130,13 @@ export default function ReviewsPage() {
               notifsLoading={notifsLoading}
               hotPlaces={hotPlaces}
               hotPlacesLoading={hotPlacesLoading}
-              onSetTab={setTab}
+              onSetTab={handleSetTab}
             />
           )}
         </div>
       </div>
 
-      <TikNav tab={tab} setTab={setTab} userId={me} />
+      <TikNav tab={tab} setTab={handleSetTab} userId={me} />
 
       {commentOf && <CommentDrawer review={commentOf} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
