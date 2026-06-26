@@ -23,6 +23,44 @@ interface Review {
 }
 
 interface Notification { id: string; type: string; actor_id: string; actor_name: string; actor_avatar: string | null; text: string; url: string; created_at: string }
+interface HotPlace { place_name: string; count: number }
+interface GroupedNotif {
+  id: string; type: string; url: string
+  actors: { name: string; avatar: string | null; id: string }[]
+  text: string; comment_body?: string
+  created_at: string; count: number
+}
+const NOTIF_COLOR: Record<string, string> = {
+  like: '#ff6b35', follow: '#1D9E75', profile_view: '#534AB7', comment: '#378ADD',
+}
+function groupNotifs(notifs: Notification[]): GroupedNotif[] {
+  const map = new Map<string, GroupedNotif>()
+  for (const n of notifs) {
+    const key = n.type === 'like' ? `like:${n.url}` : n.type === 'profile_view' ? 'profile_view' : n.id
+    const existing = map.get(key)
+    if (existing) {
+      if (!existing.actors.find(a => a.id === n.actor_id))
+        existing.actors.push({ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id })
+      existing.count++
+      if (new Date(n.created_at) > new Date(existing.created_at)) existing.created_at = n.created_at
+    } else {
+      map.set(key, {
+        id: n.id, type: n.type, url: n.url,
+        actors: [{ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id }],
+        text: n.text, comment_body: n.type === 'comment' ? n.text : undefined,
+        created_at: n.created_at, count: 1,
+      })
+    }
+  }
+  return Array.from(map.values()).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+}
+function notifSection(created_at: string): string {
+  const ms = Date.now() - new Date(created_at).getTime()
+  if (ms < 60 * 60 * 1000) return 'VỪA XONG'
+  if (ms < 24 * 60 * 60 * 1000) return 'HÔM NAY'
+  return 'TUẦN NÀY'
+}
+
 function ago(d: string) {
   const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000)
   if (m < 1) return 'vừa xong'
@@ -247,7 +285,7 @@ function MyPosts({ userId }: { userId: string }) {
         supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false }),
       ])
       setPosts((res1.reviews || []).map((r: Review) => ({ ...r, is_hidden: false })))
-      setHidden((res2.data || []).map((r: Review & { is_hidden: boolean }) => ({ ...r } as Review)))
+      setHidden((res2.data || []).map((r: any) => ({ ...r } as Review)))
       setLoading(false)
     }
     load()
@@ -470,6 +508,7 @@ function ProfileTab({ userId }: { userId: string }) {
                 className={`relative aspect-[9/16] bg-gray-900 ${sel?.id === r.id ? 'ring-2 ring-inset ring-[#fe2c55]' : ''}`}>
                 {thumb ? <Image src={thumb} alt="" fill className="object-cover" sizes="33vw" />
                   : <div className="absolute inset-0 flex items-center justify-center p-2"><p className="text-white text-xs text-center line-clamp-4">{r.body}</p></div>}
+                {/* Overlay: place name + stars */}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent px-1.5 pt-4 pb-1.5">
                   <p className="text-white text-[9px] font-semibold leading-tight line-clamp-1">{r.place_name}</p>
                   <div className="flex items-center gap-0.5 mt-0.5">
@@ -568,6 +607,185 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
   )
 }
 
+/* ─── Notification row ─── */
+function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
+  const color = NOTIF_COLOR[g.type] || '#666'
+  const [followed, setFollowed] = useState(false)
+  const actors = g.actors.slice(0, 3)
+  const actorLabel = g.actors.length === 1
+    ? g.actors[0].name
+    : g.actors.length === 2
+    ? `${g.actors[0].name} và ${g.actors[1].name}`
+    : `${g.actors[0].name}, ${g.actors[1]?.name} và ${g.actors.length - 2} người khác`
+
+  const avatarStack = (
+    <div className="relative flex-shrink-0 mr-3" style={{ width: 48, height: 44 }}>
+      {actors.map((actor, i) => {
+        const n = actor.name.split(' ').pop() || '?'
+        return (
+          <div key={i} className="absolute rounded-full overflow-hidden border-2 border-black"
+            style={{ left: i * 8, top: 0, zIndex: 3 - i, width: 36, height: 36 }}>
+            {actor.avatar
+              ? <Image src={actor.avatar} alt={n} width={36} height={36} className="object-cover w-full h-full" />
+              : <div className="w-full h-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">{n[0]?.toUpperCase()}</div>}
+          </div>
+        )
+      })}
+      <div className="absolute rounded-full flex items-center justify-center border-2 border-black"
+        style={{ background: color, width: 20, height: 20, bottom: -4, right: 0, zIndex: 10 }}>
+        {g.type === 'like' && <Heart size={9} className="text-white fill-white" />}
+        {g.type === 'follow' && <User size={9} className="text-white" />}
+        {g.type === 'comment' && <MessageCircle size={9} className="text-white" />}
+      </div>
+    </div>
+  )
+
+  const mainText = (
+    <div className="flex-1 min-w-0">
+      <p className="text-white text-sm leading-snug">
+        <span className="font-semibold">{actorLabel}</span>{' '}
+        <span className="text-gray-300">
+          {g.type === 'like' ? 'đã thích bài viết của bạn' : g.type === 'follow' ? 'đã theo dõi bạn' : 'đã bình luận'}
+        </span>
+      </p>
+      {g.type === 'comment' && g.comment_body && (
+        <p className="text-gray-400 text-xs mt-0.5 line-clamp-1">&quot;{g.comment_body}&quot;</p>
+      )}
+      <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at)}</p>
+    </div>
+  )
+
+  const rowBase = "flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors"
+
+  if (g.type === 'profile_view') {
+    return (
+      <div className={rowBase} style={{ borderColor: color }}>
+        <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 mr-3" style={{ background: `${color}22` }}>
+          <User size={20} style={{ color }} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-white text-sm"><span className="font-bold">{g.count}</span> người đã xem hồ sơ của bạn trong 24h</p>
+          <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at)}</p>
+        </div>
+        <button className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2" style={{ background: `${color}22`, color }}>Xem ai</button>
+      </div>
+    )
+  }
+
+  if (g.type === 'follow') {
+    return (
+      <div className={rowBase} style={{ borderColor: color }}>
+        {avatarStack}{mainText}
+        <button
+          onClick={async e => { e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
+          className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2 transition-all"
+          style={{ background: followed ? 'rgba(255,255,255,0.08)' : `${color}22`, color: followed ? '#666' : color }}>
+          {followed ? 'Đã theo' : 'Theo dõi lại'}
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <Link href={g.url} onClick={onNav} className={rowBase} style={{ borderColor: color }}>
+      {avatarStack}{mainText}
+      <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
+        <span className="text-base">🍽️</span>
+      </div>
+    </Link>
+  )
+}
+
+/* ─── Inbox Tab ─── */
+function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab }: {
+  notifs: Notification[]
+  notifsLoading: boolean
+  hotPlaces: HotPlace[]
+  hotPlacesLoading: boolean
+  onSetTab: (t: string) => void
+}) {
+  const grouped = groupNotifs(notifs)
+  const bySection = new Map<string, GroupedNotif[]>()
+  for (const g of grouped) {
+    const s = notifSection(g.created_at)
+    if (!bySection.has(s)) bySection.set(s, [])
+    bySection.get(s)!.push(g)
+  }
+  const sections = ['VỪA XONG', 'HÔM NAY', 'TUẦN NÀY'].filter(l => bySection.has(l)).map(l => ({ label: l, items: bySection.get(l)! }))
+
+  return (
+    <div className="h-dvh flex flex-col bg-black overflow-hidden">
+      <div className="flex-shrink-0 pt-14 px-4 pb-3 border-b border-gray-800">
+        <h2 className="text-white font-bold text-lg">Thông báo</h2>
+      </div>
+
+      <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+        {notifsLoading ? (
+          <div className="flex justify-center pt-16"><Loader2 size={22} className="text-white animate-spin" /></div>
+        ) : (
+          <>
+            {/* AI Digest Banner */}
+            <div className="px-4 mt-4 mb-1">
+              <button onClick={() => onSetTab('explore')} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
+                style={{ background: 'linear-gradient(135deg, #1c0d00 0%, #2a1500 100%)', border: '1px solid rgba(255,107,53,0.28)' }}>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,53,0.15)' }}>
+                  <span className="text-lg">✨</span>
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-xs mb-0.5" style={{ color: '#ff6b35' }}>Tappy gợi ý hôm nay</p>
+                  <p className="text-white text-sm leading-snug">3 quán bạn bè hay đến đang mở gần bạn</p>
+                </div>
+                <ChevronRight size={16} className="text-gray-500 flex-shrink-0" />
+              </button>
+            </div>
+
+            {/* Hot places row */}
+            {!hotPlacesLoading && hotPlaces.length > 0 && (
+              <div className="mb-1">
+                <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-2 tracking-widest">ĐANG HOT GẦN BẠN 🔥</p>
+                <div className="flex gap-3 px-4 overflow-x-auto pb-3" style={{ scrollbarWidth: 'none' }}>
+                  {hotPlaces.map((p, i) => (
+                    <button key={p.place_name} onClick={() => onSetTab('explore')}
+                      className="flex flex-col items-center gap-1.5 flex-shrink-0 active:scale-95 transition-transform">
+                      <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gray-800"
+                        style={i === 0 ? { boxShadow: '0 0 0 2px #ff6b35' } : {}}>
+                        <span className="text-2xl">🍽️</span>
+                      </div>
+                      <p className="text-white text-[10px] text-center font-medium leading-tight line-clamp-2" style={{ width: 64 }}>{p.place_name}</p>
+                      <p className="text-gray-500 text-[9px]">{p.count} lượt</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Notifications grouped by section */}
+            {notifs.length === 0 ? (
+              <div className="flex flex-col items-center pt-16 text-gray-500 gap-3">
+                <Bell size={40} className="opacity-30" />
+                <p className="text-sm">Chưa có thông báo nào</p>
+              </div>
+            ) : sections.length === 0 ? (
+              <div className="flex flex-col items-center pt-16 text-gray-500 gap-3">
+                <Bell size={40} className="opacity-30" />
+                <p className="text-sm">Không có thông báo mới</p>
+              </div>
+            ) : (
+              sections.map(({ label, items }) => (
+                <div key={label}>
+                  <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-1.5 tracking-widest">{label}</p>
+                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => sessionStorage.setItem('reviews_tab', 'inbox')} />)}
+                </div>
+              ))
+            )}
+            <div className="h-6" />
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
 /* ─── Main ─── */
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
@@ -583,6 +801,8 @@ export default function ReviewsPage() {
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [notifs, setNotifs] = useState<Notification[]>([])
   const [notifsLoading, setNotifsLoading] = useState(false)
+  const [hotPlaces, setHotPlaces] = useState<HotPlace[]>([])
+  const [hotPlacesLoading, setHotPlacesLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(0)
@@ -593,20 +813,41 @@ export default function ReviewsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Review[]>([])
   const [searching, setSearching] = useState(false)
-  const [searchMode, setSearchMode] = useState<'review'|'user'>('review')
-  const [userResults, setUserResults] = useState<{id:string;full_name:string|null;avatar_url:string|null;follower_count:number;is_following:boolean}[]>([])
-  const [userSearching, setUserSearching] = useState(false)
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // User search state
+  const [searchMode, setSearchMode] = useState<'review' | 'user'>('review')
+  const [userResults, setUserResults] = useState<{ id: string; full_name: string | null; avatar_url: string | null; follower_count: number; following_count: number; is_following: boolean }[]>([])
+  const [userSearching, setUserSearching] = useState(false)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null))
   }, [supabase])
 
-  // Load notifications when inbox tab opens
+  // Load notifications + hot places when inbox tab opens
   useEffect(() => {
     if (tab !== 'inbox') return
     setNotifsLoading(true)
     fetch('/api/notifications').then(r => r.json()).then(d => setNotifs(d.notifications || [])).finally(() => setNotifsLoading(false))
+    setHotPlacesLoading(true)
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    ;(async () => {
+      try {
+        const { data } = await supabase
+          .from('review_likes')
+          .select('reviews!inner(place_name)')
+          .gte('created_at', since)
+          .limit(200)
+        const counts = new Map<string, number>()
+        for (const row of (data || []) as any[]) {
+          const name = row.reviews?.place_name
+          if (name) counts.set(name, (counts.get(name) || 0) + 1)
+        }
+        setHotPlaces(Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([place_name, count]) => ({ place_name, count })))
+      } finally {
+        setHotPlacesLoading(false)
+      }
+    })()
   }, [tab])
 
   const fetch_ = useCallback(async (p: number, append = false, ft: 'for-you' | 'following' = 'for-you') => {
@@ -643,33 +884,33 @@ export default function ReviewsPage() {
       } finally { setSearching(false) }
     }, 400)
   }, [])
-  const doUserSearch = async (q: string) => {
+
+  // User search
+  const doUserSearch = useCallback(async (q: string) => {
     if (q.length < 2) { setUserResults([]); return }
     setUserSearching(true)
     try {
       const res = await fetch('/api/users/search?q=' + encodeURIComponent(q))
       const d = await res.json()
       setUserResults(d.users || [])
-    } finally {
-      setUserSearching(false)
-    }
-  }
+    } finally { setUserSearching(false) }
+  }, [])
 
   const toggleFollow = async (targetId: string) => {
     setUserResults(prev => prev.map(u => u.id === targetId
-      ? { ...u, is_following: !u.is_following, follower_count: u.is_following ? u.follower_count - 1 : u.follower_count + 1 }
+      ? { ...u, is_following: !u.is_following, follower_count: u.follower_count + (u.is_following ? -1 : 1) }
       : u))
-    const res = await fetch('/api/users/' + targetId + '/follow', { method: 'POST' })
-    const d = await res.json()
+    const res = await fetch(`/api/users/${targetId}/follow`, { method: 'POST' })
     if (res.ok) {
+      const d = await res.json()
       setUserResults(prev => prev.map(u => u.id === targetId ? { ...u, is_following: d.following, follower_count: d.follower_count } : u))
     } else {
+      // revert
       setUserResults(prev => prev.map(u => u.id === targetId
-        ? { ...u, is_following: !u.is_following, follower_count: u.is_following ? u.follower_count - 1 : u.follower_count + 1 }
+        ? { ...u, is_following: !u.is_following, follower_count: u.follower_count + (u.is_following ? 1 : -1) }
         : u))
     }
   }
-
 
   // Infinite scroll
   useEffect(() => {
@@ -735,18 +976,14 @@ export default function ReviewsPage() {
           {/* Explore / Search */}
           {tab === 'explore' && (
             <div className="h-dvh flex flex-col bg-black overflow-hidden">
-              {/* Search bar */}
-              <div className="flex-shrink-0 pt-12 px-4 pb-3 border-b border-gray-800">
+              {/* Search bar + mode toggle */}
+              <div className="flex-shrink-0 pt-12 px-4 pb-3 border-b border-gray-800 space-y-2">
                 <div className="flex items-center gap-2 bg-gray-900 rounded-2xl px-4 py-2.5">
                   <Search size={18} className="text-gray-500 flex-shrink-0" />
                   <input
                     autoFocus
                     value={searchQuery}
-                    onChange={e => {
-                      setSearchQuery(e.target.value)
-                      if (searchMode === 'review') doSearch(e.target.value)
-                      else doUserSearch(e.target.value)
-                    }}
+                    onChange={e => { setSearchQuery(e.target.value); searchMode === 'review' ? doSearch(e.target.value) : doUserSearch(e.target.value) }}
                     placeholder={searchMode === 'review' ? 'Tìm review, địa điểm...' : 'Tìm theo tên, email, SĐT...'}
                     className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
                   />
@@ -756,163 +993,114 @@ export default function ReviewsPage() {
                     </button>
                   )}
                 </div>
-                {/* Mode toggle */}
-                <div className="flex gap-2 mt-3">
-                  <button
-                    onClick={() => { setSearchMode('review'); if (searchQuery) doSearch(searchQuery) }}
-                    className={`flex-1 py-1.5 rounded-xl text-xs font-semibold transition-colors ${searchMode === 'review' ? 'bg-white text-black' : 'bg-gray-800 text-gray-400'}`}
-                  >📍 Địa điểm & Review</button>
-                  <button
-                    onClick={() => { setSearchMode('user'); if (searchQuery) doUserSearch(searchQuery) }}
-                    className={`flex-1 py-1.5 rounded-xl text-xs font-semibold transition-colors ${searchMode === 'user' ? 'bg-white text-black' : 'bg-gray-800 text-gray-400'}`}
-                  >👤 Người dùng</button>
+                {/* Segmented control */}
+                <div className="flex bg-gray-900 rounded-xl p-1 gap-1">
+                  <button onClick={() => { setSearchMode('review'); setUserResults([]); if (searchQuery) doSearch(searchQuery) }} className={`flex-1 text-xs py-1.5 rounded-lg font-semibold transition-colors ${searchMode === 'review' ? 'bg-white text-black' : 'text-gray-400'}`}>📍 Địa điểm & Review</button>
+                  <button onClick={() => { setSearchMode('user'); setSearchResults([]); if (searchQuery) doUserSearch(searchQuery) }} className={`flex-1 text-xs py-1.5 rounded-lg font-semibold transition-colors ${searchMode === 'user' ? 'bg-white text-black' : 'text-gray-400'}`}>👤 Người dùng</button>
                 </div>
               </div>
 
               {/* Results */}
               <div className="flex-1 overflow-y-auto">
-                {/* Review search results */}
-                {searchMode === 'review' && (
-                  <>
-                    {searching && <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>}
-                    {!searching && searchQuery && searchResults.length === 0 && (
-                      <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
-                        <Search size={36} className="opacity-20" />
-                        <p className="text-sm">Không tìm thấy kết quả cho &quot;{searchQuery}&quot;</p>
-                      </div>
-                    )}
-                    {!searching && searchResults.length > 0 && (
-                      <div>
-                        <p className="text-gray-500 text-xs px-4 py-3">{searchResults.length} kết quả</p>
-                        <div className="grid grid-cols-2 gap-px bg-gray-800">
-                          {searchResults.map(r => {
-                            const thumb = r.photos?.[0]
-                            return (
-                              <div key={r.id} className="relative aspect-[4/5] bg-gray-900">
-                                {thumb
-                                  ? <Image src={thumb} alt="" fill className="object-cover" sizes="50vw" />
-                                  : <div className="absolute inset-0 flex items-center justify-center p-3"><p className="text-white text-xs text-center line-clamp-5">{r.body}</p></div>}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                                <div className="absolute bottom-0 left-0 right-0 p-2">
-                                  <p className="text-white text-xs font-semibold line-clamp-1">{r.place_name}</p>
-                                  {r.body && <p className="text-gray-300 text-[10px] line-clamp-1 mt-0.5">{r.body}</p>}
-                                  <div className="flex items-center gap-2 mt-1">
-                                    <span className="text-white text-[10px] flex items-center gap-0.5"><Heart size={9} className="fill-white" /> {r.like_count}</span>
-                                    {r.rating > 0 && <span className="text-amber-400 text-[10px]">{'★'.repeat(r.rating)}</span>}
-                                  </div>
-                                </div>
+                {searchMode === 'review' && searching && (
+                  <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>
+                )}
+                {searchMode === 'review' && !searching && searchQuery && searchResults.length === 0 && (
+                  <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
+                    <Search size={36} className="opacity-20" />
+                    <p className="text-sm">Không tìm thấy kết quả cho &quot;{searchQuery}&quot;</p>
+                  </div>
+                )}
+                {searchMode === 'review' && !searching && searchResults.length > 0 && (
+                  <div>
+                    <p className="text-gray-500 text-xs px-4 py-3">{searchResults.length} kết quả</p>
+                    <div className="grid grid-cols-2 gap-px bg-gray-800">
+                      {searchResults.map(r => {
+                        const thumb = r.photos?.[0]
+                        return (
+                          <div key={r.id} className="relative aspect-[4/5] bg-gray-900">
+                            {thumb
+                              ? <Image src={thumb} alt="" fill className="object-cover" sizes="50vw" />
+                              : <div className="absolute inset-0 flex items-center justify-center p-3"><p className="text-white text-xs text-center line-clamp-5">{r.body}</p></div>}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 p-2">
+                              <p className="text-white text-xs font-semibold line-clamp-1">{r.place_name}</p>
+                              {r.body && <p className="text-gray-300 text-[10px] line-clamp-1 mt-0.5">{r.body}</p>}
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className="text-white text-[10px] flex items-center gap-0.5"><Heart size={9} className="fill-white" /> {r.like_count}</span>
+                                {r.rating > 0 && <span className="text-amber-400 text-[10px]">{'\u2605'.repeat(r.rating)}</span>}
                               </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )}
-                    {!searchQuery && (
-                      <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
-                        <Search size={48} className="opacity-20" />
-                        <p className="text-sm">Tìm kiếm quán ăn, địa điểm hoặc nội dung bạn muốn xem</p>
-                      </div>
-                    )}
-                  </>
-                )}
-
-                {/* User search results */}
-                {searchMode === 'user' && (
-                  <>
-                    {userSearching && <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>}
-                    {!userSearching && searchQuery && userResults.length === 0 && (
-                      <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
-                        <Search size={36} className="opacity-20" />
-                        <p className="text-sm">Không tìm thấy người dùng nào</p>
-                      </div>
-                    )}
-                    {!userSearching && userResults.length > 0 && (
-                      <div className="divide-y divide-gray-800">
-                        {userResults.map(u => {
-                          const first = u.full_name?.split(' ').pop() || '?'
-                          return (
-                            <div key={u.id} className="flex items-center gap-3 px-4 py-3">
-                              <Link href={'/users/' + u.id} className="flex-shrink-0">
-                                {u.avatar_url
-                                  ? <Image src={u.avatar_url} alt={first} width={44} height={44} className="rounded-full" />
-                                  : <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-base">{first[0]?.toUpperCase()}</div>
-                                }
-                              </Link>
-                              <Link href={'/users/' + u.id} className="flex-1 min-w-0">
-                                <p className="text-white font-semibold text-sm truncate">{u.full_name || 'Ẩn danh'}</p>
-                                <p className="text-gray-500 text-xs">{u.follower_count} người theo dõi</p>
-                              </Link>
-                              <button
-                                onClick={() => toggleFollow(u.id)}
-                                className={u.is_following
-                                  ? 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-700 text-gray-300'
-                                  : 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-black'
-                                }
-                              >
-                                {u.is_following ? 'Đang theo dõi' : 'Theo dõi'}
-                              </button>
                             </div>
-                          )
-                        })}
-                      </div>
-                    )}
-                    {!searchQuery && (
-                      <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
-                        <Search size={48} className="opacity-20" />
-                        <p className="text-sm">Tìm bạn bè theo tên, email hoặc số điện thoại</p>
-                      </div>
-                    )}
-                  </>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
                 )}
+                {!searchQuery && searchMode === 'review' && (
+                  <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
+                    <Search size={48} className="opacity-20" />
+                    <p className="text-sm">Tìm kiếm quán ăn, địa điểm hoặc nội dung bạn muốn xem</p>
+                  </div>
+                )}
+                {/* User search results */}
+                {searchMode === 'user' && <>
+                  {userSearching && <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>}
+                  {!userSearching && searchQuery && userResults.length === 0 && (
+                    <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
+                      <User size={36} className="opacity-20" />
+                      <p className="text-sm">Không tìm thấy người dùng nào</p>
+                    </div>
+                  )}
+                  {!userSearching && userResults.length > 0 && (
+                    <div className="divide-y divide-gray-800">
+                      {userResults.map(u => {
+                        const uname = u.full_name || 'Ẩn danh'
+                        return (
+                          <Link key={u.id} href={`/users/${u.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900/50 transition-colors">
+                            {u.avatar_url
+                              ? <Image src={u.avatar_url} alt={uname} width={44} height={44} className="rounded-full flex-shrink-0" />
+                              : <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center flex-shrink-0 text-white font-bold">{uname[0]?.toUpperCase()}</div>}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-white font-semibold text-sm truncate">{uname}</p>
+                              <p className="text-gray-500 text-xs">{u.follower_count} followers · {u.following_count} following</p>
+                            </div>
+                            <button onClick={e => { e.preventDefault(); toggleFollow(u.id) }} className={`text-xs font-semibold px-4 py-1.5 rounded-full flex-shrink-0 transition-colors ${u.is_following ? 'bg-gray-700 text-white' : 'bg-white text-black'}`}>{u.is_following ? 'Đang theo' : 'Theo dõi'}</button>
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  )}
+                  {!searchQuery && (
+                    <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
+                      <User size={48} className="opacity-20" />
+                      <p className="text-sm">Tìm bạn bè theo tên, email hoặc số điện thoại</p>
+                    </div>
+                  )}
+                </>}
               </div>
             </div>
           )}
 
-          {/* Profile + My Posts */}
-        {tab === 'profile' && me && <ProfileTab userId={me} />}
-        {tab === 'profile' && !me && (
-          <div className="h-dvh flex items-center justify-center">
-            <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">Đăng nhập để xem hồ sơ</Link>
-          </div>
-        )}
+          {/* Profile (TikTok style) */}
+          {tab === 'profile' && (
+            me
+              ? <ProfileTab userId={me} />
+              : <div className="h-dvh flex items-center justify-center">
+                  <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">Đăng nhập để xem hồ sơ</Link>
+                </div>
+          )}
 
-                {/* Inbox - notifications */}
-      {tab === 'inbox' && (
-        <div className="h-dvh flex flex-col bg-black overflow-hidden">
-          <div className="flex-shrink-0 pt-14 px-4 pb-3 border-b border-gray-800">
-            <h2 className="text-white font-bold text-lg">Thông báo</h2>
-          </div>
-          <div className="flex-1 overflow-y-auto">
-            {notifsLoading ? (
-              <div className="flex justify-center pt-16"><Loader2 size={22} className="text-white animate-spin" /></div>
-            ) : notifs.length === 0 ? (
-              <div className="flex flex-col items-center pt-20 text-gray-500 gap-3">
-                <Bell size={40} className="opacity-30" />
-                <p className="text-sm">Chưa có thông báo nào</p>
-              </div>
-            ) : (
-              <div className="divide-y divide-gray-800">
-                {notifs.map(n => {
-                  const firstName = n.actor_name.split(' ').pop() || 'Ẩn danh'
-                  return (
-                    <Link key={n.id} href={n.url} onClick={() => sessionStorage.setItem('reviews_tab', 'inbox')} className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-900/50 transition-colors">
-                      {n.actor_avatar
-                        ? <Image src={n.actor_avatar} alt={firstName} width={44} height={44} className="rounded-full flex-shrink-0" />
-                        : <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">{firstName[0]?.toUpperCase()}</div>}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm"><span className="font-semibold">{n.actor_name}</span> {n.text}</p>
-                        <p className="text-gray-500 text-xs mt-0.5">{ago(n.created_at)}</p>
-                      </div>
-                      {n.type === 'follow' && <User size={16} className="text-gray-600 flex-shrink-0" />}
-                      {n.type === 'like' && <Heart size={16} className="text-red-500 flex-shrink-0" />}
-                    </Link>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+          {/* Inbox - notifications */}
+          {tab === 'inbox' && (
+            <InboxTab
+              notifs={notifs}
+              notifsLoading={notifsLoading}
+              hotPlaces={hotPlaces}
+              hotPlacesLoading={hotPlacesLoading}
+              onSetTab={setTab}
+            />
+          )}
         </div>
       </div>
 
