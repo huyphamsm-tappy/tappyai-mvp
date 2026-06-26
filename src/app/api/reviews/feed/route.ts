@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+export const runtime = 'edge'
+
 
 // GET /api/reviews/feed?page=0&limit=12&sort=latest|trending&userId=xxx&following=true
 // Returns paginated community review feed with like status for logged-in user
@@ -89,5 +91,12 @@ export async function GET(req: NextRequest) {
     saved_by_me: savedIds.includes(r.id),
   }))
 
-  return NextResponse.json({ reviews: enriched, page, limit })
+  const res = NextResponse.json({ reviews: enriched, page, limit })
+
+  // Cache public (non-personalized) feeds only
+  if (!followingOnly && !filterUserId) {
+    res.headers.set('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=60')
+  }
+
+  return res
 }
