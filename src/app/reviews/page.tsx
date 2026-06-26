@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Heart, MessageCircle, Bookmark, Share2, Music2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
@@ -611,6 +611,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
+  const notifRouter = useRouter()
   const actors = g.actors.slice(0, 3)
   const actorLabel = g.actors.length === 1
     ? g.actors[0].name
@@ -657,6 +658,16 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 
   const rowBase = "flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors"
 
+  const handleReviewNav = () => {
+    const match = g.url?.match(/\/reviews\/([0-9a-f-]{36})/i)
+    const reviewId = match?.[1]
+    if (reviewId) {
+      notifRouter.push('/reviews/' + reviewId)
+    } else {
+      onNav()
+    }
+  }
+
   if (g.type === 'profile_view') {
     return (
       <div className={rowBase} style={{ borderColor: color }}>
@@ -673,36 +684,38 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   }
 
   if (g.type === 'follow') {
+    const profileUrl = g.actors[0]?.id ? `/users/${g.actors[0].id}` : '#'
     return (
-      <div className={rowBase} style={{ borderColor: color }}>
+      <Link href={profileUrl} className={rowBase} style={{ borderColor: color }}>
         {avatarStack}{mainText}
         <button
-          onClick={async e => { e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
+          onClick={async e => { e.preventDefault(); e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
           className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2 transition-all"
           style={{ background: followed ? 'rgba(255,255,255,0.08)' : `${color}22`, color: followed ? '#666' : color }}>
           {followed ? 'Đã theo' : 'Theo dõi lại'}
         </button>
-      </div>
+      </Link>
     )
   }
 
   return (
-    <Link href={g.url} onClick={onNav} className={rowBase} style={{ borderColor: color }}>
+    <div role="button" onClick={handleReviewNav} className={rowBase + ' cursor-pointer'} style={{ borderColor: color }}>
       {avatarStack}{mainText}
       <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
         <span className="text-base">🍽️</span>
       </div>
-    </Link>
+    </div>
   )
 }
 
 /* ─── Inbox Tab ─── */
-function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab }: {
+function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange }: {
   notifs: Notification[]
   notifsLoading: boolean
   hotPlaces: HotPlace[]
   hotPlacesLoading: boolean
   onSetTab: (t: string) => void
+  onFeedTypeChange: (ft: 'for-you' | 'following') => void
 }) {
   const grouped = groupNotifs(notifs)
   const bySection = new Map<string, GroupedNotif[]>()
@@ -726,7 +739,7 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
           <>
             {/* AI Digest Banner */}
             <div className="px-4 mt-4 mb-1">
-              <button onClick={() => onSetTab('explore')} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
+              <button onClick={() => { onFeedTypeChange('following'); onSetTab('home') }} className="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform"
                 style={{ background: 'linear-gradient(135deg, #1c0d00 0%, #2a1500 100%)', border: '1px solid rgba(255,107,53,0.28)' }}>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,53,0.15)' }}>
                   <span className="text-lg">✨</span>
@@ -774,7 +787,7 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
               sections.map(({ label, items }) => (
                 <div key={label}>
                   <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-1.5 tracking-widest">{label}</p>
-                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => sessionStorage.setItem('reviews_tab', 'inbox')} />)}
+                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => onSetTab('home')} />)}
                 </div>
               ))
             )}
@@ -790,12 +803,24 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
     if (typeof window === 'undefined') return 'home'
+    const fromUrl = new URLSearchParams(window.location.search).get('tab')
+    if (fromUrl) return fromUrl
     const saved = sessionStorage.getItem('reviews_tab')
     if (saved) { sessionStorage.removeItem('reviews_tab'); return saved }
     return 'home'
   })
+  useEffect(() => {
+    const fromUrl = searchParams?.get('tab')
+    if (fromUrl) setTab(fromUrl)
+  }, [searchParams])
+  const handleSetTab = useCallback((t: string) => {
+    setTab(t)
+    router.replace(window.location.pathname + '?tab=' + t, { scroll: false })
+  }, [router])
   const [feedType, setFeedType] = useState<'for-you' | 'following'>('for-you')
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
@@ -950,7 +975,7 @@ export default function ReviewsPage() {
 
   return (
     <div className="bg-black h-dvh overflow-hidden flex">
-      <Sidebar tab={tab} setTab={setTab} />
+      <Sidebar tab={tab} setTab={handleSetTab} />
 
       {/* Content */}
       <div className="flex-1 md:ml-[240px] xl:ml-[260px] flex justify-center">
@@ -1098,13 +1123,14 @@ export default function ReviewsPage() {
               notifsLoading={notifsLoading}
               hotPlaces={hotPlaces}
               hotPlacesLoading={hotPlacesLoading}
-              onSetTab={setTab}
+              onSetTab={handleSetTab}
+              onFeedTypeChange={handleFeedTypeChange}
             />
           )}
         </div>
       </div>
 
-      <TikNav tab={tab} setTab={setTab} userId={me} />
+      <TikNav tab={tab} setTab={handleSetTab} userId={me} />
 
       {commentOf && <CommentDrawer review={commentOf} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
