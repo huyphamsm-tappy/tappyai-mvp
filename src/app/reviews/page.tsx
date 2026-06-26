@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import {
   Heart, MessageCircle, Bookmark, Share2, Music2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
@@ -308,6 +309,194 @@ function MyPosts({ userId }: { userId: string }) {
               </div>
             </div>
             <div className="space-y-2">
+              <button onClick={() => doHide(sel.id, !(sel as Review & { is_hidden?: boolean }).is_hidden)}
+                className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
+                {(sel as Review & { is_hidden?: boolean }).is_hidden ? <><Eye size={18} className="text-green-400" /> Hiện bài này</> : <><EyeOff size={18} className="text-orange-400" /> Ẩn bài này</>}
+              </button>
+              <button onClick={() => doDelete(sel.id)}
+                className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-red-950/40 text-red-400 text-sm font-medium active:bg-red-950/60">
+                <Trash2 size={18} /> Xoá bài này
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+/* ─── Profile Tab (TikTok style) ─── */
+function ProfileTab({ userId }: { userId: string }) {
+  const [profile, setProfile] = useState<{
+    full_name: string | null; avatar_url: string | null
+    follower_count: number; following_count: number; review_count: number
+  } | null>(null)
+  const [posts, setPosts] = useState<Review[]>([])
+  const [hidden, setHidden] = useState<Review[]>([])
+  const [likedPosts, setLikedPosts] = useState<Review[]>([])
+  const [savedPosts, setSavedPosts] = useState<Review[]>([])
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'liked'>('posts')
+  const [sel, setSel] = useState<Review | null>(null)
+  const router = useRouter()
+  const supabase = createClient()
+
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true)
+      const [profileRes, reviewsRes, likedRes, savedRes] = await Promise.all([
+        fetch(`/api/users/${userId}`).then(r => r.json()),
+        fetch(`/api/reviews/feed?userId=${userId}&limit=50`).then(r => r.json()),
+        supabase.from('review_likes').select('review_id').eq('user_id', userId).then(r => r.data || []),
+        supabase.from('review_saves').select('review_id').eq('user_id', userId).then(r => r.data || []),
+      ])
+      setProfile(profileRes)
+      const allPosts = (reviewsRes.reviews || []).map((r: Review) => ({ ...r, is_hidden: false }))
+      setPosts(allPosts)
+      const { data: hiddenData } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
+      setHidden((hiddenData || []).map((r: any) => ({ ...r } as Review)))
+      if (likedRes.length > 0) {
+        const likedIds = (likedRes as { review_id: string }[]).map(l => l.review_id)
+        const { data: likedData } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at').in('id', likedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
+        setLikedPosts((likedData || []).map((r: any) => ({ ...r, liked_by_me: true, saved_by_me: false })))
+      }
+      if (savedRes.length > 0) {
+        const savedIds = (savedRes as { review_id: string }[]).map(s => s.review_id)
+        const { data: savedData } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at').in('id', savedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
+        setSavedPosts((savedData || []).map((r: any) => ({ ...r, liked_by_me: false, saved_by_me: true })))
+      }
+      setLoading(false)
+    }
+    load()
+  }, [userId, supabase])
+
+  const doDelete = async (id: string) => {
+    if (!confirm('Xoá bài?')) return
+    const res = await fetch(`/api/reviews/${id}`, { method: 'DELETE' })
+    if (res.ok) { setPosts(p => p.filter(r => r.id !== id)); setHidden(h => h.filter(r => r.id !== id)); setSel(null) }
+  }
+  const doHide = async (id: string, hide: boolean) => {
+    await fetch(`/api/reviews/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_hidden: hide }) })
+    if (hide) { const p = posts.find(r => r.id === id); if (p) { setPosts(prev => prev.filter(r => r.id !== id)); setHidden(prev => [{ ...p, is_hidden: true } as Review, ...prev]) } }
+    else { const h = hidden.find(r => r.id === id); if (h) { setHidden(prev => prev.filter(r => r.id !== id)); setPosts(prev => [{ ...h, is_hidden: false } as Review, ...prev]) } }
+    setSel(null)
+  }
+
+  const firstName = profile?.full_name?.split(' ').pop() || 'Tôi'
+  const handle = '@' + (profile?.full_name?.replace(/\s+/g, '').toLowerCase() || 'user')
+  const allMyPosts = [...posts, ...hidden].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as (Review & { is_hidden?: boolean })[]
+  const displayPosts = activeTab === 'posts' ? allMyPosts : activeTab === 'saved' ? savedPosts : likedPosts
+
+  const handleGridClick = (r: Review) => {
+    if (activeTab === 'posts') {
+      setSel(sel?.id === r.id ? null : r as Review)
+    } else {
+      sessionStorage.setItem('reviews_tab', activeTab)
+      router.push(`/reviews/${r.id}`)
+    }
+  }
+
+  const emptyState = {
+    posts: { icon: <Grid3X3 size={36} className="mb-3 opacity-30" />, text: 'Chưa có bài nào', cta: <Link href="/reviews/new" className="mt-4 bg-[#fe2c55] text-white px-5 py-2 rounded-full text-sm font-semibold">Đăng bài đầu tiên</Link> },
+    saved: { icon: <Bookmark size={36} className="mb-3 opacity-30" />, text: 'Chưa lưu bài nào', cta: null },
+    liked: { icon: <Heart size={36} className="mb-3 opacity-30" />, text: 'Chưa thích bài nào', cta: null },
+  }
+
+  return (
+    <div className="h-dvh overflow-y-auto bg-black pb-16" style={{ scrollbarWidth: 'none' }}>
+      {/* Gradient header */}
+      <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }} className="pt-14 pb-4 px-4 flex flex-col items-center">
+        <div className="relative mb-3">
+          {profile?.avatar_url
+            ? <Image src={profile.avatar_url} alt={firstName} width={96} height={96} className="rounded-full object-cover ring-2 ring-purple-500/40" />
+            : <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold ring-2 ring-purple-500/40">{firstName[0]?.toUpperCase()}</div>}
+          <Link href="/reviews/new" className="absolute bottom-0 right-0 w-6 h-6 bg-[#fe2c55] rounded-full flex items-center justify-center border-2 border-black">
+            <Plus size={13} className="text-white" strokeWidth={3} />
+          </Link>
+        </div>
+        <h2 className="text-white font-bold text-[17px] mb-0.5">{profile?.full_name || 'Ẩn danh'}</h2>
+        <p className="text-gray-400 text-sm mb-4">{handle}</p>
+        <div className="flex gap-10 mb-4">
+          <div className="text-center">
+            <div className="text-white font-bold text-base">{profile?.following_count ?? 0}</div>
+            <div className="text-gray-400 text-xs">Đang follow</div>
+          </div>
+          <div className="text-center">
+            <div className="text-white font-bold text-base">{profile?.follower_count ?? 0}</div>
+            <div className="text-gray-400 text-xs">Follower</div>
+          </div>
+          <div className="text-center">
+            <div className="text-white font-bold text-base">{posts.length}</div>
+            <div className="text-gray-400 text-xs">Bài viết</div>
+          </div>
+        </div>
+        <Link href="/profile" className="w-full bg-white/10 hover:bg-white/15 border border-white/20 text-white text-sm font-semibold py-2 rounded-md text-center transition-colors">
+          Chỉnh sửa hồ sơ
+        </Link>
+      </div>
+
+      {/* 3-tab bar */}
+      <div className="flex border-b border-gray-800">
+        <button onClick={() => setActiveTab('posts')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'posts' ? 'border-b-2 border-white' : ''}`}>
+          <Grid3X3 size={18} className={activeTab === 'posts' ? 'text-white' : 'text-gray-500'} />
+          <span className={`text-[10px] ${activeTab === 'posts' ? 'text-white' : 'text-gray-500'}`}>Bài viết</span>
+        </button>
+        <button onClick={() => setActiveTab('saved')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'saved' ? 'border-b-2 border-white' : ''}`}>
+          <Bookmark size={18} className={activeTab === 'saved' ? 'text-white' : 'text-gray-500'} />
+          <span className={`text-[10px] ${activeTab === 'saved' ? 'text-white' : 'text-gray-500'}`}>Đã lưu</span>
+        </button>
+        <button onClick={() => setActiveTab('liked')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'liked' ? 'border-b-2 border-white' : ''}`}>
+          <Heart size={18} className={activeTab === 'liked' ? 'text-white' : 'text-gray-500'} />
+          <span className={`text-[10px] ${activeTab === 'liked' ? 'text-white' : 'text-gray-500'}`}>Đã thích</span>
+        </button>
+      </div>
+
+      {/* Grid */}
+      {loading ? (
+        <div className="flex justify-center pt-16"><Loader2 size={20} className="text-white animate-spin" /></div>
+      ) : displayPosts.length === 0 ? (
+        <div className="flex flex-col items-center py-16 text-gray-500">
+          {emptyState[activeTab].icon}
+          <p className="text-sm">{emptyState[activeTab].text}</p>
+          {emptyState[activeTab].cta}
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-px bg-gray-800">
+          {displayPosts.map(r => {
+            const thumb = r.photos?.[0]
+            const isHidden = activeTab === 'posts' && (r as Review & { is_hidden?: boolean }).is_hidden
+            return (
+              <button key={r.id} onClick={() => handleGridClick(r as Review)}
+                className={`relative aspect-[9/16] bg-gray-900 ${sel?.id === r.id ? 'ring-2 ring-inset ring-[#fe2c55]' : ''}`}>
+                {thumb ? <Image src={thumb} alt="" fill className="object-cover" sizes="33vw" />
+                  : <div className="absolute inset-0 flex items-center justify-center p-2"><p className="text-white text-xs text-center line-clamp-4">{r.body}</p></div>}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent px-1.5 pt-4 pb-1.5">
+                  <p className="text-white text-[9px] font-semibold leading-tight line-clamp-1">{r.place_name}</p>
+                  <div className="flex items-center gap-0.5 mt-0.5">
+                    {'★'.repeat(r.rating).split('').map((_, i) => (
+                      <span key={i} className="text-amber-400 text-[8px] leading-none">★</span>
+                    ))}
+                  </div>
+                </div>
+                {isHidden && <div className="absolute inset-0 bg-black/60 flex items-center justify-center"><EyeOff size={20} className="text-white" /></div>}
+              </button>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Action sheet for my posts */}
+      {sel && activeTab === 'posts' && (
+        <>
+          <div className="fixed inset-0 z-30" onClick={() => setSel(null)} />
+          <div className="fixed bottom-[60px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[390px] z-40 bg-[#1a1a1a] rounded-t-3xl px-5 pt-3 pb-8">
+            <div className="flex justify-center mb-3"><div className="w-8 h-1 bg-gray-600 rounded-full" /></div>
+            <p className="text-white text-sm font-semibold text-center mb-3 line-clamp-1">{sel.place_name}</p>
+            <div className="space-y-2">
+              <Link href={`/reviews/${sel.id}`} onClick={() => { sessionStorage.setItem('reviews_tab', 'profile'); setSel(null) }}
+                className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
+                <Eye size={18} className="text-blue-400" /> Xem bài viết
+              </Link>
               <button onClick={() => doHide(sel.id, !(sel as Review & { is_hidden?: boolean }).is_hidden)}
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
                 {(sel as Review & { is_hidden?: boolean }).is_hidden ? <><Eye size={18} className="text-green-400" /> Hiện bài này</> : <><EyeOff size={18} className="text-orange-400" /> Ẩn bài này</>}
@@ -680,18 +869,12 @@ export default function ReviewsPage() {
           )}
 
           {/* Profile + My Posts */}
-          {tab === 'profile' && (
-            <div className="h-dvh flex flex-col bg-black overflow-hidden">
-              <div className="px-4 pt-14 pb-4 flex items-center gap-4 border-b border-gray-800 flex-shrink-0">
-                {me ? (
-                  <Link href="/profile" className="text-white text-sm font-semibold underline underline-offset-2">Hồ sơ đầy đủ →</Link>
-                ) : (
-                  <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">Đăng nhập để xem bài của bạn</Link>
-                )}
-              </div>
-              {me ? <MyPosts userId={me} /> : (
-                <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">Hãy đăng nhập trước</div>
-              )}
+        {tab === 'profile' && me && <ProfileTab userId={me} />}
+        {tab === 'profile' && !me && (
+          <div className="h-dvh flex items-center justify-center">
+            <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">Đăng nhập để xem hồ sơ</Link>
+          </div>
+        )}
             </div>
           )}
 
