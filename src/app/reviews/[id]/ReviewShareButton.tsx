@@ -7,12 +7,15 @@ export default function ReviewShareButton({
   reviewId,
   placeName,
   body,
+  variant,
   className,
   style,
 }: {
   reviewId: string
   placeName: string
   body: string
+  /** 'bar' renders the RAction-style vertical button used in the action bar */
+  variant?: 'bar'
   className?: string
   style?: React.CSSProperties
 }) {
@@ -29,6 +32,23 @@ export default function ReviewShareButton({
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
+  }
+
+  if (variant === 'bar') {
+    return (
+      <button
+        onClick={handleShare}
+        className="flex flex-col items-center gap-1 active:scale-90 transition-transform"
+        aria-label="Chia sẻ"
+      >
+        {copied
+          ? <Check size={24} className="text-green-400" />
+          : <Share2 size={24} className="text-white" />}
+        <span className="text-white text-xs font-semibold drop-shadow-md">
+          {copied ? 'Đã copy' : 'Chia sẻ'}
+        </span>
+      </button>
+    )
   }
 
   return (
