@@ -4,8 +4,9 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, MapPin, MessageCircle } from 'lucide-react'
-import ReviewShareButton from './ReviewShareButton'
 import ReviewLikeButton from './ReviewLikeButton'
+import ReviewSaveButton from './ReviewSaveButton'
+import ReviewShareButton from './ReviewShareButton'
 
 interface Props {
   params: { id: string }
@@ -32,6 +33,19 @@ async function getLikeStatus(reviewId: string): Promise<boolean> {
   if (!user) return false
   const { data } = await supabase
     .from('review_likes')
+    .select('id')
+    .eq('review_id', reviewId)
+    .eq('user_id', user.id)
+    .maybeSingle()
+  return !!data
+}
+
+async function getSaveStatus(reviewId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return false
+  const { data } = await supabase
+    .from('review_saves')
     .select('id')
     .eq('review_id', reviewId)
     .eq('user_id', user.id)
@@ -80,9 +94,10 @@ const RATING_LABEL: Record<number, string> = {
 }
 
 export default async function ReviewDetailPage({ params }: Props) {
-  const [review, initialLiked] = await Promise.all([
+  const [review, initialLiked, initialSaved] = await Promise.all([
     getReview(params.id),
     getLikeStatus(params.id),
+    getSaveStatus(params.id),
   ])
   if (!review) notFound()
 
@@ -112,7 +127,7 @@ export default async function ReviewDetailPage({ params }: Props) {
           />
         )}
 
-        {/* Gradient overlay — dark at bottom, fades up */}
+        {/* Gradient overlay */}
         <div
           className="absolute inset-0"
           style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.1) 70%, transparent 100%)' }}
@@ -127,19 +142,8 @@ export default async function ReviewDetailPage({ params }: Props) {
           <ArrowLeft size={20} className="text-white" />
         </Link>
 
-        {/* Share — top right */}
-        <div className="absolute top-12 right-4 z-20">
-          <ReviewShareButton
-            reviewId={params.id}
-            placeName={review.place_name}
-            body={review.body}
-            className="w-10 h-10 rounded-full flex items-center justify-center text-white active:scale-90 transition-transform"
-            style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' } as React.CSSProperties}
-          />
-        </div>
-
         {/* Bottom overlay: rating chips + name + address + author */}
-        <div className="absolute bottom-0 left-0 right-14 px-5 pb-7 z-10">
+        <div className="absolute bottom-0 left-0 right-4 px-5 pb-7 z-10">
           {/* Pills row */}
           <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
             <span
@@ -167,7 +171,10 @@ export default async function ReviewDetailPage({ params }: Props) {
           </div>
 
           {/* Place name */}
-          <h1 className="text-white font-black text-2xl leading-tight mb-1.5" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
+          <h1
+            className="text-white font-black text-2xl leading-tight mb-1.5"
+            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}
+          >
             {review.place_name}
           </h1>
 
@@ -203,36 +210,42 @@ export default async function ReviewDetailPage({ params }: Props) {
         </div>
       </div>
 
-      {/* ─── Floating action bar (fixed right) ─── */}
-      <div className="fixed right-3 bottom-10 z-40 flex flex-col gap-5 items-center">
+      {/* ─── Action bar — identical layout to main feed right-side buttons ─── */}
+      <div className="fixed right-3 bottom-8 z-40 flex flex-col items-center gap-5">
+        {/* ❤️ Like */}
         <ReviewLikeButton
           reviewId={params.id}
           initialLiked={initialLiked}
           initialCount={review.like_count}
         />
-        <div className="flex flex-col items-center gap-1.5">
-          <div
-            className="w-12 h-12 rounded-full flex items-center justify-center"
-            style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
-          >
-            <MessageCircle size={22} className="text-white" />
-          </div>
-          <span className="text-white text-xs font-bold" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
+        {/* 💬 Comment (display-only count on detail page) */}
+        <div className="flex flex-col items-center gap-1">
+          <MessageCircle size={26} className="text-white" />
+          <span className="text-white text-xs font-semibold drop-shadow-md">
             {review.comment_count ?? 0}
           </span>
         </div>
+        {/* 🔖 Save */}
+        <ReviewSaveButton reviewId={params.id} initialSaved={initialSaved} />
+        {/* ↗ Share */}
+        <ReviewShareButton
+          reviewId={params.id}
+          placeName={review.place_name}
+          body={review.body}
+          variant="bar"
+        />
       </div>
 
       {/* ─── Content card — slides over hero ─── */}
       <div className="relative z-10 -mt-6 rounded-t-[28px] bg-[#111111] min-h-[50vh] px-5 pt-6 pb-28">
 
-        {/* Review body */}
+        {/* Review body — pr-14 leaves room for the fixed action bar */}
         {review.body ? (
-          <p className="text-gray-200 text-base leading-[1.8] whitespace-pre-wrap pr-12">
+          <p className="text-gray-200 text-base leading-[1.8] whitespace-pre-wrap pr-14">
             {review.body}
           </p>
         ) : (
-          <p className="text-gray-600 text-sm italic pr-12">Không có nội dung mô tả.</p>
+          <p className="text-gray-600 text-sm italic pr-14">Không có nội dung mô tả.</p>
         )}
 
         {/* Extra photos grid */}
