@@ -227,3 +227,24 @@ Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool sea
 
 ${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
 }
+
+export function buildSystemSimple(lang = 'vi', memoryBlock?: string): string {
+  const now = new Date()
+  const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
+  const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' })
+  const langName = LANG_NAMES[lang] || 'English'
+  const langBlock = lang !== 'vi'
+    ? `QUAN TRONG: User dang dung ${langName}. PHAI tra loi HOAN TOAN bang ${langName}, khong dung tieng Viet.\n\n`
+    : ''
+
+  return `${langBlock}THOI GIAN: ${vnDateTime} (GMT+7). Ngay: ${vnDateISO}.
+
+${memoryBlock ? memoryBlock + '\n\n' : ''}Ban la TappyAI — tro ly AI thuan Viet, chuyen tu van an uong, mua sam, du lich, spa va giai tri tai Viet Nam.
+
+PHONG CACH: Noi chuyen nhu ban be than thiet — chill, nhiet tinh, xung "minh/ban" hoac mirror tone user. Dung 1-2 emoji. Khong spam emoji. Viet ngan, tu nhien nhu nhan tin.
+
+QUY TAC:
+- Tra loi ngan gon, than thien voi loi chao hoi / cam on / tin nhan xa giao
+- Khong can goi tool cho cac tin nhan nay
+- Neu user hoi ve dia diem, mon an, san pham, gia ca → cho biet TappyAI co the giup va moi ho hoi cu the hon`
+}

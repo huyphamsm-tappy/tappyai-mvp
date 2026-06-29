@@ -6,7 +6,7 @@ import { getMemory, buildMemoryBlock, extractMemoryFromConversation, updateMemor
 import { getModel, type ModelTier } from '@/lib/ai/provider'
 import { normalizeVN, classifyIntent, detectLang, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, LUXURY_KEYWORDS, applyLuxuryStreamFilter } from '@/lib/ai/budget'
-import { buildSystem, buildPrefBlock, type UserPrefs } from '@/lib/ai/promptBuilder'
+import { buildSystem, buildSystemSimple, buildPrefBlock, type UserPrefs } from '@/lib/ai/promptBuilder'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
@@ -1138,7 +1138,9 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: getModel(tier),
-    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage),
+    system: intent === 'chitchat'
+      ? buildSystemSimple(lang, memoryBlock)
+      : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage),
     experimental_providerMetadata: {
       anthropic: { cacheControl: { type: 'ephemeral' } },
     },
