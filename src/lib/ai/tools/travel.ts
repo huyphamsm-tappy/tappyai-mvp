@@ -129,6 +129,8 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
 
   const bookingUrl = 'https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(location)
     + (checkIn ? '&checkin=' + checkIn : '') + (checkOut ? '&checkout=' + checkOut : '')
+  const agodaUrl = 'https://www.agoda.com/vi-vn/search?q=' + encodeURIComponent(location)
+    + (checkIn ? '&checkIn=' + checkIn : '') + (checkOut ? '&checkOut=' + checkOut : '')
   const budgetTag = maxBudgetVnd && maxBudgetVnd < 1_500_000
     ? ' gia re binh dan duoi ' + Math.round(maxBudgetVnd / 1000) + 'k -"5 sao" -pullman -marriott -hilton -sheraton -sofitel -intercontinental -novotel'
     : ''
@@ -218,6 +220,7 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         search_results: searchResults,
         hotel_list: hotelList,
         booking_link: bookingUrl,
+        agoda_link: agodaUrl,
         _debug_budget: maxBudgetVnd ? 'detected:' + maxBudgetVnd : 'null',
         note: 'Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.'
       }
@@ -226,13 +229,14 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         error: 'Khong tim duoc thong tin gia phong luc nay',
         hotel_list: hotelList,
         booking_link: bookingUrl,
+        agoda_link: agodaUrl,
         _debug_budget: maxBudgetVnd ? 'detected:' + maxBudgetVnd : 'null',
         note: 'Xem va dat phong tai: ' + bookingUrl,
         search_url: bookingUrl,
       }
     }
   } catch {
-    result = { error: 'Khong lay duoc gia phong khach san luc nay', booking_link: bookingUrl, note: 'Xem va dat phong tai: ' + bookingUrl, search_url: bookingUrl }
+    result = { error: 'Khong lay duoc gia phong khach san luc nay', booking_link: bookingUrl, agoda_link: agodaUrl, note: 'Xem va dat phong tai: ' + bookingUrl, search_url: bookingUrl }
   }
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut
   return result
