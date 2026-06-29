@@ -1,14 +1,11 @@
-import { createAnthropic } from '@ai-sdk/anthropic'
 import { streamText, tool } from 'ai'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { getMemory, buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
-
-const anthropic = createAnthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-  headers: { 'anthropic-beta': 'prompt-caching-2024-07-31' },
-})
+import { getModel, type ModelTier } from '@/lib/ai/provider'
+import { normalizeVN, classifyIntent, detectLang, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
+import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, LUXURY_KEYWORDS, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
@@ -28,255 +25,36 @@ function setCache(key: string, data: unknown, ttlMs: number) {
   cache.set(key, { data, expires: Date.now() + ttlMs })
 }
 
-// ===== Phan loai nhanh: chitchat (khong can tool) vs can tool =====
-function normalizeVN(str: string): string {
-  return str
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D')
-}
-function classifyIntent(text: string): 'chitchat' | 'tool' {
-  const t = normalizeVN(text.toLowerCase().trim())
-  if (t.length === 0 || t.length > 40) return 'tool'
-  const chitchat = /^(chao|hi|hello|alo|xin chao|cam on|thank|thanks|ok|oke|okie|uh|u|um|tam biet|bye|haha|hehe|hihi|ban la ai|ban ten gi|tappyai la gi|test)/i
-  return chitchat.test(t) ? 'chitchat' : 'tool'
-}
 
-const COMPLEX_KW = /\b(restaurant|spa|hotel|nha hang|khach san|quan an|cafe|dat cho|goi y|tim kiem|san pham|mua|gia|review|danh gia|ban do|chi duong|lich trinh|tour|may bay|dat phong|booking|order|delivery|thoi tiet|tin tuc|vang|xe|taxi|shop|cua hang|tiem|quan|menu|dich vu|khu vuc|thanh pho|tinh|distric|street|road|duong|pho)\b/i
 
-function isSimpleQuery(text: string, isFirstMsg: boolean): boolean {
-  return text.trim().length < 80 && !COMPLEX_KW.test(normalizeVN(text)) && isFirstMsg
-}
 
-function detectLang(text: string): string {
-  // Encoding-safe: any non-ASCII char that isn't a recognized Asian script
-  // sets hasNonAscii=true and continues scanning (never short-circuits to 'vi'
-  // mid-loop, so Chinese text with fullwidth punctuation still resolves to 'zh').
-  // Final result: hasCJK→'zh', hasNonAscii→'vi', pure ASCII→'en'.
-  let hasCJK = false
-  let hasNonAscii = false
-  for (const ch of text) {
-    const cp = ch.codePointAt(0) ?? 0
-    if (cp <= 0x7F) continue
-    hasNonAscii = true
-    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'       // kana (exclusive to Japanese)
-    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'       // hangul
-    // CJK Unified + fullwidth block (fullwidth punct common in Chinese text)
-    if ((cp >= 0x4E00 && cp <= 0x9FFF) || (cp >= 0xFF00 && cp <= 0xFFEF)) { hasCJK = true; continue }
-    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'       // Arabic
-    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'       // Thai
-    // any other non-ASCII (Latin diacritics, etc.) — keep scanning
-  }
-  if (hasCJK) return 'zh'
-  return hasNonAscii ? 'vi' : 'en'
+function buildPlanningBlock(planType: 'trip' | 'evening'): string {
+  const toolsNeeded = planType === 'trip'
+    ? `- get_hotel_prices → tìm khách sạn phù hợp budget\n- search_places (type=restaurant) → tìm nhà hàng ngon ở điểm đến\n- search_places → tìm điểm tham quan, hoạt động thú vị\n- get_weather → thời tiết nếu biết ngày đi`
+    : `- search_places (type=spa) → nếu user muốn spa\n- search_places (type=restaurant) → tìm nhà hàng cho tối\n- search_places (type=cinema hoặc bar) → tìm giải trí tùy nhu cầu`
+
+  return `\n\n===== CHẾ ĐỘ LÊN KẾ HOẠCH ${planType === 'trip' ? 'CHUYẾN ĐI' : 'TỐI NAY'} - BẮT BUỘC =====
+User đang yêu cầu lên KẾ HOẠCH HOÀN CHỈNH. Đây là nhiệm vụ QUAN TRỌNG NHẤT.
+
+BƯỚC 1 - GỌI TOOL (bắt buộc, gọi song song nếu có thể):
+${toolsNeeded}
+
+BƯỚC 2 - Sau khi có kết quả tool, output KẾ HOẠCH theo ĐÚNG format sau (không thêm text thừa trước block):
+
+[TAPPY_PLAN]
+{"type":"${planType}","title":"[tiêu đề ngắn, ví dụ: Tối nay Quận 1 - Spa & Ăn tối]","people":[số người hoặc 1],"budget_total":"[tổng budget ước tính]","days":[{"label":"${planType === 'trip' ? 'Ngày 1' : 'Tối nay'}","items":[{"time":"[HH:MM]","emoji":"[emoji phù hợp: 🏨🍜☕💆🎬🍺🚗]","category":"[hotel|food|spa|entertainment|transport]","name":"[tên địa điểm THỰC TẾ từ tool]","description":"[mô tả 1 câu ngắn]","price":"[giá ước tính]","address":"[địa chỉ từ tool, để trống nếu không có]","maps_link":"[google maps link từ tool]","booking_link":"[link đặt chỗ nếu có]","place_id":"[place_id từ tool nếu có, để trống nếu không]"}]}],"cost_breakdown":{"[Hạng mục]":"[giá]"},"share_text":"[câu chia sẻ ngắn hấp dẫn, dùng emoji, kèm #TappyAI ở cuối]"}
+[/TAPPY_PLAN]
+
+QUY TẮC BẮT BUỘC:
+1. Tên địa điểm PHẢI lấy từ kết quả tool (địa điểm có thực)
+2. maps_link phải là URL Google Maps thực từ tool (trường maps_link hoặc googleMapsUri)
+3. budget_total phải chia rõ trong cost_breakdown
+4. share_text phải hấp dẫn, ngắn, kèm emoji và #TappyAI
+5. Sau [/TAPPY_PLAN], viết 1 câu ngắn tóm tắt và CTA_BUTTONS như thường
+6. KHÔNG đặt word limit cho reply này — kế hoạch cần đầy đủ
+==========================================================`
 }
 
-// ===== BUDGET: extract tu message va filter ket qua tool =====
-type Budget = { min: number; max: number; type: 'range' | 'under' | 'around' }
-
-function parseMoneyAmount(numStr: string, unit: string): number | null {
-  const n = parseFloat(numStr.replace(/\./g, '').replace(/,/g, '.'))
-  if (isNaN(n) || n <= 0) return null
-  const u = (unit || '').toLowerCase().trim()
-  if (u === 'k') return n * 1000
-  if (u === 'tr' || u.startsWith('tri') || u.startsWith('trieu')) return n * 1_000_000
-  if (u === 'ngan' || u.startsWith('nghin')) return n * 1000
-  if (!u && n > 0 && n <= 9999) return n * 1000 // "300" → 300.000đ heuristic
-  return n
-}
-
-function extractBudget(userMessage: string): Budget | null {
-  const t = normalizeVN(userMessage.toLowerCase())
-  const N = '([\\d][\\d.,]*)'
-  const U = '\\s*(k|tr|trieu|ngan|nghin)?'
-
-  // Range: "300k-500k" / "tu 300k den 500k" / "300.000-500.000"
-  const rangeRe = new RegExp(`(?:tu\\s+)?${N}${U}\\s*(?:den|toi|-)\\s*${N}${U}`)
-  let m = t.match(rangeRe)
-  if (m) {
-    const min = parseMoneyAmount(m[1], m[2] || '')
-    const max = parseMoneyAmount(m[3], m[4] || '')
-    if (min !== null && max !== null && max >= min && max > 0) return { min, max, type: 'range' as const }
-  }
-
-  // Under: "duoi / khong qua / toi da X"
-  const underRe = new RegExp(`(?:duoi|khong qua|toi da)\\s+${N}${U}`)
-  m = t.match(underRe)
-  if (m) {
-    const max = parseMoneyAmount(m[1], m[2] || '')
-    if (max !== null && max > 0) return { min: 0, max, type: 'under' as const }
-  }
-
-  // Around: "tam / khoang X" → ±20%
-  const aroundRe = new RegExp(`(?:tam|khoang|xap xi)\\s+${N}${U}`)
-  m = t.match(aroundRe)
-  if (m) {
-    const base = parseMoneyAmount(m[1], m[2] || '')
-    if (base !== null && base > 0) return { min: Math.round(base * 0.8), max: Math.round(base * 1.2), type: 'around' as const }
-  }
-
-  return null
-}
-
-const PROMO_KEYWORDS = ['tinh tien', 'khuyen mai', 'uu dai', 'giam gia', 'tang kem', 'mua tang', 'flash sale', 'sale off', 'giam con', 'chi con', 'chi tu']
-// Khach san/resort cao cap - luon uoc tinh > 1.5 trieu/dem, bat ke co gia trong snippet hay khong
-const LUXURY_KEYWORDS = ['5 sao', '5-sao', 'five star', 'pullman', 'intercontinental', 'marriott', 'sheraton', 'hilton', 'hyatt', 'novotel', 'sofitel', 'melia', 'movenpick', 'radisson', 'wyndham', 'imperial hotel', 'resort luxury', 'luxury resort']
-
-function extractPricesVND(text: string): number[] {
-  const t = normalizeVN(text.toLowerCase())
-  const prices: number[] = []
-  for (const m of t.matchAll(/(\d{1,3}(?:[.,]\d{3})+)\s*(?:d\b|dong|vnd)?/g)) {
-    const n = parseFloat(m[1].replace(/\./g, '').replace(/,/g, ''))
-    if (!isNaN(n) && n >= 5000) prices.push(n)
-  }
-  for (const m of t.matchAll(/(\d+(?:\.\d+)?)\s*k\b/g)) {
-    const n = parseFloat(m[1]) * 1000
-    if (!isNaN(n) && n >= 5000) prices.push(n)
-  }
-  for (const m of t.matchAll(/(\d+(?:[.,]\d+)?)\s*(?:trieu|tri\b)/g)) {
-    const n = parseFloat(m[1].replace(',', '.')) * 1_000_000
-    if (!isNaN(n) && n > 0) prices.push(n)
-  }
-  return prices
-}
-
-function extractRepresentativePriceVND(text: string): number | null {
-  const prices = extractPricesVND(text)
-  if (prices.length === 0) return null
-  // Neu co promo language → dung MAX price (gia goc cao hon), khong cho promo danh lua filter
-  const t = normalizeVN(text.toLowerCase())
-  const hasPromo = PROMO_KEYWORDS.some(k => t.includes(k))
-  return hasPromo ? Math.max(...prices) : Math.min(...prices)
-}
-
-const LUXURY_PRICE_FLOOR = 1_500_000 // uoc tinh gia toi thieu khach san 5 sao
-
-function filterResultsByBudget<T extends { title?: string; snippet?: string; price_vnd?: number }>(
-  items: T[], budget: Budget
-): T[] {
-  const tol = 1.1
-  const enforceMin = budget.type === 'range' && budget.min > 0
-  return items.filter(item => {
-    if (typeof item.price_vnd === 'number') {
-      const ok = item.price_vnd <= budget.max * tol
-      return enforceMin ? ok && item.price_vnd >= budget.min * 0.9 : ok
-    }
-    // QUAN TRONG: check ca 'link' vi URL co the chua ten thuong hieu (vd agoda.com/pullman-vung-tau/...)
-    const itemAny = item as Record<string, unknown>
-    const linkText = typeof itemAny.link === 'string' ? itemAny.link : ''
-    const text = normalizeVN(((item.title || '') + ' ' + (item.snippet || '') + ' ' + linkText).toLowerCase())
-    // Luxury check TRUOC price check: loai ngay bat ke co price trong snippet hay khong
-    const isLuxury = LUXURY_KEYWORDS.some(k => text.includes(k))
-    if (isLuxury && budget.max < LUXURY_PRICE_FLOOR) return false
-    const price = extractRepresentativePriceVND(text)
-    if (price !== null) {
-      const underMax = price <= budget.max * tol
-      const aboveMin = enforceMin ? price >= budget.min * 0.9 : true
-      return underMax && aboveMin
-    }
-    return true
-  })
-}
-
-function fmtBudget(budget: Budget): string {
-  const f = (n: number) => n >= 1_000_000
-    ? (n / 1_000_000 % 1 === 0 ? n / 1_000_000 : (n / 1_000_000).toFixed(1)) + ' triệu'
-    : n / 1000 + 'k'
-  return budget.min > 0 ? `${f(budget.min)}-${f(budget.max)}` : `dưới ${f(budget.max)}`
-}
-
-function fmtSuggest(n: number): string {
-  return n >= 1_000_000
-    ? (n / 1_000_000 % 1 === 0 ? n / 1_000_000 : (n / 1_000_000).toFixed(1)) + ' triệu'
-    : n / 1000 + 'k'
-}
-
-function applyBudgetFilter(result: unknown, budget: Budget, category: string): unknown {
-  if (!result || typeof result !== 'object') return result
-  const r = { ...(result as Record<string, unknown>) }
-
-  // Filter search_results (hotel, general)
-  if (Array.isArray(r.search_results)) {
-    const before = r.search_results as Array<{ title?: string; snippet?: string }>
-    const after = filterResultsByBudget(before, budget)
-    if (after.length === 0 && before.length > 0) {
-      const suggest = Math.round(budget.max * 1.2 / 1000) * 1000
-      return {
-        budget_filter_empty: true,
-        budget_range: fmtBudget(budget),
-        message: `Trong tầm ${fmtBudget(budget)} ở khu vực này mình chưa tìm được ${category} phù hợp. Bạn có muốn nới budget lên ${fmtSuggest(suggest)} không, hay mình tìm khu vực khác?`,
-      }
-    }
-    r.search_results = after
-    // hotel_list tu OSM khong co gia → xoa khi co budget de tranh Claude recommend sai
-    if (Array.isArray(r.hotel_list)) r.hotel_list = []
-  }
-
-  // Filter price_search_results (places - food/spa/entertainment)
-  if (Array.isArray(r.price_search_results)) {
-    r.price_search_results = filterResultsByBudget(
-      r.price_search_results as Array<{ title?: string; snippet?: string }>, budget
-    )
-  }
-
-  // Filter flights by price_vnd
-  if (Array.isArray(r.flights)) {
-    type FlightEntry = { price_vnd: number }
-    const before = r.flights as FlightEntry[]
-    const after = before.filter(f => f.price_vnd <= budget.max * 1.1)
-    if (after.length === 0 && before.length > 0) {
-      const suggest = Math.round(budget.max * 1.2 / 1000) * 1000
-      return {
-        budget_filter_empty: true,
-        budget_range: fmtBudget(budget),
-        message: `Trong tầm ${fmtBudget(budget)} mình chưa tìm được ${category} phù hợp. Bạn có muốn nới budget lên ${fmtSuggest(suggest)} không?`,
-      }
-    }
-    r.flights = after
-  }
-
-  // QUAN TRONG: Neu budget thap, inject lenh cam truc tiep vao tool result
-  // Haiku doc tool results rat ky - injection nay hieu qua hon system prompt
-  if (budget.max < LUXURY_PRICE_FLOOR) {
-    r._LENH_BAT_BUOC = `⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget ${fmtBudget(budget)} VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.`
-  }
-
-  return r
-}
-
-// ===== Chon san tool phu hop nhat de force goi (tranh model chon nham khi toolChoice=required) =====
-function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | null {
-  const t = normalizeVN(text.toLowerCase().trim())
-  if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
-  if (/gia phong|gia khach san|dat phong|booking\.com|\bagoda\b|(khach san|hotel|resort).*gia|gia.*(khach san|hotel|resort)/.test(t)) return 'get_hotel_prices'
-  if (/xe khach|ve xe (khach|do)|limousine|tau hoa|tau lua|duong sat|\btaxi\b|\bgrab\b|xanh sm|\bxe om\b|di chuyen (tu|den|toi|trong|quanh)|gia ve xe|tu .* den .* (bao nhieu|het|gia|bang gi)/.test(t)) return 'get_transport_options'
-  if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b/.test(t)) return 'search_places'
-  if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
-  if (/\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
-  if (/gia vang|vang sjc|vang 9999|vang mieng|vang nhan|gia vang the gioi|xau\s*\/?\s*usd/.test(t)) return 'get_gold_price'
-  if (/thoi tiet|du bao|nhiet do|troi mua|troi nang|troi co lanh|may co|nang khong|mua khong/.test(t)) return 'get_weather'
-  if (/ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
-  return null
-}
-
-// ===== STEP 1.2: LOCATION INTENT DETECTION =====
-function detectLocationIntent(text: string): 'offline' | 'online' | 'unknown' {
-  const t = normalizeVN(text.toLowerCase().trim())
-  // Online signals
-  const onlineRe = /\bonline\b|ship\b|\border\b|giao\s*hang|free\s*ship|voucher|flash\s*sale|\bshopee\b|\blazada\b|\btiki\b|\bsendo\b|mua\s*tren|dat\s*hang\s*online|giao\s*tan\s*noi|\bcod\b|mua\s*online/
-  // Offline signals: district names, streets, nearby, physical store
-  const offlineRe = /\bq\.\s*\d+\b|\bq\.\s*[a-z]+|\bquan\s+\d+\b|\bquan\s+(binh|phu|go|tan|nha|hoc|can|cu|thu|ba|cau|dong|hai|hoan|tay|thanh)\b|\bphuong\s+\w+|\bhuyen\s+\w+|\bduong\s+[a-z]|\bpho\s+[a-z]|\bgan\s+(day|nha|minh)\b|\bkhu\s+vuc\b|\bo\s+dau\b|\bcho\s+nao\b|\bcua\s*hang\b|\btiem\b|\bchi\s*nhanh\b|\bsieu\s*thi\b|\btrung\s*tam\s*thuong\s*mai\b|\bmall\b|\bplaza\b|\bden\s+(mua|xem)\b|\bghe\s+(qua|toi|vao)\b/
-  if (offlineRe.test(t)) return 'offline'
-  if (onlineRe.test(t)) return 'online'
-  return 'unknown'
-}
-
-function isShoppingQuery(text: string): boolean {
-  const t = normalizeVN(text.toLowerCase())
-  return /\b(ao|giay|dep|tui\b|dien thoai|laptop|may tinh|tablet|my pham|son moi|nuoc hoa|dong ho|trang suc|kinh mat|balo|sandal|sneaker|boot|hoodie|jacket|legging|vay|dam|quan\s*jean|quan\s*short|do\s*the\s*thao|thoi\s*trang|phu\s*kien|tui\s*xach|vi\s*da|hang\s*hieu)\b/.test(t)
-}
-// ===== END STEP 1.2 =====
 
 async function getNews(query: string) {
   const cacheKey = 'news:' + query.toLowerCase().trim()
@@ -1301,7 +1079,7 @@ Khi gợi ý ăn uống/spa/địa điểm: ƯU TIÊN phong cách & ngân sách 
 =================================================`
 }
 
-function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi', prefBlock = '', userLocation?: { lat: number; lng: number; address?: string } | null): string {
+function buildSystem(budget?: Budget | null, locationIntent?: 'offline' | 'online' | 'unknown', isFirstReply?: boolean, memoryBlock?: string, lang = 'vi', prefBlock = '', userLocation?: { lat: number; lng: number; address?: string } | null, planningIntent?: 'trip' | 'evening' | null, hasImage?: boolean): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) // YYYY-MM-DD
@@ -1382,9 +1160,22 @@ Neu user hoi bat ky chu de nao NGOAI 5 linh vuc tren (vi du: toan hoc, lap trinh
 TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan hay giai thich ly do.
 =============================================================`
 
+  const planningBlock = planningIntent ? buildPlanningBlock(planningIntent) : ''
+  const cameraBlock = hasImage ? `
+
+===== CAMERA AI MODE =====
+User vua gui mot hinh anh. Hay phan tich anh va tra loi theo cau hoi cua ho. Cac truong hop pho bien:
+- Chup MENU nha hang: Goi y mon ngon nhat, uoc tinh calo neu co the, so sanh voi gia trung binh khu vuc.
+- Chup HOA DON / RECEIPT: Tom tat chi tieu, tinh tong, goi y tiet kiem (dat o dau re hon neu biet).
+- Chup SAN PHAM / HANG HOA: Nhan dien san pham, goi y gia tot nhat tren Shopee/Tiki/Lazada (dung tool search_products neu can).
+- Chup QUE RAO / POSTER deal: Xac nhan thong tin deal, verify xem co hoi thuc su tot khong.
+- Chup KHAC: Mo ta noi dung anh va tra loi theo context cau hoi.
+Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool search_products.
+=========================` : ''
+
   return `${langBlock}THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
+${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
 }
 
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
@@ -1453,9 +1244,16 @@ export async function POST(req: Request) {
     : Array.isArray(rawContent)
       ? rawContent.map((c: { text?: string }) => c.text || '').join(' ')
       : ''
+
+  // Detect if last message contains an image
+  const hasImage = Array.isArray(rawContent) && rawContent.some(
+    (c: { type?: string }) => c.type === 'image' || c.type === 'image_url'
+  )
+
   const intent = classifyIntent(lastText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
+  const planningIntent = detectPlanningIntent(lastText)
   const lang = detectLang(lastText)
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
@@ -1482,6 +1280,15 @@ export async function POST(req: Request) {
       existingMemory = mem
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory)
       if (prefResult.data) prefBlock = buildPrefBlock(prefResult.data as UserPrefs)
+
+      // Inject Google Calendar events if connected
+      try {
+        const { getUpcomingEvents, formatEventsForPrompt } = await import('@/lib/integrations/googleCalendar')
+        const calEvents = await getUpcomingEvents(user.id)
+        if (calEvents.length > 0) {
+          memoryBlock = (memoryBlock || '') + formatEventsForPrompt(calEvents)
+        }
+      } catch { /* calendar optional */ }
 
       // Kiểm tra subscription từ DB
       const { data: subData } = await supabase
@@ -1540,23 +1347,21 @@ export async function POST(req: Request) {
     prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
   }
 
-  const SIMPLE_MODEL = 'claude-haiku-4-5'
-  const DEFAULT_MODEL = 'claude-haiku-4-5-20251001'
-  const chosenModel = isSimpleQuery(lastText, isFirstReply) ? SIMPLE_MODEL : DEFAULT_MODEL
-  console.log(JSON.stringify({ type: 'tappyai_model', model: chosenModel }))
+  const tier: ModelTier = (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'simple' : 'standard'
+  console.log(JSON.stringify({ type: 'tappyai_model', model: tier, planningIntent }))
 
   // Truncate history to last 10 messages to control token costs
   const trimmedMessages = messages.length > 10 ? messages.slice(-10) : messages
 
   const result = streamText({
-    model: anthropic(chosenModel),
-    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation),
+    model: getModel(tier),
+    system: buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage),
     experimental_providerMetadata: {
       anthropic: { cacheControl: { type: 'ephemeral' } },
     },
     messages: trimmedMessages,
-    maxTokens: intent === 'chitchat' ? 300 : 2048,
-    maxSteps: intent === 'chitchat' ? 1 : 5,
+    maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 3000 : hasImage ? 1024 : 2048,
+    maxSteps: intent === 'chitchat' ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
     experimental_prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) {
@@ -1653,6 +1458,37 @@ export async function POST(req: Request) {
         }),
         execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined)
       }),
+      ...(authedUserId ? {
+        save_price_watch: tool({
+          description: 'Lưu theo dõi giá sản phẩm để thông báo khi giá đạt mức mong muốn. Dùng khi user nói "theo dõi giá", "báo mình khi giá xuống", "alert giá", "Tappy theo dõi giá X khi dưới Y"',
+          parameters: z.object({
+            product_name: z.string().describe('Tên sản phẩm cần theo dõi, ví dụ: AirPods Pro, Samsung Galaxy S25'),
+            target_price: z.number().describe('Giá mục tiêu bằng VND (số nguyên), ví dụ: 2000000'),
+            search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
+          }),
+          execute: async ({ product_name, target_price, search_query }) => {
+            if (!authedUserId) return { error: 'Cần đăng nhập để theo dõi giá' }
+            try {
+              const supabaseW = createClient()
+              const { count } = await supabaseW
+                .from('price_watches')
+                .select('id', { count: 'exact', head: true })
+                .eq('user_id', authedUserId)
+                .eq('status', 'active')
+              if ((count ?? 0) >= 10) return { error: 'Bạn đã theo dõi tối đa 10 sản phẩm. Hủy bớt để thêm mới.' }
+              const { data, error } = await supabaseW
+                .from('price_watches')
+                .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
+                .select('id')
+                .single()
+              if (error) return { error: 'Lỗi lưu theo dõi: ' + error.message }
+              return { ok: true, id: data.id, product_name, target_price, message: `Đã lưu! Tappy sẽ kiểm tra giá ${product_name} mỗi 6 tiếng và báo bạn khi xuống dưới ${(target_price / 1000000).toFixed(1)} triệu.` }
+            } catch (e) {
+              return { error: String(e) }
+            }
+          }
+        }),
+      } : {}),
     },
     onFinish: async ({ usage, finishReason, text }) => {
       console.log(JSON.stringify({
@@ -1679,6 +1515,9 @@ export async function POST(req: Request) {
           if (Object.keys(extracted).length > 0) {
             await updateMemory(authedUserId, {
               location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
+              companions: extracted.companions ?? existingMemory?.companions ?? null,
+              timing: extracted.timing ?? existingMemory?.timing ?? null,
+              personality: extracted.personality ?? existingMemory?.personality ?? null,
               preferences: { ...(existingMemory?.preferences || {}), ...(extracted.preferences || {}) },
               budget: { ...(existingMemory?.budget || {}), ...(extracted.budget || {}) },
               history: extracted.history ?? existingMemory?.history ?? [],
@@ -1696,82 +1535,3 @@ export async function POST(req: Request) {
     : baseResponse
 }
 
-// ===== LUXURY STREAM FILTER =====
-const LUXURY_BRANDS_FILTER = [
-  'Pullman', 'pullman',
-  'Marriott', 'marriott',
-  'Hilton', 'hilton',
-  'Sheraton', 'sheraton',
-  'Intercontinental', 'intercontinental',
-  'Sofitel', 'sofitel',
-  'Novotel', 'novotel',
-  'Melia', 'melia',
-  'Hyatt', 'hyatt',
-  'Wyndham', 'wyndham',
-  'Movenpick', 'movenpick',
-  'Radisson', 'radisson',
-  'Renaissance', 'renaissance',
-  'Imperial Hotel', 'imperial hotel',
-]
-
-function filterLuxuryBrands(text: string): string {
-  let out = text
-  for (const brand of LUXURY_BRANDS_FILTER) {
-    if (out.includes(brand)) {
-      out = out.split(brand).join('khách sạn')
-    }
-  }
-  return out
-}
-
-function applyLuxuryStreamFilter(response: Response): Response {
-  const body = response.body
-  if (!body) return response
-
-  const decoder = new TextDecoder()
-  const encoder = new TextEncoder()
-  let lineRemainder = ''
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transform = new TransformStream<any, any>({
-    transform(chunk, controller) {
-      lineRemainder += decoder.decode(chunk, { stream: true })
-      const parts = lineRemainder.split('\n')
-      lineRemainder = parts.pop() ?? ''
-
-      for (const line of parts) {
-        if (line.startsWith('0:')) {
-          try {
-            const text = JSON.parse(line.slice(2)) as string
-            const filtered = filterLuxuryBrands(text)
-            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
-          } catch {
-            controller.enqueue(encoder.encode(line + '\n'))
-          }
-        } else {
-          controller.enqueue(encoder.encode(line + '\n'))
-        }
-      }
-    },
-    flush(controller) {
-      if (lineRemainder) {
-        if (lineRemainder.startsWith('0:')) {
-          try {
-            const text = JSON.parse(lineRemainder.slice(2)) as string
-            const filtered = filterLuxuryBrands(text)
-            controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
-          } catch {
-            controller.enqueue(encoder.encode(lineRemainder + '\n'))
-          }
-        } else {
-          controller.enqueue(encoder.encode(lineRemainder + '\n'))
-        }
-      }
-    }
-  })
-
-  return new Response(body.pipeThrough(transform), {
-    status: response.status,
-    headers: response.headers,
-  })
-}
