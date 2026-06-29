@@ -1,4 +1,4 @@
-import { getCache, setCache, serperSearch, fetchPlacePhoto } from './common'
+import { getCache, setCache, serperSearch, fetchPlacePhotoByName } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 
@@ -187,21 +187,13 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
-        // Fetch photos for all places in parallel via Place Details (Basic SKU)
+        // Fetch photos via Serper image search (Supabase-cached, no Maps Platform billing needed)
         const photoUrls = await Promise.all(
           placesData.map(async (r) => {
             const placeId = r.id as string
-            if (!placeId) return null
-            try {
-              const detailResp = await Promise.race([
-                fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${key}`),
-                new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
-              ])
-              const detail = await (detailResp as Response).json()
-              const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
-              if (photoRef) return fetchPlacePhoto(placeId, photoRef)
-            } catch { /* skip on timeout or error */ }
-            return null
+            const placeName = (r.displayName as { text?: string })?.text || ''
+            if (!placeId || !placeName) return null
+            return fetchPlacePhotoByName(placeId, placeName)
           })
         )
 
