@@ -1,16 +1,43 @@
-import { searchPlaces } from '@/lib/ai/tools/food'
+import { fetchPlacePhotoByName } from '@/lib/ai/tools/common'
 
 export async function GET() {
-  try {
-    const result = await searchPlaces('pho ngon', 'quan 3', 'restaurant', 'vi', null)
-    const r = result as { results?: Array<{ name: string; photo_url?: string }> }
-    const summary = r.results?.map(item => ({
-      name: item.name,
-      has_photo: !!item.photo_url,
-      photo_url_preview: item.photo_url ? item.photo_url.slice(0, 80) : null,
-    })) ?? []
-    return Response.json({ summary, count: r.results?.length ?? 0 })
-  } catch (e) {
-    return Response.json({ error: String(e) })
-  }
+  const serperKey = process.env.SERPER_API_KEY
+  const testPlaces = [
+    { id: 'ChIJtest1', name: 'Atispho - Pho Atiso' },
+    { id: 'ChIJtest2', name: 'Hai San Hoang Gia quan 1' },
+  ]
+
+  // Test 1: Direct Serper call (no fetchPlacePhotoByName)
+  const directSerperResults = await Promise.all(testPlaces.map(async (p) => {
+    if (!serperKey) return { name: p.name, error: 'no_key' }
+    try {
+      const t0 = Date.now()
+      const resp = await Promise.race([
+        fetch('https://google.serper.dev/images', {
+          method: 'POST',
+          headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ q: p.name, gl: 'vn', hl: 'vi', num: 3 }),
+        }),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000)),
+      ])
+      const data = await (resp as Response).json()
+      const imgs = data?.images || []
+      return { name: p.name, ms: Date.now() - t0, status: (resp as Response).status, count: imgs.length, url: imgs[0]?.imageUrl?.slice(0, 60) }
+    } catch (e) {
+      return { name: p.name, error: String(e).slice(0, 60) }
+    }
+  }))
+
+  // Test 2: Via fetchPlacePhotoByName
+  const viaFunctionResults = await Promise.all(testPlaces.map(async (p) => {
+    const t0 = Date.now()
+    const url = await fetchPlacePhotoByName(p.id, p.name)
+    return { name: p.name, ms: Date.now() - t0, url: url?.slice(0, 60) ?? null, success: !!url }
+  }))
+
+  return Response.json({
+    hasSerperKey: !!serperKey,
+    directSerper: directSerperResults,
+    viaFunction: viaFunctionResults,
+  })
 }
