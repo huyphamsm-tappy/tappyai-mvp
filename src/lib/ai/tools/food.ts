@@ -194,14 +194,12 @@ export async function searchPlaces(query: string, location?: string, type?: stri
             if (!placeId) return null
             try {
               const detailResp = await Promise.race([
-                fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
-                  headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'id,photos' },
-                }),
+                fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${key}`),
                 new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
               ])
               const detail = await (detailResp as Response).json()
-              const photoName = (detail.photos as Array<{ name: string }>)?.[0]?.name
-              if (photoName) return fetchPlacePhoto(placeId, photoName)
+              const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
+              if (photoRef) return fetchPlacePhoto(placeId, photoRef)
             } catch { /* skip on timeout or error */ }
             return null
           })

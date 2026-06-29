@@ -59,17 +59,18 @@ export async function fetchPlacePhoto(placeId: string, photoName: string): Promi
   const controller = new AbortController()
   const tid = setTimeout(() => controller.abort(), 3000)
   try {
+    // Uses old Places API (maps.googleapis.com) — compatible with existing TappyAI API key restriction
     const resp = await fetch(
-      `https://places.googleapis.com/v1/${photoName}/media?key=${key}&maxHeightPx=400&skipHttpRedirect=true`,
-      { signal: controller.signal }
+      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoName}&key=${key}`,
+      { signal: controller.signal, redirect: 'follow' }
     )
     clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', status: resp.status, ok: resp.ok }))
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', status: resp.status, ok: resp.ok, finalUrl: resp.url?.slice(0, 60) || null }))
     if (!resp.ok) return null
-    const data = await resp.json()
-    const photoUri = data?.photoUri as string | undefined
-    // photoUri should be a CDN URL (lh3.googleusercontent.com), not a places.googleapis.com URL
-    const safe = !!photoUri && !photoUri.includes('places.googleapis.com')
+    // With redirect:'follow', resp.url is the final CDN URL (lh3.googleusercontent.com)
+    const photoUri = resp.url
+    // photoUri should be a CDN URL, not a maps.googleapis.com URL
+    const safe = !!photoUri && !photoUri.includes('maps.googleapis.com')
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_photoUri', photoUriPrefix: photoUri?.slice(0, 60) || null, safe }))
     if (!photoUri || !safe) return null
     // 3. Persist to Supabase (fire-and-forget)
