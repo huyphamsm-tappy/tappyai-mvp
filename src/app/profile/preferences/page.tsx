@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Check, Save, Loader2, X, Plus } from 'lucide-react'
@@ -31,6 +32,7 @@ const QUICK_PREF_CHIPS = [
 ]
 
 type BudgetLevel = 'cheap' | 'mid' | 'high' | null
+type Gender = 'male' | 'female' | null
 
 export default function PreferencesPage() {
   const router = useRouter()
@@ -39,23 +41,28 @@ export default function PreferencesPage() {
   const [dietary, setDietary] = useState('')
   const [preferences, setPreferences] = useState<string[]>([])
   const [newPref, setNewPref] = useState('')
+  const [gender, setGender] = useState<Gender>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    fetch('/api/preferences')
-      .then(r => r.json())
-      .then(({ preferences: prefs, structured }) => {
-        if (structured) {
-          setBudget((structured.budget_level as BudgetLevel) || null)
-          setCuisines(structured.cuisine_likes || [])
-          setDietary(structured.dietary_restrictions || '')
-        }
-        if (Array.isArray(prefs)) setPreferences(prefs)
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false))
+    const supabase = createClient()
+    Promise.all([
+      fetch('/api/preferences').then(r => r.json()),
+      supabase.auth.getUser(),
+    ]).then(([{ preferences: prefs, structured }, { data: { user } }]) => {
+      if (structured) {
+        setBudget((structured.budget_level as BudgetLevel) || null)
+        setCuisines(structured.cuisine_likes || [])
+        setDietary(structured.dietary_restrictions || '')
+      }
+      if (Array.isArray(prefs)) setPreferences(prefs)
+      const g = user?.user_metadata?.gender
+      if (g === 'male' || g === 'female') setGender(g)
+    })
+    .catch(() => {})
+    .finally(() => setLoading(false))
   }, [])
 
   const toggleCuisine = useCallback((item: string) => {
@@ -93,6 +100,11 @@ export default function PreferencesPage() {
       if (r1.ok && r2.ok) {
         setSaved(true)
         setTimeout(() => { setSaved(false); router.push('/profile') }, 1200)
+      }
+      // Save gender to user metadata
+      if (gender !== null) {
+        const supabase = createClient()
+        await supabase.auth.updateUser({ data: { gender } })
       }
     } catch { /* network error */ }
     finally { setSaving(false) }
@@ -184,6 +196,36 @@ export default function PreferencesPage() {
           {preferences.length === 0 && (
             <p className="text-xs text-gray-400 dark:text-gray-500 italic">Chưa có sở thích nào. Thêm bằng chips bên trên hoặc tự nhập.</p>
           )}
+        </section>
+
+        {/* Gender */}
+        <section>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+            👤 Bạn là
+          </h3>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">
+            Giúp Tappy gợi ý câu hỏi phù hợp hơn với bạn
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {([
+              { value: 'female', label: 'Nữ', emoji: '👩' },
+              { value: 'male', label: 'Nam', emoji: '👨' },
+            ] as const).map(opt => (
+              <button
+                key={opt.value}
+                onClick={() => setGender(prev => prev === opt.value ? null : opt.value)}
+                className={`flex items-center justify-center gap-2 rounded-2xl border-2 py-3.5 font-semibold text-sm transition-all ${
+                  gender === opt.value
+                    ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
+                    : 'border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:border-gray-200 dark:hover:border-gray-700'
+                }`}
+              >
+                <span className="text-xl">{opt.emoji}</span>
+                {opt.label}
+                {gender === opt.value && <Check size={14} className="text-primary-500" />}
+              </button>
+            ))}
+          </div>
         </section>
 
         {/* Budget */}

@@ -11,6 +11,8 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { track } from '@/lib/tracking/tracker'
+import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/lib/userMemory'
+import type { UserPreferences } from '@/lib/userMemory'
 
 /* ─── types ─── */
 interface Profile { full_name: string | null; avatar_url: string | null }
@@ -376,19 +378,22 @@ function ProfileTab({ userId }: { userId: string }) {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'liked'>('posts')
   const [sel, setSel] = useState<Review | null>(null)
+  const [prefs, setPrefs] = useState<UserPreferences | null>(null)
   const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
     const load = async () => {
       setLoading(true)
-      const [profileRes, reviewsRes, likedRes, savedRes] = await Promise.all([
+      const [profileRes, reviewsRes, likedRes, savedRes, prefsRes] = await Promise.all([
         fetch(`/api/users/${userId}`).then(r => r.json()),
         fetch(`/api/reviews/feed?userId=${userId}&limit=50`).then(r => r.json()),
         supabase.from('review_likes').select('review_id').eq('user_id', userId).then(r => r.data || []),
         supabase.from('review_saves').select('review_id').eq('user_id', userId).then(r => r.data || []),
+        getUserPreferences(userId),
       ])
       setProfile(profileRes)
+      setPrefs(prefsRes)
       const allPosts = (reviewsRes.reviews || []).map((r: Review) => ({ ...r, is_hidden: false }))
       setPosts(allPosts)
       const { data: hiddenData } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
@@ -472,6 +477,26 @@ function ProfileTab({ userId }: { userId: string }) {
           Chỉnh sửa hồ sơ
         </Link>
       </div>
+
+      {/* Tappy memory chip — only shown when preferences are inferred */}
+      {prefs && prefs.preferred_style && prefs.preferred_style.length > 0 && (
+        <div className="mx-4 mt-3 p-3.5 rounded-xl" style={{ background: 'rgba(255,107,53,0.06)', border: '1px solid rgba(255,107,53,0.18)' }}>
+          <p className="text-[11px] font-semibold mb-2.5" style={{ color: '#ff6b35' }}>✨ Sở thích của bạn</p>
+          <div className="flex flex-wrap gap-1.5">
+            {prefs.preferred_style.map((s: string) => (
+              <span key={s} className="text-[11px] px-2.5 py-1 rounded-full font-semibold"
+                style={{ background: 'rgba(255,107,53,0.18)', color: '#ff6b35', border: '1px solid rgba(255,107,53,0.3)' }}>
+                {s}
+              </span>
+            ))}
+          </div>
+          {(prefs.budget_min !== null || prefs.budget_max !== null) && (
+            <p className="text-xs mt-2" style={{ color: '#9ca3af' }}>
+              💰 {[prefs.budget_min, prefs.budget_max].filter(v => v !== null).map(n => `${n?.toLocaleString()}k`).join(' – ')} VND
+            </p>
+          )}
+        </div>
+      )}
 
       {/* 3-tab bar */}
       <div className="flex border-b border-gray-800">
@@ -709,15 +734,20 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 }
 
 /* ─── Inbox Tab ─── */
-function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange }: {
+function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange, userPrefs }: {
   notifs: Notification[]
   notifsLoading: boolean
   hotPlaces: HotPlace[]
   hotPlacesLoading: boolean
   onSetTab: (t: string) => void
   onFeedTypeChange: (ft: 'for-you' | 'following') => void
+  userPrefs: UserPreferences | null
 }) {
   const grouped = groupNotifs(notifs)
+  const prefStyles = userPrefs?.preferred_style ?? []
+  const bannerSubtext = prefStyles.length > 0
+    ? `Gợi ý dựa trên sở thích ${prefStyles.slice(0, 2).join(', ')} của bạn`
+    : '3 quán bạn bè hay đến đang mở gần bạn'
   const bySection = new Map<string, GroupedNotif[]>()
   for (const g of grouped) {
     const s = notifSection(g.created_at)
@@ -746,7 +776,7 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-xs mb-0.5" style={{ color: '#ff6b35' }}>Tappy gợi ý hôm nay</p>
-                  <p className="text-white text-sm leading-snug">3 quán bạn bè hay đến đang mở gần bạn</p>
+                  <p className="text-white text-sm leading-snug">{bannerSubtext}</p>
                 </div>
                 <ChevronRight size={16} className="text-gray-500 flex-shrink-0" />
               </button>
@@ -829,6 +859,7 @@ export default function ReviewsPage() {
   const [hotPlaces, setHotPlaces] = useState<HotPlace[]>([])
   const [hotPlacesLoading, setHotPlacesLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
+  const [userPrefs, setUserPrefs] = useState<UserPreferences | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(0)
   const hasMore = useRef(true)
@@ -848,6 +879,10 @@ export default function ReviewsPage() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null))
   }, [supabase])
+  useEffect(() => {
+    if (!me) return
+    getUserPreferences(me).then(p => setUserPrefs(p))
+  }, [me])
 
   // Load notifications + hot places when inbox tab opens
   useEffect(() => {
@@ -958,6 +993,12 @@ export default function ReviewsPage() {
     const { liked } = await res.json()
     setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: liked, like_count: r.like_count + (liked ? 1 : -1) } : r))
     track('review_like', { review_id: id, place: r?.place_name, liked })
+    if (liked && me) {
+      logUserEvent(me, 'like', { review_id: id })
+      const count = parseInt(localStorage.getItem('tappy_like_count') || '0') + 1
+      localStorage.setItem('tappy_like_count', String(count))
+      if (count % 5 === 0) inferPreferencesFromEvents(me)
+    }
   }
   const save = async (id: string) => {
     const res = await fetch(`/api/reviews/${id}/save`, { method: 'POST' })
@@ -1125,6 +1166,7 @@ export default function ReviewsPage() {
               hotPlacesLoading={hotPlacesLoading}
               onSetTab={handleSetTab}
               onFeedTypeChange={handleFeedTypeChange}
+              userPrefs={userPrefs}
             />
           )}
         </div>

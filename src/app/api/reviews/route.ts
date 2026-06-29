@@ -7,7 +7,7 @@ function checkRL(ip: string): boolean {
   const today = new Date().toISOString().slice(0, 10)
   const e = rlStore.get(ip)
   if (!e || e.date !== today) { rlStore.set(ip, { date: today, count: 1 }); return true }
-  if (e.count >= 5) return false
+  if (e.count >= 20) return false
   e.count++
   return true
 }
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('reviews')
-    .select('id, user_id, place_name, rating, body, created_at, profiles(full_name, avatar_url)')
+    .select('id, user_id, place_name, rating, body, created_at, is_verified, like_count, photos, profiles(full_name, avatar_url)')
     .eq('place_id', placeId)
     .eq('is_hidden', false)
     .order('created_at', { ascending: false })
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
   if (error) return NextResponse.json({ error: 'Lỗi tải đánh giá' }, { status: 500 })
 
   const avg = data && data.length > 0
-    ? (data.reduce((s, r) => s + r.rating, 0) / data.length)
+    ? (() => { const rated = data.filter(r => r.rating > 0); return rated.length > 0 ? rated.reduce((s, r) => s + r.rating, 0) / rated.length : null })()
     : null
 
   return NextResponse.json({
@@ -39,11 +39,12 @@ export async function GET(req: NextRequest) {
   })
 }
 
-// POST /api/reviews  → create review (verified booking check)
+// POST /api/reviews  → create review (community — no booking required)
+// If user has a past booking at this place, is_verified = true (badge)
 export async function POST(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
   if (!checkRL(ip)) {
-    return NextResponse.json({ error: 'Bạn đã gửi quá 5 đánh giá hôm nay. Thử lại vào ngày mai.' }, { status: 429 })
+    return NextResponse.json({ error: 'Bạn đã đăng quá 20 bài hôm nay. Thử lại vào ngày mai.' }, { status: 429 })
   }
 
   const supabase = createClient()
@@ -58,15 +59,16 @@ export async function POST(req: NextRequest) {
     placeAddress = b.placeAddress?.trim() || ''
     rating = Number(b.rating)
     body = b.body?.trim()
-    photos = Array.isArray(b.photos) ? b.photos.filter((u: unknown) => typeof u === 'string').slice(0, 3) : []
-    if (!placeId || !placeName || !rating || !body) throw new Error('missing fields')
-    if (rating < 1 || rating > 5 || !Number.isInteger(rating)) throw new Error('invalid rating')
-    if (body.length < 20 || body.length > 500) throw new Error('body length')
+    photos = Array.isArray(b.photos) ? b.photos.filter((u: unknown) => typeof u === 'string').slice(0, 6) : []
+    if (!placeId || !placeName) throw new Error('missing fields')
+    if (!body && photos.length === 0) throw new Error('need body or photos')
+    if (rating && (rating < 1 || rating > 5 || !Number.isInteger(rating))) throw new Error('invalid rating')
+    if (body.length > 1000) throw new Error('body too long')
   } catch {
-    return NextResponse.json({ error: 'Dữ liệu không hợp lệ. Đánh giá phải từ 20–500 ký tự.' }, { status: 400 })
+    return NextResponse.json({ error: 'Cần có nội dung hoặc ảnh để đăng bài.' }, { status: 400 })
   }
 
-  // Verified booking check: must have a booking with this place_id and date already passed
+  // Check if user has a past booking here → verified badge
   const today = new Date().toISOString().slice(0, 10)
   const { data: booking } = await supabase
     .from('bookings')
@@ -77,11 +79,7 @@ export async function POST(req: NextRequest) {
     .limit(1)
     .maybeSingle()
 
-  if (!booking) {
-    return NextResponse.json({
-      error: 'Bạn chỉ có thể đánh giá địa điểm sau khi đã có đặt chỗ thật và ngày đã qua.',
-    }, { status: 403 })
-  }
+  const isVerified = !!booking
 
   // Check duplicate (1 review per user per place)
   const { data: existing } = await supabase
@@ -95,22 +93,41 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Bạn đã đánh giá địa điểm này rồi.' }, { status: 409 })
   }
 
-  const { error: insertError } = await supabase
-    .from('reviews')
-    .insert({
-      user_id: user.id,
-      place_id: placeId,
-      place_name: placeName,
-      place_address: placeAddress,
-      rating,
-      body,
-      ...(photos.length > 0 ? { photos } : {}),
-    })
+  const reviewData: Record<string, unknown> = {
+    user_id: user.id,
+    place_id: placeId,
+    place_name: placeName,
+    place_address: placeAddress,
+    body: body || '',
+    is_verified: isVerified,
+  }
+  // Only include rating if > 0 (some DB schemas have CHECK rating >= 1)
+  if (rating > 0) reviewData.rating = rating
+  // Include photos if any
+  if (photos.length > 0) reviewData.photos = photos
 
-  if (insertError) {
-    console.error('Review insert error:', insertError)
-    return NextResponse.json({ error: 'Không thể lưu đánh giá. Vui lòng thử lại.' }, { status: 500 })
+  let { error: insertError } = await supabase.from('reviews').insert(reviewData)
+
+  // If photos column doesn't exist yet, retry without it
+  if (insertError && photos.length > 0 && insertError.message?.includes('photos')) {
+    console.warn('photos column missing, retrying without photos:', insertError.message)
+    const { error: retryError } = await supabase.from('reviews').insert({ ...reviewData, photos: undefined })
+    insertError = retryError ?? null
   }
 
-  return NextResponse.json({ ok: true })
+  // If rating check constraint fails, retry with rating omitted
+  if (insertError && rating > 0 && (insertError.message?.includes('rating') || insertError.code === '23514')) {
+    console.warn('rating constraint, retrying without rating:', insertError.message)
+    const dataNoRating = { ...reviewData }
+    delete dataNoRating.rating
+    const { error: retryError2 } = await supabase.from('reviews').insert(dataNoRating)
+    insertError = retryError2 ?? null
+  }
+
+  if (insertError) {
+    console.error('Review insert error:', JSON.stringify(insertError))
+    return NextResponse.json({ error: `Không thể lưu bài viết: ${insertError.message}` }, { status: 500 })
+  }
+
+  return NextResponse.json({ ok: true, is_verified: isVerified })
 }

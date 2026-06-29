@@ -3,6 +3,7 @@ import {
   extractMemoryFromConversation,
   getMemory,
   updateMemory,
+  clearMemory,
 } from '@/lib/memory/memoryService'
 import { NextResponse } from 'next/server'
 
@@ -47,6 +48,9 @@ export async function POST(req: Request) {
     if (Object.keys(extracted).length > 0) {
       await updateMemory(user.id, {
         location_base: extracted.location_base ?? existing?.location_base ?? null,
+        companions: extracted.companions ?? existing?.companions ?? null,
+        timing: extracted.timing ?? existing?.timing ?? null,
+        personality: extracted.personality ?? existing?.personality ?? null,
         preferences: {
           ...(existing?.preferences || {}),
           ...(extracted.preferences || {}),
@@ -63,5 +67,19 @@ export async function POST(req: Request) {
   } catch (e) {
     console.error('Memory POST error:', e)
     return NextResponse.json({ ok: false })
+  }
+}
+
+// DELETE /api/memory — clear all memory for user
+export async function DELETE() {
+  try {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ ok: false }, { status: 401 })
+    await clearMemory(user.id)
+    return NextResponse.json({ ok: true })
+  } catch (e) {
+    console.error('Memory DELETE error:', e)
+    return NextResponse.json({ ok: false }, { status: 500 })
   }
 }

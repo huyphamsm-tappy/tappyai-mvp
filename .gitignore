@@ -38,3 +38,6 @@ public/games/supertux/supertux2.wasm
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Claude IDE settings
+.claude/
