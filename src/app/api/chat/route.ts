@@ -41,6 +41,8 @@ export async function POST(req: Request) {
   const locationIntent = detectLocationIntent(lastText)
   const planningIntent = detectPlanningIntent(lastText)
   const lang = detectLang(lastText)
+  const forcedTool = detectForcedTool(lastText)
+  const worthExtract = lastText.trim().length > 20
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
 
@@ -64,7 +66,7 @@ export async function POST(req: Request) {
           .maybeSingle(),
       ])
       existingMemory = mem
-      if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory)
+      if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool)
       if (prefResult.data) prefBlock = buildPrefBlock(prefResult.data as UserPrefs)
 
       // Inject Google Calendar events if connected
@@ -143,7 +145,7 @@ export async function POST(req: Request) {
     model: getModel(tier),
     system: intent === 'chitchat'
       ? buildSystemSimple(lang, memoryBlock)
-      : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage),
+      : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, forcedTool),
     experimental_providerMetadata: {
       anthropic: { cacheControl: { type: 'ephemeral' } },
     },
@@ -153,20 +155,16 @@ export async function POST(req: Request) {
     experimental_prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) {
-        const forced = detectForcedTool(lastText)
-        // Offline location + product search â†’ switch to search_places
-        if (forced === 'search_products' && locationIntent === 'offline') {
+        if (forcedTool === 'search_products' && locationIntent === 'offline') {
           return { toolChoice: { type: 'tool' as const, toolName: 'search_places' } }
         }
-        // No forced tool + offline location â†’ search_places (user wants physical location)
-        if (!forced && locationIntent === 'offline') {
+        if (!forcedTool && locationIntent === 'offline') {
           return { toolChoice: { type: 'tool' as const, toolName: 'search_places' } }
         }
-        // Unknown intent + shopping keywords â†’ no tool, ask clarification
-        if (!forced && locationIntent === 'unknown' && isShoppingQuery(lastText)) {
+        if (!forcedTool && locationIntent === 'unknown' && isShoppingQuery(lastText)) {
           return { toolChoice: 'none' as const }
         }
-        if (forced) return { toolChoice: { type: 'tool' as const, toolName: forced } }
+        if (forcedTool) return { toolChoice: { type: 'tool' as const, toolName: forcedTool } }
         return { toolChoice: 'required' as const }
       }
       return { toolChoice: 'none' as const }
@@ -287,9 +285,10 @@ export async function POST(req: Request) {
         completionTokens: usage?.completionTokens ?? null,
         totalTokens: usage?.totalTokens ?? null,
         elapsedMs: Date.now() - startTime,
+        worthExtract,
+        forcedTool,
       }))
-      // Extract + save memory from this conversation (server-side, same auth context)
-      if (authedUserId) {
+      if (authedUserId && worthExtract) {
         try {
           const convMessages = [
             ...messages.map((m: { role: string; content: unknown }) => ({

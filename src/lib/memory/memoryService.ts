@@ -72,53 +72,60 @@ export function countMemoryFacts(memory: UserMemory): number {
   return count
 }
 
-export function buildMemoryBlock(memory: UserMemory): string {
+export function buildMemoryBlock(memory: UserMemory, forcedTool?: string | null): string {
+  const infoOnly = forcedTool === 'get_weather' || forcedTool === 'get_gold_price'
+  const locationAndHistory = forcedTool === 'get_news'
+
   const parts: string[] = []
 
   if (memory.location_base) {
     parts.push(`- Vi tri thuong dung: ${memory.location_base}`)
   }
 
-  if (memory.companions) {
-    parts.push(`- Hay di cung: ${memory.companions}`)
-  }
+  if (!infoOnly && !locationAndHistory) {
+    if (memory.companions) {
+      parts.push(`- Hay di cung: ${memory.companions}`)
+    }
 
-  if (memory.timing) {
-    parts.push(`- Thoi gian hay di: ${memory.timing}`)
-  }
+    if (memory.timing) {
+      parts.push(`- Thoi gian hay di: ${memory.timing}`)
+    }
 
-  if (memory.personality) {
-    parts.push(`- Phong cach: ${memory.personality}`)
-  }
-
-  const prefs = memory.preferences || {}
-  const prefParts: string[] = []
-  if (prefs.food && prefs.food.length > 0)
-    prefParts.push(`an uong: ${prefs.food.join(', ')}`)
-  if (prefs.spa && prefs.spa.length > 0)
-    prefParts.push(`spa: ${prefs.spa.join(', ')}`)
-  if (prefs.entertainment && prefs.entertainment.length > 0)
-    prefParts.push(`giai tri: ${prefs.entertainment.join(', ')}`)
-  if (prefs.shopping && prefs.shopping.length > 0)
-    prefParts.push(`mua sam: ${prefs.shopping.join(', ')}`)
-  if (prefs.avoid && prefs.avoid.length > 0)
-    prefParts.push(`khong thich: ${prefs.avoid.join(', ')}`)
-  if (prefParts.length > 0) parts.push(`- So thich: ${prefParts.join('; ')}`)
-
-  const budgets = memory.budget || {}
-  const budgetParts: string[] = []
-  for (const [cat, range] of Object.entries(budgets)) {
-    if (range?.max) {
-      const label = range.min > 0
-        ? `${range.min.toLocaleString('vi-VN')}-${range.max.toLocaleString('vi-VN')}d`
-        : `duoi ${range.max.toLocaleString('vi-VN')}d`
-      budgetParts.push(`${cat}: ${label}`)
+    if (memory.personality) {
+      parts.push(`- Phong cach: ${memory.personality}`)
     }
   }
-  if (budgetParts.length > 0) parts.push(`- Budget thuong dung: ${budgetParts.join('; ')}`)
+
+  if (!infoOnly && !locationAndHistory) {
+    const prefs = memory.preferences || {}
+    const prefParts: string[] = []
+    if (prefs.food && prefs.food.length > 0)
+      prefParts.push(`an uong: ${prefs.food.join(', ')}`)
+    if (prefs.spa && prefs.spa.length > 0)
+      prefParts.push(`spa: ${prefs.spa.join(', ')}`)
+    if (prefs.entertainment && prefs.entertainment.length > 0)
+      prefParts.push(`giai tri: ${prefs.entertainment.join(', ')}`)
+    if (prefs.shopping && prefs.shopping.length > 0)
+      prefParts.push(`mua sam: ${prefs.shopping.join(', ')}`)
+    if (prefs.avoid && prefs.avoid.length > 0)
+      prefParts.push(`khong thich: ${prefs.avoid.join(', ')}`)
+    if (prefParts.length > 0) parts.push(`- So thich: ${prefParts.join('; ')}`)
+
+    const budgets = memory.budget || {}
+    const budgetParts: string[] = []
+    for (const [cat, range] of Object.entries(budgets)) {
+      if (range?.max) {
+        const label = range.min > 0
+          ? `${range.min.toLocaleString('vi-VN')}-${range.max.toLocaleString('vi-VN')}d`
+          : `duoi ${range.max.toLocaleString('vi-VN')}d`
+        budgetParts.push(`${cat}: ${label}`)
+      }
+    }
+    if (budgetParts.length > 0) parts.push(`- Budget thuong dung: ${budgetParts.join('; ')}`)
+  }
 
   const history = memory.history || []
-  if (history.length > 0) {
+  if (history.length > 0 && !infoOnly) {
     parts.push(`- Lan truoc da hoi ve: ${history.slice(-3).join(', ')}`)
   }
 

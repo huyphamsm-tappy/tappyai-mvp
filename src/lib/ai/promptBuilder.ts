@@ -131,6 +131,7 @@ export function buildSystem(
   userLocation?: { lat: number; lng: number; address?: string } | null,
   planningIntent?: 'trip' | 'evening' | null,
   hasImage?: boolean,
+  forcedTool?: string | null,
 ): string {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -210,6 +211,7 @@ Neu user hoi bat ky chu de nao NGOAI 5 linh vuc tren (vi du: toan hoc, lap trinh
 TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan hay giai thich ly do.
 =============================================================`
 
+  const skipDetailBlocks = forcedTool === 'get_news' || forcedTool === 'get_weather' || forcedTool === 'get_gold_price'
   const planningBlock = planningIntent ? buildPlanningBlock(planningIntent) : ''
   const cameraBlock = hasImage ? `
 
@@ -225,7 +227,7 @@ Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool sea
 
   return `${langBlock}THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
 
-${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${reviewBlock}${ctaBlock}${scopeBlock}`
+${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${skipDetailBlocks ? '' : reviewBlock}${skipDetailBlocks ? '' : ctaBlock}${scopeBlock}`
 }
 
 export function buildSystemSimple(lang = 'vi', memoryBlock?: string): string {
