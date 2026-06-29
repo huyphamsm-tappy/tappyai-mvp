@@ -1,6 +1,6 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
-// ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
+// ===== In-memory cache =====
 type CacheEntry = { data: unknown; expires: number }
 const cache = new Map<string, CacheEntry>()
 
@@ -19,7 +19,7 @@ export function setCache(key: string, data: unknown, ttlMs: number) {
   cache.set(key, { data, expires: Date.now() + ttlMs })
 }
 
-// ===== SUPABASE CACHE CLIENT (no-cookie, for place_photos table) =====
+// ===== SUPABASE CACHE CLIENT =====
 let _cacheDb: ReturnType<typeof createSupabaseClient> | null | undefined = undefined
 function getCacheClient() {
   if (_cacheDb !== undefined) return _cacheDb
@@ -29,71 +29,56 @@ function getCacheClient() {
   return _cacheDb
 }
 
-// ===== GOOGLE PLACES (NEW) PHOTO with Supabase persistent cache =====
-// Each unique place_id costs $0.007 once (Places API New Photos), then cached forever in DB.
-// photoName is the full resource path returned by Places API (New), e.g. "places/ChIJ.../photos/AeZ..."
-export async function fetchPlacePhoto(placeId: string, photoName: string): Promise<string | null> {
+// ===== FETCH PLACE PHOTO BY NAME via Serper Images (cached in Supabase) =====
+export async function fetchPlacePhotoByName(placeId: string, placeName: string): Promise<string | null> {
   const db = getCacheClient()
   // 1. Check Supabase cache first
   if (db) {
     try {
-      const { data, error } = await db
+      const { data } = await db
         .from('place_photos')
         .select('photo_url')
         .eq('place_id', placeId)
         .maybeSingle()
-      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache', placeId, hit: !!data?.photo_url, dbError: error?.message || null }))
       if (data?.photo_url) return data.photo_url as string
-    } catch (e) {
-      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache_exception', placeId, error: String(e) }))
-    }
-  } else {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache_skipped', reason: 'no_db_client' }))
+    } catch { /* ignore */ }
   }
-  // 2. Call Places API (New) photo media endpoint – returns JSON with photoUri (no redirect needed)
-  const key = process.env.GOOGLE_PLACES_API_KEY
-  if (!key || !photoName) {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', hasKey: !!key, hasPhotoName: !!photoName }))
-    return null
-  }
-  const controller = new AbortController()
-  const tid = setTimeout(() => controller.abort(), 3000)
+  // 2. Serper image search
+  const apiKey = process.env.SERPER_API_KEY
+  if (!apiKey || !placeName) return null
   try {
-    // Uses old Places API (maps.googleapis.com) — compatible with existing TappyAI API key restriction
-    const resp = await fetch(
-      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoName}&key=${key}`,
-      { signal: controller.signal, redirect: 'follow' }
-    )
-    clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', status: resp.status, ok: resp.ok, finalUrl: resp.url?.slice(0, 60) || null }))
-    if (!resp.ok) return null
-    // With redirect:'follow', resp.url is the final CDN URL (lh3.googleusercontent.com)
-    const photoUri = resp.url
-    // photoUri should be a CDN URL, not a maps.googleapis.com URL
-    const safe = !!photoUri && !photoUri.includes('maps.googleapis.com')
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_photoUri', photoUriPrefix: photoUri?.slice(0, 60) || null, safe }))
-    if (!photoUri || !safe) return null
-    // 3. Persist to Supabase (fire-and-forget)
+    const resp = await Promise.race([
+      fetch('https://google.serper.dev/images', {
+        method: 'POST',
+        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 3 }),
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000)),
+    ])
+    if (!(resp as Response).ok) return null
+    const data = await (resp as Response).json()
+    const images = data?.images as Array<{ imageUrl?: string }> | undefined
+    const photoUri = images?.[0]?.imageUrl
+    if (!photoUri) return null
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_image', placeId, placeName, photoUri: photoUri.slice(0, 60) }))
+    // 3. Cache in Supabase (fire-and-forget)
     if (db) {
       db.from('place_photos')
         .upsert({ place_id: placeId, photo_url: photoUri })
-        .then(({ error: e }) => console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_write', placeId, ok: !e, dbError: e?.message || null })))
-        .catch(e => console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_write_exception', error: String(e) })))
+        .catch(() => {})
     }
     return photoUri
-  } catch (e) {
-    clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_exception', error: String(e) }))
+  } catch {
     return null
   }
 }
 
-// Encode ky tu '(' ')' trong URL de khong vo cu phap markdown link [text](url)
+// Encode ky tu '(' ')' trong URL de khong vo cu phap markdown link
 export function sanitizeUrlForMarkdown(link: string): string {
   return link.replace(/\(/g, '%28').replace(/\)/g, '%29')
 }
 
-// ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====
+// ===== SERPER: Google Search API =====
 export async function serperSearch(query: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
@@ -178,6 +163,6 @@ export async function webSearch(query: string) {
   } catch {
     result = { note: 'Khong the tim kiem tu dong luc nay. HAY hien thi link sau cho user de tu tim: ' + fallbackUrl, results: [], search_url: fallbackUrl }
   }
-  setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
+  setCache(cacheKey, result, 5 * 60 * 1000)
   return result
 }
