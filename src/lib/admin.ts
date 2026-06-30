@@ -1,6 +1,7 @@
+// TODO: Set ADMIN_IDS in Vercel environment variables
+
 export const ADMIN_IDS = (process.env.ADMIN_IDS || '').split(',').filter(Boolean)
 
-export function isAdmin(userId: string | null | undefined): boolean {
-  if (!userId) return false
-  return ADMIN_IDS.includes(userId)
+export function isAdmin(userId?: string) {
+  return !!userId && ADMIN_IDS.includes(userId)
 }
