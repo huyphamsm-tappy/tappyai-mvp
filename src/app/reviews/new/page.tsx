@@ -205,7 +205,10 @@ export default function NewReviewPage() {
         const aiRes = await fetch('/api/explore/process', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ thumbnail_url: thumbUrl }),
+          body: JSON.stringify({
+            thumbnail_url: thumbUrl,
+            caption: body.trim() || undefined,
+          }),
         })
         if (aiRes.ok) {
           const ai = await aiRes.json()
@@ -256,8 +259,16 @@ export default function NewReviewPage() {
       return
     }
 
-    // Facebook: no preview
-    setUrlMeta({ thumbnail_url: '', title: '' })
+    // Facebook: best-effort OG image via server proxy (may be empty if page requires login)
+    if (detected === 'facebook') {
+      setFetchingMeta(true)
+      try {
+        const res = await fetch(`/api/explore/oembed?url=${encodeURIComponent(trimmed)}`)
+        const data = await res.json()
+        setUrlMeta({ thumbnail_url: data.thumbnail_url || '', title: data.title || '' })
+      } catch { setUrlMeta({ thumbnail_url: '', title: '' }) }
+      finally { setFetchingMeta(false) }
+    }
   }
 
   /* ─── Submit ─── */

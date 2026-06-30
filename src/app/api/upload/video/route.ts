@@ -11,6 +11,10 @@ const MAX_THUMB_BYTES = 10 * 1024 * 1024  // 10MB
 // Generates a Vercel Blob upload token for client-side upload.
 // Client uploads directly to Blob (bypasses serverless body size limit).
 // Pass clientPayload='thumbnail' for thumbnail uploads.
+//
+// TODO(cost): Migrate video storage to Cloudflare R2 + CDN to reduce egress cost at scale.
+// Keep Vercel Blob for avatars and small images (infrequent access, low egress).
+// Thumbnails can stay on Blob since they are small. Videos are the egress bottleneck.
 export async function POST(req: NextRequest) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()

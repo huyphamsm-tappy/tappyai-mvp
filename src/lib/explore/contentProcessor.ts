@@ -8,37 +8,78 @@ export interface ContentMeta {
   location: string
 }
 
+interface ProcessOpts {
+  thumbnailUrl?: string
+  caption?: string
+  title?: string
+}
+
 // Run ONCE on upload — never during feed load or scroll
-export async function processContent(thumbnailUrl: string, hint = ''): Promise<ContentMeta> {
+export async function processContent(opts: ProcessOpts): Promise<ContentMeta> {
+  const { thumbnailUrl, caption, title } = opts
   try {
     const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
+    // User provided caption: trust it, just extract hashtags + category (text-only, cheaper)
+    if (caption?.trim()) {
+      const contextLine = title?.trim() ? `\nTieu de: "${title.trim()}"` : ''
+      const { text } = await generateText({
+        model: anthropic('claude-haiku-4-5'),
+        maxTokens: 150,
+        messages: [{
+          role: 'user',
+          content: `Caption: "${caption.trim()}"${contextLine}\nTra ve JSON (khong them text): {"hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}`,
+        }],
+      })
+      const match = text.match(/\{[\s\S]*\}/)
+      const p = match ? JSON.parse(match[0]) : {}
+      return {
+        caption: caption.trim().slice(0, 200),
+        hashtags: Array.isArray(p.hashtags) ? p.hashtags.slice(0, 5).map(String) : [],
+        category: typeof p.category === 'string' ? p.category : 'other',
+        location: typeof p.location === 'string' ? p.location.slice(0, 100) : '',
+      }
+    }
+
+    // No caption: generate one from title and/or thumbnail
+    if (!title?.trim() && !thumbnailUrl) return fallback('')
+
+    // Text-only when title available but no thumbnail
+    if (title?.trim() && !thumbnailUrl) {
+      const { text } = await generateText({
+        model: anthropic('claude-haiku-4-5'),
+        maxTokens: 200,
+        messages: [{
+          role: 'user',
+          content: `Tieu de video: "${title.trim()}"\nTra ve JSON (khong them text):\n{"caption":"caption tieng Viet tu nhien 1-2 cau","hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}`,
+        }],
+      })
+      const match = text.match(/\{[\s\S]*\}/)
+      if (!match) return fallback(title)
+      const p = JSON.parse(match[0])
+      return {
+        caption: typeof p.caption === 'string' ? p.caption.slice(0, 200) : title.slice(0, 200),
+        hashtags: Array.isArray(p.hashtags) ? p.hashtags.slice(0, 5).map(String) : [],
+        category: typeof p.category === 'string' ? p.category : 'other',
+        location: typeof p.location === 'string' ? p.location.slice(0, 100) : '',
+      }
+    }
+
+    // Thumbnail (with optional title as hint)
+    const titleHint = title?.trim() ? `Tieu de: "${title.trim()}"\n` : ''
     const { text } = await generateText({
       model: anthropic('claude-haiku-4-5'),
       maxTokens: 200,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            { type: 'image', image: new URL(thumbnailUrl) },
-            {
-              type: 'text',
-              text: `Phan tich anh, tra ve JSON ngan gon (khong them text):${hint ? '\nGoi y: ' + hint : ''}
-{
-  "caption": "caption tieng Viet tu nhien 1-2 cau phu hop mang xa hoi",
-  "hashtags": ["tag1","tag2","tag3"],
-  "category": "food|cafe|spa|entertainment|travel|shopping|other",
-  "location": "khu vuc hoac chuoi rong neu khong ro"
-}`,
-            },
-          ],
-        },
-      ],
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', image: new URL(thumbnailUrl!) },
+          { type: 'text', text: `${titleHint}Phan tich anh, tra ve JSON ngan gon (khong them text):\n{"caption":"caption tieng Viet tu nhien 1-2 cau","hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}` },
+        ],
+      }],
     })
-
     const match = text.match(/\{[\s\S]*\}/)
-    if (!match) return fallback(hint)
-
+    if (!match) return fallback(title || '')
     const p = JSON.parse(match[0])
     return {
       caption: typeof p.caption === 'string' ? p.caption.slice(0, 200) : '',
@@ -47,7 +88,7 @@ export async function processContent(thumbnailUrl: string, hint = ''): Promise<C
       location: typeof p.location === 'string' ? p.location.slice(0, 100) : '',
     }
   } catch {
-    return fallback(hint)
+    return fallback(caption || title || '')
   }
 }
 
