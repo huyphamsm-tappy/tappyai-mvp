@@ -17,7 +17,6 @@ export async function GET(request: NextRequest) {
   // destination so we can create one clean NextResponse.redirect(url) instead
   // of mutating a pre-built response's Location header — that mutation is
   // fragile across Next.js / edge-runtime versions.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sessionCookies: Array<{ name: string; value: string; options: any }> = []
 
   const supabase = createServerClient(
@@ -29,7 +28,6 @@ export async function GET(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           cookiesToSet.forEach(c => sessionCookies.push(c as any))
         },
       },

@@ -748,7 +748,6 @@ export default function ChatInterface({
                   </div>
                 )
               }
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const msgAttachments = (msg as any).experimental_attachments as Array<{ url: string; name?: string; contentType?: string }> | undefined
               return (
                 <div key={msg.id} className="animate-slide-up flex justify-end">

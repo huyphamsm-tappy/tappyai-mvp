@@ -145,7 +145,7 @@ export default async function BookingsPage() {
             {/* Notes */}
             {b.notes && (
               <div className="mx-4 mb-3 bg-gray-50 dark:bg-gray-800 rounded-xl px-3 py-2">
-                <p className="text-xs text-gray-400 dark:text-gray-500 italic">"{b.notes}"</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 italic">&ldquo;{b.notes}&rdquo;</p>
               </div>
             )}
 

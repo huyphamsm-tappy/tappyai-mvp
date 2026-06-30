@@ -195,7 +195,6 @@ export function applyLuxuryStreamFilter(response: Response): Response {
   const encoder = new TextEncoder()
   let lineRemainder = ''
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const transform = new TransformStream<any, any>({
     transform(chunk, controller) {
       lineRemainder += decoder.decode(chunk, { stream: true })
