@@ -14,6 +14,7 @@ import { track } from '@/lib/tracking/tracker'
 import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import VideoPlayer from '@/components/explore/VideoPlayer'
+import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 
 /* ─── types ─── */
 interface Profile { full_name: string | null; avatar_url: string | null }
@@ -187,9 +188,15 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
   const name = r.profiles?.full_name || 'Ẩn danh'
   const handle = '@' + name.replace(/\s+/g, '').toLowerCase()
   const [menu, setMenu] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (r.content_type !== 'video' || !containerRef.current) return
+    return attachWatchTracker(containerRef.current, r.id, null)
+  }, [r.id, r.content_type])
 
   return (
-    <div className="relative w-full h-dvh flex-shrink-0 snap-start bg-black overflow-hidden">
+    <div ref={containerRef} className="relative w-full h-dvh flex-shrink-0 snap-start bg-black overflow-hidden">
       {/* BG */}
       {r.content_type === 'video' && r.media_url
         ? <VideoPlayer
