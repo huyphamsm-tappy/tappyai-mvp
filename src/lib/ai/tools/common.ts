@@ -91,6 +91,44 @@ export function sanitizeUrlForMarkdown(link: string): string {
   return link.replace(/\(/g, '%28').replace(/\)/g, '%29')
 }
 
+// ===== EMBEDDABLE IMAGE PICKER =====
+// Serper image results carry BOTH the original (imageUrl — often on a hotlink-protected
+// host such as Instagram/Facebook CDN, which a browser <img> cannot load) AND a Google-hosted
+// thumbnail (thumbnailUrl on encrypted-tbn0.gstatic.com — a Google CDN with NO hotlink
+// protection, so it always renders in the browser). We prefer the embeddable Google host.
+const HOTLINK_BLOCKED_HOSTS = ['lookaside.instagram.com', 'instagram.', 'cdninstagram', 'fbcdn.net', 'fbsbx.com', 'facebook.com', 'pinimg.com']
+const EMBEDDABLE_HOSTS = ['gstatic.com', 'googleusercontent.com', 'ggpht.com', 'bing.com', 'bing.net']
+
+function hostOf(url: string): string {
+  try { return new URL(url).hostname } catch { return '' }
+}
+function isBlockedHost(url: string): boolean {
+  const h = hostOf(url)
+  return HOTLINK_BLOCKED_HOSTS.some(b => h.includes(b))
+}
+function isEmbeddableHost(url: string): boolean {
+  const h = hostOf(url)
+  return EMBEDDABLE_HOSTS.some(b => h.includes(b))
+}
+
+export function pickEmbeddableImageUrl(images: Array<{ imageUrl?: string; thumbnailUrl?: string }> | undefined): string | null {
+  if (!images || images.length === 0) return null
+  // 1. Prefer a Google-hosted thumbnail (gstatic) — guaranteed embeddable, no hotlink protection
+  for (const img of images) {
+    if (img.thumbnailUrl && isEmbeddableHost(img.thumbnailUrl)) return img.thumbnailUrl
+  }
+  // 2. Then any original imageUrl that is NOT a known hotlink-protected host
+  for (const img of images) {
+    if (img.imageUrl && !isBlockedHost(img.imageUrl)) return img.imageUrl
+  }
+  // 3. Then any thumbnailUrl at all (even non-gstatic — still usually embeddable)
+  for (const img of images) {
+    if (img.thumbnailUrl) return img.thumbnailUrl
+  }
+  // 4. Last resort: first imageUrl (may be blocked; renderer's onerror will hide it gracefully)
+  return images[0].imageUrl ?? null
+}
+
 // ===== FETCH PLACE PHOTO BY NAME via Serper Images (cached in Supabase) =====
 export async function fetchPlacePhotoByName(placeId: string, placeName: string): Promise<string | null> {
   const db = getCacheClient()
@@ -126,9 +164,9 @@ export async function fetchPlacePhotoByName(placeId: string, placeName: string):
       return null
     }
     const data = await (resp as Response).json()
-    const images = data?.images as Array<{ imageUrl?: string }> | undefined
-    const photoUri = images?.[0]?.imageUrl
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, hasUri: !!photoUri }))
+    const images = data?.images as Array<{ imageUrl?: string; thumbnailUrl?: string }> | undefined
+    const photoUri = pickEmbeddableImageUrl(images)
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, hasUri: !!photoUri, chosenHost: photoUri ? hostOf(photoUri) : null }))
     if (!photoUri) return null
     // 3. Cache in Supabase (fire-and-forget)
     if (db) {

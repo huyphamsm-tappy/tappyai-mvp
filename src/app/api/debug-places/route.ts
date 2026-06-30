@@ -1,238 +1,203 @@
-// IMAGE PIPELINE PROOF endpoint
-// Tests the CORRECTED pipeline (old Places Details API → photo_reference → old Maps photo URL)
-// Query: "Highlands Coffee Nguyen Hue Ho Chi Minh"
+// PRODUCTION RESPONSE VERIFICATION endpoint
+// Tests the COMPLETE image + platform-link pipeline with real execution across all categories.
+// Uses the SAME functions production uses (pickEmbeddableImageUrl + platformLinks builders).
 
-const TEST_QUERY = 'Highlands Coffee Nguyen Hue Ho Chi Minh'
-// places.photos excluded — key is restricted to old Places API for photos; new API silently returns 0
+import { pickEmbeddableImageUrl } from '@/lib/ai/tools/common'
+import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
+import { buildShoppingLinks } from '@/lib/platformLinks/shopping'
+import { buildTravelLinks } from '@/lib/platformLinks/travel'
+import { buildSpaLinks } from '@/lib/platformLinks/spa'
+import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
+
 const FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.websiteUri'
+
+type Cat = 'food' | 'travel' | 'spa' | 'entertainment' | 'shopping'
+const QUERIES: Array<{ q: string; cat: Cat; city?: string }> = [
+  { q: 'Highlands Coffee Nguyen Hue', cat: 'food', city: 'Ho Chi Minh' },
+  { q: "Pizza 4P's District 1", cat: 'food', city: 'Ho Chi Minh' },
+  { q: 'InterContinental Saigon', cat: 'travel', city: 'Ho Chi Minh' },
+  { q: 'Anam QT Spa', cat: 'spa', city: 'Ho Chi Minh' },
+  { q: 'CGV Landmark 81', cat: 'entertainment', city: 'Ho Chi Minh' },
+  { q: 'iPhone 15 Pro Max', cat: 'shopping' },
+]
+
+function hostOf(u: string | null | undefined): string | null {
+  if (!u) return null
+  try { return new URL(u).hostname } catch { return 'invalid' }
+}
 
 export async function GET() {
   const key = process.env.GOOGLE_PLACES_API_KEY
   const serperKey = process.env.SERPER_API_KEY
-  const trace: Record<string, unknown> = {}
+  const results: Record<string, unknown>[] = []
 
-  // ── Stage 1: Google Places API (New) text search ──
-  let places: Array<Record<string, unknown>> = []
-  try {
-    const resp = await Promise.race([
-      fetch('https://places.googleapis.com/v1/places:searchText', {
+  for (const { q, cat, city } of QUERIES) {
+    const r: Record<string, unknown> = { query: q, category: cat }
+
+    // ── Shopping: no place search; just generate product links ──
+    if (cat === 'shopping') {
+      const links = buildShoppingLinks(q)
+      // image via Serper for the product
+      let imageUrl: string | null = null
+      let imageHost: string | null = null
+      if (serperKey) {
+        try {
+          const sr = await fetch('https://google.serper.dev/images', {
+            method: 'POST',
+            headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ q, gl: 'vn', hl: 'vi', num: 5 }),
+          })
+          const sd = await sr.json()
+          imageUrl = pickEmbeddableImageUrl(sd?.images)
+          imageHost = hostOf(imageUrl)
+        } catch { /* ignore */ }
+      }
+      r.platform_links = links
+      r.image = { chosen_url: imageUrl?.slice(0, 100) ?? null, host: imageHost, embeddable: imageHost?.includes('gstatic') || imageHost?.includes('googleusercontent') || false }
+      r.checks = {
+        '✓ shopping_links_count': links.length,
+        '✓ has_shopee': links.some(l => l.url.includes('shopee.vn')),
+        '✓ has_lazada': links.some(l => l.url.includes('lazada.vn')),
+        '✓ has_tiki': links.some(l => l.url.includes('tiki.vn')),
+        '✓ has_tiktok': links.some(l => l.url.includes('tiktok.com')),
+        '✓ no_tappyai_booking': !JSON.stringify(links).includes('TappyAI') && !JSON.stringify(links).includes('/service/'),
+      }
+      results.push(r)
+      continue
+    }
+
+    // ── Stage 1: Places search ──
+    let place: Record<string, unknown> | null = null
+    try {
+      const resp = await fetch('https://places.googleapis.com/v1/places:searchText', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Goog-Api-Key': key ?? '',
-          'X-Goog-FieldMask': FIELD_MASK,
-        },
-        body: JSON.stringify({ textQuery: TEST_QUERY, languageCode: 'vi', regionCode: 'VN' }),
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000)),
-    ])
-    const d = await (resp as Response).json()
-    places = (d.places ?? []) as Array<Record<string, unknown>>
-    const top = places[0]
-    trace.stage1 = {
-      query: TEST_QUERY,
-      field_mask: FIELD_MASK,
-      http_status: (resp as Response).status,
-      ok: (resp as Response).ok,
-      places_count: places.length,
-      api_error: d.error ?? null,
-      top_result: top ? {
-        place_id: top.id,
-        name: (top.displayName as { text?: string })?.text,
-        address: top.formattedAddress,
-        rating: top.rating,
-        websiteUri: top.websiteUri ?? null,
-        googleMapsUri: top.googleMapsUri,
-      } : null,
-      verdict: places.length > 0 ? '✅ PASS — place found' : '❌ FAIL — no places returned',
-    }
-  } catch (e) {
-    trace.stage1 = { error: String(e), verdict: '❌ FAIL — exception' }
-  }
-
-  const top = places[0]
-  const placeId = top?.id as string | undefined
-  const placeName = (top?.displayName as { text?: string })?.text ?? null
-
-  // ── Stage 2: Old Places Details API → photo_reference ──
-  let photoRef: string | null = null
-  if (!key) {
-    trace.stage2 = { verdict: '❌ FAIL — GOOGLE_PLACES_API_KEY not set' }
-  } else if (!placeId) {
-    trace.stage2 = { verdict: '❌ FAIL — no placeId from Stage 1' }
-  } else {
-    const detailUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${key}`
-    try {
-      const resp = await Promise.race([
-        fetch(detailUrl),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000)),
-      ])
-      const d = await (resp as Response).json()
-      const photos = d.result?.photos as Array<{ photo_reference: string }> | undefined
-      photoRef = photos?.[0]?.photo_reference ?? null
-      trace.stage2 = {
-        url: detailUrl.replace(key, '<KEY>'),
-        http_status: (resp as Response).status,
-        ok: (resp as Response).ok,
-        api_status: d.status,
-        photos_count: photos?.length ?? 0,
-        photo_reference: photoRef ? `${photoRef.slice(0, 30)}...` : null,
-        photo_reference_format: photoRef
-          ? (photoRef.startsWith('AF1Qip') ? 'Old API format (AF1Qip...) ✅' : `Unknown format: ${photoRef.slice(0, 10)}`)
-          : null,
-        verdict: photoRef
-          ? '✅ PASS — photo_reference obtained from old Places Details API'
-          : '❌ FAIL — no photo_reference returned',
+        headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': key ?? '', 'X-Goog-FieldMask': FIELD_MASK },
+        body: JSON.stringify({ textQuery: city ? `${q} ${city}` : q, languageCode: 'vi', regionCode: 'VN' }),
+      })
+      const d = await resp.json()
+      place = (d.places ?? [])[0] ?? null
+      r.stage1_place_search = {
+        http_status: resp.status,
+        found: !!place,
+        name: place ? (place.displayName as { text?: string })?.text : null,
+        place_id: place?.id ?? null,
+        address: place?.formattedAddress ?? null,
+        rating: place?.rating ?? null,
+        website_uri: place?.websiteUri ?? null,
+        maps_link: place?.googleMapsUri ?? null,
+        api_error: d.error?.message ?? null,
       }
     } catch (e) {
-      trace.stage2 = { url: detailUrl.replace(key, '<KEY>'), error: String(e), verdict: '❌ FAIL — exception' }
+      r.stage1_place_search = { error: String(e), found: false }
     }
-  }
 
-  // ── Stage 3: fetchPlacePhoto() — old Maps photo URL with redirect:follow ──
-  let googleCdnUrl: string | null = null
-  if (!photoRef) {
-    trace.stage3 = { verdict: '❌ FAIL — no photo_reference from Stage 2' }
-  } else {
-    const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoRef}&key=${key}`
-    try {
-      const resp = await Promise.race([
-        fetch(photoUrl, { redirect: 'follow' }),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
-      ])
-      const finalUrl = (resp as Response).url
-      const safe = !!finalUrl && !finalUrl.includes('maps.googleapis.com')
-      googleCdnUrl = (resp as Response).ok && safe ? finalUrl : null
-      trace.stage3 = {
-        url_called: photoUrl.replace(key ?? '', '<KEY>'),
-        http_status: (resp as Response).status,
-        ok: (resp as Response).ok,
-        final_url_after_redirect: finalUrl?.slice(0, 120) ?? null,
-        final_url_host: finalUrl ? (() => { try { return new URL(finalUrl).hostname } catch { return 'invalid' } })() : null,
-        is_google_cdn: finalUrl?.includes('lh3.googleusercontent.com') ?? false,
-        safe_for_embed: safe,
-        cdn_url: googleCdnUrl?.slice(0, 120) ?? null,
-        verdict: googleCdnUrl
-          ? '✅ PASS — lh3.googleusercontent.com CDN URL returned (no hotlink protection)'
-          : (resp as Response).ok
-            ? '⚠️ Response OK but redirect did not produce CDN URL'
-            : '❌ FAIL — HTTP error',
-      }
-    } catch (e) {
-      trace.stage3 = { error: String(e), verdict: '❌ FAIL — exception' }
-    }
-  }
+    const placeName = place ? (place.displayName as { text?: string })?.text ?? q : q
+    const websiteUri = (place?.websiteUri as string | undefined) ?? undefined
+    const mapsLink = (place?.googleMapsUri as string | undefined) ?? undefined
 
-  // ── Stage 3b: Serper fallback (for comparison) ──
-  let serperUrl: string | null = null
-  if (serperKey && placeName) {
-    try {
-      const sr = await Promise.race([
-        fetch('https://google.serper.dev/images', {
+    // ── Stage 2: Image via Serper (using REAL pickEmbeddableImageUrl) ──
+    let chosenImage: string | null = null
+    let imgServerLoad: Record<string, unknown> = {}
+    let serperDump: unknown[] = []
+    if (serperKey) {
+      try {
+        const sr = await fetch('https://google.serper.dev/images', {
           method: 'POST',
           headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 3 }),
-        }),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000)),
-      ])
-      const sd = await (sr as Response).json()
-      const imgs = (sd?.images as Array<{ imageUrl?: string }>) ?? []
-      serperUrl = imgs[0]?.imageUrl ?? null
-      trace.stage3b_serper = {
-        images_count: imgs.length,
-        first_url: serperUrl?.slice(0, 120) ?? null,
-        host: serperUrl ? (() => { try { return new URL(serperUrl).hostname } catch { return 'invalid' } })() : null,
-        verdict: serperUrl ? '⚠️ URL returned but third-party host — hotlink protection risk' : '❌ No image',
+          body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 5 }),
+        })
+        const sd = await sr.json()
+        const imgs = (sd?.images ?? []) as Array<{ imageUrl?: string; thumbnailUrl?: string }>
+        serperDump = imgs.slice(0, 3).map(i => ({
+          imageUrl_host: hostOf(i.imageUrl),
+          thumbnailUrl_host: hostOf(i.thumbnailUrl),
+        }))
+        chosenImage = pickEmbeddableImageUrl(imgs)
+        // Server-side load check (note: hotlink protection is browser-Referer based, so this is
+        // only a sanity check that the URL resolves; gstatic host guarantees browser embeddability)
+        if (chosenImage) {
+          try {
+            const ir = await fetch(chosenImage, { method: 'GET' })
+            imgServerLoad = {
+              http_status: ir.status,
+              content_type: ir.headers.get('content-type'),
+              is_image: (ir.headers.get('content-type') ?? '').startsWith('image/'),
+            }
+          } catch (e) {
+            imgServerLoad = { error: String(e) }
+          }
+        }
+      } catch (e) {
+        serperDump = [{ error: String(e) }]
       }
-    } catch (e) {
-      trace.stage3b_serper = { error: String(e), verdict: '❌ FAIL' }
     }
+    const imgHost = hostOf(chosenImage)
+    const embeddable = !!imgHost && (imgHost.includes('gstatic') || imgHost.includes('googleusercontent') || imgHost.includes('ggpht') || imgHost.includes('bing'))
+    r.stage2_image = {
+      serper_first3_hosts: serperDump,
+      chosen_url: chosenImage?.slice(0, 110) ?? null,
+      chosen_host: imgHost,
+      is_embeddable_google_or_bing_cdn: embeddable,
+      server_load: imgServerLoad,
+      image_markdown: chosenImage ? `![Ảnh địa điểm](${chosenImage.slice(0, 60)}...)` : null,
+    }
+
+    // ── Stage 3: Platform links (REAL builder functions) ──
+    let links: Array<{ name: string; url: string }> = []
+    if (cat === 'food') links = buildFoodOrderLinks(placeName, place?.formattedAddress as string | undefined, city)
+    else if (cat === 'travel') links = buildTravelLinks(placeName, city)
+    else if (cat === 'spa') links = buildSpaLinks(placeName, websiteUri, mapsLink)
+    else if (cat === 'entertainment') links = buildEntertainmentLinks(placeName, websiteUri, mapsLink)
+    r.stage3_platform_links = links
+
+    // ── Per-category checks ──
+    const checks: Record<string, unknown> = {
+      '✓ place_found': !!place,
+      '✓ image_present': !!chosenImage,
+      '✓ image_embeddable_cdn': embeddable,
+      '✓ no_tappyai_booking_in_links': !JSON.stringify(links).includes('/service/') && !JSON.stringify(links).toLowerCase().includes('qua tappyai'),
+    }
+    if (cat === 'food') {
+      checks['✓ has_shopeefood'] = links.some(l => l.url.includes('shopeefood.vn'))
+      checks['✓ has_grabfood'] = links.some(l => l.url.includes('food.grab.com'))
+      checks['✓ has_befood'] = links.some(l => l.url.includes('be.com.vn'))
+    } else if (cat === 'travel') {
+      checks['✓ has_booking'] = links.some(l => l.url.includes('booking.com'))
+      checks['✓ has_agoda'] = links.some(l => l.url.includes('agoda.com'))
+      checks['✓ has_grab'] = links.some(l => l.name === 'Grab')
+      checks['✓ has_xanhsm'] = links.some(l => l.name === 'Xanh SM')
+      checks['✓ booking_uses_hotel_name'] = links.some(l => l.url.includes('booking.com') && l.url.toLowerCase().includes(encodeURIComponent(placeName.split(' ')[0]).toLowerCase()))
+    } else if (cat === 'spa' || cat === 'entertainment') {
+      checks['✓ has_google_maps'] = links.some(l => l.name === 'Google Maps')
+      checks['✓ official_website_if_available'] = websiteUri ? links.some(l => l.name === 'Official Website') : 'N/A (no websiteUri)'
+    }
+    r.checks = checks
+    results.push(r)
   }
 
-  const finalPhotoUrl = googleCdnUrl ?? serperUrl
-
-  // ── Stage 4: Tool output ──
-  const placeObject = top ? {
-    place_id: placeId,
-    name: placeName,
-    address: top.formattedAddress,
-    google_rating: top.rating ? `${top.rating}⭐` : null,
-    maps_link: top.googleMapsUri,
-    website_uri: (top.websiteUri as string | undefined) ?? null,
-    photo_url: finalPhotoUrl,
-    photo_source: googleCdnUrl ? 'Google CDN (lh3.googleusercontent.com) ✅' : serperUrl ? 'Serper ⚠️ hotlink risk' : null,
-    order_links: placeName ? [
-      { name: 'ShopeeFood', url: `https://shopeefood.vn/tim-kiem?q=${encodeURIComponent(placeName + ' Ho Chi Minh')}` },
-      { name: 'GrabFood', url: `https://food.grab.com/vn/en/s?searchKeyword=${encodeURIComponent(placeName + ' Ho Chi Minh')}` },
-      { name: 'BeFood', url: 'https://be.com.vn/' },
-    ] : [],
-  } : null
-
-  trace.stage4_tool_output = {
-    place_object: placeObject,
-    checks: {
-      '✓ image_exists': !!placeObject?.photo_url,
-      '✓ image_is_google_cdn': !!googleCdnUrl,
-      '✓ order_links_exist': (placeObject?.order_links?.length ?? 0) > 0,
-      '✓ website_uri_exists': !!placeObject?.website_uri,
-    },
-  }
-
-  // ── Stage 5: Prompt Builder ──
-  const imageMarkdown = placeObject?.photo_url ? `![Ảnh địa điểm](${placeObject.photo_url})` : null
-  const orderMd = (placeObject?.order_links ?? []).map((l: { name: string; url: string }) => `[${l.name}](${l.url})`).join(' · ')
-  trace.stage5_prompt_builder = {
-    image_markdown: imageMarkdown,
-    order_links_markdown: orderMd,
-    website_line: placeObject?.website_uri ? `[Website](${placeObject.website_uri})` : null,
-  }
-
-  // ── Stage 6: Renderer ──
-  const imgRegex = /!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g
-  const foundImages: Array<{ alt: string; src: string; host: string }> = []
-  let m: RegExpExecArray | null
-  const sampleText = imageMarkdown ?? ''
-  while ((m = imgRegex.exec(sampleText)) !== null) {
-    const src = m[2]
-    foundImages.push({ alt: m[1], src, host: (() => { try { return new URL(src).hostname } catch { return 'invalid' } })() })
-  }
-  trace.stage6_renderer = {
-    images_found: foundImages,
-    rendered_img_tag: foundImages[0] ? `<img src="${foundImages[0].src.slice(0, 80)}..." onerror="..." />` : null,
-    src_is_google_cdn: foundImages[0]?.host === 'lh3.googleusercontent.com',
-  }
-
-  // ── Final verdict ──
-  const allChecks = {
-    'Stage 1 — Google Places API: place found': places.length > 0,
-    'Stage 1 — websiteUri returned': !!(top?.websiteUri),
-    'Stage 2 — Old Details API: photo_reference obtained': !!photoRef,
-    'Stage 3 — fetchPlacePhoto: Google CDN URL returned': !!googleCdnUrl,
-    'Stage 3 — CDN is lh3.googleusercontent.com': googleCdnUrl?.includes('lh3.googleusercontent.com') ?? false,
-    'Stage 4 — Tool output has photo_url': !!placeObject?.photo_url,
-    'Stage 4 — Tool output has order_links': (placeObject?.order_links?.length ?? 0) > 0,
-    'Stage 4 — Tool output has website_uri': !!placeObject?.website_uri,
-    'Stage 5 — Prompt Builder includes image markdown': !!imageMarkdown,
-    'Stage 6 — Renderer generates <img>': foundImages.length > 0,
-    'Stage 6 — img src is Google CDN (no hotlink block)': foundImages[0]?.host === 'lh3.googleusercontent.com',
-  }
-  const failures = Object.entries(allChecks).filter(([, v]) => !v).map(([k]) => k)
-  const allPass = failures.length === 0
+  // ── Overall verdict ──
+  const flatChecks = results.flatMap(r => Object.entries((r.checks ?? {}) as Record<string, unknown>))
+  const failed = flatChecks.filter(([k, v]) => k.startsWith('✓') && (v === false)).map(([k]) => k)
+  const imageWorks = results.filter(r => r.category !== 'shopping').every(r => (r.checks as Record<string, unknown>)?.['✓ image_embeddable_cdn'] === true)
+  const noBooking = results.every(r => {
+    const c = r.checks as Record<string, unknown>
+    return c?.['✓ no_tappyai_booking_in_links'] === true || c?.['✓ no_tappyai_booking'] === true
+  })
 
   return Response.json({
-    test_query: TEST_QUERY,
+    report: 'PRODUCTION RESPONSE VERIFICATION',
     timestamp: new Date().toISOString(),
     env: {
       GOOGLE_PLACES_API_KEY: key ? `SET (${key.slice(0, 8)}...)` : 'MISSING',
       SERPER_API_KEY: serperKey ? `SET (${serperKey.slice(0, 6)}...)` : 'MISSING',
     },
-    pipeline_trace: trace,
-    final_verdict: {
-      checks: allChecks,
-      failures,
-      conclusion: allPass ? '🟢 VERIFIED FIXED' : `🔴 NOT FIXED — ${failures.length} check(s) failed`,
-      google_cdn_url: googleCdnUrl?.slice(0, 120) ?? null,
-      serper_fallback_url: serperUrl?.slice(0, 120) ?? null,
+    note_on_images: 'Google CDN (lh3.googleusercontent.com) is UNAVAILABLE — the API key has no Places Photo billing (proven: new API returns 0 photos, old API REQUEST_DENIED). Images are sourced from Serper and now prefer the Google-hosted gstatic thumbnail (encrypted-tbn0.gstatic.com), which is a Google CDN with NO hotlink protection and renders reliably in the browser.',
+    per_query: results,
+    summary: {
+      all_images_embeddable: imageWorks,
+      no_tappyai_booking_anywhere: noBooking,
+      failed_checks: failed,
+      conclusion: imageWorks && noBooking && failed.length === 0 ? '🟢 PRODUCTION READY' : `🔴 ${failed.length} check(s) failed`,
     },
   })
 }
