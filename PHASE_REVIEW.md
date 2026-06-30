@@ -1,6 +1,6 @@
 # Phase 2 Review — Video Upload, Deals Rotation, Explore APIs
 
-**Commit cuối:** `f221a57`  
+**Commit cuối:** `f221a57` + URL-mode AI  
 **Branch:** `main`  
 **Deploy:** Vercel Production — ✅ Ready  
 **Ngày:** 2026-06-30
@@ -12,11 +12,11 @@
 | File | Mục đích |
 |---|---|
 | `src/app/api/upload/video/route.ts` | Vercel Blob `handleUpload` server handler — xác thực mime/size, cấp upload token |
-| `src/app/api/explore/process/route.ts` | POST — gọi claude-haiku-4-5 sinh caption + hashtags (ưu tiên caption → title → thumbnail) |
+| `src/app/api/explore/process/route.ts` | POST — gọi claude-haiku-4-5 sinh caption + hashtags theo priority chain |
 | `src/app/api/explore/oembed/route.ts` | GET proxy — TikTok oEmbed + Facebook OG scraper (edge runtime, CORS bypass) |
 | `src/components/explore/VideoPlayer.tsx` | Video player với platform source-link overlay (YouTube/TikTok/Facebook) |
 | `src/lib/explore/behaviorTracker.ts` | Client-side watch-time + completion-rate tracker (passive, non-blocking) |
-| `src/lib/explore/contentProcessor.ts` | AI content processor — text-only prompt khi có caption/title, vision khi không có |
+| `src/lib/explore/contentProcessor.ts` | AI content processor — priority: caption → title → thumbnail |
 | `public/feature-graphic.png` | App store feature graphic |
 | `public/zalo_verifier*.html` | Zalo domain verification files (×2) |
 
@@ -26,12 +26,12 @@
 
 | File | Thay đổi |
 |---|---|
-| `src/app/reviews/new/page.tsx` | Rewrite hoàn toàn — 3-tab media UI (Photo/Video/URL); gửi caption vào AI call |
+| `src/app/reviews/new/page.tsx` | Rewrite hoàn toàn — 3-tab media UI (Photo/Video/URL); AI flow cho cả video lẫn URL mode |
 | `src/lib/shopee-deals.ts` | Thay live API (blocked) bằng 26-deal curated pool + deterministic day rotation |
 | `src/app/deals/page.tsx` | Rewrite — color map theo category, badge styles, ICT timezone date, footer disclaimer |
 | `src/app/api/cron/deal-notifications/route.ts` | `getShopeeDeals` → `getDealsForPersonalization` (pool 12 deals cho AI) |
 | `src/app/api/reviews/feed/route.ts` | Feed query cập nhật columns mới: `content_type`, `media_url`, `thumbnail` |
-| `src/app/api/reviews/route.ts` | POST handler lưu thêm `media_url`, `content_type`, `source_type`, `source_url` |
+| `src/app/api/reviews/route.ts` | POST handler lưu thêm `media_url`, `content_type`, `source_type`, `source_url`, `hashtags` |
 | `src/app/reviews/page.tsx` | Feed UI render VideoPlayer cho video posts |
 | `src/lib/ai/tools/common.ts` | Minor updates |
 | `src/lib/ai/tools/food.ts` | Comment fix trên Serper photo fetch block |
@@ -74,15 +74,30 @@ Ba bước tuần tự, có thể huỷ:
 ```
 1. [thumb]  Canvas → frame tại 0.5s → JPEG blob → upload lên Blob → thumbUrl
 2. [video]  upload() với onUploadProgress + AbortController → media_url
-3. [ai]     POST /api/explore/process { caption, thumbnail_url } → caption + hashtags (non-blocking)
+3. [ai]     POST /api/explore/process { caption?, thumbnail_url } → hashtags + caption gợi ý (non-blocking)
 ```
+
+### URL Mode AI Flow (`reviews/new`)
+Khi user paste link (YouTube/TikTok/Facebook), ngay sau khi fetch metadata:
+```
+YouTube  → thumbnail từ i.ytimg.com → triggerUrlAI(thumb, '')
+TikTok   → oEmbed fetch            → triggerUrlAI(thumb, title)
+Facebook → OG scrape               → triggerUrlAI(thumb, title)
+
+triggerUrlAI: POST /api/explore/process { thumbnail_url?, title?, caption? }
+  → setAiHashtags nếu có
+  → setBody nếu body trống và AI trả về caption
+  → Non-blocking: failure không ảnh hưởng UX
+```
+Hashtags được lưu vào DB khi submit (`payload.hashtags = aiHashtags`).
 
 ### AI Input Priority (`contentProcessor.ts`)
 ```
-caption có  →  text-only prompt (nhanh hơn, rẻ hơn, chính xác hơn)
-title có    →  text-only prompt, AI sinh caption từ title
-chỉ thumbnail →  vision prompt (last resort)
-không có gì →  fallback empty
+1. caption có  →  text-only prompt (nhanh, không cần vision)
+               →  AI chỉ sinh hashtags + category, giữ nguyên caption của user
+2. title có    →  text-only prompt, AI sinh caption từ title
+3. thumbnail   →  vision prompt (last resort, chỉ khi không có text)
+4. không có gì →  fallback empty
 ```
 
 ### Facebook Best-Effort Preview
@@ -96,11 +111,6 @@ const seed = year * 10000 + (month+1) * 100 + day
 const j = (seed * (i + 1) * 2654435761) % (i + 1)
 ```
 26 deals, 11 platform. `getShopeeDeals()` → 7 deals. `getDealsForPersonalization()` → 12 deals.
-
-### URL Mode (YouTube/TikTok/Facebook)
-- **YouTube**: thumbnail từ `img.youtube.com/vi/{id}/maxresdefault.jpg` — không cần API call
-- **TikTok**: server-side oEmbed proxy (client bị CORS block)
-- **Facebook**: best-effort OG scrape qua `/api/explore/oembed`
 
 ### Naming Convention — snake_case xuyên suốt
 DB columns, API request body, frontend state đều dùng:
@@ -116,11 +126,13 @@ DB columns, API request body, frontend state đều dùng:
 | `/reviews/new` — Photo tab load | ✅ |
 | `/reviews/new` — Video tab hiển thị "mp4·mov·webm·≤15s·50MB" | ✅ |
 | `/reviews/new` — Link tab có sub-tabs YouTube/TikTok/Facebook | ✅ |
-| YouTube URL → thumbnail tự load (Rick Astley) | ✅ |
+| YouTube URL → thumbnail tự load + AI gọi sau | ✅ |
+| TikTok URL → oEmbed title + thumbnail + AI gọi sau | ✅ |
 | Nút "Đăng" kích hoạt sau khi nhập URL | ✅ |
-| AI dùng caption thay vì thumbnail khi user đã gõ nội dung | ✅ (logic) |
-| Facebook URL → gọi oembed, hiện thumbnail nếu public | ✅ (logic) |
-| Video upload end-to-end | ⚠️ Chưa test (thiếu BLOB_READ_WRITE_TOKEN local) |
+| AI dùng caption (text-only) thay vì thumbnail khi user gõ nội dung | ✅ |
+| AI sinh hashtags từ title/thumbnail cho URL posts | ✅ (logic) |
+| `npm run build` — pass không lỗi | ✅ |
+| Video upload end-to-end (Blob → AI → DB → feed) | ⚠️ Chưa test local (thiếu BLOB_READ_WRITE_TOKEN) |
 | Deal notification cron (7:30 ICT) | ⚠️ Đã schedule — chưa trigger thủ công |
 
 ---
@@ -128,9 +140,9 @@ DB columns, API request body, frontend state đều dùng:
 ## 7. Build Status
 
 ```
-Commit:   f221a57  fix: Phase 2 final fixes — AI input quality + Facebook OG preview + R2 TODO
-Status:   ✅ Build pass local (npm run build)
-URL:      https://tappyai.com
+Build local:   ✅ npm run build pass
+Commit cuối:   URL-mode AI + PHASE_REVIEW sync
+URL prod:      https://tappyai.com
 ```
 
 Lần redeploy trước (61c3e0f) cần thiết sau khi rotate `BLOB_READ_WRITE_TOKEN` để Vercel production nhận key mới.
@@ -145,19 +157,19 @@ Lần redeploy trước (61c3e0f) cần thiết sau khi rotate `BLOB_READ_WRITE_
 | Facebook OG scrape fail nếu page private/login-gated | Low | Fallback về thumbnail rỗng — không block UX |
 | TikTok oEmbed có thể rate-limit | Low | Edge-cached mỗi request; không có retry |
 | `review_interactions` chưa được dùng trong feed ranking | Low | Columns đã có, score formula ghi trong SQL comment |
-| Video >15s reject chỉ client-side | Low | Server handler cũng enforce `MAX_VIDEO_BYTES` — double protection |
+| Video >15s reject chỉ client-side + server size check | Low | Double protection: client duration check + server MAX_VIDEO_BYTES |
 
 ---
 
 ## 9. Known TODO Items
 
-- [ ] **Local dev**: Thêm `BLOB_READ_WRITE_TOKEN` vào `.env.local` (lấy từ Vercel UI hoặc sau lần rotate tiếp theo)
+- [ ] **Local dev**: Thêm `BLOB_READ_WRITE_TOKEN` vào `.env.local`
+- [ ] **Production test**: Verify video upload end-to-end trên https://tappyai.com/reviews/new
 - [ ] **Phase 3 chưa commit**: `src/app/api/profile/`, `src/app/profile/edit/`, `src/app/api/cron/morning-brief/`, `src/app/api/price-watch/`, `src/app/api/reviews/[id]/interact/`
 - [ ] **Feed ranking**: Đưa watch-time từ `review_interactions` vào score formula
 - [ ] **Video cancel UX**: Hiện toast "Đã huỷ" sau abort thay vì chỉ clear state
 - [ ] **Cron test**: Trigger `/api/cron/deal-notifications` thủ công với `CRON_SECRET` để verify push end-to-end
 - [ ] **Video storage**: Migrate lên Cloudflare R2 + CDN khi scale (xem TODO trong `upload/video/route.ts`)
-- [ ] **URL mode AI**: Chưa gọi `/api/explore/process` cho URL posts (title/thumbnail sẵn có nhưng chưa sinh hashtags tự động)
 
 ---
 
@@ -185,16 +197,34 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
 
 ### AI Input Priority (contentProcessor.ts)
 ```ts
-// caption có → text-only (nhanh, rẻ)
+// 1. Caption có → text-only (rẻ, chính xác)
 if (caption?.trim()) {
-  // Haiku sinh hashtags/category từ caption — không cần vision
+  // sinh hashtags + category từ caption — không gọi vision
 }
-// title có, không có thumbnail → text-only
-if (title?.trim() && !thumbnailUrl) {
-  // Haiku sinh caption + hashtags từ title
+// 2. Title có, không có thumbnail → text-only, sinh caption
+if (title?.trim() && !thumbnailUrl) { ... }
+// 3. Thumbnail (± title hint) → vision prompt
+{ type: 'image', image: new URL(thumbnailUrl) }, { type: 'text', text: titleHint + prompt }
+```
+
+### URL Mode AI Flow
+```ts
+const triggerUrlAI = async (thumbnail_url: string, title: string) => {
+  if (!thumbnail_url && !title) return
+  try {
+    const aiRes = await fetch('/api/explore/process', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ thumbnail_url, title, caption: body.trim() || undefined }),
+    })
+    if (aiRes.ok) {
+      const ai = await aiRes.json()
+      if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
+      if (!body.trim() && ai.caption) setBody(ai.caption)
+    }
+  } catch { /* non-blocking */ }
 }
-// thumbnail (với optional title hint) → vision
-// { type: 'image', ... }, { type: 'text', titleHint + prompt }
+// Gọi sau khi setUrlMeta cho YouTube / TikTok / Facebook
 ```
 
 ### Vercel Blob Upload với Progress + Cancel
@@ -211,7 +241,6 @@ const result = await upload(`videos/${Date.now()}.${ext}`, file, {
 ### Day-based Deal Rotation
 ```ts
 function getDailyDeals(count = 6): Deal[] {
-  const today = new Date()
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
   const shuffled = [...DEAL_POOL]
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -222,25 +251,11 @@ function getDailyDeals(count = 6): Deal[] {
 }
 ```
 
-### Facebook OG Scrape (oembed/route.ts)
+### Facebook OG Scrape
 ```ts
 const res = await fetch(url, {
   headers: { 'User-Agent': 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)' },
   signal: AbortSignal.timeout(6000),
 })
-const html = await res.text()
 const ogImage = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)?.[1] ?? null
-```
-
-### Upload Token Server Handler
-```ts
-const jsonResponse = await handleUpload({
-  body, request: req,
-  onBeforeGenerateToken: async (_pathname, clientPayload) => ({
-    allowedContentTypes: clientPayload === 'thumbnail' ? IMAGE_TYPES : [...VIDEO_TYPES, ...IMAGE_TYPES],
-    maximumSizeInBytes: clientPayload === 'thumbnail' ? MAX_THUMB_BYTES : MAX_VIDEO_BYTES,
-    tokenPayload: user.id,
-  }),
-  onUploadCompleted: async () => {},
-})
 ```

@@ -233,8 +233,28 @@ export default function NewReviewPage() {
   const cancelUpload = () => uploadControllerRef.current?.abort()
 
   /* ─── URL source ─── */
+  const triggerUrlAI = async (thumbnail_url: string, title: string) => {
+    if (!thumbnail_url && !title) return
+    try {
+      const aiRes = await fetch('/api/explore/process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          thumbnail_url: thumbnail_url || undefined,
+          title: title || undefined,
+          caption: body.trim() || undefined,
+        }),
+      })
+      if (aiRes.ok) {
+        const ai = await aiRes.json()
+        if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
+        if (!body.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
+      }
+    } catch { /* non-blocking */ }
+  }
+
   const handleUrlChange = async (val: string) => {
-    setSource_url(val); setUrlMeta(null)
+    setSource_url(val); setUrlMeta(null); setAiHashtags([])
     const trimmed = val.trim()
     if (!trimmed) return
 
@@ -244,7 +264,11 @@ export default function NewReviewPage() {
 
     if (detected === 'youtube') {
       const id = extractYoutubeId(trimmed)
-      if (id) setUrlMeta({ thumbnail_url: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`, title: '' })
+      if (id) {
+        const thumb = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`
+        setUrlMeta({ thumbnail_url: thumb, title: '' })
+        triggerUrlAI(thumb, '')
+      }
       return
     }
 
@@ -253,7 +277,10 @@ export default function NewReviewPage() {
       try {
         const res = await fetch(`/api/explore/oembed?url=${encodeURIComponent(trimmed)}`)
         const data = await res.json()
-        setUrlMeta({ thumbnail_url: data.thumbnail_url || '', title: data.title || '' })
+        const thumb = data.thumbnail_url || ''
+        const title = data.title || ''
+        setUrlMeta({ thumbnail_url: thumb, title })
+        triggerUrlAI(thumb, title)
       } catch { setUrlMeta({ thumbnail_url: '', title: '' }) }
       finally { setFetchingMeta(false) }
       return
@@ -265,7 +292,10 @@ export default function NewReviewPage() {
       try {
         const res = await fetch(`/api/explore/oembed?url=${encodeURIComponent(trimmed)}`)
         const data = await res.json()
-        setUrlMeta({ thumbnail_url: data.thumbnail_url || '', title: data.title || '' })
+        const thumb = data.thumbnail_url || ''
+        const title = data.title || ''
+        setUrlMeta({ thumbnail_url: thumb, title })
+        triggerUrlAI(thumb, title)
       } catch { setUrlMeta({ thumbnail_url: '', title: '' }) }
       finally { setFetchingMeta(false) }
     }
@@ -315,6 +345,7 @@ export default function NewReviewPage() {
         payload.source_type = source_type
         payload.source_url = source_url
         payload.thumbnail = urlMeta?.thumbnail_url || ''
+        if (aiHashtags.length > 0) payload.hashtags = aiHashtags
       }
 
       const res = await fetch('/api/reviews', {
