@@ -25,6 +25,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     .eq('review_id', params.id)
     .maybeSingle()
 
+  // First valid watch (≥3s) increments view_count exactly once per user per review
+  const isFirstView = !existing && watchSeconds >= 3
+
   const finalWatch = existing ? Math.max(existing.watch_seconds, watchSeconds) : watchSeconds
   const finalRate = existing ? Math.max(existing.completion_rate, completionRate) : completionRate
 
@@ -38,18 +41,24 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     { onConflict: 'user_id,review_id' }
   )
 
-  // Recompute watch_time_avg from all interactions for this review
+  // Sync watch_time_avg + completion_rate AVG, and increment view_count if first view
   const { data: interactions } = await supabase
     .from('review_interactions')
-    .select('watch_seconds')
+    .select('watch_seconds, completion_rate')
     .eq('review_id', params.id)
 
   if (interactions && interactions.length > 0) {
-    const avg = interactions.reduce((sum, r) => sum + (r.watch_seconds || 0), 0) / interactions.length
-    await supabase
-      .from('reviews')
-      .update({ watch_time_avg: Math.round(avg * 10) / 10 })
-      .eq('id', params.id)
+    const n = interactions.length
+    const avgWatch = interactions.reduce((s, r) => s + (r.watch_seconds || 0), 0) / n
+    const avgCompletion = interactions.reduce((s, r) => s + (r.completion_rate || 0), 0) / n
+    await supabase.from('reviews').update({
+      watch_time_avg: Math.round(avgWatch * 10) / 10,
+      completion_rate: Math.round(avgCompletion * 1000) / 1000,
+    }).eq('id', params.id)
+  }
+
+  if (isFirstView) {
+    await supabase.rpc('increment_review_view', { p_review_id: params.id })
   }
 
   return NextResponse.json({ ok: true })

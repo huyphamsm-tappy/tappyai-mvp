@@ -41,6 +41,18 @@ export async function GET() {
     likes = data || []
   }
 
+  // Milestone notifications for my reviews
+  let milestones: { id: string; review_id: string; milestone: number; created_at: string }[] = []
+  if (myReviewIds.length > 0) {
+    const { data } = await supabase
+      .from('review_milestones')
+      .select('id, review_id, milestone, created_at')
+      .in('review_id', myReviewIds)
+      .order('created_at', { ascending: false })
+      .limit(10)
+    milestones = data || []
+  }
+
   // Batch load profiles for all actors
   const profileIds = [
     ...(follows || []).map(f => f.follower_id),
@@ -76,6 +88,16 @@ export async function GET() {
       text: `đã thích bài "${reviewNameMap[l.review_id] || 'của bạn'}"`,
       url: `/reviews/${l.review_id}`,
       created_at: l.created_at,
+    })),
+    ...milestones.map(m => ({
+      id: 'ms_' + m.id,
+      type: 'milestone',
+      actor_id: '',
+      actor_name: '',
+      actor_avatar: null,
+      text: `🎉 Bài "${reviewNameMap[m.review_id] || 'của bạn'}" đạt ${m.milestone} lượt thích!`,
+      url: `/reviews/${m.review_id}`,
+      created_at: m.created_at,
     })),
   ]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())

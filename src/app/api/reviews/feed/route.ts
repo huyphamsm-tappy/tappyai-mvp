@@ -5,7 +5,7 @@ export const runtime = 'edge'
 const EXPLORE_SELECT = `
   id, user_id, place_id, place_name, place_address,
   rating, body, photos, is_verified, like_count, comment_count,
-  save_count, watch_time_avg, content_type, media_url, thumbnail,
+  save_count, watch_time_avg, completion_rate, view_count, content_type, media_url, thumbnail,
   hashtags, source_type, source_url, created_at,
   profiles(full_name, avatar_url)
 `
@@ -55,19 +55,49 @@ export async function GET(req: NextRequest) {
       const now = Date.now()
       const scored = data.map(r => {
         const daysOld = (now - new Date(r.created_at).getTime()) / (86400 * 1000)
-        const recencyBoost = 1.0 / (1.0 + daysOld)
+        const recencyScore = 1.0 / (1.0 + daysOld)
         const locationBoost = city && r.place_address?.toLowerCase().includes(city) ? 1.3 : 1.0
+        const normalizedWatch = Math.min((r.watch_time_avg || 0) / 60.0, 1.0)
+        const completionRate = r.completion_rate || 0
+        const viewCount = r.view_count || 0
+        const engagementRate = Math.min(
+          ((r.like_count || 0) + (r.comment_count || 0) + (r.save_count || 0)) / Math.max(viewCount, 1),
+          1.0
+        )
         const score = (
-          5
-          + (r.watch_time_avg || 0) * 0.4
-          + (r.save_count || 0) * 0.3
-          + (r.like_count || 0) * 0.2
-          + (r.comment_count || 0) * 0.1
-        ) * locationBoost * recencyBoost
+          normalizedWatch * 0.35
+          + completionRate * 0.25
+          + engagementRate * 0.25
+          + recencyScore * 0.15
+        ) * locationBoost
         return { ...r, score }
       })
       scored.sort((a, b) => b.score - a.score)
-      reviews = scored.slice(offset, offset + limit)
+      const page_results = scored.slice(offset, offset + limit)
+
+      // Cold-start: inject up to 2 new posts with zero engagement near end of page
+      const cutoff = new Date(now - 24 * 60 * 60 * 1000).toISOString()
+      const { data: coldPool } = await supabase
+        .from('reviews')
+        .select(EXPLORE_SELECT)
+        .or('is_hidden.is.null,is_hidden.eq.false')
+        .gte('created_at', cutoff)
+        .eq('like_count', 0)
+        .eq('save_count', 0)
+        .eq('comment_count', 0)
+        .eq('view_count', 0)
+        .order('created_at', { ascending: false })
+        .limit(10)
+
+      const pageIds = new Set(page_results.map((r: any) => r.id))
+      const coldCandidates = (coldPool || []).filter((r: any) => !pageIds.has(r.id)).slice(0, 2).map((r: any) => ({ ...r, score: 0 }))
+
+      if (coldCandidates.length > 0) {
+        const insertAt = Math.max(page_results.length - coldCandidates.length, 0)
+        page_results.splice(insertAt, 0, ...coldCandidates)
+      }
+
+      reviews = page_results
     }
   } else {
     // Latest, filtered, search, or following feed

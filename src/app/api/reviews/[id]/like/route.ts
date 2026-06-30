@@ -89,10 +89,10 @@ export async function POST(
       } catch { /* non-blocking — don't fail the like */ }
     })()
 
-    // Send notification to review owner
+    // Send notification to review owner + check like milestones
     const { data: review } = await supabase
       .from('reviews')
-      .select('user_id, place_name')
+      .select('user_id, place_name, like_count')
       .eq('id', reviewId)
       .single()
 
@@ -108,6 +108,28 @@ export async function POST(
         body: review.place_name || 'Xem ngay!',
         data: { url: `/reviews/${reviewId}` },
       }).catch(() => {})
+
+      // Milestone notification (5, 10, 50, 100, 500, 1000 likes)
+      const MILESTONES = [5, 10, 50, 100, 500, 1000]
+      const newCount = review.like_count || 0
+      if (MILESTONES.includes(newCount)) {
+        // ON CONFLICT DO NOTHING prevents duplicate milestone rows
+        const { data: existing } = await supabase
+          .from('review_milestones')
+          .select('id')
+          .eq('review_id', reviewId)
+          .eq('milestone', newCount)
+          .maybeSingle()
+
+        if (!existing) {
+          await supabase.from('review_milestones').insert({ review_id: reviewId, milestone: newCount })
+          sendNotificationToUser(review.user_id, {
+            title: `🎉 ${newCount} người đã thích bài của bạn!`,
+            body: review.place_name || 'Xem ngay',
+            data: { url: `/reviews/${reviewId}` },
+          }).catch(() => {})
+        }
+      }
     }
 
     return NextResponse.json({ liked: true })
