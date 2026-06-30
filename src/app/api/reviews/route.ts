@@ -52,16 +52,23 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập để đánh giá' }, { status: 401 })
 
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
+  let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]
   try {
     const b = await req.json()
     placeId = b.placeId?.trim()
     placeName = b.placeName?.trim()
     placeAddress = b.placeAddress?.trim() || ''
     rating = Number(b.rating)
-    body = b.body?.trim()
+    body = b.body?.trim() || ''
     photos = Array.isArray(b.photos) ? b.photos.filter((u: unknown) => typeof u === 'string').slice(0, 6) : []
+    media_url = b.media_url?.trim() || ''
+    thumbnail = b.thumbnail?.trim() || ''
+    content_type = b.content_type?.trim() || 'photo'
+    source_type = b.source_type?.trim() || 'upload'
+    source_url = b.source_url?.trim() || ''
+    hashtags = Array.isArray(b.hashtags) ? b.hashtags.filter((t: unknown) => typeof t === 'string').slice(0, 10) : []
     if (!placeId || !placeName) throw new Error('missing fields')
-    if (!body && photos.length === 0) throw new Error('need body or photos')
+    if (!body && photos.length === 0 && !media_url) throw new Error('need body or photos or media')
     if (rating && (rating < 1 || rating > 5 || !Number.isInteger(rating))) throw new Error('invalid rating')
     if (body.length > 1000) throw new Error('body too long')
   } catch {
@@ -101,10 +108,14 @@ export async function POST(req: NextRequest) {
     body: body || '',
     is_verified: isVerified,
   }
-  // Only include rating if > 0 (some DB schemas have CHECK rating >= 1)
   if (rating > 0) reviewData.rating = rating
-  // Include photos if any
   if (photos.length > 0) reviewData.photos = photos
+  if (content_type && content_type !== 'photo') reviewData.content_type = content_type
+  if (media_url) reviewData.media_url = media_url
+  if (thumbnail) reviewData.thumbnail = thumbnail
+  if (source_type && source_type !== 'upload') reviewData.source_type = source_type
+  if (source_url) reviewData.source_url = source_url
+  if (hashtags.length > 0) reviewData.hashtags = hashtags
 
   let { error: insertError } = await supabase.from('reviews').insert(reviewData)
 

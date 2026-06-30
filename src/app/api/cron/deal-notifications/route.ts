@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAllSubscribedUserIds, sendNotificationToUser } from '@/lib/notifications/send'
-import { getShopeeDeals } from '@/lib/shopee-deals'
+import { getDealsForPersonalization } from '@/lib/shopee-deals'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     const userIds = await getAllSubscribedUserIds()
     if (!userIds.length) return NextResponse.json({ ok: true, sent: 0 })
 
-    const deals = await getShopeeDeals()
+    const deals = await getDealsForPersonalization()
     const dealList = deals
       .map((d, i) => `${i + 1}. [${d.category}] ${d.title} — ${d.discount}`)
       .join('\n')

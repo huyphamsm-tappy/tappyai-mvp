@@ -2,17 +2,24 @@ import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
+const EXPLORE_SELECT = `
+  id, user_id, place_id, place_name, place_address,
+  rating, body, photos, is_verified, like_count, comment_count,
+  save_count, watch_time_avg, content_type, media_url, thumbnail,
+  hashtags, source_type, source_url, created_at,
+  profiles(full_name, avatar_url)
+`
 
-// GET /api/reviews/feed?page=0&limit=12&sort=latest|trending&userId=xxx&following=true
-// Returns paginated community review feed with like status for logged-in user
+// GET /api/reviews/feed?page=0&limit=12&sort=latest|trending&userId=xxx&following=true&city=xxx
 export async function GET(req: NextRequest) {
   const page = Math.max(0, parseInt(req.nextUrl.searchParams.get('page') || '0'))
   const limit = Math.min(20, parseInt(req.nextUrl.searchParams.get('limit') || '12'))
   const offset = page * limit
   const filterUserId = req.nextUrl.searchParams.get('userId')
-  const sort = req.nextUrl.searchParams.get('sort') || 'latest' // 'latest' | 'trending'
+  const sort = req.nextUrl.searchParams.get('sort') || 'latest'
   const search = req.nextUrl.searchParams.get('search')?.trim() || ''
   const followingOnly = req.nextUrl.searchParams.get('following') === 'true'
+  const city = req.nextUrl.searchParams.get('city')?.trim().toLowerCase() || ''
 
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -30,59 +37,72 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  let query = supabase
-    .from('reviews')
-    .select(`
-      id, user_id, place_id, place_name, place_address,
-      rating, body, photos, is_verified, like_count, comment_count, created_at,
-      profiles(full_name, avatar_url)
-    `)
-    .or('is_hidden.is.null,is_hidden.eq.false')
-    .range(offset, offset + limit - 1)
+  let reviews: any[] | null = null
+  let queryError: any = null
 
-  if (filterUserId) query = query.eq('user_id', filterUserId)
-  if (followingIds) query = query.in('user_id', followingIds)
-  if (search) query = query.or(`place_name.ilike.%${search}%,body.ilike.%${search}%`)
-
-  if (sort === 'trending') {
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-    query = query
-      .gte('created_at', thirtyDaysAgo)
-      .order('like_count', { ascending: false })
+  if (sort === 'trending' && !filterUserId && !followingIds && !search) {
+    // Score-based trending feed: fetch a batch, compute score in JS
+    const { data, error } = await supabase
+      .from('reviews')
+      .select(EXPLORE_SELECT)
+      .or('is_hidden.is.null,is_hidden.eq.false')
       .order('created_at', { ascending: false })
+      .limit(200)
+
+    queryError = error
+
+    if (!error && data) {
+      const now = Date.now()
+      const scored = data.map(r => {
+        const daysOld = (now - new Date(r.created_at).getTime()) / (86400 * 1000)
+        const recencyBoost = 1.0 / (1.0 + daysOld)
+        const locationBoost = city && r.place_address?.toLowerCase().includes(city) ? 1.3 : 1.0
+        const score = (
+          5
+          + (r.watch_time_avg || 0) * 0.4
+          + (r.save_count || 0) * 0.3
+          + (r.like_count || 0) * 0.2
+          + (r.comment_count || 0) * 0.1
+        ) * locationBoost * recencyBoost
+        return { ...r, score }
+      })
+      scored.sort((a, b) => b.score - a.score)
+      reviews = scored.slice(offset, offset + limit)
+    }
   } else {
+    // Latest, filtered, search, or following feed
+    let query = supabase
+      .from('reviews')
+      .select(EXPLORE_SELECT)
+      .or('is_hidden.is.null,is_hidden.eq.false')
+      .range(offset, offset + limit - 1)
+
+    if (filterUserId) query = query.eq('user_id', filterUserId)
+    if (followingIds) query = query.in('user_id', followingIds)
+    if (search) query = query.or(`place_name.ilike.%${search}%,body.ilike.%${search}%`)
     query = query.order('created_at', { ascending: false })
+
+    const { data, error } = await query
+    reviews = data
+    queryError = error
   }
 
-  const { data: reviews, error } = await query
-
-  if (error) {
-    console.error('[reviews/feed] query error:', error)
-    return NextResponse.json({ error: 'Lỗi tải feed' }, { status: 500 })
+  if (queryError) {
+    console.error('[reviews/feed] query error:', queryError)
+    return NextResponse.json({ error: 'Loi tai feed' }, { status: 500 })
   }
 
-  // Fetch liked review IDs for the current user
+  // Fetch liked and saved IDs for current user
   let likedIds: string[] = []
-  if (user && reviews && reviews.length > 0) {
-    const ids = reviews.map(r => r.id)
-    const { data: likes } = await supabase
-      .from('review_likes')
-      .select('review_id')
-      .eq('user_id', user.id)
-      .in('review_id', ids)
-    likedIds = (likes || []).map(l => l.review_id)
-  }
-
-  // Fetch saved IDs
   let savedIds: string[] = []
   if (user && reviews && reviews.length > 0) {
     const ids = reviews.map(r => r.id)
-    const { data: saves } = await supabase
-      .from('review_saves')
-      .select('review_id')
-      .eq('user_id', user.id)
-      .in('review_id', ids)
-    savedIds = (saves || []).map(s => s.review_id)
+    const [likesRes, savesRes] = await Promise.all([
+      supabase.from('review_likes').select('review_id').eq('user_id', user.id).in('review_id', ids),
+      supabase.from('review_saves').select('review_id').eq('user_id', user.id).in('review_id', ids),
+    ])
+    likedIds = (likesRes.data || []).map(l => l.review_id)
+    savedIds = (savesRes.data || []).map(s => s.review_id)
   }
 
   const enriched = (reviews || []).map(r => ({

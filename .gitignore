@@ -41,3 +41,11 @@ next-env.d.ts
 
 # Claude IDE settings
 .claude/
+.env*
+
+# Dev helper scripts (root-level only)
+/*.bat
+/*.ps1
+/*.vbs
+/*.log
+do_push.ps1

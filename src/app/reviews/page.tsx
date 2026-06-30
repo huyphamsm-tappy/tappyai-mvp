@@ -13,6 +13,7 @@ import { createClient } from '@/lib/supabase/client'
 import { track } from '@/lib/tracking/tracker'
 import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
+import VideoPlayer from '@/components/explore/VideoPlayer'
 
 /* ─── types ─── */
 interface Profile { full_name: string | null; avatar_url: string | null }
@@ -20,8 +21,11 @@ interface Comment { id: string; body: string; created_at: string; user_id: strin
 interface Review {
   id: string; user_id: string; place_name: string; place_address: string | null
   rating: number; body: string; photos: string[] | null
-  like_count: number; comment_count: number; created_at: string
+  like_count: number; comment_count: number; save_count?: number; created_at: string
   liked_by_me: boolean; saved_by_me: boolean; profiles: Profile | null
+  content_type?: string | null; media_url?: string | null; thumbnail?: string | null
+  source_type?: string | null; source_url?: string | null; hashtags?: string[] | null
+  watch_time_avg?: number; score?: number
 }
 
 interface Notification { id: string; type: string; actor_id: string; actor_name: string; actor_avatar: string | null; text: string; url: string; created_at: string }
@@ -187,7 +191,15 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
   return (
     <div className="relative w-full h-dvh flex-shrink-0 snap-start bg-black overflow-hidden">
       {/* BG */}
-      {photos.length > 0 ? <Carousel photos={photos} />
+      {r.content_type === 'video' && r.media_url
+        ? <VideoPlayer
+            url={r.media_url}
+            thumbnail={r.thumbnail ?? undefined}
+            sourceType={r.source_type ?? 'upload'}
+            sourceUrl={r.source_url ?? undefined}
+          />
+        : photos.length > 0
+        ? <Carousel photos={photos} />
         : <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />}
 
       {/* Top: for you / following */}
