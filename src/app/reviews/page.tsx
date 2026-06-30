@@ -179,7 +179,7 @@ function ShareModal({ review, onClose }: { review: Review; onClose: () => void }
 /* ─── Single post (TikTok style) ─── */
 function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, onShare, onDelete }: {
   r: Review; me: string | null
-  feedType: 'for-you' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'following') => void
+  feedType: 'for-you' | 'latest' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'latest' | 'following') => void
   onLike: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
 }) {
@@ -189,10 +189,11 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
   const handle = '@' + name.replace(/\s+/g, '').toLowerCase()
   const [menu, setMenu] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const durationRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (r.content_type !== 'video' || !containerRef.current) return
-    return attachWatchTracker(containerRef.current, r.id, null)
+    return attachWatchTracker(containerRef.current, r.id, () => durationRef.current)
   }, [r.id, r.content_type])
 
   return (
@@ -204,6 +205,7 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
             thumbnail={r.thumbnail ?? undefined}
             sourceType={r.source_type ?? 'upload'}
             sourceUrl={r.source_url ?? undefined}
+            onDurationKnown={d => { durationRef.current = d }}
           />
         : photos.length > 0
         ? <Carousel photos={photos} />
@@ -211,8 +213,9 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
 
       {/* Top: for you / following */}
       <div className="absolute top-0 left-0 right-0 z-20 pt-12 px-4 flex items-center justify-center gap-6">
-        <button onClick={() => onFeedTypeChange('following')} className={`text-sm font-medium ${feedType === 'following' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Đang follow</button>
-        <button onClick={() => onFeedTypeChange('for-you')} className={`text-sm font-medium ${feedType === 'for-you' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Đề xuất</button>
+        <button onClick={() => onFeedTypeChange('following')} className={`text-xs font-medium ${feedType === 'following' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Đang follow</button>
+        <button onClick={() => onFeedTypeChange('for-you')} className={`text-xs font-medium ${feedType === 'for-you' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Đề xuất</button>
+        <button onClick={() => onFeedTypeChange('latest')} className={`text-xs font-medium ${feedType === 'latest' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Mới nhất</button>
         {isMe && (
           <div className="absolute right-4 top-12">
             <button onClick={() => setMenu(v => !v)} className="w-8 h-8 flex items-center justify-center">
@@ -870,7 +873,9 @@ export default function ReviewsPage() {
     setTab(t)
     router.replace(window.location.pathname + '?tab=' + t, { scroll: false })
   }, [router])
-  const [feedType, setFeedType] = useState<'for-you' | 'following'>('for-you')
+  const [feedType, setFeedType] = useState<'for-you' | 'latest' | 'following'>('for-you')
+  const [city, setCity] = useState('')
+  const [topHashtags, setTopHashtags] = useState<string[]>([])
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [notifs, setNotifs] = useState<Notification[]>([])
@@ -901,7 +906,24 @@ export default function ReviewsPage() {
   useEffect(() => {
     if (!me) return
     getUserPreferences(me).then(p => setUserPrefs(p))
-  }, [me])
+    // City: infer from trailing segment of user's recent post addresses
+    supabase.from('reviews').select('place_address').eq('user_id', me).order('created_at', { ascending: false }).limit(5).then(({ data }) => {
+      const candidates = (data || []).map(r => r.place_address).filter(Boolean).map((a: string) => a.split(',').pop()?.trim() || '').filter(Boolean)
+      if (candidates.length === 0) return
+      const freq = new Map<string, number>()
+      for (const c of candidates) freq.set(c, (freq.get(c) || 0) + 1)
+      setCity(Array.from(freq.entries()).sort((a, b) => b[1] - a[1])[0][0])
+    })
+    // Top hashtags: from reviews the user has watched
+    supabase.from('review_interactions').select('review_id').eq('user_id', me).order('created_at', { ascending: false }).limit(20).then(async ({ data: interData }) => {
+      const ids = (interData || []).map(r => r.review_id as string)
+      if (ids.length === 0) return
+      const { data: hashData } = await supabase.from('reviews').select('hashtags').in('id', ids)
+      const freq = new Map<string, number>()
+      for (const row of hashData || []) for (const tag of row.hashtags || []) freq.set(tag, (freq.get(tag) || 0) + 1)
+      setTopHashtags(Array.from(freq.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([t]) => t))
+    })
+  }, [me, supabase])
 
   // Load notifications + hot places when inbox tab opens
   useEffect(() => {
@@ -929,19 +951,33 @@ export default function ReviewsPage() {
     })()
   }, [tab])
 
-  const fetch_ = useCallback(async (p: number, append = false, ft: 'for-you' | 'following' = 'for-you') => {
-    const followingParam = ft === 'following' ? '&following=true' : ''
-    const res = await fetch(`/api/reviews/feed?page=${p}&sort=latest${followingParam}`)
+  const fetch_ = useCallback(async (p: number, append = false, ft: 'for-you' | 'latest' | 'following' = 'for-you') => {
+    let url = `/api/reviews/feed?page=${p}&limit=12`
+    if (ft === 'for-you') {
+      url += `&sort=trending${city ? `&city=${encodeURIComponent(city)}` : ''}`
+    } else if (ft === 'latest') {
+      url += '&sort=latest'
+    } else {
+      url += '&sort=latest&following=true'
+    }
+    const res = await fetch(url)
     const data = await res.json()
-    const rows: Review[] = (data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false }))
+    let rows: Review[] = (data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false }))
+    if (ft === 'for-you' && topHashtags.length > 0) {
+      rows = [...rows].sort((a, b) => {
+        const sa = (a.hashtags || []).filter(t => topHashtags.includes(t)).length
+        const sb = (b.hashtags || []).filter(t => topHashtags.includes(t)).length
+        return sb - sa
+      })
+    }
     setReviews(prev => append ? [...prev, ...rows] : rows)
     hasMore.current = rows.length >= 12
     setLoading(false)
-  }, [])
+  }, [city, topHashtags])
 
   useEffect(() => { fetch_(0, false, feedType) }, [fetch_, feedType])
 
-  const handleFeedTypeChange = (ft: 'for-you' | 'following') => {
+  const handleFeedTypeChange = (ft: 'for-you' | 'latest' | 'following') => {
     if (ft === feedType) return
     setFeedType(ft)
     setLoading(true)
@@ -1050,6 +1086,8 @@ export default function ReviewsPage() {
                   <p className="text-4xl">{feedType === 'following' ? '👥' : '📸'}</p>
                   <p className="font-semibold">{feedType === 'following' ? 'Chưa theo dõi ai hoặc họ chưa đăng bài' : 'Chưa có bài nào'}</p>
                   {feedType === 'following'
+                    ? <button onClick={() => handleFeedTypeChange('for-you')} className="bg-white text-black px-6 py-2.5 rounded-full font-semibold">Xem Đề xuất</button>
+                    : feedType === 'latest'
                     ? <button onClick={() => handleFeedTypeChange('for-you')} className="bg-white text-black px-6 py-2.5 rounded-full font-semibold">Xem Đề xuất</button>
                     : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">Đăng ngay</Link>}
                 </div>

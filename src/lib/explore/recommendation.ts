@@ -37,7 +37,7 @@ export async function getRecommendationContext(userId: string): Promise<Recommen
         freq.set(tag, (freq.get(tag) || 0) + 1)
       }
     }
-    topHashtags = [...freq.entries()]
+    topHashtags = Array.from(freq.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([tag]) => tag)
@@ -52,5 +52,5 @@ function inferCity(addresses: string[]): string {
   if (candidates.length === 0) return ''
   const freq = new Map<string, number>()
   for (const c of candidates) freq.set(c, (freq.get(c) || 0) + 1)
-  return [...freq.entries()].sort((a, b) => b[1] - a[1])[0][0]
+  return Array.from(freq.entries()).sort((a, b) => b[1] - a[1])[0][0]
 }

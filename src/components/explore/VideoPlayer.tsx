@@ -8,9 +8,10 @@ interface VideoPlayerProps {
   sourceType?: string
   sourceUrl?: string
   onWatchProgress?: (seconds: number, completionRate: number) => void
+  onDurationKnown?: (d: number) => void
 }
 
-export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sourceUrl, onWatchProgress }: VideoPlayerProps) {
+export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sourceUrl, onWatchProgress, onDurationKnown }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
@@ -134,6 +135,7 @@ export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sou
         preload="metadata"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
+        onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
       {showPlayIcon && (

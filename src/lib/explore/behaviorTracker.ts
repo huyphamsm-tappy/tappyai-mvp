@@ -3,7 +3,7 @@ const MIN_WATCH_SECONDS = 3 // skip very short glances
 export function attachWatchTracker(
   element: HTMLElement,
   reviewId: string,
-  videoDuration: number | null = null
+  getDuration: (() => number | null) | null = null
 ): () => void {
   let startTime: number | null = null
   let totalWatched = 0
@@ -12,8 +12,9 @@ export function attachWatchTracker(
   const send = () => {
     if (totalWatched < MIN_WATCH_SECONDS || sent) return
     sent = true
-    const completionRate = videoDuration && videoDuration > 0
-      ? Math.min(totalWatched / videoDuration, 1)
+    const duration = getDuration?.() ?? null
+    const completionRate = duration && duration > 0
+      ? Math.min(totalWatched / duration, 1)
       : 0
     const payload = JSON.stringify({
       watch_seconds: Math.round(totalWatched),
