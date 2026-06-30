@@ -1,6 +1,6 @@
 # Phase 2 Review — Video Upload, Deals Rotation, Explore APIs
 
-**Commit cuối:** `f221a57` + URL-mode AI  
+**Commit cuối:** `3f89426`  
 **Branch:** `main`  
 **Deploy:** Vercel Production — ✅ Ready  
 **Ngày:** 2026-06-30
@@ -126,14 +126,19 @@ DB columns, API request body, frontend state đều dùng:
 | `/reviews/new` — Photo tab load | ✅ |
 | `/reviews/new` — Video tab hiển thị "mp4·mov·webm·≤15s·50MB" | ✅ |
 | `/reviews/new` — Link tab có sub-tabs YouTube/TikTok/Facebook | ✅ |
-| YouTube URL → thumbnail tự load + AI gọi sau | ✅ |
-| TikTok URL → oEmbed title + thumbnail + AI gọi sau | ✅ |
+| YouTube URL → thumbnail load + `/api/explore/process` 200 + 5 hashtags sinh ra | ✅ Production |
+| TikTok URL → oEmbed 200, thumbnail null → AI skip đúng (guard hoạt động) | ✅ Production |
+| Facebook URL → oembed OG scrape 200 + `/api/explore/process` 200 | ✅ Production |
 | Nút "Đăng" kích hoạt sau khi nhập URL | ✅ |
-| AI dùng caption (text-only) thay vì thumbnail khi user gõ nội dung | ✅ |
-| AI sinh hashtags từ title/thumbnail cho URL posts | ✅ (logic) |
+| AI dùng caption text-only khi user đã gõ nội dung | ✅ |
+| **Video upload — thumbnail Blob** | ✅ Production: `thumbnails/1782791414545.jpg` |
+| **Video upload — video Blob** | ✅ Production: `videos/1782791418060.webm` |
+| **Video upload — AI process** | ✅ Production: `/api/explore/process` 200 |
+| **Video upload — "Video đã tải lên" + Đăng enabled** | ✅ Production |
 | `npm run build` — pass không lỗi | ✅ |
-| Video upload end-to-end (Blob → AI → DB → feed) | ⚠️ Chưa test local (thiếu BLOB_READ_WRITE_TOKEN) |
 | Deal notification cron (7:30 ICT) | ⚠️ Đã schedule — chưa trigger thủ công |
+
+**Blob store:** `y5ozy0i9wdb73mam.public.blob.vercel-storage.com` (production `BLOB_READ_WRITE_TOKEN` confirmed working)
 
 ---
 
@@ -164,7 +169,6 @@ Lần redeploy trước (61c3e0f) cần thiết sau khi rotate `BLOB_READ_WRITE_
 ## 9. Known TODO Items
 
 - [ ] **Local dev**: Thêm `BLOB_READ_WRITE_TOKEN` vào `.env.local`
-- [ ] **Production test**: Verify video upload end-to-end trên https://tappyai.com/reviews/new
 - [ ] **Phase 3 chưa commit**: `src/app/api/profile/`, `src/app/profile/edit/`, `src/app/api/cron/morning-brief/`, `src/app/api/price-watch/`, `src/app/api/reviews/[id]/interact/`
 - [ ] **Feed ranking**: Đưa watch-time từ `review_interactions` vào score formula
 - [ ] **Video cancel UX**: Hiện toast "Đã huỷ" sau abort thay vì chỉ clear state
