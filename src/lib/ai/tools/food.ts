@@ -1,6 +1,9 @@
-import { getCache, setCache, serperSearch, fetchPlacePhotoByName } from './common'
+import { getCache, setCache, serperSearch, fetchPlacePhoto, fetchPlacePhotoByName } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
+import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
+import { buildSpaLinks } from '@/lib/platformLinks/spa'
+import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 
 export async function getNews(query: string) {
   const cacheKey = 'news:' + query.toLowerCase().trim()
@@ -121,12 +124,6 @@ export async function searchPlacesOSM(query: string, location?: string) {
   } catch (e) { return { error: String(e), results: [], google_maps_search: googleMapsUrl } }
 }
 
-const FOOD_DELIVERY_LINKS = [
-  { name: 'ShopeeFood', url: 'https://shopeefood.vn/' },
-  { name: 'GrabFood', url: 'https://food.grab.com/vn/vi/' },
-  { name: 'BeFood', url: 'https://be.com.vn/' },
-]
-
 // Kiem tra 1 link co phai trang CU THE (khong phai trang chu) tren ShopeeFood/GrabFood/Baemin/BeFood
 function isDirectFoodOrderLink(link: string): boolean {
   try {
@@ -165,7 +162,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           circle: { center: { latitude: locationBias.lat, longitude: locationBias.lng }, radius: 5000.0 }
         }
       }
-      const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
+      const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.photos,places.websiteUri'
       const resp = await Promise.race([
         fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
@@ -187,12 +184,21 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
-        // Fetch photos via Serper image search (Supabase-cached, no Maps Platform billing needed)
+        // Fetch photos: Google Places CDN first (stable, no hotlink protection), Serper image search as fallback
         const photoUrls = await Promise.all(
           placesData.map(async (r) => {
             const placeId = r.id as string
             const placeName = (r.displayName as { text?: string })?.text || ''
-            if (!placeId || !placeName) return null
+            if (!placeId) return null
+            // Try Google Places photo — pass full resource name (places/ChIJ.../photos/AeZ...)
+            const photos = r.photos as Array<{ name?: string }> | undefined
+            const photoName = photos?.[0]?.name as string | undefined
+            if (photoName) {
+              const googlePhoto = await fetchPlacePhoto(placeId, photoName)
+              if (googlePhoto) return googlePhoto
+            }
+            // Fallback: Serper image search (may have hotlink protection on returned URLs)
+            if (!placeName) return null
             return fetchPlacePhotoByName(placeId, placeName)
           })
         )
@@ -206,6 +212,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
             google_rating: r.rating ? `${r.rating}⭐ (${(r.userRatingCount as number | undefined)?.toLocaleString('vi-VN') ?? r.userRatingCount} đánh giá Google Maps)` : null,
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
             tiktok_url: `https://www.tiktok.com/search?q=${encodeURIComponent(((r.displayName as { text?: string })?.text || '') + ' review')}`,
+            ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
             ...(photoUrls[idx] ? { photo_url: photoUrls[idx] } : {})
           }))
         }
@@ -239,7 +246,42 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         if (isFood) {
           const directOrder = (orderResults || []).filter(r => isDirectFoodOrderLink(r.link))
           if (directOrder.length > 0) extra.order_search_results = directOrder
-          extra.order_links = FOOD_DELIVERY_LINKS
+          // Inject per-place search links using the exact restaurant name on each platform
+          const places = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined
+          if (Array.isArray(places)) {
+            extra.results = places.map(place => ({
+              ...place,
+              order_links: buildFoodOrderLinks(
+                place.name as string || '',
+                place.address as string | undefined,
+                location
+              )
+            }))
+          }
+        } else if (isSpa) {
+          const places = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined
+          if (Array.isArray(places)) {
+            extra.results = places.map(place => ({
+              ...place,
+              platform_links: buildSpaLinks(
+                place.name as string || '',
+                place.website_uri as string | undefined,
+                place.maps_link as string | undefined
+              )
+            }))
+          }
+        } else if (isEntertainment) {
+          const places = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined
+          if (Array.isArray(places)) {
+            extra.results = places.map(place => ({
+              ...place,
+              platform_links: buildEntertainmentLinks(
+                place.name as string || '',
+                place.website_uri as string | undefined,
+                place.maps_link as string | undefined
+              )
+            }))
+          }
         }
         if (Object.keys(extra).length > 0) {
           result = { ...(result as Record<string, unknown>), ...extra }

@@ -59,10 +59,12 @@ export async function fetchPlacePhoto(placeId: string, photoName: string): Promi
   const controller = new AbortController()
   const tid = setTimeout(() => controller.abort(), 3000)
   try {
-    const resp = await fetch(
-      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoName}&key=${key}`,
-      { signal: controller.signal, redirect: 'follow' }
-    )
+    // New API resource names (places/ChIJ.../photos/AeZ...) → use Places API (New) media endpoint
+    // Legacy photo_reference tokens → use old Maps API endpoint
+    const photoApiUrl = photoName.includes('/')
+      ? `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=400&key=${key}`
+      : `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoName}&key=${key}`
+    const resp = await fetch(photoApiUrl, { signal: controller.signal, redirect: 'follow' })
     clearTimeout(tid)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', status: resp.status, ok: resp.ok, finalUrl: resp.url?.slice(0, 60) || null }))
     if (!resp.ok) return null
