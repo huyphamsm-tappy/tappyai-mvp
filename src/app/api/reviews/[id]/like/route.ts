@@ -113,22 +113,17 @@ export async function POST(
       const MILESTONES = [5, 10, 50, 100, 500, 1000]
       const newCount = review.like_count || 0
       if (MILESTONES.includes(newCount)) {
-        // ON CONFLICT DO NOTHING prevents duplicate milestone rows
-        const { data: existing } = await supabase
+        const { error: msError } = await supabase
           .from('review_milestones')
-          .select('id')
-          .eq('review_id', reviewId)
-          .eq('milestone', newCount)
-          .maybeSingle()
-
-        if (!existing) {
-          await supabase.from('review_milestones').insert({ review_id: reviewId, milestone: newCount })
+          .insert({ review_id: reviewId, milestone: newCount })
+        if (!msError) {
           sendNotificationToUser(review.user_id, {
             title: `🎉 ${newCount} người đã thích bài của bạn!`,
             body: review.place_name || 'Xem ngay',
             data: { url: `/reviews/${reviewId}` },
           }).catch(() => {})
         }
+        // msError.code === '23505' → duplicate milestone, skip silently
       }
     }
 

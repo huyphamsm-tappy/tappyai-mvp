@@ -9,7 +9,11 @@ CREATE INDEX IF NOT EXISTS reviews_view_count_idx ON public.reviews (view_count)
 
 -- 2. Atomic increment function (avoids client-side race condition)
 CREATE OR REPLACE FUNCTION public.increment_review_view(p_review_id UUID)
-RETURNS VOID LANGUAGE SQL SECURITY DEFINER AS $$
+RETURNS VOID
+LANGUAGE SQL
+SECURITY DEFINER
+SET search_path = public
+AS $$
   UPDATE public.reviews SET view_count = view_count + 1 WHERE id = p_review_id;
 $$;
 

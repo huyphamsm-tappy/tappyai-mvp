@@ -67,6 +67,8 @@ export default function CreatorPage() {
 
     if (stats) {
       const views = stats.reduce((s, r) => s + (r.view_count || 0), 0)
+      // TODO: total_watch_time is MVP approximation only
+      // Current calculation: Σ(watch_time_avg × view_count)
       const watchSec = stats.reduce((s, r) => s + (r.watch_time_avg || 0) * (r.view_count || 0), 0)
       setTotalViews(views)
       setTotalWatchMin(Math.round(watchSec / 60))
