@@ -162,7 +162,8 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           circle: { center: { latitude: locationBias.lat, longitude: locationBias.lng }, radius: 5000.0 }
         }
       }
-      const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.photos,places.websiteUri'
+      // places.photos excluded: key is restricted to old Places API only — new API silently returns 0 photos
+      const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.websiteUri'
       const resp = await Promise.race([
         fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
@@ -184,19 +185,25 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
-        // Fetch photos: Google Places CDN first (stable, no hotlink protection), Serper image search as fallback
+        // Fetch photos: old Places Details API for photo_reference (key restricted from new API photos),
+        // then old Maps photo URL (redirect:follow → lh3.googleusercontent.com CDN). Serper as fallback.
         const photoUrls = await Promise.all(
           placesData.map(async (r) => {
             const placeId = r.id as string
             const placeName = (r.displayName as { text?: string })?.text || ''
             if (!placeId) return null
-            // Try Google Places photo — pass full resource name (places/ChIJ.../photos/AeZ...)
-            const photos = r.photos as Array<{ name?: string }> | undefined
-            const photoName = photos?.[0]?.name as string | undefined
-            if (photoName) {
-              const googlePhoto = await fetchPlacePhoto(placeId, photoName)
-              if (googlePhoto) return googlePhoto
-            }
+            try {
+              const detailResp = await Promise.race([
+                fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${key}`),
+                new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
+              ])
+              const detail = await (detailResp as Response).json()
+              const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
+              if (photoRef) {
+                const googlePhoto = await fetchPlacePhoto(placeId, photoRef)
+                if (googlePhoto) return googlePhoto
+              }
+            } catch { /* skip on timeout or error */ }
             // Fallback: Serper image search (may have hotlink protection on returned URLs)
             if (!placeName) return null
             return fetchPlacePhotoByName(placeId, placeName)
