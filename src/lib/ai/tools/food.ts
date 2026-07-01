@@ -57,21 +57,24 @@ export async function searchPlacesOSM(query: string, location?: string) {
   try {
     const cityCoords: Record<string, [number, number]> = {
       'ha noi': [21.0285, 105.8542], 'hanoi': [21.0285, 105.8542], 'hn': [21.0285, 105.8542],
-      'ho chi minh': [10.7769, 106.7009], 'hcm': [10.7769, 106.7009], 'saigon': [10.7769, 106.7009],
+      'ho chi minh': [10.7769, 106.7009], 'hcm': [10.7769, 106.7009], 'saigon': [10.7769, 106.7009], 'sai gon': [10.7769, 106.7009],
       'da nang': [16.0544, 108.2022], 'danang': [16.0544, 108.2022],
       'hue': [16.4637, 107.5909], 'can tho': [10.0452, 105.7469],
       'hai phong': [20.8449, 106.6881], 'nha trang': [12.2388, 109.1967],
       'da lat': [11.9404, 108.4583], 'vung tau': [10.3460, 107.0843],
       'hoi an': [15.8801, 108.3380],
     }
-    const locKey = loc.toLowerCase()
+    // normalizeVN strips Vietnamese diacritics — without this, real user input like
+    // "Hà Nội"/"Hoàn Kiếm Hà Nội" never matches the ASCII-only keys below, silently
+    // falling through to slower Nominatim geocoding and skipping the dense-metro radius.
+    const locKey = normalizeVN(loc.toLowerCase())
     const preset = Object.entries(cityCoords).find(([k]) => locKey.includes(k))
     let lat = preset ? preset[1][0] : 21.0285
     let lon = preset ? preset[1][1] : 105.8542
     // Dense metro search radius: a 5km amenity radius times out against public Overpass
     // mirrors in Hanoi/HCMC (measured: 504 after 12.7s at 5km vs 0.98s at 1.5km, same query).
     // Other cities/locations are less venue-dense — keep the larger 5km radius there.
-    const DENSE_METRO_KEYS = new Set(['ha noi', 'hanoi', 'hn', 'ho chi minh', 'hcm', 'saigon'])
+    const DENSE_METRO_KEYS = new Set(['ha noi', 'hanoi', 'hn', 'ho chi minh', 'hcm', 'saigon', 'sai gon'])
     const searchRadius = preset && DENSE_METRO_KEYS.has(preset[0]) ? 1500 : 5000
     if (!preset) {
       try {
@@ -136,7 +139,13 @@ export async function searchPlacesOSM(query: string, location?: string) {
     const results = baseResults.map((r, idx) => {
       const settled = photoResults[idx]
       const photoUrl = settled.status === 'fulfilled' ? settled.value : null
-      return { ...r, ...(photoUrl ? { photo_url: photoUrl } : {}) }
+      return {
+        ...r,
+        // Mirrors the same static tiktok_url template the Google branch already builds
+        // (food.ts, Google success branch) — OSM places had never had this field at all.
+        tiktok_url: `https://www.tiktok.com/search?q=${encodeURIComponent(r.name + ' review')}`,
+        ...(photoUrl ? { photo_url: photoUrl } : {})
+      }
     })
     return {
       location: loc, amenity_type: amenity, source: 'OpenStreetMap', count: results.length, results,
