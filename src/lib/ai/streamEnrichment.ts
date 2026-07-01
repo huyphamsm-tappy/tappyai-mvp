@@ -163,10 +163,13 @@ export function applyPlaceEnrichmentStreamFilter(response: Response): Response {
               if (Array.isArray(results) && results.length > 0) latestPlaces = results
             } else if (toolName === 'get_hotel_prices' || toolName === 'search_products') {
               // Neither has a 'name'-shaped results[] — search_results is the primary
-              // content instead, with 'title' standing in for the place name.
+              // content instead, with 'title' standing in for the place name. Raw titles
+              // are "Hotel Name - City - Booking.com"-style (from the Serper snippet); the
+              // AI writes just "Hotel Name", so matching on the full title never hits —
+              // take the part before the first " - " to match how it actually gets written.
               const searchResults = res.result?.search_results
               if (Array.isArray(searchResults) && searchResults.length > 0) {
-                latestPlaces = searchResults.map(r => ({ ...r, name: r.title }))
+                latestPlaces = searchResults.map(r => ({ ...r, name: r.title?.split(' - ')[0]?.trim() }))
               }
             }
           } catch { /* ignore */ }

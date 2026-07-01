@@ -43,12 +43,13 @@ export async function searchProducts(query: string) {
     }
 
     // search_results has no image field of its own — attach product photos by title, same
-    // Serper-image mechanism food.ts/travel.ts already use.
+    // Serper-image mechanism food.ts/travel.ts already use. Fetch for EVERY entry (already
+    // capped at 8 above), not just the first few — the AI doesn't always describe the
+    // first array entries, so a "top N" cap left whichever ones it picked imageless.
     if (searchResults && searchResults.length > 0) {
-      const topResults = searchResults.slice(0, 5)
-      const photoLists = await Promise.all(topResults.map(r => fetchPlacePhotosByName(r.link, r.title)))
+      const photoLists = await Promise.all(searchResults.map(r => fetchPlacePhotosByName(r.link, r.title)))
       searchResults = searchResults.map((r, idx) =>
-        idx < photoLists.length && photoLists[idx].length > 0
+        photoLists[idx].length > 0
           ? { ...r, photo_url: photoLists[idx][0], photo_urls: photoLists[idx] }
           : r
       )

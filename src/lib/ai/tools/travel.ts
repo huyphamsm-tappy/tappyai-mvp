@@ -216,11 +216,13 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
     // search_results (Booking/Agoda snippets) is the PRIMARY content the AI describes with
     // names/prices, but has no image field of its own — only hotel_list (OSM) did. Attach
     // photos by hotel name here too, same Serper-image mechanism food.ts already uses.
+    // Fetch for EVERY entry (already capped at 8 above) — the AI doesn't always describe
+    // the first few array entries, so limiting photos to a "top N" left whichever hotels
+    // it actually picked without an image to attach.
     if (searchResults && searchResults.length > 0) {
-      const topResults = searchResults.slice(0, 5)
-      const photoLists = await Promise.all(topResults.map(r => fetchPlacePhotosByName(r.link, r.title)))
+      const photoLists = await Promise.all(searchResults.map(r => fetchPlacePhotosByName(r.link, r.title)))
       searchResults = searchResults.map((r, idx) =>
-        idx < photoLists.length && photoLists[idx].length > 0
+        photoLists[idx].length > 0
           ? { ...r, photo_url: photoLists[idx][0], photo_urls: photoLists[idx] }
           : r
       )
