@@ -27,14 +27,15 @@ function domainOf(url: string): string {
 // The AI sometimes writes its OWN version of a link (different query string, city suffix
 // dropped, etc.) rather than copying the tool's exact URL — so even a decoded string match
 // misses it. What actually matters is whether that place already has a link to the same
-// domain somewhere near its own name, regardless of the exact URL content. windowEnd bounds
-// the search so it can't bleed into the next place's own block or the trailing CTA_BUTTONS
-// JSON (which commonly repeats the SAME domains for a different place).
+// domain somewhere near its own name, regardless of the exact URL content. windowEnd (the
+// next chosen place's own mention, or the CTA_BUTTONS marker) is the real boundary — no
+// extra fixed-length cap, since a single long image URL (CDN tracking params etc.) can
+// otherwise push a place's own TikTok/order line past an arbitrary short cutoff.
 function hasDomainNearName(placeName: string, domain: string, lowerText: string, windowEnd: number): boolean {
   if (!domain) return false
   const idx = lowerText.indexOf(placeName.toLowerCase())
   if (idx === -1) return false
-  const window = lowerText.slice(idx, Math.min(idx + 800, windowEnd))
+  const window = lowerText.slice(idx, windowEnd)
   return window.includes(domain)
 }
 
