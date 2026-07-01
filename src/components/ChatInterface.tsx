@@ -336,7 +336,7 @@ function formatMessage(content: string) {
   const withImages = content.replace(
     /\n?!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)\n?/g,
     (_, alt, src) =>
-      `\n<div style="margin:8px 0;border-radius:12px;overflow:hidden;max-width:280px"><img src="${src}" alt="${alt}" style="width:100%;height:160px;object-fit:cover;display:block" loading="lazy" onerror="this.closest('div').style.display='none'"/></div>\n`
+      `\n<div style="margin:8px 0;border-radius:12px;overflow:hidden;max-width:280px"><img src="${src}" alt="${alt}" data-zoomable="true" style="width:100%;height:160px;object-fit:cover;display:block;cursor:zoom-in" loading="lazy" onerror="this.closest('div').style.display='none'"/></div>\n`
   )
   return withImages
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline font-medium break-all">$1</a>')
@@ -377,6 +377,7 @@ export default function ChatInterface({
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
@@ -416,7 +417,7 @@ export default function ChatInterface({
 
   // Khởi tạo SpeechRecognition (Web Speech API)
   const startVoice = useCallback(() => {
-    const SpeechRecognition = window.SpeechRecognition || (window as unknown as { webkitSpeechRecognition: typeof SpeechRecognition }).webkitSpeechRecognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognition) {
       alert('Trình duyệt không hỗ trợ nhận giọng nói. Hãy dùng Chrome hoặc Edge.')
       return
@@ -598,7 +599,7 @@ export default function ChatInterface({
 
   // Dynamic prompts cho 'general' (theo giờ VN), static cho các category cụ thể
   const quickPrompts = useMemo(() => {
-    if (category === 'general' || !QUICK_PROMPTS[category]) {
+    if ((category as string) === 'general' || !QUICK_PROMPTS[category]) {
       const vnHour = (new Date().getUTCHours() + 7) % 24
       const vnDay = new Date().getUTCDay()
       return getDynamicPrompts(vnHour, vnDay, null, null, 3).map(p => p.text)
@@ -662,7 +663,15 @@ export default function ChatInterface({
               </div>
             </div>
           )}
-          <div className="space-y-6">
+          <div
+            className="space-y-6"
+            onClick={(e) => {
+              const target = e.target as HTMLElement
+              if (target.tagName === 'IMG' && target.dataset.zoomable === 'true') {
+                setZoomedImage((target as HTMLImageElement).src)
+              }
+            }}
+          >
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
@@ -757,7 +766,8 @@ export default function ChatInterface({
                         key={i}
                         src={att.url}
                         alt={att.name || 'Ảnh đính kèm'}
-                        className="rounded-2xl rounded-br-md max-w-[240px] max-h-[280px] object-cover border border-white/20 shadow"
+                        data-zoomable="true"
+                        className="rounded-2xl rounded-br-md max-w-[240px] max-h-[280px] object-cover border border-white/20 shadow cursor-zoom-in"
                       />
                     ))}
                     {(typeof msg.content === 'string' ? msg.content : '').trim() && (
@@ -938,6 +948,28 @@ export default function ChatInterface({
           </div>
         </form>
       </div>
+      {/* Image zoom lightbox — opens on click for any place photo or uploaded attachment */}
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in"
+          onClick={() => setZoomedImage(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setZoomedImage(null)}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            aria-label="Đóng"
+          >
+            <X size={22} />
+          </button>
+          <img
+            src={zoomedImage}
+            alt="Ảnh phóng to"
+            className="max-w-[92vw] max-h-[85vh] object-contain rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   )
 }
