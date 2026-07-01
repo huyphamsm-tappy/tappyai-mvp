@@ -68,6 +68,11 @@ export async function searchPlacesOSM(query: string, location?: string) {
     const preset = Object.entries(cityCoords).find(([k]) => locKey.includes(k))
     let lat = preset ? preset[1][0] : 21.0285
     let lon = preset ? preset[1][1] : 105.8542
+    // Dense metro search radius: a 5km amenity radius times out against public Overpass
+    // mirrors in Hanoi/HCMC (measured: 504 after 12.7s at 5km vs 0.98s at 1.5km, same query).
+    // Other cities/locations are less venue-dense — keep the larger 5km radius there.
+    const DENSE_METRO_KEYS = new Set(['ha noi', 'hanoi', 'hn', 'ho chi minh', 'hcm', 'saigon'])
+    const searchRadius = preset && DENSE_METRO_KEYS.has(preset[0]) ? 1500 : 5000
     if (!preset) {
       try {
         const geoResp = await Promise.race([
@@ -91,14 +96,16 @@ export async function searchPlacesOSM(query: string, location?: string) {
     else if (ql.match(/benh vien|hospital|clinic/)) amenity = 'hospital'
     else if (ql.match(/pharmacy|thuoc/)) amenity = 'pharmacy'
     else if (ql.match(/atm|ngan hang|bank/)) amenity = 'bank'
-    const oql = '[out:json][timeout:10];(node["amenity"="' + amenity + '"]["name"](around:5000,' + lat + ',' + lon + ');way["amenity"="' + amenity + '"]["name"](around:5000,' + lat + ',' + lon + '););out center 10;'
+    const oql = '[out:json][timeout:10];(node["amenity"="' + amenity + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + ');way["amenity"="' + amenity + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + '););out center 10;'
     const endpoints = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter']
     let overpassData: { elements?: unknown[] } | null = null
     for (const endpoint of endpoints) {
       try {
         const resp = await Promise.race([
           fetch(endpoint + '?data=' + encodeURIComponent(oql), { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+          // Aligned with the query's own [timeout:10] budget + 1s network buffer —
+          // previously 5000ms, which aborted before the server's own declared timeout.
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
         ])
         if ((resp as Response).ok) { overpassData = await (resp as Response).json(); break }
       } catch { continue }
