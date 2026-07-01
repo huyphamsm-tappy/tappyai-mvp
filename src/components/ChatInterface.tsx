@@ -332,11 +332,19 @@ function logCTAClick(button: CTAButton) {
 }
 
 function formatMessage(content: string) {
-  // Images first — render before link processing to avoid conflicts
+  // Images first — render before link processing to avoid conflicts. Group any run of
+  // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
+  // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
   const withImages = content.replace(
-    /\n?!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)\n?/g,
-    (_, alt, src) =>
-      `\n<div style="margin:8px 0;border-radius:12px;overflow:hidden;max-width:280px"><img src="${src}" alt="${alt}" data-zoomable="true" style="width:100%;height:160px;object-fit:cover;display:block;cursor:zoom-in" loading="lazy" onerror="this.closest('div').style.display='none'"/></div>\n`
+    /(?:!\[[^\]]*\]\(https?:\/\/[^\s)]+\)[ \t]*\n?)+/g,
+    (block) => {
+      const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]
+      if (imgs.length === 0) return block
+      const imgTags = imgs.map(([, alt, src]) =>
+        `<img src="${src}" alt="${alt}" data-zoomable="true" style="width:200px;height:160px;object-fit:cover;border-radius:12px;flex-shrink:0;scroll-snap-align:start;cursor:zoom-in" loading="lazy" onerror="this.style.display='none'"/>`
+      ).join('')
+      return `\n<div style="display:flex;gap:8px;overflow-x:auto;margin:8px 0;padding-bottom:2px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory">${imgTags}</div>\n`
+    }
   )
   return withImages
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline font-medium break-all">$1</a>')
