@@ -11,6 +11,7 @@ import { getModel, type ModelTier } from '@/lib/ai/provider'
 import { classifyIntent, detectLang, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock, type UserPrefs } from '@/lib/ai/promptBuilder'
+import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 
 export const maxDuration = 60
 
@@ -152,6 +153,7 @@ export async function POST(req: Request) {
     messages: trimmedMessages,
     maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 3000 : hasImage ? 1024 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
+    // @ts-ignore — experimental_prepareStep exists in AI SDK but missing from this version's types; do not remove
     experimental_prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) {
@@ -316,8 +318,9 @@ export async function POST(req: Request) {
     },
   })
   const baseResponse = result.toDataStreamResponse()
+  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse)
   return (budget && budget.max < LUXURY_PRICE_FLOOR)
-    ? applyLuxuryStreamFilter(baseResponse)
-    : baseResponse
+    ? applyLuxuryStreamFilter(enrichedResponse)
+    : enrichedResponse
 }
 
