@@ -20,11 +20,22 @@ function decodeSafe(s: string): string {
   try { return decodeURIComponent(s) } catch { return s }
 }
 
-// The AI sometimes rewrites a URL with literal accented characters instead of copying the
-// percent-encoded original verbatim (e.g. "...q=Ph%E1%BB%9F..." vs "...q=Phở..."). A raw
-// string .includes() misses that, so compare decoded forms instead.
-function urlAlreadyPresent(url: string, decodedText: string): boolean {
-  return decodedText.includes(decodeSafe(url))
+function domainOf(url: string): string {
+  try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase() } catch { return '' }
+}
+
+// The AI sometimes writes its OWN version of a link (different query string, city suffix
+// dropped, etc.) rather than copying the tool's exact URL — so even a decoded string match
+// misses it. What actually matters is whether that place already has a link to the same
+// domain somewhere near its own name, regardless of the exact URL content.
+function hasDomainNearName(placeName: string, domain: string, decodedText: string): boolean {
+  if (!domain) return false
+  const lowerText = decodedText.toLowerCase()
+  const idx = lowerText.indexOf(placeName.toLowerCase())
+  if (idx === -1) return false
+  // Window covers the AI's own description/links for that place before it moves to the next.
+  const window = lowerText.slice(idx, idx + 800)
+  return window.includes(domain)
 }
 
 function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): string {
@@ -38,12 +49,17 @@ function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): strin
 
   const parts: string[] = []
   for (const p of chosen) {
-    const lines: string[] = [`**${p.name}**`]
-    if (p.photo_url && !urlAlreadyPresent(p.photo_url, decodedText)) lines.push(`![Ảnh địa điểm](${p.photo_url})`)
-    if (p.tiktok_url && !urlAlreadyPresent(p.tiktok_url, decodedText)) lines.push(`🎵 [Xem review TikTok](${p.tiktok_url})`)
+    const name = p.name as string
+    const lines: string[] = [`**${name}**`]
+    if (p.photo_url && !hasDomainNearName(name, domainOf(p.photo_url), decodedText)) {
+      lines.push(`![Ảnh địa điểm](${p.photo_url})`)
+    }
+    if (p.tiktok_url && !hasDomainNearName(name, 'tiktok.com', decodedText)) {
+      lines.push(`🎵 [Xem review TikTok](${p.tiktok_url})`)
+    }
     const links = p.order_links || p.platform_links
     if (links && links.length > 0) {
-      const missing = links.filter(l => !urlAlreadyPresent(l.url, decodedText))
+      const missing = links.filter(l => !hasDomainNearName(name, domainOf(l.url), decodedText))
       if (missing.length > 0) lines.push(missing.map(l => `[${l.name}](${l.url})`).join(' · '))
     }
     if (lines.length > 1) parts.push(lines.join('\n'))
