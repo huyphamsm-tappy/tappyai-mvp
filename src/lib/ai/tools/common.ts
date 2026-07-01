@@ -1,5 +1,3 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
 const cache = new Map<string, CacheEntry>()
@@ -19,41 +17,15 @@ export function setCache(key: string, data: unknown, ttlMs: number) {
   cache.set(key, { data, expires: Date.now() + ttlMs })
 }
 
-// ===== SUPABASE CACHE CLIENT (no-cookie, for place_photos table) =====
-let _cacheDb: ReturnType<typeof createSupabaseClient> | null | undefined = undefined
-function getCacheClient() {
-  if (_cacheDb !== undefined) return _cacheDb
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  _cacheDb = url && key ? createSupabaseClient(url, key) : null
-  return _cacheDb
-}
-
-// ===== GOOGLE PLACES (NEW) PHOTO with Supabase persistent cache =====
-// Each unique place_id costs $0.007 once (Places API New Photos), then cached forever in DB.
+// ===== GOOGLE PLACES PHOTO — LIVE SOURCE ONLY =====
+// Google Maps Platform Terms of Service: Places content (photos) must not be pre-fetched,
+// cached, or stored beyond the request — only place_id (indefinitely) and lat/lng (<=30 days)
+// are exempt. This function therefore never persists the result; every call hits Google live.
 // photoName is the full resource path returned by Places API (New), e.g. "places/ChIJ.../photos/AeZ..."
 export async function fetchPlacePhoto(placeId: string, photoName: string): Promise<string | null> {
-  const db = getCacheClient()
-  // 1. Check Supabase cache first
-  if (db) {
-    try {
-      const { data, error } = await db
-        .from('place_photos')
-        .select('photo_url')
-        .eq('place_id', placeId)
-        .maybeSingle()
-      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache', placeId, hit: !!data?.photo_url, dbError: error?.message || null }))
-      if (data?.photo_url) return data.photo_url as string
-    } catch (e) {
-      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache_exception', placeId, error: String(e) }))
-    }
-  } else {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_cache_skipped', reason: 'no_db_client' }))
-  }
-  // 2. Call Places API (New) photo media endpoint
   const key = process.env.GOOGLE_PLACES_API_KEY
   if (!key || !photoName) {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', hasKey: !!key, hasPhotoName: !!photoName }))
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', placeId, hasKey: !!key, hasPhotoName: !!photoName }))
     return null
   }
   const controller = new AbortController()
@@ -66,22 +38,61 @@ export async function fetchPlacePhoto(placeId: string, photoName: string): Promi
       : `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoName}&key=${key}`
     const resp = await fetch(photoApiUrl, { signal: controller.signal, redirect: 'follow' })
     clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', status: resp.status, ok: resp.ok, finalUrl: resp.url?.slice(0, 60) || null }))
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', placeId, status: resp.status, ok: resp.ok, finalUrl: resp.url?.slice(0, 60) || null }))
     if (!resp.ok) return null
     const photoUri = resp.url
     const safe = !!photoUri && !photoUri.includes('maps.googleapis.com')
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_photoUri', photoUriPrefix: photoUri?.slice(0, 60) || null, safe }))
     if (!photoUri || !safe) return null
-    if (db) {
-      db.from('place_photos')
-        .upsert({ place_id: placeId, photo_url: photoUri })
-        .then(({ error: e }) => console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_write', placeId, ok: !e, dbError: e?.message || null })))
-        .catch(e => console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'db_write_exception', error: String(e) })))
-    }
     return photoUri
   } catch (e) {
     clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_exception', error: String(e) }))
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_exception', placeId, error: String(e) }))
+    return null
+  }
+}
+
+// ===== OFFICIAL WEBSITE IMAGE (og:image) — live only, short timeout, never blocks =====
+// Highest-priority source: an image the business itself publishes on its own site.
+// Bounded read (stops once <head> is seen or MAX_BYTES hit) + hard timeout so a slow/dead
+// site can never delay the overall place response — any failure here just falls through.
+export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<string | null> {
+  if (!websiteUri) return null
+  const controller = new AbortController()
+  const tid = setTimeout(() => controller.abort(), 1800)
+  try {
+    const resp = await fetch(websiteUri, {
+      signal: controller.signal,
+      redirect: 'follow',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TappyAI/1.0; +https://tappyai.com)' },
+    })
+    if (!resp.ok || !resp.body) { clearTimeout(tid); return null }
+    const contentType = resp.headers.get('content-type') || ''
+    if (!contentType.includes('text/html')) { clearTimeout(tid); return null }
+
+    const reader = resp.body.getReader()
+    const decoder = new TextDecoder()
+    let html = ''
+    let bytesRead = 0
+    const MAX_BYTES = 100_000
+    while (bytesRead < MAX_BYTES) {
+      const { done, value } = await reader.read()
+      if (done) break
+      bytesRead += value.length
+      html += decoder.decode(value, { stream: true })
+      if (/<\/head>/i.test(html)) break
+    }
+    reader.cancel().catch(() => {})
+    clearTimeout(tid)
+
+    const match =
+      html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i)
+    const raw = match?.[1]
+    if (!raw) return null
+    return new URL(raw, websiteUri).toString()
+  } catch (e) {
+    clearTimeout(tid)
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'website_image_failed', websiteUri: websiteUri.slice(0, 60), error: String(e).slice(0, 80) }))
     return null
   }
 }
@@ -111,40 +122,45 @@ function isEmbeddableHost(url: string): boolean {
   return EMBEDDABLE_HOSTS.some(b => h.includes(b))
 }
 
-export function pickEmbeddableImageUrl(images: Array<{ imageUrl?: string; thumbnailUrl?: string }> | undefined): string | null {
+// Simple heuristic (no AI/classification): Serper's Google Images results include plenty of
+// logos, icons, and ad banners mixed in with real venue photos. Skip anything small/square-icon
+// sized or whose title/domain says "logo"/"icon" outright; keep Serper's own relevance order
+// otherwise (it's already ranked by Google Image Search for the query).
+const LOGO_ICON_KEYWORDS = ['logo', 'icon', 'favicon']
+type SerperImage = { imageUrl?: string; thumbnailUrl?: string; imageWidth?: number; imageHeight?: number; title?: string; domain?: string }
+
+function looksLikeLogoOrIcon(img: SerperImage): boolean {
+  const { imageWidth: w, imageHeight: h } = img
+  if (w && h && (w < 300 || h < 300)) return true
+  const text = `${img.title || ''} ${img.domain || ''}`.toLowerCase()
+  return LOGO_ICON_KEYWORDS.some(k => text.includes(k))
+}
+
+export function pickEmbeddableImageUrl(images: SerperImage[] | undefined): string | null {
   if (!images || images.length === 0) return null
+  const filtered = images.filter(img => !looksLikeLogoOrIcon(img))
+  const pool = filtered.length > 0 ? filtered : images // don't filter down to nothing
   // 1. Prefer a Google-hosted thumbnail (gstatic) — guaranteed embeddable, no hotlink protection
-  for (const img of images) {
+  for (const img of pool) {
     if (img.thumbnailUrl && isEmbeddableHost(img.thumbnailUrl)) return img.thumbnailUrl
   }
   // 2. Then any original imageUrl that is NOT a known hotlink-protected host
-  for (const img of images) {
+  for (const img of pool) {
     if (img.imageUrl && !isBlockedHost(img.imageUrl)) return img.imageUrl
   }
   // 3. Then any thumbnailUrl at all (even non-gstatic — still usually embeddable)
-  for (const img of images) {
+  for (const img of pool) {
     if (img.thumbnailUrl) return img.thumbnailUrl
   }
   // 4. Last resort: first imageUrl (may be blocked; renderer's onerror will hide it gracefully)
-  return images[0].imageUrl ?? null
+  return pool[0].imageUrl ?? null
 }
 
-// ===== FETCH PLACE PHOTO BY NAME via Serper Images (cached in Supabase) =====
+// ===== FETCH PLACE PHOTO BY NAME via Serper Images — LIVE SOURCE ONLY, no persistence =====
+// Serper does not own the images it returns (its own Terms say returned content "remain[s] the
+// sole responsibility of those who make it available"), so it is treated the same as Google:
+// last-resort fallback, resolved fresh on every call, never written to a database.
 export async function fetchPlacePhotoByName(placeId: string, placeName: string): Promise<string | null> {
-  const db = getCacheClient()
-  // 1. Check Supabase cache (with 1s timeout to avoid blocking)
-  if (db) {
-    try {
-      const cacheResult = await Promise.race([
-        db.from('place_photos').select('photo_url').eq('place_id', placeId).maybeSingle(),
-        new Promise<{ data: null; error: null }>((resolve) => setTimeout(() => resolve({ data: null, error: null }), 1000)),
-      ])
-      if ((cacheResult as { data?: { photo_url?: string } }).data?.photo_url) {
-        return (cacheResult as { data: { photo_url: string } }).data.photo_url
-      }
-    } catch { /* ignore */ }
-  }
-  // 2. Serper image search
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !placeName) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_skip', reason: !apiKey ? 'no_key' : 'no_name', placeId }))
@@ -155,7 +171,7 @@ export async function fetchPlacePhotoByName(placeId: string, placeName: string):
       fetch('https://google.serper.dev/images', {
         method: 'POST',
         headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 3 }),
+        body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 5 }),
       }),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
     ])
@@ -164,16 +180,9 @@ export async function fetchPlacePhotoByName(placeId: string, placeName: string):
       return null
     }
     const data = await (resp as Response).json()
-    const images = data?.images as Array<{ imageUrl?: string; thumbnailUrl?: string }> | undefined
+    const images = data?.images as SerperImage[] | undefined
     const photoUri = pickEmbeddableImageUrl(images)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, hasUri: !!photoUri, chosenHost: photoUri ? hostOf(photoUri) : null }))
-    if (!photoUri) return null
-    // 3. Cache in Supabase (fire-and-forget)
-    if (db) {
-      db.from('place_photos')
-        .upsert({ place_id: placeId, photo_url: photoUri })
-        .catch(() => {})
-    }
     return photoUri
   } catch (e) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))

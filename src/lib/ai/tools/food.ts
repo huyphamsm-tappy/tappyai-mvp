@@ -1,4 +1,4 @@
-import { getCache, setCache, serperSearch, fetchPlacePhoto, fetchPlacePhotoByName } from './common'
+import { getCache, setCache, serperSearch, fetchPlacePhoto, fetchPlacePhotoByName, fetchOfficialWebsiteImage } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
@@ -185,13 +185,24 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
-        // Fetch photos: old Places Details API for photo_reference (key restricted from new API photos),
-        // then old Maps photo URL (redirect:follow → lh3.googleusercontent.com CDN). Serper as fallback.
+        // Image resolver chain — try each source, never stop after one failure:
+        //   1. Official website og:image (short timeout, business's own content)
+        //   2. Google Places Photo (live only — no caching, per Maps Platform ToS)
+        //   3. Serper image search (live only — Serper doesn't own the images it returns)
+        // If all three fail, photo_url is simply omitted (no image) rather than showing
+        // something wrong.
         const photoUrls = await Promise.all(
           placesData.map(async (r) => {
             const placeId = r.id as string
             const placeName = (r.displayName as { text?: string })?.text || ''
+            const websiteUri = r.websiteUri as string | undefined
             if (!placeId) return null
+
+            if (websiteUri) {
+              const siteImage = await fetchOfficialWebsiteImage(websiteUri)
+              if (siteImage) return siteImage
+            }
+
             try {
               const detailResp = await Promise.race([
                 fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${key}`),
@@ -203,8 +214,8 @@ export async function searchPlaces(query: string, location?: string, type?: stri
                 const googlePhoto = await fetchPlacePhoto(placeId, photoRef)
                 if (googlePhoto) return googlePhoto
               }
-            } catch { /* skip on timeout or error */ }
-            // Fallback: Serper image search (may have hotlink protection on returned URLs)
+            } catch { /* skip on timeout or error, fall through to Serper */ }
+
             if (!placeName) return null
             return fetchPlacePhotoByName(placeId, placeName)
           })
