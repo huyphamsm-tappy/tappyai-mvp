@@ -136,58 +136,72 @@ function looksLikeLogoOrIcon(img: SerperImage): boolean {
   return LOGO_ICON_KEYWORDS.some(k => text.includes(k))
 }
 
-export function pickEmbeddableImageUrl(images: SerperImage[] | undefined): string | null {
-  if (!images || images.length === 0) return null
+// Returns up to `max` distinct embeddable URLs, in the same preference order pickEmbeddableImageUrl
+// uses for its single pick (gstatic-hosted thumbnail > non-hotlink-blocked original > any
+// thumbnail > last-resort original), just not stopping after the first match.
+export function pickEmbeddableImageUrls(images: SerperImage[] | undefined, max = 3): string[] {
+  if (!images || images.length === 0) return []
   const filtered = images.filter(img => !looksLikeLogoOrIcon(img))
   const pool = filtered.length > 0 ? filtered : images // don't filter down to nothing
-  // 1. Prefer a Google-hosted thumbnail (gstatic) — guaranteed embeddable, no hotlink protection
-  for (const img of pool) {
-    if (img.thumbnailUrl && isEmbeddableHost(img.thumbnailUrl)) return img.thumbnailUrl
+
+  const picked: string[] = []
+  const seen = new Set<string>()
+  const add = (url: string | undefined) => {
+    if (picked.length >= max || !url || seen.has(url)) return
+    seen.add(url)
+    picked.push(url)
   }
-  // 2. Then any original imageUrl that is NOT a known hotlink-protected host
-  for (const img of pool) {
-    if (img.imageUrl && !isBlockedHost(img.imageUrl)) return img.imageUrl
-  }
-  // 3. Then any thumbnailUrl at all (even non-gstatic — still usually embeddable)
-  for (const img of pool) {
-    if (img.thumbnailUrl) return img.thumbnailUrl
-  }
-  // 4. Last resort: first imageUrl (may be blocked; renderer's onerror will hide it gracefully)
-  return pool[0].imageUrl ?? null
+
+  for (const img of pool) if (img.thumbnailUrl && isEmbeddableHost(img.thumbnailUrl)) add(img.thumbnailUrl)
+  for (const img of pool) if (img.imageUrl && !isBlockedHost(img.imageUrl)) add(img.imageUrl)
+  for (const img of pool) if (img.thumbnailUrl) add(img.thumbnailUrl)
+  if (picked.length === 0 && pool[0]?.imageUrl) add(pool[0].imageUrl)
+
+  return picked
+}
+
+export function pickEmbeddableImageUrl(images: SerperImage[] | undefined): string | null {
+  return pickEmbeddableImageUrls(images, 1)[0] ?? null
 }
 
 // ===== FETCH PLACE PHOTO BY NAME via Serper Images — LIVE SOURCE ONLY, no persistence =====
 // Serper does not own the images it returns (its own Terms say returned content "remain[s] the
 // sole responsibility of those who make it available"), so it is treated the same as Google:
 // last-resort fallback, resolved fresh on every call, never written to a database.
-export async function fetchPlacePhotoByName(placeId: string, placeName: string): Promise<string | null> {
+export async function fetchPlacePhotosByName(placeId: string, placeName: string, max = 3): Promise<string[]> {
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !placeName) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_skip', reason: !apiKey ? 'no_key' : 'no_name', placeId }))
-    return null
+    return []
   }
   try {
     const resp = await Promise.race([
       fetch('https://google.serper.dev/images', {
         method: 'POST',
         headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 5 }),
+        body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 8 }),
       }),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
     ])
     if (!(resp as Response).ok) {
       console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_not_ok', status: (resp as Response).status, placeId }))
-      return null
+      return []
     }
     const data = await (resp as Response).json()
     const images = data?.images as SerperImage[] | undefined
-    const photoUri = pickEmbeddableImageUrl(images)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, hasUri: !!photoUri, chosenHost: photoUri ? hostOf(photoUri) : null }))
-    return photoUri
+    const photoUris = pickEmbeddableImageUrls(images, max)
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
+    return photoUris
   } catch (e) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
-    return null
+    return []
   }
+}
+
+// Back-compat single-image wrapper for callers not yet migrated to the gallery (photo_urls[]).
+export async function fetchPlacePhotoByName(placeId: string, placeName: string): Promise<string | null> {
+  const photos = await fetchPlacePhotosByName(placeId, placeName, 1)
+  return photos[0] ?? null
 }
 
 // ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====

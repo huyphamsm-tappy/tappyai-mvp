@@ -1,4 +1,4 @@
-import { getCache, setCache, serperSearch, fetchPlacePhoto, fetchPlacePhotoByName, fetchOfficialWebsiteImage } from './common'
+import { getCache, setCache, serperSearch, fetchPlacePhoto, fetchPlacePhotosByName, fetchOfficialWebsiteImage } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
@@ -131,20 +131,20 @@ export async function searchPlacesOSM(query: string, location?: string) {
     // Query with name+address (when a real address is known) to disambiguate chains
     // like "Highlands Coffee"; allSettled so one failed lookup can't drop the batch.
     const photoResults = await Promise.allSettled(
-      baseResults.map(r => fetchPlacePhotoByName(
+      baseResults.map(r => fetchPlacePhotosByName(
         r.name,
         r.address && r.address !== 'Xem ban do' ? `${r.name} ${r.address}` : r.name
       ))
     )
     const results = baseResults.map((r, idx) => {
       const settled = photoResults[idx]
-      const photoUrl = settled.status === 'fulfilled' ? settled.value : null
+      const photoUrls = settled.status === 'fulfilled' ? settled.value : []
       return {
         ...r,
         // Mirrors the same static tiktok_url template the Google branch already builds
         // (food.ts, Google success branch) — OSM places had never had this field at all.
         tiktok_url: `https://www.tiktok.com/search?q=${encodeURIComponent(r.name + ' review')}`,
-        ...(photoUrl ? { photo_url: photoUrl } : {})
+        ...(photoUrls.length > 0 ? { photo_url: photoUrls[0], photo_urls: photoUrls } : {})
       }
     })
     return {
@@ -216,39 +216,48 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
-        // Image resolver chain — try each source, never stop after one failure:
+        // Image resolver chain — collect from every source instead of stopping at the first
+        // success, up to 3 total, so a place isn't limited to whichever source answers first:
         //   1. Official website og:image (short timeout, business's own content)
         //   2. Google Places Photo (live only — no caching, per Maps Platform ToS)
         //   3. Serper image search (live only — Serper doesn't own the images it returns)
-        // If all three fail, photo_url is simply omitted (no image) rather than showing
+        // If all three fail, photo_urls is simply omitted (no image) rather than showing
         // something wrong.
-        const photoUrls = await Promise.all(
+        const MAX_PHOTOS = 3
+        const photoUrlLists = await Promise.all(
           placesData.map(async (r) => {
             const placeId = r.id as string
             const placeName = (r.displayName as { text?: string })?.text || ''
             const websiteUri = r.websiteUri as string | undefined
-            if (!placeId) return null
+            if (!placeId) return [] as string[]
 
-            if (websiteUri) {
-              const siteImage = await fetchOfficialWebsiteImage(websiteUri)
-              if (siteImage) return siteImage
+            const collected: string[] = []
+            const addUnique = (url: string | null | undefined) => {
+              if (url && !collected.includes(url)) collected.push(url)
             }
 
-            try {
-              const detailResp = await Promise.race([
-                fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${key}`),
-                new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
-              ])
-              const detail = await (detailResp as Response).json()
-              const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
-              if (photoRef) {
-                const googlePhoto = await fetchPlacePhoto(placeId, photoRef)
-                if (googlePhoto) return googlePhoto
-              }
-            } catch { /* skip on timeout or error, fall through to Serper */ }
+            if (websiteUri) {
+              addUnique(await fetchOfficialWebsiteImage(websiteUri))
+            }
 
-            if (!placeName) return null
-            return fetchPlacePhotoByName(placeId, placeName)
+            if (collected.length < MAX_PHOTOS) {
+              try {
+                const detailResp = await Promise.race([
+                  fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${key}`),
+                  new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
+                ])
+                const detail = await (detailResp as Response).json()
+                const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
+                if (photoRef) addUnique(await fetchPlacePhoto(placeId, photoRef))
+              } catch { /* skip on timeout or error, fall through to Serper */ }
+            }
+
+            if (collected.length < MAX_PHOTOS && placeName) {
+              const serperPhotos = await fetchPlacePhotosByName(placeId, placeName, MAX_PHOTOS - collected.length)
+              serperPhotos.forEach(addUnique)
+            }
+
+            return collected.slice(0, MAX_PHOTOS)
           })
         )
 
@@ -262,7 +271,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
             tiktok_url: `https://www.tiktok.com/search?q=${encodeURIComponent(((r.displayName as { text?: string })?.text || '') + ' review')}`,
             ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
-            ...(photoUrls[idx] ? { photo_url: photoUrls[idx] } : {})
+            ...(photoUrlLists[idx].length > 0 ? { photo_url: photoUrlLists[idx][0], photo_urls: photoUrlLists[idx] } : {})
           }))
         }
       } else {

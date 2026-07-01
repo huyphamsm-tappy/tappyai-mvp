@@ -11,6 +11,7 @@ type PlatformLink = { name: string; url: string }
 type PlaceLike = {
   name?: string
   photo_url?: string
+  photo_urls?: string[]
   tiktok_url?: string
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
@@ -18,6 +19,13 @@ type PlaceLike = {
 
 function decodeSafe(s: string): string {
   try { return decodeURIComponent(s) } catch { return s }
+}
+
+// Images are copied verbatim by the AI or not at all — it can't reformulate a working CDN
+// URL the way it sometimes rewrites a search-link query string — so an exact (decoded) match
+// is reliable here, unlike the domain-based check used for TikTok/order links below.
+function imageUrlPresent(url: string, decodedText: string): boolean {
+  return decodedText.includes(decodeSafe(url))
 }
 
 function domainOf(url: string): string {
@@ -40,7 +48,7 @@ function hasDomainNearName(placeName: string, domain: string, lowerText: string,
 }
 
 function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): string {
-  const usable = places.filter(p => p.name && (p.photo_url || p.tiktok_url))
+  const usable = places.filter(p => p.name && ((p.photo_urls && p.photo_urls.length > 0) || p.photo_url || p.tiktok_url))
   if (usable.length === 0) return ''
 
   // Tool-provided names sometimes lack diacritics the AI adds back in when it writes its
@@ -72,9 +80,11 @@ function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): strin
     }
 
     const lines: string[] = [`**${name}**`]
-    if (p.photo_url && !hasDomainNearName(ownName, domainOf(p.photo_url), dedupText, windowEnd)) {
-      lines.push(`![Ảnh địa điểm](${p.photo_url})`)
-    }
+    // Images are checked one-by-one by exact URL, not by domain — the gallery can have several
+    // gstatic.com images, and having ONE of them already in the text must not skip the other two.
+    const photos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : []))
+    const missingPhotos = photos.filter(url => !imageUrlPresent(url, decodedText))
+    for (const url of missingPhotos) lines.push(`![Ảnh địa điểm](${url})`)
     if (p.tiktok_url && !hasDomainNearName(ownName, 'tiktok.com', dedupText, windowEnd)) {
       lines.push(`🎵 [Xem review TikTok](${p.tiktok_url})`)
     }
