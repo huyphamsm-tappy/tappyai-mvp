@@ -21,11 +21,22 @@ function decodeSafe(s: string): string {
   try { return decodeURIComponent(s) } catch { return s }
 }
 
+// Google gstatic thumbnail URLs end with a &s=NN size suffix that the AI sometimes drops
+// (e.g. "...&s=10" -> "...&s") when copying near-verbatim — strip it before the fallback
+// comparison so that still counts as "already present".
+function coreImageUrl(url: string): string {
+  return url.replace(/&s=?\d*$/, '')
+}
+
 // Images are copied verbatim by the AI or not at all — it can't reformulate a working CDN
 // URL the way it sometimes rewrites a search-link query string — so an exact (decoded) match
-// is reliable here, unlike the domain-based check used for TikTok/order links below.
+// is reliable here, unlike the domain-based check used for TikTok/order links below. Falls
+// back to a suffix-tolerant core match for the gstatic truncation case above.
 function imageUrlPresent(url: string, decodedText: string): boolean {
-  return decodedText.includes(decodeSafe(url))
+  const decoded = decodeSafe(url)
+  if (decodedText.includes(decoded)) return true
+  const core = coreImageUrl(decoded)
+  return core !== decoded && decodedText.includes(core)
 }
 
 function domainOf(url: string): string {
