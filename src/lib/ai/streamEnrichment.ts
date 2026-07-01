@@ -16,6 +16,8 @@ type PlaceLike = {
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
 }
+// get_hotel_prices / search_products' primary content — 'title' stands in for 'name'.
+type SearchResultLike = { title?: string; photo_url?: string; photo_urls?: string[] }
 
 function decodeSafe(s: string): string {
   try { return decodeURIComponent(s) } catch { return s }
@@ -151,11 +153,21 @@ export function applyPlaceEnrichmentStreamFilter(response: Response): Response {
           controller.enqueue(encoder.encode(line + '\n'))
         } else if (line.startsWith('a:')) {
           try {
-            const res = JSON.parse(line.slice(2)) as { toolCallId?: string; result?: { results?: PlaceLike[] } }
+            const res = JSON.parse(line.slice(2)) as {
+              toolCallId?: string
+              result?: { results?: PlaceLike[]; search_results?: SearchResultLike[] }
+            }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
-            const results = res.result?.results
-            if (toolName === 'search_places' && Array.isArray(results) && results.length > 0) {
-              latestPlaces = results
+            if (toolName === 'search_places') {
+              const results = res.result?.results
+              if (Array.isArray(results) && results.length > 0) latestPlaces = results
+            } else if (toolName === 'get_hotel_prices' || toolName === 'search_products') {
+              // Neither has a 'name'-shaped results[] — search_results is the primary
+              // content instead, with 'title' standing in for the place name.
+              const searchResults = res.result?.search_results
+              if (Array.isArray(searchResults) && searchResults.length > 0) {
+                latestPlaces = searchResults.map(r => ({ ...r, name: r.title }))
+              }
             }
           } catch { /* ignore */ }
           controller.enqueue(encoder.encode(line + '\n'))
