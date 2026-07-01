@@ -16,6 +16,17 @@ type PlaceLike = {
   platform_links?: PlatformLink[]
 }
 
+function decodeSafe(s: string): string {
+  try { return decodeURIComponent(s) } catch { return s }
+}
+
+// The AI sometimes rewrites a URL with literal accented characters instead of copying the
+// percent-encoded original verbatim (e.g. "...q=Ph%E1%BB%9F..." vs "...q=Phở..."). A raw
+// string .includes() misses that, so compare decoded forms instead.
+function urlAlreadyPresent(url: string, decodedText: string): boolean {
+  return decodedText.includes(decodeSafe(url))
+}
+
 function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): string {
   const usable = places.filter(p => p.name && (p.photo_url || p.tiktok_url))
   if (usable.length === 0) return ''
@@ -23,18 +34,17 @@ function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): strin
   const normText = normalizeVN(accumulatedText.toLowerCase())
   const mentioned = usable.filter(p => normText.includes(normalizeVN((p.name as string).toLowerCase())))
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
+  const decodedText = decodeSafe(accumulatedText)
 
   const parts: string[] = []
   for (const p of chosen) {
     const lines: string[] = [`**${p.name}**`]
-    // Skip a field if the AI already wrote that exact URL itself — avoids duplicate images/links
-    // for the (rarer) case where the model did follow the prompt instruction correctly.
-    if (p.photo_url && !accumulatedText.includes(p.photo_url)) lines.push(`![Ảnh địa điểm](${p.photo_url})`)
-    if (p.tiktok_url && !accumulatedText.includes(p.tiktok_url)) lines.push(`🎵 [Xem review TikTok](${p.tiktok_url})`)
+    if (p.photo_url && !urlAlreadyPresent(p.photo_url, decodedText)) lines.push(`![Ảnh địa điểm](${p.photo_url})`)
+    if (p.tiktok_url && !urlAlreadyPresent(p.tiktok_url, decodedText)) lines.push(`🎵 [Xem review TikTok](${p.tiktok_url})`)
     const links = p.order_links || p.platform_links
     if (links && links.length > 0) {
-      const linkLine = links.map(l => `[${l.name}](${l.url})`).join(' · ')
-      if (!accumulatedText.includes(links[0].url)) lines.push(linkLine)
+      const missing = links.filter(l => !urlAlreadyPresent(l.url, decodedText))
+      if (missing.length > 0) lines.push(missing.map(l => `[${l.name}](${l.url})`).join(' · '))
     }
     if (lines.length > 1) parts.push(lines.join('\n'))
   }
