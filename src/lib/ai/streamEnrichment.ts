@@ -27,14 +27,14 @@ function domainOf(url: string): string {
 // The AI sometimes writes its OWN version of a link (different query string, city suffix
 // dropped, etc.) rather than copying the tool's exact URL — so even a decoded string match
 // misses it. What actually matters is whether that place already has a link to the same
-// domain somewhere near its own name, regardless of the exact URL content.
-function hasDomainNearName(placeName: string, domain: string, decodedText: string): boolean {
+// domain somewhere near its own name, regardless of the exact URL content. windowEnd bounds
+// the search so it can't bleed into the next place's own block or the trailing CTA_BUTTONS
+// JSON (which commonly repeats the SAME domains for a different place).
+function hasDomainNearName(placeName: string, domain: string, lowerText: string, windowEnd: number): boolean {
   if (!domain) return false
-  const lowerText = decodedText.toLowerCase()
   const idx = lowerText.indexOf(placeName.toLowerCase())
   if (idx === -1) return false
-  // Window covers the AI's own description/links for that place before it moves to the next.
-  const window = lowerText.slice(idx, idx + 800)
+  const window = lowerText.slice(idx, Math.min(idx + 800, windowEnd))
   return window.includes(domain)
 }
 
@@ -45,21 +45,37 @@ function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): strin
   const normText = normalizeVN(accumulatedText.toLowerCase())
   const mentioned = usable.filter(p => normText.includes(normalizeVN((p.name as string).toLowerCase())))
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
+
   const decodedText = decodeSafe(accumulatedText)
+  // CTA_BUTTONS is a general block, not scoped to any one place — links inside it must
+  // never count as "already covered" for a specific place's own dedup window.
+  const ctaIdx = decodedText.indexOf('[CTA_BUTTONS]')
+  const dedupText = (ctaIdx === -1 ? decodedText : decodedText.slice(0, ctaIdx)).toLowerCase()
+  const textEnd = dedupText.length
 
   const parts: string[] = []
   for (const p of chosen) {
     const name = p.name as string
+    // Bound this place's window at wherever the NEXT chosen place's name first appears,
+    // so its links can't be attributed to this one.
+    let windowEnd = textEnd
+    for (const other of chosen) {
+      if (other === p) continue
+      const otherIdx = dedupText.indexOf((other.name as string).toLowerCase())
+      const ownIdx = dedupText.indexOf(name.toLowerCase())
+      if (otherIdx !== -1 && ownIdx !== -1 && otherIdx > ownIdx) windowEnd = Math.min(windowEnd, otherIdx)
+    }
+
     const lines: string[] = [`**${name}**`]
-    if (p.photo_url && !hasDomainNearName(name, domainOf(p.photo_url), decodedText)) {
+    if (p.photo_url && !hasDomainNearName(name, domainOf(p.photo_url), dedupText, windowEnd)) {
       lines.push(`![Ảnh địa điểm](${p.photo_url})`)
     }
-    if (p.tiktok_url && !hasDomainNearName(name, 'tiktok.com', decodedText)) {
+    if (p.tiktok_url && !hasDomainNearName(name, 'tiktok.com', dedupText, windowEnd)) {
       lines.push(`🎵 [Xem review TikTok](${p.tiktok_url})`)
     }
     const links = p.order_links || p.platform_links
     if (links && links.length > 0) {
-      const missing = links.filter(l => !hasDomainNearName(name, domainOf(l.url), decodedText))
+      const missing = links.filter(l => !hasDomainNearName(name, domainOf(l.url), dedupText, windowEnd))
       if (missing.length > 0) lines.push(missing.map(l => `[${l.name}](${l.url})`).join(' · '))
     }
     if (lines.length > 1) parts.push(lines.join('\n'))
