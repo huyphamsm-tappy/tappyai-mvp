@@ -1,4 +1,4 @@
-import { getCache, setCache, serperSearch, webSearch } from './common'
+import { getCache, setCache, serperSearch, webSearch, fetchPlacePhotosByName } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { LUXURY_KEYWORDS } from '@/lib/ai/budget'
 import { searchPlacesOSM } from './food'
@@ -211,6 +211,19 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
       const ddg = await webSearch(searchQuery) as { results?: Array<{ title: string; link: string; snippet: string }> }
       searchResults = ddg?.results
       source = 'Tim kiem web (DuckDuckGo) + OpenStreetMap'
+    }
+
+    // search_results (Booking/Agoda snippets) is the PRIMARY content the AI describes with
+    // names/prices, but has no image field of its own — only hotel_list (OSM) did. Attach
+    // photos by hotel name here too, same Serper-image mechanism food.ts already uses.
+    if (searchResults && searchResults.length > 0) {
+      const topResults = searchResults.slice(0, 5)
+      const photoLists = await Promise.all(topResults.map(r => fetchPlacePhotosByName(r.link, r.title)))
+      searchResults = searchResults.map((r, idx) =>
+        idx < photoLists.length && photoLists[idx].length > 0
+          ? { ...r, photo_url: photoLists[idx][0], photo_urls: photoLists[idx] }
+          : r
+      )
     }
 
     if (searchResults && searchResults.length > 0) {

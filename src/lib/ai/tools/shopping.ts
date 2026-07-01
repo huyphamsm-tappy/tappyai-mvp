@@ -1,4 +1,4 @@
-import { getCache, setCache, serperSearch } from './common'
+import { getCache, setCache, serperSearch, fetchPlacePhotosByName } from './common'
 
 export async function searchProducts(query: string) {
   const cacheKey = 'products:' + query.toLowerCase().trim()
@@ -40,6 +40,18 @@ export async function searchProducts(query: string) {
         seen.add(r.link)
         return true
       }).slice(0, 8)
+    }
+
+    // search_results has no image field of its own — attach product photos by title, same
+    // Serper-image mechanism food.ts/travel.ts already use.
+    if (searchResults && searchResults.length > 0) {
+      const topResults = searchResults.slice(0, 5)
+      const photoLists = await Promise.all(topResults.map(r => fetchPlacePhotosByName(r.link, r.title)))
+      searchResults = searchResults.map((r, idx) =>
+        idx < photoLists.length && photoLists[idx].length > 0
+          ? { ...r, photo_url: photoLists[idx][0], photo_urls: photoLists[idx] }
+          : r
+      )
     }
 
     const tiktokShopLink = 'https://www.tiktok.com/search?q=' + encodeURIComponent(query)
