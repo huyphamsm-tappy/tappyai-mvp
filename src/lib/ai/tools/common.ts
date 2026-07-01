@@ -89,7 +89,10 @@ export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<str
       html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i)
     const raw = match?.[1]
     if (!raw) return null
-    return new URL(raw, websiteUri).toString()
+    // HTML attribute values commonly escape '&' as '&amp;' (valid HTML) — without decoding,
+    // a URL with multiple query params (typical for CDN tracking links) comes out malformed.
+    const decoded = raw.replace(/&amp;/g, '&')
+    return new URL(decoded, websiteUri).toString()
   } catch (e) {
     clearTimeout(tid)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'website_image_failed', websiteUri: websiteUri.slice(0, 60), error: String(e).slice(0, 80) }))
