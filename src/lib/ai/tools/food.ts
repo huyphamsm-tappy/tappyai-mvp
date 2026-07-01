@@ -105,7 +105,7 @@ export async function searchPlacesOSM(query: string, location?: string) {
     }
     if (!overpassData) return { note: 'Tim kiem tren Google Maps: ' + googleMapsUrl, google_maps_search: googleMapsUrl, results: [] }
     type El = { tags?: Record<string, string>; lat?: number; lon?: number; center?: { lat: number; lon: number } }
-    const results = ((overpassData.elements || []) as El[]).slice(0, 10).map(el => {
+    const baseResults = ((overpassData.elements || []) as El[]).slice(0, 10).map(el => {
       const tags = el.tags || {}
       const elat = el.lat ?? el.center?.lat
       const elon = el.lon ?? el.center?.lon
@@ -116,6 +116,21 @@ export async function searchPlacesOSM(query: string, location?: string) {
         maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl
       }
     }).filter(r => r.name)
+    // Reuse the same Serper-based image resolver as the Google path so OSM-fallback
+    // places aren't structurally imageless — placeName doubles as the id (log label only).
+    // Query with name+address (when a real address is known) to disambiguate chains
+    // like "Highlands Coffee"; allSettled so one failed lookup can't drop the batch.
+    const photoResults = await Promise.allSettled(
+      baseResults.map(r => fetchPlacePhotoByName(
+        r.name,
+        r.address && r.address !== 'Xem ban do' ? `${r.name} ${r.address}` : r.name
+      ))
+    )
+    const results = baseResults.map((r, idx) => {
+      const settled = photoResults[idx]
+      const photoUrl = settled.status === 'fulfilled' ? settled.value : null
+      return { ...r, ...(photoUrl ? { photo_url: photoUrl } : {}) }
+    })
     return {
       location: loc, amenity_type: amenity, source: 'OpenStreetMap', count: results.length, results,
       google_maps_search: googleMapsUrl,
