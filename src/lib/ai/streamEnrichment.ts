@@ -43,40 +43,44 @@ function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): strin
   const usable = places.filter(p => p.name && (p.photo_url || p.tiktok_url))
   if (usable.length === 0) return ''
 
-  const normText = normalizeVN(accumulatedText.toLowerCase())
-  const mentioned = usable.filter(p => normText.includes(normalizeVN((p.name as string).toLowerCase())))
-  const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
-
+  // Tool-provided names sometimes lack diacritics the AI adds back in when it writes its
+  // own prose (e.g. tool: "Long Bien", AI's text: "Long Biên") — normalize BOTH the text
+  // and every name lookup the same way throughout, or position-finding silently fails.
   const decodedText = decodeSafe(accumulatedText)
+  const ctaIdx = decodedText.indexOf('[CTA_BUTTONS]')
   // CTA_BUTTONS is a general block, not scoped to any one place — links inside it must
   // never count as "already covered" for a specific place's own dedup window.
-  const ctaIdx = decodedText.indexOf('[CTA_BUTTONS]')
-  const dedupText = (ctaIdx === -1 ? decodedText : decodedText.slice(0, ctaIdx)).toLowerCase()
+  const dedupText = normalizeVN((ctaIdx === -1 ? decodedText : decodedText.slice(0, ctaIdx)).toLowerCase())
   const textEnd = dedupText.length
+  const normName = (n: string) => normalizeVN(n.toLowerCase())
+
+  const mentioned = usable.filter(p => dedupText.includes(normName(p.name as string)))
+  const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const parts: string[] = []
   for (const p of chosen) {
     const name = p.name as string
+    const ownName = normName(name)
     // Bound this place's window at wherever the NEXT chosen place's name first appears,
     // so its links can't be attributed to this one.
     let windowEnd = textEnd
     for (const other of chosen) {
       if (other === p) continue
-      const otherIdx = dedupText.indexOf((other.name as string).toLowerCase())
-      const ownIdx = dedupText.indexOf(name.toLowerCase())
+      const otherIdx = dedupText.indexOf(normName(other.name as string))
+      const ownIdx = dedupText.indexOf(ownName)
       if (otherIdx !== -1 && ownIdx !== -1 && otherIdx > ownIdx) windowEnd = Math.min(windowEnd, otherIdx)
     }
 
     const lines: string[] = [`**${name}**`]
-    if (p.photo_url && !hasDomainNearName(name, domainOf(p.photo_url), dedupText, windowEnd)) {
+    if (p.photo_url && !hasDomainNearName(ownName, domainOf(p.photo_url), dedupText, windowEnd)) {
       lines.push(`![Ảnh địa điểm](${p.photo_url})`)
     }
-    if (p.tiktok_url && !hasDomainNearName(name, 'tiktok.com', dedupText, windowEnd)) {
+    if (p.tiktok_url && !hasDomainNearName(ownName, 'tiktok.com', dedupText, windowEnd)) {
       lines.push(`🎵 [Xem review TikTok](${p.tiktok_url})`)
     }
     const links = p.order_links || p.platform_links
     if (links && links.length > 0) {
-      const missing = links.filter(l => !hasDomainNearName(name, domainOf(l.url), dedupText, windowEnd))
+      const missing = links.filter(l => !hasDomainNearName(ownName, domainOf(l.url), dedupText, windowEnd))
       if (missing.length > 0) lines.push(missing.map(l => `[${l.name}](${l.url})`).join(' · '))
     }
     if (lines.length > 1) parts.push(lines.join('\n'))
