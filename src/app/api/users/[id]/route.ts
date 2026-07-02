@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'edge'
@@ -8,8 +8,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
 
   // profiles table has public SELECT policy so regular client works
   const { data: profile, error } = await supabase

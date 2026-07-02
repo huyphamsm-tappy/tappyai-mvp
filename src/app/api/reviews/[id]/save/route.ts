@@ -1,10 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 
-export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
 
   const { data: existing } = await supabase

@@ -1,16 +1,15 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAnthropic } from '@ai-sdk/anthropic'
 import { generateText } from 'ai'
 import { NextRequest, NextResponse } from 'next/server'
 
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
-export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const groupId = params.id
   if (!groupId) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { data: group, error: groupError } = await supabase

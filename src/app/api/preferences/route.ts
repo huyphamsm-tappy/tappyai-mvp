@@ -1,10 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { data } = await supabase
@@ -30,8 +29,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { preferences } = await req.json()
@@ -61,8 +59,7 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { budget_level, cuisine_likes, dietary_restrictions } = await req.json()

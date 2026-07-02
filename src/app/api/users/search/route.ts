@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Best-effort in-memory rate limit: 30 searches / 60s / IP — throttles enumeration
@@ -17,8 +17,7 @@ function checkSearchRL(ip: string): boolean {
 // GET /api/users/search?q=...
 // Search users by name (partial), or by EXACT email / phone.
 export async function GET(req: NextRequest) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
 
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'

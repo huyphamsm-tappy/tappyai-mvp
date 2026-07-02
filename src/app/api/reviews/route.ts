@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 
@@ -48,8 +49,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Bạn đã đăng quá 20 bài hôm nay. Thử lại vào ngày mai.' }, { status: 429 })
   }
 
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập để đánh giá' }, { status: 401 })
 
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]

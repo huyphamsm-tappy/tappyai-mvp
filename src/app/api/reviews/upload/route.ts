@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 
@@ -19,8 +19,7 @@ function checkRL(userId: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập để tải ảnh' }, { status: 401 })
 
   if (!checkRL(user.id)) {

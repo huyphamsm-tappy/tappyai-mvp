@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
 
 async function inferFromBooking(userId: string, serviceType: string | null) {
@@ -27,8 +28,7 @@ async function inferFromBooking(userId: string, serviceType: string | null) {
 
 export async function POST(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { serviceId, serviceName, serviceType, date, time, guests, name, phone, notes, placeId } = await req.json()
@@ -71,10 +71,9 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { data } = await supabase

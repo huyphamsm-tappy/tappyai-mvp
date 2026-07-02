@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { getMemory } from '@/lib/memory/memoryService'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 
@@ -20,8 +20,7 @@ export async function GET(req: NextRequest) {
     let gender: 'male' | 'female' | null = null
 
     try {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const { user } = await getRequestUser(req)
       if (user) {
         memory = await getMemory(user.id)
         // Gender from user metadata (set via preferences page)

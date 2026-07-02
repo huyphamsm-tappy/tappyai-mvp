@@ -1,12 +1,11 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 
 // GET /api/notifications → returns recent activity (follows + likes) for current user
-export async function GET() {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+export async function GET(req: Request) {
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ notifications: [] })
 
   // Follow notifications

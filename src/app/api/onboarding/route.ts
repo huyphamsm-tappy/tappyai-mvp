@@ -1,12 +1,11 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { updateMemory } from '@/lib/memory/memoryService'
 
 export async function POST(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user } = await getRequestUser(req)
     if (!user) {
       console.error('onboarding: unauthenticated request (no session cookie)')
       return NextResponse.json({ ok: false }, { status: 401 })

@@ -5,7 +5,8 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, ExternalLink, Copy, Check, Sparkles, MapPin, Zap } from 'lucide-react'
+import { Loader2, ExternalLink, Copy, Check, Sparkles, MapPin, Zap, Mail, ArrowLeft } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Phát hiện trình duyệt nội bộ của các app chat (Google chặn OAuth trong các webview này)
 function detectInAppBrowser(): { isInApp: boolean; name: string; isAndroid: boolean } {
@@ -44,8 +45,19 @@ export default function LoginPage() {
   const [loadingZalo, setLoadingZalo] = useState(false)
   const [inApp, setInApp] = useState<{ isInApp: boolean; name: string; isAndroid: boolean }>({ isInApp: false, name: '', isAndroid: false })
   const [copied, setCopied] = useState(false)
+
+  // Email OTP — Supabase-native, no password. Step 'email' asks for the address,
+  // step 'code' verifies the 6-digit code Supabase emails. Works inside any
+  // in-app browser (unlike Google), so it's offered as a fallback there too.
+  const [otpStep, setOtpStep] = useState<'closed' | 'email' | 'code'>('closed')
+  const [otpEmail, setOtpEmail] = useState('')
+  const [otpCode, setOtpCode] = useState('')
+  const [otpLoading, setOtpLoading] = useState(false)
+  const [otpError, setOtpError] = useState('')
+
   const supabase = createClient()
   const router = useRouter()
+  const { t } = useTranslation()
 
   useEffect(() => {
     setInApp(detectInAppBrowser())
@@ -97,6 +109,52 @@ export default function LoginPage() {
     const urlParams = new URLSearchParams(window.location.search)
     const returnTo = urlParams.get('returnTo') || '/'
     window.location.href = `/api/auth/zalo?returnTo=${encodeURIComponent(returnTo)}`
+  }
+
+  const getReturnDest = () => {
+    const returnTo = new URLSearchParams(window.location.search).get('returnTo')
+    return returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
+  }
+
+  const handleSendOtp = async () => {
+    setOtpError('')
+    const email = otpEmail.trim()
+    if (!email || !email.includes('@')) {
+      setOtpError(t('auth.emailOtp.errorInvalidEmail'))
+      return
+    }
+    setOtpLoading(true)
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: true },
+    })
+    setOtpLoading(false)
+    if (error) {
+      setOtpError(t('auth.emailOtp.errorSendFailed'))
+      return
+    }
+    setOtpStep('code')
+  }
+
+  const handleVerifyOtp = async () => {
+    setOtpError('')
+    const code = otpCode.trim()
+    if (code.length < 6) {
+      setOtpError(t('auth.emailOtp.errorInvalidCode'))
+      return
+    }
+    setOtpLoading(true)
+    const { error } = await supabase.auth.verifyOtp({
+      email: otpEmail.trim(),
+      token: code,
+      type: 'email',
+    })
+    setOtpLoading(false)
+    if (error) {
+      setOtpError(t('auth.emailOtp.errorVerifyFailed'))
+      return
+    }
+    router.replace(getReturnDest())
   }
 
   const handleOpenInChrome = () => {
@@ -207,6 +265,20 @@ export default function LoginPage() {
                   <span className="font-medium text-gray-700 dark:text-gray-200">&quot;Mở trong Safari&quot;</span>
                 </p>
               )}
+
+              {/* Email OTP works inside any in-app browser, so it's offered here too */}
+              <div className="flex items-center gap-3 pt-2">
+                <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+                <span className="text-xs text-gray-400">hoặc</span>
+                <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+              </div>
+              <EmailOtpBlock
+                otpStep={otpStep} setOtpStep={setOtpStep}
+                otpEmail={otpEmail} setOtpEmail={setOtpEmail}
+                otpCode={otpCode} setOtpCode={setOtpCode}
+                otpLoading={otpLoading} otpError={otpError}
+                onSend={handleSendOtp} onVerify={handleVerifyOtp}
+              />
             </div>
           ) : (
             <>
@@ -254,6 +326,21 @@ export default function LoginPage() {
                   )}
                   {loadingZalo ? 'Đang đăng nhập...' : 'Tiếp tục với Zalo'}
                 </button>
+
+                {/* Divider */}
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+                  <span className="text-xs text-gray-400">hoặc</span>
+                  <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+                </div>
+
+                <EmailOtpBlock
+                  otpStep={otpStep} setOtpStep={setOtpStep}
+                  otpEmail={otpEmail} setOtpEmail={setOtpEmail}
+                  otpCode={otpCode} setOtpCode={setOtpCode}
+                  otpLoading={otpLoading} otpError={otpError}
+                  onSend={handleSendOtp} onVerify={handleVerifyOtp}
+                />
               </div>
 
               <p className="text-center text-gray-400 text-xs mt-6">
@@ -266,6 +353,92 @@ export default function LoginPage() {
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+// Email OTP (Supabase-native, passwordless) — the one provider that works inside
+// any in-app browser, so it's rendered both in the normal flow and as the
+// fallback alongside the in-app-browser warning above.
+function EmailOtpBlock({
+  otpStep, setOtpStep, otpEmail, setOtpEmail, otpCode, setOtpCode, otpLoading, otpError, onSend, onVerify,
+}: {
+  otpStep: 'closed' | 'email' | 'code'
+  setOtpStep: (s: 'closed' | 'email' | 'code') => void
+  otpEmail: string
+  setOtpEmail: (v: string) => void
+  otpCode: string
+  setOtpCode: (v: string) => void
+  otpLoading: boolean
+  otpError: string
+  onSend: () => void
+  onVerify: () => void
+}) {
+  const { t } = useTranslation()
+
+  if (otpStep === 'closed') {
+    return (
+      <button
+        onClick={() => setOtpStep('email')}
+        className="w-full bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all"
+      >
+        <Mail size={20} />
+        {t('auth.emailOtp.cta')}
+      </button>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      <button
+        onClick={() => { setOtpStep('closed'); setOtpCode('') }}
+        className="flex items-center gap-1 text-gray-400 text-xs hover:text-gray-600 dark:hover:text-gray-300"
+      >
+        <ArrowLeft size={14} /> {t('auth.emailOtp.back')}
+      </button>
+
+      {otpStep === 'email' ? (
+        <>
+          <input
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            placeholder={t('auth.emailOtp.emailPlaceholder')}
+            value={otpEmail}
+            onChange={(e) => setOtpEmail(e.target.value)}
+            className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+          />
+          {otpError && <p className="text-red-500 text-xs">{otpError}</p>}
+          <button
+            onClick={onSend}
+            disabled={otpLoading}
+            className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all disabled:opacity-70"
+          >
+            {otpLoading ? <Loader2 size={20} className="animate-spin" /> : t('auth.emailOtp.send')}
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="text-xs text-gray-400 text-center">{t('auth.emailOtp.codeSentTo', { email: otpEmail })}</p>
+          <input
+            type="text"
+            inputMode="numeric"
+            maxLength={6}
+            placeholder="000000"
+            value={otpCode}
+            onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+            className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm tracking-[0.3em] text-center focus:outline-none focus:ring-2 focus:ring-primary-500"
+          />
+          {otpError && <p className="text-red-500 text-xs">{otpError}</p>}
+          <button
+            onClick={onVerify}
+            disabled={otpLoading}
+            className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all disabled:opacity-70"
+          >
+            {otpLoading ? <Loader2 size={20} className="animate-spin" /> : t('auth.emailOtp.verify')}
+          </button>
+        </>
+      )}
     </div>
   )
 }

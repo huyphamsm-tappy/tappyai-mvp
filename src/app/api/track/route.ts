@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 
@@ -10,8 +10,7 @@ const ALLOWED_TYPES = new Set([
 ])
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ ok: false }, { status: 401 })
 
   let events: Array<{ event_type: string; metadata?: Record<string, unknown> }>

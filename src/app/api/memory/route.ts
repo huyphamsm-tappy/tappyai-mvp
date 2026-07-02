@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import {
   extractMemoryFromConversation,
   getMemory,
@@ -8,12 +8,9 @@ import {
 import { NextResponse } from 'next/server'
 
 // GET /api/memory — check if user has memory (for badge)
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const supabase = createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
+    const { user } = await getRequestUser(req)
     if (!user) return NextResponse.json({ memory: null })
 
     const memory = await getMemory(user.id)
@@ -33,10 +30,7 @@ export async function GET() {
 // POST /api/memory — extract + save memory from conversation
 export async function POST(req: Request) {
   try {
-    const supabase = createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
+    const { user } = await getRequestUser(req)
     if (!user) return NextResponse.json({ ok: false })
 
     const { messages } = await req.json()
@@ -71,10 +65,9 @@ export async function POST(req: Request) {
 }
 
 // DELETE /api/memory — clear all memory for user
-export async function DELETE() {
+export async function DELETE(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user } = await getRequestUser(req)
     if (!user) return NextResponse.json({ ok: false }, { status: 401 })
     await clearMemory(user.id)
     return NextResponse.json({ ok: true })

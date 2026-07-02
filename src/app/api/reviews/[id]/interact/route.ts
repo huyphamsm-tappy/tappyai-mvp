@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 
@@ -6,8 +6,7 @@ import { rebuildProfile } from '@/lib/preferences/profileCache'
 // Records watch time and updates watch_time_avg on the review.
 // Unauthenticated requests are silently ignored.
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ ok: true })
 
   let body: { watch_seconds?: number; completion_rate?: number } = {}

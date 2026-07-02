@@ -1,6 +1,7 @@
 import { streamText, tool } from 'ai'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
@@ -56,8 +57,7 @@ export async function POST(req: Request) {
   let existingMemory: UserMemory | null = null
   let isPro = false
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user, supabase } = await getRequestUser(req)
     if (user) {
       authedUserId = user.id
       const chatContext = await buildChatPromptContext(user.id, supabase)
@@ -265,7 +265,11 @@ export async function POST(req: Request) {
           execute: async ({ product_name, target_price, search_query }) => {
             if (!authedUserId) return { error: 'Cáº§n Ä‘Äƒng nháº­p Ä‘á»ƒ theo dÃµi giÃ¡' }
             try {
-              const supabaseW = createClient()
+              // authedUserId is already verified above via getRequestUser (cookie or
+              // Bearer JWT) — use the admin client for this write instead of a fresh
+              // cookie-based createClient(), which would silently find no session for
+              // a Bearer-authenticated (native) request.
+              const supabaseW = createAdminClient()
               const { count } = await supabaseW
                 .from('price_watches')
                 .select('id', { count: 'exact', head: true })

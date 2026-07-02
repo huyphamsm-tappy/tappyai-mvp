@@ -1,11 +1,10 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
 
 // POST /api/notifications/subscribe — upsert a Web Push subscription for the current user
 export async function POST(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const body = await req.json()
@@ -39,10 +38,9 @@ export async function POST(req: Request) {
 }
 
 // DELETE /api/notifications/subscribe — disable the subscription for the current user
-export async function DELETE() {
+export async function DELETE(req: Request) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { error } = await supabase

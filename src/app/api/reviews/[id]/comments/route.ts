@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
@@ -28,8 +29,7 @@ export async function POST(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
 
   let body: string
@@ -58,7 +58,7 @@ export async function POST(
     .single()
 
   if (review && review.user_id !== user.id) {
-    const commenterName = (comment.profiles as { full_name: string | null } | null)?.full_name?.split(' ').pop() || 'Ai do'
+    const commenterName = (comment.profiles as unknown as { full_name: string | null } | null)?.full_name?.split(' ').pop() || 'Ai do'
     sendNotificationToUser(review.user_id, {
       title: commenterName + ' binh luan review cua ban',
       body: '"' + body.slice(0, 60) + (body.length > 60 ? '...' : '') + '"',
@@ -77,8 +77,7 @@ export async function DELETE(
   const commentId = req.nextUrl.searchParams.get('commentId')
   if (!commentId) return NextResponse.json({ error: 'commentId required' }, { status: 400 })
 
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
 
   const { error } = await supabase

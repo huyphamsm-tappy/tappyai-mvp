@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
@@ -21,8 +21,7 @@ export async function GET(req: NextRequest) {
   const followingOnly = req.nextUrl.searchParams.get('following') === 'true'
   const city = req.nextUrl.searchParams.get('city')?.trim().toLowerCase() || ''
 
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user, supabase } = await getRequestUser(req)
 
   // For "following" feed: get list of followed user IDs
   let followingIds: string[] | null = null

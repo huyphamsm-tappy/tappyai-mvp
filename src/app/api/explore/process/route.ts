@@ -1,5 +1,5 @@
 import { processContent } from '@/lib/explore/contentProcessor'
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 
 const EMPTY: Record<string, unknown> = { caption: '', hashtags: [], category: 'other', location: '' }
@@ -8,8 +8,7 @@ const EMPTY: Record<string, unknown> = { caption: '', hashtags: [], category: 'o
 // Priority: caption → title → thumbnail_url (never uses thumbnail alone if text is available)
 // Only runs on upload — never during feed loading or scrolling.
 export async function POST(req: NextRequest) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { user } = await getRequestUser(req)
   if (!user) return NextResponse.json(EMPTY)
 
   let thumbnail_url = '', caption = '', title = ''
