@@ -1075,7 +1075,7 @@ export default function ReviewsPage() {
 
       {/* Content */}
       <div className="flex-1 md:ml-[240px] xl:ml-[260px] flex justify-center">
-        <div className="w-full max-w-[390px] relative">
+        <div className="w-full max-w-container-compact relative">
 
           {/* Home Feed */}
           {tab === 'home' && (

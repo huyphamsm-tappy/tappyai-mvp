@@ -110,6 +110,9 @@ export default function CreatorPage() {
         <span className="font-bold text-sm">{handle}</span>
       </div>
 
+      {/* Content column — bounds avatar/stats/grid on wide screens; sticky top bar above stays full-bleed */}
+      <div className="mx-auto w-full max-w-container-content">
+
       {/* Avatar + stats */}
       <div className="flex flex-col items-center px-4 pt-4 pb-6">
         {profile.avatar_url
@@ -181,6 +184,7 @@ export default function CreatorPage() {
               )
             })}
           </div>}
+      </div>
     </div>
   )
 }

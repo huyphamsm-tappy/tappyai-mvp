@@ -398,7 +398,7 @@ export default function NewReviewPage() {
         </button>
       </div>
 
-      <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-4 space-y-4">
+      <div className="flex-1 container-content py-4 space-y-4">
 
         {/* Media mode tabs */}
         <div className="flex bg-gray-100 dark:bg-gray-900 rounded-xl p-1 gap-1">

@@ -238,6 +238,9 @@ export default async function ReviewDetailPage({ params }: Props) {
 
       {/* ─── Content card — slides over hero ─── */}
       <div className="relative z-10 -mt-6 rounded-t-[28px] bg-[#111111] min-h-[50vh] px-5 pt-6 pb-28">
+        {/* Content column — caps text/photo readability on wide screens; the card's own
+            background/padding above stays full-bleed so the "slide over hero" look is unchanged. */}
+        <div className="mx-auto w-full max-w-container-content">
 
         {/* Review body — pr-14 leaves room for the fixed action bar */}
         {review.body ? (
@@ -277,6 +280,7 @@ export default async function ReviewDetailPage({ params }: Props) {
           >
             🤖 Hỏi Tappy
           </Link>
+        </div>
         </div>
       </div>
     </div>
