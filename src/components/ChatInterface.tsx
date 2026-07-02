@@ -640,7 +640,7 @@ export default function ChatInterface({
         />
       )}
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto w-full px-4 py-5">
+        <div className="max-w-container-content mx-auto w-full px-4 py-5">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
               <div className="text-center">
@@ -782,7 +782,7 @@ export default function ChatInterface({
               const msgAttachments = (msg as any).experimental_attachments as Array<{ url: string; name?: string; contentType?: string }> | undefined
               return (
                 <div key={msg.id} className="animate-slide-up flex justify-end">
-                  <div className="max-w-[85%] flex flex-col items-end gap-1.5">
+                  <div className="max-w-[85%] md:max-w-[75%] flex flex-col items-end gap-1.5">
                     {msgAttachments?.filter(a => a.contentType?.startsWith('image/')).map((att, i) => (
                       <img
                         key={i}
@@ -823,7 +823,7 @@ export default function ChatInterface({
           <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />
         )}
         {/* Action chips */}
-        <div className="max-w-2xl mx-auto w-full flex gap-2 mb-2 overflow-x-auto scrollbar-none">
+        <div className="max-w-container-content mx-auto w-full flex gap-2 mb-2 overflow-x-auto scrollbar-none">
           <button
             type="button"
             onClick={handleNearbySearch}
@@ -866,7 +866,7 @@ export default function ChatInterface({
           className="hidden"
           onChange={handleImageSelect}
         />
-        <form id="chat-form" onSubmit={handleFormSubmit} className="max-w-2xl mx-auto w-full flex flex-col gap-2">
+        <form id="chat-form" onSubmit={handleFormSubmit} className="max-w-container-content mx-auto w-full flex flex-col gap-2">
           {/* Image preview */}
           {imagePreviewUrl && (
             <div className="relative inline-flex self-start ml-1">
