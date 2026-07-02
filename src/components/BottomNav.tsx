@@ -35,7 +35,7 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-t border-gray-100 dark:border-gray-800">
-      <div className="max-w-2xl mx-auto px-2">
+      <div className="mx-auto w-full max-w-container-content px-2 sm:px-4 lg:px-6">
         <div className="flex items-center justify-around h-16">
           {tabs.map(({ href, icon: Icon, label }) => {
             const isActive = href === '/' ? pathname === '/' : pathname.startsWith(href)

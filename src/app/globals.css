@@ -104,3 +104,26 @@
   -webkit-backdrop-filter: blur(14px);
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
 }
+
+/* ==========================================================================
+   Responsive foundation utilities (Phase 1 — docs/UI_GUIDELINES.md)
+   ADDITIVE ONLY. None of these are applied to existing pages/components yet;
+   they exist so Phase 2+ responsive work can adopt them consistently.
+   Current UI is unaffected.
+   ========================================================================== */
+
+@layer components {
+  /* Semantic centered containers with a responsive gutter (§4). */
+  .container-compact { @apply mx-auto w-full max-w-container-compact px-4 sm:px-6 lg:px-8; }
+  .container-content { @apply mx-auto w-full max-w-container-content px-4 sm:px-6 lg:px-8; }
+  .container-wide    { @apply mx-auto w-full max-w-container-wide px-4 sm:px-6 lg:px-8; }
+  .container-feed    { @apply mx-auto w-full max-w-container-feed px-4 sm:px-6 lg:px-8; }
+  .container-full    { @apply mx-auto w-full max-w-container-full px-4 sm:px-6 lg:px-8; }
+}
+
+/* Safe-area inset utilities (notch / home indicator) — §19. */
+.pt-safe { padding-top: env(safe-area-inset-top); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+.pl-safe { padding-left: env(safe-area-inset-left); }
+.pr-safe { padding-right: env(safe-area-inset-right); }
+.min-h-screen-safe { min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }

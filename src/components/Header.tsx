@@ -37,7 +37,7 @@ export default function Header({ user, showBack, backHref, title }: HeaderProps)
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
-      <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
+      <div className="container-content h-14 flex items-center justify-between gap-3">
         {showBack ? (
           backHref ? (
             <Link href={backHref} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">

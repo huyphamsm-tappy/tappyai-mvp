@@ -8,7 +8,35 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    // Ordered breakpoints incl. xs(480) + 3xl(1920)/4xl(2560) per docs/UI_GUIDELINES.md §3.
+    // sm/md/lg/xl/2xl keep Tailwind's exact default values — existing utilities regenerate identically.
+    screens: {
+      xs: '480px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+      '3xl': '1920px',
+      '4xl': '2560px',
+    },
     extend: {
+      // Semantic container max-widths (docs/UI_GUIDELINES.md §4). Additive; nothing uses them yet.
+      maxWidth: {
+        'container-compact': '28rem', // 448px
+        'container-content': '48rem', // 768px
+        'container-wide': '64rem',    // 1024px
+        'container-feed': '80rem',    // 1280px
+        'container-full': '96rem',    // 1536px
+      },
+      // Fluid clamp() type scale (docs/UI_GUIDELINES.md §5). Additive; existing text-* untouched.
+      fontSize: {
+        'fluid-display': ['clamp(1.75rem, 4vw, 2.75rem)', { lineHeight: '1.1' }],
+        'fluid-h1': ['clamp(1.5rem, 3vw, 2rem)', { lineHeight: '1.2' }],
+        'fluid-h2': ['clamp(1.25rem, 2.2vw, 1.5rem)', { lineHeight: '1.25' }],
+        'fluid-h3': ['clamp(1.05rem, 1.6vw, 1.25rem)', { lineHeight: '1.3' }],
+        'fluid-body': ['clamp(1rem, 1.2vw, 1.125rem)', { lineHeight: '1.6' }],
+      },
       colors: {
         primary: { DEFAULT: '#007AFF', 50: '#E5F1FF', 100: '#CCE3FF', 200: '#99C8FF', 300: '#66ACFF', 400: '#3391FF', 500: '#007AFF', 600: '#0062CC', 700: '#004999', 800: '#003166', 900: '#001833' },
         accent: { DEFAULT: '#FF9500', 50: '#FFF4E5', 100: '#FFE9CC', 200: '#FFD399', 300: '#FFBD66', 400: '#FFA733', 500: '#FF9500', 600: '#CC7700', 700: '#995900', 800: '#663C00', 900: '#331E00' }
