@@ -1,3 +1,4 @@
+import { SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { generateText } from 'ai'
 import { createAnthropic } from '@ai-sdk/anthropic'
@@ -17,27 +18,54 @@ export interface UserMemory {
   companions?: string | null       // "thường đi với bạn bè", "hay đi 2 người", "cặp đôi", "gia đình"
   timing?: string | null           // "hay đi cuối tuần", "hay đi tối", "thường đi trưa"
   personality?: string | null      // "thích local quán nhỏ", "ưa cao cấp", "thích thử đồ mới"
+  behavior_summary?: string | null // weekly rollup of user_events (written by cron/behavior-rollup)
   updated_at?: string
 }
 
-export async function getMemory(userId: string): Promise<UserMemory | null> {
+// memoryService is the SINGLE gateway for user_memory access. No other module
+// may touch the table directly. Callers with a user session omit `client`
+// (cookie-scoped server client); cron jobs inject createAdminClient().
+
+const MEMORY_COLUMNS = 'location_base, preferences, budget, history, companions, timing, personality, updated_at'
+
+export async function getMemory(userId: string, client?: SupabaseClient): Promise<UserMemory | null> {
   try {
-    const supabase = createClient()
+    const supabase = client ?? createClient()
     const { data, error } = await supabase
       .from('user_memory')
-      .select('location_base, preferences, budget, history, companions, timing, personality, updated_at')
+      .select(MEMORY_COLUMNS)
       .eq('user_id', userId)
       .single()
     if (error || !data) return null
-    return data as UserMemory
+    return data as unknown as UserMemory
   } catch {
     return null
   }
 }
 
-export async function updateMemory(userId: string, newData: Partial<UserMemory>): Promise<void> {
+// Batch read for cron jobs — one .in() query instead of N getMemory() calls.
+// Returns only users that have a memory row.
+export async function getMemoryBatch(userIds: string[], client: SupabaseClient): Promise<Map<string, UserMemory>> {
+  const map = new Map<string, UserMemory>()
+  if (userIds.length === 0) return map
   try {
-    const supabase = createClient()
+    const { data } = await client
+      .from('user_memory')
+      .select(`user_id, ${MEMORY_COLUMNS}`)
+      .in('user_id', userIds)
+    for (const row of data ?? []) {
+      const { user_id, ...memory } = row as unknown as UserMemory & { user_id: string }
+      map.set(user_id, memory)
+    }
+  } catch (e) {
+    console.error('getMemoryBatch error:', e)
+  }
+  return map
+}
+
+export async function updateMemory(userId: string, newData: Partial<UserMemory>, client?: SupabaseClient): Promise<void> {
+  try {
+    const supabase = client ?? createClient()
     await supabase.from('user_memory').upsert(
       { user_id: userId, ...newData, updated_at: new Date().toISOString() },
       { onConflict: 'user_id' }
@@ -47,9 +75,9 @@ export async function updateMemory(userId: string, newData: Partial<UserMemory>)
   }
 }
 
-export async function clearMemory(userId: string): Promise<void> {
+export async function clearMemory(userId: string, client?: SupabaseClient): Promise<void> {
   try {
-    const supabase = createClient()
+    const supabase = client ?? createClient()
     await supabase.from('user_memory').delete().eq('user_id', userId)
   } catch (e) {
     console.error('clearMemory error:', e)
