@@ -127,9 +127,9 @@ export default async function HomePage() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-20">
       <Header user={userInfo} />
 
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-7">
+      <main className="container-content py-6 md:py-8 space-y-7 md:space-y-8">
         {/* Hero */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500 p-6 pb-7 shadow-lg shadow-primary-500/20">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500 p-6 pb-7 md:p-8 md:pb-9 shadow-lg shadow-primary-500/20">
           <div className="absolute -top-14 -right-14 w-48 h-48 rounded-full bg-white/10 pointer-events-none" />
           <div className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-accent-300/20 blur-2xl pointer-events-none" />
 
@@ -137,7 +137,7 @@ export default async function HomePage() {
             <p className="text-white/80 text-sm font-medium mb-1">
               {user ? `Xin chào, ${firstName} 👋` : 'Chào mừng đến với TappyAI 👋'}
             </p>
-            <h1 className="text-white text-2xl sm:text-3xl font-black leading-tight mb-5"
+            <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl font-black leading-tight mb-5"
               dangerouslySetInnerHTML={{ __html: heroText }}
             />
             <SearchBar variant="hero" />

@@ -5,7 +5,7 @@ import { CATEGORIES } from '@/lib/utils'
 
 export default function CategoryPills() {
   return (
-    <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 scrollbar-hide">
+    <div className="flex gap-2 sm:gap-2.5 overflow-x-auto sm:flex-wrap sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 scrollbar-hide">
       {CATEGORIES.map((cat) => (
         <Link
           key={cat.id}
