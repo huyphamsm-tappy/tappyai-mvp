@@ -93,8 +93,7 @@ export async function GET(req: NextRequest) {
       const coldCandidates = (coldPool || []).filter((r: any) => !pageIds.has(r.id)).slice(0, 2).map((r: any) => ({ ...r, score: 0 }))
 
       if (coldCandidates.length > 0) {
-        const insertAt = Math.max(page_results.length - coldCandidates.length, 0)
-        page_results.splice(insertAt, 0, ...coldCandidates)
+        page_results.push(...coldCandidates)
       }
 
       reviews = page_results
@@ -109,7 +108,13 @@ export async function GET(req: NextRequest) {
 
     if (filterUserId) query = query.eq('user_id', filterUserId)
     if (followingIds) query = query.in('user_id', followingIds)
-    if (search) query = query.or(`place_name.ilike.%${search}%,body.ilike.%${search}%`)
+    if (search) {
+      // Wrap the value in double quotes and escape \ and " so PostgREST treats
+      // reserved chars (, . ( )) as literal search text instead of filter syntax.
+      // Prevents filter injection while preserving search behavior (% stays a wildcard).
+      const safe = search.replace(/[\\"]/g, m => '\\' + m)
+      query = query.or(`place_name.ilike."%${safe}%",body.ilike."%${safe}%"`)
+    }
     query = query.order('created_at', { ascending: false })
 
     const { data, error } = await query
