@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { rebuildProfile } from '@/lib/preferences/profileCache'
 
 // POST /api/reviews/[id]/interact  { watch_seconds, completion_rate }
 // Records watch time and updates watch_time_avg on the review.
@@ -41,25 +42,22 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     { onConflict: 'user_id,review_id' }
   )
 
-  // Sync watch_time_avg + completion_rate AVG, and increment view_count if first view
-  const { data: interactions } = await supabase
-    .from('review_interactions')
-    .select('watch_seconds, completion_rate')
-    .eq('review_id', params.id)
+  // Sync watch_time_avg + completion_rate via DB-side AVG (avoids full-row transfer)
+  const { data: avgs } = await supabase
+    .rpc('get_interaction_avgs', { p_review_id: params.id })
 
-  if (interactions && interactions.length > 0) {
-    const n = interactions.length
-    const avgWatch = interactions.reduce((s, r) => s + (r.watch_seconds || 0), 0) / n
-    const avgCompletion = interactions.reduce((s, r) => s + (r.completion_rate || 0), 0) / n
+  if (avgs?.[0]) {
     await supabase.from('reviews').update({
-      watch_time_avg: Math.round(avgWatch * 10) / 10,
-      completion_rate: Math.round(avgCompletion * 1000) / 1000,
+      watch_time_avg: Math.round((avgs[0].avg_watch || 0) * 10) / 10,
+      completion_rate: Math.round((avgs[0].avg_completion || 0) * 1000) / 1000,
     }).eq('id', params.id)
   }
 
   if (isFirstView) {
     await supabase.rpc('increment_review_view', { p_review_id: params.id })
   }
+
+  rebuildProfile(user.id, supabase).catch(() => {})
 
   return NextResponse.json({ ok: true })
 }

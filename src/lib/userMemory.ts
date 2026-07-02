@@ -1,3 +1,4 @@
+import { SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 
 export interface UserPreferences {
@@ -50,8 +51,10 @@ export async function logUserEvent(
 
 // Looks at the last 100 events and updates preferred_style based on
 // style_tags attached to liked/checkin events (threshold: 3+ occurrences).
-export async function inferPreferencesFromEvents(userId: string): Promise<void> {
-  const supabase = createClient()
+// Canonical writer for preferred_style. Client-side callers omit `client`
+// (browser client); server routes inject their server client.
+export async function inferPreferencesFromEvents(userId: string, client?: SupabaseClient): Promise<void> {
+  const supabase = client ?? createClient()
 
   const { data: events } = await supabase
     .from('user_events')

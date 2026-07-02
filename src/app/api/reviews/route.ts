@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { rebuildProfile } from '@/lib/preferences/profileCache'
 
 // Best-effort in-memory rate limit: 5 reviews/day/IP
 const rlStore = new Map<string, { date: string; count: number }>()
@@ -139,6 +140,8 @@ export async function POST(req: NextRequest) {
     console.error('Review insert error:', JSON.stringify(insertError))
     return NextResponse.json({ error: `Không thể lưu bài viết: ${insertError.message}` }, { status: 500 })
   }
+
+  rebuildProfile(user.id, supabase).catch(() => {})
 
   return NextResponse.json({ ok: true, is_verified: isVerified })
 }

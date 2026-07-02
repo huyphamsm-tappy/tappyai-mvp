@@ -1,10 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { rebuildProfile } from '@/lib/preferences/profileCache'
 
 const ALLOWED_TYPES = new Set([
   'page_view', 'page_time', 'chat_search', 'category_click', 'place_save',
   'place_click', 'review_view', 'deal_click', 'feature_use',
   'review_search', 'review_like', 'review_share', 'review_post',
+  'hide', 'not_interested', 'report',
 ])
 
 export async function POST(req: NextRequest) {
@@ -33,6 +35,16 @@ export async function POST(req: NextRequest) {
 
   if (rows.length) {
     await supabase.from('user_events').insert(rows)
+
+    // Rebuild preference profile when search or negative feedback signals arrive
+    const needsRebuild = rows.some(r =>
+      r.event_type === 'chat_search' ||
+      r.event_type === 'review_search' ||
+      r.event_type === 'hide' ||
+      r.event_type === 'not_interested' ||
+      r.event_type === 'report'
+    )
+    if (needsRebuild) rebuildProfile(user.id, supabase).catch(() => {})
   }
 
   return NextResponse.json({ ok: true })

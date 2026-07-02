@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
+import { rebuildProfile } from '@/lib/preferences/profileCache'
+import { inferPreferencesFromEvents } from '@/lib/userMemory'
 
 // POST /api/reviews/[id]/like  → toggle like (optimistic insert, delete on 23505)
 export async function POST(
@@ -24,12 +26,15 @@ export async function POST(
       .delete()
       .eq('review_id', reviewId)
       .eq('user_id', user.id)
+    rebuildProfile(user.id, supabase).catch(() => {})
     return NextResponse.json({ liked: false })
   }
 
   if (error) return NextResponse.json({ error: 'Không thể like' }, { status: 500 })
 
   // Insert succeeded → liked=true
+  rebuildProfile(user.id, supabase).catch(() => {})
+
   // Log the like event (fire-and-forget)
   ;(async () => {
     try {
@@ -41,7 +46,8 @@ export async function POST(
         metadata: {},
       })
 
-      // Every 5 like events, re-infer preferred_style from recent behavior
+      // Every 5 like events, re-infer preferred_style from recent behavior.
+      // Delegates to the canonical writer in userMemory.ts (server client injected).
       const { count: likeCount } = await supabase
         .from('user_events')
         .select('*', { count: 'exact', head: true })
@@ -49,35 +55,7 @@ export async function POST(
         .eq('event_type', 'like')
 
       if (likeCount && likeCount % 5 === 0) {
-        const { data: events } = await supabase
-          .from('user_events')
-          .select('event_type, metadata')
-          .eq('user_id', user.id)
-          .in('event_type', ['like', 'checkin'])
-          .order('created_at', { ascending: false })
-          .limit(100)
-
-        if (events && events.length > 0) {
-          const styleCounts = new Map<string, number>()
-          for (const ev of events) {
-            const tags = ev.metadata?.style_tags
-            if (!Array.isArray(tags)) continue
-            for (const tag of tags as string[]) {
-              styleCounts.set(tag, (styleCounts.get(tag) ?? 0) + 1)
-            }
-          }
-          const preferred_style = Array.from(styleCounts.entries())
-            .filter(([, c]) => c >= 3)
-            .sort((a, b) => b[1] - a[1])
-            .map(([tag]) => tag)
-
-          if (preferred_style.length > 0) {
-            await supabase.from('user_preferences').upsert(
-              { user_id: user.id, preferred_style, updated_at: new Date().toISOString() },
-              { onConflict: 'user_id' }
-            )
-          }
-        }
+        await inferPreferencesFromEvents(user.id, supabase)
       }
     } catch { /* non-blocking */ }
   })()
@@ -103,7 +81,7 @@ export async function POST(
     }).catch(() => {})
 
     // Milestone notification (5, 10, 50, 100, 500, 1000 likes)
-    const MILESTONES = [5, 10, 50, 100, 500, 1000]
+    const MILESTONES = [5, 10, 25, 50, 100]
     const newCount = review.like_count || 0
     if (MILESTONES.includes(newCount)) {
       const { error: msError } = await supabase
