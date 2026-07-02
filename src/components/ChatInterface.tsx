@@ -331,11 +331,25 @@ function logCTAClick(button: CTAButton) {
   } catch {}
 }
 
+// Escape HTML metacharacters BEFORE any markdown→HTML transform. This neutralizes
+// raw `< > " &` coming from LLM output, tool results (untrusted external data), or the
+// user's own message, preventing HTML/attribute injection when the result is rendered
+// via dangerouslySetInnerHTML. Markdown syntax chars ([ ] ( ) * # - ! and the https://
+// scheme) are NOT escaped, so every transform below still matches. `&`→`&amp;` inside a
+// URL is the correct attribute encoding — the browser decodes it back when requesting.
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
 function formatMessage(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
-  const withImages = content.replace(
+  const withImages = escapeHtml(content).replace(
     /(?:!\[[^\]]*\]\(https?:\/\/[^\s)]+\)[ \t]*\n?)+/g,
     (block) => {
       const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]

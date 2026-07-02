@@ -26,7 +26,18 @@ function hostOf(u: string | null | undefined): string | null {
   try { return new URL(u).hostname } catch { return 'invalid' }
 }
 
-export async function GET() {
+// Dev works without a token; production requires Bearer CRON_SECRET so this
+// paid-API diagnostic can't be hit anonymously (cost + info-disclosure).
+function authorized(req: Request): boolean {
+  if (process.env.NODE_ENV !== 'production') return true
+  const secret = process.env.CRON_SECRET
+  return !!secret && req.headers.get('authorization') === `Bearer ${secret}`
+}
+
+export async function GET(req: Request) {
+  if (!authorized(req)) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const key = process.env.GOOGLE_PLACES_API_KEY
   const serperKey = process.env.SERPER_API_KEY
   const results: Record<string, unknown>[] = []
@@ -188,8 +199,8 @@ export async function GET() {
     report: 'PRODUCTION RESPONSE VERIFICATION',
     timestamp: new Date().toISOString(),
     env: {
-      GOOGLE_PLACES_API_KEY: key ? `SET (${key.slice(0, 8)}...)` : 'MISSING',
-      SERPER_API_KEY: serperKey ? `SET (${serperKey.slice(0, 6)}...)` : 'MISSING',
+      GOOGLE_PLACES_API_KEY: key ? 'SET' : 'MISSING',
+      SERPER_API_KEY: serperKey ? 'SET' : 'MISSING',
     },
     note_on_images: 'Google CDN (lh3.googleusercontent.com) is UNAVAILABLE — the API key has no Places Photo billing (proven: new API returns 0 photos, old API REQUEST_DENIED). Images are sourced from Serper and now prefer the Google-hosted gstatic thumbnail (encrypted-tbn0.gstatic.com), which is a Google CDN with NO hotlink protection and renders reliably in the browser.',
     per_query: results,

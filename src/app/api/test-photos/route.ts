@@ -1,6 +1,17 @@
 import { fetchPlacePhotoByName } from '@/lib/ai/tools/common'
 
-export async function GET() {
+// Dev works without a token; production requires Bearer CRON_SECRET so this
+// paid-API diagnostic can't be hit anonymously.
+function authorized(req: Request): boolean {
+  if (process.env.NODE_ENV !== 'production') return true
+  const secret = process.env.CRON_SECRET
+  return !!secret && req.headers.get('authorization') === `Bearer ${secret}`
+}
+
+export async function GET(req: Request) {
+  if (!authorized(req)) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const serperKey = process.env.SERPER_API_KEY
   const testPlaces = [
     { id: 'ChIJtest1', name: 'Atispho - Pho Atiso' },
