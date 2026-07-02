@@ -291,7 +291,7 @@ export async function POST(req: Request) {
         }),
       } : {}),
     },
-    onFinish: async ({ usage, finishReason, text, providerMetadata }) => {
+    onFinish: async ({ usage, finishReason, text }) => {
       console.log(JSON.stringify({
         type: 'tappyai_usage',
         intent,
@@ -303,8 +303,6 @@ export async function POST(req: Request) {
         worthExtract,
         forcedTool,
       }))
-      // TEMPORARY DEBUG — verifying prompt cache is actually being hit, remove after confirming
-      console.log(JSON.stringify({ type: 'DEBUG_CACHE_CHECK', anthropic: providerMetadata?.anthropic ?? null }))
       if (authedUserId && worthExtract) {
         try {
           const convMessages = [
