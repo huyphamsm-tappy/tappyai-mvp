@@ -142,15 +142,28 @@ export async function POST(req: Request) {
   // Truncate history to last 10 messages to control token costs
   const trimmedMessages = messages.length > 10 ? messages.slice(-10) : messages
 
+  // Anthropic prompt caching only applies when cacheControl is attached to a specific
+  // message object — passing it as a top-level streamText() option alongside a plain
+  // `system` string is silently ignored by the SDK (verified in node_modules/ai's
+  // convertToLanguageModelPrompt: the string-system code path never reads provider
+  // metadata at all). Passing the system prompt as the first `messages[]` entry instead
+  // is the code path that actually attaches cache_control, so repeat requests within the
+  // ~5min cache window get the (large, mostly-static) system prompt at a cached rate
+  // instead of full price.
+  const systemPrompt = intent === 'chitchat'
+    ? buildSystemSimple(lang, memoryBlock)
+    : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, forcedTool)
+
   const result = streamText({
     model: getModel(tier),
-    system: intent === 'chitchat'
-      ? buildSystemSimple(lang, memoryBlock)
-      : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, forcedTool),
-    experimental_providerMetadata: {
-      anthropic: { cacheControl: { type: 'ephemeral' } },
-    },
-    messages: trimmedMessages,
+    messages: [
+      {
+        role: 'system' as const,
+        content: systemPrompt,
+        providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' } } },
+      },
+      ...trimmedMessages,
+    ],
     maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 3000 : hasImage ? 1024 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
     // @ts-ignore — experimental_prepareStep exists in AI SDK but missing from this version's types; do not remove
@@ -278,7 +291,7 @@ export async function POST(req: Request) {
         }),
       } : {}),
     },
-    onFinish: async ({ usage, finishReason, text }) => {
+    onFinish: async ({ usage, finishReason, text, providerMetadata }) => {
       console.log(JSON.stringify({
         type: 'tappyai_usage',
         intent,
@@ -290,6 +303,8 @@ export async function POST(req: Request) {
         worthExtract,
         forcedTool,
       }))
+      // TEMPORARY DEBUG — verifying prompt cache is actually being hit, remove after confirming
+      console.log(JSON.stringify({ type: 'DEBUG_CACHE_CHECK', anthropic: providerMetadata?.anthropic ?? null }))
       if (authedUserId && worthExtract) {
         try {
           const convMessages = [
