@@ -137,8 +137,9 @@ export async function POST(req: NextRequest) {
   }
 
   if (insertError) {
-    console.error('Review insert error:', JSON.stringify(insertError))
-    return NextResponse.json({ error: `Không thể lưu bài viết: ${insertError.message}` }, { status: 500 })
+    // Log concise detail server-side for debugging; never leak DB error text to the client.
+    console.error('Review insert error:', insertError.code ?? insertError.message)
+    return NextResponse.json({ error: 'Không thể lưu bài viết, vui lòng thử lại' }, { status: 500 })
   }
 
   rebuildProfile(user.id, supabase).catch(() => {})

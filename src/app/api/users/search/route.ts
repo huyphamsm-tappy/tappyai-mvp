@@ -1,12 +1,28 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Best-effort in-memory rate limit: 30 searches / 60s / IP — throttles enumeration
+// brute-force while leaving normal friend-search UX untouched. Same inline pattern
+// as the reviews route (no shared framework).
+const searchRL = new Map<string, { windowStart: number; count: number }>()
+function checkSearchRL(ip: string): boolean {
+  const now = Date.now()
+  const e = searchRL.get(ip)
+  if (!e || now - e.windowStart > 60_000) { searchRL.set(ip, { windowStart: now, count: 1 }); return true }
+  if (e.count >= 30) return false
+  e.count++
+  return true
+}
+
 // GET /api/users/search?q=...
-// Search users by name, email, or phone
+// Search users by name (partial), or by EXACT email / phone.
 export async function GET(req: NextRequest) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  if (!checkSearchRL(ip)) return NextResponse.json({ error: 'Bạn tìm kiếm quá nhanh, thử lại sau chút nhé' }, { status: 429 })
 
   const q = req.nextUrl.searchParams.get('q')?.trim() ?? ''
   if (q.length < 2) return NextResponse.json({ users: [] })
@@ -22,11 +38,13 @@ export async function GET(req: NextRequest) {
       const admin = createAdminClient()
       const { data: authUsers } = await admin.auth.admin.listUsers({ perPage: 200 })
       if (authUsers?.users) {
+        // EXACT match on email/phone (not substring) so a partial value like
+        // "gmail.com" can't enumerate users — you must know the full address/number.
+        const clean = q.replace(/\D/g, '')
         matchedIds = authUsers.users
           .filter(u => {
-            if (isEmail) return u.email?.toLowerCase().includes(q.toLowerCase())
-            const clean = q.replace(/\D/g, '')
-            return u.phone?.replace(/\D/g, '').includes(clean)
+            if (isEmail) return u.email?.toLowerCase() === q.toLowerCase()
+            return !!u.phone && u.phone.replace(/\D/g, '') === clean
           })
           .map(u => u.id)
           .filter(id => id !== user.id)
