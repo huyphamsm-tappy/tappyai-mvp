@@ -210,8 +210,11 @@ export default async function ReviewDetailPage({ params }: Props) {
         </div>
       </div>
 
-      {/* ─── Action bar — identical layout to main feed right-side buttons ─── */}
-      <div className="fixed right-3 bottom-8 z-40 flex flex-col items-center gap-5">
+      {/* ─── Action bar — identical layout to main feed right-side buttons ───
+          right = max(0.75rem, 50vw - 392px): tracks the max-w-container-content (768px)
+          column's right edge on wide screens; below the ~808px crossover it clamps to the
+          original 0.75rem (right-3), so mobile/tablet spacing is unchanged. */}
+      <div className="fixed right-[max(0.75rem,calc(50vw-392px))] bottom-8 z-40 flex flex-col items-center gap-5">
         {/* ❤️ Like */}
         <ReviewLikeButton
           reviewId={params.id}
