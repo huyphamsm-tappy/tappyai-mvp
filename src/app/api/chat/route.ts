@@ -1,7 +1,7 @@
 import { streamText, tool } from 'ai'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
-import { getMemory, buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
+import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
 import { searchProducts } from '@/lib/ai/tools/shopping'
@@ -10,8 +10,9 @@ import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/t
 import { getModel, type ModelTier } from '@/lib/ai/provider'
 import { classifyIntent, detectLang, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
-import { buildSystem, buildSystemSimple, buildPrefBlock, type UserPrefs } from '@/lib/ai/promptBuilder'
+import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
+import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 
 export const maxDuration = 60
 
@@ -59,16 +60,10 @@ export async function POST(req: Request) {
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
       authedUserId = user.id
-      const [mem, prefResult] = await Promise.all([
-        getMemory(user.id),
-        supabase.from('user_preferences')
-          .select('budget_level, cuisine_likes, dietary_restrictions, inferred_preferences')
-          .eq('user_id', user.id)
-          .maybeSingle(),
-      ])
-      existingMemory = mem
+      const chatContext = await buildChatPromptContext(user.id, supabase)
+      existingMemory = chatContext.memory
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool)
-      if (prefResult.data) prefBlock = buildPrefBlock(prefResult.data as UserPrefs)
+      if (chatContext.prefs) prefBlock = buildPrefBlock(chatContext.prefs)
 
       // Inject Google Calendar events if connected
       try {
