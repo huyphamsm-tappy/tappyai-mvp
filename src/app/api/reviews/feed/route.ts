@@ -139,8 +139,24 @@ export async function GET(req: NextRequest) {
     savedIds = (savesRes.data || []).map(s => s.review_id)
   }
 
+  // reviews.comment_count drifts from reality (the DB trigger that maintains it is blocked
+  // by RLS for ordinary users — see the comments API route for root cause). Override it with
+  // a real tally so the feed always shows the true count; the trending/cold-start logic above
+  // intentionally keeps reading the raw column for ranking, which is a separate concern.
+  const realCommentCounts = new Map<string, number>()
+  if (reviews && reviews.length > 0) {
+    const { data: commentRows } = await supabase
+      .from('review_comments')
+      .select('review_id')
+      .in('review_id', reviews.map(r => r.id))
+    for (const row of commentRows || []) {
+      realCommentCounts.set(row.review_id, (realCommentCounts.get(row.review_id) || 0) + 1)
+    }
+  }
+
   const enriched = (reviews || []).map(r => ({
     ...r,
+    comment_count: realCommentCounts.get(r.id) ?? 0,
     liked_by_me: likedIds.includes(r.id),
     saved_by_me: savedIds.includes(r.id),
   }))

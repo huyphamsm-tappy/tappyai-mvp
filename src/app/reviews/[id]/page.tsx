@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { MapPin, MessageCircle } from 'lucide-react'
+import { MapPin } from 'lucide-react'
 import ReviewBackButton from './ReviewBackButton'
+import ReviewCommentButton from './ReviewCommentButton'
 import ReviewLikeButton from './ReviewLikeButton'
 import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
@@ -54,6 +55,18 @@ async function getSaveStatus(reviewId: string): Promise<boolean> {
   return !!data
 }
 
+// reviews.comment_count drifts from reality (see comments API route for root cause: the
+// DB trigger that maintains it is blocked by RLS for ordinary users). Compute the real
+// count directly instead of trusting the column, so the page always shows the truth.
+async function getCommentCount(reviewId: string): Promise<number> {
+  const supabase = createClient()
+  const { count } = await supabase
+    .from('review_comments')
+    .select('id', { count: 'exact', head: true })
+    .eq('review_id', reviewId)
+  return count ?? 0
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const review = await getReview(params.id)
   if (!review) return { title: 'Review | TappyAI' }
@@ -95,10 +108,11 @@ const RATING_LABEL: Record<number, string> = {
 }
 
 export default async function ReviewDetailPage({ params }: Props) {
-  const [review, initialLiked, initialSaved] = await Promise.all([
+  const [review, initialLiked, initialSaved, commentCount] = await Promise.all([
     getReview(params.id),
     getLikeStatus(params.id),
     getSaveStatus(params.id),
+    getCommentCount(params.id),
   ])
   if (!review) notFound()
 
@@ -216,13 +230,8 @@ export default async function ReviewDetailPage({ params }: Props) {
           initialLiked={initialLiked}
           initialCount={review.like_count}
         />
-        {/* 💬 Comment (display-only count on detail page) */}
-        <div className="flex flex-col items-center gap-1">
-          <MessageCircle size={26} className="text-white" />
-          <span className="text-white text-xs font-semibold drop-shadow-md">
-            {review.comment_count ?? 0}
-          </span>
-        </div>
+        {/* 💬 Comment */}
+        <ReviewCommentButton reviewId={params.id} initialCount={commentCount} />
         {/* 🔖 Save */}
         <ReviewSaveButton reviewId={params.id} initialSaved={initialSaved} />
         {/* ↗ Share */}

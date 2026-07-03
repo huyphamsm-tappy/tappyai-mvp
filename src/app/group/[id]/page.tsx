@@ -155,7 +155,7 @@ export default function GroupPage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header showBack title={group.name} />
+      <Header showBack backHref="/" title={group.name} />
       <main className="max-w-2xl mx-auto px-4 py-5 space-y-4">
 
         {/* Group header card */}

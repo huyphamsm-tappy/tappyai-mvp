@@ -73,7 +73,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
       <div className="bg-gradient-to-r from-primary-500 to-accent-500 px-4 py-3 text-white">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="font-bold text-sm leading-snug truncate">{plan.title}</h3>
+            <h3 className="font-bold text-sm leading-snug line-clamp-2">{plan.title}</h3>
             {(plan.people || plan.budget_total) && (
               <p className="text-primary-100 text-xs mt-0.5">
                 {plan.people && plan.people > 1 ? `${plan.people} người · ` : ''}

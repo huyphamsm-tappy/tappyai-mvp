@@ -4,6 +4,40 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
 
+type CommentProfile = { full_name: string | null; avatar_url: string | null }
+
+// review_comments.user_id references auth.users, not public.profiles, so PostgREST has no
+// FK path to resolve an implicit profiles(...) embed here (unlike e.g. reviews.user_id).
+// Fetch comments and profiles separately and merge in application code instead.
+async function attachProfiles<T extends { user_id: string }>(
+  supabase: ReturnType<typeof createClient>,
+  rows: T[]
+): Promise<(T & { profiles: CommentProfile | null })[]> {
+  const userIds = Array.from(new Set(rows.map(r => r.user_id)))
+  if (userIds.length === 0) return rows.map(r => ({ ...r, profiles: null }))
+
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('id, full_name, avatar_url')
+    .in('id', userIds)
+
+  const byId = new Map((profiles || []).map(p => [p.id, { full_name: p.full_name, avatar_url: p.avatar_url }]))
+  return rows.map(r => ({ ...r, profiles: byId.get(r.user_id) ?? null }))
+}
+
+// reviews.comment_count is a denormalized counter kept in sync by a DB trigger that runs
+// AS the requesting user (no SECURITY DEFINER) — with no RLS UPDATE policy on `reviews` for
+// ordinary users, that trigger's own update is silently dropped, so the stored column drifts.
+// Reads aren't affected by that gap, so compute the true count directly on every request
+// instead of trusting the column — this guarantees what's returned always matches reality.
+async function getRealCommentCount(supabase: ReturnType<typeof createClient>, reviewId: string): Promise<number> {
+  const { count } = await supabase
+    .from('review_comments')
+    .select('id', { count: 'exact', head: true })
+    .eq('review_id', reviewId)
+  return count ?? 0
+}
+
 // GET /api/reviews/[id]/comments?limit=30
 export async function GET(
   req: NextRequest,
@@ -14,14 +48,18 @@ export async function GET(
 
   const { data, error } = await supabase
     .from('review_comments')
-    .select('id, body, created_at, user_id, profiles(full_name, avatar_url)')
+    .select('id, body, created_at, user_id')
     .eq('review_id', params.id)
     .order('created_at', { ascending: true })
     .limit(limit)
 
   if (error) return NextResponse.json({ error: 'Loi tai binh luan' }, { status: 500 })
 
-  return NextResponse.json({ comments: data || [] })
+  const [comments, count] = await Promise.all([
+    attachProfiles(supabase, data || []),
+    getRealCommentCount(supabase, params.id),
+  ])
+  return NextResponse.json({ comments, count })
 }
 
 // POST /api/reviews/[id]/comments
@@ -41,13 +79,15 @@ export async function POST(
     return NextResponse.json({ error: 'Binh luan phai tu 1-300 ky tu' }, { status: 400 })
   }
 
-  const { data: comment, error } = await supabase
+  const { data: insertedComment, error } = await supabase
     .from('review_comments')
     .insert({ review_id: params.id, user_id: user.id, body })
-    .select('id, body, created_at, user_id, profiles(full_name, avatar_url)')
+    .select('id, body, created_at, user_id')
     .single()
 
   if (error) return NextResponse.json({ error: 'Khong the gui binh luan' }, { status: 500 })
+
+  const [comment] = await attachProfiles(supabase, [insertedComment])
 
   // Notify review owner (fire-and-forget, skip self-comment)
   const adminSb = createAdminClient()
@@ -58,7 +98,7 @@ export async function POST(
     .single()
 
   if (review && review.user_id !== user.id) {
-    const commenterName = (comment.profiles as unknown as { full_name: string | null } | null)?.full_name?.split(' ').pop() || 'Ai do'
+    const commenterName = comment.profiles?.full_name?.split(' ').pop() || 'Ai do'
     sendNotificationToUser(review.user_id, {
       title: commenterName + ' binh luan review cua ban',
       body: '"' + body.slice(0, 60) + (body.length > 60 ? '...' : '') + '"',
@@ -66,7 +106,8 @@ export async function POST(
     }).catch(() => {})
   }
 
-  return NextResponse.json({ comment })
+  const count = await getRealCommentCount(supabase, params.id)
+  return NextResponse.json({ comment, count })
 }
 
 // DELETE /api/reviews/[id]/comments?commentId=xxx
@@ -88,5 +129,6 @@ export async function DELETE(
 
   if (error) return NextResponse.json({ error: 'Khong the xoa' }, { status: 500 })
 
-  return NextResponse.json({ ok: true })
+  const count = await getRealCommentCount(supabase, params.id)
+  return NextResponse.json({ ok: true, count })
 }
