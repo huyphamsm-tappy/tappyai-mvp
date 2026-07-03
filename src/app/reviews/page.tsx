@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Heart, MessageCircle, Bookmark, Share2, Music2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
-  X, Send, Loader2, Home, Search, Plus, Bell, User, Grid3X3, ArrowLeft
+  X, Send, Loader2, Home, Search, Plus, Bell, User, Grid3X3, ArrowLeft, AlertCircle
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { track } from '@/lib/tracking/tracker'
@@ -102,18 +102,39 @@ function Carousel({ photos }: { photos: string[] }) {
 function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: () => void; onAdded: (id: string) => void }) {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState(false)
+  const [sendError, setSendError] = useState(false)
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    fetch(`/api/reviews/${review.id}/comments`).then(r => r.json()).then(d => setComments(d.comments || [])).finally(() => setLoading(false))
+    setLoadError(false)
+    fetch(`/api/reviews/${review.id}/comments`)
+      .then(r => { if (!r.ok) throw new Error('load_failed'); return r.json() })
+      .then(d => setComments(d.comments || []))
+      .catch(() => setLoadError(true))
+      .finally(() => setLoading(false))
   }, [review.id])
   const send = async () => {
-    if (!text.trim() || sending) return; setSending(true)
-    const res = await fetch(`/api/reviews/${review.id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body: text.trim() }) })
-    const d = await res.json()
-    if (res.ok) { setComments(p => [...p, d.comment]); setText(''); onAdded(review.id); setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth' }), 100) }
-    setSending(false)
+    if (!text.trim() || sending) return
+    setSending(true)
+    setSendError(false)
+    try {
+      const res = await fetch(`/api/reviews/${review.id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body: text.trim() }) })
+      const d = await res.json()
+      if (res.ok) {
+        setComments(p => [...p, d.comment])
+        setText('')
+        onAdded(review.id)
+        setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth' }), 100)
+      } else {
+        setSendError(true)
+      }
+    } catch {
+      setSendError(true)
+    } finally {
+      setSending(false)
+    }
   }
   return (
     <>
@@ -126,6 +147,7 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
         </div>
         <div className="flex-1 overflow-y-auto px-4 space-y-4 pb-2 min-h-0">
           {loading ? <div className="flex justify-center py-6"><Loader2 size={18} className="text-white animate-spin" /></div>
+            : loadError ? <div className="flex flex-col items-center gap-2 py-6 text-gray-500"><AlertCircle size={20} className="opacity-60" /><p className="text-sm">Không thể tải bình luận. Vui lòng thử lại.</p></div>
             : comments.length === 0 ? <p className="text-center text-gray-500 text-sm py-6">Chưa có bình luận nào</p>
             : comments.map(c => {
               const n = c.profiles?.full_name?.split(' ').pop() || 'Ẩn danh'
@@ -137,6 +159,7 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
             })}
           <div ref={ref} />
         </div>
+        {sendError && <p className="px-4 text-xs text-red-400 flex-shrink-0">Không thể đăng bình luận. Vui lòng thử lại.</p>}
         <div className="flex gap-2 px-4 py-3 border-t border-gray-800 flex-shrink-0">
           <input value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Thêm bình luận..." maxLength={300}
             className="flex-1 bg-gray-800 text-white placeholder-gray-500 text-sm px-4 py-2 rounded-full focus:outline-none" />
@@ -398,6 +421,7 @@ function ProfileTab({ userId }: { userId: string }) {
   const [likedPosts, setLikedPosts] = useState<Review[]>([])
   const [savedPosts, setSavedPosts] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState(false)
   const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'liked'>('posts')
   const [sel, setSel] = useState<Review | null>(null)
   const [prefs, setPrefs] = useState<UserPreferences | null>(null)
@@ -407,30 +431,39 @@ function ProfileTab({ userId }: { userId: string }) {
   useEffect(() => {
     const load = async () => {
       setLoading(true)
-      const [profileRes, reviewsRes, likedRes, savedRes, prefsRes] = await Promise.all([
-        fetch(`/api/users/${userId}`).then(r => r.json()),
-        fetch(`/api/reviews/feed?userId=${userId}&limit=50`).then(r => r.json()),
-        supabase.from('review_likes').select('review_id').eq('user_id', userId).then(r => r.data || []),
-        supabase.from('review_saves').select('review_id').eq('user_id', userId).then(r => r.data || []),
-        getUserPreferences(userId),
-      ])
-      setProfile(profileRes)
-      setPrefs(prefsRes)
-      const allPosts = (reviewsRes.reviews || []).map((r: Review) => ({ ...r, is_hidden: false }))
-      setPosts(allPosts)
-      const { data: hiddenData } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
-      setHidden((hiddenData || []).map((r: any) => ({ ...r } as Review)))
-      if (likedRes.length > 0) {
-        const likedIds = (likedRes as { review_id: string }[]).map(l => l.review_id)
-        const { data: likedData } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at').in('id', likedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
-        setLikedPosts((likedData || []).map((r: any) => ({ ...r, liked_by_me: true, saved_by_me: false })))
+      setLoadError(false)
+      try {
+        const [profileRes, reviewsRes, likedRes, savedRes, prefsRes] = await Promise.all([
+          fetch(`/api/users/${userId}`).then(r => { if (!r.ok) throw new Error('profile_failed'); return r.json() }),
+          fetch(`/api/reviews/feed?userId=${userId}&limit=50`).then(r => { if (!r.ok) throw new Error('feed_failed'); return r.json() }),
+          supabase.from('review_likes').select('review_id').eq('user_id', userId).then(r => { if (r.error) throw r.error; return r.data || [] }),
+          supabase.from('review_saves').select('review_id').eq('user_id', userId).then(r => { if (r.error) throw r.error; return r.data || [] }),
+          getUserPreferences(userId),
+        ])
+        setProfile(profileRes)
+        setPrefs(prefsRes)
+        const allPosts = (reviewsRes.reviews || []).map((r: Review) => ({ ...r, is_hidden: false }))
+        setPosts(allPosts)
+        const { data: hiddenData, error: hiddenError } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
+        if (hiddenError) throw hiddenError
+        setHidden((hiddenData || []).map((r: any) => ({ ...r } as Review)))
+        if (likedRes.length > 0) {
+          const likedIds = (likedRes as { review_id: string }[]).map(l => l.review_id)
+          const { data: likedData, error: likedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at').in('id', likedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
+          if (likedError) throw likedError
+          setLikedPosts((likedData || []).map((r: any) => ({ ...r, liked_by_me: true, saved_by_me: false })))
+        }
+        if (savedRes.length > 0) {
+          const savedIds = (savedRes as { review_id: string }[]).map(s => s.review_id)
+          const { data: savedData, error: savedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at').in('id', savedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
+          if (savedError) throw savedError
+          setSavedPosts((savedData || []).map((r: any) => ({ ...r, liked_by_me: false, saved_by_me: true })))
+        }
+      } catch {
+        setLoadError(true)
+      } finally {
+        setLoading(false)
       }
-      if (savedRes.length > 0) {
-        const savedIds = (savedRes as { review_id: string }[]).map(s => s.review_id)
-        const { data: savedData } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at').in('id', savedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
-        setSavedPosts((savedData || []).map((r: any) => ({ ...r, liked_by_me: false, saved_by_me: true })))
-      }
-      setLoading(false)
     }
     load()
   }, [userId, supabase])
@@ -539,6 +572,11 @@ function ProfileTab({ userId }: { userId: string }) {
       {/* Grid */}
       {loading ? (
         <div className="flex justify-center pt-16"><Loader2 size={20} className="text-white animate-spin" /></div>
+      ) : loadError ? (
+        <div className="flex flex-col items-center py-16 text-gray-500 gap-2">
+          <AlertCircle size={36} className="opacity-30" />
+          <p className="text-sm">Không thể tải hồ sơ. Vui lòng thử lại.</p>
+        </div>
       ) : displayPosts.length === 0 ? (
         <div className="flex flex-col items-center py-16 text-gray-500">
           {emptyState[activeTab].icon}
@@ -756,9 +794,10 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 }
 
 /* ─── Inbox Tab ─── */
-function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange, userPrefs }: {
+function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange, userPrefs }: {
   notifs: Notification[]
   notifsLoading: boolean
+  notifsError: boolean
   hotPlaces: HotPlace[]
   hotPlacesLoading: boolean
   onSetTab: (t: string) => void
@@ -825,7 +864,12 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
             )}
 
             {/* Notifications grouped by section */}
-            {notifs.length === 0 ? (
+            {notifsError ? (
+              <div className="flex flex-col items-center pt-16 text-gray-500 gap-3">
+                <AlertCircle size={40} className="opacity-30" />
+                <p className="text-sm">Không thể tải thông báo. Vui lòng thử lại.</p>
+              </div>
+            ) : notifs.length === 0 ? (
               <div className="flex flex-col items-center pt-16 text-gray-500 gap-3">
                 <Bell size={40} className="opacity-30" />
                 <p className="text-sm">Chưa có thông báo nào</p>
@@ -855,6 +899,7 @@ function InboxTab({ notifs, notifsLoading, hotPlaces, hotPlacesLoading, onSetTab
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
+  const [feedError, setFeedError] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
@@ -880,6 +925,7 @@ export default function ReviewsPage() {
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [notifs, setNotifs] = useState<Notification[]>([])
   const [notifsLoading, setNotifsLoading] = useState(false)
+  const [notifsError, setNotifsError] = useState(false)
   const [hotPlaces, setHotPlaces] = useState<HotPlace[]>([])
   const [hotPlacesLoading, setHotPlacesLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
@@ -893,43 +939,52 @@ export default function ReviewsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Review[]>([])
   const [searching, setSearching] = useState(false)
+  const [searchError, setSearchError] = useState(false)
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // User search state
   const [searchMode, setSearchMode] = useState<'review' | 'user'>('review')
   const [userResults, setUserResults] = useState<{ id: string; full_name: string | null; avatar_url: string | null; follower_count: number; following_count: number; is_following: boolean }[]>([])
   const [userSearching, setUserSearching] = useState(false)
+  const [userSearchError, setUserSearchError] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null))
+    supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null)).catch(() => {})
   }, [supabase])
   useEffect(() => {
     if (!me) return
-    getUserPreferences(me).then(p => setUserPrefs(p))
-    // City: infer from trailing segment of user's recent post addresses
+    getUserPreferences(me).then(p => setUserPrefs(p)).catch(() => {})
+    // City: infer from trailing segment of user's recent post addresses (best-effort personalization signal)
     supabase.from('reviews').select('place_address').eq('user_id', me).order('created_at', { ascending: false }).limit(5).then(({ data }) => {
       const candidates = (data || []).map(r => r.place_address).filter(Boolean).map((a: string) => a.split(',').pop()?.trim() || '').filter(Boolean)
       if (candidates.length === 0) return
       const freq = new Map<string, number>()
       for (const c of candidates) freq.set(c, (freq.get(c) || 0) + 1)
       setCity(Array.from(freq.entries()).sort((a, b) => b[1] - a[1])[0][0])
-    })
-    // Top hashtags: from reviews the user has watched
+    }, () => {})
+    // Top hashtags: from reviews the user has watched (best-effort personalization signal)
     supabase.from('review_interactions').select('review_id').eq('user_id', me).order('created_at', { ascending: false }).limit(20).then(async ({ data: interData }) => {
-      const ids = (interData || []).map(r => r.review_id as string)
-      if (ids.length === 0) return
-      const { data: hashData } = await supabase.from('reviews').select('hashtags').in('id', ids)
-      const freq = new Map<string, number>()
-      for (const row of hashData || []) for (const tag of row.hashtags || []) freq.set(tag, (freq.get(tag) || 0) + 1)
-      setTopHashtags(Array.from(freq.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([t]) => t))
-    })
+      try {
+        const ids = (interData || []).map(r => r.review_id as string)
+        if (ids.length === 0) return
+        const { data: hashData } = await supabase.from('reviews').select('hashtags').in('id', ids)
+        const freq = new Map<string, number>()
+        for (const row of hashData || []) for (const tag of row.hashtags || []) freq.set(tag, (freq.get(tag) || 0) + 1)
+        setTopHashtags(Array.from(freq.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([t]) => t))
+      } catch { /* best-effort personalization, degrade silently */ }
+    }, () => {})
   }, [me, supabase])
 
   // Load notifications + hot places when inbox tab opens
   useEffect(() => {
     if (tab !== 'inbox') return
     setNotifsLoading(true)
-    fetch('/api/notifications').then(r => r.json()).then(d => setNotifs(d.notifications || [])).finally(() => setNotifsLoading(false))
+    setNotifsError(false)
+    fetch('/api/notifications')
+      .then(r => { if (!r.ok) throw new Error('notifs_failed'); return r.json() })
+      .then(d => setNotifs(d.notifications || []))
+      .catch(() => setNotifsError(true))
+      .finally(() => setNotifsLoading(false))
     setHotPlacesLoading(true)
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     ;(async () => {
@@ -945,6 +1000,8 @@ export default function ReviewsPage() {
           if (name) counts.set(name, (counts.get(name) || 0) + 1)
         }
         setHotPlaces(Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([place_name, count]) => ({ place_name, count })))
+      } catch {
+        // Best-effort personalization row — degrade silently, section just won't render (no misleading empty-state message exists for it)
       } finally {
         setHotPlacesLoading(false)
       }
@@ -960,19 +1017,32 @@ export default function ReviewsPage() {
     } else {
       url += '&sort=latest&following=true'
     }
-    const res = await fetch(url)
-    const data = await res.json()
-    let rows: Review[] = (data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false }))
-    if (ft === 'for-you' && topHashtags.length > 0) {
-      rows = [...rows].sort((a, b) => {
-        const sa = (a.hashtags || []).filter(t => topHashtags.includes(t)).length
-        const sb = (b.hashtags || []).filter(t => topHashtags.includes(t)).length
-        return sb - sa
-      })
+    try {
+      const res = await fetch(url)
+      if (!res.ok) throw new Error('feed_failed')
+      const data = await res.json()
+      let rows: Review[] = (data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false }))
+      if (ft === 'for-you' && topHashtags.length > 0) {
+        rows = [...rows].sort((a, b) => {
+          const sa = (a.hashtags || []).filter(t => topHashtags.includes(t)).length
+          const sb = (b.hashtags || []).filter(t => topHashtags.includes(t)).length
+          return sb - sa
+        })
+      }
+      setReviews(prev => append ? [...prev, ...rows] : rows)
+      hasMore.current = rows.length >= 12
+      if (!append) setFeedError(false)
+    } catch {
+      if (append) {
+        // Let the next scroll retry the same page instead of permanently disabling pagination
+        hasMore.current = true
+      } else {
+        setReviews([])
+        setFeedError(true)
+      }
+    } finally {
+      setLoading(false)
     }
-    setReviews(prev => append ? [...prev, ...rows] : rows)
-    hasMore.current = rows.length >= 12
-    setLoading(false)
   }, [city, topHashtags])
 
   useEffect(() => { fetch_(0, false, feedType) }, [fetch_, feedType])
@@ -988,26 +1058,36 @@ export default function ReviewsPage() {
   // Debounced search
   const doSearch = useCallback((q: string) => {
     if (searchTimer.current) clearTimeout(searchTimer.current)
-    if (!q.trim()) { setSearchResults([]); return }
+    if (!q.trim()) { setSearchResults([]); setSearchError(false); return }
     setSearching(true)
     searchTimer.current = setTimeout(async () => {
       try {
         const res = await fetch(`/api/reviews/feed?search=${encodeURIComponent(q)}&limit=20`)
+        if (!res.ok) throw new Error('search_failed')
         const data = await res.json()
         setSearchResults((data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false })))
+        setSearchError(false)
         track('review_search', { query: q })
+      } catch {
+        setSearchResults([])
+        setSearchError(true)
       } finally { setSearching(false) }
     }, 400)
   }, [])
 
   // User search
   const doUserSearch = useCallback(async (q: string) => {
-    if (q.length < 2) { setUserResults([]); return }
+    if (q.length < 2) { setUserResults([]); setUserSearchError(false); return }
     setUserSearching(true)
     try {
       const res = await fetch('/api/users/search?q=' + encodeURIComponent(q))
+      if (!res.ok) throw new Error('user_search_failed')
       const d = await res.json()
       setUserResults(d.users || [])
+      setUserSearchError(false)
+    } catch {
+      setUserResults([])
+      setUserSearchError(true)
     } finally { setUserSearching(false) }
   }, [])
 
@@ -1081,6 +1161,11 @@ export default function ReviewsPage() {
           {tab === 'home' && (
             loading
               ? <div className="h-dvh flex items-center justify-center"><Loader2 size={28} className="text-white animate-spin" /></div>
+              : feedError
+              ? <div className="h-dvh flex flex-col items-center justify-center text-white gap-3">
+                  <AlertCircle size={36} className="opacity-60" />
+                  <p className="font-semibold">Không thể tải bài viết. Vui lòng thử lại.</p>
+                </div>
               : reviews.length === 0
               ? <div className="h-dvh flex flex-col items-center justify-center text-white gap-3">
                   <p className="text-4xl">{feedType === 'following' ? '👥' : '📸'}</p>
@@ -1111,7 +1196,7 @@ export default function ReviewsPage() {
                     className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
                   />
                   {searchQuery && (
-                    <button onClick={() => { setSearchQuery(''); setSearchResults([]); setUserResults([]) }}>
+                    <button onClick={() => { setSearchQuery(''); setSearchResults([]); setUserResults([]); setSearchError(false); setUserSearchError(false) }}>
                       <X size={16} className="text-gray-500" />
                     </button>
                   )}
@@ -1128,7 +1213,13 @@ export default function ReviewsPage() {
                 {searchMode === 'review' && searching && (
                   <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>
                 )}
-                {searchMode === 'review' && !searching && searchQuery && searchResults.length === 0 && (
+                {searchMode === 'review' && !searching && searchQuery && searchError && (
+                  <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
+                    <AlertCircle size={36} className="opacity-20" />
+                    <p className="text-sm">Không thể tìm kiếm. Vui lòng thử lại.</p>
+                  </div>
+                )}
+                {searchMode === 'review' && !searching && !searchError && searchQuery && searchResults.length === 0 && (
                   <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
                     <Search size={36} className="opacity-20" />
                     <p className="text-sm">Không tìm thấy kết quả cho &quot;{searchQuery}&quot;</p>
@@ -1169,7 +1260,13 @@ export default function ReviewsPage() {
                 {/* User search results */}
                 {searchMode === 'user' && <>
                   {userSearching && <div className="flex justify-center pt-12"><Loader2 size={22} className="text-white animate-spin" /></div>}
-                  {!userSearching && searchQuery && userResults.length === 0 && (
+                  {!userSearching && searchQuery && userSearchError && (
+                    <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
+                      <AlertCircle size={36} className="opacity-20" />
+                      <p className="text-sm">Không thể tìm kiếm. Vui lòng thử lại.</p>
+                    </div>
+                  )}
+                  {!userSearching && !userSearchError && searchQuery && userResults.length === 0 && (
                     <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
                       <User size={36} className="opacity-20" />
                       <p className="text-sm">Không tìm thấy người dùng nào</p>
@@ -1219,6 +1316,7 @@ export default function ReviewsPage() {
             <InboxTab
               notifs={notifs}
               notifsLoading={notifsLoading}
+              notifsError={notifsError}
               hotPlaces={hotPlaces}
               hotPlacesLoading={hotPlacesLoading}
               onSetTab={handleSetTab}
