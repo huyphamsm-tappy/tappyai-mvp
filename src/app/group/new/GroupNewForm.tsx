@@ -39,7 +39,11 @@ export default function GroupNewForm() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header showBack title="Tạo nhóm mới" />
+      <Header
+        showBack
+        title="Tạo nhóm mới"
+        backHref="/"
+      />
       <main className="max-w-2xl mx-auto px-4 py-8">
         <div className="card p-6">
           <div className="flex items-center gap-3 mb-6">

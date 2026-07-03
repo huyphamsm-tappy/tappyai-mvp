@@ -1,7 +1,7 @@
 'use client'
 
 import { useChat } from 'ai/react'
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart, X } from 'lucide-react'
@@ -619,14 +619,23 @@ export default function ChatInterface({
     }
   }
 
-  // Dynamic prompts cho 'general' (theo giờ VN), static cho các category cụ thể
-  const quickPrompts = useMemo(() => {
+  // Dynamic prompts cho 'general' (theo giờ VN), static cho các category cụ thể.
+  // Khởi tạo bằng dữ liệu tĩnh (không phụ thuộc Date/Math.random) để khớp chính xác
+  // giữa SSR và lần hydrate đầu tiên trên client, tránh hydration mismatch. Giá trị
+  // "thật" (theo giờ VN, có random) chỉ được tính trong useEffect — chạy sau khi
+  // hydrate xong, hoàn toàn ở client.
+  const [quickPrompts, setQuickPrompts] = useState<string[]>(
+    () => QUICK_PROMPTS[category] ?? QUICK_PROMPTS.general
+  )
+
+  useEffect(() => {
     if ((category as string) === 'general' || !QUICK_PROMPTS[category]) {
       const vnHour = (new Date().getUTCHours() + 7) % 24
       const vnDay = new Date().getUTCDay()
-      return getDynamicPrompts(vnHour, vnDay, null, null, 3).map(p => p.text)
+      setQuickPrompts(getDynamicPrompts(vnHour, vnDay, null, null, 3).map(p => p.text))
+    } else {
+      setQuickPrompts(QUICK_PROMPTS[category])
     }
-    return QUICK_PROMPTS[category]
   }, [category])
 
   return (

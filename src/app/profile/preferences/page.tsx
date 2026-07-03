@@ -45,6 +45,7 @@ export default function PreferencesPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [saveError, setSaveError] = useState(false)
 
   useEffect(() => {
     const supabase = createClient()
@@ -84,6 +85,7 @@ export default function PreferencesPage() {
 
   const handleSave = async () => {
     setSaving(true)
+    setSaveError(false)
     try {
       const [r1, r2] = await Promise.all([
         fetch('/api/preferences', {
@@ -100,13 +102,15 @@ export default function PreferencesPage() {
       if (r1.ok && r2.ok) {
         setSaved(true)
         setTimeout(() => { setSaved(false); router.push('/profile') }, 1200)
+      } else {
+        setSaveError(true)
       }
       // Save gender to user metadata
       if (gender !== null) {
         const supabase = createClient()
         await supabase.auth.updateUser({ data: { gender } })
       }
-    } catch { /* network error */ }
+    } catch { setSaveError(true) }
     finally { setSaving(false) }
   }
 
@@ -315,6 +319,9 @@ export default function PreferencesPage() {
             <><Save size={18} /> Lưu sở thích</>
           )}
         </button>
+        {saveError && (
+          <p className="text-sm text-red-500 text-center">Không thể lưu sở thích. Vui lòng thử lại.</p>
+        )}
 
       </main>
 

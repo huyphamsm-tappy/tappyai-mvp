@@ -34,7 +34,7 @@ export default function GroupPage() {
   const [group, setGroup] = useState<Group | null>(null)
   const [loading, setLoading] = useState(true)
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  const [isCreator, setIsCreator] = useState(false)
+  const [authChecked, setAuthChecked] = useState(false)
   const [joinSuccess, setJoinSuccess] = useState(false)
   const [suggesting, setSuggesting] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -63,21 +63,17 @@ export default function GroupPage() {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
-    supabase.auth.getUser().then(({ data }) => {
-      setCurrentUserId(data.user?.id ?? null)
-    })
+    supabase.auth.getUser()
+      .then(({ data }) => {
+        setCurrentUserId(data.user?.id ?? null)
+      })
+      .finally(() => setAuthChecked(true))
 
     const joined = localStorage.getItem(`joined_group_${id}`)
     if (joined) setJoinSuccess(true)
 
     fetchGroup()
   }, [id, fetchGroup])
-
-  useEffect(() => {
-    if (group && currentUserId) {
-      setIsCreator(group.creator_id === currentUserId)
-    }
-  }, [group, currentUserId])
 
   async function handleJoin(e: React.FormEvent) {
     e.preventDefault()
@@ -136,7 +132,7 @@ export default function GroupPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  if (loading) {
+  if (loading || !authChecked) {
     return (
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <Loader2 className="animate-spin text-primary-500" size={32} />
@@ -152,6 +148,8 @@ export default function GroupPage() {
       </div>
     )
   }
+
+  const isCreator = !!group && !!currentUserId && group.creator_id === currentUserId
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">

@@ -99,7 +99,7 @@ function Carousel({ photos }: { photos: string[] }) {
 }
 
 /* ─── Comment drawer ─── */
-function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: () => void; onAdded: (id: string) => void }) {
+function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: () => void; onAdded: (id: string, count: number) => void }) {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
@@ -125,7 +125,7 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
       if (res.ok) {
         setComments(p => [...p, d.comment])
         setText('')
-        onAdded(review.id)
+        onAdded(review.id, d.count)
         setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth' }), 100)
       } else {
         setSendError(true)
@@ -1050,7 +1050,7 @@ export default function ReviewsPage() {
     track('place_save', { review_id: id })
   }
   const del = (id: string) => setReviews(p => p.filter(r => r.id !== id))
-  const addComment = (id: string) => setReviews(p => p.map(r => r.id === id ? { ...r, comment_count: r.comment_count + 1 } : r))
+  const addComment = (id: string, count: number) => setReviews(p => p.map(r => r.id === id ? { ...r, comment_count: count } : r))
 
   const handleShare = (r: Review) => {
     setShareOf(r)
