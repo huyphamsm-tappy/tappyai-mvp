@@ -16,7 +16,7 @@ ALTER TABLE public.user_preferences
 ALTER TABLE public.user_preferences ENABLE ROW LEVEL SECURITY;
 
 DO $$ BEGIN
-  CREATE POLICY "Users manage own preferences" ON public.user_preferences
+  CREATE POLICY "Users can manage own preferences" ON public.user_preferences
     FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 EXCEPTION WHEN duplicate_object THEN NULL;
 END $$;
