@@ -47,7 +47,7 @@ export async function searchProducts(query: string) {
     // capped at 8 above), not just the first few — the AI doesn't always describe the
     // first array entries, so a "top N" cap left whichever ones it picked imageless.
     if (searchResults && searchResults.length > 0) {
-      const photoLists = await Promise.all(searchResults.map(r => fetchPlacePhotosByName(r.link, r.title)))
+      const photoLists = await Promise.all(searchResults.map(r => fetchPlacePhotosByName(r.link, r.title, 3, 'shopping')))
       searchResults = searchResults.map((r, idx) =>
         photoLists[idx].length > 0
           ? { ...r, photo_url: photoLists[idx][0], photo_urls: photoLists[idx] }

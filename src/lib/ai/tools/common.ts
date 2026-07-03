@@ -139,14 +139,42 @@ function looksLikeLogoOrIcon(img: SerperImage): boolean {
   return LOGO_ICON_KEYWORDS.some(k => text.includes(k))
 }
 
+const FOOD_VENUE_KEYWORDS = [
+  'nhà hàng', 'quán ăn', 'quán cafe', 'quán nhậu', 'restaurant', 'cafe', 'coffee',
+  'buffet', 'menu', 'món ăn', 'ẩm thực', 'đồ ăn', 'food', 'foody',
+  'bếp', 'kitchen', 'grill', 'sushi', 'pizza', 'burger', 'bánh',
+  'lẩu', 'nướng', 'phở', 'bún', 'cơm', 'trà sữa',
+  'foody.vn', 'shopeefood', 'grabfood', 'loship',
+]
+
+function looksLikeFoodVenue(img: SerperImage): boolean {
+  const text = `${img.title || ''} ${img.domain || ''}`.toLowerCase()
+  return FOOD_VENUE_KEYWORDS.some(k => text.includes(k))
+}
+
 // Returns up to `max` distinct embeddable URLs, in the same preference order pickEmbeddableImageUrl
 // uses for its single pick (gstatic-hosted thumbnail > non-hotlink-blocked original > any
 // thumbnail > last-resort original), just not stopping after the first match.
-export function pickEmbeddableImageUrls(images: SerperImage[] | undefined, max = 3): string[] {
-  if (!images || images.length === 0) return []
-  const filtered = images.filter(img => !looksLikeLogoOrIcon(img))
-  const pool = filtered.length > 0 ? filtered : images // don't filter down to nothing
+export type ImageContext = 'shopping' | 'food' | 'travel' | 'default'
 
+export function pickEmbeddableImageUrls(images: SerperImage[] | undefined, max = 3, context: ImageContext = 'default'): string[] {
+  if (!images || images.length === 0) return []
+  const nonLogoIcon = images.filter(img => !looksLikeLogoOrIcon(img))
+  const pool = nonLogoIcon.length > 0 ? nonLogoIcon : images // don't filter down to nothing
+
+  // Shopping must NEVER show food/restaurant images — unlike the logo/icon heuristic above,
+  // this filter does not fall back to the unfiltered pool. If every candidate looks like a
+  // food venue, return no images at all so the caller falls back to a placeholder instead.
+  if (context === 'shopping') {
+    const noFood = pool.filter(img => !looksLikeFoodVenue(img))
+    if (noFood.length === 0) return []
+    return pickFromPool(noFood, max)
+  }
+
+  return pickFromPool(pool, max)
+}
+
+function pickFromPool(pool: SerperImage[], max: number): string[] {
   const picked: string[] = []
   const seen = new Set<string>()
   const add = (url: string | undefined) => {
@@ -171,7 +199,7 @@ export function pickEmbeddableImageUrl(images: SerperImage[] | undefined): strin
 // Serper does not own the images it returns (its own Terms say returned content "remain[s] the
 // sole responsibility of those who make it available"), so it is treated the same as Google:
 // last-resort fallback, resolved fresh on every call, never written to a database.
-export async function fetchPlacePhotosByName(placeId: string, placeName: string, max = 3): Promise<string[]> {
+export async function fetchPlacePhotosByName(placeId: string, placeName: string, max = 3, context: ImageContext = 'default'): Promise<string[]> {
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !placeName) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_skip', reason: !apiKey ? 'no_key' : 'no_name', placeId }))
@@ -192,7 +220,7 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
     }
     const data = await (resp as Response).json()
     const images = data?.images as SerperImage[] | undefined
-    const photoUris = pickEmbeddableImageUrls(images, max)
+    const photoUris = pickEmbeddableImageUrls(images, max, context)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
     return photoUris
   } catch (e) {

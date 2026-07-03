@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
-import { ArrowLeft, Star, CheckCircle, MapPin, UserPlus, UserCheck, Loader2 } from 'lucide-react'
+import { Star, CheckCircle, MapPin, UserPlus, UserCheck, Loader2 } from 'lucide-react'
 
 interface UserProfile {
   id: string
@@ -133,17 +133,7 @@ export default function UserProfilePage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header showBack />
-
-      {/* Top bar */}
-      <div className="sticky top-0 z-30 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-4 py-3">
-        <div className="max-w-2xl mx-auto flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-            <ArrowLeft size={22} />
-          </button>
-          <h1 className="font-bold text-gray-900 dark:text-white">{profile.full_name || 'Người dùng'}</h1>
-        </div>
-      </div>
+      <Header showBack title={profile.full_name || 'Người dùng'} />
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-5">
         {/* Profile card */}

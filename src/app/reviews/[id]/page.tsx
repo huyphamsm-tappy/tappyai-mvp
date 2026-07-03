@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, MapPin, MessageCircle } from 'lucide-react'
+import { MapPin, MessageCircle } from 'lucide-react'
+import ReviewBackButton from './ReviewBackButton'
 import ReviewLikeButton from './ReviewLikeButton'
 import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
@@ -134,13 +135,7 @@ export default async function ReviewDetailPage({ params }: Props) {
         />
 
         {/* Back button */}
-        <Link
-          href="/reviews"
-          className="absolute top-12 left-4 z-20 w-10 h-10 rounded-full flex items-center justify-center active:scale-90 transition-transform"
-          style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
-        >
-          <ArrowLeft size={20} className="text-white" />
-        </Link>
+        <ReviewBackButton />
 
         {/* Bottom overlay: rating chips + name + address + author */}
         <div className="absolute bottom-0 left-0 right-4 px-5 pb-7 z-10">

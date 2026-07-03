@@ -4,7 +4,8 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
 import SignOutButton from '../SignOutButton'
-import { Bell, Sliders, MessageSquareText, Brain, Star, FileText, Shield } from 'lucide-react'
+import { Bell, Brain, FileText, Shield } from 'lucide-react'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default async function SettingsPage() {
   const supabase = createClient()
@@ -30,9 +31,8 @@ export default async function SettingsPage() {
           </h3>
           <div className="card divide-y divide-gray-100 dark:divide-gray-800">
             <MenuItem icon={Bell} label="Thông báo" description="Nhắc nhở và cập nhật" href="/profile/notifications" />
-            <MenuItem icon={Sliders} label="Hành vi ứng dụng" description="Tùy chỉnh trải nghiệm" comingSoon />
-            <MenuItem icon={MessageSquareText} label="Phong cách trả lời" description="Giọng văn của trợ lý AI" comingSoon />
-            <MenuItem icon={Brain} label="Trí nhớ" description="Quản lý thông tin AI ghi nhớ" comingSoon />
+            <MenuItem icon={Brain} label="Trí nhớ" description="Quản lý thông tin AI ghi nhớ" href="/profile/tappy-knows" />
+            <LanguageSwitcher />
           </div>
         </section>
 
@@ -41,7 +41,6 @@ export default async function SettingsPage() {
             Khác
           </h3>
           <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={Star} label="Đánh giá ứng dụng" description="Gửi phản hồi cho TappyAI" comingSoon />
             <MenuItem icon={FileText} label="Điều khoản dịch vụ" href="/profile/terms" />
             <MenuItem icon={Shield} label="Chính sách bảo mật" href="/profile/privacy" />
           </div>

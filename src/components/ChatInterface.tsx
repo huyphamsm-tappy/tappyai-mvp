@@ -4,7 +4,7 @@ import { useChat } from 'ai/react'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
-import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart, X, Camera, ImagePlus } from 'lucide-react'
+import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart, X } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
@@ -900,21 +900,7 @@ export default function ChatInterface({
               rows={1}
               className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none transition-all overflow-hidden"
             />
-          {/* Nút camera */}
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isLoading}
-            className={cn(
-              'w-11 h-11 rounded-2xl flex items-center justify-center transition-all flex-shrink-0 disabled:opacity-40',
-              imageFile
-                ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-500'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-500'
-            )}
-            aria-label="Chụp / chọn ảnh"
-          >
-            {imageFile ? <ImagePlus size={18} /> : <Camera size={18} />}
-          </button>
+          {/* Camera button hidden for MVP */}
           {/* Nút emoji */}
           <div className="relative flex-shrink-0">
             <button
