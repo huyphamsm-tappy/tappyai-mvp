@@ -38,6 +38,8 @@ function extractYoutubeId(url: string): string | null {
 // mobile Safari). A timeout guarantees these promises always settle so the upload
 // UI can never freeze at "Đang tạo thumbnail…". 20s is generous for a ≤50MB clip.
 const MEDIA_READ_TIMEOUT_MS = 20000
+const THUMB_TIMEOUT_MS = 8000        // hard cap on thumbnail decode/seek — never freeze the UI
+const THUMB_UPLOAD_TIMEOUT_MS = 15000 // hard cap on the (best-effort) thumbnail blob upload
 
 /* Structured pipeline instrumentation. Every video stage emits START, then
    SUCCESS or FAIL with elapsed TIME (ms) and, on failure, the ERROR. Prefixed
@@ -80,33 +82,85 @@ function getVideoDuration(file: File): Promise<number> {
 
 function generateVideoThumbnail(file: File): Promise<Blob> {
   return new Promise((resolve, reject) => {
+    const t0 = (typeof performance !== 'undefined' ? performance.now() : Date.now())
+    const ms = () => Math.round((typeof performance !== 'undefined' ? performance.now() : Date.now()) - t0)
     const video = document.createElement('video')
     const url = URL.createObjectURL(file)
     let settled = false
-    const finish = (fn: () => void) => {
+    let drawn = false
+    const finish = (fn: () => void, tag: string) => {
       if (settled) return
       settled = true
       clearTimeout(timer)
       URL.revokeObjectURL(url)
+      console.info(`[video-pipeline:thumb] settle(${tag}) @${ms()}ms`)
       fn()
     }
-    const timer = setTimeout(() => finish(() => reject(new Error('thumbnail timeout'))), MEDIA_READ_TIMEOUT_MS)
-    video.muted = true
-    video.playsInline = true
-    video.src = url
-    video.onloadedmetadata = () => { try { video.currentTime = 0.5 } catch { /* seek may throw on odd media */ } }
-    video.onseeked = () => {
+    // Hard cap: guarantees the promise ALWAYS settles, so the UI can never
+    // freeze at "Đang tạo thumbnail…" regardless of codec/format quirks.
+    const timer = setTimeout(() => {
+      console.warn(`[video-pipeline:thumb] TIMEOUT @${ms()}ms readyState=${video.readyState} dims=${video.videoWidth}x${video.videoHeight}`)
+      finish(() => reject(new Error('thumbnail timeout')), 'timeout')
+    }, THUMB_TIMEOUT_MS)
+
+    const draw = (via: string) => {
+      if (drawn || settled) return
+      drawn = true
+      console.info(`[video-pipeline:thumb] draw(${via}) @${ms()}ms dims=${video.videoWidth}x${video.videoHeight} rs=${video.readyState}`)
       try {
+        // No renderable video track (audio-only, or an undecodable codec) —
+        // fail gracefully so the caller continues WITHOUT a thumbnail.
+        if (!video.videoWidth || !video.videoHeight) {
+          finish(() => reject(new Error('no video dimensions')), 'no-dims'); return
+        }
         const MAX_DIM = 1280
         const scale = Math.min(MAX_DIM / video.videoWidth, MAX_DIM / video.videoHeight, 1)
         const canvas = document.createElement('canvas')
         canvas.width = Math.round(video.videoWidth * scale)
         canvas.height = Math.round(video.videoHeight * scale)
-        canvas.getContext('2d')!.drawImage(video, 0, 0, canvas.width, canvas.height)
-        canvas.toBlob(blob => finish(() => blob ? resolve(blob) : reject(new Error('toBlob failed'))), 'image/jpeg', 0.82)
-      } catch (e) { finish(() => reject(e)) }
+        const ctx = canvas.getContext('2d')
+        if (!ctx) { finish(() => reject(new Error('no 2d context')), 'no-ctx'); return }
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+        console.info(`[video-pipeline:thumb] drawImage ok @${ms()}ms → toBlob`)
+        canvas.toBlob(
+          blob => {
+            console.info(`[video-pipeline:thumb] toBlob cb @${ms()}ms bytes=${blob?.size ?? 0}`)
+            finish(() => (blob ? resolve(blob) : reject(new Error('toBlob null'))), 'toblob')
+          },
+          'image/jpeg',
+          0.82,
+        )
+      } catch (e) {
+        console.error(`[video-pipeline:thumb] draw threw @${ms()}ms`, e)
+        finish(() => reject(e), 'draw-throw')
+      }
     }
-    video.onerror = () => finish(() => reject(new Error('video error')))
+
+    video.muted = true
+    video.playsInline = true
+    video.preload = 'metadata'
+    video.onloadedmetadata = () => {
+      console.info(`[video-pipeline:thumb] loadedmetadata @${ms()}ms dur=${video.duration} dims=${video.videoWidth}x${video.videoHeight}`)
+      // Seek to a small, guaranteed-in-range time to force one decoded frame.
+      // Seeking to 0.5 would be out of range for sub-0.5s clips (→ 'seeked'
+      // never fires) and invalid when duration is Infinity/NaN.
+      const dur = isFinite(video.duration) && video.duration > 0 ? video.duration : 0
+      const target = dur ? Math.min(0.1, dur / 2) : 0.1
+      try {
+        console.info(`[video-pipeline:thumb] set currentTime=${target} @${ms()}ms`)
+        video.currentTime = target
+      } catch (e) {
+        console.warn(`[video-pipeline:thumb] currentTime threw @${ms()}ms — drawing current frame`, e)
+        draw('metadata-fallback')
+      }
+    }
+    video.onseeked = () => { console.info(`[video-pipeline:thumb] seeked @${ms()}ms`); draw('seeked') }
+    video.onerror = () => {
+      console.error(`[video-pipeline:thumb] video error @${ms()}ms`, video.error)
+      finish(() => reject(new Error('video decode error')), 'error')
+    }
+    console.info(`[video-pipeline:thumb] start @${ms()}ms size=${file.size} type=${file.type}`)
+    video.src = url
   })
 }
 
@@ -265,11 +319,17 @@ export default function NewReviewPage() {
       setThumbPreview(URL.createObjectURL(thumbBlob))
       const thumbFile = new File([thumbBlob], 'thumb.jpg', { type: 'image/jpeg' })
       const tThumbUp = vstart('thumbnail-upload')
+      // Bound the (best-effort) thumbnail upload too: the 'thumb' UI state covers
+      // this call, so a stalled blob upload would otherwise freeze the UI at
+      // "Đang tạo thumbnail…" just as an unresolved decode would.
+      const thumbAbort = new AbortController()
+      const thumbTimer = setTimeout(() => thumbAbort.abort(), THUMB_UPLOAD_TIMEOUT_MS)
       try {
         const result = await upload(`thumbnails/${Date.now()}.jpg`, thumbFile, {
           access: 'public',
           handleUploadUrl: '/api/upload/video',
           clientPayload: 'thumbnail',
+          abortSignal: thumbAbort.signal,
         })
         thumbUrl = result.url
         setThumbnail(thumbUrl)
@@ -277,6 +337,8 @@ export default function NewReviewPage() {
       } catch (e) {
         vfail('thumbnail-upload', tThumbUp, e)
         throw e
+      } finally {
+        clearTimeout(thumbTimer)
       }
     } catch (e) {
       // Non-fatal: log and continue to the video upload without a poster thumbnail.
