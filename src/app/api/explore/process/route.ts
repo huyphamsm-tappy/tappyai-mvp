@@ -1,5 +1,6 @@
 import { processContent } from '@/lib/explore/contentProcessor'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { NextRequest, NextResponse } from 'next/server'
 
 const EMPTY: Record<string, unknown> = { caption: '', hashtags: [], category: 'other', location: '' }
@@ -18,6 +19,14 @@ export async function POST(req: NextRequest) {
     caption = b.caption?.trim() || ''
     title = b.title?.trim() || ''
   } catch { /* empty body */ }
+
+  // SSRF guard: the thumbnail URL is fetched server-side (AI SDK image input).
+  // Only allow https URLs to public hosts; drop anything pointing at
+  // localhost/loopback/private/link-local/internal or a non-https scheme.
+  if (thumbnail_url && !isSafeHttpsUrl(thumbnail_url)) {
+    console.warn('[explore/process] rejected unsafe thumbnail_url')
+    thumbnail_url = ''
+  }
 
   if (!thumbnail_url && !caption && !title) return NextResponse.json(EMPTY)
 

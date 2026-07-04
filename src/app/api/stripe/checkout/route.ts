@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
@@ -6,24 +7,30 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06
 
 export async function POST(req: Request) {
   try {
-    const { user, supabase } = await getRequestUser(req)
+    const { user } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('email, stripe_customer_id')
-      .eq('id', user.id)
-      .single()
+    // stripe_customer_id lives in the restricted billing_customers table (not the
+    // public profiles table), accessed only via the service-role client.
+    const admin = createAdminClient()
+    const { data: billing } = await admin
+      .from('billing_customers')
+      .select('stripe_customer_id')
+      .eq('user_id', user.id)
+      .maybeSingle()
 
     // Tạo hoặc lấy Stripe customer
-    let customerId = profile?.stripe_customer_id
+    let customerId = billing?.stripe_customer_id
     if (!customerId) {
       const customer = await stripe.customers.create({
-        email: profile?.email || user.email,
+        email: user.email,
         metadata: { supabase_user_id: user.id },
       })
       customerId = customer.id
-      await supabase.from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id)
+      await admin.from('billing_customers').upsert(
+        { user_id: user.id, stripe_customer_id: customerId, updated_at: new Date().toISOString() },
+        { onConflict: 'user_id' },
+      )
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tappyai.vercel.app'

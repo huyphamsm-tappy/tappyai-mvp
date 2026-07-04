@@ -14,11 +14,24 @@ import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, appl
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
+import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 
 export const maxDuration = 60
 
 export async function POST(req: Request) {
   const startTime = Date.now()
+
+  // Flood guard: cap requests per client IP (applies to anonymous and
+  // authenticated callers alike, before any expensive LLM/tool work). The
+  // per-user daily freemium cap below is a separate, longer-window control.
+  const rl = rateLimit(`chat:${clientIp(req)}`, 30, 60_000)
+  if (!rl.ok) {
+    return new Response(
+      JSON.stringify({ error: 'Bạn gửi quá nhanh, vui lòng thử lại sau giây lát.' }),
+      { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rl.retryAfter) } },
+    )
+  }
+
   const { messages, userLocation: rawUserLocation, userPreferences: rawUserPrefs } = await req.json()
 
   const userLocation: { lat: number; lng: number; address?: string } | null =

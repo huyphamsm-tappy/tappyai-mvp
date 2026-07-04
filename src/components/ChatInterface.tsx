@@ -582,9 +582,15 @@ export default function ChatInterface({
   }, [])
 
   const clearImage = useCallback(() => {
-    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl)
     setImageFile(null)
     setImagePreviewUrl(null)
+  }, [])
+
+  // Revoke the object URL whenever it changes (re-selection) or on unmount, so a
+  // selected-but-not-cleared image preview can never leak.
+  useEffect(() => {
+    if (!imagePreviewUrl) return
+    return () => URL.revokeObjectURL(imagePreviewUrl)
   }, [imagePreviewUrl])
 
   const handleFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {

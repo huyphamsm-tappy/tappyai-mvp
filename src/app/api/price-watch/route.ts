@@ -62,11 +62,16 @@ export async function DELETE(req: Request) {
   const { id } = await req.json()
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
 
-  await supabase
+  const { data, error } = await supabase
     .from('price_watches')
     .update({ status: 'cancelled' })
     .eq('id', id)
     .eq('user_id', user.id)
+    .select('id')
+
+  // Never report success if the cancel failed or matched nothing (wrong id / not owner).
+  if (error) return NextResponse.json({ error: 'Không thể huỷ theo dõi' }, { status: 500 })
+  if (!data || data.length === 0) return NextResponse.json({ error: 'Không tìm thấy' }, { status: 404 })
 
   return NextResponse.json({ ok: true })
 }

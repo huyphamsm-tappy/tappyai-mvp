@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -231,6 +231,11 @@ export default function NewReviewPage() {
   const [media_url, setMedia_url] = useState('')
   const [thumbnail, setThumbnail] = useState('')
   const [thumbPreview, setThumbPreview] = useState('')
+  // Revoke the thumbnail preview object URL on change / reset / unmount.
+  useEffect(() => {
+    if (!thumbPreview) return
+    return () => URL.revokeObjectURL(thumbPreview)
+  }, [thumbPreview])
   const [uploadProgress, setUploadProgress] = useState(0)
   type UploadStep = '' | 'thumb' | 'video' | 'ai' | 'done'
   const [uploadStep, setUploadStep] = useState<UploadStep>('')
