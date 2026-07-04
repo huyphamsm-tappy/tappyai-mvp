@@ -305,7 +305,7 @@ export default function PreferencesPage() {
         <button
           onClick={handleSave}
           disabled={saving || saved}
-          className={`w-full py-4 rounded-2xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-2 ${
+          className={`w-full py-4 rounded-2xl font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 ${
             saved
               ? 'bg-green-500 text-white'
               : 'bg-primary-500 hover:bg-primary-600 active:scale-[0.98] text-white disabled:opacity-60'

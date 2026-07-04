@@ -135,7 +135,7 @@ export default function UserProfilePage() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
       <Header showBack title={profile.full_name || 'Người dùng'} />
 
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-5">
+      <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Profile card */}
         <div className="card p-5">
           <div className="flex items-start gap-4">
@@ -210,7 +210,7 @@ export default function UserProfilePage() {
           </h3>
 
           {reviews.length === 0 ? (
-            <div className="card p-8 text-center">
+            <div className="card p-4 text-center">
               <p className="text-gray-400 text-sm">Chưa có review nào</p>
             </div>
           ) : (

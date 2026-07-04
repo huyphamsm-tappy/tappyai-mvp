@@ -213,7 +213,7 @@ export default function GroupPage() {
                 </div>
               </div>
             ) : (
-              <div className="card p-5 text-center text-sm text-gray-500 dark:text-gray-400">
+              <div className="card p-4 text-center text-sm text-gray-500 dark:text-gray-400">
                 Chưa có ai tham gia. Chia sẻ link ở trên nhé!
               </div>
             )}

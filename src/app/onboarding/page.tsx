@@ -116,13 +116,13 @@ export default function OnboardingPage() {
               Để gợi ý địa điểm sát thực tế hơn với bạn.
             </p>
 
-            <div className="grid grid-cols-2 gap-2 mb-4">
+            <div className="grid grid-cols-2 gap-3 mb-4">
               {CITIES.map(c => (
                 <button
                   key={c}
                   onClick={() => setCity(c)}
                   className={cn(
-                    'flex items-center gap-2 p-3.5 rounded-2xl border-2 transition-all text-left text-sm',
+                    'flex items-center gap-2 p-4 rounded-2xl border-2 transition-all text-left text-sm',
                     city === c
                       ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 font-medium'
                       : 'border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200'

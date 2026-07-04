@@ -65,7 +65,7 @@ export default function GameHubPage() {
       <SupertuxPreload dataUrl={stDataUrl} wasmUrl={stWasmUrl} />
       <Header showBack backHref="/" title="Mini Games" />
 
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-5">
+      <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Hero */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 p-6 pb-7 shadow-lg shadow-emerald-500/20">
           <div className="absolute -top-14 -right-14 w-48 h-48 rounded-full bg-white/10 pointer-events-none" />

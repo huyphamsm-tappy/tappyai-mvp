@@ -32,7 +32,7 @@ export default async function ProfileHistoryPage() {
 
       <main className="max-w-2xl mx-auto px-4 py-6">
         {!conversations || conversations.length === 0 ? (
-          <div className="card p-8 text-center">
+          <div className="card p-4 text-center">
             <MessageCircle size={32} className="text-gray-300 dark:text-gray-600 mx-auto mb-3" />
             <p className="text-gray-500 dark:text-gray-400 text-sm">Chưa có cuộc trò chuyện nào</p>
             <Link href="/chat" className="inline-block mt-3 btn-primary text-sm py-2 px-5">
