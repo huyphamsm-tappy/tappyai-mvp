@@ -8,8 +8,12 @@ import { createClient } from '@/lib/supabase/client'
 import { upload } from '@vercel/blob/client'
 import {
   Star, Camera, X, ArrowLeft, Loader2, CheckCircle,
-  MapPin, Plus, Video, Link2, XCircle,
+  MapPin, Plus, Video, Link2, XCircle, Music,
 } from 'lucide-react'
+import {
+  MusicPickerSheet, MusicThumbnail, MusicDuration, useMusicTrack,
+  type MusicSelection,
+} from '@/modules/music'
 
 const MAX_PHOTOS = 6
 const MAX_VIDEO_SIZE = 50 * 1024 * 1024   // 50 MB
@@ -66,6 +70,42 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
   })
 }
 
+// Displays a selected MusicSelection as a card (cover, title, artist,
+// duration, remove). Fetches the track's own display metadata via
+// useMusicTrack since MusicSelection itself only carries {trackId, startSec,
+// volume}. Feature-owned composition of the Music Module's exported dumb
+// display primitives — not a Music Module component.
+function SelectedMusicCard({
+  trackId, onReplace, onRemove,
+}: { trackId: string; onReplace: () => void; onRemove: () => void }) {
+  const { track } = useMusicTrack(trackId)
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onReplace}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onReplace() } }}
+      aria-label="Nhạc nền đã chọn, bấm để đổi nhạc"
+      className="flex w-full cursor-pointer items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-700 p-3 text-left transition-colors hover:border-[#fe2c55]/50"
+    >
+      <MusicThumbnail coverUrl={track?.coverUrl ?? null} title={track?.title ?? ''} size={44} />
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{track?.title ?? 'Đang tải...'}</p>
+        {track?.artist && <p className="truncate text-xs text-gray-500 dark:text-gray-400">{track.artist}</p>}
+      </div>
+      {track && <MusicDuration seconds={track.durationSec} className="flex-shrink-0 text-xs text-gray-400" />}
+      <button
+        type="button"
+        aria-label="Xóa nhạc nền"
+        onClick={e => { e.stopPropagation(); onRemove() }}
+        className="flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-red-500"
+      >
+        <X size={16} />
+      </button>
+    </div>
+  )
+}
+
 /* ─── page ─── */
 
 export default function NewReviewPage() {
@@ -109,6 +149,12 @@ export default function NewReviewPage() {
 
   /* ai suggestions */
   const [aiHashtags, setAiHashtags] = useState<string[]>([])
+
+  /* music */
+  const [music, setMusic] = useState<MusicSelection | null>(null)
+  const [musicPickerOpen, setMusicPickerOpen] = useState(false)
+  const [hasOpenedMusicPicker, setHasOpenedMusicPicker] = useState(false)
+  const openMusicPicker = () => { setHasOpenedMusicPicker(true); setMusicPickerOpen(true) }
 
   const resetVideoState = () => {
     setMedia_url(''); setThumbnail(''); setThumbPreview('')
@@ -328,6 +374,10 @@ export default function NewReviewPage() {
         placeAddress: '',
         rating: rating || 0,
         body: body.trim(),
+      }
+
+      if (music) {
+        payload.music = { version: 1, trackId: music.trackId, startSec: music.startSec, volume: music.volume }
       }
 
       if (mediaMode === 'photo') {
@@ -654,6 +704,26 @@ export default function NewReviewPage() {
                 </button>
               ))}
             </div>
+          )}
+        </div>
+
+        {/* Music */}
+        <div>
+          {!music ? (
+            <button type="button" onClick={openMusicPicker} aria-haspopup="dialog"
+              className="flex items-center gap-2 text-sm text-[#fe2c55] font-medium hover:text-[#ef2950] transition-colors">
+              <Music size={16} />
+              Thêm nhạc nền
+            </button>
+          ) : (
+            <SelectedMusicCard trackId={music.trackId} onReplace={openMusicPicker} onRemove={() => setMusic(null)} />
+          )}
+          {hasOpenedMusicPicker && (
+            <MusicPickerSheet
+              open={musicPickerOpen}
+              onClose={() => setMusicPickerOpen(false)}
+              onSelect={selection => setMusic(selection)}
+            />
           )}
         </div>
 

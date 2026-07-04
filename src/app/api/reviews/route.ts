@@ -2,6 +2,16 @@ import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
+import { createSelection, getTrack } from '@/modules/music/server'
+
+const MUSIC_PAYLOAD_VERSION = 1
+
+interface ReviewMusic {
+  version: number
+  trackId: string
+  startSec: number
+  volume: number
+}
 
 // Best-effort in-memory rate limit: 5 reviews/day/IP
 const rlStore = new Map<string, { date: string; count: number }>()
@@ -54,6 +64,7 @@ export async function POST(req: NextRequest) {
 
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]
+  let music: ReviewMusic | null
   try {
     const b = await req.json()
     placeId = b.placeId?.trim()
@@ -68,12 +79,30 @@ export async function POST(req: NextRequest) {
     source_type = b.source_type?.trim() || 'upload'
     source_url = b.source_url?.trim() || ''
     hashtags = Array.isArray(b.hashtags) ? b.hashtags.filter((t: unknown) => typeof t === 'string').slice(0, 10) : []
+    music = null
+    if (b.music) {
+      if (b.music.version !== MUSIC_PAYLOAD_VERSION) throw new Error('unsupported music version')
+      // createSelection validates shape (trackId non-empty, startSec/volume in range)
+      // and throws on invalid input — reuses the Music Module's own public validator
+      // rather than re-implementing the checks here.
+      const selection = createSelection(String(b.music.trackId), Number(b.music.startSec), Number(b.music.volume))
+      music = { version: MUSIC_PAYLOAD_VERSION, ...selection }
+    }
     if (!placeId || !placeName) throw new Error('missing fields')
     if (!body && photos.length === 0 && !media_url) throw new Error('need body or photos or media')
     if (rating && (rating < 1 || rating > 5 || !Number.isInteger(rating))) throw new Error('invalid rating')
     if (body.length > 1000) throw new Error('body too long')
   } catch {
     return NextResponse.json({ error: 'Cần có nội dung hoặc ảnh để đăng bài.' }, { status: 400 })
+  }
+
+  // Confirm the referenced track still exists (no DB-level FK to Music by
+  // design — validated here via the Music Module's own public API).
+  if (music) {
+    const track = await getTrack(music.trackId)
+    if (!track) {
+      return NextResponse.json({ error: 'Bài nhạc không còn tồn tại, vui lòng chọn lại.' }, { status: 400 })
+    }
   }
 
   // Check if user has a past booking here → verified badge
@@ -117,6 +146,7 @@ export async function POST(req: NextRequest) {
   if (source_type && source_type !== 'upload') reviewData.source_type = source_type
   if (source_url) reviewData.source_url = source_url
   if (hashtags.length > 0) reviewData.hashtags = hashtags
+  if (music) reviewData.music = music
 
   let { error: insertError } = await supabase.from('reviews').insert(reviewData)
 
@@ -134,6 +164,15 @@ export async function POST(req: NextRequest) {
     delete dataNoRating.rating
     const { error: retryError2 } = await supabase.from('reviews').insert(dataNoRating)
     insertError = retryError2 ?? null
+  }
+
+  // If music column doesn't exist yet, retry without it
+  if (insertError && music && insertError.message?.includes('music')) {
+    console.warn('music column missing, retrying without music:', insertError.message)
+    const dataNoMusic = { ...reviewData }
+    delete dataNoMusic.music
+    const { error: retryError3 } = await supabase.from('reviews').insert(dataNoMusic)
+    insertError = retryError3 ?? null
   }
 
   if (insertError) {
