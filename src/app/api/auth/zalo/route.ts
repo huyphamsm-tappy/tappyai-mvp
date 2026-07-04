@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
-// Zalo requires callback domain to match a verified domain (www.tappyai.com)
-const ZALO_BASE = process.env.NEXT_PUBLIC_APP_URL!.replace('://tappyai.com', '://www.tappyai.com')
-const REDIRECT_URI = `${ZALO_BASE}/api/auth/zalo/callback`
+const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/zalo/callback`
 
 export async function GET(req: NextRequest) {
   const returnTo = req.nextUrl.searchParams.get('returnTo') || '/'
