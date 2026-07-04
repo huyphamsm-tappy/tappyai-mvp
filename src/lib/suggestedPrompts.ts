@@ -255,6 +255,17 @@ export function getDynamicPrompts(
     candidates = [shuffle(SPA_OVERRIDE_PROMPTS)[0], ...candidates]
   }
 
+  // Deduplicate by text. The pools overlap (e.g. WITTY_PROMPTS is included both via
+  // the gender/witty slice and its own explicit slice), so the same prompt text can
+  // appear more than once. Returning duplicates would collide on React's `key={text}`
+  // in consumers and render duplicate suggestion cards.
+  const seenText = new Set<string>()
+  candidates = candidates.filter(p => {
+    if (seenText.has(p.text)) return false
+    seenText.add(p.text)
+    return true
+  })
+
   // 6. Pick with category diversity
   const selected: PromptItem[] = []
   const usedCategories = new Set<string>()

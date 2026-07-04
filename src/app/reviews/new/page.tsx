@@ -33,14 +33,29 @@ function extractYoutubeId(url: string): string | null {
   return url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/)?.[1] ?? null
 }
 
+// Reading duration/thumbnail from a <video> can hang forever if the browser loads
+// metadata but never fires `onseeked` (seen with some .mov/codec files, esp. on
+// mobile Safari). A timeout guarantees these promises always settle so the upload
+// UI can never freeze at "Đang tạo thumbnail…". 20s is generous for a ≤50MB clip.
+const MEDIA_READ_TIMEOUT_MS = 20000
+
 function getVideoDuration(file: File): Promise<number> {
   return new Promise((resolve, reject) => {
     const video = document.createElement('video')
     const url = URL.createObjectURL(file)
+    let settled = false
+    const done = (fn: () => void) => {
+      if (settled) return
+      settled = true
+      clearTimeout(timer)
+      URL.revokeObjectURL(url)
+      fn()
+    }
+    const timer = setTimeout(() => done(() => reject(new Error('duration timeout'))), MEDIA_READ_TIMEOUT_MS)
     video.preload = 'metadata'
     video.src = url
-    video.onloadedmetadata = () => { URL.revokeObjectURL(url); resolve(video.duration) }
-    video.onerror = () => { URL.revokeObjectURL(url); reject(new Error('cannot read video')) }
+    video.onloadedmetadata = () => done(() => resolve(video.duration))
+    video.onerror = () => done(() => reject(new Error('cannot read video')))
   })
 }
 
@@ -48,10 +63,19 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const video = document.createElement('video')
     const url = URL.createObjectURL(file)
+    let settled = false
+    const finish = (fn: () => void) => {
+      if (settled) return
+      settled = true
+      clearTimeout(timer)
+      URL.revokeObjectURL(url)
+      fn()
+    }
+    const timer = setTimeout(() => finish(() => reject(new Error('thumbnail timeout'))), MEDIA_READ_TIMEOUT_MS)
     video.muted = true
     video.playsInline = true
     video.src = url
-    video.onloadedmetadata = () => { video.currentTime = 0.5 }
+    video.onloadedmetadata = () => { try { video.currentTime = 0.5 } catch { /* seek may throw on odd media */ } }
     video.onseeked = () => {
       try {
         const MAX_DIM = 1280
@@ -60,13 +84,10 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
         canvas.width = Math.round(video.videoWidth * scale)
         canvas.height = Math.round(video.videoHeight * scale)
         canvas.getContext('2d')!.drawImage(video, 0, 0, canvas.width, canvas.height)
-        canvas.toBlob(blob => {
-          URL.revokeObjectURL(url)
-          blob ? resolve(blob) : reject(new Error('toBlob failed'))
-        }, 'image/jpeg', 0.82)
-      } catch (e) { URL.revokeObjectURL(url); reject(e) }
+        canvas.toBlob(blob => finish(() => blob ? resolve(blob) : reject(new Error('toBlob failed'))), 'image/jpeg', 0.82)
+      } catch (e) { finish(() => reject(e)) }
     }
-    video.onerror = () => { URL.revokeObjectURL(url); reject(new Error('video error')) }
+    video.onerror = () => finish(() => reject(new Error('video error')))
   })
 }
 
@@ -208,17 +229,13 @@ export default function NewReviewPage() {
 
     resetVideoState()
 
-    /* 1. Generate + upload thumbnail */
+    /* 1. Generate + upload thumbnail — best-effort. A poster frame is nice-to-have;
+       if the browser can't decode one, the video must still upload and play. */
     setUploadStep('thumb')
-    let thumbBlob: Blob
-    try { thumbBlob = await generateVideoThumbnail(file) }
-    catch { setError('Khong tao duoc thumbnail'); setUploadStep(''); return }
-
-    const localPreview = URL.createObjectURL(thumbBlob)
-    setThumbPreview(localPreview)
-
     let thumbUrl = ''
     try {
+      const thumbBlob = await generateVideoThumbnail(file)
+      setThumbPreview(URL.createObjectURL(thumbBlob))
       const thumbFile = new File([thumbBlob], 'thumb.jpg', { type: 'image/jpeg' })
       const result = await upload(`thumbnails/${Date.now()}.jpg`, thumbFile, {
         access: 'public',
@@ -227,7 +244,10 @@ export default function NewReviewPage() {
       })
       thumbUrl = result.url
       setThumbnail(thumbUrl)
-    } catch { setError('Loi tai thumbnail'); setUploadStep(''); return }
+    } catch (e) {
+      // Non-fatal: log and continue to the video upload without a poster thumbnail.
+      console.warn('[video-upload] thumbnail step failed, continuing without thumbnail:', e)
+    }
 
     /* 2. Upload video with progress */
     const controller = new AbortController()
@@ -236,6 +256,7 @@ export default function NewReviewPage() {
 
     try {
       const ext = file.name.split('.').pop() || 'mp4'
+      console.info('[video-upload] uploading video', { sizeMB: (file.size / 1048576).toFixed(1), type: file.type })
       const result = await upload(`videos/${Date.now()}.${ext}`, file, {
         access: 'public',
         handleUploadUrl: '/api/upload/video',
@@ -244,6 +265,7 @@ export default function NewReviewPage() {
           setUploadProgress(Math.round(percentage)),
       })
       setMedia_url(result.url)
+      console.info('[video-upload] video uploaded ok')
 
       /* 3. AI processing (non-blocking — failure is OK) */
       setUploadStep('ai')
@@ -268,6 +290,7 @@ export default function NewReviewPage() {
       if ((e as Error)?.name === 'AbortError') {
         setError('Da huy tai len')
       } else {
+        console.error('[video-upload] video upload failed:', e)
         setError('Loi tai video. Vui long thu lai.')
       }
       resetVideoState()

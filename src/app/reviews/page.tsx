@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Heart, MessageCircle, Bookmark, Share2, Music2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
-  X, Send, Loader2, Home, Search, Plus, Bell, User, Grid3X3, ArrowLeft, AlertCircle
+  X, Send, Loader2, Home, Search, Plus, Bell, User, Grid3X3, ArrowLeft, AlertCircle, Compass
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { track } from '@/lib/tracking/tracker'
@@ -561,8 +561,12 @@ function ProfileTab({ userId }: { userId: string }) {
 function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => void; userId: string | null }) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur border-t border-gray-800 flex items-center h-[60px]">
+      {/* App Home — TappyAI has exactly one Home: the AI Chat home at "/". Reviews never redefines it. */}
+      <Link href="/" className="flex-1 flex flex-col items-center gap-0.5 py-1 text-gray-500">
+        <Home size={24} /><span className="text-[10px]">Trang chủ</span>
+      </Link>
       {[
-        { id: 'home', icon: <Home size={24} />, label: 'Trang chủ' },
+        { id: 'home', icon: <Compass size={24} />, label: 'Khám phá' },
         { id: 'explore', icon: <Search size={24} />, label: 'Tìm Kiếm' },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
@@ -594,9 +598,14 @@ function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => v
 function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) {
   return (
     <aside className="hidden md:flex flex-col w-[240px] xl:w-[260px] fixed left-[max(0px,calc(50vw-500px))] top-0 h-screen py-6 px-4 gap-1 border-r border-gray-800">
-      <div className="text-white font-black text-2xl px-3 mb-4">TappyAI</div>
+      {/* Logo returns to the app's single Home (AI Chat at "/") */}
+      <Link href="/" className="text-white font-black text-2xl px-3 mb-4 block">TappyAI</Link>
+      {/* App Home — TappyAI has exactly one Home: the AI Chat home at "/". Reviews never redefines it. */}
+      <Link href="/" className="flex items-center gap-4 px-3 py-2.5 rounded-xl text-[15px] font-medium text-gray-300 hover:bg-white/5 transition-colors">
+        <Home size={22} />Trang chủ
+      </Link>
       {[
-        { id: 'home', icon: <Home size={22} />, label: 'Trang chủ' },
+        { id: 'home', icon: <Compass size={22} />, label: 'Khám phá' },
         { id: 'explore', icon: <Search size={22} />, label: 'Tìm Kiếm' },
         { id: 'profile', icon: <User size={22} />, label: 'Hồ sơ & Bài của tôi' },
       ].map(item => (

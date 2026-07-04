@@ -136,6 +136,7 @@ export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sou
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
+        onError={() => { console.error('[VideoPlayer] playback error:', url); setPlaying(false) }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
       {showPlayIcon && (
