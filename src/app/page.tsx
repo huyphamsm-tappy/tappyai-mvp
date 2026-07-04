@@ -94,12 +94,20 @@ export default async function HomePage() {
     },
     {
       range: [17, 20],
-      texts: [
-        'Tan làm rồi!<br />Tối nay ăn gì, đi đâu? 🎊',
-        'Giờ vàng buổi tối —<br />Tappy gợi ý quán ngon ngay! 🍜',
-        'Công việc xong rồi,<br />giờ là thời gian của bạn! 🥂',
-        'Tối nay có kế hoạch gì?<br />Tappy lo hết phần tìm kiếm! 😊',
-      ],
+      // Weekend evenings have no "just got off work" — use weekend-appropriate copy.
+      texts: isWeekend
+        ? [
+            'Tối cuối tuần rồi!<br />Đi chơi hay ăn gì ngon? 🎊',
+            'Giờ vàng cuối tuần —<br />Tappy gợi ý quán ngon ngay! 🍜',
+            'Tối cuối tuần của bạn,<br />đi đâu cho đáng? 🥂',
+            'Tối nay có kế hoạch gì?<br />Tappy lo hết phần tìm kiếm! 😊',
+          ]
+        : [
+            'Tan làm rồi!<br />Tối nay ăn gì, đi đâu? 🎊',
+            'Giờ vàng buổi tối —<br />Tappy gợi ý quán ngon ngay! 🍜',
+            'Công việc xong rồi,<br />giờ là thời gian của bạn! 🥂',
+            'Tối nay có kế hoạch gì?<br />Tappy lo hết phần tìm kiếm! 😊',
+          ],
     },
     {
       range: [20, 24],

@@ -39,6 +39,25 @@ function extractYoutubeId(url: string): string | null {
 // UI can never freeze at "Đang tạo thumbnail…". 20s is generous for a ≤50MB clip.
 const MEDIA_READ_TIMEOUT_MS = 20000
 
+/* Structured pipeline instrumentation. Every video stage emits START, then
+   SUCCESS or FAIL with elapsed TIME (ms) and, on failure, the ERROR. Prefixed
+   so prod logs can be filtered with `[video-pipeline]`. */
+type VStage =
+  | 'select' | 'validate-format' | 'validate-size' | 'validate-duration'
+  | 'thumbnail-generate' | 'thumbnail-upload' | 'video-upload' | 'ai-process' | 'submit-review'
+function vstart(stage: VStage, extra?: Record<string, unknown>): number {
+  console.info(`[video-pipeline] ${stage} START`, extra ?? {})
+  return (typeof performance !== 'undefined' ? performance.now() : Date.now())
+}
+function vok(stage: VStage, t0: number, extra?: Record<string, unknown>) {
+  const ms = Math.round((typeof performance !== 'undefined' ? performance.now() : Date.now()) - t0)
+  console.info(`[video-pipeline] ${stage} SUCCESS`, { ms, ...(extra ?? {}) })
+}
+function vfail(stage: VStage, t0: number, error: unknown, extra?: Record<string, unknown>) {
+  const ms = Math.round((typeof performance !== 'undefined' ? performance.now() : Date.now()) - t0)
+  console.error(`[video-pipeline] ${stage} FAIL`, { ms, error: (error as Error)?.message ?? String(error), ...(extra ?? {}) })
+}
+
 function getVideoDuration(file: File): Promise<number> {
   return new Promise((resolve, reject) => {
     const video = document.createElement('video')
@@ -213,17 +232,23 @@ export default function NewReviewPage() {
     if (videoInputRef.current) videoInputRef.current.value = ''
     if (!file) return
     setError('')
+    vstart('select', { name: file.name, sizeMB: +(file.size / 1048576).toFixed(2), type: file.type })
 
+    /* Stage: validate — format / size / duration */
     if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
+      vfail('validate-format', performance.now(), new Error('unsupported type'), { type: file.type })
       setError('Chi ho tro mp4, mov, webm'); return
     }
     if (file.size > MAX_VIDEO_SIZE) {
+      vfail('validate-size', performance.now(), new Error('too large'), { sizeMB: +(file.size / 1048576).toFixed(2) })
       setError('Video phai nho hon 50MB'); return
     }
+    const tDur = vstart('validate-duration')
     let duration: number
-    try { duration = await getVideoDuration(file) }
-    catch { setError('Khong doc duoc thong tin video'); return }
+    try { duration = await getVideoDuration(file); vok('validate-duration', tDur, { duration: +duration.toFixed(2) }) }
+    catch (e) { vfail('validate-duration', tDur, e); setError('Khong doc duoc thong tin video'); return }
     if (duration > MAX_VIDEO_DURATION) {
+      vfail('validate-duration', tDur, new Error('too long'), { duration: +duration.toFixed(2), max: MAX_VIDEO_DURATION })
       setError(`Video toi da ${MAX_VIDEO_DURATION} giay`); return
     }
 
@@ -233,20 +258,29 @@ export default function NewReviewPage() {
        if the browser can't decode one, the video must still upload and play. */
     setUploadStep('thumb')
     let thumbUrl = ''
+    const tThumbGen = vstart('thumbnail-generate')
     try {
       const thumbBlob = await generateVideoThumbnail(file)
+      vok('thumbnail-generate', tThumbGen, { bytes: thumbBlob.size })
       setThumbPreview(URL.createObjectURL(thumbBlob))
       const thumbFile = new File([thumbBlob], 'thumb.jpg', { type: 'image/jpeg' })
-      const result = await upload(`thumbnails/${Date.now()}.jpg`, thumbFile, {
-        access: 'public',
-        handleUploadUrl: '/api/upload/video',
-        clientPayload: 'thumbnail',
-      })
-      thumbUrl = result.url
-      setThumbnail(thumbUrl)
+      const tThumbUp = vstart('thumbnail-upload')
+      try {
+        const result = await upload(`thumbnails/${Date.now()}.jpg`, thumbFile, {
+          access: 'public',
+          handleUploadUrl: '/api/upload/video',
+          clientPayload: 'thumbnail',
+        })
+        thumbUrl = result.url
+        setThumbnail(thumbUrl)
+        vok('thumbnail-upload', tThumbUp, { url: result.url })
+      } catch (e) {
+        vfail('thumbnail-upload', tThumbUp, e)
+        throw e
+      }
     } catch (e) {
       // Non-fatal: log and continue to the video upload without a poster thumbnail.
-      console.warn('[video-upload] thumbnail step failed, continuing without thumbnail:', e)
+      vfail('thumbnail-generate', tThumbGen, e, { note: 'continuing without thumbnail' })
     }
 
     /* 2. Upload video with progress */
@@ -254,9 +288,9 @@ export default function NewReviewPage() {
     uploadControllerRef.current = controller
     setUploadStep('video'); setUploadProgress(0)
 
+    const tVideo = vstart('video-upload', { sizeMB: +(file.size / 1048576).toFixed(2), type: file.type })
     try {
       const ext = file.name.split('.').pop() || 'mp4'
-      console.info('[video-upload] uploading video', { sizeMB: (file.size / 1048576).toFixed(1), type: file.type })
       const result = await upload(`videos/${Date.now()}.${ext}`, file, {
         access: 'public',
         handleUploadUrl: '/api/upload/video',
@@ -265,10 +299,11 @@ export default function NewReviewPage() {
           setUploadProgress(Math.round(percentage)),
       })
       setMedia_url(result.url)
-      console.info('[video-upload] video uploaded ok')
+      vok('video-upload', tVideo, { url: result.url })
 
       /* 3. AI processing (non-blocking — failure is OK) */
       setUploadStep('ai')
+      const tAi = vstart('ai-process')
       try {
         const aiRes = await fetch('/api/explore/process', {
           method: 'POST',
@@ -282,15 +317,19 @@ export default function NewReviewPage() {
           const ai = await aiRes.json()
           if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
           if (!body.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
+          vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0 })
+        } else {
+          vfail('ai-process', tAi, new Error(`HTTP ${aiRes.status}`), { note: 'non-blocking' })
         }
-      } catch { /* AI failure does not block upload */ }
+      } catch (e) { vfail('ai-process', tAi, e, { note: 'non-blocking' }) }
 
       setUploadStep('done')
     } catch (e) {
       if ((e as Error)?.name === 'AbortError') {
+        vfail('video-upload', tVideo, e, { note: 'user aborted' })
         setError('Da huy tai len')
       } else {
-        console.error('[video-upload] video upload failed:', e)
+        vfail('video-upload', tVideo, e)
         setError('Loi tai video. Vui long thu lai.')
       }
       resetVideoState()
@@ -421,13 +460,15 @@ export default function NewReviewPage() {
         if (aiHashtags.length > 0) payload.hashtags = aiHashtags
       }
 
+      const tSubmit = vstart('submit-review', { content_type: payload.content_type, hasMedia: !!payload.media_url })
       const res = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Loi dang bai')
+      if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.error || 'Loi dang bai') }
+      vok('submit-review', tSubmit)
       setSuccess(true)
       setTimeout(() => router.push('/reviews'), 1500)
     } catch (err) {

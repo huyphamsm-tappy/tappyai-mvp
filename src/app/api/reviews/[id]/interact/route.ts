@@ -41,16 +41,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     { onConflict: 'user_id,review_id' }
   )
 
-  // Sync watch_time_avg + completion_rate via DB-side AVG (avoids full-row transfer)
-  const { data: avgs } = await supabase
-    .rpc('get_interaction_avgs', { p_review_id: params.id })
-
-  if (avgs?.[0]) {
-    await supabase.from('reviews').update({
-      watch_time_avg: Math.round((avgs[0].avg_watch || 0) * 10) / 10,
-      completion_rate: Math.round((avgs[0].avg_completion || 0) * 1000) / 1000,
-    }).eq('id', params.id)
-  }
+  // Sync watch_time_avg + completion_rate. Must run via a SECURITY DEFINER RPC:
+  // a user-scoped `reviews.update(...)` is silently dropped by RLS for reviews
+  // the viewer doesn't own (the normal case — you watch other people's videos),
+  // so the stats never updated and ranking broke. The RPC recomputes both
+  // averages from review_interactions and writes them with definer privileges.
+  await supabase.rpc('sync_review_watch_stats', { p_review_id: params.id })
 
   if (isFirstView) {
     await supabase.rpc('increment_review_view', { p_review_id: params.id })
