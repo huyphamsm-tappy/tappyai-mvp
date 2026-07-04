@@ -16,8 +16,16 @@ interface HeaderProps {
 export default function Header({ user, showBack, backHref, title }: HeaderProps) {
   const router = useRouter()
   const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'
-  const hour = new Date().getHours()
-  const greeting = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
+
+  // Greeting depends on the local time-of-day, so it must be computed on the
+  // client only — computing it during render would differ between the server
+  // timezone (UTC) and the browser timezone and cause a hydration mismatch
+  // (React #425/#422). Start empty so SSR and first client render agree.
+  const [greeting, setGreeting] = useState('')
+  useEffect(() => {
+    const hour = new Date().getHours()
+    setGreeting(hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối')
+  }, [])
 
   // Dark mode toggle
   const [dark, setDark] = useState(false)
