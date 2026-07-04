@@ -679,7 +679,7 @@ export default function ChatInterface({
                       className="flex flex-col items-center gap-1 px-3 py-2 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-primary-50 dark:hover:bg-primary-900/20 border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-800 transition-all active:scale-95"
                     >
                       <span className="text-2xl">{mood.emoji}</span>
-                      <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400">{mood.label}</span>
+                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{mood.label}</span>
                     </button>
                   ))}
                 </div>
@@ -710,10 +710,10 @@ export default function ChatInterface({
                 return (
                   <div key={msg.id} className="animate-slide-up flex gap-3">
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-[11px] font-bold">T</span>
+                      <span className="text-white text-xs font-bold">T</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[15px] leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
+                      <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(text) }} />
                       </div>
                       {plan && <TripPlanCard plan={plan} />}
@@ -802,7 +802,7 @@ export default function ChatInterface({
                       />
                     ))}
                     {(typeof msg.content === 'string' ? msg.content : '').trim() && (
-                      <div className="bg-primary-500 text-white rounded-2xl rounded-br-md px-4 py-2.5 text-[15px] leading-[1.6]">
+                      <div className="bg-primary-500 text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
                         <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
                       </div>
                     )}
@@ -813,7 +813,7 @@ export default function ChatInterface({
             {isLoading && (
               <div className="flex gap-3 animate-fade-in">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-[11px] font-bold">T</span>
+                  <span className="text-white text-xs font-bold">T</span>
                 </div>
                 <div className="flex items-center h-7 gap-1">
                   <span className="typing-dot text-gray-400" />
@@ -928,7 +928,7 @@ export default function ChatInterface({
             {/* Emoji panel */}
             {showEmojiPanel && (
               <div className="absolute bottom-14 right-0 z-20 w-64 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-xl shadow-gray-200/60 dark:shadow-black/40 p-3">
-                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-0.5">Chọn biểu cảm</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-0.5">Chọn biểu cảm</p>
                 <div className="grid grid-cols-6 gap-1">
                   {EMOJIS.map((emoji) => (
                     <button

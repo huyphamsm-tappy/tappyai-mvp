@@ -110,7 +110,7 @@ export default function TarotDraw() {
                   <p className="font-bold text-gray-900 dark:text-white">{d.card.nameVi}</p>
                   <span
                     className={cn(
-                      'inline-block mt-1 text-[11px] font-medium px-2 py-0.5 rounded-full',
+                      'inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full',
                       d.reversed
                         ? 'bg-red-50 dark:bg-red-950/30 text-red-500'
                         : 'bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
@@ -123,7 +123,7 @@ export default function TarotDraw() {
                   {(d.reversed ? d.card.keywordsReversed : d.card.keywordsUpright).map((kw) => (
                     <span
                       key={kw}
-                      className="text-[11px] bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full"
+                      className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full"
                     >
                       {kw}
                     </span>

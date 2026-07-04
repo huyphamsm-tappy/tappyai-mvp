@@ -21,7 +21,7 @@ export default function SuperTuxPage() {
 
         <div className="text-center">
           <h1 className="text-white font-bold text-sm leading-tight">🐧 SuperTux</h1>
-          <p className="text-gray-500 text-[10px] leading-tight">Mã nguồn mở • GPL</p>
+          <p className="text-gray-500 text-xs leading-tight">Mã nguồn mở • GPL</p>
         </div>
 
         <a

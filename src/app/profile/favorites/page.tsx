@@ -99,7 +99,7 @@ export default function FavoritesPage() {
                 {f.place_address && (
                   <p className="text-xs text-gray-400 dark:text-gray-500 truncate mt-0.5">{f.place_address}</p>
                 )}
-                <p className="text-[10px] text-gray-300 dark:text-gray-600 mt-1">Đã lưu {formatDate(f.created_at)}</p>
+                <p className="text-xs text-gray-300 dark:text-gray-600 mt-1">Đã lưu {formatDate(f.created_at)}</p>
               </div>
             </Link>
             <FavoriteDeleteButton placeId={f.place_id} onDeleted={() => handleDeleted(f.place_id)} />

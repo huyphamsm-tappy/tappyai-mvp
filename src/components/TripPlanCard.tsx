@@ -116,7 +116,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
           <div key={i} className="px-3 py-3 flex gap-3">
             {/* Time column */}
             <div className="flex flex-col items-center flex-shrink-0 w-10 pt-0.5">
-              <span className="text-[11px] text-gray-400 dark:text-gray-500 font-mono leading-none">
+              <span className="text-xs text-gray-400 dark:text-gray-500 font-mono leading-none">
                 {item.time || ''}
               </span>
               {i < currentDay.items.length - 1 && (
@@ -135,7 +135,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
                   </span>
                 </div>
                 {item.price && (
-                  <span className="flex-shrink-0 text-[11px] font-semibold text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 px-2 py-0.5 rounded-full whitespace-nowrap">
+                  <span className="flex-shrink-0 text-xs font-semibold text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 px-2 py-0.5 rounded-full whitespace-nowrap">
                     {item.price}
                   </span>
                 )}
@@ -152,7 +152,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
               {item.address && item.address !== 'Xem bản đồ' && (
                 <div className="flex items-center gap-1 mt-1.5">
                   <MapPin size={9} className="text-gray-400 flex-shrink-0" />
-                  <span className="text-[11px] text-gray-400 truncate">{item.address}</span>
+                  <span className="text-xs text-gray-400 truncate">{item.address}</span>
                 </div>
               )}
 
@@ -164,7 +164,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
                       href={item.maps_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                      className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                     >
                       <MapPin size={9} />
                       Bản đồ
@@ -175,7 +175,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
                       href={item.booking_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-[11px] text-primary-600 dark:text-primary-400 font-semibold hover:underline transition-colors"
+                      className="flex items-center gap-1 text-xs text-primary-600 dark:text-primary-400 font-semibold hover:underline transition-colors"
                     >
                       <ExternalLink size={9} />
                       Đặt ngay

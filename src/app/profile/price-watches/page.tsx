@@ -131,7 +131,7 @@ export default function PriceWatchesPage() {
                             <span className="ml-2 text-gray-400">· Hiện tại: {fmtVND(w.current_price)}</span>
                           )}
                         </p>
-                        <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                           Kiểm tra lần cuối: {fmtDate(w.last_checked)}
                         </p>
                       </div>

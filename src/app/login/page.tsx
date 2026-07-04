@@ -452,7 +452,7 @@ function EmailOtpBlock({
             placeholder={t('auth.emailOtp.emailPlaceholder')}
             value={otpEmail}
             onChange={(e) => setOtpEmail(e.target.value)}
-            className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           {otpError && <p className="text-red-500 text-xs">{otpError}</p>}
           <button
@@ -473,7 +473,7 @@ function EmailOtpBlock({
             placeholder="000000"
             value={otpCode}
             onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-            className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm tracking-[0.3em] text-center focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm tracking-[0.3em] text-center focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           {otpError && <p className="text-red-500 text-xs">{otpError}</p>}
           <button

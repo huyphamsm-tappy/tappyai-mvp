@@ -156,7 +156,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="Nguyễn Văn A"
-              className="w-full px-3 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40"
+              className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40"
             />
           </div>
           <div>
@@ -166,7 +166,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
               value={phone}
               onChange={e => setPhone(e.target.value)}
               placeholder="09xxxxxxxx"
-              className="w-full px-3 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40"
+              className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40"
             />
           </div>
         </div>
@@ -181,7 +181,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
             value={date}
             min={getTodayVN()}
             onChange={e => setDate(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/40"
+            className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/40"
           />
         </div>
 
@@ -240,7 +240,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
             onChange={e => setNotes(e.target.value)}
             placeholder="Yêu cầu đặc biệt, dị ứng thực phẩm, dịp kỷ niệm..."
             rows={2}
-            className="w-full px-3 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40 resize-none"
+            className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40 resize-none"
           />
         </div>
 

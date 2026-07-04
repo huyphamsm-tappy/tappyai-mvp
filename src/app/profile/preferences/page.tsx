@@ -252,7 +252,7 @@ export default function PreferencesPage() {
                 <span className={`text-sm font-semibold ${budget === opt.value ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-200'}`}>
                   {opt.label}
                 </span>
-                <span className="text-[11px] text-gray-400 dark:text-gray-500 text-center leading-tight">{opt.desc}</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500 text-center leading-tight">{opt.desc}</span>
                 {budget === opt.value && (
                   <Check size={14} className="text-primary-500 mt-0.5" />
                 )}

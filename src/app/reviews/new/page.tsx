@@ -659,7 +659,7 @@ export default function NewReviewPage() {
           placeholder="Chia se trai nghiem, cam nhan cua ban..."
           rows={4}
           maxLength={1000}
-          className="w-full px-0 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 bg-transparent border-none outline-none resize-none text-[15px] leading-relaxed"
+          className="w-full px-0 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 bg-transparent border-none outline-none resize-none text-base leading-relaxed"
         />
         {body.length > 0 && <p className="text-right text-xs text-gray-400">{body.length}/1000</p>}
 
@@ -679,7 +679,7 @@ export default function NewReviewPage() {
           {showPlaceInput && (
             <input type="text" value={placeName} onChange={e => setPlaceName(e.target.value)}
               placeholder="Ten quan, nha hang, dia diem..." autoFocus maxLength={100}
-              className="mt-2 w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40" />
+              className="mt-2 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40" />
           )}
         </div>
 

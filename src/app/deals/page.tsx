@@ -73,7 +73,7 @@ export default async function DealsPage() {
                   {deal.title}
                 </p>
                 {deal.badge && (
-                  <span className={`flex-shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-md ${BADGE_STYLES[deal.badge] ?? 'bg-gray-200 text-gray-600'}`}>
+                  <span className={`flex-shrink-0 text-xs font-bold px-1.5 py-0.5 rounded-md ${BADGE_STYLES[deal.badge] ?? 'bg-gray-200 text-gray-600'}`}>
                     {deal.badge}
                   </span>
                 )}

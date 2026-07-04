@@ -125,7 +125,7 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
             className="w-full rounded-xl border border-amber-200 dark:border-amber-800/40 bg-white dark:bg-gray-900 px-3 py-2 text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-amber-400/40"
           />
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-gray-400">{body.trim().length}/500</span>
+            <span className="text-xs text-gray-400">{body.trim().length}/500</span>
           </div>
 
           {/* Photo upload */}
@@ -151,7 +151,7 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
                   className="w-16 h-16 rounded-lg border-2 border-dashed border-amber-300 dark:border-amber-700 flex flex-col items-center justify-center gap-0.5 text-amber-500 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/20 transition-colors"
                 >
                   <ImagePlus size={16} />
-                  <span className="text-[9px] font-medium">Thêm ảnh</span>
+                  <span className="text-xs font-medium">Thêm ảnh</span>
                 </button>
               )}
             </div>
@@ -164,7 +164,7 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
               onChange={e => handleFiles(e.target.files)}
             />
             {photos.length > 0 && (
-              <p className="text-[10px] text-gray-400">Tối đa 3 ảnh · Mỗi ảnh dưới 5MB</p>
+              <p className="text-xs text-gray-400">Tối đa 3 ảnh · Mỗi ảnh dưới 5MB</p>
             )}
           </div>
 

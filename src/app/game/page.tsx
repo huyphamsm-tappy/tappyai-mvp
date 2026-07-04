@@ -98,12 +98,12 @@ export default function GameHubPage() {
                 <p className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   SuperTux
                 </p>
-                <span className="text-[10px] font-medium bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-300 px-1.5 py-0.5 rounded-full">GPL</span>
+                <span className="text-xs font-medium bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-300 px-1.5 py-0.5 rounded-full">GPL</span>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
                 Game platformer Mario-style mã nguồn mở — chạy thẳng trên trình duyệt!
               </p>
-              <p className="text-[10px] text-sky-500 mt-0.5">supertux.org</p>
+              <p className="text-xs text-sky-500 mt-0.5">supertux.org</p>
             </div>
             <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
           </Link>

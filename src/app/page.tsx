@@ -127,7 +127,7 @@ export default async function HomePage() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-20">
       <Header user={userInfo} />
 
-      <main className="container-content py-6 md:py-8 space-y-7 md:space-y-8">
+      <main className="container-content py-6 md:py-8 space-y-6 md:space-y-8">
         {/* Hero */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500 p-6 pb-7 md:p-8 md:pb-9 shadow-lg shadow-primary-500/20">
           <div className="absolute -top-14 -right-14 w-48 h-48 rounded-full bg-white/10 pointer-events-none" />
@@ -333,7 +333,7 @@ export default async function HomePage() {
                   {item.emoji}
                 </div>
                 <div className="p-3">
-                  <p className="text-[13px] leading-snug font-medium text-gray-700 dark:text-gray-200 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  <p className="text-sm leading-snug font-medium text-gray-700 dark:text-gray-200 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                     {item.text}
                   </p>
                 </div>

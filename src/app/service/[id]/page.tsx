@@ -135,7 +135,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
                   <div className="flex items-center gap-1 bg-purple-50 dark:bg-purple-900/20 px-2.5 py-1.5 rounded-xl">
                     <Star size={13} className="text-purple-500 fill-purple-500" />
                     <span className="text-sm font-bold text-purple-600 dark:text-purple-400">{tappyAvg}</span>
-                    <span className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">Tappy</span>
+                    <span className="text-xs text-purple-500 dark:text-purple-400 font-medium">Tappy</span>
                   </div>
                 )}
               </div>
@@ -245,7 +245,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
                     {'★'.repeat(Math.round(tappyAvg!))}{'☆'.repeat(5 - Math.round(tappyAvg!))}
                   </span>
                   <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{tappyAvg}/5</span>
-                  <span className="text-[10px] text-gray-400">({tappyReviews.length})</span>
+                  <span className="text-xs text-gray-400">({tappyReviews.length})</span>
                 </div>
               </div>
               <div className="space-y-3">
@@ -255,7 +255,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
                       <span className="text-amber-400 text-xs tracking-tight">
                         {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
                       </span>
-                      <span className="text-[10px] text-gray-400 dark:text-gray-500">
+                      <span className="text-xs text-gray-400 dark:text-gray-500">
                         {new Date(r.created_at).toLocaleDateString('vi-VN')}
                       </span>
                     </div>
