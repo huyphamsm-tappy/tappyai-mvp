@@ -313,7 +313,7 @@ export default function GroupPage() {
                 />
               </div>
 
-              {joinError && <p className="text-sm text-red-500">{joinError}</p>}
+              {joinError && <p className="text-sm text-red-500 dark:text-red-400">{joinError}</p>}
 
               <button
                 type="submit"

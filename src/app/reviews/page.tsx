@@ -296,7 +296,7 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
       {/* Bottom info */}
       <div className="absolute bottom-20 left-3 right-20 z-20">
         <Link href={`/users/${r.user_id}`}>
-          <p className="text-white font-bold text-[15px] mb-1 drop-shadow">{handle}</p>
+          <p className="text-white font-bold text-[15px] mb-1 drop-shadow truncate">{handle}</p>
         </Link>
         {r.body ? <p className="text-white text-sm leading-snug line-clamp-3 drop-shadow">{r.body}</p> : null}
         {r.place_name !== 'Chia sẻ' && (
@@ -433,7 +433,7 @@ function ProfileTab({ userId }: { userId: string }) {
           </Link>
         </div>
         <h2 className="text-white font-bold text-[17px] mb-0.5">{profile?.full_name || 'Ẩn danh'}</h2>
-        <p className="text-gray-400 text-sm mb-4">{handle}</p>
+        <p className="text-gray-400 text-sm mb-4 max-w-full truncate">{handle}</p>
         <div className="flex gap-10 mb-4">
           <div className="text-center">
             <div className="text-white font-bold text-base">{profile?.following_count ?? 0}</div>

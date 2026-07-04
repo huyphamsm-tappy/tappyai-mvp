@@ -454,7 +454,7 @@ function EmailOtpBlock({
             onChange={(e) => setOtpEmail(e.target.value)}
             className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
-          {otpError && <p className="text-red-500 text-xs">{otpError}</p>}
+          {otpError && <p className="text-red-500 dark:text-red-400 text-xs">{otpError}</p>}
           <button
             onClick={onSend}
             disabled={otpLoading}
@@ -475,7 +475,7 @@ function EmailOtpBlock({
             onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
             className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm tracking-[0.3em] text-center focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
-          {otpError && <p className="text-red-500 text-xs">{otpError}</p>}
+          {otpError && <p className="text-red-500 dark:text-red-400 text-xs">{otpError}</p>}
           <button
             onClick={onVerify}
             disabled={otpLoading}

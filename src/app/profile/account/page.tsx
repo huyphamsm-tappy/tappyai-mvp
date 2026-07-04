@@ -46,7 +46,7 @@ export default async function AccountPage() {
             </div>
           )}
           <h2 className="font-bold text-gray-900 dark:text-white text-lg mt-3">{userInfo.full_name || firstName}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">{userInfo.email}</p>
+          <p className="w-full truncate text-gray-500 dark:text-gray-400 text-sm">{userInfo.email}</p>
         </div>
 
         <section>
