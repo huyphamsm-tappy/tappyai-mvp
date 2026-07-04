@@ -249,7 +249,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 rounded-2xl bg-primary-500 hover:bg-primary-600 active:scale-95 text-white font-bold text-sm transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+          className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 active:scale-95 text-white font-bold text-sm transition-all disabled:opacity-60 flex items-center justify-center gap-2"
         >
           {loading ? <Loader2 size={18} className="animate-spin" /> : '✅ Xác nhận đặt chỗ'}
         </button>

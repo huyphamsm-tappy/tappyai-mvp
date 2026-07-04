@@ -97,7 +97,7 @@ export default function OnboardingPage() {
             <button
               onClick={() => setStep(2)}
               disabled={selected.length === 0}
-              className="w-full py-4 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 text-white font-semibold flex items-center justify-center gap-2 transition-all"
+              className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 text-white font-semibold flex items-center justify-center gap-2 transition-all"
             >
               Tiếp theo <ChevronRight size={18} />
             </button>
@@ -146,7 +146,7 @@ export default function OnboardingPage() {
             <button
               onClick={handleFinish}
               disabled={loading}
-              className="w-full py-4 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-60 text-white font-semibold flex items-center justify-center gap-2 transition-all"
+              className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-60 text-white font-semibold flex items-center justify-center gap-2 transition-all"
             >
               {loading ? <Loader2 size={18} className="animate-spin" /> : '🚀 Bắt đầu khám phá'}
             </button>

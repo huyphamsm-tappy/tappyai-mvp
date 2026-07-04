@@ -255,7 +255,7 @@ export default function MessageActionBar({
             onClick={onTTSPause}
             className="p-1 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-shrink-0"
           >
-            {isPaused ? <Play size={15} /> : <Pause size={15} />}
+            {isPaused ? <Play size={14} /> : <Pause size={14} />}
           </button>
 
           {/* Skip back 15s */}

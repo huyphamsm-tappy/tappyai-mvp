@@ -223,7 +223,7 @@ export default function GroupPage() {
               <button
                 onClick={handleSuggest}
                 disabled={suggesting}
-                className="w-full py-3.5 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95 shadow-sm"
+                className="w-full py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95 shadow-sm"
               >
                 {suggesting ? (
                   <><Loader2 size={18} className="animate-spin" /> Tappy đang nghĩ...</>
@@ -318,7 +318,7 @@ export default function GroupPage() {
               <button
                 type="submit"
                 disabled={joining || !name.trim() || !budget || !area.trim()}
-                className="w-full py-3.5 bg-primary-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95"
+                className="w-full py-3 bg-primary-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95"
               >
                 {joining ? <Loader2 size={18} className="animate-spin" /> : null}
                 Tham gia nhóm

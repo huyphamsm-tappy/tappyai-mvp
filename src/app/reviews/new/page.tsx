@@ -442,7 +442,7 @@ export default function NewReviewPage() {
         <button
           onClick={handleSubmit}
           disabled={!canPost || submitting || isUploading}
-          className="px-4 py-1.5 rounded-full bg-[#fe2c55] hover:bg-[#ef2950] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white text-sm font-semibold transition-all"
+          className="py-3 px-6 rounded-full bg-[#fe2c55] hover:bg-[#ef2950] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white text-sm font-semibold transition-all"
         >
           {submitting ? <Loader2 size={15} className="animate-spin" /> : 'Dang'}
         </button>

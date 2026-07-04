@@ -30,7 +30,7 @@ export default function StripeCheckoutButton() {
       <button
         onClick={handleCheckout}
         disabled={loading}
-        className="w-full py-3.5 rounded-xl bg-white text-primary-600 font-bold text-sm flex items-center justify-center gap-2 hover:bg-white/90 active:scale-95 transition-all disabled:opacity-70"
+        className="w-full py-3 rounded-xl bg-white text-primary-600 font-bold text-sm flex items-center justify-center gap-2 hover:bg-white/90 active:scale-95 transition-all disabled:opacity-70"
       >
         {loading ? (
           <Loader2 size={16} className="animate-spin" />

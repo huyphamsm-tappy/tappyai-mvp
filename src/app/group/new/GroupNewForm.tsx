@@ -79,7 +79,7 @@ export default function GroupNewForm() {
             <button
               type="submit"
               disabled={loading || !name.trim()}
-              className="w-full py-3.5 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95"
+              className="w-full py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95"
             >
               {loading ? <Loader2 size={18} className="animate-spin" /> : '🍽️'}
               {loading ? 'Đang tạo...' : 'Tạo nhóm'}
