@@ -10,11 +10,13 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     .from('review_saves').select('id').eq('review_id', params.id).eq('user_id', user.id).maybeSingle()
 
   if (existing) {
-    await supabase.from('review_saves').delete().eq('id', existing.id)
+    const { error } = await supabase.from('review_saves').delete().eq('id', existing.id)
+    if (error) return NextResponse.json({ error: 'Khong the bo luu' }, { status: 500 })
     rebuildProfile(user.id, supabase).catch(() => {})
     return NextResponse.json({ saved: false })
   } else {
-    await supabase.from('review_saves').insert({ review_id: params.id, user_id: user.id })
+    const { error } = await supabase.from('review_saves').insert({ review_id: params.id, user_id: user.id })
+    if (error) return NextResponse.json({ error: 'Khong the luu' }, { status: 500 })
     rebuildProfile(user.id, supabase).catch(() => {})
     return NextResponse.json({ saved: true })
   }

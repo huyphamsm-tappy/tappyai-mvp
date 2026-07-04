@@ -28,12 +28,11 @@ export async function POST(req: NextRequest) {
 
   switch (event.type) {
     case 'checkout.session.completed': {
-      const session = event.data.object as Stripe.CheckoutSession
-      const userId = session.subscription_data?.metadata?.supabase_user_id
-        || (session as { metadata?: { supabase_user_id?: string } }).metadata?.supabase_user_id
+      const session = event.data.object as Stripe.Checkout.Session
+      const userId = session.metadata?.supabase_user_id
       if (userId && session.subscription) {
         const sub = await stripe.subscriptions.retrieve(session.subscription as string)
-        await supabase.from('subscriptions').upsert({
+        const { error: upsertErr } = await supabase.from('subscriptions').upsert({
           user_id: userId,
           stripe_subscription_id: sub.id,
           stripe_customer_id: sub.customer as string,
@@ -41,6 +40,11 @@ export async function POST(req: NextRequest) {
           price_id: sub.items.data[0]?.price.id,
           current_period_end: new Date((sub as unknown as { current_period_end: number }).current_period_end * 1000).toISOString(),
         }, { onConflict: 'user_id' })
+        // Return non-2xx so Stripe retries — never report success on a failed write.
+        if (upsertErr) {
+          console.error('[stripe-webhook] subscription upsert failed:', upsertErr.message)
+          return NextResponse.json({ error: 'DB write failed' }, { status: 500 })
+        }
       }
       break
     }
@@ -50,7 +54,7 @@ export async function POST(req: NextRequest) {
       const sub = event.data.object as Stripe.Subscription
       const userId = sub.metadata?.supabase_user_id
       if (userId) {
-        await supabase.from('subscriptions').upsert({
+        const { error: upsertErr } = await supabase.from('subscriptions').upsert({
           user_id: userId,
           stripe_subscription_id: sub.id,
           stripe_customer_id: sub.customer as string,
@@ -58,6 +62,10 @@ export async function POST(req: NextRequest) {
           price_id: sub.items.data[0]?.price.id,
           current_period_end: new Date((sub as unknown as { current_period_end: number }).current_period_end * 1000).toISOString(),
         }, { onConflict: 'user_id' })
+        if (upsertErr) {
+          console.error('[stripe-webhook] subscription upsert failed:', upsertErr.message)
+          return NextResponse.json({ error: 'DB write failed' }, { status: 500 })
+        }
       }
       break
     }
