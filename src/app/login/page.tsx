@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2, ExternalLink, Copy, Check, Sparkles, MapPin, Zap, Mail, ArrowLeft } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { AUTH_PROVIDERS } from '@/lib/auth/providers'
 
 // Phát hiện trình duyệt nội bộ của các app chat (Google chặn OAuth trong các webview này)
 function detectInAppBrowser(): { isInApp: boolean; name: string; isAndroid: boolean } {
@@ -42,6 +43,7 @@ const FEATURES = [
 
 export default function LoginPage() {
   const [loadingGoogle, setLoadingGoogle] = useState(false)
+  const [loadingFacebook, setLoadingFacebook] = useState(false)
   const [loadingZalo, setLoadingZalo] = useState(false)
   const [inApp, setInApp] = useState<{ isInApp: boolean; name: string; isAndroid: boolean }>({ isInApp: false, name: '', isAndroid: false })
   const [copied, setCopied] = useState(false)
@@ -99,6 +101,25 @@ export default function LoginPage() {
     if (error || !data?.url) {
       console.error(error)
       setLoadingGoogle(false)
+      return
+    }
+    window.location.replace(data.url)
+  }
+
+  const handleFacebookLogin = async () => {
+    setLoadingFacebook(true)
+    const urlParams = new URLSearchParams(window.location.search)
+    const returnTo = urlParams.get('returnTo') || '/'
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(returnTo)}`,
+        skipBrowserRedirect: true,
+      },
+    })
+    if (error || !data?.url) {
+      console.error(error)
+      setLoadingFacebook(false)
       return
     }
     window.location.replace(data.url)
@@ -287,7 +308,7 @@ export default function LoginPage() {
                 {/* Google */}
                 <button
                   onClick={handleGoogleLogin}
-                  disabled={loadingGoogle || loadingZalo}
+                  disabled={loadingGoogle || loadingFacebook || loadingZalo}
                   className="w-full bg-gray-900 hover:bg-gray-800 active:bg-black dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {loadingGoogle ? (
@@ -303,6 +324,31 @@ export default function LoginPage() {
                   {loadingGoogle ? 'Đang đăng nhập...' : 'Tiếp tục với Google'}
                 </button>
 
+                {/* Facebook — hidden via AUTH_PROVIDERS config; code preserved for re-enabling */}
+                {AUTH_PROVIDERS.facebook.enabled && (
+                  <>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+                      <span className="text-xs text-gray-400">hoặc</span>
+                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+                    </div>
+                    <button
+                      onClick={handleFacebookLogin}
+                      disabled={loadingGoogle || loadingFacebook || loadingZalo}
+                      className="w-full bg-[#1877F2] hover:bg-[#166FE5] active:bg-[#125FC4] text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      {loadingFacebook ? (
+                        <Loader2 size={20} className="animate-spin" />
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="white"/>
+                        </svg>
+                      )}
+                      {loadingFacebook ? 'Đang đăng nhập...' : 'Tiếp tục với Facebook'}
+                    </button>
+                  </>
+                )}
+
                 {/* Divider */}
                 <div className="flex items-center gap-3">
                   <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
@@ -313,7 +359,7 @@ export default function LoginPage() {
                 {/* Zalo */}
                 <button
                   onClick={handleZaloLogin}
-                  disabled={loadingGoogle || loadingZalo}
+                  disabled={loadingGoogle || loadingFacebook || loadingZalo}
                   className="w-full bg-[#0068ff] hover:bg-[#0057d9] active:bg-[#0046b3] text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {loadingZalo ? (
