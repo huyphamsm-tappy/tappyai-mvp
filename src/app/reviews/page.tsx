@@ -15,6 +15,7 @@ import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/
 import type { UserPreferences } from '@/lib/userMemory'
 import VideoPlayer from '@/components/explore/VideoPlayer'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
+import ReviewMusicCard from './ReviewMusicCard'
 
 /* ─── types ─── */
 interface Profile { full_name: string | null; avatar_url: string | null }
@@ -27,6 +28,7 @@ interface Review {
   content_type?: string | null; media_url?: string | null; thumbnail?: string | null
   source_type?: string | null; source_url?: string | null; hashtags?: string[] | null
   watch_time_avg?: number; score?: number
+  music?: { version: number; trackId: string; startSec: number; volume: number } | null
 }
 
 interface Notification { id: string; type: string; actor_id: string; actor_name: string; actor_avatar: string | null; text: string; url: string; created_at: string }
@@ -302,6 +304,16 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
             <span className="text-sm">📍</span> {r.place_name}
             {r.rating > 0 && <span className="ml-2 text-amber-400">{'★'.repeat(r.rating)}</span>}
           </p>
+        )}
+        {r.music && (
+          <div className="mt-2">
+            <ReviewMusicCard
+              playKey={r.id}
+              trackId={r.music.trackId}
+              startSec={r.music.startSec}
+              volume={r.music.volume}
+            />
+          </div>
         )}
       </div>
     </div>

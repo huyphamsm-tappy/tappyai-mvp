@@ -9,6 +9,7 @@ import ReviewCommentButton from './ReviewCommentButton'
 import ReviewLikeButton from './ReviewLikeButton'
 import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
+import ReviewMusicCard from '../ReviewMusicCard'
 
 interface Props {
   params: { id: string }
@@ -20,7 +21,7 @@ async function getReview(id: string) {
     .from('reviews')
     .select(`
       id, user_id, place_name, place_address, rating, body,
-      photos, is_verified, like_count, comment_count, created_at,
+      photos, is_verified, like_count, comment_count, created_at, music,
       profiles(full_name, avatar_url)
     `)
     .eq('id', id)
@@ -256,6 +257,18 @@ export default async function ReviewDetailPage({ params }: Props) {
           </p>
         ) : (
           <p className="text-gray-600 text-sm italic pr-14">Không có nội dung mô tả.</p>
+        )}
+
+        {/* Attached music */}
+        {review.music && (
+          <div className="mt-6">
+            <ReviewMusicCard
+              playKey={review.id}
+              trackId={review.music.trackId}
+              startSec={review.music.startSec}
+              volume={review.music.volume}
+            />
+          </div>
         )}
 
         {/* Extra photos grid */}

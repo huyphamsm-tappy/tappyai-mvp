@@ -6,7 +6,7 @@ const EXPLORE_SELECT = `
   id, user_id, place_id, place_name, place_address,
   rating, body, photos, is_verified, like_count, comment_count,
   save_count, watch_time_avg, completion_rate, view_count, content_type, media_url, thumbnail,
-  hashtags, source_type, source_url, created_at,
+  hashtags, source_type, source_url, created_at, music,
   profiles(full_name, avatar_url)
 `
 
