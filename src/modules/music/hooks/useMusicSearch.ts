@@ -35,24 +35,28 @@ export function useMusicSearch(): UseMusicSearchResult {
     setLoading(true)
     setError(null)
 
+    let cancelled = false
     const timer = setTimeout(() => {
       const thisRequest = ++requestId.current
       musicService
         .searchTracks({ query: trimmed })
         .then((result) => {
-          if (thisRequest !== requestId.current) return
+          if (cancelled || thisRequest !== requestId.current) return
           setResults(result.tracks)
         })
         .catch(() => {
-          if (thisRequest !== requestId.current) return
+          if (cancelled || thisRequest !== requestId.current) return
           setError('Không thể tìm nhạc')
         })
         .finally(() => {
-          if (thisRequest === requestId.current) setLoading(false)
+          if (!cancelled && thisRequest === requestId.current) setLoading(false)
         })
     }, DEBOUNCE_MS)
 
-    return () => clearTimeout(timer)
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
   }, [query])
 
   const updateQuery = useCallback((next: string) => setQuery(next), [])

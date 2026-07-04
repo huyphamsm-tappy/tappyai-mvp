@@ -48,6 +48,27 @@ function clampLimit(limit?: number): number {
   return Math.min(limit, MAX_LIMIT)
 }
 
+// Builds a "contains" ILIKE pattern from a raw search term and safely embeds
+// it as a double-quoted value for a PostgREST .or() filter string.
+//
+// Two independent escaping passes are required here:
+// 1. Escape the user's literal `%`/`_` so Postgres's ILIKE treats them as
+//    literal characters (not SQL wildcards), then add our own leading/
+//    trailing `%` for the "contains" match.
+// 2. Escape backslashes/double-quotes in the resulting pattern and wrap it
+//    in double quotes, per PostgREST's documented value-quoting rule. This
+//    protects reserved filter-syntax characters in the user's term (",",
+//    ".", "(", ")") from being parsed as `.or()` structure — e.g. a comma
+//    in a search term would otherwise split into an unintended second
+//    filter condition. `.or()` passes its string through unescaped, so this
+//    quoting must happen here, at the only place the value is constructed.
+function buildIlikePattern(term: string): string {
+  const likeEscaped = term.replace(/[%_]/g, (c) => `\\${c}`)
+  const pattern = `%${likeEscaped}%`
+  const quoted = pattern.replace(/[\\"]/g, (c) => `\\${c}`)
+  return `"${quoted}"`
+}
+
 const TRACK_COLUMNS =
   'id, title, artist, duration_sec, audio_url, preview_url, cover_url, category_id, provider_id'
 
@@ -96,12 +117,12 @@ export async function searchTracks(filter: MusicSearchFilter): Promise<MusicTrac
 
   if (!term) return { tracks: [], page, limit, hasMore: false }
 
-  const escaped = term.replace(/[%_]/g, (c) => `\\${c}`)
+  const pattern = buildIlikePattern(term)
   const { data, error } = await supabase
     .from('music_tracks')
     .select(TRACK_COLUMNS)
     .eq('is_active', true)
-    .or(`title.ilike.%${escaped}%,artist.ilike.%${escaped}%`)
+    .or(`title.ilike.${pattern},artist.ilike.${pattern}`)
     .order('created_at', { ascending: false })
     .range(offset, offset + limit)
 

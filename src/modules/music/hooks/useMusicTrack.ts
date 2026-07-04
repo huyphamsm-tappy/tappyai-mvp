@@ -25,6 +25,7 @@ export function useMusicTrack(trackId: string | null): UseMusicTrackResult {
       return
     }
 
+    let cancelled = false
     const thisRequest = ++requestId.current
     setLoading(true)
     setError(null)
@@ -32,16 +33,20 @@ export function useMusicTrack(trackId: string | null): UseMusicTrackResult {
     musicService
       .getTrack(trackId)
       .then((result) => {
-        if (thisRequest !== requestId.current) return
+        if (cancelled || thisRequest !== requestId.current) return
         setTrack(result)
       })
       .catch(() => {
-        if (thisRequest !== requestId.current) return
+        if (cancelled || thisRequest !== requestId.current) return
         setError('Không thể tải bài hát')
       })
       .finally(() => {
-        if (thisRequest === requestId.current) setLoading(false)
+        if (!cancelled && thisRequest === requestId.current) setLoading(false)
       })
+
+    return () => {
+      cancelled = true
+    }
   }, [trackId])
 
   return { track, loading, error }

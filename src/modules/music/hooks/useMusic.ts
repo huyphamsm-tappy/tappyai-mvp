@@ -33,6 +33,7 @@ export function useMusic(options: UseMusicOptions = {}): UseMusicResult {
   }, [categoryId])
 
   useEffect(() => {
+    let cancelled = false
     const thisRequest = ++requestId.current
     setLoading(true)
     setError(null)
@@ -40,17 +41,21 @@ export function useMusic(options: UseMusicOptions = {}): UseMusicResult {
     musicService
       .browseTracks({ categoryId, page, limit })
       .then((result) => {
-        if (thisRequest !== requestId.current) return // stale response, ignore
+        if (cancelled || thisRequest !== requestId.current) return // unmounted or stale response, ignore
         setTracks((prev) => (page === 0 ? result.tracks : [...prev, ...result.tracks]))
         setHasMore(result.hasMore)
       })
       .catch(() => {
-        if (thisRequest !== requestId.current) return
+        if (cancelled || thisRequest !== requestId.current) return
         setError('Không thể tải danh sách nhạc')
       })
       .finally(() => {
-        if (thisRequest === requestId.current) setLoading(false)
+        if (!cancelled && thisRequest === requestId.current) setLoading(false)
       })
+
+    return () => {
+      cancelled = true
+    }
   }, [categoryId, page, limit])
 
   const loadMore = useCallback(() => {
