@@ -4,7 +4,8 @@ import { useChat } from 'ai/react'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
-import { Send, Sparkles, Mic, MicOff, Smile, Heart, X, Square, RotateCcw } from 'lucide-react'
+import Link from 'next/link'
+import { Send, Sparkles, Mic, MicOff, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
@@ -676,9 +677,12 @@ export default function ChatInterface({
                 <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo?.label || 'TappyAI'}</h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Tôi có thể giúp bạn tìm thông tin chính xác</p>
                 {hasMemory && (
-                  <span className="inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-xs font-medium">
-                    🎯 Đã cá nhân hóa cho bạn
-                  </span>
+                  <Link
+                    href="/profile/tappy-knows"
+                    className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-xs font-medium hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
+                  >
+                    <Brain size={12} /> Tappy nhớ sở thích của bạn · Quản lý
+                  </Link>
                 )}
               </div>
               {/* Tappy Mood selector */}
@@ -710,6 +714,15 @@ export default function ChatInterface({
                 ))}
               </div>
             </div>
+          )}
+          {/* Memory / data transparency indicator — visible while chatting, links to review & control (MUXS 23) */}
+          {hasMemory && messages.length > 0 && (
+            <Link
+              href="/profile/tappy-knows"
+              className="flex items-center gap-1.5 mb-4 text-xs text-gray-400 dark:text-gray-500 hover:text-primary-500 dark:hover:text-primary-400 transition-colors w-fit"
+            >
+              <Brain size={12} /> Tappy đang dùng trí nhớ của bạn để trả lời · Xem &amp; quản lý
+            </Link>
           )}
           <div
             className="space-y-6"
