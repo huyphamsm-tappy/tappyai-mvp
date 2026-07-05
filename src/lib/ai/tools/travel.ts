@@ -141,7 +141,7 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
     // Buoc 1: lay gia chung + danh sach khach san OSM song song
     const [serperResults, places] = await Promise.all([
       serperSearch(searchQuery),
-      searchPlacesOSM('khach san', location) as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
+      searchPlacesOSM('khach san', location, 'hotel') as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
     ])
     let hotelList = places?.results?.slice(0, 5) || []
     // Filter luxury brands khoi OSM list neu co budget

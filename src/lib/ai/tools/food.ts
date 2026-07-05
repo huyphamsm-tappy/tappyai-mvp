@@ -51,7 +51,7 @@ export async function getNews(query: string) {
 }
 
 
-export async function searchPlacesOSM(query: string, location?: string) {
+export async function searchPlacesOSM(query: string, location?: string, type?: string) {
   const loc = location || 'Ha Noi'
   const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
   try {
@@ -96,15 +96,19 @@ export async function searchPlacesOSM(query: string, location?: string) {
     let osmKey = 'amenity'
     let osmValue = 'restaurant'
     let osmOp = '=' // '~' for a regex alternation (attractions span several tourism subtypes)
-    if (ql.match(/cafe|ca phe|coffee/)) osmValue = 'cafe'
+    // Attractions are tagged tourism=attraction/museum/viewpoint/... — NOT an amenity.
+    // 'artwork' deliberately excluded (heavily mistagged in VN OSM data).
+    const setAttraction = () => { osmKey = 'tourism'; osmValue = 'attraction|museum|viewpoint|theme_park|zoo|gallery'; osmOp = '~' }
+    // An explicit type from the tool call is authoritative over query-keyword guessing —
+    // the model chose it deliberately (e.g. type=attraction even if the query is a place name).
+    if (type === 'attraction') setAttraction()
+    else if (type === 'hotel') { osmKey = 'tourism'; osmValue = 'hotel' }
+    else if (type && ['cafe', 'spa', 'bar', 'gym', 'cinema', 'restaurant'].includes(type)) osmValue = type
+    else if (ql.match(/cafe|ca phe|coffee/)) osmValue = 'cafe'
     else if (ql.match(/spa|massage/)) osmValue = 'spa'
     else if (ql.match(/hotel|khach san|resort/)) { osmKey = 'tourism'; osmValue = 'hotel' }
-    // Attractions are tagged tourism=attraction/museum/viewpoint/... — NOT an amenity. Without
-    // this branch, "diem tham quan Da Nang" fell through to the restaurant default and returned
-    // restaurants. 'artwork' deliberately excluded (heavily mistagged in VN OSM data).
-    else if (qn.match(/tham quan|thang canh|diem du lich|diem den|danh lam|bao tang|khu du lich|sightsee|attraction|museum/)) {
-      osmKey = 'tourism'; osmValue = 'attraction|museum|viewpoint|theme_park|zoo|gallery'; osmOp = '~'
-    }
+    // Without this branch, "diem tham quan Da Nang" fell through to the restaurant default.
+    else if (qn.match(/tham quan|thang canh|diem du lich|diem den|danh lam|bao tang|khu du lich|sightsee|attraction|museum/)) setAttraction()
     else if (ql.match(/bar|pub/)) osmValue = 'bar'
     else if (ql.match(/gym|fitness/)) osmValue = 'gym'
     else if (ql.match(/cinema|phim|rap/)) osmValue = 'cinema'
@@ -323,7 +327,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
       console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
     }
   }
-  if (!result) result = await searchPlacesOSM(query, location)
+  if (!result) result = await searchPlacesOSM(query, location, type)
 
   // ===== Gia tham khao tu Serper (an uong / spa / giai tri) =====
   const qNorm = normalizeVN(query.toLowerCase())

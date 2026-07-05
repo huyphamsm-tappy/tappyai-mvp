@@ -11,7 +11,7 @@ const LANG_NAMES: Record<string, string> = { en: 'English', ja: 'Japanese', ko: 
 
 export function buildPlanningBlock(planType: 'trip' | 'evening'): string {
   const toolsNeeded = planType === 'trip'
-    ? `- get_hotel_prices → tìm khách sạn phù hợp budget\n- search_places (type=restaurant) → tìm nhà hàng ngon ở điểm đến\n- search_places → tìm điểm tham quan, hoạt động thú vị\n- get_weather → thời tiết nếu biết ngày đi`
+    ? `- get_hotel_prices → tìm khách sạn phù hợp budget\n- search_places (type=restaurant) → tìm nhà hàng ngon ở điểm đến\n- search_places (type=attraction) → tìm điểm tham quan, thắng cảnh, hoạt động thú vị ở điểm đến\n- get_weather → thời tiết nếu biết ngày đi`
     : `- search_places (type=spa) → nếu user muốn spa\n- search_places (type=restaurant) → tìm nhà hàng cho tối\n- search_places (type=cinema hoặc bar) → tìm giải trí tùy nhu cầu`
 
   return `\n\n===== CHẾ ĐỘ LÊN KẾ HOẠCH ${planType === 'trip' ? 'CHUYẾN ĐI' : 'TỐI NAY'} - BẮT BUỘC =====
