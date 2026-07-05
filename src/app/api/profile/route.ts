@@ -9,14 +9,17 @@ export async function GET(req: NextRequest) {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, avatar_url, email, created_at, language')
+    .select('full_name, avatar_url, created_at, language')
     .eq('id', user.id)
     .single()
 
   return NextResponse.json({
     full_name: profile?.full_name || user.user_metadata?.full_name || '',
     avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url || '',
-    email: profile?.email || user.email || '',
+    // Email is sourced from the session (auth.users.email), never from
+    // profiles — the duplicate profiles.email column is being removed
+    // (add_profiles_email_isolation.sql) to close a public-read exposure.
+    email: user.email || '',
     bio: user.user_metadata?.bio || '',
     // UI language only (Localization_Architecture.md §2.3) — AI response
     // language is never read from here, it stays per-message auto-detected.

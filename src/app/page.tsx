@@ -126,8 +126,12 @@ export default async function HomePage() {
   const heroText = slot.texts[dayOfMonth % slot.texts.length]
 
   const userInfo = user
-    ? (profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email })
-    : null
+    ? {
+        full_name: profile?.full_name ?? user.user_metadata?.full_name,
+        avatar_url: profile?.avatar_url ?? user.user_metadata?.avatar_url,
+        email: user.email, // always from session; profiles.email is being removed
+      }
+    : undefined
 
   const firstName = userInfo?.full_name?.split(' ').pop() || userInfo?.email?.split('@')[0] || 'bạn'
 

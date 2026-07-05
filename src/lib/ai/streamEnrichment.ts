@@ -106,7 +106,12 @@ function buildInjectedBlock(places: PlaceLike[], accumulatedText: string): strin
       const missing = links.filter(l => !hasDomainNearName(ownName, domainOf(l.url), dedupText, windowEnd))
       if (missing.length > 0) lines.push(missing.map(l => `[${l.name}](${l.url})`).join(' · '))
     }
-    if (lines.length > 1) parts.push(lines.join('\n'))
+    // Only surface a place in the trailing "Hình ảnh & link review" block when it
+    // contributes at least one IMAGE the model failed to show inline — that is the
+    // block's real purpose (the model is unreliable at copying photos). Adding a
+    // place just because one order link (e.g. BeFood) was missing produced a
+    // redundant name+link-only entry that duplicated the rich main list (UAT #3).
+    if (missingPhotos.length > 0) parts.push(lines.join('\n'))
   }
   if (parts.length === 0) return ''
   return '\n\n📸 _Hình ảnh & link review:_\n\n' + parts.join('\n\n')

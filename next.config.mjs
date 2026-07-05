@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Build gates ENFORCED: production builds fail on TypeScript or ESLint errors.
+  // (Previously both were disabled via ignoreBuildErrors/ignoreDuringBuilds,
+  // which let type/lint regressions reach production unchecked.)
   experimental: {
     // By default Next.js keeps dynamic-page RSC payloads in the Router Cache
     // (client-side in-memory) for 30 seconds. Back navigation within that window

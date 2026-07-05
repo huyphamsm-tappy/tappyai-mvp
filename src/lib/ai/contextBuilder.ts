@@ -116,7 +116,9 @@ export async function buildChatPromptContext(
   supabase: SupabaseClient
 ): Promise<ChatPromptContext> {
   const [memory, prefResult] = await Promise.all([
-    getMemory(userId),
+    // Pass the request-scoped client so memory reads work under Bearer-token
+    // (native) auth, where a fresh cookie client would have no session.
+    getMemory(userId, supabase),
     supabase
       .from('user_preferences')
       .select('budget_level, cuisine_likes, dietary_restrictions, inferred_preferences')

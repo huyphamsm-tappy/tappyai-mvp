@@ -1,9 +1,14 @@
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const groupId = params.id
   if (!groupId) return NextResponse.json({ error: 'id required' }, { status: 400 })
+
+  // Auth required — joining writes member data (budget/dietary/area) into a
+  // group and must be attributed to the caller. Anonymous joins are rejected.
+  const { user, supabase } = await getRequestUser(req)
+  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
 
   let name: string, budget: string, food_preferences: string, dietary_restrictions: string, area: string
   try {
@@ -18,8 +23,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 })
   }
 
-  const supabase = createClient()
-
   const { count } = await supabase
     .from('group_members')
     .select('id', { count: 'exact', head: true })
@@ -31,8 +34,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
   const { error } = await supabase
     .from('group_members')
-    .insert({ group_id: groupId, name, budget, food_preferences, dietary_restrictions, area })
+    .insert({ group_id: groupId, user_id: user.id, name, budget, food_preferences, dietary_restrictions, area })
 
-  if (error) return NextResponse.json({ error: 'Không thể tham gia nhóm' }, { status: 500 })
+  if (error) {
+    // Unique (group_id, user_id) violation → already a member; treat as success.
+    if (error.code === '23505') return NextResponse.json({ ok: true, alreadyJoined: true })
+    return NextResponse.json({ error: 'Không thể tham gia nhóm' }, { status: 500 })
+  }
   return NextResponse.json({ ok: true })
 }

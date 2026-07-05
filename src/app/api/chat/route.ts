@@ -147,6 +147,20 @@ export async function POST(req: Request) {
     }
   } catch { /* no-op if auth fails */ }
 
+  // Freemium policy (product decision): anonymous users may NOT chat with the
+  // AI or consume LLM tokens. Chat requires an authenticated session; this also
+  // removes the unauthenticated cost-amplification path.
+  if (!authedUserId) {
+    return new Response(
+      JSON.stringify({
+        error: 'auth_required',
+        message: 'Vui lòng đăng nhập để trò chuyện với Tappy.',
+        upgradeUrl: '/login',
+      }),
+      { status: 401, headers: { 'Content-Type': 'application/json' } }
+    )
+  }
+
   // Inject freeform user preferences from client request body
   const rawPrefsArr = Array.isArray(rawUserPrefs)
     ? (rawUserPrefs as unknown[]).filter(p => typeof p === 'string').slice(0, 50) as string[]
@@ -339,6 +353,9 @@ export async function POST(req: Request) {
           ]
           const extracted = await extractMemoryFromConversation(convMessages, existingMemory)
           if (Object.keys(extracted).length > 0) {
+            // Write with the admin client (pinned user_id) so the upsert works
+            // under Bearer-token (native) auth — a fresh cookie client would
+            // have no session and RLS would silently drop the write.
             await updateMemory(authedUserId, {
               location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
               companions: extracted.companions ?? existingMemory?.companions ?? null,
@@ -347,7 +364,7 @@ export async function POST(req: Request) {
               preferences: { ...(existingMemory?.preferences || {}), ...(extracted.preferences || {}) },
               budget: { ...(existingMemory?.budget || {}), ...(extracted.budget || {}) },
               history: extracted.history ?? existingMemory?.history ?? [],
-            })
+            }, createAdminClient())
           }
         } catch (e) {
           console.error('Memory extract/save error:', e)

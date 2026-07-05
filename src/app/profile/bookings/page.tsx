@@ -43,13 +43,15 @@ export default async function BookingsPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, avatar_url, email')
+    .select('full_name, avatar_url')
     .eq('id', user.id)
     .single()
 
-  const userInfo = profile || {
-    full_name: user.user_metadata?.full_name,
-    avatar_url: user.user_metadata?.avatar_url,
+  // Email always comes from the session (auth.users.email); profiles.email is
+  // being removed (add_profiles_email_isolation.sql).
+  const userInfo = {
+    full_name: profile?.full_name ?? user.user_metadata?.full_name,
+    avatar_url: profile?.avatar_url ?? user.user_metadata?.avatar_url,
     email: user.email,
   }
 

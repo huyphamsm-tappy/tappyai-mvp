@@ -10,10 +10,10 @@ import { NextResponse } from 'next/server'
 // GET /api/memory — check if user has memory (for badge)
 export async function GET(req: Request) {
   try {
-    const { user } = await getRequestUser(req)
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ memory: null })
 
-    const memory = await getMemory(user.id)
+    const memory = await getMemory(user.id, supabase)
     const hasMemory =
       memory !== null &&
       (!!memory.location_base ||
@@ -30,13 +30,13 @@ export async function GET(req: Request) {
 // POST /api/memory — extract + save memory from conversation
 export async function POST(req: Request) {
   try {
-    const { user } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ ok: false })
+    const { user, supabase } = await getRequestUser(req)
+    if (!user) return NextResponse.json({ ok: false }, { status: 401 })
 
     const { messages } = await req.json()
     if (!messages?.length) return NextResponse.json({ ok: false })
 
-    const existing = await getMemory(user.id)
+    const existing = await getMemory(user.id, supabase)
     const extracted = await extractMemoryFromConversation(messages, existing)
 
     if (Object.keys(extracted).length > 0) {
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
           ...(extracted.budget || {}),
         },
         history: extracted.history ?? existing?.history ?? [],
-      })
+      }, supabase)
     }
 
     return NextResponse.json({ ok: true })
@@ -115,9 +115,9 @@ export async function PATCH(req: Request) {
 // DELETE /api/memory — clear all memory for user
 export async function DELETE(req: Request) {
   try {
-    const { user } = await getRequestUser(req)
+    const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ ok: false }, { status: 401 })
-    await clearMemory(user.id)
+    await clearMemory(user.id, supabase)
     return NextResponse.json({ ok: true })
   } catch (e) {
     console.error('Memory DELETE error:', e)

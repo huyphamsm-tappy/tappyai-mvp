@@ -29,6 +29,12 @@ interface Post {
   place_name: string
 }
 
+function fmt(n: number) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M'
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'k'
+  return String(n)
+}
+
 export default function CreatorPage() {
   const params = useParams()
   const router = useRouter()
@@ -39,6 +45,9 @@ export default function CreatorPage() {
   const [posts, setPosts] = useState<Post[]>([])
   const [totalViews, setTotalViews] = useState(0)
   const [totalWatchMin, setTotalWatchMin] = useState(0)
+  const [totalLikes, setTotalLikes] = useState(0)
+  const [totalSaves, setTotalSaves] = useState(0)
+  const [avgCompletion, setAvgCompletion] = useState(0)
   const [loading, setLoading] = useState(true)
   const [followLoading, setFollowLoading] = useState(false)
 
@@ -58,20 +67,26 @@ export default function CreatorPage() {
       setPosts(feedData.reviews || [])
     }
 
-    // On-the-fly: total views + estimated total watch time from reviews table
+    // TODO: When scale increases, denormalize creator metrics into profiles table
     const { data: stats } = await supabase
       .from('reviews')
-      .select('view_count, watch_time_avg')
+      .select('view_count, watch_time_avg, like_count, save_count, completion_rate')
       .eq('user_id', creatorId)
       .or('is_hidden.is.null,is_hidden.eq.false')
 
     if (stats) {
       const views = stats.reduce((s, r) => s + (r.view_count || 0), 0)
-      // TODO: When scale increases, denormalize into profiles table
-      // instead of runtime aggregation
       const watchSec = stats.reduce((s, r) => s + (r.watch_time_avg || 0) * (r.view_count || 0), 0)
+      const likes = stats.reduce((s, r) => s + (r.like_count || 0), 0)
+      const saves = stats.reduce((s, r) => s + (r.save_count || 0), 0)
+      const avgComp = stats.length > 0
+        ? stats.reduce((s, r) => s + (r.completion_rate || 0), 0) / stats.length
+        : 0
       setTotalViews(views)
       setTotalWatchMin(Math.round(watchSec / 60))
+      setTotalLikes(likes)
+      setTotalSaves(saves)
+      setAvgCompletion(Math.round(avgComp * 100))
     }
 
     setLoading(false)
@@ -100,7 +115,6 @@ export default function CreatorPage() {
 
   const name = profile.full_name || 'Ẩn danh'
   const handle = '@' + name.replace(/\s+/g, '').toLowerCase()
-  const totalLikes = posts.reduce((s, p) => s + (p.like_count || 0), 0)
 
   return (
     <div className="min-h-dvh bg-black text-white pb-6">
@@ -117,13 +131,13 @@ export default function CreatorPage() {
       <div className="flex flex-col items-center px-4 pt-4 pb-6">
         {profile.avatar_url
           ? <Image src={profile.avatar_url} alt={name} width={88} height={88} className="rounded-full ring-2 ring-white/20 object-cover mb-3" />
-          : <div className="w-22 h-22 w-[88px] h-[88px] rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mb-3">{name[0]?.toUpperCase()}</div>}
+          : <div className="w-[88px] h-[88px] rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mb-3">{name[0]?.toUpperCase()}</div>}
 
         <h1 className="font-bold text-lg mb-0.5">{name}</h1>
         <p className="text-gray-400 text-sm mb-3">{handle}</p>
         {profile.bio && <p className="text-gray-300 text-sm text-center max-w-xs mb-3">{profile.bio}</p>}
 
-        {/* Stats row */}
+        {/* Stats row — social */}
         <div className="flex gap-7 mb-4">
           {[
             { label: 'Bài viết', value: profile.review_count },
@@ -132,21 +146,29 @@ export default function CreatorPage() {
             { label: 'Likes', value: totalLikes },
           ].map(s => (
             <div key={s.label} className="flex flex-col items-center">
-              <span className="font-bold text-base">{s.value >= 1000 ? (s.value / 1000).toFixed(1) + 'k' : s.value}</span>
+              <span className="font-bold text-base">{fmt(s.value)}</span>
               <span className="text-gray-500 text-[10px]">{s.label}</span>
             </div>
           ))}
         </div>
 
-        {/* Views + watch time */}
+        {/* Stats row — content metrics */}
         <div className="flex gap-6 mb-4 text-center">
           <div>
-            <p className="font-bold text-sm">{totalViews >= 1000 ? (totalViews / 1000).toFixed(1) + 'k' : totalViews}</p>
+            <p className="font-bold text-sm">{fmt(totalViews)}</p>
             <p className="text-gray-500 text-[10px]">Lượt xem</p>
           </div>
           <div>
             <p className="font-bold text-sm">{totalWatchMin >= 60 ? Math.round(totalWatchMin / 60) + 'g' : totalWatchMin + 'p'}</p>
-            <p className="text-gray-500 text-[10px]">Tổng giờ xem</p>
+            <p className="text-gray-500 text-[10px]">Giờ xem</p>
+          </div>
+          <div>
+            <p className="font-bold text-sm">{fmt(totalSaves)}</p>
+            <p className="text-gray-500 text-[10px]">Lưu</p>
+          </div>
+          <div>
+            <p className="font-bold text-sm">{avgCompletion}%</p>
+            <p className="text-gray-500 text-[10px]">Hoàn thành</p>
           </div>
         </div>
 

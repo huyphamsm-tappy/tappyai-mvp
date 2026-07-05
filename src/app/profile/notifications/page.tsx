@@ -11,11 +11,12 @@ export default async function NotificationsPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, avatar_url, email')
+    .select('full_name, avatar_url')
     .eq('id', user.id)
     .single()
 
-  const userInfo = profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email }
+  // Email always from session (auth.users.email); profiles.email is being removed.
+  const userInfo = { full_name: profile?.full_name ?? user.user_metadata?.full_name, avatar_url: profile?.avatar_url ?? user.user_metadata?.avatar_url, email: user.email }
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">

@@ -13,7 +13,7 @@ const SPEED_START = 150
 const SPEED_MIN = 60
 
 type Dir = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
-type Pt = { x: number; y: number }
+type Pt = { x: number; y: number; dir?: string }
 
 function rnd(max: number) { return Math.floor(Math.random() * max) }
 
@@ -27,7 +27,7 @@ function spawnFood(snake: Pt[]): Pt {
 export default function SnakePage() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const stateRef = useRef({
-    snake: [{ x: 10, y: 10 }],
+    snake: [{ x: 10, y: 10 }] as Pt[],
     dir: 'RIGHT' as Dir,
     nextDir: 'RIGHT' as Dir,
     food: { x: 15, y: 10 },

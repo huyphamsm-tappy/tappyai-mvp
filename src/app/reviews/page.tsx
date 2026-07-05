@@ -1053,9 +1053,17 @@ export default function ReviewsPage() {
 
   const like = async (id: string) => {
     const r = reviews.find(r => r.id === id)
-    const res = await fetch(`/api/reviews/${id}/like`, { method: 'POST' })
-    const { liked } = await res.json()
-    setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: liked, like_count: r.like_count + (liked ? 1 : -1) } : r))
+    // Validate the response before mutating counts — a 401/500 (or non-JSON
+    // error page) previously left `liked` undefined and DECREMENTED the count.
+    let liked: boolean
+    try {
+      const res = await fetch(`/api/reviews/${id}/like`, { method: 'POST' })
+      if (!res.ok) return
+      const data = await res.json()
+      if (typeof data.liked !== 'boolean') return
+      liked = data.liked
+    } catch { return }
+    setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: liked, like_count: Math.max(0, r.like_count + (liked ? 1 : -1)) } : r))
     track('review_like', { review_id: id, place: r?.place_name, liked })
     if (liked && me) {
       logUserEvent(me, 'like', { review_id: id })
@@ -1065,8 +1073,14 @@ export default function ReviewsPage() {
     }
   }
   const save = async (id: string) => {
-    const res = await fetch(`/api/reviews/${id}/save`, { method: 'POST' })
-    const { saved } = await res.json()
+    let saved: boolean
+    try {
+      const res = await fetch(`/api/reviews/${id}/save`, { method: 'POST' })
+      if (!res.ok) return
+      const data = await res.json()
+      if (typeof data.saved !== 'boolean') return
+      saved = data.saved
+    } catch { return }
     setReviews(p => p.map(r => r.id === id ? { ...r, saved_by_me: saved } : r))
     track('place_save', { review_id: id })
   }

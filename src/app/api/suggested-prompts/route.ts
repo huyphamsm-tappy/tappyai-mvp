@@ -3,6 +3,9 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { getMemory } from '@/lib/memory/memoryService'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 
+// Reads per-request auth/searchParams — never statically prerender.
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   try {
     const now = new Date()
@@ -20,9 +23,9 @@ export async function GET(req: NextRequest) {
     let gender: 'male' | 'female' | null = null
 
     try {
-      const { user } = await getRequestUser(req)
+      const { user, supabase } = await getRequestUser(req)
       if (user) {
-        memory = await getMemory(user.id)
+        memory = await getMemory(user.id, supabase)
         // Gender from user metadata (set via preferences page)
         const g = user.user_metadata?.gender
         if (g === 'male' || g === 'female') gender = g

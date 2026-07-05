@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
@@ -83,7 +84,10 @@ export async function POST(
     const MILESTONES = [5, 10, 25, 50, 100]
     const newCount = review.like_count || 0
     if (MILESTONES.includes(newCount)) {
-      const { error: msError } = await supabase
+      // Insert via admin client: add_phase4_hardening.sql removed the
+      // review_milestones INSERT policy, so the user-scoped client's insert was
+      // silently dropped by RLS and the milestone notification never fired.
+      const { error: msError } = await createAdminClient()
         .from('review_milestones')
         .insert({ review_id: reviewId, milestone: newCount })
       if (!msError) {

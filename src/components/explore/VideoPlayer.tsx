@@ -21,6 +21,22 @@ export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sou
   })
   const [playing, setPlaying] = useState(false)
   const [showPlayIcon, setShowPlayIcon] = useState(false)
+  const ytContainerRef = useRef<HTMLDivElement>(null)
+  const [ytActive, setYtActive] = useState(false)
+
+  // YouTube embeds only stream while in view — otherwise every mounted card
+  // autoplayed its own iframe simultaneously (bandwidth/CPU/battery drain).
+  useEffect(() => {
+    if (sourceType !== 'youtube') return
+    const el = ytContainerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setYtActive(entry.isIntersecting && entry.intersectionRatio >= 0.5),
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [sourceType])
 
   // Auto-play/pause when scrolling in/out of viewport
   useEffect(() => {
@@ -75,15 +91,17 @@ export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sou
     if (!videoId) return <div className="absolute inset-0 bg-black" />
     const ytThumb = thumbnail || `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`
     return (
-      <div className="absolute inset-0 bg-black">
-        <img src={ytThumb} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1`}
-          className="absolute inset-0 w-full h-full"
-          allow="autoplay; encrypted-media"
-          allowFullScreen
-          title="video"
-        />
+      <div ref={ytContainerRef} className="absolute inset-0 bg-black">
+        <img src={ytThumb} alt="" className={`absolute inset-0 w-full h-full object-cover ${ytActive ? 'opacity-30' : 'opacity-100'}`} />
+        {ytActive && (
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1`}
+            className="absolute inset-0 w-full h-full"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            title="video"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
       </div>
     )
