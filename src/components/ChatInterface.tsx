@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Send, Sparkles, Mic, MicOff, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
+import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
@@ -433,6 +433,8 @@ export default function ChatInterface({
   const [isListening, setIsListening] = useState(false)
   // Voice status message (unsupported / permission / error) shown near the input.
   const [voiceError, setVoiceError] = useState<string | null>(null)
+  // After dictation ends, auto-send with a short grace window the user can cancel.
+  const [pendingSend, setPendingSend] = useState(false)
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const [userPreferences, setUserPreferences] = useState<string[]>([])
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -444,6 +446,8 @@ export default function ChatInterface({
   // The input text captured when dictation starts, so interim results append to
   // (not clobber) whatever the user already typed.
   const voiceBaseRef = useRef('')
+  const autoSendTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const voiceSpokeRef = useRef(false)
 
   interface UserLocation { lat: number; lng: number; address: string; ts?: number }
   const [userLocation, setUserLocation] = useState<UserLocation | null>(() => {
@@ -497,8 +501,18 @@ export default function ChatInterface({
   // (see the messagesRef declaration above for why the closure is unsafe).
   useEffect(() => { messagesRef.current = messages }, [messages])
 
-  // Voice input (Web Speech API). Dictation ONLY fills the input box — it never
-  // auto-sends; the user reviews/edits then presses send like normal.
+  // Cancel a queued voice auto-send (grace window): used when the user edits the
+  // text, taps "sửa", starts a new dictation, sends manually, or unmounts.
+  const cancelAutoSend = useCallback(() => {
+    if (autoSendTimerRef.current) {
+      clearTimeout(autoSendTimerRef.current)
+      autoSendTimerRef.current = null
+    }
+    setPendingSend(false)
+  }, [])
+
+  // Voice input (Web Speech API). Dictation fills the input box, then auto-sends
+  // after a short grace window the user can cancel (to review/edit first).
   const startVoice = useCallback(() => {
     const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognitionCtor) {
@@ -506,6 +520,8 @@ export default function ChatInterface({
       return
     }
     setVoiceError(null)
+    cancelAutoSend()
+    voiceSpokeRef.current = false
     posthog.capture('mic_used')
     const recognition = new SpeechRecognitionCtor()
     recognition.lang = 'vi-VN'
@@ -517,9 +533,23 @@ export default function ChatInterface({
     voiceBaseRef.current = input ? input.replace(/\s+$/, '') + ' ' : ''
 
     recognition.onstart = () => { setIsListening(true); setVoiceError(null) }
-    recognition.onend = () => setIsListening(false)
+    recognition.onend = () => {
+      setIsListening(false)
+      // Auto-send with a 2s grace window (user's chosen behavior): only if real
+      // speech was captured. The status line lets them tap to cancel and edit.
+      if (voiceSpokeRef.current) {
+        setPendingSend(true)
+        autoSendTimerRef.current = setTimeout(() => {
+          autoSendTimerRef.current = null
+          setPendingSend(false)
+          const form = document.getElementById('chat-form') as HTMLFormElement | null
+          form?.requestSubmit()
+        }, 2000)
+      }
+    }
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       setIsListening(false)
+      cancelAutoSend()
       switch (event.error) {
         case 'not-allowed':
         case 'service-not-allowed':
@@ -540,7 +570,8 @@ export default function ChatInterface({
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       let transcript = ''
       for (let i = 0; i < event.results.length; i++) transcript += event.results[i][0].transcript
-      // Fill the input (never send). User keeps full control to edit/send.
+      if (transcript.trim()) voiceSpokeRef.current = true
+      // Fill the input live; onend then queues the auto-send (cancellable).
       setInput(voiceBaseRef.current + transcript)
     }
     // Optimistic instant feedback: the button reacts the moment it's tapped,
@@ -554,7 +585,7 @@ export default function ChatInterface({
       setIsListening(false)
       setVoiceError('Không khởi động được micro. Tải lại trang rồi thử lại nhé.')
     }
-  }, [input, setInput])
+  }, [input, setInput, cancelAutoSend])
 
   const stopVoice = useCallback(() => {
     recognitionRef.current?.stop() // lets the final result land, then onend fires
@@ -571,6 +602,7 @@ export default function ChatInterface({
         try { r.abort() } catch { /* already stopped */ }
         recognitionRef.current = null
       }
+      if (autoSendTimerRef.current) clearTimeout(autoSendTimerRef.current)
     }
   }, [])
 
@@ -700,6 +732,7 @@ export default function ChatInterface({
 
   const handleFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    cancelAutoSend() // a manual send supersedes any queued voice auto-send
     if (!input.trim() && !imageFile) return
     posthog.capture('chat_message_sent', { input_method: 'button', has_image: !!imageFile })
     if (imageFile) {
@@ -710,7 +743,7 @@ export default function ChatInterface({
     } else {
       handleSubmit(e)
     }
-  }, [input, imageFile, handleSubmit, clearImage])
+  }, [input, imageFile, handleSubmit, clearImage, cancelAutoSend])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -1074,26 +1107,26 @@ export default function ChatInterface({
               </button>
             </div>
           )}
-          {/* Voice status — user always knows the state (listening / error / unsupported) */}
-          {(isListening || voiceError) && (
-            <div
-              role="status"
-              aria-live="polite"
-              className={cn(
-                'flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full',
-                isListening
-                  ? 'bg-orange-50 dark:bg-orange-900/20 text-[#FF9500]'
-                  : 'bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400'
-              )}
+          {/* Voice status — user always knows the state (listening / auto-sending / error) */}
+          {isListening && (
+            <div role="status" aria-live="polite" className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-orange-50 dark:bg-orange-900/20 text-[#FF9500]">
+              <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
+              <span>Đang nghe… nói xong Tappy tự gửi (bạn có 2 giây để sửa trước).</span>
+            </div>
+          )}
+          {!isListening && pendingSend && (
+            <button
+              type="button"
+              onClick={() => { cancelAutoSend(); inputRef.current?.focus() }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-orange-50 dark:bg-orange-900/20 text-[#FF9500] hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors"
             >
-              {isListening ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
-                  <span>Đang nghe… nói xong Tappy điền vào ô chat để bạn kiểm tra rồi gửi.</span>
-                </>
-              ) : (
-                <span>{voiceError}</span>
-              )}
+              <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
+              <span>Đang gửi trong giây lát… chạm để sửa trước khi gửi.</span>
+            </button>
+          )}
+          {!isListening && !pendingSend && voiceError && (
+            <div role="status" aria-live="polite" className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400">
+              <span>{voiceError}</span>
             </div>
           )}
           <div className="flex gap-2 items-end">
@@ -1102,6 +1135,7 @@ export default function ChatInterface({
               value={input}
               onChange={(e) => {
                 if (voiceError) setVoiceError(null)
+                if (pendingSend) cancelAutoSend()
                 handleInputChange(e)
                 e.target.style.height = 'auto'
                 e.target.style.height = Math.min(e.target.scrollHeight, 160) + 'px'
@@ -1162,10 +1196,10 @@ export default function ChatInterface({
                 : 'bg-gray-100 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-orange-900/20'
             )}
           >
-            {isListening
-              ? <MicOff size={18} className="text-white" />
-              : <Mic size={18} className="text-[#FF9500]" />
-            }
+            {/* Listening = white mic on a pulsing orange button (clearly "recording,
+               tap to stop"). Previously used MicOff (a slashed mic), which reads as
+               "mic disabled" and confused users about the on/off state. */}
+            <Mic size={18} className={isListening ? 'text-white' : 'text-[#FF9500]'} />
           </button>
           {isLoading ? (
             <button type="button" onClick={() => stop()} aria-label="Dừng trả lời" className="w-11 h-11 rounded-2xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center transition-all flex-shrink-0">
