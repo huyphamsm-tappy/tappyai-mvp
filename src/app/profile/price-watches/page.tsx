@@ -11,6 +11,7 @@ type Watch = {
   current_price: number | null
   status: 'active' | 'triggered' | 'cancelled'
   last_checked: string | null
+  notified_at: string | null
   created_at: string
 }
 
@@ -132,7 +133,9 @@ export default function PriceWatchesPage() {
                           )}
                         </p>
                         <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
-                          Kiểm tra lần cuối: {fmtDate(w.last_checked)}
+                          {w.last_checked
+                            ? `Kiểm tra lần cuối: ${fmtDate(w.last_checked)}`
+                            : 'Tappy sẽ kiểm tra giá trong vài giờ tới ⏳'}
                         </p>
                       </div>
                       <button
@@ -166,6 +169,11 @@ export default function PriceWatchesPage() {
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                           Đã xuống mức <span className="font-semibold text-green-600">{w.current_price ? fmtVND(w.current_price) : fmtVND(w.target_price)}</span>
                         </p>
+                        {w.notified_at && (
+                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                            Đã báo: {fmtDate(w.notified_at)}
+                          </p>
+                        )}
                       </div>
                     </div>
                   ))}

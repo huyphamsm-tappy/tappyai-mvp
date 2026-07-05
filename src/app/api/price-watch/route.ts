@@ -8,7 +8,7 @@ export async function GET(req: Request) {
 
   const { data, error } = await supabase
     .from('price_watches')
-    .select('id, product_name, target_price, current_price, status, last_checked, created_at')
+    .select('id, product_name, target_price, current_price, status, last_checked, notified_at, created_at')
     .eq('user_id', user.id)
     .neq('status', 'cancelled')
     .order('created_at', { ascending: false })
