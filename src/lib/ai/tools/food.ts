@@ -134,6 +134,10 @@ export async function searchPlacesOSM(query: string, location?: string) {
       const veg = tags['diet:vegetarian'] || ''
       const vegan = tags['diet:vegan'] || ''
       const vegetarian = (/^(yes|only)$/i.test(veg) || /^(yes|only)$/i.test(vegan)) ? true : null
+      // Cafe atmosphere/purpose signals (MFS 3.2: attuned to the FEEL — work/study/meeting).
+      // internet_access ~25% coverage on VN cafes; a real wifi signal when present.
+      const wifi = /^(wlan|yes|wifi|terminal)$/i.test(tags['internet_access'] || '') ? true : null
+      const outdoor = /^yes$/i.test(tags['outdoor_seating'] || '') ? true : null
       return {
         name: tags['name:vi'] || tags.name || '',
         address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || 'Xem ban do',
@@ -143,6 +147,8 @@ export async function searchPlacesOSM(query: string, location?: string) {
         ...(tags.opening_hours ? { opening_hours: tags.opening_hours } : {}),
         ...(website ? { website_uri: website } : {}),
         ...(vegetarian ? { vegetarian: true } : {}),
+        ...(wifi ? { wifi: true } : {}),
+        ...(outdoor ? { outdoor_seating: true } : {}),
       }
     }).filter(r => r.name)
     // Reuse the same Serper-based image resolver as the Google path so OSM-fallback
