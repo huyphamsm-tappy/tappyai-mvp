@@ -91,6 +91,43 @@ function countFacts(m: Memory) {
   return n
 }
 
+// Response-style control (Personalization — MFS 2.6: tailors tone; lets the user
+// shape it). Stored in localStorage, sent with each chat request.
+function ResponseStyleCard() {
+  const [style, setStyle] = useState<{ tone?: string; length?: string }>({})
+  useEffect(() => {
+    try { setStyle(JSON.parse(localStorage.getItem('tappy_response_style') || '{}')) } catch { /* ignore */ }
+  }, [])
+  const update = (key: 'tone' | 'length', val: string) => {
+    const next = { ...style, [key]: style[key] === val ? undefined : val }
+    setStyle(next)
+    try { localStorage.setItem('tappy_response_style', JSON.stringify(next)) } catch { /* ignore */ }
+  }
+  const Pill = ({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) => (
+    <button type="button" onClick={onClick} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${active ? 'bg-primary-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>{children}</button>
+  )
+  return (
+    <div className="card p-4">
+      <div className="flex items-center gap-2 mb-3">
+        <Sparkles size={15} className="text-primary-500" />
+        <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Phong cách trả lời của Tappy</span>
+      </div>
+      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">Giọng điệu</p>
+      <div className="flex flex-wrap gap-2 mb-3">
+        <Pill active={style.tone === 'friendly'} onClick={() => update('tone', 'friendly')}>Thân mật</Pill>
+        <Pill active={style.tone === 'neutral'} onClick={() => update('tone', 'neutral')}>Trung lập</Pill>
+        <Pill active={style.tone === 'formal'} onClick={() => update('tone', 'formal')}>Lịch sự</Pill>
+      </div>
+      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">Độ dài</p>
+      <div className="flex flex-wrap gap-2">
+        <Pill active={style.length === 'short'} onClick={() => update('length', 'short')}>Ngắn gọn</Pill>
+        <Pill active={style.length === 'detailed'} onClick={() => update('length', 'detailed')}>Đầy đủ</Pill>
+      </div>
+      <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-3">Bỏ chọn tất cả = để Tappy tự điều chỉnh theo cách bạn nhắn.</p>
+    </div>
+  )
+}
+
 export default function TappyKnowsPage() {
   const [memory, setMemory] = useState<Memory | null>(null)
   const [loading, setLoading] = useState(true)
@@ -200,6 +237,8 @@ export default function TappyKnowsPage() {
             <RefreshCw size={16} className={`text-gray-400 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
+
+        {!loading && <div className="mb-4"><ResponseStyleCard /></div>}
 
         {loading ? (
           <div className="flex justify-center py-16">

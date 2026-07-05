@@ -32,7 +32,19 @@ export async function POST(req: Request) {
     )
   }
 
-  const { messages, userLocation: rawUserLocation, userPreferences: rawUserPrefs } = await req.json()
+  const { messages, userLocation: rawUserLocation, userPreferences: rawUserPrefs, responseStyle: rawResponseStyle } = await req.json()
+
+  // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
+  // Sent from the client (localStorage); no persistence needed. Validated to a small enum.
+  const rs = (rawResponseStyle && typeof rawResponseStyle === 'object') ? rawResponseStyle as { tone?: string; length?: string } : {}
+  const toneLine = rs.tone === 'formal' ? 'Giọng điệu: lịch sự, trang trọng, xưng "mình/bạn".'
+    : rs.tone === 'friendly' ? 'Giọng điệu: thân mật, gần gũi như bạn thân.'
+    : rs.tone === 'neutral' ? 'Giọng điệu: trung lập, tự nhiên.' : ''
+  const lengthLine = rs.length === 'short' ? 'Độ dài: CỰC ngắn gọn, đi thẳng ý chính.'
+    : rs.length === 'detailed' ? 'Độ dài: đầy đủ hơn, giải thích rõ khi cần.' : ''
+  const styleBlock = (toneLine || lengthLine)
+    ? `\n\n===== PHONG CACH TRA LOI USER CHON (uu tien) =====\n${[toneLine, lengthLine].filter(Boolean).join('\n')}\n=================================================`
+    : ''
 
   const userLocation: { lat: number; lng: number; address?: string } | null =
     rawUserLocation && typeof rawUserLocation.lat === 'number' && typeof rawUserLocation.lng === 'number'
@@ -158,9 +170,10 @@ export async function POST(req: Request) {
   // is the code path that actually attaches cache_control, so repeat requests within the
   // ~5min cache window get the (large, mostly-static) system prompt at a cached rate
   // instead of full price.
-  const systemPrompt = intent === 'chitchat'
+  const systemPrompt = (intent === 'chitchat'
     ? buildSystemSimple(lang, memoryBlock)
     : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, forcedTool)
+  ) + styleBlock
 
   const result = streamText({
     model: getModel(tier),

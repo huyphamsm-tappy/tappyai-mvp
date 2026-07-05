@@ -424,11 +424,19 @@ export default function ChatInterface({
     } catch { return null }
   })
 
+  // User-chosen response style (Personalization — MFS 2.6). Set on /profile/tappy-knows,
+  // stored in localStorage, sent with each chat request. Empty = adaptive default.
+  const [responseStyle] = useState<{ tone?: string; length?: string }>(() => {
+    if (typeof window === 'undefined') return {}
+    try { return JSON.parse(localStorage.getItem('tappy_response_style') || '{}') } catch { return {} }
+  })
+
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error } = useChat({
     api: '/api/chat',
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
+      ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
     },
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
