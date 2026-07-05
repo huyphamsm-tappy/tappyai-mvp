@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
+import QRProfileButton from '@/components/QRProfileButton'
 import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users, TrendingDown, Brain, Star, Plug } from 'lucide-react'
 
 export default async function ProfilePage() {
@@ -59,6 +60,7 @@ export default async function ProfilePage() {
                 </span>
               </div>
             </div>
+            <QRProfileButton userId={user.id} name={userInfo.full_name || firstName} />
           </div>
         </div>
 
