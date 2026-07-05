@@ -74,7 +74,7 @@ export default async function ProfilePage() {
             <MenuItem icon={MessageCircle} label="Lịch sử chat" description="Xem các cuộc trò chuyện trước đây" href="/profile/history" />
             <MenuItem icon={CalendarDays} label="Lịch đặt chỗ" description="Nhà hàng, spa, khách sạn đã đặt" href="/profile/bookings" />
             <MenuItem icon={Heart} label="Sở thích của tôi" description="Ngân sách, ẩm thực yêu thích, kiêng cữ" href="/profile/preferences" />
-            <MenuItem icon={Bookmark} label="Đã lưu" description="Địa điểm yêu thích đã lưu từ chat" href="/profile/favorites" />
+            <MenuItem icon={Bookmark} label="Đã lưu" description="Địa điểm yêu thích & bài viết đã lưu" href="/profile/favorites" />
             <MenuItem icon={TrendingDown} label="Theo dõi giá" description="Tappy báo khi giá xuống mức mong muốn" href="/profile/price-watches" />
             <MenuItem icon={Brain} label="Tappy biết gì về bạn" description="Xem và quản lý bộ nhớ cá nhân của Tappy" href="/profile/tappy-knows" />
             <MenuItem icon={Plug} label="Kết nối ứng dụng" description="Google Calendar, Zalo và nhiều hơn nữa" href="/profile/integrations" />
