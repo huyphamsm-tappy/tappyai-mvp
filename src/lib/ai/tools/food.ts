@@ -51,7 +51,7 @@ export async function getNews(query: string) {
 }
 
 
-export async function searchPlacesOSM(query: string, location?: string, type?: string) {
+export async function searchPlacesOSM(query: string, location?: string, type?: string, locationBias?: { lat: number; lng: number } | null) {
   const loc = location || 'Ha Noi'
   const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
   try {
@@ -69,24 +69,36 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     // falling through to slower Nominatim geocoding and skipping the dense-metro radius.
     const locKey = normalizeVN(loc.toLowerCase())
     const preset = Object.entries(cityCoords).find(([k]) => locKey.includes(k))
-    let lat = preset ? preset[1][0] : 21.0285
-    let lon = preset ? preset[1][1] : 105.8542
     // Dense metro search radius: a 5km amenity radius times out against public Overpass
     // mirrors in Hanoi/HCMC (measured: 504 after 12.7s at 5km vs 0.98s at 1.5km, same query).
     // Other cities/locations are less venue-dense — keep the larger 5km radius there.
     const DENSE_METRO_KEYS = new Set(['ha noi', 'hanoi', 'hn', 'ho chi minh', 'hcm', 'saigon', 'sai gon'])
-    const searchRadius = preset && DENSE_METRO_KEYS.has(preset[0]) ? 1500 : 5000
-    if (!preset) {
-      try {
-        const geoResp = await Promise.race([
-          fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
-            headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' }
-          }),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
-        ])
-        const geoData = await (geoResp as Response).json()
-        if (geoData[0]) { lat = parseFloat(geoData[0].lat); lon = parseFloat(geoData[0].lon) }
-      } catch { /* use default */ }
+    let lat: number
+    let lon: number
+    let searchRadius: number
+    if (locationBias) {
+      // Real device GPS → search around the user's ACTUAL position with a tight
+      // "right here, right now" radius (MFS 3.7 Nearby). Skip geocoding a city string;
+      // the precise coords are what "gần đây" actually means.
+      lat = locationBias.lat
+      lon = locationBias.lng
+      searchRadius = 2000
+    } else {
+      lat = preset ? preset[1][0] : 21.0285
+      lon = preset ? preset[1][1] : 105.8542
+      searchRadius = preset && DENSE_METRO_KEYS.has(preset[0]) ? 1500 : 5000
+      if (!preset) {
+        try {
+          const geoResp = await Promise.race([
+            fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
+              headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' }
+            }),
+            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
+          ])
+          const geoData = await (geoResp as Response).json()
+          if (geoData[0]) { lat = parseFloat(geoData[0].lat); lon = parseFloat(geoData[0].lon) }
+        } catch { /* use default */ }
+      }
     }
     const ql = query.toLowerCase()
     // OSM tag key differs by category. Hotels are tagged tourism=hotel, NOT amenity=hotel —
@@ -327,7 +339,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
       console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
     }
   }
-  if (!result) result = await searchPlacesOSM(query, location, type)
+  if (!result) result = await searchPlacesOSM(query, location, type, locationBias)
 
   // ===== Gia tham khao tu Serper (an uong / spa / giai tri) =====
   const qNorm = normalizeVN(query.toLowerCase())
