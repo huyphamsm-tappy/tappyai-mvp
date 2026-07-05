@@ -100,7 +100,12 @@ export async function searchPlacesOSM(query: string, location?: string) {
     else if (ql.match(/pharmacy|thuoc/)) amenity = 'pharmacy'
     else if (ql.match(/atm|ngan hang|bank/)) amenity = 'bank'
     const oql = '[out:json][timeout:10];(node["amenity"="' + amenity + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + ');way["amenity"="' + amenity + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + '););out center 10;'
-    const endpoints = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter']
+    // overpass.kumi.systems is dead (serves an HTML/XML error page with HTTP 200, so the
+    // .json() below throws and the fallback is silently useless). maps.mail.ru is a live,
+    // fast Overpass mirror with full VN coverage — verified returning valid JSON. Keeping a
+    // real second endpoint matters: the primary intermittently runs ~8s under load, close to
+    // the 11s budget, so a working fallback is what actually keeps "surfaces options" reliable.
+    const endpoints = ['https://overpass-api.de/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter']
     let overpassData: { elements?: unknown[] } | null = null
     for (const endpoint of endpoints) {
       try {
@@ -119,11 +124,25 @@ export async function searchPlacesOSM(query: string, location?: string) {
       const tags = el.tags || {}
       const elat = el.lat ?? el.center?.lat
       const elon = el.lon ?? el.center?.lon
+      // OSM already returns these tags in the same Overpass response — surface the honest,
+      // decision-useful ones instead of discarding them (MFS 3.1/3.2/3.3: present useful info,
+      // surface RELEVANT options). cuisine ~55% coverage on VN venues; the rest are sparse but
+      // real when present. No new API call, no billing, no fabrication — only omit when absent.
+      const cuisineRaw = tags.cuisine || ''
+      const cuisine = cuisineRaw ? cuisineRaw.split(';').map(c => c.replace(/_/g, ' ').trim()).filter(Boolean).join(', ') : null
+      const website = tags.website || tags['contact:website'] || null
+      const veg = tags['diet:vegetarian'] || ''
+      const vegan = tags['diet:vegan'] || ''
+      const vegetarian = (/^(yes|only)$/i.test(veg) || /^(yes|only)$/i.test(vegan)) ? true : null
       return {
         name: tags['name:vi'] || tags.name || '',
         address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || 'Xem ban do',
         phone: tags.phone || tags['contact:phone'] || null,
-        maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl
+        maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl,
+        ...(cuisine ? { cuisine } : {}),
+        ...(tags.opening_hours ? { opening_hours: tags.opening_hours } : {}),
+        ...(website ? { website_uri: website } : {}),
+        ...(vegetarian ? { vegetarian: true } : {}),
       }
     }).filter(r => r.name)
     // Reuse the same Serper-based image resolver as the Google path so OSM-fallback
