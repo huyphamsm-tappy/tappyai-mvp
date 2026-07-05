@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Check, Crown, ArrowLeft } from 'lucide-react'
 import StripeCheckoutButton from '@/components/StripeCheckoutButton'
+import ManageSubscriptionButton from '@/components/ManageSubscriptionButton'
 
 const FREE_FEATURES = [
   '10 tin nhắn / ngày',
@@ -74,6 +75,7 @@ export default async function SubscriptionPage() {
                 ? new Date(sub.current_period_end).toLocaleDateString('vi-VN')
                 : '--/--/----'}
             </p>
+            <ManageSubscriptionButton />
           </div>
         ) : (
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
