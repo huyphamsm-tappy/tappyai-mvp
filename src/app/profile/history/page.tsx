@@ -4,7 +4,8 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { formatRelativeTime, CATEGORIES } from '@/lib/utils'
-import { MessageCircle, ChevronRight } from 'lucide-react'
+import { MessageCircle } from 'lucide-react'
+import DeleteConversationButton from './DeleteConversationButton'
 
 export default async function ProfileHistoryPage() {
   const supabase = createClient()
@@ -45,22 +46,23 @@ export default async function ProfileHistoryPage() {
               const cat = CATEGORIES.find(c => c.id === conv.category)
               const msgCount = Array.isArray(conv.messages) ? conv.messages.length : 0
               return (
-                <Link
+                <div
                   key={conv.id}
-                  href={`/chat/${conv.id}`}
                   className="flex items-center gap-3 card p-4 hover:border-primary-200 dark:hover:border-primary-800 transition-all"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0 text-xl">
-                    {cat?.emoji || '💬'}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{conv.title}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
-                      {msgCount} tin nhắn · {formatRelativeTime(conv.updated_at)}
-                    </p>
-                  </div>
-                  <ChevronRight size={16} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
-                </Link>
+                  <Link href={`/chat/${conv.id}`} className="flex items-center gap-3 flex-1 min-w-0">
+                    <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0 text-xl">
+                      {cat?.emoji || '💬'}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{conv.title}</p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                        {msgCount} tin nhắn · {formatRelativeTime(conv.updated_at)}
+                      </p>
+                    </div>
+                  </Link>
+                  <DeleteConversationButton id={conv.id} />
+                </div>
               )
             })}
           </div>
