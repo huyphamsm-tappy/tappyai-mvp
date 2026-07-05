@@ -51,6 +51,17 @@ export async function getNews(query: string) {
 }
 
 
+// Straight-line distance (km) between two lat/lng points — for grounding places in the
+// user's surroundings (MFS 3.8 Maps: orientation & sense of surroundings). Local copy to
+// avoid a circular import with travel.ts (which imports searchPlacesOSM from here).
+function haversineKmLocal(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLon = (lon2 - lon1) * Math.PI / 180
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
 export async function searchPlacesOSM(query: string, location?: string, type?: string, locationBias?: { lat: number; lng: number } | null) {
   const loc = location || 'Ha Noi'
   const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
@@ -182,6 +193,8 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         ...(wifi ? { wifi: true } : {}),
         ...(outdoor ? { outdoor_seating: true } : {}),
         ...(stars ? { stars } : {}),
+        // Distance from the user, only when we have both their GPS and the place's coords.
+        ...((locationBias && elat && elon) ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, elat, elon) * 10) / 10 } : {}),
       }
     }).filter(r => r.name)
     // Reuse the same Serper-based image resolver as the Google path so OSM-fallback
