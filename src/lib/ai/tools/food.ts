@@ -92,19 +92,27 @@ export async function searchPlacesOSM(query: string, location?: string) {
     // OSM tag key differs by category. Hotels are tagged tourism=hotel, NOT amenity=hotel —
     // querying amenity=hotel returned 0 rows every time (verified: amenity=hotel→0 vs
     // tourism=hotel→60 at Nha Trang), so the OSM hotel_list was silently always empty.
+    const qn = normalizeVN(ql)
     let osmKey = 'amenity'
     let osmValue = 'restaurant'
+    let osmOp = '=' // '~' for a regex alternation (attractions span several tourism subtypes)
     if (ql.match(/cafe|ca phe|coffee/)) osmValue = 'cafe'
     else if (ql.match(/spa|massage/)) osmValue = 'spa'
     else if (ql.match(/hotel|khach san|resort/)) { osmKey = 'tourism'; osmValue = 'hotel' }
+    // Attractions are tagged tourism=attraction/museum/viewpoint/... — NOT an amenity. Without
+    // this branch, "diem tham quan Da Nang" fell through to the restaurant default and returned
+    // restaurants. 'artwork' deliberately excluded (heavily mistagged in VN OSM data).
+    else if (qn.match(/tham quan|thang canh|diem du lich|diem den|danh lam|bao tang|khu du lich|sightsee|attraction|museum/)) {
+      osmKey = 'tourism'; osmValue = 'attraction|museum|viewpoint|theme_park|zoo|gallery'; osmOp = '~'
+    }
     else if (ql.match(/bar|pub/)) osmValue = 'bar'
     else if (ql.match(/gym|fitness/)) osmValue = 'gym'
     else if (ql.match(/cinema|phim|rap/)) osmValue = 'cinema'
     else if (ql.match(/benh vien|hospital|clinic/)) osmValue = 'hospital'
     else if (ql.match(/pharmacy|thuoc/)) osmValue = 'pharmacy'
     else if (ql.match(/atm|ngan hang|bank/)) osmValue = 'bank'
-    const amenity = osmValue
-    const oql = '[out:json][timeout:10];(node["' + osmKey + '"="' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + ');way["' + osmKey + '"="' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + '););out center 10;'
+    const amenity = osmOp === '~' ? 'attraction' : osmValue
+    const oql = '[out:json][timeout:10];(node["' + osmKey + '"' + osmOp + '"' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + ');way["' + osmKey + '"' + osmOp + '"' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + '););out center 10;'
     // overpass.kumi.systems is dead (serves an HTML/XML error page with HTTP 200, so the
     // .json() below throws and the fallback is silently useless). maps.mail.ru is a live,
     // fast Overpass mirror with full VN coverage — verified returning valid JSON. Keeping a
