@@ -4,7 +4,7 @@ import { useChat } from 'ai/react'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
-import { Send, Loader2, Sparkles, Mic, MicOff, Smile, Heart, X } from 'lucide-react'
+import { Send, Sparkles, Mic, MicOff, Smile, Heart, X, Square, RotateCcw } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
@@ -412,7 +412,7 @@ export default function ChatInterface({
     } catch { return null }
   })
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error } = useChat({
     api: '/api/chat',
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
@@ -828,6 +828,26 @@ export default function ChatInterface({
                 </div>
               </div>
             )}
+            {/* Error recovery — explain plainly, preserve the user's message, offer a way forward (MUXS 8) */}
+            {error && !isLoading && (
+              <div className="flex gap-3 animate-fade-in">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-white text-xs font-bold">T</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/40 px-4 py-3 text-sm text-red-700 dark:text-red-300">
+                    <p className="leading-relaxed">Mình gặp trục trặc khi trả lời — tin nhắn của bạn vẫn được giữ nguyên. Bạn thử lại nhé?</p>
+                    <button
+                      type="button"
+                      onClick={() => reload()}
+                      className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-medium transition-colors"
+                    >
+                      <RotateCcw size={13} /> Thử lại
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div ref={bottomRef} />
         </div>
@@ -967,7 +987,15 @@ export default function ChatInterface({
               : <Mic size={18} className="text-[#FF9500]" />
             }
           </button>
-          <button type="submit" disabled={isLoading || (!input.trim() && !imageFile)} className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">{isLoading ? <Loader2 size={18} className="text-white animate-spin" /> : <Send size={18} className="text-white" />}</button>
+          {isLoading ? (
+            <button type="button" onClick={() => stop()} aria-label="Dừng trả lời" className="w-11 h-11 rounded-2xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center transition-all flex-shrink-0">
+              <Square size={15} className="text-gray-700 dark:text-gray-200 fill-current" />
+            </button>
+          ) : (
+            <button type="submit" disabled={!input.trim() && !imageFile} aria-label="Gửi" className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
+              <Send size={18} className="text-white" />
+            </button>
+          )}
           </div>
         </form>
       </div>
