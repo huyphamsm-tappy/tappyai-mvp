@@ -89,17 +89,22 @@ export async function searchPlacesOSM(query: string, location?: string) {
       } catch { /* use default */ }
     }
     const ql = query.toLowerCase()
-    let amenity = 'restaurant'
-    if (ql.match(/cafe|ca phe|coffee/)) amenity = 'cafe'
-    else if (ql.match(/spa|massage/)) amenity = 'spa'
-    else if (ql.match(/hotel|khach san|resort/)) amenity = 'hotel'
-    else if (ql.match(/bar|pub/)) amenity = 'bar'
-    else if (ql.match(/gym|fitness/)) amenity = 'gym'
-    else if (ql.match(/cinema|phim|rap/)) amenity = 'cinema'
-    else if (ql.match(/benh vien|hospital|clinic/)) amenity = 'hospital'
-    else if (ql.match(/pharmacy|thuoc/)) amenity = 'pharmacy'
-    else if (ql.match(/atm|ngan hang|bank/)) amenity = 'bank'
-    const oql = '[out:json][timeout:10];(node["amenity"="' + amenity + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + ');way["amenity"="' + amenity + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + '););out center 10;'
+    // OSM tag key differs by category. Hotels are tagged tourism=hotel, NOT amenity=hotel —
+    // querying amenity=hotel returned 0 rows every time (verified: amenity=hotel→0 vs
+    // tourism=hotel→60 at Nha Trang), so the OSM hotel_list was silently always empty.
+    let osmKey = 'amenity'
+    let osmValue = 'restaurant'
+    if (ql.match(/cafe|ca phe|coffee/)) osmValue = 'cafe'
+    else if (ql.match(/spa|massage/)) osmValue = 'spa'
+    else if (ql.match(/hotel|khach san|resort/)) { osmKey = 'tourism'; osmValue = 'hotel' }
+    else if (ql.match(/bar|pub/)) osmValue = 'bar'
+    else if (ql.match(/gym|fitness/)) osmValue = 'gym'
+    else if (ql.match(/cinema|phim|rap/)) osmValue = 'cinema'
+    else if (ql.match(/benh vien|hospital|clinic/)) osmValue = 'hospital'
+    else if (ql.match(/pharmacy|thuoc/)) osmValue = 'pharmacy'
+    else if (ql.match(/atm|ngan hang|bank/)) osmValue = 'bank'
+    const amenity = osmValue
+    const oql = '[out:json][timeout:10];(node["' + osmKey + '"="' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + ');way["' + osmKey + '"="' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + '););out center 10;'
     // overpass.kumi.systems is dead (serves an HTML/XML error page with HTTP 200, so the
     // .json() below throws and the fallback is silently useless). maps.mail.ru is a live,
     // fast Overpass mirror with full VN coverage — verified returning valid JSON. Keeping a
@@ -138,6 +143,9 @@ export async function searchPlacesOSM(query: string, location?: string) {
       // internet_access ~25% coverage on VN cafes; a real wifi signal when present.
       const wifi = /^(wlan|yes|wifi|terminal)$/i.test(tags['internet_access'] || '') ? true : null
       const outdoor = /^yes$/i.test(tags['outdoor_seating'] || '') ? true : null
+      // Hotel star rating (MFS 3.4: accommodation quality is core "needs" info). ~13% of
+      // tourism=hotel nodes carry it; only accept a sane 1–5 value.
+      const stars = /^[1-5]$/.test((tags.stars || '').trim()) ? (tags.stars || '').trim() : null
       return {
         name: tags['name:vi'] || tags.name || '',
         address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || 'Xem ban do',
@@ -149,6 +157,7 @@ export async function searchPlacesOSM(query: string, location?: string) {
         ...(vegetarian ? { vegetarian: true } : {}),
         ...(wifi ? { wifi: true } : {}),
         ...(outdoor ? { outdoor_seating: true } : {}),
+        ...(stars ? { stars } : {}),
       }
     }).filter(r => r.name)
     // Reuse the same Serper-based image resolver as the Google path so OSM-fallback
