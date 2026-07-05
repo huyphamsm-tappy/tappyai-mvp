@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:reset": "node scripts/dev-reset.mjs",
+    "dev:reset:keep": "node scripts/dev-reset.mjs --keep",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
