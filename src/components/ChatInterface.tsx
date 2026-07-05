@@ -88,6 +88,17 @@ function parsePlan(content: string): { text: string; plan: TappyPlan | null } {
   }
 }
 
+// Optional follow-up suggestions the model may emit at the very end.
+// Rendered as tappable chips (only on the latest reply) — a helpful next step,
+// never a push. MFS 2.7.
+function parseFollowups(content: string): { text: string; followups: string[] } {
+  const m = content.match(/\[FOLLOWUPS\]([\s\S]*?)\[\/FOLLOWUPS\]/i)
+  if (!m) return { text: content, followups: [] }
+  const text = content.replace(/\[FOLLOWUPS\][\s\S]*?\[\/FOLLOWUPS\]/i, '').trimEnd()
+  const followups = m[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 3)
+  return { text, followups }
+}
+
 function parsePlaceFromUrl(url: string) {
   try {
     const u = new URL(url, 'http://localhost')
@@ -712,7 +723,9 @@ export default function ChatInterface({
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
-                const { text, buttons } = parseCTA(textAfterPlan)
+                const { text: textAfterCta, buttons } = parseCTA(textAfterPlan)
+                const { text, followups } = parseFollowups(textAfterCta)
+                const isLastMessage = msgIdx === messages.length - 1
                 return (
                   <div key={msg.id} className="animate-slide-up flex gap-3">
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -788,6 +801,21 @@ export default function ChatInterface({
                               </div>
                             )
                           })}
+                        </div>
+                      )}
+                      {/* Optional follow-up suggestions — only on the latest reply, never a push (MFS 2.7) */}
+                      {followups.length > 0 && isLastMessage && !isLoading && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {followups.map((f, i) => (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => { posthog.capture('followup_clicked'); append({ role: 'user', content: f }) }}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            >
+                              {f}
+                            </button>
+                          ))}
                         </div>
                       )}
                     </div>
