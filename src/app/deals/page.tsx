@@ -19,7 +19,6 @@ const CATEGORY_COLORS: Record<string, string> = {
 const BADGE_STYLES: Record<string, string> = {
   'HOT': 'bg-red-500 text-white',
   'MỚI': 'bg-blue-500 text-white',
-  'HẾT HÔM NAY': 'bg-orange-500 text-white',
 }
 
 function categoryColor(cat: string) {
@@ -96,13 +95,13 @@ export default async function DealsPage() {
         ))}
       </div>
 
-      {/* Footer */}
-      <div className="mt-6 text-center space-y-1">
+      {/* Footer — commercial-nature disclosure (MFS 3.10: disclose clearly, no false scarcity) */}
+      <div className="mt-6 text-center space-y-1.5">
         <p className="text-xs text-gray-400 dark:text-gray-600">
           Deals thay đổi mỗi ngày • Bật thông báo để nhận lúc 7:30 sáng
         </p>
-        <p className="text-xs text-gray-300 dark:text-gray-700">
-          Tappy không chịu trách nhiệm về giá và tình trạng sản phẩm trên nền tảng bên thứ ba
+        <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-md mx-auto">
+          Đây là ưu đãi từ các nền tảng TMĐT/đối tác — Tappy tổng hợp giúp bạn, <span className="font-medium">không phải quảng cáo trả tiền</span>. Giá &amp; ưu đãi theo công bố của nền tảng, có thể thay đổi — bạn tự kiểm tra khi mua.
         </p>
       </div>
     </main>

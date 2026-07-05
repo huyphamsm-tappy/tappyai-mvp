@@ -5,13 +5,13 @@ export interface Deal {
   url: string
   source: string
   emoji: string
-  badge?: string   // e.g. "HOT", "MỚI", "HẾT HÔM NAY"
+  badge?: string   // e.g. "HOT", "MỚI" — no false-scarcity/countdown badges (MFS 3.10: no manufactured urgency)
 }
 
 // Curated always-on Vietnamese e-commerce deals — verified real pages
 const DEAL_POOL: Deal[] = [
   // Shopee
-  { title: 'Flash Sale Shopee 0h', category: 'Điện tử', discount: 'Giảm đến 70%', url: 'https://shopee.vn/flash_sale', source: 'Shopee', emoji: '⚡', badge: 'HẾT HÔM NAY' },
+  { title: 'Flash Sale Shopee mỗi ngày', category: 'Điện tử', discount: 'Giảm đến 70%', url: 'https://shopee.vn/flash_sale', source: 'Shopee', emoji: '⚡' },
   { title: 'Freeship toàn quốc không giới hạn', category: 'Vận chuyển', discount: 'Miễn phí ship đơn từ 0đ', url: 'https://shopee.vn/m/freeship-xtra', source: 'Shopee', emoji: '🚚' },
   { title: 'Voucher giảm giá Shopee hôm nay', category: 'Mua sắm', discount: 'Giảm 30k-100k đơn 99k+', url: 'https://shopee.vn/voucher', source: 'Shopee', emoji: '🎫' },
   { title: 'Shopee Xu đổi ưu đãi', category: 'Tiết kiệm', discount: 'Đổi 200 Xu giảm thêm tiền', url: 'https://shopee.vn/coin', source: 'Shopee', emoji: '🪙' },
