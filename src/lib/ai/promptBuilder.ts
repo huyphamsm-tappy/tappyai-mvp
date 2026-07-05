@@ -33,6 +33,7 @@ QUY TẮC BẮT BUỘC:
 4. share_text phải hấp dẫn, ngắn, kèm emoji và #TappyAI
 5. Sau [/TAPPY_PLAN], viết 1 câu ngắn tóm tắt và CTA_BUTTONS như thường
 6. KHÔNG đặt word limit cho reply này — kế hoạch cần đầy đủ
+7. MINH BACH GIẢ ĐỊNH: nếu user CHƯA nói rõ số người / ngân sách / ngày đi, hãy NÊU RÕ giả định của bạn trong câu tóm tắt (vd: "Mình giả định 2 người, budget ~800k nhé — nói mình biết nếu khác"). Kế hoạch là của user để điều chỉnh, KHÔNG quyết thay user.
 ==========================================================`
 }
 
