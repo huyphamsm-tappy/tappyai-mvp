@@ -1,6 +1,7 @@
 'use client'
 
 import { useChat } from 'ai/react'
+import type { Message } from 'ai'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
@@ -93,10 +94,20 @@ function parsePlan(content: string): { text: string; plan: TappyPlan | null } {
 // Rendered as tappable chips (only on the latest reply) — a helpful next step,
 // never a push. MFS 2.7.
 function parseFollowups(content: string): { text: string; followups: string[] } {
-  const m = content.match(/\[FOLLOWUPS\]([\s\S]*?)\[\/FOLLOWUPS\]/i)
-  if (!m) return { text: content, followups: [] }
-  const text = content.replace(/\[FOLLOWUPS\][\s\S]*?\[\/FOLLOWUPS\]/i, '').trimEnd()
-  const followups = m[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 3)
+  // The model is meant to emit a single-line [FOLLOWUPS]a|b|c[/FOLLOWUPS] block,
+  // but it sometimes omits/malforms the closing tag (and stream enrichment appends
+  // an image block after it). Bound extraction to the followups LINE so a missing
+  // close tag can never leak the raw marker or swallow trailing content.
+  const m = content.match(/\[FOLLOWUPS\]([^\n]*?)(?:\[\/FOLLOWUPS\]|\n|$)/i)
+  let followups: string[] = []
+  let text = content
+  if (m) {
+    followups = m[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 3)
+    text = content.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/i, '')
+  }
+  // Safety net: strip any stray/orphan markers so implementation details are
+  // never visible to the user, even on malformed output.
+  text = text.replace(/\[\/?FOLLOWUPS\]/gi, '').trimEnd()
   return { text, followups }
 }
 
@@ -136,7 +147,7 @@ function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[]
     if (!placeName.trim()) return
     setSaving(true)
     try {
-      await fetch('/api/favorites', {
+      const res = await fetch('/api/favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -146,10 +157,16 @@ function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[]
           placeType: 'saved',
         }),
       })
+      // Only confirm on a real success — previously it showed "✓ saved" even
+      // on a 401/500, misleading the user into thinking the place was saved.
+      if (!res.ok) throw new Error('save failed')
       setSaved(true)
       setTimeout(() => { setOpen(false); setSaved(false) }, 1500)
-    } catch {}
-    setSaving(false)
+    } catch {
+      /* leave unsaved so the user can retry; no false success state */
+    } finally {
+      setSaving(false)
+    }
   }
 
   if (open) {
@@ -379,6 +396,9 @@ function formatMessage(content: string) {
     .replace(/^## (.+)$\n?/gm, '<div class="font-semibold text-base mt-3 mb-1">$1</div>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    // Underscore italic (_text_). Boundary-guarded so it never matches
+    // underscores inside URLs/hrefs (which are flanked by url chars, not spaces).
+    .replace(/(^|[\s(>])_(?!_)([^_\n]+?)_(?=[\s.,;:!?)<]|$)/g, '$1<em>$2</em>')
     .replace(/^(\d+)\.\s+(.+)$\n?/gm, '<div class="flex gap-2 my-1"><span class="text-gray-400 dark:text-gray-500 tabular-nums flex-shrink-0">$1.</span><span>$2</span></div>')
     .replace(/^- (.+)$\n?/gm, '<li>$1</li>')
     .replace(/(?:<li>.*?<\/li>)+/g, (m) => `<ul class="list-disc pl-5 my-2 space-y-1">${m}</ul>`)
@@ -402,10 +422,17 @@ export default function ChatInterface({
   // Allows the CTA click handler to block even when savePromiseRef.current is
   // momentarily null (between onFinish being queued and it actually running).
   const savePendingRef = useRef(false)
+  // Always-current mirror of `messages`. onFinish's own `messages` closure is
+  // captured at submit time (the running request holds the submit-time onFinish,
+  // per @ai-sdk/react's useCallback triggerRequest) and does NOT include the
+  // user's just-sent message — persisting from it dropped the last user turn.
+  const messagesRef = useRef<Message[]>([])
   const category = initialCategory as CategoryId
   const catInfo = CATEGORIES.find(c => c.id === category)
   const [hasMemory, setHasMemory] = useState(false)
   const [isListening, setIsListening] = useState(false)
+  // Voice status message (unsupported / permission / error) shown near the input.
+  const [voiceError, setVoiceError] = useState<string | null>(null)
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const [userPreferences, setUserPreferences] = useState<string[]>([])
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -414,6 +441,9 @@ export default function ChatInterface({
   const [zoomedImage, setZoomedImage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
+  // The input text captured when dictation starts, so interim results append to
+  // (not clobber) whatever the user already typed.
+  const voiceBaseRef = useRef('')
 
   interface UserLocation { lat: number; lng: number; address: string; ts?: number }
   const [userLocation, setUserLocation] = useState<UserLocation | null>(() => {
@@ -440,53 +470,108 @@ export default function ChatInterface({
     },
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
-      const all = [...messages, message]
+      // Latest committed messages (includes the user's turn) + the authoritative
+      // final assistant message, deduped by id — never the stale `messages` closure.
+      const all = [...messagesRef.current.filter(m => m.id !== message.id), message]
       if (onSave) {
         savePendingRef.current = true
         const p = Promise.resolve(onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat'))
         savePromiseRef.current = p
-        await p
-        savePromiseRef.current = null
-        savePendingRef.current = false
+        // try/finally so a rejected save can't leave savePendingRef stuck true
+        // (which would strand the CTA-click await path).
+        try {
+          await p
+        } finally {
+          savePromiseRef.current = null
+          savePendingRef.current = false
+        }
       }
-      fetch('/api/memory', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: all.map(m => ({ role: m.role, content: m.content })) }),
-      }).then(() => setHasMemory(true)).catch(() => {})
+      // Memory extraction is performed server-side in /api/chat's onFinish — the
+      // previous duplicate client POST to /api/memory ran a second identical LLM
+      // extraction per reply and is removed. Flag memory optimistically for the UI.
+      setHasMemory(true)
     },
   })
 
-  // Khởi tạo SpeechRecognition (Web Speech API)
+  // Keep messagesRef current so onFinish persists the full transcript
+  // (see the messagesRef declaration above for why the closure is unsafe).
+  useEffect(() => { messagesRef.current = messages }, [messages])
+
+  // Voice input (Web Speech API). Dictation ONLY fills the input box — it never
+  // auto-sends; the user reviews/edits then presses send like normal.
   const startVoice = useCallback(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    if (!SpeechRecognition) {
-      alert('Trình duyệt không hỗ trợ nhận giọng nói. Hãy dùng Chrome hoặc Edge.')
+    const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognitionCtor) {
+      setVoiceError('Trình duyệt chưa hỗ trợ nhập bằng giọng nói. Hãy dùng Chrome hoặc Edge nhé.')
       return
     }
+    setVoiceError(null)
     posthog.capture('mic_used')
-    const recognition = new SpeechRecognition()
+    const recognition = new SpeechRecognitionCtor()
     recognition.lang = 'vi-VN'
-    recognition.interimResults = false
+    recognition.interimResults = true // live transcript into the input as you speak
+    recognition.continuous = false
     recognition.maxAlternatives = 1
     recognitionRef.current = recognition
+    // Preserve anything already typed; dictation appends after it.
+    voiceBaseRef.current = input ? input.replace(/\s+$/, '') + ' ' : ''
 
-    recognition.onstart = () => setIsListening(true)
+    recognition.onstart = () => { setIsListening(true); setVoiceError(null) }
     recognition.onend = () => setIsListening(false)
-    recognition.onerror = () => setIsListening(false)
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const transcript = event.results[0][0].transcript
-      if (transcript.trim()) {
-        posthog.capture('chat_message_sent', { input_method: 'voice' })
-        append({ role: 'user', content: transcript.trim() })
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      setIsListening(false)
+      switch (event.error) {
+        case 'not-allowed':
+        case 'service-not-allowed':
+          setVoiceError('Cần cấp quyền micro để nói. Hãy bật quyền cho trang rồi thử lại nhé.')
+          break
+        case 'no-speech':
+          setVoiceError('Mình chưa nghe thấy gì — bấm micro và nói lại nhé.')
+          break
+        case 'audio-capture':
+          setVoiceError('Không tìm thấy micro trên thiết bị.')
+          break
+        case 'aborted':
+          break // user/unmount stopped — no message needed
+        default:
+          setVoiceError('Có trục trặc khi nhận giọng nói, thử lại nhé.')
       }
     }
-    recognition.start()
-  }, [append])
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let transcript = ''
+      for (let i = 0; i < event.results.length; i++) transcript += event.results[i][0].transcript
+      // Fill the input (never send). User keeps full control to edit/send.
+      setInput(voiceBaseRef.current + transcript)
+    }
+    // Optimistic instant feedback: the button reacts the moment it's tapped,
+    // before the permission prompt / onstart resolves (onstart confirms it,
+    // onerror/onend reset it). Guarantees the user always sees an on/off change.
+    setIsListening(true)
+    try {
+      recognition.start()
+    } catch {
+      // start() throws if called while already running or blocked — never fail silently.
+      setIsListening(false)
+      setVoiceError('Không khởi động được micro. Tải lại trang rồi thử lại nhé.')
+    }
+  }, [input, setInput])
 
   const stopVoice = useCallback(() => {
-    recognitionRef.current?.stop()
+    recognitionRef.current?.stop() // lets the final result land, then onend fires
     setIsListening(false)
+  }, [])
+
+  // Kill any live/dangling recognition on unmount so it can't fire callbacks
+  // (or keep the mic open) after the component is gone.
+  useEffect(() => {
+    return () => {
+      const r = recognitionRef.current
+      if (r) {
+        r.onstart = null; r.onend = null; r.onerror = null; r.onresult = null
+        try { r.abort() } catch { /* already stopped */ }
+        recognitionRef.current = null
+      }
+    }
   }, [])
 
   const handleNearbySearch = useCallback(() => {
@@ -884,16 +969,36 @@ export default function ChatInterface({
                   <span className="text-white text-xs font-bold">T</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/40 px-4 py-3 text-sm text-red-700 dark:text-red-300">
-                    <p className="leading-relaxed">Mình gặp trục trặc khi trả lời — tin nhắn của bạn vẫn được giữ nguyên. Bạn thử lại nhé?</p>
-                    <button
-                      type="button"
-                      onClick={() => reload()}
-                      className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-medium transition-colors"
-                    >
-                      <RotateCcw size={13} /> Thử lại
-                    </button>
-                  </div>
+                  {/auth_required|Unauthorized/i.test(error.message || '') ? (
+                    // Auth-required (401): chat needs login. Show a clear login CTA —
+                    // never the generic "retry" (which can never succeed for a guest).
+                    // returnTo carries the current chat URL (incl. ?q=) so the message
+                    // auto-resumes after a successful login.
+                    <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
+                      <p className="leading-relaxed">Cần đăng nhập để trò chuyện với Tappy 💬 Tin nhắn của bạn được giữ nguyên — đăng nhập để tiếp tục ngay nhé!</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const rt = encodeURIComponent(window.location.pathname + window.location.search)
+                          window.location.href = `/login?returnTo=${rt}`
+                        }}
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-xs font-medium transition-colors"
+                      >
+                        Đăng nhập để tiếp tục
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/40 px-4 py-3 text-sm text-red-700 dark:text-red-300">
+                      <p className="leading-relaxed">Mình gặp trục trặc khi trả lời — tin nhắn của bạn vẫn được giữ nguyên. Bạn thử lại nhé?</p>
+                      <button
+                        type="button"
+                        onClick={() => reload()}
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-medium transition-colors"
+                      >
+                        <RotateCcw size={13} /> Thử lại
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -969,11 +1074,34 @@ export default function ChatInterface({
               </button>
             </div>
           )}
+          {/* Voice status — user always knows the state (listening / error / unsupported) */}
+          {(isListening || voiceError) && (
+            <div
+              role="status"
+              aria-live="polite"
+              className={cn(
+                'flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full',
+                isListening
+                  ? 'bg-orange-50 dark:bg-orange-900/20 text-[#FF9500]'
+                  : 'bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400'
+              )}
+            >
+              {isListening ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
+                  <span>Đang nghe… nói xong Tappy điền vào ô chat để bạn kiểm tra rồi gửi.</span>
+                </>
+              ) : (
+                <span>{voiceError}</span>
+              )}
+            </div>
+          )}
           <div className="flex gap-2 items-end">
           <textarea
               ref={inputRef}
               value={input}
               onChange={(e) => {
+                if (voiceError) setVoiceError(null)
                 handleInputChange(e)
                 e.target.style.height = 'auto'
                 e.target.style.height = Math.min(e.target.scrollHeight, 160) + 'px'
@@ -1024,6 +1152,9 @@ export default function ChatInterface({
             type="button"
             onClick={isListening ? stopVoice : startVoice}
             disabled={isLoading}
+            aria-label={isListening ? 'Dừng nghe' : 'Nói để nhập văn bản'}
+            aria-pressed={isListening}
+            title={isListening ? 'Đang nghe — bấm để dừng' : 'Nói để nhập'}
             className={cn(
               'w-11 h-11 rounded-2xl flex items-center justify-center transition-all flex-shrink-0 disabled:opacity-40',
               isListening
