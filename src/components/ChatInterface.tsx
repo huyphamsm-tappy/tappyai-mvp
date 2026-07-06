@@ -15,13 +15,15 @@ import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
+// Mood chips — labels and the message each sends are dictionary keys so both
+// localize; the analytics id stays stable across languages.
 const MOODS = [
-  { emoji: '😊', label: 'Vui', prompt: 'Mình đang vui, Tappy gợi ý chỗ ăn uống hoặc vui chơi gì vibe hay không?' },
-  { emoji: '😔', label: 'Buồn', prompt: 'Mình đang hơi buồn, Tappy gợi ý gì giúp mình cảm thấy tốt hơn không?' },
-  { emoji: '😤', label: 'Stress', prompt: 'Mình đang stress cần được relax. Gợi ý spa hoặc cafe yên tĩnh gần đây giúp mình?' },
-  { emoji: '😴', label: 'Mệt', prompt: 'Mình đang rất mệt, muốn đi đâu thư giãn nhẹ nhàng. Tappy gợi ý giúp mình nhé' },
-  { emoji: '🥱', label: 'Chán', prompt: 'Mình đang chán, không biết làm gì. Tappy gợi ý gì vui và mới lạ không?' },
-  { emoji: '🤩', label: 'Hứng', prompt: 'Mình đang rất hứng khởi, muốn làm gì đó thật đặc biệt. Tappy gợi ý không?' },
+  { emoji: '😊', id: 'Vui', labelKey: 'chat.moodHappy', promptKey: 'chat.moodHappyPrompt' },
+  { emoji: '😔', id: 'Buồn', labelKey: 'chat.moodSad', promptKey: 'chat.moodSadPrompt' },
+  { emoji: '😤', id: 'Stress', labelKey: 'chat.moodStress', promptKey: 'chat.moodStressPrompt' },
+  { emoji: '😴', id: 'Mệt', labelKey: 'chat.moodTired', promptKey: 'chat.moodTiredPrompt' },
+  { emoji: '🥱', id: 'Chán', labelKey: 'chat.moodBored', promptKey: 'chat.moodBoredPrompt' },
+  { emoji: '🤩', id: 'Hứng', labelKey: 'chat.moodExcited', promptKey: 'chat.moodExcitedPrompt' },
 ]
 
 const EMOJIS = [
@@ -39,6 +41,17 @@ const QUICK_PROMPTS: Record<string, string[]> = {
   travel: ['Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Lịch trình Phú Quốc 4 ngày 2 người budget 8 triệu', 'Lịch trình Hội An 2 ngày cuối tuần budget 3 triệu'],
   spa: ['Spa massage giá bình dân?', 'Nail salon gel tốt?', 'Trung tâm dưỡng da uy tín?'],
   general: ['🌙 Tối nay mình muốn spa + ăn tối ngon, 2 người budget 800k', 'Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Ăn gì ngon hôm nay gần đây?'],
+}
+
+// English mirror of QUICK_PROMPTS — picked by the active locale. Vietnamese
+// dish/place names stay as-is (proper nouns).
+const QUICK_PROMPTS_EN: Record<string, string[]> = {
+  food: ['Good bún bò spots in TP.HCM?', 'Cafes with a nice view in Hà Nội?', 'Fresh live-seafood restaurants?'],
+  shopping: ['Big shopping malls in Sài Gòn?', 'Trusted stores for brand-name goods?', 'Night markets for souvenirs?'],
+  entertainment: ['IMAX movie theaters?', 'Karaoke places with private rooms?', 'Rooftop bars with a great view?'],
+  travel: ['Đà Nẵng itinerary, 3 days, 2 people, 5M budget', 'Phú Quốc itinerary, 4 days, 2 people, 8M budget', 'Hội An weekend itinerary, 2 days, 3M budget'],
+  spa: ['Affordable massage spas?', 'Good gel nail salons?', 'Trusted skincare centers?'],
+  general: ['🌙 Tonight: a nice spa + dinner for 2, budget 800k', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget', "What's good to eat nearby today?"],
 }
 
 interface CTAButton {
@@ -413,7 +426,7 @@ export default function ChatInterface({
   onSave,
 }: ChatInterfaceProps) {
   const router = useRouter()
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   // Tracks the in-flight save so internal_booking clicks can await it before
@@ -775,14 +788,15 @@ export default function ChatInterface({
   )
 
   useEffect(() => {
-    if ((category as string) === 'general' || !QUICK_PROMPTS[category]) {
+    const bank = locale === 'en' ? QUICK_PROMPTS_EN : QUICK_PROMPTS
+    if ((category as string) === 'general' || !bank[category]) {
       const vnHour = (new Date().getUTCHours() + 7) % 24
       const vnDay = new Date().getUTCDay()
-      setQuickPrompts(getDynamicPrompts(vnHour, vnDay, null, null, 3).map(p => p.text))
+      setQuickPrompts(getDynamicPrompts(vnHour, vnDay, null, null, 3).map(p => (locale === 'en' ? p.textEn : p.text)))
     } else {
-      setQuickPrompts(QUICK_PROMPTS[category])
+      setQuickPrompts(bank[category])
     }
-  }, [category])
+  }, [category, locale])
 
   return (
     <div className="flex flex-col h-full">
@@ -809,26 +823,26 @@ export default function ChatInterface({
                     href="/profile/tappy-knows"
                     className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-xs font-medium hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
                   >
-                    <Brain size={12} /> Tappy nhớ sở thích của bạn · Quản lý
+                    <Brain size={12} /> {t('chat.memoryChip')}
                   </Link>
                 )}
               </div>
               {/* Tappy Mood selector */}
               <div className="w-full">
-                <p className="text-xs text-gray-400 dark:text-gray-500 text-center mb-2">Hôm nay bạn cảm thấy thế nào?</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 text-center mb-2">{t('chat.moodQuestion')}</p>
                 <div className="flex justify-center gap-2 flex-wrap">
                   {MOODS.map((mood) => (
                     <button
-                      key={mood.label}
+                      key={mood.id}
                       type="button"
                       onClick={() => {
-                        posthog.capture('mood_selected', { mood: mood.label })
-                        append({ role: 'user', content: mood.prompt })
+                        posthog.capture('mood_selected', { mood: mood.id })
+                        append({ role: 'user', content: t(mood.promptKey) })
                       }}
                       className="flex flex-col items-center gap-1 px-3 py-2 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-primary-50 dark:hover:bg-primary-900/20 border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-800 transition-all active:scale-95"
                     >
                       <span className="text-2xl">{mood.emoji}</span>
-                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{mood.label}</span>
+                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{t(mood.labelKey)}</span>
                     </button>
                   ))}
                 </div>
@@ -849,7 +863,7 @@ export default function ChatInterface({
               href="/profile/tappy-knows"
               className="flex items-center gap-1.5 mb-4 text-xs text-gray-400 dark:text-gray-500 hover:text-primary-500 dark:hover:text-primary-400 transition-colors w-fit"
             >
-              <Brain size={12} /> Tappy đang dùng trí nhớ của bạn để trả lời · Xem &amp; quản lý
+              <Brain size={12} /> {t('chat.memoryUsing')}
             </Link>
           )}
           <div
@@ -1054,31 +1068,31 @@ export default function ChatInterface({
             disabled={isLoading}
             className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 border border-primary-200 dark:border-primary-800 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-all disabled:opacity-40"
           >
-            📍 Tìm quanh đây
+            {t('chat.chipNearby')}
           </button>
           <button
             type="button"
             disabled={isLoading}
-            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'plan_chip' }); append({ role: 'user', content: 'Tối nay mình muốn spa thư giãn rồi ăn tối ngon, 2 người, budget khoảng 800k, gợi ý lịch trình giúp mình nhé' }) }}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'plan_chip' }); append({ role: 'user', content: t('chat.chipTonightPrompt') }) }}
             className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-accent-50 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400 border border-accent-200 dark:border-accent-800 hover:bg-accent-100 dark:hover:bg-accent-900/50 transition-all disabled:opacity-40"
           >
-            🌙 Tappy Tối Nay
+            {t('chat.chipTonight')}
           </button>
           <button
             type="button"
             disabled={isLoading}
-            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'plan_chip' }); setInput('Lịch trình ') }}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'plan_chip' }); setInput(t('chat.chipTripPrefill')) }}
             className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all disabled:opacity-40"
           >
-            ✈️ Lên kế hoạch trip
+            {t('chat.chipTrip')}
           </button>
           <button
             type="button"
             disabled={isLoading}
-            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'price_watch_chip' }); setInput('Tappy theo dõi ') }}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'price_watch_chip' }); setInput(t('chat.chipPriceWatchPrefill')) }}
             className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/50 transition-all disabled:opacity-40"
           >
-            🎯 Theo dõi giá
+            {t('chat.chipPriceWatch')}
           </button>
         </div>
         {/* Hidden file input */}

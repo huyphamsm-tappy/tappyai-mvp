@@ -10,7 +10,7 @@ import { formatRelativeTime, cn } from '@/lib/utils'
 import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, Music2 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
-interface Suggestion { text: string; category: string; emoji: string; gradient: string }
+interface Suggestion { text: string; textEn: string; category: string; emoji: string; gradient: string }
 interface Conv { id: string; title: string; messageCount: number; updated_at: string }
 
 // English hero greetings by VN-hour slot. Vietnamese keeps the server-computed
@@ -218,14 +218,17 @@ export default function HomeView({
         <section>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('home.suggestionsTitle')}</h3>
           <div className="grid grid-cols-2 gap-3">
-            {suggestions.map((item) => (
-              <Link key={item.text} href={`/chat?q=${encodeURIComponent(item.text)}&category=${item.category}`} className="group rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <div className={cn('h-16 flex items-center justify-center text-3xl bg-gradient-to-br', item.gradient)}>{item.emoji}</div>
-                <div className="p-3">
-                  <p className="text-sm leading-snug font-medium text-gray-700 dark:text-gray-200 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{item.text}</p>
-                </div>
-              </Link>
-            ))}
+            {suggestions.map((item) => {
+              const text = locale === 'en' ? item.textEn || item.text : item.text
+              return (
+                <Link key={item.text} href={`/chat?q=${encodeURIComponent(text)}&category=${item.category}`} className="group rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+                  <div className={cn('h-16 flex items-center justify-center text-3xl bg-gradient-to-br', item.gradient)}>{item.emoji}</div>
+                  <div className="p-3">
+                    <p className="text-sm leading-snug font-medium text-gray-700 dark:text-gray-200 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{text}</p>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </section>
 
