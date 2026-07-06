@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { ChevronLeft, Sun, Moon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface HeaderProps {
   user?: { full_name?: string | null; avatar_url?: string | null; email?: string | null }
@@ -15,17 +16,20 @@ interface HeaderProps {
 
 export default function Header({ user, showBack, backHref, title }: HeaderProps) {
   const router = useRouter()
+  const { t, locale } = useTranslation()
   const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'
 
   // Greeting depends on the local time-of-day, so it must be computed on the
   // client only — computing it during render would differ between the server
   // timezone (UTC) and the browser timezone and cause a hydration mismatch
   // (React #425/#422). Start empty so SSR and first client render agree.
+  // Recomputes on locale change so the greeting language follows the toggle.
   const [greeting, setGreeting] = useState('')
   useEffect(() => {
     const hour = new Date().getHours()
-    setGreeting(hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối')
-  }, [])
+    setGreeting(hour < 12 ? t('header.morning') : hour < 18 ? t('header.afternoon') : t('header.evening'))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale])
 
   // Dark mode toggle
   const [dark, setDark] = useState(false)
@@ -50,12 +54,12 @@ export default function Header({ user, showBack, backHref, title }: HeaderProps)
           backHref ? (
             <Link href={backHref} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
               <ChevronLeft size={20} />
-              Quay lại
+              {t('common.back')}
             </Link>
           ) : (
             <button onClick={() => router.back()} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
               <ChevronLeft size={20} />
-              Quay lại
+              {t('common.back')}
             </button>
           )
         ) : (

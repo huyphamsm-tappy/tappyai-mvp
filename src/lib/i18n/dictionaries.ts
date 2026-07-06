@@ -36,6 +36,12 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // Common
     'common.or': 'hoặc',
     'common.and': 'và',
+    'common.back': 'Quay lại',
+
+    // Header greeting
+    'header.morning': 'Chào buổi sáng',
+    'header.afternoon': 'Chào buổi chiều',
+    'header.evening': 'Chào buổi tối',
 
     // Category tags
     'tag.food': 'Ăn uống',
@@ -188,6 +194,12 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // Common
     'common.or': 'or',
     'common.and': 'and',
+    'common.back': 'Back',
+
+    // Header greeting
+    'header.morning': 'Good morning',
+    'header.afternoon': 'Good afternoon',
+    'header.evening': 'Good evening',
 
     // Category tags
     'tag.food': 'Food',
