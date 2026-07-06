@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ChevronLeft, Play, Pause, Loader2, Music2, Heart, Plus } from 'lucide-react'
+import { ChevronLeft, Play, Pause, Loader2, Music2, Heart, Bell, Plus, TrendingUp } from 'lucide-react'
 import { MusicThumbnail, MusicDuration } from '@/modules/music'
 
 interface SoundVideo {
@@ -23,10 +23,27 @@ interface SoundData {
     coverUrl: string | null
     previewUrl: string | null
     audioUrl: string
+    musicType: string
+    playCount: number
   }
   usageCount: number
+  savedCount: number
+  savedByMe: boolean
+  followCount: number
+  followedByMe: boolean
+  trendingRank: number | null
   videos: SoundVideo[]
 }
+
+const TYPE_LABEL: Record<string, string> = {
+  royalty_free: 'Miễn phí bản quyền',
+  licensed: 'Có bản quyền',
+  original_sound: 'Âm thanh gốc',
+  ai_generated: 'AI tạo nhạc',
+  external: 'Liên kết ngoài',
+}
+
+const fmt = (n: number) => n.toLocaleString('vi-VN')
 
 export default function SoundPage() {
   const router = useRouter()
@@ -36,8 +53,16 @@ export default function SoundPage() {
   const [data, setData] = useState<SoundData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Local, optimistic interaction state (seeded from the fetched data).
   const [playing, setPlaying] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [savedCount, setSavedCount] = useState(0)
+  const [followed, setFollowed] = useState(false)
+  const [playCount, setPlayCount] = useState(0)
+  const [busy, setBusy] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
+  const countedPlay = useRef(false)
 
   useEffect(() => {
     if (!trackId) return
@@ -49,7 +74,14 @@ export default function SoundPage() {
         if (!r.ok) throw new Error('load')
         return r.json()
       })
-      .then((d: SoundData) => { if (!cancelled) setData(d) })
+      .then((d: SoundData) => {
+        if (cancelled) return
+        setData(d)
+        setSaved(d.savedByMe)
+        setSavedCount(d.savedCount)
+        setFollowed(d.followedByMe)
+        setPlayCount(d.track.playCount)
+      })
       .catch((e) => { if (!cancelled) setError(e.message === 'notfound' ? 'Bài nhạc không tồn tại.' : 'Không tải được, thử lại nhé.') })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
@@ -66,7 +98,42 @@ export default function SoundPage() {
     audio.src = data.track.previewUrl ?? data.track.audioUrl
     audio.play().catch(() => {})
     setPlaying(true)
+    // Count the first play of this page view only (fire-and-forget).
+    if (!countedPlay.current) {
+      countedPlay.current = true
+      setPlayCount((n) => n + 1)
+      fetch(`/api/sound/${trackId}/play`, { method: 'POST' }).catch(() => {})
+    }
   }
+
+  // Save / follow toggles share the same optimistic + 401→login pattern.
+  const toggle = useCallback(async (
+    kind: 'save' | 'follow',
+    on: boolean,
+    setOn: (v: boolean) => void,
+  ) => {
+    if (busy || !trackId) return
+    setBusy(true)
+    const next = !on
+    setOn(next) // optimistic
+    if (kind === 'save') setSavedCount((c) => c + (next ? 1 : -1))
+    try {
+      const res = await fetch(`/api/sound/${trackId}/${kind}`, { method: next ? 'POST' : 'DELETE' })
+      if (res.status === 401) {
+        router.push(`/login?returnTo=/sound/${trackId}`)
+        return
+      }
+      const body = await res.json().catch(() => null)
+      if (!res.ok) throw new Error('fail')
+      if (kind === 'save' && typeof body?.savedCount === 'number') setSavedCount(body.savedCount)
+    } catch {
+      // revert on failure
+      setOn(on)
+      if (kind === 'save') setSavedCount((c) => c + (next ? -1 : 1))
+    } finally {
+      setBusy(false)
+    }
+  }, [busy, trackId, router])
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
@@ -90,32 +157,75 @@ export default function SoundPage() {
 
         {!loading && !error && data && (
           <>
-            {/* Track header */}
-            <div className="flex flex-col items-center text-center gap-3">
+            {/* Hero */}
+            <div className="flex flex-col items-center text-center gap-2">
               <div className="relative">
-                <MusicThumbnail coverUrl={data.track.coverUrl} title={data.track.title} size={112} />
+                <MusicThumbnail coverUrl={data.track.coverUrl} title={data.track.title} size={132} />
                 <button
                   onClick={togglePlay}
                   aria-label={playing ? 'Tạm dừng' : 'Phát'}
-                  className="absolute inset-0 m-auto flex h-12 w-12 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-sm"
+                  className="absolute inset-0 m-auto flex h-14 w-14 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-sm active:scale-95 transition"
                 >
-                  {playing ? <Pause size={22} /> : <Play size={22} className="ml-0.5" />}
+                  {playing ? <Pause size={24} /> : <Play size={24} className="ml-0.5" />}
                 </button>
               </div>
-              <div>
-                <p className="text-lg font-bold text-gray-900 dark:text-white flex items-center justify-center gap-1.5">
-                  <Music2 size={16} className="text-primary-500" /> {data.track.title}
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                  {data.track.artist ?? 'Không rõ nghệ sĩ'} · <MusicDuration seconds={data.track.durationSec} className="inline" />
-                </p>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">
-                Được sử dụng trong <span className="text-primary-600 dark:text-primary-400">{data.usageCount}</span> video
+
+              <p className="mt-1 text-xl font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                <Music2 size={17} className="text-primary-500" /> {data.track.title}
               </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{data.track.artist ?? 'Không rõ nghệ sĩ'}</p>
+              <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                <MusicDuration seconds={data.track.durationSec} />
+                <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5">🏷️ {TYPE_LABEL[data.track.musicType] ?? data.track.musicType}</span>
+              </div>
+
+              {data.trendingRank != null && (
+                <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-orange-50 dark:bg-orange-950/40 px-3 py-1 text-xs font-semibold text-orange-600 dark:text-orange-300">
+                  <TrendingUp size={13} /> Trending tuần này (#{data.trendingRank})
+                </div>
+              )}
+
+              {/* Stats */}
+              <div className="mt-2 flex items-center gap-4 text-sm">
+                <span className="flex items-center gap-1 text-gray-700 dark:text-gray-200">
+                  🎬 <span className="font-semibold">{fmt(data.usageCount)}</span> video
+                </span>
+                <span className="flex items-center gap-1 text-gray-700 dark:text-gray-200">
+                  <Heart size={14} className="text-rose-500" /> <span className="font-semibold">{fmt(savedCount)}</span> lưu
+                </span>
+              </div>
+              <p className="text-xs text-gray-400 dark:text-gray-500">Đã phát {fmt(playCount)} lần</p>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-5 space-y-2.5">
+              <div className="grid grid-cols-2 gap-2.5">
+                <button
+                  onClick={() => toggle('save', saved, setSaved)}
+                  disabled={busy}
+                  className={`flex items-center justify-center gap-1.5 rounded-full py-2.5 text-sm font-semibold transition active:scale-95 disabled:opacity-60 ${
+                    saved
+                      ? 'bg-rose-500 text-white'
+                      : 'bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700'
+                  }`}
+                >
+                  <Heart size={16} className={saved ? 'fill-white' : ''} /> {saved ? 'Đã lưu' : 'Lưu'}
+                </button>
+                <button
+                  onClick={() => toggle('follow', followed, setFollowed)}
+                  disabled={busy}
+                  className={`flex items-center justify-center gap-1.5 rounded-full py-2.5 text-sm font-semibold transition active:scale-95 disabled:opacity-60 ${
+                    followed
+                      ? 'bg-primary-500 text-white'
+                      : 'bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700'
+                  }`}
+                >
+                  <Bell size={16} className={followed ? 'fill-white' : ''} /> {followed ? 'Đang theo dõi' : 'Theo dõi'}
+                </button>
+              </div>
               <button
                 onClick={() => router.push(`/reviews/new?sound=${data.track.id}`)}
-                className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary-500 px-6 py-3 text-sm font-semibold text-white active:scale-95 transition"
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 py-3 text-sm font-semibold text-white active:scale-95 transition"
               >
                 <Plus size={16} /> Sử dụng âm thanh này
               </button>
