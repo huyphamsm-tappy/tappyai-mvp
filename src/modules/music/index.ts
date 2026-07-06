@@ -28,4 +28,7 @@ export {
 
 export { useMusic, useMusicTrack, useMusicSearch, useMusicCategories } from './hooks'
 
-export { MusicThumbnail, MusicDuration, MusicBadge, MusicRow, MusicPickerSheet } from './components'
+export {
+  MusicThumbnail, MusicDuration, MusicBadge, MusicRow, MusicPickerSheet,
+  MusicSearchInput, MusicCategoryTabs, MusicTrackList,
+} from './components'

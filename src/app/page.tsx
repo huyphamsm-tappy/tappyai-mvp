@@ -5,7 +5,7 @@ import BottomNav from '@/components/BottomNav'
 import CategoryPills from '@/components/CategoryPills'
 import SearchBar from '@/components/SearchBar'
 import { formatRelativeTime, cn } from '@/lib/utils'
-import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator } from 'lucide-react'
+import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, Music2 } from 'lucide-react'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import { getMemory } from '@/lib/memory/memoryService'
 
@@ -231,6 +231,44 @@ export default async function HomePage() {
             </div>
             <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
           </Link>
+        </section>
+
+        {/* Gợi ý cho bạn + Thư viện nhạc */}
+        <section>
+          <div className="grid grid-cols-2 gap-3">
+            <Link
+              href="/recommendations"
+              className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900/30 dark:to-accent-900/30 flex items-center justify-center shadow-sm">
+                <Sparkles size={20} className="text-primary-600 dark:text-primary-400" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  ✨ Gợi ý cho bạn
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">
+                  Địa điểm hợp gu, cá nhân hóa
+                </p>
+              </div>
+            </Link>
+            <Link
+              href="/music"
+              className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-pink-100 to-orange-100 dark:from-pink-900/30 dark:to-orange-900/30 flex items-center justify-center shadow-sm">
+                <Music2 size={20} className="text-pink-600 dark:text-pink-400" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">
+                  🎵 Thư viện nhạc
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">
+                  Nghe & chọn nhạc nền cho review
+                </p>
+              </div>
+            </Link>
+          </div>
         </section>
 
         {/* Đổi tiền tệ + Chia tiền */}
