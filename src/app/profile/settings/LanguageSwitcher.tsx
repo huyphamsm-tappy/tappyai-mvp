@@ -9,7 +9,7 @@ const LANGUAGES = [
 ]
 
 export default function LanguageSwitcher() {
-  const { locale, setLocale } = useTranslation()
+  const { t, locale, setLocale } = useTranslation()
 
   return (
     <div className="flex items-center gap-3 px-4 py-3">
@@ -17,7 +17,7 @@ export default function LanguageSwitcher() {
         <Globe size={18} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-900 dark:text-white">Ngôn ngữ / Language</p>
+        <p className="text-sm font-medium text-gray-900 dark:text-white">{t('settings.language')}</p>
       </div>
       <div className="flex gap-1.5 flex-shrink-0">
         {LANGUAGES.map(lang => (

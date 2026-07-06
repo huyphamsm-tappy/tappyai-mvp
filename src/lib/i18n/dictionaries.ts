@@ -18,6 +18,20 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'auth.emailOtp.errorSendFailed': 'Không thể gửi mã, vui lòng thử lại',
     'auth.emailOtp.errorInvalidCode': 'Mã xác thực gồm 6 chữ số',
     'auth.emailOtp.errorVerifyFailed': 'Mã không đúng hoặc đã hết hạn',
+
+    // Settings
+    'settings.title': 'Cài đặt',
+    'settings.options': 'Tùy chọn',
+    'settings.other': 'Khác',
+    'settings.notifications': 'Thông báo',
+    'settings.notifications.desc': 'Nhắc nhở và cập nhật',
+    'settings.memory': 'Trí nhớ',
+    'settings.memory.desc': 'Quản lý thông tin AI ghi nhớ',
+    'settings.language': 'Ngôn ngữ',
+    'settings.terms': 'Điều khoản dịch vụ',
+    'settings.privacy': 'Chính sách bảo mật',
+    'settings.version': 'Phiên bản hiện tại: {v}',
+    'settings.signOut': 'Đăng xuất',
   },
   en: {
     'auth.emailOtp.cta': 'Sign in with Email',
@@ -32,5 +46,19 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'auth.emailOtp.errorSendFailed': 'Could not send code, please try again',
     'auth.emailOtp.errorInvalidCode': 'The code is 6 digits',
     'auth.emailOtp.errorVerifyFailed': 'Incorrect or expired code',
+
+    // Settings
+    'settings.title': 'Settings',
+    'settings.options': 'Options',
+    'settings.other': 'Other',
+    'settings.notifications': 'Notifications',
+    'settings.notifications.desc': 'Reminders and updates',
+    'settings.memory': 'Memory',
+    'settings.memory.desc': 'Manage what the AI remembers',
+    'settings.language': 'Language',
+    'settings.terms': 'Terms of Service',
+    'settings.privacy': 'Privacy Policy',
+    'settings.version': 'Current version: {v}',
+    'settings.signOut': 'Sign out',
   },
 }
