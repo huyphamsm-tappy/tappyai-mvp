@@ -6,14 +6,16 @@ import posthog from 'posthog-js'
 import { cn } from '@/lib/utils'
 import { getZodiacByDate, ZodiacSign } from '@/lib/boi/zodiacData'
 import { generateFortune, FortunePeriod } from '@/lib/boi/fortuneEngine'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
-const PERIODS: { id: FortunePeriod; label: string }[] = [
-  { id: 'day', label: 'Hôm nay' },
-  { id: 'week', label: 'Tuần này' },
-  { id: 'month', label: 'Tháng này' },
+const PERIODS: { id: FortunePeriod; labelKey: string }[] = [
+  { id: 'day', labelKey: 'fortune.periodToday' },
+  { id: 'week', labelKey: 'fortune.periodThisWeek' },
+  { id: 'month', labelKey: 'fortune.periodThisMonth' },
 ]
 
 export default function CungHoangDaoForm() {
+  const { t } = useTranslation()
   const [birthDate, setBirthDate] = useState('')
   const [sign, setSign] = useState<ZodiacSign | null>(null)
   const [period, setPeriod] = useState<FortunePeriod>('day')
@@ -42,9 +44,9 @@ export default function CungHoangDaoForm() {
       <form onSubmit={handleSubmit} className="card p-6 text-center space-y-5">
         <div className="text-5xl">✨</div>
         <div>
-          <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">Tra cứu cung hoàng đạo</h2>
+          <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">{t('fortune.zodiacFormTitle')}</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Nhập ngày sinh (dương lịch) để xem cung hoàng đạo và vận may của bạn.
+            {t('fortune.zodiacFormHint')}
           </p>
         </div>
 
@@ -61,7 +63,7 @@ export default function CungHoangDaoForm() {
         </div>
 
         <button type="submit" className="btn-primary w-full">
-          Xem cung của tôi
+          {t('fortune.zodiacSubmit')}
         </button>
       </form>
     )
@@ -75,7 +77,7 @@ export default function CungHoangDaoForm() {
         <div className="text-5xl">{sign.emoji}</div>
         <h2 className="font-bold text-gray-900 dark:text-white text-xl">{sign.nameVi}</h2>
         <p className="text-xs text-gray-400 dark:text-gray-500">
-          {sign.dateRangeLabel} · {sign.element} · Cai quản: {sign.ruling}
+          {sign.dateRangeLabel} · {sign.element} · {t('fortune.ruledBy')} {sign.ruling}
         </p>
         <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed pt-1">{sign.traits}</p>
       </div>
@@ -93,7 +95,7 @@ export default function CungHoangDaoForm() {
                 : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400'
             )}
           >
-            {p.label}
+            {t(p.labelKey)}
           </button>
         ))}
       </div>
@@ -113,23 +115,23 @@ export default function CungHoangDaoForm() {
           </div>
         </div>
 
-        <FortuneRow icon={Heart} label="Tình duyên" text={reading.love} color="text-pink-500" />
-        <FortuneRow icon={Briefcase} label="Công việc" text={reading.career} color="text-primary-500" />
-        <FortuneRow icon={Coins} label="Tài lộc" text={reading.money} color="text-accent-500" />
-        <FortuneRow icon={HeartPulse} label="Sức khỏe" text={reading.health} color="text-green-500" />
+        <FortuneRow icon={Heart} label={t('fortune.love')} text={reading.love} color="text-pink-500" />
+        <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-primary-500" />
+        <FortuneRow icon={Coins} label={t('fortune.money')} text={reading.money} color="text-accent-500" />
+        <FortuneRow icon={HeartPulse} label={t('fortune.health')} text={reading.health} color="text-green-500" />
 
         <div className="flex items-center gap-4 pt-2 border-t border-gray-100 dark:border-gray-800 text-sm">
           <span className="text-gray-500 dark:text-gray-400">
-            Số may mắn: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
+            {t('fortune.luckyNumber')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
           </span>
           <span className="text-gray-500 dark:text-gray-400">
-            Màu hợp: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
+            {t('fortune.luckyColor')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
           </span>
         </div>
       </div>
 
       <button onClick={handleReset} className="btn-secondary w-full flex items-center justify-center gap-2">
-        <RotateCcw size={16} /> Xem lại với ngày sinh khác
+        <RotateCcw size={16} /> {t('fortune.redoWithOtherDate')}
       </button>
     </div>
   )

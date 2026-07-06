@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from 'react'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Volume2, VolumeX, Copy, Check, ChevronDown } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const LANGUAGES = [
   { code: 'vi', name: 'Tiếng Việt', tts: 'vi-VN' },
@@ -39,6 +40,7 @@ const LANGUAGES = [
 ]
 
 export default function TranslatePage() {
+  const { t } = useTranslation()
   const [inputText, setInputText] = useState('')
   const [targetLang, setTargetLang] = useState('vi')
   const [translation, setTranslation] = useState('')
@@ -65,16 +67,16 @@ export default function TranslatePage() {
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.message || 'Có lỗi xảy ra. Vui lòng thử lại.')
+        setError(data.message || t('translate.errorGeneric'))
       } else {
         setTranslation(data.translation)
       }
     } catch {
-      setError('Không thể kết nối. Vui lòng kiểm tra mạng.')
+      setError(t('translate.errorNetwork'))
     } finally {
       setLoading(false)
     }
-  }, [inputText, targetLang])
+  }, [inputText, targetLang, t])
 
   const speak = useCallback((text: string, ttsLang: string) => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return
@@ -104,25 +106,25 @@ export default function TranslatePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
-      <Header title="Dịch ngôn ngữ" />
+      <Header title={t('translate.headerTitle')} />
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 pt-5 pb-24 space-y-4">
         {/* Hero banner */}
         <div className="rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 p-5 text-white shadow-lg">
           <div className="text-3xl mb-2">🌐</div>
-          <h2 className="text-xl font-bold leading-tight">Dịch ngôn ngữ tức thì</h2>
-          <p className="text-white/70 text-sm mt-1">30 ngôn ngữ · Không cần đăng nhập · Đọc to kết quả</p>
+          <h2 className="text-xl font-bold leading-tight">{t('translate.heroTitle')}</h2>
+          <p className="text-white/70 text-sm mt-1">{t('translate.heroSubtitle')}</p>
         </div>
 
         {/* Input */}
         <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
           <div className="px-4 pt-3 pb-1">
-            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Văn bản cần dịch</p>
+            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">{t('translate.inputLabel')}</p>
             <textarea
               ref={textareaRef}
               value={inputText}
               onChange={e => setInputText(e.target.value)}
-              placeholder="Nhập hoặc dán văn bản vào đây..."
+              placeholder={t('translate.inputPlaceholder')}
               rows={5}
               maxLength={2000}
               className="w-full resize-none bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm leading-relaxed outline-none"
@@ -135,7 +137,7 @@ export default function TranslatePage() {
                 onClick={() => { setInputText(''); setTranslation(''); setError(''); textareaRef.current?.focus() }}
                 className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
-                Xóa
+                {t('translate.clear')}
               </button>
             )}
           </div>
@@ -144,7 +146,7 @@ export default function TranslatePage() {
         {/* Language picker */}
         <div className="relative">
           <div className="flex items-center gap-2 mb-2">
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Dịch sang</p>
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('translate.targetLangLabel')}</p>
           </div>
           <button
             onClick={() => setShowLangPicker(v => !v)}
@@ -182,9 +184,9 @@ export default function TranslatePage() {
           {loading ? (
             <span className="flex items-center justify-center gap-2">
               <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-              Đang dịch...
+              {t('translate.translating')}
             </span>
-          ) : 'Dịch ngay'}
+          ) : t('translate.translateNow')}
         </button>
 
         {/* Error */}
@@ -199,7 +201,7 @@ export default function TranslatePage() {
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
             <div className="px-4 pt-3 pb-1">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-semibold text-violet-500 uppercase tracking-wider">Kết quả · {selectedLang.name}</p>
+                <p className="text-xs font-semibold text-violet-500 uppercase tracking-wider">{t('translate.resultLabel', { lang: selectedLang.name })}</p>
               </div>
               <p className="text-gray-900 dark:text-white text-base leading-relaxed whitespace-pre-wrap">{translation}</p>
             </div>
@@ -213,14 +215,14 @@ export default function TranslatePage() {
                 }`}
               >
                 {speaking ? <VolumeX size={15} /> : <Volume2 size={15} />}
-                {speaking ? 'Dừng' : 'Đọc to'}
+                {speaking ? t('translate.stopSpeaking') : t('translate.readAloud')}
               </button>
               <button
                 onClick={copy}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700 text-sm font-medium transition-colors"
               >
                 {copied ? <Check size={15} /> : <Copy size={15} />}
-                {copied ? 'Đã chép!' : 'Sao chép'}
+                {copied ? t('translate.copied') : t('translate.copy')}
               </button>
             </div>
           </div>
@@ -228,7 +230,7 @@ export default function TranslatePage() {
 
         {/* Tip */}
         <p className="text-center text-xs text-gray-400 dark:text-gray-600 px-4">
-          Miễn phí · Tối đa 30 lần/ngày · Không cần tài khoản
+          {t('translate.footerTip')}
         </p>
       </main>
 

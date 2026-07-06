@@ -16,13 +16,14 @@ import {
   YEAR_ANIMALS,
 } from '@/lib/boi/fortuneEngine'
 import { LIFETIME_READINGS, type LifetimeReading } from '@/lib/boi/lifetimeData'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type ViewMode = FortunePeriod | 'lifetime' | 'year'
 
-const PERIOD_TABS: { id: FortunePeriod; label: string }[] = [
-  { id: 'day', label: 'Hôm nay' },
-  { id: 'week', label: 'Tuần này' },
-  { id: 'month', label: 'Tháng này' },
+const PERIOD_TABS: { id: FortunePeriod; labelKey: string }[] = [
+  { id: 'day', labelKey: 'fortune.periodToday' },
+  { id: 'week', labelKey: 'fortune.periodThisWeek' },
+  { id: 'month', labelKey: 'fortune.periodThisMonth' },
 ]
 
 const VN_YEAR = new Date(Date.now() + 7 * 60 * 60 * 1000).getUTCFullYear()
@@ -44,6 +45,7 @@ interface ResultState {
 }
 
 export default function TuViForm() {
+  const { t } = useTranslation()
   const [birthDate, setBirthDate] = useState('')
   const [result, setResult] = useState<ResultState | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('day')
@@ -85,9 +87,9 @@ export default function TuViForm() {
       <form onSubmit={handleSubmit} className="card p-6 text-center space-y-5">
         <div className="text-5xl">🧧</div>
         <div>
-          <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">Xem tử vi 12 con giáp</h2>
+          <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">{t('fortune.tuviFormTitle')}</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Nhập ngày sinh (dương lịch) để xem con giáp, tử vi trọn đời và vận hạn từng kỳ.
+            {t('fortune.tuviFormHint')}
           </p>
         </div>
 
@@ -104,7 +106,7 @@ export default function TuViForm() {
         </div>
 
         <button type="submit" className="btn-primary w-full">
-          Xem tử vi của tôi
+          {t('fortune.tuviSubmit')}
         </button>
       </form>
     )
@@ -118,10 +120,10 @@ export default function TuViForm() {
       <div className="card p-6 text-center space-y-2">
         <div className="text-5xl">{result.canChi.emoji}</div>
         <h2 className="font-bold text-gray-900 dark:text-white text-xl">
-          Tuổi {result.canChi.nameVi} ({result.canChi.animalVi})
+          {t('fortune.tuviAgeTitle', { name: result.canChi.nameVi, animal: result.canChi.animalVi })}
         </h2>
         <p className="text-xs text-gray-400 dark:text-gray-500">
-          Sinh năm {result.year} · Ngũ hành: <span className="font-medium text-accent-500">{result.nguHanh}</span>
+          {t('fortune.tuviBornYear', { year: String(result.year) })} <span className="font-medium text-accent-500">{result.nguHanh}</span>
         </p>
         <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed pt-1">{result.canChi.traits}</p>
       </div>
@@ -140,14 +142,14 @@ export default function TuViForm() {
                   : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400'
               )}
             >
-              {p.label}
+              {t(p.labelKey)}
             </button>
           ))}
         </div>
 
         <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 px-1">
           <div className="flex-1 h-px bg-gray-100 dark:bg-gray-800" />
-          <span>hoặc xem</span>
+          <span>{t('fortune.orView')}</span>
           <div className="flex-1 h-px bg-gray-100 dark:bg-gray-800" />
         </div>
 
@@ -162,7 +164,7 @@ export default function TuViForm() {
             )}
           >
             <BookOpen size={15} />
-            Trọn đời
+            {t('fortune.lifetimeTab')}
           </button>
           <button
             onClick={() => handleViewModeChange('year')}
@@ -174,7 +176,7 @@ export default function TuViForm() {
             )}
           >
             <Calendar size={15} />
-            Theo năm
+            {t('fortune.byYearTab')}
           </button>
         </div>
       </div>
@@ -204,7 +206,7 @@ export default function TuViForm() {
       )}
 
       <button onClick={handleReset} className="btn-secondary w-full flex items-center justify-center gap-2">
-        <RotateCcw size={16} /> Xem lại với ngày sinh khác
+        <RotateCcw size={16} /> {t('fortune.redoWithOtherDate')}
       </button>
     </div>
   )
@@ -213,6 +215,7 @@ export default function TuViForm() {
 // ---- Period reading (ngày/tuần/tháng) ----
 
 function PeriodReadingCard({ reading }: { reading: FortuneReading }) {
+  const { t } = useTranslation()
   return (
     <div className="card p-5 space-y-4">
       <div className="flex items-center justify-between">
@@ -220,17 +223,17 @@ function PeriodReadingCard({ reading }: { reading: FortuneReading }) {
         <StarRow score={reading.score} />
       </div>
 
-      <FortuneRow icon={Heart} label="Tình duyên" text={reading.love} color="text-pink-500" />
-      <FortuneRow icon={Briefcase} label="Công việc" text={reading.career} color="text-primary-500" />
-      <FortuneRow icon={Coins} label="Tài lộc" text={reading.money} color="text-accent-500" />
-      <FortuneRow icon={HeartPulse} label="Sức khỏe" text={reading.health} color="text-green-500" />
+      <FortuneRow icon={Heart} label={t('fortune.love')} text={reading.love} color="text-pink-500" />
+      <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-primary-500" />
+      <FortuneRow icon={Coins} label={t('fortune.money')} text={reading.money} color="text-accent-500" />
+      <FortuneRow icon={HeartPulse} label={t('fortune.health')} text={reading.health} color="text-green-500" />
 
       <div className="flex items-center gap-4 pt-2 border-t border-gray-100 dark:border-gray-800 text-sm">
         <span className="text-gray-500 dark:text-gray-400">
-          Số may mắn: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
+          {t('fortune.luckyNumber')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
         </span>
         <span className="text-gray-500 dark:text-gray-400">
-          Màu hợp: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
+          {t('fortune.luckyColor')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
         </span>
       </div>
     </div>
@@ -248,13 +251,14 @@ function LifetimeCard({
   animalVi: string
   stages: LifeStage[]
 }) {
+  const { t } = useTranslation()
   return (
     <div className="space-y-3">
       {/* Tổng quan */}
       <div className="card p-5 space-y-4">
         <div className="flex items-center gap-2">
           <BookOpen size={16} className="text-violet-500" />
-          <p className="font-semibold text-gray-900 dark:text-white">Tử vi trọn đời — Tuổi {animalVi}</p>
+          <p className="font-semibold text-gray-900 dark:text-white">{t('fortune.lifetimeTitle', { animal: animalVi })}</p>
         </div>
 
         <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed italic border-l-2 border-violet-300 dark:border-violet-700 pl-3">
@@ -262,20 +266,20 @@ function LifetimeCard({
         </p>
 
         <div className="space-y-4">
-          <LifetimeRow icon={Briefcase} label="Sự nghiệp" text={lifetime.career} color="text-primary-500" />
-          <LifetimeRow icon={Heart} label="Tình duyên" text={lifetime.love} color="text-pink-500" />
-          <LifetimeRow icon={HeartPulse} label="Sức khỏe" text={lifetime.health} color="text-green-500" />
+          <LifetimeRow icon={Briefcase} label={t('fortune.careerLife')} text={lifetime.career} color="text-primary-500" />
+          <LifetimeRow icon={Heart} label={t('fortune.love')} text={lifetime.love} color="text-pink-500" />
+          <LifetimeRow icon={HeartPulse} label={t('fortune.health')} text={lifetime.health} color="text-green-500" />
         </div>
 
         <div className="rounded-2xl bg-violet-50 dark:bg-violet-900/20 p-4">
-          <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1.5">✨ Lời khuyên trọn đời</p>
+          <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1.5">{t('fortune.lifetimeAdvice')}</p>
           <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{lifetime.advice}</p>
         </div>
       </div>
 
       {/* Giai đoạn cuộc đời */}
       <div className="card p-5 space-y-4">
-        <p className="font-semibold text-gray-900 dark:text-white text-sm">Luận giải theo giai đoạn</p>
+        <p className="font-semibold text-gray-900 dark:text-white text-sm">{t('fortune.lifeStages')}</p>
         <div className="space-y-3">
           {stages.map((stage) => (
             <LifeStageCard key={stage.label} stage={stage} />
@@ -287,6 +291,7 @@ function LifetimeCard({
 }
 
 function LifeStageCard({ stage }: { stage: LifeStage }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const IconComp = STAGE_ICONS[stage.label as keyof typeof STAGE_ICONS] as typeof Sprout | undefined
 
@@ -315,8 +320,8 @@ function LifeStageCard({ stage }: { stage: LifeStage }) {
               {stage.fate}
             </p>
           )}
-          <LifetimeRow icon={Briefcase} label="Sự nghiệp" text={stage.career} color="text-primary-500" />
-          <LifetimeRow icon={Heart} label="Tình duyên" text={stage.love} color="text-pink-500" />
+          <LifetimeRow icon={Briefcase} label={t('fortune.careerLife')} text={stage.career} color="text-primary-500" />
+          <LifetimeRow icon={Heart} label={t('fortune.love')} text={stage.love} color="text-pink-500" />
         </div>
       )}
     </div>
@@ -364,6 +369,7 @@ function YearReadingSection({
   selectedYear: number
   onYearChange: (y: number) => void
 }) {
+  const { t } = useTranslation()
   const reading = generateYearFortune(canChi.id, birthYear, selectedYear) as YearFortuneReading
   const months = generateMonthlyBreakdown(canChi.id, birthYear, birthMonth, birthDay, selectedYear)
 
@@ -372,7 +378,7 @@ function YearReadingSection({
       {/* Year picker */}
       <div className="flex items-center gap-2">
         <Calendar size={16} className="text-amber-500 flex-shrink-0" />
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Chọn năm xem vận hạn:</p>
+        <p className="text-sm font-medium text-gray-700 dark:text-gray-200">{t('fortune.pickYear')}</p>
         <select
           value={selectedYear}
           onChange={(e) => onYearChange(Number(e.target.value))}
@@ -389,7 +395,7 @@ function YearReadingSection({
       {/* Compat note */}
       <div className="rounded-2xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 p-3">
         <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">
-          {reading.compatLabel !== '—' ? reading.compatLabel : `Tuổi ${canChi.animalVi} — Năm ${reading.yearAnimal}`}
+          {reading.compatLabel !== '—' ? reading.compatLabel : t('fortune.compatFallback', { animal: canChi.animalVi, yearAnimal: reading.yearAnimal })}
         </p>
         <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{reading.compatNote}</p>
       </div>
@@ -397,28 +403,28 @@ function YearReadingSection({
       {/* Year overview card */}
       <div className="card p-5 space-y-4">
         <div className="flex items-center justify-between">
-          <p className="font-semibold text-gray-900 dark:text-white">{reading.periodLabel} — Tổng quan</p>
+          <p className="font-semibold text-gray-900 dark:text-white">{t('fortune.yearOverview', { period: reading.periodLabel })}</p>
           <StarRow score={reading.score} />
         </div>
 
-        <FortuneRow icon={Heart} label="Tình duyên" text={reading.love} color="text-pink-500" />
-        <FortuneRow icon={Briefcase} label="Công việc" text={reading.career} color="text-primary-500" />
-        <FortuneRow icon={Coins} label="Tài lộc" text={reading.money} color="text-accent-500" />
-        <FortuneRow icon={HeartPulse} label="Sức khỏe" text={reading.health} color="text-green-500" />
+        <FortuneRow icon={Heart} label={t('fortune.love')} text={reading.love} color="text-pink-500" />
+        <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-primary-500" />
+        <FortuneRow icon={Coins} label={t('fortune.money')} text={reading.money} color="text-accent-500" />
+        <FortuneRow icon={HeartPulse} label={t('fortune.health')} text={reading.health} color="text-green-500" />
 
         <div className="flex items-center gap-4 pt-2 border-t border-gray-100 dark:border-gray-800 text-sm">
           <span className="text-gray-500 dark:text-gray-400">
-            Số may: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
+            {t('fortune.luckyNumberShort')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
           </span>
           <span className="text-gray-500 dark:text-gray-400">
-            Màu hợp: <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
+            {t('fortune.luckyColor')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
           </span>
         </div>
       </div>
 
       {/* Monthly breakdown */}
       <div className="card p-5 space-y-3">
-        <p className="font-semibold text-gray-900 dark:text-white text-sm">Luận giải từng tháng</p>
+        <p className="font-semibold text-gray-900 dark:text-white text-sm">{t('fortune.monthlyBreakdown')}</p>
         <div className="space-y-2">
           {months.map((m) => (
             <MonthCard key={m.month} monthData={m} />
@@ -430,6 +436,7 @@ function YearReadingSection({
 }
 
 function MonthCard({ monthData }: { monthData: MonthlyFortune }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
   return (
@@ -439,7 +446,7 @@ function MonthCard({ monthData }: { monthData: MonthlyFortune }) {
         className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
       >
         <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center flex-shrink-0">
-          <span className="text-xs font-bold text-amber-600 dark:text-amber-400">T{monthData.month}</span>
+          <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{t('fortune.monthAbbrev', { n: String(monthData.month) })}</span>
         </div>
         <div className="flex-1 min-w-0">
           <p className="font-medium text-gray-800 dark:text-gray-200 text-sm">{monthData.monthName}</p>
@@ -456,11 +463,11 @@ function MonthCard({ monthData }: { monthData: MonthlyFortune }) {
 
       {open && (
         <div className="px-3 pb-4 space-y-3 border-t border-gray-100 dark:border-gray-800 pt-3">
-          <MonthRow icon={Heart} label="Tình duyên" text={monthData.love} color="text-pink-500" />
-          <MonthRow icon={Briefcase} label="Công việc" text={monthData.career} color="text-primary-500" />
-          <MonthRow icon={Coins} label="Tài lộc" text={monthData.money} color="text-accent-500" />
-          <MonthRow icon={HeartPulse} label="Sức khỏe" text={monthData.health} color="text-green-500" />
-          <MonthRow icon={StickyNote} label="Lưu ý" text={monthData.note} color="text-gray-500" />
+          <MonthRow icon={Heart} label={t('fortune.love')} text={monthData.love} color="text-pink-500" />
+          <MonthRow icon={Briefcase} label={t('fortune.career')} text={monthData.career} color="text-primary-500" />
+          <MonthRow icon={Coins} label={t('fortune.money')} text={monthData.money} color="text-accent-500" />
+          <MonthRow icon={HeartPulse} label={t('fortune.health')} text={monthData.health} color="text-green-500" />
+          <MonthRow icon={StickyNote} label={t('fortune.note')} text={monthData.note} color="text-gray-500" />
         </div>
       )}
     </div>

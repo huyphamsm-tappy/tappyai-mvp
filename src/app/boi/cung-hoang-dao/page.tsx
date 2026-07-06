@@ -1,7 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import Header from '@/components/Header'
-import BottomNav from '@/components/BottomNav'
-import CungHoangDaoForm from '@/components/boi/CungHoangDaoForm'
+import CungHoangDaoView from './CungHoangDaoView'
 
 export default async function CungHoangDaoPage() {
   const supabase = createClient()
@@ -13,19 +11,5 @@ export default async function CungHoangDaoPage() {
     userInfo = profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email }
   }
 
-  return (
-    <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header user={userInfo} showBack backHref="/boi" title="Cung hoàng đạo" />
-
-      <main className="max-w-2xl mx-auto px-4 py-6">
-        <CungHoangDaoForm />
-
-        <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-6">
-          Nội dung chỉ mang tính giải trí, tham khảo — không thay thế lời khuyên chuyên môn.
-        </p>
-      </main>
-
-      <BottomNav />
-    </div>
-  )
+  return <CungHoangDaoView user={userInfo} />
 }

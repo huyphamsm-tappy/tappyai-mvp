@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from 'react'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Camera, ImagePlus, ScanText, Copy, Check, Download, Share2, X, FileText } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Resize image to max 2048px before sending to API (reduces payload, faster OCR)
 async function resizeImage(file: File, maxPx = 2048, quality = 0.85): Promise<{ base64: string; mimeType: string }> {
@@ -53,6 +54,7 @@ function downloadTxt(text: string, filename: string) {
 }
 
 export default function ScanPage() {
+  const { t } = useTranslation()
   const [preview, setPreview] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
@@ -94,14 +96,14 @@ export default function ScanPage() {
         body: JSON.stringify({ imageBase64: base64, mimeType }),
       })
       const data = await res.json()
-      if (!res.ok) setError(data.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
+      if (!res.ok) setError(data.error || t('scan.errorGeneric'))
       else setResult(data.text)
     } catch {
-      setError('Không thể kết nối. Kiểm tra mạng và thử lại.')
+      setError(t('scan.errorNetwork'))
     } finally {
       setLoading(false)
     }
-  }, [file])
+  }, [file, t])
 
   const copy = useCallback(async () => {
     if (!result) return
@@ -114,27 +116,27 @@ export default function ScanPage() {
     if (!result) return
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        await navigator.share({ title: 'Nội dung tài liệu — TappyAI', text: result })
+        await navigator.share({ title: t('scan.shareTitle'), text: result })
         setShared(true)
         setTimeout(() => setShared(false), 2000)
       } catch { /* user cancelled */ }
     } else {
-      window.location.href = `mailto:?subject=${encodeURIComponent('Nội dung tài liệu — TappyAI')}&body=${encodeURIComponent(result)}`
+      window.location.href = `mailto:?subject=${encodeURIComponent(t('scan.shareTitle'))}&body=${encodeURIComponent(result)}`
     }
-  }, [result])
+  }, [result, t])
 
-  const filename = file ? file.name.replace(/\.[^.]+$/, '') : 'tai-lieu'
+  const filename = file ? file.name.replace(/\.[^.]+$/, '') : t('scan.defaultFilename')
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
-      <Header title="Quét tài liệu" showBack />
+      <Header title={t('scan.headerTitle')} showBack />
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 pt-5 pb-24 space-y-4">
         {/* Hero */}
         <div className="rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 p-5 text-white shadow-lg">
           <div className="text-3xl mb-2">📷</div>
-          <h2 className="text-xl font-bold leading-tight">Quét & trích xuất văn bản</h2>
-          <p className="text-white/70 text-sm mt-1">Chụp ảnh tài liệu — AI đọc và trích xuất toàn bộ nội dung</p>
+          <h2 className="text-xl font-bold leading-tight">{t('scan.heroTitle')}</h2>
+          <p className="text-white/70 text-sm mt-1">{t('scan.heroSubtitle')}</p>
         </div>
 
         {/* Image picker */}
@@ -146,8 +148,8 @@ export default function ScanPage() {
               className="flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-2 border-dashed border-teal-300 dark:border-teal-700 rounded-2xl p-6 hover:border-teal-400 hover:bg-teal-50/50 dark:hover:bg-teal-900/20 transition-all"
             >
               <Camera size={32} className="text-teal-500" />
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">Chụp ảnh</span>
-              <span className="text-xs text-gray-400">Dùng camera</span>
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t('scan.takePhoto')}</span>
+              <span className="text-xs text-gray-400">{t('scan.useCamera')}</span>
             </button>
             {/* Gallery */}
             <button
@@ -155,8 +157,8 @@ export default function ScanPage() {
               className="flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-2 border-dashed border-cyan-300 dark:border-cyan-700 rounded-2xl p-6 hover:border-cyan-400 hover:bg-cyan-50/50 dark:hover:bg-cyan-900/20 transition-all"
             >
               <ImagePlus size={32} className="text-cyan-500" />
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">Chọn ảnh</span>
-              <span className="text-xs text-gray-400">Từ thư viện</span>
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t('scan.pickImage')}</span>
+              <span className="text-xs text-gray-400">{t('scan.fromGallery')}</span>
             </button>
             <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
             <input ref={galleryRef} type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
@@ -164,7 +166,7 @@ export default function ScanPage() {
         ) : (
           <div className="relative rounded-2xl overflow-hidden bg-black shadow-lg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={preview} alt="Preview" className="w-full max-h-72 object-contain" />
+            <img src={preview} alt={t('scan.previewAlt')} className="w-full max-h-72 object-contain" />
             <button
               onClick={clearImage}
               className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center text-white hover:bg-black/80 transition-colors"
@@ -184,12 +186,12 @@ export default function ScanPage() {
             {loading ? (
               <>
                 <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                Đang đọc tài liệu...
+                {t('scan.scanning')}
               </>
             ) : (
               <>
                 <ScanText size={20} />
-                Quét tài liệu
+                {t('scan.scanButton')}
               </>
             )}
           </button>
@@ -206,13 +208,13 @@ export default function ScanPage() {
         {result && (
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
             <div className="px-4 pt-4 pb-2">
-              <p className="text-xs font-semibold text-teal-500 uppercase tracking-wider mb-3">Nội dung trích xuất</p>
+              <p className="text-xs font-semibold text-teal-500 uppercase tracking-wider mb-3">{t('scan.resultLabel')}</p>
               <p className="text-gray-900 dark:text-white text-sm leading-relaxed whitespace-pre-wrap">{result}</p>
             </div>
 
             {/* Export actions */}
             <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3">
-              <p className="text-xs text-gray-400 mb-2 font-medium">Xuất nội dung</p>
+              <p className="text-xs text-gray-400 mb-2 font-medium">{t('scan.exportLabel')}</p>
               <div className="flex flex-wrap gap-2">
                 {/* Copy */}
                 <button
@@ -224,7 +226,7 @@ export default function ScanPage() {
                   }`}
                 >
                   {copied ? <Check size={14} /> : <Copy size={14} />}
-                  {copied ? 'Đã chép!' : 'Sao chép'}
+                  {copied ? t('scan.copied') : t('scan.copy')}
                 </button>
 
                 {/* .txt */}
@@ -255,7 +257,7 @@ export default function ScanPage() {
                   }`}
                 >
                   <Share2 size={14} />
-                  {shared ? 'Đã chia sẻ!' : 'Chia sẻ'}
+                  {shared ? t('scan.sharedDone') : t('scan.share')}
                 </button>
               </div>
             </div>
@@ -265,12 +267,12 @@ export default function ScanPage() {
         {/* Tips */}
         {!result && !loading && (
           <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/40 rounded-2xl p-4">
-            <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-2">Mẹo để đọc tốt hơn</p>
+            <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-2">{t('scan.tipsTitle')}</p>
             <ul className="text-xs text-amber-600 dark:text-amber-500 space-y-1">
-              <li>• Đặt tài liệu trên nền tối, chụp thẳng góc</li>
-              <li>• Đảm bảo đủ ánh sáng, tránh bóng đổ</li>
-              <li>• Chữ in rõ nét — hỗ trợ cả tiếng Việt và tiếng Anh</li>
-              <li>• Giới hạn 20 lần quét mỗi ngày</li>
+              <li>• {t('scan.tipFlat')}</li>
+              <li>• {t('scan.tipLighting')}</li>
+              <li>• {t('scan.tipPrint')}</li>
+              <li>• {t('scan.tipLimit', { n: '20' })}</li>
             </ul>
           </div>
         )}

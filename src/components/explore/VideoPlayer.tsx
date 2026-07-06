@@ -1,6 +1,7 @@
 'use client'
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Volume2, VolumeX, Play } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface VideoPlayerProps {
   url: string
@@ -21,6 +22,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   { url, thumbnail, sourceType = 'upload', sourceUrl, onWatchProgress, onDurationKnown },
   ref
 ) {
+  const { t } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
@@ -184,10 +186,10 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
           a labelled "Bật tiếng" pill while muted, a plain icon once on. */}
       <button
         onClick={toggleMute}
-        aria-label={muted ? 'Bật tiếng' : 'Tắt tiếng'}
+        aria-label={muted ? t('video.unmute') : t('video.mute')}
         className="absolute top-14 right-3 z-30 flex items-center gap-1 h-8 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-semibold px-2.5"
       >
-        {muted ? <><VolumeX size={15} /> Bật tiếng</> : <Volume2 size={15} />}
+        {muted ? <><VolumeX size={15} /> {t('video.unmute')}</> : <Volume2 size={15} />}
       </button>
     </div>
   )

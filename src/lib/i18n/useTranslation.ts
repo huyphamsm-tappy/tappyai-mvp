@@ -3,12 +3,13 @@
 import { useSyncExternalStore } from 'react'
 import { dictionaries, type Locale } from './dictionaries'
 import { w2vi, w2en } from './w2'
+import { w3vi, w3en } from './w3'
 
 // Full lookup maps: base dictionary + per-screen wave modules layered on top.
 // Namespaced keys make the merge collision-free.
 const full: Record<Locale, Record<string, string>> = {
-  vi: { ...dictionaries.vi, ...w2vi },
-  en: { ...dictionaries.en, ...w2en },
+  vi: { ...dictionaries.vi, ...w2vi, ...w3vi },
+  en: { ...dictionaries.en, ...w2en, ...w3en },
 }
 
 const STORAGE_KEY = 'tappy_lang'

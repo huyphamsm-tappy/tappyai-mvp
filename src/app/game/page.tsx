@@ -1,13 +1,17 @@
+'use client'
+
 import Link from 'next/link'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { ChevronRight } from 'lucide-react'
 import { SupertuxPreload } from '@/components/SupertuxPreload'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Product scope: SuperTux is the only game surfaced. The former mini-game grid
 // (Bắn Thiên Hà, Đua Xe, Rắn Săn Mồi, Đập Gạch, 2048, Phòng Thủ) was removed.
 
 export default function GameHubPage() {
+  const { t } = useTranslation()
   const stDataUrl = process.env.NEXT_PUBLIC_SUPERTUX_DATA_URL ?? ''
   const stWasmUrl = process.env.NEXT_PUBLIC_SUPERTUX_WASM_URL ?? ''
 
@@ -15,7 +19,7 @@ export default function GameHubPage() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
       {/* Invisible background preload — warms the cache for SuperTux assets */}
       <SupertuxPreload dataUrl={stDataUrl} wasmUrl={stWasmUrl} />
-      <Header showBack backHref="/" title="Game" />
+      <Header showBack backHref="/" title={t('game.headerTitle')} />
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Hero */}
@@ -23,12 +27,12 @@ export default function GameHubPage() {
           <div className="absolute -top-14 -right-14 w-48 h-48 rounded-full bg-white/10 pointer-events-none" />
           <div className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
           <div className="relative">
-            <p className="text-white/80 text-sm font-medium mb-1">Game 🎮</p>
+            <p className="text-white/80 text-sm font-medium mb-1">{t('game.heroEyebrow')} 🎮</p>
             <h1 className="text-white text-2xl sm:text-3xl font-black leading-tight">
-              Chơi SuperTux<br />ngay trên TappyAI!
+              {t('game.heroTitleLine1')}<br />{t('game.heroTitleLine2')}
             </h1>
             <p className="text-white/70 text-sm mt-2">
-              Game platformer mã nguồn mở — miễn phí, không cần cài đặt, chơi thẳng trên trình duyệt.
+              {t('game.heroDescription')}
             </p>
           </div>
         </div>
@@ -49,7 +53,7 @@ export default function GameHubPage() {
               <span className="text-xs font-medium bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-300 px-1.5 py-0.5 rounded-full">GPL</span>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
-              Game platformer Mario-style mã nguồn mở — chạy thẳng trên trình duyệt!
+              {t('game.supertuxCardDescription')}
             </p>
             <p className="text-xs text-sky-500 mt-0.5">supertux.org</p>
           </div>

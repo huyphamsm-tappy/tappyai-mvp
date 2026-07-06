@@ -146,6 +146,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'chat.send': 'Gửi',
     'chat.loginPrompt': 'Cần đăng nhập để trò chuyện với Tappy 💬 Tin nhắn của bạn được giữ nguyên — đăng nhập để tiếp tục ngay nhé!',
 
+    // Video player
+    'video.unmute': 'Bật tiếng',
+    'video.mute': 'Tắt tiếng',
+
     // Bottom nav
     'nav.home': 'Trang chủ',
     'nav.chat': 'Chat',
@@ -293,6 +297,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'chat.inputImagePlaceholder': 'Ask Tappy about this image...',
     'chat.send': 'Send',
     'chat.loginPrompt': 'Sign in to chat with Tappy 💬 Your message is saved — sign in to continue!',
+
+    // Video player
+    'video.unmute': 'Unmute',
+    'video.mute': 'Mute',
 
     // Bottom nav
     'nav.home': 'Home',

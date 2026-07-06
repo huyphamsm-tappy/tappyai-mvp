@@ -5,6 +5,7 @@ import { Sparkles, RotateCcw } from 'lucide-react'
 import posthog from 'posthog-js'
 import { cn } from '@/lib/utils'
 import { getRandomCards, TarotCard } from '@/lib/boi/tarotData'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type DrawCount = 1 | 3
 
@@ -13,9 +14,10 @@ interface DrawnCard {
   reversed: boolean
 }
 
-const THREE_CARD_LABELS = ['Quá khứ', 'Hiện tại', 'Tương lai']
+const THREE_CARD_LABEL_KEYS = ['fortune.tarotPast', 'fortune.tarotPresent', 'fortune.tarotFuture']
 
 export default function TarotDraw() {
+  const { t } = useTranslation()
   const [count, setCount] = useState<DrawCount>(1)
   const [drawn, setDrawn] = useState<DrawnCard[] | null>(null)
   const [revealing, setRevealing] = useState(false)
@@ -44,9 +46,9 @@ export default function TarotDraw() {
         <div className="card p-6 text-center space-y-5">
           <div className="text-5xl">🔮</div>
           <div>
-            <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">Rút bài Tarot</h2>
+            <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">{t('fortune.tarotDrawTitle')}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Tĩnh tâm một chút, nghĩ về câu hỏi của bạn rồi chọn số lá muốn rút.
+              {t('fortune.tarotDrawHint')}
             </p>
           </div>
 
@@ -60,7 +62,7 @@ export default function TarotDraw() {
                   : 'border-gray-100 dark:border-gray-800 text-gray-600 dark:text-gray-300'
               )}
             >
-              1 lá · Thông điệp hôm nay
+              {t('fortune.tarotOneCard')}
             </button>
             <button
               onClick={() => setCount(3)}
@@ -71,7 +73,7 @@ export default function TarotDraw() {
                   : 'border-gray-100 dark:border-gray-800 text-gray-600 dark:text-gray-300'
               )}
             >
-              3 lá · Quá khứ - Hiện tại - Tương lai
+              {t('fortune.tarotThreeCards')}
             </button>
           </div>
 
@@ -82,11 +84,11 @@ export default function TarotDraw() {
           >
             {revealing ? (
               <>
-                <Sparkles size={18} className="animate-pulse" /> Đang xáo bài...
+                <Sparkles size={18} className="animate-pulse" /> {t('fortune.tarotShuffling')}
               </>
             ) : (
               <>
-                <Sparkles size={18} /> Rút bài ngay
+                <Sparkles size={18} /> {t('fortune.tarotDrawNow')}
               </>
             )}
           </button>
@@ -100,7 +102,7 @@ export default function TarotDraw() {
               <div key={d.card.id} className="card p-5 text-center space-y-3">
                 {drawn.length === 3 && (
                   <p className="text-xs font-semibold text-accent-500 uppercase tracking-wide">
-                    {THREE_CARD_LABELS[i]}
+                    {t(THREE_CARD_LABEL_KEYS[i])}
                   </p>
                 )}
                 <div className={cn('text-5xl transition-transform', d.reversed && 'inline-block rotate-180')}>
@@ -116,7 +118,7 @@ export default function TarotDraw() {
                         : 'bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
                     )}
                   >
-                    {d.reversed ? 'Ngược (Reversed)' : 'Xuôi (Upright)'}
+                    {d.reversed ? t('fortune.tarotReversed') : t('fortune.tarotUpright')}
                   </span>
                 </div>
                 <div className="flex flex-wrap justify-center gap-1.5">
@@ -140,7 +142,7 @@ export default function TarotDraw() {
             onClick={handleReset}
             className="btn-secondary w-full flex items-center justify-center gap-2"
           >
-            <RotateCcw size={16} /> Rút lại
+            <RotateCcw size={16} /> {t('fortune.tarotRedraw')}
           </button>
         </div>
       )}

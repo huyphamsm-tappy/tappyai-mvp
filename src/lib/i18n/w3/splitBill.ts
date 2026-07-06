@@ -1,0 +1,51 @@
+// Wave-3 dictionary module — Split Bill screen (src/app/split-bill/page.tsx).
+// Flat vi/en maps with keys namespaced under `splitBill.` so an object-spread
+// merge into the app dictionaries stays collision-free.
+
+export const vi: Record<string, string> = {
+  'splitBill.title': 'Chia tiền',
+  'splitBill.billTotalLabel': 'Tổng tiền hóa đơn (đ)',
+  'splitBill.billTotalPlaceholder': 'Nhập tổng tiền...',
+  'splitBill.peopleLabel': 'Số người',
+  'splitBill.peopleUnit': 'người',
+  'splitBill.tipLabel': 'Tip / phụ thu (%)',
+  'splitBill.tipNone': 'Không',
+  'splitBill.tipCustomPlaceholder': 'Tự nhập',
+  'splitBill.modeEqual': 'Chia đều',
+  'splitBill.modeCustom': 'Chia theo món',
+  'splitBill.perPersonLabel': 'Mỗi người trả',
+  'splitBill.includesTip': '(Bao gồm {tip}% tip · Tổng: {total} đ)',
+  'splitBill.billLabel': 'Hóa đơn',
+  'splitBill.tipShortLabel': 'Tip',
+  'splitBill.totalLabel': 'Tổng',
+  'splitBill.emptyPrompt': 'Nhập tổng tiền để tính',
+  'splitBill.customHint': 'Nhập số tiền từng người đã gọi',
+  'splitBill.amountPlaceholder': 'Số tiền...',
+  'splitBill.totalAfterTip': 'Tổng (sau tip)',
+  'splitBill.disclaimer': 'Số tiền chỉ mang tính tham khảo, làm tròn để dễ trả.',
+  'splitBill.personDefaultName': 'Người {n}',
+}
+
+export const en: Record<string, string> = {
+  'splitBill.title': 'Split the bill',
+  'splitBill.billTotalLabel': 'Bill total (đ)',
+  'splitBill.billTotalPlaceholder': 'Enter the total...',
+  'splitBill.peopleLabel': 'Number of people',
+  'splitBill.peopleUnit': 'people',
+  'splitBill.tipLabel': 'Tip / service charge (%)',
+  'splitBill.tipNone': 'None',
+  'splitBill.tipCustomPlaceholder': 'Custom',
+  'splitBill.modeEqual': 'Split evenly',
+  'splitBill.modeCustom': 'Split by item',
+  'splitBill.perPersonLabel': 'Each person pays',
+  'splitBill.includesTip': '(Includes {tip}% tip · Total: {total} đ)',
+  'splitBill.billLabel': 'Bill',
+  'splitBill.tipShortLabel': 'Tip',
+  'splitBill.totalLabel': 'Total',
+  'splitBill.emptyPrompt': 'Enter the bill total to calculate',
+  'splitBill.customHint': 'Enter what each person ordered',
+  'splitBill.amountPlaceholder': 'Amount...',
+  'splitBill.totalAfterTip': 'Total (after tip)',
+  'splitBill.disclaimer': 'Amounts are estimates — round them to make paying easier.',
+  'splitBill.personDefaultName': 'Person {n}',
+}

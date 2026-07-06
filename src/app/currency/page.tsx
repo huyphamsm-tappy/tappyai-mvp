@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { ArrowLeftRight, RefreshCw, ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import BottomNav from '@/components/BottomNav'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const CURRENCIES = [
   { code: 'VND', name: 'Việt Nam Đồng', flag: '🇻🇳', decimals: 0 },
@@ -55,6 +56,7 @@ function CurrencySelect({
 }
 
 export default function CurrencyPage() {
+  const { t } = useTranslation()
   const [rates, setRates] = useState<Record<string, number> | null>(null)
   const [rateDate, setRateDate] = useState<string | null>(null)
   const [fallback, setFallback] = useState(false)
@@ -111,20 +113,20 @@ export default function CurrencyPage() {
           <ChevronLeft size={20} className="text-gray-600 dark:text-gray-300" />
         </Link>
         <h1 className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          💱 Đổi tiền tệ
+          💱 {t('currency.title')}
         </h1>
       </div>
 
       <main className="max-w-lg mx-auto px-4 py-6 space-y-5">
         {/* Amount input */}
         <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-5 shadow-sm">
-          <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">Số tiền</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">{t('currency.amountLabel')}</p>
           <input
             type="number"
             inputMode="decimal"
             value={amount}
             onChange={e => setAmount(e.target.value)}
-            placeholder="Nhập số tiền..."
+            placeholder={t('currency.amountPlaceholder')}
             className="w-full text-3xl font-black text-gray-900 dark:text-white bg-transparent border-none outline-none placeholder-gray-300 dark:placeholder-gray-700 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
           <div className="mt-3 flex flex-wrap gap-2">
@@ -143,15 +145,15 @@ export default function CurrencyPage() {
         {/* Currency selectors + swap */}
         <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-5 shadow-sm">
           <div className="flex items-end gap-3">
-            <CurrencySelect value={from} onChange={setFrom} label="Từ" />
+            <CurrencySelect value={from} onChange={setFrom} label={t('currency.fromLabel')} />
             <button
               onClick={swap}
               className="mb-1 p-2.5 rounded-2xl bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors flex-shrink-0"
-              aria-label="Đổi chiều"
+              aria-label={t('currency.swapDirection')}
             >
               <ArrowLeftRight size={18} />
             </button>
-            <CurrencySelect value={to} onChange={setTo} label="Sang" />
+            <CurrencySelect value={to} onChange={setTo} label={t('currency.toLabel')} />
           </div>
         </div>
 
@@ -160,7 +162,7 @@ export default function CurrencyPage() {
           {loadingRates ? (
             <div className="flex items-center gap-2 animate-pulse">
               <RefreshCw size={16} className="animate-spin opacity-60" />
-              <span className="text-white/70 text-sm">Đang tải tỷ giá...</span>
+              <span className="text-white/70 text-sm">{t('currency.loadingRates')}</span>
             </div>
           ) : converted !== null ? (
             <>
@@ -180,21 +182,21 @@ export default function CurrencyPage() {
               )}
             </>
           ) : (
-            <p className="text-white/70 text-sm">Nhập số tiền để xem kết quả</p>
+            <p className="text-white/70 text-sm">{t('currency.emptyPrompt')}</p>
           )}
         </div>
 
         {/* Rate info */}
         <div className="text-center text-xs text-gray-400 dark:text-gray-500 space-y-1">
           {fallback ? (
-            <p>⚠️ Đang dùng tỷ giá ước tính (không kết nối được nguồn dữ liệu)</p>
+            <p>⚠️ {t('currency.fallbackNotice')}</p>
           ) : formattedDate ? (
             <p className="flex items-center justify-center gap-1.5">
               <RefreshCw size={10} />
-              Tỷ giá cập nhật {formattedDate} · Nguồn: open.er-api.com
+              {t('currency.ratesUpdated', { date: formattedDate })}
             </p>
           ) : null}
-          <p>Tỷ giá chỉ mang tính tham khảo, không dùng cho giao dịch tài chính.</p>
+          <p>{t('currency.disclaimer')}</p>
         </div>
       </main>
 
