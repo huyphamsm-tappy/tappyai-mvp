@@ -5,10 +5,12 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2, ArrowLeft } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 export default function RegisterPage() {
   const router = useRouter()
   const supabase = createClient()
+  const { t } = useTranslation()
 
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
@@ -23,7 +25,7 @@ export default function RegisterPage() {
     setError(null)
 
     if (password.length < 6) {
-      setError('Mật khẩu cần ít nhất 6 ký tự')
+      setError(t('register.errPasswordLen'))
       setLoading(false)
       return
     }
@@ -64,26 +66,25 @@ export default function RegisterPage() {
             <span className="text-4xl font-black text-white">T</span>
           </div>
           <h1 className="text-3xl font-black text-white">TappyAI</h1>
-          <p className="text-primary-100 mt-2 text-sm">Tạo tài khoản mới</p>
+          <p className="text-primary-100 mt-2 text-sm">{t('register.subtitle')}</p>
         </div>
 
         {done ? (
           <div className="text-center space-y-4">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-6">
-              <p className="text-white font-semibold mb-2">Kiểm tra email của bạn 📩</p>
+              <p className="text-white font-semibold mb-2">{t('register.checkEmailTitle')}</p>
               <p className="text-primary-100 text-sm">
-                Chúng tôi đã gửi link xác nhận tới <span className="text-white font-medium">{email}</span>.
-                Hãy mở email và bấm vào link để hoàn tất đăng ký.
+                {t('register.checkEmailDesc', { email })}
               </p>
             </div>
             <Link href="/login" className="text-white underline text-sm">
-              Về trang đăng nhập
+              {t('register.backToLogin')}
             </Link>
           </div>
         ) : (
           <form onSubmit={handleRegister} className="space-y-4">
             <Link href="/login" className="flex items-center gap-2 text-white/80 text-sm mb-2">
-              <ArrowLeft size={16} /> Quay lại đăng nhập
+              <ArrowLeft size={16} /> {t('register.backToLogin')}
             </Link>
 
             {error && (
@@ -93,39 +94,39 @@ export default function RegisterPage() {
             )}
 
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3">
-              <label className="text-primary-100 text-xs">Họ và tên</label>
+              <label className="text-primary-100 text-xs">{t('register.fullName')}</label>
               <input
                 type="text"
                 required
                 autoFocus
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Nguyễn Văn A"
+                placeholder={t('register.fullNamePlaceholder')}
                 className="w-full bg-transparent text-white placeholder-white/40 outline-none text-lg mt-1"
               />
             </div>
 
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3">
-              <label className="text-primary-100 text-xs">Email</label>
+              <label className="text-primary-100 text-xs">{t('register.email')}</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="ban@email.com"
+                placeholder={t('register.emailPlaceholder')}
                 className="w-full bg-transparent text-white placeholder-white/40 outline-none text-lg mt-1"
               />
             </div>
 
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3">
-              <label className="text-primary-100 text-xs">Mật khẩu</label>
+              <label className="text-primary-100 text-xs">{t('register.password')}</label>
               <input
                 type="password"
                 required
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Tối thiểu 6 ký tự"
+                placeholder={t('register.passwordPlaceholder')}
                 className="w-full bg-transparent text-white placeholder-white/40 outline-none text-lg mt-1"
               />
             </div>
@@ -136,14 +137,14 @@ export default function RegisterPage() {
               className="w-full bg-white hover:bg-gray-50 text-gray-900 font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-lg disabled:opacity-70"
             >
               {loading && <Loader2 size={20} className="animate-spin" />}
-              {loading ? 'Đang tạo tài khoản...' : 'Tạo tài khoản'}
+              {loading ? t('register.creating') : t('register.submit')}
             </button>
 
             <p className="text-center text-primary-100/70 text-xs mt-2">
-              Bằng cách tạo tài khoản, bạn đồng ý với{' '}
-              <span className="text-white underline cursor-pointer">Điều khoản dịch vụ</span>
-              {' '}và{' '}
-              <span className="text-white underline cursor-pointer">Chính sách bảo mật</span>
+              {t('register.agreePrefix')}{' '}
+              <span className="text-white underline cursor-pointer">{t('settings.terms')}</span>
+              {' '}{t('common.and')}{' '}
+              <span className="text-white underline cursor-pointer">{t('settings.privacy')}</span>
             </p>
           </form>
         )}

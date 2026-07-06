@@ -5,14 +5,15 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { MapPin, ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const INTERESTS = [
-  { id: 'food', emoji: '🍜', label: 'Ăn uống' },
-  { id: 'spa', emoji: '💆', label: 'Spa & Làm đẹp' },
-  { id: 'travel', emoji: '✈️', label: 'Du lịch' },
-  { id: 'shopping', emoji: '🛍️', label: 'Mua sắm' },
-  { id: 'entertainment', emoji: '🎉', label: 'Giải trí' },
-  { id: 'hotel', emoji: '🏨', label: 'Khách sạn' },
+  { id: 'food', emoji: '🍜', key: 'tag.food' },
+  { id: 'spa', emoji: '💆', key: 'tag.spa' },
+  { id: 'travel', emoji: '✈️', key: 'tag.travel' },
+  { id: 'shopping', emoji: '🛍️', key: 'tag.shopping' },
+  { id: 'entertainment', emoji: '🎉', key: 'tag.entertainment' },
+  { id: 'hotel', emoji: '🏨', key: 'tag.hotel' },
 ]
 
 const CITIES = ['TP. Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Cần Thơ', 'Nha Trang', 'Vũng Tàu', 'Hội An', 'Phú Quốc']
@@ -20,6 +21,7 @@ const CITIES = ['TP. Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Cần Thơ', 
 export default function OnboardingPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { t } = useTranslation()
   const [step, setStep] = useState(1)
   const [selected, setSelected] = useState<string[]>([])
   const [city, setCity] = useState('')
@@ -68,10 +70,10 @@ export default function OnboardingPage() {
         {step === 1 && (
           <div className="animate-fade-in">
             <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-1">
-              Chào mừng đến với TappyAI! 👋
+              {t('onboarding.welcomeTitle')}
             </h1>
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-              Cho mình biết bạn quan tâm đến lĩnh vực nào để cá nhân hóa trải nghiệm nhé.
+              {t('onboarding.welcomeDesc')}
             </p>
 
             <div className="grid grid-cols-2 gap-3 mb-8">
@@ -88,7 +90,7 @@ export default function OnboardingPage() {
                 >
                   <span className="text-2xl">{item.emoji}</span>
                   <span className={cn('text-sm font-medium', selected.includes(item.id) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-200')}>
-                    {item.label}
+                    {t(item.key)}
                   </span>
                 </button>
               ))}
@@ -99,10 +101,10 @@ export default function OnboardingPage() {
               disabled={selected.length === 0}
               className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 text-white font-semibold flex items-center justify-center gap-2 transition-all"
             >
-              Tiếp theo <ChevronRight size={18} />
+              {t('common.next')} <ChevronRight size={18} />
             </button>
             <button onClick={() => setStep(2)} className="w-full mt-3 text-center text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-              Bỏ qua
+              {t('common.skip')}
             </button>
           </div>
         )}
@@ -110,10 +112,10 @@ export default function OnboardingPage() {
         {step === 2 && (
           <div className="animate-fade-in">
             <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-1">
-              Bạn đang ở đâu? 📍
+              {t('onboarding.locationTitle')}
             </h1>
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-              Để gợi ý địa điểm sát thực tế hơn với bạn.
+              {t('onboarding.locationDesc')}
             </p>
 
             <div className="grid grid-cols-2 gap-3 mb-4">
@@ -137,7 +139,7 @@ export default function OnboardingPage() {
             {/* Custom city input */}
             <input
               type="text"
-              placeholder="Hoặc nhập thành phố khác..."
+              placeholder={t('onboarding.otherCity')}
               value={CITIES.includes(city) ? '' : city}
               onChange={e => setCity(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 mb-6"
@@ -148,10 +150,10 @@ export default function OnboardingPage() {
               disabled={loading}
               className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-60 text-white font-semibold flex items-center justify-center gap-2 transition-all"
             >
-              {loading ? <Loader2 size={18} className="animate-spin" /> : '🚀 Bắt đầu khám phá'}
+              {loading ? <Loader2 size={18} className="animate-spin" /> : t('onboarding.start')}
             </button>
             <button onClick={handleFinish} className="w-full mt-3 text-center text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-              Bỏ qua
+              {t('common.skip')}
             </button>
           </div>
         )}
