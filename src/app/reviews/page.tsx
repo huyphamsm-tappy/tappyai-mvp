@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
-  Heart, MessageCircle, Bookmark, Share2, Music2,
+  Heart, MessageCircle, Bookmark, Share2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
   X, Send, Loader2, Home, Search, Plus, Bell, User, Grid3X3, ArrowLeft, AlertCircle, Compass
 } from 'lucide-react'
@@ -16,6 +16,7 @@ import type { UserPreferences } from '@/lib/userMemory'
 import VideoPlayer from '@/components/explore/VideoPlayer'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicCard from './ReviewMusicCard'
+import ReviewMusicDisc from './ReviewMusicDisc'
 
 /* ─── types ─── */
 interface Profile { full_name: string | null; avatar_url: string | null }
@@ -287,10 +288,15 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
         <RAction icon={<Bookmark size={24} className={r.saved_by_me ? 'fill-amber-400 text-amber-400' : 'text-white'} />} label="Lưu" onClick={() => onSave(r.id)} />
         {/* Share */}
         <RAction icon={<Share2 size={24} className="text-white" />} label="Chia sẻ" onClick={() => onShare(r)} />
-        {/* Music disc */}
-        <div className="w-10 h-10 rounded-full border-2 border-white/30 bg-black/50 flex items-center justify-center animate-spin-slow">
-          <Music2 size={16} className="text-white" />
-        </div>
+        {/* Music disc — only when the review has an attached soundtrack; tap to play */}
+        {r.music && (
+          <ReviewMusicDisc
+            playKey={r.id}
+            trackId={r.music.trackId}
+            startSec={r.music.startSec}
+            volume={r.music.volume}
+          />
+        )}
       </div>
 
       {/* Bottom info */}
