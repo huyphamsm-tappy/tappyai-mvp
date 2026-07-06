@@ -3,10 +3,18 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
 const ZALO_APP_SECRET = process.env.ZALO_APP_SECRET!
-const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/zalo/callback`
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL!
+
+// Same host the init route used (e.g. www.tappyai.com) so redirect_uri matches
+// exactly at token exchange, and all follow-up redirects stay on this origin.
+function originOf(req: NextRequest): string {
+  const host = req.headers.get('x-forwarded-host') ?? req.headers.get('host') ?? req.nextUrl.host
+  const proto = req.headers.get('x-forwarded-proto') ?? 'https'
+  return `${proto}://${host}`
+}
 
 export async function GET(req: NextRequest) {
+  const REDIRECT_URI = `${originOf(req)}/api/auth/zalo/callback`
+  const APP_URL = originOf(req)
   const code = req.nextUrl.searchParams.get('code')
   const state = req.nextUrl.searchParams.get('state')
   const codeVerifier = req.cookies.get('zalo_login_cv')?.value

@@ -2,10 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
-const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/zalo/callback`
+
+// Build the callback URL from the ACTUAL request host (e.g. www.tappyai.com),
+// not NEXT_PUBLIC_APP_URL (which was the bare apex "tappyai.com"). Zalo requires
+// redirect_uri to exactly match the registered Callback URL (www), and the PKCE
+// cookies are set on this same host — so the callback must land back on it.
+function originOf(req: NextRequest): string {
+  const host = req.headers.get('x-forwarded-host') ?? req.headers.get('host') ?? req.nextUrl.host
+  const proto = req.headers.get('x-forwarded-proto') ?? 'https'
+  return `${proto}://${host}`
+}
 
 export async function GET(req: NextRequest) {
   const returnTo = req.nextUrl.searchParams.get('returnTo') || '/'
+  const REDIRECT_URI = `${originOf(req)}/api/auth/zalo/callback`
 
   const codeVerifier = crypto.randomBytes(32).toString('base64url')
   const codeChallenge = crypto.createHash('sha256').update(codeVerifier).digest('base64url')
