@@ -1,4 +1,5 @@
 import { Loader2, AlertCircle, Music2 } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { MusicTrack } from '../types/track'
 import { MusicPickerRow } from './MusicPickerRow'
 
@@ -23,6 +24,7 @@ export function MusicTrackList({
   onSelectTrack,
   onTogglePreview,
 }: MusicTrackListProps) {
+  const { t } = useTranslation()
   if (error) {
     return (
       <div className="flex flex-col items-center gap-2 py-10 text-gray-500 dark:text-gray-400">
@@ -44,7 +46,7 @@ export function MusicTrackList({
     return (
       <div className="flex flex-col items-center gap-2 py-10 text-gray-500 dark:text-gray-400">
         <Music2 size={22} className="opacity-60" />
-        <p className="text-sm">Không tìm thấy bài hát nào</p>
+        <p className="text-sm">{t('music.emptyTracks')}</p>
       </div>
     )
   }
@@ -70,7 +72,7 @@ export function MusicTrackList({
               onClick={onLoadMore}
               className="text-sm font-medium text-primary-500"
             >
-              Xem thêm
+              {t('music.loadMore')}
             </button>
           )}
         </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { MusicCategory } from '../types/category'
 import { getCategoryLabel } from '../services/musicService'
 
@@ -8,6 +9,7 @@ interface MusicCategoryTabsProps {
 }
 
 export function MusicCategoryTabs({ categories, activeCategoryId, onSelect }: MusicCategoryTabsProps) {
+  const { t } = useTranslation()
   if (categories.length === 0) return null
 
   return (
@@ -22,7 +24,7 @@ export function MusicCategoryTabs({ categories, activeCategoryId, onSelect }: Mu
             : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'
         }`}
       >
-        Tất cả
+        {t('music.categoryAll')}
       </button>
       {categories.map((category) => (
         <button

@@ -14,6 +14,7 @@ import {
   MusicPickerSheet, MusicThumbnail, MusicDuration, useMusicTrack,
   type MusicSelection,
 } from '@/modules/music'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const MAX_PHOTOS = 6
 const MAX_VIDEO_SIZE = 50 * 1024 * 1024   // 50 MB
@@ -173,24 +174,25 @@ function SelectedMusicCard({
   trackId, onReplace, onRemove,
 }: { trackId: string; onReplace: () => void; onRemove: () => void }) {
   const { track } = useMusicTrack(trackId)
+  const { t } = useTranslation()
   return (
     <div
       role="button"
       tabIndex={0}
       onClick={onReplace}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onReplace() } }}
-      aria-label="Nhạc nền đã chọn, bấm để đổi nhạc"
+      aria-label={t('reviewNew.selectedMusicAria')}
       className="flex w-full cursor-pointer items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-700 p-3 text-left transition-colors hover:border-[#fe2c55]/50"
     >
       <MusicThumbnail coverUrl={track?.coverUrl ?? null} title={track?.title ?? ''} size={44} />
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{track?.title ?? 'Đang tải...'}</p>
+        <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{track?.title ?? t('reviewNew.loading')}</p>
         {track?.artist && <p className="truncate text-xs text-gray-500 dark:text-gray-400">{track.artist}</p>}
       </div>
       {track && <MusicDuration seconds={track.durationSec} className="flex-shrink-0 text-xs text-gray-400" />}
       <button
         type="button"
-        aria-label="Xóa nhạc nền"
+        aria-label={t('reviewNew.removeMusic')}
         onClick={e => { e.stopPropagation(); onRemove() }}
         className="flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-red-500"
       >
@@ -203,6 +205,7 @@ function SelectedMusicCard({
 /* ─── page ─── */
 
 export default function NewReviewPage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const photoInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
@@ -273,7 +276,7 @@ export default function NewReviewPage() {
   const handlePhotoSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     if (!files.length) return
-    if (photos.length + files.length > MAX_PHOTOS) { setError(`Toi da ${MAX_PHOTOS} anh`); return }
+    if (photos.length + files.length > MAX_PHOTOS) { setError(t('reviewNew.maxPhotos', { n: String(MAX_PHOTOS) })); return }
     setPhotoUploading(true); setError('')
     try {
       const uploaded: string[] = []
@@ -282,12 +285,12 @@ export default function NewReviewPage() {
         fd.append('file', file)
         const res = await fetch('/api/reviews/upload', { method: 'POST', body: fd })
         const data = await res.json()
-        if (!res.ok) throw new Error(data.error || 'Loi tai anh')
+        if (!res.ok) throw new Error(data.error || t('reviewNew.photoUploadError'))
         uploaded.push(data.url)
       }
       setPhotos(prev => [...prev, ...uploaded])
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Loi tai anh')
+      setError(err instanceof Error ? err.message : t('reviewNew.photoUploadError'))
     } finally {
       setPhotoUploading(false)
       if (photoInputRef.current) photoInputRef.current.value = ''
@@ -305,19 +308,19 @@ export default function NewReviewPage() {
     /* Stage: validate — format / size / duration */
     if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
       vfail('validate-format', performance.now(), new Error('unsupported type'), { type: file.type })
-      setError('Chi ho tro mp4, mov, webm'); return
+      setError(t('reviewNew.videoUnsupportedFormat')); return
     }
     if (file.size > MAX_VIDEO_SIZE) {
       vfail('validate-size', performance.now(), new Error('too large'), { sizeMB: +(file.size / 1048576).toFixed(2) })
-      setError('Video phai nho hon 50MB'); return
+      setError(t('reviewNew.videoTooLarge')); return
     }
     const tDur = vstart('validate-duration')
     let duration: number
     try { duration = await getVideoDuration(file); vok('validate-duration', tDur, { duration: +duration.toFixed(2) }) }
-    catch (e) { vfail('validate-duration', tDur, e); setError('Khong doc duoc thong tin video'); return }
+    catch (e) { vfail('validate-duration', tDur, e); setError(t('reviewNew.videoReadError')); return }
     if (duration > MAX_VIDEO_DURATION) {
       vfail('validate-duration', tDur, new Error('too long'), { duration: +duration.toFixed(2), max: MAX_VIDEO_DURATION })
-      setError(`Video toi da ${MAX_VIDEO_DURATION} giay`); return
+      setError(t('reviewNew.videoTooLong', { n: String(MAX_VIDEO_DURATION) })); return
     }
 
     resetVideoState()
@@ -403,10 +406,10 @@ export default function NewReviewPage() {
     } catch (e) {
       if ((e as Error)?.name === 'AbortError') {
         vfail('video-upload', tVideo, e, { note: 'user aborted' })
-        setError('Da huy tai len')
+        setError(t('reviewNew.uploadCancelled'))
       } else {
         vfail('video-upload', tVideo, e)
-        setError('Loi tai video. Vui long thu lai.')
+        setError(t('reviewNew.videoUploadError'))
       }
       resetVideoState()
     } finally {
@@ -543,19 +546,26 @@ export default function NewReviewPage() {
         body: JSON.stringify(payload),
       })
       const data = await res.json()
-      if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.error || 'Loi dang bai') }
+      if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.error || t('reviewNew.postError')) }
       vok('submit-review', tSubmit)
       setSuccess(true)
       setTimeout(() => router.push('/reviews'), 1500)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Loi dang bai')
+      setError(err instanceof Error ? err.message : t('reviewNew.postError'))
     } finally {
       setSubmitting(false)
     }
   }
 
   const displayRating = hoverRating || rating
-  const ratingLabels = ['', 'Te', 'Khong tot', 'Binh thuong', 'Tot', 'Tuyet voi']
+  const ratingLabels = [
+    '',
+    t('reviewNew.rating1'),
+    t('reviewNew.rating2'),
+    t('reviewNew.rating3'),
+    t('reviewNew.rating4'),
+    t('reviewNew.rating5'),
+  ]
 
   /* ─── Success screen ─── */
   if (success) {
@@ -563,8 +573,8 @@ export default function NewReviewPage() {
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <div className="text-center px-8">
           <CheckCircle size={56} className="text-green-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Da dang bai!</h2>
-          <p className="text-gray-500">Cam on ban da chia se</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('reviewNew.successTitle')}</h2>
+          <p className="text-gray-500">{t('reviewNew.successSubtitle')}</p>
         </div>
       </div>
     )
@@ -578,13 +588,13 @@ export default function NewReviewPage() {
         <Link href="/reviews" className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
           <ArrowLeft size={22} />
         </Link>
-        <h1 className="font-bold text-gray-900 dark:text-white">Bai viet moi</h1>
+        <h1 className="font-bold text-gray-900 dark:text-white">{t('reviewNew.headerTitle')}</h1>
         <button
           onClick={handleSubmit}
           disabled={!canPost || submitting || isUploading}
           className="py-3 px-6 rounded-full bg-[#fe2c55] hover:bg-[#ef2950] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white text-sm font-semibold transition-all"
         >
-          {submitting ? <Loader2 size={15} className="animate-spin" /> : 'Dang'}
+          {submitting ? <Loader2 size={15} className="animate-spin" /> : t('reviewNew.post')}
         </button>
       </div>
 
@@ -593,9 +603,9 @@ export default function NewReviewPage() {
         {/* Media mode tabs */}
         <div className="flex bg-gray-100 dark:bg-gray-900 rounded-xl p-1 gap-1">
           {([
-            { id: 'photo', icon: <Camera size={15} />, label: 'Anh' },
-            { id: 'video', icon: <Video size={15} />, label: 'Video' },
-            { id: 'url',   icon: <Link2 size={15} />, label: 'Link' },
+            { id: 'photo', icon: <Camera size={15} />, label: t('reviewNew.tabPhoto') },
+            { id: 'video', icon: <Video size={15} />, label: t('reviewNew.tabVideo') },
+            { id: 'url',   icon: <Link2 size={15} />, label: t('reviewNew.tabLink') },
           ] as const).map(tab => (
             <button
               key={tab.id}
@@ -622,8 +632,8 @@ export default function NewReviewPage() {
                   ? <Loader2 size={32} className="animate-spin text-[#fe2c55]" />
                   : <>
                       <Camera size={40} />
-                      <span className="text-sm font-medium">Them anh</span>
-                      <span className="text-xs text-gray-400">Toi da {MAX_PHOTOS} anh</span>
+                      <span className="text-sm font-medium">{t('reviewNew.addPhoto')}</span>
+                      <span className="text-xs text-gray-400">{t('reviewNew.maxPhotos', { n: String(MAX_PHOTOS) })}</span>
                     </>}
               </button>
             ) : (
@@ -657,8 +667,8 @@ export default function NewReviewPage() {
               <button type="button" onClick={() => videoInputRef.current?.click()}
                 className="w-full aspect-video rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-[#fe2c55] hover:border-[#fe2c55]/50 transition-all">
                 <Video size={40} />
-                <span className="text-sm font-medium">Chon video</span>
-                <span className="text-xs text-gray-400">mp4 · mov · webm &nbsp;·&nbsp; toi da 15s · 50MB</span>
+                <span className="text-sm font-medium">{t('reviewNew.selectVideo')}</span>
+                <span className="text-xs text-gray-400">{t('reviewNew.videoHint')}</span>
               </button>
             )}
 
@@ -676,9 +686,9 @@ export default function NewReviewPage() {
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {uploadStep === 'thumb' && 'Dang tao thumbnail...'}
-                      {uploadStep === 'video' && 'Dang tai video len...'}
-                      {uploadStep === 'ai'    && 'Dang phan tich noi dung...'}
+                      {uploadStep === 'thumb' && t('reviewNew.creatingThumbnail')}
+                      {uploadStep === 'video' && t('reviewNew.uploadingVideo')}
+                      {uploadStep === 'ai'    && t('reviewNew.analyzingContent')}
                     </span>
                     {uploadStep === 'video' && (
                       <span className="text-sm font-bold text-[#fe2c55]">{uploadProgress}%</span>
@@ -693,7 +703,7 @@ export default function NewReviewPage() {
                   {(uploadStep === 'thumb' || uploadStep === 'video') && (
                     <button onClick={cancelUpload}
                       className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-red-500 transition-colors">
-                      <XCircle size={16} /> Huy
+                      <XCircle size={16} /> {t('reviewNew.cancel')}
                     </button>
                   )}
                 </div>
@@ -712,8 +722,8 @@ export default function NewReviewPage() {
                   </div>
                 </div>
                 <div className="px-4 py-2.5 flex items-center justify-between">
-                  <span className="text-xs text-gray-500">Video da tai len</span>
-                  <button onClick={resetVideoState} className="text-xs text-red-400 hover:text-red-600">Xoa</button>
+                  <span className="text-xs text-gray-500">{t('reviewNew.videoUploaded')}</span>
+                  <button onClick={resetVideoState} className="text-xs text-red-400 hover:text-red-600">{t('reviewNew.remove')}</button>
                 </div>
               </div>
             )}
@@ -746,16 +756,16 @@ export default function NewReviewPage() {
               value={source_url}
               onChange={e => handleUrlChange(e.target.value)}
               placeholder={
-                source_type === 'youtube' ? 'Dan link YouTube...'
-                : source_type === 'tiktok' ? 'Dan link TikTok...'
-                : 'Dan link Facebook...'
+                source_type === 'youtube' ? t('reviewNew.pasteYoutube')
+                : source_type === 'tiktok' ? t('reviewNew.pasteTiktok')
+                : t('reviewNew.pasteFacebook')
               }
               className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40"
             />
 
             {fetchingMeta && (
               <div className="flex items-center gap-2 text-gray-400 text-sm">
-                <Loader2 size={16} className="animate-spin" /> Dang tai thong tin...
+                <Loader2 size={16} className="animate-spin" /> {t('reviewNew.loadingMeta')}
               </div>
             )}
 
@@ -776,7 +786,7 @@ export default function NewReviewPage() {
             )}
 
             {source_type === 'facebook' && source_url && (
-              <p className="text-xs text-gray-400">Facebook: chi luu link va hien thi nut xem ngoai.</p>
+              <p className="text-xs text-gray-400">{t('reviewNew.facebookNote')}</p>
             )}
           </div>
         )}
@@ -796,7 +806,7 @@ export default function NewReviewPage() {
         <textarea
           value={body}
           onChange={e => setBody(e.target.value)}
-          placeholder="Chia se trai nghiem, cam nhan cua ban..."
+          placeholder={t('reviewNew.bodyPlaceholder')}
           rows={4}
           maxLength={1000}
           className="w-full px-0 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 bg-transparent border-none outline-none resize-none text-base leading-relaxed"
@@ -810,7 +820,7 @@ export default function NewReviewPage() {
           <button type="button" onClick={() => setShowPlaceInput(v => !v)}
             className="flex items-center gap-2 text-sm text-[#fe2c55] font-medium hover:text-[#ef2950] transition-colors">
             <MapPin size={16} />
-            {placeName || 'Them dia diem'}
+            {placeName || t('reviewNew.addPlace')}
             {placeName && (
               <X size={14} className="text-gray-400"
                 onClick={e => { e.stopPropagation(); setPlaceName(''); setShowPlaceInput(false) }} />
@@ -818,7 +828,7 @@ export default function NewReviewPage() {
           </button>
           {showPlaceInput && (
             <input type="text" value={placeName} onChange={e => setPlaceName(e.target.value)}
-              placeholder="Ten quan, nha hang, dia diem..." autoFocus maxLength={100}
+              placeholder={t('reviewNew.placePlaceholder')} autoFocus maxLength={100}
               className="mt-2 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40" />
           )}
         </div>
@@ -828,7 +838,7 @@ export default function NewReviewPage() {
           <button type="button" onClick={() => { setShowRating(v => !v); if (showRating) setRating(0) }}
             className="flex items-center gap-2 text-sm text-[#fe2c55] font-medium hover:text-[#ef2950] transition-colors">
             <Star size={16} />
-            {rating > 0 ? `${rating} sao - ${ratingLabels[rating]}` : 'Them danh gia sao'}
+            {rating > 0 ? t('reviewNew.ratingLabel', { n: String(rating), label: ratingLabels[rating] }) : t('reviewNew.addRating')}
             {rating > 0 && (
               <X size={14} className="text-gray-400" onClick={e => { e.stopPropagation(); setRating(0) }} />
             )}
@@ -853,7 +863,7 @@ export default function NewReviewPage() {
             <button type="button" onClick={openMusicPicker} aria-haspopup="dialog"
               className="flex items-center gap-2 text-sm text-[#fe2c55] font-medium hover:text-[#ef2950] transition-colors">
               <Music size={16} />
-              Thêm nhạc nền
+              {t('reviewNew.addMusic')}
             </button>
           ) : (
             <SelectedMusicCard trackId={music.trackId} onReplace={openMusicPicker} onRemove={() => setMusic(null)} />

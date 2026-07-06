@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { MusicTrack } from '@/modules/music'
 import {
   useMusic,
@@ -19,6 +20,7 @@ import {
 // the review-soundtrack picker uses); tapping a row plays/pauses its preview.
 export default function MusicLibraryPage() {
   const router = useRouter()
+  const { t } = useTranslation()
   const { categories } = useMusicCategories()
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
   const browse = useMusic({ categoryId: activeCategoryId ?? undefined })
@@ -60,10 +62,10 @@ export default function MusicLibraryPage() {
             onClick={() => router.push('/')}
             className="flex items-center gap-1 text-sm font-medium text-primary-500"
           >
-            <ChevronLeft size={18} /> Trang chủ
+            <ChevronLeft size={18} /> {t('music.backHome')}
           </button>
           <h1 className="flex-1 text-center font-semibold text-gray-900 dark:text-white pr-16">
-            🎵 Thư viện nhạc
+            🎵 {t('music.title')}
           </h1>
         </div>
       </header>

@@ -2,6 +2,14 @@
 
 import { useSyncExternalStore } from 'react'
 import { dictionaries, type Locale } from './dictionaries'
+import { w2vi, w2en } from './w2'
+
+// Full lookup maps: base dictionary + per-screen wave modules layered on top.
+// Namespaced keys make the merge collision-free.
+const full: Record<Locale, Record<string, string>> = {
+  vi: { ...dictionaries.vi, ...w2vi },
+  en: { ...dictionaries.en, ...w2en },
+}
 
 const STORAGE_KEY = 'tappy_lang'
 
@@ -55,7 +63,7 @@ export function setLocale(next: Locale) {
 }
 
 export function translate(locale: Locale, key: string, vars?: Record<string, string>): string {
-  let str = dictionaries[locale]?.[key] ?? dictionaries.vi[key] ?? key
+  let str = full[locale]?.[key] ?? full.vi[key] ?? key
   if (vars) for (const [k, v] of Object.entries(vars)) str = str.replace(`{${k}}`, v)
   return str
 }

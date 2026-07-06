@@ -17,6 +17,7 @@ import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoP
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicCard from './ReviewMusicCard'
 import ReviewMusicDisc from './ReviewMusicDisc'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 /* ─── types ─── */
 interface Profile { full_name: string | null; avatar_url: string | null }
@@ -71,12 +72,12 @@ function notifSection(created_at: string): string {
   return 'TUẦN NÀY'
 }
 
-function ago(d: string) {
+function ago(d: string, t: (key: string, vars?: Record<string, string>) => string) {
   const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000)
-  if (m < 1) return 'vừa xong'
-  if (m < 60) return m + 'p'
-  if (m < 1440) return Math.floor(m / 60) + 'g'
-  return Math.floor(m / 1440) + 'n'
+  if (m < 1) return t('reviews.agoJustNow')
+  if (m < 60) return t('reviews.agoMinutes', { n: String(m) })
+  if (m < 1440) return t('reviews.agoHours', { n: String(Math.floor(m / 60)) })
+  return t('reviews.agoDays', { n: String(Math.floor(m / 1440)) })
 }
 
 /* ─── Photo carousel ─── */
@@ -103,6 +104,7 @@ function Carousel({ photos }: { photos: string[] }) {
 
 /* ─── Comment drawer ─── */
 function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: () => void; onAdded: (id: string, count: number) => void }) {
+  const { t } = useTranslation()
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
@@ -145,28 +147,28 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
       <div className="fixed bottom-[60px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[390px] z-50 bg-[#1a1a1a] rounded-t-3xl max-h-[60vh] flex flex-col">
         <div className="flex justify-center py-2 flex-shrink-0"><div className="w-8 h-1 bg-gray-600 rounded-full" /></div>
         <div className="flex items-center px-4 pb-3 flex-shrink-0">
-          <h3 className="font-semibold text-white flex-1">{review.comment_count} bình luận</h3>
+          <h3 className="font-semibold text-white flex-1">{t('reviews.commentsTitle', { n: String(review.comment_count) })}</h3>
           <button onClick={onClose}><X size={20} className="text-gray-400" /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-4 space-y-4 pb-2 min-h-0">
           {loading ? <div className="flex justify-center py-6"><Loader2 size={18} className="text-white animate-spin" /></div>
-            : loadError ? <div className="flex flex-col items-center gap-2 py-6 text-gray-500"><AlertCircle size={20} className="opacity-60" /><p className="text-sm">Không thể tải bình luận. Vui lòng thử lại.</p></div>
-            : comments.length === 0 ? <p className="text-center text-gray-500 text-sm py-6">Chưa có bình luận nào</p>
+            : loadError ? <div className="flex flex-col items-center gap-2 py-6 text-gray-500"><AlertCircle size={20} className="opacity-60" /><p className="text-sm">{t('reviews.commentsLoadError')}</p></div>
+            : comments.length === 0 ? <p className="text-center text-gray-500 text-sm py-6">{t('reviews.commentsEmpty')}</p>
             : comments.map(c => {
-              const n = c.profiles?.full_name?.split(' ').pop() || 'Ẩn danh'
+              const n = c.profiles?.full_name?.split(' ').pop() || t('reviews.anonymous')
               return <div key={c.id} className="flex gap-2.5">
                 {c.profiles?.avatar_url ? <Image src={c.profiles.avatar_url} alt={n} width={32} height={32} className="rounded-full flex-shrink-0" />
                   : <div className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">{n[0]?.toUpperCase()}</div>}
-                <div><p className="text-xs font-semibold text-white">{n} <span className="text-gray-500 font-normal">{ago(c.created_at)}</span></p><p className="text-sm text-gray-300 mt-0.5">{c.body}</p></div>
+                <div><p className="text-xs font-semibold text-white">{n} <span className="text-gray-500 font-normal">{ago(c.created_at, t)}</span></p><p className="text-sm text-gray-300 mt-0.5">{c.body}</p></div>
               </div>
             })}
           <div ref={ref} />
         </div>
-        {sendError && <p className="px-4 text-xs text-red-400 flex-shrink-0">Không thể đăng bình luận. Vui lòng thử lại.</p>}
+        {sendError && <p className="px-4 text-xs text-red-400 flex-shrink-0">{t('reviews.commentSendError')}</p>}
         <div className="flex gap-2 px-4 py-3 border-t border-gray-800 flex-shrink-0">
-          <input value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Thêm bình luận..." maxLength={300}
+          <input value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder={t('reviews.commentPlaceholder')} maxLength={300}
             className="flex-1 bg-gray-800 text-white placeholder-gray-500 text-sm px-4 py-2 rounded-full focus:outline-none" />
-          <button onClick={send} disabled={!text.trim() || sending} className="text-pink-500 font-semibold text-sm disabled:opacity-40">{sending ? <Loader2 size={16} className="animate-spin" /> : 'Đăng'}</button>
+          <button onClick={send} disabled={!text.trim() || sending} className="text-pink-500 font-semibold text-sm disabled:opacity-40">{sending ? <Loader2 size={16} className="animate-spin" /> : t('reviews.commentSend')}</button>
         </div>
       </div>
     </>
@@ -175,6 +177,7 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
 
 /* ─── Share modal ─── */
 function ShareModal({ review, onClose }: { review: Review; onClose: () => void }) {
+  const { t } = useTranslation()
   const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/reviews/${review.id}`
   const [copied, setCopied] = useState(false)
   const copy = async () => { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000) }
@@ -184,11 +187,11 @@ function ShareModal({ review, onClose }: { review: Review; onClose: () => void }
       <div className="fixed inset-0 bg-black/60 z-50" onClick={onClose} />
       <div className="fixed bottom-[60px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[390px] z-50 bg-[#1a1a1a] rounded-t-3xl px-5 pt-3 pb-8">
         <div className="flex justify-center mb-4"><div className="w-8 h-1 bg-gray-600 rounded-full" /></div>
-        <p className="text-white font-semibold text-center mb-5">Chia sẻ với bạn bè</p>
+        <p className="text-white font-semibold text-center mb-5">{t('reviews.shareTitle')}</p>
         <div className="flex gap-4 justify-center mb-6">
           {[
-            { emoji: '📋', label: copied ? 'Đã chép' : 'Sao chép', fn: copy },
-            { emoji: '🔗', label: 'Chia sẻ', fn: share },
+            { emoji: '📋', label: copied ? t('reviews.shareCopied') : t('reviews.shareCopy'), fn: copy },
+            { emoji: '🔗', label: t('reviews.shareAction'), fn: share },
           ].map(a => (
             <button key={a.label} onClick={a.fn} className="flex flex-col items-center gap-2">
               <div className="w-14 h-14 bg-gray-800 rounded-full flex items-center justify-center text-2xl">{a.emoji}</div>
@@ -209,9 +212,10 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onLikeDouble, onSave,
   onLike: (id: string) => void; onLikeDouble: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
 }) {
+  const { t } = useTranslation()
   const photos = (r.photos || []).filter(Boolean)
   const isMe = me === r.user_id
-  const name = r.profiles?.full_name || 'Ẩn danh'
+  const name = r.profiles?.full_name || t('reviews.anonymous')
   const handle = '@' + name.replace(/\s+/g, '').toLowerCase()
   const [menu, setMenu] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -305,9 +309,9 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onLikeDouble, onSave,
 
       {/* Top: for you / following */}
       <div className="absolute top-0 left-0 right-0 z-20 pt-12 px-4 flex items-center justify-center gap-6">
-        <button onClick={() => onFeedTypeChange('following')} className={`text-xs font-medium ${feedType === 'following' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Đang follow</button>
-        <button onClick={() => onFeedTypeChange('for-you')} className={`text-xs font-medium ${feedType === 'for-you' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Đề xuất</button>
-        <button onClick={() => onFeedTypeChange('latest')} className={`text-xs font-medium ${feedType === 'latest' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>Mới nhất</button>
+        <button onClick={() => onFeedTypeChange('following')} className={`text-xs font-medium ${feedType === 'following' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabFollowing')}</button>
+        <button onClick={() => onFeedTypeChange('for-you')} className={`text-xs font-medium ${feedType === 'for-you' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabForYou')}</button>
+        <button onClick={() => onFeedTypeChange('latest')} className={`text-xs font-medium ${feedType === 'latest' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabLatest')}</button>
         {isMe && (
           <div className="absolute right-4 top-12">
             <button onClick={() => setMenu(v => !v)} className="w-8 h-8 flex items-center justify-center">
@@ -317,13 +321,13 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onLikeDouble, onSave,
               <>
                 <div className="fixed inset-0 z-30" onClick={() => setMenu(false)} />
                 <div className="absolute right-0 top-9 z-40 bg-[#1a1a1a] border border-gray-700 rounded-2xl overflow-hidden w-40 shadow-2xl">
-                  <button onClick={async () => { if (!confirm('Xoá?')) return; const res = await fetch(`/api/reviews/${r.id}`, { method: 'DELETE' }); if (res.ok) { onDelete(r.id) } setMenu(false) }}
+                  <button onClick={async () => { if (!confirm(t('reviews.deleteConfirmShort'))) return; const res = await fetch(`/api/reviews/${r.id}`, { method: 'DELETE' }); if (res.ok) { onDelete(r.id) } setMenu(false) }}
                     className="flex items-center gap-3 w-full px-4 py-3 text-red-400 text-sm font-medium hover:bg-gray-800">
-                    <Trash2 size={15} /> Xoá bài
+                    <Trash2 size={15} /> {t('reviews.deletePost')}
                   </button>
                   <button onClick={async () => { const res = await fetch(`/api/reviews/${r.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_hidden: true }) }); if (res.ok) { onDelete(r.id) } setMenu(false) }}
                     className="flex items-center gap-3 w-full px-4 py-3 text-gray-300 text-sm font-medium hover:bg-gray-800 border-t border-gray-800">
-                    <EyeOff size={15} /> Ẩn bài
+                    <EyeOff size={15} /> {t('reviews.hidePost')}
                   </button>
                 </div>
               </>
@@ -351,9 +355,9 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onLikeDouble, onSave,
         {/* Comment */}
         <RAction icon={<MessageCircle size={26} className="text-white" />} label={r.comment_count} onClick={() => onComment(r)} />
         {/* Save */}
-        <RAction icon={<Bookmark size={24} className={r.saved_by_me ? 'fill-amber-400 text-amber-400' : 'text-white'} />} label="Lưu" onClick={() => onSave(r.id)} />
+        <RAction icon={<Bookmark size={24} className={r.saved_by_me ? 'fill-amber-400 text-amber-400' : 'text-white'} />} label={t('reviews.railSave')} onClick={() => onSave(r.id)} />
         {/* Share */}
-        <RAction icon={<Share2 size={24} className="text-white" />} label="Chia sẻ" onClick={() => onShare(r)} />
+        <RAction icon={<Share2 size={24} className="text-white" />} label={t('reviews.railShare')} onClick={() => onShare(r)} />
         {/* Music disc — only when the review has an attached soundtrack; tap to play */}
         {r.music && (
           <ReviewMusicDisc
@@ -403,6 +407,7 @@ function RAction({ icon, label, onClick }: { icon: React.ReactNode; label?: stri
 
 /* ─── Profile Tab (TikTok style) ─── */
 function ProfileTab({ userId }: { userId: string }) {
+  const { t } = useTranslation()
   const [profile, setProfile] = useState<{
     full_name: string | null; avatar_url: string | null
     follower_count: number; following_count: number; review_count: number
@@ -460,7 +465,7 @@ function ProfileTab({ userId }: { userId: string }) {
   }, [userId, supabase])
 
   const doDelete = async (id: string) => {
-    if (!confirm('Xoá bài?')) return
+    if (!confirm(t('reviews.deleteConfirm'))) return
     const res = await fetch(`/api/reviews/${id}`, { method: 'DELETE' })
     if (res.ok) { setPosts(p => p.filter(r => r.id !== id)); setHidden(h => h.filter(r => r.id !== id)); setSel(null) }
   }
@@ -472,7 +477,7 @@ function ProfileTab({ userId }: { userId: string }) {
     setSel(null)
   }
 
-  const firstName = profile?.full_name?.split(' ').pop() || 'Tôi'
+  const firstName = profile?.full_name?.split(' ').pop() || t('reviews.me')
   const handle = '@' + (profile?.full_name?.replace(/\s+/g, '').toLowerCase() || 'user')
   const allMyPosts = [...posts, ...hidden].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as (Review & { is_hidden?: boolean })[]
   const displayPosts = activeTab === 'posts' ? allMyPosts : activeTab === 'saved' ? savedPosts : likedPosts
@@ -487,9 +492,9 @@ function ProfileTab({ userId }: { userId: string }) {
   }
 
   const emptyState = {
-    posts: { icon: <Grid3X3 size={36} className="mb-3 opacity-30" />, text: 'Chưa có bài nào', cta: <Link href="/reviews/new" className="mt-4 bg-[#fe2c55] text-white px-5 py-2 rounded-full text-sm font-semibold">Đăng bài đầu tiên</Link> },
-    saved: { icon: <Bookmark size={36} className="mb-3 opacity-30" />, text: 'Chưa lưu bài nào', cta: null },
-    liked: { icon: <Heart size={36} className="mb-3 opacity-30" />, text: 'Chưa thích bài nào', cta: null },
+    posts: { icon: <Grid3X3 size={36} className="mb-3 opacity-30" />, text: t('reviews.emptyPosts'), cta: <Link href="/reviews/new" className="mt-4 bg-[#fe2c55] text-white px-5 py-2 rounded-full text-sm font-semibold">{t('reviews.emptyPostsCta')}</Link> },
+    saved: { icon: <Bookmark size={36} className="mb-3 opacity-30" />, text: t('reviews.emptySaved'), cta: null },
+    liked: { icon: <Heart size={36} className="mb-3 opacity-30" />, text: t('reviews.emptyLiked'), cta: null },
   }
 
   return (
@@ -504,31 +509,31 @@ function ProfileTab({ userId }: { userId: string }) {
             <Plus size={13} className="text-white" strokeWidth={3} />
           </Link>
         </div>
-        <h2 className="text-white font-bold text-[17px] mb-0.5">{profile?.full_name || 'Ẩn danh'}</h2>
+        <h2 className="text-white font-bold text-[17px] mb-0.5">{profile?.full_name || t('reviews.anonymous')}</h2>
         <p className="text-gray-400 text-sm mb-4 max-w-full truncate">{handle}</p>
         <div className="flex gap-10 mb-4">
           <div className="text-center">
             <div className="text-white font-bold text-base">{profile?.following_count ?? 0}</div>
-            <div className="text-gray-400 text-xs">Đang follow</div>
+            <div className="text-gray-400 text-xs">{t('reviews.statFollowing')}</div>
           </div>
           <div className="text-center">
             <div className="text-white font-bold text-base">{profile?.follower_count ?? 0}</div>
-            <div className="text-gray-400 text-xs">Follower</div>
+            <div className="text-gray-400 text-xs">{t('reviews.statFollowers')}</div>
           </div>
           <div className="text-center">
             <div className="text-white font-bold text-base">{posts.length}</div>
-            <div className="text-gray-400 text-xs">Bài viết</div>
+            <div className="text-gray-400 text-xs">{t('reviews.statPosts')}</div>
           </div>
         </div>
         <Link href="/profile" className="w-full bg-white/10 hover:bg-white/15 border border-white/20 text-white text-sm font-semibold py-2 rounded-md text-center transition-colors">
-          Chỉnh sửa hồ sơ
+          {t('reviews.editProfile')}
         </Link>
       </div>
 
       {/* Tappy memory chip — only shown when preferences are inferred */}
       {prefs && prefs.preferred_style && prefs.preferred_style.length > 0 && (
         <div className="mx-4 mt-3 p-3.5 rounded-xl" style={{ background: 'rgba(255,107,53,0.06)', border: '1px solid rgba(255,107,53,0.18)' }}>
-          <p className="text-[11px] font-semibold mb-2.5" style={{ color: '#ff6b35' }}>✨ Sở thích của bạn</p>
+          <p className="text-[11px] font-semibold mb-2.5" style={{ color: '#ff6b35' }}>{t('reviews.yourPreferences')}</p>
           <div className="flex flex-wrap gap-1.5">
             {prefs.preferred_style.map((s: string) => (
               <span key={s} className="text-[11px] px-2.5 py-1 rounded-full font-semibold"
@@ -549,15 +554,15 @@ function ProfileTab({ userId }: { userId: string }) {
       <div className="flex border-b border-gray-800">
         <button onClick={() => setActiveTab('posts')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'posts' ? 'border-b-2 border-white' : ''}`}>
           <Grid3X3 size={18} className={activeTab === 'posts' ? 'text-white' : 'text-gray-500'} />
-          <span className={`text-[10px] ${activeTab === 'posts' ? 'text-white' : 'text-gray-500'}`}>Bài viết</span>
+          <span className={`text-[10px] ${activeTab === 'posts' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabPosts')}</span>
         </button>
         <button onClick={() => setActiveTab('saved')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'saved' ? 'border-b-2 border-white' : ''}`}>
           <Bookmark size={18} className={activeTab === 'saved' ? 'text-white' : 'text-gray-500'} />
-          <span className={`text-[10px] ${activeTab === 'saved' ? 'text-white' : 'text-gray-500'}`}>Đã lưu</span>
+          <span className={`text-[10px] ${activeTab === 'saved' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabSaved')}</span>
         </button>
         <button onClick={() => setActiveTab('liked')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'liked' ? 'border-b-2 border-white' : ''}`}>
           <Heart size={18} className={activeTab === 'liked' ? 'text-white' : 'text-gray-500'} />
-          <span className={`text-[10px] ${activeTab === 'liked' ? 'text-white' : 'text-gray-500'}`}>Đã thích</span>
+          <span className={`text-[10px] ${activeTab === 'liked' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabLiked')}</span>
         </button>
       </div>
 
@@ -567,7 +572,7 @@ function ProfileTab({ userId }: { userId: string }) {
       ) : loadError ? (
         <div className="flex flex-col items-center py-16 text-gray-500 gap-2">
           <AlertCircle size={36} className="opacity-30" />
-          <p className="text-sm">Không thể tải hồ sơ. Vui lòng thử lại.</p>
+          <p className="text-sm">{t('reviews.profileLoadError')}</p>
         </div>
       ) : displayPosts.length === 0 ? (
         <div className="flex flex-col items-center py-16 text-gray-500">
@@ -611,15 +616,15 @@ function ProfileTab({ userId }: { userId: string }) {
             <div className="space-y-2">
               <Link href={`/reviews/${sel.id}`} onClick={() => { sessionStorage.setItem('reviews_tab', 'profile'); setSel(null) }}
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
-                <Eye size={18} className="text-blue-400" /> Xem bài viết
+                <Eye size={18} className="text-blue-400" /> {t('reviews.sheetViewPost')}
               </Link>
               <button onClick={() => doHide(sel.id, !(sel as Review & { is_hidden?: boolean }).is_hidden)}
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
-                {(sel as Review & { is_hidden?: boolean }).is_hidden ? <><Eye size={18} className="text-green-400" /> Hiện bài này</> : <><EyeOff size={18} className="text-orange-400" /> Ẩn bài này</>}
+                {(sel as Review & { is_hidden?: boolean }).is_hidden ? <><Eye size={18} className="text-green-400" /> {t('reviews.sheetShowPost')}</> : <><EyeOff size={18} className="text-orange-400" /> {t('reviews.sheetHidePost')}</>}
               </button>
               <button onClick={() => doDelete(sel.id)}
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-red-950/40 text-red-400 text-sm font-medium active:bg-red-950/60">
-                <Trash2 size={18} /> Xoá bài này
+                <Trash2 size={18} /> {t('reviews.sheetDeletePost')}
               </button>
             </div>
           </div>
@@ -631,15 +636,16 @@ function ProfileTab({ userId }: { userId: string }) {
 
 /* ─── TikTok Bottom Nav ─── */
 function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => void; userId: string | null }) {
+  const { t } = useTranslation()
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur border-t border-gray-800 flex items-center h-[60px]">
       {/* App Home — TappyAI has exactly one Home: the AI Chat home at "/". Reviews never redefines it. */}
       <Link href="/" className="flex-1 flex flex-col items-center gap-0.5 py-1 text-gray-500">
-        <Home size={24} /><span className="text-[10px]">Trang chủ</span>
+        <Home size={24} /><span className="text-[10px]">{t('reviews.navHome')}</span>
       </Link>
       {[
-        { id: 'home', icon: <Compass size={24} />, label: 'Khám phá' },
-        { id: 'explore', icon: <Search size={24} />, label: 'Tìm Kiếm' },
+        { id: 'home', icon: <Compass size={24} />, label: t('reviews.navDiscover') },
+        { id: 'explore', icon: <Search size={24} />, label: t('reviews.navSearch') },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
           className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === item.id ? 'text-white' : 'text-gray-500'}`}>
@@ -657,10 +663,10 @@ function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => v
         </div>
       </Link>
       <button onClick={() => setTab('inbox')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === 'inbox' ? 'text-white' : 'text-gray-500'}`}>
-        <Bell size={24} /><span className="text-[10px]">Hộp thư</span>
+        <Bell size={24} /><span className="text-[10px]">{t('reviews.navInbox')}</span>
       </button>
       <button onClick={() => setTab('profile')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === 'profile' ? 'text-white' : 'text-gray-500'}`}>
-        <User size={24} /><span className="text-[10px]">Hồ sơ</span>
+        <User size={24} /><span className="text-[10px]">{t('reviews.navProfile')}</span>
       </button>
     </div>
   )
@@ -668,18 +674,19 @@ function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => v
 
 /* ─── Desktop sidebar ─── */
 function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) {
+  const { t } = useTranslation()
   return (
     <aside className="hidden md:flex flex-col w-[240px] xl:w-[260px] fixed left-[max(0px,calc(50vw-500px))] top-0 h-screen py-6 px-4 gap-1 border-r border-gray-800">
       {/* Logo returns to the app's single Home (AI Chat at "/") */}
       <Link href="/" className="text-white font-black text-2xl px-3 mb-4 block">TappyAI</Link>
       {/* App Home — TappyAI has exactly one Home: the AI Chat home at "/". Reviews never redefines it. */}
       <Link href="/" className="flex items-center gap-4 px-3 py-2.5 rounded-xl text-[15px] font-medium text-gray-300 hover:bg-white/5 transition-colors">
-        <Home size={22} />Trang chủ
+        <Home size={22} />{t('reviews.navHome')}
       </Link>
       {[
-        { id: 'home', icon: <Compass size={22} />, label: 'Khám phá' },
-        { id: 'explore', icon: <Search size={22} />, label: 'Tìm Kiếm' },
-        { id: 'profile', icon: <User size={22} />, label: 'Hồ sơ & Bài của tôi' },
+        { id: 'home', icon: <Compass size={22} />, label: t('reviews.navDiscover') },
+        { id: 'explore', icon: <Search size={22} />, label: t('reviews.navSearch') },
+        { id: 'profile', icon: <User size={22} />, label: t('reviews.navProfileAndPosts') },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
           className={`flex items-center gap-4 px-3 py-2.5 rounded-xl text-[15px] font-${tab === item.id ? 'bold text-white bg-white/10' : 'medium text-gray-300 hover:bg-white/5'} transition-colors`}>
@@ -687,7 +694,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
         </button>
       ))}
       <Link href="/reviews/new" className="mt-4 mx-1 bg-[#fe2c55] hover:bg-[#ef2950] text-white font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors">
-        <Plus size={18} />Đăng bài
+        <Plus size={18} />{t('reviews.sidebarPost')}
       </Link>
     </aside>
   )
@@ -695,6 +702,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 
 /* ─── Notification row ─── */
 function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
+  const { t } = useTranslation()
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
   const notifRouter = useRouter()
@@ -702,8 +710,8 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   const actorLabel = g.actors.length === 1
     ? g.actors[0].name
     : g.actors.length === 2
-    ? `${g.actors[0].name} và ${g.actors[1].name}`
-    : `${g.actors[0].name}, ${g.actors[1]?.name} và ${g.actors.length - 2} người khác`
+    ? t('reviews.notifTwoActors', { a: g.actors[0].name, b: g.actors[1].name })
+    : t('reviews.notifManyActors', { a: g.actors[0].name, b: g.actors[1]?.name ?? '', n: String(g.actors.length - 2) })
 
   const avatarStack = (
     <div className="relative flex-shrink-0 mr-3" style={{ width: 48, height: 44 }}>
@@ -732,13 +740,13 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
       <p className="text-white text-sm leading-snug">
         <span className="font-semibold">{actorLabel}</span>{' '}
         <span className="text-gray-300">
-          {g.type === 'like' ? 'đã thích bài viết của bạn' : g.type === 'follow' ? 'đã theo dõi bạn' : 'đã bình luận'}
+          {g.type === 'like' ? t('reviews.notifLiked') : g.type === 'follow' ? t('reviews.notifFollowed') : t('reviews.notifCommented')}
         </span>
       </p>
       {g.type === 'comment' && g.comment_body && (
         <p className="text-gray-400 text-xs mt-0.5 line-clamp-1">&quot;{g.comment_body}&quot;</p>
       )}
-      <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at)}</p>
+      <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at, t)}</p>
     </div>
   )
 
@@ -761,10 +769,10 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
           <User size={20} style={{ color }} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-white text-sm"><span className="font-bold">{g.count}</span> người đã xem hồ sơ của bạn trong 24h</p>
-          <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at)}</p>
+          <p className="text-white text-sm"><span className="font-bold">{g.count}</span> {t('reviews.notifProfileViews')}</p>
+          <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at, t)}</p>
         </div>
-        <button className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2" style={{ background: `${color}22`, color }}>Xem ai</button>
+        <button className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2" style={{ background: `${color}22`, color }}>{t('reviews.notifSeeWho')}</button>
       </div>
     )
   }
@@ -778,7 +786,7 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
           onClick={async e => { e.preventDefault(); e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
           className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2 transition-all"
           style={{ background: followed ? 'rgba(255,255,255,0.08)' : `${color}22`, color: followed ? '#666' : color }}>
-          {followed ? 'Đã theo' : 'Theo dõi lại'}
+          {followed ? t('reviews.followed') : t('reviews.followBack')}
         </button>
       </Link>
     )
@@ -805,23 +813,29 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
   onFeedTypeChange: (ft: 'for-you' | 'following') => void
   userPrefs: UserPreferences | null
 }) {
+  const { t } = useTranslation()
   const grouped = groupNotifs(notifs)
   const prefStyles = userPrefs?.preferred_style ?? []
   const bannerSubtext = prefStyles.length > 0
-    ? `Gợi ý dựa trên sở thích ${prefStyles.slice(0, 2).join(', ')} của bạn`
-    : '3 quán bạn bè hay đến đang mở gần bạn'
+    ? t('reviews.bannerPersonalized', { styles: prefStyles.slice(0, 2).join(', ') })
+    : t('reviews.bannerDefault')
   const bySection = new Map<string, GroupedNotif[]>()
   for (const g of grouped) {
     const s = notifSection(g.created_at)
     if (!bySection.has(s)) bySection.set(s, [])
     bySection.get(s)!.push(g)
   }
+  const sectionLabel: Record<string, string> = {
+    'VỪA XONG': t('reviews.sectionJustNow'),
+    'HÔM NAY': t('reviews.sectionToday'),
+    'TUẦN NÀY': t('reviews.sectionThisWeek'),
+  }
   const sections = ['VỪA XONG', 'HÔM NAY', 'TUẦN NÀY'].filter(l => bySection.has(l)).map(l => ({ label: l, items: bySection.get(l)! }))
 
   return (
     <div className="h-dvh flex flex-col bg-black overflow-hidden">
       <div className="flex-shrink-0 pt-14 px-4 pb-3 border-b border-gray-800">
-        <h2 className="text-white font-bold text-lg">Thông báo</h2>
+        <h2 className="text-white font-bold text-lg">{t('reviews.notificationsTitle')}</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
@@ -837,7 +851,7 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
                   <span className="text-lg">✨</span>
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-xs mb-0.5" style={{ color: '#ff6b35' }}>Tappy gợi ý hôm nay</p>
+                  <p className="font-semibold text-xs mb-0.5" style={{ color: '#ff6b35' }}>{t('reviews.bannerTitle')}</p>
                   <p className="text-white text-sm leading-snug">{bannerSubtext}</p>
                 </div>
                 <ChevronRight size={16} className="text-gray-500 flex-shrink-0" />
@@ -847,7 +861,7 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
             {/* Hot places row */}
             {!hotPlacesLoading && hotPlaces.length > 0 && (
               <div className="mb-1">
-                <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-2 tracking-widest">ĐANG HOT GẦN BẠN 🔥</p>
+                <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-2 tracking-widest">{t('reviews.hotNearYou')}</p>
                 <div className="flex gap-3 px-4 overflow-x-auto pb-3" style={{ scrollbarWidth: 'none' }}>
                   {hotPlaces.map((p, i) => (
                     <button key={p.place_name} onClick={() => onSetTab('explore')}
@@ -857,7 +871,7 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
                         <span className="text-2xl">🍽️</span>
                       </div>
                       <p className="text-white text-[10px] text-center font-medium leading-tight line-clamp-2" style={{ width: 64 }}>{p.place_name}</p>
-                      <p className="text-gray-500 text-[9px]">{p.count} lượt</p>
+                      <p className="text-gray-500 text-[9px]">{t('reviews.hotCount', { n: String(p.count) })}</p>
                     </button>
                   ))}
                 </div>
@@ -868,22 +882,22 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
             {notifsError ? (
               <div className="flex flex-col items-center pt-16 text-gray-500 gap-3">
                 <AlertCircle size={40} className="opacity-30" />
-                <p className="text-sm">Không thể tải thông báo. Vui lòng thử lại.</p>
+                <p className="text-sm">{t('reviews.notifsLoadError')}</p>
               </div>
             ) : notifs.length === 0 ? (
               <div className="flex flex-col items-center pt-16 text-gray-500 gap-3">
                 <Bell size={40} className="opacity-30" />
-                <p className="text-sm">Chưa có thông báo nào</p>
+                <p className="text-sm">{t('reviews.notifsEmpty')}</p>
               </div>
             ) : sections.length === 0 ? (
               <div className="flex flex-col items-center pt-16 text-gray-500 gap-3">
                 <Bell size={40} className="opacity-30" />
-                <p className="text-sm">Không có thông báo mới</p>
+                <p className="text-sm">{t('reviews.notifsNoNew')}</p>
               </div>
             ) : (
               sections.map(({ label, items }) => (
                 <div key={label}>
-                  <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-1.5 tracking-widest">{label}</p>
+                  <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-1.5 tracking-widest">{sectionLabel[label] ?? label}</p>
                   {items.map(g => <NotifRow key={g.id} g={g} onNav={() => onSetTab('home')} />)}
                 </div>
               ))
@@ -898,6 +912,7 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
 
 /* ─── Main ─── */
 export default function ReviewsPage() {
+  const { t } = useTranslation()
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [feedError, setFeedError] = useState(false)
@@ -1206,17 +1221,17 @@ export default function ReviewsPage() {
               : feedError
               ? <div className="h-dvh flex flex-col items-center justify-center text-white gap-3">
                   <AlertCircle size={36} className="opacity-60" />
-                  <p className="font-semibold">Không thể tải bài viết. Vui lòng thử lại.</p>
+                  <p className="font-semibold">{t('reviews.feedLoadError')}</p>
                 </div>
               : reviews.length === 0
               ? <div className="h-dvh flex flex-col items-center justify-center text-white gap-3">
                   <p className="text-4xl">{feedType === 'following' ? '👥' : '📸'}</p>
-                  <p className="font-semibold">{feedType === 'following' ? 'Chưa theo dõi ai hoặc họ chưa đăng bài' : 'Chưa có bài nào'}</p>
+                  <p className="font-semibold">{feedType === 'following' ? t('reviews.feedEmptyFollowing') : t('reviews.feedEmpty')}</p>
                   {feedType === 'following'
-                    ? <button onClick={() => handleFeedTypeChange('for-you')} className="bg-white text-black px-6 py-2.5 rounded-full font-semibold">Xem Đề xuất</button>
+                    ? <button onClick={() => handleFeedTypeChange('for-you')} className="bg-white text-black px-6 py-2.5 rounded-full font-semibold">{t('reviews.seeForYou')}</button>
                     : feedType === 'latest'
-                    ? <button onClick={() => handleFeedTypeChange('for-you')} className="bg-white text-black px-6 py-2.5 rounded-full font-semibold">Xem Đề xuất</button>
-                    : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">Đăng ngay</Link>}
+                    ? <button onClick={() => handleFeedTypeChange('for-you')} className="bg-white text-black px-6 py-2.5 rounded-full font-semibold">{t('reviews.seeForYou')}</button>
+                    : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">{t('reviews.postNow')}</Link>}
                 </div>
               : <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
                   {reviews.map(r => <Post key={r.id} r={r} me={me} feedType={feedType} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
@@ -1234,7 +1249,7 @@ export default function ReviewsPage() {
                     autoFocus
                     value={searchQuery}
                     onChange={e => { setSearchQuery(e.target.value); searchMode === 'review' ? doSearch(e.target.value) : doUserSearch(e.target.value) }}
-                    placeholder={searchMode === 'review' ? 'Tìm review, địa điểm...' : 'Tìm theo tên, email, SĐT...'}
+                    placeholder={searchMode === 'review' ? t('reviews.searchPlaceholderReview') : t('reviews.searchPlaceholderUser')}
                     className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
                   />
                   {searchQuery && (
@@ -1245,8 +1260,8 @@ export default function ReviewsPage() {
                 </div>
                 {/* Segmented control */}
                 <div className="flex bg-gray-900 rounded-xl p-1 gap-1">
-                  <button onClick={() => { setSearchMode('review'); setUserResults([]); if (searchQuery) doSearch(searchQuery) }} className={`flex-1 text-xs py-1.5 rounded-lg font-semibold transition-colors ${searchMode === 'review' ? 'bg-white text-black' : 'text-gray-400'}`}>📍 Địa điểm & Review</button>
-                  <button onClick={() => { setSearchMode('user'); setSearchResults([]); if (searchQuery) doUserSearch(searchQuery) }} className={`flex-1 text-xs py-1.5 rounded-lg font-semibold transition-colors ${searchMode === 'user' ? 'bg-white text-black' : 'text-gray-400'}`}>👤 Người dùng</button>
+                  <button onClick={() => { setSearchMode('review'); setUserResults([]); if (searchQuery) doSearch(searchQuery) }} className={`flex-1 text-xs py-1.5 rounded-lg font-semibold transition-colors ${searchMode === 'review' ? 'bg-white text-black' : 'text-gray-400'}`}>{t('reviews.searchModePlaces')}</button>
+                  <button onClick={() => { setSearchMode('user'); setSearchResults([]); if (searchQuery) doUserSearch(searchQuery) }} className={`flex-1 text-xs py-1.5 rounded-lg font-semibold transition-colors ${searchMode === 'user' ? 'bg-white text-black' : 'text-gray-400'}`}>{t('reviews.searchModeUsers')}</button>
                 </div>
               </div>
 
@@ -1258,18 +1273,18 @@ export default function ReviewsPage() {
                 {searchMode === 'review' && !searching && searchQuery && searchError && (
                   <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
                     <AlertCircle size={36} className="opacity-20" />
-                    <p className="text-sm">Không thể tìm kiếm. Vui lòng thử lại.</p>
+                    <p className="text-sm">{t('reviews.searchError')}</p>
                   </div>
                 )}
                 {searchMode === 'review' && !searching && !searchError && searchQuery && searchResults.length === 0 && (
                   <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
                     <Search size={36} className="opacity-20" />
-                    <p className="text-sm">Không tìm thấy kết quả cho &quot;{searchQuery}&quot;</p>
+                    <p className="text-sm">{t('reviews.searchNoResults', { q: searchQuery })}</p>
                   </div>
                 )}
                 {searchMode === 'review' && !searching && searchResults.length > 0 && (
                   <div>
-                    <p className="text-gray-500 text-xs px-4 py-3">{searchResults.length} kết quả</p>
+                    <p className="text-gray-500 text-xs px-4 py-3">{t('reviews.searchResultCount', { n: String(searchResults.length) })}</p>
                     <div className="grid grid-cols-2 gap-px bg-gray-800">
                       {searchResults.map(r => {
                         const thumb = r.photos?.[0]
@@ -1296,7 +1311,7 @@ export default function ReviewsPage() {
                 {!searchQuery && searchMode === 'review' && (
                   <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
                     <Search size={48} className="opacity-20" />
-                    <p className="text-sm">Tìm kiếm quán ăn, địa điểm hoặc nội dung bạn muốn xem</p>
+                    <p className="text-sm">{t('reviews.searchHintReview')}</p>
                   </div>
                 )}
                 {/* User search results */}
@@ -1305,19 +1320,19 @@ export default function ReviewsPage() {
                   {!userSearching && searchQuery && userSearchError && (
                     <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
                       <AlertCircle size={36} className="opacity-20" />
-                      <p className="text-sm">Không thể tìm kiếm. Vui lòng thử lại.</p>
+                      <p className="text-sm">{t('reviews.searchError')}</p>
                     </div>
                   )}
                   {!userSearching && !userSearchError && searchQuery && userResults.length === 0 && (
                     <div className="flex flex-col items-center pt-16 text-gray-500 gap-2">
                       <User size={36} className="opacity-20" />
-                      <p className="text-sm">Không tìm thấy người dùng nào</p>
+                      <p className="text-sm">{t('reviews.userSearchNoResults')}</p>
                     </div>
                   )}
                   {!userSearching && userResults.length > 0 && (
                     <div className="divide-y divide-gray-800">
                       {userResults.map(u => {
-                        const uname = u.full_name || 'Ẩn danh'
+                        const uname = u.full_name || t('reviews.anonymous')
                         return (
                           <Link key={u.id} href={`/users/${u.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900/50 transition-colors">
                             {u.avatar_url
@@ -1325,9 +1340,9 @@ export default function ReviewsPage() {
                               : <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center flex-shrink-0 text-white font-bold">{uname[0]?.toUpperCase()}</div>}
                             <div className="flex-1 min-w-0">
                               <p className="text-white font-semibold text-sm truncate">{uname}</p>
-                              <p className="text-gray-500 text-xs">{u.follower_count} followers · {u.following_count} following</p>
+                              <p className="text-gray-500 text-xs">{t('reviews.userFollowStats', { followers: String(u.follower_count), following: String(u.following_count) })}</p>
                             </div>
-                            <button onClick={e => { e.preventDefault(); toggleFollow(u.id) }} className={`text-xs font-semibold px-4 py-1.5 rounded-full flex-shrink-0 transition-colors ${u.is_following ? 'bg-gray-700 text-white' : 'bg-white text-black'}`}>{u.is_following ? 'Đang theo' : 'Theo dõi'}</button>
+                            <button onClick={e => { e.preventDefault(); toggleFollow(u.id) }} className={`text-xs font-semibold px-4 py-1.5 rounded-full flex-shrink-0 transition-colors ${u.is_following ? 'bg-gray-700 text-white' : 'bg-white text-black'}`}>{u.is_following ? t('reviews.following') : t('reviews.follow')}</button>
                           </Link>
                         )
                       })}
@@ -1336,7 +1351,7 @@ export default function ReviewsPage() {
                   {!searchQuery && (
                     <div className="flex flex-col items-center pt-20 text-gray-600 gap-3 px-8 text-center">
                       <User size={48} className="opacity-20" />
-                      <p className="text-sm">Tìm bạn bè theo tên, email hoặc số điện thoại</p>
+                      <p className="text-sm">{t('reviews.searchHintUser')}</p>
                     </div>
                   )}
                 </>}
@@ -1349,7 +1364,7 @@ export default function ReviewsPage() {
             me
               ? <ProfileTab userId={me} />
               : <div className="h-dvh flex items-center justify-center">
-                  <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">Đăng nhập để xem hồ sơ</Link>
+                  <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">{t('reviews.loginToViewProfile')}</Link>
                 </div>
           )}
 
