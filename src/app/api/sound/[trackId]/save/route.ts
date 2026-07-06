@@ -1,14 +1,15 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { createAdminClient } from '@/lib/supabase/admin'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
-async function savedCount(trackId: string): Promise<number> {
+// Total via the SECURITY DEFINER function (bypasses own-row RLS without a
+// service-role key). Best-effort — a failure just returns 0.
+async function savedCount(client: SupabaseClient, trackId: string): Promise<number> {
   try {
-    const { count } = await createAdminClient()
-      .from('music_saved').select('id', { count: 'exact', head: true }).eq('track_id', trackId)
-    return count ?? 0
+    const { data } = await client.rpc('music_saved_count', { p_track: trackId })
+    return Number(data) || 0
   } catch { return 0 }
 }
 
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest, { params }: { params: { trackId: st
   // 23505 = already saved → treat as success.
   if (error && error.code !== '23505') return NextResponse.json({ error: 'Không lưu được' }, { status: 500 })
 
-  return NextResponse.json({ saved: true, savedCount: await savedCount(trackId) })
+  return NextResponse.json({ saved: true, savedCount: await savedCount(supabase, trackId) })
 }
 
 // DELETE — remove the save.
@@ -35,5 +36,5 @@ export async function DELETE(req: NextRequest, { params }: { params: { trackId: 
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
 
   await supabase.from('music_saved').delete().eq('user_id', user.id).eq('track_id', trackId)
-  return NextResponse.json({ saved: false, savedCount: await savedCount(trackId) })
+  return NextResponse.json({ saved: false, savedCount: await savedCount(supabase, trackId) })
 }
