@@ -816,7 +816,7 @@ export default function ChatInterface({
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <span className="text-3xl">{catInfo?.emoji || '🤖'}</span>
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo?.label || 'TappyAI'}</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo ? t(`tag.${catInfo.id}`) : 'TappyAI'}</h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{t('chat.welcomeSubtitle')}</p>
                 {hasMemory && (
                   <Link

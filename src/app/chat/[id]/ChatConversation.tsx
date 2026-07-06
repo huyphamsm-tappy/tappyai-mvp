@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import ChatInterface from '@/components/ChatInterface'
 import { CATEGORIES } from '@/lib/utils'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface Conversation {
   id: string
@@ -14,6 +15,7 @@ interface Conversation {
 }
 
 export default function ChatConversation({ conversation }: { conversation: Conversation }) {
+  const { t } = useTranslation()
   const catInfo = CATEGORIES.find(c => c.id === conversation.category)
 
   const handleSave = useCallback(async (
@@ -31,7 +33,7 @@ export default function ChatConversation({ conversation }: { conversation: Conve
 
   return (
     <div className="flex flex-col h-dvh bg-white dark:bg-gray-950">
-      <Header showBack backHref="/" title={catInfo ? `${catInfo.emoji} ${catInfo.label}` : conversation.title} />
+      <Header showBack backHref="/" title={catInfo ? `${catInfo.emoji} ${t(`tag.${catInfo.id}`)}` : conversation.title} />
       <div className="flex-1 overflow-hidden">
         <ChatInterface
           initialCategory={conversation.category}

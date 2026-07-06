@@ -6,10 +6,12 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import ChatInterface from '@/components/ChatInterface'
 import { CATEGORIES } from '@/lib/utils'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 function ChatPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const { t } = useTranslation()
   const query = searchParams.get('q') || ''
   const category = searchParams.get('category') || 'general'
   const catInfo = CATEGORIES.find(c => c.id === category)
@@ -33,7 +35,7 @@ function ChatPageContent() {
 
   return (
     <div className="flex flex-col h-dvh bg-white dark:bg-gray-950">
-      <Header showBack backHref="/" title={catInfo ? `${catInfo.emoji} ${catInfo.label}` : 'TappyAI'} />
+      <Header showBack backHref="/" title={catInfo ? `${catInfo.emoji} ${t(`tag.${catInfo.id}`)}` : 'TappyAI'} />
       <div className="flex-1 overflow-hidden">
         <ChatInterface initialMessage={query} initialCategory={category} onSave={handleSave} />
       </div>
