@@ -57,7 +57,11 @@ export async function GET(req: NextRequest) {
       { headers: { access_token: tokens.access_token } }
     )
     const profile = await profileRes.json()
-    if (!profile.id) throw new Error('Cannot get Zalo profile')
+    if (!profile.id) {
+      // Surface Zalo's actual response so the exact cause (permission/scope,
+      // app-not-activated, token issue) is visible in the runtime logs.
+      throw new Error(`Cannot get Zalo profile (HTTP ${profileRes.status}): ${JSON.stringify(profile).slice(0, 400)}`)
+    }
 
     const zaloId = String(profile.id)
     const zaloEmail = `zalo_${zaloId}@zalo.tappyai.com`
