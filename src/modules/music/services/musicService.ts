@@ -1,3 +1,4 @@
+import type { SupabaseClient } from '@supabase/supabase-js'
 import * as musicRepository from '../repository/musicRepository'
 import { formatDuration, normalizeSearch, validateSelection } from '../utils'
 import type { MusicTrack } from '../types/track'
@@ -43,6 +44,18 @@ export function createSelection(trackId: string, startSec: number, volume: numbe
     throw new Error('Invalid music selection')
   }
   return selection
+}
+
+// --- Usage recording ---
+// Records that a track was used by a consuming entity (e.g. a posted review),
+// through the caller's authenticated client so the music_usage RLS policy is
+// satisfied. entityType is an opaque convention string owned by the caller —
+// the Music Module never enumerates feature names.
+export async function recordUsage(
+  client: SupabaseClient,
+  row: { trackId: string; entityType: string; entityId: string; userId: string }
+): Promise<void> {
+  return musicRepository.recordUsage(client, row)
 }
 
 // --- Preview metadata ---

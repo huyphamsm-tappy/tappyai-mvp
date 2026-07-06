@@ -255,6 +255,15 @@ export default function NewReviewPage() {
   const [hasOpenedMusicPicker, setHasOpenedMusicPicker] = useState(false)
   const openMusicPicker = () => { setHasOpenedMusicPicker(true); setMusicPickerOpen(true) }
 
+  // "Sử dụng âm thanh này" deep-link from a sound page (/reviews/new?sound=ID):
+  // preselect that track so the composer opens with the soundtrack attached.
+  // Read from window.location (not useSearchParams) so this statically-rendered
+  // page needs no Suspense boundary. Defaults match the selection panel.
+  useEffect(() => {
+    const sound = new URLSearchParams(window.location.search).get('sound')
+    if (sound) setMusic({ trackId: sound, startSec: 0, volume: 1 })
+  }, [])
+
   const resetVideoState = () => {
     setMedia_url(''); setThumbnail(''); setThumbPreview('')
     setUploadStep(''); setUploadProgress(0); setAiHashtags([])

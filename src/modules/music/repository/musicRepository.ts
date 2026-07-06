@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import type { MusicTrack } from '../types/track'
 import type { MusicCategory } from '../types/category'
 import type { MusicProvider } from '../types/provider'
@@ -148,6 +148,24 @@ export async function getCategories(): Promise<MusicCategory[]> {
     labelI18n: (row.label_i18n ?? {}) as Record<string, string>,
     sortOrder: row.sort_order,
   }))
+}
+
+// Append-only usage log write. Unlike the read paths, this cannot use the
+// module's own anon client: music_usage's INSERT policy is
+// WITH CHECK (auth.uid() = user_id), which the anon client (no session) can
+// never satisfy. So the caller passes in its own authenticated client (an API
+// route's per-request Supabase client) and RLS enforces that user_id matches
+// the signed-in user. Best-effort — the caller treats failures as non-fatal.
+export async function recordUsage(
+  client: SupabaseClient,
+  row: { trackId: string; entityType: string; entityId: string; userId: string }
+): Promise<void> {
+  await client.from('music_usage').insert({
+    track_id: row.trackId,
+    entity_type: row.entityType,
+    entity_id: row.entityId,
+    user_id: row.userId,
+  })
 }
 
 export async function getProviders(): Promise<MusicProvider[]> {

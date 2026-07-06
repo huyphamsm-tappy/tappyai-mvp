@@ -26,6 +26,7 @@ export {
   getCategories,
   getProviders,
   createSelection,
+  recordUsage,
   getPreviewUrl,
   getTrackDurationLabel,
   getCategoryLabel,

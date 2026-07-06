@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
-import { createSelection, getTrack } from '@/modules/music/server'
+import { createSelection, getTrack, recordUsage } from '@/modules/music/server'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -148,7 +148,7 @@ export async function POST(req: NextRequest) {
   if (hashtags.length > 0) reviewData.hashtags = hashtags
   if (music) reviewData.music = music
 
-  let { error: insertError } = await supabase.from('reviews').insert(reviewData)
+  let { data: insData, error: insertError } = await supabase.from('reviews').insert(reviewData).select('id').maybeSingle()
 
   // If photos column doesn't exist yet, retry without it
   if (insertError && photos.length > 0 && insertError.message?.includes('photos')) {
@@ -179,6 +179,22 @@ export async function POST(req: NextRequest) {
     // Log concise detail server-side for debugging; never leak DB error text to the client.
     console.error('Review insert error:', insertError.code ?? insertError.message)
     return NextResponse.json({ error: 'Không thể lưu bài viết, vui lòng thử lại' }, { status: 500 })
+  }
+
+  // Record music usage for the "sound page" virality loop (how many videos use
+  // a track, and which ones). Append-only history — best-effort, never blocks
+  // or fails the post. entity_type 'review' is this feature's own convention.
+  if (music) {
+    let reviewId = insData?.id as string | undefined
+    if (!reviewId) {
+      // A column-mismatch retry above may have re-inserted without returning id.
+      const { data: found } = await supabase
+        .from('reviews').select('id').eq('user_id', user.id).eq('place_id', placeId).maybeSingle()
+      reviewId = found?.id
+    }
+    if (reviewId) {
+      recordUsage(supabase, { trackId: music.trackId, entityType: 'review', entityId: reviewId, userId: user.id }).catch(() => {})
+    }
   }
 
   rebuildProfile(user.id, supabase).catch(() => {})
