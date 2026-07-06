@@ -27,18 +27,18 @@ function detectInAppBrowser(): { isInApp: boolean; name: string; isAndroid: bool
 }
 
 const EXPLORE_TAGS = [
-  { emoji: '🍜', label: 'Ăn uống' },
-  { emoji: '✈️', label: 'Du lịch' },
-  { emoji: '💆', label: 'Spa & Làm đẹp' },
-  { emoji: '🛍️', label: 'Mua sắm' },
-  { emoji: '🏨', label: 'Khách sạn' },
-  { emoji: '🎉', label: 'Giải trí' },
+  { emoji: '🍜', key: 'tag.food' },
+  { emoji: '✈️', key: 'tag.travel' },
+  { emoji: '💆', key: 'tag.spa' },
+  { emoji: '🛍️', key: 'tag.shopping' },
+  { emoji: '🏨', key: 'tag.hotel' },
+  { emoji: '🎉', key: 'tag.entertainment' },
 ]
 
 const FEATURES = [
-  { icon: Sparkles, text: 'Trợ lý AI cá nhân hóa, hiểu rõ nhu cầu của bạn' },
-  { icon: MapPin, text: 'Gợi ý địa điểm, dịch vụ thuần Việt, sát thực tế' },
-  { icon: Zap, text: 'Trả lời nhanh, chính xác với AI tiên tiến nhất' },
+  { icon: Sparkles, key: 'login.feature1' },
+  { icon: MapPin, key: 'login.feature2' },
+  { icon: Zap, key: 'login.feature3' },
 ]
 
 export default function LoginPage() {
@@ -211,18 +211,18 @@ export default function LoginPage() {
             <h1 className="brand-title text-3xl">TappyAI</h1>
           </div>
           <p className="brand-slogan mt-3 text-sm max-w-xs mx-auto">
-            Chạm đến mọi dịch vụ – AI Agent cá nhân hóa cho cuộc sống tại Việt Nam
+            {t('login.slogan')}
           </p>
 
           {/* Explore tags */}
           <div className="flex flex-wrap justify-center gap-2 mt-6 max-w-sm mx-auto">
             {EXPLORE_TAGS.map((tag) => (
               <span
-                key={tag.label}
+                key={tag.key}
                 className="explore-tag inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full shadow-sm"
               >
                 <span>{tag.emoji}</span>
-                {tag.label}
+                {t(tag.key)}
               </span>
             ))}
           </div>
@@ -237,11 +237,11 @@ export default function LoginPage() {
             {FEATURES.map((item) => {
               const Icon = item.icon
               return (
-                <div key={item.text} className="flex items-center gap-3">
+                <div key={item.key} className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center flex-shrink-0">
                     <Icon size={16} className="text-primary-500" />
                   </div>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm leading-snug">{item.text}</p>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm leading-snug">{t(item.key)}</p>
                 </div>
               )
             })}
@@ -252,12 +252,10 @@ export default function LoginPage() {
               {/* Cảnh báo trình duyệt trong app */}
               <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl px-4 py-4">
                 <p className="text-gray-900 dark:text-white font-semibold text-sm mb-1">
-                  ⚠️ Không thể đăng nhập Google trong {inApp.name}
+                  {t('login.inappTitle', { name: inApp.name })}
                 </p>
                 <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  Google không cho phép đăng nhập trong trình duyệt nội bộ của {inApp.name}.
-                  Hãy mở trang này bằng <span className="font-medium text-gray-900 dark:text-white">Chrome</span> hoặc{' '}
-                  <span className="font-medium text-gray-900 dark:text-white">Safari</span> để đăng nhập.
+                  {t('login.inappDesc', { name: inApp.name })}
                 </p>
               </div>
 
@@ -267,7 +265,7 @@ export default function LoginPage() {
                   className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-lg"
                 >
                   <ExternalLink size={20} />
-                  Mở bằng Chrome
+                  {t('login.openChrome')}
                 </button>
               )}
 
@@ -276,21 +274,19 @@ export default function LoginPage() {
                 className="w-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all"
               >
                 {copied ? <Check size={20} /> : <Copy size={20} />}
-                {copied ? 'Đã copy link!' : 'Sao chép link để mở ở trình duyệt khác'}
+                {copied ? t('login.copied') : t('login.copyLink')}
               </button>
 
               {!inApp.isAndroid && (
                 <p className="text-center text-gray-400 text-xs">
-                  Trên iPhone: bấm vào biểu tượng <span className="font-medium text-gray-700 dark:text-gray-200">⋯</span> hoặc{' '}
-                  <span className="font-medium text-gray-700 dark:text-gray-200">chia sẻ</span> ở góc màn hình và chọn{' '}
-                  <span className="font-medium text-gray-700 dark:text-gray-200">&quot;Mở trong Safari&quot;</span>
+                  {t('login.iosHint')}
                 </p>
               )}
 
               {/* Email OTP works inside any in-app browser, so it's offered here too */}
               <div className="flex items-center gap-3 pt-2">
                 <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-                <span className="text-xs text-gray-400">hoặc</span>
+                <span className="text-xs text-gray-400">{t('common.or')}</span>
                 <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
               </div>
               <EmailOtpBlock
@@ -321,7 +317,7 @@ export default function LoginPage() {
                       <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                     </svg>
                   )}
-                  {loadingGoogle ? 'Đang đăng nhập...' : 'Tiếp tục với Google'}
+                  {loadingGoogle ? t('login.signingIn') : t('login.continueGoogle')}
                 </button>
 
                 {/* Facebook — hidden via AUTH_PROVIDERS config; code preserved for re-enabling */}
@@ -329,7 +325,7 @@ export default function LoginPage() {
                   <>
                     <div className="flex items-center gap-3">
                       <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-                      <span className="text-xs text-gray-400">hoặc</span>
+                      <span className="text-xs text-gray-400">{t('common.or')}</span>
                       <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
                     </div>
                     <button
@@ -344,7 +340,7 @@ export default function LoginPage() {
                           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="white"/>
                         </svg>
                       )}
-                      {loadingFacebook ? 'Đang đăng nhập...' : 'Tiếp tục với Facebook'}
+                      {loadingFacebook ? t('login.signingIn') : t('login.continueFacebook')}
                     </button>
                   </>
                 )}
@@ -352,7 +348,7 @@ export default function LoginPage() {
                 {/* Divider */}
                 <div className="flex items-center gap-3">
                   <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-                  <span className="text-xs text-gray-400">hoặc</span>
+                  <span className="text-xs text-gray-400">{t('common.or')}</span>
                   <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
                 </div>
 
@@ -370,13 +366,13 @@ export default function LoginPage() {
                       <text x="24" y="34" textAnchor="middle" fontSize="22" fontWeight="bold" fill="white" fontFamily="Arial, sans-serif">Z</text>
                     </svg>
                   )}
-                  {loadingZalo ? 'Đang đăng nhập...' : 'Tiếp tục với Zalo'}
+                  {loadingZalo ? t('login.signingIn') : t('login.continueZalo')}
                 </button>
 
                 {/* Divider */}
                 <div className="flex items-center gap-3">
                   <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-                  <span className="text-xs text-gray-400">hoặc</span>
+                  <span className="text-xs text-gray-400">{t('common.or')}</span>
                   <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
                 </div>
 
@@ -390,10 +386,10 @@ export default function LoginPage() {
               </div>
 
               <p className="text-center text-gray-400 text-xs mt-6">
-                Bằng cách tiếp tục, bạn đồng ý với{' '}
-                <Link href="/terms" className="text-gray-600 dark:text-gray-300 underline">Điều khoản dịch vụ</Link>
-                {' '}và{' '}
-                <Link href="/privacy" className="text-gray-600 dark:text-gray-300 underline">Chính sách bảo mật</Link>
+                {t('login.agreePrefix')}{' '}
+                <Link href="/terms" className="text-gray-600 dark:text-gray-300 underline">{t('settings.terms')}</Link>
+                {' '}{t('common.and')}{' '}
+                <Link href="/privacy" className="text-gray-600 dark:text-gray-300 underline">{t('settings.privacy')}</Link>
               </p>
             </>
           )}
