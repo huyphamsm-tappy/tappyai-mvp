@@ -13,7 +13,7 @@ import { createClient } from '@/lib/supabase/client'
 import { track } from '@/lib/tracking/tracker'
 import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
-import VideoPlayer from '@/components/explore/VideoPlayer'
+import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicCard from './ReviewMusicCard'
 import ReviewMusicDisc from './ReviewMusicDisc'
@@ -203,10 +203,10 @@ function ShareModal({ review, onClose }: { review: Review; onClose: () => void }
 }
 
 /* ─── Single post (TikTok style) ─── */
-function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, onShare, onDelete }: {
+function Post({ r, me, feedType, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete }: {
   r: Review; me: string | null
   feedType: 'for-you' | 'latest' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'latest' | 'following') => void
-  onLike: (id: string) => void; onSave: (id: string) => void
+  onLike: (id: string) => void; onLikeDouble: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
 }) {
   const photos = (r.photos || []).filter(Boolean)
@@ -216,17 +216,65 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
   const [menu, setMenu] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const durationRef = useRef<number | null>(null)
+  const videoHandleRef = useRef<VideoPlayerHandle>(null)
 
   useEffect(() => {
     if (r.content_type !== 'video' || !containerRef.current) return
     return attachWatchTracker(containerRef.current, r.id, () => durationRef.current)
   }, [r.id, r.content_type])
 
+  // ── Feed gestures (TikTok-standard) ──────────────────────────────────
+  // Double tap → like (+ big heart burst + haptic). Long press → pause/resume
+  // the video. Single tap → nothing (never pauses). A gesture layer over the
+  // media owns these; the action rail / mute button sit above it and keep
+  // their own taps. touchAction:'pan-y' leaves vertical feed-scrolling native.
+  const [heartBurst, setHeartBurst] = useState(0)
+  const lastTapRef = useRef(0)
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const startPtRef = useRef<{ x: number; y: number } | null>(null)
+  const movedRef = useRef(false)
+  const longPressedRef = useRef(false)
+
+  const buzz = (ms: number) => { try { navigator.vibrate?.(ms) } catch { /* unsupported */ } }
+
+  const doubleTapLike = () => {
+    setHeartBurst((b) => b + 1) // always animate, even if already liked
+    buzz(20)
+    if (!r.liked_by_me) onLikeDouble(r.id) // like-only + optimistic; no re-like if liked
+  }
+
+  const clearLP = () => { if (longPressTimer.current) { clearTimeout(longPressTimer.current); longPressTimer.current = null } }
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    startPtRef.current = { x: e.clientX, y: e.clientY }
+    movedRef.current = false
+    longPressedRef.current = false
+    clearLP()
+    longPressTimer.current = setTimeout(() => {
+      longPressedRef.current = true
+      videoHandleRef.current?.togglePlay()
+      buzz(10)
+    }, 450)
+  }
+  const onPointerMove = (e: React.PointerEvent) => {
+    const s = startPtRef.current
+    if (!s) return
+    if (Math.abs(e.clientX - s.x) > 10 || Math.abs(e.clientY - s.y) > 10) { movedRef.current = true; clearLP() }
+  }
+  const onPointerUp = () => {
+    clearLP()
+    if (movedRef.current || longPressedRef.current) return // scroll or long-press, not a tap
+    const now = Date.now()
+    if (now - lastTapRef.current < 300) { lastTapRef.current = 0; doubleTapLike() }
+    else { lastTapRef.current = now } // single tap → nothing
+  }
+
   return (
     <div ref={containerRef} className="relative w-full h-dvh flex-shrink-0 snap-start bg-black overflow-hidden">
       {/* BG */}
       {r.content_type === 'video' && r.media_url
         ? <VideoPlayer
+            ref={videoHandleRef}
             url={r.media_url}
             thumbnail={r.thumbnail ?? undefined}
             sourceType={r.source_type ?? 'upload'}
@@ -236,6 +284,24 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onSave, onComment, on
         : photos.length > 0
         ? <Carousel photos={photos} />
         : <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />}
+
+      {/* Gesture layer — double-tap like / long-press pause. Sits above the
+          media but below the carousel nav (z-10) and the action rail (z-20). */}
+      <div
+        className="absolute inset-0 z-[5]"
+        style={{ touchAction: 'pan-y' }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={clearLP}
+      />
+
+      {/* Big heart burst on double-tap (key remount replays the animation) */}
+      {heartBurst > 0 && (
+        <div key={heartBurst} className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center">
+          <Heart size={112} className="fill-[#fe2c55] text-[#fe2c55] drop-shadow-2xl animate-heart-pop" />
+        </div>
+      )}
 
       {/* Top: for you / following */}
       <div className="absolute top-0 left-0 right-0 z-20 pt-12 px-4 flex items-center justify-center gap-6">
@@ -1078,6 +1144,33 @@ export default function ReviewsPage() {
       if (count % 5 === 0) inferPreferencesFromEvents(me)
     }
   }
+  // Double-tap like: like-only (never unlikes) + OPTIMISTIC with rollback, so
+  // the heart/count react instantly. The right-rail heart keeps the plain
+  // toggle `like`. Caller only invokes this when the post isn't already liked.
+  const likeOnly = async (id: string) => {
+    const cur = reviews.find(r => r.id === id)
+    if (!cur || cur.liked_by_me) return
+    setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: true, like_count: r.like_count + 1 } : r))
+    track('review_like', { review_id: id, place: cur.place_name, liked: true })
+    if (me) {
+      logUserEvent(me, 'like', { review_id: id })
+      const count = parseInt(localStorage.getItem('tappy_like_count') || '0') + 1
+      localStorage.setItem('tappy_like_count', String(count))
+      if (count % 5 === 0) inferPreferencesFromEvents(me)
+    }
+    try {
+      const res = await fetch(`/api/reviews/${id}/like`, { method: 'POST' })
+      if (!res.ok) throw new Error('like failed')
+      const data = await res.json()
+      // Server toggled OFF (it was already liked server-side) → reconcile to truth.
+      if (data.liked === false) {
+        setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: false, like_count: Math.max(0, r.like_count - 1) } : r))
+      }
+    } catch {
+      // rollback the optimistic like
+      setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: false, like_count: Math.max(0, r.like_count - 1) } : r))
+    }
+  }
   const save = async (id: string) => {
     let saved: boolean
     try {
@@ -1126,7 +1219,7 @@ export default function ReviewsPage() {
                     : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">Đăng ngay</Link>}
                 </div>
               : <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                  {reviews.map(r => <Post key={r.id} r={r} me={me} feedType={feedType} onFeedTypeChange={handleFeedTypeChange} onLike={like} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
+                  {reviews.map(r => <Post key={r.id} r={r} me={me} feedType={feedType} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
                 </div>
           )}
 

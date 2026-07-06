@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Volume2, VolumeX, Play } from 'lucide-react'
 
 interface VideoPlayerProps {
@@ -11,7 +11,16 @@ interface VideoPlayerProps {
   onDurationKnown?: (d: number) => void
 }
 
-export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sourceUrl, onWatchProgress, onDurationKnown }: VideoPlayerProps) {
+// Imperative handle the feed uses to pause/resume on long-press (single tap is
+// reserved — the feed's gesture layer owns taps for double-tap-to-like).
+export interface VideoPlayerHandle {
+  togglePlay: () => void
+}
+
+const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function VideoPlayer(
+  { url, thumbnail, sourceType = 'upload', sourceUrl, onWatchProgress, onDurationKnown },
+  ref
+) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
@@ -74,16 +83,20 @@ export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sou
     if (videoRef.current) videoRef.current.muted = next
   }
 
-  const handleTap = () => {
-    if (!videoRef.current) return
-    if (videoRef.current.paused) {
-      videoRef.current.play().catch(() => {})
+  // Manual pause/resume, driven by the feed's long-press gesture. While the
+  // user has paused, the play icon stays up as a cue; resuming hides it.
+  const togglePlay = () => {
+    const v = videoRef.current
+    if (!v || sourceType !== 'upload') return
+    if (v.paused) {
+      v.play().catch(() => {})
+      setShowPlayIcon(false)
     } else {
-      videoRef.current.pause()
+      v.pause()
       setShowPlayIcon(true)
-      setTimeout(() => setShowPlayIcon(false), 800)
     }
   }
+  useImperativeHandle(ref, () => ({ togglePlay }), [sourceType])
 
   // YouTube: iframe embed with autoplay muted
   if (sourceType === 'youtube') {
@@ -137,9 +150,10 @@ export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sou
     )
   }
 
-  // Native upload video
+  // Native upload video. No tap handler here — the feed's gesture layer owns
+  // taps (double-tap = like); pause is via long-press → togglePlay().
   return (
-    <div className="absolute inset-0 bg-black" onClick={handleTap}>
+    <div className="absolute inset-0 bg-black">
       {thumbnail && !playing && (
         <img src={thumbnail} alt="" className="absolute inset-0 w-full h-full object-cover" />
       )}
@@ -172,4 +186,6 @@ export default function VideoPlayer({ url, thumbnail, sourceType = 'upload', sou
       </button>
     </div>
   )
-}
+})
+
+export default VideoPlayer
