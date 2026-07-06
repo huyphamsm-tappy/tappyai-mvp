@@ -13,6 +13,7 @@ import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const MOODS = [
   { emoji: '😊', label: 'Vui', prompt: 'Mình đang vui, Tappy gợi ý chỗ ăn uống hoặc vui chơi gì vibe hay không?' },
@@ -412,6 +413,7 @@ export default function ChatInterface({
   onSave,
 }: ChatInterfaceProps) {
   const router = useRouter()
+  const { t } = useTranslation()
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   // Tracks the in-flight save so internal_booking clicks can await it before
@@ -801,7 +803,7 @@ export default function ChatInterface({
                   <span className="text-3xl">{catInfo?.emoji || '🤖'}</span>
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo?.label || 'TappyAI'}</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Tôi có thể giúp bạn tìm thông tin chính xác</p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{t('chat.welcomeSubtitle')}</p>
                 {hasMemory && (
                   <Link
                     href="/profile/tappy-knows"
@@ -1008,7 +1010,7 @@ export default function ChatInterface({
                     // returnTo carries the current chat URL (incl. ?q=) so the message
                     // auto-resumes after a successful login.
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
-                      <p className="leading-relaxed">Cần đăng nhập để trò chuyện với Tappy 💬 Tin nhắn của bạn được giữ nguyên — đăng nhập để tiếp tục ngay nhé!</p>
+                      <p className="leading-relaxed">{t('chat.loginPrompt')}</p>
                       <button
                         type="button"
                         onClick={() => {
@@ -1141,7 +1143,7 @@ export default function ChatInterface({
                 e.target.style.height = Math.min(e.target.scrollHeight, 160) + 'px'
               }}
               onKeyDown={handleKeyDown}
-              placeholder={imageFile ? 'Hỏi Tappy về ảnh này...' : 'Nhắn tin với TappyAI...'}
+              placeholder={imageFile ? t('chat.inputImagePlaceholder') : t('chat.inputPlaceholder')}
               disabled={isLoading}
               rows={1}
               className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none transition-all overflow-hidden"
@@ -1206,7 +1208,7 @@ export default function ChatInterface({
               <Square size={15} className="text-gray-700 dark:text-gray-200 fill-current" />
             </button>
           ) : (
-            <button type="submit" disabled={!input.trim() && !imageFile} aria-label="Gửi" className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
+            <button type="submit" disabled={!input.trim() && !imageFile} aria-label={t('chat.send')} className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
               <Send size={18} className="text-white" />
             </button>
           )}

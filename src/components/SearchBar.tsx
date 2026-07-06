@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, Sparkles, ArrowUp, Smile, Mic } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const EMOJIS = [
   '😀','😄','😂','🤣','😊','😍',
@@ -20,6 +21,7 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ placeholder, onSearch, variant = 'default' }: SearchBarProps) {
+  const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({})
@@ -87,7 +89,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
   const startVoice = useCallback(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SR) {
-      setVoiceError('Trình duyệt chưa hỗ trợ nhập bằng giọng nói. Hãy dùng Chrome hoặc Edge nhé.')
+      setVoiceError(t('search.errNoSupport'))
       return
     }
     setVoiceError(null)
@@ -119,18 +121,18 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
       switch (event.error) {
         case 'not-allowed':
         case 'service-not-allowed':
-          setVoiceError('Cần cấp quyền micro để nói. Hãy bật quyền cho trang rồi thử lại nhé.')
+          setVoiceError(t('search.errMicPerm'))
           break
         case 'no-speech':
-          setVoiceError('Mình chưa nghe thấy gì — bấm micro và nói lại nhé.')
+          setVoiceError(t('search.errNoSpeech'))
           break
         case 'audio-capture':
-          setVoiceError('Không tìm thấy micro trên thiết bị.')
+          setVoiceError(t('search.errNoMic'))
           break
         case 'aborted':
           break
         default:
-          setVoiceError('Có trục trặc khi nhận giọng nói, thử lại nhé.')
+          setVoiceError(t('search.errGeneric'))
       }
     }
     recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -144,7 +146,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
       recognition.start()
     } catch {
       setIsListening(false)
-      setVoiceError('Không khởi động được micro. Tải lại trang rồi thử lại nhé.')
+      setVoiceError(t('search.errStart'))
     }
   }, [query, cancelAutoSend])
 
@@ -209,7 +211,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
               if (pendingSend) cancelAutoSend()
               setQuery(e.target.value)
             }}
-            placeholder={placeholder || 'Hỏi TappyAI bất cứ điều gì...'}
+            placeholder={placeholder || t('search.placeholder')}
             className="w-full bg-white dark:bg-gray-900 rounded-2xl pl-11 pr-[130px] py-4 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/60 text-base shadow-lg transition-all"
           />
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -233,7 +235,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
             <button
               type="button"
               onClick={isListening ? stopVoice : startVoice}
-              aria-label={isListening ? 'Dừng nghe' : 'Nói để nhập'}
+              aria-label={isListening ? t('search.voiceStop') : t('search.voiceStart')}
               aria-pressed={isListening}
               className={cn(
                 'w-9 h-9 rounded-xl flex items-center justify-center transition-all',
@@ -262,7 +264,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
         {isListening && (
           <div role="status" aria-live="polite" className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs bg-white/90 dark:bg-gray-900/90 text-[#FF9500] shadow">
             <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
-            <span>Đang nghe… nói xong Tappy tự mở chat (bạn có 2 giây để sửa trước).</span>
+            <span>{t('search.listening')}</span>
           </div>
         )}
         {!isListening && pendingSend && (
@@ -272,7 +274,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
             className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs bg-white/90 dark:bg-gray-900/90 text-[#FF9500] shadow hover:bg-white dark:hover:bg-gray-900 transition-colors"
           >
             <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
-            <span>Đang mở chat trong giây lát… chạm để sửa trước.</span>
+            <span>{t('search.opening')}</span>
           </button>
         )}
         {!isListening && !pendingSend && voiceError && (
@@ -291,7 +293,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder={placeholder || 'Hỏi TappyAI về ăn uống, du lịch, spa...'}
+        placeholder={placeholder || t('search.placeholderExplore')}
         className="w-full bg-gray-100 dark:bg-gray-800 rounded-2xl pl-11 pr-4 py-3 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-base transition-all"
       />
       {query && (
