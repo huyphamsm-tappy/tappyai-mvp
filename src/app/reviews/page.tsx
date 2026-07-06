@@ -435,18 +435,18 @@ function ProfileTab({ userId }: { userId: string }) {
         setPrefs(prefsRes)
         const allPosts = (reviewsRes.reviews || []).map((r: Review) => ({ ...r, is_hidden: false }))
         setPosts(allPosts)
-        const { data: hiddenData, error: hiddenError } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
+        const { data: hiddenData, error: hiddenError } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
         if (hiddenError) throw hiddenError
         setHidden((hiddenData || []).map((r: any) => ({ ...r } as Review)))
         if (likedRes.length > 0) {
           const likedIds = (likedRes as { review_id: string }[]).map(l => l.review_id)
-          const { data: likedData, error: likedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at').in('id', likedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
+          const { data: likedData, error: likedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').in('id', likedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
           if (likedError) throw likedError
           setLikedPosts((likedData || []).map((r: any) => ({ ...r, liked_by_me: true, saved_by_me: false })))
         }
         if (savedRes.length > 0) {
           const savedIds = (savedRes as { review_id: string }[]).map(s => s.review_id)
-          const { data: savedData, error: savedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at').in('id', savedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
+          const { data: savedData, error: savedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').in('id', savedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
           if (savedError) throw savedError
           setSavedPosts((savedData || []).map((r: any) => ({ ...r, liked_by_me: false, saved_by_me: true })))
         }

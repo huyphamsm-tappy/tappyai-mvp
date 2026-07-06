@@ -79,7 +79,9 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     e.stopPropagation()
     const next = !muted
     setMuted(next)
-    localStorage.setItem('tappy_video_muted', String(!next))
+    // Store the ACTUAL muted state. (Was String(!next) — inverted — so unmuting
+    // never persisted: on reload the video muted itself again.)
+    localStorage.setItem('tappy_video_muted', String(next))
     if (videoRef.current) videoRef.current.muted = next
   }
 
@@ -178,11 +180,14 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
           </div>
         </div>
       )}
+      {/* Autoplay must start muted (browser policy). Make unmuting obvious:
+          a labelled "Bật tiếng" pill while muted, a plain icon once on. */}
       <button
         onClick={toggleMute}
-        className="absolute top-14 right-3 z-30 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center backdrop-blur-sm"
+        aria-label={muted ? 'Bật tiếng' : 'Tắt tiếng'}
+        className="absolute top-14 right-3 z-30 flex items-center gap-1 h-8 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-semibold px-2.5"
       >
-        {muted ? <VolumeX size={16} className="text-white" /> : <Volume2 size={16} className="text-white" />}
+        {muted ? <><VolumeX size={15} /> Bật tiếng</> : <Volume2 size={15} />}
       </button>
     </div>
   )
