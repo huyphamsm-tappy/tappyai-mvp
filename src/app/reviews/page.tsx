@@ -103,7 +103,7 @@ function Carousel({ photos }: { photos: string[] }) {
 }
 
 /* ─── Comment drawer ─── */
-function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: () => void; onAdded: (id: string, count: number) => void }) {
+function CommentDrawer({ review, me, onClose, onAdded }: { review: Review; me: string | null; onClose: () => void; onAdded: (id: string, count: number) => void }) {
   const { t } = useTranslation()
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
@@ -111,15 +111,29 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
   const [sendError, setSendError] = useState(false)
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
+  // Local, authoritative count so the header updates the moment a comment is
+  // posted or deleted (the review.comment_count prop is a stale snapshot).
+  const [count, setCount] = useState(review.comment_count)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     setLoadError(false)
     fetch(`/api/reviews/${review.id}/comments`)
       .then(r => { if (!r.ok) throw new Error('load_failed'); return r.json() })
-      .then(d => setComments(d.comments || []))
+      .then(d => { setComments(d.comments || []); if (typeof d.count === 'number') setCount(d.count) })
       .catch(() => setLoadError(true))
       .finally(() => setLoading(false))
   }, [review.id])
+  const del = async (commentId: string) => {
+    try {
+      const res = await fetch(`/api/reviews/${review.id}/comments?commentId=${commentId}`, { method: 'DELETE' })
+      if (!res.ok) return
+      const d = await res.json()
+      setComments(p => p.filter(c => c.id !== commentId))
+      const newCount = typeof d.count === 'number' ? d.count : Math.max(0, count - 1)
+      setCount(newCount)
+      onAdded(review.id, newCount) // keep the feed rail count in sync
+    } catch { /* leave the comment in place on failure */ }
+  }
   const send = async () => {
     if (!text.trim() || sending) return
     setSending(true)
@@ -130,6 +144,7 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
       if (res.ok) {
         setComments(p => [...p, d.comment])
         setText('')
+        if (typeof d.count === 'number') setCount(d.count)
         onAdded(review.id, d.count)
         setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth' }), 100)
       } else {
@@ -147,7 +162,7 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
       <div className="fixed bottom-[60px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[390px] z-50 bg-[#1a1a1a] rounded-t-3xl max-h-[60vh] flex flex-col">
         <div className="flex justify-center py-2 flex-shrink-0"><div className="w-8 h-1 bg-gray-600 rounded-full" /></div>
         <div className="flex items-center px-4 pb-3 flex-shrink-0">
-          <h3 className="font-semibold text-white flex-1">{t('reviews.commentsTitle', { n: String(review.comment_count) })}</h3>
+          <h3 className="font-semibold text-white flex-1">{t('reviews.commentsTitle', { n: String(count) })}</h3>
           <button onClick={onClose}><X size={20} className="text-gray-400" /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-4 space-y-4 pb-2 min-h-0">
@@ -159,7 +174,12 @@ function CommentDrawer({ review, onClose, onAdded }: { review: Review; onClose: 
               return <div key={c.id} className="flex gap-2.5">
                 {c.profiles?.avatar_url ? <Image src={c.profiles.avatar_url} alt={n} width={32} height={32} className="rounded-full flex-shrink-0" />
                   : <div className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">{n[0]?.toUpperCase()}</div>}
-                <div><p className="text-xs font-semibold text-white">{n} <span className="text-gray-500 font-normal">{ago(c.created_at, t)}</span></p><p className="text-sm text-gray-300 mt-0.5">{c.body}</p></div>
+                <div className="flex-1 min-w-0"><p className="text-xs font-semibold text-white">{n} <span className="text-gray-500 font-normal">{ago(c.created_at, t)}</span></p><p className="text-sm text-gray-300 mt-0.5">{c.body}</p></div>
+                {c.user_id === me && (
+                  <button onClick={() => del(c.id)} aria-label={t('reviews.commentDelete')} className="flex-shrink-0 self-start p-1 -mr-1 text-gray-500 hover:text-red-400 transition-colors">
+                    <Trash2 size={14} />
+                  </button>
+                )}
               </div>
             })}
           <div ref={ref} />
@@ -1389,7 +1409,7 @@ export default function ReviewsPage() {
 
       <TikNav tab={tab} setTab={handleSetTab} userId={me} />
 
-      {commentOf && <CommentDrawer review={commentOf} onClose={() => setCommentOf(null)} onAdded={addComment} />}
+      {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
     </div>
   )

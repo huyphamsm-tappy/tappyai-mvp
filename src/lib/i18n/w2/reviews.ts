@@ -30,6 +30,7 @@ export const vi: Record<string, string> = {
   'reviews.commentSendError': 'Không thể đăng bình luận. Vui lòng thử lại.',
   'reviews.commentPlaceholder': 'Thêm bình luận...',
   'reviews.commentSend': 'Đăng',
+  'reviews.commentDelete': 'Xóa bình luận',
 
   // Share sheet
   'reviews.shareTitle': 'Chia sẻ với bạn bè',
@@ -157,6 +158,7 @@ export const en: Record<string, string> = {
   'reviews.commentSendError': "Couldn't post your comment. Please try again.",
   'reviews.commentPlaceholder': 'Add a comment...',
   'reviews.commentSend': 'Post',
+  'reviews.commentDelete': 'Delete comment',
 
   // Share sheet
   'reviews.shareTitle': 'Share with friends',

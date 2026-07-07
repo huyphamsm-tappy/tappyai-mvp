@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { Loader2, MessageCircle, X } from 'lucide-react'
+import { Loader2, MessageCircle, X, Trash2 } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 interface CommentProfile { full_name: string | null; avatar_url: string | null }
 interface Comment { id: string; body: string; created_at: string; user_id: string; profiles: CommentProfile | null }
@@ -32,7 +33,22 @@ export default function ReviewCommentButton({
   const [loading, setLoading] = useState(true)
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
+  const [me, setMe] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data }) => setMe(data.user?.id ?? null))
+  }, [])
+
+  const del = async (commentId: string) => {
+    try {
+      const res = await fetch(`/api/reviews/${reviewId}/comments?commentId=${commentId}`, { method: 'DELETE' })
+      if (!res.ok) return
+      const d = await res.json()
+      setComments(prev => prev.filter(c => c.id !== commentId))
+      if (typeof d.count === 'number') setCount(d.count)
+    } catch { /* leave in place on failure */ }
+  }
 
   useEffect(() => {
     if (!open) return
@@ -110,12 +126,17 @@ export default function ReviewCommentButton({
                           {name[0]?.toUpperCase()}
                         </div>
                       )}
-                      <div>
+                      <div className="flex-1 min-w-0">
                         <p className="text-xs font-semibold text-white">
                           {name} <span className="text-gray-500 font-normal">{timeAgo(c.created_at)}</span>
                         </p>
                         <p className="text-sm text-gray-300 mt-0.5">{c.body}</p>
                       </div>
+                      {c.user_id === me && (
+                        <button onClick={() => del(c.id)} aria-label="Xóa bình luận" className="flex-shrink-0 self-start p-1 -mr-1 text-gray-500 hover:text-red-400 transition-colors">
+                          <Trash2 size={14} />
+                        </button>
+                      )}
                     </div>
                   )
                 })
