@@ -153,7 +153,7 @@ export default function ReviewDetailView({
                 alt={firstName}
                 width={28}
                 height={28}
-                className="rounded-full ring-1 ring-white/30 flex-shrink-0"
+                className="w-7 h-7 rounded-full object-cover ring-1 ring-white/30 flex-shrink-0"
               />
             ) : (
               <div

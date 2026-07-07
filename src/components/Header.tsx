@@ -89,7 +89,7 @@ export default function Header({ user, showBack, backHref, title }: HeaderProps)
                   alt={user.full_name || 'Avatar'}
                   width={32}
                   height={32}
-                  className="rounded-full ring-2 ring-primary-500/20"
+                  className="w-8 h-8 rounded-full object-cover ring-2 ring-primary-500/20"
                 />
               ) : (
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
