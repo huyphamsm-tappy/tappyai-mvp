@@ -1116,9 +1116,12 @@ export default function ReviewsPage() {
       const d = await res.json()
       setUserResults(prev => prev.map(u => u.id === targetId ? { ...u, is_following: d.following, follower_count: d.follower_count } : u))
     } else {
-      // revert
+      // revert — undo the optimistic delta. u.is_following here is the ALREADY-
+      // flipped (optimistic) value, so the sign must match the optimistic line
+      // above (? -1 : 1), not its inverse. (Bug: it was ? 1 : -1, which pushed
+      // the count 2 further off — a failed follow read 12 instead of back to 10.)
       setUserResults(prev => prev.map(u => u.id === targetId
-        ? { ...u, is_following: !u.is_following, follower_count: u.follower_count + (u.is_following ? 1 : -1) }
+        ? { ...u, is_following: !u.is_following, follower_count: u.follower_count + (u.is_following ? -1 : 1) }
         : u))
     }
   }
