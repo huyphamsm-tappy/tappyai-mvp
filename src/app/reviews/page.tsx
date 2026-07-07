@@ -228,13 +228,16 @@ function ShareModal({ review, onClose }: { review: Review; onClose: () => void }
 }
 
 /* ─── Single post (TikTok style) ─── */
-function Post({ r, me, feedType, renderVideo, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete }: {
+function Post({ r, me, feedType, renderVideo, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete }: {
   r: Review; me: string | null
   // Only the active slide (± 1 neighbour) mounts a real <video>. Off-screen
   // slides render just the thumbnail. iOS Safari caps how many HTMLMediaElements
   // can buffer at once, so mounting every feed video froze the media pipeline —
   // new uploads wouldn't play and scrolling stalled until the tab was reloaded.
   renderVideo: boolean
+  // The for-you/following/latest switcher only belongs on the main feed — hidden
+  // when the same Post powers the profile clip viewer.
+  showFeedTabs?: boolean
   feedType: 'for-you' | 'latest' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'latest' | 'following') => void
   onLike: (id: string) => void; onLikeDouble: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
@@ -347,9 +350,11 @@ function Post({ r, me, feedType, renderVideo, onFeedTypeChange, onLike, onLikeDo
 
       {/* Top: for you / following */}
       <div className="absolute top-0 left-0 right-0 z-20 pt-12 px-4 flex items-center justify-center gap-6">
-        <button onClick={() => onFeedTypeChange('following')} className={`text-xs font-medium ${feedType === 'following' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabFollowing')}</button>
-        <button onClick={() => onFeedTypeChange('for-you')} className={`text-xs font-medium ${feedType === 'for-you' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabForYou')}</button>
-        <button onClick={() => onFeedTypeChange('latest')} className={`text-xs font-medium ${feedType === 'latest' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabLatest')}</button>
+        {showFeedTabs && <>
+          <button onClick={() => onFeedTypeChange('following')} className={`text-xs font-medium ${feedType === 'following' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabFollowing')}</button>
+          <button onClick={() => onFeedTypeChange('for-you')} className={`text-xs font-medium ${feedType === 'for-you' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabForYou')}</button>
+          <button onClick={() => onFeedTypeChange('latest')} className={`text-xs font-medium ${feedType === 'latest' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabLatest')}</button>
+        </>}
         {isMe && (
           <div className="absolute right-4 top-12">
             <button onClick={() => setMenu(v => !v)} className="w-8 h-8 flex items-center justify-center">
@@ -443,6 +448,104 @@ function RAction({ icon, label, onClick }: { icon: React.ReactNode; label?: stri
   )
 }
 
+/* ─── Swipeable clip viewer — opens from the profile grid with the SAME UX as
+   the main feed: swipe/arrow between clips, single-tap pause, double-tap like,
+   like/comment/save/share, own-post delete/hide. Reuses Post/CommentDrawer/ShareModal. */
+function ClipViewer({ posts, startIndex, me, onClose }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void }) {
+  const [items, setItems] = useState<Review[]>(posts)
+  const [activeIndex, setActiveIndex] = useState(startIndex)
+  const [commentOf, setCommentOf] = useState<Review | null>(null)
+  const [shareOf, setShareOf] = useState<Review | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Jump straight to the tapped clip on open.
+  useEffect(() => {
+    const c = containerRef.current
+    if (c) c.scrollTo({ top: startIndex * c.clientHeight, behavior: 'auto' })
+  }, [startIndex])
+
+  const requireLogin = () => { if (me) return false; window.location.href = '/login?returnTo=/reviews'; return true }
+
+  const like = async (id: string) => {
+    if (requireLogin()) return
+    let liked: boolean
+    try {
+      const res = await fetch(`/api/reviews/${id}/like`, { method: 'POST' })
+      if (!res.ok) return
+      const data = await res.json()
+      if (typeof data.liked !== 'boolean') return
+      liked = data.liked
+    } catch { return }
+    setItems(p => p.map(r => r.id === id ? { ...r, liked_by_me: liked, like_count: Math.max(0, r.like_count + (liked ? 1 : -1)) } : r))
+  }
+  const likeOnly = async (id: string) => {
+    if (requireLogin()) return
+    const cur = items.find(r => r.id === id)
+    if (!cur || cur.liked_by_me) return
+    setItems(p => p.map(r => r.id === id ? { ...r, liked_by_me: true, like_count: r.like_count + 1 } : r))
+    try {
+      const res = await fetch(`/api/reviews/${id}/like`, { method: 'POST' })
+      if (!res.ok) throw new Error('like failed')
+      const data = await res.json()
+      if (data.liked === false) setItems(p => p.map(r => r.id === id ? { ...r, liked_by_me: false, like_count: Math.max(0, r.like_count - 1) } : r))
+    } catch {
+      setItems(p => p.map(r => r.id === id ? { ...r, liked_by_me: false, like_count: Math.max(0, r.like_count - 1) } : r))
+    }
+  }
+  const save = async (id: string) => {
+    if (requireLogin()) return
+    let saved: boolean
+    try {
+      const res = await fetch(`/api/reviews/${id}/save`, { method: 'POST' })
+      if (!res.ok) return
+      const data = await res.json()
+      if (typeof data.saved !== 'boolean') return
+      saved = data.saved
+    } catch { return }
+    setItems(p => p.map(r => r.id === id ? { ...r, saved_by_me: saved } : r))
+  }
+  const del = (id: string) => { setItems(p => p.filter(r => r.id !== id)) }
+  const addComment = (id: string, count: number) => setItems(p => p.map(r => r.id === id ? { ...r, comment_count: count } : r))
+
+  const scrollFeed = (dir: 1 | -1) => {
+    const c = containerRef.current
+    if (!c) return
+    const cur = Math.round(c.scrollTop / c.clientHeight)
+    const next = Math.max(0, Math.min(items.length - 1, cur + dir))
+    c.scrollTo({ top: next * c.clientHeight, behavior: 'auto' })
+    setActiveIndex(next)
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black flex justify-center">
+      <button onClick={onClose} aria-label="Đóng" className="absolute top-4 left-4 z-[60] w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white active:scale-90 transition-transform">
+        <ChevronLeft size={24} />
+      </button>
+      <div className="w-full max-w-container-compact relative h-dvh">
+        <div ref={containerRef}
+          onScroll={e => { const c = e.currentTarget; const idx = Math.round(c.scrollTop / c.clientHeight); setActiveIndex(prev => (prev === idx ? prev : idx)) }}
+          className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+          {items.map((r, i) => (
+            <Post key={r.id} r={r} me={me} feedType="latest" showFeedTabs={false}
+              renderVideo={i === activeIndex || i === activeIndex + 1}
+              onFeedTypeChange={() => {}} onLike={like} onLikeDouble={likeOnly} onSave={save}
+              onComment={setCommentOf} onShare={setShareOf} onDelete={del} />
+          ))}
+        </div>
+        {/* Desktop prev/next — no swipe on desktop */}
+        <div className="hidden md:flex flex-col gap-3 absolute left-full ml-4 top-1/2 -translate-y-1/2 z-40">
+          <button onClick={() => scrollFeed(-1)} disabled={activeIndex <= 0} aria-label="Clip trước"
+            className="w-11 h-11 rounded-full bg-gray-800/90 text-white flex items-center justify-center hover:bg-gray-700 disabled:opacity-30 disabled:cursor-default transition-colors"><ChevronUp size={22} /></button>
+          <button onClick={() => scrollFeed(1)} disabled={activeIndex >= items.length - 1} aria-label="Clip sau"
+            className="w-11 h-11 rounded-full bg-gray-800/90 text-white flex items-center justify-center hover:bg-gray-700 disabled:opacity-30 disabled:cursor-default transition-colors"><ChevronDown size={22} /></button>
+        </div>
+      </div>
+      {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
+      {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
+    </div>
+  )
+}
+
 /* ─── Profile Tab (TikTok style) ─── */
 function ProfileTab({ userId }: { userId: string }) {
   const { t } = useTranslation()
@@ -458,8 +561,8 @@ function ProfileTab({ userId }: { userId: string }) {
   const [loadError, setLoadError] = useState(false)
   const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'liked'>('posts')
   const [sel, setSel] = useState<Review | null>(null)
+  const [viewerStart, setViewerStart] = useState<number | null>(null) // index into displayPosts when the swipe viewer is open
   const [prefs, setPrefs] = useState<UserPreferences | null>(null)
-  const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
@@ -520,13 +623,12 @@ function ProfileTab({ userId }: { userId: string }) {
   const allMyPosts = [...posts, ...hidden].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as (Review & { is_hidden?: boolean })[]
   const displayPosts = activeTab === 'posts' ? allMyPosts : activeTab === 'saved' ? savedPosts : likedPosts
 
+  // Tapping any grid tile opens the swipeable clip viewer at that clip — same
+  // feed UX (swipe, tap-pause, double-tap like, comment/save/share) instead of
+  // a dead-end single detail page.
   const handleGridClick = (r: Review) => {
-    if (activeTab === 'posts') {
-      setSel(sel?.id === r.id ? null : r as Review)
-    } else {
-      sessionStorage.setItem('reviews_tab', activeTab)
-      router.push(`/reviews/${r.id}`)
-    }
+    const idx = displayPosts.findIndex(p => p.id === r.id)
+    if (idx >= 0) setViewerStart(idx)
   }
 
   const emptyState = {
@@ -670,6 +772,11 @@ function ProfileTab({ userId }: { userId: string }) {
             </div>
           </div>
         </>
+      )}
+
+      {/* Swipeable clip viewer — opens on grid tap */}
+      {viewerStart !== null && (
+        <ClipViewer posts={displayPosts} startIndex={viewerStart} me={userId} onClose={() => setViewerStart(null)} />
       )}
     </div>
   )
