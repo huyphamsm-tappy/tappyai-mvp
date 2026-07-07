@@ -1114,9 +1114,16 @@ export default function ReviewsPage() {
   }
 
   // Desktop has no swipe — scroll one slide up/down via on-screen arrows.
+  // scroll-snap-type: mandatory cancels a programmatic smooth scroll (it re-snaps
+  // to the current slide before the animation advances), so briefly disable snap
+  // for the duration of the smooth scroll, then restore it.
   const scrollFeed = (dir: 1 | -1) => {
     const c = containerRef.current
-    if (c) c.scrollBy({ top: dir * c.clientHeight, behavior: 'smooth' })
+    if (!c) return
+    const cur = Math.round(c.scrollTop / c.clientHeight)
+    c.style.scrollSnapType = 'none'
+    c.scrollTo({ top: (cur + dir) * c.clientHeight, behavior: 'smooth' })
+    setTimeout(() => { c.style.scrollSnapType = '' }, 500)
   }
 
   // Debounced search
