@@ -48,7 +48,14 @@ export async function middleware(request: NextRequest) {
   // router.replace() so that the browser's Back button works correctly on
   // iOS Safari (server-side 307 redirects during Back navigation add a new
   // history entry on Safari, creating an infinite Back→login→service loop).
-  await supabase.auth.getSession()
+  //
+  // MUST be getUser(), not getSession(): only getUser() revalidates the token
+  // against the Supabase auth server and rotates/writes the refreshed access+
+  // refresh cookies back onto supabaseResponse. getSession() just reads cookies
+  // without a guaranteed refresh, so once the ~1h access token expired the
+  // server started rendering the user as logged-out (the reported "desktop
+  // session logs out periodically" symptom).
+  await supabase.auth.getUser()
 
   return supabaseResponse
 }

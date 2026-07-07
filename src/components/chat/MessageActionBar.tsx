@@ -25,7 +25,10 @@ interface Props {
   onTTSSkipForward: () => void
   onTTSSpeedChange: (speed: number) => void
   onTTSStop: () => void
-  onRegenerate: () => void
+  // Optional: only the latest assistant message can be regenerated (useChat.reload()
+  // always re-runs the LAST turn). Omitting it on older messages hides the button so
+  // the user can't click "Tạo lại" on turn 2 and silently regenerate turn 5.
+  onRegenerate?: () => void
 }
 
 const SPEED_OPTIONS = [1, 1.5, 2]
@@ -203,10 +206,12 @@ export default function MessageActionBar({
           <Volume2 size={14} />
         </button>
 
-        {/* Regenerate */}
-        <button onClick={() => { posthog.capture('message_action', { action: 'regenerate' }); onRegenerate() }} className={btnBase} title="Tạo lại">
-          <RefreshCw size={14} />
-        </button>
+        {/* Regenerate — only rendered for the latest assistant message */}
+        {onRegenerate && (
+          <button onClick={() => { posthog.capture('message_action', { action: 'regenerate' }); onRegenerate() }} className={btnBase} title="Tạo lại">
+            <RefreshCw size={14} />
+          </button>
+        )}
 
         {/* More menu */}
         <div className="relative" ref={moreRef}>

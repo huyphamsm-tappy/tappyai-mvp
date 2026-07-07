@@ -763,6 +763,7 @@ export default function ChatInterface({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
+      cancelAutoSend() // pressing Enter is a manual send — supersede any queued voice auto-send so it can't fire a second (duplicate) submit
       if ((input.trim() || imageFile) && !isLoading) {
         posthog.capture('chat_message_sent', { input_method: 'keyboard', has_image: !!imageFile })
         const fakeForm = { preventDefault: () => {} } as React.FormEvent<HTMLFormElement>
@@ -908,7 +909,7 @@ export default function ChatInterface({
                         onTTSSkipForward={tts.skipForward}
                         onTTSSpeedChange={tts.changeSpeed}
                         onTTSStop={tts.stop}
-                        onRegenerate={reload}
+                        onRegenerate={isLastMessage ? reload : undefined}
                       />
                       <SavePlaceButton text={text} buttons={buttons} />
                       {buttons.length > 0 && (

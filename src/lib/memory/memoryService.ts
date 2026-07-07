@@ -246,17 +246,26 @@ Quy tac:
       parsed.history = [...new Set(combined)].slice(-10)
     }
 
-    // Merge preferences (keep existing keys not in new extraction)
+    // An extracted value counts as "no new data" when it is null/undefined, an
+    // empty string, or an empty array — so it must NOT clobber a populated
+    // existing value. (Bug: the LLM occasionally emits `{ food: [] }` for a key
+    // it has nothing new on; `!parsed.preferences[k]` treats `[]` as truthy, so
+    // the existing list was never restored and the later route-side spread wiped
+    // the user's remembered preferences.)
+    const isEmptyVal = (v: unknown) =>
+      v == null || v === '' || (Array.isArray(v) && v.length === 0)
+
+    // Merge preferences (keep existing keys the new extraction left empty)
     if (parsed.preferences && existingMemory?.preferences) {
       for (const [k, v] of Object.entries(existingMemory.preferences)) {
-        if (!parsed.preferences[k]) parsed.preferences[k] = v
+        if (isEmptyVal(parsed.preferences[k])) parsed.preferences[k] = v
       }
     }
 
-    // Merge budget (keep existing categories not overwritten)
+    // Merge budget (keep existing categories the new extraction left empty)
     if (parsed.budget && existingMemory?.budget) {
       for (const [k, v] of Object.entries(existingMemory.budget)) {
-        if (!parsed.budget[k]) parsed.budget[k] = v
+        if (isEmptyVal(parsed.budget[k])) parsed.budget[k] = v
       }
     }
 

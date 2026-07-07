@@ -11,6 +11,18 @@ const LANGUAGES = [
 export default function LanguageSwitcher() {
   const { t, locale, setLocale } = useTranslation()
 
+  const changeLanguage = (code: 'vi' | 'en') => {
+    setLocale(code) // instant UI flip (localStorage-backed)
+    // Persist to the server so the choice follows the user across devices /
+    // after clearing site data. Fire-and-forget: the local switch already took
+    // effect, and a failed sync just falls back to the browser-locale default.
+    fetch('/api/profile', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ language: code }),
+    }).catch(() => {})
+  }
+
   return (
     <div className="flex items-center gap-3 px-4 py-3">
       <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
@@ -23,7 +35,7 @@ export default function LanguageSwitcher() {
         {LANGUAGES.map(lang => (
           <button
             key={lang.code}
-            onClick={() => setLocale(lang.code)}
+            onClick={() => changeLanguage(lang.code)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
               locale === lang.code
                 ? 'bg-primary-500 text-white'

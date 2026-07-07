@@ -137,6 +137,26 @@ export default function LoginPage() {
     return returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
   }
 
+  // OAuth (Google/Zalo) routes new users through /auth/callback|confirm which check
+  // profiles.onboarded before redirecting. The client-side OTP path skips those routes,
+  // so mirror the same check here — otherwise a brand-new OTP signup lands on / and never
+  // sees the interest/city onboarding (its memory never gets seeded).
+  const destWithOnboarding = async (dest: string): Promise<string> => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return dest
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('onboarded')
+        .eq('id', user.id)
+        .maybeSingle()
+      if (!profile?.onboarded) {
+        return dest !== '/' ? `/onboarding?next=${encodeURIComponent(dest)}` : '/onboarding'
+      }
+    } catch { /* fall through to dest on any lookup failure */ }
+    return dest
+  }
+
   const handleSendOtp = async () => {
     setOtpError('')
     const email = otpEmail.trim()
@@ -175,7 +195,7 @@ export default function LoginPage() {
       setOtpError(t('auth.emailOtp.errorVerifyFailed'))
       return
     }
-    router.replace(getReturnDest())
+    router.replace(await destWithOnboarding(getReturnDest()))
   }
 
   const handleOpenInChrome = () => {

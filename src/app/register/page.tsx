@@ -46,9 +46,11 @@ export default function RegisterPage() {
       return
     }
 
-    // Nếu Supabase đã trả session ngay (email confirmation tắt) → vào app luôn
+    // Nếu Supabase đã trả session ngay (email confirmation tắt) → một tài khoản
+    // vừa tạo luôn chưa onboarded, nên đưa thẳng vào onboarding (thay vì "/",
+    // vốn bỏ qua bước seed sở thích/thành phố — giống các flow OAuth khác).
     if (data.session) {
-      router.push('/')
+      router.push('/onboarding')
       router.refresh()
       return
     }
