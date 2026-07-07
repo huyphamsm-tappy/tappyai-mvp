@@ -38,7 +38,7 @@ export default async function AccountPage() {
               alt={userInfo.full_name || 'Avatar'}
               width={80}
               height={80}
-              className="rounded-2xl ring-2 ring-primary-100 dark:ring-primary-900"
+              className="w-20 h-20 rounded-2xl object-cover ring-2 ring-primary-100 dark:ring-primary-900"
             />
           ) : (
             <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">

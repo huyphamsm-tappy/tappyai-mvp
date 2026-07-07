@@ -120,7 +120,7 @@ export default function ReviewCommentButton({
                   return (
                     <div key={c.id} className="flex gap-2.5">
                       {c.profiles?.avatar_url ? (
-                        <Image src={c.profiles.avatar_url} alt={name} width={32} height={32} className="rounded-full flex-shrink-0" />
+                        <Image src={c.profiles.avatar_url} alt={name} width={32} height={32} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">
                           {name[0]?.toUpperCase()}

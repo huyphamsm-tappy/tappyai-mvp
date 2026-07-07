@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Heart, MessageCircle, Bookmark, Share2,
-  ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff, Eye,
+  ChevronLeft, ChevronRight, ChevronUp, ChevronDown, MoreVertical, Trash2, EyeOff, Eye,
   X, Send, Loader2, Home, Search, Plus, Bell, User, Grid3X3, ArrowLeft, AlertCircle, Compass
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
@@ -172,7 +172,7 @@ function CommentDrawer({ review, me, onClose, onAdded }: { review: Review; me: s
             : comments.map(c => {
               const n = c.profiles?.full_name?.split(' ').pop() || t('reviews.anonymous')
               return <div key={c.id} className="flex gap-2.5">
-                {c.profiles?.avatar_url ? <Image src={c.profiles.avatar_url} alt={n} width={32} height={32} className="rounded-full flex-shrink-0" />
+                {c.profiles?.avatar_url ? <Image src={c.profiles.avatar_url} alt={n} width={32} height={32} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                   : <div className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">{n[0]?.toUpperCase()}</div>}
                 <div className="flex-1 min-w-0"><p className="text-xs font-semibold text-white">{n} <span className="text-gray-500 font-normal">{ago(c.created_at, t)}</span></p><p className="text-sm text-gray-300 mt-0.5">{c.body}</p></div>
                 {c.user_id === me && (
@@ -253,18 +253,21 @@ function Post({ r, me, feedType, renderVideo, onFeedTypeChange, onLike, onLikeDo
   }, [r.id, r.content_type])
 
   // ── Feed gestures (TikTok-standard) ──────────────────────────────────
-  // Double tap → like (+ big heart burst + haptic). Long press → pause/resume
-  // the video. Single tap → nothing (never pauses). A gesture layer over the
-  // media owns these; the action rail / mute button sit above it and keep
-  // their own taps. touchAction:'pan-y' leaves vertical feed-scrolling native.
+  // Single tap → pause/resume the video. Double tap → like (+ big heart burst
+  // + haptic). Telling them apart needs a 300ms wait: a lone tap only pauses
+  // once that window passes with no second tap; a second tap inside it cancels
+  // the pending pause and likes instead. A gesture layer over the media owns
+  // these; the action rail / mute button sit above it and keep their own taps.
+  // touchAction:'pan-y' leaves vertical feed-scrolling native.
   const [heartBurst, setHeartBurst] = useState(0)
   const lastTapRef = useRef(0)
-  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const singleTapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const startPtRef = useRef<{ x: number; y: number } | null>(null)
   const movedRef = useRef(false)
-  const longPressedRef = useRef(false)
 
   const buzz = (ms: number) => { try { navigator.vibrate?.(ms) } catch { /* unsupported */ } }
+  const cancelPendingTap = () => { if (singleTapTimer.current) { clearTimeout(singleTapTimer.current); singleTapTimer.current = null } }
+  useEffect(() => cancelPendingTap, [])
 
   const doubleTapLike = () => {
     setHeartBurst((b) => b + 1) // always animate, even if already liked
@@ -272,30 +275,32 @@ function Post({ r, me, feedType, renderVideo, onFeedTypeChange, onLike, onLikeDo
     if (!r.liked_by_me) onLikeDouble(r.id) // like-only + optimistic; no re-like if liked
   }
 
-  const clearLP = () => { if (longPressTimer.current) { clearTimeout(longPressTimer.current); longPressTimer.current = null } }
-
   const onPointerDown = (e: React.PointerEvent) => {
     startPtRef.current = { x: e.clientX, y: e.clientY }
     movedRef.current = false
-    longPressedRef.current = false
-    clearLP()
-    longPressTimer.current = setTimeout(() => {
-      longPressedRef.current = true
-      videoHandleRef.current?.togglePlay()
-      buzz(10)
-    }, 450)
   }
   const onPointerMove = (e: React.PointerEvent) => {
     const s = startPtRef.current
     if (!s) return
-    if (Math.abs(e.clientX - s.x) > 10 || Math.abs(e.clientY - s.y) > 10) { movedRef.current = true; clearLP() }
+    if (Math.abs(e.clientX - s.x) > 10 || Math.abs(e.clientY - s.y) > 10) movedRef.current = true
   }
   const onPointerUp = () => {
-    clearLP()
-    if (movedRef.current || longPressedRef.current) return // scroll or long-press, not a tap
+    if (movedRef.current) return // a scroll, not a tap
     const now = Date.now()
-    if (now - lastTapRef.current < 300) { lastTapRef.current = 0; doubleTapLike() }
-    else { lastTapRef.current = now } // single tap → nothing
+    if (now - lastTapRef.current < 300) {
+      // second tap within the window → double-tap like; drop the pending pause
+      lastTapRef.current = 0
+      cancelPendingTap()
+      doubleTapLike()
+    } else {
+      // first tap → wait; if no second tap lands, it's a single tap → pause/resume
+      lastTapRef.current = now
+      cancelPendingTap()
+      singleTapTimer.current = setTimeout(() => {
+        singleTapTimer.current = null
+        videoHandleRef.current?.togglePlay()
+      }, 300)
+    }
   }
 
   return (
@@ -320,7 +325,7 @@ function Post({ r, me, feedType, renderVideo, onFeedTypeChange, onLike, onLikeDo
         ? <Carousel photos={photos} />
         : <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />}
 
-      {/* Gesture layer — double-tap like / long-press pause. Sits above the
+      {/* Gesture layer — single-tap pause / double-tap like. Sits above the
           media but below the carousel nav (z-10) and the action rail (z-20). */}
       <div
         className="absolute inset-0 z-[5]"
@@ -328,7 +333,7 @@ function Post({ r, me, feedType, renderVideo, onFeedTypeChange, onLike, onLikeDo
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        onPointerCancel={clearLP}
+        onPointerCancel={() => { movedRef.current = true; cancelPendingTap() }}
       />
 
       {/* Big heart burst on double-tap (key remount replays the animation) */}
@@ -373,7 +378,7 @@ function Post({ r, me, feedType, renderVideo, onFeedTypeChange, onLike, onLikeDo
         <div className="relative mb-1">
           <Link href={`/users/${r.user_id}`}>
             {r.profiles?.avatar_url
-              ? <Image src={r.profiles.avatar_url} alt={name} width={48} height={48} className="rounded-full ring-2 ring-white object-cover" />
+              ? <Image src={r.profiles.avatar_url} alt={name} width={48} height={48} className="w-12 h-12 rounded-full ring-2 ring-white object-cover" />
               : <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 ring-2 ring-white flex items-center justify-center text-white font-bold">{name[0]?.toUpperCase()}</div>}
           </Link>
           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-5 bg-[#fe2c55] rounded-full flex items-center justify-center">
@@ -534,7 +539,7 @@ function ProfileTab({ userId }: { userId: string }) {
       <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }} className="pt-14 pb-4 px-4 flex flex-col items-center">
         <div className="relative mb-3">
           {profile?.avatar_url
-            ? <Image src={profile.avatar_url} alt={firstName} width={96} height={96} className="rounded-full object-cover ring-2 ring-purple-500/40" />
+            ? <Image src={profile.avatar_url} alt={firstName} width={96} height={96} className="w-24 h-24 rounded-full object-cover ring-2 ring-purple-500/40" />
             : <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold ring-2 ring-purple-500/40">{firstName[0]?.toUpperCase()}</div>}
           <Link href="/reviews/new" className="absolute bottom-0 right-0 w-6 h-6 bg-[#fe2c55] rounded-full flex items-center justify-center border-2 border-black">
             <Plus size={13} className="text-white" strokeWidth={3} />
@@ -1108,6 +1113,12 @@ export default function ReviewsPage() {
     setActiveIndex(0) // new feed starts at the top slide
   }
 
+  // Desktop has no swipe — scroll one slide up/down via on-screen arrows.
+  const scrollFeed = (dir: 1 | -1) => {
+    const c = containerRef.current
+    if (c) c.scrollBy({ top: dir * c.clientHeight, behavior: 'smooth' })
+  }
+
   // Debounced search
   const doSearch = useCallback((q: string) => {
     if (searchTimer.current) clearTimeout(searchTimer.current)
@@ -1278,9 +1289,22 @@ export default function ReviewsPage() {
                     ? <button onClick={() => handleFeedTypeChange('for-you')} className="bg-white text-black px-6 py-2.5 rounded-full font-semibold">{t('reviews.seeForYou')}</button>
                     : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">{t('reviews.postNow')}</Link>}
                 </div>
-              : <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                  {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={i === activeIndex || i === activeIndex + 1} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
-                </div>
+              : <>
+                  <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={i === activeIndex || i === activeIndex + 1} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
+                  </div>
+                  {/* Desktop prev/next — no swipe on desktop, so surface arrows to the right of the column. */}
+                  <div className="hidden md:flex flex-col gap-3 absolute left-full ml-4 top-1/2 -translate-y-1/2 z-20">
+                    <button onClick={() => scrollFeed(-1)} disabled={activeIndex <= 0} aria-label={t('reviews.prevPost')}
+                      className="w-11 h-11 rounded-full bg-gray-800/90 text-white flex items-center justify-center hover:bg-gray-700 disabled:opacity-30 disabled:cursor-default transition-colors">
+                      <ChevronUp size={22} />
+                    </button>
+                    <button onClick={() => scrollFeed(1)} disabled={activeIndex >= reviews.length - 1} aria-label={t('reviews.nextPost')}
+                      className="w-11 h-11 rounded-full bg-gray-800/90 text-white flex items-center justify-center hover:bg-gray-700 disabled:opacity-30 disabled:cursor-default transition-colors">
+                      <ChevronDown size={22} />
+                    </button>
+                  </div>
+                </>
           )}
 
           {/* Explore / Search */}
@@ -1381,7 +1405,7 @@ export default function ReviewsPage() {
                         return (
                           <Link key={u.id} href={`/users/${u.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900/50 transition-colors">
                             {u.avatar_url
-                              ? <Image src={u.avatar_url} alt={uname} width={44} height={44} className="rounded-full flex-shrink-0" />
+                              ? <Image src={u.avatar_url} alt={uname} width={44} height={44} className="w-11 h-11 rounded-full object-cover flex-shrink-0" />
                               : <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center flex-shrink-0 text-white font-bold">{uname[0]?.toUpperCase()}</div>}
                             <div className="flex-1 min-w-0">
                               <p className="text-white font-semibold text-sm truncate">{uname}</p>

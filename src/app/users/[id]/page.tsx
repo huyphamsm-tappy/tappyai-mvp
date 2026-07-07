@@ -140,7 +140,7 @@ export default function UserProfilePage() {
         <div className="card p-5">
           <div className="flex items-start gap-4">
             {profile.avatar_url ? (
-              <Image src={profile.avatar_url} alt={firstName} width={72} height={72} className="rounded-2xl ring-2 ring-primary-100 dark:ring-primary-900 flex-shrink-0" />
+              <Image src={profile.avatar_url} alt={firstName} width={72} height={72} className="w-[72px] h-[72px] rounded-2xl object-cover ring-2 ring-primary-100 dark:ring-primary-900 flex-shrink-0" />
             ) : (
               <div className="w-18 h-18 w-[72px] h-[72px] rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center flex-shrink-0">
                 <span className="text-white text-2xl font-bold">{firstName[0]?.toUpperCase()}</span>

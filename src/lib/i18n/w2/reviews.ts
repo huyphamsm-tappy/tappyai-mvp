@@ -31,6 +31,8 @@ export const vi: Record<string, string> = {
   'reviews.commentPlaceholder': 'Thêm bình luận...',
   'reviews.commentSend': 'Đăng',
   'reviews.commentDelete': 'Xóa bình luận',
+  'reviews.prevPost': 'Bài trước',
+  'reviews.nextPost': 'Bài sau',
 
   // Share sheet
   'reviews.shareTitle': 'Chia sẻ với bạn bè',
@@ -159,6 +161,8 @@ export const en: Record<string, string> = {
   'reviews.commentPlaceholder': 'Add a comment...',
   'reviews.commentSend': 'Post',
   'reviews.commentDelete': 'Delete comment',
+  'reviews.prevPost': 'Previous',
+  'reviews.nextPost': 'Next',
 
   // Share sheet
   'reviews.shareTitle': 'Share with friends',

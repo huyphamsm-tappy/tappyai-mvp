@@ -105,7 +105,7 @@ export default function Header({ user, showBack, backHref, title }: HeaderProps)
         {user && showBack && title && (
           <Link href="/profile" className="flex-shrink-0">
             {user.avatar_url ? (
-              <Image src={user.avatar_url} alt="Avatar" width={32} height={32} className="rounded-full" />
+              <Image src={user.avatar_url} alt="Avatar" width={32} height={32} className="w-8 h-8 rounded-full object-cover" />
             ) : (
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
                 <span className="text-white text-sm font-semibold">{firstName[0]?.toUpperCase()}</span>

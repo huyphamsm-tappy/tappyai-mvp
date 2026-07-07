@@ -130,7 +130,7 @@ export default function CreatorPage() {
       {/* Avatar + stats */}
       <div className="flex flex-col items-center px-4 pt-4 pb-6">
         {profile.avatar_url
-          ? <Image src={profile.avatar_url} alt={name} width={88} height={88} className="rounded-full ring-2 ring-white/20 object-cover mb-3" />
+          ? <Image src={profile.avatar_url} alt={name} width={88} height={88} className="w-[88px] h-[88px] rounded-full ring-2 ring-white/20 object-cover mb-3" />
           : <div className="w-[88px] h-[88px] rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mb-3">{name[0]?.toUpperCase()}</div>}
 
         <h1 className="font-bold text-lg mb-0.5">{name}</h1>

@@ -39,7 +39,7 @@ export default function ProfileView({ userId, userInfo, firstName, conversationC
                 alt={userInfo.full_name || 'Avatar'}
                 width={64}
                 height={64}
-                className="rounded-2xl ring-2 ring-primary-100 dark:ring-primary-900"
+                className="w-16 h-16 rounded-2xl object-cover ring-2 ring-primary-100 dark:ring-primary-900"
               />
             ) : (
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
