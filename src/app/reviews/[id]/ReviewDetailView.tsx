@@ -9,6 +9,7 @@ import ReviewLikeButton from './ReviewLikeButton'
 import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
 import ReviewMusicCard from '../ReviewMusicCard'
+import VideoPlayer from '@/components/explore/VideoPlayer'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type Author = { full_name: string | null; avatar_url: string | null } | null
@@ -25,6 +26,11 @@ type Review = {
   like_count: number
   music: { trackId: string; startSec: number; volume: number } | null
   created_at: string
+  content_type: string | null
+  media_url: string | null
+  thumbnail: string | null
+  source_type: string | null
+  source_url: string | null
   profiles: Author
 }
 
@@ -70,13 +76,24 @@ export default function ReviewDetailView({
   const firstName = author?.full_name?.split(' ').pop() || anonymous
   const heroPhoto = review.photos?.[0] ?? null
   const extraPhotos = review.photos?.slice(1) ?? []
+  const isVideo = review.content_type === 'video' && !!review.media_url
 
   return (
     <div className="min-h-dvh bg-[#0a0a0a]">
 
       {/* ─── Hero ─── */}
       <div className="relative w-full h-[55vh]">
-        {heroPhoto ? (
+        {isVideo ? (
+          // Video posts have no photos[] — play the clip itself (autoplay muted +
+          // loop, tap the pill to unmute). Previously the hero fell through to the
+          // dark gradient, so opening a clip showed a black screen.
+          <VideoPlayer
+            url={review.media_url!}
+            thumbnail={review.thumbnail ?? undefined}
+            sourceType={review.source_type ?? 'upload'}
+            sourceUrl={review.source_url ?? undefined}
+          />
+        ) : heroPhoto ? (
           <Image
             src={heroPhoto}
             alt={review.place_name}

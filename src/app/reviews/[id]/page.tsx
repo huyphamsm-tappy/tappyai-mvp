@@ -14,6 +14,7 @@ async function getReview(id: string) {
     .select(`
       id, user_id, place_name, place_address, rating, body,
       photos, is_verified, like_count, comment_count, created_at, music,
+      content_type, media_url, thumbnail, source_type, source_url,
       profiles(full_name, avatar_url)
     `)
     .eq('id', id)
