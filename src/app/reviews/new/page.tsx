@@ -18,7 +18,11 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const MAX_PHOTOS = 6
 const MAX_VIDEO_SIZE = 50 * 1024 * 1024   // 50 MB
-const MAX_VIDEO_DURATION = 15              // seconds
+const MAX_VIDEO_DURATION = 15              // seconds — the limit SHOWN to the user (hint + error)
+// Actual reject threshold: a clip the user trimmed to "15s" often measures 15.04–15.9s
+// once encoded, so accept a small tolerance above the advertised limit. This is a
+// backend-only allowance — never surfaced in the UI (the user always sees 15s).
+const MAX_VIDEO_DURATION_ACCEPT = 17      // seconds
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 
 /* ─── helpers ─── */
@@ -318,8 +322,9 @@ export default function NewReviewPage() {
     let duration: number
     try { duration = await getVideoDuration(file); vok('validate-duration', tDur, { duration: +duration.toFixed(2) }) }
     catch (e) { vfail('validate-duration', tDur, e); setError(t('reviewNew.videoReadError')); return }
-    if (duration > MAX_VIDEO_DURATION) {
-      vfail('validate-duration', tDur, new Error('too long'), { duration: +duration.toFixed(2), max: MAX_VIDEO_DURATION })
+    // Reject on the tolerant threshold, but the error the user sees still says 15s.
+    if (duration > MAX_VIDEO_DURATION_ACCEPT) {
+      vfail('validate-duration', tDur, new Error('too long'), { duration: +duration.toFixed(2), max: MAX_VIDEO_DURATION_ACCEPT })
       setError(t('reviewNew.videoTooLong', { n: String(MAX_VIDEO_DURATION) })); return
     }
 
