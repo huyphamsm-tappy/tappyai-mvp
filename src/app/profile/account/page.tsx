@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
-import { Mail, User as UserIcon, Calendar, Edit3, Grid3X3 } from 'lucide-react'
+import { Mail, User as UserIcon, Calendar, Edit3 } from 'lucide-react'
 
 export default async function AccountPage() {
   const supabase = createClient()
@@ -66,7 +66,6 @@ export default async function AccountPage() {
           </h3>
           <div className="card divide-y divide-gray-100 dark:divide-gray-800">
             <MenuItem icon={Edit3} label="Chỉnh sửa hồ sơ" description="Đổi tên hiển thị, ảnh đại diện" href="/profile/edit" />
-            <MenuItem icon={Grid3X3} label="Bài viết của tôi" description="Xem và quản lý bài đăng" href="/profile/posts" />
           </div>
         </section>
       </main>
