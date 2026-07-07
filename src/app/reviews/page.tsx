@@ -614,7 +614,10 @@ function ProfileTab({ userId }: { userId: string }) {
       ) : (
         <div className="grid grid-cols-3 gap-px bg-gray-800">
           {displayPosts.map(r => {
-            const thumb = r.photos?.[0]
+            // Video posts have no photos[] — their poster frame lives in `thumbnail`.
+            // Without this the tile fell through to the body-text placeholder, so a
+            // profile of clips showed only captions instead of the video thumbnails.
+            const thumb = r.photos?.[0] || (r.content_type === 'video' ? r.thumbnail : null)
             const isHidden = activeTab === 'posts' && (r as Review & { is_hidden?: boolean }).is_hidden
             return (
               <button key={r.id} onClick={() => handleGridClick(r as Review)}
@@ -1276,7 +1279,7 @@ export default function ReviewsPage() {
                     : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">{t('reviews.postNow')}</Link>}
                 </div>
               : <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                  {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
+                  {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={i === activeIndex || i === activeIndex + 1} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
                 </div>
           )}
 

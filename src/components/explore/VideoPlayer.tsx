@@ -168,7 +168,11 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         muted={muted}
         playsInline
         loop
-        preload="metadata"
+        // preload="none": only the in-view slide (which the IntersectionObserver
+        // explicitly play()s) fetches media. The pre-mounted next slide stays at
+        // zero bytes until it becomes active — critical on iOS Safari, which caps
+        // how many video elements can buffer/decode at once.
+        preload="none"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}

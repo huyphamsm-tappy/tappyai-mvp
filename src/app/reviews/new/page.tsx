@@ -549,7 +549,10 @@ export default function NewReviewPage() {
       if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.error || t('reviewNew.postError')) }
       vok('submit-review', tSubmit)
       setSuccess(true)
-      setTimeout(() => router.push('/reviews'), 1500)
+      // Land on the author's own profile grid, where the just-posted clip is at
+      // the top — the default "for-you" feed is trending-ranked, so a brand-new
+      // 0-engagement post isn't there and users thought the upload had failed.
+      setTimeout(() => router.push('/reviews?tab=profile'), 1500)
     } catch (err) {
       setError(err instanceof Error ? err.message : t('reviewNew.postError'))
     } finally {
