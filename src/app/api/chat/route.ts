@@ -189,7 +189,9 @@ export async function POST(req: Request) {
     : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, forcedTool)
   ) + styleBlock
 
-  const result = streamText({
+  let result
+  try {
+  result = streamText({
     model: getModel(tier),
     messages: [
       {
@@ -372,6 +374,13 @@ export async function POST(req: Request) {
       }
     },
   })
+  } catch (e) {
+    console.error('streamText init error:', e)
+    return new Response(
+      JSON.stringify({ error: 'ai_error', message: String(e) }),
+      { status: 502, headers: { 'Content-Type': 'application/json' } },
+    )
+  }
   const baseResponse = result.toDataStreamResponse()
   const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse)
   return (budget && budget.max < LUXURY_PRICE_FLOOR)

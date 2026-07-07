@@ -46,6 +46,23 @@ export default async function SubscriptionPage() {
     ? new Date(sub.current_period_end) > new Date()
     : false
 
+  let todayMsgCount = 0
+  if (!isPro) {
+    const now = new Date()
+    const vnOffset = 7 * 60 * 60 * 1000
+    const vnMidnight = new Date(Math.floor((now.getTime() + vnOffset) / 86400000) * 86400000 - vnOffset)
+    const { data: todayConvs } = await supabase
+      .from('conversations')
+      .select('messages')
+      .eq('user_id', user.id)
+      .gte('updated_at', vnMidnight.toISOString())
+    todayMsgCount = (todayConvs || []).reduce((sum, c) => {
+      const msgs = Array.isArray(c.messages) ? c.messages : []
+      return sum + msgs.filter((m: { role: string }) => m.role === 'user').length
+    }, 0)
+  }
+  const remaining = Math.max(0, 10 - todayMsgCount)
+
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
       <Header user={userInfo} showBack backHref="/profile" title="Nâng cấp TappyAI" />
@@ -80,7 +97,7 @@ export default async function SubscriptionPage() {
         ) : (
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
             <p className="text-blue-700 dark:text-blue-300 text-sm font-medium">
-              🎁 Bạn đang dùng gói Free — còn <strong>-- / 10</strong> tin nhắn hôm nay
+              🎁 Bạn đang dùng gói Free — còn <strong>{remaining} / 10</strong> tin nhắn hôm nay
             </p>
           </div>
         )}

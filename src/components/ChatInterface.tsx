@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
+import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain, Crown } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
@@ -1019,10 +1019,6 @@ export default function ChatInterface({
                 </div>
                 <div className="flex-1 min-w-0">
                   {/auth_required|Unauthorized/i.test(error.message || '') ? (
-                    // Auth-required (401): chat needs login. Show a clear login CTA —
-                    // never the generic "retry" (which can never succeed for a guest).
-                    // returnTo carries the current chat URL (incl. ?q=) so the message
-                    // auto-resumes after a successful login.
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
                       <p className="leading-relaxed">{t('chat.loginPrompt')}</p>
                       <button
@@ -1034,6 +1030,18 @@ export default function ChatInterface({
                         className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-xs font-medium transition-colors"
                       >
                         Đăng nhập để tiếp tục
+                      </button>
+                    </div>
+                  ) : /free_limit_reached/i.test(error.message || '') ? (
+                    <div className="rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
+                      <p className="leading-relaxed font-medium">Bạn đã dùng hết 10 tin nhắn miễn phí hôm nay.</p>
+                      <p className="leading-relaxed mt-1 text-amber-600 dark:text-amber-400">Nâng cấp Pro để nhắn không giới hạn, hoặc quay lại vào ngày mai nhé!</p>
+                      <button
+                        type="button"
+                        onClick={() => { window.location.href = '/subscription' }}
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-medium transition-colors shadow-sm"
+                      >
+                        <Crown size={13} /> Nâng cấp Pro
                       </button>
                     </div>
                   ) : (
