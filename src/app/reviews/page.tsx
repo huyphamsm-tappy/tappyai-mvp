@@ -1121,7 +1121,9 @@ export default function ReviewsPage() {
     const c = containerRef.current
     if (!c) return
     const cur = Math.round(c.scrollTop / c.clientHeight)
-    c.scrollTo({ top: (cur + dir) * c.clientHeight, behavior: 'auto' })
+    const next = Math.max(0, Math.min(reviews.length - 1, cur + dir))
+    c.scrollTo({ top: next * c.clientHeight, behavior: 'auto' })
+    setActiveIndex(next) // update immediately so the arrows' disabled state + video window track it
   }
 
   // Debounced search
