@@ -147,18 +147,34 @@ export async function POST(req: Request) {
     }
   } catch { /* no-op if auth fails */ }
 
-  // Freemium policy (product decision): anonymous users may NOT chat with the
-  // AI or consume LLM tokens. Chat requires an authenticated session; this also
-  // removes the unauthenticated cost-amplification path.
+  // Freemium policy: anonymous visitors get a small taste — FREE_ANON_LIMIT basic
+  // questions per day — then must log in. The count lives in an httpOnly cookie
+  // (server-set, so ordinary users can't tamper; clearing cookies resets it,
+  // which is acceptable for a top-of-funnel teaser). Everything past chat
+  // (reviews, saves, upload, …) still requires an account.
+  const FREE_ANON_LIMIT = 5
+  let anonSetCookie: string | null = null
   if (!authedUserId) {
-    return new Response(
-      JSON.stringify({
-        error: 'auth_required',
-        message: 'Vui lòng đăng nhập để trò chuyện với Tappy.',
-        upgradeUrl: '/login',
-      }),
-      { status: 401, headers: { 'Content-Type': 'application/json' } }
-    )
+    const nowMs = Date.now()
+    const vnToday = new Date(Math.floor((nowMs + 7 * 60 * 60 * 1000) / 86400000) * 86400000).toISOString().slice(0, 10)
+    const cookieHeader = req.headers.get('cookie') || ''
+    const m = cookieHeader.match(/(?:^|;\s*)tappy_anon=([^;]+)/)
+    let anonCount = 0
+    if (m) {
+      const [d, c] = decodeURIComponent(m[1]).split(':')
+      if (d === vnToday) anonCount = parseInt(c, 10) || 0
+    }
+    if (anonCount >= FREE_ANON_LIMIT) {
+      return new Response(
+        JSON.stringify({
+          error: 'anon_limit_reached',
+          message: `Bạn đã dùng hết ${FREE_ANON_LIMIT} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!`,
+          upgradeUrl: '/login',
+        }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+    anonSetCookie = `tappy_anon=${vnToday}:${anonCount + 1}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
   }
 
   // Inject freeform user preferences from client request body
@@ -383,8 +399,11 @@ export async function POST(req: Request) {
   }
   const baseResponse = result.toDataStreamResponse()
   const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse)
-  return (budget && budget.max < LUXURY_PRICE_FLOOR)
+  const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse
+  // Persist the incremented anonymous question count for the day.
+  if (anonSetCookie) finalResponse.headers.set('Set-Cookie', anonSetCookie)
+  return finalResponse
 }
 

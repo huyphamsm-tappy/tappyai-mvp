@@ -135,6 +135,8 @@ function CommentDrawer({ review, me, onClose, onAdded }: { review: Review; me: s
     } catch { /* leave the comment in place on failure */ }
   }
   const send = async () => {
+    // Anonymous can read comments but must log in to post one.
+    if (!me) { window.location.href = '/login?returnTo=' + encodeURIComponent('/reviews'); return }
     if (!text.trim() || sending) return
     setSending(true)
     setSendError(false)
@@ -1163,6 +1165,7 @@ export default function ReviewsPage() {
   }, [])
 
   const toggleFollow = async (targetId: string) => {
+    if (!me) { window.location.href = '/login?returnTo=' + encodeURIComponent('/reviews'); return }
     setUserResults(prev => prev.map(u => u.id === targetId
       ? { ...u, is_following: !u.is_following, follower_count: u.follower_count + (u.is_following ? -1 : 1) }
       : u))
@@ -1201,7 +1204,16 @@ export default function ReviewsPage() {
     return () => c.removeEventListener('scroll', onScroll)
   }, [loading, fetch_, feedType])
 
+  // Anonymous visitors can browse the feed but not interact — send them to login
+  // (with a returnTo) the moment they try to like / save / follow / comment.
+  const requireLogin = () => {
+    if (me) return false
+    window.location.href = '/login?returnTo=' + encodeURIComponent('/reviews')
+    return true
+  }
+
   const like = async (id: string) => {
+    if (requireLogin()) return
     const r = reviews.find(r => r.id === id)
     // Validate the response before mutating counts — a 401/500 (or non-JSON
     // error page) previously left `liked` undefined and DECREMENTED the count.
@@ -1226,6 +1238,7 @@ export default function ReviewsPage() {
   // the heart/count react instantly. The right-rail heart keeps the plain
   // toggle `like`. Caller only invokes this when the post isn't already liked.
   const likeOnly = async (id: string) => {
+    if (requireLogin()) return
     const cur = reviews.find(r => r.id === id)
     if (!cur || cur.liked_by_me) return
     setReviews(p => p.map(r => r.id === id ? { ...r, liked_by_me: true, like_count: r.like_count + 1 } : r))
@@ -1250,6 +1263,7 @@ export default function ReviewsPage() {
     }
   }
   const save = async (id: string) => {
+    if (requireLogin()) return
     let saved: boolean
     try {
       const res = await fetch(`/api/reviews/${id}/save`, { method: 'POST' })

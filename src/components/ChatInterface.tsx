@@ -1033,6 +1033,22 @@ export default function ChatInterface({
                         Đăng nhập để tiếp tục
                       </button>
                     </div>
+                  ) : /anon_limit_reached/i.test(error.message || '') ? (
+                    // Anonymous visitor used up their free questions → prompt login.
+                    <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
+                      <p className="leading-relaxed font-medium">Bạn đã dùng hết 5 câu hỏi miễn phí hôm nay.</p>
+                      <p className="leading-relaxed mt-1 text-primary-600 dark:text-primary-400">Đăng nhập để tiếp tục trò chuyện với Tappy và mở khoá mọi tính năng!</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const rt = encodeURIComponent(window.location.pathname + window.location.search)
+                          window.location.href = `/login?returnTo=${rt}`
+                        }}
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-xs font-medium transition-colors"
+                      >
+                        Đăng nhập để tiếp tục
+                      </button>
+                    </div>
                   ) : /free_limit_reached/i.test(error.message || '') ? (
                     <div className="rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
                       <p className="leading-relaxed font-medium">Bạn đã dùng hết 10 tin nhắn miễn phí hôm nay.</p>
