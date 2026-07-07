@@ -480,7 +480,7 @@ export default function ChatInterface({
     try { return JSON.parse(localStorage.getItem('tappy_response_style') || '{}') } catch { return {} }
   })
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({
     api: '/api/chat',
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
@@ -683,6 +683,9 @@ export default function ChatInterface({
   }, [])
 
   useEffect(() => {
+    // If we're about to restore a stashed transcript (post-login), don't also
+    // auto-send the initialMessage from a lingering ?q= — that would duplicate it.
+    if (typeof window !== 'undefined' && sessionStorage.getItem('tappy_pending_chat')) return
     if (initialMessage && messages.length === 0) {
       setInput(initialMessage)
       setTimeout(() => {
@@ -691,6 +694,31 @@ export default function ChatInterface({
       }, 100)
     }
   }, [])
+
+  // Continuity across the login redirect: an anonymous chat lives only in this
+  // component's state (anon turns aren't persisted server-side), so stashPendingChat()
+  // saves the transcript before we send the user to /login, and this restores it on
+  // return — only into a fresh chat, never over an existing saved conversation.
+  useEffect(() => {
+    if (conversationId || (savedMessages && savedMessages.length) || messages.length > 0) return
+    try {
+      const raw = sessionStorage.getItem('tappy_pending_chat')
+      if (!raw) return
+      sessionStorage.removeItem('tappy_pending_chat')
+      const stashed = JSON.parse(raw) as Array<{ role: 'user' | 'assistant'; content: string }>
+      if (Array.isArray(stashed) && stashed.length) {
+        setMessages(stashed.map((m, i) => ({ id: String(i), role: m.role, content: m.content })))
+      }
+    } catch { sessionStorage.removeItem('tappy_pending_chat') }
+  }, [])
+
+  // Save the current (anonymous) transcript so it survives the /login round-trip.
+  const stashPendingChat = () => {
+    try {
+      const msgs = messagesRef.current
+      if (msgs.length) sessionStorage.setItem('tappy_pending_chat', JSON.stringify(msgs.map(m => ({ role: m.role, content: m.content }))))
+    } catch { /* storage unavailable — nothing to restore */ }
+  }
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -1025,6 +1053,7 @@ export default function ChatInterface({
                       <button
                         type="button"
                         onClick={() => {
+                          stashPendingChat() // keep the transcript across login
                           const rt = encodeURIComponent(window.location.pathname + window.location.search)
                           window.location.href = `/login?returnTo=${rt}`
                         }}
@@ -1041,6 +1070,7 @@ export default function ChatInterface({
                       <button
                         type="button"
                         onClick={() => {
+                          stashPendingChat() // keep the transcript across login
                           const rt = encodeURIComponent(window.location.pathname + window.location.search)
                           window.location.href = `/login?returnTo=${rt}`
                         }}
