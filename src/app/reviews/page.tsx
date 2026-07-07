@@ -226,8 +226,13 @@ function ShareModal({ review, onClose }: { review: Review; onClose: () => void }
 }
 
 /* ─── Single post (TikTok style) ─── */
-function Post({ r, me, feedType, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete }: {
+function Post({ r, me, feedType, renderVideo, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete }: {
   r: Review; me: string | null
+  // Only the active slide (± 1 neighbour) mounts a real <video>. Off-screen
+  // slides render just the thumbnail. iOS Safari caps how many HTMLMediaElements
+  // can buffer at once, so mounting every feed video froze the media pipeline —
+  // new uploads wouldn't play and scrolling stalled until the tab was reloaded.
+  renderVideo: boolean
   feedType: 'for-you' | 'latest' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'latest' | 'following') => void
   onLike: (id: string) => void; onLikeDouble: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
@@ -297,14 +302,20 @@ function Post({ r, me, feedType, onFeedTypeChange, onLike, onLikeDouble, onSave,
     <div ref={containerRef} className="relative w-full h-dvh flex-shrink-0 snap-start bg-black overflow-hidden">
       {/* BG */}
       {r.content_type === 'video' && r.media_url
-        ? <VideoPlayer
-            ref={videoHandleRef}
-            url={r.media_url}
-            thumbnail={r.thumbnail ?? undefined}
-            sourceType={r.source_type ?? 'upload'}
-            sourceUrl={r.source_url ?? undefined}
-            onDurationKnown={d => { durationRef.current = d }}
-          />
+        ? (renderVideo
+            ? <VideoPlayer
+                ref={videoHandleRef}
+                url={r.media_url}
+                thumbnail={r.thumbnail ?? undefined}
+                sourceType={r.source_type ?? 'upload'}
+                sourceUrl={r.source_url ?? undefined}
+                onDurationKnown={d => { durationRef.current = d }}
+              />
+            // Off-screen: thumbnail only, no <video> element (frees iOS media slots)
+            : <div className="absolute inset-0 bg-black">
+                {r.thumbnail && <img src={r.thumbnail} alt="" className="absolute inset-0 w-full h-full object-cover" />}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+              </div>)
         : photos.length > 0
         ? <Carousel photos={photos} />
         : <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />}
@@ -936,6 +947,8 @@ export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [feedError, setFeedError] = useState(false)
+  // Index of the slide currently in view — only this one (± 1) mounts a <video>.
+  const [activeIndex, setActiveIndex] = useState(0)
   const router = useRouter()
   const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
@@ -1089,6 +1102,7 @@ export default function ReviewsPage() {
     setLoading(true)
     pageRef.current = 0
     hasMore.current = true
+    setActiveIndex(0) // new feed starts at the top slide
   }
 
   // Debounced search
@@ -1146,11 +1160,16 @@ export default function ReviewsPage() {
     }
   }
 
-  // Infinite scroll
+  // Infinite scroll + active-slide tracking (drives which slide mounts a <video>)
   useEffect(() => {
     const c = containerRef.current
     if (!c) return
     const onScroll = () => {
+      // Each slide is exactly one viewport tall (h-dvh + snap), so the active
+      // index is simply how many viewports we've scrolled. Only setState when it
+      // actually changes so we don't re-render the whole feed on every scroll tick.
+      const idx = Math.round(c.scrollTop / c.clientHeight)
+      setActiveIndex(prev => (prev === idx ? prev : idx))
       if (hasMore.current && c.scrollTop + c.clientHeight >= c.scrollHeight - c.clientHeight * 0.5) {
         hasMore.current = false
         pageRef.current += 1
@@ -1257,7 +1276,7 @@ export default function ReviewsPage() {
                     : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">{t('reviews.postNow')}</Link>}
                 </div>
               : <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                  {reviews.map(r => <Post key={r.id} r={r} me={me} feedType={feedType} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
+                  {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
                 </div>
           )}
 
