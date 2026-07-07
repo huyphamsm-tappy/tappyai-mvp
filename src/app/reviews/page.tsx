@@ -81,21 +81,20 @@ function ago(d: string, t: (key: string, vars?: Record<string, string>) => strin
 }
 
 /* ─── Photo carousel ─── */
-function Carousel({ photos }: { photos: string[] }) {
-  const [i, setI] = useState(0)
-  const sx = useRef(0)
+// Controlled by the parent Post so the feed's gesture layer (which sits above the
+// media and would otherwise swallow horizontal swipes) can drive the image change.
+function Carousel({ photos, index, onIndexChange }: { photos: string[]; index: number; onIndexChange: (i: number) => void }) {
+  const i = Math.max(0, Math.min(photos.length - 1, index))
   return (
-    <div className="absolute inset-0 select-none"
-      onTouchStart={e => { sx.current = e.touches[0].clientX }}
-      onTouchEnd={e => { const dx = sx.current - e.changedTouches[0].clientX; if (dx > 40) setI(p => Math.min(photos.length - 1, p + 1)); else if (dx < -40) setI(p => Math.max(0, p - 1)) }}>
+    <div className="absolute inset-0 select-none">
       <Image src={photos[i]} alt="" fill className="object-cover" sizes="100vw" priority={i === 0} />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
       {photos.length > 1 && <>
         <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1 z-10">
           {photos.map((_, j) => <div key={j} className={`h-0.5 rounded-full transition-all ${j === i ? 'w-6 bg-white' : 'w-3 bg-white/40'}`} />)}
         </div>
-        {i > 0 && <button onClick={() => setI(p => p - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-black/40 rounded-full flex items-center justify-center"><ChevronLeft size={16} className="text-white" /></button>}
-        {i < photos.length - 1 && <button onClick={() => setI(p => p + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-black/40 rounded-full flex items-center justify-center"><ChevronRight size={16} className="text-white" /></button>}
+        {i > 0 && <button onClick={() => onIndexChange(i - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-black/40 rounded-full flex items-center justify-center"><ChevronLeft size={16} className="text-white" /></button>}
+        {i < photos.length - 1 && <button onClick={() => onIndexChange(i + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-black/40 rounded-full flex items-center justify-center"><ChevronRight size={16} className="text-white" /></button>}
         <span className="absolute top-3 right-3 text-white text-xs bg-black/40 px-1.5 py-0.5 rounded-full z-10">{i + 1}/{photos.length}</span>
       </>}
     </div>
@@ -265,6 +264,7 @@ function Post({ r, me, feedType, renderVideo, showFeedTabs = true, onFeedTypeCha
   // these; the action rail / mute button sit above it and keep their own taps.
   // touchAction:'pan-y' leaves vertical feed-scrolling native.
   const [heartBurst, setHeartBurst] = useState(0)
+  const [carIdx, setCarIdx] = useState(0) // current image in a multi-photo post
   const lastTapRef = useRef(0)
   const singleTapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const startPtRef = useRef<{ x: number; y: number } | null>(null)
@@ -289,8 +289,20 @@ function Post({ r, me, feedType, renderVideo, showFeedTabs = true, onFeedTypeCha
     if (!s) return
     if (Math.abs(e.clientX - s.x) > 10 || Math.abs(e.clientY - s.y) > 10) movedRef.current = true
   }
-  const onPointerUp = () => {
-    if (movedRef.current) return // a scroll, not a tap
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (movedRef.current) {
+      // A drag, not a tap. If it was a mostly-horizontal swipe over a multi-photo
+      // post, page the carousel (the gesture layer sits above the Carousel, so it
+      // has to forward the swipe itself). Vertical drags stay native feed-scroll.
+      const s = startPtRef.current
+      if (s && photos.length > 1) {
+        const dx = e.clientX - s.x, dy = e.clientY - s.y
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+          setCarIdx(p => dx < 0 ? Math.min(photos.length - 1, p + 1) : Math.max(0, p - 1))
+        }
+      }
+      return
+    }
     const now = Date.now()
     if (now - lastTapRef.current < 300) {
       // second tap within the window → double-tap like; drop the pending pause
@@ -327,7 +339,7 @@ function Post({ r, me, feedType, renderVideo, showFeedTabs = true, onFeedTypeCha
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
               </div>)
         : photos.length > 0
-        ? <Carousel photos={photos} />
+        ? <Carousel photos={photos} index={carIdx} onIndexChange={setCarIdx} />
         : <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />}
 
       {/* Gesture layer — single-tap pause / double-tap like. Sits above the
