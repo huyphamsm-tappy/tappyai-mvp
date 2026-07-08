@@ -41,6 +41,20 @@
 /* Gentle scale+fade entrance for follow-up chips / action buttons / cards. */
 @keyframes popIn { 0% { transform: scale(0.92) translateY(4px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
 .animate-pop-in { animation: popIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both; }
+/* Category avatar (assistant): the icon gently "breathes" when idle, and
+   bounces/wiggles while Tappy is actively thinking or streaming a reply. */
+@keyframes catIdle { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-1px) scale(1.08); } }
+.animate-cat-idle { animation: catIdle 2.8s ease-in-out infinite; }
+@keyframes catActive {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  20% { transform: translateY(-2.5px) rotate(-8deg) scale(1.12); }
+  50% { transform: translateY(0) rotate(0deg) scale(1.05); }
+  80% { transform: translateY(-2.5px) rotate(8deg) scale(1.12); }
+}
+.animate-cat-active { animation: catActive 0.9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-cat-idle, .animate-cat-active { animation: none; }
+}
 .message-content { line-height: 1.6; }
 .message-content ul { list-style-type: disc; }
 .message-content li { margin-bottom: 0.25rem; }

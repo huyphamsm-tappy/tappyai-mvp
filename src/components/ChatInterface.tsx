@@ -471,6 +471,25 @@ function useSmoothText(target: string, active: boolean): string {
   return active ? shown : target
 }
 
+// Assistant avatar. Instead of a static "T", it shows the current category's
+// icon (🍜 Ăn uống, 🛍️ Mua sắm, ✈️ Du lịch, 💆 Spa, 🎭 Giải trí…) so the reply
+// feels like it comes from that specialist. The glyph gently "breathes" when
+// idle and bounces/wiggles while Tappy is actively working. Falls back to the
+// branded "T" for general chat (no category).
+function TappyAvatar({ glyph, active }: { glyph: string | null; active?: boolean }) {
+  return (
+    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+      {glyph ? (
+        <span className={cn('text-sm leading-none select-none', active ? 'animate-cat-active' : 'animate-cat-idle')}>
+          {glyph}
+        </span>
+      ) : (
+        <span className={cn('text-white text-xs font-bold', active && 'animate-cat-active')}>T</span>
+      )}
+    </div>
+  )
+}
+
 export default function ChatInterface({
   initialMessage,
   initialCategory = 'general',
@@ -497,6 +516,8 @@ export default function ChatInterface({
   const messagesRef = useRef<Message[]>([])
   const category = initialCategory as CategoryId
   const catInfo = CATEGORIES.find(c => c.id === category)
+  // Category icon for the assistant avatar (null → branded "T" for general chat).
+  const avatarGlyph = catInfo?.emoji ?? null
   const [hasMemory, setHasMemory] = useState(false)
   const [isListening, setIsListening] = useState(false)
   // Voice status message (unsupported / permission / error) shown near the input.
@@ -990,9 +1011,7 @@ export default function ChatInterface({
                 const isLastMessage = msgIdx === messages.length - 1
                 return (
                   <div key={msg.id} className="animate-slide-up flex gap-3">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-xs font-bold">T</span>
-                    </div>
+                    <TappyAvatar glyph={avatarGlyph} active={isLoading && isLastMessage} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(isLoading && isLastMessage ? smoothedLastText : text) }} />
@@ -1114,9 +1133,7 @@ export default function ChatInterface({
             })}
             {waitingForReply && (
               <div className="flex gap-3 animate-fade-in">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">T</span>
-                </div>
+                <TappyAvatar glyph={avatarGlyph} active />
                 <div className="flex items-center h-7 gap-2">
                   <div className="flex items-center gap-1">
                     <span className="typing-dot text-gray-400" />
@@ -1132,9 +1149,7 @@ export default function ChatInterface({
             {/* Error recovery — explain plainly, preserve the user's message, offer a way forward (MUXS 8) */}
             {error && !isLoading && (
               <div className="flex gap-3 animate-fade-in">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">T</span>
-                </div>
+                <TappyAvatar glyph={avatarGlyph} />
                 <div className="flex-1 min-w-0">
                   {/auth_required|Unauthorized/i.test(error.message || '') ? (
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
