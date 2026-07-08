@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ChevronLeft, Play, Pause, Loader2, Music2, Heart, Bell, Plus, TrendingUp } from 'lucide-react'
+import { ChevronLeft, Play, Pause, Loader2, Music2, Heart, Bell, Plus, TrendingUp, Flag, X } from 'lucide-react'
 import { MusicThumbnail, MusicDuration } from '@/modules/music'
 
 interface SoundVideo {
@@ -63,6 +63,29 @@ export default function SoundPage() {
   const [busy, setBusy] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
   const countedPlay = useRef(false)
+
+  // Copyright / abuse report (notice-and-takedown entry point).
+  const [reportOpen, setReportOpen] = useState(false)
+  const [reportReason, setReportReason] = useState('copyright')
+  const [reportDetails, setReportDetails] = useState('')
+  const [reportBusy, setReportBusy] = useState(false)
+  const [reportSent, setReportSent] = useState(false)
+
+  const submitReport = async () => {
+    if (reportBusy || !trackId) return
+    setReportBusy(true)
+    try {
+      const res = await fetch(`/api/music/tracks/${trackId}/report`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: reportReason, details: reportDetails.trim() || undefined }),
+      })
+      if (res.status === 401) { router.push(`/login?returnTo=/sound/${trackId}`); return }
+      if (res.ok) { setReportSent(true); setTimeout(() => { setReportOpen(false); setReportSent(false); setReportDetails('') }, 1800) }
+    } finally {
+      setReportBusy(false)
+    }
+  }
 
   useEffect(() => {
     if (!trackId) return
@@ -229,6 +252,12 @@ export default function SoundPage() {
               >
                 <Plus size={16} /> Sử dụng âm thanh này
               </button>
+              <button
+                onClick={() => setReportOpen(true)}
+                className="mx-auto mt-1 flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 hover:text-red-500 transition-colors"
+              >
+                <Flag size={12} /> Báo cáo bản quyền
+              </button>
             </div>
 
             {/* Videos grid */}
@@ -265,6 +294,47 @@ export default function SoundPage() {
           </>
         )}
       </main>
+
+      {/* Report modal — notice-and-takedown entry point */}
+      {reportOpen && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={() => !reportBusy && setReportOpen(false)} />
+          <div className="fixed bottom-0 left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[440px] z-50 bg-white dark:bg-gray-900 rounded-t-3xl p-5 pb-8 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-1.5"><Flag size={16} className="text-red-500" /> Báo cáo bài nhạc</h3>
+              <button onClick={() => setReportOpen(false)} aria-label="Đóng"><X size={20} className="text-gray-400" /></button>
+            </div>
+            {reportSent ? (
+              <p className="text-sm text-green-600 dark:text-green-400 py-4 text-center">Đã gửi báo cáo. Chúng tôi sẽ xử lý trong 24–48h. Cảm ơn bạn!</p>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  {[
+                    { v: 'copyright', l: 'Vi phạm bản quyền (nhạc của tôi/người khác)' },
+                    { v: 'inappropriate', l: 'Nội dung không phù hợp' },
+                    { v: 'spam', l: 'Spam / giả mạo' },
+                    { v: 'other', l: 'Khác' },
+                  ].map((o) => (
+                    <label key={o.v} className="flex items-center gap-2.5 text-sm text-gray-700 dark:text-gray-200 cursor-pointer">
+                      <input type="radio" name="reason" checked={reportReason === o.v} onChange={() => setReportReason(o.v)} className="w-4 h-4" />
+                      {o.l}
+                    </label>
+                  ))}
+                </div>
+                <textarea
+                  value={reportDetails} onChange={(e) => setReportDetails(e.target.value)} maxLength={1000}
+                  placeholder="Mô tả thêm (tùy chọn) — nếu là chủ sở hữu, ghi bằng chứng quyền + liên hệ"
+                  className="w-full h-20 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none resize-none"
+                />
+                <button onClick={submitReport} disabled={reportBusy} className="w-full py-2.5 rounded-full bg-red-500 text-white text-sm font-semibold disabled:opacity-50 flex items-center justify-center gap-2">
+                  {reportBusy ? <Loader2 size={15} className="animate-spin" /> : 'Gửi báo cáo'}
+                </button>
+                <p className="text-[11px] text-gray-400 text-center">Xem <Link href="/copyright" className="underline">Chính sách bản quyền</Link></p>
+              </>
+            )}
+          </div>
+        </>
+      )}
 
       {/* eslint-disable-next-line jsx-a11y/media-has-caption -- instrumental preview clip */}
       <audio ref={audioRef} onEnded={() => setPlaying(false)} className="hidden" />

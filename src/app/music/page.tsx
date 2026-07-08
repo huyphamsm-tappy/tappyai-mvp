@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, Upload } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { MusicTrack } from '@/modules/music'
 import {
@@ -64,9 +64,15 @@ export default function MusicLibraryPage() {
           >
             <ChevronLeft size={18} /> {t('music.backHome')}
           </button>
-          <h1 className="flex-1 text-center font-semibold text-gray-900 dark:text-white pr-16">
+          <h1 className="flex-1 text-center font-semibold text-gray-900 dark:text-white">
             🎵 {t('music.title')}
           </h1>
+          <button
+            onClick={() => router.push('/music/upload')}
+            className="flex items-center gap-1 text-sm font-medium text-primary-500"
+          >
+            <Upload size={16} /> Đăng
+          </button>
         </div>
       </header>
 
