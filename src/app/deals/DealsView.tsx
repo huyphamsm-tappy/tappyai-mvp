@@ -46,7 +46,9 @@ export default function DealsView({ deals }: { deals: Deal[] }) {
         <div className="flex items-start justify-between gap-3">
           <div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('deals.title')} 🔥</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 capitalize">{formatDate(locale)}</p>
+            {/* Locale + current-date string differs between SSR ('vi') and the
+                client's stored locale/clock — suppress the hydration text mismatch. */}
+            <p suppressHydrationWarning className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 capitalize">{formatDate(locale)}</p>
           </div>
           <DealNotifyButton />
         </div>
