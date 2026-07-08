@@ -418,6 +418,59 @@ function formatMessage(content: string) {
     .replace(/(?:<li>.*?<\/li>)+/g, (m) => `<ul class="list-disc pl-5 my-2 space-y-1">${m}</ul>`)
 }
 
+// Smooth typewriter reveal for the streaming reply.
+// The server/network delivers tokens in big bursts (measured: a 398-char reply
+// arrived in just 3 chunks of 71/147/116 chars), which reads as text "jumping"
+// in rigid blocks. This decouples what's shown from how the bytes arrive: we
+// keep the full streamed text as the target and reveal it a few chars per frame
+// (ease-out: bigger gap → faster catch-up) so it always reads like fluid typing,
+// regardless of burst size. When streaming ends we snap to the full text so the
+// final render is never truncated.
+function useSmoothText(target: string, active: boolean): string {
+  const [shown, setShown] = useState(target)
+  const targetRef = useRef(target)
+  const shownRef = useRef(target)
+  targetRef.current = target
+
+  useEffect(() => {
+    // Not streaming (idle, or a completed message): show the full text at once.
+    if (!active) {
+      shownRef.current = target
+      setShown(target)
+      return
+    }
+    // A brand-new stream starts near-empty; if the current shown text is longer
+    // than the new target (message switched/reset), snap back before revealing.
+    if (shownRef.current.length > target.length) {
+      shownRef.current = target.slice(0, 0)
+    }
+    let raf = 0
+    let alive = true
+    const tick = () => {
+      if (!alive) return
+      const tgt = targetRef.current
+      const cur = shownRef.current
+      if (cur.length < tgt.length) {
+        const gap = tgt.length - cur.length
+        const reveal = Math.max(2, Math.ceil(gap / 8)) // ease-out catch-up
+        const next = tgt.slice(0, cur.length + reveal)
+        shownRef.current = next
+        setShown(next)
+      } else if (cur.length > tgt.length) {
+        shownRef.current = tgt
+        setShown(tgt)
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => { alive = false; cancelAnimationFrame(raf) }
+    // Re-run when the target grows so a running loop always sees fresh bytes via
+    // the ref; `active` toggles start/stop.
+  }, [active, target])
+
+  return active ? shown : target
+}
+
 export default function ChatInterface({
   initialMessage,
   initialCategory = 'general',
@@ -532,6 +585,14 @@ export default function ChatInterface({
   const lastMsg = messages[messages.length - 1]
   const waitingForReply = isLoading && (!lastMsg || lastMsg.role === 'user' ||
     !(typeof lastMsg.content === 'string' ? lastMsg.content : '').trim())
+  // Target visible text of the last assistant reply (same parse chain as the
+  // render below), fed through the smoothing hook so the streaming message types
+  // out fluidly instead of jumping in bursts. Called unconditionally at the top
+  // level (hooks rule); only the last streaming message uses the smoothed value.
+  const lastAssistantRaw = lastMsg && lastMsg.role === 'assistant' && typeof lastMsg.content === 'string'
+    ? parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text
+    : ''
+  const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
 
   // Cancel a queued voice auto-send (grace window): used when the user edits the
   // text, taps "sửa", starts a new dictation, sends manually, or unmounts.
@@ -934,7 +995,7 @@ export default function ChatInterface({
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
-                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(text) }} />
+                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(isLoading && isLastMessage ? smoothedLastText : text) }} />
                       </div>
                       {plan && <TripPlanCard plan={plan} />}
                       {/* Action bar (copy/share/like/dislike/TTS/regenerate) — only
