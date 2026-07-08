@@ -626,6 +626,31 @@ export default function ChatInterface({
   const lastMsg = messages[messages.length - 1]
   const waitingForReply = isLoading && (!lastMsg || lastMsg.role === 'user' ||
     !(typeof lastMsg.content === 'string' ? lastMsg.content : '').trim())
+  // When Tappy calls a tool mid-turn, say WHICH one — a concrete "đang tìm quán
+  // ăn…" reads far better than a generic spinner. Names match the tools defined
+  // in /api/chat; anything unmapped falls back to the rotating THINK_HINTS.
+  const TOOL_HINTS: Record<string, [string, string]> = {
+    // [vi, en]
+    search_places:        ['🔎 Đang tìm địa điểm…', '🔎 Searching places…'],
+    search_products:      ['🛍️ Đang tìm sản phẩm…', '🛍️ Searching products…'],
+    get_weather:          ['⛅ Đang xem thời tiết…', '⛅ Checking the weather…'],
+    get_gold_price:       ['🪙 Đang tra giá vàng…', '🪙 Checking gold prices…'],
+    get_flight_prices:    ['✈️ Đang tìm vé máy bay…', '✈️ Finding flights…'],
+    get_hotel_prices:     ['🏨 Đang tìm khách sạn…', '🏨 Finding hotels…'],
+    get_transport_options:['🚗 Đang tìm cách di chuyển…', '🚗 Finding transport…'],
+    get_news:             ['📰 Đang đọc tin tức…', '📰 Reading the news…'],
+    web_search:           ['🌐 Đang tìm trên web…', '🌐 Searching the web…'],
+    save_price_watch:     ['🔔 Đang đặt theo dõi giá…', '🔔 Setting up price watch…'],
+  }
+  const activeTool = (() => {
+    if (!isLoading || !lastMsg || lastMsg.role !== 'assistant') return null
+    const inv = lastMsg.toolInvocations
+    if (!inv || inv.length === 0) return null
+    // Prefer the most recent invocation still awaiting a result; else the last.
+    const running = [...inv].reverse().find(i => i.state !== 'result') ?? inv[inv.length - 1]
+    return running?.toolName ?? null
+  })()
+  const toolHint = activeTool ? TOOL_HINTS[activeTool] : undefined
   // Target visible text of the last assistant reply (same parse chain as the
   // render below), fed through the smoothing hook so the streaming message types
   // out fluidly instead of jumping in bursts. Called unconditionally at the top
@@ -1163,8 +1188,8 @@ export default function ChatInterface({
                     <span className="typing-dot text-gray-400" />
                     <span className="typing-dot text-gray-400" />
                   </div>
-                  <span key={thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in">
-                    {THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
+                  <span key={toolHint ? activeTool : thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in">
+                    {toolHint ? toolHint[locale === 'en' ? 1 : 0] : THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
                   </span>
                 </div>
               </div>
