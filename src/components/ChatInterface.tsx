@@ -516,6 +516,23 @@ export default function ChatInterface({
   // (see the messagesRef declaration above for why the closure is unsafe).
   useEffect(() => { messagesRef.current = messages }, [messages])
 
+  // Rotating "thinking" hint shown while we wait for the first token — gives the
+  // sense Tappy is working (searching / synthesising) rather than frozen.
+  const THINK_HINTS = locale === 'en'
+    ? ['Tappy is thinking…', 'Looking things up…', 'Putting it together…']
+    : ['Tappy đang suy nghĩ…', 'Đang tìm thông tin…', 'Đang tổng hợp câu trả lời…']
+  const [thinkHintIdx, setThinkHintIdx] = useState(0)
+  useEffect(() => {
+    if (!isLoading) { setThinkHintIdx(0); return }
+    const id = setInterval(() => setThinkHintIdx(i => i + 1), 1800)
+    return () => clearInterval(id)
+  }, [isLoading])
+  // "Thinking" dots show only until the first token arrives; once the assistant
+  // message starts filling in, the reply streams with a cursor instead.
+  const lastMsg = messages[messages.length - 1]
+  const waitingForReply = isLoading && (!lastMsg || lastMsg.role === 'user' ||
+    !(typeof lastMsg.content === 'string' ? lastMsg.content : '').trim())
+
   // Cancel a queued voice auto-send (grace window): used when the user edits the
   // text, taps "sửa", starts a new dictation, sends manually, or unmounts.
   const cancelAutoSend = useCallback(() => {
@@ -917,31 +934,36 @@ export default function ChatInterface({
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
-                        <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(text) }} />
+                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(text) }} />
                       </div>
                       {plan && <TripPlanCard plan={plan} />}
-                      {/* Action bar: copy, share, like, dislike, TTS, regenerate, more */}
-                      <MessageActionBar
-                        msgId={msg.id}
-                        messageIndex={msgIdx}
-                        conversationId={conversationId}
-                        text={text}
-                        isThisSpeaking={tts.speakingId === msg.id}
-                        isPaused={tts.isPaused}
-                        ttsElapsed={tts.elapsed}
-                        ttsTotal={tts.totalSecs}
-                        ttsSpeed={tts.speed}
-                        onSpeak={() => tts.speak(msg.id, text)}
-                        onTTSPause={tts.togglePause}
-                        onTTSSkipBack={tts.skipBack}
-                        onTTSSkipForward={tts.skipForward}
-                        onTTSSpeedChange={tts.changeSpeed}
-                        onTTSStop={tts.stop}
-                        onRegenerate={isLastMessage ? reload : undefined}
-                      />
+                      {/* Action bar (copy/share/like/dislike/TTS/regenerate) — only
+                          once the reply is done, fading in for a polished finish. */}
+                      {!(isLoading && isLastMessage) && (
+                        <div className="animate-fade-in">
+                          <MessageActionBar
+                            msgId={msg.id}
+                            messageIndex={msgIdx}
+                            conversationId={conversationId}
+                            text={text}
+                            isThisSpeaking={tts.speakingId === msg.id}
+                            isPaused={tts.isPaused}
+                            ttsElapsed={tts.elapsed}
+                            ttsTotal={tts.totalSecs}
+                            ttsSpeed={tts.speed}
+                            onSpeak={() => tts.speak(msg.id, text)}
+                            onTTSPause={tts.togglePause}
+                            onTTSSkipBack={tts.skipBack}
+                            onTTSSkipForward={tts.skipForward}
+                            onTTSSpeedChange={tts.changeSpeed}
+                            onTTSStop={tts.stop}
+                            onRegenerate={isLastMessage ? reload : undefined}
+                          />
+                        </div>
+                      )}
                       <SavePlaceButton text={text} buttons={buttons} />
                       {buttons.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-3">
+                        <div className="flex flex-wrap gap-2 mt-3 animate-fade-in">
                           {buttons.map((btn, i) => {
                             const place = btn.type === 'internal_booking' ? parsePlaceFromUrl(btn.url) : null
                             return (
@@ -995,7 +1017,8 @@ export default function ChatInterface({
                               key={i}
                               type="button"
                               onClick={() => { posthog.capture('followup_clicked'); append({ role: 'user', content: f }) }}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                              style={{ animationDelay: `${i * 70}ms` }}
+                              className="animate-pop-in inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                             >
                               {f}
                             </button>
@@ -1028,15 +1051,20 @@ export default function ChatInterface({
                 </div>
               )
             })}
-            {isLoading && (
+            {waitingForReply && (
               <div className="flex gap-3 animate-fade-in">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-white text-xs font-bold">T</span>
                 </div>
-                <div className="flex items-center h-7 gap-1">
-                  <span className="typing-dot text-gray-400" />
-                  <span className="typing-dot text-gray-400" />
-                  <span className="typing-dot text-gray-400" />
+                <div className="flex items-center h-7 gap-2">
+                  <div className="flex items-center gap-1">
+                    <span className="typing-dot text-gray-400" />
+                    <span className="typing-dot text-gray-400" />
+                    <span className="typing-dot text-gray-400" />
+                  </div>
+                  <span key={thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in">
+                    {THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
+                  </span>
                 </div>
               </div>
             )}

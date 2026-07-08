@@ -28,6 +28,19 @@
 .typing-dot:nth-child(2) { animation-delay: 0.2s; }
 .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes pulseDot { 0%, 80%, 100% { transform: scale(0); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
+/* ChatGPT-style blinking cursor at the tail of a reply that's still streaming. */
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.streaming-cursor::after {
+  content: '▋';
+  display: inline-block;
+  margin-left: 2px;
+  color: currentColor;
+  opacity: 0.7;
+  animation: blink 1s step-end infinite;
+}
+/* Gentle scale+fade entrance for follow-up chips / action buttons / cards. */
+@keyframes popIn { 0% { transform: scale(0.92) translateY(4px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+.animate-pop-in { animation: popIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .message-content { line-height: 1.6; }
 .message-content ul { list-style-type: disc; }
 .message-content li { margin-bottom: 0.25rem; }
