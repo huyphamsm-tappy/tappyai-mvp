@@ -1,5 +1,6 @@
 import { createAnthropic } from '@ai-sdk/anthropic'
 import { generateText } from 'ai'
+import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
@@ -24,6 +25,16 @@ const LENGTH_GUIDE: Record<string, string> = {
 }
 
 export async function POST(req: Request) {
+  // Cost-abuse guard: this is an unauthenticated LLM endpoint. Cap bursts per IP
+  // before doing any Claude work (protects Anthropic billing from floods).
+  const rl = rateLimit(`viet-content:${clientIp(req)}`, 10, 60_000)
+  if (!rl.ok) {
+    return Response.json(
+      { error: 'Bạn tạo nội dung quá nhanh, vui lòng thử lại sau giây lát.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+    )
+  }
+
   if (!process.env.ANTHROPIC_API_KEY) {
     return Response.json(
       { error: 'ANTHROPIC_API_KEY chưa được cấu hình trên server.' },

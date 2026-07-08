@@ -1,6 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
+import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 
 // SQL required in Supabase:
 // ALTER TABLE public.reviews ADD COLUMN IF NOT EXISTS photos text[] DEFAULT '{}';
@@ -38,13 +39,17 @@ export async function POST(req: NextRequest) {
 
   const file = formData.get('file') as File | null
   if (!file) return NextResponse.json({ error: 'Không tìm thấy file' }, { status: 400 })
-  if (!file.type.startsWith('image/')) return NextResponse.json({ error: 'Chỉ chấp nhận file ảnh' }, { status: 400 })
   if (file.size > MAX_FILE_SIZE) return NextResponse.json({ error: 'File ảnh phải nhỏ hơn 5MB' }, { status: 400 })
 
+  // Validate the REAL file type by its magic bytes, not the client-supplied
+  // MIME/extension — blocks SVG/HTML-as-image (stored-XSS) and mislabeled files.
+  const bytes = new Uint8Array(await file.arrayBuffer())
+  const kind = sniffImageType(bytes)
+  if (!kind) return NextResponse.json({ error: 'Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF' }, { status: 400 })
+
   try {
-    const ext = file.name.split('.').pop() || 'jpg'
-    const path = `reviews/${user.id}/${Date.now()}.${ext}`
-    const blob = await put(path, file, { access: 'public' })
+    const path = `reviews/${user.id}/${Date.now()}.${imageExt(kind)}`
+    const blob = await put(path, file, { access: 'public', contentType: imageMime(kind) })
     return NextResponse.json({ url: blob.url })
   } catch (e) {
     console.error('Blob upload error:', e)

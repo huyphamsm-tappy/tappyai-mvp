@@ -1,6 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
+import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 
 // GET /api/profile
 export async function GET(req: NextRequest) {
@@ -83,16 +84,20 @@ export async function POST(req: NextRequest) {
   if (file.size > 3 * 1024 * 1024) {
     return NextResponse.json({ error: 'Ảnh tối đa 3MB' }, { status: 400 })
   }
-  if (!file.type.startsWith('image/')) {
-    return NextResponse.json({ error: 'Chỉ chấp nhận file ảnh' }, { status: 400 })
+  // Validate by magic bytes, not the client-declared MIME/extension — blocks
+  // SVG/HTML-as-avatar (stored-XSS) and mislabeled uploads.
+  const bytes = new Uint8Array(await file.arrayBuffer())
+  const kind = sniffImageType(bytes)
+  if (!kind) {
+    return NextResponse.json({ error: 'Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF' }, { status: 400 })
   }
 
-  const ext = file.name.split('.').pop() || 'jpg'
   let blob: { url: string }
   try {
-    blob = await put(`avatars/${user.id}.${ext}`, file, {
+    blob = await put(`avatars/${user.id}.${imageExt(kind)}`, file, {
       access: 'public',
       addRandomSuffix: true,
+      contentType: imageMime(kind),
     })
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Upload thất bại'

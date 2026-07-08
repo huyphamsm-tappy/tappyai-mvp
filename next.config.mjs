@@ -20,6 +20,19 @@ const nextConfig = {
     ],
   },
   async headers() {
+    // Baseline security headers applied to every route. CSP is intentionally
+    // omitted here — a strict policy needs per-page testing against inline
+    // styles, Stripe, and remote images, and is tracked as a follow-up.
+    const securityHeaders = [
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      // Camera (OCR), mic (voice), geolocation ("tìm quanh đây") are used by the
+      // app itself; allow same-origin only and deny the rest by default.
+      { key: 'Permissions-Policy', value: 'camera=(self), microphone=(self), geolocation=(self), browsing-topics=()' },
+      // HSTS — Vercel serves HTTPS everywhere; pin it for 2 years.
+      { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+    ]
     return [
       {
         // COOP + COEP on the parent Next.js page (required for embedded iframe SharedArrayBuffer).
@@ -30,6 +43,7 @@ const nextConfig = {
           { key: 'Cross-Origin-Embedder-Policy', value: 'credentialless' },
         ],
       },
+      { source: '/:path*', headers: securityHeaders },
     ]
   },
 }
