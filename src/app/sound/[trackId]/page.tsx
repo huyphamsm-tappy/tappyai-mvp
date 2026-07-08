@@ -45,6 +45,15 @@ const TYPE_LABEL: Record<string, string> = {
 
 const fmt = (n: number) => n.toLocaleString('vi-VN')
 
+// Derive CC-BY attribution from a curated track's audio URL. Jamendo tracks are
+// ingested with a mp3d.jamendo.com/?trackid=<id> URL, so the source + license
+// are reconstructable and we can credit the artist as CC-BY requires.
+function attributionFor(audioUrl: string | undefined): { license: string; source: string; provider: string } | null {
+  const m = (audioUrl || '').match(/mp3d\.jamendo\.com\/\?trackid=(\d+)/)
+  if (m) return { license: 'CC-BY', source: `https://www.jamendo.com/track/${m[1]}`, provider: 'Jamendo' }
+  return null
+}
+
 export default function SoundPage() {
   const router = useRouter()
   const params = useParams<{ trackId: string }>()
@@ -201,6 +210,15 @@ export default function SoundPage() {
                 <MusicDuration seconds={data.track.durationSec} />
                 <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5">🏷️ {TYPE_LABEL[data.track.musicType] ?? data.track.musicType}</span>
               </div>
+              {(() => {
+                const attr = attributionFor(data.track.audioUrl)
+                return attr ? (
+                  <p className="text-[11px] text-gray-400 dark:text-gray-500">
+                    {data.track.artist ? `${data.track.artist} · ` : ''}{attr.license} ·{' '}
+                    <a href={attr.source} target="_blank" rel="noopener noreferrer" className="underline hover:text-primary-500">{attr.provider}</a>
+                  </p>
+                ) : null
+              })()}
 
               {data.trendingRank != null && (
                 <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-orange-50 dark:bg-orange-950/40 px-3 py-1 text-xs font-semibold text-orange-600 dark:text-orange-300">
