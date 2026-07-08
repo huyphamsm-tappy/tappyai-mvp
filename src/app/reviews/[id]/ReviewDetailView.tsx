@@ -14,6 +14,11 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type Author = { full_name: string | null; avatar_url: string | null } | null
 
+// "Share-only" posts (a clip/photo with no place added) carry a sentinel
+// place_name — don't render it as a place title or a "go to <place>?" CTA.
+const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
+const isShareOnlyName = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+
 type Review = {
   id: string
   user_id: string
@@ -146,13 +151,15 @@ export default function ReviewDetailView({
             )}
           </div>
 
-          {/* Place name */}
-          <h1
-            className="text-white font-black text-2xl leading-tight mb-1.5"
-            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}
-          >
-            {review.place_name}
-          </h1>
+          {/* Place name — hidden for share-only posts (no real place) */}
+          {!isShareOnlyName(review.place_name) && (
+            <h1
+              className="text-white font-black text-2xl leading-tight mb-1.5"
+              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}
+            >
+              {review.place_name}
+            </h1>
+          )}
 
           {/* Address */}
           {review.place_address && (
@@ -251,7 +258,8 @@ export default function ReviewDetailView({
         {/* Divider */}
         <div className="mt-8 border-t border-white/6" />
 
-        {/* CTA */}
+        {/* CTA — only meaningful when the post is about a real place */}
+        {!isShareOnlyName(review.place_name) && (
         <div
           className="mt-6 p-4 rounded-2xl"
           style={{ background: 'rgba(255,107,53,0.08)', border: '1px solid rgba(255,107,53,0.18)' }}
@@ -267,6 +275,7 @@ export default function ReviewDetailView({
             🤖 {t('reviewDetail.askTappy')}
           </Link>
         </div>
+        )}
         </div>
       </div>
     </div>

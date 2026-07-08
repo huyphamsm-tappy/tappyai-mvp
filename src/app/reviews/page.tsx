@@ -44,6 +44,11 @@ interface GroupedNotif {
 const NOTIF_COLOR: Record<string, string> = {
   like: '#ff6b35', follow: '#1D9E75', profile_view: '#534AB7', comment: '#378ADD',
 }
+// A "share-only" post (clip/photo posted without adding a place) carries a
+// sentinel place_name, so it must not show a 📍 chip or count as a hot place.
+// Includes the legacy no-diacritic value written by older builds.
+const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
+const isShareOnlyName = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
 function groupNotifs(notifs: Notification[]): GroupedNotif[] {
   const map = new Map<string, GroupedNotif>()
   for (const n of notifs) {
@@ -430,7 +435,7 @@ function Post({ r, me, feedType, renderVideo, showFeedTabs = true, onFeedTypeCha
           <p className="text-white font-bold text-[15px] mb-1 drop-shadow truncate">{handle}</p>
         </Link>
         {r.body ? <p className="text-white text-sm leading-snug line-clamp-3 drop-shadow">{r.body}</p> : null}
-        {r.place_name !== 'Chia sẻ' && (
+        {!isShareOnlyName(r.place_name) && (
           <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">
             <span className="text-sm">📍</span> {r.place_name}
             {r.rating > 0 && <span className="ml-2 text-amber-400">{'★'.repeat(r.rating)}</span>}
@@ -747,7 +752,7 @@ function ProfileTab({ userId }: { userId: string }) {
                   : <div className="absolute inset-0 flex items-center justify-center p-2"><p className="text-white text-xs text-center line-clamp-4">{r.body}</p></div>}
                 {/* Overlay: place name + stars */}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent px-1.5 pt-4 pb-1.5">
-                  <p className="text-white text-[9px] font-semibold leading-tight line-clamp-1">{r.place_name}</p>
+                  {!isShareOnlyName(r.place_name) && <p className="text-white text-[9px] font-semibold leading-tight line-clamp-1">{r.place_name}</p>}
                   <div className="flex items-center gap-0.5 mt-0.5">
                     {'★'.repeat(r.rating).split('').map((_, i) => (
                       <span key={i} className="text-amber-400 text-[8px] leading-none">★</span>
@@ -767,7 +772,7 @@ function ProfileTab({ userId }: { userId: string }) {
           <div className="fixed inset-0 z-30" onClick={() => setSel(null)} />
           <div className="fixed bottom-[60px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[390px] z-40 bg-[#1a1a1a] rounded-t-3xl px-5 pt-3 pb-8">
             <div className="flex justify-center mb-3"><div className="w-8 h-1 bg-gray-600 rounded-full" /></div>
-            <p className="text-white text-sm font-semibold text-center mb-3 line-clamp-1">{sel.place_name}</p>
+            <p className="text-white text-sm font-semibold text-center mb-3 line-clamp-1">{isShareOnlyName(sel.place_name) ? 'Bài chia sẻ' : sel.place_name}</p>
             <div className="space-y-2">
               <Link href={`/reviews/${sel.id}`} onClick={() => { sessionStorage.setItem('reviews_tab', 'profile'); setSel(null) }}
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
@@ -1175,7 +1180,7 @@ export default function ReviewsPage() {
         const counts = new Map<string, number>()
         for (const row of (data || []) as any[]) {
           const name = row.reviews?.place_name
-          if (name) counts.set(name, (counts.get(name) || 0) + 1)
+          if (name && !isShareOnlyName(name)) counts.set(name, (counts.get(name) || 0) + 1)
         }
         setHotPlaces(Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([place_name, count]) => ({ place_name, count })))
       } catch {

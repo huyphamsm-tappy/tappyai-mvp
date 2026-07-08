@@ -516,7 +516,7 @@ export default function NewReviewPage() {
 
       const payload: Record<string, unknown> = {
         placeId,
-        placeName: placeName.trim() || 'Chia se',
+        placeName: placeName.trim() || 'Chia sẻ',
         placeAddress: '',
         rating: rating || 0,
         body: body.trim(),

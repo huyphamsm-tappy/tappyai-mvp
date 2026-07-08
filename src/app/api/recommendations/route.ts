@@ -7,6 +7,12 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
+// A "share-only" post (user posted a clip/photo without adding a place) carries
+// a sentinel place_name instead of a real one, so it must never be ranked as a
+// place. Covers the current value and the legacy no-diacritic one.
+const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
+const isShareOnlyPlace = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+
 // GET /api/recommendations — personalized "Gợi ý cho bạn".
 // Builds the user's AI context (from preference profile + memory) and ranks
 // candidate places (aggregated from community reviews, with saved favorites as
@@ -50,6 +56,7 @@ export async function GET(req: NextRequest) {
   for (const r of reviewRows ?? []) {
     const pid = (r.place_id as string | null)?.trim()
     if (!pid) continue
+    if (isShareOnlyPlace(r.place_name as string | null)) continue // skip place-less "sharing" posts
     const e: PlaceAgg = byPlace.get(pid) ?? { name: r.place_name ?? '', address: r.place_address ?? null, ratings: [], tags: new Set<string>(), latest: r.created_at as string }
     if (typeof r.rating === 'number') e.ratings.push(r.rating)
     for (const t of (r.hashtags ?? [])) if (t) e.tags.add(String(t))
