@@ -1,39 +1,49 @@
-# Tappy mascot assets
+# Tappy Core Pose Library
 
-Drop the **exported** category icons from the official brand sheet here as
-**transparent PNG**. The `<TappyMascot variant="..." />` component
-(`src/components/TappyMascot.tsx`) loads `/tappy/<variant>.png` and falls back to
-an emoji until the file exists — so nothing breaks while assets are pending.
+**Owner owns all art. Claude owns code/component/wiring only — never redesigns.**
 
-## Required files (exact names)
+Everything in the app maps to these **18 canonical poses** (18 poses → 100+
+situations). Drop each exported PNG here as `/public/tappy/<pose>.png`.
+`<TappyMascot pose="..." />` (`src/components/TappyMascot.tsx`) loads it and
+falls back to 🤖 until the file exists — nothing breaks while art is pending.
 
-| File | Brand-sheet icon | Used for |
-|------|------------------|----------|
-| `overview.png`       | Tổng quan (otter waving)        | General chat avatar + welcome hero |
-| `places.png`         | Địa điểm (magnifying glass)     | "searching a place" state |
-| `food.png`           | Ẩm thực (bowl)                  | Food tab |
-| `travel.png`         | Du lịch (camera + plane)        | Travel tab |
-| `shopping.png`       | Mua sắm (bags)                  | Shopping tab |
-| `deals.png`          | Deal / Ưu đãi (%)               | Deals |
-| `delivery.png`       | Giao hàng (scooter)             | (reserved) |
-| `entertainment.png`  | Giải trí (headphones)           | Entertainment tab |
-| `aitools.png`        | Công cụ AI (laptop)             | AI tool pages |
-| `recommendations.png`| Gợi ý (shield)                  | Recommendations |
+## The 18 poses
 
-*(Optional: `spa.png` — the sheet has no spa icon yet; without it the Spa tab
-uses `overview.png`.)*
+| # | file | used for (examples) |
+|---|------|---------------------|
+| 01 | `welcome.png`        | onboarding / welcome hero / splash |
+| 02 | `wave.png`           | **default AI avatar** / overview / chat-default |
+| 03 | `thinking.png`       | chat thinking · loading-ai · hero-thinking |
+| 04 | `searching.png`      | places · AI search · loading-search · empty-search · chat-searching |
+| 05 | `food.png`           | Food tab · loading-food · empty-food |
+| 06 | `travel.png`         | Travel tab · loading-travel · empty-travel |
+| 07 | `shopping.png`       | Shopping tab · loading-shopping · empty-shopping |
+| 08 | `deals.png`          | Deals · new-deal notification · empty-deals |
+| 09 | `entertainment.png`  | Entertainment tab |
+| 10 | `aitools.png`        | AI tool pages (scan/translate/currency…) |
+| 11 | `recommendation.png` | Recommendations · recommendation notification |
+| 12 | `success.png`        | success · celebrate · thumbsup |
+| 13 | `sorry.png`          | error · confused · retry |
+| 14 | `reading.png`        | hero-reading |
+| 15 | `phone.png`          | notification · new-message |
+| 16 | `speaking.png`       | chat speaking / TTS |
+| 17 | `delivery.png`       | delivery |
+| 18 | `spa.png`            | Spa tab |
 
-## Format spec
+## Phases (don't wait for all 18)
 
-- **PNG, transparent background.**
-- Square canvas, mascot centred.
-- Export at **3×** so it stays crisp on retina: **288×288 px** is ideal
-  (min 192×192). One file per variant is enough — the component scales it down
-  to the display size (24–128 px).
-- Keep the brand style: 3D, rounded, #007AFF / #FF9500, Tappy always smiling.
+- **Phase 1 (13 poses — ships the whole AI experience):**
+  `welcome, wave, thinking, searching, food, travel, shopping, deals,
+  entertainment, aitools, recommendation, success, sorry`
+- **Phase 2 (5 poses):** `reading, phone, speaking, delivery, spa`
 
-## Notes
+## Format (one file per pose)
 
-- SVG is also accepted (rename the component's `.png` to `.svg` if you export
-  vectors) — but these are 3D renders, so **PNG @3× is the realistic format**.
-- Do NOT put the app logo here — this folder is the AI **mascot** only.
+- **PNG, transparent background, 288×288 px (3×).** One file per pose — the
+  component scales it to any display size (24–128). Do **not** export per-size files.
+- Fallback is 🤖 (never SVG — SVG would break the 3D character).
+
+## Do NOT put here
+
+App logo · nav icons · product/merchant/payment icons. This folder is the AI
+**mascot** only.

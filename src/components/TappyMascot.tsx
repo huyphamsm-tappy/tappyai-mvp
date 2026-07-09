@@ -2,49 +2,72 @@
 
 import { useState } from 'react'
 
-// The 10 Tappy (otter) category icons from the official brand sheet. Drop the
-// exported transparent PNGs into /public/tappy/<variant>.png (see the README
-// there) and they light up everywhere this component is used. Until a file
-// exists, each variant gracefully falls back to its emoji so nothing breaks.
-export type TappyVariant =
-  | 'overview'       // otter waving — general AI / welcome
-  | 'places'         // magnifying glass — searching a place
-  | 'food'           // bowl — Ăn uống
-  | 'travel'         // camera + plane — Du lịch
-  | 'shopping'       // bags — Mua sắm
-  | 'deals'          // % — Deals
-  | 'delivery'       // scooter — Giao hàng
-  | 'entertainment'  // headphones — Giải trí
-  | 'aitools'        // laptop — AI tools
-  | 'recommendations'// shield — Gợi ý
+// ── Tappy Core Pose Library (18 canonical poses) ────────────────────────────
+// The OWNER owns all art (the 3D otter mascot). This file is code only: it maps
+// every in-app situation to ONE of these 18 poses (18 poses → 100+ situations).
+// Drop each exported PNG at /public/tappy/<pose>.png (transparent, 288×288 @3×);
+// the component scales it to the display size and falls back to 🤖 until the
+// file exists. NEVER add/redesign a pose here — art is the owner's domain.
+export type TappyPose =
+  | 'welcome'        // 01
+  | 'wave'           // 02  (default / overview)
+  | 'thinking'       // 03
+  | 'searching'      // 04
+  | 'food'           // 05
+  | 'travel'         // 06
+  | 'shopping'       // 07
+  | 'deals'          // 08
+  | 'entertainment'  // 09
+  | 'aitools'        // 10
+  | 'recommendation' // 11
+  | 'success'        // 12
+  | 'sorry'          // 13  (error)
+  | 'reading'        // 14
+  | 'phone'          // 15
+  | 'speaking'       // 16
+  | 'delivery'       // 17
+  | 'spa'            // 18
 
-const FALLBACK_EMOJI: Record<TappyVariant, string> = {
-  overview: '🤖', places: '🔎', food: '🍜', travel: '✈️', shopping: '🛍️',
-  deals: '🎯', delivery: '🛵', entertainment: '🎧', aitools: '💻', recommendations: '🛡️',
+// Emoji fallback per pose — shown only until the real PNG is dropped in.
+const FALLBACK: Record<TappyPose, string> = {
+  welcome: '👋', wave: '🤖', thinking: '🤔', searching: '🔎', food: '🍜',
+  travel: '✈️', shopping: '🛍️', deals: '🎯', entertainment: '🎧', aitools: '💻',
+  recommendation: '🛡️', success: '🎉', sorry: '😔', reading: '📖', phone: '📱',
+  speaking: '💬', delivery: '🛵', spa: '💆',
 }
 
-// Map an app CategoryId (food/shopping/entertainment/travel/spa/general) to a
-// Tappy variant. Spa has no dedicated icon on the sheet yet → falls back to overview.
-export function categoryToTappy(category?: string | null): TappyVariant {
+// Phase 1 poses (ship as soon as these 13 land) — the rest are Phase 2.
+export const PHASE_1: TappyPose[] = [
+  'welcome', 'wave', 'thinking', 'searching', 'food', 'travel', 'shopping',
+  'deals', 'entertainment', 'aitools', 'recommendation', 'success', 'sorry',
+]
+
+// ── Context → pose mappers (this is how "100+ situations" reuse 18 poses) ────
+// App CategoryId (food/shopping/entertainment/travel/spa/general) → pose.
+export function categoryToTappy(category?: string | null): TappyPose {
   switch (category) {
     case 'food': return 'food'
     case 'shopping': return 'shopping'
     case 'entertainment': return 'entertainment'
     case 'travel': return 'travel'
-    default: return 'overview'
+    case 'spa': return 'spa'
+    default: return 'wave'
   }
 }
 
 export function TappyMascot({
-  variant = 'overview',
+  pose = 'wave',
   size = 40,
   className = '',
   alt = '',
+  eager = false,
 }: {
-  variant?: TappyVariant
+  pose?: TappyPose
   size?: number
   className?: string
   alt?: string
+  /** avatar should load eagerly; large illustrations may lazy-load */
+  eager?: boolean
 }) {
   const [failed, setFailed] = useState(false)
 
@@ -55,20 +78,22 @@ export function TappyMascot({
         className={className}
         style={{ fontSize: Math.round(size * 0.72), lineHeight: 1, display: 'inline-block' }}
       >
-        {FALLBACK_EMOJI[variant]}
+        {FALLBACK[pose]}
       </span>
     )
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- variant-keyed static asset from /public, next/image adds no benefit
+    // eslint-disable-next-line @next/next/no-img-element -- pose-keyed static asset from /public; next/image adds no benefit for a fixed-size mascot
     <img
-      src={`/tappy/${variant}.png`}
+      src={`/tappy/${pose}.png`}
       width={size}
       height={size}
       alt={alt}
       className={className}
       onError={() => setFailed(true)}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
       style={{ objectFit: 'contain', display: 'inline-block' }}
       draggable={false}
     />
