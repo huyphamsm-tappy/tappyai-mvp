@@ -14,7 +14,8 @@ import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { TappyMascot, categoryToTappy, type TappyPose } from '@/components/TappyMascot'
+import { TappyMascot } from '@/components/TappyMascot'
+import { getTappyPose } from '@/lib/TappyMascotState'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -268,7 +269,7 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
       <div className="relative w-full max-w-md mx-auto bg-white dark:bg-gray-900 rounded-t-3xl sm:rounded-3xl shadow-2xl px-5 pt-6 pb-8 space-y-5">
         <div className="text-center mb-1">
           <div className="w-16 h-16 mx-auto mb-2 select-none overflow-hidden rounded-2xl">
-            <TappyMascot pose="welcome" size={64} eager animated />
+            <TappyMascot pose={getTappyPose({ isWelcome: true })} size={64} eager animated />
           </div>
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">Tappy muốn hiểu bạn hơn!</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">3 câu hỏi nhanh để gợi ý chuẩn hơn.</p>
@@ -477,10 +478,14 @@ function useSmoothText(target: string, active: boolean): string {
 function TappyAvatar({ category, active, searching, error: isError, listening }: {
   category?: string; active?: boolean; searching?: boolean; error?: boolean; listening?: boolean
 }) {
-  const pose: TappyPose = isError ? 'sorry'
-    : listening ? 'speaking'
-    : active ? (searching ? (category === 'food' ? 'delivery' : 'searching') : 'thinking')
-    : categoryToTappy(category)
+  const pose = getTappyPose({
+    category,
+    hasError: isError,
+    isListening: listening,
+    isSearching: active && searching,
+    isStreaming: active && !searching,
+    isWelcome: false,
+  })
   return (
     <div className="w-8 h-8 rounded-xl flex-shrink-0 mt-0.5 select-none overflow-hidden">
       <TappyMascot pose={pose} size={32} eager animated />
@@ -963,7 +968,7 @@ export default function ChatInterface({
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
               <div className="text-center">
                 <div className="w-20 h-20 rounded-2xl mx-auto mb-4 select-none overflow-hidden shadow-lg">
-                  <TappyMascot pose={categoryToTappy(category)} size={80} eager animated />
+                  <TappyMascot pose={getTappyPose({ category })} size={80} eager animated />
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo ? t(`tag.${catInfo.id}`) : 'TappyAI'}</h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{t('chat.welcomeSubtitle')}</p>

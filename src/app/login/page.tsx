@@ -9,6 +9,7 @@ import { Loader2, ExternalLink, Copy, Check, Sparkles, MapPin, Zap, Mail, ArrowL
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AUTH_PROVIDERS } from '@/lib/auth/providers'
 import { TappyMascot } from '@/components/TappyMascot'
+import { getTappyPose } from '@/lib/TappyMascotState'
 
 // Phát hiện trình duyệt nội bộ của các app chat (Google chặn OAuth trong các webview này)
 function detectInAppBrowser(): { isInApp: boolean; name: string; isAndroid: boolean } {
@@ -482,7 +483,7 @@ function EmailOtpBlock({
         </>
       ) : (
         <>
-          <div className="flex justify-center"><TappyMascot pose="phone" size={48} eager animated /></div>
+          <div className="flex justify-center"><TappyMascot pose={getTappyPose({ category: 'phone' })} size={48} eager animated /></div>
           <p className="text-xs text-gray-400 text-center">{t('auth.emailOtp.codeSentTo', { email: otpEmail })}</p>
           <input
             type="text"

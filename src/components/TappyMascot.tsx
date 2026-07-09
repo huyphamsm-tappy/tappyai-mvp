@@ -42,22 +42,6 @@ export const PHASE_1: TappyPose[] = [
   'deals', 'entertainment', 'aitools', 'recommendation', 'success', 'sorry',
 ]
 
-// ── Context → pose mappers (this is how "100+ situations" reuse 18 poses) ────
-// App CategoryId (food/shopping/entertainment/travel/spa/general) → pose.
-export function categoryToTappy(category?: string | null): TappyPose {
-  switch (category) {
-    case 'food': return 'food'
-    case 'shopping': return 'shopping'
-    case 'entertainment': return 'entertainment'
-    case 'travel': return 'travel'
-    case 'spa': return 'spa'
-    case 'deals': return 'deals'
-    case 'aitools': return 'aitools'
-    case 'recommendation': return 'recommendation'
-    default: return 'wave'
-  }
-}
-
 export function TappyMascot({
   pose = 'wave',
   size = 40,
