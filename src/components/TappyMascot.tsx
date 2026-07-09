@@ -36,12 +36,6 @@ const FALLBACK: Record<TappyPose, string> = {
   speaking: '💬', delivery: '🛵', spa: '💆',
 }
 
-// Phase 1 poses (ship as soon as these 13 land) — the rest are Phase 2.
-export const PHASE_1: TappyPose[] = [
-  'welcome', 'wave', 'thinking', 'searching', 'food', 'travel', 'shopping',
-  'deals', 'entertainment', 'aitools', 'recommendation', 'success', 'sorry',
-]
-
 export function TappyMascot({
   pose = 'wave',
   size = 40,
