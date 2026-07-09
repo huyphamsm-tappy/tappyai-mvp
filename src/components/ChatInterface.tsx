@@ -14,6 +14,7 @@ import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { TappyMascot, categoryToTappy } from '@/components/TappyMascot'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -266,7 +267,9 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={handleSkip} />
       <div className="relative w-full max-w-md mx-auto bg-white dark:bg-gray-900 rounded-t-3xl sm:rounded-3xl shadow-2xl px-5 pt-6 pb-8 space-y-5">
         <div className="text-center mb-1">
-          <div className="text-3xl mb-2">👋</div>
+          <div className="w-16 h-16 mx-auto mb-2 select-none overflow-hidden rounded-2xl">
+            <TappyMascot pose="welcome" size={64} eager />
+          </div>
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">Tappy muốn hiểu bạn hơn!</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">3 câu hỏi nhanh để gợi ý chuẩn hơn.</p>
         </div>
@@ -471,41 +474,11 @@ function useSmoothText(target: string, active: boolean): string {
   return active ? shown : target
 }
 
-// Per-tab Tappy mascot: the 🤖 base always reads as "Tappy", and a small item
-// badge marks the specialty — 🤖🍜 food, 🤖✈️ travel, 🤖🛍️ shopping, 🤖🌿 spa,
-// 🤖🎬 entertainment. Each item carries its own "personality" animation, and
-// while Tappy is working the item swaps to a tool glyph (🍜→🔎→🍜) to signal
-// searching. General chat shows the plain 🤖 mascot (no more bare "T").
-// Roadmap: this is the emoji-composite stage; `anim` class names + the badge
-// slot are the seam where vector icons / Lottie mascots plug in later.
-type Mascot = { item: string; tool: string; anim: string }
-const CAT_MASCOT: Record<string, Mascot> = {
-  food:          { item: '🍜', tool: '🔎', anim: 'mascot-food' },      // rung nhẹ — "nóng hổi"
-  travel:        { item: '✈️', tool: '🗺️', anim: 'mascot-travel' },   // bay nhẹ
-  shopping:      { item: '🛍️', tool: '🏷️', anim: 'mascot-shopping' }, // lắc nhẹ
-  spa:           { item: '🌿', tool: '💧', anim: 'mascot-spa' },       // đung đưa
-  entertainment: { item: '🎬', tool: '🍿', anim: 'mascot-ent' },       // bounce nhẹ
-}
-
-function TappyAvatar({ mascot, active }: { mascot: Mascot | null; active?: boolean }) {
-  // While active, cycle the badge item↔tool so it reads as "Tappy is working".
-  const [swap, setSwap] = useState(false)
-  useEffect(() => {
-    if (!active || !mascot) { setSwap(false); return }
-    const id = setInterval(() => setSwap((s) => !s), 650)
-    return () => clearInterval(id)
-  }, [active, mascot])
-  const shown = mascot ? (active && swap ? mascot.tool : mascot.item) : null
-
+function TappyAvatar({ category, active }: { category?: string; active?: boolean }) {
+  const pose = active ? 'thinking' : categoryToTappy(category)
   return (
-    <div className="relative w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm select-none">
-      <span className={cn('text-sm leading-none', active ? 'animate-cat-active' : 'animate-cat-idle')}>🤖</span>
-      {mascot && (
-        // Specialty badge — its own personality animation; each swap pops in.
-        <span className={cn('absolute -bottom-1 -right-1 text-[11px] leading-none drop-shadow-sm', mascot.anim)}>
-          <span key={shown} className="inline-block animate-glyph-swap">{shown}</span>
-        </span>
-      )}
+    <div className="w-8 h-8 rounded-xl flex-shrink-0 mt-0.5 select-none overflow-hidden">
+      <TappyMascot pose={pose} size={32} eager />
     </div>
   )
 }
@@ -536,8 +509,6 @@ export default function ChatInterface({
   const messagesRef = useRef<Message[]>([])
   const category = initialCategory as CategoryId
   const catInfo = CATEGORIES.find(c => c.id === category)
-  // Per-tab mascot for the assistant avatar (null → plain 🤖 for general chat).
-  const mascot = CAT_MASCOT[category] ?? null
   const [hasMemory, setHasMemory] = useState(false)
   const [isListening, setIsListening] = useState(false)
   // Voice status message (unsupported / permission / error) shown near the input.
@@ -986,11 +957,8 @@ export default function ChatInterface({
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
               <div className="text-center">
-                <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center mx-auto mb-4 shadow-lg select-none">
-                  <span className="text-3xl animate-cat-idle">🤖</span>
-                  {mascot && (
-                    <span className={cn('absolute -bottom-1.5 -right-1.5 text-xl drop-shadow-sm', mascot.anim)}>{mascot.item}</span>
-                  )}
+                <div className="w-20 h-20 rounded-2xl mx-auto mb-4 select-none overflow-hidden shadow-lg">
+                  <TappyMascot pose={categoryToTappy(category)} size={80} eager />
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo ? t(`tag.${catInfo.id}`) : 'TappyAI'}</h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{t('chat.welcomeSubtitle')}</p>
@@ -1059,7 +1027,7 @@ export default function ChatInterface({
                 const isLastMessage = msgIdx === messages.length - 1
                 return (
                   <div key={msg.id} className="animate-slide-up flex gap-3">
-                    <TappyAvatar mascot={mascot} active={isLoading && isLastMessage} />
+                    <TappyAvatar category={category} active={isLoading && isLastMessage} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(isLoading && isLastMessage ? smoothedLastText : text) }} />
@@ -1181,7 +1149,7 @@ export default function ChatInterface({
             })}
             {waitingForReply && (
               <div className="flex gap-3 animate-fade-in">
-                <TappyAvatar mascot={mascot} active />
+                <TappyAvatar category={category} active />
                 <div className="flex items-center h-7 gap-2">
                   <div className="flex items-center gap-1">
                     <span className="typing-dot text-gray-400" />
@@ -1197,7 +1165,7 @@ export default function ChatInterface({
             {/* Error recovery — explain plainly, preserve the user's message, offer a way forward (MUXS 8) */}
             {error && !isLoading && (
               <div className="flex gap-3 animate-fade-in">
-                <TappyAvatar mascot={mascot} />
+                <TappyAvatar category={category} />
                 <div className="flex-1 min-w-0">
                   {/auth_required|Unauthorized/i.test(error.message || '') ? (
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
