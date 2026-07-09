@@ -1104,6 +1104,12 @@ export default function ReviewsPage() {
   const [feedType, setFeedType] = useState<'for-you' | 'latest' | 'following'>('for-you')
   const [city, setCity] = useState('')
   const [topHashtags, setTopHashtags] = useState<string[]>([])
+  const cityRef = useRef(city)
+  const topHashtagsRef = useRef(topHashtags)
+  cityRef.current = city
+  topHashtagsRef.current = topHashtags
+  const abortRef = useRef<AbortController | null>(null)
+  const fetchRef = useRef<(p: number, append: boolean, ft: 'for-you' | 'latest' | 'following', signal?: AbortSignal) => Promise<void>>(null as any)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [notifs, setNotifs] = useState<Notification[]>([])
@@ -1136,26 +1142,38 @@ export default function ReviewsPage() {
   }, [supabase])
   useEffect(() => {
     if (!me) return
-    getUserPreferences(me).then(p => setUserPrefs(p)).catch(() => {})
-    // City: infer from trailing segment of user's recent post addresses (best-effort personalization signal)
-    supabase.from('reviews').select('place_address').eq('user_id', me).order('created_at', { ascending: false }).limit(5).then(({ data }) => {
+    let cancelled = false
+    getUserPreferences(me).then(p => { if (!cancelled) setUserPrefs(p) }).catch(() => {})
+
+    const cityP = supabase.from('reviews').select('place_address').eq('user_id', me).order('created_at', { ascending: false }).limit(5).then(({ data }) => {
       const candidates = (data || []).map(r => r.place_address).filter(Boolean).map((a: string) => a.split(',').pop()?.trim() || '').filter(Boolean)
       if (candidates.length === 0) return
       const freq = new Map<string, number>()
       for (const c of candidates) freq.set(c, (freq.get(c) || 0) + 1)
-      setCity(Array.from(freq.entries()).sort((a, b) => b[1] - a[1])[0][0])
+      if (!cancelled) setCity(Array.from(freq.entries()).sort((a, b) => b[1] - a[1])[0][0])
     }, () => {})
-    // Top hashtags: from reviews the user has watched (best-effort personalization signal)
-    supabase.from('review_interactions').select('review_id').eq('user_id', me).order('created_at', { ascending: false }).limit(20).then(async ({ data: interData }) => {
+
+    const hashP = supabase.from('review_interactions').select('review_id').eq('user_id', me).order('created_at', { ascending: false }).limit(20).then(async ({ data: interData }) => {
       try {
         const ids = (interData || []).map(r => r.review_id as string)
         if (ids.length === 0) return
         const { data: hashData } = await supabase.from('reviews').select('hashtags').in('id', ids)
         const freq = new Map<string, number>()
         for (const row of hashData || []) for (const tag of row.hashtags || []) freq.set(tag, (freq.get(tag) || 0) + 1)
-        setTopHashtags(Array.from(freq.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([t]) => t))
+        if (!cancelled) setTopHashtags(Array.from(freq.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([t]) => t))
       } catch { /* best-effort personalization, degrade silently */ }
     }, () => {})
+
+    // Re-fetch feed once with personalization signals after both settle (single call, not cascade)
+    Promise.allSettled([cityP, hashP]).then(() => {
+      if (cancelled) return
+      abortRef.current?.abort()
+      const ac = new AbortController()
+      abortRef.current = ac
+      fetchRef.current(0, false, 'for-you', ac.signal)
+    })
+
+    return () => { cancelled = true }
   }, [me, supabase])
 
   // Load notifications + hot places when inbox tab opens
@@ -1191,44 +1209,54 @@ export default function ReviewsPage() {
     })()
   }, [tab])
 
-  const fetch_ = useCallback(async (p: number, append = false, ft: 'for-you' | 'latest' | 'following' = 'for-you') => {
+  const fetch_ = useCallback(async (p: number, append = false, ft: 'for-you' | 'latest' | 'following' = 'for-you', signal?: AbortSignal) => {
     let url = `/api/reviews/feed?page=${p}&limit=12`
     if (ft === 'for-you') {
-      url += `&sort=trending${city ? `&city=${encodeURIComponent(city)}` : ''}`
+      const c = cityRef.current
+      url += `&sort=trending${c ? `&city=${encodeURIComponent(c)}` : ''}`
     } else if (ft === 'latest') {
       url += '&sort=latest'
     } else {
       url += '&sort=latest&following=true'
     }
     try {
-      const res = await fetch(url)
+      const res = await fetch(url, { signal })
       if (!res.ok) throw new Error('feed_failed')
       const data = await res.json()
+      const ht = topHashtagsRef.current
       let rows: Review[] = (data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false }))
-      if (ft === 'for-you' && topHashtags.length > 0) {
+      if (ft === 'for-you' && ht.length > 0) {
         rows = [...rows].sort((a, b) => {
-          const sa = (a.hashtags || []).filter(t => topHashtags.includes(t)).length
-          const sb = (b.hashtags || []).filter(t => topHashtags.includes(t)).length
+          const sa = (a.hashtags || []).filter(t => ht.includes(t)).length
+          const sb = (b.hashtags || []).filter(t => ht.includes(t)).length
           return sb - sa
         })
       }
+      if (signal?.aborted) return
       setReviews(prev => append ? [...prev, ...rows] : rows)
       hasMore.current = rows.length >= 12
       if (!append) setFeedError(false)
-    } catch {
+    } catch (e: any) {
+      if (e?.name === 'AbortError') return
       if (append) {
-        // Let the next scroll retry the same page instead of permanently disabling pagination
         hasMore.current = true
       } else {
         setReviews([])
         setFeedError(true)
       }
     } finally {
-      setLoading(false)
+      if (!signal?.aborted) setLoading(false)
     }
-  }, [city, topHashtags])
+  }, [])
+  fetchRef.current = fetch_
 
-  useEffect(() => { fetch_(0, false, feedType) }, [fetch_, feedType])
+  useEffect(() => {
+    abortRef.current?.abort()
+    const ac = new AbortController()
+    abortRef.current = ac
+    fetch_(0, false, feedType, ac.signal)
+    return () => ac.abort()
+  }, [fetch_, feedType])
 
   const handleFeedTypeChange = (ft: 'for-you' | 'latest' | 'following') => {
     if (ft === feedType) return
