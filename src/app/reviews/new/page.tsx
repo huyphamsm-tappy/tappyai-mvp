@@ -7,9 +7,10 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { upload } from '@vercel/blob/client'
 import {
-  Star, Camera, X, ArrowLeft, Loader2, CheckCircle,
+  Star, Camera, X, ArrowLeft, Loader2,
   MapPin, Plus, Video, Link2, XCircle, Music,
 } from 'lucide-react'
+import { TappyMascot } from '@/components/TappyMascot'
 import {
   MusicPickerSheet, MusicThumbnail, MusicDuration, useMusicTrack,
   type MusicSelection,
@@ -580,7 +581,9 @@ export default function NewReviewPage() {
     return (
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <div className="text-center px-8">
-          <CheckCircle size={56} className="text-green-500 mx-auto mb-4" />
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl overflow-hidden select-none">
+            <TappyMascot pose="success" size={64} eager />
+          </div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('reviewNew.successTitle')}</h2>
           <p className="text-gray-500">{t('reviewNew.successSubtitle')}</p>
         </div>

@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Camera, ImagePlus, ScanText, Copy, Check, Download, Share2, X, FileText } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { TappyMascot } from '@/components/TappyMascot'
 
 // Resize image to max 2048px before sending to API (reduces payload, faster OCR)
 async function resizeImage(file: File, maxPx = 2048, quality = 0.85): Promise<{ base64: string; mimeType: string }> {
@@ -134,7 +135,9 @@ export default function ScanPage() {
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 pt-5 pb-24 space-y-4">
         {/* Hero */}
         <div className="rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 p-5 text-white shadow-lg">
-          <div className="text-3xl mb-2">📷</div>
+          <div className="w-12 h-12 mb-2 rounded-xl overflow-hidden select-none">
+            <TappyMascot pose="aitools" size={48} eager />
+          </div>
           <h2 className="text-xl font-bold leading-tight">{t('scan.heroTitle')}</h2>
           <p className="text-white/70 text-sm mt-1">{t('scan.heroSubtitle')}</p>
         </div>

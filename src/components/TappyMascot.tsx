@@ -51,6 +51,9 @@ export function categoryToTappy(category?: string | null): TappyPose {
     case 'entertainment': return 'entertainment'
     case 'travel': return 'travel'
     case 'spa': return 'spa'
+    case 'deals': return 'deals'
+    case 'aitools': return 'aitools'
+    case 'recommendation': return 'recommendation'
     default: return 'wave'
   }
 }

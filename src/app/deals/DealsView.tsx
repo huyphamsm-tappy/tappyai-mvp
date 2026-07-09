@@ -4,6 +4,7 @@ import type { Deal } from '@/lib/shopee-deals'
 import DealNotifyButton from './DealNotifyButton'
 import { ExternalLink } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { TappyMascot } from '@/components/TappyMascot'
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Điện tử': 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300',
@@ -45,7 +46,10 @@ export default function DealsView({ deals }: { deals: Deal[] }) {
       <div className="mb-5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('deals.title')} 🔥</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('deals.title')}</h1>
+              <div className="w-8 h-8 rounded-lg overflow-hidden select-none"><TappyMascot pose="deals" size={32} eager /></div>
+            </div>
             {/* Locale + current-date string differs between SSR ('vi') and the
                 client's stored locale/clock — suppress the hydration text mismatch. */}
             <p suppressHydrationWarning className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 capitalize">{formatDate(locale)}</p>

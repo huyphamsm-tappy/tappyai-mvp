@@ -474,8 +474,10 @@ function useSmoothText(target: string, active: boolean): string {
   return active ? shown : target
 }
 
-function TappyAvatar({ category, active }: { category?: string; active?: boolean }) {
-  const pose = active ? 'thinking' : categoryToTappy(category)
+function TappyAvatar({ category, active, searching, error: isError }: {
+  category?: string; active?: boolean; searching?: boolean; error?: boolean
+}) {
+  const pose = isError ? 'sorry' : active ? (searching ? 'searching' : 'thinking') : categoryToTappy(category)
   return (
     <div className="w-8 h-8 rounded-xl flex-shrink-0 mt-0.5 select-none overflow-hidden">
       <TappyMascot pose={pose} size={32} eager />
@@ -1027,7 +1029,7 @@ export default function ChatInterface({
                 const isLastMessage = msgIdx === messages.length - 1
                 return (
                   <div key={msg.id} className="animate-slide-up flex gap-3">
-                    <TappyAvatar category={category} active={isLoading && isLastMessage} />
+                    <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(isLoading && isLastMessage ? smoothedLastText : text) }} />
@@ -1149,7 +1151,7 @@ export default function ChatInterface({
             })}
             {waitingForReply && (
               <div className="flex gap-3 animate-fade-in">
-                <TappyAvatar category={category} active />
+                <TappyAvatar category={category} active searching={!!activeTool} />
                 <div className="flex items-center h-7 gap-2">
                   <div className="flex items-center gap-1">
                     <span className="typing-dot text-gray-400" />
@@ -1165,7 +1167,7 @@ export default function ChatInterface({
             {/* Error recovery — explain plainly, preserve the user's message, offer a way forward (MUXS 8) */}
             {error && !isLoading && (
               <div className="flex gap-3 animate-fade-in">
-                <TappyAvatar category={category} />
+                <TappyAvatar category={category} error />
                 <div className="flex-1 min-w-0">
                   {/auth_required|Unauthorized/i.test(error.message || '') ? (
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
