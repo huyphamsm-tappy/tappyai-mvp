@@ -14,7 +14,7 @@ import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { TappyMascot, categoryToTappy } from '@/components/TappyMascot'
+import { TappyMascot, categoryToTappy, type TappyPose } from '@/components/TappyMascot'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -474,10 +474,13 @@ function useSmoothText(target: string, active: boolean): string {
   return active ? shown : target
 }
 
-function TappyAvatar({ category, active, searching, error: isError }: {
-  category?: string; active?: boolean; searching?: boolean; error?: boolean
+function TappyAvatar({ category, active, searching, error: isError, listening }: {
+  category?: string; active?: boolean; searching?: boolean; error?: boolean; listening?: boolean
 }) {
-  const pose = isError ? 'sorry' : active ? (searching ? 'searching' : 'thinking') : categoryToTappy(category)
+  const pose: TappyPose = isError ? 'sorry'
+    : listening ? 'speaking'
+    : active ? (searching ? (category === 'food' ? 'delivery' : 'searching') : 'thinking')
+    : categoryToTappy(category)
   return (
     <div className="w-8 h-8 rounded-xl flex-shrink-0 mt-0.5 select-none overflow-hidden">
       <TappyMascot pose={pose} size={32} eager />
