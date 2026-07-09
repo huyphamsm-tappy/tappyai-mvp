@@ -168,11 +168,14 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         muted={muted}
         playsInline
         loop
-        // preload="none": only the in-view slide (which the IntersectionObserver
-        // explicitly play()s) fetches media. The pre-mounted next slide stays at
-        // zero bytes until it becomes active — critical on iOS Safari, which caps
-        // how many video elements can buffer/decode at once.
-        preload="none"
+        // preload="auto": the feed only ever mounts a <video> for the active slide
+        // and its ONE next neighbour (see reviews page windowing), so at most two
+        // elements buffer at once — safe for iOS Safari's media-element cap. That
+        // lets the next slide warm up ahead of time instead of cold-starting from
+        // zero bytes on every swipe (which was the visible load latency). The old
+        // preload="none" over-corrected the earlier many-videos freeze; the ±1
+        // windowing is what actually prevents that, not disabling preload.
+        preload="auto"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
