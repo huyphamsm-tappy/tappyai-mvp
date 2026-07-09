@@ -40,19 +40,22 @@ export async function GET(req: NextRequest) {
   let queryError: any = null
 
   if (sort === 'trending' && !filterUserId && !followingIds && !search) {
-    // Score-based trending feed: fetch a batch, compute score in JS
-    const { data, error } = await supabase
+    // Phase 1 — LIGHT scoring pass: pull only the columns the score needs (no
+    // profiles join, no body/photos/hashtags) for the candidate pool. Ranking a
+    // 200-row pool no longer drags 200 full rows + a join across the wire.
+    const { data: pool, error } = await supabase
       .from('reviews')
-      .select(EXPLORE_SELECT)
+      .select('id, created_at, place_address, like_count, comment_count, save_count, view_count, watch_time_avg, completion_rate')
       .or('is_hidden.is.null,is_hidden.eq.false')
       .order('created_at', { ascending: false })
       .limit(200)
 
     queryError = error
 
-    if (!error && data) {
+    if (!error && pool) {
       const now = Date.now()
-      const scored = data.map(r => {
+      const cutoff = now - 24 * 60 * 60 * 1000
+      const scored = pool.map((r: any) => {
         const daysOld = (now - new Date(r.created_at).getTime()) / (86400 * 1000)
         const recencyScore = 1.0 / (1.0 + daysOld)
         const locationBoost = city && r.place_address?.toLowerCase().includes(city) ? 1.3 : 1.0
@@ -64,38 +67,36 @@ export async function GET(req: NextRequest) {
           1.0
         )
         const score = (
-          normalizedWatch * 0.35
-          + completionRate * 0.25
-          + engagementRate * 0.25
-          + recencyScore * 0.15
+          normalizedWatch * 0.35 + completionRate * 0.25 + engagementRate * 0.25 + recencyScore * 0.15
         ) * locationBoost
-        return { ...r, score }
+        return { id: r.id as string, score }
       })
       scored.sort((a, b) => b.score - a.score)
-      const page_results = scored.slice(offset, offset + limit)
+      const pageRows = scored.slice(offset, offset + limit)
+      const pageIds = new Set(pageRows.map(x => x.id))
 
-      // Cold-start: inject up to 2 new posts with zero engagement near end of page
-      const cutoff = new Date(now - 24 * 60 * 60 * 1000).toISOString()
-      const { data: coldPool } = await supabase
-        .from('reviews')
-        .select(EXPLORE_SELECT)
-        .or('is_hidden.is.null,is_hidden.eq.false')
-        .gte('created_at', cutoff)
-        .eq('like_count', 0)
-        .eq('save_count', 0)
-        .eq('comment_count', 0)
-        .eq('view_count', 0)
-        .order('created_at', { ascending: false })
-        .limit(10)
+      // Cold-start: up to 2 recent zero-engagement posts, taken from the SAME
+      // pool (no separate query) so brand-new posts still surface.
+      const cold = (pool as any[]).filter(r =>
+        new Date(r.created_at).getTime() >= cutoff &&
+        !r.like_count && !r.save_count && !r.comment_count && !r.view_count &&
+        !pageIds.has(r.id)
+      ).slice(0, 2)
 
-      const pageIds = new Set(page_results.map((r: any) => r.id))
-      const coldCandidates = (coldPool || []).filter((r: any) => !pageIds.has(r.id)).slice(0, 2).map((r: any) => ({ ...r, score: 0 }))
-
-      if (coldCandidates.length > 0) {
-        page_results.push(...coldCandidates)
+      const wantIds = [...pageRows.map(x => x.id), ...cold.map(r => r.id)]
+      // Phase 2 — fetch FULL rows (with the profiles join) only for what this
+      // page renders (~12–14), not the whole 200-row pool.
+      if (wantIds.length > 0) {
+        const { data: full, error: fullErr } = await supabase
+          .from('reviews')
+          .select(EXPLORE_SELECT)
+          .in('id', wantIds)
+        queryError = fullErr
+        const byId = new Map((full || []).map((r: any) => [r.id, r]))
+        reviews = wantIds.map(id => byId.get(id)).filter(Boolean) as any[]
+      } else {
+        reviews = []
       }
-
-      reviews = page_results
     }
   } else {
     // Latest, filtered, search, or following feed
@@ -139,24 +140,13 @@ export async function GET(req: NextRequest) {
     savedIds = (savesRes.data || []).map(s => s.review_id)
   }
 
-  // reviews.comment_count drifts from reality (the DB trigger that maintains it is blocked
-  // by RLS for ordinary users — see the comments API route for root cause). Override it with
-  // a real tally so the feed always shows the true count; the trending/cold-start logic above
-  // intentionally keeps reading the raw column for ranking, which is a separate concern.
-  const realCommentCounts = new Map<string, number>()
-  if (reviews && reviews.length > 0) {
-    const { data: commentRows } = await supabase
-      .from('review_comments')
-      .select('review_id')
-      .in('review_id', reviews.map(r => r.id))
-    for (const row of commentRows || []) {
-      realCommentCounts.set(row.review_id, (realCommentCounts.get(row.review_id) || 0) + 1)
-    }
-  }
-
+  // comment_count is now maintained accurately by the SECURITY DEFINER counter
+  // trigger (add_counter_security_definer.sql) + its one-time backfill, so we
+  // trust the column directly instead of re-tallying review_comments on every
+  // feed load (that extra query was only there while the RLS-blocked trigger
+  // left the column drifting).
   const enriched = (reviews || []).map(r => ({
     ...r,
-    comment_count: realCommentCounts.get(r.id) ?? 0,
     liked_by_me: likedIds.includes(r.id),
     saved_by_me: savedIds.includes(r.id),
   }))
