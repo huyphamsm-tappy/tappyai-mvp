@@ -482,7 +482,7 @@ function EmailOtpBlock({
         </>
       ) : (
         <>
-          <div className="flex justify-center"><TappyMascot pose="phone" size={48} eager /></div>
+          <div className="flex justify-center"><TappyMascot pose="phone" size={48} eager animated /></div>
           <p className="text-xs text-gray-400 text-center">{t('auth.emailOtp.codeSentTo', { email: otpEmail })}</p>
           <input
             type="text"

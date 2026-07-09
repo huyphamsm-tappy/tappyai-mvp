@@ -23,7 +23,7 @@ export default function VietContentView({ user }: { user: ComponentProps<typeof 
           <div className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
           <div className="relative">
             <div className="w-12 h-12 mb-2 rounded-xl overflow-hidden select-none">
-              <TappyMascot pose="reading" size={48} eager />
+              <TappyMascot pose="reading" size={48} eager animated />
             </div>
             <p className="text-white/80 text-sm font-medium mb-1">{t('vietContent.heroKicker')}</p>
             <h1 className="text-white text-2xl sm:text-3xl font-black leading-tight">

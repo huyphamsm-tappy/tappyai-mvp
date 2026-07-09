@@ -257,7 +257,7 @@ export default function MessageActionBar({
       {isThisSpeaking && (
         <div className="mt-2 flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
           <div className="w-6 h-6 rounded-lg overflow-hidden select-none flex-shrink-0">
-            <TappyMascot pose="speaking" size={24} eager />
+            <TappyMascot pose="speaking" size={24} eager animated />
           </div>
           {/* Play / Pause */}
           <button

@@ -48,7 +48,7 @@ export default function DealsView({ deals }: { deals: Deal[] }) {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('deals.title')}</h1>
-              <div className="w-8 h-8 rounded-lg overflow-hidden select-none"><TappyMascot pose="deals" size={32} eager /></div>
+              <div className="w-8 h-8 rounded-lg overflow-hidden select-none"><TappyMascot pose="deals" size={32} eager animated /></div>
             </div>
             {/* Locale + current-date string differs between SSR ('vi') and the
                 client's stored locale/clock — suppress the hydration text mismatch. */}

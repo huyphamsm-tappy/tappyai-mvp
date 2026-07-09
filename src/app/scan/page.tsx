@@ -136,7 +136,7 @@ export default function ScanPage() {
         {/* Hero */}
         <div className="rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 p-5 text-white shadow-lg">
           <div className="w-12 h-12 mb-2 rounded-xl overflow-hidden select-none">
-            <TappyMascot pose="aitools" size={48} eager />
+            <TappyMascot pose="aitools" size={48} eager animated />
           </div>
           <h2 className="text-xl font-bold leading-tight">{t('scan.heroTitle')}</h2>
           <p className="text-white/70 text-sm mt-1">{t('scan.heroSubtitle')}</p>

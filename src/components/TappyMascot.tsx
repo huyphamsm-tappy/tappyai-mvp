@@ -64,21 +64,23 @@ export function TappyMascot({
   className = '',
   alt = '',
   eager = false,
+  animated = false,
 }: {
   pose?: TappyPose
   size?: number
   className?: string
   alt?: string
-  /** avatar should load eagerly; large illustrations may lazy-load */
   eager?: boolean
+  animated?: boolean
 }) {
   const [failed, setFailed] = useState(false)
+  const motionClass = animated ? `tappy-motion-${pose}` : ''
 
   if (failed) {
     return (
       <span
         aria-hidden={!alt}
-        className={className}
+        className={`${motionClass} ${className}`.trim()}
         style={{ fontSize: Math.round(size * 0.72), lineHeight: 1, display: 'inline-block' }}
       >
         {FALLBACK[pose]}
@@ -93,7 +95,7 @@ export function TappyMascot({
       width={size}
       height={size}
       alt={alt}
-      className={className}
+      className={`${motionClass} ${className}`.trim()}
       onError={() => setFailed(true)}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"

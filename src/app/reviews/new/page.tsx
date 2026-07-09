@@ -582,7 +582,7 @@ export default function NewReviewPage() {
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <div className="text-center px-8">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl overflow-hidden select-none">
-            <TappyMascot pose="success" size={64} eager />
+            <TappyMascot pose="success" size={64} eager animated />
           </div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('reviewNew.successTitle')}</h2>
           <p className="text-gray-500">{t('reviewNew.successSubtitle')}</p>

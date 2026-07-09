@@ -78,7 +78,7 @@ export default function RecommendationsPage() {
         {!loading && !error && recs.length === 0 && (
           <div className="flex flex-col items-center gap-2 py-12 text-center text-gray-500 dark:text-gray-400">
             <div className="w-14 h-14 rounded-2xl overflow-hidden select-none">
-              <TappyMascot pose="recommendation" size={56} />
+              <TappyMascot pose="recommendation" size={56} animated />
             </div>
             <p className="text-sm">Chưa đủ dữ liệu để gợi ý.</p>
             <p className="text-xs">Dùng Tappy nhiều hơn (chat, lưu địa điểm, review) để Tappy hiểu bạn rõ hơn nhé!</p>
