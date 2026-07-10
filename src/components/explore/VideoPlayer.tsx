@@ -26,7 +26,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
-  const [mutedUI, setMutedUI] = useState(true)
+  const [mutedUI, setMutedUI] = useState(false)
   const mutedRef = useRef(true)
   const [playing, setPlaying] = useState(false)
   const [showPlayIcon, setShowPlayIcon] = useState(false)
@@ -201,11 +201,9 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         preload="auto"
         onPlay={() => {
           setPlaying(true)
-          const wantsMuted = localStorage.getItem('tappy_video_muted') !== 'false'
-          if (!wantsMuted && videoRef.current) {
+          if (videoRef.current) {
             videoRef.current.muted = false
             mutedRef.current = false
-            setMutedUI(false)
           }
         }}
         onPause={() => setPlaying(false)}
