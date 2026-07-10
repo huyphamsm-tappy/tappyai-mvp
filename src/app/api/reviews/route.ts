@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
-import { createSelection, getTrack, recordUsage } from '@/modules/music/server'
+import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -11,6 +11,11 @@ interface ReviewMusic {
   trackId: string
   startSec: number
   volume: number
+  // 'original' = this clip's own audio, auto-registered as a reusable sound.
+  // 'attached' = a sound borrowed from another clip / the music library.
+  // The feed uses this to decide playback: original clips play their own video
+  // audio; attached clips mute the video and play the borrowed sound over it.
+  origin?: 'original' | 'attached'
 }
 
 // Best-effort in-memory rate limit: 5 reviews/day/IP
@@ -65,6 +70,7 @@ export async function POST(req: NextRequest) {
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]
   let music: ReviewMusic | null
+  let videoDuration = 0
   try {
     const b = await req.json()
     placeId = b.placeId?.trim()
@@ -79,6 +85,7 @@ export async function POST(req: NextRequest) {
     source_type = b.source_type?.trim() || 'upload'
     source_url = b.source_url?.trim() || ''
     hashtags = Array.isArray(b.hashtags) ? b.hashtags.filter((t: unknown) => typeof t === 'string').slice(0, 10) : []
+    videoDuration = Number(b.duration) || 0
     music = null
     if (b.music) {
       if (b.music.version !== MUSIC_PAYLOAD_VERSION) throw new Error('unsupported music version')
@@ -86,7 +93,9 @@ export async function POST(req: NextRequest) {
       // and throws on invalid input — reuses the Music Module's own public validator
       // rather than re-implementing the checks here.
       const selection = createSelection(String(b.music.trackId), Number(b.music.startSec), Number(b.music.volume))
-      music = { version: MUSIC_PAYLOAD_VERSION, ...selection }
+      // A track the user picked from another clip / the library → 'attached':
+      // the feed mutes this clip's video and plays the borrowed sound over it.
+      music = { version: MUSIC_PAYLOAD_VERSION, ...selection, origin: 'attached' }
     }
     if (!placeId || !placeName) throw new Error('missing fields')
     if (!body && photos.length === 0 && !media_url) throw new Error('need body or photos or media')
@@ -128,6 +137,27 @@ export async function POST(req: NextRequest) {
 
   if (existing) {
     return NextResponse.json({ error: 'Bạn đã đánh giá địa điểm này rồi.' }, { status: 409 })
+  }
+
+  // Auto-register the clip's OWN audio as a reusable "original sound" (TikTok
+  // model): a native video upload that didn't borrow a sound gets an
+  // original_sound track pointing at the clip itself (Phase 1 — audio_url = the
+  // video's media_url, no extraction). Others can then "use this sound", and the
+  // clip shows up under it. Best-effort — a failure here never blocks the post.
+  if (!music && content_type === 'video' && source_type === 'upload' && media_url) {
+    try {
+      const { data: prof } = await supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle()
+      const durationSec = Math.min(600, Math.max(1, Math.round(videoDuration) || 15))
+      const trackId = await createOriginalSound(supabase, {
+        title: 'Âm thanh gốc',
+        artist: prof?.full_name?.trim() || null,
+        durationSec,
+        audioUrl: media_url,
+        coverUrl: thumbnail || null,
+        uploadedBy: user.id,
+      })
+      if (trackId) music = { version: MUSIC_PAYLOAD_VERSION, trackId, startSec: 0, volume: 1, origin: 'original' }
+    } catch { /* original sound is best-effort — never block the post */ }
   }
 
   const reviewData: Record<string, unknown> = {

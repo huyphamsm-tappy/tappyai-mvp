@@ -168,6 +168,43 @@ export async function recordUsage(
   })
 }
 
+// Registers a clip's own audio as a reusable "original sound" (TikTok model).
+// Phase 1: audio_url is a POINTER to the clip's media_url — no audio extraction,
+// no ffmpeg. Later (Phase 2) we can extract audio to its own file and just swap
+// what audio_url points at; every reader already goes through audio_url.
+// Requires the caller's AUTHENTICATED client: the music_tracks INSERT RLS policy
+// is WITH CHECK (auth.uid() = uploaded_by AND music_type = 'original_sound' AND
+// rights_confirmed = true), which the module's anon read client can't satisfy.
+// Returns the new track id, or null on any failure (best-effort — never blocks
+// the post that triggered it).
+export async function insertOriginalSoundTrack(
+  client: SupabaseClient,
+  row: { title: string; artist: string | null; durationSec: number; audioUrl: string; coverUrl: string | null; uploadedBy: string }
+): Promise<string | null> {
+  const { data: provider } = await client
+    .from('music_providers').select('id').eq('slug', 'internal').single()
+  if (!provider) return null
+  const { data, error } = await client
+    .from('music_tracks')
+    .insert({
+      title: row.title,
+      artist: row.artist,
+      duration_sec: row.durationSec,
+      audio_url: row.audioUrl,
+      preview_url: row.audioUrl,
+      cover_url: row.coverUrl,
+      provider_id: provider.id,
+      music_type: 'original_sound',
+      uploaded_by: row.uploadedBy,
+      rights_confirmed: true,
+      is_active: true,
+    })
+    .select('id')
+    .single()
+  if (error || !data) return null
+  return data.id as string
+}
+
 export async function getProviders(): Promise<MusicProvider[]> {
   const { data, error } = await supabase
     .from('music_providers')

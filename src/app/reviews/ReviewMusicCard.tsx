@@ -12,17 +12,30 @@ interface ReviewMusicCardProps {
   trackId: string
   startSec: number
   volume: number
+  // When true (this clip is the active slide and it borrowed a sound), the
+  // sound auto-plays over the muted video — TikTok reuse. Stops on scroll away.
+  active?: boolean
 }
 
 // Never owns an Audio element itself — reads shared state via
 // useMusicPlayback and emits play/pause intent to musicPlaybackController,
 // which owns the single HTMLAudioElement for the whole Reviews feature.
-export default function ReviewMusicCard({ playKey, trackId, startSec, volume }: ReviewMusicCardProps) {
+export default function ReviewMusicCard({ playKey, trackId, startSec, volume, active = false }: ReviewMusicCardProps) {
   const { track } = useMusicTrack(trackId)
   const playback = useMusicPlayback()
   const isActive = playback.playKey === playKey
   const isPlaying = isActive && playback.isPlaying
   const progress = isActive ? playback.progress : 0
+
+  // Auto-play the borrowed sound while this clip is the active slide, and stop
+  // when it scrolls away — the video is muted for these clips, so the sound is
+  // what the viewer hears. Manual pause via the button still works (the effect
+  // only re-runs when active/track change, not on a user pause).
+  useEffect(() => {
+    if (!active || !track) return
+    musicPlaybackController.play(playKey, getPreviewUrl(track), startSec, volume, track.durationSec)
+    return () => { musicPlaybackController.stopIfActive(playKey) }
+  }, [active, track, playKey, startSec, volume])
 
   // Stop playback if this card leaves the page (unmount from navigation,
   // feed pagination, etc.) — only when it was the one actually playing, so

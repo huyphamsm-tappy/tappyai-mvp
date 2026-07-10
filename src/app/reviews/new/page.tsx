@@ -239,6 +239,9 @@ export default function NewReviewPage() {
   /* video upload */
   const [media_url, setMedia_url] = useState('')
   const [thumbnail, setThumbnail] = useState('')
+  // Measured clip length (s) — sent on submit so the auto-registered original
+  // sound gets an accurate duration_sec (see /api/reviews original-sound block).
+  const [videoDuration, setVideoDuration] = useState(0)
   const [thumbPreview, setThumbPreview] = useState('')
   // Revoke the thumbnail preview object URL on change / reset / unmount.
   useEffect(() => {
@@ -274,7 +277,7 @@ export default function NewReviewPage() {
   }, [])
 
   const resetVideoState = () => {
-    setMedia_url(''); setThumbnail(''); setThumbPreview('')
+    setMedia_url(''); setThumbnail(''); setThumbPreview(''); setVideoDuration(0)
     setUploadStep(''); setUploadProgress(0); setAiHashtags([])
   }
 
@@ -331,6 +334,7 @@ export default function NewReviewPage() {
     }
 
     resetVideoState()
+    setVideoDuration(duration) // keep the measured length for the original-sound track
 
     /* 1. Generate + upload thumbnail — best-effort. A poster frame is nice-to-have;
        if the browser can't decode one, the video must still upload and play. */
@@ -536,6 +540,7 @@ export default function NewReviewPage() {
         payload.media_url = media_url
         payload.thumbnail = thumbnail
         payload.source_type = 'upload'
+        payload.duration = videoDuration // for the auto-registered original sound
         if (aiHashtags.length > 0) payload.hashtags = aiHashtags
       } else {
         payload.content_type = 'video'

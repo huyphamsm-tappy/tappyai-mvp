@@ -17,6 +17,7 @@ import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoP
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicCard from './ReviewMusicCard'
 import ReviewMusicDisc from './ReviewMusicDisc'
+import ReviewOriginalSoundBar from './ReviewOriginalSoundBar'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 /* ─── types ─── */
@@ -30,7 +31,7 @@ interface Review {
   content_type?: string | null; media_url?: string | null; thumbnail?: string | null
   source_type?: string | null; source_url?: string | null; hashtags?: string[] | null
   watch_time_avg?: number; score?: number
-  music?: { version: number; trackId: string; startSec: number; volume: number } | null
+  music?: { version: number; trackId: string; startSec: number; volume: number; origin?: 'original' | 'attached' } | null
 }
 
 interface Notification { id: string; type: string; actor_id: string; actor_name: string; actor_avatar: string | null; text: string; url: string; created_at: string }
@@ -339,6 +340,8 @@ function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = tru
                 sourceType={r.source_type ?? 'upload'}
                 sourceUrl={r.source_url ?? undefined}
                 active={active}
+                // Borrowed-sound clips play the sound over a muted video (no echo).
+                forceMuted={!!(r.music && r.music.origin !== 'original')}
                 onDurationKnown={d => { durationRef.current = d }}
               />
             // Off-screen: thumbnail only, no <video> element (frees iOS media slots)
@@ -421,8 +424,9 @@ function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = tru
         <RAction icon={<Bookmark size={24} className={r.saved_by_me ? 'fill-amber-400 text-amber-400' : 'text-white'} />} label={t('reviews.railSave')} onClick={() => onSave(r.id)} />
         {/* Share */}
         <RAction icon={<Share2 size={24} className="text-white" />} label={t('reviews.railShare')} onClick={() => onShare(r)} />
-        {/* Music disc — only when the review has an attached soundtrack; tap to play */}
-        {r.music && (
+        {/* Music disc — only for BORROWED sounds (tap to play). Original-sound
+            clips play their own video audio, so a separate disc would just echo. */}
+        {r.music && r.music.origin !== 'original' && (
           <ReviewMusicDisc
             playKey={r.id}
             trackId={r.music.trackId}
@@ -446,12 +450,17 @@ function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = tru
         )}
         {r.music && (
           <div className="mt-2">
-            <ReviewMusicCard
-              playKey={r.id}
-              trackId={r.music.trackId}
-              startSec={r.music.startSec}
-              volume={r.music.volume}
-            />
+            {r.music.origin === 'original'
+              // Original sound: compact attribution pill, no player (video audio IS the sound).
+              ? <ReviewOriginalSoundBar trackId={r.music.trackId} handle={handle} />
+              // Borrowed sound: full card; auto-plays over the muted video while active.
+              : <ReviewMusicCard
+                  playKey={r.id}
+                  trackId={r.music.trackId}
+                  startSec={r.music.startSec}
+                  volume={r.music.volume}
+                  active={active}
+                />}
           </div>
         )}
       </div>

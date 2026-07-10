@@ -58,6 +58,18 @@ export async function recordUsage(
   return musicRepository.recordUsage(client, row)
 }
 
+// --- Original sound registration ---
+// Registers a clip's own audio as a reusable "original sound" (see repository).
+// Phase 1 keeps audio_url as a pointer to the clip's media_url — the audioUrl
+// field stays the only abstraction, so upgrading to extracted audio later is a
+// swap, not a rewrite. Returns the new track id, or null (best-effort).
+export async function createOriginalSound(
+  client: SupabaseClient,
+  row: { title: string; artist: string | null; durationSec: number; audioUrl: string; coverUrl: string | null; uploadedBy: string }
+): Promise<string | null> {
+  return musicRepository.insertOriginalSoundTrack(client, row)
+}
+
 // --- Preview metadata ---
 // A track's short pre-cut preview clip is the intended preview source;
 // fall back to the full track when no preview clip was cut.

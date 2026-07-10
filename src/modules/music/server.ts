@@ -27,6 +27,7 @@ export {
   getProviders,
   createSelection,
   recordUsage,
+  createOriginalSound,
   getPreviewUrl,
   getTrackDurationLabel,
   getCategoryLabel,
