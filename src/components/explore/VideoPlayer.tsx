@@ -1,5 +1,5 @@
 'use client'
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
 import { Volume2, VolumeX, Play } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
@@ -59,9 +59,10 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     }
   }, [])
 
-  // Keep DOM muted in sync after React re-renders (React's muted prop would
-  // override our ref-based control, so we re-apply after every render).
-  useEffect(() => {
+  // Keep DOM muted in sync after React re-renders (React's hardcoded muted
+  // prop resets video.muted=true on every render; fix it back immediately
+  // before the browser paints so there's no audio gap).
+  useLayoutEffect(() => {
     if (videoRef.current) videoRef.current.muted = mutedRef.current
   })
 
@@ -201,7 +202,15 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         playsInline
         loop
         preload="auto"
-        onPlay={() => setPlaying(true)}
+        onPlay={() => {
+          setPlaying(true)
+          const wantsMuted = localStorage.getItem('tappy_video_muted') !== 'false'
+          if (!wantsMuted && videoRef.current) {
+            videoRef.current.muted = false
+            mutedRef.current = false
+            setMutedUI(false)
+          }
+        }}
         onPause={() => setPlaying(false)}
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
         onError={() => { console.error('[VideoPlayer] playback error:', url); setPlaying(false) }}
