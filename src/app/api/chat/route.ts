@@ -75,7 +75,10 @@ export async function POST(req: Request) {
   const isFirstReply = userMessages.length <= 1
 
   // Load user memory + kiá»ƒm tra freemium limit
-  const FREE_DAILY_LIMIT = 10
+  // Free (logged-in) daily cap. Temporarily 15/day during the free test phase —
+  // Pro upgrade is hidden until we have a legal entity for payments, so when this
+  // runs out we tell the user to come back tomorrow instead of upselling Pro.
+  const FREE_DAILY_LIMIT = 15
   let memoryBlock = ''
   let prefBlock = ''
   let authedUserId: string | null = null
@@ -137,8 +140,7 @@ export async function POST(req: Request) {
           return new Response(
             JSON.stringify({
               error: 'free_limit_reached',
-              message: `Báº¡n Ä‘Ã£ dÃ¹ng háº¿t ${FREE_DAILY_LIMIT} tin nháº¯n miá»…n phÃ­ hÃ´m nay. NÃ¢ng cáº¥p Pro Ä‘á»ƒ nháº¯n khÃ´ng giá»›i háº¡n! ðŸš€`,
-              upgradeUrl: '/subscription',
+              message: `Bạn đã dùng hết ${FREE_DAILY_LIMIT} tin nhắn miễn phí hôm nay. Hẹn gặp lại bạn vào ngày mai nhé!`,
             }),
             { status: 429, headers: { 'Content-Type': 'application/json' } }
           )

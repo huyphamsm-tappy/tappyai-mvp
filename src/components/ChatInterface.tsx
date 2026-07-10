@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain, Crown } from 'lucide-react'
+import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
@@ -1211,15 +1211,8 @@ export default function ChatInterface({
                     </div>
                   ) : /free_limit_reached/i.test(error.message || '') ? (
                     <div className="rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
-                      <p className="leading-relaxed font-medium">Bạn đã dùng hết 10 tin nhắn miễn phí hôm nay.</p>
-                      <p className="leading-relaxed mt-1 text-amber-600 dark:text-amber-400">Nâng cấp Pro để nhắn không giới hạn, hoặc quay lại vào ngày mai nhé!</p>
-                      <button
-                        type="button"
-                        onClick={() => { window.location.href = '/subscription' }}
-                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-medium transition-colors shadow-sm"
-                      >
-                        <Crown size={13} /> Nâng cấp Pro
-                      </button>
+                      <p className="leading-relaxed font-medium">Bạn đã dùng hết 15 tin nhắn miễn phí hôm nay.</p>
+                      <p className="leading-relaxed mt-1 text-amber-600 dark:text-amber-400">Hẹn gặp lại bạn vào ngày mai nhé! 🌅</p>
                     </div>
                   ) : (
                     <div className="rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/40 px-4 py-3 text-sm text-red-700 dark:text-red-300">

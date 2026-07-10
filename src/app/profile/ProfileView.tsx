@@ -8,6 +8,10 @@ import QRProfileButton from '@/components/QRProfileButton'
 import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users, TrendingDown, Brain, Star, Plug } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
+// Pro upgrade is hidden while we run the free test phase (no legal entity for
+// payments yet). Flip to true to re-surface the "Nâng cấp Pro" entry point.
+const SHOW_PRO_UPGRADE = false
+
 type ProfileViewProps = {
   userId: string
   userInfo: {
@@ -75,7 +79,11 @@ export default function ProfileView({ userId, userInfo, firstName, conversationC
             <MenuItem icon={Plug} label={t('profile.integrations')} description={t('profile.integrations.desc')} href="/profile/integrations" />
             <MenuItem icon={Star} label={t('profile.myReviews')} description={t('profile.myReviews.desc')} href="/reviews" />
             <MenuItem icon={Users} label={t('profile.groupDining')} description={t('profile.groupDining.desc')} href="/group/new" />
-            <MenuItem icon={Crown} label={t('profile.upgradePro')} description={t('profile.upgradePro.desc')} href="/subscription" />
+            {/* Pro upgrade tạm ẩn trong giai đoạn test miễn phí (chưa có pháp nhân
+                để thanh toán). Đổi false → true để bật lại khi lên Pro. */}
+            {SHOW_PRO_UPGRADE && (
+              <MenuItem icon={Crown} label={t('profile.upgradePro')} description={t('profile.upgradePro.desc')} href="/subscription" />
+            )}
           </div>
         </section>
 
