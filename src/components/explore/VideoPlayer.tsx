@@ -49,6 +49,14 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     return () => observer.disconnect()
   }, [sourceType])
 
+  // React doesn't reliably set the `muted` HTML attribute on initial render
+  // (long-standing bug). Without it the browser blocks autoplay.
+  useEffect(() => {
+    if (videoRef.current) videoRef.current.muted = muted
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const visibleRef = useRef(false)
+
   // Auto-play/pause when scrolling in/out of viewport
   useEffect(() => {
     const video = videoRef.current
@@ -56,7 +64,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        visibleRef.current = entry.isIntersecting && entry.intersectionRatio >= 0.5
+        if (visibleRef.current) {
           video.play().catch(() => {})
           startRef.current = Date.now()
         } else {
@@ -165,19 +174,17 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         ref={videoRef}
         src={url}
         className="absolute inset-0 w-full h-full object-cover"
+        autoPlay
         muted={muted}
         playsInline
         loop
-        // preload="auto": the feed only ever mounts a <video> for the active slide
-        // and its ONE next neighbour (see reviews page windowing), so at most two
-        // elements buffer at once — safe for iOS Safari's media-element cap. That
-        // lets the next slide warm up ahead of time instead of cold-starting from
-        // zero bytes on every swipe (which was the visible load latency). The old
-        // preload="none" over-corrected the earlier many-videos freeze; the ±1
-        // windowing is what actually prevents that, not disabling preload.
         preload="auto"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
+        onCanPlay={() => {
+          const v = videoRef.current
+          if (v && v.paused && visibleRef.current) v.play().catch(() => {})
+        }}
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
         onError={() => { console.error('[VideoPlayer] playback error:', url); setPlaying(false) }}
       />
