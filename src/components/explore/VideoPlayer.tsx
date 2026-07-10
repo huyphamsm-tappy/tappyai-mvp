@@ -52,8 +52,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   // React doesn't reliably set the `muted` HTML attribute on initial render
   // (long-standing bug). Without it the browser blocks autoplay.
   useEffect(() => {
-    if (videoRef.current) videoRef.current.muted = muted
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (videoRef.current) videoRef.current.muted = true
+  }, [])
 
   const visibleRef = useRef(false)
 
@@ -62,13 +62,19 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     const video = videoRef.current
     if (!video || sourceType !== 'upload') return
 
+    const retryPlay = () => {
+      if (visibleRef.current && video.paused) video.play().catch(() => {})
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         visibleRef.current = entry.isIntersecting && entry.intersectionRatio >= 0.5
         if (visibleRef.current) {
-          video.play().catch(() => {})
+          video.play().catch(() => {
+            video.addEventListener('canplay', retryPlay, { once: true })
+          })
           startRef.current = Date.now()
-        } else {
+        } else if (!video.paused) {
           video.pause()
           if (startRef.current !== null) {
             watchedRef.current += (Date.now() - startRef.current) / 1000
@@ -83,7 +89,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
       { threshold: 0.5 }
     )
     observer.observe(video)
-    return () => observer.disconnect()
+    return () => { observer.disconnect(); video.removeEventListener('canplay', retryPlay) }
   }, [sourceType, onWatchProgress])
 
   const toggleMute = (e: React.MouseEvent) => {
