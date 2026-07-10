@@ -232,13 +232,15 @@ function ShareModal({ review, onClose }: { review: Review; onClose: () => void }
 }
 
 /* ─── Single post (TikTok style) ─── */
-function Post({ r, me, feedType, renderVideo, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete }: {
+function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete }: {
   r: Review; me: string | null
   // Only the active slide (± 1 neighbour) mounts a real <video>. Off-screen
   // slides render just the thumbnail. iOS Safari caps how many HTMLMediaElements
   // can buffer at once, so mounting every feed video froze the media pipeline —
   // new uploads wouldn't play and scrolling stalled until the tab was reloaded.
   renderVideo: boolean
+  // Whether this is THE slide in view — drives play/pause in VideoPlayer.
+  active?: boolean
   // The for-you/following/latest switcher only belongs on the main feed — hidden
   // when the same Post powers the profile clip viewer.
   showFeedTabs?: boolean
@@ -336,6 +338,7 @@ function Post({ r, me, feedType, renderVideo, showFeedTabs = true, onFeedTypeCha
                 thumbnail={r.thumbnail ?? undefined}
                 sourceType={r.source_type ?? 'upload'}
                 sourceUrl={r.source_url ?? undefined}
+                active={active}
                 onDurationKnown={d => { durationRef.current = d }}
               />
             // Off-screen: thumbnail only, no <video> element (frees iOS media slots)
@@ -544,7 +547,7 @@ function ClipViewer({ posts, startIndex, me, onClose }: { posts: Review[]; start
           className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
           {items.map((r, i) => (
             <Post key={r.id} r={r} me={me} feedType="latest" showFeedTabs={false}
-              renderVideo={Math.abs(i - activeIndex) <= 1}
+              renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex}
               onFeedTypeChange={() => {}} onLike={like} onLikeDouble={likeOnly} onSave={save}
               onComment={setCommentOf} onShare={setShareOf} onDelete={del} />
           ))}
@@ -1464,7 +1467,7 @@ export default function ReviewsPage() {
                 </div>
               : <>
                   <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
+                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
                   </div>
                   {/* Desktop prev/next — no swipe on desktop, so surface arrows to the right of the column. */}
                   <div className="hidden md:flex flex-col gap-3 absolute left-full ml-4 top-1/2 -translate-y-1/2 z-20">

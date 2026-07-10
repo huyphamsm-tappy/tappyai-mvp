@@ -1,5 +1,5 @@
 'use client'
-import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Volume2, VolumeX, Play } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
@@ -8,6 +8,11 @@ interface VideoPlayerProps {
   thumbnail?: string
   sourceType?: string
   sourceUrl?: string
+  // Whether this clip is the one currently in view. Playback is driven by this
+  // flag (set by the feed from its exact scroll position) — NOT by a per-video
+  // IntersectionObserver, which raced with the feed's own active-slide tracking
+  // and left some clips stuck paused after scrolling back and forth.
+  active?: boolean
   onWatchProgress?: (seconds: number, completionRate: number) => void
   onDurationKnown?: (d: number) => void
 }
@@ -18,22 +23,71 @@ export interface VideoPlayerHandle {
   togglePlay: () => void
 }
 
+/* ── Global feed audio (TikTok/Reels model) ───────────────────────────────
+   Reliability first: every clip autoplays MUTED — the only mode browsers allow
+   without a user gesture — so playback NEVER depends on the audio policy and a
+   clip can never get stuck paused waiting for permission. Sound is a separate
+   global layer: it "unlocks" on the user's very first interaction (any tap or
+   scroll), and from then on the active clip plays with sound. We never unmute a
+   clip before that gesture, which is exactly what used to make iOS Safari pause
+   the video. One shared state across all clips → sound is consistent feed-wide. */
+let feedSoundOn = true // user preference: default sound ON
+let feedAudioUnlocked = false // a real user gesture has happened this session
+const audioSubs = new Set<() => void>()
+function notifyAudio() { audioSubs.forEach(fn => { try { fn() } catch { /* subscriber gone */ } }) }
+function unlockFeedAudio() {
+  if (feedAudioUnlocked) return
+  feedAudioUnlocked = true
+  notifyAudio()
+}
+function setFeedSoundOn(on: boolean) {
+  feedSoundOn = on
+  try { localStorage.setItem('tappy_video_muted', on ? 'false' : 'true') } catch { /* private mode */ }
+  notifyAudio()
+}
+if (typeof window !== 'undefined') {
+  try { feedSoundOn = localStorage.getItem('tappy_video_muted') !== 'true' } catch { /* private mode */ }
+  const opts = { capture: true, passive: true } as AddEventListenerOptions
+  const h = () => unlockFeedAudio()
+  window.addEventListener('pointerdown', h, opts)
+  window.addEventListener('touchstart', h, opts)
+  window.addEventListener('click', h, opts)
+  window.addEventListener('keydown', h, opts)
+}
+
 const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function VideoPlayer(
-  { url, thumbnail, sourceType = 'upload', sourceUrl, onWatchProgress, onDurationKnown },
+  { url, thumbnail, sourceType = 'upload', sourceUrl, active = false, onWatchProgress, onDurationKnown },
   ref
 ) {
   const { t } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
-  const [mutedUI, setMutedUI] = useState(true)
-  const mutedRef = useRef(true)
-  const unmutingRef = useRef(false)
-  const triedUnmuteRef = useRef(false)
   const [playing, setPlaying] = useState(false)
   const [showPlayIcon, setShowPlayIcon] = useState(false)
+  // Icon reflects the ACTUAL muted state of the element (starts muted for
+  // autoplay), not the preference — so it never shows "sound on" while silent.
+  const [mutedUI, setMutedUI] = useState(true)
+  const userPausedRef = useRef(false) // true only while the user long-pressed to pause
+  const activeRef = useRef(active)
+  activeRef.current = active
+  // Keep watch callback in a ref so the playback effect doesn't restart the
+  // video when the parent passes a fresh function identity on re-render.
+  const onWatchProgressRef = useRef(onWatchProgress)
+  onWatchProgressRef.current = onWatchProgress
   const ytContainerRef = useRef<HTMLDivElement>(null)
   const [ytActive, setYtActive] = useState(false)
+
+  // Push the current global sound state onto this clip. Only unmutes when the
+  // user has interacted (feedAudioUnlocked) AND wants sound AND this is the
+  // active clip — otherwise stays muted. Never breaks playback.
+  const applySound = () => {
+    const v = videoRef.current
+    if (!v) return
+    const wantSound = feedSoundOn && feedAudioUnlocked && activeRef.current
+    v.muted = !wantSound
+    setMutedUI(v.muted)
+  }
 
   // YouTube embeds only stream while in view — otherwise every mounted card
   // autoplayed its own iframe simultaneously (bandwidth/CPU/battery drain).
@@ -49,73 +103,63 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     return () => observer.disconnect()
   }, [sourceType])
 
-  // Force muted on mount for autoplay (React's muted prop doesn't reliably
-  // set the HTML attribute, and the user may have unmuted previously).
+  // ── Playback, driven purely by `active` ──────────────────────────────────
+  // Active → play (always starting muted, so it can NEVER be blocked), retrying
+  // until the media is ready, then apply sound. Inactive → pause + bank watch
+  // time. Deterministic: the feed says which slide is active; no observer race.
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = true
-      mutedRef.current = true
+    const v = videoRef.current
+    if (!v || sourceType !== 'upload') return
+    let cancelled = false
+    let retry: ReturnType<typeof setTimeout> | null = null
+
+    if (active) {
+      userPausedRef.current = false
+      const play = () => {
+        if (cancelled || !activeRef.current || userPausedRef.current) return
+        v.muted = true // guaranteed-allowed start; applySound may unmute after
+        v.play().then(() => {
+          if (!cancelled) applySound()
+        }).catch(() => {
+          // Not buffered yet or a transient block — try again shortly. `canplay`
+          // also re-fires play() below once the media has data.
+          retry = setTimeout(play, 200)
+        })
+      }
+      play()
+      v.addEventListener('canplay', play)
+      startRef.current = Date.now()
+      return () => {
+        cancelled = true
+        if (retry) clearTimeout(retry)
+        v.removeEventListener('canplay', play)
+      }
     }
+
+    // Inactive → pause and record how long it was watched.
+    v.pause()
+    if (startRef.current !== null) {
+      watchedRef.current += (Date.now() - startRef.current) / 1000
+      startRef.current = null
+      if (onWatchProgressRef.current && v.duration > 0) {
+        onWatchProgressRef.current(watchedRef.current, Math.min(watchedRef.current / v.duration, 1))
+      }
+    }
+  }, [active, sourceType])
+
+  // React to global audio changes: first-gesture unlock, or the sound toggle on
+  // any clip. Only the active clip actually makes noise.
+  useEffect(() => {
+    const onChange = () => { if (activeRef.current) applySound() }
+    audioSubs.add(onChange)
+    return () => { audioSubs.delete(onChange) }
   }, [])
-
-  // Keep DOM muted in sync after React re-renders (React's hardcoded muted
-  // prop resets video.muted=true on every render; fix it back immediately
-  // before the browser paints so there's no audio gap).
-  useLayoutEffect(() => {
-    if (videoRef.current) videoRef.current.muted = mutedRef.current
-  })
-
-  const visibleRef = useRef(false)
-  const retryTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Auto-play/pause when scrolling in/out of viewport
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video || sourceType !== 'upload') return
-
-    const attemptPlay = () => {
-      if (!visibleRef.current || !video.paused) return
-      video.play().catch(() => {
-        retryTimer.current = setTimeout(attemptPlay, 250)
-      })
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        visibleRef.current = entry.isIntersecting && entry.intersectionRatio >= 0.5
-        if (visibleRef.current) {
-          if (retryTimer.current) clearTimeout(retryTimer.current)
-          attemptPlay()
-          startRef.current = Date.now()
-        } else if (!video.paused) {
-          if (retryTimer.current) { clearTimeout(retryTimer.current); retryTimer.current = null }
-          video.pause()
-          if (startRef.current !== null) {
-            watchedRef.current += (Date.now() - startRef.current) / 1000
-            startRef.current = null
-            if (onWatchProgress && video.duration > 0) {
-              const completionRate = Math.min(watchedRef.current / video.duration, 1)
-              onWatchProgress(watchedRef.current, completionRate)
-            }
-          }
-        }
-      },
-      { threshold: 0.5 }
-    )
-    observer.observe(video)
-    return () => {
-      observer.disconnect()
-      if (retryTimer.current) clearTimeout(retryTimer.current)
-    }
-  }, [sourceType, onWatchProgress])
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation()
-    const next = !mutedRef.current
-    mutedRef.current = next
-    setMutedUI(next)
-    localStorage.setItem('tappy_video_muted', String(next))
-    if (videoRef.current) videoRef.current.muted = next
+    unlockFeedAudio() // this IS a user gesture — unmuting from here always works
+    setFeedSoundOn(!feedSoundOn) // notifies every clip; active one (re)applies
+    applySound()
   }
 
   // Manual pause/resume, driven by the feed's long-press gesture. While the
@@ -124,14 +168,30 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     const v = videoRef.current
     if (!v || sourceType !== 'upload') return
     if (v.paused) {
+      userPausedRef.current = false
       v.play().catch(() => {})
       setShowPlayIcon(false)
     } else {
+      userPausedRef.current = true
       v.pause()
       setShowPlayIcon(true)
     }
   }
   useImperativeHandle(ref, () => ({ togglePlay }), [sourceType])
+
+  // Safety net: if the browser paused us for any reason OTHER than the user's
+  // own long-press (e.g. a stray unmute on an old iOS) while we're still the
+  // active clip, recover to guaranteed muted playback rather than sit frozen.
+  const handlePause = () => {
+    setPlaying(false)
+    const v = videoRef.current
+    if (!v) return
+    if (activeRef.current && !userPausedRef.current && !v.ended && v.readyState >= 2) {
+      v.muted = true
+      setMutedUI(true)
+      v.play().catch(() => {})
+    }
+  }
 
   // YouTube: iframe embed with autoplay muted
   if (sourceType === 'youtube') {
@@ -196,33 +256,15 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         ref={videoRef}
         src={url}
         className="absolute inset-0 w-full h-full object-cover"
-        autoPlay
         muted
         playsInline
         loop
+        // preload="auto": the feed only mounts a <video> for the active slide and
+        // its immediate neighbours, so at most a few buffer at once — safe for
+        // iOS Safari's media-element cap — and neighbours warm up before the swipe.
         preload="auto"
-        onPlay={() => {
-          setPlaying(true)
-          if (videoRef.current && mutedRef.current && !triedUnmuteRef.current) {
-            triedUnmuteRef.current = true
-            unmutingRef.current = true
-            videoRef.current.muted = false
-            mutedRef.current = false
-            setMutedUI(false)
-          }
-        }}
-        onPause={() => {
-          setPlaying(false)
-          if (unmutingRef.current && videoRef.current && visibleRef.current) {
-            unmutingRef.current = false
-            videoRef.current.muted = true
-            mutedRef.current = true
-            setMutedUI(true)
-            videoRef.current.play().catch(() => {})
-            return
-          }
-          unmutingRef.current = false
-        }}
+        onPlay={() => setPlaying(true)}
+        onPause={handlePause}
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
         onError={() => { console.error('[VideoPlayer] playback error:', url); setPlaying(false) }}
       />
@@ -234,8 +276,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
           </div>
         </div>
       )}
-      {/* Autoplay must start muted (browser policy). Make unmuting obvious:
-          a labelled "Bật tiếng" pill while muted, a plain icon once on. */}
+      {/* Sound starts muted for autoplay, then unlocks on the user's first tap.
+          The pill makes it obvious: "Bật tiếng" while muted, a plain icon once on. */}
       <button
         onClick={toggleMute}
         aria-label={mutedUI ? t('video.unmute') : t('video.mute')}
