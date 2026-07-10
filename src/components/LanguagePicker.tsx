@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getStoredLocale, setLocale } from '@/lib/i18n/useTranslation'
 import type { Locale } from '@/lib/i18n/dictionaries'
+import { TappyMascot } from '@/components/TappyMascot'
 
 // First-visit language chooser. Shows once — the moment a locale is stored
 // (either here or later in Settings) getStoredLocale() stops returning null and
@@ -32,7 +33,9 @@ export default function LanguagePicker() {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
       <div className="w-full max-w-sm rounded-3xl bg-white dark:bg-gray-900 p-6 shadow-2xl">
         <div className="text-center mb-5">
-          <div className="text-4xl mb-2">🌐</div>
+          <div className="flex justify-center mb-2">
+            <TappyMascot pose="welcome" size={72} eager animated />
+          </div>
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">Chọn ngôn ngữ</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">Choose your language</p>
         </div>
