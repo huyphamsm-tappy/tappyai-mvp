@@ -1,7 +1,6 @@
 'use client'
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { Volume2, VolumeX, Play } from 'lucide-react'
-import { useTranslation } from '@/lib/i18n/useTranslation'
+import { Play } from 'lucide-react'
 
 interface VideoPlayerProps {
   url: string
@@ -26,12 +25,12 @@ export interface VideoPlayerHandle {
 /* ── Global feed audio (TikTok/Reels model) ───────────────────────────────
    Reliability first: every clip autoplays MUTED — the only mode browsers allow
    without a user gesture — so playback NEVER depends on the audio policy and a
-   clip can never get stuck paused waiting for permission. Sound is a separate
-   global layer: it "unlocks" on the user's very first interaction (any tap or
-   scroll), and from then on the active clip plays with sound. We never unmute a
-   clip before that gesture, which is exactly what used to make iOS Safari pause
-   the video. One shared state across all clips → sound is consistent feed-wide. */
-let feedSoundOn = true // user preference: default sound ON
+   clip can never get stuck paused waiting for permission. Sound then "unlocks"
+   on the user's very first interaction (any tap or scroll), and from then on the
+   active clip plays with sound. We never unmute a clip before that gesture,
+   which is exactly what used to make iOS Safari pause the video. There is no
+   mute button — sound is always on once unlocked (owner's TikTok-style choice);
+   to silence a clip the user long-presses to pause it. */
 let feedAudioUnlocked = false // a real user gesture has happened this session
 const audioSubs = new Set<() => void>()
 function notifyAudio() { audioSubs.forEach(fn => { try { fn() } catch { /* subscriber gone */ } }) }
@@ -40,13 +39,7 @@ function unlockFeedAudio() {
   feedAudioUnlocked = true
   notifyAudio()
 }
-function setFeedSoundOn(on: boolean) {
-  feedSoundOn = on
-  try { localStorage.setItem('tappy_video_muted', on ? 'false' : 'true') } catch { /* private mode */ }
-  notifyAudio()
-}
 if (typeof window !== 'undefined') {
-  try { feedSoundOn = localStorage.getItem('tappy_video_muted') !== 'true' } catch { /* private mode */ }
   const opts = { capture: true, passive: true } as AddEventListenerOptions
   const h = () => unlockFeedAudio()
   window.addEventListener('pointerdown', h, opts)
@@ -59,15 +52,11 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   { url, thumbnail, sourceType = 'upload', sourceUrl, active = false, onWatchProgress, onDurationKnown },
   ref
 ) {
-  const { t } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
   const [playing, setPlaying] = useState(false)
   const [showPlayIcon, setShowPlayIcon] = useState(false)
-  // Icon reflects the ACTUAL muted state of the element (starts muted for
-  // autoplay), not the preference — so it never shows "sound on" while silent.
-  const [mutedUI, setMutedUI] = useState(true)
   const userPausedRef = useRef(false) // true only while the user long-pressed to pause
   const activeRef = useRef(active)
   activeRef.current = active
@@ -78,15 +67,12 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   const ytContainerRef = useRef<HTMLDivElement>(null)
   const [ytActive, setYtActive] = useState(false)
 
-  // Push the current global sound state onto this clip. Only unmutes when the
-  // user has interacted (feedAudioUnlocked) AND wants sound AND this is the
-  // active clip — otherwise stays muted. Never breaks playback.
+  // Unmute this clip once the user has interacted (feedAudioUnlocked) and it's
+  // the active clip; otherwise keep it muted. Never breaks playback.
   const applySound = () => {
     const v = videoRef.current
     if (!v) return
-    const wantSound = feedSoundOn && feedAudioUnlocked && activeRef.current
-    v.muted = !wantSound
-    setMutedUI(v.muted)
+    v.muted = !(feedAudioUnlocked && activeRef.current)
   }
 
   // YouTube embeds only stream while in view — otherwise every mounted card
@@ -166,13 +152,6 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     return () => { audioSubs.delete(onChange) }
   }, [])
 
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    unlockFeedAudio() // this IS a user gesture — unmuting from here always works
-    setFeedSoundOn(!feedSoundOn) // notifies every clip; active one (re)applies
-    applySound()
-  }
-
   // Manual pause/resume, driven by the feed's long-press gesture. While the
   // user has paused, the play icon stays up as a cue; resuming hides it.
   const togglePlay = () => {
@@ -199,7 +178,6 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     if (!v) return
     if (activeRef.current && !userPausedRef.current && !v.ended && !v.muted) {
       v.muted = true
-      setMutedUI(true)
     }
   }
 
@@ -286,15 +264,6 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
           </div>
         </div>
       )}
-      {/* Sound starts muted for autoplay, then unlocks on the user's first tap.
-          The pill makes it obvious: "Bật tiếng" while muted, a plain icon once on. */}
-      <button
-        onClick={toggleMute}
-        aria-label={mutedUI ? t('video.unmute') : t('video.mute')}
-        className="absolute top-14 right-3 z-30 flex items-center gap-1 h-8 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-semibold px-2.5"
-      >
-        {mutedUI ? <><VolumeX size={15} /> {t('video.unmute')}</> : <Volume2 size={15} />}
-      </button>
     </div>
   )
 })
