@@ -12,10 +12,6 @@ interface VideoPlayerProps {
   // IntersectionObserver, which raced with the feed's own active-slide tracking
   // and left some clips stuck paused after scrolling back and forth.
   active?: boolean
-  // Force the clip silent regardless of the global sound state. Used when the
-  // clip borrowed another sound: the feed plays that sound over the muted video,
-  // so the video's own audio must never come through (no echo).
-  forceMuted?: boolean
   onWatchProgress?: (seconds: number, completionRate: number) => void
   onDurationKnown?: (d: number) => void
 }
@@ -53,7 +49,7 @@ if (typeof window !== 'undefined') {
 }
 
 const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function VideoPlayer(
-  { url, thumbnail, sourceType = 'upload', sourceUrl, active = false, forceMuted = false, onWatchProgress, onDurationKnown },
+  { url, thumbnail, sourceType = 'upload', sourceUrl, active = false, onWatchProgress, onDurationKnown },
   ref
 ) {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -72,15 +68,11 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   const [ytActive, setYtActive] = useState(false)
 
   // Unmute this clip once the user has interacted (feedAudioUnlocked) and it's
-  // the active clip; otherwise keep it muted. When forceMuted (the clip borrowed
-  // another sound), stay silent so the borrowed sound plays without echo. Never
-  // breaks playback.
-  const forceMutedRef = useRef(forceMuted)
-  forceMutedRef.current = forceMuted
+  // the active clip; otherwise keep it muted. Never breaks playback.
   const applySound = () => {
     const v = videoRef.current
     if (!v) return
-    v.muted = forceMutedRef.current || !(feedAudioUnlocked && activeRef.current)
+    v.muted = !(feedAudioUnlocked && activeRef.current)
   }
 
   // YouTube embeds only stream while in view — otherwise every mounted card

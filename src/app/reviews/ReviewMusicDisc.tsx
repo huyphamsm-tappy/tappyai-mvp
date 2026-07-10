@@ -1,46 +1,22 @@
 'use client'
 
-import { Music2 } from 'lucide-react'
-import { useMusicTrack, getPreviewUrl } from '@/modules/music'
-import { musicPlaybackController } from './musicPlaybackController'
-import { useMusicPlayback } from './useMusicPlayback'
+import Link from 'next/link'
+import { Music } from 'lucide-react'
 
-interface ReviewMusicDiscProps {
-  playKey: string
-  trackId: string
-  startSec: number
-  volume: number
-}
-
-// The spinning disc in a review's action rail. Only rendered when the review
-// actually has an attached soundtrack (the parent guards on r.music), so an
-// empty music-note disc never appears. Tapping it toggles that soundtrack
-// through the same shared musicPlaybackController the ReviewMusicCard uses —
-// one HTMLAudioElement for the whole feed. The disc only spins while playing,
-// giving a clear "this is playing" cue.
-export default function ReviewMusicDisc({ playKey, trackId, startSec, volume }: ReviewMusicDiscProps) {
-  const { track } = useMusicTrack(trackId)
-  const playback = useMusicPlayback()
-  const isPlaying = playback.playKey === playKey && playback.isPlaying
-
-  function handleToggle() {
-    if (!track) return
-    if (isPlaying) {
-      musicPlaybackController.pause()
-      return
-    }
-    musicPlaybackController.play(playKey, getPreviewUrl(track), startSec, volume, track.durationSec)
-  }
-
+// The clip's sound, shown in the action rail. Tapping opens the sound page —
+// the "use this sound" reuse entry point (browse a clip → open its sound →
+// "Sử dụng âm thanh này" → compose). Only rendered when the clip has a
+// registered sound (the parent guards on r.music.origin), so it never appears
+// for legacy clips whose attached track was removed. Uses a single-note icon
+// (not the beamed note, which read too close to the TikTok logo).
+export default function ReviewMusicDisc({ trackId }: { trackId: string }) {
   return (
-    <button
-      type="button"
-      onClick={handleToggle}
-      disabled={!track}
-      aria-label={isPlaying ? 'Tạm dừng nhạc nền' : 'Phát nhạc nền'}
-      className={`w-10 h-10 rounded-full border-2 border-white/30 bg-black/50 flex items-center justify-center transition active:scale-90 disabled:opacity-50 ${isPlaying ? 'animate-spin-slow' : ''}`}
+    <Link
+      href={`/sound/${trackId}`}
+      aria-label="Xem âm thanh của clip"
+      className="w-10 h-10 rounded-full border-2 border-white/30 bg-black/50 flex items-center justify-center active:scale-90 transition"
     >
-      <Music2 size={16} className="text-white" />
-    </button>
+      <Music size={16} className="text-white" />
+    </Link>
   )
 }
