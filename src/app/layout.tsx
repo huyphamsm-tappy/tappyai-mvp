@@ -4,6 +4,7 @@ import { PostHogProvider } from '@/components/PostHogProvider'
 import LocationProvider from '@/components/LocationProvider'
 import TrackingProvider from '@/components/TrackingProvider'
 import LanguagePicker from '@/components/LanguagePicker'
+import VersionWatcher from '@/components/VersionWatcher'
 
 export const metadata: Metadata = {
   title: 'TappyAI - Trợ lý AI thuần Việt',
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LocationProvider />
         <TrackingProvider />
         <LanguagePicker />
+        <VersionWatcher />
       </body>
     </html>
   )

@@ -12,6 +12,12 @@ const nextConfig = {
     // Setting dynamic to 0 forces every navigation (including Back) to re-fetch.
     staleTimes: { dynamic: 0 },
   },
+  // Bake the deploy's commit SHA into the client bundle so a running tab can
+  // tell when a newer version has shipped and reload itself (see VersionWatcher).
+  // Fixes the recurring "iPhone Safari keeps showing an old cached build" issue.
+  env: {
+    NEXT_PUBLIC_BUILD_ID: process.env.VERCEL_GIT_COMMIT_SHA || 'dev',
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
