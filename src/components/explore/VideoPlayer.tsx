@@ -26,10 +26,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
-  const [mutedUI, setMutedUI] = useState(() => {
-    if (typeof window === 'undefined') return true
-    return localStorage.getItem('tappy_video_muted') !== 'false'
-  })
+  const [mutedUI, setMutedUI] = useState(true)
   const mutedRef = useRef(true)
   const [playing, setPlaying] = useState(false)
   const [showPlayIcon, setShowPlayIcon] = useState(false)
