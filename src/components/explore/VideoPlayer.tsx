@@ -26,10 +26,11 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
-  const [muted, setMuted] = useState(() => {
+  const [mutedUI, setMutedUI] = useState(() => {
     if (typeof window === 'undefined') return true
     return localStorage.getItem('tappy_video_muted') !== 'false'
   })
+  const mutedRef = useRef(true)
   const [playing, setPlaying] = useState(false)
   const [showPlayIcon, setShowPlayIcon] = useState(false)
   const ytContainerRef = useRef<HTMLDivElement>(null)
@@ -49,32 +50,45 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     return () => observer.disconnect()
   }, [sourceType])
 
-  // React doesn't reliably set the `muted` HTML attribute on initial render
-  // (long-standing bug). Without it the browser blocks autoplay.
+  // Force muted on mount for autoplay (React's muted prop doesn't reliably
+  // set the HTML attribute, and the user may have unmuted previously).
   useEffect(() => {
-    if (videoRef.current) videoRef.current.muted = true
+    if (videoRef.current) {
+      videoRef.current.muted = true
+      mutedRef.current = true
+    }
   }, [])
 
+  // Keep DOM muted in sync after React re-renders (React's muted prop would
+  // override our ref-based control, so we re-apply after every render).
+  useEffect(() => {
+    if (videoRef.current) videoRef.current.muted = mutedRef.current
+  })
+
   const visibleRef = useRef(false)
+  const retryTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Auto-play/pause when scrolling in/out of viewport
   useEffect(() => {
     const video = videoRef.current
     if (!video || sourceType !== 'upload') return
 
-    const retryPlay = () => {
-      if (visibleRef.current && video.paused) video.play().catch(() => {})
+    const attemptPlay = () => {
+      if (!visibleRef.current || !video.paused) return
+      video.play().catch(() => {
+        retryTimer.current = setTimeout(attemptPlay, 250)
+      })
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         visibleRef.current = entry.isIntersecting && entry.intersectionRatio >= 0.5
         if (visibleRef.current) {
-          video.play().catch(() => {
-            video.addEventListener('canplay', retryPlay, { once: true })
-          })
+          if (retryTimer.current) clearTimeout(retryTimer.current)
+          attemptPlay()
           startRef.current = Date.now()
         } else if (!video.paused) {
+          if (retryTimer.current) { clearTimeout(retryTimer.current); retryTimer.current = null }
           video.pause()
           if (startRef.current !== null) {
             watchedRef.current += (Date.now() - startRef.current) / 1000
@@ -89,15 +103,17 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
       { threshold: 0.5 }
     )
     observer.observe(video)
-    return () => { observer.disconnect(); video.removeEventListener('canplay', retryPlay) }
+    return () => {
+      observer.disconnect()
+      if (retryTimer.current) clearTimeout(retryTimer.current)
+    }
   }, [sourceType, onWatchProgress])
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation()
-    const next = !muted
-    setMuted(next)
-    // Store the ACTUAL muted state. (Was String(!next) — inverted — so unmuting
-    // never persisted: on reload the video muted itself again.)
+    const next = !mutedRef.current
+    mutedRef.current = next
+    setMutedUI(next)
     localStorage.setItem('tappy_video_muted', String(next))
     if (videoRef.current) videoRef.current.muted = next
   }
@@ -181,16 +197,12 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         src={url}
         className="absolute inset-0 w-full h-full object-cover"
         autoPlay
-        muted={muted}
+        muted
         playsInline
         loop
         preload="auto"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
-        onCanPlay={() => {
-          const v = videoRef.current
-          if (v && v.paused && visibleRef.current) v.play().catch(() => {})
-        }}
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
         onError={() => { console.error('[VideoPlayer] playback error:', url); setPlaying(false) }}
       />
@@ -206,10 +218,10 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
           a labelled "Bật tiếng" pill while muted, a plain icon once on. */}
       <button
         onClick={toggleMute}
-        aria-label={muted ? t('video.unmute') : t('video.mute')}
+        aria-label={mutedUI ? t('video.unmute') : t('video.mute')}
         className="absolute top-14 right-3 z-30 flex items-center gap-1 h-8 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-semibold px-2.5"
       >
-        {muted ? <><VolumeX size={15} /> {t('video.unmute')}</> : <Volume2 size={15} />}
+        {mutedUI ? <><VolumeX size={15} /> {t('video.unmute')}</> : <Volume2 size={15} />}
       </button>
     </div>
   )

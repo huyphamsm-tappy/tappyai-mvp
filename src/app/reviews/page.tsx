@@ -544,7 +544,7 @@ function ClipViewer({ posts, startIndex, me, onClose }: { posts: Review[]; start
           className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
           {items.map((r, i) => (
             <Post key={r.id} r={r} me={me} feedType="latest" showFeedTabs={false}
-              renderVideo={i === activeIndex || i === activeIndex + 1}
+              renderVideo={Math.abs(i - activeIndex) <= 1}
               onFeedTypeChange={() => {}} onLike={like} onLikeDouble={likeOnly} onSave={save}
               onComment={setCommentOf} onShare={setShareOf} onDelete={del} />
           ))}
@@ -1464,7 +1464,7 @@ export default function ReviewsPage() {
                 </div>
               : <>
                   <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={i === activeIndex || i === activeIndex + 1} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
+                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
                   </div>
                   {/* Desktop prev/next — no swipe on desktop, so surface arrows to the right of the column. */}
                   <div className="hidden md:flex flex-col gap-3 absolute left-full ml-4 top-1/2 -translate-y-1/2 z-20">
