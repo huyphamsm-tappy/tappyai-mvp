@@ -26,9 +26,10 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   const videoRef = useRef<HTMLVideoElement>(null)
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
-  const [mutedUI, setMutedUI] = useState(false)
+  const [mutedUI, setMutedUI] = useState(true)
   const mutedRef = useRef(true)
   const unmutingRef = useRef(false)
+  const triedUnmuteRef = useRef(false)
   const [playing, setPlaying] = useState(false)
   const [showPlayIcon, setShowPlayIcon] = useState(false)
   const ytContainerRef = useRef<HTMLDivElement>(null)
@@ -202,10 +203,12 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         preload="auto"
         onPlay={() => {
           setPlaying(true)
-          if (videoRef.current && mutedRef.current) {
+          if (videoRef.current && mutedRef.current && !triedUnmuteRef.current) {
+            triedUnmuteRef.current = true
             unmutingRef.current = true
             videoRef.current.muted = false
             mutedRef.current = false
+            setMutedUI(false)
           }
         }}
         onPause={() => {
