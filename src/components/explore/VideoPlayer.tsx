@@ -110,40 +110,51 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   useEffect(() => {
     const v = videoRef.current
     if (!v || sourceType !== 'upload') return
-    let cancelled = false
-    let retry: ReturnType<typeof setTimeout> | null = null
 
-    if (active) {
-      userPausedRef.current = false
-      const play = () => {
-        if (cancelled || !activeRef.current || userPausedRef.current) return
-        v.muted = true // guaranteed-allowed start; applySound may unmute after
-        v.play().then(() => {
-          if (!cancelled) applySound()
-        }).catch(() => {
-          // Not buffered yet or a transient block — try again shortly. `canplay`
-          // also re-fires play() below once the media has data.
-          retry = setTimeout(play, 200)
-        })
+    if (!active) {
+      // Inactive → pause and record how long it was watched.
+      v.pause()
+      if (startRef.current !== null) {
+        watchedRef.current += (Date.now() - startRef.current) / 1000
+        startRef.current = null
+        if (onWatchProgressRef.current && v.duration > 0) {
+          onWatchProgressRef.current(watchedRef.current, Math.min(watchedRef.current / v.duration, 1))
+        }
       }
-      play()
-      v.addEventListener('canplay', play)
-      startRef.current = Date.now()
-      return () => {
-        cancelled = true
-        if (retry) clearTimeout(retry)
-        v.removeEventListener('canplay', play)
-      }
+      return
     }
 
-    // Inactive → pause and record how long it was watched.
-    v.pause()
-    if (startRef.current !== null) {
-      watchedRef.current += (Date.now() - startRef.current) / 1000
-      startRef.current = null
-      if (onWatchProgressRef.current && v.duration > 0) {
-        onWatchProgressRef.current(watchedRef.current, Math.min(watchedRef.current / v.duration, 1))
-      }
+    // Active → a self-healing watchdog. Whatever pauses the clip (iOS blocking
+    // an unmute, decode pressure, media not buffered yet, a stray policy pause),
+    // this resumes it within 300ms — UNLESS the user long-pressed to pause. This
+    // is what makes "some clips stay paused when scrolled to" impossible: the
+    // clip cannot stay paused against the user's intent, no matter the cause.
+    userPausedRef.current = false
+    startRef.current = Date.now()
+    let disposed = false
+    let soundApplied = false
+
+    const ensurePlaying = () => {
+      if (disposed || userPausedRef.current || !activeRef.current) return
+      if (!v.paused) return
+      v.play().then(() => {
+        if (disposed) return
+        // Apply sound once per active session; the watchdog's later ticks never
+        // re-toggle mute, so an unmute can't ping-pong with playback.
+        if (!soundApplied) { soundApplied = true; applySound() }
+      }).catch(() => { /* not ready / blocked — next tick retries */ })
+    }
+
+    ensurePlaying()
+    v.addEventListener('canplay', ensurePlaying)
+    v.addEventListener('loadeddata', ensurePlaying)
+    const watchdog = setInterval(ensurePlaying, 300)
+
+    return () => {
+      disposed = true
+      clearInterval(watchdog)
+      v.removeEventListener('canplay', ensurePlaying)
+      v.removeEventListener('loadeddata', ensurePlaying)
     }
   }, [active, sourceType])
 
@@ -179,17 +190,16 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   }
   useImperativeHandle(ref, () => ({ togglePlay }), [sourceType])
 
-  // Safety net: if the browser paused us for any reason OTHER than the user's
-  // own long-press (e.g. a stray unmute on an old iOS) while we're still the
-  // active clip, recover to guaranteed muted playback rather than sit frozen.
+  // If the browser paused the active clip without the user asking (most often
+  // iOS rejecting an unmute), assume sound was the culprit and drop back to
+  // muted so the watchdog's next tick can resume it and it stays playing.
   const handlePause = () => {
     setPlaying(false)
     const v = videoRef.current
     if (!v) return
-    if (activeRef.current && !userPausedRef.current && !v.ended && v.readyState >= 2) {
+    if (activeRef.current && !userPausedRef.current && !v.ended && !v.muted) {
       v.muted = true
       setMutedUI(true)
-      v.play().catch(() => {})
     }
   }
 
