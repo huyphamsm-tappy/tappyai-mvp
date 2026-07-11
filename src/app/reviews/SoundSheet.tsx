@@ -97,11 +97,13 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/60 z-50" onClick={onClose} />
-      <div className="fixed bottom-0 left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[440px] z-50 bg-white dark:bg-gray-900 rounded-t-3xl max-h-[75dvh] overflow-y-auto">
-        {/* Handle + close */}
+      <div className="fixed inset-0 bg-black/60 z-[60]" onClick={onClose} />
+      <div className="fixed z-[60] bg-white dark:bg-gray-900 overflow-y-auto
+        bottom-0 left-0 right-0 rounded-t-3xl max-h-[75dvh]
+        md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[480px] md:max-h-[80vh] md:rounded-2xl md:shadow-2xl">
+        {/* Handle (mobile) + close */}
         <div className="sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur z-10 px-5 pt-3 pb-2 flex items-center justify-between">
-          <div className="w-8 h-1 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto" />
+          <div className="w-8 h-1 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto md:hidden" />
           <button onClick={onClose} className="absolute right-4 top-3 p-1" aria-label="Đóng">
             <X size={20} className="text-gray-500" />
           </button>
