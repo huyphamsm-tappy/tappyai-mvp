@@ -23,29 +23,25 @@ export interface VideoPlayerHandle {
 }
 
 /* ── Global feed audio (TikTok/Reels model) ───────────────────────────────
-   Reliability first: every clip autoplays MUTED — the only mode browsers allow
-   without a user gesture — so playback NEVER depends on the audio policy and a
-   clip can never get stuck paused waiting for permission. Sound then "unlocks"
-   on the user's very first interaction (any tap or scroll), and from then on the
-   active clip plays with sound. We never unmute a clip before that gesture,
-   which is exactly what used to make iOS Safari pause the video. There is no
-   mute button — sound is always on once unlocked (owner's TikTok-style choice);
-   to silence a clip the user long-presses to pause it. */
-let feedAudioUnlocked = false // a real user gesture has happened this session
+   Every clip autoplays MUTED — the only mode browsers allow without a gesture.
+   Sound "unlocks" on the user's first tap: we unmute + play() the active video
+   inside the click handler's call stack. iOS Safari specifically requires play()
+   to originate from a click (not touchstart/pointerdown) to allow unmuted
+   playback — the old code listened to touchstart which fired first, set the
+   flag, and then the click handler early-returned, so the unmute NEVER happened
+   on iOS. Now only click triggers the notify, and every click re-notifies (no
+   early return) so subsequent taps keep retrying if the first attempt fails.
+   After the first successful unmuted play the page gains "audio permission" and
+   subsequent clips play with sound automatically. No mute button — sound is
+   always on once unlocked (owner's TikTok-style choice). */
+let feedAudioUnlocked = false
 const audioSubs = new Set<() => void>()
-function notifyAudio() { audioSubs.forEach(fn => { try { fn() } catch { /* subscriber gone */ } }) }
-function unlockFeedAudio() {
-  if (feedAudioUnlocked) return
-  feedAudioUnlocked = true
-  notifyAudio()
-}
+function notifyAudio() { audioSubs.forEach(fn => { try { fn() } catch {} }) }
 if (typeof window !== 'undefined') {
-  const opts = { capture: true, passive: true } as AddEventListenerOptions
-  const h = () => unlockFeedAudio()
-  window.addEventListener('pointerdown', h, opts)
-  window.addEventListener('touchstart', h, opts)
-  window.addEventListener('click', h, opts)
-  window.addEventListener('keydown', h, opts)
+  window.addEventListener('click', () => {
+    feedAudioUnlocked = true
+    notifyAudio()
+  }, { capture: true, passive: true } as AddEventListenerOptions)
 }
 
 const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function VideoPlayer(
@@ -66,14 +62,6 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   onWatchProgressRef.current = onWatchProgress
   const ytContainerRef = useRef<HTMLDivElement>(null)
   const [ytActive, setYtActive] = useState(false)
-
-  // Unmute this clip once the user has interacted (feedAudioUnlocked) and it's
-  // the active clip; otherwise keep it muted. Never breaks playback.
-  const applySound = () => {
-    const v = videoRef.current
-    if (!v) return
-    v.muted = !(feedAudioUnlocked && activeRef.current)
-  }
 
   // YouTube embeds only stream while in view — otherwise every mounted card
   // autoplayed its own iframe simultaneously (bandwidth/CPU/battery drain).
@@ -118,17 +106,19 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     userPausedRef.current = false
     startRef.current = Date.now()
     let disposed = false
-    let soundApplied = false
 
     const ensurePlaying = () => {
       if (disposed || userPausedRef.current || !activeRef.current) return
       if (!v.paused) return
-      v.play().then(() => {
-        if (disposed) return
-        // Apply sound once per active session; the watchdog's later ticks never
-        // re-toggle mute, so an unmute can't ping-pong with playback.
-        if (!soundApplied) { soundApplied = true; applySound() }
-      }).catch(() => { /* not ready / blocked — next tick retries */ })
+      // If audio is unlocked (page gained permission from a prior click),
+      // try playing unmuted. Falls back to muted if the browser rejects.
+      v.muted = !feedAudioUnlocked
+      v.play().catch(() => {
+        if (feedAudioUnlocked) {
+          v.muted = true
+          v.play().catch(() => {})
+        }
+      })
     }
 
     ensurePlaying()
@@ -144,10 +134,21 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     }
   }, [active, sourceType])
 
-  // React to global audio changes: first-gesture unlock, or the sound toggle on
-  // any clip. Only the active clip actually makes noise.
+  // React to global audio unlock (click). This callback runs in the click
+  // handler's synchronous call stack — the only path iOS Safari honors for
+  // unmuting media. Every click re-fires (no early return) so a failed first
+  // attempt (e.g. touchstart set the flag but click hadn't fired yet) retries.
   useEffect(() => {
-    const onChange = () => { if (activeRef.current) applySound() }
+    const onChange = () => {
+      const v = videoRef.current
+      if (!v || !activeRef.current || !feedAudioUnlocked) return
+      if (!v.muted) return
+      v.muted = false
+      v.play().catch(() => {
+        v.muted = true
+        v.play().catch(() => {})
+      })
+    }
     audioSubs.add(onChange)
     return () => { audioSubs.delete(onChange) }
   }, [])

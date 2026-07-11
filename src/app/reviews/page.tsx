@@ -421,11 +421,11 @@ function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = tru
         {/* Share */}
         <RAction icon={<Share2 size={24} className="text-white" />} label={t('reviews.railShare')} onClick={() => onShare(r)} />
         {/* The clip's sound — tap to open its sound page ("use this sound").
-            Shown only for clips with a registered sound (origin set), so legacy
-            clips with a removed track don't get a dead disc. Every clip plays
-            its OWN audio; the disc is a discovery/reuse entry, not a player. */}
-        {r.music && r.music.origin && (
-          <ReviewMusicDisc trackId={r.music.trackId} />
+            Shown for ALL upload video clips. If the clip has a registered track
+            (music.trackId), the disc links to the sound page; otherwise it's
+            a visual-only indicator (migrations may not be applied yet). */}
+        {r.content_type === 'video' && (r.source_type === 'upload' || !r.source_type) && r.media_url && (
+          <ReviewMusicDisc trackId={r.music?.trackId} />
         )}
       </div>
 

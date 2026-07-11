@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
         uploadedBy: user.id,
       })
       if (trackId) music = { version: MUSIC_PAYLOAD_VERSION, trackId, startSec: 0, volume: 1, origin: 'original' }
-    } catch { /* original sound is best-effort — never block the post */ }
+    } catch (e) { console.error('[reviews] original sound registration failed:', e instanceof Error ? e.message : e) }
   }
 
   const reviewData: Record<string, unknown> = {
