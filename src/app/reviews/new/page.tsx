@@ -18,13 +18,16 @@ import {
 } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
-const MAX_PHOTOS = 6
-const MAX_VIDEO_SIZE = 50 * 1024 * 1024   // 50 MB
-const MAX_VIDEO_DURATION = 15              // seconds — the limit SHOWN to the user (hint + error)
-// Actual reject threshold: a clip the user trimmed to "15s" often measures 15.04–15.9s
-// once encoded, so accept a small tolerance above the advertised limit. This is a
-// backend-only allowance — never surfaced in the UI (the user always sees 15s).
-const MAX_VIDEO_DURATION_ACCEPT = 17      // seconds
+// Upload limits come from the shared product config (single source; also served
+// to native clients via GET /api/config) — do not redefine numbers here.
+import {
+  MAX_PHOTOS_PER_REVIEW as MAX_PHOTOS,
+  MAX_VIDEO_DURATION_SEC as MAX_VIDEO_DURATION,
+  MAX_VIDEO_DURATION_ACCEPT_SEC as MAX_VIDEO_DURATION_ACCEPT,
+  MAX_VIDEO_SIZE_MB,
+} from '@/lib/config/product'
+
+const MAX_VIDEO_SIZE = MAX_VIDEO_SIZE_MB * 1024 * 1024
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 
 /* ─── helpers ─── */

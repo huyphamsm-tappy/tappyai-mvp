@@ -7,10 +7,9 @@ import MenuItem from '@/components/MenuItem'
 import QRProfileButton from '@/components/QRProfileButton'
 import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users, TrendingDown, Brain, Star, Plug } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-
-// Pro upgrade is hidden while we run the free test phase (no legal entity for
-// payments yet). Flip to true to re-surface the "Nâng cấp Pro" entry point.
-const SHOW_PRO_UPGRADE = false
+// Pro visibility is a product decision owned by the shared config (single
+// source — also served to native clients via GET /api/config).
+import { SHOW_PRO_UPGRADE } from '@/lib/config/product'
 
 type ProfileViewProps = {
   userId: string

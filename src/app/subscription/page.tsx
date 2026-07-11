@@ -6,10 +6,10 @@ import BottomNav from '@/components/BottomNav'
 import { Check, Crown, ArrowLeft } from 'lucide-react'
 import StripeCheckoutButton from '@/components/StripeCheckoutButton'
 import ManageSubscriptionButton from '@/components/ManageSubscriptionButton'
+import { FREE_DAILY_LIMIT, countTodayUserMessages } from '@/lib/config/product'
 
 const FREE_FEATURES = [
-  // Keep in sync with FREE_DAILY_LIMIT in /api/chat (15/day since 66aedb8).
-  '15 tin nhắn / ngày',
+  `${FREE_DAILY_LIMIT} tin nhắn / ngày`, // sourced from the product config — never hardcode
   'Tìm kiếm địa điểm cơ bản',
   'Lưu lịch sử 7 ngày',
 ]
@@ -47,23 +47,10 @@ export default async function SubscriptionPage() {
     ? new Date(sub.current_period_end) > new Date()
     : false
 
-  let todayMsgCount = 0
-  if (!isPro) {
-    const now = new Date()
-    const vnOffset = 7 * 60 * 60 * 1000
-    const vnMidnight = new Date(Math.floor((now.getTime() + vnOffset) / 86400000) * 86400000 - vnOffset)
-    const { data: todayConvs } = await supabase
-      .from('conversations')
-      .select('messages')
-      .eq('user_id', user.id)
-      .gte('updated_at', vnMidnight.toISOString())
-    todayMsgCount = (todayConvs || []).reduce((sum, c) => {
-      const msgs = Array.isArray(c.messages) ? c.messages : []
-      return sum + msgs.filter((m: { role: string }) => m.role === 'user').length
-    }, 0)
-  }
-  // Must match the enforced FREE_DAILY_LIMIT in /api/chat — was 10, raised to 15 (66aedb8).
-  const remaining = Math.max(0, 15 - todayMsgCount)
+  // Same measurement helper /api/chat enforces with — display can never drift
+  // from enforcement again (this page once showed 10/day against an enforced 15).
+  const todayMsgCount = isPro ? 0 : await countTodayUserMessages(supabase, user.id)
+  const remaining = Math.max(0, FREE_DAILY_LIMIT - todayMsgCount)
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
@@ -99,7 +86,7 @@ export default async function SubscriptionPage() {
         ) : (
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
             <p className="text-blue-700 dark:text-blue-300 text-sm font-medium">
-              🎁 Bạn đang dùng gói Free — còn <strong>{remaining} / 15</strong> tin nhắn hôm nay
+              🎁 Bạn đang dùng gói Free — còn <strong>{remaining} / {FREE_DAILY_LIMIT}</strong> tin nhắn hôm nay
             </p>
           </div>
         )}

@@ -1,22 +1,14 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
+import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
 
-// Best-effort in-memory rate limit (20 scans/day per IP per lambda instance)
-const rlStore = new Map<string, { date: string; count: number }>()
-
-function checkRL(ip: string): boolean {
-  const today = new Date().toISOString().slice(0, 10)
-  const e = rlStore.get(ip)
-  if (!e || e.date !== today) { rlStore.set(ip, { date: today, count: 1 }); return true }
-  if (e.count >= 20) return false
-  e.count++
-  return true
-}
+// Daily cap via the shared limiter (lib/security/rateLimit) — one implementation
+// for every daily-capped route instead of per-route Maps.
+const DAILY_SCAN_LIMIT = 20
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
-  if (!checkRL(ip)) {
-    return NextResponse.json({ error: 'Bạn đã quét quá 20 tài liệu hôm nay. Thử lại vào ngày mai.' }, { status: 429 })
+  if (!dailyRateLimit(`scan:${clientIp(req)}`, DAILY_SCAN_LIMIT).ok) {
+    return NextResponse.json({ error: `Bạn đã quét quá ${DAILY_SCAN_LIMIT} tài liệu hôm nay. Thử lại vào ngày mai.` }, { status: 429 })
   }
 
   let imageBase64: string, mimeType: string

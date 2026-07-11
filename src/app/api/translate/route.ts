@@ -1,21 +1,10 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
+import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
 
-// Best-effort in-memory rate limit (per lambda instance, resets on cold start)
-const rlStore = new Map<string, { date: string; count: number }>()
+// Daily cap via the shared limiter (lib/security/rateLimit) — one implementation
+// for every daily-capped route instead of per-route Maps.
 const DAILY_LIMIT = 30
-
-function checkRL(ip: string): boolean {
-  const today = new Date().toISOString().slice(0, 10)
-  const e = rlStore.get(ip)
-  if (!e || e.date !== today) {
-    rlStore.set(ip, { date: today, count: 1 })
-    return true
-  }
-  if (e.count >= DAILY_LIMIT) return false
-  e.count++
-  return true
-}
 
 const LANG_NAMES: Record<string, string> = {
   vi: 'Vietnamese', en: 'English', ja: 'Japanese', ko: 'Korean',
@@ -29,9 +18,8 @@ const LANG_NAMES: Record<string, string> = {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
-  if (!checkRL(ip)) {
-    return NextResponse.json({ error: 'rate_limit', message: 'Bạn đã dịch quá 30 lần hôm nay. Vui lòng thử lại vào ngày mai.' }, { status: 429 })
+  if (!dailyRateLimit(`translate:${clientIp(req)}`, DAILY_LIMIT).ok) {
+    return NextResponse.json({ error: 'rate_limit', message: `Bạn đã dịch quá ${DAILY_LIMIT} lần hôm nay. Vui lòng thử lại vào ngày mai.` }, { status: 429 })
   }
 
   let text: string, targetLang: string

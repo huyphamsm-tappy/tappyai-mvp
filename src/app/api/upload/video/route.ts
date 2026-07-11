@@ -2,10 +2,13 @@ import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { MAX_VIDEO_SIZE_MB } from '@/lib/config/product'
+
 const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const MAX_VIDEO_BYTES = 50 * 1024 * 1024  // 50MB
-const MAX_THUMB_BYTES = 10 * 1024 * 1024  // 10MB
+// Size limit from the shared product config — same number the composer enforces.
+const MAX_VIDEO_BYTES = MAX_VIDEO_SIZE_MB * 1024 * 1024
+const MAX_THUMB_BYTES = 10 * 1024 * 1024  // 10MB (thumbnail — internal to this route)
 
 // POST /api/upload/video
 // Generates a Vercel Blob upload token for client-side upload.

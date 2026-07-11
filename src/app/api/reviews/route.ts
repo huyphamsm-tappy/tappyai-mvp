@@ -3,6 +3,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
+import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -18,16 +19,9 @@ interface ReviewMusic {
   origin?: 'original' | 'attached'
 }
 
-// Best-effort in-memory rate limit: 5 reviews/day/IP
-const rlStore = new Map<string, { date: string; count: number }>()
-function checkRL(ip: string): boolean {
-  const today = new Date().toISOString().slice(0, 10)
-  const e = rlStore.get(ip)
-  if (!e || e.date !== today) { rlStore.set(ip, { date: today, count: 1 }); return true }
-  if (e.count >= 20) return false
-  e.count++
-  return true
-}
+// Daily cap: 20 posts/day/IP via the shared limiter (lib/security/rateLimit) —
+// one implementation for every daily-capped route instead of per-route Maps.
+const DAILY_POST_LIMIT = 20
 
 // GET /api/reviews?placeId=ChIJxxx  → list visible reviews for a place
 export async function GET(req: NextRequest) {
@@ -59,9 +53,8 @@ export async function GET(req: NextRequest) {
 // POST /api/reviews  → create review (community — no booking required)
 // If user has a past booking at this place, is_verified = true (badge)
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
-  if (!checkRL(ip)) {
-    return NextResponse.json({ error: 'Bạn đã đăng quá 20 bài hôm nay. Thử lại vào ngày mai.' }, { status: 429 })
+  if (!dailyRateLimit(`reviews:${clientIp(req)}`, DAILY_POST_LIMIT).ok) {
+    return NextResponse.json({ error: `Bạn đã đăng quá ${DAILY_POST_LIMIT} bài hôm nay. Thử lại vào ngày mai.` }, { status: 429 })
   }
 
   const { user, supabase } = await getRequestUser(req)

@@ -15,6 +15,7 @@ import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptB
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
 
 export const maxDuration = 60
 
@@ -74,11 +75,8 @@ export async function POST(req: Request) {
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
 
-  // Load user memory + kiá»ƒm tra freemium limit
-  // Free (logged-in) daily cap. Temporarily 15/day during the free test phase —
-  // Pro upgrade is hidden until we have a legal entity for payments, so when this
-  // runs out we tell the user to come back tomorrow instead of upselling Pro.
-  const FREE_DAILY_LIMIT = 15
+  // Load user memory + kiểm tra freemium limit. Quota values + measurement live
+  // in @/lib/config/product — the single owner of every business value.
   let memoryBlock = ''
   let prefBlock = ''
   let authedUserId: string | null = null
@@ -114,27 +112,14 @@ export async function POST(req: Request) {
 
       if (!isPro) {
         // Äáº¿m sá»‘ tin nháº¯n user Ä‘Ã£ gá»­i hÃ´m nay (theo giá» VN UTC+7)
-        const now = new Date()
-        const vnOffset = 7 * 60 * 60 * 1000
-        const vnMidnight = new Date(Math.floor((now.getTime() + vnOffset) / 86400000) * 86400000 - vnOffset)
-        const { count } = await supabase
-          .from('conversations')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-          .gte('updated_at', vnMidnight.toISOString())
 
         // Æ¯á»›c tÃ­nh sá»‘ message tá»« conversations hÃ´m nay â€” Ä‘Æ¡n giáº£n: náº¿u > FREE_DAILY_LIMIT conversations thÃ¬ cháº·n
         // CÃ¡ch chÃ­nh xÃ¡c hÆ¡n cáº§n track message count riÃªng â€” dÃ¹ng táº¡m cÃ¡ch nÃ y cho MVP
-        const { data: todayConvs } = await supabase
-          .from('conversations')
-          .select('messages')
-          .eq('user_id', user.id)
-          .gte('updated_at', vnMidnight.toISOString())
-
-        const totalMsgs = (todayConvs || []).reduce((sum, c) => {
-          const msgs = Array.isArray(c.messages) ? c.messages : []
-          return sum + msgs.filter((m: { role: string }) => m.role === 'user').length
-        }, 0)
+        // Shared VN-day measurement from @/lib/config/product — the same helper
+        // the subscription page displays from, so display and enforcement can
+        // never disagree. (Also drops a redundant count-only query this route
+        // used to run and never read.)
+        const totalMsgs = await countTodayUserMessages(supabase, user.id)
 
         if (totalMsgs >= FREE_DAILY_LIMIT) {
           return new Response(
@@ -154,29 +139,27 @@ export async function POST(req: Request) {
   // (server-set, so ordinary users can't tamper; clearing cookies resets it,
   // which is acceptable for a top-of-funnel teaser). Everything past chat
   // (reviews, saves, upload, …) still requires an account.
-  const FREE_ANON_LIMIT = 5
   let anonSetCookie: string | null = null
   if (!authedUserId) {
-    const nowMs = Date.now()
-    const vnToday = new Date(Math.floor((nowMs + 7 * 60 * 60 * 1000) / 86400000) * 86400000).toISOString().slice(0, 10)
+    const today = vnToday()
     const cookieHeader = req.headers.get('cookie') || ''
     const m = cookieHeader.match(/(?:^|;\s*)tappy_anon=([^;]+)/)
     let anonCount = 0
     if (m) {
       const [d, c] = decodeURIComponent(m[1]).split(':')
-      if (d === vnToday) anonCount = parseInt(c, 10) || 0
+      if (d === today) anonCount = parseInt(c, 10) || 0
     }
-    if (anonCount >= FREE_ANON_LIMIT) {
+    if (anonCount >= ANON_DAILY_LIMIT) {
       return new Response(
         JSON.stringify({
           error: 'anon_limit_reached',
-          message: `Bạn đã dùng hết ${FREE_ANON_LIMIT} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!`,
+          message: `Bạn đã dùng hết ${ANON_DAILY_LIMIT} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!`,
           upgradeUrl: '/login',
         }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       )
     }
-    anonSetCookie = `tappy_anon=${vnToday}:${anonCount + 1}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
+    anonSetCookie = `tappy_anon=${today}:${anonCount + 1}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
   }
 
   // Inject freeform user preferences from client request body

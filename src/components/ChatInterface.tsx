@@ -384,6 +384,19 @@ function logCTAClick(button: CTAButton) {
 // via dangerouslySetInnerHTML. Markdown syntax chars ([ ] ( ) * # - ! and the https://
 // scheme) are NOT escaped, so every transform below still matches. `&`→`&amp;` inside a
 // URL is the correct attribute encoding — the browser decodes it back when requesting.
+// Quota/limit copy is BACKEND-OWNED: /api/chat's 429/401 bodies carry the
+// user-facing `message` (with the current limit number baked in server-side).
+// The client renders that message instead of hardcoding numbers, so raising a
+// quota never needs a client change. useChat surfaces the raw response body as
+// error.message; fall back to a static line only if it isn't parseable JSON.
+function serverErrorMessage(raw: string | undefined): string | null {
+  if (!raw) return null
+  try {
+    const body = JSON.parse(raw)
+    return typeof body?.message === 'string' && body.message.trim() ? body.message : null
+  } catch { return null }
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
@@ -1194,8 +1207,9 @@ export default function ChatInterface({
                     </div>
                   ) : /anon_limit_reached/i.test(error.message || '') ? (
                     // Anonymous visitor used up their free questions → prompt login.
+                    // Message text comes from the server (backend owns quota copy).
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
-                      <p className="leading-relaxed font-medium">Bạn đã dùng hết 5 câu hỏi miễn phí hôm nay.</p>
+                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? 'Bạn đã dùng hết số câu hỏi miễn phí hôm nay.'}</p>
                       <p className="leading-relaxed mt-1 text-primary-600 dark:text-primary-400">Đăng nhập để tiếp tục trò chuyện với Tappy và mở khoá mọi tính năng!</p>
                       <button
                         type="button"
@@ -1210,9 +1224,9 @@ export default function ChatInterface({
                       </button>
                     </div>
                   ) : /free_limit_reached/i.test(error.message || '') ? (
+                    // Message text comes from the server (backend owns quota copy).
                     <div className="rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
-                      <p className="leading-relaxed font-medium">Bạn đã dùng hết 15 tin nhắn miễn phí hôm nay.</p>
-                      <p className="leading-relaxed mt-1 text-amber-600 dark:text-amber-400">Hẹn gặp lại bạn vào ngày mai nhé! 🌅</p>
+                      <p className="leading-relaxed font-medium">{(serverErrorMessage(error.message) ?? 'Bạn đã dùng hết số tin nhắn miễn phí hôm nay. Hẹn gặp lại bạn vào ngày mai nhé!') + ' 🌅'}</p>
                     </div>
                   ) : (
                     <div className="rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/40 px-4 py-3 text-sm text-red-700 dark:text-red-300">
