@@ -16,6 +16,9 @@ export default function ZaloFinishPage() {
       const params = new URLSearchParams(window.location.hash.slice(1))
       const at = params.get('at')
       const next = params.get('next') || '/'
+      // iOS runs this page inside ASWebAuthenticationSession; the flow must end
+      // at the app's custom scheme instead of a web redirect (see /auth/confirm).
+      const platform = params.get('platform') === 'ios' ? 'ios' : 'web'
       if (!at) { window.location.replace('/login?error=zalo_failed'); return }
 
       try {
@@ -33,6 +36,7 @@ export default function ZaloFinishPage() {
             name: profile.name,
             avatar: profile.picture?.data?.url ?? null,
             next,
+            platform,
           }),
         })
         const data = await res.json().catch(() => null)

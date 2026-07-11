@@ -7,6 +7,10 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type') as 'magiclink' | 'email' | null
   const rawNext = searchParams.get('next') ?? '/'
   const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/'
+  // platform=ios: the flow runs inside the app's ASWebAuthenticationSession, so
+  // instead of a cookie session + web redirect we hand the session tokens back
+  // to the app via its custom scheme. Strict allowlist; the scheme is hardcoded.
+  const isIos = searchParams.get('platform') === 'ios'
 
   if (!tokenHash || !type) {
     return NextResponse.redirect(`${origin}/login?error=missing_token`)
@@ -29,7 +33,7 @@ export async function GET(request: NextRequest) {
     }
   )
 
-  const { data: { user }, error } = await supabase.auth.verifyOtp({
+  const { data: { user, session }, error } = await supabase.auth.verifyOtp({
     token_hash: tokenHash,
     type,
   })
@@ -37,6 +41,19 @@ export async function GET(request: NextRequest) {
   if (error || !user) {
     const msg = error?.message ?? 'verify_failed'
     return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(msg)}`)
+  }
+
+  // iOS: finish at the app's callback with the session tokens in the URL
+  // FRAGMENT (never sent to servers or logged — same rationale as the Zalo
+  // callback). No web cookies are set; onboarding gating is the app's own
+  // concern (it reads profiles.onboarded, docs/ios/09). Web flow is unchanged.
+  if (isIos && session) {
+    const fragment = new URLSearchParams({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token,
+      expires_at: String(session.expires_at ?? Math.floor(Date.now() / 1000) + 3600),
+    })
+    return NextResponse.redirect(`tappyai://auth/callback#${fragment.toString()}`)
   }
 
   const { data: profile } = await supabase

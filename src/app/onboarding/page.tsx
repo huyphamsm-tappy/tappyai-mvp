@@ -6,17 +6,8 @@ import Image from 'next/image'
 import { MapPin, ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-
-const INTERESTS = [
-  { id: 'food', emoji: '🍜', key: 'tag.food' },
-  { id: 'spa', emoji: '💆', key: 'tag.spa' },
-  { id: 'travel', emoji: '✈️', key: 'tag.travel' },
-  { id: 'shopping', emoji: '🛍️', key: 'tag.shopping' },
-  { id: 'entertainment', emoji: '🎉', key: 'tag.entertainment' },
-  { id: 'hotel', emoji: '🏨', key: 'tag.hotel' },
-]
-
-const CITIES = ['TP. Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Cần Thơ', 'Nha Trang', 'Vũng Tàu', 'Hội An', 'Phú Quốc']
+// Single source: the same lists native clients receive via GET /api/config.
+import { ONBOARDING_INTERESTS as INTERESTS, ONBOARDING_CITIES as CITIES } from '@/lib/config/product'
 
 export default function OnboardingPage() {
   const router = useRouter()

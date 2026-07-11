@@ -6,6 +6,9 @@ import {
   MAX_PHOTOS_PER_REVIEW,
   MAX_VIDEO_SIZE_MB,
   MAX_VIDEO_DURATION_SEC,
+  AUTH_PROVIDERS,
+  ONBOARDING_INTERESTS,
+  ONBOARDING_CITIES,
 } from '@/lib/config/product'
 
 // GET /api/config — the backend-owned product configuration, as a stable
@@ -31,6 +34,15 @@ export async function GET() {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
         maxVideoSizeMb: MAX_VIDEO_SIZE_MB,
         maxVideoDurationSec: MAX_VIDEO_DURATION_SEC,
+      },
+      // Which sign-in methods the product offers (HOW each works stays
+      // backend-internal) + the onboarding catalog — identical on every platform.
+      auth: {
+        providers: AUTH_PROVIDERS,
+      },
+      onboarding: {
+        interests: ONBOARDING_INTERESTS,
+        cities: ONBOARDING_CITIES,
       },
     },
     // Cacheable: values change only on deploy. Short TTL + SWR keeps clients

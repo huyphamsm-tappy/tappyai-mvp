@@ -30,6 +30,32 @@ export const MAX_VIDEO_DURATION_SEC = 15
  * allowance — never surfaced in UI copy. */
 export const MAX_VIDEO_DURATION_ACCEPT_SEC = 17
 
+// ── Authentication providers (product decision — which sign-in methods exist) ─
+// Served to clients via GET /api/config. Clients render buttons from this list;
+// HOW each provider works (Supabase, custom OAuth, …) stays backend-internal.
+export const AUTH_PROVIDERS = [
+  { id: 'google', enabled: true },
+  { id: 'zalo', enabled: true },
+  { id: 'email', enabled: true },
+] as const
+
+// ── Onboarding choices (product catalog, identical on every platform) ────────
+// The web onboarding page renders these directly; native clients read them from
+// GET /api/config. Interest ids are the backend vocabulary stored in memory/
+// preferences — labels are i18n keys resolved client-side (presentation).
+export const ONBOARDING_INTERESTS = [
+  { id: 'food', emoji: '🍜', key: 'tag.food' },
+  { id: 'spa', emoji: '💆', key: 'tag.spa' },
+  { id: 'travel', emoji: '✈️', key: 'tag.travel' },
+  { id: 'shopping', emoji: '🛍️', key: 'tag.shopping' },
+  { id: 'entertainment', emoji: '🎉', key: 'tag.entertainment' },
+  { id: 'hotel', emoji: '🏨', key: 'tag.hotel' },
+] as const
+
+export const ONBOARDING_CITIES: readonly string[] = [
+  'TP. Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Cần Thơ', 'Nha Trang', 'Vũng Tàu', 'Hội An', 'Phú Quốc',
+]
+
 // ── Vietnam quota-day helpers ────────────────────────────────────────────────
 // All daily quotas reset at 00:00 Việt Nam (UTC+7) — matching the product copy
 // ("Reset lúc 00:00 mỗi ngày theo giờ Việt Nam", "quay lại ngày mai").

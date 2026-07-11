@@ -15,6 +15,9 @@ function originOf(req: NextRequest): string {
 
 export async function GET(req: NextRequest) {
   const returnTo = req.nextUrl.searchParams.get('returnTo') || '/'
+  // platform=ios → the flow ends at the app's custom scheme instead of a web
+  // redirect (see /auth/confirm). Strict allowlist — never a free-form value.
+  const platform = req.nextUrl.searchParams.get('platform') === 'ios' ? 'ios' : 'web'
   const REDIRECT_URI = `${originOf(req)}/api/auth/zalo/callback`
 
   const codeVerifier = crypto.randomBytes(32).toString('base64url')
@@ -38,6 +41,9 @@ export async function GET(req: NextRequest) {
     httpOnly: true, secure: true, sameSite: 'lax', maxAge: 300, path: '/',
   })
   res.cookies.set('zalo_login_return', returnTo, {
+    httpOnly: true, secure: true, sameSite: 'lax', maxAge: 300, path: '/',
+  })
+  res.cookies.set('zalo_login_platform', platform, {
     httpOnly: true, secure: true, sameSite: 'lax', maxAge: 300, path: '/',
   })
   return res

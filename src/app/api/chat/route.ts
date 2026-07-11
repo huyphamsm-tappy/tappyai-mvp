@@ -82,9 +82,36 @@ export async function POST(req: Request) {
   let authedUserId: string | null = null
   let existingMemory: UserMemory | null = null
   let isPro = false
+  // True once a token-based ANONYMOUS session's quota was enforced server-side
+  // (keyed by anonymous_id) — the legacy cookie counter below is then skipped.
+  let anonQuotaByToken = false
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (user) {
+    if (user?.is_anonymous) {
+      // Anonymous session minted by POST /api/auth/anonymous. Same Bearer
+      // pipeline as logged-in users (getRequestUser verified the JWT); quota is
+      // keyed by anonymous_id = auth.uid() inside a SECURITY DEFINER function —
+      // the client never sends or computes quota information. No memory,
+      // preferences, or subscription lookups for anonymous identities.
+      const { data: usedToday, error: quotaError } = await supabase.rpc('anon_chat_usage_increment')
+      if (!quotaError && typeof usedToday === 'number') {
+        anonQuotaByToken = true
+        if (usedToday > ANON_DAILY_LIMIT) {
+          return new Response(
+            JSON.stringify({
+              error: 'anon_limit_reached',
+              message: `Bạn đã dùng hết ${ANON_DAILY_LIMIT} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!`,
+              upgradeUrl: '/login',
+            }),
+            { status: 401, headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+      } else {
+        // RPC unavailable (migration not applied yet / transient) — fall back to
+        // the legacy cookie cap below rather than leaving the request uncapped.
+        console.error('[chat] anon quota rpc failed, falling back to cookie cap:', quotaError?.message)
+      }
+    } else if (user) {
       authedUserId = user.id
       const chatContext = await buildChatPromptContext(user.id, supabase)
       existingMemory = chatContext.memory
@@ -140,7 +167,7 @@ export async function POST(req: Request) {
   // which is acceptable for a top-of-funnel teaser). Everything past chat
   // (reviews, saves, upload, …) still requires an account.
   let anonSetCookie: string | null = null
-  if (!authedUserId) {
+  if (!authedUserId && !anonQuotaByToken) {
     const today = vnToday()
     const cookieHeader = req.headers.get('cookie') || ''
     const m = cookieHeader.match(/(?:^|;\s*)tappy_anon=([^;]+)/)
