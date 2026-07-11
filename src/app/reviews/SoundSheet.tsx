@@ -115,7 +115,11 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
           )}
 
           {!loading && error && (
-            <div className="rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/40 px-4 py-3 text-sm text-red-700 dark:text-red-300 my-4">{error}</div>
+            <div className="text-center py-8">
+              <Music2 size={32} className="mx-auto text-gray-300 dark:text-gray-600 mb-3" />
+              <p className="text-sm text-gray-500 dark:text-gray-400">Âm thanh này không còn khả dụng.</p>
+              <button onClick={onClose} className="mt-4 text-sm text-primary-500 font-medium">Đóng</button>
+            </div>
           )}
 
           {!loading && !error && data && (
