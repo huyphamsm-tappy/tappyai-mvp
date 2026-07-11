@@ -8,7 +8,8 @@ import StripeCheckoutButton from '@/components/StripeCheckoutButton'
 import ManageSubscriptionButton from '@/components/ManageSubscriptionButton'
 
 const FREE_FEATURES = [
-  '10 tin nhắn / ngày',
+  // Keep in sync with FREE_DAILY_LIMIT in /api/chat (15/day since 66aedb8).
+  '15 tin nhắn / ngày',
   'Tìm kiếm địa điểm cơ bản',
   'Lưu lịch sử 7 ngày',
 ]
@@ -61,7 +62,8 @@ export default async function SubscriptionPage() {
       return sum + msgs.filter((m: { role: string }) => m.role === 'user').length
     }, 0)
   }
-  const remaining = Math.max(0, 10 - todayMsgCount)
+  // Must match the enforced FREE_DAILY_LIMIT in /api/chat — was 10, raised to 15 (66aedb8).
+  const remaining = Math.max(0, 15 - todayMsgCount)
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
@@ -97,7 +99,7 @@ export default async function SubscriptionPage() {
         ) : (
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
             <p className="text-blue-700 dark:text-blue-300 text-sm font-medium">
-              🎁 Bạn đang dùng gói Free — còn <strong>{remaining} / 10</strong> tin nhắn hôm nay
+              🎁 Bạn đang dùng gói Free — còn <strong>{remaining} / 15</strong> tin nhắn hôm nay
             </p>
           </div>
         )}
