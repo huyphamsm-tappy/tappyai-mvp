@@ -1072,7 +1072,13 @@ export default function ReviewsPage() {
   const [loading, setLoading] = useState(true)
   const [feedError, setFeedError] = useState(false)
   // Index of the slide currently in view — only this one (± 1) mounts a <video>.
-  const [activeIndex, setActiveIndex] = useState(0)
+  // Restored from sessionStorage so pressing back from /sound/{id} returns to
+  // the clip the user was watching, not the top of the feed.
+  const [activeIndex, setActiveIndex] = useState(() => {
+    if (typeof window === 'undefined') return 0
+    const saved = sessionStorage.getItem('reviews_activeIndex')
+    return saved ? parseInt(saved, 10) || 0 : 0
+  })
   const router = useRouter()
   const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
@@ -1254,7 +1260,8 @@ export default function ReviewsPage() {
     setLoading(true)
     pageRef.current = 0
     hasMore.current = true
-    setActiveIndex(0) // new feed starts at the top slide
+    setActiveIndex(0)
+    restoredRef.current = true // don't re-scroll when the new feed loads
   }
 
   // Desktop has no swipe — scroll one slide up/down via on-screen arrows.
@@ -1325,6 +1332,23 @@ export default function ReviewsPage() {
         : u))
     }
   }
+
+  // Persist active slide so pressing back from /sound/{id} returns here.
+  useEffect(() => {
+    sessionStorage.setItem('reviews_activeIndex', String(activeIndex))
+  }, [activeIndex])
+
+  // After reviews load, scroll to the restored index (if any).
+  const restoredRef = useRef(false)
+  useEffect(() => {
+    if (loading || restoredRef.current || reviews.length === 0) return
+    restoredRef.current = true
+    const saved = activeIndex
+    if (saved > 0 && saved < reviews.length) {
+      const c = containerRef.current
+      if (c) c.scrollTo({ top: saved * c.clientHeight, behavior: 'auto' })
+    }
+  }, [loading, reviews.length, activeIndex])
 
   // Infinite scroll + active-slide tracking (drives which slide mounts a <video>)
   useEffect(() => {
