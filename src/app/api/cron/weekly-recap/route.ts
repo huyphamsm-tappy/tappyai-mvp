@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getMemoryBatch } from '@/lib/memory/memoryService'
 import { getAllSubscribedUserIds, sendNotificationToUser } from '@/lib/notifications/send'
@@ -53,8 +53,6 @@ export async function GET(req: Request) {
     // Fetch memory for active users
     const memoryByUser = await getMemoryBatch(activeUserIds, supabase)
 
-    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
-
     const results = await Promise.allSettled(
       activeUserIds.map(async (uid) => {
         const mem = memoryByUser.get(uid)
@@ -95,13 +93,7 @@ Trả lời ĐÚNG format:
 TITLE: [nội dung]
 BODY: [nội dung]`
 
-        const msg = await anthropic.messages.create({
-          model: 'claude-haiku-4-5',
-          max_tokens: 150,
-          messages: [{ role: 'user', content: prompt }],
-        })
-
-        const text = msg.content[0].type === 'text' ? msg.content[0].text : ''
+        const { text } = await AI.generate({ role: 'fast', maxTokens: 150, prompt })
         const titleMatch = text.match(/TITLE:\s*(.+)/)
         const bodyMatch = text.match(/BODY:\s*(.+)/)
 

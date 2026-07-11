@@ -1,4 +1,4 @@
-import { streamText, tool } from 'ai'
+import { tool } from 'ai'
 import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -8,7 +8,7 @@ import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
 import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
-import { getModel, type ModelTier } from '@/lib/ai/provider'
+import { AI, type ModelRole } from '@/lib/ai/llm'
 import { classifyIntent, detectLang, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
@@ -188,20 +188,12 @@ export async function POST(req: Request) {
     prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
   }
 
-  const tier: ModelTier = (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'simple' : 'standard'
-  console.log(JSON.stringify({ type: 'tappyai_model', model: tier, planningIntent }))
+  const role: ModelRole = (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
+  console.log(JSON.stringify({ type: 'tappyai_model', model: role, planningIntent }))
 
   // Truncate history to last 10 messages to control token costs
   const trimmedMessages = messages.length > 10 ? messages.slice(-10) : messages
 
-  // Anthropic prompt caching only applies when cacheControl is attached to a specific
-  // message object — passing it as a top-level streamText() option alongside a plain
-  // `system` string is silently ignored by the SDK (verified in node_modules/ai's
-  // convertToLanguageModelPrompt: the string-system code path never reads provider
-  // metadata at all). Passing the system prompt as the first `messages[]` entry instead
-  // is the code path that actually attaches cache_control, so repeat requests within the
-  // ~5min cache window get the (large, mostly-static) system prompt at a cached rate
-  // instead of full price.
   const systemPrompt = (intent === 'chitchat'
     ? buildSystemSimple(lang, memoryBlock)
     : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, forcedTool)
@@ -209,20 +201,15 @@ export async function POST(req: Request) {
 
   let result
   try {
-  result = streamText({
-    model: getModel(tier),
-    messages: [
-      {
-        role: 'system' as const,
-        content: systemPrompt,
-        providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' } } },
-      },
-      ...trimmedMessages,
-    ],
+  // Provider-specific optimizations (e.g. prompt caching of this large system
+  // prompt) are applied inside the active provider adapter — not here.
+  result = AI.stream({
+    role,
+    system: systemPrompt,
+    messages: trimmedMessages,
     maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 3000 : hasImage ? 1024 : 2048,
     maxSteps: intent === 'chitchat' ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
-    // @ts-ignore — experimental_prepareStep exists in AI SDK but missing from this version's types; do not remove
-    experimental_prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
+    prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
       if (stepNumber === 0) {
         if (forcedTool === 'search_products' && locationIntent === 'offline') {

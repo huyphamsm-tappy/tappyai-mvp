@@ -1,5 +1,4 @@
-import { generateText } from 'ai'
-import { createAnthropic } from '@ai-sdk/anthropic'
+import { AI } from '@/lib/ai/llm'
 
 export interface ContentMeta {
   caption: string
@@ -18,18 +17,13 @@ interface ProcessOpts {
 export async function processContent(opts: ProcessOpts): Promise<ContentMeta> {
   const { thumbnailUrl, caption, title } = opts
   try {
-    const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
-
     // User provided caption: trust it, just extract hashtags + category (text-only, cheaper)
     if (caption?.trim()) {
       const contextLine = title?.trim() ? `\nTieu de: "${title.trim()}"` : ''
-      const { text } = await generateText({
-        model: anthropic('claude-haiku-4-5'),
+      const { text } = await AI.generate({
+        role: 'fast',
         maxTokens: 150,
-        messages: [{
-          role: 'user',
-          content: `Caption: "${caption.trim()}"${contextLine}\nTra ve JSON (khong them text): {"hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}`,
-        }],
+        prompt: `Caption: "${caption.trim()}"${contextLine}\nTra ve JSON (khong them text): {"hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}`,
       })
       const match = text.match(/\{[\s\S]*\}/)
       const p = match ? JSON.parse(match[0]) : {}
@@ -46,13 +40,10 @@ export async function processContent(opts: ProcessOpts): Promise<ContentMeta> {
 
     // Text-only when title available but no thumbnail
     if (title?.trim() && !thumbnailUrl) {
-      const { text } = await generateText({
-        model: anthropic('claude-haiku-4-5'),
+      const { text } = await AI.generate({
+        role: 'fast',
         maxTokens: 200,
-        messages: [{
-          role: 'user',
-          content: `Tieu de video: "${title.trim()}"\nTra ve JSON (khong them text):\n{"caption":"caption tieng Viet tu nhien 1-2 cau","hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}`,
-        }],
+        prompt: `Tieu de video: "${title.trim()}"\nTra ve JSON (khong them text):\n{"caption":"caption tieng Viet tu nhien 1-2 cau","hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}`,
       })
       const match = text.match(/\{[\s\S]*\}/)
       if (!match) return fallback(title)
@@ -67,16 +58,11 @@ export async function processContent(opts: ProcessOpts): Promise<ContentMeta> {
 
     // Thumbnail (with optional title as hint)
     const titleHint = title?.trim() ? `Tieu de: "${title.trim()}"\n` : ''
-    const { text } = await generateText({
-      model: anthropic('claude-haiku-4-5'),
+    const { text } = await AI.vision({
+      role: 'fast',
       maxTokens: 200,
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'image', image: new URL(thumbnailUrl!) },
-          { type: 'text', text: `${titleHint}Phan tich anh, tra ve JSON ngan gon (khong them text):\n{"caption":"caption tieng Viet tu nhien 1-2 cau","hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}` },
-        ],
-      }],
+      image: new URL(thumbnailUrl!),
+      prompt: `${titleHint}Phan tich anh, tra ve JSON ngan gon (khong them text):\n{"caption":"caption tieng Viet tu nhien 1-2 cau","hashtags":["tag1","tag2","tag3"],"category":"food|cafe|spa|entertainment|travel|shopping|other","location":"khu vuc neu ro, khong thi de trong"}`,
     })
     const match = text.match(/\{[\s\S]*\}/)
     if (!match) return fallback(title || '')

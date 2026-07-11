@@ -1,9 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { createAnthropic } from '@ai-sdk/anthropic'
-import { generateText } from 'ai'
+import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
-
-const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const groupId = params.id
@@ -37,9 +34,9 @@ ${members.map(m => `- ${m.name}: ngân sách ${m.budget}, thích ${m.food_prefer
 Hãy gợi ý 3 địa điểm ăn uống phù hợp với TẤT CẢ mọi người, với lý do tại sao địa điểm đó phù hợp cho cả nhóm. Format đẹp, dễ đọc bằng tiếng Việt.`
 
   try {
-    const { text: suggestion } = await generateText({
-      model: anthropic('claude-haiku-4-5-20251001'),
-      messages: [{ role: 'user', content: prompt }],
+    const { text: suggestion } = await AI.generate({
+      role: 'smart',
+      prompt,
       maxTokens: 1024,
     })
 

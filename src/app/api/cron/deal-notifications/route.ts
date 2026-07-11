@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAllSubscribedUserIds, sendNotificationToUser } from '@/lib/notifications/send'
 import { getDealsForPersonalization } from '@/lib/shopee-deals'
@@ -39,29 +39,22 @@ export async function GET(req: Request) {
       prefByUser.set(p.user_id as string, tags)
     }
 
-    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
-
     const results = await Promise.allSettled(
       userIds.map(async (uid) => {
         const tags = prefByUser.get(uid) ?? []
         const prefStr = tags.length ? tags.join(', ') : 'mua sắm tổng quát'
 
-        const msg = await anthropic.messages.create({
-          model: 'claude-haiku-4-5',
-          max_tokens: 200,
-          messages: [{
-            role: 'user',
-            content: `Sở thích người dùng: ${prefStr}
+        const { text } = await AI.generate({
+          role: 'fast',
+          maxTokens: 200,
+          prompt: `Sở thích người dùng: ${prefStr}
 Deals hôm nay:
 ${dealList}
 
 Chọn 1-2 deals phù hợp nhất. Trả lời đúng định dạng này (tiếng Việt):
 TITLE: (tối đa 60 ký tự, bắt đầu bằng emoji)
 BODY: (tối đa 120 ký tự)`,
-          }],
         })
-
-        const text = msg.content[0].type === 'text' ? msg.content[0].text : ''
         const titleMatch = text.match(/TITLE:\s*(.+)/)
         const bodyMatch = text.match(/BODY:\s*(.+)/)
 

@@ -1,8 +1,5 @@
-import { createAnthropic } from '@ai-sdk/anthropic'
-import { generateText } from 'ai'
+import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
-
-const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
 // Best-effort in-memory rate limit (20 scans/day per IP per lambda instance)
 const rlStore = new Map<string, { date: string; count: number }>()
@@ -39,22 +36,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { text } = await generateText({
-      model: anthropic('claude-haiku-4-5-20251001'),
-      messages: [{
-        role: 'user',
-        content: [
-          {
-            type: 'image',
-            image: imageBase64,
-            mimeType: mimeType as 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif',
-          },
-          {
-            type: 'text',
-            text: 'Hãy trích xuất toàn bộ văn bản (text) trong ảnh này một cách chính xác và đầy đủ nhất có thể. Giữ nguyên định dạng đoạn văn, xuống dòng, và thứ tự đọc tự nhiên (từ trái sang phải, từ trên xuống dưới). Chỉ trả về nội dung văn bản trích xuất được — không thêm giải thích, không thêm nhận xét. Nếu ảnh không chứa văn bản, trả lời: "Không tìm thấy văn bản trong ảnh."',
-          },
-        ],
-      }],
+    const { text } = await AI.vision({
+      image: imageBase64,
+      mimeType,
+      prompt: 'Hãy trích xuất toàn bộ văn bản (text) trong ảnh này một cách chính xác và đầy đủ nhất có thể. Giữ nguyên định dạng đoạn văn, xuống dòng, và thứ tự đọc tự nhiên (từ trái sang phải, từ trên xuống dưới). Chỉ trả về nội dung văn bản trích xuất được — không thêm giải thích, không thêm nhận xét. Nếu ảnh không chứa văn bản, trả lời: "Không tìm thấy văn bản trong ảnh."',
       maxTokens: 2048,
     })
     return NextResponse.json({ text: text.trim() })

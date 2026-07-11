@@ -1,7 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
-import { generateText } from 'ai'
-import { createAnthropic } from '@ai-sdk/anthropic'
+import { AI } from '@/lib/ai/llm'
 
 export interface UserMemory {
   location_base: string | null
@@ -170,8 +169,6 @@ export async function extractMemoryFromConversation(
   existingMemory: UserMemory | null
 ): Promise<Partial<UserMemory>> {
   try {
-    const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
-
     const userTexts = messages
       .filter(m => m.role === 'user')
       .map(m => (typeof m.content === 'string' ? m.content : JSON.stringify(m.content)))
@@ -191,13 +188,10 @@ export async function extractMemoryFromConversation(
         })
       : '{}'
 
-    const { text: rawText } = await generateText({
-      model: anthropic('claude-haiku-4-5'),
+    const { text: rawText } = await AI.generate({
+      role: 'fast',
       maxTokens: 500,
-      messages: [
-        {
-          role: 'user',
-          content: `Phan tich cuoc hoi thoai va trich xuat thong tin ve user. Tra ve JSON ngan gon.
+      prompt: `Phan tich cuoc hoi thoai va trich xuat thong tin ve user. Tra ve JSON ngan gon.
 
 Memory hien tai: ${existingCtx}
 
@@ -230,8 +224,6 @@ Quy tac:
 - history: ghi chu de chinh cua cuoc hoi thoai NAY, khong copy tu memory cu
 - Neu khong co thong tin gi moi, tra ve {}
 - Chi tra ve JSON, khong giai thich.`,
-        },
-      ],
     })
 
     const text = rawText.trim()

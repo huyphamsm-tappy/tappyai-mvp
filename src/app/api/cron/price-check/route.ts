@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendNotificationToUser } from '@/lib/notifications/send'
 
@@ -54,7 +54,6 @@ export async function GET(req: Request) {
   }
 
   const supabase = createAdminClient()
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
   // Fetch all active watches (max 100 per run to stay within time limit)
   const { data: watches, error } = await supabase
@@ -82,21 +81,16 @@ export async function GET(req: Request) {
         .map(r => `${r.title}\n${r.snippet}`)
         .join('\n---\n')
 
-      const msg = await anthropic.messages.create({
-        model: 'claude-haiku-4-5',
-        max_tokens: 80,
-        messages: [{
-          role: 'user',
-          content: `Tìm giá thấp nhất của "${watch.product_name}" từ kết quả tìm kiếm này (giá bán hiện tại, không phải giá gốc):
+      const { text } = await AI.generate({
+        role: 'fast',
+        maxTokens: 80,
+        prompt: `Tìm giá thấp nhất của "${watch.product_name}" từ kết quả tìm kiếm này (giá bán hiện tại, không phải giá gốc):
 
 ${snippetText}
 
 Trả lời ĐÚNG format (chỉ 1 dòng):
 PRICE_VND: [số nguyên bằng VND, ví dụ: 1950000] hoặc PRICE_VND: không rõ`,
-        }],
       })
-
-      const text = msg.content[0].type === 'text' ? msg.content[0].text : ''
       const priceMatch = text.match(/PRICE_VND:\s*(\d+)/)
       const extractedPrice = priceMatch ? parseInt(priceMatch[1]) : null
 

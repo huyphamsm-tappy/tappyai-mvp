@@ -1,8 +1,5 @@
-import { createAnthropic } from '@ai-sdk/anthropic'
-import { generateText } from 'ai'
+import { AI } from '@/lib/ai/llm'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
-
-const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
 const PLATFORM_GUIDE: Record<string, string> = {
   facebook: 'Facebook (phong cách thân thiện, có thể dùng emoji, phù hợp mọi lứa tuổi)',
@@ -35,9 +32,9 @@ export async function POST(req: Request) {
     )
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!AI.isConfigured()) {
     return Response.json(
-      { error: 'ANTHROPIC_API_KEY chưa được cấu hình trên server.' },
+      { error: 'AI provider chưa được cấu hình trên server.' },
       { status: 500 },
     )
   }
@@ -63,15 +60,10 @@ export async function POST(req: Request) {
   const lengthDesc = LENGTH_GUIDE[length] ?? LENGTH_GUIDE.medium
 
   try {
-    const { text } = await generateText({
-      model: anthropic('claude-haiku-4-5-20251001'),
+    const { text } = await AI.generate({
+      role: 'smart',
       system: `Bạn là copywriter chuyên nghiệp viết content mạng xã hội tiếng Việt. Nhiệm vụ: viết caption hấp dẫn, tự nhiên, đúng ngôn ngữ và văn hóa Việt Nam. Luôn trả về JSON hợp lệ duy nhất với đúng cấu trúc: {"caption":"<nội dung caption>","hashtags":"<các hashtag cách nhau bằng dấu cách, tối đa 10 hashtag>"}. Không thêm bất kỳ text nào ngoài JSON.`,
-      messages: [
-        {
-          role: 'user',
-          content: `Platform: ${platformDesc}\nTone: ${toneDesc}\nĐộ dài caption: ${lengthDesc}\n\nChủ đề/mô tả: "${topic.trim()}"\n\nViết caption và hashtags phù hợp. Trả về JSON duy nhất.`,
-        },
-      ],
+      prompt: `Platform: ${platformDesc}\nTone: ${toneDesc}\nĐộ dài caption: ${lengthDesc}\n\nChủ đề/mô tả: "${topic.trim()}"\n\nViết caption và hashtags phù hợp. Trả về JSON duy nhất.`,
       maxTokens: 900,
       temperature: 0.8,
     })

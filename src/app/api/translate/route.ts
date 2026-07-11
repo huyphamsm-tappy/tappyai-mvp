@@ -1,8 +1,5 @@
-import { createAnthropic } from '@ai-sdk/anthropic'
-import { generateText } from 'ai'
+import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
-
-const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
 // Best-effort in-memory rate limit (per lambda instance, resets on cold start)
 const rlStore = new Map<string, { date: string; count: number }>()
@@ -51,12 +48,9 @@ export async function POST(req: NextRequest) {
   const langName = LANG_NAMES[targetLang] || 'Vietnamese'
 
   try {
-    const { text: translation } = await generateText({
-      model: anthropic('claude-haiku-4-5-20251001'),
-      messages: [{
-        role: 'user',
-        content: `Translate the following text to ${langName}. Return ONLY the translation — no explanations, no quotes, no extra text.\n\n${text}`,
-      }],
+    const { text: translation } = await AI.generate({
+      role: 'smart',
+      prompt: `Translate the following text to ${langName}. Return ONLY the translation — no explanations, no quotes, no extra text.\n\n${text}`,
       maxTokens: 1024,
     })
     return NextResponse.json({ translation: translation.trim() })
