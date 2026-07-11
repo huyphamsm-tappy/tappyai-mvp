@@ -16,6 +16,7 @@ import type { UserPreferences } from '@/lib/userMemory'
 import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicDisc from './ReviewMusicDisc'
+import SoundSheet from './SoundSheet'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 /* ─── types ─── */
@@ -231,7 +232,7 @@ function ShareModal({ review, onClose }: { review: Review; onClose: () => void }
 }
 
 /* ─── Single post (TikTok style) ─── */
-function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete }: {
+function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onSoundTap }: {
   r: Review; me: string | null
   // Only the active slide (± 1 neighbour) mounts a real <video>. Off-screen
   // slides render just the thumbnail. iOS Safari caps how many HTMLMediaElements
@@ -246,6 +247,7 @@ function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = tru
   feedType: 'for-you' | 'latest' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'latest' | 'following') => void
   onLike: (id: string) => void; onLikeDouble: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
+  onSoundTap?: (trackId: string) => void
 }) {
   const { t } = useTranslation()
   const photos = (r.photos || []).filter(Boolean)
@@ -425,7 +427,7 @@ function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = tru
             (music.trackId), the disc links to the sound page; otherwise it's
             a visual-only indicator (migrations may not be applied yet). */}
         {r.content_type === 'video' && (r.source_type === 'upload' || !r.source_type) && r.media_url && (
-          <ReviewMusicDisc trackId={r.music?.trackId} />
+          <ReviewMusicDisc trackId={r.music?.trackId} onTap={onSoundTap} />
         )}
       </div>
 
@@ -463,6 +465,7 @@ function ClipViewer({ posts, startIndex, me, onClose }: { posts: Review[]; start
   const [activeIndex, setActiveIndex] = useState(startIndex)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
+  const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Jump straight to the tapped clip on open.
@@ -536,7 +539,7 @@ function ClipViewer({ posts, startIndex, me, onClose }: { posts: Review[]; start
             <Post key={r.id} r={r} me={me} feedType="latest" showFeedTabs={false}
               renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex}
               onFeedTypeChange={() => {}} onLike={like} onLikeDouble={likeOnly} onSave={save}
-              onComment={setCommentOf} onShare={setShareOf} onDelete={del} />
+              onComment={setCommentOf} onShare={setShareOf} onDelete={del} onSoundTap={setSoundTrackId} />
           ))}
         </div>
         {/* Desktop prev/next — no swipe on desktop */}
@@ -549,6 +552,7 @@ function ClipViewer({ posts, startIndex, me, onClose }: { posts: Review[]; start
       </div>
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
+      {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
     </div>
   )
 }
@@ -1072,13 +1076,7 @@ export default function ReviewsPage() {
   const [loading, setLoading] = useState(true)
   const [feedError, setFeedError] = useState(false)
   // Index of the slide currently in view — only this one (± 1) mounts a <video>.
-  // Restored from sessionStorage so pressing back from /sound/{id} returns to
-  // the clip the user was watching, not the top of the feed.
-  const [activeIndex, setActiveIndex] = useState(() => {
-    if (typeof window === 'undefined') return 0
-    const saved = sessionStorage.getItem('reviews_activeIndex')
-    return saved ? parseInt(saved, 10) || 0 : 0
-  })
+  const [activeIndex, setActiveIndex] = useState(0)
   const router = useRouter()
   const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
@@ -1108,6 +1106,7 @@ export default function ReviewsPage() {
   const fetchRef = useRef<(p: number, append: boolean, ft: 'for-you' | 'latest' | 'following', signal?: AbortSignal) => Promise<void>>(null as any)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
+  const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
   const [notifs, setNotifs] = useState<Notification[]>([])
   const [notifsLoading, setNotifsLoading] = useState(false)
   const [notifsError, setNotifsError] = useState(false)
@@ -1261,7 +1260,6 @@ export default function ReviewsPage() {
     pageRef.current = 0
     hasMore.current = true
     setActiveIndex(0)
-    restoredRef.current = true // don't re-scroll when the new feed loads
   }
 
   // Desktop has no swipe — scroll one slide up/down via on-screen arrows.
@@ -1332,23 +1330,6 @@ export default function ReviewsPage() {
         : u))
     }
   }
-
-  // Persist active slide so pressing back from /sound/{id} returns here.
-  useEffect(() => {
-    sessionStorage.setItem('reviews_activeIndex', String(activeIndex))
-  }, [activeIndex])
-
-  // After reviews load, scroll to the restored index (if any).
-  const restoredRef = useRef(false)
-  useEffect(() => {
-    if (loading || restoredRef.current || reviews.length === 0) return
-    restoredRef.current = true
-    const saved = activeIndex
-    if (saved > 0 && saved < reviews.length) {
-      const c = containerRef.current
-      if (c) c.scrollTo({ top: saved * c.clientHeight, behavior: 'auto' })
-    }
-  }, [loading, reviews.length, activeIndex])
 
   // Infinite scroll + active-slide tracking (drives which slide mounts a <video>)
   useEffect(() => {
@@ -1478,7 +1459,7 @@ export default function ReviewsPage() {
                 </div>
               : <>
                   <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} />)}
+                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} onSoundTap={setSoundTrackId} />)}
                   </div>
                   {/* Desktop prev/next — no swipe on desktop, so surface arrows to the right of the column. */}
                   <div className="hidden md:flex flex-col gap-3 absolute left-full ml-4 top-1/2 -translate-y-1/2 z-20">
@@ -1644,6 +1625,7 @@ export default function ReviewsPage() {
 
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
+      {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
     </div>
   )
 }
