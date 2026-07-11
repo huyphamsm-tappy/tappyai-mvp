@@ -1,0 +1,22 @@
+# Architecture Guard — automated enforcement of docs/architecture/AI_PLATFORM.md
+# Fails the build if any AI-architecture rule is violated (vendor SDK imports,
+# hardcoded model ids, vendor keys/instantiation/cache logic outside the
+# provider layer, or bypassing the AI facade). Same check as local:
+#   npm run architecture:check
+name: Architecture Guard
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  guard:
+    name: AI architecture rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # Zero-dependency script — no npm install needed.
+      - run: node scripts/architecture/check.mjs

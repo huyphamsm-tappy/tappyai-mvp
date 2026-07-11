@@ -185,26 +185,47 @@ Ghi chú:
 - **Gemini** dùng `@ai-sdk/google`.
 - Adapter phải trong suốt: không đổi prompt, không đổi hành vi nghiệp vụ.
 
-## 7. Checklist review (chạy trước khi merge bất kỳ PR nào chạm AI)
+## 7. Architecture Guard — thực thi tự động
 
-Các lệnh sau phải trả về **rỗng** (ngoài `src/lib/ai/llm/`):
+Luật trong tài liệu này được **thực thi bằng máy**, không chỉ bằng review:
 
 ```bash
-# SDK vendor lọt ra ngoài adapter? (bắt import thật, bỏ qua chữ trong comment;
-# lưu ý: `ai` / `ai/react` / `@ai-sdk/react` là AI SDK trung lập — được phép)
-grep -rn "from '@ai-sdk/\|from \"@ai-sdk/\|@anthropic-ai\|createAnthropic\|new Anthropic" src --include="*.ts" --include="*.tsx" | grep -v "src/lib/ai/llm"
-
-# Model id hardcode ngoài adapter?
-grep -rn "claude-\|gpt-4\|gpt-5\|gemini-\|grok-\|deepseek-" src --include="*.ts" | grep -v "src/lib/ai/llm/providers"
-
-# Credential vendor trong business code?
-grep -rn "ANTHROPIC_API_KEY\|OPENAI_API_KEY\|GOOGLE_.*_KEY\|XAI_API_KEY" src --include="*.ts" | grep -v "src/lib/ai/llm"
-
-# Tối ưu vendor lọt vào business code?
-grep -rn "cacheControl\|anthropic-beta\|providerOptions.*anthropic" src --include="*.ts" | grep -v "src/lib/ai/llm"
+npm run architecture:check          # local — chạy trước khi commit code chạm AI
 ```
 
-Nếu một lệnh có kết quả → PR vi phạm luật → sửa cho đi qua layer trước khi merge.
+- Script: `scripts/architecture/check.mjs` (zero-dependency Node, không cần
+  `npm install` để chạy).
+- CI: workflow **Architecture Guard** (`.github/workflows/architecture-guard.yml`)
+  chạy trên mọi `push` và `pull_request` — **vi phạm = build đỏ = không merge**.
+- Guard strip comment trước khi quét (nhắc tên SDK trong comment không bị bắt
+  oan) nhưng **quét cả string literal** (model id nằm trong string).
+
+### 7 rule được thực thi
+
+| Rule id | Bắt gì |
+|---|---|
+| `no-vendor-sdk-imports` | import `@ai-sdk/*` (trừ `@ai-sdk/react`) / SDK vendor ngoài `providers/` |
+| `no-hardcoded-model-ids` | `claude-*`, `gpt-*`, `gemini-*`, `grok-*`, `deepseek-*`… ngoài `providers/` |
+| `no-vendor-api-keys` | `*_API_KEY` của vendor trong business code |
+| `no-direct-provider-instantiation` | `createAnthropic()`, `new Anthropic()`, `createOpenAI()`… ngoài `providers/` |
+| `no-facade-bypass` | gọi thẳng `generateText`/`streamText`/`generateObject`/`embed` ngoài layer |
+| `no-vendor-cache-logic` | `cacheControl`, `anthropic-beta`, `providerOptions:{anthropic…}` ngoài `providers/` |
+| `no-raw-vendor-dependencies` | SDK thô (`@anthropic-ai/sdk`, `openai`…) xuất hiện trong package.json |
+
+### Cách sửa khi guard báo đỏ
+
+Mỗi vi phạm in ra `file:dòng` + gợi ý sửa (`→ Fix: …`). Nguyên tắc chung:
+**đừng xin ngoại lệ — hãy đi qua layer.** Cần capability mới (embeddings,
+structured output…)? Thêm method vào `ai.ts` + mở rộng `AIProvider`, rồi gọi
+qua `AI.*` — đừng gọi thẳng SDK "cho nhanh".
+
+### Thêm provider mới một cách an toàn
+
+Làm đúng §6 (adapter trong `providers/<id>.ts` + đăng ký ở `registry.ts`) thì
+guard tự cho qua — vì `providers/` là vùng được phép. Nếu provider mới có SDK /
+tên model / biến key chưa nằm trong pattern của guard, **bổ sung pattern vào
+`scripts/architecture/check.mjs`** (RULES là data — chỉ thêm regex, không sửa
+engine) trong cùng PR với adapter, để code vendor đó cũng bị khóa vào đúng vùng.
 
 ---
 
