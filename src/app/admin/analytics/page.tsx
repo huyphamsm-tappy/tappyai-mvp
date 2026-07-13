@@ -1,11 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import { isAdmin } from '@/lib/admin'
 
+// Admin access is enforced by the /admin RBAC layout (Phase 0). This legacy page
+// no longer depends on the deprecated ADMIN_IDS gate; it will be superseded by the
+// Product Analytics module in Phase 1.
 export default async function AnalyticsPage() {
   const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!isAdmin(user?.id)) redirect('/reviews')
 
   const since7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
   const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
