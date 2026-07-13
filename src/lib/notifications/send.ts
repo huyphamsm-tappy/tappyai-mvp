@@ -72,7 +72,7 @@ export async function sendNotificationToUser(
   const supabase = createAdminClient()
   const { data: subs, error } = await supabase
     .from('notification_subscriptions')
-    .select('provider, subscription_data')
+    .select('id, provider, subscription_data')
     .eq('user_id', userId)
     .eq('enabled', true)
 
@@ -86,11 +86,29 @@ export async function sendNotificationToUser(
     subs.map(s => dispatch(s.provider, s.subscription_data as Record<string, unknown>, payload))
   )
 
+  // Prune subscriptions the push service reports as permanently gone (Web Push
+  // 404/410, APNs 410) — otherwise dead endpoints accumulate forever and every
+  // future send/cron re-attempts them, inflating failures and wasting the budget.
+  const goneIds: string[] = []
   results.forEach((r, i) => {
     if (r.status === 'rejected') {
-      console.error(`[notifications] Dispatch failed for sub ${i}:`, r.reason)
+      const status = (r.reason as { statusCode?: number })?.statusCode
+      if (status === 404 || status === 410) {
+        goneIds.push(subs[i].id as string)
+      } else {
+        console.error(`[notifications] Dispatch failed for sub ${subs[i].id}:`, r.reason)
+      }
     }
   })
+
+  if (goneIds.length > 0) {
+    const { error: pruneErr } = await supabase
+      .from('notification_subscriptions')
+      .update({ enabled: false })
+      .in('id', goneIds)
+    if (pruneErr) console.error('[notifications] Failed to prune dead subscriptions:', pruneErr)
+    else console.info(`[notifications] Pruned ${goneIds.length} dead subscription(s)`)
+  }
 }
 
 /**

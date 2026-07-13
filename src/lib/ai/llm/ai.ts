@@ -53,6 +53,7 @@ export const AI = {
       maxSteps: opts.maxSteps,
       tools: opts.tools,
       onFinish: opts.onFinish,
+      abortSignal: opts.abortSignal,
       // @ts-ignore — experimental_prepareStep exists in the AI SDK at runtime but is missing from this version's types; do not remove
       experimental_prepareStep: opts.prepareStep,
     })

@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { AI } from '@/lib/ai/llm'
+import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
@@ -8,6 +9,11 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  // Per-user cap on this paid LLM call (creator-only, but still uncapped otherwise).
+  if (!rateLimit(`group-suggest:${user.id}`, 5, 60_000).ok) {
+    return NextResponse.json({ error: 'Bạn thao tác quá nhanh, thử lại sau giây lát.' }, { status: 429 })
+  }
 
   const { data: group, error: groupError } = await supabase
     .from('groups')

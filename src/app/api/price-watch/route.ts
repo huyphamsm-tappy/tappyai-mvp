@@ -14,7 +14,7 @@ export async function GET(req: Request) {
     .order('created_at', { ascending: false })
     .limit(20)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) { console.error('[price-watch]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
   return NextResponse.json({ watches: data })
 }
 
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     .select('id')
     .single()
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) { console.error('[price-watch]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
   return NextResponse.json({ id: data.id, ok: true })
 }
 

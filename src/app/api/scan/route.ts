@@ -11,11 +11,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `Bạn đã quét quá ${DAILY_SCAN_LIMIT} tài liệu hôm nay. Thử lại vào ngày mai.` }, { status: 429 })
   }
 
+  const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
   let imageBase64: string, mimeType: string
   try {
     const body = await req.json()
     imageBase64 = body.imageBase64
-    mimeType = body.mimeType || 'image/jpeg'
+    // Constrain the client-supplied mimeType to an image allowlist before it
+    // reaches the vision model; anything else falls back to JPEG.
+    mimeType = ALLOWED_MIME.includes(body.mimeType) ? body.mimeType : 'image/jpeg'
     if (!imageBase64) throw new Error('missing image')
     // Strip data URL prefix if present
     if (imageBase64.includes(',')) imageBase64 = imageBase64.split(',')[1]

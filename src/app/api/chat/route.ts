@@ -35,6 +35,28 @@ export async function POST(req: Request) {
 
   const { messages, userLocation: rawUserLocation, userPreferences: rawUserPrefs, responseStyle: rawResponseStyle } = await req.json()
 
+  // Reject a non-array or oversized history BEFORE any expensive LLM/tool work.
+  // maxTokens bounds only OUTPUT and the IP limiter bounds request COUNT — neither
+  // caps input payload size, so an unbounded prompt is a real cost/DoS vector.
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return new Response(
+      JSON.stringify({ error: 'invalid_request' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } },
+    )
+  }
+  const totalInputChars = (messages as Array<{ content?: unknown }>).reduce((sum, m) => {
+    const c = m?.content
+    if (typeof c === 'string') return sum + c.length
+    if (Array.isArray(c)) return sum + (c as Array<{ text?: string }>).reduce((s, p) => s + (p?.text?.length || 0), 0)
+    return sum
+  }, 0)
+  if (totalInputChars > 24_000) {
+    return new Response(
+      JSON.stringify({ error: 'message_too_long', message: 'Tin nhắn quá dài. Vui lòng rút gọn.' }),
+      { status: 413, headers: { 'Content-Type': 'application/json' } },
+    )
+  }
+
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
   // Sent from the client (localStorage); no persistence needed. Validated to a small enum.
   const rs = (rawResponseStyle && typeof rawResponseStyle === 'object') ? rawResponseStyle as { tone?: string; length?: string } : {}
@@ -159,7 +181,13 @@ export async function POST(req: Request) {
         }
       }
     }
-  } catch { /* no-op if auth fails */ }
+  } catch (e) {
+    // Identity/quota resolution is best-effort so a transient auth/DB error can't
+    // hard-fail chat. This favors availability over strict enforcement: on error
+    // the daily cap for THIS request may be skipped. Log it so the fail-open is
+    // observable rather than silent.
+    console.error('[chat] auth/quota resolution failed (proceeding unmetered):', e)
+  }
 
   // Freemium policy: anonymous visitors get a small taste — FREE_ANON_LIMIT basic
   // questions per day — then must log in. The count lives in an httpOnly cookie
@@ -215,6 +243,10 @@ export async function POST(req: Request) {
   // prompt) are applied inside the active provider adapter — not here.
   result = AI.stream({
     role,
+    // Cancel the upstream generation (and skip the onFinish memory-extraction
+    // call) if the client disconnects — otherwise it runs to maxDuration billing
+    // tokens for a response nobody is receiving.
+    abortSignal: req.signal,
     system: systemPrompt,
     messages: trimmedMessages,
     maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 3000 : hasImage ? 1024 : 2048,
@@ -362,7 +394,7 @@ export async function POST(req: Request) {
       if (authedUserId && worthExtract) {
         try {
           const convMessages = [
-            ...messages.map((m: { role: string; content: unknown }) => ({
+            ...trimmedMessages.map((m: { role: string; content: unknown }) => ({
               role: m.role,
               content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
             })),
@@ -390,9 +422,12 @@ export async function POST(req: Request) {
     },
   })
   } catch (e) {
+    // Log the real error server-side, but NEVER return String(e) to the client:
+    // the AI registry's own error text enumerates provider/model names, which the
+    // client must never learn (AI Platform boundary). Return a generic code.
     console.error('streamText init error:', e)
     return new Response(
-      JSON.stringify({ error: 'ai_error', message: String(e) }),
+      JSON.stringify({ error: 'ai_error' }),
       { status: 502, headers: { 'Content-Type': 'application/json' } },
     )
   }

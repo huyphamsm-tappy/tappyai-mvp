@@ -1,5 +1,6 @@
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Client-direct Blob upload token for Original Sound audio. The browser uploads
@@ -14,6 +15,11 @@ const MAX_COVER_BYTES = 5 * 1024 * 1024  // 5MB
 export async function POST(req: NextRequest) {
   const { user } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+
+  // Cap upload-token minting per user (each token authorizes a direct Blob PUT).
+  if (!rateLimit(`upload-audio:${user.id}`, 30, 60_000).ok) {
+    return NextResponse.json({ error: 'Bạn tải lên quá nhanh, thử lại sau giây lát.' }, { status: 429 })
+  }
 
   const body = (await req.json()) as HandleUploadBody
 

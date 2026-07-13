@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
 
@@ -69,6 +70,12 @@ export async function POST(
 ) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
+
+  // Burst cap: each comment inserts a row AND fires a push to the review owner,
+  // so an uncapped POST is a spam vector against that owner.
+  if (!rateLimit(`comment:${user.id}`, 10, 60_000).ok) {
+    return NextResponse.json({ error: 'Ban binh luan qua nhanh, thu lai sau giay lat.' }, { status: 429 })
+  }
 
   let body: string
   try {

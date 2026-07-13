@@ -34,10 +34,13 @@ export async function POST(req: NextRequest) {
         const sub = await stripe.subscriptions.retrieve(session.subscription as string)
         const { error: upsertErr } = await supabase.from('subscriptions').upsert({
           user_id: userId,
-          stripe_subscription_id: sub.id,
+          // Column is `stripe_sub_id` in the production schema (NOT `stripe_subscription_id`),
+          // and there is no `price_id` column — writing either makes PostgREST reject the whole
+          // upsert (PGRST204), 500s the webhook, and Stripe retries forever → Pro never granted.
+          stripe_sub_id: sub.id,
           stripe_customer_id: sub.customer as string,
           status: sub.status,
-          price_id: sub.items.data[0]?.price.id,
+          plan: 'pro',
           current_period_end: new Date((sub as unknown as { current_period_end: number }).current_period_end * 1000).toISOString(),
         }, { onConflict: 'user_id' })
         // Return non-2xx so Stripe retries — never report success on a failed write.
@@ -56,10 +59,13 @@ export async function POST(req: NextRequest) {
       if (userId) {
         const { error: upsertErr } = await supabase.from('subscriptions').upsert({
           user_id: userId,
-          stripe_subscription_id: sub.id,
+          // Column is `stripe_sub_id` in the production schema (NOT `stripe_subscription_id`),
+          // and there is no `price_id` column — writing either makes PostgREST reject the whole
+          // upsert (PGRST204), 500s the webhook, and Stripe retries forever → Pro never granted.
+          stripe_sub_id: sub.id,
           stripe_customer_id: sub.customer as string,
           status: sub.status,
-          price_id: sub.items.data[0]?.price.id,
+          plan: 'pro',
           current_period_end: new Date((sub as unknown as { current_period_end: number }).current_period_end * 1000).toISOString(),
         }, { onConflict: 'user_id' })
         if (upsertErr) {

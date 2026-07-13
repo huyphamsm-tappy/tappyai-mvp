@@ -36,16 +36,16 @@ export async function POST(req: NextRequest) {
     const supabase = createAdminClient()
     const zaloEmail = `zalo_${zaloId}@zalo.tappyai.com`
 
-    const { data: existingUsers } = await supabase.auth.admin.listUsers({ perPage: 1000 })
-    const existingUser = existingUsers?.users?.find((u) => u.user_metadata?.zalo_id === zaloId)
-
-    if (!existingUser) {
-      const { data: newUser, error: createErr } = await supabase.auth.admin.createUser({
-        email: zaloEmail,
-        email_confirm: true,
-        user_metadata: { zalo_id: zaloId, full_name: name, avatar_url: avatar, provider: 'zalo' },
-      })
-      if (createErr || !newUser.user) throw createErr || new Error('Create user failed')
+    // Ensure user exists — attempt to create; if the email is already registered
+    // Supabase returns a "already been registered" message, which we treat as
+    // success. This avoids a full listUsers scan that breaks beyond 1000 users.
+    const { error: createErr } = await supabase.auth.admin.createUser({
+      email: zaloEmail,
+      email_confirm: true,
+      user_metadata: { zalo_id: zaloId, full_name: name, avatar_url: avatar, provider: 'zalo' },
+    })
+    if (createErr && !createErr.message?.toLowerCase().includes('already')) {
+      throw createErr
     }
 
     const { data: linkData, error: linkErr } = await supabase.auth.admin.generateLink({

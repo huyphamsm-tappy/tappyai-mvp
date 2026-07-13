@@ -1,0 +1,21 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["APPLE_TEAM_ID.com.tappyai.ios"],
+        "components": [
+          { "/": "/chat*",         "comment": "AI Chat tab" },
+          { "/": "/reviews*",      "comment": "Reviews & Explore tab" },
+          { "/": "/discover*",     "comment": "Discovery tab" },
+          { "/": "/game*",         "comment": "Games tab" },
+          { "/": "/profile*",      "comment": "Profile tab" },
+          { "/": "/subscription*", "comment": "Subscription screen" },
+          { "/": "/*",             "comment": "All other paths — fall through to DeepLinkHandler" }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["APPLE_TEAM_ID.com.tappyai.ios"]
+  }
+}

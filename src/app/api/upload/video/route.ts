@@ -1,5 +1,6 @@
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 
 import { MAX_VIDEO_SIZE_MB } from '@/lib/config/product'
@@ -21,6 +22,11 @@ const MAX_THUMB_BYTES = 10 * 1024 * 1024  // 10MB (thumbnail — internal to thi
 export async function POST(req: NextRequest) {
   const { user } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
+
+  // Cap upload-token minting per user (each token authorizes a direct Blob PUT).
+  if (!rateLimit(`upload-video:${user.id}`, 30, 60_000).ok) {
+    return NextResponse.json({ error: 'Ban tai len qua nhanh, thu lai sau giay lat.' }, { status: 429 })
+  }
 
   const body = (await req.json()) as HandleUploadBody
 

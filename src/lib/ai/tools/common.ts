@@ -1,3 +1,5 @@
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
 const cache = new Map<string, CacheEntry>()
@@ -57,6 +59,10 @@ export async function fetchPlacePhoto(placeId: string, photoName: string): Promi
 // site can never delay the overall place response — any failure here just falls through.
 export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<string | null> {
   if (!websiteUri) return null
+  // SSRF guard: only fetch public https hosts. The URL originates from
+  // search/Places data (not a fixed host), so a result pointing at an internal
+  // address (e.g. cloud metadata) must never be fetched server-side.
+  if (!isSafeHttpsUrl(websiteUri)) return null
   const controller = new AbortController()
   const tid = setTimeout(() => controller.abort(), 1800)
   try {

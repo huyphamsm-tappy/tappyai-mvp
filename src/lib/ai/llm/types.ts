@@ -40,6 +40,10 @@ export interface AIStreamOptions extends AIGenerateOptions {
    * version ships the option at runtime without type definitions. */
   prepareStep?: (options: { stepNumber: number }) => unknown | Promise<unknown>
   onFinish?: Parameters<typeof streamText>[0]['onFinish']
+  /** Abort the upstream generation when the caller's request is cancelled
+   * (client disconnect). Wire the route's `req.signal` here so a dropped
+   * connection stops billing tokens instead of running to completion. */
+  abortSignal?: AbortSignal
 }
 
 export interface AIVisionOptions {

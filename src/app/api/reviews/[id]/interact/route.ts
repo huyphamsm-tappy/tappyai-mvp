@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 
@@ -8,6 +9,10 @@ import { rebuildProfile } from '@/lib/preferences/profileCache'
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ ok: true })
+
+  // 10 stat writes per user per minute — enough for normal feed use, blocks floods
+  const { ok: allowed } = rateLimit(`interact:${user.id}`, 10, 60_000)
+  if (!allowed) return NextResponse.json({ ok: true })
 
   let body: { watch_seconds?: number; completion_rate?: number } = {}
   try { body = await req.json() } catch { /* empty */ }

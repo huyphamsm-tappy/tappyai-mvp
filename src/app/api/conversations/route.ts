@@ -1,11 +1,14 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
 
+const MAX_MESSAGES = 200
+const MAX_PAYLOAD_BYTES = 512 * 1024 // 512 KB
+
 export async function GET(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { data, error } = await supabase.from('conversations').select('id, title, category, updated_at, messages').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(20)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
   return NextResponse.json(data)
 }
 
@@ -13,8 +16,12 @@ export async function POST(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { title, category, messages } = await req.json()
+  if (Array.isArray(messages)) {
+    if (messages.length > MAX_MESSAGES) return NextResponse.json({ error: 'Too many messages' }, { status: 413 })
+    if (JSON.stringify(messages).length > MAX_PAYLOAD_BYTES) return NextResponse.json({ error: 'Payload too large' }, { status: 413 })
+  }
   const { data, error } = await supabase.from('conversations').insert({ user_id: user.id, title: title || 'Cuộc trò chuyện mới', category: category || 'general', messages: messages || [] }).select().single()
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
   return NextResponse.json(data)
 }
 
@@ -22,8 +29,12 @@ export async function PUT(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id, title, messages } = await req.json()
+  if (Array.isArray(messages)) {
+    if (messages.length > MAX_MESSAGES) return NextResponse.json({ error: 'Too many messages' }, { status: 413 })
+    if (JSON.stringify(messages).length > MAX_PAYLOAD_BYTES) return NextResponse.json({ error: 'Payload too large' }, { status: 413 })
+  }
   const { data, error } = await supabase.from('conversations').update({ title, messages, updated_at: new Date().toISOString() }).eq('id', id).eq('user_id', user.id).select().single()
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
   return NextResponse.json(data)
 }
 
@@ -36,6 +47,6 @@ export async function DELETE(req: Request) {
   if (!id) { try { id = (await req.json())?.id } catch { /* no body */ } }
   if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
   const { error } = await supabase.from('conversations').delete().eq('id', id).eq('user_id', user.id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
   return NextResponse.json({ ok: true })
 }
