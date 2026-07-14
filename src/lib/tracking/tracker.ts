@@ -1,7 +1,14 @@
-// Lightweight in-app event tracker
-// Batches events and flushes every 10s or when 10 events accumulate
+// Lightweight in-app event tracker — the ONE client analytics tracker.
+// Batches events and flushes every 10s or when 10 events accumulate.
+// Every event carries the shared unified envelope (see envelope.ts) so all
+// current and future analytics reuse one schema (Analytics v1.1 §3/§8A).
 
-export type EventType =
+import { buildEnvelope, type AnalyticsEnvelope } from './envelope'
+
+// Known event vocabulary (autocomplete hint). The pipeline is forward-compatible:
+// any string is accepted and unknown types are tagged server-side, so new events
+// (e.g. future auth events) need no change here.
+type KnownEventType =
   | 'page_view'
   | 'page_time'
   | 'chat_search'
@@ -15,8 +22,16 @@ export type EventType =
   | 'review_like'
   | 'review_share'
   | 'review_post'
+  | 'hide'
+  | 'not_interested'
+  | 'report'
 
-export interface TrackEvent {
+export type EventType = KnownEventType | (string & {})
+
+// A queued event = shared envelope + type + properties (stored as `metadata`,
+// the existing user_events column). The envelope's event_id is generated at
+// creation time so retries/duplicate flushes dedup server-side.
+export interface TrackEvent extends AnalyticsEnvelope {
   event_type: EventType
   metadata?: Record<string, unknown>
 }
@@ -27,10 +42,9 @@ class EventTracker {
   private readonly FLUSH_INTERVAL = 10_000
   private readonly BATCH_SIZE = 10
 
-  track(event: TrackEvent) {
-    // Only track in browser
+  track(event_type: EventType, metadata?: Record<string, unknown>) {
     if (typeof window === 'undefined') return
-    this.queue.push(event)
+    this.queue.push({ ...buildEnvelope(), event_type, metadata })
     if (this.queue.length >= this.BATCH_SIZE) {
       this.flush()
     } else if (!this.timer) {
@@ -52,7 +66,7 @@ class EventTracker {
     } catch { /* silent fail — tracking is best-effort */ }
   }
 
-  // Call on page unload to flush remaining events
+  // Call on page unload to flush remaining events.
   flushSync() {
     if (!this.queue.length) return
     const events = this.queue.splice(0)
@@ -64,5 +78,5 @@ class EventTracker {
 export const tracker = typeof window !== 'undefined' ? new EventTracker() : null
 
 export function track(event_type: EventType, metadata?: Record<string, unknown>) {
-  tracker?.track({ event_type, metadata })
+  tracker?.track(event_type, metadata)
 }

@@ -16,6 +16,7 @@ import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
+import { track } from '@/lib/tracking/tracker'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -177,6 +178,9 @@ function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[]
       // on a 401/500, misleading the user into thinking the place was saved.
       if (!res.ok) throw new Error('save failed')
       setSaved(true)
+      // Existing Event Catalog domain event (§15 canonical rename target for the
+      // legacy `place_save` type) — reused as-is, not an activation-specific event.
+      track('search_result_saved', { place_type: 'saved' })
       setTimeout(() => { setOpen(false); setSaved(false) }, 1500)
     } catch {
       /* leave unsaved so the user can retry; no false success state */
@@ -580,6 +584,10 @@ export default function ChatInterface({
       // Latest committed messages (includes the user's turn) + the authoritative
       // final assistant message, deduped by id — never the stale `messages` closure.
       const all = [...messagesRef.current.filter(m => m.id !== message.id), message]
+      // Existing Event Catalog domain event (§5 Chat/AI Events) — reused as-is,
+      // not an activation-specific event. The Activation Engine (a later step)
+      // will consume this, not emit its own signal event.
+      track('chat_response_received', { feature: category })
       if (onSave) {
         savePendingRef.current = true
         const p = Promise.resolve(onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat'))

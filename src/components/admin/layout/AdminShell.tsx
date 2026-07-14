@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, BarChart3, Users, ShieldAlert, Megaphone,
-  ScrollText, KeyRound, Settings as SettingsIcon, Activity, LogOut,
+  ScrollText, KeyRound, Settings as SettingsIcon, Activity, LogOut, UserCheck, Zap,
 } from 'lucide-react'
 import { hasRole, type AdminRole } from '@/lib/admin/roles'
 import { cn } from '@/lib/utils'
@@ -24,6 +24,8 @@ type NavItem = {
 const NAV: NavItem[] = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, minRole: 'analyst', ready: true },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart3, minRole: 'analyst', ready: true },
+  { href: '/admin/analytics/auth', label: 'Auth Analytics', icon: UserCheck, minRole: 'analyst', ready: true },
+  { href: '/admin/analytics/activation', label: 'Activation Analytics', icon: Zap, minRole: 'analyst', ready: true },
   { href: '/admin/users', label: 'Users', icon: Users, minRole: 'admin', ready: false },
   { href: '/admin/moderation', label: 'Moderation', icon: ShieldAlert, minRole: 'moderator', ready: false },
   { href: '/admin/engagement', label: 'Engagement', icon: Megaphone, minRole: 'admin', ready: false },
