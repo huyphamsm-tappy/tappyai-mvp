@@ -11,6 +11,7 @@ export interface CandidatePlace {
   reviewCount: number           // used for Popularity signal
   averageRating: number         // 0–5 — used for Popularity signal
   latestReviewAt: string | null // ISO timestamp — used for Freshness signal
+  savedByUser?: boolean         // user explicitly saved this place — used for Affinity signal
 }
 
 // Raw sub-scores before weights are applied. Each value is 0–1.

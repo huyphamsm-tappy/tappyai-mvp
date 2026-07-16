@@ -98,6 +98,7 @@ export async function GET(req: NextRequest) {
         reviewCount: 0,
         averageRating: 0,
         latestReviewAt: (f.created_at as string) ?? null,
+        savedByUser: true,
       })
     }
   }
