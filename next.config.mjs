@@ -23,6 +23,15 @@ const nextConfig = {
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       { protocol: 'https', hostname: '*.supabase.co' },
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
+      // Album art for the curated (Jamendo) music catalog. scripts/ingest-jamendo.mjs
+      // stores the API's `image` field verbatim as music_tracks.cover_url, and every
+      // one of those points at this host — verified against production: 103 of 109
+      // tracks use usercontent.jamendo.com, the other 6 are Vercel Blob (original
+      // sounds). MusicThumbnail renders cover_url through next/image, which refuses
+      // any host not listed here, so without this entry ~94% of the library showed a
+      // broken-image glyph. Not a CSP issue (img-src already allows https:) — this is
+      // next/image's own allowlist.
+      { protocol: 'https', hostname: 'usercontent.jamendo.com' },
     ],
   },
   async headers() {
