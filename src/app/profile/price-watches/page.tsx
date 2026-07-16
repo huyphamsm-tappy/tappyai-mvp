@@ -30,6 +30,7 @@ export default function PriceWatchesPage() {
   const [watches, setWatches] = useState<Watch[]>([])
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [deleteError, setDeleteError] = useState(false)
 
   const fetchWatches = async () => {
     setLoading(true)
@@ -48,13 +49,27 @@ export default function PriceWatchesPage() {
 
   const handleDelete = async (id: string) => {
     setDeleting(id)
+    setDeleteError(false)
     try {
-      await fetch('/api/price-watch', {
+      const res = await fetch('/api/price-watch', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id }),
       })
+      // fetch() only rejects on a network failure — 401/404/500 all RESOLVE.
+      // Removing the row on any of those makes the watch vanish from the list
+      // while it's still active on the server: the DELETE only flips status to
+      // 'cancelled', and GET filters cancelled out, so a re-fetch would show
+      // the row back — an unwanted-notifications bug the user can't see coming.
+      // Only drop the row once the server confirms the cancel actually landed.
+      if (res.status === 401) {
+        window.location.href = `/login?returnTo=${encodeURIComponent('/profile/price-watches')}`
+        return
+      }
+      if (!res.ok) { setDeleteError(true); return }
       setWatches(w => w.filter(x => x.id !== id))
+    } catch {
+      setDeleteError(true)
     } finally {
       setDeleting(null)
     }
@@ -99,6 +114,12 @@ export default function PriceWatchesPage() {
             Nhắn Tappy ngay
           </Link>
         </div>
+
+        {deleteError && (
+          <div role="alert" className="card p-3 mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+            <p className="text-sm text-red-700 dark:text-red-300">Không thể huỷ theo dõi. Vui lòng thử lại.</p>
+          </div>
+        )}
 
         {loading ? (
           <div className="flex justify-center py-12">
