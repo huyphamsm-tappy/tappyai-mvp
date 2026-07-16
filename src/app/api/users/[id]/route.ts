@@ -11,6 +11,11 @@ export async function GET(
   const { user, supabase } = await getRequestUser(req)
 
   // profiles table has public SELECT policy so regular client works
+  // NOTE: `profiles.bio` exists in supabase/migrations/add_profile_edit.sql but
+  // that migration has NOT been applied to production — selecting it 500s this
+  // whole endpoint ("column profiles.bio does not exist", verified live against
+  // prod PostgREST). Left out until the migration is applied; do not add it
+  // back without confirming the column exists first.
   const { data: profile, error } = await supabase
     .from('profiles')
     .select('id, full_name, avatar_url, follower_count, following_count')
