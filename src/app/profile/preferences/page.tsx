@@ -46,11 +46,21 @@ export default function PreferencesPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [saveError, setSaveError] = useState(false)
+  // A FAILED load must be distinguishable from "nothing saved yet" — both leave
+  // the form empty, but only one of them is safe to save from. Without this, a
+  // failed GET rendered a blank form and Save then upserted those blanks over
+  // the user's real budget/cuisines/dietary/memory chips.
+  const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
     const supabase = createClient()
     Promise.all([
-      fetch('/api/preferences').then(r => r.json()),
+      fetch('/api/preferences').then(r => {
+        // fetch() only rejects on a network failure — a 401/500 resolves, and
+        // .json() on an error body yields {} → an empty form that looks saveable.
+        if (!r.ok) throw new Error('prefs_load_failed')
+        return r.json()
+      }),
       supabase.auth.getUser(),
     ]).then(([{ preferences: prefs, structured }, { data: { user } }]) => {
       if (structured) {
@@ -62,7 +72,7 @@ export default function PreferencesPage() {
       const g = user?.user_metadata?.gender
       if (g === 'male' || g === 'female') setGender(g)
     })
-    .catch(() => {})
+    .catch(() => setLoadError(true))
     .finally(() => setLoading(false))
   }, [])
 
@@ -84,6 +94,11 @@ export default function PreferencesPage() {
   }, [])
 
   const handleSave = async () => {
+    // Refuse to save from a form we never managed to populate — the two upserts
+    // below write the WHOLE row (PUT sends budget/cuisines/dietary, POST
+    // replaces the preferences array), so saving an empty form after a failed
+    // load silently destroys real data.
+    if (loadError) return
     setSaving(true)
     setSaveError(false)
     try {
@@ -118,6 +133,22 @@ export default function PreferencesPage() {
     return (
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24 flex items-center justify-center">
         <Loader2 className="animate-spin text-primary-400" size={32} />
+      </div>
+    )
+  }
+
+  // Never render the (empty) form after a failed load — it is indistinguishable
+  // from "nothing saved yet", and saving from it would overwrite real data.
+  if (loadError) {
+    return (
+      <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24 flex flex-col items-center justify-center gap-3 px-6">
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+          Không tải được sở thích của bạn. Vui lòng thử lại.
+        </p>
+        <button onClick={() => window.location.reload()}
+          className="text-sm font-semibold text-primary-500">
+          Thử lại
+        </button>
       </div>
     )
   }
