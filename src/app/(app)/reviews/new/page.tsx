@@ -289,6 +289,9 @@ export default function NewReviewPage() {
   // the last-resolved memo stops the SAME url being resolved twice when the user pastes, edits
   // and reverts, or when a re-render replays the value.
   const urlDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Monotonic token: every change to the URL field bumps it, so a resolve or AI response for an older URL is
+  // dropped instead of overwriting the preview and suggestions of the current one.
+  const urlReqSeqRef = useRef(0)
   const lastResolvedUrlRef = useRef<string>('')
   const supabase = createClient()
 
@@ -599,7 +602,7 @@ export default function NewReviewPage() {
   const cancelUpload = () => uploadControllerRef.current?.abort()
 
   /* ─── URL source ─── */
-  const triggerUrlAI = async (thumbnail_url: string, title: string) => {
+  const triggerUrlAI = async (thumbnail_url: string, title: string, seq: number) => {
     if (!thumbnail_url && !title) return
     try {
       const aiRes = await apiFetch('/api/explore/process', {
@@ -613,6 +616,7 @@ export default function NewReviewPage() {
       })
       if (aiRes.ok) {
         const ai = await aiRes.json()
+        if (urlReqSeqRef.current !== seq) return // stale: the URL changed while this was in flight
         if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(mergeHashtags(ai.hashtags.map(String)))
         if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
         suggestArea(ai)
@@ -629,6 +633,7 @@ export default function NewReviewPage() {
    * pair is deferred until the user stops typing. See the refs above for what this cost.
    */
   const handleUrlChange = (val: string) => {
+    const seq = ++urlReqSeqRef.current
     setSource_url(val); setUrlMeta(null); setAiHashtags([]); setUrlUnsupported(false)
     if (areaFromAi) { setPlaceArea(''); setAreaFromAi(false) }
     if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current)
@@ -639,10 +644,10 @@ export default function NewReviewPage() {
     // the right source_type (and the matching placeholder), not the previous one.
     const detectedNow = detectSource(trimmed)
     if (detectedNow) setSource_type(detectedNow)
-    urlDebounceRef.current = setTimeout(() => { void resolveUrl(trimmed) }, URL_RESOLVE_DEBOUNCE_MS)
+    urlDebounceRef.current = setTimeout(() => { void resolveUrl(trimmed, seq) }, URL_RESOLVE_DEBOUNCE_MS)
   }
 
-  const resolveUrl = async (trimmed: string) => {
+  const resolveUrl = async (trimmed: string, seq: number) => {
     const detected = detectSource(trimmed)
     // Unsupported provider (TikTok/Facebook/Instagram/other) → show a hint and
     // do not resolve. canPost stays false, so the post can't be created.
@@ -663,16 +668,18 @@ export default function NewReviewPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: trimmed }),
       })
+      if (urlReqSeqRef.current !== seq) return // stale: the user has moved on to another URL
       if (!res.ok) { setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' }); return }
       const { data } = await res.json()
+      if (urlReqSeqRef.current !== seq) return
       const thumb = data?.thumbnail || placeholderFor(detected)
       const title = data?.title || ''
       setUrlMeta({ thumbnail_url: thumb, title })
-      if (LINK_AI_SUGGEST_ENABLED) triggerUrlAI(thumb, title)
+      if (LINK_AI_SUGGEST_ENABLED) triggerUrlAI(thumb, title, seq)
     } catch {
-      setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' })
+      if (urlReqSeqRef.current === seq) setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' })
     } finally {
-      setFetchingMeta(false)
+      if (urlReqSeqRef.current === seq) setFetchingMeta(false) // a newer URL owns the spinner now
     }
   }
 
