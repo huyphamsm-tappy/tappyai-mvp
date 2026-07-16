@@ -5,8 +5,15 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
-  const { error } = await supabase.from('reviews').delete().eq('id', params.id).eq('user_id', user.id)
+  // .select('id') makes a zero-row delete OBSERVABLE. Postgres/PostgREST does not
+  // treat "the WHERE clause matched nothing" as an error — a delete that (for any
+  // reason: wrong id, RLS, a row already gone) removes zero rows still returns
+  // { error: null }. Without checking the returned rows, the client is told the
+  // delete succeeded and removes the clip from its own state, but the row is
+  // still in the database — reappearing after the next reload as a "ghost" clip.
+  const { data, error } = await supabase.from('reviews').delete().eq('id', params.id).eq('user_id', user.id).select('id')
   if (error) return NextResponse.json({ error: 'Khong the xoa' }, { status: 500 })
+  if (!data || data.length === 0) return NextResponse.json({ error: 'Khong tim thay bai viet' }, { status: 404 })
   return NextResponse.json({ ok: true })
 }
 

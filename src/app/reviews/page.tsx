@@ -460,19 +460,42 @@ function RAction({ icon, label, onClick }: { icon: React.ReactNode; label?: stri
 /* ─── Swipeable clip viewer — opens from the profile grid with the SAME UX as
    the main feed: swipe/arrow between clips, single-tap pause, double-tap like,
    like/comment/save/share, own-post delete/hide. Reuses Post/CommentDrawer/ShareModal. */
-function ClipViewer({ posts, startIndex, me, onClose }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void }) {
+function ClipViewer({ posts, startIndex, me, onClose, onItemRemoved }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onItemRemoved?: (id: string) => void }) {
   const [items, setItems] = useState<Review[]>(posts)
   const [activeIndex, setActiveIndex] = useState(startIndex)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  // Tracks whether the item count just changed so the sync effect below only
+  // repositions the scroll on a delete/hide, not on every render.
+  const prevLengthRef = useRef(items.length)
 
   // Jump straight to the tapped clip on open.
   useEffect(() => {
     const c = containerRef.current
     if (c) c.scrollTo({ top: startIndex * c.clientHeight, behavior: 'auto' })
   }, [startIndex])
+
+  // Deleting/hiding a clip shrinks `items` but never moves the scroll position,
+  // which is what `activeIndex` is derived from on scroll. If the removed clip
+  // was BEFORE the one in view, every later index shifts down by one while
+  // `activeIndex` (and the physical scrollTop) stay put — `active`/`renderVideo`
+  // then point at the WRONG slide (or, if activeIndex is now >= items.length,
+  // at no slide at all), so the clip the user is actually looking at gets
+  // active=false and its VideoPlayer never plays: the black/frozen thumbnail
+  // this bug reports. Clamping alone isn't enough (it only fixes the
+  // out-of-bounds case) — re-snapping the scroll position to match is what
+  // keeps `activeIndex` and the physically visible slide in agreement.
+  useEffect(() => {
+    if (items.length === prevLengthRef.current) return
+    prevLengthRef.current = items.length
+    const clamped = Math.min(activeIndex, Math.max(0, items.length - 1))
+    if (clamped !== activeIndex) setActiveIndex(clamped)
+    const c = containerRef.current
+    if (c) c.scrollTo({ top: clamped * c.clientHeight, behavior: 'auto' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items.length])
 
   const requireLogin = () => { if (me) return false; window.location.href = '/login?returnTo=/reviews'; return true }
 
@@ -514,7 +537,12 @@ function ClipViewer({ posts, startIndex, me, onClose }: { posts: Review[]; start
     } catch { return }
     setItems(p => p.map(r => r.id === id ? { ...r, saved_by_me: saved } : r))
   }
-  const del = (id: string) => { setItems(p => p.filter(r => r.id !== id)) }
+  // `items` is a snapshot taken when the viewer opened (own copy, not a live
+  // reference to the caller's list) — removing here never touched the grid
+  // underneath. onItemRemoved lets the caller (ProfileTab) mirror the removal
+  // into its own state, so the grid doesn't still show a since-deleted/hidden
+  // clip as a "ghost" tile until the next full reload.
+  const del = (id: string) => { setItems(p => p.filter(r => r.id !== id)); onItemRemoved?.(id) }
   const addComment = (id: string, count: number) => setItems(p => p.map(r => r.id === id ? { ...r, comment_count: count } : r))
 
   const scrollFeed = (dir: 1 | -1) => {
@@ -787,7 +815,18 @@ function ProfileTab({ userId }: { userId: string }) {
 
       {/* Swipeable clip viewer — opens on grid tap */}
       {viewerStart !== null && (
-        <ClipViewer posts={displayPosts} startIndex={viewerStart} me={userId} onClose={() => setViewerStart(null)} />
+        <ClipViewer posts={displayPosts} startIndex={viewerStart} me={userId} onClose={() => setViewerStart(null)}
+          onItemRemoved={id => {
+            // Mirrors a delete/hide performed INSIDE the viewer back into every
+            // array the grid renders from — the viewer only holds its own
+            // snapshot (see ClipViewer's `items`), so without this the grid
+            // still shows the clip as a "ghost" tile until the profile is
+            // fully reloaded.
+            setPosts(p => p.filter(r => r.id !== id))
+            setHidden(h => h.filter(r => r.id !== id))
+            setLikedPosts(p => p.filter(r => r.id !== id))
+            setSavedPosts(p => p.filter(r => r.id !== id))
+          }} />
       )}
     </div>
   )
