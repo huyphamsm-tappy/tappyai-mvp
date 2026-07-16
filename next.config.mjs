@@ -66,7 +66,14 @@ const nextConfig = {
       "media-src 'self' data: blob: https:",
       // Blob hosts are needed for client-direct video upload (@vercel/blob/client
       // PUTs straight to the store from the browser), not just displaying media.
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com",
+      // graph.zalo.me: Zalo's profile endpoint is VN-IP-only, so /auth/zalo-finish
+      // fetches it directly from the user's (Vietnamese) browser instead of from
+      // our US-based server (see src/app/auth/zalo-finish/page.tsx). This directive
+      // was never updated when that flow was introduced, so every browser silently
+      // blocked the fetch as a CSP violation — the actual root cause of "Zalo
+      // login does not work" (not a VN-IP or app-registration issue; both verified
+      // fine independently).
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://graph.zalo.me",
       "frame-src 'self' https://www.youtube.com",
       "worker-src 'self' blob:",
       "manifest-src 'self'",
