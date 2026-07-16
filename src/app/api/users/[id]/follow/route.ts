@@ -1,7 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
-import { createNotification } from '@/lib/notifications/create'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 
 // POST /api/users/[id]/follow → toggle follow/unfollow (optimistic insert, delete on 23505)
@@ -54,7 +53,6 @@ export async function POST(
     body: 'Xem trang cá nhân của họ',
     data: { url: `/users/${user.id}` },
   }).catch(() => {})
-  createNotification({ userId: targetId, actorId: user.id, type: 'FOLLOW', entityType: 'profile', entityId: user.id })
 
   return NextResponse.json({ following: true, follower_count: profileRes.data?.follower_count ?? 0 })
 }

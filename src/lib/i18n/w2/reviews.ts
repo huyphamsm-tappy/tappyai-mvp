@@ -89,10 +89,6 @@ export const vi: Record<string, string> = {
   'reviews.notifsLoadError': 'Không thể tải thông báo. Vui lòng thử lại.',
   'reviews.notifsEmpty': 'Chưa có thông báo nào',
   'reviews.notifsNoNew': 'Không có thông báo mới',
-  'reviews.notifUnread': 'Chưa đọc',
-  'reviews.notifMarkAllRead': 'Đánh dấu tất cả đã đọc',
-  'reviews.notifMilestone': 'Bài "{place}" đạt {n} lượt thích!',
-  'reviews.yourPost': 'của bạn',
 
   // Notification sections
   'reviews.sectionJustNow': 'VỪA XONG',
@@ -223,10 +219,6 @@ export const en: Record<string, string> = {
   'reviews.notifsLoadError': "Couldn't load notifications. Please try again.",
   'reviews.notifsEmpty': 'No notifications yet',
   'reviews.notifsNoNew': 'No new notifications',
-  'reviews.notifUnread': 'Unread',
-  'reviews.notifMarkAllRead': 'Mark all as read',
-  'reviews.notifMilestone': 'Your post "{place}" hit {n} likes!',
-  'reviews.yourPost': 'your post',
 
   // Notification sections
   'reviews.sectionJustNow': 'JUST NOW',

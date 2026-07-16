@@ -4,7 +4,6 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
-import { createNotification } from '@/lib/notifications/create'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
 
@@ -112,7 +111,6 @@ export async function POST(
       body: '"' + body.slice(0, 60) + (body.length > 60 ? '...' : '') + '"',
       data: { url: '/reviews/' + params.id },
     }).catch(() => {})
-    createNotification({ userId: review.user_id, actorId: user.id, type: 'COMMENT', entityType: 'review', entityId: params.id })
   }
 
   const count = await getRealCommentCount(supabase, params.id)

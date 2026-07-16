@@ -2,7 +2,6 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendNotificationToUser } from '@/lib/notifications/send'
-import { createNotification } from '@/lib/notifications/create'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { inferPreferencesFromEvents } from '@/lib/userMemory'
 
@@ -80,7 +79,6 @@ export async function POST(
       body: review.place_name || 'Xem ngay!',
       data: { url: `/reviews/${reviewId}` },
     }).catch(() => {})
-    createNotification({ userId: review.user_id, actorId: user.id, type: 'LIKE', entityType: 'review', entityId: reviewId })
 
     // Milestone notification (5, 10, 50, 100, 500, 1000 likes)
     const MILESTONES = [5, 10, 25, 50, 100]
