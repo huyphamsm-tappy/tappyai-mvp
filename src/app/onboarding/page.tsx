@@ -168,7 +168,7 @@ export default function OnboardingPage() {
             >
               {loading ? <Loader2 size={18} className="animate-spin" /> : t('onboarding.start')}
             </button>
-            <button onClick={handleFinish} className="w-full mt-3 text-center text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+            <button onClick={handleFinish} disabled={loading} className="w-full mt-3 text-center text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-40">
               {t('common.skip')}
             </button>
           </div>
