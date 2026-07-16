@@ -1,7 +1,11 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 
-export type NotificationType = 'LIKE' | 'COMMENT' | 'FOLLOW'
-export type NotificationEntityType = 'review' | 'profile'
+// Mirrors the `notification_type` Postgres enum. LIKE/COMMENT/FOLLOW are the
+// only values the current code emits; REPLY/MENTION/SYSTEM are already
+// declared in the enum (see 20260716_notifications_mvp.sql) so shipping them
+// later needs no migration.
+export type NotificationType = 'LIKE' | 'COMMENT' | 'FOLLOW' | 'REPLY' | 'MENTION' | 'SYSTEM'
+export type NotificationEntityType = 'review' | 'profile' | 'comment'
 
 // Inserts one row into the persisted `notifications` table (Notification
 // System MVP). Best-effort by design — mirrors the existing
@@ -15,27 +19,41 @@ export type NotificationEntityType = 'review' | 'profile'
 // never the same as the currently-authenticated caller (`actorId`) in a real
 // notification — an RLS INSERT policy checking `auth.uid() = user_id` can
 // never pass for that shape of write. See the "No direct client inserts"
-// policy in 20260716_notifications_mvp.sql for why this is the only insert
-// path, by design (same reasoning as review_milestones' admin-client insert).
+// policy in the migration for why this is the only insert path, by design.
 export async function createNotification(row: {
-  userId: string    // recipient
-  actorId: string   // who performed the action
+  userId: string                       // recipient
+  actorId?: string | null              // who performed the action (null for SYSTEM)
   type: NotificationType
-  entityType: NotificationEntityType
-  entityId: string
+  entityType?: NotificationEntityType | null
+  entityId?: string | null
+  actionUrl: string                    // where tapping navigates
+  // Optional presentation fields. Leave title/body NULL for LIKE/COMMENT/
+  // FOLLOW — the UI composes those from an i18n key + a live actor join so the
+  // text is in the READER's language and shows the actor's CURRENT name (see
+  // the migration's comment). Set them only for types whose text isn't
+  // derivable (SYSTEM announcements, marketing).
+  title?: string | null
+  body?: string | null
+  image?: string | null
+  metadata?: Record<string, unknown>
 }): Promise<void> {
   // Never notify yourself. Also enforced by the table's own CHECK constraint
   // (notifications_no_self_notify) — this early return just avoids a round
   // trip for the common case (e.g. liking your own review).
-  if (row.userId === row.actorId) return
+  if (row.actorId && row.userId === row.actorId) return
 
   try {
     const { error } = await createAdminClient().from('notifications').insert({
       user_id: row.userId,
-      actor_id: row.actorId,
+      actor_id: row.actorId ?? null,
       type: row.type,
-      entity_type: row.entityType,
-      entity_id: row.entityId,
+      entity_type: row.entityType ?? null,
+      entity_id: row.entityId ?? null,
+      action_url: row.actionUrl,
+      title: row.title ?? null,
+      body: row.body ?? null,
+      image: row.image ?? null,
+      metadata: row.metadata ?? {},
     })
     // 23505 = idx_notifications_unread_dedup already has an unread row for
     // this exact (user, actor, type, entity) — expected dedup, not an error.

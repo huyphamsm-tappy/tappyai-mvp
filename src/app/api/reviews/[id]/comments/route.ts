@@ -112,7 +112,20 @@ export async function POST(
       body: '"' + body.slice(0, 60) + (body.length > 60 ? '...' : '') + '"',
       data: { url: '/reviews/' + params.id },
     }).catch(() => {})
-    createNotification({ userId: review.user_id, actorId: user.id, type: 'COMMENT', entityType: 'review', entityId: params.id })
+    // metadata.comment_preview restores the comment snippet the old derived
+    // Inbox used to show under a comment notification — it can't be derived
+    // later (the comment may be edited/deleted), so it's captured here at
+    // notify time. title/body stay NULL: the surrounding sentence is composed
+    // in the reader's language from an i18n key + a live actor join.
+    createNotification({
+      userId: review.user_id, actorId: user.id, type: 'COMMENT',
+      entityType: 'review', entityId: params.id,
+      actionUrl: '/reviews/' + params.id,
+      metadata: {
+        place_name: review.place_name ?? null,
+        comment_preview: body.slice(0, 80),
+      },
+    })
   }
 
   const count = await getRealCommentCount(supabase, params.id)

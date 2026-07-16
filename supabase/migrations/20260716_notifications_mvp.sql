@@ -3,30 +3,60 @@
 -- ============================================================================
 -- New, standalone table. Does NOT modify any existing table/trigger/policy.
 -- Replaces the ad-hoc derived list in /api/notifications (which recomputed
--- "notifications" on every read from user_follows/review_likes/review_milestones,
--- with no persisted read state) with a real, persisted notifications table.
---
--- Types shipped in this MVP: LIKE, COMMENT, FOLLOW. The CHECK constraint is
--- intentionally a plain TEXT + CHECK (not a Postgres ENUM) so adding REPLY /
--- MENTION / SYSTEM later is a one-line ALTER, not a type migration.
+-- "notifications" on every read from user_follows/review_likes, with no
+-- persisted read state) with a real, persisted notifications table.
 -- ============================================================================
+
+-- Enum (not TEXT + CHECK). All six values are declared UP FRONT even though
+-- only LIKE/COMMENT/FOLLOW are emitted by current code: Postgres's
+-- `ALTER TYPE ... ADD VALUE` has transaction-block restrictions and can't be
+-- used in the same transaction that adds it, so pre-declaring the planned
+-- values makes shipping REPLY/MENTION/SYSTEM later a pure app-code change
+-- with no migration at all. Wrapped in a DO block so re-running is safe
+-- (CREATE TYPE has no IF NOT EXISTS).
+DO $$ BEGIN
+  CREATE TYPE public.notification_type AS ENUM ('LIKE', 'COMMENT', 'FOLLOW', 'REPLY', 'MENTION', 'SYSTEM');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
 CREATE TABLE IF NOT EXISTS public.notifications (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id     UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,  -- recipient
-  actor_id    UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,  -- who did the action
-  type        TEXT NOT NULL CHECK (type IN ('LIKE', 'COMMENT', 'FOLLOW')),
-  -- Polymorphic target the notification is about — 'review' (LIKE/COMMENT,
-  -- entity_id = reviews.id) or 'profile' (FOLLOW, entity_id = actor_id, i.e.
-  -- where tapping the notification should navigate). No FK on entity_id since
-  -- it can point at either table; see Technical Debt note in the PR report
-  -- about orphaned rows if the target review is later deleted.
-  entity_type TEXT NOT NULL CHECK (entity_type IN ('review', 'profile')),
-  entity_id   UUID NOT NULL,
+  -- Nullable: a SYSTEM notification (announcement, promo) has no human actor.
+  actor_id    UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  type        public.notification_type NOT NULL,
+
+  -- What the notification is about. Nullable for the same reason as actor_id
+  -- (a SYSTEM notification may point at nothing in particular). No FK on
+  -- entity_id: it's polymorphic across reviews/profiles/comments.
+  entity_type TEXT CHECK (entity_type IN ('review', 'profile', 'comment')),
+  entity_id   UUID,
+
+  -- ── Presentation fields ──────────────────────────────────────────────────
+  -- title/body are OPTIONAL and intentionally left NULL for LIKE/COMMENT/
+  -- FOLLOW. Reason: this app is fully bilingual (vi/en, src/lib/i18n) and the
+  -- reader's language is not knowable at write time — freezing "Huy da thich
+  -- bai viet cua ban" into the row would show Vietnamese to an English reader
+  -- forever, and would also freeze the actor's display name at write time (a
+  -- later rename would leave old rows stale). So for those three types the UI
+  -- keeps composing text from the i18n key + a live actor join, exactly as it
+  -- does today, and `metadata` carries the structured extras it needs.
+  -- title/body exist for types where text ISN'T derivable — SYSTEM
+  -- announcements, marketing, anything human-authored — so those can ship with
+  -- no schema change.
+  title       TEXT,
+  body        TEXT,
+  image       TEXT,                                    -- e.g. review thumbnail
+  action_url  TEXT NOT NULL,                           -- where tapping navigates
+  metadata    JSONB NOT NULL DEFAULT '{}'::jsonb,      -- structured extras (place_name, comment preview, ...)
+
   is_read     BOOLEAN NOT NULL DEFAULT false,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-  CONSTRAINT notifications_no_self_notify CHECK (user_id <> actor_id)
+
+  -- Never notify yourself — enforced at the DB, not just in app code.
+  -- IS DISTINCT FROM (not <>) so a NULL actor_id (SYSTEM) still passes.
+  CONSTRAINT notifications_no_self_notify CHECK (user_id IS DISTINCT FROM actor_id)
 );
 
 -- Fast unread-count + unread-list queries (the two hottest reads: badge count,
@@ -40,11 +70,13 @@ CREATE INDEX IF NOT EXISTS idx_notifications_user_created
   ON public.notifications (user_id, created_at DESC);
 
 -- Anti-duplicate: while a notification from this exact actor, of this exact
--- type, about this exact entity, is still UNREAD, a repeat of the same action
--- (e.g. unlike -> like again, or a client double-submit) does not create a
--- second row — the unique index makes the insert a no-op (23505) rather than
--- spamming the recipient. Once the user reads it, the same action can create
--- a fresh notification again (matches TikTok/Instagram behavior).
+-- type, about this exact entity is still UNREAD, a repeat of the same action
+-- (unlike -> like again, a client double-submit) does not create a second row
+-- — the unique index turns the insert into a no-op (23505) instead of spamming
+-- the recipient. Once read, the same action can notify again (matches
+-- TikTok/Instagram behavior). Rows with NULL actor_id/entity_id (SYSTEM) are
+-- never deduped, since NULLs are distinct in a unique index — correct: two
+-- separate announcements should both be delivered.
 CREATE UNIQUE INDEX IF NOT EXISTS idx_notifications_unread_dedup
   ON public.notifications (user_id, actor_id, type, entity_id)
   WHERE is_read = false;
@@ -68,12 +100,11 @@ CREATE POLICY "Users update own notifications"
 -- someone OTHER than auth.uid() (the actor) in every real case, so a
 -- straightforward `auth.uid() = user_id` INSERT check can never pass for a
 -- genuine notification — the same shape of problem review_milestones hit
--- (see add_phase4_hardening.sql). Rather than trying to write a check that
--- lets an actor insert on a recipient's behalf (which an anon/compromised
--- client could then abuse to forge notifications for anyone), inserts are
--- done exclusively via the server's admin (service-role) client, which
--- bypasses RLS entirely. This policy just makes that explicit and blocks
--- every other path.
+-- (see add_phase4_hardening.sql). Rather than writing a check that lets an
+-- actor insert on a recipient's behalf (which a compromised client could then
+-- abuse to forge notifications for anyone), inserts go exclusively through the
+-- server's admin (service-role) client, which bypasses RLS. This policy makes
+-- that explicit and blocks every other path.
 DROP POLICY IF EXISTS "No direct client inserts" ON public.notifications;
 CREATE POLICY "No direct client inserts"
   ON public.notifications FOR INSERT

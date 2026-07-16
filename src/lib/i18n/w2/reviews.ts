@@ -82,8 +82,6 @@ export const vi: Record<string, string> = {
   'reviews.notifLiked': 'đã thích bài viết của bạn',
   'reviews.notifFollowed': 'đã theo dõi bạn',
   'reviews.notifCommented': 'đã bình luận',
-  'reviews.notifProfileViews': 'người đã xem hồ sơ của bạn trong 24h',
-  'reviews.notifSeeWho': 'Xem ai',
   'reviews.followed': 'Đã theo',
   'reviews.followBack': 'Theo dõi lại',
   'reviews.notifsLoadError': 'Không thể tải thông báo. Vui lòng thử lại.',
@@ -91,8 +89,6 @@ export const vi: Record<string, string> = {
   'reviews.notifsNoNew': 'Không có thông báo mới',
   'reviews.notifUnread': 'Chưa đọc',
   'reviews.notifMarkAllRead': 'Đánh dấu tất cả đã đọc',
-  'reviews.notifMilestone': 'Bài "{place}" đạt {n} lượt thích!',
-  'reviews.yourPost': 'của bạn',
 
   // Notification sections
   'reviews.sectionJustNow': 'VỪA XONG',
@@ -216,8 +212,6 @@ export const en: Record<string, string> = {
   'reviews.notifLiked': 'liked your post',
   'reviews.notifFollowed': 'followed you',
   'reviews.notifCommented': 'commented',
-  'reviews.notifProfileViews': 'people viewed your profile in the last 24h',
-  'reviews.notifSeeWho': 'See who',
   'reviews.followed': 'Following',
   'reviews.followBack': 'Follow back',
   'reviews.notifsLoadError': "Couldn't load notifications. Please try again.",
@@ -225,8 +219,6 @@ export const en: Record<string, string> = {
   'reviews.notifsNoNew': 'No new notifications',
   'reviews.notifUnread': 'Unread',
   'reviews.notifMarkAllRead': 'Mark all as read',
-  'reviews.notifMilestone': 'Your post "{place}" hit {n} likes!',
-  'reviews.yourPost': 'your post',
 
   // Notification sections
   'reviews.sectionJustNow': 'JUST NOW',

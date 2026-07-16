@@ -80,7 +80,16 @@ export async function POST(
       body: review.place_name || 'Xem ngay!',
       data: { url: `/reviews/${reviewId}` },
     }).catch(() => {})
-    createNotification({ userId: review.user_id, actorId: user.id, type: 'LIKE', entityType: 'review', entityId: reviewId })
+    // title/body deliberately omitted — the Inbox composes those from an i18n
+    // key + a live actor join so the text is in the reader's language, not the
+    // liker's. metadata.place_name lets the row show which post was liked
+    // without the list route joining reviews.
+    createNotification({
+      userId: review.user_id, actorId: user.id, type: 'LIKE',
+      entityType: 'review', entityId: reviewId,
+      actionUrl: `/reviews/${reviewId}`,
+      metadata: { place_name: review.place_name ?? null },
+    })
 
     // Milestone notification (5, 10, 50, 100, 500, 1000 likes)
     const MILESTONES = [5, 10, 25, 50, 100]

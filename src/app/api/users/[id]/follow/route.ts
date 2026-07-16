@@ -54,7 +54,14 @@ export async function POST(
     body: 'Xem trang cá nhân của họ',
     data: { url: `/users/${user.id}` },
   }).catch(() => {})
-  createNotification({ userId: targetId, actorId: user.id, type: 'FOLLOW', entityType: 'profile', entityId: user.id })
+  // entityId = the follower's own profile: that's both what the notification
+  // is "about" and where tapping it goes. title/body stay NULL — composed in
+  // the reader's language from an i18n key + a live actor join.
+  createNotification({
+    userId: targetId, actorId: user.id, type: 'FOLLOW',
+    entityType: 'profile', entityId: user.id,
+    actionUrl: `/users/${user.id}`,
+  })
 
   return NextResponse.json({ following: true, follower_count: profileRes.data?.follower_count ?? 0 })
 }

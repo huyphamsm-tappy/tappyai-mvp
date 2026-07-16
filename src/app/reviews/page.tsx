@@ -33,32 +33,36 @@ interface Review {
   music?: { version: number; trackId: string; startSec: number; volume: number; origin?: 'original' | 'attached' } | null
 }
 
-// Notification System MVP. Types match the persisted `notifications` table
-// (LIKE/COMMENT/FOLLOW) plus MILESTONE, which is NOT a persisted-table type —
-// it's merged in from review_milestones purely for backward compatibility
-// with the old derived-list Inbox (see /api/notifications/route.ts) and has
-// no actor (actor_id/actor_name/actor_avatar are null) and no is_read state
-// (always shown as read; can't be individually marked).
-type NotifType = 'LIKE' | 'COMMENT' | 'FOLLOW' | 'MILESTONE'
+// Notification System MVP — mirrors the persisted `notifications` table
+// one-to-one (no derived/stitched-in entries). REPLY/MENTION/SYSTEM are
+// already valid in the DB enum but nothing emits them yet; they're in the type
+// so a future phase needs no migration and no type churn here.
+// title/body arrive NULL for LIKE/COMMENT/FOLLOW — those rows' text is
+// composed below from an i18n key + the live actor join, so it renders in the
+// READER's language rather than whatever language the actor happened to use.
+type NotifType = 'LIKE' | 'COMMENT' | 'FOLLOW' | 'REPLY' | 'MENTION' | 'SYSTEM'
 interface Notification {
   id: string; type: NotifType
   actor_id: string | null; actor_name: string | null; actor_avatar: string | null
-  url: string; is_read: boolean; created_at: string
-  milestone?: number; place_name?: string | null // MILESTONE only
+  title: string | null; body: string | null; image: string | null
+  url: string; metadata: Record<string, unknown>
+  is_read: boolean; created_at: string
 }
 interface HotPlace { place_name: string; count: number }
 interface GroupedNotif {
   id: string; type: NotifType; url: string; is_read: boolean
+  title: string | null; body: string | null
   actors: { name: string; avatar: string | null; id: string }[]
   created_at: string; count: number
-  milestone?: number; place_name?: string | null
+  metadata: Record<string, unknown>
   // Every underlying notification id folded into this group (LIKE rows can
   // fold several) — marking the group read must mark ALL of them, or the
   // unread badge would stay stuck > 0 after the user already saw the row.
   allIds: string[]
 }
 const NOTIF_COLOR: Record<NotifType, string> = {
-  LIKE: '#ff6b35', FOLLOW: '#1D9E75', COMMENT: '#378ADD', MILESTONE: '#FFB800',
+  LIKE: '#ff6b35', FOLLOW: '#1D9E75', COMMENT: '#378ADD',
+  REPLY: '#378ADD', MENTION: '#9B59B6', SYSTEM: '#666',
 }
 // A "share-only" post (clip/photo posted without adding a place) carries a
 // sentinel place_name, so it must not show a 📍 chip or count as a hot place.
@@ -66,9 +70,9 @@ const NOTIF_COLOR: Record<NotifType, string> = {
 const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
 const isShareOnlyName = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
 // Only LIKE groups by target (so "A, B and 3 others liked your post" collapses
-// into one row with a stacked avatar list, TikTok-style) — COMMENT/FOLLOW/
-// MILESTONE each stay their own row since collapsing them would hide distinct
-// comments/followers/milestones a user should see individually.
+// into one row with a stacked avatar list, TikTok-style) — every other type
+// stays its own row, since collapsing them would hide distinct comments,
+// followers, or announcements a user should see individually.
 function groupNotifs(notifs: Notification[]): GroupedNotif[] {
   const map = new Map<string, GroupedNotif>()
   for (const n of notifs) {
@@ -84,9 +88,10 @@ function groupNotifs(notifs: Notification[]): GroupedNotif[] {
     } else {
       map.set(key, {
         id: n.id, type: n.type, url: n.url, is_read: n.is_read,
+        title: n.title, body: n.body,
         actors: n.actor_id ? [{ name: n.actor_name ?? '', avatar: n.actor_avatar, id: n.actor_id }] : [],
         created_at: n.created_at, count: 1, allIds: [n.id],
-        milestone: n.milestone, place_name: n.place_name,
+        metadata: n.metadata ?? {},
       })
     }
   }
@@ -1055,14 +1060,23 @@ function NotifRow({ g, onNav, onMarkRead }: { g: GroupedNotif; onNav: () => void
     </div>
   )
 
+  // Localized in the READER's language from the type + live actor join —
+  // never from a title/body frozen at write time (those stay NULL for these
+  // types; see the migration's comment on the presentation fields).
+  const typeText = g.type === 'LIKE' ? t('reviews.notifLiked')
+    : g.type === 'FOLLOW' ? t('reviews.notifFollowed')
+    : t('reviews.notifCommented')
+  const commentPreview = typeof g.metadata.comment_preview === 'string' ? g.metadata.comment_preview : null
+
   const mainText = (
     <div className="flex-1 min-w-0">
       <p className="text-white text-sm leading-snug">
         <span className="font-semibold">{actorLabel}</span>{' '}
-        <span className="text-gray-300">
-          {g.type === 'LIKE' ? t('reviews.notifLiked') : g.type === 'FOLLOW' ? t('reviews.notifFollowed') : t('reviews.notifCommented')}
-        </span>
+        <span className="text-gray-300">{typeText}</span>
       </p>
+      {g.type === 'COMMENT' && commentPreview && (
+        <p className="text-gray-400 text-xs mt-0.5 line-clamp-1">&quot;{commentPreview}&quot;</p>
+      )}
       <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at, t)}</p>
     </div>
   )
@@ -1080,16 +1094,21 @@ function NotifRow({ g, onNav, onMarkRead }: { g: GroupedNotif; onNav: () => void
     }
   }
 
-  if (g.type === 'MILESTONE') {
+  // SYSTEM (and any future human-authored type): text comes from the row's own
+  // title/body, since there's nothing to derive it from. Nothing emits SYSTEM
+  // yet — this is the branch that makes shipping it a pure backend change.
+  if (g.type === 'SYSTEM') {
     return (
-      <div className={rowBase} style={{ borderColor: color }}>
+      <div role="button" onClick={handleReviewNav} className={rowBase + ' cursor-pointer'} style={{ borderColor: color }}>
         <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 mr-3" style={{ background: `${color}22` }}>
-          <span className="text-xl">🎉</span>
+          <Bell size={18} style={{ color }} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-white text-sm leading-snug">{t('reviews.notifMilestone', { n: String(g.milestone ?? 0), place: g.place_name || t('reviews.yourPost') })}</p>
+          {g.title && <p className="text-white text-sm font-semibold leading-snug">{g.title}</p>}
+          {g.body && <p className="text-gray-300 text-xs mt-0.5 line-clamp-2">{g.body}</p>}
           <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at, t)}</p>
         </div>
+        {unreadDot}
       </div>
     )
   }
@@ -1408,11 +1427,16 @@ export default function ReviewsPage() {
   }, [notifsLoadingMore])
 
   // Bell badge — fetched on mount (so it's right the moment the app loads,
-  // before the user ever opens Inbox) and polled every 45s. No Realtime
-  // channel exists anywhere in this codebase yet (verified); a single
-  // lightweight COUNT query on an indexed column is the proportionate choice
-  // here rather than introducing the app's first-ever Realtime subscription
-  // for one badge number.
+  // before the user ever opens Inbox), polled every 20s, AND refetched
+  // whenever the tab regains focus/visibility. The focus refetch is what
+  // actually makes the badge feel live: the common case is the user coming
+  // back to a backgrounded tab, where a plain interval would leave a stale
+  // count on screen for up to a full period. The interval only covers the
+  // rarer case of sitting on an already-focused tab.
+  // No Realtime channel exists anywhere in this codebase (verified: zero
+  // matches for supabase.channel / postgres_changes), so a single lightweight
+  // COUNT on a partial index is the proportionate choice over introducing the
+  // app's first-ever Realtime subscription for one badge number.
   useEffect(() => {
     if (!me) { setUnreadCount(0); return }
     let cancelled = false
@@ -1422,9 +1446,17 @@ export default function ReviewsPage() {
         .then(d => { if (!cancelled) setUnreadCount(d.count || 0) })
         .catch(() => {})
     }
+    const loadIfVisible = () => { if (document.visibilityState === 'visible') load() }
     load()
-    const interval = setInterval(load, 45_000)
-    return () => { cancelled = true; clearInterval(interval) }
+    const interval = setInterval(loadIfVisible, 20_000)
+    window.addEventListener('focus', load)
+    document.addEventListener('visibilitychange', loadIfVisible)
+    return () => {
+      cancelled = true
+      clearInterval(interval)
+      window.removeEventListener('focus', load)
+      document.removeEventListener('visibilitychange', loadIfVisible)
+    }
   }, [me])
 
   // Marks the given notification ids read: optimistic local update (so the
