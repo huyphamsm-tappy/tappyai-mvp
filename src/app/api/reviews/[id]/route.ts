@@ -23,7 +23,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
   let body: { is_hidden?: boolean } = {}
   try { body = await req.json() } catch { /* empty */ }
-  const { error } = await supabase.from('reviews').update({ is_hidden: body.is_hidden ?? false }).eq('id', params.id).eq('user_id', user.id)
+  // Same zero-row trap the DELETE above was fixed for: a PostgREST update whose
+  // WHERE matches nothing (wrong id, not the owner, RLS) returns { error: null }.
+  // Without .select() we'd answer ok:true and the client would flip the post's
+  // hidden state in its own list while the DB row never changed — the post
+  // reappears (or stays hidden) on the next reload. Make it observable.
+  const { data, error } = await supabase.from('reviews').update({ is_hidden: body.is_hidden ?? false }).eq('id', params.id).eq('user_id', user.id).select('id')
   if (error) return NextResponse.json({ error: 'Khong the cap nhat' }, { status: 500 })
+  if (!data || data.length === 0) return NextResponse.json({ error: 'Khong tim thay bai viet' }, { status: 404 })
   return NextResponse.json({ ok: true })
 }
