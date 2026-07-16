@@ -39,13 +39,27 @@ const nextConfig = {
     //   frame    — self (SuperTux iframe) + YouTube embeds. Stripe checkout is a
     //              full-page redirect, so it needs no frame/script entry.
     //   frame-ancestors 'self' — clickjacking guard (supersedes X-Frame-Options).
+    // Next's Fast Refresh runtime (react-refresh) compiles modules with eval(),
+    // so `next dev` needs 'unsafe-eval' — without it the CSP throws an EvalError
+    // inside main-app.js, the client bundle never boots, and NOTHING hydrates:
+    // every page renders its server HTML and then sits there dead (no effects, no
+    // data fetching, no navigation). That made local verification impossible and
+    // was misread as "Supabase hangs in dev". Production is untouched: this is
+    // gated on the dev server only, where react-refresh is the sole eval() user.
+    const isDev = process.env.NODE_ENV !== 'production'
+    const scriptSrc = [
+      "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'",
+      isDev ? "'unsafe-eval'" : '',
+      'https://us.i.posthog.com https://us-assets.i.posthog.com',
+    ].filter(Boolean).join(' ')
+
     const csp = [
       "default-src 'self'",
       "base-uri 'self'",
       "object-src 'none'",
       "form-action 'self'",
       "frame-ancestors 'self'",
-      "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com",
+      scriptSrc,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
