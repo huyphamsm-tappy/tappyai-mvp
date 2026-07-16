@@ -69,7 +69,18 @@ export function extractBudget(userMessage: string): Budget | null {
 
   const rangeRe = new RegExp(`(?:tu\\s+)?${N}${U}\\s*(?:den|toi|-)\\s*${N}${U}`)
   let m = t.match(rangeRe)
-  if (m) {
+  // A real money range names its unit on at least ONE side: "100k-200k",
+  // "tu 500k den 1 trieu", "2-3 trieu". A BARE N-M with no unit anywhere is
+  // almost never a budget in this app's traffic — it's "4-5 sao", "2-3 nguoi",
+  // "quan 1-3", "3-4 ngay", "8-10 gio". Those all matched here (the `tu` prefix
+  // is optional and `-` is a separator), and parseMoneyAmount multiplies a
+  // unitless n<=9999 by 1000 — so "khach san 4-5 sao" became a 4.000-5.000d
+  // budget. That filtered away every real result ("Trong tam 4k-5k... chua tim
+  // duoc") AND, being under LUXURY_PRICE_FLOOR, switched on the luxury-brand
+  // stream filter that rewrites hotel names to "khach san" mid-answer.
+  // Requiring a unit trades a rare miss ("tu 100 den 200" with no unit at all,
+  // now unfiltered rather than wrong) for killing that entire class.
+  if (m && (m[2] || m[4])) {
     const min = parseMoneyAmount(m[1], m[2] || '')
     const max = parseMoneyAmount(m[3], m[4] || '')
     if (min !== null && max !== null && max >= min && max > 0) return { min, max, type: 'range' as const }
