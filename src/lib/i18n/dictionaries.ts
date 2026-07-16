@@ -93,6 +93,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.locationDesc': 'Để gợi ý địa điểm sát thực tế hơn với bạn.',
     'onboarding.otherCity': 'Hoặc nhập thành phố khác...',
     'onboarding.start': '🚀 Bắt đầu khám phá',
+    'onboarding.saveError': 'Chưa lưu được thiết lập của bạn. Vui lòng thử lại.',
 
     // Home
     'home.greetingUser': 'Xin chào, {name} 👋',
@@ -273,6 +274,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.locationDesc': 'So we can suggest places that fit you better.',
     'onboarding.otherCity': 'Or type another city...',
     'onboarding.start': '🚀 Start exploring',
+    'onboarding.saveError': "We couldn't save your setup. Please try again.",
 
     // Home
     'home.greetingUser': 'Hi, {name} 👋',

@@ -21,8 +21,15 @@ export async function POST(req: Request) {
       .from('profiles')
       .upsert({ id: user.id, onboarded: true }, { onConflict: 'id' })
 
+    // Marking the profile onboarded IS this endpoint's job: auth/callback reads
+    // profiles.onboarded on every login and sends the user back here whenever it
+    // is false. Reporting ok:true after a failed upsert therefore doesn't
+    // degrade gracefully — it hands the client a success it can act on, the
+    // client leaves, and the next login bounces straight back to onboarding,
+    // forever. Fail loudly so the client can retry.
     if (upsertError) {
       console.error('onboarding: upsert failed', upsertError)
+      return NextResponse.json({ ok: false }, { status: 500 })
     }
 
     // Lưu sở thích vào memory

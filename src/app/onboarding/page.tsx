@@ -17,6 +17,7 @@ export default function OnboardingPage() {
   const [selected, setSelected] = useState<string[]>([])
   const [city, setCity] = useState('')
   const [loading, setLoading] = useState(false)
+  const [saveError, setSaveError] = useState(false)
 
   const toggleInterest = (id: string) => {
     setSelected(prev =>
@@ -26,14 +27,32 @@ export default function OnboardingPage() {
 
   const handleFinish = async () => {
     setLoading(true)
+    setSaveError(false)
+    const next = searchParams.get('next') || '/'
+    // fetch() only rejects on a network failure — a 401 or 500 RESOLVES. The old
+    // `catch {}` therefore never fired on the failures that actually happen, and
+    // we navigated away as if the profile had been marked onboarded. It hadn't:
+    // auth/callback re-reads profiles.onboarded on every login and sends anyone
+    // still false straight back here, so a single silent failure loops the user
+    // through onboarding on every login with no way out.
     try {
-      await fetch('/api/onboarding', {
+      const res = await fetch('/api/onboarding', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ interests: selected, city }),
       })
-    } catch { /* no-op */ }
-    const next = searchParams.get('next') || '/'
+      // No readable session — retrying here can't help. Send them to log in;
+      // auth/callback re-checks onboarded and routes back with `next` intact.
+      if (res.status === 401) {
+        router.replace(`/login?returnTo=${encodeURIComponent(next)}`)
+        return
+      }
+      if (!res.ok) throw new Error(`onboarding save failed: ${res.status}`)
+    } catch {
+      setSaveError(true)
+      setLoading(false)
+      return
+    }
     // replace() instead of push() so /onboarding is removed from history.
     // After the full OAuth flow, history has one entry for /onboarding (the
     // entire login chain was collapsed by window.location.replace). push()
@@ -135,6 +154,12 @@ export default function OnboardingPage() {
               onChange={e => setCity(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 mb-6"
             />
+
+            {saveError && (
+              <p role="alert" className="mb-3 text-sm text-red-600 dark:text-red-400 text-center">
+                {t('onboarding.saveError')}
+              </p>
+            )}
 
             <button
               onClick={handleFinish}
