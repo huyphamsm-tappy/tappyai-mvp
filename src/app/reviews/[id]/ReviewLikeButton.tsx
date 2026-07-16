@@ -22,15 +22,34 @@ export default function ReviewLikeButton({
     const prev = liked
     const next = !prev
     setLiked(next)
-    setCount(c => c + (next ? 1 : -1))
+    setCount(c => c + (next ? 1 : -1)) // optimistic
+    const revert = () => { setLiked(prev); setCount(c => c + (prev ? 1 : -1)) }
     try {
       const res = await fetch(`/api/reviews/${reviewId}/like`, { method: 'POST' })
-      const data = await res.json()
+
+      // fetch() only REJECTS on a network failure — a 401 or 500 resolves
+      // normally, so without these guards `data.liked` is undefined on an error
+      // body and the reconcile branch below decrements a SECOND time on top of
+      // the optimistic one: unlike + 500 dropped the count by 2 while the
+      // server never changed. The feed's own handler already guards exactly
+      // this (see `like` in src/app/reviews/page.tsx); this page had drifted.
+      if (res.status === 401) {
+        revert()
+        // Browse-only policy: reading is public, interacting needs an account.
+        window.location.href = '/login?returnTo=' + encodeURIComponent(`/reviews/${reviewId}`)
+        return
+      }
+      if (!res.ok) throw new Error('like_failed')
+
+      const data = await res.json().catch(() => null)
+      if (typeof data?.liked !== 'boolean') throw new Error('bad_response')
+
+      // Reconcile with the server's real state (they differ only if this
+      // page's initial state was already stale, e.g. liked in another tab).
       setLiked(data.liked)
       if (data.liked !== next) setCount(c => c + (data.liked ? 1 : -1))
     } catch {
-      setLiked(prev)
-      setCount(c => c + (prev ? 1 : -1))
+      revert()
     } finally {
       setPending(false)
     }
