@@ -36,15 +36,24 @@ export async function POST(req: NextRequest) {
     const supabase = createAdminClient()
     const zaloEmail = `zalo_${zaloId}@zalo.tappyai.com`
 
-    // Ensure user exists — attempt to create; if the email is already registered
-    // Supabase returns a "already been registered" message, which we treat as
-    // success. This avoids a full listUsers scan that breaks beyond 1000 users.
+    // Ensure user exists — attempt to create; if the email is already registered,
+    // treat that as success. This avoids a full listUsers scan that breaks beyond
+    // 1000 users (there is no getUserByEmail in the admin API — only paginated
+    // listUsers). Duplicate-email is checked primarily via the stable GoTrue
+    // error code ('email_exists', @supabase/auth-js ErrorCode) rather than the
+    // message string. The message check is kept as a fallback only: whether the
+    // live server actually populates `.code` on this exact call depends on the
+    // response's API-version header (see auth-js lib/fetch.ts handleError) and
+    // was not exercised against production — verifying it would mean creating a
+    // real duplicate user, so a message fallback stays as a safety net rather
+    // than assuming the stable code path.
     const { error: createErr } = await supabase.auth.admin.createUser({
       email: zaloEmail,
       email_confirm: true,
       user_metadata: { zalo_id: zaloId, full_name: name, avatar_url: avatar, provider: 'zalo' },
     })
-    if (createErr && !createErr.message?.toLowerCase().includes('already')) {
+    const isDuplicateEmail = createErr?.code === 'email_exists' || createErr?.message?.toLowerCase().includes('already')
+    if (createErr && !isDuplicateEmail) {
       throw createErr
     }
 
