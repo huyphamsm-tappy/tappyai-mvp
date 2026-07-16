@@ -512,20 +512,19 @@ export default function NewReviewPage() {
     } catch { /* non-blocking */ }
   }
 
-  // The actual oembed + vision work, run once the URL field has settled.
-  const processUrl = async (val: string, seq: number) => {
+  // The network-only work — oembed (TikTok/FB) + the vision call — run once the
+  // URL field has settled. Synchronous state (source type, YouTube thumbnail) is
+  // NOT done here; it's set eagerly in handleUrlChange so a submit inside the
+  // debounce window still reads the right values.
+  const processUrlNetwork = async (val: string, seq: number) => {
     const trimmed = val.trim()
     const detected = trimmed ? detectSource(trimmed) : null
     if (!detected) return
-    setSource_type(detected)
 
     if (detected === 'youtube') {
       const id = extractYoutubeId(trimmed)
       if (!id) return
-      const thumb = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`
-      if (urlReqSeqRef.current !== seq) return
-      setUrlMeta({ thumbnail_url: thumb, title: '' })
-      triggerUrlAI(thumb, '', seq)
+      triggerUrlAI(`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`, '', seq)
       return
     }
 
@@ -549,17 +548,30 @@ export default function NewReviewPage() {
   }
 
   const handleUrlChange = (val: string) => {
-    setSource_url(val); setUrlMeta(null); setAiHashtags([])
+    setSource_url(val); setAiHashtags([])
     // Bump the token on every change (including clearing the field) so any
-    // in-flight oembed/vision call is invalidated immediately, then debounce
-    // the new work — the old code fired both network calls on every keystroke
-    // and let whichever resolved last win, so an earlier URL's hashtags could
-    // clobber the current URL's.
+    // in-flight oembed/vision call is invalidated immediately.
     const seq = ++urlReqSeqRef.current
     if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current)
+
     const trimmed = val.trim()
-    if (!trimmed || !detectSource(trimmed)) return
-    urlDebounceRef.current = setTimeout(() => processUrl(val, seq), URL_PROCESS_DEBOUNCE_MS)
+    const detected = trimmed ? detectSource(trimmed) : null
+    if (!detected) { setUrlMeta(null); return }
+
+    // Synchronous, network-free state must be set NOW: the user can paste a link
+    // and hit Post within the debounce window, and handleSubmit reads source_type
+    // and urlMeta.thumbnail_url. Debouncing these saved the wrong source_type
+    // (default 'youtube') and an empty thumbnail for a fast submit — only the
+    // network calls below are debounced.
+    setSource_type(detected)
+    if (detected === 'youtube') {
+      const id = extractYoutubeId(trimmed)
+      setUrlMeta({ thumbnail_url: id ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : '', title: '' })
+    } else {
+      setUrlMeta(null) // TikTok/FB thumbnail arrives from the debounced oembed
+    }
+
+    urlDebounceRef.current = setTimeout(() => processUrlNetwork(val, seq), URL_PROCESS_DEBOUNCE_MS)
   }
 
   /* ─── Submit ─── */
