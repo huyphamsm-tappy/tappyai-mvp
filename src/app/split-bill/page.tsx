@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { ChevronLeft, Plus, Minus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import BottomNav from '@/components/BottomNav'
@@ -29,9 +29,21 @@ export default function SplitBillPage() {
     { id: 1, name: t('splitBill.personDefaultName', { n: '1' }), amount: '' },
     { id: 2, name: t('splitBill.personDefaultName', { n: '2' }), amount: '' },
   ])
-  let nextId = persons.length + 1
+  // Monotonic — never derived from persons.length. Deriving it meant that
+  // after a removal the counter REWOUND and reissued an id that was still in
+  // use: [1,2,3] → remove #2 → [1,3] → add → nextId=3 → [1,3,3]. Both id-3 rows
+  // then edited together (updatePerson maps by id), customTotal counted the
+  // amount twice, and deleting either one filtered BOTH — dropping to a single
+  // person, under the enforced 2-person minimum, with no delete buttons left.
+  const nextIdRef = useRef(persons.length + 1)
 
-  const activeTip = customTip !== '' ? parseFloat(customTip) || 0 : tip
+  // tip === -1 is a SENTINEL meaning "a preset is deselected because a custom
+  // tip is being typed" — it is not a real percentage. It must never reach the
+  // math: clearing the custom field used to fall back to tip, still -1, and
+  // silently applied a −1% tip (1.000.000 → 990.000, "Tip: -10.000 đ") while no
+  // preset appeared selected. Clamp negatives away here, at the one place the
+  // effective tip is derived.
+  const activeTip = customTip !== '' ? Math.max(0, parseFloat(customTip) || 0) : Math.max(0, tip)
   const totalNum = parseFloat(total.replace(/[^0-9.]/g, '')) || 0
   const grandTotal = totalNum * (1 + activeTip / 100)
   const perPerson = people > 0 ? grandTotal / people : 0
@@ -42,7 +54,7 @@ export default function SplitBillPage() {
   const customGrand = customTotal * (1 + activeTip / 100)
 
   function addPerson() {
-    setPersons(prev => [...prev, { id: nextId++, name: t('splitBill.personDefaultName', { n: String(prev.length + 1) }), amount: '' }])
+    setPersons(prev => [...prev, { id: nextIdRef.current++, name: t('splitBill.personDefaultName', { n: String(prev.length + 1) }), amount: '' }])
   }
   function removePerson(id: number) {
     if (persons.length <= 2) return
@@ -57,8 +69,10 @@ export default function SplitBillPage() {
     if (mode === 'equal') return
     setPersons(prev => {
       if (n > prev.length) {
+        // Same rewind defect as addPerson had — `prev.length + i + 1` reissues
+        // live ids after any removal. Use the monotonic counter here too.
         const added = Array.from({ length: n - prev.length }, (_, i) => ({
-          id: prev.length + i + 1,
+          id: nextIdRef.current++,
           name: t('splitBill.personDefaultName', { n: String(prev.length + i + 1) }),
           amount: '',
         }))
