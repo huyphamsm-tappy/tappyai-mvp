@@ -50,6 +50,9 @@ function extractYoutubeId(url: string): string | null {
 const MEDIA_READ_TIMEOUT_MS = 20000
 const THUMB_TIMEOUT_MS = 8000        // hard cap on thumbnail decode/seek — never freeze the UI
 const THUMB_UPLOAD_TIMEOUT_MS = 15000 // hard cap on the (best-effort) thumbnail blob upload
+// Wait for the URL field to settle before doing any oembed/vision work, so
+// typing or pasting a link fires one round of network calls, not one per key.
+const URL_PROCESS_DEBOUNCE_MS = 500
 
 /* Structured pipeline instrumentation. Every video stage emits START, then
    SUCCESS or FAIL with elapsed TIME (ms) and, on failure, the ERROR. Prefixed
@@ -219,6 +222,11 @@ export default function NewReviewPage() {
   const photoInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
   const uploadControllerRef = useRef<AbortController | null>(null)
+  // URL-source AI: debounce timer + a monotonic request token. Every change to
+  // the URL field bumps the token, so any oembed/vision response from an older
+  // URL is discarded instead of overwriting the current URL's suggestions.
+  const urlDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const urlReqSeqRef = useRef(0)
   const supabase = createClient()
 
   /* ─── Auth gate ───────────────────────────────────────────────────────────
@@ -476,8 +484,14 @@ export default function NewReviewPage() {
 
   const cancelUpload = () => uploadControllerRef.current?.abort()
 
+  // Don't let a debounced URL-processing call fire after the composer unmounts.
+  useEffect(() => () => { if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current) }, [])
+
   /* ─── URL source ─── */
-  const triggerUrlAI = async (thumbnail_url: string, title: string) => {
+  // seq is the request token captured when this work was scheduled. If the URL
+  // changed since (urlReqSeqRef moved on), this response belongs to a URL the
+  // user has already replaced — drop it so it can't overwrite the current one.
+  const triggerUrlAI = async (thumbnail_url: string, title: string, seq: number) => {
     if (!thumbnail_url && !title) return
     try {
       const aiRes = await fetch('/api/explore/process', {
@@ -491,58 +505,61 @@ export default function NewReviewPage() {
       })
       if (aiRes.ok) {
         const ai = await aiRes.json()
+        if (urlReqSeqRef.current !== seq) return // stale: a newer URL superseded this
         if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
         if (!body.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
       }
     } catch { /* non-blocking */ }
   }
 
-  const handleUrlChange = async (val: string) => {
-    setSource_url(val); setUrlMeta(null); setAiHashtags([])
+  // The actual oembed + vision work, run once the URL field has settled.
+  const processUrl = async (val: string, seq: number) => {
     const trimmed = val.trim()
-    if (!trimmed) return
-
-    const detected = detectSource(trimmed)
+    const detected = trimmed ? detectSource(trimmed) : null
     if (!detected) return
     setSource_type(detected)
 
     if (detected === 'youtube') {
       const id = extractYoutubeId(trimmed)
-      if (id) {
-        const thumb = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`
-        setUrlMeta({ thumbnail_url: thumb, title: '' })
-        triggerUrlAI(thumb, '')
-      }
+      if (!id) return
+      const thumb = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`
+      if (urlReqSeqRef.current !== seq) return
+      setUrlMeta({ thumbnail_url: thumb, title: '' })
+      triggerUrlAI(thumb, '', seq)
       return
     }
 
-    if (detected === 'tiktok') {
-      setFetchingMeta(true)
-      try {
-        const res = await fetch(`/api/explore/oembed?url=${encodeURIComponent(trimmed)}`)
-        const data = await res.json()
-        const thumb = data.thumbnail_url || ''
-        const title = data.title || ''
-        setUrlMeta({ thumbnail_url: thumb, title })
-        triggerUrlAI(thumb, title)
-      } catch { setUrlMeta({ thumbnail_url: '', title: '' }) }
-      finally { setFetchingMeta(false) }
-      return
+    // TikTok / Facebook: best-effort OG image via server proxy (may be empty if
+    // the page requires login). Each network result is gated on the token so a
+    // slow oembed for an old URL can't repaint the preview for the current one.
+    setFetchingMeta(true)
+    try {
+      const res = await fetch(`/api/explore/oembed?url=${encodeURIComponent(trimmed)}`)
+      const data = await res.json()
+      if (urlReqSeqRef.current !== seq) return
+      const thumb = data.thumbnail_url || ''
+      const title = data.title || ''
+      setUrlMeta({ thumbnail_url: thumb, title })
+      triggerUrlAI(thumb, title, seq)
+    } catch {
+      if (urlReqSeqRef.current === seq) setUrlMeta({ thumbnail_url: '', title: '' })
+    } finally {
+      if (urlReqSeqRef.current === seq) setFetchingMeta(false)
     }
+  }
 
-    // Facebook: best-effort OG image via server proxy (may be empty if page requires login)
-    if (detected === 'facebook') {
-      setFetchingMeta(true)
-      try {
-        const res = await fetch(`/api/explore/oembed?url=${encodeURIComponent(trimmed)}`)
-        const data = await res.json()
-        const thumb = data.thumbnail_url || ''
-        const title = data.title || ''
-        setUrlMeta({ thumbnail_url: thumb, title })
-        triggerUrlAI(thumb, title)
-      } catch { setUrlMeta({ thumbnail_url: '', title: '' }) }
-      finally { setFetchingMeta(false) }
-    }
+  const handleUrlChange = (val: string) => {
+    setSource_url(val); setUrlMeta(null); setAiHashtags([])
+    // Bump the token on every change (including clearing the field) so any
+    // in-flight oembed/vision call is invalidated immediately, then debounce
+    // the new work — the old code fired both network calls on every keystroke
+    // and let whichever resolved last win, so an earlier URL's hashtags could
+    // clobber the current URL's.
+    const seq = ++urlReqSeqRef.current
+    if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current)
+    const trimmed = val.trim()
+    if (!trimmed || !detectSource(trimmed)) return
+    urlDebounceRef.current = setTimeout(() => processUrl(val, seq), URL_PROCESS_DEBOUNCE_MS)
   }
 
   /* ─── Submit ─── */
