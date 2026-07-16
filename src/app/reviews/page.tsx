@@ -497,6 +497,14 @@ function ClipViewer({ posts, startIndex, me, onClose, onItemRemoved }: { posts: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items.length])
 
+  // TEMPORARY diagnostic trace for BUG 3 UAT — prints ClipViewer's own state
+  // (items.length, activeIndex) on every change so the pipeline's sync can be
+  // read straight from the DevTools console during a real delete. Safe to
+  // remove after UAT confirms the fix; it is console-only, no UI/behavior effect.
+  useEffect(() => {
+    console.info('[BUG3-trace] ClipViewer', { itemsLength: items.length, activeIndex })
+  }, [items.length, activeIndex])
+
   const requireLogin = () => { if (me) return false; window.location.href = '/login?returnTo=/reviews'; return true }
 
   const like = async (id: string) => {
@@ -603,6 +611,16 @@ function ProfileTab({ userId }: { userId: string }) {
   const [viewerStart, setViewerStart] = useState<number | null>(null) // index into displayPosts when the swipe viewer is open
   const [prefs, setPrefs] = useState<UserPreferences | null>(null)
   const supabase = createClient()
+
+  // TEMPORARY diagnostic trace for BUG 3 UAT — prints ProfileTab's own state
+  // (viewerStart, posts.length, hidden.length) on every change, so the grid's
+  // half of the Delete -> ... -> DOM pipeline can be read straight from the
+  // DevTools console during a real delete. Pair with the '[BUG3-trace]
+  // ClipViewer' log to see both sides update in the same session. Safe to
+  // remove after UAT confirms the fix; console-only, no UI/behavior effect.
+  useEffect(() => {
+    console.info('[BUG3-trace] ProfileTab', { viewerStart, postsLength: posts.length, hiddenLength: hidden.length })
+  }, [viewerStart, posts.length, hidden.length])
 
   useEffect(() => {
     const load = async () => {
