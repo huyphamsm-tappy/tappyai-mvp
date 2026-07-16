@@ -33,38 +33,60 @@ interface Review {
   music?: { version: number; trackId: string; startSec: number; volume: number; origin?: 'original' | 'attached' } | null
 }
 
-interface Notification { id: string; type: string; actor_id: string; actor_name: string; actor_avatar: string | null; text: string; url: string; created_at: string }
+// Notification System MVP. Types match the persisted `notifications` table
+// (LIKE/COMMENT/FOLLOW) plus MILESTONE, which is NOT a persisted-table type —
+// it's merged in from review_milestones purely for backward compatibility
+// with the old derived-list Inbox (see /api/notifications/route.ts) and has
+// no actor (actor_id/actor_name/actor_avatar are null) and no is_read state
+// (always shown as read; can't be individually marked).
+type NotifType = 'LIKE' | 'COMMENT' | 'FOLLOW' | 'MILESTONE'
+interface Notification {
+  id: string; type: NotifType
+  actor_id: string | null; actor_name: string | null; actor_avatar: string | null
+  url: string; is_read: boolean; created_at: string
+  milestone?: number; place_name?: string | null // MILESTONE only
+}
 interface HotPlace { place_name: string; count: number }
 interface GroupedNotif {
-  id: string; type: string; url: string
+  id: string; type: NotifType; url: string; is_read: boolean
   actors: { name: string; avatar: string | null; id: string }[]
-  text: string; comment_body?: string
   created_at: string; count: number
+  milestone?: number; place_name?: string | null
+  // Every underlying notification id folded into this group (LIKE rows can
+  // fold several) — marking the group read must mark ALL of them, or the
+  // unread badge would stay stuck > 0 after the user already saw the row.
+  allIds: string[]
 }
-const NOTIF_COLOR: Record<string, string> = {
-  like: '#ff6b35', follow: '#1D9E75', profile_view: '#534AB7', comment: '#378ADD',
+const NOTIF_COLOR: Record<NotifType, string> = {
+  LIKE: '#ff6b35', FOLLOW: '#1D9E75', COMMENT: '#378ADD', MILESTONE: '#FFB800',
 }
 // A "share-only" post (clip/photo posted without adding a place) carries a
 // sentinel place_name, so it must not show a 📍 chip or count as a hot place.
 // Includes the legacy no-diacritic value written by older builds.
 const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
 const isShareOnlyName = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+// Only LIKE groups by target (so "A, B and 3 others liked your post" collapses
+// into one row with a stacked avatar list, TikTok-style) — COMMENT/FOLLOW/
+// MILESTONE each stay their own row since collapsing them would hide distinct
+// comments/followers/milestones a user should see individually.
 function groupNotifs(notifs: Notification[]): GroupedNotif[] {
   const map = new Map<string, GroupedNotif>()
   for (const n of notifs) {
-    const key = n.type === 'like' ? `like:${n.url}` : n.type === 'profile_view' ? 'profile_view' : n.id
+    const key = n.type === 'LIKE' ? `like:${n.url}` : n.id
     const existing = map.get(key)
     if (existing) {
-      if (!existing.actors.find(a => a.id === n.actor_id))
-        existing.actors.push({ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id })
+      if (n.actor_id && !existing.actors.find(a => a.id === n.actor_id))
+        existing.actors.push({ name: n.actor_name ?? '', avatar: n.actor_avatar, id: n.actor_id })
       existing.count++
+      existing.allIds.push(n.id)
+      if (!n.is_read) existing.is_read = false
       if (new Date(n.created_at) > new Date(existing.created_at)) existing.created_at = n.created_at
     } else {
       map.set(key, {
-        id: n.id, type: n.type, url: n.url,
-        actors: [{ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id }],
-        text: n.text, comment_body: n.type === 'comment' ? n.text : undefined,
-        created_at: n.created_at, count: 1,
+        id: n.id, type: n.type, url: n.url, is_read: n.is_read,
+        actors: n.actor_id ? [{ name: n.actor_name ?? '', avatar: n.actor_avatar, id: n.actor_id }] : [],
+        created_at: n.created_at, count: 1, allIds: [n.id],
+        milestone: n.milestone, place_name: n.place_name,
       })
     }
   }
@@ -917,7 +939,7 @@ function ProfileTab({ userId, viewerId, showBackButton, onBack }: { userId: stri
 }
 
 /* ─── TikTok Bottom Nav ─── */
-function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => void; userId: string | null }) {
+function TikNav({ tab, setTab, userId, unreadCount = 0 }: { tab: string; setTab: (t: string) => void; userId: string | null; unreadCount?: number }) {
   const { t } = useTranslation()
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur border-t border-gray-800 flex items-center h-[60px]">
@@ -944,8 +966,16 @@ function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => v
           </div>
         </div>
       </Link>
-      <button onClick={() => setTab('inbox')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === 'inbox' ? 'text-white' : 'text-gray-500'}`}>
-        <Bell size={24} /><span className="text-[10px]">{t('reviews.navInbox')}</span>
+      <button onClick={() => setTab('inbox')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 relative ${tab === 'inbox' ? 'text-white' : 'text-gray-500'}`}>
+        <div className="relative">
+          <Bell size={24} />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-[#fe2c55] text-white text-[9px] font-bold flex items-center justify-center leading-none">
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </span>
+          )}
+        </div>
+        <span className="text-[10px]">{t('reviews.navInbox')}</span>
       </button>
       <button onClick={() => setTab('profile')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === 'profile' ? 'text-white' : 'text-gray-500'}`}>
         <User size={24} /><span className="text-[10px]">{t('reviews.navProfile')}</span>
@@ -983,7 +1013,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 }
 
 /* ─── Notification row ─── */
-function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
+function NotifRow({ g, onNav, onMarkRead }: { g: GroupedNotif; onNav: () => void; onMarkRead: (ids: string[]) => void }) {
   const { t } = useTranslation()
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
@@ -994,6 +1024,14 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
     : g.actors.length === 2
     ? t('reviews.notifTwoActors', { a: g.actors[0].name, b: g.actors[1].name })
     : t('reviews.notifManyActors', { a: g.actors[0].name, b: g.actors[1]?.name ?? '', n: String(g.actors.length - 2) })
+
+  // Unread dot — the one visual cue that a row hasn't been seen yet. Reading
+  // (tapping into it) marks every underlying id in this group, not just the
+  // group's own synthetic id (see GroupedNotif.allIds — a grouped LIKE row
+  // folds several real notification rows into one).
+  const unreadDot = !g.is_read && (
+    <div className="w-2 h-2 rounded-full flex-shrink-0 ml-2" style={{ background: '#fe2c55' }} aria-label={t('reviews.notifUnread')} />
+  )
 
   const avatarStack = (
     <div className="relative flex-shrink-0 mr-3" style={{ width: 48, height: 44 }}>
@@ -1010,9 +1048,9 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
       })}
       <div className="absolute rounded-full flex items-center justify-center border-2 border-black"
         style={{ background: color, width: 20, height: 20, bottom: -4, right: 0, zIndex: 10 }}>
-        {g.type === 'like' && <Heart size={9} className="text-white fill-white" />}
-        {g.type === 'follow' && <User size={9} className="text-white" />}
-        {g.type === 'comment' && <MessageCircle size={9} className="text-white" />}
+        {g.type === 'LIKE' && <Heart size={9} className="text-white fill-white" />}
+        {g.type === 'FOLLOW' && <User size={9} className="text-white" />}
+        {g.type === 'COMMENT' && <MessageCircle size={9} className="text-white" />}
       </div>
     </div>
   )
@@ -1022,12 +1060,9 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
       <p className="text-white text-sm leading-snug">
         <span className="font-semibold">{actorLabel}</span>{' '}
         <span className="text-gray-300">
-          {g.type === 'like' ? t('reviews.notifLiked') : g.type === 'follow' ? t('reviews.notifFollowed') : t('reviews.notifCommented')}
+          {g.type === 'LIKE' ? t('reviews.notifLiked') : g.type === 'FOLLOW' ? t('reviews.notifFollowed') : t('reviews.notifCommented')}
         </span>
       </p>
-      {g.type === 'comment' && g.comment_body && (
-        <p className="text-gray-400 text-xs mt-0.5 line-clamp-1">&quot;{g.comment_body}&quot;</p>
-      )}
       <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at, t)}</p>
     </div>
   )
@@ -1035,6 +1070,7 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   const rowBase = "flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors"
 
   const handleReviewNav = () => {
+    onMarkRead(g.allIds)
     const match = g.url?.match(/\/reviews\/([0-9a-f-]{36})/i)
     const reviewId = match?.[1]
     if (reviewId) {
@@ -1044,28 +1080,27 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
     }
   }
 
-  if (g.type === 'profile_view') {
+  if (g.type === 'MILESTONE') {
     return (
       <div className={rowBase} style={{ borderColor: color }}>
         <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 mr-3" style={{ background: `${color}22` }}>
-          <User size={20} style={{ color }} />
+          <span className="text-xl">🎉</span>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-white text-sm"><span className="font-bold">{g.count}</span> {t('reviews.notifProfileViews')}</p>
+          <p className="text-white text-sm leading-snug">{t('reviews.notifMilestone', { n: String(g.milestone ?? 0), place: g.place_name || t('reviews.yourPost') })}</p>
           <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at, t)}</p>
         </div>
-        <button className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2" style={{ background: `${color}22`, color }}>{t('reviews.notifSeeWho')}</button>
       </div>
     )
   }
 
-  if (g.type === 'follow') {
+  if (g.type === 'FOLLOW') {
     const profileUrl = g.actors[0]?.id ? `/users/${g.actors[0].id}` : '#'
     return (
-      <Link href={profileUrl} className={rowBase} style={{ borderColor: color }}>
-        {avatarStack}{mainText}
+      <Link href={profileUrl} onClick={() => onMarkRead(g.allIds)} className={rowBase} style={{ borderColor: color }}>
+        {avatarStack}{mainText}{unreadDot}
         <button
-          onClick={async e => { e.preventDefault(); e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
+          onClick={async e => { e.preventDefault(); e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); onMarkRead(g.allIds); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
           className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2 transition-all"
           style={{ background: followed ? 'rgba(255,255,255,0.08)' : `${color}22`, color: followed ? '#666' : color }}>
           {followed ? t('reviews.followed') : t('reviews.followBack')}
@@ -1076,7 +1111,7 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 
   return (
     <div role="button" onClick={handleReviewNav} className={rowBase + ' cursor-pointer'} style={{ borderColor: color }}>
-      {avatarStack}{mainText}
+      {avatarStack}{mainText}{unreadDot}
       <div className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center ml-2 flex-shrink-0">
         <span className="text-base">🍽️</span>
       </div>
@@ -1085,7 +1120,10 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 }
 
 /* ─── Inbox Tab ─── */
-function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange, userPrefs }: {
+function InboxTab({
+  notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange, userPrefs,
+  unreadCount, onMarkRead, onMarkAllRead, hasMore, loadingMore, onLoadMore,
+}: {
   notifs: Notification[]
   notifsLoading: boolean
   notifsError: boolean
@@ -1094,9 +1132,16 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
   onSetTab: (t: string) => void
   onFeedTypeChange: (ft: 'for-you' | 'following') => void
   userPrefs: UserPreferences | null
+  unreadCount: number
+  onMarkRead: (ids: string[]) => void
+  onMarkAllRead: () => void
+  hasMore: boolean
+  loadingMore: boolean
+  onLoadMore: () => void
 }) {
   const { t } = useTranslation()
   const grouped = groupNotifs(notifs)
+  const listRef = useRef<HTMLDivElement>(null)
   const prefStyles = userPrefs?.preferred_style ?? []
   const bannerSubtext = prefStyles.length > 0
     ? t('reviews.bannerPersonalized', { styles: prefStyles.slice(0, 2).join(', ') })
@@ -1116,11 +1161,21 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
 
   return (
     <div className="h-dvh flex flex-col bg-black overflow-hidden">
-      <div className="flex-shrink-0 pt-14 px-4 pb-3 border-b border-gray-800">
+      <div className="flex-shrink-0 pt-14 px-4 pb-3 border-b border-gray-800 flex items-center justify-between">
         <h2 className="text-white font-bold text-lg">{t('reviews.notificationsTitle')}</h2>
+        {unreadCount > 0 && (
+          <button onClick={onMarkAllRead} className="text-xs font-semibold" style={{ color: '#fe2c55' }}>
+            {t('reviews.notifMarkAllRead')}
+          </button>
+        )}
       </div>
 
-      <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+      <div ref={listRef} className="flex-1 overflow-y-auto"
+        style={{ scrollbarWidth: 'none' }}
+        onScroll={e => {
+          const c = e.currentTarget
+          if (hasMore && !loadingMore && c.scrollTop + c.clientHeight >= c.scrollHeight - 300) onLoadMore()
+        }}>
         {notifsLoading ? (
           <div className="flex justify-center pt-16"><Loader2 size={22} className="text-white animate-spin" /></div>
         ) : (
@@ -1180,10 +1235,11 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
               sections.map(({ label, items }) => (
                 <div key={label}>
                   <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-1.5 tracking-widest">{sectionLabel[label] ?? label}</p>
-                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => onSetTab('home')} />)}
+                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => onSetTab('home')} onMarkRead={onMarkRead} />)}
                 </div>
               ))
             )}
+            {loadingMore && <div className="flex justify-center py-4"><Loader2 size={18} className="text-white animate-spin" /></div>}
             <div className="h-6" />
           </>
         )}
@@ -1233,6 +1289,12 @@ export default function ReviewsPage() {
   const [notifs, setNotifs] = useState<Notification[]>([])
   const [notifsLoading, setNotifsLoading] = useState(false)
   const [notifsError, setNotifsError] = useState(false)
+  const [notifsHasMore, setNotifsHasMore] = useState(false)
+  const [notifsLoadingMore, setNotifsLoadingMore] = useState(false)
+  const notifsPageRef = useRef(0)
+  // Bell badge count — independent of whether the Inbox tab has ever been
+  // opened this session, so the badge is accurate the moment the app loads.
+  const [unreadCount, setUnreadCount] = useState(0)
   const [hotPlaces, setHotPlaces] = useState<HotPlace[]>([])
   const [hotPlacesLoading, setHotPlacesLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
@@ -1294,14 +1356,17 @@ export default function ReviewsPage() {
     return () => { cancelled = true }
   }, [me, supabase])
 
-  // Load notifications + hot places when inbox tab opens
+  // Load notifications (page 0) + hot places when inbox tab opens. Re-opening
+  // the tab always refetches page 0 fresh (no "already loaded" guard) —
+  // that's an intentional, pre-existing behavior this page already had.
   useEffect(() => {
     if (tab !== 'inbox') return
     setNotifsLoading(true)
     setNotifsError(false)
-    fetch('/api/notifications')
+    notifsPageRef.current = 0
+    fetch('/api/notifications?page=0')
       .then(r => { if (!r.ok) throw new Error('notifs_failed'); return r.json() })
-      .then(d => setNotifs(d.notifications || []))
+      .then(d => { setNotifs(d.notifications || []); setNotifsHasMore(!!d.hasMore) })
       .catch(() => setNotifsError(true))
       .finally(() => setNotifsLoading(false))
     setHotPlacesLoading(true)
@@ -1326,6 +1391,64 @@ export default function ReviewsPage() {
       }
     })()
   }, [tab])
+
+  const loadMoreNotifs = useCallback(() => {
+    if (notifsLoadingMore) return
+    setNotifsLoadingMore(true)
+    const nextPage = notifsPageRef.current + 1
+    fetch(`/api/notifications?page=${nextPage}`)
+      .then(r => { if (!r.ok) throw new Error('notifs_failed'); return r.json() })
+      .then(d => {
+        notifsPageRef.current = nextPage
+        setNotifs(prev => [...prev, ...(d.notifications || [])])
+        setNotifsHasMore(!!d.hasMore)
+      })
+      .catch(() => {}) // best-effort — a failed "load more" just stops paging, doesn't blank the list already shown
+      .finally(() => setNotifsLoadingMore(false))
+  }, [notifsLoadingMore])
+
+  // Bell badge — fetched on mount (so it's right the moment the app loads,
+  // before the user ever opens Inbox) and polled every 45s. No Realtime
+  // channel exists anywhere in this codebase yet (verified); a single
+  // lightweight COUNT query on an indexed column is the proportionate choice
+  // here rather than introducing the app's first-ever Realtime subscription
+  // for one badge number.
+  useEffect(() => {
+    if (!me) { setUnreadCount(0); return }
+    let cancelled = false
+    const load = () => {
+      fetch('/api/notifications/unread-count')
+        .then(r => r.json())
+        .then(d => { if (!cancelled) setUnreadCount(d.count || 0) })
+        .catch(() => {})
+    }
+    load()
+    const interval = setInterval(load, 45_000)
+    return () => { cancelled = true; clearInterval(interval) }
+  }, [me])
+
+  // Marks the given notification ids read: optimistic local update (so the
+  // dot disappears and the badge decrements immediately) + fire the real
+  // API calls in parallel. A grouped LIKE row can carry several ids — see
+  // GroupedNotif.allIds.
+  const markNotifsRead = useCallback((ids: string[]) => {
+    const toMark = ids.filter(id => {
+      const n = notifs.find(x => x.id === id)
+      return n && !n.is_read
+    })
+    if (toMark.length === 0) return
+    setNotifs(prev => prev.map(n => toMark.includes(n.id) ? { ...n, is_read: true } : n))
+    setUnreadCount(c => Math.max(0, c - toMark.length))
+    Promise.all(toMark.map(id => fetch(`/api/notifications/read/${id}`, { method: 'POST' }).catch(() => {})))
+  }, [notifs])
+
+  const markAllNotifsRead = useCallback(() => {
+    const unreadIds = notifs.filter(n => !n.is_read).map(n => n.id)
+    if (unreadIds.length === 0) return
+    setNotifs(prev => prev.map(n => ({ ...n, is_read: true })))
+    setUnreadCount(0)
+    fetch('/api/notifications/read-all', { method: 'POST' }).catch(() => {})
+  }, [notifs])
 
   const fetch_ = useCallback(async (p: number, append = false, ft: 'for-you' | 'latest' | 'following' = 'for-you', signal?: AbortSignal) => {
     let url = `/api/reviews/feed?page=${p}&limit=12`
@@ -1748,12 +1871,18 @@ export default function ReviewsPage() {
               onSetTab={handleSetTab}
               onFeedTypeChange={handleFeedTypeChange}
               userPrefs={userPrefs}
+              unreadCount={unreadCount}
+              onMarkRead={markNotifsRead}
+              onMarkAllRead={markAllNotifsRead}
+              hasMore={notifsHasMore}
+              loadingMore={notifsLoadingMore}
+              onLoadMore={loadMoreNotifs}
             />
           )}
         </div>
       </div>
 
-      <TikNav tab={tab} setTab={handleSetTab} userId={me} />
+      <TikNav tab={tab} setTab={handleSetTab} userId={me} unreadCount={unreadCount} />
 
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
