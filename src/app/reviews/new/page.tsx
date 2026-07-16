@@ -221,6 +221,43 @@ export default function NewReviewPage() {
   const uploadControllerRef = useRef<AbortController | null>(null)
   const supabase = createClient()
 
+  /* ─── Auth gate ───────────────────────────────────────────────────────────
+     The composer is login-only: every upload path (photo, video, thumbnail)
+     mints a server-side token that 401s for anonymous users. With no gate here
+     an anonymous visitor reached the form, picked a video, and the 401 came
+     back as "Lỗi tải video" — a dead end that read as a broken uploader rather
+     than "please log in". Three layers now cover it: this mount gate (anon
+     never reaches the form), a pre-upload re-check (session expired while the
+     form sat open), and a post-failure re-check (session died mid-upload).
+     The query string rides along so the ?sound= "use this sound" deep link
+     survives the login round-trip. */
+  const loginHref = () =>
+    `/login?returnTo=${encodeURIComponent('/reviews/new' + window.location.search)}`
+
+  const [authed, setAuthed] = useState(false)
+  useEffect(() => {
+    let cancelled = false
+    supabase.auth.getUser()
+      .then(({ data: { user } }) => {
+        if (cancelled) return
+        if (user) setAuthed(true)
+        else router.replace(loginHref())
+      })
+      .catch(() => { if (!cancelled) router.replace(loginHref()) })
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Re-validates the session at the moment of an upload. Returns false (and
+  // routes to login) when it is gone, so a 401 can never surface as an upload
+  // error.
+  const ensureSession = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) return true
+    router.replace(loginHref())
+    return false
+  }
+
   /* shared */
   const [body, setBody] = useState('')
   const [rating, setRating] = useState(0)
@@ -289,6 +326,7 @@ export default function NewReviewPage() {
     const files = Array.from(e.target.files || [])
     if (!files.length) return
     if (photos.length + files.length > MAX_PHOTOS) { setError(t('reviewNew.maxPhotos', { n: String(MAX_PHOTOS) })); return }
+    if (!(await ensureSession())) return
     setPhotoUploading(true); setError('')
     try {
       const uploaded: string[] = []
@@ -314,6 +352,7 @@ export default function NewReviewPage() {
     const file = e.target.files?.[0]
     if (videoInputRef.current) videoInputRef.current.value = ''
     if (!file) return
+    if (!(await ensureSession())) return
     setError('')
     vstart('select', { name: file.name, sizeMB: +(file.size / 1048576).toFixed(2), type: file.type })
 
@@ -421,11 +460,15 @@ export default function NewReviewPage() {
       if ((e as Error)?.name === 'AbortError') {
         vfail('video-upload', tVideo, e, { note: 'user aborted' })
         setError(t('reviewNew.uploadCancelled'))
+        resetVideoState()
       } else {
         vfail('video-upload', tVideo, e)
-        setError(t('reviewNew.videoUploadError'))
+        resetVideoState()
+        // The upload token 401s if the session died mid-upload. Re-checking auth
+        // is what tells that apart from a genuine upload failure — an expired
+        // session routes to login rather than reading as "Lỗi tải video".
+        if (await ensureSession()) setError(t('reviewNew.videoUploadError'))
       }
-      resetVideoState()
     } finally {
       uploadControllerRef.current = null
     }
@@ -584,6 +627,17 @@ export default function NewReviewPage() {
     t('reviewNew.rating4'),
     t('reviewNew.rating5'),
   ]
+
+  /* ─── Auth gate screen ───
+     Held until the session is confirmed, so an anonymous visitor never sees the
+     form (they are already on their way to /login). */
+  if (!authed) {
+    return (
+      <div className="min-h-dvh bg-white dark:bg-gray-950 flex items-center justify-center">
+        <Loader2 size={24} className="animate-spin text-gray-400" />
+      </div>
+    )
+  }
 
   /* ─── Success screen ─── */
   if (success) {
