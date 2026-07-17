@@ -201,3 +201,128 @@ describe('Config Validation fails correctly (Step 3)', () => {
     expect(() => getProviderById('openai')).toThrow(/no adapter installed/)
   })
 })
+
+describe('Gemini adapter (Sprint 4 — staging only, no production traffic)', () => {
+  it('loads correctly via the Registry', () => {
+    const gemini = getProviderById('gemini')
+    expect(gemini.id).toBe('gemini')
+  })
+
+  it('resolves a model for every role without throwing', () => {
+    const gemini = getProviderById('gemini')
+    for (const role of ROLES) {
+      expect(() => gemini.model(role)).not.toThrow()
+      expect(typeof gemini.model(role).modelId).toBe('string')
+    }
+  })
+
+  it('reports vision support correctly', () => {
+    expect(getProviderById('gemini').capabilities.vision).toBe(true)
+  })
+
+  it('reports tool support (incl. forced tool choice) correctly', () => {
+    const caps = getProviderById('gemini').capabilities
+    expect(caps.tools).toBe(true)
+    expect(caps.forcedToolChoice).toBe(true)
+  })
+
+  it('honestly declares NO prompt-caching support (a real capability gap vs Claude)', () => {
+    expect(getProviderById('gemini').capabilities.promptCaching).toBe(false)
+  })
+
+  it('isConfigured() reflects GEMINI_API_KEY presence, same pattern as Claude', () => {
+    const original = process.env.GEMINI_API_KEY
+    try {
+      delete process.env.GEMINI_API_KEY
+      expect(getProviderById('gemini').isConfigured()).toBe(false)
+      process.env.GEMINI_API_KEY = 'test-only-placeholder'
+      expect(getProviderById('gemini').isConfigured()).toBe(true)
+    } finally {
+      if (original === undefined) delete process.env.GEMINI_API_KEY
+      else process.env.GEMINI_API_KEY = original
+    }
+  })
+
+  it('capability validation works: requiring promptCaching from Gemini throws UnsupportedCapabilityError', () => {
+    // The first real (non-fake) provider in this codebase that can actually
+    // exercise the Capability Registry's throw path — Claude declares every
+    // capability true, so Sprint 3's throw test needed a synthetic stub.
+    const gemini = getProviderById('gemini')
+    expect(() => assertCapabilities(gemini.id, 'smart', gemini.capabilities, ['promptCaching'])).toThrow(UnsupportedCapabilityError)
+    // Every other capability it DOES declare still passes.
+    expect(() => assertCapabilities(gemini.id, 'smart', gemini.capabilities, ['streaming', 'tools', 'forcedToolChoice', 'vision', 'jsonMode'])).not.toThrow()
+  })
+})
+
+describe('LLM_PROVIDER_OVERRIDE — staging-only escape hatch (Sprint 4)', () => {
+  const withEnv = (vars: Record<string, string | undefined>, fn: () => void) => {
+    const originals: Record<string, string | undefined> = {}
+    for (const k of Object.keys(vars)) originals[k] = process.env[k]
+    try {
+      for (const [k, v] of Object.entries(vars)) { if (v === undefined) delete process.env[k]; else process.env[k] = v }
+      fn()
+    } finally {
+      for (const [k, v] of Object.entries(originals)) { if (v === undefined) delete process.env[k]; else process.env[k] = v }
+    }
+  }
+
+  it('Router resolves to Gemini for every role when the override is set (non-production)', () => {
+    withEnv({ LLM_PROVIDER_OVERRIDE: 'gemini', VERCEL_ENV: undefined, NODE_ENV: 'test' }, () => {
+      for (const role of ROLES) {
+        expect(resolveProviderId(role)).toBe('gemini')
+        expect(resolveModel(role).provider.id).toBe('gemini')
+      }
+    })
+  })
+
+  it('is IGNORED when VERCEL_ENV=production, even if set — Claude stays default', () => {
+    withEnv({ LLM_PROVIDER_OVERRIDE: 'gemini', VERCEL_ENV: 'production' }, () => {
+      for (const role of ROLES) {
+        expect(resolveProviderId(role)).toBe('claude')
+        expect(resolveModel(role).provider.id).toBe('claude')
+      }
+    })
+  })
+
+  it('is IGNORED when NODE_ENV=production (no VERCEL_ENV), even if set — Claude stays default', () => {
+    withEnv({ LLM_PROVIDER_OVERRIDE: 'gemini', VERCEL_ENV: undefined, NODE_ENV: 'production' }, () => {
+      expect(resolveProviderId('fast')).toBe('claude')
+    })
+  })
+
+  it('Vercel Preview (VERCEL_ENV=preview) is treated as staging, not production — override applies', () => {
+    withEnv({ LLM_PROVIDER_OVERRIDE: 'gemini', VERCEL_ENV: 'preview' }, () => {
+      expect(resolveProviderId('fast')).toBe('gemini')
+    })
+  })
+
+  it('with no override set, production routing is completely unchanged — Claude for every role', () => {
+    withEnv({ LLM_PROVIDER_OVERRIDE: undefined }, () => {
+      for (const role of ROLES) {
+        expect(resolveProviderId(role)).toBe('claude')
+        expect(resolveModel(role).provider.id).toBe('claude')
+        expect(resolveModel(role).model.modelId).toBe(getProvider().model(role).modelId)
+      }
+    })
+  })
+
+  it('config validation catches an unknown LLM_PROVIDER_OVERRIDE value', () => {
+    withEnv({ LLM_PROVIDER_OVERRIDE: 'not-a-real-provider' }, () => {
+      expect(() => validateAIConfig()).toThrow(ConfigValidationError)
+      try { validateAIConfig() } catch (e) { expect((e as ConfigValidationError).reason).toBe('unknown_provider') }
+    })
+  })
+
+  it('config validation flags Gemini as missing_provider when overridden-to without credentials', () => {
+    withEnv({ LLM_PROVIDER_OVERRIDE: 'gemini', GEMINI_API_KEY: undefined }, () => {
+      expect(() => validateAIConfig()).toThrow(ConfigValidationError)
+      try { validateAIConfig() } catch (e) { expect((e as ConfigValidationError).reason).toBe('missing_provider') }
+    })
+  })
+
+  it('config validation passes once Gemini is overridden-to WITH credentials', () => {
+    withEnv({ LLM_PROVIDER_OVERRIDE: 'gemini', GEMINI_API_KEY: 'test-only-placeholder' }, () => {
+      expect(() => validateAIConfig()).not.toThrow()
+    })
+  })
+})

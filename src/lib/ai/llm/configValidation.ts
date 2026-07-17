@@ -46,8 +46,10 @@ function assertSaneModelOverride(envVar: string): void {
 
 /**
  * Validates:
- *  - LLM_PROVIDER and every LLM_PROVIDER_<ROLE> (if set) name a known
- *    provider id                                          → 'unknown_provider'
+ *  - LLM_PROVIDER, every LLM_PROVIDER_<ROLE>, and LLM_PROVIDER_OVERRIDE (if
+ *    set) name a known provider id — checked regardless of environment, so a
+ *    typo in a staging-only var is still caught even where it wouldn't apply
+ *                                                         → 'unknown_provider'
  *  - LLM_*_MODEL overrides (if set) are non-empty           → 'invalid_model_override'
  *  - KNOWN_PROVIDER_IDS / ALL_CAPABILITY_KEYS / ALL_MODEL_ROLES contain no
  *    duplicates — structurally guaranteed today by TypeScript's type system,
@@ -67,6 +69,9 @@ export function validateAIConfig(): void {
 
   const envProvider = process.env.LLM_PROVIDER
   if (envProvider) assertKnownProviderId(envProvider.toLowerCase(), 'LLM_PROVIDER')
+
+  const envOverrideVar = process.env.LLM_PROVIDER_OVERRIDE
+  if (envOverrideVar) assertKnownProviderId(envOverrideVar.toLowerCase(), 'LLM_PROVIDER_OVERRIDE')
 
   const usedProviderIds = new Set<ProviderId>([defaultProviderId()])
   for (const role of ALL_MODEL_ROLES) {

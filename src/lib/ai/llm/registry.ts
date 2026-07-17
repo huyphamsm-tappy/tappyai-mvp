@@ -1,6 +1,7 @@
 import type { AIProvider } from './provider'
 import type { ProviderId } from './types'
 import { createClaudeProvider } from './providers/claude'
+import { createGeminiProvider } from './providers/gemini'
 import { defaultProviderId, modelOverridesFromEnv } from './config'
 
 // ── Provider Registry — the single place a provider is instantiated ─────────
@@ -8,7 +9,11 @@ import { defaultProviderId, modelOverridesFromEnv } from './config'
 //
 // Adding a provider = one adapter file + one case below. Grok and DeepSeek
 // expose OpenAI-compatible APIs, so their adapters are @ai-sdk/openai with a
-// custom baseURL; Gemini uses @ai-sdk/google. No business code changes.
+// custom baseURL. No business code changes.
+//
+// Gemini (Sprint 4) is installed but receives NO production traffic —
+// Provider Policy (policy.ts) never names it outside the dev/staging-only
+// LLM_PROVIDER_OVERRIDE escape hatch. See ADR-012.
 
 // One memoized instance per provider id (not just the active one) — the
 // Router (router.ts) may try several candidate ids per call, and each must
@@ -21,8 +26,9 @@ function instantiateProvider(id: ProviderId): AIProvider {
   switch (id) {
     case 'claude':
       return createClaudeProvider(modelOverridesFromEnv())
-    case 'openai':
     case 'gemini':
+      return createGeminiProvider(modelOverridesFromEnv())
+    case 'openai':
     case 'grok':
     case 'deepseek':
       // Recognized extension points — adapter not installed yet.
