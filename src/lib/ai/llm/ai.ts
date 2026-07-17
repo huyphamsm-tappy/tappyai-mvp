@@ -3,7 +3,7 @@ import type { CapabilityKey } from './capabilities'
 import type { AIProvider } from './provider'
 import { getProvider } from './registry'
 import { resolveModel } from './router'
-import { emitTelemetry } from './telemetry'
+import { emitTelemetry, generateRequestId } from './telemetry'
 import type { AIGenerateOptions, AIStreamOptions, AIVisionOptions } from './types'
 
 // ── AI capability layer ──────────────────────────────────────────────────────
@@ -16,6 +16,14 @@ import type { AIGenerateOptions, AIStreamOptions, AIVisionOptions } from './type
 // Router existed — see docs/ai-platform/SPRINT_1_ARCHITECTURE_FOUNDATION.md §9.
 // Return values are the AI SDK's neutral result objects (result.text,
 // result.toDataStreamResponse(), …) — no caller ever sees a vendor response format.
+//
+// resolveModel() can throw synchronously (unknown/uninstalled provider, or —
+// Sprint 3 — UnsupportedCapabilityError). This is not new exposure: the
+// pre-Sprint-2 code already called getProvider().model(role) directly, which
+// could already throw synchronously for an unknown provider id. Every one of
+// the 14 call sites already wraps its AI.* call in a try/catch (verified
+// during the Sprint 3 audit), so this is unreachable-but-safe today — Claude
+// declares every capability every call site needs (golden.test.ts).
 
 /** Normalize system/prompt/messages into one list and let the resolved provider
  * apply its (semantically transparent) request shaping. The system prompt is
@@ -33,6 +41,32 @@ function modelIdOf(model: LanguageModelV1): string {
   return model.modelId ?? 'unknown'
 }
 
+function errorCodeOf(err: unknown): string {
+  return err instanceof Error ? err.name : 'UnknownError'
+}
+
+/** Resolves via the Router, emitting a telemetry event and re-throwing the
+ * SAME error object unchanged on failure (never swallowed) — so a resolution
+ * failure is observable without altering what the caller sees. */
+function resolveWithTelemetry(
+  method: 'generate' | 'stream' | 'vision',
+  role: Parameters<typeof resolveModel>[0],
+  requiredCaps: CapabilityKey[],
+  requestId: string,
+  startedAt: number,
+) {
+  try {
+    return resolveModel(role, requiredCaps)
+  } catch (err) {
+    emitTelemetry({
+      requestId, role, capability: requiredCaps, provider: 'unknown', model: 'unknown',
+      latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null, estimatedCost: null,
+      success: false, errorCode: errorCodeOf(err), retryCount: 0, method,
+    })
+    throw err
+  }
+}
+
 export const AI = {
   /** Which provider is active (telemetry/debug only — never branch on this). */
   providerId(): string {
@@ -47,8 +81,10 @@ export const AI = {
   /** Single-shot text generation (no tools, no streaming). */
   generate(opts: AIGenerateOptions) {
     const role = opts.role ?? 'fast'
-    const { provider, model } = resolveModel(role)
+    const requiredCaps: CapabilityKey[] = []
+    const requestId = generateRequestId()
     const startedAt = Date.now()
+    const { provider, model } = resolveWithTelemetry('generate', role, requiredCaps, requestId, startedAt)
     const result = generateText({
       model,
       messages: buildMessages(opts, provider),
@@ -57,14 +93,15 @@ export const AI = {
     })
     result.then(
       (res) => emitTelemetry({
-        event: 'ai_call', method: 'generate', providerId: provider.id, role, model: modelIdOf(model),
-        capabilities: [], ok: true, elapsedMs: Date.now() - startedAt,
-        promptTokens: res.usage?.promptTokens ?? null, completionTokens: res.usage?.completionTokens ?? null,
-        totalTokens: res.usage?.totalTokens ?? null, finishReason: res.finishReason ?? null,
+        requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
+        latencyMs: Date.now() - startedAt, inputTokens: res.usage?.promptTokens ?? null,
+        outputTokens: res.usage?.completionTokens ?? null, estimatedCost: null, success: true,
+        errorCode: null, retryCount: 0, method: 'generate', finishReason: res.finishReason ?? null,
       }),
-      () => emitTelemetry({
-        event: 'ai_call', method: 'generate', providerId: provider.id, role, model: modelIdOf(model),
-        capabilities: [], ok: false, elapsedMs: Date.now() - startedAt,
+      (err) => emitTelemetry({
+        requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
+        latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null, estimatedCost: null,
+        success: false, errorCode: errorCodeOf(err), retryCount: 0, method: 'generate',
       }),
     )
     return result
@@ -77,8 +114,9 @@ export const AI = {
     const requiredCaps: CapabilityKey[] = ['streaming']
     if (opts.tools) requiredCaps.push('tools')
     if (opts.prepareStep) requiredCaps.push('forcedToolChoice')
-    const { provider, model } = resolveModel(role, requiredCaps)
+    const requestId = generateRequestId()
     const startedAt = Date.now()
+    const { provider, model } = resolveWithTelemetry('stream', role, requiredCaps, requestId, startedAt)
     return streamText({
       model,
       messages: buildMessages(opts, provider),
@@ -87,10 +125,10 @@ export const AI = {
       tools: opts.tools,
       onFinish: async (result) => {
         emitTelemetry({
-          event: 'ai_call', method: 'stream', providerId: provider.id, role, model: modelIdOf(model),
-          capabilities: requiredCaps, ok: true, elapsedMs: Date.now() - startedAt,
-          promptTokens: result.usage?.promptTokens ?? null, completionTokens: result.usage?.completionTokens ?? null,
-          totalTokens: result.usage?.totalTokens ?? null, finishReason: result.finishReason ?? null,
+          requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
+          latencyMs: Date.now() - startedAt, inputTokens: result.usage?.promptTokens ?? null,
+          outputTokens: result.usage?.completionTokens ?? null, estimatedCost: null, success: true,
+          errorCode: null, retryCount: 0, method: 'stream', finishReason: result.finishReason ?? null,
         })
         if (opts.onFinish) await opts.onFinish(result)
       },
@@ -103,8 +141,10 @@ export const AI = {
   /** Image + instruction → text (OCR, image analysis). */
   vision(opts: AIVisionOptions) {
     const role = opts.role ?? 'vision'
-    const { provider, model } = resolveModel(role, ['vision'])
+    const requiredCaps: CapabilityKey[] = ['vision']
+    const requestId = generateRequestId()
     const startedAt = Date.now()
+    const { provider, model } = resolveWithTelemetry('vision', role, requiredCaps, requestId, startedAt)
     const result = generateText({
       model,
       messages: buildMessages({
@@ -120,14 +160,15 @@ export const AI = {
     })
     result.then(
       (res) => emitTelemetry({
-        event: 'ai_call', method: 'vision', providerId: provider.id, role, model: modelIdOf(model),
-        capabilities: ['vision'], ok: true, elapsedMs: Date.now() - startedAt,
-        promptTokens: res.usage?.promptTokens ?? null, completionTokens: res.usage?.completionTokens ?? null,
-        totalTokens: res.usage?.totalTokens ?? null, finishReason: res.finishReason ?? null,
+        requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
+        latencyMs: Date.now() - startedAt, inputTokens: res.usage?.promptTokens ?? null,
+        outputTokens: res.usage?.completionTokens ?? null, estimatedCost: null, success: true,
+        errorCode: null, retryCount: 0, method: 'vision', finishReason: res.finishReason ?? null,
       }),
-      () => emitTelemetry({
-        event: 'ai_call', method: 'vision', providerId: provider.id, role, model: modelIdOf(model),
-        capabilities: ['vision'], ok: false, elapsedMs: Date.now() - startedAt,
+      (err) => emitTelemetry({
+        requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
+        latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null, estimatedCost: null,
+        success: false, errorCode: errorCodeOf(err), retryCount: 0, method: 'vision',
       }),
     )
     return result

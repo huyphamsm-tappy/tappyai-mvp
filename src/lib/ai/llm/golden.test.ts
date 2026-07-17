@@ -1,40 +1,56 @@
 import { describe, it, expect } from 'vitest'
-import { getProvider } from './registry'
+import { getProvider, getProviderById } from './registry'
 import { resolveModel } from './router'
+import { resolveProviderId } from './policy'
+import { validateAIConfig, ConfigValidationError, assertNoDuplicates } from './configValidation'
+import {
+  ALL_CAPABILITY_KEYS,
+  assertCapabilities,
+  hasCapabilities,
+  UnsupportedCapabilityError,
+  type ProviderCapabilities,
+} from './capabilities'
+import { KNOWN_PROVIDER_IDS } from './config'
 import type { ModelRole } from './types'
-import type { CapabilityKey } from './capabilities'
 
-// ── Golden regression test — proves the Sprint-2 foundation is inert ────────
-// Per docs/ai-platform/SPRINT_1_ARCHITECTURE_FOUNDATION.md §9 point 6: for
-// every role, the Router's resolved model id must equal what the pre-Router
-// code (getProvider().model(role)) resolved to. If this passes, the whole
-// "no behavior change" proof is mechanically verified, not just asserted.
-// Runs fully offline — constructing a LanguageModelV1 wrapper does not call
-// the network; only an actual generate/stream/vision call would.
+// ── Golden regression suite — the AI platform's "no behavior change" proof ──
+// Runs fully offline: constructing a LanguageModelV1 wrapper never calls the
+// network; only an actual generate/stream/vision call would.
 
 const ROLES: ModelRole[] = ['fast', 'smart', 'planning', 'vision']
-const ALL_CAPS: CapabilityKey[] = ['streaming', 'tools', 'forcedToolChoice', 'vision', 'jsonMode', 'promptCaching']
 
-describe('AI platform foundation — no behavior change', () => {
-  it('router resolves the same model id as the pre-Router direct path, for every role', () => {
+describe('AI Router — resolves identically to the pre-Router direct path', () => {
+  it('resolves the same model id as getProvider().model(role), for every role', () => {
     for (const role of ROLES) {
-      const before = getProvider().model(role).modelId
-      const after = resolveModel(role).model.modelId
-      expect(after).toBe(before)
+      expect(resolveModel(role).model.modelId).toBe(getProvider().model(role).modelId)
     }
   })
 
-  it('router resolves the same provider id as getProvider(), for every role', () => {
+  it('resolves the same provider id as getProvider(), for every role', () => {
     for (const role of ROLES) {
       expect(resolveModel(role).provider.id).toBe(getProvider().id)
     }
   })
 
-  it('requiring every declared capability still resolves to the same provider (Claude declares all true)', () => {
+  it('requiring every declared capability still resolves (Claude declares all true)', () => {
     for (const role of ROLES) {
-      const { provider, model } = resolveModel(role, ALL_CAPS)
+      const { provider, model } = resolveModel(role, ALL_CAPABILITY_KEYS)
       expect(provider.id).toBe(getProvider().id)
       expect(model.modelId).toBe(getProvider().model(role).modelId)
+    }
+  })
+
+  it('requiring each individual capability, one at a time, resolves correctly for every role', () => {
+    for (const role of ROLES) {
+      for (const cap of ALL_CAPABILITY_KEYS) {
+        expect(() => resolveModel(role, [cap])).not.toThrow()
+      }
+    }
+  })
+
+  it('with no per-role env override, the Policy names exactly the global default — no candidate list', () => {
+    for (const role of ROLES) {
+      expect(resolveProviderId(role)).toBe(getProvider().id)
     }
   })
 
@@ -42,25 +58,146 @@ describe('AI platform foundation — no behavior change', () => {
     expect(getProvider().id).toBe('claude')
     expect(getProvider().isConfigured()).toBe(!!process.env.ANTHROPIC_API_KEY)
   })
+})
 
-  it('with no per-role env override, the Policy yields exactly one candidate (today\'s single-provider shape)', async () => {
-    const { resolveCandidates } = await import('./policy')
-    for (const role of ROLES) {
-      expect(resolveCandidates(role)).toEqual(['claude'])
+describe('AI Router purity (Step 1)', () => {
+  it('is a plain synchronous function with no hidden async/retry behavior', () => {
+    // resolveModel must return synchronously (no Promise) — a Router that
+    // retried or fell back across a network call would need to be async.
+    const result = resolveModel('fast')
+    expect(result).not.toBeInstanceOf(Promise)
+  })
+
+  it('reads no environment variables of its own — same result across repeated calls with unrelated env noise', () => {
+    process.env.SOME_UNRELATED_VAR = 'noise'
+    const before = resolveModel('fast').model.modelId
+    delete process.env.SOME_UNRELATED_VAR
+    const after = resolveModel('fast').model.modelId
+    expect(after).toBe(before)
+  })
+})
+
+describe('Capability Registry — unsupported capability throws, never downgrades (Step 2)', () => {
+  const fakeCaps = (overrides: Partial<ProviderCapabilities> = {}): ProviderCapabilities => ({
+    streaming: true, tools: true, forcedToolChoice: true, vision: true, jsonMode: true, promptCaching: true,
+    ...overrides,
+  })
+
+  it('assertCapabilities throws UnsupportedCapabilityError listing every missing capability', () => {
+    const caps = fakeCaps({ vision: false, tools: false })
+    try {
+      assertCapabilities('fake-provider', 'planning', caps, ['vision', 'tools', 'streaming'])
+      expect.unreachable('expected assertCapabilities to throw')
+    } catch (e) {
+      expect(e).toBeInstanceOf(UnsupportedCapabilityError)
+      const err = e as UnsupportedCapabilityError
+      expect(err.providerId).toBe('fake-provider')
+      expect(err.role).toBe('planning')
+      expect(err.missing).toEqual(['vision', 'tools'])
     }
   })
 
-  it('Claude adapter declares every capability the 14 audited call sites actually need', () => {
+  it('assertCapabilities does not throw when every required capability is present', () => {
+    expect(() => assertCapabilities('fake-provider', 'fast', fakeCaps(), ['streaming', 'vision'])).not.toThrow()
+  })
+
+  it('hasCapabilities is a non-throwing predicate matching assertCapabilities', () => {
+    const caps = fakeCaps({ jsonMode: false })
+    expect(hasCapabilities(caps, ['jsonMode'])).toBe(false)
+    expect(hasCapabilities(caps, ['streaming'])).toBe(true)
+  })
+
+  it('the real Claude adapter declares every capability the 14 audited call sites need', () => {
     const caps = getProvider().capabilities
     // streaming + tools + forcedToolChoice: chat route's AI.stream (maxSteps, prepareStep, tools)
     // vision: scan (OCR) + contentProcessor thumbnail enrichment
     // jsonMode: viet-content / memoryService / contentProcessor all prompt for JSON replies
     // promptCaching: chat route's large system prompt via decorateMessages
-    expect(caps.streaming).toBe(true)
-    expect(caps.tools).toBe(true)
-    expect(caps.forcedToolChoice).toBe(true)
-    expect(caps.vision).toBe(true)
-    expect(caps.jsonMode).toBe(true)
-    expect(caps.promptCaching).toBe(true)
+    for (const cap of ALL_CAPABILITY_KEYS) expect(caps[cap]).toBe(true)
+  })
+
+  it('ALL_CAPABILITY_KEYS stays in sync with the real adapter\'s declared keys (catches drift)', () => {
+    const declaredKeys = Object.keys(getProvider().capabilities).sort()
+    expect(declaredKeys).toEqual([...ALL_CAPABILITY_KEYS].sort())
+  })
+})
+
+describe('Config Validation fails correctly (Step 3)', () => {
+  it('the real, unmodified production config is valid (no production routing changes)', () => {
+    // Under `vitest run`, NODE_ENV=test, and @next/env's loadEnvConfig
+    // deliberately excludes .env.local for NODE_ENV=test (the same dotenv/
+    // Next.js convention Jest follows: personal dev secrets shouldn't leak
+    // into test runs). ANTHROPIC_API_KEY lives only in .env.local, so it is
+    // genuinely absent here — this is a test-environment fact, not a
+    // production one (next build / next dev load it fine, confirmed
+    // separately). Supply a placeholder ONLY if the real one isn't already
+    // present, so this test exercises the actual validation logic (every
+    // structural rule: known provider, known per-role overrides, sane model
+    // overrides, no duplicates) without depending on secret-loading
+    // conventions, and without ever touching/logging a real credential.
+    const hadKey = process.env.ANTHROPIC_API_KEY
+    if (!hadKey) process.env.ANTHROPIC_API_KEY = 'test-only-placeholder-value'
+    try {
+      expect(() => validateAIConfig()).not.toThrow()
+    } finally {
+      if (!hadKey) delete process.env.ANTHROPIC_API_KEY
+    }
+  })
+
+  it('rejects an unknown LLM_PROVIDER', () => {
+    const original = process.env.LLM_PROVIDER
+    process.env.LLM_PROVIDER = 'not-a-real-provider'
+    try {
+      expect(() => validateAIConfig()).toThrow(ConfigValidationError)
+      try { validateAIConfig() } catch (e) { expect((e as ConfigValidationError).reason).toBe('unknown_provider') }
+    } finally {
+      if (original === undefined) delete process.env.LLM_PROVIDER
+      else process.env.LLM_PROVIDER = original
+    }
+  })
+
+  it('rejects an unknown per-role LLM_PROVIDER_<ROLE> override', () => {
+    const original = process.env.LLM_PROVIDER_VISION
+    process.env.LLM_PROVIDER_VISION = 'not-a-real-provider'
+    try {
+      expect(() => validateAIConfig()).toThrow(ConfigValidationError)
+      try { validateAIConfig() } catch (e) { expect((e as ConfigValidationError).reason).toBe('unknown_provider') }
+    } finally {
+      if (original === undefined) delete process.env.LLM_PROVIDER_VISION
+      else process.env.LLM_PROVIDER_VISION = original
+    }
+  })
+
+  it('rejects an empty/whitespace-only model override', () => {
+    const original = process.env.LLM_FAST_MODEL
+    process.env.LLM_FAST_MODEL = '   '
+    try {
+      expect(() => validateAIConfig()).toThrow(ConfigValidationError)
+      try { validateAIConfig() } catch (e) { expect((e as ConfigValidationError).reason).toBe('invalid_model_override') }
+    } finally {
+      if (original === undefined) delete process.env.LLM_FAST_MODEL
+      else process.env.LLM_FAST_MODEL = original
+    }
+  })
+
+  it('rejects a provider referenced by config but missing credentials', () => {
+    const original = process.env.ANTHROPIC_API_KEY
+    delete process.env.ANTHROPIC_API_KEY
+    try {
+      expect(() => validateAIConfig()).toThrow(ConfigValidationError)
+      try { validateAIConfig() } catch (e) { expect((e as ConfigValidationError).reason).toBe('missing_provider') }
+    } finally {
+      if (original !== undefined) process.env.ANTHROPIC_API_KEY = original
+    }
+  })
+
+  it('assertNoDuplicates throws on a repeated entry and passes on the real config arrays', () => {
+    expect(() => assertNoDuplicates(['a', 'b', 'a'], 'test item')).toThrow(ConfigValidationError)
+    expect(() => assertNoDuplicates(KNOWN_PROVIDER_IDS, 'provider id')).not.toThrow()
+    expect(() => assertNoDuplicates(ALL_CAPABILITY_KEYS, 'capability key')).not.toThrow()
+  })
+
+  it('getProviderById throws a clear error for a recognized-but-not-installed provider', () => {
+    expect(() => getProviderById('openai')).toThrow(/no adapter installed/)
   })
 })

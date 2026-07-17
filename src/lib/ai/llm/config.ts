@@ -1,5 +1,14 @@
 import type { ModelOverrides, ModelRole, ProviderId } from './types'
 
+// Every provider id the architecture recognizes (installed or not — see
+// registry.ts). The runtime source of truth for "is this id known at all",
+// used by configValidation.ts. Kept here (not derived from the ProviderId
+// union, which TS erases at runtime) so it can be checked for accidental
+// duplicates the same way ALL_CAPABILITY_KEYS is.
+export const KNOWN_PROVIDER_IDS: ProviderId[] = ['claude', 'openai', 'gemini', 'grok', 'deepseek']
+
+export const ALL_MODEL_ROLES: ModelRole[] = ['fast', 'smart', 'planning', 'vision']
+
 // ── Config Contract — the single place every AI-layer env var is read ───────
 //
 //   LLM_PROVIDER          which adapter is active by default: claude | openai

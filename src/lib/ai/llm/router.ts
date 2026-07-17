@@ -1,8 +1,8 @@
 import type { LanguageModelV1 } from 'ai'
-import { hasCapabilities, type CapabilityKey } from './capabilities'
+import { assertCapabilities, type CapabilityKey } from './capabilities'
 import type { AIProvider } from './provider'
-import { getProvider, getProviderById } from './registry'
-import { resolveCandidates } from './policy'
+import { getProviderById } from './registry'
+import { resolveProviderId } from './policy'
 import type { ModelRole } from './types'
 
 export interface ResolvedModel {
@@ -10,30 +10,26 @@ export interface ResolvedModel {
   model: LanguageModelV1
 }
 
-// ── AI Router — (role, required capabilities) → (provider, model) ──────────
-// Generalizes the old `getProvider().model(role)` call: tries the Policy's
-// ordered candidates for this role, skipping any that are not installed, not
-// configured (missing credentials), or missing a capability this call needs.
-// Falls back to the process's globally active provider (today's getProvider())
-// if no candidate qualifies — so a misconfigured policy degrades to current
-// behavior instead of throwing.
+// ── AI Router — a PURE resolver ──────────────────────────────────────────────
+//   Capability / Role → Provider Policy → Provider → Model
 //
-// With only one provider installed (Claude) and no per-role env overrides —
-// true in production today — this always resolves to exactly what
-// getProvider().model(role) resolved to before the Router existed.
+// The Router does NOT: log, cache, retry, fall back, build prompts, mutate
+// requests, call an SDK, or read environment variables directly (Policy and
+// Config own env access; ai.ts owns telemetry). Every step here is a plain
+// function call; nothing is swallowed. If the Policy names a provider with no
+// installed adapter, getProviderById's error propagates unchanged — that is
+// normal error propagation, not a retry/fallback. If the resolved provider
+// can't serve a required capability, assertCapabilities throws
+// UnsupportedCapabilityError — never a silent downgrade or an auto-switch to
+// a different provider (see ADR-008).
+//
+// With only Claude installed and no per-role env override — true in
+// production today — this always resolves to exactly what
+// getProvider().model(role) resolved to before the Router existed (proven in
+// golden.test.ts).
 export function resolveModel(role: ModelRole, requiredCaps: CapabilityKey[] = []): ResolvedModel {
-  for (const id of resolveCandidates(role)) {
-    let provider: AIProvider
-    try {
-      provider = getProviderById(id)
-    } catch {
-      continue // recognized-but-not-installed / unknown id — skip, don't throw
-    }
-    if (!provider.isConfigured()) continue
-    if (hasCapabilities(provider.capabilities, requiredCaps)) {
-      return { provider, model: provider.model(role) }
-    }
-  }
-  const provider = getProvider()
+  const providerId = resolveProviderId(role)
+  const provider = getProviderById(providerId)
+  assertCapabilities(provider.id, role, provider.capabilities, requiredCaps)
   return { provider, model: provider.model(role) }
 }
