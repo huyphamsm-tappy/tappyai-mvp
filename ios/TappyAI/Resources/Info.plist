@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>TappyAI</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+
+	<!-- Environment (injected from Config/*.xcconfig) -->
+	<key>TAPPY_API_BASE_URL</key>
+	<string>$(TAPPY_API_BASE_URL)</string>
+	<key>TAPPY_ENV</key>
+	<string>$(TAPPY_ENV)</string>
+	<key>SUPABASE_URL</key>
+	<string>$(SUPABASE_URL)</string>
+	<key>SUPABASE_ANON_KEY</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+
+	<!-- Launch + orientation -->
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+
+	<!-- Permission usage strings (foundation placeholders; wording finalized with feature work) -->
+	<key>NSCameraUsageDescription</key>
+	<string>TappyAI uses the camera to record reviews and scan menus/receipts.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>TappyAI uses the microphone to record video reviews and original sounds.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>TappyAI accesses your photos to upload reviews and images.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>TappyAI saves media you export from the app.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>TappyAI uses your location to find nearby places and personalize suggestions.</string>
+
+	<!-- Custom URL scheme for OAuth callbacks (Google/Zalo). Also register a universal-link domain (D4). -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.tappyai.ios</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tappyai</string>
+			</array>
+		</dict>
+	</array>
+
+	<!-- App Transport Security: allow plain HTTP to localhost for Debug simulator builds.
+	     Debug.xcconfig sets TAPPY_API_BASE_URL = http://localhost:3000 (HTTP). Without this
+	     exception, URLSession blocks all connections and the app cannot reach the backend in
+	     development. Production builds use HTTPS so this exception has no effect in release.
+	     Apple explicitly permits localhost ATS exceptions during App Store review. -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

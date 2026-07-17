@@ -17,7 +17,7 @@
 | **Technical Debt** | (1) Legacy `/admin/analytics` renders nested in the new shell until Phase 1 replaces it. (2) Settings is a read-only shell (persistence needs a future ADR). (3) `ADMIN_IDS`/`isAdmin()` kept as deprecated compat — removal tracked in roadmap. (4) RBAC role cache is per-serverless-instance (≤60s revocation lag). |
 | **Known Issues** | None functional at code level. Settings persistence intentionally absent (architecture gap, not a bug). |
 | **Risks** | (1) **Lockout risk** if code is deployed before the seed runs — mitigated by the mandated order (migrate → seed → deploy). (2) Per-instance role cache (accepted, ADR-003). (3) Portaled Radix theming relies on global `:root` tokens (verified product-safe). |
-| **Commit Hash** | ⏳ **Not yet committed** — awaiting owner instruction to commit (per repo policy, I commit only when asked). Will record the hash here upon commit. |
+| **Commit Hash** | ✅ `dc7fc84` (full: `dc7fc84dd120c038cf2287865d9c2528fd561384`) on branch `feat/backoffice-phase0` (74 files). Not pushed/deployed yet. |
 | **Deployment Status** | ⏳ **Not deployed.** |
 | **Owner Approval** | ⏳ **Pending.** |
 | **Next Phase** | Phase 1 — Analytics Core (do **not** start until Phase 0 is Completed and approved). |

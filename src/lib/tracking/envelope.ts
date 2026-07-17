@@ -7,6 +7,8 @@
 // server_timestamp (created_at), country (from IP). The client supplies the
 // device/session context and the idempotency key.
 
+import { detectDeviceContext, type DeviceContext } from './deviceContext'
+
 const SCHEMA_VERSION = 1
 
 function uuid(): string {
@@ -49,24 +51,6 @@ function getSessionId(): string {
   } catch { return uuid() }
 }
 
-function getDeviceType(): 'phone' | 'tablet' | 'desktop' | 'unknown' {
-  const ua = typeof navigator !== 'undefined' ? navigator.userAgent || '' : ''
-  if (/iPad|Tablet/i.test(ua)) return 'tablet'
-  if (/Mobi|Android|iPhone/i.test(ua)) return 'phone'
-  if (typeof window !== 'undefined') return 'desktop'
-  return 'unknown'
-}
-
-function getOs(): { name: string; version: string } {
-  const ua = typeof navigator !== 'undefined' ? navigator.userAgent || '' : ''
-  if (/Android/i.test(ua)) return { name: 'Android', version: (ua.match(/Android ([\d.]+)/) || [])[1] || '' }
-  if (/iPhone|iPad|iPod/i.test(ua)) return { name: 'iOS', version: ((ua.match(/OS ([\d_]+)/) || [])[1] || '').replace(/_/g, '.') }
-  if (/Windows/i.test(ua)) return { name: 'Windows', version: (ua.match(/Windows NT ([\d.]+)/) || [])[1] || '' }
-  if (/Mac OS X/i.test(ua)) return { name: 'macOS', version: '' }
-  if (/Linux/i.test(ua)) return { name: 'Linux', version: '' }
-  return { name: 'unknown', version: '' }
-}
-
 export interface AnalyticsEnvelope {
   event_id: string
   schema_version: number
@@ -80,24 +64,34 @@ export interface AnalyticsEnvelope {
   language: string
   session_id: string
   client_timestamp: string
+  // Full cross-platform device contract (Android/iOS fill the identical shape).
+  // The flat fields above (os_name/os_version/device_type/app_version/platform,
+  // language←locale) are PROJECTED from this same object — one detection path,
+  // no duplicated logic. They are kept flat for the existing rollups/dimension
+  // that index them; device_context is the complete, forward-scalable record.
+  device_context: DeviceContext
 }
 
 // Build the envelope for a single event. event_id is generated here — at event
 // creation — so retries/duplicate flushes reuse it and dedup server-side (§8A.1).
+// Device signals are detected ONCE (detectDeviceContext); the flat envelope
+// fields are projected from that single detection so callers and existing
+// consumers are unchanged.
 export function buildEnvelope(): AnalyticsEnvelope {
-  const os = getOs()
+  const device = detectDeviceContext()
   return {
     event_id: uuid(),
     schema_version: SCHEMA_VERSION,
     anon_id: getAnonId(),
     platform: 'web',
-    app_version: process.env.NEXT_PUBLIC_APP_VERSION || 'unknown',
-    build_number: process.env.NEXT_PUBLIC_BUILD_NUMBER || 'unknown',
-    os_name: os.name,
-    os_version: os.version,
-    device_type: getDeviceType(),
-    language: (typeof navigator !== 'undefined' && navigator.language) || 'unknown',
+    app_version: device.app_version,
+    build_number: device.build_number,
+    os_name: device.os_name,
+    os_version: device.os_version,
+    device_type: device.device_type,
+    language: device.locale,
     session_id: getSessionId(),
     client_timestamp: new Date().toISOString(),
+    device_context: device,
   }
 }

@@ -40,6 +40,10 @@ interface IncomingEvent {
   language?: string
   session_id?: string
   client_timestamp?: string
+  // Full cross-platform device contract (see src/lib/tracking/deviceContext.ts).
+  // Stored verbatim in the additive user_events.device_context jsonb column; the
+  // flat columns above remain the indexed hot dimensions used by the rollups.
+  device_context?: Record<string, unknown>
 }
 
 export async function POST(req: NextRequest) {
@@ -88,6 +92,7 @@ export async function POST(req: NextRequest) {
       language: e.language ?? null,
       session_id: e.session_id ?? null,
       client_timestamp: e.client_timestamp ?? null,
+      device_context: e.device_context ?? null, // full cross-platform device contract
       created_at: nowIso, // server_timestamp
     }))
 

@@ -33,9 +33,12 @@
 
 | # | Gate | Owner action | Status |
 |---|---|---|---|
-| B1 | Commit Phase 0 changes; record hash | approve commit | ⏳ |
-| B2 | Confirm Super Admin UUID(s) to seed | provide UUID(s) | ⏳ |
-| B3 | Confirm target environment for verification (prod / preview) | choose | ⏳ |
+| B1 | Commit Phase 0 changes; record hash | approved | ✅ `dc7fc84` on `feat/backoffice-phase0` (74 files) |
+| B2 | Confirm Super Admin UUID(s) to seed | provide UUID(s) | ⏳ awaiting |
+| B3 | Confirm target environment for verification | chosen | ✅ **Production** (Option B — single Supabase project; no preview/staging DB, no new infra) |
+| B4 | Allow-side PV method | chosen | ✅ Claude drives owner's logged-in Chrome (super_admin session); Claude never handles the password |
+
+**Finalized release order (owner decision):** migration (C1) → seed (C2) → **then** merge `feat/backoffice-phase0` → `main` → deploy (C3) → smoke test → PV-1…6 → report → owner approval. No deploy before seed.
 
 ## Gate C — Production Execution (owner runs, in ORDER)
 
