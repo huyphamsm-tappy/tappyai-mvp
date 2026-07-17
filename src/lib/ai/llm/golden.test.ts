@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs'
+import { fileURLToPath } from 'url'
 import { describe, it, expect } from 'vitest'
 import { getProvider, getProviderById } from './registry'
 import { resolveModel } from './router'
@@ -11,7 +13,18 @@ import {
   type ProviderCapabilities,
 } from './capabilities'
 import { KNOWN_PROVIDER_IDS } from './config'
+import { calculateCost } from './costCalculator'
+import { PRICING_CATALOG, PRICING_CATALOG_VERSION, findPricing } from './pricingCatalog'
+import { CAPABILITY_COST_POLICY } from './capabilityCostPolicy'
+import { BUDGET_TIERS } from './budgetTiers'
 import type { ModelRole } from './types'
+
+const moduleSource = (relPath: string): string => readFileSync(fileURLToPath(new URL(relPath, import.meta.url)), 'utf8')
+
+// Strips comments before a source-text architecture check runs, so a doc
+// comment ILLUSTRATING a forbidden pattern (e.g. "never write
+// `if (provider === 'claude')`") isn't mistaken for the pattern itself.
+const stripComments = (src: string): string => src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')
 
 // ── Golden regression suite — the AI platform's "no behavior change" proof ──
 // Runs fully offline: constructing a LanguageModelV1 wrapper never calls the
@@ -324,5 +337,139 @@ describe('LLM_PROVIDER_OVERRIDE — staging-only escape hatch (Sprint 4)', () =>
     withEnv({ LLM_PROVIDER_OVERRIDE: 'gemini', GEMINI_API_KEY: 'test-only-placeholder' }, () => {
       expect(() => validateAIConfig()).not.toThrow()
     })
+  })
+})
+
+describe('Pricing Catalog (Sprint 5, Step 2)', () => {
+  it('loads correctly and contains entries for both Claude models actually in use', () => {
+    expect(PRICING_CATALOG.length).toBeGreaterThan(0)
+    expect(findPricing('claude', 'claude-haiku-4-5')).toBeDefined()
+    expect(findPricing('claude', 'claude-haiku-4-5-20251001')).toBeDefined()
+  })
+
+  it('every catalog entry has the full Pricing Contract shape', () => {
+    for (const entry of PRICING_CATALOG) {
+      expect(entry.provider).toBe('claude')
+      expect(typeof entry.model).toBe('string')
+      expect(typeof entry.inputTokenPrice).toBe('number')
+      expect(typeof entry.outputTokenPrice).toBe('number')
+      expect(entry.currency).toBe('USD')
+      expect(typeof entry.effectiveDate).toBe('string')
+    }
+  })
+
+  it('has no entries for Gemini — the "empty placeholder" the brief calls for', () => {
+    expect(PRICING_CATALOG.some(p => p.provider === 'gemini')).toBe(false)
+  })
+
+  it('PRICING_CATALOG_VERSION is a non-empty string', () => {
+    expect(typeof PRICING_CATALOG_VERSION).toBe('string')
+    expect(PRICING_CATALOG_VERSION.length).toBeGreaterThan(0)
+  })
+})
+
+describe('Cost Calculator (Sprint 5, Step 3)', () => {
+  it('is deterministic — identical input always yields identical output', () => {
+    const input = { provider: 'claude', model: 'claude-haiku-4-5', inputTokens: 1000, outputTokens: 500 }
+    const a = calculateCost(input)
+    const b = calculateCost({ ...input })
+    const c = calculateCost({ ...input })
+    expect(a).toBe(b)
+    expect(b).toBe(c)
+  })
+
+  it('computes a plausible, positive cost for a known Claude model', () => {
+    const cost = calculateCost({ provider: 'claude', model: 'claude-haiku-4-5', inputTokens: 1_000_000, outputTokens: 1_000_000 })
+    expect(cost).toBeGreaterThan(0)
+    // 1M input @ $1/M + 1M output @ $5/M = $6, per the current catalog entry.
+    expect(cost).toBe(6)
+  })
+
+  it('returns undefined for an unknown MODEL (known provider)', () => {
+    expect(calculateCost({ provider: 'claude', model: 'not-a-real-model', inputTokens: 100, outputTokens: 100 })).toBeUndefined()
+  })
+
+  it('returns undefined for an unknown PROVIDER (e.g. Gemini — no catalog entry yet)', () => {
+    expect(calculateCost({ provider: 'gemini', model: 'gemini-2.5-flash', inputTokens: 100, outputTokens: 100 })).toBeUndefined()
+  })
+
+  it('returns undefined for a completely unrecognized provider string, never throws', () => {
+    expect(() => calculateCost({ provider: 'not-a-real-provider', model: 'x', inputTokens: 1, outputTokens: 1 })).not.toThrow()
+    expect(calculateCost({ provider: 'not-a-real-provider', model: 'x', inputTokens: 1, outputTokens: 1 })).toBeUndefined()
+  })
+
+  it('cached tokens are clamped to inputTokens and never produce a negative cost', () => {
+    const cost = calculateCost({ provider: 'claude', model: 'claude-haiku-4-5', inputTokens: 100, outputTokens: 0, cachedInputTokens: 999_999 })
+    expect(cost).toBeGreaterThanOrEqual(0)
+  })
+
+  it('contains no hardcoded provider-specific branching (source-text check, per the Owner Architecture Principle)', () => {
+    const src = stripComments(moduleSource('./costCalculator.ts'))
+    expect(src).not.toMatch(/===\s*['"]claude['"]/)
+    expect(src).not.toMatch(/===\s*['"]gemini['"]/)
+    expect(src).not.toMatch(/===\s*['"]openai['"]/)
+  })
+})
+
+describe('Telemetry cost fields (Sprint 5, Step 4)', () => {
+  it('AI.* calls never throw due to cost computation (verified via the exported calculator directly)', () => {
+    // ai.ts's costFields() helper is not exported (internal), so this proves
+    // the piece it depends on can never be the source of a throw: every
+    // input shape it's called with (real usage numbers, or nulls when usage
+    // is missing) either returns a number or undefined, never throws.
+    expect(() => calculateCost({ provider: 'claude', model: 'claude-haiku-4-5', inputTokens: 0, outputTokens: 0 })).not.toThrow()
+    expect(() => calculateCost({ provider: 'unknown', model: 'unknown', inputTokens: 0, outputTokens: 0 })).not.toThrow()
+  })
+})
+
+describe('Budget Tiers + Capability Cost Policy — metadata only (Sprint 5, Steps 5-6)', () => {
+  it('BUDGET_TIERS contains exactly the five documented tiers', () => {
+    expect(BUDGET_TIERS).toEqual(['LOW', 'MEDIUM', 'HIGH', 'PREMIUM', 'ENTERPRISE'])
+  })
+
+  it('CAPABILITY_COST_POLICY covers every ModelRole with a valid tier', () => {
+    const roles: ModelRole[] = ['fast', 'smart', 'planning', 'vision']
+    for (const role of roles) {
+      expect(BUDGET_TIERS).toContain(CAPABILITY_COST_POLICY[role])
+    }
+  })
+})
+
+describe('Router/Policy ignore the Cost Policy entirely (Sprint 5, Step 8 — the key regression guard)', () => {
+  it('router.ts does not import any cost/budget/pricing module (static source check)', () => {
+    const src = moduleSource('./router.ts')
+    for (const forbidden of ['capabilityCostPolicy', 'budgetTiers', 'costCalculator', 'pricingCatalog', 'CAPABILITY_COST_POLICY', 'BudgetTier']) {
+      expect(src).not.toContain(forbidden)
+    }
+  })
+
+  it('policy.ts does not import any cost/budget/pricing module (static source check)', () => {
+    const src = moduleSource('./policy.ts')
+    for (const forbidden of ['capabilityCostPolicy', 'budgetTiers', 'costCalculator', 'pricingCatalog', 'CAPABILITY_COST_POLICY', 'BudgetTier']) {
+      expect(src).not.toContain(forbidden)
+    }
+  })
+
+  it('mutating the Cost Policy at runtime has zero effect on resolveModel()\'s output', () => {
+    const roles: ModelRole[] = ['fast', 'smart', 'planning', 'vision']
+    const before = roles.map(r => resolveModel(r).provider.id)
+    const original = { ...CAPABILITY_COST_POLICY }
+    try {
+      // Deliberately corrupt the policy table to prove nothing reads it.
+      CAPABILITY_COST_POLICY.fast = 'ENTERPRISE'
+      CAPABILITY_COST_POLICY.vision = 'LOW'
+      const after = roles.map(r => resolveModel(r).provider.id)
+      expect(after).toEqual(before)
+    } finally {
+      Object.assign(CAPABILITY_COST_POLICY, original)
+    }
+  })
+
+  it('production routing remains completely unchanged after this sprint — Claude for every role', () => {
+    const roles: ModelRole[] = ['fast', 'smart', 'planning', 'vision']
+    for (const role of roles) {
+      expect(resolveModel(role).provider.id).toBe('claude')
+      expect(resolveModel(role).model.modelId).toBe(getProvider().model(role).modelId)
+    }
   })
 })

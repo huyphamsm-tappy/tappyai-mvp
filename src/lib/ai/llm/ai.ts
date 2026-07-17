@@ -1,5 +1,7 @@
 import { generateText, streamText, type CoreMessage, type LanguageModelV1 } from 'ai'
 import type { CapabilityKey } from './capabilities'
+import { calculateCost } from './costCalculator'
+import { PRICING_CATALOG_VERSION } from './pricingCatalog'
 import type { AIProvider } from './provider'
 import { getProvider } from './registry'
 import { resolveModel } from './router'
@@ -45,6 +47,17 @@ function errorCodeOf(err: unknown): string {
   return err instanceof Error ? err.name : 'UnknownError'
 }
 
+/** Sprint 5: cost fields for a successful call's telemetry event, or {} when
+ * this provider/model has no Pricing Catalog entry — never throws, matching
+ * the Telemetry Contract's "estimated_cost = undefined, never throw" rule.
+ * Log-line-only: never affects what the caller receives. */
+function costFields(providerId: string, model: string, inputTokens: number | null, outputTokens: number | null) {
+  if (inputTokens === null || outputTokens === null) return {}
+  const estimatedCost = calculateCost({ provider: providerId, model, inputTokens, outputTokens })
+  if (estimatedCost === undefined) return {}
+  return { estimatedCost, pricingVersion: PRICING_CATALOG_VERSION, pricingSource: 'catalog' as const }
+}
+
 /** Resolves via the Router, emitting a telemetry event and re-throwing the
  * SAME error object unchanged on failure (never swallowed) — so a resolution
  * failure is observable without altering what the caller sees. */
@@ -60,7 +73,7 @@ function resolveWithTelemetry(
   } catch (err) {
     emitTelemetry({
       requestId, role, capability: requiredCaps, provider: 'unknown', model: 'unknown',
-      latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null, estimatedCost: null,
+      latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null,
       success: false, errorCode: errorCodeOf(err), retryCount: 0, method,
     })
     throw err
@@ -95,12 +108,13 @@ export const AI = {
       (res) => emitTelemetry({
         requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
         latencyMs: Date.now() - startedAt, inputTokens: res.usage?.promptTokens ?? null,
-        outputTokens: res.usage?.completionTokens ?? null, estimatedCost: null, success: true,
-        errorCode: null, retryCount: 0, method: 'generate', finishReason: res.finishReason ?? null,
+        outputTokens: res.usage?.completionTokens ?? null,
+        ...costFields(provider.id, modelIdOf(model), res.usage?.promptTokens ?? null, res.usage?.completionTokens ?? null),
+        success: true, errorCode: null, retryCount: 0, method: 'generate', finishReason: res.finishReason ?? null,
       }),
       (err) => emitTelemetry({
         requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
-        latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null, estimatedCost: null,
+        latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null,
         success: false, errorCode: errorCodeOf(err), retryCount: 0, method: 'generate',
       }),
     )
@@ -127,8 +141,9 @@ export const AI = {
         emitTelemetry({
           requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
           latencyMs: Date.now() - startedAt, inputTokens: result.usage?.promptTokens ?? null,
-          outputTokens: result.usage?.completionTokens ?? null, estimatedCost: null, success: true,
-          errorCode: null, retryCount: 0, method: 'stream', finishReason: result.finishReason ?? null,
+          outputTokens: result.usage?.completionTokens ?? null,
+          ...costFields(provider.id, modelIdOf(model), result.usage?.promptTokens ?? null, result.usage?.completionTokens ?? null),
+          success: true, errorCode: null, retryCount: 0, method: 'stream', finishReason: result.finishReason ?? null,
         })
         if (opts.onFinish) await opts.onFinish(result)
       },
@@ -162,12 +177,13 @@ export const AI = {
       (res) => emitTelemetry({
         requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
         latencyMs: Date.now() - startedAt, inputTokens: res.usage?.promptTokens ?? null,
-        outputTokens: res.usage?.completionTokens ?? null, estimatedCost: null, success: true,
-        errorCode: null, retryCount: 0, method: 'vision', finishReason: res.finishReason ?? null,
+        outputTokens: res.usage?.completionTokens ?? null,
+        ...costFields(provider.id, modelIdOf(model), res.usage?.promptTokens ?? null, res.usage?.completionTokens ?? null),
+        success: true, errorCode: null, retryCount: 0, method: 'vision', finishReason: res.finishReason ?? null,
       }),
       (err) => emitTelemetry({
         requestId, role, capability: requiredCaps, provider: provider.id, model: modelIdOf(model),
-        latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null, estimatedCost: null,
+        latencyMs: Date.now() - startedAt, inputTokens: null, outputTokens: null,
         success: false, errorCode: errorCodeOf(err), retryCount: 0, method: 'vision',
       }),
     )

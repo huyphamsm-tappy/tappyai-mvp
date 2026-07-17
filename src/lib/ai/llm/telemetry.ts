@@ -25,10 +25,20 @@ export interface AITelemetryEvent {
   latencyMs: number
   inputTokens: number | null
   outputTokens: number | null
-  /** Always null today — no per-provider/per-model pricing table exists yet
-   * for a single-provider system. The field exists so the contract doesn't
-   * need to change shape when pricing data lands (see Future Work). */
-  estimatedCost: number | null
+  /** Sprint 5: computed via costCalculator.ts from the Pricing Catalog.
+   * undefined (key omitted from the logged JSON, since JSON.stringify drops
+   * undefined properties) whenever this provider/model has no catalog entry
+   * — e.g. Gemini today. NEVER throws to get here; an unpriceable call is
+   * simply unpriced, not a telemetry failure. See ADR-014. */
+  estimatedCost?: number
+  /** PRICING_CATALOG_VERSION at the moment this event's cost was computed.
+   * Present only alongside a defined estimatedCost. */
+  pricingVersion?: string
+  /** Always 'catalog' when present — no live pricing API exists (Owner
+   * Architecture Principle: pricing data is not source of truth; nothing
+   * here fetches pricing online). Present only alongside a defined
+   * estimatedCost. */
+  pricingSource?: 'catalog'
   success: boolean
   /** The failing error's `.name` (e.g. 'UnsupportedCapabilityError'), or null on success. */
   errorCode: string | null
