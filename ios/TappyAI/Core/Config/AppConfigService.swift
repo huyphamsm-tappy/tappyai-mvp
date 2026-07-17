@@ -16,6 +16,10 @@ struct AppConfig: Decodable, Sendable {
 
     struct Flags: Decodable, Sendable {
         let showProUpgrade: Bool
+        /// App Connections (integrations) UI entry-point gate — mirrors Web
+        /// `SHOW_APP_CONNECTIONS`. Optional so decoding still succeeds against an
+        /// older /api/config that predates the flag; absent is treated as hidden.
+        let showAppConnections: Bool?
     }
 
     struct Upload: Decodable, Sendable {
