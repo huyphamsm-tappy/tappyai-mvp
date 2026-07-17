@@ -1,0 +1,22 @@
+<resources>
+    <string name="history_title">Lịch sử trò chuyện</string>
+    <string name="history_error_title">Không tải được</string>
+    <string name="history_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="history_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="history_error_session_expired">Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.</string>
+    <string name="history_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="history_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+    <string name="history_empty_title">Chưa có cuộc trò chuyện nào</string>
+    <string name="history_empty_message">Trò chuyện với Tappy và lịch sử của bạn sẽ hiện ở đây.</string>
+    <string name="history_start_chat">Bắt đầu chat</string>
+    <string name="history_delete_dialog_title">Xóa cuộc trò chuyện?</string>
+    <string name="history_delete_dialog_message">Xóa \"%1$s\"? Hành động này không thể hoàn tác.</string>
+    <string name="history_delete_confirm">Xóa</string>
+    <string name="history_messages_count_time">%1$d tin nhắn · %2$s</string>
+    <string name="history_delete_conversation_cd">Xóa cuộc trò chuyện %1$s</string>
+    <string name="history_time_just_now">Vừa xong</string>
+    <string name="history_time_minutes_ago">%1$d phút trước</string>
+    <string name="history_time_hours_ago">%1$d giờ trước</string>
+    <string name="history_time_day_ago">%1$d ngày trước</string>
+    <string name="history_time_days_ago">%1$d ngày trước</string>
+</resources>

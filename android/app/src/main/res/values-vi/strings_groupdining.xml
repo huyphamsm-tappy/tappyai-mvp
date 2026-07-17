@@ -1,0 +1,56 @@
+<resources>
+    <string name="groupdining_create_heading">Đi đâu ăn gì cả team?</string>
+    <string name="groupdining_create_subtitle">Tạo nhóm, chia sẻ link, để Tappy gợi ý</string>
+    <string name="groupdining_name_label">Tên nhóm của bạn</string>
+    <string name="groupdining_name_placeholder">VD: Team Marketing, Hội bạn thân, Cả nhà...</string>
+    <string name="groupdining_create_button">🍽️ Tạo nhóm</string>
+
+    <string name="groupdining_not_found_title">Không tìm thấy nhóm</string>
+    <string name="groupdining_not_found_message">Nhóm này không còn tồn tại.</string>
+    <string name="groupdining_load_error_title">Không tải được nhóm này</string>
+
+    <string name="groupdining_members_one">%1$d thành viên đã tham gia</string>
+    <string name="groupdining_members_other">%1$d thành viên đã tham gia</string>
+
+    <string name="groupdining_share_label">CHIA SẺ LINK VỚI NHÓM</string>
+    <string name="groupdining_copied_content_description">Đã sao chép</string>
+    <string name="groupdining_copy_link_content_description">Sao chép link</string>
+    <string name="groupdining_share_link_content_description">Chia sẻ link</string>
+    <string name="groupdining_link_clip_label">Link nhóm</string>
+    <string name="groupdining_share_chooser_title">Chia sẻ link nhóm</string>
+
+    <string name="groupdining_members_label">THÀNH VIÊN</string>
+    <string name="groupdining_no_members_message">Chưa có ai tham gia. Chia sẻ link ở trên nhé!</string>
+    <string name="groupdining_member_budget">💰 %1$s</string>
+    <string name="groupdining_member_likes">🍽️ Thích: %1$s</string>
+    <string name="groupdining_member_avoids">🚫 Kiêng: %1$s</string>
+    <string name="groupdining_member_area">📍 Khu vực: %1$s</string>
+
+    <string name="groupdining_join_title">Điền thông tin của bạn</string>
+    <string name="groupdining_join_name_label">Tên bạn *</string>
+    <string name="groupdining_join_name_placeholder">VD: Minh, Lan, Tú...</string>
+    <string name="groupdining_join_budget_label">Ngân sách *</string>
+    <string name="groupdining_join_food_label">Thích ăn gì?</string>
+    <string name="groupdining_join_food_placeholder">VD: bún bò, pizza, cơm tấm, lẩu...</string>
+    <string name="groupdining_join_dietary_label">Kiêng gì không?</string>
+    <string name="groupdining_join_dietary_placeholder">VD: không ăn thịt heo, dị ứng hải sản, ăn chay...</string>
+    <string name="groupdining_join_area_label">Khu vực thuận tiện *</string>
+    <string name="groupdining_join_area_placeholder">VD: Quận 1, Bình Thạnh, Thủ Đức...</string>
+    <string name="groupdining_join_button">Tham gia nhóm</string>
+
+    <string name="groupdining_joined_title">Đã tham gia!</string>
+    <string name="groupdining_joined_waiting_message">Chờ trưởng nhóm gợi ý nhé 🎉</string>
+
+    <string name="groupdining_suggest_button">🍽️ Tappy gợi ý ngay</string>
+    <string name="groupdining_suggestion_title">Gợi ý của Tappy</string>
+
+    <string name="groupdining_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="groupdining_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="groupdining_error_session_expired">Vui lòng đăng nhập để tiếp tục.</string>
+    <string name="groupdining_error_creator_only">Chỉ trưởng nhóm mới có thể thực hiện thao tác này.</string>
+    <string name="groupdining_error_rate_limited">Bạn đang thao tác hơi nhanh. Vui lòng thử lại sau một chút.</string>
+    <string name="groupdining_error_join_400">Không thể tham gia — nhóm có thể đã đầy (tối đa 10 người) hoặc thông tin của bạn chưa đầy đủ.</string>
+    <string name="groupdining_error_create_400">Vui lòng nhập tên nhóm.</string>
+    <string name="groupdining_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="groupdining_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+</resources>

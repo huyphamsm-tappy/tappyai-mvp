@@ -1,0 +1,17 @@
+<resources>
+    <string name="onboarding_welcome_title">Welcome to TappyAI! 👋</string>
+    <string name="onboarding_welcome_desc">Tell us which areas interest you so we can personalize your experience.</string>
+    <string name="onboarding_location_title">Where are you? 📍</string>
+    <string name="onboarding_location_desc">So we can suggest places that fit you better.</string>
+    <string name="onboarding_other_city">Or type another city...</string>
+    <string name="onboarding_start">🚀 Start exploring</string>
+    <string name="onboarding_error_title">Couldn\'t load</string>
+    <string name="onboarding_error_message">Please check your connection and try again.</string>
+
+    <string name="onboarding_interest_food">Food</string>
+    <string name="onboarding_interest_spa">Spa &amp; Beauty</string>
+    <string name="onboarding_interest_travel">Travel</string>
+    <string name="onboarding_interest_shopping">Shopping</string>
+    <string name="onboarding_interest_entertainment">Entertainment</string>
+    <string name="onboarding_interest_hotel">Hotel</string>
+</resources>

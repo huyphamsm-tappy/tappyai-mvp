@@ -1,0 +1,97 @@
+<resources>
+    <string name="chat_category_general">TappyAI</string>
+    <string name="chat_category_food">Food</string>
+    <string name="chat_category_shopping">Shopping</string>
+    <string name="chat_category_entertainment">Entertainment</string>
+    <string name="chat_category_travel">Travel</string>
+    <string name="chat_category_spa">Spa</string>
+
+    <string name="chat_welcome_subtitle">How can Tappy help you today?</string>
+    <string name="chat_mood_prompt_header">How are you feeling today?</string>
+
+    <string name="chat_mood_happy_label">Happy</string>
+    <string name="chat_mood_happy_prompt">I\'m feeling happy, got any fun ideas for me?</string>
+    <string name="chat_mood_sad_label">Sad</string>
+    <string name="chat_mood_sad_prompt">I\'m feeling down, anything that could cheer me up?</string>
+    <string name="chat_mood_stressed_label">Stressed</string>
+    <string name="chat_mood_stressed_prompt">I\'m stressed, suggest a way to relax?</string>
+    <string name="chat_mood_tired_label">Tired</string>
+    <string name="chat_mood_tired_prompt">I\'m tired, anything low-key I could do?</string>
+    <string name="chat_mood_bored_label">Bored</string>
+    <string name="chat_mood_bored_prompt">I\'m bored, got something interesting to suggest?</string>
+    <string name="chat_mood_excited_label">Excited</string>
+    <string name="chat_mood_excited_prompt">I\'m feeling excited, suggest something fun and lively?</string>
+
+    <string name="chat_prompt_general_1">🌙 I want spa + a nice dinner tonight, 2 people, budget 800k</string>
+    <string name="chat_prompt_general_2">3-day 2-night Da Nang itinerary, 2 people, budget 5 million</string>
+    <string name="chat_prompt_general_3">What\'s good to eat nearby today?</string>
+
+    <string name="chat_prompt_food_1">Good bun bo places in HCMC?</string>
+    <string name="chat_prompt_food_2">Cafes with a nice view in Hanoi?</string>
+    <string name="chat_prompt_food_3">Fresh seafood restaurants?</string>
+
+    <string name="chat_prompt_shopping_1">Big shopping malls in Saigon?</string>
+    <string name="chat_prompt_shopping_2">Reliable places for branded goods?</string>
+    <string name="chat_prompt_shopping_3">Night markets for souvenirs?</string>
+
+    <string name="chat_prompt_entertainment_1">IMAX movie theaters?</string>
+    <string name="chat_prompt_entertainment_2">Karaoke places with private rooms?</string>
+    <string name="chat_prompt_entertainment_3">Rooftop bars with a nice view?</string>
+
+    <string name="chat_prompt_travel_1">3-day 2-night Da Nang itinerary, 2 people, budget 5 million</string>
+    <string name="chat_prompt_travel_2">4-day 3-night Phu Quoc itinerary, 2 people, budget 8 million</string>
+    <string name="chat_prompt_travel_3">2-day weekend Hoi An itinerary, budget 3 million</string>
+
+    <string name="chat_prompt_spa_1">Affordable spa massage?</string>
+    <string name="chat_prompt_spa_2">Good gel nail salons?</string>
+    <string name="chat_prompt_spa_3">Trustworthy skincare centers?</string>
+
+    <string name="chat_action_attach_image">Attach image</string>
+    <string name="chat_action_voice_input">Voice input</string>
+    <string name="chat_clear_pending_image">Remove photo</string>
+    <string name="chat_voice_recognition_failed">Voice input isn\'t available right now.</string>
+    <string name="chat_composer_placeholder">Message Tappy…</string>
+    <string name="chat_action_stop">Stop</string>
+    <string name="chat_action_send">Send</string>
+
+    <string name="chat_error_generic">Something went wrong.</string>
+    <string name="chat_error_connection">Connection error. Please check your network and try again.</string>
+    <string name="chat_error_generic_with_code">Something went wrong (code %1$d)</string>
+    <string name="chat_error_message_too_long">Message is too long. Please try again with shorter content.</string>
+    <string name="chat_error_ai_service_down">The AI service is temporarily having issues. Please try again later.</string>
+
+    <string name="chat_followup_food_1">Find another place</string>
+    <string name="chat_followup_food_2">See menu prices</string>
+    <string name="chat_followup_food_3">Book a table</string>
+    <string name="chat_followup_travel_1">Detailed itinerary</string>
+    <string name="chat_followup_travel_2">Find hotels</string>
+    <string name="chat_followup_travel_3">Flight tickets</string>
+    <string name="chat_followup_shopping_1">Compare prices</string>
+    <string name="chat_followup_shopping_2">Find stores</string>
+    <string name="chat_followup_shopping_3">See reviews</string>
+    <string name="chat_followup_entertainment_1">See showtimes</string>
+    <string name="chat_followup_entertainment_2">Book tickets now</string>
+    <string name="chat_followup_entertainment_3">See more</string>
+    <string name="chat_followup_spa_1">See price list</string>
+    <string name="chat_followup_spa_2">Book an appointment</string>
+    <string name="chat_followup_spa_3">See reviews</string>
+    <string name="chat_followup_general_1">Ask more</string>
+    <string name="chat_followup_general_2">Find more</string>
+    <string name="chat_followup_general_3">Another topic</string>
+
+    <string name="chat_action_copy">Copy</string>
+    <string name="chat_action_share">Share</string>
+    <string name="chat_share_chooser_title">Share message</string>
+    <string name="chat_action_like">Like</string>
+    <string name="chat_action_dislike">Dislike</string>
+    <string name="chat_action_read_aloud">Read aloud</string>
+    <string name="chat_action_stop_read_aloud">Stop reading</string>
+    <string name="chat_action_regenerate">Regenerate</string>
+    <string name="chat_action_more">More</string>
+    <string name="chat_more_copy_plaintext">Copy plaintext</string>
+    <string name="chat_more_copy_id">Copy ID</string>
+    <string name="chat_more_report">Report a problem</string>
+    <string name="chat_more_reported">Reported</string>
+
+    <string name="chat_toast_signin_failed">Sign-in link didn\'t work. Please try signing in again.</string>
+</resources>

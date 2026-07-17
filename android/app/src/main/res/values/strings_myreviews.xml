@@ -1,0 +1,19 @@
+<resources>
+    <string name="myreviews_title">My Reviews</string>
+    <string name="myreviews_post_count">%1$d posts</string>
+    <string name="myreviews_hidden_badge_description">Hidden</string>
+    <string name="myreviews_like_count_badge">❤️ %1$d</string>
+    <string name="myreviews_delete_dialog_title">Delete post?</string>
+    <string name="myreviews_delete_dialog_message">Delete \"%1$s\"? This can\'t be undone.</string>
+    <string name="myreviews_delete_confirm">Delete</string>
+    <string name="myreviews_show_post">Show this post</string>
+    <string name="myreviews_hide_post">Hide this post</string>
+    <string name="myreviews_delete_post_action">Delete this post</string>
+    <string name="myreviews_status_hidden">🔒 Hidden</string>
+    <string name="myreviews_status_visible">👁 Visible</string>
+    <string name="myreviews_status_line">%1$s · ❤️ %2$d · 💬 %3$d</string>
+    <string name="myreviews_error_title">Couldn\'t load your posts</string>
+    <string name="myreviews_error_message">Please try again later.</string>
+    <string name="myreviews_empty_title">No posts yet</string>
+    <string name="myreviews_create_first_review">Post your first review</string>
+</resources>

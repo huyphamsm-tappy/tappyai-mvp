@@ -1,0 +1,58 @@
+<resources>
+    <!-- Settings screen (profile/SettingsScreen.kt, SettingsViewModel.kt) -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_section_options">Tùy chọn</string>
+    <string name="settings_notifications">Thông báo</string>
+    <string name="settings_memory">Bộ nhớ</string>
+    <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_section_other">Khác</string>
+    <string name="settings_terms_of_service">Điều khoản dịch vụ</string>
+    <string name="settings_privacy_policy">Chính sách bảo mật</string>
+    <string name="settings_version">Phiên bản %1$s</string>
+    <string name="settings_signing_out">Đang đăng xuất…</string>
+    <string name="settings_sign_out">Đăng xuất</string>
+    <string name="settings_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="settings_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="settings_error_generic">Không thể đăng xuất. Vui lòng thử lại.</string>
+
+    <!-- Profile screen (profile/ProfileScreen.kt, ProfileMenu.kt, QrProfileSheet.kt) -->
+    <string name="profile_qr_feature_name">Hồ sơ QR</string>
+    <string name="profile_section_account">Tài khoản</string>
+    <string name="profile_menu_account">Tài khoản</string>
+    <string name="profile_menu_chat_history">Lịch sử trò chuyện</string>
+    <string name="profile_menu_bookings">Đặt chỗ</string>
+    <string name="profile_menu_preferences">Sở thích của tôi</string>
+    <string name="profile_menu_saved">Đã lưu</string>
+    <string name="profile_menu_price_tracking">Theo dõi giá</string>
+    <string name="profile_menu_tappy_knows">Tappy biết gì về bạn</string>
+    <string name="profile_menu_app_connections">Kết nối ứng dụng</string>
+    <string name="profile_menu_my_reviews">Đánh giá của tôi</string>
+    <string name="profile_menu_group_dining">Ăn uống nhóm</string>
+    <string name="profile_menu_upgrade_to_pro">Nâng cấp lên Pro</string>
+    <string name="profile_section_settings">Cài đặt</string>
+    <string name="profile_settings_row_title">Cài đặt</string>
+    <string name="profile_settings_subtitle">Ngôn ngữ, thông báo, giao diện</string>
+    <string name="profile_header_title">Hồ sơ của bạn</string>
+    <string name="profile_header_subtitle">Đăng nhập để cá nhân hóa</string>
+    <string name="profile_qr_button_content_description">Hiển thị hồ sơ QR</string>
+    <string name="profile_qr_default_name">Hồ sơ của tôi</string>
+    <string name="profile_qr_scan_subtitle">Quét để xem hồ sơ</string>
+    <string name="profile_qr_code_content_description">Mã QR liên kết đến hồ sơ này</string>
+    <string name="profile_qr_generate_error">Không thể tạo mã QR. Vui lòng thử lại.</string>
+    <string name="profile_qr_share_button">Chia sẻ liên kết</string>
+    <string name="profile_qr_share_chooser_title">Chia sẻ liên kết hồ sơ</string>
+
+    <!-- Notifications screen (notifications/NotificationsScreen.kt) -->
+    <string name="notif_title">Thông báo</string>
+    <string name="notif_push_title">Thông báo đẩy</string>
+    <string name="notif_push_on_description">Đang bật — Tappy sẽ nhắc bạn đúng lúc</string>
+    <string name="notif_push_off_description">Đang tắt — bật để nhận nhắc nhở từ Tappy</string>
+    <string name="notif_toggle_content_description">Bật/tắt thông báo đẩy</string>
+    <string name="notif_receive_header">BẠN SẼ NHẬN ĐƯỢC GÌ</string>
+    <string name="notif_receive_morning_brief">Bản tin buổi sáng riêng cho bạn lúc 7:30 sáng</string>
+    <string name="notif_receive_deals">Ưu đãi &amp; khuyến mãi phù hợp với sở thích của bạn</string>
+    <string name="notif_receive_lunch">Nhắc nhở ăn trưa hằng ngày lúc 11 giờ</string>
+    <string name="notif_receive_booking">Nhắc nhở đặt chỗ trước 3 ngày</string>
+    <string name="notif_receive_weekly_recap">Tổng kết hằng tuần vào Chủ nhật lúc 8:00 tối</string>
+    <string name="notif_receive_footer">Âm thanh "Tappy" riêng sẽ phát khi ứng dụng đang mở. Khi ứng dụng đóng, âm thanh do hệ thống của bạn kiểm soát.</string>
+</resources>

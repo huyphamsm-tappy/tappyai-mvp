@@ -1,0 +1,23 @@
+<resources>
+    <string name="bookings_title">Bookings</string>
+    <string name="bookings_review_label">Review</string>
+    <string name="bookings_pending_banner">⏳ Processing — TappyAI has recorded your booking. The venue will call to confirm using the phone number you provided.</string>
+    <string name="bookings_share_button">Share</string>
+    <string name="bookings_status_confirmed">✅ Confirmed</string>
+    <string name="bookings_status_cancelled">❌ Cancelled</string>
+    <string name="bookings_status_pending">⏳ Processing</string>
+    <string name="bookings_error_title">Couldn\'t load your bookings</string>
+    <string name="bookings_error_message">Please try again later.</string>
+    <string name="bookings_empty_title">No bookings yet</string>
+    <string name="bookings_empty_message">Use chat to find restaurants, spas, and hotels — and book in seconds.</string>
+    <string name="bookings_explore_now">Explore now</string>
+    <string name="bookings_share_header">📋 Booking confirmation — TappyAI</string>
+    <string name="bookings_share_time_suffix"> at %1$s</string>
+    <string name="bookings_share_subject">Booking confirmation — TappyAI</string>
+    <string name="bookings_share_chooser_title">Share booking</string>
+    <string name="bookings_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="bookings_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="bookings_error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="bookings_error_server">The server is having issues. Please try again later.</string>
+    <string name="bookings_error_generic">Something went wrong. Please try again.</string>
+</resources>

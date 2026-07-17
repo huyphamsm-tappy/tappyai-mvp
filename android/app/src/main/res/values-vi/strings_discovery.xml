@@ -1,0 +1,28 @@
+<resources>
+    <!-- Hub screen -->
+    <string name="discovery_search_placeholder">Tìm món ăn, địa điểm, hoạt động…</string>
+    <string name="discovery_section_browse">Khám phá</string>
+
+    <!-- Category (browse) screen -->
+    <string name="discovery_category_search_placeholder">Tìm kiếm %1$s…</string>
+    <string name="discovery_results_empty_title">Chưa có kết quả</string>
+    <string name="discovery_results_empty_message">Kết quả khám phá sẽ xuất hiện tại đây khi được kết nối.</string>
+
+    <!-- Discovery groups (hub tiles) -->
+    <string name="discovery_group_food_cafes">Ăn uống &amp; Cà phê</string>
+    <string name="discovery_group_hotels_travel">Khách sạn &amp; Du lịch</string>
+    <string name="discovery_group_shopping_deals">Mua sắm &amp; Ưu đãi</string>
+    <string name="discovery_group_weather">Thời tiết</string>
+    <string name="discovery_group_finance">Tài chính</string>
+
+    <!-- Discovery categories (sub-category chips) -->
+    <string name="discovery_category_restaurant">Nhà hàng</string>
+    <string name="discovery_category_cafe">Quán cà phê</string>
+    <string name="discovery_category_hotel">Khách sạn</string>
+    <string name="discovery_category_attraction">Điểm tham quan</string>
+    <string name="discovery_category_travel">Du lịch</string>
+    <string name="discovery_category_shopping">Mua sắm</string>
+    <string name="discovery_category_deals">Ưu đãi</string>
+    <string name="discovery_category_weather">Thời tiết</string>
+    <string name="discovery_category_finance">Tài chính</string>
+</resources>

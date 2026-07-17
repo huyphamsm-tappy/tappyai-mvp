@@ -1,0 +1,27 @@
+<resources>
+    <string name="account_title">Account</string>
+    <string name="account_load_error_title">Couldn\'t load your profile</string>
+    <string name="account_info_section">Information</string>
+    <string name="account_full_name_label">Full name</string>
+    <string name="account_email_label">Email</string>
+    <string name="account_joined_label">Joined</string>
+    <string name="account_no_data_placeholder">—</string>
+    <string name="account_edit_section">Edit</string>
+    <string name="account_edit_profile">Edit profile</string>
+    <string name="account_saved_toast">Profile saved</string>
+    <string name="account_change_avatar">Change avatar</string>
+    <string name="account_cannot_change">Cannot change</string>
+    <string name="account_full_name_placeholder">Your full name</string>
+    <string name="account_bio_label">Bio</string>
+    <string name="account_bio_placeholder">Tell us about yourself</string>
+    <string name="account_bio_counter">%1$d / 200</string>
+    <string name="account_save">Save</string>
+    <string name="account_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="account_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="account_error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="account_error_server">The server is having trouble. Please try again later.</string>
+    <string name="account_error_generic">Something went wrong. Please try again.</string>
+    <string name="account_avatar_read_failed">Couldn\'t read that image. Please try another one.</string>
+    <string name="account_avatar_too_large">Image must be 3MB or smaller.</string>
+    <string name="account_avatar_invalid_type">Please choose a JPEG, PNG, GIF, or WebP image.</string>
+</resources>

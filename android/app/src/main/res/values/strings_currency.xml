@@ -1,0 +1,29 @@
+<resources>
+    <string name="currency_title">💱 Currency converter</string>
+    <string name="currency_amount_label">Amount</string>
+    <string name="currency_amount_placeholder">Enter an amount...</string>
+    <string name="currency_from_label">From</string>
+    <string name="currency_to_label">To</string>
+    <string name="currency_swap_description">Swap direction</string>
+    <string name="currency_selected_description">Selected</string>
+    <string name="currency_loading_rates">Loading exchange rates...</string>
+    <string name="currency_amount_equals">%1$s %2$s =</string>
+    <string name="currency_rate_line">1 %1$s = %2$s %3$s</string>
+    <string name="currency_enter_amount_prompt">Enter an amount to see the result</string>
+    <string name="currency_fallback_notice">⚠️ Using estimated rates (could not reach the data source)</string>
+    <string name="currency_rates_updated">Rates updated %1$s · Source: open.er-api.com</string>
+    <string name="currency_disclaimer">Rates are for reference only, not for financial transactions.</string>
+
+    <string name="currency_name_vnd">Vietnamese Dong</string>
+    <string name="currency_name_usd">US Dollar</string>
+    <string name="currency_name_eur">Euro</string>
+    <string name="currency_name_jpy">Japanese Yen</string>
+    <string name="currency_name_krw">South Korean Won</string>
+    <string name="currency_name_gbp">British Pound</string>
+    <string name="currency_name_aud">Australian Dollar</string>
+    <string name="currency_name_sgd">Singapore Dollar</string>
+    <string name="currency_name_thb">Thai Baht</string>
+    <string name="currency_name_cny">Chinese Yuan</string>
+    <string name="currency_name_hkd">Hong Kong Dollar</string>
+    <string name="currency_name_twd">Taiwan Dollar</string>
+</resources>

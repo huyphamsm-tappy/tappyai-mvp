@@ -1,0 +1,20 @@
+# Gradle build outputs and caches
+.gradle/
+build/
+*/build/
+
+# Local dev config (contains credentials — never commit)
+local.properties
+gradle.properties
+
+# Android Studio / IDE files
+*.iml
+.idea/
+.DS_Store
+
+# Signing keystore
+*.jks
+*.keystore
+
+# Generated code
+generated/

@@ -1,0 +1,58 @@
+<resources>
+    <!-- Settings screen (profile/SettingsScreen.kt, SettingsViewModel.kt) -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_options">Options</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_memory">Memory</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_section_other">Other</string>
+    <string name="settings_terms_of_service">Terms of Service</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_signing_out">Signing out…</string>
+    <string name="settings_sign_out">Sign out</string>
+    <string name="settings_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="settings_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="settings_error_generic">Couldn\'t sign you out. Please try again.</string>
+
+    <!-- Profile screen (profile/ProfileScreen.kt, ProfileMenu.kt, QrProfileSheet.kt) -->
+    <string name="profile_qr_feature_name">QR profile</string>
+    <string name="profile_section_account">Account</string>
+    <string name="profile_menu_account">Account</string>
+    <string name="profile_menu_chat_history">Chat history</string>
+    <string name="profile_menu_bookings">Bookings</string>
+    <string name="profile_menu_preferences">My preferences</string>
+    <string name="profile_menu_saved">Saved</string>
+    <string name="profile_menu_price_tracking">Price tracking</string>
+    <string name="profile_menu_tappy_knows">What Tappy knows</string>
+    <string name="profile_menu_app_connections">App connections</string>
+    <string name="profile_menu_my_reviews">My reviews</string>
+    <string name="profile_menu_group_dining">Group dining</string>
+    <string name="profile_menu_upgrade_to_pro">Upgrade to Pro</string>
+    <string name="profile_section_settings">Settings</string>
+    <string name="profile_settings_row_title">Settings</string>
+    <string name="profile_settings_subtitle">Language, notifications, appearance</string>
+    <string name="profile_header_title">Your profile</string>
+    <string name="profile_header_subtitle">Sign in to personalize</string>
+    <string name="profile_qr_button_content_description">Show QR profile</string>
+    <string name="profile_qr_default_name">My profile</string>
+    <string name="profile_qr_scan_subtitle">Scan to see profile</string>
+    <string name="profile_qr_code_content_description">QR code linking to this profile</string>
+    <string name="profile_qr_generate_error">Couldn\'t generate the QR code. Please try again.</string>
+    <string name="profile_qr_share_button">Share link</string>
+    <string name="profile_qr_share_chooser_title">Share profile link</string>
+
+    <!-- Notifications screen (notifications/NotificationsScreen.kt) -->
+    <string name="notif_title">Notifications</string>
+    <string name="notif_push_title">Push notifications</string>
+    <string name="notif_push_on_description">On — Tappy will remind you at the right time</string>
+    <string name="notif_push_off_description">Off — turn on to get reminders from Tappy</string>
+    <string name="notif_toggle_content_description">Toggle push notifications</string>
+    <string name="notif_receive_header">WHAT YOU\'LL RECEIVE</string>
+    <string name="notif_receive_morning_brief">A personalized morning brief at 7:30 AM</string>
+    <string name="notif_receive_deals">Deals &amp; offers matched to your interests</string>
+    <string name="notif_receive_lunch">A daily lunch reminder at 11 AM</string>
+    <string name="notif_receive_booking">Booking reminders 3 days ahead</string>
+    <string name="notif_receive_weekly_recap">A weekly recap every Sunday at 8:00 PM</string>
+    <string name="notif_receive_footer">A custom "Tappy" sound plays while the app is open. When the app is closed, the sound is controlled by your system.</string>
+</resources>

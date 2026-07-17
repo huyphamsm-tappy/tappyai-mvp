@@ -1,0 +1,43 @@
+<resources>
+    <!-- Search + view toggle -->
+    <string name="maps_search_placeholder">Search restaurants, hotels…</string>
+    <string name="maps_view_mode_map">Map</string>
+    <string name="maps_view_mode_list">List</string>
+
+    <!-- Map pane FABs -->
+
+    <!-- Map placeholder canvas -->
+    <string name="maps_preview_label">Map preview</string>
+
+    <!-- Place list states -->
+    <string name="maps_load_error_title">Couldn\'t load places</string>
+    <string name="maps_empty_title">No places found</string>
+    <string name="maps_empty_message">Try a different search or filter.</string>
+
+    <!-- Place detail sheet -->
+    <string name="maps_detail_address">Address</string>
+    <string name="maps_detail_phone">Phone</string>
+    <string name="maps_detail_hours">Hours</string>
+    <string name="maps_detail_price">Price range</string>
+    <string name="maps_action_open">Open</string>
+    <string name="maps_action_remove">Remove</string>
+    <string name="maps_action_share">Share</string>
+    <string name="maps_share_text">%1$s\n%2$s\n%3$s</string>
+    <string name="maps_share_chooser_title">Share place</string>
+
+    <!-- Place categories -->
+    <string name="maps_category_all">All</string>
+    <string name="maps_category_food">Food</string>
+    <string name="maps_category_spa">Spa &amp; Beauty</string>
+    <string name="maps_category_hotel">Hotels</string>
+    <string name="maps_category_travel">Travel</string>
+    <string name="maps_category_shopping">Shopping</string>
+    <string name="maps_category_entertainment">Entertainment</string>
+
+    <!-- Error messages (mirrors strings_account.xml phrasing for the same underlying NetworkError cases) -->
+    <string name="maps_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="maps_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="maps_error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="maps_error_server">The server is having trouble. Please try again later.</string>
+    <string name="maps_error_generic">Something went wrong. Please try again.</string>
+</resources>

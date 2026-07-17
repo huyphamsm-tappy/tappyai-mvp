@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder launcher mark: a simple "T" glyph on a transparent field, sized for the
+     adaptive-icon safe zone (66dp of a 108dp canvas). Replace with real brand artwork
+     before shipping — this exists only so the scaffold builds and installs. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M29,32 L79,32 L79,44 L61,44 L61,80 L47,80 L47,44 L29,44 Z" />
+</vector>

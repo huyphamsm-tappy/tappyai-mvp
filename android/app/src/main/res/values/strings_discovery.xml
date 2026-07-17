@@ -1,0 +1,28 @@
+<resources>
+    <!-- Hub screen -->
+    <string name="discovery_search_placeholder">Search food, places, things to do…</string>
+    <string name="discovery_section_browse">Browse</string>
+
+    <!-- Category (browse) screen -->
+    <string name="discovery_category_search_placeholder">Search %1$s…</string>
+    <string name="discovery_results_empty_title">No results yet</string>
+    <string name="discovery_results_empty_message">Discovery results will appear here once they\'re connected.</string>
+
+    <!-- Discovery groups (hub tiles) -->
+    <string name="discovery_group_food_cafes">Food &amp; Cafés</string>
+    <string name="discovery_group_hotels_travel">Hotels &amp; Travel</string>
+    <string name="discovery_group_shopping_deals">Shopping &amp; Deals</string>
+    <string name="discovery_group_weather">Weather</string>
+    <string name="discovery_group_finance">Finance</string>
+
+    <!-- Discovery categories (sub-category chips) -->
+    <string name="discovery_category_restaurant">Restaurants</string>
+    <string name="discovery_category_cafe">Cafés</string>
+    <string name="discovery_category_hotel">Hotels</string>
+    <string name="discovery_category_attraction">Attractions</string>
+    <string name="discovery_category_travel">Travel</string>
+    <string name="discovery_category_shopping">Shopping</string>
+    <string name="discovery_category_deals">Deals</string>
+    <string name="discovery_category_weather">Weather</string>
+    <string name="discovery_category_finance">Finance</string>
+</resources>

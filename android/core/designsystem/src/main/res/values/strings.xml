@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Accessibility content-description strings shared across designsystem components.
+         Localized (values-vi/ sibling) — the app's full EN/VI switch (LanguageManager,
+         AppCompatDelegate.setApplicationLocales) resolves library-module resources the same way
+         as :app's own, so these must stay in sync with it, not be English-only. -->
+    <string name="tappy_cd_back">Back</string>
+    <string name="tappy_cd_close">Close</string>
+    <string name="tappy_cd_loading">Loading</string>
+    <string name="tappy_search_clear">Clear search</string>
+</resources>

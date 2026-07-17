@@ -1,0 +1,49 @@
+<resources>
+    <string name="home_location_not_set">Đặt vị trí của bạn</string>
+    <string name="home_ask_prefix">Hỏi Tappy: %1$s</string>
+    <string name="home_ask_prompt_1">Tìm nhà hàng</string>
+    <string name="home_ask_prompt_2">Lên kế hoạch chuyến đi</string>
+    <string name="home_ask_prompt_3">Dịch văn bản</string>
+    <string name="home_ask_prompt_4">Khám phá địa điểm gần đây</string>
+
+    <string name="home_quick_explore">Khám phá</string>
+    <string name="home_quick_maps">Bản đồ</string>
+    <string name="home_quick_music">Âm nhạc</string>
+    <string name="home_quick_scan">Quét</string>
+    <string name="home_quick_translate">Dịch thuật</string>
+    <string name="home_quick_games">Trò chơi</string>
+    <string name="home_quick_currency">Tỷ giá</string>
+    <string name="home_quick_deals">Ưu đãi</string>
+
+    <string name="home_section_quick_actions">Thao tác nhanh</string>
+    <string name="home_section_suggested">Gợi ý cho bạn</string>
+    <string name="home_empty_suggestions_title">Chưa có gợi ý</string>
+    <string name="home_empty_suggestions_message">Gợi ý cá nhân hóa sẽ xuất hiện khi Tappy hiểu bạn hơn.</string>
+    <string name="home_section_recent_activity">Hoạt động gần đây</string>
+    <string name="home_empty_recent_title">Chưa có hoạt động</string>
+    <string name="home_empty_recent_message">Cuộc trò chuyện và địa điểm đã lưu gần đây sẽ hiện ở đây.</string>
+
+    <string name="home_recommendations_section">✨ Gợi ý cho bạn</string>
+    <string name="home_recommendations_card_title">✨ Gợi ý cho bạn</string>
+    <string name="home_recommendations_card_desc">Địa điểm hợp gu, cá nhân hóa</string>
+
+    <string name="home_section_fortune">🔮 Xem bói hôm nay</string>
+    <string name="home_fortune_tarot_title">Tarot</string>
+    <string name="home_fortune_tarot_description">Khám phá thông điệp từ vũ trụ</string>
+    <string name="home_fortune_horoscope_title">Tử vi</string>
+    <string name="home_fortune_horoscope_description">Vận mệnh theo can chi năm sinh</string>
+    <string name="home_fortune_zodiac_title">Cung HĐ</string>
+    <string name="home_fortune_zodiac_description">Vận số theo ngày sinh</string>
+
+    <string name="home_tab_home">Trang chủ</string>
+    <string name="home_tab_chat">Trò chuyện</string>
+    <string name="home_tab_explore">Khám phá</string>
+    <string name="home_tab_maps">Bản đồ</string>
+    <string name="home_tab_profile">Hồ sơ</string>
+    <string name="home_tab_placeholder_message">Trải nghiệm %1$s sẽ sớm ra mắt.</string>
+
+    <string name="home_greeting_morning">Chào buổi sáng ☀️</string>
+    <string name="home_greeting_afternoon">Chào buổi chiều 🌤️</string>
+    <string name="home_greeting_evening">Chào buổi tối 🌙</string>
+    <string name="home_greeting_night">Vẫn còn thức à? 🌙</string>
+</resources>

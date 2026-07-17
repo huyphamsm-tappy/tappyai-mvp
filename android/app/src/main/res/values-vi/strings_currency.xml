@@ -1,0 +1,29 @@
+<resources>
+    <string name="currency_title">💱 Quy đổi ngoại tệ</string>
+    <string name="currency_amount_label">Số tiền</string>
+    <string name="currency_amount_placeholder">Nhập số tiền...</string>
+    <string name="currency_from_label">Từ</string>
+    <string name="currency_to_label">Sang</string>
+    <string name="currency_swap_description">Đổi chiều</string>
+    <string name="currency_selected_description">Đã chọn</string>
+    <string name="currency_loading_rates">Đang tải tỷ giá...</string>
+    <string name="currency_amount_equals">%1$s %2$s =</string>
+    <string name="currency_rate_line">1 %1$s = %2$s %3$s</string>
+    <string name="currency_enter_amount_prompt">Nhập số tiền để xem kết quả</string>
+    <string name="currency_fallback_notice">⚠️ Đang dùng tỷ giá ước tính (không thể kết nối nguồn dữ liệu)</string>
+    <string name="currency_rates_updated">Tỷ giá cập nhật %1$s · Nguồn: open.er-api.com</string>
+    <string name="currency_disclaimer">Tỷ giá chỉ mang tính tham khảo, không dùng cho giao dịch tài chính.</string>
+
+    <string name="currency_name_vnd">Việt Nam Đồng</string>
+    <string name="currency_name_usd">Đô la Mỹ</string>
+    <string name="currency_name_eur">Euro</string>
+    <string name="currency_name_jpy">Yên Nhật</string>
+    <string name="currency_name_krw">Won Hàn Quốc</string>
+    <string name="currency_name_gbp">Bảng Anh</string>
+    <string name="currency_name_aud">Đô la Úc</string>
+    <string name="currency_name_sgd">Đô la Singapore</string>
+    <string name="currency_name_thb">Baht Thái</string>
+    <string name="currency_name_cny">Nhân dân tệ</string>
+    <string name="currency_name_hkd">Đô la Hồng Kông</string>
+    <string name="currency_name_twd">Đô la Đài Loan</string>
+</resources>

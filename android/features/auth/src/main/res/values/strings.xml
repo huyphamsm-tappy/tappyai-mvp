@@ -1,0 +1,29 @@
+<resources>
+    <string name="auth_brand_name">TappyAI</string>
+    <string name="auth_subtitle">Sign in to continue</string>
+    <string name="auth_continue_with_google">Continue with Google</string>
+    <string name="auth_continue_with_facebook">Continue with Facebook</string>
+    <string name="auth_or_divider">or</string>
+    <string name="auth_email_label">Email</string>
+    <string name="auth_email_placeholder">you@example.com</string>
+    <string name="auth_send_code">Send code</string>
+
+    <string name="auth_otp_title">Check your email</string>
+    <string name="auth_otp_sent_to">We sent a sign-in link to\n%1$s</string>
+    <string name="auth_otp_instructions">Tap the \"Sign in\" button in the email to complete sign in. The app will open automatically.</string>
+    <string name="auth_otp_code_divider">Or enter a code if provided</string>
+    <string name="auth_otp_code_label">Code</string>
+    <string name="auth_otp_code_placeholder">123456</string>
+    <string name="auth_verify_code">Verify code</string>
+
+    <string name="auth_google_signin_cancelled">Google sign-in was cancelled.</string>
+    <string name="auth_enter_email_first">Enter your email address first.</string>
+    <string name="auth_enter_code_first">Enter the code you received.</string>
+
+    <string name="auth_error_invalid_code">That code or account isn\'t valid. Please try again.</string>
+    <string name="auth_error_too_many_attempts">Too many attempts. Please wait a moment and try again.</string>
+    <string name="auth_error_generic_with_code">Something went wrong (code %1$d). Please try again.</string>
+    <string name="auth_error_no_connectivity">No internet connection. Check your network and try again.</string>
+    <string name="auth_error_timeout">The request took too long. Please try again.</string>
+    <string name="auth_error_generic">Something went wrong. Please try again.</string>
+</resources>
