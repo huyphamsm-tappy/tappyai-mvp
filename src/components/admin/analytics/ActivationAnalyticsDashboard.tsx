@@ -51,7 +51,10 @@ export function ActivationAnalyticsDashboard() {
     } finally {
       setLoading(false)
     }
-  }, [filter, t])
+    // `t` deliberately omitted: useTranslation() returns a fresh closure every
+    // render, so depending on it here would refetch on every render (infinite loop).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter])
 
   useEffect(() => { load() }, [load])
 

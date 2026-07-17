@@ -51,7 +51,10 @@ export function AuthAnalyticsDashboard() {
     } finally {
       setLoading(false)
     }
-  }, [filter, t])
+    // `t` deliberately omitted: useTranslation() returns a fresh closure every
+    // render, so depending on it here would refetch on every render (infinite loop).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter])
 
   const loadAcq = useCallback(async () => {
     try {
@@ -60,7 +63,8 @@ export function AuthAnalyticsDashboard() {
     } catch (e) {
       setError(e instanceof Error ? e.message : t('admin.auth.error.acquisition'))
     }
-  }, [filter, dimension, t])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- t omitted, see loadPrimary above
+  }, [filter, dimension])
 
   useEffect(() => { loadPrimary() }, [loadPrimary])
   useEffect(() => { loadAcq() }, [loadAcq])
