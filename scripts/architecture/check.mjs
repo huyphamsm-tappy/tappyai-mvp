@@ -24,6 +24,25 @@ const EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs'])
 const AI_LAYER = 'src/lib/ai/llm/' // the capability layer itself (uses the AI SDK core)
 const PROVIDER_LAYER = 'src/lib/ai/llm/providers/' // vendor SDKs, model ids, keys, cache logic
 
+// A Pricing Catalog's entire job is mapping concrete model ids to prices —
+// the same category of legitimate exception DEFAULT_MODELS gets in an
+// adapter, just for a different concern (pricing lookup, not model
+// selection). Exempting the specific file, not the whole layer, keeps every
+// OTHER file in src/lib/ai/llm/ (ai.ts, router.ts, policy.ts, …) fully
+// guarded — none of them have a legitimate reason to name a concrete model.
+const PRICING_CATALOG_FILE = 'src/lib/ai/llm/pricingCatalog.ts'
+
+// Any *.test.ts(x) file — regardless of directory. A test verifying
+// isConfigured()/validateAIConfig()'s credential-sensitivity, or a model-id
+// resolution test, must reference the REAL env var name or model id to
+// exercise real behavior; that is not the "business code coupled to a
+// vendor" problem this guard exists to catch. Rules that are exempt for
+// tests are marked `testExempt: true` below — deliberately NOT applied to
+// no-vendor-sdk-imports / no-direct-provider-instantiation / no-facade-bypass,
+// so a test importing a raw vendor SDK directly (bypassing the abstraction
+// it's supposed to be testing) is still caught.
+const TEST_FILE_RE = /\.test\.(ts|tsx|js|mjs)$/
+
 // Raw vendor SDK packages that must never be dependencies at all — they bypass
 // the neutral AI SDK entirely. (@ai-sdk/* adapter packages ARE allowed as deps;
 // their IMPORTS are restricted to the provider layer by rule 1.)
@@ -67,8 +86,9 @@ const RULES = [
       /\bllama-?\d/i,
       /\bmistral-(large|medium|small|\d)/i,
     ],
-    allow: [PROVIDER_LAYER],
-    hint: "pass a semantic role instead: AI.generate({ role: 'fast' | 'smart' | 'planning' | 'vision' }). Concrete ids belong in the adapter's DEFAULT_MODELS or LLM_*_MODEL env.",
+    allow: [PROVIDER_LAYER, PRICING_CATALOG_FILE],
+    testExempt: true,
+    hint: "pass a semantic role instead: AI.generate({ role: 'fast' | 'smart' | 'planning' | 'vision' }). Concrete ids belong in the adapter's DEFAULT_MODELS, the Pricing Catalog, or LLM_*_MODEL env.",
   },
   {
     id: 'no-vendor-api-keys',
@@ -77,6 +97,7 @@ const RULES = [
       /\b(ANTHROPIC|OPENAI|GEMINI|GOOGLE_GENERATIVE_AI|XAI|GROK|DEEPSEEK|MISTRAL|TOGETHER|FIREWORKS)_API_KEY\b/,
     ],
     allow: [PROVIDER_LAYER],
+    testExempt: true,
     hint: 'use AI.isConfigured() to gate on credentials. Only the matching adapter may read its vendor key.',
   },
   {
@@ -118,6 +139,7 @@ const RULES = [
       /providerOptions\s*:\s*\{\s*['"]?(anthropic|openai|google|xai|deepseek|mistral|vertex)\b/,
     ],
     allow: [PROVIDER_LAYER],
+    testExempt: true,
     hint: "vendor optimizations live in the adapter's decorateMessages() (src/lib/ai/llm/providers/*). The application must not know whether prompt caching exists.",
   },
 ]
@@ -190,10 +212,12 @@ function checkSources() {
   const violations = [] // { ruleId, title, hint, file, line, text }
   for (const file of walk(SRC)) {
     const rel = toPosix(relative(ROOT, file))
+    const isTestFile = TEST_FILE_RE.test(rel)
     const stripped = stripComments(readFileSync(file, 'utf8'))
     const lines = stripped.split('\n')
     for (const rule of RULES) {
       if (rule.allow.some((prefix) => rel.startsWith(prefix))) continue
+      if (isTestFile && rule.testExempt) continue
       for (let i = 0; i < lines.length; i++) {
         for (const pattern of rule.patterns) {
           if (pattern.test(lines[i])) {
