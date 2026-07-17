@@ -1,5 +1,6 @@
 import { createAnthropic } from '@ai-sdk/anthropic'
 import type { CoreMessage } from 'ai'
+import type { ProviderCapabilities } from '../capabilities'
 import type { AIProvider } from '../provider'
 import type { ModelOverrides, ModelRole } from '../types'
 
@@ -17,6 +18,19 @@ const DEFAULT_MODELS: Record<ModelRole, string> = {
   vision:   'claude-haiku-4-5-20251001',
 }
 
+// Matches the model's actual, audited behavior — every capability the chat
+// route and other call sites exercise (streaming, tool calls, forced
+// toolChoice via prepareStep, image input, JSON-shaped replies, prompt
+// caching) already works today.
+const CLAUDE_CAPABILITIES: ProviderCapabilities = {
+  streaming: true,
+  tools: true,
+  forcedToolChoice: true,
+  vision: true,
+  jsonMode: true,
+  promptCaching: true,
+}
+
 export function createClaudeProvider(overrides: ModelOverrides): AIProvider {
   const anthropic = createAnthropic({
     apiKey: process.env.ANTHROPIC_API_KEY!,
@@ -25,6 +39,8 @@ export function createClaudeProvider(overrides: ModelOverrides): AIProvider {
 
   return {
     id: 'claude',
+
+    capabilities: CLAUDE_CAPABILITIES,
 
     isConfigured: () => !!process.env.ANTHROPIC_API_KEY,
 

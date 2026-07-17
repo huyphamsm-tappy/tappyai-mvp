@@ -1,4 +1,5 @@
 import type { CoreMessage, LanguageModelV1 } from 'ai'
+import type { ProviderCapabilities } from './capabilities'
 import type { ModelRole } from './types'
 
 // ── Provider adapter contract ────────────────────────────────────────────────
@@ -10,6 +11,9 @@ import type { ModelRole } from './types'
 
 export interface AIProvider {
   readonly id: string
+
+  /** Which capabilities this provider supports — see capabilities.ts. */
+  readonly capabilities: ProviderCapabilities
 
   /** True when this provider's credentials are present in the environment. */
   isConfigured(): boolean
