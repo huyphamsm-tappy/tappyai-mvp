@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatInt } from '@/lib/admin/analytics/activationAnalyticsClient'
 import type { ActivationTrendPoint } from '@/lib/admin/analytics/activationAnalyticsService'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Daily activation-rate trend — same dependency-free div-bar approach as
 // AuthTrendChart (no new chart library). Built as a sibling rather than a
@@ -17,17 +18,18 @@ export function ActivationTrendChart({ points, loading, error }: {
   loading?: boolean
   error?: string | null
 }) {
+  const { t } = useTranslation()
   const max = Math.max(1, ...points.map((p) => p.activated_count))
   return (
     <Card>
-      <CardHeader><CardTitle className="text-base">Daily activations</CardTitle></CardHeader>
+      <CardHeader><CardTitle className="text-base">{t('admin.activation.chart.dailyActivations')}</CardTitle></CardHeader>
       <CardContent>
         {error ? (
           <div role="alert" className="text-sm text-red-500">{error}</div>
         ) : loading && points.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">{t('admin.common.loading')}</p>
         ) : points.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No data for this range.</p>
+          <p className="text-sm text-muted-foreground">{t('admin.common.noDataRange')}</p>
         ) : (
           <div className="flex items-end gap-1 h-40 overflow-x-auto" data-testid="activation-trend-bars">
             {points.map((p) => (

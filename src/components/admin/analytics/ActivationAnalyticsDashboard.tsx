@@ -7,6 +7,7 @@ import type {
   ActivationPlatformBreakdown, ActivationTrendPoint,
 } from '@/lib/admin/analytics/activationAnalyticsService'
 import type { ActivationRule } from '@/lib/admin/analytics/activationRules/registry'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { ActivationKpiCards } from './ActivationKpiCards'
 import { ActivationFilters } from './ActivationFilters'
 import { ActivationTrendChart } from './ActivationTrendChart'
@@ -20,6 +21,7 @@ const PAGE = 25
 // Founder/Investor dashboards can reuse the same client + components with
 // their own layout (SR-3/SR-4).
 export function ActivationAnalyticsDashboard() {
+  const { t } = useTranslation()
   const [filter, setFilter] = useState<ActivationAnalyticsFilter>({})
 
   const [summary, setSummary] = useState<ActivationSummary | null>(null)
@@ -45,11 +47,11 @@ export function ActivationAnalyticsDashboard() {
       setSummary(s); setRule(r); setPlatform(p.data); setTrend(t)
       setSource(src.data); setSourcePage(src.meta?.page ?? null)
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load analytics')
+      setError(e instanceof Error ? e.message : t('admin.activation.error.analytics'))
     } finally {
       setLoading(false)
     }
-  }, [filter])
+  }, [filter, t])
 
   useEffect(() => { load() }, [load])
 
@@ -60,26 +62,30 @@ export function ActivationAnalyticsDashboard() {
   }
 
   const sourceCols: Column<ActivationSourceBreakdown>[] = [
-    { key: 'signup_source', label: 'Source', render: (r) => r.signup_source },
-    { key: 'signups', label: 'Signups', align: 'right', render: (r) => formatInt(r.signups) },
-    { key: 'activated', label: 'Activated', align: 'right', render: (r) => formatInt(r.activated_count) },
-    { key: 'rate', label: 'Rate', align: 'right', render: (r) => formatPct(r.activation_rate) },
+    { key: 'signup_source', label: t('admin.activation.table.source'), render: (r) => r.signup_source },
+    { key: 'signups', label: t('admin.activation.table.signups'), align: 'right', render: (r) => formatInt(r.signups) },
+    { key: 'activated', label: t('admin.activation.table.activated'), align: 'right', render: (r) => formatInt(r.activated_count) },
+    { key: 'rate', label: t('admin.activation.table.rate'), align: 'right', render: (r) => formatPct(r.activation_rate) },
   ]
   const platformCols: Column<ActivationPlatformBreakdown>[] = [
-    { key: 'platform', label: 'Platform', render: (r) => r.platform },
-    { key: 'signups', label: 'Signups', align: 'right', render: (r) => formatInt(r.signups) },
-    { key: 'activated', label: 'Activated', align: 'right', render: (r) => formatInt(r.activated_count) },
-    { key: 'rate', label: 'Rate', align: 'right', render: (r) => formatPct(r.activation_rate) },
+    { key: 'platform', label: t('admin.activation.table.platform'), render: (r) => r.platform },
+    { key: 'signups', label: t('admin.activation.table.signups'), align: 'right', render: (r) => formatInt(r.signups) },
+    { key: 'activated', label: t('admin.activation.table.activated'), align: 'right', render: (r) => formatInt(r.activated_count) },
+    { key: 'rate', label: t('admin.activation.table.rate'), align: 'right', render: (r) => formatPct(r.activation_rate) },
   ]
 
   return (
     <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold">{t('admin.activation.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('admin.activation.subtitle')}</p>
+      </div>
       <ActivationFilters value={filter} onChange={setFilter} onReset={() => setFilter({})} />
       <ActivationKpiCards summary={summary} rule={rule} loading={loading} error={error} />
       <ActivationTrendChart points={trend} loading={loading} error={error} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <AuthBreakdownTable title="By source" columns={sourceCols} rows={source} loading={loading} error={error} hasMore={sourcePage?.hasMore} onLoadMore={loadMoreSource} />
-        <AuthBreakdownTable title="By platform" columns={platformCols} rows={platform} loading={loading} error={error} />
+        <AuthBreakdownTable title={t('admin.activation.table.bySource')} columns={sourceCols} rows={source} loading={loading} error={error} hasMore={sourcePage?.hasMore} onLoadMore={loadMoreSource} />
+        <AuthBreakdownTable title={t('admin.activation.table.byPlatform')} columns={platformCols} rows={platform} loading={loading} error={error} />
       </div>
     </div>
   )

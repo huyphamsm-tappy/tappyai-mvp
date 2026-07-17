@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatInt, formatPct } from '@/lib/admin/analytics/activationAnalyticsClient'
 import type { ActivationSummary } from '@/lib/admin/analytics/activationAnalyticsService'
 import type { ActivationRule } from '@/lib/admin/analytics/activationRules/registry'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Presentational (props only — no fetch), same shape as AuthKpiCards, so it's
 // reusable by the Activation Dashboard, Founder Dashboard, and Investor
@@ -16,12 +17,13 @@ export function ActivationKpiCards({ summary, rule, loading, error }: {
   loading?: boolean
   error?: string | null
 }) {
+  const { t } = useTranslation()
   const cards: { label: string; value: string }[] = summary
     ? [
-        { label: 'Signups', value: formatInt(summary.signups) },
-        { label: 'Activated', value: formatInt(summary.activated_count) },
-        { label: 'Activation rate', value: formatPct(summary.activation_rate) },
-        { label: 'Avg time to activation', value: formatDuration(summary.avg_time_to_activation_seconds) },
+        { label: t('admin.activation.kpi.signups'), value: formatInt(summary.signups) },
+        { label: t('admin.activation.kpi.activated'), value: formatInt(summary.activated_count) },
+        { label: t('admin.activation.kpi.rate'), value: formatPct(summary.activation_rate) },
+        { label: t('admin.activation.kpi.avgTime'), value: formatDuration(summary.avg_time_to_activation_seconds) },
       ]
     : []
 
@@ -29,7 +31,7 @@ export function ActivationKpiCards({ summary, rule, loading, error }: {
 
   return (
     <div className="space-y-2">
-      {rule && <p className="text-xs text-muted-foreground">Activation Rule: {rule.name} ({rule.ruleVersion})</p>}
+      {rule && <p className="text-xs text-muted-foreground">{t('admin.activation.rule', { name: rule.name, version: rule.ruleVersion })}</p>}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3" data-testid="activation-kpi-cards">
         {loading || !summary
           ? Array.from({ length: 4 }).map((_, i) => (

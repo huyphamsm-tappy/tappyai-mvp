@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatInt, formatPct } from '@/lib/admin/analytics/authAnalyticsClient'
 import type { AuthSummary } from '@/lib/admin/analytics/authAnalyticsService'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Presentational (props only — no fetch), so it's reusable by the Auth Dashboard,
 // Founder Dashboard, and Investor Dashboard, and easy to unit-test.
@@ -11,14 +12,15 @@ export function AuthKpiCards({ summary, loading, error }: {
   loading?: boolean
   error?: string | null
 }) {
+  const { t } = useTranslation()
   const cards: { label: string; value: string }[] = summary
     ? [
-        { label: 'Signups', value: formatInt(summary.signups) },
-        { label: 'Logins (success)', value: formatInt(summary.logins_success) },
-        { label: 'Logins (failed)', value: formatInt(summary.logins_failed) },
-        { label: 'Login success rate', value: formatPct(summary.login_success_rate) },
-        { label: 'First logins', value: formatInt(summary.first_logins) },
-        { label: 'Signup → first login', value: formatPct(summary.first_login_conversion) },
+        { label: t('admin.auth.kpi.signups'), value: formatInt(summary.signups) },
+        { label: t('admin.auth.kpi.loginsSuccess'), value: formatInt(summary.logins_success) },
+        { label: t('admin.auth.kpi.loginsFailed'), value: formatInt(summary.logins_failed) },
+        { label: t('admin.auth.kpi.successRate'), value: formatPct(summary.login_success_rate) },
+        { label: t('admin.auth.kpi.firstLogins'), value: formatInt(summary.first_logins) },
+        { label: t('admin.auth.kpi.signupToFirstLogin'), value: formatPct(summary.first_login_conversion) },
       ]
     : []
 

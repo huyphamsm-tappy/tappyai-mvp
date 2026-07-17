@@ -7,6 +7,7 @@ import type {
   AuthAnalyticsFilter, AuthSummary, ProviderBreakdown, PlatformBreakdown,
   DailyTrendPoint, DimensionCount, AcquisitionDimension,
 } from '@/lib/admin/analytics/authAnalyticsService'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AuthKpiCards } from './AuthKpiCards'
 import { AuthFilters } from './AuthFilters'
 import { AuthTrendChart } from './AuthTrendChart'
@@ -19,6 +20,7 @@ const DIMENSIONS: AcquisitionDimension[] = ['method', 'platform', 'app_version',
 // and feeds the reusable presentational components. Founder/Investor dashboards can
 // reuse the same client + components with their own layout.
 export function AuthAnalyticsDashboard() {
+  const { t } = useTranslation()
   const [filter, setFilter] = useState<AuthAnalyticsFilter>({})
   const [dimension, setDimension] = useState<AcquisitionDimension>('method')
 
@@ -45,20 +47,20 @@ export function AuthAnalyticsDashboard() {
       setSummary(s); setPlatform(p.data); setTrend(t)
       setProvider(pr.data); setProviderPage(pr.meta?.page ?? null)
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load analytics')
+      setError(e instanceof Error ? e.message : t('admin.auth.error.analytics'))
     } finally {
       setLoading(false)
     }
-  }, [filter])
+  }, [filter, t])
 
   const loadAcq = useCallback(async () => {
     try {
       const a = await authAnalyticsClient.acquisition(filter, { dimension, limit: PAGE, offset: 0 })
       setAcq(a.data); setAcqPage(a.meta?.page ?? null)
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load acquisition')
+      setError(e instanceof Error ? e.message : t('admin.auth.error.acquisition'))
     }
-  }, [filter, dimension])
+  }, [filter, dimension, t])
 
   useEffect(() => { loadPrimary() }, [loadPrimary])
   useEffect(() => { loadAcq() }, [loadAcq])
@@ -75,35 +77,39 @@ export function AuthAnalyticsDashboard() {
   }
 
   const providerCols: Column<ProviderBreakdown>[] = [
-    { key: 'method', label: 'Method', render: (r) => r.method },
-    { key: 'signups', label: 'Signups', align: 'right', render: (r) => formatInt(r.signups) },
-    { key: 'ok', label: 'Logins', align: 'right', render: (r) => formatInt(r.logins_success) },
-    { key: 'fail', label: 'Failed', align: 'right', render: (r) => formatInt(r.logins_failed) },
-    { key: 'rate', label: 'Success', align: 'right', render: (r) => formatPct(r.login_success_rate) },
+    { key: 'method', label: t('admin.auth.table.method'), render: (r) => r.method },
+    { key: 'signups', label: t('admin.auth.table.signups'), align: 'right', render: (r) => formatInt(r.signups) },
+    { key: 'ok', label: t('admin.auth.table.logins'), align: 'right', render: (r) => formatInt(r.logins_success) },
+    { key: 'fail', label: t('admin.auth.table.failed'), align: 'right', render: (r) => formatInt(r.logins_failed) },
+    { key: 'rate', label: t('admin.auth.table.success'), align: 'right', render: (r) => formatPct(r.login_success_rate) },
   ]
   const platformCols: Column<PlatformBreakdown>[] = [
-    { key: 'platform', label: 'Platform', render: (r) => r.platform },
-    { key: 'signups', label: 'Signups', align: 'right', render: (r) => formatInt(r.signups) },
-    { key: 'ok', label: 'Logins', align: 'right', render: (r) => formatInt(r.logins_success) },
-    { key: 'rate', label: 'Success', align: 'right', render: (r) => formatPct(r.login_success_rate) },
+    { key: 'platform', label: t('admin.auth.table.platform'), render: (r) => r.platform },
+    { key: 'signups', label: t('admin.auth.table.signups'), align: 'right', render: (r) => formatInt(r.signups) },
+    { key: 'ok', label: t('admin.auth.table.logins'), align: 'right', render: (r) => formatInt(r.logins_success) },
+    { key: 'rate', label: t('admin.auth.table.success'), align: 'right', render: (r) => formatPct(r.login_success_rate) },
   ]
   const acqCols: Column<DimensionCount>[] = [
     { key: 'key', label: dimension, render: (r) => r.key },
-    { key: 'users', label: 'Users', align: 'right', render: (r) => formatInt(r.users) },
+    { key: 'users', label: t('admin.auth.table.users'), align: 'right', render: (r) => formatInt(r.users) },
   ]
 
   return (
     <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold">{t('admin.auth.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('admin.auth.subtitle')}</p>
+      </div>
       <AuthFilters value={filter} onChange={setFilter} onReset={() => setFilter({})} />
       <AuthKpiCards summary={summary} loading={loading} error={error} />
       <AuthTrendChart points={trend} loading={loading} error={error} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <AuthBreakdownTable title="By provider" columns={providerCols} rows={provider} loading={loading} error={error} hasMore={providerPage?.hasMore} onLoadMore={loadMoreProvider} />
-        <AuthBreakdownTable title="By platform" columns={platformCols} rows={platform} loading={loading} error={error} />
+        <AuthBreakdownTable title={t('admin.auth.table.byProvider')} columns={providerCols} rows={provider} loading={loading} error={error} hasMore={providerPage?.hasMore} onLoadMore={loadMoreProvider} />
+        <AuthBreakdownTable title={t('admin.auth.table.byPlatform')} columns={platformCols} rows={platform} loading={loading} error={error} />
       </div>
       <div className="space-y-3">
         <div className="flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">Acquisition by</span>
+          <span className="text-sm text-muted-foreground">{t('admin.auth.acquisitionBy')}</span>
           <div className="w-40">
             <Select value={dimension} onValueChange={(v) => setDimension(v as AcquisitionDimension)}>
               <SelectTrigger><SelectValue /></SelectTrigger>
@@ -111,7 +117,7 @@ export function AuthAnalyticsDashboard() {
             </Select>
           </div>
         </div>
-        <AuthBreakdownTable title="Acquisition breakdown" columns={acqCols} rows={acq} loading={loading} error={error} hasMore={acqPage?.hasMore} onLoadMore={loadMoreAcq} />
+        <AuthBreakdownTable title={t('admin.auth.table.acquisitionBreakdown')} columns={acqCols} rows={acq} loading={loading} error={error} hasMore={acqPage?.hasMore} onLoadMore={loadMoreAcq} />
       </div>
     </div>
   )
