@@ -377,7 +377,7 @@ export default function NewReviewPage() {
     let duration: number
     try { duration = await getVideoDuration(file); vok('validate-duration', tDur, { duration: +duration.toFixed(2) }) }
     catch (e) { vfail('validate-duration', tDur, e); setError(t('reviewNew.videoReadError')); return }
-    // Reject on the tolerant threshold, but the error the user sees still says 15s.
+    // Reject on the tolerant threshold, but the error the user sees still says the advertised limit.
     if (duration > MAX_VIDEO_DURATION_ACCEPT) {
       vfail('validate-duration', tDur, new Error('too long'), { duration: +duration.toFixed(2), max: MAX_VIDEO_DURATION_ACCEPT })
       setError(t('reviewNew.videoTooLong', { n: String(MAX_VIDEO_DURATION) })); return

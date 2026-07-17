@@ -9,7 +9,7 @@ import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Us
 import { useTranslation } from '@/lib/i18n/useTranslation'
 // Pro visibility is a product decision owned by the shared config (single
 // source — also served to native clients via GET /api/config).
-import { SHOW_PRO_UPGRADE } from '@/lib/config/product'
+import { SHOW_PRO_UPGRADE, SHOW_INTEGRATIONS } from '@/lib/config/product'
 
 type ProfileViewProps = {
   userId: string
@@ -75,7 +75,11 @@ export default function ProfileView({ userId, userInfo, firstName, conversationC
             <MenuItem icon={Bookmark} label={t('profile.saved')} description={t('profile.saved.desc')} href="/profile/favorites" />
             <MenuItem icon={TrendingDown} label={t('profile.priceWatch')} description={t('profile.priceWatch.desc')} href="/profile/price-watches" />
             <MenuItem icon={Brain} label={t('profile.tappyKnows')} description={t('profile.tappyKnows.desc')} href="/profile/tappy-knows" />
-            <MenuItem icon={Plug} label={t('profile.integrations')} description={t('profile.integrations.desc')} href="/profile/integrations" />
+            {/* Connections tạm ẩn trên Web (feature hide, không xoá route/API).
+                Đổi false → true để bật lại. */}
+            {SHOW_INTEGRATIONS && (
+              <MenuItem icon={Plug} label={t('profile.integrations')} description={t('profile.integrations.desc')} href="/profile/integrations" />
+            )}
             <MenuItem icon={Star} label={t('profile.myReviews')} description={t('profile.myReviews.desc')} href="/reviews" />
             <MenuItem icon={Users} label={t('profile.groupDining')} description={t('profile.groupDining.desc')} href="/group/new" />
             {/* Pro upgrade tạm ẩn trong giai đoạn test miễn phí (chưa có pháp nhân

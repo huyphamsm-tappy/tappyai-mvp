@@ -19,16 +19,20 @@ export const ANON_DAILY_LIMIT = 5
 /** Pro upsell hidden app-wide during the free test phase. Mirrored by the
  * Android `SHOW_PRO_UPGRADE` gate — flip BOTH together when Pro launches. */
 export const SHOW_PRO_UPGRADE = false
+/** Connections (Google Calendar/Zalo) menu entry temporarily hidden on Web
+ * only — UI hide, not a removal. The APIs, routes, and DB tables are
+ * untouched; flip back to true to re-show. */
+export const SHOW_INTEGRATIONS = false
 
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
 export const MAX_VIDEO_SIZE_MB = 50
 /** Advertised clip length — what the user is told. */
-export const MAX_VIDEO_DURATION_SEC = 15
-/** Tolerant reject threshold: a clip trimmed to "15s" often encodes at
- * 15.04–15.9s, so accept a little above the advertised limit. Backend-only
+export const MAX_VIDEO_DURATION_SEC = 60
+/** Tolerant reject threshold: a clip trimmed to "60s" often encodes a couple
+ * hundred ms over, so accept a little above the advertised limit. Backend-only
  * allowance — never surfaced in UI copy. */
-export const MAX_VIDEO_DURATION_ACCEPT_SEC = 17
+export const MAX_VIDEO_DURATION_ACCEPT_SEC = 62
 
 // ── Authentication providers (product decision — which sign-in methods exist) ─
 // Served to clients via GET /api/config. Clients render buttons from this list;

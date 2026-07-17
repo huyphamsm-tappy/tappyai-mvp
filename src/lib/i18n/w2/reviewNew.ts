@@ -21,7 +21,7 @@ export const vi: Record<string, string> = {
 
   // Video tab
   'reviewNew.selectVideo': 'Chọn video',
-  'reviewNew.videoHint': 'mp4 · mov · webm  ·  tối đa 15s · 50MB',
+  'reviewNew.videoHint': 'mp4 · mov · webm  ·  tối đa 60s · 50MB',
   'reviewNew.creatingThumbnail': 'Đang tạo thumbnail...',
   'reviewNew.uploadingVideo': 'Đang tải video lên...',
   'reviewNew.analyzingContent': 'Đang phân tích nội dung...',
@@ -89,7 +89,7 @@ export const en: Record<string, string> = {
 
   // Video tab
   'reviewNew.selectVideo': 'Choose a video',
-  'reviewNew.videoHint': 'mp4 · mov · webm  ·  up to 15s · 50MB',
+  'reviewNew.videoHint': 'mp4 · mov · webm  ·  up to 60s · 50MB',
   'reviewNew.creatingThumbnail': 'Creating thumbnail...',
   'reviewNew.uploadingVideo': 'Uploading video...',
   'reviewNew.analyzingContent': 'Analyzing content...',

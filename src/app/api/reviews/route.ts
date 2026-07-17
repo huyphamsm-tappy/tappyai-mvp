@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
 import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
+import { MAX_VIDEO_DURATION_ACCEPT_SEC } from '@/lib/config/product'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -78,7 +79,18 @@ export async function POST(req: NextRequest) {
     source_type = b.source_type?.trim() || 'upload'
     source_url = b.source_url?.trim() || ''
     hashtags = Array.isArray(b.hashtags) ? b.hashtags.filter((t: unknown) => typeof t === 'string').slice(0, 10) : []
-    videoDuration = Number(b.duration) || 0
+    // Validate the RAW parsed value BEFORE any fallback collapses it. `Number(x) || 0`
+    // turns a non-numeric/missing `duration` (NaN) into 0 — if that collapsed value were
+    // what Number.isFinite() checked below, NaN could never be observed (0 is always
+    // finite), silently defeating the very check meant to catch it. Reject on the raw
+    // value first; only THEN apply the "unknown duration -> 0" fallback for the
+    // unrelated original-sound default further down in this function, which explicitly
+    // wants that fallback and is unaffected by this validation.
+    const rawDuration = Number(b.duration)
+    if (content_type === 'video' && (!Number.isFinite(rawDuration) || rawDuration > MAX_VIDEO_DURATION_ACCEPT_SEC)) {
+      return NextResponse.json({ error: 'Cần có nội dung hoặc ảnh để đăng bài.' }, { status: 400 })
+    }
+    videoDuration = rawDuration || 0
     music = null
     if (b.music) {
       if (b.music.version !== MUSIC_PAYLOAD_VERSION) throw new Error('unsupported music version')
