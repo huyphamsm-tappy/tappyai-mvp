@@ -1,10 +1,10 @@
 # TappyAI AI Platform — Sprint 1: Architecture Foundation
 
-**Status:** DESIGN ONLY — awaiting Owner approval. No code was changed in this sprint.
+**Status:** APPROVED by Owner. Migration Phases 2–4 (Capability Registry, Provider Registry, Provider Policy, AI Router, Telemetry Contract, Config Layer) **implemented in Sprint 2** — commit `674655d` on `fix/web-production-stabilization`. Verified: `tsc --noEmit` clean, `next build` clean (all 10 AI-dependent routes compiled), full vitest suite 30/30 (incl. `src/lib/ai/llm/golden.test.ts`, the falsifiable no-behavior-change guard from §9 point 6). Claude remains the only installed/active provider; none of the 14 call sites in §2.3 were modified.
 **Scope:** Prepare the foundation for Multi-LLM. Zero production behavior change.
 **Source of truth:** the code as read on this branch (`fix/web-production-stabilization`). Docs were not trusted; every claim below is grounded in a file:line read during the audit.
 
-> Binding constraint honored: this sprint created **no** abstraction, interface, registry, adapter, router, or refactor. The sections below are a *design* to be reviewed. Nothing here ships until Owner approves.
+> Sprint 1 (this document) was design-only. Sprint 2 implemented exactly the 6 components below — no abstraction, interface, or router beyond what this document designed. Phase 5+ (installing a second adapter, routing real traffic to it) is explicitly **not** part of this sprint and requires its own separate approval.
 
 ---
 
