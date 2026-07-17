@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Badge, type BadgeProps } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type Role = 'super_admin' | 'admin' | 'moderator' | 'analyst'
 
@@ -28,7 +29,15 @@ const ROLE_BADGE: Record<Role, BadgeProps['variant']> = {
   analyst: 'success',
 }
 
+const ROLE_LABEL_KEY: Record<Role, string> = {
+  super_admin: 'admin.role.superAdmin',
+  admin: 'admin.role.admin',
+  moderator: 'admin.role.moderator',
+  analyst: 'admin.role.analyst',
+}
+
 export function RolesManager() {
+  const { t, locale } = useTranslation()
   const [rows, setRows] = useState<RoleRow[]>([])
   const [loading, setLoading] = useState(true)
   const [userId, setUserId] = useState('')
@@ -41,14 +50,14 @@ export function RolesManager() {
     try {
       const res = await fetch('/api/admin/rbac/roles')
       const json = await res.json()
-      if (!res.ok) throw new Error(json.error?.message ?? 'Failed to load')
+      if (!res.ok) throw new Error(json.error?.message ?? t('admin.common.failedToLoad'))
       setRows(json.data ?? [])
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Failed to load roles')
+      toast.error(e instanceof Error ? e.message : t('admin.rbac.error.loadRoles'))
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [t])
 
   useEffect(() => { load() }, [load])
 
@@ -61,27 +70,28 @@ export function RolesManager() {
         body: JSON.stringify({ user_id: userId.trim(), role, notes: notes.trim() || undefined }),
       })
       const json = await res.json()
-      if (!res.ok) throw new Error(json.error?.message ?? 'Failed to grant role')
-      toast.success('Role granted')
+      if (!res.ok) throw new Error(json.error?.message ?? t('admin.rbac.error.grant'))
+      toast.success(t('admin.rbac.success.grant'))
       setUserId(''); setNotes('')
       load()
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Failed to grant role')
+      toast.error(e instanceof Error ? e.message : t('admin.rbac.error.grant'))
     } finally {
       setSubmitting(false)
     }
   }
 
   async function revoke(row: RoleRow) {
-    if (!confirm(`Revoke ${row.role} from ${row.profiles?.full_name ?? row.user_id}?`)) return
+    const name = row.profiles?.full_name ?? row.user_id
+    if (!confirm(t('admin.rbac.revokeConfirm', { role: row.role, name }))) return
     try {
       const res = await fetch(`/api/admin/rbac/roles/${row.id}`, { method: 'DELETE' })
       const json = await res.json()
-      if (!res.ok) throw new Error(json.error?.message ?? 'Failed to revoke')
-      toast.success('Role revoked')
+      if (!res.ok) throw new Error(json.error?.message ?? t('admin.rbac.error.revoke'))
+      toast.success(t('admin.rbac.success.revoke'))
       load()
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Failed to revoke role')
+      toast.error(e instanceof Error ? e.message : t('admin.rbac.error.revoke'))
     }
   }
 
@@ -89,65 +99,69 @@ export function RolesManager() {
 
   return (
     <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold">{t('admin.rbac.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('admin.rbac.subtitle')}</p>
+      </div>
       <Card>
-        <CardHeader><CardTitle>Grant a role</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('admin.rbac.grantTitle')}</CardTitle></CardHeader>
         <CardContent className="flex flex-col sm:flex-row gap-3 sm:items-end">
           <div className="flex-1">
-            <label className="text-xs text-muted-foreground">User ID (Supabase UUID)</label>
+            <label className="text-xs text-muted-foreground">{t('admin.rbac.userIdLabel')}</label>
             <Input value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="00000000-0000-0000-0000-000000000000" />
           </div>
           <div className="w-full sm:w-40">
-            <label className="text-xs text-muted-foreground">Role</label>
+            <label className="text-xs text-muted-foreground">{t('admin.rbac.roleLabel')}</label>
             <Select value={role} onValueChange={(v) => setRole(v as Role)}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="analyst">Analyst</SelectItem>
-                <SelectItem value="moderator">Moderator</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="super_admin">Super Admin</SelectItem>
+                <SelectItem value="analyst">{t(ROLE_LABEL_KEY.analyst)}</SelectItem>
+                <SelectItem value="moderator">{t(ROLE_LABEL_KEY.moderator)}</SelectItem>
+                <SelectItem value="admin">{t(ROLE_LABEL_KEY.admin)}</SelectItem>
+                <SelectItem value="super_admin">{t(ROLE_LABEL_KEY.super_admin)}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="flex-1">
-            <label className="text-xs text-muted-foreground">Notes (optional)</label>
-            <Input value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Reason / context" />
+            <label className="text-xs text-muted-foreground">{t('admin.rbac.notesLabel')}</label>
+            <Input value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t('admin.rbac.notesPlaceholder')} />
           </div>
-          <Button onClick={grant} disabled={!isUuid || submitting}>Grant</Button>
+          <Button onClick={grant} disabled={!isUuid || submitting}>{t('admin.rbac.grantButton')}</Button>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader><CardTitle>Admin roles</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('admin.rbac.adminRoles')}</CardTitle></CardHeader>
         <CardContent>
           {loading ? (
-            <p className="text-sm text-muted-foreground">Loading…</p>
+            <p className="text-sm text-muted-foreground">{t('admin.common.loading')}</p>
           ) : rows.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No admin roles yet. Grant one above.</p>
+            <p className="text-sm text-muted-foreground">{t('admin.rbac.noRolesYet')}</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Granted</TableHead>
-                  <TableHead>Notes</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('admin.rbac.table.user')}</TableHead>
+                  <TableHead>{t('admin.rbac.table.role')}</TableHead>
+                  <TableHead>{t('admin.rbac.table.granted')}</TableHead>
+                  <TableHead>{t('admin.rbac.table.notes')}</TableHead>
+                  <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {rows.map((r) => (
                   <TableRow key={r.id}>
                     <TableCell>
-                      <div className="font-medium">{r.profiles?.full_name ?? 'Unknown'}</div>
+                      <div className="font-medium">{r.profiles?.full_name ?? t('admin.common.unknown')}</div>
                       <div className="text-xs text-muted-foreground font-mono">{r.user_id}</div>
                     </TableCell>
                     <TableCell><Badge variant={ROLE_BADGE[r.role]}>{r.role}</Badge></TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(r.granted_at).toLocaleDateString('vi-VN')}
+                      {new Date(r.granted_at).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US')}
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground max-w-[220px] truncate">{r.notes ?? '—'}</TableCell>
                     <TableCell className="text-right">
-                      <Button variant="destructive" size="sm" onClick={() => revoke(r)}>Revoke</Button>
+                      <Button variant="destructive" size="sm" onClick={() => revoke(r)}>{t('admin.rbac.revokeButton')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}

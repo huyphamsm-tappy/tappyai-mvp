@@ -5,13 +5,5 @@ import { RolesManager } from '@/components/admin/rbac/RolesManager'
 // this page enforces the stricter minimum. API handlers enforce independently.
 export default async function RbacPage() {
   await requirePageRole('super_admin')
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Roles</h1>
-        <p className="text-sm text-muted-foreground">Grant and revoke back office access. Every change is audit-logged.</p>
-      </div>
-      <RolesManager />
-    </div>
-  )
+  return <RolesManager />
 }

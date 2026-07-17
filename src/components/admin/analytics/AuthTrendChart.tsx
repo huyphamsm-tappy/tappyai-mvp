@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatInt } from '@/lib/admin/analytics/authAnalyticsClient'
 import type { DailyTrendPoint } from '@/lib/admin/analytics/authAnalyticsService'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Lightweight daily-trend chart (div bars — same dependency-free approach as the
 // existing /admin/analytics page; no chart library). Presentational + responsive.
@@ -11,17 +12,18 @@ export function AuthTrendChart({ points, loading, error }: {
   loading?: boolean
   error?: string | null
 }) {
+  const { t } = useTranslation()
   const max = Math.max(1, ...points.map((p) => p.logins_success))
   return (
     <Card>
-      <CardHeader><CardTitle className="text-base">Daily logins (success)</CardTitle></CardHeader>
+      <CardHeader><CardTitle className="text-base">{t('admin.auth.chart.dailyLogins')}</CardTitle></CardHeader>
       <CardContent>
         {error ? (
           <div role="alert" className="text-sm text-red-500">{error}</div>
         ) : loading && points.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">{t('admin.common.loading')}</p>
         ) : points.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No data for this range.</p>
+          <p className="text-sm text-muted-foreground">{t('admin.common.noDataRange')}</p>
         ) : (
           <div className="flex items-end gap-1 h-40 overflow-x-auto" data-testid="auth-trend-bars">
             {points.map((p) => (
