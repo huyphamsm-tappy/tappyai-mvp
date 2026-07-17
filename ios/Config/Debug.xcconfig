@@ -1,0 +1,20 @@
+// Debug configuration — non-secret defaults. Secrets go in Config/Secrets.xcconfig (gitignored) and override here.
+#include? "Secrets.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER = com.tappyai.ios.debug
+PRODUCT_NAME = TappyAI
+
+// Backend (Next.js API + Web). Simulator reaches the host machine via localhost.
+// NOTE: URLs use $() so slashes are fine in xcconfig.
+TAPPY_API_BASE_URL = http:/$()/localhost:3000
+TAPPY_ENV = debug
+
+// Supabase (anon key only on client — RLS-bound). Provide real values via Secrets.xcconfig.
+SUPABASE_URL = https:/$()/YOUR-PROJECT.supabase.co
+SUPABASE_ANON_KEY = REPLACE_ME_LOCALLY
+
+// APNs environment: "development" connects to the Apple sandbox push server.
+APS_ENVIRONMENT = development
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
+GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1

@@ -1,0 +1,9 @@
+<resources>
+    <string name="deals_title">🏷️ Deals</string>
+    <string name="deals_error_title">Couldn\'t load deals</string>
+    <string name="deals_error_message">Couldn\'t load deals. Please try again later.</string>
+    <string name="deals_empty_title">No deals right now</string>
+    <string name="deals_empty_message">Check back later for new deals.</string>
+    <string name="deals_opens_externally_description">Opens externally</string>
+    <string name="deals_category_source_format">%1$s · via %2$s</string>
+</resources>

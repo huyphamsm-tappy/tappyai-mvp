@@ -1,0 +1,49 @@
+<resources>
+    <string name="home_location_not_set">Set your location</string>
+    <string name="home_ask_prefix">Ask Tappy: %1$s</string>
+    <string name="home_ask_prompt_1">Find restaurants</string>
+    <string name="home_ask_prompt_2">Plan a trip</string>
+    <string name="home_ask_prompt_3">Translate text</string>
+    <string name="home_ask_prompt_4">Discover nearby places</string>
+
+    <string name="home_quick_explore">Explore</string>
+    <string name="home_quick_maps">Maps</string>
+    <string name="home_quick_music">Music</string>
+    <string name="home_quick_scan">Scan</string>
+    <string name="home_quick_translate">Translate</string>
+    <string name="home_quick_games">Games</string>
+    <string name="home_quick_currency">Currency</string>
+    <string name="home_quick_deals">Deals</string>
+
+    <string name="home_section_quick_actions">Quick actions</string>
+    <string name="home_section_suggested">Suggested for you</string>
+    <string name="home_empty_suggestions_title">No suggestions yet</string>
+    <string name="home_empty_suggestions_message">Personalized suggestions will appear here as Tappy gets to know you.</string>
+    <string name="home_section_recent_activity">Recent activity</string>
+    <string name="home_empty_recent_title">No recent activity</string>
+    <string name="home_empty_recent_message">Your recent chats and saved places will show up here.</string>
+
+    <string name="home_recommendations_section">✨ For you</string>
+    <string name="home_recommendations_card_title">✨ For you</string>
+    <string name="home_recommendations_card_desc">Personalized places for your taste</string>
+
+    <string name="home_section_fortune">🔮 Fortune today</string>
+    <string name="home_fortune_tarot_title">Tarot</string>
+    <string name="home_fortune_tarot_description">Discover messages from the universe</string>
+    <string name="home_fortune_horoscope_title">Horoscope</string>
+    <string name="home_fortune_horoscope_description">Fortune by your zodiac year</string>
+    <string name="home_fortune_zodiac_title">Zodiac</string>
+    <string name="home_fortune_zodiac_description">Fortune by your birth date</string>
+
+    <string name="home_tab_home">Home</string>
+    <string name="home_tab_chat">Chat</string>
+    <string name="home_tab_explore">Explore</string>
+    <string name="home_tab_maps">Maps</string>
+    <string name="home_tab_profile">Profile</string>
+    <string name="home_tab_placeholder_message">The %1$s experience is coming soon.</string>
+
+    <string name="home_greeting_morning">Good morning ☀️</string>
+    <string name="home_greeting_afternoon">Good afternoon 🌤️</string>
+    <string name="home_greeting_evening">Good evening 🌙</string>
+    <string name="home_greeting_night">Still up? 🌙</string>
+</resources>

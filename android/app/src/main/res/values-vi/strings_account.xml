@@ -1,0 +1,27 @@
+<resources>
+    <string name="account_title">Tài khoản</string>
+    <string name="account_load_error_title">Không tải được hồ sơ</string>
+    <string name="account_info_section">Thông tin</string>
+    <string name="account_full_name_label">Họ và tên</string>
+    <string name="account_email_label">Email</string>
+    <string name="account_joined_label">Ngày tham gia</string>
+    <string name="account_no_data_placeholder">—</string>
+    <string name="account_edit_section">Chỉnh sửa</string>
+    <string name="account_edit_profile">Chỉnh sửa hồ sơ</string>
+    <string name="account_saved_toast">Đã lưu hồ sơ</string>
+    <string name="account_change_avatar">Đổi ảnh đại diện</string>
+    <string name="account_cannot_change">Không thể thay đổi</string>
+    <string name="account_full_name_placeholder">Họ và tên của bạn</string>
+    <string name="account_bio_label">Giới thiệu</string>
+    <string name="account_bio_placeholder">Hãy giới thiệu đôi chút về bạn</string>
+    <string name="account_bio_counter">%1$d / 200</string>
+    <string name="account_save">Lưu</string>
+    <string name="account_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="account_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="account_error_session_expired">Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.</string>
+    <string name="account_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="account_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+    <string name="account_avatar_read_failed">Không thể đọc ảnh này. Vui lòng chọn ảnh khác.</string>
+    <string name="account_avatar_too_large">Ảnh tối đa 3MB.</string>
+    <string name="account_avatar_invalid_type">Vui lòng chọn ảnh JPEG, PNG, GIF hoặc WebP.</string>
+</resources>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="recommendations_title">✨ Gợi ý cho bạn</string>
+    <string name="recommendations_subtitle_personalized">Cá nhân hóa theo sở thích của bạn</string>
+    <string name="recommendations_subtitle_popular">Địa điểm nổi bật gần đây</string>
+    <string name="recommendations_ask_tappy">Hỏi Tappy về chỗ này</string>
+    <string name="recommendations_place_fallback">Địa điểm</string>
+    <string name="recommendations_empty_title">Chưa đủ dữ liệu để gợi ý.</string>
+    <string name="recommendations_empty_message">Dùng Tappy nhiều hơn (chat, lưu địa điểm, review) để Tappy hiểu bạn rõ hơn nhé!</string>
+    <string name="recommendations_error_title">Không tải được</string>
+    <string name="recommendations_error_auth">Cần đăng nhập để xem gợi ý.</string>
+    <string name="recommendations_error_generic">Không tải được gợi ý, thử lại nhé.</string>
+    <string name="recommendations_ask_prompt">Kể mình nghe về %1$s</string>
+    <string name="recommendations_ask_prompt_fallback">địa điểm này</string>
+</resources>

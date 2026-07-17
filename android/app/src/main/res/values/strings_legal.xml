@@ -1,0 +1,30 @@
+<resources>
+    <!-- Legal document chrome only (profile/LegalDocumentScreen.kt, PrivacyPolicyScreen.kt,
+         TermsOfServiceScreen.kt) — long-form body paragraphs stay hardcoded, out of scope. -->
+    <string name="legal_last_updated">Last updated: %1$s</string>
+    <string name="legal_last_updated_date">June 13, 2026</string>
+
+    <string name="legal_privacy_title">Privacy Policy</string>
+    <string name="legal_privacy_section1_title">Information We Collect</string>
+    <string name="legal_privacy_section2_title">How We Use Information</string>
+    <string name="legal_privacy_section3_title">Sharing With Third Parties</string>
+    <string name="legal_privacy_section4_title">Data Security</string>
+    <string name="legal_privacy_section5_title">Your Rights</string>
+    <string name="legal_privacy_section6_title">Changes to This Policy</string>
+
+    <string name="legal_terms_title">Terms of Service</string>
+    <string name="legal_terms_section1_title">Introduction</string>
+    <string name="legal_terms_section2_title">Account</string>
+    <string name="legal_terms_section3_title">AI-Provided Information</string>
+    <string name="legal_terms_section4_title">Fair Use</string>
+    <string name="legal_terms_section5_title">Changes to These Terms</string>
+    <string name="legal_terms_section6_title">Contact</string>
+
+    <string name="legal_copyright_title">Copyright Policy</string>
+    <string name="legal_copyright_scope">Applies to music uploaded to TappyAI by users.</string>
+    <string name="legal_copyright_section1_title">Conditions for uploading music</string>
+    <string name="legal_copyright_section2_title">Responsibility</string>
+    <string name="legal_copyright_section3_title">Reporting infringement (Notice-and-Takedown)</string>
+    <string name="legal_copyright_section4_title">Copyright Agent</string>
+    <string name="legal_copyright_section5_title">Repeat infringement</string>
+</resources>

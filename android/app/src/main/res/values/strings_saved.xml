@@ -1,0 +1,21 @@
+<resources>
+    <string name="saved_title">Saved</string>
+    <string name="saved_open_label">Open</string>
+    <string name="saved_items_count">%1$d items</string>
+    <string name="saved_remove_favorite_content_description">Remove %1$s from favorites</string>
+    <string name="saved_error_title">Couldn\'t load your saved items</string>
+    <string name="saved_error_message">Please try again later.</string>
+    <string name="saved_load_error_fallback">Couldn\'t load your saved items.</string>
+    <string name="saved_empty_title">Nothing saved yet</string>
+    <string name="saved_empty_message">Tap ♡ to save places you love, or 🔖 to bookmark posts to revisit — they\'ll all live here.</string>
+    <string name="saved_explore_now">Explore now</string>
+    <string name="saved_section_favorites">Favorite places</string>
+    <string name="saved_section_reviews">Saved reviews</string>
+    <string name="saved_date_prefix">Saved %1$s</string>
+    <string name="saved_review_fallback_name">Review</string>
+    <string name="saved_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="saved_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="saved_error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="saved_error_server">The server is having issues. Please try again later.</string>
+    <string name="saved_error_generic">Something went wrong. Please try again.</string>
+</resources>

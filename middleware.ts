@@ -55,7 +55,20 @@ export async function middleware(request: NextRequest) {
   // without a guaranteed refresh, so once the ~1h access token expired the
   // server started rendering the user as logged-out (the reported "desktop
   // session logs out periodically" symptom).
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // Back Office route protection (Architecture v1.1, owner decision Phase 0):
+  // middleware enforces AUTHENTICATION only — never a DB-backed role check. The
+  // authoritative RBAC role gate runs in the /admin server layout and in every
+  // /api/admin/* handler (defense-in-depth, Security §4). Unauthenticated users
+  // hitting an /admin PAGE are redirected to login; /api/admin/* is untouched
+  // here (those handlers return JSON 401/403 themselves).
+  if (pathname.startsWith('/admin') && !user) {
+    const loginUrl = request.nextUrl.clone()
+    loginUrl.pathname = '/login'
+    loginUrl.search = `?redirect=${encodeURIComponent(pathname)}`
+    return NextResponse.redirect(loginUrl)
+  }
 
   return supabaseResponse
 }

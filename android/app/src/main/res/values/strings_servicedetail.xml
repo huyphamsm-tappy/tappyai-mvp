@@ -1,0 +1,46 @@
+<resources>
+    <string name="service_category_food">Food</string>
+    <string name="service_category_spa">Spa &amp; Beauty</string>
+    <string name="service_category_hotel">Hotel</string>
+    <string name="service_category_travel">Travel</string>
+    <string name="service_category_shopping">Shopping</string>
+    <string name="service_category_entertainment">Entertainment</string>
+
+    <string name="service_tappy_rating">★ %1$.1f Tappy</string>
+    <string name="service_address_label">Address</string>
+
+    <string name="service_my_bookings_title">Your bookings</string>
+    <string name="service_booking_at_time"> at %1$s</string>
+    <string name="service_booking_guests_suffix"> • %1$d guests</string>
+    <string name="service_status_confirmed">Confirmed</string>
+    <string name="service_status_cancelled">Cancelled</string>
+    <string name="service_status_pending">Pending</string>
+
+    <string name="service_community_reviews_title">Reviews from TappyAI</string>
+    <string name="service_avg_rating">%1$.1f/5 (%2$d)</string>
+
+    <string name="service_booking_title">Book now</string>
+    <string name="service_booking_name_label">Full name *</string>
+    <string name="service_booking_name_hint">Nguyễn Văn A</string>
+    <string name="service_booking_phone_label">Phone number *</string>
+    <string name="service_booking_phone_hint">09xxxxxxxx</string>
+    <string name="service_booking_date_label">Date *</string>
+    <string name="service_booking_date_placeholder">Select a date</string>
+    <string name="service_booking_time_label">Time (optional)</string>
+    <string name="service_booking_guests_default">Guests</string>
+    <string name="service_booking_guests_rooms">Rooms</string>
+    <string name="service_booking_guests_people">People</string>
+    <string name="service_booking_notes_label">Additional notes</string>
+    <string name="service_booking_notes_hint">Special requests, food allergies, occasion…</string>
+    <string name="service_booking_submit">✅ Confirm booking</string>
+    <string name="service_booking_footnote">After you book, the venue will contact you to confirm</string>
+    <string name="service_booking_error_required">Please fill in all required fields.</string>
+    <string name="service_booking_error_generic">Something went wrong. Please try again.</string>
+
+    <string name="service_booking_success_title">Booking successful! 🎉</string>
+    <string name="service_booking_success_message">We\'ll contact you to confirm as soon as possible.</string>
+    <string name="service_booking_guests_summary">👥 %1$d guests</string>
+    <string name="service_booking_share">Share confirmation</string>
+    <string name="service_booking_back">Back</string>
+    <string name="service_booking_confirm_share_title">Booking confirmation — TappyAI</string>
+</resources>

@@ -1,0 +1,23 @@
+<resources>
+    <string name="bookings_title">Lịch đặt chỗ</string>
+    <string name="bookings_review_label">Đánh giá</string>
+    <string name="bookings_pending_banner">⏳ Đang xử lý — TappyAI đã ghi nhận lượt đặt chỗ của bạn. Địa điểm sẽ gọi điện xác nhận qua số điện thoại bạn đã cung cấp.</string>
+    <string name="bookings_share_button">Chia sẻ</string>
+    <string name="bookings_status_confirmed">✅ Đã xác nhận</string>
+    <string name="bookings_status_cancelled">❌ Đã huỷ</string>
+    <string name="bookings_status_pending">⏳ Đang xử lý</string>
+    <string name="bookings_error_title">Không tải được lịch đặt chỗ của bạn</string>
+    <string name="bookings_error_message">Vui lòng thử lại sau.</string>
+    <string name="bookings_empty_title">Chưa có lịch đặt chỗ nào</string>
+    <string name="bookings_empty_message">Dùng trò chuyện để tìm nhà hàng, spa và khách sạn — và đặt chỗ chỉ trong vài giây.</string>
+    <string name="bookings_explore_now">Khám phá ngay</string>
+    <string name="bookings_share_header">📋 Xác nhận đặt chỗ — TappyAI</string>
+    <string name="bookings_share_time_suffix"> lúc %1$s</string>
+    <string name="bookings_share_subject">Xác nhận đặt chỗ — TappyAI</string>
+    <string name="bookings_share_chooser_title">Chia sẻ lịch đặt chỗ</string>
+    <string name="bookings_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="bookings_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="bookings_error_session_expired">Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.</string>
+    <string name="bookings_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="bookings_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+</resources>

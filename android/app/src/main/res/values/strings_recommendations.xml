@@ -1,0 +1,15 @@
+<resources>
+    <string name="recommendations_title">✨ Suggestions for you</string>
+    <string name="recommendations_subtitle_personalized">Personalized to your tastes</string>
+    <string name="recommendations_subtitle_popular">Trending places nearby</string>
+    <string name="recommendations_ask_tappy">Ask Tappy about this place</string>
+    <string name="recommendations_place_fallback">Place</string>
+    <string name="recommendations_empty_title">Not enough data to suggest yet.</string>
+    <string name="recommendations_empty_message">Use Tappy more (chat, save places, review) so Tappy gets to know you better!</string>
+    <string name="recommendations_error_title">Couldn\'t load</string>
+    <string name="recommendations_error_auth">Sign in to see suggestions.</string>
+    <string name="recommendations_error_generic">Couldn\'t load suggestions, please try again.</string>
+    <!-- The exact prompt the web pre-fills chat with: "Kể mình nghe về {place}". %1$s = place name. -->
+    <string name="recommendations_ask_prompt">Kể mình nghe về %1$s</string>
+    <string name="recommendations_ask_prompt_fallback">địa điểm này</string>
+</resources>

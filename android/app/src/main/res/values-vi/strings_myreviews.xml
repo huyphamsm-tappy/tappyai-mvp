@@ -1,0 +1,19 @@
+<resources>
+    <string name="myreviews_title">Bài viết của tôi</string>
+    <string name="myreviews_post_count">%1$d bài viết</string>
+    <string name="myreviews_hidden_badge_description">Đã ẩn</string>
+    <string name="myreviews_like_count_badge">❤️ %1$d</string>
+    <string name="myreviews_delete_dialog_title">Xóa bài viết?</string>
+    <string name="myreviews_delete_dialog_message">Xóa \"%1$s\"? Hành động này không thể hoàn tác.</string>
+    <string name="myreviews_delete_confirm">Xóa</string>
+    <string name="myreviews_show_post">Hiện bài viết này</string>
+    <string name="myreviews_hide_post">Ẩn bài viết này</string>
+    <string name="myreviews_delete_post_action">Xóa bài viết này</string>
+    <string name="myreviews_status_hidden">🔒 Đã ẩn</string>
+    <string name="myreviews_status_visible">👁 Hiển thị</string>
+    <string name="myreviews_status_line">%1$s · ❤️ %2$d · 💬 %3$d</string>
+    <string name="myreviews_error_title">Không thể tải bài viết của bạn</string>
+    <string name="myreviews_error_message">Vui lòng thử lại sau.</string>
+    <string name="myreviews_empty_title">Chưa có bài viết nào</string>
+    <string name="myreviews_create_first_review">Đăng đánh giá đầu tiên</string>
+</resources>

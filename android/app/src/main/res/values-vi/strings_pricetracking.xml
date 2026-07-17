@@ -1,0 +1,24 @@
+<resources>
+    <string name="pricetracking_title">🎯 Theo dõi giá</string>
+    <string name="pricetracking_refresh_content_description">Làm mới</string>
+    <string name="pricetracking_error_title">Không tải được danh sách theo dõi giá</string>
+    <string name="pricetracking_how_to_add_title">Cách thêm một mục theo dõi giá</string>
+    <string name="pricetracking_how_to_add_message">Trò chuyện với Tappy và nói điều gì đó như \"Theo dõi giá iPhone 16\" — Tappy sẽ thiết lập theo dõi và báo cho bạn khi giá giảm.</string>
+    <string name="pricetracking_empty_title">Chưa có mục theo dõi giá nào</string>
+    <string name="pricetracking_empty_message">Trò chuyện với Tappy để bắt đầu theo dõi giá sản phẩm</string>
+    <string name="pricetracking_go_to_chat">Đến trò chuyện</string>
+    <string name="pricetracking_tracking_header">ĐANG THEO DÕI (%1$d/%2$d)</string>
+    <string name="pricetracking_target_price">Giá mục tiêu: %1$s</string>
+    <string name="pricetracking_current_price">Giá hiện tại: %1$s</string>
+    <string name="pricetracking_checked_date">Đã kiểm tra %1$s</string>
+    <string name="pricetracking_delete_watch_content_description">Xoá mục theo dõi</string>
+    <string name="pricetracking_notified_header">ĐÃ BÁO (%1$d)</string>
+    <string name="pricetracking_notified_date">Đã báo %1$s</string>
+    <string name="pricetracking_updated_message">Đã cập nhật</string>
+    <string name="pricetracking_delete_failed_message">Không thể xoá mục theo dõi giá. Vui lòng thử lại.</string>
+    <string name="pricetracking_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="pricetracking_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="pricetracking_error_session_expired">Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.</string>
+    <string name="pricetracking_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="pricetracking_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+</resources>

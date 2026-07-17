@@ -1,0 +1,17 @@
+<resources>
+    <string name="onboarding_welcome_title">Chào mừng đến với TappyAI! 👋</string>
+    <string name="onboarding_welcome_desc">Cho mình biết bạn quan tâm đến lĩnh vực nào để cá nhân hóa trải nghiệm nhé.</string>
+    <string name="onboarding_location_title">Bạn đang ở đâu? 📍</string>
+    <string name="onboarding_location_desc">Để gợi ý địa điểm sát thực tế hơn với bạn.</string>
+    <string name="onboarding_other_city">Hoặc nhập thành phố khác...</string>
+    <string name="onboarding_start">🚀 Bắt đầu khám phá</string>
+    <string name="onboarding_error_title">Không thể tải</string>
+    <string name="onboarding_error_message">Vui lòng kiểm tra kết nối và thử lại.</string>
+
+    <string name="onboarding_interest_food">Ăn uống</string>
+    <string name="onboarding_interest_spa">Spa &amp; Làm đẹp</string>
+    <string name="onboarding_interest_travel">Du lịch</string>
+    <string name="onboarding_interest_shopping">Mua sắm</string>
+    <string name="onboarding_interest_entertainment">Giải trí</string>
+    <string name="onboarding_interest_hotel">Khách sạn</string>
+</resources>

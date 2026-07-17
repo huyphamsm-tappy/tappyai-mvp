@@ -1,0 +1,9 @@
+<resources>
+    <string name="deals_title">🏷️ Ưu đãi</string>
+    <string name="deals_error_title">Không thể tải ưu đãi</string>
+    <string name="deals_error_message">Không thể tải ưu đãi. Vui lòng thử lại sau.</string>
+    <string name="deals_empty_title">Hiện chưa có ưu đãi nào</string>
+    <string name="deals_empty_message">Quay lại sau để xem ưu đãi mới.</string>
+    <string name="deals_opens_externally_description">Mở bên ngoài ứng dụng</string>
+    <string name="deals_category_source_format">%1$s · qua %2$s</string>
+</resources>

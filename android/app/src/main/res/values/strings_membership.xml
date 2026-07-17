@@ -1,0 +1,30 @@
+<resources>
+    <string name="membership_title">Upgrade to Pro</string>
+    <string name="membership_hero_title">TappyAI Pro</string>
+    <string name="membership_hero_subtitle">The full, unlimited experience</string>
+    <string name="membership_free_status_banner">🎁 You\'re currently on the Free plan.</string>
+    <string name="membership_plan_name_free">Free</string>
+    <string name="membership_plan_name_pro">Pro</string>
+    <string name="membership_free_tagline">Try it for free</string>
+    <string name="membership_pro_tagline">Unlimited, every feature</string>
+    <string name="membership_per_month">/month</string>
+    <string name="membership_current_plan">Current plan</string>
+    <string name="membership_upgrade_cta">Upgrade to Pro — %1$s/month</string>
+    <string name="membership_pro_subscription_feature_name">Pro subscription</string>
+    <string name="membership_faq_title">Frequently asked questions</string>
+    <string name="membership_free_feature_messages">15 messages / day</string>
+    <string name="membership_free_feature_search">Basic place search</string>
+    <string name="membership_free_feature_history">7-day history</string>
+    <string name="membership_pro_feature_messages">Unlimited messages</string>
+    <string name="membership_pro_feature_search">Advanced, more accurate search</string>
+    <string name="membership_pro_feature_history">Unlimited history</string>
+    <string name="membership_pro_feature_voice">Voice input</string>
+    <string name="membership_pro_feature_memory">AI remembers your preferences</string>
+    <string name="membership_pro_feature_priority">Priority, faster responses</string>
+    <string name="membership_faq_payment_q">How do I pay?</string>
+    <string name="membership_faq_payment_a">Visa/Mastercard and e-wallets supported — coming soon.</string>
+    <string name="membership_faq_cancel_q">Can I cancel anytime?</string>
+    <string name="membership_faq_cancel_a">Yes, cancel anytime — your data is kept.</string>
+    <string name="membership_faq_reset_q">When does the Free limit reset?</string>
+    <string name="membership_faq_reset_a">Resets daily at 00:00 Vietnam time.</string>
+</resources>

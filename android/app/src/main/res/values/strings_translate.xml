@@ -1,0 +1,59 @@
+<resources>
+    <string name="translate_title">Translate</string>
+    <string name="translate_hero_title">Instant translation</string>
+    <string name="translate_hero_subtitle">30 languages · No sign-in needed · Read results aloud</string>
+    <string name="translate_input_label">Text to translate</string>
+    <string name="translate_input_placeholder">Type or paste text here...</string>
+    <string name="translate_char_counter">%1$d/2000</string>
+    <string name="translate_clear">Clear</string>
+    <string name="translate_action_translating">Translating...</string>
+    <string name="translate_action_translate">Translate</string>
+    <string name="translate_target_label">Translate to</string>
+    <string name="translate_footer_note">Free · Up to 30 translations/day · No account needed</string>
+    <string name="translate_result_header">Result · %1$s</string>
+    <string name="translate_action_stop">Stop</string>
+    <string name="translate_action_read_aloud">Read aloud</string>
+    <string name="translate_action_copied">Copied!</string>
+    <string name="translate_action_copy">Copy</string>
+    <string name="translate_selected_description">Selected</string>
+
+    <string name="translate_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="translate_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="translate_error_limit">You\'ve hit today\'s translation limit. Please try again tomorrow.</string>
+    <string name="translate_error_bad_request">Please check your text and try again.</string>
+    <string name="translate_error_server">Translation failed. Please try again.</string>
+    <string name="translate_error_generic">Something went wrong. Please try again.</string>
+
+    <!-- Language endonyms — each language's name for itself, shown the same regardless of the
+         app's UI language (matches how Android/iOS system language pickers behave). -->
+    <string name="translate_lang_vietnamese">Tiếng Việt</string>
+    <string name="translate_lang_english">English</string>
+    <string name="translate_lang_japanese">日本語</string>
+    <string name="translate_lang_korean">한국어</string>
+    <string name="translate_lang_chinese_simplified">中文（简体）</string>
+    <string name="translate_lang_chinese_traditional">中文（繁體）</string>
+    <string name="translate_lang_french">Français</string>
+    <string name="translate_lang_german">Deutsch</string>
+    <string name="translate_lang_spanish">Español</string>
+    <string name="translate_lang_italian">Italiano</string>
+    <string name="translate_lang_portuguese">Português</string>
+    <string name="translate_lang_arabic">العربية</string>
+    <string name="translate_lang_thai">ภาษาไทย</string>
+    <string name="translate_lang_indonesian">Bahasa Indonesia</string>
+    <string name="translate_lang_malay">Bahasa Melayu</string>
+    <string name="translate_lang_hindi">हिंदी</string>
+    <string name="translate_lang_russian">Русский</string>
+    <string name="translate_lang_dutch">Nederlands</string>
+    <string name="translate_lang_polish">Polski</string>
+    <string name="translate_lang_turkish">Türkçe</string>
+    <string name="translate_lang_swedish">Svenska</string>
+    <string name="translate_lang_danish">Dansk</string>
+    <string name="translate_lang_norwegian">Norsk</string>
+    <string name="translate_lang_finnish">Suomi</string>
+    <string name="translate_lang_czech">Čeština</string>
+    <string name="translate_lang_hungarian">Magyar</string>
+    <string name="translate_lang_romanian">Română</string>
+    <string name="translate_lang_greek">Ελληνικά</string>
+    <string name="translate_lang_hebrew">עברית</string>
+    <string name="translate_lang_ukrainian">Українська</string>
+</resources>

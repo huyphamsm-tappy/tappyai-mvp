@@ -1,0 +1,95 @@
+<resources>
+    <!-- Shared actions / labels -->
+    <string name="reviews_action_save">Lưu</string>
+    <string name="reviews_action_share">Chia sẻ</string>
+    <string name="reviews_anonymous_name">Ẩn danh</string>
+    <string name="reviews_new_post_label">Bài viết mới</string>
+
+    <!-- Comments -->
+    <string name="reviews_comments_header_title">Bình luận</string>
+    <string name="reviews_comment_default_user">Người dùng</string>
+
+    <!-- Composer -->
+    <string name="reviews_composer_post_button">Đăng</string>
+    <string name="reviews_composer_add_location">Thêm địa điểm</string>
+    <string name="reviews_composer_place_name_placeholder">Tên địa điểm</string>
+    <string name="reviews_composer_add_rating">Thêm đánh giá</string>
+    <string name="reviews_composer_tab_photo">Ảnh</string>
+    <string name="reviews_composer_tab_video">Video</string>
+    <string name="reviews_composer_tab_link">Link</string>
+    <string name="reviews_composer_placeholder_photo">Thêm ảnh</string>
+    <string name="reviews_composer_placeholder_video">Chọn video</string>
+    <string name="reviews_composer_placeholder_link">Dán link</string>
+    <string name="reviews_composer_body_placeholder">Chia sẻ trải nghiệm...</string>
+    <string name="reviews_composer_posted_toast">Đã đăng bài</string>
+    <string name="reviews_composer_using_sound">Đang dùng: %1$s</string>
+    <string name="reviews_composer_remove_sound">Bỏ âm thanh</string>
+
+    <!-- Star rating -->
+    <string-array name="reviews_rating_labels">
+        <item>Tệ</item>
+        <item>Không tốt</item>
+        <item>Bình thường</item>
+        <item>Tốt</item>
+        <item>Tuyệt vời</item>
+    </string-array>
+
+    <!-- Notifications -->
+    <string name="reviews_notifications_label">Thông báo</string>
+    <string name="reviews_notifications_error_title">Không tải được thông báo</string>
+    <string name="reviews_notification_empty_title">Chưa có thông báo</string>
+    <string name="reviews_notification_empty_message">Thông báo sẽ xuất hiện khi có người tương tác với bài viết của bạn.</string>
+    <string name="reviews_notification_others">và %1$d người khác</string>
+
+    <!-- Overflow menu -->
+    <string name="reviews_overflow_more_options">Tùy chọn khác</string>
+    <string name="reviews_overflow_delete_post">Xóa bài viết</string>
+    <string name="reviews_overflow_hide_post">Ẩn bài viết</string>
+
+    <!-- Profile -->
+    <string name="reviews_profile_stat_posts">Bài viết</string>
+    <string name="reviews_profile_stat_likes">Lượt thích</string>
+    <string name="reviews_profile_stat_saves">Lượt lưu</string>
+    <string name="reviews_profile_empty_title">Chưa có bài viết</string>
+    <string name="reviews_profile_empty_message">Bài viết của người dùng sẽ hiển thị ở đây.</string>
+    <string name="reviews_profile_fallback_title">Hồ sơ</string>
+    <string name="reviews_profile_error_title">Không tải được trang cá nhân</string>
+
+    <!-- Search -->
+    <string name="reviews_search_placeholder">Tìm bài viết, địa điểm...</string>
+    <string name="reviews_search_clear_content_description">Xóa</string>
+    <string name="reviews_search_empty_title">Không tìm thấy kết quả</string>
+    <string name="reviews_search_empty_message">Thử tìm với từ khóa khác.</string>
+    <string name="reviews_search_label">Tìm kiếm</string>
+    <string name="reviews_search_error_title">Không tìm được</string>
+
+    <!-- Share sheet -->
+    <string name="reviews_share_sheet_title">Chia sẻ với bạn bè</string>
+    <string name="reviews_share_copied_label">Đã chép</string>
+    <string name="reviews_share_copy_label">Sao chép</string>
+    <string name="reviews_share_fallback_text">TappyAI Review</string>
+
+    <!-- Feed -->
+    <string name="reviews_feed_title">Bài viết</string>
+    <string name="reviews_feed_error_title">Không tải được bài viết</string>
+    <string name="reviews_feed_empty_title">Chưa có bài viết nào</string>
+    <string name="reviews_feed_empty_message">Hãy quay lại sau nhé.</string>
+
+    <!-- Detail -->
+    <string name="reviews_detail_title">Chi tiết</string>
+    <string name="reviews_detail_unavailable_title">Không tải được bài viết</string>
+    <string name="reviews_detail_unavailable_message">Bài viết không còn khả dụng.</string>
+
+    <!-- Error messages (ReviewErrorMessages) -->
+    <string name="reviews_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="reviews_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="reviews_error_session_expired">Vui lòng đăng nhập để tiếp tục.</string>
+    <string name="reviews_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="reviews_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+    <string name="reviews_post_error_missing_fields">Cần có địa điểm và nội dung để đăng bài.</string>
+    <string name="reviews_post_error_login_required">Vui lòng đăng nhập để đăng bài.</string>
+    <string name="reviews_post_error_duplicate">Bạn đã đánh giá địa điểm này rồi.</string>
+    <string name="reviews_post_error_too_long">Nội dung quá dài. Vui lòng rút gọn.</string>
+    <string name="reviews_post_error_rate_limited">Bạn đã đăng quá nhiều bài hôm nay. Thử lại vào ngày mai nhé!</string>
+    <string name="reviews_post_error_generic">Không thể đăng bài. Vui lòng thử lại.</string>
+</resources>

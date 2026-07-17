@@ -1,0 +1,21 @@
+<resources>
+    <string name="saved_title">Đã lưu</string>
+    <string name="saved_open_label">Mở</string>
+    <string name="saved_items_count">%1$d mục</string>
+    <string name="saved_remove_favorite_content_description">Xoá %1$s khỏi mục yêu thích</string>
+    <string name="saved_error_title">Không tải được mục đã lưu của bạn</string>
+    <string name="saved_error_message">Vui lòng thử lại sau.</string>
+    <string name="saved_load_error_fallback">Không tải được mục đã lưu của bạn.</string>
+    <string name="saved_empty_title">Chưa có mục nào được lưu</string>
+    <string name="saved_empty_message">Chạm ♡ để lưu những địa điểm bạn yêu thích, hoặc 🔖 để đánh dấu bài viết xem lại sau — tất cả sẽ hiển thị ở đây.</string>
+    <string name="saved_explore_now">Khám phá ngay</string>
+    <string name="saved_section_favorites">Địa điểm yêu thích</string>
+    <string name="saved_section_reviews">Đánh giá đã lưu</string>
+    <string name="saved_date_prefix">Đã lưu %1$s</string>
+    <string name="saved_review_fallback_name">Đánh giá</string>
+    <string name="saved_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="saved_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="saved_error_session_expired">Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.</string>
+    <string name="saved_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="saved_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+</resources>

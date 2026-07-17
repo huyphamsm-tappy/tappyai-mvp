@@ -43,9 +43,18 @@ next-env.d.ts
 .claude/
 .env*
 
+# iOS secrets — local only, never commit
+ios/Config/Secrets.xcconfig
+
 # Dev helper scripts (root-level only)
 /*.bat
 /*.ps1
 /*.vbs
 /*.log
 do_push.ps1
+
+# Android local credentials (Supabase URL/anon key, Google Web Client ID) — supplied locally via
+# -P overrides or this file; never commit real project credentials, even though the anon key is
+# meant to be public in a shipped APK (Production Audit Sprint finding: currently untracked,
+# adding this defensively so a future `git add -A` can't accidentally stage it).
+android/gradle.properties

@@ -1,0 +1,9 @@
+<resources>
+    <string name="common_back">Quay lại</string>
+    <string name="common_next">Tiếp theo</string>
+    <string name="common_skip">Bỏ qua</string>
+    <string name="common_confirm">Xác nhận</string>
+    <string name="common_cancel">Hủy</string>
+    <string name="common_try_again">Thử lại</string>
+    <string name="coming_soon_description">Chúng tôi vẫn đang xây dựng %1$s. Tính năng này sẽ có trong bản cập nhật sắp tới.</string>
+</resources>

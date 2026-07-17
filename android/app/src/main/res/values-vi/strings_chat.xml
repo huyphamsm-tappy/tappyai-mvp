@@ -1,0 +1,97 @@
+<resources>
+    <string name="chat_category_general">TappyAI</string>
+    <string name="chat_category_food">Ăn Uống</string>
+    <string name="chat_category_shopping">Mua Sắm</string>
+    <string name="chat_category_entertainment">Giải Trí</string>
+    <string name="chat_category_travel">Du Lịch</string>
+    <string name="chat_category_spa">Spa</string>
+
+    <string name="chat_welcome_subtitle">Tappy có thể giúp gì cho bạn?</string>
+    <string name="chat_mood_prompt_header">Hôm nay bạn thế nào?</string>
+
+    <string name="chat_mood_happy_label">Vui</string>
+    <string name="chat_mood_happy_prompt">Tôi đang vui, gợi ý gì hay để làm nhé!</string>
+    <string name="chat_mood_sad_label">Buồn</string>
+    <string name="chat_mood_sad_prompt">Tôi đang buồn, có gì giúp tôi vui lên không?</string>
+    <string name="chat_mood_stressed_label">Stress</string>
+    <string name="chat_mood_stressed_prompt">Tôi đang stress, gợi ý cách thư giãn nhé!</string>
+    <string name="chat_mood_tired_label">Mệt</string>
+    <string name="chat_mood_tired_prompt">Tôi đang mệt, có gì nhẹ nhàng không?</string>
+    <string name="chat_mood_bored_label">Chán</string>
+    <string name="chat_mood_bored_prompt">Tôi đang chán, gợi ý gì thú vị nhé!</string>
+    <string name="chat_mood_excited_label">Hứng</string>
+    <string name="chat_mood_excited_prompt">Tôi đang hứng khởi, gợi ý hoạt động sôi động nhé!</string>
+
+    <string name="chat_prompt_general_1">🌙 Tối nay mình muốn spa + ăn tối ngon, 2 người budget 800k</string>
+    <string name="chat_prompt_general_2">Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu</string>
+    <string name="chat_prompt_general_3">Ăn gì ngon hôm nay gần đây?</string>
+
+    <string name="chat_prompt_food_1">Quán bún bò ngon ở TP.HCM?</string>
+    <string name="chat_prompt_food_2">Cafe view đẹp Hà Nội?</string>
+    <string name="chat_prompt_food_3">Nhà hàng hải sản tươi sống?</string>
+
+    <string name="chat_prompt_shopping_1">Trung tâm mua sắm lớn Sài Gòn?</string>
+    <string name="chat_prompt_shopping_2">Mua đồ hiệu uy tín?</string>
+    <string name="chat_prompt_shopping_3">Chợ đêm lưu niệm?</string>
+
+    <string name="chat_prompt_entertainment_1">Rạp chiếu phim IMAX?</string>
+    <string name="chat_prompt_entertainment_2">Quán karaoke bao phòng?</string>
+    <string name="chat_prompt_entertainment_3">Bar rooftop view đẹp?</string>
+
+    <string name="chat_prompt_travel_1">Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu</string>
+    <string name="chat_prompt_travel_2">Lịch trình Phú Quốc 4 ngày 2 người budget 8 triệu</string>
+    <string name="chat_prompt_travel_3">Lịch trình Hội An 2 ngày cuối tuần budget 3 triệu</string>
+
+    <string name="chat_prompt_spa_1">Spa massage giá bình dân?</string>
+    <string name="chat_prompt_spa_2">Nail salon gel tốt?</string>
+    <string name="chat_prompt_spa_3">Trung tâm dưỡng da uy tín?</string>
+
+    <string name="chat_action_attach_image">Đính kèm ảnh</string>
+    <string name="chat_action_voice_input">Nhập bằng giọng nói</string>
+    <string name="chat_clear_pending_image">Xóa ảnh</string>
+    <string name="chat_voice_recognition_failed">Nhập bằng giọng nói hiện không khả dụng.</string>
+    <string name="chat_composer_placeholder">Nhắn tin cho Tappy…</string>
+    <string name="chat_action_stop">Dừng</string>
+    <string name="chat_action_send">Gửi</string>
+
+    <string name="chat_error_generic">Có lỗi xảy ra.</string>
+    <string name="chat_error_connection">Có lỗi kết nối. Vui lòng kiểm tra mạng và thử lại.</string>
+    <string name="chat_error_generic_with_code">Có lỗi xảy ra (mã %1$d)</string>
+    <string name="chat_error_message_too_long">Tin nhắn quá dài. Vui lòng thử lại với nội dung ngắn hơn.</string>
+    <string name="chat_error_ai_service_down">Dịch vụ AI tạm thời gặp sự cố. Vui lòng thử lại sau.</string>
+
+    <string name="chat_followup_food_1">Tìm quán khác</string>
+    <string name="chat_followup_food_2">Xem giá menu</string>
+    <string name="chat_followup_food_3">Đặt bàn trước</string>
+    <string name="chat_followup_travel_1">Lịch trình chi tiết</string>
+    <string name="chat_followup_travel_2">Tìm khách sạn</string>
+    <string name="chat_followup_travel_3">Vé máy bay</string>
+    <string name="chat_followup_shopping_1">So sánh giá</string>
+    <string name="chat_followup_shopping_2">Tìm cửa hàng</string>
+    <string name="chat_followup_shopping_3">Xem review</string>
+    <string name="chat_followup_entertainment_1">Xem giờ chiếu</string>
+    <string name="chat_followup_entertainment_2">Đặt vé ngay</string>
+    <string name="chat_followup_entertainment_3">Xem thêm</string>
+    <string name="chat_followup_spa_1">Xem bảng giá</string>
+    <string name="chat_followup_spa_2">Đặt lịch</string>
+    <string name="chat_followup_spa_3">Xem review</string>
+    <string name="chat_followup_general_1">Hỏi thêm</string>
+    <string name="chat_followup_general_2">Tìm thêm</string>
+    <string name="chat_followup_general_3">Chủ đề khác</string>
+
+    <string name="chat_action_copy">Sao chép</string>
+    <string name="chat_action_share">Chia sẻ</string>
+    <string name="chat_share_chooser_title">Chia sẻ tin nhắn</string>
+    <string name="chat_action_like">Thích</string>
+    <string name="chat_action_dislike">Không thích</string>
+    <string name="chat_action_read_aloud">Đọc to</string>
+    <string name="chat_action_stop_read_aloud">Dừng đọc</string>
+    <string name="chat_action_regenerate">Tạo lại</string>
+    <string name="chat_action_more">Thêm</string>
+    <string name="chat_more_copy_plaintext">Sao chép văn bản thuần</string>
+    <string name="chat_more_copy_id">Sao chép ID</string>
+    <string name="chat_more_report">Báo cáo lỗi</string>
+    <string name="chat_more_reported">Đã báo cáo</string>
+
+    <string name="chat_toast_signin_failed">Liên kết đăng nhập không hoạt động. Vui lòng thử đăng nhập lại.</string>
+</resources>

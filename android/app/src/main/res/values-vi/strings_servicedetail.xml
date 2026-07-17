@@ -1,0 +1,46 @@
+<resources>
+    <string name="service_category_food">Ăn uống</string>
+    <string name="service_category_spa">Spa &amp; Làm đẹp</string>
+    <string name="service_category_hotel">Khách sạn</string>
+    <string name="service_category_travel">Du lịch</string>
+    <string name="service_category_shopping">Mua sắm</string>
+    <string name="service_category_entertainment">Giải trí</string>
+
+    <string name="service_tappy_rating">★ %1$.1f Tappy</string>
+    <string name="service_address_label">Địa chỉ</string>
+
+    <string name="service_my_bookings_title">Lịch đặt của bạn</string>
+    <string name="service_booking_at_time"> lúc %1$s</string>
+    <string name="service_booking_guests_suffix"> • %1$d người</string>
+    <string name="service_status_confirmed">Đã xác nhận</string>
+    <string name="service_status_cancelled">Đã hủy</string>
+    <string name="service_status_pending">Chờ xác nhận</string>
+
+    <string name="service_community_reviews_title">Đánh giá từ TappyAI</string>
+    <string name="service_avg_rating">%1$.1f/5 (%2$d)</string>
+
+    <string name="service_booking_title">Đặt chỗ ngay</string>
+    <string name="service_booking_name_label">Họ tên *</string>
+    <string name="service_booking_name_hint">Nguyễn Văn A</string>
+    <string name="service_booking_phone_label">Số điện thoại *</string>
+    <string name="service_booking_phone_hint">09xxxxxxxx</string>
+    <string name="service_booking_date_label">Ngày *</string>
+    <string name="service_booking_date_placeholder">Chọn ngày</string>
+    <string name="service_booking_time_label">Giờ (tùy chọn)</string>
+    <string name="service_booking_guests_default">Số khách</string>
+    <string name="service_booking_guests_rooms">Số phòng</string>
+    <string name="service_booking_guests_people">Số người</string>
+    <string name="service_booking_notes_label">Ghi chú thêm</string>
+    <string name="service_booking_notes_hint">Yêu cầu đặc biệt, dị ứng thực phẩm, dịp kỷ niệm…</string>
+    <string name="service_booking_submit">✅ Xác nhận đặt chỗ</string>
+    <string name="service_booking_footnote">Sau khi đặt, cơ sở sẽ liên hệ xác nhận với bạn</string>
+    <string name="service_booking_error_required">Vui lòng điền đầy đủ thông tin bắt buộc.</string>
+    <string name="service_booking_error_generic">Có lỗi xảy ra. Vui lòng thử lại.</string>
+
+    <string name="service_booking_success_title">Đặt chỗ thành công! 🎉</string>
+    <string name="service_booking_success_message">Chúng tôi sẽ liên hệ xác nhận với bạn sớm nhất.</string>
+    <string name="service_booking_guests_summary">👥 %1$d khách</string>
+    <string name="service_booking_share">Chia sẻ xác nhận</string>
+    <string name="service_booking_back">Quay lại</string>
+    <string name="service_booking_confirm_share_title">Xác nhận đặt chỗ — TappyAI</string>
+</resources>

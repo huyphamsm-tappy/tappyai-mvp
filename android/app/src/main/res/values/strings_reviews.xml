@@ -1,0 +1,95 @@
+<resources>
+    <!-- Shared actions / labels -->
+    <string name="reviews_action_save">Save</string>
+    <string name="reviews_action_share">Share</string>
+    <string name="reviews_anonymous_name">Anonymous</string>
+    <string name="reviews_new_post_label">New post</string>
+
+    <!-- Comments -->
+    <string name="reviews_comments_header_title">Comments</string>
+    <string name="reviews_comment_default_user">User</string>
+
+    <!-- Composer -->
+    <string name="reviews_composer_post_button">Post</string>
+    <string name="reviews_composer_add_location">Add location</string>
+    <string name="reviews_composer_place_name_placeholder">Place name</string>
+    <string name="reviews_composer_add_rating">Add rating</string>
+    <string name="reviews_composer_tab_photo">Photo</string>
+    <string name="reviews_composer_tab_video">Video</string>
+    <string name="reviews_composer_tab_link">Link</string>
+    <string name="reviews_composer_placeholder_photo">Add photo</string>
+    <string name="reviews_composer_placeholder_video">Choose video</string>
+    <string name="reviews_composer_placeholder_link">Paste link</string>
+    <string name="reviews_composer_body_placeholder">Share your experience...</string>
+    <string name="reviews_composer_posted_toast">Posted</string>
+    <string name="reviews_composer_using_sound">Using: %1$s</string>
+    <string name="reviews_composer_remove_sound">Remove sound</string>
+
+    <!-- Star rating -->
+    <string-array name="reviews_rating_labels">
+        <item>Terrible</item>
+        <item>Poor</item>
+        <item>Average</item>
+        <item>Good</item>
+        <item>Excellent</item>
+    </string-array>
+
+    <!-- Notifications -->
+    <string name="reviews_notifications_label">Notifications</string>
+    <string name="reviews_notifications_error_title">Couldn\'t load notifications</string>
+    <string name="reviews_notification_empty_title">No notifications yet</string>
+    <string name="reviews_notification_empty_message">Notifications will appear when someone interacts with your posts.</string>
+    <string name="reviews_notification_others">and %1$d more</string>
+
+    <!-- Overflow menu -->
+    <string name="reviews_overflow_more_options">More options</string>
+    <string name="reviews_overflow_delete_post">Delete post</string>
+    <string name="reviews_overflow_hide_post">Hide post</string>
+
+    <!-- Profile -->
+    <string name="reviews_profile_stat_posts">Posts</string>
+    <string name="reviews_profile_stat_likes">Likes</string>
+    <string name="reviews_profile_stat_saves">Saves</string>
+    <string name="reviews_profile_empty_title">No posts yet</string>
+    <string name="reviews_profile_empty_message">This user\'s posts will appear here.</string>
+    <string name="reviews_profile_fallback_title">Profile</string>
+    <string name="reviews_profile_error_title">Couldn\'t load profile</string>
+
+    <!-- Search -->
+    <string name="reviews_search_placeholder">Search posts, places...</string>
+    <string name="reviews_search_clear_content_description">Clear</string>
+    <string name="reviews_search_empty_title">No results found</string>
+    <string name="reviews_search_empty_message">Try a different search term.</string>
+    <string name="reviews_search_label">Search</string>
+    <string name="reviews_search_error_title">Couldn\'t search</string>
+
+    <!-- Share sheet -->
+    <string name="reviews_share_sheet_title">Share with friends</string>
+    <string name="reviews_share_copied_label">Copied</string>
+    <string name="reviews_share_copy_label">Copy</string>
+    <string name="reviews_share_fallback_text">TappyAI Review</string>
+
+    <!-- Feed -->
+    <string name="reviews_feed_title">Reviews</string>
+    <string name="reviews_feed_error_title">Couldn\'t load posts</string>
+    <string name="reviews_feed_empty_title">No posts yet</string>
+    <string name="reviews_feed_empty_message">Check back later.</string>
+
+    <!-- Detail -->
+    <string name="reviews_detail_title">Details</string>
+    <string name="reviews_detail_unavailable_title">Couldn\'t load this post</string>
+    <string name="reviews_detail_unavailable_message">This post is no longer available.</string>
+
+    <!-- Error messages (ReviewErrorMessages) -->
+    <string name="reviews_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="reviews_error_timeout">Connection is too slow. Please try again.</string>
+    <string name="reviews_error_session_expired">Please sign in to continue.</string>
+    <string name="reviews_error_server">The server is having issues. Please try again later.</string>
+    <string name="reviews_error_generic">Something went wrong. Please try again.</string>
+    <string name="reviews_post_error_missing_fields">A place and content are required to post.</string>
+    <string name="reviews_post_error_login_required">Please sign in to post.</string>
+    <string name="reviews_post_error_duplicate">You\'ve already reviewed this place.</string>
+    <string name="reviews_post_error_too_long">Content is too long. Please shorten it.</string>
+    <string name="reviews_post_error_rate_limited">You\'ve posted too many times today. Try again tomorrow!</string>
+    <string name="reviews_post_error_generic">Couldn\'t post. Please try again.</string>
+</resources>

@@ -10,6 +10,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AUTH_PROVIDERS } from '@/lib/auth/providers'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
+import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
 
 // Phát hiện trình duyệt nội bộ của các app chat (Google chặn OAuth trong các webview này)
 function detectInAppBrowser(): { isInApp: boolean; name: string; isAndroid: boolean } {
@@ -67,6 +68,18 @@ export default function LoginPage() {
     setInApp(detectInAppBrowser())
   }, [])
 
+  // Zalo (and other OAuth) failures redirect back here with ?error=… — emit the
+  // login-failure event once on arrival (method best-effort from the pending
+  // marker), then strip the param so a re-render / strict-mode re-run can't re-emit.
+  useEffect(() => {
+    const err = new URLSearchParams(window.location.search).get('error')
+    if (!err) return
+    emitAuthLoginFailed(err === 'zalo_failed' ? 'zalo' : (getPendingMethod() ?? 'unknown'), 'oauth_denied')
+    const url = new URL(window.location.href)
+    url.searchParams.delete('error')
+    window.history.replaceState({}, '', url.toString())
+  }, [])
+
   useEffect(() => {
     const checkAndRedirect = async () => {
       const { data: { user } } = await supabase.auth.getUser()
@@ -91,6 +104,7 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     setLoadingGoogle(true)
+    markAuthPending('google')
     const urlParams = new URLSearchParams(window.location.search)
     const returnTo = urlParams.get('returnTo') || '/'
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -102,6 +116,7 @@ export default function LoginPage() {
     })
     if (error || !data?.url) {
       console.error(error)
+      emitAuthLoginFailed('google', 'oauth_denied')
       setLoadingGoogle(false)
       return
     }
@@ -110,6 +125,7 @@ export default function LoginPage() {
 
   const handleFacebookLogin = async () => {
     setLoadingFacebook(true)
+    markAuthPending('facebook')
     const urlParams = new URLSearchParams(window.location.search)
     const returnTo = urlParams.get('returnTo') || '/'
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -121,6 +137,7 @@ export default function LoginPage() {
     })
     if (error || !data?.url) {
       console.error(error)
+      emitAuthLoginFailed('facebook', 'oauth_denied')
       setLoadingFacebook(false)
       return
     }
@@ -129,6 +146,7 @@ export default function LoginPage() {
 
   const handleZaloLogin = () => {
     setLoadingZalo(true)
+    markAuthPending('zalo')
     const urlParams = new URLSearchParams(window.location.search)
     const returnTo = urlParams.get('returnTo') || '/'
     window.location.href = `/api/auth/zalo?returnTo=${encodeURIComponent(returnTo)}`
@@ -173,6 +191,7 @@ export default function LoginPage() {
     })
     setOtpLoading(false)
     if (error) {
+      emitAuthLoginFailed('email_otp', 'network')
       setOtpError(t('auth.emailOtp.errorSendFailed'))
       return
     }
@@ -187,6 +206,7 @@ export default function LoginPage() {
       return
     }
     setOtpLoading(true)
+    markAuthPending('email_otp')
     const { error } = await supabase.auth.verifyOtp({
       email: otpEmail.trim(),
       token: code,
@@ -194,9 +214,13 @@ export default function LoginPage() {
     })
     setOtpLoading(false)
     if (error) {
+      emitAuthLoginFailed('email_otp', 'invalid_credentials')
       setOtpError(t('auth.emailOtp.errorVerifyFailed'))
       return
     }
+    // On success the client sets the session → onAuthStateChange (SIGNED_IN) →
+    // the global listener emits auth_login_completed (+ signup if first) with the
+    // pending 'email_otp' method.
     router.replace(await destWithOnboarding(getReturnDest()))
   }
 

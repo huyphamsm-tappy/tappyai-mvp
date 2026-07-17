@@ -1,0 +1,17 @@
+<resources>
+    <string name="appconn_back">Quay lại</string>
+    <string name="appconn_title">Kết nối ứng dụng</string>
+    <string name="appconn_subtitle">Tappy học thêm về bạn qua các app bạn dùng</string>
+    <string name="appconn_privacy_note">Tappy chỉ đọc dữ liệu bạn cho phép, không đọc tin nhắn cá nhân, không chia sẻ với bên thứ ba. Bạn có thể ngắt kết nối bất cứ lúc nào.</string>
+    <string name="appconn_calendar_description">Kết nối lịch để Tappy gợi ý phù hợp với thời gian của bạn.</string>
+    <string name="appconn_calendar_reads">Tên sự kiện, thời gian, địa điểm trong 7 ngày tới (chỉ đọc)</string>
+    <string name="appconn_zalo_description">Kết nối tài khoản Zalo để Tappy biết tên và ảnh đại diện của bạn.</string>
+    <string name="appconn_zalo_reads">Tên hiển thị, ảnh đại diện Zalo (không đọc tin nhắn)</string>
+    <string name="appconn_reads_label">TAPPY CHỈ ĐỌC</string>
+    <string name="appconn_connect">Kết nối</string>
+    <string name="appconn_usage_title">Tappy dùng dữ liệu này để làm gì?</string>
+    <string name="appconn_usage_calendar">Google Calendar → Tappy gợi ý quán ăn gần lịch họp của bạn</string>
+    <string name="appconn_usage_zalo">Zalo → Hiển thị tên và ảnh thật của bạn trên review feed</string>
+    <string name="appconn_usage_behavior">Hành vi trong app → Tappy nhớ bạn thích gì, hay dùng lúc mấy giờ</string>
+    <string name="appconn_coming_soon_description">Kết nối %1$s sẽ sớm ra mắt. Hiện tại bạn có thể dùng Tappy bình thường.</string>
+</resources>

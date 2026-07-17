@@ -1,0 +1,30 @@
+<resources>
+    <string name="scan_title">Quét</string>
+    <string name="scan_hero_title">Quét mọi tài liệu</string>
+    <string name="scan_hero_subtitle">Trích xuất văn bản từ ảnh menu, biển hiệu, hoặc tài liệu.</string>
+    <string name="scan_take_photo">Chụp ảnh</string>
+    <string name="scan_use_camera">Dùng máy ảnh</string>
+    <string name="scan_pick_image">Chọn ảnh</string>
+    <string name="scan_from_gallery">Từ thư viện</string>
+    <string name="scan_preview_alt">Ảnh đã chọn</string>
+    <string name="scan_clear_image">Xóa ảnh</string>
+    <string name="scan_action_scan">Quét</string>
+    <string name="scan_action_scanning">Đang quét…</string>
+    <string name="scan_result_label">Văn bản trích xuất</string>
+    <string name="scan_action_copy">Sao chép</string>
+    <string name="scan_action_copied">Đã sao chép</string>
+    <string name="scan_action_share">Chia sẻ</string>
+    <string name="scan_share_chooser_title">Chia sẻ văn bản</string>
+    <string name="scan_tips_title">Mẹo</string>
+    <string name="scan_tip_flat">• Đặt tài liệu phẳng và lấp đầy khung hình</string>
+    <string name="scan_tip_lighting">• Dùng ánh sáng tốt, tránh chói và bóng đổ</string>
+    <string name="scan_tip_limit">• Tối đa 20 lượt quét mỗi ngày</string>
+    <string name="scan_error_no_connectivity">Không có kết nối internet. Vui lòng kiểm tra và thử lại.</string>
+    <string name="scan_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="scan_error_limit">Bạn đã đạt giới hạn quét hôm nay. Vui lòng thử lại vào ngày mai.</string>
+    <string name="scan_error_bad_request">Ảnh này quá lớn. Vui lòng chọn ảnh nhỏ hơn.</string>
+    <string name="scan_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="scan_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+    <string name="scan_error_decode_failed">Không thể đọc ảnh này. Vui lòng chọn ảnh khác.</string>
+    <string name="scan_error_no_camera">Không tìm thấy ứng dụng camera trên thiết bị này. Hãy thử chọn ảnh có sẵn.</string>
+</resources>
