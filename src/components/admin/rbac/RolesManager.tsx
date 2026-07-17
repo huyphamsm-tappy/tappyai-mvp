@@ -57,7 +57,10 @@ export function RolesManager() {
     } finally {
       setLoading(false)
     }
-  }, [t])
+    // `t` deliberately omitted: useTranslation() returns a fresh closure every
+    // render, so depending on it here would refetch on every render (infinite loop).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => { load() }, [load])
 
