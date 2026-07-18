@@ -106,6 +106,13 @@ data class LikeResponseDto(val liked: Boolean = false)
 @Serializable
 data class SaveResponseDto(val saved: Boolean = false)
 
+/** POST /api/users/{id}/follow toggles and returns the new state + authoritative follower count. */
+@Serializable
+data class FollowResponseDto(
+    val following: Boolean = false,
+    @SerialName("follower_count") val followerCount: Int = 0,
+)
+
 /** PATCH /api/reviews/{id} request body — hide/unhide the caller's own review. */
 @Serializable
 data class SetHiddenRequestDto(@SerialName("is_hidden") val isHidden: Boolean)
@@ -250,6 +257,9 @@ fun CommentDto.toDomain(): ReviewComment = ReviewComment(
 fun UserProfileDto.toReviewProfile(): ReviewProfile = ReviewProfile(
     fullName = fullName,
     avatarUrl = avatarUrl,
+    isFollowing = isFollowing,
+    isSelf = isSelf,
+    followerCount = followerCount,
 )
 
 fun NotificationDto.toDomain(): ReviewNotification = ReviewNotification(

@@ -58,6 +58,11 @@ interface ReviewsApi {
     @GET("api/users/{id}")
     suspend fun getUserProfile(@Path("id") userId: String): UserProfileDto
 
+    /** Toggles follow on the target user (no request body). Insert-or-delete server-side; returns
+     *  the new following state and the updated follower count. 400 on self-follow. */
+    @POST("api/users/{id}/follow")
+    suspend fun toggleFollow(@Path("id") userId: String): FollowResponseDto
+
     @GET("api/notifications")
     suspend fun getNotifications(): NotificationsResponseDto
 

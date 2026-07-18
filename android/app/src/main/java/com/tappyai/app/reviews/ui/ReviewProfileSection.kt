@@ -3,21 +3,26 @@ package com.tappyai.app.reviews.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RateReview
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +49,8 @@ private val ProfileDivider = Color(0x1AFFFFFF)
 private val ProfileReviewBody = Color(0xB3FFFFFF)
 private val ProfileReviewPlace = Color(0x66FFFFFF)
 private val ProfileStarColor = Color(0xFFFBBF24)
+private val ProfileFollowBg = Color(0xFFFE2C55)
+private val ProfileFollowingBg = Color(0x33FFFFFF)
 
 @Composable
 internal fun ReviewProfileHeader(
@@ -52,6 +59,8 @@ internal fun ReviewProfileHeader(
     totalLikes: Int,
     totalSaves: Int,
     modifier: Modifier = Modifier,
+    isTogglingFollow: Boolean = false,
+    onToggleFollow: () -> Unit = {},
 ) {
     val displayName = profile.fullName ?: stringResource(R.string.reviews_anonymous_name)
 
@@ -83,6 +92,45 @@ internal fun ReviewProfileHeader(
             ProfileStat(value = reviewCount.toString(), label = stringResource(R.string.reviews_profile_stat_posts))
             ProfileStat(value = totalLikes.toString(), label = stringResource(R.string.reviews_profile_stat_likes))
             ProfileStat(value = totalSaves.toString(), label = stringResource(R.string.reviews_profile_stat_saves))
+        }
+
+        // Only on another user's profile — the backend 400s a self-follow, and this screen is only
+        // reached for other authors (own profile lives under the Profile tab).
+        if (!profile.isSelf) {
+            FollowButton(
+                isFollowing = profile.isFollowing,
+                isLoading = isTogglingFollow,
+                onClick = onToggleFollow,
+            )
+        }
+    }
+}
+
+@Composable
+private fun FollowButton(
+    isFollowing: Boolean,
+    isLoading: Boolean,
+    onClick: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(if (isFollowing) ProfileFollowingBg else ProfileFollowBg)
+            .clickable(enabled = !isLoading, onClick = onClick)
+            .padding(horizontal = TappySpacing.xxl, vertical = TappySpacing.md),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White)
+        } else {
+            Text(
+                text = stringResource(
+                    if (isFollowing) R.string.reviews_profile_following else R.string.reviews_profile_follow,
+                ),
+                color = Color.White,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
         }
     }
 }
@@ -164,6 +212,8 @@ internal fun LazyListScope.reviewProfileItems(
     profile: ReviewProfile,
     reviews: List<Review>,
     onReviewClick: (Review) -> Unit,
+    isTogglingFollow: Boolean = false,
+    onToggleFollow: () -> Unit = {},
 ) {
     item(key = "profile-header") {
         ReviewProfileHeader(
@@ -171,6 +221,8 @@ internal fun LazyListScope.reviewProfileItems(
             reviewCount = reviews.size,
             totalLikes = reviews.sumOf { it.likeCount },
             totalSaves = reviews.sumOf { it.saveCount ?: 0 },
+            isTogglingFollow = isTogglingFollow,
+            onToggleFollow = onToggleFollow,
         )
     }
 

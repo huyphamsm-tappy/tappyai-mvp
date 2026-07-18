@@ -63,6 +63,8 @@
     <string name="reviews_profile_empty_message">Bài viết của người dùng sẽ hiển thị ở đây.</string>
     <string name="reviews_profile_fallback_title">Hồ sơ</string>
     <string name="reviews_profile_error_title">Không tải được trang cá nhân</string>
+    <string name="reviews_profile_follow">Theo dõi</string>
+    <string name="reviews_profile_following">Đang theo dõi</string>
 
     <!-- Search -->
     <string name="reviews_search_placeholder">Tìm bài viết, địa điểm...</string>

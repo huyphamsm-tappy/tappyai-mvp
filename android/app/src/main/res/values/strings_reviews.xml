@@ -63,6 +63,8 @@
     <string name="reviews_profile_empty_message">This user\'s posts will appear here.</string>
     <string name="reviews_profile_fallback_title">Profile</string>
     <string name="reviews_profile_error_title">Couldn\'t load profile</string>
+    <string name="reviews_profile_follow">Follow</string>
+    <string name="reviews_profile_following">Following</string>
 
     <!-- Search -->
     <string name="reviews_search_placeholder">Search posts, places...</string>
