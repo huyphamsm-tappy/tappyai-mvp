@@ -85,6 +85,12 @@
     <string name="reviews_feed_error_title">Couldn\'t load posts</string>
     <string name="reviews_feed_empty_title">No posts yet</string>
     <string name="reviews_feed_empty_message">Check back later.</string>
+    <string name="reviews_tab_following">Following</string>
+    <string name="reviews_tab_for_you">For You</string>
+    <string name="reviews_tab_latest">Latest</string>
+    <string name="reviews_feed_empty_following">You\'re not following anyone, or they haven\'t posted yet</string>
+    <string name="reviews_feed_see_for_you">See For You</string>
+    <string name="reviews_feed_post_now">Post now</string>
 
     <!-- Detail -->
     <string name="reviews_detail_title">Details</string>

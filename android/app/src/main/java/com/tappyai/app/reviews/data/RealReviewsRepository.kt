@@ -41,10 +41,18 @@ class RealReviewsRepository @Inject constructor(
         sort: String?,
         userId: String?,
         search: String?,
+        following: Boolean,
     ): NetworkResult<List<Review>> {
         val result = safeApiCall {
-            api.getFeed(page = page, limit = limit, sort = sort, userId = userId, search = search)
-                .reviews.map { it.toDomain() }
+            // Send following=true only when set; null keeps it off the query string (web parity).
+            api.getFeed(
+                page = page,
+                limit = limit,
+                sort = sort,
+                userId = userId,
+                search = search,
+                following = if (following) true else null,
+            ).reviews.map { it.toDomain() }
         }
         if (result is NetworkResult.Success) {
             result.data.forEach { reviewCache[it.id] = it }

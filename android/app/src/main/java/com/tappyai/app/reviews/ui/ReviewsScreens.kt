@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Search
@@ -47,6 +49,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.app.reviews.data.Review
+import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.reviews.data.ReviewGroupedNotification
 import com.tappyai.app.reviews.data.isShareOnlyName
 import com.tappyai.core.designsystem.component.TappyEmptyState
@@ -96,10 +99,10 @@ internal fun ReviewsFeedScreen(
                 )
             }
             reviews.isEmpty() -> {
-                TappyEmptyState(
-                    icon = Icons.Filled.RateReview,
-                    title = stringResource(R.string.reviews_feed_empty_title),
-                    message = stringResource(R.string.reviews_feed_empty_message),
+                FeedEmptyState(
+                    feedType = uiState.feedType,
+                    onSeeForYou = { viewModel.onFeedTypeChange(ReviewFeedType.ForYou) },
+                    onCompose = onCompose,
                     modifier = Modifier.align(Alignment.Center),
                 )
             }
@@ -125,12 +128,108 @@ internal fun ReviewsFeedScreen(
             }
         }
 
-        FeedTopBar(
-            onBack = onBack,
-            onSearch = onSearch,
-            onNotifications = onNotifications,
-            onCompose = onCompose,
-            modifier = Modifier.align(Alignment.TopCenter),
+        Column(modifier = Modifier.align(Alignment.TopCenter)) {
+            FeedTopBar(
+                onBack = onBack,
+                onSearch = onSearch,
+                onNotifications = onNotifications,
+                onCompose = onCompose,
+            )
+            FeedTabs(
+                selected = uiState.feedType,
+                onSelect = viewModel::onFeedTypeChange,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+            )
+        }
+    }
+}
+
+/** For You / Following / Latest tab switcher, centered under the feed's top bar — mirrors the web's
+ *  top-of-feed tab row (active tab bold + underlined). */
+@Composable
+private fun FeedTabs(
+    selected: ReviewFeedType,
+    onSelect: (ReviewFeedType) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xl),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        FeedTab(
+            label = stringResource(R.string.reviews_tab_following),
+            selected = selected == ReviewFeedType.Following,
+            onClick = { onSelect(ReviewFeedType.Following) },
+        )
+        FeedTab(
+            label = stringResource(R.string.reviews_tab_for_you),
+            selected = selected == ReviewFeedType.ForYou,
+            onClick = { onSelect(ReviewFeedType.ForYou) },
+        )
+        FeedTab(
+            label = stringResource(R.string.reviews_tab_latest),
+            selected = selected == ReviewFeedType.Latest,
+            onClick = { onSelect(ReviewFeedType.Latest) },
+        )
+    }
+}
+
+@Composable
+private fun FeedTab(label: String, selected: Boolean, onClick: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(vertical = 4.dp),
+    ) {
+        Text(
+            text = label,
+            color = if (selected) ScreenTextPrimary else ScreenTextPrimary.copy(alpha = 0.6f),
+            fontSize = 13.sp,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+        )
+        if (selected) {
+            Box(
+                modifier = Modifier
+                    .padding(top = 2.dp)
+                    .size(width = 16.dp, height = 2.dp)
+                    .background(ScreenTextPrimary),
+            )
+        }
+    }
+}
+
+/** Feed empty state, tab-specific to match the web: Following → "not following" + See For You;
+ *  Latest → no posts + See For You; For You → no posts + Post now. */
+@Composable
+private fun FeedEmptyState(
+    feedType: ReviewFeedType,
+    onSeeForYou: () -> Unit,
+    onCompose: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when (feedType) {
+        ReviewFeedType.Following -> TappyEmptyState(
+            icon = Icons.Filled.Group,
+            title = stringResource(R.string.reviews_feed_empty_following),
+            actionText = stringResource(R.string.reviews_feed_see_for_you),
+            onAction = onSeeForYou,
+            modifier = modifier,
+        )
+        ReviewFeedType.Latest -> TappyEmptyState(
+            icon = Icons.Filled.RateReview,
+            title = stringResource(R.string.reviews_feed_empty_title),
+            actionText = stringResource(R.string.reviews_feed_see_for_you),
+            onAction = onSeeForYou,
+            modifier = modifier,
+        )
+        ReviewFeedType.ForYou -> TappyEmptyState(
+            icon = Icons.Filled.RateReview,
+            title = stringResource(R.string.reviews_feed_empty_title),
+            actionText = stringResource(R.string.reviews_feed_post_now),
+            onAction = onCompose,
+            modifier = modifier,
         )
     }
 }

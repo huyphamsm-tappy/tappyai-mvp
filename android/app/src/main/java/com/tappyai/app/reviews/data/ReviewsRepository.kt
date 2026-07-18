@@ -31,6 +31,7 @@ interface ReviewsRepository {
         sort: String? = "latest",
         userId: String? = null,
         search: String? = null,
+        following: Boolean = false,
     ): NetworkResult<List<Review>>
 
     /** Toggles like; returns the new liked state. Backend returns no count — caller adjusts locally. */

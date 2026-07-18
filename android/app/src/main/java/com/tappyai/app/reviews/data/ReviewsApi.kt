@@ -35,6 +35,9 @@ interface ReviewsApi {
         @Query("sort") sort: String? = null,
         @Query("userId") userId: String? = null,
         @Query("search") search: String? = null,
+        // Only sent (as true) for the Following tab; null is omitted from the query string, matching
+        // the web which appends `&following=true` only for that tab.
+        @Query("following") following: Boolean? = null,
     ): FeedResponseDto
 
     @POST("api/reviews/{id}/like")

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewErrorMessages
+import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
@@ -27,6 +28,8 @@ data class ReviewsFeedUiState(
     val isLoadingMore: Boolean = false,
     val error: String? = null,
     val endReached: Boolean = false,
+    /** Active feed tab — For You (default) / Following / Latest, mirroring the web. */
+    val feedType: ReviewFeedType = ReviewFeedType.ForYou,
 )
 
 @HiltViewModel
@@ -49,12 +52,22 @@ class ReviewsFeedViewModel @Inject constructor(
     /** (Re)load from page 0, replacing the list. Used for initial load, retry, and refresh. */
     fun refresh() = loadFirstPage()
 
+    /** Switches the active feed tab and reloads from page 0. Mirrors the web, which aborts the
+     *  in-flight request and refetches on tab change; clearing [ReviewsFeedUiState.reviews] makes
+     *  the loading overlay show for the newly-selected tab rather than the old tab's posts. */
+    fun onFeedTypeChange(type: ReviewFeedType) {
+        if (_uiState.value.feedType == type) return
+        _uiState.update { it.copy(feedType = type, reviews = emptyList()) }
+        loadFirstPage()
+    }
+
     private fun loadFirstPage() {
         loadJob?.cancel()
         page = 0
+        val type = _uiState.value.feedType
         _uiState.update { it.copy(isInitialLoading = true, error = null, endReached = false) }
         loadJob = viewModelScope.launch {
-            when (val result = repository.getFeed(page = 0, limit = PAGE_SIZE)) {
+            when (val result = repository.getFeed(page = 0, limit = PAGE_SIZE, sort = sortFor(type), following = followingFor(type))) {
                 is NetworkResult.Success -> _uiState.update {
                     it.copy(
                         reviews = result.data,
@@ -85,9 +98,10 @@ class ReviewsFeedViewModel @Inject constructor(
     }
 
     private fun loadNextPage() {
+        val type = _uiState.value.feedType
         _uiState.update { it.copy(isLoadingMore = true) }
         viewModelScope.launch {
-            when (val result = repository.getFeed(page = page + 1, limit = PAGE_SIZE)) {
+            when (val result = repository.getFeed(page = page + 1, limit = PAGE_SIZE, sort = sortFor(type), following = followingFor(type))) {
                 is NetworkResult.Success -> {
                     page += 1
                     // De-dupe by id: the feed has no cursor, so a row inserted between page
@@ -154,6 +168,16 @@ class ReviewsFeedViewModel @Inject constructor(
             state.copy(reviews = state.reviews.map { if (it.id == id) transform(it) else it })
         }
     }
+
+    // Exact sort/following params the web sends per tab: For You → trending ranking; Following →
+    // followed-authors, latest order; Latest → plain reverse-chronological.
+    private fun sortFor(type: ReviewFeedType): String = when (type) {
+        ReviewFeedType.ForYou -> "trending"
+        ReviewFeedType.Latest -> "latest"
+        ReviewFeedType.Following -> "latest"
+    }
+
+    private fun followingFor(type: ReviewFeedType): Boolean = type == ReviewFeedType.Following
 
     private companion object {
         const val TAG = "ReviewsFeedViewModel"
