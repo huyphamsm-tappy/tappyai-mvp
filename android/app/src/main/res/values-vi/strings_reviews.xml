@@ -24,6 +24,11 @@
     <string name="reviews_composer_posted_toast">Đã đăng bài</string>
     <string name="reviews_composer_using_sound">Đang dùng: %1$s</string>
     <string name="reviews_composer_remove_sound">Bỏ âm thanh</string>
+    <string name="reviews_composer_remove_photo">Xóa ảnh</string>
+    <string name="reviews_composer_photo_max">Bạn chỉ có thể thêm tối đa %1$d ảnh</string>
+    <string name="reviews_composer_photo_read_failed">Không đọc được ảnh này. Vui lòng chọn ảnh khác.</string>
+    <string name="reviews_composer_photo_too_large">Mỗi ảnh phải nhỏ hơn 5MB.</string>
+    <string name="reviews_composer_photo_invalid_type">Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF.</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">

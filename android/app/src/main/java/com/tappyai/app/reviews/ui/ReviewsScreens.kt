@@ -41,6 +41,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.app.reviews.data.Review
@@ -343,12 +346,21 @@ internal fun ReviewSearchScreen(
     }
 }
 
+/** Review photo cap — same value the composer screen and ViewModel enforce (backend caps at 6). */
+private const val MAX_COMPOSER_PHOTOS = 6
+
 @Composable
 internal fun ReviewComposerHost(
     onBack: () -> Unit,
     viewModel: ReviewComposerViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    // System photo picker (no runtime permission). Multi-select capped at the review photo limit;
+    // the ViewModel additionally trims to the remaining slots and enforces per-file size/type.
+    val pickPhotos = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_COMPOSER_PHOTOS),
+    ) { uris -> viewModel.onPhotosPicked(uris) }
     // rememberSaveable so a multi-paragraph draft (body/rating/place + the disclosure toggles)
     // survives rotation and process-death — with plain remember the user silently lost the entire
     // review they were writing on any config change. ComposerMediaMode is a plain enum (Serializable),
@@ -401,6 +413,12 @@ internal fun ReviewComposerHost(
         onPost = { viewModel.submit(body = body, rating = rating, placeName = placeName, includeSound = soundIncluded) },
         attachedSoundTitle = viewModel.attachedTrackTitle?.takeIf { soundIncluded },
         onRemoveSound = { soundIncluded = false },
+        photoUrls = uiState.photoUrls,
+        isUploadingPhoto = uiState.isUploadingPhoto,
+        onPickPhotos = {
+            pickPhotos.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        },
+        onRemovePhoto = viewModel::onRemovePhoto,
     )
 }
 
