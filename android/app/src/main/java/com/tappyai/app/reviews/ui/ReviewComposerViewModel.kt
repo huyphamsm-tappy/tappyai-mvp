@@ -1,13 +1,18 @@
 package com.tappyai.app.reviews.ui
 
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tappyai.app.R
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /** One-shot outcome of a submit, delivered once to the screen (Toast + navigate on success). */
@@ -24,7 +30,13 @@ sealed interface ComposerEvent {
     data class Failed(val message: String) : ComposerEvent
 }
 
-data class ReviewComposerUiState(val isPosting: Boolean = false)
+data class ReviewComposerUiState(
+    val isPosting: Boolean = false,
+    /** Public Blob URLs of photos already uploaded for this draft (max [MAX_PHOTOS]). */
+    val photoUrls: List<String> = emptyList(),
+    /** True while at least one picked photo is still uploading. */
+    val isUploadingPhoto: Boolean = false,
+)
 
 @HiltViewModel
 class ReviewComposerViewModel @Inject constructor(
@@ -32,6 +44,7 @@ class ReviewComposerViewModel @Inject constructor(
     private val repository: ReviewsRepository,
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     /** Present only when reached via [com.tappyai.app.navigation.AppRoute.ComposerWithSound]
@@ -64,7 +77,9 @@ class ReviewComposerViewModel @Inject constructor(
      * (its "x" on the "Using: {title}" chip) without needing a mutable copy of [attachedTrackId].
      */
     fun submit(body: String, rating: Int, placeName: String, includeSound: Boolean = true) {
-        if (_uiState.value.isPosting) return
+        // Block posting while a photo is still uploading, so the created review can't miss a URL
+        // that is a moment away from being ready.
+        if (_uiState.value.isPosting || _uiState.value.isUploadingPhoto) return
         _uiState.update { it.copy(isPosting = true) }
         viewModelScope.launch {
             val result = repository.createReview(
@@ -75,6 +90,7 @@ class ReviewComposerViewModel @Inject constructor(
                 body = body.trim(),
                 rating = rating.takeIf { it in 1..5 },
                 musicTrackId = attachedTrackId.takeIf { includeSound },
+                photos = _uiState.value.photoUrls.takeIf { it.isNotEmpty() },
             )
             _uiState.update { it.copy(isPosting = false) }
             when (result) {
@@ -96,7 +112,72 @@ class ReviewComposerViewModel @Inject constructor(
      */
     private fun slugify(name: String): String = "community_" + name.trim().lowercase().replace(Regex("\\s+"), "_")
 
+    /**
+     * Reads each picked [uris] photo and uploads it via [ReviewsRepository.uploadReviewPhoto],
+     * appending the returned Blob URL to [ReviewComposerUiState.photoUrls]. Mirrors the web's
+     * upload-on-select flow. Enforces the same limits the backend does — max [MAX_PHOTOS] total
+     * and [MAX_PHOTO_BYTES] per file — and validates the MIME is an image before hitting the
+     * network (the server re-sniffs the bytes regardless). The byte read runs on [Dispatchers.IO]
+     * since a photo-picker Uri may be backed by slow storage; blocking the main thread there
+     * stalls the UI. Per-file failures are surfaced as a Toast and skip only that file.
+     */
+    fun onPhotosPicked(uris: List<Uri>) {
+        if (uris.isEmpty() || _uiState.value.isUploadingPhoto) return
+        val remaining = MAX_PHOTOS - _uiState.value.photoUrls.size
+        if (remaining <= 0) {
+            viewModelScope.launch {
+                _events.send(ComposerEvent.Failed(context.getString(R.string.reviews_composer_photo_max, MAX_PHOTOS)))
+            }
+            return
+        }
+        val toUpload = uris.take(remaining)
+        _uiState.update { it.copy(isUploadingPhoto = true) }
+        viewModelScope.launch {
+            for (uri in toUpload) {
+                val bytes = try {
+                    withContext(Dispatchers.IO) {
+                        context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
+                    }
+                } catch (e: Exception) {
+                    logger.e(TAG, "Failed to read picked photo", e)
+                    null
+                }
+                if (bytes == null) {
+                    _events.send(ComposerEvent.Failed(context.getString(R.string.reviews_composer_photo_read_failed)))
+                    continue
+                }
+                if (bytes.size > MAX_PHOTO_BYTES) {
+                    _events.send(ComposerEvent.Failed(context.getString(R.string.reviews_composer_photo_too_large)))
+                    continue
+                }
+                val mimeType = context.contentResolver.getType(uri)
+                if (mimeType == null || !mimeType.startsWith("image/")) {
+                    _events.send(ComposerEvent.Failed(context.getString(R.string.reviews_composer_photo_invalid_type)))
+                    continue
+                }
+                when (val result = repository.uploadReviewPhoto(bytes, mimeType)) {
+                    is NetworkResult.Success ->
+                        _uiState.update { it.copy(photoUrls = it.photoUrls + result.data) }
+                    is NetworkResult.Error -> {
+                        logger.e(TAG, "Photo upload failed: ${result.error}")
+                        _events.send(ComposerEvent.Failed(reviewErrorMessages.toUserMessage(result.error)))
+                    }
+                }
+            }
+            _uiState.update { it.copy(isUploadingPhoto = false) }
+        }
+    }
+
+    /** Drops one already-uploaded photo from the draft (removes its URL; no server call needed). */
+    fun onRemovePhoto(url: String) {
+        _uiState.update { it.copy(photoUrls = it.photoUrls - url) }
+    }
+
     private companion object {
         const val TAG = "ReviewComposerViewModel"
+        // Matches the web's MAX_PHOTOS_PER_REVIEW (src/lib/config/product.ts) and the backend's
+        // photos.slice(0, 6) cap; and the 5MB-per-file limit the upload route enforces.
+        const val MAX_PHOTOS = 6
+        const val MAX_PHOTO_BYTES = 5 * 1024 * 1024
     }
 }

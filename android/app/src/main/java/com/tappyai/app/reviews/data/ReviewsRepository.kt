@@ -37,15 +37,25 @@ interface ReviewsRepository {
 
     suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>>
 
+    /**
+     * Uploads a single review photo (multipart `POST /api/reviews/upload`) and returns its public
+     * Blob URL on success. [mimeType] must be a real image type; the backend re-sniffs the bytes
+     * and rejects anything else (≤5MB). Callers collect the URLs and pass them to [createReview]
+     * as [photos] — mirroring the web, where photo upload and review creation are two steps.
+     */
+    suspend fun uploadReviewPhoto(bytes: ByteArray, mimeType: String): NetworkResult<String>
+
     /** [musicTrackId], when present, attaches a sound picked via Sound Detail's "Use this sound"
      *  (`POST /api/reviews`'s `music` field, `origin: 'attached'`) — matches the web's own
-     *  attach-an-existing-track flow, independent of whether real media is attached. */
+     *  attach-an-existing-track flow, independent of whether real media is attached.
+     *  [photos] carries public Blob URLs from [uploadReviewPhoto] (max 6, backend-capped). */
     suspend fun createReview(
         placeId: String,
         placeName: String,
         body: String,
         rating: Int?,
         musicTrackId: String? = null,
+        photos: List<String>? = null,
     ): NetworkResult<Unit>
 
     /**

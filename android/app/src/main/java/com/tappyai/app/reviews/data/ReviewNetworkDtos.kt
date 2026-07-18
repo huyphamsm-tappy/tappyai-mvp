@@ -140,7 +140,16 @@ data class CreateReviewRequestDto(
     val body: String,
     val rating: Int? = null,
     val music: MusicSelectionDto? = null,
+    // Public Blob URLs of already-uploaded photos (via [PhotoUploadResponseDto]). The backend reads
+    // `b.photos` (camelCase, unlike the snake_case response fields) and caps the array at 6. Null
+    // when the review has no photos — with encodeDefaults=false it's then omitted from the wire,
+    // matching the web sending no `photos` key at all.
+    val photos: List<String>? = null,
 )
+
+/** POST /api/reviews/upload returns the public Blob URL of the one stored photo. */
+@Serializable
+data class PhotoUploadResponseDto(val url: String = "")
 
 /** A track picked via Sound Detail's "Use this sound", attached to the review being composed —
  *  mirrors the web's `ReviewMusic` shape (`src/app/api/reviews/route.ts`). [startSec]/[volume]

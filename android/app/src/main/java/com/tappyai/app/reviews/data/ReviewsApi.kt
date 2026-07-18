@@ -1,10 +1,13 @@
 package com.tappyai.app.reviews.data
 
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -54,6 +57,16 @@ interface ReviewsApi {
 
     @POST("api/reviews")
     suspend fun createReview(@Body body: CreateReviewRequestDto): CreateReviewResponseDto
+
+    /**
+     * Uploads ONE photo as multipart/form-data (part name `file`) and returns its public Blob URL.
+     * Mirrors the web's `POST /api/reviews/upload`: one file per request, ≤5MB, and the server
+     * re-sniffs the real image type by magic bytes (JPG/PNG/WebP/GIF) regardless of the client
+     * MIME. Callers collect the returned URLs into [CreateReviewRequestDto.photos].
+     */
+    @Multipart
+    @POST("api/reviews/upload")
+    suspend fun uploadPhoto(@Part file: MultipartBody.Part): PhotoUploadResponseDto
 
     /** The caller's own reviews, including hidden ones — see My Reviews. */
     @GET("api/reviews/mine")

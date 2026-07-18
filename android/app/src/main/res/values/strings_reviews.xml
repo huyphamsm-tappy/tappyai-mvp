@@ -24,6 +24,11 @@
     <string name="reviews_composer_posted_toast">Posted</string>
     <string name="reviews_composer_using_sound">Using: %1$s</string>
     <string name="reviews_composer_remove_sound">Remove sound</string>
+    <string name="reviews_composer_remove_photo">Remove photo</string>
+    <string name="reviews_composer_photo_max">You can add up to %1$d photos</string>
+    <string name="reviews_composer_photo_read_failed">Couldn\'t read that photo. Please try another.</string>
+    <string name="reviews_composer_photo_too_large">Each photo must be under 5MB.</string>
+    <string name="reviews_composer_photo_invalid_type">Only JPG, PNG, WebP or GIF images are allowed.</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">

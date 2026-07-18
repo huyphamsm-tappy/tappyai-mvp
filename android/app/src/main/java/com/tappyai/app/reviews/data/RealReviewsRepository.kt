@@ -2,6 +2,9 @@ package com.tappyai.app.reviews.data
 
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.core.network.safeApiCall
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.Collections
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -64,12 +67,23 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>> =
         safeApiCall { groupNotifications(api.getNotifications().notifications.map { it.toDomain() }) }
 
+    override suspend fun uploadReviewPhoto(bytes: ByteArray, mimeType: String): NetworkResult<String> =
+        safeApiCall {
+            val body = bytes.toRequestBody(mimeType.toMediaType())
+            // Part name `file` — the exact field the web's /api/reviews/upload route reads from the
+            // multipart form. The filename is cosmetic; the server derives the real extension from
+            // the sniffed image type, so a constant "photo" is fine.
+            val part = MultipartBody.Part.createFormData("file", "photo", body)
+            api.uploadPhoto(part).url
+        }
+
     override suspend fun createReview(
         placeId: String,
         placeName: String,
         body: String,
         rating: Int?,
         musicTrackId: String?,
+        photos: List<String>?,
     ): NetworkResult<Unit> = safeApiCall {
         api.createReview(
             CreateReviewRequestDto(
@@ -78,6 +92,7 @@ class RealReviewsRepository @Inject constructor(
                 body = body,
                 rating = rating,
                 music = musicTrackId?.let { MusicSelectionDto(trackId = it) },
+                photos = photos?.takeIf { it.isNotEmpty() },
             ),
         )
         Unit
