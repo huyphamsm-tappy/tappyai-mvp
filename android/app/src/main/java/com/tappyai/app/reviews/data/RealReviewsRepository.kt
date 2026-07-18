@@ -77,6 +77,9 @@ class RealReviewsRepository @Inject constructor(
             api.uploadPhoto(part).url
         }
 
+    override suspend fun getLinkThumbnail(url: String): NetworkResult<String?> =
+        safeApiCall { api.getOembed(url).thumbnailUrl }
+
     override suspend fun createReview(
         placeId: String,
         placeName: String,
@@ -84,6 +87,7 @@ class RealReviewsRepository @Inject constructor(
         rating: Int?,
         musicTrackId: String?,
         photos: List<String>?,
+        link: LinkAttachment?,
     ): NetworkResult<Unit> = safeApiCall {
         api.createReview(
             CreateReviewRequestDto(
@@ -93,6 +97,12 @@ class RealReviewsRepository @Inject constructor(
                 rating = rating,
                 music = musicTrackId?.let { MusicSelectionDto(trackId = it) },
                 photos = photos?.takeIf { it.isNotEmpty() },
+                // Mirror the web's link payload: content_type='video', media_url = the source URL.
+                contentType = link?.let { "video" },
+                mediaUrl = link?.sourceUrl,
+                sourceType = link?.sourceType,
+                sourceUrl = link?.sourceUrl,
+                thumbnail = link?.thumbnailUrl,
             ),
         )
         Unit

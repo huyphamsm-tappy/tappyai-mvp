@@ -29,6 +29,8 @@
     <string name="reviews_composer_photo_read_failed">Couldn\'t read that photo. Please try another.</string>
     <string name="reviews_composer_photo_too_large">Each photo must be under 5MB.</string>
     <string name="reviews_composer_photo_invalid_type">Only JPG, PNG, WebP or GIF images are allowed.</string>
+    <string name="reviews_composer_link_loading">Fetching preview…</string>
+    <string name="reviews_composer_link_attached">Link attached (%1$s)</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">

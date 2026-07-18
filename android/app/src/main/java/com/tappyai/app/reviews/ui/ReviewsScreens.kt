@@ -419,6 +419,11 @@ internal fun ReviewComposerHost(
             pickPhotos.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         },
         onRemovePhoto = viewModel::onRemovePhoto,
+        linkUrl = uiState.linkUrl,
+        onLinkUrlChange = viewModel::onLinkUrlChanged,
+        linkSourceType = uiState.linkSourceType,
+        linkThumbnailUrl = uiState.linkThumbnailUrl,
+        isFetchingLinkMeta = uiState.isFetchingLinkMeta,
     )
 }
 

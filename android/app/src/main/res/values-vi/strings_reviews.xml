@@ -29,6 +29,8 @@
     <string name="reviews_composer_photo_read_failed">Không đọc được ảnh này. Vui lòng chọn ảnh khác.</string>
     <string name="reviews_composer_photo_too_large">Mỗi ảnh phải nhỏ hơn 5MB.</string>
     <string name="reviews_composer_photo_invalid_type">Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF.</string>
+    <string name="reviews_composer_link_loading">Đang lấy bản xem trước…</string>
+    <string name="reviews_composer_link_attached">Đã đính kèm link (%1$s)</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">
