@@ -8,6 +8,8 @@
     <!-- Comments -->
     <string name="reviews_comments_header_title">Comments</string>
     <string name="reviews_comment_default_user">User</string>
+    <string name="reviews_comment_input_hint">Add a comment…</string>
+    <string name="reviews_comment_send">Send comment</string>
 
     <!-- Composer -->
     <string name="reviews_composer_post_button">Post</string>

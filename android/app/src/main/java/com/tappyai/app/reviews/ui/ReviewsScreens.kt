@@ -190,6 +190,15 @@ internal fun ReviewDetailScreen(
     val nowMillis = System.currentTimeMillis()
     val review = uiState.review
 
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is DetailEvent.CommentFailed ->
+                    Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -203,7 +212,7 @@ internal fun ReviewDetailScreen(
                 message = stringResource(R.string.reviews_detail_unavailable_message),
             )
         } else {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.weight(1f)) {
                 item(key = "review-card") {
                     ReviewCard(
                         review = review,
@@ -220,6 +229,10 @@ internal fun ReviewDetailScreen(
                 }
                 reviewCommentItems(comments = uiState.comments, nowMillis = nowMillis)
             }
+            ReviewCommentInputBar(
+                isPosting = uiState.isPostingComment,
+                onSend = viewModel::postComment,
+            )
         }
     }
 }

@@ -6,12 +6,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +45,11 @@ private val CommentTextPrimary = Color(0xFFFFFFFF)
 private val CommentTextSecondary = Color(0xB3FFFFFF)
 private val CommentDivider = Color(0x33FFFFFF)
 private val CommentHeaderText = Color(0xFFFFFFFF)
+private val CommentAccent = Color(0xFFFE2C55)
+private val CommentPlaceholder = Color(0x66FFFFFF)
+
+/** Backend caps a comment at 300 chars (POST /api/reviews/{id}/comments) — enforce it client-side too. */
+private const val MAX_COMMENT_LEN = 300
 
 @Composable
 internal fun ReviewCommentsHeader(count: Int) {
@@ -113,6 +130,75 @@ internal fun LazyListScope.reviewCommentItems(
     }
     items(items = comments, key = { it.id }) { comment ->
         ReviewCommentItem(comment = comment, nowMillis = nowMillis)
+    }
+}
+
+/**
+ * Fixed comment composer pinned below the comment list on the detail screen. Holds its own draft
+ * (rememberSaveable, survives rotation), caps input at [MAX_COMMENT_LEN] like the backend, and
+ * calls [onSend] with the trimmed text — clearing the field immediately. While [isPosting] the send
+ * control shows a spinner and is disabled so a double-tap can't double-post.
+ */
+@Composable
+internal fun ReviewCommentInputBar(
+    isPosting: Boolean,
+    onSend: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var draft by rememberSaveable { mutableStateOf("") }
+    Column(modifier = modifier.background(CommentBackground)) {
+        HorizontalDivider(color = CommentDivider, thickness = 0.5.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        ) {
+            TextField(
+                value = draft,
+                onValueChange = { if (it.length <= MAX_COMMENT_LEN) draft = it },
+                placeholder = {
+                    Text(
+                        text = stringResource(R.string.reviews_comment_input_hint),
+                        color = CommentPlaceholder,
+                        fontSize = 14.sp,
+                    )
+                },
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = CommentTextPrimary,
+                    unfocusedTextColor = CommentTextPrimary,
+                    cursorColor = CommentAccent,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
+                modifier = Modifier.weight(1f),
+            )
+            val canSend = draft.isNotBlank() && !isPosting
+            IconButton(
+                onClick = {
+                    val text = draft.trim()
+                    if (text.isNotEmpty()) {
+                        onSend(text)
+                        draft = ""
+                    }
+                },
+                enabled = canSend,
+            ) {
+                if (isPosting) {
+                    CircularProgressIndicator(modifier = Modifier.size(20.dp), color = CommentAccent)
+                } else {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Send,
+                        contentDescription = stringResource(R.string.reviews_comment_send),
+                        tint = if (canSend) CommentAccent else CommentTextSecondary,
+                    )
+                }
+            }
+        }
     }
 }
 
