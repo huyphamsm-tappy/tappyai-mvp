@@ -3,6 +3,9 @@
     <string name="membership_hero_title">TappyAI Pro</string>
     <string name="membership_hero_subtitle">The full, unlimited experience</string>
     <string name="membership_free_status_banner">🎁 You\'re currently on the Free plan.</string>
+    <string name="membership_status_pro">✨ You\'re on TappyAI Pro</string>
+    <string name="membership_status_free_count">🎁 You\'re on Free — %1$d/%2$d messages left today</string>
+    <string name="membership_pro_active_cta">You\'re on Pro ✓</string>
     <string name="membership_plan_name_free">Free</string>
     <string name="membership_plan_name_pro">Pro</string>
     <string name="membership_free_tagline">Try it for free</string>

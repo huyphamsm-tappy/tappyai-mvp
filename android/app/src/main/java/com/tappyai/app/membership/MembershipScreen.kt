@@ -36,6 +36,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tappyai.app.R
 import com.tappyai.core.designsystem.component.TappyCard
 import com.tappyai.core.designsystem.component.TappyComingSoonSheet
@@ -54,7 +56,11 @@ import com.tappyai.core.designsystem.theme.TappySpacing
  *    prices. All colors come from the theme (no hex), including the Pro card's gradient.
  */
 @Composable
-fun MembershipScreen(onBack: () -> Unit) {
+fun MembershipScreen(
+    onBack: () -> Unit,
+    viewModel: MembershipViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var comingSoonFeature by remember { mutableStateOf<String?>(null) }
     val proSubscriptionFeatureName = stringResource(R.string.membership_pro_subscription_feature_name)
 
@@ -79,9 +85,12 @@ fun MembershipScreen(onBack: () -> Unit) {
             }
 
             Hero()
-            FreeStatusBanner()
+            MembershipStatusBanner(uiState)
             FreeCard()
-            ProCard(onUpgrade = { comingSoonFeature = proSubscriptionFeatureName })
+            ProCard(
+                isPro = uiState.isPro,
+                onUpgrade = { comingSoonFeature = proSubscriptionFeatureName },
+            )
             FaqSection()
         }
     }
@@ -129,8 +138,20 @@ private fun Hero() {
     }
 }
 
+/**
+ * Status banner reflecting the real subscription (GET /api/subscription): "You're on Pro" when
+ * subscribed, else "You're on Free — remaining/limit messages today" from the live quota. Falls back
+ * to the static Free line when the count is unknown (signed out or the call failed). Mirrors the web
+ * `/subscription` banner.
+ */
 @Composable
-private fun FreeStatusBanner() {
+private fun MembershipStatusBanner(uiState: MembershipUiState) {
+    val text = when {
+        uiState.isPro -> stringResource(R.string.membership_status_pro)
+        uiState.remaining != null && uiState.freeDailyLimit != null ->
+            stringResource(R.string.membership_status_free_count, uiState.remaining, uiState.freeDailyLimit)
+        else -> stringResource(R.string.membership_free_status_banner)
+    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,7 +160,7 @@ private fun FreeStatusBanner() {
             .padding(TappySpacing.lg),
     ) {
         Text(
-            text = stringResource(R.string.membership_free_status_banner),
+            text = text,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
@@ -184,7 +205,7 @@ private fun FreeCard() {
 }
 
 @Composable
-private fun ProCard(onUpgrade: () -> Unit) {
+private fun ProCard(isPro: Boolean, onUpgrade: () -> Unit) {
     val onGradient = MaterialTheme.colorScheme.onPrimary
     Box(
         modifier = Modifier
@@ -249,31 +270,50 @@ private fun ProCard(onUpgrade: () -> Unit) {
             // Inverse CTA (surface pill + primary text) to stand out on the gradient, matching the
             // web. TappyButton has no "inverse on a colored surface" variant, so a small inline
             // pill is used rather than adding a design-system variant for this one site.
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(TappyShapes.card)
-                    .background(MaterialTheme.colorScheme.surface)
-                    .clickable(onClick = onUpgrade)
-                    .padding(vertical = TappySpacing.lg),
-                contentAlignment = Alignment.Center,
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm, Alignment.CenterHorizontally),
-                    verticalAlignment = Alignment.CenterVertically,
+            if (isPro) {
+                // Already subscribed → non-interactive "You're on Pro ✓", matching the web.
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(TappyShapes.card)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(vertical = TappySpacing.lg),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Bolt,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(18.dp),
-                    )
                     Text(
-                        text = stringResource(R.string.membership_upgrade_cta, MembershipContent.PRO_PRICE),
+                        text = stringResource(R.string.membership_pro_active_cta),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
                     )
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(TappyShapes.card)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .clickable(onClick = onUpgrade)
+                        .padding(vertical = TappySpacing.lg),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm, Alignment.CenterHorizontally),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Bolt,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Text(
+                            text = stringResource(R.string.membership_upgrade_cta, MembershipContent.PRO_PRICE),
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
             }
         }
