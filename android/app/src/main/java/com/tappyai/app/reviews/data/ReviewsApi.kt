@@ -55,6 +55,14 @@ interface ReviewsApi {
     @POST("api/reviews")
     suspend fun createReview(@Body body: CreateReviewRequestDto): CreateReviewResponseDto
 
+    /**
+     * Server-side oEmbed/OG proxy for a pasted link (TikTok/Facebook block direct client fetch).
+     * Returns a best-effort thumbnail + title; fields are null/empty when the provider gives none.
+     * YouTube needs no call — its thumbnail URL is derived from the video id client-side.
+     */
+    @GET("api/explore/oembed")
+    suspend fun getOembed(@Query("url") url: String): OembedResponseDto
+
     /** The caller's own reviews, including hidden ones — see My Reviews. */
     @GET("api/reviews/mine")
     suspend fun getMine(): FeedResponseDto

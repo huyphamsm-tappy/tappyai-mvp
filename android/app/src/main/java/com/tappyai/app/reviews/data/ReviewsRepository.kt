@@ -2,6 +2,14 @@ package com.tappyai.app.reviews.data
 
 import com.tappyai.core.network.NetworkResult
 
+/** A pasted external clip (YouTube/TikTok/Facebook) attached to a review being composed.
+ *  [thumbnailUrl] is best-effort (may be null when the provider exposes no poster frame). */
+data class LinkAttachment(
+    val sourceType: String,
+    val sourceUrl: String,
+    val thumbnailUrl: String?,
+)
+
 /**
  * Abstraction over the Reviews backend. ViewModels depend on this, never on Retrofit/OkHttp or
  * the DTOs — every method returns already-mapped domain types wrapped in [NetworkResult] so the
@@ -37,15 +45,25 @@ interface ReviewsRepository {
 
     suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>>
 
+    /**
+     * Best-effort thumbnail URL for a pasted TikTok/Facebook link, via GET /api/explore/oembed.
+     * Returns null when the provider exposes none — never fatal; the review can post without a
+     * poster frame. YouTube thumbnails are derived client-side and don't call this.
+     */
+    suspend fun getLinkThumbnail(url: String): NetworkResult<String?>
+
     /** [musicTrackId], when present, attaches a sound picked via Sound Detail's "Use this sound"
      *  (`POST /api/reviews`'s `music` field, `origin: 'attached'`) — matches the web's own
-     *  attach-an-existing-track flow, independent of whether real media is attached. */
+     *  attach-an-existing-track flow, independent of whether real media is attached.
+     *  [link], when present, attaches an external clip (YouTube/TikTok/Facebook) — the web sends
+     *  content_type='video', media_url=source_url, source_type, source_url and a best-effort thumb. */
     suspend fun createReview(
         placeId: String,
         placeName: String,
         body: String,
         rating: Int?,
         musicTrackId: String? = null,
+        link: LinkAttachment? = null,
     ): NetworkResult<Unit>
 
     /**

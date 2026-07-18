@@ -349,6 +349,7 @@ internal fun ReviewComposerHost(
     viewModel: ReviewComposerViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     // rememberSaveable so a multi-paragraph draft (body/rating/place + the disclosure toggles)
     // survives rotation and process-death — with plain remember the user silently lost the entire
     // review they were writing on any config change. ComposerMediaMode is a plain enum (Serializable),
@@ -401,6 +402,11 @@ internal fun ReviewComposerHost(
         onPost = { viewModel.submit(body = body, rating = rating, placeName = placeName, includeSound = soundIncluded) },
         attachedSoundTitle = viewModel.attachedTrackTitle?.takeIf { soundIncluded },
         onRemoveSound = { soundIncluded = false },
+        linkUrl = uiState.linkUrl,
+        onLinkUrlChange = viewModel::onLinkUrlChanged,
+        linkSourceType = uiState.linkSourceType,
+        linkThumbnailUrl = uiState.linkThumbnailUrl,
+        isFetchingLinkMeta = uiState.isFetchingLinkMeta,
     )
 }
 

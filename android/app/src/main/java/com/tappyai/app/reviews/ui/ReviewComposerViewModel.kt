@@ -3,11 +3,13 @@ package com.tappyai.app.reviews.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tappyai.app.reviews.data.LinkAttachment
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +26,17 @@ sealed interface ComposerEvent {
     data class Failed(val message: String) : ComposerEvent
 }
 
-data class ReviewComposerUiState(val isPosting: Boolean = false)
+data class ReviewComposerUiState(
+    val isPosting: Boolean = false,
+    /** Raw text in the Link tab's URL field. */
+    val linkUrl: String = "",
+    /** Detected provider for [linkUrl] — "youtube"/"tiktok"/"facebook", or null if unrecognized. */
+    val linkSourceType: String? = null,
+    /** Best-effort poster frame for the link (YouTube: derived; TikTok/FB: via oEmbed). */
+    val linkThumbnailUrl: String? = null,
+    /** True while a TikTok/Facebook thumbnail lookup is in flight. */
+    val isFetchingLinkMeta: Boolean = false,
+)
 
 @HiltViewModel
 class ReviewComposerViewModel @Inject constructor(
@@ -75,6 +87,7 @@ class ReviewComposerViewModel @Inject constructor(
                 body = body.trim(),
                 rating = rating.takeIf { it in 1..5 },
                 musicTrackId = attachedTrackId.takeIf { includeSound },
+                link = currentLinkAttachment(),
             )
             _uiState.update { it.copy(isPosting = false) }
             when (result) {
@@ -95,6 +108,60 @@ class ReviewComposerViewModel @Inject constructor(
      * fragment the same place into separate placeIds depending on which platform posted first.
      */
     private fun slugify(name: String): String = "community_" + name.trim().lowercase().replace(Regex("\\s+"), "_")
+
+    private var linkMetaJob: Job? = null
+
+    /**
+     * Handles every keystroke in the Link tab's URL field. Detects the provider (YouTube/TikTok/
+     * Facebook) byte-for-byte like the web's `detectSource`, then resolves a poster thumbnail:
+     * YouTube's is derived from the video id with no network call; TikTok/Facebook go through the
+     * server oEmbed proxy (best-effort — a missing thumbnail never blocks posting). A newer
+     * keystroke cancels the previous in-flight lookup so a stale thumbnail can't land.
+     */
+    fun onLinkUrlChanged(url: String) {
+        linkMetaJob?.cancel()
+        val trimmed = url.trim()
+        val source = detectSource(trimmed)
+        _uiState.update {
+            it.copy(linkUrl = url, linkSourceType = source, linkThumbnailUrl = null, isFetchingLinkMeta = false)
+        }
+        when (source) {
+            null -> return
+            "youtube" -> extractYoutubeId(trimmed)?.let { id ->
+                _uiState.update { it.copy(linkThumbnailUrl = "https://i.ytimg.com/vi/$id/maxresdefault.jpg") }
+            }
+            else -> {
+                _uiState.update { it.copy(isFetchingLinkMeta = true) }
+                linkMetaJob = viewModelScope.launch {
+                    val thumb = when (val r = repository.getLinkThumbnail(trimmed)) {
+                        is NetworkResult.Success -> r.data
+                        is NetworkResult.Error -> null
+                    }
+                    _uiState.update { it.copy(linkThumbnailUrl = thumb, isFetchingLinkMeta = false) }
+                }
+            }
+        }
+    }
+
+    /** The current Link tab state as a [LinkAttachment], or null if no recognized URL is entered. */
+    private fun currentLinkAttachment(): LinkAttachment? {
+        val s = _uiState.value
+        val type = s.linkSourceType ?: return null
+        val u = s.linkUrl.trim().ifEmpty { return null }
+        return LinkAttachment(sourceType = type, sourceUrl = u, thumbnailUrl = s.linkThumbnailUrl)
+    }
+
+    /** Provider detection — mirrors the web's `detectSource` (src/app/reviews/new/page.tsx). */
+    private fun detectSource(url: String): String? = when {
+        url.contains("youtube.com") || url.contains("youtu.be") -> "youtube"
+        url.contains("tiktok.com") -> "tiktok"
+        url.contains("facebook.com") || url.contains("fb.com") || url.contains("fb.watch") -> "facebook"
+        else -> null
+    }
+
+    /** YouTube id extraction — mirrors the web's `extractYoutubeId` regex. */
+    private fun extractYoutubeId(url: String): String? =
+        Regex("(?:youtube\\.com/watch\\?v=|youtu\\.be/)([^&?/]+)").find(url)?.groupValues?.getOrNull(1)
 
     private companion object {
         const val TAG = "ReviewComposerViewModel"

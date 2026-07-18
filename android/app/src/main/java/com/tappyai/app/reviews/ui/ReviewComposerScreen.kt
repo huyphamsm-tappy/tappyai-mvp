@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
+import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.theme.TappySpacing
 
 private val ComposerBackground = Color(0xFF000000)
@@ -85,13 +87,21 @@ fun ReviewComposerScreen(
     modifier: Modifier = Modifier,
     attachedSoundTitle: String? = null,
     onRemoveSound: () -> Unit = {},
+    linkUrl: String = "",
+    onLinkUrlChange: (String) -> Unit = {},
+    linkSourceType: String? = null,
+    linkThumbnailUrl: String? = null,
+    isFetchingLinkMeta: Boolean = false,
 ) {
+    // A valid pasted link is postable on its own (no body needed), matching the web + backend
+    // rule that a review needs body OR media.
+    val hasValidLink = linkSourceType != null && linkUrl.isNotBlank()
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(ComposerBackground),
     ) {
-        ComposerHeader(onBack = onBack, onPost = onPost, canPost = body.isNotBlank())
+        ComposerHeader(onBack = onBack, onPost = onPost, canPost = body.isNotBlank() || hasValidLink)
         HorizontalDivider(color = ComposerDivider, thickness = 0.5.dp)
 
         Column(
@@ -109,7 +119,17 @@ fun ReviewComposerScreen(
 
             MediaModeTabs(selected = mediaMode, onSelect = onMediaModeChange)
 
-            MediaPlaceholder(mediaMode = mediaMode)
+            when (mediaMode) {
+                // Link is the wired media lane here; Photo/Video remain placeholders on this branch.
+                ComposerMediaMode.Link -> ComposerLinkSection(
+                    url = linkUrl,
+                    onUrlChange = onLinkUrlChange,
+                    sourceType = linkSourceType,
+                    thumbnailUrl = linkThumbnailUrl,
+                    isFetching = isFetchingLinkMeta,
+                )
+                else -> MediaPlaceholder(mediaMode = mediaMode)
+            }
 
             ComposerBody(body = body, onBodyChange = onBodyChange)
 
@@ -332,6 +352,70 @@ private fun MediaPlaceholder(mediaMode: ComposerMediaMode) {
                 text = label,
                 color = ComposerTextSecondary,
                 fontSize = 14.sp,
+            )
+        }
+    }
+}
+
+/**
+ * Link lane of the composer: a URL field plus a live preview. As the user types, the ViewModel
+ * detects the provider and resolves a poster frame — this composable renders one of three states:
+ * a spinner while a TikTok/Facebook thumbnail loads, the thumbnail once available, or a plain
+ * "attached" confirmation when the provider is recognized but exposes no poster frame.
+ */
+@Composable
+private fun ComposerLinkSection(
+    url: String,
+    onUrlChange: (String) -> Unit,
+    sourceType: String?,
+    thumbnailUrl: String?,
+    isFetching: Boolean,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+        TextField(
+            value = url,
+            onValueChange = onUrlChange,
+            placeholder = {
+                Text(
+                    stringResource(R.string.reviews_composer_placeholder_link),
+                    color = ComposerTextPlaceholder,
+                    fontSize = 14.sp,
+                )
+            },
+            singleLine = true,
+            colors = composerTextFieldColors(),
+            modifier = Modifier.fillMaxWidth(),
+        )
+        when {
+            isFetching -> Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+            ) {
+                CircularProgressIndicator(color = ComposerAccent, modifier = Modifier.size(18.dp))
+                Text(
+                    text = stringResource(R.string.reviews_composer_link_loading),
+                    color = ComposerTextSecondary,
+                    fontSize = 13.sp,
+                )
+            }
+            thumbnailUrl != null -> Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(ComposerSurface),
+            ) {
+                TappyImage(
+                    url = thumbnailUrl,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+            sourceType != null -> Text(
+                // Recognized provider but no poster frame (e.g. a login-gated Facebook page).
+                text = stringResource(R.string.reviews_composer_link_attached, sourceType),
+                color = ComposerTextSecondary,
+                fontSize = 13.sp,
             )
         }
     }

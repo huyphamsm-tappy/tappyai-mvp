@@ -24,6 +24,8 @@
     <string name="reviews_composer_posted_toast">Đã đăng bài</string>
     <string name="reviews_composer_using_sound">Đang dùng: %1$s</string>
     <string name="reviews_composer_remove_sound">Bỏ âm thanh</string>
+    <string name="reviews_composer_link_loading">Đang lấy bản xem trước…</string>
+    <string name="reviews_composer_link_attached">Đã đính kèm link (%1$s)</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">

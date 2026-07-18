@@ -64,12 +64,16 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>> =
         safeApiCall { groupNotifications(api.getNotifications().notifications.map { it.toDomain() }) }
 
+    override suspend fun getLinkThumbnail(url: String): NetworkResult<String?> =
+        safeApiCall { api.getOembed(url).thumbnailUrl }
+
     override suspend fun createReview(
         placeId: String,
         placeName: String,
         body: String,
         rating: Int?,
         musicTrackId: String?,
+        link: LinkAttachment?,
     ): NetworkResult<Unit> = safeApiCall {
         api.createReview(
             CreateReviewRequestDto(
@@ -78,6 +82,12 @@ class RealReviewsRepository @Inject constructor(
                 body = body,
                 rating = rating,
                 music = musicTrackId?.let { MusicSelectionDto(trackId = it) },
+                // Mirror the web's link payload: content_type='video', media_url = the source URL.
+                contentType = link?.let { "video" },
+                mediaUrl = link?.sourceUrl,
+                sourceType = link?.sourceType,
+                sourceUrl = link?.sourceUrl,
+                thumbnail = link?.thumbnailUrl,
             ),
         )
         Unit

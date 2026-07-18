@@ -24,6 +24,8 @@
     <string name="reviews_composer_posted_toast">Posted</string>
     <string name="reviews_composer_using_sound">Using: %1$s</string>
     <string name="reviews_composer_remove_sound">Remove sound</string>
+    <string name="reviews_composer_link_loading">Fetching preview…</string>
+    <string name="reviews_composer_link_attached">Link attached (%1$s)</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">

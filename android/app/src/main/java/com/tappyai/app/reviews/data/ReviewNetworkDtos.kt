@@ -140,6 +140,23 @@ data class CreateReviewRequestDto(
     val body: String,
     val rating: Int? = null,
     val music: MusicSelectionDto? = null,
+    // Link-share fields — a review whose media is an external clip (YouTube/TikTok/Facebook). The
+    // backend reads these snake_case keys (b.content_type, b.source_type, …); for a link the web
+    // sets content_type='video', media_url=source_url, source_type=<provider>, plus a best-effort
+    // thumbnail. All null (and omitted, since encodeDefaults=false) for a plain text review.
+    @SerialName("content_type") val contentType: String? = null,
+    @SerialName("media_url") val mediaUrl: String? = null,
+    @SerialName("source_type") val sourceType: String? = null,
+    @SerialName("source_url") val sourceUrl: String? = null,
+    val thumbnail: String? = null,
+)
+
+/** GET /api/explore/oembed?url=… — server-side thumbnail/title proxy for TikTok/Facebook links
+ *  (they block direct client fetch). Fields are null/empty when the provider exposes none. */
+@Serializable
+data class OembedResponseDto(
+    @SerialName("thumbnail_url") val thumbnailUrl: String? = null,
+    val title: String = "",
 )
 
 /** A track picked via Sound Detail's "Use this sound", attached to the review being composed —
