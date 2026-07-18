@@ -14,6 +14,7 @@ import com.tappyai.app.chat.data.ChatException
 import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
+import com.tappyai.app.chat.data.SuggestedPromptsRepository
 import com.tappyai.app.history.StoredChatMessage
 import com.tappyai.app.history.data.ChatHistoryRepository
 import com.tappyai.app.language.AppLanguage
@@ -40,6 +41,7 @@ class ChatViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
     private val chatHistoryRepository: ChatHistoryRepository,
     private val messageFeedbackRepository: MessageFeedbackRepository,
+    private val suggestedPromptsRepository: SuggestedPromptsRepository,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
@@ -113,6 +115,27 @@ class ChatViewModel @Inject constructor(
      *  `reportState === 'reported'` disabling its own report button. */
     private val _reportedMessageIds = MutableStateFlow<Set<Long>>(emptySet())
     val reportedMessageIds: StateFlow<Set<Long>> = _reportedMessageIds.asStateFlow()
+
+    /** Dynamic starter prompts (GET /api/suggested-prompts) for the general-category welcome. Empty
+     *  until loaded / on failure, in which case the screen keeps the static [quickPrompts]. */
+    private val _dynamicPrompts = MutableStateFlow<List<String>>(emptyList())
+    val dynamicPrompts: StateFlow<List<String>> = _dynamicPrompts.asStateFlow()
+
+    init {
+        // The general-category welcome shows dynamic, time/memory-aware prompts (the web's
+        // /api/suggested-prompts); specific categories keep their static starter prompts. Best-effort
+        // — a failure leaves the static fallback in place.
+        if (category == ChatCategory.General) {
+            viewModelScope.launch {
+                val english = languageManager.current == AppLanguage.English
+                when (val result = suggestedPromptsRepository.getPrompts(english)) {
+                    is NetworkResult.Success -> _dynamicPrompts.value = result.data
+                    is NetworkResult.Error ->
+                        logger.e("ChatViewModel", "Suggested prompts load failed: ${result.error}")
+                }
+            }
+        }
+    }
 
     private var nextId = 0L
     private var respondingJob: Job? = null
