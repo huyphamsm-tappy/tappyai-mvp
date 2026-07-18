@@ -62,6 +62,17 @@ interface ReviewsApi {
     @PATCH("api/reviews/{id}")
     suspend fun setHidden(@Path("id") reviewId: String, @Body body: SetHiddenRequestDto): OkResponseDto
 
+    /**
+     * Records video watch analytics (auth-only; the backend silently ignores anonymous callers and
+     * rate-limits 10/min). Fire-and-forget: the response is just {ok}. Mirrors the web's
+     * behaviorTracker sendBeacon to the same endpoint.
+     */
+    @POST("api/reviews/{id}/interact")
+    suspend fun recordInteraction(
+        @Path("id") reviewId: String,
+        @Body body: InteractRequestDto,
+    ): OkResponseDto
+
     @DELETE("api/reviews/{id}")
     suspend fun deleteReview(@Path("id") reviewId: String): OkResponseDto
 }

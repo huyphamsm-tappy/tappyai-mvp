@@ -99,6 +99,15 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun deleteReview(reviewId: String): NetworkResult<Unit> =
         safeApiCall { api.deleteReview(reviewId); Unit }
 
+    override suspend fun recordInteraction(
+        reviewId: String,
+        watchSeconds: Int,
+        completionRate: Double,
+    ): NetworkResult<Unit> = safeApiCall {
+        api.recordInteraction(reviewId, InteractRequestDto(watchSeconds = watchSeconds, completionRate = completionRate))
+        Unit
+    }
+
     private companion object {
         const val CACHE_MAX_ENTRIES = 200
         const val CACHE_INITIAL_CAPACITY = 16

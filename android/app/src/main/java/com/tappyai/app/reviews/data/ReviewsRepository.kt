@@ -63,4 +63,8 @@ interface ReviewsRepository {
 
     /** Deletes one of the caller's own reviews. */
     suspend fun deleteReview(reviewId: String): NetworkResult<Unit>
+
+    /** Records video watch analytics for [reviewId] (POST /api/reviews/{id}/interact). Fire-and-
+     *  forget — callers ignore the result; a failure never affects playback. */
+    suspend fun recordInteraction(reviewId: String, watchSeconds: Int, completionRate: Double): NetworkResult<Unit>
 }
