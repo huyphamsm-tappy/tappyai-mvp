@@ -9,6 +9,7 @@
     <string name="appconn_zalo_reads">Display name and Zalo profile picture (messages are never read)</string>
     <string name="appconn_reads_label">TAPPY ONLY READS</string>
     <string name="appconn_connect">Connect</string>
+    <string name="appconn_connected">✓ Connected</string>
     <string name="appconn_usage_title">What does Tappy do with this data?</string>
     <string name="appconn_usage_calendar">Google Calendar → Tappy suggests places to eat near your meetings</string>
     <string name="appconn_usage_zalo">Zalo → Shows your real name and photo on your review feed</string>

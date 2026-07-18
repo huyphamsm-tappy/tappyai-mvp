@@ -9,6 +9,7 @@
     <string name="appconn_zalo_reads">Tên hiển thị, ảnh đại diện Zalo (không đọc tin nhắn)</string>
     <string name="appconn_reads_label">TAPPY CHỈ ĐỌC</string>
     <string name="appconn_connect">Kết nối</string>
+    <string name="appconn_connected">✓ Đã kết nối</string>
     <string name="appconn_usage_title">Tappy dùng dữ liệu này để làm gì?</string>
     <string name="appconn_usage_calendar">Google Calendar → Tappy gợi ý quán ăn gần lịch họp của bạn</string>
     <string name="appconn_usage_zalo">Zalo → Hiển thị tên và ảnh thật của bạn trên review feed</string>

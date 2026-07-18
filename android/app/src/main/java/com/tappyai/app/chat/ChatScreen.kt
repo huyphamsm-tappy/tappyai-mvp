@@ -94,6 +94,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
     val isLoadingConversation by viewModel.isLoadingConversation.collectAsStateWithLifecycle()
     val speakingMessageId = viewModel.speakingMessageId
     val feedback by viewModel.feedback.collectAsStateWithLifecycle()
+    val dynamicPrompts by viewModel.dynamicPrompts.collectAsStateWithLifecycle()
     val reportedMessageIds by viewModel.reportedMessageIds.collectAsStateWithLifecycle()
 
     val listState = rememberLazyListState()
@@ -123,6 +124,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                 onMoodSelected = viewModel::onMoodSelected,
                 onQuickPromptSelected = viewModel::onQuickPromptSelected,
                 modifier = Modifier.weight(1f).fillMaxWidth(),
+                dynamicPrompts = dynamicPrompts,
             )
         } else {
             LazyColumn(
@@ -256,8 +258,15 @@ private fun WelcomeState(
     onMoodSelected: (MoodChip) -> Unit,
     onQuickPromptSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
+    dynamicPrompts: List<String> = emptyList(),
 ) {
-    val prompts = quickPrompts(category)
+    // General category shows the backend's dynamic, time/memory-aware prompts when available;
+    // specific categories (and the general fallback) use the static starter prompts.
+    val prompts = if (category == ChatCategory.General && dynamicPrompts.isNotEmpty()) {
+        dynamicPrompts
+    } else {
+        quickPrompts(category)
+    }
 
     LazyColumn(
         modifier = modifier,

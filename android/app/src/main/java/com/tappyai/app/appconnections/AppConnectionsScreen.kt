@@ -24,6 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tappyai.app.R
 import com.tappyai.core.designsystem.component.TappyButton
 import com.tappyai.core.designsystem.component.TappyButtonVariant
@@ -58,7 +60,11 @@ private val INTEGRATIONS = listOf(
 )
 
 @Composable
-fun AppConnectionsScreen(onBack: () -> Unit) {
+fun AppConnectionsScreen(
+    onBack: () -> Unit,
+    viewModel: AppConnectionsViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var connectingProvider by remember { mutableStateOf<String?>(null) }
 
     Column(
@@ -116,6 +122,7 @@ fun AppConnectionsScreen(onBack: () -> Unit) {
             INTEGRATIONS.forEach { info ->
                 IntegrationCard(
                     info = info,
+                    connected = info.provider in uiState.connectedProviders,
                     onConnect = { connectingProvider = info.name },
                 )
             }
@@ -162,6 +169,7 @@ fun AppConnectionsScreen(onBack: () -> Unit) {
 @Composable
 private fun IntegrationCard(
     info: IntegrationInfo,
+    connected: Boolean,
     onConnect: () -> Unit,
 ) {
     TappyCard(modifier = Modifier.fillMaxWidth()) {
@@ -206,12 +214,22 @@ private fun IntegrationCard(
                 }
             }
 
-            TappyButton(
-                text = stringResource(R.string.appconn_connect),
-                onClick = onConnect,
-                variant = TappyButtonVariant.Secondary,
-                modifier = Modifier.fillMaxWidth(),
-            )
+            if (connected) {
+                // Already linked — show the real connected state (connecting/disconnecting is not
+                // available on Android: mobile OAuth is backend-blocked).
+                Text(
+                    text = stringResource(R.string.appconn_connected),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            } else {
+                TappyButton(
+                    text = stringResource(R.string.appconn_connect),
+                    onClick = onConnect,
+                    variant = TappyButtonVariant.Secondary,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
     }
 }
