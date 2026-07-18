@@ -46,6 +46,12 @@ interface ReviewsApi {
         @Query("limit") limit: Int = 50,
     ): CommentsResponseDto
 
+    @POST("api/reviews/{id}/comments")
+    suspend fun postComment(
+        @Path("id") reviewId: String,
+        @Body body: PostCommentRequestDto,
+    ): PostCommentResponseDto
+
     @GET("api/users/{id}")
     suspend fun getUserProfile(@Path("id") userId: String): UserProfileDto
 

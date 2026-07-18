@@ -88,6 +88,17 @@ data class CommentDto(
     val profiles: ProfileDto? = null,
 )
 
+/** POST /api/reviews/{id}/comments request body — the new comment text (backend enforces 1–300). */
+@Serializable
+data class PostCommentRequestDto(val body: String)
+
+/** POST /api/reviews/{id}/comments response — the created comment plus the updated total count. */
+@Serializable
+data class PostCommentResponseDto(
+    val comment: CommentDto? = null,
+    val count: Int = 0,
+)
+
 /** POST /api/reviews/{id}/like and /save return only the new boolean — no count. */
 @Serializable
 data class LikeResponseDto(val liked: Boolean = false)

@@ -33,6 +33,11 @@ interface ReviewsRepository {
 
     suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>>
 
+    /** Posts a comment on [reviewId] and returns the created comment (already mapped to domain).
+     *  The backend enforces 1–300 chars and rate-limits (10/min); a validation or rate-limit
+     *  failure surfaces as a typed [NetworkResult.Error]. */
+    suspend fun postComment(reviewId: String, body: String): NetworkResult<ReviewComment>
+
     suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile>
 
     suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>>
