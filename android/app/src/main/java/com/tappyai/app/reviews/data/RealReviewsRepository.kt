@@ -61,6 +61,9 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile> =
         safeApiCall { api.getUserProfile(userId).toReviewProfile() }
 
+    override suspend fun toggleFollow(userId: String): NetworkResult<Boolean> =
+        safeApiCall { api.toggleFollow(userId).following }
+
     override suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>> =
         safeApiCall { groupNotifications(api.getNotifications().notifications.map { it.toDomain() }) }
 

@@ -256,6 +256,8 @@ internal fun ReviewProfileScreen(
                         profile = profile,
                         reviews = uiState.reviews,
                         onReviewClick = onReviewClick,
+                        isTogglingFollow = uiState.isTogglingFollow,
+                        onToggleFollow = viewModel::toggleFollow,
                     )
                 }
             }

@@ -35,6 +35,10 @@ interface ReviewsRepository {
 
     suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile>
 
+    /** Toggles follow on [userId] (POST /api/users/{id}/follow, no body). Returns the new following
+     *  state. Caller adjusts the follower count locally (±1); the backend also returns the count. */
+    suspend fun toggleFollow(userId: String): NetworkResult<Boolean>
+
     suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>>
 
     /** [musicTrackId], when present, attaches a sound picked via Sound Detail's "Use this sound"
