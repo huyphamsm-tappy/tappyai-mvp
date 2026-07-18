@@ -3,6 +3,7 @@ package com.tappyai.app.reviews.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.reviews.data.Review
+import com.tappyai.app.reviews.data.ReviewContentType
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.reviews.data.ReviewsRepository
@@ -15,6 +16,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.math.round
+import kotlin.math.roundToInt
 import javax.inject.Inject
 
 /**
@@ -179,9 +182,52 @@ class ReviewsFeedViewModel @Inject constructor(
 
     private fun followingFor(type: ReviewFeedType): Boolean = type == ReviewFeedType.Following
 
+    // ── Video watch analytics (feed-only, mirrors the web's behaviorTracker) ──────────
+    private var activeVideoReviewId: String? = null
+    private var activeStartMs: Long = 0L
+    private val videoDurations = mutableMapOf<String, Float>()
+
+    /** Records a clip's duration (seconds), reported by the player at READY — used to compute the
+     *  completion_rate when the watch is finalized. */
+    fun onVideoDuration(reviewId: String, durationSec: Float) {
+        if (durationSec > 0f) videoDurations[reviewId] = durationSec
+    }
+
+    /**
+     * Called when the settled feed page changes (or the first page loads). Finalizes the previously
+     * active clip's watch, then starts timing [review] if it's a playable upload/link video. The
+     * pager's settled page is the Android equivalent of the web tracker's ≥50%-visible clip.
+     */
+    fun onActiveReviewChanged(review: Review?) {
+        finalizeActiveWatch()
+        if (review != null && review.contentType == ReviewContentType.Video && review.mediaUrl != null) {
+            activeVideoReviewId = review.id
+            activeStartMs = System.currentTimeMillis()
+        }
+    }
+
+    /** Finalizes any in-progress watch (e.g. when the feed leaves composition). */
+    fun flushWatch() = finalizeActiveWatch()
+
+    private fun finalizeActiveWatch() {
+        val reviewId = activeVideoReviewId ?: return
+        activeVideoReviewId = null
+        val watchedSec = (System.currentTimeMillis() - activeStartMs) / 1000.0
+        if (watchedSec < MIN_WATCH_SECONDS) return
+        val duration = videoDurations[reviewId]
+        val completion = if (duration != null && duration > 0f) minOf(watchedSec / duration, 1.0) else 0.0
+        val watchSeconds = watchedSec.roundToInt()
+        val completionRate = round(completion * 100) / 100
+        viewModelScope.launch {
+            // Fire-and-forget — a failure never affects playback (matches the web's sendBeacon).
+            repository.recordInteraction(reviewId, watchSeconds, completionRate)
+        }
+    }
+
     private companion object {
         const val TAG = "ReviewsFeedViewModel"
         const val PAGE_SIZE = 12
         const val PREFETCH_DISTANCE = 3
+        const val MIN_WATCH_SECONDS = 3.0
     }
 }

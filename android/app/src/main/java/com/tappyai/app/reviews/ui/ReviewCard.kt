@@ -83,13 +83,26 @@ fun ReviewCard(
     onHide: () -> Unit,
     modifier: Modifier = Modifier,
     onMusicDiscClick: (() -> Unit)? = null,
+    // Feed video playback: [active] is true only for the current pager page (drives autoplay);
+    // [audioUnlocked] follows the feed's first-tap audio permission; [onVideoDuration] reports the
+    // clip length (seconds) for watch analytics; [onRequestAudioUnlock] fires on a tap of the clip.
+    active: Boolean = false,
+    audioUnlocked: Boolean = false,
+    onVideoDuration: (Float) -> Unit = {},
+    onRequestAudioUnlock: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(ReviewBackground),
     ) {
-        ReviewMediaBackground(review = review)
+        ReviewMediaBackground(
+            review = review,
+            active = active,
+            audioUnlocked = audioUnlocked,
+            onVideoDuration = onVideoDuration,
+            onRequestAudioUnlock = onRequestAudioUnlock,
+        )
 
         if (isMe) {
             ReviewOverflowMenu(
@@ -124,9 +137,28 @@ fun ReviewCard(
 }
 
 @Composable
-private fun ReviewMediaBackground(review: Review) {
+private fun ReviewMediaBackground(
+    review: Review,
+    active: Boolean,
+    audioUnlocked: Boolean,
+    onVideoDuration: (Float) -> Unit,
+    onRequestAudioUnlock: () -> Unit,
+) {
+    val videoUrl = review.mediaUrl
     Box(modifier = Modifier.fillMaxSize()) {
         when {
+            review.contentType == ReviewContentType.Video && videoUrl != null -> {
+                ReviewFeedVideo(
+                    mediaUrl = videoUrl,
+                    thumbnail = review.thumbnail,
+                    sourceType = review.sourceType,
+                    sourceUrl = review.sourceUrl,
+                    active = active,
+                    audioUnlocked = audioUnlocked,
+                    onDuration = onVideoDuration,
+                    onRequestAudioUnlock = onRequestAudioUnlock,
+                )
+            }
             review.contentType == ReviewContentType.Video -> {
                 ReviewVideoPlaceholder(thumbnail = review.thumbnail)
             }

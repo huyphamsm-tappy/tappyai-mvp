@@ -113,6 +113,18 @@ data class FollowResponseDto(
     @SerialName("follower_count") val followerCount: Int = 0,
 )
 
+/**
+ * POST /api/reviews/{id}/interact request body — video watch analytics. The backend GREATEST-merges
+ * these per user/review, and the first watch ≥3s increments view_count once. [watchSeconds] is the
+ * accumulated seconds the clip was the active/visible slide; [completionRate] is watched/duration
+ * clamped to 1 (two-decimal), matching the web's behaviorTracker payload exactly.
+ */
+@Serializable
+data class InteractRequestDto(
+    @SerialName("watch_seconds") val watchSeconds: Int,
+    @SerialName("completion_rate") val completionRate: Double,
+)
+
 /** PATCH /api/reviews/{id} request body — hide/unhide the caller's own review. */
 @Serializable
 data class SetHiddenRequestDto(@SerialName("is_hidden") val isHidden: Boolean)

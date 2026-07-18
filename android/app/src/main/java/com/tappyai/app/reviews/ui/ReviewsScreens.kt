@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
@@ -80,6 +81,21 @@ internal fun ReviewsFeedScreen(
         viewModel.onPageSettled(pagerState.currentPage)
     }
 
+    // First user tap unlocks feed audio (clips start muted, then play with sound) — the web's
+    // page-level "tap to unmute". Once unlocked it stays unlocked for the session.
+    var audioUnlocked by rememberSaveable { mutableStateOf(false) }
+
+    // Watch-time analytics: when the settled clip changes (swipe or first load) finalize the previous
+    // clip's watch (posts to /interact when ≥3s) and start timing the new one — the same behaviour as
+    // the web's behaviorTracker, driven by the pager's settled page instead of an IntersectionObserver.
+    val activeReview = reviews.getOrNull(pagerState.settledPage)
+    LaunchedEffect(activeReview?.id) {
+        viewModel.onActiveReviewChanged(activeReview)
+    }
+    DisposableEffect(Unit) {
+        onDispose { viewModel.flushWatch() }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -116,6 +132,10 @@ internal fun ReviewsFeedScreen(
                     ReviewCard(
                         review = review,
                         isMe = false,
+                        active = pagerState.settledPage == page,
+                        audioUnlocked = audioUnlocked,
+                        onVideoDuration = { viewModel.onVideoDuration(review.id, it) },
+                        onRequestAudioUnlock = { audioUnlocked = true },
                         onLike = { viewModel.toggleLike(review) },
                         onSave = { viewModel.toggleSave(review) },
                         onComment = { onReviewClick(review.id) },
