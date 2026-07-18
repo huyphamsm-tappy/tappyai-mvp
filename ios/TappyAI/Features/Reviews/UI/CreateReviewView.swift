@@ -293,7 +293,7 @@ struct CreateReviewView: View {
                         Text("Chọn video")
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.textSecondary)
-                        Text("mp4 · mov · webm  ·  tối đa 15s · 50MB")
+                        Text("mp4 · mov · webm  ·  tối đa 60s · 50MB")
                             .font(TappyFont.caption)
                             .foregroundStyle(TappyColor.textSecondary.opacity(0.6))
                     }

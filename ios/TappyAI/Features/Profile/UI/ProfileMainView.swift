@@ -9,6 +9,7 @@ struct ProfileMainView: View {
     @State private var conversationCount = 0
     @State private var loading = true
     @State private var showProUpgrade = false
+    @State private var showAppConnections = false
 
     private var service: ProfileService { ProfileService(api: deps.api) }
 
@@ -138,8 +139,14 @@ struct ProfileMainView: View {
                 Divider().padding(.leading, 52)
                 menuRow(icon: "brain", label: "Tappy biết gì", desc: "Xem & quản lý bộ nhớ Tappy", dest: .tappyKnows)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "link", label: "Kết nối", desc: "Liên kết ứng dụng bên ngoài", dest: .integrations)
-                Divider().padding(.leading, 52)
+                // Kết nối (App Connections) gated by the backend flag, mirroring Web's
+                // `{SHOW_APP_CONNECTIONS && <MenuItem integrations/>}`. Currently hidden
+                // (flag false, owner decision 2026-07-17); the screen/APIs stay intact
+                // and re-appear the moment the flag flips — no app release needed.
+                if showAppConnections {
+                    menuRow(icon: "link", label: "Kết nối", desc: "Liên kết ứng dụng bên ngoài", dest: .integrations)
+                    Divider().padding(.leading, 52)
+                }
                 menuRow(icon: "star", label: "Bài đánh giá", desc: "Xem các review bạn đã viết", dest: nil, action: {
                     router.switchTo(.explore)
                 })
@@ -257,6 +264,7 @@ struct ProfileMainView: View {
             conversationCount = convs?.count ?? 0
             if let cfg = try? await deps.configService.config() {
                 showProUpgrade = cfg.flags.showProUpgrade
+                showAppConnections = cfg.flags.showAppConnections ?? false
             }
         } catch {
             profile = UserProfile(fullName: "", avatarUrl: "", email: "", bio: "")

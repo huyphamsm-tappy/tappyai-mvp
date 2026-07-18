@@ -23,12 +23,12 @@ export const SHOW_PRO_UPGRADE = false
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
 export const MAX_VIDEO_SIZE_MB = 50
-/** Advertised clip length — what the user is told. */
-export const MAX_VIDEO_DURATION_SEC = 15
-/** Tolerant reject threshold: a clip trimmed to "15s" often encodes at
- * 15.04–15.9s, so accept a little above the advertised limit. Backend-only
+/** Advertised clip length — what the user is told (UI copy shows "60 seconds"). */
+export const MAX_VIDEO_DURATION_SEC = 60
+/** Tolerant reject threshold: a clip trimmed to "60s" often encodes at
+ * 60.04–61.9s, so accept a little above the advertised limit. Backend-only
  * allowance — never surfaced in UI copy. */
-export const MAX_VIDEO_DURATION_ACCEPT_SEC = 17
+export const MAX_VIDEO_DURATION_ACCEPT_SEC = 62
 
 // ── Authentication providers (product decision — which sign-in methods exist) ─
 // Served to clients via GET /api/config. Clients render buttons from this list;
