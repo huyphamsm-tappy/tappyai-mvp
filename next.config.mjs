@@ -35,6 +35,8 @@ const nextConfig = {
     //   img/media— any https + data/blob (place photos come from many CDNs;
     //              review video/music from Blob/Supabase).
     //   connect  — Supabase (REST + realtime wss), PostHog, Nominatim geocode,
+    //              Zalo profile graph (graph.zalo.me/v2.0/me — the client-side
+    //              fetch in /auth/zalo-finish; Zalo returns profile only to VN IPs),
     //              Vercel vitals; everything else is same-origin /api.
     //   frame    — self (SuperTux iframe) + YouTube embeds. Stripe checkout is a
     //              full-page redirect, so it needs no frame/script entry.
@@ -52,7 +54,7 @@ const nextConfig = {
       "media-src 'self' data: blob: https:",
       // Blob hosts are needed for client-direct video upload (@vercel/blob/client
       // PUTs straight to the store from the browser), not just displaying media.
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com",
       "frame-src 'self' https://www.youtube.com",
       "worker-src 'self' blob:",
       "manifest-src 'self'",
