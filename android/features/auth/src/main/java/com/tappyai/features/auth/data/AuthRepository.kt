@@ -2,6 +2,7 @@ package com.tappyai.features.auth.data
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkError
 import com.tappyai.core.network.NetworkResult
@@ -170,20 +171,58 @@ class AuthRepository @Inject constructor(
 
     /**
      * Called from `MainActivity.onNewIntent`/`onCreate` (M8) when the OAuth redirect deep
-     * link arrives. `handleDeeplinks(intent)` is supabase-kt's own Android integration point —
-     * it performs the actual PKCE code exchange from the intent's data URI and updates
-     * [sessionState] internally; this just syncs the resulting session into [TokenProvider]
-     * afterward, same as every other successful sign-in path.
+     * link arrives. Two shapes reach here, matching iOS `AuthRepository.signInWithZalo`
+     * (fragment-first, PKCE-fallback):
      *
-     * **Fixed during Build Verification:** confirmed via Supabase's official native-mobile-
-     * deep-linking guide that this is called on the [SupabaseClient] itself
-     * (`supabase.handleDeeplinks(intent)`), not on the `Auth` plugin instance — my first draft
-     * had it as `supabaseClient.auth.handleDeeplinks(intent)`, which doesn't exist.
+     *  1. **Token fragment** — the backend's custom Zalo flow hands the session straight back as
+     *     `tappyai://auth-callback#access_token=…&refresh_token=…&expires_at=…` (see
+     *     `/auth/confirm`). supabase-kt's [handleDeeplinks] only consumes a PKCE `?code=`, so it
+     *     can't import this; [parseOAuthFragment] reads the tokens and [importSession] loads them
+     *     directly (same construction as the cold-start restore in [sessionState]).
+     *  2. **PKCE `?code=`** — Supabase-native OAuth (e.g. Facebook) redirects with a code in the
+     *     query; there is no token fragment, so we fall back to [handleDeeplinks], which performs
+     *     the code exchange on the [SupabaseClient] itself (not the `Auth` plugin instance).
+     *
+     * Either way [persistSession] then syncs the resulting session into [TokenProvider], same as
+     * every other successful sign-in path.
      */
     suspend fun handleOAuthRedirectIntent(intent: Intent): NetworkResult<Unit> = safeAuthCall {
-        supabaseClient.handleDeeplinks(intent)
+        val fragmentSession = parseOAuthFragment(intent)
+        if (fragmentSession != null) {
+            val expiresAt = JwtDecoder.decode(fragmentSession.accessToken)?.expiresAt ?: 0L
+            val nowSec = System.currentTimeMillis() / 1000
+            supabaseClient.auth.importSession(
+                UserSession(
+                    accessToken = fragmentSession.accessToken,
+                    refreshToken = fragmentSession.refreshToken,
+                    expiresIn = (expiresAt - nowSec).coerceAtLeast(0L),
+                    tokenType = "bearer",
+                )
+            )
+        } else {
+            supabaseClient.handleDeeplinks(intent)
+        }
         persistSession()
     }.logOnError("handleOAuthRedirectIntent")
+
+    /**
+     * Extracts session tokens from a native OAuth callback's URL **fragment**
+     * (`tappyai://auth-callback#access_token=…&refresh_token=…`). Returns null when there is no
+     * token fragment — e.g. a PKCE `?code=` redirect — so the caller falls back to
+     * [handleDeeplinks]. Mirrors iOS's fragment parse in `AuthRepository.signInWithZalo`.
+     *
+     * Reads `encodedFragment` (still percent-encoded) and re-parses it as a query string so the
+     * SDK's own URL decoder recovers the exact token values, rather than hand-splitting.
+     */
+    private fun parseOAuthFragment(intent: Intent): OAuthFragmentSession? {
+        val fragment = intent.data?.encodedFragment?.takeIf { it.isNotEmpty() } ?: return null
+        val params = Uri.parse("tappyai://oauth?$fragment")
+        val accessToken = params.getQueryParameter("access_token")?.takeIf { it.isNotEmpty() } ?: return null
+        val refreshToken = params.getQueryParameter("refresh_token")?.takeIf { it.isNotEmpty() } ?: return null
+        return OAuthFragmentSession(accessToken, refreshToken)
+    }
+
+    private data class OAuthFragmentSession(val accessToken: String, val refreshToken: String)
 
     suspend fun signOut(): NetworkResult<Unit> = safeAuthCall {
         supabaseClient.auth.signOut()
