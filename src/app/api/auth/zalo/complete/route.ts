@@ -17,14 +17,14 @@ export async function POST(req: NextRequest) {
   const at = req.cookies.get('zalo_at')?.value
   if (!at) return NextResponse.json({ error: 'no_session' }, { status: 401 })
 
-  let zaloId: string, name: string, avatar: string | null, next: string, platform: 'ios' | 'web'
+  let zaloId: string, name: string, avatar: string | null, next: string, platform: 'ios' | 'android' | 'web'
   try {
     const b = await req.json()
     zaloId = String(b.zaloId || '').trim()
     name = (String(b.name || '').trim()) || 'Người dùng Zalo'
     avatar = b.avatar ? String(b.avatar) : null
     next = typeof b.next === 'string' && b.next.startsWith('/') && !b.next.startsWith('//') ? b.next : '/'
-    platform = b.platform === 'ios' ? 'ios' : 'web' // strict allowlist
+    platform = b.platform === 'ios' ? 'ios' : b.platform === 'android' ? 'android' : 'web' // strict allowlist
     if (!zaloId) throw new Error('missing zaloId')
   } catch {
     return NextResponse.json({ error: 'bad_request' }, { status: 400 })
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     })
     if (linkErr || !linkData?.properties?.hashed_token) throw linkErr || new Error('Magic link failed')
 
-    const confirmUrl = `${origin}/auth/confirm?token_hash=${linkData.properties.hashed_token}&type=magiclink&next=${encodeURIComponent(next)}${platform === 'ios' ? '&platform=ios' : ''}`
+    const confirmUrl = `${origin}/auth/confirm?token_hash=${linkData.properties.hashed_token}&type=magiclink&next=${encodeURIComponent(next)}${platform !== 'web' ? `&platform=${platform}` : ''}`
     return clear(NextResponse.json({ confirmUrl }))
   } catch (e) {
     console.error('[auth/zalo/complete]', e)
