@@ -7,10 +7,14 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type') as 'magiclink' | 'email' | null
   const rawNext = searchParams.get('next') ?? '/'
   const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/'
-  // platform=ios: the flow runs inside the app's ASWebAuthenticationSession, so
-  // instead of a cookie session + web redirect we hand the session tokens back
-  // to the app via its custom scheme. Strict allowlist; the scheme is hardcoded.
-  const isIos = searchParams.get('platform') === 'ios'
+  // Native app flows (iOS/Android): instead of a cookie session + web redirect we
+  // hand the session tokens back to the app via its custom scheme. Strict allowlist;
+  // schemes are hardcoded. iOS registered tappyai://auth/callback; Android registered
+  // tappyai://auth-callback (see android AndroidManifest + SupabaseModule).
+  const platform =
+    searchParams.get('platform') === 'ios' ? 'ios'
+    : searchParams.get('platform') === 'android' ? 'android'
+    : 'web'
 
   if (!tokenHash || !type) {
     return NextResponse.redirect(`${origin}/login?error=missing_token`)
@@ -43,17 +47,19 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(msg)}`)
   }
 
-  // iOS: finish at the app's callback with the session tokens in the URL
-  // FRAGMENT (never sent to servers or logged — same rationale as the Zalo
-  // callback). No web cookies are set; onboarding gating is the app's own
-  // concern (it reads profiles.onboarded, docs/ios/09). Web flow is unchanged.
-  if (isIos && session) {
+  // Native app (iOS/Android): finish at the app's callback with the session tokens
+  // in the URL FRAGMENT (never sent to servers or logged — same rationale as the Zalo
+  // callback). No web cookies are set; onboarding gating is the app's own concern (it
+  // reads profiles.onboarded). Web flow is unchanged. iOS ↔ tappyai://auth/callback,
+  // Android ↔ tappyai://auth-callback (each app's own registered scheme).
+  if ((platform === 'ios' || platform === 'android') && session) {
     const fragment = new URLSearchParams({
       access_token: session.access_token,
       refresh_token: session.refresh_token,
       expires_at: String(session.expires_at ?? Math.floor(Date.now() / 1000) + 3600),
     })
-    return NextResponse.redirect(`tappyai://auth/callback#${fragment.toString()}`)
+    const scheme = platform === 'android' ? 'tappyai://auth-callback' : 'tappyai://auth/callback'
+    return NextResponse.redirect(`${scheme}#${fragment.toString()}`)
   }
 
   const { data: profile } = await supabase
