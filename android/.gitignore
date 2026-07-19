@@ -1,9 +1,11 @@
 # Gradle build outputs and caches
 .gradle/
+.kotlin/
 build/
 */build/
 
-# Local dev config (contains credentials — never commit)
+# Local dev config (contains credentials — never commit).
+# gradle.properties.template IS committed (build flags + placeholder secret keys).
 local.properties
 gradle.properties
 
