@@ -1,5 +1,6 @@
 package com.tappyai.features.auth.data
 
+import android.content.Context
 import android.content.Intent
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkError
@@ -46,6 +47,7 @@ class AuthRepository @Inject constructor(
     private val supabaseClient: SupabaseClient,
     private val tokenProvider: TokenProvider,
     private val logger: LoggerProvider,
+    private val zaloSignInClient: ZaloSignInClient,
 ) : SessionRefresher {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -142,10 +144,21 @@ class AuthRepository @Inject constructor(
         supabaseClient.auth.signInWith(Facebook)
     }.logOnError("startFacebookSignIn")
 
+    /**
+     * Zalo sign-in — thin delegate to [ZaloSignInClient], which opens the backend web OAuth flow
+     * in a Chrome Custom Tab. Kept on the repository so the LoginScreen → LoginViewModel →
+     * AuthRepository pipeline matches the other providers; no OAuth/session logic lives here (the
+     * launch is a Custom-Tab/[context] UI concern). Completion arrives later via the
+     * `tappyai://auth-callback` deep link → [handleOAuthRedirectIntent], like every other OAuth.
+     */
+    fun startZaloSignIn(context: Context) = zaloSignInClient.launch(context)
+
     suspend fun sendEmailOtp(email: String): NetworkResult<Unit> = safeAuthCall {
-        // redirectUrl at the signInWith level makes Supabase embed tappyai://auth-callback as
-        // the redirect target in the magic-link email, so tapping "Sign in" opens the app.
-        supabaseClient.auth.signInWith(OTP, redirectUrl = "tappyai://auth-callback") {
+        // No redirectUrl: passing one makes Supabase send a magic-LINK email (no code), but this
+        // flow navigates to the OTP code-entry screen and calls verifyEmailOtp(token = code).
+        // Omitting it makes Supabase send the 6-digit OTP code instead — matching the web's
+        // signInWithOtp({ email }) (no emailRedirectTo) + verifyOtp({ token, type: 'email' }).
+        supabaseClient.auth.signInWith(OTP) {
             this.email = email
         }
     }.logOnError("sendEmailOtp")

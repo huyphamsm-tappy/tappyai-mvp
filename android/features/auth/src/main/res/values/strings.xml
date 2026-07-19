@@ -2,6 +2,8 @@
     <string name="auth_brand_name">TappyAI</string>
     <string name="auth_subtitle">Sign in to continue</string>
     <string name="auth_continue_with_google">Continue with Google</string>
+    <string name="auth_continue_with_zalo">Continue with Zalo</string>
+    <!-- Facebook retained for future use; hidden from the V1 login UI (Google + Zalo + Email only). -->
     <string name="auth_continue_with_facebook">Continue with Facebook</string>
     <string name="auth_or_divider">or</string>
     <string name="auth_email_label">Email</string>

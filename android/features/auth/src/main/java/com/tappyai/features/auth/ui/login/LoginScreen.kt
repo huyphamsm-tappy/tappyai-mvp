@@ -69,9 +69,11 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                     onClick = { viewModel.onGoogleSignInClick(context) },
                     enabled = !isLoading,
                 )
+                // V1 login methods: Google + Zalo + Email. Facebook is intentionally hidden from
+                // the UI (its ViewModel/AuthRepository implementation is retained for future use).
                 TappyButton(
-                    text = stringResource(R.string.auth_continue_with_facebook),
-                    onClick = viewModel::onFacebookSignInClick,
+                    text = stringResource(R.string.auth_continue_with_zalo),
+                    onClick = { viewModel.onZaloSignInClick(context) },
                     variant = TappyButtonVariant.Secondary,
                     enabled = !isLoading,
                 )
