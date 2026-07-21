@@ -45,4 +45,8 @@
     <string name="music_open_details_content_description">Open %1$s details</string>
     <string name="music_stop_preview_content_description">Stop preview of %1$s</string>
     <string name="music_play_preview_content_description">Play preview of %1$s</string>
+    <string name="music_picker_title">Choose background music</string>
+    <string name="music_picker_start">Start at</string>
+    <string name="music_picker_volume">Volume</string>
+    <string name="music_picker_select">Use this track</string>
 </resources>

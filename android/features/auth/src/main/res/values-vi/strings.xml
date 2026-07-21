@@ -2,6 +2,7 @@
     <string name="auth_brand_name">TappyAI</string>
     <string name="auth_subtitle">Đăng nhập để tiếp tục</string>
     <string name="auth_continue_with_google">Tiếp tục với Google</string>
+    <string name="auth_continue_with_zalo">Tiếp tục với Zalo</string>
     <string name="auth_continue_with_facebook">Tiếp tục với Facebook</string>
     <string name="auth_or_divider">hoặc</string>
     <string name="auth_email_label">Email</string>

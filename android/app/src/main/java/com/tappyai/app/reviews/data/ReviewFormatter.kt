@@ -20,6 +20,22 @@ fun formatRelativeTime(createdAt: String, nowMillis: Long): String {
     }
 }
 
+/** The Inbox time buckets — web parity `notifSection()`: <1h JUST NOW, <24h TODAY, else THIS WEEK. */
+enum class NotificationSection { JustNow, Today, ThisWeek }
+
+/** Buckets a notification by age, mirroring the web Inbox's section headers. A blank/malformed
+ *  timestamp degrades to [NotificationSection.JustNow], consistent with [formatRelativeTime]. */
+fun notificationSection(createdAt: String, nowMillis: Long): NotificationSection {
+    val createdAtMillis = parseIsoMillis(createdAt)
+    if (createdAtMillis == 0L) return NotificationSection.JustNow
+    val minutes = (nowMillis - createdAtMillis) / 60_000
+    return when {
+        minutes < 60 -> NotificationSection.JustNow
+        minutes < 1440 -> NotificationSection.Today
+        else -> NotificationSection.ThisWeek
+    }
+}
+
 fun groupNotifications(
     notifications: List<ReviewNotification>,
 ): List<ReviewGroupedNotification> {

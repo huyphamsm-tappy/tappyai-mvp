@@ -39,6 +39,20 @@ data class FavoriteDto(
 data class OkResponseDto(val ok: Boolean = false)
 
 /**
+ * POST /api/favorites body. camelCase keys to match the web contract (`{placeId, placeName,
+ * placeAddress, placeType}`). No default values on purpose — the shared prod Json has
+ * `encodeDefaults=false`, which would drop any field left at its default, so every field is a
+ * required constructor param and always serialized.
+ */
+@Serializable
+data class AddFavoriteRequestDto(
+    val placeId: String,
+    val placeName: String,
+    val placeAddress: String,
+    val placeType: String,
+)
+
+/**
  * Maps one favorite to the domain model. [key] is a caller-supplied stable index used only as the
  * `MapPlace.id` (the LazyColumn key) — the list index is unique within a loaded list, which is all
  * the UI key requires. [FavoriteDto.placeId] (the real server-side uuid) is carried through

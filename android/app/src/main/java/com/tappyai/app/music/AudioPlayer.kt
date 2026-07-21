@@ -35,6 +35,19 @@ interface AudioPlayer {
      *  url (a track missing both `previewUrl`/`audioUrl`) is a no-op — never crashes on a bad URI. */
     fun toggle(trackId: String, url: String?)
 
+    /**
+     * Like [toggle], but honors the review's saved trim — starts at [startSec] and plays at
+     * [volume] (0–1). Web parity: `musicPlaybackController.play()`, which is the only web player
+     * that applies `startSec`/`volume` (the library/sound previews ignore them).
+     */
+    fun toggleFrom(trackId: String, url: String?, startSec: Int, volume: Float)
+
+    /** Current playback position, ms (0 when nothing is loaded) — drives a progress bar. */
+    fun positionMs(): Long
+
+    /** Duration of the loaded track, ms (0 when unknown/unset). */
+    fun durationMs(): Long
+
     /** Stop and unload whatever is playing. */
     fun stop()
 }
@@ -74,13 +87,34 @@ private class ExoAudioPlayer(context: Context) : AudioPlayer {
         }
         if (url == null) return
         playingTrackId = trackId
+        player.volume = 1f // reset any trim volume a previous toggleFrom() applied
         player.setMediaItem(MediaItem.fromUri(url))
         player.prepare()
         player.play()
     }
 
+    override fun toggleFrom(trackId: String, url: String?, startSec: Int, volume: Float) {
+        if (playingTrackId == trackId) {
+            if (player.isPlaying) player.pause() else player.play()
+            return
+        }
+        if (url == null) return
+        playingTrackId = trackId
+        player.volume = volume.coerceIn(0f, 1f)
+        player.setMediaItem(MediaItem.fromUri(url))
+        player.prepare()
+        player.seekTo(startSec.coerceAtLeast(0) * 1000L)
+        player.play()
+    }
+
+    override fun positionMs(): Long = player.currentPosition.coerceAtLeast(0L)
+
+    // ExoPlayer reports C.TIME_UNSET (a large negative) until the media is prepared.
+    override fun durationMs(): Long = player.duration.takeIf { it > 0L } ?: 0L
+
     override fun stop() {
         player.stop()
+        player.volume = 1f
         playingTrackId = null
     }
 

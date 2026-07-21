@@ -29,6 +29,7 @@ data class ReviewProfileUiState(
     val reviews: List<Review> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
+    val isTogglingFollow: Boolean = false,
 )
 
 @HiltViewModel
@@ -87,6 +88,48 @@ class ReviewProfileViewModel @Inject constructor(
                     isLoading = false,
                     error = null,
                 )
+            }
+        }
+    }
+
+    /**
+     * Toggles follow on the loaded profile. Optimistically flips [ReviewProfile.isFollowing] and
+     * nudges [ReviewProfile.followerCount] by ±1 so the button reacts instantly, then reconciles
+     * with the server's authoritative following state (reverting both on failure). No-op on the
+     * caller's own profile ([ReviewProfile.isSelf], which the backend 400s) or while a toggle is
+     * already in flight.
+     */
+    fun toggleFollow() {
+        val userId = loadedUserId ?: return
+        val profile = _uiState.value.profile ?: return
+        if (profile.isSelf || _uiState.value.isTogglingFollow) return
+        val target = !profile.isFollowing
+        _uiState.update {
+            it.copy(
+                isTogglingFollow = true,
+                profile = profile.copy(
+                    isFollowing = target,
+                    followerCount = (profile.followerCount + if (target) 1 else -1).coerceAtLeast(0),
+                ),
+            )
+        }
+        viewModelScope.launch {
+            when (val result = repository.toggleFollow(userId)) {
+                is NetworkResult.Success -> _uiState.update { s ->
+                    s.copy(isTogglingFollow = false, profile = s.profile?.copy(isFollowing = result.data))
+                }
+                is NetworkResult.Error -> {
+                    logger.e(TAG, "Toggle follow failed: ${result.error}")
+                    _uiState.update { s ->
+                        s.copy(
+                            isTogglingFollow = false,
+                            profile = s.profile?.copy(
+                                isFollowing = profile.isFollowing,
+                                followerCount = profile.followerCount,
+                            ),
+                        )
+                    }
+                }
             }
         }
     }

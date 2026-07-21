@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.google.id)
 
+    // Chrome Custom Tabs — Zalo Login (Task 2) opens the web OAuth flow in a Custom Tab.
+    implementation(libs.androidx.browser)
+
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.core)
 

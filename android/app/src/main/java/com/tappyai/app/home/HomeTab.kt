@@ -5,7 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -30,7 +30,7 @@ sealed interface HomeRoute {
         val prefill: String? = null,
     ) : HomeRoute
     @Serializable data object Explore : HomeRoute
-    @Serializable data object Maps : HomeRoute
+    @Serializable data object Deals : HomeRoute
     @Serializable data object Profile : HomeRoute
 }
 
@@ -63,7 +63,7 @@ enum class HomeTab(
     Home(HomeRoute.Home, R.string.home_tab_home, Icons.Filled.Home),
     Chat(HomeRoute.Chat(), R.string.home_tab_chat, Icons.AutoMirrored.Filled.Chat),
     Explore(HomeRoute.Explore, R.string.home_tab_explore, Icons.Filled.Explore),
-    Maps(HomeRoute.Maps, R.string.home_tab_maps, Icons.Filled.Map),
+    Deals(HomeRoute.Deals, R.string.home_tab_deals, Icons.Filled.LocalOffer),
     Profile(HomeRoute.Profile, R.string.home_tab_profile, Icons.Filled.Person),
 }
 

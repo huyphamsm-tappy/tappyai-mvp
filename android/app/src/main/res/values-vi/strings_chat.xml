@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="chat_category_general">TappyAI</string>
     <string name="chat_category_food">Ăn Uống</string>
     <string name="chat_category_shopping">Mua Sắm</string>
@@ -7,6 +7,9 @@
     <string name="chat_category_spa">Spa</string>
 
     <string name="chat_welcome_subtitle">Tappy có thể giúp gì cho bạn?</string>
+    <string name="chat_think_hint_1">Tappy đang suy nghĩ…</string>
+    <string name="chat_think_hint_2">Đang tìm thông tin…</string>
+    <string name="chat_think_hint_3">Đang tổng hợp câu trả lời…</string>
     <string name="chat_mood_prompt_header">Hôm nay bạn thế nào?</string>
 
     <string name="chat_mood_happy_label">Vui</string>
@@ -48,6 +51,17 @@
 
     <string name="chat_action_attach_image">Đính kèm ảnh</string>
     <string name="chat_action_voice_input">Nhập bằng giọng nói</string>
+    <string name="chat_action_emoji">Chọn emoji</string>
+    <string name="chat_emoji_panel_title">Chọn biểu cảm</string>
+    <string name="chat_chip_nearby">📍 Tìm quanh đây</string>
+    <string name="chat_chip_tonight">🌙 Tappy Tối Nay</string>
+    <string name="chat_chip_trip">✈️ Lên kế hoạch trip</string>
+    <string name="chat_chip_price_watch">🎯 Theo dõi giá</string>
+    <string name="chat_chip_nearby_prompt">Gợi ý quán ăn và địa điểm vui chơi gần mình nhé</string>
+    <string name="chat_chip_tonight_prompt">Tối nay mình muốn spa thư giãn rồi ăn tối ngon, 2 người, budget khoảng 800k, gợi ý lịch trình giúp mình nhé</string>
+    <string name="chat_chip_trip_prefill">"Lịch trình "</string>
+    <string name="chat_chip_price_watch_prefill">"Tappy theo dõi "</string>
+    <string name="chat_action_voice_stop">Dừng ghi âm</string>
     <string name="chat_clear_pending_image">Xóa ảnh</string>
     <string name="chat_voice_recognition_failed">Nhập bằng giọng nói hiện không khả dụng.</string>
     <string name="chat_composer_placeholder">Nhắn tin cho Tappy…</string>
@@ -94,4 +108,15 @@
     <string name="chat_more_reported">Đã báo cáo</string>
 
     <string name="chat_toast_signin_failed">Liên kết đăng nhập không hoạt động. Vui lòng thử đăng nhập lại.</string>
+
+    <!-- AI response cards (web parity: TripPlanCard + CTA) -->
+    <string name="chat_plan_share_text">%1$s — kế hoạch từ TappyAI 🎉 #TappyAI</string>
+    <string name="chat_plan_share_short">Chia sẻ</string>
+    <string name="chat_plan_share_cta">📤 Chia sẻ lịch trình</string>
+    <string name="chat_plan_cost_title">💰 Chi phí ước tính</string>
+    <string name="chat_plan_cost_total">Tổng ước tính</string>
+    <string name="chat_plan_map">Bản đồ</string>
+    <string name="chat_plan_book">Đặt ngay</string>
+    <string name="chat_save_place">Lưu địa điểm</string>
+    <string name="chat_save_place_saved">Đã lưu</string>
 </resources>

@@ -8,6 +8,13 @@
     <!-- Comments -->
     <string name="reviews_comments_header_title">Comments</string>
     <string name="reviews_comment_default_user">User</string>
+    <string name="reviews_comment_input_hint">Add a comment…</string>
+    <string name="reviews_comment_send">Send comment</string>
+    <string name="reviews_comment_delete">Delete comment</string>
+    <string name="reviews_comment_reply">Reply</string>
+    <string name="reviews_comment_react">React</string>
+    <string name="reviews_comment_replying_to">Replying to %1$s</string>
+    <string name="reviews_comment_cancel_reply">Cancel</string>
 
     <!-- Composer -->
     <string name="reviews_composer_post_button">Post</string>
@@ -24,6 +31,19 @@
     <string name="reviews_composer_posted_toast">Posted</string>
     <string name="reviews_composer_using_sound">Using: %1$s</string>
     <string name="reviews_composer_remove_sound">Remove sound</string>
+    <string name="reviews_composer_add_music">Add music</string>
+    <string name="reviews_notification_banner_title">Tappy\'s picks for today</string>
+    <string name="reviews_notification_banner_subtext">3 spots your friends love are open near you</string>
+    <string name="reviews_notification_section_just_now">JUST NOW</string>
+    <string name="reviews_notification_section_today">TODAY</string>
+    <string name="reviews_notification_section_this_week">THIS WEEK</string>
+    <string name="reviews_composer_remove_photo">Remove photo</string>
+    <string name="reviews_composer_photo_max">You can add up to %1$d photos</string>
+    <string name="reviews_composer_photo_read_failed">Couldn\'t read that photo. Please try another.</string>
+    <string name="reviews_composer_photo_too_large">Each photo must be under 5MB.</string>
+    <string name="reviews_composer_photo_invalid_type">Only JPG, PNG, WebP or GIF images are allowed.</string>
+    <string name="reviews_composer_link_loading">Fetching preview…</string>
+    <string name="reviews_composer_link_attached">Link attached (%1$s)</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">
@@ -54,9 +74,21 @@
     <string name="reviews_profile_empty_message">This user\'s posts will appear here.</string>
     <string name="reviews_profile_fallback_title">Profile</string>
     <string name="reviews_profile_error_title">Couldn\'t load profile</string>
+    <string name="reviews_profile_follow">Follow</string>
+    <string name="reviews_profile_following">Following</string>
+    <string name="reviews_profile_stat_following">Following</string>
+    <string name="reviews_profile_stat_followers">Followers</string>
+    <string name="reviews_profile_edit">Edit profile</string>
 
     <!-- Search -->
     <string name="reviews_search_placeholder">Search posts, places...</string>
+    <string name="reviews_search_mode_reviews">Reviews</string>
+    <string name="reviews_search_mode_users">Users</string>
+    <string name="reviews_follow">Follow</string>
+    <string name="reviews_following">Following</string>
+    <string name="reviews_user_followers">%1$d followers</string>
+    <string name="reviews_search_users_empty_title">No users found</string>
+    <string name="reviews_search_users_empty_message">Try a different name</string>
     <string name="reviews_search_clear_content_description">Clear</string>
     <string name="reviews_search_empty_title">No results found</string>
     <string name="reviews_search_empty_message">Try a different search term.</string>
@@ -74,6 +106,13 @@
     <string name="reviews_feed_error_title">Couldn\'t load posts</string>
     <string name="reviews_feed_empty_title">No posts yet</string>
     <string name="reviews_feed_empty_message">Check back later.</string>
+    <string name="reviews_tab_compose">Post</string>
+    <string name="reviews_tab_following">Following</string>
+    <string name="reviews_tab_for_you">For You</string>
+    <string name="reviews_tab_latest">Latest</string>
+    <string name="reviews_feed_empty_following">You\'re not following anyone, or they haven\'t posted yet</string>
+    <string name="reviews_feed_see_for_you">See For You</string>
+    <string name="reviews_feed_post_now">Post now</string>
 
     <!-- Detail -->
     <string name="reviews_detail_title">Details</string>

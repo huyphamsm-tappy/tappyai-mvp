@@ -3,6 +3,7 @@ package com.tappyai.app.reviews.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -25,6 +27,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
+import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.theme.TappySpacing
 
 private val ComposerBackground = Color(0xFF000000)
@@ -63,6 +67,10 @@ private val MediaPlaceholderBorder = Color(0x4DFFFFFF)
 private val MediaPlaceholderIcon = Color(0x66FFFFFF)
 private val ActionRowIcon = Color(0xFFFE2C55)
 private val CharCountColor = Color(0x66FFFFFF)
+private val PhotoRemoveScrim = Color(0x99000000)
+
+/** Max photos per review — mirrors the backend cap (photos.slice(0,6)) and MAX_PHOTOS_PER_REVIEW. */
+private const val MAX_PHOTOS_COMPOSER = 6
 
 enum class ComposerMediaMode { Photo, Video, Link }
 
@@ -85,13 +93,26 @@ fun ReviewComposerScreen(
     modifier: Modifier = Modifier,
     attachedSoundTitle: String? = null,
     onRemoveSound: () -> Unit = {},
+    onAddMusic: () -> Unit = {},
+    photoUrls: List<String> = emptyList(),
+    isUploadingPhoto: Boolean = false,
+    onPickPhotos: () -> Unit = {},
+    onRemovePhoto: (String) -> Unit = {},
+    linkUrl: String = "",
+    onLinkUrlChange: (String) -> Unit = {},
+    linkSourceType: String? = null,
+    linkThumbnailUrl: String? = null,
+    isFetchingLinkMeta: Boolean = false,
 ) {
+    // A valid pasted link is postable on its own (no body needed), matching the web + backend
+    // rule that a review needs body OR media.
+    val hasValidLink = linkSourceType != null && linkUrl.isNotBlank()
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(ComposerBackground),
     ) {
-        ComposerHeader(onBack = onBack, onPost = onPost, canPost = body.isNotBlank())
+        ComposerHeader(onBack = onBack, onPost = onPost, canPost = body.isNotBlank() || hasValidLink)
         HorizontalDivider(color = ComposerDivider, thickness = 0.5.dp)
 
         Column(
@@ -105,11 +126,29 @@ fun ReviewComposerScreen(
 
             if (attachedSoundTitle != null) {
                 AttachedSoundChip(title = attachedSoundTitle, onRemove = onRemoveSound)
+            } else {
+                AddMusicButton(onClick = onAddMusic)
             }
 
             MediaModeTabs(selected = mediaMode, onSelect = onMediaModeChange)
 
-            MediaPlaceholder(mediaMode = mediaMode)
+            when (mediaMode) {
+                // Photo and Link are the wired media lanes; Video remains a placeholder.
+                ComposerMediaMode.Photo -> ComposerPhotoSection(
+                    photoUrls = photoUrls,
+                    isUploading = isUploadingPhoto,
+                    onPickPhotos = onPickPhotos,
+                    onRemovePhoto = onRemovePhoto,
+                )
+                ComposerMediaMode.Link -> ComposerLinkSection(
+                    url = linkUrl,
+                    onUrlChange = onLinkUrlChange,
+                    sourceType = linkSourceType,
+                    thumbnailUrl = linkThumbnailUrl,
+                    isFetching = isFetchingLinkMeta,
+                )
+                else -> MediaPlaceholder(mediaMode = mediaMode)
+            }
 
             ComposerBody(body = body, onBodyChange = onBodyChange)
 
@@ -299,6 +338,33 @@ private fun AttachedSoundChip(title: String, onRemove: () -> Unit) {
     }
 }
 
+/** Web parity: the composer's "Add music" text button (Music icon + accent label) shown when no
+ *  track is attached — opens the in-composer [com.tappyai.app.music.MusicPickerSheet]. */
+@Composable
+private fun AddMusicButton(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick)
+            .padding(vertical = TappySpacing.xs, horizontal = TappySpacing.xs),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+    ) {
+        Icon(
+            imageVector = Icons.Filled.MusicNote,
+            contentDescription = null,
+            tint = ComposerAccent,
+            modifier = Modifier.size(16.dp),
+        )
+        Text(
+            text = stringResource(R.string.reviews_composer_add_music),
+            color = ComposerAccent,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+        )
+    }
+}
+
 @Composable
 private fun MediaPlaceholder(mediaMode: ComposerMediaMode) {
     val (icon, label) = when (mediaMode) {
@@ -332,6 +398,157 @@ private fun MediaPlaceholder(mediaMode: ComposerMediaMode) {
                 text = label,
                 color = ComposerTextSecondary,
                 fontSize = 14.sp,
+            )
+        }
+    }
+}
+
+/**
+ * Photo lane of the composer: a horizontally-scrolling strip of already-uploaded thumbnails (each
+ * with a remove affordance) followed by an "add photo" tile that opens the system photo picker via
+ * [onPickPhotos]. The tile shows a spinner while [isUploading] and disappears once [MAX_PHOTOS_COMPOSER]
+ * photos are attached. Uploading happens in the ViewModel; this composable only renders state.
+ */
+@Composable
+private fun ComposerPhotoSection(
+    photoUrls: List<String>,
+    isUploading: Boolean,
+    onPickPhotos: () -> Unit,
+    onRemovePhoto: (String) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+    ) {
+        photoUrls.forEach { url ->
+            Box(
+                modifier = Modifier
+                    .size(110.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(ComposerSurface),
+            ) {
+                TappyImage(
+                    url = url,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                )
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(TappySpacing.xs)
+                        .size(24.dp)
+                        .clip(CircleShape)
+                        .background(PhotoRemoveScrim)
+                        .clickable { onRemovePhoto(url) },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = stringResource(R.string.reviews_composer_remove_photo),
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp),
+                    )
+                }
+            }
+        }
+        if (photoUrls.size < MAX_PHOTOS_COMPOSER) {
+            Box(
+                modifier = Modifier
+                    .size(110.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .border(1.5.dp, MediaPlaceholderBorder, RoundedCornerShape(12.dp))
+                    .clickable(enabled = !isUploading, onClick = onPickPhotos),
+                contentAlignment = Alignment.Center,
+            ) {
+                if (isUploading) {
+                    CircularProgressIndicator(
+                        color = ComposerAccent,
+                        modifier = Modifier.size(24.dp),
+                    )
+                } else {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.CameraAlt,
+                            contentDescription = null,
+                            tint = MediaPlaceholderIcon,
+                            modifier = Modifier.size(28.dp),
+                        )
+                        Text(
+                            text = stringResource(R.string.reviews_composer_placeholder_photo),
+                            color = ComposerTextSecondary,
+                            fontSize = 12.sp,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Link lane of the composer: a URL field plus a live preview. As the user types, the ViewModel
+ * detects the provider and resolves a poster frame — this composable renders one of three states:
+ * a spinner while a TikTok/Facebook thumbnail loads, the thumbnail once available, or a plain
+ * "attached" confirmation when the provider is recognized but exposes no poster frame.
+ */
+@Composable
+private fun ComposerLinkSection(
+    url: String,
+    onUrlChange: (String) -> Unit,
+    sourceType: String?,
+    thumbnailUrl: String?,
+    isFetching: Boolean,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+        TextField(
+            value = url,
+            onValueChange = onUrlChange,
+            placeholder = {
+                Text(
+                    stringResource(R.string.reviews_composer_placeholder_link),
+                    color = ComposerTextPlaceholder,
+                    fontSize = 14.sp,
+                )
+            },
+            singleLine = true,
+            colors = composerTextFieldColors(),
+            modifier = Modifier.fillMaxWidth(),
+        )
+        when {
+            isFetching -> Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+            ) {
+                CircularProgressIndicator(color = ComposerAccent, modifier = Modifier.size(18.dp))
+                Text(
+                    text = stringResource(R.string.reviews_composer_link_loading),
+                    color = ComposerTextSecondary,
+                    fontSize = 13.sp,
+                )
+            }
+            thumbnailUrl != null -> Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(ComposerSurface),
+            ) {
+                TappyImage(
+                    url = thumbnailUrl,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+            sourceType != null -> Text(
+                // Recognized provider but no poster frame (e.g. a login-gated Facebook page).
+                text = stringResource(R.string.reviews_composer_link_attached, sourceType),
+                color = ComposerTextSecondary,
+                fontSize = 13.sp,
             )
         }
     }

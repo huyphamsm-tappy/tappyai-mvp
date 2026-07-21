@@ -45,4 +45,8 @@
     <string name="music_open_details_content_description">Mở chi tiết %1$s</string>
     <string name="music_stop_preview_content_description">Dừng nghe thử %1$s</string>
     <string name="music_play_preview_content_description">Nghe thử %1$s</string>
+    <string name="music_picker_title">Chọn nhạc nền</string>
+    <string name="music_picker_start">Bắt đầu từ</string>
+    <string name="music_picker_volume">Âm lượng</string>
+    <string name="music_picker_select">Chọn nhạc này</string>
 </resources>

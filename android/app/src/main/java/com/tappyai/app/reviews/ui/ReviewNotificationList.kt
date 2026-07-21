@@ -36,11 +36,17 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.ui.graphics.Brush
 import com.tappyai.app.R
+import com.tappyai.app.reviews.data.NotificationSection
 import com.tappyai.app.reviews.data.ReviewGroupedNotification
 import com.tappyai.app.reviews.data.SEED_NOTIFICATIONS
 import com.tappyai.app.reviews.data.formatRelativeTime
 import com.tappyai.app.reviews.data.groupNotifications
+import com.tappyai.app.reviews.data.notificationSection
 import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyEmptyState
@@ -122,14 +128,97 @@ internal fun LazyListScope.reviewNotificationItems(
             )
         }
     } else {
-        items(items = notifications, key = { it.id }) { notification ->
-            ReviewNotificationItem(
-                notification = notification,
-                nowMillis = nowMillis,
-                onClick = { onNotificationClick(notification) },
+        // Web parity: the Inbox groups rows under JUST NOW / TODAY / THIS WEEK headers. The list is
+        // already sorted newest-first, so emitting the buckets in order preserves that ordering.
+        val bySection = notifications.groupBy { notificationSection(it.createdAt, nowMillis) }
+        NotificationSection.values().forEach { section ->
+            val rows = bySection[section].orEmpty()
+            if (rows.isNotEmpty()) {
+                item(key = "notif-section-${section.name}") {
+                    NotificationSectionHeader(section = section)
+                }
+                items(items = rows, key = { it.id }) { notification ->
+                    ReviewNotificationItem(
+                        notification = notification,
+                        nowMillis = nowMillis,
+                        onClick = { onNotificationClick(notification) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * The Inbox "AI digest" banner — web parity (`reviews/page.tsx` InboxTab): a rounded gradient card
+ * above the notification list that hands off to the Following feed. Web personalizes the subtext
+ * from the user's taste prefs; those aren't plumbed into this screen, so it uses the web's own
+ * DEFAULT copy (`reviews.bannerDefault`) rather than inventing a variant.
+ */
+@Composable
+internal fun InboxDigestBanner(onClick: () -> Unit) {
+    val accent = Color(0xFFFF6B35)
+    Box(modifier = Modifier.padding(horizontal = TappySpacing.xl, vertical = TappySpacing.md)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp)) // rounded-2xl
+                .background(
+                    Brush.linearGradient(listOf(Color(0xFF1C0D00), Color(0xFF2A1500))),
+                )
+                .border(1.dp, accent.copy(alpha = 0.28f), RoundedCornerShape(16.dp))
+                .clickable(onClick = onClick)
+                .padding(14.dp), // p-3.5
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg), // gap-3
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(36.dp) // w-9 h-9
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(accent.copy(alpha = 0.15f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(text = "✨", fontSize = 18.sp)
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.reviews_notification_banner_title),
+                    color = accent,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                Text(
+                    text = stringResource(R.string.reviews_notification_banner_subtext),
+                    color = NotifTextPrimary,
+                    fontSize = 14.sp,
+                )
+            }
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = Color(0xFF6B7280),
+                modifier = Modifier.size(16.dp),
             )
         }
     }
+}
+
+@Composable
+private fun NotificationSectionHeader(section: NotificationSection) {
+    Text(
+        text = stringResource(
+            when (section) {
+                NotificationSection.JustNow -> R.string.reviews_notification_section_just_now
+                NotificationSection.Today -> R.string.reviews_notification_section_today
+                NotificationSection.ThisWeek -> R.string.reviews_notification_section_this_week
+            },
+        ),
+        color = NotifTextSecondary,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.SemiBold,
+        modifier = Modifier.padding(horizontal = TappySpacing.xl, vertical = TappySpacing.md),
+    )
 }
 
 @Composable

@@ -17,11 +17,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -72,15 +77,17 @@ private val TIME_SLOTS = listOf(
     "18:00", "19:00", "20:00", "21:00",
 )
 
-private data class CategoryMeta(val emoji: String, val labelRes: Int)
+/** [bg]/[fg] mirror the web CATEGORY_META tailwind pair (e.g. food = bg-orange-50 text-orange-600). */
+private data class CategoryMeta(val emoji: String, val labelRes: Int, val bg: Color, val fg: Color)
 
 private fun categoryMeta(type: String): CategoryMeta = when (type) {
-    "spa" -> CategoryMeta("💆", R.string.service_category_spa)
-    "hotel" -> CategoryMeta("🏨", R.string.service_category_hotel)
-    "travel" -> CategoryMeta("✈️", R.string.service_category_travel)
-    "shopping" -> CategoryMeta("🛍️", R.string.service_category_shopping)
-    "entertainment" -> CategoryMeta("🎉", R.string.service_category_entertainment)
-    else -> CategoryMeta("🍜", R.string.service_category_food) // web falls back to food
+    "spa" -> CategoryMeta("💆", R.string.service_category_spa, Color(0xFFFDF2F8), Color(0xFFDB2777))
+    "hotel" -> CategoryMeta("🏨", R.string.service_category_hotel, Color(0xFFEFF6FF), Color(0xFF2563EB))
+    "travel" -> CategoryMeta("✈️", R.string.service_category_travel, Color(0xFFF0F9FF), Color(0xFF0284C7))
+    "shopping" -> CategoryMeta("🛍️", R.string.service_category_shopping, Color(0xFFFAF5FF), Color(0xFF9333EA))
+    "entertainment" -> CategoryMeta("🎉", R.string.service_category_entertainment, Color(0xFFFEFCE8), Color(0xFFCA8A04))
+    // web falls back to food
+    else -> CategoryMeta("🍜", R.string.service_category_food, Color(0xFFFFF7ED), Color(0xFFEA580C))
 }
 
 /**
@@ -127,18 +134,37 @@ fun ServiceDetailScreen(
                 )
             }
 
-            // Hero banner
+            // Hero banner — web parity: h-52 (208px), `from-primary-400 to-accent-500` (to bottom-
+            // right), two translucent circle blobs, category emoji text-7xl.
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
+                    .height(208.dp)
                     .background(
                         Brush.linearGradient(
-                            listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.tertiary),
+                            colors = listOf(Color(0xFF3391FF), Color(0xFFFF9500)),
+                            start = Offset.Zero,
+                            end = Offset.Infinite,
                         ),
                     ),
                 contentAlignment = Alignment.Center,
             ) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .offset(x = 40.dp, y = (-40).dp)
+                        .size(160.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = 0.12f)),
+                )
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .offset(x = (-30).dp, y = 50.dp)
+                        .size(140.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = 0.08f)),
+                )
                 Text(text = meta.emoji, fontSize = 72.sp)
             }
 
@@ -204,13 +230,14 @@ private fun ServiceHeader(info: ServiceInfo, meta: CategoryMeta, reviewsState: U
         Box(
             modifier = Modifier
                 .clip(TappyShapes.pill)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                // Web parity: a per-category colored chip (CATEGORY_META's bg-*-50 / text-*-600).
+                .background(meta.bg)
                 .padding(horizontal = TappySpacing.md, vertical = TappySpacing.xs),
         ) {
             Text(
                 text = meta.emoji + " " + stringResource(meta.labelRes),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = meta.fg,
             )
         }
     }
@@ -218,17 +245,28 @@ private fun ServiceHeader(info: ServiceInfo, meta: CategoryMeta, reviewsState: U
 
 @Composable
 private fun AddressCard(address: String, onOpen: () -> Unit) {
+    // Web parity: an info-card row with a colored 36px rounded icon square (address = bg-blue-50,
+    // MapPin text-blue-600), label text-xs, value text-sm, trailing chevron.
     TappyCard(modifier = Modifier.fillMaxWidth().clip(TappyShapes.card).clickable(onClick = onOpen)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md), // gap-3 = 12px
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                imageVector = Icons.Filled.LocationOn,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-            )
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color(0xFFEFF6FF)), // blue-50
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.LocationOn,
+                    contentDescription = null,
+                    tint = Color(0xFF2563EB), // blue-600
+                    modifier = Modifier.size(18.dp),
+                )
+            }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(R.string.service_address_label),
@@ -242,6 +280,11 @@ private fun AddressCard(address: String, onOpen: () -> Unit) {
                     overflow = TextOverflow.Ellipsis,
                 )
             }
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            )
         }
     }
 }

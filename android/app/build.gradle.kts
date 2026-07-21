@@ -64,7 +64,14 @@ android {
             versionNameSuffix = "-debug"
             isMinifyEnabled = false
             isDebuggable = true
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3000/\"")
+            // Emulator's host-loopback by default (local dev server on :3000). A physical-device QA
+            // build overrides this with the real backend via -PTAPPYAI_API_BASE_URL_DEBUG=<url>,
+            // the same findProperty override pattern staging/release use — no new config system.
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"${project.findProperty("TAPPYAI_API_BASE_URL_DEBUG") ?: "http://10.0.2.2:3000/"}\""
+            )
         }
         create("staging") {
             initWith(getByName("debug"))

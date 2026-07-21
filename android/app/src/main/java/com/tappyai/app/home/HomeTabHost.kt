@@ -15,6 +15,7 @@ import com.tappyai.app.fortune.tuvi.TuViScreen
 import com.tappyai.app.fortune.zodiac.ZodiacScreen
 import com.tappyai.app.games.GamesRoute
 import com.tappyai.app.games.GamesScreen
+import com.tappyai.app.groupdining.GroupDiningScreen
 import com.tappyai.app.music.MusicLibraryScreen
 import com.tappyai.app.music.MusicRoute
 import com.tappyai.app.profile.CopyrightPolicyScreen
@@ -23,6 +24,8 @@ import com.tappyai.app.recommendations.RecommendationsRoute
 import com.tappyai.app.recommendations.RecommendationsScreen
 import com.tappyai.app.scan.ScanRoute
 import com.tappyai.app.scan.ScanScreen
+import com.tappyai.app.splitbill.SplitBillRoute
+import com.tappyai.app.splitbill.SplitBillScreen
 import com.tappyai.app.translate.TranslateRoute
 import com.tappyai.app.translate.TranslateScreen
 import com.tappyai.app.vietwriter.VietWriterRoute
@@ -40,12 +43,17 @@ import com.tappyai.app.vietwriter.VietWriterScreen
 fun HomeTabHost(
     onNavigateToTab: (HomeTab) -> Unit,
     onOpenChatWithPrefill: (String) -> Unit,
+    onOpenChatWithCategory: (String) -> Unit,
+    onOpenConversation: (String) -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = HomeTabRoute.Landing) {
         composable<HomeTabRoute.Landing> {
             HomeScreen(
                 onNavigateToTab = onNavigateToTab,
+                onOpenChatWithCategory = onOpenChatWithCategory,
+                onOpenChatWithPrefill = onOpenChatWithPrefill,
+                onOpenConversation = onOpenConversation,
                 onOpenMusic = { navController.navigate(MusicRoute.Library) },
                 onOpenRecommendations = { navController.navigate(RecommendationsRoute.Main) },
                 onOpenTarot = { navController.navigate(FortuneRoute.Tarot) },
@@ -57,7 +65,15 @@ fun HomeTabHost(
                 onOpenGames = { navController.navigate(GamesRoute.Main) },
                 onOpenScan = { navController.navigate(ScanRoute.Main) },
                 onOpenVietWriter = { navController.navigate(VietWriterRoute.Main) },
+                onOpenTappyTogether = { navController.navigate(HomeTabRoute.GroupDining) },
+                onOpenSplitBill = { navController.navigate(SplitBillRoute.Main) },
             )
+        }
+        composable<HomeTabRoute.GroupDining> {
+            GroupDiningScreen(onBack = { navController.popBackStack() })
+        }
+        composable<SplitBillRoute.Main> {
+            SplitBillScreen(onBack = { navController.popBackStack() })
         }
         composable<RecommendationsRoute.Main> {
             RecommendationsScreen(

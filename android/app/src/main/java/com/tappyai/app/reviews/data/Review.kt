@@ -33,6 +33,13 @@ data class Review(
 data class ReviewProfile(
     val fullName: String?,
     val avatarUrl: String?,
+    // Follow state — populated only by the user-profile endpoint (GET /api/users/{id}). The
+    // feed-embedded ProfileDto carries none, so these default to false/0 there (and for seed data).
+    val isFollowing: Boolean = false,
+    val isSelf: Boolean = false,
+    val followerCount: Int = 0,
+    val followingCount: Int = 0,
+    val reviewCount: Int = 0,
 )
 
 data class ReviewMusic(

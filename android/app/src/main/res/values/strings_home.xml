@@ -1,5 +1,8 @@
 <resources>
     <string name="home_location_not_set">Set your location</string>
+    <string name="home_hero_greeting_sub">Hi there 👋</string>
+    <string name="home_hero_search_placeholder">Ask TappyAI anything…</string>
+    <string name="home_action_open">Open</string>
     <string name="home_ask_prefix">Ask Tappy: %1$s</string>
     <string name="home_ask_prompt_1">Find restaurants</string>
     <string name="home_ask_prompt_2">Plan a trip</string>
@@ -19,13 +22,38 @@
     <string name="home_section_suggested">Suggested for you</string>
     <string name="home_empty_suggestions_title">No suggestions yet</string>
     <string name="home_empty_suggestions_message">Personalized suggestions will appear here as Tappy gets to know you.</string>
+    <string name="home_suggestion_1">\"What to eat?\" — the hardest question of the day. Let Tappy decide 🤔</string>
+    <string name="home_suggestion_2">Treat yourself to something today, you deserve it 🎁</string>
+    <string name="home_suggestion_3">Find a great spot without asking the whole group chat</string>
+    <string name="home_suggestion_4">Where to go this weekend that won\'t make Monday feel worse?</string>
+    <string name="home_suggestion_5">Any deals today to justify to my wallet? 💸</string>
+    <string name="home_suggestion_6">Need an evening plan that requires zero overthinking</string>
     <string name="home_section_recent_activity">Recent activity</string>
     <string name="home_empty_recent_title">No recent activity</string>
     <string name="home_empty_recent_message">Your recent chats and saved places will show up here.</string>
+    <string name="home_recent_message_count">%1$d messages</string>
 
     <string name="home_recommendations_section">✨ For you</string>
     <string name="home_recommendations_card_title">✨ For you</string>
     <string name="home_recommendations_card_desc">Personalized places for your taste</string>
+
+    <!-- Web-parity Home sections (mirror HomeView.tsx + dictionaries home.*) -->
+    <string name="home_scan_title">📷 Scan documents</string>
+    <string name="home_scan_card_title">Snap a photo → AI extracts the text</string>
+    <string name="home_scan_card_desc">Scan paper documents, receipts, menus — export to .TXT, .DOCX or share instantly.</string>
+    <string name="home_together_title">Tappy Together</string>
+    <string name="home_together_desc">Pick a place as a group — AI suggests what suits everyone</string>
+    <string name="home_music_title">🎵 Music library</string>
+    <string name="home_music_desc">Listen &amp; pick soundtracks for reviews</string>
+    <string name="home_tools_title">🛠️ Handy tools</string>
+    <string name="home_currency_title">💱 Currency converter</string>
+    <string name="home_currency_desc">VND, USD, EUR, JPY... live rates</string>
+    <string name="home_split_title">🧮 Split the bill</string>
+    <string name="home_split_desc">Split evenly or by item, with tip</string>
+    <string name="home_translate_title">🌐 Translate</string>
+    <string name="home_translate_desc">Fast multi-language translation</string>
+    <string name="home_games_title">🎮 Games</string>
+    <string name="home_games_desc">Quick fun &amp; relaxation</string>
 
     <string name="home_section_fortune">🔮 Fortune today</string>
     <string name="home_fortune_tarot_title">Tarot</string>
@@ -38,12 +66,14 @@
     <string name="home_tab_home">Home</string>
     <string name="home_tab_chat">Chat</string>
     <string name="home_tab_explore">Explore</string>
-    <string name="home_tab_maps">Maps</string>
-    <string name="home_tab_profile">Profile</string>
+    <string name="home_tab_deals">Deals</string>
+    <string name="home_tab_profile">Me</string>
+    <string name="home_section_explore_by_category">Explore by category</string>
+    <string name="home_category_food">Food &amp; Drink</string>
+    <string name="home_category_shopping">Shopping</string>
+    <string name="home_category_entertainment">Entertainment</string>
+    <string name="home_category_travel">Travel</string>
+    <string name="home_category_spa">Spa &amp; Beauty</string>
     <string name="home_tab_placeholder_message">The %1$s experience is coming soon.</string>
 
-    <string name="home_greeting_morning">Good morning ☀️</string>
-    <string name="home_greeting_afternoon">Good afternoon 🌤️</string>
-    <string name="home_greeting_evening">Good evening 🌙</string>
-    <string name="home_greeting_night">Still up? 🌙</string>
 </resources>

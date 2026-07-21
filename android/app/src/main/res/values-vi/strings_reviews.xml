@@ -8,6 +8,13 @@
     <!-- Comments -->
     <string name="reviews_comments_header_title">Bình luận</string>
     <string name="reviews_comment_default_user">Người dùng</string>
+    <string name="reviews_comment_input_hint">Thêm bình luận…</string>
+    <string name="reviews_comment_send">Gửi bình luận</string>
+    <string name="reviews_comment_delete">Xoá bình luận</string>
+    <string name="reviews_comment_reply">Trả lời</string>
+    <string name="reviews_comment_react">Cảm xúc</string>
+    <string name="reviews_comment_replying_to">Đang trả lời %1$s</string>
+    <string name="reviews_comment_cancel_reply">Huỷ</string>
 
     <!-- Composer -->
     <string name="reviews_composer_post_button">Đăng</string>
@@ -24,6 +31,19 @@
     <string name="reviews_composer_posted_toast">Đã đăng bài</string>
     <string name="reviews_composer_using_sound">Đang dùng: %1$s</string>
     <string name="reviews_composer_remove_sound">Bỏ âm thanh</string>
+    <string name="reviews_composer_add_music">Thêm nhạc</string>
+    <string name="reviews_notification_banner_title">Tappy gợi ý hôm nay</string>
+    <string name="reviews_notification_banner_subtext">3 quán bạn bè hay đến đang mở gần bạn</string>
+    <string name="reviews_notification_section_just_now">VỪA XONG</string>
+    <string name="reviews_notification_section_today">HÔM NAY</string>
+    <string name="reviews_notification_section_this_week">TUẦN NÀY</string>
+    <string name="reviews_composer_remove_photo">Xóa ảnh</string>
+    <string name="reviews_composer_photo_max">Bạn chỉ có thể thêm tối đa %1$d ảnh</string>
+    <string name="reviews_composer_photo_read_failed">Không đọc được ảnh này. Vui lòng chọn ảnh khác.</string>
+    <string name="reviews_composer_photo_too_large">Mỗi ảnh phải nhỏ hơn 5MB.</string>
+    <string name="reviews_composer_photo_invalid_type">Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF.</string>
+    <string name="reviews_composer_link_loading">Đang lấy bản xem trước…</string>
+    <string name="reviews_composer_link_attached">Đã đính kèm link (%1$s)</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">
@@ -54,9 +74,21 @@
     <string name="reviews_profile_empty_message">Bài viết của người dùng sẽ hiển thị ở đây.</string>
     <string name="reviews_profile_fallback_title">Hồ sơ</string>
     <string name="reviews_profile_error_title">Không tải được trang cá nhân</string>
+    <string name="reviews_profile_follow">Theo dõi</string>
+    <string name="reviews_profile_following">Đang theo dõi</string>
+    <string name="reviews_profile_stat_following">Đang follow</string>
+    <string name="reviews_profile_stat_followers">Follower</string>
+    <string name="reviews_profile_edit">Chỉnh sửa hồ sơ</string>
 
     <!-- Search -->
     <string name="reviews_search_placeholder">Tìm bài viết, địa điểm...</string>
+    <string name="reviews_search_mode_reviews">Đánh giá</string>
+    <string name="reviews_search_mode_users">Người dùng</string>
+    <string name="reviews_follow">Theo dõi</string>
+    <string name="reviews_following">Đang theo dõi</string>
+    <string name="reviews_user_followers">%1$d người theo dõi</string>
+    <string name="reviews_search_users_empty_title">Không tìm thấy người dùng</string>
+    <string name="reviews_search_users_empty_message">Thử tên khác</string>
     <string name="reviews_search_clear_content_description">Xóa</string>
     <string name="reviews_search_empty_title">Không tìm thấy kết quả</string>
     <string name="reviews_search_empty_message">Thử tìm với từ khóa khác.</string>
@@ -74,6 +106,13 @@
     <string name="reviews_feed_error_title">Không tải được bài viết</string>
     <string name="reviews_feed_empty_title">Chưa có bài viết nào</string>
     <string name="reviews_feed_empty_message">Hãy quay lại sau nhé.</string>
+    <string name="reviews_tab_compose">Đăng bài</string>
+    <string name="reviews_tab_following">Đang theo dõi</string>
+    <string name="reviews_tab_for_you">Đề xuất</string>
+    <string name="reviews_tab_latest">Mới nhất</string>
+    <string name="reviews_feed_empty_following">Chưa theo dõi ai hoặc họ chưa đăng bài</string>
+    <string name="reviews_feed_see_for_you">Xem Đề xuất</string>
+    <string name="reviews_feed_post_now">Đăng ngay</string>
 
     <!-- Detail -->
     <string name="reviews_detail_title">Chi tiết</string>

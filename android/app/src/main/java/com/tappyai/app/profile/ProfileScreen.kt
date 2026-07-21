@@ -46,6 +46,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
+import com.tappyai.app.account.AccountProfile
+import com.tappyai.core.designsystem.component.TappyAvatar
+import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyCard
 import com.tappyai.core.designsystem.component.TappyComingSoonSheet
 import com.tappyai.core.designsystem.component.TappyMenuRow
@@ -136,6 +139,7 @@ fun ProfileScreen(
         ) {
             val qrFeatureName = stringResource(R.string.profile_qr_feature_name)
             ProfileHeaderCard(
+                profile = viewModel.profile,
                 onShowQr = {
                     if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName
                 },
@@ -199,33 +203,46 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileHeaderCard(onShowQr: () -> Unit) {
+private fun ProfileHeaderCard(profile: AccountProfile?, onShowQr: () -> Unit) {
     TappyCard(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Placeholder identity — no signed-in user in this foundation, so a neutral
-            // person icon rather than initials of a fabricated name.
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(TappyShapes.card)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Person,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(32.dp),
+            if (profile != null) {
+                // Signed-in user: real avatar (image or name-initials), matching the web header.
+                TappyAvatar(
+                    name = profile.fullName,
+                    imageUrl = profile.avatarUrl,
+                    size = TappyAvatarSize.HeaderUser,
                 )
+            } else {
+                // Not yet loaded / session missing — neutral person icon, no fabricated identity.
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(TappyShapes.card)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(32.dp),
+                    )
+                }
             }
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = stringResource(R.string.profile_header_title), style = MaterialTheme.typography.titleLarge)
                 Text(
-                    text = stringResource(R.string.profile_header_subtitle),
+                    text = profile?.fullName?.takeIf { it.isNotBlank() }
+                        ?: stringResource(R.string.profile_header_title),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                Text(
+                    text = profile?.email?.takeIf { it.isNotBlank() }
+                        ?: stringResource(R.string.profile_header_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

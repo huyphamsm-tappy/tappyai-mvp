@@ -13,6 +13,12 @@ data class ChatMessage(
     val role: TappyChatRole,
     val text: String,
     val followups: List<String> = emptyList(),
+    // Structured cards parsed out of an assistant reply (web parity — see [ChatResponseParser]).
+    val plan: TappyPlan? = null,
+    val ctaButtons: List<CtaButton> = emptyList(),
+    // Positional render list (text + inline photo galleries in stream order — web formatMessage
+    // parity, see [ReplySegment]). Empty for user/error/restored messages → render [text] directly.
+    val segments: List<ReplySegment> = emptyList(),
     val isError: Boolean = false,
     val imageUri: Uri? = null,
 )
