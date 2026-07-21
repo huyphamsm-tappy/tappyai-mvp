@@ -38,6 +38,8 @@ data class ReviewProfile(
     val isFollowing: Boolean = false,
     val isSelf: Boolean = false,
     val followerCount: Int = 0,
+    val followingCount: Int = 0,
+    val reviewCount: Int = 0,
 )
 
 data class ReviewMusic(

@@ -1,5 +1,8 @@
 <resources>
     <string name="home_location_not_set">Đặt vị trí của bạn</string>
+    <string name="home_hero_greeting_sub">Xin chào 👋</string>
+    <string name="home_hero_search_placeholder">Hỏi TappyAI bất cứ điều gì…</string>
+    <string name="home_action_open">Mở</string>
     <string name="home_ask_prefix">Hỏi Tappy: %1$s</string>
     <string name="home_ask_prompt_1">Tìm nhà hàng</string>
     <string name="home_ask_prompt_2">Lên kế hoạch chuyến đi</string>
@@ -19,13 +22,38 @@
     <string name="home_section_suggested">Gợi ý cho bạn</string>
     <string name="home_empty_suggestions_title">Chưa có gợi ý</string>
     <string name="home_empty_suggestions_message">Gợi ý cá nhân hóa sẽ xuất hiện khi Tappy hiểu bạn hơn.</string>
+    <string name="home_suggestion_1">\"Ăn gì?\" — câu hỏi khó nhất ngày. Tappy quyết hộ luôn 🤔</string>
+    <string name="home_suggestion_2">Hôm nay tự thưởng một cái gì đó đi, xứng đáng mà 🎁</string>
+    <string name="home_suggestion_3">Tìm quán ngon không cần hỏi cả group chat nữa</string>
+    <string name="home_suggestion_4">Đi đâu cuối tuần mà về không muốn đi làm sớm hơn?</string>
+    <string name="home_suggestion_5">Deal hôm nay có gì để biện hộ cho ví tiền không? 💸</string>
+    <string name="home_suggestion_6">Cần kế hoạch cho buổi tối không cần nghĩ quá nhiều</string>
     <string name="home_section_recent_activity">Hoạt động gần đây</string>
     <string name="home_empty_recent_title">Chưa có hoạt động</string>
     <string name="home_empty_recent_message">Cuộc trò chuyện và địa điểm đã lưu gần đây sẽ hiện ở đây.</string>
+    <string name="home_recent_message_count">%1$d tin nhắn</string>
 
     <string name="home_recommendations_section">✨ Gợi ý cho bạn</string>
     <string name="home_recommendations_card_title">✨ Gợi ý cho bạn</string>
     <string name="home_recommendations_card_desc">Địa điểm hợp gu, cá nhân hóa</string>
+
+    <!-- Web-parity Home sections (mirror HomeView.tsx + dictionaries home.*) -->
+    <string name="home_scan_title">📷 Quét tài liệu</string>
+    <string name="home_scan_card_title">Chụp ảnh → AI trích xuất văn bản</string>
+    <string name="home_scan_card_desc">Quét tài liệu giấy, hóa đơn, thực đơn — xuất ra .TXT, .DOCX hoặc chia sẻ ngay.</string>
+    <string name="home_together_title">Tappy Together</string>
+    <string name="home_together_desc">Cùng nhóm chọn quán ăn — AI gợi ý hợp ý tất cả mọi người</string>
+    <string name="home_music_title">🎵 Thư viện nhạc</string>
+    <string name="home_music_desc">Nghe &amp; chọn nhạc nền cho review</string>
+    <string name="home_tools_title">🛠️ Công cụ tiện ích</string>
+    <string name="home_currency_title">💱 Đổi tiền tệ</string>
+    <string name="home_currency_desc">VND, USD, EUR, JPY... tỷ giá thực</string>
+    <string name="home_split_title">🧮 Chia tiền</string>
+    <string name="home_split_desc">Chia đều hoặc theo món, có tip</string>
+    <string name="home_translate_title">🌐 Dịch thuật</string>
+    <string name="home_translate_desc">Dịch nhanh đa ngôn ngữ</string>
+    <string name="home_games_title">🎮 Games</string>
+    <string name="home_games_desc">Giải trí, thư giãn nhanh</string>
 
     <string name="home_section_fortune">🔮 Xem bói hôm nay</string>
     <string name="home_fortune_tarot_title">Tarot</string>
@@ -36,14 +64,16 @@
     <string name="home_fortune_zodiac_description">Vận số theo ngày sinh</string>
 
     <string name="home_tab_home">Trang chủ</string>
-    <string name="home_tab_chat">Trò chuyện</string>
+    <string name="home_tab_chat">Chat</string>
     <string name="home_tab_explore">Khám phá</string>
-    <string name="home_tab_maps">Bản đồ</string>
-    <string name="home_tab_profile">Hồ sơ</string>
+    <string name="home_tab_deals">Deals</string>
+    <string name="home_tab_profile">Tôi</string>
+    <string name="home_section_explore_by_category">Khám phá theo lĩnh vực</string>
+    <string name="home_category_food">Ăn uống</string>
+    <string name="home_category_shopping">Mua sắm</string>
+    <string name="home_category_entertainment">Giải trí</string>
+    <string name="home_category_travel">Du lịch</string>
+    <string name="home_category_spa">Spa &amp; Làm đẹp</string>
     <string name="home_tab_placeholder_message">Trải nghiệm %1$s sẽ sớm ra mắt.</string>
 
-    <string name="home_greeting_morning">Chào buổi sáng ☀️</string>
-    <string name="home_greeting_afternoon">Chào buổi chiều 🌤️</string>
-    <string name="home_greeting_evening">Chào buổi tối 🌙</string>
-    <string name="home_greeting_night">Vẫn còn thức à? 🌙</string>
 </resources>

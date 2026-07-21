@@ -1,5 +1,6 @@
 package com.tappyai.app.chat
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -11,13 +12,20 @@ import com.tappyai.app.R
  * "general" default. Accepted as an optional parameter from navigation sources (Home card,
  * Maps, Reviews, etc.); the Chat tab itself has no permanent category picker.
  */
-enum class ChatCategory(val emoji: String, @StringRes val labelRes: Int) {
-    General("🤖", R.string.chat_category_general),
-    Food("🍜", R.string.chat_category_food),
-    Shopping("🛍️", R.string.chat_category_shopping),
-    Entertainment("🎭", R.string.chat_category_entertainment),
-    Travel("✈️", R.string.chat_category_travel),
-    Spa("💆", R.string.chat_category_spa),
+// Each category maps to one of the owner's Otter mascot poses (the same art the web uses via
+// TappyMascot's CATEGORY_POSES) — the PNGs live in res/drawable-nodpi. General falls back to the
+// neutral `wave` pose, matching the web default.
+enum class ChatCategory(
+    val emoji: String,
+    @StringRes val labelRes: Int,
+    @DrawableRes val mascot: Int,
+) {
+    General("🤖", R.string.chat_category_general, R.drawable.tappy_wave),
+    Food("🍜", R.string.chat_category_food, R.drawable.tappy_food),
+    Shopping("🛍️", R.string.chat_category_shopping, R.drawable.tappy_shopping),
+    Entertainment("🎭", R.string.chat_category_entertainment, R.drawable.tappy_entertainment),
+    Travel("✈️", R.string.chat_category_travel, R.drawable.tappy_travel),
+    Spa("💆", R.string.chat_category_spa, R.drawable.tappy_spa),
 }
 
 @Composable

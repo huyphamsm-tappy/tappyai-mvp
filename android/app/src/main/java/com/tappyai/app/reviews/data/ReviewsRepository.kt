@@ -43,11 +43,24 @@ interface ReviewsRepository {
     suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>>
 
     /** Posts a comment on [reviewId] and returns the created comment (already mapped to domain).
+     *  [parentId] replies to another comment (one-level thread); null posts a top-level comment.
      *  The backend enforces 1–300 chars and rate-limits (10/min); a validation or rate-limit
      *  failure surfaces as a typed [NetworkResult.Error]. */
-    suspend fun postComment(reviewId: String, body: String): NetworkResult<ReviewComment>
+    suspend fun postComment(reviewId: String, body: String, parentId: String? = null): NetworkResult<ReviewComment>
+
+    /** Deletes one of the caller's own comments; returns the review's updated comment count. */
+    suspend fun deleteComment(reviewId: String, commentId: String): NetworkResult<Int>
+
+    /** Sets (or changes) the caller's single reaction ([reactionKey]) on [commentId]. One per user. */
+    suspend fun setReaction(commentId: String, reactionKey: String): NetworkResult<Unit>
+
+    /** Removes the caller's reaction from [commentId]. */
+    suspend fun removeReaction(commentId: String): NetworkResult<Unit>
 
     suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile>
+
+    /** Searches users by name (or exact email/phone) for the Explore "Users" search mode. */
+    suspend fun searchUsers(query: String): NetworkResult<List<UserSearchResult>>
 
     /** Toggles follow on [userId] (POST /api/users/{id}/follow, no body). Returns the new following
      *  state. Caller adjusts the follower count locally (±1); the backend also returns the count. */
@@ -82,6 +95,10 @@ interface ReviewsRepository {
         body: String,
         rating: Int?,
         musicTrackId: String? = null,
+        // Web parity: the composer's MusicSelectionPanel lets the user set a start offset + volume
+        // for the attached track; sent through in the `music` payload (defaults = whole track, full).
+        musicStartSec: Int = 0,
+        musicVolume: Double = 1.0,
         photos: List<String>? = null,
         link: LinkAttachment? = null,
     ): NetworkResult<Unit>

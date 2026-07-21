@@ -76,10 +76,13 @@ fun MessageActionBar(
     val liked = feedback == MessageFeedback.Like
     val disliked = feedback == MessageFeedback.Dislike
 
-    val iconSize = Modifier.size(16.dp)
+    // Web: lucide icons at size={14}; active like = text-green-500, dislike = text-red-500,
+    // read-aloud = text-primary-500. Use the exact green/red-500 hexes the web uses (not theme
+    // error) so the affordances read identically.
+    val iconSize = Modifier.size(14.dp)
     val tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-    val activeLike = MaterialTheme.colorScheme.primary
-    val activeDislike = MaterialTheme.colorScheme.error
+    val activeLike = androidx.compose.ui.graphics.Color(0xFF22C55E) // green-500
+    val activeDislike = androidx.compose.ui.graphics.Color(0xFFEF4444) // red-500
 
     val copyLabel = stringResource(R.string.chat_action_copy)
     val shareLabel = stringResource(R.string.chat_action_share)

@@ -7,6 +7,7 @@ import com.tappyai.app.reviews.data.ReviewContentType
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.reviews.data.ReviewsRepository
+import com.tappyai.features.auth.data.AuthRepository
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,16 +34,20 @@ data class ReviewsFeedUiState(
     val endReached: Boolean = false,
     /** Active feed tab — For You (default) / Following / Latest, mirroring the web. */
     val feedType: ReviewFeedType = ReviewFeedType.ForYou,
+    // The signed-in user's id (JWT `sub`) so the feed can show the own-post overflow (delete/hide)
+    // on the user's OWN posts only, mirroring the web feed. Null when signed out.
+    val currentUserId: String? = null,
 )
 
 @HiltViewModel
 class ReviewsFeedViewModel @Inject constructor(
     private val repository: ReviewsRepository,
+    private val authRepository: AuthRepository,
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ReviewsFeedUiState())
+    private val _uiState = MutableStateFlow(ReviewsFeedUiState(currentUserId = authRepository.currentUserId()))
     val uiState: StateFlow<ReviewsFeedUiState> = _uiState.asStateFlow()
 
     private var page = 0
@@ -162,6 +167,36 @@ class ReviewsFeedViewModel @Inject constructor(
                 }
             } else if (result is NetworkResult.Success) {
                 updateReview(review.id) { it.copy(savedByMe = result.data) }
+            }
+        }
+    }
+
+    /**
+     * Deletes the caller's own post (web parity: own-post overflow → Delete). Optimistically removes
+     * it from the feed; a failure re-adds the prior list. Server enforces ownership independently.
+     */
+    fun deleteReview(review: Review) {
+        val previous = _uiState.value.reviews
+        _uiState.update { it.copy(reviews = it.reviews.filterNot { r -> r.id == review.id }) }
+        viewModelScope.launch {
+            val result = repository.deleteReview(review.id)
+            if (result is NetworkResult.Error) {
+                logger.e(TAG, "Delete review failed: ${result.error}")
+                _uiState.update { it.copy(reviews = previous) }
+            }
+        }
+    }
+
+    /** Hides the caller's own post (web parity: own-post overflow → Hide). Same optimistic-remove +
+     *  revert-on-failure as [deleteReview], but via setHidden rather than a hard delete. */
+    fun hideReview(review: Review) {
+        val previous = _uiState.value.reviews
+        _uiState.update { it.copy(reviews = it.reviews.filterNot { r -> r.id == review.id }) }
+        viewModelScope.launch {
+            val result = repository.setHidden(review.id, true)
+            if (result is NetworkResult.Error) {
+                logger.e(TAG, "Hide review failed: ${result.error}")
+                _uiState.update { it.copy(reviews = previous) }
             }
         }
     }

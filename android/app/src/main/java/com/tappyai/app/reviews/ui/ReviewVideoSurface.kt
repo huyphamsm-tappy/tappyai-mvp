@@ -2,7 +2,7 @@ package com.tappyai.app.reviews.ui
 
 import android.content.Intent
 import android.net.Uri
-import android.view.SurfaceView
+import android.view.TextureView
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.background
@@ -49,6 +49,7 @@ internal fun ReviewFeedVideo(
     sourceUrl: String?,
     active: Boolean,
     audioUnlocked: Boolean,
+    paused: Boolean,
     onDuration: (Float) -> Unit,
     onRequestAudioUnlock: () -> Unit,
     modifier: Modifier = Modifier,
@@ -57,30 +58,35 @@ internal fun ReviewFeedVideo(
         ReviewSourceType.YouTube -> ReviewYouTubeSurface(mediaUrl, thumbnail, active, modifier)
         ReviewSourceType.TikTok, ReviewSourceType.Facebook ->
             ReviewExternalClipPreview(thumbnail, sourceUrl, modifier)
-        else -> ReviewUploadVideoSurface(mediaUrl, active, audioUnlocked, onDuration, onRequestAudioUnlock, modifier)
+        else -> ReviewUploadVideoSurface(mediaUrl, active, audioUnlocked, paused, onDuration, modifier)
     }
 }
 
 /**
- * Native-upload video: ExoPlayer rendering onto a SurfaceView. Autoplays MUTED when [active], loops,
- * and unmutes once [audioUnlocked] (the feed's first-tap audio permission). A single tap requests
- * that unlock — the web's "tap to unmute" — via [onRequestAudioUnlock]. Reports the clip duration in
- * seconds via [onDuration] once ExoPlayer reaches READY, for the feed's completion-rate analytics.
+ * Native-upload video: ExoPlayer rendering onto a TextureView (not a SurfaceView — a SurfaceView owns
+ * a separate window that z-orders above the Compose content, hiding the feed's action rail, caption,
+ * pause badge and heart-burst overlays; TextureView composites inside the view tree so overlays draw
+ * on top, matching the web's `<video>` + absolutely-positioned overlays). Autoplays WITH sound when
+ * [active] and not [paused], loops. Unlike a browser `<video>`, ExoPlayer has no muted-until-gesture
+ * autoplay restriction, so audio is on from the first frame ([audioUnlocked] defaults true) — the
+ * user never has to tap to hear it. Taps (play/pause toggle) are handled by the feed card's gesture
+ * layer (see ReviewCard), which drives [paused]. Reports the clip duration in seconds via
+ * [onDuration] once ExoPlayer reaches READY, for the feed's completion-rate analytics.
  */
 @Composable
 private fun ReviewUploadVideoSurface(
     url: String,
     active: Boolean,
     audioUnlocked: Boolean,
+    paused: Boolean,
     onDuration: (Float) -> Unit,
-    onRequestAudioUnlock: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val player = remember(url) {
         ExoPlayer.Builder(context).build().apply {
             repeatMode = Player.REPEAT_MODE_ONE
-            volume = 0f
+            volume = 1f
             setMediaItem(MediaItem.fromUri(url))
             prepare()
         }
@@ -100,14 +106,15 @@ private fun ReviewUploadVideoSurface(
             player.release()
         }
     }
-    // Active drives play/pause; volume follows the feed-level audio unlock (muted until first tap).
-    LaunchedEffect(active, audioUnlocked) {
+    // Active (current pager page) and the user's pause toggle drive play/pause; volume follows the
+    // feed-level audio flag, which defaults on so autoplay has sound immediately.
+    LaunchedEffect(active, audioUnlocked, paused) {
         player.volume = if (audioUnlocked) 1f else 0f
-        if (active) player.play() else player.pause()
+        if (active && !paused) player.play() else player.pause()
     }
-    Box(modifier = modifier.fillMaxSize().clickable(onClick = onRequestAudioUnlock)) {
+    Box(modifier = modifier.fillMaxSize()) {
         AndroidView(
-            factory = { ctx -> SurfaceView(ctx).also { player.setVideoSurfaceView(it) } },
+            factory = { ctx -> TextureView(ctx).also { player.setVideoTextureView(it) } },
             modifier = Modifier.fillMaxSize(),
         )
     }

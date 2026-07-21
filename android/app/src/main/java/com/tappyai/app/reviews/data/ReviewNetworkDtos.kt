@@ -86,16 +86,37 @@ data class CommentDto(
     @SerialName("created_at") val createdAt: String = "",
     @SerialName("user_id") val userId: String = "",
     val profiles: ProfileDto? = null,
+    // Threaded replies + reactions (backend: parent_comment_id, aggregated reactions map, and the
+    // caller's own reaction). All default so an older/leaner response still deserializes.
+    @SerialName("parent_comment_id") val parentCommentId: String? = null,
+    val reactions: Map<String, Int> = emptyMap(),
+    @SerialName("my_reaction") val myReaction: String? = null,
 )
 
-/** POST /api/reviews/{id}/comments request body — the new comment text (backend enforces 1–300). */
+/** POST /api/reviews/{id}/comments request body — the new comment text (backend enforces 1–300).
+ *  [parentId] replies to another comment; null (omitted, encodeDefaults=false) posts a top-level one. */
 @Serializable
-data class PostCommentRequestDto(val body: String)
+data class PostCommentRequestDto(val body: String, val parentId: String? = null)
+
+/** POST /api/comments/{commentId}/reactions request body — the reaction key (backend whitelists it). */
+@Serializable
+data class ReactionRequestDto(val reaction: String)
+
+/** POST/DELETE /api/comments/{commentId}/reactions → { ok, reaction? }. */
+@Serializable
+data class ReactionResponseDto(val ok: Boolean = false, val reaction: String? = null)
 
 /** POST /api/reviews/{id}/comments response — the created comment plus the updated total count. */
 @Serializable
 data class PostCommentResponseDto(
     val comment: CommentDto? = null,
+    val count: Int = 0,
+)
+
+/** DELETE /api/reviews/{id}/comments?commentId= → { ok, count } (the updated real comment count). */
+@Serializable
+data class DeleteCommentResponseDto(
+    val ok: Boolean = false,
     val count: Int = 0,
 )
 
@@ -132,6 +153,22 @@ data class SetHiddenRequestDto(@SerialName("is_hidden") val isHidden: Boolean)
 /** PATCH and DELETE /api/reviews/{id} both return this shape on success. */
 @Serializable
 data class OkResponseDto(val ok: Boolean = false)
+
+/** GET /api/users/search?q= → { users: [...] }. Each user carries the caller's follow state. */
+@Serializable
+data class UserSearchResponseDto(
+    val users: List<UserSearchResultDto> = emptyList(),
+)
+
+@Serializable
+data class UserSearchResultDto(
+    val id: String = "",
+    @SerialName("full_name") val fullName: String? = null,
+    @SerialName("avatar_url") val avatarUrl: String? = null,
+    @SerialName("follower_count") val followerCount: Int = 0,
+    @SerialName("following_count") val followingCount: Int = 0,
+    @SerialName("is_following") val isFollowing: Boolean = false,
+)
 
 @Serializable
 data class UserProfileDto(
@@ -198,16 +235,27 @@ data class OembedResponseDto(
 @Serializable
 data class PhotoUploadResponseDto(val url: String = "")
 
-/** A track picked via Sound Detail's "Use this sound", attached to the review being composed —
- *  mirrors the web's `ReviewMusic` shape (`src/app/api/reviews/route.ts`). [startSec]/[volume]
- *  stay at their defaults since the composer has no trim/mix UI (matches an un-trimmed pick). */
+/**
+ * A track attached to the review being composed — the ONE cross-platform music payload
+ * (`{version, trackId, startSec, volume}`, web `src/app/api/reviews/route.ts`). The backend hard-
+ * rejects a missing/mismatched `version` ("unsupported music version"), and `Number(undefined)` on
+ * a missing startSec/volume NaN-fails its validator — so NO field may carry a default value: the
+ * shared prod Json has `encodeDefaults=false`, which silently drops default-valued fields from the
+ * wire (the same trap that broke Blob uploads — see `BlobTokenRequestDto`). Every field is a
+ * required constructor param and is therefore always serialized.
+ */
 @Serializable
 data class MusicSelectionDto(
-    val version: Int = 1,
+    val version: Int,
     val trackId: String,
-    val startSec: Int = 0,
-    val volume: Double = 1.0,
-)
+    val startSec: Int,
+    val volume: Double,
+) {
+    companion object {
+        /** Web `MUSIC_PAYLOAD_VERSION` — bump only in lockstep with the backend. */
+        const val PAYLOAD_VERSION = 1
+    }
+}
 
 @Serializable
 data class CreateReviewResponseDto(
@@ -264,6 +312,18 @@ fun CommentDto.toDomain(): ReviewComment = ReviewComment(
     createdAt = createdAt,
     userId = userId,
     profiles = profiles?.toDomain(),
+    parentCommentId = parentCommentId,
+    reactions = reactions,
+    myReaction = myReaction,
+)
+
+fun UserSearchResultDto.toDomain(): UserSearchResult = UserSearchResult(
+    id = id,
+    fullName = fullName,
+    avatarUrl = avatarUrl,
+    followerCount = followerCount,
+    followingCount = followingCount,
+    isFollowing = isFollowing,
 )
 
 fun UserProfileDto.toReviewProfile(): ReviewProfile = ReviewProfile(
@@ -272,6 +332,8 @@ fun UserProfileDto.toReviewProfile(): ReviewProfile = ReviewProfile(
     isFollowing = isFollowing,
     isSelf = isSelf,
     followerCount = followerCount,
+    followingCount = followingCount,
+    reviewCount = reviewCount,
 )
 
 fun NotificationDto.toDomain(): ReviewNotification = ReviewNotification(

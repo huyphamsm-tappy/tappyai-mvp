@@ -28,4 +28,15 @@ class RealMapsRepository @Inject constructor(
             api.deleteFavorite(placeId)
             Unit
         }
+
+    override suspend fun addFavorite(
+        placeId: String,
+        placeName: String,
+        placeAddress: String,
+        placeType: String,
+    ): NetworkResult<Unit> =
+        safeApiCall {
+            api.addFavorite(AddFavoriteRequestDto(placeId, placeName, placeAddress, placeType))
+            Unit
+        }
 }

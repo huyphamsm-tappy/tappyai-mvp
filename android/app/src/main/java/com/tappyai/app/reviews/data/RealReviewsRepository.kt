@@ -69,16 +69,28 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>> =
         safeApiCall { api.getComments(reviewId).comments.map { it.toDomain() } }
 
-    override suspend fun postComment(reviewId: String, body: String): NetworkResult<ReviewComment> =
+    override suspend fun postComment(reviewId: String, body: String, parentId: String?): NetworkResult<ReviewComment> =
         safeApiCall {
             // The backend returns { comment, count } on 2xx; comment is present on success. Guard
             // the nullable DTO field defensively — a null here becomes a typed error via safeApiCall.
-            (api.postComment(reviewId, PostCommentRequestDto(body = body)).comment
+            (api.postComment(reviewId, PostCommentRequestDto(body = body, parentId = parentId)).comment
                 ?: error("comments endpoint returned no comment")).toDomain()
         }
 
+    override suspend fun deleteComment(reviewId: String, commentId: String): NetworkResult<Int> =
+        safeApiCall { api.deleteComment(reviewId, commentId).count }
+
+    override suspend fun setReaction(commentId: String, reactionKey: String): NetworkResult<Unit> =
+        safeApiCall { api.postReaction(commentId, ReactionRequestDto(reaction = reactionKey)); Unit }
+
+    override suspend fun removeReaction(commentId: String): NetworkResult<Unit> =
+        safeApiCall { api.deleteReaction(commentId); Unit }
+
     override suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile> =
         safeApiCall { api.getUserProfile(userId).toReviewProfile() }
+
+    override suspend fun searchUsers(query: String): NetworkResult<List<UserSearchResult>> =
+        safeApiCall { api.searchUsers(query).users.map { it.toDomain() } }
 
     override suspend fun toggleFollow(userId: String): NetworkResult<Boolean> =
         safeApiCall { api.toggleFollow(userId).following }
@@ -105,6 +117,8 @@ class RealReviewsRepository @Inject constructor(
         body: String,
         rating: Int?,
         musicTrackId: String?,
+        musicStartSec: Int,
+        musicVolume: Double,
         photos: List<String>?,
         link: LinkAttachment?,
     ): NetworkResult<Unit> = safeApiCall {
@@ -114,7 +128,14 @@ class RealReviewsRepository @Inject constructor(
                 placeName = placeName,
                 body = body,
                 rating = rating,
-                music = musicTrackId?.let { MusicSelectionDto(trackId = it) },
+                music = musicTrackId?.let {
+                    MusicSelectionDto(
+                        version = MusicSelectionDto.PAYLOAD_VERSION,
+                        trackId = it,
+                        startSec = musicStartSec,
+                        volume = musicVolume,
+                    )
+                },
                 photos = photos?.takeIf { it.isNotEmpty() },
                 // Mirror the web's link payload: content_type='video', media_url = the source URL.
                 contentType = link?.let { "video" },

@@ -13,6 +13,7 @@ import com.tappyai.core.network.NetworkResult
 import com.tappyai.features.auth.data.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -39,9 +40,18 @@ class SettingsViewModel @Inject constructor(
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
-    /** Defaults to English — matches this build's own current all-hardcoded-English UI when the
-     *  user hasn't explicitly picked a language yet. */
-    var language by mutableStateOf(languageManager.current ?: AppLanguage.English)
+    /**
+     * When the user hasn't explicitly picked a language yet ([LanguageManager.current] == null),
+     * fall back to the language the UI is ACTUALLY rendering — the system locale — never a fixed
+     * default. Hardcoding English here made the row claim "🇬🇧 English" on a Vietnamese-locale
+     * device while every string rendered Vietnamese, and the user's first "English" pick then
+     * no-opped through [selectLanguage]'s `language == next` guard (device-reproduced 2026-07-21).
+     */
+    var language by mutableStateOf(
+        languageManager.current
+            ?: AppLanguage.fromTag(Locale.getDefault().language)
+            ?: AppLanguage.English,
+    )
         private set
 
     fun selectLanguage(next: AppLanguage) {

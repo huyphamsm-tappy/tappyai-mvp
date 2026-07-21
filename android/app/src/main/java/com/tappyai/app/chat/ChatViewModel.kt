@@ -1,6 +1,11 @@
 package com.tappyai.app.chat
 
 import android.net.Uri
+import android.content.Intent
+import android.os.Bundle
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import androidx.compose.runtime.getValue
@@ -17,6 +22,7 @@ import com.tappyai.app.chat.data.MessageFeedbackRepository
 import com.tappyai.app.chat.data.SuggestedPromptsRepository
 import com.tappyai.app.history.StoredChatMessage
 import com.tappyai.app.history.data.ChatHistoryRepository
+import com.tappyai.app.maps.data.MapsRepository
 import com.tappyai.app.language.AppLanguage
 import com.tappyai.app.language.LanguageManager
 import com.tappyai.core.common.StringProvider
@@ -42,10 +48,11 @@ class ChatViewModel @Inject constructor(
     private val chatHistoryRepository: ChatHistoryRepository,
     private val messageFeedbackRepository: MessageFeedbackRepository,
     private val suggestedPromptsRepository: SuggestedPromptsRepository,
+    private val mapsRepository: MapsRepository,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
-    @ApplicationContext context: android.content.Context,
+    @ApplicationContext private val context: android.content.Context,
 ) : ViewModel() {
 
     val category: ChatCategory = savedStateHandle.get<String>("category")
@@ -86,6 +93,14 @@ class ChatViewModel @Inject constructor(
 
     private val _isAssistantResponding = MutableStateFlow(false)
     val isAssistantResponding: StateFlow<Boolean> = _isAssistantResponding.asStateFlow()
+
+    // The reply text revealed AS IT STREAMS (structured blocks stripped, image markdown KEPT — the
+    // UI segments it live so photo galleries appear inline mid-stream, matching the committed
+    // message's segments). Empty until the first token arrives — the UI shows the thinking dots +
+    // rotating hint until then, then the smooth typewriter reveal. Web parity: ChatInterface
+    // streams the last assistant message's text live via useSmoothText + formatMessage.
+    private val _streamingText = MutableStateFlow("")
+    val streamingText: StateFlow<String> = _streamingText.asStateFlow()
 
     // True only while a resumed conversation's history is still loading, so the Welcome state
     // doesn't flash before the real messages arrive (see init{} below). Chats started fresh
@@ -142,6 +157,12 @@ class ChatViewModel @Inject constructor(
 
     private var textToSpeech: TextToSpeech? = null
 
+    private var speechRecognizer: SpeechRecognizer? = null
+    private val _isListening = MutableStateFlow(false)
+    /** True while the in-app voice recogniser is actively listening — drives the mic recording
+     *  animation (mirrors the web chat's `isListening`). */
+    val isListening: StateFlow<Boolean> = _isListening.asStateFlow()
+
     /** False until the device's TTS engine finishes initializing successfully — mirrors the
      *  web's `!window.speechSynthesis` guard; [onToggleSpeak] silently no-ops while false. */
     var ttsAvailable by mutableStateOf(false)
@@ -153,6 +174,26 @@ class ChatViewModel @Inject constructor(
      *  messages instead of one single result. */
     var speakingMessageId by mutableStateOf<Long?>(null)
         private set
+
+    // ── TTS player-bar state (web parity: the scrubber shown while a message reads aloud) ──
+    // Native TextToSpeech has no pause/seek, so play/pause/skip/speed are implemented by stopping and
+    // re-speaking from a character offset; onRangeStart drives the live progress. CPS matches the web.
+    var ttsSpeed by mutableStateOf(1f)
+        private set
+    var ttsIsPaused by mutableStateOf(false)
+        private set
+    var ttsProgress by mutableStateOf(0f) // 0..1
+        private set
+    var ttsElapsedSec by mutableStateOf(0)
+        private set
+    var ttsTotalSec by mutableStateOf(0)
+        private set
+    private var ttsText: String = ""
+    private var ttsBaseOffset: Int = 0 // char index the current utterance started at
+    private var ttsCurrentOffset: Int = 0
+    // Set true when WE stop TTS on purpose (pause/skip/speed change) so the engine's onDone/onError
+    // callback doesn't tear the player down — only a natural finish or the user's Stop should.
+    private var ttsIntentionalStop = false
 
     init {
         val id = conversationId
@@ -190,14 +231,91 @@ class ChatViewModel @Inject constructor(
         }
         textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
             override fun onStart(utteranceId: String?) {}
-            override fun onDone(utteranceId: String?) { speakingMessageId = null }
+            // Live progress: `start` is the char index within the CURRENT (offset) utterance; add the
+            // base to get the absolute position, then derive progress + elapsed (web CPS = 13).
+            override fun onRangeStart(utteranceId: String?, start: Int, end: Int, frame: Int) {
+                val abs = (ttsBaseOffset + start).coerceIn(0, ttsText.length)
+                ttsCurrentOffset = abs
+                val len = ttsText.length.coerceAtLeast(1)
+                ttsProgress = abs.toFloat() / len
+                ttsElapsedSec = (abs / (TTS_CPS * ttsSpeed)).toInt()
+                ttsTotalSec = (len / (TTS_CPS * ttsSpeed)).toInt()
+            }
+            override fun onDone(utteranceId: String?) {
+                if (ttsIntentionalStop) { ttsIntentionalStop = false; return }
+                stopTtsPlayback()
+            }
             @Deprecated("Deprecated in Java")
-            override fun onError(utteranceId: String?) { speakingMessageId = null }
-            override fun onError(utteranceId: String?, errorCode: Int) { speakingMessageId = null }
+            override fun onError(utteranceId: String?) {
+                if (ttsIntentionalStop) { ttsIntentionalStop = false; return }
+                stopTtsPlayback()
+            }
+            override fun onError(utteranceId: String?, errorCode: Int) {
+                if (ttsIntentionalStop) { ttsIntentionalStop = false; return }
+                stopTtsPlayback()
+            }
         })
     }
 
     fun onInputChange(value: String) { input = value }
+
+    /** Appends a picked emoji to the draft (web `insertEmoji`; the composer's String-based field
+     *  has no cursor access, so Android appends at the end — the common typing-then-emoji flow). */
+    fun onEmojiPicked(emoji: String) { input += emoji }
+
+    /**
+     * Starts in-app voice input via [SpeechRecognizer] (mirrors the web chat's Web Speech API mic):
+     * a live partial transcript flows into the input as the user speaks, and on a final result the
+     * recognised text is appended and the message is AUTO-SENT — the same behaviour as web (no extra
+     * manual tap). Toggling while already listening stops it. RECORD_AUDIO is requested by the screen.
+     */
+    fun startVoiceInput() {
+        if (_isListening.value) { stopVoiceInput(); return }
+        if (!SpeechRecognizer.isRecognitionAvailable(context)) return
+        val base = input
+        val recognizer = SpeechRecognizer.createSpeechRecognizer(context)
+        speechRecognizer = recognizer
+        recognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) { _isListening.value = true }
+            override fun onBeginningOfSpeech() {}
+            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onBufferReceived(buffer: ByteArray?) {}
+            override fun onEndOfSpeech() { _isListening.value = false }
+            override fun onError(error: Int) {
+                _isListening.value = false
+                recognizer.destroy(); speechRecognizer = null
+            }
+            override fun onPartialResults(partialResults: Bundle?) {
+                partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                    ?.takeIf { it.isNotBlank() }
+                    ?.let { input = if (base.isBlank()) it else "$base $it" }
+            }
+            override fun onResults(results: Bundle?) {
+                _isListening.value = false
+                recognizer.destroy(); speechRecognizer = null
+                val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                if (!text.isNullOrBlank()) {
+                    input = if (base.isBlank()) text else "$base $text"
+                    onSend() // web parity: auto-send once recognition completes
+                }
+            }
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+        _isListening.value = true // optimistic instant feedback (web parity)
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, speechLocaleTag)
+            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+        }
+        runCatching { recognizer.startListening(intent) }.onFailure { _isListening.value = false }
+    }
+
+    /** Stops/cancels in-app voice input and clears the listening state. */
+    fun stopVoiceInput() {
+        speechRecognizer?.let { runCatching { it.stopListening() }; runCatching { it.destroy() } }
+        speechRecognizer = null
+        _isListening.value = false
+    }
 
     fun onImagePicked(uri: Uri) { pendingImageUri = uri }
 
@@ -242,17 +360,85 @@ class ChatViewModel @Inject constructor(
      *  (matching the web's single-speaker toggle), else stops any other message and starts
      *  this one. No-ops if the device has no working TTS engine. */
     fun onToggleSpeak(id: Long, text: String) {
-        val tts = textToSpeech ?: return
-        if (!ttsAvailable) return
-        if (speakingMessageId == id) {
-            tts.stop()
-            speakingMessageId = null
-            return
-        }
-        tts.language = Locale.forLanguageTag(speechLocaleTag)
+        if (textToSpeech == null || !ttsAvailable) return
+        if (speakingMessageId == id) { stopTtsPlayback(); return }
+        // Start fresh on a new message (reset the scrubber; keep no residual speed).
         speakingMessageId = id
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "chat-utterance-$id")
+        ttsText = text
+        ttsSpeed = 1f
+        ttsProgress = 0f
+        ttsElapsedSec = 0
+        ttsTotalSec = (text.length.coerceAtLeast(1) / (TTS_CPS * ttsSpeed)).toInt()
+        speakFromOffset(0)
     }
+
+    /** (Re)speak [ttsText] from [offset] chars in, at the current [ttsSpeed]. Backs resume/skip/speed. */
+    private fun speakFromOffset(offset: Int) {
+        val tts = textToSpeech ?: return
+        ttsBaseOffset = offset.coerceIn(0, ttsText.length)
+        ttsCurrentOffset = ttsBaseOffset
+        ttsIsPaused = false
+        tts.setSpeechRate(ttsSpeed)
+        tts.language = Locale.forLanguageTag(speechLocaleTag)
+        val remainder = ttsText.substring(ttsBaseOffset)
+        tts.speak(remainder, TextToSpeech.QUEUE_FLUSH, null, "chat-utterance-$speakingMessageId")
+    }
+
+    /** Fully stops read-aloud and hides the player (natural finish, Stop tap, or error). */
+    private fun stopTtsPlayback() {
+        ttsIntentionalStop = false
+        textToSpeech?.stop()
+        speakingMessageId = null
+        ttsIsPaused = false
+        ttsProgress = 0f
+    }
+
+    /** Player Stop/close — same as tapping the speaking message's read-aloud again. */
+    fun onStopSpeak() = stopTtsPlayback()
+
+    /** Player play/pause. Pause = stop but keep the offset; play = resume from that offset. */
+    fun onTtsPauseResume() {
+        if (speakingMessageId == null) return
+        if (ttsIsPaused) {
+            speakFromOffset(ttsCurrentOffset)
+        } else {
+            ttsIntentionalStop = true
+            textToSpeech?.stop()
+            ttsIsPaused = true
+        }
+    }
+
+    /** Skip [seconds] (±) — jump the char offset by seconds×CPS×speed and re-speak from there. */
+    fun onTtsSkip(seconds: Int) {
+        if (speakingMessageId == null) return
+        val delta = (seconds * TTS_CPS * ttsSpeed).toInt()
+        val target = (ttsCurrentOffset + delta).coerceIn(0, ttsText.length)
+        if (target >= ttsText.length) { stopTtsPlayback(); return }
+        ttsIntentionalStop = true
+        speakFromOffset(target)
+    }
+
+    /** Cycle read-aloud speed 1× → 1.5× → 2× → 1× (web parity), re-speaking from the current spot. */
+    fun onTtsCycleSpeed() {
+        if (speakingMessageId == null) return
+        ttsSpeed = when (ttsSpeed) {
+            1f -> 1.5f
+            1.5f -> 2f
+            else -> 1f
+        }
+        if (!ttsIsPaused) {
+            ttsIntentionalStop = true
+            speakFromOffset(ttsCurrentOffset)
+        }
+    }
+
+    /** Saves a place to favorites (web SavePlaceButton / FavoriteToggle). Returns true on success. */
+    suspend fun addFavorite(placeId: String, placeName: String, placeAddress: String, placeType: String): Boolean =
+        mapsRepository.addFavorite(placeId, placeName, placeAddress, placeType) is NetworkResult.Success
+
+    /** Removes a favorite place by id. Returns true on success. */
+    suspend fun removeFavorite(placeId: String): Boolean =
+        mapsRepository.removeFavorite(placeId) is NetworkResult.Success
 
     private fun sendUserMessage(text: String, imageUri: Uri? = null) {
         _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
@@ -267,17 +453,34 @@ class ChatViewModel @Inject constructor(
         _isAssistantResponding.value = false
         respondingJob = viewModelScope.launch {
             _isAssistantResponding.value = true
+            _streamingText.value = ""
 
             try {
                 val reply = StringBuilder()
-                chatRepository.streamReply(history).collect { token -> reply.append(token) }
+                chatRepository.streamReply(history).collect { token ->
+                    reply.append(token)
+                    // Surface the running text with structured blocks stripped but image markdown
+                    // RETAINED — the UI segments it live, so each recommendation's photos render
+                    // inline at their position during the stream (web parity: formatMessage runs
+                    // on the accumulated stream every frame; images are never deferred to the end).
+                    _streamingText.value = ChatResponseParser.parse(reply.toString()).streamText
+                }
 
+                // Parse the structured blocks the model may append (plan/CTA/followups) and strip
+                // them from the visible text — web parity (see ChatResponseParser). Web parses
+                // followups from the reply itself; keep the dedicated endpoint as a fallback when
+                // the model didn't inline any, so existing Android followups don't regress.
+                val parsed = ChatResponseParser.parse(reply.toString())
+                val followups = parsed.followups.ifEmpty { chatRepository.getFollowups(category) }
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
                         role = TappyChatRole.Assistant,
-                        text = reply.toString().trim(),
-                        followups = chatRepository.getFollowups(category),
+                        text = parsed.text,
+                        plan = parsed.plan,
+                        ctaButtons = parsed.ctaButtons,
+                        segments = parsed.segments,
+                        followups = followups,
                     )
                 }
                 persistConversation()
@@ -305,6 +508,7 @@ class ChatViewModel @Inject constructor(
                 }
             } finally {
                 _isAssistantResponding.value = false
+                _streamingText.value = ""
             }
         }
     }
@@ -413,11 +617,15 @@ class ChatViewModel @Inject constructor(
         textToSpeech?.stop()
         textToSpeech?.shutdown()
         textToSpeech = null
+        speechRecognizer?.destroy()
+        speechRecognizer = null
         super.onCleared()
     }
 
     private companion object {
         const val TAG = "ChatViewModel"
+        /** Read-aloud chars-per-second estimate — matches the web useTTS `CPS = 13` for progress/skip. */
+        const val TTS_CPS = 13f
         /** Matches the web's `all[0]?.content?.slice(0, 50)` title rule. */
         const val TITLE_MAX_CHARS = 50
         /** Matches the web's `|| 'Chat'` fallback for a blank first message. */

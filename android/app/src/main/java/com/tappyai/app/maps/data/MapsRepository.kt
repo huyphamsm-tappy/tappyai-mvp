@@ -17,4 +17,12 @@ interface MapsRepository {
 
     /** Removes a favorite by its real server-side id (`MapPlace.placeId`), matching `SavedRepository`. */
     suspend fun removeFavorite(placeId: String): NetworkResult<Unit>
+
+    /** Saves a place to favorites (POST /api/favorites), mirroring the web SavePlaceButton/FavoriteToggle. */
+    suspend fun addFavorite(
+        placeId: String,
+        placeName: String,
+        placeAddress: String,
+        placeType: String,
+    ): NetworkResult<Unit>
 }

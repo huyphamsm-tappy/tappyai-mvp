@@ -58,8 +58,36 @@ interface ReviewsApi {
         @Body body: PostCommentRequestDto,
     ): PostCommentResponseDto
 
+    /** Deletes one of the caller's OWN comments (server enforces `user_id = auth.uid`).
+     *  Mirrors the web's `DELETE /api/reviews/{id}/comments?commentId=`; returns {ok, count}. */
+    @DELETE("api/reviews/{id}/comments")
+    suspend fun deleteComment(
+        @Path("id") reviewId: String,
+        @Query("commentId") commentId: String,
+    ): DeleteCommentResponseDto
+
+    /** Sets (or changes) the caller's single reaction on a comment. One row per (comment, user)
+     *  server-side, so a repeat with a different key just updates it. Web: POST /api/comments/{id}/reactions. */
+    @POST("api/comments/{commentId}/reactions")
+    suspend fun postReaction(
+        @Path("commentId") commentId: String,
+        @Body body: ReactionRequestDto,
+    ): ReactionResponseDto
+
+    /** Removes the caller's reaction from a comment (web: DELETE /api/comments/{id}/reactions). */
+    @DELETE("api/comments/{commentId}/reactions")
+    suspend fun deleteReaction(
+        @Path("commentId") commentId: String,
+    ): ReactionResponseDto
+
     @GET("api/users/{id}")
     suspend fun getUserProfile(@Path("id") userId: String): UserProfileDto
+
+    /** Searches users by partial name (or exact email/phone) — mirrors the web's
+     *  `GET /api/users/search?q=`. Min 2 chars server-side; each result includes the caller's
+     *  follow state. 401 when signed out, 429 when rate-limited. */
+    @GET("api/users/search")
+    suspend fun searchUsers(@Query("q") query: String): UserSearchResponseDto
 
     /** Toggles follow on the target user (no request body). Insert-or-delete server-side; returns
      *  the new following state and the updated follower count. 400 on self-follow. */

@@ -9,4 +9,10 @@ sealed interface ReviewsRoute {
     @Serializable data object Composer : ReviewsRoute
     @Serializable data object Notifications : ReviewsRoute
     @Serializable data object Search : ReviewsRoute
+
+    /** The feed's music-disc bottom sheet — web parity `SoundSheet` (a compact `/sound/{id}`). */
+    @Serializable data class SoundSheet(val trackId: String) : ReviewsRoute
+
+    /** The signed-in user's own profile inside Explore (mirrors the web reviews ProfileTab). */
+    @Serializable data object SelfProfile : ReviewsRoute
 }

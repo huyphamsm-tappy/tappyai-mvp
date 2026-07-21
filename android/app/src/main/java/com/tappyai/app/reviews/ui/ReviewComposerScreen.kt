@@ -93,6 +93,7 @@ fun ReviewComposerScreen(
     modifier: Modifier = Modifier,
     attachedSoundTitle: String? = null,
     onRemoveSound: () -> Unit = {},
+    onAddMusic: () -> Unit = {},
     photoUrls: List<String> = emptyList(),
     isUploadingPhoto: Boolean = false,
     onPickPhotos: () -> Unit = {},
@@ -125,6 +126,8 @@ fun ReviewComposerScreen(
 
             if (attachedSoundTitle != null) {
                 AttachedSoundChip(title = attachedSoundTitle, onRemove = onRemoveSound)
+            } else {
+                AddMusicButton(onClick = onAddMusic)
             }
 
             MediaModeTabs(selected = mediaMode, onSelect = onMediaModeChange)
@@ -332,6 +335,33 @@ private fun AttachedSoundChip(title: String, onRemove: () -> Unit) {
                 modifier = Modifier.size(18.dp),
             )
         }
+    }
+}
+
+/** Web parity: the composer's "Add music" text button (Music icon + accent label) shown when no
+ *  track is attached — opens the in-composer [com.tappyai.app.music.MusicPickerSheet]. */
+@Composable
+private fun AddMusicButton(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick)
+            .padding(vertical = TappySpacing.xs, horizontal = TappySpacing.xs),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+    ) {
+        Icon(
+            imageVector = Icons.Filled.MusicNote,
+            contentDescription = null,
+            tint = ComposerAccent,
+            modifier = Modifier.size(16.dp),
+        )
+        Text(
+            text = stringResource(R.string.reviews_composer_add_music),
+            color = ComposerAccent,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+        )
     }
 }
 

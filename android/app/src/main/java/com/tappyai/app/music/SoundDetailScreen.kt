@@ -345,6 +345,7 @@ private fun Actions(
                 },
             )
         }
+        // Sound model (web parity): every Sound is reusable by SoundID reference.
         TappyButton(
             text = useThisSoundLabel,
             onClick = onUseThisSound,

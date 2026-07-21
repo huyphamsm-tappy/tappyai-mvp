@@ -46,6 +46,13 @@ data class ReviewComposerUiState(
     val linkThumbnailUrl: String? = null,
     /** True while a TikTok/Facebook thumbnail lookup is in flight. */
     val isFetchingLinkMeta: Boolean = false,
+    /** Attached background music, mutable now that the composer can pick/replace/trim a track in-
+     *  place (web parity: the MusicPickerSheet + SelectedMusicCard). Null when no track is attached. */
+    val attachedTrackId: String? = null,
+    val attachedTrackTitle: String? = null,
+    /** Start offset (sec) + volume (0–1) chosen in the picker's trim panel — web MusicSelectionPanel. */
+    val attachedStartSec: Int = 0,
+    val attachedVolume: Double = 1.0,
 )
 
 @HiltViewModel
@@ -57,13 +64,6 @@ class ReviewComposerViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
-    /** Present only when reached via [com.tappyai.app.navigation.AppRoute.ComposerWithSound]
-     *  (Sound Detail's "Use this sound") — absent for a normal compose-from-Reviews-tab visit,
-     *  since that route carries no such nav args. [attachedTrackTitle] rides along purely for
-     *  display (the "Using: {title}" chip) so the screen doesn't need a second fetch. */
-    val attachedTrackId: String? = savedStateHandle["trackId"]
-    val attachedTrackTitle: String? = savedStateHandle["trackTitle"]
-
     /**
      * Set only when reached via [com.tappyai.app.navigation.AppRoute.ComposerForPlace] (a past
      * booking's Review button). When present, [submit] sends this real `place_id` instead of
@@ -72,7 +72,14 @@ class ReviewComposerViewModel @Inject constructor(
     private val presetPlaceId: String? = savedStateHandle["placeId"]
     val prefilledPlaceName: String? = savedStateHandle["placeName"]
 
-    private val _uiState = MutableStateFlow(ReviewComposerUiState())
+    // Seed the attached track from the nav args when reached via `ComposerWithSound` (Sound Detail's
+    // "Use this sound"); it's mutable state now, so the in-composer picker can add/replace/trim too.
+    private val _uiState = MutableStateFlow(
+        ReviewComposerUiState(
+            attachedTrackId = savedStateHandle["trackId"],
+            attachedTrackTitle = savedStateHandle["trackTitle"],
+        ),
+    )
     val uiState: StateFlow<ReviewComposerUiState> = _uiState.asStateFlow()
 
     private val _events = Channel<ComposerEvent>(Channel.BUFFERED)
@@ -83,13 +90,13 @@ class ReviewComposerViewModel @Inject constructor(
      * rating and a free-text place name — it has no structured place picker or media picker — so
      * [placeId] is derived as a slug of [placeName]. The backend requires a place, so a blank
      * place name yields a 400 which we surface as a Toast (leaving validation to the backend,
-     * which owns that business rule). [includeSound] lets the screen drop the pre-attached track
-     * (its "x" on the "Using: {title}" chip) without needing a mutable copy of [attachedTrackId].
+     * which owns that business rule). The attached track (id/startSec/volume) lives in [uiState].
      */
-    fun submit(body: String, rating: Int, placeName: String, includeSound: Boolean = true) {
+    fun submit(body: String, rating: Int, placeName: String) {
         // Block posting while a photo is still uploading, so the created review can't miss a URL
         // that is a moment away from being ready.
-        if (_uiState.value.isPosting || _uiState.value.isUploadingPhoto) return
+        val s = _uiState.value
+        if (s.isPosting || s.isUploadingPhoto) return
         _uiState.update { it.copy(isPosting = true) }
         viewModelScope.launch {
             val result = repository.createReview(
@@ -99,8 +106,10 @@ class ReviewComposerViewModel @Inject constructor(
                 placeName = placeName.trim(),
                 body = body.trim(),
                 rating = rating.takeIf { it in 1..5 },
-                musicTrackId = attachedTrackId.takeIf { includeSound },
-                photos = _uiState.value.photoUrls.takeIf { it.isNotEmpty() },
+                musicTrackId = s.attachedTrackId,
+                musicStartSec = s.attachedStartSec,
+                musicVolume = s.attachedVolume,
+                photos = s.photoUrls.takeIf { it.isNotEmpty() },
                 link = currentLinkAttachment(),
             )
             _uiState.update { it.copy(isPosting = false) }
@@ -182,6 +191,26 @@ class ReviewComposerViewModel @Inject constructor(
     /** Drops one already-uploaded photo from the draft (removes its URL; no server call needed). */
     fun onRemovePhoto(url: String) {
         _uiState.update { it.copy(photoUrls = it.photoUrls - url) }
+    }
+
+    /** Attaches (or replaces) the background track chosen in the in-composer MusicPickerSheet, with
+     *  the start offset + volume from its trim panel (web parity: onSelect(MusicSelection)). */
+    fun onMusicSelected(trackId: String, title: String, startSec: Int, volume: Double) {
+        _uiState.update {
+            it.copy(
+                attachedTrackId = trackId,
+                attachedTrackTitle = title,
+                attachedStartSec = startSec.coerceAtLeast(0),
+                attachedVolume = volume.coerceIn(0.0, 1.0),
+            )
+        }
+    }
+
+    /** Removes the attached track (the "x" on the SelectedMusicCard). */
+    fun onRemoveSound() {
+        _uiState.update {
+            it.copy(attachedTrackId = null, attachedTrackTitle = null, attachedStartSec = 0, attachedVolume = 1.0)
+        }
     }
 
     private var linkMetaJob: Job? = null

@@ -155,10 +155,15 @@ class AuthRepository @Inject constructor(
     fun startZaloSignIn(context: Context) = zaloSignInClient.launch(context)
 
     suspend fun sendEmailOtp(email: String): NetworkResult<Unit> = safeAuthCall {
-        // No redirectUrl: passing one makes Supabase send a magic-LINK email (no code), but this
-        // flow navigates to the OTP code-entry screen and calls verifyEmailOtp(token = code).
-        // Omitting it makes Supabase send the 6-digit OTP code instead — matching the web's
-        // signInWithOtp({ email }) (no emailRedirectTo) + verifyOtp({ token, type: 'email' }).
+        // Web production sends a magic LINK for email login (Supabase project uses the default
+        // email template — verified in the dashboard + the real email), NOT a 6-digit code. So
+        // Android must complete via the link too (Web is the source of truth). We rely on the
+        // default redirectUrl (= the Auth plugin's deep link, tappyai://auth-callback, from the
+        // scheme/host in SupabaseModule): Supabase builds the magic link's redirect_to as that
+        // deep link, so tapping "Sign in" in the email goes through Supabase /auth/v1/verify,
+        // which redirects to tappyai://auth-callback — re-opening the app. handleOAuthRedirectIntent
+        // then completes the session from that deep link (same path the OAuth providers use), so
+        // the user never has to finish sign-in in the browser.
         supabaseClient.auth.signInWith(OTP) {
             this.email = email
         }

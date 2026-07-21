@@ -1,6 +1,7 @@
 package com.tappyai.app.reviews.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.SEED_REVIEWS
+import com.tappyai.app.reviews.data.UserSearchResult
 import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyEmptyState
@@ -48,6 +50,7 @@ private val SearchTextSecondary = Color(0xB3FFFFFF)
 private val SearchPlaceholder = Color(0x66FFFFFF)
 private val SearchIconColor = Color(0x99FFFFFF)
 private val SearchStarColor = Color(0xFFFBBF24)
+private val FollowRed = Color(0xFFFE2C55)
 
 @Composable
 internal fun ReviewSearchBar(
@@ -193,6 +196,119 @@ internal fun LazyListScope.reviewSearchItems(
             ReviewSearchResultItem(
                 review = review,
                 onClick = { onResultClick(review) },
+            )
+        }
+    }
+}
+
+/** Reviews / Users mode toggle for the search screen — mirrors the web search's two search modes. */
+@Composable
+internal fun ReviewSearchModeTabs(
+    selected: ReviewSearchMode,
+    onSelect: (ReviewSearchMode) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = TappySpacing.xl, vertical = TappySpacing.md),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xl),
+    ) {
+        SearchModeTab(
+            label = stringResource(R.string.reviews_search_mode_reviews),
+            active = selected == ReviewSearchMode.Reviews,
+            onClick = { onSelect(ReviewSearchMode.Reviews) },
+        )
+        SearchModeTab(
+            label = stringResource(R.string.reviews_search_mode_users),
+            active = selected == ReviewSearchMode.Users,
+            onClick = { onSelect(ReviewSearchMode.Users) },
+        )
+    }
+}
+
+@Composable
+private fun SearchModeTab(label: String, active: Boolean, onClick: () -> Unit) {
+    Text(
+        text = label,
+        color = if (active) SearchTextPrimary else SearchTextSecondary,
+        fontSize = 14.sp,
+        fontWeight = if (active) FontWeight.Bold else FontWeight.Normal,
+        modifier = Modifier.clickable(onClick = onClick),
+    )
+}
+
+@Composable
+internal fun UserSearchResultItem(
+    user: UserSearchResult,
+    onClick: () -> Unit,
+    onFollowToggle: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val displayName = user.fullName ?: stringResource(R.string.reviews_anonymous_name)
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = TappySpacing.xl, vertical = TappySpacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TappyAvatar(name = displayName, imageUrl = user.avatarUrl, size = TappyAvatarSize.ListRow)
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
+            Text(
+                text = displayName,
+                color = SearchTextPrimary,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = stringResource(R.string.reviews_user_followers, user.followerCount),
+                color = SearchPlaceholder,
+                fontSize = 12.sp,
+            )
+        }
+        FollowPill(isFollowing = user.isFollowing, onClick = onFollowToggle)
+    }
+}
+
+@Composable
+private fun FollowPill(isFollowing: Boolean, onClick: () -> Unit) {
+    Text(
+        text = stringResource(if (isFollowing) R.string.reviews_following else R.string.reviews_follow),
+        color = if (isFollowing) SearchTextSecondary else Color.White,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.SemiBold,
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(if (isFollowing) Color.Transparent else FollowRed)
+            .border(1.dp, if (isFollowing) SearchIconColor else FollowRed, RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 14.dp, vertical = 6.dp),
+    )
+}
+
+internal fun LazyListScope.userSearchItems(
+    users: List<UserSearchResult>,
+    onUserClick: (String) -> Unit,
+    onFollowToggle: (String) -> Unit,
+) {
+    if (users.isEmpty()) {
+        item(key = "user-search-empty") {
+            TappyEmptyState(
+                icon = Icons.Filled.Search,
+                title = stringResource(R.string.reviews_search_users_empty_title),
+                message = stringResource(R.string.reviews_search_users_empty_message),
+            )
+        }
+    } else {
+        items(items = users, key = { it.id }) { user ->
+            UserSearchResultItem(
+                user = user,
+                onClick = { onUserClick(user.id) },
+                onFollowToggle = { onFollowToggle(user.id) },
             )
         }
     }

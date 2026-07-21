@@ -54,6 +54,17 @@ import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.theme.TappyMinTouchTarget
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import kotlinx.coroutines.delay
 
 // -- Review always-dark palette --------------------------------------------------
 private val ReviewBackground = Color(0xFF000000)
@@ -91,6 +102,12 @@ fun ReviewCard(
     onVideoDuration: (Float) -> Unit = {},
     onRequestAudioUnlock: () -> Unit = {},
 ) {
+    // Feed gestures (mirrors the web Post gesture layer): single-tap toggles play/pause (and unlocks
+    // audio on first tap), double-tap likes + shows a center heart-pop burst. Reset per review so a
+    // recycled pager page doesn't inherit the previous clip's paused/burst state.
+    var paused by remember(review.id) { mutableStateOf(false) }
+    var heartBurstKey by remember(review.id) { mutableIntStateOf(0) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -100,9 +117,52 @@ fun ReviewCard(
             review = review,
             active = active,
             audioUnlocked = audioUnlocked,
+            paused = paused,
             onVideoDuration = onVideoDuration,
             onRequestAudioUnlock = onRequestAudioUnlock,
         )
+
+        // Tap/double-tap layer. Sits above the media but below the action rail/overflow (composed
+        // after), so the rail's own buttons still receive their taps. detectTapGestures passes drag
+        // events through, so the vertical pager and photo carousel underneath keep working.
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(review.id) {
+                    detectTapGestures(
+                        onTap = {
+                            onRequestAudioUnlock()
+                            paused = !paused
+                        },
+                        onDoubleTap = {
+                            if (!review.likedByMe) onLike()
+                            heartBurstKey++
+                        },
+                    )
+                },
+        )
+
+        if (paused && review.contentType == ReviewContentType.Video) {
+            // Circular badge (mirrors web: w-16 h-16 bg-white/20 rounded-full + solid white play
+            // icon) so the pause indicator stays visible over bright video frames.
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.PlayArrow,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(32.dp),
+                )
+            }
+        }
+
+        HeartBurst(triggerKey = heartBurstKey, modifier = Modifier.align(Alignment.Center))
 
         if (isMe) {
             ReviewOverflowMenu(
@@ -129,6 +189,7 @@ fun ReviewCard(
 
         ReviewBottomOverlay(
             review = review,
+            onAuthorClick = onAvatarClick,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(start = 12.dp, end = 80.dp, bottom = 80.dp),
@@ -141,6 +202,7 @@ private fun ReviewMediaBackground(
     review: Review,
     active: Boolean,
     audioUnlocked: Boolean,
+    paused: Boolean,
     onVideoDuration: (Float) -> Unit,
     onRequestAudioUnlock: () -> Unit,
 ) {
@@ -155,6 +217,7 @@ private fun ReviewMediaBackground(
                     sourceUrl = review.sourceUrl,
                     active = active,
                     audioUnlocked = audioUnlocked,
+                    paused = paused,
                     onDuration = onVideoDuration,
                     onRequestAudioUnlock = onRequestAudioUnlock,
                 )
@@ -202,6 +265,40 @@ private fun ReviewMediaBackground(
                         1.0f to ReviewGradientBottom,
                     ),
                 ),
+        )
+    }
+}
+
+/**
+ * Center heart-pop burst shown on a double-tap like — mirrors the web's `animate-heart-pop`
+ * (`heartPop` keyframes: scale 0.8→1.3→1.0 while fading in, then fade out; ~0.7s total). Composed
+ * unconditionally (Animatable/effect are stable); the icon only draws while the burst is visible.
+ */
+@Composable
+private fun HeartBurst(triggerKey: Int, modifier: Modifier = Modifier) {
+    val scale = remember { Animatable(1f) }
+    val alpha = remember { Animatable(0f) }
+    LaunchedEffect(triggerKey) {
+        if (triggerKey == 0) return@LaunchedEffect
+        alpha.snapTo(1f)
+        scale.snapTo(0.8f)
+        scale.animateTo(1.3f, animationSpec = tween(150))
+        scale.animateTo(1.0f, animationSpec = tween(180))
+        delay(200)
+        alpha.animateTo(0f, animationSpec = tween(220))
+    }
+    if (alpha.value > 0f) {
+        Icon(
+            imageVector = Icons.Filled.Favorite,
+            contentDescription = null,
+            tint = LikeRed,
+            modifier = modifier
+                .size(112.dp)
+                .graphicsLayer {
+                    scaleX = scale.value
+                    scaleY = scale.value
+                    this.alpha = alpha.value
+                },
         )
     }
 }
@@ -370,12 +467,15 @@ private fun ReviewMusicDiscIcon(onClick: () -> Unit) {
 @Composable
 private fun ReviewBottomOverlay(
     review: Review,
+    onAuthorClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         val displayName = review.profiles?.fullName
         if (displayName != null) {
             val handle = "@${displayName.lowercase().replace(" ", ".")}"
+            // Web parity: the author handle (like the avatar) opens the author's profile
+            // (web feed links avatar + handle to /users/[id]).
             Text(
                 text = handle,
                 color = ReviewTextPrimary,
@@ -383,6 +483,7 @@ private fun ReviewBottomOverlay(
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.clickable(onClick = onAuthorClick),
             )
             Spacer(modifier = Modifier.height(6.dp))
         }

@@ -1,0 +1,24 @@
+<resources>
+    <!-- Split Bill (mirror src/app/split-bill/page.tsx + i18n/w3/splitBill.ts) -->
+    <string name="split_title">🧮 Chia tiền</string>
+    <string name="split_bill_total_label">Tổng tiền hóa đơn (đ)</string>
+    <string name="split_bill_total_placeholder">Nhập tổng tiền...</string>
+    <string name="split_people_label">Số người</string>
+    <string name="split_people_unit">người</string>
+    <string name="split_tip_label">Tip / phụ thu (%)</string>
+    <string name="split_tip_none">Không</string>
+    <string name="split_tip_custom_placeholder">Tự nhập</string>
+    <string name="split_mode_equal">Chia đều</string>
+    <string name="split_mode_custom">Chia theo món</string>
+    <string name="split_per_person_label">Mỗi người trả</string>
+    <string name="split_includes_tip">(Bao gồm %1$s%% tip · Tổng: %2$s đ)</string>
+    <string name="split_bill_label">Hóa đơn</string>
+    <string name="split_tip_short_label">Tip</string>
+    <string name="split_total_label">Tổng</string>
+    <string name="split_empty_prompt">Nhập tổng tiền để tính</string>
+    <string name="split_custom_hint">Nhập số tiền từng người đã gọi</string>
+    <string name="split_amount_placeholder">Số tiền...</string>
+    <string name="split_total_after_tip">Tổng (sau tip)</string>
+    <string name="split_disclaimer">Số tiền chỉ mang tính tham khảo, làm tròn để dễ trả.</string>
+    <string name="split_person_default_name">Người %1$d</string>
+</resources>

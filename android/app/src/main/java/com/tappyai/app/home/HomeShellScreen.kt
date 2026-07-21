@@ -20,8 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tappyai.app.chat.ChatScreen
+import com.tappyai.app.deals.DealsScreen
 import com.tappyai.app.explore.ExploreTab
-import com.tappyai.app.maps.MapsScreen
 import com.tappyai.app.profile.ProfileTab
 import com.tappyai.core.common.UiState
 import com.tappyai.core.designsystem.component.TappyAppBar
@@ -108,11 +108,19 @@ fun HomeShellScreen(
                             onOpenChatWithPrefill = { prefill ->
                                 navController.navigateToChatWithPrefill(prefill)
                             },
+                            onOpenChatWithCategory = { category ->
+                                navController.navigateToChatWithCategory(category)
+                            },
+                            onOpenConversation = { conversationId ->
+                                navController.navigateToConversation(conversationId)
+                            },
                         )
                     }
                     composable<HomeRoute.Chat> { ChatScreen() }
-                    composable<HomeRoute.Explore> { ExploreTab() }
-                    composable<HomeRoute.Maps> { MapsScreen() }
+                    composable<HomeRoute.Explore> {
+                        ExploreTab(onEditProfile = { navController.selectTab(HomeTab.Profile) })
+                    }
+                    composable<HomeRoute.Deals> { DealsScreen() }
                     composable<HomeRoute.Profile> {
                         ProfileTab(
                             onOpenChat = { navController.selectTab(HomeTab.Chat) },
@@ -163,6 +171,18 @@ private fun NavHostController.navigateToConversation(conversationId: String) {
  */
 private fun NavHostController.navigateToChatWithPrefill(prefill: String) {
     navigate(HomeRoute.Chat(prefill = prefill)) {
+        popUpTo(graph.findStartDestination().id) { saveState = true }
+        launchSingleTop = true
+    }
+}
+
+/**
+ * Opens the Chat tab scoped to a content [category] — the native equivalent of the web home's
+ * category pill `/chat?category=<id>` (HomeRoute.Chat carries the `category`). Same fresh-instance
+ * rationale as [navigateToChatWithPrefill]: a restored Chat back stack would ignore the category.
+ */
+private fun NavHostController.navigateToChatWithCategory(category: String) {
+    navigate(HomeRoute.Chat(category = category)) {
         popUpTo(graph.findStartDestination().id) { saveState = true }
         launchSingleTop = true
     }

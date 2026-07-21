@@ -1,51 +1,75 @@
 package com.tappyai.app.home
 
 import androidx.lifecycle.ViewModel
-import com.tappyai.app.R
+import androidx.lifecycle.viewModelScope
+import com.tappyai.app.history.Conversation
+import com.tappyai.app.history.data.ChatHistoryRepository
+import com.tappyai.app.language.AppLanguage
+import com.tappyai.app.language.LanguageManager
 import com.tappyai.core.common.ClockProvider
-import com.tappyai.core.common.StringProvider
 import com.tappyai.core.common.UiState
+import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
 import javax.inject.Inject
 
 /**
- * State for the Home launchpad ([HomeScreen]). Phase 1C.1 scope is the UI skeleton only — no
- * network, no cross-feature business logic. So:
- *  - [greeting] is derived purely from the device clock ([ClockProvider], the existing test
- *    seam) — a local, offline computation, not a personalized server greeting.
- *  - [suggestionsState] and [recentActivityState] have **no data source yet** and honestly
- *    start [UiState.Empty]; the screen renders real empty/loading states off them (never fake
- *    data). When a later phase wires the AI-recommendation / history features, only this
- *    ViewModel changes — the screen already renders every state.
+ * State for the Home launchpad ([HomeScreen]).
+ *  - [greeting] comes from [HomeGreeting] — the exact web hero engine (7 local-time slots ×
+ *    multiple templates × weekday/weekend variants, template = dayOfMonth % pool). Local, offline
+ *    computation from the device clock ([ClockProvider]); never a single hardcoded string.
+ *  - [recentActivityState] surfaces the user's recent conversations (web parity: HomeView's
+ *    "Recent conversations" — GET conversations, newest first, capped at 5), starting
+ *    [UiState.Loading] then resolving to real rows or an honest empty state.
+ *
+ * The Suggestions section renders a static curated prompt set directly in the screen (UI-parity
+ * only, no personalization engine — see `HOME_SUGGESTIONS`), so it needs no ViewModel state.
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     clock: ClockProvider,
-    stringProvider: StringProvider,
+    languageManager: LanguageManager,
+    private val chatHistoryRepository: ChatHistoryRepository,
 ) : ViewModel() {
 
-    val greeting: String = greetingForHour(stringProvider, hourOfDay(clock.nowMillis()))
+    val greeting: String = run {
+        val now = Instant.ofEpochMilli(clock.nowMillis()).atZone(ZoneId.systemDefault())
+        HomeGreeting.heroText(
+            hour = now.hour,
+            isWeekend = now.dayOfWeek == DayOfWeek.SATURDAY || now.dayOfWeek == DayOfWeek.SUNDAY,
+            dayOfMonth = now.dayOfMonth,
+            english = languageManager.current == AppLanguage.English,
+        )
+    }
 
-    private val _suggestionsState = MutableStateFlow<UiState<List<String>>>(UiState.Empty)
-    val suggestionsState: StateFlow<UiState<List<String>>> = _suggestionsState.asStateFlow()
+    private val _recentActivityState = MutableStateFlow<UiState<List<Conversation>>>(UiState.Loading)
+    val recentActivityState: StateFlow<UiState<List<Conversation>>> = _recentActivityState.asStateFlow()
 
-    private val _recentActivityState = MutableStateFlow<UiState<List<String>>>(UiState.Empty)
-    val recentActivityState: StateFlow<UiState<List<String>>> = _recentActivityState.asStateFlow()
+    init { loadRecent() }
+
+    fun loadRecent() {
+        _recentActivityState.value = UiState.Loading
+        viewModelScope.launch {
+            when (val result = chatHistoryRepository.getConversations()) {
+                is NetworkResult.Success -> {
+                    val recent = result.data.take(RECENT_LIMIT)
+                    _recentActivityState.value =
+                        if (recent.isEmpty()) UiState.Empty else UiState.Success(recent)
+                }
+                // Home stays graceful on a transient failure — fall back to the empty-chat state
+                // rather than a full error screen (the section is a launchpad convenience, not core).
+                is NetworkResult.Error -> _recentActivityState.value = UiState.Empty
+            }
+        }
+    }
 
     private companion object {
-        fun hourOfDay(millis: Long): Int =
-            Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).hour
-
-        fun greetingForHour(stringProvider: StringProvider, hour: Int): String = when (hour) {
-            in 5..10 -> stringProvider.get(R.string.home_greeting_morning)
-            in 11..16 -> stringProvider.get(R.string.home_greeting_afternoon)
-            in 17..21 -> stringProvider.get(R.string.home_greeting_evening)
-            else -> stringProvider.get(R.string.home_greeting_night)
-        }
+        const val RECENT_LIMIT = 5
     }
 }

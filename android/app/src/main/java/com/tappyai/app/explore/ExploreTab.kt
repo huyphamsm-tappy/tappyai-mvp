@@ -4,6 +4,6 @@ import androidx.compose.runtime.Composable
 import com.tappyai.app.reviews.ui.ReviewsNavHost
 
 @Composable
-fun ExploreTab() {
-    ReviewsNavHost()
+fun ExploreTab(onEditProfile: () -> Unit = {}) {
+    ReviewsNavHost(onEditProfile = onEditProfile)
 }

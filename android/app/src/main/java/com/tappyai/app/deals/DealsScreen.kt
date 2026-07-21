@@ -47,7 +47,10 @@ import com.tappyai.core.designsystem.theme.tappyCategoryColors
  */
 @Composable
 fun DealsScreen(
-    onBack: () -> Unit,
+    // Null when Deals is a top-level shell tab (Web parity: /deals is a primary nav destination):
+    // the shell's TappyAppBar already shows the title, so the in-content back+title header is
+    // suppressed. Non-null keeps the drill-in header for any push-navigation caller.
+    onBack: (() -> Unit)? = null,
     viewModel: DealsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.uiState
@@ -65,11 +68,13 @@ fun DealsScreen(
                 .padding(TappySpacing.xl),
             verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
+            if (onBack != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
+                    }
+                    Text(text = stringResource(R.string.deals_title), style = MaterialTheme.typography.titleLarge)
                 }
-                Text(text = stringResource(R.string.deals_title), style = MaterialTheme.typography.titleLarge)
             }
 
             when (state) {
