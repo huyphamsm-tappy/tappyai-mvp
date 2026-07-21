@@ -264,6 +264,7 @@ export default function SoundPage() {
                   <Bell size={16} className={followed ? 'fill-white' : ''} /> {followed ? 'Đang theo dõi' : 'Theo dõi'}
                 </button>
               </div>
+              {/* Sound model: every Sound is reusable by SoundID reference. */}
               <button
                 onClick={() => router.push(`/reviews/new?sound=${data.track.id}`)}
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 py-3 text-sm font-semibold text-white active:scale-95 transition"

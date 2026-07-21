@@ -39,6 +39,33 @@ async function getRealCommentCount(supabase: ReturnType<typeof createClient>, re
   return count ?? 0
 }
 
+// Aggregate each comment's reactions into { reactions: { like: 2, love: 1 }, my_reaction: 'like' }.
+// One row per (comment, user) in comment_reactions, so counts are a simple group-by and the
+// caller's own reaction (if any) is the single row matching [currentUserId].
+async function attachReactions<T extends { id: string }>(
+  supabase: ReturnType<typeof createClient>,
+  rows: T[],
+  currentUserId: string | null,
+): Promise<(T & { reactions: Record<string, number>; my_reaction: string | null })[]> {
+  const ids = rows.map(r => r.id)
+  if (ids.length === 0) return rows.map(r => ({ ...r, reactions: {}, my_reaction: null }))
+
+  const { data } = await supabase
+    .from('comment_reactions')
+    .select('comment_id, user_id, reaction')
+    .in('comment_id', ids)
+
+  const counts = new Map<string, Record<string, number>>()
+  const mine = new Map<string, string>()
+  for (const r of (data || []) as { comment_id: string; user_id: string; reaction: string }[]) {
+    const c = counts.get(r.comment_id) ?? {}
+    c[r.reaction] = (c[r.reaction] ?? 0) + 1
+    counts.set(r.comment_id, c)
+    if (currentUserId && r.user_id === currentUserId) mine.set(r.comment_id, r.reaction)
+  }
+  return rows.map(r => ({ ...r, reactions: counts.get(r.id) ?? {}, my_reaction: mine.get(r.id) ?? null }))
+}
+
 // GET /api/reviews/[id]/comments?limit=30
 export async function GET(
   req: NextRequest,
@@ -46,18 +73,20 @@ export async function GET(
 ) {
   const limit = Math.min(50, parseInt(req.nextUrl.searchParams.get('limit') || '30'))
   const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('review_comments')
-    .select('id, body, created_at, user_id')
+    .select('id, body, created_at, user_id, parent_comment_id')
     .eq('review_id', params.id)
     .order('created_at', { ascending: true })
     .limit(limit)
 
   if (error) return NextResponse.json({ error: 'Loi tai binh luan' }, { status: 500 })
 
+  const withProfiles = await attachProfiles(supabase, data || [])
   const [comments, count] = await Promise.all([
-    attachProfiles(supabase, data || []),
+    attachReactions(supabase, withProfiles, user?.id ?? null),
     getRealCommentCount(supabase, params.id),
   ])
   return NextResponse.json({ comments, count })
@@ -78,9 +107,13 @@ export async function POST(
   }
 
   let body: string
+  let parentId: string | null = null
   try {
     const b = await req.json()
     body = b.body?.trim()
+    // Optional: replying to another comment. A one-level thread — a reply's own parentId is
+    // ignored by the UI's nesting, matching typical social-app comment threads.
+    parentId = typeof b.parentId === 'string' && b.parentId.trim() ? b.parentId.trim() : null
     if (!body || body.length < 1 || body.length > 300) throw new Error('invalid')
   } catch {
     return NextResponse.json({ error: 'Binh luan phai tu 1-300 ky tu' }, { status: 400 })
@@ -88,13 +121,14 @@ export async function POST(
 
   const { data: insertedComment, error } = await supabase
     .from('review_comments')
-    .insert({ review_id: params.id, user_id: user.id, body })
-    .select('id, body, created_at, user_id')
+    .insert({ review_id: params.id, user_id: user.id, body, parent_comment_id: parentId })
+    .select('id, body, created_at, user_id, parent_comment_id')
     .single()
 
   if (error) return NextResponse.json({ error: 'Khong the gui binh luan' }, { status: 500 })
 
-  const [comment] = await attachProfiles(supabase, [insertedComment])
+  const [withProfile] = await attachProfiles(supabase, [insertedComment])
+  const comment = { ...withProfile, reactions: {} as Record<string, number>, my_reaction: null as string | null }
 
   // Notify review owner (fire-and-forget, skip self-comment)
   const adminSb = createAdminClient()
