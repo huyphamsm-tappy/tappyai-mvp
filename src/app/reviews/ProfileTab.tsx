@@ -126,14 +126,20 @@ function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Revie
   )
 }
 
-/* ─── Profile Tab (TikTok style) ─── */
+/* ─── Profile Tab (TikTok style) ───
+   Shared between viewing your OWN profile (reviews?tab=profile, viewerId===userId)
+   and viewing ANOTHER user's profile (/users/[id]) — same grid, same swipeable
+   viewer, same everything, so the two experiences can never drift apart again. */
 // Exported for the profile-grid delete-reflow regression test (profileGridDelete.test.tsx).
-export function ProfileTab({ userId }: { userId: string }) {
+export function ProfileTab({ userId, viewerId, showBackButton, onBack }: { userId: string; viewerId: string | null; showBackButton?: boolean; onBack?: () => void }) {
   const { t } = useTranslation()
+  const isOwnProfile = viewerId === userId
   const [profile, setProfile] = useState<{
     full_name: string | null; avatar_url: string | null
     follower_count: number; following_count: number; review_count: number
   } | null>(null)
+  const [following, setFollowing] = useState(false)
+  const [followBusy, setFollowBusy] = useState(false)
   const [posts, setPosts] = useState<Review[]>([])
   const [hidden, setHidden] = useState<Review[]>([])
   const [likedPosts, setLikedPosts] = useState<Review[]>([])
@@ -154,17 +160,28 @@ export function ProfileTab({ userId }: { userId: string }) {
         const [profileRes, reviewsRes, likedRes, savedRes, prefsRes] = await Promise.all([
           fetch(`/api/users/${userId}`).then(r => { if (!r.ok) throw new Error('profile_failed'); return r.json() }),
           fetch(`/api/reviews/feed?userId=${userId}&limit=50`).then(r => { if (!r.ok) throw new Error('feed_failed'); return r.json() }),
-          supabase.from('review_likes').select('review_id').eq('user_id', userId).then(r => { if (r.error) throw r.error; return r.data || [] }),
-          supabase.from('review_saves').select('review_id').eq('user_id', userId).then(r => { if (r.error) throw r.error; return r.data || [] }),
-          getUserPreferences(userId),
+          // Hidden posts, saved and liked are fetched ONLY for your own profile.
+          // On someone else's profile they are not merely hidden from the UI —
+          // they are never requested, so a misconfigured RLS policy cannot leak
+          // another user's private lists to a visitor.
+          isOwnProfile
+            ? supabase.from('review_likes').select('review_id').eq('user_id', userId).then(r => { if (r.error) throw r.error; return r.data || [] })
+            : Promise.resolve([]),
+          isOwnProfile
+            ? supabase.from('review_saves').select('review_id').eq('user_id', userId).then(r => { if (r.error) throw r.error; return r.data || [] })
+            : Promise.resolve([]),
+          isOwnProfile ? getUserPreferences(userId) : Promise.resolve(null),
         ])
         setProfile(profileRes)
+        setFollowing(!!profileRes.is_following)
         setPrefs(prefsRes)
         const allPosts = (reviewsRes.reviews || []).map((r: Review) => ({ ...r, is_hidden: false }))
         setPosts(allPosts)
-        const { data: hiddenData, error: hiddenError } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
-        if (hiddenError) throw hiddenError
-        setHidden((hiddenData || []).map((r: any) => ({ ...r } as Review)))
+        if (isOwnProfile) {
+          const { data: hiddenData, error: hiddenError } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
+          if (hiddenError) throw hiddenError
+          setHidden((hiddenData || []).map((r: any) => ({ ...r } as Review)))
+        }
         if (likedRes.length > 0) {
           const likedIds = (likedRes as { review_id: string }[]).map(l => l.review_id)
           const { data: likedData, error: likedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').in('id', likedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
@@ -184,7 +201,33 @@ export function ProfileTab({ userId }: { userId: string }) {
       }
     }
     load()
-  }, [userId, supabase])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, isOwnProfile, supabase])
+
+  // Follow/unfollow the profile being VIEWED — only meaningful when it isn't your
+  // own. Same optimistic + revert-on-failure pattern already used for review likes.
+  // Anonymous visitors may browse a public profile; following is an interaction,
+  // so it sends them to login like every other interact action.
+  const handleFollow = async () => {
+    if (isOwnProfile || followBusy) return
+    if (!viewerId) { window.location.href = '/login?returnTo=' + encodeURIComponent(`/users/${userId}`); return }
+    setFollowBusy(true)
+    const next = !following
+    setFollowing(next)
+    setProfile(p => p ? { ...p, follower_count: Math.max(0, p.follower_count + (next ? 1 : -1)) } : p)
+    try {
+      const res = await fetch(`/api/users/${userId}/follow`, { method: 'POST' })
+      const data = await res.json().catch(() => null)
+      if (!res.ok) throw new Error('follow_failed')
+      if (typeof data?.following === 'boolean') setFollowing(data.following)
+      if (typeof data?.follower_count === 'number') setProfile(p => p ? { ...p, follower_count: data.follower_count } : p)
+    } catch {
+      setFollowing(!next)
+      setProfile(p => p ? { ...p, follower_count: Math.max(0, p.follower_count + (next ? -1 : 1)) } : p)
+    } finally {
+      setFollowBusy(false)
+    }
+  }
 
   const doDelete = async (id: string) => {
     if (!confirm(t('reviews.deleteConfirm'))) return
@@ -221,14 +264,25 @@ export function ProfileTab({ userId }: { userId: string }) {
   return (
     <div className="h-dvh overflow-y-auto bg-black pb-16" style={{ scrollbarWidth: 'none' }}>
       {/* Gradient header */}
-      <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }} className="pt-14 pb-4 px-4 flex flex-col items-center">
+      <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }} className="relative pt-14 pb-4 px-4 flex flex-col items-center">
+        {/* Back button — only when this profile is its own stacked route
+            (/users/[id]), not when it's the bottom-nav "Hồ sơ" tab. Same visual
+            treatment as ClipViewer's back button, for consistency. */}
+        {showBackButton && (
+          <button onClick={onBack} aria-label={t('common.back')}
+            className="absolute top-4 left-4 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white active:scale-90 transition-transform">
+            <ChevronLeft size={20} />
+          </button>
+        )}
         <div className="relative mb-3">
           {profile?.avatar_url
             ? <Image src={profile.avatar_url} alt={firstName} width={96} height={96} className="w-24 h-24 rounded-full object-cover ring-2 ring-purple-500/40" />
             : <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold ring-2 ring-purple-500/40">{firstName[0]?.toUpperCase()}</div>}
-          <Link href="/reviews/new" className="absolute bottom-0 right-0 w-6 h-6 bg-[#fe2c55] rounded-full flex items-center justify-center border-2 border-black">
-            <Plus size={13} className="text-white" strokeWidth={3} />
-          </Link>
+          {isOwnProfile && (
+            <Link href="/reviews/new" className="absolute bottom-0 right-0 w-6 h-6 bg-[#fe2c55] rounded-full flex items-center justify-center border-2 border-black">
+              <Plus size={13} className="text-white" strokeWidth={3} />
+            </Link>
+          )}
         </div>
         <h2 className="text-white font-bold text-[17px] mb-0.5">{profile?.full_name || t('reviews.anonymous')}</h2>
         <p className="text-gray-400 text-sm mb-4 max-w-full truncate">{handle}</p>
@@ -246,13 +300,23 @@ export function ProfileTab({ userId }: { userId: string }) {
             <div className="text-gray-400 text-xs">{t('reviews.statPosts')}</div>
           </div>
         </div>
-        <Link href="/profile" className="w-full bg-white/10 hover:bg-white/15 border border-white/20 text-white text-sm font-semibold py-2 rounded-md text-center transition-colors">
-          {t('reviews.editProfile')}
-        </Link>
+        {isOwnProfile ? (
+          <Link href="/profile" className="w-full bg-white/10 hover:bg-white/15 border border-white/20 text-white text-sm font-semibold py-2 rounded-md text-center transition-colors">
+            {t('reviews.editProfile')}
+          </Link>
+        ) : (
+          <button onClick={handleFollow} disabled={followBusy}
+            className={`w-full py-2 rounded-md text-sm font-semibold transition-colors disabled:opacity-60 ${
+              following ? 'bg-white/10 hover:bg-white/15 border border-white/20 text-white' : 'bg-[#fe2c55] hover:bg-[#ef2950] text-white'
+            }`}>
+            {followBusy ? <Loader2 size={15} className="animate-spin mx-auto" /> : following ? t('reviews.following') : t('reviews.follow')}
+          </button>
+        )}
       </div>
 
-      {/* Tappy memory chip — only shown when preferences are inferred */}
-      {prefs && prefs.preferred_style && prefs.preferred_style.length > 0 && (
+      {/* Tappy memory chip — only on your own profile; it is a private preference
+          summary, not something to surface on someone else's profile. */}
+      {isOwnProfile && prefs && prefs.preferred_style && prefs.preferred_style.length > 0 && (
         <div className="mx-4 mt-3 p-3.5 rounded-xl" style={{ background: 'rgba(255,107,53,0.06)', border: '1px solid rgba(255,107,53,0.18)' }}>
           <p className="text-[11px] font-semibold mb-2.5" style={{ color: '#ff6b35' }}>{t('reviews.yourPreferences')}</p>
           <div className="flex flex-wrap gap-1.5">
@@ -271,21 +335,30 @@ export function ProfileTab({ userId }: { userId: string }) {
         </div>
       )}
 
-      {/* 3-tab bar */}
-      <div className="flex border-b border-gray-800">
-        <button onClick={() => setActiveTab('posts')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'posts' ? 'border-b-2 border-white' : ''}`}>
-          <Grid3X3 size={18} className={activeTab === 'posts' ? 'text-white' : 'text-gray-500'} />
-          <span className={`text-[10px] ${activeTab === 'posts' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabPosts')}</span>
-        </button>
-        <button onClick={() => setActiveTab('saved')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'saved' ? 'border-b-2 border-white' : ''}`}>
-          <Bookmark size={18} className={activeTab === 'saved' ? 'text-white' : 'text-gray-500'} />
-          <span className={`text-[10px] ${activeTab === 'saved' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabSaved')}</span>
-        </button>
-        <button onClick={() => setActiveTab('liked')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'liked' ? 'border-b-2 border-white' : ''}`}>
-          <Heart size={18} className={activeTab === 'liked' ? 'text-white' : 'text-gray-500'} />
-          <span className={`text-[10px] ${activeTab === 'liked' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabLiked')}</span>
-        </button>
-      </div>
+      {/* Tab bar — Saved/Liked are this account's own private lists (same convention
+          as TikTok's default-private Likes tab), so someone else's profile only ever
+          shows their public posts grid. */}
+      {isOwnProfile ? (
+        <div className="flex border-b border-gray-800">
+          <button onClick={() => setActiveTab('posts')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'posts' ? 'border-b-2 border-white' : ''}`}>
+            <Grid3X3 size={18} className={activeTab === 'posts' ? 'text-white' : 'text-gray-500'} />
+            <span className={`text-[10px] ${activeTab === 'posts' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabPosts')}</span>
+          </button>
+          <button onClick={() => setActiveTab('saved')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'saved' ? 'border-b-2 border-white' : ''}`}>
+            <Bookmark size={18} className={activeTab === 'saved' ? 'text-white' : 'text-gray-500'} />
+            <span className={`text-[10px] ${activeTab === 'saved' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabSaved')}</span>
+          </button>
+          <button onClick={() => setActiveTab('liked')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'liked' ? 'border-b-2 border-white' : ''}`}>
+            <Heart size={18} className={activeTab === 'liked' ? 'text-white' : 'text-gray-500'} />
+            <span className={`text-[10px] ${activeTab === 'liked' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabLiked')}</span>
+          </button>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center gap-1.5 py-2.5 border-b border-gray-800 text-white">
+          <Grid3X3 size={16} />
+          <span className="text-xs font-semibold">{t('reviews.profileTabPosts')}</span>
+        </div>
+      )}
 
       {/* Grid */}
       {loading ? (
@@ -355,9 +428,14 @@ export function ProfileTab({ userId }: { userId: string }) {
         </>
       )}
 
-      {/* Swipeable clip viewer — opens on grid tap */}
+      {/* Swipeable clip viewer — opens on grid tap.
+          me={viewerId}, NOT userId: userId is whose profile this is, viewerId is
+          who is actually logged in. Passing userId would make every review's
+          isMe check (me === r.user_id) trivially true for ANY visitor, since every
+          review on this grid already belongs to userId — surfacing the delete/hide
+          menu to people who do not own the post. */}
       {viewerStart !== null && (
-        <ClipViewer posts={displayPosts} startIndex={viewerStart} me={userId} onClose={() => setViewerStart(null)}
+        <ClipViewer posts={displayPosts} startIndex={viewerStart} me={viewerId} onClose={() => setViewerStart(null)}
           onDelete={(id) => { setPosts(p => p.filter(r => r.id !== id)); setHidden(h => h.filter(r => r.id !== id)) }} />
       )}
     </div>

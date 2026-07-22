@@ -862,7 +862,7 @@ export default function ReviewsPage() {
           {/* Profile (TikTok style) */}
           {tab === 'profile' && (
             me
-              ? <ProfileTab userId={me} />
+              ? <ProfileTab userId={me} viewerId={me} />
               : <div className="h-dvh flex items-center justify-center">
                   <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">{t('reviews.loginToViewProfile')}</Link>
                 </div>

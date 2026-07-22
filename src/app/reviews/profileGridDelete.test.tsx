@@ -70,7 +70,9 @@ beforeEach(() => {
 
 describe('Profile grid delete reflow', () => {
   it('removes the deleted clip from the grid immediately (reflows 3 → 2, no empty tile)', async () => {
-    const { container } = render(<ProfileTab userId={ME} />)
+    // viewerId === userId: the delete-reflow scenario only exists on your OWN
+    // profile (the delete menu never renders for another user's clips).
+    const { container } = render(<ProfileTab userId={ME} viewerId={ME} />)
 
     // 1) grid loads with 3 clips
     await waitFor(() => expect(gridTiles(container).length).toBe(3), { timeout: 4000 })
