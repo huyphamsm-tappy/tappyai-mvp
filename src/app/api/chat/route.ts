@@ -27,7 +27,7 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
-import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -372,7 +372,8 @@ export async function POST(req: Request) {
   // in the reply, budget_max 2,000,000 on the place rows) — the fold read the last 3 user turns
   // whatever their subject.
   const priorUserTexts: string[] = subjectUserTexts.slice(-4, -1)
-  const ownPlanningIntent = detectPlanningIntent(lastText)
+  // Conversation-scoped, not lastText: after Tappy's clarifying question the user's answer alone rarely re-states the trip (intent.ts).
+  const ownPlanningIntent = detectPlanningIntentFromConversation(messages)
   // UAT3 P0: the nearest plan, but never across a purchase or another tool subject (subjectScope.ts).
   const inheritedPlanningIntent = ownPlanningIntent === null && isPlanningRefinement(lastText)
     ? inheritPlanningIntent(priorUserTexts, { hasGps: !!userLocation, lang })
