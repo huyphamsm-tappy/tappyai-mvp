@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
-import { Star, CheckCircle, MapPin, UserPlus, UserCheck, Loader2 } from 'lucide-react'
+import { Star, CheckCircle, MapPin, UserPlus, UserCheck, Loader2, Play } from 'lucide-react'
 
 interface UserProfile {
   id: string
@@ -26,6 +26,11 @@ interface Review {
   rating: number
   body: string
   photos: string[] | null
+  // A video post carries no photos[] — its poster frame lives in `thumbnail`.
+  // These three fields were always returned by /api/reviews/feed; this view just
+  // never declared them, so every clip rendered as a caption-only card.
+  content_type: string | null
+  thumbnail: string | null
   is_verified: boolean
   like_count: number
   comment_count: number
@@ -226,6 +231,19 @@ export default function UserProfilePage() {
                         </div>
                       ))}
                     </div>
+                  )}
+
+                  {/* Video poster — same rule the profile grid already proved:
+                      a clip has no photos[], so without this branch it fell through
+                      to a caption-only card. Opens the existing detail page, which
+                      is what plays the clip. */}
+                  {(!r.photos || r.photos.length === 0) && r.content_type === 'video' && r.thumbnail && (
+                    <Link href={`/reviews/${r.id}`} className="relative block w-20 h-20 rounded-xl overflow-hidden" aria-label={`Xem clip ${r.place_name}`}>
+                      <Image src={r.thumbnail} alt="" fill className="object-cover" sizes="80px" />
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/25">
+                        <Play size={20} className="text-white drop-shadow" fill="white" />
+                      </span>
+                    </Link>
                   )}
 
                   <div className="flex items-start justify-between gap-2">
