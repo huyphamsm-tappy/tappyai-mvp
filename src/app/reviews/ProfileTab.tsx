@@ -273,12 +273,21 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
 
   return (
     <div className="h-dvh overflow-y-auto bg-black pb-16" style={{ scrollbarWidth: 'none' }}>
+      {/* ONE content container for the whole page variant: hero, tab bar and grid
+          all share it, so nothing on /users/[id] is full-bleed while its
+          neighbour is centred (that mismatch is what put a 729px block of the
+          grid's hairline background beside 3 clips at 1456w). On phones the
+          container is wider than the screen, so mobile renders exactly as
+          before. The tab variant gets `contents` — invisible to layout, its
+          448px wrapper in /reviews stays in charge. Fixed overlays (action
+          sheet, ClipViewer) position against the viewport, not this box. */}
+      <div className={isPage ? 'max-w-container-content mx-auto w-full' : 'contents'}>
       {/* Gradient header. Layout comes from the ROUTE (variant), never from who
           is looking: /users/[id] is one page with one shape for everyone. The
           compact horizontal hero hands the viewport to the grid, because on a
           profile page the clips are the content. */}
       <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }}
-        className={`relative px-4 flex ${isPage ? 'flex-row items-center gap-4 pt-5 pb-3 max-w-container-content mx-auto w-full' : 'flex-col items-center pt-14 pb-4'}`}>
+        className={`relative px-4 flex ${isPage ? 'flex-row items-center gap-4 pt-5 pb-3' : 'flex-col items-center pt-14 pb-4'}`}>
         {/* Back button — only when this profile is its own stacked route
             (/users/[id]), not when it's the bottom-nav "Hồ sơ" tab. Same visual
             treatment as ClipViewer's back button, for consistency. */}
@@ -402,7 +411,15 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
            columns it produced 485x862 tiles on a 1456px screen, under one row
            visible. The tab keeps the fixed 3-up it has always had. Same shape
            for owner and visitor alike; only the route decides. */
-        <div className={`grid gap-px bg-gray-800 ${isPage ? 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6' : 'grid-cols-3'}`}>
+        /* Column count is sized to the shared container (max 768px), not the
+           viewport: base 3 = phones (unchanged), sm:4 = 160-192px tiles once the
+           container is at its cap. The md/lg steps died with full-bleed — inside
+           768px, 5-6 columns would mean <154px tiles.
+           Background: the gray hairline bg may only ever show through the 1px
+           gaps; in any partial row (posts % columns != 0) it also floods the
+           EMPTY cells. From sm up the container bg is black so empty cells read
+           as page background; phones keep the gray hairlines untouched. */
+        <div className={`grid gap-px ${isPage ? 'bg-gray-800 sm:bg-black grid-cols-3 sm:grid-cols-4' : 'bg-gray-800 grid-cols-3'}`}>
           {displayPosts.map(r => {
             // Video posts have no photos[] — their poster frame lives in `thumbnail`.
             // Without this the tile fell through to the body-text placeholder, so a
@@ -465,6 +482,7 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
         <ClipViewer posts={displayPosts} startIndex={viewerStart} me={viewerId} onClose={() => setViewerStart(null)}
           onDelete={(id) => { setPosts(p => p.filter(r => r.id !== id)); setHidden(h => h.filter(r => r.id !== id)) }} />
       )}
+      </div>
     </div>
   )
 }
