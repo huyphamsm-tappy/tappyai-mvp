@@ -52,9 +52,17 @@ const nextConfig = {
       "font-src 'self' data: https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
       "media-src 'self' data: blob: https:",
-      // Blob hosts are needed for client-direct video upload (@vercel/blob/client
-      // PUTs straight to the store from the browser), not just displaying media.
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com",
+      // Blob hosts: *.public.blob.vercel-storage.com / blob.vercel-storage.com are
+      // the STORAGE hosts — they serve blobs for playback/display. They are NOT
+      // where uploads go. @vercel/blob/client PUTs the file to its API host,
+      // https://vercel.com/api/blob (defaultVercelBlobApiUrl in the SDK), so that
+      // host must be listed too or the browser refuses every upload. Omitting it
+      // killed all video/audio uploads for two weeks: the refusal surfaces as
+      // "TypeError: Failed to fetch", which the SDK classifies as a retryable
+      // network error and retries 10x with backoff, so the UI hung on "Đang tải
+      // clip lên" instead of showing an error. Playback kept working (storage
+      // hosts were allowed), which is what hid the breakage.
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com",
       "frame-src 'self' https://www.youtube.com",
       "worker-src 'self' blob:",
       "manifest-src 'self'",
