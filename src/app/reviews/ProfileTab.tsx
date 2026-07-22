@@ -131,9 +131,19 @@ function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Revie
    and viewing ANOTHER user's profile (/users/[id]) — same grid, same swipeable
    viewer, same everything, so the two experiences can never drift apart again. */
 // Exported for the profile-grid delete-reflow regression test (profileGridDelete.test.tsx).
-export function ProfileTab({ userId, viewerId, showBackButton, onBack }: { userId: string; viewerId: string | null; showBackButton?: boolean; onBack?: () => void }) {
+//
+// Two independent axes, never mixed:
+//   variant       — LAYOUT. Decided by the ROUTE, identical for every viewer.
+//                   'page' = the standalone /users/[id] profile (horizontal hero,
+//                   responsive columns, 3:4 tiles — the Product Owner's reference);
+//                   'tab' = the bottom-nav "Hồ sơ" tab's classic centred layout.
+//   isOwnProfile  — PERMISSIONS ONLY. Which actions and private data exist:
+//                   edit-profile vs follow, the + upload badge, the private
+//                   Saved/Liked tabs, hidden posts, preferences, delete/hide.
+export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant = 'tab' }: { userId: string; viewerId: string | null; showBackButton?: boolean; onBack?: () => void; variant?: 'tab' | 'page' }) {
   const { t } = useTranslation()
   const isOwnProfile = viewerId === userId
+  const isPage = variant === 'page'
   const [profile, setProfile] = useState<{
     full_name: string | null; avatar_url: string | null
     follower_count: number; following_count: number; review_count: number
@@ -263,30 +273,41 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack }: { userI
 
   return (
     <div className="h-dvh overflow-y-auto bg-black pb-16" style={{ scrollbarWidth: 'none' }}>
-      {/* Gradient header */}
-      <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }} className="relative pt-14 pb-4 px-4 flex flex-col items-center">
+      {/* Gradient header. Layout comes from the ROUTE (variant), never from who
+          is looking: /users/[id] is one page with one shape for everyone. The
+          compact horizontal hero hands the viewport to the grid, because on a
+          profile page the clips are the content. */}
+      <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }}
+        className={`relative px-4 flex ${isPage ? 'flex-row items-center gap-4 pt-5 pb-3 max-w-container-content mx-auto w-full' : 'flex-col items-center pt-14 pb-4'}`}>
         {/* Back button — only when this profile is its own stacked route
             (/users/[id]), not when it's the bottom-nav "Hồ sơ" tab. Same visual
             treatment as ClipViewer's back button, for consistency. */}
+        {/* In the horizontal page hero the back button is the first item of the
+            row (it must not overlap the avatar on the left); in the centred tab
+            hero it floats over the gradient as it always has. */}
         {showBackButton && (
           <button onClick={onBack} aria-label={t('common.back')}
-            className="absolute top-4 left-4 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white active:scale-90 transition-transform">
+            className={`w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white active:scale-90 transition-transform ${isPage ? 'shrink-0 -ml-1' : 'absolute top-4 left-4 z-10'}`}>
             <ChevronLeft size={20} />
           </button>
         )}
-        <div className="relative mb-3">
+        <div className={`relative shrink-0 ${isPage ? '' : 'mb-3'}`}>
           {profile?.avatar_url
-            ? <Image src={profile.avatar_url} alt={firstName} width={96} height={96} className="w-24 h-24 rounded-full object-cover ring-2 ring-purple-500/40" />
-            : <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold ring-2 ring-purple-500/40">{firstName[0]?.toUpperCase()}</div>}
+            ? <Image src={profile.avatar_url} alt={firstName} width={96} height={96} className={`rounded-full object-cover ring-2 ring-purple-500/40 ${isPage ? 'w-[72px] h-[72px]' : 'w-24 h-24'}`} />
+            : <div className={`rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold ring-2 ring-purple-500/40 ${isPage ? 'w-[72px] h-[72px] text-2xl' : 'w-24 h-24 text-3xl'}`}>{firstName[0]?.toUpperCase()}</div>}
           {isOwnProfile && (
             <Link href="/reviews/new" className="absolute bottom-0 right-0 w-6 h-6 bg-[#fe2c55] rounded-full flex items-center justify-center border-2 border-black">
               <Plus size={13} className="text-white" strokeWidth={3} />
             </Link>
           )}
         </div>
+        {/* On the page layout this is the right-hand column of the horizontal
+            hero; on the tab layout `contents` makes the wrapper invisible so the
+            classic centred column renders exactly as it always has. */}
+        <div className={isPage ? 'flex-1 min-w-0 flex flex-col items-start gap-1' : 'contents'}>
         <h2 className="text-white font-bold text-[17px] mb-0.5">{profile?.full_name || t('reviews.anonymous')}</h2>
-        <p className="text-gray-400 text-sm mb-4 max-w-full truncate">{handle}</p>
-        <div className="flex gap-10 mb-4">
+        <p className={`text-gray-400 text-sm max-w-full truncate ${isPage ? '' : 'mb-4'}`}>{handle}</p>
+        <div className={`flex ${isPage ? 'gap-5' : 'gap-10 mb-4'}`}>
           <div className="text-center">
             <div className="text-white font-bold text-base">{profile?.following_count ?? 0}</div>
             <div className="text-gray-400 text-xs">{t('reviews.statFollowing')}</div>
@@ -300,18 +321,22 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack }: { userI
             <div className="text-gray-400 text-xs">{t('reviews.statPosts')}</div>
           </div>
         </div>
+        {/* WHICH button exists is a permission (owner edits, visitor follows);
+            HOW it is shaped is the layout (compact pill on the page, full-width
+            on the tab). The two axes never mix. */}
         {isOwnProfile ? (
-          <Link href="/profile" className="w-full bg-white/10 hover:bg-white/15 border border-white/20 text-white text-sm font-semibold py-2 rounded-md text-center transition-colors">
+          <Link href="/profile" className={`${isPage ? 'mt-1 px-6 py-1.5' : 'w-full py-2'} bg-white/10 hover:bg-white/15 border border-white/20 text-white text-sm font-semibold rounded-md text-center transition-colors`}>
             {t('reviews.editProfile')}
           </Link>
         ) : (
           <button onClick={handleFollow} disabled={followBusy}
-            className={`w-full py-2 rounded-md text-sm font-semibold transition-colors disabled:opacity-60 ${
+            className={`${isPage ? 'mt-1 px-6 py-1.5' : 'w-full py-2'} rounded-md text-sm font-semibold transition-colors disabled:opacity-60 ${
               following ? 'bg-white/10 hover:bg-white/15 border border-white/20 text-white' : 'bg-[#fe2c55] hover:bg-[#ef2950] text-white'
             }`}>
             {followBusy ? <Loader2 size={15} className="animate-spin mx-auto" /> : following ? t('reviews.following') : t('reviews.follow')}
           </button>
         )}
+        </div>
       </div>
 
       {/* Tappy memory chip — only on your own profile; it is a private preference
@@ -353,12 +378,10 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack }: { userI
             <span className={`text-[10px] ${activeTab === 'liked' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabLiked')}</span>
           </button>
         </div>
-      ) : (
-        <div className="flex items-center justify-center gap-1.5 py-2.5 border-b border-gray-800 text-white">
-          <Grid3X3 size={16} />
-          <span className="text-xs font-semibold">{t('reviews.profileTabPosts')}</span>
-        </div>
-      )}
+      ) : null}
+      {/* No tab bar on someone else's profile: there is only one tab, so a bar
+          carrying a single static label communicates nothing and costs the grid
+          a row of viewport. The grid below is the content. */}
 
       {/* Grid */}
       {loading ? (
@@ -375,7 +398,11 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack }: { userI
           {emptyState[activeTab].cta}
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-px bg-gray-800">
+        /* The page grid scales its column count with the viewport — locked at 3
+           columns it produced 485x862 tiles on a 1456px screen, under one row
+           visible. The tab keeps the fixed 3-up it has always had. Same shape
+           for owner and visitor alike; only the route decides. */
+        <div className={`grid gap-px bg-gray-800 ${isPage ? 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6' : 'grid-cols-3'}`}>
           {displayPosts.map(r => {
             // Video posts have no photos[] — their poster frame lives in `thumbnail`.
             // Without this the tile fell through to the body-text placeholder, so a
@@ -384,7 +411,7 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack }: { userI
             const isHidden = activeTab === 'posts' && (r as Review & { is_hidden?: boolean }).is_hidden
             return (
               <button key={r.id} onClick={() => handleGridClick(r as Review)}
-                className={`relative aspect-[9/16] bg-gray-900 ${sel?.id === r.id ? 'ring-2 ring-inset ring-[#fe2c55]' : ''}`}>
+                className={`relative bg-gray-900 ${isPage ? 'aspect-[3/4]' : 'aspect-[9/16]'} ${sel?.id === r.id ? 'ring-2 ring-inset ring-[#fe2c55]' : ''}`}>
                 {thumb ? <Image src={thumb} alt="" fill className="object-cover" sizes="33vw" />
                   : <div className="absolute inset-0 flex items-center justify-center p-2"><p className="text-white text-xs text-center line-clamp-4">{r.body}</p></div>}
                 {/* Overlay: place name + stars */}

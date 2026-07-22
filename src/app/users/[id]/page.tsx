@@ -36,11 +36,15 @@ export default function UserProfilePage() {
   if (!ready) return <div className="h-dvh bg-black" />
 
   return (
+    // variant="page" fixes this route's LAYOUT for every viewer — owner and
+    // visitor see the same shape here. Who is looking (viewerId) only changes
+    // permissions: edit vs follow, private tabs, delete/hide.
     <ProfileTab
       userId={userId}
       viewerId={viewerId}
       showBackButton
       onBack={() => router.back()}
+      variant="page"
     />
   )
 }
