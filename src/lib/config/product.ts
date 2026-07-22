@@ -19,6 +19,10 @@ export const ANON_DAILY_LIMIT = 5
 /** Pro upsell hidden app-wide during the free test phase. Mirrored by the
  * Android `SHOW_PRO_UPGRADE` gate — flip BOTH together when Pro launches. */
 export const SHOW_PRO_UPGRADE = false
+/** Connections (Google Calendar/Zalo) menu entry temporarily hidden on Web
+ * only — UI hide, not a removal. The APIs, routes, and DB tables are
+ * untouched; flip back to true to re-show. */
+export const SHOW_INTEGRATIONS = false
 
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
