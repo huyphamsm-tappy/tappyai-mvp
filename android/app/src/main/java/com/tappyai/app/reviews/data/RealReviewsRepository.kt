@@ -1,0 +1,181 @@
+package com.tappyai.app.reviews.data
+
+import com.tappyai.core.network.NetworkResult
+import com.tappyai.core.network.safeApiCall
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.util.Collections
+import javax.inject.Inject
+import javax.inject.Singleton
+
+/**
+ * Backend-backed [ReviewsRepository]. Every call goes through core:network's [safeApiCall], which
+ * maps HttpException/IOException/timeout/serialization into [NetworkResult.Error] and rethrows
+ * CancellationException so coroutine cancellation keeps working. DTO→domain mapping happens here;
+ * ViewModels only ever see domain types.
+ *
+ * A small in-memory [reviewCache] retains reviews served (feed/search/profile) keyed by id, so the
+ * detail screen can render the tapped review without a single-review GET endpoint (which the
+ * backend doesn't provide). It's a bounded access-order LRU: an infinite feed would otherwise grow
+ * this map for the whole process lifetime. Eviction is safe for the detail use case because the
+ * detail screen always resolves the review the user JUST tapped (most-recently-accessed), so only
+ * long-scrolled-past reviews are ever evicted. Wrapped in a synchronized map because fetches write
+ * on IO threads while the detail screen reads on the main thread.
+ */
+@Singleton
+class RealReviewsRepository @Inject constructor(
+    private val api: ReviewsApi,
+) : ReviewsRepository {
+
+    private val reviewCache: MutableMap<String, Review> = Collections.synchronizedMap(
+        object : LinkedHashMap<String, Review>(CACHE_INITIAL_CAPACITY, CACHE_LOAD_FACTOR, true) {
+            override fun removeEldestEntry(eldest: Map.Entry<String, Review>): Boolean =
+                size > CACHE_MAX_ENTRIES
+        },
+    )
+
+    override suspend fun getFeed(
+        page: Int,
+        limit: Int,
+        sort: String?,
+        userId: String?,
+        search: String?,
+        following: Boolean,
+    ): NetworkResult<List<Review>> {
+        val result = safeApiCall {
+            // Send following=true only when set; null keeps it off the query string (web parity).
+            api.getFeed(
+                page = page,
+                limit = limit,
+                sort = sort,
+                userId = userId,
+                search = search,
+                following = if (following) true else null,
+            ).reviews.map { it.toDomain() }
+        }
+        if (result is NetworkResult.Success) {
+            result.data.forEach { reviewCache[it.id] = it }
+        }
+        return result
+    }
+
+    override suspend fun toggleLike(reviewId: String): NetworkResult<Boolean> =
+        safeApiCall { api.toggleLike(reviewId).liked }
+
+    override suspend fun toggleSave(reviewId: String): NetworkResult<Boolean> =
+        safeApiCall { api.toggleSave(reviewId).saved }
+
+    override suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>> =
+        safeApiCall { api.getComments(reviewId).comments.map { it.toDomain() } }
+
+    override suspend fun postComment(reviewId: String, body: String, parentId: String?): NetworkResult<ReviewComment> =
+        safeApiCall {
+            // The backend returns { comment, count } on 2xx; comment is present on success. Guard
+            // the nullable DTO field defensively — a null here becomes a typed error via safeApiCall.
+            (api.postComment(reviewId, PostCommentRequestDto(body = body, parentId = parentId)).comment
+                ?: error("comments endpoint returned no comment")).toDomain()
+        }
+
+    override suspend fun deleteComment(reviewId: String, commentId: String): NetworkResult<Int> =
+        safeApiCall { api.deleteComment(reviewId, commentId).count }
+
+    override suspend fun setReaction(commentId: String, reactionKey: String): NetworkResult<Unit> =
+        safeApiCall { api.postReaction(commentId, ReactionRequestDto(reaction = reactionKey)); Unit }
+
+    override suspend fun removeReaction(commentId: String): NetworkResult<Unit> =
+        safeApiCall { api.deleteReaction(commentId); Unit }
+
+    override suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile> =
+        safeApiCall { api.getUserProfile(userId).toReviewProfile() }
+
+    override suspend fun searchUsers(query: String): NetworkResult<List<UserSearchResult>> =
+        safeApiCall { api.searchUsers(query).users.map { it.toDomain() } }
+
+    override suspend fun toggleFollow(userId: String): NetworkResult<Boolean> =
+        safeApiCall { api.toggleFollow(userId).following }
+
+    override suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>> =
+        safeApiCall { groupNotifications(api.getNotifications().notifications.map { it.toDomain() }) }
+
+    override suspend fun uploadReviewPhoto(bytes: ByteArray, mimeType: String): NetworkResult<String> =
+        safeApiCall {
+            val body = bytes.toRequestBody(mimeType.toMediaType())
+            // Part name `file` — the exact field the web's /api/reviews/upload route reads from the
+            // multipart form. The filename is cosmetic; the server derives the real extension from
+            // the sniffed image type, so a constant "photo" is fine.
+            val part = MultipartBody.Part.createFormData("file", "photo", body)
+            api.uploadPhoto(part).url
+        }
+
+    override suspend fun getLinkThumbnail(url: String): NetworkResult<String?> =
+        safeApiCall { api.getOembed(url).thumbnailUrl }
+
+    override suspend fun createReview(
+        placeId: String,
+        placeName: String,
+        body: String,
+        rating: Int?,
+        musicTrackId: String?,
+        musicStartSec: Int,
+        musicVolume: Double,
+        photos: List<String>?,
+        link: LinkAttachment?,
+    ): NetworkResult<Unit> = safeApiCall {
+        api.createReview(
+            CreateReviewRequestDto(
+                placeId = placeId,
+                placeName = placeName,
+                body = body,
+                rating = rating,
+                music = musicTrackId?.let {
+                    MusicSelectionDto(
+                        version = MusicSelectionDto.PAYLOAD_VERSION,
+                        trackId = it,
+                        startSec = musicStartSec,
+                        volume = musicVolume,
+                    )
+                },
+                photos = photos?.takeIf { it.isNotEmpty() },
+                // Mirror the web's link payload: content_type='video', media_url = the source URL.
+                contentType = link?.let { "video" },
+                mediaUrl = link?.sourceUrl,
+                sourceType = link?.sourceType,
+                sourceUrl = link?.sourceUrl,
+                thumbnail = link?.thumbnailUrl,
+            ),
+        )
+        Unit
+    }
+
+    override fun getCachedReview(reviewId: String): Review? = reviewCache[reviewId]
+
+    override suspend fun getMine(): NetworkResult<List<Review>> {
+        val result = safeApiCall { api.getMine().reviews.map { it.toDomain() } }
+        if (result is NetworkResult.Success) {
+            result.data.forEach { reviewCache[it.id] = it }
+        }
+        return result
+    }
+
+    override suspend fun setHidden(reviewId: String, hidden: Boolean): NetworkResult<Unit> =
+        safeApiCall { api.setHidden(reviewId, SetHiddenRequestDto(isHidden = hidden)); Unit }
+
+    override suspend fun deleteReview(reviewId: String): NetworkResult<Unit> =
+        safeApiCall { api.deleteReview(reviewId); Unit }
+
+    override suspend fun recordInteraction(
+        reviewId: String,
+        watchSeconds: Int,
+        completionRate: Double,
+    ): NetworkResult<Unit> = safeApiCall {
+        api.recordInteraction(reviewId, InteractRequestDto(watchSeconds = watchSeconds, completionRate = completionRate))
+        Unit
+    }
+
+    private companion object {
+        const val CACHE_MAX_ENTRIES = 200
+        const val CACHE_INITIAL_CAPACITY = 16
+        const val CACHE_LOAD_FACTOR = 0.75f
+    }
+}

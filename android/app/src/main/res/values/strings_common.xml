@@ -1,0 +1,9 @@
+<resources>
+    <string name="common_back">Back</string>
+    <string name="common_next">Next</string>
+    <string name="common_skip">Skip</string>
+    <string name="common_confirm">Confirm</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_try_again">Try again</string>
+    <string name="coming_soon_description">We\'re still building %1$s. It\'ll be available in a future update.</string>
+</resources>

@@ -1,0 +1,56 @@
+<resources>
+    <string name="groupdining_create_heading">Where should the team eat?</string>
+    <string name="groupdining_create_subtitle">Create a group, share the link, let Tappy suggest</string>
+    <string name="groupdining_name_label">Group name</string>
+    <string name="groupdining_name_placeholder">e.g. Team Marketing, Close friends, Family...</string>
+    <string name="groupdining_create_button">🍽️ Create group</string>
+
+    <string name="groupdining_not_found_title">Group not found</string>
+    <string name="groupdining_not_found_message">This group no longer exists.</string>
+    <string name="groupdining_load_error_title">Couldn\'t load this group</string>
+
+    <string name="groupdining_members_one">%1$d member joined</string>
+    <string name="groupdining_members_other">%1$d members joined</string>
+
+    <string name="groupdining_share_label">SHARE WITH YOUR GROUP</string>
+    <string name="groupdining_copied_content_description">Copied</string>
+    <string name="groupdining_copy_link_content_description">Copy link</string>
+    <string name="groupdining_share_link_content_description">Share link</string>
+    <string name="groupdining_link_clip_label">Group link</string>
+    <string name="groupdining_share_chooser_title">Share group link</string>
+
+    <string name="groupdining_members_label">MEMBERS</string>
+    <string name="groupdining_no_members_message">No one has joined yet. Share the link above!</string>
+    <string name="groupdining_member_budget">💰 %1$s</string>
+    <string name="groupdining_member_likes">🍽️ Likes: %1$s</string>
+    <string name="groupdining_member_avoids">🚫 Avoids: %1$s</string>
+    <string name="groupdining_member_area">📍 Area: %1$s</string>
+
+    <string name="groupdining_join_title">Fill in your details</string>
+    <string name="groupdining_join_name_label">Your name *</string>
+    <string name="groupdining_join_name_placeholder">e.g. Minh, Lan, Tu...</string>
+    <string name="groupdining_join_budget_label">Budget *</string>
+    <string name="groupdining_join_food_label">What do you like to eat?</string>
+    <string name="groupdining_join_food_placeholder">e.g. pho, pizza, com tam, hotpot...</string>
+    <string name="groupdining_join_dietary_label">Anything you avoid?</string>
+    <string name="groupdining_join_dietary_placeholder">e.g. no pork, seafood allergy, vegetarian...</string>
+    <string name="groupdining_join_area_label">Convenient area *</string>
+    <string name="groupdining_join_area_placeholder">e.g. District 1, Binh Thanh, Thu Duc...</string>
+    <string name="groupdining_join_button">Join group</string>
+
+    <string name="groupdining_joined_title">You\'re in!</string>
+    <string name="groupdining_joined_waiting_message">Waiting for the group leader to get a suggestion 🎉</string>
+
+    <string name="groupdining_suggest_button">🍽️ Ask Tappy to suggest</string>
+    <string name="groupdining_suggestion_title">Tappy\'s suggestion</string>
+
+    <string name="groupdining_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="groupdining_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="groupdining_error_session_expired">Please sign in to continue.</string>
+    <string name="groupdining_error_creator_only">Only the group creator can do that.</string>
+    <string name="groupdining_error_rate_limited">You\'re going a bit fast. Please try again in a moment.</string>
+    <string name="groupdining_error_join_400">Couldn\'t join — the group may be full (max 10) or your details are incomplete.</string>
+    <string name="groupdining_error_create_400">Please enter a group name.</string>
+    <string name="groupdining_error_server">The server is having issues. Please try again later.</string>
+    <string name="groupdining_error_generic">Something went wrong. Please try again.</string>
+</resources>

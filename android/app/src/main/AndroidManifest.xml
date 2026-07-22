@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ChromeOS support: app is a "PC" software item but not required to run only there. -->
+    <uses-feature
+        android:name="android.hardware.type.pc"
+        android:required="false" />
+    <!-- ChromeOS devices commonly have no touchscreen (mouse/keyboard/trackpad instead). -->
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- In-app voice input (SpeechRecognizer) — mirrors the web chat's mic (Web Speech API). -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Android 11+ package visibility: needed for SpeechRecognizer to see the recognition service. -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".TappyAIApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TappyAI"
+        android:resizeableActivity="true"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode"
+            android:theme="@style/Theme.TappyAI">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- OAuth redirect target (Phase 1B) — must match SupabaseModule's Auth plugin
+                 scheme/host config and the redirect URL registered in Supabase's dashboard.
+                 android:autoVerify is deliberately omitted: this is a plain custom-scheme
+                 intent-filter, not an App Link, so it needs no domain verification. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="tappyai"
+                    android:host="auth-callback" />
+            </intent-filter>
+
+            <!-- Shared group link (Group Dining). Custom scheme → no domain verification needed,
+                 same as the OAuth callback above. Parsed by GroupDeepLinkParser into
+                 AppRoute.GroupDetail. NOTE: the link actually shared with users is the public web
+                 URL (https://<origin>/group/{id}); making THAT open the app natively additionally
+                 needs an autoVerify App Links intent-filter for the real domain + a hosted
+                 assetlinks.json — an owner infra step, deliberately not added with a placeholder
+                 host here. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="tappyai"
+                    android:host="group" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

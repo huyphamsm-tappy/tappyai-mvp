@@ -111,7 +111,10 @@ export async function POST(req: NextRequest) {
   }
 
   // Confirm the referenced track still exists (no DB-level FK to Music by
-  // design — validated here via the Music Module's own public API).
+  // design — validated here via the Music Module's own public API). Sound model
+  // (canonical, TikTok-style): EVERY Sound — licensed music, a clip's original
+  // sound, or user-created — is reusable by reference; attaching only ever
+  // stores the SoundID (trackId), never duplicates audio between videos.
   if (music) {
     const track = await getTrack(music.trackId)
     if (!track) {

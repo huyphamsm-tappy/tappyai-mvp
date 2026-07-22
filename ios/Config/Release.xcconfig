@@ -1,0 +1,18 @@
+// Release configuration — non-secret defaults. Secrets go in Config/Secrets.xcconfig (gitignored).
+#include? "Secrets.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER = com.tappyai.ios
+PRODUCT_NAME = TappyAI
+
+// Production backend. Confirm the canonical domain before release.
+TAPPY_API_BASE_URL = https:/$()/www.tappyai.com
+TAPPY_ENV = release
+
+SUPABASE_URL = https:/$()/YOUR-PROJECT.supabase.co
+SUPABASE_ANON_KEY = REPLACE_ME_VIA_CI
+
+// APNs environment: "production" connects to the Apple production push server (required for
+// TestFlight and App Store builds). Changing this to "development" breaks push on live builds.
+APS_ENVIRONMENT = production
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS =

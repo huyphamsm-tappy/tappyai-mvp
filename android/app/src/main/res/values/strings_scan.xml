@@ -1,0 +1,30 @@
+<resources>
+    <string name="scan_title">Scan</string>
+    <string name="scan_hero_title">Scan any document</string>
+    <string name="scan_hero_subtitle">Extract text from photos of menus, signs, or documents.</string>
+    <string name="scan_take_photo">Take photo</string>
+    <string name="scan_use_camera">Use camera</string>
+    <string name="scan_pick_image">Pick image</string>
+    <string name="scan_from_gallery">From gallery</string>
+    <string name="scan_preview_alt">Selected photo</string>
+    <string name="scan_clear_image">Clear photo</string>
+    <string name="scan_action_scan">Scan</string>
+    <string name="scan_action_scanning">Scanning…</string>
+    <string name="scan_result_label">Extracted text</string>
+    <string name="scan_action_copy">Copy</string>
+    <string name="scan_action_copied">Copied</string>
+    <string name="scan_action_share">Share</string>
+    <string name="scan_share_chooser_title">Share text</string>
+    <string name="scan_tips_title">Tips</string>
+    <string name="scan_tip_flat">• Lay the document flat and fill the frame</string>
+    <string name="scan_tip_lighting">• Use good lighting, avoid glare and shadows</string>
+    <string name="scan_tip_limit">• Up to 20 scans per day</string>
+    <string name="scan_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="scan_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="scan_error_limit">You\'ve reached today\'s scan limit. Please try again tomorrow.</string>
+    <string name="scan_error_bad_request">That image is too large. Please choose a smaller one.</string>
+    <string name="scan_error_server">The server is having trouble. Please try again later.</string>
+    <string name="scan_error_generic">Something went wrong. Please try again.</string>
+    <string name="scan_error_decode_failed">Couldn\'t read that image. Please try another one.</string>
+    <string name="scan_error_no_camera">No camera app found on this device. Try picking a photo instead.</string>
+</resources>

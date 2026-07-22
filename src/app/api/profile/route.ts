@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, avatar_url, created_at, language')
+    .select('full_name, avatar_url, created_at, language, onboarded')
     .eq('id', user.id)
     .single()
 
@@ -25,6 +25,11 @@ export async function GET(req: NextRequest) {
     // UI language only (Localization_Architecture.md §2.3) — AI response
     // language is never read from here, it stays per-message auto-detected.
     language: profile?.language || null,
+    // Whether the user has finished the onboarding wizard. The web reads this
+    // column directly via Supabase in its auth-callback redirect gate; native
+    // clients (no direct Postgrest access) read it here to make the same
+    // "route new users to onboarding" decision. Existing (public-safe) column.
+    onboarded: profile?.onboarded ?? false,
   })
 }
 

@@ -39,13 +39,31 @@ const config: Config = {
       },
       colors: {
         primary: { DEFAULT: '#007AFF', 50: '#E5F1FF', 100: '#CCE3FF', 200: '#99C8FF', 300: '#66ACFF', 400: '#3391FF', 500: '#007AFF', 600: '#0062CC', 700: '#004999', 800: '#003166', 900: '#001833' },
-        accent: { DEFAULT: '#FF9500', 50: '#FFF4E5', 100: '#FFE9CC', 200: '#FFD399', 300: '#FFBD66', 400: '#FFA733', 500: '#FF9500', 600: '#CC7700', 700: '#995900', 800: '#663C00', 900: '#331E00' }
+        accent: { DEFAULT: '#FF9500', 50: '#FFF4E5', 100: '#FFE9CC', 200: '#FFD399', 300: '#FFBD66', 400: '#FFA733', 500: '#FF9500', 600: '#CC7700', 700: '#995900', 800: '#663C00', 900: '#331E00' },
+        // Back Office (shadcn/ui) neutral tokens — resolve only inside `.admin-theme`
+        // (see globals.css). Additive; product `primary`/`accent` above are unchanged.
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+        popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+        muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+        secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+      },
+      // Namespaced so we DON'T override Tailwind's default rounded-lg/md/sm
+      // (those are used across the product; --radius is only defined in .admin-theme).
+      borderRadius: {
+        'admin-lg': 'var(--radius)',
+        'admin-md': 'calc(var(--radius) - 2px)',
+        'admin-sm': 'calc(var(--radius) - 4px)',
       },
       fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
       animation: { 'fade-in': 'fadeIn 0.2s ease-in-out', 'slide-up': 'slideUp 0.3s ease-out', 'pulse-dot': 'pulseDot 1.4s ease-in-out infinite', 'shake': 'shake 0.4s ease-in-out', 'heart-pop': 'heartPop 0.7s ease-out forwards' },
       keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }, slideUp: { '0%': { transform: 'translateY(10px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }, pulseDot: { '0%, 80%, 100%': { transform: 'scale(0)', opacity: '0.5' }, '40%': { transform: 'scale(1)', opacity: '1' } }, shake: { '0%, 100%': { transform: 'translateX(0)' }, '20%': { transform: 'translateX(-6px)' }, '40%': { transform: 'translateX(6px)' }, '60%': { transform: 'translateX(-4px)' }, '80%': { transform: 'translateX(4px)' } }, heartPop: { '0%': { transform: 'scale(0.8)', opacity: '0' }, '20%': { transform: 'scale(1.3)', opacity: '1' }, '45%': { transform: 'scale(1)', opacity: '1' }, '100%': { transform: 'scale(1)', opacity: '0' } } }
     }
   },
-  plugins: []
+  plugins: [require('tailwindcss-animate')]
 }
 export default config

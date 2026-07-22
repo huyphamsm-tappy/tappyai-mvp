@@ -1,0 +1,58 @@
+<resources>
+    <!-- Hub (FortuneHubScreen) -->
+    <string name="fortune_hub_title">Fortune Telling</string>
+    <string name="fortune_hub_tarot_title">Draw Tarot Cards</string>
+    <string name="fortune_hub_tarot_description">Draw 1-3 cards from the 78-card Tarot deck and see your message.</string>
+    <string name="fortune_hub_tuvi_title">Chinese Zodiac Horoscope</string>
+    <string name="fortune_hub_tuvi_description">Enter your birth date to find your zodiac animal and daily/weekly/monthly readings.</string>
+    <string name="fortune_hub_zodiac_title">Star Signs</string>
+    <string name="fortune_hub_zodiac_description">Enter your birth date to find your sign, personality traits and current luck.</string>
+
+    <!-- Shared disclaimer (Hub + Tarot + Tu Vi + Zodiac) -->
+    <string name="fortune_disclaimer">For entertainment purposes only — not a substitute for professional advice.</string>
+
+    <!-- Sub-screen headers -->
+    <string name="fortune_tarot_header">Tarot</string>
+    <string name="fortune_tuvi_header">Chinese Zodiac Horoscope</string>
+    <string name="fortune_zodiac_header">Star Signs</string>
+
+    <!-- Tarot draw -->
+    <string name="fortune_tarot_draw_title">Draw Tarot Cards</string>
+    <string name="fortune_tarot_draw_hint">Take a quiet moment, focus on your question, then choose how many cards to draw.</string>
+    <string name="fortune_tarot_one_card_chip">1 card</string>
+    <string name="fortune_tarot_three_cards_chip">3 cards</string>
+    <string name="fortune_tarot_draw_now">Draw now</string>
+    <string name="fortune_tarot_shuffling">Shuffling the deck...</string>
+    <string name="fortune_tarot_past">Past</string>
+    <string name="fortune_tarot_present">Present</string>
+    <string name="fortune_tarot_future">Future</string>
+    <string name="fortune_tarot_reversed">Reversed</string>
+    <string name="fortune_tarot_upright">Upright</string>
+    <string name="fortune_tarot_redraw">Draw again</string>
+
+    <!-- Shared period tabs (Tu Vi + Zodiac) -->
+    <string name="fortune_period_today">Today</string>
+    <string name="fortune_period_this_week">This week</string>
+    <string name="fortune_period_this_month">This month</string>
+
+    <!-- Shared reading labels (Tu Vi + Zodiac) -->
+    <string name="fortune_love">Love</string>
+    <string name="fortune_career_life">Career</string>
+    <string name="fortune_money">Wealth</string>
+    <string name="fortune_health">Health</string>
+
+    <!-- Tu Vi form -->
+    <string name="fortune_tuvi_form_title">Chinese Zodiac Reading</string>
+    <string name="fortune_tuvi_form_hint">Enter your birth year to see your fortune based on your zodiac animal (Can Chi).</string>
+    <string name="fortune_tuvi_birth_year_label">Birth year (e.g. 1990)</string>
+    <string name="fortune_tuvi_submit">See my horoscope</string>
+    <string name="fortune_tuvi_change_year">Change birth year</string>
+
+    <!-- Zodiac form -->
+    <string name="fortune_zodiac_form_title">Find Your Star Sign</string>
+    <string name="fortune_zodiac_form_hint">Enter your birth day and month to find your star sign.</string>
+    <string name="fortune_zodiac_day_label">Day (1–31)</string>
+    <string name="fortune_zodiac_month_label">Month (1–12)</string>
+    <string name="fortune_zodiac_submit">See my sign</string>
+    <string name="fortune_redo_with_other_date">Try another birth date</string>
+</resources>

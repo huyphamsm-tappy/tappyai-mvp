@@ -1,0 +1,24 @@
+<resources>
+    <string name="pricetracking_title">🎯 Price tracking</string>
+    <string name="pricetracking_refresh_content_description">Refresh</string>
+    <string name="pricetracking_error_title">Couldn\'t load price watches</string>
+    <string name="pricetracking_how_to_add_title">How to add a price watch</string>
+    <string name="pricetracking_how_to_add_message">Chat with Tappy and say something like \"Track the price of iPhone 16\" — Tappy will set up the watch and notify you when the price drops.</string>
+    <string name="pricetracking_empty_title">No price watches yet</string>
+    <string name="pricetracking_empty_message">Chat with Tappy to start tracking product prices</string>
+    <string name="pricetracking_go_to_chat">Go to chat</string>
+    <string name="pricetracking_tracking_header">TRACKING (%1$d/%2$d)</string>
+    <string name="pricetracking_target_price">Target: %1$s</string>
+    <string name="pricetracking_current_price">Current: %1$s</string>
+    <string name="pricetracking_checked_date">Checked %1$s</string>
+    <string name="pricetracking_delete_watch_content_description">Delete watch</string>
+    <string name="pricetracking_notified_header">NOTIFIED (%1$d)</string>
+    <string name="pricetracking_notified_date">Notified %1$s</string>
+    <string name="pricetracking_updated_message">Updated</string>
+    <string name="pricetracking_delete_failed_message">Couldn\'t remove the price watch. Please try again.</string>
+    <string name="pricetracking_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="pricetracking_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="pricetracking_error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="pricetracking_error_server">The server is having issues. Please try again later.</string>
+    <string name="pricetracking_error_generic">Something went wrong. Please try again.</string>
+</resources>

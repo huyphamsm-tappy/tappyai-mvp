@@ -1,0 +1,22 @@
+<resources>
+    <string name="history_title">Chat history</string>
+    <string name="history_error_title">Couldn\'t load</string>
+    <string name="history_error_no_connectivity">No internet connection. Please check and try again.</string>
+    <string name="history_error_timeout">The connection is too slow. Please try again.</string>
+    <string name="history_error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="history_error_server">The server is having issues. Please try again later.</string>
+    <string name="history_error_generic">Something went wrong. Please try again.</string>
+    <string name="history_empty_title">No conversations yet</string>
+    <string name="history_empty_message">Start chatting with Tappy and your history will show up here.</string>
+    <string name="history_start_chat">Start chat</string>
+    <string name="history_delete_dialog_title">Delete conversation?</string>
+    <string name="history_delete_dialog_message">Delete \"%1$s\"? This can\'t be undone.</string>
+    <string name="history_delete_confirm">Delete</string>
+    <string name="history_messages_count_time">%1$d messages · %2$s</string>
+    <string name="history_delete_conversation_cd">Delete conversation %1$s</string>
+    <string name="history_time_just_now">Just now</string>
+    <string name="history_time_minutes_ago">%1$d min ago</string>
+    <string name="history_time_hours_ago">%1$d hr ago</string>
+    <string name="history_time_day_ago">%1$d day ago</string>
+    <string name="history_time_days_ago">%1$d days ago</string>
+</resources>

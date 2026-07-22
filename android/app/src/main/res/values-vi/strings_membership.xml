@@ -1,0 +1,33 @@
+<resources>
+    <string name="membership_title">Nâng cấp TappyAI</string>
+    <string name="membership_hero_title">TappyAI Pro</string>
+    <string name="membership_hero_subtitle">Trải nghiệm đầy đủ, không giới hạn</string>
+    <string name="membership_free_status_banner">🎁 Bạn đang dùng gói Free.</string>
+    <string name="membership_status_pro">✨ Bạn đang dùng TappyAI Pro</string>
+    <string name="membership_status_free_count">🎁 Đang dùng Free — còn %1$d/%2$d tin nhắn hôm nay</string>
+    <string name="membership_pro_active_cta">Bạn đang dùng Pro ✓</string>
+    <string name="membership_plan_name_free">Free</string>
+    <string name="membership_plan_name_pro">Pro</string>
+    <string name="membership_free_tagline">Dùng thử miễn phí</string>
+    <string name="membership_pro_tagline">Không giới hạn, đầy đủ tính năng</string>
+    <string name="membership_per_month">/tháng</string>
+    <string name="membership_current_plan">Gói hiện tại</string>
+    <string name="membership_upgrade_cta">Nâng cấp lên Pro — %1$s/tháng</string>
+    <string name="membership_pro_subscription_feature_name">Gói Pro</string>
+    <string name="membership_faq_title">Câu hỏi thường gặp</string>
+    <string name="membership_free_feature_messages">15 tin nhắn / ngày</string>
+    <string name="membership_free_feature_search">Tìm kiếm địa điểm cơ bản</string>
+    <string name="membership_free_feature_history">Lưu lịch sử 7 ngày</string>
+    <string name="membership_pro_feature_messages">Tin nhắn không giới hạn</string>
+    <string name="membership_pro_feature_search">Tìm kiếm nâng cao + chính xác hơn</string>
+    <string name="membership_pro_feature_history">Lưu lịch sử không giới hạn</string>
+    <string name="membership_pro_feature_voice">Nhận giọng nói (Voice Input)</string>
+    <string name="membership_pro_feature_memory">AI nhớ sở thích cá nhân</string>
+    <string name="membership_pro_feature_priority">Ưu tiên phản hồi nhanh hơn</string>
+    <string name="membership_faq_payment_q">Thanh toán bằng gì?</string>
+    <string name="membership_faq_payment_a">Hỗ trợ thẻ Visa/Mastercard và ví điện tử — sắp ra mắt.</string>
+    <string name="membership_faq_cancel_q">Có thể hủy bất lúc nào không?</string>
+    <string name="membership_faq_cancel_a">Có, hủy bất kỳ lúc nào, dữ liệu vẫn được giữ nguyên.</string>
+    <string name="membership_faq_reset_q">Giới hạn Free được reset khi nào?</string>
+    <string name="membership_faq_reset_a">Reset lúc 00:00 mỗi ngày theo giờ Việt Nam.</string>
+</resources>

@@ -1,0 +1,59 @@
+<resources>
+    <string name="translate_title">Dịch thuật</string>
+    <string name="translate_hero_title">Dịch thuật tức thì</string>
+    <string name="translate_hero_subtitle">30 ngôn ngữ · Không cần đăng nhập · Đọc to kết quả</string>
+    <string name="translate_input_label">Văn bản cần dịch</string>
+    <string name="translate_input_placeholder">Nhập hoặc dán văn bản vào đây...</string>
+    <string name="translate_char_counter">%1$d/2000</string>
+    <string name="translate_clear">Xóa</string>
+    <string name="translate_action_translating">Đang dịch...</string>
+    <string name="translate_action_translate">Dịch</string>
+    <string name="translate_target_label">Dịch sang</string>
+    <string name="translate_footer_note">Miễn phí · Tối đa 30 lượt dịch/ngày · Không cần tài khoản</string>
+    <string name="translate_result_header">Kết quả · %1$s</string>
+    <string name="translate_action_stop">Dừng</string>
+    <string name="translate_action_read_aloud">Đọc to</string>
+    <string name="translate_action_copied">Đã sao chép!</string>
+    <string name="translate_action_copy">Sao chép</string>
+    <string name="translate_selected_description">Đã chọn</string>
+
+    <string name="translate_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="translate_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="translate_error_limit">Bạn đã dùng hết lượt dịch hôm nay. Vui lòng thử lại vào ngày mai.</string>
+    <string name="translate_error_bad_request">Vui lòng kiểm tra lại văn bản và thử lại.</string>
+    <string name="translate_error_server">Dịch thất bại. Vui lòng thử lại.</string>
+    <string name="translate_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+
+    <!-- Language endonyms — each language's name for itself, shown the same regardless of the
+         app's UI language (matches how Android/iOS system language pickers behave). -->
+    <string name="translate_lang_vietnamese">Tiếng Việt</string>
+    <string name="translate_lang_english">English</string>
+    <string name="translate_lang_japanese">日本語</string>
+    <string name="translate_lang_korean">한국어</string>
+    <string name="translate_lang_chinese_simplified">中文（简体）</string>
+    <string name="translate_lang_chinese_traditional">中文（繁體）</string>
+    <string name="translate_lang_french">Français</string>
+    <string name="translate_lang_german">Deutsch</string>
+    <string name="translate_lang_spanish">Español</string>
+    <string name="translate_lang_italian">Italiano</string>
+    <string name="translate_lang_portuguese">Português</string>
+    <string name="translate_lang_arabic">العربية</string>
+    <string name="translate_lang_thai">ภาษาไทย</string>
+    <string name="translate_lang_indonesian">Bahasa Indonesia</string>
+    <string name="translate_lang_malay">Bahasa Melayu</string>
+    <string name="translate_lang_hindi">हिंदी</string>
+    <string name="translate_lang_russian">Русский</string>
+    <string name="translate_lang_dutch">Nederlands</string>
+    <string name="translate_lang_polish">Polski</string>
+    <string name="translate_lang_turkish">Türkçe</string>
+    <string name="translate_lang_swedish">Svenska</string>
+    <string name="translate_lang_danish">Dansk</string>
+    <string name="translate_lang_norwegian">Norsk</string>
+    <string name="translate_lang_finnish">Suomi</string>
+    <string name="translate_lang_czech">Čeština</string>
+    <string name="translate_lang_hungarian">Magyar</string>
+    <string name="translate_lang_romanian">Română</string>
+    <string name="translate_lang_greek">Ελληνικά</string>
+    <string name="translate_lang_hebrew">עברית</string>
+    <string name="translate_lang_ukrainian">Українська</string>
+</resources>

@@ -163,6 +163,7 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
                 >
                   <Heart size={16} className={saved ? 'fill-white' : ''} /> {saved ? 'Đã lưu' : 'Lưu'}
                 </button>
+                {/* Sound model: every Sound is reusable by SoundID reference. */}
                 <button
                   onClick={() => router.push(`/reviews/new?sound=${data.track.id}`)}
                   className="flex-1 flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 py-2.5 text-sm font-semibold text-white active:scale-95 transition"

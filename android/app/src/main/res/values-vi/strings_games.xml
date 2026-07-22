@@ -1,0 +1,5 @@
+<resources>
+    <string name="games_title">🎮 Trò chơi</string>
+    <string name="games_error_title">Không thể tải trò chơi</string>
+    <string name="games_error_message">Kiểm tra kết nối và thử lại.</string>
+</resources>

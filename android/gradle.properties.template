@@ -1,0 +1,33 @@
+# TappyAI Android — gradle.properties template (committed; the real gradle.properties is gitignored).
+#
+# Setup for a fresh clone:
+#   1. Copy this file:  cp gradle.properties.template gradle.properties
+#   2. Fill in the secret values below (or put them in your per-user
+#      ~/.gradle/gradle.properties so they never live in the project dir).
+#   3. Create local.properties with your SDK path (or set ANDROID_HOME):  sdk.dir=/path/to/Android/Sdk
+#
+# The build flags in the top section are the only part that must be present to
+# build; the TAPPYAI_* values are read via project.findProperty(...) and fall back
+# to safe placeholders when omitted (see app/build.gradle.kts), so the app compiles
+# without them — it just can't reach the real backend/Supabase until they are set.
+
+# ── Build flags / Gradle · AndroidX · Kotlin options (safe to commit) ──
+android.useAndroidX=true
+android.nonTransitiveRClass=true
+kotlin.code.style=official
+org.gradle.jvmargs=-Xmx4096m -Dfile.encoding=UTF-8
+org.gradle.parallel=true
+org.gradle.caching=true
+
+# ── Secrets — DO NOT commit real values (fill locally / in ~/.gradle) ──
+# Backend base URL per variant. Debug falls back to the emulator loopback if omitted.
+TAPPYAI_API_BASE_URL_DEBUG=https://www.tappyai.com/
+TAPPYAI_API_BASE_URL_STAGING=https://staging.example.com/
+TAPPYAI_API_BASE_URL_RELEASE=https://www.tappyai.com/
+# Supabase (auth). Public project URL + anon key.
+TAPPYAI_SUPABASE_URL=https://<your-project>.supabase.co
+TAPPYAI_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+# Google native Sign-In server client id (must match Supabase's Google provider config).
+TAPPYAI_GOOGLE_WEB_CLIENT_ID=<your-web-client-id>.apps.googleusercontent.com
+# Public web origin for share links (Group Dining). Same as the web NEXT_PUBLIC_APP_URL.
+TAPPYAI_WEB_APP_URL=https://www.tappyai.com

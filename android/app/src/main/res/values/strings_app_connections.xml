@@ -1,0 +1,18 @@
+<resources>
+    <string name="appconn_back">Back</string>
+    <string name="appconn_title">App connections</string>
+    <string name="appconn_subtitle">Tappy learns more about you through the apps you use</string>
+    <string name="appconn_privacy_note">Tappy only reads the data you allow, never reads your personal messages, and never shares it with third parties. You can disconnect at any time.</string>
+    <string name="appconn_calendar_description">Connect your calendar so Tappy can suggest things that fit your schedule.</string>
+    <string name="appconn_calendar_reads">Event names, times, and locations for the next 7 days (read-only)</string>
+    <string name="appconn_zalo_description">Connect your Zalo account so Tappy knows your name and profile picture.</string>
+    <string name="appconn_zalo_reads">Display name and Zalo profile picture (messages are never read)</string>
+    <string name="appconn_reads_label">TAPPY ONLY READS</string>
+    <string name="appconn_connect">Connect</string>
+    <string name="appconn_connected">✓ Connected</string>
+    <string name="appconn_usage_title">What does Tappy do with this data?</string>
+    <string name="appconn_usage_calendar">Google Calendar → Tappy suggests places to eat near your meetings</string>
+    <string name="appconn_usage_zalo">Zalo → Shows your real name and photo on your review feed</string>
+    <string name="appconn_usage_behavior">In-app behavior → Tappy remembers what you like and when you\'re active</string>
+    <string name="appconn_coming_soon_description">Connecting %1$s is launching soon. You can keep using Tappy normally for now.</string>
+</resources>

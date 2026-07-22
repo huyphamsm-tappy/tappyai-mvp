@@ -1,0 +1,58 @@
+<resources>
+    <!-- Hub (FortuneHubScreen) -->
+    <string name="fortune_hub_title">Xem bói</string>
+    <string name="fortune_hub_tarot_title">Rút bài Tarot</string>
+    <string name="fortune_hub_tarot_description">Rút 1-3 lá từ bộ 78 lá bài Tarot, xem thông điệp dành cho bạn.</string>
+    <string name="fortune_hub_tuvi_title">Tử vi 12 con giáp</string>
+    <string name="fortune_hub_tuvi_description">Nhập ngày sinh để xem con giáp và luận giải vận hạn ngày/tuần/tháng.</string>
+    <string name="fortune_hub_zodiac_title">Cung hoàng đạo</string>
+    <string name="fortune_hub_zodiac_description">Nhập ngày sinh để biết cung của bạn, tính cách và vận may hiện tại.</string>
+
+    <!-- Shared disclaimer (Hub + Tarot + Tu Vi + Zodiac) -->
+    <string name="fortune_disclaimer">Nội dung chỉ mang tính giải trí, tham khảo — không thay thế lời khuyên chuyên môn.</string>
+
+    <!-- Sub-screen headers -->
+    <string name="fortune_tarot_header">Tarot</string>
+    <string name="fortune_tuvi_header">Tử vi 12 con giáp</string>
+    <string name="fortune_zodiac_header">Cung hoàng đạo</string>
+
+    <!-- Tarot draw -->
+    <string name="fortune_tarot_draw_title">Rút bài Tarot</string>
+    <string name="fortune_tarot_draw_hint">Tĩnh tâm một chút, nghĩ về câu hỏi của bạn rồi chọn số lá muốn rút.</string>
+    <string name="fortune_tarot_one_card_chip">1 Lá</string>
+    <string name="fortune_tarot_three_cards_chip">3 Lá</string>
+    <string name="fortune_tarot_draw_now">Rút bài ngay</string>
+    <string name="fortune_tarot_shuffling">Đang xáo bài...</string>
+    <string name="fortune_tarot_past">Quá khứ</string>
+    <string name="fortune_tarot_present">Hiện tại</string>
+    <string name="fortune_tarot_future">Tương lai</string>
+    <string name="fortune_tarot_reversed">Ngược (Reversed)</string>
+    <string name="fortune_tarot_upright">Xuôi (Upright)</string>
+    <string name="fortune_tarot_redraw">Rút lại</string>
+
+    <!-- Shared period tabs (Tu Vi + Zodiac) -->
+    <string name="fortune_period_today">Hôm nay</string>
+    <string name="fortune_period_this_week">Tuần này</string>
+    <string name="fortune_period_this_month">Tháng này</string>
+
+    <!-- Shared reading labels (Tu Vi + Zodiac) -->
+    <string name="fortune_love">Tình duyên</string>
+    <string name="fortune_career_life">Sự nghiệp</string>
+    <string name="fortune_money">Tài lộc</string>
+    <string name="fortune_health">Sức khỏe</string>
+
+    <!-- Tu Vi form -->
+    <string name="fortune_tuvi_form_title">Xem tử vi 12 con giáp</string>
+    <string name="fortune_tuvi_form_hint">Nhập năm sinh để xem vận mệnh theo can chi.</string>
+    <string name="fortune_tuvi_birth_year_label">Năm sinh (VD: 1990)</string>
+    <string name="fortune_tuvi_submit">Xem tử vi của tôi</string>
+    <string name="fortune_tuvi_change_year">Đổi Năm Sinh</string>
+
+    <!-- Zodiac form -->
+    <string name="fortune_zodiac_form_title">Tra cứu cung hoàng đạo</string>
+    <string name="fortune_zodiac_form_hint">Nhập ngày và tháng sinh để tìm cung hoàng đạo.</string>
+    <string name="fortune_zodiac_day_label">Ngày (1–31)</string>
+    <string name="fortune_zodiac_month_label">Tháng (1–12)</string>
+    <string name="fortune_zodiac_submit">Xem cung của tôi</string>
+    <string name="fortune_redo_with_other_date">Xem lại với ngày sinh khác</string>
+</resources>

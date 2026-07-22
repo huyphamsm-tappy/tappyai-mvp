@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12+ (API 31+) backup/transfer scoping. Excludes the encrypted auth-token
+  SharedPreferences file (EncryptedTokenStorage's "tappy_secure_tokens") from both cloud backup
+  and device-to-device transfer — the ciphertext is Keystore-wrapped and won't decrypt on a
+  different device/after a Keystore reset anyway, but excluding it outright avoids restoring a
+  useless/corrupt token file and matches the standard "never back up auth tokens" guidance.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="tappy_secure_tokens.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="tappy_secure_tokens.xml" />
+    </device-transfer>
+</data-extraction-rules>

@@ -1,0 +1,54 @@
+{
+  "sourceLanguage" : "en",
+  "version" : "1.0",
+  "strings" : {
+    "app.name" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI" } }
+      }
+    },
+    "tab.home" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Home" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trang chủ" } }
+      }
+    },
+    "tab.chat" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Chat" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trò chuyện" } }
+      }
+    },
+    "tab.explore" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Explore" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khám phá" } }
+      }
+    },
+    "tab.deals" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Deals" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Ưu đãi" } }
+      }
+    },
+    "tab.profile" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Profile" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cá nhân" } }
+      }
+    },
+    "common.retry" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Try Again" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thử lại" } }
+      }
+    },
+    "foundation.ready.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Foundation Ready" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nền tảng sẵn sàng" } }
+      }
+    }
+  }
+}

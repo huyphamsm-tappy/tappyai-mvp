@@ -1,0 +1,22 @@
+# Gradle build outputs and caches
+.gradle/
+.kotlin/
+build/
+*/build/
+
+# Local dev config (contains credentials — never commit).
+# gradle.properties.template IS committed (build flags + placeholder secret keys).
+local.properties
+gradle.properties
+
+# Android Studio / IDE files
+*.iml
+.idea/
+.DS_Store
+
+# Signing keystore
+*.jks
+*.keystore
+
+# Generated code
+generated/

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pre-Android-12 (API < 31) equivalent of data_extraction_rules.xml — same exclusion, older
+     `android:fullBackupContent` mechanism (Auto Backup for Apps). -->
+<full-backup-content>
+    <exclude domain="sharedpref" path="tappy_secure_tokens.xml" />
+</full-backup-content>

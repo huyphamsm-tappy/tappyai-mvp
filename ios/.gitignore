@@ -1,0 +1,20 @@
+# XcodeGen output (regenerated from project.yml)
+*.xcodeproj
+
+# Xcode / build
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+
+# SwiftPM
+.swiftpm/
+.build/
+
+# macOS
+.DS_Store
+
+# Secrets (inject locally / via CI)
+Config/Secrets.xcconfig

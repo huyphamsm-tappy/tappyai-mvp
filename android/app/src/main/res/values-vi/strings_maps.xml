@@ -1,0 +1,43 @@
+<resources>
+    <!-- Search + view toggle -->
+    <string name="maps_search_placeholder">Tìm nhà hàng, khách sạn…</string>
+    <string name="maps_view_mode_map">Bản đồ</string>
+    <string name="maps_view_mode_list">Danh sách</string>
+
+    <!-- Map pane FABs -->
+
+    <!-- Map placeholder canvas -->
+    <string name="maps_preview_label">Xem trước bản đồ</string>
+
+    <!-- Place list states -->
+    <string name="maps_load_error_title">Không tải được địa điểm</string>
+    <string name="maps_empty_title">Không tìm thấy địa điểm</string>
+    <string name="maps_empty_message">Hãy thử tìm kiếm hoặc bộ lọc khác.</string>
+
+    <!-- Place detail sheet -->
+    <string name="maps_detail_address">Địa chỉ</string>
+    <string name="maps_detail_phone">Điện thoại</string>
+    <string name="maps_detail_hours">Giờ mở cửa</string>
+    <string name="maps_detail_price">Mức giá</string>
+    <string name="maps_action_open">Mở</string>
+    <string name="maps_action_remove">Xóa</string>
+    <string name="maps_action_share">Chia sẻ</string>
+    <string name="maps_share_text">%1$s\n%2$s\n%3$s</string>
+    <string name="maps_share_chooser_title">Chia sẻ địa điểm</string>
+
+    <!-- Place categories -->
+    <string name="maps_category_all">Tất cả</string>
+    <string name="maps_category_food">Ăn uống</string>
+    <string name="maps_category_spa">Spa &amp; Làm đẹp</string>
+    <string name="maps_category_hotel">Khách sạn</string>
+    <string name="maps_category_travel">Du lịch</string>
+    <string name="maps_category_shopping">Mua sắm</string>
+    <string name="maps_category_entertainment">Giải trí</string>
+
+    <!-- Error messages -->
+    <string name="maps_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
+    <string name="maps_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
+    <string name="maps_error_session_expired">Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.</string>
+    <string name="maps_error_server">Máy chủ đang gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="maps_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+</resources>

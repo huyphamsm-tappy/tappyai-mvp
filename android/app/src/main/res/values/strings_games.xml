@@ -1,0 +1,5 @@
+<resources>
+    <string name="games_title">🎮 Games</string>
+    <string name="games_error_title">Couldn\'t load the game</string>
+    <string name="games_error_message">Check your connection and try again.</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- APNs environment: "development" for Debug builds, "production" for Release/TestFlight/App Store.
+         APS_ENVIRONMENT is injected from Config/Debug.xcconfig and Config/Release.xcconfig. -->
+    <key>aps-environment</key>
+    <string>$(APS_ENVIRONMENT)</string>
+
+    <!-- Universal Links + Shared Web Credentials for www.tappyai.com.
+         Requires the apple-app-site-association file served at /.well-known/apple-app-site-association
+         and the Apple Team ID substituted in that file. -->
+    <key>com.apple.developer.associated-domains</key>
+    <array>
+        <string>applinks:www.tappyai.com</string>
+        <string>applinks:tappyai.com</string>
+        <string>webcredentials:www.tappyai.com</string>
+    </array>
+</dict>
+</plist>

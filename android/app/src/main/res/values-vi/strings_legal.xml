@@ -1,0 +1,30 @@
+<resources>
+    <!-- Legal document chrome only (profile/LegalDocumentScreen.kt, PrivacyPolicyScreen.kt,
+         TermsOfServiceScreen.kt) — long-form body paragraphs stay hardcoded, out of scope. -->
+    <string name="legal_last_updated">Cập nhật lần cuối: %1$s</string>
+    <string name="legal_last_updated_date">13 tháng 6, 2026</string>
+
+    <string name="legal_privacy_title">Chính sách bảo mật</string>
+    <string name="legal_privacy_section1_title">Thông tin chúng tôi thu thập</string>
+    <string name="legal_privacy_section2_title">Cách chúng tôi sử dụng thông tin</string>
+    <string name="legal_privacy_section3_title">Chia sẻ với bên thứ ba</string>
+    <string name="legal_privacy_section4_title">Bảo mật dữ liệu</string>
+    <string name="legal_privacy_section5_title">Quyền của bạn</string>
+    <string name="legal_privacy_section6_title">Thay đổi đối với chính sách này</string>
+
+    <string name="legal_terms_title">Điều khoản dịch vụ</string>
+    <string name="legal_terms_section1_title">Giới thiệu</string>
+    <string name="legal_terms_section2_title">Tài khoản</string>
+    <string name="legal_terms_section3_title">Thông tin do AI cung cấp</string>
+    <string name="legal_terms_section4_title">Sử dụng hợp lý</string>
+    <string name="legal_terms_section5_title">Thay đổi đối với các điều khoản này</string>
+    <string name="legal_terms_section6_title">Liên hệ</string>
+
+    <string name="legal_copyright_title">Chính sách bản quyền</string>
+    <string name="legal_copyright_scope">Áp dụng cho nhạc do người dùng đăng tải lên TappyAI.</string>
+    <string name="legal_copyright_section1_title">Điều kiện khi đăng nhạc</string>
+    <string name="legal_copyright_section2_title">Trách nhiệm</string>
+    <string name="legal_copyright_section3_title">Báo cáo vi phạm (Notice-and-Takedown)</string>
+    <string name="legal_copyright_section4_title">Đại diện bản quyền</string>
+    <string name="legal_copyright_section5_title">Xử lý vi phạm lặp lại</string>
+</resources>

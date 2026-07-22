@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2, ArrowLeft } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { markAuthPending, emitAuthLoginFailed } from '@/lib/analytics/authEvents'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -30,6 +31,7 @@ export default function RegisterPage() {
       return
     }
 
+    markAuthPending('email')
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -42,9 +44,13 @@ export default function RegisterPage() {
     setLoading(false)
 
     if (error) {
+      emitAuthLoginFailed('email', 'invalid_credentials')
       setError(error.message)
       return
     }
+    // On immediate session (email confirmation off), onAuthStateChange fires and
+    // the global listener emits auth_signup_completed + auth_login_completed
+    // (is_first_login=true) with method 'email'.
 
     // Nếu Supabase đã trả session ngay (email confirmation tắt) → một tài khoản
     // vừa tạo luôn chưa onboarded, nên đưa thẳng vào onboarding (thay vì "/",
