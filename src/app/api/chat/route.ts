@@ -9,7 +9,7 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
-import { classifyIntent, detectLang, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectForcedTool, detectLocationIntent, detectPlanningIntentFromConversation, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
@@ -90,7 +90,9 @@ export async function POST(req: Request) {
   const intent = classifyIntent(lastText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
-  const planningIntent = detectPlanningIntent(lastText)
+  // Conversation-scoped, NOT lastText: after Tappy's clarifying question the
+  // user's answer alone rarely re-states the trip (see intent.ts).
+  const planningIntent = detectPlanningIntentFromConversation(messages)
   const lang = detectLang(lastText)
   const forcedTool = detectForcedTool(lastText)
   const worthExtract = lastText.trim().length > 20

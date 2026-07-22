@@ -81,6 +81,41 @@ export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   return null
 }
 
+/** Planning conversations span turns: the user states the trip ("du lịch Đà Nẵng
+ * 3 ngày 2 đêm"), Tappy asks a clarifying question, and the user's ANSWER
+ * ("cuối tuần này, ngân sách 8 triệu, cặp đôi...") usually contains no
+ * destination/day/trip keyword of its own. Detecting on the last message alone
+ * dropped planning mode on exactly the turn the plan gets generated — the
+ * flagship brochure ([TAPPY_PLAN] → TripPlanCard) degraded to plain markdown.
+ *
+ * Walk the recent turns newest-first: the nearest user message with a planning
+ * intent wins, but an assistant message that already delivered a [TAPPY_PLAN]
+ * block ends the search — follow-up chat about a delivered plan ("tìm quán ăn
+ * cụ thể") must not force a whole new plan. The lookback window keeps a trip
+ * asked long ago from resurrecting into an unrelated conversation. */
+const PLANNING_LOOKBACK_MESSAGES = 6
+
+type ConversationMessage = { role: string; content: unknown }
+
+function messageText(content: unknown): string {
+  if (typeof content === 'string') return content
+  if (Array.isArray(content)) return content.map(c => (c as { text?: string })?.text || '').join(' ')
+  return ''
+}
+
+export function detectPlanningIntentFromConversation(messages: ConversationMessage[]): 'trip' | 'evening' | null {
+  const recent = messages.slice(-PLANNING_LOOKBACK_MESSAGES)
+  for (let i = recent.length - 1; i >= 0; i--) {
+    const text = messageText(recent[i].content)
+    if (recent[i].role === 'assistant' && text.includes('[TAPPY_PLAN]')) return null
+    if (recent[i].role === 'user') {
+      const found = detectPlanningIntent(text)
+      if (found) return found
+    }
+  }
+  return null
+}
+
 export function detectLocationIntent(text: string): 'offline' | 'online' | 'unknown' {
   const t = normalizeVN(text.toLowerCase().trim())
   // Online signals
