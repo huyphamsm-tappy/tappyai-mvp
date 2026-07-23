@@ -18,6 +18,11 @@ import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } fr
 import { ProfileTab } from './ProfileTab'
 
 interface Notification { id: string; type: string; actor_id: string; actor_name: string; actor_avatar: string | null; text: string; url: string; created_at: string }
+// Client-side "last seen the Inbox" marker — an ISO timestamp in localStorage.
+// The unread badge = notifications newer than this. Opening the Inbox advances it
+// to now. This is deliberately client-only: no server-side read tracking, no
+// notifications table (per the ticket's out-of-scope list).
+const NOTIF_SEEN_KEY = 'tappy:notifSeenAt'
 interface HotPlace { place_name: string; count: number }
 interface GroupedNotif {
   id: string; type: string; url: string
@@ -57,7 +62,7 @@ function notifSection(created_at: string): string {
 }
 
 /* ─── TikTok Bottom Nav ─── */
-function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => void; userId: string | null }) {
+function TikNav({ tab, setTab, userId, unreadCount = 0 }: { tab: string; setTab: (t: string) => void; userId: string | null; unreadCount?: number }) {
   const { t } = useTranslation()
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur border-t border-gray-800 flex items-center h-[60px]">
@@ -85,7 +90,19 @@ function TikNav({ tab, setTab, userId }: { tab: string; setTab: (t: string) => v
         </div>
       </Link>
       <button onClick={() => setTab('inbox')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === 'inbox' ? 'text-white' : 'text-gray-500'}`}>
-        <Bell size={24} /><span className="text-[10px]">{t('reviews.navInbox')}</span>
+        <span className="relative">
+          <Bell size={24} />
+          {unreadCount > 0 && (
+            // key on the value so the badge re-mounts and re-pops each time the
+            // count changes (tailwindcss-animate is already enabled app-wide).
+            <span key={unreadCount}
+              className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-[#fe2c55] text-white text-[9px] font-bold leading-none flex items-center justify-center ring-2 ring-black animate-in zoom-in-50 duration-200"
+              aria-label={t('reviews.navInbox')}>
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </span>
+          )}
+        </span>
+        <span className="text-[10px]">{t('reviews.navInbox')}</span>
       </button>
       <button onClick={() => setTab('profile')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === 'profile' ? 'text-white' : 'text-gray-500'}`}>
         <User size={24} /><span className="text-[10px]">{t('reviews.navProfile')}</span>
@@ -376,6 +393,7 @@ export default function ReviewsPage() {
   const [hotPlaces, setHotPlaces] = useState<HotPlace[]>([])
   const [hotPlacesLoading, setHotPlacesLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
+  const [unreadCount, setUnreadCount] = useState(0)
   const [userPrefs, setUserPrefs] = useState<UserPreferences | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(0)
@@ -434,9 +452,65 @@ export default function ReviewsPage() {
     return () => { cancelled = true }
   }, [me, supabase])
 
+  // Unread badge — driven by Supabase Realtime, NOT polling. A postgres_changes
+  // subscription on the four activity tables is used ONLY as a trigger: on any
+  // relevant INSERT it refetches GET /api/notifications (the single source of
+  // truth, which does the my-content join under RLS) and recomputes the unread
+  // count vs the client-side "last seen" marker. No aggregation logic is
+  // duplicated here. Over-broad events (e.g. a like on someone else's review) are
+  // harmless — the refetch simply returns my unchanged notifications.
+  // Requires the migration adding these tables to the supabase_realtime
+  // publication; until it runs, the badge still loads once but won't live-update.
+  useEffect(() => {
+    if (!me) { setUnreadCount(0); return }
+    let cancelled = false
+    const recount = async () => {
+      try {
+        const r = await fetch('/api/notifications')
+        if (!r.ok || cancelled) return
+        const d = await r.json()
+        const seen = new Date(localStorage.getItem(NOTIF_SEEN_KEY) || 0).getTime()
+        const unread = (d.notifications as Notification[] || []).filter(n => new Date(n.created_at).getTime() > seen).length
+        if (!cancelled) setUnreadCount(unread)
+      } catch { /* keep the previous count on a transient failure */ }
+    }
+    recount() // initial load
+
+    // Coalesce bursts (a like can also mint a milestone in the same moment).
+    let debounce: ReturnType<typeof setTimeout> | null = null
+    const trigger = () => { if (debounce) clearTimeout(debounce); debounce = setTimeout(recount, 300) }
+
+    const channel = supabase
+      .channel('notif-badge')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'review_likes' }, trigger)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'review_comments' }, trigger)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'user_follows', filter: `following_id=eq.${me}` }, trigger)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'review_milestones' }, trigger)
+      .subscribe()
+
+    // Not polling: a one-shot catch-up when the tab regains focus, in case the
+    // realtime socket dropped while the app was backgrounded.
+    const onWake = () => { if (document.visibilityState === 'visible') recount() }
+    window.addEventListener('focus', onWake)
+    document.addEventListener('visibilitychange', onWake)
+
+    return () => {
+      cancelled = true
+      if (debounce) clearTimeout(debounce)
+      supabase.removeChannel(channel)
+      window.removeEventListener('focus', onWake)
+      document.removeEventListener('visibilitychange', onWake)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me])
+
   // Load notifications + hot places when inbox tab opens
   useEffect(() => {
     if (tab !== 'inbox') return
+    // Opening the Inbox marks everything up to now as seen and clears the badge
+    // (client-side only — no server read state).
+    try { localStorage.setItem(NOTIF_SEEN_KEY, new Date().toISOString()) } catch { /* private mode */ }
+    setUnreadCount(0)
     setNotifsLoading(true)
     setNotifsError(false)
     fetch('/api/notifications')
@@ -884,7 +958,7 @@ export default function ReviewsPage() {
         </div>
       </div>
 
-      <TikNav tab={tab} setTab={handleSetTab} userId={me} />
+      <TikNav tab={tab} setTab={handleSetTab} userId={me} unreadCount={unreadCount} />
 
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
