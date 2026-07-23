@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 
-// GET /api/notifications → returns recent activity (follows + likes) for current user
+// GET /api/notifications → returns recent activity (follows + likes + comments + milestones) for current user
 export async function GET(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ notifications: [] })
@@ -52,10 +52,25 @@ export async function GET(req: Request) {
     milestones = data || []
   }
 
+  // Comment notifications on my reviews — same aggregation shape as likes above:
+  // comments by anyone OTHER than me, on my visible reviews, newest first.
+  let comments: { id: string; user_id: string; review_id: string; body: string; created_at: string }[] = []
+  if (myReviewIds.length > 0) {
+    const { data } = await supabase
+      .from('review_comments')
+      .select('id, user_id, review_id, body, created_at')
+      .in('review_id', myReviewIds)
+      .neq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(15)
+    comments = data || []
+  }
+
   // Batch load profiles for all actors
   const profileIds = [
     ...(follows || []).map(f => f.follower_id),
     ...likes.map(l => l.user_id),
+    ...comments.map(c => c.user_id),
   ].filter((v, i, a) => a.indexOf(v) === i)
 
   let profileMap: Record<string, { full_name: string | null; avatar_url: string | null }> = {}
@@ -97,6 +112,19 @@ export async function GET(req: Request) {
       text: `🎉 Bài "${reviewNameMap[m.review_id] || 'của bạn'}" đạt ${m.milestone} lượt thích!`,
       url: `/reviews/${m.review_id}`,
       created_at: m.created_at,
+    })),
+    // Same object shape the Inbox already consumes: the UI reads comment_body
+    // from `text` when type === 'comment' (reviews/page.tsx groupNotifs), so no
+    // Inbox change is needed. review_id → url, comment_id → id, author → actor_*.
+    ...comments.map(c => ({
+      id: 'c_' + c.id,
+      type: 'comment',
+      actor_id: c.user_id,
+      actor_name: profileMap[c.user_id]?.full_name || 'Ẩn danh',
+      actor_avatar: profileMap[c.user_id]?.avatar_url || null,
+      text: c.body,
+      url: `/reviews/${c.review_id}`,
+      created_at: c.created_at,
     })),
   ]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
