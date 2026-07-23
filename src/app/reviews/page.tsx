@@ -23,6 +23,20 @@ interface Notification { id: string; type: string; actor_id: string; actor_name:
 // to now. This is deliberately client-only: no server-side read tracking, no
 // notifications table (per the ticket's out-of-scope list).
 const NOTIF_SEEN_KEY = 'tappy:notifSeenAt'
+// Bug #8 — feed active-clip restoration. The clip in view lives only in an inner
+// snap-scroll container (no per-clip URL, no history entry), so opening an author's
+// profile (a real route change) and pressing Back would remount the feed at the top
+// slide of a freshly-fetched — and, for "trending", re-ordered — feed, i.e. a
+// different clip. We remember the active clip's ID + feed type on leave and restore
+// by ID after the feed reloads, but ONLY when the mount follows a Back/Forward
+// traversal. `popstate` fires for history traversals (Back/Forward, incl.
+// router.back()) but not for push navigations, so a recent popstate is our signal.
+const RETURN_KEY = 'tappy:reviewsReturn'
+let lastPopStateAt = 0
+if (typeof window !== 'undefined') {
+  window.addEventListener('popstate', () => { lastPopStateAt = Date.now() })
+}
+const isBackForwardMount = () => lastPopStateAt > 0 && Date.now() - lastPopStateAt < 5000
 interface HotPlace { place_name: string; count: number }
 interface GroupedNotif {
   id: string; type: string; url: string
@@ -357,6 +371,11 @@ export default function ReviewsPage() {
   const [feedError, setFeedError] = useState(false)
   // Index of the slide currently in view — only this one (± 1) mounts a <video>.
   const [activeIndex, setActiveIndex] = useState(0)
+  // Bug #8: decide ONCE, at first render, whether this mount follows a Back/Forward
+  // traversal. popstate has already fired by now on a traversal; re-checking later
+  // would be sensitive to how long the feed fetch took.
+  const isBackNavRef = useRef<boolean | null>(null)
+  if (isBackNavRef.current === null) isBackNavRef.current = isBackForwardMount()
   const router = useRouter()
   const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
@@ -375,13 +394,34 @@ export default function ReviewsPage() {
     setTab(t)
     router.replace(window.location.pathname + '?tab=' + t, { scroll: false })
   }, [router])
-  const [feedType, setFeedType] = useState<'for-you' | 'latest' | 'following'>('for-you')
+  const [feedType, setFeedType] = useState<'for-you' | 'latest' | 'following'>(() => {
+    // Bug #8: on a Back/Forward return, restore the feed the user was on so the
+    // saved clip is present to scroll to. Fresh visits keep the default.
+    if (typeof window === 'undefined' || !isBackNavRef.current) return 'for-you'
+    try {
+      const raw = sessionStorage.getItem(RETURN_KEY)
+      if (raw) {
+        const ft = JSON.parse(raw).feedType
+        if (ft === 'for-you' || ft === 'latest' || ft === 'following') return ft
+      }
+    } catch { /* private mode / bad JSON — fall through to default */ }
+    return 'for-you'
+  })
   const [city, setCity] = useState('')
   const [topHashtags, setTopHashtags] = useState<string[]>([])
   const cityRef = useRef(city)
   const topHashtagsRef = useRef(topHashtags)
   cityRef.current = city
   topHashtagsRef.current = topHashtags
+  // Bug #8: mirror live values so the unmount handler can snapshot the exact clip
+  // and feed the user is leaving from (a cleanup closure captures stale mount-time
+  // values otherwise).
+  const activeIndexRef = useRef(activeIndex)
+  activeIndexRef.current = activeIndex
+  const reviewsRef = useRef(reviews)
+  reviewsRef.current = reviews
+  const feedTypeRef = useRef(feedType)
+  feedTypeRef.current = feedType
   const abortRef = useRef<AbortController | null>(null)
   const fetchRef = useRef<(p: number, append: boolean, ft: 'for-you' | 'latest' | 'following', signal?: AbortSignal) => Promise<void>>(null as any)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
@@ -687,6 +727,43 @@ export default function ReviewsPage() {
     c.addEventListener('scroll', onScroll, { passive: true })
     return () => c.removeEventListener('scroll', onScroll)
   }, [loading, fetch_, feedType])
+
+  // Bug #8: on leaving the feed (e.g. tapping into an author's profile) remember the
+  // active clip so a Back return can restore it. Written on unmount from refs so it
+  // reflects the last-viewed clip no matter how the user navigated away.
+  useEffect(() => {
+    return () => {
+      try {
+        const r = reviewsRef.current[activeIndexRef.current]
+        if (r) sessionStorage.setItem(RETURN_KEY, JSON.stringify({ clipId: r.id, feedType: feedTypeRef.current }))
+      } catch { /* private mode / quota — restore simply won't happen */ }
+    }
+  }, [])
+
+  // Bug #8: after the feed loads on a Back/Forward return, scroll to the saved clip
+  // by ID (index is unreliable — "trending" re-orders between fetches) and mark it
+  // active so the correct <video> plays. Runs once per mount; clears the marker on a
+  // successful restore.
+  const didRestoreRef = useRef(false)
+  useEffect(() => {
+    if (didRestoreRef.current) return
+    if (loading || reviews.length === 0) return
+    didRestoreRef.current = true // one attempt per mount, success or not
+    try {
+      if (!isBackNavRef.current) return
+      const raw = sessionStorage.getItem(RETURN_KEY)
+      if (!raw) return
+      const { clipId, feedType: savedFeedType } = JSON.parse(raw)
+      if (savedFeedType && savedFeedType !== feedType) return // a different feed loaded
+      const idx = reviews.findIndex(r => r.id === clipId)
+      if (idx <= 0) return // 0 = already the top slide, -1 = clip not in this page → keep top
+      const c = containerRef.current
+      if (!c) return
+      c.scrollTo({ top: idx * c.clientHeight, behavior: 'auto' })
+      setActiveIndex(idx)
+      sessionStorage.removeItem(RETURN_KEY) // remove after a successful restore
+    } catch { /* private mode / bad JSON — leave the feed at the top */ }
+  }, [loading, reviews, feedType])
 
   // Anonymous visitors can browse the feed but not interact — send them to login
   // (with a returnTo) the moment they try to like / save / follow / comment.
