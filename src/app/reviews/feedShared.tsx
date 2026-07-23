@@ -17,6 +17,7 @@ import {
 import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicDisc from './ReviewMusicDisc'
+import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 /* ─── types ─── */
@@ -318,6 +319,19 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   const durationRef = useRef<number | null>(null)
   const videoHandleRef = useRef<VideoPlayerHandle>(null)
 
+  // Attached sound ("use this sound"): resolve the borrowed track's audio only
+  // for clips in the render window, then hand its URL to VideoPlayer, which plays
+  // it in place of the clip's own audio. An 'original' clip already IS its own
+  // audio, so only 'attached' needs substituting.
+  const attachedTrackId = renderVideo && r.music?.origin === 'attached' ? r.music.trackId : null
+  const { track: attachedTrack, loading: attachedLoading } = useMusicTrack(attachedTrackId)
+  const attachedSoundUrl = attachedTrack ? getPreviewUrl(attachedTrack) : undefined
+  // Known synchronously from the review row — VideoPlayer mutes the video from
+  // frame one, BEFORE the track URL resolves (deciding by soundUrl alone left
+  // the video unmuted during the fetch gap → double audio). Drops to false when
+  // the fetch finishes empty → VideoPlayer falls back to the clip's own audio.
+  const hasAttachedSound = !!attachedTrackId && (attachedLoading || !!attachedTrack)
+
   useEffect(() => {
     if (r.content_type !== 'video' || !containerRef.current) return
     return attachWatchTracker(containerRef.current, r.id, () => durationRef.current)
@@ -399,6 +413,9 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
                 sourceType={r.source_type ?? 'upload'}
                 sourceUrl={r.source_url ?? undefined}
                 active={active}
+                hasSound={hasAttachedSound}
+                soundUrl={attachedSoundUrl}
+                soundVolume={r.music?.volume ?? 1}
                 onDurationKnown={d => { durationRef.current = d }}
               />
             // Off-screen: thumbnail only, no <video> element (frees iOS media slots)

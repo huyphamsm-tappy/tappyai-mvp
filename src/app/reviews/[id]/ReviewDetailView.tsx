@@ -10,6 +10,7 @@ import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
 import ReviewMusicCard from '../ReviewMusicCard'
 import VideoPlayer from '@/components/explore/VideoPlayer'
+import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type Author = { full_name: string | null; avatar_url: string | null } | null
@@ -29,7 +30,7 @@ type Review = {
   photos: string[] | null
   is_verified: boolean | null
   like_count: number
-  music: { trackId: string; startSec: number; volume: number } | null
+  music: { trackId: string; startSec: number; volume: number; origin?: 'original' | 'attached' } | null
   created_at: string
   content_type: string | null
   media_url: string | null
@@ -83,6 +84,15 @@ export default function ReviewDetailView({
   const extraPhotos = review.photos?.slice(1) ?? []
   const isVideo = review.content_type === 'video' && !!review.media_url
 
+  // Same attached-sound engine as the feed: resolve the borrowed track's audio
+  // and let the hero VideoPlayer play it in place of the clip's own audio.
+  const attachedTrackId = review.music?.origin === 'attached' ? review.music.trackId : null
+  const { track: attachedTrack, loading: attachedLoading } = useMusicTrack(attachedTrackId)
+  const attachedSoundUrl = attachedTrack ? getPreviewUrl(attachedTrack) : undefined
+  // Same contract as the feed: mute from frame one while the borrowed track is
+  // the intended audio; false again if the fetch comes back empty (fallback).
+  const hasAttachedSound = !!attachedTrackId && (attachedLoading || !!attachedTrack)
+
   return (
     <div className="min-h-dvh bg-[#0a0a0a]">
 
@@ -97,6 +107,10 @@ export default function ReviewDetailView({
             thumbnail={review.thumbnail ?? undefined}
             sourceType={review.source_type ?? 'upload'}
             sourceUrl={review.source_url ?? undefined}
+            active
+            hasSound={hasAttachedSound}
+            soundUrl={attachedSoundUrl}
+            soundVolume={review.music?.volume ?? 1}
           />
         ) : heroPhoto ? (
           <Image

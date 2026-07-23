@@ -14,6 +14,23 @@ interface VideoPlayerProps {
   active?: boolean
   onWatchProgress?: (seconds: number, completionRate: number) => void
   onDurationKnown?: (d: number) => void
+  // TikTok "use this sound": when set, the clip's OWN audio is replaced by this
+  // track. The <video> stays muted and a single companion Audio — owned only
+  // while this clip is active — plays in its place, mirrored to the video's
+  // play/pause/loop. Falls back to the clip's own audio if the track fails to
+  // load, so the clip is never silent. Only 'attached' clips pass this; an
+  // 'original' clip already IS its own audio and passes nothing.
+  soundUrl?: string
+  soundVolume?: number
+  // True as soon as the review row says the clip borrows a sound (origin ===
+  // 'attached'), i.e. BEFORE soundUrl has resolved from the track fetch. The
+  // mute decision must key off this, not soundUrl: in the feed the tap that
+  // opens a clip unlocks audio first, so deciding by soundUrl let the video
+  // start UNMUTED during the fetch gap and it was never re-muted → the clip's
+  // own audio played over the borrowed track (the UAT failure). The parent
+  // drops this back to false if the track fetch fails, which is the never-
+  // silent fallback trigger.
+  hasSound?: boolean
 }
 
 // Imperative handle the feed uses to pause/resume on long-press (single tap is
@@ -45,7 +62,7 @@ if (typeof window !== 'undefined') {
 }
 
 const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function VideoPlayer(
-  { url, thumbnail, sourceType = 'upload', sourceUrl, active = false, onWatchProgress, onDurationKnown },
+  { url, thumbnail, sourceType = 'upload', sourceUrl, active = false, onWatchProgress, onDurationKnown, soundUrl, soundVolume = 1, hasSound = false },
   ref
 ) {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -56,6 +73,14 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   const userPausedRef = useRef(false) // true only while the user long-pressed to pause
   const activeRef = useRef(active)
   activeRef.current = active
+  // Attached-sound state, read from the video effects without re-running them.
+  // hasSound (not soundUrl) drives muting so the video is muted from the very
+  // first frame, before the borrowed track's URL has resolved.
+  const hasSoundRef = useRef(hasSound)
+  hasSoundRef.current = hasSound
+  const hadSoundRef = useRef(false) // for the one-shot fetch-failure fallback
+  const companionRef = useRef<HTMLAudioElement | null>(null)
+  const soundFailedRef = useRef(false)
   // Keep watch callback in a ref so the playback effect doesn't restart the
   // video when the parent passes a fresh function identity on re-render.
   const onWatchProgressRef = useRef(onWatchProgress)
@@ -109,10 +134,18 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
 
     const ensurePlaying = () => {
       if (disposed || userPausedRef.current || !activeRef.current) return
+      // Attached-sound INVARIANT, enforced on every tick (not just at play
+      // start): while the borrowed track is the intended audio source, the
+      // <video> must be muted — even if it is already playing. This closes the
+      // race where the video started unmuted before soundUrl resolved and the
+      // old play-start-only decision could never re-mute it.
+      if (hasSoundRef.current && !soundFailedRef.current && !v.muted) v.muted = true
       if (!v.paused) return
-      // If audio is unlocked (page gained permission from a prior click),
-      // try playing unmuted. Falls back to muted if the browser rejects.
-      v.muted = !feedAudioUnlocked
+      // A clip with a (working) attached sound keeps its <video> muted — the
+      // borrowed track carries the audio from the companion Audio. Otherwise:
+      // if audio is unlocked (page gained permission from a prior click), try
+      // playing unmuted, falling back to muted if the browser rejects.
+      v.muted = hasSoundRef.current && !soundFailedRef.current ? true : !feedAudioUnlocked
       v.play().catch(() => {
         if (feedAudioUnlocked) {
           v.muted = true
@@ -142,6 +175,9 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     const onChange = () => {
       const v = videoRef.current
       if (!v || !activeRef.current || !feedAudioUnlocked) return
+      // Attached sound replaces the video's audio — keep the <video> muted; the
+      // companion effect starts the borrowed track on this same unlock signal.
+      if (hasSoundRef.current && !soundFailedRef.current) return
       if (!v.muted) return
       v.muted = false
       v.play().catch(() => {
@@ -152,6 +188,93 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     audioSubs.add(onChange)
     return () => { audioSubs.delete(onChange) }
   }, [])
+
+  // ── Attached sound (TikTok "use this sound") ─────────────────────────────
+  // Only the ACTIVE clip owns an Audio instance — created here, destroyed on
+  // deactivate/unmount — so there is never more than one and none leak. The
+  // <video> is kept muted (see ensurePlaying) and this single track plays in its
+  // place, mirrored to the video's play/pause/loop. If it can't load we flip
+  // soundFailedRef and let the video's own audio through, so it's never silent.
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v || sourceType !== 'upload' || !soundUrl || !active) return
+    soundFailedRef.current = false
+    // The borrowed track owns the audio from this moment — mute the video NOW
+    // (don't wait for the watchdog tick) in case it is already playing unmuted.
+    v.muted = true
+    const audio = new Audio()
+    audio.loop = true
+    audio.preload = 'auto'
+    audio.volume = soundVolume
+    audio.src = soundUrl
+    companionRef.current = audio
+
+    // If the companion joins while the video is already mid-play (soundUrl
+    // resolved after playback started), align to the video's clock instead of
+    // starting the track from 0 against a half-played clip.
+    const alignToVideo = () => {
+      if (isFinite(audio.duration) && audio.duration > 0 && v.currentTime > 0.3) {
+        audio.currentTime = v.currentTime % audio.duration
+      }
+    }
+    audio.addEventListener('loadedmetadata', alignToVideo)
+
+    // Silent until the page's audio is unlocked (first tap) — matching a normal
+    // clip's muted autoplay; then the sound plays whenever the video is playing.
+    const syncPlay = () => {
+      if (soundFailedRef.current || !feedAudioUnlocked || v.paused) return
+      audio.play().catch(() => {})
+    }
+    const onPause = () => audio.pause()
+    let lastT = 0
+    const onTime = () => {
+      if (v.currentTime + 0.25 < lastT) audio.currentTime = 0 // video looped → restart sound
+      lastT = v.currentTime
+      syncPlay() // self-heal if the browser paused the audio
+    }
+    const onFail = () => {
+      soundFailedRef.current = true
+      audio.pause()
+      // Fall back to the clip's own audio so it is never silent.
+      if (feedAudioUnlocked && !userPausedRef.current) v.muted = false
+    }
+    v.addEventListener('play', syncPlay)
+    v.addEventListener('pause', onPause)
+    v.addEventListener('timeupdate', onTime)
+    audio.addEventListener('error', onFail)
+    audioSubs.add(syncPlay) // react to the global audio-unlock click
+    syncPlay() // the video may already be rolling
+
+    return () => {
+      audioSubs.delete(syncPlay)
+      v.removeEventListener('play', syncPlay)
+      v.removeEventListener('pause', onPause)
+      v.removeEventListener('timeupdate', onTime)
+      audio.removeEventListener('error', onFail)
+      audio.removeEventListener('loadedmetadata', alignToVideo)
+      audio.pause()
+      audio.src = ''
+      companionRef.current = null
+    }
+  }, [active, soundUrl, soundVolume, sourceType])
+
+  // Never-silent fallback: the parent drops hasSound back to false when the
+  // borrowed track can't be fetched at all (useMusicTrack finished with no
+  // track). One-shot unmute of the video's own audio — same try-unmuted /
+  // fall-back-muted pattern as the unlock handler, so iOS can't fight it.
+  useEffect(() => {
+    if (hasSound) { hadSoundRef.current = true; return }
+    if (!hadSoundRef.current) return
+    hadSoundRef.current = false
+    const v = videoRef.current
+    if (v && activeRef.current && feedAudioUnlocked && !userPausedRef.current) {
+      v.muted = false
+      v.play().catch(() => {
+        v.muted = true
+        v.play().catch(() => {})
+      })
+    }
+  }, [hasSound])
 
   // Manual pause/resume, driven by the feed's long-press gesture. While the
   // user has paused, the play icon stays up as a cue; resuming hides it.

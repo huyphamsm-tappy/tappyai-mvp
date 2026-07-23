@@ -48,6 +48,12 @@ vi.mock('./ReviewMusicDisc', () => ({ default: () => null }))
 vi.mock('./SoundSheet', () => ({ default: () => null }))
 vi.mock('./ProfileTab', () => ({ ProfileTab: () => null }))
 vi.mock('@/lib/i18n/useTranslation', () => ({ useTranslation: () => ({ t: (k: string) => k, locale: 'vi', setLocale: vi.fn() }) }))
+// feedShared imports the music module (attached-sound playback); its repository
+// builds a Supabase client at module load, so stub it out in tests.
+vi.mock('@/modules/music', () => ({
+  useMusicTrack: () => ({ track: null, loading: false }),
+  getPreviewUrl: (t: any) => t?.previewUrl ?? t?.audioUrl ?? '',
+}))
 
 const mkClip = (id: string) => ({
   id, user_id: 'author-' + id, place_name: 'Nơi ' + id, place_address: null, rating: 5, body: 'clip ' + id,
