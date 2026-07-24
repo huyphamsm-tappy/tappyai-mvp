@@ -113,6 +113,38 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(injectPlaceEnrichment([], 'xin chào')).toBe('xin chào')
     expect(injectPlaceEnrichment([{ name: 'X' }], 'không có ảnh')).toBe('không có ảnh')
   })
+
+  it('NEVER injects inside a [TAPPY_PLAN] block — keeps the JSON parseable, photos go below it', () => {
+    const planJson = JSON.stringify({
+      type: 'trip', title: 'Đà Nẵng 2 ngày', people: 2,
+      days: [{ label: 'Ngày 1', items: [
+        { time: '08:00', name: 'Bà Nà Hills', category: 'attraction' },
+        { time: '12:00', name: 'Bánh xèo Bà Dưỡng', category: 'food' },
+      ] }],
+    })
+    const text = `Đây là kế hoạch nhé!\n\n[TAPPY_PLAN]\n${planJson}\n[/TAPPY_PLAN]\n\nMình giả định 2 người nha.\n\n[CTA_BUTTONS]{"buttons":[]}[/CTA_BUTTONS]`
+    const places = [
+      { name: 'Bà Nà Hills', photo_url: `${IMG}/bana.jpg` },
+      { name: 'Bánh xèo Bà Dưỡng', photo_url: `${IMG}/banhxeo.jpg` },
+    ]
+    const out = injectPlaceEnrichment(places, text)
+    const planBlock = out.slice(out.indexOf('[TAPPY_PLAN]'), out.indexOf('[/TAPPY_PLAN]') + '[/TAPPY_PLAN]'.length)
+    // plan JSON intact — no image markdown spliced in, still parses
+    expect(planBlock).not.toContain('![')
+    expect(() => JSON.parse(planBlock.replace('[TAPPY_PLAN]', '').replace('[/TAPPY_PLAN]', '').trim())).not.toThrow()
+    // photos present, appended BELOW the plan block (legacy trailing layout)
+    expect(out).toContain('bana.jpg')
+    expect(out.indexOf('bana.jpg')).toBeGreaterThan(out.indexOf('[/TAPPY_PLAN]'))
+    expect(out).toContain('📸')
+  })
+
+  it('does not inject into a [FOLLOWUPS] block — photo lands in the prose before it', () => {
+    const text = '**Phở Gà**\nquán ngon.\n\n[FOLLOWUPS]Tìm quán khác|Chỗ gần hơn[/FOLLOWUPS]'
+    const out = injectPlaceEnrichment([{ name: 'Phở Gà', photo_url: `${IMG}/ga.jpg` }], text)
+    const f = out.indexOf('[FOLLOWUPS]')
+    expect(out.slice(f)).not.toContain('![') // nothing injected inside/after followups
+    expect(out.indexOf('ga.jpg')).toBeLessThan(f) // photo grouped with the place, before followups
+  })
 })
 
 describe('applyPlaceEnrichmentStreamFilter — stream transform', () => {

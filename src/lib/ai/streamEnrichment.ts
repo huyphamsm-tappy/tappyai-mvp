@@ -105,16 +105,39 @@ function windowEndFor(p: PlaceLike, chosen: PlaceLike[], dedupText: string, text
   return windowEnd
 }
 
+// Structured, computer-parsed blocks (not free prose): the client extracts these and renders
+// them itself, so we must NEVER splice image markdown inside them — doing so corrupts the
+// [TAPPY_PLAN] JSON (breaking the trip brochure) or the CTA/followups markers.
+const STRUCTURED_MARKERS = ['[TAPPY_PLAN]', '[CTA_BUTTONS]', '[FOLLOWUPS]']
+
+// Offset of the earliest structured-block marker (or end of text) — the hard upper bound for
+// where positional injection may write.
+function earliestMarker(text: string): number {
+  let end = text.length
+  for (const m of STRUCTURED_MARKERS) {
+    const i = text.indexOf(m)
+    if (i !== -1 && i < end) end = i
+  }
+  return end
+}
+
 // POSITION-AWARE injection: rebuilds the assistant text with each place's still-missing
 // image/review/order-link markdown inserted IMMEDIATELY AFTER that place's own block (before
-// the next place / the CTA_BUTTONS marker / end of text) — so photos stay grouped with their
-// place instead of piling up in one trailing block. Deterministic: the LLM has proven
+// the next place / the first structured marker / end of text) — so photos stay grouped with
+// their place instead of piling up in one trailing block. Deterministic: the LLM has proven
 // unreliable at copying photo URLs even when instructed to, so this backfills what it omitted.
 export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): string {
   const usable = places.filter(p => p.name && ((p.photo_urls && p.photo_urls.length > 0) || p.photo_url || p.tiktok_url))
   if (usable.length === 0) return fullText
 
   const decodedText = decodeSafe(fullText)
+
+  // A trip/evening plan renders as a structured [TAPPY_PLAN] JSON card whose place names live
+  // INSIDE the JSON — positional injection would corrupt the JSON and break the brochure. For
+  // those, append the trailing image block below everything instead (restores the pre-fix
+  // "brochure + photos underneath" layout).
+  if (fullText.includes('[TAPPY_PLAN]')) return appendTrailingBlock(usable, fullText, decodedText)
+
   // We insert into the RAW text, so name positions must be found in a normalized view that
   // stays index-aligned to it. normalizeVN strips diacritics via NFD-then-remove, so each
   // source char maps to exactly one char for precomposed input; if some exotic input ever
@@ -122,8 +145,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
   const normRaw = normalizeVN(fullText.toLowerCase())
   if (normRaw.length !== fullText.length) return appendTrailingBlock(usable, fullText, decodedText)
 
-  const ctaIdx = fullText.indexOf('[CTA_BUTTONS]')
-  const textEnd = ctaIdx === -1 ? fullText.length : ctaIdx
+  const textEnd = earliestMarker(fullText)
   // CTA_BUTTONS is a general block, not scoped to any one place — links inside it must never
   // count as "already covered" for a specific place's own dedup window.
   const dedupText = normRaw.slice(0, textEnd)
