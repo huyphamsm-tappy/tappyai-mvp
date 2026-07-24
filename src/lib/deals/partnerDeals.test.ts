@@ -47,10 +47,12 @@ describe('deals schema', () => {
     expect('partner_slug' in toDbColumns(parsed)).toBe(false)
   })
 
-  it('partner_type validates against the allowed enum', () => {
-    expect(PARTNER_TYPES).toEqual(['ecommerce', 'food', 'ride', 'travel'])
+  it('partner_type is a lowercase string — any value (future types need no code change)', () => {
     for (const t of PARTNER_TYPES) expect(CreateDealSchema.safeParse({ ...base, partnerType: t }).success).toBe(true)
-    expect(CreateDealSchema.safeParse({ ...base, partnerType: 'gaming' as any }).success).toBe(false)
+    expect(CreateDealSchema.safeParse({ ...base, partnerType: 'gaming' }).success).toBe(true) // a future type is accepted
+    expect(CreateDealSchema.parse({ ...base, partnerType: 'ECOMMERCE' }).partnerType).toBe('ecommerce') // normalized lowercase
+    expect(CreateDealSchema.safeParse({ ...base, partnerType: '' }).success).toBe(false) // required
+    expect(CreateDealSchema.safeParse({ ...base, partnerType: 'x'.repeat(33) }).success).toBe(false) // max 32
   })
 
   it('is_featured optional (DB default false); affiliate_code never accepted via API', () => {

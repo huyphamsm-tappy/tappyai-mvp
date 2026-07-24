@@ -222,9 +222,8 @@ export function DealsManager() {
                   <input className={`${inputCls} ${editing !== 'new' ? 'opacity-60 cursor-not-allowed' : ''}`} value={form.partnerSlug} disabled={editing !== 'new'} placeholder="shopee" onChange={(e) => setForm({ ...form, partnerSlug: e.target.value })} />
                 </Field>
                 <Field label="Partner type">
-                  <select className={inputCls} value={form.partnerType} onChange={(e) => setForm({ ...form, partnerType: e.target.value })}>
-                    {PARTNER_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-                  </select>
+                  <input className={inputCls} list="deal-partner-types" value={form.partnerType} placeholder="ecommerce" onChange={(e) => setForm({ ...form, partnerType: e.target.value })} />
+                  <datalist id="deal-partner-types">{PARTNER_TYPES.map((t) => <option key={t} value={t} />)}</datalist>
                 </Field>
               </div>
               <Field label="Partner name"><input className={inputCls} value={form.partnerName} onChange={(e) => setForm({ ...form, partnerName: e.target.value })} /></Field>

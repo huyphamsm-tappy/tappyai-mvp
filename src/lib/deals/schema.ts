@@ -24,8 +24,13 @@ const partnerSlug = z
   .max(60)
   .regex(/^[a-z0-9][a-z0-9-]*$/, 'partnerSlug must be lowercase letters, digits and hyphens')
 
+// Common partner types — SUGGESTIONS for the admin UI only, NOT a validation
+// allow-list: new types must not require a code change.
 export const PARTNER_TYPES = ['ecommerce', 'food', 'ride', 'travel'] as const
-const partnerType = z.enum(PARTNER_TYPES)
+
+// partner_type: free-form string, required, lowercase, max 32. String (not enum)
+// validation so future partner types work with zero code changes.
+const partnerType = z.string().trim().min(1, 'partnerType required').max(32, 'partnerType too long').toLowerCase()
 
 // Create — the required fields plus optional scheduling/media/status.
 export const CreateDealSchema = z.object({
