@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     const { data, error } = await supabase
       .from('partner_deals')
       .insert(toDbColumns(parsed.data))
-      .select('id, partner_name, category, title, description, official_url, banner_image, logo_image, display_order, is_active, start_at, end_at, country_code, created_at, updated_at')
+      .select('id, partner_slug, partner_name, partner_type, category, title, description, official_url, banner_image, logo_image, is_featured, display_order, is_active, start_at, end_at, country_code, click_count, created_at, updated_at')
       .single()
 
     if (error || !data) {

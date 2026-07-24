@@ -4,33 +4,39 @@ import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObjec
 import { upload } from '@vercel/blob/client'
 import { Loader2, Plus, Pencil, Trash2, ArrowUp, ArrowDown, Eye, EyeOff, X, ImagePlus } from 'lucide-react'
 
+const PARTNER_TYPES = ['ecommerce', 'food', 'ride', 'travel'] as const
+
 interface Deal {
   id: string
+  partnerSlug: string
   partnerName: string
+  partnerType: string
   category: string
   title: string
   description: string | null
   officialUrl: string
   bannerImage: string | null
   logoImage: string | null
+  isFeatured: boolean
   displayOrder: number
   isActive: boolean
   startAt: string | null
   endAt: string | null
   countryCode: string
+  clickCount: number
 }
 
 type FormState = {
-  partnerName: string; category: string; title: string; description: string
+  partnerSlug: string; partnerName: string; partnerType: string; category: string; title: string; description: string
   officialUrl: string; logoImage: string; bannerImage: string
-  displayOrder: string; isActive: boolean; countryCode: string
+  displayOrder: string; isActive: boolean; isFeatured: boolean; countryCode: string
   startAt: string; endAt: string
 }
 
 const BLANK: FormState = {
-  partnerName: '', category: 'Mua sắm', title: '', description: '',
+  partnerSlug: '', partnerName: '', partnerType: 'ecommerce', category: 'Mua sắm', title: '', description: '',
   officialUrl: 'https://', logoImage: '', bannerImage: '',
-  displayOrder: '0', isActive: true, countryCode: 'VN', startAt: '', endAt: '',
+  displayOrder: '0', isActive: true, isFeatured: false, countryCode: 'VN', startAt: '', endAt: '',
 }
 
 // datetime-local (local time, no tz) → ISO-8601 UTC; '' → null.
@@ -74,9 +80,9 @@ export function DealsManager() {
   }
   function openEdit(d: Deal) {
     setForm({
-      partnerName: d.partnerName, category: d.category, title: d.title, description: d.description ?? '',
+      partnerSlug: d.partnerSlug, partnerName: d.partnerName, partnerType: d.partnerType, category: d.category, title: d.title, description: d.description ?? '',
       officialUrl: d.officialUrl, logoImage: d.logoImage ?? '', bannerImage: d.bannerImage ?? '',
-      displayOrder: String(d.displayOrder), isActive: d.isActive, countryCode: d.countryCode,
+      displayOrder: String(d.displayOrder), isActive: d.isActive, isFeatured: d.isFeatured, countryCode: d.countryCode,
       startAt: toLocal(d.startAt), endAt: toLocal(d.endAt),
     })
     setEditing(d.id)
@@ -96,8 +102,13 @@ export function DealsManager() {
 
   async function save() {
     setSaving(true); setError(null)
-    const body = {
+    const isNew = editing === 'new'
+    const body: Record<string, unknown> = {
+      // partner_slug is immutable → only sent on create.
+      ...(isNew ? { partnerSlug: form.partnerSlug.trim().toLowerCase() } : {}),
       partnerName: form.partnerName.trim(),
+      partnerType: form.partnerType,
+      isFeatured: form.isFeatured,
       category: form.category.trim(),
       title: form.title.trim(),
       description: form.description.trim() || null,
@@ -111,7 +122,6 @@ export function DealsManager() {
       endAt: toIso(form.endAt),
     }
     try {
-      const isNew = editing === 'new'
       const res = await fetch(isNew ? '/api/admin/deals' : `/api/admin/deals/${editing}`, {
         method: isNew ? 'POST' : 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -181,9 +191,13 @@ export function DealsManager() {
                 {d.logoImage ? <img src={d.logoImage} alt="" className="w-full h-full object-cover" /> : (d.partnerName[0]?.toUpperCase() ?? '?')}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{d.title} <span className="text-xs text-gray-400">· {d.category}</span></p>
-                <p className="text-xs text-gray-400 truncate">{d.officialUrl}</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  {d.isFeatured && <span title="Featured" className="text-amber-500">★ </span>}
+                  {d.title} <span className="text-xs text-gray-400">· {d.category} · {d.partnerType}</span>
+                </p>
+                <p className="text-xs text-gray-400 truncate">{d.partnerSlug} · {d.officialUrl}</p>
               </div>
+              <span className="text-[11px] text-gray-400 tabular-nums" title="Lượt bấm">{d.clickCount} 👆</span>
               {!d.isActive && <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-200 dark:bg-gray-700 text-gray-500">TẮT</span>}
               <button onClick={() => toggleActive(d)} title={d.isActive ? 'Tắt' : 'Bật'} className="p-1.5 text-gray-400 hover:text-gray-700">{d.isActive ? <Eye size={16} /> : <EyeOff size={16} />}</button>
               <button onClick={() => openEdit(d)} className="p-1.5 text-gray-400 hover:text-blue-600"><Pencil size={16} /></button>
@@ -203,6 +217,16 @@ export function DealsManager() {
               <button onClick={() => setEditing(null)} className="text-gray-400 hover:text-gray-700"><X size={18} /></button>
             </div>
             <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <Field label={`Partner slug${editing === 'new' ? ' (không đổi sau khi tạo)' : ' (khoá)'}`}>
+                  <input className={`${inputCls} ${editing !== 'new' ? 'opacity-60 cursor-not-allowed' : ''}`} value={form.partnerSlug} disabled={editing !== 'new'} placeholder="shopee" onChange={(e) => setForm({ ...form, partnerSlug: e.target.value })} />
+                </Field>
+                <Field label="Partner type">
+                  <select className={inputCls} value={form.partnerType} onChange={(e) => setForm({ ...form, partnerType: e.target.value })}>
+                    {PARTNER_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </Field>
+              </div>
               <Field label="Partner name"><input className={inputCls} value={form.partnerName} onChange={(e) => setForm({ ...form, partnerName: e.target.value })} /></Field>
               <Field label="Title"><input className={inputCls} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></Field>
               <div className="grid grid-cols-2 gap-3">
@@ -215,9 +239,10 @@ export function DealsManager() {
                 <ImageField label="Logo" value={form.logoImage} busy={uploading === 'logo'} inputRef={logoInput} onPick={(f) => handleUpload('logo', f)} onClear={() => setForm({ ...form, logoImage: '' })} />
                 <ImageField label="Banner" value={form.bannerImage} busy={uploading === 'banner'} inputRef={bannerInput} onPick={(f) => handleUpload('banner', f)} onClear={() => setForm({ ...form, bannerImage: '' })} />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <Field label="Display order"><input type="number" className={inputCls} value={form.displayOrder} onChange={(e) => setForm({ ...form, displayOrder: e.target.value })} /></Field>
                 <Field label="Active"><label className="flex items-center gap-2 h-9"><input type="checkbox" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} /><span className="text-sm text-gray-600 dark:text-gray-300">Hiển thị</span></label></Field>
+                <Field label="Featured"><label className="flex items-center gap-2 h-9"><input type="checkbox" checked={form.isFeatured} onChange={(e) => setForm({ ...form, isFeatured: e.target.checked })} /><span className="text-sm text-gray-600 dark:text-gray-300">★ Ghim</span></label></Field>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Start at (optional)"><input type="datetime-local" className={inputCls} value={form.startAt} onChange={(e) => setForm({ ...form, startAt: e.target.value })} /></Field>

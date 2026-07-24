@@ -15,9 +15,23 @@ const isoDateOrNull = z
 
 const imageUrlOrNull = httpsUrl.nullable().optional()
 
+// partner_slug: lowercase, url-safe, the permanent internal id. Required on
+// create; NOT accepted on update (immutable — also enforced by a DB trigger).
+const partnerSlug = z
+  .string()
+  .trim()
+  .min(1, 'partnerSlug required')
+  .max(60)
+  .regex(/^[a-z0-9][a-z0-9-]*$/, 'partnerSlug must be lowercase letters, digits and hyphens')
+
+export const PARTNER_TYPES = ['ecommerce', 'food', 'ride', 'travel'] as const
+const partnerType = z.enum(PARTNER_TYPES)
+
 // Create — the required fields plus optional scheduling/media/status.
 export const CreateDealSchema = z.object({
+  partnerSlug,
   partnerName: z.string().trim().min(1, 'partnerName required').max(120),
+  partnerType,
   category: z.string().trim().min(1, 'category required').max(60),
   title: z.string().trim().min(1, 'title required').max(160),
   description: z.string().trim().max(280).nullable().optional(),
@@ -26,17 +40,19 @@ export const CreateDealSchema = z.object({
   logoImage: imageUrlOrNull,
   displayOrder: z.number().int().min(0).max(100000).optional(),
   isActive: z.boolean().optional(),
+  isFeatured: z.boolean().optional(),
   startAt: isoDateOrNull,
   endAt: isoDateOrNull,
   countryCode: z.string().trim().length(2).toUpperCase().optional(),
 })
 
 // Update — every field optional (edit / disable / reorder / schedule all go
-// through PATCH). At least one field must be present.
-export const UpdateDealSchema = CreateDealSchema.partial().refine(
-  (obj) => Object.keys(obj).length > 0,
-  'No fields to update'
-)
+// through PATCH). partner_slug is OMITTED: it is immutable after creation.
+// click_count is never editable (only the click endpoint bumps it). At least
+// one field must be present.
+export const UpdateDealSchema = CreateDealSchema.omit({ partnerSlug: true })
+  .partial()
+  .refine((obj) => Object.keys(obj).length > 0, 'No fields to update')
 
 export type CreateDealInput = z.infer<typeof CreateDealSchema>
 export type UpdateDealInput = z.infer<typeof UpdateDealSchema>
@@ -44,7 +60,10 @@ export type UpdateDealInput = z.infer<typeof UpdateDealSchema>
 // Map camelCase API input → snake_case DB columns (only defined keys).
 export function toDbColumns(input: Partial<CreateDealInput>): Record<string, unknown> {
   const out: Record<string, unknown> = {}
+  if (input.partnerSlug !== undefined) out.partner_slug = input.partnerSlug
   if (input.partnerName !== undefined) out.partner_name = input.partnerName
+  if (input.partnerType !== undefined) out.partner_type = input.partnerType
+  if (input.isFeatured !== undefined) out.is_featured = input.isFeatured
   if (input.category !== undefined) out.category = input.category
   if (input.title !== undefined) out.title = input.title
   if (input.description !== undefined) out.description = input.description

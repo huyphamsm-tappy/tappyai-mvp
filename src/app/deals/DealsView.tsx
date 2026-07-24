@@ -105,6 +105,7 @@ export default function DealsView() {
               href={deal.officialUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => { fetch(`/api/deals/${deal.id}/click`, { method: 'POST', keepalive: true }).catch(() => {}) }}
               className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:border-orange-200 dark:hover:border-orange-800 hover:shadow-md transition-all group active:scale-[0.99]"
             >
               {/* Logo (or partner-initial fallback) */}
