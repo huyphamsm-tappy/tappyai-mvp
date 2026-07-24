@@ -3,6 +3,7 @@
 
 export const vi: Record<string, string> = {
   'deals.title': 'Deal hôm nay',
+  'deals.empty': 'Chưa có ưu đãi nào. Quay lại sau nhé!',
   'deals.subtitle': 'Tappy chọn lọc {count} ưu đãi tốt nhất — cập nhật mỗi ngày lúc 7:30 sáng',
   'deals.viaSource': 'via {source}',
   'deals.footerHint': 'Deals thay đổi mỗi ngày • Bật thông báo để nhận lúc 7:30 sáng',
@@ -13,6 +14,7 @@ export const vi: Record<string, string> = {
 
 export const en: Record<string, string> = {
   'deals.title': "Today's deals",
+  'deals.empty': 'No deals yet. Check back soon!',
   'deals.subtitle': 'Tappy hand-picks the {count} best deals — refreshed every day at 7:30 AM',
   'deals.viaSource': 'via {source}',
   'deals.footerHint': 'Deals change daily • Turn on notifications to get them at 7:30 AM',

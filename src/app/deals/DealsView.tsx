@@ -1,11 +1,24 @@
 'use client'
 
-import type { Deal } from '@/lib/shopee-deals'
+import { useEffect, useState } from 'react'
 import DealNotifyButton from './DealNotifyButton'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Loader2 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
+
+// Public deal shape from GET /api/deals (kept local so this client component
+// never imports the server-only data layer).
+interface PartnerDeal {
+  id: string
+  partnerName: string
+  category: string
+  title: string
+  description: string | null
+  officialUrl: string
+  bannerImage: string | null
+  logoImage: string | null
+}
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Điện tử': 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300',
@@ -21,11 +34,6 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Siêu thị': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300',
 }
 
-const BADGE_STYLES: Record<string, string> = {
-  'HOT': 'bg-red-500 text-white',
-  'MỚI': 'bg-blue-500 text-white',
-}
-
 function categoryColor(cat: string) {
   return CATEGORY_COLORS[cat] ?? 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
 }
@@ -36,10 +44,22 @@ function formatDate(locale: 'vi' | 'en') {
   }).format(new Date())
 }
 
-// Client view for Deals so all UI text is reactive to the language toggle.
-// The server page still fetches the daily deals and passes them down.
-export default function DealsView({ deals }: { deals: Deal[] }) {
+// Deal cards load from the shared REST API (GET /api/deals) — the same endpoint
+// Android/iOS consume. Deals are admin-managed content; no hardcoded pool.
+export default function DealsView() {
   const { t, locale } = useTranslation()
+  const [deals, setDeals] = useState<PartnerDeal[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/deals')
+      .then((r) => r.json())
+      .then((d) => { if (!cancelled) setDeals(Array.isArray(d?.deals) ? d.deals : []) })
+      .catch(() => { if (!cancelled) setDeals([]) })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [])
 
   return (
     <main className="min-h-screen pb-28 pt-4 px-4 max-w-2xl mx-auto">
@@ -51,71 +71,85 @@ export default function DealsView({ deals }: { deals: Deal[] }) {
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('deals.title')}</h1>
               <div className="w-8 h-8 rounded-lg overflow-hidden select-none"><TappyMascot pose={getTappyPose({ category: 'deals' })} size={32} eager animated /></div>
             </div>
-            {/* Locale + current-date string differs between SSR ('vi') and the
-                client's stored locale/clock — suppress the hydration text mismatch. */}
             <p suppressHydrationWarning className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 capitalize">{formatDate(locale)}</p>
           </div>
           <DealNotifyButton />
         </div>
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-          {t('deals.subtitle', { count: String(deals.length) })}
-        </p>
+        {!loading && deals.length > 0 && (
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            {t('deals.subtitle', { count: String(deals.length) })}
+          </p>
+        )}
       </div>
+
+      {/* Loading */}
+      {loading && (
+        <div className="flex justify-center py-16">
+          <Loader2 size={24} className="animate-spin text-gray-400" />
+        </div>
+      )}
+
+      {/* Empty */}
+      {!loading && deals.length === 0 && (
+        <div className="text-center py-16 text-sm text-gray-400 dark:text-gray-500">
+          {t('deals.empty')}
+        </div>
+      )}
 
       {/* Deal cards */}
-      <div className="space-y-2.5">
-        {deals.map((deal, i) => (
-          <a
-            key={i}
-            href={deal.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:border-orange-200 dark:hover:border-orange-800 hover:shadow-md transition-all group active:scale-[0.99]"
-          >
-            {/* Emoji badge */}
-            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center text-2xl">
-              {deal.emoji}
-            </div>
+      {!loading && deals.length > 0 && (
+        <div className="space-y-2.5">
+          {deals.map((deal) => (
+            <a
+              key={deal.id}
+              href={deal.officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:border-orange-200 dark:hover:border-orange-800 hover:shadow-md transition-all group active:scale-[0.99]"
+            >
+              {/* Logo (or partner-initial fallback) */}
+              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center overflow-hidden text-lg font-bold text-orange-600 dark:text-orange-400">
+                {deal.logoImage
+                  ? <img src={deal.logoImage} alt={deal.partnerName} className="w-full h-full object-cover" />
+                  : (deal.partnerName?.[0]?.toUpperCase() ?? '?')}
+              </div>
 
-            {/* Content */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start gap-1.5 mb-1">
-                <p className="text-sm font-semibold text-gray-900 dark:text-white leading-snug line-clamp-1 flex-1">
+              {/* Content */}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white leading-snug line-clamp-1 mb-1">
                   {deal.title}
                 </p>
-                {deal.badge && (
-                  <span className={`flex-shrink-0 text-xs font-bold px-1.5 py-0.5 rounded-md ${BADGE_STYLES[deal.badge] ?? 'bg-gray-200 text-gray-600'}`}>
-                    {deal.badge}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${categoryColor(deal.category)}`}>
+                    {deal.category}
                   </span>
-                )}
+                  {deal.description && (
+                    <span className="text-xs font-bold text-orange-600 dark:text-orange-400 line-clamp-1">{deal.description}</span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('deals.viaSource', { source: deal.partnerName })}</p>
               </div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${categoryColor(deal.category)}`}>
-                  {deal.category}
-                </span>
-                <span className="text-xs font-bold text-orange-600 dark:text-orange-400">{deal.discount}</span>
-              </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('deals.viaSource', { source: deal.source })}</p>
-            </div>
 
-            {/* Arrow */}
-            <ExternalLink
-              size={14}
-              className="flex-shrink-0 text-gray-300 dark:text-gray-600 group-hover:text-orange-400 transition-colors"
-            />
-          </a>
-        ))}
-      </div>
+              <ExternalLink
+                size={14}
+                className="flex-shrink-0 text-gray-300 dark:text-gray-600 group-hover:text-orange-400 transition-colors"
+              />
+            </a>
+          ))}
+        </div>
+      )}
 
       {/* Footer — commercial-nature disclosure (MFS 3.10: disclose clearly, no false scarcity) */}
-      <div className="mt-6 text-center space-y-1.5">
-        <p className="text-xs text-gray-400 dark:text-gray-600">
-          {t('deals.footerHint')}
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-md mx-auto">
-          {t('deals.disclosurePrefix')}<span className="font-medium">{t('deals.disclosureEmphasis')}</span>{t('deals.disclosureSuffix')}
-        </p>
-      </div>
+      {!loading && deals.length > 0 && (
+        <div className="mt-6 text-center space-y-1.5">
+          <p className="text-xs text-gray-400 dark:text-gray-600">
+            {t('deals.footerHint')}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-md mx-auto">
+            {t('deals.disclosurePrefix')}<span className="font-medium">{t('deals.disclosureEmphasis')}</span>{t('deals.disclosureSuffix')}
+          </p>
+        </div>
+      )}
     </main>
   )
 }

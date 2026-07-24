@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAllSubscribedUserIds, sendNotificationToUser } from '@/lib/notifications/send'
-import { getDealsForPersonalization } from '@/lib/shopee-deals'
+import { getActiveDeals } from '@/lib/deals/partnerDeals'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -18,9 +18,10 @@ export async function GET(req: Request) {
     const userIds = await getAllSubscribedUserIds()
     if (!userIds.length) return NextResponse.json({ ok: true, sent: 0 })
 
-    const deals = await getDealsForPersonalization()
+    const deals = await getActiveDeals()
+    if (!deals.length) return NextResponse.json({ ok: true, sent: 0, note: 'no active deals' })
     const dealList = deals
-      .map((d, i) => `${i + 1}. [${d.category}] ${d.title} — ${d.discount}`)
+      .map((d, i) => `${i + 1}. [${d.category}] ${d.title} — ${d.description ?? ''}`)
       .join('\n')
 
     // Batch-fetch preferences for all subscribed users
@@ -59,7 +60,7 @@ BODY: (tối đa 120 ký tự)`,
         const bodyMatch = text.match(/BODY:\s*(.+)/)
 
         const title = titleMatch?.[1]?.trim() ?? '🛍️ Deal hôm nay cho bạn!'
-        const body = bodyMatch?.[1]?.trim() ?? `${deals[0]?.title} — ${deals[0]?.discount}`
+        const body = bodyMatch?.[1]?.trim() ?? `${deals[0]?.title} — ${deals[0]?.description ?? ''}`
 
         await sendNotificationToUser(uid, {
           title,
