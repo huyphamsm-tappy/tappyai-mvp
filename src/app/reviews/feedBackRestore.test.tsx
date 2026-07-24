@@ -65,6 +65,7 @@ const mkClip = (id: string) => ({
 let scrollTops: number[]
 
 beforeEach(() => {
+  vi.restoreAllMocks() // undo per-test spies (e.g. the Navigation Timing stub)
   vi.resetModules() // fresh page.tsx module → fresh module-level popstate timestamp
   sessionStorage.clear()
   scrollTops = []
@@ -120,5 +121,43 @@ describe('Bug #8 — feed active-clip restoration on Back', () => {
 
     expect(scrollTops).not.toContain(VIEWPORT) // never jumped to the saved clip
     expect(sessionStorage.getItem(RETURN_KEY)).toBe(JSON.stringify({ clipId: 'b', feedType: 'for-you' })) // marker untouched
+  })
+
+  it('restores on a CROSS-DOCUMENT Back (no popstate, navigation type back_forward) — Bug #17', async () => {
+    // The browser reloaded /reviews on the way back (bfcache blocked → full page
+    // load): popstate never fires; the only trace is the fresh document's
+    // Navigation Timing entry. The gate must honor it.
+    sessionStorage.setItem(RETURN_KEY, JSON.stringify({ clipId: 'b', feedType: 'for-you' }))
+    vi.spyOn(performance, 'getEntriesByType').mockReturnValue([{ type: 'back_forward' } as unknown as PerformanceEntry])
+    // NO popstate dispatched — that's the point.
+
+    const ReviewsPage = (await import('./page')).default
+    render(<ReviewsPage />)
+
+    await waitFor(() => expect(scrollTops).toContain(VIEWPORT), { timeout: 4000 })
+    expect(sessionStorage.getItem(RETURN_KEY)).toBeNull() // marker consumed
+  })
+
+  it('does NOT treat a later SPA push-visit as Back just because the document loaded via back_forward', async () => {
+    // Same document: the navigation-timing flag was already consumed by a first
+    // /reviews mount; a subsequent TikNav push-visit must not restore.
+    vi.spyOn(performance, 'getEntriesByType').mockReturnValue([{ type: 'back_forward' } as unknown as PerformanceEntry])
+    const pageModule = await import('./page')
+    const ReviewsPage = pageModule.default
+
+    // First mount consumes the document-level flag (restores nothing — no marker).
+    const first = render(<ReviewsPage />)
+    await waitFor(() => expect((fetch as any).mock.calls.some((c: any[]) => String(c[0]).includes('/api/reviews/feed'))).toBe(true), { timeout: 4000 })
+    first.unmount()
+
+    // A marker now exists (written on unmount) — but this next mount is a PUSH
+    // navigation (no popstate), so it must NOT restore.
+    sessionStorage.setItem(RETURN_KEY, JSON.stringify({ clipId: 'b', feedType: 'for-you' }))
+    scrollTops = []
+    render(<ReviewsPage />)
+    await new Promise(r => setTimeout(r, 100))
+
+    expect(scrollTops).not.toContain(VIEWPORT)
+    expect(sessionStorage.getItem(RETURN_KEY)).toBe(JSON.stringify({ clipId: 'b', feedType: 'for-you' }))
   })
 })

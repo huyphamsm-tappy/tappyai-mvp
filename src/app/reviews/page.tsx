@@ -36,7 +36,24 @@ let lastPopStateAt = 0
 if (typeof window !== 'undefined') {
   window.addEventListener('popstate', () => { lastPopStateAt = Date.now() })
 }
-const isBackForwardMount = () => lastPopStateAt > 0 && Date.now() - lastPopStateAt < 5000
+// popstate only fires for SAME-document traversals. A cross-document Back — the
+// browser reloads /reviews on the way back, e.g. mobile Safari with bfcache
+// blocked by this page's persistent realtime WebSocket — never fires it, which
+// silently skipped restoration (Bug #17). Navigation Timing records exactly that
+// case: the fresh document's navigation entry has type 'back_forward'. That flag
+// describes the DOCUMENT's initial load, so it is consumed on first read — later
+// SPA mounts of /reviews inside the same document must rely on popstate alone,
+// otherwise a plain TikNav push-visit would masquerade as a Back.
+let navTimingConsumed = false
+const isBackForwardMount = () => {
+  if (lastPopStateAt > 0 && Date.now() - lastPopStateAt < 5000) return true
+  if (navTimingConsumed) return false
+  navTimingConsumed = true
+  try {
+    const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
+    return nav?.type === 'back_forward'
+  } catch { return false }
+}
 interface HotPlace { place_name: string; count: number }
 interface GroupedNotif {
   id: string; type: string; url: string
