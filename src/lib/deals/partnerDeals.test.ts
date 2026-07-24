@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { CreateDealSchema, UpdateDealSchema, toDbColumns, PARTNER_TYPES } from './schema'
+import { promoCountdown } from './countdown'
 
 // ── supabase client mock (chainable + thenable, with a controllable rpc) ──
 let mockResult: { data: unknown; error: unknown } = { data: [], error: null }
@@ -64,6 +65,23 @@ describe('deals schema', () => {
     const cols = toDbColumns({ partnerSlug: 'be', partnerType: 'ride', isFeatured: true, officialUrl: 'https://be.com.vn' })
     expect(cols).toEqual({ partner_slug: 'be', partner_type: 'ride', is_featured: true, official_url: 'https://be.com.vn' })
   })
+
+  it('discountLabel/voucherCode are optional with max lengths', () => {
+    expect(CreateDealSchema.safeParse({ ...base, discountLabel: 'Giảm 50%', voucherCode: 'FREESHIP50' }).success).toBe(true)
+    expect(CreateDealSchema.safeParse(base).success).toBe(true) // both optional
+    expect(CreateDealSchema.safeParse({ ...base, discountLabel: 'x'.repeat(25) }).success).toBe(false) // max 24
+    expect(CreateDealSchema.safeParse({ ...base, voucherCode: 'y'.repeat(41) }).success).toBe(false) // max 40
+  })
+
+  it('promotion fields nest under metadata.promotion; untouched when neither is provided', () => {
+    expect(toDbColumns({ discountLabel: 'Giảm 50%', voucherCode: 'FREESHIP' }).metadata)
+      .toEqual({ promotion: { discountLabel: 'Giảm 50%', voucherCode: 'FREESHIP' } })
+    expect(toDbColumns({ discountLabel: '-30%' }).metadata).toEqual({ promotion: { discountLabel: '-30%' } })
+    // a reorder/toggle PATCH sends neither → metadata is NOT written (never clobbered)
+    expect('metadata' in toDbColumns({ displayOrder: 2, isActive: false })).toBe(false)
+    // explicit null clears the value but still writes a promotion object
+    expect(toDbColumns({ discountLabel: null, voucherCode: null }).metadata).toEqual({ promotion: {} })
+  })
 })
 
 describe('getActiveDeals', () => {
@@ -82,6 +100,50 @@ describe('getActiveDeals', () => {
   it('returns [] gracefully on error', async () => {
     mockResult = { data: null, error: { message: 'boom' } }
     await expect(getActiveDeals()).resolves.toEqual([])
+  })
+
+  it('extracts discountLabel/voucherCode from metadata.promotion + exposes endAt; never raw metadata', async () => {
+    mockResult = { data: [{
+      id: 'd1', partner_slug: 'shopee', partner_name: 'Shopee', partner_type: 'ecommerce',
+      category: 'Mua sắm', title: 'Shopee', description: null, official_url: 'https://shopee.vn',
+      banner_image: null, logo_image: null, is_featured: true, end_at: '2099-01-01T00:00:00Z',
+      metadata: { promotion: { discountLabel: 'Giảm 50%', voucherCode: 'FREESHIP50' }, affiliate: { secret: 'x' } },
+    }], error: null }
+    const d = (await getActiveDeals('VN'))[0]
+    expect(d.discountLabel).toBe('Giảm 50%')
+    expect(d.voucherCode).toBe('FREESHIP50')
+    expect(d.endAt).toBe('2099-01-01T00:00:00Z')
+    expect('metadata' in d).toBe(false) // raw metadata (incl. affiliate namespace) NEVER exposed
+  })
+
+  it('promo fields are null when metadata has no promotion', async () => {
+    mockResult = { data: [{
+      id: 'd2', partner_slug: 'grab', partner_name: 'Grab', partner_type: 'ride',
+      category: 'Vận chuyển', title: 'Grab', description: null, official_url: 'https://grab.com',
+      banner_image: null, logo_image: null, is_featured: false, end_at: null, metadata: {},
+    }], error: null }
+    const d = (await getActiveDeals('VN'))[0]
+    expect(d.discountLabel).toBeNull()
+    expect(d.voucherCode).toBeNull()
+    expect(d.endAt).toBeNull()
+  })
+})
+
+describe('promoCountdown', () => {
+  const now = Date.parse('2026-01-01T00:00:00Z')
+  it('no endAt / expired / invalid → none', () => {
+    expect(promoCountdown(null, now).kind).toBe('none')
+    expect(promoCountdown('2025-12-31T00:00:00Z', now).kind).toBe('none') // already past
+    expect(promoCountdown('not-a-date', now).kind).toBe('none')
+  })
+  it('<= 24h left → soon', () => {
+    expect(promoCountdown('2026-01-01T12:00:00Z', now).kind).toBe('soon') // 12h
+    expect(promoCountdown('2026-01-02T00:00:00Z', now).kind).toBe('soon') // exactly 24h
+  })
+  it('> 24h left → days', () => {
+    expect(promoCountdown('2026-01-02T01:00:00Z', now)).toEqual({ kind: 'days', days: 1 }) // 25h
+    expect(promoCountdown('2026-01-03T00:00:00Z', now)).toEqual({ kind: 'days', days: 2 }) // 48h
+    expect(promoCountdown('2026-01-04T12:00:00Z', now)).toEqual({ kind: 'days', days: 4 }) // 84h → round(3.5)
   })
 })
 

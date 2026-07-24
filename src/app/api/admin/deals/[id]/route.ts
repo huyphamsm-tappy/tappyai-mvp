@@ -11,7 +11,7 @@ import { mapPartnerDealRow } from '@/lib/deals/partnerDeals'
 import { UpdateDealSchema, toDbColumns } from '@/lib/deals/schema'
 
 const FULL_COLUMNS =
-  'id, partner_slug, partner_name, partner_type, category, title, description, official_url, banner_image, logo_image, is_featured, display_order, is_active, start_at, end_at, country_code, click_count, created_at, updated_at'
+  'id, partner_slug, partner_name, partner_type, category, title, description, official_url, banner_image, logo_image, is_featured, metadata, display_order, is_active, start_at, end_at, country_code, click_count, created_at, updated_at'
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   try {

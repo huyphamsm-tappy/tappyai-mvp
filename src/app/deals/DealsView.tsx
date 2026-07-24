@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import DealNotifyButton from './DealNotifyButton'
-import { ExternalLink, Loader2 } from 'lucide-react'
+import { ExternalLink, Loader2, Clock, Copy, Check } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
+import { promoCountdown } from '@/lib/deals/countdown'
 
 // Public deal shape from GET /api/deals (kept local so this client component
-// never imports the server-only data layer).
+// never imports the server-only data layer). discountLabel/voucherCode/endAt are
+// the only promo fields the API surfaces (extracted from metadata.promotion).
 interface PartnerDeal {
   id: string
   partnerName: string
@@ -18,6 +20,9 @@ interface PartnerDeal {
   officialUrl: string
   bannerImage: string | null
   logoImage: string | null
+  discountLabel: string | null
+  voucherCode: string | null
+  endAt: string | null
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -100,42 +105,7 @@ export default function DealsView() {
       {!loading && deals.length > 0 && (
         <div className="space-y-2.5">
           {deals.map((deal) => (
-            <a
-              key={deal.id}
-              href={deal.officialUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => { fetch(`/api/deals/${deal.id}/click`, { method: 'POST', keepalive: true }).catch(() => {}) }}
-              className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:border-orange-200 dark:hover:border-orange-800 hover:shadow-md transition-all group active:scale-[0.99]"
-            >
-              {/* Logo (or partner-initial fallback) */}
-              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center overflow-hidden text-lg font-bold text-orange-600 dark:text-orange-400">
-                {deal.logoImage
-                  ? <img src={deal.logoImage} alt={deal.partnerName} className="w-full h-full object-cover" />
-                  : (deal.partnerName?.[0]?.toUpperCase() ?? '?')}
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 dark:text-white leading-snug line-clamp-1 mb-1">
-                  {deal.title}
-                </p>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${categoryColor(deal.category)}`}>
-                    {deal.category}
-                  </span>
-                  {deal.description && (
-                    <span className="text-xs font-bold text-orange-600 dark:text-orange-400 line-clamp-1">{deal.description}</span>
-                  )}
-                </div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('deals.viaSource', { source: deal.partnerName })}</p>
-              </div>
-
-              <ExternalLink
-                size={14}
-                className="flex-shrink-0 text-gray-300 dark:text-gray-600 group-hover:text-orange-400 transition-colors"
-              />
-            </a>
+            <DealCard key={deal.id} deal={deal} />
           ))}
         </div>
       )}
@@ -152,5 +122,93 @@ export default function DealsView() {
         </div>
       )}
     </main>
+  )
+}
+
+// One promo card. Renders the discount badge (only when discountLabel exists),
+// an endAt countdown, and a copy-able voucher chip. The whole card is a link;
+// the voucher copy button stops propagation so it never opens the partner link.
+function DealCard({ deal }: { deal: PartnerDeal }) {
+  const { t } = useTranslation()
+  const [copied, setCopied] = useState(false)
+  const cd = promoCountdown(deal.endAt, Date.now())
+
+  function copyVoucher(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!deal.voucherCode) return
+    navigator.clipboard?.writeText(deal.voucherCode).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    }).catch(() => {})
+  }
+
+  return (
+    <a
+      href={deal.officialUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => { fetch(`/api/deals/${deal.id}/click`, { method: 'POST', keepalive: true }).catch(() => {}) }}
+      className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:border-orange-200 dark:hover:border-orange-800 hover:shadow-md transition-all group active:scale-[0.99]"
+    >
+      {/* Logo (or partner-initial fallback) */}
+      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center overflow-hidden text-lg font-bold text-orange-600 dark:text-orange-400">
+        {deal.logoImage
+          ? <img src={deal.logoImage} alt={deal.partnerName} className="w-full h-full object-cover" />
+          : (deal.partnerName?.[0]?.toUpperCase() ?? '?')}
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1">
+          <p className="text-sm font-semibold text-gray-900 dark:text-white leading-snug line-clamp-1">
+            {deal.title}
+          </p>
+          {/* Discount badge — rendered ONLY when a discountLabel exists */}
+          {deal.discountLabel && (
+            <span className="flex-shrink-0 text-xs font-bold px-2 py-0.5 rounded-md bg-red-500 text-white">
+              {deal.discountLabel}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${categoryColor(deal.category)}`}>
+            {deal.category}
+          </span>
+          {cd.kind === 'soon' && (
+            <span className="text-xs font-semibold text-red-600 dark:text-red-400">{t('deals.endingSoon')}</span>
+          )}
+          {cd.kind === 'days' && (
+            <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+              <Clock size={11} />
+              {cd.days === 1 ? t('deals.dayLeft') : t('deals.daysLeft', { count: String(cd.days) })}
+            </span>
+          )}
+          {deal.description && (
+            <span className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{deal.description}</span>
+          )}
+        </div>
+        {/* Voucher code — copy button never navigates (stopPropagation + preventDefault) */}
+        {deal.voucherCode && (
+          <button
+            type="button"
+            onClick={copyVoucher}
+            title={copied ? t('deals.codeCopied') : t('deals.copyCode')}
+            aria-label={t('deals.copyCode')}
+            className="mt-1.5 inline-flex items-center gap-1.5 rounded-md border border-dashed border-orange-300 dark:border-orange-700 bg-orange-50/60 dark:bg-orange-950/30 px-2 py-0.5 text-xs font-semibold text-orange-700 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/40"
+          >
+            <span className="text-gray-400 dark:text-gray-500 font-normal">{t('deals.voucherLabel')}:</span>
+            <span className="font-mono tracking-wide">{deal.voucherCode}</span>
+            {copied ? <Check size={12} className="text-green-600 dark:text-green-400" /> : <Copy size={12} />}
+          </button>
+        )}
+        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('deals.viaSource', { source: deal.partnerName })}</p>
+      </div>
+
+      <ExternalLink
+        size={14}
+        className="flex-shrink-0 text-gray-300 dark:text-gray-600 group-hover:text-orange-400 transition-colors"
+      />
+    </a>
   )
 }

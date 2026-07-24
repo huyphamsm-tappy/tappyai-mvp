@@ -18,6 +18,8 @@ interface Deal {
   bannerImage: string | null
   logoImage: string | null
   isFeatured: boolean
+  discountLabel: string | null
+  voucherCode: string | null
   displayOrder: number
   isActive: boolean
   startAt: string | null
@@ -29,6 +31,7 @@ interface Deal {
 type FormState = {
   partnerSlug: string; partnerName: string; partnerType: string; category: string; title: string; description: string
   officialUrl: string; logoImage: string; bannerImage: string
+  discountLabel: string; voucherCode: string
   displayOrder: string; isActive: boolean; isFeatured: boolean; countryCode: string
   startAt: string; endAt: string
 }
@@ -36,6 +39,7 @@ type FormState = {
 const BLANK: FormState = {
   partnerSlug: '', partnerName: '', partnerType: 'ecommerce', category: 'Mua sắm', title: '', description: '',
   officialUrl: 'https://', logoImage: '', bannerImage: '',
+  discountLabel: '', voucherCode: '',
   displayOrder: '0', isActive: true, isFeatured: false, countryCode: 'VN', startAt: '', endAt: '',
 }
 
@@ -82,6 +86,7 @@ export function DealsManager() {
     setForm({
       partnerSlug: d.partnerSlug, partnerName: d.partnerName, partnerType: d.partnerType, category: d.category, title: d.title, description: d.description ?? '',
       officialUrl: d.officialUrl, logoImage: d.logoImage ?? '', bannerImage: d.bannerImage ?? '',
+      discountLabel: d.discountLabel ?? '', voucherCode: d.voucherCode ?? '',
       displayOrder: String(d.displayOrder), isActive: d.isActive, isFeatured: d.isFeatured, countryCode: d.countryCode,
       startAt: toLocal(d.startAt), endAt: toLocal(d.endAt),
     })
@@ -115,6 +120,8 @@ export function DealsManager() {
       officialUrl: form.officialUrl.trim(),
       logoImage: form.logoImage.trim() || null,
       bannerImage: form.bannerImage.trim() || null,
+      discountLabel: form.discountLabel.trim() || null,
+      voucherCode: form.voucherCode.trim() || null,
       displayOrder: Number(form.displayOrder) || 0,
       isActive: form.isActive,
       countryCode: form.countryCode.trim().toUpperCase() || 'VN',
@@ -233,6 +240,10 @@ export function DealsManager() {
                 <Field label="Country"><input className={inputCls} value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })} /></Field>
               </div>
               <Field label="Description"><input className={inputCls} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></Field>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Mức giảm (badge, tối đa 24)"><input className={inputCls} value={form.discountLabel} placeholder="Giảm 50%" maxLength={24} onChange={(e) => setForm({ ...form, discountLabel: e.target.value })} /></Field>
+                <Field label="Mã voucher (tối đa 40)"><input className={inputCls} value={form.voucherCode} placeholder="FREESHIP50" maxLength={40} onChange={(e) => setForm({ ...form, voucherCode: e.target.value })} /></Field>
+              </div>
               <Field label="Official URL (https only)"><input className={inputCls} value={form.officialUrl} onChange={(e) => setForm({ ...form, officialUrl: e.target.value })} /></Field>
               <div className="grid grid-cols-2 gap-3">
                 <ImageField label="Logo" value={form.logoImage} busy={uploading === 'logo'} inputRef={logoInput} onPick={(f) => handleUpload('logo', f)} onClear={() => setForm({ ...form, logoImage: '' })} />

@@ -19,6 +19,11 @@ export interface PartnerDeal {
   bannerImage: string | null
   logoImage: string | null
   isFeatured: boolean
+  // Promotion display fields — extracted from metadata.promotion. Raw metadata is
+  // NEVER exposed; only these whitelisted display fields (+ endAt for countdown).
+  discountLabel: string | null
+  voucherCode: string | null
+  endAt: string | null
 }
 
 // Full row for the admin CRUD (adds scheduling/status + read-only click_count).
@@ -27,19 +32,30 @@ export interface PartnerDealRow extends PartnerDeal {
   displayOrder: number
   isActive: boolean
   startAt: string | null
-  endAt: string | null
   countryCode: string
   clickCount: number
   createdAt: string
   updatedAt: string
 }
 
+// metadata is SELECTed (to read metadata.promotion) but never returned raw.
 const PUBLIC_COLUMNS =
-  'id, partner_slug, partner_name, partner_type, category, title, description, official_url, banner_image, logo_image, is_featured'
+  'id, partner_slug, partner_name, partner_type, category, title, description, official_url, banner_image, logo_image, is_featured, metadata, end_at'
 const ADMIN_COLUMNS =
-  `${PUBLIC_COLUMNS}, display_order, is_active, start_at, end_at, country_code, click_count, created_at, updated_at`
+  `${PUBLIC_COLUMNS}, display_order, is_active, start_at, country_code, click_count, created_at, updated_at`
+
+// Pull the two whitelisted promo fields out of metadata.promotion. Anything else
+// in metadata (reserved/future namespaces) stays internal.
+function readPromotion(metadata: unknown): { discountLabel: string | null; voucherCode: string | null } {
+  const promo = (metadata as { promotion?: unknown } | null)?.promotion as
+    | { discountLabel?: unknown; voucherCode?: unknown }
+    | undefined
+  const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v : null)
+  return { discountLabel: str(promo?.discountLabel), voucherCode: str(promo?.voucherCode) }
+}
 
 function toPublic(row: Record<string, unknown>): PartnerDeal {
+  const { discountLabel, voucherCode } = readPromotion(row.metadata)
   return {
     id: row.id as string,
     partnerSlug: (row.partner_slug as string) ?? '',
@@ -52,6 +68,9 @@ function toPublic(row: Record<string, unknown>): PartnerDeal {
     bannerImage: (row.banner_image as string | null) ?? null,
     logoImage: (row.logo_image as string | null) ?? null,
     isFeatured: (row.is_featured as boolean) ?? false,
+    discountLabel,
+    voucherCode,
+    endAt: (row.end_at as string | null) ?? null,
   }
 }
 
@@ -61,7 +80,6 @@ function toRow(row: Record<string, unknown>): PartnerDealRow {
     displayOrder: (row.display_order as number) ?? 0,
     isActive: (row.is_active as boolean) ?? false,
     startAt: (row.start_at as string | null) ?? null,
-    endAt: (row.end_at as string | null) ?? null,
     countryCode: (row.country_code as string) ?? 'VN',
     clickCount: (row.click_count as number) ?? 0,
     createdAt: (row.created_at as string) ?? '',

@@ -32,6 +32,11 @@ export const PARTNER_TYPES = ['ecommerce', 'food', 'ride', 'travel'] as const
 // validation so future partner types work with zero code changes.
 const partnerType = z.string().trim().min(1, 'partnerType required').max(32, 'partnerType too long').toLowerCase()
 
+// Promotion display fields — stored inside metadata.promotion (NOT flat metadata),
+// surfaced to clients as discountLabel / voucherCode only. Optional; empty → null.
+const discountLabel = z.string().trim().max(24, 'discountLabel too long').nullable().optional()
+const voucherCode = z.string().trim().max(40, 'voucherCode too long').nullable().optional()
+
 // Create — the required fields plus optional scheduling/media/status.
 export const CreateDealSchema = z.object({
   partnerSlug,
@@ -43,6 +48,8 @@ export const CreateDealSchema = z.object({
   officialUrl: httpsUrl,
   bannerImage: imageUrlOrNull,
   logoImage: imageUrlOrNull,
+  discountLabel,
+  voucherCode,
   displayOrder: z.number().int().min(0).max(100000).optional(),
   isActive: z.boolean().optional(),
   isFeatured: z.boolean().optional(),
@@ -75,6 +82,16 @@ export function toDbColumns(input: Partial<CreateDealInput>): Record<string, unk
   if (input.officialUrl !== undefined) out.official_url = input.officialUrl
   if (input.bannerImage !== undefined) out.banner_image = input.bannerImage
   if (input.logoImage !== undefined) out.logo_image = input.logoImage
+  // Promotion fields nest under metadata.promotion. Only written when a promo
+  // field is present, so scheduling/reorder/toggle PATCHes never clobber it.
+  // NOTE: this replaces metadata wholesale — safe today (promotion is the only
+  // namespace). A future affiliate feed (V2) writing metadata must merge instead.
+  if (input.discountLabel !== undefined || input.voucherCode !== undefined) {
+    const promotion: Record<string, string> = {}
+    if (input.discountLabel) promotion.discountLabel = input.discountLabel
+    if (input.voucherCode) promotion.voucherCode = input.voucherCode
+    out.metadata = { promotion }
+  }
   if (input.displayOrder !== undefined) out.display_order = input.displayOrder
   if (input.isActive !== undefined) out.is_active = input.isActive
   if (input.startAt !== undefined) out.start_at = input.startAt
