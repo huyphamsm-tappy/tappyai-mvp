@@ -66,3 +66,50 @@ logins. Owner to confirm in the live Admin Dashboard:
 
 194/194 unit tests pass on `b4134e8`; build clean. Regression suite
 `src/lib/deals/partnerDeals.test.ts` (10 tests) is permanent.
+
+---
+
+# Promo Polish — Production Release (2026-07-24)
+
+- **Commit:** `0ebeae7` (ff-merge of `preview/deals-promo-polish` → `main`)
+- **Live:** `GET /api/version` → `{"v":"0ebeae7…"}`
+- **No new migration** — reuses the `metadata` JSONB column already on production.
+- **Homepage seed kept** (owner will replace with real promos via Admin).
+
+## What shipped
+
+Deal cards now present a real promotion instead of a bare partner link:
+
+- Promo fields stored under **`metadata.promotion`** = `{ discountLabel, voucherCode }`
+  (not flat metadata). `toDbColumns` writes metadata only when a promo field is
+  present, so reorder/toggle/schedule PATCHes never clobber it.
+- **API surfaces exactly three** new display fields: `discountLabel`, `voucherCode`,
+  `endAt` (extracted via `readPromotion()`). Raw `metadata` / `affiliate_code` /
+  `click_count` remain hidden.
+- **Card UI:** red discount badge (rendered **only** when `discountLabel` set),
+  `endAt` countdown (`> 24h` → "X days left", `<= 24h` → "🔥 Ending Soon", via the
+  pure `src/lib/deals/countdown.ts` helper), copy-able voucher chip whose copy
+  button `preventDefault + stopPropagation` so it never opens the partner link.
+- **Admin form:** new "Mức giảm (badge)" and "Mã voucher" inputs.
+
+## Production smoke tests (2026-07-24)
+
+| # | Check | Result |
+|---|-------|--------|
+| 1 | `GET /api/deals` shape adds `discountLabel`/`voucherCode`/`endAt` | ✅ |
+| 2 | API still hides `metadata`/`affiliate_code`/`click_count` | ✅ |
+| 3 | Promo flow: set `metadata.promotion` + `end_at` → fields surface on API | ✅ (`-50%` / `FREESHIP50` / endAt) |
+| 4 | Raw metadata never exposed even when populated | ✅ |
+| 5 | `/deals` renders | ✅ HTTP 200 |
+
+Test row promo set on `shopee` then reset to clean seed (`metadata={}`, `end_at=null`).
+
+## Test / build
+
+201/201 unit tests pass on `0ebeae7` (+7: schema lengths, `metadata.promotion`
+assembly + no-clobber, promo/endAt extraction + raw-metadata-never-exposed, 3
+`promoCountdown` cases); build clean.
+
+## Status
+
+**Promo Polish — RESOLVED (owner-directed release + close, 2026-07-24).**
