@@ -8,41 +8,33 @@ export interface Deal {
   badge?: string   // e.g. "HOT", "MỚI" — no false-scarcity/countdown badges (MFS 3.10: no manufactured urgency)
 }
 
-// Curated always-on Vietnamese e-commerce deals — verified real pages
+// Curated Vietnamese e-commerce/travel entries. Every URL is render-audited (not
+// just HTTP 200) to land on a real, usable page whose CONTENT matches the title —
+// a stable marketplace/category/promotion page, never a campaign deep-link (those
+// expire, geo-route, A/B-test and soft-404). Titles that could only be satisfied
+// by a volatile campaign page are generalized to the platform ("Sàn mua sắm", "Đi
+// chợ online") so title and destination always describe the same thing. Discount
+// copy is descriptive, not a fabricated fixed number the landing page can't honor
+// (MFS 3.10: no manufactured urgency / false claims).
 const DEAL_POOL: Deal[] = [
-  // Shopee
-  { title: 'Flash Sale Shopee mỗi ngày', category: 'Điện tử', discount: 'Giảm đến 70%', url: 'https://shopee.vn/flash_sale', source: 'Shopee', emoji: '⚡' },
-  { title: 'Freeship toàn quốc không giới hạn', category: 'Vận chuyển', discount: 'Miễn phí ship đơn từ 0đ', url: 'https://shopee.vn/m/freeship-xtra', source: 'Shopee', emoji: '🚚' },
-  { title: 'Voucher giảm giá Shopee hôm nay', category: 'Mua sắm', discount: 'Giảm 30k-100k đơn 99k+', url: 'https://shopee.vn/voucher', source: 'Shopee', emoji: '🎫' },
-  { title: 'Shopee Xu đổi ưu đãi', category: 'Tiết kiệm', discount: 'Đổi 200 Xu giảm thêm tiền', url: 'https://shopee.vn/coin', source: 'Shopee', emoji: '🪙' },
-  { title: 'Shopee 10.10 — Siêu Sale', category: 'Mua sắm', discount: 'Giảm đến 50% + Freeship', url: 'https://shopee.vn/m/shopee-sale', source: 'Shopee', emoji: '🛍️', badge: 'HOT' },
-  { title: 'Shopee Food hôm nay', category: 'Ăn uống', discount: 'Freeship + giảm 15k-30k', url: 'https://shopee.vn/food', source: 'Shopee Food', emoji: '🍜' },
-  { title: 'Điện thoại & máy tính bảng sale', category: 'Điện tử', discount: 'Giảm đến 40% thương hiệu lớn', url: 'https://shopee.vn/phones-tablets', source: 'Shopee', emoji: '📱' },
-  { title: 'Thời trang nữ giảm mạnh', category: 'Thời trang', discount: 'Giảm 20-60% hàng nghìn mẫu', url: 'https://shopee.vn/fashion-women', source: 'Shopee', emoji: '👗' },
-  { title: 'Shopee Sức khoẻ & Làm đẹp', category: 'Làm đẹp', discount: 'Mua 2 tặng 1 + giảm 25%', url: 'https://shopee.vn/health-beauty', source: 'Shopee', emoji: '💄' },
-  // Lazada
-  { title: 'Lazada Flash Sale hằng ngày', category: 'Mua sắm', discount: 'Giảm đến 80% sản phẩm chọn lọc', url: 'https://www.lazada.vn/campaigns/flash-sale/', source: 'Lazada', emoji: '🔥', badge: 'HOT' },
-  { title: 'Lazada Ngày siêu sale', category: 'Mua sắm', discount: 'Freeship + giảm thêm 20%', url: 'https://www.lazada.vn/campaigns/best-price/', source: 'Lazada', emoji: '💸' },
-  { title: 'Điện gia dụng Lazada', category: 'Gia dụng', discount: 'Trả góp 0% + giảm đến 35%', url: 'https://www.lazada.vn/catalog/?q=household-appliances', source: 'Lazada', emoji: '🏠' },
-  // Tiki
-  { title: 'TikiNOW giao siêu tốc 2h', category: 'Mua sắm', discount: 'Freeship + giảm thêm 15%', url: 'https://tiki.vn/khuyen-mai/tiki-ngon', source: 'Tiki', emoji: '⚡' },
-  { title: 'Sách & văn phòng phẩm Tiki', category: 'Sách', discount: 'Giảm 10-40% + tặng bookmark', url: 'https://tiki.vn/nha-sach-tiki/c8322', source: 'Tiki', emoji: '📚' },
-  { title: 'Tiki Trading deals hot', category: 'Điện tử', discount: 'Chính hãng + bảo hành 12 tháng', url: 'https://tiki.vn/khuyen-mai/flash-sale', source: 'Tiki', emoji: '🛒', badge: 'MỚI' },
-  // Travel
-  { title: 'Agoda giảm đến 40% khách sạn', category: 'Du lịch', discount: 'Đặt sớm giảm thêm 10%', url: 'https://www.agoda.com/vi-vn/deals', source: 'Agoda', emoji: '🏨' },
-  { title: 'Traveloka vé máy bay rẻ nhất', category: 'Du lịch', discount: 'Vé nội địa từ 99k', url: 'https://www.traveloka.com/vi-vn/flight/promo', source: 'Traveloka', emoji: '✈️', badge: 'HOT' },
-  { title: 'VinPearl & resort ưu đãi hè', category: 'Du lịch', discount: 'Combo nghỉ dưỡng tiết kiệm 30%', url: 'https://vinpearl.com/vi/khuyen-mai', source: 'VinPearl', emoji: '🌴' },
-  // Food & Delivery
-  { title: 'GrabFood giảm 30k mỗi ngày', category: 'Ăn uống', discount: 'Nhập code GRAB30 giảm ngay', url: 'https://food.grab.com/vn/vi/', source: 'GrabFood', emoji: '🍔' },
-  { title: 'ShopeeFood freeship + giảm 25k', category: 'Ăn uống', discount: 'Đơn từ 50k áp dụng', url: 'https://shopee.vn/food', source: 'Shopee Food', emoji: '🍱' },
-  { title: 'Baemin voucher hàng ngày', category: 'Ăn uống', discount: 'Hoàn tiền 20% tối đa 30k', url: 'https://www.baemin.com/vi', source: 'Baemin', emoji: '🛵' },
-  // Tech
-  { title: 'CellphoneS iPhone & Android sale', category: 'Điện tử', discount: 'Thu cũ đổi mới + trả góp 0%', url: 'https://cellphones.com.vn/khuyen-mai.html', source: 'CellphoneS', emoji: '📲', badge: 'HOT' },
-  { title: 'FPT Shop ưu đãi laptop', category: 'Điện tử', discount: 'Tặng túi chống sốc + giảm đến 3tr', url: 'https://fptshop.com.vn/khuyen-mai', source: 'FPT Shop', emoji: '💻' },
-  { title: 'Thế Giới Di Động deals hot', category: 'Điện tử', discount: 'Giảm giá sốc khi đặt online', url: 'https://www.thegioididong.com/tin-tuc/khuyen-mai', source: 'TGDĐ', emoji: '📡' },
-  // Grocery / Lifestyle
-  { title: 'WinMart+ giao hàng siêu nhanh', category: 'Siêu thị', discount: 'Mua 2 giảm 5k, mua 3 giảm 12k', url: 'https://winmart.vn/khuyen-mai', source: 'WinMart', emoji: '🛒' },
-  { title: 'Bach Hoa Xanh tươi sạch giảm giá', category: 'Siêu thị', discount: 'Hàng tươi giảm 15% mỗi sáng', url: 'https://www.bachhoaxanh.com/khuyen-mai', source: 'BHX', emoji: '🥬' },
+  // Marketplaces (generalized — homepage, always browsable)
+  { title: 'Shopee — Sàn mua sắm online', category: 'Mua sắm', discount: 'Voucher, Flash Sale & Freeship mỗi ngày', url: 'https://shopee.vn', source: 'Shopee', emoji: '🛍️' },
+  { title: 'Lazada — Sàn mua sắm online', category: 'Mua sắm', discount: 'Flash Sale, voucher & giá tốt mỗi ngày', url: 'https://www.lazada.vn', source: 'Lazada', emoji: '🛒' },
+  { title: 'WinMart — Đi chợ online', category: 'Siêu thị', discount: 'Đi chợ online, giao nhanh 62 tỉnh thành', url: 'https://winmart.vn', source: 'WinMart', emoji: '🏪' },
+  // Category pages (content matches the title)
+  { title: 'Nhà sách Tiki', category: 'Sách', discount: 'Giảm giá & freeship nhiều đầu sách', url: 'https://tiki.vn/nha-sach-tiki/c8322', source: 'Tiki', emoji: '📚' },
+  { title: 'Điện thoại & máy tính bảng Tiki', category: 'Điện tử', discount: 'Chính hãng, trả góp 0%, giá tốt', url: 'https://tiki.vn/dien-thoai-may-tinh-bang/c1789', source: 'Tiki', emoji: '📱' },
+  { title: 'Điện thoại Thế Giới Di Động', category: 'Điện tử', discount: 'Chính hãng, trả góp 0%, thu cũ đổi mới', url: 'https://www.thegioididong.com/dtdd', source: 'TGDĐ', emoji: '📲' },
+  { title: 'Laptop FPT Shop', category: 'Điện tử', discount: 'Trả góp 0% + quà tặng kèm laptop', url: 'https://fptshop.com.vn/may-tinh-xach-tay', source: 'FPT Shop', emoji: '💻' },
+  // Promotion pages (real, stable)
+  { title: 'Khuyến mãi CellphoneS', category: 'Điện tử', discount: 'Danh sách khuyến mãi cập nhật liên tục', url: 'https://cellphones.com.vn/khuyen-mai.html', source: 'CellphoneS', emoji: '🏷️' },
+  { title: 'Khuyến mãi Bách Hoá Xanh', category: 'Siêu thị', discount: 'Flash Sale & combo giá sỉ mỗi ngày', url: 'https://www.bachhoaxanh.com/khuyen-mai', source: 'BHX', emoji: '🥬' },
+  { title: 'Ưu đãi khách sạn Agoda', category: 'Du lịch', discount: 'Mã giảm giá & ưu đãi khách sạn mỗi ngày', url: 'https://www.agoda.com/vi-vn/deals', source: 'Agoda', emoji: '🏨' },
+  // Travel platforms (generalized — homepage)
+  { title: 'Traveloka — Đặt vé & khách sạn', category: 'Du lịch', discount: 'Đặt vé máy bay & khách sạn giá tốt', url: 'https://www.traveloka.com/vi-vn', source: 'Traveloka', emoji: '✈️' },
+  { title: 'Vinpearl — Nghỉ dưỡng & resort', category: 'Du lịch', discount: 'Đặt phòng resort & combo nghỉ dưỡng', url: 'https://vinpearl.com', source: 'VinPearl', emoji: '🌴' },
+  // Food delivery
+  { title: 'GrabFood', category: 'Ăn uống', discount: 'Đặt đồ ăn, ưu đãi & freeship theo khu vực', url: 'https://food.grab.com/vn/vi/', source: 'GrabFood', emoji: '🍔' },
 ]
 
 // Rotate based on current date — same deals all day, new set every day
