@@ -5,6 +5,8 @@ import { ArrowLeftRight, RefreshCw, ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import BottomNav from '@/components/BottomNav'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { formatAmount, formatRate } from '@/lib/finance/format'
+import { crossRate, MissingCurrencyError } from '@/lib/finance/exchange'
 
 const CURRENCIES = [
   { code: 'VND', name: 'Việt Nam Đồng', flag: '🇻🇳', decimals: 0 },
@@ -20,14 +22,6 @@ const CURRENCIES = [
   { code: 'HKD', name: 'Đô Hồng Kông', flag: '🇭🇰', decimals: 2 },
   { code: 'TWD', name: 'Đô Đài Loan', flag: '🇹🇼', decimals: 0 },
 ]
-
-function formatAmount(val: number, decimals: number) {
-  if (!isFinite(val)) return '—'
-  return val.toLocaleString('vi-VN', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  })
-}
 
 function CurrencySelect({
   value, onChange, label,
@@ -88,17 +82,18 @@ export default function CurrencyPage() {
 
   const numAmount = parseFloat(amount.replace(/[^0-9.]/g, '')) || 0
 
+  // Cross rate via the finance library. A missing currency throws (never silently
+  // uses 1), so we surface an error instead of a wrong number.
   let converted: number | null = null
   let rate: number | null = null
+  let missingCode: string | null = null
   if (rates && numAmount > 0) {
-    const fromUSD = from === 'USD' ? 1 : (rates['USD'] / (rates[from] || 1))
-    const toRate = to === 'USD' ? 1 : (rates[to] / rates['USD'])
-    rate = (1 / (rates[from] || 1)) * (rates[to] || 1)
-    if (from === 'USD') rate = rates[to] || 1
-    else if (to === 'USD') rate = 1 / (rates[from] || 1)
-    else rate = (rates[to] || 1) / (rates[from] || 1)
-    converted = numAmount * rate
-    void fromUSD; void toRate
+    try {
+      rate = crossRate(rates, from, to)
+      converted = numAmount * rate
+    } catch (e) {
+      if (e instanceof MissingCurrencyError) missingCode = e.code
+    }
   }
 
   const formattedDate = rateDate
@@ -164,6 +159,8 @@ export default function CurrencyPage() {
               <RefreshCw size={16} className="animate-spin opacity-60" />
               <span className="text-white/70 text-sm">{t('currency.loadingRates')}</span>
             </div>
+          ) : missingCode ? (
+            <p className="text-white/90 text-sm font-medium">⚠️ {t('currency.missingRate', { code: missingCode })}</p>
           ) : converted !== null ? (
             <>
               <p className="text-white/70 text-sm mb-1">
@@ -176,8 +173,8 @@ export default function CurrencyPage() {
 
               {rate !== null && (
                 <div className="mt-4 pt-4 border-t border-white/20 text-xs text-white/60 space-y-0.5">
-                  <p>1 {from} = {formatAmount(rate, toCur.decimals > 0 ? 4 : 2)} {to}</p>
-                  <p>1 {to} = {formatAmount(1 / rate, fromCur.decimals > 0 ? 4 : 2)} {from}</p>
+                  <p>1 {from} = {formatRate(rate)} {to}</p>
+                  <p>1 {to} = {formatRate(1 / rate)} {from}</p>
                 </div>
               )}
             </>
