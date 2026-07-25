@@ -65,6 +65,8 @@ function hasDomainNearName(placeName: string, domain: string, lowerText: string,
 // name lookup the same way, or position-finding silently fails.
 const normName = (n: string) => normalizeVN(n.toLowerCase())
 
+const hasPhoto = (p: PlaceLike) => !!((p.photo_urls && p.photo_urls.length > 0) || p.photo_url)
+
 // ── System-owned enrichment placement ────────────────────────────────────────
 // Architecture: the LLM writes PROSE ONLY; the app OWNS where each place's images,
 // TikTok review link, and order/platform links appear. If the model also emits any
@@ -391,18 +393,30 @@ export function applyPlaceEnrichmentStreamFilter(response: Response): Response {
               result?: { results?: PlaceLike[]; search_results?: SearchResultLike[] }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
+            let newPlaces: PlaceLike[] = []
             if (toolName === 'search_places') {
               const results = res.result?.results
-              if (Array.isArray(results) && results.length > 0) latestPlaces = results
+              if (Array.isArray(results)) newPlaces = results
             } else if (toolName === 'get_hotel_prices' || toolName === 'search_products') {
               // Neither has a 'name'-shaped results[] — search_results is the primary content
               // instead, with 'title' standing in for the place name. Raw titles are "Hotel
               // Name - City - Booking.com"-style; the AI writes just "Hotel Name", so take the
               // part before the first " - " to match how it actually gets written.
               const searchResults = res.result?.search_results
-              if (Array.isArray(searchResults) && searchResults.length > 0) {
-                latestPlaces = searchResults.map(r => ({ ...r, name: r.title?.split(' - ')[0]?.trim() }))
+              if (Array.isArray(searchResults)) {
+                newPlaces = searchResults.map(r => ({ ...r, name: r.title?.split(' - ')[0]?.trim() }))
               }
+            }
+            // ACCUMULATE across EVERY place-tool call, not just the last one: a trip plan runs
+            // several searches (hotels, food, attractions) and each plan item must be able to
+            // match its own photo. Dedupe by name; if a later call carries a photo for a name we
+            // saw without one, upgrade to the entry that has the photo.
+            for (const p of newPlaces) {
+              const key = (p.name || '').trim().toLowerCase()
+              if (!key) continue
+              const existing = latestPlaces.find(q => (q.name || '').trim().toLowerCase() === key)
+              if (!existing) latestPlaces.push(p)
+              else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
             }
           } catch { /* ignore */ }
           controller.enqueue(encoder.encode(line + '\n'))

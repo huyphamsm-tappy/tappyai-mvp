@@ -303,4 +303,31 @@ describe('applyPlaceEnrichmentStreamFilter — stream transform', () => {
     expect(out).toContain(line0('Mình là Tappy.'))
     expect(out).not.toContain('Ảnh địa điểm')
   })
+
+  it('ACCUMULATES places across MULTIPLE tool calls so a plan photographs items from every search', async () => {
+    // A trip plan runs several searches; each plan item must match a photo from its OWN search,
+    // not only the last one. hotel comes from call #1, food from call #2 — both must land.
+    const hotel = { name: 'San San Hotel', photo_url: `${IMG}/hotel.jpg` }
+    const food = { name: 'Hải Sản Mộc', photo_url: `${IMG}/food.jpg` }
+    const planJson = JSON.stringify({
+      type: 'trip', title: 'Đà Nẵng', days: [{ label: 'Ngày 1', items: [
+        { time: '14:00', name: 'San San Hotel', category: 'hotel' },
+        { time: '18:00', name: 'Hải Sản Mộc', category: 'food' },
+      ] }],
+    })
+    const out = await runFilter([
+      '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+      `a:{"toolCallId":"t1","result":{"results":[${JSON.stringify(hotel)}]}}`,
+      '9:{"toolCallId":"t2","toolName":"search_places","args":{}}',
+      `a:{"toolCallId":"t2","result":{"results":[${JSON.stringify(food)}]}}`,
+      line0(`[TAPPY_PLAN]\n${planJson}\n[/TAPPY_PLAN]`),
+      'd:{"finishReason":"stop"}',
+    ])
+    const full = out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2))).sort((a, b) => b.length - a.length)[0]
+    const plan = JSON.parse(full.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)![1].trim())
+    const items = plan.days[0].items as Array<{ name: string; photo_url?: string }>
+    // Both items got their photo even though they came from DIFFERENT searches (accumulation).
+    expect(items.find(i => i.name === 'San San Hotel')?.photo_url).toContain('hotel.jpg')
+    expect(items.find(i => i.name === 'Hải Sản Mộc')?.photo_url).toContain('food.jpg')
+  })
 })
