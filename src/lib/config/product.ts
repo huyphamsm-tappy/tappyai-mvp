@@ -19,6 +19,11 @@ export const ANON_DAILY_LIMIT = 5
 /** Pro upsell hidden app-wide during the free test phase. Mirrored by the
  * Android `SHOW_PRO_UPGRADE` gate — flip BOTH together when Pro launches. */
 export const SHOW_PRO_UPGRADE = false
+/** App Connections (integrations) entry point hidden app-wide (owner product
+ * decision 2026-07-17). The feature, its page, and its APIs stay intact — only
+ * the UI entry point is gated off. Mirrored by the Android `SHOW_APP_CONNECTIONS`
+ * gate — flip BOTH together to re-enable. */
+export const SHOW_APP_CONNECTIONS = false
 
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
