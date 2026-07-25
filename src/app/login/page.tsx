@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, ExternalLink, Copy, Check, Mail, ArrowLeft, User, ShieldCheck, Users, Sparkles, Globe2, MessageCircle, MapPin, Star } from 'lucide-react'
+import { Loader2, ExternalLink, Copy, Check, Mail, ArrowLeft, User, ShieldCheck, MessageCircle, MapPin, Star } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AUTH_PROVIDERS } from '@/lib/auth/providers'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -42,14 +42,6 @@ const FEATURES = [
   { icon: MapPin, tint: 'bg-rose-100 text-rose-500 dark:bg-rose-900/30 dark:text-rose-300', titleKey: 'login.f2Title', descKey: 'login.f2Desc' },
   { icon: ShieldCheck, tint: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-300', titleKey: 'login.f3Title', descKey: 'login.f3Desc' },
   { icon: Star, tint: 'bg-amber-100 text-amber-500 dark:bg-amber-900/30 dark:text-amber-300', titleKey: 'login.f4Title', descKey: 'login.f4Desc' },
-]
-
-// Footer trust stats (mockup pills). Values are marketing copy from the design.
-const STATS = [
-  { icon: Users, tint: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300', value: '1M+', labelKey: 'login.statUsers' },
-  { icon: Sparkles, tint: 'bg-amber-100 text-amber-500 dark:bg-amber-900/30 dark:text-amber-300', value: '50+', labelKey: 'login.statServices' },
-  { icon: Globe2, tint: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-300', value: '100+', labelKey: 'login.statCities' },
-  { icon: ShieldCheck, tint: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-300', value: '99.9%', labelKey: 'login.statUptime' },
 ]
 
 // Floating accent chips around the mascot hero (mockup: pastel circles with icons).
@@ -495,24 +487,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Footer stats */}
-        <div className="border-t border-gray-100 dark:border-gray-800 px-6 sm:px-10 py-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {STATS.map((s) => {
-              const Icon = s.icon
-              return (
-                <div key={s.labelKey} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800/60 rounded-2xl px-4 py-3">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${s.tint}`}>
-                    <Icon size={17} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-black text-gray-900 dark:text-white leading-none">{s.value}</p>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 truncate">{t(s.labelKey)}</p>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
+        {/* Footer — copyright (stats section removed 2026-07-25 to match the approved mockup) */}
+        <div className="border-t border-gray-100 dark:border-gray-800 px-6 sm:px-10 py-4">
+          <p className="text-center text-[11px] text-gray-400">© 2025 TappyAI. All rights reserved.</p>
         </div>
       </div>
     </div>
