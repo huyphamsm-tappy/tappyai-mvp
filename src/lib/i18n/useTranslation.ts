@@ -58,9 +58,15 @@ function subscribe(cb: () => void): () => void {
 // Change language app-wide. Persists to localStorage and notifies every
 // subscriber so the whole UI re-renders in the new language immediately.
 export function setLocale(next: Locale) {
-  if (current === next) return
-  current = next
+  // ALWAYS persist the explicit choice first — even when `next` already equals the
+  // in-memory `current`. On first visit `current` is seeded to the auto-detected
+  // locale (getSnapshot → detectLocale) BEFORE the user picks, so a user choosing the
+  // language that matches their browser (the common case) hit the old early-return and
+  // `tappy_lang` was never written → getStoredLocale() stayed null → the first-visit
+  // LanguagePicker reappeared on every refresh / restart / logout. Writing here fixes it.
   setStoredLocale(next)
+  if (current === next) return // already the active locale → no re-render needed
+  current = next
   listeners.forEach((l) => l())
 }
 
