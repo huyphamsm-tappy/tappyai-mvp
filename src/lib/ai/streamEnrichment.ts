@@ -196,6 +196,55 @@ function earliestMarker(text: string): number {
   return end
 }
 
+// Add each matched place's representative photo to its plan item INSIDE the [TAPPY_PLAN]
+// JSON, so TripPlanCard renders a thumbnail per item (no trailing image block for plans).
+// Edits the PARSED object then re-serializes — never string-splices markdown into the JSON.
+// A plan item with no place match (transport, "dự phòng"…) simply gets no photo. If the JSON
+// can't be parsed or nothing matches, the text is returned unchanged (no photos, no crash).
+function injectPlanPhotos(places: PlaceLike[], fullText: string): string {
+  const open = '[TAPPY_PLAN]'
+  const close = '[/TAPPY_PLAN]'
+  const start = fullText.indexOf(open)
+  const end = fullText.indexOf(close)
+  if (start === -1 || end === -1 || end < start) return fullText
+
+  let plan: { days?: Array<{ items?: Array<{ name?: string; photo_url?: string }> }> }
+  try {
+    plan = JSON.parse(fullText.slice(start + open.length, end).trim())
+  } catch {
+    return fullText // malformed JSON — leave it for the client to handle, never corrupt it
+  }
+  if (!plan || !Array.isArray(plan.days)) return fullText
+
+  // name → first photo, from the tool's places
+  const photoByName = new Map<string, string>()
+  for (const p of places) {
+    if (!p.name) continue
+    const photo = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls[0] : p.photo_url)
+    if (photo) photoByName.set(normName(p.name), photo)
+  }
+  if (photoByName.size === 0) return fullText
+
+  let changed = false
+  for (const day of plan.days) {
+    if (!Array.isArray(day?.items)) continue
+    for (const item of day.items) {
+      if (!item?.name || item.photo_url) continue
+      const key = normName(item.name)
+      let photo = photoByName.get(key)
+      if (!photo) {
+        for (const [n, url] of photoByName) {
+          if (n.length >= 4 && (key.includes(n) || n.includes(key))) { photo = url; break }
+        }
+      }
+      if (photo) { item.photo_url = photo; changed = true }
+    }
+  }
+  if (!changed) return fullText
+
+  return fullText.slice(0, start) + open + '\n' + JSON.stringify(plan) + '\n' + fullText.slice(end)
+}
+
 // POSITION-AWARE injection: the app owns enrichment layout. It (1) STRIPS any
 // enrichment the LLM wrote itself, then (2) rebuilds the assistant text with each
 // place's image/review/order-link markdown inserted IMMEDIATELY AFTER that place's
@@ -207,9 +256,10 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
   if (usable.length === 0) return fullText
 
   // A trip/evening plan renders as a structured [TAPPY_PLAN] JSON card whose place names live
-  // INSIDE the JSON — positional injection would corrupt the JSON and break the brochure. For
-  // those, append the trailing image block below everything instead (its intended layout).
-  if (fullText.includes('[TAPPY_PLAN]')) return appendTrailingBlock(usable, places, fullText, decodeSafe(fullText))
+  // INSIDE the JSON. Instead of the old trailing image block, add each matched place's photo
+  // to its plan item INSIDE the JSON so TripPlanCard shows a thumbnail per item (owner request
+  // 2026-07-25). Splicing markdown would corrupt the JSON, so we edit the parsed object.
+  if (fullText.includes('[TAPPY_PLAN]')) return injectPlanPhotos(places, fullText)
 
   // System owns placement: drop the LLM's own copies of owned enrichment, then re-inject.
   const text = stripOwnedEnrichment(places, fullText)

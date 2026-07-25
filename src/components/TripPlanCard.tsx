@@ -14,6 +14,9 @@ export interface PlanItem {
   maps_link?: string
   booking_link?: string
   place_id?: string
+  /** Representative photo, added server-side (streamEnrichment.injectPlanPhotos) by
+   * matching the item to a searched place — rendered as a thumbnail inside the item card. */
+  photo_url?: string
 }
 
 export interface PlanDay {
@@ -140,6 +143,17 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
                   </span>
                 )}
               </div>
+
+              {/* Photo — server-matched representative image, right under the place */}
+              {item.photo_url && (
+                <img
+                  src={item.photo_url}
+                  alt={item.name}
+                  loading="lazy"
+                  onError={(e) => { e.currentTarget.style.display = 'none' }}
+                  className="mt-2 w-full h-24 object-cover rounded-lg"
+                />
+              )}
 
               {/* Description */}
               {item.description && (

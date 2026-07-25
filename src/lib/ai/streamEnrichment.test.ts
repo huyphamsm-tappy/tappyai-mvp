@@ -137,12 +137,13 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(injectPlaceEnrichment([{ name: 'X' }], 'không có ảnh')).toBe('không có ảnh')
   })
 
-  it('NEVER injects inside a [TAPPY_PLAN] block — keeps the JSON parseable, photos go below it', () => {
+  it('adds a per-item photo INSIDE the [TAPPY_PLAN] JSON (thumbnail), keeps JSON parseable, NO trailing block', () => {
     const planJson = JSON.stringify({
       type: 'trip', title: 'Đà Nẵng 2 ngày', people: 2,
       days: [{ label: 'Ngày 1', items: [
         { time: '08:00', name: 'Bà Nà Hills', category: 'attraction' },
         { time: '12:00', name: 'Bánh xèo Bà Dưỡng', category: 'food' },
+        { time: '18:00', name: 'Vé máy bay về', category: 'transport' }, // no place match
       ] }],
     })
     const text = `Đây là kế hoạch nhé!\n\n[TAPPY_PLAN]\n${planJson}\n[/TAPPY_PLAN]\n\nMình giả định 2 người nha.\n\n[CTA_BUTTONS]{"buttons":[]}[/CTA_BUTTONS]`
@@ -152,13 +153,26 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     ]
     const out = injectPlaceEnrichment(places, text)
     const planBlock = out.slice(out.indexOf('[TAPPY_PLAN]'), out.indexOf('[/TAPPY_PLAN]') + '[/TAPPY_PLAN]'.length)
-    // plan JSON intact — no image markdown spliced in, still parses
+    // No markdown image spliced into the block; JSON still parses.
     expect(planBlock).not.toContain('![')
-    expect(() => JSON.parse(planBlock.replace('[TAPPY_PLAN]', '').replace('[/TAPPY_PLAN]', '').trim())).not.toThrow()
-    // photos present, appended BELOW the plan block (legacy trailing layout)
-    expect(out).toContain('bana.jpg')
-    expect(out.indexOf('bana.jpg')).toBeGreaterThan(out.indexOf('[/TAPPY_PLAN]'))
-    expect(out).toContain('📸')
+    const parsed = JSON.parse(planBlock.replace('[TAPPY_PLAN]', '').replace('[/TAPPY_PLAN]', '').trim())
+    const items = parsed.days[0].items as Array<{ name: string; photo_url?: string }>
+    // Matched items carry photo_url INSIDE the JSON; the unmatched transport item does not.
+    expect(items.find(i => i.name === 'Bà Nà Hills')?.photo_url).toContain('bana.jpg')
+    expect(items.find(i => i.name === 'Bánh xèo Bà Dưỡng')?.photo_url).toContain('banhxeo.jpg')
+    expect(items.find(i => i.name === 'Vé máy bay về')?.photo_url).toBeUndefined()
+    // Photos live INSIDE the plan block; there is NO trailing 📸 block.
+    expect(out.indexOf('bana.jpg')).toBeLessThan(out.indexOf('[/TAPPY_PLAN]'))
+    expect(out).not.toContain('📸')
+  })
+
+  it('leaves the [TAPPY_PLAN] text unchanged when no plan item matches a place with a photo', () => {
+    const planJson = JSON.stringify({
+      type: 'trip', title: 'X', days: [{ label: 'Ngày 1', items: [{ time: '08:00', name: 'Chỗ lạ', category: 'attraction' }] }],
+    })
+    const text = `[TAPPY_PLAN]\n${planJson}\n[/TAPPY_PLAN]`
+    const out = injectPlaceEnrichment([{ name: 'Quán khác hẳn', photo_url: `${IMG}/x.jpg` }], text)
+    expect(out).toBe(text) // untouched, JSON not corrupted
   })
 
   it('does not inject into a [FOLLOWUPS] block — photo lands in the prose before it', () => {
