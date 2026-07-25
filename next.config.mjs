@@ -23,6 +23,9 @@ const nextConfig = {
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       { protocol: 'https', hostname: '*.supabase.co' },
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
+      // Music-library cover art hotlinked from Jamendo (CC-BY tracks) — without
+      // this the next/image optimizer 400s and the covers render broken.
+      { protocol: 'https', hostname: '*.jamendo.com' },
     ],
   },
   async headers() {
