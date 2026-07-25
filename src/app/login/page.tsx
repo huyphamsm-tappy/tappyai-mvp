@@ -513,7 +513,6 @@ export default function LoginPage() {
               )
             })}
           </div>
-          <p className="text-center text-[11px] text-gray-400 mt-4">© 2025 TappyAI. All rights reserved.</p>
         </div>
       </div>
     </div>
