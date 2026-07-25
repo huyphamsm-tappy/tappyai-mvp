@@ -12,9 +12,11 @@ interface HeaderProps {
   showBack?: boolean
   backHref?: string
   title?: string
+  /** Hide the brand logo (Home floats over the background image; Hero carries the branding). */
+  hideLogo?: boolean
 }
 
-export default function Header({ user, showBack, backHref, title }: HeaderProps) {
+export default function Header({ user, showBack, backHref, title, hideLogo }: HeaderProps) {
   const router = useRouter()
   const { t, locale } = useTranslation()
   const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'
@@ -62,6 +64,10 @@ export default function Header({ user, showBack, backHref, title }: HeaderProps)
               {t('common.back')}
             </button>
           )
+        ) : hideLogo ? (
+          // Empty spacer keeps the right-side controls justified to the right
+          // when the logo is hidden (e.g. Home floats over the background).
+          <div aria-hidden />
         ) : (
           <Link href="/" className="flex items-center">
             <Image src="/logo.png" alt="TappyAI" width={120} height={40} className="h-9 w-auto" />
