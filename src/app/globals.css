@@ -258,31 +258,8 @@
 .pt-safe { padding-top: env(safe-area-inset-top); }
 .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
 
-/* ==========================================================================
-   Home immersive background (layout refactor — production UI polish)
-   Tablet + desktop (≥768px = `md`). Mobile (<768px) keeps the existing
-   gray/white background untouched. The content column stays centered (max
-   768px), so from tablet up the panorama reveals symmetrically on the sides
-   and through the gaps between cards — balanced at every width in the range.
-   One continuous full-viewport Vietnam panorama; content cards float above it
-   (they own their own bg/shadow, so no panel is added).
-   Light: image as-is, no overlay. Dark: SAME image + subtle tint for contrast.
-   Owner supplies the asset at /public/backgrounds/home-desktop.webp — until it
-   exists the page falls back gracefully to bg-gray-50 / bg-gray-950.
-   ========================================================================== */
-@media (min-width: 768px) {
-  .home-immersive-bg {
-    background-image: url('/backgrounds/home-desktop.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .dark .home-immersive-bg {
-    background-image:
-      linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-      url('/backgrounds/home-desktop.webp');
-  }
-}
+/* Home immersive background moved to <HomeBackground/> (next/image) +
+   src/lib/background/* — desktop/tablet only, mobile unchanged. */
 .pl-safe { padding-left: env(safe-area-inset-left); }
 .pr-safe { padding-right: env(safe-area-inset-right); }
 .min-h-screen-safe { min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
