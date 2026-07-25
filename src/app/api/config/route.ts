@@ -3,6 +3,7 @@ import {
   FREE_DAILY_LIMIT,
   ANON_DAILY_LIMIT,
   SHOW_PRO_UPGRADE,
+  SHOW_APP_CONNECTIONS,
   MAX_PHOTOS_PER_REVIEW,
   MAX_VIDEO_SIZE_MB,
   MAX_VIDEO_DURATION_SEC,
@@ -29,6 +30,7 @@ export async function GET() {
       },
       flags: {
         showProUpgrade: SHOW_PRO_UPGRADE,
+        showAppConnections: SHOW_APP_CONNECTIONS,
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
