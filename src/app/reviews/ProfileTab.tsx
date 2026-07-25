@@ -12,6 +12,7 @@ import {
   Trash2, EyeOff, Eye, Loader2, Plus, Grid3X3, AlertCircle,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { trailingFillerCount } from '@/lib/ui/gridFill'
 import { getUserPreferences } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import SoundSheet from './SoundSheet'
@@ -444,6 +445,15 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
               </button>
             )
           })}
+          {/* Option B: complete the last row with tile-coloured filler cells so its
+              empty slots don't expose the lighter container bg as a gray box, while
+              KEEPING the hairline separators. Only phones need it (3-col + gray-800);
+              on desktop the container is sm:bg-black so empties already blend — the
+              filler follows suit with sm:bg-black. */}
+          {Array.from({ length: trailingFillerCount(displayPosts.length, 3) }).map((_, i) => (
+            <div key={`filler-${i}`} aria-hidden
+              className={`bg-gray-900 ${isPage ? 'aspect-[3/4] sm:bg-black' : 'aspect-[9/16]'}`} />
+          ))}
         </div>
       )}
 
