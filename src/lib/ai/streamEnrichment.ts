@@ -1,4 +1,5 @@
 import { normalizeVN } from './intent'
+import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
 //   0:"<text delta>"                         — assistant text chunk
@@ -163,11 +164,11 @@ function placeContentLines(
 // the block boundaries for injection. (Root-cause fix: bounding a place's window by
 // only the *enriched* places let a first place's gallery run past its photo-less
 // neighbours all the way to the end of the message.) Index-aligned to the raw text.
-function placeMentionOffsets(places: PlaceLike[], dedupText: string): number[] {
+function placeMentionOffsets(places: PlaceLike[], dedupText: string, headers: Header[]): number[] {
   const offs: number[] = []
   for (const p of places) {
     if (!p.name) continue
-    const i = dedupText.indexOf(normName(p.name))
+    const i = findPlaceOffset(p.name, dedupText, headers)
     if (i !== -1) offs.push(i)
   }
   return offs
@@ -278,14 +279,18 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
   // CTA_BUTTONS is a general block, not scoped to any one place — links inside it must never
   // count as "already covered" for a specific place's own dedup window.
   const dedupText = normRaw.slice(0, textEnd)
-  const mentionOffsets = placeMentionOffsets(places, dedupText)
+  // The LLM rewrites tool place names (shortens / respells), so match with the tiered
+  // canonical→exact→segment→token matcher instead of a raw full-name indexOf — otherwise
+  // unmatched places drop to the trailing "📸" block. See placeMatch.ts.
+  const headers = proseHeaders(dedupText)
+  const mentionOffsets = placeMentionOffsets(places, dedupText, headers)
 
-  const mentioned = usable.filter(p => dedupText.includes(normName(p.name as string)))
+  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const insertions: { offset: number; text: string }[] = []
   for (const p of chosen) {
-    const ownIdx = dedupText.indexOf(normName(p.name as string))
+    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers)
     if (ownIdx === -1) continue
     const windowEnd = boundaryAfter(ownIdx, mentionOffsets, textEnd)
     const { lines } = placeContentLines(p, decodedText, dedupText, windowEnd)
@@ -323,13 +328,14 @@ function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText:
   const ctaIdx = decodedText.indexOf('[CTA_BUTTONS]')
   const dedupText = normalizeVN((ctaIdx === -1 ? decodedText : decodedText.slice(0, ctaIdx)).toLowerCase())
   const textEnd = dedupText.length
-  const mentionOffsets = placeMentionOffsets(places, dedupText)
-  const mentioned = usable.filter(p => dedupText.includes(normName(p.name as string)))
+  const headers = proseHeaders(dedupText)
+  const mentionOffsets = placeMentionOffsets(places, dedupText, headers)
+  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const parts: string[] = []
   for (const p of chosen) {
-    const ownIdx = dedupText.indexOf(normName(p.name as string))
+    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers)
     const windowEnd = boundaryAfter(ownIdx === -1 ? 0 : ownIdx, mentionOffsets, textEnd)
     const { lines, missingPhotoCount } = placeContentLines(p, decodedText, dedupText, windowEnd)
     if (missingPhotoCount > 0) parts.push([`**${p.name}**`, ...lines].join('\n'))
