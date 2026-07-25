@@ -65,6 +65,71 @@ function hasDomainNearName(placeName: string, domain: string, lowerText: string,
 // name lookup the same way, or position-finding silently fails.
 const normName = (n: string) => normalizeVN(n.toLowerCase())
 
+// ── System-owned enrichment placement ────────────────────────────────────────
+// Architecture: the LLM writes PROSE ONLY; the app OWNS where each place's images,
+// TikTok review link, and order/platform links appear. If the model also emits any
+// of that markdown (old habit / partial disobedience), we STRIP its copies here and
+// re-inject them positionally, so placement never depends on the model obeying.
+// We ONLY strip markdown whose URL matches THIS batch's tool data (an owned image
+// URL, tiktok.com host, or an owned order/platform domain) — product-marketplace
+// links, [TAPPY_PLAN]/[CTA_BUTTONS]/[FOLLOWUPS] blocks, and prose are never touched.
+type Owned = { imageCores: Set<string>; linkDomains: Set<string>; hasTiktok: boolean }
+
+function buildOwned(places: PlaceLike[]): Owned {
+  const imageCores = new Set<string>()
+  const linkDomains = new Set<string>()
+  let hasTiktok = false
+  for (const p of places) {
+    const photos = p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : [])
+    for (const u of photos) imageCores.add(coreImageUrl(decodeSafe(u)))
+    for (const l of (p.order_links || [])) { const d = domainOf(l.url); if (d) linkDomains.add(d) }
+    for (const l of (p.platform_links || [])) { const d = domainOf(l.url); if (d) linkDomains.add(d) }
+    if (p.tiktok_url) hasTiktok = true
+  }
+  return { imageCores, linkDomains, hasTiktok }
+}
+
+function isOwnedImageUrl(url: string, owned: Owned): boolean {
+  const decoded = decodeSafe(url)
+  return owned.imageCores.has(decoded) || owned.imageCores.has(coreImageUrl(decoded))
+}
+
+const IMG_TOKEN = /!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g
+const LINK_TOKEN = /\[[^\]]+\]\((https?:\/\/[^\s)]+)\)/g
+
+// True only for a WHOLE line that is nothing but system-owned enrichment, so removing
+// it can never disturb prose: a run of owned image tokens; a "🎵 [..](tiktok..)"
+// review line; or a run of owned order/platform link tokens joined by "·".
+function isOwnedEnrichmentLine(line: string, owned: Owned): boolean {
+  const t = line.trim()
+  if (t === '') return false
+
+  const imgs = [...t.matchAll(IMG_TOKEN)]
+  if (imgs.length > 0) {
+    const rest = t.replace(IMG_TOKEN, '').trim()
+    if (rest === '' && imgs.every(m => isOwnedImageUrl(m[1], owned))) return true
+  }
+
+  const tiktok = t.match(/^🎵\s*\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/)
+  if (tiktok && domainOf(tiktok[1]) === 'tiktok.com') return true
+
+  const links = [...t.matchAll(LINK_TOKEN)]
+  if (links.length > 0) {
+    const rest = t.replace(LINK_TOKEN, '').replace(/·/g, '').trim()
+    if (rest === '' && links.every(m => owned.linkDomains.has(domainOf(m[1])))) return true
+  }
+  return false
+}
+
+// Remove the LLM's own copies of owned enrichment (line-wise) so injection re-places
+// them; collapse the blank runs the removals leave behind.
+function stripOwnedEnrichment(places: PlaceLike[], text: string): string {
+  const owned = buildOwned(places)
+  if (owned.imageCores.size === 0 && owned.linkDomains.size === 0 && !owned.hasTiktok) return text
+  const kept = text.split('\n').filter(line => !isOwnedEnrichmentLine(line, owned))
+  return kept.join('\n').replace(/\n{3,}/g, '\n\n')
+}
+
 // The image/review/order-link markdown a place is still MISSING from the text (dedup-aware),
 // WITHOUT any place-name header — the caller decides whether these lines are injected inline
 // (right after the place) or wrapped under a header in the legacy trailing block.
@@ -92,17 +157,27 @@ function placeContentLines(
   return { lines, missingPhotoCount: missingPhotos.length }
 }
 
-// Window-end for a place = wherever the NEXT chosen place's name first appears, so its links
-// can't be attributed to this one. Bounded above by textEnd (CTA marker or end of text).
-function windowEndFor(p: PlaceLike, chosen: PlaceLike[], dedupText: string, textEnd: number): number {
-  const ownIdx = dedupText.indexOf(normName(p.name as string))
-  let windowEnd = textEnd
-  for (const other of chosen) {
-    if (other === p) continue
-    const otherIdx = dedupText.indexOf(normName(other.name as string))
-    if (otherIdx !== -1 && ownIdx !== -1 && otherIdx > ownIdx) windowEnd = Math.min(windowEnd, otherIdx)
+// Offsets of EVERY place the reply mentions — including photo-less ones. These are
+// the block boundaries for injection. (Root-cause fix: bounding a place's window by
+// only the *enriched* places let a first place's gallery run past its photo-less
+// neighbours all the way to the end of the message.) Index-aligned to the raw text.
+function placeMentionOffsets(places: PlaceLike[], dedupText: string): number[] {
+  const offs: number[] = []
+  for (const p of places) {
+    if (!p.name) continue
+    const i = dedupText.indexOf(normName(p.name))
+    if (i !== -1) offs.push(i)
   }
-  return windowEnd
+  return offs
+}
+
+// End of a place's block = the nearest mentioned-place offset AFTER it (so its links
+// can't be attributed to a later place), capped at textEnd (first structured marker
+// / end of text).
+function boundaryAfter(ownIdx: number, mentionOffsets: number[], textEnd: number): number {
+  let end = textEnd
+  for (const i of mentionOffsets) if (i > ownIdx) end = Math.min(end, i)
+  return end
 }
 
 // Structured, computer-parsed blocks (not free prose): the client extracts these and renders
@@ -121,34 +196,37 @@ function earliestMarker(text: string): number {
   return end
 }
 
-// POSITION-AWARE injection: rebuilds the assistant text with each place's still-missing
-// image/review/order-link markdown inserted IMMEDIATELY AFTER that place's own block (before
-// the next place / the first structured marker / end of text) — so photos stay grouped with
-// their place instead of piling up in one trailing block. Deterministic: the LLM has proven
-// unreliable at copying photo URLs even when instructed to, so this backfills what it omitted.
+// POSITION-AWARE injection: the app owns enrichment layout. It (1) STRIPS any
+// enrichment the LLM wrote itself, then (2) rebuilds the assistant text with each
+// place's image/review/order-link markdown inserted IMMEDIATELY AFTER that place's
+// own block — bounded by the NEXT MENTIONED PLACE (photo-less ones included) / the
+// first structured marker / end of text — so photos stay grouped with their place
+// instead of piling up in one trailing block, regardless of what the model emitted.
 export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): string {
   const usable = places.filter(p => p.name && ((p.photo_urls && p.photo_urls.length > 0) || p.photo_url || p.tiktok_url))
   if (usable.length === 0) return fullText
 
-  const decodedText = decodeSafe(fullText)
-
   // A trip/evening plan renders as a structured [TAPPY_PLAN] JSON card whose place names live
   // INSIDE the JSON — positional injection would corrupt the JSON and break the brochure. For
-  // those, append the trailing image block below everything instead (restores the pre-fix
-  // "brochure + photos underneath" layout).
-  if (fullText.includes('[TAPPY_PLAN]')) return appendTrailingBlock(usable, fullText, decodedText)
+  // those, append the trailing image block below everything instead (its intended layout).
+  if (fullText.includes('[TAPPY_PLAN]')) return appendTrailingBlock(usable, places, fullText, decodeSafe(fullText))
+
+  // System owns placement: drop the LLM's own copies of owned enrichment, then re-inject.
+  const text = stripOwnedEnrichment(places, fullText)
+  const decodedText = decodeSafe(text)
 
   // We insert into the RAW text, so name positions must be found in a normalized view that
   // stays index-aligned to it. normalizeVN strips diacritics via NFD-then-remove, so each
   // source char maps to exactly one char for precomposed input; if some exotic input ever
   // breaks that alignment, fall back to the legacy trailing block (images still show).
-  const normRaw = normalizeVN(fullText.toLowerCase())
-  if (normRaw.length !== fullText.length) return appendTrailingBlock(usable, fullText, decodedText)
+  const normRaw = normalizeVN(text.toLowerCase())
+  if (normRaw.length !== text.length) return appendTrailingBlock(usable, places, text, decodedText)
 
-  const textEnd = earliestMarker(fullText)
+  const textEnd = earliestMarker(text)
   // CTA_BUTTONS is a general block, not scoped to any one place — links inside it must never
   // count as "already covered" for a specific place's own dedup window.
   const dedupText = normRaw.slice(0, textEnd)
+  const mentionOffsets = placeMentionOffsets(places, dedupText)
 
   const mentioned = usable.filter(p => dedupText.includes(normName(p.name as string)))
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
@@ -157,7 +235,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
   for (const p of chosen) {
     const ownIdx = dedupText.indexOf(normName(p.name as string))
     if (ownIdx === -1) continue
-    const windowEnd = windowEndFor(p, chosen, dedupText, textEnd)
+    const windowEnd = boundaryAfter(ownIdx, mentionOffsets, textEnd)
     const { lines } = placeContentLines(p, decodedText, dedupText, windowEnd)
     if (lines.length === 0) continue
     // Insert at this place's block boundary. When the boundary is the NEXT place, snap back
@@ -165,16 +243,18 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
     // it's the CTA marker / end of text, insert exactly there (after this place's last line).
     let offset = windowEnd
     if (windowEnd < textEnd) {
-      const lineStart = fullText.lastIndexOf('\n', windowEnd - 1) + 1
+      const lineStart = text.lastIndexOf('\n', windowEnd - 1) + 1
       if (lineStart > ownIdx) offset = lineStart
     }
     insertions.push({ offset, text: lines.join('\n') })
   }
-  if (insertions.length === 0) return fullText
+  // Stripped the LLM's copies but couldn't place them positionally (names not found, etc.) —
+  // re-add them as the trailing block so nothing is lost.
+  if (insertions.length === 0) return appendTrailingBlock(usable, places, text, decodedText)
 
   // Apply from the last boundary backwards so earlier offsets stay valid as we splice.
   insertions.sort((a, b) => b.offset - a.offset)
-  let out = fullText
+  let out = text
   for (const ins of insertions) {
     const before = out.slice(0, ins.offset).replace(/\s+$/, '')
     const after = out.slice(ins.offset).replace(/^\s+/, '')
@@ -187,16 +267,18 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
 // used when normalized/raw offsets can't be aligned for safe in-place insertion. Kept so
 // images still surface (grouped per place) even in that rare case. Only surfaces a place that
 // is missing at least one IMAGE — a name+link-only entry duplicates the rich main list.
-function appendTrailingBlock(usable: PlaceLike[], fullText: string, decodedText: string): string {
+function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText: string, decodedText: string): string {
   const ctaIdx = decodedText.indexOf('[CTA_BUTTONS]')
   const dedupText = normalizeVN((ctaIdx === -1 ? decodedText : decodedText.slice(0, ctaIdx)).toLowerCase())
   const textEnd = dedupText.length
+  const mentionOffsets = placeMentionOffsets(places, dedupText)
   const mentioned = usable.filter(p => dedupText.includes(normName(p.name as string)))
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const parts: string[] = []
   for (const p of chosen) {
-    const windowEnd = windowEndFor(p, chosen, dedupText, textEnd)
+    const ownIdx = dedupText.indexOf(normName(p.name as string))
+    const windowEnd = boundaryAfter(ownIdx === -1 ? 0 : ownIdx, mentionOffsets, textEnd)
     const { lines, missingPhotoCount } = placeContentLines(p, decodedText, dedupText, windowEnd)
     if (missingPhotoCount > 0) parts.push([`**${p.name}**`, ...lines].join('\n'))
   }

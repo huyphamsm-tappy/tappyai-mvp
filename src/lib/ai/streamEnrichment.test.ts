@@ -168,6 +168,90 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(out.slice(f)).not.toContain('![') // nothing injected inside/after followups
     expect(out.indexOf('ga.jpg')).toBeLessThan(f) // photo grouped with the place, before followups
   })
+
+  // ── Regression: per-place layout when neighbours have NO photos, and when the
+  //    LLM writes its own trailing enrichment (root-cause + strip fixes). ────────
+  it('keeps the FIRST place\'s gallery under IT even when the next places have NO photos', () => {
+    // The reported bug: only place 1 had photos; its images ran past photo-less
+    // places 2 & 3 to the very end of the message. Boundary must be the next
+    // MENTIONED place, not the next enriched one.
+    const places = [
+      {
+        name: 'Bún Bò Huế O Lạc CN 2',
+        photo_urls: [`${IMG}/olac1.jpg`, `${IMG}/olac2.jpg`, `${IMG}/olac3.jpg`],
+        tiktok_url: 'https://www.tiktok.com/@olac',
+        order_links: [
+          { name: 'ShopeeFood', url: 'https://shopeefood.vn/olac' },
+          { name: 'GrabFood', url: 'https://food.grab.com/vn/olac' },
+          { name: 'BeFood', url: 'https://be.com.vn/olac' },
+        ],
+      },
+      { name: 'GÓC HUẾ - Nguyễn Thái Bình' }, // no photos
+      { name: 'Bún Bò Huế 175 Cô Giang' },     // no photos
+    ]
+    const text = [
+      'Mình tìm được vài quán bún bò Huế ngon ở TP.HCM cho bạn! 🍜',
+      '',
+      '**Bún Bò Huế O Lạc CN 2** (Phú Nhuận)',
+      '4.9⭐ (635 đánh giá Google Maps) — nước dùng đậm đà.',
+      '',
+      '**GÓC HUẾ - Nguyễn Thái Bình** (Quận 1)',
+      '4.7⭐ (864 đánh giá Google Maps) — vị chuẩn Huế.',
+      '',
+      '**Bún Bò Huế 175 Cô Giang** (Quận 1)',
+      '4.8⭐ (58 đánh giá Google Maps) — quán nhỏ, review tích cực.',
+      '',
+      'Bạn muốn đặt online hay đi trực tiếp? 😊',
+    ].join('\n')
+    const out = injectPlaceEnrichment(places, text)
+    // O Lạc's whole gallery + review + order sits BEFORE the next place, not trailing.
+    expect(idx(out, 'olac1.jpg')).toBeGreaterThan(idx(out, 'Bún Bò Huế O Lạc CN 2'))
+    expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
+    expect(idx(out, 'olac3.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
+    expect(idx(out, 'tiktok.com/@olac')).toBeLessThan(idx(out, 'GÓC HUẾ'))
+    expect(idx(out, 'shopeefood.vn/olac')).toBeLessThan(idx(out, 'GÓC HUẾ'))
+    // NOT dumped after the closing line.
+    expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'Bạn muốn đặt'))
+    // 3 consecutive image lines → carousel input.
+    expect(out).toContain(`![Ảnh địa điểm](${IMG}/olac1.jpg)\n![Ảnh địa điểm](${IMG}/olac2.jpg)\n![Ảnh địa điểm](${IMG}/olac3.jpg)`)
+  })
+
+  it('STRIPS the LLM\'s own trailing enrichment and re-places it under the place (system owns layout)', () => {
+    const places = [
+      {
+        name: 'Bún Bò Huế O Lạc CN 2',
+        photo_urls: [`${IMG}/olac1.jpg`, `${IMG}/olac2.jpg`],
+        tiktok_url: 'https://www.tiktok.com/@olac',
+        order_links: [{ name: 'ShopeeFood', url: 'https://shopeefood.vn/olac' }],
+      },
+      { name: 'GÓC HUẾ - Nguyễn Thái Bình' },
+    ]
+    // The model disobeyed the prose-only prompt and dumped enrichment at the end.
+    const text = [
+      '**Bún Bò Huế O Lạc CN 2** (Phú Nhuận)',
+      '4.9⭐ nước dùng đậm đà.',
+      '',
+      '**GÓC HUẾ - Nguyễn Thái Bình** (Quận 1)',
+      '4.7⭐ vị chuẩn Huế.',
+      '',
+      'Chúc bạn ngon miệng! 😊',
+      '',
+      `![Ảnh](${IMG}/olac1.jpg)`,
+      `![Ảnh](${IMG}/olac2.jpg)`,
+      '🎵 [Xem review TikTok](https://www.tiktok.com/@olac)',
+      '[ShopeeFood](https://shopeefood.vn/olac)',
+    ].join('\n')
+    const out = injectPlaceEnrichment(places, text)
+    // No duplication — each owned URL appears exactly once.
+    expect(count(out, 'olac1.jpg')).toBe(1)
+    expect(count(out, 'olac2.jpg')).toBe(1)
+    expect(count(out, 'tiktok.com/@olac')).toBe(1)
+    expect(count(out, 'shopeefood.vn/olac')).toBe(1)
+    // Relocated UNDER O Lạc (before GÓC HUẾ), not left trailing after the closing line.
+    expect(idx(out, 'olac1.jpg')).toBeGreaterThan(idx(out, 'Bún Bò Huế O Lạc CN 2'))
+    expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
+    expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'Chúc bạn ngon miệng'))
+  })
 })
 
 describe('applyPlaceEnrichmentStreamFilter — stream transform', () => {
