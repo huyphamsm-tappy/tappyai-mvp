@@ -34,7 +34,7 @@ export interface BackgroundDescriptor {
 export const BACKGROUNDS = {
   default: {
     id: 'default',
-    src: '/backgrounds/home-desktop-v2.webp',
+    src: '/backgrounds/home-desktop-v5.webp',
     alt: '',
     position: 'center',
     // Light: no overlay (rely on a clean-centre asset). Dark: subtle tint so
