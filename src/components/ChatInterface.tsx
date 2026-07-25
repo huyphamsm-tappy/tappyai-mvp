@@ -9,6 +9,8 @@ import Link from 'next/link'
 import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useTTS } from '@/hooks/useTTS'
+import { detectLang } from '@/lib/ai/intent'
+import { noVoiceMessage } from '@/lib/tts/voiceSelection'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
@@ -809,6 +811,14 @@ export default function ChatInterface({
 
   // TTS — managed by useTTS hook
   const tts = useTTS()
+  // TTS found no voice for the reply's language on this device → show a notice
+  // (reusing the voice-status line) instead of reading with a wrong-language voice.
+  useEffect(() => {
+    if (!tts.unavailableLang) return
+    setVoiceError(noVoiceMessage(tts.unavailableLang, locale))
+    tts.clearUnavailableLang()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tts.unavailableLang, locale])
 
   useEffect(() => {
     fetch('/api/memory')
@@ -1078,7 +1088,7 @@ export default function ChatInterface({
                             ttsElapsed={tts.elapsed}
                             ttsTotal={tts.totalSecs}
                             ttsSpeed={tts.speed}
-                            onSpeak={() => tts.speak(msg.id, text)}
+                            onSpeak={() => tts.speak(msg.id, text, detectLang(text))}
                             onTTSPause={tts.togglePause}
                             onTTSSkipBack={tts.skipBack}
                             onTTSSkipForward={tts.skipForward}
