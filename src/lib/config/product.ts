@@ -31,13 +31,33 @@ export const MAX_VIDEO_DURATION_SEC = 60
 export const MAX_VIDEO_DURATION_ACCEPT_SEC = 62
 
 // ── Authentication providers (product decision — which sign-in methods exist) ─
-// Served to clients via GET /api/config. Clients render buttons from this list;
-// HOW each provider works (Supabase, custom OAuth, …) stays backend-internal.
+// THE single source of truth for auth-provider availability. Served to ALL
+// clients via GET /api/config; the Web app imports these constants directly and
+// native clients (Android/iOS) read the same values from the endpoint. There is
+// no other provider list in the codebase — the old `src/lib/auth/providers.ts`
+// was removed so this can never drift.
+//
+// V1 = Google + Zalo only:
+//  - `email` DISABLED — the implementation stays wired internally (Supabase OTP
+//    machinery, screens, routes) but is NOT rendered in any client UI.
+//  - `facebook` DISABLED — Meta Business Verification blocks Advanced Access.
+// Clients render a provider's button ONLY when its `enabled` is true (gate on
+// isAuthProviderEnabled). HOW each provider works stays backend-internal.
 export const AUTH_PROVIDERS = [
   { id: 'google', enabled: true },
   { id: 'zalo', enabled: true },
-  { id: 'email', enabled: true },
+  { id: 'email', enabled: false },
+  { id: 'facebook', enabled: false },
 ] as const
+
+export type AuthProviderId = (typeof AUTH_PROVIDERS)[number]['id']
+
+/** Whether a sign-in method is offered in V1. Every client gates its provider
+ * button on this so all platforms expose the same set. Internal machinery for a
+ * disabled provider may still exist — it just isn't surfaced. */
+export function isAuthProviderEnabled(id: AuthProviderId): boolean {
+  return AUTH_PROVIDERS.some((p) => p.id === id && p.enabled)
+}
 
 // ── Onboarding choices (product catalog, identical on every platform) ────────
 // The web onboarding page renders these directly; native clients read them from

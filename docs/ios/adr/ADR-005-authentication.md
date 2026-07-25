@@ -32,5 +32,15 @@ Resolves the two open auth items. **Backend-first and cross-platform (Web/Androi
 
 Backend deltas (Backend + Web first): expose the stable `POST /api/auth/anonymous` (+ refresh); enforce anon quota on `anonymous_id`; guarantee history-preserving seamless upgrade; retire `tappy_anon`. iOS consumes the contract; it does not lead product behavior or depend on the backend implementation.
 
+## Amendment — 2026-07-25 (Auth Provider Contract · which methods render)
+**Provider availability is config-driven from the shared source of truth, not hardcoded per platform.** The canonical list is `AUTH_PROVIDERS` in `src/lib/config/product.ts`, served verbatim to native clients by `GET /api/config` as `auth.providers: [{ id, enabled }]`. Web imports the constants directly; **iOS reads the same list from `/api/config`** and renders a provider's button **only when `enabled === true`** (`isAuthProviderEnabled`). Web, Android, and iOS therefore expose the identical set with no per-platform drift.
+
+- **V1 enabled set = Google + Zalo only.** These are the only two buttons iOS renders in V1.
+- **Email — DISABLED and hidden, machinery kept internal.** Email-OTP stays implemented (supabase OTP verify + the OTP screens) but is **not surfaced** in the UI while `email.enabled === false`. Do not delete the native Email-OTP flow; gate its entry point on the config so it can be re-enabled by flipping the shared config alone. (Mirrors the Web, which keeps `EmailOtpBlock` + handlers but renders nothing.) The Supabase Email provider itself is **not** being disabled server-side — only its client surface.
+- **Facebook — not offered** (Meta Business Verification blocks Advanced Access); `enabled === false`, never rendered.
+- **Registration** is not a distinct provider button; account creation happens implicitly via the OAuth/OTP flows above.
+
+Implementation note for iOS: fetch `/api/config` once at launch (cacheable, `Cache-Control: public, max-age=300`), read `auth.providers`, and drive the sign-in screen off it. A provider must render **only when both** its config `enabled` is true **and** the client actually has a working handler for it — never render a button whose flow isn't implemented yet.
+
 ## Future Evolution
-Add Sign in with Apple if/when the product adds it on Web first (not an iOS-exclusive addition). Move anon handling fully server-side.
+Add Sign in with Apple if/when the product adds it on Web first (not an iOS-exclusive addition). Move anon handling fully server-side. When Sign in with Apple (or any new method) ships, it enters `AUTH_PROVIDERS` in `product.ts` first and reaches iOS through `/api/config` — never as an iOS-only hardcode.

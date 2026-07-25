@@ -7,17 +7,17 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2, ExternalLink, Copy, Check, Mail, ArrowLeft, User, ShieldCheck, Users, Sparkles, Globe2, MessageCircle, MapPin, Star } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { AUTH_PROVIDERS } from '@/lib/auth/providers'
+import { isAuthProviderEnabled } from '@/lib/config/product'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
 
-// V1 scope: Email OTP is intentionally hidden from the normal sign-in card
-// (owner decision 2026-07-21 — V1 = Google / Zalo / Guest). The OTP machinery
-// below stays fully wired because the in-app-browser fallback still relies on
-// it (it's the only provider that works inside Zalo/Facebook webviews, where
-// Google OAuth is blocked). Flip this to true to re-surface it in the card.
-const SHOW_EMAIL_OTP_IN_CARD = false
+// Which sign-in buttons render is driven entirely by the shared provider
+// contract in @/lib/config/product (the same list /api/config serves to native
+// clients) — no page-local flags. V1 = Google + Zalo. Email OTP stays fully
+// wired below (handlers + EmailOtpBlock) but is not rendered anywhere while
+// isAuthProviderEnabled('email') is false; flip it in product.ts to re-surface.
+const EMAIL_ENABLED = isAuthProviderEnabled('email')
 
 // Phát hiện trình duyệt nội bộ của các app chat (Google chặn OAuth trong các webview này)
 function detectInAppBrowser(): { isInApp: boolean; name: string; isAndroid: boolean } {
@@ -378,21 +378,26 @@ export default function LoginPage() {
                     </p>
                   )}
 
-                  {/* Email OTP works inside any in-app browser (Google is blocked
-                      there), so the fallback keeps it even though V1 hides it
-                      from the normal card. */}
-                  <div className="flex items-center gap-3 pt-2">
-                    <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-                    <span className="text-xs text-gray-400">{t('common.or')}</span>
-                    <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-                  </div>
-                  <EmailOtpBlock
-                    otpStep={otpStep} setOtpStep={setOtpStep}
-                    otpEmail={otpEmail} setOtpEmail={setOtpEmail}
-                    otpCode={otpCode} setOtpCode={setOtpCode}
-                    otpLoading={otpLoading} otpError={otpError}
-                    onSend={handleSendOtp} onVerify={handleVerifyOtp}
-                  />
+                  {/* Email OTP is the only provider that works inside an in-app
+                      browser (Google is blocked there). Kept wired, but rendered
+                      only when the shared config enables email — V1 keeps it off,
+                      so in-app users get Open-in-Chrome / Copy-link. */}
+                  {EMAIL_ENABLED && (
+                    <>
+                      <div className="flex items-center gap-3 pt-2">
+                        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+                        <span className="text-xs text-gray-400">{t('common.or')}</span>
+                        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+                      </div>
+                      <EmailOtpBlock
+                        otpStep={otpStep} setOtpStep={setOtpStep}
+                        otpEmail={otpEmail} setOtpEmail={setOtpEmail}
+                        otpCode={otpCode} setOtpCode={setOtpCode}
+                        otpLoading={otpLoading} otpError={otpError}
+                        onSend={handleSendOtp} onVerify={handleVerifyOtp}
+                      />
+                    </>
+                  )}
                 </div>
               ) : (
                 <>
@@ -401,6 +406,7 @@ export default function LoginPage() {
 
                   <div className="space-y-3">
                     {/* Google */}
+                    {isAuthProviderEnabled('google') && (
                     <button
                       onClick={handleGoogleLogin}
                       disabled={anyLoading}
@@ -418,9 +424,10 @@ export default function LoginPage() {
                       )}
                       {loadingGoogle ? t('login.signingIn') : t('login.continueGoogle')}
                     </button>
+                    )}
 
-                    {/* Facebook — hidden via AUTH_PROVIDERS config; code preserved for re-enabling */}
-                    {AUTH_PROVIDERS.facebook.enabled && (
+                    {/* Facebook — hidden via the shared provider config; code preserved for re-enabling */}
+                    {isAuthProviderEnabled('facebook') && (
                       <button
                         onClick={handleFacebookLogin}
                         disabled={anyLoading}
@@ -438,6 +445,7 @@ export default function LoginPage() {
                     )}
 
                     {/* Zalo */}
+                    {isAuthProviderEnabled('zalo') && (
                     <button
                       onClick={handleZaloLogin}
                       disabled={anyLoading}
@@ -450,6 +458,7 @@ export default function LoginPage() {
                       )}
                       {loadingZalo ? t('login.signingIn') : t('login.continueZalo')}
                     </button>
+                    )}
 
                     {/* Divider */}
                     <div className="flex items-center gap-3">
@@ -468,7 +477,7 @@ export default function LoginPage() {
                       {t('login.continueGuest')}
                     </button>
 
-                    {SHOW_EMAIL_OTP_IN_CARD && (
+                    {EMAIL_ENABLED && (
                       <EmailOtpBlock
                         otpStep={otpStep} setOtpStep={setOtpStep}
                         otpEmail={otpEmail} setOtpEmail={setOtpEmail}
