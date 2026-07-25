@@ -109,6 +109,29 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(idx(out, 'thin.jpg')).toBeGreaterThan(idx(out, 'Phở Thìn Lò Đúc'))
   })
 
+  it('injects image + review + order links when the LLM wrote PROSE ONLY (Phase-2 A+B)', () => {
+    // Under the Phase-2 prompt the model writes only name/rating/desc — no image,
+    // tiktok, or order-link markdown. Enrichment must supply all of them per place.
+    const places = [{
+      name: 'Phở Gà Huyền Hương',
+      photo_url: `${IMG}/ga.jpg`,
+      tiktok_url: 'https://www.tiktok.com/@phogahh',
+      order_links: [
+        { name: 'ShopeeFood', url: 'https://shopeefood.vn/search?q=pho-ga' },
+        { name: 'GrabFood', url: 'https://food.grab.com/vn/s?q=pho-ga' },
+        { name: 'BeFood', url: 'https://be.com.vn' },
+      ],
+    }]
+    const text = '**Phở Gà Huyền Hương**\n4.7⭐ (4.943 đánh giá Google Maps) — phở gà thanh ngọt. Địa chỉ: 20 P. Báo Khánh.'
+    const out = injectPlaceEnrichment(places, text)
+    expect(out).toContain(`![Ảnh địa điểm](${IMG}/ga.jpg)`)
+    expect(out).toContain('🎵 [Xem review TikTok](https://www.tiktok.com/@phogahh)')
+    expect(out).toContain('[ShopeeFood](https://shopeefood.vn/search?q=pho-ga)')
+    expect(out).toContain('[GrabFood]')
+    expect(out).toContain('[BeFood]')
+    expect(out.indexOf('ga.jpg')).toBeGreaterThan(out.indexOf('Phở Gà Huyền Hương'))
+  })
+
   it('returns the text unchanged when there are no usable places', () => {
     expect(injectPlaceEnrichment([], 'xin chào')).toBe('xin chào')
     expect(injectPlaceEnrichment([{ name: 'X' }], 'không có ảnh')).toBe('không có ảnh')

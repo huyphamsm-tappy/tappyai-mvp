@@ -249,7 +249,11 @@ export async function POST(req: Request) {
     abortSignal: req.signal,
     system: systemPrompt,
     messages: trimmedMessages,
-    maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 3000 : hasImage ? 1024 : 2048,
+    // Completion cap. Place/product replies previously hit finishReason:"length"
+    // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
+    // now injected by streamEnrichment instead of written by the LLM (see prompt),
+    // so actual output is smaller — this raised ceiling is headroom, not the norm.
+    maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
     maxSteps: intent === 'chitchat' ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
     prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
       if (intent === 'chitchat') return { toolChoice: 'none' as const }
