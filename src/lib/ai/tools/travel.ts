@@ -2,6 +2,7 @@ import { getCache, setCache, serperSearch, webSearch, fetchPlacePhotosByName } f
 import { normalizeVN } from '@/lib/ai/intent'
 import { LUXURY_KEYWORDS } from '@/lib/ai/budget'
 import { searchPlacesOSM } from './food'
+import { buildFlightLinks } from '@/lib/platformLinks/travel'
 
 // Kiem tra link co phai trang CU THE cua 1 khach san tren Booking.com/Agoda/Traveloka
 // (khong phai trang tim kiem/danh sach chung theo khu vuc/thanh pho)
@@ -78,13 +79,21 @@ export async function getFlightPrices(origin: string, destination: string) {
 
   const originCode = cityToIATA(origin)
   const destCode = cityToIATA(destination)
-  const searchUrl = 'https://www.aviasales.com/search/' + (originCode || '') + (destCode || '')
+
+  // Default departure ~7 days out (VN) when no specific fare date is known — keeps the
+  // Traveloka deep-link on a valid FUTURE date instead of erroring.
+  const defaultDepartISO = new Date(Date.now() + 7 * 86400000 + 7 * 3600000).toISOString().slice(0, 10)
+  // VN-recognizable booking links (Traveloka + Google Flights). If a city can't be mapped
+  // to an airport code, fall back to a city-name Google Flights query only.
+  const bookingLinks = originCode && destCode
+    ? buildFlightLinks(originCode, destCode, defaultDepartISO)
+    : [{ name: 'Google Flights', url: `https://www.google.com/travel/flights?q=${encodeURIComponent(`Flights from ${origin} to ${destination}`)}` }]
 
   let result: unknown
   if (!originCode || !destCode) {
-    result = { error: 'Khong nhan dien duoc san bay tu ten dia diem', note: 'Tim chuyen bay tai: ' + searchUrl, search_url: searchUrl }
+    result = { error: 'Khong nhan dien duoc san bay tu ten dia diem', booking_links: bookingLinks, note: 'Tim chuyen bay tren cac nen tang tren' }
   } else if (!TRAVELPAYOUTS_TOKEN) {
-    result = { error: 'Chua cau hinh API gia ve may bay', note: 'Tim chuyen bay tai: ' + searchUrl, search_url: searchUrl }
+    result = { error: 'Chua cau hinh API gia ve may bay', booking_links: bookingLinks, note: 'Tim chuyen bay tren cac nen tang tren' }
   } else {
     try {
       const params = new URLSearchParams({ origin: originCode, destination: destCode, currency: 'vnd', token: TRAVELPAYOUTS_TOKEN })
@@ -97,6 +106,9 @@ export async function getFlightPrices(origin: string, destination: string) {
       if (data?.success && routeData) {
         type Fare = { price: number; airline: string; flight_number: number; departure_at?: string; return_at?: string }
         const options = Object.values(routeData as Record<string, Fare>)
+        // Point the deep-links at the cheapest fare's departure day when available.
+        const cheapestDepart = options.map(o => o.departure_at).filter(Boolean).sort()[0]
+        const departISO = cheapestDepart ? String(cheapestDepart).slice(0, 10) : defaultDepartISO
         result = {
           source: 'Travelpayouts (du lieu Aviasales)',
           origin: originCode, destination: destCode, currency: 'VND',
@@ -107,14 +119,14 @@ export async function getFlightPrices(origin: string, destination: string) {
             departure_at: o.departure_at || null,
             return_at: o.return_at || null,
           })),
-          booking_link: 'https://www.aviasales.com/search/' + originCode + destCode,
+          booking_links: buildFlightLinks(originCode, destCode, departISO),
           note: 'Day la gia ve re gan nhat ma he thong tim duoc cho tuyen nay (khong chac dung ngay user hoi), gia co the da thay doi - bam link de xem gia chinh xac va dat ve theo ngay cu the.'
         }
       } else {
         throw new Error('no data')
       }
     } catch {
-      result = { error: 'Khong lay duoc gia ve may bay luc nay', note: 'Tim chuyen bay tai: ' + searchUrl, search_url: searchUrl }
+      result = { error: 'Khong lay duoc gia ve may bay luc nay', booking_links: bookingLinks, note: 'Tim chuyen bay tren cac nen tang tren' }
     }
   }
   setCache(cacheKey, result, 60 * 60 * 1000) // cache 1 gio
