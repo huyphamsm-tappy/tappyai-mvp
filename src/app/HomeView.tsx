@@ -49,7 +49,7 @@ export default function HomeView({
   const heroText = locale === 'en' ? heroEN(heroHour, heroIsWeekend, heroDom) : heroTextVi
 
   return (
-    <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-20">
+    <div className="home-immersive-bg min-h-dvh bg-gray-50 dark:bg-gray-950 pb-20">
       <Header user={userInfo} />
 
       <main className="container-content py-6 md:py-8 space-y-6 md:space-y-8">
