@@ -445,14 +445,14 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
               </button>
             )
           })}
-          {/* Option B: complete the last row with tile-coloured filler cells so its
-              empty slots don't expose the lighter container bg as a gray box, while
-              KEEPING the hairline separators. Only phones need it (3-col + gray-800);
-              on desktop the container is sm:bg-black so empties already blend — the
-              filler follows suit with sm:bg-black. */}
+          {/* Option B: complete the last row so its empty slots don't expose the
+              lighter container bg (gray-800) as a gray box, while KEEPING the 1px
+              hairline separators. The filler must match the PAGE background — the
+              profile scrolls on `bg-black` — NOT the tile colour (gray-900, which is
+              lighter than black and so still read as a box). bg-black → fully blends. */}
           {Array.from({ length: trailingFillerCount(displayPosts.length, 3) }).map((_, i) => (
             <div key={`filler-${i}`} aria-hidden
-              className={`bg-gray-900 ${isPage ? 'aspect-[3/4] sm:bg-black' : 'aspect-[9/16]'}`} />
+              className={`bg-black ${isPage ? 'aspect-[3/4]' : 'aspect-[9/16]'}`} />
           ))}
         </div>
       )}
