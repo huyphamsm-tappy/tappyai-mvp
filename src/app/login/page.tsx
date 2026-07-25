@@ -268,7 +268,9 @@ export default function LoginPage() {
             the overlay and blocked the whole card.) */}
         <div className="flex items-center justify-between px-6 sm:px-10 pt-6">
           <div className="flex items-center gap-2.5">
-            <Image src="/logo.png" alt="TappyAI" width={40} height={40} className="w-10 h-10 rounded-xl object-contain" />
+            {/* Approved Tappy Otter mascot (pose 02 "wave" = default AI avatar) as the
+                brand mark. Same 40px box as the old logo so the header is unchanged. */}
+            <TappyMascot pose="wave" size={40} alt="TappyAI" eager className="w-10 h-10 flex-shrink-0" />
             <span className="text-xl font-black tracking-tight text-gray-900 dark:text-white">
               tappy<span className="bg-gradient-to-r from-violet-500 to-primary-500 bg-clip-text text-transparent">ai</span>
               <span className="text-violet-400">✦</span>
