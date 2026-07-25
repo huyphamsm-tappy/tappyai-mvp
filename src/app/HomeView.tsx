@@ -52,7 +52,7 @@ export default function HomeView({
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 md:bg-transparent md:dark:bg-transparent pb-20">
       <HomeBackground />
-      <Header user={userInfo} />
+      <Header user={userInfo} hideLogo />
 
       <main className="container-content py-6 md:py-8 space-y-6 md:space-y-8">
         {/* Hero */}
