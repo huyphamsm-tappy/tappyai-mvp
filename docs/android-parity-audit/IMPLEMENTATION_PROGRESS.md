@@ -36,12 +36,13 @@ Build/test: PowerShell only. `JAVA_HOME=C:\Program Files\Android\Android Studio\
 - **P2-6** — Explore Users search segment + optimistic follow. `2947e37`
 - **P2-2 (partial)** — chat Save-place affordance (POST /api/favorites). `c9c2609`
 
-## ✅ CLIENT-SIDE BACKLOG COMPLETE.
-19 code commits + 15 regression-test files this session. Full debug APK builds; all unit tests green.
+- **P2-5** — in-feed attached-sound ("use this sound") playback (companion audio over force-muted video). `57d8932` (device-verified — audio-timing)
+
+## ✅ ENTIRE DOABLE CLIENT-SIDE BACKLOG COMPLETE.
+20 code commits + 15 regression-test files this session. Full debug APK builds; all unit tests green.
 
 ### Not done — flagged with rationale (not oversights)
-- **P2-5 in-feed attached-sound playback** — LARGE + device-verification-heavy (a companion audio player synced over the muted feed video, force-muted on every watchdog tick). Shipping complex audio-sync code I can't verify on a device would be worse than flagging it. Recommended follow-up: implement with on-device audio verification.
-- **P2-8 auth providers from /api/config** — LOW VALUE: Android's provider list already matches prod (Google + Email OTP; Facebook correctly gated). Config-driving it changes nothing functionally today, and the one provider it would matter for (Zalo) is separately backend-blocked (P1-B1).
+- **P2-8 auth providers from /api/config** — ZERO functional change: Android already shows exactly the implementable provider subset (Google + Email OTP; Facebook hidden matching web; Zalo has no handler + is separately backend-blocked, P1-B1). AUTH_PROVIDERS = google/zalo/email. Config-driving it would need a cross-module refactor (AppConfigRepository is in :app, LoginViewModel in :features:auth which can't depend on :app) for no behaviour change, and unused config parsing would be dead scaffolding. Not worth it.
 - **P2-2 history resume-by-id** — BACKEND-BLOCKED: no `GET /api/conversations/[id]` exists; web resumes via a server component (direct DB), list endpoint is `limit(20)`. Android's history list is the same 20 rows and tapping a listed conversation already resolves — no client-fixable gap without a new endpoint.
 - **P2-4 liked-reviews collection** — needs a backend source endpoint.
 - **P2-13 inferFromBooking RLS** — a Web/backend bug (cookie-scoped client drops Bearer-caller upserts), not client-fixable.
