@@ -1,35 +1,71 @@
 package com.tappyai.app.home
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
+import com.tappyai.app.account.AccountProfile
+import com.tappyai.app.account.data.AccountRepository
 import com.tappyai.core.common.ClockProvider
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.common.UiState
+import com.tappyai.core.logging.LoggerProvider
+import com.tappyai.core.network.NetworkResult
+import com.tappyai.features.auth.data.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.ZoneId
 import javax.inject.Inject
 
 /**
- * State for the Home launchpad ([HomeScreen]). Phase 1C.1 scope is the UI skeleton only — no
- * network, no cross-feature business logic. So:
+ * State for the Home launchpad ([HomeScreen]).
  *  - [greeting] is derived purely from the device clock ([ClockProvider], the existing test
  *    seam) — a local, offline computation, not a personalized server greeting.
- *  - [suggestionsState] and [recentActivityState] have **no data source yet** and honestly
- *    start [UiState.Empty]; the screen renders real empty/loading states off them (never fake
- *    data). When a later phase wires the AI-recommendation / history features, only this
- *    ViewModel changes — the screen already renders every state.
+ *  - [suggestionsState] is populated from `/api/suggested-prompts` (web parity — dynamic,
+ *    time-of-day prompts): starts [UiState.Loading], resolves to Success or an honest Empty (never
+ *    fake data). [recentActivityState] still has no source and stays [UiState.Empty].
+ *  - [profile]/[isSignedIn]: Web-parity-sync fix — the web's `Header` shows the signed-in user's
+ *    real avatar + first name next to the greeting (`src/components/Header.tsx:77-90`, `firstName
+ *    = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'`); this greeting
+ *    previously ignored sign-in state entirely and Home's avatar was hardcoded to the neutral
+ *    "not signed in" placeholder even for a signed-in user. Reuses the exact fetch pattern already
+ *    proven in [com.tappyai.app.profile.ProfileViewModel].
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     clock: ClockProvider,
     stringProvider: StringProvider,
+    private val authRepository: AuthRepository,
+    private val accountRepository: AccountRepository,
+    private val suggestedPromptsApi: com.tappyai.app.home.data.SuggestedPromptsApi,
+    private val logger: LoggerProvider,
 ) : ViewModel() {
 
     val greeting: String = greetingForHour(stringProvider, hourOfDay(clock.nowMillis()))
+
+    var isSignedIn by mutableStateOf(false)
+        private set
+
+    var profile by mutableStateOf<AccountProfile?>(null)
+        private set
+
+    /** Matches web's `firstName` fallback chain exactly (`Header.tsx:20`) — including its literal,
+     *  non-localized `"bạn"` last resort, only ever reached when both full name and email are
+     *  blank (in practice, effectively never, since Supabase always supplies an email). */
+    val greetingName: String?
+        get() = profile?.let { p ->
+            p.fullName.trim().split(" ").lastOrNull { it.isNotBlank() }
+                ?: p.email.substringBefore("@").ifBlank { null }
+                ?: "bạn"
+        }
 
     private val _suggestionsState = MutableStateFlow<UiState<List<String>>>(UiState.Empty)
     val suggestionsState: StateFlow<UiState<List<String>>> = _suggestionsState.asStateFlow()
@@ -37,15 +73,49 @@ class HomeViewModel @Inject constructor(
     private val _recentActivityState = MutableStateFlow<UiState<List<String>>>(UiState.Empty)
     val recentActivityState: StateFlow<UiState<List<String>>> = _recentActivityState.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            isSignedIn = withContext(Dispatchers.IO) { authRepository.currentUserId() } != null
+            if (isSignedIn) {
+                when (val result = accountRepository.getProfile()) {
+                    is NetworkResult.Success -> profile = result.data
+                    is NetworkResult.Error -> logger.e(TAG, "Home identity load failed: ${result.error}")
+                }
+            }
+        }
+        loadSuggestedPrompts()
+    }
+
+    /** Populate the Home "Ask Tappy" suggestion chips from /api/suggested-prompts (web parity — was
+     *  an unwired empty state). Honest empty on any failure; picks the locale-appropriate text. */
+    private fun loadSuggestedPrompts() {
+        _suggestionsState.value = UiState.Loading
+        viewModelScope.launch {
+            val isEnglish = java.util.Locale.getDefault().language == "en"
+            val prompts = runCatching { suggestedPromptsApi.getSuggestedPrompts() }
+                .onFailure { logger.e(TAG, "Suggested prompts load failed: ${it.message}") }
+                .getOrNull()
+                ?.prompts
+                ?.map { (if (isEnglish) it.textEn.ifBlank { it.text } else it.text).trim() }
+                ?.filter { it.isNotEmpty() }
+                .orEmpty()
+            _suggestionsState.value = if (prompts.isEmpty()) UiState.Empty else UiState.Success(prompts)
+        }
+    }
+
     private companion object {
+        const val TAG = "HomeViewModel"
+
         fun hourOfDay(millis: Long): Int =
             Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).hour
 
-        fun greetingForHour(stringProvider: StringProvider, hour: Int): String = when (hour) {
-            in 5..10 -> stringProvider.get(R.string.home_greeting_morning)
-            in 11..16 -> stringProvider.get(R.string.home_greeting_afternoon)
-            in 17..21 -> stringProvider.get(R.string.home_greeting_evening)
-            else -> stringProvider.get(R.string.home_greeting_night)
+        // Web parity (components/Header.tsx:30): exactly 3 buckets, no "night" —
+        // hour < 12 → morning, < 18 → afternoon, else → evening. The old 4-bucket boundaries
+        // disagreed with the web at 00–04 (web evening), 17:00 (web afternoon) and 22–23 (web evening).
+        fun greetingForHour(stringProvider: StringProvider, hour: Int): String = when {
+            hour < 12 -> stringProvider.get(R.string.home_greeting_morning)
+            hour < 18 -> stringProvider.get(R.string.home_greeting_afternoon)
+            else -> stringProvider.get(R.string.home_greeting_evening)
         }
     }
 }

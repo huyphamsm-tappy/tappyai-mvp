@@ -63,6 +63,7 @@ fun HomeTabHost(
                 onOpenScan = { navController.navigate(ScanRoute.Main) },
                 onOpenVietWriter = { navController.navigate(VietWriterRoute.Main) },
                 onOpenSplitBill = { navController.navigate(SplitBillRoute.Main) },
+                onOpenChatWithPrefill = onOpenChatWithPrefill,
             )
         }
         composable<RecommendationsRoute.Main> {

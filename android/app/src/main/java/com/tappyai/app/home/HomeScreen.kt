@@ -1,6 +1,7 @@
 package com.tappyai.app.home
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -88,6 +89,7 @@ fun HomeScreen(
     onOpenScan: () -> Unit,
     onOpenVietWriter: () -> Unit,
     onOpenSplitBill: () -> Unit,
+    onOpenChatWithPrefill: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val suggestions by viewModel.suggestionsState.collectAsStateWithLifecycle()
@@ -132,7 +134,7 @@ fun HomeScreen(
                 onOpenZodiac = onOpenZodiac,
             )
             ContentWriterSection(onOpenVietWriter = onOpenVietWriter)
-            SuggestionsSection(state = suggestions)
+            SuggestionsSection(state = suggestions, onSuggestionClick = onOpenChatWithPrefill)
             RecentActivitySection(state = recentActivity)
         }
     }
@@ -301,19 +303,32 @@ private fun QuickActionTile(action: QuickAction, modifier: Modifier = Modifier) 
 }
 
 @Composable
-private fun SuggestionsSection(state: UiState<List<String>>) {
+private fun SuggestionsSection(state: UiState<List<String>>, onSuggestionClick: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
         SectionHeader(title = stringResource(R.string.home_section_suggested))
         when (state) {
             UiState.Loading -> LoadingBlock()
             is UiState.Success -> {
-                // No real suggestion source is wired yet, so this branch is unreachable today;
-                // it's here so connecting data later is a one-line ViewModel change.
+                // Dynamic prompts from /api/suggested-prompts — tapping one opens Chat pre-filled.
                 Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-                    state.data.forEach { Text(text = it, style = MaterialTheme.typography.bodyMedium) }
+                    state.data.forEach { prompt ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(TappyShapes.card)
+                                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                                .clickable { onSuggestionClick(prompt) }
+                                .padding(TappySpacing.md),
+                            horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(Icons.Filled.Lightbulb, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                            Text(text = prompt, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                        }
+                    }
                 }
             }
-            // Idle / Empty / Error all resolve to the honest empty state for now.
+            // Idle / Empty / Error all resolve to the honest empty state.
             else -> TappyEmptyState(
                 icon = Icons.Filled.Lightbulb,
                 title = stringResource(R.string.home_empty_suggestions_title),
