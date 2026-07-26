@@ -43,6 +43,15 @@
     <string name="fortune_lucky_number">Số may mắn: %1$d</string>
     <string name="fortune_lucky_color">Màu may mắn: %1$s</string>
     <string name="fortune_ngu_hanh">Ngũ Hành: %1$s</string>
+    <string name="fortune_tuvi_mode_lifetime">Trọn đời</string>
+    <string name="fortune_tuvi_mode_year">Theo năm</string>
+    <string name="fortune_lifetime_title">Vận mệnh trọn đời tuổi %1$s</string>
+    <string name="fortune_lifetime_advice">Lời khuyên</string>
+    <string name="fortune_life_stages">Các giai đoạn cuộc đời</string>
+    <string name="fortune_pick_year">Chọn năm</string>
+    <string name="fortune_year_overview">Tổng quan %1$s</string>
+    <string name="fortune_monthly_breakdown">Chi tiết theo tháng</string>
+    <string name="fortune_tuvi_compat_fallback">Tuổi %1$s gặp năm %2$s</string>
 
     <!-- Tu Vi form -->
     <string name="fortune_tuvi_form_title">Xem tử vi 12 con giáp</string>

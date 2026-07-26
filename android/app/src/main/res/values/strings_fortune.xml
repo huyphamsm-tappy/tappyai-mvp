@@ -43,6 +43,15 @@
     <string name="fortune_lucky_number">Lucky number: %1$d</string>
     <string name="fortune_lucky_color">Lucky color: %1$s</string>
     <string name="fortune_ngu_hanh">Five Elements: %1$s</string>
+    <string name="fortune_tuvi_mode_lifetime">Lifetime</string>
+    <string name="fortune_tuvi_mode_year">By year</string>
+    <string name="fortune_lifetime_title">Lifetime destiny — %1$s</string>
+    <string name="fortune_lifetime_advice">Advice</string>
+    <string name="fortune_life_stages">Life stages</string>
+    <string name="fortune_pick_year">Pick a year</string>
+    <string name="fortune_year_overview">Overview — %1$s</string>
+    <string name="fortune_monthly_breakdown">Monthly breakdown</string>
+    <string name="fortune_tuvi_compat_fallback">%1$s meets the year of %2$s</string>
 
     <!-- Tu Vi form -->
     <string name="fortune_tuvi_form_title">Chinese Zodiac Reading</string>
