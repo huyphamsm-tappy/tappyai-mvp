@@ -13,7 +13,6 @@ type PlaceLike = {
   name?: string
   photo_url?: string
   photo_urls?: string[]
-  tiktok_url?: string
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
 }
@@ -69,27 +68,30 @@ const normName = (n: string) => normalizeVN(n.toLowerCase())
 const hasPhoto = (p: PlaceLike) => !!((p.photo_urls && p.photo_urls.length > 0) || p.photo_url)
 
 // ── System-owned enrichment placement ────────────────────────────────────────
-// Architecture: the LLM writes PROSE ONLY; the app OWNS where each place's images,
-// TikTok review link, and order/platform links appear. If the model also emits any
-// of that markdown (old habit / partial disobedience), we STRIP its copies here and
-// re-inject them positionally, so placement never depends on the model obeying.
-// We ONLY strip markdown whose URL matches THIS batch's tool data (an owned image
-// URL, tiktok.com host, or an owned order/platform domain) — product-marketplace
-// links, [TAPPY_PLAN]/[CTA_BUTTONS]/[FOLLOWUPS] blocks, and prose are never touched.
-type Owned = { imageCores: Set<string>; linkDomains: Set<string>; hasTiktok: boolean }
+// Architecture: the LLM writes PROSE ONLY; the app OWNS where each place's images
+// and order/platform links appear. If the model also emits any of that markdown
+// (old habit / partial disobedience), we STRIP its copies here and re-inject them
+// positionally, so placement never depends on the model obeying. We ONLY strip
+// markdown whose URL matches THIS batch's tool data (an owned image URL or order/
+// platform domain) — product-marketplace links, [TAPPY_PLAN]/[CTA_BUTTONS]/
+// [FOLLOWUPS] blocks, and prose are never touched.
+//
+// TikTok is NOT a supported review source in V1 (product decision 2026-07-26): we
+// never generate a TikTok review link, and any TikTok review line the model emits
+// on its own is stripped unconditionally (see isOwnedEnrichmentLine) so it never
+// reaches the user.
+type Owned = { imageCores: Set<string>; linkDomains: Set<string> }
 
 function buildOwned(places: PlaceLike[]): Owned {
   const imageCores = new Set<string>()
   const linkDomains = new Set<string>()
-  let hasTiktok = false
   for (const p of places) {
     const photos = p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : [])
     for (const u of photos) imageCores.add(coreImageUrl(decodeSafe(u)))
     for (const l of (p.order_links || [])) { const d = domainOf(l.url); if (d) linkDomains.add(d) }
     for (const l of (p.platform_links || [])) { const d = domainOf(l.url); if (d) linkDomains.add(d) }
-    if (p.tiktok_url) hasTiktok = true
   }
-  return { imageCores, linkDomains, hasTiktok }
+  return { imageCores, linkDomains }
 }
 
 function isOwnedImageUrl(url: string, owned: Owned): boolean {
@@ -102,7 +104,8 @@ const LINK_TOKEN = /\[[^\]]+\]\((https?:\/\/[^\s)]+)\)/g
 
 // True only for a WHOLE line that is nothing but system-owned enrichment, so removing
 // it can never disturb prose: a run of owned image tokens; a "🎵 [..](tiktok..)"
-// review line; or a run of owned order/platform link tokens joined by "·".
+// review line (TikTok is unsupported in V1 — always stripped); or a run of owned
+// order/platform link tokens joined by "·".
 function isOwnedEnrichmentLine(line: string, owned: Owned): boolean {
   const t = line.trim()
   if (t === '') return false
@@ -113,6 +116,7 @@ function isOwnedEnrichmentLine(line: string, owned: Owned): boolean {
     if (rest === '' && imgs.every(m => isOwnedImageUrl(m[1], owned))) return true
   }
 
+  // TikTok review line — unconditionally stripped (unsupported provider in V1).
   const tiktok = t.match(/^🎵\s*\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/)
   if (tiktok && domainOf(tiktok[1]) === 'tiktok.com') return true
 
@@ -128,7 +132,8 @@ function isOwnedEnrichmentLine(line: string, owned: Owned): boolean {
 // them; collapse the blank runs the removals leave behind.
 function stripOwnedEnrichment(places: PlaceLike[], text: string): string {
   const owned = buildOwned(places)
-  if (owned.imageCores.size === 0 && owned.linkDomains.size === 0 && !owned.hasTiktok) return text
+  // Always run: even with no owned images/links there may be an LLM-emitted TikTok
+  // review line to strip (unsupported provider in V1).
   const kept = text.split('\n').filter(line => !isOwnedEnrichmentLine(line, owned))
   return kept.join('\n').replace(/\n{3,}/g, '\n\n')
 }
@@ -149,9 +154,6 @@ function placeContentLines(
   const photos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : []))
   const missingPhotos = photos.filter(url => !imageUrlPresent(url, decodedText))
   for (const url of missingPhotos) lines.push(`![Ảnh địa điểm](${url})`)
-  if (p.tiktok_url && !hasDomainNearName(ownName, 'tiktok.com', dedupText, windowEnd)) {
-    lines.push(`🎵 [Xem review TikTok](${p.tiktok_url})`)
-  }
   const links = p.order_links || p.platform_links
   if (links && links.length > 0) {
     const missing = links.filter(l => !hasDomainNearName(ownName, domainOf(l.url), dedupText, windowEnd))
@@ -255,7 +257,7 @@ function injectPlanPhotos(places: PlaceLike[], fullText: string): string {
 // first structured marker / end of text — so photos stay grouped with their place
 // instead of piling up in one trailing block, regardless of what the model emitted.
 export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): string {
-  const usable = places.filter(p => p.name && ((p.photo_urls && p.photo_urls.length > 0) || p.photo_url || p.tiktok_url))
+  const usable = places.filter(p => p.name && ((p.photo_urls && p.photo_urls.length > 0) || p.photo_url))
   if (usable.length === 0) return fullText
 
   // A trip/evening plan renders as a structured [TAPPY_PLAN] JSON card whose place names live

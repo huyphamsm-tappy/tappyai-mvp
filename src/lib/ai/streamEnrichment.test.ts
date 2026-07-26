@@ -54,17 +54,14 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(idx(out, 'bd3.jpg')).toBeLessThan(idx(out, 'Phở Thìn Lò Đúc'))
   })
 
-  it('injects a MISSING review (TikTok) link right after its place', () => {
-    const places = [
-      { name: 'Phở Gà Huyền Hương', photo_url: `${IMG}/ga.jpg` },
-      { name: 'Phở Thìn Lò Đúc', tiktok_url: 'https://www.tiktok.com/@phothin' },
-    ]
+  it('strips an LLM-written TikTok review line — TikTok is not a review source in V1', () => {
+    const places = [{ name: 'Phở Gà Huyền Hương', photo_url: `${IMG}/ga.jpg` }]
     const text = [
-      '**1. Phở Gà Huyền Hương**', 'ngon.', '', '**2. Phở Thìn Lò Đúc**', 'đậm đà.',
+      '**1. Phở Gà Huyền Hương**', 'ngon.', '🎵 [Xem review TikTok](https://www.tiktok.com/@phogahh)',
     ].join('\n')
     const out = injectPlaceEnrichment(places, text)
-    expect(out).toContain('🎵 [Xem review TikTok](https://www.tiktok.com/@phothin)')
-    expect(idx(out, 'tiktok.com/@phothin')).toBeGreaterThan(idx(out, 'Phở Thìn Lò Đúc'))
+    expect(out).not.toContain('tiktok.com')
+    expect(out).toContain(`${IMG}/ga.jpg`) // the place's own photo is still grouped under it
   })
 
   it('matches places by diacritic-insensitive name (tool "Pho Ga", text "Phở Gà")', () => {
@@ -109,13 +106,13 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(idx(out, 'thin.jpg')).toBeGreaterThan(idx(out, 'Phở Thìn Lò Đúc'))
   })
 
-  it('injects image + review + order links when the LLM wrote PROSE ONLY (Phase-2 A+B)', () => {
-    // Under the Phase-2 prompt the model writes only name/rating/desc — no image,
-    // tiktok, or order-link markdown. Enrichment must supply all of them per place.
+  it('injects image + order links when the LLM wrote PROSE ONLY (Phase-2 A+B)', () => {
+    // Under the Phase-2 prompt the model writes only name/rating/desc — no image
+    // or order-link markdown. Enrichment must supply all of them per place. TikTok
+    // is not a review source in V1, so no TikTok line is ever injected.
     const places = [{
       name: 'Phở Gà Huyền Hương',
       photo_url: `${IMG}/ga.jpg`,
-      tiktok_url: 'https://www.tiktok.com/@phogahh',
       order_links: [
         { name: 'ShopeeFood', url: 'https://shopeefood.vn/search?q=pho-ga' },
         { name: 'GrabFood', url: 'https://food.grab.com/vn/s?q=pho-ga' },
@@ -125,7 +122,7 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     const text = '**Phở Gà Huyền Hương**\n4.7⭐ (4.943 đánh giá Google Maps) — phở gà thanh ngọt. Địa chỉ: 20 P. Báo Khánh.'
     const out = injectPlaceEnrichment(places, text)
     expect(out).toContain(`![Ảnh địa điểm](${IMG}/ga.jpg)`)
-    expect(out).toContain('🎵 [Xem review TikTok](https://www.tiktok.com/@phogahh)')
+    expect(out).not.toContain('tiktok.com')
     expect(out).toContain('[ShopeeFood](https://shopeefood.vn/search?q=pho-ga)')
     expect(out).toContain('[GrabFood]')
     expect(out).toContain('[BeFood]')
@@ -193,7 +190,6 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
       {
         name: 'Bún Bò Huế O Lạc CN 2',
         photo_urls: [`${IMG}/olac1.jpg`, `${IMG}/olac2.jpg`, `${IMG}/olac3.jpg`],
-        tiktok_url: 'https://www.tiktok.com/@olac',
         order_links: [
           { name: 'ShopeeFood', url: 'https://shopeefood.vn/olac' },
           { name: 'GrabFood', url: 'https://food.grab.com/vn/olac' },
@@ -222,7 +218,6 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(idx(out, 'olac1.jpg')).toBeGreaterThan(idx(out, 'Bún Bò Huế O Lạc CN 2'))
     expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
     expect(idx(out, 'olac3.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
-    expect(idx(out, 'tiktok.com/@olac')).toBeLessThan(idx(out, 'GÓC HUẾ'))
     expect(idx(out, 'shopeefood.vn/olac')).toBeLessThan(idx(out, 'GÓC HUẾ'))
     // NOT dumped after the closing line.
     expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'Bạn muốn đặt'))
@@ -235,7 +230,6 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
       {
         name: 'Bún Bò Huế O Lạc CN 2',
         photo_urls: [`${IMG}/olac1.jpg`, `${IMG}/olac2.jpg`],
-        tiktok_url: 'https://www.tiktok.com/@olac',
         order_links: [{ name: 'ShopeeFood', url: 'https://shopeefood.vn/olac' }],
       },
       { name: 'GÓC HUẾ - Nguyễn Thái Bình' },
@@ -259,7 +253,8 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     // No duplication — each owned URL appears exactly once.
     expect(count(out, 'olac1.jpg')).toBe(1)
     expect(count(out, 'olac2.jpg')).toBe(1)
-    expect(count(out, 'tiktok.com/@olac')).toBe(1)
+    // TikTok is unsupported in V1: the LLM's TikTok line is STRIPPED, not re-placed.
+    expect(count(out, 'tiktok.com/@olac')).toBe(0)
     expect(count(out, 'shopeefood.vn/olac')).toBe(1)
     // Relocated UNDER O Lạc (before GÓC HUẾ), not left trailing after the closing line.
     expect(idx(out, 'olac1.jpg')).toBeGreaterThan(idx(out, 'Bún Bò Huế O Lạc CN 2'))

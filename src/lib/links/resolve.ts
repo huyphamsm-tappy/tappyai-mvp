@@ -2,16 +2,17 @@
 // detection, metadata, thumbnail resolution and fallback. The frontend calls
 // POST /api/links/resolve and stores whatever this returns verbatim.
 //
-// SSRF note: we never fetch the user's URL directly. The only outbound fetches
-// are to hardcoded, trusted metadata endpoints (youtube.com/oembed,
-// tiktok.com/oembed) with the user URL passed only as a query VALUE. This is
-// why the old Facebook OG-scrape (which fetched the user page) is gone.
+// V1 supports YouTube only (product decision 2026-07-26). Any other URL resolves
+// to null → the route returns 400 and the composer refuses the post.
+//
+// SSRF note: we never fetch the user's URL directly. The only outbound fetch is
+// to the hardcoded, trusted YouTube oEmbed endpoint, with the user URL passed
+// only as a query VALUE.
 
 import {
   detectSource,
   extractYouTubeId,
   youTubeThumbnail,
-  placeholderFor,
   type LinkSource,
 } from './platforms'
 
@@ -41,24 +42,6 @@ async function youtubeMeta(url: string): Promise<{ title: string; author: string
   }
 }
 
-async function tiktokMeta(url: string): Promise<{ thumbnail: string | null; title: string; author: string }> {
-  try {
-    const res = await fetch(
-      `https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`,
-      { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) }
-    )
-    if (!res.ok) return { thumbnail: null, title: '', author: '' }
-    const d = await res.json()
-    return {
-      thumbnail: typeof d.thumbnail_url === 'string' && d.thumbnail_url ? d.thumbnail_url : null,
-      title: typeof d.title === 'string' ? d.title : '',
-      author: typeof d.author_name === 'string' ? d.author_name : '',
-    }
-  } catch {
-    return { thumbnail: null, title: '', author: '' }
-  }
-}
-
 /**
  * Resolve a pasted URL into a clean, storable descriptor. Returns null for an
  * unsupported/unparseable source (caller surfaces a 400). `thumbnail` is never
@@ -67,7 +50,7 @@ async function tiktokMeta(url: string): Promise<{ thumbnail: string | null; titl
 export async function resolveLink(rawUrl: string): Promise<ResolvedLink | null> {
   const source_url = rawUrl.trim()
   const source = detectSource(source_url)
-  if (!source) return null
+  if (!source) return null // unsupported provider (TikTok/FB/IG/other) → 400
 
   if (source === 'youtube') {
     const id = extractYouTubeId(source_url)
@@ -76,13 +59,5 @@ export async function resolveLink(rawUrl: string): Promise<ResolvedLink | null> 
     return { source_type: 'youtube', source_url, thumbnail: youTubeThumbnail(id), title, author }
   }
 
-  // tiktok
-  const meta = await tiktokMeta(source_url)
-  return {
-    source_type: 'tiktok',
-    source_url,
-    thumbnail: meta.thumbnail ?? placeholderFor('tiktok'), // best-effort → placeholder, never empty
-    title: meta.title,
-    author: meta.author,
-  }
+  return null
 }

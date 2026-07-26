@@ -1,5 +1,5 @@
 // POST /api/links/resolve  { url }
-// Backend-owned URL resolution for the composer (V1: YouTube + TikTok).
+// Backend-owned URL resolution for the composer (V1: YouTube only).
 // Returns { data: ResolvedLink } with a guaranteed non-empty thumbnail, or a
 // 400 for an unsupported source. The frontend stores `data` verbatim.
 

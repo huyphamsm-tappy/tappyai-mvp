@@ -18,10 +18,15 @@ describe('LinkPoster — always renders a non-empty poster', () => {
   })
 
   it('renders the platform placeholder — never an empty src — for a video with no thumbnail', () => {
-    const { container } = render(<LinkPoster review={{ thumbnail: '', content_type: 'video', source_type: 'tiktok' }} />)
+    const { container } = render(<LinkPoster review={{ thumbnail: '', content_type: 'video', source_type: 'youtube' }} />)
     const src = container.querySelector('img')!.getAttribute('src')
-    expect(src).toBe(POSTER_PLACEHOLDER.tiktok)
+    expect(src).toBe(POSTER_PLACEHOLDER.youtube)
     expect(src).not.toBe('')
+  })
+
+  it('legacy TikTok row with no thumbnail → generic video placeholder (graceful, never blank)', () => {
+    const { container } = render(<LinkPoster review={{ thumbnail: '', content_type: 'video', source_type: 'tiktok' }} />)
+    expect(container.querySelector('img')!.getAttribute('src')).toBe(POSTER_PLACEHOLDER.video)
   })
 
   it('always renders exactly one <img> with a non-empty src, whatever the input', () => {

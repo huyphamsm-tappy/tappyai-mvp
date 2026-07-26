@@ -1,7 +1,7 @@
 'use client'
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Play } from 'lucide-react'
-import { extractYouTubeId, extractTikTokId, placeholderFor } from '@/lib/links/platforms'
+import { extractYouTubeId, placeholderFor } from '@/lib/links/platforms'
 
 interface VideoPlayerProps {
   url: string
@@ -98,10 +98,6 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   const ytCmd = (func: string, args: unknown[] = []) => {
     try { ytFrameRef.current?.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), '*') } catch {}
   }
-  // TikTok plays via its official embed iframe, on tap only. TikTok's own player
-  // owns audio and playback — we do not (and cannot) autoplay it or control its
-  // sound; that is a platform limitation, respected here rather than hacked.
-  const [tkPlaying, setTkPlaying] = useState(false)
 
   // YouTube embeds only stream while in view — otherwise every mounted card
   // autoplayed its own iframe simultaneously (bandwidth/CPU/battery drain).
@@ -358,44 +354,9 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     )
   }
 
-  // TikTok: poster + tap → official TikTok embed iframe. TikTok controls play and
-  // audio inside its own player; we never autoplay it or fake sound control.
-  if (sourceType === 'tiktok') {
-    const tkId = extractTikTokId(url || sourceUrl || '')
-    const poster = thumbnail || placeholderFor('tiktok')
-    if (tkPlaying && tkId) {
-      return (
-        <iframe
-          src={`https://www.tiktok.com/embed/v2/${tkId}`}
-          className="absolute inset-0 w-full h-full bg-black"
-          allow="autoplay; encrypted-media; fullscreen"
-          allowFullScreen
-          title="TikTok video"
-        />
-      )
-    }
-    return (
-      <div className="absolute inset-0 bg-black flex items-center justify-center">
-        <img src={poster} alt="" className="absolute inset-0 w-full h-full object-cover" onError={e => { (e.currentTarget as HTMLImageElement).src = placeholderFor('tiktok') }} />
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
-        <button
-          onClick={e => { e.stopPropagation(); if (tkId) { setTkPlaying(true) } else if (sourceUrl) { window.open(sourceUrl, '_blank', 'noopener,noreferrer') } }}
-          className="relative z-10 flex flex-col items-center gap-2"
-        >
-          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-            <Play size={28} className="text-white fill-white" />
-          </div>
-          <span className="text-white text-sm font-semibold bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
-            {tkId ? 'Phát video TikTok' : 'Xem trên TikTok'}
-          </span>
-        </button>
-      </div>
-    )
-  }
-
-  // Legacy / unsupported external source (e.g. pre-V1 Facebook posts): poster +
-  // external link only. Not created anymore — kept so old posts never break.
+  // Unsupported / removed provider (legacy TikTok, pre-V1 Facebook/Instagram):
+  // graceful poster + "watch externally" link. These are never created anymore —
+  // this branch keeps old rows readable and never renders a broken player.
   if (sourceType !== 'upload') {
     const poster = thumbnail || placeholderFor(sourceType)
     return (

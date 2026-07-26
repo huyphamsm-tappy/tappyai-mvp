@@ -17,7 +17,10 @@ import {
   type MusicSelection,
 } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { detectSource, placeholderFor, type LinkSource } from '@/lib/links/platforms'
+import { detectSource, placeholderFor, SUPPORTED_LINK_SOURCES, type LinkSource } from '@/lib/links/platforms'
+
+// Display label per provider. Only entries in SUPPORTED_LINK_SOURCES are rendered.
+const LINK_SOURCE_LABEL: Record<LinkSource, string> = { youtube: '▶ YouTube' }
 
 // Upload limits come from the shared product config (single source; also served
 // to native clients via GET /api/config) — do not redefine numbers here.
@@ -255,6 +258,7 @@ export default function NewReviewPage() {
   const [source_type, setSource_type] = useState<LinkSource>('youtube')
   const [urlMeta, setUrlMeta] = useState<{ thumbnail_url: string; title: string } | null>(null)
   const [fetchingMeta, setFetchingMeta] = useState(false)
+  const [urlUnsupported, setUrlUnsupported] = useState(false)
 
   /* ai suggestions */
   const [aiHashtags, setAiHashtags] = useState<string[]>([])
@@ -450,12 +454,14 @@ export default function NewReviewPage() {
   }
 
   const handleUrlChange = async (val: string) => {
-    setSource_url(val); setUrlMeta(null); setAiHashtags([])
+    setSource_url(val); setUrlMeta(null); setAiHashtags([]); setUrlUnsupported(false)
     const trimmed = val.trim()
     if (!trimmed) return
 
     const detected = detectSource(trimmed)
-    if (!detected) return
+    // Unsupported provider (TikTok/Facebook/Instagram/other) → show a hint and
+    // do not resolve. canPost stays false, so the post can't be created.
+    if (!detected) { setUrlUnsupported(true); return }
     setSource_type(detected)
 
     // Backend owns all URL resolution (source, metadata, thumbnail, fallback).
@@ -738,17 +744,17 @@ export default function NewReviewPage() {
         {/* ── URL tab ── */}
         {mediaMode === 'url' && (
           <div className="space-y-3">
-            {/* Source selector */}
+            {/* Source selector — rendered from the backend-owned provider list */}
             <div className="flex gap-2">
-              {(['youtube', 'tiktok'] as const).map(src => (
+              {SUPPORTED_LINK_SOURCES.map(src => (
                 <button key={src}
-                  onClick={() => { setSource_type(src); setSource_url(''); setUrlMeta(null) }}
+                  onClick={() => { setSource_type(src); setSource_url(''); setUrlMeta(null); setUrlUnsupported(false) }}
                   className={`flex-1 text-xs py-2 rounded-xl font-semibold transition-colors border ${
                     source_type === src
                       ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
                       : 'bg-white dark:bg-gray-900 text-gray-500 border-gray-200 dark:border-gray-700 hover:border-gray-400'
                   }`}>
-                  {src === 'youtube' ? '▶ YouTube' : '♪ TikTok'}
+                  {LINK_SOURCE_LABEL[src]}
                 </button>
               ))}
             </div>
@@ -758,12 +764,13 @@ export default function NewReviewPage() {
               type="url"
               value={source_url}
               onChange={e => handleUrlChange(e.target.value)}
-              placeholder={
-                source_type === 'youtube' ? t('reviewNew.pasteYoutube')
-                : t('reviewNew.pasteTiktok')
-              }
+              placeholder={t('reviewNew.pasteYoutube')}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40"
             />
+
+            {urlUnsupported && (
+              <p className="text-xs text-amber-600 dark:text-amber-400">{t('reviewNew.linkUnsupported')}</p>
+            )}
 
             {fetchingMeta && (
               <div className="flex items-center gap-2 text-gray-400 text-sm">
@@ -777,7 +784,7 @@ export default function NewReviewPage() {
                   <img src={urlMeta.thumbnail_url} alt="" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
                     <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <span className="text-2xl">{source_type === 'youtube' ? '▶' : '♪'}</span>
+                      <span className="text-2xl">▶</span>
                     </div>
                   </div>
                 </div>

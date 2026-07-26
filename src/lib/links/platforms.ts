@@ -1,36 +1,48 @@
-// Link video platform logic (V1: YouTube + TikTok only).
+// Link video platform logic (V1: YouTube only).
 //
-// This is the SINGLE source of truth for source detection, id extraction and
-// poster resolution. It is pure and safe to import from both client and server
-// — but the deterministic thumbnail generator (`youTubeThumbnail`) is only ever
-// called by the SERVER resolver (`resolve.ts`); the frontend must never generate
-// a YouTube URL itself (owner rule), it only reads the thumbnail the backend
-// already stored.
+// SINGLE source of truth for source DETECTION and poster resolution. The set of
+// supported providers is NOT hardcoded here — it comes from
+// LINK_VIDEO_PROVIDERS in @/lib/config/product (the same list served to native
+// clients via /api/config), so Web/Android/iOS stay identical.
 //
-// Provider architecture is intentionally NOT introduced here — V1 supports a
-// fixed, small set of sources. Facebook/Instagram are deliberately excluded from
-// creation; the render helpers still degrade legacy rows gracefully.
+// Pure + safe to import from client and server. The deterministic thumbnail
+// generator (`youTubeThumbnail`) is only ever called by the SERVER resolver
+// (`resolve.ts`); the frontend never generates a video URL itself.
+//
+// Extensibility (V2): to reintroduce a provider (e.g. TikTok), add its id to
+// LINK_VIDEO_PROVIDERS, add a matcher below, and add its resolver branch — the
+// generic pipeline (LinkPoster, resolve, poster fallback) needs no refactor. The
+// `MATCHERS` type is keyed by LinkVideoProvider, so adding an id without a
+// matcher is a compile error — completeness is enforced.
 
-export type LinkSource = 'youtube' | 'tiktok'
+import { LINK_VIDEO_PROVIDERS, type LinkVideoProvider } from '@/lib/config/product'
 
-export const SUPPORTED_LINK_SOURCES: readonly LinkSource[] = ['youtube', 'tiktok']
+export type LinkSource = LinkVideoProvider
+export const SUPPORTED_LINK_SOURCES = LINK_VIDEO_PROVIDERS
 
 // Static, self-hosted placeholders. Served from /public, so they can never 404
 // and never require next/image remote-pattern config. Used both as the STORED
 // fallback (backend never saves an empty thumbnail) and as the render-time
-// onError fallback (defends legacy rows + expired CDN thumbnails).
+// onError fallback (defends legacy rows + expired CDN thumbnails). Legacy rows
+// from removed providers (tiktok/facebook/instagram) fall back to `video`.
 export const POSTER_PLACEHOLDER = {
   youtube: '/placeholders/youtube.svg',
-  tiktok: '/placeholders/tiktok.svg',
   video: '/placeholders/video.svg',
 } as const
 
-/** Detect a supported link source, or null. V1: YouTube + TikTok only. */
+// Per-provider URL matchers. Keyed by LinkVideoProvider so the set stays in
+// lockstep with the config list (missing matcher = compile error).
+const MATCHERS: Record<LinkVideoProvider, (u: string) => boolean> = {
+  youtube: u => u.includes('youtube.com') || u.includes('youtu.be'),
+}
+
+/** Detect a SUPPORTED link source, or null. Driven by LINK_VIDEO_PROVIDERS. */
 export function detectSource(url: string): LinkSource | null {
   const u = url.trim().toLowerCase()
   if (!u) return null
-  if (u.includes('youtube.com') || u.includes('youtu.be')) return 'youtube'
-  if (u.includes('tiktok.com')) return 'tiktok'
+  for (const p of SUPPORTED_LINK_SOURCES) {
+    if (MATCHERS[p](u)) return p
+  }
   return null
 }
 
@@ -50,15 +62,9 @@ export function youTubeThumbnail(id: string): string {
   return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
 }
 
-/** Extract a numeric TikTok video id from canonical or embed URLs. */
-export function extractTikTokId(url: string): string | null {
-  return url.match(/tiktok\.com\/(?:@[^/]+\/video\/|v\/|embed\/v2\/)(\d+)/)?.[1] ?? null
-}
-
-/** Platform placeholder for a source_type (legacy 'facebook'/null → generic). */
+/** Platform placeholder for a source_type. Removed/legacy providers → generic. */
 export function placeholderFor(sourceType?: string | null): string {
   if (sourceType === 'youtube') return POSTER_PLACEHOLDER.youtube
-  if (sourceType === 'tiktok') return POSTER_PLACEHOLDER.tiktok
   return POSTER_PLACEHOLDER.video
 }
 
