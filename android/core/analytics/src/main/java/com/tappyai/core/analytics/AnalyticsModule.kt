@@ -1,16 +1,7 @@
 package com.tappyai.core.analytics
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
-
-/** Binds [AnalyticsProvider] to its default implementation. */
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class AnalyticsModule {
-    @Binds
-    @Singleton
-    abstract fun bindAnalyticsProvider(impl: LoggingAnalyticsProvider): AnalyticsProvider
-}
+// The concrete [AnalyticsProvider] binding lives in the app module (`AnalyticsBindModule`), which
+// binds the network-backed provider that POSTs to /api/track — core:analytics has no network
+// dependency, so it only defines the contract + a log-only [LoggingAnalyticsProvider] for reference.
+// (Previously this module bound the log-only provider; that made Android feed the recs pipeline
+// nothing, so the real binding was moved to :app.)

@@ -59,6 +59,7 @@ class ReviewsFeedViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
     private val authRepository: AuthRepository,
+    private val analytics: com.tappyai.core.analytics.AnalyticsProvider,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -191,6 +192,8 @@ class ReviewsFeedViewModel @Inject constructor(
     /** Optimistically flips like state + count, reverting if the backend call fails. */
     fun toggleLike(review: Review) {
         val target = !review.likedByMe
+        // Personalization signal (web parity, reviews/page.tsx:808) — best-effort telemetry.
+        analytics.track("review_like", mapOf("review_id" to review.id, "place" to review.placeName, "liked" to target))
         updateReview(review.id) {
             it.copy(likedByMe = target, likeCount = (it.likeCount + if (target) 1 else -1).coerceAtLeast(0))
         }
@@ -210,6 +213,9 @@ class ReviewsFeedViewModel @Inject constructor(
     /** Optimistically flips save state + count, reverting if the backend call fails. */
     fun toggleSave(review: Review) {
         val target = !review.savedByMe
+        // Personalization signal (web parity, reviews/page.tsx:855) — fired on save (matches web,
+        // which only tracks the save direction).
+        if (target) analytics.track("place_save", mapOf("review_id" to review.id))
         updateReview(review.id) {
             it.copy(savedByMe = target, saveCount = ((it.saveCount ?: 0) + if (target) 1 else -1).coerceAtLeast(0))
         }
