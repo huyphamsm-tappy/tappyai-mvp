@@ -15,6 +15,7 @@ import {
   X, Loader2, Plus, AlertCircle,
 } from 'lucide-react'
 import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
+import LinkPoster from '@/components/LinkPoster'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicDisc from './ReviewMusicDisc'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
@@ -420,7 +421,7 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
               />
             // Off-screen: thumbnail only, no <video> element (frees iOS media slots)
             : <div className="absolute inset-0 bg-black">
-                {r.thumbnail && <img src={r.thumbnail} alt="" className="absolute inset-0 w-full h-full object-cover" />}
+                <LinkPoster review={r} />{/* off-screen slide: poster only, never blank */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
               </div>)
         : photos.length > 0

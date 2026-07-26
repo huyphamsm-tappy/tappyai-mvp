@@ -41,7 +41,7 @@ const nextConfig = {
     //              Zalo profile graph (graph.zalo.me/v2.0/me — the client-side
     //              fetch in /auth/zalo-finish; Zalo returns profile only to VN IPs),
     //              Vercel vitals; everything else is same-origin /api.
-    //   frame    — self (SuperTux iframe) + YouTube embeds. Stripe checkout is a
+    //   frame    — self (SuperTux iframe) + YouTube video embeds. Stripe checkout is a
     //              full-page redirect, so it needs no frame/script entry.
     //   frame-ancestors 'self' — clickjacking guard (supersedes X-Frame-Options).
     const csp = [

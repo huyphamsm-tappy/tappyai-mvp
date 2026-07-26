@@ -7,6 +7,7 @@ import {
   MAX_PHOTOS_PER_REVIEW,
   MAX_VIDEO_SIZE_MB,
   MAX_VIDEO_DURATION_SEC,
+  LINK_VIDEO_PROVIDERS,
   AUTH_PROVIDERS,
   ONBOARDING_INTERESTS,
   ONBOARDING_CITIES,
@@ -36,6 +37,11 @@ export async function GET() {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
         maxVideoSizeMb: MAX_VIDEO_SIZE_MB,
         maxVideoDurationSec: MAX_VIDEO_DURATION_SEC,
+      },
+      // Which external platforms a user may import a video link from. Single
+      // source consumed by web + Android + iOS so no client hardcodes its own list.
+      video: {
+        linkProviders: LINK_VIDEO_PROVIDERS,
       },
       // Which sign-in methods the product offers (HOW each works stays
       // backend-internal) + the onboarding catalog — identical on every platform.

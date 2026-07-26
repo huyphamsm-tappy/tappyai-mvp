@@ -212,9 +212,6 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       const photoUrls = settled.status === 'fulfilled' ? settled.value : []
       return {
         ...r,
-        // Mirrors the same static tiktok_url template the Google branch already builds
-        // (food.ts, Google success branch) — OSM places had never had this field at all.
-        tiktok_url: `https://www.tiktok.com/search?q=${encodeURIComponent(r.name + ' review')}`,
         ...(photoUrls.length > 0 ? { photo_url: photoUrls[0], photo_urls: photoUrls } : {})
       }
     })
@@ -340,7 +337,6 @@ export async function searchPlaces(query: string, location?: string, type?: stri
             address: r.formattedAddress,
             google_rating: r.rating ? `${r.rating}⭐ (${(r.userRatingCount as number | undefined)?.toLocaleString('vi-VN') ?? r.userRatingCount} đánh giá Google Maps)` : null,
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
-            tiktok_url: `https://www.tiktok.com/search?q=${encodeURIComponent(((r.displayName as { text?: string })?.text || '') + ' review')}`,
             ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
             ...(photoUrlLists[idx].length > 0 ? { photo_url: photoUrlLists[idx][0], photo_urls: photoUrlLists[idx] } : {})
           }))

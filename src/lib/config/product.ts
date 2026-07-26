@@ -35,6 +35,17 @@ export const MAX_VIDEO_DURATION_SEC = 60
  * allowance — never surfaced in UI copy. */
 export const MAX_VIDEO_DURATION_ACCEPT_SEC = 62
 
+// ── Link-video providers (product decision — which platforms a user may import from) ─
+// SINGLE SOURCE OF TRUTH for web (imported directly) + native (via GET /api/config).
+// No client may hardcode its own list — all consume this one so Web/Android/iOS
+// stay identical. V1: YouTube only. TikTok/Facebook/Instagram are intentionally
+// unsupported (product decision 2026-07-26: TappyAI is an AI-discovery platform,
+// not a short-video platform; TikTok overlaps our own feed and its embeds break
+// visual consistency). To reintroduce a provider in V2: add its id here, then add
+// its detection matcher (lib/links/platforms) and resolver branch (lib/links/resolve).
+export const LINK_VIDEO_PROVIDERS = ['youtube'] as const
+export type LinkVideoProvider = (typeof LINK_VIDEO_PROVIDERS)[number]
+
 // ── Authentication providers (product decision — which sign-in methods exist) ─
 // Served to clients via GET /api/config. Clients render buttons from this list;
 // HOW each provider works (Supabase, custom OAuth, …) stays backend-internal.

@@ -6,10 +6,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Trash2, EyeOff, Eye, Loader2, Grid3X3 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import LinkPoster from '@/components/LinkPoster'
 
 interface Review {
   id: string; place_name: string; body: string; photos: string[] | null
   rating: number; is_hidden: boolean; like_count: number; comment_count: number; created_at: string
+  content_type: string | null; thumbnail: string | null; source_type: string | null
 }
 
 export default function MyPostsPage() {
@@ -26,7 +28,7 @@ export default function MyPostsPage() {
       const res = await fetch(`/api/reviews/feed?userId=${user.id}&limit=50`)
       const data = await res.json()
       // Also get hidden posts
-      const { data: hidden } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at').eq('user_id', user.id).eq('is_hidden', true).order('created_at', { ascending: false })
+      const { data: hidden } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at,content_type,thumbnail,source_type').eq('user_id', user.id).eq('is_hidden', true).order('created_at', { ascending: false })
       const all = [...(data.reviews || []).map((r: Review) => ({ ...r, is_hidden: false })), ...(hidden || [])]
       all.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       setReviews(all)
@@ -75,15 +77,11 @@ export default function MyPostsPage() {
           {/* Grid */}
           <div className="grid grid-cols-3 gap-1">
             {reviews.map(r => {
-              const thumb = r.photos?.[0]
               return (
                 <button key={r.id} onClick={() => setSelected(selected === r.id ? null : r.id)}
                   className={`relative aspect-square rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-800 ${selected === r.id ? 'ring-2 ring-primary-500' : ''}`}>
-                  {thumb
-                    ? <Image src={thumb} alt="" fill className="object-cover" sizes="33vw" />
-                    : <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-                        <p className="text-white text-xs p-2 line-clamp-3 text-center">{r.body || '...'}</p>
-                      </div>}
+                  {/* Shared poster: photo → thumbnail → platform placeholder. Never blank. */}
+                  <LinkPoster review={r} />
                   {r.is_hidden && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                       <EyeOff size={20} className="text-white" />

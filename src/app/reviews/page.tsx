@@ -15,6 +15,7 @@ import type { UserPreferences } from '@/lib/userMemory'
 import SoundSheet from './SoundSheet'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
+import LinkPoster from '@/components/LinkPoster'
 import { ProfileTab } from './ProfileTab'
 import { useNotifications } from '@/components/NotificationProvider'
 import { mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
@@ -892,12 +893,10 @@ export default function ReviewsPage() {
                     <p className="text-gray-500 text-xs px-4 py-3">{t('reviews.searchResultCount', { n: String(searchResults.length) })}</p>
                     <div className="grid grid-cols-2 gap-px bg-gray-800">
                       {searchResults.map(r => {
-                        const thumb = r.photos?.[0]
                         return (
                           <div key={r.id} className="relative aspect-[4/5] bg-gray-900">
-                            {thumb
-                              ? <Image src={thumb} alt="" fill className="object-cover" sizes="50vw" />
-                              : <div className="absolute inset-0 flex items-center justify-center p-3"><p className="text-white text-xs text-center line-clamp-5">{r.body}</p></div>}
+                            {/* Shared poster: photo → thumbnail → platform placeholder. Never blank. */}
+                            <LinkPoster review={r} />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                             <div className="absolute bottom-0 left-0 right-0 p-2">
                               <p className="text-white text-xs font-semibold line-clamp-1">{r.place_name}</p>

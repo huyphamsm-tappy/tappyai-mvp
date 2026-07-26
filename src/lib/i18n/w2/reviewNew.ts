@@ -37,10 +37,8 @@ export const vi: Record<string, string> = {
 
   // URL tab
   'reviewNew.pasteYoutube': 'Dán link YouTube...',
-  'reviewNew.pasteTiktok': 'Dán link TikTok...',
-  'reviewNew.pasteFacebook': 'Dán link Facebook...',
   'reviewNew.loadingMeta': 'Đang tải thông tin...',
-  'reviewNew.facebookNote': 'Facebook: chỉ lưu link và hiển thị nút xem ngoài.',
+  'reviewNew.linkUnsupported': 'Hiện chỉ hỗ trợ link YouTube.',
 
   // Body
   'reviewNew.bodyPlaceholder': 'Chia sẻ trải nghiệm, cảm nhận của bạn...',
@@ -105,10 +103,8 @@ export const en: Record<string, string> = {
 
   // URL tab
   'reviewNew.pasteYoutube': 'Paste a YouTube link...',
-  'reviewNew.pasteTiktok': 'Paste a TikTok link...',
-  'reviewNew.pasteFacebook': 'Paste a Facebook link...',
   'reviewNew.loadingMeta': 'Loading info...',
-  'reviewNew.facebookNote': 'Facebook: we only save the link and show an external view button.',
+  'reviewNew.linkUnsupported': 'Only YouTube links are supported for now.',
 
   // Body
   'reviewNew.bodyPlaceholder': 'Share your experience and thoughts...',

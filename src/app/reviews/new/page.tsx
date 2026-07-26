@@ -17,6 +17,10 @@ import {
   type MusicSelection,
 } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { detectSource, placeholderFor, SUPPORTED_LINK_SOURCES, type LinkSource } from '@/lib/links/platforms'
+
+// Display label per provider. Only entries in SUPPORTED_LINK_SOURCES are rendered.
+const LINK_SOURCE_LABEL: Record<LinkSource, string> = { youtube: '▶ YouTube' }
 
 // Upload limits come from the shared product config (single source; also served
 // to native clients via GET /api/config) — do not redefine numbers here.
@@ -32,16 +36,10 @@ const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 
 /* ─── helpers ─── */
 
-function detectSource(url: string): 'youtube' | 'tiktok' | 'facebook' | null {
-  if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube'
-  if (url.includes('tiktok.com')) return 'tiktok'
-  if (url.includes('facebook.com') || url.includes('fb.com') || url.includes('fb.watch')) return 'facebook'
-  return null
-}
-
-function extractYoutubeId(url: string): string | null {
-  return url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/)?.[1] ?? null
-}
+// Source detection + YouTube URL/thumbnail generation live in the backend
+// (@/lib/links). The composer only detects the source for the placeholder
+// selector; the authoritative resolution happens server-side at paste time
+// via POST /api/links/resolve. The frontend never generates a YouTube URL.
 
 // Reading duration/thumbnail from a <video> can hang forever if the browser loads
 // metadata but never fires `onseeked` (seen with some .mov/codec files, esp. on
@@ -257,9 +255,10 @@ export default function NewReviewPage() {
 
   /* url source */
   const [source_url, setSource_url] = useState('')
-  const [source_type, setSource_type] = useState<'youtube' | 'tiktok' | 'facebook'>('youtube')
+  const [source_type, setSource_type] = useState<LinkSource>('youtube')
   const [urlMeta, setUrlMeta] = useState<{ thumbnail_url: string; title: string } | null>(null)
   const [fetchingMeta, setFetchingMeta] = useState(false)
+  const [urlUnsupported, setUrlUnsupported] = useState(false)
 
   /* ai suggestions */
   const [aiHashtags, setAiHashtags] = useState<string[]>([])
@@ -455,50 +454,36 @@ export default function NewReviewPage() {
   }
 
   const handleUrlChange = async (val: string) => {
-    setSource_url(val); setUrlMeta(null); setAiHashtags([])
+    setSource_url(val); setUrlMeta(null); setAiHashtags([]); setUrlUnsupported(false)
     const trimmed = val.trim()
     if (!trimmed) return
 
     const detected = detectSource(trimmed)
-    if (!detected) return
+    // Unsupported provider (TikTok/Facebook/Instagram/other) → show a hint and
+    // do not resolve. canPost stays false, so the post can't be created.
+    if (!detected) { setUrlUnsupported(true); return }
     setSource_type(detected)
 
-    if (detected === 'youtube') {
-      const id = extractYoutubeId(trimmed)
-      if (id) {
-        const thumb = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`
-        setUrlMeta({ thumbnail_url: thumb, title: '' })
-        triggerUrlAI(thumb, '')
-      }
-      return
-    }
-
-    if (detected === 'tiktok') {
-      setFetchingMeta(true)
-      try {
-        const res = await fetch(`/api/explore/oembed?url=${encodeURIComponent(trimmed)}`)
-        const data = await res.json()
-        const thumb = data.thumbnail_url || ''
-        const title = data.title || ''
-        setUrlMeta({ thumbnail_url: thumb, title })
-        triggerUrlAI(thumb, title)
-      } catch { setUrlMeta({ thumbnail_url: '', title: '' }) }
-      finally { setFetchingMeta(false) }
-      return
-    }
-
-    // Facebook: best-effort OG image via server proxy (may be empty if page requires login)
-    if (detected === 'facebook') {
-      setFetchingMeta(true)
-      try {
-        const res = await fetch(`/api/explore/oembed?url=${encodeURIComponent(trimmed)}`)
-        const data = await res.json()
-        const thumb = data.thumbnail_url || ''
-        const title = data.title || ''
-        setUrlMeta({ thumbnail_url: thumb, title })
-        triggerUrlAI(thumb, title)
-      } catch { setUrlMeta({ thumbnail_url: '', title: '' }) }
-      finally { setFetchingMeta(false) }
+    // Backend owns all URL resolution (source, metadata, thumbnail, fallback).
+    // The response thumbnail is GUARANTEED non-empty (real or platform
+    // placeholder), so a post can never be created with a broken poster.
+    setFetchingMeta(true)
+    try {
+      const res = await fetch('/api/links/resolve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: trimmed }),
+      })
+      if (!res.ok) { setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' }); return }
+      const { data } = await res.json()
+      const thumb = data?.thumbnail || placeholderFor(detected)
+      const title = data?.title || ''
+      setUrlMeta({ thumbnail_url: thumb, title })
+      triggerUrlAI(thumb, title)
+    } catch {
+      setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' })
+    } finally {
+      setFetchingMeta(false)
     }
   }
 
@@ -541,7 +526,9 @@ export default function NewReviewPage() {
       } else if (mediaMode === 'video') {
         payload.content_type = 'video'
         payload.media_url = media_url
-        payload.thumbnail = thumbnail
+        // Never store an empty poster — a failed thumbnail decode falls back to
+        // the generic video placeholder so the grid never shows a blank tile.
+        payload.thumbnail = thumbnail || placeholderFor('upload')
         payload.source_type = 'upload'
         payload.duration = videoDuration // for the auto-registered original sound
         if (aiHashtags.length > 0) payload.hashtags = aiHashtags
@@ -550,7 +537,9 @@ export default function NewReviewPage() {
         payload.media_url = source_url
         payload.source_type = source_type
         payload.source_url = source_url
-        payload.thumbnail = urlMeta?.thumbnail_url || ''
+        // Backend resolver guarantees a non-empty thumbnail; the fallback here is
+        // pure defense so a link post can never be stored with an empty poster.
+        payload.thumbnail = urlMeta?.thumbnail_url || placeholderFor(source_type)
         if (aiHashtags.length > 0) payload.hashtags = aiHashtags
       }
 
@@ -755,17 +744,17 @@ export default function NewReviewPage() {
         {/* ── URL tab ── */}
         {mediaMode === 'url' && (
           <div className="space-y-3">
-            {/* Source selector */}
+            {/* Source selector — rendered from the backend-owned provider list */}
             <div className="flex gap-2">
-              {(['youtube', 'tiktok', 'facebook'] as const).map(src => (
+              {SUPPORTED_LINK_SOURCES.map(src => (
                 <button key={src}
-                  onClick={() => { setSource_type(src); setSource_url(''); setUrlMeta(null) }}
+                  onClick={() => { setSource_type(src); setSource_url(''); setUrlMeta(null); setUrlUnsupported(false) }}
                   className={`flex-1 text-xs py-2 rounded-xl font-semibold transition-colors border ${
                     source_type === src
                       ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
                       : 'bg-white dark:bg-gray-900 text-gray-500 border-gray-200 dark:border-gray-700 hover:border-gray-400'
                   }`}>
-                  {src === 'youtube' ? '▶ YouTube' : src === 'tiktok' ? '♪ TikTok' : '📘 Facebook'}
+                  {LINK_SOURCE_LABEL[src]}
                 </button>
               ))}
             </div>
@@ -775,13 +764,13 @@ export default function NewReviewPage() {
               type="url"
               value={source_url}
               onChange={e => handleUrlChange(e.target.value)}
-              placeholder={
-                source_type === 'youtube' ? t('reviewNew.pasteYoutube')
-                : source_type === 'tiktok' ? t('reviewNew.pasteTiktok')
-                : t('reviewNew.pasteFacebook')
-              }
+              placeholder={t('reviewNew.pasteYoutube')}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40"
             />
+
+            {urlUnsupported && (
+              <p className="text-xs text-amber-600 dark:text-amber-400">{t('reviewNew.linkUnsupported')}</p>
+            )}
 
             {fetchingMeta && (
               <div className="flex items-center gap-2 text-gray-400 text-sm">
@@ -795,7 +784,7 @@ export default function NewReviewPage() {
                   <img src={urlMeta.thumbnail_url} alt="" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
                     <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <span className="text-2xl">{source_type === 'youtube' ? '▶' : source_type === 'tiktok' ? '♪' : '📘'}</span>
+                      <span className="text-2xl">▶</span>
                     </div>
                   </div>
                 </div>
@@ -805,9 +794,6 @@ export default function NewReviewPage() {
               </div>
             )}
 
-            {source_type === 'facebook' && source_url && (
-              <p className="text-xs text-gray-400">{t('reviewNew.facebookNote')}</p>
-            )}
           </div>
         )}
 

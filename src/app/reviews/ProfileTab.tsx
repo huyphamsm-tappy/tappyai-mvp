@@ -16,6 +16,7 @@ import { trailingFillerCount } from '@/lib/ui/gridFill'
 import { getUserPreferences } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import SoundSheet from './SoundSheet'
+import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from './feedShared'
 
@@ -425,13 +426,12 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
             // Video posts have no photos[] — their poster frame lives in `thumbnail`.
             // Without this the tile fell through to the body-text placeholder, so a
             // profile of clips showed only captions instead of the video thumbnails.
-            const thumb = r.photos?.[0] || (r.content_type === 'video' ? r.thumbnail : null)
             const isHidden = activeTab === 'posts' && (r as Review & { is_hidden?: boolean }).is_hidden
             return (
               <button key={r.id} onClick={() => handleGridClick(r as Review)}
                 className={`relative bg-gray-900 ${isPage ? 'aspect-[3/4]' : 'aspect-[9/16]'} ${sel?.id === r.id ? 'ring-2 ring-inset ring-[#fe2c55]' : ''}`}>
-                {thumb ? <Image src={thumb} alt="" fill className="object-cover" sizes="33vw" />
-                  : <div className="absolute inset-0 flex items-center justify-center p-2"><p className="text-white text-xs text-center line-clamp-4">{r.body}</p></div>}
+                {/* Shared poster: photo → thumbnail → platform placeholder. Never blank. */}
+                <LinkPoster review={r} />
                 {/* Overlay: place name + stars */}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent px-1.5 pt-4 pb-1.5">
                   {!isShareOnlyName(r.place_name) && <p className="text-white text-[9px] font-semibold leading-tight line-clamp-1">{r.place_name}</p>}

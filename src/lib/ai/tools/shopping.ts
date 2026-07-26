@@ -16,7 +16,7 @@ export async function searchProducts(query: string) {
     const [searchResultsRaw, directResults, shopInfoResults] = await Promise.all([
       serperSearch(query + ' gia Shopee Tiki Lazada'),
       serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)'),
-      serperSearch(query + ' shop website địa chỉ facebook tiktok'),
+      serperSearch(query + ' shop website địa chỉ facebook'),
     ])
 
     // Uu tien cac link CU THE den 1 san pham (khong phai trang tim kiem) tren Shopee/Tiki/Lazada
@@ -55,8 +55,6 @@ export async function searchProducts(query: string) {
       )
     }
 
-    const tiktokShopLink = 'https://www.tiktok.com/search?q=' + encodeURIComponent(query)
-
     if (searchResults && searchResults.length > 0) {
       result = {
         query,
@@ -64,7 +62,6 @@ export async function searchProducts(query: string) {
         search_results: searchResults,
         shop_info_results: shopInfoResults || [],
         links,
-        tiktok_shop_link: tiktokShopLink,
         note: 'Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.'
       }
     } else {
@@ -72,7 +69,6 @@ export async function searchProducts(query: string) {
         note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam',
         links,
         shop_info_results: shopInfoResults || [],
-        tiktok_shop_link: tiktokShopLink,
       }
     }
   } catch {
