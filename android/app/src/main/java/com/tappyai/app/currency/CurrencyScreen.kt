@@ -104,6 +104,7 @@ fun CurrencyScreen(
             ResultCard(
                 loading = viewModel.loadingRates,
                 converted = viewModel.converted,
+                missingRateCode = viewModel.missingRateCode,
                 numAmount = viewModel.numAmount,
                 from = viewModel.fromCurrency,
                 to = viewModel.toCurrency,
@@ -254,6 +255,7 @@ private fun CurrencySelectorField(
 private fun ResultCard(
     loading: Boolean,
     converted: Double?,
+    missingRateCode: String?,
     numAmount: Double,
     from: Currency,
     to: Currency,
@@ -282,6 +284,14 @@ private fun ResultCard(
                 CircularProgressIndicator(modifier = Modifier.size(16.dp), color = onColor, strokeWidth = 2.dp)
                 Text(text = stringResource(R.string.currency_loading_rates), style = MaterialTheme.typography.bodySmall, color = onColor)
             }
+
+            // Web parity (currency/page.tsx): a missing/invalid rate shows an explicit warning
+            // instead of a wrong number — checked before the converted branch (where rate is null).
+            missingRateCode != null -> Text(
+                text = stringResource(R.string.currency_missing_rate, missingRateCode),
+                style = MaterialTheme.typography.bodyMedium,
+                color = onColor,
+            )
 
             converted != null -> {
                 Text(

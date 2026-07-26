@@ -46,3 +46,28 @@ val QUICK_AMOUNTS = listOf("100000", "500000", "1000000", "5000000")
  * table, not a live fetch (still safe to convert with, per the web's own behavior).
  */
 data class Rates(val values: Map<String, Double>, val dateIso: String?, val fallback: Boolean)
+
+/** A real, finite, positive rate — web `isValidRate` (`src/lib/finance/exchange.ts`). */
+fun isValidRate(v: Double?): Boolean = v != null && v.isFinite() && v > 0
+
+/**
+ * USD-based cross rate `to / from` (the rates table contains `USD == 1`, so USD needs no special
+ * case) — a direct port of the web `crossRate` (`src/lib/finance/exchange.ts`). Returns null when
+ * either code's rate is absent or not finite-positive; the web equivalent THROWS `MissingCurrencyError`
+ * and never silently falls back to 1 (the Bug #15 hardening: a missing currency must stop the
+ * conversion and surface an error, not present a wrong number as authoritative).
+ */
+fun crossRate(rates: Map<String, Double>, from: String, to: String): Double? {
+    val fromRate = rates[from]
+    val toRate = rates[to]
+    if (!isValidRate(fromRate) || !isValidRate(toRate)) return null
+    return toRate!! / fromRate!!
+}
+
+/** The first code (checking `from` before `to`, matching web `crossRate`'s throw order) whose rate
+ *  is missing/invalid, or null when both are valid. Drives the "missing rate" error state. */
+fun firstMissingRateCode(rates: Map<String, Double>, from: String, to: String): String? = when {
+    !isValidRate(rates[from]) -> from
+    !isValidRate(rates[to]) -> to
+    else -> null
+}

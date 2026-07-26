@@ -10,6 +10,7 @@
     <string name="currency_amount_equals">%1$s %2$s =</string>
     <string name="currency_rate_line">1 %1$s = %2$s %3$s</string>
     <string name="currency_enter_amount_prompt">Nhập số tiền để xem kết quả</string>
+    <string name="currency_missing_rate">Không có tỷ giá cho %1$s. Vui lòng chọn đồng tiền khác.</string>
     <string name="currency_fallback_notice">⚠️ Đang dùng tỷ giá ước tính (không thể kết nối nguồn dữ liệu)</string>
     <string name="currency_rates_updated">Tỷ giá cập nhật %1$s · Nguồn: open.er-api.com</string>
     <string name="currency_disclaimer">Tỷ giá chỉ mang tính tham khảo, không dùng cho giao dịch tài chính.</string>
