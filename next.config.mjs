@@ -41,7 +41,7 @@ const nextConfig = {
     //              Zalo profile graph (graph.zalo.me/v2.0/me — the client-side
     //              fetch in /auth/zalo-finish; Zalo returns profile only to VN IPs),
     //              Vercel vitals; everything else is same-origin /api.
-    //   frame    — self (SuperTux iframe) + YouTube embeds. Stripe checkout is a
+    //   frame    — self (SuperTux iframe) + YouTube & TikTok video embeds. Stripe checkout is a
     //              full-page redirect, so it needs no frame/script entry.
     //   frame-ancestors 'self' — clickjacking guard (supersedes X-Frame-Options).
     const csp = [
@@ -66,7 +66,7 @@ const nextConfig = {
       // clip lên" instead of showing an error. Playback kept working (storage
       // hosts were allowed), which is what hid the breakage.
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com",
-      "frame-src 'self' https://www.youtube.com",
+      "frame-src 'self' https://www.youtube.com https://www.tiktok.com",
       "worker-src 'self' blob:",
       "manifest-src 'self'",
       "upgrade-insecure-requests",

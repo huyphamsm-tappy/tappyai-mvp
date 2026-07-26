@@ -1,6 +1,7 @@
 'use client'
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Play } from 'lucide-react'
+import { extractYouTubeId, extractTikTokId, placeholderFor } from '@/lib/links/platforms'
 
 interface VideoPlayerProps {
   url: string
@@ -87,6 +88,20 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   onWatchProgressRef.current = onWatchProgress
   const ytContainerRef = useRef<HTMLDivElement>(null)
   const [ytActive, setYtActive] = useState(false)
+  const ytActiveRef = useRef(false)
+  ytActiveRef.current = ytActive
+  // YouTube iframe control via the official IFrame Player API over postMessage
+  // (enablejsapi=1). No SDK script is loaded — CSP script-src doesn't allow one —
+  // so we send commands directly to the frame's contentWindow. This is how the
+  // feed's tap-to-unmute reaches the YouTube player (it can't touch a <video>).
+  const ytFrameRef = useRef<HTMLIFrameElement>(null)
+  const ytCmd = (func: string, args: unknown[] = []) => {
+    try { ytFrameRef.current?.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), '*') } catch {}
+  }
+  // TikTok plays via its official embed iframe, on tap only. TikTok's own player
+  // owns audio and playback — we do not (and cannot) autoplay it or control its
+  // sound; that is a platform limitation, respected here rather than hacked.
+  const [tkPlaying, setTkPlaying] = useState(false)
 
   // YouTube embeds only stream while in view — otherwise every mounted card
   // autoplayed its own iframe simultaneously (bandwidth/CPU/battery drain).
@@ -100,6 +115,20 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     )
     observer.observe(el)
     return () => observer.disconnect()
+  }, [sourceType])
+
+  // YouTube audio: the iframe autoplays MUTED (browser policy). When the feed's
+  // audio session unlocks (first user click, shared with native clips), unmute
+  // the active YouTube player via the IFrame API — mirroring how a native <video>
+  // gains sound. Nothing to unmute until the frame exists (mounted when ytActive).
+  useEffect(() => {
+    if (sourceType !== 'youtube') return
+    const applyAudio = () => {
+      if (!ytActiveRef.current || !feedAudioUnlocked) return
+      ytCmd('unMute'); ytCmd('setVolume', [100])
+    }
+    audioSubs.add(applyAudio)
+    return () => { audioSubs.delete(applyAudio) }
   }, [sourceType])
 
   // ── Playback, driven purely by `active` ──────────────────────────────────
@@ -305,21 +334,23 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     }
   }
 
-  // YouTube: iframe embed with autoplay muted
+  // YouTube: iframe embed, autoplay muted, tap-to-unmute via the IFrame API.
   if (sourceType === 'youtube') {
-    const videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/)?.[1]
-    if (!videoId) return <div className="absolute inset-0 bg-black" />
-    const ytThumb = thumbnail || `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`
+    const videoId = extractYouTubeId(url)
+    const ytPoster = thumbnail || placeholderFor('youtube')
+    if (!videoId) return <img src={ytPoster} alt="" className="absolute inset-0 w-full h-full object-cover" />
     return (
       <div ref={ytContainerRef} className="absolute inset-0 bg-black">
-        <img src={ytThumb} alt="" className={`absolute inset-0 w-full h-full object-cover ${ytActive ? 'opacity-30' : 'opacity-100'}`} />
+        <img src={ytPoster} alt="" className={`absolute inset-0 w-full h-full object-cover ${ytActive ? 'opacity-30' : 'opacity-100'}`} onError={e => { (e.currentTarget as HTMLImageElement).src = placeholderFor('youtube') }} />
         {ytActive && (
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1`}
+            ref={ytFrameRef}
+            src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&mute=1&playsinline=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1`}
             className="absolute inset-0 w-full h-full"
             allow="autoplay; encrypted-media"
             allowFullScreen
             title="video"
+            onLoad={() => { if (feedAudioUnlocked) { ytCmd('unMute'); ytCmd('setVolume', [100]) } }}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
@@ -327,30 +358,57 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     )
   }
 
-  // TikTok / Facebook: thumbnail preview + external link
-  if (sourceType === 'tiktok' || sourceType === 'facebook') {
-    const label = sourceType === 'tiktok' ? 'TikTok' : 'Facebook'
+  // TikTok: poster + tap → official TikTok embed iframe. TikTok controls play and
+  // audio inside its own player; we never autoplay it or fake sound control.
+  if (sourceType === 'tiktok') {
+    const tkId = extractTikTokId(url || sourceUrl || '')
+    const poster = thumbnail || placeholderFor('tiktok')
+    if (tkPlaying && tkId) {
+      return (
+        <iframe
+          src={`https://www.tiktok.com/embed/v2/${tkId}`}
+          className="absolute inset-0 w-full h-full bg-black"
+          allow="autoplay; encrypted-media; fullscreen"
+          allowFullScreen
+          title="TikTok video"
+        />
+      )
+    }
     return (
       <div className="absolute inset-0 bg-black flex items-center justify-center">
-        {thumbnail && (
-          <img src={thumbnail} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        )}
+        <img src={poster} alt="" className="absolute inset-0 w-full h-full object-cover" onError={e => { (e.currentTarget as HTMLImageElement).src = placeholderFor('tiktok') }} />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+        <button
+          onClick={e => { e.stopPropagation(); if (tkId) { setTkPlaying(true) } else if (sourceUrl) { window.open(sourceUrl, '_blank', 'noopener,noreferrer') } }}
+          className="relative z-10 flex flex-col items-center gap-2"
+        >
+          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+            <Play size={28} className="text-white fill-white" />
+          </div>
+          <span className="text-white text-sm font-semibold bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
+            {tkId ? 'Phát video TikTok' : 'Xem trên TikTok'}
+          </span>
+        </button>
+      </div>
+    )
+  }
+
+  // Legacy / unsupported external source (e.g. pre-V1 Facebook posts): poster +
+  // external link only. Not created anymore — kept so old posts never break.
+  if (sourceType !== 'upload') {
+    const poster = thumbnail || placeholderFor(sourceType)
+    return (
+      <div className="absolute inset-0 bg-black flex items-center justify-center">
+        <img src={poster} alt="" className="absolute inset-0 w-full h-full object-cover" onError={e => { (e.currentTarget as HTMLImageElement).src = placeholderFor(sourceType) }} />
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
         {sourceUrl && (
-          <a
-            href={sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative z-10 flex flex-col items-center gap-2"
-            onClick={e => e.stopPropagation()}
-          >
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="relative z-10 flex flex-col items-center gap-2" onClick={e => e.stopPropagation()}>
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
               <Play size={28} className="text-white fill-white" />
             </div>
-            <span className="text-white text-sm font-semibold bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
-              Xem trên {label}
-            </span>
+            <span className="text-white text-sm font-semibold bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">Xem video</span>
           </a>
         )}
       </div>
@@ -361,8 +419,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   // taps (double-tap = like); pause is via long-press → togglePlay().
   return (
     <div className="absolute inset-0 bg-black">
-      {thumbnail && !playing && (
-        <img src={thumbnail} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      {!playing && (
+        <img src={thumbnail || placeholderFor('upload')} alt="" className="absolute inset-0 w-full h-full object-cover" onError={e => { (e.currentTarget as HTMLImageElement).src = placeholderFor('upload') }} />
       )}
       <video
         ref={videoRef}

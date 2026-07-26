@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, Heart, Play, Loader2, UserPlus, UserCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import LinkPoster from '@/components/LinkPoster'
 
 interface CreatorProfile {
   id: string
@@ -23,6 +24,7 @@ interface Post {
   id: string
   content_type: string | null
   thumbnail: string | null
+  source_type: string | null
   photos: string[] | null
   like_count: number
   view_count: number
@@ -186,13 +188,11 @@ export default function CreatorPage() {
         ? <p className="text-center text-gray-600 text-sm py-10">Chưa có bài viết</p>
         : <div className="grid grid-cols-3 gap-px bg-gray-900">
             {posts.map(p => {
-              const thumb = p.thumbnail || p.photos?.[0]
               const isVideo = p.content_type === 'video'
               return (
                 <Link key={p.id} href={`/reviews/${p.id}`} className="relative aspect-[9/16] bg-gray-900 block">
-                  {thumb
-                    ? <Image src={thumb} alt={p.place_name} fill className="object-cover" sizes="33vw" />
-                    : <div className="absolute inset-0 flex items-center justify-center"><span className="text-gray-600 text-xs text-center px-2">{p.place_name}</span></div>}
+                  {/* Shared poster: photo → thumbnail → platform placeholder. Never blank. */}
+                  <LinkPoster review={p} alt={p.place_name} />
                   {isVideo && (
                     <div className="absolute top-1.5 left-1.5 w-5 h-5 bg-black/50 rounded-full flex items-center justify-center">
                       <Play size={10} className="text-white fill-white" />

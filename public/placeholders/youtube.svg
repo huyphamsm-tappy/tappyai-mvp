@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400" role="img" aria-label="YouTube video">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a0e0e"/>
+      <stop offset="1" stop-color="#0b0f19"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="400" fill="url(#g)"/>
+  <rect x="104" y="152" width="92" height="66" rx="16" fill="#FF0000"/>
+  <path d="M139 170 L139 200 L165 185 Z" fill="#ffffff"/>
+  <text x="150" y="262" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="rgba(255,255,255,0.9)" text-anchor="middle">YouTube</text>
+</svg>
