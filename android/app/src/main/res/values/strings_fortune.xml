@@ -40,6 +40,9 @@
     <string name="fortune_career_life">Career</string>
     <string name="fortune_money">Wealth</string>
     <string name="fortune_health">Health</string>
+    <string name="fortune_lucky_number">Lucky number: %1$d</string>
+    <string name="fortune_lucky_color">Lucky color: %1$s</string>
+    <string name="fortune_ngu_hanh">Five Elements: %1$s</string>
 
     <!-- Tu Vi form -->
     <string name="fortune_tuvi_form_title">Chinese Zodiac Reading</string>

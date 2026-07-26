@@ -205,10 +205,7 @@ private fun ResultContent(
         }
     }
 
-    val reading = result.readings.getOrNull(ZodiacPeriod.entries.indexOf(period))
-    if (reading != null) {
-        ReadingCard(reading = reading)
-    }
+    ReadingCard(reading = result.reading)
 
     TappyButton(
         text = stringResource(R.string.fortune_redo_with_other_date),
@@ -220,7 +217,7 @@ private fun ResultContent(
 }
 
 @Composable
-private fun ReadingCard(reading: ZodiacReading) {
+private fun ReadingCard(reading: com.tappyai.app.fortune.engine.FortuneReading) {
     TappyCard(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -243,7 +240,25 @@ private fun ReadingCard(reading: ZodiacReading) {
             FortuneRow(Icons.Filled.Work, stringResource(R.string.fortune_career_life), reading.career, MaterialTheme.colorScheme.primary)
             FortuneRow(Icons.Filled.MonetizationOn, stringResource(R.string.fortune_money), reading.money, Color(0xFFFFC107))
             FortuneRow(Icons.Filled.HealthAndSafety, stringResource(R.string.fortune_health), reading.health, Color(0xFF4CAF50))
+            LuckyRow(luckyNumber = reading.luckyNumber, luckyColor = reading.luckyColor)
         }
+    }
+}
+
+/** Lucky number + color chips — web parity (shown under every zodiac/tu-vi period reading). */
+@Composable
+internal fun LuckyRow(luckyNumber: Int, luckyColor: String) {
+    Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+        Text(
+            text = stringResource(R.string.fortune_lucky_number, luckyNumber),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = stringResource(R.string.fortune_lucky_color, luckyColor),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 

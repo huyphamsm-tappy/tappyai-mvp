@@ -40,6 +40,9 @@
     <string name="fortune_career_life">Sự nghiệp</string>
     <string name="fortune_money">Tài lộc</string>
     <string name="fortune_health">Sức khỏe</string>
+    <string name="fortune_lucky_number">Số may mắn: %1$d</string>
+    <string name="fortune_lucky_color">Màu may mắn: %1$s</string>
+    <string name="fortune_ngu_hanh">Ngũ Hành: %1$s</string>
 
     <!-- Tu Vi form -->
     <string name="fortune_tuvi_form_title">Xem tử vi 12 con giáp</string>

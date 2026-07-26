@@ -157,6 +157,12 @@ private fun ResultContent(
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
             )
+            // Ngũ Hành (five elements) — web parity, shown in the can-chi header.
+            Text(
+                text = stringResource(R.string.fortune_ngu_hanh, result.nguHanh),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
             Text(
                 text = result.canChi.traits,
                 style = MaterialTheme.typography.bodyMedium,
@@ -180,10 +186,7 @@ private fun ResultContent(
         }
     }
 
-    val reading = result.readings.getOrNull(TuViPeriod.entries.indexOf(period))
-    if (reading != null) {
-        ReadingCard(reading = reading)
-    }
+    ReadingCard(reading = result.reading)
 
     TappyButton(
         text = stringResource(R.string.fortune_tuvi_change_year),
@@ -195,7 +198,7 @@ private fun ResultContent(
 }
 
 @Composable
-private fun ReadingCard(reading: TuViReading) {
+private fun ReadingCard(reading: com.tappyai.app.fortune.engine.FortuneReading) {
     TappyCard(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -230,6 +233,7 @@ private fun ReadingCard(reading: TuViReading) {
                 icon = Icons.Filled.HealthAndSafety, label = stringResource(R.string.fortune_health),
                 text = reading.health, tint = Color(0xFF4CAF50),
             )
+            com.tappyai.app.fortune.zodiac.LuckyRow(luckyNumber = reading.luckyNumber, luckyColor = reading.luckyColor)
         }
     }
 }
