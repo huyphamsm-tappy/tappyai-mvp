@@ -188,6 +188,7 @@ internal fun ReviewsFeedScreen(
                             onHide = { viewModel.hide(review) },
                             // Only the settled current page plays its video (web parity: `active`).
                             active = page == pagerState.currentPage,
+                            resolveSoundUrl = viewModel::resolveAttachedSoundUrl,
                         )
                     }
                 }
@@ -349,6 +350,7 @@ internal fun ReviewDetailScreen(
                         modifier = Modifier.fillMaxWidth(),
                         // Detail hero is always on-screen — play its clip (web parity).
                         active = true,
+                        resolveSoundUrl = viewModel::resolveAttachedSoundUrl,
                     )
                 }
                 reviewCommentItems(

@@ -40,6 +40,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewContentType
+import com.tappyai.app.reviews.data.ReviewSourceType
 import com.tappyai.app.reviews.data.SEED_REVIEWS
 import com.tappyai.app.reviews.data.isShareOnlyName
 import com.tappyai.core.designsystem.component.TappyAvatar
@@ -56,6 +59,7 @@ import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.theme.TappyMinTouchTarget
 
 // -- Review always-dark palette --------------------------------------------------
+private val WHITESPACE_REGEX = Regex("\\s+")
 private val ReviewBackground = Color(0xFF000000)
 private val ReviewBackgroundGradient = Color(0xFF1F2937)
 private val ReviewTextPrimary = Color(0xFFFFFFFF)
@@ -83,13 +87,19 @@ fun ReviewCard(
     onHide: () -> Unit,
     modifier: Modifier = Modifier,
     onMusicDiscClick: (() -> Unit)? = null,
+    /** True when this card is the currently-visible feed page — drives inline video playback,
+     *  mirroring the web VideoPlayer's `active` prop. Detail view passes true (always visible);
+     *  previews leave it false (poster only). */
+    active: Boolean = false,
+    /** Resolves a borrowed track's audio URL for "use this sound" playback; null in previews. */
+    resolveSoundUrl: (suspend (String) -> String?)? = null,
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(ReviewBackground),
     ) {
-        ReviewMediaBackground(review = review)
+        ReviewMediaBackground(review = review, active = active, resolveSoundUrl = resolveSoundUrl)
 
         if (isMe) {
             ReviewOverflowMenu(
@@ -124,11 +134,33 @@ fun ReviewCard(
 }
 
 @Composable
-private fun ReviewMediaBackground(review: Review) {
+private fun ReviewMediaBackground(review: Review, active: Boolean, resolveSoundUrl: (suspend (String) -> String?)? = null) {
+    // Borrowed sound: origin=="attached" means this clip plays a track over its own (muted) audio.
+    val attachedTrackId = review.music?.takeIf { it.origin == "attached" }?.trackId
+    val soundVolume = review.music?.volume?.toFloat() ?: 1f
     Box(modifier = Modifier.fillMaxSize()) {
         when {
             review.contentType == ReviewContentType.Video -> {
-                ReviewVideoPlaceholder(thumbnail = review.thumbnail)
+                // Uploaded clips play inline (web parity); YouTube/TikTok/Facebook-sourced videos
+                // (not produced by the Android composer) fall back to the poster+play placeholder,
+                // mirroring the web VideoPlayer's non-upload branches.
+                val mediaUrl = review.mediaUrl
+                val isUpload = review.sourceType == null || review.sourceType == ReviewSourceType.Upload
+                if (mediaUrl != null && isUpload) {
+                    val authorName = review.profiles?.fullName
+                        ?: stringResource(R.string.reviews_anonymous_name)
+                    ReviewVideoPlayer(
+                        url = mediaUrl,
+                        thumbnail = review.thumbnail,
+                        active = active,
+                        contentDescription = stringResource(R.string.reviews_video_a11y, authorName),
+                        attachedTrackId = attachedTrackId,
+                        soundVolume = soundVolume,
+                        resolveSoundUrl = resolveSoundUrl,
+                    )
+                } else {
+                    ReviewVideoPlaceholder(thumbnail = review.thumbnail)
+                }
             }
             !review.photos.isNullOrEmpty() -> {
                 if (review.photos.size == 1) {
@@ -238,6 +270,7 @@ private fun ReviewActionRail(
         ReviewActionButton(
             icon = if (review.likedByMe) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
             label = review.likeCount.toString(),
+            contentDescription = stringResource(R.string.reviews_action_like_count, review.likeCount),
             tint = if (review.likedByMe) LikeRed else ReviewTextPrimary,
             onClick = onLike,
         )
@@ -245,6 +278,7 @@ private fun ReviewActionRail(
         ReviewActionButton(
             icon = Icons.Outlined.ChatBubble,
             label = review.commentCount.toString(),
+            contentDescription = stringResource(R.string.reviews_action_comment_count, review.commentCount),
             tint = ReviewTextPrimary,
             onClick = onComment,
         )
@@ -252,6 +286,7 @@ private fun ReviewActionRail(
         ReviewActionButton(
             icon = if (review.savedByMe) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
             label = stringResource(R.string.reviews_action_save),
+            contentDescription = stringResource(R.string.reviews_action_save),
             tint = if (review.savedByMe) SaveAmber else ReviewTextPrimary,
             onClick = onSave,
         )
@@ -259,6 +294,7 @@ private fun ReviewActionRail(
         ReviewActionButton(
             icon = Icons.Filled.Share,
             label = stringResource(R.string.reviews_action_share),
+            contentDescription = stringResource(R.string.reviews_action_share),
             tint = ReviewTextPrimary,
             onClick = onShare,
         )
@@ -273,6 +309,7 @@ private fun ReviewActionRail(
 private fun ReviewActionButton(
     icon: ImageVector,
     label: String,
+    contentDescription: String,
     tint: Color,
     onClick: () -> Unit,
 ) {
@@ -284,6 +321,7 @@ private fun ReviewActionButton(
         // like/comment/save/share row) was previously as narrow as its 28dp icon.
         modifier = Modifier
             .defaultMinSize(minWidth = TappyMinTouchTarget, minHeight = TappyMinTouchTarget)
+            .semantics { this.contentDescription = contentDescription }
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
@@ -307,6 +345,7 @@ private fun ReviewActionButton(
 
 @Composable
 private fun ReviewMusicDiscIcon(onClick: () -> Unit) {
+    val musicDescription = stringResource(R.string.reviews_action_music)
     Box(
         modifier = Modifier
             .size(40.dp)
@@ -319,6 +358,7 @@ private fun ReviewMusicDiscIcon(onClick: () -> Unit) {
                     style = Stroke(width = 2.dp.toPx()),
                 )
             }
+            .semantics { contentDescription = musicDescription }
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
@@ -343,7 +383,10 @@ private fun ReviewBottomOverlay(
     Column(modifier = modifier) {
         val displayName = review.profiles?.fullName
         if (displayName != null) {
-            val handle = "@${displayName.lowercase().replace(" ", ".")}"
+            // Web parity (reviews/page.tsx:256): strip ALL whitespace, no separator ("@thecoffeehouse").
+            val handle = remember(displayName) {
+                "@${displayName.lowercase().replace(WHITESPACE_REGEX, "")}"
+            }
             Text(
                 text = handle,
                 color = ReviewTextPrimary,

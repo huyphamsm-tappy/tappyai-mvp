@@ -60,7 +60,11 @@ class ReviewDetailViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
     private val authRepository: AuthRepository,
+    private val attachedSoundResolver: com.tappyai.app.reviews.data.AttachedSoundResolver,
 ) : ViewModel() {
+
+    /** Resolves a borrowed track's audio URL for "use this sound" playback (web parity). */
+    suspend fun resolveAttachedSoundUrl(trackId: String): String? = attachedSoundResolver.soundUrl(trackId)
 
     private val _uiState = MutableStateFlow(ReviewDetailUiState())
     val uiState: StateFlow<ReviewDetailUiState> = _uiState.asStateFlow()

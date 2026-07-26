@@ -60,8 +60,12 @@ class ReviewsFeedViewModel @Inject constructor(
     private val reviewErrorMessages: ReviewErrorMessages,
     private val authRepository: AuthRepository,
     private val analytics: com.tappyai.core.analytics.AnalyticsProvider,
+    private val attachedSoundResolver: com.tappyai.app.reviews.data.AttachedSoundResolver,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    /** Resolves a borrowed track's audio URL for in-feed "use this sound" playback (web parity). */
+    suspend fun resolveAttachedSoundUrl(trackId: String): String? = attachedSoundResolver.soundUrl(trackId)
 
     // Restore the feed tab first, so the initial load fetches the tab the user last saw rather than
     // always defaulting to For You after process death (web-parity contract §5.3: persist feed type).

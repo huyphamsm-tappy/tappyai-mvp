@@ -59,15 +59,34 @@ fun ReviewVideoPlayer(
     active: Boolean,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
+    /** The borrowed track id when this clip uses an attached sound (review.music.origin=="attached").
+     *  With [resolveSoundUrl], the video is force-muted and the track plays over it (web parity). */
+    attachedTrackId: String? = null,
+    soundVolume: Float = 1f,
+    resolveSoundUrl: (suspend (String) -> String?)? = null,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
+    // Attached ("use this sound") state. [hasSound] is the INTENT to borrow (known before the URL
+    // resolves) — muting keys off it, not [soundUrl], so the video never leaks its own audio in the
+    // window between unlock and the track fetch (the web's mute-race fix). On failure we fall back.
+    val hasSound = attachedTrackId != null && resolveSoundUrl != null
+    var soundUrl by remember(attachedTrackId) { mutableStateOf<String?>(null) }
+    var soundFailed by remember(attachedTrackId) { mutableStateOf(false) }
+    val borrowing = hasSound && !soundFailed
+
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
             repeatMode = Player.REPEAT_MODE_ONE
-            volume = if (FeedAudio.unlocked) 1f else 0f
+            volume = 0f
         }
+    }
+
+    // Single companion audio player for the borrowed track — muted-until-unlock, looped, mirrored to
+    // the active clip. Only ever created for attached-sound clips; released on dispose.
+    val companionPlayer = remember {
+        ExoPlayer.Builder(context).build().apply { repeatMode = Player.REPEAT_MODE_ONE }
     }
 
     // Latest `active` for callbacks registered once (lifecycle observer) — avoids capturing a stale value.
@@ -106,6 +125,15 @@ fun ReviewVideoPlayer(
                 exoPlayer.playWhenReady = true
                 exoPlayer.play()
             }
+            // Force-mute a borrowed-sound clip every tick — the web's mute-race fix: anything that
+            // unmutes the video (unlock, a late URL) is re-muted so only the companion track is heard.
+            if (borrowing && exoPlayer.volume != 0f) exoPlayer.volume = 0f
+            // Keep the companion track playing too (self-heal, same reasoning as the video).
+            if (borrowing && started && FeedAudio.unlocked &&
+                companionPlayer.playbackState == Player.STATE_READY && !companionPlayer.isPlaying
+            ) {
+                companionPlayer.play()
+            }
         }
     }
 
@@ -120,9 +148,10 @@ fun ReviewVideoPlayer(
         onDispose { exoPlayer.removeListener(listener) }
     }
 
-    // Follow the shared audio-unlock state (muted until the user's first tap anywhere in the feed).
-    LaunchedEffect(FeedAudio.unlocked) {
-        exoPlayer.volume = if (FeedAudio.unlocked) 1f else 0f
+    // Video volume: a borrowed-sound clip stays MUTED (its audio comes from the companion track);
+    // otherwise it follows the shared unlock state (muted until the user's first tap in the feed).
+    LaunchedEffect(FeedAudio.unlocked, borrowing) {
+        exoPlayer.volume = if (borrowing) 0f else if (FeedAudio.unlocked) 1f else 0f
     }
 
     // Pause while backgrounded so a scrolled-away/hidden feed never keeps playing audio; re-prepare and
@@ -131,13 +160,17 @@ fun ReviewVideoPlayer(
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_STOP -> exoPlayer.pause()
+                Lifecycle.Event.ON_STOP -> {
+                    exoPlayer.pause()
+                    companionPlayer.pause() // never let the borrowed track play in the background
+                }
                 Lifecycle.Event.ON_START -> if (currentActive) {
                     if (exoPlayer.playbackState == Player.STATE_IDLE) {
                         exoPlayer.setMediaItem(MediaItem.fromUri(url))
                         exoPlayer.prepare()
                     }
                     exoPlayer.playWhenReady = true
+                    if (borrowing && soundUrl != null && FeedAudio.unlocked) companionPlayer.playWhenReady = true
                 }
                 else -> Unit
             }
@@ -148,6 +181,49 @@ fun ReviewVideoPlayer(
 
     DisposableEffect(Unit) {
         onDispose { exoPlayer.release() }
+    }
+
+    // ── Attached ("use this sound") companion audio ──
+    // Resolve the borrowed track's audio URL once this clip is active (web `useMusicTrack`).
+    LaunchedEffect(active, attachedTrackId) {
+        if (active && attachedTrackId != null && resolveSoundUrl != null && soundUrl == null && !soundFailed) {
+            val resolved = resolveSoundUrl(attachedTrackId)
+            if (resolved == null) soundFailed = true else soundUrl = resolved
+        }
+    }
+
+    // Play the borrowed track over the muted video while active + unlocked; stop when scrolled away.
+    LaunchedEffect(active, soundUrl, FeedAudio.unlocked) {
+        val track = soundUrl
+        if (active && borrowing && track != null) {
+            if (companionPlayer.currentMediaItem == null) {
+                companionPlayer.setMediaItem(MediaItem.fromUri(track))
+                companionPlayer.prepare()
+            }
+            companionPlayer.volume = soundVolume.coerceIn(0f, 1f)
+            companionPlayer.playWhenReady = FeedAudio.unlocked
+        } else {
+            companionPlayer.playWhenReady = false
+            if (!active) {
+                companionPlayer.stop()
+                companionPlayer.clearMediaItems()
+            }
+        }
+    }
+
+    // A companion load error → fall back to the clip's own audio (the volume effect unmutes it).
+    DisposableEffect(companionPlayer) {
+        val listener = object : Player.Listener {
+            override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
+                soundFailed = true
+            }
+        }
+        companionPlayer.addListener(listener)
+        onDispose { companionPlayer.removeListener(listener) }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose { companionPlayer.release() }
     }
 
     Box(
