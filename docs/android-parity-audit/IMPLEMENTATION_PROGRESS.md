@@ -1,0 +1,40 @@
+# Android↔Web Parity — Implementation Progress
+
+Autonomous sequential implementation of the approved gap report (P0→P1→P2→P3).
+Web PRODUCTION = source of truth. **The real prod Web source is the worktree
+`.claude/worktrees/cool-vaughan-b3c7ff/` (branch `main`, `b68be0d`)** — the primary
+tree's `src/` lags prod. Always read Web contracts from that worktree.
+
+Build/test: PowerShell only. `JAVA_HOME=C:\Program Files\Android\Android Studio\jbr`,
+`ANDROID_HOME=C:\Users\Admin\AppData\Local\Android\Sdk`, then `android\gradlew.bat :app:testDebugUnitTest`.
+
+## Done (committed on feat/backoffice-phase0)
+- **P0-1, P0-2** — gradle foundation + POSIX gradlew committed. `03548b7`
+- **P1-11, P1-12** — Music CC-BY attribution + "videos using this sound" grid. `41efd93` (test: SoundAttributionTest)
+- **P1-3, P1-4, P1-5** — Reviews comment replies + reactions + feed back-restore by clip id. `3093d5e` (test: CommentWireContractTest)
+- **P1-1, P1-2** — Chat incremental token rendering + [TAPPY_PLAN] itinerary card. `8c12cbd` (test: ChatPlanTest; new TripPlan/TripPlanCard/ChatStreaming)
+- **P1-10** — Split Bill calculator (new `splitbill/` package, Home quick-action). `6e56884` (test: SplitBillCalculatorTest)
+
+## Audit correction (from prod-worktree re-verification, gap report §8)
+- **Deals is a REAL P1 gap** (prod has `POST /api/deals/[id]/click` + promo UI: discount badge, countdown, voucher chip). Was wrongly "N/A". Must audit Android Deals vs prod `partner_deals` + `DealsView.tsx`.
+- **Currency** needs re-check vs prod `src/lib/finance/exchange.ts` (`MissingCurrencyError`, no `|| 1` fallback).
+- `/api/track` DOES degrade recs (P2-10 rationale corrected; severity stays P2).
+
+## Remaining P1
+- P1-1 Chat incremental token render
+- P1-2 Chat [TAPPY_PLAN] card
+- P1-6 Location capability
+- P1-7/8/9 Fortune engine (deterministic + Tu-vi Lifetime/By-Year + tarot 78)
+- P1-10 Split Bill
+- P1-Deals (NEW) click counter + promo UI
+- **P1-13 FCM push — PAUSE POINT: needs Firebase project + google-services.json (credentials/env)**
+- **P1-B1 Zalo login — PAUSE POINT: needs backend mobile-token/deep-link contract (product decision)**
+- **P1-B2 Anonymous tier — PAUSE POINT: needs product + backend session decision**
+
+Then P2 (13 items) and P3.
+
+## Commit strategy note
+Owner's working tree had ~150 files of uncommitted parity WIP. Many feature files
+were pre-dirty (owner WIP) entangled with new work in the same files; non-interactive
+staging can't split hunks, so domain-cluster commits carry that inherited WIP with an
+honest note. Branch tip builds + tests after each commit.
