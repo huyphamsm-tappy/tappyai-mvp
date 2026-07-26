@@ -1,3 +1,5 @@
+@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+
 package com.tappyai.app.reviews.ui
 
 import androidx.compose.foundation.background
@@ -26,7 +28,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
@@ -51,7 +52,6 @@ private object FeedAudio {
  * [thumbnail] covers the surface until the first frame renders (no black flash). The ExoPlayer is
  * created per card and released on dispose; playback also pauses when the app is backgrounded.
  */
-@OptIn(UnstableApi::class)
 @Composable
 fun ReviewVideoPlayer(
     url: String,
