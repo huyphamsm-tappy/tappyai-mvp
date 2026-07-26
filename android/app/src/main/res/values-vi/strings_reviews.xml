@@ -99,6 +99,9 @@
     <string name="reviews_search_empty_title">Không tìm thấy kết quả</string>
     <string name="reviews_search_empty_message">Thử tìm với từ khóa khác.</string>
     <string name="reviews_search_label">Tìm kiếm</string>
+    <string name="reviews_search_segment_places">Địa điểm</string>
+    <string name="reviews_search_segment_users">Người dùng</string>
+    <string name="reviews_search_follower_count">%1$d người theo dõi</string>
     <string name="reviews_search_error_title">Không tìm được</string>
 
     <!-- Share sheet -->

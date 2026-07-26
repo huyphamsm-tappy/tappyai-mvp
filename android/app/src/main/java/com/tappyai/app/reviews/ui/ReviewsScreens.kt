@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -36,6 +37,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -472,6 +474,7 @@ internal fun ReviewNotificationsScreen(
 @Composable
 internal fun ReviewSearchScreen(
     onResultClick: (Review) -> Unit,
+    onOpenProfile: (String) -> Unit,
     onBack: () -> Unit,
     viewModel: ReviewSearchViewModel = hiltViewModel(),
 ) {
@@ -488,6 +491,14 @@ internal fun ReviewSearchScreen(
             onQueryChange = viewModel::onQueryChange,
             modifier = Modifier.padding(horizontal = TappySpacing.xl, vertical = TappySpacing.md),
         )
+        // Places | Users segment (web parity).
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = TappySpacing.xl),
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+        ) {
+            SearchSegmentTab(stringResource(R.string.reviews_search_segment_places), uiState.mode == SearchMode.Places) { viewModel.onModeChange(SearchMode.Places) }
+            SearchSegmentTab(stringResource(R.string.reviews_search_segment_users), uiState.mode == SearchMode.Users) { viewModel.onModeChange(SearchMode.Users) }
+        }
         when {
             uiState.isSearching -> {
                 TappyLoadingIndicator()
@@ -500,11 +511,69 @@ internal fun ReviewSearchScreen(
                     onRetry = null,
                 )
             }
-            else -> {
+            uiState.mode == SearchMode.Places -> {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     reviewSearchItems(results = uiState.results, onResultClick = onResultClick)
                 }
             }
+            else -> {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(items = uiState.userResults, key = { it.userId ?: it.hashCode().toString() }) { user ->
+                        UserResultRow(
+                            user = user,
+                            onClick = { user.userId?.let(onOpenProfile) },
+                            onToggleFollow = { viewModel.toggleFollow(user) },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchSegmentTab(label: String, selected: Boolean, onClick: () -> Unit) {
+    androidx.compose.material3.FilterChip(
+        selected = selected,
+        onClick = onClick,
+        label = { Text(label, style = MaterialTheme.typography.labelMedium) },
+    )
+}
+
+@Composable
+private fun UserResultRow(user: com.tappyai.app.reviews.data.ReviewProfile, onClick: () -> Unit, onToggleFollow: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = TappySpacing.xl, vertical = TappySpacing.md),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        com.tappyai.core.designsystem.component.TappyAvatar(
+            name = user.fullName ?: "",
+            imageUrl = user.avatarUrl,
+            size = com.tappyai.core.designsystem.component.TappyAvatarSize.ListRow,
+        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = user.fullName?.ifBlank { null } ?: stringResource(R.string.reviews_comment_default_user),
+                color = ScreenTextPrimary,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            Text(
+                text = stringResource(R.string.reviews_search_follower_count, user.followerCount),
+                color = Color(0xB3FFFFFF),
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+        if (!user.isSelf) {
+            com.tappyai.core.designsystem.component.TappyButton(
+                text = stringResource(if (user.isFollowing) R.string.reviews_profile_following else R.string.reviews_profile_follow),
+                onClick = onToggleFollow,
+                variant = if (user.isFollowing) com.tappyai.core.designsystem.component.TappyButtonVariant.Ghost else com.tappyai.core.designsystem.component.TappyButtonVariant.Primary,
+                size = com.tappyai.core.designsystem.component.TappyButtonSize.Small,
+            )
         }
     }
 }

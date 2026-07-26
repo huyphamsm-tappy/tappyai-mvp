@@ -74,6 +74,9 @@ interface ReviewsRepository {
     /** Removes the caller's reaction from a comment. */
     suspend fun removeCommentReaction(commentId: String): NetworkResult<Unit>
 
+    /** Searches users by name (Explore Users segment). */
+    suspend fun searchUsers(query: String): NetworkResult<List<ReviewProfile>>
+
     suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile>
 
     /** Toggles follow/unfollow for [userId]; returns the new state + the target's follower count. */

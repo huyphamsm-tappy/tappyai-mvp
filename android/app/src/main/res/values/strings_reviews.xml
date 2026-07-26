@@ -99,6 +99,9 @@
     <string name="reviews_search_empty_title">No results found</string>
     <string name="reviews_search_empty_message">Try a different search term.</string>
     <string name="reviews_search_label">Search</string>
+    <string name="reviews_search_segment_places">Places</string>
+    <string name="reviews_search_segment_users">Users</string>
+    <string name="reviews_search_follower_count">%1$d followers</string>
     <string name="reviews_search_error_title">Couldn\'t search</string>
 
     <!-- Share sheet -->

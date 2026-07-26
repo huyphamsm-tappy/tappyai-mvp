@@ -76,6 +76,9 @@ fun ReviewsNavHost(onBack: (() -> Unit)? = null) {
                 onResultClick = { review ->
                     navController.navigate(ReviewsRoute.Detail(reviewId = review.id))
                 },
+                onOpenProfile = { userId ->
+                    navController.navigate(ReviewsRoute.AuthorProfile(userId = userId))
+                },
                 onBack = { navController.popBackStack() },
             )
         }

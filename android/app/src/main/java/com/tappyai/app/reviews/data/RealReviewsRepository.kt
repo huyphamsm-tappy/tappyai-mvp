@@ -82,6 +82,9 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun removeCommentReaction(commentId: String): NetworkResult<Unit> =
         safeApiCall { api.removeCommentReaction(commentId); Unit }
 
+    override suspend fun searchUsers(query: String): NetworkResult<List<ReviewProfile>> =
+        safeApiCall { api.searchUsers(query).users.map { it.toReviewProfile() } }
+
     override suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile> =
         safeApiCall { api.getUserProfile(userId).toReviewProfile() }
 

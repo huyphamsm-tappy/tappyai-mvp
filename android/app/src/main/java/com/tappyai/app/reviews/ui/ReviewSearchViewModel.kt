@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewErrorMessages
+import com.tappyai.app.reviews.data.ReviewProfile
 import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
@@ -24,9 +25,14 @@ import javax.inject.Inject
  * filter. Queries are debounced so a fetch fires only after the user pauses typing. [hasSearched]
  * distinguishes "no results" (show empty state) from "haven't typed yet" (show nothing).
  */
+/** Explore search has two segments (web parity): places/reviews, and users. */
+enum class SearchMode { Places, Users }
+
 data class ReviewSearchUiState(
     val query: String = "",
+    val mode: SearchMode = SearchMode.Places,
     val results: List<Review> = emptyList(),
+    val userResults: List<ReviewProfile> = emptyList(),
     val isSearching: Boolean = false,
     val error: String? = null,
     val hasSearched: Boolean = false,
@@ -59,34 +65,86 @@ class ReviewSearchViewModel @Inject constructor(
         _uiState.update { it.copy(query = value) }
         if (value.isBlank()) {
             // Clear immediately when the field is emptied — don't wait for the debounce.
-            _uiState.update { it.copy(results = emptyList(), isSearching = false, error = null, hasSearched = false) }
+            _uiState.update { it.copy(results = emptyList(), userResults = emptyList(), isSearching = false, error = null, hasSearched = false) }
         }
         queryFlow.value = value
     }
 
+    /** Switches the Places/Users segment and re-runs the current query in the new mode. */
+    fun onModeChange(mode: SearchMode) {
+        if (_uiState.value.mode == mode) return
+        _uiState.update { it.copy(mode = mode, results = emptyList(), userResults = emptyList(), error = null, hasSearched = false) }
+        viewModelScope.launch { runSearch(_uiState.value.query.trim()) }
+    }
+
     private suspend fun runSearch(query: String) {
-        if (query.length < MIN_QUERY) {
-            _uiState.update { it.copy(results = emptyList(), isSearching = false, error = null, hasSearched = false) }
+        if (query.isBlank()) {
+            _uiState.update { it.copy(results = emptyList(), userResults = emptyList(), isSearching = false, error = null, hasSearched = false) }
             return
         }
-        _uiState.update { it.copy(isSearching = true, error = null) }
-        when (val result = repository.getFeed(page = 0, limit = RESULTS_LIMIT, sort = "latest", search = query)) {
-            is NetworkResult.Success -> _uiState.update {
-                it.copy(results = result.data, isSearching = false, error = null, hasSearched = true)
+        when (_uiState.value.mode) {
+            // Web-parity-sync: place/review search fires on any non-blank query after debounce.
+            SearchMode.Places -> {
+                _uiState.update { it.copy(isSearching = true, error = null) }
+                when (val result = repository.getFeed(page = 0, limit = RESULTS_LIMIT, sort = "latest", search = query)) {
+                    is NetworkResult.Success -> _uiState.update {
+                        it.copy(results = result.data, isSearching = false, error = null, hasSearched = true)
+                    }
+                    is NetworkResult.Error -> {
+                        logger.e(TAG, "Place search failed: ${result.error}")
+                        _uiState.update { it.copy(isSearching = false, error = reviewErrorMessages.toUserMessage(result.error), hasSearched = true) }
+                    }
+                }
             }
-            is NetworkResult.Error -> {
-                logger.e(TAG, "Search failed: ${result.error}")
-                _uiState.update {
-                    it.copy(isSearching = false, error = reviewErrorMessages.toUserMessage(result.error), hasSearched = true)
+            // Web fires user search only at 2+ chars (reviews/page.tsx:696).
+            SearchMode.Users -> {
+                if (query.length < MIN_USER_QUERY) {
+                    _uiState.update { it.copy(userResults = emptyList(), isSearching = false, error = null, hasSearched = false) }
+                    return
+                }
+                _uiState.update { it.copy(isSearching = true, error = null) }
+                when (val result = repository.searchUsers(query)) {
+                    is NetworkResult.Success -> _uiState.update {
+                        it.copy(userResults = result.data, isSearching = false, error = null, hasSearched = true)
+                    }
+                    is NetworkResult.Error -> {
+                        logger.e(TAG, "User search failed: ${result.error}")
+                        _uiState.update { it.copy(isSearching = false, error = reviewErrorMessages.toUserMessage(result.error), hasSearched = true) }
+                    }
                 }
             }
         }
     }
 
+    /** Optimistic follow toggle for a user result; reverts + reconciles from the server. */
+    fun toggleFollow(user: ReviewProfile) {
+        val userId = user.userId ?: return
+        val target = !user.isFollowing
+        updateUser(userId) {
+            it.copy(isFollowing = target, followerCount = (it.followerCount + if (target) 1 else -1).coerceAtLeast(0))
+        }
+        viewModelScope.launch {
+            when (val result = repository.followUser(userId)) {
+                is NetworkResult.Success -> updateUser(userId) {
+                    it.copy(isFollowing = result.data.following, followerCount = result.data.followerCount)
+                }
+                is NetworkResult.Error -> {
+                    logger.e(TAG, "Follow failed: ${result.error}")
+                    updateUser(userId) { it.copy(isFollowing = user.isFollowing, followerCount = user.followerCount) }
+                }
+            }
+        }
+    }
+
+    private inline fun updateUser(userId: String, crossinline transform: (ReviewProfile) -> ReviewProfile) {
+        _uiState.update { s -> s.copy(userResults = s.userResults.map { if (it.userId == userId) transform(it) else it }) }
+    }
+
     private companion object {
         const val TAG = "ReviewSearchViewModel"
-        const val DEBOUNCE_MS = 350L
-        const val MIN_QUERY = 2
+        // Web-parity-sync fix: matches web's doSearch setTimeout exactly (reviews/page.tsx:1295).
+        const val DEBOUNCE_MS = 400L
         const val RESULTS_LIMIT = 20
+        const val MIN_USER_QUERY = 2
     }
 }

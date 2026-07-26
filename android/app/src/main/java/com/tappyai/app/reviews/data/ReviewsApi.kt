@@ -80,6 +80,10 @@ interface ReviewsApi {
         @Query("commentId") commentId: String,
     ): DeleteCommentResponseDto
 
+    /** Search users by name for Explore's Users segment (web `/api/users/search?q=`). */
+    @GET("api/users/search")
+    suspend fun searchUsers(@Query("q") query: String): UserSearchResponseDto
+
     @GET("api/users/{id}")
     suspend fun getUserProfile(@Path("id") userId: String): UserProfileDto
 

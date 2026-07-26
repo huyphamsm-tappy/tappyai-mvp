@@ -350,6 +350,29 @@ fun CommentDto.toDomain(): ReviewComment = ReviewComment(
     myReaction = myReaction,
 )
 
+/** `GET /api/users/search?q=` — Explore's Users segment. */
+@Serializable
+data class UserSearchResponseDto(val users: List<UserSearchResultDto> = emptyList())
+
+@Serializable
+data class UserSearchResultDto(
+    val id: String = "",
+    @SerialName("full_name") val fullName: String? = null,
+    @SerialName("avatar_url") val avatarUrl: String? = null,
+    @SerialName("follower_count") val followerCount: Int = 0,
+    @SerialName("following_count") val followingCount: Int = 0,
+    @SerialName("is_following") val isFollowing: Boolean = false,
+)
+
+fun UserSearchResultDto.toReviewProfile(): ReviewProfile = ReviewProfile(
+    fullName = fullName,
+    avatarUrl = avatarUrl,
+    userId = id.takeIf { it.isNotBlank() },
+    followerCount = followerCount,
+    followingCount = followingCount,
+    isFollowing = isFollowing,
+)
+
 fun UserProfileDto.toReviewProfile(): ReviewProfile = ReviewProfile(
     fullName = fullName,
     avatarUrl = avatarUrl,
