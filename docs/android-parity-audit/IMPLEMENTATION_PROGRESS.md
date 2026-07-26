@@ -89,3 +89,33 @@ Owner's working tree had ~150 files of uncommitted parity WIP. Many feature file
 were pre-dirty (owner WIP) entangled with new work in the same files; non-interactive
 staging can't split hunks, so domain-cluster commits carry that inherited WIP with an
 honest note. Branch tip builds + tests after each commit.
+
+---
+
+## RC Hardening pass (2026-07-26) — Final Release-Candidate prep
+
+Workflow: build RC → re-audit vs prod worktree → UAT checklist → fix divergences → remove dead code → verify → report.
+
+### Verification gates (all green on `feat/backoffice-phase0`)
+- **Build:** `:app:assembleDebug` ✓ ; production-like R8 via `staging` buildType (isMinifyEnabled) ✓ (signed release AAB blocked — see below).
+- **Lint:** `:app:lintDebug` ✓ 0 errors, 0 UnusedResources. 193 warnings are non-blocking (120 GradleDependency version-bump hints — intentionally frozen during RC; 30 TypographyEllipsis + 23 PluralsCandidate cosmetics; 4 AutoboxingStateCreation micro-perf).
+- **Unit/Regression:** `:app:testDebugUnitTest` ✓ (incl. new envelope/tip%/updated_at guards).
+
+### Fixed this pass
+- **Lint P0 (5× UnsafeOptInUsageError, media3):** `ReviewVideoPlayer.kt` → file-level `@file:androidx.annotation.OptIn(UnstableApi)`; removed the function-level opt-in the lint check didn't recognize.
+- **Dead code (P2):** removed 9 zero-ref string resources from both locales (deals_category_source_format; home_tab_placeholder_message, home_greeting_night; reviews_composer_placeholder_link, reviews_composer_photo_max, reviews_profile_stat_posts/likes/saves, reviews_feed_title).
+- **P2 /api/track envelope:** Android sent only `{event_type,metadata}` → events landed `platform=null`, invisible to platform rollups. Added native `DeviceContext` + `AnalyticsEnvelopeBuilder` (anon_id, 30-min session_id, event_id, client_timestamp, flat fields projected from one detection). Server already accepts all fields optional — no contract change. Guarded by `TrackWireTest`.
+- **P3 Split Bill tip %:** `formatSplitAmount(activeTip)` (currency, rounded) → `formatTipPercent` mirroring web `String(activeTip)` (whole → no decimal; fractional kept).
+- **P3 Memory updated_at:** added to DTO/model/mapper; fact-count banner subtitle now shows dd/MM/yyyy (web `toLocaleDateString('vi-VN')`) with the "updates automatically" fallback. Guarded by `MemoryUpdatedTest`.
+
+### RC re-audit (5 domain sub-audits vs prod worktree cool-vaughan-b3c7ff) — NO P0/P1 found
+- Reviews (feed/detail/comments/composer/search/notifications): MATCH. One P2 — sound "disc" affordance + SoundSheet route absent from the Android feed (music-loop discovery entry). Owner-scoped to a later music sprint; playback of attached sound already works.
+- Fortune + Music: MATCH byte-for-byte (djb2 hash incl. abs/`ty2`/YEAR_COMPAT reindex traps; CC-BY attribution; videos grid).
+- Profile / Split Bill / Analytics / Auth: math + gender auth-metadata + event names MATCH. P2 (fixed) analytics envelope; P3s (tip%, updated_at fixed; review_share emission = needs a share button, out of scope; split-bill people-counter Android is arguably better).
+- Chat+Home and utility/backend screens: re-audit in progress (2 agents).
+
+### Google Play readiness blockers (external deps — cannot resolve here)
+- **Signed release AAB:** `assembleRelease`/`bundleRelease` hard-throw without 9 `TAPPYAI_*` props (keystore path/passwords/alias + prod URLs/keys). Needs the keystore + prod secrets from the owner.
+- **FCM push:** needs a Firebase project + google-services.json.
+- **Zalo login / anonymous tier:** backend mobile-token/deep-link + session contract decisions.
+- Backend-blocked data items: P2-4 liked-reviews source endpoint; P2-13 inferFromBooking RLS (web/backend bug).
