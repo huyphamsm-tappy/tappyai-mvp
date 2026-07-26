@@ -1,9 +1,10 @@
 package com.tappyai.app.chat.data
 
 import android.content.Context
+import android.net.Uri
 import android.util.Base64
 import com.tappyai.app.R
-import com.tappyai.app.chat.ChatCategory
+import com.tappyai.app.chat.ChatCtaButton
 import com.tappyai.app.chat.ChatMessage
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.designsystem.component.TappyChatRole
@@ -37,7 +38,26 @@ class RealChatRepository @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : ChatRepository {
 
-    override fun streamReply(messages: List<ChatMessage>): Flow<String> = callbackFlow {
+    // Round-2 audit fix: streamReply() re-maps the entire conversation history to DTOs on every
+    // send, so without this cache, toDto() below re-read-and-base64-encoded every earlier
+    // attached image from disk on every subsequent turn — cost growing with conversation length.
+    // Keyed by Uri (not message id) since it's the actual re-derivable input.
+    //
+    // Certification-sprint fix: this is a @Singleton-scoped map mutated from inside a
+    // withContext(Dispatchers.IO) block, and ChatViewModel.streamAssistantReply() only cancels
+    // (cooperatively) the previous job before launching a new one — job.cancel() does not
+    // interrupt code already running past a suspension point, so a rapid double-send/regenerate
+    // has a real (if narrow) window where two IO-dispatcher threads run this map's
+    // read-then-put concurrently. A plain LinkedHashMap (mutableMapOf()'s default) is not
+    // thread-safe under concurrent structural modification. ConcurrentHashMap is a safe drop-in
+    // here since values are never null.
+    private val imageDataUrlCache = java.util.concurrent.ConcurrentHashMap<Uri, String>()
+
+    override fun streamReply(
+        messages: List<ChatMessage>,
+        userPreferences: List<String>,
+        responseStyle: ResponseStyleDto?,
+    ): Flow<String> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
         // turn's error text (e.g. a connection-error message) would be replayed to the backend as a genuine
@@ -51,7 +71,7 @@ class RealChatRepository @Inject constructor(
         val dtoMessages = withContext(Dispatchers.IO) {
             messages.filterNot { it.isError }.map { msg -> msg.toDto() }
         }
-        val body = json.encodeToString(ChatRequest(dtoMessages))
+        val body = json.encodeToString(ChatRequest(dtoMessages, userPreferences, responseStyle))
             .toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
@@ -110,37 +130,56 @@ class RealChatRepository @Inject constructor(
         awaitClose { call.cancel() }
     }
 
-    override fun getFollowups(category: ChatCategory): List<String> = when (category) {
-        ChatCategory.Food -> listOf(
-            stringProvider.get(R.string.chat_followup_food_1),
-            stringProvider.get(R.string.chat_followup_food_2),
-            stringProvider.get(R.string.chat_followup_food_3),
-        )
-        ChatCategory.Travel -> listOf(
-            stringProvider.get(R.string.chat_followup_travel_1),
-            stringProvider.get(R.string.chat_followup_travel_2),
-            stringProvider.get(R.string.chat_followup_travel_3),
-        )
-        ChatCategory.Shopping -> listOf(
-            stringProvider.get(R.string.chat_followup_shopping_1),
-            stringProvider.get(R.string.chat_followup_shopping_2),
-            stringProvider.get(R.string.chat_followup_shopping_3),
-        )
-        ChatCategory.Entertainment -> listOf(
-            stringProvider.get(R.string.chat_followup_entertainment_1),
-            stringProvider.get(R.string.chat_followup_entertainment_2),
-            stringProvider.get(R.string.chat_followup_entertainment_3),
-        )
-        ChatCategory.Spa -> listOf(
-            stringProvider.get(R.string.chat_followup_spa_1),
-            stringProvider.get(R.string.chat_followup_spa_2),
-            stringProvider.get(R.string.chat_followup_spa_3),
-        )
-        ChatCategory.General -> listOf(
-            stringProvider.get(R.string.chat_followup_general_1),
-            stringProvider.get(R.string.chat_followup_general_2),
-            stringProvider.get(R.string.chat_followup_general_3),
-        )
+    /**
+     * Web-parity-sync fix: this used to be a static, per-category canned-prompt lookup —
+     * plausible-looking but entirely fabricated Android-only behavior with no web equivalent
+     * (the web has no such static table; every followup is model-generated per reply). It also
+     * never handled `[CTA_BUTTONS]`/`[TAPPY_PLAN]` at all, so a real recommendation reply showed
+     * their raw JSON markers as literal text in the chat bubble. Replaced with a real parser
+     * mirroring `ChatInterface.tsx`'s `parsePlan` → `parseCTA` → `parseFollowups` chain, in the
+     * same order (each stage strips its own marker from what the next stage sees).
+     */
+    override fun parseAssistantReply(raw: String): ParsedAssistantReply {
+        // Parse (not just strip) the [TAPPY_PLAN] block into a structured plan the UI renders as a
+        // card — mirrors ChatInterface.tsx's parsePlan. A malformed block degrades to plain text
+        // (plan = null) rather than failing the whole reply or leaking raw JSON.
+        val planMatch = TAPPY_PLAN_CAPTURE_REGEX.find(raw)
+        val plan = planMatch?.let {
+            try {
+                json.decodeFromString<com.tappyai.app.chat.TripPlan>(it.groupValues[1].trim())
+            } catch (e: Exception) {
+                logger.w(TAG, "Failed to parse TAPPY_PLAN payload: ${e.message}")
+                null
+            }
+        }
+        var text = raw.replaceFirst(TAPPY_PLAN_REGEX, "").trimEnd()
+
+        val ctaMatch = CTA_WITH_TAG_REGEX.find(text) ?: CTA_NO_TAG_REGEX.find(text)
+        val ctaButtons = if (ctaMatch != null) {
+            text = text.replaceFirst(CTA_WITH_TAG_REGEX, "").replaceFirst(CTA_NO_TAG_REGEX, "").trimEnd()
+            try {
+                json.decodeFromString<CtaButtonsPayloadDto>(ctaMatch.groupValues[1].trim()).buttons
+                    .map { ChatCtaButton(label = it.label, type = it.type, url = it.url, primary = it.primary) }
+            } catch (e: Exception) {
+                logger.w(TAG, "Failed to parse CTA_BUTTONS payload: ${e.message}")
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+
+        val followupsMatch = FOLLOWUPS_REGEX.find(text)
+        val followups = if (followupsMatch != null) {
+            text = text.replaceFirst(FOLLOWUPS_REGEX, "")
+            followupsMatch.groupValues[1].split("|").map { it.trim() }.filter { it.isNotEmpty() }.take(3)
+        } else {
+            emptyList()
+        }
+        // Safety net matching the web's own — strip any stray/orphan marker on malformed
+        // model output so implementation details are never visible to the user.
+        text = text.replace(FOLLOWUPS_STRAY_REGEX, "").trimEnd()
+
+        return ParsedAssistantReply(text = text.trim(), ctaButtons = ctaButtons, followups = followups, plan = plan)
     }
 
     private fun parseChatError(code: Int, body: String?): ChatException {
@@ -191,10 +230,11 @@ class RealChatRepository @Inject constructor(
     private fun ChatMessage.toDto(): ChatMessageDto {
         val role = if (this.role == TappyChatRole.User) "user" else "assistant"
         val dataUrl = imageUri?.let { uri ->
-            try {
+            imageDataUrlCache[uri] ?: try {
                 val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
                 val mimeType = context.contentResolver.getType(uri)?.takeIf { it.startsWith("image/") } ?: "image/jpeg"
                 bytes?.let { "data:$mimeType;base64,${Base64.encodeToString(it, Base64.NO_WRAP)}" }
+                    ?.also { imageDataUrlCache[uri] = it }
             } catch (e: Exception) {
                 logger.e(TAG, "Failed to read chat image attachment", e)
                 null
@@ -206,5 +246,28 @@ class RealChatRepository @Inject constructor(
 
     private companion object {
         const val TAG = "RealChatRepository"
+
+        // Mirrors ChatInterface.tsx's regexes exactly (source of truth: promptBuilder.ts's
+        // marker format). RegexOption.IGNORE_CASE matches JS's `/i` flag; Kotlin's `$`/`.` in
+        // DOT_MATCHES_ALL-less mode already behaves like JS's `[\s\S]` for our purposes since
+        // these patterns explicitly use `[\s\S]` rather than relying on `.`.
+        val TAPPY_PLAN_REGEX = Regex("\\[TAPPY_PLAN\\][\\s\\S]*?\\[/TAPPY_PLAN\\]", RegexOption.IGNORE_CASE)
+        val TAPPY_PLAN_CAPTURE_REGEX = Regex("\\[TAPPY_PLAN\\]([\\s\\S]*?)\\[/TAPPY_PLAN\\]", RegexOption.IGNORE_CASE)
+        val CTA_WITH_TAG_REGEX = Regex("\\[CTA_BUTTONS\\]([\\s\\S]*?)\\[/CTA_BUTTONS\\]", RegexOption.IGNORE_CASE)
+        val CTA_NO_TAG_REGEX = Regex("\\[CTA_BUTTONS\\](\\{[\\s\\S]*\\})\\s*$", RegexOption.IGNORE_CASE)
+        val FOLLOWUPS_REGEX = Regex("\\[FOLLOWUPS\\]([^\\n]*?)(?:\\[/FOLLOWUPS\\]|\\n|$)", RegexOption.IGNORE_CASE)
+        val FOLLOWUPS_STRAY_REGEX = Regex("\\[/?FOLLOWUPS\\]", RegexOption.IGNORE_CASE)
     }
 }
+
+/** Wire shape of the `[CTA_BUTTONS]{...}` JSON payload — see `CTAButton` in ChatInterface.tsx. */
+@kotlinx.serialization.Serializable
+private data class CtaButtonsPayloadDto(val buttons: List<CtaButtonDto> = emptyList())
+
+@kotlinx.serialization.Serializable
+private data class CtaButtonDto(
+    val label: String,
+    val type: String,
+    val url: String,
+    val primary: Boolean = false,
+)

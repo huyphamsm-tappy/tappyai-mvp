@@ -60,25 +60,6 @@
     <string name="chat_error_message_too_long">Message is too long. Please try again with shorter content.</string>
     <string name="chat_error_ai_service_down">The AI service is temporarily having issues. Please try again later.</string>
 
-    <string name="chat_followup_food_1">Find another place</string>
-    <string name="chat_followup_food_2">See menu prices</string>
-    <string name="chat_followup_food_3">Book a table</string>
-    <string name="chat_followup_travel_1">Detailed itinerary</string>
-    <string name="chat_followup_travel_2">Find hotels</string>
-    <string name="chat_followup_travel_3">Flight tickets</string>
-    <string name="chat_followup_shopping_1">Compare prices</string>
-    <string name="chat_followup_shopping_2">Find stores</string>
-    <string name="chat_followup_shopping_3">See reviews</string>
-    <string name="chat_followup_entertainment_1">See showtimes</string>
-    <string name="chat_followup_entertainment_2">Book tickets now</string>
-    <string name="chat_followup_entertainment_3">See more</string>
-    <string name="chat_followup_spa_1">See price list</string>
-    <string name="chat_followup_spa_2">Book an appointment</string>
-    <string name="chat_followup_spa_3">See reviews</string>
-    <string name="chat_followup_general_1">Ask more</string>
-    <string name="chat_followup_general_2">Find more</string>
-    <string name="chat_followup_general_3">Another topic</string>
-
     <string name="chat_action_copy">Copy</string>
     <string name="chat_action_share">Share</string>
     <string name="chat_share_chooser_title">Share message</string>
@@ -94,4 +75,12 @@
     <string name="chat_more_reported">Reported</string>
 
     <string name="chat_toast_signin_failed">Sign-in link didn\'t work. Please try signing in again.</string>
+    <!-- [TAPPY_PLAN] itinerary card -->
+    <string name="chat_plan_share">Share</string>
+    <string name="chat_plan_share_suffix">a plan from TappyAI 🎉 #TappyAI</string>
+    <string name="chat_plan_people">%1$d people · </string>
+    <string name="chat_plan_cost_estimate">Estimated cost</string>
+    <string name="chat_plan_total_estimate">Total estimate</string>
+    <string name="chat_plan_map">Map</string>
+    <string name="chat_plan_book_now">Book now</string>
 </resources>

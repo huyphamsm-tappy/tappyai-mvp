@@ -60,25 +60,6 @@
     <string name="chat_error_message_too_long">Tin nhắn quá dài. Vui lòng thử lại với nội dung ngắn hơn.</string>
     <string name="chat_error_ai_service_down">Dịch vụ AI tạm thời gặp sự cố. Vui lòng thử lại sau.</string>
 
-    <string name="chat_followup_food_1">Tìm quán khác</string>
-    <string name="chat_followup_food_2">Xem giá menu</string>
-    <string name="chat_followup_food_3">Đặt bàn trước</string>
-    <string name="chat_followup_travel_1">Lịch trình chi tiết</string>
-    <string name="chat_followup_travel_2">Tìm khách sạn</string>
-    <string name="chat_followup_travel_3">Vé máy bay</string>
-    <string name="chat_followup_shopping_1">So sánh giá</string>
-    <string name="chat_followup_shopping_2">Tìm cửa hàng</string>
-    <string name="chat_followup_shopping_3">Xem review</string>
-    <string name="chat_followup_entertainment_1">Xem giờ chiếu</string>
-    <string name="chat_followup_entertainment_2">Đặt vé ngay</string>
-    <string name="chat_followup_entertainment_3">Xem thêm</string>
-    <string name="chat_followup_spa_1">Xem bảng giá</string>
-    <string name="chat_followup_spa_2">Đặt lịch</string>
-    <string name="chat_followup_spa_3">Xem review</string>
-    <string name="chat_followup_general_1">Hỏi thêm</string>
-    <string name="chat_followup_general_2">Tìm thêm</string>
-    <string name="chat_followup_general_3">Chủ đề khác</string>
-
     <string name="chat_action_copy">Sao chép</string>
     <string name="chat_action_share">Chia sẻ</string>
     <string name="chat_share_chooser_title">Chia sẻ tin nhắn</string>
@@ -94,4 +75,12 @@
     <string name="chat_more_reported">Đã báo cáo</string>
 
     <string name="chat_toast_signin_failed">Liên kết đăng nhập không hoạt động. Vui lòng thử đăng nhập lại.</string>
+    <!-- [TAPPY_PLAN] itinerary card -->
+    <string name="chat_plan_share">Chia sẻ</string>
+    <string name="chat_plan_share_suffix">kế hoạch từ TappyAI 🎉 #TappyAI</string>
+    <string name="chat_plan_people">%1$d người · </string>
+    <string name="chat_plan_cost_estimate">Chi phí ước tính</string>
+    <string name="chat_plan_total_estimate">Tổng ước tính</string>
+    <string name="chat_plan_map">Bản đồ</string>
+    <string name="chat_plan_book_now">Đặt ngay</string>
 </resources>

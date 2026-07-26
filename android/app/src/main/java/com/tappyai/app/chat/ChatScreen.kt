@@ -152,7 +152,21 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                         }
                         TappyChatRole.Assistant -> Column {
                             TappyChatBubble(role = TappyChatRole.Assistant) {
-                                TappyMarkdown(message.text)
+                                // While streaming with nothing revealed yet, show the typing/searching
+                                // indicator inside the bubble; otherwise reveal the (growing) text.
+                                if (message.streaming && message.text.isBlank()) {
+                                    AssistantRespondingContent()
+                                } else {
+                                    TappyMarkdown(message.text)
+                                }
+                            }
+                            // [TAPPY_PLAN] itinerary card, rendered from the parsed plan (web parity).
+                            message.plan?.let { plan ->
+                                Spacer(modifier = Modifier.size(TappySpacing.sm))
+                                TripPlanCard(plan = plan)
+                            }
+                            if (message.ctaButtons.isNotEmpty()) {
+                                CtaButtonsRow(buttons = message.ctaButtons)
                             }
                             if (!isResponding && !message.isError) {
                                 MessageActionBar(
@@ -190,13 +204,9 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                         }
                     }
                 }
-                if (isResponding) {
-                    item(key = "assistant-responding") {
-                        TappyChatBubble(role = TappyChatRole.Assistant) {
-                            AssistantRespondingContent()
-                        }
-                    }
-                }
+                // The pre-first-token indicator now lives inside the streaming assistant message
+                // (see the Assistant branch above), so no separate bottom "responding" item is
+                // needed — that would double up with the streaming bubble.
             }
         }
 
@@ -380,6 +390,41 @@ private fun QuickPromptCard(text: String, onClick: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
+    }
+}
+
+/**
+ * Web-parity-sync fix: renders the model's `[CTA_BUTTONS]` recommendations as real tappable
+ * buttons — mirrors `ChatInterface.tsx`'s CTA rendering (primary = filled, secondary =
+ * outlined). The prompt (`promptBuilder.ts`) explicitly forbids the model from ever emitting
+ * `type="internal_booking"` — every button in practice links to an external platform — so every
+ * button opens externally via [Intent.ACTION_VIEW], same degrade-on-no-handler pattern already
+ * used by Maps/Games' external links.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun CtaButtonsRow(buttons: List<ChatCtaButton>) {
+    val context = LocalContext.current
+    FlowRow(
+        modifier = Modifier.padding(top = TappySpacing.sm),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+        verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+    ) {
+        buttons.forEach { button ->
+            TappyButton(
+                text = button.label,
+                onClick = {
+                    try {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(button.url)))
+                    } catch (_: ActivityNotFoundException) {
+                        // No app/browser installed to handle it — no-op, same degrade pattern
+                        // used elsewhere for external links.
+                    }
+                },
+                variant = if (button.primary) TappyButtonVariant.Primary else TappyButtonVariant.Secondary,
+                size = TappyButtonSize.Small,
+            )
+        }
     }
 }
 

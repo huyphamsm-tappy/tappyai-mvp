@@ -14,11 +14,16 @@ import com.tappyai.app.chat.data.ChatException
 import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
+import com.tappyai.app.chat.data.ResponseStyleDto
 import com.tappyai.app.history.StoredChatMessage
 import com.tappyai.app.history.data.ChatHistoryRepository
 import com.tappyai.app.language.AppLanguage
 import com.tappyai.app.language.LanguageManager
+import com.tappyai.app.memory.RESPONSE_STYLE_LENGTH_KEY
+import com.tappyai.app.memory.RESPONSE_STYLE_TONE_KEY
+import com.tappyai.app.preferences.data.PreferencesRepository
 import com.tappyai.core.common.StringProvider
+import com.tappyai.core.datastore.PreferencesDataSource
 import com.tappyai.core.designsystem.component.TappyChatRole
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
@@ -29,6 +34,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -36,10 +42,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val chatRepository: ChatRepository,
     private val chatHistoryRepository: ChatHistoryRepository,
     private val messageFeedbackRepository: MessageFeedbackRepository,
+    private val preferencesRepository: PreferencesRepository,
+    private val prefs: PreferencesDataSource,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
@@ -91,7 +99,8 @@ class ChatViewModel @Inject constructor(
     private val _isLoadingConversation = MutableStateFlow(conversationId != null)
     val isLoadingConversation: StateFlow<Boolean> = _isLoadingConversation.asStateFlow()
 
-    var input by mutableStateOf("")
+    // Round-3 audit fix: unsent composer text was lost on process death (a plain mutableStateOf).
+    var input by mutableStateOf(savedStateHandle.get<String>(KEY_INPUT).orEmpty())
         private set
 
     /** A photo picked for the next outgoing turn (vision input), staged until send — mirrors the
@@ -113,6 +122,18 @@ class ChatViewModel @Inject constructor(
      *  `reportState === 'reported'` disabling its own report button. */
     private val _reportedMessageIds = MutableStateFlow<Set<Long>>(emptySet())
     val reportedMessageIds: StateFlow<Set<Long>> = _reportedMessageIds.asStateFlow()
+
+    /** The user's saved freeform preference tags, sent on every chat turn (see
+     *  [ChatRepository.streamReply]'s doc). Best-effort background load, matching the web's
+     *  `fetch('/api/preferences').catch(() => {})` (`ChatInterface.tsx:820`) — a failed/slow load
+     *  just means this turn goes out with no preference bias, never blocks sending. */
+    private var userPreferences: List<String> = emptyList()
+
+    /** The user's saved tone/length pick from What-Tappy-Knows ([com.tappyai.app.memory.MemoryViewModel]),
+     *  sent on every chat turn as `responseStyle`. Read once per ViewModel instance — a mid-chat
+     *  change only takes effect on the next fresh Chat screen, matching the web's own `useState`
+     *  read-once-on-mount (`ChatInterface.tsx:570`). */
+    private var responseStyle: ResponseStyleDto? = null
 
     private var nextId = 0L
     private var respondingJob: Job? = null
@@ -137,18 +158,34 @@ class ChatViewModel @Inject constructor(
             viewModelScope.launch {
                 when (val result = chatHistoryRepository.getConversationMessages(id)) {
                     is NetworkResult.Success -> {
-                        _messages.value = result.data.map { stored ->
-                            ChatMessage(
-                                id = nextId++,
-                                role = if (stored.role == "user") TappyChatRole.User else TappyChatRole.Assistant,
-                                text = stored.content,
-                            )
+                        if (result.data.isEmpty()) {
+                            // getConversationMessages resolves the id from the 20-most-recent list
+                            // (no GET-by-id endpoint), so a conversation outside that window comes back
+                            // empty. A real conversation always has messages, so empty = not found →
+                            // start a fresh chat by clearing conversationId, exactly like the Error
+                            // branch. Otherwise persistConversation() below would PUT-overwrite the
+                            // still-existing conversation with this empty history (data loss).
+                            conversationId = null
+                        } else {
+                            _messages.value = result.data.map { stored ->
+                                ChatMessage(
+                                    id = nextId++,
+                                    role = if (stored.role == "user") TappyChatRole.User else TappyChatRole.Assistant,
+                                    text = stored.content,
+                                )
+                            }
                         }
                     }
                     is NetworkResult.Error -> {
                         // Resume is best-effort: an id that fails to load (deleted, network error)
-                        // just falls back to a fresh chat rather than blocking the screen.
+                        // just falls back to a fresh chat rather than blocking the screen. Clearing
+                        // conversationId here is required, not cosmetic: persistConversation() below
+                        // branches on it being non-null to call PUT (full-replace) instead of POST
+                        // (create) — leaving it set would let the next send silently overwrite the
+                        // real, still-existing conversation with this empty-chat's history on a
+                        // merely-transient load failure.
                         logger.e(TAG, "Failed to load conversation $id: ${result.error}")
+                        conversationId = null
                     }
                 }
                 _isLoadingConversation.value = false
@@ -157,6 +194,18 @@ class ChatViewModel @Inject constructor(
             // Fresh chat opened from an "ask Tappy about this" shortcut: fire the prompt once, the
             // same as the web auto-submitting a lingering `?q=` when the transcript is empty.
             sendUserMessage(prefill)
+        }
+
+        viewModelScope.launch {
+            when (val result = preferencesRepository.getPreferences()) {
+                is NetworkResult.Success -> userPreferences = result.data.preferences
+                is NetworkResult.Error -> Unit
+            }
+        }
+        viewModelScope.launch {
+            val tone = prefs.getString(RESPONSE_STYLE_TONE_KEY).first()
+            val length = prefs.getString(RESPONSE_STYLE_LENGTH_KEY).first()
+            responseStyle = if (tone != null || length != null) ResponseStyleDto(tone, length) else null
         }
 
         textToSpeech = TextToSpeech(context) { status ->
@@ -174,7 +223,7 @@ class ChatViewModel @Inject constructor(
         })
     }
 
-    fun onInputChange(value: String) { input = value }
+    fun onInputChange(value: String) { input = value; savedStateHandle[KEY_INPUT] = value }
 
     fun onImagePicked(uri: Uri) { pendingImageUri = uri }
 
@@ -234,6 +283,7 @@ class ChatViewModel @Inject constructor(
     private fun sendUserMessage(text: String, imageUri: Uri? = null) {
         _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
         input = ""
+        savedStateHandle[KEY_INPUT] = ""
         streamAssistantReply(_messages.value)
     }
 
@@ -245,23 +295,43 @@ class ChatViewModel @Inject constructor(
         respondingJob = viewModelScope.launch {
             _isAssistantResponding.value = true
 
+            // Insert a streaming placeholder up front and reveal text token-by-token (web parity:
+            // useSmoothText decouples display from network bursts, killing the block-jump). Markers
+            // are hidden mid-stream via streamingDisplayText; the final parse fills in plan/CTA/
+            // followups and clears the streaming flag.
+            val streamingId = nextId++
+            _messages.update { it + ChatMessage(id = streamingId, role = TappyChatRole.Assistant, text = "", streaming = true) }
             try {
                 val reply = StringBuilder()
-                chatRepository.streamReply(history).collect { token -> reply.append(token) }
+                chatRepository.streamReply(history, userPreferences, responseStyle).collect { token ->
+                    reply.append(token)
+                    val display = streamingDisplayText(reply.toString())
+                    _messages.update { msgs -> msgs.map { if (it.id == streamingId) it.copy(text = display) else it } }
+                }
 
+                // Web-parity-sync fix: extract the model's own [CTA_BUTTONS]/[FOLLOWUPS] markers and
+                // parse [TAPPY_PLAN] into a card — see ChatRepository.parseAssistantReply's doc.
+                val parsed = chatRepository.parseAssistantReply(reply.toString())
                 _messages.update { msgs ->
-                    msgs + ChatMessage(
-                        id = nextId++,
-                        role = TappyChatRole.Assistant,
-                        text = reply.toString().trim(),
-                        followups = chatRepository.getFollowups(category),
-                    )
+                    msgs.map {
+                        if (it.id != streamingId) it else it.copy(
+                            text = parsed.text,
+                            followups = parsed.followups,
+                            ctaButtons = parsed.ctaButtons,
+                            plan = parsed.plan,
+                            streaming = false,
+                        )
+                    }
                 }
                 persistConversation()
             } catch (e: CancellationException) {
-                // User tapped Stop — suppress the indicator via onStop(); just rethrow.
+                // User tapped Stop — keep whatever streamed so far (web keeps the partial reply),
+                // just clear the streaming flag so the action bar returns. Then rethrow.
+                _messages.update { msgs -> msgs.map { if (it.id == streamingId) it.copy(streaming = false) else it } }
                 throw e
             } catch (e: ChatException) {
+                // Drop the streaming placeholder and show the error bubble in its place.
+                _messages.update { msgs -> msgs.filterNot { it.id == streamingId } }
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
@@ -273,7 +343,7 @@ class ChatViewModel @Inject constructor(
             } catch (e: Exception) {
                 logger.e(TAG, "Chat stream failed", e)
                 _messages.update { msgs ->
-                    msgs + ChatMessage(
+                    msgs.filterNot { it.id == streamingId } + ChatMessage(
                         id = nextId++,
                         role = TappyChatRole.Assistant,
                         text = stringProvider.get(R.string.chat_error_connection),
@@ -401,5 +471,6 @@ class ChatViewModel @Inject constructor(
         const val DEFAULT_TITLE = "Chat"
         /** The web sends this exact literal as the report's `reason`. */
         const val REPORT_REASON = "user_reported"
+        const val KEY_INPUT = "chat_input"
     }
 }
