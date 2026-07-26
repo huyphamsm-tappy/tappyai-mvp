@@ -5,7 +5,6 @@
     <string name="deals_empty_title">Hiện chưa có ưu đãi nào</string>
     <string name="deals_empty_message">Quay lại sau để xem ưu đãi mới.</string>
     <string name="deals_opens_externally_description">Mở bên ngoài ứng dụng</string>
-    <string name="deals_category_source_format">%1$s · qua %2$s</string>
     <string name="deals_via_source">qua %1$s</string>
     <string name="deals_ending_soon">🔥 Sắp hết hạn</string>
     <string name="deals_day_left">Còn 1 ngày</string>

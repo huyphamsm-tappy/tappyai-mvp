@@ -30,11 +30,9 @@
     <string name="reviews_composer_tab_link">Link</string>
     <string name="reviews_composer_placeholder_photo">Add photo</string>
     <string name="reviews_composer_placeholder_video">Choose video</string>
-    <string name="reviews_composer_placeholder_link">Paste link</string>
     <string name="reviews_composer_photo_hint">Up to %1$d photos · 5MB each</string>
     <string name="reviews_composer_photo_add_more">Add photos</string>
     <string name="reviews_composer_photo_remove">Remove photo</string>
-    <string name="reviews_composer_photo_max">You can add up to %1$d photos</string>
     <string name="reviews_composer_url_placeholder">Paste a YouTube, TikTok or Facebook link</string>
     <string name="reviews_composer_url_unsupported">Paste a YouTube, TikTok or Facebook video link</string>
     <string name="reviews_composer_body_placeholder">Share your experience...</string>
@@ -80,9 +78,6 @@
     <string name="reviews_overflow_hide_post">Hide post</string>
 
     <!-- Profile -->
-    <string name="reviews_profile_stat_posts">Posts</string>
-    <string name="reviews_profile_stat_likes">Likes</string>
-    <string name="reviews_profile_stat_saves">Saves</string>
     <string name="reviews_profile_stat_reviews">Reviews</string>
     <string name="reviews_profile_stat_followers">Followers</string>
     <string name="reviews_profile_stat_following_count">Following</string>
@@ -111,7 +106,6 @@
     <string name="reviews_share_fallback_text">TappyAI Review</string>
 
     <!-- Feed -->
-    <string name="reviews_feed_title">Reviews</string>
     <string name="reviews_feed_error_title">Couldn\'t load posts</string>
     <string name="reviews_feed_empty_title">No posts yet</string>
     <string name="reviews_feed_empty_message">Check back later.</string>

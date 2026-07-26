@@ -40,10 +40,8 @@
     <string name="home_tab_explore">Khám phá</string>
     <string name="home_tab_maps">Bản đồ</string>
     <string name="home_tab_profile">Hồ sơ</string>
-    <string name="home_tab_placeholder_message">Trải nghiệm %1$s sẽ sớm ra mắt.</string>
 
     <string name="home_greeting_morning">Chào buổi sáng ☀️</string>
     <string name="home_greeting_afternoon">Chào buổi chiều 🌤️</string>
     <string name="home_greeting_evening">Chào buổi tối 🌙</string>
-    <string name="home_greeting_night">Vẫn còn thức à? 🌙</string>
 </resources>

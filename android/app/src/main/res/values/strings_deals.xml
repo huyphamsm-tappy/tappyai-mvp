@@ -5,7 +5,6 @@
     <string name="deals_empty_title">No deals right now</string>
     <string name="deals_empty_message">Check back later for new deals.</string>
     <string name="deals_opens_externally_description">Opens externally</string>
-    <string name="deals_category_source_format">%1$s · via %2$s</string>
     <string name="deals_via_source">via %1$s</string>
     <string name="deals_ending_soon">🔥 Ending Soon</string>
     <string name="deals_day_left">1 day left</string>

@@ -30,11 +30,9 @@
     <string name="reviews_composer_tab_link">Link</string>
     <string name="reviews_composer_placeholder_photo">Thêm ảnh</string>
     <string name="reviews_composer_placeholder_video">Chọn video</string>
-    <string name="reviews_composer_placeholder_link">Dán link</string>
     <string name="reviews_composer_photo_hint">Tối đa %1$d ảnh · mỗi ảnh 5MB</string>
     <string name="reviews_composer_photo_add_more">Thêm ảnh</string>
     <string name="reviews_composer_photo_remove">Xóa ảnh</string>
-    <string name="reviews_composer_photo_max">Bạn có thể thêm tối đa %1$d ảnh</string>
     <string name="reviews_composer_url_placeholder">Dán link YouTube, TikTok hoặc Facebook</string>
     <string name="reviews_composer_url_unsupported">Dán link video YouTube, TikTok hoặc Facebook</string>
     <string name="reviews_composer_body_placeholder">Chia sẻ trải nghiệm...</string>
@@ -80,9 +78,6 @@
     <string name="reviews_overflow_hide_post">Ẩn bài viết</string>
 
     <!-- Profile -->
-    <string name="reviews_profile_stat_posts">Bài viết</string>
-    <string name="reviews_profile_stat_likes">Lượt thích</string>
-    <string name="reviews_profile_stat_saves">Lượt lưu</string>
     <string name="reviews_profile_stat_reviews">Đánh giá</string>
     <string name="reviews_profile_stat_followers">Người theo dõi</string>
     <string name="reviews_profile_stat_following_count">Đang theo dõi</string>
@@ -111,7 +106,6 @@
     <string name="reviews_share_fallback_text">TappyAI Review</string>
 
     <!-- Feed -->
-    <string name="reviews_feed_title">Bài viết</string>
     <string name="reviews_feed_error_title">Không tải được bài viết</string>
     <string name="reviews_feed_empty_title">Chưa có bài viết nào</string>
     <string name="reviews_feed_empty_message">Hãy quay lại sau nhé.</string>

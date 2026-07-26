@@ -40,10 +40,8 @@
     <string name="home_tab_explore">Explore</string>
     <string name="home_tab_maps">Maps</string>
     <string name="home_tab_profile">Profile</string>
-    <string name="home_tab_placeholder_message">The %1$s experience is coming soon.</string>
 
     <string name="home_greeting_morning">Good morning ☀️</string>
     <string name="home_greeting_afternoon">Good afternoon 🌤️</string>
     <string name="home_greeting_evening">Good evening 🌙</string>
-    <string name="home_greeting_night">Still up? 🌙</string>
 </resources>
