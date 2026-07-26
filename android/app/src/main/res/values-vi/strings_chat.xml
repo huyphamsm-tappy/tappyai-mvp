@@ -75,6 +75,11 @@
     <string name="chat_more_reported">Đã báo cáo</string>
 
     <string name="chat_toast_signin_failed">Liên kết đăng nhập không hoạt động. Vui lòng thử đăng nhập lại.</string>
+    <!-- Save place affordance -->
+    <string name="chat_save_place">Lưu địa điểm</string>
+    <string name="chat_save_place_action">Lưu</string>
+    <string name="chat_save_place_hint">Tên địa điểm</string>
+    <string name="chat_save_place_saved">Đã lưu!</string>
     <!-- [TAPPY_PLAN] itinerary card -->
     <string name="chat_plan_share">Chia sẻ</string>
     <string name="chat_plan_share_suffix">kế hoạch từ TappyAI 🎉 #TappyAI</string>

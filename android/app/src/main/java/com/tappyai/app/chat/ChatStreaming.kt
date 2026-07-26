@@ -13,6 +13,25 @@ package com.tappyai.app.chat
  */
 private val STREAMING_MARKER_PREFIXES = listOf("[tappy_plan]", "[cta_buttons]", "[followups]")
 
+private val INTERNAL_BOOKING_NAME_REGEX = Regex("""[?&]name=([^&]+)""")
+private val FIRST_BOLD_REGEX = Regex("""\*\*([^*]{3,40})\*\*""")
+
+/**
+ * The place name the chat "Save place" affordance pre-fills, mirroring the web `detectFirstPlaceName`
+ * (`ChatInterface.tsx`): an `internal_booking` CTA's `name=` param first, else the first bold
+ * `**…**` (3–40 chars) in the reply, else empty (the user can still type one).
+ */
+fun detectFirstPlaceName(text: String, ctaButtons: List<ChatCtaButton>): String {
+    ctaButtons.firstOrNull { it.type == "internal_booking" }?.let { button ->
+        INTERNAL_BOOKING_NAME_REGEX.find(button.url)?.let { match ->
+            return runCatching {
+                java.net.URLDecoder.decode(match.groupValues[1].replace("+", " "), "UTF-8")
+            }.getOrDefault("")
+        }
+    }
+    return FIRST_BOLD_REGEX.find(text)?.groupValues?.get(1) ?: ""
+}
+
 fun streamingDisplayText(raw: String): String {
     val lower = raw.lowercase()
     var cut = raw.length

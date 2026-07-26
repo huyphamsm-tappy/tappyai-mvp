@@ -30,7 +30,9 @@ import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,6 +52,7 @@ class ChatViewModel @Inject constructor(
     private val prefs: PreferencesDataSource,
     private val languageManager: LanguageManager,
     private val locationRepository: com.tappyai.app.location.LocationRepository,
+    private val favoritesApi: com.tappyai.app.chat.data.FavoritesApi,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
     @ApplicationContext context: android.content.Context,
@@ -143,6 +146,26 @@ class ChatViewModel @Inject constructor(
 
     /** Whether location permission is already granted — lets the screen decide whether to request. */
     fun hasLocationPermission(): Boolean = locationRepository.hasPermission()
+
+    /** Saves a place to favorites (chat "Save place" affordance, web `SavePlaceButton`). Returns
+     *  true only on a real success so the UI never shows a false "saved" (a past web bug). */
+    suspend fun savePlace(placeName: String): Boolean {
+        val name = placeName.trim()
+        if (name.isEmpty()) return false
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                favoritesApi.addFavorite(
+                    com.tappyai.app.chat.data.AddFavoriteRequestDto(
+                        placeId = "manual_${System.currentTimeMillis()}",
+                        placeName = name,
+                    ),
+                ).isSuccessful
+            }.getOrElse {
+                logger.w(TAG, "Save place failed: ${it.message}")
+                false
+            }
+        }
+    }
 
     /** Best-effort refresh of [userLocation]; called once permission is available. */
     fun refreshLocation() {

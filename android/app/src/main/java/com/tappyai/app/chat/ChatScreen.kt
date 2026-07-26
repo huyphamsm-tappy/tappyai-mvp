@@ -45,7 +45,12 @@ import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
+import kotlinx.coroutines.launch
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.HorizontalDivider
@@ -184,6 +189,13 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                             }
                             if (message.ctaButtons.isNotEmpty()) {
                                 CtaButtonsRow(buttons = message.ctaButtons)
+                            }
+                            // "Save place" affordance (web SavePlaceButton) on completed replies.
+                            if (!message.streaming && !message.isError && message.text.isNotBlank()) {
+                                SavePlaceButton(
+                                    detectedName = detectFirstPlaceName(message.text, message.ctaButtons),
+                                    onSave = { name -> viewModel.savePlace(name) },
+                                )
                             }
                             if (!isResponding && !message.isError) {
                                 MessageActionBar(
@@ -418,6 +430,55 @@ private fun QuickPromptCard(text: String, onClick: () -> Unit) {
  * button opens externally via [Intent.ACTION_VIEW], same degrade-on-no-handler pattern already
  * used by Maps/Games' external links.
  */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun SavePlaceButton(detectedName: String, onSave: suspend (String) -> Boolean) {
+    var open by remember { mutableStateOf(false) }
+    var name by remember(detectedName) { mutableStateOf(detectedName) }
+    var saving by remember { mutableStateOf(false) }
+    var saved by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    when {
+        saved -> Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
+            Icon(Icons.Filled.Check, contentDescription = null, tint = Color(0xFF4CAF50), modifier = Modifier.size(16.dp))
+            Text(stringResource(R.string.chat_save_place_saved), style = MaterialTheme.typography.labelMedium, color = Color(0xFF4CAF50))
+        }
+        open -> Row(
+            modifier = Modifier.fillMaxWidth().padding(top = TappySpacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            TappyTextField(
+                value = name,
+                onValueChange = { name = it },
+                placeholder = stringResource(R.string.chat_save_place_hint),
+                modifier = Modifier.weight(1f),
+            )
+            TappyButton(
+                text = stringResource(R.string.chat_save_place_action),
+                onClick = {
+                    if (name.isBlank() || saving) return@TappyButton
+                    scope.launch {
+                        saving = true
+                        saved = onSave(name)
+                        saving = false
+                    }
+                },
+                enabled = !saving && name.isNotBlank(),
+                size = TappyButtonSize.Small,
+            )
+        }
+        else -> TappyButton(
+            text = stringResource(R.string.chat_save_place),
+            onClick = { open = true },
+            variant = TappyButtonVariant.Ghost,
+            size = TappyButtonSize.Small,
+            leadingIcon = { Icon(Icons.Filled.BookmarkBorder, contentDescription = null, modifier = Modifier.size(16.dp)) },
+        )
+    }
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CtaButtonsRow(buttons: List<ChatCtaButton>) {

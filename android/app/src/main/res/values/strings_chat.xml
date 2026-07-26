@@ -75,6 +75,11 @@
     <string name="chat_more_reported">Reported</string>
 
     <string name="chat_toast_signin_failed">Sign-in link didn\'t work. Please try signing in again.</string>
+    <!-- Save place affordance -->
+    <string name="chat_save_place">Save place</string>
+    <string name="chat_save_place_action">Save</string>
+    <string name="chat_save_place_hint">Place name</string>
+    <string name="chat_save_place_saved">Saved!</string>
     <!-- [TAPPY_PLAN] itinerary card -->
     <string name="chat_plan_share">Share</string>
     <string name="chat_plan_share_suffix">a plan from TappyAI 🎉 #TappyAI</string>
