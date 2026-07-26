@@ -26,10 +26,15 @@ Build/test: PowerShell only. `JAVA_HOME=C:\Program Files\Android\Android Studio\
 ## Remaining
 ### P2 done
 - **P2-3** — 300ms self-healing video watchdog. `1d6b3b7`
-- **P2-12** — Translate TTS checks setLanguage(), never reads wrong-language. `dc7d9b0`
+- **P2-12** — Translate TTS checks setLanguage(). `dc7d9b0`
+- **P2-7** — gender persisted to Supabase auth metadata. `5672140`
+- **P2-9** — review upload caps from `/api/config` (AppConfigRepository). `bde15d8`
+- **P2-10** — `/api/track` network provider + review_like/place_save wired. `89d26f3`
+- **P2-1** — dynamic suggested prompts on Home from `/api/suggested-prompts`. `dc7e9eb`
+- **P3** — removed dead Room `core:database` module. `49aaebc`
 
-### P2 (doable, client-side — remaining)
-- P2-1 Chat `/api/suggested-prompts` chips · P2-5 in-feed attached-sound playback · P2-6 Explore Users search + optimistic follow · P2-7 gender persistence (Supabase auth metadata) · P2-8 auth providers from `/api/config` · P2-9 upload limits/freemium from `/api/config` · P2-10 `/api/track` telemetry · P2-2 remainder (SavePlaceButton, history GET-by-id; userLocation already done via P1-6).
+### P2 (remaining)
+- P2-5 in-feed attached-sound playback (large) · P2-6 Explore Users search + optimistic follow · P2-8 auth providers from `/api/config` (marginal — Android providers already correct; Zalo blocked separately) · P2-2 remainder (SavePlaceButton in chat, history GET-by-id).
 ### P2 (needs backend / flag to owner)
 - P2-4 liked-reviews collection (needs a source endpoint) · P2-13 inferFromBooking RLS (a Web/backend bug, not client).
 ### P3 polish
