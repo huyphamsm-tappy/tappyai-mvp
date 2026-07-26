@@ -10,9 +10,18 @@
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
+    <!-- Location is optional — the app is fully usable without it (chat/feed just skip the
+         location bias), so it must not gate install on location-less devices. -->
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Coarse location is enough for chat location bias / Nearby / For-You city boost; fine is
+         requested opportunistically when granted. Both are runtime-requested, never required. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".TappyAIApplication"
@@ -25,6 +34,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TappyAI"
         android:resizeableActivity="true"
+        android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
 
         <activity
@@ -32,7 +42,7 @@
             android:exported="true"
             android:resizeableActivity="true"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode"
-            android:theme="@style/Theme.TappyAI">
+            android:theme="@style/Theme.TappyAI.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

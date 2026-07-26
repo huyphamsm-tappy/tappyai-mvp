@@ -57,6 +57,7 @@ class RealChatRepository @Inject constructor(
         messages: List<ChatMessage>,
         userPreferences: List<String>,
         responseStyle: ResponseStyleDto?,
+        userLocation: UserLocationDto?,
     ): Flow<String> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
@@ -71,7 +72,7 @@ class RealChatRepository @Inject constructor(
         val dtoMessages = withContext(Dispatchers.IO) {
             messages.filterNot { it.isError }.map { msg -> msg.toDto() }
         }
-        val body = json.encodeToString(ChatRequest(dtoMessages, userPreferences, responseStyle))
+        val body = json.encodeToString(ChatRequest(dtoMessages, userPreferences, responseStyle, userLocation))
             .toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()

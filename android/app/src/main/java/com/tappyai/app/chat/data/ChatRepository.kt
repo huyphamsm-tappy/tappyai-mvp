@@ -36,6 +36,7 @@ interface ChatRepository {
         messages: List<ChatMessage>,
         userPreferences: List<String> = emptyList(),
         responseStyle: ResponseStyleDto? = null,
+        userLocation: UserLocationDto? = null,
     ): Flow<String>
     fun parseAssistantReply(raw: String): ParsedAssistantReply
 }

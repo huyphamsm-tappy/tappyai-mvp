@@ -1,5 +1,6 @@
 package com.tappyai.app.chat
 
+import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -91,6 +92,22 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
     // STOPPED stops that churn; the ViewModel's own stream is unaffected either way.
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
+
+    // Device location for chat search bias (web parity): use it if already granted, otherwise ask
+    // once on entry (mirrors the web's on-mount geolocation prompt). Fully optional — chat works
+    // without it, so a denial just means no location bias.
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions(),
+    ) { result -> if (result.values.any { it }) viewModel.refreshLocation() }
+    LaunchedEffect(Unit) {
+        if (viewModel.hasLocationPermission()) {
+            viewModel.refreshLocation()
+        } else {
+            locationPermissionLauncher.launch(
+                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            )
+        }
+    }
     val isLoadingConversation by viewModel.isLoadingConversation.collectAsStateWithLifecycle()
     val speakingMessageId = viewModel.speakingMessageId
     val feedback by viewModel.feedback.collectAsStateWithLifecycle()

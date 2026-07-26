@@ -49,6 +49,7 @@ class ChatViewModel @Inject constructor(
     private val preferencesRepository: PreferencesRepository,
     private val prefs: PreferencesDataSource,
     private val languageManager: LanguageManager,
+    private val locationRepository: com.tappyai.app.location.LocationRepository,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
     @ApplicationContext context: android.content.Context,
@@ -134,6 +135,22 @@ class ChatViewModel @Inject constructor(
      *  change only takes effect on the next fresh Chat screen, matching the web's own `useState`
      *  read-once-on-mount (`ChatInterface.tsx:570`). */
     private var responseStyle: ResponseStyleDto? = null
+
+    /** Device location sent as `userLocation` for search bias (web parity, `ChatInterface.tsx:580`).
+     *  Populated best-effort once permission is available; null means "no bias", which the backend
+     *  handles the same as the web sending no location. */
+    private var userLocation: com.tappyai.app.chat.data.UserLocationDto? = null
+
+    /** Whether location permission is already granted — lets the screen decide whether to request. */
+    fun hasLocationPermission(): Boolean = locationRepository.hasPermission()
+
+    /** Best-effort refresh of [userLocation]; called once permission is available. */
+    fun refreshLocation() {
+        viewModelScope.launch {
+            val location = locationRepository.currentLocation() ?: return@launch
+            userLocation = com.tappyai.app.chat.data.UserLocationDto(location.lat, location.lng, location.address)
+        }
+    }
 
     private var nextId = 0L
     private var respondingJob: Job? = null
@@ -303,7 +320,7 @@ class ChatViewModel @Inject constructor(
             _messages.update { it + ChatMessage(id = streamingId, role = TappyChatRole.Assistant, text = "", streaming = true) }
             try {
                 val reply = StringBuilder()
-                chatRepository.streamReply(history, userPreferences, responseStyle).collect { token ->
+                chatRepository.streamReply(history, userPreferences, responseStyle, userLocation).collect { token ->
                     reply.append(token)
                     val display = streamingDisplayText(reply.toString())
                     _messages.update { msgs -> msgs.map { if (it.id == streamingId) it.copy(text = display) else it } }

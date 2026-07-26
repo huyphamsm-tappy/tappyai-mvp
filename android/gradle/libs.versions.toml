@@ -66,6 +66,7 @@ googleFonts = "1.7.5"
 # Maps / Push (reserved for later phases — pinned now, not yet used)
 mapsCompose = "6.4.1"
 firebaseBom = "33.7.0"
+playServicesLocation = "21.3.0"
 
 # Auth (Phase 1B) — Supabase's official Kotlin Multiplatform client (BOM pins every
 # io.github.jan-tennert.supabase:* artifact together; only `auth-kt` is used, scoped to
@@ -159,6 +160,7 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 supabase-bom = { group = "io.github.jan-tennert.supabase", name = "bom", version.ref = "supabase" }
 supabase-auth-kt = { group = "io.github.jan-tennert.supabase", name = "auth-kt" }

@@ -10,7 +10,23 @@ import kotlinx.serialization.json.put
 @Serializable
 data class ChatRequest(
     val messages: List<ChatMessageDto>,
+    /** Matches web's `userPreferences: string[]` (`ChatInterface.tsx:579`); an empty list has the
+     *  same server-side effect as the web omitting the field entirely. */
+    val userPreferences: List<String> = emptyList(),
+    /** Matches web's `responseStyle` (`ChatInterface.tsx:580`, `route.ts`'s `rs.tone`/`rs.length`).
+     *  Null tone/length falls through the backend's checks the same as the web omitting the field. */
+    val responseStyle: ResponseStyleDto? = null,
+    /** Device location for search bias — mirrors web's `userLocation: {lat,lng,address}`
+     *  (`ChatInterface.tsx:580`, `route.ts:72`). Omitted (encodeDefaults=false) when unavailable,
+     *  which the backend treats identically to the web sending no location. */
+    val userLocation: UserLocationDto? = null,
 )
+
+@Serializable
+data class ResponseStyleDto(val tone: String? = null, val length: String? = null)
+
+@Serializable
+data class UserLocationDto(val lat: Double, val lng: Double, val address: String? = null)
 
 /**
  * [content] is [JsonElement] rather than `String` because `/api/chat` accepts two shapes on the

@@ -58,13 +58,50 @@ android {
         )
     }
 
+    // Release signing (Production Readiness Sprint) — no signingConfigs block existed at all
+    // before this, which is a hard Play Store submission blocker (an unsigned release build
+    // can't be uploaded). Safe when absent: with none of the four properties supplied,
+    // signingConfigs stays empty and `release` builds exactly as it did before (unsigned,
+    // installable only after a separate signing step) — this only activates once real values are
+    // supplied via `-PTAPPYAI_RELEASE_KEYSTORE_PATH=... -PTAPPYAI_RELEASE_KEYSTORE_PASSWORD=...
+    // -PTAPPYAI_RELEASE_KEY_ALIAS=... -PTAPPYAI_RELEASE_KEY_PASSWORD=...` (or gradle.properties),
+    // the same override convention already used for TAPPYAI_SUPABASE_URL etc. above. The real
+    // keystore file itself is never committed — same `.jks`/`.keystore` .gitignore rule as always.
+    val releaseKeystorePath = project.findProperty("TAPPYAI_RELEASE_KEYSTORE_PATH") as String?
+    val releaseKeystorePassword = project.findProperty("TAPPYAI_RELEASE_KEYSTORE_PASSWORD") as String?
+    val releaseKeyAlias = project.findProperty("TAPPYAI_RELEASE_KEY_ALIAS") as String?
+    val releaseKeyPassword = project.findProperty("TAPPYAI_RELEASE_KEY_PASSWORD") as String?
+    val hasReleaseSigningConfig = listOf(
+        releaseKeystorePath, releaseKeystorePassword, releaseKeyAlias, releaseKeyPassword,
+    ).all { !it.isNullOrBlank() }
+
+    signingConfigs {
+        if (hasReleaseSigningConfig) {
+            create("release") {
+                storeFile = file(releaseKeystorePath!!)
+                storePassword = releaseKeystorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             isMinifyEnabled = false
             isDebuggable = true
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3000/\"")
+            // Defaults to the emulator's host-loopback dev server. Override with
+            // -PTAPPYAI_API_BASE_URL_DEBUG=https://host/ to point a debug build at a real HTTPS
+            // backend (e.g. Owner UAT on a physical phone, where 10.0.2.2 is unreachable). Must end
+            // in "/" and use the final (non-redirecting) host so the JWT isn't dropped on a redirect.
+            // Build config only — no business-logic change.
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"${project.findProperty("TAPPYAI_API_BASE_URL_DEBUG") ?: "http://10.0.2.2:3000/"}\""
+            )
         }
         create("staging") {
             initWith(getByName("debug"))
@@ -85,6 +122,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
+            if (hasReleaseSigningConfig) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField(
                 "String",
@@ -111,6 +151,38 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+}
+
+// Round-3 audit fix: with none of these -PTAPPYAI_* properties supplied, `release`'s
+// buildConfigFields (above) silently fall back to non-resolving placeholder values and
+// assembleRelease/bundleRelease still succeed — shipping an APK/AAB with no working login, no
+// API calls, and a broken WebView origin check. The signing props are gated for the same reason:
+// without them `hasReleaseSigningConfig` is false and the release variant produces an UNSIGNED
+// artifact instead of failing. Only release-variant build/bundle tasks are gated; debug/staging
+// (which have their own real, non-placeholder defaults and debug signing) are unaffected.
+tasks.matching { it.name in setOf("assembleRelease", "bundleRelease") }.configureEach {
+    doFirst {
+        val required = listOf(
+            "TAPPYAI_SUPABASE_URL",
+            "TAPPYAI_SUPABASE_ANON_KEY",
+            "TAPPYAI_GOOGLE_WEB_CLIENT_ID",
+            "TAPPYAI_WEB_APP_URL",
+            "TAPPYAI_API_BASE_URL_RELEASE",
+            "TAPPYAI_RELEASE_KEYSTORE_PATH",
+            "TAPPYAI_RELEASE_KEYSTORE_PASSWORD",
+            "TAPPYAI_RELEASE_KEY_ALIAS",
+            "TAPPYAI_RELEASE_KEY_PASSWORD",
+        )
+        val missing = required.filter { (project.findProperty(it) as String?).isNullOrBlank() }
+        if (missing.isNotEmpty()) {
+            throw GradleException(
+                "Refusing to build a release APK/AAB with placeholder or unsigned configuration. " +
+                    "Missing gradle properties: ${missing.joinToString(", ")}. " +
+                    "Supply them via -P<name>=... or gradle.properties before running " +
+                    "assembleRelease/bundleRelease."
+            )
         }
     }
 }
@@ -147,9 +219,13 @@ dependencies {
     // Real audio playback for the Music feature — the AudioPlayer seam's ExoPlayer implementation.
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.common)
+    implementation(libs.media3.ui)
+    // Device location (FusedLocationProvider) for chat location bias / Nearby / For-You city boost.
+    implementation(libs.play.services.location)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
