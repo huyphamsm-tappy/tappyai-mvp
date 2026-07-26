@@ -24,8 +24,12 @@ Build/test: PowerShell only. `JAVA_HOME=C:\Program Files\Android\Android Studio\
 **→ ALL NON-BLOCKED P1 ITEMS DONE.** (Bank content transcribed verbatim from prod by worktree agents into ZodiacBanks/CanChiBanks/FortuneData/LifetimeData.)
 
 ## Remaining
-### P2 (doable, client-side)
-- P2-1 Chat `/api/suggested-prompts` chips · P2-3 Reviews 300ms video watchdog · P2-5 in-feed attached-sound playback · P2-6 Explore Users search + optimistic follow · P2-7 gender persistence (Supabase auth metadata) · P2-8 auth providers from `/api/config` · P2-9 upload limits/freemium from `/api/config` · P2-10 `/api/track` telemetry · P2-12 Translate TTS voice-check bug · P2-2 remainder (SavePlaceButton, history GET-by-id; userLocation already done via P1-6).
+### P2 done
+- **P2-3** — 300ms self-healing video watchdog. `1d6b3b7`
+- **P2-12** — Translate TTS checks setLanguage(), never reads wrong-language. `dc7d9b0`
+
+### P2 (doable, client-side — remaining)
+- P2-1 Chat `/api/suggested-prompts` chips · P2-5 in-feed attached-sound playback · P2-6 Explore Users search + optimistic follow · P2-7 gender persistence (Supabase auth metadata) · P2-8 auth providers from `/api/config` · P2-9 upload limits/freemium from `/api/config` · P2-10 `/api/track` telemetry · P2-2 remainder (SavePlaceButton, history GET-by-id; userLocation already done via P1-6).
 ### P2 (needs backend / flag to owner)
 - P2-4 liked-reviews collection (needs a source endpoint) · P2-13 inferFromBooking RLS (a Web/backend bug, not client).
 ### P3 polish
