@@ -19,11 +19,15 @@ import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.auth.user.UserSession
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
@@ -106,7 +110,12 @@ class AuthRepository @Inject constructor(
                 }
             }
         )
-    }
+        // Round-2 audit fix: without this, the Keystore-backed token reads and importSession(...)
+        // above run on whatever dispatcher the collector uses — AppNavHostViewModel collects via
+        // viewModelScope.stateIn(...), whose default dispatcher is Main.immediate — blocking the
+        // main thread on every cold start for a previously-signed-in user, visibly janking the
+        // splash-to-loading-spinner transition.
+    }.flowOn(Dispatchers.IO)
 
     init {
         // Keep EncryptedTokenStorage in sync when the Supabase SDK silently refreshes the
@@ -147,6 +156,10 @@ class AuthRepository @Inject constructor(
         // the redirect target in the magic-link email, so tapping "Sign in" opens the app.
         supabaseClient.auth.signInWith(OTP, redirectUrl = "tappyai://auth-callback") {
             this.email = email
+            // Web parity (login/page.tsx:188-191 `shouldCreateUser: true`): create the account for a
+            // first-time email. supabase-kt's OTP `createUser` defaults to FALSE (the inverse of
+            // supabase-js), which would silently fail email signup for a never-seen address.
+            this.createUser = true
         }
     }.logOnError("sendEmailOtp")
 
@@ -207,6 +220,23 @@ class AuthRepository @Inject constructor(
      */
     fun currentUserId(): String? =
         tokenProvider.getAccessToken()?.let { JwtDecoder.decode(it)?.subject }
+
+    /**
+     * Reads the signed-in user's `gender` from Supabase auth metadata — the same place the web reads
+     * it (`user_metadata.gender`, `profile/preferences/page.tsx`). Best-effort: null when no user is
+     * loaded yet (populated after the first save, since [updateGender] refreshes the local user).
+     */
+    fun currentGender(): String? =
+        supabaseClient.auth.currentUserOrNull()?.userMetadata?.get("gender")?.jsonPrimitive?.contentOrNull
+
+    /**
+     * Persists `gender` to Supabase auth metadata via `auth.updateUser({ data: { gender } })` — the
+     * exact web save path (`profile/preferences/page.tsx:111`). The `/api/preferences` endpoint has
+     * no gender field, so this is the only place it can live; without it the selection was lost.
+     */
+    suspend fun updateGender(gender: String): Result<Unit> = runCatching {
+        supabaseClient.auth.updateUser { data { put("gender", gender) } }
+    }
 
     private fun <T> NetworkResult<T>.logOnError(operation: String): NetworkResult<T> = also {
         if (it is NetworkResult.Error) {

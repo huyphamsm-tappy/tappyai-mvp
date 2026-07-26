@@ -18,7 +18,15 @@ import com.tappyai.app.R
 
 enum class BudgetLevel { Cheap, Mid, High }
 
-enum class Gender { Female, Male }
+/** [wire] is the value stored in Supabase auth metadata, matching the web (`'male' | 'female'`). */
+enum class Gender(val wire: String) {
+    Female("female"),
+    Male("male");
+
+    companion object {
+        fun fromWire(value: String?): Gender? = entries.firstOrNull { it.wire == value }
+    }
+}
 
 data class BudgetOption(val level: BudgetLevel, val emoji: String, val label: String, val desc: String)
 
