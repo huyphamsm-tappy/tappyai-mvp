@@ -18,8 +18,20 @@ Build/test: PowerShell only. `JAVA_HOME=C:\Program Files\Android\Android Studio\
 - **P1-Deals** — partner_deals model + promo UI (badge/countdown/voucher) + click counter. `a17ce84` (test: PromoCountdownTest)
 
 - **P2-11** — Full 78-card tarot deck (22 major + 56 generated minor). `59ea9e2` (test: TarotDeckTest)
+- **P1-7** — Fortune deterministic engine (djb2, golden-tested) + zodiac/tu-vi period readings + lucky number/color + Ngũ Hành + aligned elements. `9e261d2` (test: FortuneEngineTest)
+- **P1-8, P1-9** — Tu-vi Lifetime + By-Year tabs (full birth date, 4 life stages, year picker + can-chi compat + 12-month breakdown). `06292c1` (test: FortuneTuViEngineTest)
+
+**→ ALL NON-BLOCKED P1 ITEMS DONE.** (Bank content transcribed verbatim from prod by worktree agents into ZodiacBanks/CanChiBanks/FortuneData/LifetimeData.)
 
 ## Remaining
+### P2 (doable, client-side)
+- P2-1 Chat `/api/suggested-prompts` chips · P2-3 Reviews 300ms video watchdog · P2-5 in-feed attached-sound playback · P2-6 Explore Users search + optimistic follow · P2-7 gender persistence (Supabase auth metadata) · P2-8 auth providers from `/api/config` · P2-9 upload limits/freemium from `/api/config` · P2-10 `/api/track` telemetry · P2-12 Translate TTS voice-check bug · P2-2 remainder (SavePlaceButton, history GET-by-id; userLocation already done via P1-6).
+### P2 (needs backend / flag to owner)
+- P2-4 liked-reviews collection (needs a source endpoint) · P2-13 inferFromBooking RLS (a Web/backend bug, not client).
+### P3 polish
+- dead CachedContextEntity cleanup, other polish items in gap report §2 P3.
+
+## OLD-Remaining note (superseded):
 - **P1-7/8/9 Fortune engine** — the big content-heavy port (~500 VN strings: deterministic djb2 engine, zodiac/tu-vi banks + lucky number/color, Tu-vi Lifetime + By-Year tabs, Ngũ Hành). Full spec at `spec_fortune.md`. NEXT MAJOR TASK — needs a focused pass (hash-parity traps §1.1 abs + §1.4 seed ids incl. `ty2`; ISO-week/UTC+7 key). Highest-value gate = a golden cross-platform determinism test.
 - **P2 items** (suggested-prompts, video watchdog, liked-reviews, gender persistence, /api/config limits, TTS voice-check, in-feed attached sound, Users search, dead CachedContextEntity cleanup, /api/track). Some already noted in gap report.
 - **P3 polish.**
