@@ -10,21 +10,31 @@ data class DealsResponseDto(val deals: List<DealDto> = emptyList())
 
 @Serializable
 data class DealDto(
-    val title: String = "",
+    val id: String = "",
+    val partnerSlug: String = "",
+    val partnerName: String = "",
+    val partnerType: String = "",
     val category: String = "",
-    val discount: String = "",
-    val url: String = "",
-    val source: String = "",
-    val emoji: String = "",
-    val badge: String? = null,
+    val title: String = "",
+    val description: String? = null,
+    val officialUrl: String = "",
+    val bannerImage: String? = null,
+    val logoImage: String? = null,
+    val isFeatured: Boolean = false,
+    val discountLabel: String? = null,
+    val voucherCode: String? = null,
+    val endAt: String? = null,
 )
 
 fun DealDto.toDomain(): Deal = Deal(
-    title = title,
+    id = id,
+    partnerName = partnerName,
     category = category,
-    discount = discount,
-    url = url,
-    source = source,
-    emoji = emoji,
-    badge = badge,
+    title = title,
+    description = description,
+    officialUrl = officialUrl,
+    logoImage = logoImage,
+    discountLabel = discountLabel,
+    voucherCode = voucherCode,
+    endAt = endAt,
 )

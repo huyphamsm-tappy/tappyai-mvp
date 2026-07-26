@@ -1,16 +1,21 @@
 package com.tappyai.app.deals
 
 /**
- * One curated deal card — mirrors the web's `Deal` type (`src/lib/shopee-deals.ts`) exactly.
- * [badge] is an optional "HOT"/"MỚI" callout; there is no image/expiry field on the web model,
- * so none exists here either (no fabricated urgency/media per the web's own MFS 3.10 note).
+ * One curated partner deal — mirrors the web PRODUCTION `PartnerDeal` public shape
+ * (`src/lib/deals/partnerDeals.ts`, admin-managed `partner_deals` rows). The old hardcoded
+ * "shopee-deals" model (discount/emoji/source/badge) is gone on prod; this is the current contract.
+ * Optional promo fields ([discountLabel]/[voucherCode]/[endAt]) drive the badge / voucher chip /
+ * countdown, each shown only when present.
  */
 data class Deal(
-    val title: String,
+    val id: String,
+    val partnerName: String,
     val category: String,
-    val discount: String,
-    val url: String,
-    val source: String,
-    val emoji: String,
-    val badge: String?,
+    val title: String,
+    val description: String?,
+    val officialUrl: String,
+    val logoImage: String?,
+    val discountLabel: String?,
+    val voucherCode: String?,
+    val endAt: String?,
 )

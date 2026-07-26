@@ -15,4 +15,10 @@ class RealDealsRepository @Inject constructor(
 
     override suspend fun getDeals(): NetworkResult<List<Deal>> =
         safeApiCall { api.getDeals().deals.map { it.toDomain() } }
+
+    // Intentionally result-ignoring (no safeApiCall): the counter is best-effort and must never
+    // surface to the UI or block the link, matching the web's `.catch(() => {})`.
+    override suspend fun recordClick(dealId: String) {
+        runCatching { api.postDealClick(dealId) }
+    }
 }

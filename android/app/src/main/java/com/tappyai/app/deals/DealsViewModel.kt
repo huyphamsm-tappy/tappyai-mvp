@@ -55,6 +55,12 @@ class DealsViewModel @Inject constructor(
 
     fun retry() = load()
 
+    /** Fire-and-forget click counter, launched as the card opens (the screen opens the URL itself,
+     *  regardless of this result — web parity: the POST must never block the link). */
+    fun onDealOpen(deal: Deal) {
+        viewModelScope.launch { repository.recordClick(deal.id) }
+    }
+
     private companion object {
         const val TAG = "DealsViewModel"
     }

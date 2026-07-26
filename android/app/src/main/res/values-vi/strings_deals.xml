@@ -6,4 +6,13 @@
     <string name="deals_empty_message">Quay lại sau để xem ưu đãi mới.</string>
     <string name="deals_opens_externally_description">Mở bên ngoài ứng dụng</string>
     <string name="deals_category_source_format">%1$s · qua %2$s</string>
+    <string name="deals_via_source">qua %1$s</string>
+    <string name="deals_ending_soon">🔥 Sắp hết hạn</string>
+    <string name="deals_day_left">Còn 1 ngày</string>
+    <string name="deals_days_left">Còn %1$d ngày</string>
+    <string name="deals_voucher_label">Mã</string>
+    <string name="deals_copy_code">Sao chép mã</string>
+    <string name="deals_code_copied">Đã sao chép!</string>
+    <string name="deals_subtitle">Tappy chọn lọc %1$d ưu đãi tốt nhất — cập nhật mỗi ngày lúc 7:30 sáng</string>
+    <string name="deals_disclosure">Đây là ưu đãi từ các nền tảng TMĐT/đối tác — Tappy tổng hợp giúp bạn, không phải quảng cáo trả tiền. Giá &amp; ưu đãi theo công bố của nền tảng, có thể thay đổi — bạn tự kiểm tra khi mua.</string>
 </resources>
