@@ -221,7 +221,7 @@ private fun EqualResult(totalNum: Double, activeTip: Double, grandTotal: Double,
                 Text("${formatSplitAmount(perPerson)} đ", color = Color.White, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Black)
                 if (activeTip > 0) {
                     Text(
-                        stringResource(R.string.splitbill_includes_tip, formatSplitAmount(activeTip), formatSplitAmount(grandTotal)),
+                        stringResource(R.string.splitbill_includes_tip, formatTipPercent(activeTip), formatSplitAmount(grandTotal)),
                         color = Color.White.copy(alpha = 0.7f),
                         style = MaterialTheme.typography.bodySmall,
                     )

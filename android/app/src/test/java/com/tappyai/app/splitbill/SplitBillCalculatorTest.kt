@@ -45,4 +45,13 @@ class SplitBillCalculatorTest {
         assertEquals(230_000.0, SplitBillCalculator.personShare(200_000.0, 15.0), 0.01)
         assertEquals(200_000.0, SplitBillCalculator.personShare(200_000.0, 0.0), 0.01)
     }
+
+    @Test
+    fun `tip percent renders like web String(activeTip) not as currency`() {
+        // Whole percents show no decimal (web String(10) === "10").
+        assertEquals("10", formatTipPercent(10.0))
+        assertEquals("0", formatTipPercent(0.0))
+        // A fractional custom tip keeps its decimal — NOT rounded to an integer like formatSplitAmount.
+        assertEquals("12.5", formatTipPercent(12.5))
+    }
 }

@@ -29,6 +29,7 @@ data class MemoryDto(
     val preferences: PreferencesDto? = null,
     val budget: Map<String, BudgetValueDto> = emptyMap(),
     val history: List<String> = emptyList(),
+    @SerialName("updated_at") val updatedAt: String? = null,
 )
 
 @Serializable
@@ -82,6 +83,7 @@ fun MemoryDto.toDomain(): Memory = Memory(
         BudgetItem(category = category, min = value.min ?: 0, max = value.max ?: 0)
     },
     history = history,
+    updatedAt = updatedAt,
 )
 
 fun Memory.toPatchDto(): MemoryPatchDto = MemoryPatchDto(

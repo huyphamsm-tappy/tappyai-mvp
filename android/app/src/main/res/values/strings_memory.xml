@@ -35,6 +35,7 @@
     <string name="memory_label_topics">Topics you ask Tappy</string>
     <string name="memory_fact_count">%1$d things Tappy remembers about you</string>
     <string name="memory_fact_count_subtitle">Updates automatically after each chat</string>
+    <string name="memory_updated_format">Updated %1$s</string>
     <string name="memory_remove_tag_cd">Remove %1$s</string>
     <string name="memory_clear_title">Clear memory</string>
     <string name="memory_clear_message">Tappy will forget everything and start over with you.</string>

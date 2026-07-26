@@ -39,3 +39,9 @@ fun formatSplitAmount(value: Double): String {
     nf.maximumFractionDigits = 0
     return nf.format(value)
 }
+
+/** The tip PERCENT label, mirroring web `String(activeTip)`: a whole percent shows with no decimal
+ *  (10 → "10"), a fractional custom tip keeps its decimal (12.5 → "12.5"). Not currency-formatted —
+ *  it is a percentage, so it must not be rounded to an integer or thousands-grouped. */
+fun formatTipPercent(value: Double): String =
+    if (value % 1.0 == 0.0) value.toLong().toString() else value.toString()

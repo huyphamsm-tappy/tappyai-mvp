@@ -17,6 +17,9 @@ data class Memory(
     val preferences: MemoryPreferences,
     val budget: List<BudgetItem>,
     val history: List<String>,
+    /** ISO-8601 last-updated timestamp from the backend, shown in the fact-count banner subtitle.
+     *  Null when the row has never been written (web falls back to the "updates automatically" copy). */
+    val updatedAt: String? = null,
 )
 
 data class MemoryPreferences(
@@ -29,17 +32,24 @@ data class MemoryPreferences(
 
 data class BudgetItem(val category: String, val min: Int, val max: Int)
 
-/** Response-style personalization (web `tappy_response_style`) — user preference, not memory data. */
-enum class ResponseTone(@StringRes val labelRes: Int) {
-    Friendly(R.string.memory_tone_friendly),
-    Neutral(R.string.memory_tone_neutral),
-    Formal(R.string.memory_tone_formal),
+/** Response-style personalization (web `tappy_response_style`) — user preference, not memory data.
+ *  [wireValue] is the exact token the web's localStorage/`/api/chat` `responseStyle` field uses
+ *  (`src/app/profile/tappy-knows/page.tsx`'s `update()`, `src/app/api/chat/route.ts`'s `rs.tone`). */
+enum class ResponseTone(@StringRes val labelRes: Int, val wireValue: String) {
+    Friendly(R.string.memory_tone_friendly, "friendly"),
+    Neutral(R.string.memory_tone_neutral, "neutral"),
+    Formal(R.string.memory_tone_formal, "formal"),
 }
 
-enum class ResponseLength(@StringRes val labelRes: Int) {
-    Short(R.string.memory_length_short),
-    Detailed(R.string.memory_length_detailed),
+enum class ResponseLength(@StringRes val labelRes: Int, val wireValue: String) {
+    Short(R.string.memory_length_short, "short"),
+    Detailed(R.string.memory_length_detailed, "detailed"),
 }
+
+/** [PreferencesDataSource][com.tappyai.core.datastore.PreferencesDataSource] keys shared between
+ *  [MemoryViewModel] (writer) and `ChatViewModel` (reader) for the persisted response style. */
+const val RESPONSE_STYLE_TONE_KEY = "response_style_tone"
+const val RESPONSE_STYLE_LENGTH_KEY = "response_style_length"
 
 @Composable
 fun ResponseTone.label(): String = stringResource(labelRes)
@@ -59,6 +69,17 @@ fun Memory.factCount(): Int {
     n += budget.size
     n += minOf(history.size, 5)
     return n
+}
+
+/** The banner's last-updated date, mirroring web `new Date(updated_at).toLocaleDateString('vi-VN')`
+ *  → `dd/MM/yyyy`. Returns null on an unparseable/absent timestamp so the caller shows the
+ *  "updates automatically" fallback (web parity). Defensive: never throws. */
+fun formatMemoryUpdated(iso: String?): String? {
+    if (iso.isNullOrBlank()) return null
+    return runCatching {
+        java.time.OffsetDateTime.parse(iso).toLocalDate()
+            .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+    }.getOrNull()
 }
 
 /** `200k–500k` / `under 500k`, mirroring the web `fmtVND` + `BudgetLabel` (kept as VND — it's data). */

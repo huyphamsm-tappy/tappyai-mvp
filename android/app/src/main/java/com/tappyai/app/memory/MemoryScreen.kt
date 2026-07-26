@@ -54,6 +54,7 @@ import com.tappyai.app.R
 import com.tappyai.core.designsystem.component.TappyButton
 import com.tappyai.core.designsystem.component.TappyButtonVariant
 import com.tappyai.core.designsystem.component.TappyCard
+import com.tappyai.core.designsystem.component.TappyLoadingIndicator
 import com.tappyai.core.designsystem.theme.TappyCategoryColor
 import com.tappyai.core.designsystem.theme.TappyContainers
 import com.tappyai.core.designsystem.theme.TappyMinTouchTarget
@@ -100,17 +101,22 @@ fun MemoryScreen(
                 onRefresh = viewModel::refresh,
             )
 
-            ResponseStyleCard(
-                tone = viewModel.tone,
-                length = viewModel.length,
-                onTone = viewModel::selectTone,
-                onLength = viewModel::selectLength,
-            )
-
-            if (memory == null) {
-                EmptyState(cleared = viewModel.cleared, onStartChat = onStartChat)
+            if (viewModel.isLoading) {
+                // Web parity (tappy-knows/page.tsx:241-246): during the initial GET show ONLY the
+                // spinner — the ResponseStyleCard and content/empty state are gated behind !loading.
+                TappyLoadingIndicator()
             } else {
-                MemoryContent(memory = memory, editing = editing, viewModel = viewModel)
+                ResponseStyleCard(
+                    tone = viewModel.tone,
+                    length = viewModel.length,
+                    onTone = viewModel::selectTone,
+                    onLength = viewModel::selectLength,
+                )
+                if (memory == null) {
+                    EmptyState(cleared = viewModel.cleared, onStartChat = onStartChat)
+                } else {
+                    MemoryContent(memory = memory, editing = editing, viewModel = viewModel)
+                }
             }
         }
     }
@@ -221,7 +227,7 @@ private fun MemoryContent(memory: Memory, editing: Boolean, viewModel: MemoryVie
     val prefs = memory.preferences
 
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
-        FactCountBanner(count = memory.factCount())
+        FactCountBanner(count = memory.factCount(), updatedAt = memory.updatedAt)
 
         memory.locationBase?.let {
             MemoryCard(icon = Icons.Filled.Place, label = stringResource(R.string.memory_label_area), iconColor = cat.blue.accent) {
@@ -340,8 +346,11 @@ private fun MemoryContent(memory: Memory, editing: Boolean, viewModel: MemoryVie
 }
 
 @Composable
-private fun FactCountBanner(count: Int) {
+private fun FactCountBanner(count: Int, updatedAt: String?) {
     val onGradient = MaterialTheme.colorScheme.onPrimary
+    // Web parity (tappy-knows/page.tsx:273-275): show the last-updated date when present,
+    // otherwise the "updates automatically after each chat" fallback.
+    val formattedDate = remember(updatedAt) { formatMemoryUpdated(updatedAt) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -367,7 +376,11 @@ private fun FactCountBanner(count: Int) {
                     color = onGradient,
                 )
                 Text(
-                    text = stringResource(R.string.memory_fact_count_subtitle),
+                    text = if (formattedDate != null) {
+                        stringResource(R.string.memory_updated_format, formattedDate)
+                    } else {
+                        stringResource(R.string.memory_fact_count_subtitle)
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = onGradient.copy(alpha = 0.8f),
                 )
