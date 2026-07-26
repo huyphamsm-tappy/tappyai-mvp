@@ -199,7 +199,6 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:security"))
     implementation(project(":core:network"))
-    implementation(project(":core:database"))
     implementation(project(":features:auth"))
 
     // Real build error found during Phase 1B.1: AppRoute.kt uses @Serializable but this module
