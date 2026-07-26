@@ -1,0 +1,6 @@
+# Gradle wrapper: the POSIX launcher MUST stay LF or it fails on Linux/CI.
+gradlew            text eol=lf
+gradlew.bat        text eol=crlf
+*.jar              binary
+*.keystore         binary
+*.jks              binary
