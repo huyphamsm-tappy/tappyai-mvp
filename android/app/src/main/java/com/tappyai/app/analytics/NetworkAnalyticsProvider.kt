@@ -26,6 +26,7 @@ import javax.inject.Singleton
 class NetworkAnalyticsProvider @Inject constructor(
     private val api: TrackApi,
     private val logger: LoggerProvider,
+    private val envelopeBuilder: AnalyticsEnvelopeBuilder,
 ) : AnalyticsProvider {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -43,7 +44,27 @@ class NetworkAnalyticsProvider @Inject constructor(
     private fun send(eventType: String, properties: Map<String, Any?>) {
         val metadata = toJsonObject(properties)
         scope.launch {
-            runCatching { api.track(TrackRequestDto(listOf(TrackEventDto(eventType, metadata)))) }
+            // Attach the shared envelope (web parity) — flat fields projected from one detection.
+            val env = envelopeBuilder.build()
+            val d = env.device
+            val event = TrackEventDto(
+                eventType = eventType,
+                metadata = metadata,
+                eventId = env.eventId,
+                schemaVersion = 1,
+                anonId = env.anonId,
+                platform = d.platform,
+                appVersion = d.appVersion,
+                buildNumber = d.buildNumber,
+                osName = d.osName,
+                osVersion = d.osVersion,
+                deviceType = d.deviceType,
+                language = d.locale,
+                sessionId = env.sessionId,
+                clientTimestamp = env.clientTimestamp,
+                deviceContext = d,
+            )
+            runCatching { api.track(TrackRequestDto(listOf(event))) }
                 .onFailure { logger.w(TAG, "track '$eventType' failed: ${it.message}") }
         }
     }
