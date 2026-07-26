@@ -148,6 +148,9 @@ class RealChatRepository @Inject constructor(
         val plan = planMatch?.let {
             try {
                 json.decodeFromString<com.tappyai.app.chat.TripPlan>(it.groupValues[1].trim())
+                    // Web parity (ChatInterface.tsx parsePlan): a block with no `days` array is a
+                    // parse-failure → render plain text, not an empty card.
+                    .takeIf { p -> p.days.isNotEmpty() }
             } catch (e: Exception) {
                 logger.w(TAG, "Failed to parse TAPPY_PLAN payload: ${e.message}")
                 null
