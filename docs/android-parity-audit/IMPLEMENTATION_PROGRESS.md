@@ -14,6 +14,10 @@ Build/test: PowerShell only. `JAVA_HOME=C:\Program Files\Android\Android Studio\
 - **P1-3, P1-4, P1-5** — Reviews comment replies + reactions + feed back-restore by clip id. `3093d5e` (test: CommentWireContractTest)
 - **P1-1, P1-2** — Chat incremental token rendering + [TAPPY_PLAN] itinerary card. `8c12cbd` (test: ChatPlanTest; new TripPlan/TripPlanCard/ChatStreaming)
 - **P1-10** — Split Bill calculator (new `splitbill/` package, Home quick-action). `6e56884` (test: SplitBillCalculatorTest)
+- **P1-6** — Location capability (play-services-location + permissions + LocationRepository) wired to chat userLocation bias. `b28ecd4` (test: ChatLocationWireTest)
+
+## Remaining P1 (doable): Fortune (P1-7/8/9, large port), Deals (re-emerged). Then P2, P3.
+## Pause points: FCM (P1-13, needs google-services.json), Zalo (P1-B1), anonymous tier (P1-B2).
 
 ## Audit correction (from prod-worktree re-verification, gap report §8)
 - **Deals is a REAL P1 gap** (prod has `POST /api/deals/[id]/click` + promo UI: discount badge, countdown, voucher chip). Was wrongly "N/A". Must audit Android Deals vs prod `partner_deals` + `DealsView.tsx`.
