@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splitbill_title">Chia tiền</string>
+    <string name="splitbill_total_label">Tổng hóa đơn</string>
+    <string name="splitbill_total_placeholder">Nhập số tiền…</string>
+    <string name="splitbill_people_label">Số người</string>
+    <string name="splitbill_people_unit">người</string>
+    <string name="splitbill_people_increment">Thêm người</string>
+    <string name="splitbill_people_decrement">Bớt người</string>
+    <string name="splitbill_tip_label">Tip</string>
+    <string name="splitbill_tip_none">Không tip</string>
+    <string name="splitbill_tip_custom_placeholder">Tùy chỉnh</string>
+    <string name="splitbill_tip_short">Tip</string>
+    <string name="splitbill_mode_equal">Chia đều</string>
+    <string name="splitbill_mode_custom">Tùy số tiền</string>
+    <string name="splitbill_per_person">Mỗi người trả</string>
+    <string name="splitbill_includes_tip">Đã gồm %1$s%% tip · tổng %2$s đ</string>
+    <string name="splitbill_bill">Hóa đơn</string>
+    <string name="splitbill_grand_total">Tổng</string>
+    <string name="splitbill_empty_prompt">Nhập tổng hóa đơn để xem chia tiền.</string>
+    <string name="splitbill_custom_hint">Nhập số tiền từng người; tip được cộng theo tỉ lệ.</string>
+    <string name="splitbill_amount_placeholder">Số tiền</string>
+    <string name="splitbill_total_after_tip">Tổng sau tip</string>
+    <string name="splitbill_add_person">Thêm người</string>
+    <string name="splitbill_remove_person">Xóa người</string>
+    <string name="splitbill_person_default">Người %1$d</string>
+    <string name="splitbill_disclaimer">Số làm tròn, chỉ mang tính tham khảo.</string>
+</resources>

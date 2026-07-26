@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splitbill_title">Split Bill</string>
+    <string name="splitbill_total_label">Bill total</string>
+    <string name="splitbill_total_placeholder">Enter amount…</string>
+    <string name="splitbill_people_label">Number of people</string>
+    <string name="splitbill_people_unit">people</string>
+    <string name="splitbill_people_increment">Add a person</string>
+    <string name="splitbill_people_decrement">Remove a person</string>
+    <string name="splitbill_tip_label">Tip</string>
+    <string name="splitbill_tip_none">No tip</string>
+    <string name="splitbill_tip_custom_placeholder">Custom</string>
+    <string name="splitbill_tip_short">Tip</string>
+    <string name="splitbill_mode_equal">Split equally</string>
+    <string name="splitbill_mode_custom">Custom amounts</string>
+    <string name="splitbill_per_person">Each person pays</string>
+    <string name="splitbill_includes_tip">Includes %1$s%% tip · total %2$s đ</string>
+    <string name="splitbill_bill">Bill</string>
+    <string name="splitbill_grand_total">Total</string>
+    <string name="splitbill_empty_prompt">Enter the bill total to see the split.</string>
+    <string name="splitbill_custom_hint">Enter each person\'s amount; tip is added proportionally.</string>
+    <string name="splitbill_amount_placeholder">Amount</string>
+    <string name="splitbill_total_after_tip">Total after tip</string>
+    <string name="splitbill_add_person">Add person</string>
+    <string name="splitbill_remove_person">Remove person</string>
+    <string name="splitbill_person_default">Person %1$d</string>
+    <string name="splitbill_disclaimer">Rounded estimate. For reference only.</string>
+</resources>

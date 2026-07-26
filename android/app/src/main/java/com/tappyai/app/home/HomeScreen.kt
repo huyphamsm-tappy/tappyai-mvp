@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.LocationOn
@@ -86,6 +87,7 @@ fun HomeScreen(
     onOpenGames: () -> Unit,
     onOpenScan: () -> Unit,
     onOpenVietWriter: () -> Unit,
+    onOpenSplitBill: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val suggestions by viewModel.suggestionsState.collectAsStateWithLifecycle()
@@ -107,7 +109,11 @@ fun HomeScreen(
                 .padding(TappySpacing.xl),
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xl),
         ) {
-            HomeHero(greeting = viewModel.greeting)
+            HomeHero(
+                greeting = viewModel.greeting,
+                greetingName = viewModel.greetingName,
+                avatarUrl = viewModel.profile?.avatarUrl,
+            )
             AskTappyCard(onClick = { onNavigateToTab(HomeTab.Chat) })
             QuickActionsSection(
                 onNavigateToTab = onNavigateToTab,
@@ -117,6 +123,7 @@ fun HomeScreen(
                 onOpenDeals = onOpenDeals,
                 onOpenGames = onOpenGames,
                 onOpenScan = onOpenScan,
+                onOpenSplitBill = onOpenSplitBill,
             )
             RecommendationsSection(onOpenRecommendations = onOpenRecommendations)
             FortuneSection(
@@ -133,19 +140,23 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeHero(greeting: String) {
+private fun HomeHero(greeting: String, greetingName: String?, avatarUrl: String?) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Identity placeholder — no signed-in user in this foundation. A blank name makes
-        // TappyAvatar render the neutral person icon, matching the Profile header's convention
-        // (UI Consistency Baseline v1: never fabricate a "Guest"/fake user). The greeting below
-        // is Home's own time-based launchpad greeting, not an identity claim.
-        TappyAvatar(name = "", size = TappyAvatarSize.HeaderUser)
+        // Web-parity-sync fix: previously always rendered the "not signed in" neutral icon and a
+        // name-less greeting regardless of auth state (`src/components/Header.tsx:77-90` shows the
+        // real avatar + first name next to the greeting once signed in). A blank name/null url
+        // still correctly falls back to the neutral placeholder (UI Consistency Baseline v1) when
+        // signed out.
+        TappyAvatar(name = greetingName.orEmpty(), imageUrl = avatarUrl, size = TappyAvatarSize.HeaderUser)
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = greeting, style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = if (greetingName != null) "$greeting, $greetingName" else greeting,
+                style = MaterialTheme.typography.titleLarge,
+            )
             // City placeholder — location is the (not-yet-built) location feature's concern; show
             // an honest "not set" affordance rather than a fabricated city.
             Row(
@@ -234,6 +245,7 @@ private fun QuickActionsSection(
     onOpenDeals: () -> Unit,
     onOpenGames: () -> Unit,
     onOpenScan: () -> Unit,
+    onOpenSplitBill: () -> Unit,
 ) {
     val actions = listOf(
         QuickAction(stringResource(R.string.home_quick_explore), Icons.Filled.Explore) { onNavigateToTab(HomeTab.Explore) },
@@ -244,6 +256,7 @@ private fun QuickActionsSection(
         QuickAction(stringResource(R.string.home_quick_games), Icons.Filled.SportsEsports) { onOpenGames() },
         QuickAction(stringResource(R.string.home_quick_currency), Icons.Filled.CurrencyExchange) { onOpenCurrency() },
         QuickAction(stringResource(R.string.home_quick_deals), Icons.Filled.LocalOffer) { onOpenDeals() },
+        QuickAction(stringResource(R.string.splitbill_title), Icons.Filled.Calculate) { onOpenSplitBill() },
     )
 
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {

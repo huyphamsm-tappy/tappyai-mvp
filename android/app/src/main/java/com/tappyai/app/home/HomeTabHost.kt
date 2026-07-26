@@ -26,6 +26,8 @@ import com.tappyai.app.recommendations.RecommendationsRoute
 import com.tappyai.app.recommendations.RecommendationsScreen
 import com.tappyai.app.scan.ScanRoute
 import com.tappyai.app.scan.ScanScreen
+import com.tappyai.app.splitbill.SplitBillRoute
+import com.tappyai.app.splitbill.SplitBillScreen
 import com.tappyai.app.translate.TranslateRoute
 import com.tappyai.app.translate.TranslateScreen
 import com.tappyai.app.vietwriter.VietWriterRoute
@@ -60,6 +62,7 @@ fun HomeTabHost(
                 onOpenGames = { navController.navigate(GamesRoute.Main) },
                 onOpenScan = { navController.navigate(ScanRoute.Main) },
                 onOpenVietWriter = { navController.navigate(VietWriterRoute.Main) },
+                onOpenSplitBill = { navController.navigate(SplitBillRoute.Main) },
             )
         }
         composable<RecommendationsRoute.Main> {
@@ -85,6 +88,9 @@ fun HomeTabHost(
         }
         composable<GamesRoute.Main> {
             GamesScreen(onBack = { navController.popBackStack() })
+        }
+        composable<SplitBillRoute.Main> {
+            SplitBillScreen(onBack = { navController.popBackStack() })
         }
         composable<MusicRoute.Library> {
             MusicLibraryScreen(
