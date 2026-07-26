@@ -12,7 +12,7 @@ data class TarotCard(
 
 data class DrawnCard(val card: TarotCard, val reversed: Boolean)
 
-val TAROT_DECK: List<TarotCard> = listOf(
+private val MAJOR_ARCANA: List<TarotCard> = listOf(
     TarotCard(
         id = 0, emoji = "🃏", nameVi = "Kẻ Ngốc",
         keywordsUpright = listOf("Khởi đầu", "Tự do", "Phiêu lưu"),
@@ -169,9 +169,70 @@ val TAROT_DECK: List<TarotCard> = listOf(
     ),
 )
 
+// ── Minor arcana (56) — generated from suit × rank templates, mirroring the web
+//    `buildMinorArcana()` (`src/lib/boi/tarotData.ts`). Ids continue after the 22 major arcana.
+private data class TarotSuit(val nameVi: String, val emoji: String, val domain: String)
+private data class TarotRank(
+    val nameVi: String,
+    val upright: String,
+    val reversed: String,
+    val kwUp: String,
+    val kwRev: String,
+)
+
+private val TAROT_SUITS = listOf(
+    TarotSuit("Gậy", "🔥", "công việc, đam mê và hành động"),
+    TarotSuit("Cốc", "💧", "tình cảm, cảm xúc và các mối quan hệ"),
+    TarotSuit("Kiếm", "🗡️", "tư duy, lời nói và các quyết định"),
+    TarotSuit("Tiền", "💰", "tài chính, vật chất và công việc thực tế"),
+)
+
+private val TAROT_RANKS = listOf(
+    TarotRank("Ace", "Một khởi đầu mới đầy tiềm năng đang mở ra", "Một cơ hội khởi đầu đang bị trì hoãn hoặc bỏ lỡ", "khởi đầu", "lỡ cơ hội"),
+    TarotRank("Hai", "Đến lúc cân nhắc một lựa chọn hoặc thiết lập sự hợp tác bước đầu", "Sự mất cân bằng hoặc do dự trước một lựa chọn quan trọng", "lựa chọn", "do dự"),
+    TarotRank("Ba", "Sự phát triển và hợp tác đang mang lại kết quả tích cực", "Sự hợp tác đang gặp trở ngại hoặc thiếu gắn kết", "hợp tác", "trở ngại"),
+    TarotRank("Bốn", "Nền tảng ổn định đang được thiết lập, mang lại cảm giác an toàn", "Sự ổn định đang trở thành trì trệ, cần một chút thay đổi", "ổn định", "trì trệ"),
+    TarotRank("Năm", "Một thử thách hoặc xung đột tạm thời xuất hiện, đòi hỏi sự khéo léo", "Mâu thuẫn đang kéo dài hơn cần thiết, nên tìm cách hóa giải sớm", "thử thách", "mâu thuẫn kéo dài"),
+    TarotRank("Sáu", "Sự hài hòa và hỗ trợ đang giúp mọi thứ dần hồi phục", "Sự mất cân bằng trong việc cho và nhận đang cần được điều chỉnh", "hài hòa", "mất cân bằng"),
+    TarotRank("Bảy", "Sự kiên trì và đánh giá lại tình hình sẽ giúp bạn đi đúng hướng", "Thiếu kiên nhẫn hoặc đánh giá sai tình hình có thể gây trở ngại", "kiên trì", "thiếu kiên nhẫn"),
+    TarotRank("Tám", "Mọi thứ đang chuyển động nhanh, đây là lúc hành động dứt khoát", "Tốc độ và sự vội vàng đang khiến bạn dễ mắc sai sót", "hành động nhanh", "vội vàng"),
+    TarotRank("Chín", "Bạn đang rất gần với thành quả mong muốn, hãy kiên trì thêm một chút", "Cảm giác mệt mỏi hoặc cô đơn xuất hiện ngay trước đích đến", "gần đạt được", "mệt mỏi"),
+    TarotRank("Mười", "Một chu kỳ đang hoàn thiện, mang lại kết quả rõ ràng và trọn vẹn", "Một chu kỳ kết thúc nhưng để lại gánh nặng cần giải quyết", "hoàn thiện", "gánh nặng"),
+    TarotRank("Pháp Sư Nhỏ (Page)", "Một tin tức mới hoặc cơ hội học hỏi đang đến với sự nhiệt huyết tươi mới", "Sự thiếu kinh nghiệm hoặc tin tức chưa chắc chắn cần được kiểm chứng", "khởi đầu học hỏi", "thiếu kinh nghiệm"),
+    TarotRank("Kỵ Sĩ (Knight)", "Hành động mạnh mẽ, quyết liệt theo đuổi mục tiêu đang được thúc đẩy", "Sự hấp tấp hoặc thiếu kế hoạch đang cản trở mục tiêu của bạn", "hành động mạnh mẽ", "hấp tấp"),
+    TarotRank("Hoàng Hậu (Queen)", "Sự trưởng thành, nuôi dưỡng và làm chủ cảm xúc đang dẫn dắt bạn", "Cảm xúc đang chi phối quá nhiều, cần lấy lại sự cân bằng nội tâm", "trưởng thành", "mất cân bằng cảm xúc"),
+    TarotRank("Vua (King)", "Sự làm chủ, tinh thông và uy tín đang giúp bạn dẫn dắt tốt mọi việc", "Quyền lực hoặc sự kiểm soát đang bị lạm dụng, cần điều chỉnh lại", "làm chủ", "lạm quyền"),
+)
+
+private fun buildMinorArcana(startId: Int): List<TarotCard> {
+    val cards = mutableListOf<TarotCard>()
+    var id = startId
+    for (suit in TAROT_SUITS) {
+        val domainFirst = suit.domain.substringBefore(",").trim()
+        for (rank in TAROT_RANKS) {
+            cards.add(
+                TarotCard(
+                    id = id++,
+                    emoji = suit.emoji,
+                    nameVi = "${rank.nameVi} ${suit.nameVi}",
+                    keywordsUpright = listOf(rank.kwUp, domainFirst),
+                    keywordsReversed = listOf(rank.kwRev, domainFirst),
+                    meaningUpright = "${rank.upright}, đặc biệt trong lĩnh vực ${suit.domain}.",
+                    meaningReversed = "${rank.reversed}, đặc biệt trong lĩnh vực ${suit.domain}.",
+                ),
+            )
+        }
+    }
+    return cards
+}
+
+/** The full 78-card deck: 22 major arcana + 56 generated minor arcana (web parity). */
+val TAROT_DECK: List<TarotCard> = MAJOR_ARCANA + buildMinorArcana(MAJOR_ARCANA.size)
+
 fun drawCards(count: Int): List<DrawnCard> {
     return TAROT_DECK
         .shuffled()
         .take(count)
-        .map { card -> DrawnCard(card = card, reversed = Math.random() < 0.4) }
+        // Web parity (tarotData.ts getRandomCards): reversed probability is 0.5, not 0.4.
+        .map { card -> DrawnCard(card = card, reversed = Math.random() < 0.5) }
 }
