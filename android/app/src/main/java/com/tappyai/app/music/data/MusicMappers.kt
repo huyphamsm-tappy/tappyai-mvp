@@ -5,6 +5,7 @@ import com.tappyai.app.music.MusicTrack
 import com.tappyai.app.music.MusicTracksPage
 import com.tappyai.app.music.MusicType
 import com.tappyai.app.music.SoundDetail
+import com.tappyai.app.music.SoundVideo
 import java.util.Locale
 
 fun MusicTrackDto.toDomain(): MusicTrack = MusicTrack(
@@ -49,4 +50,12 @@ fun SoundDetailResponseDto.toDomain(): SoundDetail = SoundDetail(
     followCount = followCount,
     followedByMe = followedByMe,
     trendingRank = trendingRank,
+    videos = videos.map { it.toDomain() },
+)
+
+fun SoundVideoDto.toDomain(): SoundVideo = SoundVideo(
+    id = id,
+    placeName = placeName,
+    thumbnail = thumbnail,
+    likeCount = likeCount,
 )

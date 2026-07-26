@@ -67,7 +67,38 @@ data class SoundDetail(
     val followCount: Int,
     val followedByMe: Boolean,
     val trendingRank: Int?,
+    val videos: List<SoundVideo>,
 )
+
+/** One review using a sound, for the Sound Detail "videos using this sound" grid — mirrors the web
+ *  `SoundVideo`. Tapping a tile opens the reused review detail, exactly like the web's `/reviews/{id}`
+ *  link. [thumbnail] is nullable so a missing thumbnail falls back to a placeholder. */
+data class SoundVideo(
+    val id: String,
+    val placeName: String,
+    val thumbnail: String?,
+    val likeCount: Int,
+)
+
+/**
+ * CC-BY attribution reconstructed from a curated track's audio URL — the legal credit CC-BY
+ * requires. Mirrors the web `attributionFor` (`src/app/sound/[trackId]/page.tsx`): Jamendo tracks
+ * are ingested with a `mp3d.jamendo.com/?trackid=<id>` URL, so the source + license are
+ * reconstructable. Returns null for non-Jamendo/unknown sources (no attribution line shown).
+ */
+data class SoundAttribution(val license: String, val source: String, val provider: String)
+
+private val JAMENDO_TRACK_REGEX = Regex("""mp3d\.jamendo\.com/\?trackid=(\d+)""")
+
+fun attributionFor(audioUrl: String?): SoundAttribution? {
+    val match = JAMENDO_TRACK_REGEX.find(audioUrl ?: "") ?: return null
+    val trackId = match.groupValues[1]
+    return SoundAttribution(
+        license = "CC-BY",
+        source = "https://www.jamendo.com/track/$trackId",
+        provider = "Jamendo",
+    )
+}
 
 /** One page of tracks from `/api/music/tracks` or `/api/music/tracks/search`. */
 data class MusicTracksPage(val tracks: List<MusicTrack>, val page: Int, val hasMore: Boolean)

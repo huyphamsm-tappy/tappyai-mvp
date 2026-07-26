@@ -57,6 +57,21 @@ data class SoundDetailResponseDto(
     val followCount: Int = 0,
     val followedByMe: Boolean = false,
     val trendingRank: Int? = null,
+    val videos: List<SoundVideoDto> = emptyList(),
+)
+
+/** One review that uses this sound, for the "videos using this sound" grid. Mirrors the web's
+ *  `SoundVideo` (`src/app/sound/[trackId]/page.tsx`); the backend route already emits this array
+ *  (`select id, place_name, body, thumbnail, ..., content_type, like_count`, camelCased server-side).
+ *  [thumbnail] is nullable — a missing thumbnail falls back to the note placeholder, never a fake. */
+@Serializable
+data class SoundVideoDto(
+    val id: String = "",
+    val placeName: String = "",
+    val body: String = "",
+    val thumbnail: String? = null,
+    val contentType: String = "photo",
+    val likeCount: Int = 0,
 )
 
 /** The track sub-object inside [SoundDetailResponseDto] — adds [musicType]/[playCount] that the

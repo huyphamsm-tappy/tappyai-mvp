@@ -14,7 +14,6 @@
     <string name="music_action_report_copyright">Report copyright</string>
     <string name="music_videos_section_title">Videos using this sound</string>
     <string name="music_videos_empty">No videos use this sound yet. Be the first!</string>
-    <string name="music_videos_count_pending_grid">%1$d video(s) use this sound.</string>
     <string name="music_error_title">Couldn\'t load</string>
     <string name="music_error_no_connectivity">No internet connection. Please check and try again.</string>
     <string name="music_error_timeout">The connection is too slow. Please try again.</string>

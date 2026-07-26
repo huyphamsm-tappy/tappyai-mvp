@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 /**
  * Routes for the Music flow, hosted inside the Home tab's nested NavHost (Home landing → Library →
- * Sound detail). Like `ProfileRoute`/`DiscoveryRoute`, an internal navigation space — never
- * emitted through the app-level navigator, and the 5-tab shell is untouched.
+ * Sound detail). Like `ProfileRoute`, an internal navigation space — never emitted through the
+ * app-level navigator, and the 5-tab shell is untouched.
  */
 sealed interface MusicRoute {
     @Serializable
@@ -19,4 +19,15 @@ sealed interface MusicRoute {
      *  route space rather than Profile's because Music is the only flow that reaches it. */
     @Serializable
     data object CopyrightPolicy : MusicRoute
+
+    /** Reused from the Reviews feature (`ReviewDetailScreen`) — reached from Sound Detail's "videos
+     *  using this sound" grid, mirroring the web's `/reviews/{id}` link. Hosted in this route space
+     *  (same pattern as `ProfileRoute.ReviewDetail`) so the Music flow keeps its own back stack. */
+    @Serializable
+    data class ReviewDetail(val reviewId: String) : MusicRoute
+
+    /** Reused from the Reviews feature (`ReviewProfileScreen`), reached from a [ReviewDetail]'s
+     *  avatar — mirrors `ProfileRoute.AuthorProfile`. */
+    @Serializable
+    data class AuthorProfile(val userId: String) : MusicRoute
 }

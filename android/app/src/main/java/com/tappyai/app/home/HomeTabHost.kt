@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.tappyai.app.currency.CurrencyRoute
 import com.tappyai.app.currency.CurrencyScreen
 import com.tappyai.app.deals.DealsRoute
@@ -19,6 +20,8 @@ import com.tappyai.app.music.MusicLibraryScreen
 import com.tappyai.app.music.MusicRoute
 import com.tappyai.app.profile.CopyrightPolicyScreen
 import com.tappyai.app.music.SoundDetailScreen
+import com.tappyai.app.reviews.ui.ReviewDetailScreen
+import com.tappyai.app.reviews.ui.ReviewProfileScreen
 import com.tappyai.app.recommendations.RecommendationsRoute
 import com.tappyai.app.recommendations.RecommendationsScreen
 import com.tappyai.app.scan.ScanRoute
@@ -93,10 +96,27 @@ fun HomeTabHost(
             SoundDetailScreen(
                 onBack = { navController.popBackStack() },
                 onOpenCopyrightPolicy = { navController.navigate(MusicRoute.CopyrightPolicy) },
+                onOpenReview = { reviewId -> navController.navigate(MusicRoute.ReviewDetail(reviewId)) },
             )
         }
         composable<MusicRoute.CopyrightPolicy> {
             CopyrightPolicyScreen(onBack = { navController.popBackStack() })
+        }
+        composable<MusicRoute.ReviewDetail> { entry ->
+            val route = entry.toRoute<MusicRoute.ReviewDetail>()
+            ReviewDetailScreen(
+                reviewId = route.reviewId,
+                onAvatarClick = { userId -> navController.navigate(MusicRoute.AuthorProfile(userId)) },
+                onBack = { navController.popBackStack() },
+            )
+        }
+        composable<MusicRoute.AuthorProfile> { entry ->
+            val route = entry.toRoute<MusicRoute.AuthorProfile>()
+            ReviewProfileScreen(
+                userId = route.userId,
+                onReviewClick = { review -> navController.navigate(MusicRoute.ReviewDetail(review.id)) },
+                onBack = { navController.popBackStack() },
+            )
         }
         composable<FortuneRoute.Hub> {
             FortuneHubScreen(

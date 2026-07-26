@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -42,11 +43,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import com.tappyai.core.designsystem.component.TappyImage
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.core.common.UiState
@@ -69,6 +73,7 @@ import com.tappyai.core.designsystem.theme.TappySpacing
 fun SoundDetailScreen(
     onBack: () -> Unit,
     onOpenCopyrightPolicy: () -> Unit,
+    onOpenReview: (String) -> Unit,
     viewModel: SoundDetailViewModel = hiltViewModel(),
 ) {
     val player = rememberAudioPlayer()
@@ -147,7 +152,7 @@ fun SoundDetailScreen(
                         onUseThisSound = viewModel::onUseThisSound,
                         onReport = { showReportSheet = true },
                     )
-                    VideosSection(usageCount = detail.usageCount)
+                    VideosSection(videos = detail.videos, onOpenReview = onOpenReview)
                 }
             }
         }
@@ -264,6 +269,10 @@ private fun Hero(detail: SoundDetail, isPlaying: Boolean, onTogglePlay: () -> Un
             }
         }
 
+        // CC-BY attribution — legal credit for curated (Jamendo) tracks, reconstructed from the
+        // audio URL exactly like the web sound page. Only shown when a source is reconstructable.
+        Attribution(artist = track.artist, audioUrl = track.audioUrl)
+
         // Real stats from GET /api/sound/{trackId} — the backend itself degrades these to 0 when
         // a table/RPC isn't migrated yet (see SoundDetailResponseDto's doc), so 0 here is either
         // "really zero" or "not migrated yet", same honest-not-fabricated meaning as before.
@@ -376,27 +385,114 @@ private fun Actions(
     }
 }
 
+/** CC-BY attribution line — mirrors the web sound page: "{artist} · CC-BY · Jamendo", with the
+ *  provider linking to the original track. Renders nothing when the source isn't reconstructable. */
 @Composable
-private fun VideosSection(usageCount: Int) {
+private fun Attribution(artist: String?, audioUrl: String?) {
+    val attribution = remember(audioUrl) { attributionFor(audioUrl) } ?: return
+    val uriHandler = LocalUriHandler.current
+    val prefix = if (artist != null) "$artist · " else ""
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = "$prefix${attribution.license} · ",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = attribution.provider,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.primary,
+            textDecoration = TextDecoration.Underline,
+            modifier = Modifier.clickable { uriHandler.openUri(attribution.source) },
+        )
+    }
+}
+
+/**
+ * "Videos using this sound" — the 3-column thumbnail grid from the web sound page. Each tile is a
+ * 9:16 cover linking to the reused review detail (web's `/reviews/{id}`), with a like-count overlay;
+ * a missing thumbnail falls back to a note placeholder. Empty state matches the web copy.
+ * Laid out as chunked rows (not a LazyVerticalGrid) because the parent is already vertically
+ * scrollable and the list is short (bounded by the backend query).
+ */
+@Composable
+private fun VideosSection(videos: List<SoundVideo>, onOpenReview: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
         Text(
             text = stringResource(R.string.music_videos_section_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
-        // The real usage count is wired (GET /api/sound/{trackId}'s usageCount); the thumbnail
-        // grid itself is a separate, later pass — so this stays a text summary, not fake tiles.
-        Text(
-            text = if (usageCount > 0) {
-                stringResource(R.string.music_videos_count_pending_grid, usageCount)
-            } else {
-                stringResource(R.string.music_videos_empty)
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        if (videos.isEmpty()) {
+            Text(
+                text = stringResource(R.string.music_videos_empty),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = TappySpacing.lg),
+            )
+        } else {
+            Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
+                videos.chunked(3).forEach { rowVideos ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
+                        rowVideos.forEach { video ->
+                            VideoTile(
+                                video = video,
+                                onClick = { onOpenReview(video.id) },
+                                modifier = Modifier.weight(1f),
+                            )
+                        }
+                        // Pad the last row so tiles keep a consistent width (grid-cols-3 parity).
+                        repeat(3 - rowVideos.size) { Box(modifier = Modifier.weight(1f)) }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun VideoTile(video: SoundVideo, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .aspectRatio(9f / 16f)
+            .clip(TappyShapes.input)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .clickable(onClick = onClick),
+    ) {
+        if (video.thumbnail != null) {
+            TappyImage(
+                url = video.thumbnail,
+                contentDescription = video.placeName.ifBlank { null },
+                modifier = Modifier.fillMaxSize(),
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Filled.MusicNote,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.align(Alignment.Center).size(20.dp),
+            )
+        }
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = TappySpacing.lg),
-        )
+                .align(Alignment.BottomStart)
+                .padding(TappySpacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(11.dp),
+            )
+            Text(
+                text = video.likeCount.toString(),
+                style = MaterialTheme.typography.labelSmall,
+                color = Color.White,
+            )
+        }
     }
 }

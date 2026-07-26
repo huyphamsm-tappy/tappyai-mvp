@@ -14,7 +14,6 @@
     <string name="music_action_report_copyright">Báo cáo bản quyền</string>
     <string name="music_videos_section_title">Video sử dụng bài nhạc này</string>
     <string name="music_videos_empty">Chưa có video nào dùng bài nhạc này. Hãy là người đầu tiên!</string>
-    <string name="music_videos_count_pending_grid">%1$d video sử dụng bài nhạc này.</string>
     <string name="music_error_title">Không thể tải</string>
     <string name="music_error_no_connectivity">Không có kết nối internet. Vui lòng kiểm tra và thử lại.</string>
     <string name="music_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
