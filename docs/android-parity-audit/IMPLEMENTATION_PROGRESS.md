@@ -17,9 +17,18 @@ Build/test: PowerShell only. `JAVA_HOME=C:\Program Files\Android\Android Studio\
 - **P1-6** — Location capability (play-services-location + permissions + LocationRepository) wired to chat userLocation bias. `b28ecd4` (test: ChatLocationWireTest)
 - **P1-Deals** — partner_deals model + promo UI (badge/countdown/voucher) + click counter. `a17ce84` (test: PromoCountdownTest)
 
-## Remaining P1 (doable): Fortune (P1-7/8/9 + P2-11 tarot) — spec at spec_fortune.md. Then P2, P3.
-## Pause points: FCM (P1-13, needs google-services.json), Zalo (P1-B1), anonymous tier (P1-B2).
-## Specs ready on disk: spec_deals.md (done), spec_fortune.md, spec_reviews_comments.md (done).
+- **P2-11** — Full 78-card tarot deck (22 major + 56 generated minor). `59ea9e2` (test: TarotDeckTest)
+
+## Remaining
+- **P1-7/8/9 Fortune engine** — the big content-heavy port (~500 VN strings: deterministic djb2 engine, zodiac/tu-vi banks + lucky number/color, Tu-vi Lifetime + By-Year tabs, Ngũ Hành). Full spec at `spec_fortune.md`. NEXT MAJOR TASK — needs a focused pass (hash-parity traps §1.1 abs + §1.4 seed ids incl. `ty2`; ISO-week/UTC+7 key). Highest-value gate = a golden cross-platform determinism test.
+- **P2 items** (suggested-prompts, video watchdog, liked-reviews, gender persistence, /api/config limits, TTS voice-check, in-feed attached sound, Users search, dead CachedContextEntity cleanup, /api/track). Some already noted in gap report.
+- **P3 polish.**
+
+## Pause points (need credentials / product decision — will stop and ask):
+- FCM push (P1-13) — needs a Firebase project + google-services.json.
+- Zalo login (P1-B1), anonymous tier (P1-B2) — backend/product contract decision.
+
+## Specs ready on disk: spec_deals.md (done), spec_fortune.md (NEXT), spec_reviews_comments.md (done).
 
 ## Audit correction (from prod-worktree re-verification, gap report §8)
 - **Deals is a REAL P1 gap** (prod has `POST /api/deals/[id]/click` + promo UI: discount badge, countdown, voucher chip). Was wrongly "N/A". Must audit Android Deals vs prod `partner_deals` + `DealsView.tsx`.
