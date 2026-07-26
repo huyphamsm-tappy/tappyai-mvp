@@ -5,6 +5,7 @@ import android.speech.tts.UtteranceProgressListener
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.translate.data.TranslateErrorMessages
@@ -13,6 +14,7 @@ import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -34,12 +36,18 @@ class TranslateViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val translateErrorMessages: TranslateErrorMessages,
     @ApplicationContext context: android.content.Context,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    var inputText by mutableStateOf("")
+    // Round-3 audit fix: restored from SavedStateHandle so typed-but-not-yet-translated text and
+    // the chosen target language survive process death instead of resetting.
+    var inputText by mutableStateOf(savedStateHandle.get<String>(KEY_INPUT).orEmpty())
         private set
 
-    var targetLanguage by mutableStateOf(LANGUAGES.first { it.code == DEFAULT_LANGUAGE_CODE })
+    var targetLanguage by mutableStateOf(
+        LANGUAGES.firstOrNull { it.code == savedStateHandle.get<String>(KEY_TARGET_LANG) }
+            ?: LANGUAGES.first { it.code == DEFAULT_LANGUAGE_CODE }
+    )
         private set
 
     var translation by mutableStateOf<String?>(null)
@@ -61,6 +69,11 @@ class TranslateViewModel @Inject constructor(
 
     private var textToSpeech: TextToSpeech? = null
 
+    // One-shot signal that the device has no voice for the requested language (so read-aloud was
+    // suppressed rather than spoken in the wrong voice). The screen shows a toast.
+    private val _ttsUnavailable = kotlinx.coroutines.channels.Channel<Unit>(kotlinx.coroutines.channels.Channel.BUFFERED)
+    val ttsUnavailableEvents: kotlinx.coroutines.flow.Flow<Unit> = _ttsUnavailable.receiveAsFlow()
+
     init {
         textToSpeech = TextToSpeech(context) { status ->
             ttsAvailable = status == TextToSpeech.SUCCESS
@@ -78,17 +91,22 @@ class TranslateViewModel @Inject constructor(
     }
 
     fun onInputTextChange(value: String) {
-        if (value.length <= MAX_TEXT_LENGTH) inputText = value
+        if (value.length <= MAX_TEXT_LENGTH) {
+            inputText = value
+            savedStateHandle[KEY_INPUT] = value
+        }
     }
 
     fun clear() {
         inputText = ""
+        savedStateHandle[KEY_INPUT] = ""
         translation = null
         errorMessage = null
     }
 
     fun onTargetLanguageChange(language: Language) {
         targetLanguage = language
+        savedStateHandle[KEY_TARGET_LANG] = language.code
     }
 
     fun translate() {
@@ -119,7 +137,15 @@ class TranslateViewModel @Inject constructor(
             isSpeaking = false
             return
         }
-        tts.language = Locale.forLanguageTag(ttsTag)
+        // Check setLanguage()'s result instead of blindly assigning `tts.language`: on a device with
+        // no voice for this language the engine would otherwise silently read in a wrong-language
+        // (often English) voice. Web parity (lib/tts/voiceSelection.ts: never wrong-lang + notice).
+        val result = tts.setLanguage(Locale.forLanguageTag(ttsTag))
+        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            logger.w(TAG, "No TTS voice for '$ttsTag' (result=$result) — read-aloud suppressed")
+            _ttsUnavailable.trySend(Unit)
+            return
+        }
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "translate-utterance")
     }
 
@@ -134,5 +160,7 @@ class TranslateViewModel @Inject constructor(
         const val TAG = "TranslateViewModel"
         // Matches the web textarea's maxLength (and the backend's own length validation).
         const val MAX_TEXT_LENGTH = 2000
+        const val KEY_INPUT = "translate_input"
+        const val KEY_TARGET_LANG = "translate_target_lang"
     }
 }

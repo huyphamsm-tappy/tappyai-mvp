@@ -13,6 +13,7 @@
     <string name="translate_result_header">Result · %1$s</string>
     <string name="translate_action_stop">Stop</string>
     <string name="translate_action_read_aloud">Read aloud</string>
+    <string name="translate_tts_voice_unavailable">No voice is installed for this language on your device.</string>
     <string name="translate_action_copied">Copied!</string>
     <string name="translate_action_copy">Copy</string>
     <string name="translate_selected_description">Selected</string>

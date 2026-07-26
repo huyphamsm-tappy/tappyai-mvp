@@ -31,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,6 +66,14 @@ fun TranslateScreen(
 ) {
     val context = LocalContext.current
     var showLanguagePicker by remember { mutableStateOf(false) }
+
+    // Notify when read-aloud is suppressed because the device lacks a voice for the target language.
+    val voiceUnavailableMessage = stringResource(R.string.translate_tts_voice_unavailable)
+    LaunchedEffect(Unit) {
+        viewModel.ttsUnavailableEvents.collect {
+            android.widget.Toast.makeText(context, voiceUnavailableMessage, android.widget.Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier

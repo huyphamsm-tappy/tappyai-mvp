@@ -13,6 +13,7 @@
     <string name="translate_result_header">Kết quả · %1$s</string>
     <string name="translate_action_stop">Dừng</string>
     <string name="translate_action_read_aloud">Đọc to</string>
+    <string name="translate_tts_voice_unavailable">Thiết bị chưa cài giọng đọc cho ngôn ngữ này.</string>
     <string name="translate_action_copied">Đã sao chép!</string>
     <string name="translate_action_copy">Sao chép</string>
     <string name="translate_selected_description">Đã chọn</string>
