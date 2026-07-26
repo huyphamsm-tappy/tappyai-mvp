@@ -53,8 +53,7 @@ ios/Config/Secrets.xcconfig
 /*.log
 do_push.ps1
 
-# Android local credentials (Supabase URL/anon key, Google Web Client ID) — supplied locally via
-# -P overrides or this file; never commit real project credentials, even though the anon key is
-# meant to be public in a shipped APK (Production Audit Sprint finding: currently untracked,
-# adding this defensively so a future `git add -A` can't accidentally stage it).
-android/gradle.properties
+# Android project credentials (Supabase URL/anon key, Google Web Client ID, API base URLs) live
+# machine-local in ~/.gradle/gradle.properties or via -P overrides — never in the repo, so a
+# `git add -A` can't reach them. The tracked android/gradle.properties holds BUILD CONFIG ONLY
+# (android.useAndroidX etc., required for a fresh clone to build) and deliberately has no credentials.

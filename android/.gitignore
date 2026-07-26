@@ -3,9 +3,9 @@
 build/
 */build/
 
-# Local dev config (contains credentials — never commit)
+# Local dev config (never commit)
 local.properties
-gradle.properties
+# gradle.properties is TRACKED (build config only); credentials live in ~/.gradle/gradle.properties
 
 # Android Studio / IDE files
 *.iml
