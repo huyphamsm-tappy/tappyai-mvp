@@ -62,13 +62,29 @@ async function dispatch(
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
+ * Outcome of a push dispatch, so the caller (emitNotification) can record
+ * push_status/push_error on the persisted notifications row (ADR-014 #6).
+ *  - attempted === 0  → the user has no enabled subscription → row is 'skipped'.
+ *  - failed  >  0     → at least one live sub errored transiently → row is 'failed' (retry-worthy).
+ *  - otherwise        → 'sent'. `gone` (404/410, pruned) is not counted as a retry-worthy failure.
+ */
+export interface PushResult {
+  attempted: number
+  sent: number
+  failed: number
+  gone: number
+  firstError?: string
+}
+
+/**
  * Send a push notification to a single user across all their active subscriptions.
  * Provider-agnostic: adding FCM later only requires a new `case` in dispatch().
+ * Returns a {@link PushResult} describing delivery for observability/retry.
  */
 export async function sendNotificationToUser(
   userId: string,
   payload: NotificationPayload
-): Promise<void> {
+): Promise<PushResult> {
   const supabase = createAdminClient()
   const { data: subs, error } = await supabase
     .from('notification_subscriptions')
@@ -78,9 +94,9 @@ export async function sendNotificationToUser(
 
   if (error) {
     console.error('[notifications] Failed to fetch subscriptions:', error)
-    return
+    return { attempted: 0, sent: 0, failed: 0, gone: 0, firstError: error.message }
   }
-  if (!subs?.length) return
+  if (!subs?.length) return { attempted: 0, sent: 0, failed: 0, gone: 0 }
 
   const results = await Promise.allSettled(
     subs.map(s => dispatch(s.provider, s.subscription_data as Record<string, unknown>, payload))
@@ -90,14 +106,21 @@ export async function sendNotificationToUser(
   // 404/410, APNs 410) — otherwise dead endpoints accumulate forever and every
   // future send/cron re-attempts them, inflating failures and wasting the budget.
   const goneIds: string[] = []
+  let sent = 0
+  let failed = 0
+  let firstError: string | undefined
   results.forEach((r, i) => {
-    if (r.status === 'rejected') {
-      const status = (r.reason as { statusCode?: number })?.statusCode
-      if (status === 404 || status === 410) {
-        goneIds.push(subs[i].id as string)
-      } else {
-        console.error(`[notifications] Dispatch failed for sub ${subs[i].id}:`, r.reason)
-      }
+    if (r.status === 'fulfilled') {
+      sent++
+      return
+    }
+    const status = (r.reason as { statusCode?: number })?.statusCode
+    if (status === 404 || status === 410) {
+      goneIds.push(subs[i].id as string)
+    } else {
+      failed++
+      if (!firstError) firstError = String((r.reason as Error)?.message ?? r.reason)
+      console.error(`[notifications] Dispatch failed for sub ${subs[i].id}:`, r.reason)
     }
   })
 
@@ -109,6 +132,8 @@ export async function sendNotificationToUser(
     if (pruneErr) console.error('[notifications] Failed to prune dead subscriptions:', pruneErr)
     else console.info(`[notifications] Pruned ${goneIds.length} dead subscription(s)`)
   }
+
+  return { attempted: subs.length, sent, failed, gone: goneIds.length, firstError }
 }
 
 /**

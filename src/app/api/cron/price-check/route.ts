@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { sendNotificationToUser } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -113,10 +113,13 @@ PRICE_VND: [số nguyên bằng VND, ví dụ: 1950000] hoặc PRICE_VND: không
           .update({ status: 'triggered', notified_at: new Date().toISOString() })
           .eq('id', watch.id)
 
-        await sendNotificationToUser(watch.user_id, {
+        await emitNotification({
+          userId: watch.user_id,
+          type: 'price',
+          category: 'deal',
           title: `🎯 Giá ${watch.product_name} đã xuống!`,
           body: `Hiện ${fmtPrice(extractedPrice)} — mục tiêu của bạn là ${fmtPrice(watch.target_price)}. Mở Tappy để mua ngay!`,
-          data: { url: `/profile/price-watches` },
+          entityUrl: `/profile/price-watches`,
         })
 
         triggered++

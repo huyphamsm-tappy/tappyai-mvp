@@ -1,4 +1,5 @@
-import { sendNotificationToUser, getAllSubscribedUserIds } from '@/lib/notifications/send'
+import { getAllSubscribedUserIds } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 import { NextResponse } from 'next/server'
 
 // Runs daily at 04:00 UTC = 11:00 ICT (UTC+7) — configured in vercel.json
@@ -14,10 +15,13 @@ export async function GET(req: Request) {
 
     const results = await Promise.allSettled(
       userIds.map(uid =>
-        sendNotificationToUser(uid, {
+        emitNotification({
+          userId: uid,
+          type: 'lunch',
+          category: 'explore',
           title: 'TappyAI 🍜',
           body: 'Tới giờ ăn trưa rồi! Để Tappy gợi ý nhà hàng ngon gần bạn nhé?',
-          data: { url: '/?prompt=gợi+ý+nhà+hàng+ăn+trưa' },
+          entityUrl: '/?prompt=gợi+ý+nhà+hàng+ăn+trưa',
         })
       )
     )

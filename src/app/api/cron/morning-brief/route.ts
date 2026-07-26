@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getMemoryBatch } from '@/lib/memory/memoryService'
-import { getAllSubscribedUserIds, sendNotificationToUser } from '@/lib/notifications/send'
+import { getAllSubscribedUserIds } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -155,10 +156,13 @@ BODY: [nội dung]`
         const title = titleMatch?.[1]?.trim() ?? `${isFriday ? '🎉 Thứ 6 rồi!' : isWeekend ? '🌞 Cuối tuần vui!' : '☀️ Chào buổi sáng!'}`
         const body = bodyMatch?.[1]?.trim() ?? 'Mở Tappy để tìm điểm ăn uống hoặc vui chơi hôm nay nhé!'
 
-        await sendNotificationToUser(uid, {
+        await emitNotification({
+          userId: uid,
+          type: 'morning_brief',
+          category: 'explore',
           title,
           body,
-          data: { url: '/' },
+          entityUrl: '/',
         })
       })
     )

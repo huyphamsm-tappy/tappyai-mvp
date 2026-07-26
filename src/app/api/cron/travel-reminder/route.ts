@@ -1,4 +1,4 @@
-import { sendNotificationToUser } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 
@@ -62,10 +62,13 @@ export async function GET(req: Request) {
           (new Date(booking.date).getTime() - today.getTime()) / 86_400_000
         )
         const when = daysLeft === 0 ? 'hôm nay' : daysLeft === 1 ? 'ngày mai' : `${daysLeft} ngày nữa`
-        return sendNotificationToUser(uid, {
+        return emitNotification({
+          userId: uid,
+          type: 'travel',
+          category: 'explore',
           title: 'Nhắc lịch đặt chỗ 📅',
           body: `Bạn có lịch tại ${booking.service_name} vào ${when}. Chúc bạn có trải nghiệm tuyệt vời!`,
-          data: { url: '/profile/bookings' },
+          entityUrl: '/profile/bookings',
         })
       })
     )

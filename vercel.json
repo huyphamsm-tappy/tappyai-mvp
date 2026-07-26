@@ -24,6 +24,18 @@
     {
       "path": "/api/cron/analytics-snapshot",
       "schedule": "5 17 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-recap",
+      "schedule": "0 13 * * 0"
+    },
+    {
+      "path": "/api/cron/travel-reminder",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/lunch-reminder",
+      "schedule": "0 4 * * *"
     }
   ]
 }

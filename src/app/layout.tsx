@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { PostHogProvider } from '@/components/PostHogProvider'
+import { NotificationProvider } from '@/components/NotificationProvider'
 import LocationProvider from '@/components/LocationProvider'
 import TrackingProvider from '@/components/TrackingProvider'
 import LanguagePicker from '@/components/LanguagePicker'
@@ -35,7 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className="antialiased">
-        <PostHogProvider>{children}</PostHogProvider>
+        <PostHogProvider>
+          <NotificationProvider>{children}</NotificationProvider>
+        </PostHogProvider>
         <LocationProvider />
         <TrackingProvider />
         <LanguagePicker />

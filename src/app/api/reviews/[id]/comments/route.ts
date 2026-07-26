@@ -3,7 +3,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
-import { sendNotificationToUser } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
 
@@ -140,10 +140,14 @@ export async function POST(
 
   if (review && review.user_id !== user.id) {
     const commenterName = comment.profiles?.full_name?.split(' ').pop() || 'Ai do'
-    sendNotificationToUser(review.user_id, {
+    emitNotification({
+      userId: review.user_id,
+      type: 'comment',
+      category: 'social',
       title: commenterName + ' binh luan review cua ban',
       body: '"' + body.slice(0, 60) + (body.length > 60 ? '...' : '') + '"',
-      data: { url: '/reviews/' + params.id },
+      actorId: user.id,
+      entityUrl: '/reviews/' + params.id,
     }).catch(() => {})
   }
 

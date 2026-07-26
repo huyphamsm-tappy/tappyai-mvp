@@ -1,134 +1,74 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
+import type { NotificationDTO } from '@/lib/notifications/contract'
 
 export const runtime = 'edge'
 
-// GET /api/notifications → returns recent activity (follows + likes + comments + milestones) for current user
+const DEFAULT_LIMIT = 40
+const MAX_LIMIT = 100
+
+// GET /api/notifications  (ADR-014 contract v1, shared Web/Android/iOS)
+// Reads the persisted `notifications` table directly — no on-read aggregation.
+// → { notifications: NotificationDTO[], unread_count }
+// Query: ?limit=40 (≤100), ?before=<ISO> cursor for older pages.
 export async function GET(req: Request) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ notifications: [] })
+  if (!user) return NextResponse.json({ notifications: [], unread_count: 0 })
 
-  // Follow notifications
-  const { data: follows } = await supabase
-    .from('user_follows')
-    .select('id, follower_id, created_at')
-    .eq('following_id', user.id)
+  const url = new URL(req.url)
+  const limit = Math.min(MAX_LIMIT, Math.max(1, parseInt(url.searchParams.get('limit') || String(DEFAULT_LIMIT), 10) || DEFAULT_LIMIT))
+  const before = url.searchParams.get('before')
+
+  let query = supabase
+    .from('notifications')
+    .select('id, type, category, title, body, actor_id, entity_url, image_url, data, read_at, created_at')
+    .eq('user_id', user.id) // redundant with RLS, kept explicit
     .order('created_at', { ascending: false })
-    .limit(15)
+    .limit(limit)
+  if (before) query = query.lt('created_at', before)
 
-  // My review IDs + names
-  const { data: myReviews } = await supabase
-    .from('reviews')
-    .select('id, place_name')
-    .eq('user_id', user.id)
-    .or('is_hidden.is.null,is_hidden.eq.false')
-    .limit(50)
-
-  const myReviewIds = (myReviews || []).map(r => r.id)
-  const reviewNameMap = Object.fromEntries((myReviews || []).map(r => [r.id, r.place_name]))
-
-  // Like notifications on my reviews
-  let likes: { id: string; user_id: string; review_id: string; created_at: string }[] = []
-  if (myReviewIds.length > 0) {
-    const { data } = await supabase
-      .from('review_likes')
-      .select('id, user_id, review_id, created_at')
-      .in('review_id', myReviewIds)
-      .neq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(15)
-    likes = data || []
+  const { data: rows, error } = await query
+  if (error) {
+    console.error('[api/notifications] read failed:', error)
+    return NextResponse.json({ notifications: [], unread_count: 0 }, { status: 500 })
   }
 
-  // Milestone notifications for my reviews
-  let milestones: { id: string; review_id: string; milestone: number; created_at: string }[] = []
-  if (myReviewIds.length > 0) {
-    const { data } = await supabase
-      .from('review_milestones')
-      .select('id, review_id, milestone, created_at')
-      .in('review_id', myReviewIds)
-      .order('created_at', { ascending: false })
-      .limit(10)
-    milestones = data || []
-  }
-
-  // Comment notifications on my reviews — same aggregation shape as likes above:
-  // comments by anyone OTHER than me, on my visible reviews, newest first.
-  let comments: { id: string; user_id: string; review_id: string; body: string; created_at: string }[] = []
-  if (myReviewIds.length > 0) {
-    const { data } = await supabase
-      .from('review_comments')
-      .select('id, user_id, review_id, body, created_at')
-      .in('review_id', myReviewIds)
-      .neq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(15)
-    comments = data || []
-  }
-
-  // Batch load profiles for all actors
-  const profileIds = [
-    ...(follows || []).map(f => f.follower_id),
-    ...likes.map(l => l.user_id),
-    ...comments.map(c => c.user_id),
-  ].filter((v, i, a) => a.indexOf(v) === i)
-
+  // Resolve actor display info for social rows (one batched profiles fetch).
+  const actorIds = Array.from(new Set((rows ?? []).map(r => r.actor_id).filter(Boolean))) as string[]
   let profileMap: Record<string, { full_name: string | null; avatar_url: string | null }> = {}
-  if (profileIds.length > 0) {
+  if (actorIds.length > 0) {
     const { data: profiles } = await supabase
       .from('profiles')
       .select('id, full_name, avatar_url')
-      .in('id', profileIds)
-    profileMap = Object.fromEntries((profiles || []).map(p => [p.id, p]))
+      .in('id', actorIds)
+    profileMap = Object.fromEntries((profiles ?? []).map(p => [p.id, p]))
   }
 
-  const notifications = [
-    ...(follows || []).map(f => ({
-      id: 'f_' + f.id,
-      type: 'follow',
-      actor_id: f.follower_id,
-      actor_name: profileMap[f.follower_id]?.full_name || 'Ẩn danh',
-      actor_avatar: profileMap[f.follower_id]?.avatar_url || null,
-      text: 'đã theo dõi bạn',
-      url: `/users/${f.follower_id}`,
-      created_at: f.created_at,
-    })),
-    ...likes.map(l => ({
-      id: 'l_' + l.id,
-      type: 'like',
-      actor_id: l.user_id,
-      actor_name: profileMap[l.user_id]?.full_name || 'Ẩn danh',
-      actor_avatar: profileMap[l.user_id]?.avatar_url || null,
-      text: `đã thích bài "${reviewNameMap[l.review_id] || 'của bạn'}"`,
-      url: `/reviews/${l.review_id}`,
-      created_at: l.created_at,
-    })),
-    ...milestones.map(m => ({
-      id: 'ms_' + m.id,
-      type: 'milestone',
-      actor_id: '',
-      actor_name: '',
-      actor_avatar: null,
-      text: `🎉 Bài "${reviewNameMap[m.review_id] || 'của bạn'}" đạt ${m.milestone} lượt thích!`,
-      url: `/reviews/${m.review_id}`,
-      created_at: m.created_at,
-    })),
-    // Same object shape the Inbox already consumes: the UI reads comment_body
-    // from `text` when type === 'comment' (reviews/page.tsx groupNotifs), so no
-    // Inbox change is needed. review_id → url, comment_id → id, author → actor_*.
-    ...comments.map(c => ({
-      id: 'c_' + c.id,
-      type: 'comment',
-      actor_id: c.user_id,
-      actor_name: profileMap[c.user_id]?.full_name || 'Ẩn danh',
-      actor_avatar: profileMap[c.user_id]?.avatar_url || null,
-      text: c.body,
-      url: `/reviews/${c.review_id}`,
-      created_at: c.created_at,
-    })),
-  ]
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .slice(0, 30)
+  const notifications: NotificationDTO[] = (rows ?? []).map(r => ({
+    id: r.id as string,
+    type: r.type as string,
+    category: r.category as string,
+    title: r.title as string,
+    body: r.body as string,
+    actor: r.actor_id
+      ? {
+          id: r.actor_id as string,
+          name: profileMap[r.actor_id as string]?.full_name || 'Ẩn danh',
+          avatar: profileMap[r.actor_id as string]?.avatar_url || null,
+        }
+      : null,
+    entity_url: (r.entity_url as string | null) ?? null,
+    image_url: (r.image_url as string | null) ?? null,
+    data: (r.data as Record<string, unknown>) ?? {},
+    read_at: (r.read_at as string | null) ?? null,
+    created_at: r.created_at as string,
+  }))
 
-  return NextResponse.json({ notifications })
+  const { count } = await supabase
+    .from('notifications')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .is('read_at', null)
+
+  return NextResponse.json({ notifications, unread_count: count ?? 0 })
 }

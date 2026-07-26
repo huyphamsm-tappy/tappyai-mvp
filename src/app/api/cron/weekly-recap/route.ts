@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getMemoryBatch } from '@/lib/memory/memoryService'
-import { getAllSubscribedUserIds, sendNotificationToUser } from '@/lib/notifications/send'
+import { getAllSubscribedUserIds } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -100,10 +101,13 @@ BODY: [nội dung]`
         const title = titleMatch?.[1]?.trim() ?? `🎉 ${convoCount} lần cùng Tappy tuần này!`
         const body = bodyMatch?.[1]?.trim() ?? 'Tappy đã đồng hành cùng bạn cả tuần. Tuần tới khám phá gì tiếp nhé?'
 
-        await sendNotificationToUser(uid, {
+        await emitNotification({
+          userId: uid,
+          type: 'weekly',
+          category: 'explore',
           title,
           body,
-          data: { url: '/profile/tappy-knows' },
+          entityUrl: '/profile/tappy-knows',
         })
       })
     )

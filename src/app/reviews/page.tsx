@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -16,13 +16,12 @@ import SoundSheet from './SoundSheet'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
 import { ProfileTab } from './ProfileTab'
+import { useNotifications } from '@/components/NotificationProvider'
+import { mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
 
-interface Notification { id: string; type: string; actor_id: string; actor_name: string; actor_avatar: string | null; text: string; url: string; created_at: string }
-// Client-side "last seen the Inbox" marker — an ISO timestamp in localStorage.
-// The unread badge = notifications newer than this. Opening the Inbox advances it
-// to now. This is deliberately client-only: no server-side read tracking, no
-// notifications table (per the ticket's out-of-scope list).
-const NOTIF_SEEN_KEY = 'tappy:notifSeenAt'
+// ADR-014: notifications now come from the app-level NotificationProvider (server
+// `notifications` table + server-side read_at). No client `notifSeenAt` marker.
+type Notification = InboxNotif
 // Bug #8 — feed active-clip restoration. The clip in view lives only in an inner
 // snap-scroll container (no per-clip URL, no history entry), so opening an author's
 // profile (a real route change) and pressing Back would remount the feed at the top
@@ -55,41 +54,14 @@ const isBackForwardMount = () => {
   } catch { return false }
 }
 interface HotPlace { place_name: string; count: number }
-interface GroupedNotif {
-  id: string; type: string; url: string
-  actors: { name: string; avatar: string | null; id: string }[]
-  text: string; comment_body?: string
-  created_at: string; count: number
-}
-const NOTIF_COLOR: Record<string, string> = {
-  like: '#ff6b35', follow: '#1D9E75', profile_view: '#534AB7', comment: '#378ADD',
-}
-function groupNotifs(notifs: Notification[]): GroupedNotif[] {
-  const map = new Map<string, GroupedNotif>()
-  for (const n of notifs) {
-    const key = n.type === 'like' ? `like:${n.url}` : n.type === 'profile_view' ? 'profile_view' : n.id
-    const existing = map.get(key)
-    if (existing) {
-      if (!existing.actors.find(a => a.id === n.actor_id))
-        existing.actors.push({ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id })
-      existing.count++
-      if (new Date(n.created_at) > new Date(existing.created_at)) existing.created_at = n.created_at
-    } else {
-      map.set(key, {
-        id: n.id, type: n.type, url: n.url,
-        actors: [{ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id }],
-        text: n.text, comment_body: n.type === 'comment' ? n.text : undefined,
-        created_at: n.created_at, count: 1,
-      })
-    }
-  }
-  return Array.from(map.values()).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-}
-function notifSection(created_at: string): string {
-  const ms = Date.now() - new Date(created_at).getTime()
-  if (ms < 60 * 60 * 1000) return 'VỪA XONG'
-  if (ms < 24 * 60 * 60 * 1000) return 'HÔM NAY'
-  return 'TUẦN NÀY'
+// GroupedNotif / NOTIF_COLOR / groupNotifs / notifSection moved to
+// '@/lib/notifications/inbox' (unit-tested). Imported above.
+// Icon + accent for non-social notification rows, keyed by category.
+const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
+  social: { color: '#ff6b35', icon: '🎉' },
+  deal: { color: '#F59E0B', icon: '🏷️' },
+  explore: { color: '#8B5CF6', icon: '✨' },
+  system: { color: '#64748B', icon: '🔔' },
 }
 
 /* ─── TikTok Bottom Nav ─── */
@@ -176,6 +148,29 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
   const notifRouter = useRouter()
+
+  // ADR-014: non-social rows (milestone, deal, explore reminders, broadcast,
+  // system) have no actor stack — render a generic icon + title + body row.
+  // Must return before the actor-based derivations below (they index g.actors[0]).
+  if (!isSocialGroup(g)) {
+    const cat = CATEGORY_STYLE[g.category] ?? CATEGORY_STYLE.system
+    const go = () => { if (g.url) notifRouter.push(g.url); else onNav() }
+    return (
+      <div role={g.url ? 'button' : undefined} onClick={go}
+        className={'flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors' + (g.url ? ' cursor-pointer' : '')}
+        style={{ borderColor: cat.color }}>
+        <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 mr-3" style={{ background: `${cat.color}22` }}>
+          <span className="text-xl">{cat.icon}</span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-white text-sm leading-snug font-semibold line-clamp-2">{g.title}</p>
+          {g.text && <p className="text-gray-400 text-xs mt-0.5 line-clamp-2">{g.text}</p>}
+          <p className="text-gray-500 text-xs mt-0.5">{ago(g.created_at, t)}</p>
+        </div>
+      </div>
+    )
+  }
+
   const actors = g.actors.slice(0, 3)
   const actorLabel = g.actors.length === 1
     ? g.actors[0].name
@@ -444,13 +439,12 @@ export default function ReviewsPage() {
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
-  const [notifs, setNotifs] = useState<Notification[]>([])
-  const [notifsLoading, setNotifsLoading] = useState(false)
-  const [notifsError, setNotifsError] = useState(false)
+  // ADR-014: notifications + unread badge come from the app-level store.
+  const { notifications, unreadCount, loading: notifsLoading, markAllRead } = useNotifications()
+  const notifs = useMemo<Notification[]>(() => notifications.map(mapDtoToInbox), [notifications])
   const [hotPlaces, setHotPlaces] = useState<HotPlace[]>([])
   const [hotPlacesLoading, setHotPlacesLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
-  const [unreadCount, setUnreadCount] = useState(0)
   const [userPrefs, setUserPrefs] = useState<UserPreferences | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(0)
@@ -509,72 +503,15 @@ export default function ReviewsPage() {
     return () => { cancelled = true }
   }, [me, supabase])
 
-  // Unread badge — driven by Supabase Realtime, NOT polling. A postgres_changes
-  // subscription on the four activity tables is used ONLY as a trigger: on any
-  // relevant INSERT it refetches GET /api/notifications (the single source of
-  // truth, which does the my-content join under RLS) and recomputes the unread
-  // count vs the client-side "last seen" marker. No aggregation logic is
-  // duplicated here. Over-broad events (e.g. a like on someone else's review) are
-  // harmless — the refetch simply returns my unchanged notifications.
-  // Requires the migration adding these tables to the supabase_realtime
-  // publication; until it runs, the badge still loads once but won't live-update.
-  useEffect(() => {
-    if (!me) { setUnreadCount(0); return }
-    let cancelled = false
-    const recount = async () => {
-      try {
-        const r = await fetch('/api/notifications')
-        if (!r.ok || cancelled) return
-        const d = await r.json()
-        const seen = new Date(localStorage.getItem(NOTIF_SEEN_KEY) || 0).getTime()
-        const unread = (d.notifications as Notification[] || []).filter(n => new Date(n.created_at).getTime() > seen).length
-        if (!cancelled) setUnreadCount(unread)
-      } catch { /* keep the previous count on a transient failure */ }
-    }
-    recount() // initial load
+  // ADR-014: the unread badge + notification list are owned by the app-level
+  // NotificationProvider (one Realtime subscription on `notifications`, correct on
+  // every route). This page no longer runs its own badge fetch/subscription.
 
-    // Coalesce bursts (a like can also mint a milestone in the same moment).
-    let debounce: ReturnType<typeof setTimeout> | null = null
-    const trigger = () => { if (debounce) clearTimeout(debounce); debounce = setTimeout(recount, 300) }
-
-    const channel = supabase
-      .channel('notif-badge')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'review_likes' }, trigger)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'review_comments' }, trigger)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'user_follows', filter: `following_id=eq.${me}` }, trigger)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'review_milestones' }, trigger)
-      .subscribe()
-
-    // Not polling: a one-shot catch-up when the tab regains focus, in case the
-    // realtime socket dropped while the app was backgrounded.
-    const onWake = () => { if (document.visibilityState === 'visible') recount() }
-    window.addEventListener('focus', onWake)
-    document.addEventListener('visibilitychange', onWake)
-
-    return () => {
-      cancelled = true
-      if (debounce) clearTimeout(debounce)
-      supabase.removeChannel(channel)
-      window.removeEventListener('focus', onWake)
-      document.removeEventListener('visibilitychange', onWake)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [me])
-
-  // Load notifications + hot places when inbox tab opens
+  // Opening the Inbox marks all notifications read (server-side) + loads hot places.
   useEffect(() => {
     if (tab !== 'inbox') return
-    // Opening the Inbox marks everything up to now as seen and clears the badge
-    // (client-side only — no server read state).
-    try { localStorage.setItem(NOTIF_SEEN_KEY, new Date().toISOString()) } catch { /* private mode */ }
-    setUnreadCount(0)
-    setNotifsLoading(true)
-    setNotifsError(false)
-    fetch('/api/notifications')
-      .then(r => { if (!r.ok) throw new Error('notifs_failed'); return r.json() })
-      .then(d => setNotifs(d.notifications || []))
-      .catch(() => setNotifsError(true))
-      .finally(() => setNotifsLoading(false))
+    // Server-side read state (replaces the old client `notifSeenAt`).
+    markAllRead()
     setHotPlacesLoading(true)
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     ;(async () => {
@@ -1041,7 +978,7 @@ export default function ReviewsPage() {
             <InboxTab
               notifs={notifs}
               notifsLoading={notifsLoading}
-              notifsError={notifsError}
+              notifsError={false}
               hotPlaces={hotPlaces}
               hotPlacesLoading={hotPlacesLoading}
               onSetTab={handleSetTab}

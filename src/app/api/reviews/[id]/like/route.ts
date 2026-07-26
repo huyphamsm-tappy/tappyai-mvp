@@ -1,7 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
-import { sendNotificationToUser } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { inferPreferencesFromEvents } from '@/lib/userMemory'
 
@@ -74,10 +74,14 @@ export async function POST(
       .eq('id', user.id)
       .single()
     const name = liker?.full_name?.split(' ').pop() || 'Ai đó'
-    sendNotificationToUser(review.user_id, {
+    emitNotification({
+      userId: review.user_id,
+      type: 'like',
+      category: 'social',
       title: `❤️ ${name} thích review của bạn`,
       body: review.place_name || 'Xem ngay!',
-      data: { url: `/reviews/${reviewId}` },
+      actorId: user.id,
+      entityUrl: `/reviews/${reviewId}`,
     }).catch(() => {})
 
     // Milestone notification (5, 10, 50, 100, 500, 1000 likes)
@@ -91,10 +95,13 @@ export async function POST(
         .from('review_milestones')
         .insert({ review_id: reviewId, milestone: newCount })
       if (!msError) {
-        sendNotificationToUser(review.user_id, {
+        emitNotification({
+          userId: review.user_id,
+          type: 'milestone',
+          category: 'social',
           title: `🎉 ${newCount} người đã thích bài của bạn!`,
           body: review.place_name || 'Xem ngay',
-          data: { url: `/reviews/${reviewId}` },
+          entityUrl: `/reviews/${reviewId}`,
         }).catch(() => {})
       }
       // msError.code === '23505' → duplicate milestone, skip silently

@@ -1,6 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
-import { sendNotificationToUser } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 
 // POST /api/users/[id]/follow → toggle follow/unfollow (optimistic insert, delete on 23505)
@@ -48,10 +48,14 @@ export async function POST(
   ])
 
   const name = followerRes.data?.full_name?.split(' ').pop() || 'Ai đó'
-  sendNotificationToUser(targetId, {
+  emitNotification({
+    userId: targetId,
+    type: 'follow',
+    category: 'social',
     title: `👤 ${name} đang theo dõi bạn`,
     body: 'Xem trang cá nhân của họ',
-    data: { url: `/users/${user.id}` },
+    actorId: user.id,
+    entityUrl: `/users/${user.id}`,
   }).catch(() => {})
 
   return NextResponse.json({ following: true, follower_count: profileRes.data?.follower_count ?? 0 })

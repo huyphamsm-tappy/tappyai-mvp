@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { getAllSubscribedUserIds, sendNotificationToUser } from '@/lib/notifications/send'
+import { getAllSubscribedUserIds } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 import { getActiveDeals } from '@/lib/deals/partnerDeals'
 
 export const runtime = 'nodejs'
@@ -62,10 +63,13 @@ BODY: (tối đa 120 ký tự)`,
         const title = titleMatch?.[1]?.trim() ?? '🛍️ Deal hôm nay cho bạn!'
         const body = bodyMatch?.[1]?.trim() ?? `${deals[0]?.title} — ${deals[0]?.description ?? ''}`
 
-        await sendNotificationToUser(uid, {
+        await emitNotification({
+          userId: uid,
+          type: 'deal',
+          category: 'deal',
           title,
           body,
-          data: { url: '/deals' },
+          entityUrl: '/deals',
         })
       })
     )

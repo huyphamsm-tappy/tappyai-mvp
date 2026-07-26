@@ -1,4 +1,5 @@
-import { sendNotificationToUser, getAllSubscribedUserIds } from '@/lib/notifications/send'
+import { getAllSubscribedUserIds } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 import { NextResponse } from 'next/server'
 
 function isAuthorized(req: Request): boolean {
@@ -33,8 +34,17 @@ export async function POST(req: Request) {
     const userIds = await getAllSubscribedUserIds()
     if (!userIds.length) return NextResponse.json({ ok: true, sent: 0 })
 
+    const entityUrl = typeof data?.url === 'string' ? data.url : null
     const results = await Promise.allSettled(
-      userIds.map(uid => sendNotificationToUser(uid, { title, body, data }))
+      userIds.map(uid => emitNotification({
+        userId: uid,
+        type: 'broadcast',
+        category: 'system',
+        title,
+        body,
+        entityUrl,
+        data,
+      }))
     )
 
     const failed = results.filter(r => r.status === 'rejected').length

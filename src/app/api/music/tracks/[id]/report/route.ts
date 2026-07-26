@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { sendNotificationToUser } from '@/lib/notifications/send'
+import { emitNotification } from '@/lib/notifications/emit'
 
 const REASONS = ['copyright', 'inappropriate', 'spam', 'other']
 
@@ -34,10 +34,13 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const adminIds = (process.env.ADMIN_IDS ?? '').split(',').map(s => s.trim()).filter(Boolean)
     const admin = createAdminClient()
     const { data: track } = await admin.from('music_tracks').select('title').eq('id', params.id).single()
-    await Promise.allSettled(adminIds.map(id => sendNotificationToUser(id, {
+    await Promise.allSettled(adminIds.map(id => emitNotification({
+      userId: id,
+      type: 'system',
+      category: 'system',
       title: 'Báo cáo bản quyền nhạc',
       body: `"${track?.title ?? params.id}" bị báo cáo (${reason}).`,
-      data: { url: `/sound/${params.id}` },
+      entityUrl: `/sound/${params.id}`,
     })))
   } catch { /* notification is best-effort; the report is already saved */ }
 
