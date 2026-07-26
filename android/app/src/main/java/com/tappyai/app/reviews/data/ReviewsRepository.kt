@@ -1,6 +1,33 @@
 package com.tappyai.app.reviews.data
 
+import android.net.Uri
 import com.tappyai.core.network.NetworkResult
+
+/** AI enrichment for a just-uploaded video — hashtags to attach and a suggested caption to fill an
+ *  empty body, mirroring the web composer's post-upload `/api/explore/process` result. */
+data class AiEnrichment(
+    val hashtags: List<String> = emptyList(),
+    val caption: String = "",
+)
+
+/** Result of posting a comment: the inserted comment (with author profile) and the backend's
+ *  recomputed exact comment count for the review. */
+data class PostedComment(
+    val comment: ReviewComment?,
+    val count: Int,
+)
+
+/** Result of toggling follow on a user: the new following state + the target's follower count. */
+data class FollowResult(
+    val following: Boolean,
+    val followerCount: Int,
+)
+
+/** oEmbed poster + title for a link-sourced review (TikTok/Facebook). */
+data class OembedResult(
+    val thumbnailUrl: String,
+    val title: String,
+)
 
 /**
  * Abstraction over the Reviews backend. ViewModels depend on this, never on Retrofit/OkHttp or
@@ -23,6 +50,7 @@ interface ReviewsRepository {
         sort: String? = "latest",
         userId: String? = null,
         search: String? = null,
+        following: Boolean? = null,
     ): NetworkResult<List<Review>>
 
     /** Toggles like; returns the new liked state. Backend returns no count — caller adjusts locally. */
@@ -33,7 +61,23 @@ interface ReviewsRepository {
 
     suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>>
 
+    /** Posts a comment (or a reply when [parentId] is non-null); returns the inserted comment (with
+     *  author profile) + the new exact count. */
+    suspend fun postComment(reviewId: String, body: String, parentId: String? = null): NetworkResult<PostedComment>
+
+    /** Deletes one of the caller's own comments; returns the new exact count. */
+    suspend fun deleteComment(reviewId: String, commentId: String): NetworkResult<Int>
+
+    /** Adds/switches the caller's reaction on a comment (one of the 6 allowed keys). */
+    suspend fun reactToComment(commentId: String, reaction: String): NetworkResult<Unit>
+
+    /** Removes the caller's reaction from a comment. */
+    suspend fun removeCommentReaction(commentId: String): NetworkResult<Unit>
+
     suspend fun getUserProfile(userId: String): NetworkResult<ReviewProfile>
+
+    /** Toggles follow/unfollow for [userId]; returns the new state + the target's follower count. */
+    suspend fun followUser(userId: String): NetworkResult<FollowResult>
 
     suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>>
 
@@ -46,7 +90,42 @@ interface ReviewsRepository {
         body: String,
         rating: Int?,
         musicTrackId: String? = null,
+        photos: List<String>? = null,
+        mediaUrl: String? = null,
+        thumbnail: String? = null,
+        contentType: String? = null,
+        sourceType: String? = null,
+        sourceUrl: String? = null,
+        durationSec: Double? = null,
+        hashtags: List<String>? = null,
     ): NetworkResult<Unit>
+
+    /** Post-upload AI enrichment for a video (hashtags + suggested caption). Non-blocking at the
+     *  call site — a failure is fine and the post proceeds without tags, matching the web.
+     *  [title] is sent for URL-sourced reviews (the web's `triggerUrlAI` passes it). */
+    suspend fun processVideoAi(thumbnailUrl: String?, caption: String?, title: String? = null): NetworkResult<AiEnrichment>
+
+    /** Uploads one photo for a photo review (multipart → `/api/reviews/upload`); returns its Blob URL. */
+    suspend fun uploadReviewPhoto(uri: Uri): NetworkResult<String>
+
+    /** Fetches the oEmbed poster + title for a TikTok/Facebook link (YouTube is built client-side). */
+    suspend fun oembed(url: String): NetworkResult<OembedResult>
+
+    /**
+     * Uploads a picked review video via the Vercel Blob client-upload handshake (mint token at
+     * `POST /api/upload/video`, then PUT the bytes directly to Blob — same as the web), streaming
+     * from [uri] with progress. Returns the final Vercel Blob URL to put in the review's `media_url`.
+     * [onProgress] reports 0f..1f as bytes are sent (for the composer's progress bar).
+     */
+    suspend fun uploadReviewVideo(
+        uri: Uri,
+        sizeBytes: Long,
+        mimeType: String,
+        onProgress: (Float) -> Unit,
+    ): NetworkResult<String>
+
+    /** Uploads a generated poster-frame JPEG (best-effort) and returns its Blob URL for `thumbnail`. */
+    suspend fun uploadReviewThumbnail(jpegBytes: ByteArray): NetworkResult<String>
 
     /**
      * The tapped review, if it was served by a previous feed/search/profile fetch. There is no

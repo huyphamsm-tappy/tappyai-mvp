@@ -2,12 +2,23 @@
     <!-- Shared actions / labels -->
     <string name="reviews_action_save">Save</string>
     <string name="reviews_action_share">Share</string>
+    <string name="reviews_action_like_count">%d likes</string>
+    <string name="reviews_action_comment_count">%d comments</string>
+    <string name="reviews_action_music">Open sound</string>
     <string name="reviews_anonymous_name">Anonymous</string>
+    <string name="reviews_video_a11y">Video review by %1$s. Double-tap to toggle sound.</string>
     <string name="reviews_new_post_label">New post</string>
 
     <!-- Comments -->
     <string name="reviews_comments_header_title">Comments</string>
     <string name="reviews_comment_default_user">User</string>
+    <string name="reviews_comment_input_placeholder">Add a comment…</string>
+    <string name="reviews_comment_send">Send</string>
+    <string name="reviews_comment_delete">Delete comment</string>
+    <string name="reviews_comment_reply">Reply</string>
+    <string name="reviews_comment_react">React</string>
+    <string name="reviews_comment_replying_to">Replying to %1$s</string>
+    <string name="reviews_comment_reply_cancel">Cancel reply</string>
 
     <!-- Composer -->
     <string name="reviews_composer_post_button">Post</string>
@@ -20,10 +31,32 @@
     <string name="reviews_composer_placeholder_photo">Add photo</string>
     <string name="reviews_composer_placeholder_video">Choose video</string>
     <string name="reviews_composer_placeholder_link">Paste link</string>
+    <string name="reviews_composer_photo_hint">Up to %1$d photos · 5MB each</string>
+    <string name="reviews_composer_photo_add_more">Add photos</string>
+    <string name="reviews_composer_photo_remove">Remove photo</string>
+    <string name="reviews_composer_photo_max">You can add up to %1$d photos</string>
+    <string name="reviews_composer_url_placeholder">Paste a YouTube, TikTok or Facebook link</string>
+    <string name="reviews_composer_url_unsupported">Paste a YouTube, TikTok or Facebook video link</string>
     <string name="reviews_composer_body_placeholder">Share your experience...</string>
     <string name="reviews_composer_posted_toast">Posted</string>
     <string name="reviews_composer_using_sound">Using: %1$s</string>
     <string name="reviews_composer_remove_sound">Remove sound</string>
+
+    <!-- Video upload (matches web reviews/new composer; never expose the 62s backend tolerance) -->
+    <string name="reviews_composer_video_hint">mp4 · mov · webm  ·  up to 60s · 50MB</string>
+    <string name="reviews_composer_video_creating_thumbnail">Creating thumbnail…</string>
+    <string name="reviews_composer_video_uploading">Uploading video…</string>
+    <string name="reviews_composer_video_analyzing">Analyzing content…</string>
+    <string name="reviews_composer_video_uploaded">Video uploaded</string>
+    <string name="reviews_composer_video_remove">Remove</string>
+    <string name="reviews_composer_video_cancel">Cancel</string>
+    <string name="reviews_composer_video_retry">Retry</string>
+    <string name="reviews_composer_video_unsupported">Only mp4, mov, webm are supported</string>
+    <string name="reviews_composer_video_too_large">Video must be under 50MB</string>
+    <string name="reviews_composer_video_read_error">Couldn\'t read video info</string>
+    <string name="reviews_composer_video_too_long">Video can be at most %1$d seconds</string>
+    <string name="reviews_composer_video_upload_error">Upload failed. Please try again.</string>
+    <string name="reviews_composer_upload_cancelled">Upload cancelled</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">
@@ -50,6 +83,11 @@
     <string name="reviews_profile_stat_posts">Posts</string>
     <string name="reviews_profile_stat_likes">Likes</string>
     <string name="reviews_profile_stat_saves">Saves</string>
+    <string name="reviews_profile_stat_reviews">Reviews</string>
+    <string name="reviews_profile_stat_followers">Followers</string>
+    <string name="reviews_profile_stat_following_count">Following</string>
+    <string name="reviews_profile_follow">Follow</string>
+    <string name="reviews_profile_following">Following</string>
     <string name="reviews_profile_empty_title">No posts yet</string>
     <string name="reviews_profile_empty_message">This user\'s posts will appear here.</string>
     <string name="reviews_profile_fallback_title">Profile</string>
@@ -74,6 +112,12 @@
     <string name="reviews_feed_error_title">Couldn\'t load posts</string>
     <string name="reviews_feed_empty_title">No posts yet</string>
     <string name="reviews_feed_empty_message">Check back later.</string>
+    <!-- Feed tabs (web parity: Following / For You / Latest) -->
+    <string name="reviews_feed_tab_following">Following</string>
+    <string name="reviews_feed_tab_foryou">For You</string>
+    <string name="reviews_feed_tab_latest">Latest</string>
+    <string name="reviews_feed_following_empty_title">Not following anyone yet</string>
+    <string name="reviews_feed_following_empty_message">Follow people to see their posts here.</string>
 
     <!-- Detail -->
     <string name="reviews_detail_title">Details</string>

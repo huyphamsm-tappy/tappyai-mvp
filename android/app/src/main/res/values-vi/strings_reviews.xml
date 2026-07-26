@@ -2,12 +2,23 @@
     <!-- Shared actions / labels -->
     <string name="reviews_action_save">Lưu</string>
     <string name="reviews_action_share">Chia sẻ</string>
+    <string name="reviews_action_like_count">%d lượt thích</string>
+    <string name="reviews_action_comment_count">%d bình luận</string>
+    <string name="reviews_action_music">Mở âm thanh</string>
     <string name="reviews_anonymous_name">Ẩn danh</string>
+    <string name="reviews_video_a11y">Video đánh giá của %1$s. Nhấn đúp để bật/tắt âm thanh.</string>
     <string name="reviews_new_post_label">Bài viết mới</string>
 
     <!-- Comments -->
     <string name="reviews_comments_header_title">Bình luận</string>
     <string name="reviews_comment_default_user">Người dùng</string>
+    <string name="reviews_comment_input_placeholder">Viết bình luận…</string>
+    <string name="reviews_comment_send">Gửi</string>
+    <string name="reviews_comment_delete">Xóa bình luận</string>
+    <string name="reviews_comment_reply">Trả lời</string>
+    <string name="reviews_comment_react">Cảm xúc</string>
+    <string name="reviews_comment_replying_to">Đang trả lời %1$s</string>
+    <string name="reviews_comment_reply_cancel">Huỷ trả lời</string>
 
     <!-- Composer -->
     <string name="reviews_composer_post_button">Đăng</string>
@@ -20,10 +31,32 @@
     <string name="reviews_composer_placeholder_photo">Thêm ảnh</string>
     <string name="reviews_composer_placeholder_video">Chọn video</string>
     <string name="reviews_composer_placeholder_link">Dán link</string>
+    <string name="reviews_composer_photo_hint">Tối đa %1$d ảnh · mỗi ảnh 5MB</string>
+    <string name="reviews_composer_photo_add_more">Thêm ảnh</string>
+    <string name="reviews_composer_photo_remove">Xóa ảnh</string>
+    <string name="reviews_composer_photo_max">Bạn có thể thêm tối đa %1$d ảnh</string>
+    <string name="reviews_composer_url_placeholder">Dán link YouTube, TikTok hoặc Facebook</string>
+    <string name="reviews_composer_url_unsupported">Dán link video YouTube, TikTok hoặc Facebook</string>
     <string name="reviews_composer_body_placeholder">Chia sẻ trải nghiệm...</string>
     <string name="reviews_composer_posted_toast">Đã đăng bài</string>
     <string name="reviews_composer_using_sound">Đang dùng: %1$s</string>
     <string name="reviews_composer_remove_sound">Bỏ âm thanh</string>
+
+    <!-- Tải video (giống composer web; không bao giờ để lộ dung sai 62s của backend) -->
+    <string name="reviews_composer_video_hint">mp4 · mov · webm  ·  tối đa 60s · 50MB</string>
+    <string name="reviews_composer_video_creating_thumbnail">Đang tạo thumbnail…</string>
+    <string name="reviews_composer_video_uploading">Đang tải video lên…</string>
+    <string name="reviews_composer_video_analyzing">Đang phân tích nội dung…</string>
+    <string name="reviews_composer_video_uploaded">Video đã tải lên</string>
+    <string name="reviews_composer_video_remove">Xóa</string>
+    <string name="reviews_composer_video_cancel">Hủy</string>
+    <string name="reviews_composer_video_retry">Thử lại</string>
+    <string name="reviews_composer_video_unsupported">Chỉ hỗ trợ mp4, mov, webm</string>
+    <string name="reviews_composer_video_too_large">Video phải nhỏ hơn 50MB</string>
+    <string name="reviews_composer_video_read_error">Không đọc được thông tin video</string>
+    <string name="reviews_composer_video_too_long">Video tối đa %1$d giây</string>
+    <string name="reviews_composer_video_upload_error">Lỗi tải video. Vui lòng thử lại.</string>
+    <string name="reviews_composer_upload_cancelled">Đã hủy tải lên</string>
 
     <!-- Star rating -->
     <string-array name="reviews_rating_labels">
@@ -50,6 +83,11 @@
     <string name="reviews_profile_stat_posts">Bài viết</string>
     <string name="reviews_profile_stat_likes">Lượt thích</string>
     <string name="reviews_profile_stat_saves">Lượt lưu</string>
+    <string name="reviews_profile_stat_reviews">Đánh giá</string>
+    <string name="reviews_profile_stat_followers">Người theo dõi</string>
+    <string name="reviews_profile_stat_following_count">Đang theo dõi</string>
+    <string name="reviews_profile_follow">Theo dõi</string>
+    <string name="reviews_profile_following">Đang theo dõi</string>
     <string name="reviews_profile_empty_title">Chưa có bài viết</string>
     <string name="reviews_profile_empty_message">Bài viết của người dùng sẽ hiển thị ở đây.</string>
     <string name="reviews_profile_fallback_title">Hồ sơ</string>
@@ -74,6 +112,11 @@
     <string name="reviews_feed_error_title">Không tải được bài viết</string>
     <string name="reviews_feed_empty_title">Chưa có bài viết nào</string>
     <string name="reviews_feed_empty_message">Hãy quay lại sau nhé.</string>
+    <string name="reviews_feed_tab_following">Đang follow</string>
+    <string name="reviews_feed_tab_foryou">Đề xuất</string>
+    <string name="reviews_feed_tab_latest">Mới nhất</string>
+    <string name="reviews_feed_following_empty_title">Chưa theo dõi ai</string>
+    <string name="reviews_feed_following_empty_message">Theo dõi mọi người để xem bài viết ở đây.</string>
 
     <!-- Detail -->
     <string name="reviews_detail_title">Chi tiết</string>

@@ -1,5 +1,7 @@
 package com.tappyai.app.reviews.data
 
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -85,7 +87,48 @@ data class CommentDto(
     val body: String = "",
     @SerialName("created_at") val createdAt: String = "",
     @SerialName("user_id") val userId: String = "",
+    // One-level threading: non-null marks a reply (backend returns replies FLATTENED in `comments`,
+    // grouped client-side). Reactions are a per-key count map; my_reaction is the caller's one pick.
+    @SerialName("parent_comment_id") val parentCommentId: String? = null,
     val profiles: ProfileDto? = null,
+    val reactions: Map<String, Int> = emptyMap(),
+    @SerialName("my_reaction") val myReaction: String? = null,
+)
+
+/** POST /api/reviews/{id}/comments request — the comment text (backend validates 1–300 chars) plus
+ *  an optional [parentId] for a reply. [parentId] is camelCase on the wire (the backend reads
+ *  `b.parentId`), so no @SerialName; omitted when null (encodeDefaults=false) which the backend
+ *  treats as a top-level comment. */
+@Serializable
+data class CreateCommentRequestDto(val body: String, val parentId: String? = null)
+
+/** POST/DELETE /api/comments/{commentId}/reactions response. The UI reconciles from optimistic
+ *  local state, so only success/failure matters; fields kept for completeness. */
+@Serializable
+data class ReactionRequestDto(val reaction: String)
+
+@Serializable
+data class ReactionResponseDto(val ok: Boolean = false, val reaction: String? = null)
+
+/** POST /api/reviews/{id}/comments response: the inserted comment + the recomputed exact count. */
+@Serializable
+data class PostCommentResponseDto(
+    val comment: CommentDto? = null,
+    val count: Int = 0,
+)
+
+/** DELETE /api/reviews/{id}/comments?commentId= response: ok + the recomputed exact count. */
+@Serializable
+data class DeleteCommentResponseDto(
+    val ok: Boolean = false,
+    val count: Int = 0,
+)
+
+/** POST /api/users/{id}/follow toggles follow/unfollow and returns the new state + follower count. */
+@Serializable
+data class FollowResponseDto(
+    val following: Boolean = false,
+    @SerialName("follower_count") val followerCount: Int = 0,
 )
 
 /** POST /api/reviews/{id}/like and /save return only the new boolean — no count. */
@@ -132,7 +175,10 @@ data class NotificationDto(
     @SerialName("created_at") val createdAt: String = "",
 )
 
-/** POST /api/reviews request body. Place fields are camelCase inbound (backend contract). */
+/** POST /api/reviews request body. Place fields are camelCase inbound; media fields are snake_case
+ *  (backend reads `b.media_url`/`b.content_type`/`b.source_type`/`b.duration`, see
+ *  `src/app/api/reviews/route.ts`). For a native video review: contentType="video",
+ *  sourceType="upload" (default), mediaUrl+thumbnail = the uploaded Blob URLs, duration = seconds. */
 @Serializable
 data class CreateReviewRequestDto(
     val placeId: String,
@@ -140,17 +186,108 @@ data class CreateReviewRequestDto(
     val body: String,
     val rating: Int? = null,
     val music: MusicSelectionDto? = null,
+    /** Photo-review image Blob URLs (from /api/reviews/upload) — sent with content_type="photo". */
+    val photos: List<String>? = null,
+    @SerialName("media_url") val mediaUrl: String? = null,
+    val thumbnail: String? = null,
+    @SerialName("content_type") val contentType: String? = null,
+    @SerialName("source_type") val sourceType: String? = null,
+    /** Original external URL for a link-sourced review (youtube/tiktok/facebook) — same as media_url. */
+    @SerialName("source_url") val sourceUrl: String? = null,
+    val duration: Double? = null,
+    /** AI-generated tags from /api/explore/process (backend caps at 10) — same field the web sends. */
+    val hashtags: List<String>? = null,
+)
+
+/** POST /api/reviews/upload response — the uploaded image's public Blob URL. */
+@Serializable
+data class UploadPhotoResponseDto(val url: String = "")
+
+/** GET /api/explore/oembed response — poster + title for a tiktok/facebook link (youtube is built
+ *  client-side from the video id). */
+@Serializable
+data class OembedResponseDto(
+    @SerialName("thumbnail_url") val thumbnailUrl: String? = null,
+    val title: String = "",
+)
+
+/**
+ * Vercel Blob client-upload handshake — STEP 1 (token mint), identical to what the web's
+ * `@vercel/blob/client` `upload()` sends to `POST /api/upload/video`. The web never routes the file
+ * through a serverless function (Vercel caps function bodies at ~4.5MB); instead it mints a
+ * short-lived client token and PUTs the bytes DIRECTLY to Vercel Blob. Android now does the exact
+ * same two steps so a 60s/50MB video isn't bounded by the function body limit.
+ *
+ * Wire shape (from the SDK): `{ type: "blob.generate-client-token",
+ * payload: { pathname, clientPayload, multipart } }`. [clientPayload] selects the upload lane the
+ * server's `onBeforeGenerateToken` branches on: `"thumbnail"` (image types, 10MB) vs. null/omitted
+ * (video types, MAX_VIDEO_SIZE_MB). [multipart] stays false — single-shot PUT.
+ */
+@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+data class BlobTokenRequestDto(
+    // The shared Json has encodeDefaults=false, so this defaulted field would be DROPPED from the
+    // wire — but `@vercel/blob`'s handleUpload switches on `body.type` and throws "Invalid event
+    // type" (→ 500) when it's absent, breaking 100% of video + thumbnail uploads. Force it on the
+    // wire, same guard as MusicSelectionDto.
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS) val type: String = "blob.generate-client-token",
+    val payload: BlobTokenPayloadDto,
+)
+
+@Serializable
+data class BlobTokenPayloadDto(
+    val pathname: String,
+    val clientPayload: String? = null,
+    val multipart: Boolean = false,
+)
+
+/** STEP 1 response: `{ type, clientToken }`. [clientToken] is `vercel_blob_client_<storeId>_<b64>`
+ *  and authorizes the direct PUT in STEP 2 (see [VercelBlobUploader]). */
+@Serializable
+data class BlobTokenResponseDto(
+    val type: String = "",
+    val clientToken: String = "",
+)
+
+/** STEP 2 response from Vercel Blob's own upload API — only [url] is consumed (the public Blob URL
+ *  that goes into the review's `media_url`/`thumbnail`). Other fields (downloadUrl, pathname, …) are
+ *  ignored via the shared Json's `ignoreUnknownKeys`. */
+@Serializable
+data class BlobPutResponseDto(
+    val url: String = "",
+)
+
+/** POST /api/explore/process request — post-upload AI enrichment (hashtags + caption) from the
+ *  clip's thumbnail (+ any typed caption). Mirrors the web composer's call. */
+@Serializable
+data class ExploreProcessRequestDto(
+    @SerialName("thumbnail_url") val thumbnailUrl: String? = null,
+    val caption: String? = null,
+    /** Video title for URL-sourced reviews — same input the web's `triggerUrlAI` passes. */
+    val title: String? = null,
+)
+
+/** POST /api/explore/process response. Extra fields (category/location) are ignored — the composer,
+ *  like the web, only consumes [hashtags] and [caption]. */
+@Serializable
+data class ExploreProcessResponseDto(
+    val caption: String = "",
+    val hashtags: List<String> = emptyList(),
 )
 
 /** A track picked via Sound Detail's "Use this sound", attached to the review being composed —
  *  mirrors the web's `ReviewMusic` shape (`src/app/api/reviews/route.ts`). [startSec]/[volume]
  *  stay at their defaults since the composer has no trim/mix UI (matches an un-trimmed pick). */
 @Serializable
+@OptIn(ExperimentalSerializationApi::class)
 data class MusicSelectionDto(
-    val version: Int = 1,
+    // The shared Json has encodeDefaults=false, so default-valued fields are dropped from the wire.
+    // The backend HARD-REQUIRES music.version === 1 (api/reviews/route.ts) and reads startSec/volume,
+    // so these must always be serialised — @EncodeDefault(ALWAYS) forces them on despite the default.
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS) val version: Int = 1,
     val trackId: String,
-    val startSec: Int = 0,
-    val volume: Double = 1.0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS) val startSec: Int = 0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS) val volume: Double = 1.0,
 )
 
 @Serializable
@@ -207,12 +344,21 @@ fun CommentDto.toDomain(): ReviewComment = ReviewComment(
     body = body,
     createdAt = createdAt,
     userId = userId,
+    parentCommentId = parentCommentId,
     profiles = profiles?.toDomain(),
+    reactions = reactions,
+    myReaction = myReaction,
 )
 
 fun UserProfileDto.toReviewProfile(): ReviewProfile = ReviewProfile(
     fullName = fullName,
     avatarUrl = avatarUrl,
+    userId = id.takeIf { it.isNotBlank() },
+    followerCount = followerCount,
+    followingCount = followingCount,
+    reviewCount = reviewCount,
+    isFollowing = isFollowing,
+    isSelf = isSelf,
 )
 
 fun NotificationDto.toDomain(): ReviewNotification = ReviewNotification(
