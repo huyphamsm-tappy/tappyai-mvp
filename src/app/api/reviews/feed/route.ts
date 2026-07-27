@@ -153,9 +153,22 @@ export async function GET(req: NextRequest) {
 
   const res = NextResponse.json({ reviews: enriched, page, limit })
 
-  // Cache public (non-personalized) feeds only
-  if (!followingOnly && !filterUserId) {
+  // Cache ONLY the truly uniform response: anonymous, non-following, non-profile
+  // feeds (every anon caller gets identical rows with liked_by_me/saved_by_me all
+  // false). A signed-in response is personalized per user by the enrichment above
+  // — the previous condition forgot that, so the CDN cached one user's
+  // liked_by_me/saved_by_me and served it to everyone for 30s (+60s stale):
+  // cross-user state leak + likes visibly flip-flopping right after interaction
+  // (x-vercel-cache HIT/STALE confirmed live on prod, 2026-07-27).
+  if (!user && !followingOnly && !filterUserId) {
     res.headers.set('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=60')
+  } else {
+    // Explicit, not just absent: authed responses must never be stored by any
+    // shared cache (Vercel edge serves cached copies even to cookie-bearing
+    // requests — observed live), and Vary documents the auth dependency for
+    // any intermediary that does respect it.
+    res.headers.set('Cache-Control', 'private, no-store')
+    res.headers.set('Vary', 'Authorization, Cookie')
   }
 
   return res
