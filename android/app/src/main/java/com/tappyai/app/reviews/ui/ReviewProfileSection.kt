@@ -32,6 +32,8 @@ import com.tappyai.app.reviews.data.SEED_PROFILES
 import com.tappyai.app.reviews.data.SEED_REVIEWS
 import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
+import com.tappyai.core.designsystem.component.TappyButton
+import com.tappyai.core.designsystem.component.TappyButtonVariant
 import com.tappyai.core.designsystem.component.TappyEmptyState
 import com.tappyai.core.designsystem.theme.TappySpacing
 
@@ -49,8 +51,8 @@ private val ProfileStarColor = Color(0xFFFBBF24)
 internal fun ReviewProfileHeader(
     profile: ReviewProfile,
     reviewCount: Int,
-    totalLikes: Int,
-    totalSaves: Int,
+    isFollowLoading: Boolean,
+    onToggleFollow: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val displayName = profile.fullName ?: stringResource(R.string.reviews_anonymous_name)
@@ -77,12 +79,26 @@ internal fun ReviewProfileHeader(
             overflow = TextOverflow.Ellipsis,
         )
 
+        // Web parity (users/[id]/page.tsx): Reviews / Followers / Following.
         Row(
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.huge),
         ) {
-            ProfileStat(value = reviewCount.toString(), label = stringResource(R.string.reviews_profile_stat_posts))
-            ProfileStat(value = totalLikes.toString(), label = stringResource(R.string.reviews_profile_stat_likes))
-            ProfileStat(value = totalSaves.toString(), label = stringResource(R.string.reviews_profile_stat_saves))
+            ProfileStat(value = reviewCount.toString(), label = stringResource(R.string.reviews_profile_stat_reviews))
+            ProfileStat(value = profile.followerCount.toString(), label = stringResource(R.string.reviews_profile_stat_followers))
+            ProfileStat(value = profile.followingCount.toString(), label = stringResource(R.string.reviews_profile_stat_following_count))
+        }
+
+        // Follow / Following button — hidden for one's own profile (web `!profile.is_self`).
+        if (!profile.isSelf) {
+            TappyButton(
+                text = stringResource(
+                    if (profile.isFollowing) R.string.reviews_profile_following else R.string.reviews_profile_follow,
+                ),
+                onClick = onToggleFollow,
+                variant = if (profile.isFollowing) TappyButtonVariant.Secondary else TappyButtonVariant.Primary,
+                enabled = !isFollowLoading,
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
 }
@@ -164,13 +180,17 @@ internal fun LazyListScope.reviewProfileItems(
     profile: ReviewProfile,
     reviews: List<Review>,
     onReviewClick: (Review) -> Unit,
+    isFollowLoading: Boolean = false,
+    onToggleFollow: () -> Unit = {},
 ) {
     item(key = "profile-header") {
         ReviewProfileHeader(
             profile = profile,
-            reviewCount = reviews.size,
-            totalLikes = reviews.sumOf { it.likeCount },
-            totalSaves = reviews.sumOf { it.saveCount ?: 0 },
+            // Backend count is authoritative; fall back to the loaded page size when unknown
+            // (e.g. profile resolved from an embedded review author rather than GET /api/users).
+            reviewCount = profile.reviewCount.takeIf { it > 0 } ?: reviews.size,
+            isFollowLoading = isFollowLoading,
+            onToggleFollow = onToggleFollow,
         )
     }
 

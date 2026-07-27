@@ -33,6 +33,14 @@ data class Review(
 data class ReviewProfile(
     val fullName: String?,
     val avatarUrl: String?,
+    // Social fields — populated from GET /api/users/{id} (UserProfileDto). The embedded review
+    // author (ProfileDto) only carries name+avatar, so these default to 0/false there.
+    val userId: String? = null,
+    val followerCount: Int = 0,
+    val followingCount: Int = 0,
+    val reviewCount: Int = 0,
+    val isFollowing: Boolean = false,
+    val isSelf: Boolean = false,
 )
 
 data class ReviewMusic(

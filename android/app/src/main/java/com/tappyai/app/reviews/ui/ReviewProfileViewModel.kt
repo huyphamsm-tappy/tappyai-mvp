@@ -29,6 +29,7 @@ data class ReviewProfileUiState(
     val reviews: List<Review> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
+    val isFollowLoading: Boolean = false,
 )
 
 @HiltViewModel
@@ -53,6 +54,44 @@ class ReviewProfileViewModel @Inject constructor(
 
     fun retry() {
         loadedUserId?.let { reload(it) }
+    }
+
+    /**
+     * Toggles follow on the viewed author (web parity: `handleFollow`). Optimistically flips
+     * `isFollowing` and nudges `followerCount`, then reconciles with the backend's authoritative
+     * `{ following, follower_count }`; reverts on failure (e.g. 401 when signed out). No-op for
+     * one's own profile (the button is hidden then, matching the web's `!is_self` gate).
+     */
+    fun toggleFollow() {
+        val profile = _uiState.value.profile ?: return
+        val targetId = profile.userId ?: loadedUserId ?: return
+        if (profile.isSelf || _uiState.value.isFollowLoading) return
+
+        val optimisticFollowing = !profile.isFollowing
+        val optimisticCount = (profile.followerCount + if (optimisticFollowing) 1 else -1).coerceAtLeast(0)
+        _uiState.update {
+            it.copy(
+                profile = profile.copy(isFollowing = optimisticFollowing, followerCount = optimisticCount),
+                isFollowLoading = true,
+            )
+        }
+        viewModelScope.launch {
+            when (val result = repository.followUser(targetId)) {
+                is NetworkResult.Success -> _uiState.update { s ->
+                    s.copy(
+                        profile = s.profile?.copy(
+                            isFollowing = result.data.following,
+                            followerCount = result.data.followerCount,
+                        ),
+                        isFollowLoading = false,
+                    )
+                }
+                is NetworkResult.Error -> {
+                    logger.e(TAG, "Follow toggle failed: ${result.error}")
+                    _uiState.update { it.copy(profile = profile, isFollowLoading = false) }
+                }
+            }
+        }
     }
 
     private fun reload(userId: String) {
