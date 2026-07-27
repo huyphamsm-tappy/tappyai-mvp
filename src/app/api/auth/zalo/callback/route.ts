@@ -20,7 +20,8 @@ export async function GET(req: NextRequest) {
   const savedState = req.cookies.get('zalo_login_state')?.value
   const returnTo = req.cookies.get('zalo_login_return')?.value || '/'
   const next = returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
-  const platform = req.cookies.get('zalo_login_platform')?.value === 'ios' ? 'ios' : 'web'
+  const platformCookie = req.cookies.get('zalo_login_platform')?.value
+  const platform = platformCookie === 'ios' ? 'ios' : platformCookie === 'android' ? 'android' : 'web'
 
   const clearFlow = (res: NextResponse) => {
     res.cookies.delete('zalo_login_cv')
@@ -61,7 +62,7 @@ export async function GET(req: NextRequest) {
     // via the URL fragment — fragments are never sent to the server or logged —
     // and finish there. The short-lived httpOnly copy binds the /complete step
     // to a caller that actually performed this server-side exchange.
-    const finishUrl = `${origin}/auth/zalo-finish#at=${encodeURIComponent(tokens.access_token)}&next=${encodeURIComponent(next)}${platform === 'ios' ? '&platform=ios' : ''}`
+    const finishUrl = `${origin}/auth/zalo-finish#at=${encodeURIComponent(tokens.access_token)}&next=${encodeURIComponent(next)}${platform !== 'web' ? `&platform=${platform}` : ''}`
     const res = clearFlow(NextResponse.redirect(finishUrl))
     res.cookies.set('zalo_at', tokens.access_token, {
       httpOnly: true, secure: true, sameSite: 'lax', maxAge: 300, path: '/',

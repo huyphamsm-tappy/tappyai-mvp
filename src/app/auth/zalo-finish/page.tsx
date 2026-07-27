@@ -16,9 +16,10 @@ export default function ZaloFinishPage() {
       const params = new URLSearchParams(window.location.hash.slice(1))
       const at = params.get('at')
       const next = params.get('next') || '/'
-      // iOS runs this page inside ASWebAuthenticationSession; the flow must end
-      // at the app's custom scheme instead of a web redirect (see /auth/confirm).
-      const platform = params.get('platform') === 'ios' ? 'ios' : 'web'
+      // Native app (iOS ASWebAuthenticationSession / Android Custom Tab): the flow
+      // must end at the app's custom scheme instead of a web redirect (see /auth/confirm).
+      const platformParam = params.get('platform')
+      const platform = platformParam === 'ios' ? 'ios' : platformParam === 'android' ? 'android' : 'web'
       if (!at) { window.location.replace('/login?error=zalo_failed'); return }
 
       try {
