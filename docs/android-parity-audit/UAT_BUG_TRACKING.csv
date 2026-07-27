@@ -1,0 +1,6 @@
+Bug ID,Module,Severity,Priority,Device,Android Version,Steps,Expected,Actual,Status,Fixed In,Verified By
+"UAT-CHAT-001","AI Chat","P0","P0","Pixel 6","API 34 (14)","1. Sign in 2. Open Chat 3. Send 'best pho in Hanoi'","Reply streams token-by-token with place cards","(example) Blank bubble then whole message at once","Open","",""
+"UAT-REV-001","Reviews / Composer","P1","P1","Samsung A12","API 30 (11)","1. Explore > + 2. Video tab 3. Pick 45s clip 4. Post","Upload shows progress, video appears in feed","(example) Progress stuck at 0%","Open","",""
+"","","","","","","","","","","",""
+"","","","","","","","","","","",""
+"","","","","","","","","","","",""
