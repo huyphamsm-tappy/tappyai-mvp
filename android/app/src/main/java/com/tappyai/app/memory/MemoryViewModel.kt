@@ -6,10 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.memory.data.MemoryRepository
+import com.tappyai.core.datastore.PreferencesDataSource
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,8 +19,9 @@ import javax.inject.Inject
  * State for the What-Tappy-Knows screen, backed by `/api/memory`. Loads on init (GET); every
  * per-fact remove optimistically updates local state then persists the FULL corrected memory via
  * PATCH (reverting on failure); clear is an optimistic DELETE. Response style ([tone]/[length]) is
- * a local-only preference (not part of `/api/memory`). The public surface is unchanged from the
- * seed version, so the screen is untouched.
+ * a local-only preference (not part of `/api/memory`) persisted in [PreferencesDataSource] — the
+ * native analog of the web's `localStorage['tappy_response_style']` — and read by [ChatViewModel]
+ * for the `responseStyle` field it sends on every chat turn (`ChatInterface.tsx:579`).
  *
  * GET never 401s — it returns null on any issue — and the screen has no error branch, so a failed
  * load maps to `memory = null` (the empty state), mirroring the backend's own contract.
@@ -26,10 +29,16 @@ import javax.inject.Inject
 @HiltViewModel
 class MemoryViewModel @Inject constructor(
     private val repository: MemoryRepository,
+    private val prefs: PreferencesDataSource,
     private val logger: LoggerProvider,
 ) : ViewModel() {
 
     var memory by mutableStateOf<Memory?>(null)
+        private set
+
+    /** Web parity (tappy-knows/page.tsx:133): show a spinner during the initial GET instead of
+     *  flashing the empty state (memory starts null) until the request resolves. */
+    var isLoading by mutableStateOf(true)
         private set
 
     /** True once the user has cleared memory this session — drives the "Memory cleared" empty copy. */
@@ -47,12 +56,25 @@ class MemoryViewModel @Inject constructor(
     // Only the latest full-state PATCH matters; cancel the prior one when a new edit arrives.
     private var persistJob: Job? = null
 
+    // Round-3 audit fix: load() had no cancel-before-relaunch guard, so two concurrent load()
+    // calls (e.g. a resume-triggered refresh racing a manual one) could land out of order, with
+    // the older/slower response winning and clobbering a newer result.
+    private var loadJob: Job? = null
+
     init {
         load()
+        viewModelScope.launch {
+            val savedTone = prefs.getString(RESPONSE_STYLE_TONE_KEY).first()
+            tone = ResponseTone.entries.firstOrNull { it.wireValue == savedTone }
+            val savedLength = prefs.getString(RESPONSE_STYLE_LENGTH_KEY).first()
+            length = ResponseLength.entries.firstOrNull { it.wireValue == savedLength }
+        }
     }
 
     private fun load() {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        isLoading = true
+        loadJob = viewModelScope.launch {
             when (val result = repository.getMemory()) {
                 is NetworkResult.Success -> memory = result.data
                 is NetworkResult.Error -> {
@@ -62,6 +84,7 @@ class MemoryViewModel @Inject constructor(
                     memory = null
                 }
             }
+            isLoading = false
         }
     }
 
@@ -94,11 +117,19 @@ class MemoryViewModel @Inject constructor(
     }
 
     fun selectTone(value: ResponseTone) {
-        tone = if (tone == value) null else value
+        val next = if (tone == value) null else value
+        tone = next
+        viewModelScope.launch {
+            if (next == null) prefs.remove(RESPONSE_STYLE_TONE_KEY) else prefs.setString(RESPONSE_STYLE_TONE_KEY, next.wireValue)
+        }
     }
 
     fun selectLength(value: ResponseLength) {
-        length = if (length == value) null else value
+        val next = if (length == value) null else value
+        length = next
+        viewModelScope.launch {
+            if (next == null) prefs.remove(RESPONSE_STYLE_LENGTH_KEY) else prefs.setString(RESPONSE_STYLE_LENGTH_KEY, next.wireValue)
+        }
     }
 
     fun removeLocation() = update { it.copy(locationBase = null) }
