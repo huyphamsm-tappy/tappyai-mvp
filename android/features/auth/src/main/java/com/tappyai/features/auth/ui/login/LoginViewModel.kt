@@ -81,10 +81,28 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Zalo sign-in — architecturally like Google (a Custom Tab that needs an Activity [context]),
+     * not like Facebook (Supabase-internal). Opens the web Zalo OAuth flow in a Chrome Custom Tab
+     * via [ZaloSignInClient]; the session lands later through the `tappyai://auth-callback` deep
+     * link (`AuthRepository.handleOAuthRedirectIntent`), the same completion path Google/Facebook
+     * use — so, like them, this does not flip UI state or navigate itself.
+     */
+    fun onZaloSignInClick(context: Context) {
+        authRepository.startZaloSignIn(context)
+    }
+
     fun onSendEmailOtpClick() {
         val emailValue = email.trim()
         if (emailValue.isEmpty()) {
             _uiState.value = UiState.Error(stringProvider.get(R.string.auth_enter_email_first))
+            return
+        }
+        // Web-parity-sync fix: matches web's handleSendOtp exactly (src/app/login/page.tsx:183)
+        // — !email.includes('@') — instead of only checking for a non-empty string, which let a
+        // malformed address (no "@" at all) reach the network before failing.
+        if (!emailValue.contains("@")) {
+            _uiState.value = UiState.Error(stringProvider.get(R.string.auth_email_invalid_format))
             return
         }
 

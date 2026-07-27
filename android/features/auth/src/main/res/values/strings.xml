@@ -2,6 +2,7 @@
     <string name="auth_brand_name">TappyAI</string>
     <string name="auth_subtitle">Sign in to continue</string>
     <string name="auth_continue_with_google">Continue with Google</string>
+    <string name="auth_continue_with_zalo">Continue with Zalo</string>
     <string name="auth_continue_with_facebook">Continue with Facebook</string>
     <string name="auth_or_divider">or</string>
     <string name="auth_email_label">Email</string>
@@ -19,6 +20,8 @@
     <string name="auth_google_signin_cancelled">Google sign-in was cancelled.</string>
     <string name="auth_enter_email_first">Enter your email address first.</string>
     <string name="auth_enter_code_first">Enter the code you received.</string>
+    <string name="auth_email_invalid_format">Enter a valid email</string>
+    <string name="auth_otp_code_invalid_length">The code is 6 digits</string>
 
     <string name="auth_error_invalid_code">That code or account isn\'t valid. Please try again.</string>
     <string name="auth_error_too_many_attempts">Too many attempts. Please wait a moment and try again.</string>

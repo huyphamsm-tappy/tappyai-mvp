@@ -2,6 +2,7 @@
     <string name="auth_brand_name">TappyAI</string>
     <string name="auth_subtitle">Đăng nhập để tiếp tục</string>
     <string name="auth_continue_with_google">Tiếp tục với Google</string>
+    <string name="auth_continue_with_zalo">Tiếp tục với Zalo</string>
     <string name="auth_continue_with_facebook">Tiếp tục với Facebook</string>
     <string name="auth_or_divider">hoặc</string>
     <string name="auth_email_label">Email</string>
@@ -19,6 +20,8 @@
     <string name="auth_google_signin_cancelled">Đăng nhập Google đã bị hủy.</string>
     <string name="auth_enter_email_first">Vui lòng nhập email của bạn trước.</string>
     <string name="auth_enter_code_first">Vui lòng nhập mã bạn đã nhận được.</string>
+    <string name="auth_email_invalid_format">Nhập email hợp lệ</string>
+    <string name="auth_otp_code_invalid_length">Mã xác thực gồm 6 chữ số</string>
 
     <string name="auth_error_invalid_code">Mã hoặc tài khoản không hợp lệ. Vui lòng thử lại.</string>
     <string name="auth_error_too_many_attempts">Bạn đã thử quá nhiều lần. Vui lòng đợi một chút rồi thử lại.</string>
