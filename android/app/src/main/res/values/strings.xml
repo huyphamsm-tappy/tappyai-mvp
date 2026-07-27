@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TappyAI</string>
+    <!-- Brand name, identical in every locale — translatable=false silences the MissingTranslation lint. -->
+    <string name="app_name" translatable="false">TappyAI</string>
 </resources>
