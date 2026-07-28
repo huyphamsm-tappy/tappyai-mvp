@@ -56,7 +56,9 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
     return () => { cancelled = true }
   }, [trackId])
 
-  // Close on browser back
+  // Close on browser back — justified transport listener (spec I1): it closes
+  // a modal, decides no business state, and writes nothing. Explore state is
+  // untouched on this path.
   useEffect(() => {
     const onPop = () => onClose()
     window.addEventListener('popstate', onPop)

@@ -27,8 +27,8 @@ type Notification = InboxNotif
 // Explore state restoration is owned by ExploreSession
 // (docs/CANONICAL_EXPLORE_NAVIGATION_SPEC.md). Freeze happens on explicit
 // departure intent, restore on Explore becoming visible — history events play
-// no part (invariants I1/I4). The old popstate/back_forward gating and the
-// unmount-written RETURN_KEY marker are gone: they only protected paths that
+// no part (invariants I1/I4). The old history-event gating and the
+// unmount-written storage marker are gone: they only protected paths that
 // happened to push history AND unmount, which is exactly why My-Profile
 // (router.replace + tab toggle) lost state (NAV-004).
 interface HotPlace { place_name: string; count: number }

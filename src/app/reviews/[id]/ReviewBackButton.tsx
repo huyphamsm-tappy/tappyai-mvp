@@ -9,6 +9,9 @@ export default function ReviewBackButton() {
   return (
     <button
       onClick={() => {
+        // Justified transport read (spec I1): picks a destination — back when a
+        // stack exists, /reviews otherwise. Decides no business state; Explore
+        // restoration is owned by ExploreSession and works on either landing.
         if (window.history.length > 1) router.back()
         else router.push('/reviews')
       }}
