@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef, useMemo } from 'react'
+import { useEffect, useState, useCallback, useRef, useMemo, type MouseEvent as ReactMouseEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -18,42 +18,19 @@ import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } fr
 import LinkPoster from '@/components/LinkPoster'
 import { ProfileTab } from './ProfileTab'
 import { useNotifications } from '@/components/NotificationProvider'
+import { getExploreSession, reportAuthState } from '@/lib/explore/webExploreSession'
 import { mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
 
 // ADR-014: notifications now come from the app-level NotificationProvider (server
 // `notifications` table + server-side read_at). No client `notifSeenAt` marker.
 type Notification = InboxNotif
-// Bug #8 — feed active-clip restoration. The clip in view lives only in an inner
-// snap-scroll container (no per-clip URL, no history entry), so opening an author's
-// profile (a real route change) and pressing Back would remount the feed at the top
-// slide of a freshly-fetched — and, for "trending", re-ordered — feed, i.e. a
-// different clip. We remember the active clip's ID + feed type on leave and restore
-// by ID after the feed reloads, but ONLY when the mount follows a Back/Forward
-// traversal. `popstate` fires for history traversals (Back/Forward, incl.
-// router.back()) but not for push navigations, so a recent popstate is our signal.
-const RETURN_KEY = 'tappy:reviewsReturn'
-let lastPopStateAt = 0
-if (typeof window !== 'undefined') {
-  window.addEventListener('popstate', () => { lastPopStateAt = Date.now() })
-}
-// popstate only fires for SAME-document traversals. A cross-document Back — the
-// browser reloads /reviews on the way back, e.g. mobile Safari with bfcache
-// blocked by this page's persistent realtime WebSocket — never fires it, which
-// silently skipped restoration (Bug #17). Navigation Timing records exactly that
-// case: the fresh document's navigation entry has type 'back_forward'. That flag
-// describes the DOCUMENT's initial load, so it is consumed on first read — later
-// SPA mounts of /reviews inside the same document must rely on popstate alone,
-// otherwise a plain TikNav push-visit would masquerade as a Back.
-let navTimingConsumed = false
-const isBackForwardMount = () => {
-  if (lastPopStateAt > 0 && Date.now() - lastPopStateAt < 5000) return true
-  if (navTimingConsumed) return false
-  navTimingConsumed = true
-  try {
-    const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
-    return nav?.type === 'back_forward'
-  } catch { return false }
-}
+// Explore state restoration is owned by ExploreSession
+// (docs/CANONICAL_EXPLORE_NAVIGATION_SPEC.md). Freeze happens on explicit
+// departure intent, restore on Explore becoming visible — history events play
+// no part (invariants I1/I4). The old popstate/back_forward gating and the
+// unmount-written RETURN_KEY marker are gone: they only protected paths that
+// happened to push history AND unmount, which is exactly why My-Profile
+// (router.replace + tab toggle) lost state (NAV-004).
 interface HotPlace { place_name: string; count: number }
 // GroupedNotif / NOTIF_COLOR / groupNotifs / notifSection moved to
 // '@/lib/notifications/inbox' (unit-tested). Imported above.
@@ -384,41 +361,58 @@ export default function ReviewsPage() {
   const [feedError, setFeedError] = useState(false)
   // Index of the slide currently in view — only this one (± 1) mounts a <video>.
   const [activeIndex, setActiveIndex] = useState(0)
-  // Bug #8: decide ONCE, at first render, whether this mount follows a Back/Forward
-  // traversal. popstate has already fired by now on a traversal; re-checking later
-  // would be sensitive to how long the feed fetch took.
-  const isBackNavRef = useRef<boolean | null>(null)
-  if (isBackNavRef.current === null) isBackNavRef.current = isBackForwardMount()
+  // ExploreSession — the single owner of Explore navigation state (spec I2).
+  // Entering here (any way: fresh visit, Back, tab return) moves the session to
+  // RESTORING when a valid snapshot exists; restore() runs once the feed loads.
+  const sessionRef = useRef<ReturnType<typeof getExploreSession> | null>(null)
+  if (sessionRef.current === null && typeof window !== 'undefined') {
+    // Render-phase init (not an effect) so the tab/feedType/searchQuery lazy
+    // initializers below already see the adopted snapshot state (§3.1: query
+    // shape restored BEFORE the first fetch). Guarded by the ref, so it runs
+    // once per mount; never on the server (the singleton must not exist there).
+    sessionRef.current = getExploreSession()
+    sessionRef.current.enterExplore()
+  }
   const router = useRouter()
   const searchParams = useSearchParams()
   const [tab, setTab] = useState<string>(() => {
     if (typeof window === 'undefined') return 'home'
+    // URL is a transport echo (?tab=) and wins when present; else the session's
+    // frozen tab (replaces the legacy sessionStorage 'reviews_tab' channel).
     const fromUrl = new URLSearchParams(window.location.search).get('tab')
     if (fromUrl) return fromUrl
-    const saved = sessionStorage.getItem('reviews_tab')
-    if (saved) { sessionStorage.removeItem('reviews_tab'); return saved }
-    return 'home'
+    return sessionRef.current?.getState().tab ?? 'home'
   })
   useEffect(() => {
     const fromUrl = searchParams?.get('tab')
     if (fromUrl) setTab(fromUrl)
   }, [searchParams])
   const handleSetTab = useCallback((t: string) => {
+    const s = sessionRef.current
+    if (t === tab) return // re-click of the current tab: no transition, no session signal
+    if (t === 'home') {
+      // Returning to the feed tab = an Explore entry (BT-02): the session moves
+      // to RESTORING and the restore effect resolves it against the already-
+      // loaded feed. Zero history entries involved (I4/I9).
+      s?.setQueryShape({ tab: t })
+      s?.enterExplore()
+    } else if (tab === 'home') {
+      // Leaving the feed for another tab — freeze FIRST, at the moment of
+      // explicit intent (I3: this path unmounts nothing and pushes nothing —
+      // exactly the path the legacy unmount marker missed, NAV-004).
+      s?.leaveExplore('tab-switch')
+      s?.setQueryShape({ tab: t })
+    } else {
+      s?.setQueryShape({ tab: t }) // non-feed → non-feed: no freeze/restore involved
+    }
     setTab(t)
     router.replace(window.location.pathname + '?tab=' + t, { scroll: false })
-  }, [router])
+  }, [router, tab])
   const [feedType, setFeedType] = useState<'for-you' | 'latest' | 'following'>(() => {
-    // Bug #8: on a Back/Forward return, restore the feed the user was on so the
-    // saved clip is present to scroll to. Fresh visits keep the default.
-    if (typeof window === 'undefined' || !isBackNavRef.current) return 'for-you'
-    try {
-      const raw = sessionStorage.getItem(RETURN_KEY)
-      if (raw) {
-        const ft = JSON.parse(raw).feedType
-        if (ft === 'for-you' || ft === 'latest' || ft === 'following') return ft
-      }
-    } catch { /* private mode / bad JSON — fall through to default */ }
-    return 'for-you'
+    // Query shape is restored from the session BEFORE the first fetch (spec
+    // §3.1), so the saved clip exists in the loaded feed. Fresh visits default.
+    const ft = sessionRef.current?.getState().feedType
+    return ft === 'for-you' || ft === 'latest' || ft === 'following' ? ft : 'for-you'
   })
   const [city, setCity] = useState('')
   const [topHashtags, setTopHashtags] = useState<string[]>([])
@@ -426,9 +420,11 @@ export default function ReviewsPage() {
   const topHashtagsRef = useRef(topHashtags)
   cityRef.current = city
   topHashtagsRef.current = topHashtags
-  // Bug #8: mirror live values so the unmount handler can snapshot the exact clip
-  // and feed the user is leaving from (a cleanup closure captures stale mount-time
-  // values otherwise).
+  // reviewsRef mirrors the live rows for non-render consumers: the scroll
+  // reporter and the visibility re-enter path read the current feed without
+  // re-binding their listeners. activeIndexRef/feedTypeRef fed the removed
+  // legacy unmount marker (L9); they are resolved in the M5 dead-code sweep
+  // (L13–L15, per-use evidence required by the migration plan).
   const activeIndexRef = useRef(activeIndex)
   activeIndexRef.current = activeIndex
   const reviewsRef = useRef(reviews)
@@ -446,14 +442,19 @@ export default function ReviewsPage() {
   const [hotPlaces, setHotPlaces] = useState<HotPlace[]>([])
   const [hotPlacesLoading, setHotPlacesLoading] = useState(false)
   const [me, setMe] = useState<string | null>(null)
+  // F10 gate: restore may not run until the identity is known, so a signed-out
+  // return invalidates BEFORE any scroll is applied (BT-20), never after.
+  const [authResolved, setAuthResolved] = useState(false)
   const [userPrefs, setUserPrefs] = useState<UserPreferences | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(0)
   const hasMore = useRef(true)
   const supabase = createClient()
 
-  // Search state
-  const [searchQuery, setSearchQuery] = useState('')
+  // Search state — the query itself is session-owned business state (§2.1,
+  // BT-11): lazy-init from the session so a restored entry repopulates the
+  // search box; results are refetched by the mount effect below.
+  const [searchQuery, setSearchQuery] = useState(() => sessionRef.current?.getState().query ?? '')
   const [searchResults, setSearchResults] = useState<Review[]>([])
   const [searching, setSearching] = useState(false)
   const [searchError, setSearchError] = useState(false)
@@ -466,7 +467,12 @@ export default function ReviewsPage() {
   const [userSearchError, setUserSearchError] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null)).catch(() => {})
+    supabase.auth.getUser().then(({ data }) => {
+      const uid = data.user?.id ?? null
+      setMe(uid)
+      reportAuthState(uid) // F10: identity change invalidates the frozen session
+      setAuthResolved(true)
+    }).catch(() => setAuthResolved(true))
   }, [supabase])
   useEffect(() => {
     if (!me) return
@@ -587,6 +593,9 @@ export default function ReviewsPage() {
 
   const handleFeedTypeChange = (ft: 'for-you' | 'latest' | 'following') => {
     if (ft === feedType) return
+    // Query shape is session-owned business state (§3.4). A held snapshot is
+    // invalidated by the session itself (F3/BT-10) — never resurrected later.
+    sessionRef.current?.setQueryShape({ feedType: ft })
     setFeedType(ft)
     setLoading(true)
     pageRef.current = 0
@@ -605,6 +614,13 @@ export default function ReviewsPage() {
     const next = Math.max(0, Math.min(reviews.length - 1, cur + dir))
     c.scrollTo({ top: next * c.clientHeight, behavior: 'auto' })
     setActiveIndex(next) // update immediately so the arrows' disabled state + video window track it
+  }
+
+  // Single write path for the query (I2): UI state and session state move
+  // together. An empty box is `null` in ExploreState, never ''.
+  const updateSearchQuery = (q: string) => {
+    setSearchQuery(q)
+    sessionRef.current?.setQueryShape({ query: q || null })
   }
 
   // Debounced search
@@ -693,6 +709,10 @@ export default function ReviewsPage() {
       // actually changes so we don't re-render the whole feed on every scroll tick.
       const idx = Math.round(c.scrollTop / c.clientHeight)
       setActiveIndex(prev => (prev === idx ? prev : idx))
+      // Report plain data into the session (§3.3) — the session never reads the
+      // DOM (P4). A scroll arriving while the session is RESTORING marks user
+      // input, so the user wins any restore race (F7/BT-25). Emits nothing.
+      sessionRef.current?.reportActiveItem({ reviewId: reviewsRef.current[idx]?.id ?? null, index: idx, scrollOffset: c.scrollTop })
       if (hasMore.current && c.scrollTop + c.clientHeight >= c.scrollHeight - c.clientHeight * 0.5) {
         hasMore.current = false
         pageRef.current += 1
@@ -703,42 +723,98 @@ export default function ReviewsPage() {
     return () => c.removeEventListener('scroll', onScroll)
   }, [loading, fetch_, feedType])
 
-  // Bug #8: on leaving the feed (e.g. tapping into an author's profile) remember the
-  // active clip so a Back return can restore it. Written on unmount from refs so it
-  // reflects the last-viewed clip no matter how the user navigated away.
+  // ── ExploreSession edges (spec §8, Web binding) ─────────────────────────
+  // Departure signals: route-change (link-click capture on the page root +
+  // App-Router segment teardown below), tab-switch (handleSetTab), background
+  // (pagehide / tab hidden). Arrival signals: mount, feed-tab return,
+  // pageshow / tab visible. History events play no part in any of them (I1/I4).
   useEffect(() => {
+    const s = sessionRef.current
+    if (!s) return
+    // Re-enter after a freeze that had no real departure: dev StrictMode's
+    // simulated remount, bfcache returns and tab-visible returns all land here.
+    const reenter = () => {
+      if (s.getPhase() !== 'frozen') return
+      s.enterExplore()
+      // Explore is still mounted with its feed already loaded — resolve the
+      // restore immediately (the load-driven effect below has no changed deps
+      // to fire on, BT-18). The UI never moved, so no scroll is applied.
+      if (s.getPhase() === 'restoring' && reviewsRef.current.length > 0) {
+        s.restore(reviewsRef.current.map(r => r.id))
+      }
+    }
+    reenter()
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') s.leaveExplore('background')
+      else reenter()
+    }
+    const onPageHide = () => { s.leaveExplore('background') } // full-document teardown: reload, external nav, tab close
+    const onPageShow = () => reenter() // bfcache return
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pagehide', onPageHide)
+    window.addEventListener('pageshow', onPageShow)
     return () => {
-      try {
-        const r = reviewsRef.current[activeIndexRef.current]
-        if (r) sessionStorage.setItem(RETURN_KEY, JSON.stringify({ clipId: r.id, feedType: feedTypeRef.current }))
-      } catch { /* private mode / quota — restore simply won't happen */ }
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pagehide', onPageHide)
+      window.removeEventListener('pageshow', onPageShow)
+      // App-Router segment teardown is the only observable signal for
+      // programmatic navigations this page doesn't own (router.push from a
+      // child modal, auth redirects). Freeze is idempotent (I7): when a click /
+      // tab / background signal already froze, this returns that same snapshot
+      // and changes nothing. It reads no UI values — the state it seals was
+      // reported continuously via reportActiveItem — so this is §8 signal
+      // conversion, not a revival of the legacy L9 unmount marker.
+      s.leaveExplore('route-change')
     }
   }, [])
 
-  // Bug #8: after the feed loads on a Back/Forward return, scroll to the saved clip
-  // by ID (index is unreliable — "trending" re-orders between fetches) and mark it
-  // active so the correct <video> plays. Runs once per mount; clears the marker on a
-  // successful restore.
-  const didRestoreRef = useRef(false)
+  // Restore — spec §3.5 (replaces the legacy L10 marker effect). Runs when the
+  // feed tab is visible with a loaded feed and the session is RESTORING — a
+  // phase only enterExplore sets, never a history event (I4). `tab` is a
+  // dependency because returning to the feed tab re-evaluates with zero
+  // history entries (BT-02/I9); `authResolved` gates F10 ordering.
   useEffect(() => {
-    if (didRestoreRef.current) return
-    if (loading || reviews.length === 0) return
-    didRestoreRef.current = true // one attempt per mount, success or not
-    try {
-      if (!isBackNavRef.current) return
-      const raw = sessionStorage.getItem(RETURN_KEY)
-      if (!raw) return
-      const { clipId, feedType: savedFeedType } = JSON.parse(raw)
-      if (savedFeedType && savedFeedType !== feedType) return // a different feed loaded
-      const idx = reviews.findIndex(r => r.id === clipId)
-      if (idx <= 0) return // 0 = already the top slide, -1 = clip not in this page → keep top
+    const s = sessionRef.current
+    if (!s || !authResolved || loading || reviews.length === 0 || tab !== 'home') return
+    if (s.getPhase() !== 'restoring') return
+    const result = s.restore(reviews.map(r => r.id))
+    const idx = result.resolvedIndex
+    if (idx === null || idx <= 0) return // top needs no scroll; every outcome was already reported by the session (I6)
+    let tries = 0
+    const apply = () => {
       const c = containerRef.current
-      if (!c) return
+      if (!c || c.clientHeight === 0) {
+        // F11: container not measured yet — defer a frame, bounded retries.
+        if (++tries <= 10) { requestAnimationFrame(apply); return }
+        // Exhausted: the feed is rendering at the top — keep session = UI truth.
+        s.reportActiveItem({ reviewId: reviews[0]?.id ?? null, index: 0, scrollOffset: 0 })
+        return
+      }
       c.scrollTo({ top: idx * c.clientHeight, behavior: 'auto' })
       setActiveIndex(idx)
-      sessionStorage.removeItem(RETURN_KEY) // remove after a successful restore
-    } catch { /* private mode / bad JSON — leave the feed at the top */ }
-  }, [loading, reviews, feedType])
+    }
+    apply()
+  }, [authResolved, loading, reviews, feedType, tab])
+
+  // Echo the settled slide into the session on plain (non-restore) loads:
+  // leaving from Clip 0 without ever scrolling still freezes an id, so a later
+  // trending re-order restores by id, not index (I5). Skipped while RESTORING
+  // (the restore effect owns that transition) and when the UI index lags the
+  // session (the render right after a restore applied).
+  useEffect(() => {
+    const s = sessionRef.current
+    if (!s || loading || reviews.length === 0 || tab !== 'home') return
+    if (s.getPhase() === 'restoring') return
+    if (s.getState().activeIndex !== activeIndex) return
+    s.reportActiveItem({ reviewId: reviews[activeIndex]?.id ?? null, index: activeIndex, scrollOffset: containerRef.current?.scrollTop ?? 0 })
+  }, [loading, reviews, activeIndex, tab])
+
+  // BT-11: a restored query re-runs its search once so results reappear.
+  useEffect(() => {
+    if (searchQuery) doSearch(searchQuery)
+    // mount-only: typing already triggers doSearch via the input itself
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Anonymous visitors can browse the feed but not interact — send them to login
   // (with a returnTo) the moment they try to like / save / follow / comment.
@@ -819,8 +895,21 @@ export default function ReviewsPage() {
     track('review_share', { review_id: r.id, place: r.place_name })
   }
 
+  // Explicit route-change departure intent (I3): any internal link inside the
+  // page that leaves /reviews freezes the session at click time — before the
+  // router acts. `/reviews` itself (?tab= echoes) stays inside Explore.
+  // External and hash links never leave the SPA route, so they don't freeze.
+  const onLeaveByLink = (e: ReactMouseEvent) => {
+    const a = (e.target as HTMLElement).closest?.('a[href]') as HTMLAnchorElement | null
+    if (!a) return
+    const href = a.getAttribute('href') ?? ''
+    if (!href.startsWith('/')) return
+    if (href.split(/[?#]/)[0] === '/reviews') return
+    sessionRef.current?.leaveExplore('route-change')
+  }
+
   return (
-    <div className="bg-black h-dvh overflow-hidden flex">
+    <div className="bg-black h-dvh overflow-hidden flex" onClickCapture={onLeaveByLink}>
       <Sidebar tab={tab} setTab={handleSetTab} />
 
       {/* Content */}
@@ -874,12 +963,12 @@ export default function ReviewsPage() {
                   <input
                     autoFocus
                     value={searchQuery}
-                    onChange={e => { setSearchQuery(e.target.value); searchMode === 'review' ? doSearch(e.target.value) : doUserSearch(e.target.value) }}
+                    onChange={e => { updateSearchQuery(e.target.value); searchMode === 'review' ? doSearch(e.target.value) : doUserSearch(e.target.value) }}
                     placeholder={searchMode === 'review' ? t('reviews.searchPlaceholderReview') : t('reviews.searchPlaceholderUser')}
                     className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
                   />
                   {searchQuery && (
-                    <button onClick={() => { setSearchQuery(''); setSearchResults([]); setUserResults([]); setSearchError(false); setUserSearchError(false) }}>
+                    <button onClick={() => { updateSearchQuery(''); setSearchResults([]); setUserResults([]); setSearchError(false); setUserSearchError(false) }}>
                       <X size={16} className="text-gray-500" />
                     </button>
                   )}

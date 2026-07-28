@@ -43,8 +43,25 @@ export function getExploreSession(): ExploreSession {
   return singleton
 }
 
+const AUTH_KEY = 'tappy:exploreSession.auth'
+
+/** F10: feed contents are identity-dependent. Pages report the resolved auth
+ *  uid once known; a change from the last recorded identity invalidates the
+ *  session. Anonymous is recorded as 'anon' so anon↔anon reloads never
+ *  invalidate. Lives here (platform binding), not in ExploreSession — identity
+ *  is an edge signal, not Explore business state. */
+export function reportAuthState(uid: string | null): void {
+  if (typeof window === 'undefined') return
+  const cur = uid ?? 'anon'
+  let prev: string | null = null
+  try { prev = window.sessionStorage.getItem(AUTH_KEY) } catch { /* F4 */ }
+  if (prev !== null && prev !== cur) getExploreSession().invalidate('auth-changed')
+  try { window.sessionStorage.setItem(AUTH_KEY, cur) } catch { /* F4: never throw */ }
+}
+
 /** Test seam. */
 export function resetExploreSessionForTests(): void {
   singleton?.dispose()
   singleton = null
+  try { window.sessionStorage.removeItem(AUTH_KEY) } catch { /* test env */ }
 }
