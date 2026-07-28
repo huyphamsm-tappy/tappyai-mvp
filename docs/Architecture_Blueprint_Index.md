@@ -17,6 +17,7 @@
 | [`Authentication_Architecture.md`](Authentication_Architecture.md) | Architecture Week — Part 2 | Login providers (current: Google+Zalo; proposed: +Apple, +Email OTP), Guest Mode boundary, session/token design, roles, Just-in-Time permission strategy. **Contains the TWA (`assetlinks.json`) finding.** |
 | [`Localization_Architecture.md`](Localization_Architecture.md) | Architecture Week — Part 3 | UI language vs. AI response language (kept separate), device-locale default, minimal schema proposal, explicit recommendation to *not* translate the UI for MVP. |
 | [`Navigation_Architecture.md`](Navigation_Architecture.md) | Architecture Week — Part 4 | Full route tree, Guest-vs-login boundary per screen, deep linking, back stack, the two-bottom-nav pattern (`BottomNav` vs `TikNav`), modal flow, upload flow, chat flow. **Contains the modal/hardware-back-button gap finding.** |
+| [`CANONICAL_EXPLORE_NAVIGATION_SPEC.md`](CANONICAL_EXPLORE_NAVIGATION_SPEC.md) | Design Freeze 2026-07-28 | **Source of Truth for Explore navigation state on Web/Android/iOS** — ExploreSession contract, ExploreState/Snapshot schema, invariants I1–I12, failure scenarios, telemetry. Complements `Navigation_Architecture.md` (routes) with zero overlap. Web implementation: `WEB_REFERENCE_BASELINE_EXPLORE_NAV.md`. |
 | `Architecture_Blueprint_Index.md` (this document) | Architecture Week — Final | Index, relationships, reading order, Android Readiness checklist. |
 
 ---

@@ -1,6 +1,6 @@
 # ADR-001 (Web) — ExploreSession owns Explore state
 
-**Status:** Proposed · **Date:** 2026-07-28 · **Scope:** Web · **Supersedes:** the history-gated restoration in `src/app/reviews/page.tsx`
+**Status:** ACCEPTED (Design Freeze 2026-07-28) · IMPLEMENTED (M1–M6, see `NAVIGATION_MIGRATION_PLAN.md` header for commits) · **Scope:** Web · **Supersedes:** the history-gated restoration formerly in `src/app/reviews/page.tsx` (removed)
 **Related:** `NAVIGATION_SESSION_ARCHITECTURE.md`, `NAVIGATION_MIGRATION_PLAN.md`, tickets WEB-EXPLORE-NAV-003 / NAV-004 (both OPEN, separate, no RCA concluded)
 
 > **Naming:** this component is named **`ExploreSession`** (owner's term). It owns *Explore* state specifically — not all navigation. Earlier drafts called it `NavigationSession`; that name is retired.
@@ -123,4 +123,4 @@ Each has a **defined**, testable behaviour — no silent degradation.
 
 ---
 
-**No code. No commits. No push. No deployment.** Implementation begins only after this revision is approved.
+Implemented after Design Freeze approval. **Not pushed, not merged, not deployed** — release gated on Owner UAT (see `EXPLORE_NAV_RELEASE_CANDIDATE.md`).

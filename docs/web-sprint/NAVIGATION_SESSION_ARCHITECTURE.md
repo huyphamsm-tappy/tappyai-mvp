@@ -1,7 +1,7 @@
-# Navigation Architecture — `NavigationSession` (Proposal)
+# Navigation Architecture — `NavigationSession` (historic proposal → implemented as `ExploreSession`)
 
-**Tickets:** WEB-EXPLORE-NAV-003 / NAV-004 (both OPEN, neither RCA-complete, neither merged)
-**Status:** ARCHITECTURE PROPOSAL. No code, no patching, no commits. Implementation only after approval.
+**Tickets:** WEB-EXPLORE-NAV-003 / NAV-004 (OPEN until independently re-tested post-migration)
+**Status:** SUBORDINATE IMPLEMENTATION NOTES. Promoted to `docs/CANONICAL_EXPLORE_NAVIGATION_SPEC.md` at Design Freeze 2026-07-28; the component shipped as **`ExploreSession`** (owner's name — `NavigationSession` is retired). Where this document and the canonical spec differ, the spec wins. Kept for design rationale/history.
 **Companion pattern:** `PLAYBACK_CONTROLLER_ARCHITECTURE.md` v3 — same shape: a **Session owns policy + state**, the **transport is dumb**.
 
 ## 0. Evidence basis (what this is built on — and what it is NOT)

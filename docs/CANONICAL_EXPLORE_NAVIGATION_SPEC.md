@@ -1,6 +1,6 @@
 # TappyAI — Canonical Explore Navigation Specification
 
-**Status:** CANONICAL SPECIFICATION · awaiting **Design Freeze** approval
+**Status:** CANONICAL SPECIFICATION · **Design Freeze APPROVED 2026-07-28** (owner) — Source of Truth
 **Version:** 1.0 · **Date:** 2026-07-28
 **Scope:** **Cross-platform** — Web, Android, iOS. This document is the single source of truth for Explore navigation state on every client.
 **Promoted from:** `docs/web-sprint/NAVIGATION_SESSION_ARCHITECTURE.md` (Web architecture) — that document and `docs/web-sprint/ADR-001-explore-session.md` become **Web implementation notes** subordinate to this spec.
@@ -235,16 +235,16 @@ A platform conforms when: the contract (§3) is implemented in full · invariant
 
 | Item | State |
 |---|---|
-| Specification | **Awaiting Design Freeze approval** |
-| Web implementation | Not started — blocked on Design Freeze |
+| Specification | **Design Freeze APPROVED 2026-07-28** |
+| Web implementation | **COMPLETE (M1–M6 + audit + E2E run #1)** — commits in `web-sprint/NAVIGATION_MIGRATION_PLAN.md`; release gated on Owner UAT |
 | Android implementation | Not started — Android track PAUSED |
 | iOS implementation | Not started |
-| NAV-003 / NAV-004 | OPEN, **separate**, no RCA concluded |
+| NAV-003 / NAV-004 | OPEN, **separate** — each closes only on its own post-migration re-test evidence |
 
-**Open decisions to settle at freeze:** staleness threshold (F9/§3.1) · scope beyond Explore · one-session-vs-many (F8) · URL shareability of the active clip (proposal: **no** — violates P1/P2) · durability-fallback migration.
+**Decisions settled at freeze (recorded in `web-sprint/EXPLORE_NAV_BUSINESS_TESTS.md`):** staleness **30 min** · scope = Explore only · **one** ExploreSession per tab · active clip **not** in URL · durability = in-memory + sessionStorage mirror.
 
-**After Design Freeze approval, no change to this specification without a new version and owner sign-off.**
+**No change to this specification without a new version and owner sign-off.**
 
 ---
 
-**No code. No commits. No push. No merge. No deployment.**
+**Web reference implementation for mobile:** `docs/WEB_REFERENCE_BASELINE_EXPLORE_NAV.md`. **Not pushed, not merged, not deployed** pending owner release approval.
