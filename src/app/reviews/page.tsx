@@ -378,7 +378,7 @@ export default function ReviewsPage() {
   const [tab, setTab] = useState<string>(() => {
     if (typeof window === 'undefined') return 'home'
     // URL is a transport echo (?tab=) and wins when present; else the session's
-    // frozen tab (replaces the legacy sessionStorage 'reviews_tab' channel).
+    // frozen tab (replaces the legacy sessionStorage tab side-channel, L8/L11).
     const fromUrl = new URLSearchParams(window.location.search).get('tab')
     if (fromUrl) return fromUrl
     return sessionRef.current?.getState().tab ?? 'home'

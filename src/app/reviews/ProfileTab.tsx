@@ -465,7 +465,11 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
             <div className="flex justify-center mb-3"><div className="w-8 h-1 bg-gray-600 rounded-full" /></div>
             <p className="text-white text-sm font-semibold text-center mb-3 line-clamp-1">{isShareOnlyName(sel.place_name) ? 'Bài chia sẻ' : sel.place_name}</p>
             <div className="space-y-2">
-              <Link href={`/reviews/${sel.id}`} onClick={() => { sessionStorage.setItem('reviews_tab', 'profile'); setSel(null) }}
+              {/* Returning to the profile tab after viewing the post is carried by
+                  the ?tab=profile URL echo (transport) and the session's frozen
+                  tab — the legacy sessionStorage side-channel (L11) is gone. The
+                  page-root click capture freezes the session on this departure. */}
+              <Link href={`/reviews/${sel.id}`} onClick={() => setSel(null)}
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
                 <Eye size={18} className="text-blue-400" /> {t('reviews.sheetViewPost')}
               </Link>

@@ -21,7 +21,7 @@ export interface ExploreState {
   filters: Record<string, string | number | boolean | null>
   /** Additive optional 1.x field (spec V2): which Explore tab was active
    *  ('home' | 'explore' | 'inbox' | 'profile'). Replaces the legacy
-   *  sessionStorage 'reviews_tab' side-channel (migration item L8/L11/L12). */
+   *  sessionStorage tab side-channel (migration items L8/L11/L12). */
   tab?: string
 }
 
