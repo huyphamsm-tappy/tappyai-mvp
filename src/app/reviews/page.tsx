@@ -383,34 +383,57 @@ export default function ReviewsPage() {
     if (fromUrl) return fromUrl
     return sessionRef.current?.getState().tab ?? 'home'
   })
-  useEffect(() => {
-    const fromUrl = searchParams?.get('tab')
-    if (fromUrl) setTab(fromUrl)
-  }, [searchParams])
-  const handleSetTab = useCallback((t: string) => {
+  // Single signal path for EVERY tab transition — direct taps AND history
+  // traversals across ?tab= states (spec v1.1 §8/DFR-001: a traversal is
+  // transport; the tab transition is the business signal). Order matters on
+  // entry: enterExplore FIRST (adopting a held snapshot replaces live state
+  // wholesale, §3.1), THEN record the tab being entered.
+  const applyTabTransition = useCallback((from: string, to: string) => {
     const s = sessionRef.current
-    if (t === tab) return // re-click of the current tab: no transition, no session signal
-    if (t === 'home') {
-      // Returning to the feed tab = an Explore entry (BT-02): the session moves
-      // to RESTORING and the restore effect resolves it against the already-
-      // loaded feed. Zero history entries involved (I4/I9). Order matters:
-      // enterExplore FIRST (adopting a held snapshot replaces live state
-      // wholesale, §3.1), THEN record the tab we are entering — the reverse
-      // left the session's tab stale at the frozen value (found in E2E).
-      s?.enterExplore()
-      s?.setQueryShape({ tab: t })
-    } else if (tab === 'home') {
-      // Leaving the feed for another tab — freeze FIRST, at the moment of
-      // explicit intent (I3: this path unmounts nothing and pushes nothing —
-      // exactly the path the legacy unmount marker missed, NAV-004).
-      s?.leaveExplore('tab-switch')
-      s?.setQueryShape({ tab: t })
+    if (!s || to === from) return
+    if (to === 'home') {
+      // Returning to the feed tab = an Explore entry (BT-02/BT-02b): the
+      // session moves to RESTORING and the restore effect resolves it against
+      // the already-loaded feed.
+      s.enterExplore()
+      s.setQueryShape({ tab: to })
+    } else if (from === 'home') {
+      // Leaving the feed — freeze FIRST, at the moment of intent (I3: this
+      // path unmounts nothing — exactly what the legacy marker missed, NAV-004).
+      s.leaveExplore('tab-switch')
+      s.setQueryShape({ tab: to })
     } else {
-      s?.setQueryShape({ tab: t }) // non-feed → non-feed: no freeze/restore involved
+      s.setQueryShape({ tab: to }) // non-feed → non-feed: no freeze/restore involved
     }
+  }, [])
+  // URL echo → tab state. First run only seeds the prev-param marker (mount
+  // already resolved the tab); afterwards a CHANGED ?tab= means a history
+  // traversal (Back/Forward, BT-02b) — route it through the same signals as a
+  // tap. A traversal that REMOVES the param (back to a bare /reviews entry)
+  // means the feed tab.
+  const prevTabParamRef = useRef<string | null | undefined>(undefined)
+  useEffect(() => {
+    const fromUrl = searchParams?.get('tab') ?? null
+    const prev = prevTabParamRef.current
+    prevTabParamRef.current = fromUrl
+    if (prev === undefined) return // initial echo — tab state already derived at mount
+    if (fromUrl === prev) return
+    const target = fromUrl ?? 'home'
+    if (target === tab) return
+    applyTabTransition(tab, target)
+    setTab(target)
+  }, [searchParams, tab, applyTabTransition])
+  const handleSetTab = useCallback((t: string) => {
+    if (t === tab) return // re-click of the current tab: no transition, no session signal
+    applyTabTransition(tab, t)
     setTab(t)
-    router.replace(window.location.pathname + '?tab=' + t, { scroll: false })
-  }, [router, tab])
+    const url = window.location.pathname + '?tab=' + t
+    // DFR-001/BT-02b: entering My Profile from the feed PUSHES a history entry
+    // so browser/system Back returns to the feed clip. Every other transition
+    // stays replace (v1.1 scope; search/inbox semantics unchanged).
+    if (t === 'profile' && tab === 'home') router.push(url, { scroll: false })
+    else router.replace(url, { scroll: false })
+  }, [router, tab, applyTabTransition])
   const [feedType, setFeedType] = useState<'for-you' | 'latest' | 'following'>(() => {
     // Query shape is restored from the session BEFORE the first fetch (spec
     // §3.1), so the saved clip exists in the loaded feed. Fresh visits default.
@@ -425,11 +448,15 @@ export default function ReviewsPage() {
   topHashtagsRef.current = topHashtags
   // reviewsRef (L14 — KEPT): mirrors the live rows for non-render consumers —
   // the scroll reporter and the visibility re-enter path read the current feed
-  // without re-binding their listeners. L13 activeIndexRef / L15 feedTypeRef
-  // are gone: their only reader was the legacy unmount marker (L9, removed in
-  // M2); the session's own state now carries index and feed type.
+  // without re-binding their listeners. L13 activeIndexRef stays gone (its only
+  // reader was the legacy unmount marker). feedTypeRef, removed in M5 as
+  // orphaned, is REINTRODUCED with a new consumer: the personalization refetch
+  // guard (Item 2 — the refetch personalizes For-You only and must not replace
+  // a restored non-For-You feed's rows, BT-12).
   const reviewsRef = useRef(reviews)
   reviewsRef.current = reviews
+  const feedTypeRef = useRef(feedType)
+  feedTypeRef.current = feedType
   const abortRef = useRef<AbortController | null>(null)
   const fetchRef = useRef<(p: number, append: boolean, ft: 'for-you' | 'latest' | 'following', signal?: AbortSignal) => Promise<void>>(null as any)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
@@ -500,6 +527,13 @@ export default function ReviewsPage() {
     // Re-fetch feed once with personalization signals after both settle (single call, not cascade)
     Promise.allSettled([cityP, hashP]).then(() => {
       if (cancelled) return
+      // Item 2 guard: this refetch personalizes the FOR-YOU feed only. If the
+      // session restored a different feed type (BT-12 'following'/'latest'),
+      // replacing those rows with For-You rows would destroy the restored
+      // state. The row REPLACEMENT itself is made position-safe by the
+      // reconciliation effect below (id-first realign) — rows stay owned by
+      // the fetch layer, position stays owned by ExploreSession (I2).
+      if (feedTypeRef.current !== 'for-you') return
       abortRef.current?.abort()
       const ac = new AbortController()
       abortRef.current = ac
@@ -795,17 +829,44 @@ export default function ReviewsPage() {
     apply()
   }, [authResolved, loading, reviews, feedType, tab])
 
-  // Echo the settled slide into the session on plain (non-restore) loads:
-  // leaving from Clip 0 without ever scrolling still freezes an id, so a later
-  // trending re-order restores by id, not index (I5). Skipped while RESTORING
-  // (the restore effect owns that transition) and when the UI index lags the
-  // session (the render right after a restore applied).
+  // UI ⇄ session position reconciliation. ExploreSession stays the single
+  // owner of position (I2): the UI only reports via reportActiveItem and,
+  // here, FOLLOWS the session when the rows change underneath it. This
+  // replaces the old settled-slide echo, whose blind report was the second
+  // half of the proven Scenario-A failure chain
+  // (docs/web-sprint/EXPLORE_NAV_SCENARIO_A_EVIDENCE.md): the signed-in
+  // personalization refetch REPLACED the rows post-restore, the video window
+  // tracked a stale index, and the echo absorbed whatever id landed in the
+  // stale slot — so the NEXT Back restored the wrong clip. Reconciliation is
+  // id-first, same principle as restore (I5):
+  //  - session id found in rows → align UI (scroll + video window) to its
+  //    possibly-new index and re-report the SAME id;
+  //  - session id gone from the rows (F1/F2 shape) → hold the slot, adopt that
+  //    slot's id through the sanctioned write path;
+  //  - session id null (fresh feed, never scrolled) → report the settled slide
+  //    so leaving Clip 0 still freezes an id (I5).
   useEffect(() => {
     const s = sessionRef.current
     if (!s || loading || reviews.length === 0 || tab !== 'home') return
-    if (s.getPhase() === 'restoring') return
-    if (s.getState().activeIndex !== activeIndex) return
-    s.reportActiveItem({ reviewId: reviews[activeIndex]?.id ?? null, index: activeIndex, scrollOffset: containerRef.current?.scrollTop ?? 0 })
+    if (s.getPhase() === 'restoring') return // the restore effect owns entry alignment
+    const c = containerRef.current
+    const wanted = s.getState().activeReviewId
+    if (wanted === null) {
+      s.reportActiveItem({ reviewId: reviews[activeIndex]?.id ?? null, index: activeIndex, scrollOffset: c?.scrollTop ?? 0 })
+      return
+    }
+    if (reviews[activeIndex]?.id === wanted) return // aligned: append, stable order, or normal user scroll
+    const newIdx = reviews.findIndex(r => r.id === wanted)
+    if (newIdx >= 0) {
+      if (c) c.scrollTo({ top: newIdx * c.clientHeight, behavior: 'auto' })
+      setActiveIndex(newIdx)
+      s.reportActiveItem({ reviewId: wanted, index: newIdx, scrollOffset: c ? newIdx * c.clientHeight : 0 })
+    } else {
+      const idx = Math.min(activeIndex, reviews.length - 1)
+      if (c) c.scrollTo({ top: idx * c.clientHeight, behavior: 'auto' })
+      setActiveIndex(idx)
+      s.reportActiveItem({ reviewId: reviews[idx]?.id ?? null, index: idx, scrollOffset: c ? idx * c.clientHeight : 0 })
+    }
   }, [loading, reviews, activeIndex, tab])
 
   // BT-11: a restored query re-runs its search once so results reappear.
