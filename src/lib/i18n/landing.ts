@@ -1,0 +1,225 @@
+// Startup landing page (/about) dictionary — corporate introduction content for
+// Google for Startups review, investors, and business partners. Layered over the
+// base dictionary by useTranslation, same contract as ./w2 and ./w3. All page
+// content lives here (business content separated from presentation); components
+// under src/app/about only render these keys.
+
+export const en: Record<string, string> = {
+  // Header
+  'landing.nav.openApp': 'Open the app',
+  'landing.nav.langLabel': 'Language',
+
+  // 1. Hero
+  'landing.hero.headline': 'The AI lifestyle assistant for everyday life in Vietnam',
+  'landing.hero.subtitle':
+    'TappyAI combines a conversational AI assistant, a short-video review community, and practical everyday utilities in one bilingual product — built around how people in Vietnam eat, travel, and live.',
+  'landing.hero.learnMore': 'Learn more',
+  'landing.hero.viewProduct': 'View product',
+  'landing.hero.screenshotAlt': 'TappyAI home screen — AI greeting card, category explorer, and daily tools',
+
+  // 2. What is TappyAI
+  'landing.what.title': 'What is TappyAI?',
+  'landing.what.p1':
+    'TappyAI is a consumer application for the Vietnamese market that brings together an AI assistant and a local discovery community. Users chat with Tappy — an assistant specialized in food, travel, and local services — and share short video reviews of real places and products.',
+  'landing.what.p2':
+    'The product is live today as a web application, with a native Android application prepared for release. The full experience ships in both Vietnamese and English.',
+
+  // 3. Vision
+  'landing.vision.title': 'Our vision',
+  'landing.vision.p1':
+    'Everyday decisions — where to eat, where to go, what a fair price is — should take seconds, not searches across many apps. TappyAI aims to be a single trusted companion for daily life in Vietnam, combining AI guidance with the honest experiences of a local community.',
+  'landing.vision.p2':
+    'We build for Vietnam first: local services, local language, and local habits — implemented to an international engineering standard.',
+
+  // 4. Product overview
+  'landing.product.title': 'Product overview',
+  'landing.product.intro': 'One product, three connected layers.',
+  'landing.product.assistant.title': 'AI assistant',
+  'landing.product.assistant.desc':
+    'A conversational assistant for food, travel, and local services. It answers in natural language, assembles plans with real places and photos, and personalizes suggestions to each user.',
+  'landing.product.community.title': 'Review community',
+  'landing.product.community.desc':
+    'A short-video feed where users post reviews of restaurants, cafés, and places — with likes, comments, follows, and reusable sounds attached to each review.',
+  'landing.product.tools.title': 'Everyday utilities',
+  'landing.product.tools.desc':
+    'Practical tools used daily: translation, currency conversion, bill splitting, document scanning, and a curated list of daily deals from popular services in Vietnam.',
+
+  // 5. Key features
+  'landing.features.title': 'Key features',
+  'landing.features.chat.title': 'AI chat & planning',
+  'landing.features.chat.desc':
+    'Ask anything about eating, traveling, and living in Vietnam — get direct answers and complete plans built from real places.',
+  'landing.features.reviews.title': 'Short-video reviews',
+  'landing.features.reviews.desc':
+    'A vertical video feed of authentic reviews from real users, with likes, comments, saves, and shares.',
+  'landing.features.sounds.title': 'Sounds & music',
+  'landing.features.sounds.desc':
+    'Reviews can carry a reusable sound, backed by a built-in library of licensed tracks and original user sounds.',
+  'landing.features.deals.title': 'Daily deals',
+  'landing.features.deals.desc':
+    'A hand-curated selection of offers from popular Vietnamese services, refreshed every day.',
+  'landing.features.tools.title': 'Practical utilities',
+  'landing.features.tools.desc':
+    'Translate, currency, split bill, document scan, and more — small tools for everyday situations.',
+  'landing.features.bilingual.title': 'Bilingual by design',
+  'landing.features.bilingual.desc':
+    'The entire product is available in Vietnamese and English and can be switched at any time.',
+
+  // 6. Product screenshots
+  'landing.shots.title': 'Product screenshots',
+  'landing.shots.caption': 'Actual production interface, captured from the live product.',
+  'landing.shots.home.label': 'Home',
+  'landing.shots.home.alt': 'TappyAI home screen with AI greeting, categories, and daily tools',
+  'landing.shots.chat.label': 'AI chat',
+  'landing.shots.chat.alt': 'TappyAI chat screen with the Tappy assistant and suggested prompts',
+  'landing.shots.reviews.label': 'Reviews feed',
+  'landing.shots.reviews.alt': 'TappyAI short-video review feed with like, comment, and share actions',
+  'landing.shots.music.label': 'Music library',
+  'landing.shots.music.alt': 'TappyAI music library listing reusable sounds with play controls',
+  'landing.shots.deals.label': 'Daily deals',
+  'landing.shots.deals.alt': 'TappyAI daily deals screen listing curated offers from popular services',
+
+  // 7. Technology
+  'landing.tech.title': 'Technology',
+  'landing.tech.intro': 'TappyAI is built on a modern, proven stack.',
+  'landing.tech.web.title': 'Web application',
+  'landing.tech.web.desc': 'Next.js, React, and TypeScript with Tailwind CSS, deployed on Vercel.',
+  'landing.tech.mobile.title': 'Mobile',
+  'landing.tech.mobile.desc': 'Native Android application built with Kotlin and Jetpack Compose.',
+  'landing.tech.ai.title': 'AI',
+  'landing.tech.ai.desc': 'Anthropic Claude models behind a provider-abstracted AI layer.',
+  'landing.tech.data.title': 'Backend & data',
+  'landing.tech.data.desc': 'Supabase — PostgreSQL, authentication, and realtime — with media storage on Vercel Blob.',
+  'landing.tech.ops.title': 'Analytics & payments',
+  'landing.tech.ops.desc': 'PostHog product analytics and Stripe subscription billing.',
+
+  // 8. About
+  'landing.about.title': 'About TappyAI',
+  'landing.about.p1':
+    'TappyAI is built by a small product team in Vietnam, founded and led by Huy Pham. The team designs, engineers, and operates the entire product — web, mobile, AI, and infrastructure.',
+  'landing.about.p2':
+    'The web product is in production today and free to try. The native Android application has completed engineering hardening and is being prepared for release.',
+
+  // 9. Contact
+  'landing.contact.title': 'Contact & support',
+  'landing.contact.support.label': 'Support',
+  'landing.contact.founder.label': 'Founder',
+  'landing.contact.founder.name': 'Huy Pham',
+  'landing.contact.website.label': 'Official website',
+
+  // 10. Footer
+  'landing.footer.terms': 'Terms of Service',
+  'landing.footer.privacy': 'Privacy Policy',
+  'landing.footer.copyrightPolicy': 'Copyright Policy',
+  'landing.footer.rights': '© 2025 TappyAI. All rights reserved.',
+}
+
+export const vi: Record<string, string> = {
+  // Header
+  'landing.nav.openApp': 'Mở ứng dụng',
+  'landing.nav.langLabel': 'Ngôn ngữ',
+
+  // 1. Hero
+  'landing.hero.headline': 'Trợ lý AI cho đời sống hằng ngày tại Việt Nam',
+  'landing.hero.subtitle':
+    'TappyAI kết hợp trợ lý AI hội thoại, cộng đồng review video ngắn và các tiện ích thiết thực hằng ngày trong một sản phẩm song ngữ — xây dựng quanh cách người Việt ăn uống, đi lại và sinh hoạt.',
+  'landing.hero.learnMore': 'Tìm hiểu thêm',
+  'landing.hero.viewProduct': 'Xem sản phẩm',
+  'landing.hero.screenshotAlt': 'Màn hình chính TappyAI — thẻ chào AI, khám phá theo danh mục và tiện ích hằng ngày',
+
+  // 2. What is TappyAI
+  'landing.what.title': 'TappyAI là gì?',
+  'landing.what.p1':
+    'TappyAI là ứng dụng tiêu dùng cho thị trường Việt Nam, kết hợp trợ lý AI với cộng đồng khám phá địa phương. Người dùng trò chuyện với Tappy — trợ lý chuyên về ẩm thực, du lịch và dịch vụ địa phương — và chia sẻ video review ngắn về những địa điểm, sản phẩm có thật.',
+  'landing.what.p2':
+    'Sản phẩm hiện đang hoạt động dưới dạng ứng dụng web, cùng ứng dụng Android native đang được chuẩn bị phát hành. Toàn bộ trải nghiệm hỗ trợ cả tiếng Việt và tiếng Anh.',
+
+  // 3. Vision
+  'landing.vision.title': 'Tầm nhìn',
+  'landing.vision.p1':
+    'Những quyết định hằng ngày — ăn ở đâu, đi đâu, giá bao nhiêu là hợp lý — nên mất vài giây, thay vì phải tìm kiếm qua nhiều ứng dụng. TappyAI hướng tới trở thành người bạn đồng hành tin cậy cho đời sống hằng ngày tại Việt Nam, kết hợp gợi ý từ AI với trải nghiệm chân thực của cộng đồng.',
+  'landing.vision.p2':
+    'Chúng tôi xây dựng cho Việt Nam trước tiên: dịch vụ địa phương, ngôn ngữ địa phương, thói quen địa phương — với chuẩn mực kỹ thuật quốc tế.',
+
+  // 4. Product overview
+  'landing.product.title': 'Tổng quan sản phẩm',
+  'landing.product.intro': 'Một sản phẩm, ba lớp kết nối với nhau.',
+  'landing.product.assistant.title': 'Trợ lý AI',
+  'landing.product.assistant.desc':
+    'Trợ lý hội thoại về ẩm thực, du lịch và dịch vụ địa phương. Trả lời bằng ngôn ngữ tự nhiên, lập kế hoạch với địa điểm và hình ảnh thực tế, cá nhân hóa gợi ý cho từng người dùng.',
+  'landing.product.community.title': 'Cộng đồng review',
+  'landing.product.community.desc':
+    'Bảng tin video ngắn nơi người dùng đăng review về nhà hàng, quán cà phê và địa điểm — với lượt thích, bình luận, theo dõi và âm thanh có thể dùng lại gắn với mỗi review.',
+  'landing.product.tools.title': 'Tiện ích hằng ngày',
+  'landing.product.tools.desc':
+    'Các công cụ thiết thực dùng mỗi ngày: dịch thuật, quy đổi tiền tệ, chia hóa đơn, quét tài liệu và danh sách deal chọn lọc từ các dịch vụ phổ biến tại Việt Nam.',
+
+  // 5. Key features
+  'landing.features.title': 'Tính năng chính',
+  'landing.features.chat.title': 'Chat AI & lập kế hoạch',
+  'landing.features.chat.desc':
+    'Hỏi mọi thứ về ăn uống, du lịch và đời sống tại Việt Nam — nhận câu trả lời trực tiếp và kế hoạch hoàn chỉnh từ các địa điểm thực tế.',
+  'landing.features.reviews.title': 'Review video ngắn',
+  'landing.features.reviews.desc':
+    'Bảng tin video dọc với các review chân thực từ người dùng thật, kèm lượt thích, bình luận, lưu và chia sẻ.',
+  'landing.features.sounds.title': 'Âm thanh & âm nhạc',
+  'landing.features.sounds.desc':
+    'Mỗi review có thể gắn một âm thanh dùng lại được, cùng thư viện nhạc bản quyền và âm thanh gốc từ người dùng.',
+  'landing.features.deals.title': 'Deal mỗi ngày',
+  'landing.features.deals.desc':
+    'Danh sách ưu đãi chọn lọc từ các dịch vụ phổ biến tại Việt Nam, làm mới mỗi ngày.',
+  'landing.features.tools.title': 'Tiện ích thiết thực',
+  'landing.features.tools.desc':
+    'Dịch thuật, tiền tệ, chia hóa đơn, quét tài liệu và nhiều hơn nữa — những công cụ nhỏ cho tình huống hằng ngày.',
+  'landing.features.bilingual.title': 'Song ngữ từ thiết kế',
+  'landing.features.bilingual.desc':
+    'Toàn bộ sản phẩm hỗ trợ tiếng Việt và tiếng Anh, có thể chuyển đổi bất kỳ lúc nào.',
+
+  // 6. Product screenshots
+  'landing.shots.title': 'Hình ảnh sản phẩm',
+  'landing.shots.caption': 'Giao diện thực tế, chụp trực tiếp từ sản phẩm đang vận hành.',
+  'landing.shots.home.label': 'Trang chủ',
+  'landing.shots.home.alt': 'Màn hình chính TappyAI với lời chào AI, danh mục và tiện ích hằng ngày',
+  'landing.shots.chat.label': 'Chat AI',
+  'landing.shots.chat.alt': 'Màn hình chat TappyAI với trợ lý Tappy và các gợi ý câu hỏi',
+  'landing.shots.reviews.label': 'Bảng tin review',
+  'landing.shots.reviews.alt': 'Bảng tin video review ngắn của TappyAI với thao tác thích, bình luận, chia sẻ',
+  'landing.shots.music.label': 'Thư viện nhạc',
+  'landing.shots.music.alt': 'Thư viện nhạc TappyAI liệt kê các âm thanh dùng lại được kèm nút phát',
+  'landing.shots.deals.label': 'Deal mỗi ngày',
+  'landing.shots.deals.alt': 'Màn hình deal mỗi ngày của TappyAI với các ưu đãi chọn lọc',
+
+  // 7. Technology
+  'landing.tech.title': 'Công nghệ',
+  'landing.tech.intro': 'TappyAI được xây dựng trên nền tảng công nghệ hiện đại, đã được kiểm chứng.',
+  'landing.tech.web.title': 'Ứng dụng web',
+  'landing.tech.web.desc': 'Next.js, React và TypeScript với Tailwind CSS, triển khai trên Vercel.',
+  'landing.tech.mobile.title': 'Di động',
+  'landing.tech.mobile.desc': 'Ứng dụng Android native xây dựng bằng Kotlin và Jetpack Compose.',
+  'landing.tech.ai.title': 'AI',
+  'landing.tech.ai.desc': 'Các mô hình Anthropic Claude phía sau tầng AI trừu tượng hóa theo nhà cung cấp.',
+  'landing.tech.data.title': 'Backend & dữ liệu',
+  'landing.tech.data.desc': 'Supabase — PostgreSQL, xác thực và realtime — cùng lưu trữ media trên Vercel Blob.',
+  'landing.tech.ops.title': 'Phân tích & thanh toán',
+  'landing.tech.ops.desc': 'Phân tích sản phẩm PostHog và thanh toán thuê bao Stripe.',
+
+  // 8. About
+  'landing.about.title': 'Về TappyAI',
+  'landing.about.p1':
+    'TappyAI được xây dựng bởi một đội ngũ sản phẩm nhỏ tại Việt Nam, do Huy Phạm sáng lập và dẫn dắt. Đội ngũ thiết kế, phát triển và vận hành toàn bộ sản phẩm — web, di động, AI và hạ tầng.',
+  'landing.about.p2':
+    'Sản phẩm web hiện đang vận hành chính thức và miễn phí trải nghiệm. Ứng dụng Android native đã hoàn tất giai đoạn củng cố kỹ thuật và đang được chuẩn bị phát hành.',
+
+  // 9. Contact
+  'landing.contact.title': 'Liên hệ & hỗ trợ',
+  'landing.contact.support.label': 'Hỗ trợ',
+  'landing.contact.founder.label': 'Nhà sáng lập',
+  'landing.contact.founder.name': 'Huy Phạm',
+  'landing.contact.website.label': 'Website chính thức',
+
+  // 10. Footer
+  'landing.footer.terms': 'Điều khoản sử dụng',
+  'landing.footer.privacy': 'Chính sách bảo mật',
+  'landing.footer.copyrightPolicy': 'Chính sách bản quyền',
+  'landing.footer.rights': '© 2025 TappyAI. All rights reserved.',
+}
