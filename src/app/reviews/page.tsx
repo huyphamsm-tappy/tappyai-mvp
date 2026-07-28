@@ -420,17 +420,13 @@ export default function ReviewsPage() {
   const topHashtagsRef = useRef(topHashtags)
   cityRef.current = city
   topHashtagsRef.current = topHashtags
-  // reviewsRef mirrors the live rows for non-render consumers: the scroll
-  // reporter and the visibility re-enter path read the current feed without
-  // re-binding their listeners. activeIndexRef/feedTypeRef fed the removed
-  // legacy unmount marker (L9); they are resolved in the M5 dead-code sweep
-  // (L13–L15, per-use evidence required by the migration plan).
-  const activeIndexRef = useRef(activeIndex)
-  activeIndexRef.current = activeIndex
+  // reviewsRef (L14 — KEPT): mirrors the live rows for non-render consumers —
+  // the scroll reporter and the visibility re-enter path read the current feed
+  // without re-binding their listeners. L13 activeIndexRef / L15 feedTypeRef
+  // are gone: their only reader was the legacy unmount marker (L9, removed in
+  // M2); the session's own state now carries index and feed type.
   const reviewsRef = useRef(reviews)
   reviewsRef.current = reviews
-  const feedTypeRef = useRef(feedType)
-  feedTypeRef.current = feedType
   const abortRef = useRef<AbortController | null>(null)
   const fetchRef = useRef<(p: number, append: boolean, ft: 'for-you' | 'latest' | 'following', signal?: AbortSignal) => Promise<void>>(null as any)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
