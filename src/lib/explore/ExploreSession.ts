@@ -196,6 +196,11 @@ export class ExploreSession {
       return false
     }
     if (!s.state || typeof s.state !== 'object' || (s.state as ExploreState).schemaVersion !== 1) return false
+    // Audit hardening: a v1 envelope with a missing/invalid frozenAt would make
+    // the staleness check `now - frozenAt > staleAfterMs` compare against NaN
+    // (always false) and restore an unbounded-age snapshot. Reject instead.
+    if (typeof s.frozenAt !== 'number' || !Number.isFinite(s.frozenAt)) return false
+    if (typeof s.sessionId !== 'string' || s.sessionId.length === 0) return false
     // V3: unknown 1.x fields inside the parsed objects are preserved as-is.
     this.snap = s as Snapshot
     this.sessionId = s.sessionId ?? this.sessionId

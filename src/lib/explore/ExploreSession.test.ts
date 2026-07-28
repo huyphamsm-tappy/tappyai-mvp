@@ -263,6 +263,16 @@ describe('durability + versioning (V1–V5, F4/F5, BT-14/21)', () => {
     expect(session.restore(FEED).outcome).toBe('exact')
   })
 
+  it('hydrate rejects a v1 envelope with missing/invalid frozenAt or sessionId (audit hardening)', () => {
+    const state = { schemaVersion: 1, activeReviewId: 'r1', activeIndex: 1, scrollOffset: 0, feedType: 'for-you', sort: null, query: null, filters: {} }
+    const { session } = mk()
+    // No frozenAt → staleness would compare against NaN and never trigger.
+    expect(session.hydrate(JSON.stringify({ schemaVersion: 1, sessionId: 's', version: 1, trigger: 'route-change', state }))).toBe(false)
+    expect(session.hydrate(JSON.stringify({ schemaVersion: 1, sessionId: 's', version: 1, frozenAt: 'yesterday', trigger: 'route-change', state }))).toBe(false)
+    expect(session.hydrate(JSON.stringify({ schemaVersion: 1, sessionId: '', version: 1, frozenAt: 1, trigger: 'route-change', state }))).toBe(false)
+    expect(session.hydrate(JSON.stringify({ schemaVersion: 1, sessionId: 's', version: 1, frozenAt: 1, trigger: 'route-change', state }))).toBe(true)
+  })
+
   it('hydrate rejects malformed payloads and missing schemaVersion (V1)', () => {
     const { session } = mk()
     expect(session.hydrate('{{{')).toBe(false)

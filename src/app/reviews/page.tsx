@@ -899,8 +899,12 @@ export default function ReviewsPage() {
   // router acts. `/reviews` itself (?tab= echoes) stays inside Explore.
   // External and hash links never leave the SPA route, so they don't freeze.
   const onLeaveByLink = (e: ReactMouseEvent) => {
+    // Modifier / non-primary clicks open a NEW tab — THIS tab never leaves, so
+    // freezing here would strand the session in FROZEN and a later real
+    // departure would idempotently return the stale snapshot (audit finding).
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
     const a = (e.target as HTMLElement).closest?.('a[href]') as HTMLAnchorElement | null
-    if (!a) return
+    if (!a || a.target === '_blank') return
     const href = a.getAttribute('href') ?? ''
     if (!href.startsWith('/')) return
     if (href.split(/[?#]/)[0] === '/reviews') return
