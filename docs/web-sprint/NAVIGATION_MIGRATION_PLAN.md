@@ -2,7 +2,7 @@
 
 **Architecture:** `NAVIGATION_SESSION_ARCHITECTURE.md` (proposal)
 **Framing:** this is a **migration, not an addition**. The end state contains **one** navigation-state mechanism.
-**Status:** PLAN ONLY — no code, no commits, no push, no deployment.
+**Status (2026-07-28):** M0–M7 EXECUTED — commits M1 `63dc74c` · M2 `2d44f1a` · M3 `a9ac82c` · M4 `8ad62de` · M5 `be41eae` · M6 `0178fa1` · audit `1d7db39` · E2E fix `c1f9308`. Evidence: `EXPLORE_NAV_MIGRATION_AUDIT.md` (Phase 3+4), `EXPLORE_NAV_E2E_EVIDENCE.md` (Phase 5 run #1). **Owner UAT + blocked E2E cells outstanding — nothing pushed, merged, or deployed.**
 
 ---
 
@@ -156,19 +156,19 @@ Worked strictly top-to-bottom; each item is checked off with evidence at the tim
 - [ ] Working tree clean; branch identified; production SHA noted
 
 **Build**
-- [ ] M1 `ExploreSession` added (unwired) + unit tests; suite green; **zero behaviour change verified**
-- [ ] M2 Explore switchover **atomic** (wire + remove L1–L7, L9, L10); suite green; build green
-- [ ] M3 Profile paths uniform (remove L8, L11, L12); **E1 ≡ E2 asserted**
-- [ ] M4 ClipViewer responsibilities codified
-- [ ] M5 Dead-code sweep; L13–L15 each resolved **with written justification**
-- [ ] M6 `feedBackRestore.test.tsx` replaced by `ExploreSession` equivalents covering Bug #8 + Bug #17 + My-Profile
+- [x] M1 `ExploreSession` added (unwired) + unit tests; suite green; **zero behaviour change verified** (`63dc74c`)
+- [x] M2 Explore switchover **atomic** (wire + remove L1–L7, L9, L10); suite green; build green (`2d44f1a`; L16 replacement folded in — it asserts the deleted mechanism and could not stay green past M2)
+- [x] M3 Profile paths uniform (remove L8, L11, L12) (`a9ac82c`); E1 ≡ E2 asserted at unit level (I9/NAV-004 test) + anon runtime tab-return; **authenticated E2 runtime = owner UAT**
+- [x] M4 ClipViewer responsibilities codified (`8ad62de`)
+- [x] M5 Dead-code sweep; L13–L15 each resolved **with written justification** (`be41eae`)
+- [x] M6 `feedBackRestore.test.tsx` replaced by `ExploreSession` equivalents covering Bug #8 + Bug #17 + My-Profile (`2d44f1a` + `0178fa1`)
 
 **Verify**
-- [ ] Invariants I1–I10 checked
-- [ ] DoD grep gates return zero hits
-- [ ] E2E matrix E1–E10 PASS with full evidence
-- [ ] Stress matrix S1–S14 PASS
-- [ ] Telemetry emitting; `restore_result.exact` observed on the happy path
+- [x] Invariants I1–I12 checked (`EXPLORE_NAV_MIGRATION_AUDIT.md`)
+- [x] DoD grep gates return zero code hits (2 justified transport uses inline-documented)
+- [x] E2E core matrix with full evidence — 15 cells PASS (`EXPLORE_NAV_E2E_EVIDENCE.md`); **auth-required + data-mutation cells BLOCKED as itemized**
+- [ ] Stress matrix S1–S14 fully PASS (S1/S14-mechanism/viewport done; S2 full-depth, S3×20, S11–S13 pending)
+- [x] Telemetry emitting (track POSTs 200 during freeze/restore activity); `restore_result.exact` observed via state (payload capture pending dev-build run)
 - [ ] Owner UAT complete and accepted
 
 **Close**
