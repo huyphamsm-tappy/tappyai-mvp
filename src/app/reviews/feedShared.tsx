@@ -28,7 +28,7 @@ export interface Review {
   id: string; user_id: string; place_name: string; place_address: string | null
   rating: number; body: string; photos: string[] | null
   like_count: number; comment_count: number; save_count?: number; created_at: string
-  liked_by_me: boolean; saved_by_me: boolean; profiles: Profile | null
+  liked_by_me: boolean; saved_by_me: boolean; is_following?: boolean; profiles: Profile | null
   content_type?: string | null; media_url?: string | null; thumbnail?: string | null
   source_type?: string | null; source_url?: string | null; hashtags?: string[] | null
   watch_time_avg?: number; score?: number
@@ -293,7 +293,7 @@ export function ShareModal({ review, onClose }: { review: Review; onClose: () =>
 }
 
 /* ─── Single post (TikTok style) ─── */
-export function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onSoundTap }: {
+export function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onSoundTap, onFollow }: {
   r: Review; me: string | null
   // Only the active slide (± 1 neighbour) mounts a real <video>. Off-screen
   // slides render just the thumbnail. iOS Safari caps how many HTMLMediaElements
@@ -309,6 +309,10 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   onLike: (id: string) => void; onLikeDouble: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
   onSoundTap?: (trackId: string) => void
+  // Follow the clip's author straight from the feed (the red "+" on the avatar).
+  // Optional: the profile clip viewer doesn't pass it, and without it the "+" is
+  // not rendered at all — an inert badge was the bug (WEB-EXPLORE-FOLLOW-002).
+  onFollow?: (userId: string) => void
 }) {
   const { t } = useTranslation()
   const photos = (r.photos || []).filter(Boolean)
@@ -486,9 +490,20 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
               ? <Image src={r.profiles.avatar_url} alt={name} width={48} height={48} className="w-12 h-12 rounded-full ring-2 ring-white object-cover" />
               : <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 ring-2 ring-white flex items-center justify-center text-white font-bold">{name[0]?.toUpperCase()}</div>}
           </Link>
-          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-5 bg-[#fe2c55] rounded-full flex items-center justify-center">
-            <Plus size={12} className="text-white" strokeWidth={3} />
-          </div>
+          {/* Follow the author. WEB-EXPLORE-FOLLOW-002: this used to be a bare
+              <div> with no handler, so tapping it did nothing. Hidden once the
+              author is followed and on your own posts — same as the web's other
+              follow affordances. */}
+          {onFollow && !isMe && !r.is_following && (
+            <button
+              type="button"
+              aria-label={t('reviews.follow')}
+              onClick={e => { e.preventDefault(); e.stopPropagation(); onFollow(r.user_id) }}
+              className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-5 bg-[#fe2c55] rounded-full flex items-center justify-center active:scale-90 transition-transform"
+            >
+              <Plus size={12} className="text-white" strokeWidth={3} />
+            </button>
+          )}
         </div>
 
         {/* Like */}

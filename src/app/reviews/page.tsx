@@ -643,6 +643,26 @@ export default function ReviewsPage() {
     } finally { setUserSearching(false) }
   }, [])
 
+  // Follow an author from the feed's avatar "+" (WEB-EXPLORE-FOLLOW-002). Separate
+  // from toggleFollow above, which owns the Search tab's userResults list: this one
+  // flips is_following on every feed row by that author (the same creator can appear
+  // on several slides) so all their "+" badges disappear together. Optimistic, with
+  // a revert if the request fails; the server value wins on success.
+  const followFromFeed = async (targetId: string) => {
+    if (requireLogin()) return
+    const setFollowing = (v: boolean) =>
+      setReviews(prev => prev.map(r => (r.user_id === targetId ? { ...r, is_following: v } : r)))
+    setFollowing(true)
+    try {
+      const res = await fetch(`/api/users/${targetId}/follow`, { method: 'POST' })
+      if (!res.ok) throw new Error('follow_failed')
+      const d = await res.json()
+      setFollowing(!!d.following)
+    } catch {
+      setFollowing(false)
+    }
+  }
+
   const toggleFollow = async (targetId: string) => {
     if (!me) { window.location.href = '/login?returnTo=' + encodeURIComponent('/reviews'); return }
     setUserResults(prev => prev.map(u => u.id === targetId
@@ -828,7 +848,7 @@ export default function ReviewsPage() {
                 </div>
               : <>
                   <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} onSoundTap={setSoundTrackId} />)}
+                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} onSoundTap={setSoundTrackId} onFollow={followFromFeed} />)}
                   </div>
                   {/* Desktop prev/next — no swipe on desktop, so surface arrows to the right of the column. */}
                   <div className="hidden md:flex flex-col gap-3 absolute left-full ml-4 top-1/2 -translate-y-1/2 z-20">

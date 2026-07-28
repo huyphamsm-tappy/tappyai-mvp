@@ -130,14 +130,21 @@ export async function GET(req: NextRequest) {
   // Fetch liked and saved IDs for current user
   let likedIds: string[] = []
   let savedIds: string[] = []
+  // Authors the viewer already follows — drives the feed avatar's "+" affordance
+  // (WEB-EXPLORE-FOLLOW-002). Without it the "+" would reappear after every
+  // refresh even for an author the viewer just followed.
+  let followedAuthorIds: string[] = []
   if (user && reviews && reviews.length > 0) {
     const ids = reviews.map(r => r.id)
-    const [likesRes, savesRes] = await Promise.all([
+    const authorIds = [...new Set(reviews.map(r => r.user_id).filter(Boolean))]
+    const [likesRes, savesRes, followsRes] = await Promise.all([
       supabase.from('review_likes').select('review_id').eq('user_id', user.id).in('review_id', ids),
       supabase.from('review_saves').select('review_id').eq('user_id', user.id).in('review_id', ids),
+      supabase.from('user_follows').select('following_id').eq('follower_id', user.id).in('following_id', authorIds),
     ])
     likedIds = (likesRes.data || []).map(l => l.review_id)
     savedIds = (savesRes.data || []).map(s => s.review_id)
+    followedAuthorIds = (followsRes.data || []).map(f => f.following_id)
   }
 
   // comment_count is now maintained accurately by the SECURITY DEFINER counter
@@ -149,6 +156,7 @@ export async function GET(req: NextRequest) {
     ...r,
     liked_by_me: likedIds.includes(r.id),
     saved_by_me: savedIds.includes(r.id),
+    is_following: followedAuthorIds.includes(r.user_id),
   }))
 
   const res = NextResponse.json({ reviews: enriched, page, limit })
