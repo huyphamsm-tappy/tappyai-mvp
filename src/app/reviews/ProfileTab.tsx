@@ -22,7 +22,18 @@ import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from '.
 
 /* ─── Swipeable clip viewer — opens from the profile grid with the SAME UX as
    the main feed: swipe/arrow between clips, single-tap pause, double-tap like,
-   like/comment/save/share, own-post delete/hide. Reuses Post/CommentDrawer/ShareModal. */
+   like/comment/save/share, own-post delete/hide. Reuses Post/CommentDrawer/ShareModal.
+
+   Ownership contract (Canonical Explore Navigation Spec §4, migration M4 —
+   normative, a violation is a review failure not a preference):
+   - Owns ONLY its viewer index (`activeIndex` below) and its local list copy.
+   - NEVER writes ExploreState: no ExploreSession calls, no sessionStorage /
+     localStorage, in any code path (F8: a secondary surface reusing Post must
+     not freeze or restore — one session, owned by the Explore feed page).
+   - NO history for open/close: opening is plain component state
+     (`viewerStart`), closing is `onClose` — no pushState, no hash, no route.
+   - Links inside the viewer that leave /reviews are the PAGE's departure
+     (caught by the page-root click capture), not the viewer's concern. */
 function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
   const [items, setItems] = useState<Review[]>(posts)
   const [activeIndex, setActiveIndex] = useState(startIndex)
