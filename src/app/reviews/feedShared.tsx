@@ -324,6 +324,23 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   const durationRef = useRef<number | null>(null)
   const videoHandleRef = useRef<VideoPlayerHandle>(null)
 
+  // Visibility lifecycle (WEB-EXPLORE-YOUTUBE-001 Phase 1, architecture v3 §6).
+  // PlaybackSession owns the policy — the feed only forwards the browser signals.
+  // Backgrounding is a SYSTEM pause: it must not set the user's sticky intent, so
+  // returning to the tab resumes unless the user themselves paused.
+  // Phase 1 scope: this reaches YouTube clips. Uploads declare ownsLifecycle and
+  // keep their existing behaviour untouched until Phase 3 (HTMLVideoController).
+  useEffect(() => {
+    const onVisibility = () => videoHandleRef.current?.onVisibilityChange(!document.hidden)
+    const onHide = () => videoHandleRef.current?.onPageHide()
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pagehide', onHide)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pagehide', onHide)
+    }
+  }, [])
+
 
   // Attached sound ("use this sound"): resolve the borrowed track's audio only
   // for clips in the render window, then hand its URL to VideoPlayer, which plays
