@@ -393,9 +393,12 @@ export default function ReviewsPage() {
     if (t === 'home') {
       // Returning to the feed tab = an Explore entry (BT-02): the session moves
       // to RESTORING and the restore effect resolves it against the already-
-      // loaded feed. Zero history entries involved (I4/I9).
-      s?.setQueryShape({ tab: t })
+      // loaded feed. Zero history entries involved (I4/I9). Order matters:
+      // enterExplore FIRST (adopting a held snapshot replaces live state
+      // wholesale, §3.1), THEN record the tab we are entering — the reverse
+      // left the session's tab stale at the frozen value (found in E2E).
       s?.enterExplore()
+      s?.setQueryShape({ tab: t })
     } else if (tab === 'home') {
       // Leaving the feed for another tab — freeze FIRST, at the moment of
       // explicit intent (I3: this path unmounts nothing and pushes nothing —
