@@ -30,6 +30,19 @@ export interface TransportCapabilities {
   canSeek: boolean
   /** true = state read from the substrate; false = inferred from issued commands. */
   stateIsAuthoritative: boolean
+  /**
+   * true = this controller's substrate ALREADY drives its own activation
+   * lifecycle, so PlaybackSession must not issue lifecycle-driven commands to it
+   * (activation, render-window, visibility, pagehide). User-initiated commands
+   * are still delivered.
+   *
+   * Phase 1 only, and only for uploaded clips: the legacy <video> implementation
+   * remains the single owner of upload playback, so Session delegates and mirrors
+   * rather than commanding — two writers would fight (the 300ms watchdog and the
+   * play-icon state). Phase 3 replaces the adapter with HTMLVideoController, at
+   * which point this is false and Session owns the lifecycle for both substrates.
+   */
+  ownsLifecycle: boolean
 }
 
 /**

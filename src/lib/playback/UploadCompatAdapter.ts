@@ -46,6 +46,16 @@ export class UploadCompatAdapter implements PlaybackController {
     canSeek: true,
     // A <video> can be read synchronously — state is the element's own truth.
     stateIsAuthoritative: true,
+    /**
+     * Phase 1 (owner decision, Option B): the legacy implementation already
+     * drives upload activation, so PlaybackSession must NOT issue lifecycle
+     * commands here — only user-initiated ones. Two writers would fight: a
+     * lifecycle pause routed through the legacy toggle would raise the play-icon
+     * (VideoPlayer.tsx:316), and nothing resets that icon on re-activation,
+     * leaving a play badge over a playing clip. Flipped to false in Phase 3 when
+     * HTMLVideoController takes ownership.
+     */
+    ownsLifecycle: true,
   }
 
   constructor(private readonly getHandle: () => LegacyUploadHandle | null) {}

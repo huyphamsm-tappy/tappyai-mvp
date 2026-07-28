@@ -16,7 +16,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { DefaultPlaybackSession } from './PlaybackSession'
 import type { PlaybackController, TransportState } from './types'
 
-function mkController() {
+function mkController(ownsLifecycle = false) {
   const calls: string[] = []
   const state: TransportState = { status: 'idle', muted: true }
   const controller: PlaybackController = {
@@ -26,7 +26,7 @@ function mkController() {
     seek: () => { calls.push('seek') },
     applyAudioUnlocked: () => { calls.push('audio') },
     getState: () => state,
-    capabilities: { canReportPosition: true, canSeek: true, stateIsAuthoritative: true },
+    capabilities: { canReportPosition: true, canSeek: true, stateIsAuthoritative: true, ownsLifecycle },
     dispose: () => { calls.push('dispose') },
   }
   return { controller, calls }
@@ -34,6 +34,12 @@ function mkController() {
 
 const mk = () => {
   const { controller, calls } = mkController()
+  return { session: new DefaultPlaybackSession('slide-1', controller), calls }
+}
+
+/** A controller that drives its own lifecycle — the Phase 1 upload adapter. */
+const mkOwning = () => {
+  const { controller, calls } = mkController(true)
   return { session: new DefaultPlaybackSession('slide-1', controller), calls }
 }
 
@@ -142,6 +148,38 @@ describe('PlaybackSession — audio unlock', () => {
     const { session, calls } = mk()
     session.onAudioUnlocked()
     expect(calls).not.toContain('audio')
+  })
+})
+
+describe('PlaybackSession — ownsLifecycle (Phase 1 upload, Option B)', () => {
+  it('issues NO lifecycle commands to a controller that owns its lifecycle', () => {
+    const { session, calls } = mkOwning()
+    session.setActive(true)          // activation
+    session.setActive(false)         // deactivation
+    session.onVisibilityChange(false) // visibility
+    session.onVisibilityChange(true)
+    session.setInRenderWindow(false)  // teardown
+    session.onPageHide()
+    expect(calls).toHaveLength(0)     // upload behaviour left entirely to legacy
+  })
+
+  it('STILL delivers user-initiated commands', () => {
+    const { session, calls } = mkOwning()
+    session.setActive(true)
+    calls.length = 0
+    session.onUserPauseToggle()
+    expect(calls).toEqual(['pause'])  // the user's tap reaches the substrate
+    calls.length = 0
+    session.onUserPauseToggle()
+    expect(calls).toContain('play')
+  })
+
+  it('does not command an owning controller on dispose (but still disposes it)', () => {
+    const { session, calls } = mkOwning()
+    session.setActive(true)
+    calls.length = 0
+    session.dispose()
+    expect(calls).toEqual(['dispose'])  // no stop() into an unmounting legacy player
   })
 })
 

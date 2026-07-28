@@ -36,6 +36,8 @@ export class YouTubeController implements PlaybackController {
     canSeek: true,
     // Real state arrives via onStateChange/infoDelivery — never inferred.
     stateIsAuthoritative: true,
+    // The iframe has no lifecycle logic of its own: PlaybackSession drives it.
+    ownsLifecycle: false,
   }
 
   private state: TransportState = { status: 'idle', muted: true }

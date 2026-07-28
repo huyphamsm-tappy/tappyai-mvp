@@ -54,7 +54,7 @@ export class DefaultPlaybackSession implements PlaybackSession {
   onUserPauseToggle() {
     if (!this.active) return
     this.userPaused = !this.userPaused
-    this.reconcile()
+    this.reconcile('user')
   }
 
   onAudioUnlocked() {
@@ -74,32 +74,43 @@ export class DefaultPlaybackSession implements PlaybackSession {
   }
 
   onPageHide() {
-    this.issue('stop')
+    this.issue('stop', 'lifecycle')
   }
 
   // ── The decision function (architecture v3 §5) ───────────────────────────
-  private reconcile() {
+  /**
+   * [source] distinguishes a lifecycle-driven decision from a user-initiated one.
+   * A controller that owns its own lifecycle (Phase 1 upload adapter) receives
+   * only the user-initiated commands — see [issue].
+   */
+  private reconcile(source: 'lifecycle' | 'user' = 'lifecycle') {
     if (this.disposed) return
 
     // Outside the render window the slide is being torn down: release, don't retain.
-    if (!this.inWindow) return this.issue('stop')
+    if (!this.inWindow) return this.issue('stop', source)
 
     // Inside the window but not the active slide → pause, keep position for a
     // fast resume when the user scrolls back.
-    if (!this.active) return this.issue('pause')
+    if (!this.active) return this.issue('pause', source)
 
     // Active but the tab is hidden → system pause (userPaused untouched).
-    if (!this.visible) return this.issue('pause')
+    if (!this.visible) return this.issue('pause', source)
 
     // Active, visible, but the user deliberately paused → respect it, no command.
-    if (this.userPaused) return this.issue('pause')
+    if (this.userPaused) return this.issue('pause', source)
 
-    this.issue('play')
+    this.issue('play', source)
   }
 
-  private issue(cmd: 'play' | 'pause' | 'stop') {
+  private issue(cmd: 'play' | 'pause' | 'stop', source: 'lifecycle' | 'user') {
     if (this.disposed || this.last === cmd) return
+    // Desired state is tracked even when the command is withheld, so a later
+    // user-initiated transition still de-dupes correctly.
     this.last = cmd
+    // Phase 1 / Option B: the legacy upload implementation owns its own
+    // activation, visibility and teardown. Issuing lifecycle commands to it
+    // would mean two writers for one behaviour; user intent still passes through.
+    if (source === 'lifecycle' && this.controller.capabilities.ownsLifecycle) return
     if (cmd === 'play') {
       this.controller.play()
       // Re-apply sound on resume: the page may have unlocked audio while this
@@ -114,7 +125,10 @@ export class DefaultPlaybackSession implements PlaybackSession {
 
   dispose() {
     if (this.disposed) return
-    this.controller.stop()
+    // Teardown is lifecycle: a controller that owns its own lifecycle cleans up
+    // itself (and commanding an unmounting legacy player would set state on a
+    // dead component).
+    if (!this.controller.capabilities.ownsLifecycle) this.controller.stop()
     this.disposed = true
     this.controller.dispose()
   }
