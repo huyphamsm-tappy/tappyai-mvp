@@ -17,15 +17,20 @@ Init: Explore For-You, scrolled to Clip 2 (id X). Actions: tap author avatar →
 Expected ExploreState: `activeReviewId=X`, `activeIndex=2`, feedType unchanged. Browser: `/users/{id}` pushed; Back returns `/reviews`. Visible: exact Clip X playing.
 Pass: `restore_result=exact`, clip X on screen.
 
-**BT-02 — My Profile (tab) → return to feed tab**
+**BT-02 — My Profile (tab) → return to feed tab** *(revised v1.1/DFR-001)*
 Init: Explore For-You, Clip 2 (id X), signed in. Actions: tap "Hồ sơ" (bottom nav) → My Profile tab → tap "Khám phá"/feed tab.
-Expected ExploreState: `activeReviewId=X` restored. Browser: URL `?tab=` changes only (replace — no new entry; transport choice). Visible: exact Clip X.
-Pass: identical outcome to BT-01 (**I9**) despite zero history entries.
+Expected ExploreState: `activeReviewId=X` restored. Browser: feed→profile is a **push** (DFR-001); the tap-return updates the URL without further stack growth. Visible: exact Clip X.
+Pass: identical outcome to BT-01 (**I9**).
 
-**BT-03 — My Profile → browser Back**
-Init: as BT-02, user arrived at Explore from Home `/`. Actions: Hồ sơ tab → browser Back.
-Expected: Back follows transport (may leave `/reviews` — allowed, P2). **Then** user re-enters Explore (nav/bottom bar). Expected ExploreState on re-entry: `activeReviewId=X` restored.
-Pass: no state loss regardless of where Back lands; re-entry shows Clip X.
+**BT-02b — My Profile → browser Back** *(new in v1.1/DFR-001 — the owner-defined behavior)*
+Init: Explore For-You, Clip 2 (id X), signed in. Actions: tap "Hồ sơ" → browser/system **Back**.
+Expected: Back pops the pushed profile entry → **feed tab visible, `activeReviewId=X` restored, `restore_result=exact`**. The traversal emits the same enter/leave signals as a direct tab tap.
+Pass: exact Clip X on screen after one Back; a second Back (from the feed tab) follows transport out of Explore.
+
+**BT-03 — leaving Explore entirely → re-entry** *(narrowed v1.1: applies to real exits, not the My-Profile tab — that is BT-02b)*
+Init: as BT-02, user arrived at Explore from Home `/`. Actions: leave `/reviews` by a real route exit (external nav, deep link, second Back from the feed tab) → later re-enter Explore (nav/bottom bar).
+Expected ExploreState on re-entry: `activeReviewId=X` restored.
+Pass: no state loss regardless of where the exit landed; re-entry shows Clip X.
 
 **BT-04 — Other profile → open a clip in profile grid → Back**
 Init: Explore Clip 2 (id X). Actions: avatar → profile → open grid clip (viewer) → close/Back → browser Back to Explore.

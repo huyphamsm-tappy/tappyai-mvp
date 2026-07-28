@@ -1,7 +1,7 @@
 # TappyAI — Canonical Explore Navigation Specification
 
 **Status:** CANONICAL SPECIFICATION · **Design Freeze APPROVED 2026-07-28** (owner) — Source of Truth
-**Version:** 1.0 · **Date:** 2026-07-28
+**Version:** **1.1** — DFR-001 "My Profile Back Navigation Semantics" applied with owner sign-off (see `web-sprint/DFR-001-myprofile-back-semantics.md`) · **Date:** 2026-07-28
 **Scope:** **Cross-platform** — Web, Android, iOS. This document is the single source of truth for Explore navigation state on every client.
 **Promoted from:** `docs/web-sprint/NAVIGATION_SESSION_ARCHITECTURE.md` (Web architecture) — that document and `docs/web-sprint/ADR-001-explore-session.md` become **Web implementation notes** subordinate to this spec.
 **Complements:** `docs/Navigation_Architecture.md` (route tree / auth gating). That document describes *where routes are*; this one describes *how Explore state survives navigation*. No overlap.
@@ -220,6 +220,8 @@ The session is identical everywhere; only the **edges** differ.
 | Durable mirror | `sessionStorage` | in-memory + `SavedStateHandle` | in-memory + state restoration |
 
 **In all cases the platform converts its native signal into a plain call** (`enterExplore` / `leaveExplore` / `reportActiveItem`). No platform type crosses the boundary.
+
+**DFR-001 (v1.1, normative):** the **feed → My Profile** tab transition creates a back-stack entry (Web: history push; Android: back-stack transaction; iOS: navigation entry), so **Back from My Profile returns to the feed tab and restores the exact clip** (BT-02b). URL/back-stack-driven tab traversals MUST emit the same `enterExplore`/`leaveExplore` signals as direct tab taps — a traversal is transport; the tab transition is the business signal. Invariants I1–I12 are unaffected: restoration still never *depends* on history; v1.1 only constrains where Back *lands* (a product transport choice, P2).
 
 ---
 

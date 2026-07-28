@@ -39,7 +39,7 @@ The cause of the *divergence* is structural: restoration is gated on `isBackForw
 
 | Alternative | Rejected because |
 |---|---|
-| **A. Patch My Profile to use `push`** | Treats the symptom. Any future non-push path breaks again; history still decides business state |
+| **A. Patch My Profile to use `push`** | Treats the symptom. Any future non-push path breaks again; history still decides business state. **DFR-001 (v1.1) addendum:** push IS now adopted for feed→profile — but as an owner-mandated *landing UX* choice layered on top of ExploreSession, not as the state mechanism. The original rejection stands for its original meaning: state survival never depends on push (any path still restores via the session), so "a future non-push path" no longer breaks anything |
 | **B. Also write the marker on tab switch** | Adds a *second* writer of the same state — the exact dual-ownership problem this project already paid for |
 | **C. Put active clip in the URL** | Makes URL the source of truth; reintroduces "transport decides business state" in a new form; leaks internal state into shareable links |
 | **D. Do nothing / accept inconsistency** | Owner-reported defect; behaviour differs per entry point with no principled reason |
