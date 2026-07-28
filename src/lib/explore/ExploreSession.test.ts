@@ -6,9 +6,18 @@
  * covers: contract §3, versioning V1–V5, failure scenarios F1–F9, invariants
  * I3–I7, and I12 (lossless JSON round-trip).
  *
- * Replaces the behaviours of feedBackRestore.test.tsx (Bug #8 / Bug #17):
- * "return restores the exact clip by id" and "a plain visit does not restore" —
- * re-expressed against the session (history plays no part, by design).
+ * Replaces the behaviours of feedBackRestore.test.tsx (Bug #8 / Bug #17), per
+ * migration M6 — the regressions are re-expressed against the session (history
+ * plays no part, by design). Full L16 mapping:
+ *   1. restore-by-id (+ marker cleared)  → 'restores the exact clip by id…',
+ *      'restores by id when the feed re-ordered', mirror lifecycle tests
+ *   2. fresh visit does not restore      → 'a plain visit with no snapshot…'
+ *   3. cross-document Back (Bug #17)     → 'mirrors to the store on freeze and
+ *      hydrates on cold start (F5)' — navigation type is no longer an input
+ *   4. push-visit ≠ Back                 → SUPERSEDED by the spec: ANY re-entry
+ *      restores (BT-03); the old assertion encoded the history dependency the
+ *      migration removes. Recorded here so the inversion is deliberate.
+ * Plus the NAV-004 / My-Profile regression (BT-02/BT-03) below.
  */
 import { describe, it, expect, vi } from 'vitest'
 import { ExploreSession } from './ExploreSession'
@@ -87,6 +96,47 @@ describe('core freeze/restore (BT-01 mechanism, Bug #8 equivalent)', () => {
     const { session } = mk()
     session.enterExplore()
     expect(session.restore(FEED).outcome).toBe('none')
+  })
+})
+
+describe('NAV-004 — My-Profile regression (BT-02/BT-03, I9)', () => {
+  it('tab switch → view post (route-change) → return restores the exact clip; the snapshot is the FEED state', () => {
+    const { session } = mk()
+    // On the feed tab, clip r2.
+    session.enterExplore()
+    session.setQueryShape({ tab: 'home' })
+    session.reportActiveItem({ reviewId: 'r2', index: 2, scrollOffset: 1624 })
+    // NAV-004's exact path: switch to My Profile (freeze at intent — no
+    // unmount, no history entry)…
+    const frozen = session.leaveExplore('tab-switch')
+    session.setQueryShape({ tab: 'profile' }) // live tab moves on AFTER the freeze
+    // …then leave /reviews from the profile tab (view own post). Idempotent:
+    // the feed snapshot — not the profile view — is what survives (I7/F6).
+    const again = session.leaveExplore('route-change')
+    expect(again!.version).toBe(frozen!.version)
+    expect(again!.trigger).toBe('tab-switch')
+    expect(again!.state.tab).toBe('home')
+    // Return: any re-entry restores (BT-03) — identical to the other-user
+    // profile path (I9), with zero history input.
+    session.enterExplore()
+    const r = session.restore(FEED)
+    expect(r.outcome).toBe('exact')
+    expect(r.targetReviewId).toBe('r2')
+    expect(r.resolvedIndex).toBe(2)
+    expect(session.getState().tab).toBe('home')
+  })
+
+  it('tab change alone never invalidates the feed snapshot (view switch, not row filter)', () => {
+    const { session, events } = mk()
+    session.enterExplore()
+    session.reportActiveItem({ reviewId: 'r1', index: 1 })
+    session.leaveExplore('tab-switch')
+    session.setQueryShape({ tab: 'profile' })
+    session.setQueryShape({ tab: 'inbox' })
+    session.setQueryShape({ tab: 'home' })
+    expect(events.filter(e => e.name === 'explore_session.invalidated')).toHaveLength(0)
+    session.enterExplore()
+    expect(session.restore(FEED).outcome).toBe('exact')
   })
 })
 
