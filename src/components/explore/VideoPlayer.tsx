@@ -2,6 +2,10 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Play } from 'lucide-react'
 import { extractYouTubeId, placeholderFor } from '@/lib/links/platforms'
+import { DefaultPlaybackSession } from '@/lib/playback/PlaybackSession'
+import { createController } from '@/lib/playback/createController'
+import type { LegacyUploadHandle } from '@/lib/playback/UploadCompatAdapter'
+import type { PlaybackSession } from '@/lib/playback/types'
 
 interface VideoPlayerProps {
   url: string
@@ -34,11 +38,14 @@ interface VideoPlayerProps {
   hasSound?: boolean
 }
 
-// Imperative handle the feed uses to pause/resume on long-press (single tap is
-// reserved — the feed's gesture layer owns taps for double-tap-to-like).
-export interface VideoPlayerHandle {
-  togglePlay: () => void
-}
+/**
+ * What the feed gets back from a player: a PlaybackSession, nothing else.
+ *
+ * The feed expresses intent (`onUserPauseToggle`, `setActive`, visibility) and
+ * never touches a controller, an element or the provider — that is the whole
+ * point of the abstraction (architecture v3 §1/§2).
+ */
+export type VideoPlayerHandle = PlaybackSession
 
 /* ── Global feed audio (TikTok/Reels model) ───────────────────────────────
    Every clip autoplays MUTED — the only mode browsers allow without a gesture.
@@ -316,7 +323,31 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
       setShowPlayIcon(true)
     }
   }
-  useImperativeHandle(ref, () => ({ togglePlay }), [sourceType])
+  // ── Unified playback (WEB-EXPLORE-YOUTUBE-001, Phase 1) ──────────────────
+  // The clip's PlaybackSession is created once per mount and exposed to the feed
+  // as the ONLY playback surface: the feed never sees a controller or an element.
+  // Nothing above this line changed — for uploads the session delegates back into
+  // the existing implementation (ownsLifecycle), so upload behaviour is untouched.
+  const legacyHandleRef = useRef<LegacyUploadHandle | null>(null)
+  legacyHandleRef.current = { togglePlay, getVideo: () => videoRef.current }
+
+  const sessionRef = useRef<DefaultPlaybackSession | null>(null)
+  if (sessionRef.current === null) {
+    sessionRef.current = new DefaultPlaybackSession(
+      url,
+      createController({
+        sourceType,
+        getFrame: () => ytFrameRef.current,
+        getLegacyUploadHandle: () => legacyHandleRef.current,
+      }),
+    )
+  }
+
+  // `active` is the single playback authority (architecture v3 §3).
+  useEffect(() => { sessionRef.current?.setActive(active) }, [active])
+  useEffect(() => () => { sessionRef.current?.dispose() }, [])
+
+  useImperativeHandle(ref, () => sessionRef.current!, [])
 
   // If the browser paused the active clip without the user asking (most often
   // iOS rejecting an unmute), assume sound was the culprit and drop back to

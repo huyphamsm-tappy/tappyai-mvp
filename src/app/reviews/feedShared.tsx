@@ -324,6 +324,7 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   const durationRef = useRef<number | null>(null)
   const videoHandleRef = useRef<VideoPlayerHandle>(null)
 
+
   // Attached sound ("use this sound"): resolve the borrowed track's audio only
   // for clips in the render window, then hand its URL to VideoPlayer, which plays
   // it in place of the clip's own audio. An 'original' clip already IS its own
@@ -401,7 +402,10 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
       cancelPendingTap()
       singleTapTimer.current = setTimeout(() => {
         singleTapTimer.current = null
-        videoHandleRef.current?.togglePlay()
+        // Feed expresses INTENT to the session; it never commands a player or
+        // branches on the provider. Works identically for uploads and YouTube —
+        // YouTube clips were unpausable before this (WEB-EXPLORE-YOUTUBE-001).
+        videoHandleRef.current?.onUserPauseToggle()
       }, 300)
     }
   }
