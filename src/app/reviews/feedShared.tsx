@@ -453,6 +453,11 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
       {/* Top: for you / following */}
       <div className="absolute top-0 left-0 right-0 z-20 pt-12 px-4 flex items-center justify-center gap-6">
         {showFeedTabs && <>
+          {/* "Đăng bài" — owner-approved Explore header entry point to the composer.
+              An ACTION, not a feed filter: always full-opacity, never shows the
+              selected-tab underline. Mobile only (md:hidden) because the desktop
+              sidebar already carries the same CTA. */}
+          <Link href="/reviews/new" className="text-xs font-medium text-white md:hidden">{t('reviews.sidebarPost')}</Link>
           <button onClick={() => onFeedTypeChange('following')} className={`text-xs font-medium ${feedType === 'following' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabFollowing')}</button>
           <button onClick={() => onFeedTypeChange('for-you')} className={`text-xs font-medium ${feedType === 'for-you' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabForYou')}</button>
           <button onClick={() => onFeedTypeChange('latest')} className={`text-xs font-medium ${feedType === 'latest' ? 'text-white font-bold border-b-2 border-white pb-0.5' : 'text-white/60'}`}>{t('reviews.tabLatest')}</button>
