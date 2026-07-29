@@ -105,6 +105,14 @@ export const en: Record<string, string> = {
   'landing.contact.support.label': 'Support',
   'landing.contact.founder.label': 'Founder',
   'landing.contact.founder.name': 'PHẠM ĐOÀN HUY',
+  'landing.contact.founder.bio1':
+    'Entrepreneur and technology business leader with more than 15 years of experience building digital businesses, marketplaces, e-commerce ecosystems, and strategic partnerships in Vietnam.',
+  'landing.contact.founder.bio2':
+    'Throughout his career, Huy has worked across startups and technology companies, leading business development, enterprise partnerships, and go-to-market initiatives while collaborating closely with product and engineering teams.',
+  'landing.contact.founder.bio3':
+    'He previously founded consumer internet ventures, including Foodnow.vn and Mía Store, gaining first-hand experience in product development, operations, customer acquisition, and startup execution.',
+  'landing.contact.founder.bio4':
+    'Today, he is the Founder & CEO of TappyAI, an AI-powered consumer platform designed to simplify everyday life through conversational AI, local discovery, and intelligent recommendations. His long-term vision is to make AI practical, accessible, and useful for millions of people across Vietnam and Southeast Asia.',
   'landing.contact.website.label': 'Official website',
 
   // 10. Footer
@@ -216,6 +224,14 @@ export const vi: Record<string, string> = {
   'landing.contact.support.label': 'Hỗ trợ',
   'landing.contact.founder.label': 'Nhà sáng lập',
   'landing.contact.founder.name': 'PHẠM ĐOÀN HUY',
+  'landing.contact.founder.bio1':
+    'Doanh nhân và nhà lãnh đạo kinh doanh công nghệ với hơn 15 năm kinh nghiệm xây dựng các doanh nghiệp số, sàn giao dịch, hệ sinh thái thương mại điện tử và quan hệ đối tác chiến lược tại Việt Nam.',
+  'landing.contact.founder.bio2':
+    'Trong suốt sự nghiệp, Huy đã làm việc tại nhiều startup và công ty công nghệ, dẫn dắt phát triển kinh doanh, quan hệ đối tác doanh nghiệp và các sáng kiến go-to-market, đồng thời phối hợp chặt chẽ với đội ngũ sản phẩm và kỹ thuật.',
+  'landing.contact.founder.bio3':
+    'Trước đây, anh từng sáng lập các dự án internet tiêu dùng, bao gồm Foodnow.vn và Mía Store, tích lũy kinh nghiệm thực tiễn về phát triển sản phẩm, vận hành, thu hút khách hàng và triển khai startup.',
+  'landing.contact.founder.bio4':
+    'Hiện tại, anh là Nhà sáng lập & CEO của TappyAI — nền tảng tiêu dùng ứng dụng AI được thiết kế để đơn giản hóa cuộc sống hằng ngày thông qua AI hội thoại, khám phá địa phương và gợi ý thông minh. Tầm nhìn dài hạn của anh là đưa AI trở nên thiết thực, dễ tiếp cận và hữu ích cho hàng triệu người tại Việt Nam và Đông Nam Á.',
   'landing.contact.website.label': 'Website chính thức',
 
   // 10. Footer

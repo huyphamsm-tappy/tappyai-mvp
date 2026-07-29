@@ -18,7 +18,7 @@ export default function LandingHeader() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-gray-950/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-container-wide items-center justify-between px-5 sm:px-8">
         <Link href="/startup" className="flex items-center gap-2.5" aria-label={BRAND_NAME}>
-          <Image src={LOGO} alt="" width={32} height={32} className="h-8 w-8 object-contain" />
+          <Image src={LOGO} alt="" width={32} height={32} className="h-8 w-8 rounded-[22%] object-cover" />
           <span className="text-lg font-bold tracking-tight">{BRAND_NAME}</span>
         </Link>
 

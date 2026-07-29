@@ -19,7 +19,7 @@ export default function LandingFooter() {
     <footer className="border-t border-white/10">
       <div className="mx-auto flex max-w-container-wide flex-col items-center gap-5 px-5 py-10 text-center sm:flex-row sm:justify-between sm:px-8 sm:text-left">
         <div className="flex items-center gap-2.5">
-          <Image src={LOGO} alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+          <Image src={LOGO} alt="" width={24} height={24} className="h-6 w-6 rounded-[22%] object-cover" />
           <span className="font-semibold">{BRAND_NAME}</span>
         </div>
 
