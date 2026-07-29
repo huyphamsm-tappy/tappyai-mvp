@@ -39,16 +39,26 @@ export async function GET(req: NextRequest) {
   let reviews: any[] | null = null
   let queryError: any = null
 
+  // Explore is a DISCOVERY surface: never serve the viewer their own posts.
+  // Those live in "Hồ sơ & Bài của tôi" (?userId=me). Without this the client's
+  // hashtag personalization ranks the viewer's own clips first — their
+  // interaction history is dominated by their own posts — so opening Explore
+  // showed your own content on the first slides, with no follow affordance
+  // (you cannot follow yourself). Applies to the general feed only: an explicit
+  // ?userId= profile feed and the following feed are unaffected.
+  const excludeOwn = <T extends { neq: (c: string, v: string) => T }>(q: T): T =>
+    user && !filterUserId ? q.neq('user_id', user.id) : q
+
   if (sort === 'trending' && !filterUserId && !followingIds && !search) {
     // Phase 1 — LIGHT scoring pass: pull only the columns the score needs (no
     // profiles join, no body/photos/hashtags) for the candidate pool. Ranking a
     // 200-row pool no longer drags 200 full rows + a join across the wire.
-    const { data: pool, error } = await supabase
+    const { data: pool, error } = await excludeOwn(supabase
       .from('reviews')
       .select('id, created_at, place_address, like_count, comment_count, save_count, view_count, watch_time_avg, completion_rate')
       .or('is_hidden.is.null,is_hidden.eq.false')
       .order('created_at', { ascending: false })
-      .limit(200)
+      .limit(200))
 
     queryError = error
 
@@ -108,6 +118,7 @@ export async function GET(req: NextRequest) {
 
     if (filterUserId) query = query.eq('user_id', filterUserId)
     if (followingIds) query = query.in('user_id', followingIds)
+    else query = excludeOwn(query)
     if (search) {
       // Wrap the value in double quotes and escape \ and " so PostgREST treats
       // reserved chars (, . ( )) as literal search text instead of filter syntax.
