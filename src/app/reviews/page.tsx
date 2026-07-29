@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef, useMemo, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useState, useCallback, useRef, useMemo, type MouseEvent as ReactMouseEvent, type WheelEvent as ReactWheelEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -959,6 +959,26 @@ export default function ReviewsPage() {
   // page that leaves /reviews freezes the session at click time — before the
   // router acts. `/reviews` itself (?tab= echoes) stays inside Explore.
   // External and hash links never leave the SPA route, so they don't freeze.
+  // Desktop wheel forwarding. The feed column is ~448px of a 1920px window
+  // (23%) and the page shell is `overflow-hidden`, so a wheel gesture anywhere
+  // in the surrounding black area hit a non-scrollable element and did nothing
+  // — the feed read as "stuck, cannot reach the other clips". Forward those
+  // gestures to the feed, ONE slide per gesture to match the on-screen arrows
+  // and the scroll-snap behaviour (a raw deltaY of ~100px would just snap back
+  // to the same slide). Pointer already over a scrollable surface → leave it
+  // to the browser.
+  const wheelLockRef = useRef(0)
+  const onPageWheel = (e: ReactWheelEvent) => {
+    if (tab !== 'home' || !containerRef.current) return
+    const t = e.target as HTMLElement
+    if (t.closest?.('.snap-y') || t.closest?.('[data-scrollable]')) return
+    if (Math.abs(e.deltaY) < 8) return
+    const now = Date.now()
+    if (now - wheelLockRef.current < 350) return // one slide per gesture, not per tick
+    wheelLockRef.current = now
+    scrollFeed(e.deltaY > 0 ? 1 : -1)
+  }
+
   const onLeaveByLink = (e: ReactMouseEvent) => {
     // Modifier / non-primary clicks open a NEW tab — THIS tab never leaves, so
     // freezing here would strand the session in FROZEN and a later real
@@ -973,7 +993,7 @@ export default function ReviewsPage() {
   }
 
   return (
-    <div className="bg-black h-dvh overflow-hidden flex" onClickCapture={onLeaveByLink}>
+    <div className="bg-black h-dvh overflow-hidden flex" onClickCapture={onLeaveByLink} onWheel={onPageWheel}>
       <Sidebar tab={tab} setTab={handleSetTab} />
 
       {/* Content */}
