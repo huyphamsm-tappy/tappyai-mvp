@@ -5,16 +5,22 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import com.tappyai.app.navigation.AppNavHost
 import com.tappyai.app.navigation.AppNavHostViewModel
+import com.tappyai.app.theme.APP_THEME_DARK_VALUE
+import com.tappyai.app.theme.APP_THEME_KEY
+import com.tappyai.app.theme.APP_THEME_LIGHT_VALUE
+import com.tappyai.core.datastore.PreferencesDataSource
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Phase 1B: hosts the real [AppNavHost] instead of directly rendering the Design System
@@ -42,19 +48,39 @@ class MainActivity : AppCompatActivity() {
      */
     private val navHostViewModel: AppNavHostViewModel by viewModels()
 
+    /** Backs the dark/light toggle — see [com.tappyai.app.theme.APP_THEME_KEY]'s doc for why a
+     *  field injection here (rather than a ViewModel) is what lets [SettingsScreen]'s toggle and
+     *  this Activity's own theme state read/write the same persisted value without prop-drilling
+     *  a callback through every intermediate nav graph. */
+    @Inject
+    lateinit var prefs: PreferencesDataSource
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Must be called before setContent — this is what actually keeps Theme.TappyAI.Splash's
+        // window on screen until Compose draws its first real frame, instead of the plain white
+        // windowBackground otherwise showing on its own for a beat on slower devices.
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         handleIntent(intent)
 
         setContent {
-            var darkTheme by rememberSaveable { mutableStateOf<Boolean?>(null) }
-            val isDark = darkTheme ?: isSystemInDarkTheme()
+            val savedTheme by prefs.getString(APP_THEME_KEY).collectAsState(initial = null)
+            val isDark = when (savedTheme) {
+                APP_THEME_DARK_VALUE -> true
+                APP_THEME_LIGHT_VALUE -> false
+                else -> isSystemInDarkTheme()
+            }
+            val scope = rememberCoroutineScope()
 
             TappyAITheme(darkTheme = isDark) {
                 AppNavHost(
                     isDarkTheme = isDark,
-                    onToggleDarkTheme = { darkTheme = !isDark },
+                    onToggleDarkTheme = {
+                        scope.launch {
+                            prefs.setString(APP_THEME_KEY, if (isDark) APP_THEME_LIGHT_VALUE else APP_THEME_DARK_VALUE)
+                        }
+                    },
                     viewModel = navHostViewModel,
                 )
             }
