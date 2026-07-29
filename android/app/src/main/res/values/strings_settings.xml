@@ -5,12 +5,25 @@
     <string name="settings_notifications">Notifications</string>
     <string name="settings_memory">Memory</string>
     <string name="settings_language">Language</string>
+    <string name="settings_dark_mode">Dark mode</string>
     <string name="settings_section_other">Other</string>
     <string name="settings_terms_of_service">Terms of Service</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_version">Version %1$s</string>
     <string name="settings_signing_out">Signing out…</string>
     <string name="settings_sign_out">Sign out</string>
+
+    <!-- Request account deletion (Path B: mirrors web profile/privacy §5 — email support request;
+         no backend self-service delete exists). Opens the user's email app prefilled. -->
+    <string name="settings_delete_account">Request account deletion</string>
+    <string name="settings_delete_account_dialog_title">Request account deletion?</string>
+    <string name="settings_delete_account_dialog_message">This opens your email app to send a deletion request to TappyAI support. Your account and all related data will be deleted after we process your request — it is not deleted automatically.</string>
+    <string name="settings_delete_account_confirm">Open email</string>
+    <string name="settings_delete_account_subject">TappyAI — Account deletion request</string>
+    <string name="settings_delete_account_body">Hello TappyAI support,\n\nI would like to request deletion of my TappyAI account and all related data.\n\nRegistered email (if different from the sender): \n\nThank you.</string>
+    <string name="settings_delete_account_no_email_app">No email app found. Please email %1$s to request account deletion.</string>
+    <string name="support_email" translatable="false">huypham.sm@gmail.com</string>
+
     <string name="settings_error_no_connectivity">No internet connection. Please check and try again.</string>
     <string name="settings_error_timeout">The connection is too slow. Please try again.</string>
     <string name="settings_error_generic">Couldn\'t sign you out. Please try again.</string>
