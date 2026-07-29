@@ -57,3 +57,6 @@ do_push.ps1
 # machine-local in ~/.gradle/gradle.properties or via -P overrides — never in the repo, so a
 # `git add -A` can't reach them. The tracked android/gradle.properties holds BUILD CONFIG ONLY
 # (android.useAndroidX etc., required for a fresh clone to build) and deliberately has no credentials.
+
+# Supabase CLI local state (project-ref, pooler URL, tool versions) — machine-local, not source.
+supabase/.temp/
