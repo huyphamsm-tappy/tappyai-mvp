@@ -141,25 +141,44 @@ private fun ReviewMediaBackground(review: Review, active: Boolean, resolveSoundU
     Box(modifier = Modifier.fillMaxSize()) {
         when {
             review.contentType == ReviewContentType.Video -> {
-                // Uploaded clips play inline (web parity); YouTube/TikTok/Facebook-sourced videos
-                // (not produced by the Android composer) fall back to the poster+play placeholder,
-                // mirroring the web VideoPlayer's non-upload branches.
+                // Mirrors the web VideoPlayer's per-source branches: uploaded clips play inline via
+                // ExoPlayer; YouTube plays inline in a muted WebView embed; TikTok/Facebook open
+                // externally (no in-app playback on web either). Only a null URL falls back to the
+                // poster placeholder.
                 val mediaUrl = review.mediaUrl
-                val isUpload = review.sourceType == null || review.sourceType == ReviewSourceType.Upload
-                if (mediaUrl != null && isUpload) {
-                    val authorName = review.profiles?.fullName
-                        ?: stringResource(R.string.reviews_anonymous_name)
-                    ReviewVideoPlayer(
-                        url = mediaUrl,
-                        thumbnail = review.thumbnail,
-                        active = active,
-                        contentDescription = stringResource(R.string.reviews_video_a11y, authorName),
-                        attachedTrackId = attachedTrackId,
-                        soundVolume = soundVolume,
-                        resolveSoundUrl = resolveSoundUrl,
-                    )
-                } else {
-                    ReviewVideoPlaceholder(thumbnail = review.thumbnail)
+                when (review.sourceType) {
+                    ReviewSourceType.YouTube ->
+                        if (mediaUrl != null) {
+                            ReviewYouTubeSurface(
+                                mediaUrl = mediaUrl,
+                                thumbnail = review.thumbnail,
+                                active = active,
+                            )
+                        } else {
+                            ReviewVideoPlaceholder(thumbnail = review.thumbnail)
+                        }
+                    ReviewSourceType.TikTok, ReviewSourceType.Facebook ->
+                        ReviewExternalClipPreview(
+                            thumbnail = review.thumbnail,
+                            sourceUrl = review.sourceUrl,
+                        )
+                    // Upload or null source_type → the inline ExoPlayer upload surface.
+                    else ->
+                        if (mediaUrl != null) {
+                            val authorName = review.profiles?.fullName
+                                ?: stringResource(R.string.reviews_anonymous_name)
+                            ReviewVideoPlayer(
+                                url = mediaUrl,
+                                thumbnail = review.thumbnail,
+                                active = active,
+                                contentDescription = stringResource(R.string.reviews_video_a11y, authorName),
+                                attachedTrackId = attachedTrackId,
+                                soundVolume = soundVolume,
+                                resolveSoundUrl = resolveSoundUrl,
+                            )
+                        } else {
+                            ReviewVideoPlaceholder(thumbnail = review.thumbnail)
+                        }
                 }
             }
             !review.photos.isNullOrEmpty() -> {
