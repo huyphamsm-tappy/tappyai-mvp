@@ -10,7 +10,7 @@ export const BRAND_NAME = 'TappyAI'
 
 // Existing project assets. Paths are root-relative; prefix with SITE_URL where
 // an absolute URL is required (Open Graph, structured data).
-export const LOGO = '/logo.png'
+export const LOGO = '/branding/otter-logo.png'
 export const OG_IMAGE = '/feature-graphic.png'
 
 // Public contact addresses for the landing page.
