@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Android 12+ (API 31+) backup/transfer scoping. Excludes the encrypted auth-token
-  SharedPreferences file (EncryptedTokenStorage's "tappy_secure_tokens") from both cloud backup
-  and device-to-device transfer — the ciphertext is Keystore-wrapped and won't decrypt on a
-  different device/after a Keystore reset anyway, but excluding it outright avoids restoring a
-  useless/corrupt token file and matches the standard "never back up auth tokens" guidance.
+  Android 12+ (API 31+) backup/transfer scoping. Excludes everything that holds a user's auth
+  state or personal data so it never leaves the device via cloud backup or device-to-device
+  transfer:
+    - tappy_secure_tokens.xml  — Keystore-wrapped auth tokens (EncryptedTokenStorage). The ciphertext
+      won't decrypt on another device / after a Keystore reset anyway; excluding avoids restoring a
+      useless/corrupt token file and matches the "never back up auth tokens" guidance.
+    - tappy.db (+ -wal/-shm)   — Room cache incl. CachedContextEntity.profileJson (profile PII).
+    - tappy_preferences        — DataStore prefs incl. personal fields (gender, dietary, name, phone
+      drafts). These are re-derivable/transient, so excluding them costs nothing.
 -->
 <data-extraction-rules>
     <cloud-backup>
         <exclude domain="sharedpref" path="tappy_secure_tokens.xml" />
+        <exclude domain="database" path="tappy.db" />
+        <exclude domain="database" path="tappy.db-wal" />
+        <exclude domain="database" path="tappy.db-shm" />
+        <exclude domain="file" path="datastore/tappy_preferences.preferences_pb" />
     </cloud-backup>
     <device-transfer>
         <exclude domain="sharedpref" path="tappy_secure_tokens.xml" />
+        <exclude domain="database" path="tappy.db" />
+        <exclude domain="database" path="tappy.db-wal" />
+        <exclude domain="database" path="tappy.db-shm" />
+        <exclude domain="file" path="datastore/tappy_preferences.preferences_pb" />
     </device-transfer>
 </data-extraction-rules>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Pre-Android-12 (API < 31) equivalent of data_extraction_rules.xml — same exclusion, older
-     `android:fullBackupContent` mechanism (Auto Backup for Apps). -->
+<!-- Pre-Android-12 (API < 31) equivalent of data_extraction_rules.xml — same exclusions, older
+     `android:fullBackupContent` mechanism (Auto Backup for Apps): auth tokens, the Room cache
+     (profile PII), and the DataStore prefs (personal fields) never leave the device. -->
 <full-backup-content>
     <exclude domain="sharedpref" path="tappy_secure_tokens.xml" />
+    <exclude domain="database" path="tappy.db" />
+    <exclude domain="database" path="tappy.db-wal" />
+    <exclude domain="database" path="tappy.db-shm" />
+    <exclude domain="file" path="datastore/tappy_preferences.preferences_pb" />
 </full-backup-content>
