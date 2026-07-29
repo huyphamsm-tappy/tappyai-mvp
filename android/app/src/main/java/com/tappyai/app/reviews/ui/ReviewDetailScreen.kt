@@ -44,6 +44,8 @@ private fun ReviewDetailContent(
                 onDelete = {},
                 onHide = {},
                 modifier = Modifier.fillMaxWidth(),
+                // The detail hero is always on-screen — play its clip (web parity).
+                active = true,
             )
         }
 

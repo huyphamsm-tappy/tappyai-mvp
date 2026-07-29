@@ -1,5 +1,6 @@
 package com.tappyai.app.maps
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -93,7 +94,7 @@ fun MapsScreen(viewModel: MapsViewModel = hiltViewModel()) {
 
         if (isExpanded) {
             Row(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.weight(1f).fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
             ) {
                 PlaceListPane(
@@ -110,7 +111,7 @@ fun MapsScreen(viewModel: MapsViewModel = hiltViewModel()) {
                 onChange = viewModel::onViewModeChange,
                 modifier = Modifier.padding(bottom = TappySpacing.sm),
             )
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
                 when (viewModel.viewMode) {
                     MapsViewMode.Map -> MapPane(modifier = Modifier.fillMaxSize())
                     MapsViewMode.List -> PlaceListPane(
@@ -395,7 +396,11 @@ private fun PlaceAction(
 private fun openPlaceInMaps(context: Context, place: MapPlace) {
     val url = place.mapsLink
         ?: "https://www.google.com/maps/search/?api=1&query=${Uri.encode("${place.name} ${place.address}")}"
-    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    try {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    } catch (_: ActivityNotFoundException) {
+        // No browser/maps app installed to handle it — no-op, same degrade pattern as Scan/Chat.
+    }
 }
 
 /** Shares [place] as plain text via the system share sheet — mirrors `BookingsScreen.shareBooking`. */

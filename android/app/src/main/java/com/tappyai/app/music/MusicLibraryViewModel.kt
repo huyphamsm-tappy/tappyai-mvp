@@ -129,6 +129,7 @@ class MusicLibraryViewModel @Inject constructor(
 
     private companion object {
         const val TAG = "MusicLibraryViewModel"
-        const val SEARCH_DEBOUNCE_MS = 400L
+        // Web-parity-sync fix: matches web's useMusicSearch.ts exactly (DEBOUNCE_MS = 300).
+        const val SEARCH_DEBOUNCE_MS = 300L
     }
 }

@@ -7,7 +7,6 @@
     <string name="bookings_status_cancelled">❌ Cancelled</string>
     <string name="bookings_status_pending">⏳ Processing</string>
     <string name="bookings_error_title">Couldn\'t load your bookings</string>
-    <string name="bookings_error_message">Please try again later.</string>
     <string name="bookings_empty_title">No bookings yet</string>
     <string name="bookings_empty_message">Use chat to find restaurants, spas, and hotels — and book in seconds.</string>
     <string name="bookings_explore_now">Explore now</string>

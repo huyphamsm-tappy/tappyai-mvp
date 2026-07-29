@@ -11,6 +11,7 @@
     <string name="pricetracking_target_price">Target: %1$s</string>
     <string name="pricetracking_current_price">Current: %1$s</string>
     <string name="pricetracking_checked_date">Checked %1$s</string>
+    <string name="pricetracking_will_check_soon">Tappy will check the price in the next few hours ⏳</string>
     <string name="pricetracking_delete_watch_content_description">Delete watch</string>
     <string name="pricetracking_notified_header">NOTIFIED (%1$d)</string>
     <string name="pricetracking_notified_date">Notified %1$s</string>

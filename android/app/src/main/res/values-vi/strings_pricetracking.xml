@@ -11,6 +11,7 @@
     <string name="pricetracking_target_price">Giá mục tiêu: %1$s</string>
     <string name="pricetracking_current_price">Giá hiện tại: %1$s</string>
     <string name="pricetracking_checked_date">Đã kiểm tra %1$s</string>
+    <string name="pricetracking_will_check_soon">Tappy sẽ kiểm tra giá trong vài giờ tới ⏳</string>
     <string name="pricetracking_delete_watch_content_description">Xoá mục theo dõi</string>
     <string name="pricetracking_notified_header">ĐÃ BÁO (%1$d)</string>
     <string name="pricetracking_notified_date">Đã báo %1$s</string>

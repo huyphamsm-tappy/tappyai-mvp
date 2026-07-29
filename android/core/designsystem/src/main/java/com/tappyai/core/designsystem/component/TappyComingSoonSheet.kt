@@ -15,8 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.tappyai.core.designsystem.R
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
@@ -57,7 +59,9 @@ fun TappyComingSoonSheet(
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = "Coming soon",
+                // Round-3 audit fix: was a hardcoded English literal, shown as-is to real
+                // Vietnamese-locale users on live screens (Music, Profile).
+                text = stringResource(R.string.tappy_coming_soon_label),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary,
             )
@@ -68,7 +72,7 @@ fun TappyComingSoonSheet(
                 textAlign = TextAlign.Center,
             )
             TappyButton(
-                text = "Close",
+                text = stringResource(R.string.tappy_cd_close),
                 onClick = onDismiss,
                 modifier = Modifier.fillMaxWidth(),
             )

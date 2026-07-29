@@ -1,6 +1,7 @@
 package com.tappyai.app.games
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -69,7 +71,7 @@ fun GamesScreen(onBack: () -> Unit) {
             Text(text = stringResource(R.string.games_title), style = MaterialTheme.typography.titleLarge)
         }
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
             if (loadFailed) {
                 TappyErrorState(
                     title = stringResource(R.string.games_error_title),
@@ -130,7 +132,11 @@ private fun SuperTuxWebView(
                         // to a third party) is handed off to the system browser instead of
                         // silently loading inside this WebView.
                         if (url.host == allowedHost) return false
-                        context.startActivity(Intent(Intent.ACTION_VIEW, url))
+                        try {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, url))
+                        } catch (_: ActivityNotFoundException) {
+                            // No browser installed to hand the outbound link off to — no-op.
+                        }
                         return true
                     }
 

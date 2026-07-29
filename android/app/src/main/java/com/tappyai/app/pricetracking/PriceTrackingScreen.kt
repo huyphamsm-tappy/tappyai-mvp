@@ -43,6 +43,7 @@ import com.tappyai.core.designsystem.component.TappyEmptyState
 import com.tappyai.core.designsystem.component.TappyErrorState
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
 import com.tappyai.core.designsystem.theme.TappyContainers
+import com.tappyai.core.designsystem.theme.TappyMinTouchTarget
 import com.tappyai.core.designsystem.theme.TappySpacing
 
 /**
@@ -242,15 +243,20 @@ private fun ActiveWatchCard(watch: PriceWatch, onDelete: () -> Unit) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                if (watch.lastChecked != null) {
-                    Text(
-                        text = stringResource(R.string.pricetracking_checked_date, formatWatchDate(watch.lastChecked)),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.outline,
-                    )
-                }
+                // Web parity (price-watches/page.tsx:135-139): always render a line — the last-checked
+                // date, or a "Tappy will check soon" placeholder for a brand-new never-checked watch.
+                Text(
+                    text = if (watch.lastChecked != null) {
+                        stringResource(R.string.pricetracking_checked_date, formatWatchDate(watch.lastChecked))
+                    } else {
+                        stringResource(R.string.pricetracking_will_check_soon)
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.outline,
+                )
             }
-            IconButton(onClick = onDelete, modifier = Modifier.size(36.dp)) {
+            // Round-3 audit fix: was 36dp, below the 48dp accessibility touch-target floor.
+            IconButton(onClick = onDelete, modifier = Modifier.size(TappyMinTouchTarget)) {
                 Icon(
                     Icons.Filled.Delete,
                     contentDescription = stringResource(R.string.pricetracking_delete_watch_content_description),

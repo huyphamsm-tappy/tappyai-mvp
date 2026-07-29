@@ -3,6 +3,7 @@ package com.tappyai.core.designsystem.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import com.tappyai.core.designsystem.theme.TappyAITheme
@@ -39,6 +41,13 @@ fun TappyTextField(
     minLines: Int = 1,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     keyboardType: KeyboardType = KeyboardType.Text,
+    // Round-2 audit fix: this component previously set no IME action at all, so every multi-field
+    // form built on it (Group join, Account edit, Service Detail booking, Zodiac, etc.) showed a
+    // generic "Done" key that dismissed the keyboard instead of advancing focus. Single-line
+    // fields default to Next (Compose's default KeyboardActions already moves focus to the next
+    // focusable on Next with no extra wiring needed); the last field in a form or a multi-line
+    // field should pass ImeAction.Done/Default explicitly at the call site.
+    imeAction: ImeAction = if (singleLine) ImeAction.Next else ImeAction.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     val isError = errorText != null
@@ -58,7 +67,8 @@ fun TappyTextField(
             label = label?.let { { Text(it) } },
             placeholder = placeholder?.let { { Text(it) } },
             shape = TappyShapes.input,
-            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
+            keyboardActions = KeyboardActions.Default,
             visualTransformation = visualTransformation,
             textStyle = MaterialTheme.typography.bodyMedium,
             colors = OutlinedTextFieldDefaults.colors(),

@@ -3,7 +3,6 @@ package com.tappyai.app.pricetracking
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 enum class PriceWatchStatus { ACTIVE, TRIGGERED }
 
@@ -18,7 +17,10 @@ data class PriceWatch(
     val createdAt: Long,
 )
 
-private val relativeDateFormatter = DateTimeFormatter.ofPattern("d MMM", Locale.ENGLISH)
+// Web parity (profile/price-watches/page.tsx:23-27): `toLocaleString('vi-VN', {dateStyle:'short',
+// timeStyle:'short'})` → "18/07/2026 14:30" — VN date + time + year. The old "d MMM" (Locale.ENGLISH)
+// dropped the year/time and showed an English month in a VI-first app.
+private val watchDateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
 fun formatWatchDate(millis: Long): String =
-    Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDate().format(relativeDateFormatter)
+    Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDateTime().format(watchDateFormatter)

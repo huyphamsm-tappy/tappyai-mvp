@@ -104,7 +104,7 @@ fun RecommendationsScreen(
             }
 
             when (val s = state) {
-                UiState.Loading, UiState.Idle -> Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                UiState.Loading, UiState.Idle -> Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                     TappyLoadingIndicator()
                 }
                 is UiState.Error -> TappyErrorState(

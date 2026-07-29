@@ -46,6 +46,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
+import com.tappyai.app.account.AccountProfile
+import com.tappyai.core.designsystem.component.TappyAvatar
+import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyCard
 import com.tappyai.core.designsystem.component.TappyComingSoonSheet
 import com.tappyai.core.designsystem.component.TappyMenuRow
@@ -77,6 +80,12 @@ private fun ProfileMenuItem.title(): String = stringResource(titleRes)
 // Flip to true together with the web flag when Pro launches; MembershipScreen stays intact.
 private const val SHOW_PRO_UPGRADE = false
 
+// Web parity 2026-07-17 (owner product decision): App Connections entry point HIDDEN app-wide
+// (mirrors web ProfileView's `SHOW_APP_CONNECTIONS = false` + /api/config `showAppConnections`).
+// Only the menu entry point is gated off — AppConnectionsScreen, its route, and the backend stay
+// intact. Flip to true together with the web flag to re-enable.
+private const val SHOW_APP_CONNECTIONS = false
+
 // Order + labels + icons mirror the web `ProfileView` "Account" section exactly.
 private val ACCOUNT_ITEMS = buildList {
     add(ProfileMenuItem.Account)
@@ -86,7 +95,7 @@ private val ACCOUNT_ITEMS = buildList {
     add(ProfileMenuItem.Saved)
     add(ProfileMenuItem.PriceTracking)
     add(ProfileMenuItem.TappyKnows)
-    add(ProfileMenuItem.AppConnections)
+    if (SHOW_APP_CONNECTIONS) add(ProfileMenuItem.AppConnections)
     add(ProfileMenuItem.MyReviews)
     add(ProfileMenuItem.GroupDining)
     if (SHOW_PRO_UPGRADE) add(ProfileMenuItem.UpgradeToPro)
@@ -95,10 +104,12 @@ private val ACCOUNT_ITEMS = buildList {
 /**
  * Profile landing — matches the web `ProfileView` section order: profile header card → "Account"
  * menu section (10 rows; +1 "Upgrade to Pro" row gated OFF by [SHOW_PRO_UPGRADE], web parity) →
- * "Settings" entry. UI-only foundation: **no auth/session, so no fake
- * user** — the header shows a placeholder identity ("Your profile" / "Sign in to personalize")
- * and the conversation-count pill is hidden entirely (no data). "Settings" navigates for real; the
- * QR button opens the real [QrProfileSheet] (the shell only reaches this screen when
+ * "Settings" entry. The header shows the real signed-in user's name/email/avatar (`GET
+ * /api/profile`, same data + endpoint [com.tappyai.app.account.AccountViewModel] already uses for
+ * the Account screen) via [ProfileViewModel.profile] — degrading to the neutral "Sign in to
+ * personalize" placeholder only while loading or on a load failure, never a fabricated identity.
+ * The conversation-count pill is hidden entirely (no data source for it yet). "Settings" navigates
+ * for real; the QR button opens the real [QrProfileSheet] (the shell only reaches this screen when
  * authenticated, so the signed-in user's id is available); every other row still opens a
  * [TappyComingSoonSheet].
  */
@@ -136,6 +147,7 @@ fun ProfileScreen(
         ) {
             val qrFeatureName = stringResource(R.string.profile_qr_feature_name)
             ProfileHeaderCard(
+                profile = viewModel.profile,
                 onShowQr = {
                     if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName
                 },
@@ -199,37 +211,54 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileHeaderCard(onShowQr: () -> Unit) {
+private fun ProfileHeaderCard(profile: AccountProfile?, onShowQr: () -> Unit) {
     TappyCard(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Placeholder identity — no signed-in user in this foundation, so a neutral
-            // person icon rather than initials of a fabricated name.
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(TappyShapes.card)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Person,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(32.dp),
+            if (profile != null) {
+                // Certification-sprint fix: real identity, same data already fetched for the
+                // Account screen (GET /api/profile) — was previously never wired to this header.
+                TappyAvatar(
+                    name = profile.fullName,
+                    imageUrl = profile.avatarUrl,
+                    size = TappyAvatarSize.ProfileCard,
                 )
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = stringResource(R.string.profile_header_title), style = MaterialTheme.typography.titleLarge)
-                Text(
-                    text = stringResource(R.string.profile_header_subtitle),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                // Conversation-count pill intentionally hidden until real data exists.
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = profile.fullName, style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        text = profile.email,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            } else {
+                // Loading, or the load failed — never fabricate an identity (UI Consistency
+                // Baseline v1), same neutral placeholder this card has always shown.
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(TappyShapes.card)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(32.dp),
+                    )
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = stringResource(R.string.profile_header_title), style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        text = stringResource(R.string.profile_header_subtitle),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
             IconButton(onClick = onShowQr) {
                 Icon(

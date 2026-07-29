@@ -7,7 +7,6 @@
     <string name="bookings_status_cancelled">❌ Đã huỷ</string>
     <string name="bookings_status_pending">⏳ Đang xử lý</string>
     <string name="bookings_error_title">Không tải được lịch đặt chỗ của bạn</string>
-    <string name="bookings_error_message">Vui lòng thử lại sau.</string>
     <string name="bookings_empty_title">Chưa có lịch đặt chỗ nào</string>
     <string name="bookings_empty_message">Dùng trò chuyện để tìm nhà hàng, spa và khách sạn — và đặt chỗ chỉ trong vài giây.</string>
     <string name="bookings_explore_now">Khám phá ngay</string>

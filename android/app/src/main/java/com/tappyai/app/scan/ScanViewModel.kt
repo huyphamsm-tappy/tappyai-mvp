@@ -137,6 +137,7 @@ class ScanViewModel @Inject constructor(
         }
         val stream = ByteArrayOutputStream()
         scaled.compress(Bitmap.CompressFormat.JPEG, quality, stream)
+        if (scaled !== this) scaled.recycle()
         val base64 = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
         return base64 to "image/jpeg"
     }

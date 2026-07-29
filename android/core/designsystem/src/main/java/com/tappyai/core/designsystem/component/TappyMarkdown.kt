@@ -1,5 +1,8 @@
 package com.tappyai.core.designsystem.component
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -28,9 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.LinkInteractionListener
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
@@ -49,10 +55,11 @@ import com.tappyai.core.designsystem.theme.TappySpacing
  * Lightweight, **dependency-free** Markdown renderer. Deliberately not a full CommonMark
  * implementation — it covers the MVP subset only:
  *   headings (#/##/###), **bold**, *italic*, `inline code`, fenced ``` code blocks,
- *   bullet lists, numbered lists, > blockquotes, --- horizontal rules, and [links](url)
- *   rendered as styled text (no click handling yet).
- * Explicitly out of scope: tables, raw HTML, nested lists, task lists, LaTeX, Mermaid,
- * markdown images.
+ *   bullet lists, numbered lists, > blockquotes, --- horizontal rules, [links](url) with real
+ *   click handling, and a `![alt](url)` image on its own line rendered as a real photo (the
+ *   actual shape the AI backend emits — see `streamEnrichment.ts` — never inline mid-paragraph).
+ * Explicitly out of scope: tables, raw HTML, nested lists, task lists, LaTeX, Mermaid, and an
+ * inline (mid-paragraph) image mixed with other text on the same line.
  *
  * **The public API is intentionally just `TappyMarkdown(markdown, modifier)`** so the internals
  * can later be swapped for a full Markdown library without touching a single call site. It
@@ -86,6 +93,13 @@ private sealed interface MdBlock {
     data class NumberedList(val items: List<String>) : MdBlock
     data class Quote(val text: String) : MdBlock
     data object Rule : MdBlock
+    /** Web-parity-sync fix: a markdown image on its own line — the actual, real-world shape the
+     *  AI backend emits for place/product photos (`src/lib/ai/streamEnrichment.ts`'s
+     *  `![alt](url)` injection is always its own line). Previously unhandled entirely (this
+     *  file's own doc comment listed "markdown images" as explicitly out of scope), so a `!`
+     *  rendered as a literal character followed by the image parsed as an ordinary clickable
+     *  link — every place/product recommendation with a photo lost its picture on Android. */
+    data class Image(val url: String, val alt: String) : MdBlock
 }
 
 private val HEADING_REGEX = Regex("^(#{1,3})\\s+(.*)$")
@@ -94,6 +108,7 @@ private val NUMBERED_REGEX = Regex("^\\s*\\d+\\.\\s+(.*)$")
 private val RULE_REGEX = Regex("^\\s*([-*_])\\1{2,}\\s*$")
 private val QUOTE_REGEX = Regex("^\\s*>\\s?(.*)$")
 private val FENCE_REGEX = Regex("^\\s*```.*$")
+private val IMAGE_LINE_REGEX = Regex("^!\\[([^\\]]*)\\]\\(([^)]+)\\)\\s*$")
 
 private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
     val lines = markdown.replace("\r\n", "\n").split("\n")
@@ -118,6 +133,12 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
             // Rule is checked before bullet so "---" isn't mistaken for a "-" list item.
             RULE_REGEX.matches(line) -> {
                 blocks += MdBlock.Rule
+                i++
+            }
+
+            IMAGE_LINE_REGEX.matches(line) -> {
+                val match = IMAGE_LINE_REGEX.find(line)!!
+                blocks += MdBlock.Image(url = match.groupValues[2].trim(), alt = match.groupValues[1].trim())
                 i++
             }
 
@@ -183,6 +204,7 @@ private fun buildInlineAnnotated(
     text: String,
     codeBackground: Color,
     linkColor: Color,
+    linkInteractionListener: LinkInteractionListener,
 ): AnnotatedString = buildAnnotatedString {
     var i = 0
     val n = text.length
@@ -229,9 +251,11 @@ private fun buildInlineAnnotated(
                     if (closeParen > closeBracket) {
                         val linkText = text.substring(i + 1, closeBracket)
                         val url = text.substring(closeBracket + 2, closeParen)
-                        // Real clickable link: withLink + LinkAnnotation.Url. With no explicit
-                        // listener, the Text opens it through the ambient UriHandler, i.e. the
-                        // system browser (Intent.ACTION_VIEW) — no in-app browser, no analytics.
+                        // Real clickable link: withLink + LinkAnnotation.Url, with an explicit
+                        // listener (system browser via Intent.ACTION_VIEW) instead of the default
+                        // ambient-UriHandler dispatch, so a malformed/unhandleable URL — this text
+                        // is arbitrary AI-generated output, not a trusted source — degrades to a
+                        // no-op instead of crashing with ActivityNotFoundException.
                         withLink(
                             LinkAnnotation.Url(
                                 url = url,
@@ -241,6 +265,7 @@ private fun buildInlineAnnotated(
                                         textDecoration = TextDecoration.Underline,
                                     ),
                                 ),
+                                linkInteractionListener = linkInteractionListener,
                             ),
                         ) {
                             append(linkText)
@@ -287,7 +312,21 @@ private fun MarkdownBlock(block: MdBlock) {
         }
         is MdBlock.Quote -> MarkdownQuote(block.text)
         MdBlock.Rule -> HorizontalDivider()
+        is MdBlock.Image -> MarkdownImage(url = block.url, alt = block.alt)
     }
+}
+
+@Composable
+private fun MarkdownImage(url: String, alt: String) {
+    TappyImage(
+        url = url,
+        contentDescription = alt.ifBlank { null },
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(180.dp)
+            .clip(TappyShapes.card),
+    )
 }
 
 @Composable
@@ -363,8 +402,19 @@ private fun MarkdownQuote(text: String) {
 private fun inlineText(text: String): AnnotatedString {
     val codeBackground = MaterialTheme.colorScheme.surfaceVariant
     val linkColor = MaterialTheme.colorScheme.primary
-    return remember(text, codeBackground, linkColor) {
-        buildInlineAnnotated(text, codeBackground, linkColor)
+    val context = LocalContext.current
+    val linkListener = remember(context) {
+        LinkInteractionListener { link ->
+            val url = (link as? LinkAnnotation.Url)?.url ?: return@LinkInteractionListener
+            try {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            } catch (_: ActivityNotFoundException) {
+                // Malformed/unhandleable URL from AI-generated markdown — degrade silently.
+            }
+        }
+    }
+    return remember(text, codeBackground, linkColor, linkListener) {
+        buildInlineAnnotated(text, codeBackground, linkColor, linkListener)
     }
 }
 

@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tappyai.app.R
 import com.tappyai.app.chat.data.MessageFeedback
+import com.tappyai.core.designsystem.theme.TappyMinTouchTarget
 import com.tappyai.core.designsystem.theme.TappySpacing
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -102,7 +103,11 @@ fun MessageActionBar(
                 copyState = true
                 scope.launch { delay(2000); copyState = false }
             },
-            modifier = Modifier.size(32.dp),
+            // Round-3 audit fix: was Modifier.size(32.dp) — a caller-supplied outer size clamps
+            // IconButton's own ≥48dp minimum-interactive-size enforcement along with it, so every
+            // action on the highest-traffic surface in the app (every AI reply) was under the
+            // accessibility touch-target floor despite looking like a normal IconButton.
+            modifier = Modifier.size(TappyMinTouchTarget),
         ) {
             Icon(
                 imageVector = if (copyState) Icons.Filled.Check else Icons.Filled.ContentCopy,
@@ -124,7 +129,11 @@ fun MessageActionBar(
                 }
                 context.startActivity(Intent.createChooser(intent, shareChooserTitle))
             },
-            modifier = Modifier.size(32.dp),
+            // Round-3 audit fix: was Modifier.size(32.dp) — a caller-supplied outer size clamps
+            // IconButton's own ≥48dp minimum-interactive-size enforcement along with it, so every
+            // action on the highest-traffic surface in the app (every AI reply) was under the
+            // accessibility touch-target floor despite looking like a normal IconButton.
+            modifier = Modifier.size(TappyMinTouchTarget),
         ) {
             Icon(Icons.Filled.Share, contentDescription = shareLabel, modifier = iconSize, tint = tint)
         }
@@ -132,7 +141,11 @@ fun MessageActionBar(
         // Like — toggle/switch semantics live in the ViewModel, matching the web's handleLike.
         IconButton(
             onClick = { onToggleFeedback(MessageFeedback.Like) },
-            modifier = Modifier.size(32.dp),
+            // Round-3 audit fix: was Modifier.size(32.dp) — a caller-supplied outer size clamps
+            // IconButton's own ≥48dp minimum-interactive-size enforcement along with it, so every
+            // action on the highest-traffic surface in the app (every AI reply) was under the
+            // accessibility touch-target floor despite looking like a normal IconButton.
+            modifier = Modifier.size(TappyMinTouchTarget),
         ) {
             Icon(
                 Icons.Filled.ThumbUp,
@@ -145,7 +158,11 @@ fun MessageActionBar(
         // Dislike
         IconButton(
             onClick = { onToggleFeedback(MessageFeedback.Dislike) },
-            modifier = Modifier.size(32.dp),
+            // Round-3 audit fix: was Modifier.size(32.dp) — a caller-supplied outer size clamps
+            // IconButton's own ≥48dp minimum-interactive-size enforcement along with it, so every
+            // action on the highest-traffic surface in the app (every AI reply) was under the
+            // accessibility touch-target floor despite looking like a normal IconButton.
+            modifier = Modifier.size(TappyMinTouchTarget),
         ) {
             Icon(
                 Icons.Filled.ThumbDown,
@@ -159,7 +176,11 @@ fun MessageActionBar(
         // window.speechSynthesis-backed useTTS hook. Toggles: tapping while speaking stops it.
         IconButton(
             onClick = { onToggleSpeak(stripMarkdown(text)) },
-            modifier = Modifier.size(32.dp),
+            // Round-3 audit fix: was Modifier.size(32.dp) — a caller-supplied outer size clamps
+            // IconButton's own ≥48dp minimum-interactive-size enforcement along with it, so every
+            // action on the highest-traffic surface in the app (every AI reply) was under the
+            // accessibility touch-target floor despite looking like a normal IconButton.
+            modifier = Modifier.size(TappyMinTouchTarget),
         ) {
             Icon(
                 imageVector = if (isSpeaking) Icons.Filled.Stop else Icons.AutoMirrored.Filled.VolumeUp,
@@ -173,7 +194,11 @@ fun MessageActionBar(
         if (isLastMessage) {
             IconButton(
                 onClick = onRegenerate,
-                modifier = Modifier.size(32.dp),
+                // Round-3 audit fix: was Modifier.size(32.dp) — a caller-supplied outer size clamps
+            // IconButton's own ≥48dp minimum-interactive-size enforcement along with it, so every
+            // action on the highest-traffic surface in the app (every AI reply) was under the
+            // accessibility touch-target floor despite looking like a normal IconButton.
+            modifier = Modifier.size(TappyMinTouchTarget),
             ) {
                 Icon(Icons.Filled.Refresh, contentDescription = regenerateLabel, modifier = iconSize, tint = tint)
             }
@@ -183,7 +208,11 @@ fun MessageActionBar(
         Box {
             IconButton(
                 onClick = { showMore = true },
-                modifier = Modifier.size(32.dp),
+                // Round-3 audit fix: was Modifier.size(32.dp) — a caller-supplied outer size clamps
+            // IconButton's own ≥48dp minimum-interactive-size enforcement along with it, so every
+            // action on the highest-traffic surface in the app (every AI reply) was under the
+            // accessibility touch-target floor despite looking like a normal IconButton.
+            modifier = Modifier.size(TappyMinTouchTarget),
             ) {
                 Icon(Icons.Filled.MoreHoriz, contentDescription = moreLabel, modifier = iconSize, tint = tint)
             }
@@ -240,14 +269,15 @@ private fun copyToClipboard(context: Context, value: String) {
     clipboard.setPrimaryClip(ClipData.newPlainText("TappyAI", value))
 }
 
+// Web parity (components/chat/MessageActionBar.tsx:38-46 `stripMd`): copy/share must produce the
+// SAME plain text as the web — strip bold, italic, headings, links (keep label), and bare URLs, then
+// trim. The previous Android version left bare URLs in and additionally mangled code spans, bullets,
+// blockquotes and rules, so the copied/shared payload differed from the web's.
 private fun stripMarkdown(text: String): String =
     text
         .replace(Regex("\\*\\*(.*?)\\*\\*"), "$1")
         .replace(Regex("\\*(.*?)\\*"), "$1")
         .replace(Regex("#{1,3}\\s"), "")
         .replace(Regex("\\[([^]]+)]\\([^)]+\\)"), "$1")
-        .replace(Regex("`([^`]+)`"), "$1")
-        .replace(Regex("^- ", RegexOption.MULTILINE), "• ")
-        .replace(Regex("^>\\s?", RegexOption.MULTILINE), "")
-        .replace(Regex("---+"), "")
+        .replace(Regex("https?://\\S+"), "")
         .trim()

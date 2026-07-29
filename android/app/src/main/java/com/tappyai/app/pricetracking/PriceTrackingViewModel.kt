@@ -88,13 +88,20 @@ class PriceTrackingViewModel @Inject constructor(
 
     /** Optimistically removes the watch, reverting (and toasting) if the cancel fails. */
     fun onDelete(id: String) {
-        val previous = watches
+        val index = watches.indexOfFirst { it.id == id }
+        if (index == -1) return
+        val removed = watches[index]
         watches = watches.filterNot { it.id == id }
         viewModelScope.launch {
             val result = repository.deleteWatch(id)
             if (result is NetworkResult.Error) {
                 logger.e(TAG, "Delete watch failed: ${result.error}")
-                watches = previous
+                // Re-insert into the CURRENT list rather than restoring a pre-delete snapshot —
+                // a concurrent delete on another watch started while this call was in flight would
+                // otherwise be silently resurrected by restoring the stale full-list snapshot.
+                if (watches.none { it.id == id }) {
+                    watches = watches.toMutableList().apply { add(index.coerceIn(0, size), removed) }
+                }
                 _messages.send(stringProvider.get(R.string.pricetracking_delete_failed_message))
             }
         }

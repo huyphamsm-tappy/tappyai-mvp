@@ -61,13 +61,23 @@ class ChatHistoryViewModel @Inject constructor(
     /** No-ops outside [UiState.Success] — nothing to delete from a Loading/Error/Empty list. */
     fun delete(id: String) {
         val snapshot = (_uiState.value as? UiState.Success)?.data ?: return
+        val index = snapshot.indexOfFirst { it.id == id }
+        if (index == -1) return
+        val removed = snapshot[index]
         val updated = snapshot.filterNot { it.id == id }
         _uiState.value = if (updated.isEmpty()) UiState.Empty else UiState.Success(updated)
         viewModelScope.launch {
             val result = repository.deleteConversation(id)
             if (result is NetworkResult.Error) {
                 logger.e(TAG, "Delete conversation failed: ${result.error}")
-                _uiState.value = UiState.Success(snapshot)
+                // Re-insert into the CURRENT list rather than restoring a pre-delete snapshot —
+                // a concurrent delete started while this call was in flight would otherwise be
+                // silently resurrected by restoring the stale full-list snapshot.
+                val current = (_uiState.value as? UiState.Success)?.data ?: listOf()
+                if (current.none { it.id == id }) {
+                    val restored = current.toMutableList().apply { add(index.coerceIn(0, size), removed) }
+                    _uiState.value = UiState.Success(restored)
+                }
             }
         }
     }

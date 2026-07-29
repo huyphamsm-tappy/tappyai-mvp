@@ -43,8 +43,9 @@ class AppNavHostViewModel @Inject constructor(
     private val authDeepLinkParser: DeepLinkParser,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
-    val sessionState: StateFlow<AuthSessionState> = authRepository.sessionState
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AuthSessionState.Loading)
+    val sessionState: StateFlow<AuthSessionState> = authRepository.sessionState.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5_000), AuthSessionState.Loading
+    )
 
     /**
      * Whether a just-logged-in user should see onboarding first. Delegates to the repository

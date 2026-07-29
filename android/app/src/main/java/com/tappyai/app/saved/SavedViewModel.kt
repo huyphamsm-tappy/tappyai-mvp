@@ -82,13 +82,27 @@ class SavedViewModel @Inject constructor(
      */
     fun removeFavorite(placeId: String) {
         val snapshot = (uiState as? UiState.Success)?.data ?: return
+        val removedIndex = snapshot.favorites.indexOfFirst { it.placeId == placeId }
+        if (removedIndex == -1) return
+        val removed = snapshot.favorites[removedIndex]
         val next = snapshot.copy(favorites = snapshot.favorites.filterNot { it.placeId == placeId })
         uiState = if (next.isEmpty) UiState.Empty else UiState.Success(next)
         viewModelScope.launch {
             val result = repository.removeFavorite(placeId)
             if (result is NetworkResult.Error) {
                 logger.e(TAG, "Remove favorite failed: ${result.error}")
-                uiState = if (snapshot.isEmpty) UiState.Empty else UiState.Success(snapshot)
+                // Revert against the list as it stands NOW, not the pre-removal snapshot — a
+                // concurrent removal started while this call was in flight would otherwise be
+                // silently resurrected by restoring the whole stale snapshot. If uiState went to
+                // Empty, both lists were empty at that point (reviews included, since this
+                // function never mutates reviews) — snapshot's reviews shape is still valid.
+                val current = (uiState as? UiState.Success)?.data
+                    ?: snapshot.copy(favorites = emptyList())
+                if (current.favorites.none { it.placeId == placeId }) {
+                    val restoredFavorites = current.favorites.toMutableList()
+                        .apply { add(removedIndex.coerceIn(0, size), removed) }
+                    uiState = UiState.Success(current.copy(favorites = restoredFavorites))
+                }
             }
         }
     }

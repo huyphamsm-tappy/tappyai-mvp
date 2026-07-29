@@ -1,10 +1,8 @@
 <resources>
     <string name="saved_title">Đã lưu</string>
-    <string name="saved_open_label">Mở</string>
     <string name="saved_items_count">%1$d mục</string>
     <string name="saved_remove_favorite_content_description">Xoá %1$s khỏi mục yêu thích</string>
     <string name="saved_error_title">Không tải được mục đã lưu của bạn</string>
-    <string name="saved_error_message">Vui lòng thử lại sau.</string>
     <string name="saved_load_error_fallback">Không tải được mục đã lưu của bạn.</string>
     <string name="saved_empty_title">Chưa có mục nào được lưu</string>
     <string name="saved_empty_message">Chạm ♡ để lưu những địa điểm bạn yêu thích, hoặc 🔖 để đánh dấu bài viết xem lại sau — tất cả sẽ hiển thị ở đây.</string>

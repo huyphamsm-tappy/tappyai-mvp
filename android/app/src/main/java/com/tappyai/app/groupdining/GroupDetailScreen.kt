@@ -56,6 +56,7 @@ import com.tappyai.core.designsystem.component.TappyErrorState
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
 import com.tappyai.core.designsystem.component.TappyTextField
 import com.tappyai.core.designsystem.theme.TappyContainers
+import com.tappyai.core.designsystem.theme.TappyMinTouchTarget
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
 import kotlinx.coroutines.delay
@@ -128,13 +129,19 @@ fun GroupDetailScreen(
                     onRetry = viewModel::load,
                 )
 
-                is UiState.Success -> GroupContent(
-                    group = state.data,
-                    isCreator = viewModel.isCreator(state.data),
-                    viewModel = viewModel,
-                    onShare = { link -> shareLink(context, link, shareChooserTitle) },
-                    onCopy = { link -> copyLink(context, link, linkClipLabel) },
-                )
+                // Web parity: keep the spinner until the auth read resolves, so the creator never
+                // flashes the non-creator join form before isCreator can be evaluated.
+                is UiState.Success -> if (!viewModel.authChecked) {
+                    TappyLoadingIndicator()
+                } else {
+                    GroupContent(
+                        group = state.data,
+                        isCreator = viewModel.isCreator(state.data),
+                        viewModel = viewModel,
+                        onShare = { link -> shareLink(context, link, shareChooserTitle) },
+                        onCopy = { link -> copyLink(context, link, linkClipLabel) },
+                    )
+                }
             }
         }
     }
@@ -249,7 +256,8 @@ private fun ShareLinkCard(link: String, onCopy: () -> Unit, onShare: () -> Unit)
                         onCopy()
                         copied = true
                     },
-                    modifier = Modifier.size(36.dp),
+                    // Round-3 audit fix: was 36dp, below the 48dp accessibility touch-target floor.
+                    modifier = Modifier.size(TappyMinTouchTarget),
                 ) {
                     Icon(
                         imageVector = if (copied) Icons.Filled.Check else Icons.Filled.ContentCopy,
@@ -262,7 +270,7 @@ private fun ShareLinkCard(link: String, onCopy: () -> Unit, onShare: () -> Unit)
                         modifier = Modifier.size(18.dp),
                     )
                 }
-                IconButton(onClick = onShare, modifier = Modifier.size(36.dp)) {
+                IconButton(onClick = onShare, modifier = Modifier.size(TappyMinTouchTarget)) {
                     Icon(
                         Icons.Filled.Share,
                         contentDescription = stringResource(R.string.groupdining_share_link_content_description),

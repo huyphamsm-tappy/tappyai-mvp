@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -76,8 +78,13 @@ fun QrProfileSheet(userId: String, name: String?, onDismiss: () -> Unit) {
     val shareChooserTitle = stringResource(R.string.profile_qr_share_chooser_title)
 
     TappyBottomSheet(onDismiss = onDismiss) {
+        // Round-3 audit fix: ModalBottomSheet does not scroll its content for you (see
+        // ReportSoundSheet's identical note) — on a short landscape phone the share button
+        // could clip below the visible area with no way to reach it.
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
         ) {

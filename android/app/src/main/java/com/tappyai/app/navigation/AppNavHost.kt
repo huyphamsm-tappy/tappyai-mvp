@@ -85,7 +85,15 @@ fun AppNavHost(
     LaunchedEffect(deepLinkTarget, sessionState) {
         val route = deepLinkTarget ?: return@LaunchedEffect
         if (sessionState == AuthSessionState.Authenticated) {
-            navController.navigate(route)
+            // Round-3 audit fix: this previously navigated with no popUpTo, so on a fresh
+            // login (not a cold start into an already-authenticated session) the auth graph
+            // (Login, or a lingering "completing sign-in" AuthCallback screen) stayed on the
+            // back stack underneath the deep-linked destination — pressing back from the
+            // group page returned to Login/AuthCallback instead of Home. Clear the auth graph
+            // here too, same as the generic post-login redirect just below.
+            navController.navigate(route) {
+                popUpTo(navController.graph.id) { inclusive = true }
+            }
             viewModel.consumeDeepLink()
         }
     }

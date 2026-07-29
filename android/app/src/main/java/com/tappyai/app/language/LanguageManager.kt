@@ -37,6 +37,14 @@ class LanguageManager @Inject constructor(
         get() = AppCompatDelegate.getApplicationLocales().takeIf { !it.isEmpty }
             ?.get(0)?.language?.let { AppLanguage.fromTag(it) }
 
+    /** [current] when the user has explicitly picked one, else whatever [current] itself resolves
+     *  to once AppCompat falls back to the system/resource locale — never a hardcoded default.
+     *  Parity-sync fix: callers previously fell back to a literal [AppLanguage.English] here, so a
+     *  vi-locale device that had never opened the picker showed "English" as the selected option
+     *  in Settings while every string on screen was actually rendering from `values-vi/`. */
+    val resolved: AppLanguage
+        get() = current ?: AppLanguage.fromTag(java.util.Locale.getDefault().language) ?: AppLanguage.English
+
     suspend fun setLanguage(language: AppLanguage) {
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language.tag))
         val result = accountRepository.updateLanguage(language.tag)
