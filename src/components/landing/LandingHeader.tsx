@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { Locale } from '@/lib/i18n/dictionaries'
+import { BRAND_NAME, LOGO } from './config'
 
 const LOCALES: Array<{ value: Locale; label: string }> = [
   { value: 'en', label: 'EN' },
@@ -16,9 +17,9 @@ export default function LandingHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-gray-950/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-container-wide items-center justify-between px-5 sm:px-8">
-        <Link href="/startup" className="flex items-center gap-2.5" aria-label="TappyAI">
-          <Image src="/logo.png" alt="" width={32} height={32} className="h-8 w-8 object-contain" />
-          <span className="text-lg font-bold tracking-tight">TappyAI</span>
+        <Link href="/startup" className="flex items-center gap-2.5" aria-label={BRAND_NAME}>
+          <Image src={LOGO} alt="" width={32} height={32} className="h-8 w-8 object-contain" />
+          <span className="text-lg font-bold tracking-tight">{BRAND_NAME}</span>
         </Link>
 
         <div className="flex items-center gap-3">

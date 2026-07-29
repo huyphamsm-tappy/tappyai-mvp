@@ -1,4 +1,4 @@
-import { SITE_URL, SUPPORT_EMAIL } from '@/components/landing/config'
+import { BRAND_NAME, LOGO, SITE_URL, SUPPORT_EMAIL } from '@/components/landing/config'
 import LandingHeader from '@/components/landing/LandingHeader'
 import LandingHero from '@/components/landing/LandingHero'
 import LandingWhatIs from '@/components/landing/LandingWhatIs'
@@ -16,9 +16,9 @@ import LandingFooter from '@/components/landing/LandingFooter'
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'TappyAI',
+  name: BRAND_NAME,
   url: SITE_URL,
-  logo: `${SITE_URL}/logo.png`,
+  logo: `${SITE_URL}${LOGO}`,
   email: SUPPORT_EMAIL,
   founder: { '@type': 'Person', name: 'Huy Pham' },
 }

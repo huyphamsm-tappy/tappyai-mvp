@@ -4,6 +4,15 @@
 export const SITE_URL = 'https://www.tappyai.com'
 export const SITE_HOST = 'www.tappyai.com'
 
+// Proper noun — identical in every language, so it is a constant rather than a
+// dictionary entry (translating it would be wrong).
+export const BRAND_NAME = 'TappyAI'
+
+// Existing project assets. Paths are root-relative; prefix with SITE_URL where
+// an absolute URL is required (Open Graph, structured data).
+export const LOGO = '/logo.png'
+export const OG_IMAGE = '/feature-graphic.png'
+
 // Verified contacts only: published in the production privacy policy. No
 // dedicated support@ mailbox exists yet — swap here when one is created.
 export const SUPPORT_EMAIL = 'huypham.sm@gmail.com'
