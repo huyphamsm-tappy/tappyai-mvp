@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
@@ -44,6 +45,7 @@ class AccountViewModel @Inject constructor(
     private val accountErrorMessages: AccountErrorMessages,
     private val stringProvider: StringProvider,
     @ApplicationContext private val context: Context,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     var profile by mutableStateOf<AccountProfile?>(null)
@@ -57,10 +59,15 @@ class AccountViewModel @Inject constructor(
     var isUploadingAvatar by mutableStateOf(false)
         private set
 
-    var editName by mutableStateOf("")
+    // Round-3 audit fix: an in-progress edit was silently discarded on process death (plain
+    // mutableStateOf, re-fetched from load() on next launch). Restored from SavedStateHandle;
+    // editFieldsInitialized tracks whether that restore actually populated a draft, so load()'s
+    // server fetch below only seeds these fields when there's nothing to preserve.
+    var editName by mutableStateOf(savedStateHandle.get<String>(KEY_EDIT_NAME).orEmpty())
         private set
-    var editBio by mutableStateOf("")
+    var editBio by mutableStateOf(savedStateHandle.get<String>(KEY_EDIT_BIO).orEmpty())
         private set
+    private var editFieldsInitialized = savedStateHandle.get<String>(KEY_EDIT_NAME) != null
 
     private val _events = Channel<AccountEvent>(Channel.BUFFERED)
     val events: Flow<AccountEvent> = _events.receiveAsFlow()
@@ -79,8 +86,11 @@ class AccountViewModel @Inject constructor(
             when (val result = repository.getProfile()) {
                 is NetworkResult.Success -> {
                     profile = result.data
-                    editName = result.data.fullName
-                    editBio = result.data.bio
+                    if (!editFieldsInitialized) {
+                        editName = result.data.fullName
+                        editBio = result.data.bio
+                        editFieldsInitialized = true
+                    }
                     isLoading = false
                 }
                 is NetworkResult.Error -> {
@@ -95,11 +105,19 @@ class AccountViewModel @Inject constructor(
     fun retry() = load()
 
     fun onNameChange(value: String) {
-        if (value.length <= 100) editName = value
+        if (value.length <= 100) {
+            editName = value
+            editFieldsInitialized = true
+            savedStateHandle[KEY_EDIT_NAME] = value
+        }
     }
 
     fun onBioChange(value: String) {
-        if (value.length <= 200) editBio = value
+        if (value.length <= 200) {
+            editBio = value
+            editFieldsInitialized = true
+            savedStateHandle[KEY_EDIT_BIO] = value
+        }
     }
 
     /**
@@ -182,5 +200,7 @@ class AccountViewModel @Inject constructor(
         const val TAG = "AccountViewModel"
         // Matches the web's client + server-side avatar size cap exactly (src/app/api/profile/route.ts).
         const val MAX_AVATAR_BYTES = 3 * 1024 * 1024
+        const val KEY_EDIT_NAME = "edit_name"
+        const val KEY_EDIT_BIO = "edit_bio"
     }
 }

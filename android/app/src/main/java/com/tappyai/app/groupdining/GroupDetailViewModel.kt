@@ -18,11 +18,13 @@ import com.tappyai.core.network.NetworkError
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.features.auth.data.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -40,7 +42,7 @@ class GroupDetailViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val groupErrorMessages: GroupErrorMessages,
     authRepository: AuthRepository,
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val groupId: String = savedStateHandle.toRoute<AppRoute.GroupDetail>().groupId
@@ -48,8 +50,18 @@ class GroupDetailViewModel @Inject constructor(
     /** Path appended to the public web origin to build the shareable link (`<origin>/group/<id>`). */
     val groupLinkPath: String = "group/$groupId"
 
-    /** Read once (mirrors the web's `supabase.auth.getUser()`); null when signed out. */
-    private val currentUserId: String? = authRepository.currentUserId()
+    /** Read once (mirrors the web's `supabase.auth.getUser()`); null when signed out. Round-2
+     *  audit fix: [AuthRepository.currentUserId] reads the Keystore-backed token store
+     *  synchronously, so this is fetched off the main thread rather than as a property
+     *  initializer (which previously ran on Hilt's construction thread, i.e. main). */
+    private var currentUserId by mutableStateOf<String?>(null)
+
+    /** Web parity (group/[id]/page.tsx:135): rendering is gated behind `!authChecked` so `isCreator`
+     *  is only evaluated after the auth read resolves — otherwise the creator briefly sees the
+     *  non-creator join form while [currentUserId] is still null. True once the read completes
+     *  (even when signed out, i.e. null userId). */
+    var authChecked by mutableStateOf(false)
+        private set
 
     var uiState by mutableStateOf<UiState<Group>>(UiState.Loading)
         private set
@@ -62,16 +74,20 @@ class GroupDetailViewModel @Inject constructor(
     var joined by mutableStateOf(false)
         private set
 
-    // ---- Join form (non-creator) ----
-    var joinName by mutableStateOf("")
+    // ---- Join form (non-creator). Round-3 audit fix: mirrored into SavedStateHandle so a
+    // filled-out join form survives process death, same pattern as ServiceDetailViewModel's
+    // booking form. ----
+    var joinName by mutableStateOf(savedStateHandle.get<String>(KEY_JOIN_NAME).orEmpty())
         private set
-    var joinBudget by mutableStateOf<BudgetOption?>(null)
+    var joinBudget by mutableStateOf(
+        savedStateHandle.get<String>(KEY_JOIN_BUDGET)?.let { runCatching { BudgetOption.valueOf(it) }.getOrNull() }
+    )
         private set
-    var joinFoodPrefs by mutableStateOf("")
+    var joinFoodPrefs by mutableStateOf(savedStateHandle.get<String>(KEY_JOIN_FOOD).orEmpty())
         private set
-    var joinDietary by mutableStateOf("")
+    var joinDietary by mutableStateOf(savedStateHandle.get<String>(KEY_JOIN_DIETARY).orEmpty())
         private set
-    var joinArea by mutableStateOf("")
+    var joinArea by mutableStateOf(savedStateHandle.get<String>(KEY_JOIN_AREA).orEmpty())
         private set
     var joining by mutableStateOf(false)
         private set
@@ -88,6 +104,10 @@ class GroupDetailViewModel @Inject constructor(
     private var loadJob: Job? = null
 
     init {
+        viewModelScope.launch {
+            currentUserId = withContext(Dispatchers.IO) { authRepository.currentUserId() }
+            authChecked = true
+        }
         viewModelScope.launch {
             joined = prefs.getBoolean(joinedKey(groupId)).first() == true
         }
@@ -114,14 +134,20 @@ class GroupDetailViewModel @Inject constructor(
     }
 
     fun onJoinNameChange(v: String) {
-        if (v.length <= MAX_MEMBER_NAME) joinName = v
+        if (v.length <= MAX_MEMBER_NAME) {
+            joinName = v
+            savedStateHandle[KEY_JOIN_NAME] = v
+        }
         if (joinError != null) joinError = null
     }
 
-    fun onJoinBudgetChange(b: BudgetOption) { joinBudget = b }
-    fun onJoinFoodPrefsChange(v: String) { joinFoodPrefs = v }
-    fun onJoinDietaryChange(v: String) { joinDietary = v }
-    fun onJoinAreaChange(v: String) { joinArea = v }
+    fun onJoinBudgetChange(b: BudgetOption) {
+        joinBudget = b
+        savedStateHandle[KEY_JOIN_BUDGET] = b.name
+    }
+    fun onJoinFoodPrefsChange(v: String) { joinFoodPrefs = v; savedStateHandle[KEY_JOIN_FOOD] = v }
+    fun onJoinDietaryChange(v: String) { joinDietary = v; savedStateHandle[KEY_JOIN_DIETARY] = v }
+    fun onJoinAreaChange(v: String) { joinArea = v; savedStateHandle[KEY_JOIN_AREA] = v }
 
     /** Required fields mirror the web form: name, budget, area (food/dietary optional). */
     val canSubmitJoin: Boolean
@@ -180,5 +206,11 @@ class GroupDetailViewModel @Inject constructor(
         // Matches the web join form's name maxLength.
         const val MAX_MEMBER_NAME = 50
         fun joinedKey(id: String) = "group_joined_$id"
+
+        const val KEY_JOIN_NAME = "join_name"
+        const val KEY_JOIN_BUDGET = "join_budget"
+        const val KEY_JOIN_FOOD = "join_food"
+        const val KEY_JOIN_DIETARY = "join_dietary"
+        const val KEY_JOIN_AREA = "join_area"
     }
 }

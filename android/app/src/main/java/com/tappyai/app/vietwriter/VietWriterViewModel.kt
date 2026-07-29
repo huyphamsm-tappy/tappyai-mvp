@@ -3,6 +3,7 @@ package com.tappyai.app.vietwriter
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.vietwriter.data.VietWriterErrorMessages
@@ -25,15 +26,27 @@ class VietWriterViewModel @Inject constructor(
     private val repository: VietWriterRepository,
     private val logger: LoggerProvider,
     private val vietWriterErrorMessages: VietWriterErrorMessages,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    var topic by mutableStateOf("")
+    // Round-3 audit fix: restored from SavedStateHandle so a typed topic + selections survive
+    // process death instead of resetting to defaults.
+    var topic by mutableStateOf(savedStateHandle.get<String>(KEY_TOPIC).orEmpty())
         private set
-    var platform by mutableStateOf(VietWriterPlatform.Facebook)
+    var platform by mutableStateOf(
+        savedStateHandle.get<String>(KEY_PLATFORM)?.let { runCatching { VietWriterPlatform.valueOf(it) }.getOrNull() }
+            ?: VietWriterPlatform.Facebook
+    )
         private set
-    var tone by mutableStateOf(VietWriterTone.Youthful)
+    var tone by mutableStateOf(
+        savedStateHandle.get<String>(KEY_TONE)?.let { runCatching { VietWriterTone.valueOf(it) }.getOrNull() }
+            ?: VietWriterTone.Youthful
+    )
         private set
-    var length by mutableStateOf(VietWriterLength.Medium)
+    var length by mutableStateOf(
+        savedStateHandle.get<String>(KEY_LENGTH)?.let { runCatching { VietWriterLength.valueOf(it) }.getOrNull() }
+            ?: VietWriterLength.Medium
+    )
         private set
 
     var isGenerating by mutableStateOf(false)
@@ -44,12 +57,15 @@ class VietWriterViewModel @Inject constructor(
         private set
 
     fun onTopicChange(value: String) {
-        if (value.length <= MAX_TOPIC_LENGTH) topic = value
+        if (value.length <= MAX_TOPIC_LENGTH) {
+            topic = value
+            savedStateHandle[KEY_TOPIC] = value
+        }
     }
 
-    fun onPlatformChange(value: VietWriterPlatform) { platform = value }
-    fun onToneChange(value: VietWriterTone) { tone = value }
-    fun onLengthChange(value: VietWriterLength) { length = value }
+    fun onPlatformChange(value: VietWriterPlatform) { platform = value; savedStateHandle[KEY_PLATFORM] = value.name }
+    fun onToneChange(value: VietWriterTone) { tone = value; savedStateHandle[KEY_TONE] = value.name }
+    fun onLengthChange(value: VietWriterLength) { length = value; savedStateHandle[KEY_LENGTH] = value.name }
 
     fun generate() {
         val trimmed = topic.trim()
@@ -79,5 +95,9 @@ class VietWriterViewModel @Inject constructor(
     private companion object {
         const val TAG = "VietWriterViewModel"
         const val MAX_TOPIC_LENGTH = 500
+        const val KEY_TOPIC = "vietwriter_topic"
+        const val KEY_PLATFORM = "vietwriter_platform"
+        const val KEY_TONE = "vietwriter_tone"
+        const val KEY_LENGTH = "vietwriter_length"
     }
 }

@@ -3,6 +3,7 @@ package com.tappyai.app.groupdining
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.groupdining.data.GroupAction
@@ -29,9 +30,12 @@ class GroupDiningViewModel @Inject constructor(
     private val navigator: TappyNavigator,
     private val logger: LoggerProvider,
     private val groupErrorMessages: GroupErrorMessages,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    var groupName by mutableStateOf("")
+    // Round-3 audit fix: restored from SavedStateHandle so a typed group name survives process
+    // death instead of resetting.
+    var groupName by mutableStateOf(savedStateHandle.get<String>(KEY_NAME).orEmpty())
         private set
 
     var isCreating by mutableStateOf(false)
@@ -44,6 +48,7 @@ class GroupDiningViewModel @Inject constructor(
     fun onGroupNameChange(value: String) {
         if (value.length <= MAX_NAME) {
             groupName = value
+            savedStateHandle[KEY_NAME] = value
             if (errorMessage != null) errorMessage = null
         }
     }
@@ -73,5 +78,6 @@ class GroupDiningViewModel @Inject constructor(
         const val TAG = "GroupDiningViewModel"
         // Matches the web input's maxLength.
         const val MAX_NAME = 80
+        const val KEY_NAME = "group_new_name"
     }
 }
