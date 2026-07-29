@@ -73,7 +73,7 @@ export default function PriceWatchesPage() {
           </Link>
           <div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">🎯 Theo dõi giá</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Tappy báo bạn khi giá xuống mức mong muốn</p>
+            <p className="text-sm text-content-secondary">Tappy báo bạn khi giá xuống mức mong muốn</p>
           </div>
           <button
             onClick={fetchWatches}
@@ -122,11 +122,11 @@ export default function PriceWatchesPage() {
                   {active.map(w => (
                     <div key={w.id} className="card p-4 flex items-start gap-3">
                       <div className="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
-                        <TrendingDown size={16} className="text-primary-500" />
+                        <TrendingDown size={16} className="text-link" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">{w.product_name}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        <p className="text-xs text-content-secondary mt-0.5">
                           Mục tiêu: <span className="font-semibold text-primary-600 dark:text-primary-400">{fmtVND(w.target_price)}</span>
                           {w.current_price && (
                             <span className="ml-2 text-gray-400">· Hiện tại: {fmtVND(w.current_price)}</span>
@@ -166,7 +166,7 @@ export default function PriceWatchesPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">{w.product_name}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        <p className="text-xs text-content-secondary mt-0.5">
                           Đã xuống mức <span className="font-semibold text-green-600">{w.current_price ? fmtVND(w.current_price) : fmtVND(w.target_price)}</span>
                         </p>
                         {w.notified_at && (

@@ -107,7 +107,7 @@ export default function FavoritesPage() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 mt-5 px-5 py-2.5 rounded-2xl bg-primary-500 text-white text-sm font-semibold hover:bg-primary-600 transition-colors"
+              className="inline-flex items-center gap-1.5 mt-5 px-5 py-2.5 rounded-2xl bg-interactive text-white text-sm font-semibold hover:bg-interactive-hover transition-colors"
             >
               Khám phá ngay
               <ChevronRight size={16} />
@@ -143,7 +143,7 @@ export default function FavoritesPage() {
         {!loading && !error && saved.length > 0 && (
           <section className="space-y-3 pt-2">
             <h2 className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide px-1">
-              <Bookmark size={12} className="text-primary-500" /> Bài viết đã lưu
+              <Bookmark size={12} className="text-link" /> Bài viết đã lưu
             </h2>
             {saved.map(s => (
               <Link

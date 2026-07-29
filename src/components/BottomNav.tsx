@@ -51,7 +51,7 @@ export default function BottomNav() {
               <button
                 key={href}
                 onClick={() => handleTabClick(href)}
-                className={cn('flex flex-col items-center gap-1 px-3 py-2 rounded-2xl transition-all duration-150', isActive ? 'text-primary-500' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600')}
+                className={cn('flex flex-col items-center gap-1 px-3 py-2 rounded-2xl transition-all duration-150', isActive ? 'text-link' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600')}
               >
                 <span className="relative">
                   <Icon size={22} strokeWidth={isActive ? 2.5 : 1.8} className={cn('transition-all', isActive && 'scale-110')} />

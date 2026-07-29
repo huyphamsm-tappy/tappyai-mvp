@@ -64,14 +64,14 @@ function RemoveBtn({ onClick, label }: { onClick: () => void; label: string }) {
   )
 }
 
-function MemoryCard({ icon: Icon, label, children, iconColor = 'text-primary-500' }: {
+function MemoryCard({ icon: Icon, label, children, iconColor = 'text-link' }: {
   icon: React.ElementType; label: string; children: React.ReactNode; iconColor?: string
 }) {
   return (
     <div className="card p-4">
       <div className="flex items-center gap-2 mb-1">
         <Icon size={15} className={iconColor} />
-        <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{label}</span>
+        <span className="text-xs font-semibold text-content-secondary uppercase tracking-wide">{label}</span>
       </div>
       {children}
     </div>
@@ -104,21 +104,21 @@ function ResponseStyleCard() {
     try { localStorage.setItem('tappy_response_style', JSON.stringify(next)) } catch { /* ignore */ }
   }
   const Pill = ({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) => (
-    <button type="button" onClick={onClick} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${active ? 'bg-primary-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>{children}</button>
+    <button type="button" onClick={onClick} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${active ? 'bg-interactive text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>{children}</button>
   )
   return (
     <div className="card p-4">
       <div className="flex items-center gap-2 mb-3">
-        <Sparkles size={15} className="text-primary-500" />
-        <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Phong cách trả lời của Tappy</span>
+        <Sparkles size={15} className="text-link" />
+        <span className="text-xs font-semibold text-content-secondary uppercase tracking-wide">Phong cách trả lời của Tappy</span>
       </div>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">Giọng điệu</p>
+      <p className="text-xs text-content-secondary mb-1.5">Giọng điệu</p>
       <div className="flex flex-wrap gap-2 mb-3">
         <Pill active={style.tone === 'friendly'} onClick={() => update('tone', 'friendly')}>Thân mật</Pill>
         <Pill active={style.tone === 'neutral'} onClick={() => update('tone', 'neutral')}>Trung lập</Pill>
         <Pill active={style.tone === 'formal'} onClick={() => update('tone', 'formal')}>Lịch sự</Pill>
       </div>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">Độ dài</p>
+      <p className="text-xs text-content-secondary mb-1.5">Độ dài</p>
       <div className="flex flex-wrap gap-2">
         <Pill active={style.length === 'short'} onClick={() => update('length', 'short')}>Ngắn gọn</Pill>
         <Pill active={style.length === 'detailed'} onClick={() => update('length', 'detailed')}>Đầy đủ</Pill>
@@ -219,12 +219,12 @@ export default function TappyKnowsPage() {
           </Link>
           <div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">🧠 Tappy biết gì về bạn</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Tappy học từ mỗi cuộc trò chuyện để phục vụ bạn tốt hơn</p>
+            <p className="text-sm text-content-secondary">Tappy học từ mỗi cuộc trò chuyện để phục vụ bạn tốt hơn</p>
           </div>
           {memory && !cleared && (
             <button
               onClick={() => setEditing(e => !e)}
-              className={`ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${editing ? 'bg-primary-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+              className={`ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${editing ? 'bg-interactive text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
             >
               {editing ? <><Check size={14} /> Xong</> : <><Pencil size={14} /> Chỉnh sửa</>}
             </button>
@@ -247,13 +247,13 @@ export default function TappyKnowsPage() {
         ) : cleared || !memory ? (
           <div className="text-center py-16 text-gray-400 dark:text-gray-600">
             <Brain size={44} className="mx-auto mb-3 opacity-40" />
-            <p className="font-semibold text-gray-500 dark:text-gray-400">
+            <p className="font-semibold text-content-secondary">
               {cleared ? 'Đã xóa bộ nhớ' : 'Tappy chưa nhớ gì về bạn'}
             </p>
             <p className="text-sm mt-1">Chat với Tappy để Tappy bắt đầu học về bạn</p>
             <Link
               href="/"
-              className="inline-flex mt-4 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-xl text-sm font-semibold transition-colors"
+              className="inline-flex mt-4 px-4 py-2 bg-interactive hover:bg-interactive-hover text-white rounded-xl text-sm font-semibold transition-colors"
             >
               Bắt đầu chat
             </Link>
@@ -381,7 +381,7 @@ export default function TappyKnowsPage() {
             {/* History */}
             {memory.history && memory.history.length > 0 && (
               <div className="card p-4">
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+                <p className="text-xs font-semibold text-content-secondary uppercase tracking-wide mb-2">
                   Chủ đề hay hỏi Tappy
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -405,7 +405,7 @@ export default function TappyKnowsPage() {
             {/* Clear memory */}
             <div className="card p-4 border border-red-100 dark:border-red-900/30">
               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Xóa bộ nhớ</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+              <p className="text-xs text-content-secondary mb-3">
                 Tappy sẽ quên tất cả và bắt đầu lại từ đầu với bạn.
               </p>
               {confirmClear ? (

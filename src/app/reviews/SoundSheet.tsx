@@ -119,8 +119,8 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
           {!loading && error && (
             <div className="text-center py-8">
               <Music2 size={32} className="mx-auto text-gray-300 dark:text-gray-600 mb-3" />
-              <p className="text-sm text-gray-500 dark:text-gray-400">Âm thanh này không còn khả dụng.</p>
-              <button onClick={onClose} className="mt-4 text-sm text-primary-500 font-medium">Đóng</button>
+              <p className="text-sm text-content-secondary">Âm thanh này không còn khả dụng.</p>
+              <button onClick={onClose} className="mt-4 text-sm text-link font-medium">Đóng</button>
             </div>
           )}
 
@@ -139,9 +139,9 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
                 </div>
                 <div className="min-w-0">
                   <p className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5 truncate">
-                    <Music2 size={15} className="text-primary-500 shrink-0" /> {data.track.title}
+                    <Music2 size={15} className="text-link shrink-0" /> {data.track.title}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{data.track.artist ?? 'Không rõ nghệ sĩ'}</p>
+                  <p className="text-sm text-content-secondary truncate">{data.track.artist ?? 'Không rõ nghệ sĩ'}</p>
                   <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
                     <MusicDuration seconds={data.track.durationSec} />
                     <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5">{TYPE_LABEL[data.track.musicType] ?? data.track.musicType}</span>
@@ -177,7 +177,7 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
               {/* See full page link */}
               <Link
                 href={`/sound/${trackId}`}
-                className="block text-center text-xs text-primary-500 mt-3 hover:underline"
+                className="block text-center text-xs text-link mt-3 hover:underline"
               >
                 Xem trang âm thanh đầy đủ →
               </Link>

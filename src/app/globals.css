@@ -10,6 +10,39 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Semantic color layer (WCAG 2.1 AA).                                 */
+/* Brand hue #007AFF is preserved as the `primary` scale (borders,     */
+/* rings, large/decorative marks). These semantic roles carry the      */
+/* text-sized contrast guarantees and auto-flip in dark mode, so call  */
+/* sites don't hand-wire `dark:` variants. RGB triplets → Tailwind     */
+/* `rgb(var(--x) / <alpha-value>)` mapping supports opacity utilities. */
+/* Ratios noted are vs the surface each role is designed to sit on.    */
+/* ------------------------------------------------------------------ */
+:root {
+  /* Interactive fills (solid button/badge background, white text on top). */
+  --interactive: 0 98 204;          /* #0062CC (primary-600) · white text 5.80:1 */
+  --interactive-hover: 0 73 153;    /* #004999 (primary-700) · white text 8.70:1 */
+  --interactive-active: 0 49 102;   /* #003166 (primary-800) · white text 12.87:1 */
+  --on-interactive: 255 255 255;    /* white — the on-color for interactive fills */
+  /* Interactive text (links / actionable icons on the page surface). */
+  --link: 0 98 204;                 /* #0062CC on white 5.80:1 */
+  /* Content text. */
+  --content: 17 24 39;              /* gray-900 on white 17.9:1 */
+  --content-secondary: 107 114 128; /* gray-500 on white 4.63:1 */
+  --content-muted: 156 163 175;     /* gray-400 — LARGE / non-essential only (2.43:1 on white, below AA-normal by design) */
+}
+.dark {
+  --interactive: 0 98 204;          /* keep — white-on-fill contrast is bg-independent (5.80:1) */
+  --interactive-hover: 0 73 153;
+  --interactive-active: 0 49 102;
+  --on-interactive: 255 255 255;
+  --link: 51 145 255;               /* #3391FF (primary-400) — matches existing dark-link convention; AA on gray-950 6.36:1, gray-900 5.60:1, gray-800 4.64:1 */
+  --content: 243 244 246;           /* gray-100 on gray-950 18.0:1 */
+  --content-secondary: 156 163 175; /* gray-400 on gray-950 7.93:1 */
+  --content-muted: 107 114 128;     /* gray-500 — LARGE / non-essential only on dark */
+}
+
+/* ------------------------------------------------------------------ */
 /* Back Office (shadcn/ui) neutral design tokens.                       */
 /* These token NAMES are new and unused by the product (which uses only */
 /* --primary / --accent above and Tailwind grays), so defining them at  */
@@ -59,7 +92,7 @@
 }
 
 @layer components {
-  .btn-primary { @apply bg-primary-500 hover:bg-primary-600 active:bg-primary-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-primary { @apply bg-interactive hover:bg-interactive-hover active:bg-interactive-active text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed; }
   .btn-secondary { @apply bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 font-semibold py-3 px-6 rounded-2xl transition-all duration-150; }
   .card { @apply bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm; }
 }

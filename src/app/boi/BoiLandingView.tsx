@@ -69,7 +69,7 @@ export default function BoiLandingView({ user }: { user: ComponentProps<typeof H
                 <p className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                   {t(f.titleKey)}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">{t(f.descKey)}</p>
+                <p className="text-xs text-content-secondary mt-0.5 leading-snug">{t(f.descKey)}</p>
               </div>
               <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
             </Link>

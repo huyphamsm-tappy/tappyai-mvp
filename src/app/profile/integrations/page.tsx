@@ -98,7 +98,7 @@ function IntegrationCard({ info, integration }: {
               </span>
             )}
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{info.description}</p>
+          <p className="text-xs text-content-secondary mt-0.5">{info.description}</p>
 
           {connected && meta && (
             <div className="flex items-center gap-2 mt-2">
@@ -132,7 +132,7 @@ function IntegrationCard({ info, integration }: {
         ) : (
           <a
             href={`/api/integrations/${integration?.provider ?? info.name.toLowerCase().replace(' ', '_')}`}
-            className="flex items-center gap-1.5 text-xs bg-primary-500 hover:bg-primary-600 text-white px-3 py-1.5 rounded-xl transition-colors font-medium"
+            className="flex items-center gap-1.5 text-xs bg-interactive hover:bg-interactive-hover text-white px-3 py-1.5 rounded-xl transition-colors font-medium"
           >
             <ExternalLink size={12} />
             Kết nối
@@ -188,7 +188,7 @@ export default function IntegrationsPage() {
 
         {loading ? (
           <div className="flex justify-center py-12">
-            <Loader2 size={24} className="text-primary-500 animate-spin" />
+            <Loader2 size={24} className="text-link animate-spin" />
           </div>
         ) : (
           <div className="space-y-3">

@@ -146,7 +146,7 @@ export default function TranslatePage() {
         {/* Language picker */}
         <div className="relative">
           <div className="flex items-center gap-2 mb-2">
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('translate.targetLangLabel')}</p>
+            <p className="text-xs font-semibold text-content-secondary uppercase tracking-wider">{t('translate.targetLangLabel')}</p>
           </div>
           <button
             onClick={() => setShowLangPicker(v => !v)}

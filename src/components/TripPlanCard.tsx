@@ -104,7 +104,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
               className={`flex-shrink-0 px-4 py-2 text-xs font-medium transition-all border-b-2 whitespace-nowrap ${
                 i === activeDay
                   ? 'border-primary-500 text-primary-600 dark:text-primary-400 bg-white dark:bg-gray-900'
-                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  : 'border-transparent text-content-secondary hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
               {day.label}
@@ -157,7 +157,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
 
               {/* Description */}
               {item.description && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                <p className="text-xs text-content-secondary mt-1 leading-relaxed">
                   {item.description}
                 </p>
               )}
@@ -178,7 +178,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
                       href={item.maps_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                      className="flex items-center gap-1 text-xs text-content-secondary hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                     >
                       <MapPin size={9} />
                       Bản đồ
@@ -209,7 +209,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
           <div className="space-y-1">
             {Object.entries(plan.cost_breakdown).map(([k, v]) => (
               <div key={k} className="flex justify-between items-center text-xs">
-                <span className="text-gray-500 dark:text-gray-400">{k}</span>
+                <span className="text-content-secondary">{k}</span>
                 <span className="font-medium text-gray-700 dark:text-gray-300">{v}</span>
               </div>
             ))}
@@ -227,7 +227,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
       <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3">
         <button
           onClick={handleShare}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 active:scale-[0.98] text-white text-sm font-semibold transition-all"
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-interactive hover:bg-interactive-hover active:scale-[0.98] text-white text-sm font-semibold transition-all"
         >
           {shareState === 'copied' ? (
             '✓ Đã sao chép vào clipboard!'

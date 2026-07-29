@@ -9,12 +9,12 @@ export default function NotFound() {
         <h2 className="mt-4 text-lg font-bold text-gray-900 dark:text-white">
           Không tìm thấy trang
         </h2>
-        <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-1.5 text-sm text-content-secondary">
           Trang bạn tìm không tồn tại hoặc đã bị di chuyển.
         </p>
         <Link
           href="/"
-          className="mt-6 inline-flex items-center gap-2 px-5 py-3 min-h-[48px] rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium transition-all"
+          className="mt-6 inline-flex items-center gap-2 px-5 py-3 min-h-[48px] rounded-xl bg-interactive hover:bg-interactive-hover text-white text-sm font-medium transition-all"
         >
           <Home size={16} /> Về trang chủ
         </Link>

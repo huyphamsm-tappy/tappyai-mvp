@@ -76,7 +76,7 @@ export default function DealsView() {
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('deals.title')}</h1>
               <div className="w-8 h-8 rounded-lg overflow-hidden select-none"><TappyMascot pose={getTappyPose({ category: 'deals' })} size={32} eager animated /></div>
             </div>
-            <p suppressHydrationWarning className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 capitalize">{formatDate(locale)}</p>
+            <p suppressHydrationWarning className="text-sm text-content-secondary mt-0.5 capitalize">{formatDate(locale)}</p>
           </div>
           <DealNotifyButton />
         </div>
@@ -116,7 +116,7 @@ export default function DealsView() {
           <p className="text-xs text-gray-400 dark:text-gray-600">
             {t('deals.footerHint')}
           </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-md mx-auto">
+          <p className="text-xs text-content-secondary leading-relaxed max-w-md mx-auto">
             {t('deals.disclosurePrefix')}<span className="font-medium">{t('deals.disclosureEmphasis')}</span>{t('deals.disclosureSuffix')}
           </p>
         </div>
@@ -179,13 +179,13 @@ function DealCard({ deal }: { deal: PartnerDeal }) {
             <span className="text-xs font-semibold text-red-600 dark:text-red-400">{t('deals.endingSoon')}</span>
           )}
           {cd.kind === 'days' && (
-            <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+            <span className="inline-flex items-center gap-1 text-xs text-content-secondary">
               <Clock size={11} />
               {cd.days === 1 ? t('deals.dayLeft') : t('deals.daysLeft', { count: String(cd.days) })}
             </span>
           )}
           {deal.description && (
-            <span className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{deal.description}</span>
+            <span className="text-xs text-content-secondary line-clamp-1">{deal.description}</span>
           )}
         </div>
         {/* Voucher code — copy button never navigates (stopPropagation + preventDefault) */}

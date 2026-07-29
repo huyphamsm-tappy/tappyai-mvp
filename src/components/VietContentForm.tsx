@@ -101,7 +101,7 @@ export default function VietContentForm() {
         {/* Topic */}
         <div className="card p-5 space-y-3">
           <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
-            <PenLine size={15} className="text-primary-500" />
+            <PenLine size={15} className="text-link" />
             {t('vietContent.topicLabel')} <span className="text-red-400">*</span>
           </label>
           <textarea
@@ -129,7 +129,7 @@ export default function VietContentForm() {
                   'flex flex-col items-center gap-1.5 py-3 rounded-2xl border-2 text-sm font-medium transition-all',
                   platform === p.id
                     ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                    : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400 hover:border-gray-200 dark:hover:border-gray-700'
+                    : 'border-gray-100 dark:border-gray-800 text-content-secondary hover:border-gray-200 dark:hover:border-gray-700'
                 )}
               >
                 <span className="text-xl">{p.emoji}</span>
@@ -152,7 +152,7 @@ export default function VietContentForm() {
                   'px-4 py-2 rounded-full border-2 text-sm font-medium transition-all',
                   tone === tn.id
                     ? 'border-accent-500 bg-accent-50 dark:bg-accent-900/20 text-accent-600 dark:text-accent-400'
-                    : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400 hover:border-gray-200 dark:hover:border-gray-700'
+                    : 'border-gray-100 dark:border-gray-800 text-content-secondary hover:border-gray-200 dark:hover:border-gray-700'
                 )}
               >
                 {t(tn.labelKey)}
@@ -174,7 +174,7 @@ export default function VietContentForm() {
                   'flex flex-col items-center gap-0.5 py-3 rounded-2xl border-2 text-sm font-medium transition-all',
                   length === l.id
                     ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400'
-                    : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400 hover:border-gray-200 dark:hover:border-gray-700'
+                    : 'border-gray-100 dark:border-gray-800 text-content-secondary hover:border-gray-200 dark:hover:border-gray-700'
                 )}
               >
                 <span>{t(l.labelKey)}</span>
@@ -244,7 +244,7 @@ export default function VietContentForm() {
           {/* Hashtags card */}
           {result.hashtags && (
             <div className="card p-4 space-y-2">
-              <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              <div className="flex items-center gap-2 text-xs font-semibold text-content-secondary uppercase tracking-wide">
                 <Hash size={13} />
                 {t('vietContent.hashtagsTitle')}
               </div>

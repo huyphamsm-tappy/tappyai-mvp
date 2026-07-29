@@ -60,7 +60,7 @@ export default function MusicLibraryPage() {
         <div className="max-w-lg mx-auto flex items-center px-4 h-14">
           <button
             onClick={() => router.push('/')}
-            className="flex items-center gap-1 text-sm font-medium text-primary-500"
+            className="flex items-center gap-1 text-sm font-medium text-link"
           >
             <ChevronLeft size={18} /> {t('music.backHome')}
           </button>
@@ -69,7 +69,7 @@ export default function MusicLibraryPage() {
           </h1>
           <button
             onClick={() => router.push('/music/upload')}
-            className="flex items-center gap-1 text-sm font-medium text-primary-500"
+            className="flex items-center gap-1 text-sm font-medium text-link"
           >
             <Upload size={16} /> Đăng
           </button>

@@ -135,7 +135,7 @@ export default function GroupPage() {
   if (loading || !authChecked) {
     return (
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
-        <Loader2 className="animate-spin text-primary-500" size={32} />
+        <Loader2 className="animate-spin text-link" size={32} />
       </div>
     )
   }
@@ -164,7 +164,7 @@ export default function GroupPage() {
             </div>
             <div>
               <h1 className="font-bold text-gray-900 dark:text-white text-lg">{group.name}</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-content-secondary">
                 {group.members.length} thành viên đã tham gia
               </p>
             </div>
@@ -183,7 +183,7 @@ export default function GroupPage() {
                 </span>
                 <button
                   onClick={copyLink}
-                  className="flex items-center gap-1 text-primary-500 font-semibold text-sm shrink-0 transition-all"
+                  className="flex items-center gap-1 text-link font-semibold text-sm shrink-0 transition-all"
                 >
                   {copied ? <Check size={15} /> : <Copy size={15} />}
                   {copied ? 'Đã sao chép' : 'Sao chép'}
@@ -202,7 +202,7 @@ export default function GroupPage() {
                       className={`pb-3 ${i < group.members.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : ''}`}
                     >
                       <p className="font-semibold text-gray-900 dark:text-white">{m.name}</p>
-                      <div className="mt-1 space-y-0.5 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="mt-1 space-y-0.5 text-sm text-content-secondary">
                         {m.budget && <p>💰 {m.budget}</p>}
                         {m.food_preferences && <p>🍽️ Thích: {m.food_preferences}</p>}
                         {m.dietary_restrictions && <p>🚫 Kiêng: {m.dietary_restrictions}</p>}
@@ -213,7 +213,7 @@ export default function GroupPage() {
                 </div>
               </div>
             ) : (
-              <div className="card p-4 text-center text-sm text-gray-500 dark:text-gray-400">
+              <div className="card p-4 text-center text-sm text-content-secondary">
                 Chưa có ai tham gia. Chia sẻ link ở trên nhé!
               </div>
             )}
@@ -267,7 +267,7 @@ export default function GroupPage() {
                       onClick={() => setBudget(b)}
                       className={`px-4 py-2 rounded-xl text-sm font-medium transition-all border ${
                         budget === b
-                          ? 'bg-primary-500 text-white border-primary-500'
+                          ? 'bg-interactive text-white border-primary-500'
                           : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-primary-300'
                       }`}
                     >
@@ -318,7 +318,7 @@ export default function GroupPage() {
               <button
                 type="submit"
                 disabled={joining || !name.trim() || !budget || !area.trim()}
-                className="w-full py-3 bg-primary-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95"
+                className="w-full py-3 bg-interactive text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95"
               >
                 {joining ? <Loader2 size={18} className="animate-spin" /> : null}
                 Tham gia nhóm
@@ -332,7 +332,7 @@ export default function GroupPage() {
           <div className="card p-6 text-center">
             <div className="text-4xl mb-3">🎉</div>
             <h2 className="font-semibold text-gray-900 dark:text-white">Đã tham gia!</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Chờ trưởng nhóm gợi ý nhé 🎉</p>
+            <p className="text-sm text-content-secondary mt-1">Chờ trưởng nhóm gợi ý nhé 🎉</p>
           </div>
         )}
 

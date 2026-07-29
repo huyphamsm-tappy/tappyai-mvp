@@ -57,8 +57,8 @@ export default function ZaloFinishPage() {
     <div className="min-h-dvh flex flex-col items-center justify-center gap-3 bg-gray-50 dark:bg-gray-950 px-6 text-center">
       {!error ? (
         <>
-          <Loader2 className="animate-spin text-primary-500" size={28} />
-          <p className="text-sm text-gray-500 dark:text-gray-400">Đang hoàn tất đăng nhập Zalo...</p>
+          <Loader2 className="animate-spin text-link" size={28} />
+          <p className="text-sm text-content-secondary">Đang hoàn tất đăng nhập Zalo...</p>
         </>
       ) : (
         <p className="text-sm text-red-500 dark:text-red-400 max-w-xs">{error}</p>

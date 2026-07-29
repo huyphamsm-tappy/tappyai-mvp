@@ -15,7 +15,7 @@ export default function NotificationSettings() {
           <BellOff size={20} className="text-gray-400 mt-0.5 flex-shrink-0" />
           <div>
             <p className="text-sm font-medium text-gray-900 dark:text-white">{t('notifications.unsupported.title')}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs text-content-secondary mt-1">
               {t('notifications.unsupported.desc')}
             </p>
           </div>
@@ -31,7 +31,7 @@ export default function NotificationSettings() {
           <BellOff size={20} className="text-amber-500 mt-0.5 flex-shrink-0" />
           <div>
             <p className="text-sm font-medium text-gray-900 dark:text-white">{t('notifications.denied.title')}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs text-content-secondary mt-1">
               {t('notifications.denied.descBefore')}{' '}
               <strong>{t('notifications.denied.descPath')}</strong> {t('notifications.denied.descAfter')}
             </p>
@@ -52,7 +52,7 @@ export default function NotificationSettings() {
             </div>
             <div>
               <p className="text-sm font-medium text-gray-900 dark:text-white">{t('notifications.push.title')}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              <p className="text-xs text-content-secondary mt-0.5">
                 {subscribed ? t('notifications.push.on') : t('notifications.push.off')}
               </p>
             </div>

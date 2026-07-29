@@ -22,7 +22,7 @@ export function MusicPickerRow({ track, isPreviewing, onSelect, onTogglePreview 
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{track.title}</p>
           {track.artist && (
-            <p className="truncate text-xs text-gray-500 dark:text-gray-400">{track.artist}</p>
+            <p className="truncate text-xs text-content-secondary">{track.artist}</p>
           )}
         </div>
         <MusicDuration seconds={track.durationSec} className="flex-shrink-0 text-xs text-gray-400" />
@@ -32,7 +32,7 @@ export function MusicPickerRow({ track, isPreviewing, onSelect, onTogglePreview 
         onClick={() => onTogglePreview(track)}
         aria-label={isPreviewing ? `Dừng nghe thử ${track.title}` : `Nghe thử ${track.title}`}
         aria-pressed={isPreviewing}
-        className="flex-shrink-0 rounded-full bg-primary-500 p-2 text-white"
+        className="flex-shrink-0 rounded-full bg-interactive p-2 text-white"
       >
         {isPreviewing ? <Square size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
       </button>

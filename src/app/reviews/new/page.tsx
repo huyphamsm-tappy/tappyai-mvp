@@ -194,7 +194,7 @@ function SelectedMusicCard({
       <MusicThumbnail coverUrl={track?.coverUrl ?? null} title={track?.title ?? ''} size={44} />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{track?.title ?? t('reviewNew.loading')}</p>
-        {track?.artist && <p className="truncate text-xs text-gray-500 dark:text-gray-400">{track.artist}</p>}
+        {track?.artist && <p className="truncate text-xs text-content-secondary">{track.artist}</p>}
       </div>
       {track && <MusicDuration seconds={track.durationSec} className="flex-shrink-0 text-xs text-gray-400" />}
       <button

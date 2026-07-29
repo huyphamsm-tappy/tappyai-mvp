@@ -11,7 +11,7 @@ export default function CopyrightPolicyPage() {
       <main className="max-w-2xl mx-auto px-5 py-6 prose-sm text-gray-800 dark:text-gray-200 space-y-6">
         <section className="space-y-2">
           <h1 className="text-xl font-bold">Chính sách bản quyền âm nhạc (Original Sound)</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Áp dụng cho nhạc do người dùng đăng tải lên TappyAI.</p>
+          <p className="text-sm text-content-secondary">Áp dụng cho nhạc do người dùng đăng tải lên TappyAI.</p>
         </section>
 
         <section className="space-y-2">
@@ -33,7 +33,7 @@ export default function CopyrightPolicyPage() {
         <section className="space-y-2">
           <h2 className="font-semibold">4. Đại diện bản quyền (Copyright Agent)</h2>
           <p className="text-sm leading-relaxed">
-            Email: <a href="mailto:copyright@tappyai.com" className="text-primary-500 underline">copyright@tappyai.com</a><br />
+            Email: <a href="mailto:copyright@tappyai.com" className="text-link underline">copyright@tappyai.com</a><br />
             Chúng tôi tiếp nhận và xử lý mọi khiếu nại bản quyền qua địa chỉ này.
           </p>
         </section>

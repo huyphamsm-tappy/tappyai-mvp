@@ -52,7 +52,7 @@ export default function GameHubPage() {
               </p>
               <span className="text-xs font-medium bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-300 px-1.5 py-0.5 rounded-full">GPL</span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
+            <p className="text-xs text-content-secondary mt-0.5 leading-snug">
               {t('game.supertuxCardDescription')}
             </p>
             <p className="text-xs text-sky-500 mt-0.5">supertux.org</p>

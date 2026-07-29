@@ -105,17 +105,17 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
           <CheckCircle2 size={32} className="text-green-500" />
         </div>
         <h3 className="font-bold text-gray-900 dark:text-white mb-1">Đặt chỗ thành công! 🎉</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-content-secondary">
           Chúng tôi sẽ liên hệ xác nhận với bạn sớm nhất.
         </p>
 
         {/* Tóm tắt booking */}
         <div className="mt-4 mb-4 text-left bg-gray-50 dark:bg-gray-800 rounded-xl px-4 py-3 text-sm space-y-1">
           <p className="font-semibold text-gray-900 dark:text-white truncate">{serviceName}</p>
-          <p className="text-gray-500 dark:text-gray-400">📅 {date}{time ? ` lúc ${time}` : ''}</p>
-          <p className="text-gray-500 dark:text-gray-400">👤 {name} · 📞 {phone}</p>
-          {guests > 1 && <p className="text-gray-500 dark:text-gray-400">👥 {guests} khách</p>}
-          {notes && <p className="text-gray-500 dark:text-gray-400 line-clamp-2">📝 {notes}</p>}
+          <p className="text-content-secondary">📅 {date}{time ? ` lúc ${time}` : ''}</p>
+          <p className="text-content-secondary">👤 {name} · 📞 {phone}</p>
+          {guests > 1 && <p className="text-content-secondary">👥 {guests} khách</p>}
+          {notes && <p className="text-content-secondary line-clamp-2">📝 {notes}</p>}
         </div>
 
         {shared ? (
@@ -124,7 +124,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
           <>
             <button
               onClick={handleShare}
-              className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 active:scale-95 text-white font-bold text-sm transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-2xl bg-interactive hover:bg-interactive-hover active:scale-95 text-white font-bold text-sm transition-all flex items-center justify-center gap-2"
             >
               <Share2 size={16} />
               Chia sẻ xác nhận
@@ -142,7 +142,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
       <h2 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-        <CalendarDays size={18} className="text-primary-500" />
+        <CalendarDays size={18} className="text-link" />
         Đặt chỗ ngay
       </h2>
 
@@ -150,7 +150,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         {/* Tên + SĐT */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Họ tên *</label>
+            <label className="text-xs text-content-secondary mb-1 block">Họ tên *</label>
             <input
               type="text"
               value={name}
@@ -160,7 +160,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
             />
           </div>
           <div>
-            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Số điện thoại *</label>
+            <label className="text-xs text-content-secondary mb-1 block">Số điện thoại *</label>
             <input
               type="tel"
               value={phone}
@@ -173,7 +173,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
 
         {/* Ngày */}
         <div>
-          <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
+          <label className="text-xs text-content-secondary mb-1 flex items-center gap-1">
             <CalendarDays size={12} /> Ngày *
           </label>
           <input
@@ -187,7 +187,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
 
         {/* Giờ */}
         <div>
-          <label className="text-xs text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1">
+          <label className="text-xs text-content-secondary mb-2 flex items-center gap-1">
             <Clock size={12} /> Giờ (tùy chọn)
           </label>
           <div className="flex flex-wrap gap-2">
@@ -198,7 +198,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
                 onClick={() => setTime(time === slot ? '' : slot)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
                   time === slot
-                    ? 'bg-primary-500 text-white'
+                    ? 'bg-interactive text-white'
                     : 'bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-primary-300'
                 }`}
               >
@@ -211,7 +211,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         {/* Số khách */}
         {showGuests && (
           <div>
-            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
+            <label className="text-xs text-content-secondary mb-1 flex items-center gap-1">
               <Users size={12} /> {guestLabel}
             </label>
             <div className="flex items-center gap-3">
@@ -232,7 +232,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
 
         {/* Ghi chú */}
         <div>
-          <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
+          <label className="text-xs text-content-secondary mb-1 flex items-center gap-1">
             <MessageSquare size={12} /> Ghi chú thêm
           </label>
           <textarea
@@ -249,7 +249,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 active:scale-95 text-white font-bold text-sm transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+          className="w-full py-3 rounded-2xl bg-interactive hover:bg-interactive-hover active:scale-95 text-white font-bold text-sm transition-all disabled:opacity-60 flex items-center justify-center gap-2"
         >
           {loading ? <Loader2 size={18} className="animate-spin" /> : '✅ Xác nhận đặt chỗ'}
         </button>

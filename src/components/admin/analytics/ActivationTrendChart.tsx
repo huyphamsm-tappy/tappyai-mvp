@@ -35,7 +35,7 @@ export function ActivationTrendChart({ points, loading, error }: {
             {points.map((p) => (
               <div key={p.date} className="flex-1 min-w-[16px] flex flex-col items-center gap-1" title={`${p.date}: ${p.activated_count} activated, ${p.signups} signups`}>
                 <span className="text-[10px] text-muted-foreground">{formatInt(p.activated_count)}</span>
-                <div className="w-full bg-primary rounded-sm" style={{ height: `${Math.max((p.activated_count / max) * 120, p.activated_count > 0 ? 4 : 0)}px` }} />
+                <div className="w-full bg-interactive rounded-sm" style={{ height: `${Math.max((p.activated_count / max) * 120, p.activated_count > 0 ? 4 : 0)}px` }} />
                 <span className="text-[10px] text-muted-foreground/70 truncate w-full text-center">{p.date.slice(5)}</span>
               </div>
             ))}

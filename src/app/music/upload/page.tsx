@@ -77,7 +77,7 @@ export default function MusicUploadPage() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
       <Header showBack backHref="/music" title="Đăng nhạc gốc" />
       <main className="max-w-lg mx-auto px-4 py-6 space-y-5">
-        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-2 text-sm text-content-secondary">
           <Music size={16} /> Original Sound — nhạc do chính bạn tạo/sở hữu
         </div>
 
@@ -85,7 +85,7 @@ export default function MusicUploadPage() {
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="w-full rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-6 flex flex-col items-center gap-2 text-gray-500 dark:text-gray-400 hover:border-primary-400 transition-colors"
+          className="w-full rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-6 flex flex-col items-center gap-2 text-content-secondary hover:border-primary-400 transition-colors"
         >
           {file ? <CheckCircle2 size={28} className="text-green-500" /> : <UploadCloud size={28} />}
           <span className="text-sm font-medium">{file ? file.name : 'Chọn file nhạc (mp3, m4a, wav… tối đa 20MB)'}</span>
@@ -116,7 +116,7 @@ export default function MusicUploadPage() {
 
         <button
           onClick={submit} disabled={!canSubmit}
-          className="w-full py-3 rounded-2xl bg-primary-500 text-white font-semibold text-sm disabled:opacity-40 flex items-center justify-center gap-2"
+          className="w-full py-3 rounded-2xl bg-interactive text-white font-semibold text-sm disabled:opacity-40 flex items-center justify-center gap-2"
         >
           {busy ? <><Loader2 size={16} className="animate-spin" /> Đang đăng…</> : 'Đăng Original Sound'}
         </button>

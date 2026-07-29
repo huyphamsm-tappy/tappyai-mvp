@@ -68,7 +68,7 @@ export default function TermsPage() {
         </div>
 
         <div className="mt-6 text-center">
-          <Link href="/login" className="inline-flex items-center gap-2 text-sm text-primary-500 font-medium hover:underline">
+          <Link href="/login" className="inline-flex items-center gap-2 text-sm text-link font-medium hover:underline">
             <ArrowLeft size={14} />
             Quay lại đăng nhập
           </Link>
