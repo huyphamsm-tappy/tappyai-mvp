@@ -11,12 +11,14 @@
 | **G1** | Static + unit | `tsc --noEmit` clean · full unit suite green · lint no new warnings | PASS / FAIL |
 | **G2** | Build | Production build exits 0 on the exact release SHA | PASS / FAIL |
 | **G3** | Architecture | Spec/ADR compliance · single-owner invariants · no legacy path · no temporary adapters | PASS / FAIL |
-| **G4** | Runtime E2E | The scenario matrix executed on the release build, with evidence; blocked cells itemised, never inferred | PASS / PARTIAL / BLOCKED |
+| **G4** | Runtime E2E | The scenario matrix executed on the release build, with evidence; blocked cells itemised, never inferred; each cell carries its Execution Path Equivalence Matrix | PASS / PARTIALLY VERIFIED / BLOCKED |
 | **G5** | Regression | Prior fixed bugs re-checked; permanent regression tests present and green | PASS / FAIL |
 | **G6** | **Owner UAT** | The Owner has personally exercised the scenarios and accepted | PASS / FAIL — **Owner only** |
 | **G7** | Deployment readiness | Merge/push/deploy plan, production verification steps, rollback levels | PASS / FAIL |
 
-**No "probably", no "should be".** Every item is PASS, FAIL, BLOCKED, or WAIVED.
+**No "probably", no "should be".** Every item is PASS, FAIL, BLOCKED, PARTIALLY VERIFIED, or WAIVED.
+
+**Two absolute bars across all gates:** a **`PARTIALLY VERIFIED`** result never satisfies a gate (Article IV §3), and an **assumption** never satisfies a gate — it must first become evidence or the gate is FAIL (Article V §2).
 
 ## G0 in detail — the new blocking gate
 

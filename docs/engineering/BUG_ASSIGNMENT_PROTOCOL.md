@@ -44,6 +44,8 @@ Root cause is claimed only against the observed RED. **HARD STOP after RCA** —
 
 One fix, one isolated commit; verify the changed-file count before committing. No unrelated refactors. Spec conflicts do not get patched around — they go back to the Owner (DFR path).
 
+Throughout Steps 2–7 the bug record carries a live **Assumption Register** (Article V §4). Anything not directly observed this session on the proven runtime identity starts as `ASSUMPTION`; it is promoted only by evidence, and never used as a premise while unproven.
+
 ## Step 6 — GREEN on the same path
 
 Re-run the Owner's exact path on a build whose identity is recorded. Capture GREEN. Run unit + regression + build gates. Any `PASS` written here must satisfy Amendment I §6 in full.

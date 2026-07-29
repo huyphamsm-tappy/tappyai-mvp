@@ -68,11 +68,16 @@ Both RED and GREEN captures must carry the **Runtime Identity Block** (Article I
 | Console + network | errors, relevant request counts |
 | Timestamp | ISO, both captures |
 
-## Standing vocabulary
+## Standing vocabulary — two axes (Article IV §4)
 
-`PASS` — RED+GREEN on the Owner's exact path (Amendment I §6).
-`PARTIAL` — executed, prerequisites substituted.
+**Classification** (before work): `REPRODUCIBLE` · `PARTIALLY REPRODUCIBLE` · `NOT REPRODUCIBLE`.
+
+**Verdict** (after execution):
+`PASS` — RED+GREEN on the Owner's exact path (Article I §6) **and** an equivalent execution path (Article IV §3).
+`PARTIALLY VERIFIED` — executed, but ≥1 material execution-path difference or a substituted prerequisite. *Supersedes the old shorthand `PARTIAL`.* Cannot close a bug, satisfy G0, or support release.
 `BLOCKED` — could not execute; prerequisite missing.
-`UNVERIFIED` — hypothesis or reasoning only.
+`UNVERIFIED` — hypothesis, reasoning, or assumption only (Article V).
 `FAIL` — executed and still failing.
 **Product UAT: WAITING FOR PRODUCT OWNER** — the closing verdict is always the Owner's.
+
+Every verification report must also publish the **Execution Path Equivalence Matrix** (Article IV §5) and the **Assumption Register** (Article V §4).

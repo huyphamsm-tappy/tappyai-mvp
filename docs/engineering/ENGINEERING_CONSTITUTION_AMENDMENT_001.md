@@ -1,6 +1,6 @@
-# TappyAI Engineering Constitution — Articles I–III
+# TappyAI Engineering Constitution — Articles I–V
 
-**Article I** — The Bug Reproduction Gate · **Article II** — Runtime Identity Proof · **Article III** — Owner Observation Supremacy
+**I** Bug Reproduction Gate · **II** Runtime Identity Proof · **III** Owner Observation Supremacy · **IV** Execution Path Equivalence · **V** Assumption Discipline
 
 **Status:** BINDING · **Scope:** Web · Android · iOS — every bug, every session, every agent
 **Date:** 2026-07-29 · **Origin:** the Explore Navigation incident (multiple false PASS reports; see ADR-015)
@@ -209,4 +209,115 @@ An Owner-observed bug is closed **only** by: (a) the Owner confirming it is fixe
 
 ---
 
-**Adopted as Articles I–III of the TappyAI Engineering Constitution. Companion documents:** ADR-015 (rationale), `BUG_REPRODUCTION_GATE_WORKFLOW.md` (diagram + evidence pack), `BUG_ASSIGNMENT_PROTOCOL.md` (intake + conflict handling), `RELEASE_GATE.md` (gates G0–G7).
+# Article IV — Execution Path Equivalence
+
+> **A PASS report is valid only if it was produced from the same execution path as the reported bug.**
+
+## §1. What an execution path is
+
+The complete set of conditions under which the code actually ran. Where applicable, it includes:
+
+| # | Dimension | A difference is **material** when… |
+|---|---|---|
+| 1 | **Authentication state** | anonymous vs signed-in changes which branches run (precedent: `if (!me) return` silently removed an entire branch) |
+| 2 | **User role** | owner / admin / normal / guest changes rendered content and permissions |
+| 3 | **Feature flags** | flags, remote config, or A/B bucket differ |
+| 4 | **Browser / platform** | real browser vs controlled pane; OS; device; app build; **rendering available or not** |
+| 5 | **Navigation path** | how the screen was entered *and* left (push vs replace, deep link, cold start, back-stack depth) |
+| 6 | **Data source** | production vs local; real vs seeded; **any mocked, injected, or rewritten response** |
+| 7 | **Runtime configuration** | env vars, CSP, port, dev vs production build, locale |
+| 8 | **Interaction method** | physical gesture vs synthetic event (trackpad swipe-back ≠ `history.back()`; wheel momentum ≠ `scrollTo`) |
+
+## §2. Materiality test
+
+A difference is **MATERIAL** if it could change *which code branch executes*, *which data is rendered*, or *which platform behaviour applies*. **When in doubt, it is material.** The AI does not get to rule a difference immaterial by reasoning — only by evidence that both variants execute the same path.
+
+## §3. Verdict rule
+
+- **Same execution path** (no material difference) → `PASS` is *eligible* (all other Articles still apply).
+- **Any material difference** → the maximum permitted verdict is **`PARTIALLY VERIFIED`**.
+
+`PARTIALLY VERIFIED` **cannot**: close a bug · satisfy release gate G0 · support release approval · justify deployment · be summarised as "works" in any report.
+
+## §4. Verdict vocabulary — two independent axes (normative)
+
+| Axis | Values | When assigned |
+|---|---|---|
+| **Classification** (Article I) | REPRODUCIBLE · PARTIALLY REPRODUCIBLE · NOT REPRODUCIBLE | *Before* any work — can the AI reproduce the Owner's bug? |
+| **Verdict** (this Article) | PASS · **PARTIALLY VERIFIED** · BLOCKED · UNVERIFIED · FAIL | *After* execution — what did the run prove? |
+
+`PARTIALLY VERIFIED` supersedes the earlier shorthand `PARTIAL` in all engineering documents.
+
+## §5. Required artefact — the Execution Path Equivalence Matrix
+
+Every verification report MUST publish this matrix; an unproven Owner value is recorded as `UNKNOWN`, never guessed:
+
+| Dimension | Owner's value | AI's value | MATCH / DIFFER / UNKNOWN | Material? | Evidence |
+|---|---|---|---|---|---|
+
+## §6. Retroactive application — Explore Navigation (worked example, 2026-07-29)
+
+| Dimension | Owner | AI | Verdict | Material? | Evidence |
+|---|---|---|---|---|---|
+| Authentication | signed in | **anonymous** | DIFFER | **YES** | no auth cookies; anon = 1 feed fetch, signed-in = 2 (`if (!me) return`) |
+| User role | owns the posts shown in My Profile | anonymous → login placeholder | DIFFER | **YES** | `page.tsx:1140–1146` |
+| Feature flags | not enumerated | not enumerated | UNKNOWN | unknown | neither side listed any |
+| Browser / platform | own Chrome/Edge profile, extensions, real window | in-app pane, 1280×720, **no compositing** | DIFFER | **YES** for any visual symptom | every screenshot timed out |
+| Navigation path | Explore → My Profile → Back | same steps executed | MATCH | — | instrumented trace |
+| Data source | same Supabase project | same project, but **empty personalization history**; one run used an **injected re-ordered response** | DIFFER | **YES** | 10 clips; `city` param changed nothing |
+| Runtime configuration | surface **unproven** | localhost:3000, production build, identity proven | UNKNOWN | **YES** | Article II §5 block |
+| Interaction method | physical mouse/trackpad + browser Back | synthetic events; one CDP click; programmatic back | DIFFER | possibly | trackpad swipe-back is a distinct mechanism |
+
+**Consequence, applied now:** every prior `PASS` issued for this bug is **reclassified `PARTIALLY VERIFIED`** and carries no weight for closure, G0, or release.
+
+---
+
+# Article V — Assumption Discipline
+
+> **An assumption may guide an investigation. It may never justify a conclusion.**
+
+## §1. Permitted use
+
+Assumptions may direct where to look, which hypothesis to test first, and how to prioritise. That is their entire legitimate scope.
+
+## §2. Forbidden use — an assumption may never justify
+
+- `PASS`
+- Root Cause confirmation
+- Bug closure
+- Release approval
+- Deployment
+
+## §3. Binary status rule
+
+Every assumption must **either become evidence** — accompanied by the command, observation, or artefact that proves it — **or remain explicitly labelled `ASSUMPTION` at every restatement**, including in summaries, commit messages, and hand-offs. There is no third state and no expiry by repetition.
+
+## §4. Assumption Register (required in every bug record)
+
+| ID | Statement | Why it matters | Status | How it would be proven | Who can prove it |
+|---|---|---|---|---|---|
+
+Status ∈ `ASSUMPTION` · `EVIDENCE` · `DISPROVEN`.
+
+## §5. Silent promotion is a violation
+
+An assumption restated without its label, or used as a premise in a conclusion, is treated as a **false claim** under Article I §9 — disclosure, revert, reclassification.
+
+## §6. Default classification
+
+Anything the AI did not **directly observe in the current session, on the proven runtime identity**, is an `ASSUMPTION`. This explicitly includes: what the Owner's environment contains, what a previous session verified, what a passing test implies about runtime behaviour, and what "should" happen according to the code.
+
+## §7. Live register — Explore Navigation (as of 2026-07-29)
+
+| ID | Statement | Status | Basis |
+|---|---|---|---|
+| A1 | The Owner tested a surface running the fixed build | **ASSUMPTION** | Owner stated `:3300` once; the surface at each failure report is unproven |
+| A2 | The reconciliation fix resolves the Owner's symptom | **ASSUMPTION** | never executed on the authenticated path |
+| A3 | The injected re-ordered response faithfully represents the real personalization refetch | **ASSUMPTION** | timing, sort input, and row content all differ |
+| A4 | Owner and AI see identical feed data | **PARTIAL EVIDENCE** | same Supabase project, 10 clips; personalization history differs |
+| A5 | The Supabase client is stable across renders (no refetch loop) | **EVIDENCE** | React fiber identity comparison across renders |
+| A6 | The `city` parameter changes which rows return | **DISPROVEN** | 4 cities → identical 10 ids, identical order |
+
+---
+
+**Adopted as Articles I–V of the TappyAI Engineering Constitution. Companion documents:** ADR-015 (rationale), `BUG_REPRODUCTION_GATE_WORKFLOW.md` (diagram + evidence pack), `BUG_ASSIGNMENT_PROTOCOL.md` (intake + conflict handling), `RELEASE_GATE.md` (gates G0–G7).
