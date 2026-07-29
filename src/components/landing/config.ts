@@ -13,10 +13,9 @@ export const BRAND_NAME = 'TappyAI'
 export const LOGO = '/logo.png'
 export const OG_IMAGE = '/feature-graphic.png'
 
-// Verified contacts only: published in the production privacy policy. No
-// dedicated support@ mailbox exists yet — swap here when one is created.
-export const SUPPORT_EMAIL = 'huypham.sm@gmail.com'
-export const FOUNDER_EMAIL = 'huypham.sm@gmail.com'
+// Public contact addresses for the landing page.
+export const SUPPORT_EMAIL = 'founder@tappyai.com'
+export const FOUNDER_EMAIL = 'founder@tappyai.com'
 
 // Real production captures (www.tappyai.com, 390x844 viewport @2x, WebP q82).
 export const HERO_SCREENSHOT = { src: '/landing/screen-home.webp', width: 780, height: 1498 }
