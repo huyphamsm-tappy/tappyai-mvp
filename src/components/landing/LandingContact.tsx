@@ -1,6 +1,7 @@
 'use client'
 
-import { Globe, Mail, User } from 'lucide-react'
+import Image from 'next/image'
+import { Globe, Mail } from 'lucide-react'
 import LandingSection from './LandingSection'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { FOUNDER_EMAIL, SITE_HOST, SITE_URL, SUPPORT_EMAIL } from './config'
@@ -25,11 +26,15 @@ export default function LandingContact() {
         </li>
 
         <li className="rounded-3xl border border-white/10 bg-gray-950/60 p-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-500/15">
-            <User size={20} className="text-accent-400" aria-hidden="true" />
-          </div>
-          <h3 className="mt-4 font-semibold">{t('landing.contact.founder.label')}</h3>
-          <p className="mt-1 text-sm text-gray-300">{t('landing.contact.founder.name')}</p>
+          <Image
+            src="/branding/founder.jpg"
+            alt={t('landing.contact.founder.name')}
+            width={539}
+            height={960}
+            className="h-14 w-14 rounded-full border border-white/10 object-cover object-[50%_28%]"
+          />
+          <h3 className="mt-4 font-semibold">{t('landing.contact.founder.name')}</h3>
+          <p className="mt-1 text-sm text-gray-300">{t('landing.contact.founder.label')}</p>
           <a
             href={`mailto:${FOUNDER_EMAIL}`}
             className="mt-1 block break-all text-sm text-primary-400 hover:underline"
