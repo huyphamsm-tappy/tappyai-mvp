@@ -51,7 +51,7 @@ export default function ProfileView({ userId, userInfo, firstName, conversationC
             )}
             <div className="min-w-0 flex-1">
               <h2 className="font-bold text-gray-900 dark:text-white text-lg">{userInfo.full_name || firstName}</h2>
-              <p className="truncate text-gray-500 dark:text-gray-400 text-sm">{userInfo.email}</p>
+              <p className="truncate text-content-secondary text-sm">{userInfo.email}</p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-xs bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 px-2 py-0.5 rounded-full font-medium">
                   {t('profile.conversationCount', { n: String(conversationCount) })}

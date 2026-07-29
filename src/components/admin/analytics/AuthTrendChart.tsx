@@ -29,7 +29,7 @@ export function AuthTrendChart({ points, loading, error }: {
             {points.map((p) => (
               <div key={p.date} className="flex-1 min-w-[16px] flex flex-col items-center gap-1" title={`${p.date}: ${p.logins_success} logins, ${p.signups} signups`}>
                 <span className="text-[10px] text-muted-foreground">{formatInt(p.logins_success)}</span>
-                <div className="w-full bg-primary rounded-sm" style={{ height: `${Math.max((p.logins_success / max) * 120, p.logins_success > 0 ? 4 : 0)}px` }} />
+                <div className="w-full bg-interactive rounded-sm" style={{ height: `${Math.max((p.logins_success / max) * 120, p.logins_success > 0 ? 4 : 0)}px` }} />
                 <span className="text-[10px] text-muted-foreground/70 truncate w-full text-center">{p.date.slice(5)}</span>
               </div>
             ))}

@@ -27,7 +27,7 @@ export function MusicTrackList({
   const { t } = useTranslation()
   if (error) {
     return (
-      <div className="flex flex-col items-center gap-2 py-10 text-gray-500 dark:text-gray-400">
+      <div className="flex flex-col items-center gap-2 py-10 text-content-secondary">
         <AlertCircle size={22} className="opacity-60" />
         <p className="text-sm">{error}</p>
       </div>
@@ -44,7 +44,7 @@ export function MusicTrackList({
 
   if (tracks.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-2 py-10 text-gray-500 dark:text-gray-400">
+      <div className="flex flex-col items-center gap-2 py-10 text-content-secondary">
         <Music2 size={22} className="opacity-60" />
         <p className="text-sm">{t('music.emptyTracks')}</p>
       </div>
@@ -70,7 +70,7 @@ export function MusicTrackList({
             <button
               type="button"
               onClick={onLoadMore}
-              className="text-sm font-medium text-primary-500"
+              className="text-sm font-medium text-link"
             >
               {t('music.loadMore')}
             </button>

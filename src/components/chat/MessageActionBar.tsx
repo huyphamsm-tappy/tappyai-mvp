@@ -202,7 +202,7 @@ export default function MessageActionBar({
         {/* TTS Speaker */}
         <button
           onClick={() => { if (!isThisSpeaking) posthog.capture('message_action', { action: 'tts_played' }); onSpeak() }}
-          className={cn(btnBase, isThisSpeaking && 'text-primary-500 bg-primary-50 dark:bg-primary-900/20 hover:text-primary-600 hover:bg-primary-100 dark:hover:bg-primary-900/30')}
+          className={cn(btnBase, isThisSpeaking && 'text-link bg-primary-50 dark:bg-primary-900/20 hover:text-primary-600 hover:bg-primary-100 dark:hover:bg-primary-900/30')}
           title={isThisSpeaking ? 'Dừng đọc' : 'Đọc to'}
         >
           <Volume2 size={14} />
@@ -287,14 +287,14 @@ export default function MessageActionBar({
           </button>
 
           {/* Elapsed time */}
-          <span className="text-xs text-gray-500 dark:text-gray-400 tabular-nums flex-shrink-0 min-w-[32px]">
+          <span className="text-xs text-content-secondary tabular-nums flex-shrink-0 min-w-[32px]">
             {fmtTime(ttsElapsed)}
           </span>
 
           {/* Progress bar */}
           <div className="flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mx-0.5">
             <div
-              className="h-full bg-primary-500 transition-all duration-700"
+              className="h-full bg-interactive transition-all duration-700"
               style={{ width: ttsTotal > 0 ? `${Math.min(100, (ttsElapsed / ttsTotal) * 100)}%` : '0%' }}
             />
           </div>

@@ -129,7 +129,7 @@ export default function CurrencyPage() {
               <button
                 key={v}
                 onClick={() => setAmount(v)}
-                className={`px-3 py-1 rounded-xl text-xs font-medium transition-colors ${amount === v ? 'bg-primary-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                className={`px-3 py-1 rounded-xl text-xs font-medium transition-colors ${amount === v ? 'bg-interactive text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
               >
                 {parseInt(v).toLocaleString('vi-VN')}
               </button>

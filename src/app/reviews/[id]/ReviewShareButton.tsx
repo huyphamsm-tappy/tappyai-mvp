@@ -54,7 +54,7 @@ export default function ReviewShareButton({
   return (
     <button
       onClick={handleShare}
-      className={className || 'flex items-center gap-1.5 text-sm text-gray-500 hover:text-primary-500 transition-colors px-2 py-1'}
+      className={className || 'flex items-center gap-1.5 text-sm text-gray-500 hover:text-link transition-colors px-2 py-1'}
       style={style}
       aria-label="Chia sẻ"
     >

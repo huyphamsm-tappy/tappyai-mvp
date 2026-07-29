@@ -283,14 +283,14 @@ export default function LoginPage() {
           {/* Left: brand + hero + features */}
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
             <div className="flex-1 min-w-0 text-center md:text-left order-2 md:order-1">
-              <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">{t('login.welcomeTo')}</p>
+              <p className="text-content-secondary text-lg font-medium">{t('login.welcomeTo')}</p>
               <h1 className="text-5xl sm:text-6xl font-black leading-tight text-gray-900 dark:text-white">
                 Tappy{' '}
                 <span className="bg-gradient-to-r from-violet-500 via-primary-500 to-primary-400 bg-clip-text text-transparent">AI</span>
                 <span className="align-super text-2xl text-violet-400">✦</span>
               </h1>
               <p className="mt-2 text-xl font-bold text-gray-900 dark:text-white">{t('login.touchEvery')}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{t('login.personalAgent')}</p>
+              <p className="text-sm text-content-secondary">{t('login.personalAgent')}</p>
 
               <div className="mt-7 space-y-4 max-w-sm mx-auto md:mx-0 text-left">
                 {FEATURES.map((f) => {
@@ -302,7 +302,7 @@ export default function LoginPage() {
                       </div>
                       <div className="min-w-0">
                         <p className="text-[13px] font-bold text-gray-900 dark:text-white leading-tight">{t(f.titleKey)}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 leading-snug mt-0.5">{t(f.descKey)}</p>
+                        <p className="text-xs text-content-secondary leading-snug mt-0.5">{t(f.descKey)}</p>
                       </div>
                     </div>
                   )
@@ -343,7 +343,7 @@ export default function LoginPage() {
                     <p className="text-gray-900 dark:text-white font-semibold text-sm mb-1">
                       {t('login.inappTitle', { name: inApp.name })}
                     </p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">
+                    <p className="text-content-secondary text-sm">
                       {t('login.inappDesc', { name: inApp.name })}
                     </p>
                   </div>
@@ -351,7 +351,7 @@ export default function LoginPage() {
                   {inApp.isAndroid && (
                     <button
                       onClick={handleOpenInChrome}
-                      className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg"
+                      className="w-full bg-interactive hover:bg-interactive-hover text-white font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg"
                     >
                       <ExternalLink size={20} />
                       {t('login.openChrome')}
@@ -391,7 +391,7 @@ export default function LoginPage() {
               ) : (
                 <>
                   <h2 className="text-center text-lg font-bold text-gray-900 dark:text-white">{t('login.signinTitle')}</h2>
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-1 mb-6">{t('login.signinSubtitle')}</p>
+                  <p className="text-center text-sm text-content-secondary mt-1 mb-6">{t('login.signinSubtitle')}</p>
 
                   <div className="space-y-3">
                     {/* Google */}
@@ -479,9 +479,9 @@ export default function LoginPage() {
                   </p>
                   <p className="text-center text-gray-400 text-xs mt-3">
                     {t('login.agreePrefix')}{' '}
-                    <Link href="/terms" className="text-primary-500 hover:underline">{t('settings.terms')}</Link>
+                    <Link href="/terms" className="text-link hover:underline">{t('settings.terms')}</Link>
                     {' '}{t('common.and')}{' '}
-                    <Link href="/privacy" className="text-primary-500 hover:underline">{t('settings.privacy')}</Link>
+                    <Link href="/privacy" className="text-link hover:underline">{t('settings.privacy')}</Link>
                   </p>
                 </>
               )}
@@ -491,7 +491,7 @@ export default function LoginPage() {
 
         {/* Footer — copyright (stats section removed 2026-07-25 to match the approved mockup) */}
         <div className="border-t border-gray-100 dark:border-gray-800 px-6 sm:px-10 py-4">
-          <p className="text-center text-[11px] text-gray-400">© 2025 TappyAI. All rights reserved.</p>
+          <p className="text-center text-[11px] text-content-secondary">{t('landing.footer.rights')}</p>
         </div>
       </div>
     </div>
@@ -553,7 +553,7 @@ function EmailOtpBlock({
           <button
             onClick={onSend}
             disabled={otpLoading}
-            className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all disabled:opacity-70"
+            className="w-full bg-interactive hover:bg-interactive-hover text-white font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all disabled:opacity-70"
           >
             {otpLoading ? <Loader2 size={20} className="animate-spin" /> : t('auth.emailOtp.send')}
           </button>
@@ -575,7 +575,7 @@ function EmailOtpBlock({
           <button
             onClick={onVerify}
             disabled={otpLoading}
-            className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all disabled:opacity-70"
+            className="w-full bg-interactive hover:bg-interactive-hover text-white font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all disabled:opacity-70"
           >
             {otpLoading ? <Loader2 size={20} className="animate-spin" /> : t('auth.emailOtp.verify')}
           </button>

@@ -171,7 +171,7 @@ export default function SoundPage() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
       <header className="sticky top-0 z-10 border-b border-gray-100 dark:border-gray-800 bg-white/80 dark:bg-gray-950/80 backdrop-blur">
         <div className="max-w-lg mx-auto flex items-center px-4 h-14">
-          <button onClick={() => router.back()} className="flex items-center gap-1 text-sm font-medium text-primary-500">
+          <button onClick={() => router.back()} className="flex items-center gap-1 text-sm font-medium text-link">
             <ChevronLeft size={18} /> Quay lại
           </button>
           <h1 className="flex-1 text-center font-semibold text-gray-900 dark:text-white pr-16">Âm thanh</h1>
@@ -203,10 +203,10 @@ export default function SoundPage() {
               </div>
 
               <p className="mt-1 text-xl font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                <Music2 size={17} className="text-primary-500" /> {data.track.title}
+                <Music2 size={17} className="text-link" /> {data.track.title}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{data.track.artist ?? 'Không rõ nghệ sĩ'}</p>
-              <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-content-secondary">{data.track.artist ?? 'Không rõ nghệ sĩ'}</p>
+              <div className="flex items-center gap-2 text-xs text-content-secondary">
                 <MusicDuration seconds={data.track.durationSec} />
                 <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5">🏷️ {TYPE_LABEL[data.track.musicType] ?? data.track.musicType}</span>
               </div>
@@ -215,7 +215,7 @@ export default function SoundPage() {
                 return attr ? (
                   <p className="text-[11px] text-gray-400 dark:text-gray-500">
                     {data.track.artist ? `${data.track.artist} · ` : ''}{attr.license} ·{' '}
-                    <a href={attr.source} target="_blank" rel="noopener noreferrer" className="underline hover:text-primary-500">{attr.provider}</a>
+                    <a href={attr.source} target="_blank" rel="noopener noreferrer" className="underline hover:text-link">{attr.provider}</a>
                   </p>
                 ) : null
               })()}
@@ -257,7 +257,7 @@ export default function SoundPage() {
                   disabled={busy}
                   className={`flex items-center justify-center gap-1.5 rounded-full py-2.5 text-sm font-semibold transition active:scale-95 disabled:opacity-60 ${
                     followed
-                      ? 'bg-primary-500 text-white'
+                      ? 'bg-interactive text-white'
                       : 'bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700'
                   }`}
                 >
@@ -283,7 +283,7 @@ export default function SoundPage() {
             <div className="mt-8">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Video sử dụng bài nhạc này</h2>
               {data.videos.length === 0 ? (
-                <p className="text-sm text-gray-500 dark:text-gray-400 py-6 text-center">
+                <p className="text-sm text-content-secondary py-6 text-center">
                   Chưa có video nào dùng bài nhạc này. Hãy là người đầu tiên!
                 </p>
               ) : (

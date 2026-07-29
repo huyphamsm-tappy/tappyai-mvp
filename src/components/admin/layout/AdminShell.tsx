@@ -88,7 +88,7 @@ export function AdminShell({
                   href={item.href}
                   className={cn(
                     'flex items-center gap-3 rounded-admin-md px-3 py-2 text-sm transition-colors',
-                    active ? 'bg-primary text-white' : 'text-foreground hover:bg-muted'
+                    active ? 'bg-interactive text-white' : 'text-foreground hover:bg-muted'
                   )}
                 >
                   <Icon className="h-4 w-4" />
@@ -112,7 +112,7 @@ export function AdminShell({
                     onClick={() => setLocale(code)}
                     className={cn(
                       'px-2 py-1 rounded text-xs font-medium transition-colors',
-                      locale === code ? 'bg-primary text-white' : 'text-muted-foreground hover:bg-muted'
+                      locale === code ? 'bg-interactive text-white' : 'text-muted-foreground hover:bg-muted'
                     )}
                     aria-pressed={locale === code}
                   >

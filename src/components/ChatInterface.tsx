@@ -205,7 +205,7 @@ function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[]
         <button
           onClick={handleSave}
           disabled={saving || !placeName.trim()}
-          className="text-xs px-2.5 py-1.5 rounded-xl bg-primary-500 text-white disabled:opacity-50 hover:bg-primary-600 transition-colors"
+          className="text-xs px-2.5 py-1.5 rounded-xl bg-interactive text-white disabled:opacity-50 hover:bg-interactive-hover transition-colors"
         >
           {saved ? '✓' : saving ? '...' : 'Lưu'}
         </button>
@@ -278,7 +278,7 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
             <TappyMascot pose={getTappyPose({ isWelcome: true })} size={64} eager animated />
           </div>
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">Tappy muốn hiểu bạn hơn!</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">3 câu hỏi nhanh để gợi ý chuẩn hơn.</p>
+          <p className="text-sm text-content-secondary mt-1">3 câu hỏi nhanh để gợi ý chuẩn hơn.</p>
         </div>
 
         <div>
@@ -286,7 +286,7 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
           <div className="flex flex-wrap gap-2 mb-2">
             {DISTRICTS.map(d => (
               <button key={d} onClick={() => { setDistrict(prev => prev === d ? '' : d); setCustomDistrict('') }}
-                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${district === d ? 'border-primary-500 bg-primary-500 text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
+                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${district === d ? 'border-primary-500 bg-interactive text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
                 {d}
               </button>
             ))}
@@ -304,7 +304,7 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
           <div className="flex flex-wrap gap-2">
             {BUDGETS.map(b => (
               <button key={b} onClick={() => setBudget(prev => prev === b ? '' : b)}
-                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${budget === b ? 'border-primary-500 bg-primary-500 text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
+                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${budget === b ? 'border-primary-500 bg-interactive text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
                 {b}
               </button>
             ))}
@@ -316,7 +316,7 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
           <div className="flex flex-wrap gap-2">
             {DIETARY_OPTS.map(d => (
               <button key={d} onClick={() => toggleDietary(d)}
-                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${dietary.includes(d) ? 'border-primary-500 bg-primary-500 text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
+                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${dietary.includes(d) ? 'border-primary-500 bg-interactive text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
                 {d}
               </button>
             ))}
@@ -326,7 +326,7 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
         <button
           onClick={handleSubmit}
           disabled={saving}
-          className="w-full py-3.5 rounded-2xl font-bold text-base bg-primary-500 hover:bg-primary-600 text-white transition-all disabled:opacity-60"
+          className="w-full py-3.5 rounded-2xl font-bold text-base bg-interactive hover:bg-interactive-hover text-white transition-all disabled:opacity-60"
         >
           {saving ? '⌛ Đang lưu...' : '🎉 Bắt đầu khám phá!'}
         </button>
@@ -1002,7 +1002,7 @@ export default function ChatInterface({
                   <TappyMascot pose={getTappyPose({ category })} size={80} eager animated />
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo ? t(`tag.${catInfo.id}`) : 'TappyAI'}</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{t('chat.welcomeSubtitle')}</p>
+                <p className="text-content-secondary text-sm mt-1">{t('chat.welcomeSubtitle')}</p>
                 {hasMemory && (
                   <Link
                     href="/profile/tappy-knows"
@@ -1027,7 +1027,7 @@ export default function ChatInterface({
                       className="flex flex-col items-center gap-1 px-3 py-2 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-primary-50 dark:hover:bg-primary-900/20 border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-800 transition-all active:scale-95"
                     >
                       <span className="text-2xl">{mood.emoji}</span>
-                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{t(mood.labelKey)}</span>
+                      <span className="text-xs font-medium text-content-secondary">{t(mood.labelKey)}</span>
                     </button>
                   ))}
                 </div>
@@ -1046,7 +1046,7 @@ export default function ChatInterface({
           {hasMemory && messages.length > 0 && (
             <Link
               href="/profile/tappy-knows"
-              className="flex items-center gap-1.5 mb-4 text-xs text-gray-400 dark:text-gray-500 hover:text-primary-500 dark:hover:text-primary-400 transition-colors w-fit"
+              className="flex items-center gap-1.5 mb-4 text-xs text-gray-400 dark:text-gray-500 hover:text-link dark:hover:text-primary-400 transition-colors w-fit"
             >
               <Brain size={12} /> {t('chat.memoryUsing')}
             </Link>
@@ -1127,7 +1127,7 @@ export default function ChatInterface({
                                   className={cn(
                                     'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all',
                                     btn.primary
-                                      ? 'bg-primary-500 hover:bg-primary-600 text-white shadow-sm shadow-primary-200 dark:shadow-primary-900/30'
+                                      ? 'bg-interactive hover:bg-interactive-hover text-white shadow-sm shadow-primary-200 dark:shadow-primary-900/30'
                                       : 'border border-primary-300 dark:border-primary-700 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20'
                                   )}
                                 >
@@ -1180,7 +1180,7 @@ export default function ChatInterface({
                       />
                     ))}
                     {(typeof msg.content === 'string' ? msg.content : '').trim() && (
-                      <div className="bg-primary-500 text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
+                      <div className="bg-interactive text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
                         <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
                       </div>
                     )}
@@ -1218,7 +1218,7 @@ export default function ChatInterface({
                           const rt = encodeURIComponent(window.location.pathname + window.location.search)
                           window.location.href = `/login?returnTo=${rt}`
                         }}
-                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-xs font-medium transition-colors"
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-interactive hover:bg-interactive-hover text-white text-xs font-medium transition-colors"
                       >
                         Đăng nhập để tiếp tục
                       </button>
@@ -1236,7 +1236,7 @@ export default function ChatInterface({
                           const rt = encodeURIComponent(window.location.pathname + window.location.search)
                           window.location.href = `/login?returnTo=${rt}`
                         }}
-                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-xs font-medium transition-colors"
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-interactive hover:bg-interactive-hover text-white text-xs font-medium transition-colors"
                       >
                         Đăng nhập để tiếp tục
                       </button>
@@ -1382,7 +1382,7 @@ export default function ChatInterface({
                 'w-11 h-11 rounded-2xl flex items-center justify-center transition-all',
                 showEmojiPanel
                   ? 'bg-accent-100 dark:bg-accent-900/30 text-accent-500'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-accent-50 dark:hover:bg-accent-900/20 hover:text-accent-500'
+                  : 'bg-gray-100 dark:bg-gray-800 text-content-secondary hover:bg-accent-50 dark:hover:bg-accent-900/20 hover:text-accent-500'
               )}
               aria-label="Chọn emoji"
             >
@@ -1432,7 +1432,7 @@ export default function ChatInterface({
               <Square size={15} className="text-gray-700 dark:text-gray-200 fill-current" />
             </button>
           ) : (
-            <button type="submit" disabled={!input.trim() && !imageFile} aria-label={t('chat.send')} className="w-11 h-11 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
+            <button type="submit" disabled={!input.trim() && !imageFile} aria-label={t('chat.send')} className="w-11 h-11 rounded-2xl bg-interactive hover:bg-interactive-hover disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
               <Send size={18} className="text-white" />
             </button>
           )}

@@ -45,7 +45,7 @@ export default function CungHoangDaoForm() {
         <div className="text-5xl">✨</div>
         <div>
           <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">{t('fortune.zodiacFormTitle')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-content-secondary">
             {t('fortune.zodiacFormHint')}
           </p>
         </div>
@@ -92,7 +92,7 @@ export default function CungHoangDaoForm() {
               'flex-1 py-2.5 rounded-2xl text-sm font-medium border-2 transition-all',
               period === p.id
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400'
+                : 'border-gray-100 dark:border-gray-800 text-content-secondary'
             )}
           >
             {t(p.labelKey)}
@@ -116,15 +116,15 @@ export default function CungHoangDaoForm() {
         </div>
 
         <FortuneRow icon={Heart} label={t('fortune.love')} text={reading.love} color="text-pink-500" />
-        <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-primary-500" />
+        <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-link" />
         <FortuneRow icon={Coins} label={t('fortune.money')} text={reading.money} color="text-accent-500" />
         <FortuneRow icon={HeartPulse} label={t('fortune.health')} text={reading.health} color="text-green-500" />
 
         <div className="flex items-center gap-4 pt-2 border-t border-gray-100 dark:border-gray-800 text-sm">
-          <span className="text-gray-500 dark:text-gray-400">
+          <span className="text-content-secondary">
             {t('fortune.luckyNumber')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
           </span>
-          <span className="text-gray-500 dark:text-gray-400">
+          <span className="text-content-secondary">
             {t('fortune.luckyColor')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
           </span>
         </div>
@@ -154,7 +154,7 @@ function FortuneRow({
         <Icon size={15} />
       </div>
       <div>
-        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">{label}</p>
+        <p className="text-xs font-semibold text-content-secondary">{label}</p>
         <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{text}</p>
       </div>
     </div>

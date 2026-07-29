@@ -23,13 +23,13 @@ export default function GlobalError({
         <h2 className="mt-4 text-lg font-bold text-gray-900 dark:text-white">
           Ối, có lỗi xảy ra
         </h2>
-        <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-1.5 text-sm text-content-secondary">
           TappyAI gặp chút trục trặc. Bạn thử lại nhé, nếu vẫn lỗi thì quay về trang chủ giúp mình.
         </p>
         <div className="mt-6 flex gap-3 justify-center">
           <button
             onClick={() => reset()}
-            className="inline-flex items-center gap-2 px-5 py-3 min-h-[48px] rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium transition-all"
+            className="inline-flex items-center gap-2 px-5 py-3 min-h-[48px] rounded-xl bg-interactive hover:bg-interactive-hover text-white text-sm font-medium transition-all"
           >
             <RefreshCw size={16} /> Thử lại
           </button>

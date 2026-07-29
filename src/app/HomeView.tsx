@@ -81,7 +81,7 @@ export default function HomeView({
         <section>
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.fortuneTitle')}</h3>
-            <Link href="/boi" className="text-sm text-primary-500 font-medium">{t('home.seeAll')}</Link>
+            <Link href="/boi" className="text-sm text-link font-medium">{t('home.seeAll')}</Link>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <Link href="/boi/tarot" className="flex flex-col items-center gap-1.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-3 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all text-center">
@@ -103,7 +103,7 @@ export default function HomeView({
         <section>
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.scanTitle')}</h3>
-            <Link href="/scan" className="text-sm text-primary-500 font-medium">{t('home.open')}</Link>
+            <Link href="/scan" className="text-sm text-link font-medium">{t('home.open')}</Link>
           </div>
           <Link href="/scan" className="group flex items-center gap-4 rounded-2xl bg-gradient-to-br from-teal-500/15 to-cyan-400/5 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 flex items-center justify-center flex-shrink-0 shadow-sm">
@@ -111,7 +111,7 @@ export default function HomeView({
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-gray-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">{t('home.scanCardTitle')}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">{t('home.scanCardDesc')}</p>
+              <p className="text-xs text-content-secondary mt-0.5 leading-snug">{t('home.scanCardDesc')}</p>
             </div>
             <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
           </Link>
@@ -125,7 +125,7 @@ export default function HomeView({
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">{t('home.togetherTitle')}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">{t('home.togetherDesc')}</p>
+              <p className="text-sm text-content-secondary mt-0.5 leading-snug">{t('home.togetherDesc')}</p>
             </div>
             <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
           </Link>
@@ -204,13 +204,13 @@ export default function HomeView({
         <section>
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.contentTitle')}</h3>
-            <Link href="/viet-content" className="text-sm text-primary-500 font-medium">{t('home.open')}</Link>
+            <Link href="/viet-content" className="text-sm text-link font-medium">{t('home.open')}</Link>
           </div>
           <Link href="/viet-content" className="group flex items-center gap-4 rounded-2xl bg-gradient-to-br from-pink-500/15 to-orange-400/5 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-100 to-orange-100 dark:from-pink-900/30 dark:to-orange-900/30 flex items-center justify-center text-3xl flex-shrink-0 shadow-sm">✍️</div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{t('home.contentCardTitle')}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">{t('home.contentCardDesc')}</p>
+              <p className="text-xs text-content-secondary mt-0.5 leading-snug">{t('home.contentCardDesc')}</p>
             </div>
             <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
           </Link>
@@ -239,7 +239,7 @@ export default function HomeView({
           <section>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.recentTitle')}</h3>
-              <Link href="/profile" className="text-sm text-primary-500 font-medium">{t('home.seeAll')}</Link>
+              <Link href="/profile" className="text-sm text-link font-medium">{t('home.seeAll')}</Link>
             </div>
             <div className="space-y-2">
               {conversations.map((conv) => (
@@ -263,14 +263,14 @@ export default function HomeView({
             <div className="w-16 h-16 rounded-2xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mx-auto mb-3">
               <MessageCircle size={28} className="text-primary-400" />
             </div>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('home.emptyChat')}</p>
+            <p className="text-content-secondary text-sm">{t('home.emptyChat')}</p>
             <Link href="/chat" className="inline-block mt-3 btn-primary text-sm py-2 px-5">{t('home.chatNow')}</Link>
           </div>
         )}
 
         {!user && (
           <div className="text-center py-4">
-            <p className="text-gray-500 dark:text-gray-400 text-sm mb-3">{t('home.loginPrompt')}</p>
+            <p className="text-content-secondary text-sm mb-3">{t('home.loginPrompt')}</p>
             <Link href="/login" className="inline-block btn-primary text-sm py-2.5 px-6">{t('home.login')}</Link>
           </div>
         )}

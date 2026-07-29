@@ -75,7 +75,7 @@ export default function QRProfileButton({ userId, name }: { userId: string; name
             </button>
 
             <h3 className="font-bold text-gray-900 dark:text-white text-base mb-1 pr-6 truncate">{name || 'Trang cá nhân của tôi'}</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">Quét mã để xem trang cá nhân</p>
+            <p className="text-xs text-content-secondary mb-4">Quét mã để xem trang cá nhân</p>
 
             {failed ? (
               <p className="py-10 text-sm text-red-500">Không tạo được mã QR. Thử lại sau nhé.</p>
@@ -91,7 +91,7 @@ export default function QRProfileButton({ userId, name }: { userId: string; name
             <button
               type="button"
               onClick={share}
-              className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors"
+              className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-interactive hover:bg-interactive-hover text-white text-sm font-semibold transition-colors"
             >
               {copied ? <><Check size={16} /> Đã sao chép liên kết</> : <><Share2 size={16} /> Chia sẻ liên kết</>}
             </button>

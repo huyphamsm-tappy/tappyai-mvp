@@ -54,12 +54,12 @@ export default function Header({ user, showBack, backHref, title, hideLogo }: He
       <div className="container-content h-14 flex items-center justify-between gap-3">
         {showBack ? (
           backHref ? (
-            <Link href={backHref} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
+            <Link href={backHref} className="flex items-center gap-1 text-link font-medium text-sm -ml-1">
               <ChevronLeft size={20} />
               {t('common.back')}
             </Link>
           ) : (
-            <button onClick={() => router.back()} className="flex items-center gap-1 text-primary-500 font-medium text-sm -ml-1">
+            <button onClick={() => router.back()} className="flex items-center gap-1 text-link font-medium text-sm -ml-1">
               <ChevronLeft size={20} />
               {t('common.back')}
             </button>
@@ -82,7 +82,7 @@ export default function Header({ user, showBack, backHref, title, hideLogo }: He
 
         {user && !showBack && (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500 dark:text-gray-400 hidden sm:block">
+            <span className="text-sm text-content-secondary hidden sm:block">
               {greeting}, <span className="font-medium text-gray-900 dark:text-white">{firstName}</span>
             </span>
             <button onClick={toggleDark} className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">

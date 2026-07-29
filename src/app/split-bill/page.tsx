@@ -122,7 +122,7 @@ export default function SplitBillPage() {
               <button
                 key={preset}
                 onClick={() => { setTip(preset); setCustomTip('') }}
-                className={`px-3 py-1.5 rounded-xl text-sm font-semibold transition-colors ${tip === preset && customTip === '' ? 'bg-primary-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                className={`px-3 py-1.5 rounded-xl text-sm font-semibold transition-colors ${tip === preset && customTip === '' ? 'bg-interactive text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
               >
                 {preset === 0 ? t('splitBill.tipNone') : `${preset}%`}
               </button>
@@ -145,13 +145,13 @@ export default function SplitBillPage() {
         <div className="flex rounded-2xl bg-gray-100 dark:bg-gray-800 p-1 gap-1">
           <button
             onClick={() => setMode('equal')}
-            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === 'equal' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400'}`}
+            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === 'equal' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm' : 'text-content-secondary'}`}
           >
             {t('splitBill.modeEqual')}
           </button>
           <button
             onClick={() => setMode('custom')}
-            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === 'custom' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400'}`}
+            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === 'custom' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm' : 'text-content-secondary'}`}
           >
             {t('splitBill.modeCustom')}
           </button>
@@ -216,7 +216,7 @@ export default function SplitBillPage() {
                   </button>
                 )}
                 {idx === persons.length - 1 && persons.length < 20 && (
-                  <button onClick={addPerson} className="p-1.5 text-gray-300 dark:text-gray-600 hover:text-primary-500 transition-colors">
+                  <button onClick={addPerson} className="p-1.5 text-gray-300 dark:text-gray-600 hover:text-link transition-colors">
                     <Plus size={15} />
                   </button>
                 )}

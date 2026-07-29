@@ -64,7 +64,7 @@ export default async function SubscriptionPage() {
             <Crown size={28} className="text-white" />
           </div>
           <h1 className="text-2xl font-black text-gray-900 dark:text-white">TappyAI Pro</h1>
-          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+          <p className="text-content-secondary text-sm mt-1">
             Trải nghiệm đầy đủ, không giới hạn
           </p>
         </div>
@@ -162,15 +162,15 @@ export default async function SubscriptionPage() {
           <h3 className="font-semibold text-gray-900 dark:text-white">Câu hỏi thường gặp</h3>
           <div>
             <p className="font-medium text-gray-800 dark:text-gray-200">Thanh toán bằng gì?</p>
-            <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5">Hỗ trợ thẻ Visa/Mastercard và ví điện tử — sắp ra mắt.</p>
+            <p className="text-content-secondary text-xs mt-0.5">Hỗ trợ thẻ Visa/Mastercard và ví điện tử — sắp ra mắt.</p>
           </div>
           <div>
             <p className="font-medium text-gray-800 dark:text-gray-200">Có thể hủy bất lúc nào không?</p>
-            <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5">Có, hủy bất kỳ lúc nào, dữ liệu vẫn được giữ nguyên.</p>
+            <p className="text-content-secondary text-xs mt-0.5">Có, hủy bất kỳ lúc nào, dữ liệu vẫn được giữ nguyên.</p>
           </div>
           <div>
             <p className="font-medium text-gray-800 dark:text-gray-200">Giới hạn Free được reset khi nào?</p>
-            <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5">Reset lúc 00:00 mỗi ngày theo giờ Việt Nam.</p>
+            <p className="text-content-secondary text-xs mt-0.5">Reset lúc 00:00 mỗi ngày theo giờ Việt Nam.</p>
           </div>
         </div>
 

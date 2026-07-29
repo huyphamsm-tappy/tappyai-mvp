@@ -11,7 +11,7 @@ export default function HomeLoading() {
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Hero skeleton */}
-        <div className="bg-primary-500/20 rounded-3xl p-6 h-32" />
+        <div className="bg-interactive/20 rounded-3xl p-6 h-32" />
 
         {/* Categories skeleton */}
         <section>

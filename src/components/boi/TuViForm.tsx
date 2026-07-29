@@ -88,7 +88,7 @@ export default function TuViForm() {
         <div className="text-5xl">🧧</div>
         <div>
           <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">{t('fortune.tuviFormTitle')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-content-secondary">
             {t('fortune.tuviFormHint')}
           </p>
         </div>
@@ -139,7 +139,7 @@ export default function TuViForm() {
                 'flex-1 py-2.5 rounded-2xl text-sm font-medium border-2 transition-all',
                 viewMode === p.id
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                  : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400'
+                  : 'border-gray-100 dark:border-gray-800 text-content-secondary'
               )}
             >
               {t(p.labelKey)}
@@ -160,7 +160,7 @@ export default function TuViForm() {
               'flex items-center justify-center gap-2 py-2.5 rounded-2xl text-sm font-medium border-2 transition-all',
               viewMode === 'lifetime'
                 ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400'
-                : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400'
+                : 'border-gray-100 dark:border-gray-800 text-content-secondary'
             )}
           >
             <BookOpen size={15} />
@@ -172,7 +172,7 @@ export default function TuViForm() {
               'flex items-center justify-center gap-2 py-2.5 rounded-2xl text-sm font-medium border-2 transition-all',
               viewMode === 'year'
                 ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'
-                : 'border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400'
+                : 'border-gray-100 dark:border-gray-800 text-content-secondary'
             )}
           >
             <Calendar size={15} />
@@ -224,15 +224,15 @@ function PeriodReadingCard({ reading }: { reading: FortuneReading }) {
       </div>
 
       <FortuneRow icon={Heart} label={t('fortune.love')} text={reading.love} color="text-pink-500" />
-      <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-primary-500" />
+      <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-link" />
       <FortuneRow icon={Coins} label={t('fortune.money')} text={reading.money} color="text-accent-500" />
       <FortuneRow icon={HeartPulse} label={t('fortune.health')} text={reading.health} color="text-green-500" />
 
       <div className="flex items-center gap-4 pt-2 border-t border-gray-100 dark:border-gray-800 text-sm">
-        <span className="text-gray-500 dark:text-gray-400">
+        <span className="text-content-secondary">
           {t('fortune.luckyNumber')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
         </span>
-        <span className="text-gray-500 dark:text-gray-400">
+        <span className="text-content-secondary">
           {t('fortune.luckyColor')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
         </span>
       </div>
@@ -266,7 +266,7 @@ function LifetimeCard({
         </p>
 
         <div className="space-y-4">
-          <LifetimeRow icon={Briefcase} label={t('fortune.careerLife')} text={lifetime.career} color="text-primary-500" />
+          <LifetimeRow icon={Briefcase} label={t('fortune.careerLife')} text={lifetime.career} color="text-link" />
           <LifetimeRow icon={Heart} label={t('fortune.love')} text={lifetime.love} color="text-pink-500" />
           <LifetimeRow icon={HeartPulse} label={t('fortune.health')} text={lifetime.health} color="text-green-500" />
         </div>
@@ -320,7 +320,7 @@ function LifeStageCard({ stage }: { stage: LifeStage }) {
               {stage.fate}
             </p>
           )}
-          <LifetimeRow icon={Briefcase} label={t('fortune.careerLife')} text={stage.career} color="text-primary-500" />
+          <LifetimeRow icon={Briefcase} label={t('fortune.careerLife')} text={stage.career} color="text-link" />
           <LifetimeRow icon={Heart} label={t('fortune.love')} text={stage.love} color="text-pink-500" />
         </div>
       )}
@@ -345,7 +345,7 @@ function LifetimeRow({
         <Icon size={15} />
       </div>
       <div>
-        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-0.5">{label}</p>
+        <p className="text-xs font-semibold text-content-secondary mb-0.5">{label}</p>
         <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{text}</p>
       </div>
     </div>
@@ -408,15 +408,15 @@ function YearReadingSection({
         </div>
 
         <FortuneRow icon={Heart} label={t('fortune.love')} text={reading.love} color="text-pink-500" />
-        <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-primary-500" />
+        <FortuneRow icon={Briefcase} label={t('fortune.career')} text={reading.career} color="text-link" />
         <FortuneRow icon={Coins} label={t('fortune.money')} text={reading.money} color="text-accent-500" />
         <FortuneRow icon={HeartPulse} label={t('fortune.health')} text={reading.health} color="text-green-500" />
 
         <div className="flex items-center gap-4 pt-2 border-t border-gray-100 dark:border-gray-800 text-sm">
-          <span className="text-gray-500 dark:text-gray-400">
+          <span className="text-content-secondary">
             {t('fortune.luckyNumberShort')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyNumber}</span>
           </span>
-          <span className="text-gray-500 dark:text-gray-400">
+          <span className="text-content-secondary">
             {t('fortune.luckyColor')} <span className="font-semibold text-gray-900 dark:text-white">{reading.luckyColor}</span>
           </span>
         </div>
@@ -464,7 +464,7 @@ function MonthCard({ monthData }: { monthData: MonthlyFortune }) {
       {open && (
         <div className="px-3 pb-4 space-y-3 border-t border-gray-100 dark:border-gray-800 pt-3">
           <MonthRow icon={Heart} label={t('fortune.love')} text={monthData.love} color="text-pink-500" />
-          <MonthRow icon={Briefcase} label={t('fortune.career')} text={monthData.career} color="text-primary-500" />
+          <MonthRow icon={Briefcase} label={t('fortune.career')} text={monthData.career} color="text-link" />
           <MonthRow icon={Coins} label={t('fortune.money')} text={monthData.money} color="text-accent-500" />
           <MonthRow icon={HeartPulse} label={t('fortune.health')} text={monthData.health} color="text-green-500" />
           <MonthRow icon={StickyNote} label={t('fortune.note')} text={monthData.note} color="text-gray-500" />
@@ -491,7 +491,7 @@ function MonthRow({
         <Icon size={13} />
       </div>
       <div>
-        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-0.5">{label}</p>
+        <p className="text-xs font-semibold text-content-secondary mb-0.5">{label}</p>
         <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{text}</p>
       </div>
     </div>
@@ -545,7 +545,7 @@ function FortuneRow({
         <Icon size={15} />
       </div>
       <div>
-        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">{label}</p>
+        <p className="text-xs font-semibold text-content-secondary">{label}</p>
         <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{text}</p>
       </div>
     </div>

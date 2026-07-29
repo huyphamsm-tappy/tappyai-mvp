@@ -225,7 +225,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
                 'w-9 h-9 rounded-xl flex items-center justify-center transition-all',
                 showEmojiPanel
                   ? 'bg-accent-100 dark:bg-accent-900/30 text-accent-500'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-accent-50 dark:hover:bg-accent-900/20 hover:text-accent-500'
+                  : 'bg-gray-100 dark:bg-gray-800 text-content-secondary hover:bg-accent-50 dark:hover:bg-accent-900/20 hover:text-accent-500'
               )}
             >
               <Smile size={18} />
@@ -252,7 +252,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
               disabled={!query.trim()}
               className={cn(
                 'w-9 h-9 rounded-xl flex items-center justify-center transition-all',
-                query.trim() ? 'bg-primary-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-300 dark:text-gray-600'
+                query.trim() ? 'bg-interactive text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-300 dark:text-gray-600'
               )}
             >
               <ArrowUp size={18} />
@@ -297,7 +297,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
         className="w-full bg-gray-100 dark:bg-gray-800 rounded-2xl pl-11 pr-4 py-3 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-base transition-all"
       />
       {query && (
-        <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 bg-primary-500 text-white rounded-xl px-3 py-1.5 text-sm font-medium">
+        <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 bg-interactive text-white rounded-xl px-3 py-1.5 text-sm font-medium">
           Hỏi
         </button>
       )}

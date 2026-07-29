@@ -145,7 +145,7 @@ export default function EditProfilePage() {
             <button
               onClick={() => fileRef.current?.click()}
               disabled={uploadingAvatar}
-              className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-primary-500 hover:bg-primary-600 flex items-center justify-center shadow-md transition-all disabled:opacity-50"
+              className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-interactive hover:bg-interactive-hover flex items-center justify-center shadow-md transition-all disabled:opacity-50"
               aria-label="Đổi ảnh đại diện"
             >
               <Camera size={15} className="text-white" />
@@ -176,7 +176,7 @@ export default function EditProfilePage() {
               Email
             </label>
             <div className="flex items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 px-3 py-2.5">
-              <span className="text-sm text-gray-500 dark:text-gray-400 flex-1">{profile.email}</span>
+              <span className="text-sm text-content-secondary flex-1">{profile.email}</span>
               <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">Không thể thay đổi</span>
             </div>
           </div>
@@ -222,7 +222,7 @@ export default function EditProfilePage() {
           className={`w-full py-4 rounded-2xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-2 ${
             saved
               ? 'bg-green-500 text-white'
-              : 'bg-primary-500 hover:bg-primary-600 active:scale-[0.98] text-white disabled:opacity-60'
+              : 'bg-interactive hover:bg-interactive-hover active:scale-[0.98] text-white disabled:opacity-60'
           }`}
         >
           {saving ? (

@@ -37,7 +37,7 @@ export default function LanguagePicker() {
             <TappyMascot pose="welcome" size={72} eager animated />
           </div>
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">Chọn ngôn ngữ</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Choose your language</p>
+          <p className="text-sm text-content-secondary">Choose your language</p>
         </div>
         <div className="space-y-3">
           <button

@@ -40,6 +40,21 @@ const config: Config = {
       colors: {
         primary: { DEFAULT: '#007AFF', 50: '#E5F1FF', 100: '#CCE3FF', 200: '#99C8FF', 300: '#66ACFF', 400: '#3391FF', 500: '#007AFF', 600: '#0062CC', 700: '#004999', 800: '#003166', 900: '#001833' },
         accent: { DEFAULT: '#FF9500', 50: '#FFF4E5', 100: '#FFE9CC', 200: '#FFD399', 300: '#FFBD66', 400: '#FFA733', 500: '#FF9500', 600: '#CC7700', 700: '#995900', 800: '#663C00', 900: '#331E00' },
+        // Semantic color layer (WCAG AA) — resolves via CSS vars in globals.css
+        // (:root / .dark), so these auto-flip in dark mode. Brand hue #007AFF stays
+        // in `primary` above; these carry the text-sized contrast guarantees.
+        interactive: {
+          DEFAULT: 'rgb(var(--interactive) / <alpha-value>)',
+          hover: 'rgb(var(--interactive-hover) / <alpha-value>)',
+          active: 'rgb(var(--interactive-active) / <alpha-value>)',
+        },
+        'on-interactive': 'rgb(var(--on-interactive) / <alpha-value>)',
+        link: 'rgb(var(--link) / <alpha-value>)',
+        content: {
+          DEFAULT: 'rgb(var(--content) / <alpha-value>)',
+          secondary: 'rgb(var(--content-secondary) / <alpha-value>)',
+          muted: 'rgb(var(--content-muted) / <alpha-value>)',
+        },
         // Back Office (shadcn/ui) neutral tokens — resolve only inside `.admin-theme`
         // (see globals.css). Additive; product `primary`/`accent` above are unchanged.
         background: 'hsl(var(--background))',

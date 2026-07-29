@@ -20,7 +20,7 @@ export function MusicCategoryTabs({ categories, activeCategoryId, onSelect }: Mu
         aria-pressed={activeCategoryId === null}
         className={`flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
           activeCategoryId === null
-            ? 'bg-primary-500 text-white'
+            ? 'bg-interactive text-white'
             : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'
         }`}
       >
@@ -34,7 +34,7 @@ export function MusicCategoryTabs({ categories, activeCategoryId, onSelect }: Mu
           aria-pressed={activeCategoryId === category.id}
           className={`flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
             activeCategoryId === category.id
-              ? 'bg-primary-500 text-white'
+              ? 'bg-interactive text-white'
               : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'
           }`}
         >

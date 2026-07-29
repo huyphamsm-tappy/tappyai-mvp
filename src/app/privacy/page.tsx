@@ -127,13 +127,13 @@ export default function PrivacyPage() {
             <h3 className="font-semibold text-gray-900 dark:text-white mb-1">7. Liên hệ</h3>
             <p>
               Nếu có thắc mắc về chính sách bảo mật, vui lòng liên hệ:{' '}
-              <span className="text-primary-500">huypham.sm@gmail.com</span>
+              <span className="text-link">huypham.sm@gmail.com</span>
             </p>
           </div>
         </div>
 
         <div className="mt-6 text-center">
-          <Link href="/login" className="inline-flex items-center gap-2 text-sm text-primary-500 font-medium hover:underline">
+          <Link href="/login" className="inline-flex items-center gap-2 text-sm text-link font-medium hover:underline">
             <ArrowLeft size={14} />
             Quay lại đăng nhập
           </Link>

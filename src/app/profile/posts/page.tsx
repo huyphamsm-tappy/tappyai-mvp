@@ -53,7 +53,7 @@ export default function MyPostsPage() {
     setSelected(null)
   }
 
-  if (loading) return <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center"><Loader2 size={24} className="text-primary-500 animate-spin" /></div>
+  if (loading) return <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center"><Loader2 size={24} className="text-link animate-spin" /></div>
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
@@ -70,7 +70,7 @@ export default function MyPostsPage() {
         <div className="flex flex-col items-center justify-center py-24 text-gray-400">
           <Grid3X3 size={48} className="mb-4 opacity-30" />
           <p className="text-sm">Bạn chưa có bài viết nào</p>
-          <Link href="/reviews/new" className="mt-4 bg-primary-500 text-white px-5 py-2 rounded-full text-sm font-semibold">Đăng bài đầu tiên</Link>
+          <Link href="/reviews/new" className="mt-4 bg-interactive text-white px-5 py-2 rounded-full text-sm font-semibold">Đăng bài đầu tiên</Link>
         </div>
       ) : (
         <div className="max-w-2xl mx-auto px-4 py-4">

@@ -52,7 +52,7 @@ export default function GroupNewForm() {
             </div>
             <div>
               <h1 className="font-bold text-gray-900 dark:text-white text-lg">Đi đâu ăn gì cả team?</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Tạo nhóm, chia sẻ link, để Tappy gợi ý</p>
+              <p className="text-sm text-content-secondary">Tạo nhóm, chia sẻ link, để Tappy gợi ý</p>
             </div>
           </div>
 

@@ -170,7 +170,7 @@ export default function PreferencesPage() {
             <button
               onClick={() => addPref(newPref)}
               disabled={!newPref.trim()}
-              className="flex items-center gap-1 px-3 py-2 rounded-xl bg-primary-500 text-white text-sm font-medium disabled:opacity-40 hover:bg-primary-600 transition-all"
+              className="flex items-center gap-1 px-3 py-2 rounded-xl bg-interactive text-white text-sm font-medium disabled:opacity-40 hover:bg-interactive-hover transition-all"
             >
               <Plus size={15} />
               Thêm
@@ -226,7 +226,7 @@ export default function PreferencesPage() {
               >
                 <span className="text-xl">{opt.emoji}</span>
                 {opt.label}
-                {gender === opt.value && <Check size={14} className="text-primary-500" />}
+                {gender === opt.value && <Check size={14} className="text-link" />}
               </button>
             ))}
           </div>
@@ -254,7 +254,7 @@ export default function PreferencesPage() {
                 </span>
                 <span className="text-xs text-gray-400 dark:text-gray-500 text-center leading-tight">{opt.desc}</span>
                 {budget === opt.value && (
-                  <Check size={14} className="text-primary-500 mt-0.5" />
+                  <Check size={14} className="text-link mt-0.5" />
                 )}
               </button>
             ))}
@@ -273,7 +273,7 @@ export default function PreferencesPage() {
                 onClick={() => toggleCuisine(item)}
                 className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
                   cuisines.includes(item)
-                    ? 'border-primary-500 bg-primary-500 text-white'
+                    ? 'border-primary-500 bg-interactive text-white'
                     : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:border-primary-300'
                 }`}
               >
@@ -308,7 +308,7 @@ export default function PreferencesPage() {
           className={`w-full py-4 rounded-2xl font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 ${
             saved
               ? 'bg-green-500 text-white'
-              : 'bg-primary-500 hover:bg-primary-600 active:scale-[0.98] text-white disabled:opacity-60'
+              : 'bg-interactive hover:bg-interactive-hover active:scale-[0.98] text-white disabled:opacity-60'
           }`}
         >
           {saving ? (

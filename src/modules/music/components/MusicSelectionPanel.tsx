@@ -39,13 +39,13 @@ export function MusicSelectionPanel({ track, onBack, onConfirm }: MusicSelection
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{track.title}</p>
           {track.artist && (
-            <p className="truncate text-xs text-gray-500 dark:text-gray-400">{track.artist}</p>
+            <p className="truncate text-xs text-content-secondary">{track.artist}</p>
           )}
         </div>
       </div>
 
       <div>
-        <div className="mb-1 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div className="mb-1 flex items-center justify-between text-xs text-content-secondary">
           <label htmlFor="music-start-sec">Vị trí bắt đầu</label>
           <span>
             {formatDuration(startSec)} / {formatDuration(track.durationSec)}
@@ -64,7 +64,7 @@ export function MusicSelectionPanel({ track, onBack, onConfirm }: MusicSelection
       </div>
 
       <div>
-        <div className="mb-1 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div className="mb-1 flex items-center justify-between text-xs text-content-secondary">
           <label htmlFor="music-volume">Âm lượng</label>
           <span>{Math.round(volume * 100)}%</span>
         </div>
@@ -83,7 +83,7 @@ export function MusicSelectionPanel({ track, onBack, onConfirm }: MusicSelection
       <button
         type="button"
         onClick={handleConfirm}
-        className="w-full rounded-full bg-primary-500 py-3 text-sm font-semibold text-white"
+        className="w-full rounded-full bg-interactive py-3 text-sm font-semibold text-white"
       >
         Chọn nhạc này
       </button>

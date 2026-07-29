@@ -47,7 +47,7 @@ export default function RecommendationsPage() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
       <header className="sticky top-0 z-10 border-b border-gray-100 dark:border-gray-800 bg-white/80 dark:bg-gray-950/80 backdrop-blur">
         <div className="max-w-lg mx-auto flex items-center px-4 h-14">
-          <button onClick={() => router.push('/')} className="flex items-center gap-1 text-sm font-medium text-primary-500">
+          <button onClick={() => router.push('/')} className="flex items-center gap-1 text-sm font-medium text-link">
             <ChevronLeft size={18} /> Trang chủ
           </button>
           <h1 className="flex-1 text-center font-semibold text-gray-900 dark:text-white pr-16">✨ Gợi ý cho bạn</h1>
@@ -55,7 +55,7 @@ export default function RecommendationsPage() {
       </header>
 
       <main className="max-w-lg mx-auto px-4 py-4 space-y-4">
-        <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+        <p className="text-sm text-content-secondary flex items-center gap-1.5">
           <Sparkles size={15} className="text-primary-400" />
           {personalized ? 'Cá nhân hóa theo sở thích của bạn' : 'Địa điểm nổi bật gần đây'}
         </p>
@@ -77,7 +77,7 @@ export default function RecommendationsPage() {
         )}
 
         {!loading && !error && recs.length === 0 && (
-          <div className="flex flex-col items-center gap-2 py-12 text-center text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col items-center gap-2 py-12 text-center text-content-secondary">
             <div className="w-14 h-14 rounded-2xl overflow-hidden select-none">
               <TappyMascot pose={getTappyPose({ category: 'recommendation' })} size={56} animated />
             </div>

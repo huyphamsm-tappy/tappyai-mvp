@@ -52,7 +52,7 @@ export default function OnboardingPage() {
         {/* Progress */}
         <div className="flex gap-1.5 mb-6">
           {[1, 2].map(s => (
-            <div key={s} className={cn('h-1 flex-1 rounded-full transition-all', s <= step ? 'bg-primary-500' : 'bg-gray-100 dark:bg-gray-800')} />
+            <div key={s} className={cn('h-1 flex-1 rounded-full transition-all', s <= step ? 'bg-interactive' : 'bg-gray-100 dark:bg-gray-800')} />
           ))}
         </div>
       </div>
@@ -63,7 +63,7 @@ export default function OnboardingPage() {
             <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-1">
               {t('onboarding.welcomeTitle')}
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+            <p className="text-content-secondary text-sm mb-6">
               {t('onboarding.welcomeDesc')}
             </p>
 
@@ -90,7 +90,7 @@ export default function OnboardingPage() {
             <button
               onClick={() => setStep(2)}
               disabled={selected.length === 0}
-              className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-40 text-white font-semibold flex items-center justify-center gap-2 transition-all"
+              className="w-full py-3 rounded-2xl bg-interactive hover:bg-interactive-hover disabled:opacity-40 text-white font-semibold flex items-center justify-center gap-2 transition-all"
             >
               {t('common.next')} <ChevronRight size={18} />
             </button>
@@ -105,7 +105,7 @@ export default function OnboardingPage() {
             <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-1">
               {t('onboarding.locationTitle')}
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+            <p className="text-content-secondary text-sm mb-6">
               {t('onboarding.locationDesc')}
             </p>
 
@@ -121,7 +121,7 @@ export default function OnboardingPage() {
                       : 'border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200'
                   )}
                 >
-                  <MapPin size={14} className={city === c ? 'text-primary-500' : 'text-gray-400'} />
+                  <MapPin size={14} className={city === c ? 'text-link' : 'text-gray-400'} />
                   {c}
                 </button>
               ))}
@@ -139,7 +139,7 @@ export default function OnboardingPage() {
             <button
               onClick={handleFinish}
               disabled={loading}
-              className="w-full py-3 rounded-2xl bg-primary-500 hover:bg-primary-600 disabled:opacity-60 text-white font-semibold flex items-center justify-center gap-2 transition-all"
+              className="w-full py-3 rounded-2xl bg-interactive hover:bg-interactive-hover disabled:opacity-60 text-white font-semibold flex items-center justify-center gap-2 transition-all"
             >
               {loading ? <Loader2 size={18} className="animate-spin" /> : t('onboarding.start')}
             </button>

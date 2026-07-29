@@ -47,7 +47,7 @@ export default function TarotDraw() {
           <div className="text-5xl">🔮</div>
           <div>
             <h2 className="font-bold text-gray-900 dark:text-white text-lg mb-1">{t('fortune.tarotDrawTitle')}</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-content-secondary">
               {t('fortune.tarotDrawHint')}
             </p>
           </div>
@@ -125,7 +125,7 @@ export default function TarotDraw() {
                   {(d.reversed ? d.card.keywordsReversed : d.card.keywordsUpright).map((kw) => (
                     <span
                       key={kw}
-                      className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full"
+                      className="text-xs bg-gray-100 dark:bg-gray-800 text-content-secondary px-2 py-0.5 rounded-full"
                     >
                       {kw}
                     </span>
