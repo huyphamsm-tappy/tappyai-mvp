@@ -98,7 +98,7 @@ export const en: Record<string, string> = {
   'landing.about.p1':
     'TappyAI is founded and built by Huy Pham in Vietnam. The product is designed, engineered, and operated in-house — web, mobile, AI, and infrastructure.',
   'landing.about.p2':
-    'The web product is in production today and free to try. The native Android application has completed engineering hardening and is in release-candidate testing; it has not yet been submitted to Google Play.',
+    'The web product is in production today and free to try. The native Android application has completed engineering hardening and is in release-candidate testing.',
 
   // 9. Contact
   'landing.contact.title': 'Contact & support',
@@ -209,7 +209,7 @@ export const vi: Record<string, string> = {
   'landing.about.p1':
     'TappyAI được sáng lập và xây dựng bởi Huy Phạm tại Việt Nam. Sản phẩm được thiết kế, phát triển và vận hành nội bộ — web, di động, AI và hạ tầng.',
   'landing.about.p2':
-    'Sản phẩm web hiện đang vận hành chính thức và miễn phí trải nghiệm. Ứng dụng Android native đã hoàn tất giai đoạn củng cố kỹ thuật và đang trong giai đoạn kiểm thử bản phát hành thử; chưa được gửi lên Google Play.',
+    'Sản phẩm web hiện đang vận hành chính thức và miễn phí trải nghiệm. Ứng dụng Android native đã hoàn tất giai đoạn củng cố kỹ thuật và đang trong giai đoạn kiểm thử bản phát hành thử.',
 
   // 9. Contact
   'landing.contact.title': 'Liên hệ & hỗ trợ',
