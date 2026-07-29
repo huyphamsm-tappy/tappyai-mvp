@@ -343,6 +343,22 @@ Any code path that changes the active review **programmatically** must synchroni
 ## §5. Never declare GREEN because automation passed
 GREEN requires **all three**: deployed to production · Owner performed UAT · Owner observed PASS. (Reinforces Article I §6 and Article IV §3.)
 
+## §6. Process gaps found in this sprint
+
+This sprint surfaced three gaps in the development process:
+
+- **PASS confirmed on a branch that had not been fully verified.** The authenticated execution path was never run, so the result did not describe the reported scenario.
+- **Regression in the navigation synchronization mechanism** (`scrollFeed` / `ExploreSession`). A programmatic jump that did not notify the session in the same tick was reverted by the synchronization effect.
+- **Incorrect conclusion caused by a test action that mutated state** — a double click during Follow verification produced two toggles and was misread as a persistence failure.
+
+These gaps have been remediated and are reflected in the Articles above.
+
+*(Recorded as technical events rather than attributed to any individual: a reader should take away "these are the failure modes to avoid", which transfers to anyone doing this work.)*
+
+---
+
+> **Engineering Constitutions exist to preserve hard-earned lessons, not to accumulate rules. Every amendment should be justified by a real production incident.**
+
 ---
 
 **Adopted as Articles I–VI of the TappyAI Engineering Constitution. Companion documents:** ADR-015 (rationale), `BUG_REPRODUCTION_GATE_WORKFLOW.md` (diagram + evidence pack), `BUG_ASSIGNMENT_PROTOCOL.md` (intake + conflict handling), `RELEASE_GATE.md` (gates G0–G7).
