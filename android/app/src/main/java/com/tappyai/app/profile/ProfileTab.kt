@@ -57,6 +57,7 @@ fun ProfileTab(
                 onOpenBookings = { navController.navigate(ProfileRoute.Bookings) },
                 onOpenPreferences = { navController.navigate(ProfileRoute.Preferences) },
                 onOpenMyReviews = { navController.navigate(ProfileRoute.MyReviews) },
+                onOpenMyProfile = { userId -> navController.navigate(ProfileRoute.AuthorProfile(userId)) },
                 onOpenGroupDining = { navController.navigate(ProfileRoute.GroupDining) },
                 onOpenPriceTracking = { navController.navigate(ProfileRoute.PriceTracking) },
                 onOpenAccount = { navController.navigate(ProfileRoute.AccountGraph) },

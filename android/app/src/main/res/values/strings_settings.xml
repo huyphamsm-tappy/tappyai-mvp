@@ -39,6 +39,7 @@
     <string name="profile_menu_price_tracking">Price tracking</string>
     <string name="profile_menu_tappy_knows">What Tappy knows</string>
     <string name="profile_menu_app_connections">App connections</string>
+    <string name="profile_menu_my_profile">My profile</string>
     <string name="profile_menu_my_reviews">My reviews</string>
     <string name="profile_menu_group_dining">Group dining</string>
     <string name="profile_menu_upgrade_to_pro">Upgrade to Pro</string>
