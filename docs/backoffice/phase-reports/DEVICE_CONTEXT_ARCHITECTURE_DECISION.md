@@ -2,10 +2,17 @@
 
 **Scope:** Cross-platform `device_context` foundation for the Analytics platform. Infrastructure only — not a new analytics feature. Follows the frozen Analytics envelope architecture (§3 / §8A).
 
-**The contract (15 fields, identical on Web/Android/iOS):**
-`platform, os_name, os_version, browser_name, browser_version, device_type, manufacturer, device_model, screen_width, screen_height, pixel_ratio, color_scheme, locale, timezone, app_version`
+**The contract (19 fields, identical on Web/Android/iOS):**
+`platform, os_name, os_version, browser_name, browser_version, device_type, manufacturer, device_model, screen_width, screen_height, pixel_ratio, color_scheme, locale, timezone, app_version, build_number, sdk_version, network_type, is_pwa`
 
-> **Contract-growth validation (added pre-release):** `manufacturer`, `pixel_ratio`, and `color_scheme` were added to the contract **after** the initial 12, and required **zero migration, zero `/api/track` change, and zero envelope change** — only the detection module grew. This is the concrete payoff of the jsonb decision below: the device contract can evolve indefinitely without schema churn. `pixel_ratio` (`window.devicePixelRatio`) and `color_scheme` (`matchMedia(prefers-color-scheme)`) are free on Web; `manufacturer` is factual UA inference (e.g. iPhone → Apple) else `'unknown'`, filled natively on Android/iOS (`Build.MANUFACTURER` / `'Apple'`).
+> **Contract-growth validation (grown to 19 pre-release, still one jsonb column, still zero migrations):** the contract grew 12 → 15 → **19** across three pre-release passes. Every growth required **zero migration, zero `/api/track` change, and (except a 1-line `build_number` projection) zero envelope change** — only the detection module grew. This is the concrete payoff of the jsonb decision below: the device contract evolves indefinitely without schema churn.
+> - `pixel_ratio` (`devicePixelRatio`), `color_scheme` (`matchMedia(prefers-color-scheme)`), `network_type` (`navigator.connection`), `is_pwa` (`matchMedia(display-mode)` / `navigator.standalone`) are free/cheap on Web.
+> - `manufacturer` is factual UA inference (iPhone → Apple) else `'unknown'`.
+> - `build_number` is env-sourced (now projected into the flat envelope field from the single detection, removing a duplicate env read); `sdk_version` is env-sourced (`NEXT_PUBLIC_ANALYTICS_SDK_VERSION`) else `'unknown'` — Web has no separate versioned analytics SDK.
+
+### Detection & fallback strategy for the two focus fields (network_type, is_pwa)
+- **`network_type`** — read `navigator.connection`, preferring the **physical medium** `type` (`wifi`/`cellular`/`ethernet`/`none`/…→`other`) because that is the cross-platform-comparable axis Android/iOS also expose; fall back to the effective **speed class** `effectiveType` (`slow-2g`/`2g`/`3g`/`4g`/`5g`) when only that is present (Chrome commonly exposes only `effectiveType`); `'unknown'` when `navigator.connection` is absent (Safari/Firefox). Stable vocabulary: `wifi|cellular|ethernet|none|slow-2g|2g|3g|4g|5g|other|unknown`.
+- **`is_pwa`** — `true`/`false` when `matchMedia` can positively evaluate `(display-mode: standalone|fullscreen|minimal-ui)` or iOS `navigator.standalone`; `'unknown'` only when `matchMedia` is unavailable and no `navigator.standalone` exists. Never fabricated — the type is `boolean | 'unknown'`.
 
 ---
 
@@ -48,6 +55,19 @@ The real decision is **where the 6 genuinely-new fields** (`browser_name`, `brow
 
 ### iOS (future)
 - Identical story: iOS fills the same contract (`UIDevice`, `ProcessInfo.operatingSystemVersion`, `Locale`, `TimeZone`, `UIScreen`, bundle short-version, `platform='ios'`, `browser_name='unknown'` since there is no browser). Same endpoint, same column, no backend change.
+
+### Native mapping for the new fields (Android / iOS)
+| Field | Android | iOS |
+|---|---|---|
+| `manufacturer` | `Build.MANUFACTURER` | `'Apple'` |
+| `pixel_ratio` | `DisplayMetrics.density` | `UIScreen.main.scale` |
+| `color_scheme` | `Configuration.uiMode` (night flag) | `UITraitCollection.userInterfaceStyle` |
+| `build_number` | `versionCode` / `BuildConfig` | `CFBundleVersion` |
+| `sdk_version` | native analytics SDK/module version | native analytics SDK/module version |
+| `network_type` | `ConnectivityManager` → `wifi`/`cellular`/`ethernet`/`none` (+ `TelephonyManager` for `2g`…`5g` if desired) | `NWPathMonitor` → `wifi`/`cellular`/`wiredEthernet→ethernet`/`none` |
+| `is_pwa` | `false` (native app, not an installed PWA) — or `'unknown'` if the app chooses not to report it | `false` (native app) |
+
+All map into the **same stable vocabularies** used on Web, so `platform` is the only field that differs by client — every other field is a drop-in.
 
 ### Backend as source of truth
 - The device is the only truthful source for its own hardware/browser/screen, so `device_context` is client-supplied **by design**. The backend remains authoritative for the fields it already owns and continues to set them server-side: `user_id` (session), `country` (IP header — deliberately **not** in the contract), `created_at` (server timestamp). Server-side normalization/validation of `device_context` (e.g. clamping, platform allow-listing) can be added later as a purely additive layer **without any contract change**.
