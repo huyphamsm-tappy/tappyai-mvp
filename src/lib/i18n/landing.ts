@@ -22,7 +22,7 @@ export const en: Record<string, string> = {
   'landing.what.p1':
     'TappyAI is a consumer application for the Vietnamese market that brings together an AI assistant and a local discovery community. Users chat with Tappy — an assistant specialized in food, travel, and local services — and share short video reviews of real places and products.',
   'landing.what.p2':
-    'The product is live today as a web application, with a native Android application prepared for release. The full experience ships in both Vietnamese and English.',
+    'The product is live today as a web application; a native Android application is in release-candidate testing. The main application interface is available in both Vietnamese and English.',
 
   // 3. Vision
   'landing.vision.title': 'Our vision',
@@ -63,7 +63,7 @@ export const en: Record<string, string> = {
     'Translate, currency, split bill, document scan, and more — small tools for everyday situations.',
   'landing.features.bilingual.title': 'Bilingual by design',
   'landing.features.bilingual.desc':
-    'The entire product is available in Vietnamese and English and can be switched at any time.',
+    'The application interface can be switched between Vietnamese and English at any time.',
 
   // 6. Product screenshots
   'landing.shots.title': 'Product screenshots',
@@ -96,9 +96,9 @@ export const en: Record<string, string> = {
   // 8. About
   'landing.about.title': 'About TappyAI',
   'landing.about.p1':
-    'TappyAI is built by a small product team in Vietnam, founded and led by Huy Pham. The team designs, engineers, and operates the entire product — web, mobile, AI, and infrastructure.',
+    'TappyAI is founded and built by Huy Pham in Vietnam. The product is designed, engineered, and operated in-house — web, mobile, AI, and infrastructure.',
   'landing.about.p2':
-    'The web product is in production today and free to try. The native Android application has completed engineering hardening and is being prepared for release.',
+    'The web product is in production today and free to try. The native Android application has completed engineering hardening and is in release-candidate testing; it has not yet been submitted to Google Play.',
 
   // 9. Contact
   'landing.contact.title': 'Contact & support',
@@ -112,7 +112,7 @@ export const en: Record<string, string> = {
   'landing.footer.terms': 'Terms of Service',
   'landing.footer.privacy': 'Privacy Policy',
   'landing.footer.copyrightPolicy': 'Copyright Policy',
-  'landing.footer.rights': '© 2025 TappyAI. All rights reserved.',
+  'landing.footer.rights': '© 2026 TappyAI. All rights reserved.',
 }
 
 export const vi: Record<string, string> = {
@@ -133,7 +133,7 @@ export const vi: Record<string, string> = {
   'landing.what.p1':
     'TappyAI là ứng dụng tiêu dùng cho thị trường Việt Nam, kết hợp trợ lý AI với cộng đồng khám phá địa phương. Người dùng trò chuyện với Tappy — trợ lý chuyên về ẩm thực, du lịch và dịch vụ địa phương — và chia sẻ video review ngắn về những địa điểm, sản phẩm có thật.',
   'landing.what.p2':
-    'Sản phẩm hiện đang hoạt động dưới dạng ứng dụng web, cùng ứng dụng Android native đang được chuẩn bị phát hành. Toàn bộ trải nghiệm hỗ trợ cả tiếng Việt và tiếng Anh.',
+    'Sản phẩm hiện đang hoạt động dưới dạng ứng dụng web; ứng dụng Android native đang trong giai đoạn kiểm thử bản phát hành thử (release candidate). Giao diện chính của ứng dụng hỗ trợ cả tiếng Việt và tiếng Anh.',
 
   // 3. Vision
   'landing.vision.title': 'Tầm nhìn',
@@ -174,7 +174,7 @@ export const vi: Record<string, string> = {
     'Dịch thuật, tiền tệ, chia hóa đơn, quét tài liệu và nhiều hơn nữa — những công cụ nhỏ cho tình huống hằng ngày.',
   'landing.features.bilingual.title': 'Song ngữ từ thiết kế',
   'landing.features.bilingual.desc':
-    'Toàn bộ sản phẩm hỗ trợ tiếng Việt và tiếng Anh, có thể chuyển đổi bất kỳ lúc nào.',
+    'Giao diện ứng dụng có thể chuyển đổi giữa tiếng Việt và tiếng Anh bất kỳ lúc nào.',
 
   // 6. Product screenshots
   'landing.shots.title': 'Hình ảnh sản phẩm',
@@ -207,9 +207,9 @@ export const vi: Record<string, string> = {
   // 8. About
   'landing.about.title': 'Về TappyAI',
   'landing.about.p1':
-    'TappyAI được xây dựng bởi một đội ngũ sản phẩm nhỏ tại Việt Nam, do Huy Phạm sáng lập và dẫn dắt. Đội ngũ thiết kế, phát triển và vận hành toàn bộ sản phẩm — web, di động, AI và hạ tầng.',
+    'TappyAI được sáng lập và xây dựng bởi Huy Phạm tại Việt Nam. Sản phẩm được thiết kế, phát triển và vận hành nội bộ — web, di động, AI và hạ tầng.',
   'landing.about.p2':
-    'Sản phẩm web hiện đang vận hành chính thức và miễn phí trải nghiệm. Ứng dụng Android native đã hoàn tất giai đoạn củng cố kỹ thuật và đang được chuẩn bị phát hành.',
+    'Sản phẩm web hiện đang vận hành chính thức và miễn phí trải nghiệm. Ứng dụng Android native đã hoàn tất giai đoạn củng cố kỹ thuật và đang trong giai đoạn kiểm thử bản phát hành thử; chưa được gửi lên Google Play.',
 
   // 9. Contact
   'landing.contact.title': 'Liên hệ & hỗ trợ',
@@ -223,5 +223,5 @@ export const vi: Record<string, string> = {
   'landing.footer.terms': 'Điều khoản sử dụng',
   'landing.footer.privacy': 'Chính sách bảo mật',
   'landing.footer.copyrightPolicy': 'Chính sách bản quyền',
-  'landing.footer.rights': '© 2025 TappyAI. All rights reserved.',
+  'landing.footer.rights': '© 2026 TappyAI. All rights reserved.',
 }
