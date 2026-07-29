@@ -1,8 +1,8 @@
-// Startup landing page (/about) dictionary — corporate introduction content for
+// Startup landing page (/startup) dictionary — corporate introduction content for
 // Google for Startups review, investors, and business partners. Layered over the
 // base dictionary by useTranslation, same contract as ./w2 and ./w3. All page
-// content lives here (business content separated from presentation); components
-// under src/app/about only render these keys.
+// content lives here (business content separated from presentation); the section
+// components under src/components/landing only render these keys.
 
 export const en: Record<string, string> = {
   // Header
