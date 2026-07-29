@@ -647,6 +647,14 @@ export default function ReviewsPage() {
     const next = Math.max(0, Math.min(reviews.length - 1, cur + dir))
     c.scrollTo({ top: next * c.clientHeight, behavior: 'auto' })
     setActiveIndex(next) // update immediately so the arrows' disabled state + video window track it
+    // Programmatic jumps must tell the session in the SAME tick. A native scroll
+    // reports through the scroll handler before React re-renders, but this path
+    // updates activeIndex first — the reconciliation effect below would then see
+    // UI-vs-session disagreement and yank the feed straight back to the session's
+    // clip, which made the desktop arrows (and wheel forwarding) look dead.
+    sessionRef.current?.reportActiveItem({
+      reviewId: reviews[next]?.id ?? null, index: next, scrollOffset: next * c.clientHeight,
+    })
   }
 
   // Single write path for the query (I2): UI state and session state move
