@@ -17,6 +17,57 @@
 
 ---
 
+## ⚠️ A. Physical-Device UAT — MANDATORY pre-flight (debug / staging builds)
+
+> **Run this before every UAT on a real phone.** Skipping it produces the exact P0-001 failure seen in UAT Run #1: Google Sign-In *succeeds*, but the app behaves as if logged out — Profile shows "Đăng nhập để cá nhân hóa" and Like/Comment/Follow/Save are dead.
+
+### A.1 Required Gradle property (the one that is easy to forget)
+
+```
+TAPPYAI_API_BASE_URL_DEBUG=https://www.tappyai.com/
+```
+
+Supply it the same way as every other build property — in `~/.gradle/gradle.properties` (machine-local, auto-merged) **or** as a `-P` flag on the build command:
+
+```powershell
+# PowerShell (this machine) — build a debug APK aimed at the real backend for physical-device UAT
+$env:JAVA_HOME="C:\Program Files\Android\Android Studio\jbr"
+.\gradlew.bat :app:assembleDebug "-PTAPPYAI_API_BASE_URL_DEBUG=https://www.tappyai.com/" --console=plain
+```
+
+### A.2 Why this is mandatory
+
+- **`API_BASE_URL` (our backend) is independent of `SUPABASE_URL` (auth).** They are separate `BuildConfig` fields. Google Sign-In talks to Supabase (`SUPABASE_URL`); everything else — `/api/profile`, feed, like, comment, follow, save — talks to `API_BASE_URL`. Auth can succeed while the whole backend is unreachable.
+- **The debug default is `http://10.0.2.2:3000/`, which is an *Android Emulator only* address.** `10.0.2.2` is the emulator's special alias for the host machine's `localhost`. On a **physical device it is the phone's own loopback** — nothing is listening there — so every first-party API call fails and the app *renders* logged-out even with a valid session.
+- **Physical devices must point at the real backend.** Use the production origin `https://www.tappyai.com/`.
+- **Use `www.`, not the apex `tappyai.com`.** `https://tappyai.com/api/*` returns **HTTP 308 → redirects to `www.tappyai.com`**, and OkHttp **strips the `Authorization` header on a cross-host redirect** — which would silently re-break auth. `https://www.tappyai.com/` returns `200` with no redirect. (Trailing `/` is required.)
+- The `staging`/`release` defaults are `*.tappyai.example.com` placeholders (reserved documentation domain) — also non-functional on any device until overridden. Same rule applies if you UAT those variants.
+
+### A.3 How to confirm the value actually took (ground truth)
+
+The compiled value is written into the generated `BuildConfig.java` — read it, don't assume:
+
+```bash
+# after building, inspect the value baked into the APK
+grep API_BASE_URL android/app/build/generated/source/buildConfig/debug/com/tappyai/app/BuildConfig.java
+# expect:  public static final String API_BASE_URL = "https://www.tappyai.com/";
+```
+
+At runtime, `adb logcat | grep okhttp` should show requests going to `https://www.tappyai.com/...` (never `10.0.2.2`). Note: `versionCode=1` / `versionName=0.1.0` are identical across all builds, so they can **not** be used to tell which config an installed APK carries — the `BuildConfig`/logcat check above is the only reliable proof.
+
+### A.4 Pre-UAT Checklist
+
+Complete **all** before starting a physical-device UAT session:
+
+- [ ] **`API_BASE_URL_DEBUG`** — set to `https://www.tappyai.com/` (verified in generated `BuildConfig.java`, not just assumed)
+- [ ] **`SUPABASE_URL`** — real prod Supabase project URL (not `https://your-project.supabase.co`)
+- [ ] **`GOOGLE_CLIENT_ID`** — real Google **Web** OAuth client id (`…apps.googleusercontent.com`), matching the Supabase Google provider
+- [ ] **Build Variant** — confirm which variant is being tested (`debug` for device UAT); staging/release need their own `*_STAGING` / `*_RELEASE` API URL overrides
+- [ ] **Clean Install** — `adb install -r` (or uninstall first) the freshly built APK; confirm the on-device build is the one you just built
+- [ ] **Login Test** — sign in, then confirm Profile shows the real name/email and Like/Save round-trip (proves the backend is reachable and the JWT is honored)
+
+---
+
 ## 1. Release Keystore (upload key)
 
 Create once and **store securely — never commit** (repo already gitignores keystores; keep a secure backup offline):
@@ -140,10 +191,12 @@ apksigner verify --verbose universal.apk
 
 | Step | Command |
 |---|---|
+| **Physical-device UAT build** | `./gradlew :app:assembleDebug -PTAPPYAI_API_BASE_URL_DEBUG=https://www.tappyai.com/` (see §A) |
+| Confirm baked API URL | `grep API_BASE_URL android/app/build/generated/source/buildConfig/debug/.../BuildConfig.java` |
 | Build signed AAB | `./gradlew :app:bundleRelease` (with 9 `TAPPYAI_*` set) |
 | AAB location | `android/app/build/outputs/bundle/release/app-release.aab` |
 | Inspect manifest | `bundletool dump manifest --bundle=app-release.aab` |
 | Verify signature | `bundletool build-apks --mode=universal …` → `apksigner verify universal.apk` |
 | Gate error | supply the exact `TAPPYAI_*` names it prints |
 
-**Never:** commit the keystore or secrets; build the release from the working tree; re-use a published versionCode; ship without a working test account for Play review.
+**Never:** commit the keystore or secrets; build the release from the working tree; re-use a published versionCode; ship without a working test account for Play review; **UAT on a physical device with the `10.0.2.2` debug default (see §A — it is emulator-only).**
