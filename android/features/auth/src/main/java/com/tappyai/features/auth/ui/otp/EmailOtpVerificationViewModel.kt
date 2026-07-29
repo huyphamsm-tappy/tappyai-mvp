@@ -52,6 +52,13 @@ class EmailOtpVerificationViewModel @Inject constructor(
             _uiState.value = UiState.Error(stringProvider.get(R.string.auth_enter_code_first))
             return
         }
+        // Web-parity-sync fix: matches web's handleVerifyOtp exactly (src/app/login/page.tsx:204)
+        // — code.length < 6 — instead of only checking for non-empty, which let an
+        // obviously-too-short code reach the network before failing.
+        if (codeValue.length < 6) {
+            _uiState.value = UiState.Error(stringProvider.get(R.string.auth_otp_code_invalid_length))
+            return
+        }
 
         viewModelScope.launch {
             _uiState.value = UiState.Loading

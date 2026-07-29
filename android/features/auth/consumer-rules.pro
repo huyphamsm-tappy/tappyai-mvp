@@ -18,6 +18,20 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
+# Round-2 audit fix: the rules above only cover this module's OWN @Serializable types
+# (AuthRoute etc). supabase-kt/auth-kt ship zero consumer ProGuard rules of their own (confirmed
+# by unzipping the release AARs), so their DTOs — e.g. UserSession, UserInfo, decoded on every
+# login/refresh/OTP/OAuth response — were unprotected and R8 could strip/rename them in a real
+# minified build, breaking sign-in silently (only reachable via an authenticated network call, so
+# a plain install+launch smoke test never caught it).
+-keep,includedescriptorclasses class io.github.jan.supabase.**$$serializer { *; }
+-keepclassmembers class io.github.jan.supabase.** {
+    *** Companion;
+}
+-keepclasseswithmembers class io.github.jan.supabase.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
 # Google Identity / Credential Manager credential classes are parceled via reflection.
 -keep class com.google.android.libraries.identity.googleid.** { *; }
 -keep class androidx.credentials.** { *; }
