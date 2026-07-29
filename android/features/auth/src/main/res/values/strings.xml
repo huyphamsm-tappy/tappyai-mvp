@@ -4,6 +4,26 @@
     <string name="auth_continue_with_google">Continue with Google</string>
     <string name="auth_continue_with_zalo">Continue with Zalo</string>
     <string name="auth_continue_with_facebook">Continue with Facebook</string>
+
+    <!-- Login screen visual parity (web 5c8dc38 login page) -->
+    <string name="auth_welcome_to">Welcome to</string>
+    <string name="auth_tagline">Touch Every Service</string>
+    <string name="auth_personal_agent">Your Personal AI Agent</string>
+    <string name="auth_feature_1_title">All-in-One AI Assistant</string>
+    <string name="auth_feature_1_desc">Chat, search, plan, and get things done in one place.</string>
+    <string name="auth_feature_2_title">Explore Everything</string>
+    <string name="auth_feature_2_desc">Travel, food, reviews, music and more — all connected.</string>
+    <string name="auth_feature_3_title">Secure &amp; Private</string>
+    <string name="auth_feature_3_desc">Your data belongs to you. We protect your privacy.</string>
+    <string name="auth_feature_4_title">Always with You</string>
+    <string name="auth_feature_4_desc">Your personal AI agent, anytime, anywhere.</string>
+    <string name="auth_signin_title">Sign in to TappyAI</string>
+    <string name="auth_signin_subtitle">Choose the best way to continue</string>
+    <string name="auth_trust_line">Your data is safe with us. We never post without your permission.</string>
+    <string name="auth_agree_prefix">By continuing, you agree to our</string>
+    <string name="auth_terms">Terms of Service</string>
+    <string name="auth_privacy">Privacy Policy</string>
+    <string name="auth_and">and</string>
     <string name="auth_or_divider">or</string>
     <string name="auth_email_label">Email</string>
     <string name="auth_email_placeholder">you@example.com</string>
