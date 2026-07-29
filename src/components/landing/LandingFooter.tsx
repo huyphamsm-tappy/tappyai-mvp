@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { BRAND_NAME, LOGO } from './config'
 
 // Legal links point at the existing production pages — no new routes.
 const LEGAL_LINKS = [
@@ -18,11 +19,14 @@ export default function LandingFooter() {
     <footer className="border-t border-white/10">
       <div className="mx-auto flex max-w-container-wide flex-col items-center gap-5 px-5 py-10 text-center sm:flex-row sm:justify-between sm:px-8 sm:text-left">
         <div className="flex items-center gap-2.5">
-          <Image src="/logo.png" alt="" width={24} height={24} className="h-6 w-6 object-contain" />
-          <span className="font-semibold">TappyAI</span>
+          <Image src={LOGO} alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+          <span className="font-semibold">{BRAND_NAME}</span>
         </div>
 
-        <nav aria-label="Legal" className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-400">
+        <nav
+          aria-label={t('landing.footer.legalNavLabel')}
+          className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-400"
+        >
           {LEGAL_LINKS.map(({ href, key }) => (
             <Link key={href} href={href} className="hover:text-white">
               {t(key)}

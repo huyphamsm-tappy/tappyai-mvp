@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { SITE_URL } from '@/components/landing/config'
+import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
 
 // Startup landing page shell: SEO metadata for the route plus the dark surface
 // the landing sections render on. Isolated from the application shell — no app
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: 'TappyAI',
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ url: `${SITE_URL}/feature-graphic.png` }],
+    images: [{ url: `${SITE_URL}${OG_IMAGE}` }],
     locale: 'en_US',
     alternateLocale: ['vi_VN'],
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: TITLE,
     description: DESCRIPTION,
-    images: [`${SITE_URL}/feature-graphic.png`],
+    images: [`${SITE_URL}${OG_IMAGE}`],
   },
 }
 

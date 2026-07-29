@@ -89,7 +89,7 @@ export const en: Record<string, string> = {
   'landing.tech.ai.title': 'AI',
   'landing.tech.ai.desc': 'Anthropic Claude models behind a provider-abstracted AI layer.',
   'landing.tech.data.title': 'Backend & data',
-  'landing.tech.data.desc': 'Supabase — PostgreSQL, authentication, and realtime — with media storage on Vercel Blob.',
+  'landing.tech.data.desc': 'Supabase — PostgreSQL, authentication, and row-level security — with media storage on Vercel Blob.',
   'landing.tech.ops.title': 'Analytics & payments',
   'landing.tech.ops.desc': 'PostHog product analytics and Stripe subscription billing.',
 
@@ -108,6 +108,7 @@ export const en: Record<string, string> = {
   'landing.contact.website.label': 'Official website',
 
   // 10. Footer
+  'landing.footer.legalNavLabel': 'Legal',
   'landing.footer.terms': 'Terms of Service',
   'landing.footer.privacy': 'Privacy Policy',
   'landing.footer.copyrightPolicy': 'Copyright Policy',
@@ -199,7 +200,7 @@ export const vi: Record<string, string> = {
   'landing.tech.ai.title': 'AI',
   'landing.tech.ai.desc': 'Các mô hình Anthropic Claude phía sau tầng AI trừu tượng hóa theo nhà cung cấp.',
   'landing.tech.data.title': 'Backend & dữ liệu',
-  'landing.tech.data.desc': 'Supabase — PostgreSQL, xác thực và realtime — cùng lưu trữ media trên Vercel Blob.',
+  'landing.tech.data.desc': 'Supabase — PostgreSQL, xác thực và bảo mật cấp dòng (RLS) — cùng lưu trữ media trên Vercel Blob.',
   'landing.tech.ops.title': 'Phân tích & thanh toán',
   'landing.tech.ops.desc': 'Phân tích sản phẩm PostHog và thanh toán thuê bao Stripe.',
 
@@ -218,6 +219,7 @@ export const vi: Record<string, string> = {
   'landing.contact.website.label': 'Website chính thức',
 
   // 10. Footer
+  'landing.footer.legalNavLabel': 'Pháp lý',
   'landing.footer.terms': 'Điều khoản sử dụng',
   'landing.footer.privacy': 'Chính sách bảo mật',
   'landing.footer.copyrightPolicy': 'Chính sách bản quyền',
