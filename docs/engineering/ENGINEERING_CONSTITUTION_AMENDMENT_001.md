@@ -1,6 +1,6 @@
-# TappyAI Engineering Constitution — Articles I–V
+# TappyAI Engineering Constitution — Articles I–VI
 
-**I** Bug Reproduction Gate · **II** Runtime Identity Proof · **III** Owner Observation Supremacy · **IV** Execution Path Equivalence · **V** Assumption Discipline
+**I** Bug Reproduction Gate · **II** Runtime Identity Proof · **III** Owner Observation Supremacy · **IV** Execution Path Equivalence · **V** Assumption Discipline · **VI** Sprint Retrospective Rules
 
 **Status:** BINDING · **Scope:** Web · Android · iOS — every bug, every session, every agent
 **Date:** 2026-07-29 · **Origin:** the Explore Navigation incident (multiple false PASS reports; see ADR-015)
@@ -320,4 +320,29 @@ Anything the AI did not **directly observe in the current session, on the proven
 
 ---
 
-**Adopted as Articles I–V of the TappyAI Engineering Constitution. Companion documents:** ADR-015 (rationale), `BUG_REPRODUCTION_GATE_WORKFLOW.md` (diagram + evidence pack), `BUG_ASSIGNMENT_PROTOCOL.md` (intake + conflict handling), `RELEASE_GATE.md` (gates G0–G7).
+# Article VI — Sprint Retrospective Rules (Owner, 2026-07-29)
+
+> Adopted from the Explore / Follow / Auth sprint closed on production `5c8dc38` with Owner UAT PASS. **Proven in production, not theory.**
+
+## §1. Owner Production UAT is the final authority
+A blocker is CLOSED **only** after the Owner confirms PASS **on production**. Browser automation, the Browser pane, local verification and runtime inspection are **evidence only**. They never override the Owner's observation. (Reinforces Article III.)
+
+## §2. Do not over-investigate
+Eliminating infrastructure — duplicate project, RLS, API layer, React state, DOM — is legitimate and was decisive here. **But the moment infrastructure is ruled out, return immediately to fixing the product.** Do not keep opening new investigations. An investigation that no longer narrows the defect is waste, and it costs the Owner time they cannot get back.
+
+## §3. One blocker at a time
+Never mix navigation · follow · authentication · feed ranking · recommendation · refactoring in one pass. **Each blocker owns its own lifecycle: RED → FIX → DEPLOY → OWNER UAT → GREEN.** Mixing them makes it impossible to attribute a failure to a change.
+
+## §4. Programmatic navigation must notify `ExploreSession` in the same tick
+Any code path that changes the active review **programmatically** must synchronize `ExploreSession` within the same execution tick. Otherwise the synchronization effect sees UI-vs-session disagreement and restores stale state, producing a navigation regression.
+
+**Proven case (this sprint):** `scrollFeed()` moved the container and called `setActiveIndex` without reporting to the session. Measured on production: clicking "Bài sau" moved `scrollTop` 0 → 945, and **60 ms later it was back at 0**. The desktop arrows were dead, and wheel forwarding died with them because it routed through the same function. Native scrolling was unaffected — the scroll handler reports **before** React re-renders. Fixed in `5c8dc38` by calling `reportActiveItem()` in the same tick.
+
+**Rule of thumb:** native scroll is self-correcting; every programmatic jump is not, and must report explicitly.
+
+## §5. Never declare GREEN because automation passed
+GREEN requires **all three**: deployed to production · Owner performed UAT · Owner observed PASS. (Reinforces Article I §6 and Article IV §3.)
+
+---
+
+**Adopted as Articles I–VI of the TappyAI Engineering Constitution. Companion documents:** ADR-015 (rationale), `BUG_REPRODUCTION_GATE_WORKFLOW.md` (diagram + evidence pack), `BUG_ASSIGNMENT_PROTOCOL.md` (intake + conflict handling), `RELEASE_GATE.md` (gates G0–G7).
