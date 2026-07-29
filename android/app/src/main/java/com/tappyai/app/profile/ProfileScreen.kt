@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Message
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Cable
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -67,6 +68,7 @@ private enum class ProfileMenuItem(val icon: ImageVector, @StringRes val titleRe
     PriceTracking(Icons.AutoMirrored.Filled.TrendingDown, R.string.profile_menu_price_tracking),
     TappyKnows(Icons.Filled.Psychology, R.string.profile_menu_tappy_knows),
     AppConnections(Icons.Filled.Cable, R.string.profile_menu_app_connections),
+    MyProfile(Icons.Filled.AccountCircle, R.string.profile_menu_my_profile),
     MyReviews(Icons.Filled.StarBorder, R.string.profile_menu_my_reviews),
     GroupDining(Icons.Filled.Group, R.string.profile_menu_group_dining),
     UpgradeToPro(Icons.Filled.WorkspacePremium, R.string.profile_menu_upgrade_to_pro),
@@ -96,6 +98,7 @@ private val ACCOUNT_ITEMS = buildList {
     add(ProfileMenuItem.PriceTracking)
     add(ProfileMenuItem.TappyKnows)
     if (SHOW_APP_CONNECTIONS) add(ProfileMenuItem.AppConnections)
+    add(ProfileMenuItem.MyProfile)
     add(ProfileMenuItem.MyReviews)
     add(ProfileMenuItem.GroupDining)
     if (SHOW_PRO_UPGRADE) add(ProfileMenuItem.UpgradeToPro)
@@ -123,6 +126,7 @@ fun ProfileScreen(
     onOpenBookings: () -> Unit,
     onOpenPreferences: () -> Unit,
     onOpenMyReviews: () -> Unit,
+    onOpenMyProfile: (String) -> Unit,
     onOpenGroupDining: () -> Unit,
     onOpenPriceTracking: () -> Unit,
     onOpenAccount: () -> Unit,
@@ -172,6 +176,9 @@ fun ProfileScreen(
                                 ProfileMenuItem.Bookings -> onOpenBookings
                                 ProfileMenuItem.Preferences -> onOpenPreferences
                                 ProfileMenuItem.MyReviews -> onOpenMyReviews
+                                // Opens the viewing self-profile (ReviewProfileScreen isSelf) via
+                                // the existing AuthorProfile route — id from the signed-in user.
+                                ProfileMenuItem.MyProfile -> ({ val id = viewModel.userId; if (id != null) onOpenMyProfile(id) })
                                 ProfileMenuItem.PriceTracking -> onOpenPriceTracking
                                 ProfileMenuItem.GroupDining -> onOpenGroupDining
                                 ProfileMenuItem.Account -> onOpenAccount
