@@ -25,7 +25,7 @@ export default function LandingFooter() {
 
         <nav
           aria-label={t('landing.footer.legalNavLabel')}
-          className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-400"
+          className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-content-secondary"
         >
           {LEGAL_LINKS.map(({ href, key }) => (
             <Link key={href} href={href} className="hover:text-white">
@@ -34,7 +34,7 @@ export default function LandingFooter() {
           ))}
         </nav>
 
-        <p className="text-sm text-gray-500">{t('landing.footer.rights')}</p>
+        <p className="text-sm text-content-secondary">{t('landing.footer.rights')}</p>
       </div>
     </footer>
   )

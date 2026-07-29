@@ -32,5 +32,11 @@ export const metadata: Metadata = {
 }
 
 export default function StartupLayout({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-dvh bg-gray-950 text-white">{children}</div>
+  // Fixed-dark surface: this page is always dark regardless of the app theme.
+  // The `dark` class marks it as a dark context (Tailwind darkMode: 'class'), so
+  // the semantic design-system tokens (text-content-secondary, text-link, …)
+  // resolve to their dark-mode values here instead of their light defaults.
+  // This is the design-system mechanism for fixed-dark surfaces — no per-page
+  // color exceptions. Landing sections use no `dark:` variants, so nothing else changes.
+  return <div className="dark min-h-dvh bg-gray-950 text-white">{children}</div>
 }

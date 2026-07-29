@@ -491,7 +491,7 @@ export default function LoginPage() {
 
         {/* Footer — copyright (stats section removed 2026-07-25 to match the approved mockup) */}
         <div className="border-t border-gray-100 dark:border-gray-800 px-6 sm:px-10 py-4">
-          <p className="text-center text-[11px] text-gray-400">© 2025 TappyAI. All rights reserved.</p>
+          <p className="text-center text-[11px] text-content-secondary">{t('landing.footer.rights')}</p>
         </div>
       </div>
     </div>

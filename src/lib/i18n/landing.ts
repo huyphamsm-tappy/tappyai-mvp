@@ -223,5 +223,5 @@ export const vi: Record<string, string> = {
   'landing.footer.terms': 'Điều khoản sử dụng',
   'landing.footer.privacy': 'Chính sách bảo mật',
   'landing.footer.copyrightPolicy': 'Chính sách bản quyền',
-  'landing.footer.rights': '© 2026 TappyAI. All rights reserved.',
+  'landing.footer.rights': '© 2026 TappyAI. Bảo lưu mọi quyền.',
 }
