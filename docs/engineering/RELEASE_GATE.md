@@ -28,7 +28,9 @@ A fix qualifies only with all of:
 4. **Same execution path** for both. A GREEN obtained on a different path, identity, or surface than the RED **fails G0**.
 5. **Traceability** — the fix commit references its RED evidence.
 
-**G0 failure modes (automatic FAIL):** no RED capture · reproduction was emulated/simulated · tested anonymously a signed-in bug · state-only evidence for a visual symptom · surface/build identity unrecorded or mismatched between captures.
+6. **Runtime Identity Block proven** (Article II §1) on both captures — repository, branch, worktree, commit SHA, PID, port, Build ID **served over HTTP**, plus build provenance. Any unprovable line ⇒ G0 FAIL.
+
+**G0 failure modes (automatic FAIL):** no RED capture · reproduction was emulated/simulated · tested anonymously a signed-in bug · state-only evidence for a visual symptom · surface/build identity unrecorded or mismatched between captures · Build ID read from disk but never verified over HTTP · build provenance assumed to be HEAD without proof · an unresolved Owner-vs-AI divergence still open (Article III §1.4).
 
 ## Release Candidate admissibility
 

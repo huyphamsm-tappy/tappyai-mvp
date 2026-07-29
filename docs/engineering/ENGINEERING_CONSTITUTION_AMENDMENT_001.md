@@ -1,4 +1,6 @@
-# TappyAI Engineering Constitution — Amendment I: The Bug Reproduction Gate
+# TappyAI Engineering Constitution — Articles I–III
+
+**Article I** — The Bug Reproduction Gate · **Article II** — Runtime Identity Proof · **Article III** — Owner Observation Supremacy
 
 **Status:** BINDING · **Scope:** Web · Android · iOS — every bug, every session, every agent
 **Date:** 2026-07-29 · **Origin:** the Explore Navigation incident (multiple false PASS reports; see ADR-015)
@@ -121,4 +123,90 @@ A violation (code written under a STOP, or a PASS without RED+GREEN) requires: i
 
 ---
 
-**Adopted as Article I of the TappyAI Engineering Constitution. Companion documents:** ADR-015 (rationale), `BUG_REPRODUCTION_GATE_WORKFLOW.md` (diagram), `BUG_ASSIGNMENT_PROTOCOL.md` (intake), `RELEASE_GATE.md` (gate G0).
+# Article II — Runtime Identity Proof
+
+> **Evidence beats reasoning. A result without a proven runtime identity is not a result.**
+
+## §1. The Identity Block (mandatory before any PASS)
+
+Any report containing `PASS` — bug fix, E2E cell, regression, verification, release gate — MUST publish this block, every line individually proven by a command whose output is shown:
+
+| # | Item | How it is proven |
+|---|---|---|
+| 1 | **Repository** | `git remote get-url origin` |
+| 2 | **Branch** | `git rev-parse --abbrev-ref HEAD` |
+| 3 | **Worktree** | absolute path of the tree under test |
+| 4 | **Commit SHA** | full `git rev-parse HEAD` |
+| 5 | **Running process PID** | OS process table, **with start time and full command line** |
+| 6 | **Port** | port→PID mapping proving *that* PID owns the port |
+| 7 | **Build ID** | on disk **and** as served over HTTP by that process |
+
+**If any single item cannot be proven, `PASS` is forbidden.** The permitted verdicts become `BLOCKED` or `UNVERIFIED`.
+
+## §2. Served beats disk
+
+Build identity MUST be verified **over HTTP from the running process**, never merely read from disk. A live process can serve a build whose files no longer exist — this occurred in the incident: the stale server on port 3000 answered **HTTP 400 for its own page chunk** while a newer build sat on disk. Disk state is not runtime state.
+
+## §3. Build provenance is not HEAD
+
+The commit a running build was **produced from** MUST be stated, and it is **not** automatically `HEAD` — commits (docs, tests, unrelated code) can move HEAD without rebuilding. If provenance cannot be established, `PASS` is forbidden.
+
+**Known gap, declared:** on localhost the app cannot self-report its commit (`/api/version` returns `"dev"` because `VERCEL_GIT_COMMIT_SHA` exists only on Vercel). Local provenance is therefore asserted by correlating the build's mtime with commit timestamps — **weaker than a baked-in SHA, and it must be labelled as inferred.** On production, `/api/version` is authoritative and must be quoted.
+
+## §4. Both sides of a comparison
+
+When an AI result is compared with an Owner result, the Identity Block must record **both surfaces**. An unproven Owner surface makes the comparison `UNVERIFIED`, never `PASS`.
+
+## §5. Worked example — this environment, 2026-07-29
+
+```
+Repository      : git@github.com:huyphamsm-tappy/tappyai-mvp.git
+Branch          : claude/nifty-sammet-44374f
+Worktree        : C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/cool-vaughan-b3c7ff
+Commit SHA(HEAD): 567cc01512b217ad773e3dda9535acdbccbcaf40
+PID             : 14276  (start 2026-07-29 08:54:20)
+CommandLine     : next start C:/Users/.../worktrees/cool-vaughan-b3c7ff -p 3000
+Port            : 3000   (netstat: 0.0.0.0:3000 LISTENING 14276)
+Build ID (disk) : KXYE_a7OpJDAxm8WLPLYC   (built 2026-07-28 15:27:56)
+Build (served)  : /_next/static/chunks/app/reviews/page-010444d740f52829.js → HTTP 200, 51090 bytes
+Build provenance: f76e9c9 (commit 15:27:25, build 15:27:56 — 31 s later; later commits are docs-only)
+                  ** INFERRED by timestamp correlation, not baked in — see §3 **
+Self-reported   : /api/version → {"v":"dev"}  (no SHA available on localhost)
+```
+
+**Note the trap this block exposes:** HEAD is `567cc01`, but the running build is from `f76e9c9`. Reporting "tested at HEAD" would have been false.
+
+---
+
+# Article III — Owner Observation Supremacy
+
+> **When the Owner's observation conflicts with the AI's reasoning or results, the Owner's observation becomes the active hypothesis until disproved by evidence.**
+
+## §1. The rule
+
+1. The Owner's report is **the working truth**. The AI's task is to **confirm and explain it**, not to defend its own contrary result.
+2. The AI's passing result is **not a refutation**. It is demoted to an **unexplained divergence** that the AI must resolve.
+3. Only **evidence** disproves an Owner observation — never reasoning, never a green test suite, never a prior PASS, never repetition.
+4. While the divergence stands: **no PASS, no bug closure, no RC, no "cannot reproduce" as a conclusion.**
+5. The **burden of proof sits with the AI**, always. The Owner is never asked to justify what they saw.
+
+## §2. Required response to a conflict
+
+On any "still broken" / "vẫn vậy" report the AI must, in this order:
+1. Adopt the Owner's observation as the active hypothesis, in writing.
+2. Publish its own Identity Block **and** state what is known/unknown about the Owner's surface (Article II §4).
+3. Enumerate **every** environmental difference that still exists (auth, surface, observation capability, input modality, data, device…).
+4. Attempt to satisfy the differences — first by its own means, then by naming exactly what only the Owner can unlock.
+5. Report `BLOCKED` or `UNVERIFIED`. **`PASS` is unavailable while the divergence is unexplained.**
+
+## §3. Forbidden rebuttals
+
+"It works on my machine" · "the tests are green" · "the code is logically correct" · "the mechanism cannot produce that" · "you must be on the wrong build" *(as an assertion rather than a proven fact)* · asking the Owner for more evidence **instead of** obtaining it. Each of these is a rebuttal by reasoning against an observation — the exact inversion this Article forbids.
+
+## §4. Closure
+
+An Owner-observed bug is closed **only** by: (a) the Owner confirming it is fixed, or (b) evidence that identifies the true cause of the Owner's observation and explains it fully — including "the Owner tested surface X" **proven**, never assumed.
+
+---
+
+**Adopted as Articles I–III of the TappyAI Engineering Constitution. Companion documents:** ADR-015 (rationale), `BUG_REPRODUCTION_GATE_WORKFLOW.md` (diagram + evidence pack), `BUG_ASSIGNMENT_PROTOCOL.md` (intake + conflict handling), `RELEASE_GATE.md` (gates G0–G7).

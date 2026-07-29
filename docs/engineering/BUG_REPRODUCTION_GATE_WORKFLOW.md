@@ -50,12 +50,16 @@ flowchart TD
 
 ## Evidence pack — required fields
 
-Both RED and GREEN captures must carry:
+Both RED and GREEN captures must carry the **Runtime Identity Block** (Article II §1 — all seven items proven, or PASS is forbidden) plus:
 
 | Field | Example |
 |---|---|
-| Commit SHA | `f76e9c9…` |
-| Artifact identity | bundle chunk hash / APK versionCode / IPA build |
+| Repository · Branch · Worktree | `git@github…` · `claude/nifty-sammet-44374f` · absolute path |
+| Commit SHA (HEAD) | full 40-char SHA |
+| **Build provenance** | the commit the running build was produced from — **not automatically HEAD** (Article II §3) |
+| PID · start time · command line | `14276` · `2026-07-29 08:54:20` · `next start <path> -p 3000` |
+| Port (proven to belong to that PID) | `3000` via port→PID mapping |
+| Build ID on disk **and served over HTTP** | `KXYE_…` · chunk fetched → `HTTP 200` (Article II §2) |
 | Surface | `http://localhost:3000/reviews` · `www.tappyai.com` · device model + OS |
 | Identity | signed-in `uid=…` / anonymous — stated, never assumed |
 | Exact steps | numbered, verbatim from the Owner Reproduction Record |

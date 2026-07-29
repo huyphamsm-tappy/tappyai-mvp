@@ -52,6 +52,10 @@ Re-run the Owner's exact path on a build whose identity is recorded. Capture GRE
 
 Hand over: RED evidence, GREEN evidence, the diff, the build identity, and the exact steps to re-check. Then **stop and wait**. `Product UAT: WAITING FOR PRODUCT OWNER`.
 
+## Step 8 — When the Owner says "still broken"
+
+Governed by **Article III (Owner Observation Supremacy)**. The Owner's observation immediately becomes the **active hypothesis**; the AI's passing result is demoted to an *unexplained divergence*, not a rebuttal. Mandatory sequence: adopt the hypothesis in writing → publish the Runtime Identity Block for the AI's surface and state what is known/unknown about the Owner's → enumerate every remaining environmental difference → attempt to close them (own means first, then name precisely what only the Owner can unlock) → report `BLOCKED`/`UNVERIFIED`. **`PASS` is unavailable while the divergence stands**, and "cannot reproduce" is never a conclusion.
+
 ## Escalation triggers (stop and ask, do not improvise)
 
 - A prerequisite needs an action the AI is forbidden to take (OAuth sign-in, credential entry, payment, destructive data change).
