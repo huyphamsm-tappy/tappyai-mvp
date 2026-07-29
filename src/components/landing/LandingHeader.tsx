@@ -45,7 +45,7 @@ export default function LandingHeader() {
 
           <Link
             href="/"
-            className="hidden rounded-full bg-primary-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-600 xs:inline-flex"
+            className="hidden rounded-full bg-interactive px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-interactive-hover xs:inline-flex"
           >
             {t('landing.nav.openApp')}
           </Link>
