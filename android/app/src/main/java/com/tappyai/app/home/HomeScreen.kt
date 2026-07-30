@@ -4,10 +4,11 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -281,13 +282,16 @@ private val HOME_CATEGORIES = listOf(
     HomeCategory("💆", R.string.home_category_spa),
 )
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CategorySection(onOpenCategory: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
         SectionHeader(title = stringResource(R.string.home_explore_by_category))
-        Row(
-            modifier = Modifier.horizontalScroll(rememberScrollState()),
+        // Web parity (CategoryPills.tsx `sm:flex-wrap`): all five categories are visible at once
+        // and wrap onto a second line — never a horizontal-swipe row (owner requirement 2026-07-30).
+        FlowRow(
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+            verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
         ) {
             HOME_CATEGORIES.forEach { cat ->
                 CategoryPill(emoji = cat.emoji, label = stringResource(cat.labelRes), onClick = onOpenCategory)
