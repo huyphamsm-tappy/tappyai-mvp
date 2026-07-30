@@ -49,8 +49,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -115,13 +118,23 @@ fun HomeScreen(
                 .padding(TappySpacing.xl),
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xl),
         ) {
-            HomeHero(
+            // Web parity (HomeView.tsx): gradient hero card (greeting + search) → Categories →
+            // Fortune → Recommendations → tools grid → Content → Suggestions → Recent. The 9-tile
+            // QuickActions grid is Android's one intentional divergence (approved), sitting where
+            // web's 2-col "Tools" section does (after Recommendations).
+            HomeHeroCard(
                 greeting = viewModel.greeting,
                 greetingName = viewModel.greetingName,
                 avatarUrl = viewModel.profile?.avatarUrl,
+                onOpenChat = { onNavigateToTab(HomeTab.Chat) },
             )
-            AskTappyCard(onClick = { onNavigateToTab(HomeTab.Chat) })
             CategorySection(onOpenCategory = { onNavigateToTab(HomeTab.Chat) })
+            FortuneSection(
+                onOpenTarot = onOpenTarot,
+                onOpenTuVi = onOpenTuVi,
+                onOpenZodiac = onOpenZodiac,
+            )
+            RecommendationsSection(onOpenRecommendations = onOpenRecommendations)
             QuickActionsSection(
                 onNavigateToTab = onNavigateToTab,
                 onOpenMusic = onOpenMusic,
@@ -132,12 +145,6 @@ fun HomeScreen(
                 onOpenScan = onOpenScan,
                 onOpenSplitBill = onOpenSplitBill,
             )
-            RecommendationsSection(onOpenRecommendations = onOpenRecommendations)
-            FortuneSection(
-                onOpenTarot = onOpenTarot,
-                onOpenTuVi = onOpenTuVi,
-                onOpenZodiac = onOpenZodiac,
-            )
             ContentWriterSection(onOpenVietWriter = onOpenVietWriter)
             SuggestionsSection(state = suggestions, onSuggestionClick = onOpenChatWithPrefill)
             RecentActivitySection(state = recentActivity)
@@ -147,50 +154,19 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeHero(greeting: String, greetingName: String?, avatarUrl: String?) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Web-parity-sync fix: previously always rendered the "not signed in" neutral icon and a
-        // name-less greeting regardless of auth state (`src/components/Header.tsx:77-90` shows the
-        // real avatar + first name next to the greeting once signed in). A blank name/null url
-        // still correctly falls back to the neutral placeholder (UI Consistency Baseline v1) when
-        // signed out.
-        TappyAvatar(name = greetingName.orEmpty(), imageUrl = avatarUrl, size = TappyAvatarSize.HeaderUser)
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = if (greetingName != null) "$greeting, $greetingName" else greeting,
-                style = MaterialTheme.typography.titleLarge,
-            )
-            // City placeholder — location is the (not-yet-built) location feature's concern; show
-            // an honest "not set" affordance rather than a fabricated city.
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.LocationOn,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp),
-                )
-                Text(
-                    text = stringResource(R.string.home_location_not_set),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun AskTappyCard(onClick: () -> Unit) {
-    // Cycle through a fixed set of local example prompts to hint at what Tappy can do. Purely
-    // presentational — deterministic timer rotation over a hardcoded list, no AI, no backend,
-    // no randomness. Tapping the card always opens Chat regardless of the shown prompt.
+private fun HomeHeroCard(
+    greeting: String,
+    greetingName: String?,
+    avatarUrl: String?,
+    onOpenChat: () -> Unit,
+) {
+    // Web parity (HomeView.tsx hero): a rounded gradient card holding the greeting, a location
+    // affordance, and the "ask Tappy" search entry — replacing Android's older plain greeting row +
+    // separate search card. Web's big rotating heroText is a server-computed field (heroTextVi) that
+    // Android has no data source for, so the greeting stands in as the card's prominent line.
+    //
+    // The prompt rotation is purely presentational — a deterministic timer over a hardcoded list,
+    // no AI/backend/randomness. Tapping the search entry always opens Chat regardless of the prompt.
     val prompts = listOf(
         stringResource(R.string.home_ask_prompt_1),
         stringResource(R.string.home_ask_prompt_2),
@@ -204,14 +180,65 @@ private fun AskTappyCard(onClick: () -> Unit) {
             promptIndex = (promptIndex + 1) % prompts.size
         }
     }
-    TappyCard(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(TappyShapes.card)
-            .clickable(onClick = onClick),
+            .clip(RoundedCornerShape(24.dp))
+            .background(
+                Brush.linearGradient(
+                    listOf(
+                        Color(0xFF2E7DFF),
+                        Color(0xFF0062CC),
+                        Color(0xFF7C3AED),
+                    ),
+                ),
+            )
+            .padding(TappySpacing.xl),
+        verticalArrangement = Arrangement.spacedBy(TappySpacing.lg),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // A blank name/null url still correctly falls back to the neutral placeholder when
+            // signed out (UI Consistency Baseline v1).
+            TappyAvatar(name = greetingName.orEmpty(), imageUrl = avatarUrl, size = TappyAvatarSize.HeaderUser)
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = if (greetingName != null) "$greeting, $greetingName" else greeting,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+                // City placeholder — location is the (not-yet-built) location feature's concern;
+                // show an honest "not set" affordance rather than a fabricated city.
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.LocationOn,
+                        contentDescription = null,
+                        tint = Color.White.copy(alpha = 0.8f),
+                        modifier = Modifier.size(16.dp),
+                    )
+                    Text(
+                        text = stringResource(R.string.home_location_not_set),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.8f),
+                    )
+                }
+            }
+        }
+        // Search entry (web SearchBar variant="hero"): a light pill inside the gradient card.
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.surface)
+                .clickable(onClick = onOpenChat)
+                .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.lg),
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
