@@ -3,8 +3,12 @@ package com.tappyai.app.reviews.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,7 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,6 +41,7 @@ import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyButton
 import com.tappyai.core.designsystem.component.TappyButtonVariant
 import com.tappyai.core.designsystem.component.TappyEmptyState
+import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.theme.TappySpacing
 
 private val ProfileBackground = Color(0xFF000000)
@@ -43,9 +50,8 @@ private val ProfileTextSecondary = Color(0xB3FFFFFF)
 private val ProfileStatValue = Color(0xFFFFFFFF)
 private val ProfileStatLabel = Color(0x99FFFFFF)
 private val ProfileDivider = Color(0x1AFFFFFF)
-private val ProfileReviewBody = Color(0xB3FFFFFF)
-private val ProfileReviewPlace = Color(0x66FFFFFF)
 private val ProfileStarColor = Color(0xFFFBBF24)
+private val ProfileTileBackground = Color(0xFF111111)
 
 @Composable
 internal fun ReviewProfileHeader(
@@ -121,57 +127,58 @@ private fun ProfileStat(value: String, label: String) {
 }
 
 @Composable
-internal fun ReviewProfileReviewItem(
+/**
+ * A single 9:16 clip/photo grid tile — matches the web ProfileTab grid (poster = photo → thumbnail
+ * → dark placeholder, with a bottom gradient overlay carrying the place name + stars). Replaces the
+ * old full-width text row so a profile of clips shows the video thumbnails, not captions.
+ */
+internal fun RowScope.ReviewProfileGridTile(
     review: Review,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = TappySpacing.xl, vertical = TappySpacing.lg),
-        verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+    val poster = review.photos?.firstOrNull() ?: review.thumbnail
+    Box(
+        modifier = Modifier
+            .weight(1f)
+            .aspectRatio(9f / 16f)
+            .background(ProfileTileBackground)
+            .clickable(onClick = onClick),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = review.placeName,
-                color = ProfileTextPrimary,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f, fill = false),
+        if (poster != null) {
+            TappyImage(
+                url = poster,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
             )
-            if (review.rating > 0) {
+        }
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .fillMaxWidth()
+                .background(
+                    Brush.verticalGradient(listOf(Color.Transparent, Color(0xCC000000))),
+                )
+                .padding(horizontal = 6.dp, vertical = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(1.dp),
+        ) {
+            if (review.placeName.isNotBlank()) {
                 Text(
-                    text = "${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}",
-                    color = ProfileStarColor,
-                    fontSize = 12.sp,
+                    text = review.placeName,
+                    color = ProfileTextPrimary,
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
-        }
-
-        Text(
-            text = review.body,
-            color = ProfileReviewBody,
-            fontSize = 13.sp,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
-        )
-
-        if (review.placeAddress != null) {
-            Text(
-                text = review.placeAddress,
-                color = ProfileReviewPlace,
-                fontSize = 12.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            if (review.rating > 0) {
+                Text(
+                    text = "★".repeat(review.rating),
+                    color = ProfileStarColor,
+                    fontSize = 8.sp,
+                )
+            }
         }
     }
 }
@@ -207,12 +214,21 @@ internal fun LazyListScope.reviewProfileItems(
             )
         }
     } else {
-        items(items = reviews, key = { it.id }) { review ->
-            ReviewProfileReviewItem(
-                review = review,
-                onClick = { onReviewClick(review) },
-            )
-            HorizontalDivider(color = ProfileDivider, thickness = 0.5.dp)
+        // Web parity (ProfileTab): a 3-up grid of clip/photo tiles, not a text list. Rendered as
+        // chunked rows inside the existing LazyColumn so the profile header scrolls with the grid.
+        items(items = reviews.chunked(3), key = { row -> row.first().id }) { rowReviews ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 1.dp),
+                horizontalArrangement = Arrangement.spacedBy(1.dp),
+            ) {
+                rowReviews.forEach { review ->
+                    ReviewProfileGridTile(review = review, onClick = { onReviewClick(review) })
+                }
+                // Keep tiles their true 1/3 width when the last row is partial.
+                repeat(3 - rowReviews.size) { Spacer(modifier = Modifier.weight(1f)) }
+            }
         }
     }
 }
