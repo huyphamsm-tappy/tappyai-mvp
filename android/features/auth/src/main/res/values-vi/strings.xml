@@ -24,6 +24,7 @@
     <string name="auth_terms">Điều khoản dịch vụ</string>
     <string name="auth_privacy">Chính sách bảo mật</string>
     <string name="auth_and">và</string>
+    <string name="auth_footer_rights">© 2026 TappyAI. Bảo lưu mọi quyền.</string>
     <string name="auth_or_divider">hoặc</string>
     <string name="auth_email_label">Email</string>
     <string name="auth_email_placeholder">you@example.com</string>

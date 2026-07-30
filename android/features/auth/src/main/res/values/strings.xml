@@ -24,6 +24,7 @@
     <string name="auth_terms">Terms of Service</string>
     <string name="auth_privacy">Privacy Policy</string>
     <string name="auth_and">and</string>
+    <string name="auth_footer_rights">© 2026 TappyAI. All rights reserved.</string>
     <string name="auth_or_divider">or</string>
     <string name="auth_email_label">Email</string>
     <string name="auth_email_placeholder">you@example.com</string>

@@ -87,6 +87,14 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xxl),
         ) {
+            // ─── Mascot hero (P1-5) ──────────────────────────────────────────────────────
+            // The web login shows the official Tappy mascot ("welcome" pose, /tappy/welcome.png)
+            // as its hero. That brand artwork is not yet in the Android resources and must not be
+            // generated/substituted, so this position is intentionally left empty (no placeholder
+            // graphic). When the official asset lands in this module's res/drawable, render it here
+            // as an Image (≈160dp, centered) above the brand block to complete pixel parity.
+            // ─────────────────────────────────────────────────────────────────────────────
+
             // Brand + tagline (web login's welcome/hero copy; wordmark stands in for the mascot hero).
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -154,17 +162,20 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                     // MVP login methods: Google + Zalo. Facebook and Email are intentionally hidden
                     // from the UI (their ViewModel/AuthRepository implementations are retained for
                     // future use — Email is gated by SHOW_EMAIL_LOGIN below, deferred on infra grounds).
+                    // Web parity: both providers are white/outlined buttons (bg-white + border),
+                    // not solid fills, so they read as equal-weight sign-in options.
                     TappyButton(
                         text = stringResource(R.string.auth_continue_with_google),
                         onClick = { viewModel.onGoogleSignInClick(context) },
                         modifier = Modifier.fillMaxWidth(),
+                        variant = TappyButtonVariant.Outlined,
                         enabled = !isLoading,
                     )
                     TappyButton(
                         text = stringResource(R.string.auth_continue_with_zalo),
                         onClick = { viewModel.onZaloSignInClick(context) },
                         modifier = Modifier.fillMaxWidth(),
-                        variant = TappyButtonVariant.Secondary,
+                        variant = TappyButtonVariant.Outlined,
                         enabled = !isLoading,
                     )
 
@@ -243,6 +254,14 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                     textAlign = TextAlign.Center,
                 )
             }
+
+            // Footer copyright — web login closes with a centered rights line.
+            Text(
+                text = stringResource(R.string.auth_footer_rights),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
         }
     }
 }
