@@ -5,6 +5,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.tappyai.app.music.MusicRoute
+import com.tappyai.app.music.SoundDetailScreen
+import com.tappyai.app.profile.CopyrightPolicyScreen
 
 @Composable
 fun ReviewsNavHost(onBack: (() -> Unit)? = null) {
@@ -19,8 +22,22 @@ fun ReviewsNavHost(onBack: (() -> Unit)? = null) {
                 onCompose = { navController.navigate(ReviewsRoute.Composer) },
                 onNotifications = { navController.navigate(ReviewsRoute.Notifications) },
                 onSearch = { navController.navigate(ReviewsRoute.Search) },
+                onOpenSound = { trackId -> navController.navigate(MusicRoute.SoundDetail(trackId)) },
                 onBack = onBack,
             )
+        }
+
+        // "Use this sound" page, reached from a feed clip's music disc (web parity). Reuses the
+        // Music feature's SoundDetailScreen; its sub-navigations resolve within this graph.
+        composable<MusicRoute.SoundDetail> {
+            SoundDetailScreen(
+                onBack = { navController.popBackStack() },
+                onOpenCopyrightPolicy = { navController.navigate(MusicRoute.CopyrightPolicy) },
+                onOpenReview = { reviewId -> navController.navigate(ReviewsRoute.Detail(reviewId = reviewId)) },
+            )
+        }
+        composable<MusicRoute.CopyrightPolicy> {
+            CopyrightPolicyScreen(onBack = { navController.popBackStack() })
         }
 
         composable<ReviewsRoute.Detail> { entry ->

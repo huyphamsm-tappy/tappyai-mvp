@@ -330,7 +330,13 @@ private fun ReviewActionRail(
             onClick = onShare,
         )
 
-        if (review.music?.origin != null && onMusicDiscClick != null) {
+        // Web parity (feedShared "use this sound"): the disc shows on ALL upload-video clips, not
+        // only ones with borrowed music. Tap opens the sound page when the clip has a registered
+        // track; otherwise it is a visual-only indicator (the handler no-ops).
+        val isUploadVideo = review.contentType == ReviewContentType.Video &&
+            (review.sourceType == null || review.sourceType == ReviewSourceType.Upload) &&
+            review.mediaUrl != null
+        if (isUploadVideo && onMusicDiscClick != null) {
             ReviewMusicDiscIcon(onClick = onMusicDiscClick)
         }
     }
