@@ -109,7 +109,8 @@
     <string name="reviews_feed_error_title">Không tải được bài viết</string>
     <string name="reviews_feed_empty_title">Chưa có bài viết nào</string>
     <string name="reviews_feed_empty_message">Hãy quay lại sau nhé.</string>
-    <string name="reviews_feed_tab_following">Đang follow</string>
+    <string name="reviews_feed_post_cta">Đăng bài</string>
+    <string name="reviews_feed_tab_following">Đang theo dõi</string>
     <string name="reviews_feed_tab_foryou">Đề xuất</string>
     <string name="reviews_feed_tab_latest">Mới nhất</string>
     <string name="reviews_feed_following_empty_title">Chưa theo dõi ai</string>

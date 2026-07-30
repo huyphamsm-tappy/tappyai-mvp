@@ -110,6 +110,7 @@
     <string name="reviews_feed_empty_title">No posts yet</string>
     <string name="reviews_feed_empty_message">Check back later.</string>
     <!-- Feed tabs (web parity: Following / For You / Latest) -->
+    <string name="reviews_feed_post_cta">Post</string>
     <string name="reviews_feed_tab_following">Following</string>
     <string name="reviews_feed_tab_foryou">For You</string>
     <string name="reviews_feed_tab_latest">Latest</string>
