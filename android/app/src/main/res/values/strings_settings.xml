@@ -3,7 +3,9 @@
     <string name="settings_title">Settings</string>
     <string name="settings_section_options">Options</string>
     <string name="settings_notifications">Notifications</string>
+    <string name="settings_notifications_desc">Reminders and updates</string>
     <string name="settings_memory">Memory</string>
+    <string name="settings_memory_desc">Manage what the AI remembers</string>
     <string name="settings_language">Language</string>
     <string name="settings_dark_mode">Dark mode</string>
     <string name="settings_section_other">Other</string>
