@@ -142,16 +142,19 @@ private fun DealsList(deals: List<Deal>, onOpen: (Deal) -> Unit) {
     }
 }
 
-/** Maps a VN category label to a palette colour, mirroring the web `CATEGORY_COLORS` set (fallback
- *  neutral). */
+/** Maps a VN category label to a palette colour, mirroring the web `CATEGORY_COLORS` set. Each web
+ *  category maps to the nearest colour in Android's 7-colour palette (web sky→blue, yellow→amber,
+ *  emerald/teal→green, indigo→purple, rose→pink). Every category web colours must colour here too —
+ *  previously "Vận chuyển" (e.g. Grab/Be) and others fell through to no badge. */
 @Composable
 private fun categoryColor(category: String) = when (category) {
     "Điện tử" -> tappyCategoryColors.blue
-    "Mua sắm", "Siêu thị" -> tappyCategoryColors.orange
-    "Ăn uống", "Gia dụng" -> tappyCategoryColors.green
+    "Mua sắm" -> tappyCategoryColors.orange
+    "Ăn uống", "Gia dụng", "Siêu thị" -> tappyCategoryColors.green
     "Du lịch", "Sách" -> tappyCategoryColors.purple
+    "Vận chuyển" -> tappyCategoryColors.blue
+    "Tiết kiệm" -> tappyCategoryColors.amber
     "Thời trang", "Làm đẹp" -> tappyCategoryColors.pink
-    "Tiết kiệm" -> tappyCategoryColors.red
     else -> null
 }
 
