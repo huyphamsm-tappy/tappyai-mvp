@@ -278,12 +278,24 @@ private fun ReviewActionRail(
             ),
             contentAlignment = Alignment.BottomCenter,
         ) {
-            TappyAvatar(
-                name = review.profiles?.fullName ?: "",
-                imageUrl = review.profiles?.avatarUrl,
-                size = TappyAvatarSize.HeaderUser,
-                modifier = Modifier.size(48.dp),
-            )
+            // Web parity: the feed avatar has a white ring (`ring-2 ring-white`). A white-filled
+            // circle behind the avatar with 2dp padding renders the ring (a plain border would be
+            // overdrawn by the same-size avatar). Without it the primaryContainer fallback bg
+            // showed as a faint blue edge.
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(ReviewTextPrimary)
+                    .padding(2.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                TappyAvatar(
+                    name = review.profiles?.fullName ?: "",
+                    imageUrl = review.profiles?.avatarUrl,
+                    size = TappyAvatarSize.HeaderUser,
+                    modifier = Modifier.size(48.dp),
+                )
+            }
         }
 
         ReviewActionButton(
