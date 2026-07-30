@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
@@ -59,23 +60,30 @@ import com.tappyai.core.designsystem.theme.TappySpacing
 
 // Matching key kept separate from the localized display title (which changes with the app
 // language) — see ChatCategory.kt for the same icon+labelRes enum shape this mirrors.
-private enum class ProfileMenuItem(val icon: ImageVector, @StringRes val titleRes: Int) {
-    Account(Icons.Filled.Person, R.string.profile_menu_account),
-    ChatHistory(Icons.AutoMirrored.Filled.Message, R.string.profile_menu_chat_history),
-    Bookings(Icons.Filled.CalendarMonth, R.string.profile_menu_bookings),
-    Preferences(Icons.Filled.FavoriteBorder, R.string.profile_menu_preferences),
-    Saved(Icons.Filled.BookmarkBorder, R.string.profile_menu_saved),
-    PriceTracking(Icons.AutoMirrored.Filled.TrendingDown, R.string.profile_menu_price_tracking),
-    TappyKnows(Icons.Filled.Psychology, R.string.profile_menu_tappy_knows),
-    AppConnections(Icons.Filled.Cable, R.string.profile_menu_app_connections),
-    MyProfile(Icons.Filled.AccountCircle, R.string.profile_menu_my_profile),
-    MyReviews(Icons.Filled.StarBorder, R.string.profile_menu_my_reviews),
-    GroupDining(Icons.Filled.Group, R.string.profile_menu_group_dining),
-    UpgradeToPro(Icons.Filled.WorkspacePremium, R.string.profile_menu_upgrade_to_pro),
+private enum class ProfileMenuItem(
+    val icon: ImageVector,
+    @StringRes val titleRes: Int,
+    @StringRes val descRes: Int,
+) {
+    Account(Icons.Filled.Person, R.string.profile_menu_account, R.string.profile_menu_account_desc),
+    ChatHistory(Icons.AutoMirrored.Filled.Message, R.string.profile_menu_chat_history, R.string.profile_menu_chat_history_desc),
+    Bookings(Icons.Filled.CalendarMonth, R.string.profile_menu_bookings, R.string.profile_menu_bookings_desc),
+    Preferences(Icons.Filled.FavoriteBorder, R.string.profile_menu_preferences, R.string.profile_menu_preferences_desc),
+    Saved(Icons.Filled.BookmarkBorder, R.string.profile_menu_saved, R.string.profile_menu_saved_desc),
+    PriceTracking(Icons.AutoMirrored.Filled.TrendingDown, R.string.profile_menu_price_tracking, R.string.profile_menu_price_tracking_desc),
+    TappyKnows(Icons.Filled.Psychology, R.string.profile_menu_tappy_knows, R.string.profile_menu_tappy_knows_desc),
+    AppConnections(Icons.Filled.Cable, R.string.profile_menu_app_connections, R.string.profile_menu_app_connections_desc),
+    MyProfile(Icons.Filled.AccountCircle, R.string.profile_menu_my_profile, R.string.profile_menu_my_profile_desc),
+    MyReviews(Icons.Filled.StarBorder, R.string.profile_menu_my_reviews, R.string.profile_menu_my_reviews_desc),
+    GroupDining(Icons.Filled.Group, R.string.profile_menu_group_dining, R.string.profile_menu_group_dining_desc),
+    UpgradeToPro(Icons.Filled.WorkspacePremium, R.string.profile_menu_upgrade_to_pro, R.string.profile_menu_upgrade_to_pro_desc),
 }
 
 @Composable
 private fun ProfileMenuItem.title(): String = stringResource(titleRes)
+
+@Composable
+private fun ProfileMenuItem.description(): String = stringResource(descRes)
 
 // Web parity 2026-07-11: the Pro upsell is HIDDEN app-wide during the free test phase
 // (mirrors web ProfileView's `SHOW_PRO_UPGRADE = false` — no legal entity for payments yet).
@@ -165,6 +173,9 @@ fun ProfileScreen(
                         TappyMenuRow(
                             icon = item.icon,
                             title = item.title(),
+                            // Web parity: every row shows a description subtitle (ProfileView
+                            // MenuItem `description=`), not just the label.
+                            subtitle = item.description(),
                             // Every item currently drills into a real screen; matched by the
                             // stable enum key (not the localized title) so this keeps working
                             // once the app language changes.
@@ -234,11 +245,20 @@ private fun ProfileHeaderCard(profile: AccountProfile?, onShowQr: () -> Unit) {
                     size = TappyAvatarSize.ProfileCard,
                 )
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = profile.fullName, style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        text = profile.fullName,
+                        style = MaterialTheme.typography.titleLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    // Web parity: the email truncates to one line (ProfileView `truncate`) rather
+                    // than wrapping.
                     Text(
                         text = profile.email,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             } else {
