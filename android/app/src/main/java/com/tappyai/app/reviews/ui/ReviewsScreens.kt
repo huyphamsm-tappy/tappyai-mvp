@@ -235,18 +235,21 @@ private fun FeedTopBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        // No leading spacer on the feed (onBack == null): the tabs left-align like the web mobile
+        // header, leaving room for all four labels + the search/bell icons on a 360dp screen.
         if (onBack != null) {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back), tint = ScreenIconColor)
             }
-        } else {
-            Spacer(modifier = Modifier.size(48.dp))
         }
-        // Web parity: Following / For You / Latest switcher, centered over the feed.
+        // Web parity (WEB-EXPLORE-HEADER-001): Đăng bài | Đang theo dõi | Đề xuất | Mới nhất.
+        // "Đăng bài" is the compose action (first, always highlighted, no underline); the other
+        // three are the feed filters.
         Row(
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            FeedTab(stringResource(R.string.reviews_feed_post_cta), selected = false, onClick = onCompose, isAction = true)
             FeedTab(stringResource(R.string.reviews_feed_tab_following), feedType == FeedType.Following) { onFeedTypeChange(FeedType.Following) }
             FeedTab(stringResource(R.string.reviews_feed_tab_foryou), feedType == FeedType.ForYou) { onFeedTypeChange(FeedType.ForYou) }
             FeedTab(stringResource(R.string.reviews_feed_tab_latest), feedType == FeedType.Latest) { onFeedTypeChange(FeedType.Latest) }
@@ -258,15 +261,15 @@ private fun FeedTopBar(
             IconButton(onClick = onNotifications) {
                 Icon(Icons.Filled.Notifications, contentDescription = stringResource(R.string.reviews_notifications_label), tint = ScreenIconColor)
             }
-            IconButton(onClick = onCompose) {
-                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.reviews_new_post_label), tint = ScreenIconColor)
-            }
         }
     }
 }
 
 @Composable
-private fun FeedTab(label: String, selected: Boolean, onClick: () -> Unit) {
+private fun FeedTab(label: String, selected: Boolean, isAction: Boolean = false, onClick: () -> Unit) {
+    // isAction = the "Đăng bài" compose entry: an action, not a filter, so it is always full
+    // opacity and never takes the selected-tab underline (web parity, WEB-EXPLORE-HEADER-001).
+    val highlighted = selected || isAction
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -278,20 +281,21 @@ private fun FeedTab(label: String, selected: Boolean, onClick: () -> Unit) {
             )
             // Accessibility: keep the tap area ≥48dp tall even though the label + underline is small.
             .defaultMinSize(minHeight = TappyMinTouchTarget)
-            .padding(horizontal = TappySpacing.sm),
+            .padding(horizontal = TappySpacing.xs),
     ) {
         Text(
             text = label,
-            color = if (selected) ScreenTextPrimary else Color(0x99FFFFFF),
-            fontSize = 13.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+            color = if (highlighted) ScreenTextPrimary else Color(0x99FFFFFF),
+            fontSize = 12.sp,
+            fontWeight = if (highlighted) FontWeight.Bold else FontWeight.Medium,
+            maxLines = 1,
         )
-        // Active-tab underline (web `border-b-2 border-white`).
+        // Active-tab underline (web `border-b-2 border-white`). Actions never take it.
         Box(
             modifier = Modifier
                 .padding(top = 2.dp)
                 .size(width = 16.dp, height = 2.dp)
-                .background(if (selected) ScreenTextPrimary else Color.Transparent),
+                .background(if (selected && !isAction) ScreenTextPrimary else Color.Transparent),
         )
     }
 }
