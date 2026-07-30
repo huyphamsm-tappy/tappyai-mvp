@@ -16,6 +16,8 @@ export const OG_IMAGE = '/feature-graphic.png'
 // Public contact addresses for the landing page.
 export const SUPPORT_EMAIL = 'founder@tappyai.com'
 export const FOUNDER_EMAIL = 'founder@tappyai.com'
+export const FOUNDER_LINKEDIN_URL = 'https://www.linkedin.com/in/ph%E1%BA%A1m-huy-313592253/'
+export const FOUNDER_LINKEDIN_LABEL = 'linkedin.com/in/phạm-huy-313592253'
 
 // Real production captures (www.tappyai.com, 390x844 viewport @2x, WebP q82).
 export const HERO_SCREENSHOT = { src: '/landing/screen-home.webp', width: 780, height: 1498 }

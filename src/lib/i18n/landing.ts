@@ -103,7 +103,7 @@ export const en: Record<string, string> = {
   // 9. Contact
   'landing.contact.title': 'Contact & support',
   'landing.contact.support.label': 'Support',
-  'landing.contact.founder.label': 'Founder',
+  'landing.contact.founder.label': 'Founder & CEO',
   'landing.contact.founder.name': 'PHẠM ĐOÀN HUY',
   'landing.contact.founder.bio1':
     'Entrepreneur and technology business leader with more than 15 years of experience building digital businesses, marketplaces, e-commerce ecosystems, and strategic partnerships in Vietnam.',
@@ -222,7 +222,7 @@ export const vi: Record<string, string> = {
   // 9. Contact
   'landing.contact.title': 'Liên hệ & hỗ trợ',
   'landing.contact.support.label': 'Hỗ trợ',
-  'landing.contact.founder.label': 'Nhà sáng lập',
+  'landing.contact.founder.label': 'Nhà sáng lập & CEO',
   'landing.contact.founder.name': 'PHẠM ĐOÀN HUY',
   'landing.contact.founder.bio1':
     'Doanh nhân và nhà lãnh đạo kinh doanh công nghệ với hơn 15 năm kinh nghiệm xây dựng các doanh nghiệp số, sàn giao dịch, hệ sinh thái thương mại điện tử và quan hệ đối tác chiến lược tại Việt Nam.',
