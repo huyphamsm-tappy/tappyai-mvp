@@ -79,6 +79,7 @@ internal fun ReviewsFeedScreen(
     onCompose: () -> Unit,
     onNotifications: () -> Unit,
     onSearch: () -> Unit,
+    onOpenSound: (String) -> Unit,
     onBack: (() -> Unit)? = null,
     viewModel: ReviewsFeedViewModel = hiltViewModel(),
 ) {
@@ -189,6 +190,9 @@ internal fun ReviewsFeedScreen(
                             // Only the settled current page plays its video (web parity: `active`).
                             active = page == pagerState.currentPage,
                             resolveSoundUrl = viewModel::resolveAttachedSoundUrl,
+                            // "Use this sound" disc (web parity): shows on every upload video;
+                            // tap opens the sound page when the clip has a registered track.
+                            onMusicDiscClick = { review.music?.trackId?.let(onOpenSound) },
                         )
                     }
                 }
