@@ -1,6 +1,7 @@
 package com.tappyai.app.reviews.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material3.HorizontalDivider
@@ -70,11 +72,20 @@ internal fun ReviewProfileHeader(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(TappySpacing.lg),
     ) {
-        TappyAvatar(
-            name = displayName,
-            imageUrl = profile.avatarUrl,
-            size = TappyAvatarSize.ProfileHero,
-        )
+        // Web parity (ProfileTab.tsx): the profile avatar wears a soft purple ring
+        // (`ring-2 ring-purple-500/40`). The ring lives on an outer circle with a small gap so it
+        // isn't overdrawn by the same-size avatar.
+        Box(
+            modifier = Modifier
+                .border(2.dp, Color(0x66A855F7), CircleShape)
+                .padding(3.dp),
+        ) {
+            TappyAvatar(
+                name = displayName,
+                imageUrl = profile.avatarUrl,
+                size = TappyAvatarSize.ProfileHero,
+            )
+        }
 
         Text(
             text = displayName,
@@ -85,13 +96,15 @@ internal fun ReviewProfileHeader(
             overflow = TextOverflow.Ellipsis,
         )
 
-        // Web parity (users/[id]/page.tsx): Reviews / Followers / Following.
+        // Web parity (ProfileTab.tsx, shared by self + /users/[id]): stat order is
+        // Following / Followers / Posts. (Labels kept in cleaner Vietnamese than web's casual
+        // "Đang follow / Follower / Bài viết"; the posts stat is this account's reviews.)
         Row(
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.huge),
         ) {
-            ProfileStat(value = reviewCount.toString(), label = stringResource(R.string.reviews_profile_stat_reviews))
-            ProfileStat(value = profile.followerCount.toString(), label = stringResource(R.string.reviews_profile_stat_followers))
             ProfileStat(value = profile.followingCount.toString(), label = stringResource(R.string.reviews_profile_stat_following_count))
+            ProfileStat(value = profile.followerCount.toString(), label = stringResource(R.string.reviews_profile_stat_followers))
+            ProfileStat(value = reviewCount.toString(), label = stringResource(R.string.reviews_profile_stat_reviews))
         }
 
         // Follow / Following button — hidden for one's own profile (web `!profile.is_self`).
