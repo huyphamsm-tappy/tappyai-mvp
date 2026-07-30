@@ -602,7 +602,9 @@ private fun ChatComposer(
                 Icon(
                     imageVector = Icons.Filled.Mic,
                     contentDescription = stringResource(R.string.chat_action_voice_input),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    // Web parity (ChatInterface.tsx "Nút microphone màu cam #FF9500"): the idle mic
+                    // is Tappy's orange accent, not the neutral on-surface tint.
+                    tint = Color(0xFFFF9500),
                 )
             }
             if (isResponding) {
