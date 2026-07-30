@@ -14,9 +14,9 @@ export default function LandingScreenshots() {
       titleKey="landing.shots.title"
       introKey="landing.shots.caption"
     >
-      <ul className="mt-10 flex flex-wrap justify-center gap-5">
+      <ul className="mt-10 grid grid-cols-2 gap-5 lg:grid-cols-4">
         {GALLERY_SCREENSHOTS.map((shot) => (
-          <li key={shot.key} className="w-[calc(50%-0.625rem)] sm:w-56">
+          <li key={shot.key}>
             <figure>
               <div className="overflow-hidden rounded-3xl border border-white/15 bg-gray-900">
                 <Image
@@ -25,7 +25,7 @@ export default function LandingScreenshots() {
                   width={shot.width}
                   height={shot.height}
                   loading="lazy"
-                  sizes="(min-width: 640px) 14rem, 45vw"
+                  sizes="(min-width: 1024px) 15rem, 45vw"
                   className="h-auto w-full"
                 />
               </div>

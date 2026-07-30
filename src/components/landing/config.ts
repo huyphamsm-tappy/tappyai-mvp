@@ -23,12 +23,9 @@ export const FOUNDER_LINKEDIN_LABEL = 'linkedin.com/in/phạm-huy-313592253'
 // a genuine screenshot of the live Home screen (src/app/HomeView.tsx).
 export const HERO_SCREENSHOT = { src: '/landing/screen-home.webp', width: 780, height: 1578 }
 
-// Gallery = only features that render fully in English today (genuine live
-// captures). Deals/Music/Reviews are Vietnamese-first (UGC + un-localized
-// content) and AI Chat awaits the language-following fix — they return in a
-// later Landing update once localized. No mockups, no hand-editing.
 export const GALLERY_SCREENSHOTS: Array<{ key: string; src: string; width: number; height: number }> = [
-  { key: 'translate', src: '/landing/screen-translate.webp', width: 780, height: 1310 },
-  { key: 'scan', src: '/landing/screen-scan.webp', width: 780, height: 1310 },
-  { key: 'split', src: '/landing/screen-split.webp', width: 780, height: 1310 },
+  { key: 'chat', src: '/landing/screen-chat.webp', width: 780, height: 1688 },
+  { key: 'reviews', src: '/landing/screen-reviews.webp', width: 780, height: 1688 },
+  { key: 'music', src: '/landing/screen-music.webp', width: 780, height: 1688 },
+  { key: 'deals', src: '/landing/screen-deals.webp', width: 780, height: 1688 },
 ]
