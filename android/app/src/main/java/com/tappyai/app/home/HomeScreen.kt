@@ -2,7 +2,9 @@ package com.tappyai.app.home
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -50,6 +53,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.core.common.UiState
@@ -117,6 +121,7 @@ fun HomeScreen(
                 avatarUrl = viewModel.profile?.avatarUrl,
             )
             AskTappyCard(onClick = { onNavigateToTab(HomeTab.Chat) })
+            CategorySection(onOpenCategory = { onNavigateToTab(HomeTab.Chat) })
             QuickActionsSection(
                 onNavigateToTab = onNavigateToTab,
                 onOpenMusic = onOpenMusic,
@@ -233,6 +238,50 @@ private fun AskTappyCard(onClick: () -> Unit) {
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
+    }
+}
+
+private data class HomeCategory(val emoji: String, val labelRes: Int)
+
+// Web parity (HomeView "Khám phá theo lĩnh vực" → CategoryPills): the five discovery categories,
+// same set + order + emoji as web's lib/utils CATEGORIES (food, shopping, entertainment, travel,
+// spa). Tapping opens Chat (web navigates to /chat?category=<id>).
+private val HOME_CATEGORIES = listOf(
+    HomeCategory("🍜", R.string.home_category_food),
+    HomeCategory("🛍️", R.string.home_category_shopping),
+    HomeCategory("🎭", R.string.home_category_entertainment),
+    HomeCategory("✈️", R.string.home_category_travel),
+    HomeCategory("💆", R.string.home_category_spa),
+)
+
+@Composable
+private fun CategorySection(onOpenCategory: () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+        SectionHeader(title = stringResource(R.string.home_explore_by_category))
+        Row(
+            modifier = Modifier.horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+        ) {
+            HOME_CATEGORIES.forEach { cat ->
+                CategoryPill(emoji = cat.emoji, label = stringResource(cat.labelRes), onClick = onOpenCategory)
+            }
+        }
+    }
+}
+
+@Composable
+private fun CategoryPill(emoji: String, label: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(50))
+            .clickable(onClick = onClick)
+            .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(text = emoji, fontSize = 16.sp)
+        Text(text = label, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
