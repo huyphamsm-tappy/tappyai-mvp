@@ -9,7 +9,7 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
-import { classifyIntent, detectLang, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
@@ -91,7 +91,11 @@ export async function POST(req: Request) {
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
   const planningIntent = detectPlanningIntent(lastText)
-  const lang = detectLang(lastText)
+  // Response language = the user's LATEST message, unless they explicitly ask
+  // for another one ("Answer in English", "Trả lời bằng tiếng Việt") — that
+  // request always wins. Never derived from UI locale, browser language,
+  // profile, country, or earlier turns (none of those are read here).
+  const lang = detectExplicitLangRequest(lastText) ?? detectLang(lastText)
   const forcedTool = detectForcedTool(lastText)
   const worthExtract = lastText.trim().length > 20
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
