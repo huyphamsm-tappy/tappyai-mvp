@@ -32,6 +32,49 @@ describe('detectLang — regression: English text must not default to Vietnamese
   })
 })
 
+describe('detectLang — regression: an English sentence naming one Vietnamese place/dish must not flip to Vietnamese', () => {
+  // Production incident (2026-07-30): "Phú Quốc itinerary, 4 days, 2 people,
+  // 8M budget" and "i wanna go to eat Phở" both answered in Vietnamese. Root
+  // cause: detectLang flagged Vietnamese on the mere PRESENCE of an accented
+  // Vietnamese word anywhere in the message, so correctly spelling a
+  // destination or dish name (as any real user does) was enough on its own —
+  // even though every other word in the sentence was English. Fixed by
+  // judging the PROPORTION of accented words, not a single occurrence.
+  it('one Vietnamese place name in an English sentence → en', () => {
+    expect(detectLang('Phú Quốc itinerary, 4 days, 2 people, 8M budget')).toBe('en')
+    expect(detectLang('Plan a 3-day trip to Đà Nẵng')).toBe('en')
+    expect(detectLang('i wanna go to eat Phở')).toBe('en')
+  })
+
+  // The place name dominates the word count — the case a plain accented-word
+  // ratio still got wrong.
+  it('short English query dominated by a Vietnamese place name → en', () => {
+    expect(detectLang('Đà Nẵng hotels')).toBe('en')
+    expect(detectLang('Phú Quốc resorts')).toBe('en')
+    expect(detectLang('Hội An walking tour')).toBe('en')
+  })
+
+  it('lowercase Vietnamese dish name in an English sentence → en', () => {
+    expect(detectLang('Best bún chả in Hà Nội?')).toBe('en')
+    expect(detectLang('Where can I try bánh mì near me?')).toBe('en')
+  })
+
+  it('Vietnamese place names that collide with Vietnamese function words → en', () => {
+    // "Hà Nội" strips to "ha noi", "Hồ Chí Minh" to "ho chi minh", "Cần Thơ" to
+    // "can tho" — none may count as a Vietnamese grammar-word signal.
+    expect(detectLang('Top restaurants in Hồ Chí Minh City')).toBe('en')
+    expect(detectLang('Weekend trip to Cần Thơ from Sài Gòn')).toBe('en')
+    expect(detectLang('Is Hòn Thơm island worth visiting?')).toBe('en')
+  })
+})
+
+describe('detectLang — Vietnamese with sparse tone marks (function-word signal)', () => {
+  it('short Vietnamese sentence with few accented words → vi', () => {
+    expect(detectLang('Cho tôi xem menu')).toBe('vi')
+    expect(detectLang('cho minh xem quán nào ngon')).toBe('vi')
+  })
+})
+
 describe('detectLang — Vietnamese must still be recognized', () => {
   it('Vietnamese with full diacritics → vi', () => {
     expect(detectLang('Quán bún bò ngon ở TP.HCM?')).toBe('vi')
