@@ -290,6 +290,9 @@ internal fun ReviewCommentComposer(
             onValueChange = onValueChange,
             placeholder = stringResource(R.string.reviews_comment_input_placeholder),
             modifier = Modifier.weight(1f),
+            // The comment bar is an always-dark surface (CommentBackground), so force light text
+            // instead of the theme's onSurface (which is dark/invisible here on a light theme).
+            textColor = CommentTextPrimary,
         )
         IconButton(
             onClick = onSend,
