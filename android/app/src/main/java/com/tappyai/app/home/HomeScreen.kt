@@ -1,6 +1,7 @@
 package com.tappyai.app.home
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,13 +25,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CurrencyExchange
-import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
@@ -38,6 +37,7 @@ import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -66,6 +66,8 @@ import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyCard
 import com.tappyai.core.designsystem.component.TappyEmptyState
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
+import com.tappyai.core.designsystem.theme.TappyCategoryColor
+import com.tappyai.core.designsystem.theme.tappyCategoryColors
 import com.tappyai.core.designsystem.theme.TappyContainers
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
@@ -137,7 +139,6 @@ fun HomeScreen(
             )
             RecommendationsSection(onOpenRecommendations = onOpenRecommendations)
             QuickActionsSection(
-                onNavigateToTab = onNavigateToTab,
                 onOpenMusic = onOpenMusic,
                 onOpenTranslate = onOpenTranslate,
                 onOpenCurrency = onOpenCurrency,
@@ -311,25 +312,35 @@ private fun CategorySection(onOpenCategory: () -> Unit) {
 
 @Composable
 private fun CategoryPill(emoji: String, label: String, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(50))
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(50))
-            .clickable(onClick = onClick)
-            .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
-        verticalAlignment = Alignment.CenterVertically,
+    // Web parity (CategoryPills.tsx): a FILLED pill — surface fill + hairline border + subtle
+    // shadow (`bg-white dark:bg-gray-900 border shadow-sm`), not the old outline-only chip.
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(50),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        shadowElevation = 1.dp,
     ) {
-        Text(text = emoji, fontSize = 16.sp)
-        Text(text = label, style = MaterialTheme.typography.bodyMedium)
+        Row(
+            modifier = Modifier.padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(text = emoji, fontSize = 16.sp)
+            Text(text = label, style = MaterialTheme.typography.bodyMedium)
+        }
     }
 }
 
-private data class QuickAction(val label: String, val icon: ImageVector, val onClick: () -> Unit)
+private data class QuickAction(
+    val label: String,
+    val icon: ImageVector,
+    val color: TappyCategoryColor,
+    val onClick: () -> Unit,
+)
 
 @Composable
 private fun QuickActionsSection(
-    onNavigateToTab: (HomeTab) -> Unit,
     onOpenMusic: () -> Unit,
     onOpenTranslate: () -> Unit,
     onOpenCurrency: () -> Unit,
@@ -338,16 +349,17 @@ private fun QuickActionsSection(
     onOpenScan: () -> Unit,
     onOpenSplitBill: () -> Unit,
 ) {
+    val cat = tappyCategoryColors
+    // Explore + Maps are intentionally omitted — they already live in the bottom navigation
+    // (owner 2026-07-30). Each tile wears a colour-tinted icon plate, matching web's Tools cards.
     val actions = listOf(
-        QuickAction(stringResource(R.string.home_quick_explore), Icons.Filled.Explore) { onNavigateToTab(HomeTab.Explore) },
-        QuickAction(stringResource(R.string.home_quick_maps), Icons.Filled.Map) { onNavigateToTab(HomeTab.Maps) },
-        QuickAction(stringResource(R.string.home_quick_music), Icons.Filled.MusicNote) { onOpenMusic() },
-        QuickAction(stringResource(R.string.home_quick_scan), Icons.Filled.QrCodeScanner) { onOpenScan() },
-        QuickAction(stringResource(R.string.home_quick_translate), Icons.Filled.Translate) { onOpenTranslate() },
-        QuickAction(stringResource(R.string.home_quick_games), Icons.Filled.SportsEsports) { onOpenGames() },
-        QuickAction(stringResource(R.string.home_quick_currency), Icons.Filled.CurrencyExchange) { onOpenCurrency() },
-        QuickAction(stringResource(R.string.home_quick_deals), Icons.Filled.LocalOffer) { onOpenDeals() },
-        QuickAction(stringResource(R.string.splitbill_title), Icons.Filled.Calculate) { onOpenSplitBill() },
+        QuickAction(stringResource(R.string.home_quick_music), Icons.Filled.MusicNote, cat.pink) { onOpenMusic() },
+        QuickAction(stringResource(R.string.home_quick_scan), Icons.Filled.QrCodeScanner, cat.amber) { onOpenScan() },
+        QuickAction(stringResource(R.string.home_quick_translate), Icons.Filled.Translate, cat.blue) { onOpenTranslate() },
+        QuickAction(stringResource(R.string.home_quick_games), Icons.Filled.SportsEsports, cat.orange) { onOpenGames() },
+        QuickAction(stringResource(R.string.home_quick_currency), Icons.Filled.CurrencyExchange, cat.green) { onOpenCurrency() },
+        QuickAction(stringResource(R.string.home_quick_deals), Icons.Filled.LocalOffer, cat.red) { onOpenDeals() },
+        QuickAction(stringResource(R.string.splitbill_title), Icons.Filled.Calculate, cat.purple) { onOpenSplitBill() },
     )
 
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
@@ -372,16 +384,27 @@ private fun QuickActionTile(action: QuickAction, modifier: Modifier = Modifier) 
             .clickable(onClick = action.onClick),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = TappySpacing.sm),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
         ) {
-            Icon(
-                imageVector = action.icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp),
-            )
+            // Web parity (Tools card): the icon sits on a rounded colour-tinted plate.
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(action.color.container),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = action.icon,
+                    contentDescription = null,
+                    tint = action.color.onContainer,
+                    modifier = Modifier.size(22.dp),
+                )
+            }
             Text(
                 text = action.label,
                 style = MaterialTheme.typography.labelMedium,
