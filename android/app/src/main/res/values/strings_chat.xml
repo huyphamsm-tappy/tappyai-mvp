@@ -48,6 +48,17 @@
 
     <string name="chat_action_attach_image">Attach image</string>
     <string name="chat_action_voice_input">Voice input</string>
+    <string name="chat_action_emoji">Emoji</string>
+
+    <!-- Composer action chips (web ChatInterface.tsx). Nearby/Tonight send; Trip/PriceWatch prefill. -->
+    <string name="chat_chip_nearby">📍 Nearby</string>
+    <string name="chat_chip_nearby_prompt">Suggest good food and fun spots near me</string>
+    <string name="chat_chip_tonight">🌙 Tappy Tonight</string>
+    <string name="chat_chip_tonight_prompt">Tonight I want a relaxing spa then a nice dinner, 2 people, budget around 800k — plan it for me!</string>
+    <string name="chat_chip_trip">✈️ Plan a trip</string>
+    <string name="chat_chip_trip_prefill">Itinerary for </string>
+    <string name="chat_chip_price_watch">🎯 Price watch</string>
+    <string name="chat_chip_price_watch_prefill">Tappy, track </string>
     <string name="chat_clear_pending_image">Remove photo</string>
     <string name="chat_voice_recognition_failed">Voice input isn\'t available right now.</string>
     <string name="chat_composer_placeholder">Message Tappy…</string>

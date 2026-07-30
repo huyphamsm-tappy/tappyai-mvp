@@ -48,6 +48,17 @@
 
     <string name="chat_action_attach_image">Đính kèm ảnh</string>
     <string name="chat_action_voice_input">Nhập bằng giọng nói</string>
+    <string name="chat_action_emoji">Biểu tượng cảm xúc</string>
+
+    <!-- Composer action chips (web ChatInterface.tsx). Nearby/Tonight send; Trip/PriceWatch prefill. -->
+    <string name="chat_chip_nearby">📍 Tìm quanh đây</string>
+    <string name="chat_chip_nearby_prompt">Gợi ý quán ăn và địa điểm vui chơi gần mình nhé</string>
+    <string name="chat_chip_tonight">🌙 Tappy Tối Nay</string>
+    <string name="chat_chip_tonight_prompt">Tối nay mình muốn spa thư giãn rồi ăn tối ngon, 2 người, budget khoảng 800k, gợi ý lịch trình giúp mình nhé</string>
+    <string name="chat_chip_trip">✈️ Lên kế hoạch trip</string>
+    <string name="chat_chip_trip_prefill">Lịch trình </string>
+    <string name="chat_chip_price_watch">🎯 Theo dõi giá</string>
+    <string name="chat_chip_price_watch_prefill">Tappy theo dõi </string>
     <string name="chat_clear_pending_image">Xóa ảnh</string>
     <string name="chat_voice_recognition_failed">Nhập bằng giọng nói hiện không khả dụng.</string>
     <string name="chat_composer_placeholder">Nhắn tin cho Tappy…</string>

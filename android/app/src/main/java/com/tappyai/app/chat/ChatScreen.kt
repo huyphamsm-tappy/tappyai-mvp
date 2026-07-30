@@ -8,8 +8,8 @@ import android.net.Uri
 import android.speech.RecognizerIntent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import com.tappyai.core.designsystem.theme.tappyCategoryColors
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -41,8 +41,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.EmojiEmotions
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.BookmarkBorder
@@ -240,10 +240,6 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
         }
 
         val context = LocalContext.current
-        val pickImage = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickVisualMedia(),
-        ) { uri -> uri?.let(viewModel::onImagePicked) }
-
         val voiceRecognitionFailedMessage = stringResource(R.string.chat_voice_recognition_failed)
         val recognizeSpeech = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult(),
@@ -262,6 +258,13 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
             PendingImagePreview(uri = uri, onClear = viewModel::onClearPendingImage)
         }
 
+        // Web parity (ChatInterface.tsx action chips): a scrollable row above the composer.
+        ChatActionChips(
+            enabled = !isResponding,
+            onSendPrompt = viewModel::onQuickPromptSelected,
+            onPrefill = viewModel::onInputChange,
+        )
+
         ChatComposer(
             input = viewModel.input,
             isResponding = isResponding,
@@ -269,9 +272,6 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
             onInputChange = viewModel::onInputChange,
             onSend = viewModel::onSend,
             onStop = viewModel::onStop,
-            onAttach = {
-                pickImage.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            },
             onVoice = {
                 val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                     putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -562,6 +562,16 @@ private fun PendingImagePreview(uri: Uri, onClear: () -> Unit) {
     }
 }
 
+// Web parity (ChatInterface.tsx EMOJIS): the composer emoji-panel character set, same order.
+private val CHAT_EMOJIS = listOf(
+    "😀", "😄", "😂", "🤣", "😊", "😍",
+    "🥰", "😘", "😎", "🤩", "😋", "😅",
+    "😳", "😬", "🙈", "🤭", "🤔", "😏",
+    "😢", "😭", "😞", "😤", "😡", "😱",
+    "👍", "❤️", "🙏", "🎉", "🔥", "💯",
+)
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ChatComposer(
     input: String,
@@ -570,12 +580,34 @@ private fun ChatComposer(
     onInputChange: (String) -> Unit,
     onSend: () -> Unit,
     onStop: () -> Unit,
-    onAttach: () -> Unit,
     onVoice: () -> Unit,
 ) {
     val canSend = input.isNotBlank() || hasPendingImage
+    var showEmojiPanel by remember { mutableStateOf(false) }
     Column {
         HorizontalDivider()
+        // Web parity (ChatInterface.tsx composer): input → emoji → mic → send, no attachment
+        // (image attach removed — Chat is a TEXT-ONLY MVP). The Smile button opens an emoji grid
+        // that inserts characters into the text field; it stays open so several can be added.
+        if (showEmojiPanel) {
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+            ) {
+                CHAT_EMOJIS.forEach { emoji ->
+                    Text(
+                        text = emoji,
+                        fontSize = 22.sp,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onInputChange(input + emoji) }
+                            .padding(6.dp),
+                    )
+                }
+            }
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -583,13 +615,6 @@ private fun ChatComposer(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
         ) {
-            IconButton(onClick = onAttach) {
-                Icon(
-                    imageVector = Icons.Filled.AttachFile,
-                    contentDescription = stringResource(R.string.chat_action_attach_image),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
             TappyTextField(
                 value = input,
                 onValueChange = onInputChange,
@@ -598,6 +623,15 @@ private fun ChatComposer(
                 maxLines = 6,
                 modifier = Modifier.weight(1f),
             )
+            // Emoji toggle (web parity: the composer's Smile button).
+            IconButton(onClick = { showEmojiPanel = !showEmojiPanel }) {
+                Icon(
+                    imageVector = Icons.Filled.EmojiEmotions,
+                    contentDescription = stringResource(R.string.chat_action_emoji),
+                    tint = if (showEmojiPanel) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             IconButton(onClick = onVoice) {
                 Icon(
                     imageVector = Icons.Filled.Mic,
@@ -627,6 +661,64 @@ private fun ChatComposer(
             }
         }
     }
+}
+
+// Web parity (ChatInterface.tsx action chips): a scrollable row of quick-action pills above the
+// composer. Nearby + Tonight SEND their prompt immediately (web `append`); Trip + Price watch
+// PREFILL the input (web `setInput`) so the user finishes the sentence. Colours mirror web
+// (primary / accent-purple / blue / green).
+@Composable
+private fun ChatActionChips(
+    enabled: Boolean,
+    onSendPrompt: (String) -> Unit,
+    onPrefill: (String) -> Unit,
+) {
+    val colors = MaterialTheme.colorScheme
+    val cat = tappyCategoryColors
+    val nearbyPrompt = stringResource(R.string.chat_chip_nearby_prompt)
+    val tonightPrompt = stringResource(R.string.chat_chip_tonight_prompt)
+    val tripPrefill = stringResource(R.string.chat_chip_trip_prefill)
+    val priceWatchPrefill = stringResource(R.string.chat_chip_price_watch_prefill)
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = TappySpacing.md, vertical = TappySpacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+    ) {
+        item {
+            ChatChip(stringResource(R.string.chat_chip_nearby), colors.primaryContainer, colors.onPrimaryContainer, enabled) { onSendPrompt(nearbyPrompt) }
+        }
+        item {
+            ChatChip(stringResource(R.string.chat_chip_tonight), cat.purple.container, cat.purple.onContainer, enabled) { onSendPrompt(tonightPrompt) }
+        }
+        item {
+            ChatChip(stringResource(R.string.chat_chip_trip), cat.blue.container, cat.blue.onContainer, enabled) { onPrefill(tripPrefill) }
+        }
+        item {
+            ChatChip(stringResource(R.string.chat_chip_price_watch), cat.green.container, cat.green.onContainer, enabled) { onPrefill(priceWatchPrefill) }
+        }
+    }
+}
+
+@Composable
+private fun ChatChip(
+    label: String,
+    containerColor: Color,
+    contentColor: Color,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
+    Text(
+        text = label,
+        color = contentColor,
+        style = MaterialTheme.typography.labelMedium,
+        maxLines = 1,
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(containerColor)
+            .clickable(enabled = enabled, onClick = onClick)
+            .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
+    )
 }
 
 @Composable
