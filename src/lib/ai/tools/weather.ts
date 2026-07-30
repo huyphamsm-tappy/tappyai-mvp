@@ -1,9 +1,10 @@
 import { normalizeVN } from '@/lib/ai/intent'
 import { getCache, setCache } from './common'
+import { messages } from '@/lib/ai/messages'
 
 // ===== WEATHER: wttr.in (free, no API key) =====
-export async function getWeather(location: string) {
-  const cacheKey = 'weather:' + (location || '').toLowerCase().trim()
+export async function getWeather(location: string, lang = 'vi') {
+  const cacheKey = 'weather:' + (location || '').toLowerCase().trim() + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -44,15 +45,15 @@ export async function getWeather(location: string) {
       source: 'wttr.in',
     }
   } catch {
-    result = { error: 'Khong lay duoc du lieu thoi tiet luc nay', note: 'Xem thoi tiet tai: ' + fallbackUrl, search_url: fallbackUrl }
+    result = { error: messages.weather.fetchError(lang), note: messages.weather.seeAt(lang, fallbackUrl), search_url: fallbackUrl }
   }
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut
   return result
 }
 
 // ===== GOLD PRICE: vang.today (free, no API key) =====
-export async function getGoldPrice(query: string) {
-  const cacheKey = 'gold:' + (query || '').toLowerCase().trim()
+export async function getGoldPrice(query: string, lang = 'vi') {
+  const cacheKey = 'gold:' + (query || '').toLowerCase().trim() + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -72,7 +73,7 @@ export async function getGoldPrice(query: string) {
       const list = (filtered.length ? filtered : entries).map(([code, v]) => ({ type_code: code, ...v }))
       result = {
         source: 'vang.today',
-        unit: 'VND/luong cho vang trong nuoc (1 luong = 10 chi = 37.5g), USD/oz cho vang the gioi (XAUUSD)',
+        unit: messages.gold.unit(lang),
         updated_time: data.time, updated_date: data.date,
         prices: list,
       }
@@ -80,7 +81,7 @@ export async function getGoldPrice(query: string) {
       throw new Error('no data')
     }
   } catch {
-    result = { error: 'Khong lay duoc gia vang luc nay', note: 'Xem gia vang tai: ' + fallbackUrl, search_url: fallbackUrl }
+    result = { error: messages.gold.fetchError(lang), note: messages.gold.seeAt(lang, fallbackUrl), search_url: fallbackUrl }
   }
   setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut, gia vang cap nhat thuong xuyen
   return result

@@ -293,30 +293,30 @@ export async function POST(req: Request) {
       get_news: tool({
         description: 'Lay tin tuc moi nhat tu VnExpress, Tuoi Tre, Dan Tri',
         parameters: z.object({ query: z.string().describe('Tu khoa tin tuc can tim') }),
-        execute: async ({ query }) => getNews(query)
+        execute: async ({ query }) => getNews(query, lang)
       }),
       ...(locationIntent !== 'offline' ? { search_products: tool({
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
-          const r = await searchProducts(query)
+          const r = await searchProducts(query, lang)
           return budget ? applyBudgetFilter(r, budget, query) : r
         }
       }) } : {}),
       web_search: tool({
         description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
         parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
-        execute: async ({ query }) => webSearch(query)
+        execute: async ({ query }) => webSearch(query, lang)
       }),
       get_weather: tool({
         description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
         parameters: z.object({ location: z.string().describe('Ten thanh pho/tinh can xem thoi tiet (vd: Ha Noi, Da Nang, TP HCM)') }),
-        execute: async ({ location }) => getWeather(location)
+        execute: async ({ location }) => getWeather(location, lang)
       }),
       get_gold_price: tool({
         description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
         parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
-        execute: async ({ query }) => getGoldPrice(query || '')
+        execute: async ({ query }) => getGoldPrice(query || '', lang)
       }),
       get_flight_prices: tool({
         description: 'Tim gia ve may bay re gan nhat giua 2 thanh pho/san bay, du lieu tu Travelpayouts (Aviasales)',
@@ -325,7 +325,7 @@ export async function POST(req: Request) {
           destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
         }),
         execute: async ({ origin, destination }) => {
-          const r = await getFlightPrices(origin, destination)
+          const r = await getFlightPrices(origin, destination, lang)
           return budget ? applyBudgetFilter(r, budget, 've may bay') : r
         }
       }),
@@ -338,7 +338,7 @@ export async function POST(req: Request) {
           checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
         }),
         execute: async ({ location, checkIn, checkOut }) => {
-          const r = await getHotelPrices(location, checkIn, checkOut, budget?.max)
+          const r = await getHotelPrices(location, checkIn, checkOut, budget?.max, lang)
           return budget ? applyBudgetFilter(r, budget, 'khach san') : r
         }
       }),
@@ -349,7 +349,7 @@ export async function POST(req: Request) {
           destination: z.string().describe('Diem den (ten tinh/thanh pho hoac dia diem cu the)'),
           mode: z.enum(['intercity', 'taxi']).optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
         }),
-        execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined)
+        execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang)
       }),
       ...(authedUserId ? {
         save_price_watch: tool({

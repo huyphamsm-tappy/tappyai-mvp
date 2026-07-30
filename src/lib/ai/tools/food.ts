@@ -4,9 +4,10 @@ import { createClient } from '@/lib/supabase/server'
 import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
 import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
+import { messages, isVi } from '@/lib/ai/messages'
 
-export async function getNews(query: string) {
-  const cacheKey = 'news:' + query.toLowerCase().trim()
+export async function getNews(query: string, lang = 'vi') {
+  const cacheKey = 'news:' + query.toLowerCase().trim() + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -36,15 +37,15 @@ export async function getNews(query: string) {
           if (!title) continue
           const tl = title.toLowerCase(), dl = desc.toLowerCase()
           const matches = queryTerms.length === 0 || queryTerms.some(k => tl.includes(k) || dl.includes(k))
-          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub ? new Date(pub).toLocaleDateString('vi-VN') : 'Moi nhat' })
+          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang) })
         }
       } catch { /* skip feed */ }
     }))
     result = articles.length === 0
-      ? { note: 'Khong tim thay tin tuc lien quan', articles: [] }
+      ? { note: messages.news.noResults(lang), articles: [] }
       : { query, total: articles.length, articles: articles.slice(0, 5) }
   } catch {
-    result = { error: 'Khong the tai tin tuc', articles: [] }
+    result = { error: messages.news.fetchError(lang), articles: [] }
   }
   setCache(cacheKey, result, 10 * 60 * 1000) // cache 10 phut, tin tuc cap nhat thuong xuyen
   return result
@@ -62,7 +63,7 @@ function haversineKmLocal(lat1: number, lon1: number, lat2: number, lon2: number
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
-export async function searchPlacesOSM(query: string, location?: string, type?: string, locationBias?: { lat: number; lng: number } | null) {
+export async function searchPlacesOSM(query: string, location?: string, type?: string, locationBias?: { lat: number; lng: number } | null, lang = 'vi') {
   const loc = location || 'Ha Noi'
   const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
   try {
@@ -158,7 +159,7 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         if ((resp as Response).ok) { overpassData = await (resp as Response).json(); break }
       } catch { continue }
     }
-    if (!overpassData) return { note: 'Tim kiem tren Google Maps: ' + googleMapsUrl, google_maps_search: googleMapsUrl, results: [] }
+    if (!overpassData) return { note: messages.places.searchOnMaps(lang, googleMapsUrl), google_maps_search: googleMapsUrl, results: [] }
     type El = { tags?: Record<string, string>; lat?: number; lon?: number; center?: { lat: number; lon: number } }
     const baseResults = ((overpassData.elements || []) as El[]).slice(0, 10).map(el => {
       const tags = el.tags || {}
@@ -183,7 +184,7 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       const stars = /^[1-5]$/.test((tags.stars || '').trim()) ? (tags.stars || '').trim() : null
       return {
         name: tags['name:vi'] || tags.name || '',
-        address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || 'Xem ban do',
+        address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || messages.places.seeMap(lang),
         phone: tags.phone || tags['contact:phone'] || null,
         maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl,
         ...(cuisine ? { cuisine } : {}),
@@ -218,7 +219,7 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     return {
       location: loc, amenity_type: amenity, source: 'OpenStreetMap', count: results.length, results,
       google_maps_search: googleMapsUrl,
-      note: results.length === 0 ? 'OSM khong co du lieu. Tim them: ' + googleMapsUrl : 'Du lieu tu OpenStreetMap. Xem them: ' + googleMapsUrl
+      note: results.length === 0 ? messages.places.noOsmData(lang, googleMapsUrl) : messages.places.osmSourceNote(lang, googleMapsUrl)
     }
   } catch (e) { return { error: String(e), results: [], google_maps_search: googleMapsUrl } }
 }
@@ -238,7 +239,7 @@ function isDirectFoodOrderLink(link: string): boolean {
 
 export async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi', locationBias?: { lat: number; lng: number } | null) {
   const locBiasKey = locationBias ? `:${locationBias.lat.toFixed(2)},${locationBias.lng.toFixed(2)}` : ''
-  const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '') + locBiasKey
+  const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '') + locBiasKey + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) {
     console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'cache_hit', cacheKey }))
@@ -335,7 +336,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
             place_id: r.id as string,
             name: (r.displayName as { text?: string })?.text || '',
             address: r.formattedAddress,
-            google_rating: r.rating ? `${r.rating}⭐ (${(r.userRatingCount as number | undefined)?.toLocaleString('vi-VN') ?? r.userRatingCount} đánh giá Google Maps)` : null,
+            google_rating: r.rating ? messages.places.googleRating(lang, r.rating as number, r.userRatingCount as number | undefined) : null,
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
             ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
             ...(photoUrlLists[idx].length > 0 ? { photo_url: photoUrlLists[idx][0], photo_urls: photoUrlLists[idx] } : {})
@@ -348,7 +349,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
       console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
     }
   }
-  if (!result) result = await searchPlacesOSM(query, location, type, locationBias)
+  if (!result) result = await searchPlacesOSM(query, location, type, locationBias, lang)
 
   // ===== Gia tham khao tu Serper (an uong / spa / giai tri) =====
   const qNorm = normalizeVN(query.toLowerCase())
@@ -366,7 +367,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         const extra: Record<string, unknown> = {}
         if (priceResults && priceResults.length > 0) {
           extra.price_search_results = priceResults
-          extra.price_note = 'Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.'
+          extra.price_note = messages.places.priceNote(lang)
         }
         if (isFood) {
           const directOrder = (orderResults || []).filter(r => isDirectFoodOrderLink(r.link))
@@ -443,7 +444,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
                 const s = rMap.get(r.place_id as string)
                 if (!s) return r
                 const avg = Math.round((s.sum / s.count) * 10) / 10
-                return { ...r, tappy_rating: `${avg}/5 (${s.count} nguoi dung TappyAI da danh gia)` }
+                return { ...r, tappy_rating: messages.places.rating(lang, avg, s.count) }
               }),
             }
           }
