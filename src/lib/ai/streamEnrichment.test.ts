@@ -263,6 +263,30 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
   })
 })
 
+describe('injectPlaceEnrichment — legacy trailing block language', () => {
+  // A place with a photo but whose name never appears in the text can't be placed
+  // positionally, so it falls back to the legacy trailing "📸" block — that label
+  // must follow the response's detected language (lang), not always Vietnamese.
+  const text = 'Mình gợi ý vài chỗ ăn ngon quanh đây nhé!'
+  const places = [{ name: 'Quán Không Nhắc Tên', photo_url: `${IMG}/x.jpg` }]
+
+  it('defaults to the Vietnamese trailing-block label when no lang is passed', () => {
+    const out = injectPlaceEnrichment(places, text)
+    expect(out).toContain('📸 _Hình ảnh & link review:_')
+  })
+
+  it('uses the Vietnamese trailing-block label for lang "vi"', () => {
+    const out = injectPlaceEnrichment(places, text, 'vi')
+    expect(out).toContain('📸 _Hình ảnh & link review:_')
+  })
+
+  it('uses the English trailing-block label for lang "en"', () => {
+    const out = injectPlaceEnrichment(places, text, 'en')
+    expect(out).toContain('📸 _Images & review links:_')
+    expect(out).not.toContain('Hình ảnh & link review')
+  })
+})
+
 describe('applyPlaceEnrichmentStreamFilter — stream transform', () => {
   const line0 = (s: string) => '0:' + JSON.stringify(s)
 

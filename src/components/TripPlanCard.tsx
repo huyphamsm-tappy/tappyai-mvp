@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { MapPin, Share2, ExternalLink, ChevronRight } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 export interface PlanItem {
   time: string
@@ -47,13 +48,14 @@ function categoryColor(cat: string) {
 }
 
 export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
+  const { t } = useTranslation()
   const [activeDay, setActiveDay] = useState(0)
   const [shareState, setShareState] = useState<'idle' | 'copied'>('idle')
 
   const handleShare = async () => {
     const shareText =
       plan.share_text ||
-      `${plan.title} — kế hoạch từ TappyAI 🎉 #TappyAI`
+      t('tripPlan.shareFallback', { title: plan.title })
 
     try {
       if (typeof navigator !== 'undefined' && navigator.share) {
@@ -79,7 +81,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
             <h3 className="font-bold text-sm leading-snug line-clamp-2">{plan.title}</h3>
             {(plan.people || plan.budget_total) && (
               <p className="text-primary-100 text-xs mt-0.5">
-                {plan.people && plan.people > 1 ? `${plan.people} người · ` : ''}
+                {plan.people && plan.people > 1 ? t('tripPlan.peopleCount', { count: String(plan.people) }) : ''}
                 {plan.budget_total}
               </p>
             )}
@@ -89,7 +91,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
             className="flex-shrink-0 flex items-center gap-1 bg-white/20 hover:bg-white/30 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-all active:scale-95"
           >
             <Share2 size={11} />
-            {shareState === 'copied' ? 'Đã copy!' : 'Chia sẻ'}
+            {shareState === 'copied' ? t('tripPlan.shared') : t('tripPlan.share')}
           </button>
         </div>
       </div>
@@ -181,7 +183,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
                       className="flex items-center gap-1 text-xs text-content-secondary hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                     >
                       <MapPin size={9} />
-                      Bản đồ
+                      {t('tripPlan.map')}
                     </a>
                   )}
                   {item.booking_link && (
@@ -192,7 +194,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
                       className="flex items-center gap-1 text-xs text-primary-600 dark:text-primary-400 font-semibold hover:underline transition-colors"
                     >
                       <ExternalLink size={9} />
-                      Đặt ngay
+                      {t('tripPlan.bookNow')}
                     </a>
                   )}
                 </div>
@@ -205,7 +207,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
       {/* ── Cost breakdown ── */}
       {plan.cost_breakdown && Object.keys(plan.cost_breakdown).length > 0 && (
         <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3 bg-gray-50 dark:bg-gray-800/40">
-          <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">💰 Chi phí ước tính</p>
+          <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">{t('tripPlan.costBreakdown')}</p>
           <div className="space-y-1">
             {Object.entries(plan.cost_breakdown).map(([k, v]) => (
               <div key={k} className="flex justify-between items-center text-xs">
@@ -216,7 +218,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
           </div>
           {plan.budget_total && (
             <div className="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2 flex justify-between items-center">
-              <span className="text-sm font-bold text-gray-700 dark:text-gray-300">Tổng ước tính</span>
+              <span className="text-sm font-bold text-gray-700 dark:text-gray-300">{t('tripPlan.totalEstimate')}</span>
               <span className="text-sm font-bold text-primary-600 dark:text-primary-400">{plan.budget_total}</span>
             </div>
           )}
@@ -230,16 +232,16 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-interactive hover:bg-interactive-hover active:scale-[0.98] text-white text-sm font-semibold transition-all"
         >
           {shareState === 'copied' ? (
-            '✓ Đã sao chép vào clipboard!'
+            t('tripPlan.shareCopied')
           ) : (
             <>
               <Share2 size={14} />
-              📤 Chia sẻ lịch trình
+              {t('tripPlan.shareItinerary')}
             </>
           )}
         </button>
         <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-1.5">
-          Chia sẻ lên Zalo, Facebook hoặc gửi cho bạn bè
+          {t('tripPlan.shareHint')}
         </p>
       </div>
     </div>

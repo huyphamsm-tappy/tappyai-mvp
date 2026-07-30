@@ -256,7 +256,7 @@ function injectPlanPhotos(places: PlaceLike[], fullText: string): string {
 // own block — bounded by the NEXT MENTIONED PLACE (photo-less ones included) / the
 // first structured marker / end of text — so photos stay grouped with their place
 // instead of piling up in one trailing block, regardless of what the model emitted.
-export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): string {
+export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lang = 'vi'): string {
   const usable = places.filter(p => p.name && ((p.photo_urls && p.photo_urls.length > 0) || p.photo_url))
   if (usable.length === 0) return fullText
 
@@ -275,7 +275,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
   // source char maps to exactly one char for precomposed input; if some exotic input ever
   // breaks that alignment, fall back to the legacy trailing block (images still show).
   const normRaw = normalizeVN(text.toLowerCase())
-  if (normRaw.length !== text.length) return appendTrailingBlock(usable, places, text, decodedText)
+  if (normRaw.length !== text.length) return appendTrailingBlock(usable, places, text, decodedText, lang)
 
   const textEnd = earliestMarker(text)
   // CTA_BUTTONS is a general block, not scoped to any one place — links inside it must never
@@ -309,7 +309,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
   }
   // Stripped the LLM's copies but couldn't place them positionally (names not found, etc.) —
   // re-add them as the trailing block so nothing is lost.
-  if (insertions.length === 0) return appendTrailingBlock(usable, places, text, decodedText)
+  if (insertions.length === 0) return appendTrailingBlock(usable, places, text, decodedText, lang)
 
   // Apply from the last boundary backwards so earlier offsets stay valid as we splice.
   insertions.sort((a, b) => b.offset - a.offset)
@@ -326,7 +326,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string): st
 // used when normalized/raw offsets can't be aligned for safe in-place insertion. Kept so
 // images still surface (grouped per place) even in that rare case. Only surfaces a place that
 // is missing at least one IMAGE — a name+link-only entry duplicates the rich main list.
-function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText: string, decodedText: string): string {
+function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText: string, decodedText: string, lang = 'vi'): string {
   const ctaIdx = decodedText.indexOf('[CTA_BUTTONS]')
   const dedupText = normalizeVN((ctaIdx === -1 ? decodedText : decodedText.slice(0, ctaIdx)).toLowerCase())
   const textEnd = dedupText.length
@@ -343,14 +343,15 @@ function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText:
     if (missingPhotoCount > 0) parts.push([`**${p.name}**`, ...lines].join('\n'))
   }
   if (parts.length === 0) return fullText
-  return fullText + '\n\n📸 _Hình ảnh & link review:_\n\n' + parts.join('\n\n')
+  const label = lang === 'vi' ? '📸 _Hình ảnh & link review:_' : '📸 _Images & review links:_'
+  return fullText + '\n\n' + label + '\n\n' + parts.join('\n\n')
 }
 
 // Deterministically re-groups image/TikTok-review/order-link markdown next to the place it
 // belongs to. Text streamed BEFORE the first place-search tool call (intro line, plain
 // chitchat) passes through live so its typewriter reveal is preserved; only the place-list
 // text that follows is buffered and re-emitted (repositioned) once the full text is known.
-export function applyPlaceEnrichmentStreamFilter(response: Response): Response {
+export function applyPlaceEnrichmentStreamFilter(response: Response, lang = 'vi'): Response {
   const body = response.body
   if (!body) return response
 
@@ -369,7 +370,7 @@ export function applyPlaceEnrichmentStreamFilter(response: Response): Response {
     if (emitted) return
     emitted = true
     if (!bufferMode) return // nothing buffered — everything already streamed live
-    const finalText = injectPlaceEnrichment(latestPlaces, mainText)
+    const finalText = injectPlaceEnrichment(latestPlaces, mainText, lang)
     if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
   }
 

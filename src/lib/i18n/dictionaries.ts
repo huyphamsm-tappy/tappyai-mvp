@@ -193,6 +193,19 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'chat.chipPriceWatch': '🎯 Theo dõi giá',
     'chat.chipPriceWatchPrefill': 'Tappy theo dõi ',
 
+    // Trip plan card
+    'tripPlan.share': 'Chia sẻ',
+    'tripPlan.shared': 'Đã copy!',
+    'tripPlan.map': 'Bản đồ',
+    'tripPlan.bookNow': 'Đặt ngay',
+    'tripPlan.costBreakdown': '💰 Chi phí ước tính',
+    'tripPlan.totalEstimate': 'Tổng ước tính',
+    'tripPlan.shareItinerary': '📤 Chia sẻ lịch trình',
+    'tripPlan.shareCopied': '✓ Đã sao chép vào clipboard!',
+    'tripPlan.shareHint': 'Chia sẻ lên Zalo, Facebook hoặc gửi cho bạn bè',
+    'tripPlan.peopleCount': '{count} người · ',
+    'tripPlan.shareFallback': '{title} — kế hoạch từ TappyAI 🎉 #TappyAI',
+
     // Video player
     'video.unmute': 'Bật tiếng',
     'video.mute': 'Tắt tiếng',
@@ -391,6 +404,19 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'chat.chipTripPrefill': 'Itinerary for ',
     'chat.chipPriceWatch': '🎯 Price watch',
     'chat.chipPriceWatchPrefill': 'Tappy, track ',
+
+    // Trip plan card
+    'tripPlan.share': 'Share',
+    'tripPlan.shared': 'Copied!',
+    'tripPlan.map': 'Map',
+    'tripPlan.bookNow': 'Book now',
+    'tripPlan.costBreakdown': '💰 Estimated cost',
+    'tripPlan.totalEstimate': 'Total estimate',
+    'tripPlan.shareItinerary': '📤 Share itinerary',
+    'tripPlan.shareCopied': '✓ Copied to clipboard!',
+    'tripPlan.shareHint': 'Share via Zalo, Facebook or send to friends',
+    'tripPlan.peopleCount': '{count} people · ',
+    'tripPlan.shareFallback': '{title} — an itinerary from TappyAI 🎉 #TappyAI',
 
     // Video player
     'video.unmute': 'Unmute',

@@ -440,7 +440,7 @@ export async function POST(req: Request) {
     )
   }
   const baseResponse = result.toDataStreamResponse()
-  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse)
+  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang)
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse
