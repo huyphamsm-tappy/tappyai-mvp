@@ -16,6 +16,12 @@
     <string name="home_quick_deals">Ưu đãi</string>
 
     <string name="home_section_quick_actions">Thao tác nhanh</string>
+    <string name="home_explore_by_category">Khám phá theo lĩnh vực</string>
+    <string name="home_category_food">Ăn Uống</string>
+    <string name="home_category_shopping">Mua Sắm</string>
+    <string name="home_category_entertainment">Giải Trí</string>
+    <string name="home_category_travel">Du Lịch</string>
+    <string name="home_category_spa">Spa</string>
     <string name="home_section_suggested">Gợi ý cho bạn</string>
     <string name="home_empty_suggestions_title">Chưa có gợi ý</string>
     <string name="home_empty_suggestions_message">Gợi ý cá nhân hóa sẽ xuất hiện khi Tappy hiểu bạn hơn.</string>
