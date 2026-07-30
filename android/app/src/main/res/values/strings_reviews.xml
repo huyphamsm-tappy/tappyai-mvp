@@ -119,6 +119,20 @@
 
     <!-- Detail -->
     <string name="reviews_detail_title">Details</string>
+    <string name="reviews_detail_rating_1">Poor</string>
+    <string name="reviews_detail_rating_2">Okay</string>
+    <string name="reviews_detail_rating_3">Average</string>
+    <string name="reviews_detail_rating_4">Great</string>
+    <string name="reviews_detail_rating_5">Excellent</string>
+    <string name="reviews_detail_no_body">No description provided.</string>
+    <string name="reviews_detail_cta_prompt">Want to know more about</string>
+    <string name="reviews_detail_ask_tappy">Ask Tappy</string>
+    <string name="reviews_detail_anonymous">Anonymous</string>
+    <string name="reviews_detail_time_just_now">just now</string>
+    <string name="reviews_detail_time_minutes_ago">%1$d min ago</string>
+    <string name="reviews_detail_time_hours_ago">%1$d hr ago</string>
+    <string name="reviews_detail_time_days_ago">%1$d days ago</string>
+    <string name="reviews_detail_time_months_ago">%1$d months ago</string>
     <string name="reviews_detail_unavailable_title">Couldn\'t load this post</string>
     <string name="reviews_detail_unavailable_message">This post is no longer available.</string>
 
