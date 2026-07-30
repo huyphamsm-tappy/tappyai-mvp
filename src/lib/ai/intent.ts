@@ -19,27 +19,94 @@ export function isSimpleQuery(text: string, isFirstMsg: boolean): boolean {
   return text.trim().length < 80 && !COMPLEX_KW.test(normalizeVN(text)) && isFirstMsg
 }
 
+// Bug (2026-07-29): the previous heuristic treated ANY non-ASCII codepoint
+// that wasn't a recognized Asian script as "must be Vietnamese". Phone/desktop
+// autocorrect routinely inserts non-ASCII punctuation into otherwise-English
+// text — curly quotes ’ ‘ “ ”, en/em dashes – —, ellipsis …, non-breaking
+// space — and incidental accented loanwords (café, naïve, façade) are
+// ordinary English. All of these silently flipped an English message to 'vi',
+// which suppressed the language-override block in promptBuilder.ts and let
+// the (Vietnamese-language) base prompt answer in Vietnamese despite the user
+// writing in English. Fix: only codepoints that are DISTINCTIVELY Vietnamese
+// (đ/Đ, ă/â/ê/ô/ơ/ư and the full Vietnamese tone-mark block) count as a
+// Vietnamese signal; everything else that isn't a recognized script falls
+// through to 'en', matching the "pure Latin script, no Vietnamese marks" case.
+function isVietnameseSignal(cp: number): boolean {
+  if (cp === 0x0110 || cp === 0x0111) return true // Đ đ
+  if (cp === 0x0102 || cp === 0x0103) return true // Ă ă
+  if (cp === 0x00C2 || cp === 0x00E2) return true // Â â
+  if (cp === 0x00CA || cp === 0x00EA) return true // Ê ê
+  if (cp === 0x00D4 || cp === 0x00F4) return true // Ô ô
+  if (cp === 0x01A0 || cp === 0x01A1) return true // Ơ ơ
+  if (cp === 0x01AF || cp === 0x01B0) return true // Ư ư
+  // Latin Extended Additional (U+1EA0-1EF9): every toned Vietnamese vowel
+  // combination (ấ ầ ẩ ẫ ậ ắ ằ ẳ ẵ ặ ế ề ể ễ ệ ố ồ ổ ỗ ộ ớ ờ ở ỡ ợ ứ ừ ử ữ ự
+  // ỳ ỵ ỷ ỹ, etc.) — not used by any other language in this app's scope.
+  if (cp >= 0x1EA0 && cp <= 0x1EF9) return true
+  return false
+}
+
 export function detectLang(text: string): string {
-  // Encoding-safe: any non-ASCII char that isn't a recognized Asian script
-  // sets hasNonAscii=true and continues scanning (never short-circuits to 'vi'
-  // mid-loop, so Chinese text with fullwidth punctuation still resolves to 'zh').
-  // Final result: hasCJK→'zh', hasNonAscii→'vi', pure ASCII→'en'.
+  // Encoding-safe: never short-circuits mid-loop for scripts that must scan to
+  // completion (Chinese text with fullwidth punctuation still resolves to 'zh').
   let hasCJK = false
-  let hasNonAscii = false
+  let hasViSignal = false
   for (const ch of text) {
     const cp = ch.codePointAt(0) ?? 0
     if (cp <= 0x7F) continue
-    hasNonAscii = true
     if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'       // kana (exclusive to Japanese)
     if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'       // hangul
     // CJK Unified + fullwidth block (fullwidth punct common in Chinese text)
     if ((cp >= 0x4E00 && cp <= 0x9FFF) || (cp >= 0xFF00 && cp <= 0xFFEF)) { hasCJK = true; continue }
     if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'       // Arabic
     if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'       // Thai
-    // any other non-ASCII (Latin diacritics, etc.) — keep scanning
+    if (isVietnameseSignal(cp)) { hasViSignal = true; continue }
+    // any other non-ASCII (smart punctuation, incidental Latin diacritics
+    // from loanwords/other Latin-script languages) — not a language signal
   }
   if (hasCJK) return 'zh'
-  return hasNonAscii ? 'vi' : 'en'
+  if (hasViSignal) return 'vi'
+  return 'en'
+}
+
+// Language names this app can explicitly instruct the model to answer in —
+// must stay in sync with LANG_NAMES in promptBuilder.ts and LANG_BCP47 in
+// lib/tts/voiceSelection.ts (same code set: vi/en/ja/ko/zh/ar/th).
+type ExplicitLang = 'vi' | 'en' | 'ja' | 'ko' | 'zh' | 'ar' | 'th'
+
+// English and diacritic-stripped-Vietnamese (matched against normalizeVN()
+// output) names for each language, used to recognize an explicit request.
+const LANG_NAME_EN: Record<ExplicitLang, string> = {
+  vi: 'vietnamese', en: 'english', ja: 'japanese', ko: 'korean',
+  zh: '(?:chinese|mandarin)', ar: 'arabic', th: 'thai',
+}
+const LANG_NAME_VI: Record<ExplicitLang, string> = {
+  vi: 'tieng\\s*viet', en: 'tieng\\s*anh', ja: 'tieng\\s*nhat', ko: 'tieng\\s*han',
+  zh: 'tieng\\s*trung', ar: 'tieng\\s*a\\s*rap', th: 'tieng\\s*thai',
+}
+
+/**
+ * Detects an EXPLICIT instruction to answer in a given language — e.g.
+ * "Answer in English", "Trả lời bằng tiếng Việt", "Please respond in
+ * Japanese". Per spec, this must override the mirror-the-message default.
+ * Returns null when the message carries no such instruction (the normal
+ * case), so the caller falls back to detectLang(). Single call site
+ * (src/app/api/chat/route.ts) — not duplicated per AI capability.
+ */
+export function detectExplicitLangRequest(text: string): ExplicitLang | null {
+  const norm = normalizeVN(text.toLowerCase())
+  for (const code of Object.keys(LANG_NAME_EN) as ExplicitLang[]) {
+    const en = LANG_NAME_EN[code]
+    const vi = LANG_NAME_VI[code]
+    const re = new RegExp(
+      `\\b(?:answer|respond|reply|speak)\\b[^.!?\\n]{0,20}\\b${en}\\b` +
+      `|\\b(?:in|switch to)\\s+${en}\\b(?:\\s+please)?\\b` +
+      `|\\b(?:tra\\s*loi|noi|dung)\\b[^.!?\\n]{0,15}\\b${vi}\\b`,
+      'i'
+    )
+    if (re.test(norm)) return code
+  }
+  return null
 }
 
 export function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | 'save_price_watch' | null {

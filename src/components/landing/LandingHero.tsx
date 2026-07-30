@@ -11,14 +11,36 @@ export default function LandingHero() {
 
   return (
     <section aria-labelledby="hero-heading" className="relative overflow-hidden">
-      {/* Brand glow: primary blue with a warm accent edge */}
+      {/* Premium hero backdrop: layered blue/orange light flows + a faint
+          technology particle grid + a depth vignette. Purely decorative —
+          sits behind the content (aria-hidden, pointer-events-none) and never
+          reduces text contrast: every layer is low-opacity and biased to the
+          top/edges, and the particle grid is masked to fade before the text. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(0,122,255,0.18),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_-5%,rgba(0,122,255,0.22),transparent)]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(40%_40%_at_85%_10%,rgba(255,149,0,0.10),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_45%_at_88%_8%,rgba(255,149,0,0.12),transparent)]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_40%_at_10%_92%,rgba(0,98,204,0.10),transparent)]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1.5px)',
+          backgroundSize: '24px 24px',
+          maskImage: 'radial-gradient(80% 60% at 62% 18%, #000, transparent 75%)',
+          WebkitMaskImage: 'radial-gradient(80% 60% at 62% 18%, #000, transparent 75%)',
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_0%,transparent_55%,rgba(3,7,18,0.55))]"
       />
 
       <div className="relative mx-auto grid max-w-container-wide items-center gap-12 px-5 pb-20 pt-16 sm:px-8 lg:grid-cols-[1.2fr_0.8fr] lg:pt-24">

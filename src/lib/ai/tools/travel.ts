@@ -3,6 +3,7 @@ import { normalizeVN } from '@/lib/ai/intent'
 import { LUXURY_KEYWORDS } from '@/lib/ai/budget'
 import { searchPlacesOSM } from './food'
 import { buildFlightLinks } from '@/lib/platformLinks/travel'
+import { messages } from '@/lib/ai/messages'
 
 // Kiem tra link co phai trang CU THE cua 1 khach san tren Booking.com/Agoda/Traveloka
 // (khong phai trang tim kiem/danh sach chung theo khu vuc/thanh pho)
@@ -72,8 +73,8 @@ function cityToIATA(name: string): string | null {
   return null
 }
 
-export async function getFlightPrices(origin: string, destination: string) {
-  const cacheKey = 'flights:' + origin.toLowerCase().trim() + ':' + destination.toLowerCase().trim()
+export async function getFlightPrices(origin: string, destination: string, lang = 'vi') {
+  const cacheKey = 'flights:' + origin.toLowerCase().trim() + ':' + destination.toLowerCase().trim() + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -91,9 +92,9 @@ export async function getFlightPrices(origin: string, destination: string) {
 
   let result: unknown
   if (!originCode || !destCode) {
-    result = { error: 'Khong nhan dien duoc san bay tu ten dia diem', booking_links: bookingLinks, note: 'Tim chuyen bay tren cac nen tang tren' }
+    result = { error: messages.flights.unknownAirport(lang), booking_links: bookingLinks, note: messages.flights.findOnPlatforms(lang) }
   } else if (!TRAVELPAYOUTS_TOKEN) {
-    result = { error: 'Chua cau hinh API gia ve may bay', booking_links: bookingLinks, note: 'Tim chuyen bay tren cac nen tang tren' }
+    result = { error: messages.flights.notConfigured(lang), booking_links: bookingLinks, note: messages.flights.findOnPlatforms(lang) }
   } else {
     try {
       const params = new URLSearchParams({ origin: originCode, destination: destCode, currency: 'vnd', token: TRAVELPAYOUTS_TOKEN })
@@ -110,7 +111,7 @@ export async function getFlightPrices(origin: string, destination: string) {
         const cheapestDepart = options.map(o => o.departure_at).filter(Boolean).sort()[0]
         const departISO = cheapestDepart ? String(cheapestDepart).slice(0, 10) : defaultDepartISO
         result = {
-          source: 'Travelpayouts (du lieu Aviasales)',
+          source: messages.flights.source(),
           origin: originCode, destination: destCode, currency: 'VND',
           flights: options.map(o => ({
             price_vnd: o.price,
@@ -120,13 +121,13 @@ export async function getFlightPrices(origin: string, destination: string) {
             return_at: o.return_at || null,
           })),
           booking_links: buildFlightLinks(originCode, destCode, departISO),
-          note: 'Day la gia ve re gan nhat ma he thong tim duoc cho tuyen nay (khong chac dung ngay user hoi), gia co the da thay doi - bam link de xem gia chinh xac va dat ve theo ngay cu the.'
+          note: messages.flights.cheapestNote(lang)
         }
       } else {
         throw new Error('no data')
       }
     } catch {
-      result = { error: 'Khong lay duoc gia ve may bay luc nay', booking_links: bookingLinks, note: 'Tim chuyen bay tren cac nen tang tren' }
+      result = { error: messages.flights.fetchError(lang), booking_links: bookingLinks, note: messages.flights.findOnPlatforms(lang) }
     }
   }
   setCache(cacheKey, result, 60 * 60 * 1000) // cache 1 gio
@@ -134,8 +135,8 @@ export async function getFlightPrices(origin: string, destination: string) {
 }
 
 // ===== HOTEL PRICES: web search (Booking.com/Agoda snippets) + OSM hotel list (free, no API key) =====
-export async function getHotelPrices(location: string, checkIn?: string, checkOut?: string, maxBudgetVnd?: number) {
-  const cacheKey = 'hotels:' + location.toLowerCase().trim() + ':' + (checkIn || '') + ':' + (checkOut || '') + ':' + (maxBudgetVnd || '')
+export async function getHotelPrices(location: string, checkIn?: string, checkOut?: string, maxBudgetVnd?: number, lang = 'vi') {
+  const cacheKey = 'hotels:' + location.toLowerCase().trim() + ':' + (checkIn || '') + ':' + (checkOut || '') + ':' + (maxBudgetVnd || '') + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -153,7 +154,7 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
     // Buoc 1: lay gia chung + danh sach khach san OSM song song
     const [serperResults, places] = await Promise.all([
       serperSearch(searchQuery),
-      searchPlacesOSM('khach san', location, 'hotel') as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
+      searchPlacesOSM('khach san', location, 'hotel', null, lang) as Promise<{ results?: Array<{ name: string; address: string; maps_link: string }> }>,
     ])
     let hotelList = places?.results?.slice(0, 5) || []
     // Filter luxury brands khoi OSM list neu co budget
@@ -218,11 +219,11 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         } catch { return r }
       })
     }
-    let source = 'Google Search (Serper) + OpenStreetMap'
+    let source = messages.hotels.sourceSerperOsm()
     if (!searchResults || searchResults.length === 0) {
-      const ddg = await webSearch(searchQuery) as { results?: Array<{ title: string; link: string; snippet: string }> }
+      const ddg = await webSearch(searchQuery, lang) as { results?: Array<{ title: string; link: string; snippet: string }> }
       searchResults = ddg?.results
-      source = 'Tim kiem web (DuckDuckGo) + OpenStreetMap'
+      source = messages.hotels.sourceDdgOsm(lang)
     }
 
     // search_results (Booking/Agoda snippets) is the PRIMARY content the AI describes with
@@ -249,21 +250,21 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         booking_link: bookingUrl,
         agoda_link: agodaUrl,
         _debug_budget: maxBudgetVnd ? 'detected:' + maxBudgetVnd : 'null',
-        note: 'Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.'
+        note: messages.hotels.priceDisclaimer(lang)
       }
     } else {
       result = {
-        error: 'Khong tim duoc thong tin gia phong luc nay',
+        error: messages.hotels.noData(lang),
         hotel_list: hotelList,
         booking_link: bookingUrl,
         agoda_link: agodaUrl,
         _debug_budget: maxBudgetVnd ? 'detected:' + maxBudgetVnd : 'null',
-        note: 'Xem va dat phong tai: ' + bookingUrl,
+        note: messages.hotels.seeBookingAt(lang, bookingUrl),
         search_url: bookingUrl,
       }
     }
   } catch {
-    result = { error: 'Khong lay duoc gia phong khach san luc nay', booking_link: bookingUrl, agoda_link: agodaUrl, note: 'Xem va dat phong tai: ' + bookingUrl, search_url: bookingUrl }
+    result = { error: messages.hotels.fetchError(lang), booking_link: bookingUrl, agoda_link: agodaUrl, note: messages.hotels.seeBookingAt(lang, bookingUrl), search_url: bookingUrl }
   }
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut
   return result
@@ -331,8 +332,8 @@ const RIDE_HAILING_APPS = [
 ]
 
 // mode: 'taxi' = uoc tinh gia trong thanh pho/quang duong ngan; khac (hoac khong co) = xe khach/tau lien tinh
-export async function getTransportOptions(origin: string, destination: string, mode?: string) {
-  const cacheKey = 'transport:' + origin.toLowerCase().trim() + ':' + destination.toLowerCase().trim() + ':' + (mode || 'auto')
+export async function getTransportOptions(origin: string, destination: string, mode?: string, lang = 'vi') {
+  const cacheKey = 'transport:' + origin.toLowerCase().trim() + ':' + destination.toLowerCase().trim() + ':' + (mode || 'auto') + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -355,13 +356,13 @@ export async function getTransportOptions(origin: string, destination: string, m
           train_search_results: trainResults || [],
           vexere_link: vexereUrl,
           train_booking_link: trainUrl,
-          note: 'Gia/chuyen xe-tau la tham khao tu ket qua tim kiem hien tai, co the khac theo gio chay, loai ghe va da thay doi.'
+          note: messages.transport.intercityDisclaimer(lang)
         }
       } else {
-        result = { error: 'Khong tim duoc ve xe khach/tau luc nay', vexere_link: vexereUrl, train_booking_link: trainUrl }
+        result = { error: messages.transport.noIntercityResults(lang), vexere_link: vexereUrl, train_booking_link: trainUrl }
       }
     } catch {
-      result = { error: 'Khong tim duoc ve xe khach/tau luc nay', vexere_link: vexereUrl, train_booking_link: trainUrl }
+      result = { error: messages.transport.noIntercityResults(lang), vexere_link: vexereUrl, train_booking_link: trainUrl }
     }
   } else {
     try {
@@ -371,9 +372,9 @@ export async function getTransportOptions(origin: string, destination: string, m
       if (rawKm === null || (rawKm < 0.3 && !sameLocation)) {
         // Khong xac dinh duoc toa do cu the cho 1 hoac ca 2 dia diem - khong dua so lieu sai lech
         result = {
-          error: 'Khong xac dinh duoc chinh xac khoang cach cho 2 dia diem nay luc nay',
+          error: messages.transport.unknownDistance(lang),
           apps: RIDE_HAILING_APPS,
-          note: 'Mo app Grab/Be/Xanh SM va nhap dia chi cu the de app tinh khoang cach + gia chinh xac tu vi tri thuc te.'
+          note: messages.transport.openAppForExact(lang)
         }
       } else {
         const distanceKm = Math.max(0.5, Math.round(rawKm * 10) / 10)
@@ -387,11 +388,11 @@ export async function getTransportOptions(origin: string, destination: string, m
           distance_km: distanceKm,
           estimated_fare_vnd: { low: estLow, high: estHigh },
           apps: RIDE_HAILING_APPS,
-          note: 'Day la gia UOC TINH theo khoang cach duong chim va don gia trung binh xe 4 cho, KHONG phai gia chinh xac tu app - mo app de xem gia thuc te (co the cong them phi gio cao diem, phi cau duong...) va dat xe.'
+          note: messages.transport.estimateDisclaimer(lang)
         }
       }
     } catch {
-      result = { error: 'Khong uoc tinh duoc khoang cach/gia xe luc nay', apps: RIDE_HAILING_APPS }
+      result = { error: messages.transport.unableToEstimate(lang), apps: RIDE_HAILING_APPS }
     }
   }
 
