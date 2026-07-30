@@ -11,6 +11,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
@@ -49,6 +50,10 @@ fun TappyTextField(
     // field should pass ImeAction.Done/Default explicitly at the call site.
     imeAction: ImeAction = if (singleLine) ImeAction.Next else ImeAction.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    // Fixed-dark surfaces (e.g. the always-black review comment bar) must pass an explicit light
+    // text colour: the default text colour follows the theme's onSurface, which is dark on a light
+    // theme and would render invisible on those always-dark bars. Null keeps the themed default.
+    textColor: Color? = null,
 ) {
     val isError = errorText != null
 
@@ -71,7 +76,18 @@ fun TappyTextField(
             keyboardActions = KeyboardActions.Default,
             visualTransformation = visualTransformation,
             textStyle = MaterialTheme.typography.bodyMedium,
-            colors = OutlinedTextFieldDefaults.colors(),
+            colors = if (textColor != null) {
+                OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = textColor,
+                    unfocusedTextColor = textColor,
+                    disabledTextColor = textColor.copy(alpha = 0.5f),
+                    cursorColor = textColor,
+                    focusedPlaceholderColor = textColor.copy(alpha = 0.6f),
+                    unfocusedPlaceholderColor = textColor.copy(alpha = 0.6f),
+                )
+            } else {
+                OutlinedTextFieldDefaults.colors()
+            },
         )
         if (isError) {
             Text(
