@@ -25,8 +25,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -58,13 +62,16 @@ private const val PRIVACY_URL = "https://www.tappyai.com/privacy"
 // explore, privacy, always-on). Emoji stand in for the web's lucide icons (the auth module has no
 // icon pack, and the mascot hero art is owner-provided and not present on Android — see the
 // welcome header, which uses the brand wordmark rather than the /tappy/welcome.png hero).
-private data class LoginFeature(val emoji: String, val titleRes: Int, val descRes: Int)
+// tint = the feature's accent colour (web login uses violet / rose / emerald / amber tinted icon
+// tiles). Applied at low alpha as the tile background so it reads as a subtle tint in both light
+// and dark themes (web has per-theme tint variants; the alpha approach is theme-safe here).
+private data class LoginFeature(val emoji: String, val titleRes: Int, val descRes: Int, val tint: Color)
 
 private val LOGIN_FEATURES = listOf(
-    LoginFeature("💬", R.string.auth_feature_1_title, R.string.auth_feature_1_desc),
-    LoginFeature("🧭", R.string.auth_feature_2_title, R.string.auth_feature_2_desc),
-    LoginFeature("🔒", R.string.auth_feature_3_title, R.string.auth_feature_3_desc),
-    LoginFeature("⭐", R.string.auth_feature_4_title, R.string.auth_feature_4_desc),
+    LoginFeature("💬", R.string.auth_feature_1_title, R.string.auth_feature_1_desc, Color(0xFF7C3AED)),
+    LoginFeature("🧭", R.string.auth_feature_2_title, R.string.auth_feature_2_desc, Color(0xFFE11D48)),
+    LoginFeature("🔒", R.string.auth_feature_3_title, R.string.auth_feature_3_desc, Color(0xFF059669)),
+    LoginFeature("⭐", R.string.auth_feature_4_title, R.string.auth_feature_4_desc, Color(0xFFD97706)),
 )
 
 @Composable
@@ -106,8 +113,12 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                 )
+                // Brand wordmark with the web's violet ✦ accent (web: "tappyai✦").
                 Text(
-                    text = stringResource(R.string.auth_brand_name),
+                    text = buildAnnotatedString {
+                        append(stringResource(R.string.auth_brand_name))
+                        withStyle(SpanStyle(color = Color(0xFFA78BFA))) { append(" ✦") }
+                    },
                     style = MaterialTheme.typography.displaySmall,
                     textAlign = TextAlign.Center,
                 )
@@ -135,6 +146,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                         emoji = feature.emoji,
                         title = stringResource(feature.titleRes),
                         description = stringResource(feature.descRes),
+                        tint = feature.tint,
                     )
                 }
             }
@@ -267,7 +279,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun LoginFeatureRow(emoji: String, title: String, description: String) {
+private fun LoginFeatureRow(emoji: String, title: String, description: String, tint: Color) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
@@ -277,7 +289,7 @@ private fun LoginFeatureRow(emoji: String, title: String, description: String) {
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .background(tint.copy(alpha = 0.15f)),
             contentAlignment = Alignment.Center,
         ) {
             Text(text = emoji, fontSize = 20.sp)
