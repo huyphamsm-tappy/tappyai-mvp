@@ -28,7 +28,7 @@ import com.tappyai.core.designsystem.theme.TappyMinTouchTarget
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
 
-enum class TappyButtonVariant { Primary, Secondary, Ghost, Destructive }
+enum class TappyButtonVariant { Primary, Secondary, Ghost, Destructive, Outlined }
 enum class TappyButtonSize { Small, Base, Large }
 
 /**
@@ -54,6 +54,8 @@ fun TappyButton(
         TappyButtonVariant.Secondary -> colors.secondaryContainer to colors.onSecondaryContainer
         TappyButtonVariant.Ghost -> Color.Transparent to colors.primary
         TappyButtonVariant.Destructive -> colors.error to colors.onError
+        // White/surface fill with a subtle border (web parity: `bg-white border border-gray-200`).
+        TappyButtonVariant.Outlined -> colors.surface to colors.onSurface
     }
     val verticalPadding = when (size) {
         TappyButtonSize.Small -> TappySpacing.md
@@ -69,6 +71,8 @@ fun TappyButton(
             .let {
                 if (variant == TappyButtonVariant.Ghost) {
                     it.border(1.dp, colors.outline, TappyShapes.card)
+                } else if (variant == TappyButtonVariant.Outlined) {
+                    it.border(1.dp, colors.outlineVariant, TappyShapes.card)
                 } else it
             }
             .clickable(enabled = isEnabled, onClick = onClick, role = Role.Button)
