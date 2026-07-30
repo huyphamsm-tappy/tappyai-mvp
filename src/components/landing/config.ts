@@ -19,8 +19,9 @@ export const FOUNDER_EMAIL = 'founder@tappyai.com'
 export const FOUNDER_LINKEDIN_URL = 'https://www.linkedin.com/in/ph%E1%BA%A1m-huy-313592253/'
 export const FOUNDER_LINKEDIN_LABEL = 'linkedin.com/in/phạm-huy-313592253'
 
-// Real production captures (www.tappyai.com, 390x844 viewport @2x, WebP q82).
-export const HERO_SCREENSHOT = { src: '/landing/screen-home.webp', width: 780, height: 1498 }
+// Real production captures (390px viewport @2x, WebP q82). screen-home.webp is
+// a genuine screenshot of the live Home screen (src/app/HomeView.tsx).
+export const HERO_SCREENSHOT = { src: '/landing/screen-home.webp', width: 780, height: 1578 }
 
 export const GALLERY_SCREENSHOTS: Array<{ key: string; src: string; width: number; height: number }> = [
   { key: 'chat', src: '/landing/screen-chat.webp', width: 780, height: 1688 },
