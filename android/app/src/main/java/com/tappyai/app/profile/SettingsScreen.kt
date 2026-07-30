@@ -113,12 +113,15 @@ fun SettingsScreen(
                     TappyMenuRow(
                         icon = Icons.Filled.Notifications,
                         title = stringResource(R.string.settings_notifications),
+                        // Web parity (SettingsView MenuItem description=): row subtitle.
+                        subtitle = stringResource(R.string.settings_notifications_desc),
                         onClick = onOpenNotifications,
                     )
                     HorizontalDivider()
                     TappyMenuRow(
                         icon = Icons.Filled.Psychology,
                         title = stringResource(R.string.settings_memory),
+                        subtitle = stringResource(R.string.settings_memory_desc),
                         onClick = onOpenTappyKnows,
                     )
                     HorizontalDivider()
