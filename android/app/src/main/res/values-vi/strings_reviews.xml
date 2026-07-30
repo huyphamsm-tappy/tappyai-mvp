@@ -118,6 +118,20 @@
 
     <!-- Detail -->
     <string name="reviews_detail_title">Chi tiết</string>
+    <string name="reviews_detail_rating_1">Kém</string>
+    <string name="reviews_detail_rating_2">Tạm ổn</string>
+    <string name="reviews_detail_rating_3">Bình thường</string>
+    <string name="reviews_detail_rating_4">Ngon</string>
+    <string name="reviews_detail_rating_5">Xuất sắc</string>
+    <string name="reviews_detail_no_body">Không có nội dung mô tả.</string>
+    <string name="reviews_detail_cta_prompt">Muốn biết thêm về</string>
+    <string name="reviews_detail_ask_tappy">Hỏi Tappy</string>
+    <string name="reviews_detail_anonymous">Ẩn danh</string>
+    <string name="reviews_detail_time_just_now">vừa xong</string>
+    <string name="reviews_detail_time_minutes_ago">%1$d phút trước</string>
+    <string name="reviews_detail_time_hours_ago">%1$d giờ trước</string>
+    <string name="reviews_detail_time_days_ago">%1$d ngày trước</string>
+    <string name="reviews_detail_time_months_ago">%1$d tháng trước</string>
     <string name="reviews_detail_unavailable_title">Không tải được bài viết</string>
     <string name="reviews_detail_unavailable_message">Bài viết không còn khả dụng.</string>
 

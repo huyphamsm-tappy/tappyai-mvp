@@ -22,6 +22,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.ChatBubble
+import androidx.compose.material3.HorizontalDivider
+import com.tappyai.core.designsystem.component.TappyAvatar
+import com.tappyai.core.designsystem.component.TappyAvatarSize
+import com.tappyai.core.designsystem.component.TappyBottomSheet
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -304,6 +323,7 @@ private fun FeedTab(label: String, selected: Boolean, isAction: Boolean = false,
     }
 }
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 internal fun ReviewDetailScreen(
     reviewId: String,
@@ -316,7 +336,7 @@ internal fun ReviewDetailScreen(
     val context = LocalContext.current
     val nowMillis = System.currentTimeMillis()
     val review = uiState.review
-    var pendingDelete by remember { mutableStateOf(false) }
+    var showComments by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -327,40 +347,175 @@ internal fun ReviewDetailScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ScreenBackground),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        // Round-3 audit fix: same width-cap gap as ReviewsFeedScreen — see its comment above.
-        Column(modifier = Modifier.widthIn(max = TappyContainers.compact).fillMaxWidth().fillMaxHeight()) {
-        ScreenHeader(title = stringResource(R.string.reviews_detail_title), onBack = onBack)
+    Box(modifier = Modifier.fillMaxSize().background(DetailPageBackground)) {
         if (review == null) {
-            TappyEmptyState(
-                icon = Icons.Filled.RateReview,
-                title = stringResource(R.string.reviews_detail_unavailable_title),
-                message = stringResource(R.string.reviews_detail_unavailable_message),
-            )
+            Column(modifier = Modifier.fillMaxSize()) {
+                ScreenHeader(title = stringResource(R.string.reviews_detail_title), onBack = onBack)
+                TappyEmptyState(
+                    icon = Icons.Filled.RateReview,
+                    title = stringResource(R.string.reviews_detail_unavailable_title),
+                    message = stringResource(R.string.reviews_detail_unavailable_message),
+                )
+            }
         } else {
-            LazyColumn(modifier = Modifier.weight(1f).fillMaxWidth()) {
-                item(key = "review-card") {
-                    ReviewCard(
-                        review = review,
-                        isMe = uiState.currentUserId != null && review.userId == uiState.currentUserId,
-                        onLike = { viewModel.toggleLike() },
-                        onSave = { viewModel.toggleSave() },
-                        onComment = {},
-                        onShare = { shareReview(context, review) },
-                        onAvatarClick = { onAvatarClick(review.userId) },
-                        onDelete = { pendingDelete = true },
-                        onHide = { viewModel.hide() },
-                        modifier = Modifier.fillMaxWidth(),
-                        // Detail hero is always on-screen — play its clip (web parity).
-                        active = true,
-                        resolveSoundUrl = viewModel::resolveAttachedSoundUrl,
+            // Web parity (reviews/[id]/ReviewDetailView): 55vh hero with a gradient overlay
+            // carrying rating pills + place + address + author, a content card that reads over
+            // it, and a fixed right action bar. Comments open in a sheet (web comment drawer).
+            val heroHeight = (LocalConfiguration.current.screenHeightDp * 0.55f).dp
+            Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                Box(modifier = Modifier.fillMaxWidth().height(heroHeight)) {
+                    ReviewMediaBackground(review = review, active = true, resolveSoundUrl = viewModel::resolveAttachedSoundUrl)
+                    Box(
+                        modifier = Modifier.fillMaxSize().background(
+                            Brush.verticalGradient(0f to Color.Transparent, 0.5f to Color(0x33000000), 1f to Color(0xE0000000)),
+                        ),
                     )
+                    IconButton(
+                        onClick = onBack,
+                        modifier = Modifier.align(Alignment.TopStart).padding(4.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.common_back),
+                            tint = Color.White,
+                        )
+                    }
+                    Column(
+                        modifier = Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(start = 20.dp, end = 72.dp, bottom = 24.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        if (review.rating > 0) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                                DetailPill(text = "${"★".repeat(review.rating)} ${review.rating}/5", bg = Color(0xD9FF6B35))
+                                ratingLabelText(review.rating)?.let { DetailPill(text = it, bg = Color(0x26FFFFFF)) }
+                            }
+                        }
+                        if (!isShareOnlyName(review.placeName)) {
+                            Text(
+                                text = review.placeName,
+                                color = Color.White,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Black,
+                                lineHeight = 28.sp,
+                            )
+                        }
+                        review.placeAddress?.takeIf { it.isNotBlank() }?.let { addr ->
+                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Filled.LocationOn, contentDescription = null, tint = Color(0xB3FFFFFF), modifier = Modifier.size(14.dp))
+                                Text(addr, color = Color(0xB3FFFFFF), fontSize = 13.sp)
+                            }
+                        }
+                        Row(
+                            modifier = Modifier.clickable { onAvatarClick(review.userId) },
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            TappyAvatar(
+                                name = review.profiles?.fullName ?: "",
+                                imageUrl = review.profiles?.avatarUrl,
+                                size = TappyAvatarSize.ListRow,
+                                modifier = Modifier.size(28.dp),
+                            )
+                            Text(
+                                text = review.profiles?.fullName ?: stringResource(R.string.reviews_detail_anonymous),
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                            )
+                            val ago = timeAgoText(review.createdAt, nowMillis)
+                            if (ago.isNotEmpty()) {
+                                Text("· $ago", color = Color(0x99FFFFFF), fontSize = 12.sp)
+                            }
+                        }
+                    }
                 }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                        .background(DetailCardBackground)
+                        .padding(horizontal = 20.dp, vertical = 24.dp),
+                ) {
+                    if (review.body.isNotBlank()) {
+                        Text(review.body, color = Color(0xE6FFFFFF), fontSize = 16.sp, lineHeight = 26.sp, modifier = Modifier.padding(end = 44.dp))
+                    } else {
+                        Text(stringResource(R.string.reviews_detail_no_body), color = Color(0x80FFFFFF), fontSize = 14.sp)
+                    }
+                    if (!isShareOnlyName(review.placeName)) {
+                        Spacer(modifier = Modifier.height(20.dp))
+                        HorizontalDivider(color = Color(0x14FFFFFF))
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color(0x14FF6B35))
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            Text(
+                                text = "${stringResource(R.string.reviews_detail_cta_prompt)} ${review.placeName}?",
+                                color = Color(0xB3FFFFFF),
+                                fontSize = 14.sp,
+                            )
+                            Text(
+                                text = "🤖 " + stringResource(R.string.reviews_detail_ask_tappy),
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(50))
+                                    .background(Color(0xFFFF6B35))
+                                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(96.dp))
+                }
+            }
+
+            Column(
+                modifier = Modifier.align(Alignment.BottomEnd).padding(end = 12.dp, bottom = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                ReviewActionButton(
+                    icon = if (review.likedByMe) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    label = review.likeCount.toString(),
+                    contentDescription = stringResource(R.string.reviews_action_like_count, review.likeCount),
+                    tint = if (review.likedByMe) Color(0xFFFE2C55) else Color.White,
+                    onClick = { viewModel.toggleLike() },
+                )
+                ReviewActionButton(
+                    icon = Icons.Outlined.ChatBubble,
+                    label = review.commentCount.toString(),
+                    contentDescription = stringResource(R.string.reviews_action_comment_count, review.commentCount),
+                    tint = Color.White,
+                    onClick = { showComments = true },
+                )
+                ReviewActionButton(
+                    icon = if (review.savedByMe) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
+                    label = stringResource(R.string.reviews_action_save),
+                    contentDescription = stringResource(R.string.reviews_action_save),
+                    tint = if (review.savedByMe) Color(0xFFFBBF24) else Color.White,
+                    onClick = { viewModel.toggleSave() },
+                )
+                ReviewActionButton(
+                    icon = Icons.Filled.Share,
+                    label = stringResource(R.string.reviews_action_share),
+                    contentDescription = stringResource(R.string.reviews_action_share),
+                    tint = Color.White,
+                    onClick = { shareReview(context, review) },
+                )
+            }
+        }
+    }
+
+    if (showComments && review != null) {
+        TappyBottomSheet(onDismiss = { showComments = false }) {
+            ReviewCommentsHeader(count = review.commentCount)
+            LazyColumn(modifier = Modifier.fillMaxWidth().heightIn(max = 420.dp)) {
                 reviewCommentItems(
                     comments = uiState.comments,
                     nowMillis = nowMillis,
@@ -383,17 +538,48 @@ internal fun ReviewDetailScreen(
                 onCancelReply = viewModel::cancelReply,
             )
         }
-        }
     }
+}
 
-    if (pendingDelete && review != null) {
-        TappyDialog(
-            title = stringResource(R.string.myreviews_delete_dialog_title),
-            message = stringResource(R.string.myreviews_delete_dialog_message, review.placeName),
-            confirmText = stringResource(R.string.myreviews_delete_confirm),
-            onConfirm = { viewModel.delete(); pendingDelete = false },
-            onDismiss = { pendingDelete = false },
-        )
+private val DetailPageBackground = Color(0xFF0A0A0A)
+private val DetailCardBackground = Color(0xFF111111)
+
+@Composable
+private fun DetailPill(text: String, bg: Color) {
+    Text(
+        text = text,
+        color = Color.White,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.SemiBold,
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(bg)
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+    )
+}
+
+@Composable
+private fun ratingLabelText(rating: Int): String? = when (rating) {
+    1 -> stringResource(R.string.reviews_detail_rating_1)
+    2 -> stringResource(R.string.reviews_detail_rating_2)
+    3 -> stringResource(R.string.reviews_detail_rating_3)
+    4 -> stringResource(R.string.reviews_detail_rating_4)
+    5 -> stringResource(R.string.reviews_detail_rating_5)
+    else -> null
+}
+
+@Composable
+private fun timeAgoText(createdAt: String, nowMillis: Long): String {
+    val then = runCatching { java.time.Instant.parse(createdAt).toEpochMilli() }
+        .recoverCatching { java.time.OffsetDateTime.parse(createdAt).toInstant().toEpochMilli() }
+        .getOrNull() ?: return ""
+    val mins = ((nowMillis - then) / 60000L).toInt().coerceAtLeast(0)
+    return when {
+        mins < 1 -> stringResource(R.string.reviews_detail_time_just_now)
+        mins < 60 -> stringResource(R.string.reviews_detail_time_minutes_ago, mins)
+        mins < 1440 -> stringResource(R.string.reviews_detail_time_hours_ago, mins / 60)
+        mins < 43200 -> stringResource(R.string.reviews_detail_time_days_ago, mins / 1440)
+        else -> stringResource(R.string.reviews_detail_time_months_ago, mins / 43200)
     }
 }
 

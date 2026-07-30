@@ -134,7 +134,7 @@ fun ReviewCard(
 }
 
 @Composable
-private fun ReviewMediaBackground(review: Review, active: Boolean, resolveSoundUrl: (suspend (String) -> String?)? = null) {
+internal fun ReviewMediaBackground(review: Review, active: Boolean, resolveSoundUrl: (suspend (String) -> String?)? = null) {
     // Borrowed sound: origin=="attached" means this clip plays a track over its own (muted) audio.
     val attachedTrackId = review.music?.takeIf { it.origin == "attached" }?.trackId
     val soundVolume = review.music?.volume?.toFloat() ?: 1f
@@ -343,7 +343,7 @@ private fun ReviewActionRail(
 }
 
 @Composable
-private fun ReviewActionButton(
+internal fun ReviewActionButton(
     icon: ImageVector,
     label: String,
     contentDescription: String,
