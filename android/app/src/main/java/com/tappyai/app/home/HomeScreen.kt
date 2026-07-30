@@ -124,7 +124,7 @@ fun HomeScreen(
             // QuickActions grid is Android's one intentional divergence (approved), sitting where
             // web's 2-col "Tools" section does (after Recommendations).
             HomeHeroCard(
-                greeting = viewModel.greeting,
+                heroHour = viewModel.heroHour,
                 greetingName = viewModel.greetingName,
                 avatarUrl = viewModel.profile?.avatarUrl,
                 onOpenChat = { onNavigateToTab(HomeTab.Chat) },
@@ -156,11 +156,18 @@ fun HomeScreen(
 
 @Composable
 private fun HomeHeroCard(
-    greeting: String,
+    heroHour: Int,
     greetingName: String?,
     avatarUrl: String?,
     onOpenChat: () -> Unit,
 ) {
+    // Resolved here (not in the ViewModel) so it re-localizes on a runtime language switch.
+    // Buckets match web (components/Header.tsx): <12 morning, <18 afternoon, else evening.
+    val greeting = when {
+        heroHour < 12 -> stringResource(R.string.home_greeting_morning)
+        heroHour < 18 -> stringResource(R.string.home_greeting_afternoon)
+        else -> stringResource(R.string.home_greeting_evening)
+    }
     // Web parity (HomeView.tsx hero): a rounded gradient card holding the greeting, a location
     // affordance, and the "ask Tappy" search entry — replacing Android's older plain greeting row +
     // separate search card. Web's big rotating heroText is a server-computed field (heroTextVi) that
@@ -185,12 +192,14 @@ private fun HomeHeroCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
+            // Web parity (HomeView.tsx): `from-primary-500 via-primary-600 to-accent-500` =
+            // #007AFF → #0062CC → #FF9500 (Tappy blue into the orange accent — NOT purple).
             .background(
                 Brush.linearGradient(
                     listOf(
-                        Color(0xFF2E7DFF),
+                        Color(0xFF007AFF),
                         Color(0xFF0062CC),
-                        Color(0xFF7C3AED),
+                        Color(0xFFFF9500),
                     ),
                 ),
             )

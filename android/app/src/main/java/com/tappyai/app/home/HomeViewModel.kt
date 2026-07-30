@@ -51,6 +51,11 @@ class HomeViewModel @Inject constructor(
 
     val greeting: String = greetingForHour(stringProvider, hourOfDay(clock.nowMillis()))
 
+    /** The device-clock hour (0–23), locale-independent. The hero greeting string is resolved in
+     *  the Composable from this via `stringResource`, so it re-localizes on a runtime language
+     *  switch — unlike [greeting], a `val` fixed to the locale at ViewModel construction. */
+    val heroHour: Int = hourOfDay(clock.nowMillis())
+
     var isSignedIn by mutableStateOf(false)
         private set
 
