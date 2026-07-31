@@ -17,7 +17,7 @@ export const en: Record<string, string> = {
   'landing.hero.headlineAccent': 'everyday life in Vietnam',
   'landing.hero.headline': 'The AI lifestyle assistant for everyday life in Vietnam',
   'landing.hero.subtitle':
-    'TappyAI combines a conversational AI assistant, a short-video review community, and practical everyday utilities in one bilingual product — built around how people in Vietnam eat, travel, and live.',
+    'TappyAI combines a conversational AI assistant, a short-video review community, and everyday utilities into a single bilingual platform—built around how people in Vietnam eat, travel, and live.',
   'landing.hero.learnMore': 'Learn more',
   'landing.hero.viewProduct': 'View product',
   'landing.hero.screenshotAlt': 'TappyAI home screen — AI greeting card, category explorer, and daily tools',
@@ -25,7 +25,7 @@ export const en: Record<string, string> = {
   // 2. What is TappyAI
   'landing.what.title': 'What is TappyAI?',
   'landing.what.p1':
-    'TappyAI is a consumer application for the Vietnamese market that brings together an AI assistant and a local discovery community. Users chat with Tappy — an assistant specialized in food, travel, and local services — and share short video reviews of real places and products.',
+    'TappyAI is a consumer application for the Vietnamese market that brings together an AI assistant and a local discovery community. Users can chat with Tappy—an AI assistant specialized in food, travel, and local services—or share short-video reviews of real places and products.',
   'landing.what.p2':
     'The product is live today as a web application; a native Android application is in release-candidate testing. The main application interface is available in both Vietnamese and English.',
 
@@ -41,13 +41,13 @@ export const en: Record<string, string> = {
   'landing.product.intro': 'One product, three connected layers.',
   'landing.product.assistant.title': 'AI assistant',
   'landing.product.assistant.desc':
-    'A conversational assistant for food, travel, and local services. It answers in natural language, assembles plans with real places and photos, and personalizes suggestions to each user.',
+    'A conversational assistant for food, travel, and local services. It answers in natural language, creates personalized plans with real places and photos, and adapts its suggestions to each user.',
   'landing.product.community.title': 'Review community',
   'landing.product.community.desc':
-    'A short-video feed where users post reviews of restaurants, cafés, and places — with likes, comments, follows, and reusable sounds attached to each review.',
+    'A short-video feed where users post reviews of restaurants, cafés, and places — with likes, comments, follows, and reusable audio tracks attached to each review.',
   'landing.product.tools.title': 'Everyday utilities',
   'landing.product.tools.desc':
-    'Practical tools used daily: translation, currency conversion, bill splitting, document scanning, and a curated list of daily deals from popular services in Vietnam.',
+    'Practical daily tools including translation, currency conversion, bill splitting, document scanning, and curated daily deals from popular services in Vietnam.',
 
   // 5. Key features
   'landing.features.title': 'Key features',
@@ -56,10 +56,10 @@ export const en: Record<string, string> = {
     'Ask anything about eating, traveling, and living in Vietnam — get direct answers and complete plans built from real places.',
   'landing.features.reviews.title': 'Short-video reviews',
   'landing.features.reviews.desc':
-    'A vertical video feed of authentic reviews from real users, with likes, comments, saves, and shares.',
+    'A vertical video feed of authentic user-generated reviews, with likes, comments, saves, and shares.',
   'landing.features.sounds.title': 'Sounds & music',
   'landing.features.sounds.desc':
-    'Reviews can carry a reusable sound, backed by a built-in library of licensed tracks and original user sounds.',
+    'Reviews can include reusable audio tracks powered by a built-in licensed music library.',
   'landing.features.deals.title': 'Daily deals',
   'landing.features.deals.desc':
     'A hand-curated selection of offers from popular Vietnamese services, refreshed every day.',
@@ -80,7 +80,7 @@ export const en: Record<string, string> = {
   'landing.shots.reviews.label': 'Reviews feed',
   'landing.shots.reviews.alt': 'TappyAI short-video review feed with like, comment, and share actions',
   'landing.shots.music.label': 'Music library',
-  'landing.shots.music.alt': 'TappyAI music library listing reusable sounds with play controls',
+  'landing.shots.music.alt': 'TappyAI music library listing reusable audio tracks with play controls',
   'landing.shots.deals.label': 'Daily deals',
   'landing.shots.deals.alt': 'TappyAI daily deals screen listing curated offers from popular services',
 
@@ -92,7 +92,8 @@ export const en: Record<string, string> = {
   'landing.tech.mobile.title': 'Mobile',
   'landing.tech.mobile.desc': 'Native Android application built with Kotlin and Jetpack Compose.',
   'landing.tech.ai.title': 'AI',
-  'landing.tech.ai.desc': 'Anthropic Claude models behind a provider-abstracted AI layer.',
+  'landing.tech.ai.desc':
+    'AI services are delivered through a provider-abstracted architecture, allowing TappyAI to support multiple AI models while remaining flexible for future expansion.',
   'landing.tech.data.title': 'Backend & data',
   'landing.tech.data.desc': 'Supabase — PostgreSQL, authentication, and row-level security — with media storage on Vercel Blob.',
   'landing.tech.ops.title': 'Analytics & payments',
@@ -101,7 +102,7 @@ export const en: Record<string, string> = {
   // 8. About
   'landing.about.title': 'About TappyAI',
   'landing.about.p1':
-    'TappyAI is founded and built by PHẠM ĐOÀN HUY in Vietnam. The product is designed, engineered, and operated in-house — web, mobile, AI, and infrastructure.',
+    'TappyAI is founded and built by PHẠM ĐOÀN HUY in Vietnam. The product is designed, engineered, and operated entirely in-house — web, mobile, AI, and infrastructure.',
   'landing.about.p2':
     'The web product is in production today and free to try. The native Android application has completed engineering hardening and is in release-candidate testing.',
 
