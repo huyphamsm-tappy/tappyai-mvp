@@ -18,7 +18,7 @@ export default function LandingHero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative isolate flex min-h-[640px] items-center overflow-hidden lg:min-h-[780px]"
+      className="relative isolate flex min-h-[640px] items-center overflow-hidden lg:min-h-[880px]"
     >
       {/* Cinematic Hero Background Environment — one dedicated artwork behind the
           HTML layer. Purely decorative (empty alt); scrims keep text legible and
@@ -30,7 +30,7 @@ export default function LandingHero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[50%_72%]"
+          className="object-cover object-[50%_80%]"
         />
         {/* Left legibility scrim, shaped rather than flat: deliberately LIGHT over
             the first ~12% (where the glowing Vietnam dot-map sits, so it reads as
@@ -53,7 +53,9 @@ export default function LandingHero() {
           Landmark 81 tower visible between them. Page rhythm below is unchanged. */}
       <div className="relative z-10 mx-auto grid w-full max-w-container-wide items-center gap-12 px-5 py-20 sm:px-8 lg:max-w-[88rem] lg:grid-cols-[1fr_auto] lg:gap-16 lg:py-24">
         {/* ── Left: copy ─────────────────────────────────────────────── */}
-        <div className="text-center lg:text-left">
+        {/* Small desktop-only inset so the headline clears the Vietnam dot-map,
+            which sits in the artwork's upper-left. Mobile/tablet unchanged. */}
+        <div className="text-center lg:pl-10 lg:text-left xl:pl-16">
           <p className="text-sm font-semibold text-[#5B9BF8] [text-shadow:0_1px_12px_rgba(2,6,23,0.7)] sm:text-base">
             {t('landing.hero.eyebrow')}
           </p>
