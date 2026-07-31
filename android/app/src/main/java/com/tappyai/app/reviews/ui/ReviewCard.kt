@@ -121,14 +121,14 @@ fun ReviewCard(
             onMusicDiscClick = onMusicDiscClick,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 12.dp, bottom = 96.dp),
+                .padding(end = 10.dp, bottom = 20.dp),
         )
 
         ReviewBottomOverlay(
             review = review,
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(start = 12.dp, end = 80.dp, bottom = 80.dp),
+                .padding(start = 16.dp, end = 76.dp, bottom = 20.dp),
         )
     }
 }
@@ -268,14 +268,18 @@ private fun ReviewActionRail(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        // TikTok/Web proportions: a tight action stack. The avatar keeps a slightly larger gap
+        // below it (its own padding) before the like/comment/save/share/sound run.
+        verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         Box(
-            modifier = Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onAvatarClick,
-            ),
+            modifier = Modifier
+                .padding(bottom = 4.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = onAvatarClick,
+                ),
             contentAlignment = Alignment.BottomCenter,
         ) {
             // Web parity: the feed avatar has a white ring (`ring-2 ring-white`). A white-filled
@@ -427,7 +431,7 @@ private fun ReviewBottomOverlay(
             Text(
                 text = handle,
                 color = ReviewTextPrimary,
-                fontSize = 15.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
