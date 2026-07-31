@@ -97,6 +97,9 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>> =
         safeApiCall { groupNotifications(api.getNotifications().notifications.map { it.toDomain() }) }
 
+    override suspend fun markAllNotificationsRead(): NetworkResult<Unit> =
+        safeApiCall { api.markAllNotificationsRead() }
+
     override suspend fun createReview(
         placeId: String,
         placeName: String,

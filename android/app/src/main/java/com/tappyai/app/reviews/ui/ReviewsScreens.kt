@@ -63,6 +63,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -142,6 +146,18 @@ internal fun ReviewsFeedScreen(
         viewModel.messages.collect { message ->
             snackbarHostState.showSnackbar(message = message, duration = SnackbarDuration.Short)
         }
+    }
+
+    // Re-read the unread count whenever the feed resumes — in particular when returning from the
+    // notifications inbox, which marks all read server-side. The bell badge then clears immediately,
+    // no app restart or manual refresh needed (web parity: markAllRead → unreadCount 0).
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) viewModel.refreshUnreadNotifications()
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
     Scaffold(
