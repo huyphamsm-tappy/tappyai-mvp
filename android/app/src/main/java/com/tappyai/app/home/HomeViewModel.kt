@@ -39,6 +39,10 @@ import javax.inject.Inject
  *    "not signed in" placeholder even for a signed-in user. Reuses the exact fetch pattern already
  *    proven in [com.tappyai.app.profile.ProfileViewModel].
  */
+/** A Home "Suggested for you" prompt carrying BOTH language variants; the UI localizes it to the
+ *  current app locale (see [SuggestionsSection]) rather than the system locale. */
+data class HomeSuggestion(val text: String, val textEn: String)
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     clock: ClockProvider,
@@ -72,8 +76,8 @@ class HomeViewModel @Inject constructor(
                 ?: "bạn"
         }
 
-    private val _suggestionsState = MutableStateFlow<UiState<List<String>>>(UiState.Empty)
-    val suggestionsState: StateFlow<UiState<List<String>>> = _suggestionsState.asStateFlow()
+    private val _suggestionsState = MutableStateFlow<UiState<List<HomeSuggestion>>>(UiState.Empty)
+    val suggestionsState: StateFlow<UiState<List<HomeSuggestion>>> = _suggestionsState.asStateFlow()
 
     private val _recentActivityState = MutableStateFlow<UiState<List<String>>>(UiState.Empty)
     val recentActivityState: StateFlow<UiState<List<String>>> = _recentActivityState.asStateFlow()
@@ -96,13 +100,15 @@ class HomeViewModel @Inject constructor(
     private fun loadSuggestedPrompts() {
         _suggestionsState.value = UiState.Loading
         viewModelScope.launch {
-            val isEnglish = java.util.Locale.getDefault().language == "en"
+            // Keep BOTH languages; the Composable localizes to the CURRENT APP locale (not the
+            // system locale, and re-picking on a runtime VI/EN switch without a re-fetch). Fixing
+            // it here with Locale.getDefault() would still read the system locale and never update.
             val prompts = runCatching { suggestedPromptsApi.getSuggestedPrompts() }
                 .onFailure { logger.e(TAG, "Suggested prompts load failed: ${it.message}") }
                 .getOrNull()
                 ?.prompts
-                ?.map { (if (isEnglish) it.textEn.ifBlank { it.text } else it.text).trim() }
-                ?.filter { it.isNotEmpty() }
+                ?.map { HomeSuggestion(text = it.text.trim(), textEn = it.textEn.trim()) }
+                ?.filter { it.text.isNotEmpty() || it.textEn.isNotEmpty() }
                 .orEmpty()
             _suggestionsState.value = if (prompts.isEmpty()) UiState.Empty else UiState.Success(prompts)
         }
