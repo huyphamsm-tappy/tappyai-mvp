@@ -30,7 +30,7 @@ export default function LandingHero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[50%_64%]"
+          className="object-cover object-[50%_72%]"
         />
         {/* Left legibility scrim, shaped rather than flat: deliberately LIGHT over
             the first ~12% (where the glowing Vietnam dot-map sits, so it reads as
@@ -114,8 +114,8 @@ export default function LandingHero() {
                   width={HERO_SCREENSHOT.width}
                   height={HERO_SCREENSHOT.height}
                   priority
-                  sizes="(min-width: 1280px) 20rem, (min-width: 1024px) 18rem, (min-width: 640px) 17rem, 15rem"
-                  className="h-auto w-[15rem] sm:w-[17rem] lg:w-[18rem] xl:w-[20rem]"
+                  sizes="(min-width: 1280px) 23rem, (min-width: 1024px) 20rem, (min-width: 640px) 17rem, 15rem"
+                  className="h-auto w-[15rem] sm:w-[17rem] lg:w-[20rem] xl:w-[23rem]"
                 />
               </div>
             </div>
