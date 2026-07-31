@@ -53,6 +53,8 @@ import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -230,6 +232,7 @@ internal fun ReviewsFeedScreen(
                 onCompose = onCompose,
                 feedType = uiState.feedType,
                 onFeedTypeChange = viewModel::onFeedTypeChange,
+                unreadCount = uiState.unreadNotifications,
                 modifier = Modifier.align(Alignment.TopCenter),
             )
             }
@@ -255,6 +258,7 @@ private fun FeedTopBar(
     onCompose: () -> Unit,
     feedType: FeedType,
     onFeedTypeChange: (FeedType) -> Unit,
+    unreadCount: Int = 0,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -287,8 +291,19 @@ private fun FeedTopBar(
             IconButton(onClick = onSearch) {
                 Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.reviews_search_label), tint = ScreenIconColor)
             }
-            IconButton(onClick = onNotifications) {
-                Icon(Icons.Filled.Notifications, contentDescription = stringResource(R.string.reviews_notifications_label), tint = ScreenIconColor)
+            // Web parity (BottomNav/NotificationProvider): the bell carries an unread-count badge.
+            BadgedBox(
+                badge = {
+                    if (unreadCount > 0) {
+                        Badge {
+                            Text(if (unreadCount > 99) "99+" else unreadCount.toString())
+                        }
+                    }
+                },
+            ) {
+                IconButton(onClick = onNotifications) {
+                    Icon(Icons.Filled.Notifications, contentDescription = stringResource(R.string.reviews_notifications_label), tint = ScreenIconColor)
+                }
             }
         }
     }

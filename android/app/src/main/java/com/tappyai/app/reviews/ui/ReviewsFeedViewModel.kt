@@ -51,6 +51,8 @@ data class ReviewsFeedUiState(
     val currentUserId: String? = null,
     /** Active feed tab. Default For You, matching the web's initial `feedType='for-you'`. */
     val feedType: FeedType = FeedType.ForYou,
+    /** Unread notification count — drives the bell badge (web parity: unread indicator). */
+    val unreadNotifications: Int = 0,
 )
 
 @HiltViewModel
@@ -89,6 +91,20 @@ class ReviewsFeedViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = withContext(Dispatchers.IO) { authRepository.currentUserId() }
             _uiState.update { it.copy(currentUserId = userId) }
+        }
+        refreshUnreadNotifications()
+    }
+
+    /** Load the unread notification count for the bell badge (web parity). Derived from the grouped
+     *  notifications' read state; silently no-ops on failure (the badge just stays hidden). Call on
+     *  init and whenever the feed is refreshed / returned to. */
+    fun refreshUnreadNotifications() {
+        viewModelScope.launch {
+            val result = repository.getNotifications()
+            if (result is NetworkResult.Success) {
+                val unread = result.data.count { it.readAt == null }
+                _uiState.update { it.copy(unreadNotifications = unread) }
+            }
         }
     }
 

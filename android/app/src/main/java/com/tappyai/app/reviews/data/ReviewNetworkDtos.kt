@@ -161,17 +161,30 @@ data class UserProfileDto(
 @Serializable
 data class NotificationsResponseDto(
     val notifications: List<NotificationDto> = emptyList(),
+    @SerialName("unread_count") val unreadCount: Int = 0,
 )
 
+@Serializable
+data class NotificationActorDto(
+    val id: String = "",
+    val name: String = "",
+    val avatar: String? = null,
+)
+
+// Canonical GET /api/notifications shape (src/lib/notifications/contract.ts NotificationDTO),
+// consumed by every client. The backend forms the localized `title`/`body`; the actor is a NESTED
+// object (was previously mis-declared as flat actor_name/actor_avatar/text/url, so every field
+// silently defaulted to empty — blank names + no message text).
 @Serializable
 data class NotificationDto(
     val id: String = "",
     val type: String = "",
-    @SerialName("actor_id") val actorId: String = "",
-    @SerialName("actor_name") val actorName: String = "",
-    @SerialName("actor_avatar") val actorAvatar: String? = null,
-    val text: String = "",
-    val url: String = "",
+    val category: String = "",
+    val title: String = "",
+    val body: String = "",
+    val actor: NotificationActorDto? = null,
+    @SerialName("entity_url") val entityUrl: String? = null,
+    @SerialName("read_at") val readAt: String? = null,
     @SerialName("created_at") val createdAt: String = "",
 )
 
@@ -387,11 +400,13 @@ fun UserProfileDto.toReviewProfile(): ReviewProfile = ReviewProfile(
 fun NotificationDto.toDomain(): ReviewNotification = ReviewNotification(
     id = id,
     type = type,
-    actorId = actorId,
-    actorName = actorName,
-    actorAvatar = actorAvatar,
-    text = text,
-    url = url,
+    actorId = actor?.id.orEmpty(),
+    actorName = actor?.name.orEmpty(),
+    actorAvatar = actor?.avatar,
+    title = title,
+    body = body,
+    url = entityUrl.orEmpty(),
+    readAt = readAt,
     createdAt = createdAt,
 )
 
