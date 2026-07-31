@@ -53,6 +53,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -415,27 +416,34 @@ private fun QuickActionTile(action: QuickAction, modifier: Modifier = Modifier) 
 }
 
 @Composable
-private fun SuggestionsSection(state: UiState<List<String>>, onSuggestionClick: (String) -> Unit) {
+private fun SuggestionsSection(state: UiState<List<HomeSuggestion>>, onSuggestionClick: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
         SectionHeader(title = stringResource(R.string.home_section_suggested))
         when (state) {
             UiState.Loading -> LoadingBlock()
             is UiState.Success -> {
                 // Dynamic prompts from /api/suggested-prompts — tapping one opens Chat pre-filled.
+                // Localize to the CURRENT APP locale (LocalConfiguration reflects the per-app locale
+                // set via AppCompatDelegate and re-composes on a language switch), NOT the system
+                // locale — so VI/EN follows the in-app language toggle. Both the displayed text and
+                // the prefill sent to Chat use the same localized string.
+                val isEnglish = LocalConfiguration.current.locales[0].language == "en"
                 Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
                     state.data.forEach { prompt ->
+                        val localized = if (isEnglish) prompt.textEn.ifBlank { prompt.text }
+                        else prompt.text.ifBlank { prompt.textEn }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(TappyShapes.card)
                                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                                .clickable { onSuggestionClick(prompt) }
+                                .clickable { onSuggestionClick(localized) }
                                 .padding(TappySpacing.md),
                             horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(Icons.Filled.Lightbulb, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
-                            Text(text = prompt, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                            Text(text = localized, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
                         }
                     }
                 }
