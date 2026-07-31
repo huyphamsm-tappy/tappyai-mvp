@@ -19,6 +19,9 @@ fun ReviewsNavHost(onBack: (() -> Unit)? = null) {
                 onReviewClick = { reviewId ->
                     navController.navigate(ReviewsRoute.Detail(reviewId = reviewId))
                 },
+                onOpenProfile = { userId ->
+                    navController.navigate(ReviewsRoute.AuthorProfile(userId = userId))
+                },
                 onCompose = { navController.navigate(ReviewsRoute.Composer) },
                 onNotifications = { navController.navigate(ReviewsRoute.Notifications) },
                 onSearch = { navController.navigate(ReviewsRoute.Search) },
