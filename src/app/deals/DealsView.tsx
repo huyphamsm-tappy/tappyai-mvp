@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import DealNotifyButton from './DealNotifyButton'
+import BrandLogo, { resolveBrandPartner } from '@/components/ui/BrandLogo'
 import { ExternalLink, Loader2, Clock, Copy, Check } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -151,12 +152,18 @@ function DealCard({ deal }: { deal: PartnerDeal }) {
       onClick={() => { fetch(`/api/deals/${deal.id}/click`, { method: 'POST', keepalive: true }).catch(() => {}) }}
       className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:border-orange-200 dark:hover:border-orange-800 hover:shadow-md transition-all group active:scale-[0.99]"
     >
-      {/* Logo (or partner-initial fallback) */}
-      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center overflow-hidden text-lg font-bold text-orange-600 dark:text-orange-400">
-        {deal.logoImage
-          ? <img src={deal.logoImage} alt={deal.partnerName} className="w-full h-full object-cover" />
-          : (deal.partnerName?.[0]?.toUpperCase() ?? '?')}
-      </div>
+      {/* Official brand logo (registry) → per-deal DB image → partner-initial fallback.
+          The registry wins for known partners so every card shows the official mark;
+          the two fallbacks only ever apply to partners not yet in PARTNERS. */}
+      {resolveBrandPartner(deal.partnerName) ? (
+        <BrandLogo partnerName={deal.partnerName} size={48} />
+      ) : (
+        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center overflow-hidden text-lg font-bold text-orange-600 dark:text-orange-400">
+          {deal.logoImage
+            ? <img src={deal.logoImage} alt={deal.partnerName} className="w-full h-full object-cover" />
+            : (deal.partnerName?.[0]?.toUpperCase() ?? '?')}
+        </div>
+      )}
 
       {/* Content */}
       <div className="flex-1 min-w-0">
