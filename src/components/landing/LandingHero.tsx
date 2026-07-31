@@ -30,13 +30,22 @@ export default function LandingHero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[58%_58%]"
+          className="object-cover object-[50%_64%]"
         />
-        {/* Left legibility scrim — deliberately lighter than a flat wash so the
-            glowing Vietnam dot-map in the upper-left stays visible, as in the reference. */}
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-gray-950/35 to-transparent" />
-        {/* Bottom blend into the page background + extra mobile legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/10 to-transparent" />
+        {/* Left legibility scrim, shaped rather than flat: deliberately LIGHT over
+            the first ~12% (where the glowing Vietnam dot-map sits, so it reads as
+            in the reference), strongest directly behind the headline, then clearing
+            early so the Landmark 81 tower and skyline stay unobscured. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, rgba(2,6,23,0.32) 0%, rgba(2,6,23,0.80) 15%, rgba(2,6,23,0.56) 46%, rgba(2,6,23,0.10) 66%, rgba(2,6,23,0) 80%)',
+          }}
+        />
+        {/* Bottom blend — shallow and short so the blue/orange light trails and the
+            water reflection stay fully visible instead of being washed to black. */}
+        <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-gray-950/85 to-transparent" />
       </div>
 
       {/* Wider than the page container on desktop only: the reference composition
@@ -80,15 +89,24 @@ export default function LandingHero() {
 
         {/* ── Right: floating device ─────────────────────────────────── */}
         <div className="flex justify-center lg:justify-end">
-          <div className="relative">
+          {/* Perspective wrapper: the reference device is turned very slightly so
+              its left edge catches light. Kept subtle so the screenshot inside
+              stays legible, and disabled below lg where the phone is centred. */}
+          <div className="relative lg:[perspective:1600px]">
             {/* Ambient glow grounding the device in the scene (decorative) */}
             <div
               aria-hidden="true"
-              className="absolute -inset-8 -z-10 rounded-full bg-blue-500/20 blur-3xl"
+              className="absolute -inset-10 -z-10 rounded-full bg-blue-500/25 blur-3xl"
             />
-            {/* Device frame: dark bezel + subtle edge highlight, mirroring the
-                premium titanium look of the reference mockup. */}
-            <div className="relative rounded-[2.5rem] border-[6px] border-gray-800 bg-gray-900 p-[2px] shadow-2xl shadow-black/70 ring-1 ring-white/20 sm:rounded-[3rem] sm:border-[8px]">
+            {/* Floor bloom under the device — sells the "floating above the city"
+                read from the reference (decorative). */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-6 -bottom-8 -z-10 h-16 rounded-[50%] bg-blue-400/25 blur-2xl"
+            />
+            {/* Device frame: dark bezel + edge highlight, mirroring the premium
+                titanium look of the reference mockup. */}
+            <div className="relative rounded-[2.5rem] border-[6px] border-gray-800 bg-gray-900 p-[2px] shadow-[0_45px_90px_-25px_rgba(0,0,0,0.9)] ring-1 ring-white/25 sm:rounded-[3rem] sm:border-[8px] lg:[transform:rotateY(-7deg)_rotateX(1.5deg)] lg:[transform-style:preserve-3d]">
               <div className="overflow-hidden rounded-[2.1rem] sm:rounded-[2.5rem]">
                 <Image
                   src={HERO_SCREENSHOT.src}
@@ -96,8 +114,8 @@ export default function LandingHero() {
                   width={HERO_SCREENSHOT.width}
                   height={HERO_SCREENSHOT.height}
                   priority
-                  sizes="(min-width: 1280px) 23rem, (min-width: 1024px) 20rem, (min-width: 640px) 17rem, 15rem"
-                  className="h-auto w-[15rem] sm:w-[17rem] lg:w-[20rem] xl:w-[23rem]"
+                  sizes="(min-width: 1280px) 20rem, (min-width: 1024px) 18rem, (min-width: 640px) 17rem, 15rem"
+                  className="h-auto w-[15rem] sm:w-[17rem] lg:w-[18rem] xl:w-[20rem]"
                 />
               </div>
             </div>
