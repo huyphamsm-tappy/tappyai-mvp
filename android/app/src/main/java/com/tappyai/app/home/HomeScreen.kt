@@ -509,36 +509,34 @@ private fun FortuneSection(
 
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
         SectionHeader(title = stringResource(R.string.home_section_fortune))
-        entries.forEach { entry ->
-            TappyCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(TappyShapes.card)
-                    .clickable(onClick = entry.onClick),
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
-                    verticalAlignment = Alignment.CenterVertically,
+        // Web parity (HomeView.tsx Fortune): a 3-column row of vertical mini-cards (emoji + label),
+        // each a filled surface + hairline border + subtle shadow — not the old full-width list rows.
+        Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
+            entries.forEach { entry ->
+                Surface(
+                    onClick = entry.onClick,
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                    shadowElevation = 1.dp,
                 ) {
-                    Text(text = entry.emoji, style = MaterialTheme.typography.headlineSmall)
-                    Column(modifier = Modifier.weight(1f)) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = TappySpacing.lg, horizontal = TappySpacing.sm),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+                    ) {
+                        Text(text = entry.emoji, fontSize = 24.sp)
                         Text(
                             text = entry.title,
-                            style = MaterialTheme.typography.titleSmall,
+                            style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Text(
-                            text = entry.description,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
+                            maxLines = 2,
                         )
                     }
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
                 }
             }
         }
