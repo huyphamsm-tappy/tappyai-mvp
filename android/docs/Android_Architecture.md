@@ -290,4 +290,18 @@ Lightweight, matching a single-owner project — not a heavyweight enterprise pr
 
 ---
 
-*No code was written for this revision. `android/docs/Android_Architecture.md` is the canonical architecture reference for TappyAI Android — status FROZEN as of this revision, superseded only by a future accepted ADR per §7.*
+## 8. AI Language Consistency Requirements
+
+> Added 2026-07-31 under **ADR 0004** (`android/docs/adr/0004-ai-language-consistency.md`), which binds Android to the backend decision record **ADR-016** (`docs/architecture/ADR-016-ai-language-detection-and-localization.md`). Origin: two production incidents (2026-07-29, 2026-07-30) in which English questions naming Vietnamese places/dishes with correct diacritics ("Phú Quốc itinerary…", "Đà Nẵng hotels", "i wanna fo to eat Phở") were answered in Vietnamese. Fixed server-side twice with zero Android changes — this section keeps it that way. **These cases are a permanent regression suite (ADR-016 §6), binding on every Android release that touches Chat.**
+
+Binding rules for `core:ai`, `features:chat`, and any module rendering AI content:
+
+- **Backend is authoritative.** `/api/chat` decides the response language from the user's latest message (explicit request always wins; a Vietnamese proper noun in an English sentence never flips the language). Android sends message text only — **no locale/device-language/profile-language hint** in the chat request.
+- **No duplicated prompt logic.** No prompt text or prompt localization exists on the client — the thin-client boundary (`docs/ios/14_BACKEND_CLIENT_BOUNDARY.md` §2, governing Android equally) already forbids it; Incident 2 lived in prompt templates, so it is restated here.
+- **No duplicated language-detection logic.** No detector for AI content anywhere in the app — not for display hints, not for TTS voice selection on AI replies, not for analytics tagging. A future genuine need (offline mode) requires a verified port of the shared backend algorithm **with** the ADR-016 §6 suite, changed only when Web changes (ADR 0004 rule 5).
+- **Preserve backend language exactly.** The streaming state machine and marker extractor (`[TAPPY_PLAN]`/`[CTA_BUTTONS]`/`[FOLLOWUPS]`) are transport/parsers, never text transformers: no translation, no diacritic stripping, no re-casing of AI prose. Android UI chrome localizes via Android resources; AI content passes through byte-transparent.
+- **Regression tests required before release.** Any release touching Chat rendering/streaming/marker parsing runs the ADR-016 §6 scenario set against the live backend (EN-with-proper-nouns → EN · VI → VI · explicit override respected), with Vietnamese inputs carrying real diacritics (Engineering Constitution Article VII), recorded in the release checklist.
+
+---
+
+*No code was written for this revision. `android/docs/Android_Architecture.md` is the canonical architecture reference for TappyAI Android — status FROZEN as of this revision, superseded only by a future accepted ADR per §7. §8 added 2026-07-31 under ADR 0004.*

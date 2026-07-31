@@ -44,6 +44,7 @@
 - **In-text structured markers to parse out:** `[TAPPY_PLAN]{json}[/TAPPY_PLAN]`, `[CTA_BUTTONS]{json}[/CTA_BUTTONS]`, `[FOLLOWUPS]a|b|c[/FOLLOWUPS]`, inline `![Ảnh địa điểm](url)`, `🎵 [Xem review TikTok](url)`.
 - **Server post-processing:** two TransformStreams — appends a final `0:` "📸 Hình ảnh & link review" block; rewrites luxury hotel brands when budget <1.5M.
 - **Model:** provider-abstracted (backend AI capability layer — see `docs/architecture/AI_PLATFORM.md`); never exposed to clients. **Tools:** search_places, get_news, search_products, web_search, get_weather, get_gold_price, get_flight_prices, get_hotel_prices, get_transport_options, save_price_watch.
+- **Response language (ADR-016, 2026-07-31):** determined **entirely server-side** from the latest user message (explicit requests like "Answer in English"/"Trả lời bằng tiếng Việt" always win; whole-sentence detection otherwise — a Vietnamese proper noun such as "Phú Quốc"/"Phở" inside an English sentence does NOT flip the reply to Vietnamese). The request carries **no language/locale field** and the client must not add one. Clients render the streamed text **verbatim** — no re-detection, no translation, no "correction". Regression cases: ADR-016 §6.
 - **Side effect:** async 2nd backend AI call extracts user memory → `user_memory`.
 
 ### 2.2 `GET/POST/PUT/DELETE /api/conversations` — chat history
