@@ -100,6 +100,7 @@ fun HomeScreen(
     onOpenScan: () -> Unit,
     onOpenVietWriter: () -> Unit,
     onOpenSplitBill: () -> Unit,
+    onOpenGroupDining: () -> Unit,
     onOpenChatWithPrefill: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -123,9 +124,9 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xl),
         ) {
             // Web parity (HomeView.tsx): gradient hero card (greeting + search) → Categories →
-            // Fortune → Recommendations → tools grid → Content → Suggestions → Recent. The 9-tile
-            // QuickActions grid is Android's one intentional divergence (approved), sitting where
-            // web's 2-col "Tools" section does (after Recommendations).
+            // Fortune → Tappy Together → Recommendations → tools grid → Content → Suggestions →
+            // Recent. The 9-tile QuickActions grid is Android's one intentional divergence
+            // (approved), sitting where web's 2-col "Tools" section does (after Recommendations).
             HomeHeroCard(
                 heroHour = viewModel.heroHour,
                 greetingName = viewModel.greetingName,
@@ -138,6 +139,8 @@ fun HomeScreen(
                 onOpenTuVi = onOpenTuVi,
                 onOpenZodiac = onOpenZodiac,
             )
+            // Web places Tappy Together as its own Home section immediately before Recommendations.
+            TappyTogetherSection(onOpenGroupDining = onOpenGroupDining)
             RecommendationsSection(onOpenRecommendations = onOpenRecommendations)
             QuickActionsSection(
                 onOpenMusic = onOpenMusic,
@@ -575,6 +578,48 @@ private fun RecommendationsSection(onOpenRecommendations: () -> Unit) {
                     )
                     Text(
                         text = stringResource(R.string.home_recommendations_card_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+/** Tappy Together group-dining entry — mirrors the web's dedicated Home section (`👥` icon, title,
+ *  description, chevron; HomeView.tsx `/group/new`). Its own section, not a quick-action tile, so
+ *  the Home entry point matches web. Tapping opens the group-creation form. */
+@Composable
+private fun TappyTogetherSection(onOpenGroupDining: () -> Unit) {
+    // Web renders Tappy Together as a bare card with no section header (unlike Scan/Fortune), so
+    // the card's own title stands alone — no duplicate heading above it.
+    Column {
+        TappyCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(TappyShapes.card)
+                .clickable(onClick = onOpenGroupDining),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = "👥", style = MaterialTheme.typography.headlineSmall)
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.home_together_title),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = stringResource(R.string.home_together_desc),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

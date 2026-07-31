@@ -10,4 +10,10 @@ import kotlinx.serialization.Serializable
 sealed interface HomeTabRoute {
     @Serializable
     data object Landing : HomeTabRoute
+
+    /** Tappy Together group-dining creation form (web parity: Home → `/group/new`). The screen is
+     *  shared with the Profile tab's own entry; creating a group navigates on to the full-screen
+     *  group detail via the app-level navigator (AppRoute.GroupDetail), independent of this host. */
+    @Serializable
+    data object GroupDining : HomeTabRoute
 }

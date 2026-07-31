@@ -16,6 +16,7 @@ import com.tappyai.app.fortune.tuvi.TuViScreen
 import com.tappyai.app.fortune.zodiac.ZodiacScreen
 import com.tappyai.app.games.GamesRoute
 import com.tappyai.app.games.GamesScreen
+import com.tappyai.app.groupdining.GroupDiningScreen
 import com.tappyai.app.music.MusicLibraryScreen
 import com.tappyai.app.music.MusicRoute
 import com.tappyai.app.profile.CopyrightPolicyScreen
@@ -63,6 +64,7 @@ fun HomeTabHost(
                 onOpenScan = { navController.navigate(ScanRoute.Main) },
                 onOpenVietWriter = { navController.navigate(VietWriterRoute.Main) },
                 onOpenSplitBill = { navController.navigate(SplitBillRoute.Main) },
+                onOpenGroupDining = { navController.navigate(HomeTabRoute.GroupDining) },
                 onOpenChatWithPrefill = onOpenChatWithPrefill,
             )
         }
@@ -92,6 +94,11 @@ fun HomeTabHost(
         }
         composable<SplitBillRoute.Main> {
             SplitBillScreen(onBack = { navController.popBackStack() })
+        }
+        // Tappy Together (web parity: Home → /group/new). Same screen the Profile tab hosts;
+        // on submit its ViewModel routes to the full-screen group detail via the app navigator.
+        composable<HomeTabRoute.GroupDining> {
+            GroupDiningScreen(onBack = { navController.popBackStack() })
         }
         composable<MusicRoute.Library> {
             MusicLibraryScreen(

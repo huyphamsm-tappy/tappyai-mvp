@@ -50,4 +50,8 @@
     <string name="home_greeting_morning">Chào buổi sáng ☀️</string>
     <string name="home_greeting_afternoon">Chào buổi chiều 🌤️</string>
     <string name="home_greeting_evening">Chào buổi tối 🌙</string>
+
+    <!-- Tappy Together (web parity: home.togetherTitle/togetherDesc) -->
+    <string name="home_together_title">Tappy Together</string>
+    <string name="home_together_desc">Cùng nhóm chọn quán ăn — AI gợi ý hợp ý tất cả mọi người</string>
 </resources>
