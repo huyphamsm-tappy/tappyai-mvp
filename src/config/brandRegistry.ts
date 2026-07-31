@@ -1,8 +1,15 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Partner Brand Registry — the single, PLATFORM-INDEPENDENT source of truth
-// for every deal-partner brand. Pure data + pure functions: no React, no
-// Next.js, no DOM. Android/iOS mirror this exact schema for a native Deals
-// surface (see docs/architecture/BRAND_ASSETS.md §2 for the normative schema).
+// Brand Registry — a PLATFORM CAPABILITY, not a Deals implementation detail.
+// The single, platform-independent source of truth for every partner brand
+// TappyAI surfaces anywhere. Pure data + pure functions: no React, no
+// Next.js, no DOM, no imports from any feature module — which is what lets
+// every current and future consumer share it:
+//   today:  Deals (src/app/deals/DealsView.tsx via BrandLogo)
+//   next:   Shopping / Food / Travel surfaces, Explore, AI Recommendations,
+//           Affiliate Platform, Merchant Center, Admin CMS, Ads Platform
+// Consumers import { resolveBrand, BRAND_REGISTRY, type BrandId } from here —
+// never define their own partner data. Governance (ownership, lifecycle,
+// versioning, deprecation, native mappings): docs/architecture/BRAND_ASSETS.md.
 //
 // Rendering lives elsewhere (src/components/ui/BrandLogo.tsx — a pure
 // renderer over this data). Validation lives in
