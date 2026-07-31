@@ -125,6 +125,9 @@ fun ReviewCard(
 
         ReviewBottomOverlay(
             review = review,
+            // Web parity (reviews/page.tsx:436): the @handle is a Link to /users/{user_id}, so
+            // tapping the username opens the author profile — same target as the avatar tap.
+            onAuthorClick = onAvatarClick,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(start = 16.dp, end = 76.dp, bottom = 20.dp),
@@ -414,6 +417,7 @@ private fun ReviewMusicDiscIcon(onClick: () -> Unit) {
 @Composable
 private fun ReviewBottomOverlay(
     review: Review,
+    onAuthorClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -430,6 +434,12 @@ private fun ReviewBottomOverlay(
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                // Web parity: the @handle links to the author profile (same target as the avatar).
+                modifier = Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = onAuthorClick,
+                ),
             )
             Spacer(modifier = Modifier.height(6.dp))
         }

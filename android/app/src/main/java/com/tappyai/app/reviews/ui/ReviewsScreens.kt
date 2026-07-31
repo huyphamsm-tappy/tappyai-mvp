@@ -102,6 +102,7 @@ private val ScreenIconColor = Color(0xFFFFFFFF)
 @Composable
 internal fun ReviewsFeedScreen(
     onReviewClick: (String) -> Unit,
+    onOpenProfile: (String) -> Unit,
     onCompose: () -> Unit,
     onNotifications: () -> Unit,
     onSearch: () -> Unit,
@@ -227,7 +228,9 @@ internal fun ReviewsFeedScreen(
                             onSave = { viewModel.toggleSave(review) },
                             onComment = { onReviewClick(review.id) },
                             onShare = { shareReview(context, review) },
-                            onAvatarClick = { onReviewClick(review.id) },
+                            // Web parity (reviews/page.tsx:407,436): avatar + @handle open the
+                            // author's profile (/users/{id}), NOT the review detail.
+                            onAvatarClick = { onOpenProfile(review.userId) },
                             onDelete = { pendingDelete = review },
                             onHide = { viewModel.hide(review) },
                             // Only the settled current page plays its video (web parity: `active`).
