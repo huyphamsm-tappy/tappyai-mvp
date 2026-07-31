@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import DealNotifyButton from './DealNotifyButton'
-import BrandLogo, { resolveBrandPartner } from '@/components/ui/BrandLogo'
+import BrandLogo from '@/components/ui/BrandLogo'
+import { resolveBrand } from '@/config/brandRegistry'
 import { ExternalLink, Loader2, Clock, Copy, Check } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -155,7 +156,7 @@ function DealCard({ deal }: { deal: PartnerDeal }) {
       {/* Official brand logo (registry) → per-deal DB image → partner-initial fallback.
           The registry wins for known partners so every card shows the official mark;
           the two fallbacks only ever apply to partners not yet in PARTNERS. */}
-      {resolveBrandPartner(deal.partnerName) ? (
+      {resolveBrand(deal.partnerName) ? (
         <BrandLogo partnerName={deal.partnerName} size={48} />
       ) : (
         <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center overflow-hidden text-lg font-bold text-orange-600 dark:text-orange-400">

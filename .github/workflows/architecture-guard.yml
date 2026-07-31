@@ -20,3 +20,19 @@ jobs:
           node-version: 20
       # Zero-dependency script — no npm install needed.
       - run: node scripts/architecture/check.mjs
+
+  # Brand-registry validation (docs/architecture/BRAND_ASSETS.md §6):
+  # duplicate ids/aliases, missing or empty asset files, invalid paths,
+  # unsupported extensions, assetType mismatches, provenance fields.
+  # Same check as local: npm run validate:brands
+  brands:
+    name: Brand registry validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run validate:brands

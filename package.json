@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "architecture:check": "node scripts/architecture/check.mjs"
+    "architecture:check": "node scripts/architecture/check.mjs",
+    "validate:brands": "vitest run src/config/brandRegistry.validation.test.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.0",
