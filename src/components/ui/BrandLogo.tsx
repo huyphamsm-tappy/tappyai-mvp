@@ -19,18 +19,41 @@ export interface BrandPartner {
    * light tile would hide it, and recoloring it is forbidden).
    */
   tile?: 'light' | 'dark'
+  /**
+   * OPTICAL size correction (multiplier on the inner logo box, default 1).
+   * Solid square marks read visually heavier than wordmarks at the same pixel
+   * box, so they get <1; airy wordmarks get slightly >1. Audit-tuned per
+   * brand — normalize how big a logo LOOKS, never stretch its pixels.
+   */
+  scale?: number
   /** Extra normalized-name aliases for resolution, beyond `name` itself. */
   aliases?: string[]
 }
 
+// ── HOW TO ADD A PARTNER (e.g. Lazada, Tiki, Amazon, eBay, AliExpress) ──────
+// 1. Get the brand's OFFICIAL logo (their press/brand page, their own site's
+//    served asset, or a Wikimedia Commons brand file). Never redraw, never
+//    recolor. Prefer SVG; PNG only if the brand publishes no public vector
+//    (use a ≥200px source so it stays crisp at 2-3× DPR in the 48px tile).
+// 2. Drop it in public/brands/<key>.svg (or .png) — kebab-case key.
+// 3. Add ONE entry below:  lazada: { name: 'Lazada', logo: '/brands/lazada.svg' }
+//    · white/light-designed lockup?          → add  tile: 'dark'
+//    · admins type other spellings?          → add  aliases: ['Lazada VN']
+//    · looks optically off next to the rest? → nudge scale (±0.1 max)
+// That's the whole change — resolution, sizing, a11y, and fallbacks are
+// generic. No switch statements, no per-brand components, ever.
+// ⚠️ Product policy first: V1 restricts which commerce platforms TappyAI may
+// surface (see promptBuilder rule 18 — e.g. Amazon/eBay are NOT approved V1
+// platforms). Adding a logo here does not approve the partner; get the
+// platform approved before its deals ship.
 export const PARTNERS: Record<string, BrandPartner> = {
   shopee: { name: 'Shopee', logo: '/brands/shopee.svg' },
   shopeefood: { name: 'ShopeeFood', logo: '/brands/shopeefood.png', aliases: ['Shopee Food'] },
   'tiktok-shop': { name: 'TikTok Shop', logo: '/brands/tiktok-shop.png', tile: 'dark', aliases: ['TikTokShop'] },
-  grab: { name: 'Grab', logo: '/brands/grab.svg' },
-  be: { name: 'Be', logo: '/brands/be.svg', aliases: ['beVN', 'Be Group'] },
-  agoda: { name: 'Agoda', logo: '/brands/agoda.svg' },
-  booking: { name: 'Booking.com', logo: '/brands/booking.svg', aliases: ['Booking'] },
+  grab: { name: 'Grab', logo: '/brands/grab.svg', scale: 1.05 },
+  be: { name: 'Be', logo: '/brands/be.svg', scale: 0.92, aliases: ['beVN', 'Be Group'] },
+  agoda: { name: 'Agoda', logo: '/brands/agoda.svg', scale: 1.1 },
+  booking: { name: 'Booking.com', logo: '/brands/booking.svg', scale: 0.92, aliases: ['Booking'] },
 }
 
 // Diacritic-insensitive, punctuation-insensitive key: "Booking.com" → "bookingcom",
@@ -91,7 +114,9 @@ function BrandLogoBase({ partnerName, size = 48, className = '', decorative = fa
   const partner = resolveBrandPartner(partnerName)
   if (!partner) return null
 
-  const inner = Math.round(size * 0.72) // consistent padding: logo box = 72% of tile
+  // Consistent padding: logo box = 72% of the tile, then the per-brand OPTICAL
+  // correction (clamped so no logo can ever escape the tile's padding).
+  const inner = Math.round(size * 0.72 * Math.min(partner.scale ?? 1, 1.15))
   return (
     <div
       className={`flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden ${TILE_CLASSES[partner.tile ?? 'light']} ${className}`}
