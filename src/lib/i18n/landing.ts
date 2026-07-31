@@ -10,6 +10,11 @@ export const en: Record<string, string> = {
   'landing.nav.langLabel': 'Language',
 
   // 1. Hero
+  'landing.hero.eyebrow': 'Welcome to TappyAI 👋',
+  // Headline is split so the closing clause carries the brand's orange accent
+  // (approved Hero reference, 2026-07-31). Both halves render as one sentence.
+  'landing.hero.headlineLead': 'The AI lifestyle assistant for',
+  'landing.hero.headlineAccent': 'everyday life in Vietnam',
   'landing.hero.headline': 'The AI lifestyle assistant for everyday life in Vietnam',
   'landing.hero.subtitle':
     'TappyAI combines a conversational AI assistant, a short-video review community, and practical everyday utilities in one bilingual product — built around how people in Vietnam eat, travel, and live.',
@@ -129,6 +134,9 @@ export const vi: Record<string, string> = {
   'landing.nav.langLabel': 'Ngôn ngữ',
 
   // 1. Hero
+  'landing.hero.eyebrow': 'Chào mừng đến với TappyAI 👋',
+  'landing.hero.headlineLead': 'Trợ lý AI cho',
+  'landing.hero.headlineAccent': 'đời sống hằng ngày tại Việt Nam',
   'landing.hero.headline': 'Trợ lý AI cho đời sống hằng ngày tại Việt Nam',
   'landing.hero.subtitle':
     'TappyAI kết hợp trợ lý AI hội thoại, cộng đồng review video ngắn và các tiện ích thiết thực hằng ngày trong một sản phẩm song ngữ — xây dựng quanh cách người Việt ăn uống, đi lại và sinh hoạt.',
