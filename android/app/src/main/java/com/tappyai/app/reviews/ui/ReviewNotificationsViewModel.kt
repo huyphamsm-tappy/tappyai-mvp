@@ -41,6 +41,15 @@ class ReviewNotificationsViewModel @Inject constructor(
 
     init {
         load()
+        markAllRead()
+    }
+
+    /** Web parity (reviews/page.tsx: `markAllRead()` on inbox open): opening the inbox marks all
+     *  unread notifications read server-side. The feed's bell badge re-reads on resume and clears.
+     *  Fire-and-forget; the list already reflects the pre-open unread state (matching web, which
+     *  keeps the items visible). */
+    private fun markAllRead() {
+        viewModelScope.launch { repository.markAllNotificationsRead() }
     }
 
     fun load() {

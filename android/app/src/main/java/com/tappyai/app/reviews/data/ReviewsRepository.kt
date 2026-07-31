@@ -84,6 +84,9 @@ interface ReviewsRepository {
 
     suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>>
 
+    /** Mark all unread notifications read (web parity: opening the inbox marks all read). */
+    suspend fun markAllNotificationsRead(): NetworkResult<Unit>
+
     /** [musicTrackId], when present, attaches a sound picked via Sound Detail's "Use this sound"
      *  (`POST /api/reviews`'s `music` field, `origin: 'attached'`) — matches the web's own
      *  attach-an-existing-track flow, independent of whether real media is attached. */

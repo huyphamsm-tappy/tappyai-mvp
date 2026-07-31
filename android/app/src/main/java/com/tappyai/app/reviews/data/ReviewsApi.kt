@@ -95,6 +95,11 @@ interface ReviewsApi {
     @GET("api/notifications")
     suspend fun getNotifications(): NotificationsResponseDto
 
+    /** Mark all unread notifications read (ADR-014 contract: no body → mark ALL). Called when the
+     *  inbox opens, mirroring web's `markAllRead()` on `tab === 'inbox'`. */
+    @POST("api/notifications/read")
+    suspend fun markAllNotificationsRead()
+
     @POST("api/reviews")
     suspend fun createReview(@Body body: CreateReviewRequestDto): CreateReviewResponseDto
 
