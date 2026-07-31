@@ -51,7 +51,7 @@ Any change that alters product behavior, a business rule, an API, or the data mo
 
 ## 5. Bug-fix workflow
 
-- **Backend/shared bug** → fix once server-side; all clients inherit. Update docs if the contract changed.
+- **Backend/shared bug** → fix once server-side; all clients inherit. Update docs if the contract changed. *Canonical worked example: the AI response-language incidents (2026-07-29/30, ADR-016) — fixed twice in `detectLang()`/prompt localization on the backend with **zero client edits**; Android and iOS inherited both fixes automatically. Its test cases are a permanent cross-platform regression suite (ADR-016 §6).*
 - **Behavior bug present on Web** → fix Web (source of truth) → propagate the fix to Android + iOS via parity tasks. Record the fix so other platforms don't re-introduce it (e.g. the feed-player and counter-trigger bug classes — see 05, 06).
 - **Platform-only bug** (e.g. AVPlayer glitch) → fix on that platform; verify the shared behavior contract (06) still holds.
 - Every non-trivial fix that encodes a rule gets a one-line note in the relevant doc so the other platforms replicate it.
@@ -73,6 +73,7 @@ Any change that alters product behavior, a business rule, an API, or the data mo
 - [ ] Entitlements verified server-side (`09 §6`); iOS uses StoreKit, not Stripe.
 - [ ] Permissions/privacy strings present (camera/mic/photos/location/notifications).
 - [ ] Known-copy reconciliations applied ("7 games", Pro OFF) — see `11`. (15/day copy: ✅ RESOLVED 2026-07-11 — `/subscription` copy + remaining counter updated to 15/day on web.)
+- [ ] AI language-consistency regression (ADR-016 §6) run against the live backend for any release touching Chat — EN-with-Vietnamese-proper-nouns → English, Vietnamese → Vietnamese, explicit override respected; VI inputs with real diacritics (Constitution Art. VII).
 - [ ] Cross-platform QA (§8) passed.
 - [ ] Risk register (`16`) has no open blockers.
 

@@ -70,7 +70,7 @@ export default function Header({ user, showBack, backHref, title, hideLogo }: He
           <div aria-hidden />
         ) : (
           <Link href="/" className="flex items-center">
-            <Image src="/logo.png" alt="TappyAI" width={120} height={40} className="h-9 w-auto" />
+            <Image src="/branding/otter-logo.png" alt="TappyAI" width={36} height={36} className="h-9 w-9 rounded-[22%] object-cover" />
           </Link>
         )}
 

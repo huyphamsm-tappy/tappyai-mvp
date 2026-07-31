@@ -47,7 +47,7 @@ export default function OnboardingPage() {
     <div className="min-h-dvh bg-white dark:bg-gray-950 flex flex-col">
       {/* Header */}
       <div className="px-6 pt-12 pb-4">
-        <Image src="/logo.png" alt="TappyAI" width={100} height={34} className="h-8 w-auto mb-8" />
+        <Image src="/branding/otter-logo.png" alt="TappyAI" width={32} height={32} className="h-8 w-8 rounded-[22%] object-cover mb-8" />
 
         {/* Progress */}
         <div className="flex gap-1.5 mb-6">

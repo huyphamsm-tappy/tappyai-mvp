@@ -1,7 +1,8 @@
 import { getCache, setCache, serperSearch, fetchPlacePhotosByName } from './common'
+import { messages } from '@/lib/ai/messages'
 
-export async function searchProducts(query: string) {
-  const cacheKey = 'products:' + query.toLowerCase().trim()
+export async function searchProducts(query: string, lang = 'vi') {
+  const cacheKey = 'products:' + query.toLowerCase().trim() + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -62,17 +63,17 @@ export async function searchProducts(query: string) {
         search_results: searchResults,
         shop_info_results: shopInfoResults || [],
         links,
-        note: 'Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.'
+        note: messages.shopping.priceDisclaimer(lang)
       }
     } else {
       result = {
-        note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam',
+        note: messages.shopping.fallbackNote(lang, query),
         links,
         shop_info_results: shopInfoResults || [],
       }
     }
   } catch {
-    result = { note: 'Tim "' + query + '" tren cac san thuong mai dien tu Viet Nam', links }
+    result = { note: messages.shopping.fallbackNote(lang, query), links }
   }
   setCache(cacheKey, result, 15 * 60 * 1000) // cache 15 phut
   return result

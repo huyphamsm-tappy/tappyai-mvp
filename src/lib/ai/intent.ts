@@ -19,27 +19,154 @@ export function isSimpleQuery(text: string, isFirstMsg: boolean): boolean {
   return text.trim().length < 80 && !COMPLEX_KW.test(normalizeVN(text)) && isFirstMsg
 }
 
+// Bug #1 (2026-07-29): the original heuristic treated ANY non-ASCII codepoint
+// that wasn't a recognized Asian script as "must be Vietnamese" — autocorrect's
+// curly quotes/dashes/ellipsis and incidental loanwords (café, naïve) silently
+// flipped English messages to 'vi'. Bug #2 (2026-07-30): the first fix for
+// bug #1 over-corrected the other way — it flagged Vietnamese on the mere
+// PRESENCE of a Vietnamese-exclusive accented letter ANYWHERE in the message,
+// so an English sentence correctly naming a Vietnamese place/dish ("Phú Quốc
+// itinerary...", "eat Phở") flipped to Vietnamese from that one word alone.
+// Fix for both: judge by the PROPORTION of accented words (see
+// VI_WORD_RATIO_THRESHOLD below), not presence/absence of any single one.
+// Any accented Latin letter — Latin-1 Supplement, Latin Extended-A/B, and
+// Latin Extended Additional (the last covers every toned Vietnamese vowel:
+// ấ ầ ẩ ẫ ậ ắ ằ ẳ ẵ ặ ế ề ể ễ ệ ố ồ ổ ỗ ộ ớ ờ ở ỡ ợ ứ ừ ử ữ ự ỳ ỵ ỷ ỹ). Deliberately
+// broad (not just Vietnamese-exclusive letters) because the ratio check below
+// — not exclusivity — is what tells a Vietnamese sentence apart from an
+// English one that merely contains an accented loanword or proper noun.
+function isAccentedLatin(cp: number): boolean {
+  if (cp >= 0x00C0 && cp <= 0x00FF && cp !== 0x00D7 && cp !== 0x00F7) return true // Latin-1 Supplement letters
+  if (cp >= 0x0100 && cp <= 0x024F) return true // Latin Extended-A/B (Đ đ Ă ă Ơ ơ Ư ư...)
+  if (cp >= 0x1E00 && cp <= 0x1EFF) return true // Latin Extended Additional (Vietnamese tone marks)
+  return false
+}
+
+const HAS_LETTER = /\p{L}/u
+const STARTS_UPPERCASE = /^\p{Lu}/u
+
+// Share of LOWERCASE accented words above which a message reads as Vietnamese.
+// Lowercase matters: Vietnamese proper nouns a user names inside an English
+// sentence are capitalized (Phú Quốc, Đà Nẵng, Phở), whereas ordinary
+// Vietnamese vocabulary mid-sentence is not (bún, ngon, ở, đây). Counting only
+// lowercase accented words is what separates "Đà Nẵng hotels" (English, asking
+// about a Vietnamese city) from "quán ăn ngon ở đây" (actual Vietnamese).
+const VI_WORD_RATIO_THRESHOLD = 0.4
+
+// Diacritic-stripped Vietnamese function words used as a SECOND signal, so a
+// short Vietnamese sentence whose words happen to carry few tone marks ("Cho
+// tôi xem menu" — 1 accented word in 4) is still recognized. Deliberately
+// EXCLUDES: (a) anything that collides with an English word (a, an, the, in,
+// to, go, no, so, may, hay, ban, la), and (b) any syllable that appears in
+// Vietnamese place names, which are exactly what English queries contain —
+// noi/ha (Hà Nội), da/nang (Đà Nẵng), phu/quoc (Phú Quốc), minh (Hồ Chí Minh),
+// can/tho (Cần Thơ), lam (Lâm Đồng), hon (Hòn Thơm), nhat (Nhật), quan
+// (Quận 1), gia (Gia Lai), hoi/an (Hội An), pho (Phở). One such collision
+// would flip an English sentence straight back to Vietnamese — the bug this
+// whole function exists to prevent.
+const VI_FUNCTION_WORDS = new Set([
+  'toi', 'tui', 'tao', 'muon', 'thich', 'biet', 'giup', 'xem', 'cho', 'gi',
+  'nao', 'dau', 'khong', 'duoc', 'roi', 'nhe', 'vay', 'nay', 'kia', 'voi',
+  'cung', 'nhieu', 'rat', 'sao', 'uong', 'kiem', 'phai', 'chac', 'nua', 'luon',
+])
+
+// Two production incidents shaped this function, in opposite directions:
+//   2026-07-29 — ANY non-ASCII codepoint that wasn't a recognized Asian script
+//     counted as Vietnamese, so autocorrect's curly quotes/dashes/ellipsis and
+//     loanwords (café, naïve) flipped English messages to 'vi'.
+//   2026-07-30 — the fix for that flagged Vietnamese on the PRESENCE of any
+//     Vietnamese-exclusive letter anywhere in the message, so an English
+//     sentence correctly naming a Vietnamese place or dish ("Phú Quốc
+//     itinerary, 4 days, 2 people, 8M budget", "i wanna go to eat Phở")
+//     flipped to Vietnamese off that single word.
+// Both stem from treating one character as proof of a language. This version
+// weighs the message as a whole instead: lowercase-accented-word share, plus
+// Vietnamese function words, with an all-accented short-message shortcut.
+// KNOWN LIMITATION (unchanged by either fix): Vietnamese typed with no
+// diacritics at all ("cho toi xem menu") carries no signal here and reads as
+// English — accepted, since the same input is genuinely ambiguous.
 export function detectLang(text: string): string {
-  // Encoding-safe: any non-ASCII char that isn't a recognized Asian script
-  // sets hasNonAscii=true and continues scanning (never short-circuits to 'vi'
-  // mid-loop, so Chinese text with fullwidth punctuation still resolves to 'zh').
-  // Final result: hasCJK→'zh', hasNonAscii→'vi', pure ASCII→'en'.
+  // Encoding-safe: never short-circuits mid-loop for scripts that must scan to
+  // completion (Chinese text with fullwidth punctuation still resolves to 'zh').
   let hasCJK = false
-  let hasNonAscii = false
   for (const ch of text) {
     const cp = ch.codePointAt(0) ?? 0
     if (cp <= 0x7F) continue
-    hasNonAscii = true
     if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'       // kana (exclusive to Japanese)
     if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'       // hangul
     // CJK Unified + fullwidth block (fullwidth punct common in Chinese text)
     if ((cp >= 0x4E00 && cp <= 0x9FFF) || (cp >= 0xFF00 && cp <= 0xFFEF)) { hasCJK = true; continue }
     if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'       // Arabic
     if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'       // Thai
-    // any other non-ASCII (Latin diacritics, etc.) — keep scanning
   }
   if (hasCJK) return 'zh'
-  return hasNonAscii ? 'vi' : 'en'
+
+  const words = text.split(/\s+/).filter(w => HAS_LETTER.test(w))
+  if (words.length === 0) return 'en'
+
+  let accentedWords = 0
+  let lowercaseAccentedWords = 0
+  let viFunctionWords = 0
+  for (const w of words) {
+    let accented = false
+    for (const ch of w) {
+      if (isAccentedLatin(ch.codePointAt(0) ?? 0)) { accented = true; break }
+    }
+    if (accented) {
+      accentedWords++
+      if (!STARTS_UPPERCASE.test(w)) lowercaseAccentedWords++
+    }
+    const bare = normalizeVN(w.toLowerCase()).replace(/[^a-z]/g, '')
+    if (bare && VI_FUNCTION_WORDS.has(bare)) viFunctionWords++
+  }
+
+  // Every word accented — a bare Vietnamese phrase or place name on its own
+  // ("Đâu?", "Đà Nẵng"), with no English word to anchor it the other way.
+  if (accentedWords === words.length) return 'vi'
+  // Real Vietnamese vocabulary plus Vietnamese grammar words, even when tone
+  // marks are sparse.
+  if (lowercaseAccentedWords >= 1 && viFunctionWords >= 2) return 'vi'
+  return lowercaseAccentedWords / words.length >= VI_WORD_RATIO_THRESHOLD ? 'vi' : 'en'
+}
+
+// Language names this app can explicitly instruct the model to answer in —
+// must stay in sync with LANG_NAMES in promptBuilder.ts and LANG_BCP47 in
+// lib/tts/voiceSelection.ts (same code set: vi/en/ja/ko/zh/ar/th).
+type ExplicitLang = 'vi' | 'en' | 'ja' | 'ko' | 'zh' | 'ar' | 'th'
+
+// English and diacritic-stripped-Vietnamese (matched against normalizeVN()
+// output) names for each language, used to recognize an explicit request.
+const LANG_NAME_EN: Record<ExplicitLang, string> = {
+  vi: 'vietnamese', en: 'english', ja: 'japanese', ko: 'korean',
+  zh: '(?:chinese|mandarin)', ar: 'arabic', th: 'thai',
+}
+const LANG_NAME_VI: Record<ExplicitLang, string> = {
+  vi: 'tieng\\s*viet', en: 'tieng\\s*anh', ja: 'tieng\\s*nhat', ko: 'tieng\\s*han',
+  zh: 'tieng\\s*trung', ar: 'tieng\\s*a\\s*rap', th: 'tieng\\s*thai',
+}
+
+/**
+ * Detects an EXPLICIT instruction to answer in a given language — e.g.
+ * "Answer in English", "Trả lời bằng tiếng Việt", "Please respond in
+ * Japanese". Per spec, this must override the mirror-the-message default.
+ * Returns null when the message carries no such instruction (the normal
+ * case), so the caller falls back to detectLang(). Single call site
+ * (src/app/api/chat/route.ts) — not duplicated per AI capability.
+ */
+export function detectExplicitLangRequest(text: string): ExplicitLang | null {
+  const norm = normalizeVN(text.toLowerCase())
+  for (const code of Object.keys(LANG_NAME_EN) as ExplicitLang[]) {
+    const en = LANG_NAME_EN[code]
+    const vi = LANG_NAME_VI[code]
+    const re = new RegExp(
+      `\\b(?:answer|respond|reply|speak)\\b[^.!?\\n]{0,20}\\b${en}\\b` +
+      `|\\b(?:in|switch to)\\s+${en}\\b(?:\\s+please)?\\b` +
+      `|\\b(?:tra\\s*loi|noi|dung)\\b[^.!?\\n]{0,15}\\b${vi}\\b`,
+      'i'
+    )
+    if (re.test(norm)) return code
+  }
+  return null
 }
 
 export function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | 'save_price_watch' | null {

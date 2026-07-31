@@ -1,4 +1,5 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { messages } from '@/lib/ai/messages'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
@@ -268,8 +269,8 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
 }
 
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
-export async function webSearch(query: string) {
-  const cacheKey = 'websearch:' + query.toLowerCase().trim()
+export async function webSearch(query: string, lang = 'vi') {
+  const cacheKey = 'websearch:' + query.toLowerCase().trim() + ':' + lang
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -321,10 +322,10 @@ export async function webSearch(query: string) {
     }
 
     result = results.length === 0
-      ? { note: 'Khong tim thay ket qua tu dong cho "' + query + '". HAY hien thi link sau cho user de tu tim: ' + fallbackUrl, results: [], search_url: fallbackUrl }
+      ? { note: messages.webSearch.noAutoResults(lang, query, fallbackUrl), results: [], search_url: fallbackUrl }
       : { query, source: 'DuckDuckGo', results, search_url: fallbackUrl }
   } catch {
-    result = { note: 'Khong the tim kiem tu dong luc nay. HAY hien thi link sau cho user de tu tim: ' + fallbackUrl, results: [], search_url: fallbackUrl }
+    result = { note: messages.webSearch.unavailable(lang, fallbackUrl), results: [], search_url: fallbackUrl }
   }
   setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
   return result

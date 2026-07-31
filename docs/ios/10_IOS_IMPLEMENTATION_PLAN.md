@@ -92,6 +92,16 @@ Per feature: **build the full UI → runtime-verify against the live backend →
 - Device UAT each phase (owner's workflow).
 - Pre-submission reconcile: 15/day copy, "7 games" copy, SuperTux WebView, IAP (only if Pro on), privacy manifest + permission strings (camera/mic/photos/location/notifications).
 
+## AI Language Consistency Requirements
+
+> Added 2026-07-31 per ADR-016 (`docs/architecture/ADR-016-ai-language-detection-and-localization.md`), after two production incidents (2026-07-29 `f68836d`, 2026-07-30 `33eb188`) in which English questions containing correctly-diacritized Vietnamese proper nouns ("Phú Quốc itinerary…", "i wanna fo to eat Phở") were answered in Vietnamese. **These incidents and their test cases are a permanent regression suite (ADR-016 §6) — binding on every iOS release that touches Chat.**
+
+- **The backend is authoritative for AI response language.** `/api/chat` detects the language of the user's latest message server-side (explicit requests always win). iOS sends the message text and **no locale/language hint**.
+- **No duplicated prompt logic.** iOS never builds, amends, or localizes any part of the system prompt — already law under `14_BACKEND_CLIENT_BOUNDARY.md` §2; restated here because Incident 2 lived in prompt templates.
+- **No duplicated language-detection logic.** iOS must not implement any detector for AI content — not "just for display hints", not for TTS voice choice on chat replies (follow backend behavior), not for analytics classification of the reply. If client-side detection is ever genuinely required, it must be a verified port of the shared `intent.ts` algorithm carrying the same ADR-016 §6 test suite, changed only when Web changes (same rule as the fortune/split-bill ports).
+- **Preserve backend language exactly.** Render the stream verbatim: no translation, no transliteration, no stripping/normalizing diacritics, no re-casing, no "language correction" of AI text. Structured-marker parsing (`[TAPPY_PLAN]` etc.) must be byte-transparent to the prose it passes through. iOS *UI chrome* (buttons, labels, plan-card headers) follows the client's own i18n — AI *content* is untouchable.
+- **Regression tests required before release.** Any release whose scope touches Chat rendering, the streaming parser, or marker extraction must run the ADR-016 §6 scenario set against the live backend (EN-with-proper-nouns → English out; Vietnamese in → Vietnamese out; explicit override respected) and record it in the release checklist (`13_PARITY_GOVERNANCE.md` §7). Vietnamese test inputs must carry real diacritics (Constitution Article VII).
+
 ## Dependency order
 
 `Phase 0 → 1` are prerequisites for everything. `2` (Chat) and `3` (Reviews) are the two flagship pillars and can proceed in parallel after Phase 1 if staffed. `4` depends on `3` (composer/feed) and Music. `5` is largely independent. `6`–`7` layer on top.

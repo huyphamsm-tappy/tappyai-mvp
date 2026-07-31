@@ -1,5 +1,17 @@
 # TappyAI — Localization Architecture
 
+> **⚠️ ADDENDUM 2026-07-31 — §1's "AI Response Language 🟢 already correct" is SUPERSEDED.**
+> The *architecture* claim (per-message, stateless, independent of UI locale) remains true, but the
+> `detectLang()` heuristic itself failed in production twice after this document was written:
+> **2026-07-29** (any non-ASCII char → `vi`; autocorrect punctuation/loanwords flipped English to Vietnamese, fixed `f68836d`)
+> and **2026-07-30** (one Vietnamese-accented char anywhere → `vi`; "Phú Quốc itinerary…", "i wanna fo to eat Phở"
+> answered in Vietnamese, fixed `33eb188`). The corrected, Owner-approved strategy — whole-sentence evaluation
+> (lowercase-accented-word ratio + Vietnamese function-word signal), explicit-request precedence, single detector,
+> `lang` threaded through every prompt builder and tool via `src/lib/ai/messages.ts`, permanent regression suite,
+> and the Android/iOS "backend is the sole language authority" parity rule — is normatively defined in
+> **`docs/architecture/ADR-016-ai-language-detection-and-localization.md`** and `docs/architecture/AI_PLATFORM.md` §8.
+> Where this document and ADR-016 disagree, **ADR-016 wins**.
+
 > **Phase:** Architecture Week — Part 3
 > **Status:** Design/analysis only — no code changes, no migrations
 > **Grounding:** Verified against `src/lib/ai/intent.ts` (`detectLang`), `src/lib/ai/promptBuilder.ts` (`langBlock`), `public/manifest.json`, `src/components/Header.tsx` (existing localStorage preference pattern, dark mode), and a repository-wide pattern check across every UI file read this session (Home, Chat, Explore, Login, Settings, Profile) confirming zero translation-key usage anywhere. No claim is speculative.

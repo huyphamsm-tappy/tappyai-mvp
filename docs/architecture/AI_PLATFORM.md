@@ -229,4 +229,38 @@ engine) trong cùng PR với adapter, để code vendor đó cũng bị khóa v�
 
 ---
 
+## 8. Ngôn ngữ phản hồi (Response Language) — LUẬT (bổ sung 2026-07-31, ADR-016)
+
+> Bổ sung theo chỉ đạo Owner sau 2 sự cố production (2026-07-29 `f68836d`, 2026-07-30 `33eb188`).
+> Chi tiết đầy đủ + bộ regression vĩnh viễn: **`ADR-016-ai-language-detection-and-localization.md`**.
+
+1. **Ngôn ngữ phản hồi = ngôn ngữ của TIN NHẮN MỚI NHẤT của user**, trừ khi user yêu cầu
+   rõ ràng ("Answer in English", "Trả lời bằng tiếng Việt") — yêu cầu rõ ràng LUÔN thắng.
+   Không bao giờ đọc UI locale, browser language, profile, hay các lượt chat trước.
+2. **Phát hiện ngôn ngữ chỉ có MỘT nơi:** `detectLang()` + `detectExplicitLangRequest()`
+   trong `src/lib/ai/intent.ts`, gọi tại MỘT call site (`/api/chat`). Cấm viết detector thứ hai
+   ở bất kỳ đâu (route khác, tool, client). Detector phải đánh giá **cả câu** (tỷ lệ từ có dấu
+   viết thường + từ chức năng tiếng Việt) — một ký tự đơn lẻ KHÔNG BAO GIỜ được quyết định
+   ngôn ngữ (đây chính là root cause của cả 2 sự cố; danh từ riêng "Phú Quốc"/"Phở" trong
+   câu tiếng Anh không được lật ngôn ngữ trả lời).
+3. **`lang` phải được truyền vào MỌI capability:** prompt builders
+   (`buildSystem`/`buildSystemSimple`/`buildPlanningBlock`) và MỌI tool
+   (`searchPlaces`, `getNews`, `searchProducts`, `webSearch`, `getWeather`, `getGoldPrice`,
+   `getFlightPrices`, `getHotelPrices`, `getTransportOptions`). Cache key của tool phải chứa
+   `lang` — kết quả cache không được rò rỉ giữa các ngôn ngữ.
+4. **Cấm chuỗi tiếng Việt (hoặc bất kỳ ngôn ngữ cố định nào) hardcode** trong: template
+   prompt (câu ví dụ mẫu mà model có thể chép nguyên văn), và mọi chuỗi tool trả về cho model
+   (note/error/warning/fallback/helper/rating/planning/summary). Chuỗi tool đi qua MỘT nguồn:
+   `src/lib/ai/messages.ts` (key theo `lang`). Prompt chỉ được mô tả Ý ĐỊNH ("viết 1 câu ngắn
+   bằng ngôn ngữ của câu trả lời…"), không đưa văn mẫu cố định ngôn ngữ.
+5. **Không block system-prompt nào được đè lên ngôn ngữ đã phát hiện.** Block override
+   ngôn ngữ có ưu tiên cao nhất; mọi block khác phải trung lập về ngôn ngữ output.
+6. **Android/iOS KHÔNG được tự phát hiện ngôn ngữ hay dịch lại phản hồi AI** — backend là
+   nguồn chân lý duy nhất; client chỉ hiển thị nguyên văn (xem §5 của ADR-016 và
+   `docs/ios/14_BACKEND_CLIENT_BOUNDARY.md`).
+7. **Sửa `detectLang`/ngưỡng/danh sách từ chức năng = phải qua ADR** + toàn bộ bộ regression
+   trong ADR-016 §6 phải xanh. Bộ test đó là VĨNH VIỄN — không được xoá case.
+
+---
+
 *Vi phạm tài liệu này không phải là "tranh luận kiến trúc" — nó là bug.*

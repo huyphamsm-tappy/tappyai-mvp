@@ -17,6 +17,7 @@ These are **backend-owned** and must never be re-implemented as the source of tr
 | Domain | Why server-only | Where today |
 |--------|-----------------|-------------|
 | **Prompt building** | System prompt, VN scope-lock, context injection, safety framing | `src/lib/ai/promptBuilder.ts` |
+| **Response-language detection & AI localization** | Whole-sentence language detection (explicit request > latest-message heuristic; proper nouns never decide language), language-aware prompt blocks, tool-string localization, lang-scoped tool caches — ADR-016 | `src/lib/ai/intent.ts` (`detectLang`/`detectExplicitLangRequest`), `src/lib/ai/messages.ts` |
 | **AI orchestration** | Tool routing, intent → tool state machine, multi-step agent loop, stream transforms | `src/app/api/chat/route.ts`, `src/lib/ai/*` |
 | **AI routing / model choice** | Provider/model selection (provider-abstracted; AI_PLATFORM.md), tool-choice, budget brand-rewrite | `src/lib/ai/llm` (capability layer + adapters), `budget.ts`, `intent.ts` |
 | **Recommendation engine** | 6-signal scoring, hidden-topic penalty, candidate aggregation | `src/lib/recommendation/*`, `/api/recommendations` |
@@ -73,6 +74,7 @@ Everything else goes through Next.js. When in doubt: **if it enforces a rule or 
 - [ ] No secret/key in the client binary.
 - [ ] Any on-device algorithm (fortune/split-bill) is a verified port of Web, changed only when Web changes.
 - [ ] Native never names or knows an AI provider/model — enforced on Web by the Architecture Guard; the same rule applies to native code and docs.
+- [ ] No language detection, translation, or "language correction" of AI responses on the client — the backend decides response language (ADR-016); the client renders the stream verbatim and sends no locale hint to `/api/chat`.
 
 ## 6. Why this keeps the platforms aligned
 
