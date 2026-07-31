@@ -15,13 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.LibraryMusic
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.ChatBubble
@@ -32,11 +33,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -387,18 +386,14 @@ internal fun ReviewActionButton(
 @Composable
 private fun ReviewMusicDiscIcon(onClick: () -> Unit) {
     val musicDescription = stringResource(R.string.reviews_action_music)
+    // Neutral "sound / music library" affordance (owner branding note): a rounded-square button with
+    // a library-music glyph, deliberately NOT a circular ringed disc — that read as TikTok's
+    // spinning music-disc branding. Behaviour is unchanged (tap opens the sound page).
     Box(
         modifier = Modifier
             .size(40.dp)
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(12.dp))
             .background(ReviewOverlayDark)
-            .drawBehind {
-                drawCircle(
-                    color = ReviewOverlayBorder,
-                    radius = size.minDimension / 2,
-                    style = Stroke(width = 2.dp.toPx()),
-                )
-            }
             .semantics { contentDescription = musicDescription }
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
@@ -408,10 +403,10 @@ private fun ReviewMusicDiscIcon(onClick: () -> Unit) {
         contentAlignment = Alignment.Center,
     ) {
         Icon(
-            imageVector = Icons.Filled.MusicNote,
+            imageVector = Icons.Filled.LibraryMusic,
             contentDescription = null,
             tint = ReviewTextPrimary,
-            modifier = Modifier.size(16.dp),
+            modifier = Modifier.size(20.dp),
         )
     }
 }
