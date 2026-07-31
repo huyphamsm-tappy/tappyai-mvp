@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -144,6 +145,11 @@ internal fun ReviewsFeedScreen(
     Scaffold(
         containerColor = ScreenBackground,
         snackbarHost = { SnackbarHost(snackbarHostState) },
+        // Immersive full-bleed feed (TikTok/web): the bottom-nav shell already insets its content
+        // for the status/navigation bars, so this inner Scaffold must NOT re-apply them — doing so
+        // double-padded the feed and letterboxed the video with black strips top + bottom. The feed
+        // fills the shell's content slot; the overlays carry their own safe-area padding.
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { innerPadding ->
         Box(
             modifier = Modifier
