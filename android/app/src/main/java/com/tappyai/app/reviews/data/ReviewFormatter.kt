@@ -42,6 +42,8 @@ fun groupNotifications(
                 actors = updatedActors,
                 count = existing.count + 1,
                 createdAt = newerTimestamp,
+                // The group is unread if ANY notification in it is unread.
+                readAt = if (existing.readAt == null || n.readAt == null) null else existing.readAt,
             )
         } else {
             map[key] = ReviewGroupedNotification(
@@ -49,8 +51,9 @@ fun groupNotifications(
                 type = n.type,
                 url = n.url,
                 actors = listOf(NotificationActor(id = n.actorId, name = n.actorName, avatar = n.actorAvatar)),
-                text = n.text,
-                commentBody = if (n.type == "comment") n.text else null,
+                title = n.title,
+                body = n.body.ifBlank { null },
+                readAt = n.readAt,
                 createdAt = n.createdAt,
                 count = 1,
             )

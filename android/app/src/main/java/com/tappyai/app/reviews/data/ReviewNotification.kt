@@ -6,8 +6,12 @@ data class ReviewNotification(
     val actorId: String,
     val actorName: String,
     val actorAvatar: String?,
-    val text: String,
+    /** Backend-formed, already-localized message (API `title`/`body`). */
+    val title: String,
+    val body: String,
     val url: String,
+    /** ISO timestamp when read; null = unread. */
+    val readAt: String?,
     val createdAt: String,
 )
 
@@ -21,8 +25,11 @@ data class ReviewGroupedNotification(
     val type: String,
     val url: String,
     val actors: List<NotificationActor>,
-    val text: String,
-    val commentBody: String?,
+    /** Backend-formed message (API `title`) + optional detail (`body`). */
+    val title: String,
+    val body: String?,
+    /** null = unread (any notification in the group unread). */
+    val readAt: String?,
     val createdAt: String,
     val count: Int,
 )

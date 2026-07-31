@@ -29,10 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,6 +51,7 @@ private val NotifBadgeLike = Color(0xFFFE2C55)
 private val NotifBadgeComment = Color(0xFF3B82F6)
 private val NotifBadgeFollow = Color(0xFF8B5CF6)
 private val NotifBadgeView = Color(0xFF6B7280)
+private val NotifUnreadDot = Color(0xFF3391FF)
 
 @Composable
 internal fun ReviewNotificationItem(
@@ -87,22 +86,36 @@ internal fun ReviewNotificationItem(
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
         ) {
             Text(
-                text = buildNotificationText(notification),
+                text = notification.title,
+                color = NotifTextPrimary,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
+                // Unread notifications read bolder (web parity: unread emphasis).
+                fontWeight = if (notification.readAt == null) FontWeight.SemiBold else FontWeight.Normal,
             )
-            if (notification.type == "comment" && notification.commentBody != null) {
+            notification.body?.let { body ->
                 Text(
-                    text = notification.commentBody,
+                    text = body,
                     color = NotifTextSecondary,
                     fontSize = 13.sp,
                     maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             Text(
                 text = formatRelativeTime(notification.createdAt, nowMillis),
                 color = NotifTextSecondary,
                 fontSize = 12.sp,
+            )
+        }
+        // Unread dot (web parity: unread notifications are visually marked).
+        if (notification.readAt == null) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .size(9.dp)
+                    .clip(CircleShape)
+                    .background(NotifUnreadDot),
             )
         }
     }
@@ -151,23 +164,6 @@ private fun NotificationBadge(type: String, modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-private fun buildNotificationText(notification: ReviewGroupedNotification) =
-    buildAnnotatedString {
-        val actors = notification.actors
-        withStyle(SpanStyle(color = NotifTextPrimary, fontWeight = FontWeight.SemiBold)) {
-            append(actors.first().name)
-        }
-        if (actors.size > 1) {
-            withStyle(SpanStyle(color = NotifTextSecondary)) {
-                append(" ")
-                append(stringResource(R.string.reviews_notification_others, actors.size - 1))
-            }
-        }
-        withStyle(SpanStyle(color = NotifTextSecondary)) {
-            append(" ${notification.text}")
-        }
-    }
 
 private fun notificationBadgeConfig(type: String): Pair<ImageVector, Color> = when (type) {
     "like" -> Icons.Filled.Favorite to NotifBadgeLike
