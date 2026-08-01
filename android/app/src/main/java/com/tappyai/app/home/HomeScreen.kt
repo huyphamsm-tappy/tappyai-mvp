@@ -52,7 +52,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.tappyai.core.designsystem.theme.TappyPalette
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -110,9 +112,24 @@ fun HomeScreen(
     // The feature whose "coming soon" sheet is open (null = closed). A single shared sheet for
     // every unfinished quick action, rather than one snackbar per tap.
 
+    // Web parity (HomeView.tsx `bg-gray-50 dark:bg-gray-950`): the Home PAGE sits on a soft gray
+    // that is one step off the card surface (white / gray-900), so the white/dark cards visibly
+    // separate from the page. Android previously inherited colorScheme.background, whose light
+    // value equals the card surface (both pure white) — cards had no separation. Resolve the page
+    // colour from the active scheme (works with the manual dark toggle + dynamic colour): a light
+    // surface → Neutral50 (≈ web gray-50), a dark surface → Neutral950 (the brand near-black,
+    // already the dark page colour). Scoped to the Home landing, mirroring how the Explore feed
+    // owns its own screen background.
+    val pageBackground = if (MaterialTheme.colorScheme.surface.luminance() < 0.5f) {
+        TappyPalette.Neutral950
+    } else {
+        TappyPalette.Neutral50
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(pageBackground)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
