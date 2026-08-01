@@ -25,9 +25,9 @@ export const en: Record<string, string> = {
   // 2. What is TappyAI
   'landing.what.title': 'What is TappyAI?',
   'landing.what.p1':
-    'TappyAI is a consumer application for the Vietnamese market that brings together an AI assistant and a local discovery community. Users can chat with Tappy—an AI assistant specialized in food, travel, and local services—or share short-video reviews of real places and products.',
+    'TappyAI is an AI lifestyle platform built for Vietnam. It is organized around what a person actually intends to do — eat, travel, plan, shop — rather than around separate app categories, so one assistant carries context across every domain instead of leaving people to stitch together a dozen tools. Alongside the assistant, a short-video review community keeps recommendations grounded in what local people have actually experienced.',
   'landing.what.p2':
-    'The product is live today as a web application; a native Android application is in release-candidate testing. The main application interface is available in both Vietnamese and English.',
+    'The product runs as one connected ecosystem across web, Android, and iOS. The web platform is live today; the native Android and iOS applications are under active development, with Android currently in release-candidate testing. The interface is fully bilingual in Vietnamese and English.',
 
   // 3. Vision
   'landing.vision.title': 'Our vision',
@@ -53,7 +53,7 @@ export const en: Record<string, string> = {
   'landing.features.title': 'Key features',
   'landing.features.chat.title': 'AI chat & planning',
   'landing.features.chat.desc':
-    'Ask anything about eating, traveling, and living in Vietnam — get direct answers and complete plans built from real places.',
+    'Ask in your own words and get back a structured, brochure-style plan — real places with photos, ratings, merchant details, and community video reviews. Booking and shopping links are built in, so you can act on the answer instead of researching it yourself.',
   'landing.features.reviews.title': 'Short-video reviews',
   'landing.features.reviews.desc':
     'A vertical video feed of authentic user-generated reviews, with likes, comments, saves, and shares.',
@@ -103,9 +103,9 @@ export const en: Record<string, string> = {
   // 8. About
   'landing.about.title': 'About TappyAI',
   'landing.about.p1':
-    'TappyAI is founded and built by PHẠM ĐOÀN HUY in Vietnam. The product is designed, engineered, and operated entirely in-house — web, mobile, AI, and infrastructure.',
+    'TappyAI is built in Vietnam by Huy Phạm, after years of building consumer internet products and watching the same everyday friction go unsolved: deciding where to eat, judging whether a price is fair, or planning a weekend still means jumping between apps, group chats, and reviews nobody can verify. Web, mobile, AI, and infrastructure are designed and engineered entirely in-house.',
   'landing.about.p2':
-    'The web product is in production today and free to try. The native Android application has completed engineering hardening and is in release-candidate testing.',
+    'The mission is to help people turn intention into action with the least possible effort and the greatest possible confidence. The longer-term vision is a trusted everyday assistant that people in Vietnam rely on to discover, decide, plan, and act — a role earned by being genuinely useful and honest, not by competing for attention.',
 
   // 9. Contact
   'landing.contact.title': 'Contact & support',
@@ -149,9 +149,9 @@ export const vi: Record<string, string> = {
   // 2. What is TappyAI
   'landing.what.title': 'TappyAI là gì?',
   'landing.what.p1':
-    'TappyAI là ứng dụng tiêu dùng cho thị trường Việt Nam, kết hợp trợ lý AI với cộng đồng khám phá địa phương. Người dùng trò chuyện với Tappy — trợ lý chuyên về ẩm thực, du lịch và dịch vụ địa phương — và chia sẻ video review ngắn về những địa điểm, sản phẩm có thật.',
+    'TappyAI là nền tảng AI cho đời sống, xây dựng riêng cho Việt Nam. Sản phẩm được tổ chức quanh điều người dùng thật sự muốn làm — ăn gì, đi đâu, lên kế hoạch ra sao, mua ở đâu — thay vì chia nhỏ theo từng loại ứng dụng, nên chỉ một trợ lý duy nhất mang theo ngữ cảnh xuyên suốt mọi nhu cầu. Đi cùng trợ lý là cộng đồng review video ngắn, giữ cho mỗi gợi ý luôn bám sát trải nghiệm thực tế của người dùng bản địa.',
   'landing.what.p2':
-    'Sản phẩm hiện đang hoạt động dưới dạng ứng dụng web; ứng dụng Android native đang trong giai đoạn kiểm thử bản phát hành thử (release candidate). Giao diện chính của ứng dụng hỗ trợ cả tiếng Việt và tiếng Anh.',
+    'Sản phẩm vận hành như một hệ sinh thái thống nhất trên web, Android và iOS. Nền tảng web hiện đã hoạt động chính thức; ứng dụng native Android và iOS đang được phát triển, trong đó Android ở giai đoạn kiểm thử bản phát hành thử (release candidate). Giao diện hỗ trợ song ngữ Việt – Anh.',
 
   // 3. Vision
   'landing.vision.title': 'Tầm nhìn',
@@ -177,7 +177,7 @@ export const vi: Record<string, string> = {
   'landing.features.title': 'Tính năng chính',
   'landing.features.chat.title': 'Chat AI & lập kế hoạch',
   'landing.features.chat.desc':
-    'Hỏi mọi thứ về ăn uống, du lịch và đời sống tại Việt Nam — nhận câu trả lời trực tiếp và kế hoạch hoàn chỉnh từ các địa điểm thực tế.',
+    'Hỏi bằng ngôn ngữ thường ngày và nhận lại lịch trình có cấu trúc như một cẩm nang — địa điểm có thật kèm hình ảnh, đánh giá, thông tin quán và review video từ cộng đồng. Link đặt chỗ, mua sắm gắn sẵn để bạn hành động ngay, thay vì phải tự đi tìm lại từ đầu.',
   'landing.features.reviews.title': 'Review video ngắn',
   'landing.features.reviews.desc':
     'Bảng tin video dọc với các review chân thực từ người dùng thật, kèm lượt thích, bình luận, lưu và chia sẻ.',
@@ -227,9 +227,9 @@ export const vi: Record<string, string> = {
   // 8. About
   'landing.about.title': 'Về TappyAI',
   'landing.about.p1':
-    'TappyAI được sáng lập và xây dựng bởi PHẠM ĐOÀN HUY tại Việt Nam. Sản phẩm được thiết kế, phát triển và vận hành nội bộ — web, di động, AI và hạ tầng.',
+    'TappyAI được xây dựng tại Việt Nam bởi Huy Phạm, sau nhiều năm làm sản phẩm internet cho người dùng và chứng kiến một vướng mắc quen thuộc chưa ai giải quyết trọn vẹn: chọn chỗ ăn, biết giá thế nào là hợp lý hay sắp xếp một chuyến đi vẫn phải nhảy qua lại giữa nhiều ứng dụng, hội nhóm và những bài review khó kiểm chứng. Web, di động, AI và hạ tầng đều do đội ngũ tự thiết kế và phát triển toàn bộ.',
   'landing.about.p2':
-    'Sản phẩm web hiện đang vận hành chính thức và miễn phí trải nghiệm. Ứng dụng Android native đã hoàn tất giai đoạn củng cố kỹ thuật và đang trong giai đoạn kiểm thử bản phát hành thử.',
+    'Sứ mệnh của TappyAI là giúp người dùng biến ý định thành hành động với ít công sức nhất và sự chắc chắn cao nhất. Tầm nhìn dài hạn là trở thành trợ lý thường ngày đáng tin cậy để người Việt khám phá, quyết định, lên kế hoạch và hành động — vị trí chỉ có được bằng sự hữu ích và trung thực, không phải bằng cách giành giật sự chú ý.',
 
   // 9. Contact
   'landing.contact.title': 'Liên hệ & hỗ trợ',
