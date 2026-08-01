@@ -160,15 +160,19 @@ private fun AccountContent(
                         showChevron = false,
                         onClick = {},
                     )
-                    HorizontalDivider()
-                    TappyMenuRow(
-                        icon = Icons.Filled.CalendarMonth,
-                        title = stringResource(R.string.account_joined_label),
-                        // GET /api/profile doesn't return the creation date → no-data placeholder.
-                        subtitle = profile.joinDate.ifBlank { stringResource(R.string.account_no_data_placeholder) },
-                        showChevron = false,
-                        onClick = {},
-                    )
+                    // Web parity (profile/account/page.tsx): the join-date row renders only when a
+                    // date exists (`{joinDate && …}`). GET /api/profile doesn't return the creation
+                    // date, so show the row only if it's populated instead of a permanent "—".
+                    if (profile.joinDate.isNotBlank()) {
+                        HorizontalDivider()
+                        TappyMenuRow(
+                            icon = Icons.Filled.CalendarMonth,
+                            title = stringResource(R.string.account_joined_label),
+                            subtitle = profile.joinDate,
+                            showChevron = false,
+                            onClick = {},
+                        )
+                    }
                 }
             }
 
