@@ -292,7 +292,15 @@ private fun ColumnScope.EmptyState(onExploreNow: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(TappySpacing.md, Alignment.CenterVertically),
     ) {
-        Text(text = "📅", fontSize = 48.sp)
+        // Empty-state icon: a monochrome vector (onSurfaceVariant, 40dp) like every other empty
+        // state in the app (Saved/Price-tracking/Maps/Memory via TappyEmptyState). The old colourful
+        // "📅" emoji (fixed "JUL 17") read as inconsistent against those clean icons.
+        Icon(
+            imageVector = Icons.Filled.CalendarMonth,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(40.dp),
+        )
         Text(text = stringResource(R.string.bookings_empty_title), style = MaterialTheme.typography.titleMedium)
         Text(
             text = stringResource(R.string.bookings_empty_message),
