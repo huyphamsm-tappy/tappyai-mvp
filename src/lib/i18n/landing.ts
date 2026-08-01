@@ -53,7 +53,7 @@ export const en: Record<string, string> = {
   'landing.features.title': 'Key features',
   'landing.features.chat.title': 'AI chat & planning',
   'landing.features.chat.desc':
-    'Ask in your own words and get back a structured, brochure-style plan — real places with photos, ratings, merchant details, and community video reviews. Booking and shopping links are built in, so you can act on the answer instead of researching it yourself. That is the difference from a general AI assistant: each recommendation is assembled from real businesses and community reviews rather than written from memory, and it ends where you can book or buy.',
+    'Ask in your own words and get back a structured, brochure-style plan — real places with photos, ratings, merchant details, and community short-video reviews. Booking and shopping links are built in, so you can act on the answer instead of researching it yourself. That is the difference from a general AI assistant: each recommendation is assembled from real businesses and community short-video reviews, grounded in current information, and it ends where you can book or buy.',
   'landing.features.reviews.title': 'Short-video reviews',
   'landing.features.reviews.desc':
     'A vertical video feed of authentic user-generated reviews, with likes, comments, saves, and shares.',
@@ -103,7 +103,7 @@ export const en: Record<string, string> = {
   // 8. About
   'landing.about.title': 'About TappyAI',
   'landing.about.p1':
-    'TappyAI is built in Vietnam by Huy Phạm, who previously founded consumer internet ventures and kept meeting the same unsolved friction: deciding where to eat, judging whether a price is fair, or planning a trip still means searching across many apps and reviews nobody can verify. Web, mobile, AI, and infrastructure are designed and engineered entirely in-house.',
+    'TappyAI is built in Vietnam by Huy Phạm, who previously founded consumer internet ventures and kept meeting the same unsolved friction: deciding where to eat, judging whether a price is fair, or planning a trip still means searching across multiple disconnected apps and information sources, with reviews nobody can verify. Web, mobile, AI, and infrastructure are designed and engineered entirely in-house.',
   'landing.about.p2':
     'The mission is to help people turn intention into action with the least possible effort and the greatest possible confidence. The longer-term vision is a trusted everyday assistant that people in Vietnam rely on to discover, decide, plan, and act — a role earned by being genuinely useful and honest, not by competing for attention.',
 
@@ -177,7 +177,7 @@ export const vi: Record<string, string> = {
   'landing.features.title': 'Tính năng chính',
   'landing.features.chat.title': 'Chat AI & lập kế hoạch',
   'landing.features.chat.desc':
-    'Hỏi bằng ngôn ngữ thường ngày và nhận lại lịch trình có cấu trúc như một cẩm nang — địa điểm có thật kèm hình ảnh, đánh giá, thông tin quán và review video từ cộng đồng. Link đặt chỗ, mua sắm gắn sẵn để bạn hành động ngay, thay vì phải tự đi tìm lại từ đầu. Đó là điểm khác biệt so với một trợ lý AI thông thường: mỗi gợi ý được dựng từ cơ sở kinh doanh có thật và review của cộng đồng, thay vì viết ra từ trí nhớ của mô hình, và kết thúc đúng chỗ bạn có thể đặt hoặc mua.',
+    'Hỏi bằng ngôn ngữ thường ngày và nhận lại lịch trình có cấu trúc như một cẩm nang — địa điểm có thật kèm hình ảnh, đánh giá, thông tin quán và review video ngắn từ cộng đồng. Link đặt chỗ, mua sắm gắn sẵn để bạn hành động ngay, thay vì phải tự đi tìm lại từ đầu. Đó là điểm khác biệt so với một trợ lý AI thông thường: mỗi gợi ý được dựng từ cơ sở kinh doanh có thật và review video ngắn từ cộng đồng, dựa trên thông tin hiện hành, và kết thúc đúng chỗ bạn có thể đặt hoặc mua.',
   'landing.features.reviews.title': 'Review video ngắn',
   'landing.features.reviews.desc':
     'Bảng tin video dọc với các review chân thực từ người dùng thật, kèm lượt thích, bình luận, lưu và chia sẻ.',
@@ -227,7 +227,7 @@ export const vi: Record<string, string> = {
   // 8. About
   'landing.about.title': 'Về TappyAI',
   'landing.about.p1':
-    'TappyAI được xây dựng tại Việt Nam bởi Huy Phạm, người từng sáng lập các dự án internet cho người dùng và liên tục gặp lại một vướng mắc chưa được giải quyết: chọn chỗ ăn, biết giá thế nào là hợp lý hay sắp xếp một chuyến đi vẫn phải tìm kiếm qua nhiều ứng dụng và những bài review khó kiểm chứng. Web, di động, AI và hạ tầng đều do đội ngũ tự thiết kế và phát triển toàn bộ.',
+    'TappyAI được xây dựng tại Việt Nam bởi Huy Phạm, người từng sáng lập các dự án internet cho người dùng và liên tục gặp lại một vướng mắc chưa được giải quyết: chọn chỗ ăn, biết giá thế nào là hợp lý hay sắp xếp một chuyến đi vẫn phải tìm kiếm qua nhiều ứng dụng và nguồn thông tin rời rạc, cùng những bài review khó kiểm chứng. Web, di động, AI và hạ tầng đều do đội ngũ tự thiết kế và phát triển toàn bộ.',
   'landing.about.p2':
     'Sứ mệnh của TappyAI là giúp người dùng biến ý định thành hành động với ít công sức nhất và sự chắc chắn cao nhất. Tầm nhìn dài hạn là trở thành trợ lý thường ngày đáng tin cậy để người Việt khám phá, quyết định, lên kế hoạch và hành động — vị trí chỉ có được bằng sự hữu ích và trung thực, không phải bằng cách giành giật sự chú ý.',
 
