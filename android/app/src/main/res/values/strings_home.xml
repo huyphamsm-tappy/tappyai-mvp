@@ -29,7 +29,6 @@
     <string name="home_empty_recent_title">No recent activity</string>
     <string name="home_empty_recent_message">Your recent chats and saved places will show up here.</string>
 
-    <string name="home_recommendations_section">✨ For you</string>
     <string name="home_recommendations_card_title">✨ For you</string>
     <string name="home_recommendations_card_desc">Personalized places for your taste</string>
 
