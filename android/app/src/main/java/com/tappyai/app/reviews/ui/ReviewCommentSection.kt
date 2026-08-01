@@ -36,7 +36,6 @@ import com.tappyai.app.R
 import com.tappyai.app.reviews.data.COMMENT_REACTIONS
 import com.tappyai.app.reviews.data.ReviewComment
 import com.tappyai.app.reviews.data.SEED_COMMENTS
-import com.tappyai.app.reviews.data.formatRelativeTime
 import com.tappyai.app.reviews.data.reactionEmoji
 import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
@@ -123,7 +122,7 @@ internal fun ReviewCommentItem(
                     fontWeight = FontWeight.SemiBold,
                 )
                 Text(
-                    text = formatRelativeTime(comment.createdAt, nowMillis),
+                    text = reviewRelativeTime(comment.createdAt, nowMillis),
                     color = CommentTextSecondary,
                     fontSize = 12.sp,
                 )
