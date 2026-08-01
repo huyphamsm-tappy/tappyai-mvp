@@ -79,8 +79,8 @@ export const en: Record<string, string> = {
   'landing.shots.chat.alt': 'TappyAI chat screen with the Tappy assistant and suggested prompts',
   'landing.shots.reviews.label': 'Reviews feed',
   'landing.shots.reviews.alt': 'TappyAI short-video review feed with like, comment, and share actions',
-  'landing.shots.music.label': 'Music library',
-  'landing.shots.music.alt': 'TappyAI music library listing reusable audio tracks with play controls',
+  'landing.shots.travel.label': 'Trip planning',
+  'landing.shots.travel.alt': 'TappyAI travel itinerary with a day-by-day plan, real hotels and restaurants, prices, maps and booking links',
   'landing.shots.deals.label': 'Daily deals',
   'landing.shots.deals.alt': 'TappyAI daily deals screen listing curated offers from popular services',
 
@@ -203,8 +203,8 @@ export const vi: Record<string, string> = {
   'landing.shots.chat.alt': 'Màn hình chat TappyAI với trợ lý Tappy và các gợi ý câu hỏi',
   'landing.shots.reviews.label': 'Bảng tin review',
   'landing.shots.reviews.alt': 'Bảng tin video review ngắn của TappyAI với thao tác thích, bình luận, chia sẻ',
-  'landing.shots.music.label': 'Thư viện nhạc',
-  'landing.shots.music.alt': 'Thư viện nhạc TappyAI liệt kê các âm thanh dùng lại được kèm nút phát',
+  'landing.shots.travel.label': 'Lên lịch trình',
+  'landing.shots.travel.alt': 'Lịch trình du lịch của TappyAI với kế hoạch theo từng ngày, khách sạn và nhà hàng có thật, giá tiền, bản đồ và link đặt chỗ',
   'landing.shots.deals.label': 'Deal mỗi ngày',
   'landing.shots.deals.alt': 'Màn hình deal mỗi ngày của TappyAI với các ưu đãi chọn lọc',
 

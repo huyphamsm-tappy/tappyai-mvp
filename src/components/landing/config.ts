@@ -23,9 +23,13 @@ export const FOUNDER_LINKEDIN_LABEL = 'linkedin.com/in/phạm-huy-313592253'
 // a genuine screenshot of the live Home screen (src/app/HomeView.tsx).
 export const HERO_SCREENSHOT = { src: '/landing/screen-home.webp', width: 780, height: 1578 }
 
+// Order tells the product story: ask → plan → community → commerce.
+// Music was retired from the gallery (owner decision 2026-08-01): it is not a
+// core Landing capability, its screen is Vietnamese-only regardless of locale,
+// and Trip planning demonstrates far more of what TappyAI does.
 export const GALLERY_SCREENSHOTS: Array<{ key: string; src: string; width: number; height: number }> = [
   { key: 'chat', src: '/landing/screen-chat.webp', width: 780, height: 1688 },
+  { key: 'travel', src: '/landing/screen-travel.webp', width: 780, height: 1688 },
   { key: 'reviews', src: '/landing/screen-reviews.webp', width: 780, height: 1688 },
-  { key: 'music', src: '/landing/screen-music.webp', width: 780, height: 1688 },
   { key: 'deals', src: '/landing/screen-deals.webp', width: 780, height: 1688 },
 ]
