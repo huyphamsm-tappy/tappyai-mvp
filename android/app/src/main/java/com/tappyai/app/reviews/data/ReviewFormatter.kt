@@ -4,22 +4,6 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-fun formatRelativeTime(createdAt: String, nowMillis: Long): String {
-    val createdAtMillis = parseIsoMillis(createdAt)
-    // parseIsoMillis degrades a blank/malformed timestamp to 0L specifically so it reads as "just
-    // now" (see its own doc comment) — but 0L run through the minutes math below computes a
-    // multi-decade delta and falls into the "Nd" branch instead, showing something like "20345d"
-    // for exactly the missing-data case this was meant to hide. Short-circuit it directly.
-    if (createdAtMillis == 0L) return "just now"
-    val minutes = (nowMillis - createdAtMillis) / 60_000
-    return when {
-        minutes < 1 -> "just now"
-        minutes < 60 -> "${minutes}m"
-        minutes < 1440 -> "${minutes / 60}h"
-        else -> "${minutes / 1440}d"
-    }
-}
-
 fun groupNotifications(
     notifications: List<ReviewNotification>,
 ): List<ReviewGroupedNotification> {
@@ -68,7 +52,10 @@ fun isShareOnlyName(name: String?): Boolean {
     return trimmed.isEmpty() || trimmed in SHARE_ONLY_NAMES
 }
 
-private fun parseIsoMillis(iso: String): Long {
+/** Parse an ISO timestamp to epoch millis; degrades a blank/malformed value to 0L ("just now")
+ *  rather than crashing the composable render. Public so the localized [reviewRelativeTime]
+ *  composable (ui) can reuse the same robust parsing. */
+fun parseIsoMillis(iso: String): Long {
     val s = iso.trim().replace(' ', 'T')
     // The DTOs default a missing `created_at` to "" (kotlinx defaults apply on an absent key),
     // and a malformed value is possible on a backend/migration gap. This runs directly inside

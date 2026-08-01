@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
 import com.tappyai.app.reviews.data.ReviewGroupedNotification
 import com.tappyai.app.reviews.data.SEED_NOTIFICATIONS
-import com.tappyai.app.reviews.data.formatRelativeTime
 import com.tappyai.app.reviews.data.groupNotifications
 import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
@@ -103,7 +102,7 @@ internal fun ReviewNotificationItem(
                 )
             }
             Text(
-                text = formatRelativeTime(notification.createdAt, nowMillis),
+                text = reviewRelativeTime(notification.createdAt, nowMillis),
                 color = NotifTextSecondary,
                 fontSize = 12.sp,
             )
