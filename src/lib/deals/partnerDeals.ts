@@ -12,7 +12,11 @@ export interface PartnerDeal {
   partnerSlug: string
   partnerName: string
   partnerType: string
+  // `category` is the LOCALIZED display label (resolved for the requested locale).
+  // `categoryKey` is the language-independent styling key (always the vi base
+  // label) so clients keep a stable category→colour map regardless of language.
   category: string
+  categoryKey: string
   title: string
   description: string | null
   officialUrl: string
@@ -56,12 +60,16 @@ function readPromotion(metadata: unknown): { discountLabel: string | null; vouch
 
 function toPublic(row: Record<string, unknown>): PartnerDeal {
   const { discountLabel, voucherCode } = readPromotion(row.metadata)
+  const baseCategory = (row.category as string) ?? ''
   return {
     id: row.id as string,
     partnerSlug: (row.partner_slug as string) ?? '',
     partnerName: (row.partner_name as string) ?? '',
     partnerType: (row.partner_type as string) ?? '',
-    category: (row.category as string) ?? '',
+    // Base (vi) values by default; getActiveDeals overlays a locale on top. The
+    // styling key is always the vi base category and never changes with language.
+    category: baseCategory,
+    categoryKey: baseCategory,
     title: (row.title as string) ?? '',
     description: (row.description as string | null) ?? null,
     officialUrl: (row.official_url as string) ?? '',
@@ -87,10 +95,25 @@ function toRow(row: Record<string, unknown>): PartnerDealRow {
   }
 }
 
+// Supported UI locales. 'vi' is the base (source of truth) — never needs a
+// lookup. Anything else resolves against partner_deal_translations with a
+// field-by-field fall back to the vi base. Unknown locales collapse to 'vi'.
+const BASE_LOCALE = 'vi'
+function normalizeLocale(locale?: string | null): string {
+  const l = (locale ?? '').trim().toLowerCase()
+  if (!l || l.startsWith('vi')) return BASE_LOCALE
+  // Keep a region tag if present ('en-us' → 'en-US') so exact rows can match;
+  // the resolver also tries the language-only form.
+  const [lang, region] = l.split('-')
+  return region ? `${lang}-${region.toUpperCase()}` : lang
+}
+
 // PUBLIC read — anon/server client, so RLS enforces active + in-date-window. We
-// additionally scope by country and sort by display_order. Best-effort: returns
-// [] on any error so the deals surface degrades gracefully instead of throwing.
-export async function getActiveDeals(countryCode = 'VN'): Promise<PartnerDeal[]> {
+// additionally scope by country and sort by display_order. When a non-vi locale
+// is requested, overlay partner_deal_translations (field-by-field, vi fallback).
+// Best-effort: returns [] on any error, and silently keeps vi text if the
+// translation lookup fails, so the deals surface degrades gracefully.
+export async function getActiveDeals(countryCode = 'VN', locale?: string | null): Promise<PartnerDeal[]> {
   try {
     const supabase = createClient()
     const { data, error } = await supabase
@@ -99,7 +122,47 @@ export async function getActiveDeals(countryCode = 'VN'): Promise<PartnerDeal[]>
       .eq('country_code', countryCode)
       .order('display_order', { ascending: true })
     if (error || !data) return []
-    return data.map(toPublic)
+    const deals = data.map(toPublic)
+
+    const wantLocale = normalizeLocale(locale)
+    if (wantLocale === BASE_LOCALE || deals.length === 0) return deals
+
+    // Try the exact locale first, then the language-only form ('en-US' → 'en').
+    // Both are non-vi so the vi base is never queried here.
+    const langOnly = wantLocale.split('-')[0]
+    const candidates = langOnly === wantLocale ? [wantLocale] : [wantLocale, langOnly]
+
+    const { data: trData } = await supabase
+      .from('partner_deal_translations')
+      .select('deal_id, locale, category, title, description')
+      .in('deal_id', deals.map((d) => d.id))
+      .in('locale', candidates)
+
+    if (!trData || trData.length === 0) return deals
+
+    // Prefer the exact-locale row over the language-only row per deal.
+    const byDeal = new Map<string, Record<string, unknown>>()
+    for (const pref of candidates) {
+      for (const tr of trData as Record<string, unknown>[]) {
+        if (tr.locale === pref && !byDeal.has(tr.deal_id as string)) {
+          byDeal.set(tr.deal_id as string, tr)
+        }
+      }
+    }
+
+    const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v : null)
+    return deals.map((d) => {
+      const tr = byDeal.get(d.id)
+      if (!tr) return d
+      // Field-by-field overlay; a null/blank translated field keeps the vi base.
+      // categoryKey stays the vi base label (stable styling key).
+      return {
+        ...d,
+        category: str(tr.category) ?? d.category,
+        title: str(tr.title) ?? d.title,
+        description: str(tr.description) ?? d.description,
+      }
+    })
   } catch {
     return []
   }
