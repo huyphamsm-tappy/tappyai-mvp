@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,11 +14,14 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tappyai.app.R
-import com.tappyai.core.designsystem.component.TappyAppBar
 import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyCard
@@ -44,7 +47,28 @@ fun AccountScreen(
     onEditProfile: () -> Unit,
 ) {
     Scaffold(
-        topBar = { TappyAppBar(title = stringResource(R.string.account_title), onBackClick = onBack) },
+        // Left-aligned back + title, matching every other Profile sub-screen (Settings, Bookings,
+        // Saved, Price tracking, …). Account previously used the centered CenterAlignedTopAppBar
+        // (TappyAppBar), the lone outlier in the Profile stack.
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.common_back),
+                    )
+                }
+                Text(
+                    text = stringResource(R.string.account_title),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            }
+        },
     ) { innerPadding ->
         val profile = viewModel.profile
         when {
