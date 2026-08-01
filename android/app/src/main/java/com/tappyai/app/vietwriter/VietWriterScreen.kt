@@ -185,10 +185,13 @@ private fun ToneSection(selected: VietWriterTone, onSelect: (VietWriterTone) -> 
                 Text(
                     text = option.label(),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                    // Selected chips use primaryContainer here to match the Platform and Length
+                    // groups on this same screen (they were on secondaryContainer/orange — the lone
+                    // group with a different selection colour, which read as an inconsistency).
+                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .clip(TappyShapes.pill)
-                        .background(if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant)
+                        .background(if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant)
                         .clickable { onSelect(option) }
                         .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.sm),
                 )
