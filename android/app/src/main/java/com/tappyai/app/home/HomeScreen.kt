@@ -458,8 +458,13 @@ private fun QuickActionTile(action: QuickAction, modifier: Modifier = Modifier) 
             }
             Text(
                 text = action.label,
-                style = MaterialTheme.typography.labelMedium,
+                // 4-col tiles are narrow; at labelMedium (12sp) single-word labels like
+                // "Translate"/"Currency" broke MID-WORD ("Translat\ne"). Shrink the caption a touch
+                // so a one-word label fits on one line; multi-word labels ("Split Bill") still wrap
+                // cleanly at the space. maxLines guards against any 3-line blow-up.
+                style = MaterialTheme.typography.labelMedium.copy(fontSize = 10.sp, lineHeight = 13.sp),
                 textAlign = TextAlign.Center,
+                maxLines = 2,
             )
         }
     }
