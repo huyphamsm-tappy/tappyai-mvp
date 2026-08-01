@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewProfile
+import com.tappyai.app.reviews.data.isShareOnlyName
 import com.tappyai.app.reviews.data.SEED_PROFILES
 import com.tappyai.app.reviews.data.SEED_REVIEWS
 import com.tappyai.core.designsystem.component.TappyAvatar
@@ -175,7 +176,10 @@ internal fun RowScope.ReviewProfileGridTile(
                 .padding(horizontal = 6.dp, vertical = 4.dp),
             verticalArrangement = Arrangement.spacedBy(1.dp),
         ) {
-            if (review.placeName.isNotBlank()) {
+            // Web parity (ProfileTab grid: `!isShareOnlyName(r.place_name)`): a share-only post
+            // carries the "Chia sẻ"/"Chia se" sentinel place name — hide it (like the feed + detail),
+            // don't print the sentinel on the grid tile.
+            if (!isShareOnlyName(review.placeName)) {
                 Text(
                     text = review.placeName,
                     color = ProfileTextPrimary,
