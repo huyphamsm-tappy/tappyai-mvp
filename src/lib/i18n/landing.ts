@@ -93,7 +93,7 @@ export const en: Record<string, string> = {
   'landing.tech.mobile.desc': 'Native Android application built with Kotlin and Jetpack Compose.',
   'landing.tech.ai.title': 'Multi-LLM AI Platform',
   'landing.tech.ai.desc':
-    'Built on a provider-agnostic Multi-LLM architecture, enabling TappyAI to intelligently orchestrate multiple AI models through a unified AI platform.',
+    'Built on a provider-agnostic Multi-LLM architecture, enabling TappyAI to intelligently orchestrate multiple AI models through a unified orchestration layer.',
   'landing.tech.data.title': 'Backend & data',
   'landing.tech.data.desc': 'Supabase — PostgreSQL, authentication, and row-level security — with media storage on Vercel Blob.',
   'landing.tech.ops.title': 'Analytics & payments',
@@ -216,7 +216,7 @@ export const vi: Record<string, string> = {
   'landing.tech.mobile.desc': 'Ứng dụng Android native xây dựng bằng Kotlin và Jetpack Compose.',
   'landing.tech.ai.title': 'Nền tảng AI Multi-LLM',
   'landing.tech.ai.desc':
-    'Được xây dựng trên kiến trúc Multi-LLM độc lập với nhà cung cấp, cho phép TappyAI điều phối thông minh nhiều mô hình AI thông qua một nền tảng AI thống nhất.',
+    'Được xây dựng trên kiến trúc Multi-LLM độc lập với nhà cung cấp, cho phép TappyAI điều phối thông minh nhiều mô hình AI thông qua một lớp điều phối AI thống nhất.',
   'landing.tech.data.title': 'Backend & dữ liệu',
   'landing.tech.data.desc': 'Supabase — PostgreSQL, xác thực và bảo mật cấp dòng (RLS) — cùng lưu trữ media trên Vercel Blob.',
   'landing.tech.ops.title': 'Phân tích & thanh toán',
