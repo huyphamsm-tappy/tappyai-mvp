@@ -50,6 +50,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
@@ -225,6 +227,34 @@ private fun HomeHeroCard(
                     ),
                 ),
             )
+            // Web parity (HomeView.tsx hero, two `absolute` decorative layers clipped by the card's
+            // rounded corners): a soft white circle bleeding off the top-right and an accent glow off
+            // the bottom-left. Drawn behind the content (drawBehind → no layout impact, clipped by
+            // the .clip above). Geometry matches web 1:1 (Tailwind rem→dp):
+            //  • top-right  `-top-14 -right-14 w-48 h-48 rounded-full bg-white/10`
+            //    → 192dp circle (r=96), right edge +56dp / top edge −56dp → center (w−40, 40), no blur.
+            //  • bottom-left `-bottom-16 -left-10 w-40 h-40 rounded-full bg-accent-300/20 blur-2xl`
+            //    → 160dp circle (r=80), left edge −40dp / bottom edge +64dp → center (40, h−16).
+            //    `blur-2xl` (40px) is reproduced as a radial-gradient falloff so the soft glow renders
+            //    on every API level (Modifier.blur is a no-op below API 31). accent-300 = #FFBD66.
+            .drawBehind {
+                drawCircle(
+                    color = Color.White.copy(alpha = 0.10f),
+                    radius = 96.dp.toPx(),
+                    center = Offset(size.width - 40.dp.toPx(), 40.dp.toPx()),
+                )
+                val glowCenter = Offset(40.dp.toPx(), size.height - 16.dp.toPx())
+                val glowRadius = 80.dp.toPx() + 40.dp.toPx()
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = listOf(Color(0xFFFFBD66).copy(alpha = 0.20f), Color.Transparent),
+                        center = glowCenter,
+                        radius = glowRadius,
+                    ),
+                    radius = glowRadius,
+                    center = glowCenter,
+                )
+            }
             .padding(TappySpacing.xl),
         verticalArrangement = Arrangement.spacedBy(TappySpacing.lg),
     ) {
