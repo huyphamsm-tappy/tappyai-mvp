@@ -22,9 +22,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -42,7 +44,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.tappyai.app.R
-import com.tappyai.core.designsystem.component.TappyAppBar
 import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyButton
@@ -83,7 +84,27 @@ fun AccountEditScreen(
     ) { uri -> uri?.let(viewModel::onAvatarPicked) }
 
     Scaffold(
-        topBar = { TappyAppBar(title = stringResource(R.string.account_edit_profile), onBackClick = onBack) },
+        // Left-aligned back + title, matching the Account screen and every other Profile
+        // sub-screen (see AccountScreen for the rationale — TappyAppBar was the centered outlier).
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.common_back),
+                    )
+                }
+                Text(
+                    text = stringResource(R.string.account_edit_profile),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            }
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
