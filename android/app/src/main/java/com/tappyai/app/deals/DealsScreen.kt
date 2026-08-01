@@ -213,7 +213,9 @@ private fun DealCard(deal: Deal, onOpen: () -> Unit) {
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm), verticalAlignment = Alignment.CenterVertically) {
-                categoryColor(deal.category)?.let { catColor ->
+                // Colour keyed by the language-independent categoryKey (stable vi label); the
+                // pill text shows the localized category.
+                categoryColor(deal.categoryKey)?.let { catColor ->
                     Box(
                         modifier = Modifier
                             .clip(TappyShapes.pill)

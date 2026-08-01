@@ -15,6 +15,9 @@ data class DealDto(
     val partnerName: String = "",
     val partnerType: String = "",
     val category: String = "",
+    // Language-independent styling key (the vi base category). Optional so an older backend that
+    // doesn't send it still parses; toDomain then falls back to [category].
+    val categoryKey: String? = null,
     val title: String = "",
     val description: String? = null,
     val officialUrl: String = "",
@@ -30,6 +33,9 @@ fun DealDto.toDomain(): Deal = Deal(
     id = id,
     partnerName = partnerName,
     category = category,
+    // Fall back to the (localized) category when the backend omits categoryKey — keeps colours
+    // working against an older backend, just without cross-language stability.
+    categoryKey = categoryKey?.takeIf { it.isNotBlank() } ?: category,
     title = title,
     description = description,
     officialUrl = officialUrl,
