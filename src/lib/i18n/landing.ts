@@ -91,9 +91,9 @@ export const en: Record<string, string> = {
   'landing.tech.web.desc': 'Next.js, React, and TypeScript with Tailwind CSS, deployed on Vercel.',
   'landing.tech.mobile.title': 'Mobile',
   'landing.tech.mobile.desc': 'Native Android application built with Kotlin and Jetpack Compose.',
-  'landing.tech.ai.title': 'AI',
+  'landing.tech.ai.title': 'Multi-LLM AI Platform',
   'landing.tech.ai.desc':
-    'AI services are delivered through a provider-abstracted architecture, allowing TappyAI to support multiple AI models while remaining flexible for future expansion.',
+    'Built on a provider-agnostic Multi-LLM architecture, enabling TappyAI to intelligently orchestrate multiple AI models through a unified AI platform.',
   'landing.tech.data.title': 'Backend & data',
   'landing.tech.data.desc': 'Supabase — PostgreSQL, authentication, and row-level security — with media storage on Vercel Blob.',
   'landing.tech.ops.title': 'Analytics & payments',
@@ -214,8 +214,9 @@ export const vi: Record<string, string> = {
   'landing.tech.web.desc': 'Next.js, React và TypeScript với Tailwind CSS, triển khai trên Vercel.',
   'landing.tech.mobile.title': 'Di động',
   'landing.tech.mobile.desc': 'Ứng dụng Android native xây dựng bằng Kotlin và Jetpack Compose.',
-  'landing.tech.ai.title': 'AI',
-  'landing.tech.ai.desc': 'Các mô hình Anthropic Claude phía sau tầng AI trừu tượng hóa theo nhà cung cấp.',
+  'landing.tech.ai.title': 'Nền tảng AI Multi-LLM',
+  'landing.tech.ai.desc':
+    'Được xây dựng trên kiến trúc Multi-LLM độc lập với nhà cung cấp, cho phép TappyAI điều phối thông minh nhiều mô hình AI thông qua một nền tảng AI thống nhất.',
   'landing.tech.data.title': 'Backend & dữ liệu',
   'landing.tech.data.desc': 'Supabase — PostgreSQL, xác thực và bảo mật cấp dòng (RLS) — cùng lưu trữ media trên Vercel Blob.',
   'landing.tech.ops.title': 'Phân tích & thanh toán',
