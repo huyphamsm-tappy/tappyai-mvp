@@ -90,6 +90,19 @@ class ReviewDetailViewModel @Inject constructor(
             it.copy(review = repository.getCachedReview(reviewId), isLoadingComments = true, commentsError = null)
         }
         viewModelScope.launch {
+            // Cache-miss fallback. The review cache is only populated by whatever feed the user
+            // scrolled, so a COLD entry into this screen — tapping a notification ("X liked your
+            // review") — used to find nothing and render "This post is no longer available", a dead
+            // end on a real, existing post. There is no GET /api/reviews/{id} endpoint (405), so
+            // recover via getMine(), which fetches the caller's own reviews and fills the same
+            // cache. Notification targets are by definition the caller's OWN posts, which are also
+            // exactly the ones the discovery feed excludes — so this covers the failing case.
+            if (repository.getCachedReview(reviewId) == null) {
+                repository.getMine()
+                repository.getCachedReview(reviewId)?.let { fetched ->
+                    _uiState.update { it.copy(review = fetched) }
+                }
+            }
             when (val result = repository.getComments(reviewId)) {
                 is NetworkResult.Success -> _uiState.update {
                     it.copy(comments = result.data, isLoadingComments = false, commentsError = null)
