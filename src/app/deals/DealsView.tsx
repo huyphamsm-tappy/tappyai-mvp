@@ -16,7 +16,10 @@ import { promoCountdown } from '@/lib/deals/countdown'
 interface PartnerDeal {
   id: string
   partnerName: string
+  // `category` is localized for display; `categoryKey` is the stable vi label
+  // used for the colour map so styling survives a language switch.
   category: string
+  categoryKey: string
   title: string
   description: string | null
   officialUrl: string
@@ -58,15 +61,19 @@ export default function DealsView() {
   const [deals, setDeals] = useState<PartnerDeal[]>([])
   const [loading, setLoading] = useState(true)
 
+  // Re-fetch whenever the app language changes so category/description switch
+  // instantly (the API localizes server-side and returns the same shape). The
+  // request carries the current locale; the server falls back to vi per field.
   useEffect(() => {
     let cancelled = false
-    fetch('/api/deals')
+    setLoading(true)
+    fetch(`/api/deals?lang=${encodeURIComponent(locale)}`)
       .then((r) => r.json())
       .then((d) => { if (!cancelled) setDeals(Array.isArray(d?.deals) ? d.deals : []) })
       .catch(() => { if (!cancelled) setDeals([]) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
-  }, [])
+  }, [locale])
 
   return (
     <main className="min-h-screen pb-28 pt-4 px-4 max-w-2xl mx-auto">
@@ -180,7 +187,7 @@ function DealCard({ deal }: { deal: PartnerDeal }) {
           )}
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${categoryColor(deal.category)}`}>
+          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${categoryColor(deal.categoryKey)}`}>
             {deal.category}
           </span>
           {cd.kind === 'soon' && (

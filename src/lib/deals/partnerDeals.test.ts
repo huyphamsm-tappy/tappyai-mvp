@@ -4,13 +4,19 @@ import { CreateDealSchema, UpdateDealSchema, toDbColumns, PARTNER_TYPES } from '
 import { promoCountdown } from './countdown'
 
 // ── supabase client mock (chainable + thenable, with a controllable rpc) ──
+// Table-aware: partner_deals queries resolve to `mockResult`, partner_deal_
+// translations queries resolve to `mockTranslations`, so getActiveDeals'
+// two-query locale path can be exercised independently.
 let mockResult: { data: unknown; error: unknown } = { data: [], error: null }
+let mockTranslations: { data: unknown; error: unknown } = { data: [], error: null }
 let rpcThrows = false
 const rpc = vi.fn(() => (rpcThrows ? Promise.reject(new Error('rpc failed')) : Promise.resolve({ data: null, error: null })))
 function chain() {
-  const c: any = { rpc }
-  for (const m of ['from', 'select', 'eq', 'order']) c[m] = vi.fn(() => c)
-  c.then = (res: any) => Promise.resolve(mockResult).then(res)
+  const c: any = { rpc, _table: '' }
+  c.from = vi.fn((t: string) => { c._table = t; return c })
+  for (const m of ['select', 'eq', 'order', 'in']) c[m] = vi.fn(() => c)
+  c.then = (res: any) =>
+    Promise.resolve(c._table === 'partner_deal_translations' ? mockTranslations : mockResult).then(res)
   return c
 }
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => chain() }))
@@ -19,7 +25,12 @@ vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => chain() }))
 import { getActiveDeals } from './partnerDeals'
 import { POST as clickPost } from '@/app/api/deals/[id]/click/route'
 
-beforeEach(() => { mockResult = { data: [], error: null }; rpcThrows = false; rpc.mockClear() })
+beforeEach(() => {
+  mockResult = { data: [], error: null }
+  mockTranslations = { data: [], error: null }
+  rpcThrows = false
+  rpc.mockClear()
+})
 
 const base = {
   partnerSlug: 'shopee', partnerName: 'Shopee', partnerType: 'ecommerce' as const,
@@ -126,6 +137,63 @@ describe('getActiveDeals', () => {
     expect(d.discountLabel).toBeNull()
     expect(d.voucherCode).toBeNull()
     expect(d.endAt).toBeNull()
+  })
+})
+
+describe('getActiveDeals — localization', () => {
+  const shopeeRow = {
+    id: 'd1', partner_slug: 'shopee', partner_name: 'Shopee', partner_type: 'ecommerce',
+    category: 'Mua sắm', title: 'Shopee', description: 'Sàn mua sắm online — mọi thứ bạn cần',
+    official_url: 'https://shopee.vn', banner_image: null, logo_image: null, is_featured: true,
+  }
+
+  it('vi (base) returns source text and categoryKey === category; no translation lookup', async () => {
+    mockResult = { data: [shopeeRow], error: null }
+    // mockTranslations stays [] — if it were queried and empty it would still be vi,
+    // but the point is the vi path must not depend on a translation row existing.
+    const d = (await getActiveDeals('VN', 'vi'))[0]
+    expect(d.category).toBe('Mua sắm')
+    expect(d.categoryKey).toBe('Mua sắm')
+    expect(d.description).toBe('Sàn mua sắm online — mọi thứ bạn cần')
+  })
+
+  it('en overlays category + description; categoryKey stays the vi base; brand title unchanged', async () => {
+    mockResult = { data: [shopeeRow], error: null }
+    mockTranslations = { data: [{
+      deal_id: 'd1', locale: 'en', category: 'Shopping', title: null,
+      description: 'Online marketplace — everything you need',
+    }], error: null }
+    const d = (await getActiveDeals('VN', 'en'))[0]
+    expect(d.category).toBe('Shopping')                 // localized display
+    expect(d.categoryKey).toBe('Mua sắm')               // stable styling key
+    expect(d.description).toBe('Online marketplace — everything you need')
+    expect(d.title).toBe('Shopee')                      // brand title never translated (tr.title null)
+  })
+
+  it('falls back field-by-field to vi when a translated field is null/blank', async () => {
+    mockResult = { data: [shopeeRow], error: null }
+    mockTranslations = { data: [{
+      deal_id: 'd1', locale: 'en', category: 'Shopping', title: null, description: '   ',
+    }], error: null }
+    const d = (await getActiveDeals('VN', 'en'))[0]
+    expect(d.category).toBe('Shopping')
+    expect(d.description).toBe('Sàn mua sắm online — mọi thứ bạn cần') // blank → vi base
+  })
+
+  it('keeps vi when no translation row exists for the requested locale', async () => {
+    mockResult = { data: [shopeeRow], error: null }
+    mockTranslations = { data: [], error: null }
+    const d = (await getActiveDeals('VN', 'en'))[0]
+    expect(d.category).toBe('Mua sắm')
+    expect(d.description).toBe('Sàn mua sắm online — mọi thứ bạn cần')
+  })
+
+  it('unknown locale collapses to vi (no crash, base text)', async () => {
+    mockResult = { data: [shopeeRow], error: null }
+    mockTranslations = { data: [{ deal_id: 'd1', locale: 'en', category: 'Shopping', title: null, description: null }], error: null }
+    const d = (await getActiveDeals('VN', 'zz'))[0]
+    // 'zz' has no rows → base vi kept.
+    expect(d.category).toBe('Mua sắm')
   })
 })
 
