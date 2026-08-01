@@ -10,7 +10,10 @@ package com.tappyai.app.deals
 data class Deal(
     val id: String,
     val partnerName: String,
+    // [category] is the localized display label; [categoryKey] is the language-independent
+    // styling key (the vi base label) so the category→colour map survives a language switch.
     val category: String,
+    val categoryKey: String,
     val title: String,
     val description: String?,
     val officialUrl: String,
