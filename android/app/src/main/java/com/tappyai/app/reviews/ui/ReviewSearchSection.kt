@@ -178,15 +178,21 @@ internal fun ReviewSearchResultItem(
 
 internal fun LazyListScope.reviewSearchItems(
     results: List<Review>,
+    hasSearched: Boolean,
     onResultClick: (Review) -> Unit,
 ) {
     if (results.isEmpty()) {
-        item(key = "search-empty") {
-            TappyEmptyState(
-                icon = Icons.Filled.Search,
-                title = stringResource(R.string.reviews_search_empty_title),
-                message = stringResource(R.string.reviews_search_empty_message),
-            )
+        // Show the "no results" empty state only AFTER a search actually ran. On the initial
+        // screen (nothing typed yet) render nothing, so we never claim "No results found" before
+        // the user has searched — mirrors the ViewModel's hasSearched contract.
+        if (hasSearched) {
+            item(key = "search-empty") {
+                TappyEmptyState(
+                    icon = Icons.Filled.Search,
+                    title = stringResource(R.string.reviews_search_empty_title),
+                    message = stringResource(R.string.reviews_search_empty_message),
+                )
+            }
         }
     } else {
         items(items = results, key = { it.id }) { review ->
@@ -215,6 +221,7 @@ private fun SearchWithResultsPreview() {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             reviewSearchItems(
                 results = SEED_REVIEWS.take(4),
+                hasSearched = true,
                 onResultClick = {},
             )
         }
@@ -238,6 +245,7 @@ private fun SearchEmptyPreview() {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             reviewSearchItems(
                 results = emptyList(),
+                hasSearched = true,
                 onResultClick = {},
             )
         }

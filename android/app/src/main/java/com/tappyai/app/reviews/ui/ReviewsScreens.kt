@@ -749,7 +749,7 @@ internal fun ReviewSearchScreen(
             }
             uiState.mode == SearchMode.Places -> {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    reviewSearchItems(results = uiState.results, onResultClick = onResultClick)
+                    reviewSearchItems(results = uiState.results, hasSearched = uiState.hasSearched, onResultClick = onResultClick)
                 }
             }
             else -> {
