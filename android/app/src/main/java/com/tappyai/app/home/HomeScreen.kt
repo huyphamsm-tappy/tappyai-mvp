@@ -593,13 +593,15 @@ private fun FortuneSection(
     }
 }
 
-/** The web's Home "Recommendations" card (`✨` Sparkles icon, title, description) — its own
- *  featured section, opening the personalized recommendations screen. Mirrors the web placing
- *  Recommendations as a dedicated Home entry, not a quick-action tile. */
+/** The web's Home "Recommendations" card (`✨` Sparkles icon, title, description), opening the
+ *  personalized recommendations screen. Web (HomeView.tsx) renders this as a bare card with NO
+ *  section header — the card title is itself "✨ For you". An earlier Android version added a
+ *  section header carrying the same "✨ For you" string, so the label rendered twice, stacked. Drop
+ *  the header to match Web exactly and remove the duplication (like the sibling Tappy Together
+ *  bare card). */
 @Composable
 private fun RecommendationsSection(onOpenRecommendations: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
-        SectionHeader(title = stringResource(R.string.home_recommendations_section))
         TappyCard(
             modifier = Modifier
                 .fillMaxWidth()
