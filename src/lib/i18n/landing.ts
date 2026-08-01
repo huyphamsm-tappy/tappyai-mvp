@@ -90,7 +90,8 @@ export const en: Record<string, string> = {
   'landing.tech.web.title': 'Web application',
   'landing.tech.web.desc': 'Next.js, React, and TypeScript with Tailwind CSS, deployed on Vercel.',
   'landing.tech.mobile.title': 'Mobile',
-  'landing.tech.mobile.desc': 'Native Android application built with Kotlin and Jetpack Compose.',
+  'landing.tech.mobile.desc':
+    'Native mobile applications built for Android (Kotlin + Jetpack Compose) and iOS (Swift + SwiftUI).',
   'landing.tech.ai.title': 'Multi-LLM AI Platform',
   'landing.tech.ai.desc':
     'Built on a provider-agnostic Multi-LLM architecture, enabling TappyAI to intelligently orchestrate multiple AI models through a unified orchestration layer.',
@@ -213,7 +214,8 @@ export const vi: Record<string, string> = {
   'landing.tech.web.title': 'Ứng dụng web',
   'landing.tech.web.desc': 'Next.js, React và TypeScript với Tailwind CSS, triển khai trên Vercel.',
   'landing.tech.mobile.title': 'Di động',
-  'landing.tech.mobile.desc': 'Ứng dụng Android native xây dựng bằng Kotlin và Jetpack Compose.',
+  'landing.tech.mobile.desc':
+    'Ứng dụng di động native dành cho Android (Kotlin + Jetpack Compose) và iOS (Swift + SwiftUI).',
   'landing.tech.ai.title': 'Nền tảng AI Multi-LLM',
   'landing.tech.ai.desc':
     'Được xây dựng trên kiến trúc Multi-LLM độc lập với nhà cung cấp, cho phép TappyAI điều phối thông minh nhiều mô hình AI thông qua một lớp điều phối AI thống nhất.',
