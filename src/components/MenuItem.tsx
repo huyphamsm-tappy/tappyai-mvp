@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ChevronRight, type LucideIcon } from 'lucide-react'
+import { ChevronRight, Lock, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface MenuItemProps {
@@ -9,9 +9,15 @@ interface MenuItemProps {
   href?: string
   comingSoon?: boolean
   danger?: boolean
+  /** Signed-out affordance: the row stays a real link (to /login) but shows a
+   * lock instead of a chevron, so a guest can see WHAT the feature is before
+   * being asked to sign in. Used by the guest Profile screen. */
+  locked?: boolean
+  /** Accessible name for the lock indicator (localized by the caller). */
+  lockedLabel?: string
 }
 
-export default function MenuItem({ icon: Icon, label, description, href, comingSoon, danger }: MenuItemProps) {
+export default function MenuItem({ icon: Icon, label, description, href, comingSoon, danger, locked, lockedLabel }: MenuItemProps) {
   const content = (
     <>
       <div
@@ -36,6 +42,13 @@ export default function MenuItem({ icon: Icon, label, description, href, comingS
         <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full font-medium flex-shrink-0">
           Sắp có
         </span>
+      ) : locked ? (
+        <Lock
+          size={15}
+          className="text-gray-300 dark:text-gray-600 flex-shrink-0"
+          aria-label={lockedLabel}
+          role={lockedLabel ? 'img' : undefined}
+        />
       ) : href ? (
         <ChevronRight size={16} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
       ) : null}

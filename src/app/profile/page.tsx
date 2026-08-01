@@ -1,11 +1,15 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import GuestProfileView from './GuestProfileView'
 import ProfileView from './ProfileView'
 
 export default async function ProfilePage() {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  // Anonymous visitors get the guest screen instead of a redirect to /login:
+  // "Me" is a primary nav tab, and ejecting guests there made the whole app
+  // look sign-in-walled. Purely presentational — every linked destination keeps
+  // its own server-side auth check, and no profile data is fetched here.
+  if (!user) return <GuestProfileView />
 
   const { data: profile } = await supabase
     .from('profiles')

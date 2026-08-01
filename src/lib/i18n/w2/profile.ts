@@ -30,6 +30,12 @@ export const vi: Record<string, string> = {
   'profile.settingsSection': 'Cài đặt',
   'profile.settings': 'Cài đặt',
   'profile.settings.desc': 'Ngôn ngữ, thông báo, giao diện',
+
+  // Guest (signed-out) Profile screen — src/app/profile/GuestProfileView.tsx
+  'profile.guest.title': 'Bạn đang dùng thử',
+  'profile.guest.subtitle': 'Trang chủ, Chat, Khám phá và Ưu đãi dùng thoải mái, không cần đăng nhập.',
+  'profile.guest.signIn': 'Đăng nhập để lưu lại',
+  'profile.guest.locked': 'Cần đăng nhập',
 }
 
 export const en: Record<string, string> = {
@@ -62,4 +68,10 @@ export const en: Record<string, string> = {
   'profile.settingsSection': 'Settings',
   'profile.settings': 'Settings',
   'profile.settings.desc': 'Language, notifications, appearance',
+
+  // Guest (signed-out) Profile screen — src/app/profile/GuestProfileView.tsx
+  'profile.guest.title': "You're exploring as a guest",
+  'profile.guest.subtitle': 'Home, Chat, Explore and Deals are open — no account needed.',
+  'profile.guest.signIn': 'Sign in to save your stuff',
+  'profile.guest.locked': 'Sign in required',
 }
