@@ -61,7 +61,9 @@ env:
   # 6769f082d2 "standardize usage of __EMSCRIPTEN__ macro" (2026-04-09) and 0c5f269c5b
   # "Pass argv[0] to PHYSFS_init" (2026-04-30). 0c5f269c5b is the earliest point carrying both,
   # and still predates the SDL3 migration 06f5f549f0 (2026-07-19) that broke upstream's nightly.
-  SUPERTUX_REF: ${{ github.event.inputs.supertux_ref || '0c5f269c5b' }}
+  # actions/checkout resolves a ref as branch/tag first and only accepts a FULL 40-char SHA -
+  # an abbreviated one fails with "a branch or tag with the name ... could not be found".
+  SUPERTUX_REF: ${{ github.event.inputs.supertux_ref || '0c5f269c5b5b6559aa27f03682b6dcfb52ffb244' }}
   EMSDK_VERSION: ${{ github.event.inputs.emsdk_version || '5.0.3' }}
   BUILD_TYPE: ${{ github.event.inputs.build_type || 'Release' }}
 
@@ -145,15 +147,20 @@ jobs:
 
       # GitHub only serves raw job logs to signed-in users, but annotations are public - so surface
       # the actual compiler errors as annotations rather than leaving "exit code 2" as the only clue.
+      # Must never fail itself, or it masks the real failure - so no working-directory (the build
+      # tree may not exist yet if we failed before Configure) and it always exits 0.
       - name: Surface compile errors
         if: failure()
-        working-directory: supertux/build
         run: |
-          if [ -f build.log ]; then
-            grep -E "error:|Error [0-9]" build.log | head -20 | while IFS= read -r line; do
+          log=supertux/build/build.log
+          if [ -f "$log" ]; then
+            grep -E "error:|Error [0-9]" "$log" | head -20 | while IFS= read -r line; do
               echo "::error::${line}"
             done
+          else
+            echo "No build log - the run failed before compilation started."
           fi
+          exit 0
 
       - name: Guard - no undefined symbols
         working-directory: supertux/build
