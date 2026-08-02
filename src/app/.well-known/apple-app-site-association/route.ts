@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { SHOW_GAMES } from '@/lib/config/product'
 
 /**
  * GET /.well-known/apple-app-site-association
@@ -21,7 +22,10 @@ const AASA = {
           { '/': '/chat*',         comment: 'AI Chat tab' },
           { '/': '/reviews*',      comment: 'Reviews & Explore tab' },
           { '/': '/discover*',     comment: 'Discovery tab' },
-          { '/': '/game*',         comment: 'Games tab' },
+          // Games deep link withdrawn while Games is parked for Tappy Arcade V2
+          // (SHOW_GAMES = false in @/lib/config/product). Restore this entry when
+          // the feature ships — the routes themselves were never removed.
+          ...(SHOW_GAMES ? [{ '/': '/game*', comment: 'Games tab' }] : []),
           { '/': '/profile*',      comment: 'Profile tab' },
           { '/': '/subscription*', comment: 'Subscription screen' },
           { '/': '/*',             comment: 'Catch-all — routed by DeepLinkHandler' },

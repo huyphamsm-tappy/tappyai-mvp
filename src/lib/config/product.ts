@@ -24,6 +24,12 @@ export const SHOW_PRO_UPGRADE = false
  * the UI entry point is gated off. Mirrored by the Android `SHOW_APP_CONNECTIONS`
  * gate — flip BOTH together to re-enable. */
 export const SHOW_APP_CONNECTIONS = false
+/** Games (SuperTux) postponed to Tappy Arcade V2 — owner product decision
+ * 2026-08-02. Nothing is removed: the /game pages, the /games/supertux route
+ * handler, the assets, the build workflow and the upstream patch all stay
+ * intact; only the UI entry points are gated off so end users cannot reach it.
+ * Mirrored by the Android `SHOW_GAMES` gate — flip BOTH together to re-enable. */
+export const SHOW_GAMES = false
 
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
