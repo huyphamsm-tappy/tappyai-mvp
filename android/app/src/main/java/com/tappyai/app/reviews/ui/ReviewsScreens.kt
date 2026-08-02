@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -78,6 +79,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -499,16 +501,30 @@ internal fun ReviewDetailScreen(
                                 color = Color(0xB3FFFFFF),
                                 fontSize = 14.sp,
                             )
-                            Text(
-                                text = "🤖 " + stringResource(R.string.reviews_detail_ask_tappy),
-                                color = Color.White,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold,
+                            // The 🤖 prefix was the mascot stand-in; it is now the official Tappy
+                            // artwork at the same visual size as the glyph it replaces (18dp ≈ a
+                            // 14sp emoji), so the pill's padding, radius, colour and text metrics
+                            // are untouched.
+                            Row(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(50))
                                     .background(Color(0xFFFF6B35))
                                     .padding(horizontal = 20.dp, vertical = 10.dp),
-                            )
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.tappy_wave),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp),
+                                )
+                                Text(
+                                    text = stringResource(R.string.reviews_detail_ask_tappy),
+                                    color = Color.White,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(96.dp))

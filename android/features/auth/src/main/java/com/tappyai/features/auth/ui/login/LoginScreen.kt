@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -24,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -60,8 +62,8 @@ private const val PRIVACY_URL = "https://www.tappyai.com/privacy"
 
 // Feature bullets — the four "tags" from the web login's left column, in the same order (chat,
 // explore, privacy, always-on). Emoji stand in for the web's lucide icons (the auth module has no
-// icon pack, and the mascot hero art is owner-provided and not present on Android — see the
-// welcome header, which uses the brand wordmark rather than the /tappy/welcome.png hero).
+// icon pack); these are feature glyphs, not mascot art — the mascot hero above now uses the
+// official /tappy/welcome.png artwork.
 // tint = the feature's accent colour (web login uses violet / rose / emerald / amber tinted icon
 // tiles). Applied at low alpha as the tile background so it reads as a subtle tint in both light
 // and dark themes (web has per-theme tint variants; the alpha approach is theme-safe here).
@@ -95,14 +97,17 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xxl),
         ) {
             // ─── Mascot hero (P1-5) ──────────────────────────────────────────────────────
-            // The web login shows the official Tappy mascot ("welcome" pose, /tappy/welcome.png)
-            // as its hero. That brand artwork is not yet in the Android resources and must not be
-            // generated/substituted, so this position is intentionally left empty (no placeholder
-            // graphic). When the official asset lands in this module's res/drawable, render it here
-            // as an Image (≈160dp, centered) above the brand block to complete pixel parity.
+            // The official Tappy mascot in its "welcome" pose — the same artwork and the same
+            // position the web login uses (`/tappy/welcome.png`, canonical pose #01 "onboarding /
+            // welcome hero"). Rendered at the 160dp the parity note specified.
             // ─────────────────────────────────────────────────────────────────────────────
+            Image(
+                painter = painterResource(R.drawable.tappy_welcome),
+                contentDescription = null,
+                modifier = Modifier.size(160.dp),
+            )
 
-            // Brand + tagline (web login's welcome/hero copy; wordmark stands in for the mascot hero).
+            // Brand + tagline (web login's welcome/hero copy).
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),

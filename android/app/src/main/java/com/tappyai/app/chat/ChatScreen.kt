@@ -15,6 +15,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -69,6 +70,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -307,7 +309,9 @@ private fun WelcomeState(
         item {
             Spacer(Modifier.height(48.dp))
         }
-        // Hero emoji placeholder (will be replaced by Tappy mascot art)
+        // Hero: the official Tappy mascot pose for this category (was a 🤖 emoji stand-in, the same
+        // fallback the web's <TappyMascot> uses until the art exists). Container size, shape,
+        // background and spacing are unchanged — only the glyph became the artwork.
         item {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -320,9 +324,10 @@ private fun WelcomeState(
                         .background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(
-                        text = category.emoji,
-                        fontSize = 40.sp,
+                    Image(
+                        painter = painterResource(category.mascotRes),
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
                     )
                 }
                 Text(
