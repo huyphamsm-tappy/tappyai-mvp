@@ -56,11 +56,24 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # EXPERIMENT on this scratch branch (not a recommendation yet): the v0.7.0 tag builds cleanly but
-  # does not run on the web - PHYSFS_init fails because the tag predates upstream's own fixes
-  # 6769f082d2 "standardize usage of __EMSCRIPTEN__ macro" (2026-04-09) and 0c5f269c5b
-  # "Pass argv[0] to PHYSFS_init" (2026-04-30). 0c5f269c5b is the earliest point carrying both,
-  # and still predates the SDL3 migration 06f5f549f0 (2026-07-19) that broke upstream's nightly.
+  # Pinned to a commit rather than the v0.7.0 tag, deliberately (owner decision 2026-08-02).
+  #
+  # The v0.7.0 tag builds cleanly and is verifiably single-threaded, but it does NOT run on the web:
+  # it passes `nullptr` to PHYSFS_init, which fails without setting an error, so the engine dies with
+  # "Couldn't initialize physfs: no error" and a black canvas. Upstream fixed both of the tag's web
+  # defects after cutting it:
+  #   6769f082d2  2026-04-09  ci: standardize usage of __EMSCRIPTEN__ macro   (the include-guard bug)
+  #   0c5f269c5b  2026-04-30  Pass argv[0] to PHYSFS_init                     (nullptr -> argv[0])
+  # 0c5f269c5b is the earliest commit carrying both. It is 28 commits past v0.7.0 - translations,
+  # metadata, an error-handler cleanup and four small gameplay bugfixes; no features, no refactors -
+  # i.e. materially what a 0.7.1 patch release would have been. It also still predates the SDL3
+  # migration 06f5f549f0 (2026-07-19), which is what left upstream's published nightly unbootable
+  # ("missing function: IMG_Load_IO"). Device-verified: this build renders and animates inline in an
+  # Android WebView with crossOriginIsolated=false and SharedArrayBuffer undefined.
+  #
+  # Chosen over carrying the two fixes as local patches so upstream source stays unmodified and there
+  # is nothing to re-conflict on a future bump.
+  #
   # actions/checkout resolves a ref as branch/tag first and only accepts a FULL 40-char SHA -
   # an abbreviated one fails with "a branch or tag with the name ... could not be found".
   SUPERTUX_REF: ${{ github.event.inputs.supertux_ref || '0c5f269c5b5b6559aa27f03682b6dcfb52ffb244' }}
