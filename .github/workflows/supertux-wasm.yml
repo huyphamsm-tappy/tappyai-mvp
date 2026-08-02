@@ -56,7 +56,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SUPERTUX_REF: ${{ github.event.inputs.supertux_ref || 'v0.7.0' }}
+  # EXPERIMENT on this scratch branch (not a recommendation yet): the v0.7.0 tag builds cleanly but
+  # does not run on the web - PHYSFS_init fails because the tag predates upstream's own fixes
+  # 6769f082d2 "standardize usage of __EMSCRIPTEN__ macro" (2026-04-09) and 0c5f269c5b
+  # "Pass argv[0] to PHYSFS_init" (2026-04-30). 0c5f269c5b is the earliest point carrying both,
+  # and still predates the SDL3 migration 06f5f549f0 (2026-07-19) that broke upstream's nightly.
+  SUPERTUX_REF: ${{ github.event.inputs.supertux_ref || '0c5f269c5b' }}
   EMSDK_VERSION: ${{ github.event.inputs.emsdk_version || '5.0.3' }}
   BUILD_TYPE: ${{ github.event.inputs.build_type || 'Release' }}
 
