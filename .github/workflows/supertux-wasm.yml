@@ -99,10 +99,41 @@ jobs:
           fetch-depth: 0
           path: supertux
 
+      # Our own repo, purely so patches/supertux/*.patch is available. Upstream is never forked;
+      # the patches are applied to a pristine checkout at build time.
+      - name: Check out this repo (for patches)
+        uses: actions/checkout@v4
+        with:
+          path: self
+
       - name: Record source revision
         id: src
         working-directory: supertux
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Apply local patches
+        id: patches
+        working-directory: supertux
+        run: |
+          shopt -s nullglob
+          list=(../self/patches/supertux/*.patch)
+          if [ ${#list[@]} -eq 0 ]; then
+            echo "none=true" >> "$GITHUB_OUTPUT"
+            echo "No patches to apply."
+            exit 0
+          fi
+          names=""
+          for p in "${list[@]}"; do
+            echo "::group::$(basename "$p")"
+            # --check first so a patch that no longer applies fails loudly here, rather than
+            # silently not applying and producing a bundle that quietly lacks the fix.
+            git apply --check "$p"
+            git apply "$p"
+            names="$names $(basename "$p")"
+            echo "::endgroup::"
+          done
+          echo "applied=$names" >> "$GITHUB_OUTPUT"
+          git --no-pager diff --stat
 
       - name: Guard - source must not configure pthreads
         working-directory: supertux
@@ -197,6 +228,17 @@ jobs:
           mkdir -p upload
           mv supertux2* upload/
 
+      # The patch is a no-op risk, not a build risk: it would still compile if it silently failed to
+      # take effect. Assert the built JS actually contains the browser touch probe it introduces.
+      - name: Guard - mobile-controls patch took effect
+        working-directory: supertux/build/upload
+        run: |
+          if ! grep -q "maxTouchPoints" supertux2.js; then
+            echo "::error::patched touch-capability probe is absent from supertux2.js - the mobile controls patch did not take effect."
+            exit 1
+          fi
+          echo "OK: touch-capability probe present - mobile controls can enable on touch devices."
+
       - name: Guard - output must be single-threaded
         working-directory: supertux/build/upload
         run: |
@@ -221,6 +263,7 @@ jobs:
             echo "emcc          = ${{ steps.em.outputs.emcc }}"
             echo "emsdk_request = ${EMSDK_VERSION}"
             echo "build_type    = ${BUILD_TYPE}"
+            echo "patches       =${{ steps.patches.outputs.applied }}${{ steps.patches.outputs.none && ' (none)' }}"
             echo "built_utc     = $(date -u +%FT%TZ)"
             echo
             echo "sizes:"; ls -l supertux2.*

@@ -1,0 +1,73 @@
+Subject: [PATCH] Enable the existing mobile controls path under Emscripten
+
+WHAT THIS IS
+    A compatibility shim for the SuperTux WebAssembly build produced by
+    .github/workflows/supertux-wasm.yml. It is applied at build time to a pristine
+    upstream checkout; upstream itself is never forked or modified in place.
+
+APPLIES TO
+    Upstream: https://github.com/SuperTux/supertux
+    Commit:   0c5f269c5b5b6559aa27f03682b6dcfb52ffb244 ("Pass argv[0] to PHYSFS_init")
+    File:     src/supertux/main.cpp
+    Verified still required on upstream master as of 2026-08-02.
+
+WHY
+    SuperTux already ships a complete on-screen touch control implementation
+    (src/control/mobile_controller.cpp, drawn by ScreenManager, gated on
+    g_config->mobile_controls). It is simply never switched on for the web build:
+
+        #ifdef __ANDROID__
+          g_config->mobile_controls = SDL_GetNumTouchDevices() > 0;
+        #endif
+
+    __ANDROID__ is not defined for Emscripten, so mobile_controls keeps its
+    constructor default of false forever. It is additionally never read back from
+    the config file (gameconfig.cpp reads only mobile_controls_scale and
+    touch_controls_visible), and the Options menu exposes only the *scale*, not a
+    toggle -- so there is no runtime or user-facing way to turn it on.
+
+    Consequence, measured on a Samsung SM-A127F: menus are usable (taps reach the
+    engine as mouse events) but no level is playable, because in-level movement
+    needs held directional input and no on-screen controls are ever drawn. This is
+    true in an Android WebView and in Chrome alike, so it is not an embedding issue.
+
+WHY NOT JUST WIDEN THE #ifdef
+    Reusing the Android condition verbatim would be a silent no-op: under Emscripten
+    SDL registers touch devices lazily, on the first touch event, so
+    SDL_GetNumTouchDevices() is still 0 at startup when this line runs. The browser's
+    own capability flag is the correct question to ask on this platform.
+
+SCOPE / SAFETY
+    Touches one platform-detection line. It does NOT change gameplay logic, physics,
+    rendering, the save format, or any behaviour on non-Emscripten platforms
+    (the new branch is #elif on __EMSCRIPTEN__). It only decides the initial value of
+    an existing configuration flag, on a platform where that flag was never
+    initialised at all.
+
+RETIRING THIS PATCH
+    Drop this file if upstream starts enabling mobile controls for Emscripten
+    themselves. The build will fail loudly (`git apply --check`) rather than silently
+    skip if upstream edits this region, which is the signal to revisit.
+
+---
+ src/supertux/main.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/supertux/main.cpp b/src/supertux/main.cpp
+--- a/src/supertux/main.cpp
++++ b/src/supertux/main.cpp
+@@ -499,6 +499,13 @@
+   }
+
+ #ifdef __ANDROID__
+   g_config->mobile_controls = SDL_GetNumTouchDevices() > 0;
++#elif defined(__EMSCRIPTEN__)
++  // SDL registers touch devices lazily under Emscripten - on the first touch event - so
++  // SDL_GetNumTouchDevices() is still 0 at this point during startup and the Android check
++  // above cannot be reused verbatim. Ask the browser for its touch capability instead.
++  // EM_ASM is a variadic macro and Clang requires at least one variadic value, hence the
++  // trailing 0 - the same workaround already used in PhysfsSubsystem::find_mount_userdir().
++  g_config->mobile_controls = EM_ASM_INT({ return (navigator.maxTouchPoints | 0) > 0; }, 0) != 0;
+ #endif
+
+   if (TTF_Init() < 0)
