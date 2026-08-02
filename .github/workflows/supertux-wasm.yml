@@ -21,9 +21,11 @@ on:
   workflow_dispatch:
     inputs:
       supertux_ref:
-        description: "SuperTux git ref to build (tag, branch or SHA)"
+        description: "SuperTux git ref to build (tag, branch, or FULL 40-char SHA)"
         required: true
-        default: "v0.7.0"
+        # Must match the env fallback below - see the long note there for why this is a commit and
+        # not the v0.7.0 tag (the tag builds but cannot run). Do not "tidy" this back to a tag.
+        default: "0c5f269c5b5b6559aa27f03682b6dcfb52ffb244"
       emsdk_version:
         description: 'Emscripten SDK version. Pin it - "latest" is NOT safe (see the default below)'
         required: true
