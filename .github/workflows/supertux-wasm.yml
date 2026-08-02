@@ -25,9 +25,18 @@ on:
         required: true
         default: "v0.7.0"
       emsdk_version:
-        description: 'Emscripten SDK version — "latest", or pin (e.g. 3.1.64) to reproduce an earlier build'
+        description: 'Emscripten SDK version. Pin it - "latest" is NOT safe (see the default below)'
         required: true
-        default: "latest"
+        # Deliberately pinned, not "latest". SuperTux v0.7.0 (released 2026-03-15) was built against
+        # emscripten 5.0.3 (2026-03-14). Emscripten 5.0.4 (2026-03-23) then moved the deprecated
+        # `EMSCRIPTEN` macro out of the command line and into emscripten.h (emscripten#26417), which
+        # breaks this exact source: src/addon/downloader.cpp guards `#include <emscripten.h>` with
+        # `#ifdef EMSCRIPTEN` (line 30) but guards the call site with `#elif defined(__EMSCRIPTEN__)`
+        # (line 399). With 5.0.4+ the include is skipped while the call still compiles, and the build
+        # dies with "use of undeclared identifier 'emscripten_run_script'". Verified: `latest` (6.0.x)
+        # fails exactly that way.
+        # When bumping supertux_ref, re-check this pin against that release's date.
+        default: "5.0.3"
       build_type:
         description: "CMake build type"
         required: true
@@ -48,7 +57,7 @@ concurrency:
 
 env:
   SUPERTUX_REF: ${{ github.event.inputs.supertux_ref || 'v0.7.0' }}
-  EMSDK_VERSION: ${{ github.event.inputs.emsdk_version || 'latest' }}
+  EMSDK_VERSION: ${{ github.event.inputs.emsdk_version || '5.0.3' }}
   BUILD_TYPE: ${{ github.event.inputs.build_type || 'Release' }}
 
 jobs:
@@ -128,6 +137,18 @@ jobs:
           source ~/emsdk/emsdk_env.sh
           set -o pipefail
           emmake make -j"$(nproc)" 2>&1 | tee build.log
+
+      # GitHub only serves raw job logs to signed-in users, but annotations are public - so surface
+      # the actual compiler errors as annotations rather than leaving "exit code 2" as the only clue.
+      - name: Surface compile errors
+        if: failure()
+        working-directory: supertux/build
+        run: |
+          if [ -f build.log ]; then
+            grep -E "error:|Error [0-9]" build.log | head -20 | while IFS= read -r line; do
+              echo "::error::${line}"
+            done
+          fi
 
       - name: Guard - no undefined symbols
         working-directory: supertux/build
