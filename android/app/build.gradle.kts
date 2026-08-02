@@ -47,14 +47,26 @@ android {
             "String", "GOOGLE_WEB_CLIENT_ID",
             "\"${project.findProperty("TAPPYAI_GOOGLE_WEB_CLIENT_ID") ?: "REPLACE_WITH_GOOGLE_WEB_CLIENT_ID.apps.googleusercontent.com"}\""
         )
-        // Public web origin used to build shareable Group Dining links (`<origin>/group/{id}`) —
-        // the same value as the web app's NEXT_PUBLIC_APP_URL. Distinct from API_BASE_URL (which is
-        // the emulator loopback in debug and not a shareable public URL). Supply the real origin via
-        // `-PTAPPYAI_WEB_APP_URL=https://...` (no trailing slash); the placeholder below only affects
-        // the copied/shared link text, not any request. Applies to all variants.
+        // Public web origin — the same value as the web app's NEXT_PUBLIC_APP_URL. Used for
+        // shareable Group Dining links (`<origin>/group/{id}`), QR profile URLs, and the Games
+        // WebView (`<origin>/games/supertux`). Distinct from API_BASE_URL (which is the emulator
+        // loopback in debug and not a public origin). Override with
+        // `-PTAPPYAI_WEB_APP_URL=https://...` (no trailing slash).
+        //
+        // The default is the REAL production origin, not a placeholder. It used to be
+        // `https://tappyai.example.com`, which does not resolve (example.com is IANA-reserved and
+        // delegates no subdomains): any debug build made without the property loaded
+        // `https://tappyai.example.com/games/supertux` and the WebView failed the main frame with
+        // net::ERR_NAME_NOT_RESOLVED, surfacing as "Couldn't load the game — check your connection"
+        // with a retry that could never succeed. Sharing/QR were silently broken the same way.
+        // Unlike API_BASE_URL there is no meaningful per-variant value here (a localhost origin is
+        // not shareable and does not serve the game), so a wrong default has no upside and one
+        // real default is correct for every variant. `assembleRelease`/`bundleRelease` still hard-
+        // gate on the property being supplied explicitly (see the release check below), so this
+        // default can never silently reach a store build.
         buildConfigField(
             "String", "WEB_APP_URL",
-            "\"${project.findProperty("TAPPYAI_WEB_APP_URL") ?: "https://tappyai.example.com"}\""
+            "\"${project.findProperty("TAPPYAI_WEB_APP_URL") ?: "https://www.tappyai.com"}\""
         )
     }
 

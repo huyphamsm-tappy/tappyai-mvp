@@ -390,6 +390,20 @@ private data class QuickAction(
     val onClick: () -> Unit,
 )
 
+/**
+ * Games (SuperTux) postponed to Tappy Arcade V2 — owner product decision 2026-08-02.
+ *
+ * Nothing is deleted: `GamesScreen`, `GamesRoute`, the nested nav destination in [HomeTabHost], the
+ * `/games/supertux` web route, the upstream patch under `patches/supertux/` and the
+ * `supertux-wasm.yml` build workflow all stay exactly as they are. Only this entry point is gated,
+ * which leaves the destination unreachable from the production UI. Flipping this back to `true` is
+ * the whole of re-enabling it on Android.
+ *
+ * Mirrors web `SHOW_GAMES` in `src/lib/config/product.ts` — flip BOTH together, the same convention
+ * already used for `SHOW_PRO_UPGRADE` and `SHOW_APP_CONNECTIONS`.
+ */
+private const val SHOW_GAMES = false
+
 @Composable
 private fun QuickActionsSection(
     onOpenMusic: () -> Unit,
@@ -404,20 +418,14 @@ private fun QuickActionsSection(
     // Explore + Maps are intentionally omitted — they already live in the bottom navigation
     // (owner 2026-07-30). Each tile wears a colour-tinted icon plate, matching web's Tools cards.
     //
-    // Games is HIDDEN from production (owner decision 2026-08-01, Finalization Sprint): SuperTux is
-    // an Emscripten/WASM build that requires SharedArrayBuffer, which the Android WebView does not
-    // expose even when the page is correctly cross-origin isolated (server does send
-    // COOP: same-origin + COEP: require-corp — verified HTTP 200 on /games/supertux). On-device the
-    // WebView therefore renders the engine's own "browser does not support SharedArrayBuffer"
-    // message and the game never starts, while the SAME url runs in the device's Chrome — i.e. a
-    // WebView-platform limitation, not a URL/route bug. Secondly, even where it does run it pulls a
-    // ~246 MB asset download, which is not acceptable behind a casual Home tile on mobile data.
-    // GamesScreen + GamesRoute are deliberately left in place (still wired in HomeTabHost) so this
-    // is a one-line re-enable once the WASM/SAB story is solved (native port or a lighter game).
-    val actions = listOf(
+    val actions = listOfNotNull(
         QuickAction(stringResource(R.string.home_quick_music), Icons.Filled.MusicNote, cat.pink) { onOpenMusic() },
         QuickAction(stringResource(R.string.home_quick_scan), Icons.Filled.QrCodeScanner, cat.amber) { onOpenScan() },
         QuickAction(stringResource(R.string.home_quick_translate), Icons.Filled.Translate, cat.blue) { onOpenTranslate() },
+        // Games postponed to Tappy Arcade V2 — gated off, not removed. See [SHOW_GAMES].
+        if (SHOW_GAMES) {
+            QuickAction(stringResource(R.string.home_quick_games), Icons.Filled.SportsEsports, cat.orange) { onOpenGames() }
+        } else null,
         QuickAction(stringResource(R.string.home_quick_currency), Icons.Filled.CurrencyExchange, cat.green) { onOpenCurrency() },
         QuickAction(stringResource(R.string.home_quick_deals), Icons.Filled.LocalOffer, cat.red) { onOpenDeals() },
         QuickAction(stringResource(R.string.splitbill_title), Icons.Filled.Calculate, cat.purple) { onOpenSplitBill() },
