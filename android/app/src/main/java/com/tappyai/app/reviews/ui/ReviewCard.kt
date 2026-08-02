@@ -151,10 +151,11 @@ internal fun ReviewMediaBackground(review: Review, active: Boolean, resolveSound
                 when (review.sourceType) {
                     ReviewSourceType.YouTube ->
                         if (mediaUrl != null) {
+                            // No `active`: web's YouTube branch never reads the feed's active-slide
+                            // prop — the embed mounts off its own >=50% visibility observation.
                             ReviewYouTubeSurface(
                                 mediaUrl = mediaUrl,
                                 thumbnail = review.thumbnail,
-                                active = active,
                             )
                         } else {
                             ReviewVideoPlaceholder(thumbnail = review.thumbnail)
