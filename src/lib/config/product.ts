@@ -24,6 +24,11 @@ export const SHOW_PRO_UPGRADE = false
  * the UI entry point is gated off. Mirrored by the Android `SHOW_APP_CONNECTIONS`
  * gate — flip BOTH together to re-enable. */
 export const SHOW_APP_CONNECTIONS = false
+/** Scam Shield — URL/Website/QR risk checker. Mirrors Android
+ * `SHOW_SCAM_SHIELD` gate — flip BOTH together. */
+export const SHOW_SCAM_SHIELD = true
+export const SCAM_SHIELD_DAILY_LIMIT_AUTH = 30
+export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
