@@ -3,7 +3,7 @@
 **Status:** NOT EXECUTED. Nothing in this runbook has been applied to production.
 **Owner conditions honoured:** bootstrap requires exactly one active `super_admin`; migrations are idempotent; no migration is applied before read-only verification completes.
 
-⚠️ **Order matters.** Step 5 (lockdown) revokes a privilege the *currently deployed* code depends on. Running it before step 4 breaks role granting in production until the deploy lands.
+**Scope change (owner decision, 2026-08-03):** the `REVOKE ... ON admin_roles FROM service_role` step is **no longer part of Component 1**. It is staged as an end-of-Foundation hardening migration at `supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql`, with the rationale in [ADR-017](../../architecture/ADR-017-service-role-hardening-strategy.md). This runbook therefore ends at step 4.
 
 ---
 
@@ -97,21 +97,19 @@ If `PLATFORM_OWNER_USER_ID` is wrong, **every** Controller request returns 403 w
 
 ---
 
-## Step 5 — Lockdown (only after step 4 is verified)
+## Step 5 — DEFERRED (not part of this deployment)
 
-Apply `supabase/migrations/20260803_platform_owner_lockdown.sql`.
+Service-role privilege reduction is staged at
+`supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql` and runs
+only at the end of the Foundation, as its own change with its own verification
+and rollback. Its gate and preconditions are in
+[ADR-017 §5](../../architecture/ADR-017-service-role-hardening-strategy.md).
 
-Verify the privilege is actually gone:
-
-```sql
-SELECT privilege_type FROM information_schema.role_table_grants
-WHERE table_name = 'admin_roles' AND grantee = 'service_role';
--- expect SELECT only — no INSERT/UPDATE/DELETE
-```
-
-Then re-run the step 4 grant checks. They must still pass: the functions retain the privilege the caller lost.
-
-**Rollback:** `GRANT INSERT, UPDATE, DELETE ON admin_roles TO service_role;`
+**Do not apply it as part of Component 1.** Until it runs, the constitutional
+rules are enforced by the `SECURITY DEFINER` functions plus the application
+checks — strong on every sanctioned path, but the service-role client still
+technically retains direct write access to `admin_roles`. ADR-017 §4 records
+that accepted exposure and why it is smaller than the pre-existing one.
 
 ---
 

@@ -24,9 +24,13 @@
 --   1. THIS migration
 --   2. bootstrap seed (after read-only verification of exactly one super_admin)
 --   3. deploy application code
---   4. ONLY THEN 20260803_platform_owner_lockdown.sql (the REVOKE)
---   Applying the lockdown before step 3 breaks role granting in production,
---   because the currently deployed code still INSERTs into admin_roles directly.
+--   That is the whole of Component 1.
+--
+--   The service-role privilege reduction (REVOKE ... ON admin_roles) is NOT part
+--   of this component. It is staged for the end of the Foundation at
+--   supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql —
+--   see ADR-017 (owner decision 2026-08-03: a privilege revocation is never
+--   bundled with a feature migration).
 -- ============================================================================
 
 -- ---------------------------------------------------------------------------

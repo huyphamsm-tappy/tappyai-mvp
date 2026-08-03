@@ -42,7 +42,7 @@ const TARGET = '33333333-3333-3333-3333-333333333333'
 const ctx = (isOwner: boolean, userId = isOwner ? OWNER : ADMIN) => ({
   user: { id: userId, email: 'a@b.c' },
   role: 'super_admin',
-  actor: { userId, email: 'a@b.c', isOwner, roles: ['super_admin'], highestRole: 'super_admin', source: 'cookie', resolvedAt: 0 },
+  actor: { userId, email: 'a@b.c', isOwner, roles: ['super_admin'], highestRole: 'super_admin', capabilities: [], source: 'cookie', resolvedAt: 0 },
 })
 
 const req = (body: unknown) =>

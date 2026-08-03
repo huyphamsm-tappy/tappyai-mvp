@@ -11,6 +11,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import type { User } from '@supabase/supabase-js'
 import { ROLE_RANK, hasRole, type AdminRole } from '@/lib/admin/roles'
 import { isPlatformOwner, invalidateOwnerCache, checkOwnerGate } from '@/lib/admin/owner'
+import { NO_CAPABILITIES, type CapabilityId } from '@/lib/admin/capabilities'
 
 // Re-export the client-safe primitives so existing server-side importers keep
 // working via '@/lib/admin/rbac'. Client components import from '@/lib/admin/roles'.
@@ -117,8 +118,12 @@ export function invalidatePrincipalCaches(): void {
  * handlers are untouched.
  *
  * `permissions` is intentionally ABSENT until component 4 (Permission Engine).
- * An always-empty set would invite call sites to depend on a field that does
- * not yet mean anything.
+ *
+ * `capabilities` IS present from now on (owner decision, 2026-08-03) so the
+ * interface does not change shape when the Capability Registry lands in
+ * component 5. It is always `NO_CAPABILITIES` today — see the contract on that
+ * constant: empty means "registry not installed", NOT "denied everything".
+ * Nothing may gate on it until component 5.
  */
 export interface Actor {
   userId: string
@@ -126,6 +131,7 @@ export interface Actor {
   isOwner: boolean
   roles: AdminRole[]
   highestRole: AdminRole | null
+  capabilities: readonly CapabilityId[]
   source: 'cookie' | 'bearer'
   resolvedAt: number
 }
@@ -142,6 +148,7 @@ export async function resolveActor(req: Request): Promise<Actor | null> {
     isOwner,
     roles,
     highestRole: highestRole(roles),
+    capabilities: NO_CAPABILITIES,
     // Retained so component 11 (Session Security) can reason about web vs
     // native without re-deriving it from headers.
     source: req.headers.get('authorization')?.startsWith('Bearer ') ? 'bearer' : 'cookie',
@@ -187,6 +194,7 @@ export async function requireAdminRole(
     isOwner,
     roles,
     highestRole: role,
+    capabilities: NO_CAPABILITIES,
     source: req.headers.get('authorization')?.startsWith('Bearer ') ? 'bearer' : 'cookie',
     resolvedAt: Date.now(),
   }
