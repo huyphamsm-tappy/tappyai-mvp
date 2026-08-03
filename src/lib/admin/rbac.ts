@@ -10,6 +10,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import type { User } from '@supabase/supabase-js'
 import { ROLE_RANK, hasRole, type AdminRole } from '@/lib/admin/roles'
+import { isPlatformOwner, invalidateOwnerCache, checkOwnerGate } from '@/lib/admin/owner'
 
 // Re-export the client-safe primitives so existing server-side importers keep
 // working via '@/lib/admin/rbac'. Client components import from '@/lib/admin/roles'.
@@ -28,49 +29,130 @@ export class AdminError extends Error {
   }
 }
 
-// Short-lived role cache (ADR-003: cache role ~60s per session to avoid a DB
+// Short-lived principal cache (ADR-003: cache ~60s per session to avoid a DB
 // read on every request). Per serverless instance; revocation tolerates <=60s lag.
 const CACHE_TTL_MS = 60_000
-const roleCache = new Map<string, { role: AdminRole | null; expires: number }>()
+
+interface Principal {
+  roles: AdminRole[]
+  isOwner: boolean
+}
+const principalCache = new Map<string, Principal & { expires: number }>()
+
+/** Highest-ranked role in a list, or null when the list is empty. */
+function highestRole(roles: AdminRole[]): AdminRole | null {
+  let top: AdminRole | null = null
+  for (const r of roles) {
+    if (top === null || ROLE_RANK[r] > ROLE_RANK[top]) top = r
+  }
+  return top
+}
+
+/**
+ * Resolve a user's full security principal: every ACTIVE admin role plus
+ * Platform Owner status.
+ *
+ * Component 2 change: this returns ALL active roles rather than collapsing to
+ * the highest. `admin_roles` already permits multiple rows per user
+ * (UNIQUE(user_id, role)), and the Permission Engine (component 4) must union
+ * the permission bundles of every role — information the old
+ * highest-rank-only resolution discarded.
+ *
+ * `isOwner` comes from `platform_owner`, NEVER from `admin_roles`. The Owner is
+ * a distinct constitutional principal, not a rung on the role ladder.
+ */
+async function resolvePrincipal(userId: string): Promise<Principal> {
+  const cached = principalCache.get(userId)
+  if (cached && cached.expires > Date.now()) {
+    return { roles: cached.roles, isOwner: cached.isOwner }
+  }
+
+  const supabase = createAdminClient()
+  const [rolesResult, isOwner] = await Promise.all([
+    supabase.from('admin_roles').select('role, expires_at').eq('user_id', userId),
+    isPlatformOwner(userId),
+  ])
+
+  const roles: AdminRole[] = []
+  if (!rolesResult.error && rolesResult.data) {
+    const now = Date.now()
+    for (const r of rolesResult.data) {
+      if (r.expires_at && new Date(r.expires_at).getTime() <= now) continue
+      roles.push(r.role as AdminRole)
+    }
+  }
+
+  principalCache.set(userId, { roles, isOwner, expires: Date.now() + CACHE_TTL_MS })
+  return { roles, isOwner }
+}
 
 /**
  * Resolve the highest admin role for a user id, or null if not an admin.
  * Used by the /admin server-component layout gate. Cached ~60s.
+ *
+ * TRANSITION SHIM: retained so every existing call site keeps working unchanged
+ * while components 3–4 land. It is deleted at the end of Block A once the
+ * Policy Decision Point replaces the rank ladder — it is not permanent
+ * old/new coexistence.
  */
 export async function resolveAdminRole(userId: string): Promise<AdminRole | null> {
-  const cached = roleCache.get(userId)
-  if (cached && cached.expires > Date.now()) return cached.role
-
-  const supabase = createAdminClient()
-  const { data, error } = await supabase
-    .from('admin_roles')
-    .select('role, expires_at')
-    .eq('user_id', userId)
-
-  let role: AdminRole | null = null
-  if (!error && data) {
-    const now = Date.now()
-    const active = data.filter(
-      (r) => !r.expires_at || new Date(r.expires_at).getTime() > now
-    )
-    for (const r of active) {
-      const cand = r.role as AdminRole
-      if (role === null || ROLE_RANK[cand] > ROLE_RANK[role]) role = cand
-    }
-  }
-
-  roleCache.set(userId, { role, expires: Date.now() + CACHE_TTL_MS })
-  return role
+  const { roles } = await resolvePrincipal(userId)
+  return highestRole(roles)
 }
 
-/** Invalidate a user's cached role immediately (call after grant/revoke). */
+/** Invalidate a user's cached principal immediately (call after grant/revoke). */
 export function invalidateRoleCache(userId: string): void {
-  roleCache.delete(userId)
+  principalCache.delete(userId)
+}
+
+/** Invalidate every cached principal plus the owner lookup (break-glass/bootstrap). */
+export function invalidatePrincipalCaches(): void {
+  principalCache.clear()
+  invalidateOwnerCache()
+}
+
+/**
+ * The full security principal for a request. Supersedes the bare
+ * `{ user, role }` pair; `user` and `role` remain on AdminContext so existing
+ * handlers are untouched.
+ *
+ * `permissions` is intentionally ABSENT until component 4 (Permission Engine).
+ * An always-empty set would invite call sites to depend on a field that does
+ * not yet mean anything.
+ */
+export interface Actor {
+  userId: string
+  email: string
+  isOwner: boolean
+  roles: AdminRole[]
+  highestRole: AdminRole | null
+  source: 'cookie' | 'bearer'
+  resolvedAt: number
+}
+
+/** Resolve the Actor for a request, or null when unauthenticated. */
+export async function resolveActor(req: Request): Promise<Actor | null> {
+  const { user } = await getRequestUser(req)
+  if (!user) return null
+
+  const { roles, isOwner } = await resolvePrincipal(user.id)
+  return {
+    userId: user.id,
+    email: user.email ?? '—',
+    isOwner,
+    roles,
+    highestRole: highestRole(roles),
+    // Retained so component 11 (Session Security) can reason about web vs
+    // native without re-deriving it from headers.
+    source: req.headers.get('authorization')?.startsWith('Bearer ') ? 'bearer' : 'cookie',
+    resolvedAt: Date.now(),
+  }
 }
 
 export interface AdminContext {
   user: User
   role: AdminRole
+  actor: Actor
 }
 
 /**
@@ -85,11 +167,45 @@ export async function requireAdminRole(
   const { user } = await getRequestUser(req)
   if (!user) throw new AdminError('UNAUTHORIZED', 'Authentication required', 401)
 
-  const role = await resolveAdminRole(user.id)
+  // Ownership assertion (component 1). Inert until PLATFORM_OWNER_USER_ID is
+  // configured; once configured, a mismatch denies the whole Controller.
+  const gate = await checkOwnerGate()
+  if (!gate.ok) {
+    console.error('[controller][owner] gate failed:', gate.reason)
+    throw new AdminError('FORBIDDEN', 'Controller unavailable: ownership assertion failed', 403)
+  }
+
+  const { roles, isOwner } = await resolvePrincipal(user.id)
+  const role = highestRole(roles)
   if (!role || !hasRole(role, minRole)) {
     throw new AdminError('FORBIDDEN', `Insufficient permissions. Required role: ${minRole}`, 403)
   }
-  return { user, role }
+
+  const actor: Actor = {
+    userId: user.id,
+    email: user.email ?? '—',
+    isOwner,
+    roles,
+    highestRole: role,
+    source: req.headers.get('authorization')?.startsWith('Bearer ') ? 'bearer' : 'cookie',
+    resolvedAt: Date.now(),
+  }
+  return { user, role, actor }
+}
+
+/**
+ * Gate for operations only the Platform Owner may perform. Used for the
+ * super_admin grant/revoke paths so the API can answer a clear 403 instead of
+ * surfacing a raw Postgres 42501 from fn_grant_admin_role.
+ *
+ * This is a UX and defense-in-depth layer ONLY — the authoritative check lives
+ * in the SECURITY DEFINER functions, which hold the privilege the application
+ * does not.
+ */
+export function requireOwner(ctx: AdminContext, operation: string): void {
+  if (!ctx.actor.isOwner) {
+    throw new AdminError('FORBIDDEN', `Only the Platform Owner may ${operation}`, 403)
+  }
 }
 
 /** Map an unknown error thrown in an admin handler to a uniform error Response. */
