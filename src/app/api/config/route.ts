@@ -4,6 +4,9 @@ import {
   ANON_DAILY_LIMIT,
   SHOW_PRO_UPGRADE,
   SHOW_APP_CONNECTIONS,
+  SHOW_SCAM_SHIELD,
+  SCAM_SHIELD_DAILY_LIMIT_AUTH,
+  SCAM_SHIELD_DAILY_LIMIT_ANON,
   MAX_PHOTOS_PER_REVIEW,
   MAX_VIDEO_SIZE_MB,
   MAX_VIDEO_DURATION_SEC,
@@ -32,19 +35,20 @@ export async function GET() {
       flags: {
         showProUpgrade: SHOW_PRO_UPGRADE,
         showAppConnections: SHOW_APP_CONNECTIONS,
+        showScamShield: SHOW_SCAM_SHIELD,
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
         maxVideoSizeMb: MAX_VIDEO_SIZE_MB,
         maxVideoDurationSec: MAX_VIDEO_DURATION_SEC,
       },
-      // Which external platforms a user may import a video link from. Single
-      // source consumed by web + Android + iOS so no client hardcodes its own list.
+      scamShield: {
+        dailyLimitAuth: SCAM_SHIELD_DAILY_LIMIT_AUTH,
+        dailyLimitAnon: SCAM_SHIELD_DAILY_LIMIT_ANON,
+      },
       video: {
         linkProviders: LINK_VIDEO_PROVIDERS,
       },
-      // Which sign-in methods the product offers (HOW each works stays
-      // backend-internal) + the onboarding catalog — identical on every platform.
       auth: {
         providers: AUTH_PROVIDERS,
       },
