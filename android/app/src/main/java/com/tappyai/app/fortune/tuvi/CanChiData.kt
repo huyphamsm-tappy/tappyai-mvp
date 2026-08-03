@@ -37,13 +37,7 @@ fun getCanChiByYear(birthYear: Int): CanChi {
 }
 
 /**
- * Ngũ Hành (five elements) by birth year, mirroring web `getNguHanhByYear` (`canChiData.ts`): keyed
- * by the year's last digit — 0/1→Kim, 2/3→Thủy, 4/5→Mộc, 6/7→Hỏa, 8/9→Thổ.
+ * Ngũ Hành nạp âm (mệnh) by birth year, mirroring web `getNguHanhByYear` (`canChiData.ts`):
+ * delegates to the canonical [getAstrologyProfile] engine. e.g. 1985 → Ất Sửu → Hải Trung Kim → "Kim".
  */
-fun getNguHanhByYear(birthYear: Int): String = when (birthYear % 10) {
-    0, 1 -> "Kim"
-    2, 3 -> "Thủy"
-    4, 5 -> "Mộc"
-    6, 7 -> "Hỏa"
-    else -> "Thổ"
-}
+fun getNguHanhByYear(birthYear: Int): String = getAstrologyProfile(birthYear).element

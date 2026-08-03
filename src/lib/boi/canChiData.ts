@@ -1,4 +1,5 @@
 import { FortuneBanks } from './fortuneEngine'
+import { getAstrologyProfile } from './canChiEngine'
 
 export interface CanChi {
   id: string
@@ -391,12 +392,10 @@ export function getCanChiByYear(year: number): CanChi {
   return CAN_CHI_LIST[idx]
 }
 
-/** Ngũ hành nạp âm đơn giản hoá theo chữ số cuối năm sinh (quy ước phổ biến). */
+/**
+ * Ngũ hành nạp âm (mệnh) theo năm sinh — uỷ quyền cho engine chuẩn ([getAstrologyProfile]).
+ * Ví dụ: 1985 → Ất Sửu → Hải Trung Kim → "Kim".
+ */
 export function getNguHanhByYear(year: number): string {
-  const lastDigit = year % 10
-  if (lastDigit === 0 || lastDigit === 1) return 'Kim'
-  if (lastDigit === 2 || lastDigit === 3) return 'Thủy'
-  if (lastDigit === 4 || lastDigit === 5) return 'Mộc'
-  if (lastDigit === 6 || lastDigit === 7) return 'Hỏa'
-  return 'Thổ'
+  return getAstrologyProfile(year).element
 }

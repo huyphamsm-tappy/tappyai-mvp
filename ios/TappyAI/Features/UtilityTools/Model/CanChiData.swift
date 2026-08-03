@@ -9,22 +9,130 @@ struct CanChi: Identifiable {
     let banks: FortuneBanks
 }
 
+/// One row of the Nạp Âm table: the name and its element, kept together so they cannot drift.
+struct NapAmEntry: Equatable {
+    let name: String
+    let element: String
+}
+
+/// The astrology result for one birth year. Plain serialisable fields only (all strings), so a
+/// backend can later return this exact shape unchanged and every platform decodes it as-is.
+struct AstrologyProfile: Equatable {
+    /// Thiên Can — Heavenly Stem, e.g. `Ất`.
+    let heavenlyStem: String
+    /// Địa Chi — Earthly Branch, e.g. `Sửu`.
+    let earthlyBranch: String
+    /// Stem + branch, e.g. `Ất Sửu`.
+    let canChi: String
+    /// Nạp Âm name of the year, e.g. `Hải Trung Kim`.
+    let napAm: String
+    /// Ngũ hành (mệnh) carried by the Nạp Âm row, e.g. `Kim`.
+    let element: String
+}
+
+/// Canonical deterministic Can Chi / Nạp Âm engine — Swift mirror of the web source of truth
+/// (`src/lib/boi/canChiEngine.ts`) and of
+/// `android/app/src/main/java/com/tappyai/app/fortune/tuvi/CanChiEngine.kt`.
+///
+/// Pure functions + static tables only: no LLM, no network, no randomness, no clock.
+///
+/// Algorithm (solar/Gregorian year in, sexagenary cycle out):
+///   n             = (year - 4) mod 60          — position in the 60-year cycle
+///   heavenlyStem  = heavenlyStems[(year - 4) mod 10]
+///   earthlyBranch = earthlyBranches[(year - 4) mod 12]
+///   entry         = napAm[n / 2]                — each Nạp Âm spans 2 consecutive years
+///   napAm         = entry.name, element = entry.element
+///
+/// NOTE: `element` is the NẠP ÂM element (mệnh), not the Heavenly-Stem element. Deriving it from
+/// the birth year's last digit yields the stem element and is wrong for mệnh (1985 → "Mộc" instead
+/// of the correct "Kim"). Name and element live in the SAME row of the SAME table — there is no
+/// second element lookup and no string parsing, so the two cannot drift apart.
+enum CanChiEngine {
+    /// Thiên Can — 10 Heavenly Stems, in cycle order.
+    static let heavenlyStems: [String] = [
+        "Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý",
+    ]
+
+    /// Địa Chi — 12 Earthly Branches, in cycle order.
+    static let earthlyBranches: [String] = [
+        "Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi",
+    ]
+
+    /// The five elements (ngũ hành) a Nạp Âm can resolve to.
+    static let elements: [String] = ["Kim", "Mộc", "Thủy", "Hỏa", "Thổ"]
+
+    /// Nạp Âm — 30 rows; row i covers the two consecutive cycle positions 2i and 2i+1.
+    static let napAm: [NapAmEntry] = [
+        NapAmEntry(name: "Hải Trung Kim", element: "Kim"),
+        NapAmEntry(name: "Lư Trung Hỏa", element: "Hỏa"),
+        NapAmEntry(name: "Đại Lâm Mộc", element: "Mộc"),
+        NapAmEntry(name: "Lộ Bàng Thổ", element: "Thổ"),
+        NapAmEntry(name: "Kiếm Phong Kim", element: "Kim"),
+        NapAmEntry(name: "Sơn Đầu Hỏa", element: "Hỏa"),
+        NapAmEntry(name: "Giản Hạ Thủy", element: "Thủy"),
+        NapAmEntry(name: "Thành Đầu Thổ", element: "Thổ"),
+        NapAmEntry(name: "Bạch Lạp Kim", element: "Kim"),
+        NapAmEntry(name: "Dương Liễu Mộc", element: "Mộc"),
+        NapAmEntry(name: "Tuyền Trung Thủy", element: "Thủy"),
+        NapAmEntry(name: "Ốc Thượng Thổ", element: "Thổ"),
+        NapAmEntry(name: "Tích Lịch Hỏa", element: "Hỏa"),
+        NapAmEntry(name: "Tùng Bách Mộc", element: "Mộc"),
+        NapAmEntry(name: "Trường Lưu Thủy", element: "Thủy"),
+        NapAmEntry(name: "Sa Trung Kim", element: "Kim"),
+        NapAmEntry(name: "Sơn Hạ Hỏa", element: "Hỏa"),
+        NapAmEntry(name: "Bình Địa Mộc", element: "Mộc"),
+        NapAmEntry(name: "Bích Thượng Thổ", element: "Thổ"),
+        NapAmEntry(name: "Kim Bạch Kim", element: "Kim"),
+        NapAmEntry(name: "Phú Đăng Hỏa", element: "Hỏa"),
+        NapAmEntry(name: "Thiên Hà Thủy", element: "Thủy"),
+        NapAmEntry(name: "Đại Trạch Thổ", element: "Thổ"),
+        NapAmEntry(name: "Thoa Xuyến Kim", element: "Kim"),
+        NapAmEntry(name: "Tang Đố Mộc", element: "Mộc"),
+        NapAmEntry(name: "Đại Khê Thủy", element: "Thủy"),
+        NapAmEntry(name: "Sa Trung Thổ", element: "Thổ"),
+        NapAmEntry(name: "Thiên Thượng Hỏa", element: "Hỏa"),
+        NapAmEntry(name: "Thạch Lựu Mộc", element: "Mộc"),
+        NapAmEntry(name: "Đại Hải Thủy", element: "Thủy"),
+    ]
+
+    /// Positive modulo — Swift `%` keeps the sign of the dividend, which breaks years before AD 4.
+    private static func mod(_ a: Int, _ m: Int) -> Int { ((a % m) + m) % m }
+
+    /// Full astrology profile for a solar birth year. Deterministic and total: any year (including
+    /// years before AD 4) returns all five fields.
+    static func profile(_ year: Int) -> AstrologyProfile {
+        let offset = year - 4
+        let n = mod(offset, 60)
+        let can = heavenlyStems[mod(offset, 10)]
+        let chi = earthlyBranches[mod(offset, 12)]
+        let entry = napAm[n / 2]
+
+        return AstrologyProfile(
+            heavenlyStem: can,
+            earthlyBranch: chi,
+            canChi: "\(can) \(chi)",
+            napAm: entry.name,
+            element: entry.element
+        )
+    }
+}
+
 enum CanChiData {
     static func getByYear(_ year: Int) -> CanChi {
         let idx = ((year - 4) % 12 + 12) % 12
         return list[idx]
     }
 
+    /// Ngũ hành nạp âm (mệnh) by birth year — delegates to the canonical ``CanChiEngine``.
+    /// e.g. 1985 → Ất Sửu → Hải Trung Kim → "Kim".
     static func getNguHanh(_ year: Int) -> String {
-        let lastDigit = year % 10
-        switch lastDigit {
-        case 0, 1: return "Kim"
-        case 2, 3: return "Thủy"
-        case 4, 5: return "Mộc"
-        case 6, 7: return "Hỏa"
-        case 8, 9: return "Thổ"
-        default: return "Kim"
-        }
+        CanChiEngine.profile(year).element
+    }
+
+    /// Full astrology profile (heavenlyStem / earthlyBranch / canChi / napAm / element) for a
+    /// birth year.
+    static func getAstrologyProfile(_ year: Int) -> AstrologyProfile {
+        CanChiEngine.profile(year)
     }
 
     static let list: [CanChi] = [
