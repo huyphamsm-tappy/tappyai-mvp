@@ -30,11 +30,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# SuperTux large binary assets — now in Vercel Blob, not tracked in git
-public/games/supertux/supertux2.data
-public/games/supertux/supertux2.wasm
-.blob-urls.env
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -433,7 +433,7 @@ private fun QuickPromptCard(text: String, onClick: () -> Unit) {
  * outlined). The prompt (`promptBuilder.ts`) explicitly forbids the model from ever emitting
  * `type="internal_booking"` — every button in practice links to an external platform — so every
  * button opens externally via [Intent.ACTION_VIEW], same degrade-on-no-handler pattern already
- * used by Maps/Games' external links.
+ * used by Maps' external links.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

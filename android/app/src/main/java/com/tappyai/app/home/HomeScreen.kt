@@ -33,7 +33,6 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -100,7 +99,6 @@ fun HomeScreen(
     onOpenTranslate: () -> Unit,
     onOpenCurrency: () -> Unit,
     onOpenDeals: () -> Unit,
-    onOpenGames: () -> Unit,
     onOpenScan: () -> Unit,
     onOpenVietWriter: () -> Unit,
     onOpenSplitBill: () -> Unit,
@@ -166,7 +164,6 @@ fun HomeScreen(
                 onOpenTranslate = onOpenTranslate,
                 onOpenCurrency = onOpenCurrency,
                 onOpenDeals = onOpenDeals,
-                onOpenGames = onOpenGames,
                 onOpenScan = onOpenScan,
                 onOpenSplitBill = onOpenSplitBill,
             )
@@ -396,24 +393,12 @@ private fun QuickActionsSection(
     onOpenTranslate: () -> Unit,
     onOpenCurrency: () -> Unit,
     onOpenDeals: () -> Unit,
-    onOpenGames: () -> Unit,
     onOpenScan: () -> Unit,
     onOpenSplitBill: () -> Unit,
 ) {
     val cat = tappyCategoryColors
     // Explore + Maps are intentionally omitted — they already live in the bottom navigation
     // (owner 2026-07-30). Each tile wears a colour-tinted icon plate, matching web's Tools cards.
-    //
-    // Games is HIDDEN from production (owner decision 2026-08-01, Finalization Sprint): SuperTux is
-    // an Emscripten/WASM build that requires SharedArrayBuffer, which the Android WebView does not
-    // expose even when the page is correctly cross-origin isolated (server does send
-    // COOP: same-origin + COEP: require-corp — verified HTTP 200 on /games/supertux). On-device the
-    // WebView therefore renders the engine's own "browser does not support SharedArrayBuffer"
-    // message and the game never starts, while the SAME url runs in the device's Chrome — i.e. a
-    // WebView-platform limitation, not a URL/route bug. Secondly, even where it does run it pulls a
-    // ~246 MB asset download, which is not acceptable behind a casual Home tile on mobile data.
-    // GamesScreen + GamesRoute are deliberately left in place (still wired in HomeTabHost) so this
-    // is a one-line re-enable once the WASM/SAB story is solved (native port or a lighter game).
     val actions = listOf(
         QuickAction(stringResource(R.string.home_quick_music), Icons.Filled.MusicNote, cat.pink) { onOpenMusic() },
         QuickAction(stringResource(R.string.home_quick_scan), Icons.Filled.QrCodeScanner, cat.amber) { onOpenScan() },

@@ -21,7 +21,6 @@ const AASA = {
           { '/': '/chat*',         comment: 'AI Chat tab' },
           { '/': '/reviews*',      comment: 'Reviews & Explore tab' },
           { '/': '/discover*',     comment: 'Discovery tab' },
-          { '/': '/game*',         comment: 'Games tab' },
           { '/': '/profile*',      comment: 'Profile tab' },
           { '/': '/subscription*', comment: 'Subscription screen' },
           { '/': '/*',             comment: 'Catch-all — routed by DeepLinkHandler' },

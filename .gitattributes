@@ -1,2 +1,0 @@
-# supertux2.data and supertux2.wasm are now in Vercel Blob storage (not git).
-# See scripts/upload-supertux-blob.mjs to re-upload if needed.

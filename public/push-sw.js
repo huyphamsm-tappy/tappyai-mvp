@@ -1,5 +1,5 @@
 // TappyAI push notification service worker
-// Scope: / (entire app — registered separately from supertux-sw.js which scopes to /games/)
+// Scope: / (entire app)
 
 self.addEventListener('push', event => {
   let data = {}

@@ -14,8 +14,6 @@ import com.tappyai.app.fortune.FortuneRoute
 import com.tappyai.app.fortune.tarot.TarotScreen
 import com.tappyai.app.fortune.tuvi.TuViScreen
 import com.tappyai.app.fortune.zodiac.ZodiacScreen
-import com.tappyai.app.games.GamesRoute
-import com.tappyai.app.games.GamesScreen
 import com.tappyai.app.groupdining.GroupDiningScreen
 import com.tappyai.app.music.MusicLibraryScreen
 import com.tappyai.app.music.MusicRoute
@@ -60,7 +58,6 @@ fun HomeTabHost(
                 onOpenTranslate = { navController.navigate(TranslateRoute.Main) },
                 onOpenCurrency = { navController.navigate(CurrencyRoute.Main) },
                 onOpenDeals = { navController.navigate(DealsRoute.Main) },
-                onOpenGames = { navController.navigate(GamesRoute.Main) },
                 onOpenScan = { navController.navigate(ScanRoute.Main) },
                 onOpenVietWriter = { navController.navigate(VietWriterRoute.Main) },
                 onOpenSplitBill = { navController.navigate(SplitBillRoute.Main) },
@@ -88,9 +85,6 @@ fun HomeTabHost(
         }
         composable<DealsRoute.Main> {
             DealsScreen(onBack = { navController.popBackStack() })
-        }
-        composable<GamesRoute.Main> {
-            GamesScreen(onBack = { navController.popBackStack() })
         }
         composable<SplitBillRoute.Main> {
             SplitBillScreen(onBack = { navController.popBackStack() })
