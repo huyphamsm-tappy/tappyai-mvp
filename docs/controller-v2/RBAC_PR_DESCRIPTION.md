@@ -14,8 +14,9 @@ permission sets, and every authorization decision in the back office resolves
 through one Policy Decision Point.
 
 **Nobody's access changes.** This is a mechanism change, and a machine-checked
-test (`migration.test.ts`) asserts that for all 18 migrated call sites the new
-permission grants *exactly* the role set the old ladder admitted.
+test (`migration.test.ts`) asserts that across all 20 authorization decision
+points the new permission grants *exactly* the role set the old ladder admitted,
+and `nav.test.ts` pins sidebar visibility per role.
 
 The Platform Owner stays **completely outside RBAC** — not a role, not a
 permission, not resolved through the engine. Owner bypass is the engine's first
@@ -40,9 +41,9 @@ with every Hub added:
 
 | | |
 |---|---:|
-| Files changed | 47 |
-| Lines | +3441 / −177 |
-| New permission engine | 9 modules + 4 test files, ~1 850 lines |
+| Files changed | 50 |
+| Lines | +3938 / −194 |
+| New permission engine | 9 modules + 4 test files, 1 785 lines |
 | Authorization decision points | 20 |
 | Permissions defined | 14 across 6 modules |
 | Tests added | 101 (47 engine + 23 migration + 12 guards + 7 invalidation + 12 nav) |
@@ -59,7 +60,7 @@ with every Hub added:
 
 - **12 API handlers** — `requireAdminRole(req, role)` → `requirePermission(req, PERMISSIONS.X)`
 - **6 page guards** — `requirePageRole(role)` → `requirePagePermission(PERMISSIONS.X)`
-- **Sidebar** — `NavItem.minRole` → `NavItem.permission`, filtered via `filterByPermission`
+- **Sidebar** — `NavItem.minRole` → `NavItem.permission`; the visibility rule moved to `nav.ts` and is pinned per role by `nav.test.ts`
 
 ### Deleted
 
@@ -160,7 +161,7 @@ All were found by auditing the implementation, not by tests failing.
    who cannot also act, and any consumer would have been invented to justify the
    helper.
 
-## Two lessons worth carrying forward
+## Four lessons worth carrying forward
 
 **Adding a guard to a fallback destination turns that fallback into a loop.**
 R-1 was created by a change (guarding `/admin`) that was itself a fix. Any
@@ -169,6 +170,16 @@ future guarded page must be checked against every redirect target pointing at it
 **A green engine says nothing about the enforcement layer.** 613 tests passed
 with an infinite redirect loop in the guard, because every test exercised the
 decision, not the action taken on it.
+
+**`Object.freeze` does not stop `Set.add`, and overriding the methods does not
+either.** `Set.prototype.add.call` reaches the internal slot directly. P-1 was a
+false-safety fix for a false-safety claim, and the test that "covered" it
+asserted only the guarded path. Immutability claims need every vector probed,
+not one.
+
+**If a layer has no tests, no number of tests elsewhere covers it.** Three of the
+thirteen findings (R-5, R-9, P-2) were untested seams — the enforcement guard,
+the invalidation wire, the navigation filter — not wrong logic.
 
 ## Verification
 
@@ -184,8 +195,14 @@ npx tsc --noEmit && npx vitest run && npm run architecture:check && npx next bui
 | `next lint` | ✅ 0 errors (pre-existing warnings only, none in `permissions/`) |
 | `next build` | ✅ compiled; all `/admin` routes `ƒ` dynamic |
 
-Both regression fixes are proven RED/GREEN: reverting R-1 fails 3 guard tests,
-cutting the R-9 wire fails 2 invalidation tests.
+Every regression fix is proven **RED/GREEN**, not merely green:
+
+| Revert | Fails |
+|---|---|
+| R-1 redirect targets | 3 guard tests |
+| R-9 invalidation wire | 2 invalidation tests |
+| P-1 immutable set | prototype-bypass assertions |
+| P-2 placeholder gate | 5 nav tests |
 
 Required test scenarios — all covered in `engine.test.ts`: permission
 inheritance · multiple roles · cache invalidation · unknown permission ·
@@ -219,10 +236,43 @@ is a Foundation-wide concern.
 - **Policy proposal, not included:** whether `moderator` should keep analytics
   read access. Deliberately left as-is; see design doc §9.
 
+## Deployment checklist
+
+All paths are under `docs/controller-v2/`.
+
+### Before merge
+
+- [ ] Owner has read `RELEASE_READINESS_COMPONENT_3.md` (verdict: READY FOR MERGE)
+- [ ] Pre-flight gates re-run on the merge commit: `npx tsc --noEmit && npx vitest run && npm run architecture:check && npx next build`
+- [ ] `vitest` reports **66 files / 647 tests**, 0 failed
+- [ ] `next build` shows all 8 `/admin` routes as **`ƒ` (dynamic)** — a static `/admin` would be served without server-side authorization
+- [ ] Confirm the one declared Policy Change is accepted (runbook §4b): a roleless Platform Owner may now reach `/admin`
+
+### Merge
+
+- [ ] **"Create a merge commit"** — do NOT squash (standing instruction from the Foundation merge)
+- [ ] Vercel deployment for `main` reaches **Ready**
+
+### After deploy — runbook §3
+
+- [ ] §3.1 Owner path: `/admin` loads, full sidebar, badge reads **Platform Owner**
+- [ ] §3.2 Non-Owner admin path (needs a second admin session — this is also the moment to close **BL-002**)
+- [ ] §3.2b Owner-Gate failure exits to `/reviews`, no `ERR_TOO_MANY_REDIRECTS` (verify on **Preview**, never induce on production)
+- [ ] §3.3 `/api/admin/settings` returns **401** unauthenticated
+- [ ] §3.4 Grant then revoke a test role; revocation takes effect within 60 s
+
+### Rollback (if any trigger fires)
+
+- [ ] Promote the previous Vercel production deployment — immediate, no database state to unwind
+- [ ] Then `git revert` the merge commit on `main`
+
+Triggers: Owner sees a reduced sidebar · any `/api/admin` route returns 200 without a session · revocation exceeds 60 s · any admin loses a surface they had · `/admin` redirect-loops.
+
 ## Documents
 
 `03_COMPONENT3_RBAC_DESIGN.md` · `RBAC_MANIFEST.md` · `PERMISSION_REGISTRY.md` ·
-`PERMISSION_RESOLUTION_FLOW.md` · `RBAC_DEPLOYMENT_RUNBOOK.md`
+`PERMISSION_RESOLUTION_FLOW.md` · `RBAC_DEPLOYMENT_RUNBOOK.md` ·
+`RELEASE_READINESS_COMPONENT_3.md`
 
 ---
 

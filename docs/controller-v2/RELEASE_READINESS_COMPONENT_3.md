@@ -3,7 +3,7 @@
 **Review type:** PR review, Engineering Constitution V1
 **Branch:** `feat/controller-v2-component3-rbac` · **Branch point:** `35233a4`
 **Registry version:** `2026-08-04.2` · **Date:** 2026-08-04
-**Diff:** 50 files changed, +3952 / −194
+**Diff:** 50 files changed, +3938 / −194
 
 # ✅ VERDICT: READY FOR MERGE
 

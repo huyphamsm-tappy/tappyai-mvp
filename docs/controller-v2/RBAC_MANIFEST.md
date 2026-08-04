@@ -1,7 +1,7 @@
 # RBAC Manifest — Component 3
 
 Complete inventory of what Component 3 adds, changes, and deletes.
-**Branch point:** `35233a4` · **Totals:** 47 files changed, +3441 / −177
+**Branch point:** `35233a4` · **Totals:** 50 files changed, +3938 / −194
 **Registry version:** `2026-08-04.2`
 
 ---
@@ -14,7 +14,7 @@ Complete inventory of what Component 3 adds, changes, and deletes.
 |---|---:|---|:---:|
 | `types.ts` | 95 | `PermissionId`, `PermissionDefinition`, `Decision`, `ResolvedPermissionSet`, deny/allow reasons | ✅ |
 | `registry.ts` | 263 | 14 permission definitions + `createRegistry()` + `PERMISSIONS` constants | ✅ |
-| `roleMap.ts` | 96 | Role → permission map; `unionPermissions()`; `PermissionSetView` + `immutableSet()` | ✅ |
+| `roleMap.ts` | 112 | Role → permission map; `unionPermissions()`; `PermissionSetView` + `immutableSet()` | ✅ |
 | `cache.ts` | 136 | Version-safe, role-set-keyed resolved-set cache | ✅ |
 | `resolver.ts` | 48 | Actor → `ResolvedPermissionSet` | ✅ |
 | `engine.ts` | 134 | The Policy Decision Point | ✅ |
@@ -22,12 +22,12 @@ Complete inventory of what Component 3 adds, changes, and deletes.
 | `client.ts` | 53 | `can`, `filterByPermission` over a plain permission list | ✅ |
 | `index.ts` | 65 | Server barrel | ❌ server only |
 
-### Tests (89 in `permissions/`, plus 12 for the nav)
+### Tests (89 in `permissions/`, plus 12 in `nav.test.ts`)
 
 | File | Lines | Tests | Covers |
 |---|---:|---:|---|
 | `engine.test.ts` | 430 | 47 | 11 required scenarios + 9 registry-integrity invariants |
-| `migration.test.ts` | 118 | 23 | Backward-compatibility lock + role-map immutability, including the `Set.prototype` bypass |
+| `migration.test.ts` | 111 | 23 | Backward-compatibility lock + role-map immutability, including the `Set.prototype` bypass |
 | `guards.test.ts` | 191 | 12 | **Enforcement layer** — decision order, redirect targets, loop regression |
 | `invalidation.test.ts` | 117 | 7 | Grant/revoke/multi-role cache flows + the invalidation wire |
 
