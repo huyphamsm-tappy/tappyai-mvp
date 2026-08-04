@@ -1,15 +1,19 @@
 # Runbook — Component 1 (Platform Owner) Deployment
 
-**Status:** NOT EXECUTED. Nothing in this runbook has been applied to production.
+**Status:** NOT EXECUTED. Nothing here has been applied to production.
 **Owner conditions honoured:** bootstrap requires exactly one active `super_admin`; migrations are idempotent; no migration is applied before read-only verification completes.
 
-**Scope change (owner decision, 2026-08-03):** the `REVOKE ... ON admin_roles FROM service_role` step is **no longer part of Component 1**. It is staged as an end-of-Foundation hardening migration at `supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql`, with the rationale in [ADR-017](../../architecture/ADR-017-service-role-hardening-strategy.md). This runbook therefore ends at step 4.
+**Scope (owner decision, 2026-08-03):** the `REVOKE ... ON admin_roles FROM service_role` step is **not part of Component 1**. It is staged as an end-of-Foundation hardening migration at `supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql`, rationale in [ADR-017](../../architecture/ADR-017-service-role-hardening-strategy.md). **This runbook ends at Step 4.**
+
+Every step below states: Preconditions · Execution · Verification · Rollback · STOP conditions.
 
 ---
 
-## Step 1 — Read-only verification (STOP gate)
+## Step 1 — Read-only verification
 
-Run in the Supabase SQL editor. Changes nothing.
+**Preconditions:** Phase 0 back-office schema live in production (`admin_roles`, `admin_role` enum, `profiles`). Supabase SQL editor access.
+
+**Execution** — read-only, changes nothing:
 
 ```sql
 -- Q1: the bootstrap precondition. MUST be exactly 1.
@@ -18,34 +22,51 @@ FROM admin_roles
 WHERE role = 'super_admin' AND (expires_at IS NULL OR expires_at > NOW());
 
 -- Q2: confirm Component 1 is not already applied.
-SELECT to_regclass('public.platform_owner')            AS platform_owner_table,
+SELECT to_regclass('public.platform_owner') AS platform_owner_table,
        to_regprocedure('public.fn_grant_admin_role(uuid,uuid,admin_role,text,timestamptz)') AS grant_fn,
-       to_regprocedure('public.fn_revoke_admin_role(uuid,uuid)')  AS revoke_fn;
+       to_regprocedure('public.fn_revoke_admin_role(uuid,uuid)') AS revoke_fn;
 
 -- Q3: no name collision with an unrelated pre-existing function.
 SELECT proname FROM pg_proc
 WHERE proname IN ('fn_grant_admin_role','fn_revoke_admin_role','fn_is_platform_owner');
 
--- Q4: current service_role privileges on admin_roles (baseline for rollback).
+-- Q4: prerequisites the migration depends on must already exist.
+SELECT to_regtype('public.admin_role') AS admin_role_enum,
+       to_regclass('public.admin_roles') AS admin_roles_table,
+       to_regclass('public.profiles')    AS profiles_table;
+
+-- Q5: baseline for rollback — record this output before changing anything.
 SELECT privilege_type FROM information_schema.role_table_grants
 WHERE table_name = 'admin_roles' AND grantee = 'service_role';
 ```
 
+**Verification / STOP conditions:**
+
 | Result | Decision |
 |---|---|
 | Q1 = 1 | CONTINUE |
-| **Q1 ≠ 1** | **STOP.** Report the count. The Owner must be assigned deliberately, not derived. |
+| **Q1 ≠ 1** | **STOP.** Report the count. The Owner must be assigned deliberately, never derived from an ambiguous state. |
 | Q2 all NULL | CONTINUE |
-| Q2 any non-NULL | STOP — already partially applied; reconcile before proceeding |
-| Q3 returns rows | STOP — `CREATE OR REPLACE` would silently overwrite an unrelated function |
+| Q2 any non-NULL | **STOP** — already partially applied; reconcile before proceeding |
+| Q3 returns 0 rows | CONTINUE |
+| Q3 returns rows | **STOP** — `CREATE OR REPLACE` would silently overwrite an unrelated function |
+| Q4 all non-NULL | CONTINUE |
+| Q4 any NULL | **STOP** — the migration will fail; Phase 0 schema is missing |
+| Q5 | informational only; record the output for Step 2 rollback |
+
+**Rollback:** none required — read-only.
 
 ---
 
 ## Step 2 — Apply the schema migration
 
-Paste `supabase/migrations/20260803_platform_owner.sql` as a single statement batch.
+**Preconditions:** Step 1 passed with no STOP. Q5 output recorded.
 
-Verify:
+**Execution:** paste `supabase/migrations/20260803_platform_owner.sql` as one statement batch.
+
+Additive only — creates one table, two indexes, three functions, enables RLS. No `DROP`, no `REVOKE`, no `ALTER` of any existing object. Idempotent (`IF NOT EXISTS` / `CREATE OR REPLACE`), so a re-run is safe.
+
+**Verification:**
 
 ```sql
 SELECT to_regclass('public.platform_owner') IS NOT NULL AS table_ok,
@@ -53,72 +74,121 @@ SELECT to_regclass('public.platform_owner') IS NOT NULL AS table_ok,
        EXISTS (SELECT 1 FROM pg_indexes
                WHERE indexname='uq_platform_owner_single_active') AS single_owner_index,
        (SELECT prosecdef FROM pg_proc WHERE proname='fn_grant_admin_role')  AS grant_secdef,
-       (SELECT prosecdef FROM pg_proc WHERE proname='fn_revoke_admin_role') AS revoke_secdef;
+       (SELECT prosecdef FROM pg_proc WHERE proname='fn_revoke_admin_role') AS revoke_secdef,
+       (SELECT prosecdef FROM pg_proc WHERE proname='fn_is_platform_owner') AS owner_fn_secdef;
 ```
 
-All five must be `true`. `grant_secdef`/`revoke_secdef` = `true` is the load-bearing check — without `SECURITY DEFINER` the functions cannot hold a privilege the caller lacks, and step 5 would simply break granting instead of securing it.
+**STOP conditions:**
 
-**Rollback:** `DROP FUNCTION fn_grant_admin_role(uuid,uuid,admin_role,text,timestamptz); DROP FUNCTION fn_revoke_admin_role(uuid,uuid); DROP FUNCTION fn_is_platform_owner(uuid); DROP TABLE platform_owner;`
+| Result | Decision |
+|---|---|
+| all six `true` | CONTINUE |
+| any `false` / NULL | **STOP** and roll back |
+| `grant_secdef` or `revoke_secdef` ≠ true | **STOP.** This is load-bearing: without `SECURITY DEFINER` the functions cannot hold a privilege the caller lacks, so the constitutional guards would not be enforceable. |
+
+**Rollback:**
+
+```sql
+DROP FUNCTION IF EXISTS fn_grant_admin_role(uuid,uuid,admin_role,text,timestamptz);
+DROP FUNCTION IF EXISTS fn_revoke_admin_role(uuid,uuid);
+DROP FUNCTION IF EXISTS fn_is_platform_owner(uuid);
+DROP TABLE IF EXISTS platform_owner;
+```
+
+Safe at this point: nothing in the deployed application references these objects yet.
 
 ---
 
 ## Step 3 — Bootstrap the Owner
 
-Run `supabase/seed/platform_owner_bootstrap.sql`. It re-checks the exactly-one condition itself and aborts otherwise — Step 1's Q1 is a pre-flight, not the only guard.
+**Preconditions:** Step 2 verified. Application code **not yet deployed** (order matters — see Step 4).
 
-Then read the Owner id and set it in Vercel (**Production + Preview + Development**):
+**Execution:** run `supabase/seed/platform_owner_bootstrap.sql`. It re-checks the exactly-one condition itself and aborts otherwise; Step 1's Q1 is a pre-flight, not the only guard. Idempotent — re-running after success is a no-op.
+
+Then read the Owner id:
 
 ```sql
 SELECT user_id FROM platform_owner WHERE active = true;
 ```
 
-`PLATFORM_OWNER_USER_ID = <that uuid>`
+Set `PLATFORM_OWNER_USER_ID = <that uuid>` in Vercel (**Production + Preview + Development**).
 
-The env var does **not** take effect until the next deploy — which is step 4.
+**Verification:**
 
-**Rollback:** `UPDATE platform_owner SET active = false, revoked_at = NOW() WHERE active = true;`
+```sql
+SELECT COUNT(*) AS active_owners FROM platform_owner WHERE active = true;  -- must be 1
+SELECT fn_is_platform_owner('<that uuid>') AS is_owner;                     -- must be true
+```
+
+**STOP conditions:**
+
+| Result | Decision |
+|---|---|
+| script raises `BOOTSTRAP ABORTED` | **STOP.** Production has ≠ 1 active `super_admin`. Do not force it. |
+| `active_owners` ≠ 1 | **STOP** and roll back |
+| `is_owner` ≠ true | **STOP** — the function is not resolving the row it should |
+
+**Rollback:**
+
+```sql
+UPDATE platform_owner SET active = false, revoked_at = NOW() WHERE active = true;
+```
+
+Also unset `PLATFORM_OWNER_USER_ID` in Vercel. Order does not matter here: the deployed code does not read either yet.
 
 ---
 
 ## Step 4 — Deploy application code
 
-Merge the PR and let Vercel deploy. After deploy, verify with an authenticated Owner session:
+**Preconditions:** Steps 2 and 3 verified. `PLATFORM_OWNER_USER_ID` set in Vercel and matching the active owner row. PR approved.
+
+**Execution:** merge the PR; Vercel deploys.
+
+**Verification** — with an authenticated session for each role:
 
 | Check | Expected |
 |---|---|
 | `/admin` loads for the Owner | 200, shell renders |
 | `/admin` loads for a non-owner admin | unchanged from today |
 | Owner grants `analyst` to a test user | 200 |
-| **Non-owner `super_admin` attempts to grant `super_admin`** | **403** |
+| **Non-owner `super_admin` grants `super_admin`** | **403** (the G1 regression check) |
 | Any actor grants a role to themselves | 403 |
-| Audit log shows `owner.super_admin_granted` for an Owner super_admin grant | present |
+| Revoke the last `super_admin` | 409 |
+| Audit log after an Owner `super_admin` grant | row with `action = 'owner.super_admin_granted'` |
+| Product routes (`/`, `/reviews`, `/scam-shield`) | 200 — unaffected |
 
-If `PLATFORM_OWNER_USER_ID` is wrong, **every** Controller request returns 403 with `ownership assertion failed` in the logs. Fix the env var and redeploy; product routes are unaffected by design.
+This step also closes the one gap left by local testing: the **enforced** path of the owner gate cannot be exercised without a real admin session.
+
+**STOP conditions:**
+
+| Symptom | Decision |
+|---|---|
+| Every Controller request 403 with `ownership assertion failed` | `PLATFORM_OWNER_USER_ID` is wrong. Fix the env var and redeploy — do NOT touch the database. |
+| Non-owner `super_admin` CAN grant `super_admin` | **STOP and roll back.** G1 is not closed. |
+| Product routes affected | **STOP and roll back.** Component 1 must not touch them. |
+
+**Rollback:** revert the merge commit on `main` and redeploy.
+
+No database action is required, and this is by design: the previous code has no owner gate and never reads `platform_owner`, so the table and the env var are inert to it. Leave both in place — rolling back the schema as well would only add risk. If a full teardown is genuinely wanted, run Step 3's then Step 2's rollback **after** the code revert is live, never before.
 
 ---
 
 ## Step 5 — DEFERRED (not part of this deployment)
 
-Service-role privilege reduction is staged at
-`supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql` and runs
-only at the end of the Foundation, as its own change with its own verification
-and rollback. Its gate and preconditions are in
-[ADR-017 §5](../../architecture/ADR-017-service-role-hardening-strategy.md).
+Service-role privilege reduction is staged at `supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql` and runs only at the end of the Foundation, as its own change with its own preconditions, verification and rollback — see [ADR-017 §5](../../architecture/ADR-017-service-role-hardening-strategy.md).
 
-**Do not apply it as part of Component 1.** Until it runs, the constitutional
-rules are enforced by the `SECURITY DEFINER` functions plus the application
-checks — strong on every sanctioned path, but the service-role client still
-technically retains direct write access to `admin_roles`. ADR-017 §4 records
-that accepted exposure and why it is smaller than the pre-existing one.
+**Do not apply it as part of Component 1.** Until it runs, the constitutional rules are enforced by the `SECURITY DEFINER` functions plus the application checks — strong on every sanctioned path, but the service-role client still technically retains direct write access to `admin_roles`. ADR-017 §4 records that accepted exposure and why it is smaller than the exposure that existed before Component 1.
 
 ---
 
 ## Break-glass (owner-approved mechanism — do not automate)
 
-Recovery of a lost Owner account requires **both** Supabase database access **and** a Vercel env change. There is deliberately no API, no UI, and no offline recovery code, and exactly one active Owner is retained.
+Recovering a lost Owner account requires **both** Supabase database access **and** a Vercel env change. Deliberately no API, no UI, no offline recovery code; exactly one active Owner is retained.
+
+**Preconditions:** the Owner account is genuinely unrecoverable, and the reassignment is authorised by the business.
 
 1. **Enter maintenance mode** — set `PLATFORM_OWNER_USER_ID` to an intentionally invalid value and redeploy. Every Controller request now returns 403 while product routes stay up. Ownership must never change while the Controller is serving.
-2. **Record intent** — insert an `audit_log` row with `action = 'owner.break_glass.initiated'` including who authorised it and why.
+2. **Record intent** — insert an `audit_log` row with `action = 'owner.break_glass.initiated'`, naming who authorised it and why.
 3. **Reassign** —
    ```sql
    UPDATE platform_owner SET active = false, revoked_at = NOW() WHERE active = true;
@@ -131,5 +201,9 @@ Recovery of a lost Owner account requires **both** Supabase database access **an
    - the new Owner can load `/admin`
    - the new Owner can grant a throwaway `analyst` role, and a non-owner cannot grant `super_admin`
 6. **Close** — write `action = 'owner.break_glass.completed'` with the verification results.
+
+**STOP:** if step 5 fails, do **not** lift maintenance mode. A Controller that is down is recoverable; one serving with ambiguous ownership is not.
+
+**Rollback:** re-point `PLATFORM_OWNER_USER_ID` at the previous owner uuid and re-activate that row, only if the original account turns out to be recoverable.
 
 Entering maintenance mode *before* ownership changes is deliberate: a break-glass event is never silent, because it is visible in the Controller's own availability.
