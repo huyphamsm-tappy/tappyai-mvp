@@ -1,8 +1,23 @@
 # Controller V2 — Current Status
 
-**Canonical status document.** If any other document in `docs/controller-v2/` disagrees with this one, this one is correct.
+> ## 🔒 SINGLE SOURCE OF TRUTH
+> **This document is the only authoritative statement of Controller V2 project status.**
+> Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
 **Last updated:** 2026-08-04
+
+---
+
+## Official project status
+
+| Item | Status |
+|---|---|
+| **Foundation Phase** | **CLOSED** |
+| **Components 1 & 2** — Platform Owner + Identity | **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** |
+| **BL-002** — G1 Production Validation | **OPEN** · type: **Production Acceptance Task** |
+| **Component 3** — RBAC | **READY TO START · NOT STARTED** |
+
+**Scope of "Foundation Phase: CLOSED".** This closes the Foundation *establishment* phase — the legacy audit, the Phase 0 audit, the approved architecture, and the two components that constitute the security foundation everything else builds on, now live in production. It does **not** mean all eleven Phase 1 components are built: Components 3–11 remain, and their state is tracked in [`ROADMAP.md`](ROADMAP.md). Read the two together.
 
 ---
 

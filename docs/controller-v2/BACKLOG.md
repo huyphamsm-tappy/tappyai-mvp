@@ -2,10 +2,14 @@
 
 Deferred work, deliberately not done now. Each item states its gate. Nothing here is scheduled until its gate is met.
 
-| ID | Title | Type | Gate |
-|---|---|---|---|
-| [BL-001](#bl-001--adr-consolidation--numbering-cleanup) | ADR Consolidation & Numbering Cleanup | Development Task | after Foundation completes |
-| [BL-002](#bl-002--g1-production-validation) | G1 Production Validation | **Production Acceptance Task** | open now — needs a manual login |
+**Status authority:** [`STATUS.md`](STATUS.md) is the single source of truth for project status.
+
+| ID | Title | Category | Type | Status | Blocks Component 3? |
+|---|---|---|---|---|---|
+| [BL-001](#bl-001--adr-consolidation--numbering-cleanup) | ADR Consolidation & Numbering Cleanup | Architecture / ADR cleanup | Development Task | Backlog | **No** |
+| [BL-002](#bl-002--g1-production-validation) | G1 Production Validation | Production validation | **Production Acceptance Task** | **OPEN** | **No** |
+
+**Nothing in this backlog blocks Component 3.** BL-001 is gated on Foundation completion and is unrelated to RBAC. BL-002 validates behaviour that is *already deployed* — it gates only the final acceptance wording of Components 1 & 2, not any further work. These two items are the complete set of open Controller V2 backlog entries.
 
 ---
 

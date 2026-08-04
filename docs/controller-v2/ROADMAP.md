@@ -1,8 +1,20 @@
 # Controller V2 — Roadmap
 
-**Last updated:** 2026-08-04 · Canonical status: [`STATUS.md`](STATUS.md)
+**Last updated:** 2026-08-04 · **Status authority:** [`STATUS.md`](STATUS.md) is the single source of truth; this document details sequencing only.
 
 Approved scope: three ordered blocks (owner decision 2026-08-03). Each component ships through **PR → Review → Merge → Deploy**, with database steps gated by a runbook.
+
+---
+
+## Official status
+
+| Item | Status |
+|---|---|
+| **Foundation Phase** | **CLOSED** |
+| **Components 1–2** | **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** |
+| **Component 3** | **READY TO START · NOT STARTED** |
+
+"Foundation Phase: CLOSED" closes the Foundation *establishment* phase — audit, architecture, and Components 1–2 in production. Components 3–11 remain and are listed below; see [`STATUS.md`](STATUS.md) for the scope note.
 
 ---
 
@@ -12,9 +24,9 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 
 | # | Component | Status |
 |---|---|---|
-| 1 | **Platform Owner** | ✅ **COMPLETE** — in production (`fb21ebe`) |
-| 2 | **Identity** | ✅ **COMPLETE** — in production (`fb21ebe`) |
-| 3 | **RBAC** | ⬅ **NEXT IMPLEMENTATION TARGET** — not started |
+| 1 | **Platform Owner** | ✅ **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — in production (`fb21ebe`) |
+| 2 | **Identity** | ✅ **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — in production (`fb21ebe`) |
+| 3 | **RBAC** | ⬅ **READY TO START · NOT STARTED** |
 | 4 | Permission Engine | not started |
 
 ### Block B — Extensibility

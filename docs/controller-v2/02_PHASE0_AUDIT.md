@@ -1,3 +1,6 @@
+> **⚠️ HISTORICAL DOCUMENT — status superseded by [`STATUS.md`](STATUS.md), the single source of truth.**
+> Written before Components 1 & 2 shipped. Its `Status:` line, verdicts and "not yet done" statements were accurate on the date shown and are preserved as the review record. **Current state: Foundation Phase CLOSED; Components 1 & 2 ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK ([BL-002](BACKLOG.md#bl-002--g1-production-validation) open).**
+
 # Controller V2 — Phase 0 Repository Audit
 
 **Status:** Awaiting owner approval · **Date:** 2026-08-03
