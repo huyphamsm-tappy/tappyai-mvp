@@ -1,6 +1,11 @@
+> **⚠️ SUPERSEDED STATUS — see [`STATUS.md`](STATUS.md).**
+> Components 1 & 2 are **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — merged (`fb21ebe`), deployed, and verified in production. The verdicts and "not yet applied" statements below were accurate when written and are retained as the historical record of the review; they no longer describe current state.
+
 # Runbook — Component 1 (Platform Owner) Deployment
 
-**Status:** NOT EXECUTED. Nothing here has been applied to production.
+**Status: EXECUTED — 2026-08-04.** Steps 1, 2 and 3 were run against production and verified via PostgreSQL catalog queries; Step 4 completed with the merge of `fb21ebe` and its deployment. Step 5 remains deliberately **DEFERRED** (see below). One post-deploy check from Step 4 is still open — the G1 end-to-end HTTP test, tracked as [BL-002](../BACKLOG.md#bl-002--g1-production-validation).
+
+*The procedure below is retained verbatim as the executable record and as the template for future components. Read the "not yet applied" phrasing in it as describing the state at authoring time.*
 **Owner conditions honoured:** bootstrap requires exactly one active `super_admin`; migrations are idempotent; no migration is applied before read-only verification completes.
 
 **Scope (owner decision, 2026-08-03):** the `REVOKE ... ON admin_roles FROM service_role` step is **not part of Component 1**. It is staged as an end-of-Foundation hardening migration at `supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql`, rationale in [ADR-017](../../architecture/ADR-017-service-role-hardening-strategy.md). **This runbook ends at Step 4.**

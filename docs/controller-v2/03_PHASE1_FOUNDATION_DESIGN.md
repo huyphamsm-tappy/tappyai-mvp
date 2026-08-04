@@ -1,3 +1,6 @@
+> **⚠️ SUPERSEDED STATUS — see [`STATUS.md`](STATUS.md).**
+> Components 1 & 2 are **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — merged (`fb21ebe`), deployed, and verified in production. The verdicts and "not yet applied" statements below were accurate when written and are retained as the historical record of the review; they no longer describe current state.
+
 # Controller V2 — Phase 1 Foundation Design
 
 **Status:** Design — awaiting approval before implementation
