@@ -111,6 +111,30 @@ const nextConfig = {
       { source: '/:path*', headers: securityHeaders },
     ]
   },
+  async redirects() {
+    // Each legal document has exactly one implementation, at /privacy and
+    // /terms. The /profile/* routes used to render their own separate copies,
+    // and the in-app Settings menu linked to those — so signed-in users kept
+    // reading stale text after the canonical pages were updated, and the
+    // document users saw could silently disagree with the one published to the
+    // Google Play Console.
+    //
+    // These redirects live here rather than in a page component because an App
+    // Router page cannot produce a permanent redirect: permanentRedirect() in a
+    // page returns HTTP 200 carrying <meta http-equiv="refresh">, and marking
+    // the route `dynamic = 'force-dynamic'` does not change that — the response
+    // is already streaming when the redirect is thrown. Crawlers and non-JS
+    // clients would receive a contentless 200 for a legal document.
+    // next.config redirects are evaluated before the filesystem route, so no
+    // page renders and the status is a real 308.
+    //
+    // Kept permanently: bookmarks, in-app deep links and anything already
+    // indexed still resolve, and crawlers are told where each document lives.
+    return [
+      { source: '/profile/privacy', destination: '/privacy', permanent: true },
+      { source: '/profile/terms', destination: '/terms', permanent: true },
+    ]
+  },
 }
 
 export default nextConfig

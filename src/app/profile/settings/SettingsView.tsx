@@ -35,8 +35,14 @@ export default function SettingsView({ user }: { user: ComponentProps<typeof Hea
             {t('settings.other')}
           </h3>
           <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={FileText} label={t('settings.terms')} href="/profile/terms" />
-            <MenuItem icon={Shield} label={t('settings.privacy')} href="/profile/privacy" />
+            {/* Canonical legal routes. These used to point at /profile/terms and
+                /profile/privacy, which rendered their own separate copies of the
+                documents — so signed-in users kept reading stale text after the
+                canonical pages were updated. Those routes now 308 here, but
+                first-party navigation links straight to the real page rather
+                than leaning on the redirect. */}
+            <MenuItem icon={FileText} label={t('settings.terms')} href="/terms" />
+            <MenuItem icon={Shield} label={t('settings.privacy')} href="/privacy" />
           </div>
           <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-3">{t('settings.version', { v: '0.1.0' })}</p>
         </section>
