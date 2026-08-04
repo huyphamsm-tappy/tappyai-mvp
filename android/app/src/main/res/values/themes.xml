@@ -10,12 +10,14 @@
 
     <!-- Cold-start splash (androidx.core.splashscreen) — MainActivity's manifest theme; installed
          via SplashScreen.installSplashScreen() before setContent, then handed off to
-         Theme.TappyAI for everything after. Reuses the existing launcher icon, not new art (Tappy
-         mascot art is owner-authored only, see project convention — no new splash-specific asset
-         invented here). -->
+         Theme.TappyAI for everything after. Uses @mipmap/ic_splash, not @mipmap/ic_launcher: the
+         splash library scales the icon harder than the launcher mask does, and reusing the launcher
+         icon cropped the otter's ears, raised paw and body. ic_splash is the same artwork and the
+         same background colour, only scaled smaller (no new mascot art — that stays owner-authored,
+         see project convention). -->
     <style name="Theme.TappyAI.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@android:color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_splash</item>
         <item name="postSplashScreenTheme">@style/Theme.TappyAI</item>
     </style>
 </resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Splash-only adaptive icon. Identical background to the launcher, but a smaller foreground:
+     androidx.core.splashscreen scales the icon harder than the launcher mask, so reusing
+     @mipmap/ic_launcher here cropped the otter (ears, paw and body all cut). Same artwork,
+     same colour — only the scale differs. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_splash_foreground" />
+</adaptive-icon>
