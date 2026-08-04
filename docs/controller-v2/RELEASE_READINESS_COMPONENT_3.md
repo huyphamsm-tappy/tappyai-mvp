@@ -3,7 +3,11 @@
 **Review type:** PR review, Engineering Constitution V1
 **Branch:** `feat/controller-v2-component3-rbac` · **Branch point:** `35233a4`
 **Registry version:** `2026-08-04.2` · **Date:** 2026-08-04
-**Diff:** 50 files changed, +3938 / −194
+**Diff:** 50 files (23 added · 1 deleted · 26 modified) — `src/` **+2409 / −194**
+
+> Line totals are quoted for `src/` only. Quoting the whole-diff total inside the
+> diff changes it on every documentation commit; the source figure is stable and
+> is the one a reviewer actually needs.
 
 # ✅ VERDICT: READY FOR MERGE
 

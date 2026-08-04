@@ -1,7 +1,9 @@
 # RBAC Manifest — Component 3
 
 Complete inventory of what Component 3 adds, changes, and deletes.
-**Branch point:** `35233a4` · **Totals:** 50 files changed, +3938 / −194
+**Branch point:** `35233a4` · **Totals:** 50 files (23 added · 1 deleted · 26 modified)
+**Source change:** `src/` +2409 / −194 — quoted for `src/` only, because a
+whole-diff total changes every time it is written down.
 **Registry version:** `2026-08-04.2`
 
 ---

@@ -41,8 +41,8 @@ with every Hub added:
 
 | | |
 |---|---:|
-| Files changed | 50 |
-| Lines | +3938 / −194 |
+| Files changed | 50 (23 added · 1 deleted · 26 modified) |
+| Lines in `src/` | +2409 / −194 |
 | New permission engine | 9 modules + 4 test files, 1 785 lines |
 | Authorization decision points | 20 |
 | Permissions defined | 14 across 6 modules |
