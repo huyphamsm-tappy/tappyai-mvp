@@ -84,13 +84,31 @@ SELECT to_regclass('public.platform_owner') IS NOT NULL AS table_ok,
        (SELECT prosecdef FROM pg_proc WHERE proname='fn_is_platform_owner') AS owner_fn_secdef;
 ```
 
+**Verification 2 — callability (added 2026-08-03; see Deployment Readiness §4 A1/A2).**
+
+The application reaches these functions through PostgREST as `service_role`. Two things must hold that the migration does not itself assert:
+
+```sql
+-- A1: service_role must hold EXECUTE. The migration adds no explicit GRANT and
+-- relies on PostgreSQL's default of granting EXECUTE to PUBLIC on new functions.
+SELECT p.proname,
+       has_function_privilege('service_role', p.oid, 'EXECUTE') AS service_role_can_execute
+FROM pg_proc p
+WHERE p.proname IN ('fn_grant_admin_role','fn_revoke_admin_role','fn_is_platform_owner');
+
+-- A2: force a PostgREST schema-cache reload so the new functions are callable
+-- immediately rather than after an indeterminate lag.
+NOTIFY pgrst, 'reload schema';
+```
+
 **STOP conditions:**
 
 | Result | Decision |
 |---|---|
-| all six `true` | CONTINUE |
+| all six assertions `true` | CONTINUE |
 | any `false` / NULL | **STOP** and roll back |
-| `grant_secdef` or `revoke_secdef` ≠ true | **STOP.** This is load-bearing: without `SECURITY DEFINER` the functions cannot hold a privilege the caller lacks, so the constitutional guards would not be enforceable. |
+| `grant_secdef` or `revoke_secdef` ≠ true | **STOP.** Load-bearing: without `SECURITY DEFINER` the functions cannot hold a privilege the caller lacks, so the constitutional guards would not be enforceable. |
+| A1 — any `service_role_can_execute` = false | **STOP.** Remediate before deploying, otherwise every role grant returns 500 after the merge: `GRANT EXECUTE ON FUNCTION fn_grant_admin_role(uuid,uuid,admin_role,text,timestamptz), fn_revoke_admin_role(uuid,uuid), fn_is_platform_owner(uuid) TO service_role;` Re-run A1 to confirm. |
 
 **Rollback:**
 
