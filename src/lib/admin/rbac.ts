@@ -10,7 +10,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import type { User } from '@supabase/supabase-js'
 import { ROLE_RANK, hasRole, type AdminRole } from '@/lib/admin/roles'
-import { isPlatformOwner, invalidateOwnerCache, checkOwnerGate } from '@/lib/admin/owner'
+import { isPlatformOwner, checkOwnerGate } from '@/lib/admin/owner'
 import { NO_CAPABILITIES, type CapabilityId } from '@/lib/admin/capabilities'
 
 // Re-export the client-safe primitives so existing server-side importers keep
@@ -106,12 +106,6 @@ export function invalidateRoleCache(userId: string): void {
   principalCache.delete(userId)
 }
 
-/** Invalidate every cached principal plus the owner lookup (break-glass/bootstrap). */
-export function invalidatePrincipalCaches(): void {
-  principalCache.clear()
-  invalidateOwnerCache()
-}
-
 /**
  * The full security principal for a request. Supersedes the bare
  * `{ user, role }` pair; `user` and `role` remain on AdminContext so existing
@@ -136,13 +130,21 @@ export interface Actor {
   resolvedAt: number
 }
 
-/** Resolve the Actor for a request, or null when unauthenticated. */
-export async function resolveActor(req: Request): Promise<Actor | null> {
+/**
+ * Resolve the Actor for a request, or null when unauthenticated.
+ *
+ * THE SINGLE Actor construction site. `requireAdminRole` delegates here rather
+ * than building its own, so the two can never drift. The Supabase `User` is
+ * returned alongside because `AdminContext` still exposes it to handlers.
+ */
+export async function resolveActor(
+  req: Request
+): Promise<{ user: User; actor: Actor } | null> {
   const { user } = await getRequestUser(req)
   if (!user) return null
 
   const { roles, isOwner } = await resolvePrincipal(user.id)
-  return {
+  const actor: Actor = {
     userId: user.id,
     email: user.email ?? '—',
     isOwner,
@@ -154,6 +156,7 @@ export async function resolveActor(req: Request): Promise<Actor | null> {
     source: req.headers.get('authorization')?.startsWith('Bearer ') ? 'bearer' : 'cookie',
     resolvedAt: Date.now(),
   }
+  return { user, actor }
 }
 
 export interface AdminContext {
@@ -171,33 +174,26 @@ export async function requireAdminRole(
   req: Request,
   minRole: AdminRole
 ): Promise<AdminContext> {
-  const { user } = await getRequestUser(req)
-  if (!user) throw new AdminError('UNAUTHORIZED', 'Authentication required', 401)
+  // 1. Identity.
+  const resolved = await resolveActor(req)
+  if (!resolved) throw new AdminError('UNAUTHORIZED', 'Authentication required', 401)
+  const { user, actor } = resolved
 
-  // Ownership assertion (component 1). Inert until PLATFORM_OWNER_USER_ID is
-  // configured; once configured, a mismatch denies the whole Controller.
+  // 2. Ownership assertion (component 1) — runs BEFORE any RBAC decision. Inert
+  // until PLATFORM_OWNER_USER_ID is configured; once configured, a mismatch
+  // denies the whole Controller.
   const gate = await checkOwnerGate()
   if (!gate.ok) {
     console.error('[controller][owner] gate failed:', gate.reason)
     throw new AdminError('FORBIDDEN', 'Controller unavailable: ownership assertion failed', 403)
   }
 
-  const { roles, isOwner } = await resolvePrincipal(user.id)
-  const role = highestRole(roles)
+  // 3. RBAC.
+  const role = actor.highestRole
   if (!role || !hasRole(role, minRole)) {
     throw new AdminError('FORBIDDEN', `Insufficient permissions. Required role: ${minRole}`, 403)
   }
 
-  const actor: Actor = {
-    userId: user.id,
-    email: user.email ?? '—',
-    isOwner,
-    roles,
-    highestRole: role,
-    capabilities: NO_CAPABILITIES,
-    source: req.headers.get('authorization')?.startsWith('Bearer ') ? 'bearer' : 'cookie',
-    resolvedAt: Date.now(),
-  }
   return { user, role, actor }
 }
 
