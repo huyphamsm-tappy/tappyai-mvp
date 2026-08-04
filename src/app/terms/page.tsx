@@ -1,79 +1,81 @@
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import type { Metadata } from 'next'
+import LegalDocument from '@/components/legal/LegalDocument'
+import { type LegalDoc } from '@/components/legal/legalDoc'
+import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
+
+// Public Terms of Service. Server component so the route keeps its metadata
+// (a 'use client' module cannot export `metadata`); the localized body is
+// rendered by LegalDocument, which reads the site-wide locale through
+// useTranslation, so this page follows the LanguagePicker like every other
+// screen. Previously this route had no metadata at all and existed only in
+// Vietnamese.
+
+const PAGE_URL = `${SITE_URL}/terms`
+const TITLE = 'Terms of Service — TappyAI'
+const DESCRIPTION =
+  'The terms that apply when you use TappyAI, covering your account, the reference nature of AI-provided information, acceptable use, and how these terms change.'
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: PAGE_URL },
+  openGraph: {
+    type: 'website',
+    url: PAGE_URL,
+    siteName: 'TappyAI',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: `${SITE_URL}${OG_IMAGE}` }],
+    locale: 'en_US',
+    alternateLocale: ['vi_VN'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [`${SITE_URL}${OG_IMAGE}`],
+  },
+  robots: { index: true, follow: true },
+}
+
+// Document structure only — every string lives in src/lib/i18n/legal.ts.
+const TERMS: LegalDoc = {
+  titleKey: 'legal.terms.title',
+  effectiveKey: 'legal.terms.effective',
+  sections: [
+    {
+      id: 'introduction',
+      headingKey: 'legal.terms.s1.heading',
+      blocks: [{ kind: 'p', key: 'legal.terms.s1.p1' }],
+    },
+    {
+      id: 'your-account',
+      headingKey: 'legal.terms.s2.heading',
+      blocks: [{ kind: 'p', key: 'legal.terms.s2.p1' }],
+    },
+    {
+      id: 'information-provided-by-the-ai',
+      headingKey: 'legal.terms.s3.heading',
+      blocks: [{ kind: 'p', key: 'legal.terms.s3.p1' }],
+    },
+    {
+      id: 'acceptable-use',
+      headingKey: 'legal.terms.s4.heading',
+      blocks: [{ kind: 'p', key: 'legal.terms.s4.p1' }],
+    },
+    {
+      id: 'changes-to-these-terms',
+      headingKey: 'legal.terms.s5.heading',
+      blocks: [{ kind: 'p', key: 'legal.terms.s5.p1' }],
+    },
+    {
+      id: 'contact',
+      headingKey: 'legal.terms.s6.heading',
+      blocks: [{ kind: 'contact' }],
+    },
+  ],
+}
 
 export default function TermsPage() {
-  return (
-    <div className="min-h-dvh bg-gray-50 dark:bg-gray-950">
-      {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
-        <div className="max-w-2xl mx-auto px-4 h-14 flex items-center gap-3">
-          <Link href="/login" className="p-2 -ml-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <ArrowLeft size={20} />
-          </Link>
-          <h1 className="font-semibold text-gray-900 dark:text-white">Điều khoản dịch vụ</h1>
-        </div>
-      </header>
-
-      <main className="max-w-2xl mx-auto px-4 py-6">
-        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-          <p className="text-gray-400 dark:text-gray-500 text-xs">Cập nhật lần cuối: 13/06/2026</p>
-
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">1. Giới thiệu</h3>
-            <p>
-              TappyAI là trợ lý AI giúp bạn tìm kiếm địa điểm ăn uống, mua sắm, spa, giải trí, du lịch
-              và các thông tin tham khảo liên quan. Khi sử dụng TappyAI, bạn đồng ý với các điều khoản
-              dưới đây.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">2. Tài khoản</h3>
-            <p>
-              Bạn cần đăng nhập bằng tài khoản Google để sử dụng TappyAI. Bạn chịu trách nhiệm bảo
-              mật tài khoản của mình và các hoạt động diễn ra dưới tài khoản đó.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">3. Thông tin do AI cung cấp</h3>
-            <p>
-              Giá cả, địa điểm, đánh giá và các thông tin khác do TappyAI cung cấp chỉ mang tính
-              tham khảo, được tổng hợp từ các nguồn tìm kiếm công khai và có thể thay đổi theo thời
-              gian, chi nhánh hoặc thời điểm. TappyAI không đảm bảo tính chính xác tuyệt đối và
-              không chịu trách nhiệm cho các quyết định dựa trên thông tin này.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">4. Sử dụng hợp lý</h3>
-            <p>
-              Bạn đồng ý không sử dụng TappyAI cho mục đích bất hợp pháp, gây hại hoặc vi phạm
-              quyền của người khác.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">5. Thay đổi điều khoản</h3>
-            <p>
-              TappyAI có thể cập nhật điều khoản này theo thời gian. Việc tiếp tục sử dụng dịch vụ
-              sau khi có thay đổi đồng nghĩa với việc bạn chấp nhận các điều khoản mới.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">6. Liên hệ</h3>
-            <p>Nếu có thắc mắc về điều khoản, vui lòng liên hệ qua email hỗ trợ của TappyAI.</p>
-          </div>
-        </div>
-
-        <div className="mt-6 text-center">
-          <Link href="/login" className="inline-flex items-center gap-2 text-sm text-link font-medium hover:underline">
-            <ArrowLeft size={14} />
-            Quay lại đăng nhập
-          </Link>
-        </div>
-      </main>
-    </div>
-  )
+  return <LegalDocument doc={TERMS} />
 }
