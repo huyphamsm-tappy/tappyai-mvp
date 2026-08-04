@@ -154,3 +154,7 @@ Discovered while filing this ADR, recorded so it is not lost:
 Recommendation: adopt one series with a registry file, and give the duplicated
 `ADR-014` pair distinct numbers. Not actioned here — renumbering a binding ADR
 cited by the Engineering Constitution is its own change, needing its own approval.
+
+**Owner decision 2026-08-03:** keep this ADR at 017; do not consolidate now.
+Tracked as **[BL-001 — ADR Consolidation & Numbering Cleanup](../controller-v2/BACKLOG.md#bl-001--adr-consolidation--numbering-cleanup)**,
+gated on completion of the Controller V2 Foundation.
