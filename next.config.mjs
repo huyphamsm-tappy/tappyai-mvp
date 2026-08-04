@@ -111,6 +111,26 @@ const nextConfig = {
       { source: '/:path*', headers: securityHeaders },
     ]
   },
+  async redirects() {
+    return [
+      {
+        // The Privacy Policy has one source of truth: /privacy. This route used
+        // to render a second, independently maintained Vietnamese copy, which is
+        // what the in-app Settings menu linked to — so signed-in users kept
+        // reading the old policy after /privacy was rewritten.
+        //
+        // This lives here rather than in the page component because a redirect
+        // thrown from an App Router page cannot set an HTTP status: the response
+        // is already streaming, so Next degrades it to a 200 carrying
+        // <meta http-equiv="refresh">, which crawlers and non-JS clients see as
+        // a contentless 200. next.config redirects are evaluated before the
+        // filesystem route, so this returns a real 308 and the page never renders.
+        source: '/profile/privacy',
+        destination: '/privacy',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default nextConfig
