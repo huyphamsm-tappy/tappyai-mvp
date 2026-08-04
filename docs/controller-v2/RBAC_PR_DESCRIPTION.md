@@ -45,7 +45,7 @@ with every Hub added:
 | New permission engine | 9 modules + 4 test files, ~1 850 lines |
 | Authorization decision points | 20 |
 | Permissions defined | 14 across 6 modules |
-| Tests added | 88 (47 engine + 22 migration + 12 guards + 7 invalidation) |
+| Tests added | 101 (47 engine + 23 migration + 12 guards + 7 invalidation + 12 nav) |
 | **SQL statements** | **0** |
 | **New environment variables** | **0** |
 
@@ -121,6 +121,15 @@ All were found by auditing the implementation, not by tests failing.
 | R-8 | **Two Actor construction sites.** Adding `resolveActorForUser` reintroduced the duplicated field mapping the Component 2 review had removed, and left a comment claiming there was only one. | duplication |
 | R-9 | `invalidateRoleCache → permissionCache.invalidate` had **no assertion behind it**. The wire could be cut by a refactor with every test still green. 7 tests added, RED/GREEN proven. | missing tests |
 
+### From the PR review (4)
+
+| # | Finding | Severity |
+|---|---|---|
+| P-1 | **The R-2 fix did not work.** Overriding `add` on a Set and freezing it is defeated by `Set.prototype.add.call` — the review proved `analyst` really could gain `security.roles.grant`. Replaced with a view object that has no [[SetData]], so every prototype method throws. | security |
+| P-2 | **Four nav placeholders lost their role gate.** `ready:false` entries carry no permission, so `filterByPermission` passed them through — an analyst could see `Users`, `Engagement` and `Monitoring`, previously admin-only. Nothing tested the nav. | regression |
+| P-3 | **Undeclared Policy Change.** The layout gate changed from "must hold a role" to "Owner OR holds a role", admitting a roleless Platform Owner where the previous code redirected them out. Correct, but it was never declared — and the badge then labelled them "analyst". | policy |
+| P-4 | **Audit recorded a fabricated role.** `actorRole: actor.highestRole ?? 'admin'` logs a role the Owner may not hold, now that P-3 lets a roleless Owner reach these handlers. `metadata.is_platform_owner` added. | audit integrity |
+
 ### From the initial self-review (6)
 
 1. **The engine had zero consumers.** The first implementation was a complete,
@@ -170,7 +179,7 @@ npx tsc --noEmit && npx vitest run && npm run architecture:check && npx next bui
 | Gate | Result |
 |---|---|
 | `tsc --noEmit` | ✅ clean |
-| `vitest run` | ✅ **65 files / 634 tests passed** |
+| `vitest run` | ✅ **66 files / 647 tests passed** |
 | `architecture:check` | ✅ 7/7 rules |
 | `next lint` | ✅ 0 errors (pre-existing warnings only, none in `permissions/`) |
 | `next build` | ✅ compiled; all `/admin` routes `ƒ` dynamic |

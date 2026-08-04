@@ -46,7 +46,7 @@ Expected:
 | Gate | Expected |
 |---|---|
 | `tsc --noEmit` | exit 0, no output |
-| `vitest run` | **65 files / 634 tests passed**, 0 failed |
+| `vitest run` | **66 files / 647 tests passed**, 0 failed |
 | `architecture:check` | 7/7 rules passed |
 | `next build` | compiled successfully; **all `/admin` routes marked `ƒ` (dynamic)** |
 
@@ -164,6 +164,31 @@ There is no data to repair and no partial state to reconcile. Roles in
 The last trigger is the one the migration lock test is designed to make
 impossible, but verify it in production anyway — the test proves the registry
 matches the old ladder, not that the deployed build is the tested build.
+
+## 4b. The one declared Policy Change
+
+Everything else in this component preserves behaviour exactly. This does not,
+so it is called out on its own.
+
+**A Platform Owner holding no admin role can now reach `/admin`.**
+
+| | |
+|---|---|
+| Before | `if (!resolveAdminRole(user.id)) redirect('/reviews')` — an Owner with no `admin_roles` row was redirected out of their own Controller |
+| After | `if (!actor.isOwner && actor.roles.length === 0) redirect('/reviews')` |
+
+Ownership does not derive from a role, so it must not depend on one — locking
+the Owner out contradicts the Component 1 principle the Owner Guard exists to
+enforce. **Nobody else is affected:** for any non-Owner the condition is
+identical to before.
+
+Verify during §3.1 that the Owner's badge reads **Platform Owner**, not
+"analyst" — that label bug was fixed alongside this and is the visible signal
+that `isOwner` is resolving.
+
+Not currently reachable in production: the Owner holds `super_admin` (the
+bootstrap derived ownership from it, and `fn_revoke_admin_role` protects it).
+This closes the path architecturally rather than relying on that.
 
 ## 5. What this deployment does NOT do
 

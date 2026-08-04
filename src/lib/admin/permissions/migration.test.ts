@@ -89,7 +89,23 @@ describe('Component 3 — the role map cannot be widened at runtime', () => {
     const map = buildRolePermissionMap(permissionRegistry)
     const analyst = map.get('analyst') as unknown as Set<PermissionId>
 
-    expect(() => analyst.add(PERMISSIONS.SECURITY_ROLES_GRANT)).toThrow(/immutable/)
+    expect(() => analyst.add(PERMISSIONS.SECURITY_ROLES_GRANT)).toThrow(TypeError)
+    expect(rolesGranted(PERMISSIONS.SECURITY_ROLES_GRANT)).toEqual(['super_admin'])
+  })
+
+  // The PR review defeated the FIRST fix with exactly this. Overriding `add` on
+  // a Set and freezing it does nothing, because `Set.prototype.add.call` reaches
+  // the internal slot directly — `analyst` really did gain `security.roles.grant`.
+  it('rejects mutation through Set.prototype, not just the own methods', () => {
+    const map = buildRolePermissionMap(permissionRegistry)
+    const analyst = map.get('analyst') as unknown as Set<PermissionId>
+
+    expect(() => Set.prototype.add.call(analyst, PERMISSIONS.SECURITY_ROLES_GRANT)).toThrow(TypeError)
+    expect(() => Set.prototype.clear.call(analyst)).toThrow(TypeError)
+    expect(() => Set.prototype.delete.call(analyst, PERMISSIONS.DASHBOARD_HOME_VIEW)).toThrow(TypeError)
+
+    expect(analyst.has(PERMISSIONS.SECURITY_ROLES_GRANT)).toBe(false)
+    expect(analyst.has(PERMISSIONS.DASHBOARD_HOME_VIEW)).toBe(true)
     expect(rolesGranted(PERMISSIONS.SECURITY_ROLES_GRANT)).toEqual(['super_admin'])
   })
 })

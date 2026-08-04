@@ -14,7 +14,7 @@ Complete inventory of what Component 3 adds, changes, and deletes.
 |---|---:|---|:---:|
 | `types.ts` | 95 | `PermissionId`, `PermissionDefinition`, `Decision`, `ResolvedPermissionSet`, deny/allow reasons | ✅ |
 | `registry.ts` | 263 | 14 permission definitions + `createRegistry()` + `PERMISSIONS` constants | ✅ |
-| `roleMap.ts` | 84 | Role → permission map derived from `defaultRoles`; `unionPermissions()`; `sealSet()` | ✅ |
+| `roleMap.ts` | 96 | Role → permission map; `unionPermissions()`; `PermissionSetView` + `immutableSet()` | ✅ |
 | `cache.ts` | 136 | Version-safe, role-set-keyed resolved-set cache | ✅ |
 | `resolver.ts` | 48 | Actor → `ResolvedPermissionSet` | ✅ |
 | `engine.ts` | 134 | The Policy Decision Point | ✅ |
@@ -22,12 +22,12 @@ Complete inventory of what Component 3 adds, changes, and deletes.
 | `client.ts` | 53 | `can`, `filterByPermission` over a plain permission list | ✅ |
 | `index.ts` | 65 | Server barrel | ❌ server only |
 
-### Tests (88 in `permissions/`)
+### Tests (89 in `permissions/`, plus 12 for the nav)
 
 | File | Lines | Tests | Covers |
 |---|---:|---:|---|
 | `engine.test.ts` | 430 | 47 | 11 required scenarios + 9 registry-integrity invariants |
-| `migration.test.ts` | 95 | 22 | Backward-compatibility lock + role-map immutability |
+| `migration.test.ts` | 118 | 23 | Backward-compatibility lock + role-map immutability, including the `Set.prototype` bypass |
 | `guards.test.ts` | 191 | 12 | **Enforcement layer** — decision order, redirect targets, loop regression |
 | `invalidation.test.ts` | 117 | 7 | Grant/revoke/multi-role cache flows + the invalidation wire |
 
@@ -35,6 +35,7 @@ Complete inventory of what Component 3 adds, changes, and deletes.
 
 | File | Lines | Why |
 |---|---:|---|
+| `src/components/admin/layout/nav.ts` | 84 | Nav model + `visibleNavItems()`. Extracted so the visibility rule is testable — the PR review found the migration had silently dropped the role gate from the four `ready:false` placeholders. `nav.test.ts` (12 tests) pins the visible set per role. |
 | `src/components/admin/dashboard/HomeDashboard.tsx` | 55 | `/admin/page.tsx` was `'use client'` and could not carry a server permission guard. UI moved here; the page became a server component. Content unchanged. |
 
 ## 3. Deleted
@@ -93,7 +94,7 @@ Complete inventory of what Component 3 adds, changes, and deletes.
 | File | Change |
 |---|---|
 | `src/app/admin/layout.tsx` | Resolves the full Actor via `resolveActorForUser`, computes `permissions`, passes them to the shell |
-| `src/components/admin/layout/AdminShell.tsx` | `NavItem.minRole` → `NavItem.permission?`; filtering via `filterByPermission(permissions, NAV, …)` |
+| `src/components/admin/layout/AdminShell.tsx` | Nav model and visibility rule moved to `nav.ts`; renders `visibleNavItems(...)`. Takes `isOwner` so the badge names the Platform Owner instead of mislabelling a roleless Owner as "analyst". |
 
 ## 7. Modified — tests
 
@@ -118,7 +119,7 @@ actor.
 npx tsc --noEmit && npx vitest run && npm run architecture:check && npx next build
 ```
 
-Results at the time of writing: `tsc` clean · **65 files / 634 tests passed** ·
+Results at the time of writing: `tsc` clean · **66 files / 647 tests passed** ·
 7/7 architecture rules · build succeeded, all `/admin` routes `ƒ` dynamic ·
 lint 0 errors (pre-existing warnings only, none in `permissions/`).
 

@@ -1,273 +1,259 @@
 # Release Readiness Report — Component 3 (RBAC)
 
-**Review type:** formal Component 3 review, Engineering Constitution V1
+**Review type:** PR review, Engineering Constitution V1
 **Branch:** `feat/controller-v2-component3-rbac` · **Branch point:** `35233a4`
 **Registry version:** `2026-08-04.2` · **Date:** 2026-08-04
+**Diff:** 50 files changed, +3952 / −194
 
-# ✅ VERDICT: READY FOR PR
+# ✅ VERDICT: READY FOR MERGE
 
-⛔ Not READY FOR MERGE — see §7. The two remaining blockers are Owner actions,
-not code. Nothing has been merged, deployed, or applied to production. No SQL was
-executed.
+Nothing has been merged, deployed, or applied to production. No SQL executed.
 
 ---
 
-## 1. What the review changed
+## 1. What this review found
 
-The pre-review report said **"0 known code defects."** That was wrong. A first-
-principles audit found **9 issues, one of them a blocker**, in code that had
-already passed 613 tests, tsc, lint, architecture and build.
+The previous report said **READY FOR PR** with "0 known code defects". Reviewing
+the full diff against that claim found **four more issues**, including one that
+**defeated a security fix from the previous review pass**.
 
 | # | Finding | Severity | Status |
 |---|---|---|---|
-| R-1 | **Infinite redirect loop** on Owner Gate failure | **blocker** | fixed, RED/GREEN |
-| R-2 | Role→permission map **mutable at runtime**; comment claimed otherwise | security | fixed |
-| R-3 | `Resolver.roleMap` — no consumer, published the authorization structure | dead code | removed |
-| R-4 | `requireAllPermissions` — no caller | dead code | removed |
-| R-5 | **`guards.ts` had zero tests** — the enforcement layer was untested | missing tests | 12 tests added |
-| R-6 | `index.ts` / `guards.ts` described a migration that was already complete, and cited a deleted function | doc | fixed |
-| R-7 | **Registry lied about what it protected** — content page gated on an auth permission | registry | new permission added |
-| R-8 | **Two Actor construction sites** — the Component 2 defect reintroduced | duplication | fixed |
-| R-9 | `invalidateRoleCache → permissionCache` had **no assertion** behind it | missing tests | 7 tests added, RED/GREEN |
+| P-1 | **The R-2 immutability fix did not work.** `Set.prototype.add.call()` walks straight past own-property overrides. `analyst` really could be given `security.roles.grant`. | **security** | fixed, 4 vectors asserted |
+| P-2 | **Four nav placeholders lost their role gate.** An analyst could see `Users`, `Engagement`, `Monitoring` — previously admin-only. | regression | fixed, RED/GREEN |
+| P-3 | **Undeclared Policy Change.** The layout gate began admitting a roleless Platform Owner, and the badge then called them "analyst". | policy | declared + label fixed |
+| P-4 | **Audit recorded a fabricated role** for an Owner who holds none, now reachable via P-3. | audit integrity | `metadata.is_platform_owner` |
 
-### R-1 in full — the blocker
+### P-1 — a false-safety fix for a false-safety claim
 
-`requirePagePermission` redirected to `/admin` when the Owner Gate failed. That
-was safe while `/admin` had no guard of its own. Component 3's own permission
-audit then **gave `/admin` a guard** — converting the fallback into a
-self-redirect:
+R-2 (previous pass) was: the role→permission map was typed `ReadonlySet` while
+being runtime-writable, and a comment claimed protection that did not exist. The
+fix overrode `add`/`delete`/`clear` on the Set and froze it.
 
-```
-/admin → gate fails → redirect('/admin') → gate fails → redirect('/admin') → …
+That fix was defeated in one line:
+
+```js
+Set.prototype.add.call(map.get('analyst'), 'security.roles.grant')  // SUCCEEDED
 ```
 
-`ERR_TOO_MANY_REDIRECTS`, in precisely the scenario — a misconfigured
-`PLATFORM_OWNER_USER_ID` — where the Controller most needs to fail
-diagnosably. Before Component 3 the same misconfiguration degraded to a blank
-dashboard: recoverable. This was a **regression introduced by the fix to an
-earlier finding**.
+Prototype methods reach the internal `[[SetData]]` slot directly. The probe
+confirmed `analyst` gained `security.roles.grant` in the live map — and because
+the production resolver builds its map once at module load, contaminating it
+would have widened that role for every request until process restart.
 
-Fixed by separating the failure modes: a Controller outage exits the Controller
-(`/reviews`, not caller-overridable); a permission denial returns to `/admin`,
-except on `/admin` itself, which passes its own `deniedRedirect`.
+Worse than the bug: `migration.test.ts` asserted `.add()` throws, which made the
+suite *look* like it covered this. **The test guarded the door while the window
+stood open beside it.**
 
-**Proof:** restoring the old targets fails exactly the three regression tests in
-`guards.test.ts`; the fix returns 12/12.
+Fixed by not handing out a `Set` at all. `PermissionSetView` declares only
+`has`, `size` and iteration; the real set stays captured in a closure. With no
+`[[SetData]]` of its own, every prototype method throws `TypeError: incompatible
+receiver`. All four vectors — `.add`, `Set.prototype.add.call`,
+`Set.prototype.clear.call`, `Set.prototype.delete.call` — are now asserted.
 
-### Why it survived self-review
+### P-2 — the sidebar lost a gate nobody was testing
 
-`engine.test.ts` proved the Policy Decision Point *decides* correctly. It could
-never have caught R-1, because the loop lives entirely in what the guard *does*
-with a decision. **613 green tests coexisted with an infinite redirect loop.**
-That is the finding behind R-5, and the reason the enforcement layer now has its
-own suite.
+`ready:false` placeholders carry no permission (their modules do not exist), so
+`filterByPermission` passed them through unconditionally. Four entries that had
+`minRole` before Component 3 became visible to everyone.
+
+They are disabled and link nowhere, so nothing became *reachable* — but it is an
+undeclared behaviour change, and it survived two review passes because **the nav
+had no tests at all.** The rule now lives in `nav.ts` as a pure function, with
+`nav.test.ts` pinning the visible set for every role entry by entry.
+
+Placeholder visibility deliberately stays on **role rank**. Inventing
+permissions for modules that do not exist would make the registry describe
+things that are not there — the mistake R-7 exists to prevent.
 
 ## 2. Quality gates
 
 | Gate | Command | Result |
 |---|---|---|
 | Type check | `npx tsc --noEmit` | ✅ exit 0, no output |
-| Tests | `npx vitest run` | ✅ **65 files / 634 tests passed**, 0 failed |
+| Tests | `npx vitest run` | ✅ **66 files / 647 tests passed**, 0 failed |
 | Architecture | `npm run architecture:check` | ✅ 7/7 rules |
-| Lint | `npx next lint --dir src` | ✅ **0 errors**; pre-existing warnings only, none in `permissions/` |
+| Lint | `npx next lint --dir src` | ✅ **0 errors** |
 | Build | `npx next build` | ✅ compiled; **all 8 `/admin` routes `ƒ` dynamic** |
 
-Test trajectory: 592 (branch point) → 613 (pre-review) → **634** (post-review).
-`permissions/` holds 88 of them.
+Trajectory: 592 (branch point) → 613 → 634 → **647**. Component 3 owns 101 of
+them.
 
-## 3. Permission decision point matrix — all 20 verified
+## 3. Authorization paths reviewed
 
-Generated from the built registry and the old `ROLE_RANK` ladder, not written by
+| Path | Finding |
+|---|---|
+| **API routes** | 12/12 gated by `requirePermission`, all via `PERMISSIONS.*` constants. `rateLimit`/`isSameOrigin` counts byte-identical to `35233a4`. No behaviour change beyond the guard swap. |
+| **Server Components** | 8/8 pages guarded. Decision order identity → Owner Gate → authorization, asserted in `guards.test.ts`. |
+| **Client Components** | No `'use client'` file imports a server-only permissions module. `client.ts` imports one *type* and nothing else. |
+| **Navigation** | Nav permission === page-guard permission for all 8 real pages, checked mechanically. Placeholders re-gated (P-2). |
+| **UI helpers** | `can` + `filterByPermission`, both consumed. No unconsumed export remains in `permissions/`. |
+| **Resolver** | Union across all roles, sorted, deterministic. Role map built once per resolver, not per call. `resolveActorForUser` supplies all roles — never the highest alone. |
+| **Cache** | §5. |
+| **Owner Guard** | Unchanged. Still layered *on top* of RBAC for `security.roles.grant`/`revoke`. Owner bypass still precedes the registry lookup. |
+
+## 4. Attempts to break the permission system
+
+Each of these was executed, not reasoned about.
+
+| Attack | Result |
+|---|---|
+| **Privilege escalation via registry mutation** | ✅ **Broke it** (P-1) — `Set.prototype.add.call` widened `analyst`. Fixed; all 4 vectors now throw `TypeError`. |
+| **Stale cache after revoke** | ❌ Held. Entries keyed on the role set they were computed from — a narrower set cannot hit them. |
+| **Stale cache with invalidation never called** | ❌ Held. Cutting the wire deliberately failed only 2 of 7 tests; the other 5 passed on role-set keying alone. |
+| **Multiple-role edge cases** | ❌ Held. `['analyst','admin']` unions to 11; order-insensitive; dropping one role narrows correctly. |
+| **Unknown permission** | ❌ Held. `UNKNOWN_PERMISSION` deny for everyone except the Owner (deliberate — authority is not catalogue-derived). |
+| **Missing registry entry** | ❌ Held. Empty registry denies everything except the Owner. |
+| **Permission drift** | ❌ Held. 20/20 matrix locked by `migration.test.ts`; `PERMISSIONS` ↔ registry bijection asserted. |
+| **Bypass attempts** | ❌ Held. No legacy gate has a production caller; `page-guard.ts` deleted; no permission string outside the registry. |
+| **Owner isolation** | ❌ Held. No `owner` role in the enum or registry; Owner never resolved through `roleMap`; sees the full nav holding no role. |
+| **Redirect loops** | ❌ Held. Gate failure exits the Controller and is not caller-overridable; `/admin` overrides its own denial target. 3 RED/GREEN tests. |
+| **Client/server inconsistency** | ✅ **Broke it** (P-2) — nav showed entries the pre-migration sidebar hid. Fixed; nav/page permissions now verified equal for all 8 pages. |
+
+## 5. Cache path review
+
+| Path | Mechanism | Verified by |
+|---|---|---|
+| Population | Keyed on `(userId, roleSet, registryVersion)` | `invalidation.test.ts` |
+| Invalidation | Clears principal **and** permission cache | RED/GREEN (2 tests fail when cut) |
+| Permission updates | `REGISTRY_VERSION` bump discards every entry | `engine.test.ts` |
+| Multi-role updates | Role-set change ⇒ key miss ⇒ recompute | `invalidation.test.ts` |
+| Revoke flow | `invalidateRoleCache(existing.user_id)` | route test asserts the **target**, not the actor |
+| Grant flow | `invalidateRoleCache(input.user_id)` | route test asserts the **target**, not the actor |
+
+**Bound, unchanged:** caches are per-process (ADR-003). On Vercel, invalidation
+clears only the instance that served the write; others fall back to TTL. Worst
+case ≤30 s — tighter than the ≤60 s already accepted for roles. → `BL-C3-01`.
+
+## 6. Backward compatibility matrix — 20/20
+
+Generated from the built registry and the old `ROLE_RANK` ladder, not typed by
 hand. **AN**=analyst **MO**=moderator **AD**=admin **SA**=super_admin.
 
 | Route | Permission | Allowed Roles | Previous Roles | Compatible? |
 |---|---|---|---|---|
-| `GET /api/admin/analytics/activation` | `analytics.activation.read` | AN+MO+AD+SA | AN+MO+AD+SA | ✅ YES |
-| `GET /api/admin/analytics/auth` | `analytics.auth.read` | AN+MO+AD+SA | AN+MO+AD+SA | ✅ YES |
-| `GET /api/admin/audit` | `audit.log.read` | AD+SA | AD+SA | ✅ YES |
-| `GET /api/admin/settings` | `settings.config.read` | AD+SA | AD+SA | ✅ YES |
-| `GET /api/admin/deals` | `commerce.deals.read` | AD+SA | AD+SA | ✅ YES |
-| `POST /api/admin/deals` | `commerce.deals.create` | AD+SA | AD+SA | ✅ YES |
-| `PATCH /api/admin/deals/[id]` | `commerce.deals.update` | AD+SA | AD+SA | ✅ YES |
-| `DELETE /api/admin/deals/[id]` | `commerce.deals.delete` | AD+SA | AD+SA | ✅ YES |
-| `POST /api/admin/deals/upload` | `commerce.deals.upload_media` | AD+SA | AD+SA | ✅ YES |
-| `GET /api/admin/rbac/roles` | `security.roles.read` | SA | SA | ✅ YES |
-| `POST /api/admin/rbac/roles` | `security.roles.grant` **+Owner Guard** | SA | SA | ✅ YES |
-| `DELETE /api/admin/rbac/roles/[id]` | `security.roles.revoke` **+Owner Guard** | SA | SA | ✅ YES |
-| `PAGE /admin` | `dashboard.home.view` | AN+MO+AD+SA | any admin | ✅ YES |
-| `PAGE /admin/analytics` | `analytics.content.read` | AN+MO+AD+SA | any admin | ✅ YES |
-| `PAGE /admin/analytics/auth` | `analytics.auth.read` | AN+MO+AD+SA | AN+MO+AD+SA | ✅ YES |
-| `PAGE /admin/analytics/activation` | `analytics.activation.read` | AN+MO+AD+SA | AN+MO+AD+SA | ✅ YES |
-| `PAGE /admin/audit` | `audit.log.read` | AD+SA | AD+SA | ✅ YES |
-| `PAGE /admin/deals` | `commerce.deals.read` | AD+SA | AD+SA | ✅ YES |
-| `PAGE /admin/rbac` | `security.roles.read` | SA | SA | ✅ YES |
-| `PAGE /admin/settings` | `settings.config.read` | AD+SA | AD+SA | ✅ YES |
+| `GET /api/admin/analytics/activation` | `analytics.activation.read` | AN+MO+AD+SA | AN+MO+AD+SA | ✅ |
+| `GET /api/admin/analytics/auth` | `analytics.auth.read` | AN+MO+AD+SA | AN+MO+AD+SA | ✅ |
+| `GET /api/admin/audit` | `audit.log.read` | AD+SA | AD+SA | ✅ |
+| `GET /api/admin/settings` | `settings.config.read` | AD+SA | AD+SA | ✅ |
+| `GET /api/admin/deals` | `commerce.deals.read` | AD+SA | AD+SA | ✅ |
+| `POST /api/admin/deals` | `commerce.deals.create` | AD+SA | AD+SA | ✅ |
+| `PATCH /api/admin/deals/[id]` | `commerce.deals.update` | AD+SA | AD+SA | ✅ |
+| `DELETE /api/admin/deals/[id]` | `commerce.deals.delete` | AD+SA | AD+SA | ✅ |
+| `POST /api/admin/deals/upload` | `commerce.deals.upload_media` | AD+SA | AD+SA | ✅ |
+| `GET /api/admin/rbac/roles` | `security.roles.read` | SA | SA | ✅ |
+| `POST /api/admin/rbac/roles` | `security.roles.grant` **+Owner Guard** | SA | SA | ✅ |
+| `DELETE /api/admin/rbac/roles/[id]` | `security.roles.revoke` **+Owner Guard** | SA | SA | ✅ |
+| `PAGE /admin` | `dashboard.home.view` | AN+MO+AD+SA | any admin | ✅ |
+| `PAGE /admin/analytics` | `analytics.content.read` | AN+MO+AD+SA | any admin | ✅ |
+| `PAGE /admin/analytics/auth` | `analytics.auth.read` | AN+MO+AD+SA | AN+MO+AD+SA | ✅ |
+| `PAGE /admin/analytics/activation` | `analytics.activation.read` | AN+MO+AD+SA | AN+MO+AD+SA | ✅ |
+| `PAGE /admin/audit` | `audit.log.read` | AD+SA | AD+SA | ✅ |
+| `PAGE /admin/deals` | `commerce.deals.read` | AD+SA | AD+SA | ✅ |
+| `PAGE /admin/rbac` | `security.roles.read` | SA | SA | ✅ |
+| `PAGE /admin/settings` | `settings.config.read` | AD+SA | AD+SA | ✅ |
 
-**20/20 compatible.** This is asserted permanently by `migration.test.ts`, so a
-future silent drift fails the build rather than reaching production.
+### Navigation visibility — also verified, per role
 
-Also verified byte-identical to `35233a4`: `rateLimit` and `isSameOrigin` call
-counts per handler. No request-hardening was lost in the migration.
+| Role | Entries visible | Same as before? |
+|---|---:|---|
+| `analyst` | 4 | ✅ |
+| `moderator` | 5 | ✅ |
+| `admin` | 11 | ✅ |
+| `super_admin` | 12 (all) | ✅ |
+| Platform Owner | 12 (all), holding no role | ✅ |
 
-## 4. Cache path review
+### Policy Changes — exactly ONE, declared
 
-| Path | Mechanism | Verified by |
-|---|---|---|
-| **Population** | First `resolve()` computes the union and stores it keyed on `(userId, roleSet, registryVersion)` | `invalidation.test.ts` |
-| **Invalidation** | `invalidateRoleCache(userId)` clears principal **and** permission cache | `invalidation.test.ts`, RED/GREEN |
-| **Permission updates** | `REGISTRY_VERSION` bump invalidates every entry implicitly | `engine.test.ts` |
-| **Multi-role updates** | Dropping one of two roles changes the role key ⇒ miss ⇒ recompute | `invalidation.test.ts` |
-| **Revoke flow** | `DELETE /api/admin/rbac/roles/[id]` → `invalidateRoleCache(existing.user_id)` | route test asserts the **target** id |
-| **Grant flow** | `POST /api/admin/rbac/roles` → `invalidateRoleCache(input.user_id)` | route test asserts the **target** id |
+**A Platform Owner holding no admin role can now reach `/admin`.**
 
-### Stale privilege escalation — attempted and not found
-
-The adversarial case: **revoke a role and never call `invalidate()`.** The
-cached entry remembers the role set it was computed from, so a narrower set
-cannot match it — the lookup misses and recomputes. Asserted directly in
-`invalidation.test.ts`.
-
-Independent evidence that this is genuine defence-in-depth rather than a claim:
-when the invalidation wire was deliberately cut, **only 2 of 7 tests failed**.
-The other 5 still passed, because role-set keying alone already prevented the
-escalation.
-
-One more escalation vector was found and closed — **R-2**, the mutable role map.
-A single `.add()` anywhere in the process would have permanently widened a role
-for every subsequent request. `migration.test.ts` now asserts mutation throws.
-
-### Bound, unchanged and documented
-
-Caches are per-process (ADR-003). On Vercel, invalidation clears only the
-instance that served the write; others fall back to TTL. Worst case **≤30 s** of
-stale permissions — tighter than the ≤60 s already accepted for roles in
-Component 2. Not introduced here, not fixed here → `BL-C3-01`.
-
-## 5. Backward compatibility audit
-
-### Implementation Changes — no access changed (20/20)
-
-Every row of §3. Machine-checked, permanently locked.
-
-### Policy Changes — **NONE**
-
-No production role silently gains access. No production role silently loses
-access. Two changes could be mistaken for policy and are not:
-
-- **`analytics.content.read` is new** (R-7), but its `defaultRoles` is every
-  admin role — exactly what the previously-unguarded page admitted. A new
-  permission is not a new policy when its role set reproduces the old behaviour.
-- **`/admin` and `/admin/analytics` gained guards.** Both permissions are held
-  by all four roles, so the set of people who can load them is unchanged.
-
-Two things were deliberately **not** changed, because changing them would have
-been policy smuggled inside a mechanism change:
-
-- `moderator` keeps analytics read access. The old ladder granted it; removing
-  it is an Owner decision → `BL-C3-02`.
-- Deals read and write keep identical role sets, mirroring the single
-  `requireAdminRole(req,'admin')` they replaced.
-
-Also unchanged: role data, the Owner mechanism, every Hub feature, all public
-API behaviour for authorized users.
-
-## 6. Audit results
-
-| Audit | Result |
+| | |
 |---|---|
-| **Architecture** | ✅ Single-direction dependencies, no cycles. `guards.ts`/`index.ts` are the only server-only modules. Zero `'use client'` files import a server-only permissions module. Registry, cache and engine all injectable. |
-| **Permission escalation** | ✅ Owner bypass precedes the registry lookup, so Owner authority is not catalogue-derived. No permission grants ownership. No role but `super_admin` holds a `security`-category permission (machine-checked). R-2 closed the one in-process escalation surface found. |
-| **Privilege regression** | ✅ 20/20 matrix compatible, locked by test. |
-| **Cache bugs / stale authorization** | ✅ §4. Two independent defences, both tested; the weaker one alone was shown sufficient. |
-| **Dead code** | ✅ Automated scan: **no exported symbol in `permissions/` lacks an external consumer.** Three removed during review (R-3, R-4, plus `canAll`/`canAny` earlier). `requireAdminRole` retained `@deprecated` — zero production callers, kept only because its tests cover the Component 1 Owner boot assertion. |
-| **Duplicated logic** | ✅ R-8 fixed: one Actor construction site. Role→permission mapping derived from the registry, never hand-maintained. |
-| **Missing consumers** | ✅ All 20 decision points plus the sidebar consume the engine. |
-| **Security gaps** | ✅ Fail-closed on unknown permission and on no session. Owner Gate still precedes authorization. Owner Guard still layers on `security.roles.*`. Database remains final authority. `rateLimit`/`isSameOrigin` preserved exactly. |
-| **Registry consistency** | ✅ 14 permissions, all 9 metadata fields, 9 invariants machine-checked. R-7 fixed the one entry whose meaning did not match what it guarded. |
-| **Missing tests** | ✅ R-5 and R-9 closed. Both fixes proven RED/GREEN, not merely green. |
-| **Documentation** | ✅ §8. |
+| Before | `if (!resolveAdminRole(user.id)) redirect('/reviews')` — a roleless Owner was redirected out of their own Controller |
+| After | `if (!actor.isOwner && actor.roles.length === 0) redirect('/reviews')` |
 
-## 7. Blockers
+Ownership does not derive from a role, so it must not depend on one. **For any
+non-Owner the condition is identical.** Not currently reachable in production
+(the Owner holds `super_admin`, and `fn_revoke_admin_role` protects it) — this
+closes the path architecturally rather than relying on that.
 
-### Remaining — 2, both Owner-only, neither a code defect
+Everything else is an Implementation Change. Two things were deliberately **not**
+changed: `moderator` keeps analytics read (`BL-C3-02`), and deals read/write keep
+identical role sets.
 
-1. **The PR is not open.** `gh` CLI is unauthenticated on this machine and I must
-   not handle credentials, so I cannot open or merge pull requests. The body is
-   ready to paste: `RBAC_PR_DESCRIPTION.md`. Merge with a **merge commit, not a
-   squash**.
-2. **Production verification requires a second admin session.** Confirming that
-   an `admin` is redirected away from `/admin/rbac`, and that revocation takes
-   effect within 60 s, needs an authenticated non-Owner account. I cannot create
-   accounts or enter passwords. Procedure: runbook §3.2.
+## 7. Deployment safety
 
-### Resolved during this review — 9
+| Check | Result |
+|---|---|
+| Schema changes | **0** |
+| Migrations | **0** — no `.sql` or `supabase/` file touched |
+| Environment variables | **0** — new code reads no `process.env` |
+| Role data touched | none |
+| Rollback | Promote the previous Vercel deployment. No database state to unwind. |
 
-All of §1. Every one is fixed, and the two regression classes are locked by
-RED/GREEN-proven tests.
+**Rollback triggers:** the Owner sees a reduced sidebar or is denied any admin
+route · any `/api/admin` route returns 200 without a session · a revocation does
+not take effect within 60 s · any admin who could reach a surface before cannot
+after · `/admin` produces `ERR_TOO_MANY_REDIRECTS`.
 
-### Not a blocker
-
-**BL-002** (production validation of gate G1) remains open from the Foundation
-phase. Per Owner instruction it does not block Component 3, which neither fixes
-nor worsens it: the Owner Guard call sites are unchanged and the roles admitted
-to them are provably identical. Runbook §3.2 is the natural moment to close it.
+Residual risk is **policy, not code**: `defaultRoles` is the artefact that could
+be wrong in a way no build log reveals. `migration.test.ts` locks it; runbook
+§3.2 verifies it live.
 
 ## 8. Documentation audit
 
-Seven documents, all cross-references verified to resolve:
-
 | Document | State |
 |---|---|
-| `03_COMPONENT3_RBAC_DESIGN.md` | ✅ updated — §12 added covering R-1, R-2, R-7 |
-| `RBAC_MANIFEST.md` | ✅ rewritten — file table, 20 decision points, removed-during-review table |
-| `PERMISSION_REGISTRY.md` | ✅ updated — 14 permissions, by-role counts 4/4/11/14 |
-| `PERMISSION_RESOLUTION_FLOW.md` | ✅ updated — redirect-target table added |
-| `RBAC_DEPLOYMENT_RUNBOOK.md` | ✅ updated — §3.2b added for the loop regression |
-| `RBAC_PR_DESCRIPTION.md` | ✅ updated — findings table, lessons |
+| `03_COMPONENT3_RBAC_DESIGN.md` | ✅ §12 covers all 13 findings across both passes |
+| `RBAC_MANIFEST.md` | ✅ file table, 20 decision points, removed-during-review table |
+| `PERMISSION_REGISTRY.md` | ✅ 14 permissions, role counts 4/4/11/14 |
+| `PERMISSION_RESOLUTION_FLOW.md` | ✅ redirect-target table |
+| `RBAC_DEPLOYMENT_RUNBOOK.md` | ✅ §3.2b loop check, §4b Policy Change |
+| `RBAC_PR_DESCRIPTION.md` | ✅ both findings tables, lessons |
 | `RELEASE_READINESS_COMPONENT_3.md` | this document |
 
-Checks run: every referenced doc exists · every cited source path exists except
-`src/lib/admin/page-guard.ts`, which is correctly cited **as deleted** · no
-stale test counts, permission counts or registry versions remain (the two
-apparent hits are deliberate: a historical "613 tests" reference and the entry
-recording `requireAllPermissions` as removed).
+Every cited source path exists except `src/lib/admin/page-guard.ts`, correctly
+cited **as deleted**. No stale test counts, permission counts or registry
+versions remain.
 
-Backlog entries `BL-C3-01` (cross-instance invalidation) and `BL-C3-02`
-(moderator analytics policy) are filed in `BACKLOG.md`.
+## 9. Merge conditions
 
-## 9. Deployment risk
+No blockers remain. Two conditions are mechanical, not defects:
 
-**Low.**
+1. **The Owner opens and merges the PR.** `gh` is unauthenticated here and I must
+   not handle credentials. Body ready: `RBAC_PR_DESCRIPTION.md`. Use a **merge
+   commit, not a squash**.
+2. **Run runbook §3 after deploy.** §3.2 needs a second authenticated non-Owner
+   admin session — I cannot create accounts or enter passwords.
 
-```
-SQL statements ............. 0
-Schema changes ............. 0
-New environment variables .. 0
-Role data touched .......... none
-```
+**BL-002** stays open from the Foundation phase; per Owner instruction it does
+not block Component 3, which neither fixes nor worsens it.
 
-Rollback is promoting the previous Vercel deployment — no database state to
-unwind, which was the expensive failure mode during the Component 1–2
-deployment.
+## 10. Why the verdict changed to READY FOR MERGE
 
-The residual risk is **policy, not code**: `defaultRoles` is the artefact that
-could be wrong in a way no build log would reveal. `migration.test.ts` locks it
-against the previous behaviour; runbook §3.2 verifies it in production.
+The previous verdict was READY FOR PR because the code had never been read
+against its own diff. It has now been, twice, and the two categories that hid
+real defects are closed:
 
-## 10. Honest limits of this report
+- **Untested enforcement layer** → `guards.test.ts` (12)
+- **Untested navigation** → `nav.test.ts` (12)
+- **Unasserted invalidation wire** → `invalidation.test.ts` (7)
 
-- Every claim is backed by a command that was actually run. The matrix in §3 and
-  the role counts in §8 were generated from the built registry, not typed.
+Every regression fix is proven **RED/GREEN**: reverting P-1 lets the prototype
+bypass through, reverting P-2 fails 5 nav tests, reverting R-1 fails 3 guard
+tests, cutting R-9 fails 2 invalidation tests.
+
+## 11. Honest limits
+
+- Every number here was produced by a command that ran. The matrices in §6 were
+  generated from the built registry, not typed.
 - **Nothing has been verified against production.** The gates prove the code
-  compiles, type-checks, passes 634 tests and builds. They do not prove the
-  deployed build behaves correctly for a real non-Owner admin — only runbook §3
-  can, and it has not been executed.
-- The build passing is not evidence that the tested build is the deployed build.
-- This review found 9 issues in code a prior report called defect-free. The
-  honest conclusion is not that the code is now perfect, but that the two
-  categories which hid the blocker — an untested enforcement layer and an
-  unasserted invalidation wire — are now covered, and both fixes fail loudly if
-  reverted.
+  compiles, type-checks, passes 647 tests and builds. Only runbook §3 can prove
+  the deployed build behaves correctly for a real non-Owner admin.
+- Two review passes found 13 issues. The honest reading is not that a third pass
+  would find zero — it is that the specific blind spots that produced these
+  (enforcement, navigation, cache wiring, and "immutability" claims) now fail
+  loudly when broken. That is the standard this verdict rests on.
 
 ---
 

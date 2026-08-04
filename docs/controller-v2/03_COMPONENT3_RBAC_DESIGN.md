@@ -219,14 +219,14 @@ helper.
 
 ## 10. Test strategy
 
-88 tests across four files:
+101 tests across five files:
 
 - `engine.test.ts` (47) — the 11 required scenarios plus production-registry
   integrity invariants: id format, complete metadata, module prefix matches
   `module`, `PERMISSIONS` ↔ registry bijection, `security` category ⇒
   `critical`, `destructive` ⇒ ≥ `high`, `read` ⇒ never `critical`, `analyst`
   holds only `read`, no non-`super_admin` holds a `security`-category permission.
-- `migration.test.ts` (22) — the **backward-compatibility lock**: for all 20
+- `migration.test.ts` (23) — the **backward-compatibility lock**: for all 20
   decision points, asserts the new permission grants *exactly* the role set the
   old ladder admitted. Plus the role-map immutability assertion.
 - `guards.test.ts` (12) — the **enforcement layer**: decision order, failure
@@ -235,6 +235,8 @@ helper.
 - `invalidation.test.ts` (7) — grant, revoke and multi-role cache flows, plus
   an adversarial case proving a revoked role cannot authorize **even if
   invalidation is never called**.
+- `nav.test.ts` (12) — navigation visibility pinned per role against the
+  pre-Component-3 sidebar, entry by entry.
 
 The integrity invariants matter more than they look. They mean a future engineer
 adding a `critical` permission to `analyst` gets a red test rather than a
@@ -245,9 +247,11 @@ production incident.
 See `RBAC_MANIFEST.md` for the complete inventory with line counts and the
 per-file audit results.
 
-## 12. What the formal review changed
+## 12. What the reviews changed
 
-The review found nine issues in this component's own implementation. Three are
+Two review passes found **thirteen** issues in this component's own
+implementation — nine in the implementation review, four more in the PR review
+that followed it. Three are
 worth reading in full because they are design-level, not typos.
 
 ### R-1 — the redirect loop (blocker)
@@ -284,4 +288,41 @@ permission, because that was the closest existing entry. Same roles, so no
 access changed — but the registry is supposed to be the answer to "what does
 this permission protect", and that answer was wrong. Added
 `analytics.content.read` with identical `defaultRoles`.
+
+### P-1 — the R-2 fix did not work
+
+The first attempt at R-2 overrode `add`/`delete`/`clear` on the Set and froze
+it. The PR review defeated it in one line:
+
+```js
+Set.prototype.add.call(map.get('analyst'), 'security.roles.grant')  // succeeded
+```
+
+Prototype methods reach the internal [[SetData]] slot directly, straight past
+own-property overrides. `analyst` really did gain `security.roles.grant`. **A
+fix for a false-safety claim was itself a false-safety claim** — and
+`migration.test.ts` had been asserting the guarded door while the window stood
+open beside it.
+
+The working fix is to stop handing out a `Set`. `PermissionSetView` declares
+only `has`, `size` and iteration; the real set stays captured in a closure. With
+no [[SetData]] of its own, every prototype method throws "incompatible
+receiver". All four mutation vectors are now asserted.
+
+### P-2 — the sidebar lost a gate nobody was testing
+
+Four `ready:false` placeholders (`/admin/users`, `/admin/moderation`,
+`/admin/engagement`, `/admin/monitoring`) carried `minRole` before Component 3.
+They own no permission — the modules do not exist — so `filterByPermission`
+passed them through unconditionally and **an analyst began seeing admin-only
+entries**.
+
+They are disabled placeholders, so nothing was actually reachable. It is still a
+behaviour change that went undeclared, and the reason it went unnoticed is that
+the nav had no tests at all. The rule now lives in `nav.ts` as a pure function
+with `nav.test.ts` pinning the visible set for every role, entry by entry.
+
+Placeholder visibility deliberately stays on **role rank**. Inventing
+permissions for modules that do not exist would make the registry describe
+things that are not there — the mistake R-7 exists to prevent.
 

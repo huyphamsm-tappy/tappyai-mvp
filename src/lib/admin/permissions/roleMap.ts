@@ -14,7 +14,20 @@ import type { AdminRole } from '@/lib/admin/roles'
 import type { PermissionId } from './types'
 import type { PermissionRegistry } from './registry'
 
-export type RolePermissionMap = ReadonlyMap<AdminRole, ReadonlySet<PermissionId>>
+/**
+ * A read-only view of one role's permissions.
+ *
+ * Deliberately NOT `ReadonlySet`: that type is satisfied only by a real `Set`,
+ * and a real `Set` can always be mutated through `Set.prototype` regardless of
+ * how it is typed or frozen. Declaring the two operations actually needed lets
+ * the map hand out something with no mutable interior at all.
+ */
+export interface PermissionSetView extends Iterable<PermissionId> {
+  has(permission: PermissionId): boolean
+  readonly size: number
+}
+
+export type RolePermissionMap = ReadonlyMap<AdminRole, PermissionSetView>
 
 /**
  * Build the role → permission map from a registry.
@@ -34,33 +47,48 @@ export function buildRolePermissionMap(registry: PermissionRegistry): RolePermis
       set.add(definition.id)
     }
   }
-  // Genuinely immutable, not just `ReadonlySet`-typed.
-  //
-  // The audit caught this claiming protection it did not provide: `ReadonlySet`
-  // is erased at compile time, and `Object.freeze` does NOT stop `Set.add` —
-  // so every role's permission set was writable at runtime through a shared
-  // reference. On the authorization hot path that is a privilege-escalation
-  // surface, however in-process. `sealSet` closes it for real.
-  const frozen = new Map<AdminRole, ReadonlySet<PermissionId>>()
-  for (const [role, set] of map) frozen.set(role, sealSet(set))
+  const frozen = new Map<AdminRole, PermissionSetView>()
+  for (const [role, set] of map) frozen.set(role, immutableSet(set))
   return frozen
 }
 
-/** A Set that throws on mutation, so the map cannot be widened after build. */
-function sealSet(set: ReadonlySet<PermissionId>): ReadonlySet<PermissionId> {
-  const deny = (): never => {
-    throw new TypeError('[permissions] the role→permission map is immutable')
-  }
-  const sealed = new Set(set)
-  return Object.freeze(
-    Object.assign(sealed, { add: deny, delete: deny, clear: deny })
-  ) as ReadonlySet<PermissionId>
+/**
+ * A genuinely immutable permission-set view.
+ *
+ * This took two attempts, and the failures are the interesting part:
+ *
+ *  1. Returning the `Set` typed as `ReadonlySet` protects nothing — the type is
+ *     erased at compile time, so `map.get('analyst').add(...)` widened a role at
+ *     runtime, process-wide, on the authorization hot path.
+ *  2. Overriding `add`/`delete`/`clear` on the Set and freezing it protects
+ *     nothing either: `Set.prototype.add.call(theSet, x)` reaches the internal
+ *     [[SetData]] directly, straight past the overrides. The PR review proved
+ *     this — `analyst` gained `security.roles.grant`.
+ *
+ * The fix is to not hand out a `Set` at all. This object has no [[SetData]] of
+ * its own, so every `Set.prototype` method throws "incompatible receiver"
+ * instead of mutating it. The real set stays captured in this closure,
+ * unreachable from any caller.
+ */
+function immutableSet(source: ReadonlySet<PermissionId>): PermissionSetView {
+  const inner = new Set(source)
+  return Object.freeze({
+    has: (value: PermissionId) => inner.has(value),
+    size: inner.size,
+    [Symbol.iterator]: () => inner[Symbol.iterator](),
+  })
 }
 
 /** Permissions a single role holds. Empty set for a role with no declared permissions. */
-export function permissionsForRole(map: RolePermissionMap, role: AdminRole): ReadonlySet<PermissionId> {
-  return map.get(role) ?? new Set<PermissionId>()
+export function permissionsForRole(map: RolePermissionMap, role: AdminRole): PermissionSetView {
+  return map.get(role) ?? EMPTY_PERMISSION_SET
 }
+
+const EMPTY_PERMISSION_SET: PermissionSetView = Object.freeze({
+  has: () => false,
+  size: 0,
+  [Symbol.iterator]: function* () {},
+})
 
 /**
  * Union of the permissions held by every supplied role.

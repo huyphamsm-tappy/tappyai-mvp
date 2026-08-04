@@ -53,7 +53,12 @@ export async function POST(req: Request) {
     writeAuditLog({
       actorId: user.id,
       actorEmail: user.email ?? '—',
+      // `actorRole` is the actor's highest ROLE. The Platform Owner reaches this
+      // handler by OWNER_BYPASS and may hold no role at all, so the fallback
+      // would record a role they do not have. `is_platform_owner` keeps the
+      // audit trail truthful without widening the audit schema.
       actorRole: actor.highestRole ?? 'admin',
+      metadata: { is_platform_owner: actor.isOwner },
       action: 'deals.created',
       targetType: 'partner_deal',
       targetId: data.id as string,

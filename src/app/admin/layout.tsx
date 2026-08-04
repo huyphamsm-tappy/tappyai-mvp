@@ -16,6 +16,11 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login?redirect=/admin')
 
+  // POLICY CHANGE (declared — see RELEASE_READINESS §5): the previous gate was
+  // `if (!resolveAdminRole(user.id)) redirect('/reviews')`, which locked the
+  // Platform Owner out of their own Controller if they held no admin_roles row.
+  // Ownership does not derive from a role, so it must not depend on one.
+  //
   // Component 3: resolve the full Actor (all roles, not just the highest) and
   // hand the shell the actor's PERMISSIONS. The shell filters navigation on
   // those rather than on role rank, so an operator never sees a door they
@@ -29,6 +34,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     <div className="admin-theme">
       <AdminShell
         role={actor.highestRole ?? 'analyst'}
+        isOwner={actor.isOwner}
         email={user.email ?? '—'}
         permissions={permissions}
       >

@@ -1,54 +1,16 @@
 'use client'
 
-import type { ComponentType, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import {
-  LayoutDashboard, BarChart3, Users, ShieldAlert, Megaphone,
-  ScrollText, KeyRound, Settings as SettingsIcon, Activity, LogOut, UserCheck, Zap, Tag,
-} from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import { type AdminRole } from '@/lib/admin/roles'
-import { PERMISSIONS } from '@/lib/admin/permissions/registry'
-import { filterByPermission } from '@/lib/admin/permissions/client'
 import type { PermissionId } from '@/lib/admin/permissions/types'
+import { NAV, visibleNavItems } from './nav'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
-// Navigation model. `minRole` gates visibility (12_RBAC.md). `ready:false` items
-// are future phases — shown disabled so the full structure is visible (UI/UX §4.2).
-type NavItem = {
-  href: string
-  labelKey: string
-  icon: ComponentType<{ className?: string }>
-  /**
-   * Component 3: permission required to see this entry, replacing the old
-   * `minRole`. Visibility now follows the actor's resolved permission set
-   * rather than role rank, so a role can be broad in one module and absent
-   * from another — something a ladder could not express.
-   *
-   * `undefined` means the entry is always visible; used by `ready:false`
-   * placeholders for modules that do not exist yet and therefore own no
-   * permission.
-   */
-  permission?: PermissionId
-  ready: boolean
-}
-
-const NAV: NavItem[] = [
-  { href: '/admin', labelKey: 'admin.nav.dashboard', icon: LayoutDashboard, permission: PERMISSIONS.DASHBOARD_HOME_VIEW, ready: true },
-  { href: '/admin/analytics', labelKey: 'admin.nav.analytics', icon: BarChart3, permission: PERMISSIONS.ANALYTICS_CONTENT_READ, ready: true },
-  { href: '/admin/analytics/auth', labelKey: 'admin.nav.authAnalytics', icon: UserCheck, permission: PERMISSIONS.ANALYTICS_AUTH_READ, ready: true },
-  { href: '/admin/analytics/activation', labelKey: 'admin.nav.activationAnalytics', icon: Zap, permission: PERMISSIONS.ANALYTICS_ACTIVATION_READ, ready: true },
-  { href: '/admin/users', labelKey: 'admin.nav.users', icon: Users, ready: false },
-  { href: '/admin/moderation', labelKey: 'admin.nav.moderation', icon: ShieldAlert, ready: false },
-  { href: '/admin/engagement', labelKey: 'admin.nav.engagement', icon: Megaphone, ready: false },
-  { href: '/admin/audit', labelKey: 'admin.nav.auditLog', icon: ScrollText, permission: PERMISSIONS.AUDIT_LOG_READ, ready: true },
-  { href: '/admin/deals', labelKey: 'admin.nav.deals', icon: Tag, permission: PERMISSIONS.COMMERCE_DEALS_READ, ready: true },
-  { href: '/admin/rbac', labelKey: 'admin.nav.roles', icon: KeyRound, permission: PERMISSIONS.SECURITY_ROLES_READ, ready: true },
-  { href: '/admin/monitoring', labelKey: 'admin.nav.monitoring', icon: Activity, ready: false },
-  { href: '/admin/settings', labelKey: 'admin.nav.settings', icon: SettingsIcon, permission: PERMISSIONS.SETTINGS_CONFIG_READ, ready: true },
-]
 
 const ROLE_LABEL_KEY: Record<AdminRole, string> = {
   super_admin: 'admin.role.superAdmin',
@@ -60,11 +22,14 @@ const ROLE_LABEL_KEY: Record<AdminRole, string> = {
 export function AdminShell({
   role,
   email,
+  isOwner,
   permissions,
   children,
 }: {
   /** Display only — the role badge. Authorization uses `permissions`. */
   role: AdminRole
+  /** The Owner holds no role but outranks every one of them — see the badge and placeholder filter. */
+  isOwner: boolean
   email: string
   /**
    * The actor's resolved permission set, computed server-side in the layout.
@@ -87,7 +52,7 @@ export function AdminShell({
             <Badge variant="muted">{t('admin.shell.badge')}</Badge>
           </div>
           <nav className="flex-1 p-3 space-y-1">
-            {filterByPermission(permissions, NAV, (item) => item.permission).map((item) => {
+            {visibleNavItems(NAV, permissions, role, isOwner).map((item) => {
               const active = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
               const Icon = item.icon
               if (!item.ready) {
@@ -143,7 +108,7 @@ export function AdminShell({
               </div>
               <div className="text-right">
                 <div className="text-sm font-medium truncate max-w-[180px]">{email}</div>
-                <div className="text-xs text-muted-foreground">{t(ROLE_LABEL_KEY[role])}</div>
+                <div className="text-xs text-muted-foreground">{t(isOwner ? 'admin.role.owner' : ROLE_LABEL_KEY[role])}</div>
               </div>
               <Link
                 href="/reviews"
