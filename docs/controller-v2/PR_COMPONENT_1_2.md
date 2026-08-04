@@ -153,7 +153,7 @@ The asymmetry is acceptable because this gate is **not the primary control** —
 
 ## Deferred hardening strategy
 
-The third layer — `REVOKE INSERT, UPDATE, DELETE ON admin_roles FROM service_role` — is **staged, not shipped**, per [ADR-017](../architecture/ADR-017-service-role-hardening-strategy.md).
+The third layer — `REVOKE INSERT, UPDATE, DELETE ON admin_roles FROM service_role` — is **staged, not shipped**, per [ADR-017](https://github.com/huyphamsm-tappy/tappyai-mvp/blob/feat/controller-v2-foundation/docs/architecture/ADR-017-service-role-hardening-strategy.md).
 
 It is the one step in Component 1 that **cannot fail safe**: every other artefact is additive and inert on rollback, while this removes a capability running code depends on. Its true precondition is also broader than this component — *nothing anywhere* may write `admin_roles` directly — which cannot be asserted while nine Foundation components remain unbuilt.
 
@@ -189,7 +189,7 @@ Purely additive. No `DROP`, no `REVOKE`, no `ALTER` of any existing object.
 
 Nothing is granted to `anon` or `authenticated`; the ownership record must never be client-readable, and RLS remains deny-by-default with zero policies. Runbook Step 2 verifies all three conditions.
 
-Full analysis: [`ASSUMPTION_REGISTER_COMPONENT_1_2.md`](ASSUMPTION_REGISTER_COMPONENT_1_2.md).
+Full analysis: [`ASSUMPTION_REGISTER_COMPONENT_1_2.md`](https://github.com/huyphamsm-tappy/tappyai-mvp/blob/feat/controller-v2-foundation/docs/controller-v2/ASSUMPTION_REGISTER_COMPONENT_1_2.md).
 
 ### `supabase/seed/platform_owner_bootstrap.sql` (runbook Step 3)
 
@@ -226,7 +226,7 @@ Verify  Step 4 post-deploy checks
 Rollback (if needed) revert the merge commit — no DB action
 ```
 
-Full detail: [`docs/controller-v2/runbooks/COMPONENT_1_DEPLOYMENT.md`](runbooks/COMPONENT_1_DEPLOYMENT.md). Every step carries Purpose, Preconditions, Commands, Verification, Rollback and STOP conditions.
+Full detail: [`docs/controller-v2/runbooks/COMPONENT_1_DEPLOYMENT.md`](https://github.com/huyphamsm-tappy/tappyai-mvp/blob/feat/controller-v2-foundation/docs/controller-v2/runbooks/COMPONENT_1_DEPLOYMENT.md). Every step carries Purpose, Preconditions, Commands, Verification, Rollback and STOP conditions.
 
 ## Why merge MUST NOT happen before the SQL steps
 
