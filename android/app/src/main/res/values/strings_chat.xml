@@ -61,6 +61,7 @@
     <string name="chat_chip_price_watch_prefill">Tappy, track </string>
     <string name="chat_clear_pending_image">Remove photo</string>
     <string name="chat_voice_recognition_failed">Voice input isn\'t available right now.</string>
+    <string name="chat_voice_auto_send_pending">Sending in a moment… tap to edit first.</string>
     <string name="chat_composer_placeholder">Message Tappy…</string>
     <string name="chat_action_stop">Stop</string>
     <string name="chat_action_send">Send</string>

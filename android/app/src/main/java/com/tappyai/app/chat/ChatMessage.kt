@@ -25,4 +25,12 @@ data class ChatMessage(
     /** True while this assistant message is still streaming in — the UI reveals text incrementally
      *  and defers the action bar / plan card until the stream finishes. */
     val streaming: Boolean = false,
+    /**
+     * The assistant reply exactly as the model produced it, markers included — what gets persisted,
+     * so re-opening the conversation can rebuild [plan]/[ctaButtons]/[followups] from it. The web
+     * stores the same thing for the same reason: `useChat`'s `messages` hold the raw stream and its
+     * save writes `m.content` verbatim, with `parsePlan(msg.content)` running at render time
+     * (`ChatInterface.tsx`). Null on user turns and on error bubbles, which carry no markers.
+     */
+    val rawText: String? = null,
 )

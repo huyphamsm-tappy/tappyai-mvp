@@ -69,6 +69,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -250,7 +252,10 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                 ?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 ?.firstOrNull()
             if (spoken != null) {
-                viewModel.onInputChange(if (viewModel.input.isBlank()) spoken else "${viewModel.input} $spoken")
+                // Web parity (ChatInterface.tsx `recognition.onresult` + `onend`): the transcript is
+                // appended to the composer and then auto-sends after a short, cancellable window.
+                // Previously this only filled the composer, so a dictated message never sent itself.
+                viewModel.onVoiceResult(spoken)
             } else if (result.resultCode != Activity.RESULT_CANCELED) {
                 Toast.makeText(context, voiceRecognitionFailedMessage, Toast.LENGTH_SHORT).show()
             }
@@ -267,10 +272,23 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
             onPrefill = viewModel::onInputChange,
         )
 
+        // Web parity (ChatInterface.tsx voice status line): while a dictated turn is queued the user
+        // gets a tappable notice that stops the send and hands the text back for editing.
+        val composerFocus = remember { FocusRequester() }
+        if (viewModel.voiceAutoSendPending) {
+            VoiceAutoSendNotice(
+                onCancel = {
+                    viewModel.cancelVoiceAutoSend()
+                    composerFocus.requestFocus()
+                },
+            )
+        }
+
         ChatComposer(
             input = viewModel.input,
             isResponding = isResponding,
             hasPendingImage = viewModel.pendingImageUri != null,
+            focusRequester = composerFocus,
             onInputChange = viewModel::onInputChange,
             onSend = viewModel::onSend,
             onStop = viewModel::onStop,
@@ -576,12 +594,49 @@ private val CHAT_EMOJIS = listOf(
     "👍", "❤️", "🙏", "🎉", "🔥", "💯",
 )
 
+/**
+ * The voice grace-window notice — the web's `!isListening && pendingSend` status button
+ * (`ChatInterface.tsx`): same orange accent as the mic, same "tap to edit before it sends" affordance.
+ * Android has no listening/error counterparts because the system `RecognizerIntent` dialog owns both
+ * of those states (it shows its own "listening" UI and its own "didn't catch that" retry).
+ */
+@Composable
+private fun VoiceAutoSendNotice(onCancel: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = TappySpacing.md, vertical = TappySpacing.xs)
+            .clip(TappyShapes.pill)
+            .background(TAPPY_MIC_ORANGE.copy(alpha = 0.12f))
+            .clickable(onClick = onCancel)
+            .padding(horizontal = TappySpacing.md, vertical = TappySpacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(8.dp)
+                .clip(CircleShape)
+                .background(TAPPY_MIC_ORANGE),
+        )
+        Text(
+            text = stringResource(R.string.chat_voice_auto_send_pending),
+            style = MaterialTheme.typography.labelSmall,
+            color = TAPPY_MIC_ORANGE,
+        )
+    }
+}
+
+/** Web parity (ChatInterface.tsx "Nút microphone màu cam #FF9500"): Tappy's mic accent, shared by
+ *  the idle mic button and the voice auto-send notice. */
+private val TAPPY_MIC_ORANGE = Color(0xFFFF9500)
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ChatComposer(
     input: String,
     isResponding: Boolean,
     hasPendingImage: Boolean,
+    focusRequester: FocusRequester,
     onInputChange: (String) -> Unit,
     onSend: () -> Unit,
     onStop: () -> Unit,
@@ -626,7 +681,9 @@ private fun ChatComposer(
                 placeholder = stringResource(R.string.chat_composer_placeholder),
                 singleLine = false,
                 maxLines = 6,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .focusRequester(focusRequester),
             )
             // Emoji toggle (web parity: the composer's Smile button).
             IconButton(onClick = { showEmojiPanel = !showEmojiPanel }) {
@@ -641,9 +698,8 @@ private fun ChatComposer(
                 Icon(
                     imageVector = Icons.Filled.Mic,
                     contentDescription = stringResource(R.string.chat_action_voice_input),
-                    // Web parity (ChatInterface.tsx "Nút microphone màu cam #FF9500"): the idle mic
-                    // is Tappy's orange accent, not the neutral on-surface tint.
-                    tint = Color(0xFFFF9500),
+                    // The idle mic is Tappy's orange accent, not the neutral on-surface tint.
+                    tint = TAPPY_MIC_ORANGE,
                 )
             }
             if (isResponding) {

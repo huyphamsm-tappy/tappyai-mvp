@@ -61,6 +61,7 @@
     <string name="chat_chip_price_watch_prefill">Tappy theo dõi </string>
     <string name="chat_clear_pending_image">Xóa ảnh</string>
     <string name="chat_voice_recognition_failed">Nhập bằng giọng nói hiện không khả dụng.</string>
+    <string name="chat_voice_auto_send_pending">Đang gửi trong giây lát… chạm để sửa trước khi gửi.</string>
     <string name="chat_composer_placeholder">Nhắn tin cho Tappy…</string>
     <string name="chat_action_stop">Dừng</string>
     <string name="chat_action_send">Gửi</string>

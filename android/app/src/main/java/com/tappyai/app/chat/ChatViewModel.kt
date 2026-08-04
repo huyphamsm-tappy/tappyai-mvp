@@ -32,6 +32,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -178,6 +179,17 @@ class ChatViewModel @Inject constructor(
     private var nextId = 0L
     private var respondingJob: Job? = null
 
+    /**
+     * True while a dictated turn is queued to send and the user can still stop it — the web's
+     * `pendingSend` (`ChatInterface.tsx`), which renders a tappable "sending in a moment… tap to
+     * edit" status line for exactly the same window. Held in the ViewModel rather than the
+     * composable so a rotation mid-window neither cancels the send nor loses the notice.
+     */
+    var voiceAutoSendPending by mutableStateOf(false)
+        private set
+
+    private var voiceAutoSendJob: Job? = null
+
     private var textToSpeech: TextToSpeech? = null
 
     /** False until the device's TTS engine finishes initializing successfully — mirrors the
@@ -207,13 +219,7 @@ class ChatViewModel @Inject constructor(
                             // still-existing conversation with this empty history (data loss).
                             conversationId = null
                         } else {
-                            _messages.value = result.data.map { stored ->
-                                ChatMessage(
-                                    id = nextId++,
-                                    role = if (stored.role == "user") TappyChatRole.User else TappyChatRole.Assistant,
-                                    text = stored.content,
-                                )
-                            }
+                            _messages.value = result.data.map { stored -> restoreMessage(stored) }
                         }
                     }
                     is NetworkResult.Error -> {
@@ -263,11 +269,81 @@ class ChatViewModel @Inject constructor(
         })
     }
 
-    fun onInputChange(value: String) { input = value; savedStateHandle[KEY_INPUT] = value }
+    /**
+     * Rebuilds one message of a resumed conversation from its stored content. Assistant turns go
+     * back through [ChatRepository.parseAssistantReply], which is what makes a saved itinerary
+     * re-render as a [TripPlanCard] (plus its CTA buttons and followups) instead of as text with the
+     * markers stripped. This mirrors the web exactly: it feeds the stored `content` straight into
+     * `useChat`'s `initialMessages` and parses at render time, so a resumed plan card survives there.
+     */
+    private fun restoreMessage(stored: StoredChatMessage): ChatMessage {
+        val id = nextId++
+        if (stored.role == "user") {
+            return ChatMessage(id = id, role = TappyChatRole.User, text = stored.content)
+        }
+        val parsed = chatRepository.parseAssistantReply(stored.content)
+        return ChatMessage(
+            id = id,
+            role = TappyChatRole.Assistant,
+            text = parsed.text,
+            followups = parsed.followups,
+            ctaButtons = parsed.ctaButtons,
+            plan = parsed.plan,
+            rawText = stored.content,
+        )
+    }
+
+    fun onInputChange(value: String) {
+        // Web parity (`ChatInterface.tsx`'s textarea `onChange`: `if (pendingSend) cancelAutoSend()`):
+        // editing the text during the voice grace window cancels the queued auto-send, so the timer
+        // can never overtake an edit the user is still making.
+        cancelVoiceAutoSend()
+        input = value
+        savedStateHandle[KEY_INPUT] = value
+    }
 
     fun onImagePicked(uri: Uri) { pendingImageUri = uri }
 
     fun onClearPendingImage() { pendingImageUri = null }
+
+    /**
+     * Consumes a finished dictation — the native counterpart of the web's `recognition.onresult`
+     * (fill the composer) + `recognition.onend` (queue the auto-send) pair in `ChatInterface.tsx`.
+     * Android's dictation is the system `RecognizerIntent` dialog, so the transcript arrives once at
+     * the end instead of streaming in live, but everything after that point matches the web:
+     *
+     *  1. the transcript is appended to whatever was already typed (the web's `voiceBaseRef`), and
+     *  2. the turn auto-sends after [VOICE_AUTO_SEND_DELAY_MS], a window the user can cancel by
+     *     tapping the status line or by editing the text.
+     *
+     * A blank transcript queues nothing, matching the web's `voiceSpokeRef` guard — a recognition
+     * that captured no speech must never fire an empty turn.
+     */
+    fun onVoiceResult(spoken: String) {
+        val transcript = spoken.trim()
+        if (transcript.isEmpty()) return
+        val base = input.trimEnd()
+        // onInputChange cancels any previous grace window, so the pending state below is set after
+        // it — a second dictation replaces the first one's timer rather than racing it.
+        onInputChange(if (base.isEmpty()) transcript else "$base $transcript")
+        voiceAutoSendPending = true
+        voiceAutoSendJob = viewModelScope.launch {
+            delay(VOICE_AUTO_SEND_DELAY_MS)
+            // Cleared before sending so onSend()'s own cancelVoiceAutoSend() can't cancel the
+            // coroutine it is being called from.
+            voiceAutoSendJob = null
+            voiceAutoSendPending = false
+            onSend()
+        }
+    }
+
+    /** Cancels a queued voice auto-send — the web's `cancelAutoSend()`. Fired by an edit, by a
+     *  manual send, and by tapping the pending status line. */
+    fun cancelVoiceAutoSend() {
+        voiceAutoSendJob?.cancel()
+        voiceAutoSendJob = null
+        voiceAutoSendPending = false
+    }
 
     fun onSend() {
         val text = input.trim()
@@ -321,6 +397,11 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun sendUserMessage(text: String, imageUri: Uri? = null) {
+        // Any send supersedes a queued voice auto-send, so the timer can never fire a second,
+        // duplicate turn behind it (web: `handleFormSubmit` and `handleKeyDown` both call
+        // `cancelAutoSend()`). Placed in this single funnel so the composer, the action chips,
+        // the mood/followup chips and the auto-send itself all get the same guarantee.
+        cancelVoiceAutoSend()
         _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
         input = ""
         savedStateHandle[KEY_INPUT] = ""
@@ -360,6 +441,7 @@ class ChatViewModel @Inject constructor(
                             ctaButtons = parsed.ctaButtons,
                             plan = parsed.plan,
                             streaming = false,
+                            rawText = reply.toString(),
                         )
                     }
                 }
@@ -473,7 +555,16 @@ class ChatViewModel @Inject constructor(
     private suspend fun persistConversation() {
         val stored = _messages.value
             .filterNot { it.isError }
-            .map { StoredChatMessage(role = if (it.role == TappyChatRole.User) "user" else "assistant", content = it.text) }
+            .map {
+                StoredChatMessage(
+                    role = if (it.role == TappyChatRole.User) "user" else "assistant",
+                    // The RAW reply, not the display text: the markers are what let this conversation
+                    // come back as a plan card (here via [restoreMessage], on the web via its
+                    // render-time `parsePlan`). Saving the stripped text dropped the itinerary from
+                    // every reload — and, since both clients share one backend, from the web too.
+                    content = it.rawText ?: it.text,
+                )
+            }
         if (stored.isEmpty()) return
 
         // Same title rule as the web: first message's text, capped at 50 chars.
@@ -512,5 +603,8 @@ class ChatViewModel @Inject constructor(
         /** The web sends this exact literal as the report's `reason`. */
         const val REPORT_REASON = "user_reported"
         const val KEY_INPUT = "chat_input"
+        /** The web's voice grace window before auto-sending a dictated turn — `setTimeout(…, 2000)`
+         *  in `ChatInterface.tsx`'s `recognition.onend`. */
+        const val VOICE_AUTO_SEND_DELAY_MS = 2_000L
     }
 }
