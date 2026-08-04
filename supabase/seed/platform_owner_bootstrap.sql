@@ -45,8 +45,15 @@ BEGIN
         RETURN;
     END IF;
 
-    SELECT COUNT(*), MIN(user_id)
-      INTO v_count, v_user
+    -- Count first, assert, THEN read the id.
+    --
+    -- The original version used `SELECT COUNT(*), MIN(user_id)` in one pass.
+    -- That is invalid PostgreSQL: there is no MIN() aggregate for `uuid`, so it
+    -- failed at runtime with `42883: function min(uuid) does not exist`. It also
+    -- expressed the wrong intent — MIN() silently picks one row out of many,
+    -- whereas this block has already established that exactly one row exists.
+    SELECT COUNT(*)
+      INTO v_count
       FROM admin_roles
      WHERE role = 'super_admin'
        AND (expires_at IS NULL OR expires_at > NOW());
@@ -56,6 +63,13 @@ BEGIN
             'BOOTSTRAP ABORTED: expected exactly 1 active super_admin, found %. Assign the Platform Owner deliberately instead.',
             v_count;
     END IF;
+
+    -- Safe: the assertion above guarantees exactly one matching row.
+    SELECT user_id
+      INTO v_user
+      FROM admin_roles
+     WHERE role = 'super_admin'
+       AND (expires_at IS NULL OR expires_at > NOW());
 
     INSERT INTO platform_owner (user_id, assigned_by, notes)
     VALUES (
