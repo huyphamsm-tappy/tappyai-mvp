@@ -6,7 +6,9 @@
   Title, labels, reviewers and merge strategy: docs/controller-v2/DEPLOYMENT_READINESS_COMPONENT_1_2.md §1
 -->
 
-**Base:** `main` `7fa2c31` · **Head:** `feat/controller-v2-foundation` `5c74dc6` · 8 commits · clean fast-forward, 0 behind, 0 conflicts
+**Base:** `main` ← **Head:** `feat/controller-v2-foundation` · clean fast-forward, 0 behind, 0 conflicts
+
+*(Commit count, head SHA and total diff stat are rendered by GitHub above — deliberately not restated here, because every edit to this body would change them and make the text stale.)*
 
 ---
 
@@ -18,8 +20,8 @@ This PR introduces the Platform Owner as a **constitutional principal that is no
 
 | | |
 |---|---|
-| Files changed | 21 (+2940 / −57) |
-| **Production source** | **5 files, +327 / −57** — everything else is tests (4 files, +432), migrations and seed (4 files, +356), and documentation (8 files, +1825) |
+| **Production source** | **5 files, +327 / −57** — this is the entire behavioural change |
+| Everything else | tests (4 files), migrations + seed (4 files), documentation (8 files) |
 | Tests | **535 passing / 60 files** (+38 vs base 497/56) |
 | Production behaviour today | **unchanged** until a gated deployment runbook is executed |
 | Applied to any database | **nothing** |
@@ -255,7 +257,7 @@ The post-deploy case matters most: the previous code has no Owner Guard and neve
 
 # Verification
 
-All gates run against the final commit `2cad83b`.
+All gates re-run against the branch head after every change, including the final one.
 
 | Gate | Command | Result |
 |---|---|---|
@@ -350,7 +352,7 @@ Everything else is unchanged:
 
 ```
 □  PR approved by the owner
-□  Tests passed (535 / 60 files) — confirmed in CI or locally
+□  Tests passed (535 / 60 files) — run LOCALLY; CI does not run tests on this repo
 □  Runbook reviewed: docs/controller-v2/runbooks/COMPONENT_1_DEPLOYMENT.md
 □  SQL Step 1 completed — read-only verification
 □  Exactly one active super_admin verified (Step 1, Q1 = 1)   ← HARD STOP if ≠ 1
@@ -358,7 +360,9 @@ Everything else is unchanged:
 □  Step 1 Q3 confirmed no function-name collision
 □  Step 1 Q4 confirmed admin_role / admin_roles / profiles exist
 □  SQL Step 2 completed — schema migration applied
-□  Step 2 verification: all six assertions true (incl. prosecdef = true on both functions)
+□  Step 2 verification 1: all six object assertions true (incl. prosecdef = true on both functions)
+□  Step 2 verification 2: A1 service_role EXECUTE ×3, A4 SELECT on platform_owner, A4b RLS on + 0 policies
+□  Step 2: NOTIFY pgrst, 'reload schema' issued
 □  SQL Step 3 completed — Owner bootstrapped, exactly one active owner row
 □  PLATFORM_OWNER_USER_ID set in Vercel (Production + Preview + Development) and matches the owner row
 □  Rollback reviewed and understood for Steps 2, 3 and post-deploy
