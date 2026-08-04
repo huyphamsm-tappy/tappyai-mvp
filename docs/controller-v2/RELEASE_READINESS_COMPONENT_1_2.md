@@ -97,7 +97,7 @@ Added Q4 to Step 1 (verifies the `admin_role` enum, `admin_roles` and `profiles`
 | Gate | Result |
 |---|---|
 | `tsc --noEmit` | clean |
-| `vitest run` | **535 passed / 60 files** (+35 vs base) |
+| `vitest run` | **535 passed / 60 files** (+38 vs base 497/56, measured on `origin/main` `7fa2c31`) |
 | `npm run lint` | 0 errors |
 | `npm run architecture:check` | 7/7 |
 | `npm run build` | exit 0, 121/121 static pages |
@@ -157,3 +157,47 @@ The branch is not ready to *merge* yet — not because of the code, but because 
 3. Execute runbook Steps 1 → 2 → 3 (owner-run SQL; **hard STOP if Step 1 Q1 ≠ 1**).
 4. Only then merge, which performs Step 4.
 5. Run the Step 4 post-deploy verification table — including the G1 regression check and the owner-gate enforced path.
+
+---
+
+# 10. PR finalization — merge decision (2026-08-03)
+
+Re-assessed after the PR package was finalized. Branch state re-verified on 10 checks, all clean:
+
+| # | Check | Result |
+|---|---|---|
+| 1 | `origin/main` is an ancestor of HEAD | ✅ no divergence |
+| 2 | Commits behind `origin/main` | ✅ 0 |
+| 3 | Merge conflicts (dry-run merge-tree) | ✅ none |
+| 4 | Local == remote | ✅ `2cad83b` both |
+| 5 | Working tree clean | ✅ |
+| 6 | Unintended commits | ✅ 5, all Controller-scoped |
+| 7 | Author identity | ✅ single expected author |
+| 8 | Out-of-scope files | ✅ none |
+| 9 | Secrets / env files committed | ✅ none |
+| 10 | Dependency or lockfile churn | ✅ none |
+
+Runbook re-audited: **Purpose** added to all four steps and to break-glass; Step 1's combined heading split into explicit Verification and STOP sections; break-glass step numbering corrected (it skipped 5) and its Execution / Verification blocks made explicit. All steps now carry Purpose · Preconditions · Commands · Verification · Rollback · STOP.
+
+Documentation corrections made during finalization: the coverage delta was stated as "+35 tests, +14 files (500 → 535)". Re-measured against `origin/main` `7fa2c31`: base is **497 / 56**, so the true delta is **+38 tests, +4 files** — which reconciles exactly with the four new test files (13 + 13 + 9 + 3 = 38). Corrected in both documents.
+
+## Decision
+
+The code, tests, migrations, rollback coverage and architecture conformance are complete and verified. **The remaining blockers are not code defects** — they are the owner-executed deployment-gate items that R7 requires to happen *before* merge, because on this repository merging is the deploy.
+
+# NOT READY
+
+## Remaining blockers
+
+| # | Blocker | Evidence | Owner action |
+|---|---|---|---|
+| **M1** | PR is not open | `gh` CLI unauthenticated on this machine; no PR exists for `feat/controller-v2-foundation` | Open it manually with the prepared body |
+| **M2** | PR not reviewed or approved | no approval recorded | Review and approve |
+| **M3** | Runbook Step 1 not executed | no read-only verification has been run; **the exactly-one-active-`super_admin` precondition is unverified** — I have no database credentials | Run Step 1 Q1–Q5. **HARD STOP if Q1 ≠ 1** |
+| **M4** | Runbook Step 2 not applied | `platform_owner` and the three functions do not exist in production | Apply the schema migration, verify all six assertions |
+| **M5** | Runbook Step 3 not applied | no Owner row; `PLATFORM_OWNER_USER_ID` not set in Vercel | Bootstrap, then set the env var in all three environments |
+| **M6** | Deployment Gate not signed off | checklist in the PR body is unchecked | Complete every box |
+
+Merging with M3–M5 outstanding produces R7: HTTP 500 on every role grant if the code ships before Step 2, or nobody able to grant `super_admin` if it ships before Step 3.
+
+Once M1–M6 are complete, this becomes **READY FOR MERGE** with no code change required.

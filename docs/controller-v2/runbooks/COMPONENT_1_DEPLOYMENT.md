@@ -11,6 +11,8 @@ Every step below states: Preconditions · Execution · Verification · Rollback 
 
 ## Step 1 — Read-only verification
 
+**Purpose:** prove production is in the exact state Component 1 assumes, before anything is changed. Specifically: exactly one active `super_admin` exists (the bootstrap derives the Owner from it), Component 1 is not already partially applied, no function-name collision would be silently overwritten, and the Phase 0 objects the migration depends on are present.
+
 **Preconditions:** Phase 0 back-office schema live in production (`admin_roles`, `admin_role` enum, `profiles`). Supabase SQL editor access.
 
 **Execution** — read-only, changes nothing:
@@ -40,7 +42,9 @@ SELECT privilege_type FROM information_schema.role_table_grants
 WHERE table_name = 'admin_roles' AND grantee = 'service_role';
 ```
 
-**Verification / STOP conditions:**
+**Verification:** read each query's output against the table below. Nothing is changed by this step, so "verification" and "STOP conditions" are the same decision table.
+
+**STOP conditions:**
 
 | Result | Decision |
 |---|---|
@@ -59,6 +63,8 @@ WHERE table_name = 'admin_roles' AND grantee = 'service_role';
 ---
 
 ## Step 2 — Apply the schema migration
+
+**Purpose:** create the Platform Owner principal and the database-enforced constitutional guards — the `platform_owner` table with its single-active-owner invariant, and the three `SECURITY DEFINER` functions that become the only sanctioned way to grant or revoke an admin role. Purely additive; the deployed application does not reference any of it yet.
 
 **Preconditions:** Step 1 passed with no STOP. Q5 output recorded.
 
@@ -101,6 +107,8 @@ Safe at this point: nothing in the deployed application references these objects
 
 ## Step 3 — Bootstrap the Owner
 
+**Purpose:** assign the one and only Platform Owner, and record the same UUID in the Vercel environment so ownership is pinned in two independent places. After this step, transferring ownership requires both database access and an environment change — neither alone is sufficient.
+
 **Preconditions:** Step 2 verified. Application code **not yet deployed** (order matters — see Step 4).
 
 **Execution:** run `supabase/seed/platform_owner_bootstrap.sql`. It re-checks the exactly-one condition itself and aborts otherwise; Step 1's Q1 is a pre-flight, not the only guard. Idempotent — re-running after success is a no-op.
@@ -140,6 +148,8 @@ Also unset `PLATFORM_OWNER_USER_ID` in Vercel. Order does not matter here: the d
 
 ## Step 4 — Deploy application code
 
+**Purpose:** activate the application half of Component 1 — the Owner Guard, the Actor, and the RPC-backed grant/revoke routes — against a database that is already prepared. This is also the only point at which the *enforced* path of the Owner Gate can be exercised, since it requires a real authenticated admin session.
+
 **Preconditions:** Steps 2 and 3 verified. `PLATFORM_OWNER_USER_ID` set in Vercel and matching the active owner row. PR approved.
 
 **Execution:** merge the PR; Vercel deploys.
@@ -173,7 +183,9 @@ No database action is required, and this is by design: the previous code has no 
 
 ---
 
-## Step 5 — DEFERRED (not part of this deployment)
+## Step 5 — DEFERRED (a pointer, not a step in this runbook)
+
+*No Purpose/Preconditions/Execution/Verification/Rollback/STOP block appears here by design: this is not a step of the Component 1 deployment. It is a signpost to a separate change with its own full runbook in ADR-017 §5.*
 
 Service-role privilege reduction is staged at `supabase/migrations/deferred/FOUNDATION_END_service_role_hardening.sql` and runs only at the end of the Foundation, as its own change with its own preconditions, verification and rollback — see [ADR-017 §5](../../architecture/ADR-017-service-role-hardening-strategy.md).
 
@@ -183,9 +195,11 @@ Service-role privilege reduction is staged at `supabase/migrations/deferred/FOUN
 
 ## Break-glass (owner-approved mechanism — do not automate)
 
-Recovering a lost Owner account requires **both** Supabase database access **and** a Vercel env change. Deliberately no API, no UI, no offline recovery code; exactly one active Owner is retained.
+**Purpose:** transfer ownership when the Owner account is permanently lost, without ever creating a second Owner and without an automated path an attacker could drive. Recovery requires **both** Supabase database access **and** a Vercel env change. Deliberately no API, no UI, no offline recovery code.
 
 **Preconditions:** the Owner account is genuinely unrecoverable, and the reassignment is authorised by the business.
+
+**Execution:**
 
 1. **Enter maintenance mode** — set `PLATFORM_OWNER_USER_ID` to an intentionally invalid value and redeploy. Every Controller request now returns 403 while product routes stay up. Ownership must never change while the Controller is serving.
 2. **Record intent** — insert an `audit_log` row with `action = 'owner.break_glass.initiated'`, naming who authorised it and why.
@@ -196,13 +210,16 @@ Recovering a lost Owner account requires **both** Supabase database access **and
    VALUES ('<new-owner-uuid>', 'break_glass', '<incident ref + authorisation>');
    ```
 4. **Restore** — set `PLATFORM_OWNER_USER_ID` to the new uuid and redeploy.
-5. **Verify before resuming** — all three must pass, or leave the Controller down rather than half-recovered:
-   - `SELECT user_id FROM platform_owner WHERE active = true` matches the env var
-   - the new Owner can load `/admin`
-   - the new Owner can grant a throwaway `analyst` role, and a non-owner cannot grant `super_admin`
-6. **Close** — write `action = 'owner.break_glass.completed'` with the verification results.
+5. **Verify** — run the Verification block below while still in maintenance mode.
+6. **Close** — write `action = 'owner.break_glass.completed'` with the verification results, then lift maintenance mode.
 
-**STOP:** if step 5 fails, do **not** lift maintenance mode. A Controller that is down is recoverable; one serving with ambiguous ownership is not.
+**Verification** — all three must pass, or leave the Controller down rather than half-recovered:
+
+- `SELECT user_id FROM platform_owner WHERE active = true` matches the env var
+- the new Owner can load `/admin`
+- the new Owner can grant a throwaway `analyst` role, **and** a non-owner cannot grant `super_admin`
+
+**STOP conditions:** if any Verification check fails, do **not** lift maintenance mode and do **not** proceed to step 6. A Controller that is down is recoverable; one serving with ambiguous ownership is not.
 
 **Rollback:** re-point `PLATFORM_OWNER_USER_ID` at the previous owner uuid and re-activate that row, only if the original account turns out to be recoverable.
 
