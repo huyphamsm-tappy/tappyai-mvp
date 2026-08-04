@@ -1,4 +1,5 @@
-import { requirePageRole } from '@/lib/admin/page-guard'
+import { requirePagePermission } from '@/lib/admin/permissions'
+import { PERMISSIONS } from '@/lib/admin/permissions'
 import { SettingsView } from '@/components/admin/settings/SettingsView'
 
 // Settings — Phase 0 SHELL (read-only). Settings PERSISTENCE requires a
@@ -6,7 +7,7 @@ import { SettingsView } from '@/components/admin/settings/SettingsView'
 // Design Change needing a new ADR (Constitution §8). Until then this shows the
 // read-only effective config; editing is intentionally not available.
 export default async function SettingsPage() {
-  await requirePageRole('admin')
+  await requirePagePermission(PERMISSIONS.SETTINGS_CONFIG_READ)
 
   return (
     <SettingsView

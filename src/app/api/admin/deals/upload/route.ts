@@ -3,7 +3,8 @@
 // with this token; the resulting public https URL is then saved on the deal.
 
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
-import { requireAdminRole, adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
+import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
+import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -12,7 +13,7 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024 // 5MB — logos/banners are small
 
 export async function POST(req: NextRequest) {
   try {
-    const { user } = await requireAdminRole(req, 'admin')
+    const { user } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_UPLOAD_MEDIA)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
     if (!rateLimit(`admin:deals:upload:${user.id}`, 40, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)

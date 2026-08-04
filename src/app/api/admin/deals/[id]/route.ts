@@ -3,7 +3,8 @@
 // every mutation: is_active toggles disable, display_order handles reorder,
 // start_at/end_at handle scheduling.
 
-import { requireAdminRole, adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
+import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
+import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
@@ -15,7 +16,7 @@ const FULL_COLUMNS =
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   try {
-    const { user, role } = await requireAdminRole(req, 'admin')
+    const { user, actor } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_UPDATE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
     if (!rateLimit(`admin:deals:update:${user.id}`, 60, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)
@@ -43,7 +44,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     writeAuditLog({
       actorId: user.id,
       actorEmail: user.email ?? '—',
-      actorRole: role,
+      actorRole: actor.highestRole ?? 'admin',
       action: 'deals.updated',
       targetType: 'partner_deal',
       targetId: params.id,
@@ -59,7 +60,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   try {
-    const { user, role } = await requireAdminRole(req, 'admin')
+    const { user, actor } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_DELETE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
     if (!rateLimit(`admin:deals:delete:${user.id}`, 30, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)
@@ -82,7 +83,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     writeAuditLog({
       actorId: user.id,
       actorEmail: user.email ?? '—',
-      actorRole: role,
+      actorRole: actor.highestRole ?? 'admin',
       action: 'deals.deleted',
       targetType: 'partner_deal',
       targetId: params.id,

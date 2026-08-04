@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { resolveAdminRole } from '@/lib/admin/rbac'
+import { resolveActorForUser } from '@/lib/admin/rbac'
+import { permissionEngine } from '@/lib/admin/permissions'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
 import { Toaster } from '@/components/ui/sonner'
 
@@ -15,12 +16,22 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login?redirect=/admin')
 
-  const role = await resolveAdminRole(user.id)
-  if (!role) redirect('/reviews') // authenticated but not an admin
+  // Component 3: resolve the full Actor (all roles, not just the highest) and
+  // hand the shell the actor's PERMISSIONS. The shell filters navigation on
+  // those rather than on role rank, so an operator never sees a door they
+  // cannot open. `role` is still passed, but only to render the role label.
+  const actor = await resolveActorForUser(user.id, user.email)
+  if (!actor.isOwner && actor.roles.length === 0) redirect('/reviews') // authenticated but not an admin
+
+  const permissions = permissionEngine.listPermissions(actor)
 
   return (
     <div className="admin-theme">
-      <AdminShell role={role} email={user.email ?? '—'}>
+      <AdminShell
+        role={actor.highestRole ?? 'analyst'}
+        email={user.email ?? '—'}
+        permissions={permissions}
+      >
         {children}
       </AdminShell>
       <Toaster />

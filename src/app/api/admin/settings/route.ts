@@ -6,7 +6,8 @@
 // a new ADR + owner approval. Until then this endpoint returns the read-only
 // effective config derived from env/constants. PUT is intentionally NOT implemented.
 
-import { requireAdminRole, adminErrorResponse, adminError } from '@/lib/admin/rbac'
+import { adminErrorResponse, adminError } from '@/lib/admin/rbac'
+import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { rateLimit } from '@/lib/security/rateLimit'
 
 // Reads auth headers per request — always dynamic (never statically rendered).
@@ -14,7 +15,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(req: Request) {
   try {
-    const { user } = await requireAdminRole(req, 'admin')
+    const { user } = await requirePermission(req, PERMISSIONS.SETTINGS_CONFIG_READ)
     if (!rateLimit(`admin:settings:get:${user.id}`, 100, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)
     }

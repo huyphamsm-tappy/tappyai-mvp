@@ -2,7 +2,8 @@
 // Handler contract mirrors the RBAC routes: RBAC -> origin -> rate-limit ->
 // validate -> operation -> audit -> uniform envelope.
 
-import { requireAdminRole, adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
+import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
+import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
@@ -13,7 +14,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(req: Request) {
   try {
-    const { user } = await requireAdminRole(req, 'admin')
+    const { user } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_READ)
     if (!rateLimit(`admin:deals:list:${user.id}`, 100, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)
     }
@@ -26,7 +27,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { user, role } = await requireAdminRole(req, 'admin')
+    const { user, actor } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_CREATE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
     if (!rateLimit(`admin:deals:create:${user.id}`, 30, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
     writeAuditLog({
       actorId: user.id,
       actorEmail: user.email ?? '—',
-      actorRole: role,
+      actorRole: actor.highestRole ?? 'admin',
       action: 'deals.created',
       targetType: 'partner_deal',
       targetId: data.id as string,

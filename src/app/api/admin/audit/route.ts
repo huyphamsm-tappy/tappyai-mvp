@@ -2,7 +2,8 @@
 // 05_API_Architecture.md §10. Default date window applied to avoid full scans
 // (20_Performance.md); cursor pagination on created_at.
 
-import { requireAdminRole, adminErrorResponse, adminError } from '@/lib/admin/rbac'
+import { adminErrorResponse, adminError } from '@/lib/admin/rbac'
+import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
 
@@ -11,7 +12,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(req: Request) {
   try {
-    const { user } = await requireAdminRole(req, 'admin')
+    const { user } = await requirePermission(req, PERMISSIONS.AUDIT_LOG_READ)
     if (!rateLimit(`admin:audit:list:${user.id}`, 100, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)
     }

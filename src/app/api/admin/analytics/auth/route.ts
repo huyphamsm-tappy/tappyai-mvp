@@ -4,7 +4,8 @@
 // Investor dashboards. Handler contract: RBAC -> same-origin -> rate-limit ->
 // validate -> service -> uniform {data,meta} envelope (21_Coding_Standards §2).
 
-import { requireAdminRole, adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
+import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
+import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { authAnalyticsService } from '@/lib/admin/analytics/authAnalyticsService'
 import { AuthAnalyticsQuerySchema, buildFilter, paginate } from './schema'
@@ -13,7 +14,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(req: Request) {
   try {
-    const { user } = await requireAdminRole(req, 'analyst')
+    const { user } = await requirePermission(req, PERMISSIONS.ANALYTICS_AUTH_READ)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
     if (!rateLimit(`admin:analytics:auth:${user.id}`, 100, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)
