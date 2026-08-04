@@ -42,10 +42,18 @@ REVOKE INSERT, UPDATE, DELETE ON admin_roles FROM service_role;
 
 -- The functions are SECURITY DEFINER and owned by the migration runner, so they
 -- retain the privilege the caller just lost. Callers only need EXECUTE.
+--
+-- These three GRANTs are already issued by 20260803_platform_owner.sql §5 (owner
+-- decision 2026-08-03). They are repeated here — idempotently — so this file
+-- remains self-contained and cannot leave the system in a state where writes are
+-- revoked but the replacement path is not callable.
 GRANT EXECUTE ON FUNCTION fn_grant_admin_role(UUID, UUID, admin_role, TEXT, TIMESTAMPTZ) TO service_role;
 GRANT EXECUTE ON FUNCTION fn_revoke_admin_role(UUID, UUID) TO service_role;
 GRANT EXECUTE ON FUNCTION fn_is_platform_owner(UUID) TO service_role;
 
 -- platform_owner is never written by the application at all — only by the
 -- bootstrap seed and the break-glass runbook, both run manually by the owner.
+-- SELECT is deliberately RETAINED: owner.ts reads this table on every admin
+-- request to resolve isOwner, and revoking it would make the Owner Gate return
+-- ENV_SET_BUT_NO_OWNER and 403 the entire Controller.
 REVOKE INSERT, UPDATE, DELETE ON platform_owner FROM service_role;

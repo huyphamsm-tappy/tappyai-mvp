@@ -84,20 +84,32 @@ SELECT to_regclass('public.platform_owner') IS NOT NULL AS table_ok,
        (SELECT prosecdef FROM pg_proc WHERE proname='fn_is_platform_owner') AS owner_fn_secdef;
 ```
 
-**Verification 2 — callability (added 2026-08-03; see Deployment Readiness §4 A1/A2).**
+**Verification 2 — callability (owner decision 2026-08-03).**
 
-The application reaches these functions through PostgREST as `service_role`. Two things must hold that the migration does not itself assert:
+The application reaches these objects through PostgREST as `service_role`. The migration now grants every required privilege explicitly (§5), so these queries **confirm** the grants landed rather than compensating for their absence.
 
 ```sql
--- A1: service_role must hold EXECUTE. The migration adds no explicit GRANT and
--- relies on PostgreSQL's default of granting EXECUTE to PUBLIC on new functions.
+-- A1: service_role must hold EXECUTE on all three functions.
 SELECT p.proname,
-       has_function_privilege('service_role', p.oid, 'EXECUTE') AS service_role_can_execute
+       has_function_privilege('service_role', p.oid, 'EXECUTE') AS can_execute
 FROM pg_proc p
 WHERE p.proname IN ('fn_grant_admin_role','fn_revoke_admin_role','fn_is_platform_owner');
 
+-- A4: service_role must hold SELECT on platform_owner. owner.ts reads it as a
+-- TABLE, not through an RPC, so a missing grant degrades to "no owner assigned"
+-- and — with PLATFORM_OWNER_USER_ID set — returns 403 for the WHOLE Controller.
+SELECT has_table_privilege('service_role', 'platform_owner', 'SELECT') AS can_select;
+
+-- A4b: platform_owner must NOT be client-readable. RLS is enabled with zero
+-- policies, so anon/authenticated are denied regardless of any table grant.
+SELECT relrowsecurity AS rls_enabled,
+       (SELECT COUNT(*) FROM pg_policies WHERE tablename = 'platform_owner') AS policy_count
+FROM pg_class WHERE relname = 'platform_owner';
+
 -- A2: force a PostgREST schema-cache reload so the new functions are callable
--- immediately rather than after an indeterminate lag.
+-- immediately rather than after an indeterminate lag. Without this, the first
+-- RPC call can return PGRST202, which the route does not map and therefore
+-- surfaces as HTTP 500.
 NOTIFY pgrst, 'reload schema';
 ```
 
@@ -108,7 +120,9 @@ NOTIFY pgrst, 'reload schema';
 | all six assertions `true` | CONTINUE |
 | any `false` / NULL | **STOP** and roll back |
 | `grant_secdef` or `revoke_secdef` ≠ true | **STOP.** Load-bearing: without `SECURITY DEFINER` the functions cannot hold a privilege the caller lacks, so the constitutional guards would not be enforceable. |
-| A1 — any `service_role_can_execute` = false | **STOP.** Remediate before deploying, otherwise every role grant returns 500 after the merge: `GRANT EXECUTE ON FUNCTION fn_grant_admin_role(uuid,uuid,admin_role,text,timestamptz), fn_revoke_admin_role(uuid,uuid), fn_is_platform_owner(uuid) TO service_role;` Re-run A1 to confirm. |
+| A1 — any `can_execute` = false | **STOP.** The migration's §5 `GRANT EXECUTE` did not land. Do not deploy: every role grant would return 500. Re-apply §5 and re-verify. |
+| A4 — `can_select` = false | **STOP.** The migration's §5 `GRANT SELECT` did not land. Do not deploy: with `PLATFORM_OWNER_USER_ID` set, the whole Controller would answer 403. Re-apply §5 and re-verify. |
+| A4b — `rls_enabled` ≠ true **or** `policy_count` ≠ 0 | **STOP.** `platform_owner` must be deny-by-default to clients. A policy here would expose the ownership record. |
 
 **Rollback:**
 

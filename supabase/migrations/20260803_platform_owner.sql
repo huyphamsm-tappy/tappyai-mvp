@@ -16,7 +16,9 @@
 --   table makes the dangerous operation structurally unreachable, not merely
 --   guarded.
 --
--- IDEMPOTENT: safe to run repeatedly (CREATE ... IF NOT EXISTS / OR REPLACE).
+-- IDEMPOTENT: safe to run repeatedly (CREATE ... IF NOT EXISTS / OR REPLACE /
+-- re-GRANT). SELF-CONTAINED: §5 grants every privilege the application needs,
+-- so nothing depends on ambient database defaults.
 -- This migration creates NO owner row — bootstrap is separate and guarded:
 --   supabase/seed/platform_owner_bootstrap.sql
 --
@@ -167,3 +169,36 @@ BEGIN
     DELETE FROM admin_roles WHERE id = p_role_id;
     RETURN v_row;
 END$$;
+
+-- ---------------------------------------------------------------------------
+-- 5. Explicit privileges (owner decision 2026-08-03 — ADR-017 follow-up)
+--
+-- Made explicit so this migration is SELF-CONTAINED rather than depending on
+-- ambient database defaults. Two implicit assumptions are removed:
+--
+--   A1  PostgreSQL grants EXECUTE to PUBLIC on newly created functions by
+--       default. True today, but implicit — and six other migrations in this
+--       repository already grant EXECUTE explicitly, so relying on the default
+--       here was an inconsistency. If PUBLIC execute is ever revoked as a
+--       hardening step, every role grant would start returning HTTP 500 with
+--       no obvious cause.
+--
+--   A4  Supabase's default privileges grant table access to service_role for
+--       new tables in `public`. Also true today, also implicit. The failure
+--       mode is worse than A1: the application reads platform_owner as a TABLE
+--       (owner.ts -> .from('platform_owner')), and if that read fails the code
+--       degrades to "no owner assigned". With PLATFORM_OWNER_USER_ID set, the
+--       Owner Gate then returns ENV_SET_BUT_NO_OWNER and the ENTIRE Controller
+--       answers 403.
+--
+-- Idempotent: re-granting an existing privilege is a no-op.
+--
+-- Deliberately NOT granted to anon/authenticated. platform_owner must never be
+-- client-readable; RLS is enabled with zero policies, and no grant here widens
+-- that. Only the service-role client (server-side) needs access.
+-- ---------------------------------------------------------------------------
+GRANT EXECUTE ON FUNCTION fn_is_platform_owner(UUID) TO service_role;
+GRANT EXECUTE ON FUNCTION fn_grant_admin_role(UUID, UUID, admin_role, TEXT, TIMESTAMPTZ) TO service_role;
+GRANT EXECUTE ON FUNCTION fn_revoke_admin_role(UUID, UUID) TO service_role;
+
+GRANT SELECT ON platform_owner TO service_role;
