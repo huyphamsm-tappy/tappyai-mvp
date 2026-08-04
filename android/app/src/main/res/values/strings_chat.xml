@@ -99,4 +99,6 @@
     <string name="chat_plan_total_estimate">Total estimate</string>
     <string name="chat_plan_map">Map</string>
     <string name="chat_plan_book_now">Book now</string>
+    <string name="chat_plan_share_itinerary">📤 Share itinerary</string>
+    <string name="chat_plan_share_hint">Share via Zalo, Facebook or send to friends</string>
 </resources>

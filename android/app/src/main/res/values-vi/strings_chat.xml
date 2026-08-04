@@ -99,4 +99,6 @@
     <string name="chat_plan_total_estimate">Tổng ước tính</string>
     <string name="chat_plan_map">Bản đồ</string>
     <string name="chat_plan_book_now">Đặt ngay</string>
+    <string name="chat_plan_share_itinerary">📤 Chia sẻ lịch trình</string>
+    <string name="chat_plan_share_hint">Chia sẻ lên Zalo, Facebook hoặc gửi cho bạn bè</string>
 </resources>
