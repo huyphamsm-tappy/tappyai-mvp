@@ -1,3 +1,6 @@
+> **⚠️ SUPERSEDED STATUS — see [`STATUS.md`](STATUS.md).**
+> Components 1 & 2 are **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — merged (`fb21ebe`), deployed, and verified in production. The verdicts and "not yet applied" statements below were accurate when written and are retained as the historical record of the review; they no longer describe current state.
+
 # Release Readiness Report — Controller V2 Components 1 & 2
 
 **Branch:** `feat/controller-v2-foundation` · **Head:** `17cd62c` · **Base:** `main` `7fa2c31` (clean fast-forward)

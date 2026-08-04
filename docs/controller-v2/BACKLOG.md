@@ -2,6 +2,122 @@
 
 Deferred work, deliberately not done now. Each item states its gate. Nothing here is scheduled until its gate is met.
 
+| ID | Title | Type | Gate |
+|---|---|---|---|
+| [BL-001](#bl-001--adr-consolidation--numbering-cleanup) | ADR Consolidation & Numbering Cleanup | Development Task | after Foundation completes |
+| [BL-002](#bl-002--g1-production-validation) | G1 Production Validation | **Production Acceptance Task** | open now — needs a manual login |
+
+---
+
+## BL-002 — G1 Production Validation
+
+**Type: PRODUCTION ACCEPTANCE TASK — not a development task.**
+No code is written, changed or reviewed by this item. It validates already-deployed behaviour.
+
+**Status:** OPEN · **Raised:** 2026-08-04 · **Blocks:** final acceptance of Components 1 & 2 only. Does **not** block Component 3.
+
+### Objective
+
+Prove, over real HTTP on live production, that **a `super_admin` who is not the Platform Owner cannot grant `super_admin`** — audit finding G1, the defect the entire Foundation exists to close.
+
+Already verified at two other layers; this item covers only the end-to-end HTTP path:
+
+- **Database** — `fn_grant_admin_role` raises `42501` for a non-Owner actor (authoritative layer)
+- **Application** — `requireOwner()` covered by the named regression test in `src/app/api/admin/rbac/roles/route.test.ts`
+
+### Prerequisites
+
+1. A second user account that is **not** the Platform Owner (`4dcce7cf-…`). Production already has more than one profile; a brand-new account is not required.
+2. That account granted `super_admin` **by the Platform Owner** — temporarily, immediately before the test.
+3. Ability to sign in as that account (manual — the only step Claude cannot perform).
+4. Production reachable at `https://www.tappyai.com`.
+
+### Exact HTTP test procedure
+
+**Step 1 — grant the temporary role.** As the Platform Owner, at `/admin/rbac`, grant `super_admin` to the test account. Record the returned role-assignment `id` — it is needed for cleanup.
+
+**Step 2 — sign in as the test account** in a separate browser profile or private window, so the Owner session stays intact.
+
+**Step 3 — issue the request.** On `https://www.tappyai.com`, in the DevTools console:
+
+```js
+const r = await fetch('/api/admin/rbac/roles', {
+  method: 'POST',
+  credentials: 'include',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    user_id: '00000000-0000-0000-0000-000000000001', // any uuid; must NOT be the caller's own
+    role: 'super_admin'
+  })
+});
+console.log(r.status, await r.text());
+```
+
+The target `user_id` must not equal the caller's own id, otherwise the self-promotion guard fires first and the test proves nothing.
+
+### Expected HTTP response
+
+```
+403
+{"error":{"code":"FORBIDDEN","message":"Only the Platform Owner may grant super_admin"}}
+```
+
+| Observed | Meaning |
+|---|---|
+| `403` + `Only the Platform Owner may grant super_admin` | ✅ **PASS** — G1 is closed |
+| `403` + `Self-promotion is not permitted` | ❌ INVALID — you are signed in as the Owner, or the target uuid equals the caller's. Re-run |
+| `200` | 🚨 **FAIL — G1 IS NOT CLOSED.** Revoke the temporary role immediately and roll back |
+| `401` | Not signed in |
+
+### Expected audit log
+
+The rejected attempt is denied by `requireOwner()` **before** the handler reaches `writeAuditLog`, so **no `rbac.role_granted` row is written** — and its absence is itself the correct outcome.
+
+What must be present is the audit trail of the temporary grant and its revocation:
+
+```sql
+SELECT action, actor_id, target_id, created_at
+FROM audit_log
+WHERE action IN ('owner.super_admin_granted','owner.super_admin_revoked')
+ORDER BY created_at DESC
+LIMIT 5;
+```
+
+Expect one `owner.super_admin_granted` (Step 1) and, after cleanup, one `owner.super_admin_revoked` — both with `actor_id` = the Platform Owner.
+
+### Cleanup procedure
+
+**Mandatory, immediately after the test — production must not be left with two Super Admins.**
+
+1. Sign out of the test account.
+2. As the Platform Owner, revoke the temporary `super_admin` at `/admin/rbac`.
+3. Confirm exactly one remains:
+
+```sql
+SELECT count(*) AS active_super_admins
+FROM admin_roles
+WHERE role = 'super_admin' AND (expires_at IS NULL OR expires_at > NOW());
+-- expect 1
+```
+
+4. Confirm the revocation was audited (query above).
+
+### Acceptance criteria
+
+All five must hold:
+
+- [ ] Request returned **HTTP 403**
+- [ ] Message was exactly `Only the Platform Owner may grant super_admin`
+- [ ] **No** `admin_roles` row was created for the attempted grant
+- [ ] Temporary role revoked; `active_super_admins` back to **1**
+- [ ] Grant and revocation both present in `audit_log`
+
+On completion, update [`STATUS.md`](STATUS.md) to **ACCEPTED** and close this item.
+
+### If it fails
+
+`200` means privilege escalation is live in production. Revoke the temporary role, then revert the merge commit `fb21ebe` and redeploy. No database rollback is required — the previous code neither reads `platform_owner` nor calls the RPCs.
+
 ---
 
 ## BL-001 — ADR Consolidation & Numbering Cleanup
