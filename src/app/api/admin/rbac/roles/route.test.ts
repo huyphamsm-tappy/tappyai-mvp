@@ -12,12 +12,13 @@ const h = vi.hoisted(() => ({
   rpc: vi.fn(),
   insert: vi.fn(),
   writeAuditLog: vi.fn(),
+  invalidateRoleCache: vi.fn(),
 }))
 
 // requireOwner stays REAL — it is the thing under test.
 vi.mock('@/lib/admin/rbac', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>
-  return { ...actual, isSameOrigin: h.isSameOrigin, invalidateRoleCache: vi.fn() }
+  return { ...actual, isSameOrigin: h.isSameOrigin, invalidateRoleCache: h.invalidateRoleCache }
 })
 // Component 3: the route is gated by requirePermission now. PERMISSIONS and the
 // rest of the module stay REAL so a wrong constant is still a test failure.
@@ -96,6 +97,16 @@ describe('POST /api/admin/rbac/roles — constitutional guards', () => {
     await POST(req({ user_id: TARGET, role: 'admin' }))
     expect(h.insert).not.toHaveBeenCalled()
     expect(h.rpc).toHaveBeenCalled()
+  })
+
+  // Component 3: the cache must be invalidated for the user whose roles CHANGED,
+  // not for the actor performing the change. Invalidating the wrong id leaves
+  // the affected user's permission set warm for up to 30s — stale privilege.
+  it('invalidates the cache of the TARGET user, never the actor', async () => {
+    h.requirePermission.mockResolvedValue(ctx(true))
+    await POST(req({ user_id: TARGET, role: 'admin' }))
+    expect(h.invalidateRoleCache).toHaveBeenCalledWith(TARGET)
+    expect(h.invalidateRoleCache).not.toHaveBeenCalledWith(OWNER)
   })
 })
 

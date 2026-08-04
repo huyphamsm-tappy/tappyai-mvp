@@ -146,10 +146,25 @@ here, not fixed here — recorded in `BACKLOG.md`.
 instead of throwing:
 
 ```
-Supabase session → resolveActorForUser(userId, email)   ← ALL roles, not the highest
+Supabase session → checkOwnerGate()
+                 →   FAIL → redirect('/reviews')      ← OUT of the Controller
+                 → resolveActorForUser(userId, email) ← ALL roles, not the highest
                  → permissionEngine.authorize(actor, X)
-                 → allowed ? render : redirect('/admin')
+                 → allowed ? render : redirect(deniedRedirect ?? '/admin')
 ```
+
+⚠️ **The redirect target is a correctness property, not a UX detail.** Every
+`/admin` page now carries a guard, `/admin` included — so a fallback that points
+into the Controller is a fallback that can re-run the failing check forever.
+Component 3 shipped exactly that loop and the review caught it:
+
+| Failure | Target | Why |
+|---|---|---|
+| Owner Gate fails | `/reviews` — **always outside** `/admin` | The whole Controller is unavailable. Any in-Controller target re-runs the same failing gate. Not overridable by the caller. |
+| Permission denied | `/admin` by default | The one page every admin can reach. |
+| Permission denied **on `/admin`** | `/reviews` via `deniedRedirect` | The default would redirect the page to itself. |
+
+`guards.test.ts` holds three RED/GREEN regression tests on these targets.
 
 **UI** resolves once, server-side, in `src/app/admin/layout.tsx`:
 

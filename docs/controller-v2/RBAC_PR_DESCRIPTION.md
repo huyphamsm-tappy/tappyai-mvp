@@ -40,12 +40,12 @@ with every Hub added:
 
 | | |
 |---|---:|
-| Files changed | 37 |
-| Lines | +1994 / −159 |
-| New permission engine | 11 files, ~1 480 lines |
-| Authorization decision points migrated | 18 |
-| Permissions defined | 13 across 6 modules |
-| Tests added | 68 (48 engine + 20 migration lock) |
+| Files changed | 47 |
+| Lines | +3441 / −177 |
+| New permission engine | 9 modules + 4 test files, ~1 850 lines |
+| Authorization decision points | 20 |
+| Permissions defined | 14 across 6 modules |
+| Tests added | 88 (47 engine + 22 migration + 12 guards + 7 invalidation) |
 | **SQL statements** | **0** |
 | **New environment variables** | **0** |
 
@@ -53,9 +53,9 @@ with every Hub added:
 
 `types.ts` · `registry.ts` · `roleMap.ts` · `cache.ts` · `resolver.ts` ·
 `engine.ts` · `guards.ts` (server only) · `client.ts` · `index.ts` +
-`engine.test.ts` · `migration.test.ts`
+`engine.test.ts` · `migration.test.ts` · `guards.test.ts` · `invalidation.test.ts`
 
-### Migrated (18 decision points)
+### Migrated (18) + newly guarded (2) = 20 decision points
 
 - **12 API handlers** — `requireAdminRole(req, role)` → `requirePermission(req, PERMISSIONS.X)`
 - **6 page guards** — `requirePageRole(role)` → `requirePagePermission(PERMISSIONS.X)`
@@ -72,6 +72,8 @@ with every Hub added:
 - `resolveActorForUser()` added to `rbac.ts` — page guards need **all** roles;
   `resolveAdminRole()` returns only the highest, which silently drops
   permissions under union semantics.
+- `resolveActor` now **delegates** to it, restoring the single Actor
+  construction site the Component 2 review established.
 - `invalidateRoleCache()` now also clears the permission cache.
 - `requireOwner` widened to accept the context `requirePermission` returns.
 - `requireAdminRole` marked `@deprecated` (zero production callers; kept because
@@ -101,9 +103,25 @@ until Component 5, because `Actor.capabilities` currently means "the registry is
 not installed", not "this actor has none" — gating on it now would deny
 everyone, including the Owner. The branch is tested so Component 5 flips a flag.
 
-## Self-review findings (found and fixed in this PR)
+## Findings fixed in this PR
 
-These were found by auditing the implementation, not by tests failing:
+All were found by auditing the implementation, not by tests failing.
+
+### From the formal review (9)
+
+| # | Finding | Severity |
+|---|---|---|
+| R-1 | **Infinite redirect loop.** `requirePagePermission` redirected to `/admin` on Owner Gate failure — and `/admin` now has a guard, so the fallback redirected to itself. `ERR_TOO_MANY_REDIRECTS` in the exact scenario where the Controller most needs to fail diagnosably. | **blocker** |
+| R-2 | **The role map was mutable at runtime.** `ReadonlySet` is erased at compile time and `Object.freeze` does not stop `Set.add`, so a stray `.add()` could permanently widen a role. The comment claimed protection that did not exist. | security |
+| R-3 | `Resolver.roleMap` — no consumer, and it published a reference to the structure authorization derives from. Removed. | dead code |
+| R-4 | `requireAllPermissions` — no caller. Removed. | dead code |
+| R-5 | **`guards.ts` had zero tests.** The enforcement layer was untested, which is why R-1 survived self-review. 12 tests added. | missing tests |
+| R-6 | `index.ts` and `guards.ts` carried a "migration in progress" narrative after migration was complete, and referenced `requirePageRole`, which was deleted. | doc |
+| R-7 | **The registry lied about what it protected.** `/admin/analytics` is a *content* analytics page gated on `analytics.auth.read`, an *authentication* permission. Added `analytics.content.read` with identical `defaultRoles`. | registry |
+| R-8 | **Two Actor construction sites.** Adding `resolveActorForUser` reintroduced the duplicated field mapping the Component 2 review had removed, and left a comment claiming there was only one. | duplication |
+| R-9 | `invalidateRoleCache → permissionCache.invalidate` had **no assertion behind it**. The wire could be cut by a refactor with every test still green. 7 tests added, RED/GREEN proven. | missing tests |
+
+### From the initial self-review (6)
 
 1. **The engine had zero consumers.** The first implementation was a complete,
    green, fully-tested library that no route, page or component imported — an
@@ -133,6 +151,16 @@ These were found by auditing the implementation, not by tests failing:
    who cannot also act, and any consumer would have been invented to justify the
    helper.
 
+## Two lessons worth carrying forward
+
+**Adding a guard to a fallback destination turns that fallback into a loop.**
+R-1 was created by a change (guarding `/admin`) that was itself a fix. Any
+future guarded page must be checked against every redirect target pointing at it.
+
+**A green engine says nothing about the enforcement layer.** 613 tests passed
+with an infinite redirect loop in the guard, because every test exercised the
+decision, not the action taken on it.
+
 ## Verification
 
 ```bash
@@ -142,10 +170,13 @@ npx tsc --noEmit && npx vitest run && npm run architecture:check && npx next bui
 | Gate | Result |
 |---|---|
 | `tsc --noEmit` | ✅ clean |
-| `vitest run` | ✅ **63 files / 613 tests passed** |
+| `vitest run` | ✅ **65 files / 634 tests passed** |
 | `architecture:check` | ✅ 7/7 rules |
 | `next lint` | ✅ 0 errors (pre-existing warnings only, none in `permissions/`) |
 | `next build` | ✅ compiled; all `/admin` routes `ƒ` dynamic |
+
+Both regression fixes are proven RED/GREEN: reverting R-1 fails 3 guard tests,
+cutting the R-9 wire fails 2 invalidation tests.
 
 Required test scenarios — all covered in `engine.test.ts`: permission
 inheritance · multiple roles · cache invalidation · unknown permission ·

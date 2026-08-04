@@ -4,13 +4,13 @@
 // from a client component pulls in `next/headers`. Client components must
 // import `@/lib/admin/permissions/client` directly.
 //
-// MIGRATION STATUS
-// `requireAdminRole(req, minRole)` from Component 2 still exists and still
-// works. Component 3 adds `requirePermission(req, PERMISSIONS.X)` alongside it;
-// call sites move over per module. The rank ladder (`hasRole` / `ROLE_RANK`) is
-// removed only once every call site has migrated — deleting it now would break
-// authorization on any route not yet converted, which is precisely the kind of
-// half-migrated state the Foundation review exists to prevent.
+// MIGRATION STATUS — COMPLETE
+// All 18 authorization decision points (12 API handlers, 6 page guards) consume
+// this engine. `requireAdminRole` and the rank ladder are superseded:
+// `requireAdminRole` is @deprecated with zero production callers, and
+// `page-guard.ts` was deleted outright. `ROLE_RANK`/`hasRole` survive only to
+// compute a display label and to power the backward-compatibility lock in
+// `migration.test.ts` — never to make an authorization decision.
 
 export type {
   PermissionId,
@@ -59,8 +59,7 @@ export {
 
 // Server-only.
 export {
-  requirePermission,
-  requireAllPermissions,
+  requirePermission,
   requirePagePermission,
   type PermissionContext,
 } from './guards'

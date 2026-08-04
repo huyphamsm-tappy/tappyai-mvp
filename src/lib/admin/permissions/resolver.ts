@@ -13,23 +13,25 @@
 import type { Actor } from '@/lib/admin/rbac'
 import type { ResolvedPermissionSet } from './types'
 import type { PermissionRegistry } from './registry'
-import { buildRolePermissionMap, unionPermissions, type RolePermissionMap } from './roleMap'
+import { buildRolePermissionMap, unionPermissions } from './roleMap'
 import { makeResolvedSet, type PermissionCache } from './cache'
 
 export interface Resolver {
   resolve(actor: Actor, now?: number): ResolvedPermissionSet
-  /** Exposed for diagnostics and the RBAC admin UI, not for authorization. */
-  readonly roleMap: RolePermissionMap
 }
 
 export function createResolver(registry: PermissionRegistry, cache: PermissionCache): Resolver {
   // Built once per resolver. The registry is immutable, so the map is too —
   // rebuilding per request would be pure waste.
+  //
+  // Deliberately NOT exposed on the Resolver interface (dead-code audit R-3):
+  // it had no consumer, and publishing the map handed callers a reference to
+  // the structure authorization is derived from. Callers that need to inspect
+  // the mapping can call `buildRolePermissionMap` themselves and get their own
+  // copy.
   const roleMap = buildRolePermissionMap(registry)
 
   return {
-    roleMap,
-
     resolve(actor: Actor, now: number = Date.now()): ResolvedPermissionSet {
       const cached = cache.get(actor.userId, actor.roles, registry.version, now)
       if (cached) return cached

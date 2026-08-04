@@ -11,6 +11,8 @@ import { HomeDashboard } from '@/components/admin/dashboard/HomeDashboard'
 // currently holds this permission, so nobody's access changes today — the point
 // is that the nav and the page now read the SAME source of truth.
 export default async function AdminHomePage() {
-  await requirePagePermission(PERMISSIONS.DASHBOARD_HOME_VIEW)
+  // deniedRedirect MUST leave the Controller: this IS /admin, so the default
+  // '/admin' target would redirect the page to itself forever.
+  await requirePagePermission(PERMISSIONS.DASHBOARD_HOME_VIEW, { deniedRedirect: '/reviews' })
   return <HomeDashboard />
 }

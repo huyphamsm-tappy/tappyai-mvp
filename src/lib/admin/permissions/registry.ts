@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-04.1'
+export const REGISTRY_VERSION = '2026-08-04.2'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -62,6 +62,24 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     category: 'read',
     riskLevel: 'low',
     // `moderator` preserves existing ROLE_RANK behaviour — see the note above.
+    defaultRoles: ['analyst', 'moderator', 'admin', 'super_admin'],
+  }),
+
+  def({
+    id: 'analytics.content.read',
+    displayName: 'Read content analytics',
+    description:
+      'View review, video, hashtag and creator aggregates. Aggregate data only; no user PII.',
+    module: 'analytics',
+    capability: 'analytics.read',
+    category: 'read',
+    riskLevel: 'low',
+    // The legacy /admin/analytics page had NO permission of its own before
+    // Component 3 — it relied on the /admin layout, which admits any admin.
+    // Every role is listed here so the guard preserves that exactly. Borrowing
+    // `analytics.auth.read` instead (the review caught this) would have gated a
+    // content page on an authentication permission, making the registry lie
+    // about what it protects.
     defaultRoles: ['analyst', 'moderator', 'admin', 'super_admin'],
   }),
 
@@ -229,6 +247,7 @@ export const PERMISSIONS = {
   DASHBOARD_HOME_VIEW: 'dashboard.home.view',
   ANALYTICS_AUTH_READ: 'analytics.auth.read',
   ANALYTICS_ACTIVATION_READ: 'analytics.activation.read',
+  ANALYTICS_CONTENT_READ: 'analytics.content.read',
   AUDIT_LOG_READ: 'audit.log.read',
   SETTINGS_CONFIG_READ: 'settings.config.read',
   COMMERCE_DEALS_READ: 'commerce.deals.read',

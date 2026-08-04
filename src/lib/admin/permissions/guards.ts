@@ -40,11 +40,20 @@ function denialMessage(decision: Decision): string {
 }
 
 /**
+ * Where to send someone when the Controller itself is unavailable.
+ *
+ * MUST be outside `/admin`. Every `/admin` page carries a permission guard, so
+ * an in-Controller destination would re-run this same failing check and bounce
+ * forever — see the redirect-loop note on `requirePagePermission`.
+ */
+const CONTROLLER_UNAVAILABLE_REDIRECT = '/reviews'
+
+/**
  * Gate an `/api/admin/*` handler on a single permission.
  *
- * Replaces `requireAdminRole(req, minRole)` for permission-based routes.
- * `requireAdminRole` remains for callers not yet migrated — see the migration
- * note in `index.ts`.
+ * This is the only route-level authorization helper. It replaced
+ * `requireAdminRole(req, minRole)` at all 12 API decision points; that function
+ * is deprecated and has no production callers.
  */
 export async function requirePermission(
   req: Request,
@@ -76,36 +85,36 @@ export async function requirePermission(
   return { user, actor, decision }
 }
 
-/** Gate a handler on ALL of several permissions. Denies on the first failure. */
-export async function requireAllPermissions(
-  req: Request,
-  permissions: readonly PermissionId[]
-): Promise<PermissionContext> {
-  if (permissions.length === 0) {
-    throw new AdminError('FORBIDDEN', 'No permission specified', 403)
-  }
-  let ctx = await requirePermission(req, permissions[0])
-  for (const p of permissions.slice(1)) {
-    const decision = permissionEngine.authorize(ctx.actor, p)
-    if (!decision.allowed) {
-      console.warn(
-        `[controller][rbac] deny ${decision.reason} user=${ctx.actor.userId} permission=${p}`
-      )
-      throw new AdminError('FORBIDDEN', denialMessage(decision), 403)
-    }
-    ctx = { ...ctx, decision }
-  }
-  return ctx
-}
+// NOTE (dead-code audit R-4): `requireAllPermissions` was written and removed.
+// It had no caller. No handler in the Controller guards on two permissions at
+// once, and inventing one to justify the helper would have been a policy change
+// dressed up as an integration. Restore it when a real two-permission handler
+// exists — the loop is six lines.
 
 /**
- * Page-level guard for `/admin` server components. Mirrors `requirePageRole`,
- * redirecting rather than throwing, because a page cannot render an error
- * envelope.
+ * Page-level guard for `/admin` server components. Redirects rather than
+ * throwing, because a page cannot render an error envelope.
+ *
+ * ⚠️ REDIRECT-LOOP HAZARD. Every `/admin` page now carries a guard, including
+ * `/admin` itself. A denial that redirects into the Controller therefore risks
+ * bouncing forever, so:
+ *
+ *   - Controller-unavailable (Owner Gate failure) always exits the Controller.
+ *     It is a whole-Controller outage; bouncing within it is meaningless.
+ *   - A permission denial defaults to `/admin`, the one page every admin can
+ *     reach. `/admin` itself MUST override `deniedRedirect`, because sending it
+ *     to its own URL is the loop.
+ *
+ * This is not hypothetical: Component 3 introduced the loop the moment it gave
+ * `/admin` a guard, and the regression tests in `guards.test.ts` exist to keep
+ * it fixed.
  */
 export async function requirePagePermission(
-  permission: PermissionId
+  permission: PermissionId,
+  options: { deniedRedirect?: string } = {}
 ): Promise<{ userId: string; email: string; actor: Actor }> {
+  const deniedRedirect = options.deniedRedirect ?? '/admin'
+
   const supabase = createClient()
   const {
     data: { user },
@@ -115,7 +124,7 @@ export async function requirePagePermission(
   const gate = await checkOwnerGate()
   if (!gate.ok) {
     console.error('[controller][owner] gate failed:', gate.reason)
-    redirect('/admin')
+    redirect(CONTROLLER_UNAVAILABLE_REDIRECT)
   }
 
   // Server components have no `Request`, so the Actor is built by user id.
@@ -125,7 +134,7 @@ export async function requirePagePermission(
   const actor = await resolveActorForUser(user.id, user.email)
 
   if (!permissionEngine.can(actor, permission)) {
-    redirect('/admin')
+    redirect(deniedRedirect)
   }
 
   return { userId: user.id, email: actor.email, actor }

@@ -75,8 +75,21 @@ describe('Component 3 migration — no access changed', () => {
 describe('Component 3 permission audit — newly guarded pages lock nobody out', () => {
   it.each([
     { site: 'admin/page.tsx', permission: PERMISSIONS.DASHBOARD_HOME_VIEW },
-    { site: 'admin/analytics/page.tsx', permission: PERMISSIONS.ANALYTICS_AUTH_READ },
+    { site: 'admin/analytics/page.tsx', permission: PERMISSIONS.ANALYTICS_CONTENT_READ },
   ])('$site grants every admin role, as the bare layout gate did', ({ permission }) => {
     expect(rolesGranted(permission)).toEqual([...ALL_ROLES].sort())
+  })
+})
+
+// The role→permission map is what every authorization decision is derived from.
+// The review found it was `ReadonlySet`-typed but writable at runtime, so a
+// single stray `.add()` anywhere in the process could permanently widen a role.
+describe('Component 3 — the role map cannot be widened at runtime', () => {
+  it('rejects mutation of a role permission set', () => {
+    const map = buildRolePermissionMap(permissionRegistry)
+    const analyst = map.get('analyst') as unknown as Set<PermissionId>
+
+    expect(() => analyst.add(PERMISSIONS.SECURITY_ROLES_GRANT)).toThrow(/immutable/)
+    expect(rolesGranted(PERMISSIONS.SECURITY_ROLES_GRANT)).toEqual(['super_admin'])
   })
 })

@@ -9,7 +9,7 @@ export default async function AnalyticsPage() {
   // which admits ANY admin. It now enforces its own permission, matching the
   // sidebar entry. Every role holds this permission today, so access is
   // unchanged; the guard closes the hidden-but-unlocked-door gap.
-  await requirePagePermission(PERMISSIONS.ANALYTICS_AUTH_READ)
+  await requirePagePermission(PERMISSIONS.ANALYTICS_CONTENT_READ)
 
   const supabase = createClient()
 

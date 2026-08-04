@@ -34,10 +34,27 @@ export function buildRolePermissionMap(registry: PermissionRegistry): RolePermis
       set.add(definition.id)
     }
   }
-  // Freeze the shape so a caller cannot mutate a shared set.
+  // Genuinely immutable, not just `ReadonlySet`-typed.
+  //
+  // The audit caught this claiming protection it did not provide: `ReadonlySet`
+  // is erased at compile time, and `Object.freeze` does NOT stop `Set.add` —
+  // so every role's permission set was writable at runtime through a shared
+  // reference. On the authorization hot path that is a privilege-escalation
+  // surface, however in-process. `sealSet` closes it for real.
   const frozen = new Map<AdminRole, ReadonlySet<PermissionId>>()
-  for (const [role, set] of map) frozen.set(role, set)
+  for (const [role, set] of map) frozen.set(role, sealSet(set))
   return frozen
+}
+
+/** A Set that throws on mutation, so the map cannot be widened after build. */
+function sealSet(set: ReadonlySet<PermissionId>): ReadonlySet<PermissionId> {
+  const deny = (): never => {
+    throw new TypeError('[permissions] the role→permission map is immutable')
+  }
+  const sealed = new Set(set)
+  return Object.freeze(
+    Object.assign(sealed, { add: deny, delete: deny, clear: deny })
+  ) as ReadonlySet<PermissionId>
 }
 
 /** Permissions a single role holds. Empty set for a role with no declared permissions. */

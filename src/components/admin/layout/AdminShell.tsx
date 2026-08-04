@@ -37,7 +37,7 @@ type NavItem = {
 
 const NAV: NavItem[] = [
   { href: '/admin', labelKey: 'admin.nav.dashboard', icon: LayoutDashboard, permission: PERMISSIONS.DASHBOARD_HOME_VIEW, ready: true },
-  { href: '/admin/analytics', labelKey: 'admin.nav.analytics', icon: BarChart3, permission: PERMISSIONS.ANALYTICS_AUTH_READ, ready: true },
+  { href: '/admin/analytics', labelKey: 'admin.nav.analytics', icon: BarChart3, permission: PERMISSIONS.ANALYTICS_CONTENT_READ, ready: true },
   { href: '/admin/analytics/auth', labelKey: 'admin.nav.authAnalytics', icon: UserCheck, permission: PERMISSIONS.ANALYTICS_AUTH_READ, ready: true },
   { href: '/admin/analytics/activation', labelKey: 'admin.nav.activationAnalytics', icon: Zap, permission: PERMISSIONS.ANALYTICS_ACTIVATION_READ, ready: true },
   { href: '/admin/users', labelKey: 'admin.nav.users', icon: Users, ready: false },

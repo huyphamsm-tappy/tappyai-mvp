@@ -145,37 +145,14 @@ export interface Actor {
 }
 
 /**
- * Resolve the Actor for a request, or null when unauthenticated.
- *
- * THE SINGLE Actor construction site. `requireAdminRole` delegates here rather
- * than building its own, so the two can never drift. The Supabase `User` is
- * returned alongside because `AdminContext` still exposes it to handlers.
- */
-export async function resolveActor(
-  req: Request
-): Promise<{ user: User; actor: Actor } | null> {
-  const { user } = await getRequestUser(req)
-  if (!user) return null
-
-  const { roles, isOwner } = await resolvePrincipal(user.id)
-  const actor: Actor = {
-    userId: user.id,
-    email: user.email ?? '—',
-    isOwner,
-    roles,
-    highestRole: highestRole(roles),
-    capabilities: NO_CAPABILITIES,
-    // Retained so component 11 (Session Security) can reason about web vs
-    // native without re-deriving it from headers.
-    source: req.headers.get('authorization')?.startsWith('Bearer ') ? 'bearer' : 'cookie',
-    resolvedAt: Date.now(),
-  }
-  return { user, actor }
-}
-
-/**
  * Build an Actor from a user id, for contexts that have no `Request` — server
  * components in particular.
+ *
+ * THE SINGLE Actor construction site. `resolveActor` and `requireAdminRole`
+ * both delegate here rather than building their own, so the field mappings can
+ * never drift. Component 2's review found exactly that defect (two inline
+ * copies of a security principal's construction) and Component 3 briefly
+ * reintroduced it by adding this function alongside a second literal.
  *
  * Component 3 integration: page guards need the FULL role list. Reaching for
  * `resolveAdminRole` there would collapse to the highest-ranked role and
@@ -195,9 +172,31 @@ export async function resolveActorForUser(
     roles,
     highestRole: highestRole(roles),
     capabilities: NO_CAPABILITIES,
+    // `source` is retained so component 11 (Session Security) can reason about
+    // web vs native without re-deriving it from headers.
     source,
     resolvedAt: Date.now(),
   }
+}
+
+/**
+ * Resolve the Actor for a request, or null when unauthenticated.
+ *
+ * Delegates construction to `resolveActorForUser`; its only added job is
+ * deriving `source` from the request. The Supabase `User` is returned alongside
+ * because `AdminContext` still exposes it to handlers.
+ */
+export async function resolveActor(
+  req: Request
+): Promise<{ user: User; actor: Actor } | null> {
+  const { user } = await getRequestUser(req)
+  if (!user) return null
+
+  const source: Actor['source'] = req.headers.get('authorization')?.startsWith('Bearer ')
+    ? 'bearer'
+    : 'cookie'
+  const actor = await resolveActorForUser(user.id, user.email, source)
+  return { user, actor }
 }
 
 export interface AdminContext {

@@ -3,7 +3,7 @@
 **Status:** implemented, self-reviewed, awaiting Owner approval
 **Branch:** `feat/controller-v2-component3-rbac`
 **Branch point:** `35233a4` (merge of the Foundation closure PR)
-**Registry version:** `2026-08-04.1`
+**Registry version:** `2026-08-04.2`
 
 ---
 
@@ -44,7 +44,7 @@ Five pieces, each in its own file under `src/lib/admin/permissions/`:
 | File | Role in the model | Client-safe |
 |---|---|---|
 | `types.ts` | Vocabulary: `PermissionId`, `PermissionDefinition`, `Decision` | ✅ |
-| `registry.ts` | The catalogue. Single source of truth. | ✅ |
+| `registry.ts` | The catalogue. Single source of truth — 14 permissions. | ✅ |
 | `roleMap.ts` | Derives role → permissions from `defaultRoles` | ✅ |
 | `cache.ts` | Resolved-set cache with the safety properties in §6 | ✅ |
 | `resolver.ts` | Actor → `ResolvedPermissionSet` | ✅ |
@@ -219,16 +219,22 @@ helper.
 
 ## 10. Test strategy
 
-68 tests across two files:
+88 tests across four files:
 
-- `engine.test.ts` (48) — the 11 required scenarios plus production-registry
+- `engine.test.ts` (47) — the 11 required scenarios plus production-registry
   integrity invariants: id format, complete metadata, module prefix matches
   `module`, `PERMISSIONS` ↔ registry bijection, `security` category ⇒
   `critical`, `destructive` ⇒ ≥ `high`, `read` ⇒ never `critical`, `analyst`
   holds only `read`, no non-`super_admin` holds a `security`-category permission.
-- `migration.test.ts` (20) — the **backward-compatibility lock**: for all 18
-  migrated call sites, asserts the new permission grants *exactly* the role set
-  the old ladder admitted. A silent policy drift fails here.
+- `migration.test.ts` (22) — the **backward-compatibility lock**: for all 20
+  decision points, asserts the new permission grants *exactly* the role set the
+  old ladder admitted. Plus the role-map immutability assertion.
+- `guards.test.ts` (12) — the **enforcement layer**: decision order, failure
+  modes, and redirect targets. Added during review, because the engine tests
+  could never have caught the redirect loop described in §12.
+- `invalidation.test.ts` (7) — grant, revoke and multi-role cache flows, plus
+  an adversarial case proving a revoked role cannot authorize **even if
+  invalidation is never called**.
 
 The integrity invariants matter more than they look. They mean a future engineer
 adding a `critical` permission to `analyst` gets a red test rather than a
@@ -238,3 +244,44 @@ production incident.
 
 See `RBAC_MANIFEST.md` for the complete inventory with line counts and the
 per-file audit results.
+
+## 12. What the formal review changed
+
+The review found nine issues in this component's own implementation. Three are
+worth reading in full because they are design-level, not typos.
+
+### R-1 — the redirect loop (blocker)
+
+`requirePagePermission` redirected to `/admin` when the Owner Gate failed. That
+was safe while `/admin` had no guard. §8 gave `/admin` a guard — which turned the
+fallback into a self-redirect: gate failure → `/admin` → gate failure → forever.
+`ERR_TOO_MANY_REDIRECTS` in the exact scenario where the Controller most needs
+to fail diagnosably.
+
+Fixed by separating the two failure modes. A **Controller outage** now exits the
+Controller entirely (`/reviews`) because bouncing inside a dead Controller is
+meaningless; a **permission denial** still returns to `/admin`, except on
+`/admin` itself, which passes its own `deniedRedirect`. Proven RED/GREEN: the
+three regression tests fail when the old targets are restored.
+
+The general lesson: *adding a guard to a fallback destination turns that
+fallback into a loop.* Any future guarded page must be checked against every
+redirect target that points at it.
+
+### R-2 — the role map was mutable
+
+`buildRolePermissionMap` returned `ReadonlySet`s and a comment claiming callers
+could not mutate them. `ReadonlySet` is erased at compile time and
+`Object.freeze` does **not** stop `Set.add` — so every role's permission set was
+writable at runtime through a shared reference, on the authorization hot path.
+The comment asserted a protection that did not exist. Now genuinely sealed.
+
+### R-7 — the registry lied about what it protected
+
+`/admin/analytics` is a **content** analytics page (reviews, videos, hashtags,
+creators). It was gated on `analytics.auth.read`, an **authentication**
+permission, because that was the closest existing entry. Same roles, so no
+access changed — but the registry is supposed to be the answer to "what does
+this permission protect", and that answer was wrong. Added
+`analytics.content.read` with identical `defaultRoles`.
+

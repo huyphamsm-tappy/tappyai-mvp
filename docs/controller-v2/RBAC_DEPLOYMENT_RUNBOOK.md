@@ -1,7 +1,7 @@
 # RBAC Deployment Runbook — Component 3
 
 **Branch:** `feat/controller-v2-component3-rbac` · **Branch point:** `35233a4`
-**Registry version:** `2026-08-04.1`
+**Registry version:** `2026-08-04.2`
 
 > **Not approved for execution.** This runbook is written for review. Do not run
 > any step until the Owner approves the PR. Per the standing rule (2026-08-03),
@@ -46,7 +46,7 @@ Expected:
 | Gate | Expected |
 |---|---|
 | `tsc --noEmit` | exit 0, no output |
-| `vitest run` | **63 files / 613 tests passed**, 0 failed |
+| `vitest run` | **65 files / 634 tests passed**, 0 failed |
 | `architecture:check` | 7/7 rules passed |
 | `next build` | compiled successfully; **all `/admin` routes marked `ƒ` (dynamic)** |
 
@@ -104,6 +104,23 @@ exactly this reason** — see §6.
 
 The direct-URL checks matter more than the sidebar checks. The sidebar is
 presentation; the redirect is the actual boundary.
+
+### 3.2b Owner Gate failure must not loop (Component 3 regression)
+
+The review found and fixed an infinite redirect loop on Owner Gate failure. It
+is unit-tested, but the deployed behaviour is worth one live check because it
+only manifests when the gate is misconfigured — the worst moment to discover a
+browser redirect loop.
+
+**Do NOT induce this on production.** Verify it on a preview deployment by
+unsetting `PLATFORM_OWNER_USER_ID` for Preview only, then loading `/admin`:
+
+| Expected | Not expected |
+|---|---|
+| A single redirect out of the Controller (to `/reviews`) | `ERR_TOO_MANY_REDIRECTS` |
+
+Restore the Preview variable afterwards. If the loop appears, roll back — it
+means the deployed build predates the fix.
 
 ### 3.3 Fail-closed spot check
 
