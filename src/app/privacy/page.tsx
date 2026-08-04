@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
-import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
+import { OG_IMAGE, SITE_URL, SUPPORT_EMAIL } from '@/components/landing/config'
 
 // Public Privacy Policy required by the Google Play Console listing, so this
 // route must stay statically renderable and reachable without auth: no session
@@ -19,12 +19,6 @@ const PAGE_URL = `${SITE_URL}/privacy`
 const TITLE = 'Privacy Policy — TappyAI'
 const DESCRIPTION =
   'How TappyAI collects, uses, stores, and protects your information, including Google account data, conversation history, personalization, usage analytics, and the third-party providers we rely on. Available in English and Vietnamese.'
-
-// Deliberately NOT the SUPPORT_EMAIL in landing/config.ts (a personal mailbox).
-// support@tappyai.com is an active Cloudflare Email Routing rule forwarding to
-// the owner, so it is the address the published policy and the Play Console
-// entry commit to. config.ts's "no dedicated support@ mailbox yet" note is stale.
-const SUPPORT_EMAIL = 'support@tappyai.com'
 
 export const metadata: Metadata = {
   title: TITLE,

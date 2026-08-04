@@ -13,8 +13,13 @@ export const BRAND_NAME = 'TappyAI'
 export const LOGO = '/branding/otter-logo.png'
 export const OG_IMAGE = '/feature-graphic.png'
 
-// Public contact addresses for the landing page.
-export const SUPPORT_EMAIL = 'founder@tappyai.com'
+// Public contact addresses. SUPPORT_EMAIL is the single user-facing support
+// channel: the landing "Support" card, the Organization email in the /startup
+// structured data, and the contact section of the /privacy policy all read it
+// from here, so they cannot drift apart. FOUNDER_EMAIL is the separate
+// executive contact on the founder profile and is intentionally a different
+// address. Both are active Cloudflare Email Routing rules.
+export const SUPPORT_EMAIL = 'support@tappyai.com'
 export const FOUNDER_EMAIL = 'founder@tappyai.com'
 export const FOUNDER_LINKEDIN_URL = 'https://www.linkedin.com/in/ph%E1%BA%A1m-huy-313592253/'
 export const FOUNDER_LINKEDIN_LABEL = 'linkedin.com/in/phạm-huy-313592253'
