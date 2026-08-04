@@ -94,11 +94,19 @@ fun ReviewVideoPlayer(
 
     var showThumbnail by rememberSaveable(url) { mutableStateOf(true) }
 
+    // Web parity (`VideoPlayer.tsx`'s `userPausedRef`): true only while the user has explicitly
+    // paused this clip via tap. Scoped per-clip (remember(url)) so a fresh clip never inherits a
+    // stale pause, and reset to false whenever this clip (re)becomes active — mirrors the web
+    // effect's `userPausedRef.current = false` at the top of its `[active, sourceType]` effect, so
+    // scrolling away and back to a paused clip resumes it (TikTok/Reels convention), same as web.
+    var userPaused by remember(url) { mutableStateOf(false) }
+
     // Only the on-screen clip holds a decoder: prepare + play while active, stop (releasing the codec)
     // and clear the poster overlay when scrolled away. Off-screen cards never prepare, so a long feed
     // can't exhaust the device's video decoders.
     LaunchedEffect(url, active) {
         if (active) {
+            userPaused = false
             exoPlayer.setMediaItem(MediaItem.fromUri(url))
             exoPlayer.prepare()
             exoPlayer.playWhenReady = true
@@ -121,7 +129,9 @@ fun ReviewVideoPlayer(
             kotlinx.coroutines.delay(300)
             val started = lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
             val state = exoPlayer.playbackState
-            if (started && !exoPlayer.isPlaying && state != Player.STATE_IDLE && state != Player.STATE_ENDED) {
+            // Web parity: the watchdog must never fight an intentional user pause — mirrors
+            // `ensurePlaying`'s own `if (... userPausedRef.current ...) return` guard.
+            if (started && !userPaused && !exoPlayer.isPlaying && state != Player.STATE_IDLE && state != Player.STATE_ENDED) {
                 exoPlayer.playWhenReady = true
                 exoPlayer.play()
             }
@@ -169,8 +179,12 @@ fun ReviewVideoPlayer(
                         exoPlayer.setMediaItem(MediaItem.fromUri(url))
                         exoPlayer.prepare()
                     }
-                    exoPlayer.playWhenReady = true
-                    if (borrowing && soundUrl != null && FeedAudio.unlocked) companionPlayer.playWhenReady = true
+                    // Don't override an intentional user pause just because the app came back to
+                    // the foreground (same userPaused guard as the watchdog, applied consistently).
+                    if (!userPaused) {
+                        exoPlayer.playWhenReady = true
+                        if (borrowing && soundUrl != null && FeedAudio.unlocked) companionPlayer.playWhenReady = true
+                    }
                 }
                 else -> Unit
             }
@@ -230,11 +244,26 @@ fun ReviewVideoPlayer(
         modifier = modifier
             .fillMaxSize()
             .background(Color.Black)
-            // Tap unlocks feed audio (web parity: first tap turns sound on for the session).
+            // Tap unlocks feed audio (web parity: first tap turns sound on for the session) AND
+            // toggles play/pause (web parity: `VideoPlayer.tsx`'s `togglePlay`, invoked by the
+            // feed's tap gesture layer in `reviews/page.tsx`). Web disambiguates a single tap from
+            // a double-tap-to-like over a 300ms window before calling togglePlay(); Android has no
+            // double-tap-to-like gesture to disambiguate against (none exists in this module), so
+            // toggling immediately on tap is the minimal, faithful match for the two reported bugs
+            // without inventing a double-tap feature that isn't there today.
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onClick = { FeedAudio.unlocked = true },
+                onClick = {
+                    FeedAudio.unlocked = true
+                    if (exoPlayer.isPlaying) {
+                        userPaused = true
+                        exoPlayer.pause()
+                    } else {
+                        userPaused = false
+                        exoPlayer.play()
+                    }
+                },
             )
             .then(
                 if (contentDescription != null) {
