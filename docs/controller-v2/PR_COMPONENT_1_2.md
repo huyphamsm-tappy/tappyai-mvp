@@ -1,9 +1,12 @@
-# PR — Controller V2 Foundation: Components 1 & 2 (Platform Owner + Identity)
+<!--
+  THIS ENTIRE FILE IS THE PR BODY. Copy it verbatim, including this comment or
+  not — GitHub hides HTML comments when rendering.
 
-> **How to use this file.** `gh` CLI is not authenticated on the build machine, so the PR must be opened manually. Copy everything below the line into the GitHub PR body.
-> https://github.com/huyphamsm-tappy/tappyai-mvp/pull/new/feat/controller-v2-foundation
+  Open at: https://github.com/huyphamsm-tappy/tappyai-mvp/pull/new/feat/controller-v2-foundation
+  Title, labels, reviewers and merge strategy: docs/controller-v2/DEPLOYMENT_READINESS_COMPONENT_1_2.md §1
+-->
 
-**Base:** `main` `7fa2c31` · **Head:** `feat/controller-v2-foundation` `2cad83b` · 5 commits · clean fast-forward, 0 behind, no conflicts
+**Base:** `main` `7fa2c31` · **Head:** `feat/controller-v2-foundation` `5c74dc6` · 8 commits · clean fast-forward, 0 behind, 0 conflicts
 
 ---
 
@@ -15,8 +18,8 @@ This PR introduces the Platform Owner as a **constitutional principal that is no
 
 | | |
 |---|---|
-| Files changed | 17 (+1795 / −57) |
-| **Production source** | **5 files, +327 / −57** — the rest is migrations, tests and documentation |
+| Files changed | 21 (+2940 / −57) |
+| **Production source** | **5 files, +327 / −57** — everything else is tests (4 files, +432), migrations and seed (4 files, +356), and documentation (8 files, +1825) |
 | Tests | **535 passing / 60 files** (+38 vs base 497/56) |
 | Production behaviour today | **unchanged** until a gated deployment runbook is executed |
 | Applied to any database | **nothing** |
@@ -172,8 +175,19 @@ Purely additive. No `DROP`, no `REVOKE`, no `ALTER` of any existing object.
 | `fn_is_platform_owner` | function | `SECURITY DEFINER`, single definition of "is the Owner" |
 | `fn_grant_admin_role` | function | `SECURITY DEFINER`, constitutional guards |
 | `fn_revoke_admin_role` | function | `SECURITY DEFINER`, guards + lockout protection |
+| `GRANT EXECUTE` ×3 | privilege | `service_role` may call the three functions |
+| `GRANT SELECT ON platform_owner` | privilege | `owner.ts` reads this table on every admin request |
 
-**Idempotent:** all seven statements are `IF NOT EXISTS` or `CREATE OR REPLACE`. Re-running is safe. Existing tables, columns, rows and privileges are untouched — `admin_roles` keeps its schema and its data.
+**Idempotent:** every statement is `IF NOT EXISTS`, `CREATE OR REPLACE`, or a re-`GRANT`. Re-running is safe. Existing tables, columns, rows and privileges are untouched — `admin_roles` keeps its schema and its data.
+
+**Self-contained (owner decision, 2026-08-03).** The grants are explicit rather than inherited from ambient database defaults. Two implicit assumptions were removed:
+
+- **A1** — PostgreSQL grants `EXECUTE` to `PUBLIC` on new functions by default. True today, but implicit, and six other migrations in this repository already grant explicitly. Had `PUBLIC` execute ever been revoked as a hardening step, every role grant would have returned HTTP 500 with no obvious cause.
+- **A4** — Supabase's default privileges grant table access to `service_role`. Same class, worse failure mode: `owner.ts` reads `platform_owner` as a **table**, not through an RPC, and a failed read degrades to "no owner assigned" — which, with `PLATFORM_OWNER_USER_ID` set, returns **403 for the entire Controller**.
+
+Nothing is granted to `anon` or `authenticated`; the ownership record must never be client-readable, and RLS remains deny-by-default with zero policies. Runbook Step 2 verifies all three conditions.
+
+Full analysis: [`ASSUMPTION_REGISTER_COMPONENT_1_2.md`](ASSUMPTION_REGISTER_COMPONENT_1_2.md).
 
 ### `supabase/seed/platform_owner_bootstrap.sql` (runbook Step 3)
 
