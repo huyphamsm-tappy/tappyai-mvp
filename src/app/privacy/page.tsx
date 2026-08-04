@@ -1,142 +1,208 @@
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import type { Metadata } from 'next'
+import Header from '@/components/Header'
+import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
+
+// Public Privacy Policy required by the Google Play Console listing, so this
+// route must stay statically renderable and reachable without auth: no session
+// reads, no client data fetching. Header is the only client component here —
+// it is what applies the `dark` class to <html> (Tailwind runs darkMode:'class',
+// and nothing else on a directly-loaded legal page would light it up).
+
+const PAGE_URL = `${SITE_URL}/privacy`
+const TITLE = 'Privacy Policy — TappyAI'
+const DESCRIPTION =
+  'How TappyAI collects, uses, stores, and protects your information, including Google account data, conversation history, and the third-party AI and search providers we rely on.'
+
+// Deliberately NOT the SUPPORT_EMAIL in landing/config.ts (a personal mailbox):
+// the published policy commits to the branded support address, which is the one
+// listed on the Play Console entry. Keep the two in sync only once config.ts's
+// "no dedicated support@ mailbox yet" note stops being true.
+const SUPPORT_EMAIL = 'support@tappyai.com'
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: PAGE_URL },
+  openGraph: {
+    type: 'website',
+    url: PAGE_URL,
+    siteName: 'TappyAI',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: `${SITE_URL}${OG_IMAGE}` }],
+    locale: 'en_US',
+    alternateLocale: ['vi_VN'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [`${SITE_URL}${OG_IMAGE}`],
+  },
+  robots: { index: true, follow: true },
+}
+
+/** Numbered policy section with an accessible heading association. */
+function Section({
+  id,
+  heading,
+  children,
+}: {
+  id: string
+  heading: string
+  children: React.ReactNode
+}) {
+  const headingId = `${id}-heading`
+  return (
+    <section aria-labelledby={headingId} className="scroll-mt-20 space-y-3">
+      <h2
+        id={headingId}
+        className="text-fluid-h3 font-semibold text-gray-900 dark:text-white"
+      >
+        {heading}
+      </h2>
+      {children}
+    </section>
+  )
+}
+
+/** Policy body copy — one shared measure/leading for every paragraph. */
+function P({ children }: { children: React.ReactNode }) {
+  return <p className="text-fluid-body text-gray-600 dark:text-gray-300">{children}</p>
+}
+
+/**
+ * Bulleted list. The marker is a decorative span rather than a native
+ * list-style dot so it can carry the brand accent colour and stay aligned with
+ * the first line of wrapped items.
+ */
+function Bullets({ items }: { items: React.ReactNode[] }) {
+  return (
+    <ul className="space-y-2.5">
+      {items.map((item, i) => (
+        <li key={i} className="flex gap-3 text-fluid-body text-gray-600 dark:text-gray-300">
+          <span
+            aria-hidden="true"
+            className="mt-[0.65em] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent-500"
+          />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950">
-      {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
-        <div className="max-w-2xl mx-auto px-4 h-14 flex items-center gap-3">
-          <Link href="/login" className="p-2 -ml-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <ArrowLeft size={20} />
-          </Link>
-          <h1 className="font-semibold text-gray-900 dark:text-white">Chính sách bảo mật</h1>
-        </div>
-      </header>
+      <Header showBack backHref="/" />
 
-      <main className="max-w-2xl mx-auto px-4 py-6">
-        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-          <p className="text-gray-400 dark:text-gray-500 text-xs">Cập nhật lần cuối: 19/06/2026</p>
+      <main className="container-content py-10 sm:py-14">
+        <header className="mb-8 sm:mb-10">
+          <h1 className="text-fluid-display font-bold text-gray-900 dark:text-white">
+            Privacy Policy
+          </h1>
+          {/* Decorative accent rule — mirrors the marketing sections */}
+          <span
+            aria-hidden="true"
+            className="mt-4 block h-1 w-12 rounded-full bg-accent-500"
+          />
+          <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+            Effective Date: August 2026
+          </p>
+        </header>
 
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">1. Thông tin chúng tôi thu thập</h3>
-            <p>
-              Khi bạn đăng nhập bằng Google, TappyAI lưu lại tên, email và ảnh đại diện từ tài khoản
-              Google của bạn. Chúng tôi cũng lưu lịch sử trò chuyện với trợ lý AI để bạn có thể xem
-              lại sau này.
-            </p>
-            <p className="mt-2">
-              Ngoài ra, chúng tôi lưu trữ các thông tin sau:
-            </p>
-            <ul className="mt-1.5 space-y-1.5 list-none pl-0">
-              <li className="flex gap-2">
-                <span className="text-gray-400 flex-shrink-0">–</span>
-                <span>
-                  <strong className="text-gray-800 dark:text-gray-200">Sở thích và ngữ cảnh cá nhân hóa:</strong> AI có thể ghi nhớ
-                  thông tin bạn chia sẻ trong cuộc trò chuyện (ví dụ: vị trí, sở thích ăn uống, ngân sách)
-                  để cá nhân hóa phản hồi. Những thông tin này được lưu trong bảng dữ liệu nội bộ
-                  và chỉ được dùng để cải thiện trải nghiệm của bạn.
-                </span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-gray-400 flex-shrink-0">–</span>
-                <span>
-                  <strong className="text-gray-800 dark:text-gray-200">Phản hồi tin nhắn:</strong> Khi bạn nhấn thích, không thích
-                  hoặc báo cáo một phản hồi của AI, hành động đó được ghi lại để cải thiện chất lượng
-                  dịch vụ.
-                </span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-gray-400 flex-shrink-0">–</span>
-                <span>
-                  <strong className="text-gray-800 dark:text-gray-200">Thông tin đặt dịch vụ:</strong> Khi bạn đặt lịch qua TappyAI,
-                  chúng tôi thu thập tên và số điện thoại để liên hệ xác nhận. Thông tin này chỉ được
-                  dùng cho mục đích đặt lịch.
-                </span>
-              </li>
-            </ul>
-          </div>
+        <div className="space-y-8 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-900 dark:ring-white/10 sm:space-y-10 sm:p-8">
+          <Section id="information-we-collect" heading="1. Information We Collect">
+            <P>TappyAI may collect:</P>
+            <Bullets
+              items={[
+                'Google account information (name, email address, profile photo) when you sign in with Google.',
+                'Conversation history with the AI assistant.',
+                'Basic account information required to provide our services.',
+              ]}
+            />
+          </Section>
 
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">2. Cách chúng tôi sử dụng thông tin</h3>
-            <p>
-              Thông tin được sử dụng để cung cấp và cải thiện trải nghiệm trò chuyện, ghi nhớ lịch sử
-              hội thoại của bạn, và hiển thị thông tin tài khoản trong phần Hồ sơ. Chúng tôi không
-              bán thông tin cá nhân của bạn cho bên thứ ba.
-            </p>
-          </div>
+          <Section id="how-we-use-your-information" heading="2. How We Use Your Information">
+            <P>We use your information to:</P>
+            <Bullets
+              items={[
+                'Provide AI-powered conversations.',
+                'Save and restore your conversation history.',
+                'Display your account profile.',
+                'Improve the quality and reliability of the service.',
+                'Protect platform security.',
+              ]}
+            />
+            <P>
+              <strong className="font-semibold text-gray-900 dark:text-white">
+                We do not sell your personal information.
+              </strong>
+            </P>
+          </Section>
 
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">3. Chia sẻ với bên thứ ba</h3>
-            <p>
-              Để trả lời câu hỏi về giá cả, địa điểm và dịch vụ, TappyAI gửi nội dung câu hỏi của bạn
-              tới các dịch vụ AI và tìm kiếm (Anthropic Claude, Google Search) để lấy kết quả. Các
-              dịch vụ này xử lý dữ liệu theo chính sách riêng của họ.
-            </p>
-          </div>
+          <Section id="third-party-services" heading="3. Third-Party Services">
+            <P>
+              To provide AI responses and search-related features, TappyAI may send relevant
+              user requests to trusted providers, including:
+            </P>
+            <Bullets items={['Anthropic Claude', 'Google Search services']} />
+            <P>These providers process data according to their own privacy policies.</P>
+          </Section>
 
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">4. Phân tích sản phẩm (PostHog)</h3>
-            <p>
-              Chúng tôi sử dụng PostHog — một nền tảng phân tích sản phẩm — để hiểu cách người dùng
-              tương tác với TappyAI. Dữ liệu được thu thập bao gồm:
-            </p>
-            <ul className="mt-1.5 space-y-1.5 list-none pl-0">
-              <li className="flex gap-2">
-                <span className="text-gray-400 flex-shrink-0">–</span>
-                <span>Lượt xem trang và điều hướng trong ứng dụng</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-gray-400 flex-shrink-0">–</span>
-                <span>Các tính năng bạn sử dụng (ví dụ: bói tarot, tử vi, viết content) — chỉ loại tính năng, không bao gồm nội dung bạn nhập</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-gray-400 flex-shrink-0">–</span>
-                <span>Hành động trong thanh công cụ tin nhắn (sao chép, chia sẻ, thích, không thích)</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-gray-400 flex-shrink-0">–</span>
-                <span>Các sự kiện tương tác giao diện (ví dụ: dùng micro, mở bảng emoji)</span>
-              </li>
-            </ul>
-            <p className="mt-2">
-              <strong className="text-gray-800 dark:text-gray-200">Quan trọng:</strong> PostHog <strong className="text-gray-800 dark:text-gray-200">không</strong> nhận
-              nội dung tin nhắn trò chuyện hay chủ đề bạn nhập trong công cụ viết content — chỉ có
-              siêu dữ liệu về loại tính năng được dùng. Nội dung trò chuyện chỉ được lưu trong hệ
-              thống Supabase của TappyAI.
-            </p>
-          </div>
+          <Section id="data-storage-and-security" heading="4. Data Storage and Security">
+            <P>
+              User data is securely stored using Supabase infrastructure with authentication
+              and access controls.
+            </P>
+            <P>
+              Only authenticated users can access their own account information and
+              conversation history.
+            </P>
+          </Section>
 
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">5. Bảo mật dữ liệu</h3>
-            <p>
-              Dữ liệu của bạn được lưu trữ trên Supabase với cơ chế xác thực và phân quyền theo tài
-              khoản. Chỉ bạn mới có thể xem lịch sử trò chuyện và thông tin hồ sơ của chính mình.
-            </p>
-          </div>
+          <Section id="your-rights" heading="5. Your Rights">
+            <P>You may:</P>
+            <Bullets
+              items={[
+                'Sign out at any time.',
+                'Request deletion of your account and associated data by contacting our support team.',
+              ]}
+            />
+          </Section>
 
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">6. Quyền của bạn</h3>
-            <p>
-              Bạn có thể yêu cầu xóa tài khoản và toàn bộ dữ liệu liên quan bất kỳ lúc nào thông qua
-              phần Cài đặt tài khoản trong ứng dụng.
-            </p>
-          </div>
+          <Section id="changes-to-this-policy" heading="6. Changes to This Policy">
+            <P>We may update this Privacy Policy from time to time.</P>
+            <P>The latest version will always be available on this page.</P>
+          </Section>
 
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">7. Liên hệ</h3>
-            <p>
-              Nếu có thắc mắc về chính sách bảo mật, vui lòng liên hệ:{' '}
-              <span className="text-primary-500">huypham.sm@gmail.com</span>
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-6 text-center">
-          <Link href="/login" className="inline-flex items-center gap-2 text-sm text-primary-500 font-medium hover:underline">
-            <ArrowLeft size={14} />
-            Quay lại đăng nhập
-          </Link>
+          <Section id="contact" heading="7. Contact">
+            <dl className="space-y-4">
+              <div>
+                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Email</dt>
+                <dd className="text-fluid-body">
+                  <a
+                    href={`mailto:${SUPPORT_EMAIL}`}
+                    className="font-medium text-primary-500 underline underline-offset-4 hover:text-primary-600 dark:hover:text-primary-400"
+                  >
+                    {SUPPORT_EMAIL}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Website</dt>
+                <dd className="text-fluid-body">
+                  <a
+                    href={SITE_URL}
+                    className="font-medium text-primary-500 underline underline-offset-4 hover:text-primary-600 dark:hover:text-primary-400"
+                  >
+                    {SITE_URL}
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </Section>
         </div>
       </main>
     </div>
