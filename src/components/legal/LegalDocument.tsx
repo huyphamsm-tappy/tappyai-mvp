@@ -86,7 +86,12 @@ export default function LegalDocument({ doc }: { doc: LegalDoc }) {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950">
-      <Header showBack backHref="/" />
+      {/* No fixed backHref: these documents are reached from Settings, the login
+          screen, the landing footer and the Play Console listing, so no single
+          destination is right for everyone. A fixed href pushed Home and stranded
+          users who came from Settings. Back now pops history, falling back to
+          Home only when the tab opened directly on this page. */}
+      <Header showBack backFallbackHref="/" />
 
       {/* lang follows the active locale so screen readers and translation tools
           pronounce the document correctly when the user switches language. */}
