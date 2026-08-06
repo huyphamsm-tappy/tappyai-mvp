@@ -32,6 +32,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'settings.privacy': 'Chính sách bảo mật',
     'settings.version': 'Phiên bản hiện tại: {v}',
     'settings.signOut': 'Đăng xuất',
+    // Links to the public /delete-account page. Mirrors the Android Settings row
+    // (R.string.settings_delete_account), which Google Play requires to be
+    // discoverable in-app as well as on the open web.
+    'settings.deleteAccount': 'Yêu cầu xóa tài khoản',
 
     // Common
     'common.or': 'hoặc',
@@ -277,6 +281,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'settings.privacy': 'Privacy Policy',
     'settings.version': 'Current version: {v}',
     'settings.signOut': 'Sign out',
+    'settings.deleteAccount': 'Request Account Deletion',
 
     // Common
     'common.or': 'or',
