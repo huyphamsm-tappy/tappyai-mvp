@@ -110,35 +110,46 @@ export const en: Record<string, string> = {
   'legal.terms.s6.heading': '6. Contact',
 
   // --------------------------------------------------------- delete account
-  // Public page required by Google Play: an app that offers in-app account
-  // deletion must also document the route on the open web. It explains the
-  // existing in-app flow — it does not add a web deletion path.
+  // Public page required by Google Play. It documents the account-deletion
+  // route the Android app actually implements: a *request* sent by email to
+  // support, not an automatic in-app erase. The app's own menu item reads
+  // "Request account deletion" and its confirmation dialog states the account
+  // "is not deleted automatically" — this copy must keep matching that wording,
+  // because Play checks the published description against the shipped flow.
   'legal.delete.title': 'Delete Your TappyAI Account',
   'legal.delete.effective': 'Last updated: August 2026',
 
-  'legal.delete.s1.heading': '1. How to Delete Your Account',
+  'legal.delete.s1.heading': '1. How to Request Account Deletion',
   'legal.delete.s1.lead':
-    'You can permanently delete your TappyAI account directly from within the app.',
+    'You can request deletion of your TappyAI account from inside the app. The request is sent to our support team by email — your account is not deleted automatically when you tap the button.',
   'legal.delete.s1.step1': 'Open TappyAI.',
   'legal.delete.s1.step2': 'Go to Settings.',
-  'legal.delete.s1.step3': 'Select Delete Account.',
-  'legal.delete.s1.step4': 'Confirm the deletion request.',
+  'legal.delete.s1.step3': 'Choose Request account deletion.',
+  'legal.delete.s1.step4':
+    'Confirm. The app opens your email app with the request already prepared — send the email to submit it.',
 
-  'legal.delete.s2.heading': '2. What Deleting Your Account Removes',
-  'legal.delete.s2.lead': 'Deleting your account permanently removes:',
-  'legal.delete.s2.b1': 'Your profile.',
-  'legal.delete.s2.b2': 'Chat history.',
-  'legal.delete.s2.b3': 'AI memory.',
-  'legal.delete.s2.b4': 'Saved items.',
-  'legal.delete.s2.b5': 'Preferences.',
-  'legal.delete.s2.b6': 'Other user-generated content associated with your account.',
+  'legal.delete.s2.heading': '2. What Happens Next',
+  'legal.delete.s2.p1':
+    'Our support team receives your request and verifies that it came from the owner of the account. Once verified, we permanently delete your account and its associated data.',
+  'legal.delete.s2.p2':
+    'If you do not have an email app set up on your device, you can send the request yourself to the support address at the bottom of this page.',
 
-  'legal.delete.s3.heading': '3. Data We May Retain',
-  'legal.delete.s3.p1':
+  'legal.delete.s3.heading': '3. What Deletion Removes',
+  'legal.delete.s3.lead': 'Once your request has been processed, deletion permanently removes:',
+  'legal.delete.s3.b1': 'Your profile.',
+  'legal.delete.s3.b2': 'Chat history.',
+  'legal.delete.s3.b3': 'AI memory.',
+  'legal.delete.s3.b4': 'Saved items.',
+  'legal.delete.s3.b5': 'Preferences.',
+  'legal.delete.s3.b6': 'Other user-generated content associated with your account.',
+
+  'legal.delete.s4.heading': '4. Data We May Retain',
+  'legal.delete.s4.p1':
     'Some information may be retained only where required by applicable laws or legitimate business obligations (for example payment or legal compliance records).',
 
-  'legal.delete.s4.heading': '4. Need Help?',
-  'legal.delete.s4.p1': 'If you need assistance, contact us:',
+  'legal.delete.s5.heading': '5. Need Help?',
+  'legal.delete.s5.p1':
+    'If you need assistance, or want to check the status of a request you have already sent, contact us:',
 
   // ------------------------------------------------------------ shared bits
   'legal.contact.email': 'Email',
@@ -246,29 +257,37 @@ export const vi: Record<string, string> = {
   'legal.delete.title': 'Xóa tài khoản TappyAI',
   'legal.delete.effective': 'Cập nhật lần cuối: Tháng 8 năm 2026',
 
-  'legal.delete.s1.heading': '1. Cách xóa tài khoản',
+  'legal.delete.s1.heading': '1. Cách gửi yêu cầu xóa tài khoản',
   'legal.delete.s1.lead':
-    'Bạn có thể xóa vĩnh viễn tài khoản TappyAI trực tiếp trong ứng dụng.',
+    'Bạn có thể gửi yêu cầu xóa tài khoản TappyAI ngay trong ứng dụng. Yêu cầu sẽ được gửi tới bộ phận hỗ trợ của chúng tôi qua email — tài khoản không bị xóa tự động ngay khi bạn nhấn nút.',
   'legal.delete.s1.step1': 'Mở TappyAI.',
   'legal.delete.s1.step2': 'Vào Cài đặt.',
-  'legal.delete.s1.step3': 'Chọn Xóa tài khoản.',
-  'legal.delete.s1.step4': 'Xác nhận yêu cầu xóa.',
+  'legal.delete.s1.step3': 'Chọn Yêu cầu xóa tài khoản.',
+  'legal.delete.s1.step4':
+    'Xác nhận. Ứng dụng sẽ mở ứng dụng email với nội dung yêu cầu đã soạn sẵn — hãy gửi email đó để hoàn tất.',
 
-  'legal.delete.s2.heading': '2. Những dữ liệu sẽ bị xóa',
-  'legal.delete.s2.lead': 'Việc xóa tài khoản sẽ xóa vĩnh viễn:',
-  'legal.delete.s2.b1': 'Hồ sơ.',
-  'legal.delete.s2.b2': 'Lịch sử trò chuyện.',
-  'legal.delete.s2.b3': 'Bộ nhớ AI.',
-  'legal.delete.s2.b4': 'Nội dung đã lưu.',
-  'legal.delete.s2.b5': 'Tùy chọn cá nhân.',
-  'legal.delete.s2.b6': 'Các dữ liệu khác do bạn tạo và gắn với tài khoản.',
+  'legal.delete.s2.heading': '2. Điều gì diễn ra sau đó',
+  'legal.delete.s2.p1':
+    'Bộ phận hỗ trợ tiếp nhận yêu cầu và xác minh rằng yêu cầu đến từ chủ tài khoản. Sau khi xác minh, chúng tôi sẽ xóa vĩnh viễn tài khoản của bạn cùng các dữ liệu liên quan.',
+  'legal.delete.s2.p2':
+    'Nếu thiết bị của bạn chưa cài ứng dụng email, bạn có thể tự gửi yêu cầu tới địa chỉ hỗ trợ ở cuối trang này.',
 
-  'legal.delete.s3.heading': '3. Dữ liệu có thể được lưu lại',
-  'legal.delete.s3.p1':
+  'legal.delete.s3.heading': '3. Những dữ liệu sẽ bị xóa',
+  'legal.delete.s3.lead': 'Sau khi yêu cầu được xử lý, việc xóa sẽ loại bỏ vĩnh viễn:',
+  'legal.delete.s3.b1': 'Hồ sơ.',
+  'legal.delete.s3.b2': 'Lịch sử trò chuyện.',
+  'legal.delete.s3.b3': 'Bộ nhớ AI.',
+  'legal.delete.s3.b4': 'Nội dung đã lưu.',
+  'legal.delete.s3.b5': 'Tùy chọn cá nhân.',
+  'legal.delete.s3.b6': 'Các dữ liệu khác do bạn tạo và gắn với tài khoản.',
+
+  'legal.delete.s4.heading': '4. Dữ liệu có thể được lưu lại',
+  'legal.delete.s4.p1':
     'Một số dữ liệu có thể được lưu lại nếu pháp luật yêu cầu hoặc để thực hiện các nghĩa vụ hợp pháp (ví dụ thông tin thanh toán hoặc lưu trữ theo quy định).',
 
-  'legal.delete.s4.heading': '4. Cần hỗ trợ?',
-  'legal.delete.s4.p1': 'Nếu cần hỗ trợ, vui lòng liên hệ:',
+  'legal.delete.s5.heading': '5. Cần hỗ trợ?',
+  'legal.delete.s5.p1':
+    'Nếu cần hỗ trợ, hoặc muốn kiểm tra tình trạng yêu cầu đã gửi, vui lòng liên hệ:',
 
   // ------------------------------------------------------------ shared bits
   'legal.contact.email': 'Email',
