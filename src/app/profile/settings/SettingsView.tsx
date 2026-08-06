@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
 import SignOutButton from '../SignOutButton'
-import { Bell, Brain, FileText, Shield } from 'lucide-react'
+import { Bell, Brain, FileText, Shield, Trash2 } from 'lucide-react'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
@@ -47,8 +47,26 @@ export default function SettingsView({ user }: { user: ComponentProps<typeof Hea
           <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-3">{t('settings.version', { v: '0.1.0' })}</p>
         </section>
 
-        <div className="card p-2">
+        {/* Account actions. Grouped in one card the way the Android Settings screen
+            groups them (SettingsScreen.kt: Sign out, divider, Request account
+            deletion — both danger-styled), so the two platforms read the same.
+            The deletion entry links to the public /delete-account page rather
+            than acting directly: deletion is a request handled by support, and
+            that page is the route Google Play requires to be documented. */}
+        <div className="card p-2 space-y-1">
           <SignOutButton />
+          {/* rounded-xl + overflow-hidden so MenuItem's square hover fill is clipped
+              to the same pill shape as SignOutButton's; without it the two rows in
+              this card highlight differently. Local wrapper rather than restyling
+              the shared MenuItem, which every other settings row also uses. */}
+          <div className="rounded-xl overflow-hidden">
+            <MenuItem
+              icon={Trash2}
+              label={t('settings.deleteAccount')}
+              href="/delete-account"
+              danger
+            />
+          </div>
         </div>
       </main>
 
