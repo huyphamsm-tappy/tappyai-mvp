@@ -2,7 +2,8 @@
 
 **Status:** implemented, self-reviewed, awaiting Owner approval
 **Branch:** `feat/controller-v2-component3-rbac`
-**Branch point:** `35233a4` (merge of the Foundation closure PR)
+**Rebased onto:** `0654f45` — originally cut at `35233a4` (the Foundation
+closure PR) and rebased when `origin/main` advanced by 11 commits during review
 **Registry version:** `2026-08-04.2`
 
 ---

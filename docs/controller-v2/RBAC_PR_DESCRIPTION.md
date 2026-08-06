@@ -1,7 +1,7 @@
 # feat(controller-v2): Component 3 — RBAC permission engine
 
 **Branch:** `feat/controller-v2-component3-rbac` → `main`
-**Branch point:** `35233a4` · **Merge strategy:** merge commit, do **not** squash
+**Rebased onto:** `0654f45` · **Merge strategy:** merge commit, do **not** squash
 **Scope:** Component 3 only. Components 1–2 touched only where integration required.
 
 ---
@@ -190,7 +190,7 @@ npx tsc --noEmit && npx vitest run && npm run architecture:check && npx next bui
 | Gate | Result |
 |---|---|
 | `tsc --noEmit` | ✅ clean |
-| `vitest run` | ✅ **66 files / 647 tests passed** |
+| `vitest run` | ✅ **67 files / 653 tests passed** |
 | `architecture:check` | ✅ 7/7 rules |
 | `next lint` | ✅ 0 errors (pre-existing warnings only, none in `permissions/`) |
 | `next build` | ✅ compiled; all `/admin` routes `ƒ` dynamic |
@@ -244,7 +244,7 @@ All paths are under `docs/controller-v2/`.
 
 - [ ] Owner has read `RELEASE_READINESS_COMPONENT_3.md` (verdict: READY FOR MERGE)
 - [ ] Pre-flight gates re-run on the merge commit: `npx tsc --noEmit && npx vitest run && npm run architecture:check && npx next build`
-- [ ] `vitest` reports **66 files / 647 tests**, 0 failed
+- [ ] `vitest` reports **67 files / 653 tests**, 0 failed
 - [ ] `next build` shows all 8 `/admin` routes as **`ƒ` (dynamic)** — a static `/admin` would be served without server-side authorization
 - [ ] Confirm the one declared Policy Change is accepted (runbook §4b): a roleless Platform Owner may now reach `/admin`
 

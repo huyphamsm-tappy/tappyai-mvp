@@ -1,7 +1,7 @@
 # Release Readiness Report — Component 3 (RBAC)
 
 **Review type:** PR review, Engineering Constitution V1
-**Branch:** `feat/controller-v2-component3-rbac` · **Branch point:** `35233a4`
+**Branch:** `feat/controller-v2-component3-rbac` · **Rebased onto:** `0654f45`
 **Registry version:** `2026-08-04.2` · **Date:** 2026-08-04
 **Diff:** 50 files (23 added · 1 deleted · 26 modified) — `src/` **+2409 / −194**
 
@@ -75,19 +75,21 @@ things that are not there — the mistake R-7 exists to prevent.
 | Gate | Command | Result |
 |---|---|---|
 | Type check | `npx tsc --noEmit` | ✅ exit 0, no output |
-| Tests | `npx vitest run` | ✅ **66 files / 647 tests passed**, 0 failed |
+| Tests | `npx vitest run` | ✅ **67 files / 653 tests passed**, 0 failed |
 | Architecture | `npm run architecture:check` | ✅ 7/7 rules |
 | Lint | `npx next lint --dir src` | ✅ **0 errors** |
 | Build | `npx next build` | ✅ compiled; **all 8 `/admin` routes `ƒ` dynamic** |
 
-Trajectory: 592 (branch point) → 613 → 634 → **647**. Component 3 owns 101 of
-them.
+Component 3 owns **101** of them (47 engine · 23 migration · 12 guards · 7
+invalidation · 12 nav). The suite total moved 647 → 653 when the branch was
+rebased onto `0654f45`: the new baseline brought its own tests. Component 3's
+own count did not change, and every one of its 101 still passes.
 
 ## 3. Authorization paths reviewed
 
 | Path | Finding |
 |---|---|
-| **API routes** | 12/12 gated by `requirePermission`, all via `PERMISSIONS.*` constants. `rateLimit`/`isSameOrigin` counts byte-identical to `35233a4`. No behaviour change beyond the guard swap. |
+| **API routes** | 12/12 gated by `requirePermission`, all via `PERMISSIONS.*` constants. `rateLimit`/`isSameOrigin` counts byte-identical to the pre-Component-3 state, re-checked against both `35233a4` and the rebase base `0654f45`. No behaviour change beyond the guard swap. |
 | **Server Components** | 8/8 pages guarded. Decision order identity → Owner Gate → authorization, asserted in `guards.test.ts`. |
 | **Client Components** | No `'use client'` file imports a server-only permissions module. `client.ts` imports one *type* and nothing else. |
 | **Navigation** | Nav permission === page-guard permission for all 8 real pages, checked mechanically. Placeholders re-gated (P-2). |
@@ -252,7 +254,7 @@ tests, cutting R-9 fails 2 invalidation tests.
 - Every number here was produced by a command that ran. The matrices in §6 were
   generated from the built registry, not typed.
 - **Nothing has been verified against production.** The gates prove the code
-  compiles, type-checks, passes 647 tests and builds. Only runbook §3 can prove
+  compiles, type-checks, passes 653 tests and builds. Only runbook §3 can prove
   the deployed build behaves correctly for a real non-Owner admin.
 - Two review passes found 13 issues. The honest reading is not that a third pass
   would find zero — it is that the specific blind spots that produced these

@@ -33,7 +33,8 @@ function rolesGranted(permission: PermissionId): AdminRole[] {
 }
 
 // The pre-migration gate at every migrated call site. Verified against
-// git 35233a4 (the branch point) — see RBAC_MANIFEST.md for the file list.
+// git 35233a4 (the original branch point) and re-checked after the rebase onto
+// 0654f45, which touches no admin file — see RBAC_MANIFEST.md for the file list.
 const MIGRATED: Array<{ site: string; legacyMinRole: AdminRole; permission: PermissionId }> = [
   // Pages
   { site: 'admin/analytics/activation/page.tsx', legacyMinRole: 'analyst', permission: PERMISSIONS.ANALYTICS_ACTIVATION_READ },

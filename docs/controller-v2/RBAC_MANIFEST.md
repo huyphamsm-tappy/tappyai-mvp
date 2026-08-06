@@ -1,7 +1,7 @@
 # RBAC Manifest — Component 3
 
 Complete inventory of what Component 3 adds, changes, and deletes.
-**Branch point:** `35233a4` · **Totals:** 50 files (23 added · 1 deleted · 26 modified)
+**Rebased onto:** `0654f45` (`origin/main`) · **Totals:** 50 files (23 added · 1 deleted · 26 modified)
 **Source change:** `src/` +2409 / −194 — quoted for `src/` only, because a
 whole-diff total changes every time it is written down.
 **Registry version:** `2026-08-04.2`
@@ -88,8 +88,10 @@ whole-diff total changes every time it is written down.
 | `/admin` | `dashboard.home.view` | Passes `deniedRedirect: '/reviews'` — the default `/admin` would redirect the page to itself |
 | `/admin/analytics` | `analytics.content.read` | New permission. Review finding R-7: it had borrowed `analytics.auth.read`, gating a **content**-analytics page on an **authentication** permission |
 
-`rateLimit` and `isSameOrigin` counts per handler are byte-identical to
-`35233a4` — no request-hardening was lost in the migration.
+`rateLimit` and `isSameOrigin` counts per handler are byte-identical to the
+pre-Component-3 state — re-checked against both `35233a4` (the original branch
+point) and `0654f45` (the rebase base, which touches no admin file). No
+request-hardening was lost in the migration.
 
 ## 6. Modified — UI
 
@@ -121,7 +123,7 @@ actor.
 npx tsc --noEmit && npx vitest run && npm run architecture:check && npx next build
 ```
 
-Results at the time of writing: `tsc` clean · **66 files / 647 tests passed** ·
+Results at the time of writing: `tsc` clean · **67 files / 653 tests passed** ·
 7/7 architecture rules · build succeeded, all `/admin` routes `ƒ` dynamic ·
 lint 0 errors (pre-existing warnings only, none in `permissions/`).
 

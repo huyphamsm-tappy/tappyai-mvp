@@ -1,6 +1,6 @@
 # RBAC Deployment Runbook — Component 3
 
-**Branch:** `feat/controller-v2-component3-rbac` · **Branch point:** `35233a4`
+**Branch:** `feat/controller-v2-component3-rbac` · **Rebased onto:** `0654f45`
 **Registry version:** `2026-08-04.2`
 
 > **Not approved for execution.** This runbook is written for review. Do not run
@@ -46,7 +46,7 @@ Expected:
 | Gate | Expected |
 |---|---|
 | `tsc --noEmit` | exit 0, no output |
-| `vitest run` | **66 files / 647 tests passed**, 0 failed |
+| `vitest run` | **67 files / 653 tests passed**, 0 failed |
 | `architecture:check` | 7/7 rules passed |
 | `next build` | compiled successfully; **all `/admin` routes marked `ƒ` (dynamic)** |
 
