@@ -8,8 +8,11 @@ self.addEventListener('push', event => {
   const title = data.title || 'TappyAI'
   const options = {
     body: data.body || '',
-    icon: data.icon || '/logo.png',
-    badge: '/logo.png',
+    // Fallback branding for a payload that omits them — the otter, not the retired infinity-mark
+    // /logo.png. The server (src/lib/notifications/send.ts) sets both fields on every push, so in
+    // practice these defaults only cover pushes sent from elsewhere.
+    icon: data.icon || '/tappy/wave.png',
+    badge: data.badge || '/tappy/wave.png',
     image: data.image || undefined,
     data: data.data || {},
     vibrate: [200, 100, 200],
