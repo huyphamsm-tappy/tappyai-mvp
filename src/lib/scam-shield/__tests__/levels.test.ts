@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { scoreToLevel, LEVEL_LABELS } from '../engine/levels'
+import { scoreToLevel } from '../engine/levels'
 
 describe('scoreToLevel', () => {
   it('maps 0 to SAFE', () => {
@@ -44,15 +44,5 @@ describe('scoreToLevel', () => {
 
   it('maps values above 100 to CRITICAL', () => {
     expect(scoreToLevel(150)).toBe('CRITICAL')
-  })
-})
-
-describe('LEVEL_LABELS', () => {
-  it('has labels for all 5 levels', () => {
-    expect(Object.keys(LEVEL_LABELS)).toHaveLength(5)
-    for (const level of ['SAFE', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'] as const) {
-      expect(LEVEL_LABELS[level]).toHaveProperty('vi')
-      expect(LEVEL_LABELS[level]).toHaveProperty('en')
-    }
   })
 })

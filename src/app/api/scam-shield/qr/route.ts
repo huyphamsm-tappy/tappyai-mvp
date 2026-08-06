@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   const rl = rateLimit(`ss:${ip}`, CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS)
   if (!rl.ok) {
     return NextResponse.json(
-      { error: 'rate_limit', message: 'Bạn đã kiểm tra quá nhiều lần. Thử lại sau.' },
+      { error: 'rate_limit', message: 'Too many checks. Try again later.' },
       { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
     )
   }
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
   if (!dailyRateLimit(dailyKey, dailyLimit).ok) {
     return NextResponse.json(
-      { error: 'daily_limit', message: 'Đã hết lượt kiểm tra hôm nay. Quay lại ngày mai.' },
+      { error: 'daily_limit', message: 'Daily check limit reached.' },
       { status: 429 },
     )
   }
@@ -83,19 +83,19 @@ export async function POST(req: Request) {
 
     if (message.includes('does not contain a URL')) {
       return NextResponse.json(
-        { error: 'qr_no_url', message: 'Mã QR không chứa liên kết', qrText },
+        { error: 'qr_no_url', message: 'QR code does not contain a link', qrText },
         { status: 400 },
       )
     }
     if (message.includes('decode') || message.includes('QR')) {
       return NextResponse.json(
-        { error: 'qr_decode_failed', message: 'Không thể đọc mã QR' },
+        { error: 'qr_decode_failed', message: 'Could not read QR code' },
         { status: 400 },
       )
     }
     console.error('[scam-shield] qr error:', message)
     return NextResponse.json(
-      { error: 'check_failed', message: 'Không thể kiểm tra mã QR' },
+      { error: 'check_failed', message: 'Could not check QR code' },
       { status: 500 },
     )
   }

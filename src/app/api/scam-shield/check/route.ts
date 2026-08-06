@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   const rl = rateLimit(`ss:${ip}`, CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS)
   if (!rl.ok) {
     return NextResponse.json(
-      { error: 'rate_limit', message: 'Bạn đã kiểm tra quá nhiều lần. Thử lại sau.' },
+      { error: 'rate_limit', message: 'Too many checks. Try again later.' },
       { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
     )
   }
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
   if (!dailyRateLimit(dailyKey, dailyLimit).ok) {
     return NextResponse.json(
-      { error: 'daily_limit', message: 'Đã hết lượt kiểm tra hôm nay. Quay lại ngày mai.' },
+      { error: 'daily_limit', message: 'Daily check limit reached.' },
       { status: 429 },
     )
   }
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   const parsed = bodySchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'invalid_input', message: 'URL không hợp lệ' },
+      { error: 'invalid_input', message: 'Invalid URL' },
       { status: 400 },
     )
   }
@@ -55,13 +55,13 @@ export async function POST(req: Request) {
     const message = err instanceof Error ? err.message : 'Check failed'
     if (message.includes('private') || message.includes('internal')) {
       return NextResponse.json(
-        { error: 'private_url', message: 'Không thể kiểm tra địa chỉ mạng nội bộ' },
+        { error: 'private_url', message: 'Cannot check internal network addresses' },
         { status: 400 },
       )
     }
     console.error('[scam-shield] check error:', message)
     return NextResponse.json(
-      { error: 'check_failed', message: 'Không thể kiểm tra URL' },
+      { error: 'check_failed', message: 'Could not check this URL' },
       { status: 500 },
     )
   }
