@@ -110,8 +110,12 @@ Any logged-in user could hammer `/api/admin/*` and inflate `audit_log` without
 limit. That is an attack on the audit log itself, not merely on storage: the
 real signal drowns.
 
-Closed by collapsing identical decisions per `(actor, permission, reason,
-surface)` into one row per 60 s. **Collapsing is not dropping** — the next row
+Closed by collapsing identical **denials** per `(actor, permission, reason,
+surface)` into one row per 60 s. **Only denials** — an `owner.override` is not
+attacker-reachable and each row is a distinct privileged action, so throttling
+those would break the 1:1 correspondence the architecture asks for. The
+adversarial review caught that: `deals/upload` writes no audit row of its own,
+so five uploads in a minute would have left one row. **Collapsing is not dropping** — the next row
 written carries `suppressed_since_last`, so a spike is still visible as a
 number. The key map is bounded (5 000 entries) so varying the key to defeat the
 throttle cannot grow memory instead.
@@ -168,11 +172,11 @@ literal. Recorded here so the deviation is deliberate and findable.
 
 ## 9. Tests
 
-66 new tests across four files; 722 total.
+69 new tests across four files; 725 total.
 
 | File | Tests | Covers |
 |---|---:|---|
-| `decisionAudit.test.ts` | 27 | The recording policy, the emitted row shape, the anti-flood throttle |
+| `decisionAudit.test.ts` | 30 | The recording policy, the emitted row shape, the anti-flood throttle |
 | `apiGuard.test.ts` | 12 | `requirePermission` decision order (ported from the deleted shim) + audit emission |
 | `singleDecisionPath.test.ts` | 31 | **Architectural lock** — reads the source tree and fails if a second way to authorize appears |
 | `guards.test.ts` (existing) | 12 | Page guard; unchanged |

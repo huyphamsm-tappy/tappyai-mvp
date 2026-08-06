@@ -261,6 +261,39 @@ describe('throttle — the audit log must not be floodable', () => {
     expect(throttleDecision('x', 60_001)).toBe(1)
   })
 
+  it('REGRESSION: owner.override is NOT throttled — each bypass is a real action', () => {
+    // The adversarial review caught this. Throttling exists to stop an attacker
+    // flooding DENIALS; only the Owner can produce an override, so it is not an
+    // attacker-reachable path, and each row is a distinct privileged action.
+    // `deals/upload` writes no audit row of its own, so the override is the ONLY
+    // record that the upload happened — collapsing five into one loses it.
+    const owner = actor({ isOwner: true, roles: [], highestRole: null })
+    for (let i = 0; i < 5; i++) {
+      auditAuthorizationDecision({ actor: owner, decision: allowOwner(PERMISSIONS.COMMERCE_DEALS_UPLOAD_MEDIA), surface: 'api' })
+    }
+
+    expect(h.writeAuditLog).toHaveBeenCalledTimes(5)
+  })
+
+  it('an override row never claims suppressed_since_last', () => {
+    const owner = actor({ isOwner: true })
+    auditAuthorizationDecision({ actor: owner, decision: allowOwner(PERMISSIONS.COMMERCE_DEALS_DELETE), surface: 'api' })
+
+    expect(h.writeAuditLog.mock.calls[0][0].metadata).not.toHaveProperty('suppressed_since_last')
+  })
+
+  it('denials are still throttled while overrides are not', () => {
+    const owner = actor({ userId: 'o', isOwner: true })
+    const other = actor({ userId: 'x', roles: [], highestRole: null })
+    for (let i = 0; i < 3; i++) {
+      auditAuthorizationDecision({ actor: owner, decision: allowOwner(PERMISSIONS.SECURITY_ROLES_GRANT), surface: 'api' })
+      auditAuthorizationDecision({ actor: other, decision: deny(PERMISSIONS.SECURITY_ROLES_GRANT), surface: 'api' })
+    }
+
+    // 3 overrides + 1 collapsed denial
+    expect(h.writeAuditLog).toHaveBeenCalledTimes(4)
+  })
+
   it('key-variation cannot grow memory without bound', () => {
     // An attacker who varies the key defeats collapsing but must not defeat the
     // memory bound. Every call still writes, so no signal is lost.

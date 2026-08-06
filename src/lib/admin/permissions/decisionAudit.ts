@@ -157,9 +157,22 @@ export function auditAuthorizationDecision(params: {
   const { actor, decision, surface, req } = params
   if (!shouldAudit(decision)) return
 
-  const suppressed = throttleDecision(
-    `${actor.userId}|${decision.permission}|${decision.reason}|${surface}`
-  )
+  // THROTTLE DENIALS ONLY.
+  //
+  // The flood vector is refusals: any authenticated user can drive them, and a
+  // repeated refusal carries no new information — one row plus a count says
+  // everything ten thousand rows would.
+  //
+  // An `owner.override` is the opposite. Only the Platform Owner can produce
+  // one, so it is not an attacker-reachable path, and each row corresponds to a
+  // distinct privileged action. Collapsing them would break the 1:1
+  // correspondence the architecture asks for — and for `deals/upload`, which
+  // writes no audit row of its own, the override IS the only record that the
+  // action happened. The adversarial review caught this: five uploads in a
+  // minute would have left one row.
+  const suppressed = decision.allowed
+    ? 0
+    : throttleDecision(`${actor.userId}|${decision.permission}|${decision.reason}|${surface}`)
   if (suppressed === null) return
 
   const definition = permissionRegistry.get(decision.permission)
