@@ -10,6 +10,76 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+// ---------------------------------------------------------------------------
+// Release configuration
+//
+// These are the *production* endpoints, not placeholders. They used to default
+// to `tappyai.example.com`, which meant a release built without the matching -P
+// override compiled and packaged perfectly while pointing every request at a
+// domain that does not exist — a broken AAB that looks fine until it is
+// installed. Public endpoints are not secrets, so the safe default is the real
+// value; only credentials are left to be supplied per-machine.
+//
+// See docs/release/ANDROID_RELEASE_CONFIGURATION.md for the full property
+// contract (what each one does, where to store it, what breaks without it).
+// ---------------------------------------------------------------------------
+val prodApiBaseUrl = "https://www.tappyai.com/"  // Retrofit baseUrl — trailing slash required
+val prodWebAppUrl = "https://www.tappyai.com"    // link building — no trailing slash
+
+/** Reads a Gradle property, treating blank as absent so `-PFoo=` cannot slip an empty value through. */
+fun releaseProp(name: String, default: String): String =
+    (project.findProperty(name) as String?)?.takeIf { it.isNotBlank() } ?: default
+
+val supabaseUrl = releaseProp("TAPPYAI_SUPABASE_URL", "https://your-project.supabase.co")
+val supabaseAnonKey = releaseProp("TAPPYAI_SUPABASE_ANON_KEY", "REPLACE_WITH_SUPABASE_ANON_KEY")
+val googleWebClientId =
+    releaseProp("TAPPYAI_GOOGLE_WEB_CLIENT_ID", "REPLACE_WITH_GOOGLE_WEB_CLIENT_ID.apps.googleusercontent.com")
+val webAppUrl = releaseProp("TAPPYAI_WEB_APP_URL", prodWebAppUrl)
+val releaseApiBaseUrl = releaseProp("TAPPYAI_API_BASE_URL_RELEASE", prodApiBaseUrl)
+
+// Substrings that must never appear in a shipped release artifact. Kept as
+// markers rather than exact matches so a *variant* of a placeholder (a stray
+// staging host, a half-edited REPLACE_WITH_) is caught too.
+val placeholderMarkers = listOf("tappyai.example.com", "your-project.supabase.co", "REPLACE_WITH")
+
+// Only guard the tasks that actually produce or install a release artifact.
+// Checking every task would break `assembleDebug` and IDE syncs on a machine
+// that has no production credentials, which is a normal state for a contributor.
+val releaseArtifactRequested = gradle.startParameter.taskNames.any {
+    Regex("(bundle|assemble|install|publish).*Release", RegexOption.IGNORE_CASE).containsMatchIn(it)
+}
+
+if (releaseArtifactRequested) {
+    val problems = buildList {
+        listOf(
+            Triple("TAPPYAI_API_BASE_URL_RELEASE", releaseApiBaseUrl, "every API request the app makes"),
+            Triple("TAPPYAI_WEB_APP_URL", webAppUrl, "shareable Group Dining links and QR profile URLs"),
+            Triple("TAPPYAI_SUPABASE_URL", supabaseUrl, "authentication and all database access"),
+            Triple("TAPPYAI_SUPABASE_ANON_KEY", supabaseAnonKey, "authentication and all database access"),
+            Triple("TAPPYAI_GOOGLE_WEB_CLIENT_ID", googleWebClientId, "Sign in with Google"),
+        ).forEach { (name, value, breaks) ->
+            placeholderMarkers.firstOrNull { value.contains(it) }?.let { marker ->
+                add("  • $name resolves to \"$value\"\n      contains placeholder \"$marker\" — would break $breaks")
+            }
+        }
+    }
+    if (problems.isNotEmpty()) {
+        throw GradleException(
+            buildString {
+                appendLine("Refusing to build a release artifact with placeholder configuration.")
+                appendLine()
+                problems.forEach { appendLine(it) }
+                appendLine()
+                appendLine("Such a build succeeds and packages cleanly, then fails at runtime on a real device.")
+                appendLine("Supply the real values via ~/.gradle/gradle.properties or -P flags:")
+                appendLine("  ./gradlew :app:bundleRelease -PTAPPYAI_SUPABASE_ANON_KEY=... ")
+                appendLine()
+                append("See docs/release/ANDROID_RELEASE_CONFIGURATION.md")
+            }
+        )
+    }
+}
+
 android {
     namespace = "com.tappyai.app"
     compileSdk = 36
@@ -31,31 +101,19 @@ android {
         // `-PTAPPYAI_SUPABASE_URL=... -PTAPPYAI_SUPABASE_ANON_KEY=... -PTAPPYAI_GOOGLE_WEB_CLIENT_ID=...`
         // (gradle.properties or CLI), same override pattern as `API_BASE_URL` below. No login
         // will complete without these — see the plan's M9 verification note.
-        buildConfigField(
-            "String", "SUPABASE_URL",
-            "\"${project.findProperty("TAPPYAI_SUPABASE_URL") ?: "https://your-project.supabase.co"}\""
-        )
-        buildConfigField(
-            "String", "SUPABASE_ANON_KEY",
-            "\"${project.findProperty("TAPPYAI_SUPABASE_ANON_KEY") ?: "REPLACE_WITH_SUPABASE_ANON_KEY"}\""
-        )
+        buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnonKey\"")
         // Google Cloud OAuth 2.0 "Web application"-type client ID (not the Android-type one) —
         // Credential Manager's native Google Sign-In requires this specific type as the
         // `serverClientId`, and it must match whatever client ID Supabase's Google provider is
         // configured with server-side.
-        buildConfigField(
-            "String", "GOOGLE_WEB_CLIENT_ID",
-            "\"${project.findProperty("TAPPYAI_GOOGLE_WEB_CLIENT_ID") ?: "REPLACE_WITH_GOOGLE_WEB_CLIENT_ID.apps.googleusercontent.com"}\""
-        )
-        // Public web origin used to build shareable Group Dining links (`<origin>/group/{id}`) —
-        // the same value as the web app's NEXT_PUBLIC_APP_URL. Distinct from API_BASE_URL (which is
-        // the emulator loopback in debug and not a shareable public URL). Supply the real origin via
-        // `-PTAPPYAI_WEB_APP_URL=https://...` (no trailing slash); the placeholder below only affects
-        // the copied/shared link text, not any request. Applies to all variants.
-        buildConfigField(
-            "String", "WEB_APP_URL",
-            "\"${project.findProperty("TAPPYAI_WEB_APP_URL") ?: "https://tappyai.example.com"}\""
-        )
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$googleWebClientId\"")
+        // Public web origin used to build shareable Group Dining links (`<origin>/group/{id}`) and
+        // QR profile URLs — the same value as the web app's NEXT_PUBLIC_APP_URL. Distinct from
+        // API_BASE_URL (which is the emulator loopback in debug and not a shareable public URL).
+        // Defaults to production; override with `-PTAPPYAI_WEB_APP_URL=https://...` (no trailing
+        // slash). Applies to all variants.
+        buildConfigField("String", "WEB_APP_URL", "\"$webAppUrl\"")
     }
 
     // Release signing (Production Readiness Sprint) — no signingConfigs block existed at all
@@ -74,6 +132,18 @@ android {
     val hasReleaseSigningConfig = listOf(
         releaseKeystorePath, releaseKeystorePassword, releaseKeyAlias, releaseKeyPassword,
     ).all { !it.isNullOrBlank() }
+
+    // Warn rather than fail: a contributor without the keystore must still be able to run
+    // release-variant tasks (lint, unit tests, `generateReleaseBuildConfig`) on a clean checkout.
+    // Play rejects an unsigned upload outright, so this cannot ship silently the way a placeholder
+    // URL could — but an unsigned artifact is easy to mistake for a finished one, hence the notice.
+    if (releaseArtifactRequested && !hasReleaseSigningConfig) {
+        logger.warn(
+            "\n⚠  Release signing is NOT configured — this artifact will be UNSIGNED and Play will reject it." +
+                "\n   Supply TAPPYAI_RELEASE_KEYSTORE_PATH, _KEYSTORE_PASSWORD, _KEY_ALIAS, _KEY_PASSWORD." +
+                "\n   See docs/release/ANDROID_RELEASE_CONFIGURATION.md\n"
+        )
+    }
 
     signingConfigs {
         if (hasReleaseSigningConfig) {
@@ -126,11 +196,7 @@ android {
                 signingConfig = signingConfigs.getByName("release")
             }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            buildConfigField(
-                "String",
-                "API_BASE_URL",
-                "\"${project.findProperty("TAPPYAI_API_BASE_URL_RELEASE") ?: "https://tappyai.example.com/"}\""
-            )
+            buildConfigField("String", "API_BASE_URL", "\"$releaseApiBaseUrl\"")
         }
     }
 
@@ -155,21 +221,24 @@ android {
     }
 }
 
-// Round-3 audit fix: with none of these -PTAPPYAI_* properties supplied, `release`'s
-// buildConfigFields (above) silently fall back to non-resolving placeholder values and
-// assembleRelease/bundleRelease still succeed — shipping an APK/AAB with no working login, no
-// API calls, and a broken WebView origin check. The signing props are gated for the same reason:
-// without them `hasReleaseSigningConfig` is false and the release variant produces an UNSIGNED
-// artifact instead of failing. Only release-variant build/bundle tasks are gated; debug/staging
-// (which have their own real, non-placeholder defaults and debug signing) are unaffected.
+// Execution-time gate for the values that have no safe default: credentials and signing.
+//
+// The public endpoints (API_BASE_URL_RELEASE, WEB_APP_URL) are deliberately NOT listed here any
+// more. They now default to production and are validated by the placeholder guard at the top of
+// this file, which checks the resolved *value* rather than the property's presence — so a build
+// that simply omits them is correct, while one that sets them to a placeholder still fails, and
+// fails at configuration time rather than after the compile.
+//
+// What remains has no defensible default: shipping without real credentials produces an app with
+// no working login, and shipping without the keystore produces an UNSIGNED artifact that Play
+// rejects. Kept at `doFirst` so release-variant lint, unit tests and generateReleaseBuildConfig
+// still run on a machine that has neither.
 tasks.matching { it.name in setOf("assembleRelease", "bundleRelease") }.configureEach {
     doFirst {
         val required = listOf(
             "TAPPYAI_SUPABASE_URL",
             "TAPPYAI_SUPABASE_ANON_KEY",
             "TAPPYAI_GOOGLE_WEB_CLIENT_ID",
-            "TAPPYAI_WEB_APP_URL",
-            "TAPPYAI_API_BASE_URL_RELEASE",
             "TAPPYAI_RELEASE_KEYSTORE_PATH",
             "TAPPYAI_RELEASE_KEYSTORE_PASSWORD",
             "TAPPYAI_RELEASE_KEY_ALIAS",
@@ -178,10 +247,10 @@ tasks.matching { it.name in setOf("assembleRelease", "bundleRelease") }.configur
         val missing = required.filter { (project.findProperty(it) as String?).isNullOrBlank() }
         if (missing.isNotEmpty()) {
             throw GradleException(
-                "Refusing to build a release APK/AAB with placeholder or unsigned configuration. " +
-                    "Missing gradle properties: ${missing.joinToString(", ")}. " +
-                    "Supply them via -P<name>=... or gradle.properties before running " +
-                    "assembleRelease/bundleRelease."
+                "Refusing to build a release APK/AAB with missing credentials or signing config.\n" +
+                    missing.joinToString("\n") { "  • $it" } +
+                    "\n\nSupply them via ~/.gradle/gradle.properties or -P<name>=...\n" +
+                    "See docs/release/ANDROID_RELEASE_CONFIGURATION.md"
             )
         }
     }
