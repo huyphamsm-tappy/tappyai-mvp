@@ -56,6 +56,29 @@ export default function LegalDocument({ doc }: { doc: LegalDoc }) {
             ))}
           </ul>
         )
+      case 'steps':
+        return (
+          // A real <ol> so the order is conveyed to assistive tech, not just
+          // drawn. The counter is rendered rather than using a native marker so
+          // it can carry the brand accent and stay aligned with wrapped lines,
+          // matching the bullet treatment above.
+          <ol key={i} className="space-y-2.5">
+            {block.keys.map((k, n) => (
+              <li
+                key={k}
+                className="flex gap-3 text-fluid-body text-gray-600 dark:text-gray-300"
+              >
+                <span
+                  aria-hidden="true"
+                  className="mt-[0.1em] flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent-500 text-xs font-semibold text-white"
+                >
+                  {n + 1}
+                </span>
+                <span className="mt-[0.15em]">{t(k)}</span>
+              </li>
+            ))}
+          </ol>
+        )
       case 'contact':
         return (
           <dl key={i} className="space-y-4">

@@ -11,6 +11,10 @@
 export type LegalBlock =
   | { kind: 'lead' | 'p' | 'note'; key: string }
   | { kind: 'bullets'; keys: string[] }
+  // Ordered instructions where the sequence is the meaning (e.g. the in-app
+  // steps on /delete-account). Distinct from `bullets`, which is an unordered
+  // set: a numbered <ol> is what assistive tech announces as "step 2 of 4".
+  | { kind: 'steps'; keys: string[] }
   | { kind: 'contact' }
 
 export interface LegalSection {
