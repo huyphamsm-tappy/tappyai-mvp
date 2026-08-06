@@ -8,6 +8,19 @@ import ScamShieldResult from './ScamShieldResult'
 
 type Tab = 'url' | 'qr'
 
+const ERROR_I18N: Record<string, string> = {
+  rate_limit: 'scamShield.error.rateLimit',
+  daily_limit: 'scamShield.error.dailyLimit',
+  invalid_input: 'scamShield.error.invalidUrl',
+  private_url: 'scamShield.error.privateUrl',
+  check_failed: 'scamShield.error.checkFailed',
+  qr_decode_failed: 'scamShield.error.qrDecode',
+  qr_no_url: 'scamShield.error.qrNoUrl',
+  no_image: 'scamShield.error.qrFailed',
+  too_large: 'scamShield.error.qrFailed',
+  invalid_content_type: 'scamShield.error.qrFailed',
+}
+
 export default function ScamShieldView() {
   const { t } = useTranslation()
   const [tab, setTab] = useState<Tab>('url')
@@ -30,8 +43,9 @@ export default function ScamShieldView() {
         body: JSON.stringify({ url: url.trim() }),
       })
       if (!res.ok) {
-        const data = await res.json().catch(() => ({ message: 'Check failed' }))
-        setError(data.message ?? 'Check failed')
+        const data = await res.json().catch(() => ({} as Record<string, string>))
+        const key = ERROR_I18N[data.error as string]
+        setError(key ? t(key) : t('scamShield.error.checkFailed'))
         return
       }
       setResult(await res.json())
@@ -55,8 +69,9 @@ export default function ScamShieldView() {
         body: formData,
       })
       if (!res.ok) {
-        const data = await res.json().catch(() => ({ message: 'QR check failed' }))
-        setError(data.message ?? 'QR check failed')
+        const data = await res.json().catch(() => ({} as Record<string, string>))
+        const key = ERROR_I18N[data.error as string]
+        setError(key ? t(key) : t('scamShield.error.qrFailed'))
         return
       }
       setResult(await res.json())

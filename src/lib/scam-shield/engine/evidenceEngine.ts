@@ -34,7 +34,7 @@ export function buildEvidence(signals: ProviderSignal[]): EvidenceReport {
 }
 
 function extractDataPoints(signal: ProviderSignal): Record<string, unknown> {
-  if (!signal.raw || typeof signal.raw !== 'object') return {}
+  if (signal.raw == null || typeof signal.raw !== 'object' || Array.isArray(signal.raw)) return {}
   const raw = signal.raw as Record<string, unknown>
   const safe: Record<string, unknown> = {}
   for (const [k, v] of Object.entries(raw)) {

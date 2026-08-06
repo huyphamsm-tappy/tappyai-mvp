@@ -131,6 +131,18 @@ describe('checkUrl integration', () => {
     await expect(checkUrl('https://127.0.0.1')).rejects.toThrow()
   })
 
+  it('rejects http loopback (no SSRF bypass via http-to-https upgrade)', async () => {
+    await expect(checkUrl('http://127.0.0.1')).rejects.toThrow('private')
+  })
+
+  it('rejects http private IPs', async () => {
+    await expect(checkUrl('http://192.168.1.1')).rejects.toThrow('private')
+  })
+
+  it('rejects http://10.0.0.1', async () => {
+    await expect(checkUrl('http://10.0.0.1')).rejects.toThrow('private')
+  })
+
   it('upgrades http to https', async () => {
     const result = await checkUrl('http://example.com')
     expect(result.url).toContain('https://')

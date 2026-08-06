@@ -49,8 +49,6 @@ export const CB_RECOVERY_MS = 60_000
 // Rate limits for the check endpoint.
 export const CHECK_RATE_LIMIT_WINDOW_MS = 60_000
 export const CHECK_RATE_LIMIT_MAX = 10
-export const CHECK_DAILY_LIMIT_AUTH = 30
-export const CHECK_DAILY_LIMIT_ANON = 10
 
 // Domain age thresholds (days).
 export const DOMAIN_AGE_CRITICAL_DAYS = 7

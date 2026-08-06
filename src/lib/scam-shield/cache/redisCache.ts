@@ -32,23 +32,6 @@ function cacheKey(provider: string, url: string): string {
   return `ss:${provider}:${hashUrl(url)}`
 }
 
-export async function getCachedSignal(
-  provider: string,
-  url: string,
-): Promise<ProviderSignal | null> {
-  const client = await getRedis()
-  if (!client) return null
-  try {
-    const raw = await client.get(cacheKey(provider, url))
-    if (!raw) return null
-    const signal = (typeof raw === 'string' ? JSON.parse(raw) : raw) as ProviderSignal
-    signal.cachedAt = signal.cachedAt ?? Date.now()
-    return signal
-  } catch {
-    return null
-  }
-}
-
 export async function getCachedSignals(
   providers: string[],
   url: string,

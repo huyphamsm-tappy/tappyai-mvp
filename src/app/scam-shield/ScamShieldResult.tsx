@@ -3,7 +3,7 @@
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { CheckResult, RiskLevel, RecommendedAction, EvidenceItem, OfficialEntity } from '@/lib/scam-shield/types'
 import {
-  ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, Info,
+  ShieldCheck, ShieldAlert, ShieldX, AlertTriangle,
   ExternalLink, Phone, Flag, Search, CircleCheck, CircleAlert,
   ChevronDown, ChevronUp, Globe,
 } from 'lucide-react'

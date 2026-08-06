@@ -44,12 +44,11 @@ export async function checkUrl(rawUrl: string): Promise<CheckResult> {
 
   const target = normalizeTarget(rawUrl)
 
+  if (target.url.protocol === 'http:') {
+    target.url = new URL(target.url.toString().replace('http:', 'https:'))
+  }
   if (!isSafeHttpsUrl(target.url.toString())) {
-    if (target.url.protocol === 'http:') {
-      target.url = new URL(target.url.toString().replace('http:', 'https:'))
-    } else {
-      throw new Error('URL is not allowed (private/internal network)')
-    }
+    throw new Error('URL is not allowed (private/internal network)')
   }
 
   return runCheck(target, 'url')
