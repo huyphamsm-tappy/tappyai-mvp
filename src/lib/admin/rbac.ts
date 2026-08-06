@@ -12,6 +12,10 @@ import type { User } from '@supabase/supabase-js'
 import { ROLE_RANK, hasRole, type AdminRole } from '@/lib/admin/roles'
 import { isPlatformOwner, checkOwnerGate } from '@/lib/admin/owner'
 import { NO_CAPABILITIES, type CapabilityId } from '@/lib/admin/capabilities'
+// Component 3 integration only. `permissions/cache` is pure (no server imports),
+// so this creates no import cycle: the permission layer type-imports Actor from
+// here, and a type-only import is erased at compile time.
+import { permissionCache } from '@/lib/admin/permissions/cache'
 
 // Re-export the client-safe primitives so existing server-side importers keep
 // working via '@/lib/admin/rbac'. Client components import from '@/lib/admin/roles'.
@@ -101,9 +105,19 @@ export async function resolveAdminRole(userId: string): Promise<AdminRole | null
   return highestRole(roles)
 }
 
-/** Invalidate a user's cached principal immediately (call after grant/revoke). */
+/**
+ * Invalidate a user's cached principal immediately (call after grant/revoke).
+ *
+ * Component 3 integration: this now also drops their cached permission set.
+ * Without it a revoked role could keep authorizing until the permission cache
+ * expired — stale privilege escalation, the one failure mode that cache must
+ * not have. The permission cache is additionally keyed on the role set, so it
+ * would self-correct even if this call were ever missed; both defences are kept
+ * because either alone is a single point of failure.
+ */
 export function invalidateRoleCache(userId: string): void {
   principalCache.delete(userId)
+  permissionCache.invalidate(userId)
 }
 
 /**
@@ -131,11 +145,46 @@ export interface Actor {
 }
 
 /**
+ * Build an Actor from a user id, for contexts that have no `Request` — server
+ * components in particular.
+ *
+ * THE SINGLE Actor construction site. `resolveActor` and `requireAdminRole`
+ * both delegate here rather than building their own, so the field mappings can
+ * never drift. Component 2's review found exactly that defect (two inline
+ * copies of a security principal's construction) and Component 3 briefly
+ * reintroduced it by adding this function alongside a second literal.
+ *
+ * Component 3 integration: page guards need the FULL role list. Reaching for
+ * `resolveAdminRole` there would collapse to the highest-ranked role and
+ * silently drop the permissions of any additional role the user holds, because
+ * permissions are a union across roles rather than a ladder.
+ */
+export async function resolveActorForUser(
+  userId: string,
+  email: string | null | undefined,
+  source: Actor['source'] = 'cookie'
+): Promise<Actor> {
+  const { roles, isOwner } = await resolvePrincipal(userId)
+  return {
+    userId,
+    email: email ?? '—',
+    isOwner,
+    roles,
+    highestRole: highestRole(roles),
+    capabilities: NO_CAPABILITIES,
+    // `source` is retained so component 11 (Session Security) can reason about
+    // web vs native without re-deriving it from headers.
+    source,
+    resolvedAt: Date.now(),
+  }
+}
+
+/**
  * Resolve the Actor for a request, or null when unauthenticated.
  *
- * THE SINGLE Actor construction site. `requireAdminRole` delegates here rather
- * than building its own, so the two can never drift. The Supabase `User` is
- * returned alongside because `AdminContext` still exposes it to handlers.
+ * Delegates construction to `resolveActorForUser`; its only added job is
+ * deriving `source` from the request. The Supabase `User` is returned alongside
+ * because `AdminContext` still exposes it to handlers.
  */
 export async function resolveActor(
   req: Request
@@ -143,19 +192,10 @@ export async function resolveActor(
   const { user } = await getRequestUser(req)
   if (!user) return null
 
-  const { roles, isOwner } = await resolvePrincipal(user.id)
-  const actor: Actor = {
-    userId: user.id,
-    email: user.email ?? '—',
-    isOwner,
-    roles,
-    highestRole: highestRole(roles),
-    capabilities: NO_CAPABILITIES,
-    // Retained so component 11 (Session Security) can reason about web vs
-    // native without re-deriving it from headers.
-    source: req.headers.get('authorization')?.startsWith('Bearer ') ? 'bearer' : 'cookie',
-    resolvedAt: Date.now(),
-  }
+  const source: Actor['source'] = req.headers.get('authorization')?.startsWith('Bearer ')
+    ? 'bearer'
+    : 'cookie'
+  const actor = await resolveActorForUser(user.id, user.email, source)
   return { user, actor }
 }
 
@@ -169,6 +209,15 @@ export interface AdminContext {
  * Gate for every /api/admin/* handler. Throws AdminError (401/403) if the caller
  * is not authenticated or lacks the minimum role. Returns the authenticated
  * admin context on success. (21_Coding_Standards.md §2.)
+ */
+/**
+ * @deprecated Component 3 supersedes this. Use `requirePermission(req,
+ * PERMISSIONS.X)` from `@/lib/admin/permissions` instead.
+ *
+ * Kept ONLY because its tests cover the Component 1 Owner boot assertion.
+ * It has ZERO production callers as of the Component 3 migration. Do not add
+ * new ones: it gates on ROLE RANK, which bypasses the permission registry and
+ * would reintroduce the parallel authorization path Component 3 removed.
  */
 export async function requireAdminRole(
   req: Request,
@@ -206,7 +255,7 @@ export async function requireAdminRole(
  * in the SECURITY DEFINER functions, which hold the privilege the application
  * does not.
  */
-export function requireOwner(ctx: AdminContext, operation: string): void {
+export function requireOwner(ctx: { actor: Actor }, operation: string): void {
   if (!ctx.actor.isOwner) {
     throw new AdminError('FORBIDDEN', `Only the Platform Owner may ${operation}`, 403)
   }

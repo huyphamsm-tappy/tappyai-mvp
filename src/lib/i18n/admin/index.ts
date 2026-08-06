@@ -27,6 +27,7 @@ export const vi: Record<string, string> = {
   'admin.role.admin': 'Admin',
   'admin.role.moderator': 'Kiểm duyệt viên',
   'admin.role.analyst': 'Chuyên viên phân tích',
+  'admin.role.owner': 'Chủ nền tảng',
 
   // Shared/common (loading, empty, errors, buttons — reused across dashboards)
   'admin.common.loading': 'Đang tải…',
@@ -179,6 +180,7 @@ export const en: Record<string, string> = {
   'admin.role.admin': 'Admin',
   'admin.role.moderator': 'Moderator',
   'admin.role.analyst': 'Analyst',
+  'admin.role.owner': 'Platform Owner',
 
   // Shared/common (loading, empty, errors, buttons — reused across dashboards)
   'admin.common.loading': 'Loading…',

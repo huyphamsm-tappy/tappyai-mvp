@@ -1,9 +1,16 @@
 import { createClient } from '@/lib/supabase/server'
+import { requirePagePermission, PERMISSIONS } from '@/lib/admin/permissions'
 
 // Admin access is enforced by the /admin RBAC layout (Phase 0). This legacy page
 // no longer depends on the deprecated ADMIN_IDS gate; it will be superseded by the
 // Product Analytics module in Phase 1.
 export default async function AnalyticsPage() {
+  // Component 3: this page previously relied only on the /admin layout gate,
+  // which admits ANY admin. It now enforces its own permission, matching the
+  // sidebar entry. Every role holds this permission today, so access is
+  // unchanged; the guard closes the hidden-but-unlocked-door gap.
+  await requirePagePermission(PERMISSIONS.ANALYTICS_CONTENT_READ)
+
   const supabase = createClient()
 
   const since7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()

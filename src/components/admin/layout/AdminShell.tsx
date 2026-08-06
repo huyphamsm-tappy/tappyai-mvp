@@ -1,41 +1,16 @@
 'use client'
 
-import type { ComponentType, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import {
-  LayoutDashboard, BarChart3, Users, ShieldAlert, Megaphone,
-  ScrollText, KeyRound, Settings as SettingsIcon, Activity, LogOut, UserCheck, Zap, Tag,
-} from 'lucide-react'
-import { hasRole, type AdminRole } from '@/lib/admin/roles'
+import { LogOut } from 'lucide-react'
+import { type AdminRole } from '@/lib/admin/roles'
+import type { PermissionId } from '@/lib/admin/permissions/types'
+import { NAV, visibleNavItems } from './nav'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
-// Navigation model. `minRole` gates visibility (12_RBAC.md). `ready:false` items
-// are future phases — shown disabled so the full structure is visible (UI/UX §4.2).
-type NavItem = {
-  href: string
-  labelKey: string
-  icon: ComponentType<{ className?: string }>
-  minRole: AdminRole
-  ready: boolean
-}
-
-const NAV: NavItem[] = [
-  { href: '/admin', labelKey: 'admin.nav.dashboard', icon: LayoutDashboard, minRole: 'analyst', ready: true },
-  { href: '/admin/analytics', labelKey: 'admin.nav.analytics', icon: BarChart3, minRole: 'analyst', ready: true },
-  { href: '/admin/analytics/auth', labelKey: 'admin.nav.authAnalytics', icon: UserCheck, minRole: 'analyst', ready: true },
-  { href: '/admin/analytics/activation', labelKey: 'admin.nav.activationAnalytics', icon: Zap, minRole: 'analyst', ready: true },
-  { href: '/admin/users', labelKey: 'admin.nav.users', icon: Users, minRole: 'admin', ready: false },
-  { href: '/admin/moderation', labelKey: 'admin.nav.moderation', icon: ShieldAlert, minRole: 'moderator', ready: false },
-  { href: '/admin/engagement', labelKey: 'admin.nav.engagement', icon: Megaphone, minRole: 'admin', ready: false },
-  { href: '/admin/audit', labelKey: 'admin.nav.auditLog', icon: ScrollText, minRole: 'admin', ready: true },
-  { href: '/admin/deals', labelKey: 'admin.nav.deals', icon: Tag, minRole: 'admin', ready: true },
-  { href: '/admin/rbac', labelKey: 'admin.nav.roles', icon: KeyRound, minRole: 'super_admin', ready: true },
-  { href: '/admin/monitoring', labelKey: 'admin.nav.monitoring', icon: Activity, minRole: 'admin', ready: false },
-  { href: '/admin/settings', labelKey: 'admin.nav.settings', icon: SettingsIcon, minRole: 'admin', ready: true },
-]
 
 const ROLE_LABEL_KEY: Record<AdminRole, string> = {
   super_admin: 'admin.role.superAdmin',
@@ -47,10 +22,21 @@ const ROLE_LABEL_KEY: Record<AdminRole, string> = {
 export function AdminShell({
   role,
   email,
+  isOwner,
+  permissions,
   children,
 }: {
+  /** Display only — the role badge. Authorization uses `permissions`. */
   role: AdminRole
+  /** The Owner holds no role but outranks every one of them — see the badge and placeholder filter. */
+  isOwner: boolean
   email: string
+  /**
+   * The actor's resolved permission set, computed server-side in the layout.
+   * Passed as plain strings so this stays a client component with no server
+   * imports (the boundary Component 2 established).
+   */
+  permissions: readonly PermissionId[]
   children: ReactNode
 }) {
   const pathname = usePathname()
@@ -66,7 +52,7 @@ export function AdminShell({
             <Badge variant="muted">{t('admin.shell.badge')}</Badge>
           </div>
           <nav className="flex-1 p-3 space-y-1">
-            {NAV.filter((item) => hasRole(role, item.minRole)).map((item) => {
+            {visibleNavItems(NAV, permissions, role, isOwner).map((item) => {
               const active = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
               const Icon = item.icon
               if (!item.ready) {
@@ -122,7 +108,7 @@ export function AdminShell({
               </div>
               <div className="text-right">
                 <div className="text-sm font-medium truncate max-w-[180px]">{email}</div>
-                <div className="text-xs text-muted-foreground">{t(ROLE_LABEL_KEY[role])}</div>
+                <div className="text-xs text-muted-foreground">{t(isOwner ? 'admin.role.owner' : ROLE_LABEL_KEY[role])}</div>
               </div>
               <Link
                 href="/reviews"

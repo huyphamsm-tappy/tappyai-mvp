@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const h = vi.hoisted(() => ({
-  requireAdminRole: vi.fn(),
+  requirePermission: vi.fn(),
   isSameOrigin: vi.fn(() => true),
   rateLimit: vi.fn(() => ({ ok: true, retryAfter: 0 })),
   svc: {
@@ -16,7 +16,11 @@ const h = vi.hoisted(() => ({
 
 vi.mock('@/lib/admin/rbac', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>
-  return { ...actual, requireAdminRole: h.requireAdminRole, isSameOrigin: h.isSameOrigin }
+  return { ...actual, isSameOrigin: h.isSameOrigin }
+})
+vi.mock('@/lib/admin/permissions', async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>
+  return { ...actual, requirePermission: h.requirePermission }
 })
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: h.rateLimit, clientIp: () => 'ip' }))
 vi.mock('@/lib/admin/analytics/activationAnalyticsService', () => ({ activationAnalyticsService: h.svc }))
@@ -28,14 +32,14 @@ const req = (qs = '') => new Request(`http://localhost/api/admin/analytics/activ
 
 beforeEach(() => {
   vi.clearAllMocks()
-  h.requireAdminRole.mockResolvedValue({ user: { id: 'admin1' }, role: 'analyst' })
+  h.requirePermission.mockResolvedValue({ user: { id: 'admin1' }, actor: { userId: 'admin1', isOwner: false, roles: ['analyst'] } })
   h.isSameOrigin.mockReturnValue(true)
   h.rateLimit.mockReturnValue({ ok: true, retryAfter: 0 })
 })
 
 describe('GET /api/admin/analytics/activation — guards', () => {
   it('401 when unauthenticated', async () => {
-    h.requireAdminRole.mockRejectedValue(new AdminError('UNAUTHORIZED', 'Authentication required', 401))
+    h.requirePermission.mockRejectedValue(new AdminError('UNAUTHORIZED', 'Authentication required', 401))
     const res = await GET(req('?view=summary'))
     expect(res.status).toBe(401)
     expect((await res.json()).error.code).toBe('UNAUTHORIZED')

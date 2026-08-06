@@ -185,3 +185,57 @@ Two concrete defects:
 It touches binding governance documents and ~174 references across the doc set, while the Foundation is mid-build and the frozen `docs/backoffice` v1.1 set may itself be superseded by Controller V2 (open decision). Renumbering now risks doing the work twice.
 
 **Not urgent:** the ambiguity is a documentation-navigation cost, not a correctness or security risk. No code reads ADR numbers.
+
+---
+
+## BL-C3-01 — Cross-instance cache invalidation
+
+**Raised by:** Component 3 performance audit · **Severity:** low · **Status:** deferred
+
+The principal cache (60 s, Component 2) and the permission cache (30 s,
+Component 3) are both **per-process**, matching ADR-003. On Vercel,
+`invalidateRoleCache(userId)` clears only the instance that served the write;
+other warm instances keep serving until TTL.
+
+**Worst case:** ≤30 s of stale permissions on instances that did not handle the
+revocation — strictly tighter than the ≤60 s already accepted for roles.
+
+**Not introduced by Component 3**, which inherited the model and made it no
+worse. A fix (Redis pub/sub, or a short-lived revocation list checked on read)
+is a Foundation-wide concern touching Component 2, and should not be smuggled
+into a component that has no database or infrastructure surface of its own.
+
+**Why deferred:** the exposure window is bounded, applies only to role
+revocation, and the Controller has a handful of admins. Fixing it means adding
+an external dependency to the authorization hot path — a larger security surface
+than the problem it closes. Revisit when the admin population or the revocation
+SLA makes 30 s unacceptable.
+
+---
+
+## BL-C3-02 — Should `moderator` keep analytics read access?
+
+**Raised by:** Component 3 permission audit · **Severity:** policy · **Status:** needs Owner decision
+
+`moderator` currently holds `analytics.auth.read` and
+`analytics.activation.read`. This is **inherited, not designed**: the old
+ROLE_RANK ladder gated those routes at `analyst`, and `moderator` outranked
+`analyst`, so moderators can read analytics in production today.
+
+Component 3 preserved it deliberately. Removing it would have been a silent
+privilege revocation smuggled inside a mechanism change, which is exactly what
+`migration.test.ts` exists to prevent.
+
+The result is that `analyst` and `moderator` hold **identical** permission sets
+(3 each). That is a smell worth resolving, but resolving it is a policy call:
+
+- **Option A** — remove analytics from `moderator`. Moderation and analytics are
+  different jobs; a moderator does not need funnel data.
+- **Option B** — keep it. Moderators benefit from seeing activation trends when
+  judging content patterns.
+
+Either way the change requires bumping `REGISTRY_VERSION` and editing the
+corresponding rows in `migration.test.ts` deliberately.
+
+**Natural moment to decide:** when the Moderation Hub ships and `moderator`
+gains permissions of its own, making the two roles genuinely distinct.

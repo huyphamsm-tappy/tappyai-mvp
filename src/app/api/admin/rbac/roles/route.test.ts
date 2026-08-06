@@ -6,23 +6,25 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 // error into a useful API response, and prove the handler no longer INSERTs.
 
 const h = vi.hoisted(() => ({
-  requireAdminRole: vi.fn(),
+  requirePermission: vi.fn(),
   isSameOrigin: vi.fn(() => true),
   rateLimit: vi.fn(() => ({ ok: true, retryAfter: 0 })),
   rpc: vi.fn(),
   insert: vi.fn(),
   writeAuditLog: vi.fn(),
+  invalidateRoleCache: vi.fn(),
 }))
 
 // requireOwner stays REAL — it is the thing under test.
 vi.mock('@/lib/admin/rbac', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>
-  return {
-    ...actual,
-    requireAdminRole: h.requireAdminRole,
-    isSameOrigin: h.isSameOrigin,
-    invalidateRoleCache: vi.fn(),
-  }
+  return { ...actual, isSameOrigin: h.isSameOrigin, invalidateRoleCache: h.invalidateRoleCache }
+})
+// Component 3: the route is gated by requirePermission now. PERMISSIONS and the
+// rest of the module stay REAL so a wrong constant is still a test failure.
+vi.mock('@/lib/admin/permissions', async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>
+  return { ...actual, requirePermission: h.requirePermission }
 })
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: h.rateLimit, clientIp: () => 'ip' }))
 vi.mock('@/lib/admin/audit', () => ({ writeAuditLog: h.writeAuditLog }))
@@ -41,7 +43,6 @@ const TARGET = '33333333-3333-3333-3333-333333333333'
 
 const ctx = (isOwner: boolean, userId = isOwner ? OWNER : ADMIN) => ({
   user: { id: userId, email: 'a@b.c' },
-  role: 'super_admin',
   actor: { userId, email: 'a@b.c', isOwner, roles: ['super_admin'], highestRole: 'super_admin', capabilities: [], source: 'cookie', resolvedAt: 0 },
 })
 
@@ -60,7 +61,7 @@ beforeEach(() => {
 
 describe('POST /api/admin/rbac/roles — constitutional guards', () => {
   it('REGRESSION (G1): a non-Owner super_admin CANNOT grant super_admin', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(false))
+    h.requirePermission.mockResolvedValue(ctx(false))
     const res = await POST(req({ user_id: TARGET, role: 'super_admin' }))
     expect(res.status).toBe(403)
     expect((await res.json()).error.message).toMatch(/Platform Owner/i)
@@ -68,7 +69,7 @@ describe('POST /api/admin/rbac/roles — constitutional guards', () => {
   })
 
   it('the Platform Owner CAN grant super_admin', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(true))
+    h.requirePermission.mockResolvedValue(ctx(true))
     const res = await POST(req({ user_id: TARGET, role: 'super_admin' }))
     expect(res.status).toBe(200)
     expect(h.rpc).toHaveBeenCalledWith('fn_grant_admin_role', expect.objectContaining({
@@ -77,7 +78,7 @@ describe('POST /api/admin/rbac/roles — constitutional guards', () => {
   })
 
   it('nobody may promote themselves — even the Owner', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(true))
+    h.requirePermission.mockResolvedValue(ctx(true))
     const res = await POST(req({ user_id: OWNER, role: 'admin' }))
     expect(res.status).toBe(403)
     expect((await res.json()).error.message).toMatch(/self-promotion/i)
@@ -85,37 +86,47 @@ describe('POST /api/admin/rbac/roles — constitutional guards', () => {
   })
 
   it('a non-Owner super_admin may still grant lower roles', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(false))
+    h.requirePermission.mockResolvedValue(ctx(false))
     const res = await POST(req({ user_id: TARGET, role: 'moderator' }))
     expect(res.status).toBe(200)
     expect(h.rpc).toHaveBeenCalled()
   })
 
   it('never INSERTs into admin_roles directly (the lockdown revokes that privilege)', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(true))
+    h.requirePermission.mockResolvedValue(ctx(true))
     await POST(req({ user_id: TARGET, role: 'admin' }))
     expect(h.insert).not.toHaveBeenCalled()
     expect(h.rpc).toHaveBeenCalled()
+  })
+
+  // Component 3: the cache must be invalidated for the user whose roles CHANGED,
+  // not for the actor performing the change. Invalidating the wrong id leaves
+  // the affected user's permission set warm for up to 30s — stale privilege.
+  it('invalidates the cache of the TARGET user, never the actor', async () => {
+    h.requirePermission.mockResolvedValue(ctx(true))
+    await POST(req({ user_id: TARGET, role: 'admin' }))
+    expect(h.invalidateRoleCache).toHaveBeenCalledWith(TARGET)
+    expect(h.invalidateRoleCache).not.toHaveBeenCalledWith(OWNER)
   })
 })
 
 describe('POST /api/admin/rbac/roles — database error mapping', () => {
   it('maps 42501 (guard raised in the DB) to 403', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(true))
+    h.requirePermission.mockResolvedValue(ctx(true))
     h.rpc.mockResolvedValue({ data: null, error: { code: '42501', message: 'FORBIDDEN: only the Platform Owner may grant super_admin' } })
     const res = await POST(req({ user_id: TARGET, role: 'super_admin' }))
     expect(res.status).toBe(403)
   })
 
   it('maps 23505 (duplicate) to 409', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(true))
+    h.requirePermission.mockResolvedValue(ctx(true))
     h.rpc.mockResolvedValue({ data: null, error: { code: '23505', message: 'duplicate key' } })
     const res = await POST(req({ user_id: TARGET, role: 'admin' }))
     expect(res.status).toBe(409)
   })
 
   it('maps unexpected errors to 500 without leaking the message', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(true))
+    h.requirePermission.mockResolvedValue(ctx(true))
     h.rpc.mockResolvedValue({ data: null, error: { code: 'XX000', message: 'internal detail' } })
     const res = await POST(req({ user_id: TARGET, role: 'admin' }))
     expect(res.status).toBe(500)
@@ -125,7 +136,7 @@ describe('POST /api/admin/rbac/roles — database error mapping', () => {
 
 describe('POST /api/admin/rbac/roles — audit', () => {
   it('audits a super_admin grant under its own owner.* action', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(true))
+    h.requirePermission.mockResolvedValue(ctx(true))
     await POST(req({ user_id: TARGET, role: 'super_admin' }))
     expect(h.writeAuditLog).toHaveBeenCalledWith(
       expect.objectContaining({ action: 'owner.super_admin_granted' })
@@ -133,7 +144,7 @@ describe('POST /api/admin/rbac/roles — audit', () => {
   })
 
   it('audits ordinary grants under rbac.role_granted', async () => {
-    h.requireAdminRole.mockResolvedValue(ctx(false))
+    h.requirePermission.mockResolvedValue(ctx(false))
     await POST(req({ user_id: TARGET, role: 'analyst' }))
     expect(h.writeAuditLog).toHaveBeenCalledWith(
       expect.objectContaining({ action: 'rbac.role_granted' })
