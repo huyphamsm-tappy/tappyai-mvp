@@ -10,13 +10,25 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 interface HeaderProps {
   user?: { full_name?: string | null; avatar_url?: string | null; email?: string | null }
   showBack?: boolean
+  /**
+   * Fixed destination for Back. Renders a link, so it *pushes* that route —
+   * only correct for a page with exactly one parent. A page reachable from
+   * several places should omit this and let Back pop history instead.
+   */
   backHref?: string
+  /**
+   * Where Back goes when there is no in-app history to pop — i.e. the tab
+   * opened directly on this page via a deep link or an external URL. Only
+   * consulted when `backHref` is absent; without it Back keeps its existing
+   * plain `router.back()` behaviour.
+   */
+  backFallbackHref?: string
   title?: string
   /** Hide the brand logo (Home floats over the background image; Hero carries the branding). */
   hideLogo?: boolean
 }
 
-export default function Header({ user, showBack, backHref, title, hideLogo }: HeaderProps) {
+export default function Header({ user, showBack, backHref, backFallbackHref, title, hideLogo }: HeaderProps) {
   const router = useRouter()
   const { t, locale } = useTranslation()
   const firstName = user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'
@@ -42,6 +54,21 @@ export default function Header({ user, showBack, backHref, title, hideLogo }: He
     setDark(isDark)
     document.documentElement.classList.toggle('dark', isDark)
   }, [])
+  // Back pops history rather than pushing a destination, so the user returns to
+  // wherever they actually came from. Only used when no fixed `backHref` is
+  // given. history.length === 1 means this tab opened directly on the page (a
+  // deep link, a shared URL, the Play Console listing), so there is nothing to
+  // pop — back() would dead-end, and in an Android TWA it would close the app.
+  // In that case go to the declared fallback instead, via replace() so the
+  // dead-end entry is not left behind in history.
+  const goBack = () => {
+    if (backFallbackHref && typeof window !== 'undefined' && window.history.length <= 1) {
+      router.replace(backFallbackHref)
+      return
+    }
+    router.back()
+  }
+
   const toggleDark = () => {
     const next = !dark
     setDark(next)
@@ -59,7 +86,7 @@ export default function Header({ user, showBack, backHref, title, hideLogo }: He
               {t('common.back')}
             </Link>
           ) : (
-            <button onClick={() => router.back()} className="flex items-center gap-1 text-link font-medium text-sm -ml-1">
+            <button onClick={goBack} className="flex items-center gap-1 text-link font-medium text-sm -ml-1">
               <ChevronLeft size={20} />
               {t('common.back')}
             </button>
