@@ -24,7 +24,7 @@
     <string name="settings_delete_account_subject">TappyAI — Account deletion request</string>
     <string name="settings_delete_account_body">Hello TappyAI support,\n\nI would like to request deletion of my TappyAI account and all related data.\n\nRegistered email (if different from the sender): \n\nThank you.</string>
     <string name="settings_delete_account_no_email_app">No email app found. Please email %1$s to request account deletion.</string>
-    <string name="support_email" translatable="false">huypham.sm@gmail.com</string>
+    <string name="support_email" translatable="false">support@tappyai.com</string>
 
     <string name="settings_error_no_connectivity">No internet connection. Please check and try again.</string>
     <string name="settings_error_timeout">The connection is too slow. Please try again.</string>

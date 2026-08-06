@@ -14,7 +14,7 @@ TappyAI's core feature is a **generative-AI assistant**. Google Play's Generativ
 
 ## 1. Play Console disclosure (Content ratings → Generative AI question)
 Answer **Yes**, the app uses generative AI to produce content shown to users. When asked how users can flag/report:
-> "Users can report any AI-generated reply directly from the message action bar (Report), which is recorded server-side. Users can also report user-generated reviews, and a copyright notice-and-takedown flow exists for user-uploaded music. Support contact: huypham.sm@gmail.com."
+> "Users can report any AI-generated reply directly from the message action bar (Report), which is recorded server-side. Users can also report user-generated reviews, and a copyright notice-and-takedown flow exists for user-uploaded music. Support contact: support@tappyai.com."
 
 Confirm the app has safeguards against generating restricted content: describe your server-side model configuration/system prompt guardrails (Anthropic Claude with a constrained system prompt scoped to local-life assistance). Keep this description truthful to your backend configuration.
 

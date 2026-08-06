@@ -15,7 +15,7 @@ Character limits (Google Play): **Title ≤ 30**, **Short description ≤ 80**, 
 | **Category (primary)** | **Lifestyle** | Best fit: a daily-life AI assistant spanning food, places, travel, spa, shopping, fortune, and utilities. |
 | Category (alternative) | Tools | Defensible if you want to position it as an assistant/utility. Pick one; Lifestyle recommended. |
 | **Tags** | AI assistant, Food & drink, Local, Lifestyle | Choose from Play's tag list; keep to the app's real scope. |
-| Contact email | huypham.sm@gmail.com | Matches the privacy-policy contact. |
+| Contact email | support@tappyai.com | Matches the privacy-policy contact. |
 | Website | *(your production web URL)* | The web app is the source of truth. |
 | Privacy policy URL | *(public `/privacy` URL — must be live)* | Required. See README blocker #4. |
 | Contains ads | **No** | No ad SDK in the build. |
@@ -59,7 +59,7 @@ Thông tin do AI cung cấp (giá cả, địa điểm, review…) có thể tha
 
 Hỗ trợ tiếng Việt và tiếng Anh. Giao diện sáng/tối.
 
-Liên hệ hỗ trợ: huypham.sm@gmail.com
+Liên hệ hỗ trợ: support@tappyai.com
 ```
 
 ---
@@ -101,7 +101,7 @@ Information provided by AI (prices, places, reviews and more) can change over ti
 
 Available in Vietnamese and English. Light and dark themes.
 
-Support: huypham.sm@gmail.com
+Support: support@tappyai.com
 ```
 
 ---

@@ -34,7 +34,7 @@
 - **Primary market / language:** Vietnam · Vietnamese (default) + English (in-app switchable)
 - **Backend:** Supabase (authentication + Postgres data) and the TappyAI API. AI answers are produced server-side via Anthropic Claude + Google Search.
 - **Third-party client SDKs that transmit data:** **none** (no Firebase, no Crashlytics, no ad SDK, no analytics SDK in the Android client)
-- **Support contact:** huypham.sm@gmail.com
+- **Support contact:** support@tappyai.com
 
 ---
 

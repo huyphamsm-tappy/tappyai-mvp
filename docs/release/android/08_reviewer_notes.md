@@ -46,4 +46,4 @@ The app requests only `INTERNET` and `ACCESS_NETWORK_STATE`. Camera, gallery, an
 - Account/data deletion: `<in-app path or public deletion URL>`.
 
 ## Support
-huypham.sm@gmail.com
+support@tappyai.com

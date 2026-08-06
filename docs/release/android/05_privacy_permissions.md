@@ -77,7 +77,7 @@ These are functional deep links, not data collection. (The user-facing shared li
 ## Privacy policy pointers
 - **Public policy:** the web `/privacy` page (source of truth; last updated 19/06/2026). Ensure the production URL is live for the Play listing.
 - **In-app policy/terms:** reachable from Settings → Terms of Service / Privacy Policy (localized; in-app "last updated" shows June 13, 2026 — align this date with the web policy).
-- **Contact:** huypham.sm@gmail.com.
+- **Contact:** support@tappyai.com.
 
 ## Permission-declaration sanity check for submission
 - [ ] Confirm no library pulled in an unexpected permission via manifest merger. Verify with the merged manifest of a **release** build: `:app:processReleaseMainManifest` output should still show only `INTERNET` + `ACCESS_NETWORK_STATE`.
