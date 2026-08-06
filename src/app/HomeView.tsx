@@ -8,7 +8,7 @@ import BottomNav from '@/components/BottomNav'
 import CategoryPills from '@/components/CategoryPills'
 import SearchBar from '@/components/SearchBar'
 import { formatRelativeTime, cn } from '@/lib/utils'
-import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, Music2 } from 'lucide-react'
+import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, Music2, ShieldCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface Suggestion { text: string; textEn: string; category: string; emoji: string; gradient: string }
@@ -188,13 +188,13 @@ export default function HomeView({
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.translateDesc')}</p>
               </div>
             </Link>
-            <Link href="/game" className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30 flex items-center justify-center shadow-sm">
-                <span className="text-xl">🎮</span>
+            <Link href="/scam-shield" className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 dark:from-teal-900/30 dark:to-emerald-900/30 flex items-center justify-center shadow-sm">
+                <ShieldCheck size={20} className="text-teal-600 dark:text-teal-400" />
               </div>
               <div>
-                <p className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">{t('home.gamesTitle')}</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.gamesDesc')}</p>
+                <p className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">{t('home.scamShieldTitle')}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.scamShieldDesc')}</p>
               </div>
             </Link>
           </div>
