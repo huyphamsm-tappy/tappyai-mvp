@@ -8,6 +8,13 @@ import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
 // URL reachable without signing in. This page *describes* the existing in-app
 // flow — it deliberately adds no web deletion path of its own.
 //
+// The flow it describes is request-based, matching what Android ships: the
+// Settings item reads "Request account deletion" and opens a prefilled email to
+// support (SettingsScreen.kt -> launchAccountDeletionEmail); there is no
+// self-service deletion endpoint. An earlier revision of this page claimed
+// immediate in-app deletion, which did not match the app — Play compares the
+// two, so this copy must be updated in lockstep with the Android flow.
+//
 // Server component so the route keeps its metadata (a 'use client' module
 // cannot export `metadata`); the localized body is rendered by LegalDocument,
 // which reads the site-wide locale through useTranslation, so the page follows
@@ -16,7 +23,7 @@ import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
 const PAGE_URL = `${SITE_URL}/delete-account`
 const TITLE = 'Delete Your TappyAI Account — TappyAI'
 const DESCRIPTION =
-  'How to permanently delete your TappyAI account from inside the app, what deleting it removes, and which records may be retained where the law requires it.'
+  'How to request deletion of your TappyAI account from inside the app, what happens after you send the request, what deletion removes, and which records may be retained where the law requires it.'
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -48,7 +55,7 @@ const DELETE_ACCOUNT: LegalDoc = {
   effectiveKey: 'legal.delete.effective',
   sections: [
     {
-      id: 'how-to-delete-your-account',
+      id: 'how-to-request-account-deletion',
       headingKey: 'legal.delete.s1.heading',
       blocks: [
         { kind: 'lead', key: 'legal.delete.s1.lead' },
@@ -56,23 +63,31 @@ const DELETE_ACCOUNT: LegalDoc = {
       ],
     },
     {
-      id: 'what-deleting-your-account-removes',
+      id: 'what-happens-next',
       headingKey: 'legal.delete.s2.heading',
       blocks: [
-        { kind: 'lead', key: 'legal.delete.s2.lead' },
-        { kind: 'bullets', keys: bullets('legal.delete.s2.b', 6) },
+        { kind: 'p', key: 'legal.delete.s2.p1' },
+        { kind: 'p', key: 'legal.delete.s2.p2' },
+      ],
+    },
+    {
+      id: 'what-deletion-removes',
+      headingKey: 'legal.delete.s3.heading',
+      blocks: [
+        { kind: 'lead', key: 'legal.delete.s3.lead' },
+        { kind: 'bullets', keys: bullets('legal.delete.s3.b', 6) },
       ],
     },
     {
       id: 'data-we-may-retain',
-      headingKey: 'legal.delete.s3.heading',
-      blocks: [{ kind: 'p', key: 'legal.delete.s3.p1' }],
+      headingKey: 'legal.delete.s4.heading',
+      blocks: [{ kind: 'p', key: 'legal.delete.s4.p1' }],
     },
     {
       id: 'contact',
-      headingKey: 'legal.delete.s4.heading',
+      headingKey: 'legal.delete.s5.heading',
       blocks: [
-        { kind: 'p', key: 'legal.delete.s4.p1' },
+        { kind: 'p', key: 'legal.delete.s5.p1' },
         { kind: 'contact' },
       ],
     },
