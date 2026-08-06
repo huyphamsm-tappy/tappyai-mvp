@@ -16,6 +16,7 @@ import { createClient } from '@/lib/supabase/server'
 import { AdminError, resolveActor, resolveActorForUser, type Actor } from '@/lib/admin/rbac'
 import { checkOwnerGate } from '@/lib/admin/owner'
 import { permissionEngine } from './engine'
+import { auditAuthorizationDecision } from './decisionAudit'
 import type { Decision, PermissionId } from './types'
 
 export interface PermissionContext {
@@ -51,9 +52,10 @@ const CONTROLLER_UNAVAILABLE_REDIRECT = '/reviews'
 /**
  * Gate an `/api/admin/*` handler on a single permission.
  *
- * This is the only route-level authorization helper. It replaced
- * `requireAdminRole(req, minRole)` at all 12 API decision points; that function
- * is deprecated and has no production callers.
+ * The ONLY route-level authorization helper. It replaced
+ * `requireAdminRole(req, minRole)` at all 12 API decision points, and
+ * Component 4 deleted that function outright — there is no second way to gate
+ * an API route.
  */
 export async function requirePermission(
   req: Request,
@@ -74,13 +76,18 @@ export async function requirePermission(
   // 3. Authorization.
   const decision = permissionEngine.authorize(actor, permission)
   if (!decision.allowed) {
-    // Denials are logged with their reason: a permission system whose refusals
-    // are invisible cannot be debugged or attack-detected.
+    // Component 4: a refusal now leaves a durable trace, not just a log line a
+    // serverless instance forgets. `console.warn` is kept for live tailing.
     console.warn(
       `[controller][rbac] deny ${decision.reason} user=${actor.userId} permission=${permission}`
     )
+    auditAuthorizationDecision({ actor, decision, surface: 'api', req })
     throw new AdminError('FORBIDDEN', denialMessage(decision), 403)
   }
+
+  // Component 4: an ALLOW is audited only when it is the Owner exercising
+  // bypass on something that is not a read — see decisionAudit.shouldAudit.
+  auditAuthorizationDecision({ actor, decision, surface: 'api', req })
 
   return { user, actor, decision }
 }
@@ -133,7 +140,14 @@ export async function requirePagePermission(
   // across roles rather than inherit down a ladder.
   const actor = await resolveActorForUser(user.id, user.email)
 
-  if (!permissionEngine.can(actor, permission)) {
+  // `authorize` rather than `can`, because the audit row needs the REASON —
+  // "denied" without "why" cannot be investigated.
+  const decision = permissionEngine.authorize(actor, permission)
+  auditAuthorizationDecision({ actor, decision, surface: 'page' })
+  if (!decision.allowed) {
+    console.warn(
+      `[controller][rbac] deny ${decision.reason} user=${actor.userId} permission=${permission}`
+    )
     redirect(deniedRedirect)
   }
 

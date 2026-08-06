@@ -1,5 +1,5 @@
 // Client-safe RBAC primitives — pure, NO server imports. Safe to import from
-// client components (e.g. AdminShell). Server-only logic (DB reads, requireAdminRole)
+// client components (e.g. AdminShell). Server-only logic (DB reads, guards)
 // lives in ./rbac which builds on these. Keeping these separate prevents client
 // bundles from pulling in next/headers via the server client.
 

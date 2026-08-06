@@ -5,12 +5,13 @@
 // import `@/lib/admin/permissions/client` directly.
 //
 // MIGRATION STATUS — COMPLETE
-// All 18 authorization decision points (12 API handlers, 6 page guards) consume
-// this engine. `requireAdminRole` and the rank ladder are superseded:
-// `requireAdminRole` is @deprecated with zero production callers, and
-// `page-guard.ts` was deleted outright. `ROLE_RANK`/`hasRole` survive only to
-// compute a display label and to power the backward-compatibility lock in
-// `migration.test.ts` — never to make an authorization decision.
+// All 20 authorization decision points (12 API handlers, 8 page guards)
+// consume this engine, and Component 4 removed every alternative:
+// `requireAdminRole`, `resolveAdminRole` and `page-guard.ts` are all DELETED.
+// `ROLE_RANK`/`hasRole` survive only to compute a display label, to gate
+// disabled nav placeholders, and to power the backward-compatibility lock in
+// `migration.test.ts` — never to make an authorization decision. That is
+// asserted by `singleDecisionPath.test.ts`.
 
 export type {
   PermissionId,

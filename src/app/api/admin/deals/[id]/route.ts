@@ -5,6 +5,7 @@
 
 import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
+import { auditActorRole } from '@/lib/admin/permissions/decisionAudit'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
@@ -48,7 +49,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       // handler by OWNER_BYPASS and may hold no role at all, so the fallback
       // would record a role they do not have. `is_platform_owner` keeps the
       // audit trail truthful without widening the audit schema.
-      actorRole: actor.highestRole ?? 'admin',
+      actorRole: auditActorRole(actor),
       metadata: { is_platform_owner: actor.isOwner },
       action: 'deals.updated',
       targetType: 'partner_deal',
@@ -92,7 +93,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       // handler by OWNER_BYPASS and may hold no role at all, so the fallback
       // would record a role they do not have. `is_platform_owner` keeps the
       // audit trail truthful without widening the audit schema.
-      actorRole: actor.highestRole ?? 'admin',
+      actorRole: auditActorRole(actor),
       metadata: { is_platform_owner: actor.isOwner },
       action: 'deals.deleted',
       targetType: 'partner_deal',

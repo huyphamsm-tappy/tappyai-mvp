@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Covers the Component 2 identity path: resolveActor is the SINGLE Actor
-// construction site and requireAdminRole delegates to it. Also pins the
-// Owner-Gate-before-RBAC ordering, which is a security property, not a detail.
+// construction site. The Owner-Gate-before-authorization ordering it used to
+// pin here moved to permissions/apiGuard.test.ts when Component 4 deleted
+// `requireAdminRole`.
 
 const h = vi.hoisted(() => ({
   getRequestUser: vi.fn(),
@@ -23,7 +24,7 @@ vi.mock('@/lib/supabase/admin', () => ({
   }),
 }))
 
-import { resolveActor, requireAdminRole, requireOwner, invalidateRoleCache, AdminError } from './rbac'
+import { resolveActor, requireOwner, invalidateRoleCache, AdminError } from './rbac'
 
 const USER = { id: 'u1', email: 'a@b.c' }
 const req = (headers?: Record<string, string>) =>
@@ -97,39 +98,9 @@ describe('resolveActor', () => {
   })
 })
 
-describe('requireAdminRole', () => {
-  it('401 when unauthenticated', async () => {
-    h.getRequestUser.mockResolvedValue({ user: null })
-    await expect(requireAdminRole(req(), 'admin')).rejects.toMatchObject({ status: 401 })
-  })
-
-  it('403 when the role is insufficient', async () => {
-    h.rolesQuery.mockResolvedValue({ data: [{ role: 'analyst', expires_at: null }], error: null })
-    await expect(requireAdminRole(req(), 'super_admin')).rejects.toMatchObject({ status: 403 })
-  })
-
-  it('returns user, role and actor on success', async () => {
-    const ctx = await requireAdminRole(req(), 'admin')
-    expect(ctx.user.id).toBe('u1')
-    expect(ctx.role).toBe('admin')
-    expect(ctx.actor.roles).toEqual(['admin'])
-  })
-
-  // SECURITY ORDERING: the ownership assertion must be evaluated before the RBAC
-  // decision. Proven by giving a user who would ALSO fail the role check — the
-  // error returned must be the gate's, not the role's.
-  it('evaluates the Owner Gate BEFORE the RBAC role check', async () => {
-    h.checkOwnerGate.mockResolvedValue({ ok: false, reason: 'ENV_MISMATCH' })
-    h.rolesQuery.mockResolvedValue({ data: [{ role: 'analyst', expires_at: null }], error: null })
-    await expect(requireAdminRole(req(), 'super_admin')).rejects.toThrow(/ownership assertion failed/)
-  })
-
-  it('denies even a valid super_admin when the gate fails', async () => {
-    h.checkOwnerGate.mockResolvedValue({ ok: false, reason: 'ENV_SET_BUT_NO_OWNER' })
-    h.rolesQuery.mockResolvedValue({ data: [{ role: 'super_admin', expires_at: null }], error: null })
-    await expect(requireAdminRole(req(), 'admin')).rejects.toThrow(/ownership assertion failed/)
-  })
-})
+// Component 4 deleted `requireAdminRole`. Its five tests moved to
+// permissions/apiGuard.test.ts, retargeted at `requirePermission` — including
+// the two that pin the Owner-Gate-before-authorization ordering.
 
 describe('requireOwner', () => {
   const ctx = (isOwner: boolean) =>
