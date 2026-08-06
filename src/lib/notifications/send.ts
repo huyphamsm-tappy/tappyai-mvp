@@ -28,8 +28,11 @@ async function dispatchWebPush(subData: WebPushSubscriptionData, payload: Notifi
     JSON.stringify({
       title: payload.title,
       body: payload.body,
-      icon: payload.icon ?? '/logo.png',
-      badge: payload.badge ?? '/logo.png',
+      // The otter mascot, not the retired infinity-mark /logo.png. The server always sends these
+      // two fields, so the service worker's own `data.icon || …` fallback never applies — both
+      // places have to carry the current branding or the old logo still ships.
+      icon: payload.icon ?? '/tappy/wave.png',
+      badge: payload.badge ?? '/tappy/wave.png',
       ...(payload.image ? { image: payload.image } : {}),
       data: payload.data ?? {},
     })
