@@ -109,6 +109,37 @@ export const en: Record<string, string> = {
 
   'legal.terms.s6.heading': '6. Contact',
 
+  // --------------------------------------------------------- delete account
+  // Public page required by Google Play: an app that offers in-app account
+  // deletion must also document the route on the open web. It explains the
+  // existing in-app flow — it does not add a web deletion path.
+  'legal.delete.title': 'Delete Your TappyAI Account',
+  'legal.delete.effective': 'Last updated: August 2026',
+
+  'legal.delete.s1.heading': '1. How to Delete Your Account',
+  'legal.delete.s1.lead':
+    'You can permanently delete your TappyAI account directly from within the app.',
+  'legal.delete.s1.step1': 'Open TappyAI.',
+  'legal.delete.s1.step2': 'Go to Settings.',
+  'legal.delete.s1.step3': 'Select Delete Account.',
+  'legal.delete.s1.step4': 'Confirm the deletion request.',
+
+  'legal.delete.s2.heading': '2. What Deleting Your Account Removes',
+  'legal.delete.s2.lead': 'Deleting your account permanently removes:',
+  'legal.delete.s2.b1': 'Your profile.',
+  'legal.delete.s2.b2': 'Chat history.',
+  'legal.delete.s2.b3': 'AI memory.',
+  'legal.delete.s2.b4': 'Saved items.',
+  'legal.delete.s2.b5': 'Preferences.',
+  'legal.delete.s2.b6': 'Other user-generated content associated with your account.',
+
+  'legal.delete.s3.heading': '3. Data We May Retain',
+  'legal.delete.s3.p1':
+    'Some information may be retained only where required by applicable laws or legitimate business obligations (for example payment or legal compliance records).',
+
+  'legal.delete.s4.heading': '4. Need Help?',
+  'legal.delete.s4.p1': 'If you need assistance, contact us:',
+
   // ------------------------------------------------------------ shared bits
   'legal.contact.email': 'Email',
   'legal.contact.website': 'Website',
@@ -210,6 +241,34 @@ export const vi: Record<string, string> = {
     'TappyAI có thể cập nhật điều khoản này theo thời gian. Việc tiếp tục sử dụng dịch vụ sau khi có thay đổi đồng nghĩa với việc bạn chấp nhận các điều khoản mới.',
 
   'legal.terms.s6.heading': '6. Liên hệ',
+
+  // --------------------------------------------------------- delete account
+  'legal.delete.title': 'Xóa tài khoản TappyAI',
+  'legal.delete.effective': 'Cập nhật lần cuối: Tháng 8 năm 2026',
+
+  'legal.delete.s1.heading': '1. Cách xóa tài khoản',
+  'legal.delete.s1.lead':
+    'Bạn có thể xóa vĩnh viễn tài khoản TappyAI trực tiếp trong ứng dụng.',
+  'legal.delete.s1.step1': 'Mở TappyAI.',
+  'legal.delete.s1.step2': 'Vào Cài đặt.',
+  'legal.delete.s1.step3': 'Chọn Xóa tài khoản.',
+  'legal.delete.s1.step4': 'Xác nhận yêu cầu xóa.',
+
+  'legal.delete.s2.heading': '2. Những dữ liệu sẽ bị xóa',
+  'legal.delete.s2.lead': 'Việc xóa tài khoản sẽ xóa vĩnh viễn:',
+  'legal.delete.s2.b1': 'Hồ sơ.',
+  'legal.delete.s2.b2': 'Lịch sử trò chuyện.',
+  'legal.delete.s2.b3': 'Bộ nhớ AI.',
+  'legal.delete.s2.b4': 'Nội dung đã lưu.',
+  'legal.delete.s2.b5': 'Tùy chọn cá nhân.',
+  'legal.delete.s2.b6': 'Các dữ liệu khác do bạn tạo và gắn với tài khoản.',
+
+  'legal.delete.s3.heading': '3. Dữ liệu có thể được lưu lại',
+  'legal.delete.s3.p1':
+    'Một số dữ liệu có thể được lưu lại nếu pháp luật yêu cầu hoặc để thực hiện các nghĩa vụ hợp pháp (ví dụ thông tin thanh toán hoặc lưu trữ theo quy định).',
+
+  'legal.delete.s4.heading': '4. Cần hỗ trợ?',
+  'legal.delete.s4.p1': 'Nếu cần hỗ trợ, vui lòng liên hệ:',
 
   // ------------------------------------------------------------ shared bits
   'legal.contact.email': 'Email',
