@@ -9,10 +9,26 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { clientIp } from '@/lib/security/rateLimit'
 import type { AdminRole } from '@/lib/admin/rbac'
 
+/**
+ * Who the audit log records as the acting principal.
+ *
+ * Component 4 widened this from `AdminRole`. The Platform Owner is NOT a role —
+ * they reach a handler by OWNER_BYPASS and may hold no `admin_roles` row at all,
+ * so the previous `actor.highestRole ?? 'admin'` fallback recorded a role they
+ * did not have. An audit trail that invents the actor's authority is worse than
+ * one that is merely incomplete.
+ *
+ * `'none'` exists for denied actors who hold no role — a denial is exactly the
+ * case worth recording, so it needs a truthful value rather than a fabricated one.
+ *
+ * No migration: `audit_log.actor_role` is `TEXT NOT NULL`, never an enum.
+ */
+export type AuditActorRole = AdminRole | 'owner' | 'none'
+
 export interface AuditParams {
   actorId: string
   actorEmail: string
-  actorRole: AdminRole
+  actorRole: AuditActorRole
   action: string
   targetType?: string
   targetId?: string

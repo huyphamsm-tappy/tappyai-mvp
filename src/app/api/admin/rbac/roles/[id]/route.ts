@@ -3,6 +3,7 @@
 
 import { requireOwner, adminErrorResponse, adminError, invalidateRoleCache, isSameOrigin } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
+import { auditActorRole } from '@/lib/admin/permissions/decisionAudit'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
@@ -11,7 +12,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   try {
     const ctx = await requirePermission(req, PERMISSIONS.SECURITY_ROLES_REVOKE)
     const { user } = ctx
-    const role = ctx.actor.highestRole ?? 'super_admin'
+    const role = auditActorRole(ctx.actor)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
     if (!rateLimit(`admin:rbac:revoke:${user.id}`, 20, 60_000).ok) {
       return adminError('RATE_LIMITED', 'Too many requests', 429)

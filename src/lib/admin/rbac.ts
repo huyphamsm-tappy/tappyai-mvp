@@ -59,9 +59,9 @@ function highestRole(roles: AdminRole[]): AdminRole | null {
  *
  * Component 2 change: this returns ALL active roles rather than collapsing to
  * the highest. `admin_roles` already permits multiple rows per user
- * (UNIQUE(user_id, role)), and the Permission Engine (component 4) must union
- * the permission bundles of every role — information the old
- * highest-rank-only resolution discarded.
+ * (UNIQUE(user_id, role)), and the Permission Engine unions the permission
+ * bundles of every role — information the old highest-rank-only resolution
+ * discarded.
  *
  * `isOwner` comes from `platform_owner`, NEVER from `admin_roles`. The Owner is
  * a distinct constitutional principal, not a rung on the role ladder.
@@ -91,19 +91,10 @@ async function resolvePrincipal(userId: string): Promise<Principal> {
   return { roles, isOwner }
 }
 
-/**
- * Resolve the highest admin role for a user id, or null if not an admin.
- * Used by the /admin server-component layout gate. Cached ~60s.
- *
- * TRANSITION SHIM: retained so every existing call site keeps working unchanged
- * while components 3–4 land. It is deleted at the end of Block A once the
- * Policy Decision Point replaces the rank ladder — it is not permanent
- * old/new coexistence.
- */
-export async function resolveAdminRole(userId: string): Promise<AdminRole | null> {
-  const { roles } = await resolvePrincipal(userId)
-  return highestRole(roles)
-}
+// REMOVED in Component 4: `resolveAdminRole(userId)`. It collapsed an actor to
+// their highest role, which under union semantics silently drops permissions —
+// the defect the Component 3 review found in the page guard. Superseded by
+// `resolveActorForUser`, and by then it had zero callers.
 
 /**
  * Invalidate a user's cached principal immediately (call after grant/revoke).
@@ -122,10 +113,12 @@ export function invalidateRoleCache(userId: string): void {
 
 /**
  * The full security principal for a request. Supersedes the bare
- * `{ user, role }` pair; `user` and `role` remain on AdminContext so existing
- * handlers are untouched.
+ * `{ user, role }` pair that `AdminContext` used to carry; Component 4 deleted
+ * that interface along with the rank-ladder gate it served.
  *
- * `permissions` is intentionally ABSENT until component 4 (Permission Engine).
+ * `permissions` is deliberately NOT a field here. They are derived on demand by
+ * the PDP from `roles`, so there is exactly one place that decides what an
+ * Actor may do — see permissions/engine.ts.
  *
  * `capabilities` IS present from now on (owner decision, 2026-08-03) so the
  * interface does not change shape when the Capability Registry lands in
@@ -148,16 +141,16 @@ export interface Actor {
  * Build an Actor from a user id, for contexts that have no `Request` — server
  * components in particular.
  *
- * THE SINGLE Actor construction site. `resolveActor` and `requireAdminRole`
- * both delegate here rather than building their own, so the field mappings can
- * never drift. Component 2's review found exactly that defect (two inline
- * copies of a security principal's construction) and Component 3 briefly
- * reintroduced it by adding this function alongside a second literal.
+ * THE SINGLE Actor construction site. `resolveActor` delegates here rather than
+ * building its own, so the field mappings can never drift. Component 2's review
+ * found exactly that defect (two inline copies of a security principal's
+ * construction) and Component 3 briefly reintroduced it by adding this function
+ * alongside a second literal.
  *
- * Component 3 integration: page guards need the FULL role list. Reaching for
- * `resolveAdminRole` there would collapse to the highest-ranked role and
- * silently drop the permissions of any additional role the user holds, because
- * permissions are a union across roles rather than a ladder.
+ * Page guards need the FULL role list. Collapsing to the highest-ranked role
+ * silently drops the permissions of any additional role the user holds, because
+ * permissions union across roles rather than inherit down a ladder. That is why
+ * Component 4 deleted `resolveAdminRole` outright rather than leaving it around.
  */
 export async function resolveActorForUser(
   userId: string,
@@ -184,7 +177,7 @@ export async function resolveActorForUser(
  *
  * Delegates construction to `resolveActorForUser`; its only added job is
  * deriving `source` from the request. The Supabase `User` is returned alongside
- * because `AdminContext` still exposes it to handlers.
+ * because handlers still receive it in `PermissionContext`.
  */
 export async function resolveActor(
   req: Request
@@ -199,52 +192,17 @@ export async function resolveActor(
   return { user, actor }
 }
 
-export interface AdminContext {
-  user: User
-  role: AdminRole
-  actor: Actor
-}
-
-/**
- * Gate for every /api/admin/* handler. Throws AdminError (401/403) if the caller
- * is not authenticated or lacks the minimum role. Returns the authenticated
- * admin context on success. (21_Coding_Standards.md §2.)
- */
-/**
- * @deprecated Component 3 supersedes this. Use `requirePermission(req,
- * PERMISSIONS.X)` from `@/lib/admin/permissions` instead.
- *
- * Kept ONLY because its tests cover the Component 1 Owner boot assertion.
- * It has ZERO production callers as of the Component 3 migration. Do not add
- * new ones: it gates on ROLE RANK, which bypasses the permission registry and
- * would reintroduce the parallel authorization path Component 3 removed.
- */
-export async function requireAdminRole(
-  req: Request,
-  minRole: AdminRole
-): Promise<AdminContext> {
-  // 1. Identity.
-  const resolved = await resolveActor(req)
-  if (!resolved) throw new AdminError('UNAUTHORIZED', 'Authentication required', 401)
-  const { user, actor } = resolved
-
-  // 2. Ownership assertion (component 1) — runs BEFORE any RBAC decision. Inert
-  // until PLATFORM_OWNER_USER_ID is configured; once configured, a mismatch
-  // denies the whole Controller.
-  const gate = await checkOwnerGate()
-  if (!gate.ok) {
-    console.error('[controller][owner] gate failed:', gate.reason)
-    throw new AdminError('FORBIDDEN', 'Controller unavailable: ownership assertion failed', 403)
-  }
-
-  // 3. RBAC.
-  const role = actor.highestRole
-  if (!role || !hasRole(role, minRole)) {
-    throw new AdminError('FORBIDDEN', `Insufficient permissions. Required role: ${minRole}`, 403)
-  }
-
-  return { user, role, actor }
-}
+// REMOVED in Component 4: `AdminContext` and `requireAdminRole(req, minRole)`.
+//
+// The rank-ladder gate had zero production callers after the Component 3
+// migration, and its continued existence was an invitation: a future route
+// could gate on ROLE RANK and silently bypass the permission registry. The
+// Block-A exit condition in 03_PHASE1_FOUNDATION_DESIGN.md is exactly this —
+// the shim is deleted "once the PDP has replaced every hasRole call".
+//
+// Its security coverage did not vanish with it: the Owner-Gate-before-RBAC
+// ordering it used to pin is now asserted directly against `requirePermission`
+// in permissions/apiGuard.test.ts.
 
 /**
  * Gate for operations only the Platform Owner may perform. Used for the

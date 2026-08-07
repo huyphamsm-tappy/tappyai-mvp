@@ -26,8 +26,8 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 |---|---|---|
 | 1 | **Platform Owner** | ✅ **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — in production (`fb21ebe`) |
 | 2 | **Identity** | ✅ **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — in production (`fb21ebe`) |
-| 3 | **RBAC** | ⬅ **READY TO START · NOT STARTED** |
-| 4 | Permission Engine | not started |
+| 3 | **RBAC** | ✅ **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — in production (`933c4f8`, PR #12) |
+| 4 | **Audited PDP** *(the roadmap called this "Permission Engine"; C3 shipped that — see 04_COMPONENT4_AUDITED_PDP_DESIGN.md §1)* | ⬅ **READY FOR REVIEW** — not merged |
 
 ### Block B — Extensibility
 
