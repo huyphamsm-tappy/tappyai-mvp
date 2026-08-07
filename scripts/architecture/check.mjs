@@ -24,6 +24,19 @@ const EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs'])
 const AI_LAYER = 'src/lib/ai/llm/' // the capability layer itself (uses the AI SDK core)
 const PROVIDER_LAYER = 'src/lib/ai/llm/providers/' // vendor SDKs, model ids, keys, cache logic
 
+// The ONLY sanctioned construction point for a Supabase service-role client.
+// It applies `{ auth: { autoRefreshToken: false, persistSession: false } }`; an
+// ad-hoc client omits that and tries to refresh tokens inside a serverless
+// handler. Controller V2 Component 9a.
+const SUPABASE_ADMIN = 'src/lib/supabase/admin.ts'
+
+// Documented exception. This route READS the key to decide whether the admin
+// path is available at all — it never constructs a client; it calls
+// createAdminClient() like everyone else. Verified in Component 9a, and
+// admin.test.ts asserts the file contains no createClient( of its own so this
+// exemption cannot quietly grow into a bypass.
+const SERVICE_ROLE_FLAG_READ = 'src/app/api/users/search/route.ts'
+
 // Raw vendor SDK packages that must never be dependencies at all — they bypass
 // the neutral AI SDK entirely. (@ai-sdk/* adapter packages ARE allowed as deps;
 // their IMPORTS are restricted to the provider layer by rule 1.)
@@ -119,6 +132,16 @@ const RULES = [
     ],
     allow: [PROVIDER_LAYER],
     hint: "vendor optimizations live in the adapter's decorateMessages() (src/lib/ai/llm/providers/*). The application must not know whether prompt caching exists.",
+  },
+  {
+    id: 'no-adhoc-service-role-client',
+    title: 'Supabase service-role client constructed outside the admin module',
+    patterns: [
+      // The service-role key may only be READ where the client is built.
+      /SUPABASE_SERVICE_ROLE_KEY/,
+    ],
+    allow: [SUPABASE_ADMIN, SERVICE_ROLE_FLAG_READ],
+    hint: 'import { createAdminClient } from "@/lib/supabase/admin". A hand-rolled client omits the auth hardening (autoRefreshToken:false, persistSession:false) and quietly becomes a second admin factory — Component 9a removed two of those.',
   },
 ]
 
