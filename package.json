@@ -11,6 +11,7 @@
     "lint": "next lint",
     "test": "vitest run",
     "architecture:check": "node scripts/architecture/check.mjs",
+    "check:sql-grants": "node scripts/architecture/check-sql-grants.mjs",
     "validate:brands": "vitest run src/config/brandRegistry.validation.test.ts"
   },
   "dependencies": {

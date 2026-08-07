@@ -26,14 +26,41 @@ const SEED_SQL = readFileSync(join(REPO, 'supabase/seed/platform_owner_bootstrap
 const OWNER_MIGRATION = readFileSync(join(REPO, 'supabase/migrations/20260803_platform_owner.sql'), 'utf8')
 const PHASE0_MIGRATION = readFileSync(join(REPO, 'supabase/migrations/20260713_backoffice_phase0.sql'), 'utf8')
 
-// Supabase provides `service_role` and a `profiles` table; a bare PostgreSQL does
-// not. This is the minimum needed for the real migrations to apply unchanged.
+// The harness — not any individual test — owns what "the platform" is.
+//
+// Supabase provides three roles, a `profiles` table, and one platform fact that
+// a bare PostgreSQL does not have: default privileges that grant EXECUTE on
+// every new function to `anon` and `authenticated`. Omitting that fact is what
+// let F-04 ship — a suite can only be as truthful as the platform it models, and
+// a test that defines its own platform can make itself green by defining one
+// where it is green (ADR-019, Engineering principle).
+//
+// This is the minimum needed for the real migrations to apply unchanged AND for
+// any privilege assertion made against them to mean something.
 const SUPABASE_PRELUDE = `
   DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') THEN
+      CREATE ROLE anon NOLOGIN;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated') THEN
+      CREATE ROLE authenticated NOLOGIN;
+    END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'service_role') THEN
       CREATE ROLE service_role NOLOGIN;
     END IF;
   END $$;
+
+  GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+
+  -- Must be re-applied on every beforeEach, not once at startup: default ACLs
+  -- are recorded per SCHEMA OID, and \`DROP SCHEMA public CASCADE\` takes them
+  -- with it. Measured: pg_default_acl rows=1 before the drop, rows=0 after.
+  -- A function created while it is absent gets proacl = NULL, which means
+  -- PostgreSQL's built-in default — under which PUBLIC, and therefore every
+  -- role, holds EXECUTE. That looks the same as "anon can call it" and is not.
+  ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT ALL ON FUNCTIONS TO anon, authenticated, service_role;
+
   CREATE TABLE IF NOT EXISTS profiles (
     id    UUID PRIMARY KEY,
     email TEXT
@@ -96,6 +123,41 @@ async function grantSuperAdmin(userId: string, expiresAt: string | null = null) 
 }
 
 const runBootstrap = () => db.query(SEED_SQL)
+
+describe('harness — the platform this suite models', () => {
+  it('reproduces Supabase default privileges on functions', async () => {
+    // Guards the guard. If this fails, every privilege assertion made anywhere
+    // in this suite is vacuous rather than merely wrong, because the `anon` it
+    // tested against would be a bare role this file invented.
+    //
+    // The instrument is `proacl`, NOT has_function_privilege. Default privileges
+    // MATERIALISE as explicit ACL entries at CREATE time; a function created
+    // without them in force has proacl = NULL, which means PostgreSQL's built-in
+    // default — under which PUBLIC holds EXECUTE and every role is a member of
+    // PUBLIC. has_function_privilege('anon', ...) therefore returns true in BOTH
+    // cases and cannot tell them apart. Measured, on the un-revoked canary.
+    //
+    // `fn_is_platform_owner` is the canary because 20260803_platform_owner.sql
+    // creates it and never revokes it — it grants service_role only. Production
+    // measures its ACL with an explicit `anon=X/postgres` entry, which is
+    // exactly what proves the platform grant was live when the migration ran.
+    const { rows } = await db.query(
+      `SELECT COALESCE(array_to_string(p.proacl, ' '), '<null: built-in default>') AS acl
+       FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+       WHERE n.nspname = 'public' AND p.proname = 'fn_is_platform_owner'`
+    )
+
+    expect(rows, 'fn_is_platform_owner must exist').toHaveLength(1)
+    const acl: string = rows[0].acl
+    expect(
+      acl,
+      'the un-revoked Component 1 function must carry an EXPLICIT anon grant — if it ' +
+        'does not, Supabase default privileges were NOT in force when the migration ' +
+        'created its functions, and this suite is testing a platform that does not exist',
+    ).toContain('anon=X')
+    expect(acl, 'and an explicit authenticated grant, for the same reason').toContain('authenticated=X')
+  })
+})
 
 describe('platform_owner_bootstrap.sql — against a real PostgreSQL', () => {
   it('REGRESSION: the seed is valid SQL and executes (guards against MIN(uuid))', async () => {
