@@ -13,6 +13,9 @@
     <string name="home_quick_translate">Translate</string>
     <string name="home_quick_currency">Currency</string>
     <string name="home_quick_deals">Deals</string>
+    <!-- Web's `home.scamShieldTitle`. Its `home.scamShieldDesc` has no Android counterpart:
+         a quick action carries a label only, exactly like the five above. -->
+    <string name="home_quick_scam_shield">Safety check</string>
 
     <string name="home_section_quick_actions">Quick actions</string>
     <string name="home_explore_by_category">Explore by category</string>

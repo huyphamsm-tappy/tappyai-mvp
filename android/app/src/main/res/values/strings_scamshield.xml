@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Scam Shield — a strict port of the web's `scamShield.*` dictionary entries
+  (src/lib/i18n/dictionaries.ts, main @ 11453de). Wording is copied verbatim; only the key
+  spelling changes, because Android resource names cannot contain dots. The mapping is
+  mechanical and 1:1:  scamShield.error.qrNoUrl  ->  scam_shield_error_qr_no_url
+
+  Two keys exist in the web dictionary but are rendered nowhere on the web
+  (`scamShield.orScanQr`, `scamShield.qrCamera`). They are ported for completeness and are
+  likewise unused here — the web offers a single picker, so adding a second affordance on
+  Android would be a redesign, not parity.
+-->
+<resources>
+    <string name="scam_shield_title">Safety Check</string>
+    <string name="scam_shield_subtitle">Check links, websites, QR codes</string>
+    <string name="scam_shield_url_placeholder">Enter URL or domain…</string>
+    <string name="scam_shield_check">Check</string>
+    <string name="scam_shield_checking">Checking…</string>
+    <string name="scam_shield_qr_upload">Scan QR</string>
+
+    <!-- Ported for completeness; unused on web and therefore unused here. -->
+    <string name="scam_shield_or_scan_qr">or scan a QR code</string>
+    <string name="scam_shield_qr_camera">Capture QR</string>
+
+    <string name="scam_shield_result_safe">Safe</string>
+    <string name="scam_shield_result_low">Low risk</string>
+    <string name="scam_shield_result_medium">Use caution</string>
+    <string name="scam_shield_result_high">High risk</string>
+    <string name="scam_shield_result_critical">Very dangerous</string>
+
+    <string name="scam_shield_confidence_high">High confidence</string>
+    <string name="scam_shield_confidence_medium">Limited data</string>
+    <string name="scam_shield_confidence_low">Insufficient data</string>
+
+    <string name="scam_shield_actions">Recommendations</string>
+    <string name="scam_shield_evidence">Analysis details</string>
+    <string name="scam_shield_official">Official information</string>
+    <string name="scam_shield_official_website">Official website</string>
+    <string name="scam_shield_official_hotline">Hotline</string>
+
+    <string name="scam_shield_error_rate_limit">Too many checks. Try again later.</string>
+    <string name="scam_shield_error_daily_limit">Daily check limit reached. Come back tomorrow.</string>
+    <string name="scam_shield_error_invalid_url">Invalid URL</string>
+    <string name="scam_shield_error_private_url">Cannot check internal network addresses</string>
+    <string name="scam_shield_error_check_failed">Could not check this URL</string>
+    <string name="scam_shield_error_qr_decode">Could not read QR code</string>
+    <string name="scam_shield_error_qr_no_url">QR code does not contain a link</string>
+    <string name="scam_shield_error_qr_failed">Could not check QR code</string>
+
+    <!-- Content descriptions have no web counterpart (the web uses inline SVG icons with no
+         accessible name). Android requires them, so they are additive, not a behaviour change. -->
+    <string name="scam_shield_cd_back">Back</string>
+    <string name="scam_shield_cd_shield">Scam Shield</string>
+</resources>

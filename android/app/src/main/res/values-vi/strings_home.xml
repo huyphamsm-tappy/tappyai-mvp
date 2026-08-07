@@ -13,6 +13,7 @@
     <string name="home_quick_translate">Dịch thuật</string>
     <string name="home_quick_currency">Tỷ giá</string>
     <string name="home_quick_deals">Ưu đãi</string>
+    <string name="home_quick_scam_shield">Kiểm tra an toàn</string>
 
     <string name="home_section_quick_actions">Thao tác nhanh</string>
     <string name="home_explore_by_category">Khám phá theo lĩnh vực</string>

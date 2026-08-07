@@ -14,6 +14,7 @@ data class AppConfigDto(
     val upload: UploadConfigDto = UploadConfigDto(),
     val flags: FlagsConfigDto = FlagsConfigDto(),
     val freemium: FreemiumConfigDto = FreemiumConfigDto(),
+    val scamShield: ScamShieldConfigDto = ScamShieldConfigDto(),
 )
 
 /** Defaults mirror the current prod values, so a failed/absent config keeps today's behaviour. */
@@ -28,12 +29,30 @@ data class UploadConfigDto(
 data class FlagsConfigDto(
     val showProUpgrade: Boolean = false,
     val showAppConnections: Boolean = false,
+    /**
+     * Defaults to true, unlike the two above: `SHOW_SCAM_SHIELD` is true in prod, and the web
+     * renders its Scam Shield entry point unconditionally. Defaulting to false would hide the
+     * feature whenever `/api/config` is unreachable, which the web never does.
+     */
+    val showScamShield: Boolean = true,
 )
 
 @Serializable
 data class FreemiumConfigDto(
     val freeDailyLimit: Int = 15,
     val anonDailyLimit: Int = 5,
+)
+
+/**
+ * Scam Shield daily caps as published by `/api/config` (`SCAM_SHIELD_DAILY_LIMIT_AUTH` /
+ * `_ANON`). Modelled so the wire contract is complete. Neither client displays these numbers:
+ * the cap is enforced server-side and surfaced as a `daily_limit` error whose copy the client
+ * localises — the web publishes them and reads them nowhere either.
+ */
+@Serializable
+data class ScamShieldConfigDto(
+    val dailyLimitAuth: Int = 30,
+    val dailyLimitAnon: Int = 10,
 )
 
 @Serializable

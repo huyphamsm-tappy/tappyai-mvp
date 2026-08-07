@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Scam Shield — Vietnamese strings copied verbatim from the web dictionary
+  (src/lib/i18n/dictionaries.ts, main @ 11453de). See values/strings_scamshield.xml for the
+  key-naming rule.
+-->
+<resources>
+    <string name="scam_shield_title">Kiểm Tra An Toàn</string>
+    <string name="scam_shield_subtitle">Kiểm tra liên kết, website, mã QR</string>
+    <string name="scam_shield_url_placeholder">Nhập URL hoặc tên miền…</string>
+    <string name="scam_shield_check">Kiểm tra</string>
+    <string name="scam_shield_checking">Đang kiểm tra…</string>
+    <string name="scam_shield_qr_upload">Quét mã QR</string>
+
+    <!-- Ported for completeness; unused on web and therefore unused here. -->
+    <string name="scam_shield_or_scan_qr">hoặc quét mã QR</string>
+    <string name="scam_shield_qr_camera">Chụp ảnh QR</string>
+
+    <string name="scam_shield_result_safe">An toàn</string>
+    <string name="scam_shield_result_low">Nguy cơ thấp</string>
+    <string name="scam_shield_result_medium">Cần cẩn thận</string>
+    <string name="scam_shield_result_high">Nguy cơ cao</string>
+    <string name="scam_shield_result_critical">Rất nguy hiểm</string>
+
+    <string name="scam_shield_confidence_high">Độ tin cậy cao</string>
+    <string name="scam_shield_confidence_medium">Dữ liệu hạn chế</string>
+    <string name="scam_shield_confidence_low">Dữ liệu không đủ</string>
+
+    <string name="scam_shield_actions">Khuyến nghị</string>
+    <string name="scam_shield_evidence">Chi tiết phân tích</string>
+    <string name="scam_shield_official">Thông tin chính thức</string>
+    <string name="scam_shield_official_website">Website chính thức</string>
+    <string name="scam_shield_official_hotline">Hotline</string>
+
+    <string name="scam_shield_error_rate_limit">Bạn đã kiểm tra quá nhiều lần. Thử lại sau.</string>
+    <string name="scam_shield_error_daily_limit">Đã hết lượt kiểm tra hôm nay. Quay lại ngày mai.</string>
+    <string name="scam_shield_error_invalid_url">URL không hợp lệ</string>
+    <string name="scam_shield_error_private_url">Không thể kiểm tra địa chỉ mạng nội bộ</string>
+    <string name="scam_shield_error_check_failed">Không thể kiểm tra URL</string>
+    <string name="scam_shield_error_qr_decode">Không thể đọc mã QR</string>
+    <string name="scam_shield_error_qr_no_url">Mã QR không chứa liên kết</string>
+    <string name="scam_shield_error_qr_failed">Không thể kiểm tra mã QR</string>
+
+    <string name="scam_shield_cd_back">Quay lại</string>
+    <string name="scam_shield_cd_shield">Kiểm tra an toàn</string>
+</resources>

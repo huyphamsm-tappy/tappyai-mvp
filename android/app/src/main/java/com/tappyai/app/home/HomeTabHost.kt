@@ -23,6 +23,8 @@ import com.tappyai.app.reviews.ui.ReviewDetailScreen
 import com.tappyai.app.reviews.ui.ReviewProfileScreen
 import com.tappyai.app.recommendations.RecommendationsRoute
 import com.tappyai.app.recommendations.RecommendationsScreen
+import com.tappyai.app.scamshield.ScamShieldRoute
+import com.tappyai.app.scamshield.ScamShieldScreen
 import com.tappyai.app.scan.ScanRoute
 import com.tappyai.app.scan.ScanScreen
 import com.tappyai.app.splitbill.SplitBillRoute
@@ -59,6 +61,7 @@ fun HomeTabHost(
                 onOpenCurrency = { navController.navigate(CurrencyRoute.Main) },
                 onOpenDeals = { navController.navigate(DealsRoute.Main) },
                 onOpenScan = { navController.navigate(ScanRoute.Main) },
+                onOpenScamShield = { navController.navigate(ScamShieldRoute.Main) },
                 onOpenVietWriter = { navController.navigate(VietWriterRoute.Main) },
                 onOpenSplitBill = { navController.navigate(SplitBillRoute.Main) },
                 onOpenGroupDining = { navController.navigate(HomeTabRoute.GroupDining) },
@@ -76,6 +79,9 @@ fun HomeTabHost(
         }
         composable<ScanRoute.Main> {
             ScanScreen(onBack = { navController.popBackStack() })
+        }
+        composable<ScamShieldRoute.Main> {
+            ScamShieldScreen(onBack = { navController.popBackStack() })
         }
         composable<VietWriterRoute.Main> {
             VietWriterScreen(onBack = { navController.popBackStack() })
