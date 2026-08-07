@@ -205,6 +205,7 @@ prev_hash  BYTEA            -- row_hash of seq-1; NULL only for the genesis row
 row_hash = sha256(
     coalesce(prev_hash, '\x00'::bytea)
  || seq
+ || id
  || actor_id || actor_email || actor_role
  || action
  || coalesce(target_type,'') || coalesce(target_id,'')
@@ -218,6 +219,13 @@ row_hash = sha256(
 **Every column is covered**, including the four the read API never returns —
 otherwise `before_state` could be rewritten undetectably, which is exactly the
 field an attacker would target.
+
+> ⚠️ **Corrected during implementation (defect A-1).** This section claimed
+> "every column is covered" while `id` was absent from the list above, so
+> `UPDATE audit_log SET id = ...` verified clean. Reproduced against the built
+> migration, then fixed; `id` is now hashed and `T-18` is the regression test.
+> The claim and the code disagreed, and only the code was ever executed — which
+> is why the acceptance criteria below are worded as tests rather than prose.
 
 > ⚠️ **Corrected in Phase C.** The original design gave `seq` a `BIGSERIAL`
 > default. Column defaults are evaluated **before** `BEFORE ROW` triggers fire,

@@ -77,7 +77,7 @@ very little. These force the orders that matter.
 | **K-ADV-1** | **Commit order reversed relative to start order** | 2 connections; A begins its `INSERT` first but is made to commit *second* (barrier held after the trigger, released in reverse) | verifier PASS. `seq` reflects **lock acquisition order**, not statement-start order — which is the correctness claim, stated positively |
 | **K-ADV-2** | Blocked writer resumes correctly | A holds the lock and sleeps inside its transaction; B blocks; A commits | B's `prev_hash` = A's `row_hash`. **This is the direct test of the Phase D §2.1 proof** — that B's post-lock `SELECT` sees A's committed row |
 | **K-ADV-3** | Waiter aborts mid-wait | A holds the lock; B blocks; B is cancelled; C then inserts | C chains to A. The sequence number B consumed (if any) is a benign gap — see R-01 |
-| **K-ADV-4** | All permutations, small N | 3 connections; enumerate all **6** commit orders explicitly | verifier PASS in all 6. Exhaustive at N=3 rather than probabilistic |
+| **K-ADV-4** | All permutations, small N | 3 connections; enumerate all **6** commit orders explicitly | verifier PASS in all 6. Exhaustive at N=3 rather than probabilistic. **Revised during implementation:** five of the six are UNREACHABLE. `pg_advisory_xact_lock` is held until `COMMIT`, so a writer cannot finish its `INSERT` until the previous one commits — commit order is *forced* equal to lock-acquisition order. Written as specified the test deadlocks by construction. It now proves the forcing (a waiter observably cannot complete), then covers all six writer orders |
 | **K-ADV-5** | Randomised soak | 50 rounds × 20 connections, random pre-commit delays | verifier PASS every round; **any failure must be captured with its full row dump**, because a chain fork is exactly the class of bug that does not reproduce |
 
 **Why `MANUAL` for K-100 and K-ADV-5:** connection-count and wall-clock cost.
@@ -298,10 +298,18 @@ so a future edit fails loudly rather than silently.
 
 | ID | Assertion | Failure meaning |
 |---|---|---|
-| **S-01** | The trigger function body contains no `EXCEPTION` keyword | An implicit subtransaction was introduced; the memo can revert while a handler proceeds (Phase E §A4) |
+| **S-01** | No `EXCEPTION` token in the trigger body opens a block — every one belongs to a `RAISE` | An implicit subtransaction was introduced; the memo can revert while a handler proceeds (Phase E §A4). **Revised during implementation:** the literal wording ("no `EXCEPTION` keyword") is unsatisfiable, because the P1 isolation assertion is a `RAISE EXCEPTION` — a throw, not a handler |
 | **S-02** | No `CREATE FUNCTION … SET audit.chain_head` anywhere in `supabase/` | A function would restore a stale memo on exit (Phase E §A2) |
 | **S-03** | The trigger is declared `VOLATILE` **explicitly**, not by default | Makes P4 a visible change in any future diff rather than an invisible default someone can flip |
 | **S-04** | `seq` has no `DEFAULT` in the schema | P3, caught at review time instead of by a concurrency test |
+
+> **Added during implementation — found by adversarial review, not by this spec.**
+>
+> | ID | Attack | Was | Now |
+> |---|---|---|---|
+> | **T-18** | `UPDATE audit_log SET id = ...` | verified clean — `id` was not hashed | `hash_mismatch` + `prev_mismatch` |
+> | **T-19** | `DELETE FROM audit_log WHERE seq <= 3` (head truncation) | verified clean — a full scan never compared the first row's `prev_hash` | `prev_mismatch` + `sequence_gap@1` |
+> | **T-20** | first sequence numbers burnt by rollback | — | still clean; this is the discrimination T-19 depends on |
 
 - [ ] **P1–P12** each mapped above, and every mapped test passes
 - [ ] **S-01 … S-04** static assertions pass
