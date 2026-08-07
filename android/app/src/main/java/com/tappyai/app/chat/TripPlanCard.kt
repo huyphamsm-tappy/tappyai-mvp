@@ -38,18 +38,22 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tappyai.app.R
 import com.tappyai.core.designsystem.component.TappyButton
 import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
+import kotlin.math.roundToInt
 
 /**
  * The `[TAPPY_PLAN]` itinerary card — an Android port of the web `TripPlanCard`
@@ -256,6 +260,65 @@ private val CONNECTOR_MIN_LENGTH = 16.dp
 /** The web's `w-px`, matched to the divider thickness the rest of the card uses. */
 private val CONNECTOR_THICKNESS = 1.dp
 
+/**
+ * Width kept back from the price pill for the place name beside it.
+ *
+ * The pill carries no weight, so [Row] measures it before the weighted name group and offers it
+ * the whole row. The model does not always write a price as a price — it writes
+ * "~450.000 VND (2 người, 2 tô phở + nước)" — and on a 360dp phone that measured 428px of a 487px
+ * row, leaving the name about 20px. No word fits in 20px, so Compose fell back to breaking the
+ * text between characters and "Phở Việt Nam" rendered one letter per line.
+ *
+ * A reserved width rather than a fraction of the row, because what the name actually needs is
+ * absolute: room for the emoji, its gap, and the longest single word it has to show. A fraction
+ * would also scale the wrong way — on a tablet the name needs no more than this and the pill
+ * should be free to use everything else.
+ *
+ * 120dp is measured, not estimated. At 96dp the name text node came out 125px wide on the report
+ * device (720x1600, density 300) and "PHỞ 24 - 158D PASTEUR" still broke as "PASTEU" / "R": a long
+ * uppercase Latin word runs to ~140px there, and Vietnamese syllables are far shorter. 120dp
+ * leaves the text ~180px once the emoji and its gap are taken, which clears that with margin.
+ */
+private val PLAN_NAME_MIN_WIDTH = 120.dp
+
+/**
+ * Floor on the pill so a very narrow row cannot reserve the name so much that the price disappears
+ * entirely. At this point neither fits properly and both are truncated rather than one erased.
+ */
+private const val PLAN_PRICE_MIN_WIDTH_FRACTION = 0.35f
+
+/**
+ * Measures the content against the width its parent offers, less [reserve] for the sibling.
+ *
+ * A layout modifier rather than `widthIn(max = …)` because the bound has to track the row it lands
+ * in, and rather than `BoxWithConstraints` because it needs no subcomposition: the incoming
+ * [Constraints] already carry the width the parent is offering. Content that already fits inside
+ * the bound is measured exactly as it was before, so short prices lay out unchanged.
+ */
+private fun Modifier.widthReserving(reserve: Dp) = this.layout { measurable, constraints ->
+    val cap = cappedMaxWidthPx(constraints.maxWidth, reserve.roundToPx(), PLAN_PRICE_MIN_WIDTH_FRACTION)
+    val placeable = measurable.measure(
+        // minWidth is clamped too: a parent demanding a minimum wider than the cap would otherwise
+        // produce an invalid range (min > max), which Constraints rejects.
+        constraints.copy(minWidth = minOf(constraints.minWidth, cap), maxWidth = cap),
+    )
+    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+}
+
+/**
+ * The width [widthReserving] measures against. Split out from the modifier so the rule can be
+ * covered by a plain JVM test — the layout phase itself needs a device.
+ *
+ * An unbounded parent (a horizontally scrolling container) offers `Constraints.Infinity`, which is
+ * `Int.MAX_VALUE`: there is no finite width to reserve from, and subtracting would leave a bound
+ * that silently truncates, so it is passed through untouched.
+ */
+internal fun cappedMaxWidthPx(availableMaxWidthPx: Int, reservePx: Int, minFraction: Float): Int {
+    if (availableMaxWidthPx == Constraints.Infinity) return availableMaxWidthPx
+    val floor = (availableMaxWidthPx * minFraction).roundToInt()
+    return (availableMaxWidthPx - reservePx).coerceIn(minOf(floor, availableMaxWidthPx), availableMaxWidthPx)
+}
+
 @Composable
 private fun PlanItemRow(item: PlanItem, showConnector: Boolean) {
     val uriHandler = LocalUriHandler.current
@@ -334,6 +397,9 @@ private fun PlanItemRow(item: PlanItem, showConnector: Boolean) {
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
+                            // Outermost, so the cap bounds the constraint the pill's own
+                            // background and padding are measured against.
+                            .widthReserving(PLAN_NAME_MIN_WIDTH)
                             .clip(TappyShapes.pill)
                             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f))
                             .padding(horizontal = TappySpacing.sm, vertical = 2.dp),
