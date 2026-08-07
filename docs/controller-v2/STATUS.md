@@ -4,7 +4,7 @@
 > **This document is the only authoritative statement of Controller V2 project status.**
 > Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
-**Last updated:** 2026-08-04
+**Last updated:** 2026-08-07
 
 ---
 
@@ -15,7 +15,18 @@
 | **Foundation Phase** | **CLOSED** |
 | **Components 1 & 2** — Platform Owner + Identity | **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** |
 | **BL-002** — G1 Production Validation | **OPEN** · type: **Production Acceptance Task** |
-| **Component 3** — RBAC | **READY TO START · NOT STARTED** |
+| **Component 3** — RBAC | **ACCEPTED · IN PRODUCTION** — merge commit `933c4f8` |
+| **Component 4** — Audited PDP | **ACCEPTED · IN PRODUCTION** — merge commit `28f68c1` |
+| **Component 5** — Capability Registry | **FROZEN** — [ADR-018](../architecture/ADR-018-capability-registry-frozen.md), merges into Component 6 |
+| **Component 9a** — single admin-client construction point | **ACCEPTED · IN PRODUCTION** — merge commit `e8d4eb9` |
+| **Component 7** — Audit Hardening | **READY TO OPEN PR** — not merged, not deployed, **migration not applied to any database**. See [RELEASE_READINESS_COMPONENT_7.md](RELEASE_READINESS_COMPONENT_7.md) |
+
+> **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
+> "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
+> components were live in production. It was last edited on Component 4's
+> branch and then went stale through two merges. A document that declares itself
+> the single source of truth is the worst place for drift, so the correction is
+> recorded here rather than filed as a backlog item.
 
 **Scope of "Foundation Phase: CLOSED".** This closes the Foundation *establishment* phase — the legacy audit, the Phase 0 audit, the approved architecture, and the two components that constitute the security foundation everything else builds on, now live in production. It does **not** mean all eleven Phase 1 components are built: Components 3–11 remain, and their state is tracked in [`ROADMAP.md`](ROADMAP.md). Read the two together.
 
