@@ -310,3 +310,48 @@ application.
 
 Criterion 5 is the one worth doing first if only one is done — it is the larger
 risk, and it is independent of the construction-path work.
+
+---
+
+## BL-C7-01 — Component 1's SECURITY DEFINER functions are executable by PUBLIC
+
+**Filed:** 2026-08-07, from the Component 7 adversarial review.
+**Type:** security hardening. **Not** a Component 7 defect — found while fixing
+the same mistake inside Component 7, and left alone there for scope discipline.
+
+`supabase/migrations/20260803_platform_owner.sql` §5 grants EXECUTE to
+`service_role` on three functions but never revokes the default:
+
+```
+GRANT EXECUTE ON FUNCTION fn_is_platform_owner(UUID) TO service_role;
+GRANT EXECUTE ON FUNCTION fn_grant_admin_role(...)   TO service_role;
+GRANT EXECUTE ON FUNCTION fn_revoke_admin_role(...)  TO service_role;
+```
+
+PostgreSQL grants EXECUTE on every new function to `PUBLIC`, so a bare `GRANT`
+narrows nothing. All three are `SECURITY DEFINER`, so `anon` and `authenticated`
+can reach them through PostgREST's `/rpc` endpoint and they execute as the owner.
+
+**What was measured** (in Component 7, on the identically-written
+`fn_verify_audit_chain`): with RLS denying `anon` a direct `SELECT` on the table,
+`SET ROLE anon` followed by a call to the SECURITY DEFINER function still
+returned rows. The ACL read `{=X/postgres,...}` — the leading `=X` is PUBLIC.
+
+**Assessed exposure, stated honestly rather than alarmingly:**
+- `fn_grant_admin_role` / `fn_revoke_admin_role` check ownership internally and
+  raise `42501` for a non-Owner caller, so this is **not** a privilege-escalation
+  path. It is unauthenticated reachability of a privileged code path.
+- `fn_is_platform_owner(UUID)` returns a boolean for any user id supplied. That
+  is an **enumeration oracle**: anyone can test whether a given account is the
+  Platform Owner. This is the item with real value to an attacker.
+
+**Fix:** follow the repo's own hardened pattern from
+`20260711_anon_chat_usage.sql` — `REVOKE ALL ... FROM PUBLIC` before each
+`GRANT`. Component 7's migration §7 is the worked example.
+
+**Acceptance:**
+1. `proacl` for all three functions contains no `=X/` (PUBLIC) entry.
+2. A test proves `anon` is refused, and that `service_role` still succeeds —
+   the second half matters as much as the first, because the whole suite runs
+   as the owner and a REVOKE that breaks production would otherwise ship green.
+3. The Owner Guard boot assertion still passes on production after the change.

@@ -18,6 +18,8 @@
 -- ---------------------------------------------------------------------------
 -- 1. Stop chaining. Inserts immediately behave as they did before Component 7.
 -- ---------------------------------------------------------------------------
+DROP TRIGGER IF EXISTS zzz_audit_log_chain ON audit_log;
+-- Pre-rename name, for a database migrated before the ordering fix.
 DROP TRIGGER IF EXISTS trg_audit_log_chain ON audit_log;
 
 -- ---------------------------------------------------------------------------

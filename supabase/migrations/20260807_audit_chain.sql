@@ -33,6 +33,21 @@
 --   P10 The hash input is LENGTH-PREFIXED, so no field boundary can be shifted.
 --   P11 jsonb::text determinism — asserted by test.
 --   P12 Inserts are single-row, or the memo covers the batch.
+--
+-- ⚠️ P12 IS WEAKER THAN PHASE D CLAIMED, and this was MEASURED, not argued.
+-- Phase D states a multi-row INSERT "forks unconditionally" without the memo.
+-- On PostgreSQL 17.5 it does not: plpgsql runs every statement through SPI,
+-- which performs a CommandCounterIncrement first, so the head lookup DOES see
+-- rows inserted earlier in the same command. A memo-less build of this design
+-- was driven with multi-row VALUES, INSERT ... SELECT and writable CTEs and
+-- produced a correctly linked chain every time (test B-22).
+--
+-- The memo is therefore REDUNDANCY, not the load-bearing mechanism. It is kept
+-- because the behaviour it guards against is a plpgsql implementation detail
+-- rather than a documented PostgreSQL guarantee, and a silent fork is the one
+-- failure this component cannot afford. But no test in this suite fails when it
+-- is removed, and the report says so rather than implying coverage that does
+-- not exist.
 -- ============================================================================
 
 -- ---------------------------------------------------------------------------
@@ -185,11 +200,20 @@ AS $chain$
 DECLARE
   v_prev BYTEA;
   v_memo TEXT;
+  v_xid  TEXT;
 BEGIN
   -- P1. Under REPEATABLE READ or SERIALIZABLE the snapshot is pinned at
   -- transaction start, so a second writer cannot see the first writer's
   -- committed row and two HONEST writes fork the chain. Fail loudly instead.
-  IF current_setting('transaction_isolation') <> 'read committed' THEN
+  -- What P1 actually requires is per-statement snapshots. PostgreSQL provides
+  -- those at READ COMMITTED and, identically, at READ UNCOMMITTED — the docs
+  -- state Read Uncommitted "behaves like Read Committed"; the name is accepted
+  -- for SQL-standard compatibility and maps onto the same implementation.
+  -- Rejecting it by string comparison was a FALSE POSITIVE, and because
+  -- writeAuditLog is fire-and-forget and swallows errors, the rejected row
+  -- vanished with nothing but a console line. REPEATABLE READ and SERIALIZABLE
+  -- pin the snapshot at transaction start and genuinely do fork the chain.
+  IF current_setting('transaction_isolation') NOT IN ('read committed', 'read uncommitted') THEN
     RAISE EXCEPTION
       'audit_log chain requires READ COMMITTED (got %). See Component 7 precondition P1.',
       current_setting('transaction_isolation')
@@ -209,9 +233,27 @@ BEGIN
   -- that command's snapshot, so a multi-row INSERT would otherwise chain every
   -- row to the same predecessor. Hex both ways — an implicit bytea->text cast
   -- yields the \x... form, which does not round-trip through decode().
+  -- The memo is STAMPED WITH THE TRANSACTION ID and only believed when the
+  -- stamp matches. Without that, the trigger trusted any value the GUC happened
+  -- to hold, and two reproduced failures followed:
+  --
+  --   SET audit.chain_head = 'deadbeef'      -> the row chained to a fabricated
+  --                                             predecessor; verifier reports
+  --                                             prev_mismatch on honest writes.
+  --   SET audit.chain_head = 'not-hex'       -> decode() raised, the INSERT
+  --                                             failed, writeAuditLog swallowed
+  --                                             it, and EVERY audit row was
+  --                                             silently lost.
+  --
+  -- P8 anticipated only a function-level SET clause. A session-, role- or
+  -- database-level SET reaches the same GUC and neither is_local nor P8 sees it.
+  -- With the stamp, anything this transaction did not write is simply ignored
+  -- and the table read takes over — wrong input degrades to correct behaviour
+  -- instead of to corruption or an outage.
+  v_xid  := pg_current_xact_id()::TEXT;
   v_memo := current_setting('audit.chain_head', true);
-  IF v_memo IS NOT NULL AND v_memo <> '' THEN
-    v_prev := decode(v_memo, 'hex');
+  IF v_memo IS NOT NULL AND split_part(v_memo, ':', 1) = v_xid THEN
+    v_prev := decode(split_part(v_memo, ':', 2), 'hex');
   ELSE
     -- P5. Inline, never a LANGUAGE sql helper: the planner may inline such a
     -- helper into the calling query and it would adopt the wrong snapshot.
@@ -224,7 +266,7 @@ BEGIN
       NEW.target_type, NEW.target_id, NEW.before_state, NEW.after_state,
       NEW.metadata, NEW.ip_address, NEW.user_agent, NEW.created_at);
 
-  PERFORM set_config('audit.chain_head', encode(NEW.row_hash, 'hex'), true);
+  PERFORM set_config('audit.chain_head', v_xid || ':' || encode(NEW.row_hash, 'hex'), true);
 
   RETURN NEW;
   -- P7. No EXCEPTION handler: it would open an implicit subtransaction, and the
@@ -233,12 +275,53 @@ END
 $chain$;
 
 DROP TRIGGER IF EXISTS trg_audit_log_chain ON audit_log;
--- Name matters: PostgreSQL fires BEFORE ROW triggers in NAME order. A trigger
--- sorting before this one could modify NEW after we hashed it.
-CREATE TRIGGER trg_audit_log_chain
+DROP TRIGGER IF EXISTS zzz_audit_log_chain ON audit_log;
+
+-- NAME MATTERS, AND THE ORIGINAL COMMENT HERE HAD IT BACKWARDS.
+--
+-- PostgreSQL fires BEFORE ROW triggers in NAME order. A trigger sorting BEFORE
+-- ours is harmless: it edits NEW first, and we hash what it produced. The
+-- dangerous one sorts AFTER — it edits NEW once we have already hashed it, so
+-- the stored row disagrees with its own hash and the verifier reports
+-- hash_mismatch on every insert. Reproduced: a trigger named 'zzz_evil' turned
+-- a healthy table into a permanent tampering alarm.
+--
+-- For an audit system a false "tampering detected" is expensive — it costs an
+-- investigation and teaches operators to distrust the alarm (Phase D records
+-- exactly this reasoning when rejecting the singleton head table).
+--
+-- 'trg_' was close to the worst available prefix: everything from 'u' to 'z'
+-- sorts after it, which includes the conventional 'update_*' trigger names.
+-- 'zzz_' is deliberate, not decorative — this trigger must observe the FINAL
+-- value of NEW, so it must fire last. PG-09 asserts that it still does.
+CREATE TRIGGER zzz_audit_log_chain
   BEFORE INSERT ON audit_log
   FOR EACH ROW
   EXECUTE FUNCTION fn_audit_log_chain();
+
+-- Naming alone is a convention, not a guarantee: 'zzz_evil' still sorts after
+-- 'zzz_audit_log_chain'. This refuses to install into a schema that already has
+-- the hazard, so the failure arrives at migration time with a name attached
+-- instead of as an unexplained hash_mismatch on every row months later.
+-- Residual risk, stated rather than hidden: a trigger added AFTER this migration
+-- is not caught here. PG-09 pins the behaviour so the cause is documented.
+DO $order$
+DECLARE v_after TEXT;
+BEGIN
+  SELECT string_agg(tgname, ', ' ORDER BY tgname) INTO v_after
+    FROM pg_trigger
+   WHERE tgrelid = 'audit_log'::regclass
+     AND NOT tgisinternal
+     AND (tgtype & 1) = 1      -- FOR EACH ROW
+     AND (tgtype & 2) = 2      -- BEFORE
+     AND (tgtype & 4) = 4      -- INSERT
+     AND tgname > 'zzz_audit_log_chain';
+  IF v_after IS NOT NULL THEN
+    RAISE EXCEPTION
+      'audit_log has BEFORE INSERT ROW trigger(s) firing after the chain trigger: %. They modify NEW after it has been hashed, which reports every honest insert as hash_mismatch.',
+      v_after USING ERRCODE = '55000';
+  END IF;
+END $order$;
 
 -- ---------------------------------------------------------------------------
 -- 6. Verifier
@@ -272,6 +355,13 @@ DECLARE
   v_last_seq BIGINT := NULL;
   v_started  BOOLEAN := FALSE;
 BEGIN
+  -- An inverted range selects no rows, and an integrity tool that answers
+  -- "clean" to a question it never asked is a false assurance. Fail loudly.
+  IF p_from IS NOT NULL AND p_to IS NOT NULL AND p_from > p_to THEN
+    RAISE EXCEPTION 'fn_verify_audit_chain: p_from (%) is greater than p_to (%)', p_from, p_to
+      USING ERRCODE = '22023';
+  END IF;
+
   -- Ranged verification starts from the predecessor's stored hash, so the
   -- Controller can check a recent window without walking a million rows.
   -- A-2 (adversarial review): a full scan previously left v_started FALSE, so
@@ -335,5 +425,38 @@ BEGIN
   RETURN;
 END
 $verify$;
+
+-- ---------------------------------------------------------------------------
+-- 7. Grants — REVOKE FIRST. A bare GRANT does not narrow anything.
+--
+-- PostgreSQL grants EXECUTE on every new function to PUBLIC by default, so
+-- `GRANT ... TO service_role` alone left `=X/postgres` in the ACL and the
+-- verifier reachable by `anon`. Measured: with RLS denying anon a direct
+-- SELECT on audit_log, `SET ROLE anon; SELECT * FROM fn_verify_audit_chain()`
+-- still returned rows — SECURITY DEFINER ran it as the owner and punched
+-- straight through the deny-by-default design this component exists to protect.
+--
+-- Two consequences, the second worse than the first:
+--   1. an unauthenticated caller learns whether the audit log has been tampered
+--      with, and the seq/id of the affected rows — a detection oracle for the
+--      very attacker the chain is aimed at;
+--   2. it is an unauthenticated, unbounded, full-table SHA-256 recomputation,
+--      callable through PostgREST's /rpc endpoint as often as you like.
+--
+-- The hash helpers are revoked for the same reason a lockpick is not left on
+-- the counter: no external consumer needs them, and fn_audit_row_hash computes
+-- exactly the value a forger would need. SECURITY DEFINER callers are
+-- unaffected — inside them the current user is the owner.
+--
+-- This follows the repo's own hardened pattern (20260711_anon_chat_usage.sql),
+-- not the weaker one in 20260803_platform_owner.sql, which has the same gap and
+-- is filed as BL-C7-01 rather than fixed here.
+-- ---------------------------------------------------------------------------
+REVOKE ALL ON FUNCTION fn_verify_audit_chain(BIGINT, BIGINT) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_audit_part(TEXT) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_audit_ts(TIMESTAMPTZ) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_audit_row_hash(
+  BYTEA, BIGINT, UUID, UUID, TEXT, TEXT, TEXT, TEXT, TEXT, JSONB, JSONB, JSONB, INET, TEXT, TIMESTAMPTZ)
+  FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION fn_verify_audit_chain(BIGINT, BIGINT) TO service_role;

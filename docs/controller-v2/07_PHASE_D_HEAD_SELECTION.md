@@ -5,6 +5,24 @@
 
 ---
 
+> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
 ## 1. The model, restated precisely
 
 Everything below assumes the Phase C decision:
@@ -25,9 +43,45 @@ Two properties of `pg_advisory_xact_lock` matter and are easy to misread:
 - It is released on commit, rollback **and backend crash**. There is no
   stuck-lock recovery path to design.
 
+> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
 ## 2. Can `ORDER BY seq DESC LIMIT 1` return the wrong predecessor?
 
-### 2.1 Under the accepted model — **No.** Proof.
+#> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
+## 2.1 Under the accepted model — **No.** Proof.
 
 The claim to prove: when transaction B runs step 3, the row inserted by any
 transaction A that committed before B acquired the lock **is visible to B**.
@@ -62,7 +116,25 @@ K was acquired, which was strictly after A's commit. A's row is committed and
 therefore visible. B chains to 5. **Sequence order, lock order and chain order
 coincide.** ∎
 
-### 2.2 Under REPEATABLE READ or SERIALIZABLE — **Yes, it breaks.**
+#> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
+## 2.2 Under REPEATABLE READ or SERIALIZABLE — **Yes, it breaks.**
 
 If the transaction's isolation level is REPEATABLE READ or higher, the snapshot
 is fixed at **transaction start**, and fact (ii) no longer holds. B's step-3
@@ -87,7 +159,25 @@ database *enforces* it. A future RPC that wraps audit writes in a
 `current_setting('transaction_isolation')` must be `read committed`, otherwise
 raise. Cheap, and it converts a silent corruption into a loud failure.
 
-### 2.3 Multi-row `INSERT` in a single statement — **Yes, it breaks.**
+#> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
+## 2.3 Multi-row `INSERT` in a single statement — **Yes, it breaks.**
 
 This one the lock cannot help with, because both rows are inside the *same*
 transaction and the *same* command.
@@ -120,6 +210,24 @@ commit or rollback — no cleanup, no leakage between transactions.
 This closes both the multi-row case **and** the case of several separate audit
 inserts inside one future explicit transaction.
 
+> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
 ## 3. Option comparison
 
 | | **1. `ORDER BY seq DESC LIMIT 1`** | **2. `MAX(seq)`** | **3. Singleton head table** | **4. `SELECT … FOR UPDATE` on the tail** |
@@ -132,7 +240,25 @@ inserts inside one future explicit transaction.
 | **Implementation complexity** | ✅ lowest | ✅ low | ❌ new table, bootstrap row, backfill must update both, migration must keep them consistent | ⚠️ medium |
 | **Operational risk** | ✅ low | ✅ low | ❌ a second source of truth for the same fact | ⚠️ medium |
 
-### Why not the singleton head table, despite one real advantage
+#> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
+## Why not the singleton head table, despite one real advantage
 
 It has a genuine benefit: because the head is stored independently, deleting the
 tail does **not** move it, so the next insert chains to a hash whose row is gone
@@ -154,7 +280,25 @@ and, worse, it teaches operators to distrust the alarm.
 **Rejected for Component 7.** Recorded here so the trade-off is visible rather
 than unconsidered.
 
-### Other PostgreSQL-native approaches considered and rejected
+#> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
+## Other PostgreSQL-native approaches considered and rejected
 
 - **Deferred constraint trigger** (`AFTER INSERT … DEFERRABLE`): runs at commit,
   when `NEW` can no longer be modified. Writing the hash would need an `UPDATE`,
@@ -163,6 +307,24 @@ than unconsidered.
 - **`pg_sequence_last_value`**: returns a number, not a hash.
 - **Computing the chain in the `INSERT` statement itself**: unreachable — Phase C
   §F1 established the application cannot compose statements through PostgREST.
+
+> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
 
 ## 4. The definitive algorithm
 
@@ -221,6 +383,24 @@ step 4 and compare to the stored `row_hash`, and compare `prev_hash` to the
 previous row's `row_hash`. A mismatch localises the tampering to a row; a
 sequence gap localises a deletion to an interval.
 
+> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
+
 ## 5. Two details that must not be left to the implementer
 
 **Field separation.** Concatenating fields without a separator is forgeable:
@@ -232,6 +412,24 @@ a classic hashing mistake and it silently destroys the property being bought.
 value because PostgreSQL normalises key order and whitespace on input. The chain
 depends on it, so it must be **asserted by test** against a real PostgreSQL, not
 assumed from documentation.
+
+> ⚠️ **CORRECTED BY MEASUREMENT during the second adversarial pass.** This
+> document's "BREAKS #2" claims a multi-row `INSERT` forks *unconditionally*
+> without the transaction-local memo. On PostgreSQL 17.5 it does not. plpgsql
+> executes each statement through SPI, which performs a `CommandCounterIncrement`
+> first, so the head lookup sees rows inserted earlier in the same command. A
+> memo-less build was driven with multi-row `VALUES`, `INSERT ... SELECT` and
+> writable CTEs and chained correctly every time (test **B-22**), and the whole
+> suite passes with the memo disabled.
+>
+> The memo is retained as defence in depth — the behaviour it guards is a
+> plpgsql implementation detail, not a documented guarantee — but it is
+> redundancy, not the mechanism, and **no test fails without it**. Keeping the
+> original wording would have left a load-bearing claim that nothing verifies.
+>
+> The memo was also not free: trusting the GUC without proof of origin produced
+> two reproduced defects (a poisoned chain head, and a silent total audit outage
+> from a malformed value). Both are fixed by stamping it with the transaction id.
 
 ## 6. What Phase D changed
 

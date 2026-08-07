@@ -510,7 +510,7 @@ describe('PART 3 — multi-row insert', () => {
 
   it('M-06 a disabled trigger cannot smuggle a row past NOT NULL', async () => {
     await insert(db)
-    await db.query('ALTER TABLE audit_log DISABLE TRIGGER trg_audit_log_chain')
+    await db.query('ALTER TABLE audit_log DISABLE TRIGGER zzz_audit_log_chain')
 
     // Better than "detected": the insert is REJECTED. row_hash NOT NULL means
     // disabling the trigger does not open a bypass, it closes the table.
@@ -528,7 +528,7 @@ describe('PART 3 — multi-row insert', () => {
       `INSERT INTO audit_log (actor_id, actor_email, actor_role, action, seq) VALUES ($1,'a@b.c','admin','smuggled', 999)`,
       [U1]
     )
-    await db.query('ALTER TABLE audit_log ENABLE TRIGGER trg_audit_log_chain')
+    await db.query('ALTER TABLE audit_log ENABLE TRIGGER zzz_audit_log_chain')
 
     expect(problems(await verify())).toContain('unchained@999')
   })
@@ -738,20 +738,20 @@ describe('PART 6 — tamper detection', () => {
   })
 
   it('T-04 a forged row is rejected', async () => {
-    await db.query('ALTER TABLE audit_log DISABLE TRIGGER trg_audit_log_chain')
+    await db.query('ALTER TABLE audit_log DISABLE TRIGGER zzz_audit_log_chain')
     await db.query(
       `INSERT INTO audit_log (actor_id, actor_email, actor_role, action, seq, prev_hash, row_hash)
        VALUES ($1,'evil@x','super_admin','forged', 99, '\\xdead'::bytea, '\\xbeef'::bytea)`,
       [U1]
     )
-    await db.query('ALTER TABLE audit_log ENABLE TRIGGER trg_audit_log_chain')
+    await db.query('ALTER TABLE audit_log ENABLE TRIGGER zzz_audit_log_chain')
 
     expect(problems(await verify())).toContain('hash_mismatch@99')
   })
 
   it('T-05 a consistent full rewrite PASSES. Documented limit (T5).', async () => {
     // Rewrite rows 3-5 AND recompute their hashes correctly.
-    await db.query('ALTER TABLE audit_log DISABLE TRIGGER trg_audit_log_chain')
+    await db.query('ALTER TABLE audit_log DISABLE TRIGGER zzz_audit_log_chain')
     await db.query(`UPDATE audit_log SET action = 'rewritten' WHERE seq >= 3`)
     await db.query(`
       DO $$
@@ -767,7 +767,7 @@ describe('PART 6 — tamper detection', () => {
           SELECT row_hash INTO v_prev FROM audit_log WHERE id = r.id;
         END LOOP;
       END $$;`)
-    await db.query('ALTER TABLE audit_log ENABLE TRIGGER trg_audit_log_chain')
+    await db.query('ALTER TABLE audit_log ENABLE TRIGGER zzz_audit_log_chain')
 
     // Internal consistency is all a chain can prove. This is the strongest
     // argument for the external anchor Phase B deferred.
@@ -967,7 +967,9 @@ describe('PART 7 — PostgreSQL behaviour', () => {
     expect(stableSaw).toBe(before)
   }, 30_000)
 
-  it('PG-09 BEFORE ROW triggers fire in NAME order', async () => {
+  it('PG-09 an EARLIER-sorting trigger is harmless: we hash what it produced', async () => {
+    // This test previously asserted the same thing but concluded the opposite —
+    // that an earlier-named trigger was the hazard. It is the safe direction.
     await db.query(`
       CREATE FUNCTION probe_marker() RETURNS trigger LANGUAGE plpgsql AS $$
         BEGIN NEW.user_agent := coalesce(NEW.user_agent,'') || '|marked'; RETURN NEW; END $$;
@@ -975,11 +977,35 @@ describe('PART 7 — PostgreSQL behaviour', () => {
     await insert(db, { user_agent: 'ua' })
 
     const r = await db.query('SELECT user_agent FROM audit_log WHERE seq = 1')
-    // 'aaa_probe' sorts before 'trg_audit_log_chain', so it ran FIRST and our
-    // hash covers its modification. A trigger added later with an earlier name
-    // would silently change what we hashed.
     expect(r.rows[0].user_agent).toBe('ua|marked')
-    expect(await verify()).toEqual([])
+    expect(await verify()).toEqual([]) // hashed AFTER the edit, so consistent
+  })
+
+  it('PG-09b a LATER-sorting trigger is the real hazard — every row false-alarms', async () => {
+    // The dangerous direction, pinned as a fact. A trigger firing after ours
+    // edits NEW once it has already been hashed, so the stored row disagrees
+    // with its own hash and an untouched table reports tampering forever.
+    await db.query(`
+      CREATE FUNCTION probe_late() RETURNS trigger LANGUAGE plpgsql AS $$
+        BEGIN NEW.user_agent := 'edited-after-hashing'; RETURN NEW; END $$;
+      CREATE TRIGGER zzz_zz_late BEFORE INSERT ON audit_log FOR EACH ROW EXECUTE FUNCTION probe_late();`)
+    await insert(db, { user_agent: 'ua' })
+
+    expect(problems(await verify())).toEqual(['hash_mismatch@1'])
+  })
+
+  it('PG-09c the migration REFUSES to install over a later-sorting trigger', async () => {
+    // Naming the trigger 'zzz_' raises the bar; it is not a guarantee. The
+    // migration checks pg_trigger so the hazard is reported at apply time with
+    // the offending name, rather than as an unexplained alarm months later.
+    await db.query('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')
+    await db.query(PRELUDE); await db.query(PHASE0)
+    await db.query(`
+      CREATE FUNCTION probe_late2() RETURNS trigger LANGUAGE plpgsql AS $$
+        BEGIN RETURN NEW; END $$;
+      CREATE TRIGGER zzz_zz_late BEFORE INSERT ON audit_log FOR EACH ROW EXECUTE FUNCTION probe_late2();`)
+
+    await expect(db.query(CHAIN)).rejects.toThrow(/firing after the chain trigger[\s\S]*zzz_zz_late/)
   })
 
   it('PG-10 reproduces the Phase C fork: a column default allocates seq outside the lock', async () => {
@@ -1168,4 +1194,298 @@ describe('PART 9 — operational', () => {
     const r = await db.query(`SELECT row_hash FROM audit_log WHERE action = 'unchained'`)
     expect(r.rows[0].row_hash).toBeNull() // the trigger is gone; inserts behave as before
   }, 60_000)
+})
+
+// ═════════════════════════════════════════════════════════════════════════════
+// PART 10 — regressions from the SECOND adversarial pass.
+//
+// Every test here reproduced a defect against the built migration before its
+// fix existed. Phase F specified none of them.
+// ═════════════════════════════════════════════════════════════════════════════
+
+describe('PART 10 — second adversarial pass', () => {
+  it('B-01 READ UNCOMMITTED is accepted — it IS read committed in PostgreSQL', async () => {
+    // The check compared a string, so a level PostgreSQL documents as behaving
+    // identically to READ COMMITTED was rejected. writeAuditLog is
+    // fire-and-forget and swallows errors, so the record vanished with nothing
+    // but a console line: a false precondition failure that costs audit rows.
+    const a = await connect()
+    await a.query('BEGIN TRANSACTION ISOLATION LEVEL READ UNCOMMITTED')
+    expect((await a.query('SHOW transaction_isolation')).rows[0].transaction_isolation)
+      .toBe('read uncommitted')
+    await insert(a, { action: 'ru' })
+    await a.query('COMMIT')
+
+    expect(await verify()).toEqual([])
+  })
+
+  it('B-01b REPEATABLE READ and SERIALIZABLE are still rejected', async () => {
+    // These pin the snapshot at transaction start and genuinely do fork the
+    // chain, so widening the check must not have widened it too far.
+    for (const level of ['REPEATABLE READ', 'SERIALIZABLE']) {
+      const c = await connect()
+      await c.query(`BEGIN TRANSACTION ISOLATION LEVEL ${level}`)
+      await expect(insert(c, { action: level }), level).rejects.toThrow(/READ COMMITTED/)
+      await c.query('ROLLBACK')
+    }
+  })
+
+  it('B-02 a session-level GUC cannot poison the chain head', async () => {
+    // set_config(..., is_local := true) writes the memo, but nothing proved the
+    // VALUE READ BACK came from this transaction. A session-, role- or
+    // database-level SET reaches the same GUC. P8 saw only function-level SET.
+    const a = await connect()
+    await a.query(`SET audit.chain_head = 'deadbeef'`)
+    await insert(a, { action: 'poisoned' })
+
+    const [r] = await rows()
+    expect(r.prev_hash).toBeNull()     // genesis, not the injected value
+    expect(await verify()).toEqual([])
+  })
+
+  it('B-03 a malformed GUC cannot take the audit log offline', async () => {
+    // decode() raised on non-hex, the INSERT failed, and writeAuditLog swallowed
+    // it. One stray session setting was a silent, total audit outage.
+    const a = await connect()
+    await a.query(`SET audit.chain_head = 'not-hex-at-all'`)
+    await insert(a, { action: 'survives' })
+    await insert(a, { action: 'survives-2' })
+
+    expect((await rows()).map((x) => x.action)).toEqual(['survives', 'survives-2'])
+    expect(await verify()).toEqual([])
+  })
+
+  it('B-03b the stamped memo still batches correctly', async () => {
+    // The stamp must not break what the memo exists for: a multi-row INSERT
+    // whose rows are invisible to their own command snapshot.
+    await db.query(
+      `INSERT INTO audit_log (actor_id, actor_email, actor_role, action)
+       SELECT $1,'a@b.c','admin','bulk.'||g FROM generate_series(1,5) g`,
+      [U1]
+    )
+    const all = await rows()
+
+    expect(all).toHaveLength(5)
+    expect(new Set(all.slice(1).map((r) => r.prev_hash!.toString('hex'))).size).toBe(4)
+    expect(await verify()).toEqual([])
+  })
+
+  it('B-14 an inverted range raises instead of reporting clean', async () => {
+    // An integrity tool that answers "verified" to a question it never asked is
+    // a false assurance. p_from > p_to selected no rows and returned [].
+    await insert(db)
+    await expect(db.query('SELECT * FROM fn_verify_audit_chain(4, 2)'))
+      .rejects.toThrow(/p_from \(4\) is greater than p_to \(2\)/)
+  })
+})
+
+describe('PART 10.1 — what the memo actually buys', () => {
+  it('B-22 a memo-less trigger does NOT fork a multi-row INSERT on this PostgreSQL', async () => {
+    // Phase D called the memo load-bearing and said a batch forks without it.
+    // It does not. This test builds the design WITHOUT a memo on a probe table
+    // and drives every multi-row shape. All chain correctly, because plpgsql
+    // runs each statement through SPI, which does a CommandCounterIncrement
+    // first, so the head lookup sees rows from earlier in the same command.
+    //
+    // The memo stays as defence in depth against an implementation detail that
+    // PostgreSQL does not guarantee. This test exists so that the day the
+    // behaviour changes, we find out HERE — and so nobody reads M-01..M-06 as
+    // evidence for a mechanism they do not exercise.
+    await db.query(`
+      CREATE TABLE probe (seq BIGINT, tag TEXT, prev BYTEA, h BYTEA);
+      CREATE SEQUENCE probe_seq;
+      CREATE FUNCTION probe_trg() RETURNS TRIGGER LANGUAGE plpgsql VOLATILE AS $$
+      DECLARE v_prev BYTEA;
+      BEGIN
+        PERFORM pg_advisory_xact_lock(991001);
+        NEW.seq := nextval('probe_seq');
+        SELECT p.h INTO v_prev FROM probe p ORDER BY p.seq DESC LIMIT 1;
+        NEW.prev := v_prev;
+        NEW.h := sha256(COALESCE(v_prev,'\\x00'::bytea) || convert_to(NEW.seq::TEXT || NEW.tag,'UTF8'));
+        RETURN NEW;
+      END $$;
+      CREATE TRIGGER t BEFORE INSERT ON probe FOR EACH ROW EXECUTE FUNCTION probe_trg();`)
+
+    const shapes: [string, string][] = [
+      ['multi-row VALUES', `INSERT INTO probe (tag) VALUES ('a'),('b'),('c')`],
+      ['INSERT ... SELECT', `INSERT INTO probe (tag) SELECT 'g'||g FROM generate_series(1,3) g`],
+      ['writable CTE', `WITH x AS (INSERT INTO probe (tag) VALUES ('c1') RETURNING 1),
+                             y AS (INSERT INTO probe (tag) VALUES ('c2') RETURNING 1) SELECT 1`],
+    ]
+
+    for (const [name, sql] of shapes) {
+      await db.query('TRUNCATE probe; ALTER SEQUENCE probe_seq RESTART')
+      await db.query(sql)
+      const r = (await db.query('SELECT seq, prev, h FROM probe ORDER BY seq')).rows
+
+      expect(r.length, name).toBeGreaterThan(1)
+      expect(r[0].prev, name).toBeNull()
+      for (let i = 1; i < r.length; i++) {
+        expect(r[i].prev?.equals(r[i - 1].h), `${name} link ${i}`).toBe(true)
+      }
+    }
+  })
+})
+
+describe('PART 10.2 — the verifier is not a public endpoint', () => {
+  beforeEach(async () => {
+    await db.query(`
+      DO $$ BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') THEN CREATE ROLE anon NOLOGIN; END IF;
+      END $$;
+      GRANT USAGE ON SCHEMA public TO anon;`)
+  })
+
+  /** Run one statement as `anon`. SET LOCAL ROLE outside a transaction is a no-op. */
+  async function asAnon<T>(sql: string): Promise<T> {
+    await db.query('BEGIN')
+    try {
+      await db.query('SET LOCAL ROLE anon')
+      return (await db.query(sql)) as T
+    } finally {
+      await db.query('ROLLBACK')
+    }
+  }
+
+  it('B-23 RLS still denies anon a direct read of audit_log', async () => {
+    await insert(db)
+    await expect(asAnon('SELECT count(*) FROM audit_log')).rejects.toThrow(/permission denied/i)
+  })
+
+  it('B-23b anon cannot call the SECURITY DEFINER verifier', async () => {
+    // PostgreSQL grants EXECUTE to PUBLIC by default, so GRANT ... TO
+    // service_role narrowed nothing. Measured before the fix: anon called the
+    // verifier and got back seq + id of tampered rows, straight past the RLS
+    // that had just denied it a plain SELECT. It is also an unauthenticated,
+    // unbounded, full-table SHA-256 recomputation reachable through /rpc.
+    await insert(db)
+    await db.query(`UPDATE audit_log SET action = 'tampered' WHERE seq = 1`)
+
+    await expect(asAnon('SELECT * FROM fn_verify_audit_chain(NULL,NULL)'))
+      .rejects.toThrow(/permission denied/i)
+    // ...and service_role, the only intended caller, still can.
+    expect(problems(await verify())).toEqual(['hash_mismatch@1'])
+  })
+
+  it('B-23c anon cannot compute a row hash', async () => {
+    // fn_audit_row_hash produces exactly the value a forger needs. No external
+    // consumer requires it; SECURITY DEFINER callers run as the owner.
+    await expect(asAnon(`SELECT fn_audit_part('x')`)).rejects.toThrow(/permission denied/i)
+    await expect(asAnon(`SELECT fn_audit_ts(now())`)).rejects.toThrow(/permission denied/i)
+  })
+
+  it('B-23d PUBLIC holds no EXECUTE on any Component 7 function', async () => {
+    const r = await db.query(`
+      SELECT proname, coalesce(proacl::text, '<default: PUBLIC>') acl FROM pg_proc
+      WHERE proname IN ('fn_audit_part','fn_audit_ts','fn_audit_row_hash','fn_verify_audit_chain')
+      ORDER BY proname`)
+
+    expect(r.rows).toHaveLength(4)
+    for (const row of r.rows) {
+      // A leading '=X/' entry is the PUBLIC grant; a NULL acl means the default,
+      // which is also PUBLIC. Either is a finding.
+      expect(row.acl, row.proname).not.toContain('<default: PUBLIC>')
+      expect(row.acl, row.proname).not.toMatch(/\{=[a-zA-Z]*\//)
+    }
+  })
+})
+
+describe('PART 10.3 — paths Phase F never exercised', () => {
+  it('B-26 a real server-side COPY chains correctly', async () => {
+    // Phase F specified no COPY test at all. COPY fires BEFORE ROW triggers, so
+    // a bulk load is the one realistic way many rows enter in one command.
+    const { writeFileSync } = await import('node:fs')
+    // Windows paths must be forward-slashed for the server-side COPY literal.
+    const csv = join(dataDir, 'copy.csv').split('\\').join('/')
+    writeFileSync(csv, [1, 2, 3].map((n) => `${U1},a@b.c,admin,copy.${n}`).join('\n') + '\n')
+
+    await insert(db, { action: 'before-copy' })
+    await db.query(
+      `COPY audit_log (actor_id, actor_email, actor_role, action) FROM '${csv}' WITH (FORMAT csv)`
+    )
+    const all = await rows()
+
+    expect(all.map((r) => r.action)).toEqual(['before-copy', 'copy.1', 'copy.2', 'copy.3'])
+    for (let i = 1; i < all.length; i++) {
+      expect(all[i].prev_hash!.equals(all[i - 1].row_hash!), `link ${i}`).toBe(true)
+    }
+    expect(await verify()).toEqual([])
+  })
+
+  it('B-27 an unchained row is reported in every window that contains it', async () => {
+    for (let i = 0; i < 4; i++) await insert(db, { action: `r${i}` })
+    await db.query('ALTER TABLE audit_log ALTER COLUMN row_hash DROP NOT NULL')
+    await db.query('UPDATE audit_log SET row_hash = NULL WHERE seq = 2')
+
+    expect(problems(await verify())).toEqual(['unchained@2', 'prev_mismatch@3'])
+    expect(problems(await verify(db, 1, 2))).toEqual(['unchained@2'])
+    expect(problems(await verify(db, 2, 2))).toEqual(['unchained@2'])
+    expect(problems(await verify(db, 3, 4))).toEqual(['prev_mismatch@3'])
+  })
+
+  it('B-29 rows written after rollback, verified WITHOUT re-applying', async () => {
+    // The rollback file supports applying step 1 alone and leaving it there.
+    // Rows then accumulate with NULL seq and NULL row_hash, and the verifier
+    // must stay useful rather than crash or go quiet.
+    await insert(db, { action: 'chained' })
+    await db.query(ROLLBACK)
+    for (const a of ['after.1', 'after.2']) {
+      await db.query(
+        `INSERT INTO audit_log (actor_id, actor_email, actor_role, action) VALUES ($1,'a@b.c','admin',$2)`,
+        [U1, a]
+      )
+    }
+
+    const v = await verify()
+    // NULL seq sorts last and reports as unchained with a null seq — the row is
+    // still named by its id, which is what an investigator needs.
+    expect(v.filter((p) => p.problem === 'unchained')).toHaveLength(2)
+    expect(v.every((p) => p.id !== null || p.problem === 'sequence_gap')).toBe(true)
+  })
+})
+
+describe('PART 10.4 — the production write path, as service_role', () => {
+  it('B-30 service_role can still insert after the PUBLIC revokes', async () => {
+    // Every other test in this file runs as `postgres`, the owner, which is
+    // exempt from the grants I just tightened. That is precisely how a REVOKE
+    // ships broken: the suite is green and production cannot write.
+    //
+    // Supabase runs the audit insert as service_role. The trigger is SECURITY
+    // DEFINER, so inside it the current user is the owner and the revoked
+    // helpers stay reachable — but that is a claim, so here it is executed.
+    await db.query('GRANT USAGE ON SCHEMA public TO service_role')
+    await db.query('GRANT INSERT, SELECT ON audit_log TO service_role')
+    await db.query('ALTER TABLE audit_log FORCE ROW LEVEL SECURITY')
+    await db.query('ALTER ROLE service_role BYPASSRLS')
+
+    const c = await connect()
+    await c.query('BEGIN')
+    await c.query('SET LOCAL ROLE service_role')
+    await c.query(
+      `INSERT INTO audit_log (actor_id, actor_email, actor_role, action) VALUES ($1,'a@b.c','admin','as-service-role')`,
+      [U1]
+    )
+    await c.query('COMMIT')
+
+    const [r] = await rows()
+    expect(r.action).toBe('as-service-role')
+    expect(r.row_hash).not.toBeNull()   // the trigger ran despite the revokes
+    expect(r.seq).toBe('1')
+    expect(await verify()).toEqual([])
+  })
+
+  it('B-30b service_role can still run the verifier; it is the only role that can', async () => {
+    await insert(db)
+    await db.query('GRANT USAGE ON SCHEMA public TO service_role')
+    await db.query('GRANT SELECT ON audit_log TO service_role')
+    await db.query('ALTER ROLE service_role BYPASSRLS')
+
+    const c = await connect()
+    await c.query('BEGIN')
+    await c.query('SET LOCAL ROLE service_role')
+    const r = await c.query('SELECT * FROM fn_verify_audit_chain(NULL,NULL)')
+    await c.query('ROLLBACK')
+
+    expect(r.rows).toEqual([])
+  })
 })
