@@ -51,7 +51,6 @@ class HomeViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val suggestedPromptsApi: com.tappyai.app.home.data.SuggestedPromptsApi,
     private val logger: LoggerProvider,
-    private val appConfigRepository: com.tappyai.app.config.AppConfigRepository,
 ) : ViewModel() {
 
     val greeting: String = greetingForHour(stringProvider, hourOfDay(clock.nowMillis()))
@@ -83,12 +82,6 @@ class HomeViewModel @Inject constructor(
     private val _recentActivityState = MutableStateFlow<UiState<List<String>>>(UiState.Empty)
     val recentActivityState: StateFlow<UiState<List<String>>> = _recentActivityState.asStateFlow()
 
-    /** `flags.showScamShield` from `/api/config` — the same runtime source the other product
-     *  numbers come from, so there is no second flag mechanism. Starts at the DEFAULT (true,
-     *  matching prod) so the tile does not flicker in before the config resolves. */
-    private val _showScamShield = MutableStateFlow(com.tappyai.app.config.AppFlags.DEFAULT.showScamShield)
-    val showScamShield: StateFlow<Boolean> = _showScamShield.asStateFlow()
-
     init {
         viewModelScope.launch {
             isSignedIn = withContext(Dispatchers.IO) { authRepository.currentUserId() } != null
@@ -100,7 +93,6 @@ class HomeViewModel @Inject constructor(
             }
         }
         loadSuggestedPrompts()
-        viewModelScope.launch { _showScamShield.value = appConfigRepository.flags().showScamShield }
     }
 
     /** Populate the Home "Ask Tappy" suggestion chips from /api/suggested-prompts (web parity — was

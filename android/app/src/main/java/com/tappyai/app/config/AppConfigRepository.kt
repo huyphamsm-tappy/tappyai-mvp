@@ -21,20 +21,9 @@ data class UploadLimits(val maxPhotos: Int, val maxVideoSizeMb: Int, val maxVide
     }
 }
 
-/** Gated feature flags from `/api/config`. The first two are false in prod, Scam Shield is true. */
-data class AppFlags(
-    val showProUpgrade: Boolean,
-    val showAppConnections: Boolean,
-    val showScamShield: Boolean,
-) {
-    companion object {
-        val DEFAULT = AppFlags(
-            showProUpgrade = false,
-            showAppConnections = false,
-            // Matches prod and the web's unconditional entry point — see FlagsConfigDto.
-            showScamShield = true,
-        )
-    }
+/** Gated feature flags from `/api/config` (both currently false in prod). */
+data class AppFlags(val showProUpgrade: Boolean, val showAppConnections: Boolean) {
+    companion object { val DEFAULT = AppFlags(showProUpgrade = false, showAppConnections = false) }
 }
 
 /**
@@ -67,7 +56,7 @@ class AppConfigRepository @Inject constructor(
     } ?: UploadLimits.DEFAULT
 
     suspend fun flags(): AppFlags = config()?.flags?.let {
-        AppFlags(it.showProUpgrade, it.showAppConnections, it.showScamShield)
+        AppFlags(it.showProUpgrade, it.showAppConnections)
     } ?: AppFlags.DEFAULT
 
     private companion object {

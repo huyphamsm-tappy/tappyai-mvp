@@ -110,7 +110,6 @@ fun HomeScreen(
 ) {
     val suggestions by viewModel.suggestionsState.collectAsStateWithLifecycle()
     val recentActivity by viewModel.recentActivityState.collectAsStateWithLifecycle()
-    val showScamShield by viewModel.showScamShield.collectAsStateWithLifecycle()
 
     // The feature whose "coming soon" sheet is open (null = closed). A single shared sheet for
     // every unfinished quick action, rather than one snackbar per tap.
@@ -170,7 +169,6 @@ fun HomeScreen(
                 onOpenScan = onOpenScan,
                 onOpenSplitBill = onOpenSplitBill,
                 onOpenScamShield = onOpenScamShield,
-                showScamShield = showScamShield,
             )
             ContentWriterSection(onOpenVietWriter = onOpenVietWriter)
             SuggestionsSection(state = suggestions, onSuggestionClick = onOpenChatWithPrefill)
@@ -401,26 +399,24 @@ private fun QuickActionsSection(
     onOpenScan: () -> Unit,
     onOpenSplitBill: () -> Unit,
     onOpenScamShield: () -> Unit,
-    showScamShield: Boolean,
 ) {
     val cat = tappyCategoryColors
     // Explore + Maps are intentionally omitted — they already live in the bottom navigation
     // (owner 2026-07-30). Each tile wears a colour-tinted icon plate, matching web's Tools cards.
-    val actions = buildList {
-        add(QuickAction(stringResource(R.string.home_quick_music), Icons.Filled.MusicNote, cat.pink) { onOpenMusic() })
-        add(QuickAction(stringResource(R.string.home_quick_scan), Icons.Filled.QrCodeScanner, cat.amber) { onOpenScan() })
-        add(QuickAction(stringResource(R.string.home_quick_translate), Icons.Filled.Translate, cat.blue) { onOpenTranslate() })
-        add(QuickAction(stringResource(R.string.home_quick_currency), Icons.Filled.CurrencyExchange, cat.green) { onOpenCurrency() })
-        add(QuickAction(stringResource(R.string.home_quick_deals), Icons.Filled.LocalOffer, cat.red) { onOpenDeals() })
-        add(QuickAction(stringResource(R.string.splitbill_title), Icons.Filled.Calculate, cat.purple) { onOpenSplitBill() })
-        // Gated on /api/config's `flags.showScamShield` per the release instruction. The web
-        // renders its own entry point unconditionally; with the flag true in prod the two agree.
-        if (showScamShield) {
-            // Web tints this tile teal/emerald; the design system has no teal token, and adding
-            // one would be a design-system change. `green` is the nearest existing token.
-            add(QuickAction(stringResource(R.string.home_quick_scam_shield), Icons.Filled.VerifiedUser, cat.green) { onOpenScamShield() })
-        }
-    }
+    val actions = listOf(
+        QuickAction(stringResource(R.string.home_quick_music), Icons.Filled.MusicNote, cat.pink) { onOpenMusic() },
+        QuickAction(stringResource(R.string.home_quick_scan), Icons.Filled.QrCodeScanner, cat.amber) { onOpenScan() },
+        QuickAction(stringResource(R.string.home_quick_translate), Icons.Filled.Translate, cat.blue) { onOpenTranslate() },
+        QuickAction(stringResource(R.string.home_quick_currency), Icons.Filled.CurrencyExchange, cat.green) { onOpenCurrency() },
+        QuickAction(stringResource(R.string.home_quick_deals), Icons.Filled.LocalOffer, cat.red) { onOpenDeals() },
+        QuickAction(stringResource(R.string.splitbill_title), Icons.Filled.Calculate, cat.purple) { onOpenSplitBill() },
+        // Unconditional, matching the web: `SHOW_SCAM_SHIELD` gates nothing there — it is declared
+        // in product.ts, published by /api/config, and read by no consumer, so HomeView renders
+        // its Scam Shield tile as a plain sibling of the others.
+        // Web tints this tile teal/emerald; the design system has no teal token, and adding one
+        // would be a design-system change. `green` is the nearest existing token.
+        QuickAction(stringResource(R.string.home_quick_scam_shield), Icons.Filled.VerifiedUser, cat.green) { onOpenScamShield() },
+    )
 
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
         SectionHeader(title = stringResource(R.string.home_section_quick_actions))
