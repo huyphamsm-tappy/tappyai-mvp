@@ -182,6 +182,11 @@ class RealChatRepository @Inject constructor(
         // Safety net matching the web's own — strip any stray/orphan marker on malformed
         // model output so implementation details are never visible to the user.
         text = text.replace(FOLLOWUPS_STRAY_REGEX, "").trimEnd()
+        // The block regexes above all require a CLOSING tag, so a reply cut off mid-block leaves its
+        // opening marker plus raw JSON sitting in the text. That is now reachable: a Stop mid-stream
+        // parses whatever arrived. Drop from any surviving opening marker to the end — there is no
+        // closing tag by construction, so nothing after it is renderable content.
+        text = text.replace(UNTERMINATED_BLOCK_REGEX, "").trimEnd()
 
         return ParsedAssistantReply(text = text.trim(), ctaButtons = ctaButtons, followups = followups, plan = plan)
     }
@@ -261,6 +266,12 @@ class RealChatRepository @Inject constructor(
         val CTA_NO_TAG_REGEX = Regex("\\[CTA_BUTTONS\\](\\{[\\s\\S]*\\})\\s*$", RegexOption.IGNORE_CASE)
         val FOLLOWUPS_REGEX = Regex("\\[FOLLOWUPS\\]([^\\n]*?)(?:\\[/FOLLOWUPS\\]|\\n|$)", RegexOption.IGNORE_CASE)
         val FOLLOWUPS_STRAY_REGEX = Regex("\\[/?FOLLOWUPS\\]", RegexOption.IGNORE_CASE)
+
+        // An opening block marker with no closing tag left after the parsers above ran — i.e. a
+        // reply that stopped mid-block. Everything from the marker onward is a half-written payload,
+        // never prose, so it is cut rather than shown.
+        val UNTERMINATED_BLOCK_REGEX =
+            Regex("\\[(?:TAPPY_PLAN|CTA_BUTTONS)\\][\\s\\S]*$", RegexOption.IGNORE_CASE)
     }
 }
 

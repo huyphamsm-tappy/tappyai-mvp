@@ -32,6 +32,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -422,8 +423,10 @@ class ChatViewModel @Inject constructor(
             // followups and clears the streaming flag.
             val streamingId = nextId++
             _messages.update { it + ChatMessage(id = streamingId, role = TappyChatRole.Assistant, text = "", streaming = true) }
+            // Declared outside the try so the Stop (CancellationException) path can still parse and
+            // persist what arrived before the user tapped Stop.
+            val reply = StringBuilder()
             try {
-                val reply = StringBuilder()
                 chatRepository.streamReply(history, userPreferences, responseStyle, userLocation).collect { token ->
                     reply.append(token)
                     val display = streamingDisplayText(reply.toString())
@@ -447,9 +450,31 @@ class ChatViewModel @Inject constructor(
                 }
                 persistConversation()
             } catch (e: CancellationException) {
-                // User tapped Stop — keep whatever streamed so far (web keeps the partial reply),
-                // just clear the streaming flag so the action bar returns. Then rethrow.
-                _messages.update { msgs -> msgs.map { if (it.id == streamingId) it.copy(streaming = false) else it } }
+                // User tapped Stop — keep whatever streamed so far (web keeps the partial reply).
+                //
+                // This must run the SAME parse as the success path. It used to only clear the
+                // streaming flag, which silently threw away an itinerary that had already fully
+                // arrived: `plan` stayed null, so no TripPlanCard was ever built, and the turn was
+                // never persisted either, so reopening the conversation could not recover it. A
+                // plan takes tens of seconds to generate, so tapping Stop is ordinary behaviour —
+                // and it made the whole itinerary disappear. parseAssistantReply degrades to
+                // plan = null on a half-arrived block, so parsing a partial reply is safe.
+                val parsed = chatRepository.parseAssistantReply(reply.toString())
+                _messages.update { msgs ->
+                    msgs.map {
+                        if (it.id != streamingId) it else it.copy(
+                            text = parsed.text,
+                            followups = parsed.followups,
+                            ctaButtons = parsed.ctaButtons,
+                            plan = parsed.plan,
+                            streaming = false,
+                            rawText = reply.toString(),
+                        )
+                    }
+                }
+                // The coroutine is already cancelled, so any suspension point would throw
+                // immediately — persisting has to opt out of cancellation or it silently no-ops.
+                withContext(NonCancellable) { persistConversation() }
                 throw e
             } catch (e: ChatException) {
                 // Drop the streaming placeholder and show the error bubble in its place.
