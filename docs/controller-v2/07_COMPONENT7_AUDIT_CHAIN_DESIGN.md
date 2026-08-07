@@ -246,6 +246,12 @@ value (PostgreSQL normalises key order on input), so hashing `metadata::text` is
 deterministic. This must be asserted by test rather than assumed, because the
 whole chain rests on it.
 
+> ⚠️ **Refined in Phase D.** Head selection is `ORDER BY seq DESC LIMIT 1`,
+> proven correct — but only under **READ COMMITTED**, and only with a
+> **transaction-local memo** so a multi-row `INSERT` cannot fork the chain. The
+> hash input also requires explicit **field separation**. See
+> `07_PHASE_D_HEAD_SELECTION.md` for the proof and the definitive algorithm.
+
 ## B4. Verification
 
 A `SECURITY DEFINER` function with a pinned `search_path`, following the pattern
