@@ -452,14 +452,27 @@ END
 $verify$;
 
 -- ---------------------------------------------------------------------------
--- 7. Grants — REVOKE FIRST. A bare GRANT does not narrow anything.
+-- 7. Grants — REVOKE FIRST, and REVOKING FROM `PUBLIC` ALONE IS NOT ENOUGH HERE.
 --
--- PostgreSQL grants EXECUTE on every new function to PUBLIC by default, so
--- `GRANT ... TO service_role` alone left `=X/postgres` in the ACL and the
--- verifier reachable by `anon`. Measured: with RLS denying anon a direct
--- SELECT on audit_log, `SET ROLE anon; SELECT * FROM fn_verify_audit_chain()`
--- still returned rows — SECURITY DEFINER ran it as the owner and punched
--- straight through the deny-by-default design this component exists to protect.
+-- Two independent grants reach a newly created function on this platform, and
+-- closing one of them closes nothing:
+--
+--   1. PostgreSQL grants EXECUTE on every new function to PUBLIC by default.
+--      That is the `=X/postgres` entry in `proacl`.
+--   2. Supabase additionally configures
+--        ALTER DEFAULT PRIVILEGES IN SCHEMA public
+--          GRANT ALL ON FUNCTIONS TO anon, authenticated, service_role;
+--      so every new function is also granted to `anon` and `authenticated`
+--      EXPLICITLY. Those are separate ACL entries and `REVOKE ... FROM PUBLIC`
+--      does not touch them. Confirmed by reading `pg_default_acl` on the
+--      production project.
+--
+-- F-04: this file previously revoked only from PUBLIC. It shipped, the ACL
+-- looked correct — the `=X/` entry really was gone — and `anon` could still
+-- call the verifier. Measured on production before the fix: RLS denied `anon` a
+-- plain SELECT on audit_log, yet `SET ROLE anon; SELECT * FROM
+-- fn_verify_audit_chain()` returned rows, and `POST /rpc/fn_verify_audit_chain`
+-- with the public anon key over HTTPS returned 200.
 --
 -- Two consequences, the second worse than the first:
 --   1. an unauthenticated caller learns whether the audit log has been tampered
@@ -471,17 +484,38 @@ $verify$;
 -- The hash helpers are revoked for the same reason a lockpick is not left on
 -- the counter: no external consumer needs them, and fn_audit_row_hash computes
 -- exactly the value a forger would need. SECURITY DEFINER callers are
--- unaffected — inside them the current user is the owner.
+-- unaffected — inside them the current user is the owner, and the owner's
+-- privileges are not what these statements revoke.
 --
--- This follows the repo's own hardened pattern (20260711_anon_chat_usage.sql),
--- not the weaker one in 20260803_platform_owner.sql, which has the same gap and
--- is filed as BL-C7-01 rather than fixed here.
+-- PUBLIC stays in the revoke list because it is a genuinely separate grantee:
+-- PostgreSQL's own default. Naming it is completeness, NOT portability.
+--
+-- This migration targets Supabase and REQUIRES the roles `anon`,
+-- `authenticated` and `service_role` to exist. `REVOKE ... FROM <missing role>`
+-- raises `42704: role "..." does not exist` and aborts — measured. That is the
+-- intended behaviour: a role-existence guard that skipped silently would
+-- produce a migration that "succeeds" while revoking nothing, which is F-04
+-- again wearing a better disguise. Ten migrations in this repository already
+-- reference these roles unconditionally and none guards for their existence,
+-- so this file follows the established baseline rather than inventing an
+-- exception.
+--
+-- The correct in-repo precedent is `add_gatea_db_hardening.sql`, which writes
+-- `REVOKE EXECUTE ... FROM anon, public`. The pattern this file previously
+-- cited — 20260711_anon_chat_usage.sql — revokes from PUBLIC only and carries
+-- the same gap, as does 20260803_platform_owner.sql (filed as BL-C7-01).
+--
+-- EXECUTE rather than ALL: EXECUTE is the only privilege type PostgreSQL
+-- defines for a routine, so the two are equivalent today — measured with
+-- `aclexplode`, every grant on these four functions was
+-- `privilege_type = EXECUTE, is_grantable = false`. Naming EXECUTE states the
+-- intent and cannot silently widen if a future PostgreSQL adds another one.
 -- ---------------------------------------------------------------------------
-REVOKE ALL ON FUNCTION fn_verify_audit_chain(BIGINT, BIGINT) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_audit_part(TEXT) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_audit_ts(TIMESTAMPTZ) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_audit_row_hash(
+REVOKE EXECUTE ON FUNCTION fn_verify_audit_chain(BIGINT, BIGINT) FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION fn_audit_part(TEXT) FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION fn_audit_ts(TIMESTAMPTZ) FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION fn_audit_row_hash(
   BYTEA, BIGINT, UUID, UUID, TEXT, TEXT, TEXT, TEXT, TEXT, JSONB, JSONB, JSONB, INET, TEXT, TIMESTAMPTZ)
-  FROM PUBLIC;
+  FROM PUBLIC, anon, authenticated;
 
 GRANT EXECUTE ON FUNCTION fn_verify_audit_chain(BIGINT, BIGINT) TO service_role;
