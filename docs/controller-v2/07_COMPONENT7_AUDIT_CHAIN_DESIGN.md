@@ -195,7 +195,8 @@ chain is what turns it into proof.
 Two new columns plus the sequence:
 
 ```
-seq        BIGSERIAL        -- total order, UNIQUE
+seq        BIGINT NOT NULL  -- total order, UNIQUE. NO column default —
+                            -- allocated inside the trigger, under the lock (Phase C §4)
 row_hash   BYTEA NOT NULL   -- sha256 of this row's canonical form + prev_hash
 prev_hash  BYTEA            -- row_hash of seq-1; NULL only for the genesis row
 ```
@@ -217,6 +218,13 @@ row_hash = sha256(
 **Every column is covered**, including the four the read API never returns —
 otherwise `before_state` could be rewritten undetectably, which is exactly the
 field an attacker would target.
+
+> ⚠️ **Corrected in Phase C.** The original design gave `seq` a `BIGSERIAL`
+> default. Column defaults are evaluated **before** `BEFORE ROW` triggers fire,
+> so the number would be assigned outside the lock and two concurrent inserts
+> could chain in the opposite order to their sequence — the verifier would then
+> report tampering on two honest writes. `seq` is now allocated inside the
+> trigger, after the lock. See `07_PHASE_C_SERIALIZATION_DECISION.md` §4.
 
 **Computed by a `BEFORE INSERT` trigger, not by the application.** This is the
 load-bearing decision:
@@ -265,8 +273,8 @@ project four times.
 
 One migration, idempotent, in four steps:
 
-1. `ALTER TABLE audit_log ADD COLUMN seq BIGSERIAL` — backfills existing rows in
-   physical order.
+1. Create the sequence and `ADD COLUMN seq BIGINT` **without a default**;
+   backfill existing rows in physical order.
 2. `ADD COLUMN prev_hash BYTEA`, `ADD COLUMN row_hash BYTEA` — nullable at first.
 3. **Backfill** existing rows in `seq` order, computing the chain from a genesis
    of `NULL`. Production currently holds **2 rows**, so this is instant; the
