@@ -1489,3 +1489,98 @@ describe('PART 10.4 — the production write path, as service_role', () => {
     expect(r.rows).toEqual([])
   })
 })
+
+// ═════════════════════════════════════════════════════════════════════════════
+// PART 11 — regressions from the PR freeze review.
+// ═════════════════════════════════════════════════════════════════════════════
+
+describe('PART 11 — PR freeze review', () => {
+  /** The migration split at its top-level section markers. */
+  function sections(): string[] {
+    const heads = [...CHAIN.matchAll(/^-- (\d)\. /gm)].map((m) => m.index!)
+    const cuts = heads.map((i) => CHAIN.lastIndexOf('-- ---', i))
+    return cuts.map((c, i) => CHAIN.slice(c, cuts[i + 1] ?? CHAIN.length))
+  }
+
+  it('F-01 the migration survives a NON-ATOMIC, section-by-section apply', async () => {
+    // This project applies SQL to production by hand, section by section, in the
+    // Supabase SQL editor — the Component 1 runbook was executed exactly that
+    // way. So "the migration is atomic" is an assumption this deployment method
+    // does not grant.
+    //
+    // With the constraints ahead of the trigger, an audit write landing between
+    // the backfill and SET NOT NULL produced a NULL seq, and the migration then
+    // aborted with "column seq contains null values" HALF-APPLIED: the trigger
+    // went in afterwards, but both NOT NULL constraints were silently missing —
+    // and those constraints are what makes a disabled trigger fail loudly.
+    await db.query('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')
+    await db.query(PRELUDE); await db.query(PHASE0)
+
+    const raw = async (a: string) => db.query(
+      `INSERT INTO audit_log (actor_id, actor_email, actor_role, action) VALUES ($1,'a@b.c','admin',$2)`,
+      [U1, a]
+    )
+    await raw('pre-existing')
+
+    const secs = sections()
+    expect(secs).toHaveLength(7)
+    for (let i = 0; i < secs.length; i++) {
+      await db.query(secs[i])            // must not throw at any point
+      await raw(`between.${i + 1}`)      // an audit write lands between every pair
+    }
+
+    // Everything written during the apply is chained, and the constraints that
+    // were being skipped are present.
+    expect(await verify()).toEqual([])
+    const cols = await db.query(`
+      SELECT column_name, is_nullable FROM information_schema.columns
+       WHERE table_name = 'audit_log' AND column_name IN ('seq','row_hash','prev_hash')
+       ORDER BY column_name`)
+    expect(cols.rows).toEqual([
+      { column_name: 'prev_hash', is_nullable: 'YES' },
+      { column_name: 'row_hash', is_nullable: 'NO' },
+      { column_name: 'seq', is_nullable: 'NO' },
+    ])
+  })
+
+  it('F-02 no function is declared more immutable than what it calls', async () => {
+    // PostgreSQL does not verify a volatility label; it trusts it and is free to
+    // constant-fold on the strength of it. fn_audit_part was IMMUTABLE while
+    // calling convert_to(text,name), which is STABLE (server-encoding
+    // dependent); fn_audit_ts was IMMUTABLE while calling to_char(timestamp,
+    // text), which is STABLE (lc_time dependent). Harmless today because the
+    // format string uses no locale token and the encoding is fixed — and silent
+    // corruption the day someone indexes one of them.
+    const r = await db.query(`
+      SELECT proname, provolatile FROM pg_proc
+       WHERE proname IN ('fn_audit_part','fn_audit_ts','fn_audit_row_hash',
+                         'fn_audit_log_chain','fn_verify_audit_chain')
+       ORDER BY proname`)
+
+    expect(Object.fromEntries(r.rows.map((x) => [x.proname, x.provolatile]))).toEqual({
+      fn_audit_part: 's',
+      fn_audit_ts: 's',
+      fn_audit_row_hash: 's',
+      // The trigger MUST stay VOLATILE: it reads the table and needs a fresh
+      // snapshot per statement (P4). PG-07 proves a STABLE one goes blind.
+      fn_audit_log_chain: 'v',
+      fn_verify_audit_chain: 's',
+    })
+  })
+
+  it('F-02b the declarations match what PostgreSQL says about the built-ins', async () => {
+    // Pins the premise rather than the conclusion. If a future PostgreSQL marks
+    // these IMMUTABLE, this fails and the STABLE labels above can be revisited
+    // on evidence instead of taste.
+    const r = await db.query(`
+      SELECT proname, provolatile FROM pg_proc
+       WHERE (proname = 'convert_to' AND pg_get_function_identity_arguments(oid) = 'text, name')
+          OR (proname = 'to_char'    AND pg_get_function_identity_arguments(oid) = 'timestamp without time zone, text')
+       ORDER BY proname`)
+
+    expect(r.rows).toEqual([
+      { proname: 'convert_to', provolatile: 's' },
+      { proname: 'to_char', provolatile: 's' },
+    ])
+  })
+})

@@ -255,7 +255,8 @@ deterministic. This must be asserted by test rather than assumed, because the
 whole chain rests on it.
 
 > ⚠️ **Refined in Phase D.** Head selection is `ORDER BY seq DESC LIMIT 1`,
-> proven correct — but only under **READ COMMITTED**, and only with a
+> proven correct — but only under **READ COMMITTED** (or READ UNCOMMITTED,
+> which PostgreSQL implements identically), and originally believed to need a
 > **transaction-local memo** so a multi-row `INSERT` cannot fork the chain. The
 > hash input also requires explicit **field separation**. See
 > `07_PHASE_D_HEAD_SELECTION.md` for the proof and the definitive algorithm.

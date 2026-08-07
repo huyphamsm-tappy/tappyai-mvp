@@ -27,22 +27,23 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 | 1 | **Platform Owner** | ✅ **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — in production (`fb21ebe`) |
 | 2 | **Identity** | ✅ **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — in production (`fb21ebe`) |
 | 3 | **RBAC** | ✅ **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** — in production (`933c4f8`, PR #12) |
-| 4 | **Audited PDP** *(the roadmap called this "Permission Engine"; C3 shipped that — see 04_COMPONENT4_AUDITED_PDP_DESIGN.md §1)* | ⬅ **READY FOR REVIEW** — not merged |
+| 4 | **Audited PDP** *(the roadmap called this "Permission Engine"; C3 shipped that — see 04_COMPONENT4_AUDITED_PDP_DESIGN.md §1)* | ✅ **IN PRODUCTION** — merge commit `28f68c1` |
 
 ### Block B — Extensibility
 
 | # | Component | Status |
 |---|---|---|
-| 5 | Capability Registry | not started |
+| 5 | Capability Registry | 🧊 **FROZEN** — [ADR-018](../architecture/ADR-018-capability-registry-frozen.md); merges into Component 6 |
 | 6 | Plugin Registry | not started |
 
 ### Block C — Operational Infrastructure
 
 | # | Component | Status |
 |---|---|---|
-| 7 | Audit | not started |
+| 7 | **Audit Hardening** — tamper-evident hash chain over `audit_log` | ⬅ **READY TO OPEN PR** — not merged, not deployed, [migration not applied](RELEASE_READINESS_COMPONENT_7.md) |
 | 8 | Event Bus | not started |
-| 9 | Secret Manager | not started |
+| 9a | Single admin-client construction point | ✅ **IN PRODUCTION** — merge commit `e8d4eb9` |
+| 9b | Secret Manager — typed boot-time config validation | not started |
 | 10 | Rate Limiting | not started |
 | 11 | Session Security | not started |
 

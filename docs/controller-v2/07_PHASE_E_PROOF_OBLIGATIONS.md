@@ -16,6 +16,21 @@ exists so that does not repeat.
 
 ---
 
+> ⚠️ **CORRECTED BY MEASUREMENT after implementation.** This part reasons about
+> the memo as the mechanism that prevents a batched `INSERT` from forking. It is
+> not. On PostgreSQL 17.5 a memo-less build of this design chains multi-row
+> `VALUES`, `INSERT ... SELECT` and writable CTEs correctly, because plpgsql runs
+> every statement through SPI, which performs a `CommandCounterIncrement` first —
+> so the head lookup sees rows inserted earlier in the same command. The whole
+> test suite passes with the memo disabled (**B-22** pins this).
+>
+> The memo is kept as defence in depth against an implementation detail
+> PostgreSQL does not guarantee, but it is redundancy, not the mechanism. It was
+> not free either: trusting the GUC without proof of origin produced two
+> reproduced defects — a poisoned chain head, and a silent total audit outage from
+> a malformed value. Both are closed by stamping the memo with the transaction id.
+> See `07_PHASE_D_HEAD_SELECTION.md` for the same correction at its source.
+
 # PART A — the transaction-local memo
 
 `set_config('audit.chain_head', <value>, is_local := true)` is the function form
@@ -215,7 +230,7 @@ they can be cited in the migration, in review, and in the tests.
 
 | # | Precondition | Source | Enforced how |
 |---|---|---|---|
-| **P1** | The transaction isolation level is **READ COMMITTED** | Phase D §2.2 | Trigger asserts `current_setting('transaction_isolation')` and raises otherwise |
+| **P1** | The transaction isolation level provides **per-statement snapshots** — READ COMMITTED or, identically, READ UNCOMMITTED | Phase D §2.2 | Trigger asserts `current_setting('transaction_isolation')` and raises on REPEATABLE READ / SERIALIZABLE. *Corrected at freeze: the original wording said READ COMMITTED only, and the check rejected a level PostgreSQL documents as equivalent* |
 | **P2** | The advisory lock is **transaction-scoped** (`pg_advisory_xact_lock`), on a single fixed key, acquired **before** any chain read | Phase C | Code review + concurrency test |
 | **P3** | `seq` has **no column default**; it is allocated by `nextval` **inside** the lock | Phase C §4 | Schema (no `DEFAULT`) + concurrency test |
 | **P4** | The trigger function is **`VOLATILE`** (the default — must not be overridden) | B1 | Explicit `VOLATILE` in the definition, so a future edit is a visible change |

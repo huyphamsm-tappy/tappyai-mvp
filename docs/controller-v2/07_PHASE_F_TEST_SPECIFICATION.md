@@ -123,8 +123,17 @@ is the memo (P6) and its encoding (P9) — not a redesign.
 | **I-05** | Level set *after* `BEGIN` | `BEGIN; SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; INSERT` | MUST RAISE | The assertion must read the *effective* level at trigger time, not a session default |
 | **I-06** | Session default changed | `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL REPEATABLE READ;` then a plain insert | MUST RAISE | A session-level change is the realistic way this breaks in production, not an explicit `BEGIN` |
 
-**Accepted:** READ COMMITTED only.
+**Accepted:** READ COMMITTED **and READ UNCOMMITTED**.
 **Must fail:** REPEATABLE READ, SERIALIZABLE — by raising, never by inserting.
+
+> ⚠️ **Corrected during the PR freeze review.** This section said "READ COMMITTED
+> only", and the trigger enforced it with a string equality. PostgreSQL documents
+> READ UNCOMMITTED as behaving like READ COMMITTED — it provides the per-statement
+> snapshots P1 actually needs — so rejecting it was a false precondition failure.
+> And because `writeAuditLog` is fire-and-forget and swallows errors, the rejected
+> audit row disappeared with nothing but a console line. **B-01** covers the
+> acceptance, **B-01b** covers that the widening did not reach REPEATABLE READ or
+> SERIALIZABLE.
 
 ---
 

@@ -73,7 +73,14 @@ ALTER TABLE audit_log ADD COLUMN IF NOT EXISTS row_hash  BYTEA;
 CREATE OR REPLACE FUNCTION fn_audit_part(p_value TEXT)
 RETURNS BYTEA
 LANGUAGE sql
-IMMUTABLE
+-- STABLE, not IMMUTABLE. `convert_to(text, name)` is STABLE in PostgreSQL
+-- because its result depends on the server encoding, and a function may not be
+-- declared more immutable than what it calls. PostgreSQL does not check this;
+-- it trusts the label and is free to constant-fold on the strength of it, and a
+-- wrong label is silent corruption the day someone builds an index or a
+-- generated column on top. Nothing here needs IMMUTABLE: the only callers are
+-- a VOLATILE trigger and a STABLE verifier.
+STABLE
 AS $$
   SELECT CASE
     WHEN p_value IS NULL THEN int4send(-1)
@@ -88,7 +95,11 @@ $$;
 CREATE OR REPLACE FUNCTION fn_audit_ts(p_ts TIMESTAMPTZ)
 RETURNS TEXT
 LANGUAGE sql
-IMMUTABLE
+-- STABLE for the same reason: `to_char(timestamp, text)` is STABLE (it can
+-- depend on lc_time). The chosen format uses no locale-dependent token, so the
+-- OUTPUT is stable in practice and B-16 measures that — but the declaration
+-- must describe the dependency, not the happy path.
+STABLE
 AS $$
   SELECT to_char(p_ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US')
 $$;
@@ -124,7 +135,8 @@ CREATE OR REPLACE FUNCTION fn_audit_row_hash(
 )
 RETURNS BYTEA
 LANGUAGE sql
-IMMUTABLE
+-- STABLE because its two helpers are. See fn_audit_part above.
+STABLE
 AS $$
   SELECT sha256(
        COALESCE(p_prev, int4send(-1))
@@ -146,49 +158,25 @@ AS $$
 $$;
 
 -- ---------------------------------------------------------------------------
--- 3. Backfill existing rows, in physical order
+-- 3. The chain trigger — INSTALLED BEFORE THE BACKFILL AND THE CONSTRAINTS
 --
--- The chain proves integrity FROM HERE FORWARD, not retroactively — nothing
--- recorded these rows' contents before now. Resumable: only rows still missing
--- a seq are touched, so re-running is a no-op.
--- ---------------------------------------------------------------------------
-DO $backfill$
-DECLARE
-  r        RECORD;
-  v_prev   BYTEA;
-  v_seq    BIGINT;
-BEGIN
-  SELECT row_hash INTO v_prev FROM audit_log WHERE seq IS NOT NULL ORDER BY seq DESC LIMIT 1;
-
-  FOR r IN SELECT * FROM audit_log WHERE seq IS NULL ORDER BY created_at, id LOOP
-    v_seq := nextval('audit_log_seq');
-    UPDATE audit_log SET
-      seq       = v_seq,
-      prev_hash = v_prev,
-      row_hash  = fn_audit_row_hash(
-                    v_prev, v_seq, r.id, r.actor_id, r.actor_email, r.actor_role, r.action,
-                    r.target_type, r.target_id, r.before_state, r.after_state,
-                    r.metadata, r.ip_address, r.user_agent, r.created_at)
-      WHERE id = r.id;
-    SELECT row_hash INTO v_prev FROM audit_log WHERE id = r.id;
-  END LOOP;
-END
-$backfill$;
-
--- ---------------------------------------------------------------------------
--- 4. Constraints — only after the backfill, so an existing table can adopt them
--- ---------------------------------------------------------------------------
-DO $constraints$ BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'audit_log_seq_key') THEN
-    ALTER TABLE audit_log ADD CONSTRAINT audit_log_seq_key UNIQUE (seq);
-  END IF;
-END $constraints$;
-
-ALTER TABLE audit_log ALTER COLUMN seq      SET NOT NULL;
-ALTER TABLE audit_log ALTER COLUMN row_hash SET NOT NULL;
-
--- ---------------------------------------------------------------------------
--- 5. The chain trigger
+-- The order of sections 3, 4 and 5 is load-bearing whenever this file is NOT
+-- applied atomically — which is how this project has actually applied SQL to
+-- production, section by section in the Supabase SQL editor.
+--
+-- With the constraints ahead of the trigger there was a window in which
+-- `row_hash` was already NOT NULL and nothing filled it, so every audit insert
+-- failed; and a window between the backfill and the constraints in which an
+-- insert produced a NULL `seq`, after which `SET NOT NULL` aborted with
+-- "column seq contains null values" and the migration stopped half-applied —
+-- leaving exactly the two constraints that make a disabled trigger fail loudly
+-- quietly absent. Reproduced by applying the sections one at a time with an
+-- audit write between each pair.
+--
+-- Installing the trigger first removes both windows: from here on every insert
+-- is chained, so the backfill has nothing new to catch up with and the
+-- constraints cannot find a NULL. The trigger fires on INSERT only, so the
+-- backfill's UPDATEs below do not trip it.
 -- ---------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION fn_audit_log_chain()
 RETURNS TRIGGER
@@ -324,6 +312,48 @@ BEGIN
 END $order$;
 
 -- ---------------------------------------------------------------------------
+-- 4. Backfill existing rows, in physical order
+--
+-- The chain proves integrity FROM HERE FORWARD, not retroactively — nothing
+-- recorded these rows' contents before now. Resumable: only rows still missing
+-- a seq are touched, so re-running is a no-op.
+-- ---------------------------------------------------------------------------
+DO $backfill$
+DECLARE
+  r        RECORD;
+  v_prev   BYTEA;
+  v_seq    BIGINT;
+BEGIN
+  SELECT row_hash INTO v_prev FROM audit_log WHERE seq IS NOT NULL ORDER BY seq DESC LIMIT 1;
+
+  FOR r IN SELECT * FROM audit_log WHERE seq IS NULL ORDER BY created_at, id LOOP
+    v_seq := nextval('audit_log_seq');
+    UPDATE audit_log SET
+      seq       = v_seq,
+      prev_hash = v_prev,
+      row_hash  = fn_audit_row_hash(
+                    v_prev, v_seq, r.id, r.actor_id, r.actor_email, r.actor_role, r.action,
+                    r.target_type, r.target_id, r.before_state, r.after_state,
+                    r.metadata, r.ip_address, r.user_agent, r.created_at)
+      WHERE id = r.id;
+    SELECT row_hash INTO v_prev FROM audit_log WHERE id = r.id;
+  END LOOP;
+END
+$backfill$;
+
+-- ---------------------------------------------------------------------------
+-- 5. Constraints — only after the backfill, so an existing table can adopt them
+-- ---------------------------------------------------------------------------
+DO $constraints$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'audit_log_seq_key') THEN
+    ALTER TABLE audit_log ADD CONSTRAINT audit_log_seq_key UNIQUE (seq);
+  END IF;
+END $constraints$;
+
+ALTER TABLE audit_log ALTER COLUMN seq      SET NOT NULL;
+ALTER TABLE audit_log ALTER COLUMN row_hash SET NOT NULL;
+
+-- ---------------------------------------------------------------------------
 -- 6. Verifier
 --
 -- Walks the chain in `seq` order and recomputes each hash. It chains on the
@@ -353,7 +383,6 @@ DECLARE
   v_expected BYTEA;
   v_actual   BYTEA;
   v_last_seq BIGINT := NULL;
-  v_started  BOOLEAN := FALSE;
 BEGIN
   -- An inverted range selects no rows, and an integrity tool that answers
   -- "clean" to a question it never asked is a false assurance. Fail loudly.
@@ -364,8 +393,8 @@ BEGIN
 
   -- Ranged verification starts from the predecessor's stored hash, so the
   -- Controller can check a recent window without walking a million rows.
-  -- A-2 (adversarial review): a full scan previously left v_started FALSE, so
-  -- the FIRST row's prev_hash was never compared and the leading gap was never
+  -- A-2 (adversarial review): a full scan previously skipped this comparison
+  -- for the FIRST row, so its prev_hash was never checked and the leading gap was never
   -- reported. `DELETE FROM audit_log WHERE seq <= 3` therefore verified clean.
   -- That is not the documented tail-truncation limit (T-03, which genuinely
   -- needs an external anchor): the chain already carries what is needed to
@@ -378,11 +407,9 @@ BEGIN
   IF p_from IS NOT NULL THEN
     SELECT a.row_hash, a.seq INTO v_expected, v_last_seq
       FROM audit_log a WHERE a.seq < p_from ORDER BY a.seq DESC LIMIT 1;
-    v_started := TRUE;
   ELSE
     v_expected := NULL;
     v_last_seq := 0;
-    v_started  := TRUE;
   END IF;
 
   FOR r IN
@@ -395,7 +422,6 @@ BEGIN
       -- Reachable only if the trigger was disabled for the insert.
       seq := r.seq; id := r.id; problem := 'unchained'; RETURN NEXT;
       v_last_seq := r.seq;
-      v_started := TRUE;
       v_expected := NULL;
       CONTINUE;
     END IF;
@@ -409,7 +435,7 @@ BEGIN
       seq := r.seq; id := r.id; problem := 'hash_mismatch'; RETURN NEXT;
     END IF;
 
-    IF v_started AND (r.prev_hash IS DISTINCT FROM v_expected) THEN
+    IF r.prev_hash IS DISTINCT FROM v_expected THEN
       seq := r.seq; id := r.id; problem := 'prev_mismatch'; RETURN NEXT;
       IF v_last_seq IS NOT NULL AND r.seq - v_last_seq > 1 THEN
         seq := v_last_seq + 1; id := NULL; problem := 'sequence_gap'; RETURN NEXT;
@@ -419,7 +445,6 @@ BEGIN
     -- Chain on the RECOMPUTED hash so an edit propagates to the successor.
     v_expected := v_actual;
     v_last_seq := r.seq;
-    v_started  := TRUE;
   END LOOP;
 
   RETURN;
