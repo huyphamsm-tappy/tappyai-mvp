@@ -1,7 +1,7 @@
 # Component 4 — Audited PDP
 
 **Status:** implemented, self-reviewed, READY FOR REVIEW
-**Branch:** `feat/controller-v2-component4-audited-pdp` · **Base:** `0654f45`… → rebased on `933c4f8` (`origin/main`, Component 3 merged)
+**Branch:** `feat/controller-v2-component4-audited-pdp` · **Base:** `933c4f8` (`origin/main`, the Component 3 merge) — cut directly, never rebased
 **Scope decision:** Owner-approved Option 1 — audited PDP (B+C+D), **no resource dimension**
 
 ---

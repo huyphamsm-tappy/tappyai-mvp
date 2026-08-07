@@ -59,7 +59,7 @@ export type DecisionSurface = 'api' | 'page'
  *     downstream audits its own effect, with before/after state; auditing the
  *     permission check as well would double-count every action.
  */
-export const AUDIT_OWNER_READS = false
+export const AUDIT_OWNER_READS: boolean = false
 
 export function shouldAudit(decision: Decision): boolean {
   if (!decision.allowed) return true
@@ -93,7 +93,9 @@ export function auditActorRole(actor: Pick<Actor, 'isOwner' | 'highestRole'>): A
  * Collapsing is not dropping: the next row that does get written carries
  * `suppressed_since_last`, so the count survives even though the rows do not.
  */
-export const DECISION_AUDIT_WINDOW_MS = 60_000
+// Not exported: its only use is the default parameter below. An exported
+// constant nobody imports is surface without a consumer.
+const DECISION_AUDIT_WINDOW_MS = 60_000
 
 /** Bounds memory if an attacker varies the key to defeat the throttle. */
 const THROTTLE_MAX_KEYS = 5_000

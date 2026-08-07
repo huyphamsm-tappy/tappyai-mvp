@@ -1,7 +1,7 @@
 # Release Readiness Report — Component 4 (Audited PDP)
 
 **Branch:** `feat/controller-v2-component4-audited-pdp` · **Base:** `933c4f8` (`origin/main`)
-**Diff:** 17 files (6 added · 11 modified) — `src/` **+935 / −130**
+**Diff:** 17 files (6 added · 11 modified) — `src/` **+937 / −130**
 **Scope:** Owner-approved Option 1 — audited PDP (B+C+D), no resource dimension
 
 # ✅ VERDICT: READY FOR REVIEW
@@ -47,6 +47,8 @@ Trajectory: 657 (C3 in production) → **725**. Component 4 adds 69.
 | — | P-4 fixed properly: `actor_role` records `owner` / `none` | `auditActorRole` tests |
 
 ## 4. Attack review — two defects found, both in my own new code
+
+*(The PR-freeze review found two more; see §9.)*
 
 **C4-A1 — audit-log flooding. Introduced by this component; closed by it.**
 
@@ -104,7 +106,7 @@ engine importing the audit writer (blocked by test).
 
 | Audit | Result |
 |---|---|
-| **Dead code** | ✅ Automated scan flagged 4 symbols; each verified as a named type/constant used by its own file's exported signatures (`PermissionSet`, `PermissionSetView`, `DecisionSurface`, `DECISION_AUDIT_WINDOW_MS`). Not dead. Three genuinely dead symbols were **deleted** (§3 D). |
+| **Dead code** | ✅ Three genuinely dead symbols **deleted** (§3 D). The freeze review then un-exported `DECISION_AUDIT_WINDOW_MS`, whose only use was its own default parameter. `PermissionSet`, `PermissionSetView` and `DecisionSurface` remain exported: each names a parameter type in its own file's public signature, which the scan's exclude-own-file heuristic misreads as unused. |
 | **Security** | ✅ Owner Gate still precedes authorization (now directly tested). Fire-and-forget audit preserved. Client/server boundary asserted by test. No new env, secret or privileged surface. |
 | **Compatibility** | ✅ Component 3's 20-row permission matrix and per-role navigation lock both still pass unchanged (35 tests). No access decision changed. |
 | **Regression** | ✅ All 162 tests under `permissions/` green; full suite 725/725. **The five files that make authorization decisions — `registry.ts`, `roleMap.ts`, `engine.ts`, `resolver.ts`, `cache.ts` — are BYTE-IDENTICAL to Component 3.** |
@@ -147,6 +149,28 @@ exists.
   Component 0 behaviour (`13_Audit_Log.md` §5), not introduced here, but it now
   matters more because denials ride the same path. Worth a decision in
   Component 7 (Audit).
+
+## 9. PR-freeze review
+
+Two objective defects, both fixed:
+
+| # | Defect | Evidence |
+|---|---|---|
+| F-1 | **Unreachable branch.** `export const AUDIT_OWNER_READS = false` carried the literal type `false`, so `if (AUDIT_OWNER_READS) return true` could never execute — while the docblock told readers to "flip" it. Annotated `: boolean` so the documented toggle is real. | `decisionAudit.ts` |
+| F-2 | **False statement in documentation.** The design doc claimed the branch was based on `0654f45` "→ rebased on `933c4f8`". Git shows `b537d44^ = 933c4f8` and `merge-base = 933c4f8`: it was cut directly and never rebased. | `04_COMPONENT4_AUDITED_PDP_DESIGN.md` |
+
+Also un-exported `DECISION_AUDIT_WINDOW_MS` (no external consumer).
+
+**Observed and deliberately left:** the denial `console.warn` is byte-identical
+in both guards. It is a duplicated *log line*, not duplicated logic, and
+extracting it at freeze would be a style refactor — which this review forbids.
+Recorded so it is a decision rather than an oversight.
+
+**Checked and clean:** no other dead code · no unreachable branches · no hidden
+policy change (the five decision-making files are byte-identical to Component 3)
+· no accidental API change beyond the three deliberate deletions and the
+documented `AuditParams.actorRole` widening (a parameter widening, so every
+existing caller still type-checks).
 
 ---
 
