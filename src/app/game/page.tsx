@@ -4,21 +4,24 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { ChevronRight } from 'lucide-react'
-import { SupertuxPreload } from '@/components/SupertuxPreload'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Product scope: SuperTux is the only game surfaced. The former mini-game grid
 // (Bắn Thiên Hà, Đua Xe, Rắn Săn Mồi, Đập Gạch, 2048, Phòng Thủ) was removed.
 
+// This page must not touch the SuperTux assets. It used to mount a
+// <SupertuxPreload> that background-fetched supertux2.data + supertux2.wasm from
+// Blob on every visit, so simply opening the hub — even for a user who never
+// pressed play — pulled the large assets over the network. The assets are now
+// fetched only when the game itself boots: supertux2.js asks for them through
+// Module.locateFile (see app/games/supertux/route.ts), and supertux-sw.js caches
+// them on that first real request. Do not reintroduce a preload here.
+
 export default function GameHubPage() {
   const { t } = useTranslation()
-  const stDataUrl = process.env.NEXT_PUBLIC_SUPERTUX_DATA_URL ?? ''
-  const stWasmUrl = process.env.NEXT_PUBLIC_SUPERTUX_WASM_URL ?? ''
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      {/* Invisible background preload — warms the cache for SuperTux assets */}
-      <SupertuxPreload dataUrl={stDataUrl} wasmUrl={stWasmUrl} />
       <Header showBack backHref="/" title={t('game.headerTitle')} />
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
