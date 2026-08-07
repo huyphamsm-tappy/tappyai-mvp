@@ -24,12 +24,42 @@ const PHASE0 = readFileSync(join(REPO, 'supabase/migrations/20260713_backoffice_
 const CHAIN = readFileSync(join(REPO, 'supabase/migrations/20260807_audit_chain.sql'), 'utf8')
 const ROLLBACK = readFileSync(join(REPO, 'supabase/migrations/rollback/20260807_audit_chain_rollback.sql'), 'utf8')
 
+// The harness — not any individual test — owns what "the platform" is.
+//
+// F-04 shipped because a single describe block created its own `anon` with
+// nothing but `GRANT USAGE ON SCHEMA public`. That is a statement about
+// Supabase, written inside the tests that depended on it, and it was wrong: the
+// real `anon` also holds EXECUTE on every new function through Supabase's
+// default privileges. Every assertion in that block inherited the false premise
+// and passed against a platform that does not exist.
+//
+// A test that defines its own platform can make itself green by defining a
+// platform where it is green. So platform facts live here, once, where a
+// correction reaches every test at the same time and where they are reviewable
+// as infrastructure rather than invisible inside a beforeEach.
 const PRELUDE = `
   DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') THEN
+      CREATE ROLE anon NOLOGIN;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated') THEN
+      CREATE ROLE authenticated NOLOGIN;
+    END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'service_role') THEN
       CREATE ROLE service_role NOLOGIN;
     END IF;
   END $$;
+
+  GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+
+  -- The platform fact F-04 turned on. Supabase configures this on every
+  -- project, so a function created after it carries an EXPLICIT anon grant in
+  -- addition to PostgreSQL's PUBLIC default — and REVOKE ... FROM PUBLIC
+  -- removes only the latter. Re-applied here on every beforeEach because
+  -- DROP SCHEMA public CASCADE also drops the schema's pg_default_acl entries.
+  ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT ALL ON FUNCTIONS TO anon, authenticated, service_role;
+
   CREATE TABLE IF NOT EXISTS profiles (id UUID PRIMARY KEY, email TEXT);
 `
 
@@ -1328,24 +1358,22 @@ describe('PART 10.1 — what the memo actually buys', () => {
 })
 
 describe('PART 10.2 — the verifier is not a public endpoint', () => {
-  beforeEach(async () => {
-    await db.query(`
-      DO $$ BEGIN
-        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') THEN CREATE ROLE anon NOLOGIN; END IF;
-      END $$;
-      GRANT USAGE ON SCHEMA public TO anon;`)
-  })
+  // No local role setup. `anon`, `authenticated` and Supabase's default
+  // privileges come from PRELUDE, so these tests run against the platform the
+  // migration will actually meet rather than one this block invented.
 
-  /** Run one statement as `anon`. SET LOCAL ROLE outside a transaction is a no-op. */
-  async function asAnon<T>(sql: string): Promise<T> {
+  /** Run one statement as `role`. SET LOCAL ROLE outside a transaction is a no-op. */
+  async function asRole<T>(role: string, sql: string): Promise<T> {
     await db.query('BEGIN')
     try {
-      await db.query('SET LOCAL ROLE anon')
+      await db.query(`SET LOCAL ROLE ${role}`)
       return (await db.query(sql)) as T
     } finally {
       await db.query('ROLLBACK')
     }
   }
+
+  const asAnon = <T>(sql: string) => asRole<T>('anon', sql)
 
   it('B-23 RLS still denies anon a direct read of audit_log', async () => {
     await insert(db)
@@ -1374,19 +1402,83 @@ describe('PART 10.2 — the verifier is not a public endpoint', () => {
     await expect(asAnon(`SELECT fn_audit_ts(now())`)).rejects.toThrow(/permission denied/i)
   })
 
-  it('B-23d PUBLIC holds no EXECUTE on any Component 7 function', async () => {
+  it('B-23d no untrusted role can execute any Component 7 function', async () => {
+    // F-04: this assertion used to read "PUBLIC holds no EXECUTE", checked by
+    // looking for a '=X/' entry in proacl. That statement was TRUE on
+    // production while `anon` could still call the verifier, because Supabase
+    // grants anon EXECUTE explicitly and the PUBLIC entry really was gone.
+    //
+    // An ACL that looks right is what let F-04 ship. Ask the question the
+    // security property actually depends on — can this role execute it — and
+    // ask it of every role that reaches PostgREST.
     const r = await db.query(`
-      SELECT proname, coalesce(proacl::text, '<default: PUBLIC>') acl FROM pg_proc
-      WHERE proname IN ('fn_audit_part','fn_audit_ts','fn_audit_row_hash','fn_verify_audit_chain')
-      ORDER BY proname`)
+      SELECT p.proname,
+             has_function_privilege('anon',          p.oid, 'EXECUTE') AS anon_exec,
+             has_function_privilege('authenticated', p.oid, 'EXECUTE') AS auth_exec,
+             has_function_privilege('service_role',  p.oid, 'EXECUTE') AS svc_exec
+      FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+      WHERE n.nspname = 'public'
+        AND p.proname IN ('fn_audit_part','fn_audit_ts','fn_audit_row_hash','fn_verify_audit_chain')
+      ORDER BY p.proname`)
 
     expect(r.rows).toHaveLength(4)
     for (const row of r.rows) {
-      // A leading '=X/' entry is the PUBLIC grant; a NULL acl means the default,
-      // which is also PUBLIC. Either is a finding.
-      expect(row.acl, row.proname).not.toContain('<default: PUBLIC>')
-      expect(row.acl, row.proname).not.toMatch(/\{=[a-zA-Z]*\//)
+      expect(row.anon_exec, `anon must not execute ${row.proname}`).toBe(false)
+      expect(row.auth_exec, `authenticated must not execute ${row.proname}`).toBe(false)
     }
+
+    // The other half, and it matters as much: the intended caller still can.
+    // Every other test in this suite runs as the owner, so a REVOKE that breaks
+    // production would otherwise ship green.
+    const verifier = r.rows.find((x) => x.proname === 'fn_verify_audit_chain')
+    expect(verifier?.svc_exec, 'service_role must still execute the verifier').toBe(true)
+  })
+
+  it('B-23e the harness reproduces Supabase default privileges', async () => {
+    // Guards the guard. Without this platform fact seeded, B-23b/c/d all pass
+    // against a bare `anon` that never had the grant, and the suite reports
+    // green over exactly the hole F-04 was. If this fails, every privilege
+    // assertion above is meaningless rather than merely wrong.
+    //
+    // The instrument is a POSITIVE CONTROL, not a configuration read. An
+    // earlier version of this test asserted only that a pg_default_acl row
+    // exists, and the freeze review broke it: moving the ALTER DEFAULT
+    // PRIVILEGES from PRELUDE to after the migration left the row in place
+    // while the functions were created without the grant, and all 102 tests
+    // passed against a migration carrying the live F-04 hole.
+    //
+    // `fn_audit_log_chain` is the one Component 7 function this migration
+    // deliberately does NOT revoke — a direct call raises "trigger functions
+    // can only be called as triggers" regardless of privilege, so a REVOKE
+    // there would be a no-op implying a hole existed. That makes it the canary.
+    //
+    // The instrument is `proacl`, NOT has_function_privilege, and the
+    // difference is the whole point. Default privileges MATERIALISE as explicit
+    // ACL entries at CREATE time; a function created without them in force has
+    // `proacl = NULL`, which means "PostgreSQL's built-in default" — under
+    // which PUBLIC holds EXECUTE and every role is a member of PUBLIC. So
+    // has_function_privilege('anon', ...) returns TRUE either way and cannot
+    // distinguish the two cases. Measured: under the ordering mutation it
+    // reported anon_holds = true with chain_acl = null.
+    //
+    // Production measures this function's ACL as
+    // `=X/postgres postgres=X/postgres anon=X/postgres authenticated=X/...` —
+    // an EXPLICIT anon entry, which is exactly what proves the platform grant
+    // was live when the migration ran.
+    const r = await db.query(`
+      SELECT COALESCE(array_to_string(p.proacl, ' '), '<null: built-in default>') AS acl
+      FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+      WHERE n.nspname = 'public' AND p.proname = 'fn_audit_log_chain'`)
+
+    expect(r.rows, 'fn_audit_log_chain must exist').toHaveLength(1)
+    const acl: string = r.rows[0].acl
+    expect(
+      acl,
+      'the un-revoked trigger function must carry an EXPLICIT anon grant — if it does ' +
+        'not, Supabase default privileges were NOT in force when the migration created ' +
+        'its functions, and every privilege assertion in this block is vacuous',
+    ).toContain('anon=X')
+    expect(acl, 'and an explicit authenticated grant, for the same reason').toContain('authenticated=X')
   })
 })
 
