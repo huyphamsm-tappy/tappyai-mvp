@@ -15,17 +15,9 @@
  */
 
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyNotificationPayload, verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
 import type { NotificationType, JWSTransaction } from '@/lib/apple-iap/types'
-
-// Admin client — never exposed to client-side code.
-function adminSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-}
 
 export async function POST(req: Request) {
   let body: { signedPayload?: string }
@@ -93,7 +85,7 @@ async function handleNotification(
   subtype: string | undefined,
   tx: JWSTransaction
 ): Promise<void> {
-  const db = adminSupabase()
+  const db = createAdminClient()
   const subId = `apple_${tx.originalTransactionId}`
 
   // Find which user owns this Apple subscription
@@ -177,7 +169,7 @@ async function handleNotification(
 }
 
 async function upsertSubscription(
-  db: ReturnType<typeof adminSupabase>,
+  db: ReturnType<typeof createAdminClient>,
   userId: string,
   subId: string,
   status: string,

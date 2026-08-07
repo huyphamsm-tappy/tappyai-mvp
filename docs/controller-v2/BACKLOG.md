@@ -239,3 +239,74 @@ corresponding rows in `migration.test.ts` deliberately.
 
 **Natural moment to decide:** when the Moderation Hub ships and `moderator`
 gains permissions of its own, making the two roles genuinely distinct.
+
+---
+
+## BL-9A-01 — `scripts/ingest-jamendo.mjs` still builds its own service-role client
+
+**Raised by:** Component 9a adversarial review · **Severity:** low–medium · **Status:** deferred
+
+Component 9a made `createAdminClient()` the single construction path for every
+Supabase service-role client **inside `src/`**. One construction remains outside
+it:
+
+```js
+// scripts/ingest-jamendo.mjs:33
+const sb = createClient(SUPABASE_URL, SERVICE_ROLE, { auth: { persistSession: false } })
+```
+
+### Why it was intentionally excluded from Component 9a
+
+The approved scope was explicit: *no new abstractions, no feature work, no
+tooling changes*. Routing this script through `createAdminClient` requires one
+of:
+
+- a build step so a plain `.mjs` can import a TypeScript module behind the `@/`
+  path alias, or
+- duplicating the constructor into a second `.mjs` helper — which would create
+  exactly the second construction path Component 9a exists to remove.
+
+Both are scope expansion. Doing either inside 9a would have traded a small,
+provable change for a build-tooling decision that deserves its own review.
+
+### Why the Architecture Guard does not cover it
+
+`scripts/architecture/check.mjs` walks `src/` only (`walk(SRC)`, where
+`SRC = join(ROOT, 'src')`). Every one of its 8 rules inherits that boundary —
+this is not specific to `no-adhoc-service-role-client`.
+
+Widening the walk to `scripts/` would immediately fail CI on this file, so the
+guard change and the script fix have to land together. That is the follow-up,
+not a Component 9a task.
+
+### Risks of leaving it as-is
+
+| Risk | Assessment |
+|---|---|
+| Missing `autoRefreshToken: false` | **Low.** It sets `persistSession: false` but not `autoRefreshToken: false`. In a short-lived CLI process the refresh timer never matters; the same omission in a serverless handler is what Component 9a fixed. |
+| Loads production credentials locally | **Medium — the real risk.** The script calls `loadEnv('.env.vercel.prod.tmp')`, so it can hold a **production** service-role key on a developer machine. That is a credential-handling concern, not a client-construction one, and it is not what Component 9a set out to fix. |
+| Drift from the sanctioned constructor | **Low today, rises over time.** Nothing enforces parity, so a future hardening added to `createAdminClient` will silently not apply here. |
+| Becomes a template | **Medium.** It is the only remaining example of hand-rolling an admin client in the repository. The next script is likely to copy it. |
+
+**Not a request-path risk.** The file is not referenced by `package.json` or any
+GitHub workflow — it is invoked manually by a developer, never by the running
+application.
+
+### Acceptance criteria for future cleanup
+
+1. `scripts/ingest-jamendo.mjs` obtains its client from **one** shared
+   constructor that also applies `autoRefreshToken: false`.
+2. That constructor is the **same** one `src/` uses, or a thin re-export of it —
+   not a copy. If a build step is required, it is added deliberately and
+   reviewed, not smuggled in.
+3. The Architecture Guard walks `scripts/` as well as `src/`, and
+   `no-adhoc-service-role-client` passes over both trees.
+4. A planted violation in `scripts/` makes CI go **RED** — proven, not assumed.
+   (Component 9a shipped this rule inert once; the pattern contained a literal
+   `U+0008` and CI reported 8/8 passing over a live violation.)
+5. The production-credential question is answered separately: either the script
+   stops reading `.env.vercel.prod.tmp`, or that practice is documented and
+   accepted in writing.
+
+Criterion 5 is the one worth doing first if only one is done — it is the larger
+risk, and it is independent of the construction-path work.
