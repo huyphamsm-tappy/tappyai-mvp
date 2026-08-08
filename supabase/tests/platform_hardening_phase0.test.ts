@@ -6,10 +6,11 @@ import EmbeddedPostgres from 'embedded-postgres'
 import type { Client } from 'pg'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Platform Hardening Phase 0 — the THREE functions the Platform Owner hotfix
-// does NOT touch. The three Component-1 RPCs (fn_is_platform_owner,
-// fn_grant_admin_role, fn_revoke_admin_role) are covered permanently by
-// platform_owner_revoke.test.ts and are deliberately NOT retested here.
+// Platform Hardening Phase 0 — the TWO functions the P0 hotfix does NOT own:
+// get_interaction_avgs and sync_review_watch_stats. The four hotfix-owned
+// functions (fn_is_platform_owner, fn_grant_admin_role, fn_revoke_admin_role,
+// fn_sync_last_login) are covered permanently by platform_owner_revoke.test.ts
+// and sync_last_login_revoke.test.ts and are deliberately NOT retested here.
 //
 // This suite runs the REAL migration chain and the REAL PH-0 migration from
 // disk (docs/architecture/ADR-020). Scope contract (LOCKED): every assertion
@@ -26,18 +27,18 @@ const mig = (f: string) => readFileSync(join(REPO, 'supabase/migrations', f), 'u
 // The migration under test.
 const PH0 = mig('20260807_platform_hardening_phase0.sql')
 
-// Minimal chain measured empirically (ADR-020 Option B′): the smallest real-file
-// sequence that creates all six functions PH-0's §0 precondition requires. Order
-// is load-bearing; do not reorder.
+// Real-file migration sequence (ADR-020 Option B′). Order is load-bearing; do
+// not reorder. Builds the two functions under test and their dependencies. The
+// migrations that created the four now-hotfix-owned functions
+// (20260713_auth_daily_rollup.sql → fn_sync_last_login; 20260803_platform_owner.sql
+// → the three C1 RPCs) were removed from the chain when PH-0 stopped owning them.
 const CHAIN = [
   '20260713_backoffice_phase0.sql',                       // admin_role enum, admin_roles, audit_log
-  '20260713_auth_daily_rollup.sql',                       // fn_sync_last_login
   '20260712_prod_baseline_and_review_saves_indexes.sql',  // review_saves + review RLS
   'add_explore_upgrade.sql',                              // review_interactions
   'add_social_week2.sql',                                 // review_comments, user_follows
   'add_phase4_hardening.sql',                             // get_interaction_avgs
   'add_counter_security_definer.sql',                     // sync_review_watch_stats
-  '20260803_platform_owner.sql',                          // the three C1 RPCs
 ].map(mig)
 
 // Repository-baseline PRELUDE (ADR-020, LOCKED). ONLY objects whose CREATE is
@@ -85,7 +86,7 @@ const PRELUDE = `
   SET check_function_bodies = off;
 `
 
-const P3 = ['fn_sync_last_login', 'get_interaction_avgs', 'sync_review_watch_stats'] as const
+const PH0_FNS = ['get_interaction_avgs', 'sync_review_watch_stats'] as const
 const PORT = 54345
 
 let pg: EmbeddedPostgres
@@ -145,19 +146,19 @@ const applyPH0 = () => db.query(PH0)
 
 describe('PH-0 harness — the platform this suite models', () => {
   it('reproduces Supabase default privileges on functions', async () => {
-    // Guards the guard (ADR-019). fn_sync_last_login is created by the chain and
-    // never granted explicitly, so its ACL proves default privileges were in
+    // Guards the guard (ADR-019). get_interaction_avgs is created by the chain
+    // and never granted explicitly, so its ACL proves default privileges were in
     // force at CREATE time. proacl, not has_function_privilege — the latter
     // cannot distinguish an explicit grant from the PUBLIC fallback.
-    const a = await acl('fn_sync_last_login')
+    const a = await acl('get_interaction_avgs')
     expect(a, 'anon default grant materialised').toContain('anon=X')
     expect(a, 'authenticated default grant materialised').toContain('authenticated=X')
   })
 })
 
-describe('PH-0 RED — before the migration, all three P3 functions are anon-callable', () => {
-  it('anon can execute all three (pre-PH0 default grants)', async () => {
-    for (const fn of P3) {
+describe('PH-0 RED — before the migration, both PH-0 functions are anon-callable', () => {
+  it('anon can execute both (pre-PH0 default grants)', async () => {
+    for (const fn of PH0_FNS) {
       expect(await canExecute('anon', fn), `anon should reach ${fn} pre-PH0`).toBe(true)
       expect(await canExecute('authenticated', fn), `authenticated should reach ${fn} pre-PH0`).toBe(true)
     }
@@ -166,17 +167,6 @@ describe('PH-0 RED — before the migration, all three P3 functions are anon-cal
 
 describe('PH-0 GREEN — after the migration', () => {
   beforeEach(applyPH0)
-
-  it('fn_sync_last_login: anon denied, authenticated denied, service_role allowed', async () => {
-    expect(await canExecute('anon', 'fn_sync_last_login')).toBe(false)
-    expect(await canExecute('authenticated', 'fn_sync_last_login')).toBe(false)
-    expect(await canExecute('service_role', 'fn_sync_last_login')).toBe(true)
-
-    const a = await acl('fn_sync_last_login')
-    expect(a).not.toContain('anon=X')
-    expect(a).not.toContain('authenticated=X')
-    expect(a).toContain('service_role=X')
-  })
 
   it('get_interaction_avgs: anon denied, authenticated denied, no replacement client grant', async () => {
     expect(await canExecute('anon', 'get_interaction_avgs')).toBe(false)
@@ -203,7 +193,7 @@ describe('PH-0 GREEN — after the migration', () => {
 
   it('is idempotent — re-applying PH-0 changes nothing', async () => {
     await applyPH0()
-    expect(await canExecute('anon', 'fn_sync_last_login')).toBe(false)
+    expect(await canExecute('anon', 'get_interaction_avgs')).toBe(false)
     expect(await canExecute('authenticated', 'sync_review_watch_stats')).toBe(true)
     expect(await canExecute('service_role', 'get_interaction_avgs')).toBe(true)
   })

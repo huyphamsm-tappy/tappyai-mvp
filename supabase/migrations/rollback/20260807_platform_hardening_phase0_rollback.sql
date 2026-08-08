@@ -4,11 +4,21 @@
 -- ── ROLLBACK CONTRACT ───────────────────────────────────────────────────────
 --
 -- THIS FILE REVERSES ONLY THE CHANGES INTRODUCED BY PLATFORM HARDENING PHASE 0.
--- IT DOES NOT RESTORE THE COMPLETE HISTORICAL ACL OF THESE SIX FUNCTIONS.
+-- IT DOES NOT RESTORE THE COMPLETE HISTORICAL ACL OF THESE TWO FUNCTIONS.
+--
+-- SCOPE — exactly TWO functions: get_interaction_avgs and
+-- sync_review_watch_stats. PH-0 was deduplicated after the P0 hotfix took
+-- ownership of the other four (fn_is_platform_owner, fn_grant_admin_role,
+-- fn_revoke_admin_role, fn_sync_last_login); this rollback must therefore NOT
+-- restore anon/authenticated on those four — doing so would re-open the very
+-- holes the hotfix closed. Their rollbacks live beside the hotfix migrations
+-- (supabase/migrations/rollback/20260807_platform_owner_revoke_public_execute_rollback.sql
+-- and ..._20260807b_sync_last_login_revoke_public_execute_rollback.sql) and are
+-- the ONLY files permitted to re-open them.
 --
 -- What it undoes:  the EXECUTE privileges that
 --                  20260807_platform_hardening_phase0.sql revoked from
---                  `anon` and `authenticated`.
+--                  `anon` and `authenticated` on the two functions above.
 --
 -- What it leaves:  every other aspect of each function's ACL, including
 --                  grantees PH-0 never touched (`postgres`, `service_role`)
@@ -28,16 +38,16 @@
 -- NOT applied automatically. Kept beside the migration so the rollback is a
 -- rehearsed file rather than something improvised during an incident.
 --
--- ⚠️ THIS RE-OPENS `anon` REACH ON SIX SECURITY DEFINER FUNCTIONS, including
--- fn_is_platform_owner, which is an enumeration oracle for the Platform Owner.
--- Run it only to restore service after a proven regression, and re-apply the
--- migration as soon as the cause is understood.
+-- ⚠️ THIS RE-OPENS `anon` REACH ON TWO SECURITY DEFINER FUNCTIONS
+-- (get_interaction_avgs, sync_review_watch_stats). Run it only to restore
+-- service after a proven regression, and re-apply the migration as soon as the
+-- cause is understood.
 --
 -- ── NOT RESTORED, AND WHY ───────────────────────────────────────────────────
 --
 -- 1. `PUBLIC`. The migration revoked it; this file does NOT grant it back.
 --    Measured pre-PH-0 state was PUBLIC + anon + authenticated + postgres +
---    service_role on all six functions. This is the one intentional gap in the
+--    service_role on both functions. This is the one intentional gap in the
 --    rollback contract above. Restoring the PUBLIC grant would re-open the
 --    functions to every role that exists now or is created later, which is
 --    strictly worse than the state this rollback is meant to reach. Granting
@@ -45,7 +55,7 @@
 --    the roles that had it in practice.
 --
 -- 2. `service_role`. The migration never revoked it, so there is nothing to
---    restore. It still holds EXECUTE on all six.
+--    restore. It still holds EXECUTE on both.
 --
 -- 3. `postgres`. Owner privileges were never in scope.
 --
@@ -66,10 +76,6 @@ DECLARE
 BEGIN
   SELECT string_agg(sig, ', ' ORDER BY sig) INTO v_missing
   FROM (VALUES
-    ('fn_is_platform_owner(UUID)'),
-    ('fn_grant_admin_role(UUID, UUID, admin_role, TEXT, TIMESTAMPTZ)'),
-    ('fn_revoke_admin_role(UUID, UUID)'),
-    ('fn_sync_last_login()'),
     ('get_interaction_avgs(UUID)'),
     ('sync_review_watch_stats(UUID)')
   ) AS t(sig)
@@ -85,39 +91,23 @@ $preconditions$;
 
 
 -- ---------------------------------------------------------------------------
--- 1. P1 — reverse §1 of the migration
--- ---------------------------------------------------------------------------
-GRANT EXECUTE ON FUNCTION fn_is_platform_owner(UUID) TO anon, authenticated;
-
-
--- ---------------------------------------------------------------------------
--- 2. P2 — reverse §2 of the migration
--- ---------------------------------------------------------------------------
-GRANT EXECUTE ON FUNCTION fn_grant_admin_role(UUID, UUID, admin_role, TEXT, TIMESTAMPTZ) TO anon, authenticated;
-
-GRANT EXECUTE ON FUNCTION fn_revoke_admin_role(UUID, UUID) TO anon, authenticated;
-
-
--- ---------------------------------------------------------------------------
--- 3. P3 — reverse §3 of the migration
+-- 1. Reverse the migration
 --
 -- `sync_review_watch_stats` is the asymmetric one: the migration revoked only
 -- PUBLIC and `anon` from it, deliberately keeping `authenticated` because that
 -- is the role its single caller runs as. Naming `authenticated` here is a
--- no-op restatement, kept so every line in this file has the same shape and so
--- the end state is readable without cross-referencing the migration.
+-- no-op restatement, kept so both lines have the same shape and so the end
+-- state is readable without cross-referencing the migration.
 -- ---------------------------------------------------------------------------
-GRANT EXECUTE ON FUNCTION fn_sync_last_login() TO anon, authenticated;
-
 GRANT EXECUTE ON FUNCTION get_interaction_avgs(UUID) TO anon, authenticated;
 
 GRANT EXECUTE ON FUNCTION sync_review_watch_stats(UUID) TO anon, authenticated;
 
 
 -- ---------------------------------------------------------------------------
--- 4. Verification after rollback
+-- 2. Verification after rollback
 --
--- Expected: anon_exec and auth_exec TRUE on all six; svc_exec TRUE on all six
+-- Expected: anon_exec and auth_exec TRUE on both; svc_exec TRUE on both
 -- (never revoked). PUBLIC remains revoked by design — see the header.
 --
 --   SELECT p.proname,
@@ -126,8 +116,7 @@ GRANT EXECUTE ON FUNCTION sync_review_watch_stats(UUID) TO anon, authenticated;
 --          has_function_privilege('service_role',  p.oid, 'EXECUTE') AS svc_exec
 --   FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
 --   WHERE n.nspname = 'public'
---     AND p.proname IN ('fn_is_platform_owner','fn_grant_admin_role','fn_revoke_admin_role',
---                       'fn_sync_last_login','get_interaction_avgs','sync_review_watch_stats')
+--     AND p.proname IN ('get_interaction_avgs','sync_review_watch_stats')
 --   ORDER BY p.proname;
 --
 -- ⚠️ has_function_privilege answers "can this role call it". It does NOT prove

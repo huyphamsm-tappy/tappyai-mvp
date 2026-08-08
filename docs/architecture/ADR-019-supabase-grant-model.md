@@ -299,11 +299,14 @@ infrastructure rather than invisible inside a `beforeEach`.
 - **F-04** was the single-component instance: Component 7's four functions,
   hotfixed on production and then synchronised into source by PR #18
   (`97dd378`). F-04 is closed.
-- **Platform Hardening Phase 0** is the platform-wide response: it applies this
-  ADR to the six SECURITY DEFINER functions measured as accidentally reachable by
-  `anon`, and installs the CI guard that stops the class of defect from
-  recurring. PH-0 is **platform infrastructure, not a Controller component**, and
-  carries no component number.
+- **Platform Hardening Phase 0** is the platform-wide response. Six SECURITY
+  DEFINER functions were measured accidentally reachable by `anon`. The P0
+  hotfix `fix/platform-owner-revoke-public` (merged to main as `1d33137`) owns
+  four of them (`fn_is_platform_owner`, `fn_grant_admin_role`,
+  `fn_revoke_admin_role`, `fn_sync_last_login`); PH-0 applies this ADR to the
+  remaining two (`get_interaction_avgs`, `sync_review_watch_stats`) and installs
+  the CI guard that stops the class of defect from recurring. PH-0 is **platform
+  infrastructure, not a Controller component**, and carries no component number.
 - This ADR is PH-0 deliverable **D1**. The migration (D2), rollback (D3), CI
   guard (D4), harness change (D5) and tests (D6) implement it.
 
@@ -320,11 +323,13 @@ infrastructure rather than invisible inside a `beforeEach`.
   `music_increment_play`, `music_saved_count`, `music_followed_count` — keep
   their grants. This ADR makes that intent explicit; it does not reverse it.
 - **Trigger functions are not revoked.**
-- **Component 1 behaviour is unchanged.** `fn_grant_admin_role` and
-  `fn_revoke_admin_role` continue to raise `42501` for a non-Owner actor. Only
-  their reachability narrows.
+- **Component 1 is out of PH-0's migration scope.** `fn_grant_admin_role` and
+  `fn_revoke_admin_role` are closed by the P0 hotfix, not this ADR's migration.
+  Their behaviour is unchanged (they still raise `42501` for a non-Owner actor),
+  and PH-0's migration does not alter their grants.
 - **Legacy migrations are not rewritten.**
 - **ADR-017's deferred service-role hardening** remains a separate item under its
   own gate.
-- **BL-C7-01 is not closed by this ADR.** It is the backlog entry PH-0's
-  migration acts on.
+- **BL-C7-01 is not closed by this ADR.** It is closed by the P0 hotfix, whose
+  migrations revoke `anon`/`authenticated` on the three Platform Owner RPCs;
+  PH-0's migration does not act on it.
