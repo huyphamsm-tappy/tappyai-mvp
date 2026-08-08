@@ -39,6 +39,12 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:logging"))
 
+    // `core:network` keeps Retrofit as `implementation`, so it is not on this module's compile
+    // classpath transitively. Declared here because features:auth now defines its own Retrofit
+    // service (AnonymousAuthApi) — it still uses core:network's shared singleton Retrofit at
+    // runtime; this only makes the annotations and HttpException resolvable at compile time.
+    implementation(libs.retrofit.core)
+
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.auth.kt)
     implementation(libs.ktor.client.android)

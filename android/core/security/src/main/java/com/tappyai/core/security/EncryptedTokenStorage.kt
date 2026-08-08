@@ -69,8 +69,25 @@ class EncryptedTokenStorage @Inject constructor(
         }.apply()
     }
 
+    // Removes the two session keys explicitly instead of clear(). Equivalent to the previous
+    // behaviour for everything that existed before — those were the only two keys — but a
+    // blanket clear() would now also wipe the pending anonymous claim, which has to survive
+    // sign-out precisely so the user's anonymous history can still be carried over afterwards.
     override fun clearTokens() {
-        prefs.edit().clear().apply()
+        prefs.edit()
+            .remove(KEY_ACCESS_TOKEN)
+            .remove(KEY_REFRESH_TOKEN)
+            .apply()
+    }
+
+    override fun savePendingAnonymousClaim(accessToken: String) {
+        prefs.edit().putString(KEY_PENDING_ANON_CLAIM, accessToken).apply()
+    }
+
+    override fun getPendingAnonymousClaim(): String? = readTokenSafely(KEY_PENDING_ANON_CLAIM)
+
+    override fun clearPendingAnonymousClaim() {
+        prefs.edit().remove(KEY_PENDING_ANON_CLAIM).apply()
     }
 
     override fun isAccessTokenExpired(): Boolean {
@@ -85,5 +102,6 @@ class EncryptedTokenStorage @Inject constructor(
         const val PREFS_FILE_NAME = "tappy_secure_tokens"
         const val KEY_ACCESS_TOKEN = "access_token"
         const val KEY_REFRESH_TOKEN = "refresh_token"
+        const val KEY_PENDING_ANON_CLAIM = "pending_anonymous_claim"
     }
 }

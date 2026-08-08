@@ -121,6 +121,18 @@ fun AppNavHost(
                     popUpTo(navController.graph.id) { inclusive = true }
                 }
             }
+            // An anonymous session is a usable session, not a logged-out one: straight to the
+            // app, and deliberately NOT through needsOnboarding(). An anonymous identity has no
+            // `profiles` row by design (20260808c_handle_new_user_skip_anonymous.sql), so
+            // /api/profile reports onboarded = false forever and the gate would trap the user in
+            // the wizard. Signing in with Google/Zalo creates the profile and restores the normal
+            // onboarding decision.
+            AuthSessionState.Anonymous -> {
+                if (deepLinkTarget != null) return@LaunchedEffect
+                navController.navigate(AppRoute.HomeShell) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                }
+            }
             AuthSessionState.Unauthenticated -> navController.navigate(AuthRoute.Login) {
                 popUpTo(navController.graph.id) { inclusive = true }
             }
@@ -137,7 +149,11 @@ fun AppNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = if (sessionState == AuthSessionState.Authenticated) {
+        // Anonymous starts in the app for the same reason it is routed there above — it is a
+        // real session. Only Unauthenticated starts on Login.
+        startDestination = if (sessionState == AuthSessionState.Authenticated ||
+            sessionState == AuthSessionState.Anonymous
+        ) {
             AppRoute.HomeShell
         } else {
             AuthRoute.Login
