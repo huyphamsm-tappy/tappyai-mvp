@@ -1545,7 +1545,8 @@ describe('PART 10.4 — the production write path, as service_role', () => {
     // Supabase runs the audit insert as service_role. The trigger is SECURITY
     // DEFINER, so inside it the current user is the owner and the revoked
     // helpers stay reachable — but that is a claim, so here it is executed.
-    await db.query('GRANT USAGE ON SCHEMA public TO service_role')
+    // Schema USAGE comes from PRELUDE. Only the table grant and BYPASSRLS are
+    // specific to this test.
     await db.query('GRANT INSERT, SELECT ON audit_log TO service_role')
     await db.query('ALTER TABLE audit_log FORCE ROW LEVEL SECURITY')
     await db.query('ALTER ROLE service_role BYPASSRLS')
@@ -1568,7 +1569,7 @@ describe('PART 10.4 — the production write path, as service_role', () => {
 
   it('B-30b service_role can still run the verifier; it is the only role that can', async () => {
     await insert(db)
-    await db.query('GRANT USAGE ON SCHEMA public TO service_role')
+    // Schema USAGE comes from PRELUDE.
     await db.query('GRANT SELECT ON audit_log TO service_role')
     await db.query('ALTER ROLE service_role BYPASSRLS')
 
