@@ -3,13 +3,16 @@ package com.tappyai.features.auth.di
 import com.tappyai.core.common.UuidProvider
 import com.tappyai.core.deeplink.DeepLinkParser
 import com.tappyai.core.network.SessionRefresher
+import com.tappyai.features.auth.data.AnonymousAuthApi
 import com.tappyai.features.auth.data.AuthRepository
 import com.tappyai.features.auth.data.RandomUuidProvider
 import com.tappyai.features.auth.deeplink.AuthDeepLinkParser
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -35,4 +38,18 @@ abstract class AuthModule {
     @Binds
     @Singleton
     abstract fun bindSessionRefresher(impl: AuthRepository): SessionRefresher
+}
+
+/** Separate object module because @Provides needs one while @Binds needs an abstract class —
+ *  same split as `AccountNetworkModule`/`AccountBindModule`. */
+@Module
+@InstallIn(SingletonComponent::class)
+object AuthNetworkModule {
+
+    /** Built from the shared singleton [Retrofit] (core:network), so the anonymous-session and
+     *  claim calls travel the same client, interceptors and base URL as every other request. */
+    @Provides
+    @Singleton
+    fun provideAnonymousAuthApi(retrofit: Retrofit): AnonymousAuthApi =
+        retrofit.create(AnonymousAuthApi::class.java)
 }

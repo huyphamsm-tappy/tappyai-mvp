@@ -84,7 +84,13 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            isSignedIn = withContext(Dispatchers.IO) { authRepository.currentUserId() } != null
+            // An anonymous session has a real user id, so `currentUserId() != null` alone would
+            // report "signed in" for a guest — and then fetch a profile that deliberately does
+            // not exist for anonymous users, logging an error on every launch. Header identity
+            // means an ACCOUNT, so exclude anonymous explicitly.
+            isSignedIn = withContext(Dispatchers.IO) {
+                authRepository.currentUserId() != null && !authRepository.isAnonymous()
+            }
             if (isSignedIn) {
                 when (val result = accountRepository.getProfile()) {
                     is NetworkResult.Success -> profile = result.data

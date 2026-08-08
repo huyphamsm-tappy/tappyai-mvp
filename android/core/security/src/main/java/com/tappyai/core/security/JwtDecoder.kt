@@ -2,6 +2,7 @@ package com.tappyai.core.security
 
 import android.util.Base64
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -26,16 +27,32 @@ object JwtDecoder {
         if (segments.size < 2) return null
 
         return try {
-            val payload = String(segments[1].decodeBase64Url(), Charsets.UTF_8)
-            val claims = json.parseToJsonElement(payload).jsonObject
-            JwtClaims(
-                subject = claims["sub"]?.jsonPrimitive?.contentOrNull,
-                issuedAt = claims["iat"]?.jsonPrimitive?.longOrNull,
-                expiresAt = claims["exp"]?.jsonPrimitive?.longOrNull,
-            )
+            parseClaims(String(segments[1].decodeBase64Url(), Charsets.UTF_8))
         } catch (e: Exception) {
             null
         }
+    }
+
+    /**
+     * The claim-mapping half of [decode], split out so it can be unit-tested on the JVM.
+     * [decode] itself cannot be: it goes through `android.util.Base64`, which is an empty
+     * android.jar stub under unit tests, and the project has no Robolectric. Splitting here
+     * keeps the behaviour identical while making the part that actually carries meaning —
+     * which claims are read, and what a missing one defaults to — verifiable.
+     */
+    fun parseClaims(payloadJson: String): JwtClaims? = try {
+        val claims = json.parseToJsonElement(payloadJson).jsonObject
+        JwtClaims(
+            subject = claims["sub"]?.jsonPrimitive?.contentOrNull,
+            issuedAt = claims["iat"]?.jsonPrimitive?.longOrNull,
+            expiresAt = claims["exp"]?.jsonPrimitive?.longOrNull,
+            // Absent claim -> false: only an explicit `true` marks a session anonymous, so a
+            // real account can never be mistaken for one (which would strand the user in the
+            // anonymous 5/day quota).
+            isAnonymous = claims["is_anonymous"]?.jsonPrimitive?.booleanOrNull ?: false,
+        )
+    } catch (e: Exception) {
+        null
     }
 
     /** JWT segments are base64url-encoded *without* padding (RFC 7515 Appendix C), but
