@@ -49,13 +49,20 @@ object NetworkModule {
         tokenAuthenticator: TokenAuthenticator,
         @Named("isDebug") isDebug: Boolean,
     ): OkHttpClient {
-        // BODY-level logging prints every request/response header, which would otherwise
-        // print the `Authorization: Bearer <token>` AuthInterceptor just added in plaintext
-        // to Logcat on every debug-build request — redactHeader masks the value while still
-        // showing the header exists. Gate review finding: token exposed via logs (High).
+        // HEADERS, not BODY. An application interceptor logging at BODY level reads the whole
+        // response body before handing it back, so a STREAMING endpoint delivers nothing until it
+        // closes. `/api/chat` streams the reply token-by-token, so at BODY level a debug build
+        // showed an empty bubble for the entire reply and then everything at once on close — and
+        // tapping Stop mid-reply parsed an EMPTY buffer, silently losing an itinerary that the
+        // server had already sent. (ReviewsModule documents the same hazard for video upload.)
+        // Release builds were never affected: isDebug=false already selected NONE.
+        //
+        // Headers still cover the original security finding this block was written for: the
+        // `Authorization: Bearer <token>` header the AuthInterceptor adds is logged as present but
+        // redacted, never in plaintext. Gate review finding: token exposed via logs (High).
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             redactHeader("Authorization")
-            level = if (isDebug) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            level = if (isDebug) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
         }
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)

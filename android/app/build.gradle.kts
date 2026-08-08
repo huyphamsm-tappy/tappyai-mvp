@@ -205,6 +205,15 @@ android {
         buildConfig = true
     }
 
+    // TEST-ONLY. Unit tests run against android.jar stubs whose bodies throw
+    // RuntimeException("Stub!"); this makes them return default values instead, so a test can
+    // construct android.content.ContextWrapper(null) for a class that merely *holds* a Context
+    // without touching it on the path under test (see PlannerStopCancelParseTest). Affects the
+    // unit-test JVM only — no app code, no dependency, no packaged artifact.
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
