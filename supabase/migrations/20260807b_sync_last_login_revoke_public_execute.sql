@@ -1,0 +1,106 @@
+-- ---------------------------------------------------------------------------
+-- fn_sync_last_login — REVOKE EXECUTE from PUBLIC, anon and authenticated
+--
+-- REVOKE ONLY. No business logic, no signature change, no schema change, no
+-- data change, and deliberately NO GRANT (see "Why no GRANT" below).
+--
+-- Same defect as BL-C7-01, in a different file. 20260713_auth_daily_rollup.sql
+-- creates this function and contains ZERO GRANT/REVOKE statements, so the
+-- function picked up its anon/authenticated EXECUTE entirely from Supabase's
+-- project-wide
+--   ALTER DEFAULT PRIVILEGES IN SCHEMA public
+--     GRANT ALL ON FUNCTIONS TO anon, authenticated, service_role;
+-- plus PostgreSQL's own default grant to PUBLIC.
+--
+-- ---------------------------------------------------------------------------
+-- WHY THIS IS A PROBLEM
+-- ---------------------------------------------------------------------------
+-- The function is SECURITY DEFINER, takes no arguments, and its body is:
+--
+--   UPDATE public.user_acquisition ua
+--   SET last_login_at = u.last_sign_in_at, updated_at = now()
+--   FROM auth.users u
+--   WHERE u.id = ua.user_id
+--     AND u.last_sign_in_at IS DISTINCT FROM ua.last_login_at;
+--
+-- Being SECURITY DEFINER it bypasses RLS, so an unauthenticated caller holding
+-- only the public anon key can trigger a full-scan join against auth.users, at
+-- an unbounded rate, via POST /rest/v1/rpc/fn_sync_last_login.
+--
+-- The impact is AVAILABILITY, not integrity or confidentiality: the function
+-- returns void (nothing is read back) and the write is idempotent, setting
+-- last_login_at to the value auth.users already holds. Repeated calls converge.
+-- What it costs is database work — a scan/join per call, plus WAL and autovacuum
+-- churn. It is not a privilege escalation and it leaks nothing.
+--
+-- ---------------------------------------------------------------------------
+-- MEASURED ON PRODUCTION BEFORE THIS MIGRATION
+-- ---------------------------------------------------------------------------
+--   aclexplode(proacl) for fn_sync_last_login returned five EXECUTE entries,
+--   all granted by postgres:
+--       anon · authenticated · postgres · PUBLIC · service_role
+--
+-- ---------------------------------------------------------------------------
+-- WHY NO GRANT
+-- ---------------------------------------------------------------------------
+-- 20260807_platform_owner_revoke_public_execute.sql re-asserts the service_role
+-- grant so that file reads as a complete end state. This one does not, because
+-- it does not need to: `service_role` already holds its OWN ACL entry above,
+-- independent of PUBLIC. Verified before writing this migration, precisely
+-- because a REVOKE-only change would silently break the analytics cron if
+-- service_role's access had come via PUBLIC. It does not.
+--
+-- ---------------------------------------------------------------------------
+-- WHY REVOKING IS SAFE — every caller, enumerated
+-- ---------------------------------------------------------------------------
+-- Application  : exactly one call site in the entire repository,
+--                src/app/api/cron/analytics-snapshot/route.ts:60, through
+--                createAdminClient() — i.e. the service-role client.
+-- Other SQL    : no other function body references it
+--                (pg_proc.prosrc ILIKE '%fn_sync_last_login%' -> 0 rows).
+-- Triggers     : not attached to any trigger (pg_trigger -> 0 rows).
+-- DB scheduler : pg_cron is NOT installed on this project (`cron.job` does not
+--                exist; pg_extension has no 'pg_cron' row), so nothing inside
+--                the database can be scheduled to call it.
+-- Clients      : no Android or iOS call site.
+--
+-- So no anon path, no authenticated path, and no PUBLIC path is in use. The
+-- only surviving caller after this migration is service_role, which is the only
+-- one that was ever intended.
+--
+-- ---------------------------------------------------------------------------
+-- NOTES ON APPLYING
+-- ---------------------------------------------------------------------------
+-- Idempotent; re-running is a no-op. Requires the roles `anon` and
+-- `authenticated` to exist — REVOKE ... FROM <missing role> raises
+-- `42704: role "..." does not exist` and aborts, which is intended: a guard that
+-- skipped silently would produce a migration that "succeeds" while revoking
+-- nothing.
+-- ---------------------------------------------------------------------------
+
+REVOKE EXECUTE ON FUNCTION public.fn_sync_last_login()
+  FROM PUBLIC, anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- VERIFICATION — run after applying, expect exactly these results
+-- ---------------------------------------------------------------------------
+-- (a) In SQL: only postgres (owner) and service_role remain.
+--
+--   SELECT CASE WHEN a.grantee = 0 THEN 'PUBLIC'
+--               ELSE a.grantee::regrole::text END AS grantee, a.privilege_type
+--   FROM pg_proc p
+--   JOIN pg_namespace n ON n.oid = p.pronamespace
+--   CROSS JOIN LATERAL aclexplode(COALESCE(p.proacl, acldefault('f', p.proowner))) a
+--   WHERE n.nspname = 'public' AND p.proname = 'fn_sync_last_login'
+--   ORDER BY 1;
+--
+--   Expected: postgres, service_role. Any row naming anon, authenticated or
+--   PUBLIC means the revoke did not take.
+--
+-- (b) Over HTTPS with the public anon key:
+--     POST /rest/v1/rpc/fn_sync_last_login must answer
+--     `42501 permission denied for function fn_sync_last_login`.
+--
+-- (c) The analytics cron must still succeed: GET /api/cron/analytics-snapshot
+--     runs fn_sync_last_login through the service-role client.
+-- ---------------------------------------------------------------------------
