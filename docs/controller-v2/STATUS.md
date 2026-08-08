@@ -19,7 +19,7 @@
 | **Component 4** — Audited PDP | **ACCEPTED · IN PRODUCTION** — merge commit `28f68c1` |
 | **Component 5** — Capability Registry | **FROZEN** — [ADR-018](../architecture/ADR-018-capability-registry-frozen.md), merges into Component 6 |
 | **Component 9a** — single admin-client construction point | **ACCEPTED · IN PRODUCTION** — merge commit `e8d4eb9` |
-| **Component 7** — Audit Hardening | **READY TO OPEN PR** — not merged, not deployed, **migration not applied to any database**. See [RELEASE_READINESS_COMPONENT_7.md](RELEASE_READINESS_COMPONENT_7.md) |
+| **Component 7** — Audit Hardening | **IMPLEMENTED · DEPLOYED · NOT YET UAT-VERIFIED** — merge commit `f3caf59`, live in production `526157a`; F-04 grant-model source-sync (PR #18) and PH-0 audit-function hardening applied. Final UAT deferred. See [RELEASE_READINESS_COMPONENT_7.md](RELEASE_READINESS_COMPONENT_7.md) (historical, pre-merge) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
 > "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
@@ -27,6 +27,16 @@
 > branch and then went stale through two merges. A document that declares itself
 > the single source of truth is the worst place for drift, so the correction is
 > recorded here rather than filed as a backlog item.
+>
+> **Row 7 was corrected on 2026-08-08 (FOUNDATION-01 reconciliation).** It had
+> said "READY TO OPEN PR — not merged, not deployed" while C7 was in fact merged
+> (`f3caf59`), live in production (`526157a`), and hardened by F-04 (PR #18) and
+> PH-0. MEASURED: `f3caf59` is an ancestor of `origin/main`; `/admin/audit` and
+> `/api/admin/audit` serve on production; the `audit_log` hash chain is active.
+> The three states are kept distinct: **IMPLEMENTED** (code merged) and
+> **DEPLOYED** (running in prod) are both true; **UAT-VERIFIED** is not yet claimed
+> — the owner's final production UAT is deferred. `RELEASE_READINESS_COMPONENT_7.md`
+> is a pre-merge point-in-time report and is left intact with a correction banner.
 
 **Scope of "Foundation Phase: CLOSED".** This closes the Foundation *establishment* phase — the legacy audit, the Phase 0 audit, the approved architecture, and the two components that constitute the security foundation everything else builds on, now live in production. It does **not** mean all eleven Phase 1 components are built: Components 3–11 remain, and their state is tracked in [`ROADMAP.md`](ROADMAP.md). Read the two together.
 

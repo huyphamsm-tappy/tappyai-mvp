@@ -40,7 +40,7 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 
 | # | Component | Status |
 |---|---|---|
-| 7 | **Audit Hardening** — tamper-evident hash chain over `audit_log` | ⬅ **READY TO OPEN PR** — not merged, not deployed, [migration not applied](RELEASE_READINESS_COMPONENT_7.md) |
+| 7 | **Audit Hardening** — tamper-evident hash chain over `audit_log` | ✅ **IMPLEMENTED · DEPLOYED · NOT YET UAT-VERIFIED** — merge `f3caf59`, live in production `526157a` (F-04 PR #18 + PH-0 applied). Corrected 2026-08-08 (FOUNDATION-01); see [STATUS.md](STATUS.md) row 7 note |
 | 8 | Event Bus | not started |
 | 9a | Single admin-client construction point | ✅ **IN PRODUCTION** — merge commit `e8d4eb9` |
 | 9b | Secret Manager — typed boot-time config validation | not started |

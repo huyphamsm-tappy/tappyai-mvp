@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { LogOut } from 'lucide-react'
 import { type AdminRole } from '@/lib/admin/roles'
-import type { PermissionId } from '@/lib/admin/permissions/types'
-import { NAV, visibleNavItems } from './nav'
+import type { NavGroup } from '@/lib/controller/adminNavigation'
+import { navIcon } from './navIcons'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -23,24 +23,28 @@ export function AdminShell({
   role,
   email,
   isOwner,
-  permissions,
+  navGroups,
   children,
 }: {
-  /** Display only — the role badge. Authorization uses `permissions`. */
+  /** Display only — the role badge. Authorization + navigation are decided server-side. */
   role: AdminRole
-  /** The Owner holds no role but outranks every one of them — see the badge and placeholder filter. */
+  /** The Owner holds no role but outranks every one of them — see the badge. */
   isOwner: boolean
   email: string
   /**
-   * The actor's resolved permission set, computed server-side in the layout.
-   * Passed as plain strings so this stays a client component with no server
-   * imports (the boundary Component 2 established).
+   * Navigation derived server-side from the Controller registry + PDP
+   * (@/lib/controller/adminNavigation). AdminShell is purely presentational: it
+   * renders exactly what the Controller authorized. There is no client-side
+   * permission logic and no static NAV[] — this is the single navigation
+   * authority. Groups are flattened to a single ordered list to preserve the
+   * existing sidebar layout.
    */
-  permissions: readonly PermissionId[]
+  navGroups: readonly NavGroup[]
   children: ReactNode
 }) {
   const pathname = usePathname()
   const { t, locale, setLocale } = useTranslation()
+  const items = navGroups.flatMap((g) => g.items)
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
@@ -52,33 +56,21 @@ export function AdminShell({
             <Badge variant="muted">{t('admin.shell.badge')}</Badge>
           </div>
           <nav className="flex-1 p-3 space-y-1">
-            {visibleNavItems(NAV, permissions, role, isOwner).map((item) => {
-              const active = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
-              const Icon = item.icon
-              if (!item.ready) {
-                return (
-                  <div
-                    key={item.href}
-                    className="flex items-center gap-3 rounded-admin-md px-3 py-2 text-sm text-muted-foreground/60 cursor-not-allowed select-none"
-                    title={t('admin.shell.comingLaterPhase')}
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span className="flex-1">{t(item.labelKey)}</span>
-                    <span className="text-[10px] uppercase tracking-wide">{t('admin.shell.comingSoon')}</span>
-                  </div>
-                )
-              }
+            {items.map((item) => {
+              const active =
+                pathname === item.route || (item.route !== '/admin' && pathname.startsWith(item.route))
+              const Icon = navIcon(item.icon)
               return (
                 <Link
-                  key={item.href}
-                  href={item.href}
+                  key={item.route}
+                  href={item.route}
                   className={cn(
                     'flex items-center gap-3 rounded-admin-md px-3 py-2 text-sm transition-colors',
                     active ? 'bg-interactive text-white' : 'text-foreground hover:bg-muted'
                   )}
                 >
                   <Icon className="h-4 w-4" />
-                  {t(item.labelKey)}
+                  {t(item.label)}
                 </Link>
               )
             })}

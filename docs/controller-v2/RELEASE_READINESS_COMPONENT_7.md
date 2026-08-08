@@ -1,5 +1,14 @@
 # Release Readiness Report — Component 7 (Tamper-evident audit chain)
 
+> ⚠️ **HISTORICAL — PRE-MERGE POINT-IN-TIME REPORT (corrected 2026-08-08).**
+> This document captured C7's state *before* it shipped. C7 has since merged
+> (`f3caf59`), deployed to production (`origin/main` = `526157a`), and been
+> hardened by F-04 (PR #18) and PH-0. The "READY TO OPEN PR — not merged, not
+> deployed" verdict below is therefore **superseded**; the authoritative current
+> status is **IMPLEMENTED · DEPLOYED · NOT YET UAT-VERIFIED** in
+> [`STATUS.md`](STATUS.md) (row 7). The body is left intact as a historical
+> record and is **not** rewritten.
+
 **Branch:** `feat/controller-v2-component7-audit-chain`
 **Merge base:** `e8d4eb9` (`origin/main`)
 **Merge strategy:** merge commit — never squash.

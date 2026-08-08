@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { resolveActorForUser } from '@/lib/admin/rbac'
-import { permissionEngine } from '@/lib/admin/permissions'
+import { resolveAdminNavigation } from '@/lib/controller/adminNavigation'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
 import { Toaster } from '@/components/ui/sonner'
 
@@ -21,14 +21,15 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   // Platform Owner out of their own Controller if they held no admin_roles row.
   // Ownership does not derive from a role, so it must not depend on one.
   //
-  // Component 3: resolve the full Actor (all roles, not just the highest) and
-  // hand the shell the actor's PERMISSIONS. The shell filters navigation on
-  // those rather than on role rank, so an operator never sees a door they
-  // cannot open. `role` is still passed, but only to render the role label.
+  // Component 3 / FOUNDATION-03: resolve the full Actor (all roles, not just the
+  // highest). Navigation is derived server-side from the Controller registry +
+  // PDP (resolveAdminNavigation) — the single navigation authority; the legacy
+  // static NAV[] is gone. `role` is still passed, but only to render the role
+  // label.
   const actor = await resolveActorForUser(user.id, user.email)
   if (!actor.isOwner && actor.roles.length === 0) redirect('/reviews') // authenticated but not an admin
 
-  const permissions = permissionEngine.listPermissions(actor)
+  const navGroups = resolveAdminNavigation(actor)
 
   return (
     <div className="admin-theme">
@@ -36,7 +37,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         role={actor.highestRole ?? 'analyst'}
         isOwner={actor.isOwner}
         email={user.email ?? '—'}
-        permissions={permissions}
+        navGroups={navGroups}
       >
         {children}
       </AdminShell>
