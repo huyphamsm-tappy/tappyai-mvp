@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { resolveActorForUser } from '@/lib/admin/rbac'
+import { resolveActorForPage } from '@/lib/admin/permissions/guards'
 import { resolveAdminNavigation } from '@/lib/controller/adminNavigation'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
 import { Toaster } from '@/components/ui/sonner'
@@ -26,7 +26,13 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   // PDP (resolveAdminNavigation) — the single navigation authority; the legacy
   // static NAV[] is gone. `role` is still passed, but only to render the role
   // label.
-  const actor = await resolveActorForUser(user.id, user.email)
+  //
+  // FOUNDATION-10C: `resolveActorForPage` runs the trusted corporate-identity
+  // boundary before the Actor exists — an identity that is not a verified
+  // @tappyai.com mailbox is redirected out of the Controller and never becomes a
+  // principal. Being corporate is NOT authorization: the role/owner check below
+  // and the per-page PDP guard still decide everything.
+  const actor = await resolveActorForPage(user)
   if (!actor.isOwner && actor.roles.length === 0) redirect('/reviews') // authenticated but not an admin
 
   const navGroups = resolveAdminNavigation(actor)

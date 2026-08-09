@@ -75,7 +75,16 @@ describe('every admin page decides through the PDP', () => {
 
   it('the /admin layout resolves the Actor but makes no rank comparison', () => {
     const layout = codeLines(read(join(SRC, 'app/admin/layout.tsx')))
-    expect(layout).toMatch(/resolveActorForUser/)
+    // FOUNDATION-10C: the layout now goes through `resolveActorForPage`, the
+    // page-surface wrapper that runs the corporate-identity boundary and turns
+    // its denial into a redirect. It still resolves the FULL Actor — that is
+    // what this assertion has always protected.
+    //
+    // ⚠️ Matches the CALL, not the import. The previous form (`/resolveActorForUser/`)
+    // was satisfied by the import statement alone, so swapping the call for a
+    // different resolver left this test green — found by mutation M-C7. An
+    // assertion that a symbol is *mentioned* proves nothing about what runs.
+    expect(layout).toMatch(/await resolveActorForPage\(/)
     expect(layout).not.toMatch(/\bhasRole\(/)
     expect(layout).not.toMatch(/\bROLE_RANK\b/)
   })
