@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { Loader2, ExternalLink, Copy, Check, Mail, ArrowLeft, User, ShieldCheck, MessageCircle, MapPin, Star } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AUTH_PROVIDERS } from '@/lib/auth/providers'
+import { RETURN_TO_PARAM, readReturnTo } from '@/lib/auth/returnTo'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
@@ -93,12 +94,7 @@ export default function LoginPage() {
     const checkAndRedirect = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
-      const returnTo = new URLSearchParams(window.location.search).get('returnTo')
-      const dest =
-        returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
-          ? returnTo
-          : '/'
-      router.replace(dest)
+      router.replace(readReturnTo(window.location.search))
     }
 
     checkAndRedirect()
@@ -114,8 +110,7 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setLoadingGoogle(true)
     markAuthPending('google')
-    const urlParams = new URLSearchParams(window.location.search)
-    const returnTo = urlParams.get('returnTo') || '/'
+    const returnTo = readReturnTo(window.location.search)
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -135,8 +130,7 @@ export default function LoginPage() {
   const handleFacebookLogin = async () => {
     setLoadingFacebook(true)
     markAuthPending('facebook')
-    const urlParams = new URLSearchParams(window.location.search)
-    const returnTo = urlParams.get('returnTo') || '/'
+    const returnTo = readReturnTo(window.location.search)
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook',
       options: {
@@ -156,15 +150,11 @@ export default function LoginPage() {
   const handleZaloLogin = () => {
     setLoadingZalo(true)
     markAuthPending('zalo')
-    const urlParams = new URLSearchParams(window.location.search)
-    const returnTo = urlParams.get('returnTo') || '/'
-    window.location.href = `/api/auth/zalo?returnTo=${encodeURIComponent(returnTo)}`
+    const returnTo = readReturnTo(window.location.search)
+    window.location.href = `/api/auth/zalo?${RETURN_TO_PARAM}=${encodeURIComponent(returnTo)}`
   }
 
-  const getReturnDest = () => {
-    const returnTo = new URLSearchParams(window.location.search).get('returnTo')
-    return returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
-  }
+  const getReturnDest = () => readReturnTo(window.location.search)
 
   // Guest = keep browsing anonymously (access policy: browse + share + 5 AI
   // questions/day, no writes). No session is created — we simply leave /login.

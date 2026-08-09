@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { loginUrlFor } from '@/lib/auth/returnTo'
 import { resolveActorForPage } from '@/lib/admin/permissions/guards'
 import { resolveAdminNavigation } from '@/lib/controller/adminNavigation'
 import { orgMembershipEnabled, resolveActorMemberships } from '@/lib/controller/org/server'
@@ -16,7 +17,7 @@ import { Toaster } from '@/components/ui/sonner'
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login?redirect=/admin')
+  if (!user) redirect(loginUrlFor('/admin'))
 
   // POLICY CHANGE (declared — see RELEASE_READINESS §5): the previous gate was
   // `if (!resolveAdminRole(user.id)) redirect('/reviews')`, which locked the

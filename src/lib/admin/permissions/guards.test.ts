@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { loginUrlFor, readReturnTo } from '@/lib/auth/returnTo'
 
 // Controller V2 — Component 3: the ENFORCEMENT layer.
 //
@@ -129,7 +130,12 @@ describe('requirePagePermission — decision order', () => {
 
     const res = await run(PERMISSIONS.DASHBOARD_HOME_VIEW)
 
-    expect(res).toEqual({ outcome: 'redirect', target: '/login?redirect=/admin' })
+    expect(res).toEqual({ outcome: 'redirect', target: loginUrlFor('/admin') })
+    // REGRESSION: the guard once produced `?redirect=` while /login consumed
+    // `returnTo`, so the destination was silently dropped and the Owner landed on
+    // the consumer home page. Assert the real consumer can read what this real
+    // producer emitted — a name mismatch on either side fails here.
+    expect(readReturnTo(new URL(`https://x${res.target}`).search)).toBe('/admin')
     expect(h.checkOwnerGate).not.toHaveBeenCalled()
     expect(h.resolveActorForUser).not.toHaveBeenCalled()
   })

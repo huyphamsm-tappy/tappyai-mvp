@@ -13,6 +13,7 @@
 import { redirect } from 'next/navigation'
 import type { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
+import { loginUrlFor } from '@/lib/auth/returnTo'
 import { AdminError, resolveActor, resolveActorForUser, type Actor } from '@/lib/admin/rbac'
 import { checkOwnerGate } from '@/lib/admin/owner'
 import { permissionEngine } from './engine'
@@ -157,7 +158,7 @@ export async function requirePagePermission(
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) redirect('/login?redirect=/admin')
+  if (!user) redirect(loginUrlFor('/admin'))
 
   const gate = await checkOwnerGate()
   if (!gate.ok) {

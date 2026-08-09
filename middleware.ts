@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { loginSearchFor } from '@/lib/auth/returnTo'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -66,7 +67,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/admin') && !user) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/login'
-    loginUrl.search = `?redirect=${encodeURIComponent(pathname)}`
+    loginUrl.search = loginSearchFor(pathname)
     return NextResponse.redirect(loginUrl)
   }
 
