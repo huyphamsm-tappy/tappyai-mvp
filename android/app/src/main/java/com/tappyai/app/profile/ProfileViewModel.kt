@@ -43,11 +43,22 @@ class ProfileViewModel @Inject constructor(
     var profile by mutableStateOf<AccountProfile?>(null)
         private set
 
+    /** Authoritative anonymity, read from the verified JWT's `is_anonymous` claim via
+     *  [AuthRepository.isAnonymous]. Never inferred from [userId] being null (an anonymous
+     *  session has a real user id) or from the absent profile (that is a consequence of
+     *  anonymity, not evidence of it). Drives the sign-in card below the header. */
+    var isAnonymous by mutableStateOf(false)
+        private set
+
     private var loadJob: Job? = null
 
     init {
         viewModelScope.launch {
-            userId = withContext(Dispatchers.IO) { authRepository.currentUserId() }
+            val (id, anon) = withContext(Dispatchers.IO) {
+                authRepository.currentUserId() to authRepository.isAnonymous()
+            }
+            userId = id
+            isAnonymous = anon
         }
         loadJob?.cancel()
         loadJob = viewModelScope.launch {

@@ -18,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteForever
@@ -74,6 +75,9 @@ import com.tappyai.core.designsystem.theme.TappySpacing
 @Composable
 fun SettingsScreen(
     onBack: () -> Unit,
+    /** Navigates to the root graph's Login destination. Routed from `AppNavHost` because this
+     *  screen's NavController is the Profile tab's nested one and cannot reach it. */
+    onSignIn: () -> Unit,
     onOpenNotifications: () -> Unit,
     onOpenTappyKnows: () -> Unit,
     onOpenTerms: () -> Unit,
@@ -162,17 +166,31 @@ fun SettingsScreen(
             )
 
             TappyCard(contentPadding = PaddingValues(0.dp)) {
-                TappyMenuRow(
-                    icon = Icons.AutoMirrored.Filled.Logout,
-                    title = if (viewModel.isSigningOut) {
-                        stringResource(R.string.settings_signing_out)
-                    } else {
-                        stringResource(R.string.settings_sign_out)
-                    },
-                    showChevron = false,
-                    danger = true,
-                    onClick = viewModel::signOut,
-                )
+                // A guest is offered sign-in, not sign-out. Signing out of an anonymous session
+                // is meaningless and actively harmful: it mints a NEW anonymous identity, so the
+                // conversation the guest just had becomes unreachable. Signing IN is what keeps
+                // it — AuthRepository carries the anonymous conversations over automatically once
+                // the authenticated session lands.
+                if (viewModel.isAnonymous) {
+                    TappyMenuRow(
+                        icon = Icons.AutoMirrored.Filled.Login,
+                        title = stringResource(R.string.settings_sign_in),
+                        subtitle = stringResource(R.string.settings_sign_in_desc),
+                        onClick = onSignIn,
+                    )
+                } else {
+                    TappyMenuRow(
+                        icon = Icons.AutoMirrored.Filled.Logout,
+                        title = if (viewModel.isSigningOut) {
+                            stringResource(R.string.settings_signing_out)
+                        } else {
+                            stringResource(R.string.settings_sign_out)
+                        },
+                        showChevron = false,
+                        danger = true,
+                        onClick = viewModel::signOut,
+                    )
+                }
                 HorizontalDivider()
                 // Path B (Google Play account-deletion requirement): mirrors the web's stated
                 // mechanism (profile/privacy §5) — a deletion *request* to support by email; there

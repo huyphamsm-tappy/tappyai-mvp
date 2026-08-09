@@ -44,6 +44,9 @@ fun ProfileTab(
     onOpenChat: () -> Unit,
     onOpenHome: () -> Unit,
     onResumeConversation: (String) -> Unit,
+    /** Routed up to `AppNavHost` — this tab's NavController is nested and cannot reach the
+     *  root graph's Login destination. Forwarded to both Profile and Settings. */
+    onSignIn: () -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = ProfileRoute.Hub) {
@@ -62,6 +65,7 @@ fun ProfileTab(
                 onOpenPriceTracking = { navController.navigate(ProfileRoute.PriceTracking) },
                 onOpenAccount = { navController.navigate(ProfileRoute.AccountGraph) },
                 onOpenAppConnections = { navController.navigate(ProfileRoute.AppConnections) },
+                onSignIn = onSignIn,
             )
         }
         composable<ProfileRoute.AppConnections> {
@@ -70,6 +74,7 @@ fun ProfileTab(
         composable<ProfileRoute.Settings> {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
+                onSignIn = onSignIn,
                 onOpenNotifications = { navController.navigate(ProfileRoute.Notifications) },
                 onOpenTappyKnows = { navController.navigate(ProfileRoute.TappyKnows) },
                 onOpenTerms = { navController.navigate(ProfileRoute.Terms) },

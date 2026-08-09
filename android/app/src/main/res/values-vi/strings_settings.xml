@@ -14,6 +14,9 @@
     <string name="settings_version">Phiên bản %1$s</string>
     <string name="settings_signing_out">Đang đăng xuất…</string>
     <string name="settings_sign_out">Đăng xuất</string>
+    <string name="settings_sign_in">Đăng nhập</string>
+    <string name="settings_sign_in_desc">Đăng nhập để giữ lại lịch sử trò chuyện và tiếp tục trên tài khoản của bạn.</string>
+    <string name="profile_sign_in_desc">Giữ lại lịch sử trò chuyện và đồng bộ tài khoản</string>
 
     <!-- Yêu cầu xóa tài khoản (Path B: giống web profile/privacy §5 — gửi yêu cầu qua email hỗ trợ) -->
     <string name="settings_delete_account">Yêu cầu xóa tài khoản</string>
