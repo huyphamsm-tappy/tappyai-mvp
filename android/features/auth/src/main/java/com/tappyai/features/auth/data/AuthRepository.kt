@@ -342,23 +342,6 @@ class AuthRepository @Inject constructor(
      */
     fun isAnonymous(): Boolean = isAnonymousSession(tokenProvider.getAccessToken())
 
-    /**
-     * Reads the signed-in user's `gender` from Supabase auth metadata — the same place the web reads
-     * it (`user_metadata.gender`, `profile/preferences/page.tsx`). Best-effort: null when no user is
-     * loaded yet (populated after the first save, since [updateGender] refreshes the local user).
-     */
-    fun currentGender(): String? =
-        supabaseClient.auth.currentUserOrNull()?.userMetadata?.get("gender")?.jsonPrimitive?.contentOrNull
-
-    /**
-     * Persists `gender` to Supabase auth metadata via `auth.updateUser({ data: { gender } })` — the
-     * exact web save path (`profile/preferences/page.tsx:111`). The `/api/preferences` endpoint has
-     * no gender field, so this is the only place it can live; without it the selection was lost.
-     */
-    suspend fun updateGender(gender: String): Result<Unit> = runCatching {
-        supabaseClient.auth.updateUser { data { put("gender", gender) } }
-    }
-
     private fun <T> NetworkResult<T>.logOnError(operation: String): NetworkResult<T> = also {
         if (it is NetworkResult.Error) {
             logger.e(TAG, "$operation failed", (it.error as? NetworkError.Unknown)?.throwable)
