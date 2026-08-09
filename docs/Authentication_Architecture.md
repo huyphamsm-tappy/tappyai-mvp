@@ -151,6 +151,56 @@ Location: 🔵 PROPOSED — user taps a location-dependent action ("Tìm quanh �
 
 ---
 
+## 8a. Anonymous Chat V1 — as shipped on native Android
+
+§8's TWA-vs-native question was answered in practice: Android ships **native**. This section records
+the anonymous-session design that is actually in the codebase, so it is not re-derived from commits.
+
+**Session identity.** A Supabase anonymous session is `SessionStatus.Authenticated` as far as the SDK
+is concerned — a real `auth.users` row with a real JWT. The `is_anonymous` claim is the only thing
+separating it, so `JwtClaims` exposes it and `AuthRepository.sessionState` branches into
+`AuthSessionState.Anonymous`. No parallel session concept exists, and there is exactly one
+`AuthRepository` — anonymity is a property of the token, never a second architecture.
+
+⚠️ `currentUserId()` is **non-null for an anonymous session**. Any caller using `currentUserId() != null`
+as shorthand for "has an account" must pair it with `isAnonymous()`.
+
+**Lifecycle.** `ensureAnonymousSession()` runs inside `sessionState`'s one-shot restore block, before
+the first emission, so the nav host resolves straight to the shell instead of flashing Login. It is a
+no-op when a session exists and single-flight otherwise (`AtomicBoolean.compareAndSet`): every call to
+`POST /api/auth/anonymous` mints a NEW `auth.users` row, so concurrent callers would create duplicate
+throwaway identities and strand the first one's conversations. It **fails open** — if the endpoint is
+unavailable the app behaves exactly as it did before.
+
+**Claim (carry-over).** Wired in the `sessionStatus` collector, deliberately **not** at the sign-in call
+sites: those do not share one (Google returns a session inline, Facebook/Zalo complete later via deep
+link, OTP via `verifyOtp`), and all of them end at that collector — so a provider added later inherits
+the behaviour instead of silently losing history. An anonymous emission snapshots the token as a
+pending claim; a non-anonymous emission persists the session **and then** claims (order matters — the
+claim needs the new account's Bearer already stored).
+
+Only the anonymous access token is sent; the server derives both identities from tokens it verifies, so
+no user id ever leaves the device. A **4xx clears** the pending token (the server has ruled and will
+rule the same way again); a timeout or 5xx **keeps** it, because losing it is the one outcome that
+permanently orphans a user's conversations. The transfer is idempotent server-side — a replay moves 0
+rows — which the client relies on when retrying after a lost response.
+
+**Logout** lands on Anonymous, never Login. `clearTokens()` runs *before* the new session is minted so
+the previous account's token can never be reused, and it removes the two session keys explicitly rather
+than `edit().clear()` — a blanket clear would wipe the pending claim exactly when it must survive. The
+mint is launched on the repository's own `@Singleton` scope, **never the caller's**: doing it inline in
+`viewModelScope` let logout navigation destroy the ViewModel and cancel the mint.
+
+**Play / versioning.** versionCode 2 / versionName 0.1.0 is the release validated end-to-end on a
+Play-delivered artifact (Play App Signing; deployment cert `12:BD:98:F6:…`). Production promotion is
+gated by Google's closed-testing requirement (≥12 testers, ≥14 days), not by app readiness.
+
+⚠️ **Lineage note.** This behaviour was first shipped from a branch cut off the RC lineage and was
+ported onto `main` separately. Any future Android release must be built from `main`; a feature living
+only on an unmerged branch is how the `/api/auth/claim-anonymous` production outage happened.
+
+---
+
 ## 9. Future iOS Impact
 
 No iOS-specific configuration exists anywhere in the codebase (confirmed: no `apple-app-site-association` file, no universal-link setup found). This is expected — iOS is not the current target — and is not a finding of concern. Everything in this document (providers, guest mode, session model, permission strategy) is platform-agnostic and applies to a future iOS effort unchanged. iOS has no TWA-equivalent (Apple does not support installable web-wrapper apps the way Android does), so if a future iOS app is pursued, it would need either a genuine native/cross-platform client (using the same `GET /api/context`-style bearer-token pattern) or a "add to home screen" PWA-only approach — this decision is out of scope for this document and not proposed here.
