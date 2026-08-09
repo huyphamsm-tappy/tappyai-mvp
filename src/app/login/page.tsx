@@ -12,6 +12,7 @@ import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
 import { readReturnTo } from '@/lib/auth/returnTo'
+import { emailEntryRequested } from '@/lib/auth/emailEntry'
 
 // V1 scope: Email OTP is intentionally hidden from the normal sign-in card
 // (owner decision 2026-07-21 — V1 = Google / Zalo / Guest). The OTP machinery
@@ -59,6 +60,10 @@ export default function LoginPage() {
   const [loadingFacebook, setLoadingFacebook] = useState(false)
   const [loadingZalo, setLoadingZalo] = useState(false)
   const [inApp, setInApp] = useState<{ isInApp: boolean; name: string; isAndroid: boolean }>({ isInApp: false, name: '', isAndroid: false })
+  // `/login?email=1` reveals the EXISTING email block in a normal browser. Starts
+  // false so the server-rendered card is the unchanged V1 card (no hydration
+  // mismatch); the effect below reads the URL exactly like detectInAppBrowser.
+  const [showEmailEntry, setShowEmailEntry] = useState(false)
   const [copied, setCopied] = useState(false)
 
   // Email OTP — Supabase-native, no password. Step 'email' asks for the address,
@@ -76,6 +81,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     setInApp(detectInAppBrowser())
+    setShowEmailEntry(emailEntryRequested(window.location.search))
   }, [])
 
   // Zalo (and other OAuth) failures redirect back here with ?error=… — emit the
@@ -453,7 +459,7 @@ export default function LoginPage() {
                       {t('login.continueGuest')}
                     </button>
 
-                    {SHOW_EMAIL_OTP_IN_CARD && (
+                    {(SHOW_EMAIL_OTP_IN_CARD || showEmailEntry) && (
                       <EmailOtpBlock
                         otpStep={otpStep} setOtpStep={setOtpStep}
                         otpEmail={otpEmail} setOtpEmail={setOtpEmail}
