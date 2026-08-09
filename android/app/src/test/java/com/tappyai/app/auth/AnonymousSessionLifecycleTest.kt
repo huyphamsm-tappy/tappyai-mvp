@@ -68,6 +68,59 @@ class AnonymousSessionLifecycleTest {
     }
 
     /**
+     * REGRESSION — logout stranded the user on Login (measured on device 2026-08-09 08:56:22:
+     * `POST /api/auth/anonymous` → `java.io.IOException: Canceled`).
+     *
+     * `SettingsViewModel.signOut()` runs in `viewModelScope`. The moment `auth.signOut()` flips
+     * sessionState to `Unauthenticated`, `AppNavHost` navigates to Login with
+     * `popUpTo(graph, inclusive)`, which destroys SettingsScreen and its ViewModel — cancelling
+     * `viewModelScope` and with it the in-flight anonymous mint. The new session never lands, so
+     * the app sits on the Login wall that anonymous chat exists to remove.
+     *
+     * The mint must therefore be launched on [AuthRepository]'s own `@Singleton` scope, which
+     * outlives every ViewModel. Awaiting it inline in the caller's coroutine is the defect.
+     */
+    @Test
+    fun `the post-logout anonymous mint does not run on the caller's coroutine scope`() {
+        val src = code(authRepository)
+        val signOut = src.substringAfter("suspend fun signOut()").substringBefore("\n    /**")
+
+        assertTrue(
+            "signOut() must still re-establish an anonymous session",
+            signOut.contains("ensureAnonymousSession()"),
+        )
+        assertTrue(
+            "the mint must be launched on the repository's long-lived scope — awaiting it inline " +
+                "ties it to the caller's ViewModel, which navigation destroys mid-request",
+            Regex("""scope\.launch\s*\{[^}]*ensureAnonymousSession\(\)""").containsMatchIn(signOut),
+        )
+    }
+
+    @Test
+    fun `the repository scope that outlives ViewModels still exists`() {
+        // The assertion above is only meaningful if `scope` really is application-lived.
+        val src = code(authRepository)
+        assertTrue(
+            "AuthRepository must own a SupervisorJob scope on an IO dispatcher",
+            Regex("""private val scope = CoroutineScope\(SupervisorJob\(\) \+ Dispatchers\.IO\)""")
+                .containsMatchIn(src),
+        )
+        assertTrue("and the class must be a @Singleton", src.contains("@Singleton"))
+    }
+
+    @Test
+    fun `a failed anonymous mint cannot spin into an infinite retry loop`() {
+        // Fail-open is the designed behaviour; a retry loop would turn one outage into a
+        // request storm and, worse, could mint an identity per iteration.
+        val fn = code(authRepository)
+            .substringAfter("suspend fun ensureAnonymousSession()")
+            .substringBefore("\n    /**")
+        assertFalse("no while-loop around the mint", Regex("""while\s*\(""").containsMatchIn(fn))
+        assertFalse("no for-loop around the mint", Regex("""for\s*\(""").containsMatchIn(fn))
+        assertFalse("no recursive self-call", fn.contains("ensureAnonymousSession()"))
+    }
+
+    /**
      * Every call to `POST /api/auth/anonymous` mints a NEW `auth.users` row. Two concurrent
      * callers would therefore create two throwaway accounts and strand the first one's
      * conversations — unreachable forever, since nothing else holds that token.
