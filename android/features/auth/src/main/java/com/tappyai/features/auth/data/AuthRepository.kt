@@ -284,7 +284,21 @@ class AuthRepository @Inject constructor(
     suspend fun signOut(): NetworkResult<Unit> = safeAuthCall {
         supabaseClient.auth.signOut()
         tokenProvider.clearTokens()
-        ensureAnonymousSession()
+        // Launched on THIS repository's @Singleton scope, never the caller's.
+        //
+        // Measured on device 2026-08-09: awaiting it inline made the mint die with
+        // `IOException: Canceled` and stranded the user on the Login wall. The caller is
+        // SettingsViewModel.signOut() in `viewModelScope`; the instant auth.signOut() flips
+        // sessionState to Unauthenticated, AppNavHost navigates to Login with
+        // popUpTo(graph, inclusive), destroying SettingsScreen — which cancels viewModelScope and
+        // the in-flight request with it. A SupervisorJob scope owned by a singleton has no such
+        // lifecycle, so the session lands and sessionState reaches Anonymous.
+        //
+        // Fire-and-forget is correct here: signOut()'s contract is "the old session is gone",
+        // which is already true by this line. ensureAnonymousSession() keeps its own single-flight
+        // guard and its own fail-open behaviour.
+        scope.launch { ensureAnonymousSession() }
+        Unit
     }.logOnError("signOut")
 
     /**
