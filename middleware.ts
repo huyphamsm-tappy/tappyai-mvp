@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { RETURN_TO_PARAM } from '@/lib/auth/returnTo'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -66,7 +67,11 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/admin') && !user) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/login'
-    loginUrl.search = `?redirect=${encodeURIComponent(pathname)}`
+    // `RETURN_TO_PARAM` rather than a hand-written name: the login page reads
+    // the same exported constant, so the two halves cannot drift apart. They
+    // previously did (`redirect` vs `returnTo`), which silently dropped every
+    // Controller sign-in on the consumer home page.
+    loginUrl.search = `?${RETURN_TO_PARAM}=${encodeURIComponent(pathname)}`
     return NextResponse.redirect(loginUrl)
   }
 

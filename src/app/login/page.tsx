@@ -11,6 +11,7 @@ import { AUTH_PROVIDERS } from '@/lib/auth/providers'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
+import { readReturnTo } from '@/lib/auth/returnTo'
 
 // V1 scope: Email OTP is intentionally hidden from the normal sign-in card
 // (owner decision 2026-07-21 — V1 = Google / Zalo / Guest). The OTP machinery
@@ -93,11 +94,7 @@ export default function LoginPage() {
     const checkAndRedirect = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
-      const returnTo = new URLSearchParams(window.location.search).get('returnTo')
-      const dest =
-        returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
-          ? returnTo
-          : '/'
+      const dest = readReturnTo(window.location.search)
       router.replace(dest)
     }
 
@@ -114,8 +111,7 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setLoadingGoogle(true)
     markAuthPending('google')
-    const urlParams = new URLSearchParams(window.location.search)
-    const returnTo = urlParams.get('returnTo') || '/'
+    const returnTo = readReturnTo(window.location.search)
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -135,8 +131,7 @@ export default function LoginPage() {
   const handleFacebookLogin = async () => {
     setLoadingFacebook(true)
     markAuthPending('facebook')
-    const urlParams = new URLSearchParams(window.location.search)
-    const returnTo = urlParams.get('returnTo') || '/'
+    const returnTo = readReturnTo(window.location.search)
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook',
       options: {
@@ -156,15 +151,11 @@ export default function LoginPage() {
   const handleZaloLogin = () => {
     setLoadingZalo(true)
     markAuthPending('zalo')
-    const urlParams = new URLSearchParams(window.location.search)
-    const returnTo = urlParams.get('returnTo') || '/'
+    const returnTo = readReturnTo(window.location.search)
     window.location.href = `/api/auth/zalo?returnTo=${encodeURIComponent(returnTo)}`
   }
 
-  const getReturnDest = () => {
-    const returnTo = new URLSearchParams(window.location.search).get('returnTo')
-    return returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
-  }
+  const getReturnDest = () => readReturnTo(window.location.search)
 
   // Guest = keep browsing anonymously (access policy: browse + share + 5 AI
   // questions/day, no writes). No session is created — we simply leave /login.
