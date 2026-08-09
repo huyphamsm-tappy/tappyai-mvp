@@ -171,7 +171,12 @@ fun AppNavHost(
             }
         }
         composable<AppRoute.HomeShell> {
-            HomeShellScreen()
+            // The only user-initiated route to Login. Deliberately NO popUpTo: the anonymous
+            // session is still live and its conversation is not claimed yet, so the shell must
+            // stay on the back stack — backing out of Login has to return the guest to their
+            // app exactly as they left it. The automatic auth transitions above still clear the
+            // stack, so a completed sign-in lands correctly and Login does not linger.
+            HomeShellScreen(onSignIn = { navController.navigate(AuthRoute.Login) })
         }
         // Post-login onboarding wizard; on finish it replaces itself with the shell so Back can't
         // return to it (mirrors the web's router.replace to the destination).

@@ -60,6 +60,22 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch { languageManager.setLanguage(next) }
     }
 
+    /**
+     * True when the current session is an anonymous one, read from
+     * [AuthRepository.isAnonymous] — i.e. the `is_anonymous` claim on the verified JWT.
+     *
+     * Deliberately NOT inferred from a null user id, a missing profile row or an absent email:
+     * an anonymous session HAS a real user id (it is a real `auth.users` row), and the missing
+     * profile is a consequence of anonymity, not evidence of it. Reading the claim is the only
+     * authoritative answer.
+     *
+     * Drives which control the Settings screen offers: a guest is shown "sign in" (signing out
+     * of a guest session is meaningless, and would mint a NEW anonymous identity, orphaning
+     * their conversation), an account is shown "sign out" exactly as before.
+     */
+    val isAnonymous: Boolean
+        get() = authRepository.isAnonymous()
+
     fun signOut() {
         if (isSigningOut) return
         isSigningOut = true

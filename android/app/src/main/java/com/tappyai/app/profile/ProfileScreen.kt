@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Cable
@@ -108,6 +109,8 @@ private val ACCOUNT_ITEMS = buildList {
 @Composable
 fun ProfileScreen(
     onOpenSettings: () -> Unit,
+    /** Navigates to the root graph's Login destination (see `AppNavHost`). */
+    onSignIn: () -> Unit,
     onOpenMembership: () -> Unit,
     onOpenTappyKnows: () -> Unit,
     onOpenChatHistory: () -> Unit,
@@ -144,6 +147,21 @@ fun ProfileScreen(
                     if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName
                 },
             )
+
+            // Guests get a sign-in affordance right under the header — the most discoverable
+            // point on the surface they already visit to see "who am I". Settings carries the
+            // same action, but two taps deeper. Authenticated users never see this card, so
+            // their Profile is byte-identical to before.
+            if (viewModel.isAnonymous) {
+                TappyCard(contentPadding = PaddingValues(0.dp)) {
+                    TappyMenuRow(
+                        icon = Icons.AutoMirrored.Filled.Login,
+                        title = stringResource(R.string.settings_sign_in),
+                        subtitle = stringResource(R.string.profile_sign_in_desc),
+                        onClick = onSignIn,
+                    )
+                }
+            }
 
             Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
                 MenuSectionHeader(stringResource(R.string.profile_section_account))

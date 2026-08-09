@@ -46,6 +46,9 @@ import com.tappyai.core.designsystem.theme.currentWindowWidthClass
  */
 @Composable
 fun HomeShellScreen(
+    /** Navigates to the root graph's Login destination. The shell builds its own NavController
+     *  for the tabs, so anything inside it needs this routed down from `AppNavHost`. */
+    onSignIn: () -> Unit = {},
     viewModel: HomeShellViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -128,6 +131,7 @@ fun HomeShellScreen(
                             onResumeConversation = { conversationId ->
                                 navController.navigateToConversation(conversationId)
                             },
+                            onSignIn = onSignIn,
                         )
                     }
                 }
