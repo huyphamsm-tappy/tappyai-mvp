@@ -149,7 +149,10 @@ describe('requirePagePermission — decision order', () => {
 
     // Permissions union across roles, so collapsing to the highest role would
     // silently drop access. This asserts the guard calls the all-roles resolver.
-    expect(h.resolveActorForUser).toHaveBeenCalledWith(USER.id, USER.email)
+    // FOUNDATION-10C: the guard hands over the WHOLE verified user object, not
+    // a (id, email) pair it re-derived. That is what makes the corporate
+    // identity boundary unforgeable — see resolveActorForUser.
+    expect(h.resolveActorForUser).toHaveBeenCalledWith(USER, 'cookie')
   })
 })
 

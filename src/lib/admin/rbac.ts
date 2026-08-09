@@ -12,6 +12,14 @@ import type { User } from '@supabase/supabase-js'
 import { ROLE_RANK, hasRole, type AdminRole } from '@/lib/admin/roles'
 import { isPlatformOwner, checkOwnerGate } from '@/lib/admin/owner'
 import { NO_CAPABILITIES, type CapabilityId } from '@/lib/admin/capabilities'
+// FOUNDATION-10C (owner decision: Option B). Pure policy module — no DB, no
+// network, no PDP. It answers ONE question: is this verified Supabase identity
+// a corporate identity? It is authentication, never authorization.
+import {
+  checkCorporateIdentity,
+  CORPORATE_IDENTITY_DENIAL_MESSAGE,
+  type VerifiedIdentity,
+} from '@/lib/controller/auth/corporateIdentity'
 // Component 3 integration only. `permissions/cache` is pure (no server imports),
 // so this creates no import cycle: the permission layer type-imports Actor from
 // here, and a type-only import is erased at compile time.
@@ -138,8 +146,8 @@ export interface Actor {
 }
 
 /**
- * Build an Actor from a user id, for contexts that have no `Request` — server
- * components in particular.
+ * Build an Actor from a VERIFIED Supabase user, for contexts that have no
+ * `Request` — server components in particular.
  *
  * THE SINGLE Actor construction site. `resolveActor` delegates here rather than
  * building its own, so the field mappings can never drift. Component 2's review
@@ -147,20 +155,60 @@ export interface Actor {
  * construction) and Component 3 briefly reintroduced it by adding this function
  * alongside a second literal.
  *
+ * FOUNDATION-10C — THE TRUSTED CORPORATE IDENTITY BOUNDARY LIVES HERE.
+ *
+ * The parameter is the whole `User` object returned by `supabase.auth.getUser()`
+ * and NOT `(userId, email)` as it was before. That signature change is the
+ * security property, not a refactor: a caller can no longer supply an email of
+ * its own choosing, because it has nothing to supply — the only thing it can
+ * pass is an object it obtained from Supabase Auth, which (MEASURED) is fetched
+ * over the network from the Auth server on every call. A forged request body,
+ * header or client-side field therefore has no path into this decision.
+ *
+ * Because the check sits at the single construction site, a non-corporate
+ * identity never becomes an Actor at all. Every downstream surface — API guard,
+ * page guard, the `/admin` layout, and any route added later — inherits the
+ * boundary for free and cannot opt out of it.
+ *
+ * ORDERING (owner-specified): authentication → verified corporate identity →
+ * Actor → canonical PDP → membership → department scope → role → permission.
+ * The corporate check runs BEFORE the Actor exists, so it is strictly upstream
+ * of the Owner Gate and the PDP. It is not a second authorization authority: it
+ * reads no role, no membership and no permission, and holding an `@tappyai.com`
+ * address grants nothing on its own.
+ *
+ * Denial is a thrown `AdminError` (403), which `/api/admin/*` handlers already
+ * map to the uniform envelope via `adminErrorResponse`. Page surfaces catch it
+ * and redirect — see `resolveActorForPage`.
+ *
+ * NOT AUDITED, deliberately: `auditAuthorizationDecision` records PDP decisions
+ * and needs an Actor, which by construction does not exist here. Writing this
+ * denial through a second path would create the second audit writer the
+ * architecture forbids. It is logged, like every other pre-Actor rejection.
+ *
  * Page guards need the FULL role list. Collapsing to the highest-ranked role
  * silently drops the permissions of any additional role the user holds, because
  * permissions union across roles rather than inherit down a ladder. That is why
  * Component 4 deleted `resolveAdminRole` outright rather than leaving it around.
  */
 export async function resolveActorForUser(
-  userId: string,
-  email: string | null | undefined,
+  user: VerifiedIdentity & { id: string },
   source: Actor['source'] = 'cookie'
 ): Promise<Actor> {
+  const identity = checkCorporateIdentity(user)
+  if (!identity.ok) {
+    console.warn(`[controller][auth] deny ${identity.reason} user=${user.id}`)
+    throw new AdminError('FORBIDDEN', CORPORATE_IDENTITY_DENIAL_MESSAGE, 403)
+  }
+
+  const userId = user.id
   const { roles, isOwner } = await resolvePrincipal(userId)
   return {
     userId,
-    email: email ?? '—',
+    // Not `?? '—'` any more: the boundary above guarantees a verified corporate
+    // address, so the placeholder branch is unreachable and would only hide a
+    // regression if it were kept.
+    email: identity.email,
     isOwner,
     roles,
     highestRole: highestRole(roles),
@@ -188,7 +236,12 @@ export async function resolveActor(
   const source: Actor['source'] = req.headers.get('authorization')?.startsWith('Bearer ')
     ? 'bearer'
     : 'cookie'
-  const actor = await resolveActorForUser(user.id, user.email, source)
+  // `user` here came from `getRequestUser`, which resolves BOTH the cookie
+  // session and the native `Authorization: Bearer` token through
+  // `auth.getUser()` — a real round-trip to the Auth server in both cases. So
+  // the corporate boundary inside `resolveActorForUser` is enforced identically
+  // for web and native clients; a self-minted JWT never reaches it.
+  const actor = await resolveActorForUser(user, source)
   return { user, actor }
 }
 

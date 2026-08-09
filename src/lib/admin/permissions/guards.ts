@@ -50,6 +50,37 @@ function denialMessage(decision: Decision): string {
 const CONTROLLER_UNAVAILABLE_REDIRECT = '/reviews'
 
 /**
+ * Resolve the Actor for a PAGE surface, translating a corporate-identity denial
+ * into a redirect.
+ *
+ * `resolveActorForUser` enforces the FOUNDATION-10C corporate boundary by
+ * throwing (the right shape for `/api/admin/*`, whose handlers already map
+ * `AdminError` to a 403 envelope). A server component cannot render an error
+ * envelope, so the two page entry points — this module's `requirePagePermission`
+ * and the `/admin` layout — funnel through here instead of each writing their
+ * own catch. One denial path, not two.
+ *
+ * The destination is OUTSIDE `/admin` for the same reason the Owner-Gate
+ * failure redirects out: every `/admin` surface runs this boundary, so bouncing
+ * within the Controller would loop forever.
+ *
+ * Only a corporate-identity FORBIDDEN is converted. Anything else rethrows —
+ * swallowing an unexpected failure here would turn a bug into a silent redirect,
+ * and Next's own `redirect()` control-flow throw must never be caught.
+ */
+export async function resolveActorForPage(
+  user: User,
+  source: Actor['source'] = 'cookie'
+): Promise<Actor> {
+  try {
+    return await resolveActorForUser(user, source)
+  } catch (err) {
+    if (err instanceof AdminError && err.status === 403) redirect(CONTROLLER_UNAVAILABLE_REDIRECT)
+    throw err
+  }
+}
+
+/**
  * Gate an `/api/admin/*` handler on a single permission.
  *
  * The ONLY route-level authorization helper. It replaced
@@ -134,11 +165,13 @@ export async function requirePagePermission(
     redirect(CONTROLLER_UNAVAILABLE_REDIRECT)
   }
 
-  // Server components have no `Request`, so the Actor is built by user id.
-  // resolveActorForUser returns ALL roles — using the highest-ranked role alone
-  // would drop the permissions of any additional role, since permissions union
-  // across roles rather than inherit down a ladder.
-  const actor = await resolveActorForUser(user.id, user.email)
+  // Server components have no `Request`, so the Actor is built from the verified
+  // user object directly. resolveActorForUser returns ALL roles — using the
+  // highest-ranked role alone would drop the permissions of any additional role,
+  // since permissions union across roles rather than inherit down a ladder. It
+  // also enforces the corporate-identity boundary; `resolveActorForPage` turns
+  // that denial into a redirect rather than an unhandled throw.
+  const actor = await resolveActorForPage(user)
 
   // `authorize` rather than `can`, because the audit row needs the REASON —
   // "denied" without "why" cannot be investigated.

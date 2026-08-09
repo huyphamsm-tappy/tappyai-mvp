@@ -26,7 +26,15 @@ vi.mock('@/lib/supabase/admin', () => ({
 
 import { resolveActor, requireOwner, invalidateRoleCache, AdminError } from './rbac'
 
-const USER = { id: 'u1', email: 'a@b.c' }
+// FOUNDATION-10C: a VERIFIED CORPORATE identity. The previous fixture was
+// `a@b.c`, which the corporate boundary now (correctly) refuses — the identity
+// an Actor is built from must be a Supabase-confirmed @tappyai.com mailbox.
+const USER = {
+  id: 'u1',
+  email: 'a@tappyai.com',
+  email_confirmed_at: '2026-01-01T00:00:00Z',
+  is_anonymous: false,
+}
 const req = (headers?: Record<string, string>) =>
   new Request('http://localhost/api/admin/x', { headers })
 
@@ -49,7 +57,7 @@ describe('resolveActor', () => {
     const r = await resolveActor(req())
     expect(r?.actor).toMatchObject({
       userId: 'u1',
-      email: 'a@b.c',
+      email: 'a@tappyai.com',
       isOwner: false,
       roles: ['admin'],
       highestRole: 'admin',
@@ -95,6 +103,77 @@ describe('resolveActor', () => {
   it('detects a bearer (native) request', async () => {
     const r = await resolveActor(req({ authorization: 'Bearer tok' }))
     expect(r?.actor.source).toBe('bearer')
+  })
+})
+
+// FOUNDATION-10C — the trusted corporate identity boundary, at the API identity
+// path. `resolveActor` is what every `/api/admin/*` handler reaches through
+// `requirePermission`, so these prove the boundary applies to direct API calls
+// exactly as it does to the UI. The exhaustive policy matrix (domain confusion,
+// homoglyphs, punycode, aliases, …) lives in
+// `lib/controller/auth/__tests__/corporateIdentity.test.ts`; this file pins the
+// INTEGRATION — that the Actor is genuinely unreachable without it.
+describe('resolveActor — corporate identity boundary', () => {
+  const denied = async (user: Record<string, unknown>) => {
+    h.getRequestUser.mockResolvedValue({ user })
+    return resolveActor(req()).then(
+      () => null,
+      (e: unknown) => e as AdminError
+    )
+  }
+
+  it('denies a verified NON-corporate identity with 403', async () => {
+    const err = await denied({ ...USER, email: 'someone@gmail.com' })
+    expect(err).toBeInstanceOf(AdminError)
+    expect(err?.status).toBe(403)
+    expect(err?.code).toBe('FORBIDDEN')
+  })
+
+  it('denies BEFORE any role is read — the identity never becomes a principal', async () => {
+    await denied({ ...USER, email: 'someone@gmail.com' })
+    // The boundary is upstream of the Actor, so the principal lookup that feeds
+    // the PDP must not have run at all.
+    expect(h.rolesQuery).not.toHaveBeenCalled()
+    expect(h.isPlatformOwner).not.toHaveBeenCalled()
+  })
+
+  it('denies the PLATFORM OWNER when their identity is not corporate', async () => {
+    // Ownership is a constitutional principal, but it is an AUTHORIZATION fact.
+    // It cannot admit an identity that failed AUTHENTICATION — otherwise the
+    // boundary would have an exception exactly where it matters most.
+    h.isPlatformOwner.mockResolvedValue(true)
+    const err = await denied({ ...USER, email: 'owner@gmail.com' })
+    expect(err?.status).toBe(403)
+  })
+
+  it('denies an anonymous (consumer) sign-in', async () => {
+    const err = await denied({ id: 'anon-1', email: undefined, is_anonymous: true })
+    expect(err?.status).toBe(403)
+  })
+
+  it('denies a corporate address Supabase has NOT confirmed', async () => {
+    const err = await denied({ ...USER, email_confirmed_at: null })
+    expect(err?.status).toBe(403)
+  })
+
+  it('a forged request body/header email cannot reach the decision', async () => {
+    // The attack: authenticate as a consumer, then claim a corporate address in
+    // the request. `resolveActor` reads ONLY the object `getRequestUser`
+    // returned from `auth.getUser()` — there is no parameter through which a
+    // request-supplied email could enter, so the forgery is inert by
+    // construction. This test pins that: the verified identity loses.
+    h.getRequestUser.mockResolvedValue({ user: { ...USER, email: 'consumer@gmail.com' } })
+    const forged = new Request('http://localhost/api/admin/x', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-user-email': 'boss@tappyai.com' },
+      body: JSON.stringify({ email: 'boss@tappyai.com', user: { email: 'boss@tappyai.com' } }),
+    })
+    await expect(resolveActor(forged)).rejects.toBeInstanceOf(AdminError)
+  })
+
+  it('admits a verified corporate identity (the boundary is not a blanket deny)', async () => {
+    const r = await resolveActor(req())
+    expect(r?.actor.email).toBe('a@tappyai.com')
   })
 })
 
