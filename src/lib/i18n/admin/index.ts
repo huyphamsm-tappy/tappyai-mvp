@@ -6,7 +6,10 @@
 export const vi: Record<string, string> = {
   // Shell / navigation
   'admin.shell.brand': 'TappyAI',
-  'admin.shell.badge': 'Back Office',
+  // Renders beside the brand as "TappyAI Controller" (sidebar + mobile header).
+  // The Controller must not call itself a Back Office: that name belongs to the
+  // superseded Phase-0 surface, and F-08 replaced it with the Command Center.
+  'admin.shell.badge': 'Controller',
   'admin.shell.backToApp': 'Quay lại ứng dụng',
   'admin.shell.app': 'Ứng dụng',
   'admin.shell.comingSoon': 'Sắp ra mắt',
@@ -41,7 +44,11 @@ export const vi: Record<string, string> = {
 
   // Dashboard home
   'admin.dashboard.title': 'Tổng quan',
-  'admin.dashboard.subtitle': 'TappyAI Back Office — Kiến trúc v1.1. Nền tảng (Giai đoạn 0) đã hoạt động: RBAC, nhật ký audit, và khung quản trị.',
+  // ORPHANED by FOUNDATION-08: the Home this described (HomeDashboard) was
+  // replaced by the Command Center and nothing renders this key today. Kept
+  // rather than deleted so removing it stays a separate, deliberate change —
+  // but retermed, so reviving it cannot resurrect "Back Office".
+  'admin.dashboard.subtitle': 'TappyAI Controller — Kiến trúc v1.1. Nền tảng (Giai đoạn 0) đã hoạt động: RBAC, nhật ký audit, và khung quản trị.',
   'admin.dashboard.kpi.dau': 'DAU',
   'admin.dashboard.kpi.mau': 'MAU (28 ngày)',
   'admin.dashboard.kpi.mrr': 'MRR',
@@ -179,7 +186,7 @@ export const vi: Record<string, string> = {
 
   // Roles (RBAC)
   'admin.rbac.title': 'Phân quyền',
-  'admin.rbac.subtitle': 'Cấp và thu hồi quyền truy cập back office. Mọi thay đổi đều được ghi vào nhật ký audit.',
+  'admin.rbac.subtitle': 'Cấp và thu hồi quyền truy cập Controller. Mọi thay đổi đều được ghi vào nhật ký audit.',
   'admin.rbac.grantTitle': 'Cấp một vai trò',
   'admin.rbac.userIdLabel': 'User ID (Supabase UUID)',
   'admin.rbac.roleLabel': 'Vai trò',
@@ -229,7 +236,10 @@ export const vi: Record<string, string> = {
 export const en: Record<string, string> = {
   // Shell / navigation
   'admin.shell.brand': 'TappyAI',
-  'admin.shell.badge': 'Back Office',
+  // Renders beside the brand as "TappyAI Controller" (sidebar + mobile header).
+  // The Controller must not call itself a Back Office: that name belongs to the
+  // superseded Phase-0 surface, and F-08 replaced it with the Command Center.
+  'admin.shell.badge': 'Controller',
   'admin.shell.backToApp': 'Back to app',
   'admin.shell.app': 'App',
   'admin.shell.comingSoon': 'soon',
@@ -335,7 +345,8 @@ export const en: Record<string, string> = {
 
   // Dashboard home
   'admin.dashboard.title': 'Dashboard',
-  'admin.dashboard.subtitle': 'TappyAI Back Office — Architecture v1.1. Foundation (Phase 0) is live: RBAC, audit log, and the admin shell.',
+  // ORPHANED by FOUNDATION-08 — see the VI entry.
+  'admin.dashboard.subtitle': 'TappyAI Controller — Architecture v1.1. Foundation (Phase 0) is live: RBAC, audit log, and the admin shell.',
   'admin.dashboard.kpi.dau': 'DAU',
   'admin.dashboard.kpi.mau': 'MAU (28d)',
   'admin.dashboard.kpi.mrr': 'MRR',
@@ -403,7 +414,7 @@ export const en: Record<string, string> = {
 
   // Roles (RBAC)
   'admin.rbac.title': 'Roles',
-  'admin.rbac.subtitle': 'Grant and revoke back office access. Every change is audit-logged.',
+  'admin.rbac.subtitle': 'Grant and revoke Controller access. Every change is audit-logged.',
   'admin.rbac.grantTitle': 'Grant a role',
   'admin.rbac.userIdLabel': 'User ID (Supabase UUID)',
   'admin.rbac.roleLabel': 'Role',
