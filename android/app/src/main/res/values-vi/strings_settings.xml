@@ -15,15 +15,6 @@
     <string name="settings_sign_in_desc">Đăng nhập để giữ lại lịch sử trò chuyện và tiếp tục trên tài khoản của bạn.</string>
     <string name="profile_sign_in_desc">Giữ lại lịch sử trò chuyện và đồng bộ tài khoản</string>
 
-    <!-- Yêu cầu xóa tài khoản (Path B: giống web profile/privacy §5 — gửi yêu cầu qua email hỗ trợ) -->
-    <string name="settings_delete_account">Yêu cầu xóa tài khoản</string>
-    <string name="settings_delete_account_dialog_title">Yêu cầu xóa tài khoản?</string>
-    <string name="settings_delete_account_dialog_message">Thao tác này sẽ mở ứng dụng email để gửi yêu cầu xóa tài khoản đến bộ phận hỗ trợ TappyAI. Tài khoản và toàn bộ dữ liệu liên quan sẽ được xóa sau khi chúng tôi xử lý yêu cầu — không bị xóa tự động.</string>
-    <string name="settings_delete_account_confirm">Mở email</string>
-    <string name="settings_delete_account_subject">TappyAI — Yêu cầu xóa tài khoản</string>
-    <string name="settings_delete_account_body">Xin chào bộ phận hỗ trợ TappyAI,\n\nTôi muốn yêu cầu xóa tài khoản TappyAI và toàn bộ dữ liệu liên quan.\n\nEmail đã đăng ký (nếu khác email người gửi): \n\nCảm ơn.</string>
-    <string name="settings_delete_account_no_email_app">Không tìm thấy ứng dụng email. Vui lòng gửi email tới %1$s để yêu cầu xóa tài khoản.</string>
-
     <string name="settings_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
     <string name="settings_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
     <string name="settings_error_generic">Không thể đăng xuất. Vui lòng thử lại.</string>
