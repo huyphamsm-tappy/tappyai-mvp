@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { resolveActorForPage } from '@/lib/admin/permissions/guards'
 import { resolveAdminNavigation } from '@/lib/controller/adminNavigation'
+import { orgMembershipEnabled, resolveActorMemberships } from '@/lib/controller/org/server'
+import { filterNavByDepartment } from '@/lib/controller/org/navDepartment'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
 import { Toaster } from '@/components/ui/sonner'
 
@@ -35,7 +37,18 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const actor = await resolveActorForPage(user)
   if (!actor.isOwner && actor.roles.length === 0) redirect('/reviews') // authenticated but not an admin
 
-  const navGroups = resolveAdminNavigation(actor)
+  // Single navigation authority: registry → PDP filter (resolveAdminNavigation).
+  // FOUNDATION-07D refinement: when department memberships are ENABLED, apply the
+  // department-scope filter AFTER the PDP filter — a module owned by a department
+  // is shown only to members whose scope covers it (Owner sees all). While the
+  // flag is OFF (the default, and production today), no filter runs and behavior
+  // is byte-for-byte unchanged. This is presentation only; server authorization
+  // (page guards + the membership API) remains the boundary for direct access.
+  let navGroups = resolveAdminNavigation(actor)
+  if (orgMembershipEnabled()) {
+    const memberships = await resolveActorMemberships(actor)
+    navGroups = filterNavByDepartment(navGroups, { isOwner: actor.isOwner, memberships })
+  }
 
   return (
     <div className="admin-theme">

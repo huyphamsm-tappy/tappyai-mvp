@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-04.2'
+export const REGISTRY_VERSION = '2026-08-08.1'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -193,6 +193,35 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     riskLevel: 'critical',
     defaultRoles: ['super_admin'],
   }),
+
+  // ── Organization / department membership (Controller V2 FOUNDATION-07D) ────
+  // A DISTINCT capability from security.roles.* : administering DEPARTMENT
+  // memberships must not inherit platform-wide RBAC-granting semantics. The PDP
+  // is the first gate (this permission); department AUTHORITY (canDelegate — Head
+  // of the target department) is the second. Held by super_admin only for now;
+  // extending it to a lower role (so an `admin`-role Head can self-serve) would
+  // broaden current authority and is a deferred OWNER DECISION (see F-07D report).
+  def({
+    id: 'security.membership.read',
+    displayName: 'View department memberships',
+    description: 'See which users belong to which department, with org role and scope.',
+    module: 'security',
+    capability: 'security.rbac',
+    category: 'read',
+    riskLevel: 'medium',
+    defaultRoles: ['super_admin'],
+  }),
+  def({
+    id: 'security.membership.manage',
+    displayName: 'Manage department memberships',
+    description:
+      'Assign, suspend, reactivate or remove a department membership. Bounded by department authority: a Department Head may act only within their own department; the Ultimate Owner acts globally.',
+    module: 'security',
+    capability: 'security.rbac',
+    category: 'security',
+    riskLevel: 'critical',
+    defaultRoles: ['super_admin'],
+  }),
 ] as const
 
 /** A registry instance. Injectable so tests can exercise fixtures without touching the real catalogue. */
@@ -258,6 +287,8 @@ export const PERMISSIONS = {
   SECURITY_ROLES_READ: 'security.roles.read',
   SECURITY_ROLES_GRANT: 'security.roles.grant',
   SECURITY_ROLES_REVOKE: 'security.roles.revoke',
+  SECURITY_MEMBERSHIP_READ: 'security.membership.read',
+  SECURITY_MEMBERSHIP_MANAGE: 'security.membership.manage',
 } as const
 
 export type KnownPermissionId = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]
