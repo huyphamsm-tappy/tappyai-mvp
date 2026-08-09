@@ -7,6 +7,7 @@ import { orgMembershipEnabled, resolveActorMemberships } from '@/lib/controller/
 import { filterNavByDepartment } from '@/lib/controller/org/navDepartment'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
 import { Toaster } from '@/components/ui/sonner'
+import { loginPathFor } from '@/lib/auth/returnTo'
 
 // Back Office root layout — the AUTHORITATIVE RBAC gate for all /admin pages
 // (owner decision Phase 0: enforce in layout + handlers, not middleware).
@@ -16,7 +17,7 @@ import { Toaster } from '@/components/ui/sonner'
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login?redirect=/admin')
+  if (!user) redirect(loginPathFor('/admin'))
 
   // POLICY CHANGE (declared — see RELEASE_READINESS §5): the previous gate was
   // `if (!resolveAdminRole(user.id)) redirect('/reviews')`, which locked the

@@ -18,6 +18,7 @@ import { checkOwnerGate } from '@/lib/admin/owner'
 import { permissionEngine } from './engine'
 import { auditAuthorizationDecision } from './decisionAudit'
 import type { Decision, PermissionId } from './types'
+import { loginPathFor } from '@/lib/auth/returnTo'
 
 export interface PermissionContext {
   user: User
@@ -157,7 +158,7 @@ export async function requirePagePermission(
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) redirect('/login?redirect=/admin')
+  if (!user) redirect(loginPathFor('/admin'))
 
   const gate = await checkOwnerGate()
   if (!gate.ok) {

@@ -45,6 +45,7 @@ vi.mock('@/lib/admin/rbac', async (orig) => {
 
 import { requirePagePermission } from './guards'
 import { PERMISSIONS } from './registry'
+import { loginPathFor, readReturnTo } from '@/lib/auth/returnTo'
 
 const USER = { id: 'u-1', email: 'admin@tappyai.com' }
 
@@ -129,7 +130,14 @@ describe('requirePagePermission — decision order', () => {
 
     const res = await run(PERMISSIONS.DASHBOARD_HOME_VIEW)
 
-    expect(res).toEqual({ outcome: 'redirect', target: '/login?redirect=/admin' })
+    // Asserted through the shared contract, not a literal. The previous form
+    // hardcoded '/login?redirect=/admin' — the very parameter name the login
+    // page never read — so this test PASSED while the redirect was broken in
+    // production. Deriving the expectation from loginPathFor() means the
+    // producer and this assertion can no longer disagree.
+    expect(res).toEqual({ outcome: 'redirect', target: loginPathFor('/admin') })
+    // and the destination must survive the round trip to the consumer
+    expect(readReturnTo(loginPathFor('/admin').slice('/login'.length))).toBe('/admin')
     expect(h.checkOwnerGate).not.toHaveBeenCalled()
     expect(h.resolveActorForUser).not.toHaveBeenCalled()
   })
