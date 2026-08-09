@@ -9,6 +9,7 @@ import com.tappyai.core.network.NetworkResult
 import com.tappyai.core.network.SessionRefresher
 import com.tappyai.core.security.JwtDecoder
 import com.tappyai.core.security.TokenProvider
+import dagger.Lazy
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -49,12 +51,21 @@ class AuthRepository @Inject constructor(
     private val tokenProvider: TokenProvider,
     private val logger: LoggerProvider,
     private val zaloSignInClient: ZaloSignInClient,
+    // dagger.Lazy, not a direct injection: AuthRepository is bound as core:network's
+    // SessionRefresher, which TokenAuthenticator needs to build OkHttp, which Retrofit needs to
+    // build AnonymousAuthApi — a genuine Dagger dependency cycle. Deferring resolution to first
+    // use breaks it, and costs nothing: by the time any anonymous call runs, the graph is built.
+    private val anonymousAuthApi: Lazy<AnonymousAuthApi>,
 ) : SessionRefresher {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     // Guards session restoration so it runs at most once per process, even when
     // WhileSubscribed(5_000) restarts the cold sessionState flow after a long background pause.
     private val sessionRestored = AtomicBoolean(false)
+
+    /** Single-flight guard for [ensureAnonymousSession]: every call to the endpoint mints a NEW
+     *  auth.users row, so concurrent callers would create duplicate throwaway identities. */
+    private val anonymousMintInFlight = AtomicBoolean(false)
 
     /**
      * The `AuthGate` (M6) observes this to decide the NavHost's start destination — and,
@@ -96,13 +107,28 @@ class AuthRepository @Inject constructor(
                     tokenProvider.clearTokens()
                 }
             }
+            // First run, or a launch with nothing restorable: get an anonymous session before
+            // the first emission, so the nav host resolves straight to the shell instead of
+            // flashing Login and then jumping. A no-op when a session was restored just above,
+            // and a no-op (fail-open) if the endpoint is unavailable — in which case this flow
+            // emits Unauthenticated and the app behaves exactly as it does today.
+            ensureAnonymousSession()
         }
         // sessionStatus is a StateFlow — replays the current value immediately, so there is no
         // gap between importSession completing and the first AuthSessionState emission.
         emitAll(
             supabaseClient.auth.sessionStatus.map { status ->
                 when (status) {
-                    is SessionStatus.Authenticated -> AuthSessionState.Authenticated
+                    // An anonymous session is `Authenticated` as far as the SDK is concerned —
+                    // it is a real auth.users row with a real JWT. The token's `is_anonymous`
+                    // claim is the only thing that separates the two, so read it here rather
+                    // than inventing a parallel session concept.
+                    is SessionStatus.Authenticated ->
+                        if (isAnonymousSession(status.session.accessToken)) {
+                            AuthSessionState.Anonymous
+                        } else {
+                            AuthSessionState.Authenticated
+                        }
                     is SessionStatus.Initializing -> AuthSessionState.Loading
                     is SessionStatus.NotAuthenticated -> AuthSessionState.Unauthenticated
                     is SessionStatus.RefreshFailure -> AuthSessionState.Unauthenticated
@@ -118,7 +144,23 @@ class AuthRepository @Inject constructor(
         // holding the old (expired) access token, breaking the next process restart's restore.
         scope.launch {
             supabaseClient.auth.sessionStatus.collect { status ->
-                if (status is SessionStatus.Authenticated) persistSession()
+                if (status !is SessionStatus.Authenticated) return@collect
+                persistSession()
+
+                // The anon→account carry-over is wired HERE rather than at each sign-in call
+                // site, because the sign-in paths do not share one: Google returns a session
+                // inline, Facebook and Zalo complete later via a deep link, and OTP via
+                // verifyOtp. Every one of them ends at this collector, so a provider added
+                // later inherits the behaviour instead of silently losing users' history.
+                if (isAnonymousSession(status.session.accessToken)) {
+                    // Snapshot while it is still the live session — once sign-in replaces it,
+                    // this token (and with it, the only handle on those conversations) is gone.
+                    tokenProvider.savePendingAnonymousClaim(status.session.accessToken)
+                } else {
+                    // Now signed in for real: hand over anything the anonymous session left.
+                    // No-op when there is nothing pending, so this is cheap on token refreshes.
+                    claimPendingAnonymousConversations()
+                }
             }
         }
     }
@@ -229,9 +271,34 @@ class AuthRepository @Inject constructor(
 
     private data class OAuthFragmentSession(val accessToken: String, val refreshToken: String)
 
+    /**
+     * Signing out returns the user to an ANONYMOUS session, not a tokenless/Login state —
+     * matching iOS (`signOut()` → `ensureAnonymousSession()`). The app stays usable and chat
+     * keeps working against the anonymous 5/day quota.
+     *
+     * Order matters: `auth.signOut()` invalidates the old session server-side and
+     * `clearTokens()` removes it locally, so the new anonymous session can never be minted
+     * while the previous authenticated token is still present or reused. `clearTokens()`
+     * deliberately leaves any pending anonymous claim intact.
+     */
     suspend fun signOut(): NetworkResult<Unit> = safeAuthCall {
         supabaseClient.auth.signOut()
         tokenProvider.clearTokens()
+        // Launched on THIS repository's @Singleton scope, never the caller's.
+        //
+        // Measured on device 2026-08-09: awaiting it inline made the mint die with
+        // `IOException: Canceled` and stranded the user on the Login wall. The caller is
+        // SettingsViewModel.signOut() in `viewModelScope`; the instant auth.signOut() flips
+        // sessionState to Unauthenticated, AppNavHost navigates to Login with
+        // popUpTo(graph, inclusive), destroying SettingsScreen — which cancels viewModelScope and
+        // the in-flight request with it. A SupervisorJob scope owned by a singleton has no such
+        // lifecycle, so the session lands and sessionState reaches Anonymous.
+        //
+        // Fire-and-forget is correct here: signOut()'s contract is "the old session is gone",
+        // which is already true by this line. ensureAnonymousSession() keeps its own single-flight
+        // guard and its own fail-open behaviour.
+        scope.launch { ensureAnonymousSession() }
+        Unit
     }.logOnError("signOut")
 
     /**
@@ -265,9 +332,105 @@ class AuthRepository @Inject constructor(
     fun currentUserId(): String? =
         tokenProvider.getAccessToken()?.let { JwtDecoder.decode(it)?.subject }
 
+    /**
+     * True when the stored session belongs to an anonymous user.
+     *
+     * Needed because [currentUserId] is non-null for an anonymous session too — it is a real
+     * `auth.users` row — so callers that used `currentUserId() != null` as shorthand for
+     * "has an account" must pair it with this. Synchronous and claims-only, like
+     * [currentUserId]; see [JwtDecoder] for why nothing here verifies a signature.
+     */
+    fun isAnonymous(): Boolean = isAnonymousSession(tokenProvider.getAccessToken())
+
     private fun <T> NetworkResult<T>.logOnError(operation: String): NetworkResult<T> = also {
         if (it is NetworkResult.Error) {
             logger.e(TAG, "$operation failed", (it.error as? NetworkError.Unknown)?.throwable)
+        }
+    }
+
+    /**
+     * Obtains an anonymous session when there is no usable one, mirroring iOS's
+     * `AuthRepository.ensureAnonymousSession()` (survey §0 · D1).
+     *
+     * FAIL OPEN, exactly like iOS: if the endpoint is unavailable — which is its current
+     * production state, `503 anonymous_unavailable` until Anonymous Sign-ins is enabled — this
+     * logs and returns. It never throws, never retries in a loop, and never fabricates a
+     * session. The app stays on whatever state it already had.
+     *
+     * NO DUPLICATE IDENTITIES. Every call to the endpoint mints a new `auth.users` row, so two
+     * concurrent callers would create two throwaway accounts and strand the first one's
+     * conversations. [anonymousMintInFlight] makes minting single-flight, and the
+     * `currentSessionOrNull()` check makes it a no-op whenever any session already exists —
+     * including one another coroutine just imported.
+     */
+    suspend fun ensureAnonymousSession() {
+        if (supabaseClient.auth.currentSessionOrNull() != null) return
+        if (!anonymousMintInFlight.compareAndSet(false, true)) return
+        try {
+            // Re-check inside the guard: a session may have landed while we were queuing.
+            if (supabaseClient.auth.currentSessionOrNull() != null) return
+
+            val dto = anonymousAuthApi.get().createAnonymousSession()
+            if (dto.accessToken.isBlank() || dto.refreshToken.isBlank()) {
+                logger.w(TAG, "anonymous session response missing tokens")
+                return
+            }
+
+            // Import into the SDK rather than keeping a second bearer of our own: this is what
+            // makes AuthInterceptor, TokenAuthenticator's refresh-on-401 and sessionState all
+            // work for an anonymous user with no special-casing anywhere.
+            val nowSec = System.currentTimeMillis() / 1000
+            supabaseClient.auth.importSession(
+                UserSession(
+                    accessToken = dto.accessToken,
+                    refreshToken = dto.refreshToken,
+                    expiresIn = (dto.expiresAt - nowSec).coerceAtLeast(0L),
+                    tokenType = "bearer",
+                )
+            )
+            persistSession()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            // Backend capability not live yet, offline, 5xx — all the same to the client.
+            logger.i(TAG, "anonymous session unavailable, continuing without one")
+        } finally {
+            anonymousMintInFlight.set(false)
+        }
+    }
+
+    /**
+     * Hands any pending anonymous session's conversations to the account that is now signed in.
+     *
+     * Sends ONLY the anonymous access token; the server derives both identities from tokens it
+     * verifies, so no user id is ever sent from here (that is what stops one account claiming
+     * another's history). The backend owns the transfer — nothing is merged, deduplicated or
+     * deleted client-side.
+     *
+     * The pending token is cleared on success, and on a definitive rejection where retrying
+     * cannot help (the server already moved the rows, or the token is not a claimable anonymous
+     * session). It is deliberately KEPT on a transport failure so a later attempt can still
+     * rescue the history — losing it is the one outcome that permanently orphans a user's
+     * conversations.
+     */
+    suspend fun claimPendingAnonymousConversations(): Boolean {
+        val pending = tokenProvider.getPendingAnonymousClaim() ?: return false
+        return try {
+            val result = anonymousAuthApi.get().claimAnonymous(ClaimAnonymousRequestDto(pending))
+            tokenProvider.clearPendingAnonymousClaim()
+            result.ok
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: HttpException) {
+            // 4xx = the server has ruled on this token and will rule the same way next time
+            // (invalid/expired/not-anonymous/self-claim). Keeping it would retry forever.
+            // 5xx / anything else keeps it for a future attempt.
+            if (e.code() in 400..499) tokenProvider.clearPendingAnonymousClaim()
+            logger.w(TAG, "anonymous claim rejected (${e.code()})")
+            false
+        } catch (e: Exception) {
+            logger.w(TAG, "anonymous claim failed, keeping pending token for retry")
+            false
         }
     }
 

@@ -715,16 +715,20 @@ private fun ToolsSection(
                     .weight(1f)
                     .fillMaxHeight(),
             )
-            FeatureTile(
-                title = stringResource(R.string.home_games_title),
-                description = stringResource(R.string.home_games_desc),
-                onClick = onOpenGames,
-                iconGradient = GradOrangeAmber,
-                icon = { Text("🎮", fontSize = 20.sp) },
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-            )
+            // Games is HIDDEN from production (owner decision 2026-08-01, Finalization Sprint).
+            // GamesScreen embeds SuperTux in a WebView, and SuperTux is an Emscripten/WASM build
+            // that needs SharedArrayBuffer — which the Android WebView does not expose even when
+            // the page is correctly cross-origin isolated (the server does send COOP: same-origin
+            // + COEP: require-corp, and /games/supertux answers 200). On-device the WebView shows
+            // the engine's own "browser does not support SharedArrayBuffer" message and the game
+            // never starts, while the same URL runs in the device's Chrome — a WebView platform
+            // limitation, not a route bug. It also pulls a ~246 MB asset download, unacceptable
+            // behind a casual Home tile on mobile data.
+            //
+            // GamesScreen + GamesRoute are deliberately left wired in HomeTabHost so re-enabling
+            // is a one-line change once the WASM/SAB story is solved (native port or a lighter
+            // game). The spacer keeps this odd-count row aligned with the 2-up grid above.
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }

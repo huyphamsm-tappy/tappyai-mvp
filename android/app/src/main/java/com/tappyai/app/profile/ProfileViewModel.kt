@@ -10,7 +10,9 @@ import com.tappyai.app.account.data.AccountRepository
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.features.auth.data.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -22,7 +24,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    authRepository: AuthRepository,
+    private val authRepository: AuthRepository,
     private val accountRepository: AccountRepository,
 ) : ViewModel() {
     val userId: String? = authRepository.currentUserId()
@@ -30,7 +32,24 @@ class ProfileViewModel @Inject constructor(
     var profile by mutableStateOf<AccountProfile?>(null)
         private set
 
-    init { load() }
+    /**
+     * Authoritative anonymity, read from the verified JWT's `is_anonymous` claim via
+     * [AuthRepository.isAnonymous]. Never inferred from [userId] being null (an anonymous session
+     * has a real user id) or from the absent profile (that is a consequence of anonymity, not
+     * evidence of it). Drives the sign-in card below the header.
+     *
+     * Resolved on [Dispatchers.IO]: `isAnonymous()` reads the Keystore-backed token store, and a
+     * ViewModel init must not block the main thread on it.
+     */
+    var isAnonymous by mutableStateOf(false)
+        private set
+
+    init {
+        viewModelScope.launch {
+            isAnonymous = withContext(Dispatchers.IO) { authRepository.isAnonymous() }
+        }
+        load()
+    }
 
     fun load() {
         viewModelScope.launch {

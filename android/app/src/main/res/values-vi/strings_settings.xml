@@ -11,6 +11,10 @@
     <string name="settings_version">Phiên bản %1$s</string>
     <string name="settings_signing_out">Đang đăng xuất…</string>
     <string name="settings_sign_out">Đăng xuất</string>
+    <string name="settings_sign_in">Đăng nhập</string>
+    <string name="settings_sign_in_desc">Đăng nhập để giữ lại lịch sử trò chuyện và tiếp tục trên tài khoản của bạn.</string>
+    <string name="profile_sign_in_desc">Giữ lại lịch sử trò chuyện và đồng bộ tài khoản</string>
+
     <string name="settings_error_no_connectivity">Không có kết nối mạng. Vui lòng kiểm tra và thử lại.</string>
     <string name="settings_error_timeout">Kết nối quá chậm. Vui lòng thử lại.</string>
     <string name="settings_error_generic">Không thể đăng xuất. Vui lòng thử lại.</string>

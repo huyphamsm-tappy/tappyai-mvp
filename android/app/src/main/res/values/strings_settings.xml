@@ -11,6 +11,12 @@
     <string name="settings_version">Version %1$s</string>
     <string name="settings_signing_out">Signing out…</string>
     <string name="settings_sign_out">Sign out</string>
+    <!-- Shown instead of "Sign out" while the session is anonymous: signing out of a guest
+         session would mint a new anonymous identity and strand the guest's conversation. -->
+    <string name="settings_sign_in">Sign in</string>
+    <string name="settings_sign_in_desc">Sign in to keep your chat history and continue on your account.</string>
+    <string name="profile_sign_in_desc">Keep your chat history and sync your account</string>
+
     <string name="settings_error_no_connectivity">No internet connection. Please check and try again.</string>
     <string name="settings_error_timeout">The connection is too slow. Please try again.</string>
     <string name="settings_error_generic">Couldn\'t sign you out. Please try again.</string>
