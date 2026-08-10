@@ -283,7 +283,19 @@ export async function POST(req: Request) {
       }
       return { toolChoice: 'none' as const }
     },
-    tools: {
+    // Chitchat gets NO tool definitions. Measured 2026-08-10: declaring them
+    // cost ~2,400 of the path's ~2,657 input tokens, and none of it was
+    // reachable — the chitchat turn runs with maxSteps:1, so a tool call has no
+    // second step to answer in and the reply comes back EMPTY. Withholding the
+    // definitions is what actually makes that impossible; the prepareStep
+    // 'none' below never took effect (streamText ignores it — see B5).
+    //
+    // This fragments no cache. The chitchat prefix (tools + the ~300-token
+    // simple prompt = ~2,657) sits under Haiku 4.5's 4,096-token minimum
+    // cacheable size, so it was never cached to begin with — measured
+    // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
+    // the baseline and the post-B1 run. The tool path keeps its own lineage.
+    tools: intent === 'chitchat' ? undefined : {
       search_places: tool({
         description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({

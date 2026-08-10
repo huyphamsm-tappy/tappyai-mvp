@@ -6,11 +6,27 @@ export function normalizeVN(str: string): string {
     .replace(/Đ/g, 'D')
 }
 
+// A greeting, a thank-you or a bare acknowledgement — and NOTHING else. The
+// trailing group allows only polite particles and punctuation, so the pattern
+// describes messages that ARE a greeting rather than messages that merely start
+// with one.
+//
+// It used to be an unanchored prefix match, which quietly routed real requests
+// to the no-tool path because "hiện" starts with "hi", "uống" with "u", and
+// "ok show me cafes…" with "ok". That is not a cost bug: the chitchat path runs
+// with maxSteps:1, so when the model then reached for a tool there was no step
+// left to answer in and the user got an EMPTY reply. Measured live 2026-08-10 on
+// "hiện tại giá vàng bao nhiêu" and "ok show me cafes in Hanoi" — see
+// intent.test.ts. Matched against diacritic-stripped text (normalizeVN).
+const CHITCHAT_ONLY =
+  /^(xin chao|chao|hello|hi|alo|cam on|thank you|thanks|thank|oke|okie|ok|uh|um|u|tam biet|bye|haha|hehe|hihi|ban la ai|ban ten gi|tappyai la gi|test)(\s+(ban|tappy|tappyai|nhe|nha|nhieu|lam|a|oi|you|there|so much|bye))*\s*[!.,?~…]*$/i
+
 export function classifyIntent(text: string): 'chitchat' | 'tool' {
   const t = normalizeVN(text.toLowerCase().trim())
+  // Empty is not chitchat: the route rejects empty payloads, and anything that
+  // slips through should keep full capability rather than lose it silently.
   if (t.length === 0 || t.length > 40) return 'tool'
-  const chitchat = /^(chao|hi|hello|alo|xin chao|cam on|thank|thanks|ok|oke|okie|uh|u|um|tam biet|bye|haha|hehe|hihi|ban la ai|ban ten gi|tappyai la gi|test)/i
-  return chitchat.test(t) ? 'chitchat' : 'tool'
+  return CHITCHAT_ONLY.test(t) ? 'chitchat' : 'tool'
 }
 
 const COMPLEX_KW = /\b(restaurant|spa|hotel|nha hang|khach san|quan an|cafe|dat cho|goi y|tim kiem|san pham|mua|gia|review|danh gia|ban do|chi duong|lich trinh|tour|may bay|dat phong|booking|order|delivery|thoi tiet|tin tuc|vang|xe|taxi|shop|cua hang|tiem|quan|menu|dich vu|khu vuc|thanh pho|tinh|distric|street|road|duong|pho)\b/i
