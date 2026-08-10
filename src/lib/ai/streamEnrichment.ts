@@ -16,9 +16,21 @@ type PlaceLike = {
   photo_urls?: string[]
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
+  // Identity used to resolve photos late (B7-A). Present on the slim tool result
+  // the model sees, so it survives into the stream frames the filter parses.
+  place_id?: string
+  website_uri?: string
+  address?: string
 }
 // get_hotel_prices / search_products' primary content — 'title' stands in for 'name'.
 type SearchResultLike = { title?: string; photo_url?: string; photo_urls?: string[] }
+
+/**
+ * Fetches photos for exactly the places handed to it, keyed by place name (B7-A).
+ * Supplied by the route so this module stays free of tool/vendor imports and the
+ * pre-B7-A tests keep running with no network at all.
+ */
+export type PhotoResolver = (places: PlaceLike[]) => Promise<Map<string, string[]>>
 
 function decodeSafe(s: string): string {
   try { return decodeURIComponent(s) } catch { return s }
@@ -257,8 +269,66 @@ function injectPlanPhotos(places: PlaceLike[], fullText: string): string {
 // own block — bounded by the NEXT MENTIONED PLACE (photo-less ones included) / the
 // first structured marker / end of text — so photos stay grouped with their place
 // instead of piling up in one trailing block, regardless of what the model emitted.
+const hasLinks = (p: PlaceLike) =>
+  !!((p.order_links && p.order_links.length > 0) || (p.platform_links && p.platform_links.length > 0))
+
+/**
+ * Which places will actually receive enrichment, given the finished reply — and
+ * therefore the only ones worth resolving photos for (B7-A).
+ *
+ * Mirrors what the injector below does, so selection and injection cannot drift:
+ * a [TAPPY_PLAN] reply enriches every place matching a plan ITEM (6-10 is normal
+ * and must not be capped), while ordinary prose enriches at most 3.
+ */
+export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: string): PlaceLike[] {
+  const named = places.filter(p => p.name)
+  if (named.length === 0) return []
+
+  if (fullText.includes('[TAPPY_PLAN]')) {
+    const itemNames = planItemNames(fullText)
+    if (itemNames.length === 0) return []
+    return named.filter(p => itemNames.some(item => namesMatch(item, normName(p.name as string))))
+  }
+
+  const text = fullText
+  const normRaw = normalizeVN(text.toLowerCase())
+  // Same alignment guard the injector uses; without it offsets are meaningless,
+  // so fall back to the leading places rather than guessing.
+  if (normRaw.length !== text.length) return named.slice(0, 3)
+  const dedupText = normRaw.slice(0, earliestMarker(text))
+  const headers = proseHeaders(dedupText)
+  const mentioned = named.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
+  return (mentioned.length > 0 ? mentioned : named).slice(0, 3)
+}
+
+/** Place names referenced by a [TAPPY_PLAN] block's items. */
+function planItemNames(fullText: string): string[] {
+  const start = fullText.indexOf('[TAPPY_PLAN]')
+  const end = fullText.indexOf('[/TAPPY_PLAN]')
+  if (start === -1 || end === -1 || end < start) return []
+  try {
+    const plan = JSON.parse(fullText.slice(start + '[TAPPY_PLAN]'.length, end).trim()) as
+      { days?: Array<{ items?: Array<{ name?: string }> }> }
+    if (!Array.isArray(plan?.days)) return []
+    return plan.days.flatMap(d => (Array.isArray(d?.items) ? d.items : []))
+      .map(i => (i?.name ? normName(i.name) : ''))
+      .filter(Boolean)
+  } catch {
+    return []
+  }
+}
+
+/** The same tolerant match injectPlanPhotos uses: exact, else containment ≥4 chars. */
+function namesMatch(itemKey: string, placeKey: string): boolean {
+  if (itemKey === placeKey) return true
+  return placeKey.length >= 4 && (itemKey.includes(placeKey) || placeKey.includes(itemKey))
+}
+
 export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lang = 'vi'): string {
-  const usable = places.filter(p => p.name && ((p.photo_urls && p.photo_urls.length > 0) || p.photo_url))
+  // A photo is no longer a precondition for enrichment. It used to be, which
+  // meant a failed photo lookup silently took the order/platform links down with
+  // it — nothing about an order link needs a photo to exist (B4 finding).
+  const usable = places.filter(p => p.name && (hasPhoto(p) || hasLinks(p)))
   if (usable.length === 0) return fullText
 
   // A trip/evening plan renders as a structured [TAPPY_PLAN] JSON card whose place names live
@@ -363,6 +433,7 @@ export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
   collector?: EnrichmentCollector,
+  resolvePhotos?: PhotoResolver,
 ): Response {
   const body = response.body
   if (!body) return response
@@ -395,16 +466,37 @@ export function applyPlaceEnrichmentStreamFilter(
     return merged
   }
 
-  const emitReconstructed = (controller: TransformStreamDefaultController) => {
+  const emitReconstructed = async (controller: TransformStreamDefaultController) => {
     if (emitted) return
     emitted = true
     if (!bufferMode) return // nothing buffered — everything already streamed live
-    const finalText = injectPlaceEnrichment(resolvePlaces(), mainText, lang)
+    const places = resolvePlaces()
+
+    // B7-A: photos are fetched HERE, not inside the tool, because only here do we
+    // know which places the reply actually named. The tool used to resolve the
+    // top 8 blind while the injector used at most 3.
+    if (resolvePhotos) {
+      try {
+        const needed = selectPlacesNeedingEnrichment(places, mainText)
+        if (needed.length > 0) {
+          const photos = await resolvePhotos(needed)
+          for (const p of places) {
+            const urls = p.name ? photos.get(p.name) : undefined
+            if (urls && urls.length > 0) { p.photo_urls = urls; p.photo_url = urls[0] }
+          }
+        }
+      } catch {
+        // A photo lookup failing must cost photos, never the answer. Links and
+        // prose still go out below.
+      }
+    }
+
+    const finalText = injectPlaceEnrichment(places, mainText, lang)
     if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
   }
 
   const transform = new TransformStream<any, any>({
-    transform(chunk, controller) {
+    async transform(chunk, controller) {
       lineRemainder += decoder.decode(chunk, { stream: true })
       const lines = lineRemainder.split('\n')
       lineRemainder = lines.pop() ?? ''
@@ -459,15 +551,15 @@ export function applyPlaceEnrichmentStreamFilter(
           } catch { /* ignore */ }
           controller.enqueue(encoder.encode(line + '\n'))
         } else if (line.startsWith('d:')) {
-          emitReconstructed(controller)
+          await emitReconstructed(controller)
           controller.enqueue(encoder.encode(line + '\n'))
         } else {
           controller.enqueue(encoder.encode(line + '\n'))
         }
       }
     },
-    flush(controller) {
-      emitReconstructed(controller)
+    async flush(controller) {
+      await emitReconstructed(controller)
       if (lineRemainder) controller.enqueue(encoder.encode(lineRemainder + '\n'))
     },
   })

@@ -1,13 +1,14 @@
-import { getCache, setCache, serperSearch, fetchPlacePhoto, fetchPlacePhotosByName, fetchOfficialWebsiteImage } from './common'
+import { getCache, setCache, serperSearch } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
 import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { messages, isVi } from '@/lib/ai/messages'
+import { newsCacheKey, placesCacheKey } from './cacheKeys'
 
 export async function getNews(query: string, lang = 'vi') {
-  const cacheKey = 'news:' + query.toLowerCase().trim() + ':' + lang
+  const cacheKey = newsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -198,24 +199,9 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         ...((locationBias && elat && elon) ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, elat, elon) * 10) / 10 } : {}),
       }
     }).filter(r => r.name)
-    // Reuse the same Serper-based image resolver as the Google path so OSM-fallback
-    // places aren't structurally imageless — placeName doubles as the id (log label only).
-    // Query with name+address (when a real address is known) to disambiguate chains
-    // like "Highlands Coffee"; allSettled so one failed lookup can't drop the batch.
-    const photoResults = await Promise.allSettled(
-      baseResults.map(r => fetchPlacePhotosByName(
-        r.name,
-        r.address && r.address !== 'Xem ban do' ? `${r.name} ${r.address}` : r.name
-      ))
-    )
-    const results = baseResults.map((r, idx) => {
-      const settled = photoResults[idx]
-      const photoUrls = settled.status === 'fulfilled' ? settled.value : []
-      return {
-        ...r,
-        ...(photoUrls.length > 0 ? { photo_url: photoUrls[0], photo_urls: photoUrls } : {})
-      }
-    })
+    // B7-A: no eager photo lookup here either — this branch used to fire one
+    // Serper Images call per result (up to 10) when at most 3 are ever shown.
+    const results = baseResults
     return {
       location: loc, amenity_type: amenity, source: 'OpenStreetMap', count: results.length, results,
       google_maps_search: googleMapsUrl,
@@ -238,8 +224,7 @@ function isDirectFoodOrderLink(link: string): boolean {
 }
 
 export async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi', locationBias?: { lat: number; lng: number } | null) {
-  const locBiasKey = locationBias ? `:${locationBias.lat.toFixed(2)},${locationBias.lng.toFixed(2)}` : ''
-  const cacheKey = 'places:' + query.toLowerCase().trim() + ':' + (location || '').toLowerCase().trim() + ':' + (type || '') + locBiasKey + ':' + lang
+  const cacheKey = placesCacheKey(query, location, type, locationBias, lang)
   const cached = getCache(cacheKey)
   if (cached) {
     console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'cache_hit', cacheKey }))
@@ -285,51 +270,14 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
-        // Image resolver chain — collect from every source instead of stopping at the first
-        // success, up to 3 total, so a place isn't limited to whichever source answers first:
-        //   1. Official website og:image (short timeout, business's own content)
-        //   2. Google Places Photo (live only — no caching, per Maps Platform ToS)
-        //   3. Serper image search (live only — Serper doesn't own the images it returns)
-        // If all three fail, photo_urls is simply omitted (no image) rather than showing
-        // something wrong.
-        const MAX_PHOTOS = 3
-        const photoUrlLists = await Promise.all(
-          placesData.map(async (r) => {
-            const placeId = r.id as string
-            const placeName = (r.displayName as { text?: string })?.text || ''
-            const websiteUri = r.websiteUri as string | undefined
-            if (!placeId) return [] as string[]
-
-            const collected: string[] = []
-            const addUnique = (url: string | null | undefined) => {
-              if (url && !collected.includes(url)) collected.push(url)
-            }
-
-            if (websiteUri) {
-              addUnique(await fetchOfficialWebsiteImage(websiteUri))
-            }
-
-            if (collected.length < MAX_PHOTOS) {
-              try {
-                const detailResp = await Promise.race([
-                  fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${key}`),
-                  new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
-                ])
-                const detail = await (detailResp as Response).json()
-                const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
-                if (photoRef) addUnique(await fetchPlacePhoto(placeId, photoRef))
-              } catch { /* skip on timeout or error, fall through to Serper */ }
-            }
-
-            if (collected.length < MAX_PHOTOS && placeName) {
-              const serperPhotos = await fetchPlacePhotosByName(placeId, placeName, MAX_PHOTOS - collected.length)
-              serperPhotos.forEach(addUnique)
-            }
-
-            return collected.slice(0, MAX_PHOTOS)
-          })
-        )
-
+        // B7-A: photos are NOT resolved here any more. The reply names at most 3
+        // places (2-3 by prompt rule R1) and the injector enriches at most 3, so
+        // resolving all 8 up front discarded roughly five places' worth of
+        // billable Places Details / Places Photo / Serper Images calls per
+        // search. Resolution moved to applyPlaceEnrichmentStreamFilter, which
+        // runs once the reply is known and can ask for exactly the right places
+        // (see resolvePlacePhotos in ./common). place_id and website_uri below
+        // are what it resolves from.
         result = {
           source: 'Google Maps', count: d.places.length,
           results: placesData.map((r, idx) => ({
@@ -339,7 +287,6 @@ export async function searchPlaces(query: string, location?: string, type?: stri
             google_rating: r.rating ? messages.places.googleRating(lang, r.rating as number, r.userRatingCount as number | undefined) : null,
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
             ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
-            ...(photoUrlLists[idx].length > 0 ? { photo_url: photoUrlLists[idx][0], photo_urls: photoUrlLists[idx] } : {})
           }))
         }
       } else {

@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
-import { webSearch } from '@/lib/ai/tools/common'
+import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
 import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
@@ -504,7 +504,23 @@ export async function POST(req: Request) {
     )
   }
   const baseResponse = result.toDataStreamResponse()
-  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang, enrichment)
+  // B7-A: photos are fetched only for the places the finished reply actually
+  // names — the filter selects them, this resolves them. Each place degrades to
+  // "no photo" independently; one slow or failing lookup never blocks the rest.
+  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang, enrichment, async (places) => {
+    const byName = new Map<string, string[]>()
+    await Promise.all(places.map(async (p) => {
+      if (!p.name) return
+      try {
+        const urls = await resolvePlacePhotos(
+          { place_id: p.place_id, name: p.name, website_uri: p.website_uri },
+          3,
+        )
+        if (urls.length > 0) byName.set(p.name, urls)
+      } catch { /* this place simply gets no photo */ }
+    }))
+    return byName
+  })
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse

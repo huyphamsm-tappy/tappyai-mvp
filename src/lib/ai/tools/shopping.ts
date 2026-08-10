@@ -1,8 +1,9 @@
 import { getCache, setCache, serperSearch, fetchPlacePhotosByName } from './common'
 import { messages } from '@/lib/ai/messages'
+import { productsCacheKey } from './cacheKeys'
 
 export async function searchProducts(query: string, lang = 'vi') {
-  const cacheKey = 'products:' + query.toLowerCase().trim() + ':' + lang
+  const cacheKey = productsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
