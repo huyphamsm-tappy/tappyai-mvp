@@ -71,7 +71,7 @@ Identical shape: `requirePermission(req, ANALYTICS_AUTH_READ)` (`analytics/auth/
 
 ## 4. SECURITY PROOF MATRIX
 
-Local, read-only: `src/lib/controller/org/__tests__/f10ResourceEnforcementProof.test.ts` — **12/12 pass**. It drives `permissionEngine.authorize`, which *is* the decision `/api/admin/*` reaches (`guards.ts:18`).
+Local, read-only: `src/lib/controller/org/__tests__/pdpMembershipIndependence.test.ts` — **11/11 pass**. It drives `permissionEngine.authorize`, which *is* the decision `/api/admin/*` reaches (`guards.ts:18`), and it carries a tripwire that fails if `authorizeDepartmentResource` ever gains a runtime caller — because that would change this contract.
 
 | # | Case | Result | Meaning |
 |---|---|---|---|
@@ -82,7 +82,7 @@ Local, read-only: `src/lib/controller/org/__tests__/f10ResourceEnforcementProof.
 | C | commerce destructive (`commerce.deals.delete`), Head = `analyst` | **DENY** | role lacks it |
 | D | direct API call — does membership contribute any denial? | **No** | membership is not an input |
 | E | placeholder-department membership | **changes no API decision**; a wired gate would still deny (0 modules) | nav-only effect |
-| **F** | **`ai_data` membership + `analyst`  vs  no membership + `analyst`** | **IDENTICAL `allowed` and `reason` for every permission tested** | see statement below |
+| **F** | **Can membership change an API resource decision at all?** | **No — it is not expressible as a PDP input.** `Actor` carries no membership/department/scope field and `authorize(actor, permission, now)` does not take memberships, so there is no pair of actors differing only by membership to compare | the independence is **structural**, not an observed coincidence — see the statement below |
 | — | `admin` Head, `commerce.deals.delete` | **ALLOW regardless of department** | role sets blast radius |
 | P-3.1 | unwired gate: ai_data Head → ai_data resource | ALLOW | the gate works |
 | P-3.2 | unwired gate: ai_data Head → `commerce.deals.update` | **DENY `SCOPE_DENIED`** — **while the real API path ALLOWS it** | the exact gap, side by side |

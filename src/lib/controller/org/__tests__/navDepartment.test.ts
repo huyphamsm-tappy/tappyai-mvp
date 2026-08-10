@@ -66,4 +66,29 @@ describe('filterNavByDepartment', () => {
     const commerceOnly: NavGroup[] = [{ hubId: 'commerce', label: 'Commerce', order: 30, items: [{ moduleId: COMMERCE_MOD, label: 'Deals', route: '/admin/deals', order: 0 }] }]
     expect(filterNavByDepartment(commerceOnly, { isOwner: false, memberships: [member('marketing')] })).toHaveLength(0)
   })
+
+  // A non-Owner with NO membership at all. Every case above gives the actor a
+  // membership somewhere, so this state was previously unexercised — and it is
+  // exactly the state every non-Owner is in the moment the feature flag is
+  // switched on, before the first membership row exists.
+  describe('a non-Owner with ZERO memberships', () => {
+    const memberless = { isOwner: false, memberships: [] as DepartmentMembership[] }
+
+    it('sees no department-owned module', () => {
+      expect(isModuleVisibleForDepartment(COMMERCE_MOD, memberless)).toBe(false)
+      expect(isModuleVisibleForDepartment('tappy.hub.analytics.auth', memberless)).toBe(false)
+    })
+
+    it('still sees department-neutral modules — the PDP remains their only gate', () => {
+      expect(isModuleVisibleForDepartment(NEUTRAL_MOD, memberless)).toBe(true)
+    })
+
+    it('keeps the neutral item and loses the department-owned one', () => {
+      const out = filterNavByDepartment(groups, memberless)
+      expect(out).toHaveLength(1)
+      expect(out[0].items.map((i) => i.moduleId)).toEqual([NEUTRAL_MOD])
+    })
+
+    // The Owner in this same state is already covered by 'owner sees both' above.
+  })
 })
