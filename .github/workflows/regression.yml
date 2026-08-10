@@ -1,0 +1,58 @@
+# Regression Gate (CI-01) — runs the repository's test suite and static checks on
+# every push and pull request.
+#
+# Why this exists: before CI-01, CI ran exactly two jobs (Architecture Guard and
+# Brand registry validation, in architecture-guard.yml). 97 test files existed on
+# disk and exactly one of them — brandRegistry.validation.test.ts — ever ran in
+# CI. Every Controller V2 invariant was therefore unenforced, including
+# src/lib/controller/org/__tests__/pdpMembershipIndependence.test.ts, the tripwire
+# that FOUNDATION-10 relies on to detect authorizeDepartmentResource gaining a
+# runtime caller. A tripwire nobody trips automatically is documentation.
+#
+# This workflow does not replace architecture-guard.yml; both run.
+name: Regression Gate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # The point of CI-01: the whole suite, nothing excluded, nothing skipped.
+  # `npm test` is `vitest run` — 97 files, including the embedded-postgres suites
+  # under supabase/tests/ that execute the real .sql migrations.
+  regression:
+    name: Test suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  # Kept separate from the suite on purpose: a lint or type error must not mask
+  # the regression result, and vice versa.
+  static:
+    name: Types, lint, SQL grants
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # check-sql-grants diffs against origin/main and FAILS CLOSED when that
+          # ref cannot be resolved. The default shallow checkout does not provide
+          # it, so fetch full history and materialise the ref explicitly below.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run lint
+      - name: Ensure origin/main resolves for the SQL grants diff
+        run: git fetch --no-tags origin main:refs/remotes/origin/main
+      - run: npm run check:sql-grants
