@@ -17,12 +17,14 @@ import { buildSystem } from '@/lib/ai/promptBuilder'
 
 const MEASURE = process.env.TAPPY_MEASURE === '1'
 
-// The route reads ANTHROPIC_API_KEY from the Vercel environment; locally it
-// lives in .env.local, which vitest does not load.
-if (MEASURE && !process.env.ANTHROPIC_API_KEY) {
+// Next.js loads .env.local into process.env; vitest does not. Load it verbatim
+// so the active provider finds whatever credentials it needs — this file never
+// names a vendor key (Architecture Guard: no-vendor-api-keys), and credential
+// readiness is checked through AI.isConfigured() below.
+if (MEASURE) {
   for (const line of readFileSync('.env.local', 'utf8').split(/\r?\n/)) {
     const m = line.match(/^([A-Z_0-9]+)=(.*)$/)
-    if (m && m[1] === 'ANTHROPIC_API_KEY') process.env.ANTHROPIC_API_KEY = m[2].replace(/^"|"$/g, '')
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^"|"$/g, '')
   }
 }
 
@@ -58,6 +60,10 @@ const MEM_B = `===== THONG TIN VE USER NAY =====
 ==================================`
 
 describe.skipIf(!MEASURE)('prompt cache probe', () => {
+  it('the active provider has credentials', () => {
+    expect(AI.isConfigured()).toBe(true)
+  })
+
   it('A — identical prompt twice: does caching work at all?', async () => {
     const sys = buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false, null)
     const first = await probe(sys)
