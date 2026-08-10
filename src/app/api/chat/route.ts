@@ -14,6 +14,7 @@ import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, appl
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
+import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
@@ -98,7 +99,11 @@ export async function POST(req: Request) {
   // profile, country, or earlier turns (none of those are read here).
   const lang = detectExplicitLangRequest(lastText) ?? detectLang(lastText)
   const forcedTool = detectForcedTool(lastText)
-  const worthExtract = lastText.trim().length > 20
+  // Whether this turn earns a third LLM call for memory extraction. Was
+  // `lastText.length > 20`, which measured wrong in both directions: it fired on
+  // weather/gold/news lookups that store nothing, and dropped "Tôi ăn chay."
+  // (12 chars) — a hard dietary constraint. See memoryGate.ts.
+  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
 
