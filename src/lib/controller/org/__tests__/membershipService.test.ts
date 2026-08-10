@@ -126,10 +126,16 @@ describe('F — suspended Head has no authority', () => {
 
 // ── G — unauthenticated ─────────────────────────────────────────────────────────
 describe('G — unauthenticated', () => {
-  it('null actor is denied', async () => {
-    const { deps } = harness()
+  it('null actor is denied, writes nothing, and emits no audit row', async () => {
+    const { deps, repo, audits } = harness()
     const r = await assignMembership(null, assignReq(), deps)
     expect(r).toEqual({ ok: false, reason: 'UNAUTHENTICATED' })
+    // `deny()` guards its emit with `if (actor)`, so an unauthenticated call
+    // leaves no trace at all — deliberate, because the audit schema requires an
+    // actorId/actorEmail/actorRole a null actor cannot supply. Pinned so the
+    // trade-off cannot change silently.
+    expect(await repo.find('newbie', 'marketing')).toBeNull()
+    expect(audits).toHaveLength(0)
   })
 })
 

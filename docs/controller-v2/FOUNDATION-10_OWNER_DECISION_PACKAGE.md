@@ -239,17 +239,20 @@ Until 1–7 are measured on the real record, `support@tappyai.com` is a **propos
 
 ---
 
-## 8. CURRENT PRODUCTION STATE — verified read-only
+## 8. CURRENT PRODUCTION STATE — verified read-only, after the Head UAT
 
 | | |
 |---|---|
-| `department_membership` | **0** |
-| Department Heads | **0** |
-| `CONTROLLER_ORG_MEMBERSHIP_ENABLED` | **OFF** — 0 entries in Production, Preview, Development |
-| Ultimate Owner | **`founder@tappyai.com`** (`f9077a52…`), active in `platform_owner` |
-| F-10 | **INACTIVE** |
-| Production version | `/api/version` → `6f0296eacc2365ad989a2cb90d74f20236c75296b` |
-| Membership API | present, gated — `GET /api/admin/org/memberships` → **405**, `x-matched-path: /api/admin/org/memberships` |
+| Production version | `/api/version` → **`6d9a48b504ceb60dc75f4ad3128ec55fd69c2aa6`** |
+| `CONTROLLER_ORG_MEMBERSHIP_ENABLED` | **ON in Production** (Preview and Development have no entry) |
+| `department_membership` | **1** — `bafa6fc1…` / `ai_data` / `DEPARTMENT_HEAD` / scope `ai_data` / `active` |
+| Department Heads | **1** — `support@tappyai.com` |
+| `admin_roles` | **2** — the retired `super_admin` seed (untouched) + **`analyst`** for `support@`, `granted_by` = Owner, no expiry |
+| Ultimate Owner | **`founder@tappyai.com`** (`f9077a52…`), active in `platform_owner`, holds **no** `admin_roles` of its own |
+| `audit_log` | **15** — every mutation and every denial recorded |
+| Head UAT | **PASS** — `FOUNDATION-10_HEAD_UAT_PLAN.md` §7 |
+
+*(Superseded snapshot, before activation: version `6f0296e`, membership 0, Heads 0, flag OFF everywhere, F-10 inactive.)*
 
 ---
 
@@ -262,7 +265,15 @@ Measured basis: `analyst` holds **4** permissions (`dashboard.home.view` + three
 ### DECISION B — Membership authority
 **Owner / `super_admin` only.** `security.membership.read` and `.manage` are both `defaultRoles: ['super_admin']`; `.manage` is `riskLevel: critical`. Heads receive no global membership administration. *(Unchanged.)*
 
-### DECISION C — F-10 activation semantics ← **the real choice**
+### 🚦 STATUS AFTER THE HEAD UAT
+
+**Decisions A, B, D and E are executed.** The first Head exists, holds `analyst`, and the UAT passed. **Decision C is the only gate still open**, and it is now the gate that closes F-10.
+
+The UAT settled the question C is about, so C is no longer a guess:
+
+> **Department membership scopes navigation/context. API resource authorization is role/PDP-based.** Proven live: the Head's nav dropped from 8 items to 4 and the department switcher disappeared, while every API denial came back as `DENY by role/PDP` naming the missing permission — and G-4 established the independence structurally: membership is not an input to `authorize()`, and the `Actor` it receives carries no membership field, so the decision cannot depend on it.
+
+### DECISION C — F-10 activation semantics ← **the remaining choice**
 
 | | **Option 1 — accept as navigation/context scoping** | **Option 2 — block until resource enforcement is wired** |
 |---|---|---|
@@ -276,7 +287,35 @@ Measured basis: `analyst` holds **4** permissions (`dashboard.home.view` + three
 
 **Recommended immediate path: Option 1**, with resource enforcement tracked as a separate security-hardening phase — **but only if the Owner explicitly accepts, in writing, that F-10 is NOT resource isolation.** Without that acknowledgement the recommendation does not stand, because the risk of Option 1 is not technical but descriptive: a Controller believed to isolate departments when it does not.
 
-**This choice is the Owner's. It is presented, not made.**
+---
+
+## ✅ DECISION C — RESOLVED: **OPTION 1**, by the Owner, 2026-08-10
+
+The Owner selected **Option 1**. F-10 is accepted as:
+
+> **navigation/context scoped + role/PDP secured.**
+
+**Written acknowledgement, which Option 1 required:** F-10 **does not** provide department resource isolation. Department membership scopes navigation and context; API resource authorization is decided by the canonical PDP from the actor's `AdminRole`.
+
+What G-4 establishes, stated precisely:
+
+- `department_membership` is **not an input** to API resource authorization.
+- The `Actor` the PDP receives carries **no** membership, department or scope field.
+- `authorize()` takes `(actor, permission, now)` — membership is not among its parameters.
+- It follows that membership **cannot** change a resource-authorization decision in the current architecture. This is a structural consequence, not an empirical coincidence: the two situations "with membership" and "without membership" are not even expressible as different inputs to the PDP.
+- G-4 therefore proves this **independence**. It does **not** prove department resource isolation — it is the evidence that such isolation is absent.
+- Department-scoped resource enforcement remains a **separate future capability**.
+
+Pinned by `src/lib/controller/org/__tests__/pdpMembershipIndependence.test.ts`, which also fails deliberately if `authorizeDepartmentResource` ever gains a runtime caller — because that would change this contract. The live Head UAT is at `FOUNDATION-10_HEAD_UAT_PLAN.md` §7.
+
+**What follows from this decision:**
+
+1. F-10 is **architecturally closed**. Resource enforcement is **not** a prerequisite for it, and the Head UAT PASS stands.
+2. Every description of F-10 — in docs, PRs, commit messages, and conversation — must use the wording above. **"Department isolation" is prohibited language for this feature.**
+3. Wiring `authorizeDepartmentResource` becomes **separate future work**, not F-10 remediation. It would *extend* capability, not fix a defect.
+4. The one carried debt is the misleading source comment at **`navDepartment.ts:11-13`**, which still describes `authorizeDepartmentResource` as the active boundary for direct URL/API access while it has **zero callers**. Correcting that comment is documentation-only and changes no runtime behaviour. **Not yet performed — it needs its own authorization.**
+
+**Still open:** whether to keep `CONTROLLER_ORG_MEMBERSHIP_ENABLED=ON` and declare F-10 officially active. That is a separate Owner decision and has **not** been made here.
 
 ### DECISION D — Second corporate identity
 `support@tappyai.com` is a candidate **only** after all 9 verification checks pass on the real Supabase Auth record (see `FOUNDATION-10_HEAD_UAT_PLAN.md` §5). A forwarded address is not an identity. *(The Head need not be a different person: `delegation.ts` gates on uuid, never on humanity.)*

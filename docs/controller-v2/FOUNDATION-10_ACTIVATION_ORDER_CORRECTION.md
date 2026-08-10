@@ -38,7 +38,7 @@ Site 1 yields the **same value** in both states, so everything downstream of it 
 
 ### What site 2 actually does — proven, not assumed
 
-`src/lib/controller/org/__tests__/f10ActivationWindow.test.ts` — **13/13 pass**:
+Proven by the retained regression tests — `navDepartment.test.ts` ("a non-Owner with ZERO memberships"), `context.test.ts` and `f08DeploymentSafety.test.ts`. The original one-off harness was evidence for this decision and is not retained:
 
 - **Owner (`isOwner: true`), zero memberships:** `isModuleVisibleForDepartment` returns `true` for every module; `filterNavByDepartment` removes **nothing**; Home stays `owner` with all **15** departments. The flag is a **no-op for the Owner**.
 - **Non-Owner, zero memberships:** the **4 department-owned modules** (`tappy.hub.commerce.deals` + the three `tappy.hub.analytics.*`) disappear from nav; every **department-neutral** module stays (`moduleDepartment()` → `null` → always visible). A group made only of department-owned items is dropped.
@@ -127,18 +127,28 @@ Two consequences:
 
 ## 8. CORRECTED ACTIVATION ORDER
 
-Replaces *"membership first, flag last"*, which cannot be executed.
+Replaces *"membership first, flag last"*, which cannot be executed. **This order has now been executed end-to-end on production and is recorded as the canonical sequence.**
 
-| Step | Action | Gate |
-|---|---|---|
-| 0 | Membership API deployed, gated | ✅ done |
-| 1 | Second corporate identity verified | ✅ done — `support@tappyai.com`, `bafa6fc1-29b7-44aa-918c-74bc3af86b25`, all 11 checks pass |
-| **2** | **Enable `CONTROLLER_ORG_MEMBERSHIP_ENABLED=true` in Production** | ⛔ **separate Owner authorization** — this is the step the old order got backwards |
-| 3 | Owner creates the membership via `POST /api/admin/org/memberships` — `ai_data`, `DEPARTMENT_HEAD` | Owner authorization |
-| 4 | Verify membership row + `org.membership_assigned` audit + counts | read-only |
-| 5 | Grant `AdminRole = analyst` via `POST /api/admin/rbac/roles` — **independent of the flag; without it the Head has no access at all** | Owner authorization |
-| 6 | Confirm `support@` can actually hold a session (`last_sign_in_at` is still **NULL**) | prerequisite for step 7 |
-| 7 | Head UAT against the corrected matrix | separate authorization |
+| Step | Action | Gate | Outcome |
+|---|---|---|---|
+| 1 | Preflight the second corporate identity — read-only | — | ✅ `support@tappyai.com` `bafa6fc1…`, all 11 checks pass |
+| 2 | Owner authorization for the flag | Owner | ✅ given |
+| 3 | Enable `CONTROLLER_ORG_MEMBERSHIP_ENABLED=true` in **Production only** | Owner | ✅ Preview/Development deliberately untouched |
+| 4 | Production deployment **through Git** — an env change alone does nothing | Owner | ✅ PR #32 → `5217f367`, then PR #33 → `6d9a48b` |
+| 5 | Verify the runtime flag is ON by probe, not by reading the value | — | ✅ `POST` moved from feature-gate **404** to **401** |
+| 6 | Owner creates the membership through the canonical API | Owner | ✅ `POST /api/admin/org/memberships` → **200**, `ai_data` / `DEPARTMENT_HEAD` |
+| 7 | Verify the membership row and its `org.membership_assigned` audit record | — | ✅ exactly 1 row; audit 3 → 5 |
+| 8 | Owner grants `AdminRole = analyst` through the canonical role API | Owner | ✅ `POST /api/admin/rbac/roles` → **200**, `granted_by` = Owner |
+| 9 | Verify the role and its `rbac.role_granted` audit record | — | ✅ `admin_roles` 2 rows; audit 5 → 7 |
+| 10 | Verify the Head can actually hold a session | — | ✅ `last_sign_in_at` populated, via `/login?email=1` |
+| 11 | Run Head UAT groups A–H | Owner | ✅ **PASS** — see `FOUNDATION-10_HEAD_UAT_PLAN.md` §7; audit 7 → 15 |
+| 12 | Activation decision | **⛔ Owner — open** | see Decision C in the Owner Decision Package |
+
+**No SQL. No direct database mutation. No bypass of the canonical APIs.** Every mutation went through the deployed endpoints, so every one of them carries a PDP decision and an audit record.
+
+Two facts this sequence depends on, both measured:
+- **`featureGate()` runs before `requirePermission` and before the service**, so the membership API does not exist until the flag is on. That is why the flag must precede the membership.
+- **`assignMembership` never writes `admin_roles`.** The role grant is a separate mutation on a separate, un-gated route — and it, not the membership, is what actually grants access.
 
 > ⚠️ The old warning *"never enable the flag before a membership exists"* is **withdrawn**. Its stated reason — non-Owner admins dropping to `NoWorkspace` — is (a) already today's behaviour with the flag off, and (b) applies to a population measured at **zero**.
 

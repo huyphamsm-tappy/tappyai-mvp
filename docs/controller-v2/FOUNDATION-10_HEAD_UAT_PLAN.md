@@ -1,7 +1,8 @@
 # FOUNDATION-10 — Head UAT Plan & Activation Sequence
 
-**PLAN ONLY. Nothing executed.** No membership, no Head, no flag, no Vercel/Supabase change, no deploy, no commit, no push, no PR, no source change.
-**Measured against `origin/main` = production `6f0296e`.**
+**STATUS: EXECUTED — Head UAT PASSED on production, 2026-08-10.** See §7 for the result and the evidence.
+The plan below was written before execution and is preserved as written; §7 records what actually happened.
+**Planned against `origin/main` = production `6f0296e`. Executed against production `6d9a48b504ceb60dc75f4ad3128ec55fd69c2aa6`.**
 
 **Governing contract for this entire document:**
 
@@ -222,6 +223,92 @@ Items 1–2 are prerequisites **only** for describing F-10 as resource isolation
 
 ---
 
-## 8. PRODUCTION STATE
+## 8. PRODUCTION STATE — superseded, see §7
 
-`/api/version` = `6f0296e` · `department_membership` **0** · Head **0** · flag **OFF** in all environments · Owner `founder@tappyai.com` · membership API deployed and gated · **F-10 INACTIVE**.
+*(As planned, before execution: `/api/version` = `6f0296e` · `department_membership` **0** · Head **0** · flag **OFF** in all environments · membership API deployed and gated · F-10 inactive.)*
+
+---
+
+## 7. UAT RESULT — EXECUTED ON PRODUCTION, 2026-08-10
+
+**Verdict: PASS.**
+
+> F-10 Head UAT passed for the current architecture: department membership scopes navigation/context, while API resource authorization remains role/PDP-based.
+
+This is **not** department resource isolation, and this document must never be cited as evidence of it.
+
+### Subject
+
+Production `6d9a48b504ceb60dc75f4ad3128ec55fd69c2aa6` · flag runtime **ON** · Head `support@tappyai.com` (`bafa6fc1-29b7-44aa-918c-74bc3af86b25`) · membership `ai_data` / `DEPARTMENT_HEAD` / scope `ai_data` / `active` · `AdminRole` **`analyst`**.
+
+### Group results
+
+| Group | Result |
+|---|---|
+| A Identity | **PASS** |
+| B Context | **PASS** |
+| C Cross-department | **PASS** — with the limitation below |
+| D PDP | **PASS** |
+| E Owner | **PASS** |
+| F Live authorization | **PASS** |
+| G Resource | **PASS** |
+| H Regression | **PASS** |
+| **G-4 differential** | **PASS** |
+
+### Live endpoint matrix — the Head's own session
+
+| Method | Endpoint | Permission | Status | Result |
+|---|---|---|---|---|
+| GET | `/api/admin/analytics/auth` | `analytics.auth.read` | **200** | ALLOW |
+| GET | `/api/admin/analytics/activation` | `analytics.activation.read` | **200** | ALLOW |
+| GET | `/api/admin/audit` | `audit.log.read` | **403** | **DENY by role/PDP** |
+| GET | `/api/admin/deals` | `commerce.deals.read` | **403** | **DENY by role/PDP** |
+| GET | `/api/admin/settings` | `settings.config.read` | **403** | **DENY by role/PDP** |
+| GET | `/api/admin/rbac/roles` | `security.roles.read` | **403** | **DENY by role/PDP** |
+| POST | `/api/admin/org/memberships` | `security.membership.manage` | **403** | **DENY by role/PDP** |
+| PATCH | `/api/admin/org/memberships` | `security.membership.manage` | **403** | **DENY by role/PDP** |
+| DELETE | `/api/admin/org/memberships` | `security.membership.manage` | **403** | **DENY by role/PDP** |
+| POST | `/api/admin/rbac/roles` | `security.roles.grant` | **403** | **DENY by role/PDP** |
+| POST | `/api/admin/deals` | `commerce.deals.create` | **403** | **DENY by role/PDP** |
+| DELETE | `/api/admin/deals/[id]` | `commerce.deals.delete` | **403** | **DENY by role/PDP** |
+
+Every 403 body named the missing permission explicitly, e.g. `"Missing permission: commerce.deals.read"`. `POST /api/admin/deals/upload` (`commerce.deals.upload_media`) was not called live; the PDP denies it for `analyst`, consistent with the rest.
+
+### Where membership actually bit — navigation only
+
+| | Owner | Head |
+|---|---|---|
+| Nav items | **8** | **4** — Dashboard, Analytics, Auth Analytics, Activation Analytics |
+| Department switcher | 15 departments + "All departments" | **absent** |
+| Home | global | one card: *"AI / Data — Capability defined — 3 modules"* |
+
+Audit Log, Roles, Partner Deals and Settings disappeared from the Head's navigation. **This is presentation scope, not an API boundary** — the same endpoints were separately proven to deny by role/PDP.
+
+### G-4 — the differential that defines the contract
+
+- `department_membership` is **not an input** to API resource authorization.
+- The `Actor` the PDP receives carries exactly 8 fields, and **none** of them is a membership, department or scope.
+- `authorize(actor, permission, now)` does not take memberships.
+- It follows that the two states "with membership" and "without membership" **cannot be expressed as different inputs to the PDP at all**. The independence is structural, not an empirical coincidence — there is no pair of actors differing only by membership to compare.
+
+> **Department membership does not participate in resource authorization.** What bounds this Head is the `analyst` role.
+
+G-4 therefore proves that **independence**. It does **not** prove department resource isolation — it is the evidence that such isolation is absent. Department-scoped resource enforcement remains a **separate future capability**.
+
+### C limitation
+
+The intentional grant `ai_data → commerce.deals.read` exists in `CROSS_DEPARTMENT_ACCESS` but requires `admin`+. At the Head's actual role it is **unreachable** — the PDP denies `commerce.deals.read` before any department logic runs (`PERMISSION_DENIED`, not `SCOPE_DENIED`). Cases C-2/C-3/C-4 were therefore exercised in the local harness only: production has no `admin`-level actor in `ai_data`, and none was created for the UAT.
+
+### Audit delta
+
+**7 → 15 (+8).** All of it caused by the UAT itself: every denial writes an `rbac.access_denied` row (`guards.ts:25`). Each record carries `actor_email: support@tappyai.com`, `actor_role: analyst`, `reason: NO_GRANT` and `detail: "held by roles: …"` — which is simultaneously the strongest identity evidence and the strongest proof that the denial is role-based.
+
+**A read-only UAT still grows the audit log.** Budget for it; it is not an anomaly.
+
+### Unchanged by the UAT
+
+`department_membership` **1** (same row) · `admin_roles` **2** (the `analyst` grant intact, the retired seed untouched) · `platform_owner` unchanged · Owner still holds **no** `admin_roles` of its own · production SHA unchanged · no write, destructive or commerce access · no privilege escalation · no SQL, no deploy, no source change.
+
+### Non-live evidence
+
+A one-off harness of **32 tests** drove the real `permissionEngine`, the real corporate boundary and the real `buildDepartmentContext` over **production inputs transcribed verbatim**; its predicted matrix matched the live results exactly. It is **UAT evidence, not a regression test** — it is bound to one production identity and is deliberately not retained in the repository. The durable invariant it relied on lives on in `pdpMembershipIndependence.test.ts`.
