@@ -105,6 +105,40 @@ describe('buildSystem — cache-stable split', () => {
     }
   })
 
+  it('the decision-flow rule lives in the rulebook, and only once', () => {
+    const { shared } = VARIANTS[0][1]
+    expect(shared).toContain('QUYET DINH TRA LOI THE NAO')   // R7, consolidated in C2
+    expect(shared).toContain('TOI DA MOT cau hoi')            // the one-question ceiling
+    // R7 was replaced, not stacked on: the old wording must be gone.
+    expect(shared).not.toContain('HOI LAM RO khi that su can')
+    expect(shared.split('QUYET DINH TRA LOI THE NAO')).toHaveLength(2)
+  })
+
+  it('the per-turn decision stage stays OUT of the cached rulebook', () => {
+    // Stage is request-shaped. In `shared` it would break the byte-stability the
+    // 10,680-token cache depends on.
+    const stages = ['refinement', 'comparison', 'confirmation'] as const
+    const base = buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false)
+    for (const stage of stages) {
+      const built = buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false, stage)
+      expect(built.shared, `stage "${stage}" leaked into shared`).toBe(base.shared)
+    }
+    expect(buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false, 'refinement').dynamic)
+      .toContain('GIAI DOAN: DIEU CHINH')
+    expect(buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false, 'comparison').dynamic)
+      .toContain('GIAI DOAN: SO SANH')
+    expect(buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false, 'confirmation').dynamic)
+      .toContain('GIAI DOAN: XAC NHAN')
+    expect(base.dynamic).not.toContain('GIAI DOAN:')
+  })
+
+  it('a refinement turn is told to keep the current task and not re-ask', () => {
+    const { dynamic } = buildSystem(null, 'unknown', false, '', 'vi', '', null, null, false, 'refinement')
+    expect(dynamic).toContain('KHONG PHAI YEU CAU MOI')
+    expect(dynamic).toContain('GIU NGUYEN')
+    expect(dynamic).toContain('TUYET DOI KHONG hoi lai')
+  })
+
   it('the rulebook is the bulk of the prompt — otherwise the split earns nothing', () => {
     const { shared, dynamic } = VARIANTS[0][1]
     expect(shared.length).toBeGreaterThan(20_000)

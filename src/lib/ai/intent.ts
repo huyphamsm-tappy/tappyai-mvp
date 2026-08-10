@@ -200,6 +200,81 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
   return null
 }
 
+// ── Where in a decision is the user? (C2) ────────────────────────────────────
+//
+// The existing signals answer "which tool?". This one answers "which STAGE?" —
+// the difference between a cold-start request, a tweak to the answer just given,
+// a straight choice between named options, and a plain acknowledgement.
+//
+// Deterministic regex on purpose: consultative behaviour must not add an LLM
+// classification round trip (Cost Optimization is finalized and must not
+// regress). Precision is favoured over recall — a missed signal falls back to
+// exactly today's behaviour, whereas a FALSE refinement tells the model to carry
+// forward a task the user has moved on from, which is worse than shipping
+// nothing.
+
+export type DecisionStage = 'refinement' | 'comparison' | 'confirmation' | null
+
+/** A bare acknowledgement and NOTHING else — same whole-message technique as
+ *  CHITCHAT_ONLY, so "ok cho mình xem quán quận 1" is not swallowed. */
+const CONFIRMATION_ONLY =
+  /^(ok|oke|okie|okay|duoc|duoc roi|uh|um|u|ung|vang|da|yes|yep|yeah|sure|fine|great|perfect|nice|sounds good|got it|understood)(\s+(roi|nhe|nha|ban|luon|thanks|thank you|then))*\s*[!.,?~…]*$/i
+
+/** An explicit either/or choice, or an explicit "compare these" instruction.
+ *  Vietnamese "hay" doubles as "or" AND "interesting", and English "or" is
+ *  everywhere, so both need a companion marker rather than standing alone. */
+const COMPARISON =
+  /\bso sanh\b|\bcompare\b|which (one )?is better|which should i|nen (chon|mua|di|dat|lay)\b[^?]*\bhay\b|\bvs\.?\b|\bversus\b|^[^?]{1,60}\bhay\b[^?]{1,60}\?$|\bor\b[^?]{1,40}\?[^?]*$/i
+
+/** A change to the constraints of the task already in play. */
+const REFINEMENT_MARKER = new RegExp([
+  // Vietnamese comparatives ("rẻ hơn", "gần biển hơn") and swaps
+  '\\bhon\\b',
+  'doi sang|chuyen sang|thay bang|thay boi',
+  '(quan|cho|khach san|nha hang|cai|mon|noi) khac',
+  // English comparatives and swaps
+  '\\b(cheaper|closer|nearer|better|bigger|smaller|quieter|nicer|fancier|safer|shorter|longer|earlier|later|warmer|cooler|lighter|central)\\b',
+  '\\b(more|less)\\s+\\w+',
+  'change to|switch to|instead|any other|another one|anything else|something else|any better',
+].join('|'), 'i')
+
+/** A bare constraint phrase — refinement expressed by adding a limit rather than
+ *  a comparative ("Gần biển.", "Dưới 2 triệu", "under 2 million"). Anchored to
+ *  the START so it only matches messages that ARE a constraint. */
+const REFINEMENT_CONSTRAINT_LEAD =
+  /^(gan|xa|duoi|tren|trong vong|khoang|co |khong co |near|close to|next to|under|below|over|above|within|with |without )/i
+
+/** Longest message still plausibly a tweak rather than a fresh request. A real
+ *  refinement is short by nature ("rẻ hơn", "closer to the beach"). */
+const MAX_REFINEMENT_LENGTH = 60
+
+export function detectDecisionStage(
+  text: string,
+  opts: { hasPriorAssistantTurn: boolean },
+): DecisionStage {
+  const raw = (text ?? '').trim()
+  if (!raw) return null
+  const t = normalizeVN(raw.toLowerCase())
+
+  // Comparison first: it is valid as a cold start ("Nên mua iPhone hay Samsung?")
+  // and its markers are the most specific.
+  if (COMPARISON.test(t)) return 'comparison'
+
+  // A pure acknowledgement. Checked before refinement so "ok" is not read as a
+  // constraint, but AFTER the whole-message anchor rejects "ok, cheaper" —
+  // that one is a refinement carrying an acknowledgement, and the constraint is
+  // what matters.
+  if (CONFIRMATION_ONLY.test(t)) return 'confirmation'
+
+  // Refinement needs something to refine. Without a prior assistant turn the
+  // same words are a cold-start request and must be treated as one.
+  if (opts.hasPriorAssistantTurn && t.length <= MAX_REFINEMENT_LENGTH) {
+    if (REFINEMENT_MARKER.test(t) || REFINEMENT_CONSTRAINT_LEAD.test(t)) return 'refinement'
+  }
+
+  return null
+}
+
 export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   const t = normalizeVN(text.toLowerCase())
 
@@ -235,7 +310,7 @@ export function detectLocationIntent(text: string): 'offline' | 'online' | 'unkn
   return 'unknown'
 }
 
-export function isShoppingQuery(text: string): boolean {
-  const t = normalizeVN(text.toLowerCase())
-  return /\b(ao|giay|dep|tui\b|dien thoai|laptop|may tinh|tablet|my pham|son moi|nuoc hoa|dong ho|trang suc|kinh mat|balo|sandal|sneaker|boot|hoodie|jacket|legging|vay|dam|quan\s*jean|quan\s*short|do\s*the\s*thao|thoi\s*trang|phu\s*kien|tui\s*xach|vi\s*da|hang\s*hieu)\b/.test(t)
-}
+// REMOVED (C2): isShoppingQuery. Its only caller was inside the route's
+// `prepareStep` block, which streamText never executed (see the note there), so
+// the function had no effect on any request. Deleted with that block rather than
+// left as a plausible-looking helper nothing calls.

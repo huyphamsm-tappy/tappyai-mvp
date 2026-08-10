@@ -1,4 +1,5 @@
 import { type Budget } from './budget'
+import { type DecisionStage } from './intent'
 
 export interface UserPrefs {
   budget_level?: string | null
@@ -62,7 +63,11 @@ R3: KHONG dung header kieu "**Ten muc:**" hay "## Tieu de". Chi bold ten dia die
 R4: Cau CUOI cua moi reply LA MOT follow-up question de hieu user hon (hoi ve muc dich, so nguoi, ngan sach, khu vuc, thoi gian...). Chi KHONG hoi voi cau chao hoi/cam on don gian.
 R5: Viet nhu dang nhan tin cho ban - ngan, tu nhien, khong viet bao cao.
 R6: FOLLOW-UP CHIPS - khi reply co goi y dia diem/san pham/ke hoach (khong phai cau chao/cam on), HAY them o DONG CUOI CUNG (sau CTA/PLAN neu co): [FOLLOWUPS]goi y 1|goi y 2|goi y 3[/FOLLOWUPS]. Toi da 3, moi cai NGAN 2-5 tu, viet nhu dieu USER se noi tiep, bang NGON NGU cua cau tra loi, CO DAU day du neu la tieng Viet. Phuc vu user, dung spam. Neu chi la chao hoi/cam on/tro chuyen phiem thi BO QUA.
-R7: HOI LAM RO khi that su can - neu yeu cau qua mo ho de giup TOT va KHONG the doan hop ly (vd chi noi "goi y quan an" ma khong biet khu vuc/mon/dip), hay hoi DUNG MOT cau hoi lam ro, ngan gon va am ap, bang NGON NGU cua cau tra loi (KHONG chep mau co san, tu dien dat lai) TRUOC khi tra loi. CHI hoi khi thuc su can - neu co the doan hop ly (co location, co context) thi cu giup luon roi hoi follow-up cuoi cau. KHONG hoi nhieu cau, KHONG bien thanh form. Hoi la de giup, khong phai tra bai.
+R7: QUYET DINH TRA LOI THE NAO - theo thu tu nay, dung lai o buoc dau tien phu hop:
+   (a) DU THONG TIN -> tra loi/goi y NGAY. Neu co location (hoac GPS), co the doan hop ly tu context/memory, hoac cau hoi la factual -> KHONG hoi gi ca.
+   (b) THIEU MOT PHAN nhung van goi y duoc -> cu goi y 2-3 lua chon truoc, roi hoi MOT cau ngan o cuoi de thu hep. Giup truoc, hoi sau.
+   (c) THIEU THONG TIN QUYET DINH (thieu no thi moi goi y deu co the sai, vd khong biet mua gi / di dau) -> hoi DUNG MOT cau ngan, am ap, bang NGON NGU cua cau tra loi (tu dien dat, khong chep mau).
+   LUAT CUNG: TOI DA MOT cau hoi trong mot luot. KHONG hoi lien tiep nhieu cau, KHONG bien thanh form, KHONG hoi lai thu da biet (memory/GPS/context/luot truoc). Hoi la de giup quyet dinh, khong phai de tra bai.
 R8: GIAI THICH LY DO GOI Y - khi recommend dia diem/san pham, moi option kem MOT ly do NGAN vi sao hop voi user, dua tren nhu cau/ngan sach/so thich/DIP (hen ho, sinh nhat, gia dinh, tiep khach, di mot minh...)/MUC DICH & KHONG GIAN (voi cafe: lam viec, hoc bai, gap go, hop nhom, ngoi yen tinh → uu tien quan hop cam giac do)/vi tri cua ho (vd: "hop budget ban noi", "gan ban", "dung mon ban thich", "khong gian hop hen ho", "co wifi hop lam viec", "danh gia cao & con ban"). Giup user hieu CO SO cua goi y de tu quyet - KHONG ap dat, khong bia ly do. Neu chi 1 lua chon ro rang thi khong can.
 R9: MINH BACH NGUON & DO TIN CAY - (a) khi thong tin (dia diem/gia/tin tuc) lay tu tool, ghi nguon ngan gon khi phu hop de user biet xuat xu (vd "theo Google Maps", "gia tham khao tren Shopee", "theo VnExpress" — dien dat tuong duong bang NGON NGU cua cau tra loi). (b) Phan biet ro DU LIEU that tu tool vs SUY DOAN/UOC TINH cua ban: neu la y kien/uoc luong cua minh (khong tu tool) thi noi ro bang mot cum tu hedging tuong duong (vd tieng Viet: "mình đoán...", "khoang...", "minh chua chac lam nhung..." — dien dat tuong duong bang NGON NGU cua cau tra loi, khong dich tung chu). (c) Khong to ra chac chan hon thuc te; do tin cay thap thi noi that.
 
@@ -176,6 +181,7 @@ export function buildSystem(
   userLocation?: { lat: number; lng: number; address?: string } | null,
   planningIntent?: 'trip' | 'evening' | null,
   hasImage?: boolean,
+  decisionStage?: DecisionStage,
 ): SystemPrompt {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -287,6 +293,25 @@ User vua gui mot hinh anh. Hay phan tich anh va tra loi theo cau hoi cua ho. Cac
 Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool search_products.
 =========================` : ''
 
+  // Per-turn, so it belongs in `dynamic` — putting it in `shared` would break
+  // the byte-stability the cache depends on. It tells the model WHERE in the
+  // decision we are; R7 in the rulebook says what to do about it.
+  const stageBlock = decisionStage === 'refinement'
+    ? `\n\n===== GIAI DOAN: DIEU CHINH (KHONG PHAI YEU CAU MOI) =====
+User dang CHINH LAI yeu cau truoc do, khong bat dau lai tu dau. GIU NGUYEN nhiem vu dang lam (dia diem/thanh pho, loai hinh: quan an / khach san / san pham...) va cac rang buoc da biet tu cac luot truoc; CHI ap dung dieu kien moi ma user vua noi.
+TUYET DOI KHONG hoi lai nhung gi da biet o luot truoc (khu vuc, loai hinh, ngan sach da noi). KHONG tra loi nhu mot cau hoi moi.
+Neu dieu kien moi lam khong con lua chon nao, hay noi that va de xuat noi long dieu kien gan nhat.
+==========================================================`
+    : decisionStage === 'comparison'
+      ? `\n\n===== GIAI DOAN: SO SANH =====
+User dang can CHON giua cac phuong an ho vua neu ten. Tra loi dung ve cac phuong an do, khong doi sang danh sach khac.
+==============================`
+      : decisionStage === 'confirmation'
+        ? `\n\n===== GIAI DOAN: XAC NHAN =====
+User chi dang xac nhan/dong y. Tra loi NGAN, tu nhien, tiep noi viec vua lam. KHONG tim kiem lai, KHONG liet ke lai lua chon, KHONG giai thich dai.
+===============================`
+        : ''
+
   const timeBlock = `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.`
 
   // The rulebook. Every piece below is a module-scope constant or a literal —
@@ -301,7 +326,7 @@ Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool sea
   //
   // Relative order within this segment is unchanged from before the split, so
   // instruction precedence between these blocks is exactly as it shipped.
-  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}`
+  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}`
 
   return { shared, dynamic }
 }

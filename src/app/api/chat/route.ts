@@ -9,7 +9,7 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, detectDecisionStage, isSimpleQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
@@ -106,6 +106,11 @@ export async function POST(req: Request) {
   const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
+  // Where in the decision this turn sits (C2). "Rẻ hơn" only means "tighten the
+  // current task" if there IS one, so refinement is gated on a prior assistant
+  // turn — read from the history already on the request, not a second LLM call.
+  const hasPriorAssistantTurn = messages.some((m: { role: string }) => m.role === 'assistant')
+  const decisionStage = detectDecisionStage(lastText, { hasPriorAssistantTurn })
 
   // Load user memory + kiểm tra freemium limit. Quota values + measurement live
   // in @/lib/config/product — the single owner of every business value.
@@ -260,8 +265,13 @@ export async function POST(req: Request) {
   // the breakpoint. The chitchat path has no rulebook to share — its prompt is
   // ~300 tokens, far below any provider's minimum cacheable size — so it passes
   // everything as `system` and shares nothing.
-  const built = intent === 'chitchat' ? null : buildSystem(
-    budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage,
+  // A bare acknowledgement takes the same no-tool path as chitchat: there is
+  // nothing to search for, and the previous turn already produced the result the
+  // user is agreeing to. Cheaper AND the right behaviour — a confirmation must
+  // never restart a search.
+  const noToolTurn = intent === 'chitchat' || decisionStage === 'confirmation'
+  const built = noToolTurn ? null : buildSystem(
+    budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
   )
   const systemShared = built?.shared
   const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
@@ -283,38 +293,32 @@ export async function POST(req: Request) {
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
     // now injected by streamEnrichment instead of written by the LLM (see prompt),
     // so actual output is smaller — this raised ceiling is headroom, not the norm.
-    maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
-    maxSteps: intent === 'chitchat' ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
-    prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
-      if (intent === 'chitchat') return { toolChoice: 'none' as const }
-      if (stepNumber === 0) {
-        if (forcedTool === 'search_products' && locationIntent === 'offline') {
-          return { toolChoice: { type: 'tool' as const, toolName: 'search_places' } }
-        }
-        if (!forcedTool && locationIntent === 'offline') {
-          return { toolChoice: { type: 'tool' as const, toolName: 'search_places' } }
-        }
-        if (!forcedTool && locationIntent === 'unknown' && isShoppingQuery(lastText)) {
-          return { toolChoice: 'none' as const }
-        }
-        if (forcedTool) return { toolChoice: { type: 'tool' as const, toolName: forcedTool } }
-        return { toolChoice: 'required' as const }
-      }
-      return { toolChoice: 'none' as const }
-    },
-    // Chitchat gets NO tool definitions. Measured 2026-08-10: declaring them
+    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
+    maxSteps: noToolTurn ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
+    // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
+    // never ran — ai@4.3.19 destructures experimental_prepareStep in
+    // generateText only (bundle line 4177); streamText (line 5193) takes
+    // toolChoice and maxSteps but never prepareStep, and 4177 is the option's
+    // only occurrence. Production has always run at the SDK default,
+    // toolChoice:'auto', and the baseline confirmed it behaviourally.
+    //
+    // This is a SAFETY cleanup, not a saving: behaviour is unchanged. It matters
+    // because the deleted code carried an @ts-ignore asserting the option works
+    // at runtime, and AI SDK 5 DOES support prepareStep on streamText — an
+    // upgrade would have silently switched forcing on, raising cost and breaking
+    // the clarification behaviour this phase builds on `auto`.
+    //
+    // No-tool turns get NO tool definitions. Measured 2026-08-10: declaring them
     // cost ~2,400 of the path's ~2,657 input tokens, and none of it was
-    // reachable — the chitchat turn runs with maxSteps:1, so a tool call has no
-    // second step to answer in and the reply comes back EMPTY. Withholding the
-    // definitions is what actually makes that impossible; the prepareStep
-    // 'none' below never took effect (streamText ignores it — see B5).
+    // reachable — a no-tool turn runs with maxSteps:1, so a tool call has no
+    // second step to answer in and the reply comes back EMPTY.
     //
     // This fragments no cache. The chitchat prefix (tools + the ~300-token
     // simple prompt = ~2,657) sits under Haiku 4.5's 4,096-token minimum
     // cacheable size, so it was never cached to begin with — measured
     // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
     // the baseline and the post-B1 run. The tool path keeps its own lineage.
-    tools: intent === 'chitchat' ? undefined : {
+    tools: noToolTurn ? undefined : {
       search_places: tool({
         description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
