@@ -23,6 +23,16 @@ export type ModelOverrides = Partial<Record<ModelRole, string>>
 
 export interface AIGenerateOptions {
   role?: ModelRole
+  /**
+   * The portion of the system prompt that is BYTE-IDENTICAL on every request —
+   * no clock, no user, no request-shaped branching. Delivered ahead of
+   * `system`, and providers may optimize repeated delivery of it.
+   *
+   * Callers own the guarantee: put anything that varies in `system` instead.
+   * A value that changes between requests is not wrong, just pointless.
+   */
+  systemShared?: string
+  /** Request-specific system instructions. Free to vary per request. */
   system?: string
   /** Convenience: a single user message. Appended after `messages` if both given. */
   prompt?: string

@@ -40,11 +40,24 @@ export function createClaudeProvider(overrides: ModelOverrides): AIProvider {
     // cached rate. Anthropic ignores the marker on prompts below its minimum
     // cacheable size, so decorating every request is safe. Semantically
     // transparent: responses are identical with or without caching.
-    decorateMessages: (messages: CoreMessage[]) =>
-      messages.map((m) =>
-        m.role === 'system'
-          ? { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
-          : m,
-      ),
+    //
+    // The marker goes on the FIRST system message only. Anthropic caches the
+    // exact prefix ENDING at the marker, so with two system segments (the
+    // capability layer emits `systemShared` then `system`) the breakpoint lands
+    // between them: the stable segment is cached, and whatever varies per
+    // request sits after the boundary where it can no longer invalidate it.
+    // Marking the last segment instead would extend the cached prefix over the
+    // varying text and defeat the whole thing. Consecutive system messages are
+    // mapped by @ai-sdk/anthropic to separate `system` blocks, each carrying its
+    // own cache_control, so this is a real breakpoint and not an approximation.
+    // With a single system message the behaviour is unchanged.
+    decorateMessages: (messages: CoreMessage[]) => {
+      let marked = false
+      return messages.map((m) => {
+        if (m.role !== 'system' || marked) return m
+        marked = true
+        return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
+      })
+    },
   }
 }

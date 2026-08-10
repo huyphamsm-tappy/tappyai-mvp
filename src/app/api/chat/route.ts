@@ -236,10 +236,16 @@ export async function POST(req: Request) {
   // Truncate history to last 10 messages to control token costs
   const trimmedMessages = messages.length > 10 ? messages.slice(-10) : messages
 
-  const systemPrompt = (intent === 'chitchat'
-    ? buildSystemSimple(lang, memoryBlock)
-    : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, forcedTool)
-  ) + styleBlock
+  // Split so the provider can cache the invariant rulebook and leave everything
+  // request-shaped (clock, language, memory, prefs, budget, GPS, style) after
+  // the breakpoint. The chitchat path has no rulebook to share — its prompt is
+  // ~300 tokens, far below any provider's minimum cacheable size — so it passes
+  // everything as `system` and shares nothing.
+  const built = intent === 'chitchat' ? null : buildSystem(
+    budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage,
+  )
+  const systemShared = built?.shared
+  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
 
   let result
   try {
@@ -251,6 +257,7 @@ export async function POST(req: Request) {
     // call) if the client disconnects — otherwise it runs to maxDuration billing
     // tokens for a response nobody is receiving.
     abortSignal: req.signal,
+    systemShared,
     system: systemPrompt,
     messages: trimmedMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"

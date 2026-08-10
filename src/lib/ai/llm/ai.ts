@@ -12,9 +12,16 @@ import type { AIGenerateOptions, AIStreamOptions, AIVisionOptions } from './type
 /** Normalize system/prompt/messages into one list and let the active provider
  * apply its (semantically transparent) request shaping. The system prompt is
  * deliberately delivered as a leading system MESSAGE so providers can attach
- * per-message options to it — see ClaudeProvider.decorateMessages. */
-function buildMessages(opts: { system?: string; prompt?: string; messages?: CoreMessage[] }): CoreMessage[] {
+ * per-message options to it — see ClaudeProvider.decorateMessages.
+ *
+ * `systemShared` is emitted as its OWN leading system message, ahead of
+ * `system`. Two consecutive system messages stay one logical system prompt to
+ * the model, but they reach the provider as two separately addressable
+ * segments — which is what lets an adapter treat the stable one differently
+ * from the request-shaped one. Splitting is inert for providers that don't. */
+function buildMessages(opts: { systemShared?: string; system?: string; prompt?: string; messages?: CoreMessage[] }): CoreMessage[] {
   const messages: CoreMessage[] = []
+  if (opts.systemShared) messages.push({ role: 'system', content: opts.systemShared })
   if (opts.system) messages.push({ role: 'system', content: opts.system })
   if (opts.messages) messages.push(...opts.messages)
   if (opts.prompt) messages.push({ role: 'user', content: opts.prompt })

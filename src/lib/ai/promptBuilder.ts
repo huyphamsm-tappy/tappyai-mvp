@@ -146,6 +146,26 @@ Khi gợi ý ăn uống/spa/địa điểm: ƯU TIÊN phong cách & ngân sách 
 =================================================`
 }
 
+/**
+ * The system prompt, split at the boundary that matters for cost.
+ *
+ * `shared` is byte-identical for every caller, every user, every language and
+ * every minute — it is the ~11k-token rulebook. `dynamic` is everything shaped
+ * by this request. The AI layer delivers them as two system segments so the
+ * provider can put its cache breakpoint between them; nothing about the
+ * model's view of the prompt changes, since the two are concatenated.
+ *
+ * The split is load-bearing, not cosmetic: measured 2026-08-10, a one-minute
+ * clock tick or a different user's memory block used to re-bill all 11,056
+ * tokens because both sat AHEAD of the rulebook.
+ */
+export interface SystemPrompt {
+  /** Byte-identical across all requests. Verified by promptBuilder.test.ts. */
+  shared: string
+  /** Request-shaped: language, clock, memory, prefs, budget, GPS, mode blocks. */
+  dynamic: string
+}
+
 export function buildSystem(
   budget?: Budget | null,
   locationIntent?: 'offline' | 'online' | 'unknown',
@@ -156,8 +176,7 @@ export function buildSystem(
   userLocation?: { lat: number; lng: number; address?: string } | null,
   planningIntent?: 'trip' | 'evening' | null,
   hasImage?: boolean,
-  forcedTool?: string | null,
-): string {
+): SystemPrompt {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' })
@@ -248,7 +267,13 @@ TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan
 4. KHONG THAO TUNG: Khong dung ap luc / chieu tro de khien user hanh dong. Loi khuyen phuc vu user, khong phai loi ich thuong mai. User luon toan quyen quyet dinh.
 =============================================================`
 
-  const skipDetailBlocks = forcedTool === 'get_news' || forcedTool === 'get_weather' || forcedTool === 'get_gold_price'
+  // REMOVED (2026-08-10): reviewBlock/ctaBlock used to be dropped for forced
+  // get_news/get_weather/get_gold_price turns to save tokens. Measured, that was
+  // a false economy — it forked a SECOND cache lineage (9,824 tokens instead of
+  // 13,162) that had to be created from cold at 1.25x. Carrying the two blocks
+  // on every request instead costs ~4k tokens at the 0.1x cached rate. Both
+  // blocks already self-guard ("no specific suggestion → no CTA block"), so a
+  // weather answer is unaffected.
   const planningBlock = planningIntent ? buildPlanningBlock(planningIntent, lang) : ''
   const cameraBlock = hasImage ? `
 
@@ -262,9 +287,23 @@ User vua gui mot hinh anh. Hay phan tich anh va tra loi theo cau hoi cua ho. Cac
 Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool search_products.
 =========================` : ''
 
-  return `${langBlock}THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.
+  const timeBlock = `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.`
 
-${memoryBlock ? memoryBlock + '\n\n' : ''}${prefBlock ? prefBlock + '\n\n' : ''}${SYSTEM_BASE}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${skipDetailBlocks ? '' : reviewBlock}${skipDetailBlocks ? '' : ctaBlock}${scopeBlock}${safetyBlock}`
+  // The rulebook. Every piece below is a module-scope constant or a literal —
+  // no interpolation, so this string cannot vary between requests. The
+  // "shared segment is invariant" test in promptBuilder.test.ts holds the line.
+  const shared = `${SYSTEM_BASE}${reviewBlock}${ctaBlock}${scopeBlock}${safetyBlock}`
+
+  // Request-shaped, and deliberately AFTER the rulebook: it sits past the
+  // provider's cache breakpoint, so a new minute or a different user no longer
+  // invalidates the 11k-token prefix. That is also why the clock keeps
+  // minute precision — out here it costs a cache lineage nothing.
+  //
+  // Relative order within this segment is unchanged from before the split, so
+  // instruction precedence between these blocks is exactly as it shipped.
+  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}`
+
+  return { shared, dynamic }
 }
 
 export function buildSystemSimple(lang = 'vi', memoryBlock?: string): string {
