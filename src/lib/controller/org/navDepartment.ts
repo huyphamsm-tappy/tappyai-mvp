@@ -6,11 +6,15 @@
 // scope does not cover. There is still exactly ONE navigation authority; this is
 // scope refinement, applied AFTER the PDP filter.
 //
-// NOT wired into the live AdminShell in this phase (flag OFF, F-06 code
-// undeployed). Proven here so F-07D can wire it behind the flag with no logic
-// change. Security note: hiding a module from nav is UX only — server
-// authorization (authorizeDepartmentResource + the module's PDP guard) remains
-// the boundary for direct URL/API access.
+// Wired into the live AdminShell behind CONTROLLER_ORG_MEMBERSHIP_ENABLED
+// (see admin/layout.tsx), applied after the PDP filter.
+//
+// Security note: hiding a module from nav is UX only. The server-side boundary
+// for a direct URL or API request is the module's own PDP guard, and department
+// membership is not an input to it. `authorizeDepartmentResource` in
+// ./authorization.ts does implement department-scoped resource checks, but it
+// has NO runtime caller — it is a separate, future capability, not an active
+// boundary. See docs/controller-v2/FOUNDATION-10_RESOURCE_ENFORCEMENT_DECISION.md.
 
 import type { NavGroup } from '../navigationProvider'
 import { DEPARTMENTS, DEPARTMENT_IDS } from './departments'
