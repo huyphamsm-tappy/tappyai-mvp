@@ -387,7 +387,23 @@ export async function POST(req: Request) {
         }),
       } : {}),
     },
-    onFinish: async ({ usage, finishReason, text }) => {
+    onFinish: async ({ usage, finishReason, text, steps }) => {
+      // Prompt-cache accounting. `usage` is already the SUM across steps, but
+      // cache counters live in per-step providerMetadata (the top-level
+      // providerMetadata only carries the LAST step), so they are summed here.
+      // Anthropic reports promptTokens EXCLUDING cached tokens, so the real
+      // prompt size is promptTokens + cacheCreationTokens + cacheReadTokens —
+      // never read promptTokens alone as "how big was the prompt".
+      let cacheReadTokens = 0
+      let cacheCreationTokens = 0
+      let sawCacheMetadata = false
+      for (const step of steps ?? []) {
+        const meta = step.providerMetadata?.anthropic as
+          { cacheReadInputTokens?: number | null; cacheCreationInputTokens?: number | null } | undefined
+        if (!meta) continue
+        if (typeof meta.cacheReadInputTokens === 'number') { cacheReadTokens += meta.cacheReadInputTokens; sawCacheMetadata = true }
+        if (typeof meta.cacheCreationInputTokens === 'number') { cacheCreationTokens += meta.cacheCreationInputTokens; sawCacheMetadata = true }
+      }
       console.log(JSON.stringify({
         type: 'tappyai_usage',
         intent,
@@ -395,6 +411,16 @@ export async function POST(req: Request) {
         promptTokens: usage?.promptTokens ?? null,
         completionTokens: usage?.completionTokens ?? null,
         totalTokens: usage?.totalTokens ?? null,
+        // null (not 0) when the provider reported no cache metadata at all, so
+        // "caching is off/unsupported" stays distinguishable from "0 hits".
+        cacheReadTokens: sawCacheMetadata ? cacheReadTokens : null,
+        cacheCreationTokens: sawCacheMetadata ? cacheCreationTokens : null,
+        // One LLM request per step — the direct measure the cost work is judged on.
+        // The memory-extraction generate() below is a SEPARATE call not counted
+        // here; memoryExtract is its 0/1 flag, so total LLM calls = llmCalls + memoryExtract.
+        llmCalls: steps?.length ?? null,
+        memoryExtract: (authedUserId && worthExtract) ? 1 : 0,
+        toolCalls: (steps ?? []).reduce((n, s) => n + (s.toolCalls?.length ?? 0), 0),
         elapsedMs: Date.now() - startTime,
         worthExtract,
         forcedTool,
