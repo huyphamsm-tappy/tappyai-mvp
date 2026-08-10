@@ -13,6 +13,7 @@ import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
+import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
@@ -230,6 +231,19 @@ export async function POST(req: Request) {
     prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
   }
 
+  // Request-scoped enrichment channel (B4). Photos and order/platform links are
+  // carved out of every place-tool result so they never enter the model's
+  // context — the prompt forbids the model from writing them, and
+  // applyPlaceEnrichmentStreamFilter injects them positionally afterwards. This
+  // const lives and dies with this request: no module state, no key to collide
+  // on, nothing shared between users or carried across warm invocations.
+  const enrichment = createEnrichmentCollector()
+  const forModel = (toolName: string, result: unknown) => {
+    const { model, enrichment: carved } = splitToolResult(toolName, result)
+    enrichment.add(carved)
+    return model
+  }
+
   const role: ModelRole = (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
   console.log(JSON.stringify({ type: 'tappyai_model', model: role, planningIntent }))
 
@@ -306,7 +320,7 @@ export async function POST(req: Request) {
         execute: async ({ query, location, type }) => {
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
           const r = await searchPlaces(query, location, type, lang, userLocation)
-          return budget ? applyBudgetFilter(r, budget, query) : r
+          return forModel('search_places', budget ? applyBudgetFilter(r, budget, query) : r)
         }
       }),
       get_news: tool({
@@ -319,7 +333,7 @@ export async function POST(req: Request) {
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
           const r = await searchProducts(query, lang)
-          return budget ? applyBudgetFilter(r, budget, query) : r
+          return forModel('search_products', budget ? applyBudgetFilter(r, budget, query) : r)
         }
       }) } : {}),
       web_search: tool({
@@ -358,7 +372,7 @@ export async function POST(req: Request) {
         }),
         execute: async ({ location, checkIn, checkOut }) => {
           const r = await getHotelPrices(location, checkIn, checkOut, budget?.max, lang)
-          return budget ? applyBudgetFilter(r, budget, 'khach san') : r
+          return forModel('get_hotel_prices', budget ? applyBudgetFilter(r, budget, 'khach san') : r)
         }
       }),
       get_transport_options: tool({
@@ -485,7 +499,7 @@ export async function POST(req: Request) {
     )
   }
   const baseResponse = result.toDataStreamResponse()
-  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang)
+  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang, enrichment)
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse

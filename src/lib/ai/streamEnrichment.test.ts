@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
 import { injectPlaceEnrichment, applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
+import { createEnrichmentCollector } from './toolResultSplit'
 
 const IMG = 'https://img.test'
 // index of the Nth (1-based) occurrence of `sub` in `s`
@@ -348,5 +349,117 @@ describe('applyPlaceEnrichmentStreamFilter — stream transform', () => {
     // Both items got their photo even though they came from DIFFERENT searches (accumulation).
     expect(items.find(i => i.name === 'San San Hotel')?.photo_url).toContain('hotel.jpg')
     expect(items.find(i => i.name === 'Hải Sản Mộc')?.photo_url).toContain('food.jpg')
+  })
+})
+
+// B4: the enrichment the user sees no longer travels through the model. The tool
+// hands the model a slim result and pushes photos / order links / platform links
+// into a request-scoped collector, which the filter reads instead of scraping
+// them back out of the `a:` frames.
+describe('applyPlaceEnrichmentStreamFilter — enrichment from the request-scoped collector', () => {
+  const line0 = (s: string) => '0:' + JSON.stringify(s)
+
+  async function runFilter(inputLines: string[], collector?: ReturnType<typeof createEnrichmentCollector>): Promise<string> {
+    const filtered = applyPlaceEnrichmentStreamFilter(new Response(inputLines.join('\n') + '\n'), 'vi', collector)
+    return await new Response(filtered.body).text()
+  }
+
+  // The exact shape B4 produces: the `a:` frame carries NO photo, and the photo
+  // only exists in the collector. Before B4 the filter had no way to see it.
+  const SLIM_FRAME = 'a:{"toolCallId":"t1","result":{"results":[{"name":"Phở Gà","address":"5B Phủ Doãn"}]}}'
+
+  it('injects a photo that exists ONLY in the collector, never in the stream', async () => {
+    const collector = createEnrichmentCollector()
+    collector.add([{ name: 'Phở Gà', photo_urls: [`${IMG}/ga.jpg`] }])
+    const out = await runFilter([
+      '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+      SLIM_FRAME,
+      line0('**Phở Gà**\n4.7 sao ngon.'),
+      'd:{"finishReason":"stop"}',
+    ], collector)
+    expect(out).toContain('ga.jpg')
+    expect(out.indexOf('Phở Gà')).toBeLessThan(out.lastIndexOf('ga.jpg'))
+  })
+
+  it('injects order links that exist ONLY in the collector', async () => {
+    const collector = createEnrichmentCollector()
+    collector.add([{
+      name: 'Phở Gà',
+      photo_urls: [`${IMG}/ga.jpg`],
+      order_links: [{ name: 'ShopeeFood', url: 'https://shopeefood.vn/x' }, { name: 'GrabFood', url: 'https://food.grab.com/y' }],
+    }])
+    const out = await runFilter([
+      '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+      SLIM_FRAME,
+      line0('**Phở Gà**\nngon.'),
+      'd:{"finishReason":"stop"}',
+    ], collector)
+    expect(out).toContain('shopeefood.vn/x')
+    expect(out).toContain('food.grab.com/y')
+  })
+
+  it('injects platform links that exist ONLY in the collector', async () => {
+    const collector = createEnrichmentCollector()
+    collector.add([{
+      name: 'Sen Spa',
+      photo_urls: [`${IMG}/spa.jpg`],
+      platform_links: [{ name: 'Official Website', url: 'https://senspa.vn' }, { name: 'Google Maps', url: 'https://maps.google.com/?q=sen' }],
+    }])
+    const out = await runFilter([
+      '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+      'a:{"toolCallId":"t1","result":{"results":[{"name":"Sen Spa"}]}}',
+      line0('**Sen Spa**\nthư giãn.'),
+      'd:{"finishReason":"stop"}',
+    ], collector)
+    expect(out).toContain('senspa.vn')
+  })
+
+  it('handles several places from several searches, as a trip plan needs', async () => {
+    const collector = createEnrichmentCollector()
+    collector.add([{ name: 'San San Hotel', photo_urls: [`${IMG}/hotel.jpg`] }])
+    collector.add([{ name: 'Hải Sản Mộc', photo_urls: [`${IMG}/food.jpg`] }])
+    const planJson = JSON.stringify({
+      type: 'trip', title: 'Đà Nẵng', days: [{ label: 'Ngày 1', items: [
+        { time: '14:00', name: 'San San Hotel', category: 'hotel' },
+        { time: '18:00', name: 'Hải Sản Mộc', category: 'food' },
+      ] }],
+    })
+    const out = await runFilter([
+      '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+      'a:{"toolCallId":"t1","result":{"results":[{"name":"San San Hotel"}]}}',
+      '9:{"toolCallId":"t2","toolName":"search_places","args":{}}',
+      'a:{"toolCallId":"t2","result":{"results":[{"name":"Hải Sản Mộc"}]}}',
+      line0(`[TAPPY_PLAN]\n${planJson}\n[/TAPPY_PLAN]`),
+      'd:{"finishReason":"stop"}',
+    ], collector)
+    const full = out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2))).sort((a, b) => b.length - a.length)[0]
+    const plan = JSON.parse(full.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)![1].trim())
+    const items = plan.days[0].items as Array<{ name: string; photo_url?: string }>
+    expect(items.find(i => i.name === 'San San Hotel')?.photo_url).toContain('hotel.jpg')
+    expect(items.find(i => i.name === 'Hải Sản Mộc')?.photo_url).toContain('food.jpg')
+  })
+
+  it('one request\'s collector never enriches another request\'s stream', async () => {
+    const mine = createEnrichmentCollector()
+    mine.add([{ name: 'Phở Gà', photo_urls: [`${IMG}/mine.jpg`] }])
+    const theirs = createEnrichmentCollector()
+    theirs.add([{ name: 'Phở Gà', photo_urls: [`${IMG}/theirs.jpg`] }])
+
+    const lines = ['9:{"toolCallId":"t1","toolName":"search_places","args":{}}', SLIM_FRAME, line0('**Phở Gà**\nngon.'), 'd:{"finishReason":"stop"}']
+    const [a, b] = await Promise.all([runFilter(lines, mine), runFilter(lines, theirs)])
+    expect(a).toContain('mine.jpg')
+    expect(a).not.toContain('theirs.jpg')
+    expect(b).toContain('theirs.jpg')
+    expect(b).not.toContain('mine.jpg')
+  })
+
+  it('still works with no collector at all (enrichment inline in the stream)', async () => {
+    const out = await runFilter([
+      '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+      `a:{"toolCallId":"t1","result":{"results":[{"name":"Phở Gà","photo_url":"${IMG}/legacy.jpg"}]}}`,
+      line0('**Phở Gà**\nngon.'),
+      'd:{"finishReason":"stop"}',
+    ])
+    expect(out).toContain('legacy.jpg')
   })
 })
