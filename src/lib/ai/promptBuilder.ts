@@ -299,6 +299,7 @@ Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool sea
   const stageBlock = decisionStage === 'refinement'
     ? `\n\n===== GIAI DOAN: DIEU CHINH (KHONG PHAI YEU CAU MOI) =====
 User dang CHINH LAI yeu cau truoc do, khong bat dau lai tu dau. GIU NGUYEN nhiem vu dang lam (dia diem/thanh pho, loai hinh: quan an / khach san / san pham...) va cac rang buoc da biet tu cac luot truoc; CHI ap dung dieu kien moi ma user vua noi.
+DA DU THONG TIN DE TRA LOI: nhiem vu + dia diem + dieu kien moi deu da biet, nen PHAI dua ra lua chon NGAY (theo R7 muc a). TUYET DOI KHONG mo dau bang cau hoi, KHONG tra loi kieu "de goi y chinh xac hon minh can biet them...". Neu con thieu chi tiet phu (vd ngay check-in), cu goi y truoc roi hoi DUNG MOT cau ngan o CUOI.
 TUYET DOI KHONG hoi lai nhung gi da biet o luot truoc (khu vuc, loai hinh, ngan sach da noi). KHONG tra loi nhu mot cau hoi moi.
 Neu dieu kien moi lam khong con lua chon nao, hay noi that va de xuat noi long dieu kien gan nhat.
 ==========================================================`

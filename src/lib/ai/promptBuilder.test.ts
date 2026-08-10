@@ -137,6 +137,11 @@ describe('buildSystem — cache-stable split', () => {
     expect(dynamic).toContain('KHONG PHAI YEU CAU MOI')
     expect(dynamic).toContain('GIU NGUYEN')
     expect(dynamic).toContain('TUYET DOI KHONG hoi lai')
+    // C2.1: the failure was not "two questions", it was asking INSTEAD of
+    // answering — a refinement already has task + place + new constraint, so it
+    // must lead with options and put any leftover question last.
+    expect(dynamic).toContain('DA DU THONG TIN DE TRA LOI')
+    expect(dynamic).toContain('TUYET DOI KHONG mo dau bang cau hoi')
   })
 
   it('the rulebook is the bulk of the prompt — otherwise the split earns nothing', () => {
