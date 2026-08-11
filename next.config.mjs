@@ -23,6 +23,9 @@ const nextConfig = {
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       { protocol: 'https', hostname: '*.supabase.co' },
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
+      // Cloud Storage media bridge. Without this next/image 400s on every image
+      // written after MEDIA_PROVIDER is switched to gcs.
+      { protocol: 'https', hostname: 'storage.googleapis.com' },
       // Music-library cover art hotlinked from Jamendo (CC-BY tracks) — without
       // this the next/image optimizer 400s and the covers render broken.
       { protocol: 'https', hostname: '*.jamendo.com' },
@@ -40,7 +43,9 @@ const nextConfig = {
     //   connect  — Supabase (REST + realtime wss), PostHog, Nominatim geocode,
     //              Zalo profile graph (graph.zalo.me/v2.0/me — the client-side
     //              fetch in /auth/zalo-finish; Zalo returns profile only to VN IPs),
-    //              Vercel vitals; everything else is same-origin /api.
+    //              Vercel vitals, and Cloud Storage (the browser PUTs review
+    //              video/audio/deal images straight to a resumable upload
+    //              session URI); everything else is same-origin /api.
     //   frame    — self (SuperTux iframe) + YouTube video embeds. Stripe checkout is a
     //              full-page redirect, so it needs no frame/script entry.
     //   frame-ancestors 'self' — clickjacking guard (supersedes X-Frame-Options).
@@ -79,7 +84,7 @@ const nextConfig = {
       // network error and retries 10x with backoff, so the UI hung on "Đang tải
       // clip lên" instead of showing an error. Playback kept working (storage
       // hosts were allowed), which is what hid the breakage.
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com",
       "frame-src 'self' https://www.youtube.com",
       "worker-src 'self' blob:",
       "manifest-src 'self'",

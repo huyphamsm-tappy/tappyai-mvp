@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { parseTracksQuery } from '@/modules/music/api'
 import { browseTracks } from '@/modules/music/services/musicService'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { isTrustedMediaUrl } from '@/lib/media/trustedHosts'
 
 // GET /api/music/tracks?categoryId=&page=&limit=
 export async function GET(req: NextRequest) {
@@ -25,7 +26,9 @@ export async function POST(req: NextRequest) {
   const durationSec = Math.round(Number(body.durationSec) || 0)
 
   if (!title || title.length > 120) return NextResponse.json({ error: 'Tên bài hát 1–120 ký tự' }, { status: 400 })
-  if (!audioUrl || !/^https:\/\/[a-z0-9.-]+\.public\.blob\.vercel-storage\.com\//i.test(audioUrl)) {
+  // Must point at media storage we own — Blob for everything already stored,
+  // Cloud Storage for anything the bridge writes.
+  if (!audioUrl || !isTrustedMediaUrl(audioUrl)) {
     return NextResponse.json({ error: 'File nhạc không hợp lệ' }, { status: 400 })
   }
   if (!durationSec || durationSec < 1 || durationSec > 600) return NextResponse.json({ error: 'Thời lượng không hợp lệ (tối đa 10 phút)' }, { status: 400 })

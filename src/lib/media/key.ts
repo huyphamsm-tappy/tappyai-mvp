@@ -20,6 +20,18 @@ const SEGMENT = /^[A-Za-z0-9][A-Za-z0-9._-]*$/
 const CONTROL_CHARS = new RegExp('[\\u0000-\\u001F\\u007F]')
 const MAX_KEY_LENGTH = 512
 
+/**
+ * True when a value is safe to use as ONE path segment.
+ *
+ * `assertSafeMediaKey` accepts nested segments by design, so it cannot be used
+ * to vet a value that is about to be interpolated into a key: an id of `a/b`
+ * would pass as two valid segments. Anything substituted into a key template
+ * goes through here first.
+ */
+export function isSafeKeySegment(value: string): boolean {
+  return typeof value === 'string' && value.length > 0 && value.length <= 128 && SEGMENT.test(value)
+}
+
 export class InvalidMediaKeyError extends Error {
   constructor(reason: string) {
     super(`Invalid media key: ${reason}`)

@@ -29,6 +29,12 @@ export {
   ALLOWED_MEDIA_PREFIXES,
   InvalidMediaKeyError,
 } from './key'
+export {
+  MEDIA_UPLOAD_POLICIES,
+  MediaUploadRejectedError,
+  resolveUploadTarget,
+} from './uploadPolicy'
+export type { MediaUploadKind, UploadKindPolicy, UploadTarget } from './uploadPolicy'
 
 export const DEFAULT_MEDIA_PROVIDER: MediaProviderId = 'blob'
 
