@@ -1,6 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
-import { put } from '@vercel/blob'
+import { putMedia } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 
 // SQL required in Supabase:
@@ -49,10 +49,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const path = `reviews/${user.id}/${Date.now()}.${imageExt(kind)}`
-    const blob = await put(path, file, { access: 'public', contentType: imageMime(kind) })
+    const blob = await putMedia(path, file, { contentType: imageMime(kind) })
     return NextResponse.json({ url: blob.url })
   } catch (e) {
-    console.error('Blob upload error:', e)
+    console.error('Media upload error:', e)
     return NextResponse.json({ error: 'Không thể tải ảnh lên. Vui lòng thử lại.' }, { status: 500 })
   }
 }
