@@ -23,6 +23,26 @@ export interface WifDeps {
   fetchImpl?: typeof fetch
   /** Injectable clock so token caching is testable. */
   now?: () => number
+  /**
+   * Per-request budget for each credential leg. A stalled STS or
+   * IAM Credentials call must fail fast rather than consume the whole
+   * Vercel function duration (routes here run with maxDuration = 60).
+   */
+  timeoutMs?: number
+  /** Injectable so timeout behaviour is testable without real waiting. */
+  makeTimeoutSignal?: (ms: number) => AbortSignal
+}
+
+export const DEFAULT_CREDENTIAL_TIMEOUT_MS = 10_000
+
+/** Raised when a credential leg exceeds its time budget. */
+export class WifTimeoutError extends Error {
+  readonly stage: 'sts' | 'impersonation'
+  constructor(stage: 'sts' | 'impersonation', ms: number) {
+    super(`Workload Identity Federation timed out at the ${stage} stage after ${ms}ms`)
+    this.name = 'WifTimeoutError'
+    this.stage = stage
+  }
 }
 
 /** Raised when federation fails. Carries no token or credential material. */
@@ -60,7 +80,20 @@ export function stsAudience(c: WifConfig): string {
 export function createWifTokenSource(deps: WifDeps): () => Promise<string> {
   const doFetch = deps.fetchImpl ?? fetch
   const now = deps.now ?? (() => Date.now())
+  const timeoutMs = deps.timeoutMs ?? DEFAULT_CREDENTIAL_TIMEOUT_MS
+  const makeSignal = deps.makeTimeoutSignal ?? ((ms: number) => AbortSignal.timeout(ms))
   let cached: { token: string; expiresAt: number } | null = null
+
+  /** Runs one credential leg under a hard time budget. */
+  async function bounded(stage: 'sts' | 'impersonation', url: string, init: RequestInit) {
+    try {
+      return await doFetch(url, { ...init, signal: makeSignal(timeoutMs) })
+    } catch (e) {
+      const name = (e as { name?: string } | undefined)?.name
+      if (name === 'TimeoutError' || name === 'AbortError') throw new WifTimeoutError(stage, timeoutMs)
+      throw new WifExchangeError(stage)
+    }
+  }
 
   return async function getAccessToken(): Promise<string> {
     if (cached && cached.expiresAt - EXPIRY_SKEW_MS > now()) return cached.token
@@ -69,7 +102,7 @@ export function createWifTokenSource(deps: WifDeps): () => Promise<string> {
     if (!oidc) throw new WifExchangeError('oidc')
 
     // 1. Exchange the Vercel OIDC token for a Google federated token.
-    const stsRes = await doFetch(STS_ENDPOINT, {
+    const stsRes = await bounded('sts', STS_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -86,7 +119,8 @@ export function createWifTokenSource(deps: WifDeps): () => Promise<string> {
     if (!sts.access_token) throw new WifExchangeError('sts')
 
     // 2. Impersonate the bucket-scoped service account.
-    const impRes = await doFetch(
+    const impRes = await bounded(
+      'impersonation',
       `${IAMCREDENTIALS}/projects/-/serviceAccounts/${encodeURIComponent(
         deps.config.serviceAccountEmail
       )}:generateAccessToken`,

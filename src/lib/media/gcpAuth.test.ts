@@ -1,7 +1,13 @@
 import { describe, it, expect, vi } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { createWifTokenSource, stsAudience, WifExchangeError } from './gcpAuth'
+import {
+  createWifTokenSource,
+  stsAudience,
+  WifExchangeError,
+  WifTimeoutError,
+  DEFAULT_CREDENTIAL_TIMEOUT_MS,
+} from './gcpAuth'
 import { createGcsProvider } from './providers/gcs'
 import { getMediaProvider } from './index'
 
@@ -78,6 +84,51 @@ describe('WIF token source', () => {
     const err = (await get().catch((e) => e)) as WifExchangeError
     expect(err).toBeInstanceOf(WifExchangeError)
     expect(err.stage).toBe(stage)
+  })
+
+  // R / S — a stalled credential leg must fail fast, not eat the function budget
+  it.each([
+    ['sts' as const, 'sts.googleapis.com'],
+    ['impersonation' as const, 'iamcredentials'],
+  ])('times out the %s leg instead of hanging', async (stage, host) => {
+    const base = mockExchange()
+    const fetchImpl = vi.fn(async (url: string, init: RequestInit) => {
+      if (String(url).includes(host)) {
+        const e = new Error('The operation was aborted due to timeout')
+        e.name = 'TimeoutError'
+        throw e
+      }
+      return (base.fetchImpl as unknown as typeof fetch)(url as never, init as never)
+    }) as unknown as typeof fetch
+
+    const get = createWifTokenSource({
+      config: CONFIG,
+      getOidcToken: () => OIDC,
+      fetchImpl,
+      timeoutMs: 25,
+    })
+    const err = (await get().catch((e) => e)) as WifTimeoutError
+    expect(err).toBeInstanceOf(WifTimeoutError)
+    expect(err.stage).toBe(stage)
+    expect(String(err)).not.toContain(OIDC)
+  })
+
+  it('passes an abort signal with the configured budget to every leg', async () => {
+    const seen: number[] = []
+    const base = mockExchange()
+    const get = createWifTokenSource({
+      config: CONFIG,
+      getOidcToken: () => OIDC,
+      fetchImpl: base.fetchImpl,
+      timeoutMs: 1234,
+      makeTimeoutSignal: (ms) => { seen.push(ms); return AbortSignal.timeout(60_000) },
+    })
+    await get()
+    expect(seen).toEqual([1234, 1234])
+  })
+
+  it('defaults the budget well under the route maxDuration', () => {
+    expect(DEFAULT_CREDENTIAL_TIMEOUT_MS).toBeLessThan(60_000)
   })
 
   // H — no credential material in error text
