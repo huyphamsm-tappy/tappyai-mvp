@@ -10,6 +10,7 @@ import {
   MediaUploadFailedError,
   mediaUrl,
   putMedia,
+  WifExchangeError,
 } from './index'
 import { createGcsProvider, gcsPublicUrl } from './providers/gcs'
 import { createBlobProvider } from './providers/blob'
@@ -157,11 +158,19 @@ describe('provider selection', () => {
     expect(getMediaProvider(env).id).toBe('gcs')
   })
 
-  it('production wiring has no credentials yet, so a gcs write fails loudly', async () => {
+  // Production now federates via WIF. Off Vercel there is no OIDC token, so a
+  // gcs write must fail closed — never silently fall back to Blob.
+  it('a gcs write with no deployment identity fails loudly, not silently', async () => {
     const env = { MEDIA_PROVIDER: 'gcs' } as unknown as NodeJS.ProcessEnv
     await expect(
       putMedia('avatars/u1.jpg', bytes, { contentType: 'image/jpeg' }, getMediaProvider(env))
-    ).rejects.toThrow(MediaCredentialsUnavailableError)
+    ).rejects.toThrow(WifExchangeError)
+  })
+
+  it('still throws MediaCredentialsUnavailableError when no token source is injected', async () => {
+    const provider = createGcsProvider({ bucket: 'tappyai-media-prod', getAccessToken: null })
+    await expect(provider.put('avatars/u1.jpg', bytes, { contentType: 'image/jpeg' }))
+      .rejects.toThrow(MediaCredentialsUnavailableError)
   })
 
   it('routes putMedia through the blob provider by default', async () => {
