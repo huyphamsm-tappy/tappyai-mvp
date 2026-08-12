@@ -87,9 +87,13 @@ android {
     defaultConfig {
         applicationId = "com.tappyai.app"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 4
-        versionName = "0.1.0"
+        // Google Play target API level policy: from 2026-08-31 every new app and app update must
+        // target API 36 (Android 16). Raised from 35 for that reason alone — compileSdk was
+        // already 36 (androidx.browser 1.9.0 forced it during Phase 1B.1), so this is a policy
+        // change, not a toolchain one: no AGP/Gradle/Kotlin/dependency move came with it.
+        targetSdk = 36
+        versionCode = 5
+        versionName = "0.1.1"
 
         vectorDrawables {
             useSupportLibrary = true
