@@ -35,6 +35,33 @@ export interface WifDeps {
 
 export const DEFAULT_CREDENTIAL_TIMEOUT_MS = 10_000
 
+/** Where a running Vercel function receives its per-request OIDC token. */
+export const VERCEL_OIDC_HEADER = 'x-vercel-oidc-token'
+
+/**
+ * The deployment's OIDC token.
+ *
+ * Vercel exposes it two different ways, and only one of them exists in a
+ * deployed function:
+ *
+ *   builds and local development -> the `VERCEL_OIDC_TOKEN` environment variable
+ *   a running Vercel function    -> the `x-vercel-oidc-token` request header
+ *
+ * Reading only the environment variable therefore works perfectly on a
+ * developer machine and is always empty in production, which fails closed at
+ * the first stage and never reaches Google. The request wins when both are
+ * present: a function can still carry a build-time variable, and the
+ * per-request token is the live one.
+ */
+export function readDeploymentOidcToken(
+  req?: Pick<Request, 'headers'> | null,
+  env: NodeJS.ProcessEnv = process.env
+): string | null {
+  const fromRequest = req?.headers?.get(VERCEL_OIDC_HEADER)
+  if (fromRequest) return fromRequest
+  return env.VERCEL_OIDC_TOKEN || null
+}
+
 /** Raised when a credential leg exceeds its time budget. */
 export class WifTimeoutError extends Error {
   readonly stage: 'sts' | 'impersonation'
