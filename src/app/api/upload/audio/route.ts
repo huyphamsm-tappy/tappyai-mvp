@@ -7,6 +7,7 @@ import {
   isCreateUploadSessionBody,
   legacyBlobHandshakeAllowed,
 } from '@/lib/media/uploadRoute'
+import { getMediaProvider } from '@/lib/media'
 import type { MediaUploadKind } from '@/lib/media/uploadPolicy'
 
 // Client-direct upload authorization for Original Sound audio. The browser
@@ -39,10 +40,12 @@ export async function POST(req: NextRequest) {
   }
 
   if (isCreateUploadSessionBody(body)) {
-    const result = await createUploadSessionResponse(body, {
-      ownerId: user.id,
-      allowedKinds: ALLOWED_KINDS,
-    })
+    const result = await createUploadSessionResponse(
+      body,
+      { ownerId: user.id, allowedKinds: ALLOWED_KINDS },
+      // `req` carries the deployment's OIDC token in production.
+      getMediaProvider(process.env, req)
+    )
     return NextResponse.json(result.body, { status: result.status })
   }
 

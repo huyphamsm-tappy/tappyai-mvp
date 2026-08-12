@@ -1,6 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
-import { putMedia, randomMediaSuffix } from '@/lib/media'
+import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 
 // GET /api/profile
@@ -105,7 +105,10 @@ export async function POST(req: NextRequest) {
     blob = await putMedia(
       `avatars/${user.id}-${randomMediaSuffix()}.${imageExt(kind)}`,
       file,
-      { contentType: imageMime(kind) }
+      { contentType: imageMime(kind) },
+      // `req` carries the deployment's OIDC token in production — without it a
+      // GCS write has no identity to federate with.
+      getMediaProvider(process.env, req)
     )
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Upload thất bại'

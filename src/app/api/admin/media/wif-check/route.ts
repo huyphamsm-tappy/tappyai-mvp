@@ -20,7 +20,7 @@ import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { checkWifHealth } from '@/lib/media/wifHealth'
 import { createGcsProvider } from '@/lib/media/providers/gcs'
-import { createWifTokenSource } from '@/lib/media/gcpAuth'
+import { createWifTokenSource, readDeploymentOidcToken } from '@/lib/media/gcpAuth'
 
 export async function GET(req: NextRequest) {
   try {
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
             env.GCP_MEDIA_SERVICE_ACCOUNT ??
             'tappyai-media-bridge@aerobic-lock-498409-u7.iam.gserviceaccount.com',
         },
-        getOidcToken: () => env.VERCEL_OIDC_TOKEN ?? null,
+        getOidcToken: () => readDeploymentOidcToken(req, env),
       }),
     })
 

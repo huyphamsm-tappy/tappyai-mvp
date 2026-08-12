@@ -1,6 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
-import { putMedia } from '@/lib/media'
+import { getMediaProvider, putMedia } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 
 // SQL required in Supabase:
@@ -49,7 +49,14 @@ export async function POST(req: NextRequest) {
 
   try {
     const path = `reviews/${user.id}/${Date.now()}.${imageExt(kind)}`
-    const blob = await putMedia(path, file, { contentType: imageMime(kind) })
+    // `req` carries the deployment's OIDC token in production — without it a
+    // GCS write has no identity to federate with.
+    const blob = await putMedia(
+      path,
+      file,
+      { contentType: imageMime(kind) },
+      getMediaProvider(process.env, req)
+    )
     return NextResponse.json({ url: blob.url })
   } catch (e) {
     console.error('Media upload error:', e)

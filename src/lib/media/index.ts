@@ -15,12 +15,18 @@
 
 import { createBlobProvider } from './providers/blob'
 import { createGcsProvider } from './providers/gcs'
-import { createWifTokenSource } from './gcpAuth'
+import { createWifTokenSource, readDeploymentOidcToken } from './gcpAuth'
 import { isAbsoluteMediaUrl } from './key'
 import type { MediaBody, MediaProvider, MediaProviderId, PutMediaResult } from './types'
 
 export * from './types'
-export { createWifTokenSource, stsAudience, WifExchangeError } from './gcpAuth'
+export {
+  createWifTokenSource,
+  readDeploymentOidcToken,
+  stsAudience,
+  VERCEL_OIDC_HEADER,
+  WifExchangeError,
+} from './gcpAuth'
 export type { WifConfig, WifDeps } from './gcpAuth'
 export {
   assertSafeMediaKey,
@@ -50,8 +56,18 @@ export function activeProviderId(env: NodeJS.ProcessEnv = process.env): MediaPro
  * Outside a Vercel deployment there is no OIDC token, so `getOidcToken()`
  * returns null and a GCS write fails closed with WifExchangeError. It never
  * silently falls back to Blob.
+ *
+ * `req` MATTERS IN PRODUCTION. A deployed Vercel function receives its OIDC
+ * token per-request as a header, not as an environment variable, so a caller
+ * that omits the request gets a provider with no deployment identity and every
+ * GCS write fails at the first stage. Every producer is a route handler, so the
+ * request is always in scope — pass it.
  */
-export function getMediaProvider(env: NodeJS.ProcessEnv = process.env): MediaProvider {
+export function getMediaProvider(
+  env: NodeJS.ProcessEnv = process.env,
+  req?: Pick<Request, 'headers'> | null,
+  fetchImpl?: typeof fetch
+): MediaProvider {
   if (activeProviderId(env) === 'gcs') {
     return createGcsProvider({
       bucket: env.GCS_MEDIA_BUCKET ?? 'tappyai-media-prod',
@@ -64,8 +80,10 @@ export function getMediaProvider(env: NodeJS.ProcessEnv = process.env): MediaPro
             env.GCP_MEDIA_SERVICE_ACCOUNT ??
             'tappyai-media-bridge@aerobic-lock-498409-u7.iam.gserviceaccount.com',
         },
-        getOidcToken: () => env.VERCEL_OIDC_TOKEN ?? null,
+        getOidcToken: () => readDeploymentOidcToken(req, env),
+        ...(fetchImpl ? { fetchImpl } : {}),
       }),
+      ...(fetchImpl ? { fetchImpl } : {}),
     })
   }
   return createBlobProvider()
