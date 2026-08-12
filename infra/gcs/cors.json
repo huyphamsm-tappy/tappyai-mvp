@@ -1,0 +1,20 @@
+[
+  {
+    "origin": [
+      "https://www.tappyai.com",
+      "https://tappyai.com"
+    ],
+    "method": [
+      "PUT",
+      "POST",
+      "OPTIONS"
+    ],
+    "responseHeader": [
+      "Content-Type",
+      "Location",
+      "Range",
+      "X-Goog-Resumable"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]

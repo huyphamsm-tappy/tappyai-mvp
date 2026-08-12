@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
-import { upload } from '@vercel/blob/client'
+import { uploadMedia } from '@/lib/media/client'
 import {
   Star, Camera, X, ArrowLeft, Loader2,
   MapPin, Plus, Video, Link2, XCircle, Music,
@@ -355,11 +355,13 @@ export default function NewReviewPage() {
       const thumbAbort = new AbortController()
       const thumbTimer = setTimeout(() => thumbAbort.abort(), THUMB_UPLOAD_TIMEOUT_MS)
       try {
-        const result = await upload(`thumbnails/${Date.now()}.jpg`, thumbFile, {
-          access: 'public',
-          handleUploadUrl: '/api/upload/video',
-          clientPayload: 'thumbnail',
-          abortSignal: thumbAbort.signal,
+        const result = await uploadMedia({
+          endpoint: '/api/upload/video',
+          kind: 'videoThumbnail',
+          file: thumbFile,
+          legacyPathname: `thumbnails/${Date.now()}.jpg`,
+          legacyClientPayload: 'thumbnail',
+          signal: thumbAbort.signal,
         })
         thumbUrl = result.url
         setThumbnail(thumbUrl)
@@ -383,12 +385,13 @@ export default function NewReviewPage() {
     const tVideo = vstart('video-upload', { sizeMB: +(file.size / 1048576).toFixed(2), type: file.type })
     try {
       const ext = file.name.split('.').pop() || 'mp4'
-      const result = await upload(`videos/${Date.now()}.${ext}`, file, {
-        access: 'public',
-        handleUploadUrl: '/api/upload/video',
-        abortSignal: controller.signal,
-        onUploadProgress: ({ percentage }: { percentage: number }) =>
-          setUploadProgress(Math.round(percentage)),
+      const result = await uploadMedia({
+        endpoint: '/api/upload/video',
+        kind: 'video',
+        file,
+        legacyPathname: `videos/${Date.now()}.${ext}`,
+        signal: controller.signal,
+        onProgress: (percentage) => setUploadProgress(Math.round(percentage)),
       })
       setMedia_url(result.url)
       vok('video-upload', tVideo, { url: result.url })

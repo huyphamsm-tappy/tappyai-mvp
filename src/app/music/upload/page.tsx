@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { upload } from '@vercel/blob/client'
+import { uploadMedia } from '@/lib/media/client'
 import Header from '@/components/Header'
 import { Loader2, Music, UploadCloud, CheckCircle2 } from 'lucide-react'
 
@@ -45,11 +45,13 @@ export default function MusicUploadPage() {
     try {
       const durationSec = await readDuration(file)
       if (!durationSec || durationSec > 600) { setError('Nhạc phải dài 1 giây–10 phút'); setBusy(false); return }
-      // 1) Upload the audio straight to Blob.
+      // 1) Upload the audio straight to the active media provider.
       const ext = file.name.split('.').pop() || 'mp3'
-      const blob = await upload(`music/${Date.now()}.${ext}`, file, {
-        access: 'public',
-        handleUploadUrl: '/api/upload/audio',
+      const blob = await uploadMedia({
+        endpoint: '/api/upload/audio',
+        kind: 'audio',
+        file,
+        legacyPathname: `music/${Date.now()}.${ext}`,
       })
       // 2) Register the Original Sound (rights confirmation is mandatory).
       const res = await fetch('/api/music/tracks', {

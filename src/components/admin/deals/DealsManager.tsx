@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
-import { upload } from '@vercel/blob/client'
+import { uploadMedia } from '@/lib/media/client'
 import { Loader2, Plus, Pencil, Trash2, ArrowUp, ArrowDown, Eye, EyeOff, X, ImagePlus } from 'lucide-react'
 
 const PARTNER_TYPES = ['ecommerce', 'food', 'ride', 'travel'] as const
@@ -96,8 +96,11 @@ export function DealsManager() {
   async function handleUpload(kind: 'logo' | 'banner', file: File) {
     setUploading(kind)
     try {
-      const res = await upload(`deals/${kind}-${Date.now()}-${file.name}`, file, {
-        access: 'public', handleUploadUrl: '/api/admin/deals/upload',
+      const res = await uploadMedia({
+        endpoint: '/api/admin/deals/upload',
+        kind: kind === 'logo' ? 'dealLogo' : 'dealBanner',
+        file,
+        legacyPathname: `deals/${kind}-${Date.now()}-${file.name}`,
       })
       setForm((f) => ({ ...f, [kind === 'logo' ? 'logoImage' : 'bannerImage']: res.url }))
     } catch (e) {

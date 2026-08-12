@@ -1,6 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
-import { put } from '@vercel/blob'
+import { putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 
 // GET /api/profile
@@ -99,11 +99,14 @@ export async function POST(req: NextRequest) {
 
   let blob: { url: string }
   try {
-    blob = await put(`avatars/${user.id}.${imageExt(kind)}`, file, {
-      access: 'public',
-      addRandomSuffix: true,
-      contentType: imageMime(kind),
-    })
+    // `addRandomSuffix` was a Vercel Blob feature; the bridge is provider
+    // agnostic, so the cache-busting suffix is now explicit. Same effect:
+    // every avatar upload is a new object, so caches never serve a stale one.
+    blob = await putMedia(
+      `avatars/${user.id}-${randomMediaSuffix()}.${imageExt(kind)}`,
+      file,
+      { contentType: imageMime(kind) }
+    )
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Upload thất bại'
     return NextResponse.json({ error: msg }, { status: 500 })
