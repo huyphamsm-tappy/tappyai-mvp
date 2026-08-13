@@ -23,7 +23,8 @@
 | **Component 10** — Rate Limiting | **ACCEPTED · IN PRODUCTION** — merge commit `c226417`, verified on production 2026-08-13. Distributed limiter on a shared Upstash store, fail-closed, `Retry-After` on all 11 admin routes. **Audit finding S4 (HIGH) is CLOSED.** Contract: [`10_COMPONENT10_RATE_LIMITING_CONTRACT.md`](10_COMPONENT10_RATE_LIMITING_CONTRACT.md) |
 | **Component 6** — Plugin Registry | **LIFECYCLE-COMPLETE** — contract [`06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md). `register → validate → enable → ready → disable → deregister` + permission-collision validation. rollback / health checks / migration versioning **deferred** (undefined in any authoritative source), capability gate remains inert |
 | **Component 9b** — Secret Manager | **IMPLEMENTED · AWAITING PRODUCTION VERIFICATION** — typed config boundary + deploy-time gate over 5 required variables, closes **D5**. Contract: [`09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md`](09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md) |
-| **Components 8, 11** | **NOT STARTED** — no design document exists for either; sequencing undetermined |
+| **Component 8** — Event Bus | **MERGED · DEPLOYED · MIGRATION NOT APPLIED** — merge commit `0ce30a9` (PR #58), production `/api/version` matches, 8th cron registered. Contract: [`08_COMPONENT8_EVENT_BUS_CONTRACT.md`](08_COMPONENT8_EVENT_BUS_CONTRACT.md). **Not complete:** `20260813_c8_event_outbox.sql` is applied by hand by the Owner and a read-only production check on 2026-08-13 found none of its objects present |
+| **Component 11** — Session Security | **NOT STARTED — no design document exists.** Its entire recorded scope is one line of [`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §11: *"Session inventory, revocation, forced logout"* — a title, not a contract. Under Decision A it is the **last component standing between Controller V2 and COMPLETE**, and authorizing its scope is an Owner decision |
 | **Definition of Done** | **COMPONENT-COMPLETE** (C1–C11) — Owner Decision A, 2026-08-13. See [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
@@ -32,6 +33,18 @@
 > branch and then went stale through two merges. A document that declares itself
 > the single source of truth is the worst place for drift, so the correction is
 > recorded here rather than filed as a backlog item.
+>
+> **Two rows were corrected on 2026-08-13 (post-C8).** The combined row
+> *"Components 8, 11 — NOT STARTED — no design document exists for either"* was
+> stale for C8: it is merged (`0ce30a9`), deployed, and has a contract. It is
+> split above so C11's genuinely undefined scope is not hidden behind C8's
+> completion. MEASURED: `0ce30a9` is an ancestor of `origin/main`; production
+> `/api/version` returns it; `vercel crons ls` reports 8 jobs including
+> `/api/cron/outbox-drain`. Separately, [`ROADMAP.md`](ROADMAP.md) row 10 read
+> *"Rate Limiting | not started"* while this document recorded C10 as **ACCEPTED ·
+> IN PRODUCTION** since 2026-08-13 — MEASURED: `c226417` is an ancestor of
+> `origin/main`, and 11/11 admin routes call the distributed limiter. The
+> roadmap row is corrected there, in the same style as rows 6 and 8.
 >
 > **Row 7 was corrected on 2026-08-08 (FOUNDATION-01 reconciliation).** It had
 > said "READY TO OPEN PR — not merged, not deployed" while C7 was in fact merged
@@ -100,7 +113,10 @@ What remains unproven is only the **end-to-end HTTP path** on live production.
 
 > **Corrected 2026-08-13.** This section said *"**Component 3 — RBAC.** Not started"* while the table above recorded Component 3 as **ACCEPTED · IN PRODUCTION** since 2026-08-07 — the document contradicted itself. The stale line is replaced rather than preserved, because a *forward-looking* instruction that is wrong will be acted on, unlike a dated status snapshot.
 
-**C8 (Event Bus) is authorized and implemented; its migration is applied by hand.** C6, C9b and C10 are delivered. The only unopened Phase 1 component is **C11 (Session Security)**.
+**C8 is merged and deployed; its migration is still pending.** C6, C9b and C10 are delivered. Under Owner Decision A (Definition of Done = C1–C11), exactly **two** things stand between the project and COMPLETE:
+
+1. **The C8 migration** — Owner action. Everything else about C8 is done and its SQL is executed against a real PostgreSQL in CI.
+2. **C11 (Session Security)** — **blocked on scope, not on effort.** No design document exists; its only recorded scope is a one-line title. Implementation cannot begin without an authoritative contract defining states, transitions, errors, permissions and observability, and inventing one would be exactly the semantics-invention this project forbids.
 
 > ⚠️ **Code ships before the schema.** Merging C8 deploys `/api/cron/outbox-drain` immediately, but `supabase/migrations/20260813_c8_event_outbox.sql` is applied manually by the Owner. Between those two moments the daily 03:00 tick calls an `fn_outbox_claim` that does not exist and returns 500. Nothing is lost — there is no table to lose rows from — but the tick is noise until the migration lands.
 
