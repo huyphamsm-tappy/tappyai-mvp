@@ -259,9 +259,24 @@ Do not place placeholder values in `.env` files. Do not commit secrets.
 | 10 | Real-limiter tests | **PASS** — 26 tests, limiter never mocked; 7 mutations proven RED |
 | 11 | Production shared store | **PASS** — provisioned; production verification recorded separately |
 
-## 13. Verdict
+## 13. Verdict — **C10 ACCEPTED · S4 CLOSED** (2026-08-13)
 
-Superseded by [`STATUS.md`](STATUS.md). At the time of writing this section C10 was NOT DONE; the "After implementation" table above records what changed.
+Merge commit `c226417`, production `/api/version` = `c226417…`, deployment `tappyai-9jlnhqa3e` Ready.
+
+Production evidence, measured rather than asserted:
+
+| Claim | How it was proven |
+|---|---|
+| Production reaches the shared store | Under fail-closed, a `200` from an admin route is only possible if the store answered. It answered. |
+| The counter lives in **this** store | `SCAN admin:*` against the provisioned instance returned `admin:settings:get:<owner-id>` holding **exactly 100 entries** with a TTL |
+| The cap is **global**, not per-instance | 60 concurrent requests across multiple lambdas were cut off at exactly the 100 limit — 34 admitted, 26 refused. A per-process `Map` would have admitted far more. **This is S4, closed.** |
+| 429 contract | All 26 refusals: HTTP **429**, `code: RATE_LIMITED`, `Retry-After` present and > 0 |
+| Sliding window expires | After the TTL elapsed the same key admitted again, and `ZCARD` fell from 100 to 1 |
+| Namespace isolation | With `admin:settings:get` exhausted, `admin:audit:list` and `admin:rbac:list` answered `200`; the store then showed three separate keys |
+| Guard order unchanged | Unauthenticated `GET /api/admin/settings` → `401`, i.e. authentication still runs before the limiter |
+| No production mutation | `department_membership` 1, `admin_roles` 2, `audit_log` **30 → 30**, `platform_owner` unchanged. ~170 verification reads produced zero audit rows |
+
+The one thing a unit test could not cover — the Lua script executing inside Redis — is covered here: the 100-entry sorted set with a TTL is that script's output.
 
 **Reason:** S4 is an open **HIGH** finding. The current limiter is an in-process per-instance counter, so on Vercel with `N` concurrent lambdas the effective ceiling is `N × limit`. The nominal `20/min` cap on `admin:rbac:grant` — by the Phase 0 audit's own words, *"the most security-sensitive endpoint in the system"* — is therefore not a real cap. That does not satisfy the approved C10 definition, *"Shared store; real global caps (closes S4)"*.
 
