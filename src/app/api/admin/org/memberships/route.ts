@@ -10,7 +10,7 @@
 
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { adminError, adminErrorResponse, isSameOrigin } from '@/lib/admin/rbac'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { isPlatformOwner } from '@/lib/admin/owner'
 import {
   assignMembership,
@@ -43,7 +43,8 @@ export async function POST(req: Request) {
     const gated = featureGate(); if (gated) return gated
     const ctx = await requirePermission(req, PERMISSIONS.SECURITY_MEMBERSHIP_MANAGE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:org:assign:${ctx.user.id}`, 20, 60_000).ok) return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:org:assign:${ctx.user.id}`, 20, 60_000)
+    if (!rl.ok) return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
 
     const parsed = AssignMembershipSchema.safeParse(await req.json().catch(() => null))
     if (!parsed.success) return adminError('VALIDATION_ERROR', parsed.error.issues[0]?.message ?? 'Invalid body', 422)
@@ -72,7 +73,8 @@ export async function PATCH(req: Request) {
     const gated = featureGate(); if (gated) return gated
     const ctx = await requirePermission(req, PERMISSIONS.SECURITY_MEMBERSHIP_MANAGE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:org:status:${ctx.user.id}`, 20, 60_000).ok) return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:org:status:${ctx.user.id}`, 20, 60_000)
+    if (!rl.ok) return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
 
     const parsed = StatusMembershipSchema.safeParse(await req.json().catch(() => null))
     if (!parsed.success) return adminError('VALIDATION_ERROR', parsed.error.issues[0]?.message ?? 'Invalid body', 422)
@@ -95,7 +97,8 @@ export async function DELETE(req: Request) {
     const gated = featureGate(); if (gated) return gated
     const ctx = await requirePermission(req, PERMISSIONS.SECURITY_MEMBERSHIP_MANAGE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:org:remove:${ctx.user.id}`, 20, 60_000).ok) return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:org:remove:${ctx.user.id}`, 20, 60_000)
+    if (!rl.ok) return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
 
     const parsed = RemoveMembershipSchema.safeParse(await req.json().catch(() => null))
     if (!parsed.success) return adminError('VALIDATION_ERROR', parsed.error.issues[0]?.message ?? 'Invalid body', 422)

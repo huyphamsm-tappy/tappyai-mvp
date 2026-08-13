@@ -9,7 +9,7 @@
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   createUploadSessionResponse,
@@ -30,8 +30,9 @@ export async function POST(req: NextRequest) {
   try {
     const { user } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_UPLOAD_MEDIA)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:deals:upload:${user.id}`, 40, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:deals:upload:${user.id}`, 40, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     let body: unknown

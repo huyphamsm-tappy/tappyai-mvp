@@ -6,7 +6,7 @@ import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { auditActorRole } from '@/lib/admin/permissions/decisionAudit'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   try {
@@ -14,8 +14,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     const { user } = ctx
     const role = auditActorRole(ctx.actor)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:rbac:revoke:${user.id}`, 20, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:rbac:revoke:${user.id}`, 20, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const supabase = createAdminClient()

@@ -23,7 +23,7 @@ vi.mock('@/lib/admin/permissions', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>
   return { ...actual, requirePermission: h.requirePermission }
 })
-vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: h.rateLimit, clientIp: () => 'ip' }))
+vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.rateLimit }))
 vi.mock('@/lib/admin/analytics/authAnalyticsService', () => ({ authAnalyticsService: h.svc }))
 
 import { GET } from './route'

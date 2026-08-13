@@ -32,7 +32,12 @@ const h = vi.hoisted(() => ({
 }))
 
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: h.getRequestUser }))
+// This file drives three routes: two PUBLIC upload routes, which stay on the
+// in-process limiter, and one ADMIN route, which moved to the distributed
+// limiter under Component 10. Both modules must be stubbed or the public
+// routes lose their limiter mock.
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: h.rateLimit, clientIp: () => 'ip' }))
+vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.rateLimit }))
 vi.mock('@vercel/blob/client', () => ({ handleUpload: h.handleUpload }))
 vi.mock('@/lib/admin/rbac', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>

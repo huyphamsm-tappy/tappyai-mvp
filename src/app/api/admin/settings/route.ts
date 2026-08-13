@@ -8,7 +8,7 @@
 
 import { adminErrorResponse, adminError } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 
 // Reads auth headers per request — always dynamic (never statically rendered).
 export const dynamic = 'force-dynamic'
@@ -16,8 +16,9 @@ export const dynamic = 'force-dynamic'
 export async function GET(req: Request) {
   try {
     const { user } = await requirePermission(req, PERMISSIONS.SETTINGS_CONFIG_READ)
-    if (!rateLimit(`admin:settings:get:${user.id}`, 100, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:settings:get:${user.id}`, 100, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     // Read-only effective config. No secrets. No table read.

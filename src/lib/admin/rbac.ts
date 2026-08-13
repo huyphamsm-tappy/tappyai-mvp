@@ -284,9 +284,16 @@ export function adminErrorResponse(err: unknown): Response {
   )
 }
 
-/** Helper to build a uniform error Response from a code/message/status. */
-export function adminError(code: string, message: string, status: number): Response {
-  return Response.json({ error: { code, message } }, { status })
+/** Helper to build a uniform error Response from a code/message/status.
+ *  `headers` exists so a 429 can carry `Retry-After` (Component 10); the
+ *  response envelope itself is unchanged. */
+export function adminError(
+  code: string,
+  message: string,
+  status: number,
+  headers?: Record<string, string>
+): Response {
+  return Response.json({ error: { code, message } }, headers ? { status, headers } : { status })
 }
 
 /**

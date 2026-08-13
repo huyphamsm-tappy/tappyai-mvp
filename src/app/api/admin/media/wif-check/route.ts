@@ -17,7 +17,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { checkWifHealth } from '@/lib/media/wifHealth'
 import { createGcsProvider } from '@/lib/media/providers/gcs'
 import {
@@ -31,8 +31,9 @@ export async function GET(req: NextRequest) {
     const { user } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_UPLOAD_MEDIA)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
     // Each call costs two Google round-trips; keep it well away from a loop.
-    if (!rateLimit(`admin:media:wif-check:${user.id}`, 10, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:media:wif-check:${user.id}`, 10, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const env = process.env

@@ -5,7 +5,7 @@
 import { adminErrorResponse, adminError } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 
 // Reads auth headers per request — always dynamic (never statically rendered).
 export const dynamic = 'force-dynamic'
@@ -13,8 +13,9 @@ export const dynamic = 'force-dynamic'
 export async function GET(req: Request) {
   try {
     const { user } = await requirePermission(req, PERMISSIONS.AUDIT_LOG_READ)
-    if (!rateLimit(`admin:audit:list:${user.id}`, 100, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:audit:list:${user.id}`, 100, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const url = new URL(req.url)

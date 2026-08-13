@@ -6,7 +6,7 @@
 
 import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { authAnalyticsService } from '@/lib/admin/analytics/authAnalyticsService'
 import { AuthAnalyticsQuerySchema, buildFilter, paginate } from './schema'
 
@@ -16,8 +16,9 @@ export async function GET(req: Request) {
   try {
     const { user } = await requirePermission(req, PERMISSIONS.ANALYTICS_AUTH_READ)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:analytics:auth:${user.id}`, 100, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:analytics:auth:${user.id}`, 100, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const url = new URL(req.url)

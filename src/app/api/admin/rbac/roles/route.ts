@@ -7,7 +7,7 @@ import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { auditActorRole } from '@/lib/admin/permissions/decisionAudit'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { GrantRoleSchema } from './schema'
 
 // Reads auth headers per request — always dynamic (never statically rendered).
@@ -16,8 +16,9 @@ export const dynamic = 'force-dynamic'
 export async function GET(req: Request) {
   try {
     const { user } = await requirePermission(req, PERMISSIONS.SECURITY_ROLES_READ)
-    if (!rateLimit(`admin:rbac:list:${user.id}`, 100, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:rbac:list:${user.id}`, 100, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const supabase = createAdminClient()
@@ -42,8 +43,9 @@ export async function POST(req: Request) {
     const { user } = ctx
     const role = auditActorRole(ctx.actor)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:rbac:grant:${user.id}`, 20, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:rbac:grant:${user.id}`, 20, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const parsed = GrantRoleSchema.safeParse(await req.json().catch(() => null))

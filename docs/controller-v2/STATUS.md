@@ -4,7 +4,7 @@
 > **This document is the only authoritative statement of Controller V2 project status.**
 > Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
-**Last updated:** 2026-08-07
+**Last updated:** 2026-08-13
 
 ---
 
@@ -19,7 +19,10 @@
 | **Component 4** — Audited PDP | **ACCEPTED · IN PRODUCTION** — merge commit `28f68c1` |
 | **Component 5** — Capability Registry | **FROZEN** — [ADR-018](../architecture/ADR-018-capability-registry-frozen.md), merges into Component 6 |
 | **Component 9a** — single admin-client construction point | **ACCEPTED · IN PRODUCTION** — merge commit `e8d4eb9` |
-| **Component 7** — Audit Hardening | **IMPLEMENTED · DEPLOYED · NOT YET UAT-VERIFIED** — merge commit `f3caf59`, live in production `526157a`; F-04 grant-model source-sync (PR #18) and PH-0 audit-function hardening applied. Final UAT deferred. See [RELEASE_READINESS_COMPONENT_7.md](RELEASE_READINESS_COMPONENT_7.md) (historical, pre-merge) |
+| **Component 7** — Audit Hardening | **ACCEPTED · IN PRODUCTION** — merge commit `f3caf59`, live in production `526157a`; F-04 grant-model source-sync (PR #18) and PH-0 audit-function hardening applied. Accepted on production evidence per Owner Decision E, 2026-08-13. See [RELEASE_READINESS_COMPONENT_7.md](RELEASE_READINESS_COMPONENT_7.md) (historical, pre-merge) |
+| **Component 10** — Rate Limiting | **IMPLEMENTED · AWAITING PRODUCTION VERIFICATION** — distributed limiter on a shared Upstash store, fail-closed, `Retry-After` on all 11 admin routes. Contract: [`10_COMPONENT10_RATE_LIMITING_CONTRACT.md`](10_COMPONENT10_RATE_LIMITING_CONTRACT.md). **S4 closes when production verification passes**, not before |
+| **Components 6, 8, 9b, 11** | **NOT STARTED** — no design documents exist for 8, 9b or 11 |
+| **Definition of Done** | **COMPONENT-COMPLETE** (C1–C11) — Owner Decision A, 2026-08-13. See [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
 > "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
@@ -93,4 +96,10 @@ What remains unproven is only the **end-to-end HTTP path** on live production.
 
 ## Next implementation target
 
-**Component 3 — RBAC.** Not started. See [`ROADMAP.md`](ROADMAP.md).
+> **Corrected 2026-08-13.** This section said *"**Component 3 — RBAC.** Not started"* while the table above recorded Component 3 as **ACCEPTED · IN PRODUCTION** since 2026-08-07 — the document contradicted itself. The stale line is replaced rather than preserved, because a *forward-looking* instruction that is wrong will be acted on, unlike a dated status snapshot.
+
+**Component 10 — Rate Limiting.** Contract written; implementation **blocked** on Owner provisioning of the shared store, and on the unresolved fail-open/fail-closed decision. See [`10_COMPONENT10_RATE_LIMITING_CONTRACT.md`](10_COMPONENT10_RATE_LIMITING_CONTRACT.md) §8 and §11.
+
+Then **Component 6 — Plugin Registry**, the only remaining component whose starting position is supported by evidence (Component 5 is FROZEN and merges into it; `manifest.ts` and `core.ts` exist and are wired into `admin/page.tsx`).
+
+Ordering for **C8 / C9b / C11** is **not determinable** from repository evidence — no design documents exist for them. See [`ROADMAP.md`](ROADMAP.md) for the approved Phase 1 component list and [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) for the Definition of Done.
