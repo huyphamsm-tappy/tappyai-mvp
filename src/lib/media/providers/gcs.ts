@@ -42,6 +42,22 @@ const UPLOAD_HOST = 'https://storage.googleapis.com'
 
 export const DEFAULT_SESSION_TIMEOUT_MS = 10_000
 
+/**
+ * Cache lifetime stamped on every client-direct upload.
+ *
+ * Safe only because these objects are immutable BY CONSTRUCTION: `resolveUploadTarget` mints each
+ * key as `${prefix}/${ownerId}/${24 random chars}.${ext}`, server-side, per upload. A caller cannot
+ * choose or reuse a key, so a URL's bytes can never change and nothing ever needs invalidating —
+ * a new upload is simply a new URL.
+ *
+ * Without this, GCS applies its own default of one hour, and every viewer re-downloaded the whole
+ * object hourly. Egress, not storage, is the cost that matters here.
+ *
+ * If key generation ever becomes caller-influenced or deterministic, this becomes a correctness
+ * bug that stays invisible for a year — immutableCache.test.ts pins both halves together.
+ */
+export const IMMUTABLE_MEDIA_CACHE_CONTROL = 'public, max-age=31536000, immutable'
+
 export function gcsPublicUrl(bucket: string, key: string): string {
   return `${UPLOAD_HOST}/${bucket}/${key}`
 }
@@ -118,7 +134,9 @@ export function createGcsProvider(deps: GcsProviderDeps): MediaProvider {
             'X-Upload-Content-Type': req.contentType,
             'X-Upload-Content-Length': String(req.sizeBytes),
           },
-          body: '{}',
+          // Object metadata for the pending upload. The object NAME stays in the query string —
+          // putting it here as well would give the request two sources of truth for the key.
+          body: JSON.stringify({ cacheControl: IMMUTABLE_MEDIA_CACHE_CONTROL }),
           signal: makeSignal(timeoutMs),
         })
       } catch (e) {
