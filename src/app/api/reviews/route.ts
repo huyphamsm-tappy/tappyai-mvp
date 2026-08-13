@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
@@ -44,7 +45,8 @@ export async function GET(req: NextRequest) {
     : null
 
   return NextResponse.json({
-    reviews: data || [],
+    // Same boundary rule as the feed — see stripUnservableMedia.
+    reviews: (data || []).map(stripUnservableMedia),
     avg_rating: avg ? Math.round(avg * 10) / 10 : null,
     count: data?.length || 0,
   })
