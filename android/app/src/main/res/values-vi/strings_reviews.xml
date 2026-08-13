@@ -100,6 +100,13 @@
     <string name="reviews_share_copied_label">Đã chép</string>
     <string name="reviews_share_copy_label">Sao chép</string>
     <string name="reviews_share_fallback_text">TappyAI Review</string>
+    <string name="reviews_share_facebook">Facebook</string>
+    <string name="reviews_share_tiktok">TikTok</string>
+    <string name="reviews_share_zalo">Zalo</string>
+    <string name="reviews_share_copy_link">Sao chép liên kết</string>
+    <string name="reviews_share_more_apps">Ứng dụng khác</string>
+    <!-- TikTok không có endpoint chia sẻ web, nên link đi qua trình chọn của hệ thống. -->
+    <string name="reviews_share_tiktok_hint">Chọn TikTok để chia sẻ liên kết này</string>
 
     <!-- Feed -->
     <string name="reviews_feed_title">Bài viết</string>

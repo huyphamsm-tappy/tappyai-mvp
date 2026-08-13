@@ -49,6 +49,60 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Foundation Ready" } },
         "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nền tảng sẵn sàng" } }
       }
+    },
+    "share.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share with friends" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chia sẻ với bạn bè" } }
+      }
+    },
+    "share.facebook" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Facebook" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Facebook" } }
+      }
+    },
+    "share.tiktok" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TikTok" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TikTok" } }
+      }
+    },
+    "share.zalo" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Zalo" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Zalo" } }
+      }
+    },
+    "share.copyLink" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Copy link" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Sao chép liên kết" } }
+      }
+    },
+    "share.copied" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Copied" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đã chép" } }
+      }
+    },
+    "share.moreApps" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "More apps" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Ứng dụng khác" } }
+      }
+    },
+    "share.tiktokHint" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choose TikTok to share this link" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chọn TikTok để chia sẻ liên kết này" } }
+      }
+    },
+    "share.close" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Close" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đóng" } }
+      }
     }
   }
 }

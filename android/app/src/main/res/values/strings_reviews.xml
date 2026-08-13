@@ -100,6 +100,13 @@
     <string name="reviews_share_copied_label">Copied</string>
     <string name="reviews_share_copy_label">Copy</string>
     <string name="reviews_share_fallback_text">TappyAI Review</string>
+    <string name="reviews_share_facebook">Facebook</string>
+    <string name="reviews_share_tiktok">TikTok</string>
+    <string name="reviews_share_zalo">Zalo</string>
+    <string name="reviews_share_copy_link">Copy link</string>
+    <string name="reviews_share_more_apps">More apps</string>
+    <!-- TikTok publishes no web share endpoint, so the link goes to the system chooser. -->
+    <string name="reviews_share_tiktok_hint">Choose TikTok to share this link</string>
 
     <!-- Feed -->
     <string name="reviews_feed_title">Reviews</string>
