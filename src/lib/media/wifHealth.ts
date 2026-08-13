@@ -127,7 +127,15 @@ export async function checkWifHealth(deps: WifHealthDeps): Promise<WifHealthResu
   // for a token that is present but not decodable — so a perfectly good identity
   // was reported as a missing one and the exchange never ran at all.
   if (typeof token !== 'string' || token.length === 0) {
-    return { ok: false, stage: 'oidc', reason: 'no deployment identity available' }
+    // `claimsReadable` is reported even here so the field is always present.
+    // Its absence was once read as evidence that an older build was serving,
+    // which cost a diagnostic round trip.
+    return {
+      ok: false,
+      stage: 'oidc',
+      claimsReadable: false,
+      reason: 'no deployment identity available',
+    }
   }
 
   // Claims are operator convenience. Google — not this code — is the authority

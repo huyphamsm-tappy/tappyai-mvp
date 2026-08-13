@@ -57,7 +57,11 @@ export async function GET(req: NextRequest) {
 
     const result = await checkWifHealth({
       bucket,
-      getOidcToken: () => env.VERCEL_OIDC_TOKEN ?? null,
+      // The SAME reader the provider uses. These two once disagreed — the
+      // provider read the request, this read only the environment — so the
+      // response could report `headerPresent: true` and "no deployment identity
+      // available" in the same breath.
+      getOidcToken: () => readDeploymentOidcToken(req, env),
       createUploadSession: (r) => provider.createUploadSession!(r),
     })
 
