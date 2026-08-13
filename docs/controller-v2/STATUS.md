@@ -21,7 +21,8 @@
 | **Component 9a** — single admin-client construction point | **ACCEPTED · IN PRODUCTION** — merge commit `e8d4eb9` |
 | **Component 7** — Audit Hardening | **ACCEPTED · IN PRODUCTION** — merge commit `f3caf59`, live in production `526157a`; F-04 grant-model source-sync (PR #18) and PH-0 audit-function hardening applied. Accepted on production evidence per Owner Decision E, 2026-08-13. See [RELEASE_READINESS_COMPONENT_7.md](RELEASE_READINESS_COMPONENT_7.md) (historical, pre-merge) |
 | **Component 10** — Rate Limiting | **ACCEPTED · IN PRODUCTION** — merge commit `c226417`, verified on production 2026-08-13. Distributed limiter on a shared Upstash store, fail-closed, `Retry-After` on all 11 admin routes. **Audit finding S4 (HIGH) is CLOSED.** Contract: [`10_COMPONENT10_RATE_LIMITING_CONTRACT.md`](10_COMPONENT10_RATE_LIMITING_CONTRACT.md) |
-| **Components 6, 8, 9b, 11** | **NOT STARTED** — no design documents exist for 8, 9b or 11 |
+| **Component 6** — Plugin Registry | **LIFECYCLE-COMPLETE** — contract [`06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md). `register → validate → enable → ready → disable → deregister` + permission-collision validation. rollback / health checks / migration versioning **deferred** (undefined in any authoritative source), capability gate remains inert |
+| **Components 8, 9b, 11** | **NOT STARTED** — no design documents exist for any of them; sequencing undetermined |
 | **Definition of Done** | **COMPONENT-COMPLETE** (C1–C11) — Owner Decision A, 2026-08-13. See [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
@@ -98,8 +99,8 @@ What remains unproven is only the **end-to-end HTTP path** on live production.
 
 > **Corrected 2026-08-13.** This section said *"**Component 3 — RBAC.** Not started"* while the table above recorded Component 3 as **ACCEPTED · IN PRODUCTION** since 2026-08-07 — the document contradicted itself. The stale line is replaced rather than preserved, because a *forward-looking* instruction that is wrong will be acted on, unlike a dated status snapshot.
 
-**Component 10 — Rate Limiting.** Contract written; implementation **blocked** on Owner provisioning of the shared store, and on the unresolved fail-open/fail-closed decision. See [`10_COMPONENT10_RATE_LIMITING_CONTRACT.md`](10_COMPONENT10_RATE_LIMITING_CONTRACT.md) §8 and §11.
+**None currently authorized.** C10 and C6 are both delivered. What remains of Phase 1 is **C8 (Event Bus)**, **C9b (Secret Manager)** and **C11 (Session Security)**, and their ordering is **not determinable** from repository evidence — no design document exists for any of the three. Establishing an order, or authorizing one of them directly, is an Owner decision.
 
-Then **Component 6 — Plugin Registry**, the only remaining component whose starting position is supported by evidence (Component 5 is FROZEN and merges into it; `manifest.ts` and `core.ts` exist and are wired into `admin/page.tsx`).
+Deferred within C6, carried as named debt: **rollback**, **health checks**, **migration versioning**, table-collision validation, and route-gating on disable — each undefined in any authoritative source and therefore not invented. See [`06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md) §1 and §7.
 
-Ordering for **C8 / C9b / C11** is **not determinable** from repository evidence — no design documents exist for them. See [`ROADMAP.md`](ROADMAP.md) for the approved Phase 1 component list and [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) for the Definition of Done.
+See [`ROADMAP.md`](ROADMAP.md) for the approved Phase 1 component list and [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) for the Definition of Done.

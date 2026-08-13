@@ -5,10 +5,14 @@
 // same permissions, routes, labels, icons and order as the legacy nav.ts NAV[].
 // No new permissions, no duplicate business logic, no page rewrites.
 //
-// This is the integration SUBSTRATE. It is proven equivalent to the legacy nav
-// (see adminModules.equivalence.test.ts) but is NOT yet wired into AdminShell —
-// the live cutover is gated on the future-hub placeholder decision (the four
-// `ready:false` entries in nav.ts, documented there as "future Hubs").
+// This is the integration SUBSTRATE, proven equivalent to the legacy nav (see
+// adminModules.equivalence.test.ts). It IS wired into the live AdminShell:
+// src/app/admin/page.tsx calls buildAdminController() and derives navigation
+// from the registry.
+//
+// Note on terminology: the `ready:false` entries in the legacy nav.ts are
+// "COMING SOON" placeholders and are unrelated to the Component 6 lifecycle
+// state `ready` (which is derived as enabled && available — see ControllerCore).
 
 import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import { ControllerCore } from '../core'

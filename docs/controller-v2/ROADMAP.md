@@ -34,7 +34,7 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 | # | Component | Status |
 |---|---|---|
 | 5 | Capability Registry | 🧊 **FROZEN** — [ADR-018](../architecture/ADR-018-capability-registry-frozen.md); merges into Component 6 |
-| 6 | Plugin Registry | not started |
+| 6 | **Plugin Registry** | ✅ **LIFECYCLE-COMPLETE** — see [`06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md). *(This row read "not started" until 2026-08-13 while `ControllerCore` was already live in production — corrected there.)* |
 
 ### Block C — Operational Infrastructure
 
