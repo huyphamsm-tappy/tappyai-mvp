@@ -23,14 +23,14 @@ import type { ModuleManifest, RegisteredModule } from '../types'
 // transaction boundary, and the grants that close the lost-event window. NONE
 // OF THEM IS EXECUTED BY THIS FILE.
 //
-// That is a gap, not an impossibility — and the earlier claim that it was an
-// impossibility was wrong. `supabase/tests/` runs a REAL PostgreSQL 17.5 via
-// the `embedded-postgres` devDependency (no Docker, no psql, no DATABASE_URL
-// needed): audit_chain, platform_owner_revoke and platform_hardening_phase0
-// already prove grants and trigger behaviour at runtime that way. The same
-// harness could execute this migration. C8 simply does not use it yet.
+// They ARE executed by supabase/tests/c8_event_outbox.test.ts, which applies
+// this migration to a real PostgreSQL 17 (embedded-postgres — no Docker, no
+// psql, no DATABASE_URL) and exercises the locking, the attempts increment, the
+// DLQ boundary, the terminal states and the grants. That suite is the behaviour
+// proof; this one is the text proof, and they fail for different reasons — the
+// migration text can drift without the behaviour changing, and vice versa.
 //
-// Until it does, this file is split, explicitly:
+// So this file is split, explicitly:
 //
 //   describe('C8 — kernel logic')   REAL behavioural tests. The functions under
 //                                   test are pure and are actually executed.
@@ -38,11 +38,10 @@ import type { ModuleManifest, RegisteredModule } from '../types'
 //   describe('C8 — migration')      STRUCTURAL assertions against the migration
 //                                   TEXT. They prove the SQL *says* the right
 //                                   thing. They do NOT prove the database
-//                                   *does* it. Runtime proof today is a
-//                                   read-only production check (pg_proc.proacl,
-//                                   information_schema) after the Owner applies
-//                                   the migration — with an embedded-postgres
-//                                   suite as the better answer, still to write.
+//                                   *does* it — supabase/tests/
+//                                   c8_event_outbox.test.ts does that, and
+//                                   whether PRODUCTION carries the objects is a
+//                                   read-only check after the Owner applies it.
 //
 // Labelling the second group as if it were the first is how a suite reports
 // coverage it does not have.
