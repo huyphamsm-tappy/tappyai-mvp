@@ -107,14 +107,26 @@ struct PhotoUploadResponse: Decodable, Sendable {
     let url: String
 }
 
-struct BlobTokenResponse: Decodable, Sendable {
-    let type: String?
-    let clientToken: String?
+/// A server-issued permission to upload exactly one object.
+///
+/// `key` is chosen by the server, never by the client, and `url` is the durable
+/// address to persist once the upload has been confirmed.
+struct MediaUploadSessionResponse: Decodable, Sendable {
+    let provider: String?
+    let uploadUrl: String?
+    let url: String?
+    let key: String?
+    let contentType: String?
 }
 
-struct BlobUploadResult: Decodable, Sendable {
-    let url: String
-    let pathname: String?
+/// The server's verdict after it looked the object up itself.
+///
+/// This exists because a client cannot reliably observe the result of its own
+/// upload — on web the storage response is CORS-blocked entirely — so the
+/// server confirms the object before any URL is used.
+struct MediaUploadCompleteResponse: Decodable, Sendable {
+    let ok: Bool?
+    let url: String?
 }
 
 struct OEmbedResponse: Decodable, Sendable {
