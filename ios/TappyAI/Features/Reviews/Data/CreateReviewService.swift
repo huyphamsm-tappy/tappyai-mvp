@@ -32,75 +32,105 @@ struct CreateReviewService: Sendable {
         return response.url
     }
 
-    // MARK: - Video upload (Vercel Blob client protocol)
+    // MARK: - Video upload (server-owned upload session)
+    //
+    // The client no longer names the object or talks a storage vendor's
+    // protocol. It asks the server to open a session, PUTs the bytes to the URI
+    // it is given, then asks the server to confirm the object actually landed.
+    // The server owns the key and is the only thing that decides success, so a
+    // provider change is invisible here.
 
-    func requestBlobToken(pathname: String, clientPayload: String?) async throws -> String {
-        let payload: [String: Any] = [
-            "type": "blob.generate-client-token",
-            "payload": [
-                "pathname": pathname,
-                "callbackUrl": "",
-                "clientPayload": clientPayload as Any,
-                "multipart": false
-            ] as [String: Any]
-        ]
-        let body = try JSONSerialization.data(withJSONObject: payload)
-        var endpoint = Endpoint(
-            path: "/api/upload/video",
-            method: .post,
-            body: body,
-            requiresAuth: true
+    func uploadViaSession(
+        endpointPath: String,
+        kind: String,
+        data: Data,
+        contentType: String
+    ) async throws -> String {
+        let session = try await openUploadSession(
+            endpointPath: endpointPath,
+            kind: kind,
+            contentType: contentType,
+            size: data.count
         )
-        endpoint.timeout = 30
 
-        let response = try await api.send(endpoint, as: BlobTokenResponse.self)
-        guard let token = response.clientToken, !token.isEmpty else {
-            throw AppError.unexpected(message: "No upload token received")
-        }
-        return token
-    }
-
-    func uploadToBlob(token: String, pathname: String, data: Data, contentType: String) async throws -> String {
-        guard let storeId = Self.extractStoreId(from: token) else {
-            throw AppError.unexpected(message: "Cannot parse blob store from token")
-        }
-        let urlString = "https://\(storeId).public.blob.vercel-storage.com/\(pathname)"
-        guard let url = URL(string: urlString) else {
-            throw AppError.unexpected(message: "Invalid blob URL")
+        // Rollback safety: unsetting MEDIA_PROVIDER puts the server back on the
+        // legacy provider, which has no session protocol. Fail loudly rather
+        // than invent an upload path the server did not offer.
+        guard session.provider == "gcs",
+              let uploadURLString = session.uploadUrl,
+              let uploadURL = URL(string: uploadURLString),
+              let key = session.key else {
+            throw AppError.unexpected(message: "Tải lên chưa khả dụng. Vui lòng thử lại sau.")
         }
 
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: uploadURL)
         request.httpMethod = "PUT"
         request.httpBody = data
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "authorization")
-        request.setValue("7", forHTTPHeaderField: "x-api-version")
-        request.setValue(contentType, forHTTPHeaderField: "x-content-type")
-        request.setValue("public, max-age=31536000", forHTTPHeaderField: "x-cache-control-max-age")
-        request.setValue(contentType, forHTTPHeaderField: "content-type")
+        request.setValue(session.contentType ?? contentType, forHTTPHeaderField: "content-type")
         request.timeoutInterval = 120
 
-        let (responseData, response) = try await URLSession.shared.data(for: request)
-        guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
-            let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-            throw AppError.network(status: status, code: nil)
-        }
+        // The response is deliberately NOT trusted as proof of success — only
+        // an outright transport failure is fatal here. The server's own lookup
+        // below is what decides, exactly as on web.
+        _ = try? await URLSession.shared.data(for: request)
 
-        let result = try JSONDecoder().decode(BlobUploadResult.self, from: responseData)
-        return result.url
+        return try await completeUpload(endpointPath: endpointPath, kind: kind, key: key)
+    }
+
+    func openUploadSession(
+        endpointPath: String,
+        kind: String,
+        contentType: String,
+        size: Int
+    ) async throws -> MediaUploadSessionResponse {
+        let payload: [String: Any] = [
+            "type": "media.create-upload-session",
+            "kind": kind,
+            "contentType": contentType,
+            "size": size
+        ]
+        let body = try JSONSerialization.data(withJSONObject: payload)
+        var endpoint = Endpoint(path: endpointPath, method: .post, body: body, requiresAuth: true)
+        endpoint.timeout = 30
+        return try await api.send(endpoint, as: MediaUploadSessionResponse.self)
+    }
+
+    /// Asks the server to verify the object exists before any URL is used.
+    func completeUpload(endpointPath: String, kind: String, key: String) async throws -> String {
+        let payload: [String: Any] = [
+            "type": "media.complete-upload",
+            "kind": kind,
+            "key": key
+        ]
+        let body = try JSONSerialization.data(withJSONObject: payload)
+        var endpoint = Endpoint(path: endpointPath, method: .post, body: body, requiresAuth: true)
+        endpoint.timeout = 30
+
+        let result = try await api.send(endpoint, as: MediaUploadCompleteResponse.self)
+        guard result.ok == true, let url = result.url, !url.isEmpty else {
+            throw AppError.unexpected(message: "Tải lên chưa hoàn tất. Vui lòng thử lại.")
+        }
+        return url
     }
 
     func uploadVideoFile(data: Data, ext: String) async throws -> (mediaURL: String, thumbnailURL: String?) {
-        let pathname = "videos/\(Int(Date().timeIntervalSince1970 * 1000)).\(ext)"
-        let token = try await requestBlobToken(pathname: pathname, clientPayload: nil)
         let contentType = ext == "mov" ? "video/quicktime" : ext == "webm" ? "video/webm" : "video/mp4"
-        let mediaURL = try await uploadToBlob(token: token, pathname: pathname, data: data, contentType: contentType)
+        let mediaURL = try await uploadViaSession(
+            endpointPath: "/api/upload/video",
+            kind: "video",
+            data: data,
+            contentType: contentType
+        )
         return (mediaURL, nil)
     }
 
     func uploadThumbnail(data: Data) async throws -> String {
-        let pathname = "thumbnails/\(Int(Date().timeIntervalSince1970 * 1000)).jpg"
-        let token = try await requestBlobToken(pathname: pathname, clientPayload: "thumbnail")
-        return try await uploadToBlob(token: token, pathname: pathname, data: data, contentType: "image/jpeg")
+        try await uploadViaSession(
+            endpointPath: "/api/upload/video",
+            kind: "videoThumbnail",
+            data: data,
+            contentType: "image/jpeg"
+        )
     }
 
     // MARK: - AI content analysis (POST /api/explore/process — non-blocking)
@@ -179,26 +209,8 @@ struct CreateReviewService: Sendable {
         return response.categories
     }
 
-    // MARK: - Blob token parsing
-
-    private static func extractStoreId(from token: String) -> String? {
-        let prefix = "vercel_blob_client_"
-        guard token.hasPrefix(prefix) else { return nil }
-        let rest = String(token.dropFirst(prefix.count))
-        guard let decoded = Self.base64URLDecode(rest) else { return nil }
-        let parts = decoded.split(separator: ":", maxSplits: 1)
-        guard let storeId = parts.first, !storeId.isEmpty else { return nil }
-        return String(storeId)
-    }
-
-    private static func base64URLDecode(_ string: String) -> String? {
-        var base64 = string
-            .replacingOccurrences(of: "-", with: "+")
-            .replacingOccurrences(of: "_", with: "/")
-        while base64.count % 4 != 0 { base64 += "=" }
-        guard let data = Data(base64Encoded: base64) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
+    // The storage-token parsing that used to live here is gone: the client no
+    // longer receives, decodes or reasons about a storage credential at all.
 }
 
 private extension Data {
