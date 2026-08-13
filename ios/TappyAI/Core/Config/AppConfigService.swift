@@ -26,6 +26,9 @@ struct AppConfig: Decodable, Sendable {
         let maxPhotosPerReview: Int
         let maxVideoSizeMb: Int
         let maxVideoDurationSec: Int
+        /// Validation ceiling (300s advertised + 5s tolerance). Optional so an older deployment
+        /// that does not send it still decodes; `UploadLimits` carries the same default.
+        let maxVideoDurationAcceptSec: Int?
     }
 
     struct Auth: Decodable, Sendable {

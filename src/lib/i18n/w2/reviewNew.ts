@@ -21,7 +21,7 @@ export const vi: Record<string, string> = {
 
   // Video tab
   'reviewNew.selectVideo': 'Chọn video',
-  'reviewNew.videoHint': 'mp4 · mov · webm  ·  tối đa 60s · 50MB',
+  'reviewNew.videoHint': 'mp4 · mov · webm  ·  tối đa 5 phút · 50MB',
   'reviewNew.creatingThumbnail': 'Đang tạo thumbnail...',
   'reviewNew.uploadingVideo': 'Đang tải video lên...',
   'reviewNew.analyzingContent': 'Đang phân tích nội dung...',
@@ -31,7 +31,9 @@ export const vi: Record<string, string> = {
   'reviewNew.videoUnsupportedFormat': 'Chỉ hỗ trợ mp4, mov, webm',
   'reviewNew.videoTooLarge': 'Video phải nhỏ hơn 50MB',
   'reviewNew.videoReadError': 'Không đọc được thông tin video',
-  'reviewNew.videoTooLong': 'Video tối đa {n} giây',
+  // Giới hạn sản phẩm nói "5 phút"; chỉ thông báo lỗi mới nêu dung sai 5 giây.
+  'reviewNew.videoLimitHint': 'Bạn có thể tải video dài tối đa 5 phút.',
+  'reviewNew.videoTooLong': 'Video quá dài. Vui lòng chọn video tối đa 5 phút 5 giây.',
   'reviewNew.uploadCancelled': 'Đã hủy tải lên',
   'reviewNew.videoUploadError': 'Lỗi tải video. Vui lòng thử lại.',
 
@@ -87,7 +89,7 @@ export const en: Record<string, string> = {
 
   // Video tab
   'reviewNew.selectVideo': 'Choose a video',
-  'reviewNew.videoHint': 'mp4 · mov · webm  ·  up to 60s · 50MB',
+  'reviewNew.videoHint': 'mp4 · mov · webm  ·  up to 5 minutes · 50MB',
   'reviewNew.creatingThumbnail': 'Creating thumbnail...',
   'reviewNew.uploadingVideo': 'Uploading video...',
   'reviewNew.analyzingContent': 'Analyzing content...',
@@ -97,7 +99,9 @@ export const en: Record<string, string> = {
   'reviewNew.videoUnsupportedFormat': 'Only mp4, mov, webm are supported',
   'reviewNew.videoTooLarge': 'Video must be under 50MB',
   'reviewNew.videoReadError': "Couldn't read video info",
-  'reviewNew.videoTooLong': 'Video can be at most {n} seconds',
+  // The product limit is stated as "5 minutes"; only the failure names the 5s tolerance.
+  'reviewNew.videoLimitHint': 'Videos can be up to 5 minutes long.',
+  'reviewNew.videoTooLong': 'Video is too long. Please choose a video up to 5 minutes 5 seconds.',
   'reviewNew.uploadCancelled': 'Upload cancelled',
   'reviewNew.videoUploadError': 'Upload failed. Please try again.',
 

@@ -154,14 +154,16 @@ final class CreateReviewViewModel: AppObservableObject {
         let duration = try await asset.load(.duration)
         let durationSec = CMTimeGetSeconds(duration)
 
-        guard durationSec <= Double(UploadLimits.maxVideoDurationAcceptSec) else {
-            error = "Video tối đa \(UploadLimits.maxVideoDurationSec) giây"
+        // Same rule as Web `isAcceptableVideoDuration`: rejects past the 305s ceiling, and also
+        // rejects 0/NaN, which mean "AVFoundation could not read this", not "this clip is short".
+        guard UploadLimits.isAcceptableVideoDuration(durationSec) else {
+            error = String(localized: "review.video.tooLong")
             return
         }
 
         let fileSize = try FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int ?? 0
         guard fileSize <= UploadLimits.maxVideoSizeBytes else {
-            error = "Video phải nhỏ hơn \(UploadLimits.maxVideoSizeMB)MB"
+            error = String(localized: "review.video.tooLarge")
             return
         }
 

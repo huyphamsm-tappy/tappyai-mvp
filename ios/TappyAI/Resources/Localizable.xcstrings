@@ -49,6 +49,30 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Foundation Ready" } },
         "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nền tảng sẵn sàng" } }
       }
+    },
+    "review.video.limitHint" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Videos can be up to 5 minutes long." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn có thể tải video dài tối đa 5 phút." } }
+      }
+    },
+    "review.video.formatHint" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "mp4 · mov · webm  ·  up to 5 minutes · 50MB" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "mp4 · mov · webm  ·  tối đa 5 phút · 50MB" } }
+      }
+    },
+    "review.video.tooLong" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Video is too long. Please choose a video up to 5 minutes 5 seconds." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Video quá dài. Vui lòng chọn video tối đa 5 phút 5 giây." } }
+      }
+    },
+    "review.video.tooLarge" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Video must be under 50MB" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Video phải nhỏ hơn 50MB" } }
+      }
     }
   }
 }

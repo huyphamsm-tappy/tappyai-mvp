@@ -10,6 +10,7 @@ import {
   MAX_PHOTOS_PER_REVIEW,
   MAX_VIDEO_SIZE_MB,
   MAX_VIDEO_DURATION_SEC,
+  MAX_VIDEO_DURATION_ACCEPT_SEC,
   LINK_VIDEO_PROVIDERS,
   AUTH_PROVIDERS,
   ONBOARDING_INTERESTS,
@@ -41,6 +42,9 @@ export async function GET() {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
         maxVideoSizeMb: MAX_VIDEO_SIZE_MB,
         maxVideoDurationSec: MAX_VIDEO_DURATION_SEC,
+        // The validation ceiling, so a client pre-checking for UX uses the same boundary the
+        // server does instead of mirroring a hardcoded copy that can drift.
+        maxVideoDurationAcceptSec: MAX_VIDEO_DURATION_ACCEPT_SEC,
       },
       scamShield: {
         dailyLimitAuth: SCAM_SHIELD_DAILY_LIMIT_AUTH,

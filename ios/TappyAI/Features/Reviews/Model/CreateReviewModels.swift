@@ -212,10 +212,18 @@ enum UploadLimits {
     static let maxPhotosPerReview = 6
     static let maxVideoSizeMB = 50
     /// Advertised clip length — what the user is told (Web product.ts MAX_VIDEO_DURATION_SEC).
-    static let maxVideoDurationSec = 60
-    /// Tolerant reject threshold: a clip trimmed to "60s" often encodes slightly above.
-    /// Backend-only allowance (Web MAX_VIDEO_DURATION_ACCEPT_SEC) — NEVER surfaced in UI copy.
-    static let maxVideoDurationAcceptSec = 62
+    static let maxVideoDurationSec = 300
+    /// Tolerant reject threshold: a clip trimmed to "5 minutes" routinely encodes slightly above.
+    /// Validation boundary only (Web MAX_VIDEO_DURATION_ACCEPT_SEC) — UI copy says five minutes,
+    /// and only the failure message names 5:05.
+    static let maxVideoDurationAcceptSec = 305
+
+    /// Mirrors `isAcceptableVideoDuration` in Web `src/lib/config/product.ts`. An unreadable
+    /// duration (0, negative, NaN, infinite) is rejected rather than treated as "short enough".
+    static func isAcceptableVideoDuration(_ seconds: Double) -> Bool {
+        guard seconds.isFinite, seconds > 0 else { return false }
+        return seconds <= Double(maxVideoDurationAcceptSec)
+    }
     static let maxVideoSizeBytes = maxVideoSizeMB * 1024 * 1024
     static let maxPhotoSizeBytes = 5 * 1024 * 1024
     static let maxBodyLength = 1000

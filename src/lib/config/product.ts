@@ -33,12 +33,27 @@ export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
 export const MAX_VIDEO_SIZE_MB = 50
-/** Advertised clip length — what the user is told (UI copy shows "60 seconds"). */
-export const MAX_VIDEO_DURATION_SEC = 60
-/** Tolerant reject threshold: a clip trimmed to "60s" often encodes at
- * 60.04–61.9s, so accept a little above the advertised limit. Backend-only
- * allowance — never surfaced in UI copy. */
-export const MAX_VIDEO_DURATION_ACCEPT_SEC = 62
+/** Advertised clip length — what the user is told (UI copy shows "5 minutes"). */
+export const MAX_VIDEO_DURATION_SEC = 300
+/** Tolerant reject threshold: a clip a user trimmed to "5 minutes" routinely
+ * encodes at 300.04s, and rejecting that reads as a bug. Validation boundary
+ * only — UI copy says five minutes, and only the failure message names 5:05. */
+export const MAX_VIDEO_DURATION_ACCEPT_SEC = 305
+
+/**
+ * The single duration rule. Every layer that decides whether a clip may be
+ * uploaded or stored calls this — web composer, the reviews API, and (mirrored
+ * in Swift) iOS — so the boundary cannot drift between them.
+ *
+ * Anything unreadable is rejected rather than defaulted: a NaN or Infinity
+ * duration means the browser could not decode the file, and `NaN <= 305` is
+ * false anyway, but 0 and negatives would otherwise sail through as "under the
+ * limit" when they actually mean "we have no idea how long this is".
+ */
+export function isAcceptableVideoDuration(seconds: number): boolean {
+  if (!Number.isFinite(seconds) || seconds <= 0) return false
+  return seconds <= MAX_VIDEO_DURATION_ACCEPT_SEC
+}
 
 // ── Link-video providers (product decision — which platforms a user may import from) ─
 // SINGLE SOURCE OF TRUTH for web (imported directly) + native (via GET /api/config).
