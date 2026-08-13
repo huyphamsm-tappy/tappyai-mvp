@@ -164,7 +164,7 @@ export async function POST(req: Request) {
         }
       } catch { /* calendar optional */ }
 
-      // Kiá»ƒm tra subscription tá»« DB
+        // Kiểm tra subscription từ DB
       const { data: subData } = await supabase
         .from('subscriptions')
         .select('status, current_period_end')
@@ -175,10 +175,10 @@ export async function POST(req: Request) {
       }
 
       if (!isPro) {
-        // Äáº¿m sá»‘ tin nháº¯n user Ä‘Ã£ gá»­i hÃ´m nay (theo giá» VN UTC+7)
+        // Đếm số tin nhắn user đã gửi hôm nay (theo giờ VN UTC+7).
 
-        // Æ¯á»›c tÃ­nh sá»‘ message tá»« conversations hÃ´m nay â€” Ä‘Æ¡n giáº£n: náº¿u > FREE_DAILY_LIMIT conversations thÃ¬ cháº·n
-        // CÃ¡ch chÃ­nh xÃ¡c hÆ¡n cáº§n track message count riÃªng â€” dÃ¹ng táº¡m cÃ¡ch nÃ y cho MVP
+        // Ước tính số message từ conversations hôm nay — đơn giản: nếu vượt FREE_DAILY_LIMIT thì chặn.
+        // Cách chính xác hơn cần track message count riêng — dùng tạm cách này cho MVP.
         // Shared VN-day measurement from @/lib/config/product — the same helper
         // the subscription page displays from, so display and enforcement can
         // never disagree. (Also drops a redundant count-only query this route
@@ -237,7 +237,7 @@ export async function POST(req: Request) {
     ? (rawUserPrefs as unknown[]).filter(p => typeof p === 'string').slice(0, 50) as string[]
     : []
   if (rawPrefsArr.length > 0) {
-    const freeformBlock = `\n\n===== Sá»ž THÃCH & THÃ”NG TIN CÃ NHÃ‚N Cá»¦A USER =====\n${rawPrefsArr.map(p => `- ${p}`).join('\n')}\nHÃ£y luÃ´n ghi nhá»› vÃ  Ã¡p dá»¥ng nhá»¯ng sá»Ÿ thÃ­ch nÃ y khi gá»£i Ã½.\n==================================================`
+    const freeformBlock = `\n\n===== SỞ THÍCH & THÔNG TIN CÁ NHÂN CỦA USER =====\n${rawPrefsArr.map(p => `- ${p}`).join('\n')}\nHãy luôn ghi nhớ và áp dụng những sở thích này khi gợi ý.\n==================================================`
     prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
   }
 
@@ -395,14 +395,14 @@ export async function POST(req: Request) {
       }),
       ...(authedUserId ? {
         save_price_watch: tool({
-          description: 'LÆ°u theo dÃµi giÃ¡ sáº£n pháº©m Ä‘á»ƒ thÃ´ng bÃ¡o khi giÃ¡ Ä‘áº¡t má»©c mong muá»‘n. DÃ¹ng khi user nÃ³i "theo dÃµi giÃ¡", "bÃ¡o mÃ¬nh khi giÃ¡ xuá»‘ng", "alert giÃ¡", "Tappy theo dÃµi giÃ¡ X khi dÆ°á»›i Y"',
+          description: 'Lưu theo dõi giá sản phẩm để thông báo khi giá đạt mức mong muốn. Dùng khi user nói "theo dõi giá", "báo mình khi giá xuống", "alert giá", "Tappy theo dõi giá X khi dưới Y"',
           parameters: z.object({
-            product_name: z.string().describe('TÃªn sáº£n pháº©m cáº§n theo dÃµi, vÃ­ dá»¥: AirPods Pro, Samsung Galaxy S25'),
-            target_price: z.number().describe('GiÃ¡ má»¥c tiÃªu báº±ng VND (sá»‘ nguyÃªn), vÃ­ dá»¥: 2000000'),
-            search_query: z.string().describe('Query tÃ¬m kiáº¿m giÃ¡ sáº£n pháº©m nÃ y, vÃ­ dá»¥: AirPods Pro 2 giÃ¡ Shopee Tiki'),
+            product_name: z.string().describe('Tên sản phẩm cần theo dõi, ví dụ: AirPods Pro, Samsung Galaxy S25'),
+            target_price: z.number().describe('Giá mục tiêu bằng VND (số nguyên), ví dụ: 2000000'),
+            search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
           }),
           execute: async ({ product_name, target_price, search_query }) => {
-            if (!authedUserId) return { error: 'Cáº§n Ä‘Äƒng nháº­p Ä‘á»ƒ theo dÃµi giÃ¡' }
+            if (!authedUserId) return { error: 'Cần đăng nhập để theo dõi giá' }
             try {
               // authedUserId is already verified above via getRequestUser (cookie or
               // Bearer JWT) — use the admin client for this write instead of a fresh
@@ -414,14 +414,14 @@ export async function POST(req: Request) {
                 .select('id', { count: 'exact', head: true })
                 .eq('user_id', authedUserId)
                 .eq('status', 'active')
-              if ((count ?? 0) >= 10) return { error: 'Báº¡n Ä‘Ã£ theo dÃµi tá»‘i Ä‘a 10 sáº£n pháº©m. Há»§y bá»›t Ä‘á»ƒ thÃªm má»›i.' }
+              if ((count ?? 0) >= 10) return { error: 'Bạn đã theo dõi tối đa 10 sản phẩm. Hủy bớt để thêm mới.' }
               const { data, error } = await supabaseW
                 .from('price_watches')
                 .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
                 .select('id')
                 .single()
-              if (error) return { error: 'Lá»—i lÆ°u theo dÃµi: ' + error.message }
-              return { ok: true, id: data.id, product_name, target_price, message: `ÄÃ£ lÆ°u! Tappy sáº½ kiá»ƒm tra giÃ¡ ${product_name} má»—i 6 tiáº¿ng vÃ  bÃ¡o báº¡n khi xuá»‘ng dÆ°á»›i ${(target_price / 1000000).toFixed(1)} triá»‡u.` }
+              if (error) return { error: 'Lỗi lưu theo dõi: ' + error.message }
+              return { ok: true, id: data.id, product_name, target_price, message: `Đã lưu! Tappy sẽ kiểm tra giá ${product_name} mỗi 6 tiếng và báo bạn khi xuống dưới ${(target_price / 1000000).toFixed(1)} triệu.` }
             } catch (e) {
               return { error: String(e) }
             }
