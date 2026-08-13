@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { BRAND, absoluteUrl, safeOgImageUrl } from '@/lib/share/openGraph'
 import ReviewDetailView from './ReviewDetailView'
 
 interface Props {
@@ -67,20 +68,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const desc = `${review.body.slice(0, 150)}${review.body.length > 150 ? '...' : ''}`
 
+  // The review's own photo when a crawler can actually fetch it, otherwise the
+  // branded card. Previously this published `photos[0]` unconditionally — those
+  // are Vercel Blob URLs, the store is suspended and they 403, so shared review
+  // links showed a broken image; a review with no photo published none at all.
+  const image = safeOgImageUrl(review.photos?.[0])
+  const ogTitle = `${review.place_name} — ${review.rating}/5 sao`
+
   return {
     title: `${'★'.repeat(review.rating)} ${review.place_name} | TappyAI`,
     description: desc,
     openGraph: {
-      title: `${review.place_name} — ${review.rating}/5 sao`,
+      title: ogTitle,
       description: desc,
-      images: review.photos?.[0] ? [{ url: review.photos[0] }] : [],
+      url: absoluteUrl(`/reviews/${params.id}`),
+      siteName: BRAND.name,
+      images: [image],
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${review.place_name} — ${review.rating}/5 sao`,
+      title: ogTitle,
       description: desc,
-      images: review.photos?.[0] ? [review.photos[0]] : [],
+      images: [image],
     },
   }
 }
