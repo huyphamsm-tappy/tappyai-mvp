@@ -1,10 +1,13 @@
 # Controller V2 — Component 11: Session Security — CONTRACT **DRAFT**
 
-**Status:** ⛔ **DRAFT — NOT RATIFIED. NOT IMPLEMENTABLE YET.** Three questions in §20 block implementation; one of them (**O-1**) decides whether revocation is immediate or merely eventual, which changes what this component is worth.
+**Status:** 🟡 **POLICY RATIFIED — IMPLEMENTATION BLOCKED ON ENVIRONMENT.**
+**P-1 … P-7 were ratified by the Owner on 2026-08-13** and are now contract text.
+**O-1, O-2 and O-3 remain unresolved**, and the reason has changed: they are no longer open *questions* but blocked *experiments*. The Owner directed that they be settled empirically in a **non-production** Supabase environment. **No such environment exists on this machine** — see §20. They were not guessed, and implementation has not started.
+
 **Date:** 2026-08-13 · **Baseline:** `origin/main` = `89cd1a1` · production `/api/version` = same
 **Prior scope:** one line — *"Session inventory, revocation, forced logout"* ([`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §11) — plus [`02_PHASE0_AUDIT.md`](02_PHASE0_AUDIT.md) §"Not verified", which records that no implementation exists. Those are **scope signals, not semantics**, and this document does not pretend they defined anything.
 
-> **Reading rule.** Every clause below is marked **[D]** derived from existing repository evidence, **[P]** a new policy proposal needing Owner ratification, or **[O]** open and blocking. Nothing marked [P] or [O] may be implemented before the Owner rules on it.
+> **Reading rule.** Every clause is marked **[D]** derived from repository evidence, **[R]** ratified by the Owner on 2026-08-13, or **[O]** open and blocking. [D] and [R] are binding. Nothing marked [O] may be implemented.
 
 ---
 
@@ -57,9 +60,9 @@ Creation time, last refresh, expiry (`not_after`) and revocation state are prope
 
 **Never read, never stored, never returned, never logged:** access tokens, refresh tokens, cookie values, password hashes, MFA secrets, or any credential material. §12 makes this a testable invariant rather than an intention.
 
-**Device metadata is [P-6].** GoTrue records `ip` and `user_agent`. They make an inventory useful ("that Hanoi login isn't me") and they are personal data. The proposal is: store nothing new, and return a **coarsened** form — platform class from `Actor.source`, and IP **withheld by default**. C11 must not begin collecting device fingerprints; §4.3 of the Owner's brief forbids unnecessary personal data.
+**Device metadata — [R], P-6 ratified.** GoTrue records `ip` and `user_agent`. Both are personal data, and both are **withheld**. C11 may expose only a coarse **platform class**, and only where it is already available (`Actor.source`); if a field cannot be obtained without adding a new collection path, it is **omitted**. C11 starts no new data collection to make itself more useful.
 
-## 4. Lifecycle and states **[P-1]**
+## 4. Lifecycle and states **[R — P-1 ratified 2026-08-13]**
 
 Three states, and each is justified rather than assumed:
 
@@ -84,17 +87,40 @@ Legal transitions — the table is exhaustive; anything absent is illegal:
 
 **`revoked` and `expired` are terminal.** This mirrors C8's `delivered`/`dead`, whose terminality is enforced by a `status = 'pending'` predicate rather than by convention — and, as C8's runtime suite showed, terminality that is only asserted in prose is not terminality.
 
-## 5. Revocation semantics **[P-2, P-3] · enforcement blocked by [O-1]**
+### 4.1 Snapshot boundary for revoke-all — exact semantics **[R]**
 
-### 5.1 Authority
+The Owner required this be stated exactly rather than described. It is defined by *construction*, not by a re-check:
 
-| Question | Proposed rule | Rationale |
+> **Revoke-all is ONE statement inside ONE `SECURITY DEFINER` function.** The set of sessions it affects is the set matched by that statement's snapshot — under PostgreSQL's default `READ COMMITTED`, the snapshot taken when that statement begins. A session row that becomes visible after that instant is **not** matched, and therefore **not** revoked.
+
+Three consequences follow, and all three are testable against a real PostgreSQL:
+
+1. **A login racing a forced logout survives.** This is the ratified purpose: revoke-all must never become an account lock. C11 offers no standing ban on an account; that would be a different capability, and nobody authorized one.
+2. **No second pass.** An implementation must not loop, re-query, or "catch stragglers". Doing so would silently convert the operation into a lock and break invariant **I-8**.
+3. **The count returned is the count actually revoked** by that statement — never an estimate, and never a count of "sessions that existed when the request arrived".
+
+**Forbidden:** taking the snapshot in the application tier (selecting ids, then revoking them in a second call). That is two transactions — §10 — and the window between them is exactly where a concurrent login is either wrongly killed or wrongly spared, depending on timing.
+
+## 5. Revocation semantics **[R — P-2, P-3 ratified] · enforcement blocked by [O-1]**
+
+### 5.1 Authority **[R]**
+
+| Question | Ratified rule | Rationale |
 |---|---|---|
 | May a user revoke **their own** session? | **Yes** — via existing sign-out; no new surface | already true today (`SignOutButton.tsx:15`) |
-| May a user revoke **their own other** sessions? | **[P-2]** proposed: **not in v1** | needs an end-user UI on three frozen clients (web freeze, Android/iOS frozen) |
-| May an administrator revoke **another user's** session? | **[P-2]** proposed: **yes**, gated on a new `security.sessions.revoke` permission | this is the actual security capability C11 exists to add |
-| May an administrator revoke the **Owner's** session? | **[P-2]** proposed: **no** — refuse with 403 | the Owner Gate (`guards.ts:102`) runs before authorization precisely so ownership cannot be attacked through the admin surface; letting an admin log the Owner out would be a lateral path to the same effect |
-| May an administrator revoke **their own current** session? | **[P-3]** proposed: **yes, explicitly**, and it takes effect on their next request | refusing would be surprising; silently exempting it would be worse |
+| May a user revoke **their own other** sessions? | **No** — not in v1 | needs an end-user UI on three frozen clients (P-5) |
+| May an administrator revoke **another user's** session? | **Yes**, gated on `security.sessions.revoke` | the capability C11 exists to add |
+| May an administrator revoke the **Ultimate Owner's** session? | **No — 403** | the Owner Gate (`guards.ts:102`) runs before authorization precisely so ownership cannot be attacked through the admin surface; logging the Owner out is a lateral path to the same effect |
+| May an administrator revoke **their own current** session? | **Yes, explicitly**, effective on their next request | refusing is surprising; a silent exemption is worse. **No special-case branch may exempt the actor's own session** |
+
+#### 5.1.1 How Owner protection is enforced — narrowly scoped, no parallel model **[R]**
+
+The Owner ratified this as *"a narrowly scoped enforcement check"*, and it stays narrow:
+
+- The check is a **target-side predicate**: refuse when the *target subject* is the Platform Owner. It is **not** a second authorization model, and it does not touch `checkOwnerGate()`, which continues to run unchanged as step 2 of the decision order (§18) and concerns the **actor**.
+- Ownership is determined by the **existing** authority — the `platform_owner` row, reachable through `fn_is_platform_owner` / `resolvePrincipal`'s `isOwner`. C11 introduces no new notion of ownership and no second source of truth for it.
+- Enforced in **both** the handler (so the answer is a clean 403) **and** inside the revocation SQL function (so no future caller can bypass it). The database is the authority; the handler exists to give a good error. This is the shape Component 1 already uses for `fn_grant_admin_role`, where the handler pre-checks the constitutional rules the function enforces.
+- **Invariant I-4a:** a revoke or forced-logout request targeting the Owner fails **even when the actor is a `super_admin` holding `security.sessions.revoke`**. Mutation-tested by removing the target check, never by asserting its text.
 
 ### 5.2 What "revoked" must mean at request time
 
@@ -130,19 +156,27 @@ Both branches make a **real round-trip to the Auth server on every request** —
 | Reason | **required**, free text, stored in the audit entry — a forced logout without a recorded reason is indistinguishable from an attack |
 | Already fully revoked | success, `revoked: 0` — idempotent, not an error |
 | Nonexistent user | **404**, and no audit entry claiming a revocation happened |
-| Anonymous subjects | **[P-4]** proposed: **excluded from v1**. The product mints anonymous sessions (`/api/auth/anonymous`); revoking them destroys anonymous chat continuity for a non-account, which is a product decision, not a security one |
+| Anonymous subjects | **[R] excluded from C11 v1** — see §6.1 |
 
-## 7. Session inventory **[P-1, P-5, P-6] · source blocked by [O-3]**
+### 6.1 Anonymous exclusion — scope boundary **[R — P-4 ratified]**
+
+The product mints anonymous sessions (`/api/auth/anonymous`). C11 v1 neither lists nor revokes them, and **nothing in the anonymous authentication architecture changes**.
+
+The discriminator is not invented: `auth.users.is_anonymous` is a real column, and [`20260808c_handle_new_user_skip_anonymous.sql`](../../supabase/migrations/20260808c_handle_new_user_skip_anonymous.sql) records it as *verified, not assumed* (`attnum 35 · is_anonymous boolean`), having already chosen it as the right signal for exactly this kind of decision.
+
+**Boundary, stated so it cannot be crossed by accident:** every C11 read and write filters `is_anonymous = false`. An anonymous session is therefore invisible to the inventory and unaffected by forced logout — including a forced logout aimed at a user id that happens to be anonymous, which returns **404** rather than silently succeeding. Anonymous chat continuity is preserved by construction, not by care.
+
+## 7. Session inventory **[R — P-5, P-6 ratified] · source blocked by [O-3]**
 
 | Question | Proposed rule |
 |---|---|
-| Who may list? | an admin holding `security.sessions.read` **[P-7]** |
+| Who may list? | an admin holding `security.sessions.read` **[R]** |
 | Whose sessions? | **one subject at a time**, addressed by `user_id`. No "all sessions on the platform" listing — it is a compromise-amplifying surface and nothing requires it |
-| End-user self-service? | **[P-5]** not in v1 (frozen clients) |
+| End-user self-service? | **[R]** not in v1 — admin surface only; no web/Android/iOS UI work |
 | Ordering | most recently active first |
 | Pagination | `limit` ≤ 50, default 20, cursor on `(created_at, id)` |
 | Filtering | by state only (`active` / `all`) |
-| Never exposed | tokens of any kind, cookie values, MFA state beyond `aal`, raw IP unless [P-6] says otherwise |
+| Never exposed | **[R]** tokens of any kind, cookie values, **IP address**, **raw user-agent**, credentials, secrets. Only a coarse platform class may be shown, and only if it is already available — no new collection path may be added to obtain it |
 
 **Where the data comes from is [O-3].** The repository has **zero** references to `auth.sessions` or `auth.refresh_tokens` (measured: 0 occurrences across `src/` and `supabase/`), while `auth.users` is referenced routinely as an FK target. Reading GoTrue's session tables would be **new coupling to Supabase-internal schema** that no ADR sanctions. §20 puts the three options to the Owner rather than choosing one here.
 
@@ -158,7 +192,7 @@ Both branches make a **real round-trip to the Auth server on every request** —
 
 This is C8's rule restated: `ON CONFLICT DO NOTHING` and "a late settle returns NULL" both make a repeat harmless rather than fatal.
 
-## 9. Concurrency and races **[P-1]**
+## 9. Concurrency and races **[R]**
 
 | Race | Required behaviour |
 |---|---|
@@ -202,6 +236,8 @@ Codes and envelope reuse `adminError` exactly as `/api/admin/rbac/roles/route.ts
 | **I-2** | Session validity is checked **inside identity resolution**, before authorization, and **never** substitutes for it — a valid session grants nothing by itself |
 | **I-3** | Listing sessions requires `security.sessions.read`; no caller can enumerate another subject's sessions without it |
 | **I-4** | Revocation requires `security.sessions.revoke`; the Owner Gate and the F-10C corporate boundary both run first |
+| **I-4a** | A revoke or forced logout targeting the **Ultimate Owner** fails, even for a `super_admin` holding the permission |
+| **I-12** | No C11 read or write ever touches a session whose subject has `is_anonymous = true` |
 | **I-5** | No response, log line, audit entry or error ever contains an access token, refresh token or cookie value |
 | **I-6** | Repeated revocation is idempotent and never reports a second revocation |
 | **I-7** | Forced logout affects **exactly one** subject; no interleaving revokes another user's session |
@@ -210,7 +246,7 @@ Codes and envelope reuse `adminError` exactly as `/api/admin/rbac/roles/route.ts
 | **I-10** | Every revocation attempt — allowed **or denied** — produces exactly one audit entry |
 | **I-11** | C11 adds no permission check that could admit a request C4 would deny |
 
-## 13. Audit — reuses C7, adds no second system **[D] · names [P-1]**
+## 13. Audit — reuses C7, adds no second system **[D] · names [R]**
 
 `writeAuditLog` (`src/lib/admin/audit.ts:45`) into the C7 hash-chained `audit_log`. Proposed action names, following the existing `<area>.<event>` convention (`rbac.role_granted`, `owner.super_admin_granted`):
 
@@ -251,16 +287,16 @@ Handler contract per `21_Coding_Standards.md` §2, unchanged: **RBAC → origin 
 
 **Response shape** — the inventory returns only: `id`, `userId`, `state`, `createdAt`, `lastRefreshedAt`, `expiresAt`, `aal`, `clientClass`. Nothing else. That list *is* the contract; adding a field is a contract change.
 
-## 17. Permissions **[P-7]**
+## 17. Permissions **[R — P-7 ratified]**
 
 Two new entries in the C3 registry (`src/lib/admin/permissions/registry.ts`), plus a `REGISTRY_VERSION` bump so cached permission sets are discarded — the mechanism the registry already documents.
 
-| Permission | Module | Category | Risk | Proposed `defaultRoles` |
+| Permission | Module | Category | Risk | Ratified `defaultRoles` |
 |---|---|---|---|---|
 | `security.sessions.read` | security | read | medium | `super_admin`, `admin` |
 | `security.sessions.revoke` | security | write | **high** | `super_admin` only |
 
-Rationale for the asymmetry: the closest precedent, `security.roles.grant`, is `super_admin`-only. Ending another person's sessions is comparable in blast radius. **This is a proposal — the split is exactly the kind of thing that must be ratified, not assumed.**
+Rationale for the asymmetry: the closest precedent, `security.roles.grant`, is `super_admin`-only, and ending another person's sessions is comparable in blast radius. **Ratified 2026-08-13.**
 
 **No new role, no new rank, no change to C6, no change to the PDP.** The only C1–C10 edit this component requires is *adding two rows to the registry*, which is the registry's documented extension point ("New modules add entries when they ship").
 
@@ -290,36 +326,63 @@ C11 inserts **inside step 1 only**. It cannot admit anything step 3 would deny (
 | 10 | Idempotent repeats | §8 | SQL function return count | runtime test + mutation |
 | 11 | Revoke-all does not lock the account | §9 | operation defined over a snapshot set | runtime test (**I-8**) |
 | 12 | No credential material ever exposed | §3.3, ADR-019 grant model | response projection + table grants | invariant test (**I-5**) scanning every response field |
-| 13 | Inventory source | ⛔ **[O-3]** | — | — |
-| 14 | Immediate vs eventual revocation | ⛔ **[O-1]** | — | — |
+| 13 | Inventory source | ⛔ **[O-3]** — blocked, §20 | — | — |
+| 14 | Immediate vs eventual revocation | ⛔ **[O-1]** — blocked, §20 | — | — |
+| 15 | Owner target protection | §5.1.1 · Component 1 `platform_owner` authority | handler pre-check **and** SQL function predicate | invariant **I-4a**, mutation-tested by deleting the predicate |
+| 16 | Anonymous exclusion | §6.1 · `auth.users.is_anonymous` (verified in `20260808c`) | `is_anonymous = false` filter on every read and write | invariant **I-12** |
+| 17 | Revoke-all snapshot boundary | §4.1 | single statement in one SQL function | runtime test: a session created mid-operation survives (**I-8**) |
 
 **Rows 13 and 14 have no source. That is why this contract is a draft and not a specification.**
 
-## 20. ⛔ OPEN — OWNER DECISION REQUIRED
+## 20. ⛔ BLOCKED — the three experiments cannot be run from this machine
 
-### O-1 — Does revoking a session invalidate an unexpired access token?
+The Owner ratified P-1…P-7 and directed that O-1/O-2/O-3 be **resolved empirically in a non-production Supabase environment**, explicitly forbidding both guessing and production testing. That instruction is correct, and it cannot be carried out here.
 
-**Why it blocks:** it decides whether C11 delivers *immediate* revocation (thin component, reuses the round-trip that already happens) or *eventual* revocation (needs a C11 check on the hot path of every authenticated request in the product). §5.2 cannot be finished either way without the answer.
+### 20.1 What was checked, and what was found
 
-**Why I cannot answer it:** it is hosted-GoTrue behaviour. There is no local GoTrue (the embedded-postgres harness gives PostgreSQL, not the auth service), and testing it on production means creating and revoking a real session — a production mutation, which is forbidden.
-
-**How to settle it, cheaply and without touching production data:** in a **non-production** Supabase project, sign in a throwaway account, call `auth.admin.signOut(jwt)`, then immediately re-call `auth.getUser()` with the *same, still-unexpired* access token. A `403`/`401` means immediate; a `200` means eventual.
-
-### O-2 — What is the access-token TTL for this project?
-
-**Why it blocks:** if O-1 is *eventual*, this number **is** the revocation guarantee, and it must be written into the contract rather than left to a dashboard setting nobody re-reads. It is a Supabase Auth setting and does not appear anywhere in this repository.
-
-### O-3 — May C11 read GoTrue's session tables, and can it?
-
-**Why it blocks:** §7 has no data source without an answer. Measured: **zero** references to `auth.sessions` / `auth.refresh_tokens` anywhere in `src/` or `supabase/`, so this would be new coupling to Supabase-internal schema with no ADR behind it.
-
-| Option | Consequence |
+| Requirement | Measured result |
 |---|---|
-| **A.** `SECURITY DEFINER` function reading `auth.sessions` | Real inventory, real forced logout. Couples C11 to GoTrue's internal schema; a Supabase upgrade could change it. Needs an ADR |
-| **B.** C11-owned mirror table | No coupling, but nothing populates it — GoTrue fires no hook this app receives, so it would be wrong the moment a session is created outside the app's knowledge. **A silently incomplete inventory is worse than none** |
-| **C.** No inventory; revocation only | Honest and small: "log this user out everywhere" with no listing. Delivers 2 of the 3 scope words |
+| A non-production Supabase **project** | **None exists.** The only Supabase URL anywhere in this working copy — `.env.local`, `.env.local.example` — is `fwznnobrdctuskgrvuik.supabase.co`, which **is production** (it is the project `/api/version` and the live app serve from) |
+| A **local** Supabase stack (`supabase start`, which runs `gotrue`) | **Cannot start.** `supabase status` → `docker: command not found (podman also not found) — install Docker Desktop or Podman`. `docker`, `docker info` and `podman` are all absent from PATH. `supabase/config.toml` does not exist; the local stack was never initialised here |
+| Supabase CLI itself | present (2.114.0) — but every `start` path is container-based |
+| The embedded-postgres harness | present and working (it runs C8's runtime suite), but it provides **PostgreSQL only**. GoTrue is a separate service, and `auth.sessions` is *created by GoTrue*, not by any migration in this repository. The harness hand-stubs `auth.users` in its PRELUDE precisely because the real auth schema is not there |
 
-A read-only catalogue query settles the *feasibility* half (does `auth.sessions` exist here, and can a definer function read it) — `has_table_privilege` + `information_schema`, no writes.
+### 20.2 Why each item stays open
+
+**O-1 — immediate vs eventual revocation.** The experiment requires a live GoTrue: sign in, capture a still-valid access token, revoke the session, re-call `auth.getUser()` with the same token. There is no GoTrue to sign into except production's, and creating and revoking a session there is a production mutation. **Not attempted.**
+
+**O-2 — access-token TTL.** Conditional on O-1, and in any case it is a Supabase Auth *setting*, absent from this repository. It must be read from the project's configuration, and if the non-production project's value differs from production's, both must be recorded — a TTL that is only true in staging is not a security guarantee.
+
+**O-3 — may C11 read `auth.sessions`.** Option **A** is ratified *subject to technical verification*, and the verification needs a GoTrue-provisioned `auth` schema to inspect: which columns exist, whether a `SECURITY DEFINER` function can read them, and whether the six checks in the Owner's brief hold. PostgreSQL alone cannot answer it, because the table would not exist. **Measured, unchanged:** zero references to `auth.sessions` / `auth.refresh_tokens` anywhere in `src/` or `supabase/`.
+
+### 20.3 Any of three unblocks all of it
+
+| Path | What it gives | Cost |
+|---|---|---|
+| **1. Install Docker Desktop** (or Podman) | `supabase init && supabase start` brings up a local GoTrue **and** a real `auth` schema. O-1, O-2 and O-3 all become answerable here, with **zero** contact with production. Best option — it also gives every future auth-touching component a real test target | one install |
+| **2. A throwaway Supabase project** | Same answers against hosted GoTrue, which is what production actually runs. Needs URL + anon key + service-role key placed in a local `.env.staging` (**not** pasted into chat) | one free project |
+| **3. The Owner runs the experiment** | Fastest if a non-production project already exists elsewhere. A ready-to-run script is prepared and refuses to execute against the production project reference | ~5 minutes |
+
+### 20.4 The experiment, specified exactly
+
+So that whoever runs it produces an unambiguous answer:
+
+1. In a **non-production** project, sign in a throwaway account (`signInWithPassword` or `signInAnonymously`).
+2. Capture `session.access_token` and `session.session_id`; assert `getUser(token)` → **200**.
+3. Revoke: `supabase.auth.admin.signOut(access_token, 'global')` using that project's service-role key.
+4. **Immediately** — well inside the token's lifetime — call `getUser(token)` again.
+5. Record the HTTP status and error code verbatim.
+
+| Result | Meaning | Consequence for C11 |
+|---|---|---|
+| **401 / 403** | GoTrue validates the session behind the token | Revocation is **immediate**. §5.2 stands as written, no per-request database check is added, and TTL is *not* the guarantee (O-2 closes as "not applicable") |
+| **200** | The access token outlives its session | Revocation is **eventual**, bounded by the TTL. C11 must then add the minimum enforcement needed to honour the ratified guarantee, on the hot path of every authenticated request — a materially larger component that must not be shipped by accident |
+
+Step 3 also yields O-3's answer for free: with a live `auth` schema, `information_schema.columns` and `has_table_privilege` settle which fields exist and whether a definer function can read them.
+
+### 20.5 What has NOT been done, deliberately
+
+No implementation, no migration, no endpoint, no auth-path change, no mirror table, and no assumed answer to any of the three. Per the Owner's own instruction — *"If `auth.sessions` cannot provide a truthful inventory, HARD STOP and report exactly what is missing rather than inventing a substitute"* — this section is that report.
 
 ---
 
@@ -341,3 +404,17 @@ A read-only catalogue query settles the *feasibility* half (does `auth.sessions`
 | F-10 | Untouched; `authorizeDepartmentResource` keeps 0 runtime callers |
 
 **One conflict found and deliberately left visible:** §5.2's enforcement claim depends on [O-1]. Everything else in this contract survives either answer; §5.2 does not.
+
+## 22. Supabase Auth dependency — ADR required before implementation **[R, conditional]**
+
+Option **A** (a `SECURITY DEFINER` function reading `auth.sessions`) is ratified *subject to technical verification*. Because it couples Controller V2 to a schema this project does not own, the Owner required an ADR, and it must be written **once O-3 is verified** — not before, since its central claims are exactly what verification establishes. It must record:
+
+| Must state | Why |
+|---|---|
+| Why the coupling exists | no alternative source is truthful — see the mirror-table rejection below |
+| Why a mirror table is rejected | nothing populates it. GoTrue fires no hook this app receives, so it would be wrong the moment a session is created outside the app's knowledge, and **a silently incomplete inventory is worse than none** |
+| Which columns are assumed, and their observed types | the assumption set is the blast radius of an upstream change |
+| What happens when the upstream schema changes | the failure must be **loud**: the function fails, the endpoint 500s, and a test goes red — never a silently empty inventory |
+| How incompatibility is detected | a runtime test asserting the assumed columns exist with the assumed types, so a Supabase upgrade breaks CI rather than production |
+
+This follows ADR-020, which already exists precisely because repository-baseline objects that no migration creates need their assumptions written down.
