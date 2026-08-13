@@ -101,6 +101,42 @@ describe('the legacy handshake is not merely disabled but absent', () => {
   })
 })
 
+describe('no mobile client can write to Blob either', () => {
+  // The web is not the only uploader. Android and iOS talk to the same endpoints, so a client that
+  // still knew the Blob handshake would be a second way back into the store.
+  const mobileSources = () => {
+    const { globSync } = require('tinyglobby') as typeof import('tinyglobby')
+    return [
+      ...globSync(['android/app/src/main/**/*.kt'], { cwd: root }),
+      ...globSync(['ios/TappyAI/**/*.swift'], { cwd: root }),
+    ]
+  }
+
+  it('finds the mobile sources at all, so these assertions are not vacuous', () => {
+    expect(mobileSources().length).toBeGreaterThan(50)
+  })
+
+  it.each([
+    ['a Blob storage host', /vercel-storage\.com/i],
+    ['the Blob client-token handshake', /generate-client-token/i],
+    ['a Blob read-write token', /BLOB_READ_WRITE_TOKEN/i],
+  ])('no Android or iOS source mentions %s', (_what, pattern) => {
+    const offenders = mobileSources().filter((f) => pattern.test(read(f)))
+    expect(offenders).toEqual([])
+  })
+})
+
+describe('every upload kind goes through the server-owned key policy', () => {
+  // Review photo, review video, thumbnail, audio and deal media all resolve through the same
+  // policy. If a kind were missing, its uploads would have no server-owned key at all.
+  it('covers every kind the endpoints accept', async () => {
+    const { MEDIA_UPLOAD_POLICIES } = await import('./uploadPolicy')
+    for (const kind of ['video', 'videoThumbnail', 'audio', 'dealLogo', 'dealBanner'] as const) {
+      expect(MEDIA_UPLOAD_POLICIES[kind]).toBeDefined()
+    }
+  })
+})
+
 describe('reading historical Blob URLs is unaffected', () => {
   // Deleting the write path must not change how already-stored absolute URLs resolve. They are
   // filtered from responses by servableMedia, which is a separate concern and stays as it is.
