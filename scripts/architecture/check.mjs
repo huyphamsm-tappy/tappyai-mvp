@@ -124,7 +124,14 @@ const RULES = [
     id: 'no-vendor-cache-logic',
     title: 'Vendor-specific cache/options logic outside the provider layer',
     patterns: [
-      /\bcacheControl\b/,
+      // `cacheControl` is NOT a vendor-exclusive identifier: it is also the Cloud Storage JSON
+      // API's object-metadata field, which src/lib/media must spell exactly that way to set an
+      // object's HTTP Cache-Control. Matching the bare token flagged storage code for an AI rule.
+      // Anchor on Anthropic's cache VALUE instead — its cacheControl is always
+      // `{ type: 'ephemeral' }` — so the AI usage is still caught and the storage field is not.
+      // The multi-line form stays covered by the providerOptions pattern below, which matches the
+      // opening line regardless of how the object is wrapped.
+      /\bcacheControl\b[^\n]*\bephemeral\b/,
       /\bcache_control\b/,
       /anthropic-beta/,
       /prompt-caching/,
