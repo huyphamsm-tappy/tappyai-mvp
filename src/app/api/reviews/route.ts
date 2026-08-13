@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
 import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
+import { isAcceptableVideoDuration, MAX_VIDEO_DURATION_ACCEPT_SEC } from '@/lib/config/product'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -105,6 +106,19 @@ export async function POST(req: NextRequest) {
   // (canonical, TikTok-style): EVERY Sound — licensed music, a clip's original
   // sound, or user-created — is reusable by reference; attaching only ever
   // stores the SoundID (trackId), never duplicates audio between videos.
+  // The clients pre-validate duration for UX, but they are not the authority on what gets stored.
+  // This is a bound on the SUBMITTED duration, not a measurement of the object — the server never
+  // decodes the file, so a client could still under-report. Probing the object would mean a
+  // transcoding pipeline, which is far more machinery than this rule is worth. A clip is only
+  // rejected when the client itself declares a length past the ceiling; 0/absent stays allowed
+  // because plenty of posts carry no video at all.
+  if (videoDuration > 0 && !isAcceptableVideoDuration(videoDuration)) {
+    return NextResponse.json(
+      { error: `Video quá dài. Vui lòng chọn video tối đa ${MAX_VIDEO_DURATION_ACCEPT_SEC} giây.` },
+      { status: 400 }
+    )
+  }
+
   if (music) {
     const track = await getTrack(music.trackId)
     if (!track) {

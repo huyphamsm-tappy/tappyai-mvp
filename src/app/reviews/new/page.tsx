@@ -26,8 +26,8 @@ const LINK_SOURCE_LABEL: Record<LinkSource, string> = { youtube: '▶ YouTube' }
 // to native clients via GET /api/config) — do not redefine numbers here.
 import {
   MAX_PHOTOS_PER_REVIEW as MAX_PHOTOS,
-  MAX_VIDEO_DURATION_SEC as MAX_VIDEO_DURATION,
   MAX_VIDEO_DURATION_ACCEPT_SEC as MAX_VIDEO_DURATION_ACCEPT,
+  isAcceptableVideoDuration,
   MAX_VIDEO_SIZE_MB,
 } from '@/lib/config/product'
 
@@ -329,10 +329,12 @@ export default function NewReviewPage() {
     let duration: number
     try { duration = await getVideoDuration(file); vok('validate-duration', tDur, { duration: +duration.toFixed(2) }) }
     catch (e) { vfail('validate-duration', tDur, e); setError(t('reviewNew.videoReadError')); return }
-    // Reject on the tolerant threshold (62s), but the error the user sees still says 60s.
-    if (duration > MAX_VIDEO_DURATION_ACCEPT) {
+    // One shared rule (product.ts), so web, the reviews API and iOS cannot drift apart. It rejects
+    // on the 305s ceiling — and also rejects 0/NaN, which mean "the browser could not read this",
+    // not "this clip is short".
+    if (!isAcceptableVideoDuration(duration)) {
       vfail('validate-duration', tDur, new Error('too long'), { duration: +duration.toFixed(2), max: MAX_VIDEO_DURATION_ACCEPT })
-      setError(t('reviewNew.videoTooLong', { n: String(MAX_VIDEO_DURATION) })); return
+      setError(t('reviewNew.videoTooLong')); return
     }
 
     resetVideoState()
@@ -677,6 +679,7 @@ export default function NewReviewPage() {
                 className="w-full aspect-video rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-[#fe2c55] hover:border-[#fe2c55]/50 transition-all">
                 <Video size={40} />
                 <span className="text-sm font-medium">{t('reviewNew.selectVideo')}</span>
+                <span className="text-xs text-gray-400">{t('reviewNew.videoLimitHint')}</span>
                 <span className="text-xs text-gray-400">{t('reviewNew.videoHint')}</span>
               </button>
             )}
