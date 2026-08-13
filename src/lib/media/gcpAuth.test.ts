@@ -184,8 +184,10 @@ describe('GCS write through WIF', () => {
 
 describe('production wiring', () => {
   // J — default is unchanged
-  it('still defaults to blob', () => {
-    expect(getMediaProvider({} as NodeJS.ProcessEnv).id).toBe('blob')
+  // Was: "still defaults to blob". The default is now GCS and there is no Blob provider to fall
+  // back to — that fallback was the last way new media could reach the suspended store.
+  it('defaults to gcs when the environment says nothing', () => {
+    expect(getMediaProvider({} as NodeJS.ProcessEnv).id).toBe('gcs')
   })
 
   it('builds a gcs provider with a WIF source when MEDIA_PROVIDER=gcs', async () => {

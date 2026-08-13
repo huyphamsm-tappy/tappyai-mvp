@@ -172,12 +172,24 @@ describe('an authorized session request is scoped to the endpoint', () => {
 })
 
 // ------------------------------------------------------------------------- N
-describe('MEDIA_PROVIDER=blob — today’s behaviour is unchanged', () => {
-  it.each(ENDPOINTS)('$name: the legacy Blob handshake is still served', async ({ route, path }) => {
+// Was: "MEDIA_PROVIDER=blob — today's behaviour is unchanged", asserting the handshake was still
+// served. It is now refused on every endpoint regardless of environment. The handshake minted a
+// token for a CLIENT-CHOSEN object name, so leaving it reachable behind a flag meant one wrong env
+// var re-opened uploads into the suspended store.
+describe('the legacy Blob handshake is refused whatever the environment says', () => {
+  it.each(ENDPOINTS)('$name: refuses the handshake with no MEDIA_PROVIDER set', async ({ route, path }) => {
+    delete process.env.MEDIA_PROVIDER
     const res = await route(post(path, legacyBody))
-    expect(res.status).toBe(200)
-    expect(h.handleUpload).toHaveBeenCalledTimes(1)
-    expect(await res.json()).toMatchObject({ type: 'blob.generate-client-token' })
+    expect(res.status).toBe(409)
+    expect(h.handleUpload).not.toHaveBeenCalled()
+  })
+
+  it.each(ENDPOINTS)('$name: refuses it even when asked for blob explicitly', async ({ route, path }) => {
+    process.env.MEDIA_PROVIDER = 'blob'
+    const res = await route(post(path, legacyBody))
+    expect(res.status).toBe(409)
+    expect(h.handleUpload).not.toHaveBeenCalled()
+    expect(JSON.stringify(await res.json())).not.toContain('client-token')
   })
 })
 

@@ -100,7 +100,6 @@ export function DealsManager() {
         endpoint: '/api/admin/deals/upload',
         kind: kind === 'logo' ? 'dealLogo' : 'dealBanner',
         file,
-        legacyPathname: `deals/${kind}-${Date.now()}-${file.name}`,
       })
       setForm((f) => ({ ...f, [kind === 'logo' ? 'logoImage' : 'bannerImage']: res.url }))
     } catch (e) {

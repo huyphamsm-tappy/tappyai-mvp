@@ -359,8 +359,6 @@ export default function NewReviewPage() {
           endpoint: '/api/upload/video',
           kind: 'videoThumbnail',
           file: thumbFile,
-          legacyPathname: `thumbnails/${Date.now()}.jpg`,
-          legacyClientPayload: 'thumbnail',
           signal: thumbAbort.signal,
         })
         thumbUrl = result.url
@@ -389,7 +387,6 @@ export default function NewReviewPage() {
         endpoint: '/api/upload/video',
         kind: 'video',
         file,
-        legacyPathname: `videos/${Date.now()}.${ext}`,
         signal: controller.signal,
         onProgress: (percentage) => setUploadProgress(Math.round(percentage)),
       })

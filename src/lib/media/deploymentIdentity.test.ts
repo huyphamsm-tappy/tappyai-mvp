@@ -93,8 +93,10 @@ describe('getMediaProvider carries the deployment identity', () => {
     expect(fetchImpl).not.toHaveBeenCalled()
   })
 
-  it('is unchanged for blob — the request is simply unused', () => {
-    expect(getMediaProvider({} as NodeJS.ProcessEnv, requestWithToken(HEADER_TOKEN)).id).toBe('blob')
+  // Was: "unchanged for blob — the request is simply unused". There is no Blob provider to select
+  // any more, so an empty environment yields GCS and the request identity still matters.
+  it('yields a GCS provider even with an empty environment', () => {
+    expect(getMediaProvider({} as NodeJS.ProcessEnv, requestWithToken(HEADER_TOKEN)).id).toBe('gcs')
   })
 })
 

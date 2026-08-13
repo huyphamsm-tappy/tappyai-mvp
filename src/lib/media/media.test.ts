@@ -13,7 +13,7 @@ import {
   WifExchangeError,
 } from './index'
 import { createGcsProvider, gcsPublicUrl } from './providers/gcs'
-import { createBlobProvider } from './providers/blob'
+import { createSessionlessProvider } from './__fixtures__/sessionlessProvider'
 
 const BUCKET = 'tappyai-media-prod'
 const bytes = new Uint8Array([1, 2, 3])
@@ -147,9 +147,12 @@ describe('existing Blob media is untouched', () => {
 
 // ------------------------------------------------------------ provider routing
 describe('provider selection', () => {
-  it('defaults to blob so nothing changes until the bridge is switched on', () => {
-    expect(activeProviderId({} as NodeJS.ProcessEnv)).toBe('blob')
-    expect(getMediaProvider({} as NodeJS.ProcessEnv).id).toBe('blob')
+  // Was: "defaults to blob so nothing changes until the bridge is switched on". The bridge is on,
+  // proven in production, and the Blob default has been removed — an unset MEDIA_PROVIDER used to
+  // send new media to a store that had already hit its transfer ceiling.
+  it('defaults to gcs, with no environment needed to get there', () => {
+    expect(activeProviderId({} as NodeJS.ProcessEnv)).toBe('gcs')
+    expect(getMediaProvider({} as NodeJS.ProcessEnv).id).toBe('gcs')
   })
 
   it('selects gcs only when MEDIA_PROVIDER=gcs', () => {
@@ -175,7 +178,7 @@ describe('provider selection', () => {
 
   it('routes putMedia through the blob provider by default', async () => {
     const putImpl = vi.fn(async () => ({ url: 'https://blob.example/avatars/u1.jpg' }))
-    const provider = createBlobProvider({ putImpl: putImpl as never })
+    const provider = createSessionlessProvider(putImpl as never)
     const res = await putMedia('avatars/u1.jpg', bytes, { contentType: 'image/jpeg' }, provider)
     expect(res.url).toBe('https://blob.example/avatars/u1.jpg')
     expect(putImpl).toHaveBeenCalledOnce()
@@ -190,7 +193,6 @@ describe('no credential material in source', () => {
     'src/lib/media/key.ts',
     'src/lib/media/types.ts',
     'src/lib/media/providers/gcs.ts',
-    'src/lib/media/providers/blob.ts',
     'src/app/api/profile/route.ts',
     'src/app/api/reviews/upload/route.ts',
   ]

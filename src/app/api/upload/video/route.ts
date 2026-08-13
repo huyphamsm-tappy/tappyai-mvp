@@ -1,11 +1,9 @@
-import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   createUploadSessionResponse,
   isCreateUploadSessionBody,
-  legacyBlobHandshakeAllowed,
 } from '@/lib/media/uploadRoute'
 import { completeUploadResponse, isCompleteUploadBody } from '@/lib/media/uploadCompletion'
 import { getMediaProvider } from '@/lib/media'
@@ -69,32 +67,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(result.body, { status: result.status })
   }
 
-  // Once Cloud Storage is the active provider this path must be closed: it is
-  // the one route that would still hand out a token for a client-chosen object
-  // name, bypassing the server-owned key policy entirely.
-  if (!legacyBlobHandshakeAllowed()) {
-    return NextResponse.json({ error: 'Giao thuc tai len khong con duoc ho tro' }, { status: 409 })
-  }
-
-  try {
-    const jsonResponse = await handleUpload({
-      body: body as HandleUploadBody,
-      request: req,
-      onBeforeGenerateToken: async (_pathname, clientPayload) => {
-        const isThumbnail = clientPayload === 'thumbnail'
-        return {
-          allowedContentTypes: isThumbnail ? IMAGE_TYPES : [...VIDEO_TYPES, ...IMAGE_TYPES],
-          maximumSizeInBytes: isThumbnail ? MAX_THUMB_BYTES : MAX_VIDEO_BYTES,
-          tokenPayload: user.id,
-        }
-      },
-      onUploadCompleted: async () => {
-        // No-op for MVP — could update DB here in future
-      },
-    })
-    return NextResponse.json(jsonResponse)
-  } catch (e) {
-    console.error('[upload/video]', e)
-    return NextResponse.json({ error: 'Loi tao upload token' }, { status: 500 })
-  }
+  // Anything else is the retired Vercel Blob client-token handshake. It handed
+  // out a token for a CLIENT-CHOSEN object name, bypassing the server-owned key
+  // policy, so it is refused outright rather than gated behind a flag.
+  return NextResponse.json({ error: 'Giao thuc tai len khong con duoc ho tro' }, { status: 409 })
 }

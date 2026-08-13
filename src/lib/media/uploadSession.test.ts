@@ -39,7 +39,7 @@ import {
   isCreateUploadSessionBody,
 } from './uploadRoute'
 import { createGcsProvider } from './providers/gcs'
-import { createBlobProvider } from './providers/blob'
+import { createSessionlessProvider } from './__fixtures__/sessionlessProvider'
 import { getMediaProvider } from './index'
 import {
   MediaTimeoutError,
@@ -390,14 +390,17 @@ describe('upload session route helper', () => {
   })
 
   // N: under Blob the helper mints nothing and names no GCS endpoint.
-  it('tells the client to use the legacy path when the provider is blob', async () => {
+  // Was: "tells the client to use the legacy path when the provider is blob". A provider with no
+  // session concept now fails closed instead, because the legacy path let the BROWSER choose the
+  // object name — the one thing the server-owned key policy exists to prevent.
+  it('fails closed when the provider cannot open a session', async () => {
     const res = await createUploadSessionResponse(
       { type: CREATE_UPLOAD_SESSION_TYPE, kind: 'video', contentType: 'video/mp4', size: 1 },
       { ownerId: OWNER, allowedKinds: ['video'] },
-      createBlobProvider()
+      createSessionlessProvider()
     )
-    expect(res.status).toBe(200)
-    expect(res.body).toEqual({ provider: 'blob' })
+    expect(res.status).toBe(502)
+    expect(JSON.stringify(res.body)).not.toContain('blob')
   })
 
   // H/I surfaced as HTTP status by the helper.
@@ -454,9 +457,11 @@ describe('upload session route helper', () => {
 // ------------------------------------------------------------ R. wiring inherits
 describe('production wiring for sessions', () => {
   // N
-  it('the blob provider offers no upload session at all', () => {
-    expect(createBlobProvider().createUploadSession).toBeUndefined()
-    expect(getMediaProvider({} as NodeJS.ProcessEnv).createUploadSession).toBeUndefined()
+  // Was: the production provider had no session either, because it defaulted to Blob. Now the only
+  // provider that lacks one is the test fixture.
+  it('the production provider always offers a session; only the fixture lacks one', () => {
+    expect(createSessionlessProvider().createUploadSession).toBeUndefined()
+    expect(getMediaProvider({} as NodeJS.ProcessEnv).createUploadSession).toBeTypeOf('function')
   })
 
   // R/Q: MEDIA_PROVIDER=gcs off Vercel has no OIDC token -> fails closed.
