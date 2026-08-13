@@ -210,7 +210,9 @@ struct MusicPayload: Encodable, Sendable {
 
 enum UploadLimits {
     static let maxPhotosPerReview = 6
-    static let maxVideoSizeMB = 50
+    /// Binary megabytes, matching Web `MAX_VIDEO_SIZE_MB`: 150 means 157,286,400 bytes, and the
+    /// ceiling is inclusive. Raised 50 → 150 alongside the five-minute clip length.
+    static let maxVideoSizeMB = 150
     /// Advertised clip length — what the user is told (Web product.ts MAX_VIDEO_DURATION_SEC).
     static let maxVideoDurationSec = 300
     /// Tolerant reject threshold: a clip trimmed to "5 minutes" routinely encodes slightly above.
