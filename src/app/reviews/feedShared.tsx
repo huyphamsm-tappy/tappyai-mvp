@@ -9,6 +9,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import ShareMenu from '@/components/share/ShareMenu'
+import { absoluteUrl } from '@/lib/share/openGraph'
 import {
   Heart, MessageCircle, Bookmark, Share2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff,
@@ -263,32 +265,19 @@ export function CommentDrawer({ review, me, onClose, onAdded }: { review: Review
 }
 
 /* ─── Share modal ─── */
+// The Explore feed share sheet. Previously offered only "copy" and a bare
+// navigator.share() — which on Windows desktop meant the OS Share Sheet, with
+// no Facebook, TikTok or Zalo. It now delegates to the unified menu, and builds
+// the canonical URL rather than window.location.origin (which on a preview
+// deployment would hand out a non-canonical host).
 export function ShareModal({ review, onClose }: { review: Review; onClose: () => void }) {
-  const { t } = useTranslation()
-  const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/reviews/${review.id}`
-  const [copied, setCopied] = useState(false)
-  const copy = async () => { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000) }
-  const share = () => navigator.share ? navigator.share({ url }) : copy()
   return (
-    <>
-      <div className="fixed inset-0 bg-black/60 z-50" onClick={onClose} />
-      <div className="fixed bottom-[60px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[390px] z-50 bg-[#1a1a1a] rounded-t-3xl px-5 pt-3 pb-8">
-        <div className="flex justify-center mb-4"><div className="w-8 h-1 bg-gray-600 rounded-full" /></div>
-        <p className="text-white font-semibold text-center mb-5">{t('reviews.shareTitle')}</p>
-        <div className="flex gap-4 justify-center mb-6">
-          {[
-            { emoji: '📋', label: copied ? t('reviews.shareCopied') : t('reviews.shareCopy'), fn: copy },
-            { emoji: '🔗', label: t('reviews.shareAction'), fn: share },
-          ].map(a => (
-            <button key={a.label} onClick={a.fn} className="flex flex-col items-center gap-2">
-              <div className="w-14 h-14 bg-gray-800 rounded-full flex items-center justify-center text-2xl">{a.emoji}</div>
-              <span className="text-white text-xs">{a.label}</span>
-            </button>
-          ))}
-        </div>
-        <div className="bg-gray-800 rounded-xl px-4 py-2.5 text-gray-400 text-xs truncate">{url}</div>
-      </div>
-    </>
+    <ShareMenu
+      url={absoluteUrl(`/reviews/${review.id}`)}
+      title={review.place_name}
+      open
+      onClose={onClose}
+    />
   )
 }
 
