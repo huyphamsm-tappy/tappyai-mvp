@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { buildSiteMetadata } from '@/lib/share/openGraph'
 import { PostHogProvider } from '@/components/PostHogProvider'
 import { NotificationProvider } from '@/components/NotificationProvider'
 import LocationProvider from '@/components/LocationProvider'
@@ -7,9 +8,13 @@ import TrackingProvider from '@/components/TrackingProvider'
 import LanguagePicker from '@/components/LanguagePicker'
 import VersionWatcher from '@/components/VersionWatcher'
 
+// og:image / og:url / og:site_name / twitter:* all come from buildSiteMetadata.
+// They were absent before, which is why a pasted TappyAI link rendered as bare
+// text with no branding in Zalo, Facebook and Messenger.
+const share = buildSiteMetadata('vi')
+
 export const metadata: Metadata = {
-  title: 'TappyAI - Trợ lý AI thuần Việt',
-  description: 'Chạm đến mọi dịch vụ – AI Agent cá nhân hóa',
+  ...share,
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -17,11 +22,6 @@ export const metadata: Metadata = {
     title: 'TappyAI',
   },
   formatDetection: { telephone: false },
-  openGraph: {
-    type: 'website',
-    title: 'TappyAI - Trợ lý AI thuần Việt',
-    description: 'Chạm đến mọi dịch vụ – AI Agent cá nhân hóa cho cuộc sống tại Việt Nam',
-  },
   other: {
     'zalo-platform-site-verification': 'HVAV9eNi1G9wpOnV_lesVJptXKFGWLyTDZWq',
   },
