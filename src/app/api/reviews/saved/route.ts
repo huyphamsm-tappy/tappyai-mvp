@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 
 // GET /api/reviews/saved — the user's saved reviews (the "reference/bookmark" kind that,
@@ -30,5 +31,6 @@ export async function GET(req: NextRequest) {
     .map(r => ({ ...r, saved_at: savedAt.get(r.id) || r.created_at }))
     .sort((a, b) => (b.saved_at || '').localeCompare(a.saved_at || ''))
 
-  return NextResponse.json({ reviews: ordered })
+  // Same boundary rule as the feed — see stripUnservableMedia.
+  return NextResponse.json({ reviews: ordered.map(stripUnservableMedia) })
 }

@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 
 const EXPLORE_SELECT = `
@@ -50,5 +51,6 @@ export async function GET(req: NextRequest) {
     saved_by_me: savedIds.includes(r.id),
   }))
 
-  return NextResponse.json({ reviews: enriched })
+  // Same boundary rule as the feed — see stripUnservableMedia.
+  return NextResponse.json({ reviews: enriched.map(stripUnservableMedia) })
 }

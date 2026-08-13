@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
@@ -170,7 +171,11 @@ export async function GET(req: NextRequest) {
     is_following: followedAuthorIds.includes(r.user_id),
   }))
 
-  const res = NextResponse.json({ reviews: enriched, page, limit })
+  // Historical Vercel Blob media is dropped at the response boundary. The store
+  // is suspended for data transfer, so those URLs 403 today — and would start
+  // billing egress again the moment the allowance resets. Nothing is deleted;
+  // the post keeps every other field and simply renders without a dead player.
+  const res = NextResponse.json({ reviews: enriched.map(stripUnservableMedia), page, limit })
 
   // Cache ONLY the truly uniform response: anonymous, non-following, non-profile
   // feeds (every anon caller gets identical rows with liked_by_me/saved_by_me all
