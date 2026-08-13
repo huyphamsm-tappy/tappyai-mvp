@@ -8,8 +8,9 @@ import * as reviewDetail from './reviewDetail'
 import * as profile from './profile'
 import * as notifications from './notifications'
 import * as music from './music'
+import * as voice from './voice'
 
-const modules = [reviews, reviewNew, reviewDetail, profile, notifications, music]
+const modules = [reviews, reviewNew, reviewDetail, profile, notifications, music, voice]
 
 export const w2vi: Record<string, string> = Object.assign({}, ...modules.map((m) => m.vi))
 export const w2en: Record<string, string> = Object.assign({}, ...modules.map((m) => m.en))
