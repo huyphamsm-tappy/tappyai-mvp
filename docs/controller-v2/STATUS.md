@@ -22,7 +22,8 @@
 | **Component 7** — Audit Hardening | **ACCEPTED · IN PRODUCTION** — merge commit `f3caf59`, live in production `526157a`; F-04 grant-model source-sync (PR #18) and PH-0 audit-function hardening applied. Accepted on production evidence per Owner Decision E, 2026-08-13. See [RELEASE_READINESS_COMPONENT_7.md](RELEASE_READINESS_COMPONENT_7.md) (historical, pre-merge) |
 | **Component 10** — Rate Limiting | **ACCEPTED · IN PRODUCTION** — merge commit `c226417`, verified on production 2026-08-13. Distributed limiter on a shared Upstash store, fail-closed, `Retry-After` on all 11 admin routes. **Audit finding S4 (HIGH) is CLOSED.** Contract: [`10_COMPONENT10_RATE_LIMITING_CONTRACT.md`](10_COMPONENT10_RATE_LIMITING_CONTRACT.md) |
 | **Component 6** — Plugin Registry | **LIFECYCLE-COMPLETE** — contract [`06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md). `register → validate → enable → ready → disable → deregister` + permission-collision validation. rollback / health checks / migration versioning **deferred** (undefined in any authoritative source), capability gate remains inert |
-| **Components 8, 9b, 11** | **NOT STARTED** — no design documents exist for any of them; sequencing undetermined |
+| **Component 9b** — Secret Manager | **IMPLEMENTED · AWAITING PRODUCTION VERIFICATION** — typed config boundary + deploy-time gate over 5 required variables, closes **D5**. Contract: [`09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md`](09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md) |
+| **Components 8, 11** | **NOT STARTED** — no design document exists for either; sequencing undetermined |
 | **Definition of Done** | **COMPONENT-COMPLETE** (C1–C11) — Owner Decision A, 2026-08-13. See [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
@@ -99,7 +100,9 @@ What remains unproven is only the **end-to-end HTTP path** on live production.
 
 > **Corrected 2026-08-13.** This section said *"**Component 3 — RBAC.** Not started"* while the table above recorded Component 3 as **ACCEPTED · IN PRODUCTION** since 2026-08-07 — the document contradicted itself. The stale line is replaced rather than preserved, because a *forward-looking* instruction that is wrong will be acted on, unlike a dated status snapshot.
 
-**None currently authorized.** C10 and C6 are both delivered. What remains of Phase 1 is **C8 (Event Bus)**, **C9b (Secret Manager)** and **C11 (Session Security)**, and their ordering is **not determinable** from repository evidence — no design document exists for any of the three. Establishing an order, or authorizing one of them directly, is an Owner decision.
+**None currently authorized.** C6, C9b and C10 are delivered. What remains of Phase 1 is **C8 (Event Bus)** and **C11 (Session Security)**.
+
+Their ordering is still **not determinable** from repository evidence: no design document exists for either, and the two authoritative sources disagree — `03_PHASE1_FOUNDATION_DESIGN.md` §2 calls the build order a chain of *"hard dependencies"*, while `02_PHASE0_AUDIT.md` says those remediation items *"can proceed in parallel"*. Owner decision 2026-08-13 resolved this in favour of independence (C9b was taken out of the declared chain order and delivered on its own). Authorizing C8 or C11 is an Owner decision.
 
 Deferred within C6, carried as named debt: **rollback**, **health checks**, **migration versioning**, table-collision validation, and route-gating on disable — each undefined in any authoritative source and therefore not invented. See [`06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md) §1 and §7.
 

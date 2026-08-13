@@ -9,6 +9,7 @@
 import { adminErrorResponse, adminError } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
+import { envNumber, envBoolean } from '@/lib/config/env'
 
 // Reads auth headers per request — always dynamic (never statically rendered).
 export const dynamic = 'force-dynamic'
@@ -25,8 +26,8 @@ export async function GET(req: Request) {
     return Response.json({
       data: {
         reporting_timezone: 'Asia/Ho_Chi_Minh', // ADR-008
-        audit_log_retention_days: Number(process.env.AUDIT_LOG_RETENTION_DAYS ?? 365),
-        backoffice_enabled: process.env.BACKOFFICE_ENABLED !== 'false',
+        audit_log_retention_days: envNumber('AUDIT_LOG_RETENTION_DAYS', 365),
+        backoffice_enabled: envBoolean('BACKOFFICE_ENABLED', true),
         persistence_available: false, // platform_settings table not yet designed (needs ADR)
       },
     })

@@ -1,6 +1,7 @@
 import { requirePagePermission } from '@/lib/admin/permissions'
 import { PERMISSIONS } from '@/lib/admin/permissions'
 import { SettingsView } from '@/components/admin/settings/SettingsView'
+import { envNumber, envBoolean } from '@/lib/config/env'
 
 // Settings — Phase 0 SHELL (read-only). Settings PERSISTENCE requires a
 // `platform_settings` table that is NOT in the frozen schema (04). Adding it is a
@@ -11,8 +12,8 @@ export default async function SettingsPage() {
 
   return (
     <SettingsView
-      auditRetentionDays={String(process.env.AUDIT_LOG_RETENTION_DAYS ?? 365)}
-      backofficeEnabled={process.env.BACKOFFICE_ENABLED !== 'false'}
+      auditRetentionDays={String(envNumber('AUDIT_LOG_RETENTION_DAYS', 365))}
+      backofficeEnabled={envBoolean('BACKOFFICE_ENABLED', true)}
     />
   )
 }
