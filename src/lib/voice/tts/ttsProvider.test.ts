@@ -204,6 +204,28 @@ describe('failures are reported, never echoed', () => {
     expect(metrics.snapshot().errors).toBeGreaterThan(0)
   })
 
+  it('never caches a failure, so a retry really retries', async () => {
+    // A failed call that poisoned the cache would make the error permanent for that utterance until
+    // eviction — indistinguishable from a broken voice.
+    let calls = 0
+    const fetchImpl = vi.fn(async () => {
+      calls++
+      return calls === 1
+        ? ({ ok: false, status: 500, json: async () => ({}) } as unknown as Response)
+        : ({ ok: true, status: 200, json: async () => ({ audioContent: AUDIO_B64 }) } as unknown as Response)
+    }) as unknown as typeof fetch
+
+    const cache = createTtsCache()
+    const p = createGoogleTtsProvider(deps({ fetchImpl, metrics: createTtsMetrics(), cache }))
+
+    await expect(p.synthesize({ text: 'Xin chào', language: 'vi' })).rejects.toThrow()
+    expect(cache.size).toBe(0)
+
+    const retry = await p.synthesize({ text: 'Xin chào', language: 'vi' })
+    expect(retry.cacheHit).toBe(false)
+    expect(cache.size).toBe(1)
+  })
+
   it('counts a failed call as zero characters billed', async () => {
     const fetchImpl = vi.fn(async () => ({ ok: false, status: 500, json: async () => ({}) } as unknown as Response)) as unknown as typeof fetch
     const metrics = createTtsMetrics()
