@@ -16,6 +16,7 @@ import {
   isCreateUploadSessionBody,
   legacyBlobHandshakeAllowed,
 } from '@/lib/media/uploadRoute'
+import { completeUploadResponse, isCompleteUploadBody } from '@/lib/media/uploadCompletion'
 import { getMediaProvider } from '@/lib/media'
 import type { MediaUploadKind } from '@/lib/media/uploadPolicy'
 
@@ -38,6 +39,16 @@ export async function POST(req: NextRequest) {
       body = await req.json()
     } catch {
       return adminError('BAD_REQUEST', 'Malformed request body', 400)
+    }
+
+    // See /api/upload/video — the browser cannot read its own PUT response.
+    if (isCompleteUploadBody(body)) {
+      const done = await completeUploadResponse(
+        body,
+        { ownerId: user.id, allowedKinds: ALLOWED_KINDS },
+        getMediaProvider(process.env, req)
+      )
+      return NextResponse.json(done.body, { status: done.status })
     }
 
     if (isCreateUploadSessionBody(body)) {

@@ -76,6 +76,19 @@ const EXTENSIONS: Record<string, string> = {
   'audio/webm': 'weba',
 }
 
+/**
+ * The file extensions a kind can legitimately produce.
+ *
+ * Derived from the SAME content-type allowlist that names an object in the
+ * first place, so a key can be checked against the policy that minted it
+ * without a second, drift-prone list.
+ */
+export function allowedExtensionsFor(kind: MediaUploadKind): string[] {
+  const policy = MEDIA_UPLOAD_POLICIES[kind]
+  if (!policy) return []
+  return [...new Set(policy.contentTypes.map((ct) => EXTENSIONS[ct]).filter(Boolean))]
+}
+
 export type UploadRejectionCode = 'BAD_REQUEST' | 'CONTENT_TYPE' | 'TOO_LARGE'
 
 /**

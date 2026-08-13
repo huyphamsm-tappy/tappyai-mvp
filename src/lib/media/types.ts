@@ -54,6 +54,21 @@ export interface MediaProvider {
    * what tells a route to stay on the legacy path.
    */
   createUploadSession?(req: UploadSessionRequest): Promise<UploadSession>
+  /**
+   * Looks up a stored object, or null when it does not exist.
+   *
+   * Exists because a browser cannot read the result of its own client-direct
+   * PUT — the response is CORS-blocked — so the server has to confirm the
+   * object independently before any URL is persisted. Optional for the same
+   * reason `createUploadSession` is: Blob has no client-direct session.
+   */
+  statObject?(key: string): Promise<StoredObjectInfo | null>
+}
+
+/** The minimum an upload must satisfy to count as complete. */
+export interface StoredObjectInfo {
+  size: number
+  contentType: string
 }
 
 /**

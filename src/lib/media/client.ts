@@ -14,6 +14,7 @@ import { upload as blobUpload } from '@vercel/blob/client'
 import type { MediaUploadKind } from './uploadPolicy'
 
 export const CREATE_UPLOAD_SESSION_TYPE = 'media.create-upload-session'
+export const COMPLETE_UPLOAD_TYPE = 'media.complete-upload'
 
 export interface UploadTransport {
   postJson(
@@ -21,12 +22,20 @@ export interface UploadTransport {
     body: unknown,
     signal?: AbortSignal
   ): Promise<{ status: number; json: unknown }>
+  /**
+   * Sends the bytes and reports what could be OBSERVED — not whether it worked.
+   *
+   * A GCS resumable session answers the PUT with 200 and no `Access-Control-*`
+   * headers, so the browser blocks the response and reports status 0. That is
+   * indistinguishable from a network failure, so `readable: false` means
+   * "unknown", and only the server can settle it.
+   */
   putBytes(
     url: string,
     file: Blob,
     contentType: string,
     opts: { signal?: AbortSignal; onProgress?: (percentage: number) => void }
-  ): Promise<void>
+  ): Promise<{ readable: boolean; status: number }>
   blobUpload(
     pathname: string,
     file: Blob,
@@ -91,6 +100,7 @@ export async function uploadMedia(
     provider?: string
     uploadUrl?: string
     url?: string
+    key?: string
     contentType?: string
   }
 
@@ -118,12 +128,39 @@ export async function uploadMedia(
   }
 
   // The session was opened for exactly this content type; send the same one.
-  await transport.putBytes(session.uploadUrl, input.file, session.contentType ?? contentType, {
-    signal: input.signal,
-    onProgress: input.onProgress,
-  })
+  const put = await transport.putBytes(
+    session.uploadUrl,
+    input.file,
+    session.contentType ?? contentType,
+    { signal: input.signal, onProgress: input.onProgress }
+  )
 
-  return { url: session.url }
+  // A response we COULD read that says no is a definite failure — the server
+  // has nothing to add, so don't spend a round trip on it.
+  if (put.readable && (put.status < 200 || put.status > 299)) {
+    throw new MediaUploadError('Tải lên thất bại.', put.status)
+  }
+
+  // Otherwise ask the server. It reads the object with its own credential, so
+  // it can answer what the browser cannot see. Note this runs even when the PUT
+  // looked fine: "looked fine" is not evidence the bytes are all there, and a
+  // URL must never be persisted on the strength of an appearance.
+  const done = await transport.postJson(
+    input.endpoint,
+    { type: COMPLETE_UPLOAD_TYPE, kind: input.kind, key: session.key },
+    input.signal
+  )
+  const verdict = done.json as { ok?: boolean; url?: string; error?: string } | null
+
+  if (done.status !== 200 || !verdict?.ok || !verdict.url) {
+    throw new MediaUploadError(
+      verdict?.error ?? 'Tải lên chưa hoàn tất. Vui lòng thử lại.',
+      done.status
+    )
+  }
+
+  // The server's URL, for an object the server has just seen.
+  return { url: verdict.url }
 }
 
 const defaultTransport: UploadTransport = {
@@ -146,7 +183,7 @@ const defaultTransport: UploadTransport = {
   // XMLHttpRequest rather than fetch: `upload.onprogress` is the only way to
   // drive a real progress bar, and the composer already had one.
   putBytes(url, file, contentType, opts) {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<{ readable: boolean; status: number }>((resolve, reject) => {
       const xhr = new XMLHttpRequest()
       xhr.open('PUT', url, true)
       xhr.setRequestHeader('Content-Type', contentType)
@@ -162,14 +199,15 @@ const defaultTransport: UploadTransport = {
       }
       xhr.onload = () => {
         cleanup()
-        // A resumable session completes with 200 or 201; anything else is a
-        // failure and must never be reported as a finished upload.
-        if (xhr.status === 200 || xhr.status === 201) resolve()
-        else reject(new MediaUploadError('Tải lên thất bại.', xhr.status))
+        resolve({ readable: true, status: xhr.status })
       }
+      // NOT a failure — an UNKNOWN. Cloud Storage answers the resumable PUT
+      // without CORS headers, so the browser discards a perfectly good 200 and
+      // lands here with status 0. Rejecting here is what made completed uploads
+      // look broken; the server settles it instead.
       xhr.onerror = () => {
         cleanup()
-        reject(new MediaUploadError('Không kết nối được tới kho lưu trữ.'))
+        resolve({ readable: false, status: xhr.status })
       }
       xhr.onabort = () => {
         cleanup()

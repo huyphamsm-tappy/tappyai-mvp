@@ -29,10 +29,17 @@ function transport(overrides: Partial<UploadTransport> = {}) {
   const t: UploadTransport = {
     postJson: vi.fn(async (url: string, body: unknown) => {
       calls.post.push({ url, body: body as Record<string, unknown> })
+      // The endpoint now answers two questions: open a session, and confirm the
+      // object landed (the browser cannot read its own PUT response).
+      if ((body as { type?: string })?.type === 'media.complete-upload') {
+        return { status: 200, json: { ok: true, url: PUBLIC, key: 'videos/u-1/abc.mp4' } }
+      }
       return { status: 200, json: { provider: 'gcs', uploadUrl: SESSION, url: PUBLIC, key: 'videos/u-1/abc.mp4' } }
     }),
+    // The production shape: CORS-blocked response, so nothing is readable.
     putBytes: vi.fn(async (url: string, _f: Blob, contentType: string) => {
       calls.put.push({ url, contentType })
+      return { readable: false, status: 0 }
     }),
     blobUpload: vi.fn(async (pathname: string, _f: Blob, opts: Record<string, unknown>) => {
       calls.blob.push({ pathname, opts })
@@ -55,13 +62,20 @@ describe('uploadMedia — GCS session path', () => {
     const { t, calls } = transport()
     const res = await uploadMedia(input, t)
 
-    expect(calls.post).toHaveLength(1)
+    // Two posts now: open the session, then have the server confirm the object
+    // — the browser cannot read its own PUT response.
+    expect(calls.post).toHaveLength(2)
     expect(calls.post[0].url).toBe('/api/upload/video')
     expect(calls.post[0].body).toMatchObject({
       type: 'media.create-upload-session',
       kind: 'video',
       contentType: 'video/mp4',
       size: 3,
+    })
+    expect(calls.post[1].body).toMatchObject({
+      type: 'media.complete-upload',
+      kind: 'video',
+      key: 'videos/u-1/abc.mp4',
     })
 
     expect(calls.put).toEqual([{ url: SESSION, contentType: 'video/mp4' }])
@@ -89,6 +103,7 @@ describe('uploadMedia — GCS session path', () => {
       putBytes: vi.fn(async (_u: string, _f: Blob, _c: string, opts) => {
         seen.push(opts)
         opts.onProgress?.(42)
+        return { readable: false, status: 0 }
       }),
     })
     await uploadMedia({ ...input, onProgress, signal: ctrl.signal }, t)
