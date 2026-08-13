@@ -62,6 +62,34 @@ export function readDeploymentOidcToken(
   return env.VERCEL_OIDC_TOKEN || null
 }
 
+/** Which sources hold an identity. Booleans only — never the token. */
+export interface DeploymentIdentitySource {
+  source: 'header' | 'env' | 'none'
+  headerPresent: boolean
+  envPresent: boolean
+}
+
+/**
+ * Reports WHERE the deployment identity came from, without revealing it.
+ *
+ * "no deployment identity available" is the same answer whether the platform
+ * never injected a token or something between the platform and this handler
+ * dropped it, and those have completely different fixes. This distinguishes
+ * them while carrying no token, no length and no claims.
+ */
+export function describeDeploymentIdentity(
+  req?: Pick<Request, 'headers'> | null,
+  env: NodeJS.ProcessEnv = process.env
+): DeploymentIdentitySource {
+  const headerPresent = Boolean(req?.headers?.get(VERCEL_OIDC_HEADER))
+  const envPresent = Boolean(env.VERCEL_OIDC_TOKEN)
+  return {
+    source: headerPresent ? 'header' : envPresent ? 'env' : 'none',
+    headerPresent,
+    envPresent,
+  }
+}
+
 /** Raised when a credential leg exceeds its time budget. */
 export class WifTimeoutError extends Error {
   readonly stage: 'sts' | 'impersonation'
