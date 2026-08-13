@@ -56,9 +56,11 @@ struct ReviewsFeedView: View {
         }
         .sheet(item: shareBinding) { wrapper in
             if let review = vm.reviews.first(where: { $0.id == wrapper.id }) {
+                // No baseURL: the canonical origin belongs to TappyShare. This used to be
+                // `deps.env.apiBaseURL`, so a shared link pointed at the API host rather than the
+                // public review page that carries the Open Graph preview.
                 ReviewShareSheet(
                     review: review,
-                    baseURL: deps.env.apiBaseURL.absoluteString,
                     onDismiss: { vm.closeShare() }
                 )
                 .presentationDetents([.medium])

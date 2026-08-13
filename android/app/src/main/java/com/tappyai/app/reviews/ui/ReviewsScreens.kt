@@ -1,7 +1,5 @@
 package com.tappyai.app.reviews.ui
 
-import android.content.Context
-import android.content.Intent
 import android.widget.Toast
 import com.tappyai.app.music.MusicPickerSheet
 import androidx.compose.foundation.background
@@ -62,7 +60,6 @@ import com.tappyai.app.R
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.reviews.data.ReviewGroupedNotification
-import com.tappyai.app.reviews.data.isShareOnlyName
 import com.tappyai.core.designsystem.component.TappyEmptyState
 import com.tappyai.core.designsystem.component.TappyErrorState
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
@@ -89,8 +86,8 @@ internal fun ReviewsFeedScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val reviews = uiState.reviews
-    val context = LocalContext.current
     val pagerState = rememberPagerState(pageCount = { reviews.size })
+    val shareController = rememberReviewShareController()
 
     LaunchedEffect(requestedFeedType) {
         requestedFeedType?.let { viewModel.onFeedTypeChange(it) }
@@ -161,7 +158,7 @@ internal fun ReviewsFeedScreen(
                         onLike = { viewModel.toggleLike(review) },
                         onSave = { viewModel.toggleSave(review) },
                         onComment = { onReviewClick(review.id) },
-                        onShare = { shareReview(context, review) },
+                        onShare = { shareController.open(review.id) },
                         onAvatarClick = { onAuthorClick(review.userId) },
                         onDelete = { viewModel.deleteReview(review) },
                         onHide = { viewModel.hideReview(review) },
@@ -187,6 +184,8 @@ internal fun ReviewsFeedScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
+
+        ReviewShareHost(shareController)
     }
 }
 
@@ -352,6 +351,7 @@ internal fun ReviewDetailScreen(
     val context = LocalContext.current
     val nowMillis = System.currentTimeMillis()
     val review = uiState.review
+    val shareController = rememberReviewShareController()
     // Id of the comment whose emoji picker is open (only one at a time), or null.
     var reactionPickerFor by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -400,7 +400,7 @@ internal fun ReviewDetailScreen(
                             onLike = { viewModel.toggleLike() },
                             onSave = { viewModel.toggleSave() },
                             onComment = {},
-                            onShare = { shareReview(context, review) },
+                            onShare = { shareController.open(review.id) },
                             onAvatarClick = { onAvatarClick(review.userId) },
                             onDelete = {},
                             onHide = {},
@@ -443,6 +443,8 @@ internal fun ReviewDetailScreen(
                 onCancelReply = viewModel::cancelReply,
             )
         }
+
+        ReviewShareHost(shareController)
     }
 }
 
@@ -741,29 +743,7 @@ private fun ScreenHeader(title: String, onBack: () -> Unit) {
     }
 }
 
-/**
- * Fires the system share sheet with the review's text. There is no backend share endpoint and no
- * production web domain configured in the app, so this shares the place + body (+ source link if
- * the review has one) rather than a canonical review URL. Uses ACTION_SEND — a system overlay, not
- * an in-app UI change.
- */
-private fun shareReview(context: Context, review: Review) {
-    val text = buildString {
-        if (review.placeName.isNotBlank() && !isShareOnlyName(review.placeName)) {
-            append(review.placeName)
-            append("\n")
-        }
-        if (review.body.isNotBlank()) append(review.body)
-        val source = review.sourceUrl
-        if (!source.isNullOrBlank()) {
-            append("\n")
-            append(source)
-        }
-    }.trim().ifBlank { review.placeName.ifBlank { context.getString(R.string.reviews_share_fallback_text) } }
-
-    val sendIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, text)
-    }
-    context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.reviews_action_share)))
-}
+// Sharing used to fire ACTION_SEND with the review's text — placeName + body + sourceUrl — because
+// no production web domain was configured in the app. That is no longer true, and text sharing meant
+// an Android share carried no TappyAI link at all, so the Open Graph preview never applied to it.
+// The share path is now ReviewShareHost → ReviewShareSheet → TappyShare.reviewUrl.
