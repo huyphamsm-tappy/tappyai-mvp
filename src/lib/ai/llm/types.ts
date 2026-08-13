@@ -23,6 +23,16 @@ export type ModelOverrides = Partial<Record<ModelRole, string>>
 
 export interface AIGenerateOptions {
   role?: ModelRole
+  /**
+   * The portion of the system prompt that is BYTE-IDENTICAL on every request —
+   * no clock, no user, no request-shaped branching. Delivered ahead of
+   * `system`, and providers may optimize repeated delivery of it.
+   *
+   * Callers own the guarantee: put anything that varies in `system` instead.
+   * A value that changes between requests is not wrong, just pointless.
+   */
+  systemShared?: string
+  /** Request-specific system instructions. Free to vary per request. */
   system?: string
   /** Convenience: a single user message. Appended after `messages` if both given. */
   prompt?: string
@@ -35,10 +45,13 @@ export interface AIStreamOptions extends AIGenerateOptions {
   /** AI-SDK tool set (zod-defined) — provider-neutral by construction. */
   tools?: Parameters<typeof streamText>[0]['tools']
   maxSteps?: number
-  /** Per-step control (e.g. forced tool choice). Passed to the AI SDK's
-   * experimental_prepareStep — kept loosely typed because this AI SDK
-   * version ships the option at runtime without type definitions. */
-  prepareStep?: (options: { stepNumber: number }) => unknown | Promise<unknown>
+  // REMOVED (C2): a `prepareStep` option forwarded as experimental_prepareStep.
+  // streamText in ai@4.3.19 does not accept it — only generateText does — so it
+  // was silently discarded on every call while its @ts-ignore claimed the
+  // opposite. Tool choice therefore runs at the SDK default, 'auto'. If per-step
+  // control is ever wanted, add it deliberately against an SDK version whose
+  // streamText actually supports it, and re-measure: forcing a tool changes both
+  // cost and clarification behaviour.
   onFinish?: Parameters<typeof streamText>[0]['onFinish']
   /** Abort the upstream generation when the caller's request is cancelled
    * (client disconnect). Wire the route's `req.signal` here so a dropped

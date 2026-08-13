@@ -1,5 +1,6 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { messages } from '@/lib/ai/messages'
+import { webSearchCacheKey } from './cacheKeys'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
@@ -236,6 +237,55 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
   }
 }
 
+// ===== DEFERRED PHOTO RESOLUTION (B7-A) =====
+// The whole three-source chain for ONE place. It used to run inside
+// searchPlaces for every one of the (up to 8) results, while the injector uses
+// at most 3 for prose — measured, 5 of 8 resolutions were discarded, ~15
+// billable upstream calls per search. It now runs at injection time, for exactly
+// the places the reply named.
+//
+// Sources are additive, not first-wins, up to `max` photos:
+//   1. the business's own site (og:image) — its own content, best quality
+//   2. Google Places Photo, via a Details lookup for the reference
+//   3. Serper image search — last resort
+// All three are live-only and never persisted (Maps Platform + Serper terms).
+// Any single source failing is skipped; the caller gets whatever was found.
+export async function resolvePlacePhotos(
+  place: { place_id?: string; name?: string; website_uri?: string },
+  max = 3,
+): Promise<string[]> {
+  const collected: string[] = []
+  const addUnique = (url: string | null | undefined) => {
+    if (url && !collected.includes(url)) collected.push(url)
+  }
+
+  if (place.website_uri) {
+    addUnique(await fetchOfficialWebsiteImage(place.website_uri))
+  }
+
+  const key = process.env.GOOGLE_PLACES_API_KEY
+  if (collected.length < max && key && place.place_id) {
+    try {
+      const detailResp = await Promise.race([
+        fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=photos&key=${key}`),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500)),
+      ])
+      const detail = await (detailResp as Response).json()
+      const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
+      if (photoRef) addUnique(await fetchPlacePhoto(place.place_id, photoRef))
+    } catch { /* skip on timeout or error, fall through to Serper */ }
+  }
+
+  if (collected.length < max && place.name) {
+    const serperPhotos = await fetchPlacePhotosByName(
+      place.place_id || place.name, place.name, max - collected.length,
+    )
+    serperPhotos.forEach(addUnique)
+  }
+
+  return collected.slice(0, max)
+}
+
 // Back-compat single-image wrapper for callers not yet migrated to the gallery (photo_urls[]).
 export async function fetchPlacePhotoByName(placeId: string, placeName: string): Promise<string | null> {
   const photos = await fetchPlacePhotosByName(placeId, placeName, 1)
@@ -270,7 +320,7 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
 
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
 export async function webSearch(query: string, lang = 'vi') {
-  const cacheKey = 'websearch:' + query.toLowerCase().trim() + ':' + lang
+  const cacheKey = webSearchCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 

@@ -1,23 +1,16 @@
-import { normalizeVN } from '@/lib/ai/intent'
 import { getCache, setCache } from './common'
 import { messages } from '@/lib/ai/messages'
+import { goldCacheKey, resolveWeatherPlace, weatherCacheKey } from './cacheKeys'
 
 // ===== WEATHER: wttr.in (free, no API key) =====
 export async function getWeather(location: string, lang = 'vi') {
-  const cacheKey = 'weather:' + (location || '').toLowerCase().trim() + ':' + lang
+  // Resolve BEFORE keying: wttr.in is called for the canonical city, so every
+  // spelling that resolves to it ("Hà Nội", "ha noi", "HN") is one upstream call
+  // and must share one entry. It used to be three keys for one result.
+  const place = resolveWeatherPlace(location)
+  const cacheKey = weatherCacheKey(location, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
-
-  const cityMap: Record<string, string> = {
-    'ha noi': 'Hanoi', 'hanoi': 'Hanoi', 'hn': 'Hanoi',
-    'ho chi minh': 'Ho Chi Minh City', 'tp hcm': 'Ho Chi Minh City', 'hcm': 'Ho Chi Minh City', 'sai gon': 'Ho Chi Minh City', 'saigon': 'Ho Chi Minh City', 'tphcm': 'Ho Chi Minh City',
-    'da nang': 'Da Nang', 'danang': 'Da Nang',
-    'hue': 'Hue', 'can tho': 'Can Tho', 'hai phong': 'Hai Phong',
-    'nha trang': 'Nha Trang', 'da lat': 'Da Lat', 'dalat': 'Da Lat',
-    'vung tau': 'Vung Tau', 'hoi an': 'Hoi An', 'phu quoc': 'Phu Quoc',
-  }
-  const norm = normalizeVN((location || '').toLowerCase().trim())
-  const place = cityMap[norm] || location || 'Hanoi'
   const fallbackUrl = 'https://www.google.com/search?q=' + encodeURIComponent('thoi tiet ' + place)
 
   let result: unknown
@@ -53,7 +46,12 @@ export async function getWeather(location: string, lang = 'vi') {
 
 // ===== GOLD PRICE: vang.today (free, no API key) =====
 export async function getGoldPrice(query: string, lang = 'vi') {
-  const cacheKey = 'gold:' + (query || '').toLowerCase().trim() + ':' + lang
+  // `query` is accepted for the tool schema but never read below: the upstream
+  // URL is fixed and the code list is fixed, so the result is identical for
+  // every phrasing. Keying on it split one answer across "giá vàng", "vàng SJC",
+  // "SJC", "" — all of them the same fetch.
+  void query
+  const cacheKey = goldCacheKey(lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
