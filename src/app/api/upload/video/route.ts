@@ -7,6 +7,7 @@ import {
   isCreateUploadSessionBody,
   legacyBlobHandshakeAllowed,
 } from '@/lib/media/uploadRoute'
+import { completeUploadResponse, isCompleteUploadBody } from '@/lib/media/uploadCompletion'
 import { getMediaProvider } from '@/lib/media'
 import type { MediaUploadKind } from '@/lib/media/uploadPolicy'
 
@@ -45,6 +46,17 @@ export async function POST(req: NextRequest) {
     body = await req.json()
   } catch {
     return NextResponse.json({ error: 'Du lieu khong hop le' }, { status: 400 })
+  }
+
+  // The browser cannot read its own PUT response to Cloud Storage, so it asks
+  // us whether the object actually landed before any URL is persisted.
+  if (isCompleteUploadBody(body)) {
+    const done = await completeUploadResponse(
+      body,
+      { ownerId: user.id, allowedKinds: ALLOWED_KINDS },
+      getMediaProvider(process.env, req)
+    )
+    return NextResponse.json(done.body, { status: done.status })
   }
 
   if (isCreateUploadSessionBody(body)) {

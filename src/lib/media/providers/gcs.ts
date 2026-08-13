@@ -138,5 +138,50 @@ export function createGcsProvider(deps: GcsProviderDeps): MediaProvider {
 
       return { uploadUrl, url: gcsPublicUrl(deps.bucket, safeKey), key: safeKey }
     },
+
+    /**
+     * Reads an object's metadata, or null when it is not there.
+     *
+     * This is how a client-direct upload gets confirmed: the browser's PUT
+     * response is CORS-blocked, so the browser genuinely cannot tell whether
+     * its bytes landed. We can — `storage.objects.get` is already in the
+     * bucket-scoped role, so this needs no new IAM.
+     *
+     * A 404 is an answer, not an error: it means the upload did not complete.
+     */
+    async statObject(key: string) {
+      const safeKey = assertSafeMediaKey(key)
+      if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
+
+      const token = await deps.getAccessToken()
+      const url =
+        `${UPLOAD_HOST}/storage/v1/b/${encodeURIComponent(deps.bucket)}` +
+        `/o/${encodeURIComponent(safeKey)}`
+
+      let res: Response
+      try {
+        res = await doFetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: makeSignal(timeoutMs),
+        })
+      } catch (e) {
+        const name = (e as { name?: string } | undefined)?.name
+        if (name === 'TimeoutError' || name === 'AbortError') {
+          throw new MediaTimeoutError('object lookup', timeoutMs)
+        }
+        throw new MediaUploadSessionError('gcs', 'the lookup failed')
+      }
+
+      if (res.status === 404) return null
+      if (!res.ok) throw new MediaUploadSessionError('gcs', 'lookup refused', res.status)
+
+      const meta = (await res.json()) as { size?: string; contentType?: string }
+      return {
+        // GCS returns size as a string; a missing or unparseable size counts as
+        // zero so an unverifiable object can never pass as complete.
+        size: Number.parseInt(meta.size ?? '0', 10) || 0,
+        contentType: meta.contentType ?? '',
+      }
+    },
   }
 }
