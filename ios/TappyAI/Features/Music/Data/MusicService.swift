@@ -104,15 +104,33 @@ struct MusicService: Sendable {
 
     // MARK: - Upload Original Sound
 
-    func requestAudioBlobToken(pathname: String, clientPayload: String?) async throws -> String {
+    // Server-owned upload session — the same protocol the web client uses. The
+    // client never names the object and never handles a storage credential.
+
+    func openUploadSession(kind: String, contentType: String, size: Int) async throws -> MediaUploadSessionResponse {
         let payload: [String: Any] = [
-            "type": "blob.generate-client-token",
-            "payload": [
-                "pathname": pathname,
-                "callbackUrl": "",
-                "clientPayload": clientPayload as Any,
-                "multipart": false
-            ] as [String: Any]
+            "type": "media.create-upload-session",
+            "kind": kind,
+            "contentType": contentType,
+            "size": size
+        ]
+        let body = try JSONSerialization.data(withJSONObject: payload)
+        var endpoint = Endpoint(
+            path: "/api/upload/audio",
+            method: .post,
+            body: body,
+            requiresAuth: true
+        )
+        endpoint.timeout = 30
+        return try await api.send(endpoint, as: MediaUploadSessionResponse.self)
+    }
+
+    /// Asks the server to verify the object exists before any URL is used.
+    func completeUpload(kind: String, key: String) async throws -> String {
+        let payload: [String: Any] = [
+            "type": "media.complete-upload",
+            "kind": kind,
+            "key": key
         ]
         let body = try JSONSerialization.data(withJSONObject: payload)
         var endpoint = Endpoint(
@@ -123,45 +141,14 @@ struct MusicService: Sendable {
         )
         endpoint.timeout = 30
 
-        let response = try await api.send(endpoint, as: BlobTokenResponse.self)
-        guard let token = response.clientToken, !token.isEmpty else {
-            throw AppError.unexpected(message: "No upload token received")
+        let result = try await api.send(endpoint, as: MediaUploadCompleteResponse.self)
+        guard result.ok == true, let url = result.url, !url.isEmpty else {
+            throw AppError.unexpected(message: "Tải lên chưa hoàn tất. Vui lòng thử lại.")
         }
-        return token
-    }
-
-    func uploadToBlob(token: String, pathname: String, data: Data, contentType: String) async throws -> String {
-        guard let storeId = Self.extractStoreId(from: token) else {
-            throw AppError.unexpected(message: "Cannot parse blob store from token")
-        }
-        let urlString = "https://\(storeId).public.blob.vercel-storage.com/\(pathname)"
-        guard let url = URL(string: urlString) else {
-            throw AppError.unexpected(message: "Invalid blob URL")
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
-        request.httpBody = data
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "authorization")
-        request.setValue("7", forHTTPHeaderField: "x-api-version")
-        request.setValue(contentType, forHTTPHeaderField: "x-content-type")
-        request.setValue("public, max-age=31536000", forHTTPHeaderField: "x-cache-control-max-age")
-        request.setValue(contentType, forHTTPHeaderField: "content-type")
-        request.timeoutInterval = 120
-
-        let (responseData, response) = try await URLSession.shared.data(for: request)
-        guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
-            let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-            throw AppError.network(status: status, code: nil)
-        }
-
-        let result = try JSONDecoder().decode(BlobUploadResult.self, from: responseData)
-        return result.url
+        return url
     }
 
     func uploadAudioFile(data: Data, ext: String) async throws -> String {
-        let pathname = "music/\(Int(Date().timeIntervalSince1970 * 1000)).\(ext)"
-        let token = try await requestAudioBlobToken(pathname: pathname, clientPayload: nil)
         let contentType: String
         switch ext {
         case "mp3": contentType = "audio/mpeg"
@@ -172,7 +159,28 @@ struct MusicService: Sendable {
         case "webm": contentType = "audio/webm"
         default: contentType = "audio/mpeg"
         }
-        return try await uploadToBlob(token: token, pathname: pathname, data: data, contentType: contentType)
+
+        let session = try await openUploadSession(kind: "audio", contentType: contentType, size: data.count)
+
+        // Rollback safety: on the legacy provider there is no session protocol,
+        // so fail loudly rather than invent an upload path.
+        guard session.provider == "gcs",
+              let uploadURLString = session.uploadUrl,
+              let uploadURL = URL(string: uploadURLString),
+              let key = session.key else {
+            throw AppError.unexpected(message: "Tải lên chưa khả dụng. Vui lòng thử lại sau.")
+        }
+
+        var request = URLRequest(url: uploadURL)
+        request.httpMethod = "PUT"
+        request.httpBody = data
+        request.setValue(session.contentType ?? contentType, forHTTPHeaderField: "content-type")
+        request.timeoutInterval = 120
+
+        // Not trusted as proof of success — the server's own lookup decides.
+        _ = try? await URLSession.shared.data(for: request)
+
+        return try await completeUpload(kind: "audio", key: key)
     }
 
     func publishOriginalSound(title: String, artist: String?, audioUrl: String, durationSec: Int) async throws -> UploadSoundResponse {
@@ -193,26 +201,8 @@ struct MusicService: Sendable {
         return try await api.send(endpoint, as: UploadSoundResponse.self)
     }
 
-    // MARK: - Blob token parsing (reused from CreateReviewService)
-
-    private static func extractStoreId(from token: String) -> String? {
-        let prefix = "vercel_blob_client_"
-        guard token.hasPrefix(prefix) else { return nil }
-        let rest = String(token.dropFirst(prefix.count))
-        guard let decoded = base64URLDecode(rest) else { return nil }
-        let parts = decoded.split(separator: ":", maxSplits: 1)
-        guard let storeId = parts.first, !storeId.isEmpty else { return nil }
-        return String(storeId)
-    }
-
-    private static func base64URLDecode(_ string: String) -> String? {
-        var base64 = string
-            .replacingOccurrences(of: "-", with: "+")
-            .replacingOccurrences(of: "_", with: "/")
-        while base64.count % 4 != 0 { base64 += "=" }
-        guard let data = Data(base64Encoded: base64) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
+    // The storage-token parsing that used to live here is gone: the client no
+    // longer receives, decodes or reasons about a storage credential at all.
 }
 
 private struct GenericOKResponse: Decodable, Sendable {
