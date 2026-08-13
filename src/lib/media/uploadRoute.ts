@@ -5,14 +5,14 @@
 // the caller has already passed every guard it had before. Nothing in this file
 // authorizes anything; it decides what an already-authorized caller may upload.
 //
-// The response is a discriminated union so the flag stays server-side:
+// The response is always a Cloud Storage session:
 //
 //   { provider: 'gcs', uploadUrl, url, key }   -> PUT the bytes to uploadUrl
-//   { provider: 'blob' }                       -> use the legacy Blob handshake
 //
-// Returning `blob` rather than exposing MEDIA_PROVIDER to the browser means
-// there is exactly one source of truth for which provider is live, and flipping
-// it back is still a server-only change.
+// There is no Blob branch. It used to name Blob as the provider and let the
+// client take the legacy handshake, which mints a CLIENT-CHOSEN object name and
+// so bypasses every rule in `uploadPolicy`. That path is gone rather than
+// disabled, because a disabled path comes back the moment an env var is wrong.
 
 import { getMediaProvider } from './index'
 import {
@@ -32,9 +32,8 @@ export interface CreateUploadSessionBody {
 }
 
 /**
- * True for our request shape, false for Vercel Blob's `blob.generate-client-token`
- * handshake. The two protocols share an endpoint, so they must be told apart
- * before either is acted on.
+ * True for our request shape. Anything else — notably Vercel Blob's old
+ * `blob.generate-client-token` handshake — is refused by the routes.
  */
 export function isCreateUploadSessionBody(body: unknown): body is CreateUploadSessionBody {
   return (
@@ -66,9 +65,11 @@ export async function createUploadSessionResponse(
   ctx: UploadSessionContext,
   provider: MediaProvider = getMediaProvider()
 ): Promise<UploadSessionOutcome> {
-  // Blob has no session concept. Say so and let the client take the old path;
-  // no key is derived and no provider call is made.
-  if (!provider.createUploadSession) return { status: 200, body: { provider: 'blob' } }
+  // A provider with no session concept would mean a client-chosen object name.
+  // Fail closed instead of degrading to one.
+  if (!provider.createUploadSession) {
+    return { status: 502, body: { error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.' } }
+  }
 
   const input = (body ?? {}) as CreateUploadSessionBody
 
@@ -108,15 +109,4 @@ export async function createUploadSessionResponse(
     // Blob upload either: that would silently defeat server-owned keys.
     return { status: 502, body: { error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.' } }
   }
-}
-
-/**
- * Whether the endpoint may still serve Vercel Blob's client-token handshake.
- *
- * Once GCS is the active provider this must be false: leaving the handshake
- * reachable would leave a live path that mints a client-chosen object name,
- * bypassing every rule in `uploadPolicy`.
- */
-export function legacyBlobHandshakeAllowed(provider: MediaProvider = getMediaProvider()): boolean {
-  return provider.id === 'blob'
 }

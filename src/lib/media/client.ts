@@ -10,7 +10,6 @@
 // no upload-progress event, and the video composer's progress bar is not
 // something to lose in a storage migration.
 
-import { upload as blobUpload } from '@vercel/blob/client'
 import type { MediaUploadKind } from './uploadPolicy'
 
 export const CREATE_UPLOAD_SESSION_TYPE = 'media.create-upload-session'
@@ -36,11 +35,6 @@ export interface UploadTransport {
     contentType: string,
     opts: { signal?: AbortSignal; onProgress?: (percentage: number) => void }
   ): Promise<{ readable: boolean; status: number }>
-  blobUpload(
-    pathname: string,
-    file: Blob,
-    opts: Record<string, unknown>
-  ): Promise<{ url: string }>
 }
 
 export interface UploadMediaInput {
@@ -48,13 +42,6 @@ export interface UploadMediaInput {
   endpoint: string
   kind: MediaUploadKind
   file: File
-  /**
-   * The object name used on the legacy Blob path only. Under GCS the server
-   * owns the key and this value is never sent.
-   */
-  legacyPathname: string
-  /** Blob's `clientPayload` discriminator, where the legacy route needs one. */
-  legacyClientPayload?: string
   signal?: AbortSignal
   onProgress?: (percentage: number) => void
 }
@@ -104,25 +91,9 @@ export async function uploadMedia(
     contentType?: string
   }
 
-  // Blob is still the active provider — take the path that is in production.
-  if (session.provider === 'blob') {
-    const result = await transport.blobUpload(input.legacyPathname, input.file, {
-      access: 'public',
-      handleUploadUrl: input.endpoint,
-      ...(input.legacyClientPayload === undefined
-        ? {}
-        : { clientPayload: input.legacyClientPayload }),
-      ...(input.signal ? { abortSignal: input.signal } : {}),
-      ...(input.onProgress
-        ? {
-            onUploadProgress: ({ percentage }: { percentage: number }) =>
-              input.onProgress?.(percentage),
-          }
-        : {}),
-    })
-    return { url: result.url }
-  }
-
+  // There is no Blob branch any more. The server cannot answer `provider: 'blob'`
+  // and this client could not act on it if it did: an upload whose object name
+  // the browser chose is exactly what the server-owned key policy exists to stop.
   if (!session.uploadUrl || !session.url) {
     throw new MediaUploadError('Không nhận được phiên tải lên hợp lệ.')
   }
@@ -215,9 +186,5 @@ const defaultTransport: UploadTransport = {
       }
       xhr.send(file)
     })
-  },
-
-  blobUpload(pathname, file, opts) {
-    return blobUpload(pathname, file, opts as never)
   },
 }

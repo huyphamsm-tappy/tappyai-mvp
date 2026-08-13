@@ -51,7 +51,6 @@ export default function MusicUploadPage() {
         endpoint: '/api/upload/audio',
         kind: 'audio',
         file,
-        legacyPathname: `music/${Date.now()}.${ext}`,
       })
       // 2) Register the Original Sound (rights confirmation is mandatory).
       const res = await fetch('/api/music/tracks', {

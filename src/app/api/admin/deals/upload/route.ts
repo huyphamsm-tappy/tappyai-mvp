@@ -6,7 +6,6 @@
 // the note in /api/upload/video. Authorization is unchanged: permission check,
 // same-origin check, rate limit, in that order, before anything is authorized.
 
-import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { adminErrorResponse, adminError, isSameOrigin } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
@@ -14,7 +13,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import {
   createUploadSessionResponse,
   isCreateUploadSessionBody,
-  legacyBlobHandshakeAllowed,
 } from '@/lib/media/uploadRoute'
 import { completeUploadResponse, isCompleteUploadBody } from '@/lib/media/uploadCompletion'
 import { getMediaProvider } from '@/lib/media'
@@ -62,23 +60,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(result.body, { status: result.status })
     }
 
-    if (!legacyBlobHandshakeAllowed()) {
-      return adminError('UPLOAD_PROTOCOL_RETIRED', 'This upload protocol is no longer served', 409)
-    }
-
-    const jsonResponse = await handleUpload({
-      body: body as HandleUploadBody,
-      request: req,
-      onBeforeGenerateToken: async () => ({
-        allowedContentTypes: IMAGE_TYPES,
-        maximumSizeInBytes: MAX_IMAGE_BYTES,
-        tokenPayload: user.id,
-      }),
-      onUploadCompleted: async () => {
-        /* no-op — the client saves the returned URL onto the deal via PATCH */
-      },
-    })
-    return NextResponse.json(jsonResponse)
+    // The retired Blob client-token handshake — see the note in /api/upload/video.
+    return adminError('UPLOAD_PROTOCOL_RETIRED', 'This upload protocol is no longer served', 409)
   } catch (err) {
     return adminErrorResponse(err)
   }

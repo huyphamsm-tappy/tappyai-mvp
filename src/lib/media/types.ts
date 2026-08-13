@@ -1,10 +1,12 @@
 // Storage-provider-agnostic media contract.
 //
 // Callers never name a provider. They hand us a *key* (`avatars/<id>.jpg`) and
-// get back an absolute public URL — the same shape `@vercel/blob`'s `put()`
+// get back an absolute public URL — the same shape the previous storage client
 // returned — so API responses, the database and the Android client are all
 // unaffected by which provider is behind this.
 
+// 'blob' remains only so already-stored URLs can be CLASSIFIED (see
+// `servableMedia`). Nothing constructs a Blob provider: the writer is gone.
 export type MediaProviderId = 'blob' | 'gcs'
 
 export interface PutMediaResult {

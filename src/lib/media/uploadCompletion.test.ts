@@ -25,7 +25,7 @@ import {
   isCompleteUploadBody,
 } from './uploadCompletion'
 import { MediaUploadRejectedError } from './uploadPolicy'
-import { createBlobProvider } from './providers/blob'
+import { createSessionlessProvider } from './__fixtures__/sessionlessProvider'
 import type { MediaProvider } from './types'
 
 const OWNER = 'f9077a52-b0f3-453a-a497-97da115ae386'
@@ -173,7 +173,7 @@ describe('completeUploadResponse — the server, not the browser, decides', () =
   // Under Blob there is no client-direct session at all, so completion is not
   // a thing the client should be asking about.
   it('refuses when the active provider is blob', async () => {
-    const res = await completeUploadResponse(body(), ctx, createBlobProvider())
+    const res = await completeUploadResponse(body(), ctx, createSessionlessProvider())
     expect(res.status).toBe(409)
     expect(res.body.url).toBeUndefined()
   })

@@ -1,11 +1,9 @@
-import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   createUploadSessionResponse,
   isCreateUploadSessionBody,
-  legacyBlobHandshakeAllowed,
 } from '@/lib/media/uploadRoute'
 import { completeUploadResponse, isCompleteUploadBody } from '@/lib/media/uploadCompletion'
 import { getMediaProvider } from '@/lib/media'
@@ -60,30 +58,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(result.body, { status: result.status })
   }
 
-  // Closed once Cloud Storage is live — see the note in /api/upload/video.
-  if (!legacyBlobHandshakeAllowed()) {
-    return NextResponse.json({ error: 'Giao thức tải lên không còn được hỗ trợ' }, { status: 409 })
-  }
-
-  try {
-    const jsonResponse = await handleUpload({
-      body: body as HandleUploadBody,
-      request: req,
-      onBeforeGenerateToken: async (_pathname, clientPayload) => {
-        const isCover = clientPayload === 'cover'
-        return {
-          allowedContentTypes: isCover ? IMAGE_TYPES : AUDIO_TYPES,
-          maximumSizeInBytes: isCover ? MAX_COVER_BYTES : MAX_AUDIO_BYTES,
-          tokenPayload: user.id,
-        }
-      },
-      onUploadCompleted: async () => {
-        // No-op for MVP.
-      },
-    })
-    return NextResponse.json(jsonResponse)
-  } catch (e) {
-    console.error('[upload/audio]', e)
-    return NextResponse.json({ error: 'Lỗi tạo upload token' }, { status: 500 })
-  }
+  // The retired Blob client-token handshake — see the note in /api/upload/video.
+  return NextResponse.json({ error: 'Giao thức tải lên không còn được hỗ trợ' }, { status: 409 })
 }

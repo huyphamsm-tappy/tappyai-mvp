@@ -3,17 +3,21 @@
 //   putMedia(key, body, { contentType })  -> { url, key }
 //   mediaUrl(keyOrAbsoluteUrl)            -> absolute URL
 //
-// Provider selection is a single env var so the bridge can be turned on, and
-// rolled back, without a deploy that touches code:
+// Cloud Storage is the only writer. There is no provider switch any more.
 //
-//   MEDIA_PROVIDER=blob   (default — current production behaviour)
-//   MEDIA_PROVIDER=gcs    (bridge: new writes land in Cloud Storage)
+// The bridge shipped with MEDIA_PROVIDER=blob as the default so GCS could be
+// turned on, and rolled back, without touching code. That was right while GCS
+// was unproven; it is now the whole risk. An env var that re-enables Blob
+// writes means an unset, removed or misspelled value — a new environment, a
+// preview deployment, `GCS` in the wrong case — silently returns the app to
+// writing Blob objects and re-opens the client-token handshake, which mints
+// client-chosen object names. The Blob store reached its transfer ceiling once
+// already; the fix is that the path no longer exists, not that it is turned off.
 //
 // Existing absolute Blob URLs already persisted in the database are NEVER
-// rewritten: `mediaUrl()` passes any absolute URL straight through, so old
-// media keeps resolving against Blob regardless of the active provider.
+// rewritten: `mediaUrl()` passes any absolute URL straight through. Filtering
+// those out of responses is `servableMedia`'s job, not this module's.
 
-import { createBlobProvider } from './providers/blob'
 import { createGcsProvider } from './providers/gcs'
 import { createWifTokenSource, readDeploymentOidcToken } from './gcpAuth'
 import { isAbsoluteMediaUrl } from './key'
@@ -42,10 +46,15 @@ export {
 } from './uploadPolicy'
 export type { MediaUploadKind, UploadKindPolicy, UploadTarget } from './uploadPolicy'
 
-export const DEFAULT_MEDIA_PROVIDER: MediaProviderId = 'blob'
+export const DEFAULT_MEDIA_PROVIDER: MediaProviderId = 'gcs'
 
-export function activeProviderId(env: NodeJS.ProcessEnv = process.env): MediaProviderId {
-  return env.MEDIA_PROVIDER === 'gcs' ? 'gcs' : DEFAULT_MEDIA_PROVIDER
+/**
+ * Always `gcs`. The parameter is kept so callers need not change and so the
+ * invariant is directly testable: no value of MEDIA_PROVIDER selects anything
+ * else. The env var is now inert and can be removed from the environment.
+ */
+export function activeProviderId(_env: NodeJS.ProcessEnv = process.env): MediaProviderId {
+  return DEFAULT_MEDIA_PROVIDER
 }
 
 /**
@@ -68,25 +77,22 @@ export function getMediaProvider(
   req?: Pick<Request, 'headers'> | null,
   fetchImpl?: typeof fetch
 ): MediaProvider {
-  if (activeProviderId(env) === 'gcs') {
-    return createGcsProvider({
-      bucket: env.GCS_MEDIA_BUCKET ?? 'tappyai-media-prod',
-      getAccessToken: createWifTokenSource({
-        config: {
-          projectNumber: env.GCP_PROJECT_NUMBER ?? '1023373437508',
-          poolId: env.GCP_WIF_POOL ?? 'vercel-oidc',
-          providerId: env.GCP_WIF_PROVIDER ?? 'vercel',
-          serviceAccountEmail:
-            env.GCP_MEDIA_SERVICE_ACCOUNT ??
-            'tappyai-media-bridge@aerobic-lock-498409-u7.iam.gserviceaccount.com',
-        },
-        getOidcToken: () => readDeploymentOidcToken(req, env),
-        ...(fetchImpl ? { fetchImpl } : {}),
-      }),
+  return createGcsProvider({
+    bucket: env.GCS_MEDIA_BUCKET ?? 'tappyai-media-prod',
+    getAccessToken: createWifTokenSource({
+      config: {
+        projectNumber: env.GCP_PROJECT_NUMBER ?? '1023373437508',
+        poolId: env.GCP_WIF_POOL ?? 'vercel-oidc',
+        providerId: env.GCP_WIF_PROVIDER ?? 'vercel',
+        serviceAccountEmail:
+          env.GCP_MEDIA_SERVICE_ACCOUNT ??
+          'tappyai-media-bridge@aerobic-lock-498409-u7.iam.gserviceaccount.com',
+      },
+      getOidcToken: () => readDeploymentOidcToken(req, env),
       ...(fetchImpl ? { fetchImpl } : {}),
-    })
-  }
-  return createBlobProvider()
+    }),
+    ...(fetchImpl ? { fetchImpl } : {}),
+  })
 }
 
 export async function putMedia(

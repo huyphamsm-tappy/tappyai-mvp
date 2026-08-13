@@ -22,7 +22,6 @@ const input = {
   endpoint: '/api/admin/deals/upload',
   kind: 'dealLogo' as const,
   file: file(),
-  legacyPathname: 'deals/logo-1.png',
 }
 
 /**
@@ -54,7 +53,6 @@ function transport(opts: {
       if (opts.put === 'readable') return { readable: true, status: 200 }
       return { readable: false, status: 0 } // production shape
     }),
-    blobUpload: vi.fn(async () => ({ url: 'https://legacy.public.blob.vercel-storage.com/x.png' })),
   }
   return { t, calls }
 }
@@ -124,8 +122,11 @@ describe('an unreadable PUT is resolved by the server, not guessed', () => {
   })
 })
 
-describe('the Blob path is untouched by completion', () => {
-  it('never asks the server to verify a Blob upload', async () => {
+describe('a Blob session produces no upload at all', () => {
+  // This used to assert the Blob path skipped completion, which was correct while that path
+  // existed. It no longer does: a 'blob' answer is now a malformed session, and the right outcome
+  // is a failure rather than an upload the completion check never verified.
+  it('refuses instead of uploading, and never returns a Blob URL', async () => {
     const calls: Array<Record<string, unknown>> = []
     const t: UploadTransport = {
       postJson: vi.fn(async (_u: string, b: unknown) => {
@@ -133,10 +134,8 @@ describe('the Blob path is untouched by completion', () => {
         return { status: 200, json: { provider: 'blob' } }
       }),
       putBytes: vi.fn(async () => ({ readable: true, status: 200 })),
-      blobUpload: vi.fn(async () => ({ url: 'https://legacy.public.blob.vercel-storage.com/x.png' })),
     }
-    const res = await uploadMedia(input, t)
-    expect(res.url).toContain('blob.vercel-storage.com')
+    await expect(uploadMedia(input, t)).rejects.toThrow()
     expect(calls.filter((b) => b.type === 'media.complete-upload')).toHaveLength(0)
     expect(t.putBytes).not.toHaveBeenCalled()
   })
