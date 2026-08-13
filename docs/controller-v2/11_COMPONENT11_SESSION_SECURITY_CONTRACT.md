@@ -397,10 +397,10 @@ No implementation, no migration, no endpoint, no auth-path change, no mirror tab
 | Duplicate rate limiter | **None** — C10 only |
 | Client-specific security semantics | **None** — `Actor.source` is *recorded*, never used to decide |
 | Plaintext token storage | **None** — §3.3, **I-5** |
-| Unnecessary personal data | Constrained by **[P-6]**; nothing new collected |
+| Unnecessary personal data | Constrained by **[R] P-6**; IP and raw user-agent withheld, nothing new collected |
 | Transaction ambiguity | Resolved — §10, one SQL function, no app-level loop |
 | Undefined race behaviour | Resolved — §9, including revoke-all vs new sign-in |
-| Frozen-client impact | **None in v1** — admin surface only **[P-5]** |
+| Frozen-client impact | **None in v1** — admin surface only, **[R] P-5** |
 | F-10 | Untouched; `authorizeDepartmentResource` keeps 0 runtime callers |
 
 **One conflict found and deliberately left visible:** §5.2's enforcement claim depends on [O-1]. Everything else in this contract survives either answer; §5.2 does not.
