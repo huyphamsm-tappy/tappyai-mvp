@@ -7,7 +7,7 @@ import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { auditActorRole } from '@/lib/admin/permissions/decisionAudit'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { listAllDealsForAdmin, mapPartnerDealRow } from '@/lib/deals/partnerDeals'
 import { CreateDealSchema, toDbColumns } from '@/lib/deals/schema'
 
@@ -16,8 +16,9 @@ export const dynamic = 'force-dynamic'
 export async function GET(req: Request) {
   try {
     const { user } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_READ)
-    if (!rateLimit(`admin:deals:list:${user.id}`, 100, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:deals:list:${user.id}`, 100, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
     const deals = await listAllDealsForAdmin()
     return Response.json({ data: deals })
@@ -30,8 +31,9 @@ export async function POST(req: Request) {
   try {
     const { user, actor } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_CREATE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:deals:create:${user.id}`, 30, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:deals:create:${user.id}`, 30, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const parsed = CreateDealSchema.safeParse(await req.json().catch(() => null))

@@ -8,7 +8,7 @@ import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { auditActorRole } from '@/lib/admin/permissions/decisionAudit'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { mapPartnerDealRow } from '@/lib/deals/partnerDeals'
 import { UpdateDealSchema, toDbColumns } from '@/lib/deals/schema'
 
@@ -19,8 +19,9 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   try {
     const { user, actor } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_UPDATE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:deals:update:${user.id}`, 60, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:deals:update:${user.id}`, 60, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const parsed = UpdateDealSchema.safeParse(await req.json().catch(() => null))
@@ -68,8 +69,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   try {
     const { user, actor } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_DELETE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-    if (!rateLimit(`admin:deals:delete:${user.id}`, 30, 60_000).ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429)
+    const rl = await distributedRateLimit(`admin:deals:delete:${user.id}`, 30, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
     }
 
     const supabase = createAdminClient()

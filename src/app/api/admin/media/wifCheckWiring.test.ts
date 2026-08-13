@@ -21,7 +21,7 @@ const h = vi.hoisted(() => ({
   createUploadSession: vi.fn(),
 }))
 
-vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: h.rateLimit, clientIp: () => 'ip' }))
+vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.rateLimit }))
 vi.mock('@/lib/admin/rbac', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>
   return { ...actual, isSameOrigin: h.isSameOrigin }

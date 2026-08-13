@@ -6,6 +6,7 @@ import type { AuditParams } from '@/lib/admin/audit'
 import type { DepartmentMembership, DepartmentId, OrgRole, OrgScope } from '../types'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { __setRateLimitStore } from '@/lib/security/distributedRateLimit'
 
 // FOUNDATION-07D — ROUTE-LEVEL integration for /api/admin/org/memberships.
 // The REAL permissionEngine decides authorization (NOT mocked). Only three
@@ -63,7 +64,25 @@ function post(body: unknown): Request {
 const UID = '11111111-1111-4111-8111-111111111111'
 const assignBody = (over: Record<string, unknown> = {}) => ({ targetUserId: UID, targetDepartment: 'marketing', targetOrgRole: 'EMPLOYEE', targetScope: 'marketing', ...over })
 
-beforeEach(() => { hoisted.resolved = null; hoisted.flagOn = true; hoisted.isOwnerTarget = false; hoisted.audits = []; hoisted.repoSeed = [] })
+// Component 10: the membership route now uses the distributed limiter, which
+// fails CLOSED without a shared store. These tests are about department
+// authority, not rate limiting, so give them a working store rather than
+// mocking the limiter away.
+const permissiveStore = (() => {
+  const sets = new Map<string, Map<string, number>>()
+  return {
+    async evalSlidingWindow(key: string, nowMs: number, windowMs: number, limit: number, member: string) {
+      const set = sets.get(key) ?? new Map<string, number>()
+      for (const [m, s] of set) if (s <= nowMs - windowMs) set.delete(m)
+      if (set.size >= limit) return [0, Math.min(...set.values())] as [number, number]
+      set.set(member, nowMs)
+      sets.set(key, set)
+      return [1, 0] as [number, number]
+    },
+  }
+})()
+
+beforeEach(() => { hoisted.resolved = null; hoisted.flagOn = true; hoisted.isOwnerTarget = false; hoisted.audits = []; hoisted.repoSeed = []; __setRateLimitStore(permissiveStore) })
 
 describe('feature flag', () => {
   it('OFF → 404 (endpoint does not exist)', async () => {
