@@ -76,7 +76,8 @@ describe('isServableMediaUrl', () => {
 })
 
 // ------------------------------------------------------------- row stripping
-const row = (over: Record<string, unknown> = {}) => ({
+/** Mirrors what the review routes actually select — including the array field. */
+const row = (over: Record<string, unknown> = {}): Record<string, unknown> => ({
   id: 'r1',
   user_id: 'u1',
   content: 'Great place',
@@ -84,6 +85,8 @@ const row = (over: Record<string, unknown> = {}) => ({
   like_count: 3,
   media_url: GCS,
   thumbnail: GCS.replace('/videos/', '/thumbnails/'),
+  photos: [] as unknown[],
+  source_url: null,
   profiles: { full_name: 'Huy', avatar_url: GOOGLE_AVATAR },
   ...over,
 })
@@ -154,13 +157,66 @@ describe('stripUnservableMedia', () => {
   })
 })
 
+// ------------------------------------------------------------ array media
+// Found in production, not in review: `photos` is an ARRAY of URLs. The first
+// version of this filter only handled scalar fields, so a Blob photo sailed
+// straight through a feed that every other check said was clean. Scalars were
+// never the whole shape.
+describe('photos — an array field, filtered per element', () => {
+  it('drops Blob photos and keeps the rest', () => {
+    const out = stripUnservableMedia(row({ photos: [BLOB, GCS, YOUTUBE] }))
+    expect(out.photos).toEqual([GCS, YOUTUBE])
+  })
+
+  it('yields an empty array when every photo is Blob — never null', () => {
+    const out = stripUnservableMedia(row({ photos: [BLOB, BLOB] }))
+    expect(out.photos).toEqual([])
+  })
+
+  it('leaves an all-GCS gallery untouched', () => {
+    const photos = [GCS, GCS.replace('abc', 'def')]
+    expect(stripUnservableMedia(row({ photos })).photos).toEqual(photos)
+  })
+
+  it.each([[null], [undefined], [[]]])('leaves %s alone', (photos) => {
+    const out = stripUnservableMedia(row({ photos }))
+    expect(out.photos).toEqual(photos ?? photos)
+  })
+
+  it('does not mutate the caller’s array', () => {
+    const photos = [BLOB, GCS]
+    stripUnservableMedia(row({ photos }))
+    expect(photos).toEqual([BLOB, GCS])
+  })
+
+  it('ignores non-string entries rather than throwing', () => {
+    const out = stripUnservableMedia(row({ photos: [BLOB, null, 42, GCS] as unknown[] }))
+    expect(out.photos).toEqual([GCS])
+  })
+})
+
+// `source_url` is the ORIGINAL external link (YouTube/TikTok post), not stored
+// media. It must survive untouched or Explore loses its link-post attribution.
+describe('source_url is left alone', () => {
+  it.each([YOUTUBE, TIKTOK])('keeps %s', (url) => {
+    expect(stripUnservableMedia(row({ source_url: url })).source_url).toBe(url)
+  })
+})
+
 // -------------------------------------------- the invariant, stated directly
 describe('INVARIANT: no Blob URL survives to the client', () => {
   it.each([
     { media_url: BLOB },
     { thumbnail: BLOB },
+    { photos: [BLOB] },
+    { photos: [GCS, BLOB, YOUTUBE] },
     { profiles: { full_name: 'x', avatar_url: BLOB_AVATAR } },
-    { media_url: BLOB, thumbnail: BLOB, profiles: { full_name: 'x', avatar_url: BLOB_AVATAR } },
+    {
+      media_url: BLOB,
+      thumbnail: BLOB,
+      photos: [BLOB, BLOB],
+      profiles: { full_name: 'x', avatar_url: BLOB_AVATAR },
+    },
   ])('%j leaves no blob host anywhere in the payload', (over) => {
     const serialized = JSON.stringify(stripUnservableMedia(row(over)))
     expect(serialized).not.toContain('blob.vercel-storage.com')

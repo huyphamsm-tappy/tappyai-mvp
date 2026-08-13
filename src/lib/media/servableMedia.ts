@@ -60,8 +60,24 @@ export function isServableMediaUrl(value: string | null | undefined): boolean {
   return mediaProviderOf(value) !== 'vercel-blob'
 }
 
-/** Media-bearing fields on a review row as the feed routes select them. */
+/**
+ * Scalar media fields on a review row, as the feed routes select them.
+ *
+ * `source_url` is deliberately absent: it is the ORIGINAL external link of a
+ * YouTube/TikTok post, not stored media, and clearing it would strip link posts
+ * of their attribution.
+ */
 const MEDIA_FIELDS = ['media_url', 'thumbnail', 'thumbnail_url', 'audio_url', 'cover_url'] as const
+
+/**
+ * Media fields that hold an ARRAY of URLs.
+ *
+ * Found in production rather than in review: a review's `photos` is a list, and
+ * a filter that only understood scalars let a Blob photo through a feed every
+ * other check called clean. Entries are filtered individually so a gallery
+ * keeps its servable images instead of being dropped wholesale.
+ */
+const MEDIA_ARRAY_FIELDS = ['photos'] as const
 
 interface ProfileLike {
   avatar_url?: string | null
@@ -85,6 +101,16 @@ export function stripUnservableMedia<T extends Record<string, unknown>>(row: T):
   for (const field of MEDIA_FIELDS) {
     const value = out[field]
     if (typeof value === 'string' && !isServableMediaUrl(value)) out[field] = null
+  }
+
+  // Arrays keep their servable entries. An empty array, not null, is the right
+  // "nothing left" answer: consumers already handle a gallery with no photos,
+  // and changing the field's type would be a second, avoidable break.
+  for (const field of MEDIA_ARRAY_FIELDS) {
+    const value = out[field]
+    if (Array.isArray(value)) {
+      out[field] = value.filter((entry) => typeof entry === 'string' && isServableMediaUrl(entry))
+    }
   }
 
   // The author's avatar travels with the row via the joined profile.
