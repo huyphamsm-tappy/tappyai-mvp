@@ -20,7 +20,11 @@ import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { checkWifHealth } from '@/lib/media/wifHealth'
 import { createGcsProvider } from '@/lib/media/providers/gcs'
-import { createWifTokenSource, readDeploymentOidcToken } from '@/lib/media/gcpAuth'
+import {
+  createWifTokenSource,
+  describeDeploymentIdentity,
+  readDeploymentOidcToken,
+} from '@/lib/media/gcpAuth'
 
 export async function GET(req: NextRequest) {
   try {
@@ -57,10 +61,24 @@ export async function GET(req: NextRequest) {
       createUploadSession: (r) => provider.createUploadSession!(r),
     })
 
+    // Which x-vercel-* headers reached this handler, BY NAME ONLY — no values.
+    // If the platform injected its usual headers but not the OIDC one, the token
+    // was dropped between the platform and here; if none arrived at all, the
+    // request never carried platform headers to begin with. Those are different
+    // problems, and the name list is what tells them apart.
+    const platformHeaders = Array.from(req.headers.keys())
+      .filter((k) => k.toLowerCase().startsWith('x-vercel-'))
+      .sort()
+
     // The active provider is reported too, so an operator can tell a healthy
     // chain apart from a chain that is healthy AND already carrying traffic.
     return NextResponse.json(
-      { ...result, activeProvider: env.MEDIA_PROVIDER === 'gcs' ? 'gcs' : 'blob' },
+      {
+        ...result,
+        activeProvider: env.MEDIA_PROVIDER === 'gcs' ? 'gcs' : 'blob',
+        identity: describeDeploymentIdentity(req, env),
+        platformHeaders,
+      },
       { status: result.ok ? 200 : 503 }
     )
   } catch (err) {
