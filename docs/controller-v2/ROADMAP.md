@@ -41,7 +41,7 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 | # | Component | Status |
 |---|---|---|
 | 7 | **Audit Hardening** — tamper-evident hash chain over `audit_log` | ✅ **IMPLEMENTED · DEPLOYED · NOT YET UAT-VERIFIED** — merge `f3caf59`, live in production `526157a` (F-04 PR #18 + PH-0 applied). Corrected 2026-08-08 (FOUNDATION-01); see [STATUS.md](STATUS.md) row 7 note |
-| 8 | Event Bus | not started |
+| 8 | **Event Bus** — transactional outbox, at-least-once fan-out | 🟡 **IMPLEMENTED · MIGRATION NOT APPLIED** — mechanism only (no producers, no consumers). `supabase/migrations/20260813_c8_event_outbox.sql` is applied **by hand by the Owner**; until then the drain has no table or functions to call. See [`08_COMPONENT8_EVENT_BUS_CONTRACT.md`](08_COMPONENT8_EVENT_BUS_CONTRACT.md) |
 | 9a | Single admin-client construction point | ✅ **IN PRODUCTION** — merge commit `e8d4eb9` |
 | 9b | **Secret Manager — typed boot-time config validation** | ✅ **IMPLEMENTED** — deploy-time gate over 5 required variables + typed runtime boundary; closes **D5**. See [`09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md`](09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md) |
 | 10 | Rate Limiting | not started |

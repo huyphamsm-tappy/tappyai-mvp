@@ -76,7 +76,7 @@ export interface HubDescriptor {
 
 export type RegistrationResult = { ok: true } | { ok: false; errors: readonly string[] }
 
-/** A controller event (FOUNDATION-01 §6 — fields FROZEN, delivery OPEN for C8). */
+/** A controller event (FOUNDATION-01 §6 — fields FROZEN; delivery defined by C8). */
 export interface ControllerEvent {
   id: string
   type: string

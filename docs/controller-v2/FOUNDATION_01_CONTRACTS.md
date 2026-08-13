@@ -94,12 +94,19 @@ manifest-describable. **Initial scope: first-party only** (no third-party loadin
 Lifecycle `register → validate → enable → ready → (disable) → deregister`;
 enable/disable audited; failure isolated. Implementation = C6.
 
-## 6. Event contract — **PARTIAL: fields FROZEN, delivery OPEN (C8)**
+## 6. Event contract — **fields FROZEN; delivery now DEFINED by C8**
 Event = `{id, type, version, producer, actor, timestamp, correlationId, payload,
 metadata, securityClass}`. **FROZEN:** every event carries actor + correlationId +
-securityClass; security-relevant events integrate with C7 audit. **OPEN (defer to
-C8, not invented here):** ordering, persistence/outbox durability, retry,
-idempotency, delivery (sync/async), consumer registration.
+securityClass; security-relevant events integrate with C7 audit.
+
+**No longer open.** Ordering, persistence/outbox durability, retry, idempotency,
+delivery and consumer registration were listed here as *"OPEN — defer to C8, not
+invented here"*. They are defined by
+[`08_COMPONENT8_EVENT_BUS_CONTRACT.md`](08_COMPONENT8_EVENT_BUS_CONTRACT.md) plus
+`01_CONTROLLER_V2_ARCHITECTURE.md` §7, ratified as binding by Owner decision
+2026-08-13: at-least-once, per-aggregate ordering only, an outbox row per
+(event, consumer), 3 attempts then DLQ, and consumers bound from
+`manifest.events.consumes`. **The field freeze above is unchanged.**
 
 ## 7. Configuration / feature-flag contract — **FROZEN (provider impl deferred)**
 Precedence (high→low): **runtime (DB/API) > feature flags > environment >

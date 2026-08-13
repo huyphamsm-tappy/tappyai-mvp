@@ -36,6 +36,10 @@
     {
       "path": "/api/cron/lunch-reminder",
       "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/outbox-drain",
+      "schedule": "0 3 * * *"
     }
   ]
 }
