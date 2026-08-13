@@ -7,6 +7,7 @@
 // (owner decision, Phase 0).
 
 import { createAdminClient } from '@/lib/supabase/admin'
+import { serverEnv } from '@/lib/config/env'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import type { User } from '@supabase/supabase-js'
 import { ROLE_RANK, hasRole, type AdminRole } from '@/lib/admin/roles'
@@ -304,5 +305,5 @@ export function adminError(
 export function isSameOrigin(req: Request): boolean {
   const origin = req.headers.get('origin')
   if (!origin) return true
-  return origin === process.env.NEXT_PUBLIC_SITE_URL
+  return origin === serverEnv.siteUrl()
 }
