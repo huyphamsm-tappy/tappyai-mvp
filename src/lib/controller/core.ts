@@ -108,6 +108,21 @@ export class ControllerCore {
       }
     }
 
+    // Permission ownership is exclusive across modules (architecture §5 lists
+    // "permission collisions" as a validate step). Two modules declaring the same
+    // permission would make the nav's visibility source ambiguous and let a
+    // permission grant widen a second module's surface silently.
+    //
+    // A module repeating a permission inside its OWN manifest is not a collision —
+    // `permissions` is a declaration list, not a set — so the check dedupes first.
+    for (const permission of new Set(manifest.permissions)) {
+      for (const other of this.modules.values()) {
+        if (other.manifest.permissions.includes(permission)) {
+          errors.push(`permission "${permission}" already declared by module "${other.manifest.id}"`)
+        }
+      }
+    }
+
     // Dependency + version resolution (fail-closed).
     for (const dep of manifest.dependencies) {
       if (dep.moduleId) {
@@ -172,6 +187,85 @@ export class ControllerCore {
     return { ok: true }
   }
 
+  /**
+   * `ready` from the lifecycle contract (FOUNDATION-01 §5:
+   * register → validate → enable → ready → disable → deregister).
+   *
+   * It is a DERIVED condition, not a third `ModuleStatus`: a module is ready when
+   * it is registered, enabled, and has not been marked unavailable by a runtime
+   * failure. `available` has exactly one writer — `runIsolated` sets it false when
+   * a module throws — so "ready" means "enabled and not currently broken".
+   *
+   * This is the same predicate `isModuleAccessible` applies before consulting the
+   * PDP; that method now calls this one so the two cannot drift apart.
+   */
+  isReady(moduleId: string): boolean {
+    const mod = this.modules.get(moduleId)
+    return !!mod && mod.available && mod.status === 'enabled'
+  }
+
+  /**
+   * Modules that depend on `moduleId`, directly or through a capability it
+   * provides. Sorted, so the rejection message is deterministic.
+   *
+   * Disabled dependents count: a dependency that is merely switched off is still
+   * a declared dependency, and removing its target would leave it dangling — the
+   * orphan state this registry refuses to create.
+   */
+  private dependentsOf(moduleId: string): string[] {
+    const mod = this.modules.get(moduleId)
+    if (!mod) return []
+    const provided = new Set(mod.manifest.capabilities)
+    const dependents: string[] = []
+    for (const other of this.modules.values()) {
+      if (other.manifest.id === moduleId) continue
+      const dependsOnIt = other.manifest.dependencies.some(
+        (dep) => dep.moduleId === moduleId || (dep.capabilityId !== undefined && provided.has(dep.capabilityId))
+      )
+      if (dependsOnIt) dependents.push(other.manifest.id)
+    }
+    return dependents.sort()
+  }
+
+  /**
+   * Remove a module from the registry — the final lifecycle step.
+   *
+   * Fail-closed and non-cascading: if any registered module depends on this one,
+   * nothing is removed and the dependents are named. Cascading would disable
+   * modules the caller never asked about; orphaning would leave a dependency
+   * pointing at nothing, which registration itself refuses to allow.
+   *
+   * On success the module's capability bindings are released, and its routes
+   * become free because route ownership is derived by scanning registered modules
+   * rather than stored separately. No routing architecture is introduced here.
+   */
+  deregister(moduleId: string): { ok: true } | { ok: false; errors: string[] } {
+    const mod = this.modules.get(moduleId)
+    if (!mod) return { ok: false, errors: [`module "${moduleId}" not registered`] }
+
+    const dependents = this.dependentsOf(moduleId)
+    if (dependents.length > 0) {
+      // Registry untouched.
+      return { ok: false, errors: [`module "${moduleId}" is required by: ${dependents.join(', ')}`] }
+    }
+
+    this.modules.delete(moduleId)
+    for (const capabilityId of mod.manifest.capabilities) {
+      // Only release a binding this module actually owns.
+      if (this.capabilities.get(capabilityId)?.moduleId === moduleId) this.capabilities.delete(capabilityId)
+    }
+
+    this.audit.record({
+      action: 'controller.module.deregistered',
+      actor: null,
+      targetType: 'module',
+      targetId: moduleId,
+      detail: { hub: mod.manifest.hub, version: mod.manifest.version },
+    })
+    this.emit('controller.module.deregistered', 'security', null, { moduleId })
+    return { ok: true }
+  }
+
   // ── Authorization — delegates to the existing PDP, no second engine ─────────
   authorize(actor: Actor | null, permission: PermissionId, now?: number): Decision {
     return this.authorizeFn(actor, permission, now)
@@ -183,8 +277,8 @@ export class ControllerCore {
    * with a visibilityPermission requires the PDP to allow it.
    */
   isModuleAccessible(moduleId: string, actor: Actor | null, now?: number): boolean {
-    const mod = this.modules.get(moduleId)
-    if (!mod || !mod.available || mod.status !== 'enabled') return false
+    if (!this.isReady(moduleId)) return false
+    const mod = this.modules.get(moduleId)!
     const perm = mod.manifest.navigation.visibilityPermission
     if (!perm) return true
     return this.authorize(actor, perm, now).allowed
