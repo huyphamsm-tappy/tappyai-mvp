@@ -33,6 +33,13 @@ export interface WifHealthResult {
   stage: WifHealthStage
   /** Metadata only — enough to confirm the identity, never the token itself. */
   oidc?: OidcClaims
+  /**
+   * Whether the token's claims could be decoded. Reported separately from `ok`
+   * on purpose: an undecodable token is a cosmetic problem, not a failure, and
+   * conflating the two is what hid a working identity behind "no deployment
+   * identity available".
+   */
+  claimsReadable?: boolean
   bucket?: string
   /** A short, non-sensitive reason. Never provider text, never credentials. */
   reason?: string
@@ -54,6 +61,26 @@ export interface WifHealthDeps {
  * operator can see which identity the deployment is presenting — in particular
  * whether the subject ends in `environment:production`.
  */
+/**
+ * base64url -> utf8, using `atob` rather than `Buffer`.
+ *
+ * `Buffer` is a Node global and does not exist in the Edge runtime, so a
+ * Buffer-based decode throws there — and because the caller treats a throw as
+ * "cannot decode", a perfectly valid token would look unreadable purely because
+ * of where the route happened to run. `atob` and `TextDecoder` exist in both.
+ */
+function decodeBase64Url(segment: string): string | null {
+  try {
+    const b64 = segment.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = b64 + '='.repeat((4 - (b64.length % 4)) % 4)
+    const binary = atob(padded)
+    const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0))
+    return new TextDecoder().decode(bytes)
+  } catch {
+    return null
+  }
+}
+
 export function readOidcClaims(
   token: string | null | undefined,
   now: () => number = () => Date.now()
@@ -63,9 +90,12 @@ export function readOidcClaims(
   const parts = token.split('.')
   if (parts.length !== 3) return null
 
+  const json = decodeBase64Url(parts[1])
+  if (json === null) return null
+
   let payload: Record<string, unknown>
   try {
-    payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'))
+    payload = JSON.parse(json)
   } catch {
     return null
   }
@@ -90,13 +120,21 @@ function stageOf(e: unknown): WifHealthStage {
 
 export async function checkWifHealth(deps: WifHealthDeps): Promise<WifHealthResult> {
   const now = deps.now ?? (() => Date.now())
-  const oidc = readOidcClaims(deps.getOidcToken(), now)
+  const token = deps.getOidcToken()
 
-  // No deployment identity at all — nothing downstream can succeed, and there
-  // is no point spending a call on Google to discover that.
-  if (!oidc) {
+  // Presence is a question about the TOKEN, not about whether we can pretty-print
+  // it. This used to test `readOidcClaims(...) !== null`, which also returns null
+  // for a token that is present but not decodable — so a perfectly good identity
+  // was reported as a missing one and the exchange never ran at all.
+  if (typeof token !== 'string' || token.length === 0) {
     return { ok: false, stage: 'oidc', reason: 'no deployment identity available' }
   }
+
+  // Claims are operator convenience. Google — not this code — is the authority
+  // on whether a token is acceptable, and the only way to learn its verdict is
+  // to attempt the exchange. An identity we cannot decode is still an identity.
+  const oidc = readOidcClaims(token, now) ?? undefined
+  const claimsReadable = oidc !== undefined
 
   // A server-owned key under an allowed prefix, exactly as a real upload would
   // be named. Nothing here comes from a caller.
@@ -111,8 +149,15 @@ export async function checkWifHealth(deps: WifHealthDeps): Promise<WifHealthResu
   } catch (e) {
     // The error's own text is never echoed: a provider message can contain
     // request metadata, and a wrapped error could carry a session URI.
-    return { ok: false, stage: stageOf(e), oidc, bucket: deps.bucket, reason: 'chain rejected' }
+    return {
+      ok: false,
+      stage: stageOf(e),
+      oidc,
+      claimsReadable,
+      bucket: deps.bucket,
+      reason: 'chain rejected',
+    }
   }
 
-  return { ok: true, stage: 'complete', oidc, bucket: deps.bucket }
+  return { ok: true, stage: 'complete', oidc, claimsReadable, bucket: deps.bucket }
 }
