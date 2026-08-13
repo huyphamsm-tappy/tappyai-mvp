@@ -31,6 +31,12 @@ export interface WifDeps {
   timeoutMs?: number
   /** Injectable so timeout behaviour is testable without real waiting. */
   makeTimeoutSignal?: (ms: number) => AbortSignal
+  /**
+   * Scopes requested when impersonating. Defaults to STORAGE_SCOPE, so every existing caller keeps
+   * exactly the permissions it had. A caller supplying its own must pass the narrowest scope its
+   * service account needs — this is not a place to widen anything.
+   */
+  scopes?: readonly string[]
 }
 
 export const DEFAULT_CREDENTIAL_TIMEOUT_MS = 10_000
@@ -116,7 +122,15 @@ export class WifExchangeError extends Error {
 
 const STS_ENDPOINT = 'https://sts.googleapis.com/v1/token'
 const IAMCREDENTIALS = 'https://iamcredentials.googleapis.com/v1'
-const SCOPE = 'https://www.googleapis.com/auth/devstorage.read_write'
+/**
+ * The media service account's scope. Deliberately narrow — storage only.
+ *
+ * It is the DEFAULT rather than the only option because a second service account (voice/TTS) needs
+ * a different scope, and giving each its own is what keeps them separate. Widening THIS constant to
+ * cover both would hand the media identity permissions it has no reason to hold, which is precisely
+ * the boundary the two-account split exists to preserve.
+ */
+export const STORAGE_SCOPE = 'https://www.googleapis.com/auth/devstorage.read_write'
 /** Refresh a little early so a token never expires mid-upload. */
 const EXPIRY_SKEW_MS = 60_000
 
@@ -185,7 +199,7 @@ export function createWifTokenSource(deps: WifDeps): () => Promise<string> {
           Authorization: `Bearer ${sts.access_token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ scope: [SCOPE] }),
+        body: JSON.stringify({ scope: [...(deps.scopes ?? [STORAGE_SCOPE])] }),
       }
     )
     if (!impRes.ok) throw new WifExchangeError('impersonation', impRes.status)
