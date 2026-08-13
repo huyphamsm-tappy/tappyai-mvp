@@ -19,6 +19,7 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
 const VOICE_COMPONENTS = [
   'src/components/ChatInterface.tsx',
   'src/components/SearchBar.tsx',
+  'src/app/translate/page.tsx',
 ] as const
 
 /** A speech-recognition locale assigned from a literal rather than the shared table. */
@@ -63,18 +64,25 @@ describe('voice messages are localized, not hardcoded', () => {
   // The defect is a STRING LITERAL, not "did not call t()". `noVoiceMessage(code, uiLocale)` is a
   // legitimate localization helper with its own EN/VI coverage, so requiring t() specifically would
   // fail a correctly-localized call site and push someone to weaken the guard.
+  // A literal with CONTENT is the defect. `setVoiceError('')` and `setVoiceError(null)` clear the
+  // banner and display nothing, so they are not user-facing text — flagging them would only teach
+  // someone to route an empty string through the translator to satisfy a guard.
+  const HARDCODED_MESSAGE = /setVoiceError\(\s*['"`][^'"`]/
+
   it('no setVoiceError call passes a hardcoded message', () => {
     for (const file of VOICE_COMPONENTS) {
       const calls = read(file).match(/setVoiceError\([^)]*\)/g) ?? []
       expect(calls.length, file).toBeGreaterThan(0)
-      const literals = calls.filter((c) => /setVoiceError\(\s*['"`]/.test(c))
-      expect(literals, file).toEqual([])
+      expect(calls.filter((c) => HARDCODED_MESSAGE.test(c)), file).toEqual([])
     }
   })
 
-  it('that guard would catch a real regression', () => {
-    expect(/setVoiceError\(\s*['"`]/.test("setVoiceError('Cần cấp quyền micro')")).toBe(true)
-    expect(/setVoiceError\(\s*['"`]/.test("setVoiceError(t('voice.noSpeech'))")).toBe(false)
-    expect(/setVoiceError\(\s*['"`]/.test('setVoiceError(noVoiceMessage(x, locale))')).toBe(false)
+  it('that guard would catch a real regression, and tolerates clearing', () => {
+    expect(HARDCODED_MESSAGE.test("setVoiceError('Cần cấp quyền micro')")).toBe(true)
+    expect(HARDCODED_MESSAGE.test('setVoiceError("Microphone blocked")')).toBe(true)
+    expect(HARDCODED_MESSAGE.test("setVoiceError(t('voice.noSpeech'))")).toBe(false)
+    expect(HARDCODED_MESSAGE.test('setVoiceError(noVoiceMessage(x, locale))')).toBe(false)
+    expect(HARDCODED_MESSAGE.test("setVoiceError('')")).toBe(false)
+    expect(HARDCODED_MESSAGE.test('setVoiceError(null)')).toBe(false)
   })
 })
