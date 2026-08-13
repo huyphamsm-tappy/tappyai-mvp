@@ -100,9 +100,13 @@ What remains unproven is only the **end-to-end HTTP path** on live production.
 
 > **Corrected 2026-08-13.** This section said *"**Component 3 — RBAC.** Not started"* while the table above recorded Component 3 as **ACCEPTED · IN PRODUCTION** since 2026-08-07 — the document contradicted itself. The stale line is replaced rather than preserved, because a *forward-looking* instruction that is wrong will be acted on, unlike a dated status snapshot.
 
-**None currently authorized.** C6, C9b and C10 are delivered. What remains of Phase 1 is **C8 (Event Bus)** and **C11 (Session Security)**.
+**C8 (Event Bus) is authorized and implemented; its migration is applied by hand.** C6, C9b and C10 are delivered. The only unopened Phase 1 component is **C11 (Session Security)**.
 
-Their ordering is still **not determinable** from repository evidence: no design document exists for either, and the two authoritative sources disagree — `03_PHASE1_FOUNDATION_DESIGN.md` §2 calls the build order a chain of *"hard dependencies"*, while `02_PHASE0_AUDIT.md` says those remediation items *"can proceed in parallel"*. Owner decision 2026-08-13 resolved this in favour of independence (C9b was taken out of the declared chain order and delivered on its own). Authorizing C8 or C11 is an Owner decision.
+> ⚠️ **Code ships before the schema.** Merging C8 deploys `/api/cron/outbox-drain` immediately, but `supabase/migrations/20260813_c8_event_outbox.sql` is applied manually by the Owner. Between those two moments the daily 03:00 tick calls an `fn_outbox_claim` that does not exist and returns 500. Nothing is lost — there is no table to lose rows from — but the tick is noise until the migration lands.
+
+C8's design document now exists — [`08_COMPONENT8_EVENT_BUS_CONTRACT.md`](08_COMPONENT8_EVENT_BUS_CONTRACT.md), built on `01_CONTROLLER_V2_ARCHITECTURE.md` §7 which the Owner ratified as binding on 2026-08-13. It ships the **mechanism only**: an outbox table, the `fn_outbox_publish` primitive whose grants close the lost-event window, and a daily drain cron. It creates **no producers and no consumers**, so production carries zero delivery obligations by construction.
+
+C11 still has **no design document**, so its scope remains undetermined and authorizing it is an Owner decision. The old ordering dispute is resolved: `03_PHASE1_FOUNDATION_DESIGN.md` §2 called the build order a chain of *"hard dependencies"* while `02_PHASE0_AUDIT.md` said those items *"can proceed in parallel"*; Owner decision 2026-08-13 settled it in favour of independence, and C9b, C6, C10 and C8 have each been delivered outside the declared chain order.
 
 Deferred within C6, carried as named debt: **rollback**, **health checks**, **migration versioning**, table-collision validation, and route-gating on disable — each undefined in any authoritative source and therefore not invented. See [`06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md) §1 and §7.
 
