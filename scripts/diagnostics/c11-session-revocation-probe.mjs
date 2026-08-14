@@ -63,6 +63,20 @@ console.log(`target: ${new URL(URL_).host}  (production ref absent — proceedin
 const anon = createClient(URL_, ANON, { auth: { persistSession: false, autoRefreshToken: false } })
 const admin = createClient(URL_, SERVICE, { auth: { persistSession: false, autoRefreshToken: false } })
 
+// `--cleanup-only` sweeps identities a crashed run may have stranded. Staging
+// must not accumulate probe users, and "probably fine" is not a check.
+if (process.argv.includes('--cleanup-only')) {
+  const { data, error } = await admin.auth.admin.listUsers({ perPage: 1000 })
+  if (error) { console.error('listUsers failed:', error.message); process.exit(1) }
+  const stale = data.users.filter((u) => (u.email ?? '').startsWith('c11-probe-'))
+  console.log(`probe identities found: ${stale.length}`)
+  for (const u of stale) {
+    const { error: delErr } = await admin.auth.admin.deleteUser(u.id)
+    console.log(`  ${u.email}: ${delErr ? `FAILED — ${delErr.message}` : 'deleted'}`)
+  }
+  process.exit(0)
+}
+
 // ── Establish a throwaway session ───────────────────────────────────────────
 // Anonymous sign-in keeps the blast radius at zero: no password, no mailbox, no
 // real identity. If the project has anonymous sign-ins disabled, set
@@ -115,7 +129,17 @@ async function cleanup() {
   if (!disposableUserId) return
   const { error } = await admin.auth.admin.deleteUser(disposableUserId)
   console.log(`\ndisposable identity deleted: ${error ? `FAILED — ${error.message}` : 'ok'}`)
+  disposableUserId = null
 }
+
+// A crash anywhere below must not strand the identity in staging. `finally` is
+// not enough on its own: an unhandled rejection kills the process before any
+// trailing statement runs, which is exactly what happened on the first O-3 run.
+process.on('unhandledRejection', async (err) => {
+  console.error(`\nunhandled: ${err?.message ?? err}`)
+  await cleanup()
+  process.exit(1)
+})
 
 const token = session.access_token
 const claims = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString())
@@ -176,7 +200,17 @@ if (dbPlaceholder) {
 
 const { default: pg } = await import('pg')
 const db = new pg.Client({ connectionString: DB_URL })
-await db.connect()
+try {
+  await db.connect()
+} catch (e) {
+  console.error(`\nO-3: could not connect — ${e.code ?? ''} ${e.message}`)
+  if (e.code === '28P01') {
+    console.error('     The password in STAGING_DATABASE_URL is not accepted. Reset it at')
+    console.error('     Supabase -> Settings -> Database -> Database password, then update the file.')
+  }
+  await cleanup()
+  process.exit(4)
+}
 
 const cols = await db.query(
   `SELECT column_name, data_type, is_nullable FROM information_schema.columns
