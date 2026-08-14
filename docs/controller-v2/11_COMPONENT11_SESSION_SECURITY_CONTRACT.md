@@ -1,10 +1,10 @@
 # Controller V2 — Component 11: Session Security — CONTRACT **DRAFT**
 
-**Status:** 🟡 **POLICY RATIFIED — IMPLEMENTATION BLOCKED ON ENVIRONMENT.**
+**Status:** 🟢 **POLICY RATIFIED · O-1 and O-2 MEASURED · one item (O-3) outstanding.**
 **P-1 … P-7 were ratified by the Owner on 2026-08-13** and are now contract text.
-**O-1, O-2 and O-3 remain unresolved**, and the reason has changed: they are no longer open *questions* but blocked *experiments*. The Owner directed that they be settled empirically in a **non-production** Supabase environment. **No such environment exists on this machine** — see §20. They were not guessed, and implementation has not started.
+**O-1 and O-2 are resolved by measurement** against the non-production project `nhncoqyadofojjrnpiia` on 2026-08-14 — see §20. **O-1 = IMMEDIATE revocation**, so §5.2 stands as written and C11 adds no per-request database lookup. **O-3 remains outstanding**: reading `auth.sessions` needs a direct staging PostgreSQL connection, and the credential for it is not yet available. Nothing was guessed; the inventory is not implemented.
 
-**Date:** 2026-08-13 · **Baseline:** `origin/main` = `89cd1a1` · production `/api/version` = same
+**Date:** 2026-08-13, measurements added 2026-08-14 · **Baseline:** `origin/main` = `6f78a4e`
 **Prior scope:** one line — *"Session inventory, revocation, forced logout"* ([`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §11) — plus [`02_PHASE0_AUDIT.md`](02_PHASE0_AUDIT.md) §"Not verified", which records that no implementation exists. Those are **scope signals, not semantics**, and this document does not pretend they defined anything.
 
 > **Reading rule.** Every clause is marked **[D]** derived from repository evidence, **[R]** ratified by the Owner on 2026-08-13, or **[O]** open and blocking. [D] and [R] are binding. Nothing marked [O] may be implemented.
@@ -56,7 +56,7 @@ Not a guess: the SDK pins it. `@supabase/auth-js@2.108.2` declares `session_id` 
 
 ### 3.3 Fields C11 reads — and the ones it must not
 
-Creation time, last refresh, expiry (`not_after`) and revocation state are properties of the GoTrue session row. **Whether this project can read that row at all is [O-3].**
+Creation time, last refresh, expiry (`not_after`) and revocation state are properties of the GoTrue session row. **Whether this project can read that row at all is [O-3]** — outstanding, see §20.3.
 
 **Never read, never stored, never returned, never logged:** access tokens, refresh tokens, cookie values, password hashes, MFA secrets, or any credential material. §12 makes this a testable invariant rather than an intention.
 
@@ -326,63 +326,56 @@ C11 inserts **inside step 1 only**. It cannot admit anything step 3 would deny (
 | 10 | Idempotent repeats | §8 | SQL function return count | runtime test + mutation |
 | 11 | Revoke-all does not lock the account | §9 | operation defined over a snapshot set | runtime test (**I-8**) |
 | 12 | No credential material ever exposed | §3.3, ADR-019 grant model | response projection + table grants | invariant test (**I-5**) scanning every response field |
-| 13 | Inventory source | ⛔ **[O-3]** — blocked, §20 | — | — |
-| 14 | Immediate vs eventual revocation | ⛔ **[O-1]** — blocked, §20 | — | — |
+| 13 | Inventory source | ⛔ **[O-3]** — outstanding, §20.3 | — | — |
+| 14 | Immediate vs eventual revocation | ✅ **§20.1 — measured 2026-08-14**: HTTP 403 `session_not_found` with 3597 s of token life left | GoTrue, via the existing `auth.getUser()` round-trip in `getRequestUser.ts` | the probe run, kept as integration evidence |
 | 15 | Owner target protection | §5.1.1 · Component 1 `platform_owner` authority | handler pre-check **and** SQL function predicate | invariant **I-4a**, mutation-tested by deleting the predicate |
 | 16 | Anonymous exclusion | §6.1 · `auth.users.is_anonymous` (verified in `20260808c`) | `is_anonymous = false` filter on every read and write | invariant **I-12** |
 | 17 | Revoke-all snapshot boundary | §4.1 | single statement in one SQL function | runtime test: a session created mid-operation survives (**I-8**) |
 
 **Rows 13 and 14 have no source. That is why this contract is a draft and not a specification.**
 
-## 20. ⛔ BLOCKED — the three experiments cannot be run from this machine
+## 20. Empirical results — O-1 and O-2 RESOLVED, O-3 outstanding
 
-The Owner ratified P-1…P-7 and directed that O-1/O-2/O-3 be **resolved empirically in a non-production Supabase environment**, explicitly forbidding both guessing and production testing. That instruction is correct, and it cannot be carried out here.
+Measured 2026-08-14 against the **non-production** project `nhncoqyadofojjrnpiia` (`tappyai-staging`), using `scripts/diagnostics/c11-session-revocation-probe.mjs`. Production was never contacted; the probe refuses the production ref by construction.
 
-### 20.1 What was checked, and what was found
+### 20.1 ✅ O-1 — revocation is **IMMEDIATE**
 
-| Requirement | Measured result |
+| Step | Observed |
 |---|---|
-| A non-production Supabase **project** | **None exists.** The only Supabase URL anywhere in this working copy — `.env.local`, `.env.local.example` — is `fwznnobrdctuskgrvuik.supabase.co`, which **is production** (it is the project `/api/version` and the live app serve from) |
-| A **local** Supabase stack (`supabase start`, which runs `gotrue`) | **Cannot start.** `supabase status` → `docker: command not found (podman also not found) — install Docker Desktop or Podman`. `docker`, `docker info` and `podman` are all absent from PATH. `supabase/config.toml` does not exist; the local stack was never initialised here |
-| Supabase CLI itself | present (2.114.0) — but every `start` path is container-based |
-| The embedded-postgres harness | present and working (it runs C8's runtime suite), but it provides **PostgreSQL only**. GoTrue is a separate service, and `auth.sessions` is *created by GoTrue*, not by any migration in this repository. The harness hand-stubs `auth.users` in its PRELUDE precisely because the real auth schema is not there |
+| `getUser` with a fresh access token | **HTTP 200** (accepted) |
+| `admin.signOut(token, scope: 'global')` | ok |
+| `getUser` with the **same, still-unexpired** token | **HTTP 403** — `{"code":403,"error_code":"session_not_found","msg":"Session from session_id claim in JWT does not exist"}` |
+| Token life remaining at that moment | **3597 s** of 3600 |
 
-### 20.2 Why each item stays open
+The token had 59 minutes left and was refused anyway. GoTrue validates the `session_id` claim against the session record on every `/auth/v1/user` call, so **a revoked session cannot authenticate a subsequent request** — invariant **I-1** holds at the identity layer, not by convention.
 
-**O-1 — immediate vs eventual revocation.** The experiment requires a live GoTrue: sign in, capture a still-valid access token, revoke the session, re-call `auth.getUser()` with the same token. There is no GoTrue to sign into except production's, and creating and revoking a session there is a production mutation. **Not attempted.**
+**Consequence, and it is the load-bearing one:** §5.2 stands exactly as written. Every authenticated path in this application already resolves identity through `auth.getUser()` — `src/lib/auth/getRequestUser.ts` does it on **both** the cookie and bearer branches, and `middleware.ts:53-58` records why `getUser()` was chosen over `getSession()`. Revocation therefore enforces itself on the next request across web and native, **with no C11 database lookup added to the hot path**. C11 stays a thin component.
 
-**O-2 — access-token TTL.** Conditional on O-1, and in any case it is a Supabase Auth *setting*, absent from this repository. It must be read from the project's configuration, and if the non-production project's value differs from production's, both must be recorded — a TTL that is only true in staging is not a security guarantee.
+**Method note.** The staging project has anonymous sign-ins disabled, so the probe minted a disposable identity through the admin API, used it, and deleted it (`disposable identity deleted: ok`). No durable object was created in staging, and no real identity was used.
 
-**O-3 — may C11 read `auth.sessions`.** Option **A** is ratified *subject to technical verification*, and the verification needs a GoTrue-provisioned `auth` schema to inspect: which columns exist, whether a `SECURITY DEFINER` function can read them, and whether the six checks in the Owner's brief hold. PostgreSQL alone cannot answer it, because the table would not exist. **Measured, unchanged:** zero references to `auth.sessions` / `auth.refresh_tokens` anywhere in `src/` or `supabase/`.
+### 20.2 ✅ O-2 — TTL measured, and it is **not** the revocation guarantee
 
-### 20.3 Any of three unblocks all of it
+**3600 s (60 min)**, read from the token's own `iat`/`exp` claims rather than from a dashboard setting.
 
-| Path | What it gives | Cost |
-|---|---|---|
-| **1. Install Docker Desktop** (or Podman) | `supabase init && supabase start` brings up a local GoTrue **and** a real `auth` schema. O-1, O-2 and O-3 all become answerable here, with **zero** contact with production. Best option — it also gives every future auth-touching component a real test target | one install |
-| **2. A throwaway Supabase project** | Same answers against hosted GoTrue, which is what production actually runs. Needs URL + anon key + service-role key placed in a local `.env.staging` (**not** pasted into chat) | one free project |
-| **3. The Owner runs the experiment** | Fastest if a non-production project already exists elsewhere. A ready-to-run script is prepared and refuses to execute against the production project reference | ~5 minutes |
+Because O-1 is immediate, this number does **not** bound revocation — it bounds only how long a token survives without any revocation at all. Had O-1 come back `200`, this 3600 s would have *been* the security guarantee and §5.2 would have required rewriting before any code was written. It did not, so it does not.
 
-### 20.4 The experiment, specified exactly
+Also confirmed live: **`session_id` is present as a claim** on issued tokens, which is what makes a session — not a token — the unit C11 governs (§3.1).
 
-So that whoever runs it produces an unambiguous answer:
+### 20.3 ⛔ O-3 — outstanding, blocked on one value
 
-1. In a **non-production** project, sign in a throwaway account (`signInWithPassword` or `signInAnonymously`).
-2. Capture `session.access_token` and `session.session_id`; assert `getUser(token)` → **200**.
-3. Revoke: `supabase.auth.admin.signOut(access_token, 'global')` using that project's service-role key.
-4. **Immediately** — well inside the token's lifetime — call `getUser(token)` again.
-5. Record the HTTP status and error code verbatim.
+`auth.sessions` cannot be inspected through PostgREST: Supabase does not expose the `auth` schema over REST, so this needs a direct PostgreSQL connection to the **staging** database.
 
-| Result | Meaning | Consequence for C11 |
-|---|---|---|
-| **401 / 403** | GoTrue validates the session behind the token | Revocation is **immediate**. §5.2 stands as written, no per-request database check is added, and TTL is *not* the guarantee (O-2 closes as "not applicable") |
-| **200** | The access token outlives its session | Revocation is **eventual**, bounded by the TTL. C11 must then add the minimum enforcement needed to honour the ratified guarantee, on the hot path of every authenticated request — a materially larger component that must not be shipped by accident |
+`STAGING_DATABASE_URL` in `.env.staging` still carries the literal `[YOUR-PASSWORD]` placeholder. The probe detects that and skips O-3 rather than attempting to authenticate as the placeholder, which would report a confusing auth failure instead of an unfinished step.
 
-Step 3 also yields O-3's answer for free: with a live `auth` schema, `information_schema.columns` and `has_table_privilege` settle which fields exist and whether a definer function can read them.
+**Still to be measured, all read-only:**
 
-### 20.5 What has NOT been done, deliberately
+| Question | Query |
+|---|---|
+| Does `auth.sessions` exist, and with which columns? | `information_schema.columns` |
+| Can `anon` / `authenticated` / `service_role` read it directly? | `has_table_privilege` — all three **must** be false, so a definer function is the only path |
+| Which columns carry credential material? | name match on `token`/`secret`/`password` — a C11 projection must never select them |
 
-No implementation, no migration, no endpoint, no auth-path change, no mirror table, and no assumed answer to any of the three. Per the Owner's own instruction — *"If `auth.sessions` cannot provide a truthful inventory, HARD STOP and report exactly what is missing rather than inventing a substitute"* — this section is that report.
+Until then ADR-021's assumption table stays empty, and the Option A / Option C decision stays open. Nothing about the inventory is implemented.
 
 ---
 

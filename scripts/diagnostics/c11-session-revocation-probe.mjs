@@ -68,6 +68,8 @@ const admin = createClient(URL_, SERVICE, { auth: { persistSession: false, autoR
 // real identity. If the project has anonymous sign-ins disabled, set
 // STAGING_TEST_EMAIL / STAGING_TEST_PASSWORD and it will use those instead.
 let session
+let disposableUserId = null   // deleted in cleanup() if this probe created it
+
 if (env.STAGING_TEST_EMAIL && env.STAGING_TEST_PASSWORD) {
   const { data, error } = await anon.auth.signInWithPassword({
     email: env.STAGING_TEST_EMAIL, password: env.STAGING_TEST_PASSWORD,
@@ -77,11 +79,42 @@ if (env.STAGING_TEST_EMAIL && env.STAGING_TEST_PASSWORD) {
 } else {
   const { data, error } = await anon.auth.signInAnonymously()
   if (error) {
-    console.error('anonymous sign-in failed:', error.message)
-    console.error('Enable anonymous sign-ins on the throwaway project, or set STAGING_TEST_EMAIL/_PASSWORD.')
-    process.exit(1)
+    // Anonymous sign-ins are commonly disabled. Rather than stopping, mint a
+    // disposable identity through the admin API and delete it at the end. It
+    // exists only inside this staging project, for the length of this run.
+    console.log(`anonymous sign-in unavailable (${error.message}) — creating a disposable identity instead`)
+    const stamp = `${Date.now()}${Math.floor(Math.random() * 1e6)}`
+    const email = `c11-probe-${stamp}@example.com`
+    const password = `Pw-${stamp}-${Math.random().toString(36).slice(2)}`
+
+    const { data: created, error: createErr } = await admin.auth.admin.createUser({
+      email, password, email_confirm: true,
+    })
+    if (createErr) {
+      console.error('could not create a disposable identity:', createErr.message)
+      console.error('Either enable anonymous sign-ins, or set STAGING_TEST_EMAIL/_PASSWORD.')
+      process.exit(1)
+    }
+    disposableUserId = created.user.id
+    console.log(`disposable identity created: ${email}`)
+
+    const { data: signedIn, error: signInErr } = await anon.auth.signInWithPassword({ email, password })
+    if (signInErr) {
+      console.error('disposable sign-in failed:', signInErr.message)
+      await admin.auth.admin.deleteUser(disposableUserId).catch(() => {})
+      process.exit(1)
+    }
+    session = signedIn.session
+  } else {
+    session = data.session
   }
-  session = data.session
+}
+
+/** Remove the disposable identity. Staging must not accumulate probe users. */
+async function cleanup() {
+  if (!disposableUserId) return
+  const { error } = await admin.auth.admin.deleteUser(disposableUserId)
+  console.log(`\ndisposable identity deleted: ${error ? `FAILED — ${error.message}` : 'ok'}`)
 }
 
 const token = session.access_token
@@ -103,13 +136,14 @@ const probe = async (label) => {
 const before = await probe('getUser BEFORE revocation')
 if (before !== 200) {
   console.error('\nThe token was not accepted even before revocation — the probe proves nothing. Stopping.')
+  await cleanup()
   process.exit(1)
 }
 
 // ── Revoke, then immediately re-probe the SAME unexpired token ──────────────
 const { error: revokeErr } = await admin.auth.admin.signOut(token, 'global')
 console.log(`\nadmin.signOut(scope=global): ${revokeErr ? `ERROR ${revokeErr.message}` : 'ok'}`)
-if (revokeErr) { console.error('Revocation failed; O-1 is unanswered.'); process.exit(1) }
+if (revokeErr) { console.error('Revocation failed; O-1 is unanswered.'); await cleanup(); process.exit(1) }
 
 const after = await probe('getUser AFTER revocation ')
 
@@ -126,13 +160,22 @@ if (after === 200) {
 console.log('───────────────────────────────────────────────')
 
 // ── O-3: is auth.sessions readable, and what does it actually contain? ──────
-if (!env.STAGING_DATABASE_URL) {
-  console.log('\nO-3: skipped — set STAGING_DATABASE_URL to inspect the auth schema.')
+// An unsubstituted placeholder is "not configured", not a connection string.
+// Without this check the probe tries to authenticate as the literal password
+// and reports an auth failure, which reads like a wrong password rather than a
+// step that was never completed.
+const DB_URL = env.STAGING_DATABASE_URL
+const dbPlaceholder = !DB_URL || /\[YOUR-PASSWORD\]|<.*password.*>/i.test(DB_URL)
+
+if (dbPlaceholder) {
+  console.log('\nO-3: SKIPPED — STAGING_DATABASE_URL is absent or still carries the')
+  console.log('     [YOUR-PASSWORD] placeholder. O-1 and O-2 above are unaffected.')
+  await cleanup()
   process.exit(0)
 }
 
 const { default: pg } = await import('pg')
-const db = new pg.Client({ connectionString: env.STAGING_DATABASE_URL })
+const db = new pg.Client({ connectionString: DB_URL })
 await db.connect()
 
 const cols = await db.query(
@@ -153,3 +196,5 @@ const tokens = cols.rows.filter((c) => /token|secret|password/i.test(c.column_na
 console.log(`\nO-3 · credential-bearing columns that a C11 projection must never select: ${tokens.length ? tokens.map((c) => c.column_name).join(', ') : 'none'}`)
 
 await db.end()
+
+await cleanup()

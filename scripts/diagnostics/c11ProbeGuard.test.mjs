@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { execFileSync } from 'node:child_process'
 import { join } from 'node:path'
+import { tmpdir } from 'node:os'
 
 // Controller V2 — Component 11: the diagnostic probe's SAFETY GUARD.
 //
@@ -19,11 +20,18 @@ import { join } from 'node:path'
 const PROBE = join(process.cwd(), 'scripts', 'diagnostics', 'c11-session-revocation-probe.mjs')
 const PRODUCTION_URL = 'https://fwznnobrdctuskgrvuik.supabase.co'
 
-/** Run the probe with a controlled environment; return {status, output}. */
-function run(env) {
+/**
+ * Run the probe with a controlled environment; return {status, output}.
+ *
+ * `cwd` matters: the probe reads `.env.staging` relative to the working
+ * directory. A developer machine that has one would otherwise turn the
+ * "configuration absent" cases into live network calls — the tests would pass
+ * or fail depending on whose machine ran them, which is not a test.
+ */
+function run(env, cwd = process.cwd()) {
   try {
     const stdout = execFileSync(process.execPath, [PROBE], {
-      cwd: process.cwd(),
+      cwd,
       encoding: 'utf8',
       // A clean environment: `.env.staging` must not leak into these cases, and
       // neither must a developer's shell.
@@ -79,13 +87,13 @@ describe('C11 probe — refuses to run against production', () => {
   it('exits 2 when configuration is absent, rather than falling back to anything', () => {
     // The failure mode this guards: a missing .env.staging silently resolving to
     // the production values already present in .env.local.
-    const { status, output } = run({})
+    const { status, output } = run({}, tmpdir())
     expect(status).toBe(2)
     expect(output).toContain('Missing STAGING_SUPABASE_URL')
   })
 
   it('does not read .env.local — the production file is not a fallback', () => {
-    const { status, output } = run({})
+    const { status, output } = run({}, tmpdir())
     expect(status).not.toBe(0)
     expect(output).not.toContain('fwznnobrdctuskgrvuik')
   })
