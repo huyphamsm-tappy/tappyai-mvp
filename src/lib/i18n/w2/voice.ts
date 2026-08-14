@@ -32,6 +32,8 @@ export const vi: Record<string, string> = {
   'voice.readAloud': 'Đọc to',
   'voice.stopReading': 'Dừng đọc',
   'voice.voiceUnavailable': 'Thiết bị chưa có giọng đọc cho {language}. Bạn vẫn đọc được nội dung bên trên.',
+  // Khác với voiceUnavailable: đây là lỗi tạm thời, thử lại được.
+  'voice.readAloudFailed': 'Chưa đọc được câu trả lời. Bạn thử lại giúp mình nhé.',
 }
 
 export const en: Record<string, string> = {
@@ -59,4 +61,6 @@ export const en: Record<string, string> = {
   'voice.readAloud': 'Read aloud',
   'voice.stopReading': 'Stop reading',
   'voice.voiceUnavailable': 'This device has no {language} voice. You can still read the text above.',
+  // Unlike voiceUnavailable, this one is temporary and worth retrying.
+  'voice.readAloudFailed': "Couldn't read that answer aloud. Please try again.",
 }

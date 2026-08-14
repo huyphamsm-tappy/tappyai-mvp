@@ -8,8 +8,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
 import posthog from 'posthog-js'
-import { useTTS } from '@/hooks/useTTS'
-import { detectLang } from '@/lib/ai/intent'
+import { useServerTTS } from '@/hooks/useServerTTS'
 import { noVoiceMessage } from '@/lib/tts/voiceSelection'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
@@ -817,16 +816,25 @@ export default function ChatInterface({
     )
   }, [userLocation, append])
 
-  // TTS — managed by useTTS hook
-  const tts = useTTS()
-  // TTS found no voice for the reply's language on this device → show a notice
-  // (reusing the voice-status line) instead of reading with a wrong-language voice.
+  // Read Aloud — audio synthesized server-side, so every platform hears the same Tappy voice.
+  // The language of each reply is decided by the backend, not here.
+  const tts = useServerTTS()
+  // The server cannot speak this reply's language → show a notice (reusing the voice-status line)
+  // rather than reading it with another language's voice.
   useEffect(() => {
     if (!tts.unavailableLang) return
     setVoiceError(noVoiceMessage(tts.unavailableLang, locale))
     tts.clearUnavailableLang()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tts.unavailableLang, locale])
+  // Synthesis failed for a retryable reason — distinct from "no voice for this language", and it
+  // gets a different sentence: one says try again, the other says do not bother.
+  useEffect(() => {
+    if (!tts.failed) return
+    setVoiceError(t('voice.readAloudFailed'))
+    tts.clearFailed()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tts.failed])
 
   useEffect(() => {
     fetch('/api/memory')
@@ -1096,7 +1104,7 @@ export default function ChatInterface({
                             ttsElapsed={tts.elapsed}
                             ttsTotal={tts.totalSecs}
                             ttsSpeed={tts.speed}
-                            onSpeak={() => tts.speak(msg.id, text, detectLang(text))}
+                            onSpeak={() => tts.speak(msg.id, text)}
                             onTTSPause={tts.togglePause}
                             onTTSSkipBack={tts.skipBack}
                             onTTSSkipForward={tts.skipForward}
