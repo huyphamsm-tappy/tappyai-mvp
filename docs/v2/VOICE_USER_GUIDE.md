@@ -96,20 +96,22 @@ question, their answer, or their translation.
 
 | | Web | iOS | Android |
 |---|---|---|---|
-| Voice input | ✅ chat, search, translate | ⏳ locale wiring pending | ✅ chat, translate |
-| Read aloud | ✅ Tappy's own voice | ⏳ pending | ✅ device voice, correct language |
+| Voice input | ✅ chat, search, translate | ✅ chat | ✅ chat, translate |
+| Read aloud | ✅ Tappy's own voice | ✅ device voice, correct language | ✅ device voice, correct language |
 | Voice translation | ✅ speech → text → translation → visible text → audio | ⏳ pending | ⏳ pending |
 | Browser requirement | Chrome or Edge | — | — |
 
 **A difference worth knowing about, in plain terms:** on the web, Read Aloud uses *Tappy's own
-voice* — the same one for everybody. On Android it currently uses the voice built into your phone,
-so two people may hear Tappy slightly differently. What is the same on both is the **language**: a
+voice* — the same one for everybody. On Android and iPhone it currently uses the voice built into
+your phone, so two people may hear Tappy slightly differently. What is the same everywhere is the
+**language**: a
 Vietnamese reply is read in Vietnamese and an English reply in English, whichever language the app
 itself is set to. If a reply is in a language Tappy cannot read yet, it stays quiet and leaves the
 text on screen rather than reading it in the wrong voice.
 
 > **Một khác biệt bạn nên biết:** trên web, Đọc to dùng *giọng riêng của Tappy* — ai cũng nghe
-> giống nhau. Trên Android hiện dùng giọng có sẵn trong máy, nên mỗi người có thể nghe hơi khác.
+> giống nhau. Trên Android và iPhone hiện dùng giọng có sẵn trong máy, nên mỗi người có thể nghe
+> hơi khác.
 > Điểm giống nhau là **ngôn ngữ**: câu trả lời tiếng Việt được đọc bằng tiếng Việt, câu tiếng Anh
 > đọc bằng tiếng Anh, bất kể ứng dụng đang để ngôn ngữ nào. Nếu gặp ngôn ngữ Tappy chưa đọc được,
 > Tappy im lặng và giữ nguyên chữ trên màn hình, chứ không đọc bằng giọng sai.
