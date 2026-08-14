@@ -1,6 +1,7 @@
 import webpush from 'web-push'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { NotificationKind } from './kind'
+import { createFcmSender } from './fcm'
 
 /**
  * Free-form delivery data, plus the one field the clients agree on.
@@ -62,13 +63,22 @@ async function dispatch(
       await dispatchWebPush(subscriptionData as unknown as WebPushSubscriptionData, payload)
       break
 
-    // ── FCM (future) ──────────────────────────────────────────────────────────
-    // case 'fcm': {
-    //   const { token } = subscriptionData as { token: string }
-    //   await sendFCMNotification(token, payload)  // TODO: implement when native app ships
-    //   break
-    // }
-    // ─────────────────────────────────────────────────────────────────────────
+    case 'fcm': {
+      const { token } = subscriptionData as { token?: string }
+      if (!token) {
+        console.warn('[notifications] FCM subscription has no token')
+        break
+      }
+      const send = createFcmSender()
+      if (!send) {
+        // No FCM identity configured on this deployment. Skipping is right: it is a deployment
+        // that cannot reach Android, not a failed send that should be retried forever.
+        console.warn('[notifications] FCM not configured; skipping Android delivery')
+        break
+      }
+      await send(token, payload)
+      break
+    }
 
     default:
       console.warn(`[notifications] Unknown provider: ${provider}`)

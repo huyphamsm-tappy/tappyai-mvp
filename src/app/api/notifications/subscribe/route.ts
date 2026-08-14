@@ -18,7 +18,14 @@ export async function POST(req: Request) {
 
     if (body?.provider === 'fcm') {
       const { token } = body
-      if (typeof token !== 'string' || !token) {
+      // Treated as a bounded opaque string: never parsed, never trusted for identity, only stored.
+      // The bounds exist so a client cannot use this row as arbitrary storage.
+      if (
+        typeof token !== 'string' ||
+        token.length < 20 ||
+        token.length > 4096 ||
+        !/^[A-Za-z0-9_:.\-]+$/.test(token)
+      ) {
         return NextResponse.json({ error: 'Invalid subscription data' }, { status: 400 })
       }
       provider = 'fcm'

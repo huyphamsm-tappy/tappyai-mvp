@@ -50,12 +50,12 @@ describe('POST /api/notifications/subscribe — two transports, one contract', (
   })
 
   it('stores an FCM token under its own provider', async () => {
-    const res = await POST(post({ provider: 'fcm', token: 'tok-123' }))
+    const res = await POST(post({ provider: 'fcm', token: 'fZx1_test-token:APA91bExampleValue' }))
     expect(res.status).toBe(200)
     expect(h.state.upsert).toMatchObject({
       user_id: 'u1',
       provider: 'fcm',
-      subscription_data: { token: 'tok-123' },
+      subscription_data: { token: 'fZx1_test-token:APA91bExampleValue' },
       enabled: true,
     })
   })
@@ -63,7 +63,7 @@ describe('POST /api/notifications/subscribe — two transports, one contract', (
   it('never lets the request body decide who the subscription belongs to', async () => {
     // The obvious attack: register your device against someone else's account. The user id comes
     // from the verified session and nowhere else.
-    const res = await POST(post({ provider: 'fcm', token: 'tok', user_id: 'victim' }))
+    const res = await POST(post({ provider: 'fcm', token: 'fZx1_test-token:APA91bExampleValue', user_id: 'victim' }))
     expect(res.status).toBe(200)
     expect(h.state.upsert.user_id).toBe('u1')
   })
@@ -72,6 +72,11 @@ describe('POST /api/notifications/subscribe — two transports, one contract', (
     for (const body of [
       { provider: 'fcm' },
       { provider: 'fcm', token: '' },
+      // Bounded: too short to be a real token, too long to be anything but abuse of the row as
+      // storage, and characters an FCM token never contains.
+      { provider: 'fcm', token: 'short' },
+      { provider: 'fcm', token: 'a'.repeat(4097) },
+      { provider: 'fcm', token: '{"not":"a token"} with spaces' },
       { provider: 'fcm', token: 123 },
     ]) {
       const res = await POST(post(body))
@@ -83,14 +88,14 @@ describe('POST /api/notifications/subscribe — two transports, one contract', (
   it('an unknown provider is treated as web push, not silently accepted', async () => {
     // Falling through to webpush validation means a typo'd provider fails loudly instead of
     // writing a row nothing can ever send to.
-    const res = await POST(post({ provider: 'carrier-pigeon', token: 'tok' }))
+    const res = await POST(post({ provider: 'carrier-pigeon', token: 'fZx1_test-token:APA91bExampleValue' }))
     expect(res.status).toBe(400)
     expect(h.state.upsert).toBeNull()
   })
 
   it('requires a session for either transport', async () => {
     h.state.user = null
-    for (const body of [WEBPUSH, { provider: 'fcm', token: 'tok' }]) {
+    for (const body of [WEBPUSH, { provider: 'fcm', token: 'fZx1_test-token:APA91bExampleValue' }]) {
       const res = await POST(post(body))
       expect(res.status).toBe(401)
       expect(h.state.upsert).toBeNull()
@@ -99,7 +104,7 @@ describe('POST /api/notifications/subscribe — two transports, one contract', (
 
   it('surfaces a storage failure rather than reporting success', async () => {
     h.state.error = { message: 'boom' }
-    const res = await POST(post({ provider: 'fcm', token: 'tok' }))
+    const res = await POST(post({ provider: 'fcm', token: 'fZx1_test-token:APA91bExampleValue' }))
     expect(res.status).toBe(500)
   })
 })
