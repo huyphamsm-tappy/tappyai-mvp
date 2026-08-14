@@ -1,8 +1,8 @@
 # Controller V2 — Component 11: Session Security — CONTRACT **DRAFT**
 
-**Status:** 🟢 **POLICY RATIFIED · O-1 and O-2 MEASURED · one item (O-3) outstanding.**
+**Status:** 🟢 **POLICY RATIFIED · O-1, O-2 and O-3 ALL MEASURED · implemented.**
 **P-1 … P-7 were ratified by the Owner on 2026-08-13** and are now contract text.
-**O-1 and O-2 are resolved by measurement** against the non-production project `nhncoqyadofojjrnpiia` on 2026-08-14 — see §20. **O-1 = IMMEDIATE revocation**, so §5.2 stands as written and C11 adds no per-request database lookup. **O-3 remains outstanding**: reading `auth.sessions` needs a direct staging PostgreSQL connection, and the credential for it is not yet available. Nothing was guessed; the inventory is not implemented.
+**All three open questions are resolved by measurement** against the non-production project `nhncoqyadofojjrnpiia` on 2026-08-14 — see §20. **O-1 = IMMEDIATE revocation**, so §5.2 stands as written and C11 adds no per-request database lookup. **O-2 = 3600 s**, which is therefore not the revocation guarantee. **O-3 = Option A is feasible**: `auth.sessions` exists, no PostgREST role can read it, and `auth.users.is_anonymous` is real — with one correction the measurement forced, recorded in §20.4. Nothing was guessed.
 
 **Date:** 2026-08-13, measurements added 2026-08-14 · **Baseline:** `origin/main` = `6f78a4e`
 **Prior scope:** one line — *"Session inventory, revocation, forced logout"* ([`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §11) — plus [`02_PHASE0_AUDIT.md`](02_PHASE0_AUDIT.md) §"Not verified", which records that no implementation exists. Those are **scope signals, not semantics**, and this document does not pretend they defined anything.
@@ -56,7 +56,7 @@ Not a guess: the SDK pins it. `@supabase/auth-js@2.108.2` declares `session_id` 
 
 ### 3.3 Fields C11 reads — and the ones it must not
 
-Creation time, last refresh, expiry (`not_after`) and revocation state are properties of the GoTrue session row. **Whether this project can read that row at all is [O-3]** — outstanding, see §20.3.
+Creation time, last refresh and expiry (`not_after`) are properties of the GoTrue session row. **Revocation state is not** — §20.4: revoking deletes the row, so "revoked" is an absence and the durable record is the C7 audit entry. Reading the row requires a `SECURITY DEFINER` function; no PostgREST role can `SELECT auth.sessions` (measured, §20.3).
 
 **Never read, never stored, never returned, never logged:** access tokens, refresh tokens, cookie values, password hashes, MFA secrets, or any credential material. §12 makes this a testable invariant rather than an intention.
 
@@ -71,6 +71,8 @@ Three states, and each is justified rather than assumed:
 | **active** | a session exists and its refresh path still works | GoTrue, at sign-in |
 | **expired** | `not_after` has passed | GoTrue, by time — **not** an action |
 | **revoked** | deliberately ended before expiry | C11, or the user signing out |
+
+> **Storage, measured 2026-08-14 (§20.4):** GoTrue has no `revoked` column — revoking **deletes the row**. `active` and `expired` are distinguished by `not_after`; `revoked` is the row's absence, and its durable record is the C7 audit entry. Every property below holds unchanged, and terminality becomes structural rather than predicate-enforced.
 
 **`expired` and `revoked` are deliberately distinct.** Collapsing them would make the audit trail unable to answer *"was this session ended by someone, or did it simply run out?"* — the single most important question after an account compromise.
 
@@ -326,7 +328,7 @@ C11 inserts **inside step 1 only**. It cannot admit anything step 3 would deny (
 | 10 | Idempotent repeats | §8 | SQL function return count | runtime test + mutation |
 | 11 | Revoke-all does not lock the account | §9 | operation defined over a snapshot set | runtime test (**I-8**) |
 | 12 | No credential material ever exposed | §3.3, ADR-019 grant model | response projection + table grants | invariant test (**I-5**) scanning every response field |
-| 13 | Inventory source | ⛔ **[O-3]** — outstanding, §20.3 | — | — |
+| 13 | Inventory source | ✅ §20.3 measured 2026-08-14; ADR-021 Option A | fn_session_inventory, explicit 8-column projection | runtime suite: field list, credential absence, anonymous exclusion |
 | 14 | Immediate vs eventual revocation | ✅ **§20.1 — measured 2026-08-14**: HTTP 403 `session_not_found` with 3597 s of token life left | GoTrue, via the existing `auth.getUser()` round-trip in `getRequestUser.ts` | the probe run, kept as integration evidence |
 | 15 | Owner target protection | §5.1.1 · Component 1 `platform_owner` authority | handler pre-check **and** SQL function predicate | invariant **I-4a**, mutation-tested by deleting the predicate |
 | 16 | Anonymous exclusion | §6.1 · `auth.users.is_anonymous` (verified in `20260808c`) | `is_anonymous = false` filter on every read and write | invariant **I-12** |
@@ -361,21 +363,43 @@ Because O-1 is immediate, this number does **not** bound revocation — it bound
 
 Also confirmed live: **`session_id` is present as a claim** on issued tokens, which is what makes a session — not a token — the unit C11 governs (§3.1).
 
-### 20.3 ⛔ O-3 — outstanding, blocked on one value
+### 20.3 ✅ O-3 — RESOLVED, and Option A is feasible
 
-`auth.sessions` cannot be inspected through PostgREST: Supabase does not expose the `auth` schema over REST, so this needs a direct PostgreSQL connection to the **staging** database.
+Measured 2026-08-14 in the staging SQL editor (read-only; the direct database credential never worked, and that channel was abandoned rather than fought).
 
-`STAGING_DATABASE_URL` in `.env.staging` still carries the literal `[YOUR-PASSWORD]` placeholder. The probe detects that and skips O-3 rather than attempting to authenticate as the placeholder, which would report a confusing auth failure instead of an unfinished step.
+**`auth.sessions` exists, with 15 columns.** The eight C11 reads are `id`, `user_id`, `created_at`, `refreshed_at`, `not_after`, `aal`, `user_agent` (derived only) and, through `auth.users`, `is_anonymous`. The full list, the types, and the credential-bearing columns are recorded in [ADR-021](../architecture/ADR-021-c11-auth-sessions-dependency.md).
 
-**Still to be measured, all read-only:**
-
-| Question | Query |
+| Question | Measured |
 |---|---|
-| Does `auth.sessions` exist, and with which columns? | `information_schema.columns` |
-| Can `anon` / `authenticated` / `service_role` read it directly? | `has_table_privilege` — all three **must** be false, so a definer function is the only path |
-| Which columns carry credential material? | name match on `token`/`secret`/`password` — a C11 projection must never select them |
+| `anon` / `authenticated` / `service_role` may `SELECT auth.sessions` | **false, all three** — a `SECURITY DEFINER` function is the only path, exactly as Option A assumed |
+| The same roles hold `USAGE` on schema `auth` | true — harmless on its own, since no table privilege follows it |
+| `auth.users.is_anonymous` exists | **true** — P-4's discriminator is real on this instance, not just in the 20260808c migration's comment |
+| Credential-bearing columns | **`refresh_token_hmac_key`, `refresh_token_counter`** — never projected; the runtime suite asserts a real value in the column and its absence from the output |
+| Personal data | `ip` (inet), `user_agent` (text) — both withheld under P-6; `user_agent` is read only to derive a three-valued platform class |
 
-Until then ADR-021's assumption table stays empty, and the Option A / Option C decision stays open. Nothing about the inventory is implemented.
+**One correction to this contract, driven by measurement — §4.2.**
+
+### 20.4 O-3's consequence: revocation is a DELETE, not a flag
+
+**GoTrue has no `revoked` column.** §3.3 assumed "revocation state" was a property of the session row. It is not: revoking deletes the row, which is why the O-1 probe saw `session_not_found` rather than a session marked dead.
+
+The three ratified states are unchanged; only their storage is now known:
+
+| State | How it is represented |
+|---|---|
+| **active** | the row exists, and `not_after` is NULL or in the future |
+| **expired** | the row exists, and `not_after <= now()` |
+| **revoked** | **the row is gone** |
+
+Every ratified property survives this, and two of them get *stronger*:
+
+- **Terminality needs no predicate.** A deleted row cannot transition anywhere, and re-authentication creates a new session with a new id. C8 needed a `status = 'pending'` guard to make terminality real; here it is structural.
+- **Idempotency falls out of the same fact.** A second revoke deletes 0 rows and reports `not_found` — §8's "already-revoked → success, count 0" holds without a special case.
+- **The snapshot boundary is unaffected.** A single `DELETE … WHERE user_id = $1` takes its READ COMMITTED snapshot at statement start exactly as an `UPDATE` would, so §4.1 stands verbatim. The runtime suite proves it with a trigger that inserts a session *during* the delete: the racing login survives.
+
+**What this costs, stated plainly:** a revoked session leaves no row, so the *inventory* can never show revoked sessions — only active and expired ones. The durable record of a revocation is the **C7 audit entry**, which is why §13 requires one for every revoke, forced logout and denial. That is not a workaround; it is the only honest place for the fact, since the subject of the record no longer exists.
+
+This is a correction driven by measurement, not a new decision: no ratified property changed, and nothing was invented to make the component implementable.
 
 ---
 

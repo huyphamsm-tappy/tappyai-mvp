@@ -1,11 +1,11 @@
 # ADR-021 — Component 11 reads GoTrue's `auth.sessions`
 
-**Status:** ⛔ **DRAFT — the dependency this ADR governs is NOT yet verified.**
+**Status:** ✅ **ACCEPTED — the dependency is measured, and Option A is implemented.**
 **Date:** 2026-08-13 · **Component:** Controller V2 — C11 Session Security
 **Contract:** [`11_COMPONENT11_SESSION_SECURITY_CONTRACT.md`](../controller-v2/11_COMPONENT11_SESSION_SECURITY_CONTRACT.md) §7, §20 (O-3), §22
 **Supersedes nothing. Related:** [ADR-019](ADR-019-supabase-grant-model.md) (grant model), [ADR-020](ADR-020-repository-baseline-objects.md) (objects no migration creates)
 
-> **This ADR may not be marked Accepted until O-3 is verified against a real GoTrue.** Its central factual claims — that `auth.sessions` exists here, which columns it carries, and that a `SECURITY DEFINER` function can read it — are exactly what verification establishes. Writing them down as decided before measuring them is the failure mode this project has already paid for twice.
+> Measured 2026-08-14 against the staging project `nhncoqyadofojjrnpiia`, read-only, through the SQL editor. This ADR was deliberately left in DRAFT with an empty assumption table until that measurement existed.
 
 ## Context
 
@@ -39,13 +39,36 @@ Rejected as insufficient rather than wrong. It is honest and small, and it deliv
 
 ## Assumptions about the upstream schema
 
-**To be filled in from measurement, not from documentation.** The probe (`scripts/diagnostics/c11-session-revocation-probe.mjs`) prints the live column list and per-role reachability. Until it runs, this table stays empty on purpose:
+Measured, not documented. `auth.sessions` carries **15 columns**; C11 depends on seven of them, plus `auth.users.is_anonymous`.
 
-| Column | Type | Used for | Verified |
+| Column | Type | C11 uses it for | Verified |
 |---|---|---|---|
-| _(pending O-3)_ | | | ❌ |
+| `id` | uuid, NOT NULL | session identity | ✅ |
+| `user_id` | uuid, NOT NULL | subject, and the revoke-all predicate | ✅ |
+| `created_at` | timestamptz | inventory ordering + cursor | ✅ |
+| `refreshed_at` | **timestamp WITHOUT time zone** | last activity — converted `AT TIME ZONE 'UTC'`, never reinterpreted | ✅ |
+| `not_after` | timestamptz | active vs expired | ✅ |
+| `aal` | `auth.aal_level` enum | assurance level, cast to text | ✅ |
+| `user_agent` | text | **read only** to derive a three-valued platform class; never returned | ✅ |
+| `auth.users.is_anonymous` | boolean | P-4 exclusion, on every read and write | ✅ |
 
-The assumption set recorded here **is** the blast radius of a future Supabase upgrade. Anything not listed must not be read by C11.
+**Deliberately never touched**, though present: `refresh_token_hmac_key` and `refresh_token_counter` (credential material), `ip` (personal data, withheld by P-6), and `updated_at`, `factor_id`, `tag`, `oauth_client_id`, `scopes` (outside the contract).
+
+`refreshed_at` being the one naive timestamp in the table is the sort of detail that only measurement surfaces: returning it without conversion would silently shift "last activity" by the server's offset. A mutation covers it, and the runtime suite runs under a non-UTC session timezone so the mutation cannot pass by luck.
+
+**Privilege evidence, measured the same day:**
+
+| Role | `USAGE` on schema `auth` | `SELECT` on `auth.sessions` |
+|---|---|---|
+| `anon` | true | **false** |
+| `authenticated` | true | **false** |
+| `service_role` | true | **false** |
+
+All three hold schema `USAGE` and none can read the table, which is precisely the shape Option A needs: the definer function is the only path, and it is not merely the *preferred* one.
+
+**One thing the measurement changed.** GoTrue has no `revoked` column — revocation deletes the row. The contract's state machine is unaffected (§20.4 records why), but any implementation that expected to flag a row would have been wrong, and would have been written that way had this ADR been accepted before measuring.
+
+The assumption set above **is** the blast radius of a future Supabase upgrade. Anything not listed must not be read by C11.
 
 ## What happens when Supabase changes the schema
 
@@ -61,7 +84,8 @@ A runtime test in the embedded-PostgreSQL harness cannot help here — `auth.ses
 
 | Layer | Where | Detects |
 |---|---|---|
-| **Structural + behavioural** | `supabase/tests/` (embedded PostgreSQL) | the C11 function's own logic against a *stand-in* table whose shape is declared by this ADR — proves the projection, the filters, the snapshot and the grants |
+| **Apply-time guard** | the migration's own `DO` block | a missing column **at the moment the migration is applied to a real GoTrue database**, raising `42703` and naming it. This is the mechanism that turns a Supabase upgrade into a loud failure rather than an empty inventory, and the runtime suite proves it by dropping a column and requiring the apply to fail |
+| **Structural + behavioural** | `supabase/tests/c11_session_security.test.ts` (embedded PostgreSQL) | the C11 functions' own logic against a *stand-in* table built from the measured shape — the projection, the filters, the snapshot, the grants |
 | **Schema-assumption** | the diagnostic probe, run against a real GoTrue | that the real `auth.sessions` still matches the assumption table above |
 
 The first layer must never be described as proving the second. A stand-in table shaped by our own assumptions cannot detect that those assumptions became false — that is precisely the "fake GoTrue semantics" trap, and this ADR names it so nobody has to rediscover it.
