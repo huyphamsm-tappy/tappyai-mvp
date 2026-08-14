@@ -15,6 +15,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- In-app voice input (SpeechRecognizer) — mirrors the web chat's mic (Web Speech API). -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Android 13+ delivers no notification at all without this. Undeclared, the permission can
+         never be granted, so it gates delivery only — never Tappy's identity sound setting. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Android 11+ package visibility: needed for SpeechRecognizer to see the recognition service. -->
     <queries>

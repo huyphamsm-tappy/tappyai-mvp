@@ -43,11 +43,17 @@ single recording made in advance. There is nothing in it that could change with 
 
 ## Notification permission
 
-Tappy asks once. If you say no, nothing breaks — you simply will not get notifications until you
-allow them in your phone's settings. Allowing notifications does not give Tappy your microphone.
+Tappy asks once, and only when you turn notifications on yourself in **Settings → Notifications**.
+Changing the Tappy sound never triggers that question — it is a different setting. If you say no,
+nothing breaks; turning it on again takes you straight to your phone's own notification screen for
+Tappy, because once you have declined, Android stops showing the pop-up at all. Allowing
+notifications does not give Tappy your microphone.
 
-> Tappy chỉ hỏi một lần. Nếu bạn từ chối, không có gì hỏng cả — chỉ là bạn sẽ không nhận thông báo cho
-> tới khi bật lại trong cài đặt máy. Cho phép thông báo **không** đồng nghĩa với cho Tappy dùng micro.
+> Tappy chỉ hỏi một lần, và chỉ khi chính bạn bật thông báo trong **Cài đặt → Thông báo**. Đổi âm
+> thanh Tappy không bao giờ làm hiện câu hỏi đó — đó là cài đặt khác. Nếu bạn từ chối, không có gì
+> hỏng cả; lần bật sau máy sẽ đưa bạn thẳng tới màn hình thông báo của điện thoại cho Tappy, vì sau
+> khi đã từ chối thì Android không hiện hộp thoại nữa. Cho phép thông báo **không** đồng nghĩa với
+> cho Tappy dùng micro.
 
 ## Turning the sound off
 
@@ -75,7 +81,8 @@ different switch, and turning off the sound is not a quiet way of doing it.
 |---|---|---|---|
 | Notification arrives | ✅ | ✅ | ⏳ not yet |
 | Tappy chime + "Tappy!" | ✅ while the site is open | ⏳ not yet | ⏳ not yet |
-| Turn the sound off | ⏳ not yet | ⏳ not yet | ⏳ not yet |
+| Turn the sound off | ⏳ not yet | ⏳ not yet | ✅ Settings → Tappy notification sound |
+| Ask permission to notify | n/a | ⏳ not yet | ✅ Settings → Notifications |
 | Content ever read aloud | **never** | **never** | **never** |
 
 ⏳ means it is being built. Nothing marked ⏳ should be described to users as working.

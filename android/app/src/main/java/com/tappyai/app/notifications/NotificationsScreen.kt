@@ -1,5 +1,10 @@
 package com.tappyai.app.notifications
 
+import android.content.Context
+import android.content.Intent
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +29,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +63,19 @@ fun NotificationsScreen(
     viewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val pushEnabled by viewModel.pushEnabled.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val permissionState = remember { NotificationPermissionState(context) }
+
+    // Same permission pattern the chat mic already uses (ChatScreen's RECORD_AUDIO launcher) —
+    // deliberately not a second permission framework.
+    val requestPermission = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        permissionState.hasBeenRequested = true
+        // Reflect what the OS decided, not what the tap asked for. Showing the switch ON after a
+        // denial would promise notifications that can never arrive.
+        viewModel.setPushEnabled(granted)
+    }
 
     Column(
         modifier = Modifier
@@ -82,7 +102,25 @@ fun NotificationsScreen(
 
             PushToggleCard(
                 enabled = pushEnabled,
-                onToggle = viewModel::setPushEnabled,
+                onToggle = { wanted ->
+                    // Turning push OFF never revokes anything and never asks: it is the user's
+                    // in-app choice. Only turning it ON can need the OS permission.
+                    if (!wanted) {
+                        viewModel.setPushEnabled(false)
+                    } else when (
+                        TappyNotificationPermission.actionFor(context, permissionState.hasBeenRequested)
+                    ) {
+                        NotificationPermissionAction.NOT_REQUIRED,
+                        NotificationPermissionAction.ALREADY_GRANTED,
+                        -> viewModel.setPushEnabled(true)
+
+                        NotificationPermissionAction.REQUEST ->
+                            requestPermission.launch(TappyNotificationPermission.PERMISSION)
+
+                        NotificationPermissionAction.DIRECT_TO_SETTINGS ->
+                            openAppNotificationSettings(context)
+                    }
+                },
             )
 
             if (pushEnabled) {
@@ -169,6 +207,23 @@ private fun WhatYoullReceiveCard() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+/**
+ * Opens the system screen for this app's notifications, for the case where the permission was
+ * already declined once and the OS will no longer show a dialog.
+ *
+ * Wrapped in [runCatching] because a settings activity is not guaranteed to exist on every OEM
+ * build, and failing to open a screen must never take the app down.
+ */
+private fun openAppNotificationSettings(context: Context) {
+    runCatching {
+        context.startActivity(
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
     }
 }
 
