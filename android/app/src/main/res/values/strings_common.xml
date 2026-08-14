@@ -6,4 +6,14 @@
     <string name="common_cancel">Cancel</string>
     <string name="common_try_again">Try again</string>
     <string name="coming_soon_description">We\'re still building %1$s. It\'ll be available in a future update.</string>
+
+    <!-- Notification channels. Two channels because Android fixes a channel's sound at creation. -->
+    <string name="notif_channel_default_name">Notifications</string>
+    <string name="notif_channel_default_desc">Deals, reminders and updates from Tappy.</string>
+    <string name="notif_channel_identity_name">Tappy notification sound</string>
+    <string name="notif_channel_identity_desc">Tappy\'s own chime, so you can recognise it without looking at your screen.</string>
+
+    <!-- The user-facing toggle. Turning it off silences the chime, not the notifications. -->
+    <string name="settings_tappy_notification_sound">Tappy notification sound</string>
+    <string name="settings_tappy_notification_sound_desc">Play Tappy\'s chime when a notification arrives. Turning this off keeps your notifications — they just arrive quietly. Tappy never reads your notifications aloud.</string>
 </resources>

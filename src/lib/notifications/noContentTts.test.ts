@@ -98,10 +98,44 @@ describe('no notification handler reaches any other TTS path', () => {
   })
 })
 
-describe('what the service worker hands the page', () => {
-  it('still posts the payload — which is exactly why the guards above exist', () => {
-    // Documenting the hazard rather than pretending it is absent: the body IS available at the
-    // call site. The guards make using it a test failure instead of a plausible-looking edit.
-    expect(serviceWorker()).toContain("postMessage({ type: 'TAPPY_PUSH'")
+describe('the service worker hands the page a trigger, not the notification', () => {
+  // INVERTED 2026-08-14. This block previously asserted the OPPOSITE — that the worker still posts
+  // `{ type: 'TAPPY_PUSH', payload: data }` — and documented it as a hazard the other guards had to
+  // contain: the body sat one property access from the line that triggers speech.
+  //
+  // Nothing on the page ever consumed that payload (only `event.data?.type` was read), so it was
+  // removed. The hazard is now gone by construction rather than guarded against, which is a
+  // stronger position than the one these tests were written to defend.
+
+  it('sends no payload with the identity trigger', () => {
+    const src = serviceWorker()
+    expect(src).toContain("postMessage({ type: 'TAPPY_IDENTITY' })")
+    expect(src).not.toContain('payload: data')
+  })
+
+  it('posts nothing that could carry notification text', () => {
+    const posted = serviceWorker().match(/postMessage\([^)]*\)/g) ?? []
+    expect(posted.length).toBeGreaterThan(0)
+    for (const call of posted) {
+      for (const field of ['payload', 'body', 'title', 'data']) {
+        expect(call, call).not.toContain(field)
+      }
+    }
+  })
+
+  it('only an identity-classified notification triggers the sound', () => {
+    // A trigger fired for every push would make the identity meaningless and would play Tappy's
+    // voice for notifications the backend never marked as its own.
+    const src = serviceWorker()
+    expect(src).toMatch(/kind === 'tappy_identity'/)
+  })
+
+  it('still always shows the visual notification, whatever the kind', () => {
+    // The identity is additive. Classification must never suppress the title and body.
+    expect(serviceWorker()).toContain('self.registration.showNotification(title, options)')
+  })
+
+  it('treats a missing or unknown kind as normal', () => {
+    expect(serviceWorker()).toMatch(/=== 'tappy_identity' \? 'tappy_identity' : 'normal'/)
   })
 })
