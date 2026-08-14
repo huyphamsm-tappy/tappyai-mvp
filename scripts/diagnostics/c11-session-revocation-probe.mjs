@@ -199,7 +199,39 @@ if (dbPlaceholder) {
 }
 
 const { default: pg } = await import('pg')
-const db = new pg.Client({ connectionString: DB_URL })
+
+// Do NOT hand the raw string to pg. A generated database password routinely
+// contains characters that are URI-reserved (@ # / ? %), and connectionString
+// parsing splits on them — the password silently arrives truncated and the
+// server answers 28P01, which reads exactly like a wrong password.
+//
+// Password is everything between the first ':' after the scheme and the LAST
+// '@', so an embedded '@' cannot terminate it early.
+const m = /^postgres(?:ql)?:\/\/([^:@/]+):(.*)@([^@/]+)\/(.+?)(?:\?.*)?$/.exec(DB_URL.trim())
+if (!m) {
+  console.error('\nO-3: STAGING_DATABASE_URL is not a recognisable postgres URI.')
+  await cleanup()
+  process.exit(4)
+}
+const [, dbUser, rawPassword, hostPort, database] = m
+const [dbHost, dbPort = '5432'] = hostPort.split(':')
+const password = /%[0-9A-Fa-f]{2}/.test(rawPassword) ? decodeURIComponent(rawPassword) : rawPassword
+
+// Non-secret shape only — never the value.
+const reserved = ['@', '#', '/', '?', '%', ':'].filter((c) => rawPassword.includes(c))
+console.log(`\nO-3 · connecting as ${dbUser}@${dbHost}:${dbPort}/${database}`)
+console.log(`     password length ${password.length}${reserved.length ? `, contains URI-reserved ${reserved.join(' ')}` : ', no URI-reserved characters'}`)
+
+const db = new pg.Client({
+  user: dbUser,
+  password,
+  host: dbHost,
+  port: Number(dbPort),
+  database,
+  // Supabase terminates TLS; without this pg negotiates plaintext.
+  ssl: { rejectUnauthorized: false },
+  connectionTimeoutMillis: 20_000,
+})
 try {
   await db.connect()
 } catch (e) {
