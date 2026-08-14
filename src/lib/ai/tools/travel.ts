@@ -4,6 +4,7 @@ import { LUXURY_KEYWORDS } from '@/lib/ai/budget'
 import { searchPlacesOSM } from './food'
 import { buildFlightLinks } from '@/lib/platformLinks/travel'
 import { messages } from '@/lib/ai/messages'
+import { flightsCacheKey, hotelsCacheKey, transportCacheKey } from './cacheKeys'
 
 // Kiem tra link co phai trang CU THE cua 1 khach san tren Booking.com/Agoda/Traveloka
 // (khong phai trang tim kiem/danh sach chung theo khu vuc/thanh pho)
@@ -74,7 +75,7 @@ function cityToIATA(name: string): string | null {
 }
 
 export async function getFlightPrices(origin: string, destination: string, lang = 'vi') {
-  const cacheKey = 'flights:' + origin.toLowerCase().trim() + ':' + destination.toLowerCase().trim() + ':' + lang
+  const cacheKey = flightsCacheKey(origin, destination, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -136,7 +137,7 @@ export async function getFlightPrices(origin: string, destination: string, lang 
 
 // ===== HOTEL PRICES: web search (Booking.com/Agoda snippets) + OSM hotel list (free, no API key) =====
 export async function getHotelPrices(location: string, checkIn?: string, checkOut?: string, maxBudgetVnd?: number, lang = 'vi') {
-  const cacheKey = 'hotels:' + location.toLowerCase().trim() + ':' + (checkIn || '') + ':' + (checkOut || '') + ':' + (maxBudgetVnd || '') + ':' + lang
+  const cacheKey = hotelsCacheKey(location, checkIn, checkOut, maxBudgetVnd, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -333,7 +334,7 @@ const RIDE_HAILING_APPS = [
 
 // mode: 'taxi' = uoc tinh gia trong thanh pho/quang duong ngan; khac (hoac khong co) = xe khach/tau lien tinh
 export async function getTransportOptions(origin: string, destination: string, mode?: string, lang = 'vi') {
-  const cacheKey = 'transport:' + origin.toLowerCase().trim() + ':' + destination.toLowerCase().trim() + ':' + (mode || 'auto') + ':' + lang
+  const cacheKey = transportCacheKey(origin, destination, mode, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 

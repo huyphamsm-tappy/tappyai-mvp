@@ -1,5 +1,66 @@
 import { describe, it, expect } from 'vitest'
-import { detectLang, detectExplicitLangRequest } from './intent'
+import { detectLang, detectExplicitLangRequest, classifyIntent } from './intent'
+
+// classifyIntent picks between the full tool-capable prompt and the lightweight
+// no-tool prompt. Getting it wrong is not a cost problem, it is a correctness
+// one: the chitchat path runs with maxSteps:1, so if the model decides it needs
+// a tool there is no second step in which to answer and the user receives an
+// EMPTY reply. Measured 2026-08-10 against the running server, before the fix:
+//
+//   "hiện tại giá vàng bao nhiêu"  -> chitchat -> called get_gold_price -> 0 chars
+//   "ok show me cafes in Hanoi"    -> chitchat -> called search_places  -> 0 chars
+//
+// Both were caused by the pattern being an unanchored PREFIX match: "hiện"
+// starts with "hi", "uống" starts with "u", "ok show me…" starts with "ok".
+describe('classifyIntent', () => {
+  describe('genuine chitchat — nothing a tool could help with', () => {
+    for (const t of [
+      'Chào', 'Chào Tappy', 'chào bạn', 'xin chào', 'hi', 'hi there', 'hello', 'alo',
+      'cảm ơn', 'cảm ơn nhé', 'cảm ơn bạn nhiều', 'thanks', 'thank you', 'Thanks so much',
+      'ok', 'oke', 'okie', 'ừ', 'um', 'tạm biệt', 'bye', 'haha', 'hehe',
+      'bạn là ai', 'bạn tên gì', 'TappyAI là gì', 'test', 'ok!', 'hello?', 'Chào Tappy!!',
+    ]) {
+      it(`"${t}"`, () => expect(classifyIntent(t)).toBe('chitchat'))
+    }
+  })
+
+  describe('NOT chitchat — a greeting token merely starts the message', () => {
+    for (const t of [
+      // The two that shipped empty replies.
+      'hiện tại giá vàng bao nhiêu',
+      'ok show me cafes in Hanoi',
+      // Same shape, other collisions.
+      'uống gì ngon ở quận 1',
+      'hôm nay ăn gì',
+      'hiểu rồi, tìm quán khác đi',
+      'ok cho mình xem quán ăn quận 1',
+      'oke vậy đặt bàn ở đâu',
+      'hi-end restaurants in Hanoi',
+      'test tốc độ mạng ở Hà Nội',
+      'umbrella shops near me',
+      'bye bye Đà Nẵng, gợi ý quán ăn Hà Nội',
+      'cảm ơn, giờ tìm khách sạn giúp mình',
+      'thanks, now find me a hotel in Da Nang',
+    ]) {
+      it(`"${t}"`, () => expect(classifyIntent(t)).toBe('tool'))
+    }
+  })
+
+  describe('NOT chitchat — ordinary requests, VI and EN', () => {
+    for (const t of [
+      'Gợi ý quán ăn ngon ở Quận 1', 'tỷ giá USD', 'thời tiết Hà Nội',
+      'Suggest a good restaurant in District 1', 'gold price today',
+      'quán nào gần trung tâm nhất?', 'which one is closest to the centre?',
+    ]) {
+      it(`"${t}"`, () => expect(classifyIntent(t)).toBe('tool'))
+    }
+  })
+
+  it('an empty message is not chitchat', () => {
+    expect(classifyIntent('')).toBe('tool')
+    expect(classifyIntent('   ')).toBe('tool')
+  })
+})
 
 describe('detectLang — regression: English text must not default to Vietnamese', () => {
   // Reported bug (2026-07-29): UI in English, quick prompts in English, user

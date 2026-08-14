@@ -32,7 +32,11 @@ export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
-export const MAX_VIDEO_SIZE_MB = 50
+/** Maximum video file size, in BINARY megabytes: every layer multiplies this by 1024 * 1024, so
+ * 150 means 157,286,400 bytes. The ceiling is inclusive — a file of exactly that many bytes is
+ * accepted and one byte more is not. Raised 50 → 150 once five-minute clips were allowed, since a
+ * 50MB cap made most of the new duration range unusable. */
+export const MAX_VIDEO_SIZE_MB = 150
 /** Advertised clip length — what the user is told (UI copy shows "5 minutes"). */
 export const MAX_VIDEO_DURATION_SEC = 300
 /** Tolerant reject threshold: a clip a user trimmed to "5 minutes" routinely

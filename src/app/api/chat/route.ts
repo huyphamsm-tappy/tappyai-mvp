@@ -3,16 +3,18 @@ import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
-import { webSearch } from '@/lib/ai/tools/common'
+import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
 import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery, isShoppingQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, detectDecisionStage, isSimpleQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
+import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
+import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
@@ -97,9 +99,18 @@ export async function POST(req: Request) {
   // profile, country, or earlier turns (none of those are read here).
   const lang = detectExplicitLangRequest(lastText) ?? detectLang(lastText)
   const forcedTool = detectForcedTool(lastText)
-  const worthExtract = lastText.trim().length > 20
+  // Whether this turn earns a third LLM call for memory extraction. Was
+  // `lastText.length > 20`, which measured wrong in both directions: it fired on
+  // weather/gold/news lookups that store nothing, and dropped "Tôi ăn chay."
+  // (12 chars) — a hard dietary constraint. See memoryGate.ts.
+  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
+  // Where in the decision this turn sits (C2). "Rẻ hơn" only means "tighten the
+  // current task" if there IS one, so refinement is gated on a prior assistant
+  // turn — read from the history already on the request, not a second LLM call.
+  const hasPriorAssistantTurn = messages.some((m: { role: string }) => m.role === 'assistant')
+  const decisionStage = detectDecisionStage(lastText, { hasPriorAssistantTurn })
 
   // Load user memory + kiểm tra freemium limit. Quota values + measurement live
   // in @/lib/config/product — the single owner of every business value.
@@ -153,7 +164,7 @@ export async function POST(req: Request) {
         }
       } catch { /* calendar optional */ }
 
-      // Kiá»ƒm tra subscription tá»« DB
+        // Kiểm tra subscription từ DB
       const { data: subData } = await supabase
         .from('subscriptions')
         .select('status, current_period_end')
@@ -164,10 +175,10 @@ export async function POST(req: Request) {
       }
 
       if (!isPro) {
-        // Äáº¿m sá»‘ tin nháº¯n user Ä‘Ã£ gá»­i hÃ´m nay (theo giá» VN UTC+7)
+        // Đếm số tin nhắn user đã gửi hôm nay (theo giờ VN UTC+7).
 
-        // Æ¯á»›c tÃ­nh sá»‘ message tá»« conversations hÃ´m nay â€” Ä‘Æ¡n giáº£n: náº¿u > FREE_DAILY_LIMIT conversations thÃ¬ cháº·n
-        // CÃ¡ch chÃ­nh xÃ¡c hÆ¡n cáº§n track message count riÃªng â€” dÃ¹ng táº¡m cÃ¡ch nÃ y cho MVP
+        // Ước tính số message từ conversations hôm nay — đơn giản: nếu vượt FREE_DAILY_LIMIT thì chặn.
+        // Cách chính xác hơn cần track message count riêng — dùng tạm cách này cho MVP.
         // Shared VN-day measurement from @/lib/config/product — the same helper
         // the subscription page displays from, so display and enforcement can
         // never disagree. (Also drops a redundant count-only query this route
@@ -226,8 +237,21 @@ export async function POST(req: Request) {
     ? (rawUserPrefs as unknown[]).filter(p => typeof p === 'string').slice(0, 50) as string[]
     : []
   if (rawPrefsArr.length > 0) {
-    const freeformBlock = `\n\n===== Sá»ž THÃCH & THÃ”NG TIN CÃ NHÃ‚N Cá»¦A USER =====\n${rawPrefsArr.map(p => `- ${p}`).join('\n')}\nHÃ£y luÃ´n ghi nhá»› vÃ  Ã¡p dá»¥ng nhá»¯ng sá»Ÿ thÃ­ch nÃ y khi gá»£i Ã½.\n==================================================`
+    const freeformBlock = `\n\n===== SỞ THÍCH & THÔNG TIN CÁ NHÂN CỦA USER =====\n${rawPrefsArr.map(p => `- ${p}`).join('\n')}\nHãy luôn ghi nhớ và áp dụng những sở thích này khi gợi ý.\n==================================================`
     prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
+  }
+
+  // Request-scoped enrichment channel (B4). Photos and order/platform links are
+  // carved out of every place-tool result so they never enter the model's
+  // context — the prompt forbids the model from writing them, and
+  // applyPlaceEnrichmentStreamFilter injects them positionally afterwards. This
+  // const lives and dies with this request: no module state, no key to collide
+  // on, nothing shared between users or carried across warm invocations.
+  const enrichment = createEnrichmentCollector()
+  const forModel = (toolName: string, result: unknown) => {
+    const { model, enrichment: carved } = splitToolResult(toolName, result)
+    enrichment.add(carved)
+    return model
   }
 
   const role: ModelRole = (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
@@ -236,10 +260,21 @@ export async function POST(req: Request) {
   // Truncate history to last 10 messages to control token costs
   const trimmedMessages = messages.length > 10 ? messages.slice(-10) : messages
 
-  const systemPrompt = (intent === 'chitchat'
-    ? buildSystemSimple(lang, memoryBlock)
-    : buildSystem(budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, forcedTool)
-  ) + styleBlock
+  // Split so the provider can cache the invariant rulebook and leave everything
+  // request-shaped (clock, language, memory, prefs, budget, GPS, style) after
+  // the breakpoint. The chitchat path has no rulebook to share — its prompt is
+  // ~300 tokens, far below any provider's minimum cacheable size — so it passes
+  // everything as `system` and shares nothing.
+  // A bare acknowledgement takes the same no-tool path as chitchat: there is
+  // nothing to search for, and the previous turn already produced the result the
+  // user is agreeing to. Cheaper AND the right behaviour — a confirmation must
+  // never restart a search.
+  const noToolTurn = intent === 'chitchat' || decisionStage === 'confirmation'
+  const built = noToolTurn ? null : buildSystem(
+    budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
+  )
+  const systemShared = built?.shared
+  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
 
   let result
   try {
@@ -251,32 +286,39 @@ export async function POST(req: Request) {
     // call) if the client disconnects — otherwise it runs to maxDuration billing
     // tokens for a response nobody is receiving.
     abortSignal: req.signal,
+    systemShared,
     system: systemPrompt,
     messages: trimmedMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
     // now injected by streamEnrichment instead of written by the LLM (see prompt),
     // so actual output is smaller — this raised ceiling is headroom, not the norm.
-    maxTokens: intent === 'chitchat' ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
-    maxSteps: intent === 'chitchat' ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
-    prepareStep: async ({ stepNumber }: { stepNumber: number }) => {
-      if (intent === 'chitchat') return { toolChoice: 'none' as const }
-      if (stepNumber === 0) {
-        if (forcedTool === 'search_products' && locationIntent === 'offline') {
-          return { toolChoice: { type: 'tool' as const, toolName: 'search_places' } }
-        }
-        if (!forcedTool && locationIntent === 'offline') {
-          return { toolChoice: { type: 'tool' as const, toolName: 'search_places' } }
-        }
-        if (!forcedTool && locationIntent === 'unknown' && isShoppingQuery(lastText)) {
-          return { toolChoice: 'none' as const }
-        }
-        if (forcedTool) return { toolChoice: { type: 'tool' as const, toolName: forcedTool } }
-        return { toolChoice: 'required' as const }
-      }
-      return { toolChoice: 'none' as const }
-    },
-    tools: {
+    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
+    maxSteps: noToolTurn ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
+    // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
+    // never ran — ai@4.3.19 destructures experimental_prepareStep in
+    // generateText only (bundle line 4177); streamText (line 5193) takes
+    // toolChoice and maxSteps but never prepareStep, and 4177 is the option's
+    // only occurrence. Production has always run at the SDK default,
+    // toolChoice:'auto', and the baseline confirmed it behaviourally.
+    //
+    // This is a SAFETY cleanup, not a saving: behaviour is unchanged. It matters
+    // because the deleted code carried an @ts-ignore asserting the option works
+    // at runtime, and AI SDK 5 DOES support prepareStep on streamText — an
+    // upgrade would have silently switched forcing on, raising cost and breaking
+    // the clarification behaviour this phase builds on `auto`.
+    //
+    // No-tool turns get NO tool definitions. Measured 2026-08-10: declaring them
+    // cost ~2,400 of the path's ~2,657 input tokens, and none of it was
+    // reachable — a no-tool turn runs with maxSteps:1, so a tool call has no
+    // second step to answer in and the reply comes back EMPTY.
+    //
+    // This fragments no cache. The chitchat prefix (tools + the ~300-token
+    // simple prompt = ~2,657) sits under Haiku 4.5's 4,096-token minimum
+    // cacheable size, so it was never cached to begin with — measured
+    // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
+    // the baseline and the post-B1 run. The tool path keeps its own lineage.
+    tools: noToolTurn ? undefined : {
       search_places: tool({
         description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
@@ -287,7 +329,7 @@ export async function POST(req: Request) {
         execute: async ({ query, location, type }) => {
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
           const r = await searchPlaces(query, location, type, lang, userLocation)
-          return budget ? applyBudgetFilter(r, budget, query) : r
+          return forModel('search_places', budget ? applyBudgetFilter(r, budget, query) : r)
         }
       }),
       get_news: tool({
@@ -300,7 +342,7 @@ export async function POST(req: Request) {
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
           const r = await searchProducts(query, lang)
-          return budget ? applyBudgetFilter(r, budget, query) : r
+          return forModel('search_products', budget ? applyBudgetFilter(r, budget, query) : r)
         }
       }) } : {}),
       web_search: tool({
@@ -339,7 +381,7 @@ export async function POST(req: Request) {
         }),
         execute: async ({ location, checkIn, checkOut }) => {
           const r = await getHotelPrices(location, checkIn, checkOut, budget?.max, lang)
-          return budget ? applyBudgetFilter(r, budget, 'khach san') : r
+          return forModel('get_hotel_prices', budget ? applyBudgetFilter(r, budget, 'khach san') : r)
         }
       }),
       get_transport_options: tool({
@@ -353,14 +395,14 @@ export async function POST(req: Request) {
       }),
       ...(authedUserId ? {
         save_price_watch: tool({
-          description: 'LÆ°u theo dÃµi giÃ¡ sáº£n pháº©m Ä‘á»ƒ thÃ´ng bÃ¡o khi giÃ¡ Ä‘áº¡t má»©c mong muá»‘n. DÃ¹ng khi user nÃ³i "theo dÃµi giÃ¡", "bÃ¡o mÃ¬nh khi giÃ¡ xuá»‘ng", "alert giÃ¡", "Tappy theo dÃµi giÃ¡ X khi dÆ°á»›i Y"',
+          description: 'Lưu theo dõi giá sản phẩm để thông báo khi giá đạt mức mong muốn. Dùng khi user nói "theo dõi giá", "báo mình khi giá xuống", "alert giá", "Tappy theo dõi giá X khi dưới Y"',
           parameters: z.object({
-            product_name: z.string().describe('TÃªn sáº£n pháº©m cáº§n theo dÃµi, vÃ­ dá»¥: AirPods Pro, Samsung Galaxy S25'),
-            target_price: z.number().describe('GiÃ¡ má»¥c tiÃªu báº±ng VND (sá»‘ nguyÃªn), vÃ­ dá»¥: 2000000'),
-            search_query: z.string().describe('Query tÃ¬m kiáº¿m giÃ¡ sáº£n pháº©m nÃ y, vÃ­ dá»¥: AirPods Pro 2 giÃ¡ Shopee Tiki'),
+            product_name: z.string().describe('Tên sản phẩm cần theo dõi, ví dụ: AirPods Pro, Samsung Galaxy S25'),
+            target_price: z.number().describe('Giá mục tiêu bằng VND (số nguyên), ví dụ: 2000000'),
+            search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
           }),
           execute: async ({ product_name, target_price, search_query }) => {
-            if (!authedUserId) return { error: 'Cáº§n Ä‘Äƒng nháº­p Ä‘á»ƒ theo dÃµi giÃ¡' }
+            if (!authedUserId) return { error: 'Cần đăng nhập để theo dõi giá' }
             try {
               // authedUserId is already verified above via getRequestUser (cookie or
               // Bearer JWT) — use the admin client for this write instead of a fresh
@@ -372,14 +414,14 @@ export async function POST(req: Request) {
                 .select('id', { count: 'exact', head: true })
                 .eq('user_id', authedUserId)
                 .eq('status', 'active')
-              if ((count ?? 0) >= 10) return { error: 'Báº¡n Ä‘Ã£ theo dÃµi tá»‘i Ä‘a 10 sáº£n pháº©m. Há»§y bá»›t Ä‘á»ƒ thÃªm má»›i.' }
+              if ((count ?? 0) >= 10) return { error: 'Bạn đã theo dõi tối đa 10 sản phẩm. Hủy bớt để thêm mới.' }
               const { data, error } = await supabaseW
                 .from('price_watches')
                 .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
                 .select('id')
                 .single()
-              if (error) return { error: 'Lá»—i lÆ°u theo dÃµi: ' + error.message }
-              return { ok: true, id: data.id, product_name, target_price, message: `ÄÃ£ lÆ°u! Tappy sáº½ kiá»ƒm tra giÃ¡ ${product_name} má»—i 6 tiáº¿ng vÃ  bÃ¡o báº¡n khi xuá»‘ng dÆ°á»›i ${(target_price / 1000000).toFixed(1)} triá»‡u.` }
+              if (error) return { error: 'Lỗi lưu theo dõi: ' + error.message }
+              return { ok: true, id: data.id, product_name, target_price, message: `Đã lưu! Tappy sẽ kiểm tra giá ${product_name} mỗi 6 tiếng và báo bạn khi xuống dưới ${(target_price / 1000000).toFixed(1)} triệu.` }
             } catch (e) {
               return { error: String(e) }
             }
@@ -387,7 +429,23 @@ export async function POST(req: Request) {
         }),
       } : {}),
     },
-    onFinish: async ({ usage, finishReason, text }) => {
+    onFinish: async ({ usage, finishReason, text, steps }) => {
+      // Prompt-cache accounting. `usage` is already the SUM across steps, but
+      // cache counters live in per-step providerMetadata (the top-level
+      // providerMetadata only carries the LAST step), so they are summed here.
+      // Anthropic reports promptTokens EXCLUDING cached tokens, so the real
+      // prompt size is promptTokens + cacheCreationTokens + cacheReadTokens —
+      // never read promptTokens alone as "how big was the prompt".
+      let cacheReadTokens = 0
+      let cacheCreationTokens = 0
+      let sawCacheMetadata = false
+      for (const step of steps ?? []) {
+        const meta = step.providerMetadata?.anthropic as
+          { cacheReadInputTokens?: number | null; cacheCreationInputTokens?: number | null } | undefined
+        if (!meta) continue
+        if (typeof meta.cacheReadInputTokens === 'number') { cacheReadTokens += meta.cacheReadInputTokens; sawCacheMetadata = true }
+        if (typeof meta.cacheCreationInputTokens === 'number') { cacheCreationTokens += meta.cacheCreationInputTokens; sawCacheMetadata = true }
+      }
       console.log(JSON.stringify({
         type: 'tappyai_usage',
         intent,
@@ -395,6 +453,16 @@ export async function POST(req: Request) {
         promptTokens: usage?.promptTokens ?? null,
         completionTokens: usage?.completionTokens ?? null,
         totalTokens: usage?.totalTokens ?? null,
+        // null (not 0) when the provider reported no cache metadata at all, so
+        // "caching is off/unsupported" stays distinguishable from "0 hits".
+        cacheReadTokens: sawCacheMetadata ? cacheReadTokens : null,
+        cacheCreationTokens: sawCacheMetadata ? cacheCreationTokens : null,
+        // One LLM request per step — the direct measure the cost work is judged on.
+        // The memory-extraction generate() below is a SEPARATE call not counted
+        // here; memoryExtract is its 0/1 flag, so total LLM calls = llmCalls + memoryExtract.
+        llmCalls: steps?.length ?? null,
+        memoryExtract: (authedUserId && worthExtract) ? 1 : 0,
+        toolCalls: (steps ?? []).reduce((n, s) => n + (s.toolCalls?.length ?? 0), 0),
         elapsedMs: Date.now() - startTime,
         worthExtract,
         forcedTool,
@@ -440,7 +508,23 @@ export async function POST(req: Request) {
     )
   }
   const baseResponse = result.toDataStreamResponse()
-  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang)
+  // B7-A: photos are fetched only for the places the finished reply actually
+  // names — the filter selects them, this resolves them. Each place degrades to
+  // "no photo" independently; one slow or failing lookup never blocks the rest.
+  const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang, enrichment, async (places) => {
+    const byName = new Map<string, string[]>()
+    await Promise.all(places.map(async (p) => {
+      if (!p.name) return
+      try {
+        const urls = await resolvePlacePhotos(
+          { place_id: p.place_id, name: p.name, website_uri: p.website_uri },
+          3,
+        )
+        if (urls.length > 0) byName.set(p.name, urls)
+      } catch { /* this place simply gets no photo */ }
+    }))
+    return byName
+  })
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse

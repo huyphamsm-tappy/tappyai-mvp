@@ -44,7 +44,8 @@ const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 // Reading duration/thumbnail from a <video> can hang forever if the browser loads
 // metadata but never fires `onseeked` (seen with some .mov/codec files, esp. on
 // mobile Safari). A timeout guarantees these promises always settle so the upload
-// UI can never freeze at "Đang tạo thumbnail…". 20s is generous for a ≤50MB clip.
+// UI can never freeze at "Đang tạo thumbnail…". Metadata reads only need the moov atom, so this
+// budget tracks decode behaviour rather than file length — it is unchanged by the size limit.
 const MEDIA_READ_TIMEOUT_MS = 20000
 const THUMB_TIMEOUT_MS = 8000        // hard cap on thumbnail decode/seek — never freeze the UI
 const THUMB_UPLOAD_TIMEOUT_MS = 15000 // hard cap on the (best-effort) thumbnail blob upload
