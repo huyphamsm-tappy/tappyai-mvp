@@ -39,6 +39,16 @@
         android:resizeableActivity="true"
         tools:targetApi="31">
 
+        <!-- FCM transport (V2-03). exported=false: only the Play Services client may bind, and
+             nothing else on the device should be able to hand this app a notification. -->
+        <service
+            android:name=".notifications.TappyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

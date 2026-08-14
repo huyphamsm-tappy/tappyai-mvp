@@ -8,6 +8,10 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    // V2-03: reads app/google-services.json. That one file declares com.tappyai.app,
+    // com.tappyai.app.debug and com.tappyai.app.staging, so every variant resolves from it and
+    // no per-variant copy exists to drift.
+    alias(libs.plugins.google.services)
 }
 
 // ---------------------------------------------------------------------------
@@ -235,6 +239,10 @@ dependencies {
     // only applied the kotlin-serialization compiler plugin, never the runtime library the
     // annotation itself comes from — "Unresolved reference 'serialization'".
     implementation(libs.kotlinx.serialization.json)
+    // Firebase Cloud Messaging — transport only. The BOM decides the messaging version; nothing
+    // else from Firebase is pulled in (no Analytics, no Crashlytics).
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging.ktx)
     // OkHttp is implementation (non-transitive) in core:network, so RealChatRepository needs
     // it declared directly here to use OkHttpClient, Request, and RequestBody on the compile
     // classpath.
