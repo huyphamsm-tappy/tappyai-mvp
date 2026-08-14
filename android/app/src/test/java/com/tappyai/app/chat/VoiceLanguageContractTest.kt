@@ -137,6 +137,66 @@ class VoiceLanguageContractTest {
         assertTrue(offending.contains("?: \"vi-VN\""))
     }
 
+    // ---- the error actually reaches the user ---------------------------------
+
+    private val chatScreen = File("src/main/java/com/tappyai/app/chat/ChatScreen.kt")
+    private val stringsEn = File("src/main/res/values/strings_chat.xml")
+    private val stringsVi = File("src/main/res/values-vi/strings_chat.xml")
+
+    @Test
+    fun `the screen observes ttsError and shows it`() {
+        val src = chatScreen.readText()
+        assertTrue("must observe the state", src.contains("viewModel.ttsError"))
+        assertTrue("must react to changes", src.contains("LaunchedEffect(ttsError)"))
+        assertTrue("must surface it", src.contains("Toast.makeText(ttsToastContext"))
+    }
+
+    @Test
+    fun `the notice is cleared after showing so it does not replay`() {
+        // Without this, a rotation would re-run the effect and show the same message again.
+        assertTrue(chatScreen.readText().contains("viewModel.clearTtsError()"))
+    }
+
+    @Test
+    fun `stopping playback shows nothing`() {
+        // Silence is the correct feedback for "you pressed stop". stopTtsPlayback must not set an
+        // error, or every ordinary stop would toast at the user.
+        val src = chatViewModel.readText()
+        val stop = src.substringAfter("private fun stopTtsPlayback").substringBefore("\n    }")
+        assertTrue("stopTtsPlayback must not set ttsError", !stop.contains("ttsError ="))
+    }
+
+    @Test
+    fun `no technical detail can reach the user through these strings`() {
+        // The messages are built from string resources, never from an exception or HTTP status.
+        val src = chatViewModel.readText()
+        val onToggle = src.substringAfter("fun onToggleSpeak").substringBefore("\n    }")
+        for (leak in listOf("e.message", "result.error", "HTTP", "http", "Google", "api.")) {
+            assertTrue("onToggleSpeak must not surface $leak", !onToggle.contains(leak))
+        }
+    }
+
+    @Test
+    fun `both read-aloud messages exist in English and Vietnamese`() {
+        for (key in listOf("chat_tts_language_unsupported", "chat_tts_language_failed")) {
+            assertTrue("$key missing from EN", stringsEn.readText().contains("\"$key\""))
+            assertTrue("$key missing from VI", stringsVi.readText().contains("\"$key\""))
+        }
+    }
+
+    @Test
+    fun `the two messages are actually different text in each language`() {
+        // A copy-paste that left the same sentence for both outcomes would pass the presence check
+        // above while telling the user the wrong thing half the time.
+        for (file in listOf(stringsEn, stringsVi)) {
+            val text = file.readText()
+            val unsupported = text.substringAfter("\"chat_tts_language_unsupported\">").substringBefore("</string>")
+            val failed = text.substringAfter("\"chat_tts_language_failed\">").substringBefore("</string>")
+            assertTrue("${file.parentFile.name}: the two messages must differ", unsupported != failed)
+            assertTrue("${file.parentFile.name}: unsupported message must not be empty", unsupported.isNotBlank())
+        }
+    }
+
     @Test
     fun `the language is asked once per playback, not per scrub`() {
         // speakFromOffset also backs resume/skip/speed; asking there would spend a request per drag.
