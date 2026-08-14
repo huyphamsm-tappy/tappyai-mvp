@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-08.1'
+export const REGISTRY_VERSION = '2026-08-14.1'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -194,6 +194,40 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     defaultRoles: ['super_admin'],
   }),
 
+  // ── Session security (Controller V2 Component 11) ─────────────────────────
+  // A DISTINCT capability from security.rbac: reading or ending someone's
+  // sessions is not the same authority as granting them a role, and folding the
+  // two together would make a future capability gate unable to separate them.
+  //
+  // The read/revoke split is deliberately asymmetric, ratified 2026-08-13 (P-7).
+  // Ending another person's sessions is comparable in blast radius to
+  // security.roles.grant, which is super_admin-only, so revoke matches it while
+  // read stays available to `admin`. The Ultimate Owner can never be the TARGET
+  // of a revoke — that is enforced in the handler and in the SQL function, not
+  // by this registry (contract §5.1.1).
+  def({
+    id: 'security.sessions.read',
+    displayName: 'View active sessions',
+    description:
+      'List a user’s sessions: creation time, last activity, expiry and platform class. Credential material is never returned.',
+    module: 'security',
+    capability: 'security.sessions',
+    category: 'read',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'security.sessions.revoke',
+    displayName: 'Revoke sessions / force logout',
+    description:
+      'End a specific session, or every session for one user. Cannot target the Platform Owner, and never affects anonymous sessions.',
+    module: 'security',
+    capability: 'security.sessions',
+    category: 'security',
+    riskLevel: 'critical',
+    defaultRoles: ['super_admin'],
+  }),
+
   // ── Organization / department membership (Controller V2 FOUNDATION-07D) ────
   // A DISTINCT capability from security.roles.* : administering DEPARTMENT
   // memberships must not inherit platform-wide RBAC-granting semantics. The PDP
@@ -289,6 +323,8 @@ export const PERMISSIONS = {
   SECURITY_ROLES_REVOKE: 'security.roles.revoke',
   SECURITY_MEMBERSHIP_READ: 'security.membership.read',
   SECURITY_MEMBERSHIP_MANAGE: 'security.membership.manage',
+  SECURITY_SESSIONS_READ: 'security.sessions.read',
+  SECURITY_SESSIONS_REVOKE: 'security.sessions.revoke',
 } as const
 
 export type KnownPermissionId = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]
