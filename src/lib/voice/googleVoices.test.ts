@@ -55,27 +55,47 @@ describe('the candidate catalog', () => {
   })
 })
 
-describe('no voice ships until a human has listened', () => {
-  it('reports selection as incomplete while any language is unchosen', () => {
-    // Deliberately asserts the CURRENT state: nothing in this repo can listen, so nothing here may
-    // decide. When the owner picks, SELECTED_VOICE fills in and this test is updated with it.
-    expect(SELECTED_VOICE.vi).toBeNull()
-    expect(SELECTED_VOICE.en).toBeNull()
-    expect(isVoiceSelectionComplete()).toBe(false)
+describe('the chosen voice', () => {
+  // INVERTED 2026-08-14. Until the owner listened, this block asserted the opposite — that
+  // SELECTED_VOICE.vi and .en were both null and isVoiceSelectionComplete() was false — because
+  // nothing in this repository can hear, so nothing here was allowed to decide. The decision has
+  // now been made from long-form samples, so the assertions flip to pin WHAT was chosen.
+
+  it('is Kore in both languages', () => {
+    expect(SELECTED_VOICE.vi).toBe('vi-VN-Chirp3-HD-Kore')
+    expect(SELECTED_VOICE.en).toBe('en-US-Chirp3-HD-Kore')
+    expect(isVoiceSelectionComplete()).toBe(true)
   })
 
-  it('the completeness gate reacts to what is actually set, not to a constant', () => {
-    // Guards the guard: a hardcoded `return false` would pass the test above while making the gate
-    // useless the moment a voice IS chosen.
-    const filled: Record<string, string | null> = { vi: 'vi-VN-Neural2-A', en: 'en-US-Neural2-F' }
-    const complete = SUPPORTED_VOICE_LANGUAGES.every((l) => !!filled[l])
-    expect(complete).toBe(true)
+  it('is the SAME Chirp3-HD persona across languages, not two lookalike voices', () => {
+    // The reason Kore was chosen. Wavenet/Neural2/Studio define each language independently, so
+    // matching suffixes there mean nothing; Chirp3-HD builds one persona across locales. If a future
+    // edit swapped either side to a per-language family, Tappy would silently become two people.
+    const persona = (v: string | null) => v?.replace(/^[a-z]{2}-[A-Z]{2}-/, '')
+    expect(persona(SELECTED_VOICE.vi)).toBe(persona(SELECTED_VOICE.en))
+    expect(persona(SELECTED_VOICE.vi)).toBe('Chirp3-HD-Kore')
   })
 
-  it('every selectable value would be a real catalog name', () => {
+  it('names only voices that exist in the verified catalog', () => {
     const names = new Set(GOOGLE_VOICE_CANDIDATES.map((v) => v.name))
     for (const chosen of Object.values(SELECTED_VOICE)) {
       if (chosen) expect(names.has(chosen), chosen).toBe(true)
     }
+  })
+
+  it('speaks the language it is registered under', () => {
+    // A vi-VN voice sitting in the `en` slot would read English with Vietnamese phonetics.
+    for (const [lang, chosen] of Object.entries(SELECTED_VOICE)) {
+      if (!chosen) continue
+      const cfg = VOICE_LANGUAGES[lang]
+      expect(chosen.startsWith(cfg.locale), `${lang} -> ${chosen}`).toBe(true)
+    }
+  })
+
+  it('the completeness gate still reacts to what is set, not to a constant', () => {
+    // Guards the guard in the other direction now: a hardcoded `return true` would satisfy the
+    // first test while making the gate useless if a language were ever left unchosen.
+    const partial: Record<string, string | null> = { vi: 'vi-VN-Chirp3-HD-Kore', en: null }
+    expect(SUPPORTED_VOICE_LANGUAGES.every((l) => !!partial[l])).toBe(false)
   })
 })

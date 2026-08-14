@@ -35,10 +35,12 @@ export interface GoogleVoiceCandidate {
  * chosen, Vietnamese and English can use the same generation.
  */
 export const GOOGLE_VOICE_CANDIDATES: readonly GoogleVoiceCandidate[] = [
+  { name: 'vi-VN-Chirp3-HD-Kore', locale: 'vi-VN', gender: 'FEMALE', tier: 'Chirp3-HD' },
   { name: 'vi-VN-Chirp3-HD-Aoede', locale: 'vi-VN', gender: 'FEMALE', tier: 'Chirp3-HD' },
   { name: 'vi-VN-Chirp3-HD-Charon', locale: 'vi-VN', gender: 'MALE', tier: 'Chirp3-HD' },
   { name: 'vi-VN-Neural2-A', locale: 'vi-VN', gender: 'FEMALE', tier: 'Neural2' },
   { name: 'vi-VN-Neural2-D', locale: 'vi-VN', gender: 'MALE', tier: 'Neural2' },
+  { name: 'en-US-Chirp3-HD-Kore', locale: 'en-US', gender: 'FEMALE', tier: 'Chirp3-HD' },
   { name: 'en-US-Chirp3-HD-Aoede', locale: 'en-US', gender: 'FEMALE', tier: 'Chirp3-HD' },
   { name: 'en-US-Chirp3-HD-Charon', locale: 'en-US', gender: 'MALE', tier: 'Chirp3-HD' },
   { name: 'en-US-Neural2-F', locale: 'en-US', gender: 'FEMALE', tier: 'Neural2' },
@@ -46,15 +48,27 @@ export const GOOGLE_VOICE_CANDIDATES: readonly GoogleVoiceCandidate[] = [
 ]
 
 /**
- * The chosen voice per language. Null until a human has listened.
+ * Tappy's voice, per language. Chosen by the owner on 2026-08-14 after listening to long-form
+ * samples of 16 Vietnamese and 4 English voices.
  *
- * Null is the honest state, and it is also the safe one: a caller that reads null must report the
- * voice as unconfigured. Seeding a "reasonable default" would silently ship whichever name happened
- * to be typed first as Tappy's voice.
+ * WHY THE SAME NAME APPEARS TWICE: `Kore` is not two similar voices, it is ONE Chirp3-HD persona
+ * built for 53 locales. Every other family — Wavenet, Neural2, Studio — defines each language
+ * independently, so `vi-VN-Wavenet-C` and `en-US-Wavenet-C` share a letter and nothing else. Kore
+ * is what makes Tappy the same person when the reply switches language, and it is why a future
+ * Japanese or Korean release keeps that identity instead of introducing a stranger.
+ *
+ * Measured trade-off, accepted knowingly: Chirp3-HD speaks roughly twice as fast as Wavenet or
+ * Neural2 (99KB vs 201KB of audio for the same Vietnamese passage). Vietnamese and English are
+ * closely matched to each other (99KB vs 108KB), so the pace is consistent across languages. If it
+ * ever reads too fast, `speakingRate` is the dial — not a different voice — and it is part of the
+ * cache key, so changing it invalidates cleanly.
+ *
+ * Null remains the meaningful "unconfigured" state for any language without a choice; a caller
+ * reading null must report voice as unavailable rather than substitute a name.
  */
 export const SELECTED_VOICE: Record<string, string | null> = {
-  vi: null,
-  en: null,
+  vi: 'vi-VN-Chirp3-HD-Kore',
+  en: 'en-US-Chirp3-HD-Kore',
 }
 
 /** Candidates serving a given supported language, for a selection UI or a decision record. */
