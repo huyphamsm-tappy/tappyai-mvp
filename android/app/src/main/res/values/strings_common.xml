@@ -14,6 +14,8 @@
     <string name="notif_channel_identity_desc">Tappy\'s own chime, so you can recognise it without looking at your screen.</string>
 
     <!-- The user-facing toggle. Turning it off silences the chime, not the notifications. -->
+    <string name="common_on">On</string>
+    <string name="common_off">Off</string>
     <string name="settings_tappy_notification_sound">Tappy notification sound</string>
     <string name="settings_tappy_notification_sound_desc">Play Tappy\'s chime when a notification arrives. Turning this off keeps your notifications — they just arrive quietly. Tappy never reads your notifications aloud.</string>
 </resources>

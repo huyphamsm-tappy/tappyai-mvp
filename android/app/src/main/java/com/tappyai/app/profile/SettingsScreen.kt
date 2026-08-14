@@ -16,6 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.Shield
@@ -111,6 +112,23 @@ fun SettingsScreen(
                         icon = Icons.Filled.Psychology,
                         title = stringResource(R.string.settings_memory),
                         onClick = onOpenTappyKnows,
+                    )
+                    HorizontalDivider()
+                    // Uses the same row component as everything else rather than introducing a
+                    // Switch primitive this screen does not otherwise have. Turning this off does
+                    // NOT stop notifications — see the string description, which says so, because
+                    // the obvious wrong assumption about a sound toggle is that it silences the
+                    // notifications themselves.
+                    TappyMenuRow(
+                        icon = Icons.Filled.VolumeUp,
+                        title = stringResource(R.string.settings_tappy_notification_sound),
+                        valueText = stringResource(
+                            if (viewModel.tappyNotificationSoundEnabled) R.string.common_on
+                            else R.string.common_off
+                        ),
+                        onClick = {
+                            viewModel.setTappyNotificationSound(!viewModel.tappyNotificationSoundEnabled)
+                        },
                     )
                     HorizontalDivider()
                     TappyMenuRow(

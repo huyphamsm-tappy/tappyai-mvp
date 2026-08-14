@@ -125,6 +125,67 @@ class TappyNotificationsTest {
         assertTrue("must not cancel or suppress notifications", !src.contains("cancelAll") && !src.contains("areNotificationsEnabled"))
     }
 
+    // ---- the settings toggle -----------------------------------------------
+
+    private val settingsViewModel = File("src/main/java/com/tappyai/app/profile/SettingsViewModel.kt")
+    private val settingsScreen = File("src/main/java/com/tappyai/app/profile/SettingsScreen.kt")
+
+    @Test
+    fun `the toggle is reachable from the real settings screen`() {
+        // Storage and logic existed before this; without a row the user could never change it.
+        val src = settingsScreen.readText()
+        assertTrue(src.contains("settings_tappy_notification_sound"))
+        assertTrue(src.contains("viewModel.setTappyNotificationSound"))
+    }
+
+    @Test
+    fun `the toggle reuses the existing row component, not a new settings system`() {
+        val src = settingsScreen.readText()
+        assertTrue("must reuse TappyMenuRow", src.contains("TappyMenuRow("))
+        assertTrue("must not introduce a Switch primitive here", !src.contains("Switch("))
+    }
+
+    @Test
+    fun `state is read from storage on construction, so rotation cannot lose it`() {
+        // The ViewModel is a cache; SharedPreferences is the truth. Initialising from a literal
+        // would show the default again after every process death.
+        val src = settingsViewModel.readText()
+        assertTrue(src.contains("mutableStateOf(notificationPrefs.identitySoundEnabled)"))
+        assertTrue("must not seed from a literal", !src.contains("mutableStateOf(true) // identity"))
+    }
+
+    @Test
+    fun `a change is persisted immediately, not on screen exit`() {
+        // A process death between the visible change and a deferred write would silently revert a
+        // choice the user already saw take effect.
+        val src = settingsViewModel.readText()
+        val fn = src.substringAfter("fun setTappyNotificationSound").substringBefore("\n    }")
+        assertTrue("must write through to storage", fn.contains("notificationPrefs.identitySoundEnabled = enabled"))
+    }
+
+    @Test
+    fun `the toggle cannot disable notifications or permission`() {
+        // It gates the channel only. If either of these appears here, the toggle has grown into
+        // something the user did not agree to.
+        val src = settingsViewModel.readText()
+        for (forbidden in listOf("POST_NOTIFICATIONS", "areNotificationsEnabled", "cancelAll", "NotificationManagerCompat")) {
+            assertTrue("settings must not touch $forbidden", !src.contains(forbidden))
+        }
+    }
+
+    @Test
+    fun `on and off labels exist in both languages and differ`() {
+        val en = stringsEn.readText()
+        val vi = stringsVi.readText()
+        for (key in listOf("common_on", "common_off")) {
+            assertTrue("$key missing from EN", en.contains("\"$key\""))
+            assertTrue("$key missing from VI", vi.contains("\"$key\""))
+        }
+        // A copy-paste leaving On/Off identical would make the row unreadable.
+        assertTrue(en.contains(">On<") && en.contains(">Off<"))
+        assertTrue(vi.contains(">Bật<") && vi.contains(">Tắt<"))
+    }
+
     // ---- localization -------------------------------------------------------
 
     @Test

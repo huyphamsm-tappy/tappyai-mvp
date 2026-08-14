@@ -14,6 +14,8 @@
     <string name="notif_channel_identity_desc">Tiếng chuông riêng của Tappy, để bạn nhận ra ngay mà không cần nhìn màn hình.</string>
 
     <!-- Công tắc cho người dùng. Tắt đi là tắt tiếng chuông, không phải tắt thông báo. -->
+    <string name="common_on">Bật</string>
+    <string name="common_off">Tắt</string>
     <string name="settings_tappy_notification_sound">Âm thanh thông báo Tappy</string>
     <string name="settings_tappy_notification_sound_desc">Phát tiếng chuông của Tappy khi có thông báo. Tắt đi bạn vẫn nhận thông báo như thường, chỉ là không có tiếng. Tappy không bao giờ đọc nội dung thông báo của bạn.</string>
 </resources>
