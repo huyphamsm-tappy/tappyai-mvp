@@ -1,5 +1,18 @@
 import webpush from 'web-push'
 import { createAdminClient } from '@/lib/supabase/admin'
+import type { NotificationKind } from './kind'
+
+/**
+ * Free-form delivery data, plus the one field the clients agree on.
+ *
+ * `kind` classifies the notification (see ./kind). It lives here rather than as a column because
+ * `data` is already forwarded verbatim to every provider — so the classification survives delivery
+ * with no migration and no dispatch change. Omitting it means `normal`, which is what every
+ * notification written before this existed will continue to be.
+ */
+export type NotificationData = Record<string, unknown> & {
+  kind?: NotificationKind
+}
 
 export interface NotificationPayload {
   title: string
@@ -7,7 +20,7 @@ export interface NotificationPayload {
   icon?: string
   badge?: string
   image?: string
-  data?: Record<string, unknown>
+  data?: NotificationData
 }
 
 type WebPushSubscriptionData = {
