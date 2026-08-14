@@ -116,13 +116,9 @@ What remains unproven is only the **end-to-end HTTP path** on live production.
 **C8 is merged and deployed; its migration is still pending.** C6, C9b and C10 are delivered. Under Owner Decision A (Definition of Done = C1–C11), exactly **two** things stand between the project and COMPLETE:
 
 1. **The C8 migration** — Owner action. Everything else about C8 is done and its SQL is executed against a real PostgreSQL in CI.
-<<<<<<< HEAD
 2. **The C11 migration** — Owner action, the same shape. C11 is implemented, contracted and tested; `20260814_c11_session_security.sql` opens with a guard that refuses to apply if GoTrue's `auth.sessions` has lost a column C11 reads, so a failed apply is information rather than a mystery.
 
 Both are the same class of remaining work: **code is merged, schema is not**. Neither is a design question.
-=======
-2. **C11 (Session Security)** — **blocked on scope, not on effort.** No design document exists; its only recorded scope is a one-line title. Implementation cannot begin without an authoritative contract defining states, transitions, errors, permissions and observability, and inventing one would be exactly the semantics-invention this project forbids.
->>>>>>> origin/main
 
 > ⚠️ **Code ships before the schema.** Merging C8 deploys `/api/cron/outbox-drain` immediately, but `supabase/migrations/20260813_c8_event_outbox.sql` is applied manually by the Owner. Between those two moments the daily 03:00 tick calls an `fn_outbox_claim` that does not exist and returns 500. Nothing is lost — there is no table to lose rows from — but the tick is noise until the migration lands.
 
