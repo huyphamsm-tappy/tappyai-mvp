@@ -276,6 +276,35 @@ export async function POST(req: Request) {
   const systemShared = built?.shared
   const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
 
+  // ── TEMPORARY DIAGNOSTIC — debug/vi-tool-provider-request, Preview only ──────
+  // Metadata ONLY. No prompt bodies, no user content, no credentials. Every local
+  // reproduction of the VI tool path returns Vietnamese, so what differs must be a
+  // request-shaped input this route computes and the harnesses set to empty.
+  console.log(JSON.stringify({
+    type: 'tappyai_langdiag',
+    lang,
+    role,
+    noToolTurn,
+    intent,
+    decisionStage: decisionStage ?? null,
+    locationIntent,
+    planningIntent: planningIntent ?? null,
+    isFirstReply,
+    hasImage,
+    hasBudget: Boolean(budget),
+    hasUserLocation: Boolean(userLocation),
+    memoryBlockLen: memoryBlock ? memoryBlock.length : 0,
+    prefBlockLen: prefBlock ? prefBlock.length : 0,
+    styleBlockLen: styleBlock.length,
+    sharedLen: systemShared ? systemShared.length : 0,
+    dynamicLen: systemPrompt.length,
+    // Proves WHICH language the directive actually names, without printing the prompt.
+    directiveNames: (systemPrompt.match(/User is writing in ([A-Za-z]+)\./) ?? [])[1] ?? 'NONE',
+    msgCount: trimmedMessages.length,
+    msgRoles: trimmedMessages.map((m) => m.role).join(','),
+  }))
+  // ── END TEMPORARY DIAGNOSTIC ────────────────────────────────────────────────
+
   let result
   try {
   // Provider-specific optimizations (e.g. prompt caching of this large system
