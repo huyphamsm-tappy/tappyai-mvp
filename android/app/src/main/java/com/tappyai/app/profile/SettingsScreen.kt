@@ -1,5 +1,8 @@
 package com.tappyai.app.profile
 
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +18,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.VolumeUp
@@ -37,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -46,10 +51,15 @@ import com.tappyai.app.R
 import com.tappyai.app.language.AppLanguage
 import com.tappyai.core.designsystem.component.TappyBottomSheet
 import com.tappyai.core.designsystem.component.TappyCard
+import com.tappyai.core.designsystem.component.TappyDialog
 import com.tappyai.core.designsystem.component.TappyMenuRow
 import com.tappyai.core.designsystem.theme.TappyContainers
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
+
+/** Mirrors SUPPORT_EMAIL in src/components/landing/config.ts — the one public support address,
+ *  and the one /delete-account names as the fallback if a device has no email app. */
+private const val SUPPORT_EMAIL = "support@tappyai.com"
 
 /**
  * Settings screen — mirrors the web `SettingsView`: "Options" section (Notifications, Memory,
@@ -77,6 +87,8 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     var showLanguagePicker by remember { mutableStateOf(false) }
+    var confirmDeleteAccount by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -165,6 +177,20 @@ fun SettingsScreen(
                         title = stringResource(R.string.settings_privacy_policy),
                         onClick = onOpenPrivacy,
                     )
+                    HorizontalDivider()
+                    // Required by Google Play for any app that offers account creation, and
+                    // documented publicly at /delete-account — the URL the Play listing points
+                    // reviewers at. Its step 3 reads "Choose Request account deletion", so this
+                    // row's label is fixed word-for-word by that page (guarded by
+                    // src/lib/legal/accountDeletionParity.test.ts).
+                    //
+                    // Request-based on purpose: support verifies the requester owns the account
+                    // before anything is erased. The app deletes nothing itself.
+                    TappyMenuRow(
+                        icon = Icons.Filled.DeleteOutline,
+                        title = stringResource(R.string.settings_delete_account),
+                        onClick = { confirmDeleteAccount = true },
+                    )
                 }
             }
 
@@ -213,6 +239,37 @@ fun SettingsScreen(
                 )
             }
         }
+    }
+
+    if (confirmDeleteAccount) {
+        val subject = stringResource(R.string.settings_delete_account_email_subject)
+        val body = stringResource(R.string.settings_delete_account_email_body)
+        val noEmailApp = stringResource(R.string.settings_delete_account_no_email)
+        TappyDialog(
+            title = stringResource(R.string.settings_delete_account_confirm_title),
+            message = stringResource(R.string.settings_delete_account_confirm_body),
+            confirmText = stringResource(R.string.settings_delete_account_confirm_cta),
+            onConfirm = {
+                confirmDeleteAccount = false
+                // ACTION_SENDTO with a mailto: URI resolves to email apps ONLY. ACTION_SEND would
+                // offer the chooser every messaging app on the device, which is not what the
+                // published flow says happens.
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:$SUPPORT_EMAIL")
+                    putExtra(Intent.EXTRA_SUBJECT, subject)
+                    putExtra(Intent.EXTRA_TEXT, body)
+                }
+                // Not every device has an email app configured; /delete-account already tells the
+                // user they can send the request themselves in that case, so say the same thing
+                // here rather than throwing ActivityNotFoundException.
+                if (intent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(intent)
+                } else {
+                    Toast.makeText(context, noEmailApp, Toast.LENGTH_LONG).show()
+                }
+            },
+            onDismiss = { confirmDeleteAccount = false },
+        )
     }
 
     if (showLanguagePicker) {
