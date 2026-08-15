@@ -8,7 +8,12 @@ export interface UserPrefs {
   inferred_preferences?: Record<string, number> | null
 }
 
-const LANG_NAMES: Record<string, string> = { en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
+// `vi` belongs here like every other language. Its absence was not a shortcut, it was a trap:
+// every read site is `LANG_NAMES[lang] || 'English'`, so a Vietnamese turn resolved to the string
+// "English". That was survivable only while every caller guarded with `lang !== 'vi'` — and the
+// moment one of them stopped guarding it would have instructed the model to answer Vietnamese in
+// English. Naming Vietnamese makes the guards unnecessary instead of load-bearing.
+const LANG_NAMES: Record<string, string> = { vi: 'Vietnamese', en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
 
 export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi'): string {
   const toolsNeeded = planType === 'trip'
@@ -187,12 +192,21 @@ export function buildSystem(
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' })
   const langName = LANG_NAMES[lang] || 'English'
-  const langBlock = lang !== 'vi' ? `===== CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY) =====
-User is writing in ${langName}. OVERRIDE all Vietnamese language defaults below:
-1. Your ENTIRE response MUST be in ${langName} only — never switch to Vietnamese
+  // Emitted for EVERY language, Vietnamese included.
+  //
+  // It used to be `lang !== 'vi' ? … : ''`, which meant a Vietnamese turn received no language
+  // instruction at all while every other language got a CRITICAL one. Vietnamese was supposed to
+  // fall through to "the defaults below" — but the rest of this prompt is written in UNACCENTED
+  // Vietnamese and is structured with English headings, so there was nothing to fall through to.
+  // Production answered "Quán cà phê yên tĩnh ở Quận 1 TPHCM" in English, 3 times out of 3
+  // (2026-08-15). The asymmetry was the bug: the language the product is FOR was the only one
+  // never named.
+  const langBlock = `===== CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY) =====
+User is writing in ${langName}. OVERRIDE all other language defaults below:
+1. Your ENTIRE response MUST be in ${langName} only — never switch to another language
 2. Every CTA button "label" MUST be in ${langName} — e.g. for English: "✅ Book - Place Name", "🛒 Find on Shopee", "🏨 Booking.com", "📍 View on Maps"
-3. Vietnamese label examples in the CTA rules below show STRUCTURE only — rewrite all label text in ${langName}
-==========================================================\n\n` : ''
+3. Label examples in the CTA rules below show STRUCTURE only — rewrite all label text in ${langName}
+==========================================================\n\n`
   const budgetBlock = budget
     ? `\n\n===== BUDGET FILTER - LUAT BAT BUOC =====
 User chi co budget ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND.
@@ -343,15 +357,15 @@ export function buildSystemSimple(lang = 'vi', memoryBlock?: string): string {
   // ~90% of a very small context: a two-word English turn ("thanks") came back
   // half-Vietnamese. Measured 2026-08-10, before/after in
   // docs/perf/PHASE_B_B2_2026-08-10.md.
-  const langBlock = lang !== 'vi'
-    ? `CRITICAL: The user is writing in ${langName}. Your ENTIRE reply MUST be in ${langName} — do not use Vietnamese anywhere, not even for a greeting or a sign-off.\n\n`
-    : ''
+  // Emitted for EVERY language, Vietnamese included — see the note in buildSystem. On this path
+  // the omission was worse, because the body below is unaccented Vietnamese ("Ban la TappyAI"),
+  // which is the weakest possible implicit cue. "Chào bạn, bạn giúp được gì cho tôi?" came back
+  // as "Hey there! 👋 I'm TappyAI…" in production.
+  const langBlock = `CRITICAL: The user is writing in ${langName}. Your ENTIRE reply MUST be in ${langName} — do not use any other language anywhere, not even for a greeting or a sign-off.\n\n`
   // Repeated at the very end because that is the last thing read before
   // generating — the same placement buildPlanningBlock relies on for its own
   // language reminder.
-  const langReminder = lang !== 'vi'
-    ? `\n\nREMINDER: reply in ${langName} only.`
-    : ''
+  const langReminder = `\n\nREMINDER: reply in ${langName} only.`
 
   return `${langBlock}THOI GIAN: ${vnDateTime} (GMT+7). Ngay: ${vnDateISO}.
 
