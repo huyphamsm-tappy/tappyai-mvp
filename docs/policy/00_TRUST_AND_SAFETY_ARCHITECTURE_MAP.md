@@ -1,12 +1,26 @@
 # TappyAI Policy Architecture — Document Map & Architecture Boundary
 
-> **STATUS: FOR OWNER REVIEW.** This document defines *what will be written and
-> where the edges are*. It is the gate before any of the sixteen architecture
-> documents is drafted. **Architecture only — no implementation, at any stage
-> covered by this map.**
+> **STATUS: ACTIVE.** This document defines *what will be written and where the
+> edges are*. It is the gate before any of the sixteen architecture documents is
+> drafted. **Architecture only — no implementation, at any stage covered by this
+> map.**
+>
+> **B-1 … B-5 are DECIDED and RATIFIED** (Owner, 2026-08-15), carried into
+> [`01_GOVERNANCE.md`](01_GOVERNANCE.md), which is **RATIFIED**. §2.4, §3.1 and
+> §6 below record the decisions rather than pose them.
 
 **Project:** Policy Architecture — TappyAI **Trust & Safety**.
 **Date:** 2026-08-15 · **Base commit:** `906c254`
+
+### Group status
+
+| Group | Status |
+|---|---|
+| **01 — Governance** | 🟢 **RATIFIED** (Owner, 2026-08-15, v1.0) — [`01_GOVERNANCE.md`](01_GOVERNANCE.md) |
+| **02 — Policy Taxonomy** | 🟡 **NOT STARTED** — requires a separate Owner instruction |
+| **03 … 16** | 🟡 **NOT STARTED** |
+| Technical contracts | 🔴 **NOT AUTHORIZED** |
+| Policy implementation | 🔴 **NOT AUTHORIZED** |
 
 ---
 
@@ -63,7 +77,16 @@ document records it as a dependency for the Owner, and stops.
 | "Suspend user" actually ending their access | **C11** session revocation (measured immediate) |
 | Owner as the final, unconstrained authority | **C1/C2** Platform Owner |
 
-### 2.4 The unresolved boundary — **B-1, Owner decision required**
+### 2.4 The governance boundary — **B-1, DECIDED / RATIFIED**
+
+> **RESOLVED (Owner, 2026-08-15) — option B-1a, in the refined form ratified in
+> [`01_GOVERNANCE.md`](01_GOVERNANCE.md) §2.** T&S Policy is a **separate
+> authoritative domain**. Controller/Security Governance, Back Office
+> Governance and Trust & Safety Policy Governance are **peers** under TappyAI
+> Product / Company Governance. `docs/policy/` is authoritative for T&S; the
+> Back Office Constitution is supreme **within its own domain only** and does
+> not govern T&S policy. The analysis below is retained as the reasoning that
+> led to the decision.
 
 `docs/backoffice/00_Constitution.md` (v1.1, **APPROVED**) declares itself *"the
 supreme governing law of the TappyAI Back Office Platform"* and states it
@@ -85,8 +108,9 @@ Three options, and this is the Owner's call, not the architecture's:
 | **B-1b** | `docs/policy/` sits **under** the Back Office Constitution | Inherits an approved governance model immediately; every T&S change then needs an ADR in `22_Architecture_Decision_Records.md`, and product-side surfaces are governed by a Back Office document |
 | **B-1c** | Split: Back Office keeps operator-facing tooling; `docs/policy/` owns policy, product surfaces and cross-platform contracts | Matches reality most closely; costs the most in cross-referencing |
 
-**Nothing further should be drafted until B-1 is answered**, because it decides
-whether Group 1 (Governance) writes a governance model or inherits one.
+~~Nothing further should be drafted until B-1 is answered~~ — **answered**:
+Group 01 wrote the governance model rather than inheriting one, and it is
+ratified.
 
 ---
 
@@ -107,7 +131,16 @@ So it is a design that was never ratified and never implemented. It is an
 input, not a constraint — but it is a *good* input and its core principle
 (§4.1) should survive.
 
-### 3.1 A contradiction inside it — **B-2, Owner decision required**
+### 3.1 A contradiction inside it — **B-2, DECIDED / RATIFIED**
+
+> **RESOLVED (Owner, 2026-08-15).** Neither extreme was adopted. **Bounded
+> automated action is permitted**, governed by reversibility: the lower the
+> certainty, the more reversible the action must be; the more permanent the
+> action, the higher the evidence and authority required. There is **no
+> automated path to permanent termination**, and no single signal source
+> suffices for it. See [`01_GOVERNANCE.md`](01_GOVERNANCE.md) §10 (R0–R3,
+> GA-1 … GA-10). The contradiction below is retained as the reason the question
+> was raised.
 
 Section 2 states the core principle:
 
@@ -122,8 +155,8 @@ Section 11 then states:
 These cannot both be the rule. Whether automated interim action exists at all
 is a governance decision, not a detail — it determines whether Group 1's
 principle is absolute or qualified, and everything in Groups 6, 8 and 9
-inherits the answer. **B-2 must be resolved in Group 1 before Group 6 is
-drafted.**
+inherits the answer. ~~**B-2 must be resolved in Group 1 before Group 6 is
+drafted.**~~ — **resolved in Group 01 §10, ratified.**
 
 ---
 
@@ -180,7 +213,7 @@ document in `docs/policy/`.
 
 | # | Document | Purpose | Prior art | Gate |
 |---|---|---|---|---|
-| **01** | `01_GOVERNANCE.md` | Who owns policy, how it changes, precedence over/under the Constitution, the "AI assists, humans decide" principle and its limits | `backoffice/00_Constitution.md` | **B-1, B-2** resolved here |
+| **01** | [`01_GOVERNANCE.md`](01_GOVERNANCE.md) | Who owns policy, how it changes, precedence over/under the Constitution, the "AI assists, humans decide" principle and its limits | `backoffice/00_Constitution.md` | 🟢 **RATIFIED** 2026-08-15 — B-1 … B-5 settled here |
 | **02** | `02_POLICY_TAXONOMY.md` | The violation categories themselves, their definitions, severity tiers, and the stable identifiers everything else references | `11_Moderation.md` §3, §11 | after 01 |
 | **03** | `03_MODERATION_ARCHITECTURE.md` | End-to-end pipeline: ingest → detect → score → route → decide → enforce → record | `11_Moderation.md` (reconcile) | after 02 |
 | **04** | `04_MULTIMODAL_DETECTION.md` | Text, image, video, audio detection; per-modality capability and failure modes; TappyAI is video-first, so video is the hard case | `11_Moderation.md` §11 (text+image sketch only) | after 03 |
@@ -225,15 +258,25 @@ later document inherits the looseness.
 
 ---
 
-## 6. Owner decisions required before drafting begins
+## 6. Owner decisions — **all DECIDED / RATIFIED (2026-08-15)**
 
-| | Decision | Why it blocks |
+These five blocked drafting. All are now settled and carried into
+[`01_GOVERNANCE.md`](01_GOVERNANCE.md), which is **RATIFIED**.
+
+| | Decision | Ratified outcome |
 |---|---|---|
-| **B-1** | Governance relationship between `docs/policy/` and the Back Office Constitution (§2.4: peer / subordinate / split) | Group 01 either writes a governance model or inherits one |
-| **B-2** | Is "AI never acts without a human" **absolute**, or qualified by an automated interim-hide (§3.1)? | Groups 01, 06, 08, 09 all inherit the answer |
-| **B-3** | Regulatory posture. TappyAI is a Vietnamese platform with iOS/Android distribution, so obligations plausibly arise from Vietnamese law and from Apple/Google store policy. **This architecture will not invent regulatory requirements.** Group 15 needs either counsel's input or an explicit "best-effort, no formal compliance claim" instruction | Group 15 is unwritable without it, and a fabricated compliance claim is worse than none |
-| **B-4** | Is `backoffice/11_Moderation.md` **superseded** by Groups 02/03/08/09/10, or does it remain authoritative for Back Office UI while `docs/policy/` owns policy? | Determines whether Group 03 rewrites or references |
-| **B-5** | Scope of subjects: does T&S v1 cover **AI conversation output** as well as UGC? `11_Moderation.md` §3 marks AI conversations "N/A — AI output, not UGC" | Materially changes Groups 02, 04 and 13 |
+| **B-1** | Governance relationship between `docs/policy/` and the Back Office Constitution | ✅ **DECIDED / RATIFIED** — **separate authoritative domain**; peer branches under Product / Company Governance; the Constitution is supreme within its own domain only (Group 01 §2) |
+| **B-2** | Is "AI never acts without a human" absolute, or qualified? | ✅ **DECIDED / RATIFIED** — **bounded automated action permitted**, governed by reversibility; **no automated path to permanent termination**; no single signal source suffices for it (Group 01 §10, R0–R3, GA-1 … GA-10) |
+| **B-3** | Regulatory posture | ✅ **DECIDED / RATIFIED** — **no compliance claim, no invented statutory obligations**; `LEGAL REVIEW REQUIRED` where interpretation is needed; evidence is **not** claimed legally admissible (Group 01 §15, EV-7). Seven legal questions remain open as **G01-L-01 … G01-L-07** |
+| **B-4** | Status of `backoffice/11_Moderation.md` | ✅ **DECIDED / RATIFIED** — **preserved as prior design input**; not deleted, not authoritative, not promoted. Its principle *"AI assists. Humans decide."* adopted in the refined form at Group 01 §10 (Group 01 §2.4) |
+| **B-5** | Does T&S cover AI-generated output? | ✅ **DECIDED / RATIFIED** — **yes.** Five content classes distinguished: UGC · AI-Generated · AI-Assisted · Mixed · External/Third-Party, which do **not** share policies, thresholds or evidence requirements (Group 01 §4.3) |
+
+**Ratification did not close anything else.** Group 01 carries **G01-D-05 …
+G01-D-18** (open Owner decisions) and **G01-L-01 … G01-L-07** (open legal
+questions). **G01-D-19** — the PROP-1 erasure-language contradiction — is
+**RESOLVED — OWNER APPROVED**; the ratified appeal principle is
+**REVERSAL ≠ ERASURE**. This map does not track those registers; Group 01 §24
+and §25 are authoritative for them.
 
 ---
 
@@ -248,8 +291,14 @@ later document inherits the looseness.
 
 ---
 
-## 8. What happens after this map is approved
+## 8. Sequencing
 
-Group 01 is drafted first and carries **B-1** and **B-2** to resolution. Nothing
-else is drafted until Group 01 is ratified, because both answers propagate into
-every subsequent document.
+**Completed.** Group 01 was drafted first and carried **B-1** and **B-2** to
+resolution. It is **RATIFIED** (Owner, 2026-08-15, v1.0), and B-1 … B-5 are
+authoritative.
+
+**Next.** Group 02 — Policy Taxonomy, the keystone (§5.1). It is
+🟡 **NOT STARTED** and requires a **separate Owner instruction**. Ratifying
+Group 01 does not authorise it.
+
+Technical contracts and implementation remain 🔴 **NOT AUTHORIZED**.
