@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
 import SignOutButton from '../SignOutButton'
-import { Bell, Brain, FileText, Shield, Trash2 } from 'lucide-react'
+import { Bell, BookOpen, Brain, FileText, Shield, Trash2 } from 'lucide-react'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
@@ -41,6 +41,11 @@ export default function SettingsView({ user }: { user: ComponentProps<typeof Hea
                 canonical pages were updated. Those routes now 308 here, but
                 first-party navigation links straight to the real page rather
                 than leaning on the redirect. */}
+            {/* Usage guidance sits with the other reference documents rather than
+                in onboarding: onboarding runs once, collects interests and a city,
+                and replace()s itself out of history, so it can never answer "how
+                does this work?" later. This is the surface a user can come back to. */}
+            <MenuItem icon={BookOpen} label={t('settings.howToUse')} href="/how-to-use" />
             <MenuItem icon={FileText} label={t('settings.terms')} href="/terms" />
             <MenuItem icon={Shield} label={t('settings.privacy')} href="/privacy" />
           </div>
