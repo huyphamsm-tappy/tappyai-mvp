@@ -39,11 +39,12 @@ rows keep degrading to the generic `video` treatment.
 
 ## Still unapplied from the original patches
 
-One item from the deleted patches was **not** carried over, because it is a different defect and
-belongs in its own change:
+Nothing. The last outstanding item shipped separately, as its own change:
 
-- **YouTube poster `maxresdefault` → `hqdefault`.** The web resolver uses `hqdefault` because
-  `maxresdefault` 404s for many videos and most Shorts (`src/lib/links/platforms.ts`). Both native
-  composers still build `maxresdefault` URLs:
-  - `android/.../reviews/ui/ReviewComposerViewModel.kt` (`onLinkUrlChanged`)
-  - `ios/TappyAI/Features/Reviews/UI/CreateReviewViewModel.swift` (`handleURLChange`)
+- **YouTube poster `maxresdefault` → `hqdefault`** — applied to both native composers
+  (`android/.../reviews/ui/ReviewComposerViewModel.kt` `onLinkUrlChanged`,
+  `ios/TappyAI/Features/Reviews/UI/CreateReviewViewModel.swift` `handleURLChange`). The web resolver
+  uses `hqdefault` because `maxresdefault` 404s for many videos and most Shorts
+  (`src/lib/links/platforms.ts`). `src/lib/links/nativePosterParity.test.ts` is the CI guard: it
+  derives the expected URL from `youTubeThumbnail` rather than spelling out `hqdefault`, so changing
+  the web derivation flags the native clients instead of quietly leaving them behind.

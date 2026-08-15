@@ -249,7 +249,10 @@ class ReviewComposerViewModel @Inject constructor(
         }
         if (source == "youtube") {
             extractYoutubeId(trimmed)?.let { id ->
-                _uiState.update { it.copy(linkThumbnailUrl = "https://i.ytimg.com/vi/$id/maxresdefault.jpg") }
+                // `hqdefault` mirrors the web's `youTubeThumbnail` (src/lib/links/platforms.ts): it
+                // exists for EVERY public video, while `maxresdefault` 404s for many videos and most
+                // Shorts — and nothing here would notice, since the poster is never fetched.
+                _uiState.update { it.copy(linkThumbnailUrl = "https://i.ytimg.com/vi/$id/hqdefault.jpg") }
             }
         }
     }
