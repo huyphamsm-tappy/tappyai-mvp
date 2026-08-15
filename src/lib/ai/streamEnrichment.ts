@@ -1,6 +1,7 @@
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
+import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
 //   0:"<text delta>"                         — assistant text chunk
@@ -443,6 +444,8 @@ export function applyPlaceEnrichmentStreamFilter(
   let lineRemainder = ''
   let mainText = '' // assistant text buffered AFTER a place-search tool call
   const toolNameByCallId = new Map<string, string>()
+  const productQueries: string[] = []   // C3-B.10: what search_products was asked for
+  const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
   let bufferMode = false
   let emitted = false
@@ -491,7 +494,14 @@ export function applyPlaceEnrichmentStreamFilter(
       }
     }
 
-    const finalText = injectPlaceEnrichment(places, mainText, lang)
+    const enriched = injectPlaceEnrichment(places, mainText, lang)
+    // C3-B.10: the last server-side point at which the COMPLETE prose exists and
+    // has not yet reached the client. A monetary claim the structured evidence
+    // does not support is removed here — deterministically, with no model call,
+    // no network call, and nothing written that was not already in the text.
+    // Inert unless the evidence carries structured prices (see moneyGuard).
+    const guarded = guardMoneyClaimsInText(enriched, productRecords, productQueries)
+    const finalText = guarded.text
     if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
   }
 
@@ -511,9 +521,14 @@ export function applyPlaceEnrichmentStreamFilter(
           }
         } else if (line.startsWith('9:')) {
           try {
-            const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string }
+            const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
             if (call.toolName && PLACE_TOOLS.has(call.toolName)) bufferMode = true
+            // C3-B.10: the money guard needs to know WHAT was asked for. The
+            // tool's own query is the only deterministic source — and it is what
+            // distinguishes "đệm tai cho WH-1000XM5" (an accessory request,
+            // where an accessory price is correct) from "WH-1000XM5".
+            if (call.toolName === 'search_products' && call.args?.query) productQueries.push(call.args.query)
           } catch { /* ignore */ }
           controller.enqueue(encoder.encode(line + '\n'))
         } else if (line.startsWith('a:')) {
@@ -535,6 +550,11 @@ export function applyPlaceEnrichmentStreamFilter(
               const searchResults = res.result?.search_results
               if (Array.isArray(searchResults)) {
                 newPlaces = searchResults.map(r => ({ ...r, name: r.title?.split(' - ')[0]?.trim() }))
+                // C3-B.10: keep the records verbatim for the money guard. It
+                // reads ONLY the structured `price` field, never title/snippet.
+                if (toolName === 'search_products') {
+                  for (const r of searchResults) productRecords.push(r as EvidenceRecord)
+                }
               }
             }
             // ACCUMULATE across EVERY place-tool call, not just the last one: a trip plan runs
