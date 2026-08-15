@@ -201,10 +201,20 @@ export function buildSystem(
   // Production answered "Quán cà phê yên tĩnh ở Quận 1 TPHCM" in English, 3 times out of 3
   // (2026-08-15). The asymmetry was the bug: the language the product is FOR was the only one
   // never named.
+  //
+  // Naming Vietnamese fixed the chitchat path but NOT the tool path, which kept answering in
+  // English (measured on production, 2 novel Vietnamese queries out of 2, after b35d60a). The
+  // reason was inside this very block: rule 2 used to hand the model four CONCRETE ENGLISH
+  // examples immediately after telling it to write in ${langName}. For every other language the
+  // contrast reads as "translate these"; for Vietnamese it reads as a demonstration. This file
+  // already carries the same lesson at buildPlanningBlock — "a concrete example in a fixed
+  // language is exactly what previously beat the top-of-prompt language override" (2026-07-30),
+  // fixed there by making every example a NEUTRAL bracketed description. Rule 2 now describes the
+  // shape instead of showing English.
   const langBlock = `===== CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY) =====
 User is writing in ${langName}. OVERRIDE all other language defaults below:
 1. Your ENTIRE response MUST be in ${langName} only — never switch to another language
-2. Every CTA button "label" MUST be in ${langName} — e.g. for English: "✅ Book - Place Name", "🛒 Find on Shopee", "🏨 Booking.com", "📍 View on Maps"
+2. Every CTA button "label" MUST be in ${langName} — shape: "[emoji] [action verb in ${langName}] - [place or platform name]"
 3. Label examples in the CTA rules below show STRUCTURE only — rewrite all label text in ${langName}
 ==========================================================\n\n`
   const budgetBlock = budget
