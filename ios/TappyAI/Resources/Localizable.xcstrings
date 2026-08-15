@@ -50,6 +50,18 @@
         "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nền tảng sẵn sàng" } }
       }
     },
+    "chat.tts.languageUnsupported" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "This reply is in a language Tappy can't read aloud yet. You can still read it above." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Câu trả lời này ở ngôn ngữ Tappy chưa đọc được. Bạn vẫn xem được nội dung bên trên." } }
+      }
+    },
+    "chat.tts.languageFailed" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Couldn't read that answer aloud. Please try again." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chưa đọc được câu trả lời. Bạn thử lại giúp mình nhé." } }
+      }
+    },
     "review.video.limitHint" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Videos can be up to 5 minutes long and 150MB." } },

@@ -95,6 +95,18 @@ struct ChatMessageList: View {
                         )
                     }
 
+                    // Read-aloud notice. Deliberately NOT folded into ChatErrorBanner: that models
+                    // chat/auth failures with retry and login actions, and read-aloud has neither —
+                    // the reply is already on screen and the only thing that failed is the audio.
+                    // Stopping playback sets no message, so pressing stop shows nothing.
+                    if let ttsNotice = tts.errorMessage {
+                        Text(ttsNotice)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.vertical, Spacing.xs)
+                    }
+
                     Color.clear.frame(height: 1).id("bottom")
                 }
                 .padding(.horizontal, Spacing.md)
@@ -206,7 +218,7 @@ private struct AssistantBubble: View {
                         ttsSpeed: tts.speed,
                         onCopy: onCopy,
                         onShare: onShare,
-                        onSpeak: { tts.speak(msgId: msgId, text: content) },
+                        onSpeak: { tts.speakResolvingLanguage(msgId: msgId, text: content) },
                         onTTSPause: { tts.togglePause() },
                         onTTSStop: { tts.stop() },
                         onTTSSkipBack: { tts.skipBack() },

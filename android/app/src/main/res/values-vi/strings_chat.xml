@@ -119,4 +119,7 @@
     <string name="chat_plan_book">Đặt ngay</string>
     <string name="chat_save_place">Lưu địa điểm</string>
     <string name="chat_save_place_saved">Đã lưu</string>
+    <!-- Đọc to. Hai tình huống khác nhau: một cái bảo đừng thử nữa, một cái bảo thử lại. -->
+    <string name="chat_tts_language_unsupported">Câu trả lời này ở ngôn ngữ Tappy chưa đọc được. Bạn vẫn xem được nội dung bên trên.</string>
+    <string name="chat_tts_language_failed">Chưa đọc được câu trả lời. Bạn thử lại giúp mình nhé.</string>
 </resources>

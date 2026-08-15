@@ -23,6 +23,15 @@ final class ChatViewModel: AppObservableObject {
     let tts = TTSManager()
     let voice = VoiceInputManager()
 
+    /// Gives the TTS manager a way to ask the backend for a reply's language without knowing about
+    /// networking itself. Set once in `init`; see `TTSManager.resolveLanguage`.
+    private func wireReadAloudLanguage() {
+        tts.resolveLanguage = { [weak self] text in
+            guard let self else { return .failed }
+            return await self.service.messageLanguage(text: text)
+        }
+    }
+
     // MARK: - Configuration
 
     let category: String
@@ -46,6 +55,7 @@ final class ChatViewModel: AppObservableObject {
         self.session = session
         self.category = category
         self.conversationId = conversationId
+        wireReadAloudLanguage()
 
         if let saved = savedMessages {
             self.messages = saved.enumerated().map { idx, m in

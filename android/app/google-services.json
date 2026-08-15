@@ -1,0 +1,97 @@
+{
+  "project_info": {
+    "project_number": "1023373437508",
+    "project_id": "aerobic-lock-498409-u7",
+    "storage_bucket": "aerobic-lock-498409-u7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023373437508:android:76bdea955aa16e17c5ea11",
+        "android_client_info": {
+          "package_name": "com.tappyai.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1023373437508-l3a33lgl3hopk39nqrb8gttaiglpnsv3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzJXfweuXhqFZsgHcIKUhVtcgSsD6HVAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1023373437508-l3a33lgl3hopk39nqrb8gttaiglpnsv3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023373437508:android:52b64ccf534b2da8c5ea11",
+        "android_client_info": {
+          "package_name": "com.tappyai.app.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1023373437508-l3a33lgl3hopk39nqrb8gttaiglpnsv3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzJXfweuXhqFZsgHcIKUhVtcgSsD6HVAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1023373437508-l3a33lgl3hopk39nqrb8gttaiglpnsv3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023373437508:android:70b8953746a1b39dc5ea11",
+        "android_client_info": {
+          "package_name": "com.tappyai.app.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1023373437508-l3a33lgl3hopk39nqrb8gttaiglpnsv3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzJXfweuXhqFZsgHcIKUhVtcgSsD6HVAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1023373437508-l3a33lgl3hopk39nqrb8gttaiglpnsv3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

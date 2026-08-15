@@ -19,7 +19,9 @@ import com.tappyai.app.chat.data.ChatException
 import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
+import com.tappyai.app.chat.data.MessageLanguage
 import com.tappyai.app.chat.data.SuggestedPromptsRepository
+import com.tappyai.app.chat.data.VoiceLanguageRepository
 import com.tappyai.app.history.StoredChatMessage
 import com.tappyai.app.history.data.ChatHistoryRepository
 import com.tappyai.app.maps.data.MapsRepository
@@ -49,6 +51,7 @@ class ChatViewModel @Inject constructor(
     private val messageFeedbackRepository: MessageFeedbackRepository,
     private val suggestedPromptsRepository: SuggestedPromptsRepository,
     private val mapsRepository: MapsRepository,
+    private val voiceLanguageRepository: VoiceLanguageRepository,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
@@ -167,6 +170,18 @@ class ChatViewModel @Inject constructor(
      *  web's `!window.speechSynthesis` guard; [onToggleSpeak] silently no-ops while false. */
     var ttsAvailable by mutableStateOf(false)
         private set
+
+    /** BCP-47 tag for the message currently being read, as decided by the backend. Null until a
+     *  decision arrives, and [speakFromOffset] refuses to speak while it is null. */
+    var ttsLocaleTag by mutableStateOf<String?>(null)
+        private set
+
+    /** Localized reason read-aloud could not start. Null when there is nothing to report. */
+    var ttsError by mutableStateOf<String?>(null)
+        private set
+
+    /** Dismisses the read-aloud notice once the UI has shown it. */
+    fun clearTtsError() { ttsError = null }
 
     /** The message currently being read aloud, or null. Only one message speaks at a time,
      *  matching the web's single `speakingId` in `useTTS` — mirrors [TranslateViewModel]'s
@@ -369,7 +384,29 @@ class ChatViewModel @Inject constructor(
         ttsProgress = 0f
         ttsElapsedSec = 0
         ttsTotalSec = (text.length.coerceAtLeast(1) / (TTS_CPS * ttsSpeed)).toInt()
-        speakFromOffset(0)
+        ttsError = null
+
+        // The reply's language comes from the backend, never from a local guess — see
+        // [VoiceLanguageRepository]. Asked ONCE per playback: speakFromOffset() is also used by
+        // resume/skip/speed, and re-asking on every scrub would spend a request per drag.
+        viewModelScope.launch {
+            when (val decided = voiceLanguageRepository.messageLanguage(text)) {
+                is MessageLanguage.Speakable -> {
+                    // The user may have pressed stop, or started another message, while we waited.
+                    if (speakingMessageId != id) return@launch
+                    ttsLocaleTag = decided.localeTag
+                    speakFromOffset(0)
+                }
+                MessageLanguage.NotSpeakable -> {
+                    ttsError = stringProvider.get(R.string.chat_tts_language_unsupported)
+                    stopTtsPlayback()
+                }
+                MessageLanguage.Failed -> {
+                    ttsError = stringProvider.get(R.string.chat_tts_language_failed)
+                    stopTtsPlayback()
+                }
+            }
+        }
     }
 
     /** (Re)speak [ttsText] from [offset] chars in, at the current [ttsSpeed]. Backs resume/skip/speed. */
@@ -379,7 +416,14 @@ class ChatViewModel @Inject constructor(
         ttsCurrentOffset = ttsBaseOffset
         ttsIsPaused = false
         tts.setSpeechRate(ttsSpeed)
-        tts.language = Locale.forLanguageTag(speechLocaleTag)
+        // The MESSAGE language decided by the backend — not [speechLocaleTag], which is the APP
+        // language and belongs to voice input. An English-mode user receiving a Vietnamese reply
+        // hears Vietnamese. Null means nothing decided it, so refuse rather than guess.
+        val tag = ttsLocaleTag ?: run {
+            stopTtsPlayback()
+            return
+        }
+        tts.language = Locale.forLanguageTag(tag)
         val remainder = ttsText.substring(ttsBaseOffset)
         tts.speak(remainder, TextToSpeech.QUEUE_FLUSH, null, "chat-utterance-$speakingMessageId")
     }

@@ -120,6 +120,22 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
     val reportedMessageIds by viewModel.reportedMessageIds.collectAsStateWithLifecycle()
     val isListening by viewModel.isListening.collectAsStateWithLifecycle()
 
+    // Read-aloud problems surface through the app's existing Toast pattern (AccountEditScreen,
+    // GroupDetailScreen, SoundDetailScreen all use it) rather than a second error system.
+    //
+    // The ViewModel has already turned the outcome into a localized sentence, so nothing technical
+    // reaches the user: no status code, no provider, no endpoint. Stopping or cancelling playback
+    // sets no error at all, so nothing appears — silence is the correct feedback for "you pressed
+    // stop". Cleared immediately after showing, so rotating the device does not replay it.
+    val ttsToastContext = LocalContext.current
+    val ttsError = viewModel.ttsError
+    LaunchedEffect(ttsError) {
+        ttsError?.let { message ->
+            Toast.makeText(ttsToastContext, message, Toast.LENGTH_LONG).show()
+            viewModel.clearTtsError()
+        }
+    }
+
     val listState = rememberLazyListState()
     LaunchedEffect(messages.size, isResponding) {
         val itemCount = messages.size + if (isResponding) 1 else 0

@@ -90,6 +90,32 @@ final class ChatService: Sendable {
         return result.memory != nil
     }
 
+    // MARK: - Read-aloud language
+
+    /// Asks the backend which language a reply is in. Returns a decision only — no audio, no voice
+    /// name, no cost — because iOS keeps using its own `AVSpeechSynthesizer`; all it needed from
+    /// the server was which language to set.
+    ///
+    /// Every failure path returns a REFUSAL rather than a guess. A network error says nothing about
+    /// what language the text is in, and defaulting to Vietnamese here is exactly the bug this
+    /// replaces.
+    func messageLanguage(text: String) async -> MessageLanguage {
+        guard !text.isEmpty else { return .notSpeakable }
+        let body = try? JSONSerialization.data(withJSONObject: ["text": text])
+        let endpoint = Endpoint(path: "/api/voice/language", method: .post,
+                                body: body, requiresAuth: true)
+        guard let result = try? await api.send(endpoint, as: VoiceLanguageResponse.self) else {
+            return .failed
+        }
+        // Both fields must agree before we speak: `speakable` false, a null language, or a code
+        // this build has no tag for all mean the same thing — stay quiet.
+        guard result.speakable, let tag = VoiceLocale.tag(for: result.language),
+              let language = result.language else {
+            return .notSpeakable
+        }
+        return .speakable(language: language, localeTag: tag)
+    }
+
     // MARK: - Message feedback (like/dislike/report)
 
     func saveFeedback(conversationId: String, messageIndex: Int, type: String, reason: String? = nil) async {
@@ -176,6 +202,13 @@ final class ChatService: Sendable {
 
 private struct MemoryCheckResponse: Decodable {
     let memory: AnyCodable?
+}
+
+/// `language` is null when the server cannot name a language it supports, and `speakable` mirrors
+/// that. Both are read: trusting only one would rely on the two never disagreeing.
+private struct VoiceLanguageResponse: Decodable {
+    let language: String?
+    let speakable: Bool
 }
 
 private struct PreferencesResponse: Decodable {

@@ -120,4 +120,7 @@
     <string name="chat_plan_book">Book now</string>
     <string name="chat_save_place">Save place</string>
     <string name="chat_save_place_saved">Saved</string>
+    <!-- Read aloud. Two distinct outcomes: one says do not bother, the other says try again. -->
+    <string name="chat_tts_language_unsupported">This reply is in a language Tappy can\'t read aloud yet. You can still read it above.</string>
+    <string name="chat_tts_language_failed">Couldn\'t read that answer aloud. Please try again.</string>
 </resources>

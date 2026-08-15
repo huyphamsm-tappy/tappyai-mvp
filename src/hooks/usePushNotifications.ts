@@ -38,7 +38,9 @@ export function usePushNotifications() {
   useEffect(() => {
     if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return
     const handler = (event: MessageEvent) => {
-      if (event.data?.type === 'TAPPY_PUSH') playTappyChime()
+      // The message is a trigger, not data: it says an identity notification arrived and carries
+      // nothing from it. playTappyChime takes no arguments, so there is nothing to pass anyway.
+      if (event.data?.type === 'TAPPY_IDENTITY') playTappyChime()
     }
     navigator.serviceWorker.addEventListener('message', handler)
     return () => navigator.serviceWorker.removeEventListener('message', handler)

@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
-import { Volume2, VolumeX, Copy, Check, ChevronDown } from 'lucide-react'
+import { Volume2, VolumeX, Copy, Check, ChevronDown, Mic, MicOff } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { inputLocaleFor } from '@/lib/voice/config'
 
 const LANGUAGES = [
   { code: 'vi', name: 'Tiếng Việt', tts: 'vi-VN' },
@@ -40,7 +41,7 @@ const LANGUAGES = [
 ]
 
 export default function TranslatePage() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [inputText, setInputText] = useState('')
   const [targetLang, setTargetLang] = useState('vi')
   const [translation, setTranslation] = useState('')
@@ -49,9 +50,73 @@ export default function TranslatePage() {
   const [speaking, setSpeaking] = useState(false)
   const [copied, setCopied] = useState(false)
   const [showLangPicker, setShowLangPicker] = useState(false)
+  const [isListening, setIsListening] = useState(false)
+  const [voiceError, setVoiceError] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const voiceBaseRef = useRef('')
 
   const selectedLang = LANGUAGES.find(l => l.code === targetLang) || LANGUAGES[0]
+
+  // ── Speech input ──────────────────────────────────────────────────────────
+  // Dictation feeds the SOURCE box; translation and read-aloud are unchanged downstream. The
+  // translated text stays on screen throughout — speech is additive here, never a replacement for
+  // something the user can read.
+  //
+  // Dictation listens in the app language (the shared contract), which is separate from the 30
+  // TRANSLATION targets below: we can translate INTO Japanese without being able to listen in it.
+  const startVoice = useCallback(() => {
+    const Ctor = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!Ctor) { setVoiceError(t('voice.unsupportedBrowser')); return }
+    const inputLocale = inputLocaleFor(locale)
+    if (!inputLocale) { setVoiceError(t('voice.languageUnsupported')); return }
+
+    setVoiceError('')
+    const recognition = new Ctor()
+    recognition.lang = inputLocale
+    recognition.interimResults = true
+    recognition.continuous = false
+    recognition.maxAlternatives = 1
+    recognitionRef.current = recognition
+    voiceBaseRef.current = inputText ? inputText.replace(/\s+$/, '') + ' ' : ''
+
+    recognition.onstart = () => { setIsListening(true); setVoiceError('') }
+    recognition.onend = () => setIsListening(false)
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      setIsListening(false)
+      switch (event.error) {
+        case 'not-allowed':
+        case 'service-not-allowed': setVoiceError(t('voice.permissionDenied')); break
+        case 'no-speech': setVoiceError(t('voice.noSpeech')); break
+        case 'audio-capture': setVoiceError(t('voice.audioCapture')); break
+        case 'aborted': break // user or unmount stopped it
+        default: setVoiceError(t('voice.recognitionError'))
+      }
+    }
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let transcript = ''
+      for (let i = 0; i < event.results.length; i++) transcript += event.results[i][0].transcript
+      setInputText(voiceBaseRef.current + transcript)
+    }
+
+    setIsListening(true)
+    try { recognition.start() } catch { setIsListening(false); setVoiceError(t('voice.startFailed')) }
+  }, [inputText, locale, t])
+
+  const stopVoice = useCallback(() => {
+    recognitionRef.current?.stop()
+    setIsListening(false)
+  }, [])
+
+  // Never leave the microphone open, or a callback pointing at an unmounted page.
+  useEffect(() => () => {
+    const r = recognitionRef.current
+    if (r) {
+      r.onstart = null; r.onend = null; r.onerror = null; r.onresult = null
+      try { r.abort() } catch { /* already stopped */ }
+      recognitionRef.current = null
+    }
+  }, [])
 
   const translate = useCallback(async () => {
     const text = inputText.trim()
@@ -131,7 +196,23 @@ export default function TranslatePage() {
             />
           </div>
           <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 dark:border-gray-800">
-            <span className="text-xs text-gray-400">{inputText.length}/2000</span>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={isListening ? stopVoice : startVoice}
+                aria-label={isListening ? t('voice.stopListening') : t('voice.micHint')}
+                title={isListening ? t('voice.stopListening') : t('voice.micHint')}
+                className={`flex items-center gap-1.5 text-xs transition-colors ${
+                  isListening
+                    ? 'text-violet-600 dark:text-violet-400'
+                    : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+                }`}
+              >
+                {isListening ? <MicOff size={15} /> : <Mic size={15} />}
+                {isListening ? t('voice.listening') : t('voice.micHint')}
+              </button>
+              <span className="text-xs text-gray-400">{inputText.length}/2000</span>
+            </div>
             {inputText.trim() && (
               <button
                 onClick={() => { setInputText(''); setTranslation(''); setError(''); textareaRef.current?.focus() }}
@@ -141,6 +222,9 @@ export default function TranslatePage() {
               </button>
             )}
           </div>
+          {voiceError && (
+            <p role="status" className="px-4 pb-2 text-xs text-amber-600 dark:text-amber-400">{voiceError}</p>
+          )}
         </div>
 
         {/* Language picker */}
