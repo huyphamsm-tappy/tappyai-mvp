@@ -86,6 +86,25 @@ const VI_FUNCTION_WORDS = new Set([
   'cung', 'nhieu', 'rat', 'sao', 'uong', 'kiem', 'phai', 'chac', 'nua', 'luon',
 ])
 
+// The mirror of VI_FUNCTION_WORDS: ENGLISH evidence.
+//
+// Until now the detector only ever scored Vietnamese-ness, so a short mixed query had no way to
+// be pulled back toward English. That is why "Cafe view đẹp Hà Nội?" (a Vietnamese search) and
+// "Best bún chả in Hà Nội?" (an English sentence naming a Vietnamese dish) were inseparable:
+// measured on the ratio alone the ENGLISH one actually scores HIGHER (0.67 vs 0.50). No
+// threshold or numerator change can split them — only the English words can.
+//
+// Built with the same collision rule documented above: a token counts as English evidence only
+// if it is NOT also a legitimate Vietnamese word after normalizeVN. Excluded for exactly that
+// reason — can (cần/căn), me (mẹ), my (mỹ), the (thế), i (í), and the in/to/go/no/so/may/hay/
+// ban/la set already named above. Kept deliberately small: these are unambiguous English
+// question/request words, not a general dictionary.
+const EN_FUNCTION_WORDS = new Set([
+  'best', 'where', 'try', 'near', 'recommend', 'good', 'find', 'what', 'help',
+  'with', 'your', 'from', 'about', 'please', 'need', 'want', 'looking', 'some',
+  'which', 'how', 'suggest', 'show', 'any', 'around', 'there', 'here',
+])
+
 // Two production incidents shaped this function, in opposite directions:
 //   2026-07-29 — ANY non-ASCII codepoint that wasn't a recognized Asian script
 //     counted as Vietnamese, so autocorrect's curly quotes/dashes/ellipsis and
@@ -123,6 +142,7 @@ export function detectLang(text: string): string {
   let accentedWords = 0
   let lowercaseAccentedWords = 0
   let viFunctionWords = 0
+  let enFunctionWords = 0
   for (const w of words) {
     let accented = false
     for (const ch of w) {
@@ -134,6 +154,7 @@ export function detectLang(text: string): string {
     }
     const bare = normalizeVN(w.toLowerCase()).replace(/[^a-z]/g, '')
     if (bare && VI_FUNCTION_WORDS.has(bare)) viFunctionWords++
+    if (bare && EN_FUNCTION_WORDS.has(bare)) enFunctionWords++
   }
 
   // Every word accented — a bare Vietnamese phrase or place name on its own
@@ -142,7 +163,20 @@ export function detectLang(text: string): string {
   // Real Vietnamese vocabulary plus Vietnamese grammar words, even when tone
   // marks are sparse.
   if (lowercaseAccentedWords >= 1 && viFunctionWords >= 2) return 'vi'
-  return lowercaseAccentedWords / words.length >= VI_WORD_RATIO_THRESHOLD ? 'vi' : 'en'
+  // An unambiguous English question/request word settles it. Reached only after the two rules
+  // above, so a sentence with real Vietnamese grammar still wins first.
+  if (enFunctionWords > 0) return 'en'
+  // The ratio judges only the LOWERCASE words, on both sides of the division.
+  //
+  // The numerator already ignored capitalised tokens — deliberately, so a place name cannot make
+  // an English sentence Vietnamese. But they stayed in the DENOMINATOR, so an accented proper
+  // noun scored AGAINST Vietnamese. A long sentence absorbs that; a five-word search query does
+  // not. Production answered "Cafe view đẹp Hà Nội?" in English on 1/5 = 0.200, because `Cafe`
+  // and `view` are undiacriticked loanwords in ordinary Vietnamese use and `Hà`/`Nội` diluted
+  // what remained. Judging the lowercase words alone gives 1/2 = 0.500.
+  const scoredWords = words.filter(w => !STARTS_UPPERCASE.test(w)).length
+  if (scoredWords === 0) return 'en'
+  return lowercaseAccentedWords / scoredWords >= VI_WORD_RATIO_THRESHOLD ? 'vi' : 'en'
 }
 
 // Language names this app can explicitly instruct the model to answer in —
