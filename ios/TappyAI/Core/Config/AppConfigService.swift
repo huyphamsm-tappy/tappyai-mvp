@@ -8,6 +8,13 @@ struct AppConfig: Decodable, Sendable {
     let upload: Upload
     let auth: Auth?
     let onboarding: Onboarding?
+    let video: Video?
+
+    struct Video: Decodable, Sendable {
+        /// The platforms a user may import a video from — web `LINK_VIDEO_PROVIDERS`. Optional so
+        /// an older deployment that predates the field still decodes.
+        let linkProviders: [String]?
+    }
 
     struct Freemium: Decodable, Sendable {
         let freeDailyLimit: Int
@@ -82,6 +89,15 @@ final class AppConfigService: Sendable {
         let cfg = try await config()
         guard let auth = cfg.auth else { return [] }
         return auth.providers.filter(\.enabled).map(\.id)
+    }
+
+    /// The platforms the backend accepts a video link from (`video.linkProviders`).
+    ///
+    /// Falls back to the V1 contract rather than an empty list: "no provider" would disable the
+    /// composer's Link tab outright, whereas the backend's actual V1 answer is YouTube.
+    func supportedLinkProviders() async throws -> [String] {
+        let providers = try await config().video?.linkProviders ?? []
+        return providers.isEmpty ? ["youtube"] : providers
     }
 
     func onboardingInterests(locale: String) async throws -> [(id: String, label: String)] {

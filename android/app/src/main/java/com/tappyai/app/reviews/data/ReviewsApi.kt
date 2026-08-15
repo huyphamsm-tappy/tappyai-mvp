@@ -118,6 +118,14 @@ interface ReviewsApi {
     @GET("api/explore/oembed")
     suspend fun getOembed(@Query("url") url: String): OembedResponseDto
 
+    /**
+     * The backend-owned product config (public, no auth). The composer reads only
+     * `video.linkProviders` — the list of platforms a user may import a video from, which the
+     * backend owns so no client hardcodes a provider list of its own.
+     */
+    @GET("api/config")
+    suspend fun getConfig(): ProductConfigDto
+
     /** The caller's own reviews, including hidden ones — see My Reviews. */
     @GET("api/reviews/mine")
     suspend fun getMine(): FeedResponseDto

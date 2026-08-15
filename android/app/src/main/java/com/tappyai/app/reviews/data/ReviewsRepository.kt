@@ -77,11 +77,18 @@ interface ReviewsRepository {
     suspend fun uploadReviewPhoto(bytes: ByteArray, mimeType: String): NetworkResult<String>
 
     /**
-     * Best-effort thumbnail URL for a pasted TikTok/Facebook link, via GET /api/explore/oembed.
-     * Returns null when the provider exposes none — never fatal; the review can post without a
-     * poster frame. YouTube thumbnails are derived client-side and don't call this.
+     * Best-effort thumbnail URL for a pasted link, via GET /api/explore/oembed. Returns null when
+     * the provider exposes none — never fatal; the review can post without a poster frame. YouTube
+     * thumbnails are derived client-side and don't call this.
      */
     suspend fun getLinkThumbnail(url: String): NetworkResult<String?>
+
+    /**
+     * The platforms the backend accepts a video link from (`GET /api/config` →
+     * `video.linkProviders`). The backend owns this list; the composer must not carry one of its
+     * own, or Android silently offers a provider the backend will not serve.
+     */
+    suspend fun getLinkProviders(): NetworkResult<List<String>>
 
     /** [musicTrackId], when present, attaches a sound picked via Sound Detail's "Use this sound"
      *  (`POST /api/reviews`'s `music` field, `origin: 'attached'`) — matches the web's own

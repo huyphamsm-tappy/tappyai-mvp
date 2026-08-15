@@ -111,6 +111,9 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun getLinkThumbnail(url: String): NetworkResult<String?> =
         safeApiCall { api.getOembed(url).thumbnailUrl }
 
+    override suspend fun getLinkProviders(): NetworkResult<List<String>> =
+        safeApiCall { api.getConfig().video.linkProviders }
+
     override suspend fun createReview(
         placeId: String,
         placeName: String,

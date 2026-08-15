@@ -17,7 +17,8 @@ struct CreateReviewView: View {
         self.prefilledPlaceName = prefilledPlaceName
         let service = CreateReviewService(api: deps.api)
         _vm = AppStateObject(wrappedValue: CreateReviewViewModel(
-            service: service, session: deps.session, prefilledPlaceId: prefilledPlaceId, prefilledPlaceName: prefilledPlaceName
+            service: service, session: deps.session, config: deps.configService,
+            prefilledPlaceId: prefilledPlaceId, prefilledPlaceName: prefilledPlaceName
         ))
     }
 
@@ -116,6 +117,7 @@ struct CreateReviewView: View {
                     vm.selectMusic(MusicSelection(trackId: soundId, startSec: 0, volume: 1.0))
                 }
             }
+            .task { await vm.loadSupportedProviders() }
             .onChange(of: photoSelection) { newValue in
                 guard !newValue.isEmpty else { return }
                 vm.handlePhotoItems(newValue)
@@ -450,13 +452,13 @@ struct CreateReviewView: View {
     private var urlSection: some View {
         VStack(spacing: Spacing.sm) {
             HStack(spacing: Spacing.xs) {
-                ForEach(ExternalSource.allCases, id: \.self) { source in
+                ForEach(vm.supportedSources, id: \.self) { source in
                     Button {
                         vm.sourceType = source
                         vm.sourceURL = ""
                         vm.urlMeta = nil
                     } label: {
-                        Text(source == .youtube ? "▶ YouTube" : source == .tiktok ? "♪ TikTok" : "📘 Facebook")
+                        Label(source.displayLabel, systemImage: source.icon)
                             .font(.system(size: 12, weight: .semibold))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, Spacing.sm)
@@ -473,9 +475,7 @@ struct CreateReviewView: View {
             }
 
             TextField(
-                vm.sourceType == .youtube ? "Dán link YouTube..." :
-                vm.sourceType == .tiktok ? "Dán link TikTok..." :
-                "Dán link Facebook...",
+                "Dán link \(vm.sourceType.displayLabel)...",
                 text: Binding(
                     get: { vm.sourceURL },
                     set: { vm.handleURLChange($0) }
@@ -517,8 +517,9 @@ struct CreateReviewView: View {
 
                     Color.black.opacity(0.3)
 
-                    Text(vm.sourceType == .youtube ? "▶" : vm.sourceType == .tiktok ? "♪" : "📘")
+                    Image(systemName: vm.sourceType.icon)
                         .font(.system(size: 28))
+                        .foregroundStyle(.white)
                         .padding(Spacing.md)
                         .background(.white.opacity(0.2))
                         .clipShape(Circle())
@@ -533,12 +534,6 @@ struct CreateReviewView: View {
                         .foregroundStyle(TappyColor.textSecondary)
                         .lineLimit(1)
                 }
-            }
-
-            if vm.sourceType == .facebook && !vm.sourceURL.isEmpty {
-                Text("Facebook: chỉ lưu link và hiển thị nút xem ngoài.")
-                    .font(TappyFont.caption)
-                    .foregroundStyle(TappyColor.textSecondary)
             }
         }
     }
