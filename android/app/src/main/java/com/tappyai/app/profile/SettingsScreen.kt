@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.VolumeUp
@@ -70,6 +71,7 @@ fun SettingsScreen(
     onSignIn: () -> Unit,
     onOpenNotifications: () -> Unit,
     onOpenTappyKnows: () -> Unit,
+    onOpenGuide: () -> Unit,
     onOpenTerms: () -> Unit,
     onOpenPrivacy: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
@@ -143,6 +145,15 @@ fun SettingsScreen(
             Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
                 MenuSectionHeader(stringResource(R.string.settings_section_other))
                 TappyCard(contentPadding = PaddingValues(0.dp)) {
+                    // Usage guidance sits with the reference documents rather than in
+                    // onboarding: onboarding runs once and cannot answer "how does this
+                    // work?" later. This is the row a user can come back to.
+                    TappyMenuRow(
+                        icon = Icons.AutoMirrored.Filled.MenuBook,
+                        title = stringResource(R.string.settings_how_to_use),
+                        onClick = onOpenGuide,
+                    )
+                    HorizontalDivider()
                     TappyMenuRow(
                         icon = Icons.Filled.Description,
                         title = stringResource(R.string.settings_terms_of_service),

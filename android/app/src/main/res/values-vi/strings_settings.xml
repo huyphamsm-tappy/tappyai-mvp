@@ -6,6 +6,7 @@
     <string name="settings_memory">Bộ nhớ</string>
     <string name="settings_language">Ngôn ngữ</string>
     <string name="settings_section_other">Khác</string>
+    <string name="settings_how_to_use">Hướng dẫn sử dụng</string>
     <string name="settings_terms_of_service">Điều khoản dịch vụ</string>
     <string name="settings_privacy_policy">Chính sách bảo mật</string>
     <string name="settings_version">Phiên bản %1$s</string>
