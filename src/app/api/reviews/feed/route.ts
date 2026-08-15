@@ -1,5 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { toExploreFeedItems } from '@/lib/media/servableMedia'
+import { toExploreFeedItems, toProfileFeedItems } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
@@ -189,8 +189,14 @@ export async function GET(req: NextRequest) {
   // dead rows would have ended the feed early and hidden healthy posts below it.
   // Whether more rows exist is a property of the query, not of how many survived
   // rendering, so the server is the only place that can answer it honestly.
+  //
+  // …but ONLY for the discovery surfaces. `?userId=` is a profile feed, and it backs the one
+  // place an author can reach a post to hide or delete it ("Bài của tôi" and the profile grid).
+  // Dropping unrenderable rows there would strand the post: invisible to its owner, therefore
+  // undeletable. Discovery hides it; management must not.
   const hasMore = enriched.length >= limit
-  const res = NextResponse.json({ reviews: toExploreFeedItems(enriched), page, limit, hasMore })
+  const reviewsOut = filterUserId ? toProfileFeedItems(enriched) : toExploreFeedItems(enriched)
+  const res = NextResponse.json({ reviews: reviewsOut, page, limit, hasMore })
 
   // Cache ONLY the truly uniform response: anonymous, non-following, non-profile
   // feeds (every anon caller gets identical rows with liked_by_me/saved_by_me all
