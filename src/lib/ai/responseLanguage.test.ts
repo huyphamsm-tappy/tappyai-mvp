@@ -89,6 +89,27 @@ describe('every language gets an explicit instruction, Vietnamese included', () 
     })
   }
 
+  it('the override teaches by shape, never by a concrete example in one fixed language', () => {
+    // This is what kept the TOOL path in English after the first fix. Rule 2 handed the model
+    // four English CTA labels right after telling it to write in Vietnamese; a concrete example
+    // in a fixed language beats an abstract instruction, which this codebase already learned at
+    // buildPlanningBlock in 2026-07-30 and solved with neutral bracketed descriptions.
+    //
+    // Asserted for EVERY language: an English exemplar is only invisible when the target
+    // language happens to be English.
+    const ENGLISH_EXEMPLARS = ['Find on Shopee', 'View on Maps', 'Book - Place Name', 'Booking.com']
+    for (const lang of LANGS) {
+      const { dynamic } = buildSystem(null, 'unknown', true, '', lang, '', null, null, false)
+      const override = dynamic.slice(
+        dynamic.indexOf('CRITICAL LANGUAGE OVERRIDE'),
+        dynamic.indexOf('=========================================================='),
+      )
+      for (const exemplar of ENGLISH_EXEMPLARS) {
+        expect(override, `${lang}: override shows the English exemplar "${exemplar}"`).not.toContain(exemplar)
+      }
+    }
+  })
+
   it('never instructs a Vietnamese turn to answer in English', () => {
     // The precise landmine: LANG_NAMES had no `vi` entry, and every read site is
     // `LANG_NAMES[lang] || 'English'`. Unguarded, a Vietnamese turn would have been told to
