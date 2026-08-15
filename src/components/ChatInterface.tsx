@@ -411,7 +411,9 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;')
 }
 
-function formatMessage(content: string) {
+// Exported for test only — this is the single transform standing between untrusted LLM/tool
+// output and dangerouslySetInnerHTML, and it had no coverage at all.
+export function formatMessage(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
@@ -449,6 +451,32 @@ function formatMessage(content: string) {
 // (ease-out: bigger gap → faster catch-up) so it always reads like fluid typing,
 // regardless of burst size. When streaming ends we snap to the full text so the
 // final render is never truncated.
+// A markdown link/image is ATOMIC to the typewriter: never stop the reveal inside one.
+//
+// The reveal slices `target` at an arbitrary character. formatMessage() only recognises a
+// COMPLETE `![alt](https://…)` — so while the closing `)` is still unrevealed, the prefix falls
+// through every transform and the raw URL is painted as visible text. Order links clear that
+// window in a frame or two because they are short; a ~120-char Google thumbnail URL does not,
+// which is why production showed working ShopeeFood links beside a giant raw
+// `![Ảnh địa điểm](https://encrypted-tbn0…` on the very same injected block.
+//
+// Only a real token is withheld. The full `target` is consulted to confirm the shape, so
+// ordinary prose containing `[` or `(` — "giá (khoảng 50k)", `[CTA_BUTTONS]`, `[FOLLOWUPS]` —
+// is never delayed waiting for a `)` that is not coming.
+const MD_TOKEN = /^!?\[[^\]\n]*\]\([^\s)]*\)/
+export function markdownSafeRevealEnd(target: string, end: number): number {
+  if (end <= 0 || end >= target.length) return end
+  const shown = target.slice(0, end)
+  let open = shown.lastIndexOf('[')
+  if (open === -1) return end
+  if (open > 0 && shown[open - 1] === '!') open -= 1
+  const m = MD_TOKEN.exec(target.slice(open))
+  // Not a markdown token, or it is already fully revealed — reveal as proposed.
+  if (!m || open + m[0].length <= end) return end
+  // Token is mid-reveal: hold the whole thing back until its closing ')' arrives.
+  return open
+}
+
 function useSmoothText(target: string, active: boolean): string {
   const [shown, setShown] = useState(target)
   const targetRef = useRef(target)
@@ -476,7 +504,7 @@ function useSmoothText(target: string, active: boolean): string {
       if (cur.length < tgt.length) {
         const gap = tgt.length - cur.length
         const reveal = Math.max(2, Math.ceil(gap / 8)) // ease-out catch-up
-        const next = tgt.slice(0, cur.length + reveal)
+        const next = tgt.slice(0, markdownSafeRevealEnd(tgt, cur.length + reveal))
         shownRef.current = next
         setShown(next)
       } else if (cur.length > tgt.length) {
