@@ -32,6 +32,11 @@ final class CreateReviewViewModel: AppObservableObject {
     // URL
     @AppPublished var sourceURL: String = ""
     @AppPublished var sourceType: ExternalSource = .youtube
+    /// The providers the composer offers, from `/api/config` `video.linkProviders` — the SINGLE
+    /// point gating the selector, so no provider list is hardcoded in the UI. Seeded with the V1
+    /// contract so the Link tab works before the fetch lands; a failed fetch leaves it narrowed
+    /// rather than widening it, since widening is what produced the drift this replaces.
+    @AppPublished var supportedSources: [ExternalSource] = [.youtube]
     @AppPublished var urlMeta: OEmbedResponse?
     @AppPublished var fetchingMeta = false
 
@@ -53,15 +58,33 @@ final class CreateReviewViewModel: AppObservableObject {
 
     private let service: CreateReviewService
     private let session: SessionStore
+    private let config: AppConfigService
     private let log = AppLogger.reviews
     private var uploadTask: Task<Void, Never>?
     private var searchDebounceTask: Task<Void, Never>?
 
     var isAuthenticated: Bool { session.state.isAuthenticated }
 
-    init(service: CreateReviewService, session: SessionStore, prefilledPlaceId: String? = nil, prefilledPlaceName: String? = nil) {
+    /// Applies the backend-owned provider list to the selector. A provider is offered only if the
+    /// backend lists it AND this client has a case for it, so an id we cannot parse is dropped
+    /// rather than rendered as a button that does nothing. On failure the seeded V1 default stands.
+    func loadSupportedProviders() async {
+        do {
+            let ids = try await config.supportedLinkProviders()
+            let mapped = ids.compactMap(ExternalSource.init(rawValue:))
+            if !mapped.isEmpty {
+                supportedSources = mapped
+                if !mapped.contains(sourceType) { sourceType = mapped[0] }
+            }
+        } catch {
+            log.info("link provider config load failed; keeping \(self.supportedSources)")
+        }
+    }
+
+    init(service: CreateReviewService, session: SessionStore, config: AppConfigService, prefilledPlaceId: String? = nil, prefilledPlaceName: String? = nil) {
         self.service = service
         self.session = session
+        self.config = config
         if let id = prefilledPlaceId, !id.isEmpty {
             self.prefilledPlaceId = id
         }

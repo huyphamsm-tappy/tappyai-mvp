@@ -14,7 +14,6 @@ import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,11 +39,11 @@ data class ReviewComposerUiState(
     val isUploadingPhoto: Boolean = false,
     /** Raw text in the Link tab's URL field. */
     val linkUrl: String = "",
-    /** Detected provider for [linkUrl] — "youtube"/"tiktok"/"facebook", or null if unrecognized. */
+    /** Detected provider for [linkUrl], or null when it is not one the backend accepts. */
     val linkSourceType: String? = null,
-    /** Best-effort poster frame for the link (YouTube: derived; TikTok/FB: via oEmbed). */
+    /** Best-effort poster frame for the link (YouTube: derived from the video id, no network). */
     val linkThumbnailUrl: String? = null,
-    /** True while a TikTok/Facebook thumbnail lookup is in flight. */
+    /** True while a poster lookup is in flight. */
     val isFetchingLinkMeta: Boolean = false,
     /** Attached background music, mutable now that the composer can pick/replace/trim a track in-
      *  place (web parity: the MusicPickerSheet + SelectedMusicCard). Null when no track is attached. */
@@ -84,6 +83,29 @@ class ReviewComposerViewModel @Inject constructor(
 
     private val _events = Channel<ComposerEvent>(Channel.BUFFERED)
     val events: Flow<ComposerEvent> = _events.receiveAsFlow()
+
+    /**
+     * The platforms a user may attach a video link from. The backend owns this list
+     * (`GET /api/config` → `video.linkProviders`, from web `LINK_VIDEO_PROVIDERS`) and it is the
+     * SINGLE point gating [detectSource] — no provider list is hardcoded in the detection logic.
+     *
+     * Seeded with the V1 contract so the Link tab works before the fetch lands, and deliberately
+     * left untouched when the fetch fails: falling back to "everything" would restore exactly the
+     * drift this replaces. Narrowing is the only safe failure direction.
+     */
+    private var supportedLinkProviders: Set<String> = DEFAULT_LINK_PROVIDERS
+
+    init {
+        viewModelScope.launch {
+            when (val result = repository.getLinkProviders()) {
+                is NetworkResult.Success -> {
+                    val providers = result.data.filter { it.isNotBlank() }.toSet()
+                    if (providers.isNotEmpty()) supportedLinkProviders = providers
+                }
+                is NetworkResult.Error -> logger.w(TAG, "link providers fetch failed; keeping $supportedLinkProviders")
+            }
+        }
+    }
 
     /**
      * Submits a text review via POST /api/reviews. The current composer UI collects only body,
@@ -213,36 +235,21 @@ class ReviewComposerViewModel @Inject constructor(
         }
     }
 
-    private var linkMetaJob: Job? = null
-
     /**
-     * Handles every keystroke in the Link tab's URL field. Detects the provider (YouTube/TikTok/
-     * Facebook) byte-for-byte like the web's `detectSource`, then resolves a poster thumbnail:
-     * YouTube's is derived from the video id with no network call; TikTok/Facebook go through the
-     * server oEmbed proxy (best-effort — a missing thumbnail never blocks posting). A newer
-     * keystroke cancels the previous in-flight lookup so a stale thumbnail can't land.
+     * Handles every keystroke in the Link tab's URL field. Detects the provider like the web's
+     * `detectSource`, then derives the YouTube poster from the video id with no network call.
+     * An unrecognized URL leaves [ReviewComposerUiState.linkSourceType] null, which is what stops
+     * the post — see [currentLinkAttachment].
      */
     fun onLinkUrlChanged(url: String) {
-        linkMetaJob?.cancel()
         val trimmed = url.trim()
         val source = detectSource(trimmed)
         _uiState.update {
             it.copy(linkUrl = url, linkSourceType = source, linkThumbnailUrl = null, isFetchingLinkMeta = false)
         }
-        when (source) {
-            null -> return
-            "youtube" -> extractYoutubeId(trimmed)?.let { id ->
+        if (source == "youtube") {
+            extractYoutubeId(trimmed)?.let { id ->
                 _uiState.update { it.copy(linkThumbnailUrl = "https://i.ytimg.com/vi/$id/maxresdefault.jpg") }
-            }
-            else -> {
-                _uiState.update { it.copy(isFetchingLinkMeta = true) }
-                linkMetaJob = viewModelScope.launch {
-                    val thumb = when (val r = repository.getLinkThumbnail(trimmed)) {
-                        is NetworkResult.Success -> r.data
-                        is NetworkResult.Error -> null
-                    }
-                    _uiState.update { it.copy(linkThumbnailUrl = thumb, isFetchingLinkMeta = false) }
-                }
             }
         }
     }
@@ -255,12 +262,18 @@ class ReviewComposerViewModel @Inject constructor(
         return LinkAttachment(sourceType = type, sourceUrl = u, thumbnailUrl = s.linkThumbnailUrl)
     }
 
-    /** Provider detection — mirrors the web's `detectSource` (src/app/reviews/new/page.tsx). */
-    private fun detectSource(url: String): String? = when {
-        url.contains("youtube.com") || url.contains("youtu.be") -> "youtube"
-        url.contains("tiktok.com") -> "tiktok"
-        url.contains("facebook.com") || url.contains("fb.com") || url.contains("fb.watch") -> "facebook"
-        else -> null
+    /**
+     * Provider detection — mirrors the web's `detectSource` (src/lib/links/platforms.ts), including
+     * its structure: a URL matcher per provider, intersected with the backend-owned list in
+     * [supportedLinkProviders]. A provider is offered only when this client can parse it AND the
+     * backend accepts it, so the composer can never attach something the backend will not serve.
+     *
+     * Returning null is what blocks the post: [currentLinkAttachment] yields no attachment, so the
+     * review is never created with an unsupported source.
+     */
+    private fun detectSource(url: String): String? {
+        val provider = LINK_MATCHERS.entries.firstOrNull { (_, matches) -> matches(url) }?.key
+        return provider?.takeIf { it in supportedLinkProviders }
     }
 
     /** YouTube id extraction — mirrors the web's `extractYoutubeId` regex. */
@@ -269,6 +282,24 @@ class ReviewComposerViewModel @Inject constructor(
 
     private companion object {
         const val TAG = "ReviewComposerViewModel"
+
+        /**
+         * The V1 backend contract (`LINK_VIDEO_PROVIDERS`), used until `GET /api/config` answers.
+         * A default is required because the composer may be opened offline; it matches the backend
+         * so the offline behaviour is the correct behaviour rather than a guess.
+         */
+        val DEFAULT_LINK_PROVIDERS = setOf("youtube")
+
+        /**
+         * URL matchers for the providers this client can parse, mirroring the web's `MATCHERS`
+         * (src/lib/links/platforms.ts). Being listed here is NOT permission to use a provider —
+         * [detectSource] intersects these with the backend's list. Re-enabling a provider is a
+         * coordinated change: its id in the backend's LINK_VIDEO_PROVIDERS, a resolver branch
+         * server-side, and a matcher here.
+         */
+        val LINK_MATCHERS: Map<String, (String) -> Boolean> = mapOf(
+            "youtube" to { u: String -> u.contains("youtube.com") || u.contains("youtu.be") },
+        )
         // Matches the web's MAX_PHOTOS_PER_REVIEW (src/lib/config/product.ts) and the backend's
         // photos.slice(0, 6) cap; and the 5MB-per-file limit the upload route enforces.
         const val MAX_PHOTOS = 6
