@@ -85,6 +85,468 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Video is too large. Please choose a video up to 150MB." } },
         "vi" : { "stringUnit" : { "state" : "translated", "value" : "Video quá lớn. Vui lòng chọn video tối đa 150MB." } }
       }
+    },
+    "guide.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "How to use TappyAI" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hướng dẫn sử dụng TappyAI" } }
+      }
+    },
+    "guide.settingsRow" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "How to use TappyAI" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hướng dẫn sử dụng" } }
+      }
+    },
+    "guide.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "What each part of TappyAI does, how to use it, and what to expect." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Từng phần của TappyAI làm gì, dùng ra sao, và bạn sẽ nhận được gì." } }
+      }
+    },
+    "guide.chat.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Chatting with TappyAI" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trò chuyện với TappyAI" } }
+      }
+    },
+    "guide.chat.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ask a question in your own words and TappyAI answers. It decides on its own when it needs to look something up." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hỏi bằng lời của bạn, TappyAI trả lời. Khi cần tra cứu, TappyAI tự quyết định." } }
+      }
+    },
+    "guide.chat.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open Chat and type what you want to know." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mở phần Trò chuyện và gõ điều bạn muốn biết." } }
+      }
+    },
+    "guide.chat.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Write naturally — full sentences work better than keywords." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cứ viết tự nhiên — câu đầy đủ cho kết quả tốt hơn từ khoá rời rạc." } }
+      }
+    },
+    "guide.chat.step3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add the details that matter to you, such as an area, a budget, or an occasion." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thêm chi tiết quan trọng với bạn: khu vực, ngân sách, hay dịp gì." } }
+      }
+    },
+    "guide.chat.step4" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Read the answer, then ask a follow-up to narrow it down." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đọc câu trả lời rồi hỏi tiếp để thu hẹp lại." } }
+      }
+    },
+    "guide.chat.outcome" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "A written answer. When your question is about places, trips or products, the answer also carries cards and buttons you can tap." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Một câu trả lời bằng chữ. Nếu bạn hỏi về địa điểm, chuyến đi hay sản phẩm, câu trả lời còn kèm thẻ thông tin và các nút bấm được." } }
+      }
+    },
+    "guide.chat.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "If TappyAI cannot find something, it says so instead of guessing. It will not invent a shop, a price, or a link." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nếu không tìm được, TappyAI nói thẳng là không có chứ không đoán. TappyAI không bịa ra quán, giá hay đường link." } }
+      }
+    },
+    "guide.food.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Finding food and drink" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tìm chỗ ăn uống" } }
+      }
+    },
+    "guide.food.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ask for somewhere to eat or drink and TappyAI suggests real places with their details." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hỏi chỗ ăn hoặc uống, TappyAI gợi ý những nơi có thật kèm thông tin của nơi đó." } }
+      }
+    },
+    "guide.food.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Say what you want — for example, a quiet coffee shop in District 1." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nói bạn muốn gì — ví dụ, một quán cà phê yên tĩnh ở Quận 1." } }
+      }
+    },
+    "guide.food.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Mention the area, or allow location so nearby places can be found." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nêu khu vực, hoặc cho phép định vị để tìm chỗ gần bạn." } }
+      }
+    },
+    "guide.food.step3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open the suggestion you like." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mở gợi ý bạn thích." } }
+      }
+    },
+    "guide.food.outcome" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Each place comes with its name and address, its Google rating when there is one, a Maps button, and food delivery buttons that search for that restaurant." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mỗi nơi có tên và địa chỉ, điểm đánh giá Google nếu có, nút Bản đồ, và các nút đặt đồ ăn để tìm đúng quán đó." } }
+      }
+    },
+    "guide.food.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not every place has a website, a rating, or a delivery listing. When one is missing the button is simply not shown — nothing made up is put in its place." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Không phải nơi nào cũng có website, điểm đánh giá hay mặt trên app giao đồ ăn. Thiếu cái nào thì nút đó không hiện — không có gì bịa ra thay vào chỗ đó." } }
+      }
+    },
+    "guide.travel.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Planning a trip" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Lên kế hoạch chuyến đi" } }
+      }
+    },
+    "guide.travel.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ask about a destination and TappyAI suggests places to go and where to stay." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hỏi về một điểm đến, TappyAI gợi ý nơi nên đi và chỗ nghỉ." } }
+      }
+    },
+    "guide.travel.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Name the destination, and the dates if you know them." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nêu điểm đến, kèm ngày đi nếu bạn đã biết." } }
+      }
+    },
+    "guide.travel.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Say what kind of trip it is — family, budget, a few days." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nói rõ kiểu chuyến đi — gia đình, tiết kiệm, đi mấy ngày." } }
+      }
+    },
+    "guide.travel.step3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open a suggestion to see the detail, or ask for something different." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mở một gợi ý để xem chi tiết, hoặc hỏi phương án khác." } }
+      }
+    },
+    "guide.travel.outcome" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "For places to stay you get a hotel list with Booking.com and Agoda buttons that open a search for that place." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Với chỗ nghỉ, bạn nhận được danh sách khách sạn kèm nút Booking.com và Agoda mở trang tìm kiếm nơi đó." } }
+      }
+    },
+    "guide.travel.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Prices and availability belong to the booking sites, not to TappyAI. Confirm the final price there before you pay." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Giá và tình trạng phòng là của các site đặt phòng, không phải của TappyAI. Hãy xác nhận giá cuối cùng ở đó trước khi thanh toán." } }
+      }
+    },
+    "guide.product.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Looking for a product" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tìm sản phẩm" } }
+      }
+    },
+    "guide.product.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Describe a product and TappyAI helps you compare it and points you to where it is sold." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mô tả sản phẩm, TappyAI giúp bạn so sánh và chỉ chỗ bán." } }
+      }
+    },
+    "guide.product.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Describe what you want, including the model if you know it." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mô tả thứ bạn cần, kèm tên model nếu biết." } }
+      }
+    },
+    "guide.product.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Say what matters most — budget, size, or how you will use it." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nói điều bạn quan tâm nhất — ngân sách, kích thước, hay dùng để làm gì." } }
+      }
+    },
+    "guide.product.step3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open a shopping link to check the current price." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mở link mua sắm để xem giá hiện tại." } }
+      }
+    },
+    "guide.product.outcome" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "A comparison in plain language plus Shopee, Tiki and Lazada buttons that search for that product." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bản so sánh dễ hiểu cùng các nút Shopee, Tiki, Lazada tìm đúng sản phẩm đó." } }
+      }
+    },
+    "guide.product.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI cannot see live stock or checkout prices. Treat any price it mentions as a rough guide and confirm on the store page." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI không thấy được tồn kho hay giá lúc thanh toán. Hãy xem giá nó nêu là con số tham khảo và kiểm tra lại trên trang người bán." } }
+      }
+    },
+    "guide.readaloud.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Listening to answers" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nghe câu trả lời" } }
+      }
+    },
+    "guide.readaloud.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI can read an answer out loud instead of you reading it." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI có thể đọc to câu trả lời thay vì bạn phải đọc bằng mắt." } }
+      }
+    },
+    "guide.readaloud.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Send a message and wait for the answer." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Gửi tin nhắn và chờ câu trả lời." } }
+      }
+    },
+    "guide.readaloud.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tap the speaker button under the answer to start reading." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bấm nút loa dưới câu trả lời để bắt đầu đọc." } }
+      }
+    },
+    "guide.readaloud.step3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tap it again to stop." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bấm lần nữa để dừng." } }
+      }
+    },
+    "guide.readaloud.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The answer is spoken using the voice built into your iPhone. How it sounds depends on which language voices your iPhone has installed. If there is no voice for that language, the answer stays on screen as text." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Câu trả lời được đọc bằng giọng có sẵn trong iPhone của bạn. Nghe thế nào tuỳ vào những giọng ngôn ngữ máy đã cài. Nếu không có giọng cho ngôn ngữ đó, câu trả lời vẫn nằm trên màn hình dưới dạng chữ." } }
+      }
+    },
+    "guide.notifications.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Notifications" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thông báo" } }
+      }
+    },
+    "guide.notifications.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI can notify you about things you asked it to keep an eye on." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI có thể báo cho bạn những thứ bạn nhờ nó để mắt tới." } }
+      }
+    },
+    "guide.notifications.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Allow notifications when the app asks." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cho phép thông báo khi ứng dụng hỏi." } }
+      }
+    },
+    "guide.notifications.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open Notifications in your profile to see what has arrived." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mở mục Thông báo trong trang cá nhân để xem những gì đã đến." } }
+      }
+    },
+    "guide.notifications.step3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tap a notification to open what it refers to." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bấm vào một thông báo để mở thứ nó nhắc tới." } }
+      }
+    },
+    "guide.notifications.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "If you refuse the permission, nothing is sent to your iPhone. You can still open the in-app list at any time." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nếu bạn từ chối quyền, sẽ không có gì gửi tới iPhone. Bạn vẫn mở được danh sách trong ứng dụng bất cứ lúc nào." } }
+      }
+    },
+    "guide.tappysound.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The Tappy notification sound" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Âm thanh thông báo của Tappy" } }
+      }
+    },
+    "guide.tappysound.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Some notifications come from Tappy itself and play their own recognisable sound, so you know it is Tappy without looking at the screen." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Một số thông báo là do chính Tappy gửi và phát âm thanh riêng dễ nhận ra, để bạn biết đó là Tappy mà không cần nhìn màn hình." } }
+      }
+    },
+    "guide.tappysound.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "To silence notification sounds on iPhone, use the Notifications section of the iOS Settings app." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Muốn tắt tiếng thông báo trên iPhone, hãy dùng mục Thông báo trong ứng dụng Cài đặt của iOS." } }
+      }
+    },
+    "guide.reviews.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reviews from other people" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đánh giá của người khác" } }
+      }
+    },
+    "guide.reviews.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "A feed of short reviews people have posted about places." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Một dòng các bài đánh giá ngắn mọi người viết về địa điểm." } }
+      }
+    },
+    "guide.reviews.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open Reviews to browse the feed." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mở mục Đánh giá để xem." } }
+      }
+    },
+    "guide.reviews.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open a review to read it in full and see the place." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mở một bài để đọc đầy đủ và xem địa điểm." } }
+      }
+    },
+    "guide.reviews.step3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Post your own review from the same screen." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đăng bài đánh giá của chính bạn ngay ở màn hình đó." } }
+      }
+    },
+    "guide.reviews.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Newer or quieter places may have no reviews yet." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Những nơi mới mở hoặc ít người biết có thể chưa có bài đánh giá nào." } }
+      }
+    },
+    "guide.saves.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Saving things for later" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Lưu lại để xem sau" } }
+      }
+    },
+    "guide.saves.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Keep places and content you want to come back to." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Giữ lại địa điểm và nội dung bạn muốn quay lại." } }
+      }
+    },
+    "guide.saves.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tap the save control on something you like." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bấm nút lưu trên thứ bạn thích." } }
+      }
+    },
+    "guide.saves.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Find it again under Saved in your profile." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tìm lại nó trong mục Đã lưu ở trang cá nhân." } }
+      }
+    },
+    "guide.saves.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Saving needs an account, so that the list follows you between devices." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Lưu cần có tài khoản, để danh sách theo bạn qua các thiết bị." } }
+      }
+    },
+    "guide.tools.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The small tools" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Vài công cụ nhỏ" } }
+      }
+    },
+    "guide.tools.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "A few focused tools sit alongside chat for everyday jobs." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Vài công cụ gọn nằm cạnh phần trò chuyện, cho những việc thường ngày." } }
+      }
+    },
+    "guide.tools.scan" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Scan — photograph a document and get the text out of it." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Quét tài liệu — chụp ảnh giấy tờ và lấy chữ ra khỏi ảnh." } }
+      }
+    },
+    "guide.tools.translate" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Translate — translate text between languages." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Dịch — dịch văn bản giữa các ngôn ngữ." } }
+      }
+    },
+    "guide.tools.currency" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Currency — convert an amount between currencies." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiền tệ — quy đổi một số tiền sang đơn vị khác." } }
+      }
+    },
+    "guide.tools.splitbill" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Split bill — work out who owes what after a shared meal." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chia tiền — tính xem ai còn nợ bao nhiêu sau bữa ăn chung." } }
+      }
+    },
+    "guide.tools.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Each tool tells you when it cannot finish — for example when a photo is too blurry to read." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mỗi công cụ đều báo khi không làm được — ví dụ ảnh quá mờ nên không đọc nổi chữ." } }
+      }
+    },
+    "guide.account.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Your account" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tài khoản của bạn" } }
+      }
+    },
+    "guide.account.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You can start using TappyAI without an account. Signing in is what lets your things follow you." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn dùng TappyAI được ngay mà không cần tài khoản. Đăng nhập là để mọi thứ của bạn đi theo bạn." } }
+      }
+    },
+    "guide.account.guest" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Without an account — chat and browse." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chưa có tài khoản — vẫn trò chuyện và xem được." } }
+      }
+    },
+    "guide.account.signedin" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "With an account — saved items, your reviews, notifications, and preferences." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Có tài khoản — mục đã lưu, bài đánh giá của bạn, thông báo và tuỳ chọn riêng." } }
+      }
+    },
+    "guide.account.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "When something needs an account, TappyAI asks you to sign in at that point rather than blocking you earlier." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khi có việc cần tài khoản, TappyAI mới mời bạn đăng nhập ngay lúc đó, chứ không chặn bạn từ trước." } }
+      }
+    },
+    "guide.limits.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "What to keep in mind" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Vài điều nên nhớ" } }
+      }
+    },
+    "guide.limits.intro" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "A few things worth knowing before you rely on an answer." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Vài điều nên biết trước khi bạn tin vào một câu trả lời." } }
+      }
+    },
+    "guide.limits.b1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI can be wrong. Treat what it says as a starting point, not the final word." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI có thể sai. Hãy xem những gì nó nói là điểm khởi đầu, không phải kết luận cuối cùng." } }
+      }
+    },
+    "guide.limits.b2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Opening hours, prices and availability change. Confirm on the place’s own page before you travel or pay." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Giờ mở cửa, giá và tình trạng còn chỗ đều thay đổi. Hãy xác nhận trên trang của chính nơi đó trước khi đi hoặc trả tiền." } }
+      }
+    },
+    "guide.limits.b3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "A button only appears when the underlying source really provides that link. A missing button means the information does not exist, not that it was hidden." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Một nút chỉ hiện khi nguồn thật sự có đường link đó. Thiếu nút nghĩa là thông tin đó không tồn tại, chứ không phải bị giấu đi." } }
+      }
+    },
+    "guide.limits.b4" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI does not give financial or investment advice." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI không đưa lời khuyên tài chính hay đầu tư." } }
+      }
+    },
+    "guide.limits.note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "When in doubt, check the place’s own page before acting on an answer." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khi còn phân vân, hãy kiểm tra trang của chính nơi đó trước khi làm theo câu trả lời." } }
+      }
     }
   }
 }

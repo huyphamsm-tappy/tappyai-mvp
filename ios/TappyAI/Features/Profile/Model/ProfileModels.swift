@@ -202,4 +202,6 @@ enum ProfileDestination: Hashable {
     case subscription
     case privacy
     case terms
+    /// Feature usage guidance — the native counterpart of the web's /how-to-use.
+    case howToUse
 }

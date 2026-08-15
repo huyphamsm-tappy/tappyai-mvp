@@ -126,6 +126,8 @@ struct PlaceholderShellView: View {
                         PrivacyPolicyView()
                     case .terms:
                         TermsOfServiceView()
+                    case .howToUse:
+                        HowToUseView()
                     }
                 }
         default:

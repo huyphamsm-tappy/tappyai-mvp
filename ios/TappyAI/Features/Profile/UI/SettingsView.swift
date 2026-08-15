@@ -113,6 +113,15 @@ struct ProfileSettingsView: View {
                 .padding(.horizontal, 2)
 
             VStack(spacing: 0) {
+                // Usage guidance sits with the reference documents rather than in onboarding:
+                // onboarding runs once and cannot answer "how does this work?" afterwards.
+                // Uses the LocalizedStringKey overload below so the label follows the in-app
+                // language picker; the rows beneath it are hardcoded Vietnamese, a pre-existing
+                // gap deliberately left alone here.
+                settingsRow(icon: "book", labelKey: "guide.settingsRow", desc: nil) {
+                    router.push(ProfileDestination.howToUse, on: .profile)
+                }
+                Divider().padding(.leading, 52)
                 settingsRow(icon: "doc.text", label: "Điều khoản sử dụng", desc: nil) {
                     router.push(ProfileDestination.terms, on: .profile)
                 }
@@ -160,6 +169,42 @@ struct ProfileSettingsView: View {
     }
 
     // MARK: - Row
+
+    /// Localized variant of `settingsRow`. Additive on purpose: the existing rows pass plain
+    /// `String` literals and are left untouched, while a row whose label must follow the in-app
+    /// language picker passes a `LocalizedStringKey`, which SwiftUI resolves through
+    /// `.environment(\.locale, …)`. `String(localized:)` would not — it reads the bundle locale
+    /// once and would ignore the picker entirely.
+    @ViewBuilder
+    private func settingsRow(icon: String, labelKey: LocalizedStringKey, desc: String?, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: Spacing.md) {
+                Image(systemName: icon)
+                    .font(.system(size: 15))
+                    .foregroundStyle(TappyColor.textSecondary)
+                    .frame(width: 32, height: 32)
+                    .background(TappyColor.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(labelKey)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(TappyColor.textPrimary)
+                    if let desc {
+                        Text(desc)
+                            .font(.system(size: 11))
+                            .foregroundStyle(TappyColor.textSecondary)
+                    }
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(TappyColor.textSecondary.opacity(0.5))
+            }
+            .padding(.horizontal, Spacing.md)
+            .padding(.vertical, Spacing.sm)
+        }
+        .buttonStyle(.plain)
+    }
 
     @ViewBuilder
     private func settingsRow(icon: String, label: String, desc: String?, action: @escaping () -> Void) -> some View {

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Feature usage guidance — the strings behind the "How to use TappyAI" screen.
+
+  Every sentence describes behaviour that exists in THIS app today, verified from
+  source rather than copied from the web wording:
+   * read-aloud is android.speech.tts.TextToSpeech, driven by the speaker button
+     in MessageActionBar — an on-device voice, not a cloud one;
+   * the Tappy notification sound really is toggleable here (SettingsScreen +
+     SettingsViewModel.tappyNotificationSoundEnabled), which is why it gets its
+     own section on Android and does not on web, where no such toggle exists;
+   * a Website / delivery button only appears when the source actually returned
+     that link, so the text promises exactly that and nothing more.
+
+  Steps inside a body use "1." / "2." and \n because LegalDocumentScreen numbers
+  SECTIONS, not lines. Keep the sentences short — many readers are not technical.
+-->
+<resources>
+    <string name="guide_title">How to use TappyAI</string>
+    <string name="guide_subtitle">What each part does, and what to expect.</string>
+
+    <string name="guide_chat_title">Chatting with TappyAI</string>
+    <string name="guide_chat_body">Ask a question in your own words and TappyAI answers. It decides on its own when it needs to look something up.\n\n1. Open Chat and type what you want to know.\n2. Write naturally — full sentences work better than keywords.\n3. Add the details that matter to you, such as an area, a budget, or an occasion.\n4. Read the answer, then ask a follow-up to narrow it down.\n\nYou can also tap the microphone and speak instead of typing.\n\nIf TappyAI cannot find something, it says so instead of guessing. It will not invent a shop, a price, or a link.</string>
+
+    <string name="guide_food_title">Finding food and drink</string>
+    <string name="guide_food_body">Ask for somewhere to eat or drink and TappyAI suggests real places with their details.\n\n1. Say what you want — for example, "quiet coffee shop in District 1".\n2. Mention the area, or allow location so nearby places can be found.\n3. Open the suggestion you like.\n\nEach place comes with its name and address, its Google rating when there is one, a Google Maps button, and food delivery buttons that search for that restaurant.\n\nNot every place has a website, a rating, or a delivery listing. When one is missing the button is simply not shown — nothing made up is put in its place.</string>
+
+    <string name="guide_travel_title">Planning a trip</string>
+    <string name="guide_travel_body">Ask about a destination and TappyAI suggests places to go and where to stay.\n\n1. Name the destination, and the dates if you know them.\n2. Say what kind of trip it is — family, budget, a few days.\n3. Open a suggestion to see the detail, or ask for something different.\n\nFor places to stay you get a hotel list with Booking.com and Agoda buttons that open a search for that place.\n\nPrices and availability belong to the booking sites, not to TappyAI. Confirm the final price there before you pay.</string>
+
+    <string name="guide_product_title">Looking for a product</string>
+    <string name="guide_product_body">Describe a product and TappyAI helps you compare it and points you to where it is sold.\n\n1. Describe what you want, including the model if you know it.\n2. Say what matters most — budget, size, or how you will use it.\n3. Open a shopping link to check the current price.\n\nYou get a comparison in plain language plus Shopee, Tiki and Lazada buttons that search for that product.\n\nTappyAI cannot see live stock or checkout prices. Treat any price it mentions as a rough guide and confirm on the store page.</string>
+
+    <string name="guide_readaloud_title">Listening to answers</string>
+    <string name="guide_readaloud_body">TappyAI can read an answer out loud instead of you reading it.\n\n1. Send a message and wait for the answer.\n2. Tap the speaker button under the answer to start reading.\n3. Tap it again to stop.\n\nThe answer is spoken using the voice built into your phone. How it sounds depends on which language voices your phone has installed. If your phone has no voice for that language, the answer stays on screen as text.</string>
+
+    <string name="guide_notifications_title">Notifications</string>
+    <string name="guide_notifications_body">TappyAI can notify you about things you asked it to keep an eye on.\n\n1. Allow notifications when the app asks.\n2. Open Notifications in your profile to see what has arrived.\n3. Tap a notification to open what it refers to.\n\nIf you refuse the permission, nothing is sent to your phone. You can still open the in-app list at any time.</string>
+
+    <string name="guide_tappysound_title">The Tappy notification sound</string>
+    <string name="guide_tappysound_body">Some notifications come from Tappy itself and play their own recognisable sound, so you know it is Tappy without looking at the screen.\n\n1. Open Settings from your profile.\n2. Find the Tappy notification sound row.\n3. Tap it to turn the sound on or off.\n\nTurning it off only silences that sound. The notifications still arrive and still appear in your list.</string>
+
+    <string name="guide_reviews_title">Reviews from other people</string>
+    <string name="guide_reviews_body">A feed of short reviews people have posted about places.\n\n1. Open Reviews to browse the feed.\n2. Open a review to read it in full and see the place.\n3. Post your own review from the same screen.\n\nNewer or quieter places may have no reviews yet.</string>
+
+    <string name="guide_saves_title">Saving things for later</string>
+    <string name="guide_saves_body">Keep places and content you want to come back to.\n\n1. Tap the save control on something you like.\n2. Find it again under Saved in your profile.\n\nSaving needs an account, so that the list follows you between devices.</string>
+
+    <string name="guide_tools_title">The small tools</string>
+    <string name="guide_tools_body">A few focused tools sit alongside chat for everyday jobs.\n\n• Scan — photograph a document and get the text out of it.\n• Translate — translate text between languages.\n• Currency — convert an amount between currencies.\n• Split bill — work out who owes what after a shared meal.\n\nEach tool tells you when it cannot finish — for example when a photo is too blurry to read.</string>
+
+    <string name="guide_account_title">Your account</string>
+    <string name="guide_account_body">You can start using TappyAI without an account. Signing in is what lets your things follow you.\n\n• Without an account — chat and browse.\n• With an account — saved items, your reviews, notifications, and preferences.\n\nWhen something needs an account, TappyAI asks you to sign in at that point rather than blocking you earlier.</string>
+
+    <string name="guide_limits_title">What to keep in mind</string>
+    <string name="guide_limits_body">• TappyAI can be wrong. Treat what it says as a starting point, not the final word.\n• Opening hours, prices and availability change. Confirm on the place\'s own page before you travel or pay.\n• A button only appears when the underlying source really provides that link. A missing button means the information does not exist, not that it was hidden.\n• TappyAI does not give financial or investment advice.</string>
+</resources>

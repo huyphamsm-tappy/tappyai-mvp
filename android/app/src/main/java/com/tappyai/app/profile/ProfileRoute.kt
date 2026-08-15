@@ -57,6 +57,10 @@ sealed interface ProfileRoute {
     @Serializable
     data object AccountEdit : ProfileRoute
 
+    /** Feature usage guidance — the native counterpart of the web's /how-to-use. */
+    @Serializable
+    data object Guide : ProfileRoute
+
     @Serializable
     data object Terms : ProfileRoute
 

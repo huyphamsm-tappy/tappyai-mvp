@@ -8,12 +8,13 @@ import { vi as adminVi, en as adminEn } from './admin'
 import { vi as landingVi, en as landingEn } from './landing'
 import { vi as legalVi, en as legalEn } from './legal'
 import { vi as shareVi, en as shareEn } from './share'
+import { vi as guideVi, en as guideEn } from './guide'
 
 // Full lookup maps: base dictionary + per-screen wave modules layered on top.
 // Namespaced keys make the merge collision-free.
 const full: Record<Locale, Record<string, string>> = {
-  vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...adminVi, ...landingVi, ...legalVi, ...shareVi },
-  en: { ...dictionaries.en, ...w2en, ...w3en, ...adminEn, ...landingEn, ...legalEn, ...shareEn },
+  vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...adminVi, ...landingVi, ...legalVi, ...shareVi, ...guideVi },
+  en: { ...dictionaries.en, ...w2en, ...w3en, ...adminEn, ...landingEn, ...legalEn, ...shareEn, ...guideEn },
 }
 
 const STORAGE_KEY = 'tappy_lang'

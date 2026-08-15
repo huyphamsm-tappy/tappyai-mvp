@@ -76,9 +76,13 @@ fun ProfileTab(
                 onSignIn = onSignIn,
                 onOpenNotifications = { navController.navigate(ProfileRoute.Notifications) },
                 onOpenTappyKnows = { navController.navigate(ProfileRoute.TappyKnows) },
+                onOpenGuide = { navController.navigate(ProfileRoute.Guide) },
                 onOpenTerms = { navController.navigate(ProfileRoute.Terms) },
                 onOpenPrivacy = { navController.navigate(ProfileRoute.Privacy) },
             )
+        }
+        composable<ProfileRoute.Guide> {
+            HowToUseScreen(onBack = { navController.popBackStack() })
         }
         composable<ProfileRoute.Terms> {
             TermsOfServiceScreen(onBack = { navController.popBackStack() })
