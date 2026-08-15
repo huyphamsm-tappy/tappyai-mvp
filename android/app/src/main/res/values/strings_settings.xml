@@ -62,4 +62,15 @@
     <string name="notif_receive_booking">Booking reminders 3 days ahead</string>
     <string name="notif_receive_weekly_recap">A weekly recap every Sunday at 8:00 PM</string>
     <string name="notif_receive_footer">A custom "Tappy" sound plays while the app is open. When the app is closed, the sound is controlled by your system.</string>
+
+    <!-- Account deletion. The label MUST stay word-for-word what /delete-account tells Play
+         reviewers to look for ("Choose Request account deletion") — see
+         src/lib/legal/accountDeletionParity.test.ts, which fails the build if they drift. -->
+    <string name="settings_delete_account">Request account deletion</string>
+    <string name="settings_delete_account_confirm_title">Request account deletion?</string>
+    <string name="settings_delete_account_confirm_body">This opens your email app with the request already written. Your account is not deleted until our support team receives and verifies the email.</string>
+    <string name="settings_delete_account_confirm_cta">Continue</string>
+    <string name="settings_delete_account_email_subject">Account deletion request</string>
+    <string name="settings_delete_account_email_body">Hello TappyAI support,\n\nI would like to request deletion of my TappyAI account and all related data.\n\nAccount email: </string>
+    <string name="settings_delete_account_no_email">No email app found. Please email support@tappyai.com to request deletion.</string>
 </resources>
