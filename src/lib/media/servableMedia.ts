@@ -157,3 +157,18 @@ export function isExploreRenderable(row: Record<string, unknown>): boolean {
 export function toExploreFeedItems<T extends Record<string, unknown>>(rows: readonly T[]): T[] {
   return rows.map(stripUnservableMedia).filter(isExploreRenderable)
 }
+
+/**
+ * The same response projection for a PROFILE feed (`?userId=…`), which drops nothing.
+ *
+ * A profile feed is a management surface, not a discovery one: it backs "Bài của tôi"
+ * (profile/posts) and the profile grid, the only places an author can reach a post to hide or
+ * delete it. Hiding an unrenderable row there does not tidy the product, it strands the post —
+ * the owner cannot see it, so they cannot remove it. It is also a grid of tiles rather than
+ * full-screen slides, so a medialess item is a placeholder tile, not a blank panel.
+ *
+ * Media is still stripped: not serving a suspended Blob URL is unconditional.
+ */
+export function toProfileFeedItems<T extends Record<string, unknown>>(rows: readonly T[]): T[] {
+  return rows.map(stripUnservableMedia)
+}

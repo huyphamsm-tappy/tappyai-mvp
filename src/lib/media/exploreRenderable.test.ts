@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isExploreRenderable, toExploreFeedItems } from './servableMedia'
+import { isExploreRenderable, toExploreFeedItems, toProfileFeedItems } from './servableMedia'
 
 // ── Explore must not serve a slide with nothing on it ────────────────────────
 //
@@ -96,5 +96,34 @@ describe('toExploreFeedItems — strip, then drop what cannot render', () => {
 
   it('an all-dead page becomes an empty page, not a page of blanks', () => {
     expect(toExploreFeedItems([row({ media_url: null }), row({ media_url: BLOB })])).toEqual([])
+  })
+})
+
+// A profile feed is a MANAGEMENT surface, not a discovery one. /api/reviews/feed?userId=… backs
+// "Bài của tôi" (profile/posts/page.tsx) and the profile grid (ProfileTab.tsx) — the only places
+// an author can reach their own post to hide or delete it. Filtering unrenderable rows out of
+// Explore is right; filtering them out of there strands the post: the owner can no longer see it,
+// so they can no longer remove it. It is also a grid of tiles, not full-screen slides, so a
+// medialess item is a placeholder tile rather than a blank panel to swipe past.
+describe('toProfileFeedItems — the author must still be able to reach the post', () => {
+  it('keeps a row with no media so its owner can delete it', () => {
+    expect(toProfileFeedItems([row({ id: 'dead', media_url: null })]).map(r => r.id)).toEqual(['dead'])
+  })
+
+  it('keeps a row whose media was a suspended Blob object', () => {
+    expect(toProfileFeedItems([row({ id: 'blob', media_url: BLOB })])).toHaveLength(1)
+  })
+
+  it('still refuses to point the client at Blob media', () => {
+    expect(toProfileFeedItems([row({ media_url: BLOB })])[0].media_url).toBeNull()
+  })
+
+  it('keeps healthy rows untouched', () => {
+    expect(toProfileFeedItems([row({ id: 'ok' })])[0].media_url).toBe(GCS)
+  })
+
+  it('drops nothing at all — count in equals count out', () => {
+    const page = [row({ id: 'a' }), row({ id: 'b', media_url: null }), row({ id: 'c', media_url: BLOB })]
+    expect(toProfileFeedItems(page).map(r => r.id)).toEqual(['a', 'b', 'c'])
   })
 })
