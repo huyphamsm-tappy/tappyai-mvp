@@ -275,7 +275,10 @@ final class CreateReviewViewModel: AppObservableObject {
 
         if detected == .youtube {
             if let id = ExternalSource.extractYouTubeId(trimmed) {
-                let thumb = "https://i.ytimg.com/vi/\(id)/maxresdefault.jpg"
+                // `hqdefault` mirrors the web's `youTubeThumbnail` (src/lib/links/platforms.ts): it
+                // exists for EVERY public video, while `maxresdefault` 404s for many videos and most
+                // Shorts — and nothing here would notice, since the poster is never fetched.
+                let thumb = "https://i.ytimg.com/vi/\(id)/hqdefault.jpg"
                 urlMeta = OEmbedResponse(thumbnailUrl: thumb, title: nil, authorName: nil)
                 triggerURLAI(thumbnailUrl: thumb, title: nil)
             }
