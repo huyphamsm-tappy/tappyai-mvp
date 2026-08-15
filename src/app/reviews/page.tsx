@@ -600,7 +600,10 @@ export default function ReviewsPage() {
       }
       if (signal?.aborted) return
       setReviews(prev => append ? [...prev, ...rows] : rows)
-      hasMore.current = rows.length >= 12
+      // Server-stated when available: Explore drops rows it cannot render, so a short
+      // page no longer means "end of feed". Falls back to the old length test for any
+      // response that predates the field.
+      hasMore.current = typeof data.hasMore === 'boolean' ? data.hasMore : rows.length >= 12
       if (!append) setFeedError(false)
     } catch (e: any) {
       if (e?.name === 'AbortError') return

@@ -1,5 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { stripUnservableMedia } from '@/lib/media/servableMedia'
+import { toExploreFeedItems } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
@@ -175,7 +175,22 @@ export async function GET(req: NextRequest) {
   // is suspended for data transfer, so those URLs 403 today — and would start
   // billing egress again the moment the allowance resets. Nothing is deleted;
   // the post keeps every other field and simply renders without a dead player.
-  const res = NextResponse.json({ reviews: enriched.map(stripUnservableMedia), page, limit })
+  //
+  // …and a post left with NO media at all is then dropped from Explore, because a
+  // slide with nothing on it is not content. Measured on production 2026-08-15:
+  // 3 of the 5 rows in ?sort=latest came back with media_url null, thumbnail null
+  // and no photos, and the client renders exactly that as a blank gradient panel
+  // (feedShared.tsx:443). Explore eligibility is the backend's call, so it is made
+  // here rather than asking every client to re-derive it. Visibility only — no row
+  // is deleted, and the author still sees the post under /api/reviews/mine.
+  //
+  // `hasMore` is measured BEFORE that filter, and exists because of it: the web feed
+  // used to stop paginating on `rows.length >= 12`, so a page shortened by dropping
+  // dead rows would have ended the feed early and hidden healthy posts below it.
+  // Whether more rows exist is a property of the query, not of how many survived
+  // rendering, so the server is the only place that can answer it honestly.
+  const hasMore = enriched.length >= limit
+  const res = NextResponse.json({ reviews: toExploreFeedItems(enriched), page, limit, hasMore })
 
   // Cache ONLY the truly uniform response: anonymous, non-following, non-profile
   // feeds (every anon caller gets identical rows with liked_by_me/saved_by_me all
