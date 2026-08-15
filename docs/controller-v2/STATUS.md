@@ -24,7 +24,7 @@
 | **Component 6** — Plugin Registry | **LIFECYCLE-COMPLETE** — contract [`06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md). `register → validate → enable → ready → disable → deregister` + permission-collision validation. rollback / health checks / migration versioning **deferred** (undefined in any authoritative source), capability gate remains inert |
 | **Component 9b** — Secret Manager | **IMPLEMENTED · AWAITING PRODUCTION VERIFICATION** — typed config boundary + deploy-time gate over 5 required variables, closes **D5**. Contract: [`09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md`](09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md) |
 | **Component 8** — Event Bus | **MERGED · DEPLOYED · MIGRATION NOT APPLIED** — merge commit `0ce30a9` (PR #58), production `/api/version` matches, 8th cron registered. Contract: [`08_COMPONENT8_EVENT_BUS_CONTRACT.md`](08_COMPONENT8_EVENT_BUS_CONTRACT.md). **Not complete:** `20260813_c8_event_outbox.sql` is applied by hand by the Owner and a read-only production check on 2026-08-13 found none of its objects present |
-| **Component 11** — Session Security | **NOT STARTED — no design document exists.** Its entire recorded scope is one line of [`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §11: *"Session inventory, revocation, forced logout"* — a title, not a contract. Under Decision A it is the **last component standing between Controller V2 and COMPLETE**, and authorizing its scope is an Owner decision |
+| **Component 11** — Session Security | **IMPLEMENTED · MIGRATION NOT APPLIED** — contract [`11_COMPONENT11_SESSION_SECURITY_CONTRACT.md`](11_COMPONENT11_SESSION_SECURITY_CONTRACT.md), coupling [ADR-021](../architecture/ADR-021-c11-auth-sessions-dependency.md). P-1…P-7 ratified 2026-08-13; O-1 (revocation is immediate), O-2 (3600 s TTL, therefore not the guarantee) and O-3 (`auth.sessions` readable only through a definer function) all **measured** against a non-production project 2026-08-14. **Not complete:** `supabase/migrations/20260814_c11_session_security.sql` is applied by hand by the Owner |
 | **Definition of Done** | **COMPONENT-COMPLETE** (C1–C11) — Owner Decision A, 2026-08-13. See [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
@@ -116,7 +116,9 @@ What remains unproven is only the **end-to-end HTTP path** on live production.
 **C8 is merged and deployed; its migration is still pending.** C6, C9b and C10 are delivered. Under Owner Decision A (Definition of Done = C1–C11), exactly **two** things stand between the project and COMPLETE:
 
 1. **The C8 migration** — Owner action. Everything else about C8 is done and its SQL is executed against a real PostgreSQL in CI.
-2. **C11 (Session Security)** — **blocked on scope, not on effort.** No design document exists; its only recorded scope is a one-line title. Implementation cannot begin without an authoritative contract defining states, transitions, errors, permissions and observability, and inventing one would be exactly the semantics-invention this project forbids.
+2. **The C11 migration** — Owner action, the same shape. C11 is implemented, contracted and tested; `20260814_c11_session_security.sql` opens with a guard that refuses to apply if GoTrue's `auth.sessions` has lost a column C11 reads, so a failed apply is information rather than a mystery.
+
+Both are the same class of remaining work: **code is merged, schema is not**. Neither is a design question.
 
 > ⚠️ **Code ships before the schema.** Merging C8 deploys `/api/cron/outbox-drain` immediately, but `supabase/migrations/20260813_c8_event_outbox.sql` is applied manually by the Owner. Between those two moments the daily 03:00 tick calls an `fn_outbox_claim` that does not exist and returns 500. Nothing is lost — there is no table to lose rows from — but the tick is noise until the migration lands.
 

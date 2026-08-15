@@ -45,7 +45,7 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 | 9a | Single admin-client construction point | ✅ **IN PRODUCTION** — merge commit `e8d4eb9` |
 | 9b | **Secret Manager — typed boot-time config validation** | ✅ **IMPLEMENTED** — deploy-time gate over 5 required variables + typed runtime boundary; closes **D5**. See [`09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md`](09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md) |
 | 10 | **Rate Limiting** — distributed limiter on a shared store | ✅ **ACCEPTED · IN PRODUCTION** — merge commit `c226417` (PR #46), verified on production 2026-08-13; closes audit finding **S4 (HIGH)**. See [`10_COMPONENT10_RATE_LIMITING_CONTRACT.md`](10_COMPONENT10_RATE_LIMITING_CONTRACT.md). *(This row read "not started" until 2026-08-13 — corrected there.)* |
-| 11 | Session Security | **not started — no design document exists.** Scope is a single line in [`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §11: *"Session inventory, revocation, forced logout"*. That is a title, not a contract |
+| 11 | **Session Security** — inventory, revocation, forced logout | 🟡 **IMPLEMENTED · MIGRATION NOT APPLIED** — contract [`11_COMPONENT11_SESSION_SECURITY_CONTRACT.md`](11_COMPONENT11_SESSION_SECURITY_CONTRACT.md) (P-1…P-7 ratified 2026-08-13; O-1/O-2/O-3 measured 2026-08-14), coupling [ADR-021](../architecture/ADR-021-c11-auth-sessions-dependency.md). Four `SECURITY DEFINER` functions over `auth.sessions`, three admin routes, 54 tests, 24/24 mutations killed. `supabase/migrations/20260814_c11_session_security.sql` is applied **by hand by the Owner** |
 
 ### End of Foundation
 
