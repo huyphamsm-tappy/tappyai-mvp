@@ -2,6 +2,7 @@ import { getCache, setCache, serperSearch } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
+import { pickTikTokReviewUrl } from '@/lib/links/tiktokReview'
 import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { messages, isVi } from '@/lib/ai/messages'
@@ -306,9 +307,14 @@ export async function searchPlaces(query: string, location?: string, type?: stri
   if (isFood || isSpa || isEntertainment) {
     try {
       const suffix = isFood ? 'gia menu thuc don' : isSpa ? 'gia dich vu bang gia spa massage' : 'gia ve dich vu'
-      const [priceResults, orderResults] = await Promise.all([
+      const [priceResults, orderResults, tiktokResults] = await Promise.all([
         serperSearch(query + ' ' + (location || '') + ' ' + suffix),
         isFood ? serperSearch(query + ' ' + (location || '') + ' (site:shopeefood.vn OR site:food.grab.com OR site:baemin.vn)') : Promise.resolve(null),
+        // TikTok review discovery (consultative only, product decision 2026-08-16). Same shape as
+        // the order-link search above: a real provider query, whose results are then VALIDATED —
+        // nothing here is constructed from the place name, so a place with no coverage simply
+        // ends up without a link.
+        serperSearch(query + ' ' + (location || '') + ' review site:tiktok.com'),
       ])
       if (result && typeof result === 'object') {
         const extra: Record<string, unknown> = {}
@@ -322,13 +328,21 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           // Inject per-place search links using the exact restaurant name on each platform
           const places = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined
           if (Array.isArray(places)) {
-            extra.results = places.map(place => ({
+            // One validated TikTok review for the batch, matched to the first place: the query
+            // was "<what the user asked> review site:tiktok.com", so the result belongs to the
+            // search as a whole, not to any particular row. Attributing it to every place would
+            // claim coverage that was never established.
+            const tiktokUrl = pickTikTokReviewUrl(tiktokResults)
+            extra.results = places.map((place, i) => ({
               ...place,
               order_links: buildFoodOrderLinks(
                 place.name as string || '',
                 place.address as string | undefined,
                 location
-              )
+              ),
+              ...(i === 0 && tiktokUrl
+                ? { tiktok_review_url: tiktokUrl, has_tiktok_review: true }
+                : { has_tiktok_review: false }),
             }))
           }
         } else if (isSpa) {
