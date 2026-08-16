@@ -21,7 +21,11 @@
 // stream (ai@4.3.19 dist lines 1835-1840 / 1930-1935), so it cannot make the two
 // differ — which is the entire point here.
 
-export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links'] as const
+// `tiktok_review_url` is system-owned like the rest: the stream filter injects it positionally
+// and the model must never write a TikTok URL of its own. The model still learns WHETHER one
+// exists, because `has_tiktok_review` (a boolean, not a URL) stays model-facing — that is what
+// lets it say "no TikTok review found" truthfully without being able to invent a link.
+export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links', 'tiktok_review_url'] as const
 
 export interface PlatformLink { name: string; url: string }
 
@@ -32,6 +36,7 @@ export interface PlaceEnrichment {
   photo_urls?: string[]
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
+  tiktok_review_url?: string
 }
 
 /** Request-scoped. One per HTTP request, created in the route and never shared. */
@@ -45,7 +50,8 @@ const PLACE_TOOLS = new Set(['search_places', 'get_hotel_prices', 'search_produc
 
 const hasEnrichment = (p: PlaceEnrichment) =>
   !!(p.photo_url || (p.photo_urls && p.photo_urls.length > 0) ||
-    (p.order_links && p.order_links.length > 0) || (p.platform_links && p.platform_links.length > 0))
+    (p.order_links && p.order_links.length > 0) || (p.platform_links && p.platform_links.length > 0) ||
+    p.tiktok_review_url)
 
 const hasPhoto = (p: PlaceEnrichment) => !!(p.photo_url || (p.photo_urls && p.photo_urls.length > 0))
 
@@ -79,11 +85,11 @@ export function splitToolResult(
   const enrichment: PlaceEnrichment[] = []
   const slimItems = items.map((item) => {
     if (!isRecord(item)) return item
-    const { photo_url, photo_urls, order_links, platform_links, ...rest } = item as PlaceEnrichment & Record<string, unknown>
+    const { photo_url, photo_urls, order_links, platform_links, tiktok_review_url, ...rest } = item as PlaceEnrichment & Record<string, unknown>
     const name = listKey === 'results'
       ? (item.name as string | undefined)
       : String((item.title as string | undefined) ?? '').split(' - ')[0].trim() || undefined
-    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links }
+    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url }
     if (name && hasEnrichment(carved)) enrichment.push(carved)
     return rest
   })

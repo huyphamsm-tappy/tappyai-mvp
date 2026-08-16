@@ -2,6 +2,7 @@ import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
+import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
 //   0:"<text delta>"                         — assistant text chunk
@@ -22,6 +23,8 @@ type PlaceLike = {
   place_id?: string
   website_uri?: string
   address?: string
+  /** Backend-validated TikTok review/video URL, or absent when the provider found none. */
+  tiktok_review_url?: string
 }
 // get_hotel_prices / search_products' primary content — 'title' stands in for 'name'.
 type SearchResultLike = { title?: string; photo_url?: string; photo_urls?: string[] }
@@ -90,22 +93,31 @@ const hasPhoto = (p: PlaceLike) => !!((p.photo_urls && p.photo_urls.length > 0) 
 // platform domain) — product-marketplace links, [TAPPY_PLAN]/[CTA_BUTTONS]/
 // [FOLLOWUPS] blocks, and prose are never touched.
 //
-// TikTok is NOT a supported review source in V1 (product decision 2026-07-26): we
-// never generate a TikTok review link, and any TikTok review line the model emits
-// on its own is stripped unconditionally (see isOwnedEnrichmentLine) so it never
-// reaches the user.
-type Owned = { imageCores: Set<string>; linkDomains: Set<string> }
+// TikTok review links (product decision 2026-08-16, consultative only): a place MAY carry one,
+// but only the URL the backend validated out of a real provider result — see
+// lib/links/tiktokReview. The model is never the source. Every tiktok.com line it writes is
+// stripped here; the validated URL is then re-injected positionally, so the only TikTok link a
+// user can ever see is one the backend approved. A model that invents `/@quan/video/<name>`
+// produces nothing.
+//
+// This does NOT change the review composer, whose LINK_VIDEO_PROVIDERS = ['youtube'] contract is
+// separate and still enforced by its own parity guards.
+type Owned = { imageCores: Set<string>; linkDomains: Set<string>; tiktokUrls: Set<string> }
 
 function buildOwned(places: PlaceLike[]): Owned {
   const imageCores = new Set<string>()
   const linkDomains = new Set<string>()
+  const tiktokUrls = new Set<string>()
   for (const p of places) {
     const photos = p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : [])
     for (const u of photos) imageCores.add(coreImageUrl(decodeSafe(u)))
     for (const l of (p.order_links || [])) { const d = domainOf(l.url); if (d) linkDomains.add(d) }
     for (const l of (p.platform_links || [])) { const d = domainOf(l.url); if (d) linkDomains.add(d) }
+    // Re-validate at the boundary rather than trusting the field: this set is the ONLY thing
+    // that can put a TikTok URL in front of a user.
+    if (isValidTikTokContentUrl(p.tiktok_review_url)) tiktokUrls.add(p.tiktok_review_url as string)
   }
-  return { imageCores, linkDomains }
+  return { imageCores, linkDomains, tiktokUrls }
 }
 
 function isOwnedImageUrl(url: string, owned: Owned): boolean {
@@ -130,9 +142,11 @@ function isOwnedEnrichmentLine(line: string, owned: Owned): boolean {
     if (rest === '' && imgs.every(m => isOwnedImageUrl(m[1], owned))) return true
   }
 
-  // TikTok review line — unconditionally stripped (unsupported provider in V1).
+  // TikTok review line. Stripped whether or not it is the validated one: the backend re-injects
+  // its own copy positionally, so removing the model's saves us from trusting its placement, and
+  // removing an UNvalidated one is what makes invention impossible.
   const tiktok = t.match(/^🎵\s*\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/)
-  if (tiktok && domainOf(tiktok[1]) === 'tiktok.com') return true
+  if (tiktok && /(^|\.)tiktok\.com$/.test(domainOf(tiktok[1]))) return true
 
   const links = [...t.matchAll(LINK_TOKEN)]
   if (links.length > 0) {
@@ -144,12 +158,25 @@ function isOwnedEnrichmentLine(line: string, owned: Owned): boolean {
 
 // Remove the LLM's own copies of owned enrichment (line-wise) so injection re-places
 // them; collapse the blank runs the removals leave behind.
+/**
+ * Remove every markdown link to TikTok that is not the backend-validated URL — inline in prose
+ * too, not just whole lines.
+ *
+ * Without this, `xem review trên [TikTok](https://tiktok.com/@guess/video/1)` mid-sentence would
+ * survive the line-wise pass and the model WOULD be able to publish a URL it invented. Stripping
+ * to the link's own label keeps the sentence readable.
+ */
+function stripUnvalidatedTikTokLinks(text: string, owned: Owned): string {
+  return text.replace(/\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (whole, label: string, url: string) =>
+    /(^|\.)tiktok\.com$/.test(domainOf(url)) && !owned.tiktokUrls.has(url) ? label : whole)
+}
+
 function stripOwnedEnrichment(places: PlaceLike[], text: string): string {
   const owned = buildOwned(places)
   // Always run: even with no owned images/links there may be an LLM-emitted TikTok
   // review line to strip (unsupported provider in V1).
   const kept = text.split('\n').filter(line => !isOwnedEnrichmentLine(line, owned))
-  return kept.join('\n').replace(/\n{3,}/g, '\n\n')
+  return stripUnvalidatedTikTokLinks(kept.join('\n'), owned).replace(/\n{3,}/g, '\n\n')
 }
 
 // The image/review/order-link markdown a place is still MISSING from the text (dedup-aware),
@@ -168,6 +195,16 @@ function placeContentLines(
   const photos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : []))
   const missingPhotos = photos.filter(url => !imageUrlPresent(url, decodedText))
   for (const url of missingPhotos) lines.push(`![Ảnh địa điểm](${url})`)
+  // Validated TikTok review, injected positionally like every other owned link. Re-validated
+  // here so a malformed field can never reach the user even if it slipped into the tool result.
+  if (isValidTikTokContentUrl(p.tiktok_review_url)) {
+    const url = p.tiktok_review_url as string
+    if (!hasDomainNearName(ownName, domainOf(url), dedupText, windowEnd)) {
+      // Fixed label, like the injected `![Ảnh địa điểm]` above: "Review TikTok" reads the same
+      // either language and the platform name carries the meaning.
+      lines.push(`🎵 [Review TikTok](${url})`)
+    }
+  }
   const links = p.order_links || p.platform_links
   if (links && links.length > 0) {
     const missing = links.filter(l => !hasDomainNearName(ownName, domainOf(l.url), dedupText, windowEnd))
@@ -273,6 +310,11 @@ function injectPlanPhotos(places: PlaceLike[], fullText: string): string {
 const hasLinks = (p: PlaceLike) =>
   !!((p.order_links && p.order_links.length > 0) || (p.platform_links && p.platform_links.length > 0))
 
+/** A validated TikTok review is enrichment in its own right — same reasoning as the B4 finding
+ *  below: a place that has only this must still reach the injector, or the link is silently lost
+ *  for every place without a photo or an order link. */
+const hasTikTok = (p: PlaceLike) => isValidTikTokContentUrl(p.tiktok_review_url)
+
 /**
  * Which places will actually receive enrichment, given the finished reply — and
  * therefore the only ones worth resolving photos for (B7-A).
@@ -329,8 +371,11 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lan
   // A photo is no longer a precondition for enrichment. It used to be, which
   // meant a failed photo lookup silently took the order/platform links down with
   // it — nothing about an order link needs a photo to exist (B4 finding).
-  const usable = places.filter(p => p.name && (hasPhoto(p) || hasLinks(p)))
-  if (usable.length === 0) return fullText
+  const usable = places.filter(p => p.name && (hasPhoto(p) || hasLinks(p) || hasTikTok(p)))
+  // Nothing to inject — but the unvalidated-TikTok strip must still run. A place with no photo
+  // and no order links used to take this early exit with the model's own tiktok.com link intact,
+  // which is exactly the invention path the contract forbids.
+  if (usable.length === 0) return stripUnvalidatedTikTokLinks(fullText, buildOwned(places))
 
   // A trip/evening plan renders as a structured [TAPPY_PLAN] JSON card whose place names live
   // INSIDE the JSON. Instead of the old trailing image block, add each matched place's photo
