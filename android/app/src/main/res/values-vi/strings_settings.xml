@@ -6,6 +6,7 @@
     <string name="settings_memory">Bộ nhớ</string>
     <string name="settings_language">Ngôn ngữ</string>
     <string name="settings_section_other">Khác</string>
+    <string name="settings_how_to_use">Hướng dẫn sử dụng</string>
     <string name="settings_terms_of_service">Điều khoản dịch vụ</string>
     <string name="settings_privacy_policy">Chính sách bảo mật</string>
     <string name="settings_version">Phiên bản %1$s</string>
@@ -59,4 +60,14 @@
     <string name="notif_receive_booking">Nhắc nhở đặt chỗ trước 3 ngày</string>
     <string name="notif_receive_weekly_recap">Tổng kết hằng tuần vào Chủ nhật lúc 8:00 tối</string>
     <string name="notif_receive_footer">Âm thanh "Tappy" riêng sẽ phát khi ứng dụng đang mở. Khi ứng dụng đóng, âm thanh do hệ thống của bạn kiểm soát.</string>
+
+    <!-- Xoá tài khoản. Nhãn PHẢI khớp từng chữ với trang /delete-account ("Chọn Yêu cầu xóa tài
+         khoản") — xem src/lib/legal/accountDeletionParity.test.ts. -->
+    <string name="settings_delete_account">Yêu cầu xóa tài khoản</string>
+    <string name="settings_delete_account_confirm_title">Yêu cầu xóa tài khoản?</string>
+    <string name="settings_delete_account_confirm_body">Thao tác này sẽ mở ứng dụng email với nội dung yêu cầu đã soạn sẵn. Tài khoản chỉ bị xóa sau khi bộ phận hỗ trợ nhận và xác minh email của bạn.</string>
+    <string name="settings_delete_account_confirm_cta">Tiếp tục</string>
+    <string name="settings_delete_account_email_subject">Yêu cầu xóa tài khoản</string>
+    <string name="settings_delete_account_email_body">Chào bộ phận hỗ trợ TappyAI,\n\nTôi muốn yêu cầu xóa tài khoản TappyAI và toàn bộ dữ liệu liên quan.\n\nEmail tài khoản: </string>
+    <string name="settings_delete_account_no_email">Không tìm thấy ứng dụng email. Vui lòng gửi email tới support@tappyai.com để yêu cầu xóa tài khoản.</string>
 </resources>

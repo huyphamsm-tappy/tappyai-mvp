@@ -2,7 +2,9 @@ import AVFoundation
 import Combine
 
 /// Text-to-speech manager — native equivalent of Web's useTTS hook (window.speechSynthesis).
-/// Uses AVSpeechSynthesizer with vi-VN voice.
+///
+/// Uses AVSpeechSynthesizer with the MESSAGE language decided by the backend. It previously used a
+/// hardcoded vi-VN voice, so an English-mode user's English reply was read by a Vietnamese voice.
 @MainActor
 final class TTSManager: NSObject, AppObservableObject, AVSpeechSynthesizerDelegate {
     @AppPublished var speakingMsgId: String?
@@ -10,10 +12,21 @@ final class TTSManager: NSObject, AppObservableObject, AVSpeechSynthesizerDelega
     @AppPublished var elapsed: Int = 0
     @AppPublished var totalSecs: Int = 0
     @AppPublished var speed: Float = 1.0
+    /// Localized reason read-aloud could not start; nil when there is nothing to report.
+    /// Stopping never sets it — silence is the correct feedback for pressing stop.
+    @AppPublished var errorMessage: String?
+
+    /// Asks the backend which language a reply is in. Injected by `ChatViewModel` so this manager
+    /// stays free of networking, and so the UI layer does not have to thread a view model through
+    /// the message list just to press play.
+    var resolveLanguage: ((String) async -> MessageLanguage)?
 
     private let synth = AVSpeechSynthesizer()
     private var timer: AnyCancellable?
     private var currentText: String = ""
+    /// The message language currently being read, set by `speak` and reused by `restartFrom` so
+    /// resume/skip/speed never re-derive a voice — or silently fall back to a different language.
+    private var currentLocaleTag: String = ""
     private static let cps: Float = 13
 
     override init() {
@@ -21,22 +34,56 @@ final class TTSManager: NSObject, AppObservableObject, AVSpeechSynthesizerDelega
         synth.delegate = self
     }
 
-    func speak(msgId: String, text: String) {
+    /// Read-aloud entry point for the UI: resolves the message language, then speaks.
+    ///
+    /// Pressing play on the message already speaking stops it, and stops WITHOUT asking the
+    /// backend — a toggle-off should never cost a request, and never shows an error.
+    func speakResolvingLanguage(msgId: String, text: String) {
+        if speakingMsgId == msgId {
+            stop()
+            return
+        }
+        errorMessage = nil
+        guard let resolveLanguage else { return }
+        Task { @MainActor in
+            switch await resolveLanguage(text) {
+            case .speakable(_, let localeTag):
+                speak(msgId: msgId, text: text, localeTag: localeTag)
+            case .notSpeakable:
+                // Tappy has no voice for this language. Say so and leave the text on screen rather
+                // than reading it in the wrong one.
+                errorMessage = String(localized: "chat.tts.languageUnsupported")
+            case .failed:
+                // Retryable, and deliberately a different sentence from the one above.
+                errorMessage = String(localized: "chat.tts.languageFailed")
+            }
+        }
+    }
+
+    /// Reads `text` aloud in `localeTag`, which is the MESSAGE language decided by the backend —
+    /// never the app's UI language, and never a literal. Held for the duration of playback so
+    /// `restartFrom` (resume/skip/speed) keeps the same voice instead of re-deriving one.
+    func speak(msgId: String, text: String, localeTag: String) {
         if speakingMsgId == msgId {
             stop()
             return
         }
         let clean = Self.stripMarkdown(text)
         guard !clean.isEmpty else { return }
+        // No voice for the requested language means stay silent. Substituting another language is
+        // the single worst failure here: it reads Vietnamese aloud in English and sounds broken
+        // rather than unavailable.
+        guard let voice = AVSpeechSynthesisVoice(language: localeTag) else { return }
         synth.stopSpeaking(at: .immediate)
         currentText = clean
+        currentLocaleTag = localeTag
         speakingMsgId = msgId
         isPaused = false
         elapsed = 0
         totalSecs = max(1, Int(ceil(Float(clean.count) / (Self.cps * speed))))
 
         let utterance = AVSpeechUtterance(string: clean)
-        utterance.voice = AVSpeechSynthesisVoice(language: "vi-VN")
+        utterance.voice = voice
         utterance.rate = speed * AVSpeechUtteranceDefaultSpeechRate
         synth.speak(utterance)
         startTimer()
@@ -90,7 +137,8 @@ final class TTSManager: NSObject, AppObservableObject, AVSpeechSynthesizerDelega
         totalSecs = max(1, Int(ceil(Float(currentText.count) / (Self.cps * speed))))
 
         let utterance = AVSpeechUtterance(string: slice)
-        utterance.voice = AVSpeechSynthesisVoice(language: "vi-VN")
+        // The language this playback started with — not a literal, and not re-decided mid-scrub.
+        utterance.voice = AVSpeechSynthesisVoice(language: currentLocaleTag)
         utterance.rate = speed * AVSpeechUtteranceDefaultSpeechRate
         synth.speak(utterance)
         startTimer()

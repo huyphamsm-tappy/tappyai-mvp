@@ -50,11 +50,19 @@ enum ExternalSource: String, CaseIterable, Sendable {
         }
     }
 
+    /// Detects the provider of a pasted URL, or nil when this client cannot parse it.
+    ///
+    /// Mirrors the web's `detectSource` (src/lib/links/platforms.ts): a matcher per provider, and
+    /// nothing else. Which of these the composer may actually OFFER is not decided here — the
+    /// backend owns that via `/api/config` `video.linkProviders`, applied in
+    /// `CreateReviewViewModel.supportedSources`. Being parseable is not permission.
+    ///
+    /// The `tiktok`/`facebook` cases stay on the enum so legacy rows (created before the
+    /// 2026-07-26 decision, still permitted by the DB CHECK) decode and render; they have no
+    /// matcher, so they can never be attached to a NEW post.
     static func detect(url: String) -> ExternalSource? {
         let lower = url.lowercased()
         if lower.contains("youtube.com") || lower.contains("youtu.be") { return .youtube }
-        if lower.contains("tiktok.com") { return .tiktok }
-        if lower.contains("facebook.com") || lower.contains("fb.com") || lower.contains("fb.watch") { return .facebook }
         return nil
     }
 

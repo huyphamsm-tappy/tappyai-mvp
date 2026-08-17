@@ -236,6 +236,26 @@ data class OembedResponseDto(
 data class PhotoUploadResponseDto(val url: String = "")
 
 /**
+ * The slice of `GET api/config` the composer needs. The backend owns which platforms a user may
+ * import a video from (web `LINK_VIDEO_PROVIDERS` in `src/lib/config/product.ts`), and serves the
+ * list here so web/Android/iOS cannot drift apart. The shared lenient Json (`ignoreUnknownKeys`)
+ * drops the freemium/flags/upload/auth/onboarding blocks.
+ */
+@Serializable
+data class ProductConfigDto(
+    val video: VideoConfigDto = VideoConfigDto(),
+)
+
+/**
+ * [linkProviders] defaults to the V1 contract rather than empty: an older deployment that predates
+ * the field must not be read as "no provider is allowed", which would break the Link tab entirely.
+ */
+@Serializable
+data class VideoConfigDto(
+    val linkProviders: List<String> = listOf("youtube"),
+)
+
+/**
  * A track attached to the review being composed — the ONE cross-platform music payload
  * (`{version, trackId, startSec, volume}`, web `src/app/api/reviews/route.ts`). The backend hard-
  * rejects a missing/mismatched `version` ("unsupported music version"), and `Number(undefined)` on

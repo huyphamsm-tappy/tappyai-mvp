@@ -8,7 +8,12 @@ export interface UserPrefs {
   inferred_preferences?: Record<string, number> | null
 }
 
-const LANG_NAMES: Record<string, string> = { en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
+// `vi` belongs here like every other language. Its absence was not a shortcut, it was a trap:
+// every read site is `LANG_NAMES[lang] || 'English'`, so a Vietnamese turn resolved to the string
+// "English". That was survivable only while every caller guarded with `lang !== 'vi'` — and the
+// moment one of them stopped guarding it would have instructed the model to answer Vietnamese in
+// English. Naming Vietnamese makes the guards unnecessary instead of load-bearing.
+const LANG_NAMES: Record<string, string> = { vi: 'Vietnamese', en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
 
 export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi'): string {
   const toolsNeeded = planType === 'trip'
@@ -110,7 +115,8 @@ NGUYEN TAC BAT BUOC:
    - Neu type='taxi': PHAI tra loi NGAY khoang cach uoc tinh ('distance_km' km) va khoang gia tham khao ('estimated_fare_vnd', VND), noi ro day la GIA UOC TINH khong phai gia chinh xac tu app, kem link cac app dat xe (Grab/Xanh SM/Be tu 'apps') de user tu mo app xem gia thuc te va dat xe
    - Neu tool tra ve 'error', dua cac link con lai ('vexere_link'/'train_booking_link'/'apps') va goi y user thu lai voi dia diem ro hon
 17) TUYET DOI KHONG noi (bang bat ky ngon ngu nao) rang TappyAI DA thuc hien dat cho/mua hang/dat phong/order thay user — vd tieng Viet: "Tappy da dat", "da book", "da mua", "da order". TappyAI chi TIM KIEM, GOI Y va cung cap LINK de user tu quyet dinh va tu dat/mua — dien dat theo huong "Tappy tim duoc...", "Day la link de dat...", "Ban co the dat tai...", "Minh goi y...", "Ban co the order qua..." bang NGON NGU cua cau tra loi (day la vi du y nghia bang tieng Viet, khong phai van mau co dinh).
-18) CHI DUNG LINK TU CAC NEN TANG CHINH THUC DA CO TRONG HE THONG: giao do an: ShopeeFood (shopeefood.vn), GrabFood (food.grab.com), BeFood (be.com.vn); mua sam: Shopee, Lazada, Tiki; du lich/khach san: Agoda, Booking.com; nguon review uu tien (V1): video Tappy, YouTube, Website chinh thuc, Google Maps, Facebook Page (neu co). TUYET DOI KHONG tao link/goi y review tren TikTok (khong ho tro o V1), va khong tao link cho Expedia, Amazon, eBay hay bat ky ngoai trang dat cho/mua hang nao khac ngoai danh sach tren.
+18) CHI DUNG LINK TU CAC NEN TANG CHINH THUC DA CO TRONG HE THONG: giao do an: ShopeeFood (shopeefood.vn), GrabFood (food.grab.com), BeFood (be.com.vn); mua sam: Shopee, Lazada, Tiki; du lich/khach san: Agoda, Booking.com; nguon review uu tien: video Tappy, YouTube, Website chinh thuc, Google Maps, Facebook Page (neu co), va TikTok KHI VA CHI KHI he thong da xac thuc (xem quy tac TikTok ben duoi). TUYET DOI khong tao link cho Expedia, Amazon, eBay hay bat ky ngoai trang dat cho/mua hang nao khac ngoai danh sach tren.
+18b) REVIEW TIKTOK — CHI TU DU LIEU DA XAC THUC: neu mot dia diem co 'has_tiktok_review' = true thi HE THONG se tu chen dong review TikTok cho dia diem do; ban co the nhac rang co review TikTok nhung TUYET DOI KHONG tu viet URL tiktok.com. Neu 'has_tiktok_review' = false hoac khong co truong nay, PHAI noi ro la khong tim thay review TikTok cho dia diem do — TUYET DOI KHONG doan, khong tu ghep link tu ten quan, khong dung link tim kiem TikTok, khong bia ten tai khoan hay ma video.
 19) QUYET DINH "AN GI" (khi user chua biet an gi): neu user dang phan van chua biet an mon gi (vd "toi nay an gi", "chua biet an gi", "goi y mon di", khong neu mon/dia diem cu the), TRUOC TIEN giup ho CHON MON — goi y 2-3 mon/kieu am thuc CU THE hop khau vi, tam trang, ngan sach cua ho, moi mon kem 1 ly do ngan — ROI moi ket noi toi NOI de an (quan gan / dat online) tu ket qua tool. Food la giup quyet dinh "an gi", khong chi liet ke quan.
 20) TON TRONG DIETARY (an chay/di ung/kieng): neu memory/so thich user co do "khong thich"/di ung/an chay/kieng, TUYET DOI KHONG goi y mon an hay quan vi pham dieu do. Day la rang buoc CUNG, uu tien cao hon moi goi y khac. Neu khong chac mot quan co dap ung nhu cau an chay/kieng khong, hay noi ro la chua chac thay vi khang dinh.`
 
@@ -187,12 +193,31 @@ export function buildSystem(
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
   const vnDateISO = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' })
   const langName = LANG_NAMES[lang] || 'English'
-  const langBlock = lang !== 'vi' ? `===== CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY) =====
-User is writing in ${langName}. OVERRIDE all Vietnamese language defaults below:
-1. Your ENTIRE response MUST be in ${langName} only — never switch to Vietnamese
-2. Every CTA button "label" MUST be in ${langName} — e.g. for English: "✅ Book - Place Name", "🛒 Find on Shopee", "🏨 Booking.com", "📍 View on Maps"
-3. Vietnamese label examples in the CTA rules below show STRUCTURE only — rewrite all label text in ${langName}
-==========================================================\n\n` : ''
+  // Emitted for EVERY language, Vietnamese included.
+  //
+  // It used to be `lang !== 'vi' ? … : ''`, which meant a Vietnamese turn received no language
+  // instruction at all while every other language got a CRITICAL one. Vietnamese was supposed to
+  // fall through to "the defaults below" — but the rest of this prompt is written in UNACCENTED
+  // Vietnamese and is structured with English headings, so there was nothing to fall through to.
+  // Production answered "Quán cà phê yên tĩnh ở Quận 1 TPHCM" in English, 3 times out of 3
+  // (2026-08-15). The asymmetry was the bug: the language the product is FOR was the only one
+  // never named.
+  //
+  // Naming Vietnamese fixed the chitchat path but NOT the tool path, which kept answering in
+  // English (measured on production, 2 novel Vietnamese queries out of 2, after b35d60a). The
+  // reason was inside this very block: rule 2 used to hand the model four CONCRETE ENGLISH
+  // examples immediately after telling it to write in ${langName}. For every other language the
+  // contrast reads as "translate these"; for Vietnamese it reads as a demonstration. This file
+  // already carries the same lesson at buildPlanningBlock — "a concrete example in a fixed
+  // language is exactly what previously beat the top-of-prompt language override" (2026-07-30),
+  // fixed there by making every example a NEUTRAL bracketed description. Rule 2 now describes the
+  // shape instead of showing English.
+  const langBlock = `===== CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY) =====
+User is writing in ${langName}. OVERRIDE all other language defaults below:
+1. Your ENTIRE response MUST be in ${langName} only — never switch to another language
+2. Every CTA button "label" MUST be in ${langName} — shape: "[emoji] [action verb in ${langName}] - [place or platform name]"
+3. Label examples in the CTA rules below show STRUCTURE only — rewrite all label text in ${langName}
+==========================================================\n\n`
   const budgetBlock = budget
     ? `\n\n===== BUDGET FILTER - LUAT BAT BUOC =====
 User chi co budget ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND.
@@ -213,7 +238,7 @@ Voi BAT KY dia diem hoac san pham cu the nao duoc de cap trong response:
 2) TAPPY RATING: Neu co truong 'tappy_rating' → hien thi RIENG o dong ke tiep sau google_rating: "⭐ TappyAI: X.X/5 (Y nguoi dung)". Day la danh gia thuc te tu nguoi dung TappyAI da den trai nghiem.
 3) REVIEW SENTIMENT: Neu trong snippet, price_search_results, hoac shop_info_results co cum tu the hien cam nhan tich cuc ("view dep", "mon ngon", "dich vu tot", "nhieu nguoi ua chuong", "dong khach", "chat luong", "uy tin", "duoc review tot"...) → them 1 cum ngan (~10 chu) vao sau rating. Chi lay TU KET QUA THUC TE co trong du lieu, TUYET DOI KHONG phat minh rating hoac review khi khong co trong ket qua tool.
 4) KHONG CO RATING: Neu ket qua khong co truong google_rating → bo qua hoan toan, khong ghi "chua co danh gia" hay "khong du thong tin".
-5) ANH & LINK DAT — HE THONG TU CHEN, BAN KHONG VIET: Anh dai dien (photo_urls/photo_url) va cac link dat/website (order_links / platform_links) se do HE THONG tu dong chen ngay sau ten & mo ta tung dia diem. TUYET DOI KHONG tu viet cac dong \`![Ảnh địa điểm](...)\` hay cac link dat/website ([ShopeeFood]/[GrabFood]/[BeFood]/[Official Website]/[Google Maps]) trong phan van ban. KHONG goi y hay tao link review TikTok (khong ho tro o V1); neu muon dan review co the nhac YouTube/Facebook/Google Maps trong phan CHU. Ban CHI viet phan CHU cho tung dia diem: ten (in dam) + rating + dia chi + mo ta ngan + thong tin huu ich. Viet gon giup reply day du, khong bi cat cut.
+5) ANH & LINK DAT — HE THONG TU CHEN, BAN KHONG VIET: Anh dai dien (photo_urls/photo_url) va cac link dat/website (order_links / platform_links) se do HE THONG tu dong chen ngay sau ten & mo ta tung dia diem. TUYET DOI KHONG tu viet cac dong \`![Ảnh địa điểm](...)\` hay cac link dat/website ([ShopeeFood]/[GrabFood]/[BeFood]/[Official Website]/[Google Maps]) trong phan van ban. Dong review TikTok cung do HE THONG tu chen khi co du lieu da xac thuc — TUYET DOI KHONG tu viet URL tiktok.com trong phan van ban (xem quy tac 18b). Ban CHI viet phan CHU cho tung dia diem: ten (in dam) + rating + dia chi + mo ta ngan + thong tin huu ich. Viet gon giup reply day du, khong bi cat cut.
 6) THONG TIN HUU ICH DE QUYET DINH (chi khi truong ton tai trong ket qua tool, TUYET DOI khong bia): neu dia diem co 'cuisine' → nhac ngan loai am thuc/mon (vd "quan do Viet", "chuyen do An Do") de user biet quan phuc vu gi; neu co 'opening_hours' → nhac gio mo cua ngan gon; neu co 'vegetarian' → nhac "co do chay" (huu ich cho user an chay/kieng); neu co 'wifi' → nhac "co wifi" (huu ich khi user tim cafe de lam viec/hoc); neu co 'outdoor_seating' → nhac "co cho ngoi ngoai troi"; neu co 'stars' (khach san) → nhac hang sao (vd "khach san 4 sao"); neu co 'distance_km' → nhac khoang cach tu vi tri user (vd "cach ban ~1.2km") de ho hinh dung duong di. Long ghep tu nhien vao mo ta tung quan, khong liet ke kieu bang bieu.
 ==========================================`
   const ctaBlock = `\n\n===== CTA ACTION BUTTONS - BAT BUOC =====
@@ -343,15 +368,15 @@ export function buildSystemSimple(lang = 'vi', memoryBlock?: string): string {
   // ~90% of a very small context: a two-word English turn ("thanks") came back
   // half-Vietnamese. Measured 2026-08-10, before/after in
   // docs/perf/PHASE_B_B2_2026-08-10.md.
-  const langBlock = lang !== 'vi'
-    ? `CRITICAL: The user is writing in ${langName}. Your ENTIRE reply MUST be in ${langName} — do not use Vietnamese anywhere, not even for a greeting or a sign-off.\n\n`
-    : ''
+  // Emitted for EVERY language, Vietnamese included — see the note in buildSystem. On this path
+  // the omission was worse, because the body below is unaccented Vietnamese ("Ban la TappyAI"),
+  // which is the weakest possible implicit cue. "Chào bạn, bạn giúp được gì cho tôi?" came back
+  // as "Hey there! 👋 I'm TappyAI…" in production.
+  const langBlock = `CRITICAL: The user is writing in ${langName}. Your ENTIRE reply MUST be in ${langName} — do not use any other language anywhere, not even for a greeting or a sign-off.\n\n`
   // Repeated at the very end because that is the last thing read before
   // generating — the same placement buildPlanningBlock relies on for its own
   // language reminder.
-  const langReminder = lang !== 'vi'
-    ? `\n\nREMINDER: reply in ${langName} only.`
-    : ''
+  const langReminder = `\n\nREMINDER: reply in ${langName} only.`
 
   return `${langBlock}THOI GIAN: ${vnDateTime} (GMT+7). Ngay: ${vnDateISO}.
 

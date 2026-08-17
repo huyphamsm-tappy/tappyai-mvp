@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Search, Sparkles, ArrowUp, Smile, Mic } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { inputLocaleFor } from '@/lib/voice/config'
 
 const EMOJIS = [
   '😀','😄','😂','🤣','😊','😍',
@@ -21,7 +22,7 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ placeholder, onSearch, variant = 'default' }: SearchBarProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [query, setQuery] = useState('')
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({})
@@ -92,11 +93,17 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
       setVoiceError(t('search.errNoSupport'))
       return
     }
+    // Same shared table the chat mic reads — search must not listen in a different language.
+    const inputLocale = inputLocaleFor(locale)
+    if (!inputLocale) {
+      setVoiceError(t('voice.languageUnsupported'))
+      return
+    }
     setVoiceError(null)
     cancelAutoSend()
     voiceSpokeRef.current = false
     const recognition = new SR()
-    recognition.lang = 'vi-VN'
+    recognition.lang = inputLocale
     recognition.interimResults = true
     recognition.continuous = false
     recognition.maxAlternatives = 1
@@ -148,7 +155,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
       setIsListening(false)
       setVoiceError(t('search.errStart'))
     }
-  }, [query, cancelAutoSend])
+  }, [query, cancelAutoSend, t, locale])
 
   const stopVoice = useCallback(() => {
     recognitionRef.current?.stop()

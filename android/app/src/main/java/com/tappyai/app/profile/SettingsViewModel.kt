@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.language.AppLanguage
 import com.tappyai.app.language.LanguageManager
+import com.tappyai.app.notifications.TappyNotificationPreferences
 import com.tappyai.app.profile.data.SettingsErrorMessages
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.features.auth.data.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -32,7 +34,32 @@ class SettingsViewModel @Inject constructor(
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val settingsErrorMessages: SettingsErrorMessages,
+    @ApplicationContext private val appContext: android.content.Context,
 ) : ViewModel() {
+
+    private val notificationPrefs = TappyNotificationPreferences(appContext)
+
+    /**
+     * Whether Tappy's own chime plays for notifications it classified as its own.
+     *
+     * This is NOT a notification switch. Turning it off leaves every notification arriving and
+     * visible — it only silences the identity sound. Someone who finds the chime intrusive must be
+     * able to quiet it without losing what it was announcing, so this deliberately touches neither
+     * the OS permission nor delivery.
+     *
+     * Read from storage on construction, so the state survives rotation and process death: the
+     * ViewModel is the cache, SharedPreferences is the truth.
+     */
+    var tappyNotificationSoundEnabled by mutableStateOf(notificationPrefs.identitySoundEnabled)
+        private set
+
+    fun setTappyNotificationSound(enabled: Boolean) {
+        if (tappyNotificationSoundEnabled == enabled) return
+        tappyNotificationSoundEnabled = enabled
+        // Persist immediately rather than on screen exit — a process death between the two would
+        // otherwise silently revert a choice the user already saw take effect.
+        notificationPrefs.identitySoundEnabled = enabled
+    }
 
     var isSigningOut by mutableStateOf(false)
         private set

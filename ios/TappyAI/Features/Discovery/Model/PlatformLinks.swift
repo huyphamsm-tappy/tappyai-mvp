@@ -51,7 +51,6 @@ enum PlatformLinks {
             PlatformLink(name: "Shopee", url: "https://shopee.vn/search?keyword=\(q)"),
             PlatformLink(name: "Tiki", url: "https://tiki.vn/search?q=\(q)"),
             PlatformLink(name: "Lazada", url: "https://www.lazada.vn/catalog/?q=\(q)"),
-            PlatformLink(name: "TikTok Shop", url: "https://www.tiktok.com/search?q=\(q)"),
         ]
     }
 

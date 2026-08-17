@@ -15,11 +15,22 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- In-app voice input (SpeechRecognizer) — mirrors the web chat's mic (Web Speech API). -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Android 13+ delivers no notification at all without this. Undeclared, the permission can
+         never be granted, so it gates delivery only — never Tappy's identity sound setting. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Android 11+ package visibility: needed for SpeechRecognizer to see the recognition service. -->
     <queries>
         <intent>
             <action android:name="android.speech.RecognitionService" />
+        </intent>
+        <!-- Account-deletion request opens an email app (Settings → Request account deletion).
+             Without this, resolveActivity() on the mailto: intent returns null on Android 11+
+             even when an email app is installed, and the flow would always fall through to the
+             "no email app" message — silently breaking the route /delete-account publishes. -->
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
         </intent>
     </queries>
 
@@ -35,6 +46,16 @@
         android:theme="@style/Theme.TappyAI"
         android:resizeableActivity="true"
         tools:targetApi="31">
+
+        <!-- FCM transport (V2-03). exported=false: only the Play Services client may bind, and
+             nothing else on the device should be able to hand this app a notification. -->
+        <service
+            android:name=".notifications.TappyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".MainActivity"

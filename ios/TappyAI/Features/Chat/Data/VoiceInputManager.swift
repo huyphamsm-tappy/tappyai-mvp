@@ -18,8 +18,21 @@ final class VoiceInputManager: AppObservableObject {
     var onTranscript: ((String) -> Void)?
     var onFinished: ((String) -> Void)?
 
-    init() {
-        recognizer = SFSpeechRecognizer(locale: Locale(identifier: "vi-VN"))
+    /// Dictation listens in the APP language — you speak the language you chose to work in. This is
+    /// deliberately NOT the message language: read-aloud follows the reply, input follows the user.
+    /// Defaults to the app's current UI language rather than a hardcoded locale.
+    init(appLanguage: String = LocalizationManager.currentLanguageCode) {
+        recognizer = SFSpeechRecognizer(
+            locale: Locale(identifier: VoiceLocale.inputTag(forAppLanguage: appLanguage))
+        )
+    }
+
+    /// Re-targets the recogniser when the user switches app language mid-session. Not called while
+    /// listening — the caller stops first, so an in-flight recognition is never re-pointed.
+    func updateAppLanguage(_ appLanguage: String) {
+        recognizer = SFSpeechRecognizer(
+            locale: Locale(identifier: VoiceLocale.inputTag(forAppLanguage: appLanguage))
+        )
     }
 
     func startListening(existingText: String) {

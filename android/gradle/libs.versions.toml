@@ -107,6 +107,10 @@ zxing = "3.5.3"
 # MediaItem.fromUri() directly at that same URL — no new backend surface needed.
 media3 = "1.5.0"
 
+# V2-03: the Google Services plugin that reads app/google-services.json. `firebaseBom` and the
+# messaging artifact were already pinned above as "reserved for later phases" — this is the phase.
+googleServices = "4.4.2"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
@@ -194,6 +198,9 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+# Reads app/google-services.json and generates the per-variant Firebase config. The single file
+# declares all three application ids, so no variant-specific copy is needed.
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 # Phase 0.5: pinned only, not applied in any build.gradle.kts yet — no :benchmark or
 # :baselineprofile module exists. Apply once a Phase 2+ screen is worth benchmarking.
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineProfile" }

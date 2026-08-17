@@ -8,6 +8,10 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    // V2-03: reads app/google-services.json. That one file declares com.tappyai.app,
+    // com.tappyai.app.debug and com.tappyai.app.staging, so every variant resolves from it and
+    // no per-variant copy exists to drift.
+    alias(libs.plugins.google.services)
 }
 
 // ---------------------------------------------------------------------------
@@ -88,7 +92,10 @@ android {
         applicationId = "com.tappyai.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 4
+        // 6, not 5: vc5 is already on Play (built from f49d6c0, which is not on any remote branch)
+        // and Play requires a strictly increasing versionCode. vc5 predates the Account Deletion
+        // entry that Play's own listing URL documents, so it must not be the artifact under test.
+        versionCode = 6
         versionName = "0.1.0"
 
         vectorDrawables {
@@ -235,6 +242,10 @@ dependencies {
     // only applied the kotlin-serialization compiler plugin, never the runtime library the
     // annotation itself comes from — "Unresolved reference 'serialization'".
     implementation(libs.kotlinx.serialization.json)
+    // Firebase Cloud Messaging — transport only. The BOM decides the messaging version; nothing
+    // else from Firebase is pulled in (no Analytics, no Crashlytics).
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging.ktx)
     // OkHttp is implementation (non-transitive) in core:network, so RealChatRepository needs
     // it declared directly here to use OkHttpClient, Request, and RequestBody on the compile
     // classpath.

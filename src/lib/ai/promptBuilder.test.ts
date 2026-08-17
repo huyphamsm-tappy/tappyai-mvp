@@ -91,7 +91,14 @@ describe('buildSystem — cache-stable split', () => {
     expect(byLabel.get('vi / image')!.dynamic).toContain('CAMERA AI MODE')
     expect(byLabel.get('vi / offline')!.dynamic).toContain('CUA HANG VAT LY')
     expect(byLabel.get('en / bare')!.dynamic).toContain('LANGUAGE OVERRIDE')
-    expect(byLabel.get('vi / bare')!.dynamic).not.toContain('LANGUAGE OVERRIDE')
+    // This line used to assert the OPPOSITE for Vietnamese — that it received no override — which
+    // is precisely the defect that shipped: production answered Vietnamese messages in English
+    // because Vietnamese was the one language the prompt never named (2026-08-15). The override is
+    // now emitted for every language; what this test is actually about is that it lands in
+    // `dynamic` rather than `shared`, and that still holds.
+    expect(byLabel.get('vi / bare')!.dynamic).toContain('LANGUAGE OVERRIDE')
+    expect(byLabel.get('vi / bare')!.dynamic).toContain('User is writing in Vietnamese.')
+    expect(byLabel.get('vi / bare')!.shared).not.toContain('LANGUAGE OVERRIDE')
   })
 
   it('the language override still precedes every request-shaped block', () => {

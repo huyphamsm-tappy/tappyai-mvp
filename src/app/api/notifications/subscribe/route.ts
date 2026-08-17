@@ -8,9 +8,35 @@ export async function POST(req: Request) {
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const body = await req.json()
-    const { endpoint, keys } = body
-    if (!endpoint || !keys?.p256dh || !keys?.auth) {
-      return NextResponse.json({ error: 'Invalid subscription data' }, { status: 400 })
+
+    // Two transports, one contract. `notification_subscriptions` was created with a `provider`
+    // column and a JSON payload for exactly this, so Android's FCM token registers here rather
+    // than through a second endpoint with its own auth. The provider comes from the request; the
+    // USER always comes from the verified session, never from the body.
+    let provider: string
+    let subscription_data: Record<string, unknown>
+
+    if (body?.provider === 'fcm') {
+      const { token } = body
+      // Treated as a bounded opaque string: never parsed, never trusted for identity, only stored.
+      // The bounds exist so a client cannot use this row as arbitrary storage.
+      if (
+        typeof token !== 'string' ||
+        token.length < 20 ||
+        token.length > 4096 ||
+        !/^[A-Za-z0-9_:.\-]+$/.test(token)
+      ) {
+        return NextResponse.json({ error: 'Invalid subscription data' }, { status: 400 })
+      }
+      provider = 'fcm'
+      subscription_data = { token }
+    } else {
+      const { endpoint, keys } = body
+      if (!endpoint || !keys?.p256dh || !keys?.auth) {
+        return NextResponse.json({ error: 'Invalid subscription data' }, { status: 400 })
+      }
+      provider = 'webpush'
+      subscription_data = { endpoint, keys }
     }
 
     const { error } = await supabase
@@ -18,8 +44,8 @@ export async function POST(req: Request) {
       .upsert(
         {
           user_id: user.id,
-          provider: 'webpush',
-          subscription_data: { endpoint, keys },
+          provider,
+          subscription_data,
           enabled: true,
         },
         { onConflict: 'user_id,provider' }

@@ -124,3 +124,51 @@ export function stripUnservableMedia<T extends Record<string, unknown>>(row: T):
 
   return out as T
 }
+
+/**
+ * Whether an Explore slide would render anything at all.
+ *
+ * Deliberately the same predicate the feed client already uses to pick a renderer
+ * (feedShared.tsx): a video needs `media_url`, otherwise the row needs `photos`. Anything
+ * else falls through to a bare gradient `<div>` — a full-screen blank slide the user has to
+ * swipe past. Keeping the two in one rule is the point; when they drifted, the backend served
+ * rows the client could only render as nothing.
+ *
+ * Call it AFTER stripUnservableMedia: a row whose only media was a suspended Blob URL still
+ * has a non-null `media_url` in the database, and looks renderable until that pointer is
+ * cleared. Order is why this lives next to the strip and not in the SQL query.
+ *
+ * This decides VISIBILITY, not existence. The row is untouched, and the author still sees the
+ * post on their own profile (/api/reviews/mine, /saved) so they can fix or delete it.
+ */
+export function isExploreRenderable(row: Record<string, unknown>): boolean {
+  if (row.content_type === 'video' && typeof row.media_url === 'string' && row.media_url.length > 0) return true
+  const photos = row.photos
+  return Array.isArray(photos) && photos.length > 0
+}
+
+/**
+ * The Explore feed's response projection: clear media we must not point at, then drop whatever
+ * is left with nothing to show.
+ *
+ * One function so the two steps cannot be reordered or applied separately by a future caller —
+ * filtering before the strip would keep exactly the dead Blob rows this exists to remove.
+ */
+export function toExploreFeedItems<T extends Record<string, unknown>>(rows: readonly T[]): T[] {
+  return rows.map(stripUnservableMedia).filter(isExploreRenderable)
+}
+
+/**
+ * The same response projection for a PROFILE feed (`?userId=…`), which drops nothing.
+ *
+ * A profile feed is a management surface, not a discovery one: it backs "Bài của tôi"
+ * (profile/posts) and the profile grid, the only places an author can reach a post to hide or
+ * delete it. Hiding an unrenderable row there does not tidy the product, it strands the post —
+ * the owner cannot see it, so they cannot remove it. It is also a grid of tiles rather than
+ * full-screen slides, so a medialess item is a placeholder tile, not a blank panel.
+ *
+ * Media is still stripped: not serving a suspended Blob URL is unconditional.
+ */
+export function toProfileFeedItems<T extends Record<string, unknown>>(rows: readonly T[]): T[] {
+  return rows.map(stripUnservableMedia)
+}

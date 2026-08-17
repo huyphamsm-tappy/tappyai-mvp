@@ -8,14 +8,14 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
 import posthog from 'posthog-js'
-import { useTTS } from '@/hooks/useTTS'
-import { detectLang } from '@/lib/ai/intent'
+import { useServerTTS } from '@/hooks/useServerTTS'
 import { noVoiceMessage } from '@/lib/tts/voiceSelection'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { inputLocaleFor } from '@/lib/voice/config'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
@@ -411,7 +411,9 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;')
 }
 
-function formatMessage(content: string) {
+// Exported for test only — this is the single transform standing between untrusted LLM/tool
+// output and dangerouslySetInnerHTML, and it had no coverage at all.
+export function formatMessage(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
@@ -449,6 +451,32 @@ function formatMessage(content: string) {
 // (ease-out: bigger gap → faster catch-up) so it always reads like fluid typing,
 // regardless of burst size. When streaming ends we snap to the full text so the
 // final render is never truncated.
+// A markdown link/image is ATOMIC to the typewriter: never stop the reveal inside one.
+//
+// The reveal slices `target` at an arbitrary character. formatMessage() only recognises a
+// COMPLETE `![alt](https://…)` — so while the closing `)` is still unrevealed, the prefix falls
+// through every transform and the raw URL is painted as visible text. Order links clear that
+// window in a frame or two because they are short; a ~120-char Google thumbnail URL does not,
+// which is why production showed working ShopeeFood links beside a giant raw
+// `![Ảnh địa điểm](https://encrypted-tbn0…` on the very same injected block.
+//
+// Only a real token is withheld. The full `target` is consulted to confirm the shape, so
+// ordinary prose containing `[` or `(` — "giá (khoảng 50k)", `[CTA_BUTTONS]`, `[FOLLOWUPS]` —
+// is never delayed waiting for a `)` that is not coming.
+const MD_TOKEN = /^!?\[[^\]\n]*\]\([^\s)]*\)/
+export function markdownSafeRevealEnd(target: string, end: number): number {
+  if (end <= 0 || end >= target.length) return end
+  const shown = target.slice(0, end)
+  let open = shown.lastIndexOf('[')
+  if (open === -1) return end
+  if (open > 0 && shown[open - 1] === '!') open -= 1
+  const m = MD_TOKEN.exec(target.slice(open))
+  // Not a markdown token, or it is already fully revealed — reveal as proposed.
+  if (!m || open + m[0].length <= end) return end
+  // Token is mid-reveal: hold the whole thing back until its closing ')' arrives.
+  return open
+}
+
 function useSmoothText(target: string, active: boolean): string {
   const [shown, setShown] = useState(target)
   const targetRef = useRef(target)
@@ -476,7 +504,7 @@ function useSmoothText(target: string, active: boolean): string {
       if (cur.length < tgt.length) {
         const gap = tgt.length - cur.length
         const reveal = Math.max(2, Math.ceil(gap / 8)) // ease-out catch-up
-        const next = tgt.slice(0, cur.length + reveal)
+        const next = tgt.slice(0, markdownSafeRevealEnd(tgt, cur.length + reveal))
         shownRef.current = next
         setShown(next)
       } else if (cur.length > tgt.length) {
@@ -679,7 +707,14 @@ export default function ChatInterface({
   const startVoice = useCallback(() => {
     const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognitionCtor) {
-      setVoiceError('Trình duyệt chưa hỗ trợ nhập bằng giọng nói. Hãy dùng Chrome hoặc Edge nhé.')
+      setVoiceError(t('voice.unsupportedBrowser'))
+      return
+    }
+    // Dictation listens in the language the user chose to work in. Never a literal: the shared
+    // table is what keeps web, iOS and Android hearing the same language.
+    const inputLocale = inputLocaleFor(locale)
+    if (!inputLocale) {
+      setVoiceError(t('voice.languageUnsupported'))
       return
     }
     setVoiceError(null)
@@ -687,7 +722,7 @@ export default function ChatInterface({
     voiceSpokeRef.current = false
     posthog.capture('mic_used')
     const recognition = new SpeechRecognitionCtor()
-    recognition.lang = 'vi-VN'
+    recognition.lang = inputLocale
     recognition.interimResults = true // live transcript into the input as you speak
     recognition.continuous = false
     recognition.maxAlternatives = 1
@@ -716,18 +751,18 @@ export default function ChatInterface({
       switch (event.error) {
         case 'not-allowed':
         case 'service-not-allowed':
-          setVoiceError('Cần cấp quyền micro để nói. Hãy bật quyền cho trang rồi thử lại nhé.')
+          setVoiceError(t('voice.permissionDenied'))
           break
         case 'no-speech':
-          setVoiceError('Mình chưa nghe thấy gì — bấm micro và nói lại nhé.')
+          setVoiceError(t('voice.noSpeech'))
           break
         case 'audio-capture':
-          setVoiceError('Không tìm thấy micro trên thiết bị.')
+          setVoiceError(t('voice.audioCapture'))
           break
         case 'aborted':
           break // user/unmount stopped — no message needed
         default:
-          setVoiceError('Có trục trặc khi nhận giọng nói, thử lại nhé.')
+          setVoiceError(t('voice.recognitionError'))
       }
     }
     recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -746,9 +781,9 @@ export default function ChatInterface({
     } catch {
       // start() throws if called while already running or blocked — never fail silently.
       setIsListening(false)
-      setVoiceError('Không khởi động được micro. Tải lại trang rồi thử lại nhé.')
+      setVoiceError(t('voice.startFailed'))
     }
-  }, [input, setInput, cancelAutoSend])
+  }, [input, setInput, cancelAutoSend, t, locale])
 
   const stopVoice = useCallback(() => {
     recognitionRef.current?.stop() // lets the final result land, then onend fires
@@ -809,16 +844,25 @@ export default function ChatInterface({
     )
   }, [userLocation, append])
 
-  // TTS — managed by useTTS hook
-  const tts = useTTS()
-  // TTS found no voice for the reply's language on this device → show a notice
-  // (reusing the voice-status line) instead of reading with a wrong-language voice.
+  // Read Aloud — audio synthesized server-side, so every platform hears the same Tappy voice.
+  // The language of each reply is decided by the backend, not here.
+  const tts = useServerTTS()
+  // The server cannot speak this reply's language → show a notice (reusing the voice-status line)
+  // rather than reading it with another language's voice.
   useEffect(() => {
     if (!tts.unavailableLang) return
     setVoiceError(noVoiceMessage(tts.unavailableLang, locale))
     tts.clearUnavailableLang()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tts.unavailableLang, locale])
+  // Synthesis failed for a retryable reason — distinct from "no voice for this language", and it
+  // gets a different sentence: one says try again, the other says do not bother.
+  useEffect(() => {
+    if (!tts.failed) return
+    setVoiceError(t('voice.readAloudFailed'))
+    tts.clearFailed()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tts.failed])
 
   useEffect(() => {
     fetch('/api/memory')
@@ -1088,7 +1132,7 @@ export default function ChatInterface({
                             ttsElapsed={tts.elapsed}
                             ttsTotal={tts.totalSecs}
                             ttsSpeed={tts.speed}
-                            onSpeak={() => tts.speak(msg.id, text, detectLang(text))}
+                            onSpeak={() => tts.speak(msg.id, text)}
                             onTTSPause={tts.togglePause}
                             onTTSSkipBack={tts.skipBack}
                             onTTSSkipForward={tts.skipForward}

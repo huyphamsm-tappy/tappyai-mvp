@@ -250,39 +250,81 @@ describe('production boundary', () => {
    * guard exists to forbid, so the counter-example is synthetic instead.
    */
   const observationIsSealedOff = (source: string): boolean =>
-    /^\s*observePrivacyForFeed\(.*\)\s*$/m.test(source) &&
+    /^\s*if \(exploreServed\) observePrivacyForFeed\(exploreServed, .*\)\s*$/m.test(source) &&
     !/(?:const|let|var)\s+\w+\s*=\s*observePrivacyForFeed/.test(source) &&
-    source.indexOf('observePrivacyForFeed(served') > source.indexOf('NextResponse.json({ reviews:') &&
+    source.indexOf('observePrivacyForFeed(exploreServed') >
+      source.indexOf('NextResponse.json({ reviews:') &&
     source.includes('NextResponse.json({ reviews:');
+
+  /**
+   * What the observation is allowed to be handed.
+   *
+   * Owner decision 2026-08-17: P1 observes the FINAL EXPLORE-SERVED collection.
+   * Not the pre-filter `enriched` rows — Explore now drops rows with no media, and
+   * classifying a row no user was shown is observing nothing. Not the profile
+   * rows either: `?userId=` is a management surface, not Explore.
+   */
+  const observesOnlyExploreServedItems = (source: string): boolean =>
+    // The Explore collection is bound separately and is null on the profile path.
+    /const\s+exploreServed\s*=\s*filterUserId\s*\?\s*null\s*:\s*toExploreFeedItems\(enriched\)/.test(
+      source,
+    ) &&
+    // ...so the observation is skipped entirely for a profile feed.
+    /if \(exploreServed\) observePrivacyForFeed\(exploreServed,/.test(source) &&
+    // ...and it is never handed the pre-filter rows or the profile rows.
+    !/observePrivacyForFeed\(\s*enriched/.test(source) &&
+    !/observePrivacyForFeed\(\s*reviewsOut/.test(source) &&
+    !/observePrivacyForFeed\(\s*toProfileFeedItems/.test(source);
 
   it('the observation cannot reach the response: it runs after it, and its result is never bound', () => {
     expect(observationIsSealedOff(readFileSync(path.join(SRC, FEED_ROUTE), 'utf8'))).toBe(true);
   });
 
-  it('...and that check actually rejects the shapes it is meant to catch', () => {
-    const bound = `
-      const served = enriched.map(stripUnservableMedia)
-      const res = NextResponse.json({ reviews: served, page, limit })
-      const observed = observePrivacyForFeed(served, iso)
-      return res`;
-    const beforeResponse = `
-      observePrivacyForFeed(served, iso)
-      const res = NextResponse.json({ reviews: served, page, limit })
-      return res`;
-    const absent = `
-      const res = NextResponse.json({ reviews: served, page, limit })
-      return res`;
+  it('the observation target is the final Explore-served collection, and only that', () => {
+    expect(observesOnlyExploreServedItems(readFileSync(path.join(SRC, FEED_ROUTE), 'utf8'))).toBe(
+      true,
+    );
+  });
+
+  it('...and both checks actually reject the shapes they are meant to catch', () => {
+    const OK_TAIL = `
+      const exploreServed = filterUserId ? null : toExploreFeedItems(enriched)
+      const reviewsOut = exploreServed ?? toProfileFeedItems(enriched)
+      const res = NextResponse.json({ reviews: reviewsOut, page, limit, hasMore })
+`;
+    // Sealed-off check: bound result, run before the response, or absent entirely.
+    const bound = `${OK_TAIL}      const observed = observePrivacyForFeed(exploreServed, iso)\n      return res`;
+    const beforeResponse = `      if (exploreServed) observePrivacyForFeed(exploreServed, iso)\n${OK_TAIL}      return res`;
+    const absent = `${OK_TAIL}      return res`;
     for (const bad of [bound, beforeResponse, absent]) {
       expect(observationIsSealedOff(bad)).toBe(false);
     }
+
+    // Target check: pre-filter rows, profile rows, or the merged output.
+    const preFilter = `${OK_TAIL}      observePrivacyForFeed(enriched, iso)\n      return res`;
+    const profileRows = `${OK_TAIL}      observePrivacyForFeed(toProfileFeedItems(enriched), iso)\n      return res`;
+    const mergedOutput = `${OK_TAIL}      observePrivacyForFeed(reviewsOut, iso)\n      return res`;
+    const noExploreBinding = `
+      const reviewsOut = filterUserId ? toProfileFeedItems(enriched) : toExploreFeedItems(enriched)
+      const res = NextResponse.json({ reviews: reviewsOut, page, limit, hasMore })
+      observePrivacyForFeed(reviewsOut, iso)
+      return res`;
+    for (const bad of [preFilter, profileRows, mergedOutput, noExploreBinding]) {
+      expect(observesOnlyExploreServedItems(bad)).toBe(false);
+    }
   });
 
-  it('the served payload still carries exactly the three fields it always did', () => {
+  it('the served payload is the current production shape, untouched by policy', () => {
     const feed = readFileSync(path.join(SRC, FEED_ROUTE), 'utf8');
-    expect(feed).toMatch(/NextResponse\.json\(\{\s*reviews:\s*served,\s*page,\s*limit\s*\}\)/);
-    // The rows handed to the client are still the media-stripped enriched rows,
-    // with nothing from the policy layer merged in.
-    expect(feed).toMatch(/const\s+served\s*=\s*enriched\.map\(stripUnservableMedia\)/);
+    // `hasMore` is `main`'s, not policy's — the policy release neither added it
+    // nor may remove it.
+    expect(feed).toMatch(
+      /NextResponse\.json\(\{\s*reviews:\s*reviewsOut,\s*page,\s*limit,\s*hasMore\s*\}\)/,
+    );
+    // The rows handed to the client come from the existing Explore/profile
+    // transforms, with nothing from the policy layer merged in.
+    expect(feed).toMatch(/const\s+reviewsOut\s*=\s*exploreServed\s*\?\?\s*toProfileFeedItems\(enriched\)/);
+    expect(feed).toMatch(/const\s+hasMore\s*=\s*enriched\.length\s*>=\s*limit/);
   });
 
   it('the policy module performs no writes, no scheduling and no network', () => {

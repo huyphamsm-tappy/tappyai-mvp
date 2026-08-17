@@ -1,5 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { stripUnservableMedia } from '@/lib/media/servableMedia'
+import { toExploreFeedItems, toProfileFeedItems } from '@/lib/media/servableMedia'
 import { observePrivacyForFeed } from '@/lib/policy/explore/reviewFeedObservation'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
@@ -176,8 +176,35 @@ export async function GET(req: NextRequest) {
   // is suspended for data transfer, so those URLs 403 today — and would start
   // billing egress again the moment the allowance resets. Nothing is deleted;
   // the post keeps every other field and simply renders without a dead player.
-  const served = enriched.map(stripUnservableMedia)
-  const res = NextResponse.json({ reviews: served, page, limit })
+  //
+  // …and a post left with NO media at all is then dropped from Explore, because a
+  // slide with nothing on it is not content. Measured on production 2026-08-15:
+  // 3 of the 5 rows in ?sort=latest came back with media_url null, thumbnail null
+  // and no photos, and the client renders exactly that as a blank gradient panel
+  // (feedShared.tsx:443). Explore eligibility is the backend's call, so it is made
+  // here rather than asking every client to re-derive it. Visibility only — no row
+  // is deleted, and the author still sees the post under /api/reviews/mine.
+  //
+  // `hasMore` is measured BEFORE that filter, and exists because of it: the web feed
+  // used to stop paginating on `rows.length >= 12`, so a page shortened by dropping
+  // dead rows would have ended the feed early and hidden healthy posts below it.
+  // Whether more rows exist is a property of the query, not of how many survived
+  // rendering, so the server is the only place that can answer it honestly.
+  //
+  // …but ONLY for the discovery surfaces. `?userId=` is a profile feed, and it backs the one
+  // place an author can reach a post to hide or delete it ("Bài của tôi" and the profile grid).
+  // Dropping unrenderable rows there would strand the post: invisible to its owner, therefore
+  // undeletable. Discovery hides it; management must not.
+  const hasMore = enriched.length >= limit
+  // Explore's served collection is bound separately from the profile one, and is
+  // `null` on the profile path. Trust & Safety P1 observes what Explore actually
+  // serves (Owner decision 2026-08-17), and binding it this way makes observing
+  // the wrong collection unrepresentable rather than merely discouraged: there is
+  // no variable here holding "whichever of the two we ended up with", so the
+  // pre-filter `enriched` rows and the profile rows cannot be reached by it.
+  const exploreServed = filterUserId ? null : toExploreFeedItems(enriched)
+  const reviewsOut = exploreServed ?? toProfileFeedItems(enriched)
+  const res = NextResponse.json({ reviews: reviewsOut, page, limit, hasMore })
 
   // Cache ONLY the truly uniform response: anonymous, non-following, non-profile
   // feeds (every anon caller gets identical rows with liked_by_me/saved_by_me all
@@ -199,11 +226,16 @@ export async function GET(req: NextRequest) {
 
   // Trust & Safety P1 (`ts.privacy.personal-information@1`) — OBSERVATION ONLY.
   //
-  // Runs after the response is built, on the rows that were actually served, and
-  // reads only body + hashtags + the row's own place fields. It cannot change
+  // Runs after the response is built, on the FINAL EXPLORE-SERVED collection —
+  // after the media filtering above, never on the pre-filter `enriched` rows and
+  // never on profile-feed rows (`exploreServed` is null there, so the call is
+  // skipped). Classifying a row Explore already removed would be observing
+  // something no user was shown.
+  //
+  // It reads only body + hashtags + the row's own place fields, and cannot change
   // what this handler returns: `res` is already constructed above, and the
   // observation record type has no field for visibility, ranking, ordering,
-  // recommendation or notification.
+  // recommendation, pagination or notification.
   //
   // THE RESULT IS DISCARDED, ON PURPOSE. There is no sink to send it to — no
   // edge-compatible audit or event writer exists, and `reviews` has no
@@ -214,7 +246,7 @@ export async function GET(req: NextRequest) {
   //
   // `observePrivacyForFeed` is total: it returns an empty list rather than
   // throwing, so a classifier problem can never break the feed.
-  observePrivacyForFeed(served, new Date().toISOString())
+  if (exploreServed) observePrivacyForFeed(exploreServed, new Date().toISOString())
 
   return res
 }

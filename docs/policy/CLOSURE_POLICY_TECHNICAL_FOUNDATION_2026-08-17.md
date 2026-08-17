@@ -195,10 +195,20 @@ and is not named.
 `ts.privacy.personal-information` is connected to the real Explore feed
 (`/api/reviews/feed`).
 
+**What it observes:** the **final Explore-served collection** — the items that
+survive the feed's existing media filtering and transformation, i.e. exactly what
+Explore hands to the user. Not the pre-filter enriched rows, and not the profile
+feed: `?userId=` is a management surface, and its collection is never passed to
+the observer. Owner decision, 2026-08-17.
+
+**Response shape:** `reviews / page / limit / hasMore`. `hasMore` is the feed's
+own field and predates this work — the Policy release neither introduced it nor
+may remove it.
+
 Current behaviour: **observation-only**. No persistence · no user-visible policy
-field · no change to ranking, ordering, visibility or recommendation · no
-notification · no moderation · no enforcement. The observation result is computed
-and discarded, because storage is not approved.
+field · no change to ranking, ordering, visibility, pagination or recommendation ·
+no notification · no moderation · no enforcement. The observation result is
+computed and discarded, because storage is not approved.
 
 **Measured impact** (not estimated): approximately **+0.1 ms CPU per request** at
 the route's maximum page size, and approximately **+12.1 kB gzip** on the route

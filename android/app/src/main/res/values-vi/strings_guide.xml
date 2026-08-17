@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bản tiếng Việt của màn hình "Hướng dẫn sử dụng TappyAI".
+  Mọi khoá trong values/strings_guide.xml đều phải có ở đây — lint MissingTranslation
+  fail build, và một khoá thiếu sẽ âm thầm rơi về tiếng Anh giữa màn hình tiếng Việt.
+-->
+<resources>
+    <string name="guide_title">Hướng dẫn sử dụng TappyAI</string>
+    <string name="guide_subtitle">Từng phần làm gì, và bạn sẽ nhận được gì.</string>
+
+    <string name="guide_chat_title">Trò chuyện với TappyAI</string>
+    <string name="guide_chat_body">Hỏi bằng lời của bạn, TappyAI trả lời. Khi cần tra cứu, TappyAI tự quyết định.\n\n1. Mở phần Trò chuyện và gõ điều bạn muốn biết.\n2. Cứ viết tự nhiên — câu đầy đủ cho kết quả tốt hơn từ khoá rời rạc.\n3. Thêm chi tiết quan trọng với bạn: khu vực, ngân sách, hay dịp gì.\n4. Đọc câu trả lời rồi hỏi tiếp để thu hẹp lại.\n\nBạn cũng có thể bấm biểu tượng micro để nói thay vì gõ.\n\nNếu không tìm được, TappyAI nói thẳng là không có chứ không đoán. TappyAI không bịa ra quán, giá hay đường link.</string>
+
+    <string name="guide_food_title">Tìm chỗ ăn uống</string>
+    <string name="guide_food_body">Hỏi chỗ ăn hoặc uống, TappyAI gợi ý những nơi có thật kèm thông tin của nơi đó.\n\n1. Nói bạn muốn gì — ví dụ "quán cà phê yên tĩnh ở Quận 1".\n2. Nêu khu vực, hoặc cho phép định vị để tìm chỗ gần bạn.\n3. Mở gợi ý bạn thích.\n\nMỗi nơi có tên và địa chỉ, điểm đánh giá Google nếu có, nút Google Maps, và các nút đặt đồ ăn để tìm đúng quán đó.\n\nKhông phải nơi nào cũng có website, điểm đánh giá hay mặt trên app giao đồ ăn. Thiếu cái nào thì nút đó không hiện — không có gì bịa ra thay vào chỗ đó.</string>
+
+    <string name="guide_travel_title">Lên kế hoạch chuyến đi</string>
+    <string name="guide_travel_body">Hỏi về một điểm đến, TappyAI gợi ý nơi nên đi và chỗ nghỉ.\n\n1. Nêu điểm đến, kèm ngày đi nếu bạn đã biết.\n2. Nói rõ kiểu chuyến đi — gia đình, tiết kiệm, đi mấy ngày.\n3. Mở một gợi ý để xem chi tiết, hoặc hỏi phương án khác.\n\nVới chỗ nghỉ, bạn nhận được danh sách khách sạn kèm nút Booking.com và Agoda mở trang tìm kiếm nơi đó.\n\nGiá và tình trạng phòng là của các site đặt phòng, không phải của TappyAI. Hãy xác nhận giá cuối cùng ở đó trước khi thanh toán.</string>
+
+    <string name="guide_product_title">Tìm sản phẩm</string>
+    <string name="guide_product_body">Mô tả sản phẩm, TappyAI giúp bạn so sánh và chỉ chỗ bán.\n\n1. Mô tả thứ bạn cần, kèm tên model nếu biết.\n2. Nói điều bạn quan tâm nhất — ngân sách, kích thước, hay dùng để làm gì.\n3. Mở link mua sắm để xem giá hiện tại.\n\nBạn nhận được bản so sánh dễ hiểu cùng các nút Shopee, Tiki, Lazada tìm đúng sản phẩm đó.\n\nTappyAI không thấy được tồn kho hay giá lúc thanh toán. Hãy xem giá nó nêu là con số tham khảo và kiểm tra lại trên trang người bán.</string>
+
+    <string name="guide_readaloud_title">Nghe câu trả lời</string>
+    <string name="guide_readaloud_body">TappyAI có thể đọc to câu trả lời thay vì bạn phải đọc bằng mắt.\n\n1. Gửi tin nhắn và chờ câu trả lời.\n2. Bấm nút loa dưới câu trả lời để bắt đầu đọc.\n3. Bấm lần nữa để dừng.\n\nCâu trả lời được đọc bằng giọng có sẵn trong điện thoại của bạn. Nghe thế nào tuỳ vào những giọng ngôn ngữ máy bạn đã cài. Nếu máy không có giọng cho ngôn ngữ đó, câu trả lời vẫn nằm trên màn hình dưới dạng chữ.</string>
+
+    <string name="guide_notifications_title">Thông báo</string>
+    <string name="guide_notifications_body">TappyAI có thể báo cho bạn những thứ bạn nhờ nó để mắt tới.\n\n1. Cho phép thông báo khi ứng dụng hỏi.\n2. Mở mục Thông báo trong trang cá nhân để xem những gì đã đến.\n3. Bấm vào một thông báo để mở thứ nó nhắc tới.\n\nNếu bạn từ chối quyền, sẽ không có gì gửi tới điện thoại. Bạn vẫn mở được danh sách trong ứng dụng bất cứ lúc nào.</string>
+
+    <string name="guide_tappysound_title">Âm thanh thông báo của Tappy</string>
+    <string name="guide_tappysound_body">Một số thông báo là do chính Tappy gửi và phát âm thanh riêng dễ nhận ra, để bạn biết đó là Tappy mà không cần nhìn màn hình.\n\n1. Mở Cài đặt từ trang cá nhân.\n2. Tìm dòng âm thanh thông báo Tappy.\n3. Bấm để bật hoặc tắt âm thanh đó.\n\nTắt đi chỉ làm im tiếng đó. Thông báo vẫn đến và vẫn hiện trong danh sách của bạn.</string>
+
+    <string name="guide_reviews_title">Đánh giá của người khác</string>
+    <string name="guide_reviews_body">Một dòng các bài đánh giá ngắn mọi người viết về địa điểm.\n\n1. Mở mục Đánh giá để xem.\n2. Mở một bài để đọc đầy đủ và xem địa điểm.\n3. Đăng bài đánh giá của chính bạn ngay ở màn hình đó.\n\nNhững nơi mới mở hoặc ít người biết có thể chưa có bài đánh giá nào.</string>
+
+    <string name="guide_saves_title">Lưu lại để xem sau</string>
+    <string name="guide_saves_body">Giữ lại địa điểm và nội dung bạn muốn quay lại.\n\n1. Bấm nút lưu trên thứ bạn thích.\n2. Tìm lại nó trong mục Đã lưu ở trang cá nhân.\n\nLưu cần có tài khoản, để danh sách theo bạn qua các thiết bị.</string>
+
+    <string name="guide_tools_title">Vài công cụ nhỏ</string>
+    <string name="guide_tools_body">Vài công cụ gọn nằm cạnh phần trò chuyện, cho những việc thường ngày.\n\n• Quét tài liệu — chụp ảnh giấy tờ và lấy chữ ra khỏi ảnh.\n• Dịch — dịch văn bản giữa các ngôn ngữ.\n• Tiền tệ — quy đổi một số tiền sang đơn vị khác.\n• Chia tiền — tính xem ai còn nợ bao nhiêu sau bữa ăn chung.\n\nMỗi công cụ đều báo khi không làm được — ví dụ ảnh quá mờ nên không đọc nổi chữ.</string>
+
+    <string name="guide_account_title">Tài khoản của bạn</string>
+    <string name="guide_account_body">Bạn dùng TappyAI được ngay mà không cần tài khoản. Đăng nhập là để mọi thứ của bạn đi theo bạn.\n\n• Chưa có tài khoản — vẫn trò chuyện và xem được.\n• Có tài khoản — mục đã lưu, bài đánh giá của bạn, thông báo và tuỳ chọn riêng.\n\nKhi có việc cần tài khoản, TappyAI mới mời bạn đăng nhập ngay lúc đó, chứ không chặn bạn từ trước.</string>
+
+    <string name="guide_limits_title">Vài điều nên nhớ</string>
+    <string name="guide_limits_body">• TappyAI có thể sai. Hãy xem những gì nó nói là điểm khởi đầu, không phải kết luận cuối cùng.\n• Giờ mở cửa, giá và tình trạng còn chỗ đều thay đổi. Hãy xác nhận trên trang của chính nơi đó trước khi đi hoặc trả tiền.\n• Một nút chỉ hiện khi nguồn thật sự có đường link đó. Thiếu nút nghĩa là thông tin đó không tồn tại, chứ không phải bị giấu đi.\n• TappyAI không đưa lời khuyên tài chính hay đầu tư.</string>
+</resources>

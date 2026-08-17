@@ -19,12 +19,23 @@ self.addEventListener('push', event => {
     requireInteraction: false,
   }
 
+  // Only notifications the BACKEND classified as `tappy_identity` earn the identity sound. A sound
+  // that plays for everything is just a notification sound, not an identity. Missing or unknown
+  // kinds are `normal`, so every notification written before this existed keeps working.
+  const kind = (data.data && data.data.kind) === 'tappy_identity' ? 'tappy_identity' : 'normal'
+
   event.waitUntil(
-    // Check if app is in foreground — if so, post a message so the page can
-    // play the Tappy chime instead of (in addition to) the OS notification
+    // If a tab is in the foreground, tell it to play the Tappy identity — in addition to the OS
+    // notification, which always shows so the title/body stay visible.
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
       const foreground = clientList.find(c => c.visibilityState === 'visible')
-      if (foreground) foreground.postMessage({ type: 'TAPPY_PUSH', payload: data })
+      // The message carries NO payload, deliberately. Nothing on the page ever consumed it, and
+      // sending it put the notification body one property access away from the line that triggers
+      // speech. Now the page is told THAT to play a sound, never WHAT was in the notification —
+      // so reading content aloud is not something a future edit can reach for.
+      if (foreground && kind === 'tappy_identity') {
+        foreground.postMessage({ type: 'TAPPY_IDENTITY' })
+      }
       return self.registration.showNotification(title, options)
     })
   )
