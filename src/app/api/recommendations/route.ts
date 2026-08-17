@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { buildAIContext } from '@/lib/ai/contextBuilder'
+import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { rankCandidates } from '@/lib/recommendation/recommendationEngine'
 import type { AIContextResult } from '@/types/aiContext'
 import type { CandidatePlace } from '@/types/recommendation'
@@ -41,6 +42,9 @@ export async function GET(req: NextRequest) {
     .from('reviews')
     .select('place_id, place_name, place_address, rating, hashtags, created_at')
     .eq('is_hidden', false)
+    // Content safety gate. Exclusion only — no ranking or recommendation penalty
+    // is introduced here; unpublishable rows simply are not candidates.
+    .or(publishableFilter())
     .not('place_id', 'is', null)
     .order('created_at', { ascending: false })
     .limit(500)

@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
+import { decidePublication } from '@/lib/safety/gate/publishDecision'
 import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
@@ -36,6 +38,10 @@ export async function GET(req: NextRequest) {
     .select('id, user_id, place_name, rating, body, created_at, is_verified, like_count, photos, profiles(full_name, avatar_url)')
     .eq('place_id', placeId)
     .eq('is_hidden', false)
+    // Content safety gate — never serve content the gate has not published.
+    // Legacy rows (publication_state NULL) predate the gate and keep the exact
+    // visibility they had before it existed.
+    .or(publishableFilter())
     .order('created_at', { ascending: false })
     .limit(50)
 
@@ -189,6 +195,29 @@ export async function POST(req: NextRequest) {
   if (source_url) reviewData.source_url = source_url
   if (hashtags.length > 0) reviewData.hashtags = hashtags
   if (music) reviewData.music = music
+
+  // ── Content safety publication gate ────────────────────────────────────────
+  // The actual publication boundary. New content receives its lifecycle state
+  // HERE, before it is stored, so nothing becomes public without a decision.
+  //
+  // While the gate is inactive this adds no columns at all, and the post is
+  // stored exactly as it always was. When it is active, an evaluation that fails
+  // yields UNDER_REVIEW — held, never restricted, and never an accusation.
+  const { columns: lifecycle } = await decidePublication(
+    {
+      id: 'pending',
+      body: reviewData.body,
+      hashtags: reviewData.hashtags,
+      place_name: reviewData.place_name,
+      place_address: reviewData.place_address,
+      content_type: reviewData.content_type,
+      source_type: reviewData.source_type,
+      media_url: reviewData.media_url,
+      thumbnail: reviewData.thumbnail,
+    },
+    new Date().toISOString(),
+  )
+  Object.assign(reviewData, lifecycle)
 
   let { data: insData, error: insertError } = await supabase.from('reviews').insert(reviewData).select('id').maybeSingle()
 
