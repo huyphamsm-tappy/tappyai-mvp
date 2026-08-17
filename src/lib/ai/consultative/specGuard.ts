@@ -288,6 +288,14 @@ export function guardSpecClaimsInText(
       .trim()
       .replace(/^(?:and|but|or|va|nhung|hoac)\s+/i, '')
     if (/[.!?…:]$/.test(sentence.trim()) && !/[.!?…:]$/.test(joined)) joined += '.'
+    // Dropping the opening clause promotes whatever followed to the start of the
+    // sentence, and it was written mid-sentence: "Máy nhẹ, phù hợp di chuyển."
+    // became "phù hợp di chuyển." on a deployed build. Only restored when the
+    // ORIGINAL opened with a capital, so prose that was already lower-case stays
+    // as the model wrote it.
+    if (/^\p{Lu}/u.test(sentence.trim()) && /^\p{Ll}/u.test(joined)) {
+      joined = joined[0].toUpperCase() + joined.slice(1)
+    }
     return joined
   })
 

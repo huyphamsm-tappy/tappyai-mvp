@@ -548,3 +548,37 @@ describe('SPEC-GUARD-24 — a claim about "Máy này" belongs to the last candid
     expect(guardSpecClaimsInText(t, C).removed).toEqual([])
   })
 })
+
+// ── SPEC-GUARD-25 — the sentence still READS like a sentence ────────────────
+//
+// Seen on the deployed build after the guard started firing: "RAM 16GB đủ cho AI
+// tasks cơ bản. phù hợp di chuyển." Removing the opening clause promoted a
+// lower-case fragment to the start of a sentence. Grounded, and visibly broken —
+// the guard must not make Tappy look careless in exchange for being correct.
+describe('SPEC-GUARD-25 — removing the opening clause restores the capital', () => {
+  // The fragment only becomes reachable once a previous sentence named the
+  // candidate — which is exactly the shape the deployed reply had.
+  it('VI: the deployed-build artifact', () => {
+    const r = g('Asus Vivobook 16 A1607QA giá 18.59 triệu. Máy nhẹ, phù hợp di chuyển.')
+    expect(r.text).toContain('Phù hợp di chuyển')
+    expect(r.text).not.toMatch(/nhẹ/)
+    expect(r.text).not.toMatch(/\.\s+[a-zà-ỹ]/)
+  })
+
+  it('EN: the same shape', () => {
+    const r = guardSpecClaimsInText(
+      'Asus Vivobook 16 A1607QA is lightweight, and it costs 18.59M.', NO_SPEC)
+    expect(r.text).not.toMatch(/^and\b/i)
+    expect(r.text).toMatch(/^It costs/)
+  })
+
+  it('a sentence that already starts lower-case is left alone', () => {
+    const t = 'giá 18.59 triệu tại Thế Giới Di Động.'
+    expect(g(t).text.trim()).toBe(t)
+  })
+
+  it('a surviving first clause keeps its original casing', () => {
+    const r = g('Asus Vivobook 16 A1607QA giá 18.59 triệu, máy rất nhẹ.')
+    expect(r.text).toMatch(/^Asus/)
+  })
+})
