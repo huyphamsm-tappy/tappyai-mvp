@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { toExploreFeedItems, toProfileFeedItems } from '@/lib/media/servableMedia'
+import { observePrivacyForFeed } from '@/lib/policy/explore/reviewFeedObservation'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
@@ -195,7 +196,14 @@ export async function GET(req: NextRequest) {
   // Dropping unrenderable rows there would strand the post: invisible to its owner, therefore
   // undeletable. Discovery hides it; management must not.
   const hasMore = enriched.length >= limit
-  const reviewsOut = filterUserId ? toProfileFeedItems(enriched) : toExploreFeedItems(enriched)
+  // Explore's served collection is bound separately from the profile one, and is
+  // `null` on the profile path. Trust & Safety P1 observes what Explore actually
+  // serves (Owner decision 2026-08-17), and binding it this way makes observing
+  // the wrong collection unrepresentable rather than merely discouraged: there is
+  // no variable here holding "whichever of the two we ended up with", so the
+  // pre-filter `enriched` rows and the profile rows cannot be reached by it.
+  const exploreServed = filterUserId ? null : toExploreFeedItems(enriched)
+  const reviewsOut = exploreServed ?? toProfileFeedItems(enriched)
   const res = NextResponse.json({ reviews: reviewsOut, page, limit, hasMore })
 
   // Cache ONLY the truly uniform response: anonymous, non-following, non-profile
@@ -215,6 +223,30 @@ export async function GET(req: NextRequest) {
     res.headers.set('Cache-Control', 'private, no-store')
     res.headers.set('Vary', 'Authorization, Cookie')
   }
+
+  // Trust & Safety P1 (`ts.privacy.personal-information@1`) — OBSERVATION ONLY.
+  //
+  // Runs after the response is built, on the FINAL EXPLORE-SERVED collection —
+  // after the media filtering above, never on the pre-filter `enriched` rows and
+  // never on profile-feed rows (`exploreServed` is null there, so the call is
+  // skipped). Classifying a row Explore already removed would be observing
+  // something no user was shown.
+  //
+  // It reads only body + hashtags + the row's own place fields, and cannot change
+  // what this handler returns: `res` is already constructed above, and the
+  // observation record type has no field for visibility, ranking, ordering,
+  // recommendation, pagination or notification.
+  //
+  // THE RESULT IS DISCARDED, ON PURPOSE. There is no sink to send it to — no
+  // edge-compatible audit or event writer exists, and `reviews` has no
+  // classification column. Where these records are stored, and for how long, is
+  // an unmade Product and privacy decision. Wiring the call now means that
+  // decision costs one line, not a re-integration; until it is made this
+  // computes the classification and drops it.
+  //
+  // `observePrivacyForFeed` is total: it returns an empty list rather than
+  // throwing, so a classifier problem can never break the feed.
+  if (exploreServed) observePrivacyForFeed(exploreServed, new Date().toISOString())
 
   return res
 }
