@@ -582,3 +582,28 @@ describe('SPEC-GUARD-25 — removing the opening clause restores the capital', (
     expect(r.text).toMatch(/^Asus/)
   })
 })
+
+// ── SPEC-GUARD-26 — no connector left dangling at the end ───────────────────
+//
+// Deployed build, VI refinement turn: "Nhược điểm là SSD 256GB chật —." The
+// clause the dash introduced was the ungrounded one, and removing it left the
+// dash pointing at nothing. Same class as the stranded conjunction, other end of
+// the sentence.
+describe('SPEC-GUARD-26 — a trailing connector is not left pointing at nothing', () => {
+  it('VI: the deployed-build artifact', () => {
+    const r = g('Asus Vivobook 16 A1607QA giá 18.59 triệu — máy rất nhẹ.')
+    expect(r.text).not.toMatch(/[—–-]\s*\.?\s*$/)
+    expect(r.text).toContain('18.59 triệu')
+  })
+
+  it('EN: an em dash before a removed battery clause', () => {
+    const r = g('Asus Vivobook 16 A1607QA costs 18.59M — it has great battery life.')
+    expect(r.text).not.toMatch(/[—–]\s*\.?\s*$/)
+    expect(r.text).toContain('18.59M')
+  })
+
+  it('a dash in the MIDDLE of surviving text is untouched', () => {
+    const t = 'Asus Vivobook 16 A1607QA — 18.59 triệu — tại Thế Giới Di Động.'
+    expect(g(t).text.trim()).toBe(t)
+  })
+})

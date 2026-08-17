@@ -287,6 +287,11 @@ export function guardSpecClaimsInText(
       .replace(/\s{2,}/g, ' ')
       .trim()
       .replace(/^(?:and|but|or|va|nhung|hoac)\s+/i, '')
+      // A dash or colon INTRODUCES what follows. When the clause it introduced was
+      // the ungrounded one, it is left pointing at nothing: the deployed build
+      // emitted "Nhược điểm là SSD 256GB chật —." Same class as the stranded
+      // conjunction, at the other end of the sentence.
+      .replace(/\s*[—–:]\s*$/, '')
     if (/[.!?…:]$/.test(sentence.trim()) && !/[.!?…:]$/.test(joined)) joined += '.'
     // Dropping the opening clause promotes whatever followed to the start of the
     // sentence, and it was written mid-sentence: "Máy nhẹ, phù hợp di chuyển."
