@@ -20,6 +20,7 @@ import { join } from 'node:path'
 const root = join(__dirname, '..', '..', '..')
 const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
 const route = () => read('src/app/api/chat/route.ts')
+const priceWatchMessages = () => read('src/lib/priceWatch/messages.ts')
 
 /** Sequences that only exist when UTF-8 was decoded as Latin-1 and re-encoded. */
 const MOJIBAKE = /Ã[-¿©¡°ª«¬­®¯]|Æ°|áº|Ä‘|á»|â€”/
@@ -68,10 +69,33 @@ describe('the strings the model and the user actually read', () => {
     expect(src).toContain('Giá mục tiêu bằng VND')
   })
 
+  // These three outcomes used to be hardcoded Vietnamese literals in the route.
+  // Consultative V2 moved them into the bilingual Price Watch layer, so the guard
+  // follows them — the risk it defends against belongs to the STRINGS, not to the
+  // file that happened to hold them.
   it('the user-facing outcomes are readable', () => {
-    const src = route()
+    const src = priceWatchMessages()
     expect(src).toContain('Cần đăng nhập để theo dõi giá')
-    expect(src).toContain('Bạn đã theo dõi tối đa 10 sản phẩm')
+    expect(src).toContain('Tối đa 10 sản phẩm theo dõi cùng lúc')
     expect(src).toContain('Đã lưu!')
+  })
+})
+
+// The bilingual layer is now the single home of every Price Watch string a user
+// reads, in either language, and it arrived without an encoding guard of its own.
+describe('the Price Watch messages carry no double-encoded text', () => {
+  it('has no mojibake on any line', () => {
+    const offenders = priceWatchMessages()
+      .split('\n')
+      .map((line, i) => ({ line: i + 1, text: line }))
+      .filter((l) => MOJIBAKE.test(l.text))
+      .map((l) => `${l.line}: ${l.text.trim().slice(0, 60)}`)
+    expect(offenders).toEqual([])
+  })
+
+  it('the Vietnamese notification strings are readable', () => {
+    const src = priceWatchMessages()
+    expect(src).toContain('đã xuống!')
+    expect(src).toContain('mục tiêu của bạn là')
   })
 })
