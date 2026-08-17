@@ -212,11 +212,33 @@ describe('production boundary', () => {
    */
   const FEED_ROUTE = 'app/api/reviews/feed/route.ts';
 
-  it('exactly one file outside the policy module imports it, and it is the Explore feed route', () => {
-    const importers = outsidePolicy.filter((f) =>
-      /from\s+['"](?:@\/lib\/policy|\.\.?\/(?:\.\.\/)*lib\/policy)/.test(readFileSync(f, 'utf8')),
+  /**
+   * ⚠ RE-PINNED again, 2026-08-17: the content-safety evidence pipeline lives at
+   * `src/lib/safety/**` and consumes the policy engine.
+   *
+   * It is OUTSIDE the policy module on purpose. Gathering evidence means network
+   * calls to a vision model, and the guard two tests below proves the policy
+   * module makes none — a property it would lose the moment acquisition moved
+   * inside. So the boundary is: policy stays inert and provable, safety is where
+   * impurity is allowed.
+   *
+   * The claim stays narrow: only the feed route and the safety module may reach
+   * the policy engine, and nothing else. That is an enumerated allow-list, not a
+   * relaxation.
+   */
+  const POLICY_CONSUMER_PREFIXES = [FEED_ROUTE, 'lib/safety/'];
+
+  it('only the Explore feed route and the safety pipeline import the policy module', () => {
+    const importers = outsidePolicy
+      .filter((f) => /from\s+['"](?:@\/lib\/policy|\.\.?\/(?:\.\.\/)*lib\/policy)/.test(readFileSync(f, 'utf8')))
+      .map((f) => path.relative(SRC, f).replace(/\\/g, '/'));
+
+    const unexpected = importers.filter(
+      (f) => !POLICY_CONSUMER_PREFIXES.some((p) => f === p || f.startsWith(p)),
     );
-    expect(importers.map((f) => path.relative(SRC, f).replace(/\\/g, '/'))).toEqual([FEED_ROUTE]);
+    expect(unexpected).toEqual([]);
+    // The feed route must still be one of them — the integration is not optional.
+    expect(importers).toContain(FEED_ROUTE);
   });
 
   it('the feed route imports the observation entry point and nothing else from the module', () => {

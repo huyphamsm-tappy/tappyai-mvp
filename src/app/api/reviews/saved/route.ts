@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { stripUnservableMedia } from '@/lib/media/servableMedia'
+import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { NextRequest, NextResponse } from 'next/server'
 
 // GET /api/reviews/saved — the user's saved reviews (the "reference/bookmark" kind that,
@@ -26,6 +27,8 @@ export async function GET(req: NextRequest) {
     .select('id, place_name, body, photos, thumbnail, content_type, created_at')
     .in('id', ids)
     .or('is_hidden.is.null,is_hidden.eq.false')
+    // Content safety gate — a saved post that is under review is not served.
+    .or(publishableFilter())
 
   const ordered = (reviews || [])
     .map(r => ({ ...r, saved_at: savedAt.get(r.id) || r.created_at }))

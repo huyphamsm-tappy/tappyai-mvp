@@ -1,6 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { toExploreFeedItems, toProfileFeedItems } from '@/lib/media/servableMedia'
 import { observePrivacyForFeed } from '@/lib/policy/explore/reviewFeedObservation'
+import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
@@ -59,6 +60,9 @@ export async function GET(req: NextRequest) {
       .from('reviews')
       .select('id, created_at, place_address, like_count, comment_count, save_count, view_count, watch_time_avg, completion_rate')
       .or('is_hidden.is.null,is_hidden.eq.false')
+      // Content safety gate — Explore and the profile feed both serve only what
+      // the gate has published. Legacy rows (NULL) keep their prior visibility.
+      .or(publishableFilter())
       .order('created_at', { ascending: false })
       .limit(200))
 
@@ -116,6 +120,9 @@ export async function GET(req: NextRequest) {
       .from('reviews')
       .select(EXPLORE_SELECT)
       .or('is_hidden.is.null,is_hidden.eq.false')
+      // Content safety gate — Explore and the profile feed both serve only what
+      // the gate has published. Legacy rows (NULL) keep their prior visibility.
+      .or(publishableFilter())
       .range(offset, offset + limit - 1)
 
     if (filterUserId) query = query.eq('user_id', filterUserId)
