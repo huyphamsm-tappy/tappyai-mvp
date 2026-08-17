@@ -9,7 +9,13 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, detectDecisionStage, isSimpleQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
+import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
+import { normalizePlaces, normalizeHotels, normalizeShopping } from '@/lib/ai/consultative/candidate'
+import { rankCandidates } from '@/lib/ai/consultative/rank'
+import { derivePick, buildPickPayload, buildRankingInstructionBlock } from '@/lib/ai/consultative/pick'
+import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
@@ -110,12 +116,19 @@ export async function POST(req: Request) {
   // current task" if there IS one, so refinement is gated on a prior assistant
   // turn — read from the history already on the request, not a second LLM call.
   const hasPriorAssistantTurn = messages.some((m: { role: string }) => m.role === 'assistant')
-  const decisionStage = detectDecisionStage(lastText, { hasPriorAssistantTurn })
+
+  // resolveDecisionStage defers to the shipped detectDecisionStage whenever it
+  // fires, and fills the gap where it returns null but the structured need
+  // actually changed — "nâng ngân sách lên 35 triệu" is a refinement because a
+  // budget moved, not because it contains a keyword. See consultative/refinement.ts.
+  const decisionStage = resolveDecisionStage(messages)
 
   // Load user memory + kiểm tra freemium limit. Quota values + measurement live
   // in @/lib/config/product — the single owner of every business value.
   let memoryBlock = ''
   let prefBlock = ''
+  /** Durable preferences, reused by the need profile as a LOW-WEIGHT prior. */
+  let storedPrefs: StoredPreferences | null = null
   let authedUserId: string | null = null
   let existingMemory: UserMemory | null = null
   let isPro = false
@@ -153,7 +166,7 @@ export async function POST(req: Request) {
       const chatContext = await buildChatPromptContext(user.id, supabase)
       existingMemory = chatContext.memory
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool)
-      if (chatContext.prefs) prefBlock = buildPrefBlock(chatContext.prefs)
+      if (chatContext.prefs) { prefBlock = buildPrefBlock(chatContext.prefs); storedPrefs = chatContext.prefs }
 
       // Inject Google Calendar events if connected
       try {
@@ -254,6 +267,68 @@ export async function POST(req: Request) {
     return model
   }
 
+  // ── Consultative V2: the structured need, folded from the whole history ────
+  //
+  // Deterministic and model-free, so the route still makes exactly ONE
+  // AI.stream() call — the architecture lock is untouched. This is what the
+  // ranker orders against and what the Pick is FOR; without it there is nothing
+  // user-specific to rank by. Derived here because durable preferences (a
+  // low-weight prior) are only loaded above.
+  const needProfile = deriveNeedProfile(messages, {
+    storedPreferences: storedPrefs,
+    gps: userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null,
+  })
+
+  /**
+   * Rank a place/hotel tool result against this turn's need, in place.
+   *
+   * Reordering happens on the RESULT the model reads, not in the prompt: the
+   * ordering is DATA, and the safety rule that tool results are data rather than
+   * instructions stays intact. The instruction that explains what the ordering
+   * means lives in the system prompt, where instructions belong.
+   *
+   * When the ranker declines (no rankable evidence — RANK-07) the provider order
+   * is returned untouched. Nothing is dropped: hard-filtered candidates are
+   * removed from the model's view exactly as applyBudgetFilter already does, and
+   * every surviving record keeps its own link, photo and enrichment fields.
+   */
+  const rankForModel = (toolName: 'search_places' | 'get_hotel_prices' | 'search_products', result: unknown) => {
+    if (!result || typeof result !== 'object') return { result, pick: null }
+    const r = result as Record<string, unknown>
+    const candidates = toolName === 'search_places' ? normalizePlaces(r)
+      : toolName === 'get_hotel_prices' ? normalizeHotels(r)
+        : normalizeShopping(r)
+    if (candidates.length < 2) return { result, pick: null }
+
+    const ranked = rankCandidates(candidates, needProfile)
+    if (!ranked.rankable) return { result, pick: null }
+
+    // Reorder the array the model reads, by candidate identity — never by index,
+    // so a normalizer that skipped a nameless entry cannot shift the mapping.
+    const order = new Map(ranked.ranked.map((e, i) => [e.candidate.raw, i]))
+    const key = toolName === 'search_places' ? 'results'
+      : toolName === 'get_hotel_prices' ? 'search_results'
+        : 'shopping_results'
+    if (Array.isArray(r[key])) {
+      const rows = r[key] as unknown[]
+      const kept = rows.filter(row => order.has(row))
+      const untouched = rows.filter(row => !order.has(row))
+      r[key] = [...kept.sort((a, b) => (order.get(a) ?? 0) - (order.get(b) ?? 0)), ...untouched]
+    }
+
+    return { result: r, pick: derivePick(ranked, needProfile) }
+  }
+  /** The Pick for this turn, set by whichever tool produced rankable candidates. */
+  let turnPick: ReturnType<typeof derivePick> = null
+
+  // STEP 13: the save_price_watch tool answers in the language of THIS message.
+  // That is the documented split — add_user_language_preference.sql states that
+  // AI response language "stays auto-detected per-message … and is not stored
+  // per-user", while the REST route and the async push read profiles.language.
+  // Anything other than English resolves to Vietnamese, preserving today's
+  // behaviour for every existing caller.
+  const pwLang = normalizePwLang(lang === 'en' ? 'en' : 'vi')
+
   const role: ModelRole = (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
   console.log(JSON.stringify({ type: 'tappyai_model', model: role, planningIntent }))
 
@@ -270,8 +345,15 @@ export async function POST(req: Request) {
   // user is agreeing to. Cheaper AND the right behaviour — a confirmation must
   // never restart a search.
   const noToolTurn = intent === 'chitchat' || decisionStage === 'confirmation'
+  // The ranking instruction is only carried on turns that can actually produce a
+  // ranked result — Places and Hotel are the two domains with structured
+  // candidate attributes today. A weather or gold lookup pays nothing for it.
+  const isDecisionDomain = needProfile.domain === 'places'
+    || needProfile.domain === 'hotel'
+    || needProfile.domain === 'shopping'
   const built = noToolTurn ? null : buildSystem(
     budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
+    isDecisionDomain ? buildRankingInstructionBlock() : undefined,
   )
   const systemShared = built?.shared
   const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
@@ -329,7 +411,14 @@ export async function POST(req: Request) {
         execute: async ({ query, location, type }) => {
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
           const r = await searchPlaces(query, location, type, lang, userLocation)
-          return forModel('search_places', budget ? applyBudgetFilter(r, budget, query) : r)
+          const filtered = budget ? applyBudgetFilter(r, budget, query) : r
+          // Deterministic ranking runs BEFORE the model sees the result, so the
+          // order it reads is already the order that fits this user.
+          const { result, pick } = rankForModel('search_places', filtered)
+          if (pick) turnPick = pick
+          return forModel('search_places', pick
+            ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
+            : result)
         }
       }),
       get_news: tool({
@@ -342,7 +431,12 @@ export async function POST(req: Request) {
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
           const r = await searchProducts(query, lang)
-          return forModel('search_products', budget ? applyBudgetFilter(r, budget, query) : r)
+          const filtered = budget ? applyBudgetFilter(r, budget, query) : r
+          const { result, pick } = rankForModel('search_products', filtered)
+          if (pick) turnPick = pick
+          return forModel('search_products', pick
+            ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
+            : result)
         }
       }) } : {}),
       web_search: tool({
@@ -381,7 +475,12 @@ export async function POST(req: Request) {
         }),
         execute: async ({ location, checkIn, checkOut }) => {
           const r = await getHotelPrices(location, checkIn, checkOut, budget?.max, lang)
-          return forModel('get_hotel_prices', budget ? applyBudgetFilter(r, budget, 'khach san') : r)
+          const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
+          const { result, pick } = rankForModel('get_hotel_prices', filtered)
+          if (pick) turnPick = pick
+          return forModel('get_hotel_prices', pick
+            ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
+            : result)
         }
       }),
       get_transport_options: tool({
@@ -402,7 +501,7 @@ export async function POST(req: Request) {
             search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
           }),
           execute: async ({ product_name, target_price, search_query }) => {
-            if (!authedUserId) return { error: 'Cần đăng nhập để theo dõi giá' }
+            if (!authedUserId) return { error: pw.needLogin(pwLang) }
             try {
               // authedUserId is already verified above via getRequestUser (cookie or
               // Bearer JWT) — use the admin client for this write instead of a fresh
@@ -414,14 +513,14 @@ export async function POST(req: Request) {
                 .select('id', { count: 'exact', head: true })
                 .eq('user_id', authedUserId)
                 .eq('status', 'active')
-              if ((count ?? 0) >= 10) return { error: 'Bạn đã theo dõi tối đa 10 sản phẩm. Hủy bớt để thêm mới.' }
+              if ((count ?? 0) >= 10) return { error: pw.limitReached(pwLang) }
               const { data, error } = await supabaseW
                 .from('price_watches')
                 .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
                 .select('id')
                 .single()
-              if (error) return { error: 'Lỗi lưu theo dõi: ' + error.message }
-              return { ok: true, id: data.id, product_name, target_price, message: `Đã lưu! Tappy sẽ kiểm tra giá ${product_name} mỗi 6 tiếng và báo bạn khi xuống dưới ${(target_price / 1000000).toFixed(1)} triệu.` }
+              if (error) return { error: pw.saveError(pwLang, error.message) }
+              return { ok: true, id: data.id, product_name, target_price, message: pw.saved(pwLang, product_name, Math.round(target_price)) }
             } catch (e) {
               return { error: String(e) }
             }

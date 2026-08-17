@@ -1,4 +1,4 @@
-import { getCache, setCache, serperSearch, fetchPlacePhotosByName } from './common'
+import { getCache, setCache, serperSearch, serperShopping, fetchPlacePhotosByName } from './common'
 import { messages } from '@/lib/ai/messages'
 import { productsCacheKey } from './cacheKeys'
 
@@ -15,7 +15,13 @@ export async function searchProducts(query: string, lang = 'vi') {
 
   let result: unknown
   try {
-    const [searchResultsRaw, directResults, shopInfoResults] = await Promise.all([
+    // Structured product candidates come from Serper's /shopping endpoint, where
+    // price/source/productId are the provider's OWN fields. The three organic
+    // queries below are kept unchanged as the fallback and as the source of the
+    // shop-info/direct-link enrichment the prompt rules already depend on —
+    // removing them would change shipped behaviour beyond this task's scope.
+    const [shoppingRecords, searchResultsRaw, directResults, shopInfoResults] = await Promise.all([
+      serperShopping(query),
       serperSearch(query + ' gia Shopee Tiki Lazada'),
       serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)'),
       serperSearch(query + ' shop website địa chỉ facebook'),
@@ -57,11 +63,18 @@ export async function searchProducts(query: string, lang = 'vi') {
       )
     }
 
-    if (searchResults && searchResults.length > 0) {
+    const hasStructured = !!shoppingRecords && shoppingRecords.length > 0
+
+    if (hasStructured || (searchResults && searchResults.length > 0)) {
       result = {
         query,
         source: 'Google Search (Serper)',
-        search_results: searchResults,
+        ...(searchResults && searchResults.length > 0 ? { search_results: searchResults } : {}),
+        // Structured records live in their OWN field so nothing downstream
+        // confuses them with organic results. The consultative normalizer reads
+        // only this array; the money guard reads the same records for price
+        // verification, which is what activates it.
+        ...(hasStructured ? { shopping_results: shoppingRecords } : {}),
         shop_info_results: shopInfoResults || [],
         links,
         note: messages.shopping.priceDisclaimer(lang)

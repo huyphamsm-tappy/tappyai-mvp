@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { detectLang, detectExplicitLangRequest } from './intent'
-import { buildSystem, buildSystemSimple } from './promptBuilder'
+import { buildSystem, buildSystemSimple, buildPlanningBlock } from './promptBuilder'
 
 // REPRODUCTION GATE for the production defect found on 2026-08-15: a Vietnamese message came back
 // in English from https://www.tappyai.com, three times out of three.
@@ -117,5 +117,130 @@ describe('every language gets an explicit instruction, Vietnamese included', () 
     const { dynamic } = buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false)
     expect(dynamic).not.toContain('User is writing in English.')
     expect(buildSystemSimple('vi')).not.toContain('The user is writing in English.')
+  })
+})
+
+// ── Consultative V2 additions ──────────────────────────────────────────────
+// Brought forward from the consultative branch. The reproduction gate above is
+// the record of the production defect; these assert the surrounding contract:
+// where the directive lives, that it never demonstrates another language, and
+// that the cache-stable segment is unaffected by any of it.
+
+const toolPath = (lang: string) =>
+  buildSystem(null, 'unknown', true, '', lang, '', null, null, false)
+
+describe('LANG-01 — a Vietnamese tool-path turn carries a Vietnamese directive', () => {
+  const vi = toolPath('vi')
+
+  it('the override block is present for Vietnamese, not only for other languages', () => {
+    expect(vi.dynamic).toContain('CRITICAL LANGUAGE OVERRIDE')
+  })
+
+  it('it names Vietnamese — never "English" via the || fallback', () => {
+    // LANG_NAMES[lang] || 'English' means a missing `vi` key does not merely omit
+    // the directive: it would instruct the model to answer Vietnamese IN ENGLISH.
+    expect(vi.dynamic).toContain('Vietnamese')
+    expect(vi.dynamic).not.toMatch(/User is writing in English/)
+  })
+
+  it('the directive lives in `dynamic`, never in the cached `shared`', () => {
+    expect(vi.shared).not.toContain('CRITICAL LANGUAGE OVERRIDE')
+  })
+})
+
+describe('LANG-01 — the override must not DEMONSTRATE another language', () => {
+  it('carries no concrete English label examples, for any language', () => {
+    // The measured root cause. Concrete examples in a fixed language beat the
+    // instruction above them — the same lesson buildPlanningBlock records from
+    // 2026-07-30. The rule must describe SHAPE, never show English.
+    for (const lang of ['vi', 'en', 'ja', 'ko']) {
+      const block = toolPath(lang).dynamic
+      const override = block.slice(block.indexOf('CRITICAL LANGUAGE OVERRIDE'), block.indexOf('=========================================='))
+      for (const shown of ['Find on Shopee', 'View on Maps', 'Book - Place Name']) {
+        expect(override, `"${shown}" is a concrete English example inside the override (lang=${lang})`)
+          .not.toContain(shown)
+      }
+    }
+  })
+})
+
+describe('LANG-02 — the whole tool-path assembly, VI in → VI directive out', () => {
+  // The route computes `lang` from the user's LATEST message only, then hands it
+  // to buildSystem. This walks that path for real Vietnamese requests that reach
+  // the tool path (place/food requests — not chitchat).
+  const VI_TOOL_REQUESTS = [
+    'Trưa mai mình muốn tìm quán cơm tấm ngon gần chợ Bến Thành',
+    'Cuối tuần này mình muốn dẫn mẹ đi ăn bún chả ở khu Hoàn Kiếm',
+    'Gợi ý giúp mình vài quán cà phê yên tĩnh ở Quận 1 để ngồi làm việc',
+    'Tìm khách sạn gần biển ở Đà Nẵng dưới 2 triệu một đêm giúp mình',
+  ]
+
+  for (const request of VI_TOOL_REQUESTS) {
+    it(`"${request.slice(0, 40)}…" → vi → Vietnamese directive`, () => {
+      const lang = detectExplicitLangRequest(request) ?? detectLang(request)
+      expect(lang, 'language detection has never been the defect').toBe('vi')
+      const built = buildSystem(null, 'unknown', true, '', lang, '', null, null, false)
+      expect(built.dynamic).toContain('CRITICAL LANGUAGE OVERRIDE')
+      expect(built.dynamic).toContain('Vietnamese')
+    })
+  }
+
+  it('an English request still gets an English directive — no over-correction', () => {
+    const en = toolPath('en')
+    expect(en.dynamic).toContain('CRITICAL LANGUAGE OVERRIDE')
+    expect(en.dynamic).toContain('English')
+    expect(en.dynamic).not.toContain('Vietnamese')
+  })
+
+  it('every other language keeps its own directive', () => {
+    for (const [code, name] of [['ja', 'Japanese'], ['ko', 'Korean'], ['zh', 'Chinese'], ['th', 'Thai']] as const) {
+      expect(toolPath(code).dynamic).toContain(name)
+    }
+  })
+})
+
+describe('the chitchat path keeps the directive it was fixed with', () => {
+  it('Vietnamese gets both the opening directive and the trailing reminder', () => {
+    const vi = buildSystemSimple('vi', '')
+    expect(vi).toContain('Vietnamese')
+    expect(vi).toMatch(/REMINDER: reply in Vietnamese only/)
+  })
+
+  it('English is unaffected', () => {
+    const en = buildSystemSimple('en', '')
+    expect(en).toContain('English')
+    expect(en).not.toContain('Vietnamese')
+  })
+})
+
+describe('the planning block — current behaviour, recorded not changed', () => {
+  it('other languages get a trailing language reminder', () => {
+    expect(buildPlanningBlock('trip', 'en')).toContain('English')
+  })
+
+  // OPEN, DELIBERATELY NOT FIXED HERE.
+  //
+  // buildPlanningBlock still gates its reminder on `lang !== 'vi'`, so a Vietnamese
+  // trip plan gets NO reminder at the position the file's own comment calls
+  // load-bearing ("the spot the model reads immediately before generating"). The
+  // same gap exists on production `main`.
+  //
+  // It is NOT fixed here because (a) it does not reproduce — the defect this step
+  // was asked to root-cause is closed on production, and (b) closing it needs
+  // REWORDING, not ungating: the existing sentence reads "PHAI viet bang ${langName}
+  // — KHONG dung tieng Viet", which is self-contradictory when langName IS
+  // Vietnamese. Changing prompt text with no reproduced defect is the "blindly
+  // strengthen the prompt" move this step forbids. Reported for an owner decision.
+  it('currently emits no reminder for Vietnamese — documented, pending owner decision', () => {
+    expect(buildPlanningBlock('trip', 'vi')).not.toMatch(/NGON NGU/)
+  })
+})
+
+describe('the cache contract survives the language fix', () => {
+  it('`shared` is byte-identical across every language', () => {
+    const ref = toolPath('vi').shared
+    for (const lang of ['en', 'ja', 'ko', 'zh', 'ar', 'th']) {
+      expect(toolPath(lang).shared).toBe(ref)
+    }
   })
 })
