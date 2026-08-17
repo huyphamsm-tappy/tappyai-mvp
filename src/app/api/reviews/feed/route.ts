@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { stripUnservableMedia } from '@/lib/media/servableMedia'
+import { observePrivacyForFeed } from '@/lib/policy/explore/reviewFeedObservation'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
@@ -175,7 +176,8 @@ export async function GET(req: NextRequest) {
   // is suspended for data transfer, so those URLs 403 today — and would start
   // billing egress again the moment the allowance resets. Nothing is deleted;
   // the post keeps every other field and simply renders without a dead player.
-  const res = NextResponse.json({ reviews: enriched.map(stripUnservableMedia), page, limit })
+  const served = enriched.map(stripUnservableMedia)
+  const res = NextResponse.json({ reviews: served, page, limit })
 
   // Cache ONLY the truly uniform response: anonymous, non-following, non-profile
   // feeds (every anon caller gets identical rows with liked_by_me/saved_by_me all
@@ -194,6 +196,25 @@ export async function GET(req: NextRequest) {
     res.headers.set('Cache-Control', 'private, no-store')
     res.headers.set('Vary', 'Authorization, Cookie')
   }
+
+  // Trust & Safety P1 (`ts.privacy.personal-information@1`) — OBSERVATION ONLY.
+  //
+  // Runs after the response is built, on the rows that were actually served, and
+  // reads only body + hashtags + the row's own place fields. It cannot change
+  // what this handler returns: `res` is already constructed above, and the
+  // observation record type has no field for visibility, ranking, ordering,
+  // recommendation or notification.
+  //
+  // THE RESULT IS DISCARDED, ON PURPOSE. There is no sink to send it to — no
+  // edge-compatible audit or event writer exists, and `reviews` has no
+  // classification column. Where these records are stored, and for how long, is
+  // an unmade Product and privacy decision. Wiring the call now means that
+  // decision costs one line, not a re-integration; until it is made this
+  // computes the classification and drops it.
+  //
+  // `observePrivacyForFeed` is total: it returns an empty list rather than
+  // throwing, so a classifier problem can never break the feed.
+  observePrivacyForFeed(served, new Date().toISOString())
 
   return res
 }
