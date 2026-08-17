@@ -146,6 +146,13 @@ function splitClauses(sentence: string): string[] {
   return sentence.split(/(?<=[,;—–])\s+|\s+(?=\bvà\b|\bnhưng\b|\band\b|\bbut\b)/i)
 }
 
+/**
+ * A sentence that is nothing but a discourse marker once the claim it introduced
+ * is gone. Anchored at both ends so it can never match real prose that merely
+ * begins with one of these.
+ */
+const ONLY_CONNECTOR = /^(?:tuy nhien|tuy vay|ngoai ra|mat khac|them vao do|ben canh do|however|moreover|besides|additionally|also|but|and)[\s,.;:!?]*$/
+
 const VI_NOTE = 'Nguồn hiện tại chưa có thông tin về thông số này.'
 const EN_NOTE = 'The current source has no data on this specification.'
 
@@ -304,6 +311,11 @@ export function guardSpecClaimsInText(
     if (/^\p{Lu}/u.test(sentence.trim()) && /^\p{Ll}/u.test(joined)) {
       joined = joined[0].toUpperCase() + joined.slice(1)
     }
+    // A discourse marker exists to introduce what comes next. When that was the
+    // ungrounded clause, the marker is left standing alone — production emitted
+    // "… tiện cho lập trình. Tuy nhiên. Nếu bạn cần GPU riêng …". Nothing is lost
+    // by dropping it, because it carried no information of its own.
+    if (ONLY_CONNECTOR.test(norm(joined))) return ''
     return joined
   })
 
