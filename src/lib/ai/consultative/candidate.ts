@@ -31,6 +31,24 @@ export interface CandidateAttrs {
   outdoorSeating?: boolean
   /** Hotel: the link is a specific hotel page rather than a search/list page. */
   directPage?: boolean
+  /**
+   * Product weight and battery life.
+   *
+   * NEVER set by `normalizeShopping` — Serper `/shopping` returns only title,
+   * source, link, price, imageUrl and productId. They exist so a claim about
+   * weight or battery can be CHECKED: absent means the reply may not assert it,
+   * present (from a richer provider) means it may. A user asking for "máy nhẹ"
+   * does not populate these — a requirement is not evidence.
+   */
+  weightKg?: number
+  batteryHours?: number
+  /**
+   * Transport: minutes until PICKUP, not journey duration.
+   *
+   * Grab Farefeed documents `eta` as "minutes until pickup". Treating it as trip
+   * time would be a fabricated claim, so the name says what it is.
+   */
+  etaMinutes?: number
 }
 
 export interface Candidate {
@@ -191,6 +209,64 @@ export function normalizeShopping(toolResult: unknown): Candidate[] {
       link: link || null,
       raw: r,
     })
+  }
+
+  return out
+}
+
+/**
+ * Normalizes a Grab Farefeed ride-estimate result into common candidates.
+ *
+ * Shape is taken from Grab's PUBLIC Farefeed documentation
+ * (`POST /farefeed/v1/estimate`), which returns one entry per ride SERVICE —
+ * "JustGrab", "GrabShare", … — each with its own fare range, pickup ETA and deep
+ * link. That is a genuinely comparable candidate set: the user is choosing
+ * between services that differ on price and wait, with real evidence for both.
+ *
+ * Documented fields consumed: `serviceID`, `serviceName`, `fare.currency`,
+ * `fare.minFare`, `fare.maxFare`, `eta`, `deepLink` / `directDeepLink`.
+ * `surgeNotice` and `iconLink` ride through on `raw` untouched.
+ *
+ * TWO deliberate refusals:
+ *
+ *   1. `minFare` becomes `priceVnd` ONLY when `fare.currency` is VND. A fare in
+ *      another currency read as VND would be wrong by orders of magnitude and
+ *      would pass every downstream budget check — the same guard
+ *      `parseSerperPriceVnd` applies to Shopping. Grab's own documentation
+ *      example shows "SGD", so this is a live hazard, not a hypothetical.
+ *   2. `eta` is minutes to PICKUP, never journey duration. It is stored as
+ *      `etaMinutes` so no caller can mistake it for travel time.
+ */
+export function normalizeTransport(toolResult: unknown): Candidate[] {
+  const root = (toolResult && typeof toolResult === 'object') ? toolResult as Record<string, unknown> : {}
+  const out: Candidate[] = []
+  const seen = new Set<string>()
+
+  for (const item of asArray(root.ride_estimates)) {
+    if (!item || typeof item !== 'object') continue
+    const r = item as Record<string, unknown>
+    const name = str(r.serviceName).trim()
+    if (!name) continue
+
+    const id = str(r.serviceID) || (typeof r.serviceID === 'number' ? String(r.serviceID) : '') || name
+    if (seen.has(id)) continue
+    seen.add(id)
+
+    const attrs: CandidateAttrs = {}
+
+    const fare = (r.fare && typeof r.fare === 'object') ? r.fare as Record<string, unknown> : {}
+    const currency = str(fare.currency).toUpperCase()
+    if (currency === 'VND' && typeof fare.minFare === 'number' && fare.minFare > 0) {
+      put(attrs, 'priceVnd', Math.round(fare.minFare))
+    }
+
+    if (typeof r.eta === 'number' && r.eta >= 0) put(attrs, 'etaMinutes', r.eta)
+
+    // The service's own deep link. directDeepLink is the more specific of the
+    // two when present; neither is ever synthesised.
+    const link = str(r.directDeepLink) || str(r.deepLink)
+
+    out.push({ id, name, domain: 'transport', attrs, link: link || null, raw: r })
   }
 
   return out

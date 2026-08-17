@@ -55,8 +55,17 @@ const CONTRAST = /\bnhung\b|tuy nhien|doi lai|bu lai|danh doi|nguoc lai|\bbut\b|
 /** Causal markers. */
 const CAUSAL = /\bvi\b|boi vi|\bdo\b|\bnen\b|because|\bsince\b|that is why|which is why|so that/
 
-/** A calibrated lean — how the prompt already asks the model to phrase a pick. */
-const LEAN = /nghieng ve|minh chon|tappy chon|minh goi y|goi y nhat|hop nhat|i'?d go with|i recommend|my pick|tappy'?s pick|i'?d pick|would choose/
+/**
+ * A calibrated lean — how a pick is actually phrased.
+ *
+ * The prompt asks for "nghiêng về", but live replies overwhelmingly write
+ * "là lựa chọn tốt nhất" / "looks like the best fit". Measuring only the
+ * prompt's own wording reported a real Pick as absent.
+ */
+const LEAN = /nghieng ve|minh chon|tappy chon|minh goi y|goi y nhat|hop nhat|phu hop nhat|lua chon tot nhat|tot nhat cho ban|i'?d go with|i recommend|my pick|tappy'?s pick|i'?d pick|would choose|best (fit|choice|option|pick)/
+
+/** Words that make a two-candidate sentence a COMPARISON rather than a list. */
+const COMPARATIVE_JOIN = /\bhon\b|\bthan\b|\bvs\.?\b|\bversus\b|so voi|compared to|\bwhereas\b/
 
 /** Blanket praise that names no attribute. Explicitly NOT pros/cons. */
 const BLANKET = /rat tuyet voi|ai cung thich|cung rat on|deu co uu va nhuoc|cung duoc|rat ngon|deu tot/
@@ -73,6 +82,11 @@ const ATTR_MENTION: ReadonlyArray<[RegExp, keyof CandidateAttrs]> = [
   // rating mention in a Vietnamese reply read as an unsupported price claim.
   [/\bvnd\b|\bdong\b|(?<!danh\s)\bgia\b(?!\s*dinh)|\bprice\b|\bcosts?\b/, 'priceVnd'],
   [/\bsao\b|\bstar\b/, 'stars'],
+  // Weight and battery — the two attributes the live failure asserted without
+  // evidence. `/shopping` supplies neither, so any claim about them is caught
+  // unless a richer provider populated the field.
+  [/\bnhe\b|nang \d|trong luong|lightweight|\blight\b|\bweight\b|\bkg\b/, 'weightKg'],
+  [/\bpin\b|\bbattery\b|thoi luong pin/, 'batteryHours'],
 ]
 
 /** Attribute key → the label used in `ungroundedClaims`. */
@@ -80,7 +94,21 @@ const ATTR_LABEL: Record<string, string> = {
   outdoorSeating: 'outdoor',
   priceVnd: 'price',
   distanceKm: 'distance',
+  weightKg: 'weight',
+  batteryHours: 'battery',
 }
+
+/**
+ * Phrasing that frames an attribute as the USER'S REQUIREMENT rather than a
+ * claim about the product.
+ *
+ * "Vì bạn ưu tiên máy nhẹ, mình nghiêng về X" restates what the user asked for
+ * and asserts nothing about X. "X rất nhẹ" does. Without this distinction the
+ * grounding check would punish a reply for correctly quoting the user back —
+ * and the product rule is precisely that a requirement is not evidence.
+ */
+const REQUIREMENT_FRAMING =
+  /\bban (uu tien|can|muon|thich|yeu cau)|vi ban\b|theo yeu cau|ban dang tim|\byou (want|need|prefer|asked|care)\b|since you\b|because you\b|your (requirement|priority|preference)/
 
 /** Which need-profile facts count as "the user said this". */
 function requirementTerms(need: NeedProfile): RegExp[] {
@@ -150,12 +178,43 @@ export function analyzeConsultativeReply(
   const entries = ctx.ranked.ranked
   const nameOf = (n: string) => norm(n)
 
+  /**
+   * Words that identify nothing on their own.
+   *
+   * Marketplace titles are long ("Laptop Asus Vivobook 16 A1607QA - MB067W (X1 26
+   * 100, 16GB/512GB)") and a model writes the short form. Matching the full title
+   * verbatim found NOTHING on real replies, which silently zeroed every verdict.
+   * So a candidate is matched on its DISTINCTIVE tokens instead — with generic
+   * ones excluded, otherwise "laptop" alone would match every product.
+   */
+  const GENERIC = new Set(['laptop', 'may', 'tinh', 'xach', 'tay', 'quan', 'nha', 'hang',
+    'new', 'like', 'gen', 'pro', 'plus', 'inch', 'ram', 'ssd', 'the', 'and', 'for'])
+
+  const distinctiveTokens = (name: string): string[] =>
+    norm(name).split(/[^a-z0-9]+/).filter(t => t.length >= 3 && !GENERIC.has(t) && !/^\d+$/.test(t))
+
+  /**
+   * A candidate is mentioned when ≥2 of its distinctive tokens appear.
+   *
+   * Fewer than two distinctive tokens falls back to EXACT full-name matching.
+   * A one-token rule is far too loose for short Vietnamese names: "Quán Gần"
+   * reduces to the single token `gan`, which the unrelated phrase "chỗ gần"
+   * already contains — so a reply naming only "Quán Xa" was reported as naming
+   * both. Token tolerance is for long marketplace titles; short names keep the
+   * stricter rule.
+   */
+  const mentions = (haystack: string, name: string): boolean => {
+    const toks = distinctiveTokens(name)
+    if (toks.length < 2) return haystack.includes(nameOf(name))
+    return toks.filter(t => haystack.includes(t)).length >= 2
+  }
+
   // ── Which candidates are actually discussed, and how much ────────────────
   const perCandidate: Record<string, number> = {}
   const mentionedIn = new Map<string, string[]>() // candidate name → sentences
   for (const e of entries) {
     const key = nameOf(e.candidate.name)
-    const hits = sents.filter(s => norm(s).includes(key))
+    const hits = sents.filter(s => mentions(norm(s), e.candidate.name))
     if (hits.length > 0) {
       perCandidate[e.candidate.name] = hits.length
       mentionedIn.set(e.candidate.name, hits)
@@ -190,11 +249,26 @@ export function analyzeConsultativeReply(
       const ns = norm(s)
       // Only attribute a claim when this sentence names exactly ONE candidate;
       // a comparison sentence naming both cannot be assigned to either.
-      const named = candidatesMentioned.filter(n => ns.includes(nameOf(n)))
-      if (named.length !== 1) continue
+      const named = candidatesMentioned.filter(n => mentions(ns, n))
+      if (named.length === 0) continue
+      // A sentence framed as the user's requirement asserts nothing about the
+      // product, so it cannot produce an unsupported product claim.
+      if (REQUIREMENT_FRAMING.test(ns)) continue
+      if (!named.includes(name)) continue
+      // Two candidates in one sentence mean different things depending on how
+      // they are joined:
+      //   COMPARATIVE — "A nhẹ hơn B"      → asserts the attribute of BOTH
+      //   LIST        — "A (⭐5), hoặc B"  → the attribute belongs to A only
+      // Attributing across a LIST produced false positives on real prose, so a
+      // multi-candidate sentence is only attributed when it actually compares.
+      if (named.length > 1 && !COMPARATIVE_JOIN.test(ns)) continue
       const body = stripNames(ns)
       for (const [re, attr] of ATTR_MENTION) {
         if (!re.test(body)) continue
+        // `stars` is a HOTEL class. In Vietnamese "5 sao" is also the ordinary
+        // way to say a rating, so outside hotels it must not be read as a
+        // separate unsupported attribute.
+        if (attr === 'stars' && entry.candidate.domain !== 'hotel') continue
         if (candidateHasEvidenceFor(entry.candidate.attrs, attr as string)) continue
         const label = `${name}:${ATTR_LABEL[attr as string] ?? attr}`
         if (!ungroundedClaims.includes(label)) ungroundedClaims.push(label)
@@ -230,7 +304,7 @@ export function analyzeConsultativeReply(
   }
   for (const s of contrastSents) {
     const ns = norm(s)
-    const named = candidatesMentioned.filter(n => ns.includes(nameOf(n)))
+    const named = candidatesMentioned.filter(n => mentions(ns, n))
     if (named.length >= 1) tradeoff.candidateSpecific = true
     if (named.length >= 1 && mentionsRequirement(ns)) tradeoff.userSpecific = true
     for (const n of named) {
@@ -246,7 +320,7 @@ export function analyzeConsultativeReply(
   let pickName: string | null = null
   for (const s of leanSents) {
     const ns = norm(s)
-    const named = candidatesMentioned.filter(n => ns.includes(nameOf(n)))
+    const named = candidatesMentioned.filter(n => mentions(ns, n))
     if (named.length >= 1) { pickName = named[0]; break }
   }
   const pick = {
@@ -257,15 +331,35 @@ export function analyzeConsultativeReply(
 
   // ── WHY-01 ───────────────────────────────────────────────────────────────
   const causalSents = sents.filter(s => CAUSAL.test(norm(s)))
+  /**
+   * A causal clause counts when the candidate is named in that sentence OR in
+   * the one immediately before it.
+   *
+   * A real explanation routinely spans two sentences — "Mình nghiêng về X."
+   * then "Vì ngân sách của bạn…" — and demanding the name inside the causal
+   * sentence reported a valid Why as absent. The window is exactly ONE sentence,
+   * so a causal clause elsewhere in the reply still does not count.
+   */
+  const namedInOrBefore = (idx: number): string[] => {
+    const here = sents[idx] ? candidatesMentioned.filter(n => mentions(norm(sents[idx]), n)) : []
+    if (here.length > 0) return here
+    const prev = idx > 0 && sents[idx - 1] ? sents[idx - 1] : ''
+    return prev ? candidatesMentioned.filter(n => mentions(norm(prev), n)) : []
+  }
+
+  const causalIdx = sents
+    .map((s, i) => (CAUSAL.test(norm(s)) ? i : -1))
+    .filter(i => i >= 0)
+
   const why = {
-    present: causalSents.some(s => candidatesMentioned.some(n => norm(s).includes(nameOf(n)))),
+    present: causalIdx.some(i => namedInOrBefore(i).length > 0),
     referencesAttribute: false,
     referencesRequirement: false,
   }
-  for (const s of causalSents) {
+  for (const i of causalIdx) {
+    const s = sents[i]
     const ns = norm(s)
-    for (const n of candidatesMentioned) {
-      if (!ns.includes(nameOf(n))) continue
+    for (const n of namedInOrBefore(i)) {
       const entry = entries.find(e => e.candidate.name === n)!
       if (ATTR_MENTION.some(([re, attr]) => re.test(stripNames(ns)) && candidateHasEvidenceFor(entry.candidate.attrs, attr as string))) {
         why.referencesAttribute = true

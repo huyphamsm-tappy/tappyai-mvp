@@ -119,15 +119,48 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   [/hieu nang|\bperformance\b|\bcpu\b|manh me|\bspeed\b|xu ly nhanh/, 'performance', false],
   [/gia re|\bre\b|\bcheap\b|affordable|tiet kiem|dang tien|value for money/, 'price', true],
   [/\bcamera\b|chup anh|chup hinh/, 'camera', false],
-  [/dung luong|\bstorage\b|\bssd\b|bo nho/, 'storage', false],
+  // "dung lượng pin" is BATTERY capacity, not disk. Without the guard the same
+  // phrase set a storage priority the user never expressed.
+  [/dung luong(?! pin)|\bstorage\b|\bssd\b|bo nho/, 'storage', false],
   [/man hinh|\bscreen\b|\bdisplay\b|\boled\b/, 'screen', false],
   [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b/, 'rating', true],
   [/\bgan\b|\bnear\b|\bclose to\b|gan day|gan toi|khoang cach|\bdistance\b/, 'distance', true],
+  // Transport pickup speed. Phrases are deliberately specific ("toi nhanh", not
+  // bare "nhanh") so a laptop "xu ly nhanh" query still resolves to performance.
+  [/toi nhanh|den nhanh|don nhanh|doi lau|cho lau|it phai cho|\bpickup\b|shortest wait|fastest pickup|arrives? soonest/, 'eta', true],
   [/yen tinh|\bquiet\b|khong on/, 'quiet', true],
   [/gan bien|\bbeach\b|view bien|beachfront/, 'beach', true],
   [/trung tam|\bcentral\b|\bdowntown\b|city cent(er|re)/, 'central', true],
   [/\bwifi\b|\bwi-fi\b/, 'wifi', true],
   [/ngoai troi|\boutdoor\b|san vuon/, 'outdoor', true],
+]
+
+/**
+ * The bare NOUN for each attribute.
+ *
+ * ATTRIBUTES lists how a user REQUESTS a property, so for evaluative keys it
+ * holds the evaluative phrase — price is `gia re|cheap|affordable`, and the
+ * plain noun "giá" appears nowhere. That is correct for a bare mention (naming
+ * "giá" is not a request) but leaves "giá cũng quan trọng" unreadable, because
+ * there the marker supplies the request and the noun only has to be identified.
+ *
+ * Used ONLY where an explicit priority marker is already present.
+ *
+ * `gia` needs the same guard it needs everywhere in this codebase: "đánh giá"
+ * normalizes to "danh gia", so an unguarded \bgia\b reads every rating remark
+ * as a statement about price.
+ */
+const ATTRIBUTE_NOUNS: ReadonlyArray<[RegExp, string]> = [
+  [/(?<!danh\s)\bgia\b(?!\s*dinh)|\bprice\b|\bcost\b|chi phi/, 'price'],
+  [/\bpin\b|\bbattery\b/, 'battery'],
+  [/trong luong|\bweight\b/, 'portability'],
+  [/khoang cach|\bdistance\b|\blocation\b/, 'distance'],
+  [/danh gia|\brating\b|\breviews?\b/, 'rating'],
+  [/man hinh|\bscreen\b|\bdisplay\b/, 'screen'],
+  [/hieu nang|\bperformance\b/, 'performance'],
+  [/\bcamera\b/, 'camera'],
+  [/dung luong(?! pin)|\bstorage\b/, 'storage'],
+  [/\bgpu\b|card do hoa/, 'gpu'],
 ]
 
 /** Use cases — what the thing is FOR. */
@@ -310,6 +343,42 @@ function attributeIn(fragment: string): string | null {
   return null
 }
 
+/**
+ * The attribute NEAREST the end of the fragment.
+ *
+ * `attributeIn` returns whichever attribute sits earliest in the lexicon, which
+ * is right for "ưu tiên X" (the fragment starts at the marker) and wrong for the
+ * postfix form: in "…máy nhẹ và pin trâu, giá cũng quan trọng" the priority
+ * being stated is the one adjacent to the marker — price — not the first key
+ * the lexicon happens to list.
+ */
+function attributeNearestEnd(fragment: string): string | null {
+  let best: string | null = null
+  let bestAt = -1
+  for (const [re, key] of [...ATTRIBUTE_NOUNS, ...ATTRIBUTES]) {
+    const m = fragment.match(new RegExp(re.source, 'g'))
+    if (!m) continue
+    const at = fragment.lastIndexOf(m[m.length - 1])
+    if (at > bestAt) { bestAt = at; best = key }
+  }
+  return best
+}
+
+/**
+ * An evaluative modifier. Attached to a SPEC noun it turns a neutral mention
+ * into a request — "pin tốt" asks for good battery exactly the way "quán yên
+ * tĩnh" asks for quiet. The bare noun on its own still asks for nothing.
+ */
+const QUALITY = /\b(tot|trau|lau|ben|khoe|manh|dep|lon|cao|xin|muot|good|great|long|strong|excellent|solid|nice|big|sharp|decent|reliable)\b/
+
+/** A spec noun and a quality word within one short span of each other. */
+function qualifiedSpec(t: string, attrRe: RegExp): boolean {
+  const A = attrRe.source
+  const Q = QUALITY.source
+  return new RegExp(`(?:${A})[^.,;!?]{0,12}?(?:${Q})`).test(t)
+    || new RegExp(`(?:${Q})[^.,;!?]{0,12}?(?:${A})`).test(t)
+}
+
 /** English comparatives that are one word and name their attribute implicitly. */
 const ONE_SIDED_EN: ReadonlyArray<[RegExp, string]> = [
   [/\bcheaper\b|more affordable/, 'price'],
@@ -443,11 +512,24 @@ export function deriveNeedProfile(
         const key = attributeIn(explicit[1])
         if (key) { setPriority(p, key, W_COMPARATIVE_WIN, 'stated'); p.changedAtTurn.priorities = turn }
       }
+      // The POSTFIX form of the same statement: "giá cũng quan trọng",
+      // "price matters too", "price is important to me". As common as the
+      // prefix form in both languages, and it reaches ranking — `price` is a
+      // scored term, so failing to read it left the order unchanged by
+      // something the user said plainly.
+      const postfix = t.match(
+        /(.{1,40})\s*(?:cung |rat |kha |really |also )?(?:la |is |are )?(?:rat )?(?:quan trong|matters?|important)\b/)
+      if (postfix) {
+        const key = attributeNearestEnd(postfix[1])
+        if (key) { setPriority(p, key, W_COMPARATIVE_WIN, 'stated'); p.changedAtTurn.priorities = turn }
+      }
       // Evaluative qualifiers are requests in themselves — see the note on
       // ATTRIBUTES. Applied AFTER the explicit form so "ưu tiên gần" keeps the
       // stronger weight rather than being flattened back to a bare mention.
       for (const [re, key, isQualifier] of ATTRIBUTES) {
-        if (!isQualifier || !re.test(t)) continue
+        // A SPEC noun joins them when an evaluative modifier is attached to it.
+        if (!isQualifier && !qualifiedSpec(t, re)) continue
+        if (!re.test(t)) continue
         if (p.priorities.some(x => x.key === key && x.source !== 'preference')) continue
         setPriority(p, key, W_STATED, 'stated')
         p.changedAtTurn.priorities = turn

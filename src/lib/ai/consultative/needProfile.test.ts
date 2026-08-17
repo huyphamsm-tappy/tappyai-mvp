@@ -268,3 +268,90 @@ describe('durable preferences are a LOW-WEIGHT prior, never an override', () => 
     expect(p.avoid).toContain('non-vegetarian')
   })
 })
+
+// ── NP-PRIO-01…02 — priority phrasings found in the final live acceptance run ─
+//
+// The acceptance run asked, in both languages, for a light long-battery laptop
+// where "giá cũng quan trọng" / "price matters too". The derived profile came
+// back with NO price priority in either language, and no battery priority in
+// English. Two independent gaps in how a priority may be stated:
+//
+//   1. Only the PREFIX form was recognised ("ưu tiên X"). The postfix form —
+//      "X quan trọng", "X matters", "X is important" — is at least as common in
+//      both languages and carried no signal at all. This one reaches ranking:
+//      `price` is a scored term, so a stated price priority changes the order.
+//
+//   2. A SPEC noun only became a priority through a comparative or an explicit
+//      marker. But a spec noun carrying an EVALUATIVE modifier is a request in
+//      exactly the way the ATTRIBUTES doc describes — "pin tốt" is no less a
+//      requirement than "quán yên tĩnh". Naming the noun alone still is not.
+describe('NP-PRIO-01 — a priority stated AFTER the attribute', () => {
+  const prio = (t: string) => deriveNeedProfile(turns(t)).priorities
+
+  for (const t of ['giá cũng quan trọng', 'giá quan trọng với mình', 'giá rất quan trọng']) {
+    it(`VI: "${t}"`, () => {
+      expect(prio(t).find(x => x.key === 'price')?.source).toBe('stated')
+    })
+  }
+
+  for (const t of ['price matters too', 'price is important to me', 'price really matters']) {
+    it(`EN: "${t}"`, () => {
+      expect(prio(t).find(x => x.key === 'price')?.source).toBe('stated')
+    })
+  }
+
+  it('picks the NEAREST attribute, not the first one in the lexicon', () => {
+    const p = prio('Mình hay mang đi lại nên ưu tiên máy nhẹ và pin trâu, giá cũng quan trọng')
+    expect(p.map(x => x.key)).toContain('price')
+    expect(p.map(x => x.key)).toContain('portability')
+    expect(p.map(x => x.key)).toContain('battery')
+  })
+
+  it('a bare mention is still NOT a priority', () => {
+    expect(prio('Laptop này có GPU rời và SSD 512GB').map(x => x.key)).not.toContain('gpu')
+  })
+
+  it('a comparative still wins — it states an ORDERING', () => {
+    const p = prio('pin quan trọng hơn GPU')
+    expect(p.find(x => x.key === 'battery')!.weight).toBeGreaterThan(
+      p.find(x => x.key === 'gpu')?.weight ?? 0)
+  })
+})
+
+describe('NP-PRIO-02 — a spec noun with an evaluative modifier IS a request', () => {
+  const keys = (t: string) => deriveNeedProfile(turns(t)).priorities.map(x => x.key)
+
+  for (const t of ['mình cần pin tốt', 'pin trâu', 'pin lâu', 'thời lượng pin tốt']) {
+    it(`VI battery: "${t}"`, () => expect(keys(t)).toContain('battery'))
+  }
+
+  for (const t of ['I prefer long battery', 'I want good battery life', 'great battery']) {
+    it(`EN battery: "${t}"`, () => expect(keys(t)).toContain('battery'))
+  }
+
+  it('VI/EN parity on the live acceptance turn', () => {
+    const vi = keys('Mình hay mang đi lại nên ưu tiên máy nhẹ và pin trâu, giá cũng quan trọng')
+    const en = keys('I travel a lot so I prefer something light with long battery, price matters too')
+    for (const k of ['battery', 'portability', 'price']) {
+      expect(vi, `VI must carry ${k}`).toContain(k)
+      expect(en, `EN must carry ${k}`).toContain(k)
+    }
+  })
+
+  it('other qualified specs work the same way', () => {
+    expect(keys('màn hình đẹp')).toContain('screen')
+    expect(keys('camera tốt')).toContain('camera')
+    expect(keys('hiệu năng mạnh')).toContain('performance')
+  })
+
+  it('the SPEC/QUALIFIER split still holds — a bare noun is not a request', () => {
+    for (const t of ['máy có pin', 'laptop có GPU', 'it has a camera']) {
+      expect(keys(t), t).toEqual([])
+    }
+  })
+
+  it('"dung lượng pin" is battery, not storage', () => {
+    expect(keys('dung lượng pin tốt')).toContain('battery')
+    expect(keys('dung lượng pin tốt')).not.toContain('storage')
+  })
+})

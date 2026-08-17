@@ -57,6 +57,9 @@ const BASE: Record<string, number> = {
   price: 0.5,
   stars: 0.4,
   directPage: 0.4,
+  // Transport: minutes to pickup. Weighted like distance — for a ride, waiting
+  // is the same kind of cost as travelling further.
+  eta: 0.5,
   // Amenity booleans: weak on their own, decisive once the user names them.
   wifi: 0.2,
   outdoor: 0.2,
@@ -79,7 +82,7 @@ const BOOLEAN_ATTRS: ReadonlyArray<[string, keyof CandidateAttrs]> = [
 ]
 
 /** Every attribute the ranker can score, for missing-evidence bookkeeping. */
-const SCOREABLE = ['rating', 'reviewCount', 'distance', 'price', 'stars', 'wifi', 'outdoor', 'vegetarian', 'cuisine']
+const SCOREABLE = ['rating', 'reviewCount', 'distance', 'price', 'stars', 'eta', 'wifi', 'outdoor', 'vegetarian', 'cuisine']
 
 function hasEvidenceFor(attrs: CandidateAttrs, key: string): boolean {
   switch (key) {
@@ -88,6 +91,7 @@ function hasEvidenceFor(attrs: CandidateAttrs, key: string): boolean {
     case 'distance': return attrs.distanceKm !== undefined
     case 'price': return attrs.priceVnd !== undefined
     case 'stars': return attrs.stars !== undefined
+    case 'eta': return attrs.etaMinutes !== undefined
     case 'wifi': return attrs.wifi !== undefined
     case 'outdoor': return attrs.outdoorSeating !== undefined
     case 'vegetarian': return attrs.vegetarian !== undefined
@@ -101,7 +105,21 @@ function isRankable(c: Candidate): boolean {
   return SCOREABLE.some(k => hasEvidenceFor(c.attrs, k)) || c.attrs.directPage === true
 }
 
-function scoreOne(c: Candidate, need: NeedProfile): { score: number; reasons: Reason[]; missing: string[] } {
+function scoreOne(
+  c: Candidate,
+  need: NeedProfile,
+  /**
+   * What a price is measured against.
+   *
+   * The stated budget when there is one; otherwise the highest KNOWN price in
+   * this candidate set. Without the fallback the price term never fired unless
+   * the user named a number — so "đi xe giá rẻ" / "a cheap ride", the ordinary
+   * way a price preference is expressed, ranked as if price had not been
+   * mentioned. The fallback invents nothing: it compares real prices against
+   * the most expensive real option actually offered.
+   */
+  priceCeiling: number | null,
+): { score: number; reasons: Reason[]; missing: string[] } {
   const a = c.attrs
   const reasons: Reason[] = []
   const missing: string[] = []
@@ -130,13 +148,19 @@ function scoreOne(c: Candidate, need: NeedProfile): { score: number; reasons: Re
     add('distance', clamp01(1 - a.distanceKm / 10), `${a.distanceKm}km away`)
   } else if (priorityWeight(need, 'distance') > 0) missing.push('distance')
 
-  // ── Price: only meaningful against a budget the user actually stated ──────
-  if (a.priceVnd !== undefined && need.budget && need.budget.max > 0) {
-    add('price', clamp01((need.budget.max - a.priceVnd) / need.budget.max), `${a.priceVnd} VND`)
+  // ── Price: measured against the budget, or against the set's own top price ─
+  if (a.priceVnd !== undefined && priceCeiling !== null && priceCeiling > 0) {
+    add('price', clamp01((priceCeiling - a.priceVnd) / priceCeiling), `${a.priceVnd} VND`)
   } else if (a.priceVnd === undefined && priorityWeight(need, 'price') > 0) missing.push('price')
 
   // ── Hotel stars ───────────────────────────────────────────────────────────
   if (a.stars !== undefined) add('stars', clamp01((a.stars - 1) / 4), `${a.stars}-star`)
+
+  // ── Transport: minutes to PICKUP (not journey time) ──────────────────────
+  // Linear to 20 minutes, beyond which a wait is simply "long".
+  if (a.etaMinutes !== undefined) {
+    add('eta', clamp01(1 - a.etaMinutes / 20), `${a.etaMinutes} min to pickup`)
+  } else if (priorityWeight(need, 'eta') > 0) missing.push('eta')
 
   // ── Source trust: a bookable hotel page beats a search-results page ───────
   if (a.directPage === true) add('directPage', 1, 'direct booking page')
@@ -232,8 +256,16 @@ export function rankCandidates(candidates: Candidate[], need: NeedProfile): Rank
   const budgetFilterEmpty =
     list.length > 0 && kept.length === 0 && filtered.every(f => f.filteredBy === 'budget')
 
+  // A stated budget wins; otherwise the dearest KNOWN price in the surviving set
+  // gives the price term a real scale to work against. Null when no candidate
+  // carries a price, in which case the term simply does not fire.
+  const knownPrices = kept.map(c => c.attrs.priceVnd).filter((p): p is number => typeof p === 'number')
+  const priceCeiling = (need.budget && need.budget.max > 0)
+    ? need.budget.max
+    : (knownPrices.length > 0 ? Math.max(...knownPrices) : null)
+
   const scored: RankedEntry[] = kept.map(c => {
-    const { score, reasons, missing } = scoreOne(c, need)
+    const { score, reasons, missing } = scoreOne(c, need, priceCeiling)
     return {
       candidate: c,
       score,

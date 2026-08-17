@@ -31,6 +31,8 @@ function parseMoneyAmount(numStr: string, unit: string): number | null {
   const u = (unit || '').toLowerCase().trim()
   if (u === 'k') return n * 1000
   if (u === 'tr' || u.startsWith('tri') || u.startsWith('trieu')) return n * 1_000_000
+  // English millions, so "budget 5 million" resolves the same as "5 triệu".
+  if (u === 'm' || u.startsWith('mil')) return n * 1_000_000
   if (u === 'ngan' || u.startsWith('nghin')) return n * 1000
   if (!u && n > 0 && n <= 9999) return n * 1000
   return n
@@ -87,6 +89,34 @@ export function extractBudget(userMessage: string): Budget | null {
   if (m) {
     const base = parseMoneyAmount(m[1], m[2] || '')
     if (base !== null && base > 0) return { min: Math.round(base * 0.8), max: Math.round(base * 1.2), type: 'around' as const }
+  }
+
+  // ── The BARE form: "ngân sách 5 triệu" / "budget 5 million" ───────────────
+  //
+  // Checked LAST so every qualifier above still wins — "ngân sách khoảng 5
+  // triệu" keeps its ±20% band rather than collapsing to a ceiling.
+  //
+  // This is the most natural Vietnamese phrasing and it returned null, so a trip
+  // request stating "ngân sách 5 triệu" carried NO budget into the prompt budget
+  // block, applyBudgetFilter, or the ranker — the constraint was silently lost.
+  //
+  // A UNIT IS REQUIRED, and that requirement is what makes the rule safe: it is
+  // the reason "Đà Nẵng 3 ngày" and "2 người" cannot become budgets. A bare
+  // "budget 5" is genuinely ambiguous and is refused rather than guessed.
+  // A BOUNDED, non-greedy gap is allowed between the keyword and the amount, so
+  // natural phrasings reach the number: "ngân sách tối đa CỦA MÌNH LÀ 20 triệu",
+  // "my maximum budget IS 20 million". Found by live acceptance 2026-08-17 — the
+  // refinement turn was silently dropping the narrowed budget.
+  //
+  // Safe because of two guards, not one: the match must START at a budget
+  // keyword, and it must END at a money unit. `[^.!?\n]` also stops it crossing
+  // a sentence boundary, so "ngân sách. Chuyến đi 3 ngày" cannot become 3.
+  const bareRe = new RegExp(
+    `(?:ngan sach|budget)[^.!?\\n]{0,25}?${N}\\s*(k|tr|trieu|ngan|nghin|m|mil|million)\\b`)
+  m = t.match(bareRe)
+  if (m) {
+    const max = parseMoneyAmount(m[1], m[2] || '')
+    if (max !== null && max > 0) return { min: 0, max, type: 'under' as const }
   }
 
   return null

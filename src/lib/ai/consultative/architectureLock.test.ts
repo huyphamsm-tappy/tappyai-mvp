@@ -114,6 +114,29 @@ describe('the ranking instruction is only sent on decision-domain turns', () => 
   })
 })
 
+describe('the transport-mode question is BACKEND-decided, not prompt-decided', () => {
+  it('the route computes the trip context deterministically', () => {
+    expect(code(ROUTE)).toContain('resolveTripContext(messages)')
+  })
+
+  it('the block is gated on shouldAskTransportMode, never sent unconditionally', () => {
+    expect(code(ROUTE)).toMatch(/tripContext\.shouldAskTransportMode\s*\?\s*buildTransportModeBlock\(\)/)
+  })
+
+  it('the trip module stays model-free, network-free and deterministic', () => {
+    const src = code('src/lib/ai/consultative/tripContext.ts')
+    expect(src).not.toContain('@/lib/ai/llm')
+    expect(src).not.toContain('fetch(')
+    expect(src).not.toContain('Date.now(')
+    expect(src).not.toContain('Math.random(')
+  })
+
+  it('the question never reaches the cached `shared` segment', () => {
+    const base = buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false)
+    expect(base.shared).not.toContain('CHON PHUONG TIEN')
+  })
+})
+
 describe('the AI SDK is not upgraded out from under the toolChoice assumption', () => {
   it('still ai@4.3.x', () => {
     const version = JSON.parse(readFileSync('node_modules/ai/package.json', 'utf8')).version as string

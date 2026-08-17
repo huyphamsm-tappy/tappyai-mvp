@@ -3,6 +3,7 @@ import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
+import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
 //   0:"<text delta>"                         — assistant text chunk
@@ -500,6 +501,15 @@ export function applyPlaceEnrichmentStreamFilter(
   // Collector first (it holds the real enrichment post-B4), then anything found
   // in the stream for a name the collector didn't cover — so a slim frame and a
   // legacy fat frame both work, and neither can shadow the other's photo.
+  /**
+   * Structured shopping records seen this turn, for the spec guard.
+   *
+   * Read from `shopping_results` — the /shopping array whose fields are the
+   * provider's own — never from the organic `search_results`, which carry no
+   * structured attributes at all.
+   */
+  const specRecords: SpecEvidence[] = []
+
   const resolvePlaces = (): PlaceLike[] => {
     if (!collector || collector.places.length === 0) return latestPlaces
     const merged: PlaceLike[] = [...collector.places]
@@ -546,7 +556,17 @@ export function applyPlaceEnrichmentStreamFilter(
     // no network call, and nothing written that was not already in the text.
     // Inert unless the evidence carries structured prices (see moneyGuard).
     const guarded = guardMoneyClaimsInText(enriched, productRecords, productQueries)
-    const finalText = guarded.text
+
+    // The SPEC guard is the same idea applied to the other half of a product
+    // claim. Money guards what a thing COSTS; this guards what it IS — weight
+    // and battery, which /shopping never returns. They compose because both are
+    // pure functions over the prose that take nothing from outside the input:
+    // money runs first so the spec pass reads text whose prices are already
+    // settled. Inert unless structured shopping records were collected, and
+    // inert for every other domain.
+    const finalText = specRecords.length > 0
+      ? guardSpecClaimsInText(guarded.text, specRecords).text
+      : guarded.text
     if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
   }
 
@@ -580,14 +600,28 @@ export function applyPlaceEnrichmentStreamFilter(
           try {
             const res = JSON.parse(line.slice(2)) as {
               toolCallId?: string
-              result?: { results?: PlaceLike[]; search_results?: SearchResultLike[] }
+              result?: {
+                results?: PlaceLike[]
+                search_results?: SearchResultLike[]
+                /** Structured /shopping records — the spec guard's evidence. */
+                shopping_results?: Array<{ title?: string; weightKg?: number; batteryHours?: number }>
+              }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
             let newPlaces: PlaceLike[] = []
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results
-            } else if (toolName === 'get_hotel_prices' || toolName === 'search_products') {
+            }
+            if (toolName === 'search_products') {
+              const structured = res.result?.shopping_results
+              if (Array.isArray(structured)) {
+                for (const r of structured) {
+                  if (r?.title) specRecords.push({ name: r.title, weightKg: r.weightKg, batteryHours: r.batteryHours })
+                }
+              }
+            }
+            if (toolName === 'get_hotel_prices' || toolName === 'search_products') {
               // Neither has a 'name'-shaped results[] — search_results is the primary content
               // instead, with 'title' standing in for the place name. Raw titles are "Hotel
               // Name - City - Booking.com"-style; the AI writes just "Hotel Name", so take the

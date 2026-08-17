@@ -141,6 +141,34 @@ LUAT:
 }
 
 /**
+ * Shopping grounding — what the product evidence can and cannot support.
+ *
+ * Added after live acceptance 2026-08-17 measured a real failure: asked for a
+ * light laptop with good battery, the reply asserted "nhẹ" and "pin tốt" while
+ * `/shopping` had supplied only title, source, price, link and rating. Neither
+ * attribute existed anywhere in the evidence.
+ *
+ * The rule this block carries is the one the whole architecture rests on:
+ * a USER REQUIREMENT is not CANDIDATE EVIDENCE. Wanting a light laptop does not
+ * make any laptop light, and a recommendation may not borrow the user's wish and
+ * hand it back as a product fact.
+ *
+ * Sent only on shopping turns, and only into `dynamic` — never `shared`.
+ */
+export function buildShoppingGroundingBlock(): string {
+  return `\n\n===== MUA SAM: CAN CU CUA TUNG CAU =====
+Ket qua tim kiem san pham chi chung minh duoc: TEN san pham, GIA niem yet, NOI BAN (shop/san), va DANH GIA neu ket qua that su co truong do.
+No KHONG chung minh duoc: trong luong, thoi luong PIN, do ben, nhiet do, do on, chat luong man hinh, hieu nang thuc te, hay "tot hon noi chung".
+LUAT CUNG — YEU CAU CUA USER KHONG PHAI BANG CHUNG SAN PHAM:
+- User noi "uu tien may nhe, pin tot" nghia la HO MUON the. Dieu do KHONG bien bat ky may nao thanh nhe hay pin tot, va KHONG duoc suy ra rang san pham dap ung yeu cau do.
+- Duoc phep nhac lai yeu cau cua user (vd "vi ban can may nhe..."), NHUNG TUYET DOI KHONG khang dinh san pham CO thuoc tinh do khi ket qua khong ghi.
+KHONG SUY DIEN tu: man hinh (15.6 inch khong co nghia la nhe), ten dong may, CPU, thuong hieu, gia cao, hay danh gia cao. Gia cao KHONG suy ra pin tot; danh gia cao KHONG suy ra may nhe.
+NEU THIEU DU LIEU: noi that mot cau ngan rang nguon hien tai CHUA CO THONG TIN ve tieu chi do nen ban chua khang dinh duoc — roi van goi y dua tren nhung gi CO that (gia, danh gia, noi ban). Thieu bang chung thi BO QUA hoac NOI RO, khong duoc bia.
+Luat nay ap dung cho MOI cau: uu diem, nhuoc diem, danh doi, ly do chon, va phan so sanh.
+==========================================`
+}
+
+/**
  * Render a known Pick as prompt text.
  *
  * Used where the Pick is already in hand at prompt-build time (tests, and any

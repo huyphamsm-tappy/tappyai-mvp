@@ -68,6 +68,32 @@ describe('parseSerperPriceVnd — only the provider price field, never a guess',
       expect(parseSerperPriceVnd(v)).toBeNull()
     }
   })
+
+  // ── Found by LIVE verification, 2026-08-17 ────────────────────────────────
+  //
+  // A real /shopping response for "laptop lap trinh AI" contained:
+  //
+  //     1 VND | Mac24h | ThinkPad T14 Gen 7
+  //
+  // A placeholder listing ("1 ₫" — usually "contact for price") parsed as a real
+  // 1 VND price and ranked 3rd. It never becomes a plausible product price, but
+  // it scores MAXIMUM on the price term, so under a "ưu tiên giá rẻ" turn it
+  // would have become Tappy's Pick — recommending a laptop at one dong.
+  it('REJECTS an implausible placeholder price — the live 1 VND case', () => {
+    expect(parseSerperPriceVnd('1 ₫')).toBeNull()
+    expect(parseSerperPriceVnd('1')).toBeNull()
+    expect(parseSerperPriceVnd(1)).toBeNull()
+    expect(parseSerperPriceVnd('0 ₫')).toBeNull()
+    expect(parseSerperPriceVnd('999 ₫')).toBeNull()
+  })
+
+  it('still accepts every genuinely cheap real price', () => {
+    // The floor only removes placeholders. Real Vietnamese marketplace prices,
+    // including accessories, sit far above it.
+    expect(parseSerperPriceVnd('1.000 ₫')).toBe(1_000)
+    expect(parseSerperPriceVnd('35.000 ₫')).toBe(35_000)
+    expect(parseSerperPriceVnd('161.241 ₫')).toBe(161_241)
+  })
 })
 
 describe('SHOP-NORM-01 — structured results normalize correctly', () => {

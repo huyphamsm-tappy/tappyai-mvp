@@ -14,7 +14,8 @@ import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative
 import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
-import { derivePick, buildPickPayload, buildRankingInstructionBlock } from '@/lib/ai/consultative/pick'
+import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock } from '@/lib/ai/consultative/pick'
+import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
 import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
@@ -351,9 +352,24 @@ export async function POST(req: Request) {
   const isDecisionDomain = needProfile.domain === 'places'
     || needProfile.domain === 'hotel'
     || needProfile.domain === 'shopping'
+
+  // The transport-mode stage is decided HERE, deterministically, not by the
+  // model noticing it should ask. resolveTripContext folds the history, so the
+  // question is asked exactly once and never on a non-trip turn.
+  const tripContext = resolveTripContext(messages)
+
+  const consultativeBlock = [
+    isDecisionDomain ? buildRankingInstructionBlock() : '',
+    // Shopping evidence carries price/store/rating and nothing else, so the
+    // model must be told what it may NOT assert — measured live 2026-08-17
+    // asserting weight and battery that no candidate supplied.
+    needProfile.domain === 'shopping' ? buildShoppingGroundingBlock() : '',
+    tripContext.shouldAskTransportMode ? buildTransportModeBlock() : '',
+  ].filter(Boolean).join('')
+
   const built = noToolTurn ? null : buildSystem(
     budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
-    isDecisionDomain ? buildRankingInstructionBlock() : undefined,
+    consultativeBlock || undefined,
   )
   const systemShared = built?.shared
   const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock

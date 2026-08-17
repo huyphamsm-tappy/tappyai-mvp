@@ -396,8 +396,24 @@ export async function serperShopping(query: string): Promise<ShoppingRecord[] | 
  * never a title or a snippet. Anything that does not parse cleanly returns null
  * rather than a guess.
  */
+/**
+ * Below this, a "price" is a placeholder rather than a price.
+ *
+ * Found by live verification 2026-08-17: a real /shopping response listed
+ * `1 ₫ | Mac24h | ThinkPad T14 Gen 7` — the "contact for price" convention. It
+ * parsed as a genuine 1 VND price and, because it scores MAXIMUM on the price
+ * term, a "ưu tiên giá rẻ" turn would have made it Tappy's Pick.
+ *
+ * 1,000 VND is deliberately far below any real Vietnamese marketplace listing
+ * (the cheapest real accessories sit in the tens of thousands), so this removes
+ * placeholders without rejecting a single genuine price.
+ */
+const MIN_PLAUSIBLE_PRICE_VND = 1_000
+
 export function parseSerperPriceVnd(value: unknown): number | null {
-  if (typeof value === 'number') return Number.isFinite(value) && value > 0 ? Math.round(value) : null
+  if (typeof value === 'number') {
+    return Number.isFinite(value) && value >= MIN_PLAUSIBLE_PRICE_VND ? Math.round(value) : null
+  }
   if (typeof value !== 'string' || !value.trim()) return null
   // Reject anything carrying a non-VND currency: a USD figure read as VND would
   // be wrong by ~25,000x and would pass every downstream range check.
@@ -405,7 +421,7 @@ export function parseSerperPriceVnd(value: unknown): number | null {
   const digits = value.replace(/[^\d]/g, '')
   if (!digits) return null
   const n = parseInt(digits, 10)
-  return Number.isFinite(n) && n > 0 ? n : null
+  return Number.isFinite(n) && n >= MIN_PLAUSIBLE_PRICE_VND ? n : null
 }
 
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
