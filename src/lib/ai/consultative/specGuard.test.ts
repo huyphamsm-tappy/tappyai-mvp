@@ -467,3 +467,84 @@ describe('SPEC-GUARD-22 — no stranded conjunctions, no lost full stops', () =>
     expect(r.text.trim()).toMatch(/[.!?]$/)
   })
 })
+
+// ── SPEC-GUARD-23/24 — found on a DEPLOYED build, in the real output shape ──
+//
+// The production reply put each candidate's name inside a markdown link and its
+// description in the sentence after it:
+//
+//   **[ASUS Vivobook S14 S3407CA-LY096WS](https://…)** - **27.49 triệu**
+//   CPU Intel Ultra 7 255H, RAM 16GB, SSD 512GB. Máy này cân bằng tốt …, pin khá lâu.
+//
+// Both halves of that shape defeated the guard, and together they made it inert
+// for every real Shopping answer:
+//
+//   1. PROTECTED vaults markdown links BEFORE matching, so the only place the
+//      name appears was hidden from names(). Never REWRITING a link is right;
+//      refusing to READ it is not.
+//   2. The claim lives in the next sentence, which refers back as "Máy này".
+//
+// So "pin khá lâu" and "nhẹ & pin lâu" reached a user as fact, with no weight or
+// battery evidence behind either — the exact assertion this guard exists to stop.
+describe('SPEC-GUARD-23 — a name inside a markdown link still identifies', () => {
+  const ASUS: SpecEvidence[] = [{ name: 'ASUS Vivobook S14 S3407CA-LY096WS' }]
+
+  it('the production sentence loses its battery claim', () => {
+    const t = '**[ASUS Vivobook S14 S3407CA-LY096WS](https://shopee.vn/p/123)** - **27.49 triệu**, pin khá lâu.'
+    const r = guardSpecClaimsInText(t, ASUS)
+    expect(r.text).not.toMatch(/pin khá lâu/)
+    expect(r.removed).toContain('ASUS Vivobook S14 S3407CA-LY096WS:battery')
+  })
+
+  it('and the link itself is still byte-intact', () => {
+    const link = '[ASUS Vivobook S14 S3407CA-LY096WS](https://shopee.vn/p/123?utm=x&y=2)'
+    const r = guardSpecClaimsInText(`**${link}** - **27.49 triệu**, pin khá lâu.`, ASUS)
+    expect(r.text).toContain(link)
+  })
+
+  it('a grounded price beside the link survives', () => {
+    const t = '**[ASUS Vivobook S14 S3407CA-LY096WS](https://shopee.vn/p/123)** - **27.49 triệu**.'
+    expect(guardSpecClaimsInText(t, ASUS).removed).toEqual([])
+  })
+})
+
+describe('SPEC-GUARD-24 — a claim about "Máy này" belongs to the last candidate named', () => {
+  const C: SpecEvidence[] = [
+    { name: 'ASUS Vivobook S14 S3407CA-LY096WS' },
+    { name: 'HP 14 ep1137TU' },
+  ]
+
+  it('the production VI paragraph loses both ungrounded claims', () => {
+    const t = '**[ASUS Vivobook S14 S3407CA-LY096WS](https://shopee.vn/a)** - **27.49 triệu** 💻\n'
+      + 'CPU Intel Ultra 7 255H, RAM 16GB, SSD 512GB. Máy này cân bằng tốt giữa hiệu năng & tính di động, CPU mạnh cho AI training, pin khá lâu.'
+    const r = guardSpecClaimsInText(t, C)
+    expect(r.text).not.toMatch(/pin khá lâu/)
+    expect(r.text).toContain('CPU Intel Ultra 7 255H')
+    expect(r.text).toContain('hiệu năng')
+  })
+
+  it('EN: "This machine is light with long battery" after a linked name', () => {
+    const t = '**[HP 14 ep1137TU](https://tiki.vn/b)** - **24.89M**\nThis machine is light with long battery.'
+    const r = guardSpecClaimsInText(t, C)
+    expect(r.text).not.toMatch(/light|battery/i)
+    expect(r.removed).toContain('HP 14 ep1137TU:weight')
+  })
+
+  it('the subject RESETS when a different candidate is named', () => {
+    const t = '**[ASUS Vivobook S14 S3407CA-LY096WS](https://shopee.vn/a)** giá 27.49 triệu.\n'
+      + '**[HP 14 ep1137TU](https://tiki.vn/b)** - **24.89 triệu**. Máy này pin lâu.'
+    const r = guardSpecClaimsInText(t, C)
+    expect(r.removed).toContain('HP 14 ep1137TU:battery')
+    expect(r.removed).not.toContain('ASUS Vivobook S14 S3407CA-LY096WS:battery')
+  })
+
+  it('a user-requirement sentence is still not a claim, even while carrying', () => {
+    const t = '**[HP 14 ep1137TU](https://tiki.vn/b)** - **24.89 triệu**. Bạn ưu tiên máy nhẹ và pin tốt.'
+    expect(guardSpecClaimsInText(t, C).removed).toEqual([])
+  })
+
+  it('the carry does not reach a reply with no candidate named at all', () => {
+    const t = 'Mình tìm được vài lựa chọn. Máy này rất nhẹ.'
+    expect(guardSpecClaimsInText(t, C).removed).toEqual([])
+  })
+})
