@@ -87,6 +87,29 @@ export const pw = {
 } as const
 
 /**
+ * The narrow slice of a Supabase client this function actually uses.
+ *
+ * This used to be an inline `any` with a disable directive naming
+ * `@typescript-eslint/no-explicit-any` — a rule the production ESLint config does
+ * not register, so `next build` failed on the DIRECTIVE rather than on the code.
+ *
+ * Erased at the boundary with `unknown` rather than described in full: matching
+ * Supabase's generic builder shape structurally makes the compiler instantiate it
+ * (TS2589, "excessively deep"), which is why `any` was reached for in the first
+ * place. One narrowing cast inside the function is cheaper, and still no `any`.
+ */
+type ProfileLanguageReader = { from: (table: string) => unknown }
+
+/** The single call chain resolveUserLang depends on. */
+type LanguageQuery = {
+  select: (columns: string) => {
+    eq: (column: string, value: string) => {
+      single: () => PromiseLike<{ data: unknown }>
+    }
+  }
+}
+
+/**
  * The stored UI-language preference for a user, or 'vi' when unset.
  *
  * `profiles.language` is nullable ("not set yet"), so the fallback matters: it is
@@ -94,11 +117,12 @@ export const pw = {
  * is also 'vi' — a language read must never be able to fail a price-watch write.
  */
 export async function resolveUserLang(
-  supabase: { from: (t: string) => any },  // eslint-disable-line @typescript-eslint/no-explicit-any
+  supabase: ProfileLanguageReader,
   userId: string,
 ): Promise<PwLang> {
   try {
-    const { data } = await supabase.from('profiles').select('language').eq('id', userId).single()
+    const q = supabase.from('profiles') as LanguageQuery
+    const { data } = await q.select('language').eq('id', userId).single()
     return normalizePwLang((data as { language?: unknown } | null)?.language)
   } catch {
     return 'vi'
