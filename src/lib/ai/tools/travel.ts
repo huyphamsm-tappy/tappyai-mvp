@@ -8,7 +8,12 @@ import { flightsCacheKey, hotelsCacheKey, transportCacheKey } from './cacheKeys'
 
 // Kiem tra link co phai trang CU THE cua 1 khach san tren Booking.com/Agoda/Traveloka
 // (khong phai trang tim kiem/danh sach chung theo khu vuc/thanh pho)
-function isSpecificOtaHotelPage(link: string): boolean {
+//
+// Exported (behaviour unchanged) so the consultative normalizer can reuse the ONE
+// definition instead of keeping a second copy. A duplicated link rule is exactly
+// how the TikTok Shop defect in PR #74 happened: iOS carried its own copy of the
+// platform-link builders and drifted.
+export function isSpecificOtaHotelPage(link: string): boolean {
   try {
     const u = new URL(link)
     const host = u.hostname.replace(/^www\./, '')

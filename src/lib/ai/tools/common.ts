@@ -318,6 +318,112 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
   }
 }
 
+/**
+ * A structured shopping record from Serper's `/shopping` endpoint.
+ *
+ * `price` is AUTHORITATIVE — the provider returns it as its own field. Nothing
+ * here is parsed out of `title`, which is the defect that produced a measured 20%
+ * false-accept rate when prices were read from titles (C3-B.8).
+ */
+export interface ShoppingRecord {
+  title: string
+  link: string
+  /** Merchant/store, e.g. "Shopee", "Tiki". Absent when the provider omits it. */
+  source?: string
+  /** VND, from the provider's own price field. Absent when not returned. */
+  price?: number
+  productId?: string
+  imageUrl?: string
+  rating?: number
+  ratingCount?: number
+}
+
+/**
+ * Serper `/shopping` — structured product candidates.
+ *
+ * Same client shape as serperSearch above (same key, same timeout, same
+ * sanitisation): this is a second ENDPOINT on the provider already in use, not a
+ * new provider or a new search service.
+ *
+ * Returns null when the key is absent or the call fails, so callers keep their
+ * existing organic path as fallback rather than losing shopping entirely.
+ */
+export async function serperShopping(query: string): Promise<ShoppingRecord[] | null> {
+  const apiKey = process.env.SERPER_API_KEY
+  if (!apiKey) return null
+  try {
+    const resp = await Promise.race([
+      fetch('https://google.serper.dev/shopping', {
+        method: 'POST',
+        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num: 12 })
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+    ])
+    if (!(resp as Response).ok) return null
+    const data = await (resp as Response).json()
+    const rows = (data?.shopping || []) as Array<Record<string, unknown>>
+    return rows
+      .filter(r => typeof r.title === 'string' && typeof r.link === 'string')
+      .slice(0, 12)
+      .map(r => {
+        const out: ShoppingRecord = {
+          title: r.title as string,
+          link: sanitizeUrlForMarkdown(r.link as string),
+        }
+        // Each field is carried ONLY when the provider actually supplied it.
+        // An absent field must stay absent — `undefined` means "no evidence",
+        // and defaulting it to 0/'' would turn silence into a false claim.
+        if (typeof r.source === 'string' && r.source) out.source = r.source
+        const price = parseSerperPriceVnd(r.price)
+        if (price !== null) out.price = price
+        if (typeof r.productId === 'string' && r.productId) out.productId = r.productId
+        if (typeof r.imageUrl === 'string' && r.imageUrl) out.imageUrl = sanitizeUrlForMarkdown(r.imageUrl)
+        if (typeof r.rating === 'number' && r.rating >= 0 && r.rating <= 5) out.rating = r.rating
+        if (typeof r.ratingCount === 'number' && r.ratingCount >= 0) out.ratingCount = r.ratingCount
+        return out
+      })
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Read Serper's `price` field into VND.
+ *
+ * It arrives either as a number or as a formatted string ("₫6.490.000",
+ * "6.490.000 ₫"). Only the provider's OWN price field is ever passed here —
+ * never a title or a snippet. Anything that does not parse cleanly returns null
+ * rather than a guess.
+ */
+/**
+ * Below this, a "price" is a placeholder rather than a price.
+ *
+ * Found by live verification 2026-08-17: a real /shopping response listed
+ * `1 ₫ | Mac24h | ThinkPad T14 Gen 7` — the "contact for price" convention. It
+ * parsed as a genuine 1 VND price and, because it scores MAXIMUM on the price
+ * term, a "ưu tiên giá rẻ" turn would have made it Tappy's Pick.
+ *
+ * 1,000 VND is deliberately far below any real Vietnamese marketplace listing
+ * (the cheapest real accessories sit in the tens of thousands), so this removes
+ * placeholders without rejecting a single genuine price.
+ */
+const MIN_PLAUSIBLE_PRICE_VND = 1_000
+
+export function parseSerperPriceVnd(value: unknown): number | null {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) && value >= MIN_PLAUSIBLE_PRICE_VND ? Math.round(value) : null
+  }
+  if (typeof value !== 'string' || !value.trim()) return null
+  // Reject anything carrying a non-VND currency: a USD figure read as VND would
+  // be wrong by ~25,000x and would pass every downstream range check.
+  if (/US\$|\$|USD|EUR|€|¥|£/i.test(value)) return null
+  const digits = value.replace(/[^\d]/g, '')
+  if (!digits) return null
+  const n = parseInt(digits, 10)
+  return Number.isFinite(n) && n >= MIN_PLAUSIBLE_PRICE_VND ? n : null
+}
+
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
 export async function webSearch(query: string, lang = 'vi') {
   const cacheKey = webSearchCacheKey(query, lang)

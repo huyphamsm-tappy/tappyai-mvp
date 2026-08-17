@@ -188,6 +188,13 @@ export function buildSystem(
   planningIntent?: 'trip' | 'evening' | null,
   hasImage?: boolean,
   decisionStage?: DecisionStage,
+  /**
+   * Pre-rendered Tappy's Pick block from `consultative/pick.ts`, when the
+   * deterministic ranker produced one. Request-specific by nature, so it lands
+   * in `dynamic` and never in the cached `shared` segment — see the note on
+   * SystemPrompt and the PICK-07 assertions in consultative/pick.test.ts.
+   */
+  pickBlock?: string,
 ): SystemPrompt {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -352,7 +359,7 @@ User chi dang xac nhan/dong y. Tra loi NGAN, tu nhien, tiep noi viec vua lam. KH
   //
   // Relative order within this segment is unchanged from before the split, so
   // instruction precedence between these blocks is exactly as it shipped.
-  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}`
+  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${pickBlock || ''}`
 
   return { shared, dynamic }
 }

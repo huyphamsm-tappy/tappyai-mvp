@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { AI } from '@/lib/ai/llm'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { emitNotification } from '@/lib/notifications/emit'
+import { pw, normalizePwLang, type PwLang } from '@/lib/priceWatch/messages'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -42,10 +43,10 @@ async function searchCurrentPrice(query: string): Promise<Array<{ title: string;
   }
 }
 
-function fmtPrice(n: number): string {
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + ' triệu'
-  return (n / 1000).toFixed(0) + 'k'
-}
+// STEP 13: price formatting and notification copy moved into the shared Price
+// Watch message layer so both exist in Vietnamese AND English. The local
+// fmtPrice() was Vietnamese-only ("4.2 triệu"), so an English user received
+// "Now 4.2 triệu — your target is 4.5 triệu".
 
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET
@@ -66,6 +67,20 @@ export async function GET(req: Request) {
   if (error || !watches?.length) {
     return NextResponse.json({ ok: true, checked: 0 })
   }
+
+  // STEP 13: resolve each watch owner's stored UI language in ONE batched read,
+  // so a push goes out in the language that user chose. `profiles.language` is
+  // nullable ("not set yet") and anything unset resolves to Vietnamese, which is
+  // exactly today's behaviour for every existing user. A failed lookup is also
+  // Vietnamese — a language read must never stop a price alert from being sent.
+  const langByUser = new Map<string, PwLang>()
+  try {
+    const userIds = [...new Set((watches as Watch[]).map(w => w.user_id))]
+    const { data: profiles } = await supabase.from('profiles').select('id, language').in('id', userIds)
+    for (const p of (profiles ?? []) as Array<{ id: string; language: unknown }>) {
+      langByUser.set(p.id, normalizePwLang(p.language))
+    }
+  } catch { /* every user falls back to 'vi' below */ }
 
   let triggered = 0
   let checked = 0
@@ -113,12 +128,13 @@ PRICE_VND: [số nguyên bằng VND, ví dụ: 1950000] hoặc PRICE_VND: không
           .update({ status: 'triggered', notified_at: new Date().toISOString() })
           .eq('id', watch.id)
 
+        const lang = langByUser.get(watch.user_id) ?? 'vi'
         await emitNotification({
           userId: watch.user_id,
           type: 'price',
           category: 'deal',
-          title: `🎯 Giá ${watch.product_name} đã xuống!`,
-          body: `Hiện ${fmtPrice(extractedPrice)} — mục tiêu của bạn là ${fmtPrice(watch.target_price)}. Mở Tappy để mua ngay!`,
+          title: pw.notifyTitle(lang, watch.product_name),
+          body: pw.notifyBody(lang, extractedPrice, watch.target_price),
           entityUrl: `/profile/price-watches`,
         })
 
