@@ -607,3 +607,42 @@ describe('SPEC-GUARD-26 — a trailing connector is not left pointing at nothing
     expect(g(t).text.trim()).toBe(t)
   })
 })
+
+// ── SPEC-GUARD-27 — a unit written without a space is still a unit ──────────
+//
+// PRODUCTION, 0830262: "**ASUS Zenbook A14 UX3407QA** (27.99 triệu) — chỉ 0.98kg".
+// \bkg\b needs a word boundary before "kg", and a digit followed by a letter is
+// not one, so the no-space form — the ordinary way to write it on a Vietnamese
+// marketplace — sailed through while "0.98 kg" was caught. A fabricated number
+// with two decimals is the most convincing kind of unsupported claim.
+describe('SPEC-GUARD-27 — "0.98kg" asserts weight just as "0.98 kg" does', () => {
+  const Z: SpecEvidence[] = [{ name: 'ASUS Zenbook A14 UX3407QA' }]
+
+  for (const w of ['0.98kg', '0,98kg', '1.4kg', '2kg']) {
+    it(`blocks "${w}" with no space`, () => {
+      const r = guardSpecClaimsInText(`**ASUS Zenbook A14 UX3407QA** — chỉ ${w}, màn hình OLED sắc nét.`, Z)
+      expect(r.text).not.toContain(w)
+      expect(r.removed).toContain('ASUS Zenbook A14 UX3407QA:weight')
+      expect(r.text).toContain('màn hình OLED sắc nét')
+    })
+  }
+
+  it('the production sentence, verbatim', () => {
+    const t = '**ASUS Zenbook A14 UX3407QA** (27.99 triệu) — chỉ 0.98kg, màn hình OLED 14 inch sắc nét, chip Snapdragon X1 mạnh cho lập trình, RAM 16GB + SSD 512GB.'
+    const r = guardSpecClaimsInText(t, Z)
+    expect(r.text).not.toMatch(/0\.98kg/)
+    expect(r.text).toContain('27.99 triệu')
+    expect(r.text).toContain('RAM 16GB')
+  })
+
+  it('a weight claim WITH evidence still survives in either form', () => {
+    const E: SpecEvidence[] = [{ name: 'ASUS Zenbook A14 UX3407QA', weightKg: 0.98 }]
+    expect(guardSpecClaimsInText('**ASUS Zenbook A14 UX3407QA** chỉ 0.98kg.', E).removed).toEqual([])
+  })
+
+  it('does not fire on unrelated unit-like text', () => {
+    const r = guardSpecClaimsInText('**ASUS Zenbook A14 UX3407QA** có RAM 16GB và SSD 512GB.', Z)
+    expect(r.removed).toEqual([])
+    expect(r.text).toContain('16GB')
+  })
+})

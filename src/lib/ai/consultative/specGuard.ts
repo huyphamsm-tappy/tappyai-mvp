@@ -38,7 +38,10 @@ type SpecAttr = 'weight' | 'battery'
 // normalizes to "hieu nang", so a bare \bnang\b would read every performance
 // remark as a weight claim.
 const ATTR_PATTERNS: ReadonlyArray<[SpecAttr, RegExp]> = [
-  ['weight', /\bnhe\b|\bnhe hon\b|trong luong|\bkg\b|lightweight|\blighter\b|\blight\b|\bweighs?\b|\bweight\b|\bheavy\b|\bheavier\b|(?<!hieu\s)\bnang\b|\bmong\b|\bgon\b|\bportable\b|portability|\bslim\b/],
+  // `\bkg\b` alone missed the no-space form. A digit followed by a letter is not
+  // a word boundary, so PRODUCTION emitted "chỉ 0.98kg" — a two-decimal number
+  // nothing in the evidence supports — while "0.98 kg" was caught.
+  ['weight', /\bnhe\b|\bnhe hon\b|trong luong|\bkg\b|\d\s*kg\b|lightweight|\blighter\b|\blight\b|\bweighs?\b|\bweight\b|\bheavy\b|\bheavier\b|(?<!hieu\s)\bnang\b|\bmong\b|\bgon\b|\bportable\b|portability|\bslim\b/],
   ['battery', /\bpin\b|thoi luong pin|\bbattery\b|batteries/],
 ]
 
