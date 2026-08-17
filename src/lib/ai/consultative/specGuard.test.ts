@@ -646,3 +646,35 @@ describe('SPEC-GUARD-27 — "0.98kg" asserts weight just as "0.98 kg" does', () 
     expect(r.text).toContain('16GB')
   })
 })
+
+// ── SPEC-GUARD-28 — a sentence reduced to its connector is not a sentence ───
+//
+// PRODUCTION, 8784ab3, refinement turn: "… tiện cho lập trình. Tuy nhiên. Nếu
+// bạn cần GPU riêng …". "Tuy nhiên," introduced the ungrounded clause; removing
+// it left the connector standing alone as a sentence of its own. A discourse
+// marker with nothing left to contrast is not worth emitting.
+describe('SPEC-GUARD-28 — a connector with nothing left to introduce is dropped', () => {
+  const D: SpecEvidence[] = [{ name: 'Laptop Dell 15 DC15250' }]
+
+  it('VI: the production artifact', () => {
+    const t = '**Laptop Dell 15 DC15250** giá 17.99 triệu. Tuy nhiên, máy khá nặng. Nếu bạn cần GPU riêng thì có lựa chọn khác.'
+    const r = guardSpecClaimsInText(t, D)
+    expect(r.text).not.toMatch(/Tuy nhiên\.\s/)
+    expect(r.text).not.toMatch(/nặng/)
+    expect(r.text).toContain('17.99 triệu')
+    expect(r.text).toContain('Nếu bạn cần GPU riêng')
+  })
+
+  for (const c of ['Tuy nhiên', 'Ngoài ra', 'Mặt khác', 'However', 'Moreover']) {
+    it(`drops a lone "${c}."`, () => {
+      const r = guardSpecClaimsInText(`**Laptop Dell 15 DC15250** giá 17.99 triệu. ${c}, máy rất nhẹ.`, D)
+      expect(r.text).not.toMatch(new RegExp(`${c}\.?\s*$`))
+      expect(r.text).toContain('17.99 triệu')
+    })
+  }
+
+  it('a connector that still introduces real content survives', () => {
+    const t = '**Laptop Dell 15 DC15250** giá 17.99 triệu. Tuy nhiên, RAM 8GB hơi ít.'
+    expect(guardSpecClaimsInText(t, D).text.trim()).toBe(t)
+  })
+})
