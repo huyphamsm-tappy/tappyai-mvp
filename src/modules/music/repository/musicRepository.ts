@@ -73,15 +73,31 @@ const TRACK_COLUMNS =
   'id, title, artist, duration_sec, audio_url, preview_url, cover_url, category_id, provider_id'
 
 export async function getTrackById(id: string): Promise<MusicTrack | null> {
+  // 🚨 `.limit(1)`, deliberately NOT `.maybeSingle()`.
+  //
+  // `maybeSingle()` asks PostgREST for a SINGULAR object
+  // (`Accept: application/vnd.pgrst.object+json`), and a zero-row result then
+  // comes back as **HTTP 406 / PGRST116**, not as an empty list. That was
+  // harmless while every track was readable. It stopped being harmless on
+  // 2026-08-18, when the publication boundary began hiding a held track's row:
+  // the request flipped from `200 {row}` to `406 {error}`, an error response
+  // does not replace a stored success, and production went on serving the held
+  // clip's media URL from the last good 200 — for hours after the database had
+  // stopped returning the row to anyone. Measured: four distinct anon query
+  // shapes returned nothing, while this call still answered with the row.
+  //
+  // A list request makes "no rows" an ordinary success (`200 []`), so it stores
+  // and replaces like every other read. One row still yields that one row, and
+  // the caller contract — `MusicTrack | null` — is unchanged.
   const { data, error } = await supabase
     .from('music_tracks')
     .select(TRACK_COLUMNS)
     .eq('id', id)
     .eq('is_active', true)
-    .maybeSingle()
+    .limit(1)
 
-  if (error || !data) return null
-  return mapTrackRow(data as TrackRow)
+  if (error || !data || data.length === 0) return null
+  return mapTrackRow(data[0] as TrackRow)
 }
 
 export async function getTracks(filter: MusicBrowseFilter = {}): Promise<MusicTracksPage> {
