@@ -46,7 +46,7 @@ import {
   MediaUploadSessionError,
   MediaCredentialsUnavailableError,
 } from './types'
-import { WifExchangeError } from './gcpAuth'
+import { WifExchangeError, createWifTokenSource } from './gcpAuth'
 
 const BUCKET = 'tappyai-media-prod'
 const OWNER = '4dcce7cf-5f49-4c58-9901-2d586e31352d'
@@ -516,6 +516,94 @@ describe('upload session route helper', () => {
       expect(res.status).toBe(502)
       const logged = calls.find((c) => c.includes('credential exchange failed'))
       expect(JSON.parse(logged!)[1].stage).toBe('unknown')
+    })
+
+    // "sts stage" alone was not enough in production: it left "Google refused
+    // this subject" and "we sent an audience built from an empty env var"
+    // looking identical. The provider's own refusal and the audience separate
+    // them, and both are credential-free.
+    it('carries the provider refusal and the audience it was aimed at', async () => {
+      const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      try {
+        const provider = createGcsProvider({
+          bucket: BUCKET,
+          getAccessToken: createWifTokenSource({
+            config: {
+              projectNumber: '1023373437508',
+              poolId: 'vercel-oidc',
+              providerId: 'vercel',
+              serviceAccountEmail: 'media@example.iam.gserviceaccount.com',
+            },
+            getOidcToken: () => 'header.payload.signature',
+            fetchImpl: (async () =>
+              ({
+                ok: false,
+                status: 400,
+                text: async () =>
+                  JSON.stringify({
+                    error: 'unauthorized_client',
+                    error_description: 'The given credential is rejected by the attribute condition.',
+                  }),
+              }) as unknown as Response) as unknown as typeof fetch,
+          }),
+        })
+        const res = await createUploadSessionResponse(
+          { type: CREATE_UPLOAD_SESSION_TYPE, kind: 'video', contentType: 'video/mp4', size: 1 },
+          { ownerId: OWNER, allowedKinds: ['video'] },
+          provider
+        )
+        expect(res.status).toBe(502)
+
+        const logged = spy.mock.calls
+          .map((c) => c[1] as Record<string, unknown>)
+          .find((c) => c && c.stage === 'sts')
+        expect(logged).toBeDefined()
+        expect(logged!.status).toBe(400)
+        expect(String(logged!.reason)).toContain('unauthorized_client')
+        // The audience must be the REAL one built from config, not a constant:
+        // that is the whole point of carrying it.
+        expect(logged!.audience).toBe(
+          '//iam.googleapis.com/projects/1023373437508/locations/global/workloadIdentityPools/vercel-oidc/providers/vercel'
+        )
+        // And it must never carry the subject token.
+        expect(JSON.stringify(logged)).not.toContain('header.payload.signature')
+      } finally {
+        spy.mockRestore()
+      }
+    })
+
+    // A refusal body that is not JSON must not become a second failure.
+    it('survives a refusal body that is not JSON', async () => {
+      const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      try {
+        const provider = createGcsProvider({
+          bucket: BUCKET,
+          getAccessToken: createWifTokenSource({
+            config: {
+              projectNumber: '1',
+              poolId: 'p',
+              providerId: 'v',
+              serviceAccountEmail: 'a@b.iam.gserviceaccount.com',
+            },
+            getOidcToken: () => 'tok',
+            fetchImpl: (async () =>
+              ({ ok: false, status: 502, text: async () => '<html>gateway</html>' }) as unknown as Response) as unknown as typeof fetch,
+          }),
+        })
+        const res = await createUploadSessionResponse(
+          { type: CREATE_UPLOAD_SESSION_TYPE, kind: 'video', contentType: 'video/mp4', size: 1 },
+          { ownerId: OWNER, allowedKinds: ['video'] },
+          provider
+        )
+        expect(res.status).toBe(502)
+        const logged = spy.mock.calls
+          .map((c) => c[1] as Record<string, unknown>)
+          .find((c) => c && c.stage === 'sts')
+        expect(logged!.status).toBe(502)
+        expect(logged!.reason).toBeUndefined()
+      } finally {
+        spy.mockRestore()
+      }
     })
 
     // L still holds: the stage is for the operator, never for the caller. If it

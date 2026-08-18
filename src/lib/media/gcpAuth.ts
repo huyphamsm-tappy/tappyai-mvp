@@ -109,7 +109,33 @@ export class WifTimeoutError extends Error {
 /** Raised when federation fails. Carries no token or credential material. */
 export class WifExchangeError extends Error {
   readonly stage: 'oidc' | 'sts' | 'impersonation'
-  constructor(stage: 'oidc' | 'sts' | 'impersonation', status?: number) {
+  /** HTTP status the leg returned, where there was a response at all. */
+  readonly status?: number
+  /**
+   * The provider's own refusal, e.g. `unauthorized_client: The given credential
+   * is rejected by the attribute condition.`
+   *
+   * Google's STS error envelope describes WHY it said no and never echoes the
+   * subject token; it is bounded here anyway. "sts stage, HTTP 400" and "your
+   * subject does not satisfy the attribute condition" are the same failure to a
+   * status code and completely different failures to whoever has to fix it.
+   */
+  readonly reason?: string
+  /**
+   * The federation target the exchange was aimed at — a public resource path
+   * naming the project number, pool and provider.
+   *
+   * Carried because it is BUILT from configuration: an empty or mistyped
+   * `GCP_PROJECT_NUMBER` / `GCP_WIF_POOL` / `GCP_WIF_PROVIDER` produces a
+   * plausible-looking audience that no provider matches, and the refusal then
+   * looks identical to a genuine condition mismatch.
+   */
+  readonly audience?: string
+  constructor(
+    stage: 'oidc' | 'sts' | 'impersonation',
+    status?: number,
+    extra?: { reason?: string; audience?: string }
+  ) {
     super(
       status === undefined
         ? `Workload Identity Federation failed at the ${stage} stage`
@@ -117,6 +143,29 @@ export class WifExchangeError extends Error {
     )
     this.name = 'WifExchangeError'
     this.stage = stage
+    this.status = status
+    this.reason = extra?.reason
+    this.audience = extra?.audience
+  }
+}
+
+/**
+ * The provider's machine-readable refusal, if it sent one.
+ *
+ * Total by construction: a body that is missing, truncated or not JSON yields
+ * `undefined` rather than throwing. A diagnostic that can fail is worse than no
+ * diagnostic, because it turns one failure into two.
+ */
+async function readRefusal(res: Response): Promise<string | undefined> {
+  try {
+    const text = (await res.text()).slice(0, 400)
+    const body = JSON.parse(text) as { error?: unknown; error_description?: unknown }
+    const code = typeof body.error === 'string' ? body.error : undefined
+    const desc = typeof body.error_description === 'string' ? body.error_description : undefined
+    const joined = [code, desc].filter(Boolean).join(': ').slice(0, 200)
+    return joined || undefined
+  } catch {
+    return undefined
   }
 }
 
@@ -183,7 +232,12 @@ export function createWifTokenSource(deps: WifDeps): () => Promise<string> {
         subjectToken: oidc,
       }),
     })
-    if (!stsRes.ok) throw new WifExchangeError('sts', stsRes.status)
+    if (!stsRes.ok) {
+      throw new WifExchangeError('sts', stsRes.status, {
+        reason: await readRefusal(stsRes),
+        audience: stsAudience(deps.config),
+      })
+    }
     const sts = (await stsRes.json()) as { access_token?: string }
     if (!sts.access_token) throw new WifExchangeError('sts')
 
