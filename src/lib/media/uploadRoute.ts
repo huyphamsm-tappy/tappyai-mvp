@@ -121,10 +121,22 @@ export async function createUploadSessionResponse(
     // what it was before. Read structurally rather than with `instanceof` so a
     // timeout, an exchange failure and a future error type all report the same
     // way without this file importing three error classes.
-    const stage =
-      typeof (e as { stage?: unknown } | null | undefined)?.stage === 'string'
-        ? (e as { stage: string }).stage
-        : 'unknown'
+    const err = (e ?? {}) as {
+      stage?: unknown
+      status?: unknown
+      reason?: unknown
+      audience?: unknown
+    }
+    const stage = typeof err.stage === 'string' ? err.stage : 'unknown'
+    // `status`, `reason` and `audience` are only ever set by WifExchangeError,
+    // which is documented to carry no credential material. `audience` is a
+    // public resource path built from configuration — it is here because an
+    // empty `GCP_PROJECT_NUMBER` / `GCP_WIF_POOL` / `GCP_WIF_PROVIDER` yields a
+    // well-formed audience that matches no provider, and that refusal is
+    // indistinguishable from a real condition mismatch without seeing it.
+    const status = typeof err.status === 'number' ? err.status : undefined
+    const reason = typeof err.reason === 'string' ? err.reason : undefined
+    const audience = typeof err.audience === 'string' ? err.audience : undefined
     // Worded without the word "session" on purpose: a guard in
     // `uploadSession.test.ts` forbids any console call in this file from naming
     // an upload session, because that is how a one-object bearer capability ends
@@ -132,6 +144,9 @@ export async function createUploadSessionResponse(
     // what bends here, not the rule.
     console.error('[media/upload] credential exchange failed', {
       stage,
+      status,
+      reason,
+      audience,
       kind: String(input.kind ?? 'unknown'),
     })
     return { status: 502, body: { error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.' } }
