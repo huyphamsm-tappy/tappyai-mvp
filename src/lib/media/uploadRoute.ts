@@ -101,12 +101,39 @@ export async function createUploadSessionResponse(
         contentType: target.contentType,
       },
     }
-  } catch {
+  } catch (e) {
     // Every failure past this point is ours, not the caller's: a rejected
     // credential exchange, a timeout, a refusal from Cloud Storage. The caller
     // learns only that it failed — never the provider's status text, never the
     // token, never a partially built session URI. It must not degrade into a
     // Blob upload either: that would silently defeat server-owned keys.
+    //
+    // The OPERATOR is a different audience, and used to get nothing at all. A
+    // production 502 here looked identical whether the deployment had no OIDC
+    // identity, or STS refused the exchange, or Cloud Storage said no — three
+    // problems with three different fixes, reported as one opaque number. That
+    // ambiguity is what made a real upload outage take six rounds to place.
+    //
+    // `stage` is the one fact that resolves it: 'oidc' | 'sts' | 'impersonation'
+    // off WifExchangeError/WifTimeoutError. It is a fixed enum describing WHICH
+    // LEG failed, carries no token, no status text and no session URI, and it is
+    // logged rather than returned — the response body below is byte-identical to
+    // what it was before. Read structurally rather than with `instanceof` so a
+    // timeout, an exchange failure and a future error type all report the same
+    // way without this file importing three error classes.
+    const stage =
+      typeof (e as { stage?: unknown } | null | undefined)?.stage === 'string'
+        ? (e as { stage: string }).stage
+        : 'unknown'
+    // Worded without the word "session" on purpose: a guard in
+    // `uploadSession.test.ts` forbids any console call in this file from naming
+    // an upload session, because that is how a one-object bearer capability ends
+    // up in a log. The rule is blunt and it should stay blunt — the message is
+    // what bends here, not the rule.
+    console.error('[media/upload] credential exchange failed', {
+      stage,
+      kind: String(input.kind ?? 'unknown'),
+    })
     return { status: 502, body: { error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.' } }
   }
 }

@@ -452,6 +452,100 @@ describe('upload session route helper', () => {
     expect(text).not.toContain('Bearer')
     expect(text).not.toContain('upload_id')
   })
+
+  // ---------------------------------------------------------------------------
+  // U  a 502 must name WHICH credential leg failed, to the operator only
+  // ---------------------------------------------------------------------------
+  // Regression for a real outage: production returned 502 on every upload and
+  // the handler logged nothing, so "no deployment identity" and "STS refused the
+  // exchange" were indistinguishable from the outside. The stage is the whole
+  // diagnostic; losing it again costs days.
+  describe('U. the failing credential leg reaches the operator log', () => {
+    const failWith = (err: unknown) =>
+      createGcsProvider({
+        bucket: BUCKET,
+        getAccessToken: async () => {
+          throw err
+        },
+      })
+
+    const run = async (err: unknown) => {
+      const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      try {
+        const res = await createUploadSessionResponse(
+          { type: CREATE_UPLOAD_SESSION_TYPE, kind: 'video', contentType: 'video/mp4', size: 1 },
+          { ownerId: OWNER, allowedKinds: ['video'] },
+          failWith(err)
+        )
+        return { res, calls: spy.mock.calls.map((c) => JSON.stringify(c)) }
+      } finally {
+        spy.mockRestore()
+      }
+    }
+
+    // The exact case that was invisible in production: no OIDC token at all, so
+    // the exchange throws before any network call and STS logs nothing either.
+    it('reports stage "oidc" when the deployment has no identity', async () => {
+      const { res, calls } = await run(new WifExchangeError('oidc'))
+      expect(res.status).toBe(502)
+      // Assert the VALUE, not merely that the word appears: a log line naming
+      // the stage is the point, and `toContain('oidc')` would also pass on a
+      // line that happened to mention the word for any other reason.
+      const logged = calls.find((c) => c.includes('credential exchange failed'))
+      expect(logged).toBeDefined()
+      expect(JSON.parse(logged!)[1].stage).toBe('oidc')
+      expect(JSON.parse(logged!)[1].kind).toBe('video')
+    })
+
+    it('reports stage "sts" when the exchange itself is refused', async () => {
+      const { res, calls } = await run(new WifExchangeError('sts', 403))
+      expect(res.status).toBe(502)
+      const logged = calls.find((c) => c.includes('credential exchange failed'))
+      expect(JSON.parse(logged!)[1].stage).toBe('sts')
+    })
+
+    it('reports stage "impersonation" when the service account leg fails', async () => {
+      const { res } = await run(new WifExchangeError('impersonation'))
+      expect(res.status).toBe(502)
+    })
+
+    // An error with no stage must still log, and must not throw while trying to
+    // read one — the diagnostic cannot become a second failure mode.
+    it('falls back to "unknown" for an error that carries no stage', async () => {
+      const { res, calls } = await run(new Error('boom'))
+      expect(res.status).toBe(502)
+      const logged = calls.find((c) => c.includes('credential exchange failed'))
+      expect(JSON.parse(logged!)[1].stage).toBe('unknown')
+    })
+
+    // L still holds: the stage is for the operator, never for the caller. If it
+    // reached the body, the client would learn our credential topology.
+    it('never puts the stage in the response body', async () => {
+      const { res } = await run(new WifExchangeError('oidc'))
+      const text = JSON.stringify(res.body)
+      for (const leak of ['oidc', 'sts', 'impersonation', 'stage']) {
+        expect(text, leak).not.toContain(leak)
+      }
+    })
+
+    // The success path must stay silent: a log on every upload would bury the
+    // one line that matters.
+    it('logs nothing when the session opens successfully', async () => {
+      const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      try {
+        const res = await createUploadSessionResponse(
+          { type: CREATE_UPLOAD_SESSION_TYPE, kind: 'video', contentType: 'video/mp4', size: 2048 },
+          { ownerId: OWNER, allowedKinds: ['video'] },
+          mockSession(200).provider
+        )
+        expect(res.status).toBe(200)
+        expect(res.body.uploadUrl).toBe(SESSION_URI)
+        expect(spy).not.toHaveBeenCalled()
+      } finally {
+        spy.mockRestore()
+      }
+    })
+  })
 })
 
 // ------------------------------------------------------------ R. wiring inherits
