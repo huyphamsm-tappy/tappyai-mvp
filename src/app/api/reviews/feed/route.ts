@@ -120,10 +120,28 @@ export async function GET(req: NextRequest) {
       .from('reviews')
       .select(EXPLORE_SELECT)
       .or('is_hidden.is.null,is_hidden.eq.false')
-      // Content safety gate — Explore and the profile feed both serve only what
-      // the gate has published. Legacy rows (NULL) keep their prior visibility.
-      .or(publishableFilter())
       .range(offset, offset + limit - 1)
+
+    // Content safety gate — Explore and other people's profiles serve only what
+    // the gate has published. Legacy rows (NULL) keep their prior visibility.
+    //
+    // 🔑 EXCEPT the author's own profile. This route backs "Bài của tôi" and the
+    // profile grid, which is the one place an author can reach a post to edit,
+    // hide or delete it. Filtering a held post out THERE does not hide it from
+    // the public — it strands it: invisible to the only person who could act on
+    // it, while the gate holds it indefinitely. The same reasoning already
+    // exempts this branch from the unrenderable-media filter below, and
+    // /api/reviews/mine is deliberately unfiltered for exactly this reason.
+    //
+    // 🚨 Scoped to the AUTHOR, not to "a profile feed". `filterUserId` is a
+    // query parameter and anyone can put anyone's id in it; `user.id` comes from
+    // a verified session or JWT (getRequestUser). Only when they are the same
+    // person does the gate step aside, and only for that person's own rows —
+    // the `.eq('user_id', filterUserId)` below keeps the query self-scoped, and
+    // the database's own publication boundary independently refuses a held row
+    // to anyone but its author.
+    const isOwnProfile = Boolean(filterUserId && user && filterUserId === user.id)
+    if (!isOwnProfile) query = query.or(publishableFilter())
 
     if (filterUserId) query = query.eq('user_id', filterUserId)
     if (followingIds) query = query.in('user_id', followingIds)
