@@ -117,7 +117,14 @@ COMMENT ON FUNCTION public.fn_original_sound_is_servable(uuid) IS
   'Policy predicate for music_tracks_publication_boundary. SECURITY DEFINER because a policy subquery is otherwise filtered by the querying role''s row security on reviews, which reports a held clip as an orphan. EXECUTE MUST remain granted to anon and authenticated: an RLS expression runs as the querying role, so revoking it makes every read of music_tracks fail with 42501. Returns one boolean, performs no action, discloses no row.';
 
 -- ── 2. EXECUTE — granted on purpose. See the comment above before changing. ──
-REVOKE EXECUTE ON FUNCTION public.fn_original_sound_is_servable(uuid) FROM PUBLIC;
+--
+-- Written as revoke-everything-then-grant-back, which is the form ADR-019's
+-- guard prescribes (`scripts/architecture/check-sql-grants.mjs`, rules G1 and
+-- G2): naming `anon` and `authenticated` in the REVOKE is what shows the author
+-- knows Supabase grants them by default, rather than assuming `FROM PUBLIC`
+-- closed anything. The end state is one line of `has_function_privilege` away
+-- from obvious: PUBLIC cannot execute, `anon` and `authenticated` can.
+REVOKE EXECUTE ON FUNCTION public.fn_original_sound_is_servable(uuid) FROM PUBLIC, anon, authenticated;
 GRANT  EXECUTE ON FUNCTION public.fn_original_sound_is_servable(uuid) TO anon, authenticated;
 
 -- ── 3. The boundary ─────────────────────────────────────────────────────────

@@ -333,6 +333,32 @@ restriction, so `music_type` really is writable by the person being held.
 Channel: Supabase Management API, one `BEGIN … COMMIT` per file, ref pinned to
 production.
 
+⚠️ **The committed `…b_music_tracks…` file differs from the executed bytes by one
+line, and only that line.** What ran was:
+
+```sql
+REVOKE EXECUTE ON FUNCTION public.fn_original_sound_is_servable(uuid) FROM PUBLIC;
+GRANT  EXECUTE ON FUNCTION public.fn_original_sound_is_servable(uuid) TO anon, authenticated;
+```
+
+ADR-019's guard rejects that form — a `REVOKE … FROM PUBLIC` that names neither
+Supabase role reads as the classic mistake of assuming PUBLIC is the only
+grantee. The committed file names all three in the REVOKE and grants the two
+back, which is the form the guard's own hint prescribes:
+
+```sql
+REVOKE EXECUTE ON FUNCTION public.fn_original_sound_is_servable(uuid) FROM PUBLIC, anon, authenticated;
+GRANT  EXECUTE ON FUNCTION public.fn_original_sound_is_servable(uuid) TO anon, authenticated;
+```
+
+**The resulting privileges are identical** — PUBLIC cannot execute, `anon` and
+`authenticated` can — which is what production has and what
+`has_function_privilege` returned during §4 verification. Production was **not**
+re-run to match the byte sequence: revoking and re-granting live would be a
+write with no effect other than a window in which every read of `music_tracks`
+fails. A fresh environment provisioned from this file lands in exactly the state
+production is in.
+
 ### Verification (§4) — all criteria met
 
 ```
