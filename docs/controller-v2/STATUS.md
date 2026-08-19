@@ -133,6 +133,31 @@ Guards were added so the surface stays closed rather than merely being closed to
 **Still open — `ADMIN_IDS` is not retired as an environment concept.** `src/app/api/music/tracks/[id]/report/route.ts` still reads `process.env.ADMIN_IDS` to choose who is notified. Replacing it with an RBAC-derived recipient set needs a policy no authoritative source states — *which role receives copyright reports?* — so it is **F: OWNER DECISION REQUIRED**, not implemented on a guess.
 
 **Also closed by Phase 4:** the §11 row `BACKOFFICE_ENABLED` = *REFACTOR → Config Provider flag* — done, see above.
+### Phase 5 — Event Bus / Outbox (2026-08-19): **BLOCKED, mechanism verified**
+
+No code was written. That is the finding, not an omission.
+
+**The mechanism is complete and now proven twice.** [`c8_event_outbox.test.ts`](../../supabase/tests/c8_event_outbox.test.ts) — **39/39 against a real PostgreSQL 17**. And re-verified read-only on production *after* ADR-017 landed, because ADR-017 changed `service_role` privileges and the P4 guarantee is expressed as a grant:
+
+| Checked | Result |
+|---|---|
+| `fn_outbox_publish` EXECUTE | **false for `anon`, `authenticated` AND `service_role`** — P4 intact; unreachable from the app tier, exactly as §5 requires |
+| `fn_outbox_claim` / `fn_outbox_settle` EXECUTE | `service_role` only |
+| `event_outbox` table grants | `service_role SELECT` only |
+| `UNIQUE (event_id, consumer_id)` | present |
+| Rows | 0 total, 0 pending, 0 dead — consistent with zero producers |
+
+**Why no first event flow was built.** The blocker is structural, and three independent sources agree:
+
+1. **C8 §10 puts it out of scope** — *"No producers · no consumers · … no migration of existing business mutations to create a demo event."*
+2. **§5 makes a producer a database object, not application code.** `fn_outbox_publish` has EXECUTE revoked from every PostgREST role, so the only possible caller is another `SECURITY DEFINER` function. A first producer therefore means modifying an existing security-critical RPC — `fn_grant_admin_role` is the only realistic candidate, and it is the constitutional G1 fix.
+3. **There is no consumer to deliver to.** Zero manifests declare `events.consumes`, and §8 is arithmetic: *"0 consumers ⇒ 0 outbox rows."*
+
+Together those mean a first producer would **re-issue the function that closes G1 in order to insert zero rows**. That is real risk for no delivered behaviour.
+
+**The actual dependency.** [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) §7 names the first producer and consumers itself: Commerce.Orders publishes `commerce.order.refunded`, Analytics and Marketing consume it. Under [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md) all three are **not started**. Event wiring depends on the business modules, not the reverse — so this work belongs after the Hubs exist, not before them.
+
+Nothing was declared to paper over it: no manifest was given an `events` block it cannot honour, and no handler was registered in the empty `ConsumerDispatch`. The forcing function in [`outbox.test.ts:181`](../../src/lib/controller/__tests__/outbox.test.ts) still pins the zero-consumer state, so the suite fails the day a real consumer is declared without a handler.
 
 ### Two observations recorded, not acted on
 
