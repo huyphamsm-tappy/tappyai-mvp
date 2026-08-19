@@ -12,6 +12,7 @@ mis-ordered `CREATE`.
 | File | Gate | Status | Rationale |
 |---|---|---|---|
 | `FOUNDATION_END_service_role_hardening.sql` | End of Controller V2 Foundation (after all Phase 1 components ship and soak) | ✅ **gate met · APPLIED to production 2026-08-19** — do **not** run it again; it is kept here as the record of what was executed. Evidence: [`docs/controller-v2/STATUS.md` § Post-Foundation work](../../../docs/controller-v2/STATUS.md#post-foundation-work) | ADR-017 — Service Role Hardening Strategy |
+| `PHASE2_M08_profiles_account_status.sql` | Explicit Owner authorization of the Phase 2 migration | ⏸️ **NOT APPLIED** — prepared for review only. It must land **before** any Module 08 enforcement code: a check that reads `is_suspended` before the column exists is rejected by PostgREST, which would break posting, commenting and chat for every user | `04_Database_Architecture.md` §7 (authoritative schema source per ERRATA-005) · Module 08 User Management |
 
 ## Rules
 
