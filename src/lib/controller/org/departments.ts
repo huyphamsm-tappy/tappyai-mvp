@@ -11,6 +11,7 @@
 // read/analyze into other departments) — it does not OWN other departments'
 // resources.
 
+import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import type { CrossDepartmentAccess, Department, DepartmentId } from './types'
 
 export const DEPARTMENTS: Readonly<Record<DepartmentId, Department>> = Object.freeze({
@@ -64,6 +65,6 @@ export function getDepartment(id: string): Department | undefined {
  * NO ownership and NO write.
  */
 export const CROSS_DEPARTMENT_ACCESS: readonly CrossDepartmentAccess[] = Object.freeze([
-  { fromDepartment: 'ai_data', toDepartment: 'commerce', mode: 'analyze', permissions: ['commerce.deals.read'] },
+  { fromDepartment: 'ai_data', toDepartment: 'commerce', mode: 'analyze', permissions: [PERMISSIONS.COMMERCE_DEALS_READ] },
   { fromDepartment: 'ai_data', toDepartment: 'marketing', mode: 'analyze', permissions: [] },
 ])
