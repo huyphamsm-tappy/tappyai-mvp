@@ -383,6 +383,44 @@ So the single authority for "layout follows the business question" is an uncited
 
 **Remaining B5 surface:** Density (needs B2). **Phase 7 is not complete, and cannot be until these decisions land.**
 
+### Phase 8 — Business Hubs (2026-08-19): **STARTED, first unit only**
+
+#### Infrastructure vs business modules — they are not the same thing
+
+The **Hub framework is COMPLETE** and is not rebuilt: registry, manifest association, lifecycle, `permissionScope`, navigation, dependency resolution, failure isolation, audit sink, i18n. What is missing is **business modules inside the hubs** — 17 of the 20 mapped in [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md) are not started.
+
+#### Unit shipped: the Founder Hub's architected id
+
+Merge `baf3420`, [PR #110](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/110). `tappy.hub.dashboard` → **`tappy.hub.founder`**, per taxonomy §3 under Decision G.
+
+**The §3 caution was half wrong, and it was measured before acting rather than assumed.** §3 called the rename *"a migration with a real cutover"* because a hub id lives in a manifest **and** in the audit trail. On production, read-only:
+
+| Checked | Result |
+|---|---|
+| `audit_log` rows `action LIKE 'controller.%'` | **0** |
+| `audit_log` rows `target_id LIKE 'tappy.hub%'` | **0** |
+| `module_registry` · `platform_settings` | **do not exist** |
+
+Every `buildAdminController()` call site uses the default **NOOP audit sink**, so `controller.hub.registered` has never been written. The manifest half is real but code-only, in one non-test file. **No data migration.**
+
+**The module id did NOT change.** `01_ARCH` §2.1 makes it *"globally unique, immutable"*, and the taxonomy authorized renaming the hub alone — so `tappy.hub.dashboard.home` keeps its id inside `tappy.hub.founder`. A test pins that, so it cannot be "tidied" later without authority.
+
+**This completes nothing.** Business Analytics and the Investor Dashboard do not exist; `daily_snapshots` has no migration. It corrects an identity. No module invented, no route added, no KPI faked.
+
+**14 new tests**; four existing updated to the new identity, none weakened. **Production:** live at `baf3420`, all routes 200, no 500. ⚠️ *production render not visually verified; unit/CI evidence only* — no Owner session, and no account substituted.
+
+#### Data sources that DO exist, measured (for the modules still to come)
+
+`auth_daily_rollup` · `activation_daily_rollup` · `user_acquisition` · `user_events` · `system_health_log` · `music_track_reports`. **Absent:** `daily_snapshots`, `module_registry`, `platform_settings`, `role_definitions`, `permission_grants`.
+
+#### 🔴 Owner decisions before the next Phase 8 unit
+
+1. **Which business module is next, and against which spec?** Every remaining module needs new permissions, an API route, a page and a service. `docs/backoffice` has approved specs for several (bo-10 User Management, bo-11 Moderation, bo-14 System Monitoring), but none has been authorised as the next build.
+2. **`tappy.hub.configuration`** stays on HOLD pending the Module 17 Settings decision (taxonomy §2).
+3. **Module-id convention after a hub rename** — is the `tappy.hub.dashboard.home` mismatch accepted permanently, or does a future ADR permit module-id migration?
+
+**Phase 8 is NOT complete.** One identity corrected; no business module built.
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
