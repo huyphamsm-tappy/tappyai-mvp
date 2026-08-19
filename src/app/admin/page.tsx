@@ -35,7 +35,21 @@ export default async function AdminHomePage() {
 
   // PDP-gated real signals — only what THIS actor may see.
   const canRoles = permissionEngine.can(actor, PERMISSIONS.SECURITY_ROLES_READ)
-  const canAudit = permissionEngine.can(actor, PERMISSIONS.AUDIT_LOG_READ)
+
+  // Capability binding (FOUNDATION-01 §1). Home's manifest DECLARES a dependency
+  // on `audit.read`; this is where that declaration is honoured. Two independent
+  // conditions must both hold before the audit panel reads anything:
+  //
+  //   1. the PDP allows this actor to read the audit log, and
+  //   2. the kernel can bind `audit.read` — i.e. the providing module is
+  //      registered, enabled and not isolated by a failure.
+  //
+  // They are not redundant. (1) is authorization; (2) is availability. Disabling
+  // the Audit module must close this panel for everyone including the Owner,
+  // because "disabled ⇒ capability unreachable" is a property of the module, not
+  // of the actor — and the Owner bypasses (1) by constitutional rule.
+  const auditCapability = core.bindCapability('audit.read')
+  const canAudit = permissionEngine.can(actor, PERMISSIONS.AUDIT_LOG_READ) && auditCapability !== undefined
 
   let adminRoles: number | null = null
   let recentAudit: HomeAuditEvent[] | null = null
