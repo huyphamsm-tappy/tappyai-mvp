@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
@@ -21,13 +21,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.core.common.UiState
@@ -99,60 +99,66 @@ fun DealsScreen(
 
 @Composable
 private fun DealsList(deals: List<Deal>, onOpen: (String) -> Unit) {
+    // Keys are derived up front rather than inline: `it.url` alone is not unique (see
+    // [dealListKeys]), and a duplicate key crashes the whole tab during measure.
+    val keys = remember(deals) { dealListKeys(deals) }
     LazyColumn(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-        items(items = deals, key = { it.url }) { deal ->
-            DealCard(deal = deal, onClick = { onOpen(deal.url) })
+        itemsIndexed(items = deals, key = { index, _ -> keys[index] }) { _, deal ->
+            // A blank url has nothing to open — `openUri("")` throws ActivityNotFoundException,
+            // so such a card renders as plain (non-tappable) content instead.
+            val url = deal.url.trim()
+            DealCard(deal = deal, onClick = if (url.isEmpty()) null else ({ onOpen(url) }))
         }
     }
 }
 
+/** [onClick] is null for a deal with no url — the card then carries no tap affordance at all. */
 @Composable
-private fun DealCard(deal: Deal, onClick: () -> Unit) {
+private fun DealCard(deal: Deal, onClick: (() -> Unit)?) {
     val colors = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(TappyShapes.card)
             .background(colors.surfaceVariant)
-            .clickable(onClick = onClick)
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(TappySpacing.lg),
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(text = deal.emoji, style = MaterialTheme.typography.headlineSmall)
-
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
-            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs), verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = deal.title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, fill = false),
-                )
-                if (deal.badge != null) {
-                    Box(
-                        modifier = Modifier
-                            .clip(TappyShapes.pill)
-                            .background(tappyCategoryColors.red.accent)
-                            .padding(horizontal = TappySpacing.sm, vertical = 2.dp),
-                    ) {
-                        Text(text = deal.badge, style = MaterialTheme.typography.labelSmall, color = colors.onError)
-                    }
-                }
-            }
-            Text(text = deal.discount, style = MaterialTheme.typography.bodyMedium, color = tappyCategoryColors.green.accent)
             Text(
-                text = stringResource(R.string.deals_category_source_format, deal.category, deal.source),
+                text = deal.title,
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            // Most deals carry no promotion — web renders the discount only when one exists.
+            val discount = deal.discount?.trim()
+            if (!discount.isNullOrEmpty()) {
+                Text(text = discount, style = MaterialTheme.typography.bodyMedium, color = tappyCategoryColors.green.accent)
+            }
+            // "via <partner>" only when there is a partner to name — otherwise the format string
+            // leaves a dangling "· via " with nothing after it.
+            val source = deal.source.trim()
+            Text(
+                text = if (source.isEmpty()) {
+                    deal.category
+                } else {
+                    stringResource(R.string.deals_category_source_format, deal.category, source)
+                },
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.onSurfaceVariant,
             )
         }
 
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-            contentDescription = stringResource(R.string.deals_opens_externally_description),
-            tint = colors.onSurfaceVariant,
-        )
+        // Only promise "opens externally" when there is actually something to open.
+        if (onClick != null) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                contentDescription = stringResource(R.string.deals_opens_externally_description),
+                tint = colors.onSurfaceVariant,
+            )
+        }
     }
 }

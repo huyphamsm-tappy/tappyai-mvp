@@ -379,7 +379,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'home.scanCardTitle': 'Snap a photo → AI extracts the text',
     'home.scanCardDesc': 'Scan paper documents, receipts, menus — export to .TXT, .DOCX or share instantly.',
     'home.togetherTitle': 'Tappy Together',
-    'home.togetherDesc': 'Pick a place as a group — AI suggests what suits everyone',
+    'home.togetherDesc': 'Pick a place to eat as a group — AI suggests what suits everyone',
     'home.recTitle': '✨ For you',
     'home.recDesc': 'Personalized places for your taste',
     'home.musicTitle': '🎵 Music library',

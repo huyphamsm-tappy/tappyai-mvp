@@ -57,11 +57,20 @@
             </intent-filter>
         </service>
 
+        <!-- windowSoftInputMode is REQUIRED here, not cosmetic. MainActivity calls
+             enableEdgeToEdge(), so decorFitsSystemWindows=false and Compose owns the IME
+             inset itself (ChatScreen's imePadding()). With nothing declared, the mode
+             resolved to ADJUST_PAN on a real device (measured: sim={adjust=pan}), so the
+             system panned the whole window up by the IME height AND imePadding() subtracted
+             it a second time: the composer was displaced 1093px instead of 672px and landed
+             at the top of the screen. adjustResize suppresses the pan and leaves the inset
+             to be applied exactly once. -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:resizeableActivity="true"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.TappyAI">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
