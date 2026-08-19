@@ -15,7 +15,10 @@ Controller V2 had an approved **scope** — Phase 1, Blocks A+B+C, Components 1�
 
 ## The decisions
 
-### A — Definition of Done: **COMPONENT-COMPLETE**
+### A — Definition of Done: **COMPONENT-COMPLETE** — ⚠️ SUPERSEDED 2026-08-19
+
+> **Superseded by [Owner Decision F, 2026-08-19](OWNER_DECISIONS_2026-08-19.md#f--definition-of-done-full-architecture).** The text below is unchanged and remains the accurate record of what was decided on 2026-08-13 — it governed the C1–C11 workstream, which completed under it. It is **no longer the definition of Controller V2**: C1–C11 is the Foundation and a precondition. Decisions B, C, D and E of this record are **not** affected.
+
 
 Controller V2 is **COMPLETE** when Components **C1–C11** are complete according to their actual contracts/specifications, their applicable gates pass, and the production verification required by each component is satisfied.
 
