@@ -577,6 +577,54 @@ Separating the two authorities, as they must be:
 
 **Phase 8 remains BLOCKED. Phase 7 remains PARTIAL.**
 
+### Phase 8 — the "schema conflict" does not exist (2026-08-19)
+
+Read-only. **No code, no migration, no ADR, no `profiles` change, no consumer-app change.**
+
+#### ⚠️ Correcting the entry above: there is NO conflict between bo-23 and bo-10
+
+That entry claimed *"Two frozen documents specify different schemas for the same feature."* **That was wrong, and it was my own misreading** — the assumption that `is_vip` and the status columns were alternatives.
+
+They are **different fields for different modules, and they coexist**:
+
+| Field | Belongs to | Source |
+|---|---|---|
+| `is_vip` | **Module 11 CRM** | [`14_CRM.md:142`](../backoffice/14_CRM.md) — *"VIP status is stored in `profiles.is_vip BOOLEAN` (new column)"* |
+| `is_suspended` · `suspended_until` · `is_banned` · **`ban_reason`** | **Module 08 User Management** | [`04_Database_Architecture.md`](../backoffice/04_Database_Architecture.md) §7 |
+
+bo-23 Phase 2 lists `is_vip` because Phase 2 also delivers `/admin/crm/[id]`. Its migration list is a roadmap summary, **not a schema source**.
+
+#### Authority precedence for schema — it is explicit
+
+**ERRATA-005** (Constitution §9.2) *"Declared `04` the single authoritative schema source"*, and [`04`](../backoffice/04_Database_Architecture.md) line 24 states it: *"where a table is described in more than one document, the definition referenced here **governs**, and any other copy is a non-authoritative reference."*
+
+So the governing definition is bo-04 §7, and it defines **four** additive columns — one more (`ban_reason`) than bo-10 §4 mentions. `05_API_Architecture.md` §users agrees with bo-04. **Nothing is in conflict; one summary is merely not exhaustive.**
+
+**Classification under Constitution §8.2: not a Design Change, and not even an erratum that blocks anything.** No ADR is required to resolve a conflict that does not exist. **Owner Decision A from the previous entry is withdrawn — it was never needed.**
+
+#### `profiles` ownership — answered by the frozen architecture
+
+bo-04 line 106: *"Existing product tables (`profiles`, …) are defined in the main app schema; **§7 documents the additive columns this architecture requires on them**."* §7 is headed *"Minimal modifications to existing tables. **Only additions, never breaking changes.**"*
+
+So `profiles` is **consumer-app-owned**, and the approved v1.1 architecture **already authorises the Back Office to add these columns**. Ownership is not transferred; User Management is an administrative facade over consumer-owned data.
+
+#### What remains genuinely blocking
+
+**MEASURED: zero code references** to `is_suspended`, `suspended_until`, `is_banned`, `ban_reason` or `is_vip` anywhere in `src/` or `supabase/migrations/`. Production `profiles` has none of them.
+
+**`MODULE 08 FULL IMPLEMENTATION = CROSS-WORKSTREAM.`** bo-10 §4 defines suspension as *"cannot post content, cannot comment, cannot use AI, can browse read-only"*. Those enforcement points live in the consumer API layer — `src/app/api/reviews/route.ts`, `src/app/api/chat/route.ts` and the comment path — none of which consults any status field today. Controller V2 alone cannot satisfy the frozen contract; the admin side would set a flag nothing honours.
+
+Ban is better placed: *"revokes ALL active Supabase sessions"* is C11, which exists. Soft-delete anonymisation still meets the known *"Delete Account has no backend"* gap and bo-33 Privacy.
+
+#### 🔴 Minimum Owner decisions — now **two**, not four
+
+1. **Authorize the Phase 2 migration** (bo-04 §7 profiles columns + `user_notes` + `moderation_queue` + `moderation_actions`), under the ADR-017 pattern. **No ADR needed for the schema itself** — bo-04 §7 is already approved at v1.1.
+2. **Authorize consumer-side enforcement of suspension**, or scope Phase 2 to admin-side only and accept, explicitly, that suspension restricts nothing until the consumer app honours it.
+
+Still open, unchanged and unrelated: **Module 17** hub, **Module 20** classification.
+
+**PHASE 8 BLOCKED — PENDING MIGRATION AND CROSS-TIER AUTHORIZATION.** The schema-authority conflict is closed.
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
