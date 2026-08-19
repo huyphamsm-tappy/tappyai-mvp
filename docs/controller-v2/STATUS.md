@@ -175,6 +175,23 @@ The authorization boundary is untouched: `AdminShell` is presentational, and the
 
 **Blocked, and not attempted:** command palette (⌘K), context bar, alert well, the six layout presets, density comfortable/compact, and the Denial-UX 403 page. Each is named only by `01_CONTROLLER_V2_ARCHITECTURE.md` §8 and each is a **new UI surface**, while §13 holds the UI boundary **OWNER-APPROVAL-PENDING** and every `docs/backoffice/**` UI spec is **DRAFT — Awaiting Owner Approval** (verified in `17_UI_UX_Standards.md`). Density additionally needs a preference store, which depends on B2.
 
+### Architecture Guard — Controller V2 rules (2026-08-19)
+
+[`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) §1 lists five *"Hard rules **enforced by the Architecture Guard**"* and names the mechanism outright — *"enforced in CI by extending `scripts/architecture/check.mjs`"*. The guard shipped **8 rules, all of them for the AI provider layer and none for Controller V2**, so those five held by convention only.
+
+Two of the five are enforceable against the code as it exists today, and are now enforced:
+
+| §1 rule | Enforced as | Why it matters |
+|---|---|---|
+| 4 — *"No consumer-app import inside the Controller"* | `no-consumer-app-import-in-controller` | This is the property that keeps extracting the Controller to its own deployment *"a build-config change, not a rewrite"* — and that extraction is **still an open Owner decision** ([`00_LEGACY_AUDIT.md`](00_LEGACY_AUDIT.md) §5.3). An unenforced invariant protecting an open decision is the kind that rots |
+| 5 — *"No permission string literal outside a manifest"* | `no-permission-string-literal` | *"a permission that is not declared in a manifest does not compile"* |
+
+**The guard found a real violation on its first run**, not a fixture: [`src/lib/controller/org/departments.ts`](../../src/lib/controller/org/departments.ts) declared `permissions: ['commerce.deals.read']` as a raw literal. Fixed to `PERMISSIONS.COMMERCE_DEALS_READ`. Guard now reports **10/10**.
+
+The other three §1 rules (module→module imports, module→connector imports, module-owned repositories) describe `src/controller/modules/` and `src/controller/connectors/`, **directories that do not exist**. They are deliberately NOT written against a shape the repository has not adopted.
+
+The rule engine gained exactly two fields: `scope` (a rule that applies only *within* prefixes — `allow` cannot express a boundary rule) and `exemptTests`. **Mutation: 6/6 killed**, including dropping the scope filter, widening the allowlist to the whole `supabase/` directory, removing the test exemption, and matching the permission *id shape* instead of the *argument position* — the last one matters because `'admin.nav.dashboard'` is shaped exactly like a permission id, so a shape-matching rule would condemn every nav label and then be loosened until it caught nothing.
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.

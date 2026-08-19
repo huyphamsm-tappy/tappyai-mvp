@@ -49,9 +49,33 @@ const BANNED_DEPENDENCIES = [
   '@google-cloud/vertexai',
 ]
 
+// Controller V2 kernel + its modules. 01_CONTROLLER_V2_ARCHITECTURE.md §1 makes
+// this a boundary: nothing here may import consumer-app code, so extracting the
+// Controller to its own deployment stays a build-config change rather than a
+// rewrite. That extraction is still an OPEN owner decision (00_LEGACY_AUDIT.md
+// §5.3), which is exactly why the invariant needs enforcing rather than luck.
+const CONTROLLER_LAYER = 'src/lib/controller/'
+
+// The Security Core (FOUNDATION_01 §9) the Controller is REQUIRED to consume,
+// plus the single admin-client construction point (C9a). Note this names
+// `supabase/admin` and not the whole directory: `supabase/server` and
+// `supabase/client` are request-scoped consumer clients.
+const CONTROLLER_ALLOWED_IMPORTS = /@\/(?:lib\/(?:admin|controller|security)\/|lib\/supabase\/admin['"])/
+
+// Where permission ids are DECLARED. Everywhere else must use the registry
+// constant, so a permission no manifest declares cannot be referenced.
+const PERMISSION_REGISTRY = 'src/lib/admin/permissions/'
+
 // ── Rules ────────────────────────────────────────────────────────────────────
 // id/title show in the report; patterns run per source line (comments stripped);
 // allow = path prefixes exempt from the rule; hint = how to fix.
+//
+// Optional per-rule fields:
+//   scope       = path prefixes the rule applies WITHIN (absent = everywhere).
+//                 `allow` says "not here"; `scope` says "only here" — a boundary
+//                 rule needs the second, and cannot be expressed with the first.
+//   exemptTests = skip *.test.* files. Only for rules whose violation is the
+//                 normal way to write a fixture.
 const RULES = [
   {
     id: 'no-vendor-sdk-imports',
@@ -150,6 +174,39 @@ const RULES = [
     allow: [SUPABASE_ADMIN, SERVICE_ROLE_FLAG_READ],
     hint: 'import { createAdminClient } from "@/lib/supabase/admin". A hand-rolled client omits the auth hardening (autoRefreshToken:false, persistSession:false) and quietly becomes a second admin factory — Component 9a removed two of those.',
   },
+  {
+    // Controller V2 — 01_CONTROLLER_V2_ARCHITECTURE.md §1, rule 4.
+    id: 'no-consumer-app-import-in-controller',
+    title: 'Consumer-app import inside the Controller',
+    patterns: [
+      // Any `@/` import that is NOT one of the Security Core zones. Written as a
+      // negative lookahead because the rule is an allowlist: adding a new
+      // consumer-app directory must not silently become permitted.
+      new RegExp(`from\\s+['"](?!${CONTROLLER_ALLOWED_IMPORTS.source})@/`),
+      new RegExp(`require\\(\\s*['"](?!${CONTROLLER_ALLOWED_IMPORTS.source})@/`),
+    ],
+    allow: [],
+    scope: [CONTROLLER_LAYER],
+    hint: 'the Controller may import the Security Core (@/lib/admin/**, @/lib/security/**), the admin client (@/lib/supabase/admin) and itself — nothing else. Reach consumer-app behaviour through a capability, not an import: keeping this boundary is what makes extracting the Controller a build-config change instead of a rewrite (00_LEGACY_AUDIT.md §5.3).',
+  },
+  {
+    // Controller V2 — 01_CONTROLLER_V2_ARCHITECTURE.md §1, rule 5.
+    id: 'no-permission-string-literal',
+    title: 'Permission id written as a string literal instead of a registry constant',
+    patterns: [
+      // Argument positions of the two guards and the PDP.
+      /requirePagePermission\(\s*['"]/,
+      /requirePermission\([^)]*,\s*['"]/,
+      /\.(?:can|authorize)\([^)]*,\s*['"][a-z_]+\.[a-z_]+\.[a-z_]+['"]/,
+      // Manifest / hub declaration fields.
+      /(?:visibilityPermission|permissionScope)\s*:\s*['"]/,
+      /\bpermissions\s*:\s*\[\s*['"]/,
+    ],
+    // The registry is where these ids are DEFINED; it cannot import itself.
+    allow: [PERMISSION_REGISTRY],
+    exemptTests: true,
+    hint: "use PERMISSIONS.<KEY> from '@/lib/admin/permissions/registry'. A raw string is a permission no manifest declares, which the architecture requires not to compile — and it is matched on the ARGUMENT POSITION, not the id shape, because i18n keys ('admin.nav.dashboard') are shaped identically.",
+  },
 ]
 
 // ── Engine ───────────────────────────────────────────────────────────────────
@@ -224,6 +281,11 @@ function checkSources() {
     const lines = stripped.split('\n')
     for (const rule of RULES) {
       if (rule.allow.some((prefix) => rel.startsWith(prefix))) continue
+      // `scope` is the inverse of `allow`: the rule applies ONLY inside these
+      // prefixes. Boundary rules need it — "no consumer-app import in the
+      // Controller" cannot be written as "forbidden everywhere except X".
+      if (rule.scope && !rule.scope.some((prefix) => rel.startsWith(prefix))) continue
+      if (rule.exemptTests && /\.test\.[cm]?[jt]sx?$/.test(rel)) continue
       for (let i = 0; i < lines.length; i++) {
         for (const pattern of rule.patterns) {
           if (pattern.test(lines[i])) {
@@ -262,6 +324,7 @@ const violations = [...checkSources(), ...checkDependencies()]
 const totalRules = RULES.length + 1 // + dependency rule
 
 console.log('Architecture Guard — AI Platform (docs/architecture/AI_PLATFORM.md)')
+console.log('                 + Controller V2 (docs/controller-v2/01_CONTROLLER_V2_ARCHITECTURE.md §1)')
 console.log('')
 
 if (violations.length === 0) {
@@ -286,5 +349,6 @@ for (const [ruleId, list] of byRule) {
 }
 
 console.log(`Result: ${violations.length} violation(s) across ${byRule.size} rule(s).`)
-console.log('The AI architecture is FROZEN — see docs/architecture/AI_PLATFORM.md before changing anything above.')
+console.log('These architectures are FROZEN — see docs/architecture/AI_PLATFORM.md and')
+console.log('docs/controller-v2/01_CONTROLLER_V2_ARCHITECTURE.md §1 before changing anything above.')
 process.exit(1)
