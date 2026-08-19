@@ -625,6 +625,52 @@ Still open, unchanged and unrelated: **Module 17** hub, **Module 20** classifica
 
 **PHASE 8 BLOCKED — PENDING MIGRATION AND CROSS-TIER AUTHORIZATION.** The schema-authority conflict is closed.
 
+### Phase 2 / Module 08 — Owner Decision 2 taken; enforcement is ordered behind the migration (2026-08-19)
+
+**Owner decision recorded:** suspension must be **real enforcement, not an admin-only flag.** The contract is not weakened.
+
+**No enforcement code was written**, and the reason is an ordering fact, not a preference.
+
+#### Cross-tier enforcement map — measured from the code
+
+`10_User_Management.md` §4 prohibits four things for a suspended user: *post content · comment · use AI · browse read-only*. Those enforcement points are:
+
+| Prohibited action | Route | Guard today | Reads `profiles`? |
+|---|---|---|---|
+| Post content | [`api/reviews/route.ts`](../../src/app/api/reviews/route.ts) POST | `getRequestUser` | ❌ |
+| Comment | [`api/reviews/[id]/comments/route.ts`](../../src/app/api/reviews/[id]/comments/route.ts) POST | `getRequestUser` | ❌ |
+| Use AI | [`api/chat/route.ts`](../../src/app/api/chat/route.ts) POST | `getRequestUser` | ❌ |
+
+`getRequestUser` is the shared authentication primitive across ~20 routes and **does not read `profiles` at all**. Putting the status check inside it would (a) add a database round trip to every authenticated request and (b) block read-only routes, which the contract explicitly permits. So the boundary is **one shared `assertAccountActive` primitive called by the three prohibited-action routes** — one coherent boundary, not three inline checks.
+
+Reactions/likes are **not** in the prohibited list and were not added to it.
+
+#### Why enforcement cannot ship first
+
+The four columns do not exist. A query selecting `is_suspended` from `profiles` is **rejected by PostgREST** — it does not fail soft. Merging enforcement before the migration would break **posting, commenting and chat for every user in production**. The alternative — tolerating the missing column and treating everyone as active — is a fail-open path that would outlive its excuse.
+
+**So the order is: migration → enforcement.** Not a preference.
+
+#### Migration artifact prepared, NOT applied
+
+[`supabase/migrations/deferred/PHASE2_M08_profiles_account_status.sql`](../../supabase/migrations/deferred/PHASE2_M08_profiles_account_status.sql) — the four `profiles` columns quoted verbatim from `04` §7, additive only, `IF NOT EXISTS` throughout, with rollback and read-only verification queries in the header. It sits in `deferred/` so a bulk apply cannot pick it up. SQL grant guard: **0 errors**.
+
+Scoped deliberately to Module 08. `user_notes` (CRM), `moderation_queue` and `moderation_actions` (Module 09) are **not** in this artifact — Module 09 is still blocked by the Content Safety overlap, and folding them in would expand Module 08 silently.
+
+#### Ban and delete
+
+**Ban** — *"revokes ALL active Supabase sessions"* is satisfied by **C11 Session Security**, which exists in production. No new capability needed. Needs `is_banned` + `ban_reason` from the same migration.
+
+**Delete / PII anonymisation — SEPARATE WORKSTREAM.** bo-33 Privacy and bo-34 Retention are APPROVED, but account deletion still has no backend (a known Play-store blocker), and it is not required to make suspension real. Not expanded into this slice.
+
+#### 🔴 The one remaining decision
+
+> **Authorize applying `PHASE2_M08_profiles_account_status.sql` to production**, under the ADR-017 sequence: preflight → review → explicit authorization → apply → verify → rollback window.
+
+The moment it lands, enforcement is unblocked and proceeds RED → implement → GREEN → mutation → regression → PR → CI → merge.
+
+**PHASE 8 BLOCKED — PENDING PRODUCTION MIGRATION AUTHORIZATION.**
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
