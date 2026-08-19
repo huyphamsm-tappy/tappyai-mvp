@@ -80,7 +80,7 @@ async function runCheck(target: CheckTarget, inputType: InputType): Promise<Chec
   const risk = calculateRisk(signals)
   const evidence = buildEvidence(signals)
   const directoryMatch = await officialDirectory.lookup(target.hostname)
-  const actions = getRecommendedActions(risk.level, evidence, directoryMatch)
+  const actions = getRecommendedActions(risk.level, evidence, directoryMatch, risk.confidence)
 
   return {
     inputType,
