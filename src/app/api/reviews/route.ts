@@ -8,6 +8,7 @@ import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
 import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
 import { isAcceptableVideoDuration, MAX_VIDEO_DURATION_ACCEPT_SEC } from '@/lib/config/product'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -68,6 +69,16 @@ export async function POST(req: NextRequest) {
 
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Cần đăng nhập để đánh giá' }, { status: 401 })
+
+  // Module 08 §4 — a suspended account cannot post content. Checked before the
+  // body is parsed and before any upload work, so a blocked post costs nothing.
+  const restriction = await getAccountRestriction(supabase, user.id)
+  if (restriction.blocked) {
+    return NextResponse.json(
+      { error: accountRestrictionMessage(restriction), code: accountRestrictionCode(restriction.reason!) },
+      { status: 403 }
+    )
+  }
 
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]

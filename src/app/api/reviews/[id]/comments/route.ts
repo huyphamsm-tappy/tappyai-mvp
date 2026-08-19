@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
 
@@ -104,6 +105,15 @@ export async function POST(
   // so an uncapped POST is a spam vector against that owner.
   if (!rateLimit(`comment:${user.id}`, 10, 60_000).ok) {
     return NextResponse.json({ error: 'Ban binh luan qua nhanh, thu lai sau giay lat.' }, { status: 429 })
+  }
+
+  // Module 08 §4 — a suspended account cannot comment.
+  const restriction = await getAccountRestriction(supabase, user.id)
+  if (restriction.blocked) {
+    return NextResponse.json(
+      { error: accountRestrictionMessage(restriction), code: accountRestrictionCode(restriction.reason!) },
+      { status: 403 }
+    )
   }
 
   let body: string
