@@ -117,4 +117,22 @@ Any new value requires updating this table AND the corresponding Postgres enum (
 
 ---
 
+## 8. Account Status Fields — Module 08
+
+Stored in `public.account_status`, **not** on `profiles` — Owner authorization 2026-08-19, [ADR-022](../architecture/ADR-022-account-status-isolation.md). Schema in `04_Database_Architecture.md` §7B. Semantics in `10_User_Management.md` §4.
+
+| Field | Type | Required | Class (`33` §3) | Definition |
+|---|---|---|---|---|
+| `user_id` | UUID | Yes | C0 | PK and FK to `profiles.id`, `ON DELETE CASCADE`. One status row per user at most. |
+| `is_suspended` | boolean | Yes | C0 | Account is suspended. Cannot post, comment or use AI; can browse read-only. Not self-clearable — no PostgREST role holds UPDATE. |
+| `suspended_until` | timestamptz \| null | No | C0 | Expiry of a time-limited suspension. Null means indefinite until lifted. The auto-unsuspend job (`10` §4) reads this; the index `idx_account_status_suspended_until` serves that lookup. |
+| `is_banned` | boolean | Yes | C0 | Account is banned: cannot log in. The column records the state; it does not revoke sessions — that is an Auth Admin API operation. |
+| `ban_reason` | text \| null | No | **OPEN — Owner decision pending** | Free-text administrative note recording why the ban or suspension was applied. Written by the admin surface via `service_role`. Readable by **no** PostgREST role — not `anon`, not `authenticated`, not the subject of the note. Its `33` §3 class is deliberately unassigned; the field's exposure is identical under any answer. |
+| `created_at` | timestamptz | Yes | C0 | Row creation. |
+| `updated_at` | timestamptz | Yes | C0 | Maintained by the shared `set_updated_at()` trigger, as on `profiles`. |
+
+**Absent row means ACTIVE.** There is no backfill and no signup trigger, so most users have no row. Any read must `LEFT JOIN` and `COALESCE(is_suspended, false)` / `COALESCE(is_banned, false)`; an inner join silently drops every never-moderated user.
+
+---
+
 *End of Data Dictionary*

@@ -1,8 +1,26 @@
 -- ============================================================================
+-- ⛔ SUPERSEDED — DO NOT APPLY. NEVER APPLIED.
+--
+--   Owner authorization 2026-08-19 (Candidate C) replaces this artifact with
+--   `supabase/migrations/20260819_m08_account_status.sql`, which creates the
+--   dedicated `public.account_status` table and leaves `profiles` untouched.
+--   Authority: docs/architecture/ADR-022-account-status-isolation.md.
+--
+--   A read-only production preflight blocked this file. `profiles` carries two
+--   permissive SELECT policies with `qual = true` for `{public}` and grants
+--   `anon`/`authenticated` SELECT/INSERT/UPDATE/DELETE. RLS filters rows, not
+--   columns — so on `profiles` these four columns would make `ban_reason`
+--   readable by the anonymous internet and let a suspended user clear their own
+--   `is_suspended` over PostgREST.
+--
+--   Retained as the record of what was specified by `04` §7 and why it changed.
+--   The four fields are unchanged; only their location is.
+-- ============================================================================
+--
 -- Controller V2 — Phase 2 / Module 08 User Management
 -- Account status columns on `profiles`
 --
--- GATE: explicit Owner authorization of the Phase 2 migration.
+-- GATE: superseded — the gate can no longer be met. See the notice above.
 --       This file is in `deferred/` precisely so a bulk or directory-default
 --       apply cannot pick it up. It has NOT been applied.
 --
