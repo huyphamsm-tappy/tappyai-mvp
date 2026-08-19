@@ -35,7 +35,7 @@ const T = enStrings
 
 const GROUPS: NavGroup[] = [
   {
-    hubId: 'tappy.hub.dashboard', label: 'admin.nav.group.dashboard', order: 0,
+    hubId: 'tappy.hub.founder', label: 'admin.nav.group.founder', order: 0,
     items: [{ moduleId: 'm.home', label: 'admin.nav.dashboard', icon: 'LayoutDashboard', route: '/admin', order: 0 }],
   },
   {
@@ -58,7 +58,7 @@ function renderShell(navGroups: NavGroup[]) {
 describe('§2/§13 — the sidebar is hub-grouped', () => {
   it('renders a heading for every hub that has visible items', () => {
     renderShell(GROUPS)
-    expect(screen.getByText(T['admin.nav.group.dashboard'])).toBeDefined()
+    expect(screen.getByText(T['admin.nav.group.founder'])).toBeDefined()
     expect(screen.getByText(T['admin.nav.group.security'])).toBeDefined()
   })
 
@@ -75,7 +75,7 @@ describe('§2/§13 — the sidebar is hub-grouped', () => {
     renderShell(GROUPS)
     const headings = screen.getAllByRole('group').map((g) => g.getAttribute('aria-label'))
     expect(headings).toEqual([
-      T['admin.nav.group.dashboard'],
+      T['admin.nav.group.founder'],
       T['admin.nav.group.security'],
     ])
   })

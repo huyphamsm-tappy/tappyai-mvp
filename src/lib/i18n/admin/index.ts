@@ -46,7 +46,7 @@ export const vi: Record<string, string> = {
   // Hub nav-group headings. Every registered hub declares one of these as its
   // `navigationGroup`; until Phase 7 the shell flattened the groups away, so the
   // keys were referenced by the registry and never translated.
-  'admin.nav.group.dashboard': 'Bảng điều khiển',
+  'admin.nav.group.founder': 'Điều hành',
   'admin.nav.group.analytics': 'Phân tích',
   'admin.nav.group.security': 'Bảo mật',
   'admin.nav.group.commerce': 'Thương mại',
@@ -316,7 +316,7 @@ export const en: Record<string, string> = {
   'admin.denied.unknown.body':
     'You do not have permission to open it. If you believe that is a mistake, ask an administrator.',
 
-  'admin.nav.group.dashboard': 'Control Center',
+  'admin.nav.group.founder': 'Founder',
   'admin.nav.group.analytics': 'Analytics',
   'admin.nav.group.security': 'Security',
   'admin.nav.group.commerce': 'Commerce',

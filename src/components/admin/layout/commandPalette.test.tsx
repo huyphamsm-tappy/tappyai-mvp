@@ -22,7 +22,7 @@ afterEach(() => {
 
 const GROUPS: NavGroup[] = [
   {
-    hubId: 'tappy.hub.dashboard', label: 'admin.nav.group.dashboard', order: 0,
+    hubId: 'tappy.hub.founder', label: 'admin.nav.group.founder', order: 0,
     items: [{ moduleId: 'm.home', label: 'admin.nav.dashboard', icon: 'LayoutDashboard', route: '/admin', order: 0 }],
   },
   {

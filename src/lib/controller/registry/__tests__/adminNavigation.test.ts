@@ -75,10 +75,10 @@ describe('registry nav — per-role visibility (migrated from nav.test.ts)', () 
 })
 
 describe('registry nav — hub grouping + deterministic order', () => {
-  it('groups are hub-ordered dashboard→analytics→security→commerce→configuration', () => {
+  it('groups are hub-ordered founder→analytics→security→commerce→configuration', () => {
     const groups = deriveNavigation(buildAdminController(), ACTOR.owner)
     expect(groups.map((g) => g.hubId)).toEqual([
-      'tappy.hub.dashboard', 'tappy.hub.analytics', 'tappy.hub.security', 'tappy.hub.commerce', 'tappy.hub.configuration',
+      'tappy.hub.founder', 'tappy.hub.analytics', 'tappy.hub.security', 'tappy.hub.commerce', 'tappy.hub.configuration',
     ])
   })
 

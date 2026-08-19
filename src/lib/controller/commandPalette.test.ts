@@ -24,7 +24,7 @@ import type { NavGroup } from './navigationProvider'
 /** In the order `deriveNavigation` returns them — hub order, then item order. */
 const GROUPS: NavGroup[] = [
   {
-    hubId: 'tappy.hub.dashboard', label: 'admin.nav.group.dashboard', order: 0,
+    hubId: 'tappy.hub.founder', label: 'admin.nav.group.founder', order: 0,
     items: [{ moduleId: 'm.home', label: 'admin.nav.dashboard', icon: 'LayoutDashboard', route: '/admin', order: 0 }],
   },
   {
@@ -52,7 +52,7 @@ const LABELS: Record<string, string> = {
   'admin.nav.dashboard': 'Dashboard',
   'admin.nav.auditLog': 'Audit Log',
   'admin.nav.roles': 'RBAC',
-  'admin.nav.group.dashboard': 'Control Center',
+  'admin.nav.group.founder': 'Founder',
   'admin.nav.group.security': 'Security',
   'admin.nav.group.analytics': 'Analytics',
   'admin.nav.group.commerce': 'Commerce',
