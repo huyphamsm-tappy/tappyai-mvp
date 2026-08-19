@@ -5,7 +5,7 @@ export const vi: Record<string, string> = {
   'deals.title': 'Deal hôm nay',
   'deals.empty': 'Chưa có ưu đãi nào. Quay lại sau nhé!',
   'deals.subtitle': 'Tappy chọn lọc {count} ưu đãi tốt nhất — cập nhật mỗi ngày lúc 7:30 sáng',
-  'deals.viaSource': 'via {source}',
+  'deals.viaSource': 'qua {source}',
   'deals.dayLeft': 'Còn 1 ngày',
   'deals.daysLeft': 'Còn {count} ngày',
   'deals.endingSoon': '🔥 Sắp hết hạn',
