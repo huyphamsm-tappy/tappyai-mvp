@@ -493,17 +493,30 @@ export class ControllerCore {
    * with a visibilityPermission requires the PDP to allow it.
    */
   isModuleAccessible(moduleId: string, actor: Actor | null, now?: number): boolean {
-    if (!this.isReady(moduleId)) return false
-    const mod = this.modules.get(moduleId)!
+    return this.isReady(moduleId) && this.isModulePermitted(moduleId, actor, now)
+  }
 
-    // Hub scope first (FOUNDATION-01 §2: a Hub "contains and GOVERNS modules,
-    // owns a permission scope"). A hub that declares a scope gates every module
-    // inside it, including modules that declare no visibilityPermission of their
-    // own — otherwise "governs" would mean nothing and the field would be
-    // decoration. Hubs without a scope are unaffected.
-    //
-    // Owner is unaffected either way: the PDP answers OWNER_BYPASS before it
-    // reads the permission, so this adds no new way to lock the Owner out.
+  /**
+   * The PERMISSION half of `isModuleAccessible`, without the readiness half.
+   *
+   * Split out because the Alert Well needs exactly this: an alert about a module
+   * that is disabled or has failed must still respect who may know the module
+   * exists, but gating it on readiness would hide every alert it is meant to
+   * raise — a broken module is never `ready` by definition.
+   *
+   * Hub scope first (FOUNDATION-01 §2: a Hub "contains and GOVERNS modules, owns
+   * a permission scope"). A hub that declares a scope gates every module inside
+   * it, including modules that declare no visibilityPermission of their own —
+   * otherwise "governs" would mean nothing and the field would be decoration.
+   * Hubs without a scope are unaffected.
+   *
+   * Owner is unaffected either way: the PDP answers OWNER_BYPASS before it reads
+   * the permission, so this adds no new way to lock the Owner out.
+   */
+  isModulePermitted(moduleId: string, actor: Actor | null, now?: number): boolean {
+    const mod = this.modules.get(moduleId)
+    if (!mod) return false
+
     const hubScope = this.hubs.get(mod.manifest.hub)?.permissionScope
     if (hubScope && !this.authorize(actor, hubScope, now).allowed) return false
 

@@ -2,7 +2,7 @@
 
 import { Link2Off } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { NotConnected } from './NotConnected'
+import { AlertWell } from './AlertWell'
 import type { ControllerHomeData } from './types'
 
 // The "What needs my attention?" pillar. REAL: recent audit-log activity (C7),
@@ -43,7 +43,7 @@ export function AttentionPanel({ attention }: { attention: ControllerHomeData['a
         )}
       </div>
 
-      <NotConnected labelKey="admin.home.nc.alerts" />
+      <AlertWell alerts={attention.alerts} />
     </section>
   )
 }

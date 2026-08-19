@@ -19,6 +19,8 @@ export interface HomeModuleLink {
   route: string
 }
 
+import type { ControllerAlert } from '@/lib/controller/alerts'
+
 export interface ControllerHomeData {
   controllerVersion: string
   env: 'production' | 'preview' | 'local'
@@ -33,8 +35,16 @@ export interface ControllerHomeData {
   }
   /** adminRoles is null when the actor lacks security.roles.read. */
   signals: { adminRoles: number | null }
-  /** recentAudit is null when the actor lacks audit.log.read. */
-  attention: { recentAudit: HomeAuditEvent[] | null }
+  attention: {
+    /** null when the actor lacks audit.log.read. */
+    recentAudit: HomeAuditEvent[] | null
+    /**
+     * Alert Well (B5). Derived server-side from registry facts, already
+     * permission-filtered and ordered most-severe-first. An empty array is a
+     * real answer — "nothing needs attention" — not a missing source.
+     */
+    alerts: ControllerAlert[]
+  }
   quickActions: HomeModuleLink[]
   /** Scope-aware organization context (Owner → global; else the actor's departments). */
   scope: { isGlobal: boolean; departmentIds: string[] }
