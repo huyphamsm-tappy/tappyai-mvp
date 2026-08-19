@@ -60,10 +60,22 @@ const DIMENSIONS: Array<{ field: string; vi: string; en: string; keys: string[] 
   { field: 'condition', vi: 'tình trạng', en: 'condition', keys: ['condition_label', 'condition'] },
 ]
 
+/**
+ * Values that occupy a field without carrying evidence.
+ *
+ * A place with no street address still gets `address: "Xem ban do"` — the UI's
+ * "see map" label, written into the field by the place tool. Measured on a live
+ * decision turn, that surfaced as "địa chỉ: Xem ban do", a fact-shaped sentence
+ * whose fact is a button caption. A placeholder is an ABSENT field: treating it
+ * as present is exactly the evidence-free claim this module exists to prevent.
+ */
+const PLACEHOLDER = /^(xem ban do|see map|xem bản đồ|n\/?a|-+|dang cap nhat|đang cập nhật|unknown|null|undefined)$/i
+
 const readable = (v: unknown): string | null => {
   if (v === undefined || v === null) return null
   const s = String(v).replace(/\s+/g, ' ').trim()
-  return s === '' ? null : s
+  if (s === '' || PLACEHOLDER.test(s)) return null
+  return s
 }
 
 /** Project one candidate onto the grounded structure. Nothing is derived. */

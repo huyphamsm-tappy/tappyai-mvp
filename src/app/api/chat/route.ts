@@ -25,6 +25,7 @@ import { buildRankingBlock, rankCandidates } from '@/lib/ai/candidateRanking'
 import { RECOMMENDATION_SCHEMA, buildDecisionToolBlock, renderRecommendation, validateDecision, type RecommendationDecision } from '@/lib/ai/recommendationDecision'
 import { buildNoCandidateResponse, buildRejectionQuestionBlock, buildRejectionResponse, buildSearchFailedResponse, shouldUseDeterministicRejection, shouldUseDeterministicResponse, toDataStreamBody } from '@/lib/ai/noCandidateResponse'
 import { buildProductQuery, classifyProductResult, filterIrrelevantProducts, productRecordsFrom, shouldPreSearchProducts } from '@/lib/ai/productPreSearch'
+import { buildPlaceQuery, classifyPlaceResult, placeRecordsFrom, shouldPreSearchPlaces } from '@/lib/ai/placePreSearch'
 import {
   createState,
   isValidConversationId,
@@ -429,6 +430,46 @@ export async function POST(req: Request) {
     }
   }
 
+  // ── Place pre-search ──────────────────────────────────────────────────────
+  // The same move, for the sibling path. Measured 2026-08-19: the place tool
+  // returned ten real venues and the reply presented two the tool never named.
+  // Searching first is what puts the initial place turn under the SAME
+  // grounded-facts regime that already governs every follow-up turn — the raw
+  // tool output arriving mid-stream has nothing said about it, the candidate
+  // table does. It also costs one model request instead of two.
+  let placePreSearched = false
+  if (!productPreSearched && shouldPreSearchPlaces({
+    delta: consultationDelta, forcedTool, state: convState,
+    locationIntent: locationIntent !== 'unknown', planningIntent: !!planningIntent, hasImage,
+  }) && convState) {
+    const { query, location } = buildPlaceQuery(convState, lastText)
+    const raw = await searchPlaces(query, location, undefined, lang, userLocation)
+    const filtered = budget ? applyBudgetFilter(raw, budget, query) : raw
+    // Same wrapper as the tool path, so B4 carving, enrichment collection and
+    // candidate normalisation behave identically to an LLM-issued call.
+    const model = forModel('search_places', filtered)
+    const outcome = classifyPlaceResult(model)
+    convState.lastSearchOutcome = outcome
+    placePreSearched = true
+    console.log(JSON.stringify({ type: 'tappyai_place_presearch', outcome, results: freshCandidates.length }))
+
+    if (outcome === 'ok') {
+      convState.candidates = freshCandidates.slice()
+      convState.lastSearchContext = { query, tool: 'search_places', at: Date.now() }
+      // Feed the filter what the missing `9:`/`a:` frames would have carried, so
+      // photos and order links still inject.
+      preSearchSeed = {
+        places: placeRecordsFrom(model) as TurnEvidence['places'],
+        productRecords: [],
+        productQueries: [],
+      }
+    }
+    // An empty or failed place search deliberately falls through to the normal
+    // path: the zero-evidence block already forbids naming a venue, and turning
+    // every no-result place turn into a template is the over-reach the product
+    // gate was careful to avoid.
+  }
+
   const stateBlock = buildStateContextBlock(convState, consultationDelta?.searchImpact)
   // Task 3F: the ranking is computed HERE, deterministically, from the candidates
   // the previous turn grounded — the model receives an ordered set with reasons
@@ -519,10 +560,10 @@ export async function POST(req: Request) {
   // is withheld ONLY when there is genuinely something to reuse. Initial
   // discovery, a location change, a new hard constraint and an exhausted pool
   // all set searchImpact.required, so all of them keep the tool.
-  const withholdPlaceSearch = !!convState
+  const withholdPlaceSearch = placePreSearched || (!!convState
     && consultationDelta?.searchImpact.required === false
     && usableCount > 0
-    && unseenCandidateCount(convState) > 0
+    && unseenCandidateCount(convState) > 0)
   // The factual surface. Built from VISIBLE candidates only — this turn's
   // rejection is already applied (applyDelta runs before ranking), so a
   // just-rejected option has no facts to state and nothing to be recommended
@@ -536,7 +577,14 @@ export async function POST(req: Request) {
   // model reaching for a tool that was not there: measured finishReason
   // 'tool-calls' with toolCalls 0 and an EMPTY reply on every pre-searched
   // turn. This states the fact; it is not an instruction about behaviour.
-  const reuseBlock = withholdPlaceSearch
+  const reuseBlock = placePreSearched
+    ? `\n\n===== LUOT NAY: DA TIM DIA DIEM XONG (SERVER) =====
+Mot lan tim dia diem da chay o server cho luot nay; ket qua chinh la cac lua chon o tren.
+Tool search_places KHONG co trong danh sach tool cua luot nay — dung goi no.
+CHI duoc neu ten nhung quan da liet ket o tren. KHONG duoc them bat ky quan nao khac,
+du ban co biet no that su ton tai — mot cai ten khong co trong danh sach la mot cai ten bia.
+====================================================`
+    : withholdPlaceSearch
     ? `\n\n===== LUOT NAY: DUNG LAI CAC LUA CHON DA CO =====
 Van con lua chon TRONG BANG CHUNG o tren ma user CHUA duoc xem. Hay tra loi tu nhung lua chon do.
 Tool search_places KHONG co trong danh sach tool cua luot nay — dung goi no.
@@ -981,6 +1029,19 @@ Hay tra loi TRUC TIEP tu du lieu da co.
     }
     if (anySearchRan) {
       convState.lastSearchOutcome = anySearchFailed ? 'failed' : freshCandidates.length > 0 ? 'ok' : 'empty'
+    }
+    // Identity grounding on the PRESENTATION turn, measured rather than assumed.
+    // The decision turn composes its own prose (D3) and cannot fabricate; this
+    // turn still writes freely, and it was caught naming venues the tool never
+    // returned. Reported only — editing the reply here would be the
+    // post-generation mutation this project ruled out.
+    const ungrounded = evidence.ungroundedNames ?? []
+    if (ungrounded.length > 0) {
+      console.log(JSON.stringify({
+        type: 'tappyai_identity_ungrounded', count: ungrounded.length,
+        presented: (evidence.presentedNames ?? []).length,
+        candidates: convState.candidates.length, preSearched: placePreSearched || productPreSearched,
+      }))
     }
     await saveState(convState)
     // The filter needs the held pool to tell which candidates a NON-searching

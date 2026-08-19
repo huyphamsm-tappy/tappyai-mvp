@@ -510,6 +510,57 @@ export interface TurnEvidence {
    * project's existing identity (productId -> link -> title).
    */
   presentedIds?: string[]
+  /**
+   * OUTPUT — option names the reply presented that no evidence backs. Reported,
+   * never acted on; see `ungroundedNamesIn`.
+   */
+  ungroundedNames?: string[]
+}
+
+/**
+ * Which option names in this reply does no evidence back?
+ *
+ * MEASUREMENT ONLY — this reports, it never edits the text. The reply is the
+ * model's; rewriting it here would be exactly the post-generation mutation this
+ * project ruled out. What it buys is that identity fabrication stops being
+ * invisible: it was found by reading one reply by hand, and without a counter
+ * it would go back to being found by hand.
+ *
+ * Measured 2026-08-19, VI place turn: the tool returned ten real venues and the
+ * reply bolded "Cà Phê Acoustic" (real), "The Workshop Coffee" (invented) and
+ * "Soo Kafe" (invented) — the authoritative list was in front of it.
+ *
+ * A bolded run is the reply's option heading; nothing else in the format names
+ * a venue. Substring matching in BOTH directions, because a reply legitimately
+ * shortens "Cà Phê Acoustic" to "Acoustic".
+ */
+export function ungroundedNamesIn(
+  text: string,
+  places: PlaceLike[],
+  productRecords: EvidenceRecord[],
+  heldCandidates: Array<{ candidateId: string; name: string }>,
+): string[] {
+  if (!text) return []
+  const known = [
+    ...places.map(p => p.name || ''),
+    ...productRecords.map(r => r.title || ''),
+    ...heldCandidates.map(c => c.name),
+  ]
+    .map(n => normalizeVN(n.trim().toLowerCase()))
+    .filter(Boolean)
+  if (known.length === 0) return []   // nothing to check against; not a finding
+
+  const out: string[] = []
+  for (const m of text.matchAll(/\*\*([^*\n]{3,60})\*\*/g)) {
+    // Strip list numbering and trailing punctuation the heading carries.
+    const shown = m[1].replace(/^\s*\d+[.)]\s*/, '').replace(/[:：\-–—\s]+$/, '').trim()
+    if (!shown) continue
+    const norm = normalizeVN(shown.toLowerCase())
+    if (norm.length < 3) continue
+    if (known.some(k => k.includes(norm) || norm.includes(k))) continue
+    out.push(shown)
+  }
+  return [...new Set(out)]
 }
 
 export function applyPlaceEnrichmentStreamFilter(
@@ -552,6 +603,8 @@ export function applyPlaceEnrichmentStreamFilter(
   let presentedNames: string[] = []
   /** Canonical ids of HELD candidates this reply named — see TurnEvidence.presentedIds. */
   let presentedIds: string[] = []
+  /** Names the reply presents as options that no evidence backs — see below. */
+  let ungroundedNames: string[] = []
   /**
    * The live-path text, recorded purely so presentation tracking does not
    * depend on bufferMode.
@@ -682,6 +735,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // A candidate is presented only if its name appears in the text the user
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
+    ungroundedNames = ungroundedNamesIn(finalText, places, productRecords, seed?.heldCandidates ?? [])
     if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
   }
 
@@ -792,7 +846,7 @@ export function applyPlaceEnrichmentStreamFilter(
           // resolved it from the reconstructed text above, live turns resolve
           // it here from what was actually streamed.
           if (presentedIds.length === 0) presentedIds = namedHeldIds(liveText)
-          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], presentedIds: [...new Set(presentedIds)] })
+          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], presentedIds: [...new Set(presentedIds)], ungroundedNames })
         } catch { /* state is best-effort; the reply already shipped */ }
       }
     },

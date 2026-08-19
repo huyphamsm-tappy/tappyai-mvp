@@ -309,6 +309,20 @@ describe('end to end: model answer in, wire bytes out', () => {
     expect(t).toMatch(/chưa có dữ liệu/)
   })
 
+  // Measured on a live VI decision turn after a rejection: the pick's only
+  // "fact" was `address: "Xem ban do"` — the UI's see-map button caption, which
+  // the place tool writes into the field when there is no street address. It
+  // rendered as "địa chỉ: Xem ban do".
+  it('treats a placeholder value as an absent field, not as evidence', () => {
+    const placeholderOnly: Candidate = {
+      candidateId: 'ph1', name: 'Cà Phê Sỏi Đá', type: 'place', source: 'search_places',
+      retrievedAt: 0, facts: { address: 'Xem ban do' },
+    }
+    const t = run({ recommendedId: 'ph1', reasonCodes: [] }, stateWith([placeholderOnly]))
+    expect(t).not.toContain('Xem ban do')
+    expect(t).toMatch(/chưa xác minh được thêm thông tin/)
+  })
+
   it('refuses to recommend a rejected candidate even if the model asks', () => {
     const r = stateWith([ANAN, COSA])
     r.rejections = [{ ref: 'AnAn', turn: 1 }]

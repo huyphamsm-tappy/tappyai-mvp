@@ -312,7 +312,9 @@ describe('search_places is withheld on reuse turns', () => {
   })
 
   it('the route gates the tool on exactly that predicate', () => {
-    expect(route).toContain('const withholdPlaceSearch = !!convState')
+    // The reuse predicate is unchanged; a pre-searched turn is now a SECOND
+    // reason to withhold, because the server already spent that search.
+    expect(route).toContain('const withholdPlaceSearch = placePreSearched || (!!convState')
     expect(route).toContain("consultationDelta?.searchImpact.required === false")
     expect(route).toContain('unseenCandidateCount(convState) > 0')
     expect(route).toContain('...(withholdPlaceSearch ? {} : { search_places: tool({')
@@ -327,11 +329,30 @@ describe('search_places is withheld on reuse turns', () => {
     expect(route).toContain('!productPreSearched ? { search_products: tool({')
   })
 
+  // `searchPlaces(` left this list when the place pre-search landed — the same
+  // carve-out `searchProducts(` already has, and for the same reason. It is not
+  // a prefetch: the gate only fires when the delta already decided a search was
+  // required, so the call is RELOCATED from the tool step, not added. Everything
+  // else stays banned, and the gate assertions below keep the exception narrow.
   it('7. no other tool gained a pre-generation exception', () => {
     const beforeStream = route.slice(0, route.indexOf('AI.stream('))
-    for (const forbidden of ['searchPlaces(', 'getHotelPrices(', 'getFlightPrices(', 'getNews(', 'getWeather(', 'webSearch(']) {
+    for (const forbidden of ['getHotelPrices(', 'getFlightPrices(', 'getNews(', 'getWeather(', 'webSearch(']) {
       expect(beforeStream, `${forbidden} must not run before generation`).not.toContain(forbidden)
     }
+  })
+
+  it('the place pre-search is gated as tightly as the product one', () => {
+    const gate = readFileSync('src/lib/ai/placePreSearch.ts', 'utf8')
+    expect(gate, 'it must never fire speculatively')
+      .toContain('if (delta.searchImpact.required !== true) return false')
+    expect(gate, 'a non-place turn must never pre-search').toContain('if (!locationIntent) return false')
+    expect(gate, 'held products must block it').toContain("state.candidates.some(c => c.type === 'product')")
+    expect(gate, 'multi-step turns keep the tool path').toContain('if (planningIntent || hasImage) return false')
+    // Having searched, the server must withhold the tool, or "exactly one
+    // search" would be advisory.
+    expect(route).toContain('const withholdPlaceSearch = placePreSearched')
+    // The two pre-searches must never both run in one turn.
+    expect(route).toContain('if (!productPreSearched && shouldPreSearchPlaces(')
   })
 })
 

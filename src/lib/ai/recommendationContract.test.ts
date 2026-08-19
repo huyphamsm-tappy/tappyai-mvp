@@ -423,8 +423,13 @@ describe('no new model calls were introduced for consultative behaviour', () => 
 
     // Places and hotels were the concrete prefetch risks C3-B.3 was written
     // against; the rest are listed so a future tool cannot slip in unnoticed.
+    // `searchPlaces(` was removed from this list when the place pre-search
+    // landed — the same gated carve-out `searchProducts(` already had. Neither
+    // is a prefetch: both fire only when the delta already required a search,
+    // so the call moves off the tool step rather than being added. The gate
+    // assertions in mediaPolicy.test.ts keep that exception narrow.
     for (const forbidden of [
-      'searchPlaces(', 'searchPlacesOSM(', 'getHotelPrices(', 'getFlightPrices(',
+      'searchPlacesOSM(', 'getHotelPrices(', 'getFlightPrices(',
       'getTransportOptions(', 'getNews(', 'getWeather(', 'getGoldPrice(', 'webSearch(',
     ]) {
       expect(beforeStream, `${forbidden} must not be invoked before generation`).not.toContain(forbidden)
