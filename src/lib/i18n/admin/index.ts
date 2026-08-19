@@ -16,6 +16,11 @@ export const vi: Record<string, string> = {
   'admin.shell.comingLaterPhase': 'Sẽ có ở giai đoạn sau',
   // Context Bar (B5, 01_ARCH §8 · UI standards §2 "context is always visible").
   'admin.context.envLabel': 'Môi trường',
+  // Command Palette (B5, 01_ARCH §8) — NAVIGATE only; act/search undefined.
+  'admin.palette.open': 'Tìm nhanh',
+  'admin.palette.title': 'Đi tới màn hình',
+  'admin.palette.placeholder': 'Gõ tên màn hình…',
+  'admin.palette.noResults': 'Không có màn hình nào khớp.',
   // Denial UX (B5, 01_ARCH §8). Each reason says what was refused and what the
   // visitor can do — never what the deployment's configuration looks like.
   'admin.denied.heading': 'Không có quyền truy cập',
@@ -287,6 +292,10 @@ export const en: Record<string, string> = {
   'admin.shell.comingSoon': 'soon',
   'admin.shell.comingLaterPhase': 'Coming in a later phase',
   'admin.context.envLabel': 'Environment',
+  'admin.palette.open': 'Quick find',
+  'admin.palette.title': 'Go to a screen',
+  'admin.palette.placeholder': 'Type a screen name…',
+  'admin.palette.noResults': 'No screen matches.',
   'admin.denied.heading': 'Access denied',
   'admin.denied.backToSite': 'Back to the site',
   'admin.denied.backToController': 'Back to the Controller',

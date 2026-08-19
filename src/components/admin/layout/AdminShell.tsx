@@ -8,6 +8,7 @@ import { type AdminRole } from '@/lib/admin/roles'
 import type { NavGroup } from '@/lib/controller/adminNavigation'
 import { navIcon } from './navIcons'
 import { ContextBar } from './ContextBar'
+import { CommandPalette } from './CommandPalette'
 import type { ControllerEnv } from '@/lib/controller/adminConfig'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -103,6 +104,7 @@ export function AdminShell({
             <div className="flex items-center gap-3">
               {/* B5 Context Bar. The locale control MOVED here rather than being
                   copied: two controls for one setting can disagree. */}
+              <CommandPalette navGroups={navGroups} />
               <ContextBar env={env} />
               <div className="text-right">
                 <div className="text-sm font-medium truncate max-w-[180px]">{email}</div>
