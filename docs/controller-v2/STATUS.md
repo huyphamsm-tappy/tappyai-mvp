@@ -342,6 +342,47 @@ Alongside the **date range** gap recorded above, §8's Command Palette leaves tw
 
 **Remaining B5 surfaces, approved and NOT started:** Layout Presets · Density (also needs B2). **Phase 7 is not complete.**
 
+### B5 · Layout Presets — **BLOCKED, not started** (2026-08-19)
+
+Fifth of six approved Phase 7 surfaces. **No code was written**, and that is the finding.
+
+**The entire contract is one sentence and a six-line diagram block** in [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) §8: *"RULE 10: layout follows the business question"*, plus six preset names each with a target and a question. Nothing else exists anywhere.
+
+#### Dependency audit — five of six presets target things that do not exist
+
+| Preset | Target | Target exists? | Data exists? | Contract sufficient? | Implementable? |
+|---|---|---|---|---|---|
+| KPI-First | Founder Hub | ❌ `tappy.hub.founder` is **not registered** — the taxonomy schedules a rename from `tappy.hub.dashboard` that has not happened | ❌ `ControllerHome` shows registry counts, not KPIs; `daily_snapshots` has no migration | ❌ | ❌ |
+| Overview → Detail | Analytics | ✅ hub + 3 modules + 3 routes | ⚠️ partial | ❌ | ❌ |
+| Sidebar-Filter Grid | Users, Orders | ❌ `tappy.hub.user` not registered; Orders not started | ❌ | ❌ | ❌ |
+| Storytelling Scroll | Investor Report | ❌ module 06 not started | ❌ | ❌ | ❌ |
+| Two-Column Work Surface | Moderation, Support | ❌ not started | ❌ | ❌ | ❌ |
+| Monitoring Wall | Operations | ❌ `tappy.hub.operations` not registered | ❌ | ❌ | ❌ |
+
+**Only Analytics has a real target** — and even there the contract supplies a name and a business question, nothing structural.
+
+#### A standalone preset engine is NOT contractually supported either
+
+The only structural statement is the diagram edge `Sh --> Lay --> DS`, which is a layering claim, not an engine specification. Undefined: what a preset **is** (slots? regions? a grid?), how one is **selected** (by hub, by page, or by user), the default, override rules, persistence, breakpoints and responsive behaviour, whether presets are fixed or configurable, and how they interact with Density.
+
+A registry mapping six names to six targets would be a data structure nothing consumes — an architectural shell whose only purpose is to claim the preset is done. It was not built.
+
+#### A provenance gap in the one sentence that states the principle
+
+`01_ARCH` §8 cites *"RULE 8: a premium operating system, not ERP. RULE 10: layout follows the business question. RULE 9: Tappy appears naturally."* MEASURED: [`docs/backoffice/00_Constitution.md`](../backoffice/00_Constitution.md) defines **Rule 8 as "AI Assists, Humans Decide", Rule 9 as "Privacy by Default", and Rule 10 as "Immutable Audit Log"** — none of which match. The rule set `01_ARCH` cites exists **nowhere in the repository**; only line 530 and two audit documents quoting it back.
+
+So the single authority for "layout follows the business question" is an uncited rule.
+
+#### 🔴 OWNER DECISIONS REQUIRED
+
+1. **Sequencing** — do Layout Presets follow Phase 8/9/10 (which create Founder, User, Operations and the Investor module), or does an earlier subset apply to Analytics alone?
+2. **Preset semantics** — what a preset *is* structurally, how it is selected, its default, and whether it is fixed or configurable.
+3. **RULE 8/9/10 provenance** — where the cited rule set lives, or whether `01_ARCH` §8 should be corrected.
+
+**Natural sequencing, for the record:** five of six presets describe layouts for Hubs that Phase 8–10 create. Building the layouts before the rooms is the inversion the Event Bus audit already found in Phase 5.
+
+**Remaining B5 surface:** Density (needs B2). **Phase 7 is not complete, and cannot be until these decisions land.**
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
