@@ -14,8 +14,8 @@
 import { describe, expect, it } from 'vitest';
 
 import { gatherEvidence } from '../evidence/pipeline';
-import { evaluateSafety } from '../gate/safetyResult';
-import { aggregateWithRules, storedStateFor } from '../gate/publicationGate';
+import { evaluateSafety, publicationFromGate } from '../gate/safetyResult';
+import { aggregateWithRules } from '../gate/publicationGate';
 import {
   ABSENCE_CAPABLE_POLICIES,
   POLICY_INDICATORS,
@@ -62,7 +62,10 @@ async function outcomeOf(subject: Record<string, unknown>) {
     bundle,
     result,
     today: result.publication,
-    ifRestrictedOff: storedStateFor(alt.decision),
+    // Through the same MVP resolution the real decision uses, so this column and
+    // `today` are comparable. `storedStateFor` alone is the gate's own vocabulary
+    // and still says UNDER_REVIEW; publication is what the row actually gets.
+    ifRestrictedOff: publicationFromGate(result.state, alt.decision),
     heldBy: alt.blockedBy,
   };
 }
@@ -189,11 +192,11 @@ describe('content that raises a policy is still held', () => {
   ];
 
   for (const c of cases) {
-    it(`${c.name} is held, and never published`, async () => {
+    it(`${c.name} is rejected, and never published`, async () => {
       const { heldBy, ifRestrictedOff, today } = await outcomeOf(post({ body: c.body }));
       expect(heldBy, c.name).toContain(c.expectHeldBy);
-      expect(ifRestrictedOff, c.name).toBe('UNDER_REVIEW');
-      expect(today, c.name).toBe('UNDER_REVIEW');
+      expect(ifRestrictedOff, c.name).toBe('RESTRICTED');
+      expect(today, c.name).toBe('RESTRICTED');
     });
   }
 });
@@ -203,12 +206,12 @@ describe('content that raises a policy is still held', () => {
 // ---------------------------------------------------------------------------
 
 describe('unknown never becomes safe', () => {
-  it('a video is held under EVERY configuration — audio and frames were never seen', async () => {
+  it('a video is rejected under EVERY configuration — audio and frames were never seen', async () => {
     const { today, ifRestrictedOff, heldBy } = await outcomeOf(
       post({ content_type: 'video', media_url: 'https://x/v.mp4' }),
     );
-    expect(today).toBe('UNDER_REVIEW');
-    expect(ifRestrictedOff).toBe('UNDER_REVIEW');
+    expect(today).toBe('RESTRICTED');
+    expect(ifRestrictedOff).toBe('RESTRICTED');
     expect(heldBy.length).toBeGreaterThan(10);
   });
 
@@ -240,14 +243,14 @@ describe('unknown never becomes safe', () => {
     const { today } = await outcomeOf(
       post({ content_type: 'photo', media_url: 'https://storage.googleapis.com/b/clip.mp4' }),
     );
-    expect(today).toBe('UNDER_REVIEW');
+    expect(today).toBe('RESTRICTED');
   });
 
   it('media of an unrecognisable kind is never treated as fully examined', async () => {
     const { today } = await outcomeOf(
       post({ content_type: 'photo', media_url: 'https://storage.googleapis.com/b/object' }),
     );
-    expect(today).toBe('UNDER_REVIEW');
+    expect(today).toBe('RESTRICTED');
   });
 });
 
@@ -301,7 +304,7 @@ describe('SAFE → PUBLISHED for ordinary content', () => {
 describe('harmful variants of protected topics are still held', () => {
   it('violent political content is held, while political criticism is not', async () => {
     const violent = await outcomeOf(post({ body: 'Phải giết hết bọn quan chức đó' }));
-    expect(violent.today).toBe('UNDER_REVIEW');
+    expect(violent.today).toBe('RESTRICTED');
     expect(violent.heldBy).toContain('ts.violence.incitement-threats');
 
     const ordinary = await outcomeOf(post({ body: 'Tôi phản đối chính sách thuế mới' }));
@@ -310,7 +313,7 @@ describe('harmful variants of protected topics are still held', () => {
 
   it('religious incitement is held, while religious teaching is not', async () => {
     const incite = await outcomeOf(post({ body: 'Giết hết bọn theo đạo đó đi' }));
-    expect(incite.today).toBe('UNDER_REVIEW');
+    expect(incite.today).toBe('RESTRICTED');
 
     const teaching = await outcomeOf(post({ body: 'Bài giảng về đạo Phật hôm nay rất hay' }));
     expect(teaching.today).toBe('PUBLISHED');
@@ -328,7 +331,7 @@ describe('the publication boundary refuses everything it cannot stand behind', (
     } as never;
     const r = evalSafety(failed, T);
     expect(r.state).toBe('ENGINE_ERROR');
-    expect(r.publication).toBe('UNDER_REVIEW');
+    expect(r.publication).toBe('RESTRICTED');
   });
 
   it('a stale result cannot publish the current content', async () => {
@@ -336,12 +339,12 @@ describe('the publication boundary refuses everything it cannot stand behind', (
     const { result } = await outcomeOf(post());
     expect(result.publication).toBe('PUBLISHED');
     expect(mayPublish(result, 'a-different-version')).toBe(false);
-    expect(publicationStateFor(result, 'a-different-version')).toBe('UNDER_REVIEW');
+    expect(publicationStateFor(result, 'a-different-version')).toBe('RESTRICTED');
   });
 
   it('no result at all is held, never published', async () => {
     const { publicationStateFor } = await import('../gate/safetyResult');
-    expect(publicationStateFor(null, 'v1')).toBe('UNDER_REVIEW');
+    expect(publicationStateFor(null, 'v1')).toBe('RESTRICTED');
   });
 
   it('a forged publication state on a write is rejected', async () => {
@@ -378,5 +381,91 @@ describe('the author is told the truth about a published post', () => {
     }
     expect(authorModerationPayload(columns, 'en')!.title).toMatch(/live/i);
     expect(authorModerationPayload(columns, 'vi')!.title).toMatch(/đã được đăng/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The MVP contract: two terminal outcomes, and the reason survives the collapse
+// ---------------------------------------------------------------------------
+
+describe('every upload resolves — nothing parks in UNDER_REVIEW', () => {
+  it('no safety state maps to UNDER_REVIEW any more', async () => {
+    const { PUBLICATION_FOR, SAFETY_STATES } = await import('../gate/safetyResult');
+    for (const s of SAFETY_STATES)
+      expect(PUBLICATION_FOR[s], s).not.toBe('UNDER_REVIEW');
+    expect(PUBLICATION_FOR.SAFE).toBe('PUBLISHED');
+    for (const s of SAFETY_STATES)
+      if (s !== 'SAFE') expect(PUBLICATION_FOR[s], s).toBe('RESTRICTED');
+  });
+
+  it('a rejected post is never publicly readable', async () => {
+    const { isPubliclyReadable } = await import('../gate/publicationAccess');
+    expect(isPubliclyReadable('RESTRICTED')).toBe(false);
+  });
+});
+
+describe('the rejection notice tells the truth about WHY', () => {
+  it('an actual violation carries the Community Guidelines warning, in both languages', async () => {
+    const { authorModerationPayload } = await import('../gate/authorNotice');
+    for (const lang of ['vi', 'en']) {
+      const p = authorModerationPayload(
+        { publication_state: 'RESTRICTED', safety_state: 'VIOLATION' },
+        lang,
+      )!;
+      expect(p.state, lang).toBe('RESTRICTED');
+      expect(p.assertsViolation, lang).toBe(true);
+      expect(p.detail, lang).toContain('⚠️');
+    }
+    expect(
+      authorModerationPayload({ publication_state: 'RESTRICTED', safety_state: 'VIOLATION' }, 'en')!.detail,
+    ).toContain('Community Guidelines');
+    expect(
+      authorModerationPayload({ publication_state: 'RESTRICTED', safety_state: 'VIOLATION' }, 'vi')!.detail,
+    ).toContain('Nguyên tắc Cộng đồng');
+  });
+
+  /**
+   * The invariant the whole MVP collapse could have destroyed. Four states now
+   * share VIOLATION's outcome; none of them may share its accusation.
+   */
+  it('an unverifiable post is rejected WITHOUT being accused, in both languages', async () => {
+    const { authorModerationPayload } = await import('../gate/authorNotice');
+    for (const safety of ['UNDETERMINED', 'ENGINE_ERROR', 'LEGAL_REVIEW_REQUIRED', 'HUMAN_REVIEW_REQUIRED'])
+      for (const lang of ['vi', 'en']) {
+        const p = authorModerationPayload(
+          { publication_state: 'RESTRICTED', safety_state: safety },
+          lang,
+        )!;
+        expect(p.state, `${safety}/${lang}`).toBe('RESTRICTED');
+        expect(p.assertsViolation, `${safety}/${lang}`).toBe(false);
+        expect(p.detail, `${safety}/${lang}`).not.toContain('⚠️');
+        expect(p.detail, `${safety}/${lang}`).toMatch(
+          lang === 'en' ? /not a finding that you did anything wrong/ : /không phải là kết luận vi phạm/,
+        );
+      }
+  });
+
+  it('every rejection says the post is still in the author’s profile', async () => {
+    const { authorModerationPayload } = await import('../gate/authorNotice');
+    for (const safety of ['VIOLATION', 'UNDETERMINED', 'ENGINE_ERROR']) {
+      expect(
+        authorModerationPayload({ publication_state: 'RESTRICTED', safety_state: safety }, 'en')!.detail,
+      ).toMatch(/still in your profile|still yours/i);
+      expect(
+        authorModerationPayload({ publication_state: 'RESTRICTED', safety_state: safety }, 'vi')!.detail,
+      ).toMatch(/trang cá nhân/);
+    }
+  });
+
+  it('a rejection still leaks no internal detail', async () => {
+    const { authorModerationPayload } = await import('../gate/authorNotice');
+    for (const safety of ['VIOLATION', 'UNDETERMINED', 'ENGINE_ERROR'])
+      for (const lang of ['vi', 'en']) {
+        const s = JSON.stringify(
+          authorModerationPayload({ publication_state: 'RESTRICTED', safety_state: safety }, lang),
+        );
+        for (const leak of ['ts.', 'INSUFFICIENT_EVIDENCE', 'IMAGE_FRAME', 'evaluated_version', safety])
+          expect(s, `${safety}/${lang}/${leak}`).not.toContain(leak);
+      }
   });
 });

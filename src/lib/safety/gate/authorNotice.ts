@@ -79,53 +79,60 @@ export const NOTICE_FOR: Readonly<Record<SafetyState, AuthorNotice>> = Object.fr
     assertsViolation: true,
     title: 'Bài của bạn chưa được đăng',
     detail:
-      'Nội dung này vi phạm chính sách an toàn của TappyAI nên chưa được đăng. Bài vẫn thuộc về bạn và không bị xoá.',
+      '⚠️ Nội dung này không thể được đăng vì không đáp ứng Nguyên tắc Cộng đồng của TappyAI. Bài vẫn thuộc về bạn, vẫn nằm trong trang cá nhân của bạn và không bị xoá.',
     title_en: 'Your post was not published',
     detail_en:
-      'This content goes against TappyAI’s safety policy, so it was not published. The post is still yours and has not been deleted.',
+      '⚠️ This content can’t be published because it doesn’t meet TappyAI’s Community Guidelines. The post is still yours, still in your profile, and has not been deleted.',
   },
 
   // The three ways of not knowing share one honest message: the system has not
   // finished, and that is not an accusation.
+  // ── The four ways of NOT KNOWING ─────────────────────────────────────────
+  //
+  // All four now end at the same place as VIOLATION — the post is not published.
+  // The OUTCOME is shared; the REASON must not be. These say the check could not
+  // be completed, and each keeps the sentence that says so explicitly, because a
+  // person whose upload could not be verified has not been accused of anything
+  // and must never read it that way.
   UNDETERMINED: {
     notify: true,
     assertsViolation: false,
-    title: 'Bài của bạn đang được kiểm tra',
+    title: 'Bài của bạn chưa được đăng',
     detail:
-      'Hệ thống chưa đủ căn cứ để kết luận, nên bài đang chờ kiểm tra. Đây không phải là kết luận vi phạm.',
-    title_en: 'Your post is being checked',
+      'Hệ thống không đủ căn cứ để xác nhận nội dung này an toàn, nên bài không được đăng công khai. Bài vẫn nằm trong trang cá nhân của bạn. Đây không phải là kết luận vi phạm.',
+    title_en: 'Your post was not published',
     detail_en:
-      'The system did not have enough to reach a conclusion, so your post is waiting to be checked. This is not a finding that you did anything wrong.',
+      'The safety check could not confirm this content, so it was not published publicly. It is still in your profile. This is not a finding that you did anything wrong.',
   },
   HUMAN_REVIEW_REQUIRED: {
     notify: true,
     assertsViolation: false,
-    title: 'Bài của bạn đang được kiểm tra',
+    title: 'Bài của bạn chưa được đăng',
     detail:
-      'Nội dung này cần người thật xem trước khi đăng. Đây không phải là kết luận vi phạm.',
-    title_en: 'Your post is being checked',
+      'Nội dung này cần đánh giá thêm mà hệ thống hiện chưa thực hiện được, nên bài không được đăng công khai. Bài vẫn nằm trong trang cá nhân của bạn. Đây không phải là kết luận vi phạm.',
+    title_en: 'Your post was not published',
     detail_en:
-      'This content needs a person to look at it before it can be published. This is not a finding that you did anything wrong.',
+      'This content needs a review the system cannot carry out yet, so it was not published publicly. It is still in your profile. This is not a finding that you did anything wrong.',
   },
   LEGAL_REVIEW_REQUIRED: {
     notify: true,
     assertsViolation: false,
-    title: 'Bài của bạn đang được kiểm tra',
+    title: 'Bài của bạn chưa được đăng',
     detail:
-      'Bài đang chờ kiểm tra trước khi đăng. Đây không phải là kết luận vi phạm.',
-    title_en: 'Your post is being checked',
+      'Hệ thống chưa thể hoàn tất kiểm tra an toàn cho nội dung này, nên bài không được đăng công khai. Bài vẫn nằm trong trang cá nhân của bạn. Đây không phải là kết luận vi phạm.',
+    title_en: 'Your post was not published',
     detail_en:
-      'Your post is waiting to be checked before it is published. This is not a finding that you did anything wrong.',
+      'The safety check could not be completed for this content, so it was not published publicly. It is still in your profile. This is not a finding that you did anything wrong.',
   },
   ENGINE_ERROR: {
     notify: true,
     assertsViolation: false,
-    title: 'Bài của bạn đang được kiểm tra',
+    title: 'Bài của bạn chưa được đăng',
     detail:
-      'Hệ thống chưa kiểm tra xong nội dung này. Đây không phải là kết luận vi phạm.',
-    title_en: 'Your post is being checked',
+      'Hệ thống không kiểm tra được nội dung này, nên bài không được đăng công khai. Bài vẫn nằm trong trang cá nhân của bạn. Đây không phải là kết luận vi phạm.',
+    title_en: 'Your post was not published',
     detail_en:
-      'The system has not finished checking this content. This is not a finding that you did anything wrong.',
+      'The safety check could not run on this content, so it was not published publicly. It is still in your profile. This is not a finding that you did anything wrong.',
   },
 });
 

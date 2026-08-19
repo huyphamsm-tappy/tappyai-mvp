@@ -322,12 +322,12 @@ describe('safety result keeps both layers', () => {
     expect(PUBLICATION_DECISIONS).toContain(result.gate.decision);
   });
 
-  it('a bundle with no metadata is still held — absence needs a complete examination', () => {
+  it('a bundle with no metadata is rejected — absence needs a complete examination', () => {
     // TEXT alone is not a complete examination: METADATA never observed, so the
     // absence model stays silent and the prohibitive policies cannot be cleared.
     const result = evaluateSafety(bundle([textEvidence({ body: 'Quán ngon' })]), T);
     expect(result.gate.decision).toBe('UNDER_REVIEW');
-    expect(result.publication).toBe('UNDER_REVIEW');
+    expect(result.publication).toBe('RESTRICTED');
     // 🔑 The three non-blocking policies are set aside for publication...
     expect([...result.gate.notBlocking].sort()).toEqual([
       'ts.graphic.presentation',
@@ -340,28 +340,28 @@ describe('safety result keeps both layers', () => {
     expect(result.state).toBe('LEGAL_REVIEW_REQUIRED');
   });
 
-  it('an engine error holds publication regardless of any gate rule', () => {
+  it('an engine error is rejected regardless of any gate rule', () => {
     const result = evaluateSafety(
       bundle([{ modality: 'IMAGE_FRAME', status: 'FAILED', reason: 'vision call failed' }]),
       T,
     );
     expect(result.state).toBe('ENGINE_ERROR');
-    expect(result.publication).toBe('UNDER_REVIEW');
+    expect(result.publication).toBe('RESTRICTED');
   });
 
   it('an engine error overrides even a gate that says PUBLISHED', () => {
     // The decisive case, and it is unreachable through a bundle today: a broken
     // evaluation whose gate nonetheless concluded "publish". Tested directly so
     // the rule cannot rot into a redundant branch nobody exercises.
-    expect(publicationFromGate('ENGINE_ERROR', 'PUBLISHED')).toBe('UNDER_REVIEW');
+    expect(publicationFromGate('ENGINE_ERROR', 'PUBLISHED')).toBe('RESTRICTED');
     for (const decision of PUBLICATION_DECISIONS)
-      expect(publicationFromGate('ENGINE_ERROR', decision), decision).toBe('UNDER_REVIEW');
+      expect(publicationFromGate('ENGINE_ERROR', decision), decision).toBe('RESTRICTED');
   });
 
   it('every other state defers to the gate, and only PUBLISHED publishes', () => {
     expect(publicationFromGate('SAFE', 'PUBLISHED')).toBe('PUBLISHED');
-    expect(publicationFromGate('SAFE', 'CONFIGURATION_REQUIRED')).toBe('UNDER_REVIEW');
-    expect(publicationFromGate('SAFE', 'UNDER_REVIEW')).toBe('UNDER_REVIEW');
+    expect(publicationFromGate('SAFE', 'CONFIGURATION_REQUIRED')).toBe('RESTRICTED');
+    expect(publicationFromGate('SAFE', 'UNDER_REVIEW')).toBe('RESTRICTED');
     expect(publicationFromGate('VIOLATION', 'RESTRICTED')).toBe('RESTRICTED');
   });
 });

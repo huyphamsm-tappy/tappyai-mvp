@@ -360,10 +360,10 @@ describe('the publication gate', () => {
     expect(PUBLICATION_FOR).toEqual({
       SAFE: 'PUBLISHED',
       VIOLATION: 'RESTRICTED',
-      UNDETERMINED: 'UNDER_REVIEW',
-      HUMAN_REVIEW_REQUIRED: 'UNDER_REVIEW',
-      LEGAL_REVIEW_REQUIRED: 'UNDER_REVIEW',
-      ENGINE_ERROR: 'UNDER_REVIEW',
+      UNDETERMINED: 'RESTRICTED',
+      HUMAN_REVIEW_REQUIRED: 'RESTRICTED',
+      LEGAL_REVIEW_REQUIRED: 'RESTRICTED',
+      ENGINE_ERROR: 'RESTRICTED',
     });
     for (const s of SAFETY_STATES) {
       if (s !== 'SAFE') expect(publicationFor(s), s).not.toBe('PUBLISHED');
@@ -371,12 +371,12 @@ describe('the publication gate', () => {
   });
 
   it('a failure to evaluate never publishes', () => {
-    expect(publicationFor('ENGINE_ERROR')).toBe('UNDER_REVIEW');
-    expect(publicationFor('UNDETERMINED')).toBe('UNDER_REVIEW');
+    expect(publicationFor('ENGINE_ERROR')).toBe('RESTRICTED');
+    expect(publicationFor('UNDETERMINED')).toBe('RESTRICTED');
   });
 
-  it('no result at all means under review, not published', () => {
-    expect(publicationStateFor(null, 'v1')).toBe('UNDER_REVIEW');
+  it('no result at all is rejected, never published', () => {
+    expect(publicationStateFor(null, 'v1')).toBe('RESTRICTED');
   });
 
   it('a result for another version cannot publish this one', () => {
@@ -397,7 +397,7 @@ describe('the publication gate', () => {
     };
     expect(mayPublish(safe, 'v1')).toBe(true);
     expect(mayPublish(safe, 'v2')).toBe(false);
-    expect(publicationStateFor(safe, 'v2')).toBe('UNDER_REVIEW');
+    expect(publicationStateFor(safe, 'v2')).toBe('RESTRICTED');
   });
 
   it('the fingerprint changes when examined content changes, and not otherwise', () => {
@@ -465,7 +465,7 @@ describe('evaluating a real bundle', () => {
     expect(hasFailure(b)).toBe(true);
     const result = evaluateSafety(b, T);
     expect(result.state).toBe('ENGINE_ERROR');
-    expect(result.publication).toBe('UNDER_REVIEW');
+    expect(result.publication).toBe('RESTRICTED');
   });
 
   it('the result carries no content, no identity and no raw text', () => {
