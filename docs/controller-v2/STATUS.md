@@ -457,6 +457,67 @@ Modules with a dedicated document: 01 (bo-26), 06 (bo-15), 07 + 19 (bo-08), 08 (
 
 **Phase 8 remains STARTED, NOT COMPLETE** — one hub identity corrected, zero business modules built.
 
+### Phase 8 — document authority RESOLVED, and a correction to the entry above (2026-08-19)
+
+Read-only. **No business-module code was written. No module spec was promoted or edited.**
+
+#### ⚠️ Correction 1 of the previous entry was WRONG
+
+That entry concluded *"every business-module specification is DRAFT, therefore no authority exists"*. **A precedence rule does exist, it was found in the Constitution, and it says the opposite.**
+
+[`00_Constitution.md`](../backoffice/00_Constitution.md) — itself `✅ APPROVED — Architecture v1.1` — binds approval at the **architecture-set version**, not per file:
+
+| Clause | Text |
+|---|---|
+| **§8.1** | the set version is *"the **exact contract** each implementation phase is built against"* |
+| **§9.1** | `v1.0` = *"Approved & frozen baseline (ADR-012). **Docs 00–35**"* · `v1.1` = *"✅ **CURRENT — Approved & Frozen**"* |
+| **§8.5** | *"No phase may begin against an unversioned or in-flight change — **only against a released, approved version**"* |
+
+**DOCUMENT AUTHORITY RESULT**
+- **Authoritative source:** `00_Constitution.md` §8–§9, established by ADR-012 (freeze) and ADR-013 (v1.1).
+- **Precedence rule:** set-level version approval, covering docs 00–35.
+- **Is the README stale?** **No** — it restates §9.1.
+- **Are the individual `DRAFT` headers authoritative?** **No** — they are pre-freeze remnants. Aligning them is **Editorial Errata** under §8.2 (*"Requires ADR? No"*), which must be logged in §9.2 — and is the Owner's to apply, not this workstream's.
+- **Evidence that promotion is per-document was misleading:** `17_UI_UX_Standards.md` was promoted by the Owner in answer to the question *this workstream framed*. It still reads `DRAFT` today. That act resolved a blocker as posed; it did not establish that headers govern.
+
+§8.5's gate is therefore **met**: v1.1 is released and approved.
+
+#### Corrections 2 and 3 of the previous entry STAND
+
+18/20 modules placed (not 17/20), and document numbers are not module numbers — Module 14 System Monitoring still has no dedicated document.
+
+#### The real blocker, measured
+
+Specs are substantially richer than "DRAFT" implied: [`12_RBAC.md`](../backoffice/12_RBAC.md) carries a per-role **permission matrix** (User Management 10 rows, Moderation 7, Engagement 4, System Monitoring 1); [`05_API_Architecture.md`](../backoffice/05_API_Architecture.md) defines concrete endpoints; [`04_Database_Architecture.md`](../backoffice/04_Database_Architecture.md) defines the DDL.
+
+What is missing is **the database**. Checked read-only on production:
+
+| Required by | Table / column | Exists |
+|---|---|---|
+| Module 08 User Management | `user_notes` | ❌ |
+| Module 08 | `profiles.status` / `suspended_at` / `banned_at` / `deleted_at` | ❌ — `profiles` has 10 columns, none of them status |
+| Module 09 Moderation | `moderation_queue` · `moderation_cases` · `user_warnings` | ❌ |
+| Module 10 Engagement | `notification_campaigns` · `in_app_messages` | ❌ |
+| Module 14 System Monitoring | `cron_execution_log` | ❌ (`system_health_log` does exist) |
+
+**Every remaining business module requires production schema mutation**, which is gated and unauthorized.
+
+#### 🔴 The minimum Owner decision set
+
+**Phase 8 is unblocked by ONE decision, not by promoting a spec:**
+
+> **Authorize the migration for one named module**, reviewed and applied under the ADR-017 pattern (preflight → explicit authorization → apply frozen migration → verify → rollback window).
+
+Ranked by fewest remaining unknowns:
+
+1. **Module 08 — User Management.** Deepest spec (228 lines), permissions defined (10 matrix rows), 8 endpoints defined, DDL defined. ⚠️ Blast radius is the highest of the three: it adds columns to `profiles`, a **consumer-app table**, and soft-delete touches the known "Delete Account has no backend" gap.
+2. **Module 14 — System Monitoring.** Smallest surface, one permission row, and `system_health_log` already exists — but the spec is a 30-line section with no dedicated document, and it needs `cron_execution_log` plus an external Vercel Analytics dependency.
+3. **Module 09 Moderation** and **Module 10 Engagement** are **not recommended next**: Moderation overlaps the Content Safety publication-gate workstream, and Engagement depends on the FCM/APNs notification workstream. Both are explicitly out of scope here.
+
+Also still open: **Module 17 Settings** hub placement (no authoritative answer exists in `01_ARCH`, the taxonomy, FOUNDATION-01, Owner Decisions, or the registry — current code places it in `tappy.hub.configuration`, a container the registry invented) and **Module 20 Shared Services**, which `03_Module_Architecture.md` describes as a cross-cutting service layer — kernel/capability territory under `01_ARCH` §5, not a Hub member.
+
+**Phase 8 remains BLOCKED. Owner decision package ready.**
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
