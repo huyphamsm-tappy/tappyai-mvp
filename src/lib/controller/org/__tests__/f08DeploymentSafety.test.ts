@@ -91,12 +91,26 @@ describe('M-F6 — the department nav filter is REACHABLE, not merely mentioned'
   })
 })
 
-describe('M-F7 — /admin overrides deniedRedirect (documented redirect-loop hazard)', () => {
-  it('the Home page sends a denial OUTSIDE the Controller', () => {
+describe('M-F7 — a denial on /admin leaves the Controller (documented redirect-loop hazard)', () => {
+  // The hazard is unchanged; what closes it moved. This test used to require the
+  // Home page to pass `deniedRedirect: '/reviews'`, because the DEFAULT was
+  // '/admin' — which on /admin itself is the infinite loop. B5 changed the
+  // default to the denial page, which is outside the Controller, so the override
+  // is no longer load-bearing and the page dropped it.
+  //
+  // Asserting the DESTINATION rather than the override keeps the invariant and
+  // stops pinning one particular way of achieving it.
+  it('the guard default is outside the Controller, so /admin needs no override', async () => {
+    const { denialPath } = await import('@/lib/admin/denial')
+
+    expect(denialPath('missing_permission', 'dashboard.home.view' as never)).not.toMatch(/^\/admin/)
+  })
+
+  it('the Home page therefore passes no /admin denial target of its own', () => {
     const page = readFileSync(join(ROOT, 'src/app/admin/page.tsx'), 'utf8')
-    // requirePagePermission defaults deniedRedirect to '/admin'. On /admin
-    // itself that is the infinite loop guards.ts warns about, so this page MUST
-    // pass an explicit non-Controller target.
-    expect(page).toMatch(/requirePagePermission\(\s*PERMISSIONS\.DASHBOARD_HOME_VIEW\s*,\s*\{\s*deniedRedirect:\s*'\/reviews'\s*\}/)
+
+    // If someone reintroduces an override, it must still not point into /admin.
+    const override = page.match(/deniedRedirect:\s*'([^']+)'/)
+    if (override) expect(override[1]).not.toMatch(/^\/admin/)
   })
 })

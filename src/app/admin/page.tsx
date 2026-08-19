@@ -16,9 +16,12 @@ import { resolveDepartmentContext } from '@/lib/controller/org/server'
 // only populated if the actor is authorized — otherwise it is null (rendered as
 // "restricted"/"—"), never fabricated. No new authorization or audit path.
 export default async function AdminHomePage() {
-  // deniedRedirect MUST leave the Controller: this IS /admin, so the default
-  // '/admin' target would redirect the page to itself forever.
-  const { actor } = await requirePagePermission(PERMISSIONS.DASHBOARD_HOME_VIEW, { deniedRedirect: '/reviews' })
+  // The `deniedRedirect: '/reviews'` override is gone, and deliberately so: the
+  // default used to be '/admin', which for THIS page was the redirect loop. B5
+  // changed the default to the denial page, which is outside the Controller — so
+  // the override is no longer load-bearing, and dropping it means a refusal here
+  // explains itself like every other one.
+  const { actor } = await requirePagePermission(PERMISSIONS.DASHBOARD_HOME_VIEW)
 
   const core = buildAdminController()
   const modules = core.discover()

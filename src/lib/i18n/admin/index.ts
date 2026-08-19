@@ -14,6 +14,28 @@ export const vi: Record<string, string> = {
   'admin.shell.app': 'Ứng dụng',
   'admin.shell.comingSoon': 'Sắp ra mắt',
   'admin.shell.comingLaterPhase': 'Sẽ có ở giai đoạn sau',
+  // Denial UX (B5, 01_ARCH §8). Each reason says what was refused and what the
+  // visitor can do — never what the deployment's configuration looks like.
+  'admin.denied.heading': 'Không có quyền truy cập',
+  'admin.denied.backToSite': 'Về trang chủ',
+  'admin.denied.backToController': 'Về Bảng điều khiển',
+  'admin.denied.whoCanAccess': 'Vai trò có quyền này:',
+  'admin.denied.not_corporate.title': 'Cần danh tính nội bộ TappyAI',
+  'admin.denied.not_corporate.body':
+    'Bảng điều khiển chỉ mở cho hòm thư @tappyai.com đã được xác minh. Tài khoản bạn đang đăng nhập không phải như vậy. Hãy đăng nhập lại bằng tài khoản nội bộ.',
+  'admin.denied.no_admin_role.title': 'Tài khoản chưa được cấp vai trò quản trị',
+  'admin.denied.no_admin_role.body':
+    'Danh tính của bạn hợp lệ nhưng chưa được cấp vai trò nào trong Bảng điều khiển. Hãy đề nghị quản trị viên cấp vai trò phù hợp.',
+  'admin.denied.missing_permission.title': 'Thiếu quyền cho màn hình này',
+  'admin.denied.missing_permission.body':
+    'Bạn đã đăng nhập vào Bảng điều khiển nhưng vai trò hiện tại không mở được màn hình này.',
+  'admin.denied.controller_unavailable.title': 'Bảng điều khiển tạm thời không khả dụng',
+  'admin.denied.controller_unavailable.body':
+    'Bảng điều khiển đang từ chối mọi truy cập vì một điều kiện an toàn chưa được thoả mãn. Đây không phải lỗi tài khoản của bạn. Hãy báo cho quản trị viên nền tảng.',
+  'admin.denied.unknown.title': 'Trang này không mở cho bạn',
+  'admin.denied.unknown.body':
+    'Bạn không có quyền mở trang này. Nếu bạn cho rằng đây là nhầm lẫn, hãy liên hệ quản trị viên.',
+
   // Hub nav-group headings. Every registered hub declares one of these as its
   // `navigationGroup`; until Phase 7 the shell flattened the groups away, so the
   // keys were referenced by the registry and never translated.
@@ -253,6 +275,26 @@ export const en: Record<string, string> = {
   'admin.shell.app': 'App',
   'admin.shell.comingSoon': 'soon',
   'admin.shell.comingLaterPhase': 'Coming in a later phase',
+  'admin.denied.heading': 'Access denied',
+  'admin.denied.backToSite': 'Back to the site',
+  'admin.denied.backToController': 'Back to the Controller',
+  'admin.denied.whoCanAccess': 'Roles that hold this permission:',
+  'admin.denied.not_corporate.title': 'A TappyAI corporate identity is required',
+  'admin.denied.not_corporate.body':
+    'The Controller is open only to a verified @tappyai.com mailbox, and the account you are signed in with is not one. Sign in again with your corporate account.',
+  'admin.denied.no_admin_role.title': 'This account holds no administrative role',
+  'admin.denied.no_admin_role.body':
+    'Your identity is accepted, but no Controller role has been granted to it yet. Ask an administrator to grant the role you need.',
+  'admin.denied.missing_permission.title': 'A permission for this screen is missing',
+  'admin.denied.missing_permission.body':
+    'You are signed in to the Controller, but your current role does not open this screen.',
+  'admin.denied.controller_unavailable.title': 'The Controller is temporarily unavailable',
+  'admin.denied.controller_unavailable.body':
+    'The Controller is refusing all access because a safety condition is not satisfied. This is not a problem with your account. Please tell the platform administrator.',
+  'admin.denied.unknown.title': 'This page is not available to you',
+  'admin.denied.unknown.body':
+    'You do not have permission to open it. If you believe that is a mistake, ask an administrator.',
+
   'admin.nav.group.dashboard': 'Control Center',
   'admin.nav.group.analytics': 'Analytics',
   'admin.nav.group.security': 'Security',

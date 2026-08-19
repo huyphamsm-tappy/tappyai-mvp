@@ -8,6 +8,7 @@ import { filterNavByDepartment } from '@/lib/controller/org/navDepartment'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
 import { Toaster } from '@/components/ui/sonner'
 import { loginPathFor } from '@/lib/auth/returnTo'
+import { denialPath } from '@/lib/admin/denial'
 
 // Back Office root layout — the AUTHORITATIVE RBAC gate for all /admin pages
 // (owner decision Phase 0: enforce in layout + handlers, not middleware).
@@ -36,7 +37,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   // principal. Being corporate is NOT authorization: the role/owner check below
   // and the per-page PDP guard still decide everything.
   const actor = await resolveActorForPage(user)
-  if (!actor.isOwner && actor.roles.length === 0) redirect('/reviews') // authenticated but not an admin
+  // B5: a corporate identity with no role at all is told so, instead of being
+  // dropped on the consumer site with no signal.
+  if (!actor.isOwner && actor.roles.length === 0) redirect(denialPath('no_admin_role'))
 
   // Single navigation authority: registry → PDP filter (resolveAdminNavigation).
   // FOUNDATION-07D refinement: when department memberships are ENABLED, apply the
