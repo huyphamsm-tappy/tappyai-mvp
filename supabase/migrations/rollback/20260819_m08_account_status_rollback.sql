@@ -1,0 +1,57 @@
+-- ============================================================================
+-- ROLLBACK for 20260819_m08_account_status.sql — Controller V2 Phase 2 / Module 08
+--
+-- NOT applied automatically. Kept beside the migration so the rollback is a
+-- rehearsed file rather than something improvised during an incident.
+--
+-- SAFE WHILE: no deployed code reads `public.account_status`. The migration is
+-- ordered deliberately AHEAD of Module 08 enforcement for this reason — a
+-- PostgREST query naming a column that does not exist is rejected outright
+-- (42703, measured), it does not fail soft. Once enforcement ships, dropping
+-- this table breaks posting, commenting and chat for every user, and the
+-- rollback becomes a code rollback first and a schema rollback second.
+--
+-- DESTRUCTIVE OF EVIDENCE. Dropping the table discards every suspension and ban
+-- decision recorded in it, including `ban_reason`. The corresponding `audit_log`
+-- entries survive (`13_Audit_Log.md` §3 records `user.suspend` / `user.ban` with
+-- before/after state), so the decisions remain reconstructable — but the live
+-- state does not. Drop only if the design is being abandoned, not to tidy up
+-- after a transient incident.
+--
+-- `public.profiles` was never altered by the migration, so there is nothing to
+-- restore there. This file must not touch it.
+-- ============================================================================
+
+-- ---------------------------------------------------------------------------
+-- 1. Full rollback — removes the table and, with it, its policy, its index, its
+--    trigger and its grants. `public.set_updated_at()` is NOT dropped: it is a
+--    pre-existing shared function that `profiles` still uses.
+-- ---------------------------------------------------------------------------
+DROP TABLE IF EXISTS public.account_status;
+
+-- ---------------------------------------------------------------------------
+-- 2. Partial rollback (alternative to step 1) — keep the data, close the read
+--    path. Use this if the concern is the authenticated self-read grant rather
+--    than the table itself. Suspension state and `ban_reason` are preserved and
+--    remain reachable by `service_role`.
+--
+--    Not run by default; uncomment deliberately.
+-- ---------------------------------------------------------------------------
+-- REVOKE ALL ON TABLE public.account_status FROM PUBLIC, anon, authenticated;
+-- DROP POLICY IF EXISTS account_status_select_own ON public.account_status;
+
+-- ============================================================================
+-- VERIFY (read-only, after rollback)
+--
+--   SELECT count(*) AS present FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+--    WHERE n.nspname='public' AND c.relname='account_status';
+--   -- Expect: 0 after step 1.
+--
+--   SELECT count(*) AS profiles_columns FROM information_schema.columns
+--    WHERE table_schema='public' AND table_name='profiles';
+--   -- Expect: 10 — unchanged, before and after.
+--
+--   SELECT count(*) AS shared_fn FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+--    WHERE n.nspname='public' AND p.proname='set_updated_at';
+--   -- Expect: 1 — the shared trigger function survives the rollback.
+-- ============================================================================
