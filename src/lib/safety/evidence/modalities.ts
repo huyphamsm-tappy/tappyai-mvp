@@ -68,7 +68,11 @@ export function textEvidence(input: TextInput): ModalityResult {
       modality: 'TEXT',
       status: 'OBSERVED',
       contactIdentifiers: contactIdentifiersIn(text),
-      recognisedText: '',
+      // The caption itself, so what the author wrote is part of the observable
+      // surface rather than only a source of contact identifiers. Without this a
+      // written threat is invisible to everything downstream — the caption was
+      // read for phone numbers and then discarded.
+      recognisedText: text,
     };
   } catch {
     return { modality: 'TEXT', status: 'FAILED', reason: 'text extraction threw' };
@@ -84,6 +88,42 @@ export interface MetadataInput {
   readonly place_address?: unknown;
   readonly content_type?: unknown;
   readonly source_type?: unknown;
+  /**
+   * Read ONLY to answer "does this item carry media at all", never for its value.
+   * The completeness check needs to tell a text-only post (nothing to look at, so
+   * an unavailable frame is honest) from a post whose media could not be read
+   * (something to look at that we did not) — and those are indistinguishable from
+   * the frame result alone.
+   */
+  readonly media_url?: unknown;
+  readonly thumbnail?: unknown;
+}
+
+const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.heic', '.avif'];
+const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.webm', '.m4v', '.avi', '.mkv', '.3gp', '.hevc', '.m3u8'];
+
+/**
+ * `image` | `video` | `unknown`, from the stored object's own path.
+ *
+ * Fail-closed by construction: only a recognised IMAGE extension returns
+ * `image`. A recognised video extension, an unrecognised one, a missing one and
+ * an unparsable URL all return something the completeness check refuses to treat
+ * as fully examinable. Getting this wrong in the safe direction costs a review;
+ * getting it wrong the other way publishes an unexamined video.
+ */
+export function mediaKindOf(url: string): 'image' | 'video' | 'unknown' {
+  if (!url) return 'unknown';
+  let path = url;
+  try {
+    path = new URL(url).pathname;
+  } catch {
+    // Not absolute — fall back to the raw string, minus any query/fragment.
+    path = url.split(/[?#]/)[0] ?? url;
+  }
+  const lower = path.toLowerCase();
+  if (VIDEO_EXTENSIONS.some((e) => lower.endsWith(e))) return 'video';
+  if (IMAGE_EXTENSIONS.some((e) => lower.endsWith(e))) return 'image';
+  return 'unknown';
 }
 
 /**
@@ -99,6 +139,19 @@ export function metadataEvidence(input: MetadataInput): ModalityResult {
       descriptors.push(`contentType:${input.content_type}`);
     if (typeof input.source_type === 'string' && input.source_type)
       descriptors.push(`sourceType:${input.source_type}`);
+    // Presence only — never the URL, which carries an uploader-chosen filename.
+    const mediaUrl = typeof input.media_url === 'string' ? input.media_url.trim() : '';
+    const hasMedia =
+      mediaUrl.length > 0 ||
+      (typeof input.thumbnail === 'string' && input.thumbnail.trim().length > 0);
+    descriptors.push(`mediaPresent:${hasMedia}`);
+    // 🚨 `content_type` is CLIENT-SUPPLIED. A client that declares "photo" while
+    // uploading a video would otherwise have only its poster frame examined and
+    // could publish an unexamined clip. So the media's own kind is derived here
+    // from the stored object's extension, independently of what was declared,
+    // and anything not positively recognisable as an image counts as unknown.
+    // Only the KIND is emitted — never the URL or the filename.
+    descriptors.push(`mediaKind:${mediaKindOf(mediaUrl)}`);
     for (const id of contactIdentifiersIn(placeText)) descriptors.push(`businessContact:${id}`);
     return { modality: 'METADATA', status: 'OBSERVED', descriptors, contactIdentifiers: [] };
   } catch {

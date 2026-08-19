@@ -87,11 +87,43 @@ describe('gate rules', () => {
     expect(JSON.stringify(GATE_RULE_DECISIONS).toLowerCase()).not.toContain('ratif');
   });
 
-  it('no other policy rule was changed — all seventeen still block', () => {
+  /**
+   * Three policies are now non-blocking, and the reason differs: the hate policy
+   * because it is Legal-blocked and unanswerable (Owner, 2026-08-17), and the two
+   * RESTRICTED-disposition policies because a RESTRICTED disposition establishes
+   * no violation even fully constituted (Owner, 2026-08-19).
+   *
+   * The assertion that matters is the complement: EVERY PROHIBITED policy still
+   * blocks. That is what stops this list growing quietly.
+   */
+  const NON_BLOCKING = ['ts.hate.protected-target-abuse', 'ts.graphic.presentation', 'ts.sexual.adult-content'];
+
+  it('every PROHIBITED policy still blocks — only the three named ones do not', () => {
     for (const r of POLICY_REGISTRY) {
-      if (r.identity === HATE) continue;
+      if (NON_BLOCKING.includes(r.identity)) continue;
       expect(PUBLICATION_GATE_RULES[r.identity], r.identity).toBe('BLOCKS_PUBLICATION');
     }
+    expect(Object.values(PUBLICATION_GATE_RULES).filter((r) => r === 'DOES_NOT_BLOCK_PUBLICATION'))
+      .toHaveLength(3);
+  });
+
+  /** The safety claim of the 2026-08-19 decision, asserted rather than asserted-in-prose. */
+  it('the two newly non-blocking policies are exactly the RESTRICTED-disposition ones', () => {
+    const restricted = POLICY_REGISTRY.filter((r) => r.disposition?.value === 'RESTRICTED').map((r) => r.identity);
+    expect(restricted.sort()).toEqual(['ts.graphic.presentation', 'ts.sexual.adult-content']);
+    for (const p of restricted)
+      expect(PUBLICATION_GATE_RULES[p], p).toBe('DOES_NOT_BLOCK_PUBLICATION');
+  });
+
+  it('every child-safety and non-consent policy still blocks', () => {
+    for (const p of [
+      'ts.child.sexual-exploitation',
+      'ts.child.sexualization',
+      'ts.child.grooming',
+      'ts.child.abuse-harm',
+      'ts.sexual.exploitation-nonconsent',
+    ])
+      expect(PUBLICATION_GATE_RULES[p], p).toBe('BLOCKS_PUBLICATION');
   });
 
   it('only cleared outcomes are non-blocking', () => {
@@ -290,41 +322,46 @@ describe('safety result keeps both layers', () => {
     expect(PUBLICATION_DECISIONS).toContain(result.gate.decision);
   });
 
-  it('under Option B a normal clip is held by the OTHER policies, not by Legal', () => {
+  it('a bundle with no metadata is rejected — absence needs a complete examination', () => {
+    // TEXT alone is not a complete examination: METADATA never observed, so the
+    // absence model stays silent and the prohibitive policies cannot be cleared.
     const result = evaluateSafety(bundle([textEvidence({ body: 'Quán ngon' })]), T);
-    // The hate policy is set aside...
-    expect(result.gate.notBlocking).toEqual([HATE]);
-    expect(result.gate.unresolved).toEqual([]);
-    // ...and the remaining seventeen still cannot tell, so it waits.
     expect(result.gate.decision).toBe('UNDER_REVIEW');
-    expect(result.publication).toBe('UNDER_REVIEW');
-    // 🔑 The content's safety state STILL reports the Legal block. Option B
-    // changed publication authority, not the policy layer.
+    expect(result.publication).toBe('RESTRICTED');
+    // 🔑 The three non-blocking policies are set aside for publication...
+    expect([...result.gate.notBlocking].sort()).toEqual([
+      'ts.graphic.presentation',
+      'ts.hate.protected-target-abuse',
+      'ts.sexual.adult-content',
+    ]);
+    expect(result.gate.unresolved).toEqual([]);
+    // ...and the content's safety state STILL reports the Legal block. Both
+    // Owner decisions changed publication authority, never the policy layer.
     expect(result.state).toBe('LEGAL_REVIEW_REQUIRED');
   });
 
-  it('an engine error holds publication regardless of any gate rule', () => {
+  it('an engine error is rejected regardless of any gate rule', () => {
     const result = evaluateSafety(
       bundle([{ modality: 'IMAGE_FRAME', status: 'FAILED', reason: 'vision call failed' }]),
       T,
     );
     expect(result.state).toBe('ENGINE_ERROR');
-    expect(result.publication).toBe('UNDER_REVIEW');
+    expect(result.publication).toBe('RESTRICTED');
   });
 
   it('an engine error overrides even a gate that says PUBLISHED', () => {
     // The decisive case, and it is unreachable through a bundle today: a broken
     // evaluation whose gate nonetheless concluded "publish". Tested directly so
     // the rule cannot rot into a redundant branch nobody exercises.
-    expect(publicationFromGate('ENGINE_ERROR', 'PUBLISHED')).toBe('UNDER_REVIEW');
+    expect(publicationFromGate('ENGINE_ERROR', 'PUBLISHED')).toBe('RESTRICTED');
     for (const decision of PUBLICATION_DECISIONS)
-      expect(publicationFromGate('ENGINE_ERROR', decision), decision).toBe('UNDER_REVIEW');
+      expect(publicationFromGate('ENGINE_ERROR', decision), decision).toBe('RESTRICTED');
   });
 
   it('every other state defers to the gate, and only PUBLISHED publishes', () => {
     expect(publicationFromGate('SAFE', 'PUBLISHED')).toBe('PUBLISHED');
-    expect(publicationFromGate('SAFE', 'CONFIGURATION_REQUIRED')).toBe('UNDER_REVIEW');
-    expect(publicationFromGate('SAFE', 'UNDER_REVIEW')).toBe('UNDER_REVIEW');
+    expect(publicationFromGate('SAFE', 'CONFIGURATION_REQUIRED')).toBe('RESTRICTED');
+    expect(publicationFromGate('SAFE', 'UNDER_REVIEW')).toBe('RESTRICTED');
     expect(publicationFromGate('VIOLATION', 'RESTRICTED')).toBe('RESTRICTED');
   });
 });

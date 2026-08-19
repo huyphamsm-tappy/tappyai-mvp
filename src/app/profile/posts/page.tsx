@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Trash2, EyeOff, Eye, Loader2, Grid3X3 } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Trash2, EyeOff, Eye, Loader2, Grid3X3 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import LinkPoster from '@/components/LinkPoster'
 
@@ -12,6 +12,19 @@ interface Review {
   id: string; place_name: string; body: string; photos: string[] | null
   rating: number; is_hidden: boolean; like_count: number; comment_count: number; created_at: string
   content_type: string | null; thumbnail: string | null; source_type: string | null
+  /**
+   * Present only on the author's own feed, and only when the safety gate wrote a
+   * lifecycle state. The wording is already localized by the server, so this
+   * renders it rather than mapping a code to a string here — which also keeps
+   * the reason out of the client, where it could be read to work out what to
+   * change to get past the gate.
+   */
+  moderation?: {
+    state: 'UNDER_REVIEW' | 'PUBLISHED' | 'RESTRICTED'
+    title: string
+    detail: string
+    assertsViolation: boolean
+  } | null
 }
 
 export default function MyPostsPage() {
@@ -87,6 +100,13 @@ export default function MyPostsPage() {
                       <EyeOff size={20} className="text-white" />
                     </div>
                   )}
+                  {/* Not published. The post is still here and still theirs — it
+                      simply is not public — so it is marked, never hidden. */}
+                  {r.moderation?.state === 'RESTRICTED' && !r.is_hidden && (
+                    <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
+                      <AlertTriangle size={20} className="text-amber-300" />
+                    </div>
+                  )}
                   <div className="absolute bottom-1 left-1 flex items-center gap-1">
                     <span className="text-white text-xs drop-shadow">❤️ {r.like_count}</span>
                   </div>
@@ -105,6 +125,21 @@ export default function MyPostsPage() {
             <div className="fixed inset-0 z-30" onClick={() => setSelected(null)} />
             <div className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-900 rounded-t-3xl px-5 pt-4 pb-8 max-w-2xl mx-auto shadow-2xl">
               <div className="flex justify-center mb-4"><div className="w-10 h-1 bg-gray-200 dark:bg-gray-700 rounded-full" /></div>
+              {/* Why this post is not public. Server-worded, already localized,
+                  and deliberately the same panel the author acts from — the
+                  explanation belongs next to the delete button, not somewhere
+                  they have to go looking for it. */}
+              {r.moderation?.state === 'RESTRICTED' && (
+                <div className="mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/60">
+                  <div className="flex items-start gap-2">
+                    <AlertTriangle size={16} className="text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">{r.moderation.title}</p>
+                      <p className="text-xs text-amber-800 dark:text-amber-300/90 mt-1">{r.moderation.detail}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
               {/* Preview */}
               <div className="flex items-center gap-3 mb-5 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
                 {r.photos?.[0]

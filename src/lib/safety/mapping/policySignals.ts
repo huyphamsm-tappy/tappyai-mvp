@@ -26,6 +26,8 @@
 
 import type { Signals } from '@/lib/policy/detect/constitution';
 
+import { absenceSignalFor, examinationOf } from './applicability';
+
 import {
   allContactIdentifiers,
   observationsIn,
@@ -191,7 +193,21 @@ export function privacySignalsFrom(bundle: EvidenceBundle): Signals {
   const identifiers = allContactIdentifiers(bundle);
   const businessContacts = new Set(businessContactsIn(bundle));
 
-  if (identifiers.length === 0) return {};
+  if (identifiers.length === 0) {
+    // Reading no contact string is not, on its own, establishing there is none —
+    // which is why this used to return `{}`. But when the examination was
+    // COMPLETE, every surface that could carry an identifier was actually read,
+    // and absence IS established. P1 anticipates exactly this: "a caller with
+    // stronger evidence may supply `false` directly", and
+    // `exposureConstitutedFrom` settles on it at step 2.
+    //
+    // 🔒 This touches only the absence path. P1's frozen consent semantics —
+    // clauses 2 and 3, the branch that keeps the accepted result at 6/8 — are
+    // reached only when identifying information IS present, and are untouched.
+    return examinationOf(bundle).level === 'COMPLETE'
+      ? { identifyingInformationPresent: false }
+      : {};
+  }
 
   const everyIdentifierIsBusiness = identifiers.every((id) =>
     [...businessContacts].some((b) => b.includes(id) || id.includes(b)),
@@ -206,10 +222,23 @@ export function privacySignalsFrom(bundle: EvidenceBundle): Signals {
 /**
  * Signals for any policy, from evidence.
  *
- * Returns `{}` for the seventeen policies no observation reaches — which the
- * engine reads as "nothing established" and answers `UNDETERMINED`. That empty
- * object is the point of this function, not a shortcoming of it.
+ * Two kinds of answer come out of here, and they are not symmetric:
+ *
+ *   · P1 gets positive signals — the one place an observation establishes a
+ *     corpus element (identifiers are structural; consent still never is).
+ *   · Every other policy may get `{ [decisive]: false }` from
+ *     {@link absenceSignalFor}, and ONLY when the item was completely examined
+ *     and nothing observed raises that policy.
+ *
+ * Everything else still returns `{}` — "nothing established" — and the engine
+ * still answers `UNDETERMINED`. What changed is that "we looked properly and
+ * this policy is not in play" is now expressible, where before the only two
+ * expressible answers were "violated" and "unknown".
+ *
+ * 🚨 Nothing in the absence path can produce `true`. It can move a policy from
+ * blocking-unknown to not-applicable and can never move one toward a violation.
  */
 export function signalsFor(policy: string, bundle: EvidenceBundle): Signals {
-  return policy === 'ts.privacy.personal-information' ? privacySignalsFrom(bundle) : {};
+  if (policy === 'ts.privacy.personal-information') return privacySignalsFrom(bundle);
+  return absenceSignalFor(policy, bundle);
 }

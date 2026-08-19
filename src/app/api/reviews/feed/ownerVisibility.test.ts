@@ -216,3 +216,86 @@ describe('nothing else about the profile feed changed', () => {
     expect(ids(await call(`?userId=${OWNER}&limit=50`))).not.toContain(hidden.id)
   })
 })
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MODERATION STATE ON THE WIRE.
+//
+// Seeing a rejected post in your own profile with no indication that it is not
+// public is the "it uploaded fine and then vanished" experience the gate exists
+// to prevent. So the author's own profile carries the moderation payload — and
+// nobody else's response may.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const REJECTED = '33333333-3333-4333-8333-333333333333'
+
+const callRaw = async (qs: string) => {
+  const req = { nextUrl: new URL('http://localhost/api/reviews/feed' + qs) }
+  const res = await GET(req as any)
+  return await res.json()
+}
+
+describe('moderation state reaches the author, and only the author', () => {
+  beforeEach(() => {
+    h.state.rows = [
+      review(REJECTED, OWNER, 'RESTRICTED'),
+      review(PUBLISHED, OWNER, 'PUBLISHED'),
+    ]
+  })
+
+  it('the author is told their post was not published', async () => {
+    h.state.user = { id: OWNER }
+    const rows = (await callRaw(`?userId=${OWNER}&limit=50`)).reviews as Row[]
+    const rejected = rows.find((r) => r.id === REJECTED)!
+    expect(rejected, 'the rejected post must still be served to its author').toBeDefined()
+    expect(rejected.moderation).toBeDefined()
+    expect(rejected.moderation.state).toBe('RESTRICTED')
+    expect(String(rejected.moderation.title).trim()).not.toBe('')
+    expect(String(rejected.moderation.detail).trim()).not.toBe('')
+  });
+
+  it('a published post reads as published, not as pending', async () => {
+    h.state.user = { id: OWNER }
+    const rows = (await callRaw(`?userId=${OWNER}&limit=50`)).reviews as Row[]
+    expect(rows.find((r) => r.id === PUBLISHED)!.moderation.state).toBe('PUBLISHED')
+  })
+
+  it('🚨 the raw lifecycle columns NEVER reach a client, not even the author', async () => {
+    h.state.user = { id: OWNER }
+    const body = await callRaw(`?userId=${OWNER}&limit=50`)
+    const serialised = JSON.stringify(body)
+    expect(serialised).not.toContain('publication_state')
+    expect(serialised).not.toContain('safety_state')
+    expect(serialised).not.toContain('evaluated_version')
+  })
+
+  it('🚨 another user viewing this profile gets NO moderation field at all', async () => {
+    h.state.user = { id: OTHER }
+    const rows = (await callRaw(`?userId=${OWNER}&limit=50`)).reviews as Row[]
+    // ...and the rejected post is not there in the first place.
+    expect(ids(rows)).not.toContain(REJECTED)
+    for (const r of rows) expect(r.moderation, r.id).toBeUndefined()
+  })
+
+  it('🚨 an anonymous caller gets no moderation field', async () => {
+    h.state.user = null
+    const rows = (await callRaw(`?userId=${OWNER}&limit=50`)).reviews as Row[]
+    expect(ids(rows)).not.toContain(REJECTED)
+    for (const r of rows) expect(r.moderation, r.id).toBeUndefined()
+  })
+
+  it('🚨 the Explore feed never carries it, even for the author', async () => {
+    h.state.user = { id: OWNER }
+    const rows = (await callRaw('?limit=50')).reviews as Row[]
+    for (const r of rows) expect(r.moderation, r.id).toBeUndefined()
+  })
+
+  it('English is served when asked for, Vietnamese by default', async () => {
+    h.state.user = { id: OWNER }
+    const vi = (await callRaw(`?userId=${OWNER}&limit=50`)).reviews as Row[]
+    const en = (await callRaw(`?userId=${OWNER}&limit=50&lang=en`)).reviews as Row[]
+    const viNotice = vi.find((r) => r.id === REJECTED)!.moderation
+    const enNotice = en.find((r) => r.id === REJECTED)!.moderation
+    expect(viNotice.title).not.toBe(enNotice.title)
+    expect(enNotice.title).toMatch(/[A-Za-z]/)
+  })
+})
