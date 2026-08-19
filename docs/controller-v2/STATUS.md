@@ -246,6 +246,34 @@ The first of six Owner-approved Phase 7 surfaces. Merge `15ad02f`, [PR #101](htt
 
 **Remaining B5 surfaces, approved and NOT started:** Command Palette (⌘K) · Context Bar · Alert Well · Layout Presets · Density (also needs B2). **Phase 7 is not complete.**
 
+### B5 · Alert Well — **COMPLETE** (2026-08-19)
+
+Second of six approved Phase 7 surfaces. Merge `f7329ce`, [PR #103](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/103). No migration, no env, no IAM/GCS.
+
+`01_ARCH` §8 defines it in five words — *"what needs attention now"*. The Home already carried the slot: `AttentionPanel` rendered a `NotConnected` placeholder labelled `admin.home.nc.alerts`, because until Phase 4 there was nothing real to put in it.
+
+**No second monitoring system.** No table, no event stream, no polling. Every alert is a kernel fact derived at render:
+
+| Kind | Severity | Source fact |
+|---|---|---|
+| `module_unavailable` | **ERROR** | `runIsolated` marked it broken after it threw |
+| `capability_unresolved` | **WARNING** | a declared capability dependency cannot bind (the Phase 4 rule) |
+| `module_disabled` | **INFO** | an operator switched it off — painting a deliberate decision red is how operators learn to ignore red |
+
+One alert per module, most severe. Ordering is severity then module id; **the view does not re-sort**, so the server's rule stays the only one.
+
+**Why `core.ts` changed.** `isModuleAccessible` was readiness **and** permission. Gating alerts on readiness would hide exactly the alerts this exists to raise — a broken module is never `ready` by definition. It is now composed from `isReady` + the new `isModulePermitted`, so behaviour is unchanged and the halves cannot drift. Alerts use the permission half: same hub scope, same module visibility, **nothing newly authorized**, and a null actor gets nothing.
+
+**Deliberately absent:** the failure message from `runIsolated`. It is already audited, and a driver error can quote a connection string.
+
+**Tests:** 17 derivation + 20 surface. **Mutation 13/13 killed** — including hiding a real failure, fabricating one, reversing severity, bypassing the permission filter, dropping hub scope, admitting a null actor, leaking the dependency object, erasing the empty state, colour-only severity, and losing the Vietnamese string.
+
+**Production:** merge live at `f7329ce`; `/admin`, `/reviews`, `/access-denied` all 200, no 500.
+
+⚠️ **Verification limitation, stated rather than papered over.** The Alert Well renders **inside `/admin`**, which requires an authenticated `@tappyai.com` session this session does not hold. Its rendered output was **not** observed in production. No account was impersonated or substituted. Rendering is covered by unit + mutation evidence only.
+
+**Remaining B5 surfaces, approved and NOT started:** Context Bar · Command Palette (⌘K) · Layout Presets · Density (also needs B2). **Phase 7 is not complete.**
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
