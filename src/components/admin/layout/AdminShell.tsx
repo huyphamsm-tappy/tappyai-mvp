@@ -7,6 +7,8 @@ import { LogOut } from 'lucide-react'
 import { type AdminRole } from '@/lib/admin/roles'
 import type { NavGroup } from '@/lib/controller/adminNavigation'
 import { navIcon } from './navIcons'
+import { ContextBar } from './ContextBar'
+import type { ControllerEnv } from '@/lib/controller/adminConfig'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -24,6 +26,7 @@ export function AdminShell({
   email,
   isOwner,
   navGroups,
+  env,
   children,
 }: {
   /** Display only — the role badge. Authorization + navigation are decided server-side. */
@@ -36,14 +39,16 @@ export function AdminShell({
    * (@/lib/controller/adminNavigation). AdminShell is purely presentational: it
    * renders exactly what the Controller authorized. There is no client-side
    * permission logic and no static NAV[] — this is the single navigation
-   * authority. Groups are flattened to a single ordered list to preserve the
-   * existing sidebar layout.
+   * authority. Rendered hub-grouped since Phase 7 — the provider always carried
+   * the groups; the shell used to discard them.
    */
   navGroups: readonly NavGroup[]
+  /** Which deployment this is. UI standards §2: context is always in view. */
+  env: ControllerEnv
   children: ReactNode
 }) {
   const pathname = usePathname()
-  const { t, locale, setLocale } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
@@ -96,21 +101,9 @@ export function AdminShell({
             <div className="md:hidden font-bold">{t('admin.shell.brand')} {t('admin.shell.badge')}</div>
             <div className="flex-1" />
             <div className="flex items-center gap-3">
-              <div className="flex gap-1">
-                {(['vi', 'en'] as const).map((code) => (
-                  <button
-                    key={code}
-                    onClick={() => setLocale(code)}
-                    className={cn(
-                      'px-2 py-1 rounded text-xs font-medium transition-colors',
-                      locale === code ? 'bg-interactive text-white' : 'text-muted-foreground hover:bg-muted'
-                    )}
-                    aria-pressed={locale === code}
-                  >
-                    {code.toUpperCase()}
-                  </button>
-                ))}
-              </div>
+              {/* B5 Context Bar. The locale control MOVED here rather than being
+                  copied: two controls for one setting can disagree. */}
+              <ContextBar env={env} />
               <div className="text-right">
                 <div className="text-sm font-medium truncate max-w-[180px]">{email}</div>
                 <div className="text-xs text-muted-foreground">{t(isOwner ? 'admin.role.owner' : ROLE_LABEL_KEY[role])}</div>

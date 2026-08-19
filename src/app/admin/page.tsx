@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildAdminController } from '@/lib/controller/registry/adminModules'
 import { deriveNavigation } from '@/lib/controller/navigationProvider'
 import { deriveAlerts } from '@/lib/controller/alerts'
+import { controllerEnv } from '@/lib/controller/adminConfig'
 import { ControllerHome } from '@/components/admin/home/ControllerHome'
 import type { ControllerHomeData, HomeAuditEvent } from '@/components/admin/home/types'
 import { homeMode, departmentSummaries } from '@/lib/controller/org'
@@ -93,8 +94,8 @@ export default async function AdminHomePage() {
   // (isolation, server-enforced); none → []. Registry-derived, never fabricated.
   const departments = departmentSummaries(deptContext)
 
-  const rawEnv = process.env.VERCEL_ENV
-  const env: ControllerHomeData['env'] = rawEnv === 'production' ? 'production' : rawEnv === 'preview' ? 'preview' : 'local'
+  // One env mapping for the whole Controller — see controllerEnv.
+  const env = controllerEnv()
 
   const data: ControllerHomeData = {
     controllerVersion: process.env.VERCEL_GIT_COMMIT_SHA ?? core.version,

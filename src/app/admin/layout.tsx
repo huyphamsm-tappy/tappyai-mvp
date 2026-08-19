@@ -6,6 +6,7 @@ import { resolveAdminNavigation } from '@/lib/controller/adminNavigation'
 import { orgMembershipEnabled, resolveActorMemberships } from '@/lib/controller/org/server'
 import { filterNavByDepartment } from '@/lib/controller/org/navDepartment'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
+import { controllerEnv } from '@/lib/controller/adminConfig'
 import { Toaster } from '@/components/ui/sonner'
 import { loginPathFor } from '@/lib/auth/returnTo'
 import { denialPath } from '@/lib/admin/denial'
@@ -61,6 +62,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         isOwner={actor.isOwner}
         email={user.email ?? '—'}
         navGroups={navGroups}
+        env={controllerEnv()}
       >
         {children}
       </AdminShell>
