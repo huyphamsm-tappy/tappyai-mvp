@@ -3,6 +3,7 @@ import { permissionEngine } from '@/lib/admin/permissions/engine'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildAdminController } from '@/lib/controller/registry/adminModules'
 import { deriveNavigation } from '@/lib/controller/navigationProvider'
+import { deriveAlerts } from '@/lib/controller/alerts'
 import { ControllerHome } from '@/components/admin/home/ControllerHome'
 import type { ControllerHomeData, HomeAuditEvent } from '@/components/admin/home/types'
 import { homeMode, departmentSummaries } from '@/lib/controller/org'
@@ -102,7 +103,7 @@ export default async function AdminHomePage() {
     mode,
     platform,
     signals: { adminRoles },
-    attention: { recentAudit },
+    attention: { recentAudit, alerts: deriveAlerts(core, actor) },
     quickActions,
     scope,
     departments,
