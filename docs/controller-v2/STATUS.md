@@ -216,6 +216,36 @@ Closed by calling the same `writeAuditLog` with the same field shape as `deals/r
 
 A sweep of all 8 admin mutation routes confirms this was **the only gap**: `org/memberships` writes no row directly but audits through `membershipService`, which is the canonical writer.
 
+### B5 · Denial UX — **COMPLETE, production-verified** (2026-08-19)
+
+The first of six Owner-approved Phase 7 surfaces. Merge `15ad02f`, [PR #101](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/101). No migration, no env, no IAM/GCS.
+
+**What it closes.** Four structurally different refusals all landed on `/reviews` or `/admin` with no signal — Owner Gate failure, non-corporate identity, corporate identity with no role, and a PDP denial. Each one had a precise reason in hand and discarded it, which is why *a production incident and a correctly-working permission check were indistinguishable from outside*. `01_ARCH` §8: *"A 403 explains which permission is missing and who can grant it. A dead end is a support ticket."*
+
+**Scope completed:** a pure decision module ([`denial.ts`](../../src/lib/admin/denial.ts)) that decides **wording, never access**; `/access-denied`, deliberately outside `/admin` because every `/admin` page carries its own guard; and a permission denial that names the permission and lists the roles holding it, resolved from the registry.
+
+**What is deliberately not disclosed.** `ENV_SET_BUT_NO_OWNER` / `ENV_MISMATCH` and the six corporate sub-reasons describe the deployment's configuration, not the visitor, so they collapse into `controller_unavailable` and `not_corporate`. The query string is user-controlled, so both fields are validated against closed sets: an unknown reason falls back to the generic message, and an unknown permission id is **dropped rather than echoed**.
+
+**Production evidence** (merge `15ad02f` live):
+
+| Check | Result |
+|---|---|
+| `?reason=<script>alert(1)</script>` | **0** injected `<script>` tags. The string appears only inside Next's own RSC `urlParts` payload — URL-encoded and JSON-escaped framework serialization of the request URL, not page output |
+| `?permission=made.up.pwn` | dropped — **0** occurrences of the roles block |
+| `?reason=missing_permission&permission=security.roles.read` | names *"View admin role assignments"* and `super_admin` |
+| `?reason=junk` | falls back — renders *"Trang này không mở cho bạn"* |
+| `?reason=controller_unavailable` | **0** matches for `ENV_MISMATCH`, `ENV_SET_BUT_NO_OWNER`, `service_role`, `supabase` |
+| Controller link | present for `missing_permission`, **absent** for `not_corporate` |
+| HTTP | 200 on every reason; no 500 |
+
+**VI/EN evidence.** Production server-renders **Vietnamese** (`Cần danh tính nội bộ TappyAI`, `Trang này không mở cho bạn`); the test suite renders **English**. Both maps are asserted to contain every key **and to differ**, so a key copied from English cannot pass as translated.
+
+**Security regression evidence.** Mutation **11/11 killed**. Two survived the first run and both were real gaps: admitting a non-corporate identity as a principal broke **no test at all** — the FOUNDATION-10C boundary had none — and forcing the Controller link on for every reason broke nothing either. Tests were added for both. Four existing assertions were retargeted, none weakened: each keeps its original force (denied, never into `/admin`).
+
+⚠️ **Verification limitation, stated rather than papered over.** The authenticated denial paths — non-corporate signed-in user, corporate user with no role, and a real PDP denial — were **not** exercised against production, because that needs sessions this session does not hold. No account was impersonated or substituted. Those paths are covered by unit + mutation evidence only.
+
+**Remaining B5 surfaces, approved and NOT started:** Command Palette (⌘K) · Context Bar · Alert Well · Layout Presets · Density (also needs B2). **Phase 7 is not complete.**
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
