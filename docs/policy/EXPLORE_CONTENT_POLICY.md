@@ -200,30 +200,49 @@ document does not claim one.
 
 ## 8. Current operational reality — read this before relying on the gate
 
-🔴 **As configured today, no new Explore post reaches `PUBLISHED`.**
+🔴 **As configured today, no new Explore post reaches `PUBLISHED`.** One decision
+stands between the system and a working publish path, and it is named below.
 
-Eleven of the eighteen policies are evidence-gated and one is legally blocked;
-against the evidence the three available modalities produce, they return
-`INSUFFICIENT_EVIDENCE`, which is a blocking outcome. Measured on a deliberately
-benign post — a bowl of noodles, no text, all three modalities observed, zero
-coverage gaps — the result is `UNDER_REVIEW`, with 18 of 18 policy lines
-blocking.
+**What was fixed.** Every policy used to answer `INSUFFICIENT_EVIDENCE` for every
+post, because the evidence model had no way to express "we examined this and the
+policy is not in play". It could say *violated* or *unknown*, and nothing else.
+It now distinguishes them: where an item was **completely examined** and nothing
+observed raises a given policy, that policy is reported absent
+(`NOT_APPLICABLE`) rather than unknown. A benign photo went from 18 of 18 policy
+lines blocking to **none**.
 
-This is the safe direction, and it is working exactly as designed. But its
-product meaning must not be misread: **with the gate active, Explore accepts no
-new public content, and there is no human review to release what it holds.**
+That change can only ever make the system more cautious, never less. It emits no
+positive finding, it is inert unless the examination was complete, and any
+observed indicator withholds it — so an indicator now costs a review where it
+previously cost nothing.
 
-Closing that requires one of:
+**What still holds every post.** Two policies — `ts.graphic.presentation` and
+`ts.sexual.adult-content` — are the only ones left blocking a benign item, and
+they are the only two whose disposition is `RESTRICTED` rather than `PROHIBITED`.
+Both turn on a **presentation event**: whether the viewer chose to see the item,
+and whether an interstitial or audience condition was applied. No presentation
+event exists at publication time, so neither can ever be answered there.
 
-1. resolving the evidence-gated policies so a clean post can constitute
-   `APPLICABLE_NO_VIOLATION` rather than `INSUFFICIENT_EVIDENCE` — corpus work,
-   plus Owner ratification; or
-2. a human review capability, which is governance-blocked per §7; or
-3. weakening the gate so unresolved policies stop blocking — **which is the
-   fail-open this architecture exists to prevent, and is not recommended.**
+The awkward part is that a `RESTRICTED` policy, per the Owner's decision of
+2026-08-16, establishes **no violation even when fully constituted** — its
+maximum adverse outcome is `APPLICABLE_NO_VIOLATION`, which does not withhold
+publication. So today the system withholds more for *not knowing* than it would
+for knowing the worst.
 
-Until then the gate should be regarded as *correct and not yet operable*, and its
-activation is a product decision rather than an engineering one.
+🔵 **THE OPEN DECISION (Owner).** Should a `RESTRICTED`-disposition policy gate
+publication while it is merely undetermined? Making these two
+`DOES_NOT_BLOCK_PUBLICATION` removes **no prohibitive protection** — sexual harm
+is governed by `ts.sexual.exploitation-nonconsent` and the four `ts.child.*`
+policies, all `PROHIBITED`, all still blocking, all still requiring absence to be
+positively established. Measured under that configuration: benign photo and
+ordinary political and religious posts publish; threats, sexual wording, scam
+wording, self-harm and graphic wording all stay held; every video stays held.
+
+**Videos are held regardless**, under every configuration, because frames across
+the clip and audio are not examined (§6) — that is a coverage gap, not a
+decision, and only frame sampling or human review closes it.
+
+There is still no human review to release anything held (§7).
 
 ---
 
