@@ -274,6 +274,40 @@ One alert per module, most severe. Ordering is severity then module id; **the vi
 
 **Remaining B5 surfaces, approved and NOT started:** Context Bar · Command Palette (⌘K) · Layout Presets · Density (also needs B2). **Phase 7 is not complete.**
 
+### B5 · Context Bar — **COMPLETE (partial by contract)** (2026-08-19)
+
+Third of six approved Phase 7 surfaces. Merge `da98c6f`, [PR #105](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/105). No migration, no env, no IAM/GCS, no preference store.
+
+`01_ARCH` §8 names it **"env · date range · locale"**; UI standards §2 gives the requirement — *"Context is always visible … always in view"*. **Two of the three shipped. The third is an open contract gap, not an omission.**
+
+**Shipped:** `env` is now in view on **every** Controller page — MEASURED before, it appeared only on the Home (`CommandHeader`), so on `/admin/rbac` or `/admin/audit` an operator could not tell production from preview. `locale` **moved** into the bar rather than being copied, because two controls for one setting can disagree. `controllerEnv()` is now the single `VERCEL_ENV` mapping; anything unrecognised is `local`, since an environment the deployment cannot name is not production.
+
+**Mutation 12/12 killed**, including *reporting preview as production* and *defaulting an unknown environment to production* — the two ways this surface could actively mislead rather than merely fail.
+
+**Production:** live at `da98c6f`; `/admin`, `/reviews`, `/access-denied`, `/api/version` all 200, no 500.
+
+⚠️ **Verification limitation.** The bar renders **inside `/admin`**, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation evidence only.** No account was impersonated or substituted.
+
+#### 🔴 OPEN CONTRACT GAP — date range (needs an Owner decision)
+
+| Defined | Source |
+|---|---|
+| 8 presets, default **"Last 30 days"** | `17_UI_UX_Standards` §5.4 |
+| Reporting timezone `Asia/Ho_Chi_Minh` | ADR-008, owner-approved |
+| `from`/`to` at the data layer | the analytics API already accepts them — **and no UI passes them** |
+
+| **Undefined anywhere** |
+|---|
+| **What the range filters** — audit log? Home signals? the Alert Well? |
+| What it means on a page with no time series (RBAC, Settings, Deals) |
+| Whether the selection persists |
+
+§5.4 also calls it *"Global … top toolbar"* while the layout sketch places it beside `[Page Title]` — **two different components**.
+
+It was therefore **not built**: a control that looks like a filter and filters nothing is worse than an absent one, because it makes an operator believe they scoped a view they did not. A test asserts **no preset string renders**, so adding one later fails until this gap is closed deliberately.
+
+**Remaining B5 surfaces, approved and NOT started:** Command Palette (⌘K) · Layout Presets · Density (also needs B2). **Phase 7 is not complete.**
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
