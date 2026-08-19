@@ -115,6 +115,25 @@ The first phase after Decision F. **PARTIAL** — what shipped, and what it is s
 
 **Verification:** 8/8 mutations killed against the security guards — including one that survived first and exposed a rollback path no test held open.
 
+### Phase 6 — legacy retirement (2026-08-19): **PARTIAL**
+
+**Removed: `src/lib/admin.ts`** — the pre-RBAC `ADMIN_IDS` / `isAdmin()` gate. [`00_LEGACY_AUDIT.md`](00_LEGACY_AUDIT.md) states why it mattered: *"a second authorization source is a privilege-escalation surface by definition."*
+
+Removal condition proven, not assumed. Two sources state it, and both are met:
+
+| Source | Condition | Evidence |
+|---|---|---|
+| [`00_LEGACY_AUDIT.md`](00_LEGACY_AUDIT.md) | *"Must grep and confirm zero live references before deleting"* | 0 importers, 0 call sites of `isAdmin()`, across `src/`, `scripts/`, `supabase/`, tests and config |
+| `docs/backoffice/23_Implementation_Roadmap.md:382` | *"safe after Phase 0 is deployed, admins are seeded, and **no code path references `isAdmin()`**"* | same |
+
+Guards were added so the surface stays closed rather than merely being closed today, and they are mutation-tested: **6/6 killed**, covering re-creating the module, re-importing it, turning the notification list back into a gate, dropping the anonymous-reporter `401`, narrowing reporting to permission holders, and routing the id list somewhere other than the notifier. One mutation survived first — a loose regex still matched an id list exfiltrated to an external host on its way to the notifier — and the guard was tightened.
+
+**Corrected: the contract's stated migration does not fit the code.** [`FOUNDATION_01_CONTRACTS.md`](FOUNDATION_01_CONTRACTS.md) §11 gives the removal as *"REMOVE (after 1 caller migrates) — migrate `music/tracks/[id]/report` to `requirePermission`"*. MEASURED: that route never imported `src/lib/admin.ts` (it inlines the env parse), and its `ADMIN_IDS` read is a **notification recipient list**, not an authorization check — authorization there is `getRequestUser` + `401`, and reporting is deliberately open to any signed-in user under a 24–48 h takedown SLA. Applying `requirePermission` literally would make copyright reporting admin-only, which secures nothing and breaks the channel. The §11 row is **not edited** — it is a decision record — and the discrepancy is recorded here instead.
+
+**Still open — `ADMIN_IDS` is not retired as an environment concept.** `src/app/api/music/tracks/[id]/report/route.ts` still reads `process.env.ADMIN_IDS` to choose who is notified. Replacing it with an RBAC-derived recipient set needs a policy no authoritative source states — *which role receives copyright reports?* — so it is **F: OWNER DECISION REQUIRED**, not implemented on a guess.
+
+**Also closed by Phase 4:** the §11 row `BACKOFFICE_ENABLED` = *REFACTOR → Config Provider flag* — done, see above.
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
