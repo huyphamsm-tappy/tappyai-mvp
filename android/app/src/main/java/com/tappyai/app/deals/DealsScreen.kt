@@ -28,7 +28,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.core.common.UiState
@@ -127,31 +126,27 @@ private fun DealCard(deal: Deal, onClick: (() -> Unit)?) {
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(text = deal.emoji, style = MaterialTheme.typography.headlineSmall)
-
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
-            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs), verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = deal.title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, fill = false),
-                )
-                if (deal.badge != null) {
-                    Box(
-                        modifier = Modifier
-                            .clip(TappyShapes.pill)
-                            .background(tappyCategoryColors.red.accent)
-                            .padding(horizontal = TappySpacing.sm, vertical = 2.dp),
-                    ) {
-                        Text(text = deal.badge, style = MaterialTheme.typography.labelSmall, color = colors.onError)
-                    }
-                }
-            }
-            Text(text = deal.discount, style = MaterialTheme.typography.bodyMedium, color = tappyCategoryColors.green.accent)
             Text(
-                text = stringResource(R.string.deals_category_source_format, deal.category, deal.source),
+                text = deal.title,
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            // Most deals carry no promotion — web renders the discount only when one exists.
+            val discount = deal.discount?.trim()
+            if (!discount.isNullOrEmpty()) {
+                Text(text = discount, style = MaterialTheme.typography.bodyMedium, color = tappyCategoryColors.green.accent)
+            }
+            // "via <partner>" only when there is a partner to name — otherwise the format string
+            // leaves a dangling "· via " with nothing after it.
+            val source = deal.source.trim()
+            Text(
+                text = if (source.isEmpty()) {
+                    deal.category
+                } else {
+                    stringResource(R.string.deals_category_source_format, deal.category, source)
+                },
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.onSurfaceVariant,
             )
