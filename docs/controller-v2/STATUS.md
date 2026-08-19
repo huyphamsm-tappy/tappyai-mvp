@@ -308,6 +308,40 @@ It was therefore **not built**: a control that looks like a filter and filters n
 
 **Remaining B5 surfaces, approved and NOT started:** Command Palette (⌘K) · Layout Presets · Density (also needs B2). **Phase 7 is not complete.**
 
+### B5 · Command Palette — **COMPLETE (navigate only, by contract)** (2026-08-19)
+
+Fourth of six approved Phase 7 surfaces. Merge `8fe1d43`, [PR #107](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/107). No migration, no env, no IAM/GCS, **no new dependency** — built on the existing Dialog primitive.
+
+`01_ARCH` §8 names three capabilities — *"⌘K Command Palette — navigate · act · search"*. The entire authoritative corpus for this surface is **four statements**, and only one specifies behaviour:
+
+> §8 Navigation: *"Derived from the Module Registry, filtered by the actor's permissions. **You never see a door you cannot open.**"*
+
+| Capability | Status |
+|---|---|
+| **NAVIGATE** | ✅ **DEFINED** — implemented from `NavGroup[]`, already PDP- and hub-scope-filtered |
+| **ACT** | 🔴 **UNDEFINED** — no source names a command, its permission, its confirmation, its audit, or whether it mutates. The only prose, *"every action reachable in two keystrokes"*, is an aspiration, not a command list |
+| **SEARCH** | 🔴 **UNDEFINED** — no source names a searchable entity, field, ranking, scope, limit or permission rule |
+
+**Neither gap was filled by guessing**, and **two tests guard that**: one fails if a mutating command appears, another if a query matching a user, deal or audit row returns anything.
+
+**Security boundary:** `Registry → Navigation Provider → PDP → hub permissionScope → NavGroup[] → Palette`. The palette re-derives nothing; filtering is a subset operation, so **no query can surface a command the server did not authorize** — exercised by typing `rbac` at a palette never given that module. The filter matches the **translated label and hub name only**, never the route or module id: matching those would let an operator find a screen by typing a path they were never shown.
+
+`Ctrl+K` is accepted alongside `⌘K` because there is no ⌘ key on Windows or Linux, where the named shortcut would be unreachable. Entries are real links (Tab-reachable, §8), plus a visible trigger.
+
+**Mutation 13/13 killed**, including *growing an ACT command* and *matching the route*.
+
+**The Architecture Guard from PR #99 caught this work**: the module's test imported `@/lib/i18n/admin` from inside `src/lib/controller/`, a §1.4 violation. The rule is right — a kernel test that cannot compile without the consumer app is a kernel that cannot be extracted — so the test now uses a stub resolver.
+
+**Production:** live at `8fe1d43`; `/api/version`, `/admin`, `/reviews`, `/access-denied` all 200, no 500.
+
+⚠️ **production render not visually verified; unit/mutation/CI evidence only.** The palette is inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. No account was impersonated or substituted.
+
+#### 🔴 OPEN CONTRACT GAPS — `act` and `search` (need Owner decisions)
+
+Alongside the **date range** gap recorded above, §8's Command Palette leaves two more. Each needs the same shape of answer before it can be built: *what exactly, with what permission, with what confirmation, and audited how?*
+
+**Remaining B5 surfaces, approved and NOT started:** Layout Presets · Density (also needs B2). **Phase 7 is not complete.**
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
