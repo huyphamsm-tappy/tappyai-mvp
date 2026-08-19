@@ -421,6 +421,42 @@ Every `buildAdminController()` call site uses the default **NOOP audit sink**, s
 
 **Phase 8 is NOT complete.** One identity corrected; no business module built.
 
+### Phase 8 — 20-module authority audit (2026-08-19): **NO AUTHORIZED IMPLEMENTATION UNIT**
+
+Read-only. **No code, no RED tests, no placeholder module.** Three corrections to earlier entries in this document come first, because each changes what happens next.
+
+#### Correction 1 — every business-module specification is DRAFT
+
+[`docs/backoffice/README.md`](../backoffice/README.md) line 109 claims *"All documents (00–35) — Architecture v1.1 — ✅ APPROVED"*. MEASURED against the files themselves: **29 of 36 self-declare `Status: DRAFT — Awaiting Owner Approval`**, and that set includes **every module specification (01–30)**.
+
+Only six declare approval: `00_Constitution`, `31_Feature_Flags`, `32_Experimentation`, `33_Privacy`, `34_Data_Retention`, `35_Business_KPI_Dictionary`. **None of them is a module spec.**
+
+The per-document header is the operative status, and the B5 precedent proves it: the Owner had to **explicitly promote** `17_UI_UX_Standards.md` out of DRAFT for the Phase 7 surfaces — an act that would have been unnecessary if the README's blanket claim governed. That promotion was **per document**. `17_UI_UX_Standards.md` still reads `DRAFT` in its own header today; the promotion lives in the decision record, not the file.
+
+**Owner Decision G settled containment — which hub owns which module — and that stands. It did not promote any module spec to implementation authority.**
+
+#### Correction 2 — the mapping is 18/20, not 17/20
+
+Counted directly from [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md) §1: modules **01–16, 18, 19** are placed = **18**. The two of the twenty left ambiguous are **17 Settings** and **20 Shared Services**. The third row in §2 — Feature Flags / Experimentation — is **not among the twenty numbered modules**, as §2 says itself. Earlier entries in this document said "17/20 placed, 3 ambiguous"; that counted a non-module as a module.
+
+#### Correction 3 — document numbers are not module numbers
+
+`docs/backoffice/14_CRM.md` is **document** 14; **Module** 14 is System Monitoring. An earlier entry proposed *"bo-14 System Monitoring"* as a build candidate on the strength of a dedicated spec. There is no such document: **Module 14 has only a 30-line section** inside DRAFT `03_Module_Architecture.md`.
+
+Modules with a dedicated document: 01 (bo-26), 06 (bo-15), 07 + 19 (bo-08), 08 (bo-10), 09 (bo-11), 10 (bo-09), 11 (bo-14), 12 (bo-13) ✅ shipped, 13 (bo-12) ✅ shipped, 16 (bo-16), 02/04 (bo-06). **Modules 03, 05, 14, 15, 17, 18, 20 have a section only** — 15 to 37 lines each.
+
+#### Verdict
+
+**PHASE 8 HAS NO AUTHORIZED IMPLEMENTATION UNIT.** Building any of the 17 remaining modules would mean treating a DRAFT as a frozen contract. Data existing is not authority: `system_health_log`, `user_events` and `user_acquisition` are real, and none of them authorises a module.
+
+#### 🔴 Owner decisions that would unlock Phase 8
+
+1. **Promote one module specification out of DRAFT**, the same way `17_UI_UX_Standards.md` was promoted — naming the document, and naming what it authorises (product behaviour, API, data model, permissions, acceptance criteria).
+2. **Reconcile the README's blanket approval with the 29 DRAFT headers** — one of the two is wrong, and today the frozen doc set contradicts itself.
+3. **Module 17 Settings** hub placement, still open, still blocking `tappy.hub.configuration`.
+
+**Phase 8 remains STARTED, NOT COMPLETE** — one hub identity corrected, zero business modules built.
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
