@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getReview } from './getReview'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { BRAND, absoluteUrl, safeOgImageUrl } from '@/lib/share/openGraph'
@@ -6,22 +7,6 @@ import ReviewDetailView from './ReviewDetailView'
 
 interface Props {
   params: { id: string }
-}
-
-async function getReview(id: string) {
-  const supabase = createClient()
-  const { data } = await supabase
-    .from('reviews')
-    .select(`
-      id, user_id, place_name, place_address, rating, body,
-      photos, is_verified, like_count, comment_count, created_at, music,
-      content_type, media_url, thumbnail, source_type, source_url,
-      profiles(full_name, avatar_url)
-    `)
-    .eq('id', id)
-    .or('is_hidden.is.null,is_hidden.eq.false')
-    .single()
-  return data
 }
 
 async function getLikeStatus(reviewId: string): Promise<boolean> {
