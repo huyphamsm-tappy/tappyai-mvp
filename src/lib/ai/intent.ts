@@ -213,7 +213,7 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
 // forward a task the user has moved on from, which is worse than shipping
 // nothing.
 
-export type DecisionStage = 'refinement' | 'comparison' | 'confirmation' | null
+export type DecisionStage = 'refinement' | 'comparison' | 'confirmation' | 'decision' | 'rejection' | null
 
 /** A bare acknowledgement and NOTHING else — same whole-message technique as
  *  CHITCHAT_ONLY, so "ok cho mình xem quán quận 1" is not swallowed. */
@@ -248,6 +248,99 @@ const REFINEMENT_CONSTRAINT_LEAD =
  *  refinement is short by nature ("rẻ hơn", "closer to the beach"). */
 const MAX_REFINEMENT_LENGTH = 60
 
+/**
+ * "You pick for me." The user is not naming two options to compare (that is
+ * [COMPARISON]) — they are handing the decision to the assistant, which is the
+ * one turn where a list is always the wrong answer.
+ *
+ * Measured gap: the Mac conversation's "bạn chọn máy nào?" / "which one would
+ * you choose?" both scored `null`, so the turn that most needs a committed
+ * recommendation was the one running with no stage guidance at all.
+ */
+const DECISION_REQUEST = new RegExp([
+  'ban (chon|thich|khuyen|nghieng)',
+  '(chon|lay|mua) (cai|may|quan|cho|phuong an|loai) nao',
+  'theo ban( thi)? nen',
+  '(tu van|chon|goi y) giup',
+  'neu la ban',
+  'which (one )?would you (choose|pick|go with|recommend)',
+  'what would you (choose|pick|go with|recommend)',
+  'which (one )?do you recommend',
+  'your (pick|choice)',
+  'you (choose|pick|decide)',
+  '\\bpick one\\b|\\brecommend one\\b|\\bjust pick\\b',
+  'if you were me',
+].join('|'), 'i')
+
+/**
+ * The previous suggestions were rejected as a set. Distinct from a refinement:
+ * a refinement says what to change, a rejection only says the direction was
+ * wrong, so the reply has to find out WHY before spending another search.
+ */
+const REJECTION = new RegExp([
+  'khong (thich|ung|hop|thay hay|khoai)',
+  'chan qua|khong on|deu khong',
+  'khong cai nao',
+  "don'?t like|do not like|not a fan",
+  'none of (these|them|those)',
+  'not what i (want|need|had in mind)',
+  'neither|not really feeling',
+].join('|'), 'i')
+
+/**
+ * A constraint or priority added to the task already in play, phrased as a
+ * statement rather than a comparative — "tầm 25 triệu", "chủ yếu code",
+ * "pin phải tốt", "around 25 million", "mostly coding". C2 only caught
+ * comparatives ("rẻ hơn") and a short list of prepositional leads, so every
+ * turn of a realistic multi-turn consultation fell through to no stage.
+ * Same refinement semantics: keep the task, apply the new condition.
+ */
+const CONSTRAINT_ADDITION = new RegExp([
+  // Budget / rough amount, usually the second thing a buyer says.
+  '^(tam|khoang|ngan sach|gia|duoi|tren)\\b',
+  '^(around|about|budget|under|below|up to|max)\\b',
+  // Purpose / usage.
+  '^(chu yeu|chinh la|de |dung de |uu tien)\\b',
+  '^(mostly|mainly|primarily|for )\\b',
+  // A stated must-have: "pin phải tốt", "màn phải to", "must be quiet".
+  '\\bphai (tot|cao|moi|ben|manh|nhanh|re|lon|nho|rong|sach|yen)\\b',
+  '\\b(must|has to|needs to) (be|have)\\b',
+  // Who is coming / what the occasion is — changes the answer as much as a
+  // budget does ("mình sẽ dẫn theo con nhỏ", "I'll have my child with me").
+  '\\b(dan theo|di voi|di cung|cung voi|co them|dat cho|cho ca nha)\\b',
+  "\\b(bringing|with my|for my|i'?ll have)\\b",
+].join('|'), 'i')
+
+/**
+ * "Cho mình thêm vài quán khác" — the user wants MORE options, not different
+ * requirements.
+ *
+ * Distinct from refinement, which these phrases currently fall under: a
+ * refinement changes what qualifies and can invalidate the held set, whereas
+ * this asks for the next slice of a set we usually already have. Treating them
+ * the same is what made "thêm quán khác" trigger a fresh search plus a fresh
+ * batch of photos when unshown candidates were already sitting in state.
+ *
+ * Deliberately narrow — it must not swallow "quán khác rẻ hơn", which really is
+ * a refinement, so any comparative in the message disqualifies it.
+ */
+const MORE_OPTIONS = new RegExp([
+  'them (vai |may |mot |2 |3 )?(quan|cho|noi|khach san|nha hang|mon|lua chon|option|may)',
+  'con (quan|cho|noi|cai|lua chon|option)s? nao (khac|nua)',
+  '(quan|cho|noi|cai|lua chon)s? (nao )?khac (khong|nua)',
+  'show me more|more options|other options|any others|what else|anything else',
+  'give me (a few )?more',
+].join('|'), 'i')
+
+/** A comparative means the ask CHANGES the criteria — that is refinement. */
+const COMPARATIVE_MARKER = /\bhon\b|\b(cheaper|closer|quieter|better|nicer|bigger|smaller|nearer)\b/i
+
+export function detectMoreOptions(text: string): boolean {
+  const t = normalizeVN(text.toLowerCase())
+  if (COMPARATIVE_MARKER.test(t)) return false
+  return MORE_OPTIONS.test(t)
+}
+
 export function detectDecisionStage(
   text: string,
   opts: { hasPriorAssistantTurn: boolean },
@@ -256,9 +349,20 @@ export function detectDecisionStage(
   if (!raw) return null
   const t = normalizeVN(raw.toLowerCase())
 
-  // Comparison first: it is valid as a cold start ("Nên mua iPhone hay Samsung?")
-  // and its markers are the most specific.
+  // "You pick" before comparison: both can carry "nao"/"which", but handing the
+  // decision over is the stronger signal and needs the committing reply, not the
+  // even-handed one. Gated on a prior assistant turn — with nothing on the table
+  // there is nothing to choose between, and it is a cold-start request instead.
+  if (opts.hasPriorAssistantTurn && DECISION_REQUEST.test(t)) return 'decision'
+
+  // Comparison: valid as a cold start ("Nên mua iPhone hay Samsung?") and its
+  // markers are the most specific of the remaining ones.
   if (COMPARISON.test(t)) return 'comparison'
+
+  // Rejection before refinement: "không thích mấy cái này" also trips the
+  // refinement marker via "cái khác", but "these were wrong" is not the same
+  // instruction as "make it cheaper" and must not be answered the same way.
+  if (opts.hasPriorAssistantTurn && REJECTION.test(t)) return 'rejection'
 
   // A pure acknowledgement. Checked before refinement so "ok" is not read as a
   // constraint, but AFTER the whole-message anchor rejects "ok, cheaper" —
@@ -269,7 +373,11 @@ export function detectDecisionStage(
   // Refinement needs something to refine. Without a prior assistant turn the
   // same words are a cold-start request and must be treated as one.
   if (opts.hasPriorAssistantTurn && t.length <= MAX_REFINEMENT_LENGTH) {
-    if (REFINEMENT_MARKER.test(t) || REFINEMENT_CONSTRAINT_LEAD.test(t)) return 'refinement'
+    if (
+      REFINEMENT_MARKER.test(t) ||
+      REFINEMENT_CONSTRAINT_LEAD.test(t) ||
+      CONSTRAINT_ADDITION.test(t)
+    ) return 'refinement'
   }
 
   return null
@@ -299,14 +407,35 @@ export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   return null
 }
 
+/** Asks WHERE without naming anywhere — a weak signal, never decisive alone. */
+const weakWhereRe = /\bo\s+dau\b|\bcho\s+nao\b/
+
+/** The turn is about acquiring a product, so a bare "where" is answerable
+ *  online. Bare `\bmua\b` also matches "mùa"/"mưa" once diacritics are
+ *  stripped; that costs a place question its offline hint and nothing more,
+ *  and detectForcedTool already accepts the same ambiguity. */
+const purchaseRe = /\bmua\b|\bco ban\b|san pham|dat hang|order hang|\bbuy\b|\bpurchase\b/
+
 export function detectLocationIntent(text: string): 'offline' | 'online' | 'unknown' {
   const t = normalizeVN(text.toLowerCase().trim())
   // Online signals
   const onlineRe = /\bonline\b|ship\b|\border\b|giao\s*hang|free\s*ship|voucher|flash\s*sale|\bshopee\b|\blazada\b|\btiki\b|\bsendo\b|mua\s*tren|dat\s*hang\s*online|giao\s*tan\s*noi|\bcod\b|mua\s*online/
-  // Offline signals: district names, streets, nearby, physical store
-  const offlineRe = /\bq\.\s*\d+\b|\bq\.\s*[a-z]+|\bquan\s+\d+\b|\bquan\s+(binh|phu|go|tan|nha|hoc|can|cu|thu|ba|cau|dong|hai|hoan|tay|thanh)\b|\bphuong\s+\w+|\bhuyen\s+\w+|\bduong\s+[a-z]|\bpho\s+[a-z]|\bgan\s+(day|nha|minh)\b|\bkhu\s+vuc\b|\bo\s+dau\b|\bcho\s+nao\b|\bcua\s*hang\b|\btiem\b|\bchi\s*nhanh\b|\bsieu\s*thi\b|\btrung\s*tam\s*thuong\s*mai\b|\bmall\b|\bplaza\b|\bden\s+(mua|xem)\b|\bghe\s+(qua|toi|vao)\b/
+  // Offline signals: district names, streets, nearby, physical store. Each one
+  // names a PLACE, so any single match decides on its own.
+  const offlineRe = /\bq\.\s*\d+\b|\bq\.\s*[a-z]+|\bquan\s+\d+\b|\bquan\s+(binh|phu|go|tan|nha|hoc|can|cu|thu|ba|cau|dong|hai|hoan|tay|thanh)\b|\bphuong\s+\w+|\bhuyen\s+\w+|\bduong\s+[a-z]|\bpho\s+[a-z]|\bgan\s+(day|nha|minh)\b|\bkhu\s+vuc\b|\bcua\s*hang\b|\btiem\b|\bchi\s*nhanh\b|\bsieu\s*thi\b|\btrung\s*tam\s*thuong\s*mai\b|\bmall\b|\bplaza\b|\bden\s+(mua|xem)\b|\bghe\s+(qua|toi|vao)\b/
   if (offlineRe.test(t)) return 'offline'
   if (onlineRe.test(t)) return 'online'
+  // "ở đâu" / "chỗ nào" ask WHERE — they name no place. A marketplace link
+  // answers them as well as a shop address does, so alone they cannot mean
+  // "physical store". They used to sit in offlineRe above, and because the
+  // route DROPS search_products whenever this returns 'offline', the most
+  // ordinary Vietnamese shopping phrasing — "mua X ở đâu" — lost the shopping
+  // tool entirely. Measured 2026-08-11 on the stored benchmarks: 12-vi called
+  // no tool at all in both runs while its English twin called search_products.
+  // They keep their place meaning for everything that is NOT a purchase, which
+  // is why the weak check is last: a real location marker or an explicit
+  // marketplace above still wins outright.
+  if (weakWhereRe.test(t) && !purchaseRe.test(t)) return 'offline'
   return 'unknown'
 }
 

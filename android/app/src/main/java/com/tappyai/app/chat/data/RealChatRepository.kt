@@ -37,7 +37,11 @@ class RealChatRepository @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : ChatRepository {
 
-    override fun streamReply(messages: List<ChatMessage>): Flow<String> = callbackFlow {
+    override fun streamReply(
+        messages: List<ChatMessage>,
+        conversationId: String?,
+        onConversationId: (String) -> Unit,
+    ): Flow<String> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
         // turn's error text (e.g. a connection-error message) would be replayed to the backend as a genuine
@@ -51,7 +55,7 @@ class RealChatRepository @Inject constructor(
         val dtoMessages = withContext(Dispatchers.IO) {
             messages.filterNot { it.isError }.map { msg -> msg.toDto() }
         }
-        val body = json.encodeToString(ChatRequest(dtoMessages))
+        val body = json.encodeToString(ChatRequest(dtoMessages, conversationId))
             .toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
@@ -78,6 +82,11 @@ class RealChatRepository @Inject constructor(
                     close(parseChatError(response.code, response.body?.string()))
                     return@launch
                 }
+
+                // Read BEFORE draining the body: on the first turn this is the only place the
+                // server's conversation id appears, and the caller needs it for the next turn.
+                // Absent header simply means server-side state is off for this request.
+                response.header("X-Conversation-Id")?.takeIf { it.isNotBlank() }?.let(onConversationId)
 
                 val source = response.body?.source()
                 if (source == null) {

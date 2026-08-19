@@ -1,0 +1,84 @@
+[
+  {
+    "id": "P1 S3 Sony vs Bose (total-fail case)",
+    "rep": 1,
+    "verifiedRecords": 0,
+    "moneyGrounded": 0,
+    "moneyNotInEvidence": 0,
+    "saysNotFound": false,
+    "promptTokens": 3367,
+    "outTok": 445,
+    "steps": 2,
+    "sampleEvidence": [],
+    "text": "I'll search for current pricing and details on both headphones to help you compare.Based on general specs, here's the key difference:\n\n**Sony WH-1000XM5** excels at noise cancellation (industry-leading) and battery life (~40 hours). Better if you prioritize ANC and long listening sessions.\n\n**Bose QuietComfort Ultra** shines with comfort for extended wear and more natural sound signature. Better if you value comfort and balanced audio quality.\n\nBoth are premium (~7-8M VND range in Vietnam). Sony tends slightly cheaper, Bose more comfortable for all-day use.\n\nWhich matters more to you — best-in-class noise cancellation, or comfort for long hours? 🎧\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Sony WH-1000XM5 - Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Sony+WH-1000XM5\",\"primary\":true},{\"label\":\"🛒 Bose QuietComfort Ultra - Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Bose+QuietComfort+Ultra\",\"primary\":true},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=wireless+headphones\",\"primary\":false}]}[/CTA_BUTTONS]"
+  },
+  {
+    "id": "P1 S3 Sony vs Bose (total-fail case)",
+    "rep": 2,
+    "verifiedRecords": 0,
+    "moneyGrounded": 0,
+    "moneyNotInEvidence": 0,
+    "saysNotFound": false,
+    "promptTokens": 3367,
+    "outTok": 438,
+    "steps": 2,
+    "sampleEvidence": [],
+    "text": "I'll search for current pricing and details on both headphones to help you compare.Based on general specs, here's the key difference:\n\n**Sony WH-1000XM5** excels at noise cancellation (industry-leading) and battery life (~40 hours). Better if you prioritize ANC and long listening sessions.\n\n**Bose QuietComfort Ultra** shines in comfort for all-day wear and sound quality tuning. Better if you value comfort and balanced audio.\n\nBoth are premium (~7-8M VND range in Vietnam). Sony tends slightly cheaper, Bose more comfortable. Your choice depends on: do you prioritize **noise cancellation power** or **comfort + sound balance**?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Sony WH-1000XM5 - Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Sony+WH-1000XM5\",\"primary\":true},{\"label\":\"🛒 Bose QuietComfort Ultra - Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Bose+QuietComfort+Ultra\",\"primary\":true},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=wireless+headphones\",\"primary\":false}]}[/CTA_BUTTONS]"
+  },
+  {
+    "id": "P2 S1 iPhone 15 vs Galaxy S24 (VI)",
+    "rep": 1,
+    "verifiedRecords": 0,
+    "moneyGrounded": 0,
+    "moneyNotInEvidence": 0,
+    "saysNotFound": false,
+    "promptTokens": 3289,
+    "outTok": 501,
+    "steps": 2,
+    "sampleEvidence": [],
+    "text": "I'll search for current pricing and specs to help you compare these two phones.Here's what I found to help you decide:\n\n**iPhone 15** — Apple's ecosystem, strong performance, great camera, longer software support (typically 5-6 years). Best if you already use Apple devices or value simplicity.\n\n**Galaxy S24** — More customizable Android, better display tech, competitive camera with more zoom options, faster charging. Better if you want flexibility and advanced features.\n\n**Key differences:**\n- **Price**: Both are premium; check current deals on Shopee/Tiki/Lazada as prices fluctuate\n- **Camera**: iPhone 15 excels at video; S24 has better zoom range\n- **Display**: S24's AMOLED is sharper; iPhone 15 is still excellent\n- **Battery**: S24 typically lasts longer per charge\n\nI couldn't pull exact current prices from the search, so check the links below to compare real-time pricing and reviews from actual buyers.\n\n**What matters most to you — ecosystem/simplicity, camera quality, or customization?**\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":true},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=iPhone+15+Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]"
+  },
+  {
+    "id": "P2 S1 iPhone 15 vs Galaxy S24 (VI)",
+    "rep": 2,
+    "verifiedRecords": 0,
+    "moneyGrounded": 0,
+    "moneyNotInEvidence": 0,
+    "saysNotFound": false,
+    "promptTokens": 3289,
+    "outTok": 511,
+    "steps": 2,
+    "sampleEvidence": [],
+    "text": "I'll search for current pricing and specs to help you compare these two phones.Here's what I found to help you decide:\n\n**iPhone 15** — Strong ecosystem, great camera, smooth performance. Best if you already use Apple products (Mac, iPad, AirPods) and want seamless integration.\n\n**Galaxy S24** — More customizable, better display tech, excellent AI features. Better value if you want more features per dollar and prefer Android flexibility.\n\n**Key differences:**\n- **Price**: Galaxy S24 typically costs less than iPhone 15 in Vietnam\n- **Camera**: Both excellent; iPhone has better video, S24 has better zoom\n- **Battery**: S24 usually lasts longer\n- **Software**: iPhone = closed ecosystem, S24 = open Android\n\nI couldn't pull exact current prices from the search, but you can check real-time pricing on Shopee, Tiki, and Lazada above.\n\n**What matters most to you — ecosystem lock-in, price, or camera quality?**\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":true},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]iPhone 15 vs S24 specs|Best phone under 15 million VND|Camera comparison|Gaming performance[/FOLLOWUPS]"
+  },
+  {
+    "id": "P3 EN exact model",
+    "rep": 1,
+    "verifiedRecords": 0,
+    "moneyGrounded": 0,
+    "moneyNotInEvidence": 0,
+    "saysNotFound": false,
+    "promptTokens": 3287,
+    "outTok": 443,
+    "steps": 2,
+    "sampleEvidence": [],
+    "text": "I'll search for current pricing and specs on both phones to help you compare.Here's what to consider:\n\n**iPhone 15** — Apple's latest with strong performance, great camera, and long software support (typically 5+ years). Tends to hold resale value well.\n\n**Galaxy S24** — Samsung's flagship with excellent display, versatile camera system, and more customization. Often has competitive pricing and good trade-in options.\n\n**Key differences:** iPhone excels in ecosystem & longevity; Galaxy offers more features & flexibility. Price-wise, both are premium, but Galaxy sometimes has better deals in Vietnam.\n\nTo see current prices and compare, check **Shopee**, **Tiki**, and **Lazada** — they often have promotions. What matters most to you: ecosystem (Apple/Android), camera quality, price, or something else?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=iPhone+15+Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]"
+  },
+  {
+    "id": "P3 EN exact model",
+    "rep": 2,
+    "verifiedRecords": 12,
+    "moneyGrounded": 0,
+    "moneyNotInEvidence": 0,
+    "saysNotFound": false,
+    "promptTokens": 5132,
+    "outTok": 463,
+    "steps": 2,
+    "sampleEvidence": [
+      "Samsung Galaxy S24 5G (8GB - 128GB) - Bản Mỹ | GIA XAC MINH: 10.999.000 ₫ — ban tai: Viettablet",
+      "Samsung Galaxy S24 | GIA XAC MINH: 13.299.000 ₫ — ban tai: Đức Huy Mobile",
+      "Galaxy S24 FE | GIA XAC MINH: 7.690.000 ₫ — ban tai: HungMobile"
+    ],
+    "text": "I'll search for current pricing and specs on both phones to help you compare.**iPhone 15** starts around **11.8–14.7M VND** (base 128GB), while **Galaxy S24** ranges from **11–13.3M VND** (128GB variants). Here's the key difference:\n\n**Galaxy S24** wins on **price** — you get a solid flagship for less, especially the base model at ~11M VND. It has a larger screen and more customization with Android.\n\n**iPhone 15** is better if you value **ecosystem** — seamless integration with Mac/iPad, longer software support (typically 5+ years), and strong resale value. The camera is also excellent for video.\n\n**My lean:** If budget matters most, go **S24**. If you already use Apple devices or want long-term support, **iPhone 15** is worth the extra cost.\n\nWhat matters more to you — price, ecosystem, or something else like camera/screen size?\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CK26mEFSA8E91Ddb786h2oahH2otnmKKULz-JsF0pg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkHCPoRc96twR1MOeA5DwL29eLvsrs0RFBccyfVd8Y7g&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNE6odoZE9Bi0bIrdcdEALrX8CsjJdjWoU9JMhzy4R3Q&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNCL_dDdcIeWWIJzV2iehFHBxAlpN9GcYpF-IA5yoEaQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq6GJi_VWnMGRpYTvzhL8rix1xr1dvzpkj9_NewTrQcw&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs4eGo1UhVJL8vHDHeX05bn-8MdrrvJv0ysvgyjQJvTw&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmjm_o2XFgVY9zdG-0E599-OK2GkNdEDhlgSvfCGUa7A&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWlBWC3z5h1WuOUihCu12uYQVLbQwzE1YUXJiu6h5bxQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXurj_-kQNF81yvXpfduGKT7r1XG2faZM_bxUQOMqFIw&s=10)\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Find Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Galaxy+S24\",\"primary\":true},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone\",\"primary\":false}]}[/CTA_BUTTONS]"
+  }
+]

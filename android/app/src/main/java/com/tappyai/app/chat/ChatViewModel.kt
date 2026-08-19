@@ -155,6 +155,16 @@ class ChatViewModel @Inject constructor(
     private var nextId = 0L
     private var respondingJob: Job? = null
 
+    /**
+     * Server-side CONSULTATIVE STATE id (Task 3D) — deliberately NOT [conversationId], which is
+     * the Supabase row id this chat is persisted as. Different lifetimes and different owners:
+     * that one survives across sessions and is created by our own save, this one is minted by
+     * `/api/chat`, expires in 24h, and only keys the accumulated constraints and candidate
+     * evidence. Reusing the history id here would key server state on a client-supplied row id.
+     * ViewModel-scoped: it dies with the chat session and is never persisted or shown.
+     */
+    private var consultationId: String? = null
+
     private var textToSpeech: TextToSpeech? = null
 
     private var speechRecognizer: SpeechRecognizer? = null
@@ -457,7 +467,12 @@ class ChatViewModel @Inject constructor(
 
             try {
                 val reply = StringBuilder()
-                chatRepository.streamReply(history).collect { token ->
+                chatRepository.streamReply(
+                    history,
+                    consultationId,
+                    // First id wins for this chat session; the server echoes the same one back.
+                    onConversationId = { id -> if (consultationId == null) consultationId = id },
+                ).collect { token ->
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown
                     // RETAINED — the UI segments it live, so each recommendation's photos render

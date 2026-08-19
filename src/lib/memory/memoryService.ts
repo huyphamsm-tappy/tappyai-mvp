@@ -1,6 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { AI } from '@/lib/ai/llm'
+import { fenceUntrusted } from '@/lib/ai/security/fence'
+import { sanitizeMemoryPatch } from './memoryContract'
 
 export interface UserMemory {
   location_base: string | null
@@ -62,11 +64,28 @@ export async function getMemoryBatch(userIds: string[], client: SupabaseClient):
   return map
 }
 
+/**
+ * The ONE way memory is persisted (P3-S3). Every writer — chat extraction, the
+ * memory POST/PATCH routes, onboarding, the behaviour-rollup cron — comes
+ * through here, and there is no direct write to `user_memory` anywhere else.
+ *
+ * Three things make this a boundary rather than a helper:
+ *  1. the candidate is canonically re-materialised, so raw LLM output and raw
+ *     client JSON can never reach the table (MEM-02/03);
+ *  2. `user_id` is written AFTER the patch is spread, so no candidate field can
+ *     override ownership even if the sanitiser were somehow bypassed — the old
+ *     `{ user_id, ...newData }` order made that a one-key attack (MEM-01/04);
+ *  3. an empty or non-object candidate writes nothing at all.
+ */
 export async function updateMemory(userId: string, newData: Partial<UserMemory>, client?: SupabaseClient): Promise<void> {
   try {
+    if (typeof userId !== 'string' || userId.length === 0) return
+    const patch = sanitizeMemoryPatch(newData)
+    if (Object.keys(patch).length === 0) return
+
     const supabase = client ?? createClient()
     await supabase.from('user_memory').upsert(
-      { user_id: userId, ...newData, updated_at: new Date().toISOString() },
+      { ...patch, user_id: userId, updated_at: new Date().toISOString() },
       { onConflict: 'user_id' }
     )
   } catch (e) {
@@ -158,8 +177,13 @@ export function buildMemoryBlock(memory: UserMemory, forcedTool?: string | null)
 
   if (parts.length === 0) return ''
 
+  // P3-S2: the VALUES are fenced, the header and the instruction are not.
+  // Memory is derived from user text by an LLM extraction and persisted, so it
+  // is untrusted data on every later turn — but the surrounding line telling the
+  // model what to do with it is ours, and wrapping trusted policy as untrusted
+  // would be the inverse mistake (FENCE-02).
   return `===== THONG TIN VE USER NAY =====
-${parts.join('\n')}
+${fenceUntrusted('user_memory', parts.join('\n'))}
 Dung thong tin nay de ca nhan hoa response. Khong can hoi lai nhung gi da biet.
 ==================================`
 }

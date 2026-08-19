@@ -12,8 +12,8 @@ import org.junit.Test
  * crash this file exists to prevent, and it reproduced on production `com.tappyai.app`
  * versionCode 4 as well as the debug build. It is worth pinning because the crash is invisible in
  * source review (the item lambda is inlined, so no `com.tappyai` frame appears in the stack) and
- * because it is data-driven: `DealDto.url` defaults to `""`, so a single backend field rename
- * silently turns EVERY deal blank and takes the screen down.
+ * because it is data-driven: `DealDto.officialUrl` defaults to `""`, so a single backend field
+ * rename silently turns EVERY deal blank and takes the screen down.
  */
 class DealListKeysTest {
 
@@ -23,8 +23,6 @@ class DealListKeysTest {
         discount = "-50%",
         url = url,
         source = "Shopee",
-        emoji = "🛍️",
-        badge = null,
     )
 
     /** The regression: two blank urls both keyed `""` under the old `key = { it.url }`. */

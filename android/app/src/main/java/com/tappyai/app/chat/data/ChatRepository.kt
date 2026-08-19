@@ -16,6 +16,19 @@ import kotlinx.coroutines.flow.Flow
  * [getFollowups] is client-side only; the backend does not return follow-up suggestions.
  */
 interface ChatRepository {
-    fun streamReply(messages: List<ChatMessage>): Flow<String>
+    /**
+     * [conversationId] is the server-side consultative state id (Task 3D). Null on the first
+     * turn; the server then mints one and returns it in the `X-Conversation-Id` header, which
+     * arrives through [onConversationId]. Sending it back on later turns is what makes the
+     * backend load the accumulated constraints and the previous turn's grounded candidates
+     * instead of starting a fresh conversation for every message.
+     *
+     * Both parameters default, so callers that do not care (and the fake) are unaffected.
+     */
+    fun streamReply(
+        messages: List<ChatMessage>,
+        conversationId: String? = null,
+        onConversationId: (String) -> Unit = {},
+    ): Flow<String>
     fun getFollowups(category: ChatCategory): List<String>
 }

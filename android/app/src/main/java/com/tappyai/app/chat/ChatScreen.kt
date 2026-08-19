@@ -39,7 +39,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -131,11 +130,17 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
     Column(
+        // No imePadding() here. The Activity window is already resized by the system to reveal
+        // the focused composer when the keyboard opens (measured: 2400px -> 1806px on API 35),
+        // so adding the IME inset on top of that subtracted the keyboard's height twice: the
+        // composer ended up ~880px above the keyboard with a dead band under it, the welcome
+        // content was clipped, and the bottom nav was pushed behind the keyboard. Every other
+        // text-input screen in the app (17 use TappyTextField) relies on the window resize alone;
+        // Chat was the only one that also padded, and the only one that broke.
         modifier = Modifier
             .widthIn(max = TappyContainers.content)
             .fillMaxWidth()
-            .fillMaxHeight()
-            .imePadding(),
+            .fillMaxHeight(),
     ) {
         if (isLoadingConversation) {
             Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {

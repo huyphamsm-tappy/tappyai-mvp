@@ -1,0 +1,30 @@
+import { readFileSync } from 'node:fs'
+import { judgeMoneyClaims, guardMoneyClaimsInText }
+  from 'file:///C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/src/lib/ai/moneyGuard.ts'
+
+const FX = 'C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/src/lib/ai/__fixtures__/moneyGuard.fixtures.json'
+const fx = JSON.parse(readFileSync(FX, 'utf8'))
+
+const n = (a: any[], k: string) => a.filter((c: any) => c.verdict === k).length
+let bTot = 0, aTot = 0, keptV = 0
+console.log('turn                                  before  V  U  ACC AMB   after  V   chars')
+for (const f of fx) {
+  const before = judgeMoneyClaims(f.reply, f.records, f.shoppingQueries)
+  const out = guardMoneyClaimsInText(f.reply, f.records, f.shoppingQueries)
+  const after = judgeMoneyClaims(out.text, f.records, f.shoppingQueries)
+  bTot += before.length; aTot += after.length; keptV += n(after, 'VERIFIED')
+  console.log(
+    String(f.id).padEnd(37) + String(before.length).padStart(6) + String(n(before, 'VERIFIED')).padStart(4) +
+    String(n(before, 'UNVERIFIED')).padStart(3) + String(n(before, 'ACCESSORY')).padStart(4) + String(n(before, 'AMBIGUOUS')).padStart(4) +
+    String(after.length).padStart(8) + String(n(after, 'VERIFIED')).padStart(3) +
+    `   ${f.reply.length}→${out.text.length}`)
+}
+console.log(`\nTOTAL claims before=${bTot}  after=${aTot}  removed=${bTot - aTot}  verified kept=${keptV}`)
+console.log(`unsupported surviving the guard: ${aTot - keptV}`)
+
+// latency, measured over the largest fixture
+const big = fx.reduce((a: any, b: any) => (a.reply.length > b.reply.length ? a : b))
+const t0 = process.hrtime.bigint()
+for (let i = 0; i < 200; i++) guardMoneyClaimsInText(big.reply, big.records, big.shoppingQueries)
+const ms = Number(process.hrtime.bigint() - t0) / 1e6 / 200
+console.log(`\nguard latency: ${ms.toFixed(3)} ms/call  (reply ${big.reply.length} chars, ${big.records.length} records, 200 iterations)`)

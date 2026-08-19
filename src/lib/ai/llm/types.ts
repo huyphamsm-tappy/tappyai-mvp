@@ -1,4 +1,5 @@
 import type { CoreMessage, streamText } from 'ai'
+import type { RoutingHints } from './routing/signals'
 
 // ── Provider-neutral types for the AI layer ──────────────────────────────────
 // Business code imports ONLY from '@/lib/ai/llm'. Nothing here (or anywhere
@@ -23,6 +24,18 @@ export type ModelOverrides = Partial<Record<ModelRole, string>>
 
 export interface AIGenerateOptions {
   role?: ModelRole
+  /**
+   * What KIND of job this is — task class, complexity, risk, latency budget.
+   *
+   * Call sites describe the job; they never name a provider or a model, and
+   * there is deliberately no field through which they could. Selection is the
+   * router's responsibility, behind this one entry point, so it never gets
+   * distributed across call sites.
+   *
+   * Optional: omitted hints are derived from the call itself (which method,
+   * whether tools are present, how large the input is).
+   */
+  routing?: RoutingHints
   /**
    * The portion of the system prompt that is BYTE-IDENTICAL on every request —
    * no clock, no user, no request-shaped branching. Delivered ahead of

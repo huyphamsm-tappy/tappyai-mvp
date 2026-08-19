@@ -1,0 +1,56 @@
+// GENERATED from android/app/src/main/res/{values,values-vi}/strings_pricetracking.xml
+// Keys are the Android resource names verbatim so Web and Android share one key
+// set — t('pricetracking_title') on web is R.string.pricetracking_title on Android.
+// Screens: /profile/price-watches
+// Regenerate rather than hand-editing: keep the two platforms in lockstep.
+export const vi: Record<string, string> = {
+  'pricetracking_title': '🎯 Theo dõi giá',
+  'pricetracking_refresh_content_description': 'Làm mới',
+  'pricetracking_error_title': 'Không tải được danh sách theo dõi giá',
+  'pricetracking_how_to_add_title': 'Cách thêm một mục theo dõi giá',
+  'pricetracking_how_to_add_message': 'Trò chuyện với Tappy và nói điều gì đó như "Theo dõi giá iPhone 16" — Tappy sẽ thiết lập theo dõi và báo cho bạn khi giá giảm.',
+  'pricetracking_empty_title': 'Chưa có mục theo dõi giá nào',
+  'pricetracking_empty_message': 'Trò chuyện với Tappy để bắt đầu theo dõi giá sản phẩm',
+  'pricetracking_go_to_chat': 'Đến trò chuyện',
+  'pricetracking_tracking_header': 'ĐANG THEO DÕI ({1}/{2})',
+  'pricetracking_target_price': 'Giá mục tiêu: {1}',
+  'pricetracking_current_price': 'Giá hiện tại: {1}',
+  'pricetracking_checked_date': 'Đã kiểm tra {1}',
+  'pricetracking_will_check_soon': 'Tappy sẽ kiểm tra giá trong vài giờ tới ⏳',
+  'pricetracking_delete_watch_content_description': 'Xoá mục theo dõi',
+  'pricetracking_notified_header': 'ĐÃ BÁO ({1})',
+  'pricetracking_notified_date': 'Đã báo {1}',
+  'pricetracking_updated_message': 'Đã cập nhật',
+  'pricetracking_delete_failed_message': 'Không thể xoá mục theo dõi giá. Vui lòng thử lại.',
+  'pricetracking_error_no_connectivity': 'Không có kết nối mạng. Vui lòng kiểm tra và thử lại.',
+  'pricetracking_error_timeout': 'Kết nối quá chậm. Vui lòng thử lại.',
+  'pricetracking_error_session_expired': 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+  'pricetracking_error_server': 'Máy chủ đang gặp sự cố. Vui lòng thử lại sau.',
+  'pricetracking_error_generic': 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+}
+
+export const en: Record<string, string> = {
+  'pricetracking_title': '🎯 Price tracking',
+  'pricetracking_refresh_content_description': 'Refresh',
+  'pricetracking_error_title': 'Couldn\'t load price watches',
+  'pricetracking_how_to_add_title': 'How to add a price watch',
+  'pricetracking_how_to_add_message': 'Chat with Tappy and say something like "Track the price of iPhone 16" — Tappy will set up the watch and notify you when the price drops.',
+  'pricetracking_empty_title': 'No price watches yet',
+  'pricetracking_empty_message': 'Chat with Tappy to start tracking product prices',
+  'pricetracking_go_to_chat': 'Go to chat',
+  'pricetracking_tracking_header': 'TRACKING ({1}/{2})',
+  'pricetracking_target_price': 'Target: {1}',
+  'pricetracking_current_price': 'Current: {1}',
+  'pricetracking_checked_date': 'Checked {1}',
+  'pricetracking_will_check_soon': 'Tappy will check the price in the next few hours ⏳',
+  'pricetracking_delete_watch_content_description': 'Delete watch',
+  'pricetracking_notified_header': 'NOTIFIED ({1})',
+  'pricetracking_notified_date': 'Notified {1}',
+  'pricetracking_updated_message': 'Updated',
+  'pricetracking_delete_failed_message': 'Couldn\'t remove the price watch. Please try again.',
+  'pricetracking_error_no_connectivity': 'No internet connection. Please check and try again.',
+  'pricetracking_error_timeout': 'The connection is too slow. Please try again.',
+  'pricetracking_error_session_expired': 'Your session has expired. Please sign in again.',
+  'pricetracking_error_server': 'The server is having issues. Please try again later.',
+  'pricetracking_error_generic': 'Something went wrong. Please try again.',
+}

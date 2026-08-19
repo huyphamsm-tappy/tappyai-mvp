@@ -1,0 +1,895 @@
+{
+  "search": {
+    "ok": true,
+    "credits": 1,
+    "arrayKey": "organic",
+    "count": 7,
+    "fields": [
+      "title",
+      "link",
+      "snippet",
+      "rating",
+      "ratingCount",
+      "position"
+    ],
+    "data": {
+      "searchParameters": {
+        "q": "Sony WH-1000XM5",
+        "gl": "vn",
+        "hl": "vi",
+        "type": "search",
+        "num": 10,
+        "engine": "google"
+      },
+      "organic": [
+        {
+          "title": "Tai nghe Sony WH-1000XM5 | Giá rẻ, có trả góp, ưu đãi tốt",
+          "link": "https://cellphones.com.vn/tai-nghe-chup-tai-sony-wh-1000xm5.html",
+          "snippet": "Kích thước. Dài 27.62 cm - Rộng 21.67 cm - Cao 7.59 cm. Trọng lượng. 250 g. Công nghệ âm thanh. SENSE ENGINE Bộ xử lý tích hợp V1",
+          "rating": 5,
+          "ratingCount": 27,
+          "position": 1
+        },
+        {
+          "title": "Tai nghe không dây có công nghệ chống ồn WH-1000XM5",
+          "link": "https://www.sony.com.vn/electronics/tai-nghe-choang-dau-tai-nghe/wh-1000xm5",
+          "snippet": "Khám phá tai nghe không dây WH-1000XM5 của Sony với khả năng chống ồn, chất lượng cuộc gọi và âm thanh vượt trội. Hãy tìm hiểu ngay!",
+          "rating": 4.5,
+          "ratingCount": 701,
+          "position": 2
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 (Nobox | Bluetooth 5.2",
+          "link": "https://songlongmedia.com/tai-nghe-sony-wh-1000xm5-likenew.html?srsltid=AfmBOoqURzZCRMOB9-pLLFHDz-MsEchC3zArF9OUU1NslOtUno0nIPmp",
+          "snippet": "Tai nghe Sony WH-1000XM5 (Nobox | Bluetooth 5.2 | Pin 30h | Chống ồn ANC | Dolby Atmos | DSEE Extreme | Fast Pair | LDAC) · 4.599.000 đ · 6.390.000 đ · 4.999.",
+          "rating": 5,
+          "ratingCount": 1,
+          "position": 3
+        },
+        {
+          "title": "Tai nghe bluetooth Sony WH-1000XM5 màng loa 30mm ...",
+          "link": "https://shopee.vn/Tai-nghe-bluetooth-Sony-WH-1000XM5-m%C3%A0ng-loa-30mm-chu%E1%BA%A9n-Hi-Res-c%C3%B4ng-ngh%E1%BB%87-Auto-NC-Optimizer-ch%E1%BB%91ng-%E1%BB%93n-i.1152330179.25364859955",
+          "snippet": "Mua Tai nghe bluetooth Sony WH-1000XM5 màng loa 30mm chuẩn Hi-Res, công nghệ Auto NC Optimizer chống ồn giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+          "rating": 4.9,
+          "ratingCount": 363,
+          "position": 4
+        },
+        {
+          "title": "Mua Bán Sony WH-1000XM5 Chính Hãng Giá Rẻ",
+          "link": "https://www.chotot.com/tags/mua-ban-tivi-am-thanh/sony-wh-1000xm5",
+          "snippet": "Giá Sony WH-1000XM5 cũ trên thị trường hiện thường dao động khoảng 100.000 đ–4 triệu, tùy ngoại hình, pin, màn hình, bảo hành, phụ kiện đi kèm và khu vực bán.",
+          "position": 5
+        },
+        {
+          "title": "Hướng dẫn sử dụng cho WH-1000XM5",
+          "link": "https://www.sony.com.vn/electronics/support/wireless-headphones-bluetooth-headphones/wh-1000xm5/manuals",
+          "snippet": "WH-1000XM5 · Thông số kỹ thuật · Điểm nổi bật của sản phẩm. WH-1000XM5. Tìm kiếm. WH-1000XM5. Tất cảPhần mềmHướng dẫn sử dụngHỏi & Đáp ...",
+          "position": 6
+        },
+        {
+          "title": "Tai nghe Sony không dây có công nghệ chống ồn ...",
+          "link": "https://pico.vn/tai-nghe-khong-day-co-cong-nghe-chong-on-wh1000xm5lme-mau-xanh-anh-trang-bt-52-bh-12-thang-WH1000XM5LME",
+          "snippet": "Thiết kế tinh tế và đeo thoải mái ... Tai nghe Sony WH-1000XM5 mang kiểu dáng chụp tai over-ear nhẹ chỉ khoảng 250 g, giúp đeo lâu mà không gây khó chịu ngay cả ...",
+          "rating": 4.6,
+          "ratingCount": 19443,
+          "position": 7
+        }
+      ],
+      "credits": 1
+    }
+  },
+  "shopping": {
+    "ok": true,
+    "credits": 2,
+    "arrayKey": "shopping",
+    "count": 40,
+    "fields": [
+      "title",
+      "source",
+      "link",
+      "price",
+      "imageUrl",
+      "productId",
+      "position"
+    ],
+    "data": {
+      "searchParameters": {
+        "q": "Sony WH-1000XM5",
+        "gl": "vn",
+        "hl": "vi",
+        "type": "shopping",
+        "num": 40,
+        "page": 1,
+        "engine": "google"
+      },
+      "shopping": [
+        {
+          "title": "Sony Tai nghe không dây có công nghệ chống ồn WH-1000XM5",
+          "source": "Sony Store Online",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:16864155713509914155,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTjvnn3jYsbdaYDYK3hjffJy7mL7dpVHfNHKn5_7ekbBjC2MpMeeJHBh3zNHU1ZQQBcaWrtFpBXLbgauaqqSaJPcKLXAXgvSw",
+          "productId": "16864155713509914155",
+          "position": 1
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5",
+          "source": "Oneway Mobile",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:10334165813310916847,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "5.790.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR9NPPO2eCSSo2UgMNxJptPQPEx4CdrJ3uvBjiR5unuGcCQBiWWkPHqxcswf2E2P53Tz1ijjFVPJsPWu-Fv9aV4Eq5guG6OMcLzhTpg1ICEGO4lgxkjjBvq",
+          "productId": "10334165813310916847",
+          "position": 2
+        },
+        {
+          "title": "Tai nghe Bluetooth chụp Tai Sony WH-1000XM5",
+          "source": "CellphoneS",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:17217432158767688068,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTYTGCUG_Pozgf9eo1VRDz4lrcqS3Q1nJkpZ69WcQ6IvTI2F3D311SNJDoJQEAptOLIQNhLiA__0n5p-Knsvf_E7UkbW-ebsuADo_MeIzIJnRLalD39G8Gt0g",
+          "productId": "17217432158767688068",
+          "position": 3
+        },
+        {
+          "title": "Tai nghe Bluetooth Chụp Tai Sony WH1000XM5 Hồng",
+          "source": "Thế Giới Di Động",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:11105106651197054684,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRyOBChe7Zc7bk5izqnzqj2SZ-4IZfyJnqiYlMbip2SbPyTKcJHdm_jG_RjFpeOVq3YHSPIkKriCIt_UwNrIIbTmlm3CPMT_-DoY9t11IcTbVnnCD6zhHDNCm8",
+          "productId": "11105106651197054684",
+          "position": 4
+        },
+        {
+          "title": "Tai nghe Bluetooth choàng đầu Sony WH-1000XM5",
+          "source": "Fptshop.com.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:15014324908206376720,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.890.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ-IfLWnkOAqhhOmEUAyykIjsiu0V48auakOe9T9Y26KSxWdFNtLYmwh1eAENQ0qcyaaeFLODENffoIqswd12KuVphAqhYr--Sx-RBzkZNs_1p-SHoX87LT",
+          "rating": 4.8,
+          "ratingCount": 602,
+          "productId": "15014324908206376720",
+          "position": 5
+        },
+        {
+          "title": "Tai Nghe Bluetooth Chụp Tai Sony WH1000XM5",
+          "source": "Điện Máy Chợ Lớn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:7512451679007732710,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS6Ajby5yaUFBTv325Ix2oqJVf0G7X1BFInOFYh4St8Gg7ZO32MiCSe2WcLZC5pX1PYo4-4H_UMtcgwkLXhVdPfPNfJYG7Rv84FXCgOaKv-edTsPWC4iKHi",
+          "rating": 4.7,
+          "ratingCount": 3,
+          "productId": "7512451679007732710",
+          "position": 6
+        },
+        {
+          "title": "Tai Nghe Sony WH-1000XM5 (Chụp Tai, Chống Ồn, Pin 40 Giờ, Bluetooth 5.2)",
+          "source": "HDRadio.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:9699595882880653650,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.190.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSj2d3cBnC6cqPakCRKESLHC39z3Pu7h76ZTkXOrY9SCjxEZ3iPpFusoUA28G4uFeh8F8U3fQGPhZ93Z84_x1atiUri3j9aCJs95wjxpsnjIf5NMb6EfylbCw",
+          "rating": 5,
+          "ratingCount": 6,
+          "productId": "9699595882880653650",
+          "position": 7
+        },
+        {
+          "title": "Tai Nghe Sony WH-1000XM5",
+          "source": "minmobile.com.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:15833984043778041870,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "3.500.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRowHewRAYi0beb-tehlzZVO76lAGgyhv0SZNxHwwjpPXDQ2UTxwUXGDHeq-IJZugI9fsPzzyn0Qn65Dz_zkdw9jY8RQ249",
+          "productId": "15833984043778041870",
+          "position": 8
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 | Chính Hãng - Like New",
+          "source": "Tín Đồ Tai Nghe",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:9089894111741523947,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "4.990.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR7xg5oN0ebr0pHjh6UEVygX-td08UhYTQYsNTac0XVKQKhuBAKQYgAZttM6SbkQ8RXEZTJ7VTd0lRCvpkD5p8a_DDO9xduDNuCC9pUN5KuJAM58mIqq7asQQ",
+          "rating": 5,
+          "ratingCount": 6,
+          "productId": "9089894111741523947",
+          "position": 9
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 - Màu đen - Ngoại hình 97% - 1 bên tai bị tróc vải nhẹ - Kèm sạc",
+          "source": "2handland",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:962617484601445329,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "3.800.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcShWINbt-KW1X4R0SNq0zQWiZir3RUD4pqAlEYVIoFs_fgcmrzPJv0tRp39Ba1IUYKaOn_tQfQVn-5kbo7XpJaAY_Nz__B0lJ-SjATTQr-FShb63rqOaumx",
+          "productId": "962617484601445329",
+          "position": 10
+        },
+        {
+          "title": "Tai nghe Bluetooth Chụp Tai Sony WH1000XM5",
+          "source": "Điện máy XANH",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:18441164075223991914,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRCffpcnZFC-Uh4WLJmfV5x3VbFzbJ3IH8EUJpKmJ71FM4xD-bu1T-c351OEEECcLXG47701aKgOEaXxwyTSEdht-DKhqVJ_u1CuLe1ofdUdbeiKn9s4Q1PAQ",
+          "rating": 5,
+          "ratingCount": 6,
+          "productId": "18441164075223991914",
+          "position": 11
+        },
+        {
+          "title": "Tai nghe không dây choàng đầu Sony WH-1000XM5/PME",
+          "source": "Phong Vũ",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:13127014286083544157,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQYLLFSCGj-gzRSVfwW0W7UI2xn4g5-ro9iy_ZekEBH2DEqo5iFnN81oVs_oFg3uxgtWxtOwF37R7VEKvyfz5JMihriFwxkrCk1rmDGkfxGgK-bIRA4u6xJuw",
+          "rating": 4.5,
+          "ratingCount": 245,
+          "productId": "13127014286083544157",
+          "position": 12
+        },
+        {
+          "title": "Tai nghe chống ồn Sony WH-1000XM5 NEW",
+          "source": "Tín Đồ Tai Nghe",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:1643624184684567261,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "5.690.000 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSHdR7GtZt00mXxRLf35H1R1W_fV7xjT4izGl4-op2WLqY3GFyyvd3NREKiROLXOSgcAWcvP2eGrIx_ph3-YetsLBpYi4nJMxuH8FPEd6rN",
+          "productId": "1643624184684567261",
+          "position": 13
+        },
+        {
+          "title": "[ WH 1000XM5 ] Tai nghe Bluetooth Sony WH-1000XM5 chính hãng. Bảo hành 12 tháng, 1 đổi 1 15 ngày.",
+          "source": "Shopee",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:15335468524843289552,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.776.895 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSsWHBVFQad4_Mg8UVLxaIpL5Oin6Jnqfko8oDOMN7ZP0MTQZW-XHQQeICAVePn7gEzoLvFpJZ-Jef3mAnO_DNvUtPtLeoiGspCe31JYCfEJAo7ocjwQjyJkxw",
+          "rating": 4.7,
+          "ratingCount": 88,
+          "productId": "15335468524843289552",
+          "position": 14
+        },
+        {
+          "title": "Tai Nghe Sony WH 1000XM5 Wireless Noise Cancelling ( Black ) -Hàng chính hãng",
+          "source": "PhuQuangKTS",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:12359051741543514247,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.930.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTQyJcRWiNcWroo-rDeUGOXLMkWJMtMG_UCCYUkysTCvpbqbdvd5wObd8G1Y8IVu9zIKTrsWLbKlswZjV5Phc-n1HdD9CsxjNm5SkJfOr4",
+          "productId": "12359051741543514247",
+          "position": 15
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 - Hàng trưng bày",
+          "source": "Antien.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:235175756844604637,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "4.990.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTfkGorvJDqQ-JiD6UfIzc3tWR9_3nGsLuqCuLl2cluNojv4JWAH-Zz6Vh9ZlrSuUn3U5kMvbMJI7vNX4fw6luhfYhbhja9",
+          "rating": 4.8,
+          "ratingCount": 602,
+          "productId": "235175756844604637",
+          "position": 16
+        },
+        {
+          "title": "Tai nghe không dây Sony WH-1000XM5 WH1000XM5/BME (Đen)",
+          "source": "Hugotech.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:3984079289532454651,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.844.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT6ouLzEfIMM7RIzMcTjzssDKx-ASuOKJhge7qLIYlLaRpv2gVpOtfPJQkklZdItBcDnbL7h6kDaNf6qrdlVLFib1L03JABysECop_y07N0fK_3lJBrZuPcqA",
+          "rating": 4.8,
+          "ratingCount": 602,
+          "productId": "3984079289532454651",
+          "position": 17
+        },
+        {
+          "title": "Tai Nghe Bluetooth Sony WH-1000XM5 Mới Nhất",
+          "source": "Thiên Vũ Audio",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:9548374483307544883,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.990.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSqnGzobFu8NH3OAJ5CJ8hAyevmAXDNIyQVTps4pkKzzchHLdOU0Js_EFd2AgS55pvqeRttfCrau2RtIW5HifcawBWxqzkFOu-DeXEYpik05_kLXxvHtGDH",
+          "productId": "9548374483307544883",
+          "position": 18
+        },
+        {
+          "title": "[Ảnh thật] Tai nghe Bluetooth chụp tai Sony WH-1000XM5, Khử tiếng ồn dựa theo môi trường, 360 Audio, Pin 40 tiếng",
+          "source": "Shopee",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:13593068477316069564,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "4.450.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTqeDyOpJNI8jdBFLL-d_GG0Kuxe9xeZozaSHqUkrKWdtA9aBLfdMZdhRmjHlJ2s-h_zDofewNAsCZOjSQahMxelwo5Sv4JscrfvQhrHMN4A15BDsFrlihgibbj",
+          "rating": 5,
+          "ratingCount": 6,
+          "productId": "13593068477316069564",
+          "position": 19
+        },
+        {
+          "title": "Tai nghe không dây có công nghệ chống ồn Sony WH-1000XM5 - Hồng khói",
+          "source": "MediaMart",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:15048336852567802637,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.480.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTf0WtHrAQ6v_nW6qw8ubQkwEMv9_aunArWxLLWXIP6LvzzmdfDVOi3Vj653sBao-sNp1bJy6njPUOa-QmUKIz04uf6RF2t",
+          "rating": 4.7,
+          "ratingCount": 88,
+          "productId": "15048336852567802637",
+          "position": 20
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 kết nối không dây chống ồn -Bạc",
+          "source": "Sáng Tao ICT",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:10189626454016452716,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.390.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT0zKVLhEklXUNFAjUjDivdvRr5_M6RRiuAOeqVk-OHienPP7tclB26PUgXXA6lXsn3-ptE3zF9XHP0_smFG2jMl0kEmGuziLcAhZ_iefY15us45F6gKk1D",
+          "rating": 4.8,
+          "ratingCount": 4,
+          "productId": "10189626454016452716",
+          "position": 21
+        },
+        {
+          "title": "Tai nghe over-ear không dây chống ồn Sony WH 1000XM5 -Hàng Chính Hãng",
+          "source": "PhuQuangKTS",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:1607723524249667427,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.790.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRpikYkXJ1IU4gO6qx11z6nWgMbnSiu3I4gvcr6YA5Bavq0Lt2vkGKTwOQJxBUx8g8Fx_M5reGQucr9oIA129IXdqNLaO5CtX7RMbnW4ME",
+          "rating": 4.5,
+          "ratingCount": 13,
+          "productId": "1607723524249667427",
+          "position": 22
+        },
+        {
+          "title": "[WH 1000XM5] Tai nghe Sony không dây chống ồn WH-1000XM5 - Hành Chính Hãng Bảo Hành 12 Tháng Chính Hãng",
+          "source": "Shopee",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:2699168449164837937,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.950.000 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRdmuLl6Kz7X6MleME74k0AW2B0odL718wRxZmQ9I5Cxvs2_XpcFJkYl7lqOOrJKDeo039x9CRn8iIBozSBGaiQFBJmjcDb0lQKFJsQmlb2whJ0ofcvnwHXa84",
+          "rating": 5,
+          "ratingCount": 6,
+          "productId": "2699168449164837937",
+          "position": 23
+        },
+        {
+          "title": "Tai nghe không dây Sony WH-1000XM5 WH1000XM5/LME (Xanh ánh trăng)",
+          "source": "Hugotech.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:14429188465242142534,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.844.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQgDbVIUz1hI07Y-_csYEWLEdAPDAh_TWIJbgM6Kj22NPsnb3AwPIJa_3K6IbcSyfYtB8FlLoNnbFs5ac1JhFwv01IKlnL-SPmVYTnAoF5hTCQacsaQXWjg",
+          "productId": "14429188465242142534",
+          "position": 24
+        },
+        {
+          "title": "Tai nghe không dây có công nghệ chống ồn Sony WH-1000XM5 - Đen",
+          "source": "MediaMart",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:2671943155012667370,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.480.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRmxH8_OG4vhuR5ASbWQ2jCmH-UQSidqLdvUnJtVPWgBHtcLYXEVtlpZ9WOgWVp9BvhTo-vWHKzWiVb-T6F4Qr5MN054Uvb-QdPR01_p4W7-mv26YLyWimaAQ",
+          "productId": "2671943155012667370",
+          "position": 25
+        },
+        {
+          "title": "SONY WH-1000XM5 Tai Nghe Chụp Tai Chống Ồn - Driver 30mm, Pin 40 Giờ, - Bảo Hành Chính Hãng 12 Tháng",
+          "source": "Shopee",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:11504913045381894126,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "8.090.000 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQm972fG9rdygDs4GMPh94AHMqptjYiUVmPdvKlY4GKU6XSbblp2LOUwGNHKiYD-fztUo2dsGBrK5xiyM1sCk9UPGUARRAhXed2TZH5WCGC3yvZJ5E8Yx1Tdg",
+          "rating": 5,
+          "ratingCount": 6,
+          "productId": "11504913045381894126",
+          "position": 26
+        },
+        {
+          "title": "Tai Nghe Không Dây Sony WH-1000XM5 - Chính Hãng",
+          "source": "dof.zone",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:453609210704914043,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.590.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTlN542ZdTSFpWfgZs9ni5H4NIXpRRHh04DE4gNiOrxfUgLsm7CFpS9BbPOivqLSnIY-Z7DD3ei6eoWcOJklIWqnl8YZ-_uJACNbYDhh2YJjNHWA_j8hhq_2A",
+          "productId": "453609210704914043",
+          "position": 27
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 | Black (Chính Hãng)",
+          "source": "Anh Đức Digital",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:6166396974495138187,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSJl57zFxenz28gUo3RuVi28qjvYcELJ64da2wUNaEH-8_ZMZZn-7m284koH8QjbtyEL2Snyt9fcZJwwxDXPTJLRMytXc7-f5_Puu6SGDPc8KXB1StIhFLdGA",
+          "rating": 4.3,
+          "ratingCount": 42,
+          "productId": "6166396974495138187",
+          "position": 28
+        },
+        {
+          "title": "Tai Nghe Sony WH1000XM5",
+          "source": "ShopDunk",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:6518279679560735049,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRbAnLUnTqthBUivm9Qg44wG3GEYa_iuIjR96eGo5vnBSAsJ8M4lrBDnaYB9ogfHRttkpLzlU2mXKOg2aCllXK6wX-ziPzyIFe9dTtR59WR4-nQYsRq08qD",
+          "rating": 4.5,
+          "ratingCount": 13,
+          "productId": "6518279679560735049",
+          "position": 29
+        },
+        {
+          "title": "Tai nghe sony xm5 wh1000xm5 like new 99%",
+          "source": "Shopee",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:12325735769772981318,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "4.229.100 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTku1Cpa6_eWW6tBdILOHtckujTNwgpat2jV7GoKAE6FZRzeSoE9S5xCSkxN9BXbfa6TiQoqXrWDMcvO1NLSMq50T8TOwYWUaiaURVaJYX8",
+          "rating": 4.8,
+          "ratingCount": 25,
+          "productId": "12325735769772981318",
+          "position": 30
+        },
+        {
+          "title": "Tai nghe không dây có công nghệ chống ồn Sony WH-1000XM5 - Xanh ánh trăng",
+          "source": "MediaMart",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:12948432113231219020,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.480.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSFVG7XT-6QcbN5Mjz4dWeX60ZVAumiAWCfOPo0cRJoQfXIMy1dUpjYw63Yp7hfvS3aJoym2QKnb6u2gD1NZGVqNYDB34NDVEZjqkDkhcR94f3EPcltfd4Ma48",
+          "productId": "12948432113231219020",
+          "position": 31
+        },
+        {
+          "title": "Tai Nghe Sony WH-1000XM5 Wireless Noise-Cancelling - Black",
+          "source": "Cello.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:8987652376639032221,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.980.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSfot4LkOxjdegHAqjJfwEyCFVyuQxRvim-bkip075b-Kf1ManLaoOORkE8Tk2wTKU87NIniyODC-m67M3X3HJlXLQ9wEKTUwcNe4W1-wtfbIlN2sHgrlOs",
+          "productId": "8987652376639032221",
+          "position": 32
+        },
+        {
+          "title": "Sony WH-1000XM5 Tai nghe Chụp tai Bluetooth. Bảo hành 12 tháng, 1 đổi 1 30 ngày.",
+          "source": "Shopee",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:16107313689394070866,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "8.047.600 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTuqXp9mPtdhZeDYSnbMNR5oV1ex4PvcUwPzPDS3qpKz9uBTJ0QQXRQHgMw-kthYHpxXLhmhDW1872LMusLiepbUqkEbXxIUgr_RwYgUKiSD_eeK6kFdZYpHA",
+          "productId": "16107313689394070866",
+          "position": 33
+        },
+        {
+          "title": "Tai nghe không dây Sony WH-1000XM5 WH1000XM5/PME (Hồng khói)",
+          "source": "Hugotech.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:7784297911650055313,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.844.000 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSOBwtKMsoyvINLGP-H0gnd4IlaKKedll5WtEdF6NuRTWYCjHIsx7crO5WzgJwSblkG7cXhWZTorY6f1rgAvSODLn7Kuq9NxlD_ePP-vtOtzdelqul1Y3wCeQ",
+          "productId": "7784297911650055313",
+          "position": 34
+        },
+        {
+          "title": "Tai nghe chụp tai Sony WH-1000XM5",
+          "source": "Dương Long - duonglong.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:10989555576300674725,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.990.000 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRt7aGszC-mDvOlYPYMqEmB3gt5eHE4lGcTWEbr50_ZjvnDU86RY_joSdcRHTlnSS45jlwm-I3KOtpVseI_WhjiOzenTopZxYZL_y_y_BWc6bqgcqgw5Skz",
+          "rating": 4.7,
+          "ratingCount": 3,
+          "productId": "10989555576300674725",
+          "position": 35
+        },
+        {
+          "title": "Tai nghe chụp tai (Không dây) Sony WH-1000XM5 - Chính Hãng",
+          "source": "Hoàng Hà Mobile",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:11649493578591823674,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.490.000 ₫",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRzH-h6n8MGrHhjQtqF06tnT04qwnXKdvOn6j37XFlkuZFrtZam2lFDBUJ0e0Bbqh-PJ3yS8SY_kuMXja_00-1c-3Euj6qo",
+          "productId": "11649493578591823674",
+          "position": 36
+        },
+        {
+          "title": "Sony WH-1000XM5 tai nghe Bluetooth Hi-Res 30mm, chống ồn tối ưu, đàm thoại rõ nét",
+          "source": "Shopee",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:14658592383624693211,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "8.015.150 ₫",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRcAwzBQs4_RsUQcw6y2okLze4JYKExOpE5LXeGzZ3yz_V337qVtswpl8rloukMvFGBg-iBS8g30qv0KBVWl63lU1jvs2j5F7ZlTFxWC8c",
+          "rating": 4.8,
+          "ratingCount": 148,
+          "productId": "14658592383624693211",
+          "position": 37
+        },
+        {
+          "title": "Tai nghe bluetooth chống ồn chủ động Sony WH-1000XM5 ( Sony Wh1000xm5 )",
+          "source": "Tainghetot.com",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:2124569326159180670,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "3.690.000 ₫",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT7mQJD3QRyGEh63vO9OsJTQj9qR1QJ-Bky68UWgLNO9AM9DFbA8tkdCprRMjXMzSYmWoFaUhK-lcfxYTfsTeNtewOnZqkom4Kl7RVBDQ",
+          "rating": 5,
+          "ratingCount": 47,
+          "productId": "2124569326159180670",
+          "position": 38
+        },
+        {
+          "title": "Tai nghe không dây Sony WH1000XM5",
+          "source": "OwlGaming",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:5983885641508615905,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "7.845.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTeVIVnHHIISIK87LbXn3O2C5U-xwq1UJjRo65YXMCf1hY86fUr5w5JgvZzeGzltziXopH0lbVxfDAtdMDdkkwDPrwm_IODe71amp5ZdThcTVzU451EQuRR",
+          "rating": 5,
+          "ratingCount": 6,
+          "productId": "5983885641508615905",
+          "position": 39
+        },
+        {
+          "title": "Tai Nghe Sony WH-1000XM5 Wireless Noise-Cancelling - White",
+          "source": "Cello.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:1485486817878842241,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": "6.980.000 ₫",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS2ovE3eakIhb32E9onnMfH8fberpWNaYcqxBrX4hhk1ACV1ZEjM275kH79HFEXU0mB_fqqd5niYX71IU--PSbs9bBzokcvinhanw_w8C9j-M02q3Bu40TVRg",
+          "productId": "1485486817878842241",
+          "position": 40
+        }
+      ],
+      "credits": 2
+    }
+  },
+  "images": {
+    "ok": true,
+    "credits": 1,
+    "arrayKey": "images",
+    "count": 10,
+    "fields": [
+      "title",
+      "imageUrl",
+      "imageWidth",
+      "imageHeight",
+      "thumbnailUrl",
+      "thumbnailWidth",
+      "thumbnailHeight",
+      "source",
+      "domain",
+      "link",
+      "googleUrl",
+      "position"
+    ],
+    "data": {
+      "searchParameters": {
+        "q": "Sony WH-1000XM5",
+        "gl": "vn",
+        "hl": "vi",
+        "type": "images",
+        "num": 10,
+        "engine": "google"
+      },
+      "images": [
+        {
+          "title": "Tai nghe chống ồn Sony WH-1000XM5 chính hãng giá rẻ",
+          "imageUrl": "https://bizweb.dktcdn.net/100/479/913/products/tai-nghe-sony-wh1000xm5-blue.jpg?v=1681816669527",
+          "imageWidth": 977,
+          "imageHeight": 1500,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK8b4qSedkyaVM0WoUYDp8kiDroUPCUJY-Xfl77kqiMQ&s=10",
+          "thumbnailWidth": 360,
+          "thumbnailHeight": 555,
+          "source": "Tín Đồ Tai Nghe",
+          "domain": "tindotainghe.com",
+          "link": "https://tindotainghe.com/tai-nghe-sony-wh-1000xm5",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F479%2F913%2Fproducts%2Ftai-nghe-sony-wh1000xm5-blue.jpg%3Fv%3D1681816669527&tbnid=8cYX6ihl-pU13M&imgrefurl=https%3A%2F%2Ftindotainghe.com%2Ftai-nghe-sony-wh-1000xm5&docid=rA6v3ivR7ofHhM&w=977&h=1500",
+          "position": 1
+        },
+        {
+          "title": "WH-1000XM5 | Tai nghe không dây có công nghệ chống ồn | Sony Vietnam",
+          "imageUrl": "https://www.sony.com.vn/image/623af7b9b246c988fc3f3264a4de278c?fmt=png-alpha&wid=1578&hei=1050&bgcolor=F6F9FF",
+          "imageWidth": 1578,
+          "imageHeight": 1050,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNatnPXAhRUr6mfnp4O2Okgpu_SBpm17hTtdiMLcdREA&s=10",
+          "thumbnailWidth": 547,
+          "thumbnailHeight": 365,
+          "source": "Sony",
+          "domain": "www.sony.com.vn",
+          "link": "https://www.sony.com.vn/electronics/tai-nghe-choang-dau-tai-nghe/wh-1000xm5",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.sony.com.vn%2Fimage%2F623af7b9b246c988fc3f3264a4de278c%3Ffmt%3Dpng-alpha%26wid%3D1578%26hei%3D1050%26bgcolor%3DF6F9FF&tbnid=5XnPikbUKztGHM&imgrefurl=https%3A%2F%2Fwww.sony.com.vn%2Felectronics%2Ftai-nghe-choang-dau-tai-nghe%2Fwh-1000xm5&docid=5CiBXePQtyowjM&w=1578&h=1050",
+          "position": 2
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 (Nobox | Bluetooth 5.2 | Pin 30h | Chống ồn ANC |  Dolby Atmos | DSEE Extreme | Fast Pair | LDAC)",
+          "imageUrl": "https://songlongmedia.com/media/product/3574_tai_nghe_sony_wh_1000xm5_like_new_99_songlongmedia__1_.jpg",
+          "imageWidth": 1000,
+          "imageHeight": 1000,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0TE5uw4jqYlC3t8zoBUJNBqoZJUBUyijQSae-zgr0EQ&s=10",
+          "thumbnailWidth": 447,
+          "thumbnailHeight": 447,
+          "source": "SongLongMedia",
+          "domain": "songlongmedia.com",
+          "link": "https://songlongmedia.com/tai-nghe-sony-wh-1000xm5-likenew.html?srsltid=AfmBOoq09oanAai0C_YPhGLMQ0l7PTi2j3XL_ycrm2UHwGPQusY36Hfh",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsonglongmedia.com%2Fmedia%2Fproduct%2F3574_tai_nghe_sony_wh_1000xm5_like_new_99_songlongmedia__1_.jpg&tbnid=kWKZcyTbBvorMM&imgrefurl=https%3A%2F%2Fsonglongmedia.com%2Ftai-nghe-sony-wh-1000xm5-likenew.html%3Fsrsltid%3DAfmBOoq09oanAai0C_YPhGLMQ0l7PTi2j3XL_ycrm2UHwGPQusY36Hfh&docid=xKfxaPAGBDrA8M&w=1000&h=1000",
+          "position": 3
+        },
+        {
+          "title": "Tai Nghe Sony WH-1000XM5 Wireless Noise Cancelling - Black – Máy Ảnh - Máy  Quay - FlyCam - Thiết bị Studio - Phụ Kiện",
+          "imageUrl": "https://file.hstatic.net/1000340975/file/1652444420_1706394_3d032a56463a43cf8874e10ebb5f53d1_grande.jpg",
+          "imageWidth": 500,
+          "imageHeight": 500,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLpvh_llKjuBb__e5m2xs-ivLMCt-ASxb6ow2ACBZ-nQ&s=10",
+          "thumbnailWidth": 447,
+          "thumbnailHeight": 447,
+          "source": "phuquangkts.vn",
+          "domain": "phuquangkts.vn",
+          "link": "https://phuquangkts.vn/products/tai-nghe-sony-wh-1000xm5-wireless-noise-cancelling-silver?srsltid=AfmBOoqRsBTKz7LMpesl3Wz-9zGHNOSbHN3iERfZ5spUX7VAisrmr_vy",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ffile.hstatic.net%2F1000340975%2Ffile%2F1652444420_1706394_3d032a56463a43cf8874e10ebb5f53d1_grande.jpg&tbnid=5jvjFGuRI8pMdM&imgrefurl=https%3A%2F%2Fphuquangkts.vn%2Fproducts%2Ftai-nghe-sony-wh-1000xm5-wireless-noise-cancelling-silver%3Fsrsltid%3DAfmBOoqRsBTKz7LMpesl3Wz-9zGHNOSbHN3iERfZ5spUX7VAisrmr_vy&docid=ompQSfuk7JzkGM&w=500&h=500",
+          "position": 4
+        },
+        {
+          "title": "Tai nghe Bluetooth chụp tai Sony WH-1000XM5",
+          "imageUrl": "https://img.youtube.com/vi/v6EjmbMgv80/maxresdefault.jpg",
+          "imageWidth": 1280,
+          "imageHeight": 720,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZB0PRijDzyAb_dutKWucRuYK-dhwKNeg-dT4BL_TsTQ&s=10",
+          "thumbnailWidth": 597,
+          "thumbnailHeight": 335,
+          "source": "CellphoneS",
+          "domain": "cellphones.com.vn",
+          "link": "https://cellphones.com.vn/tai-nghe-chup-tai-sony-wh-1000xm5.html",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.youtube.com%2Fvi%2Fv6EjmbMgv80%2Fmaxresdefault.jpg&tbnid=zpCJd050M487HM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Ftai-nghe-chup-tai-sony-wh-1000xm5.html&docid=qKnhHwEqfXc06M&w=1280&h=720",
+          "position": 5
+        },
+        {
+          "title": "Tai nghe không dây có công nghệ chống ồn WH-1000XM5 | Xanh ánh  trăng/WH-1000XM5",
+          "imageUrl": "https://www.sony.com.vn/image/942609f36382af7dd7b2cb9a10f541ec?fmt=png-alpha",
+          "imageWidth": 400,
+          "imageHeight": 400,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNnomutReNnaRNv2IY0iwAafTtNSAz0Om78ICFiGDSDA&s=10",
+          "thumbnailWidth": 400,
+          "thumbnailHeight": 400,
+          "source": "Sony",
+          "domain": "www.sony.com.vn",
+          "link": "https://www.sony.com.vn/electronics/tai-nghe-choang-dau-tai-nghe/wh-1000xm5",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.sony.com.vn%2Fimage%2F942609f36382af7dd7b2cb9a10f541ec%3Ffmt%3Dpng-alpha&tbnid=n_1scRgIoatLLM&imgrefurl=https%3A%2F%2Fwww.sony.com.vn%2Felectronics%2Ftai-nghe-choang-dau-tai-nghe%2Fwh-1000xm5&docid=5CiBXePQtyowjM&w=400&h=400",
+          "position": 6
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 | Chính Hãng, Giá Tốt, Trả Góp 0%",
+          "imageUrl": "https://logico.com.vn/images/products/2022/05/13/original/tai-nghe-khong-day-hi-res-chong-on-sony-wh-1000xm5-4_1652431076.png",
+          "imageWidth": 600,
+          "imageHeight": 500,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCd1nL2LMPME6LpFyr6F-ZntDYSXs4Rj1S0sKi1HIvbA&s=10",
+          "thumbnailWidth": 489,
+          "thumbnailHeight": 408,
+          "source": "Logico",
+          "domain": "logico.com.vn",
+          "link": "https://logico.com.vn/tai-nghe-khong-day-hi-res-chong-on-sony-wh-1000xm5-dp17318?srsltid=AfmBOooLbIQwbIruAc3wojjtNqnJKS2MqUstw4BH8g_CVifl9PUgUKK6",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flogico.com.vn%2Fimages%2Fproducts%2F2022%2F05%2F13%2Foriginal%2Ftai-nghe-khong-day-hi-res-chong-on-sony-wh-1000xm5-4_1652431076.png&tbnid=tQkJ_2JjHzjArM&imgrefurl=https%3A%2F%2Flogico.com.vn%2Ftai-nghe-khong-day-hi-res-chong-on-sony-wh-1000xm5-dp17318%3Fsrsltid%3DAfmBOooLbIQwbIruAc3wojjtNqnJKS2MqUstw4BH8g_CVifl9PUgUKK6&docid=qQSPPR57va-E7M&w=600&h=500",
+          "position": 7
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5",
+          "imageUrl": "https://onewaymobile.vn/images/products/2022/07/14/original/tai-nghe-chup-tai-sony-wh-1000xm5-2_1657779587.png",
+          "imageWidth": 900,
+          "imageHeight": 900,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQELpWJXad35jRd3uw-pOZEAqqibKBaiAQG-MuGZ5Wrgw&s=10",
+          "thumbnailWidth": 554,
+          "thumbnailHeight": 554,
+          "source": "ONEWAY",
+          "domain": "onewaymobile.vn",
+          "link": "https://onewaymobile.vn/tai-nghe-sony-wh-1000xm-5",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fonewaymobile.vn%2Fimages%2Fproducts%2F2022%2F07%2F14%2Foriginal%2Ftai-nghe-chup-tai-sony-wh-1000xm5-2_1657779587.png&tbnid=xhvXdYSSzuxaEM&imgrefurl=https%3A%2F%2Fonewaymobile.vn%2Ftai-nghe-sony-wh-1000xm-5&docid=ZtHXPvg5DjRG4M&w=900&h=900",
+          "position": 8
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM5 | Chống Ồn, Pin 30H, Giá Rẻ",
+          "imageUrl": "https://baochauelec.com/upload/original-image/tai-nghe-sony-wh-1000xm5.png",
+          "imageWidth": 504,
+          "imageHeight": 504,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRORJ9a3stXUBrzR3heNSf4DdInNySaB0AsDXGMxxsVpA&s=10",
+          "thumbnailWidth": 447,
+          "thumbnailHeight": 447,
+          "source": "Bảo Châu Elec",
+          "domain": "baochauelec.com",
+          "link": "https://baochauelec.com/tai-nghe-sony-wh-1000xm5?srsltid=AfmBOoreTxGytOioQvx4S8rG6rzLCgrpoodPJMJ0w42bGII3Anrcui9E",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbaochauelec.com%2Fupload%2Foriginal-image%2Ftai-nghe-sony-wh-1000xm5.png&tbnid=kkM9MxWrd8PMGM&imgrefurl=https%3A%2F%2Fbaochauelec.com%2Ftai-nghe-sony-wh-1000xm5%3Fsrsltid%3DAfmBOoreTxGytOioQvx4S8rG6rzLCgrpoodPJMJ0w42bGII3Anrcui9E&docid=tL-LRvTzgLJKuM&w=504&h=504",
+          "position": 9
+        },
+        {
+          "title": "Tai nghe chụp tai Sony WH-1000XM5",
+          "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/410/941/products/annotation-2023-07-06-081426.jpg?v=1688606165297",
+          "imageWidth": 314,
+          "imageHeight": 385,
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuyZtfx1Y2SZ3AgGgVFt2HA8egiNZjJ2vBAbB2kr-M-A&s=10",
+          "thumbnailWidth": 314,
+          "thumbnailHeight": 385,
+          "source": "Dương Long",
+          "domain": "duonglong.vn",
+          "link": "https://duonglong.vn/tai-nghe-chup-tai-sony-wh-1000xm5",
+          "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F410%2F941%2Fproducts%2Fannotation-2023-07-06-081426.jpg%3Fv%3D1688606165297&tbnid=yMup_jxDzniSDM&imgrefurl=https%3A%2F%2Fduonglong.vn%2Ftai-nghe-chup-tai-sony-wh-1000xm5&docid=Y3CNytaU0urrxM&w=314&h=385",
+          "position": 10
+        }
+      ],
+      "credits": 1
+    }
+  },
+  "places": {
+    "ok": true,
+    "credits": 1,
+    "arrayKey": "places",
+    "count": 7,
+    "fields": [
+      "position",
+      "title",
+      "address",
+      "latitude",
+      "longitude",
+      "phoneNumber",
+      "website",
+      "cid"
+    ],
+    "data": {
+      "searchParameters": {
+        "q": "Sony WH-1000XM5",
+        "gl": "vn",
+        "hl": "vi",
+        "type": "places",
+        "num": 10,
+        "page": 1,
+        "engine": "google"
+      },
+      "places": [
+        {
+          "position": 1,
+          "title": "Best Buy",
+          "address": "531 5th Ave, New York, NY 10017, Hoa Kỳ",
+          "latitude": 40.75484,
+          "longitude": -73.97968,
+          "phoneNumber": "+1 212-808-0309",
+          "website": "https://stores.bestbuy.com/ny/new-york/531-5th-ave-1028.html/?ref=NS&loc=ns100",
+          "cid": "4675204875206232998"
+        },
+        {
+          "position": 2,
+          "title": "Audio46 Headphones - Headphone Superstore",
+          "address": "29 W 46th St, New York, NY 10036, Hoa Kỳ",
+          "latitude": 40.75678,
+          "longitude": -73.98018,
+          "phoneNumber": "+1 212-354-6424",
+          "website": "https://audio46.com/",
+          "cid": "12202145900260218483"
+        },
+        {
+          "position": 3,
+          "title": "Sony Square NYC",
+          "address": "25 Madison Ave, New York, NY 10010, Hoa Kỳ",
+          "latitude": 40.741802,
+          "longitude": -73.98678,
+          "phoneNumber": "+1 212-833-8800",
+          "website": "https://www.sony.com/square-nyc.html",
+          "cid": "16274099440450271809"
+        },
+        {
+          "position": 4,
+          "title": "Sony Store",
+          "address": "550 Madison Ave, New York, NY 10022, Hoa Kỳ",
+          "latitude": 40.761307,
+          "longitude": -73.97344,
+          "phoneNumber": "+1 212-833-8800",
+          "website": "https://www.sony.com/",
+          "cid": "14149358735823485064"
+        },
+        {
+          "position": 5,
+          "title": "Sony Store",
+          "address": "1701 John F Kennedy Blvd, Philadelphia, PA 19103, Hoa Kỳ",
+          "latitude": 39.954563,
+          "longitude": -75.168465,
+          "website": "https://www.sony.com/",
+          "cid": "2377344655814654845"
+        },
+        {
+          "position": 6,
+          "title": "Sony",
+          "address": "18 Lightcap Rd #399, Pottstown, PA 19464, Hoa Kỳ",
+          "latitude": 40.23611,
+          "longitude": -75.569336,
+          "phoneNumber": "+1 610-323-8650",
+          "website": "https://www.sony.com/",
+          "cid": "17945956131955806115"
+        },
+        {
+          "position": 7,
+          "title": "Sony Store",
+          "address": "100 Menlo Park Mall, Edison, NJ 08837, Hoa Kỳ",
+          "latitude": 40.547596,
+          "longitude": -74.33647,
+          "phoneNumber": "+1 732-603-2130",
+          "website": "https://www.sony.com/",
+          "cid": "8173911623966890453"
+        }
+      ],
+      "credits": 1
+    }
+  },
+  "news": {
+    "ok": true,
+    "credits": 1,
+    "arrayKey": "news",
+    "count": 10,
+    "fields": [
+      "title",
+      "link",
+      "snippet",
+      "date",
+      "source",
+      "imageUrl"
+    ],
+    "data": {
+      "searchParameters": {
+        "q": "Sony WH-1000XM5",
+        "gl": "vn",
+        "hl": "vi",
+        "type": "news",
+        "num": 10,
+        "page": 1,
+        "allowSuggested": true,
+        "engine": "google"
+      },
+      "news": [
+        {
+          "title": "Đánh giá tai nghe Sony WH-1000XM5: Chuẩn mực tai nghe chống ồn cao cấp hiện nay",
+          "link": "https://fptshop.com.vn/tin-tuc/danh-gia/danh-gia-tai-nghe-sony-wh-1000xm5-198580",
+          "snippet": "Kết luận. Tổng thể, qua đánh giá tai nghe Sony WH-1000XM5, đây là mẫu tai nghe cao cấp hội tụ đầy đủ các yếu tố từ chống ồn xuất sắc, âm thanh cân bằng đến trải...",
+          "date": "6 thg 2, 2026",
+          "source": "FPTShop",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdgKmlznqfg6PcijjWXZFS29xP7Ynp2mRrlzFGpEQ0rxJ7H1eFvy-zHHk&usqp=CAI&s"
+        },
+        {
+          "title": "Sony tung bản cập nhật \"khủng\" cho WH-1000XM6 và WF-1000XM5: Thêm chia sẻ âm thanh, tích hợp AI Gemini",
+          "link": "https://cellphones.com.vn/sforum/sony-cap-nhat-wh-1000xm6-1000xm5",
+          "snippet": "Sony vừa phát hành một bản cập nhật firmware quan trọng cho hai mẫu tai nghe chống ồn cao cấp của hãng là WH-1000XM6 và WF-1000XM5. Bản cập nhật này mang đến...",
+          "date": "2 thg 10, 2025",
+          "source": "CellphoneS",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS87DeRNHFi8JdfKb64K_x48o1fbLO_Ce1YdKESahB8oW4NeaRE5y6_r0&usqp=CAI&s"
+        },
+        {
+          "title": "So sánh tai nghe Sony WH-1000XM5 và XM6 chi tiết: Tai nghe mới hơn có thật sự vượt trội?",
+          "link": "https://fptshop.com.vn/tin-tuc/danh-gia/so-sanh-tai-nghe-sony-wh-1000xm5-va-xm6-196453",
+          "snippet": "WH-1000XM6 là sản phẩm mới, giá bán cao hơn trong giai đoạn đầu. Mức chênh lệch phản ánh những nâng cấp về thiết kế và công nghệ mà Sony trang bị. Model XM5 phù...",
+          "date": "23 thg 12, 2025",
+          "source": "FPT Shop",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiEmFEA-L-UhwimEtediEs0_ZFDwsAdPyQouwwQEEq_09HVyi_EgW0fD4&usqp=CAI&s"
+        },
+        {
+          "title": "Trải nghiệm tai nghe chống ồn Sony WH-1000XM5",
+          "link": "https://thanhnien.vn/trai-nghiem-tai-nghe-chong-on-sony-wh-1000xm5-185250326010452534.htm",
+          "snippet": "Công nghệ âm thanh. Sony WH-1000XM5 được trang bị trình điều khiển 30 mm mới được làm bằng composite sợi carbon nhằm đảm bảo trọng lượng nhẹ...",
+          "date": "26 thg 3, 2025",
+          "source": "Báo Thanh Niên",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlkwO4KRdpn-D-8xideH_nGKHz8hRwt1Un1F1ad_a04Btyrlj6MpxUfkU&usqp=CAI&s"
+        },
+        {
+          "title": "Trên tay tai nghe Sony WH-1000XM5 phiên bản hồng khói: Nhẹ nhàng, sang trọng và rất “LE SSERAFIM”",
+          "link": "https://genk.vn/tren-tay-tai-nghe-sony-wh-1000xm5-phien-ban-hong-khoi-nhe-nhang-sang-trong-va-rat-le-sserafim-20250401013654994.chn",
+          "snippet": "Sony vừa tung ra phiên bản màu hồng khói mới cho mẫu tai nghe chống ồn cao cấp WH-1000XM5, đánh dấu sự hợp tác đặc biệt với nhóm nhạc nữ K-pop...",
+          "date": "1 thg 4, 2025",
+          "source": "GenK.vn",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt8VLFnxbt-7sSdLcdXx9i3ayiaIpEGcJTRsYE-4Og6mf53PZDFUc83As&usqp=CAI&s"
+        },
+        {
+          "title": "Tai nghe Sony WH-1000XM6 có thể sắp ra mắt: Xuất hiện trên FCC",
+          "link": "https://www.thegioididong.com/tin-tuc/sony-wh-1000xm6-co-the-sap-ra-mat-xuat-hien-tren-fcc-1574570",
+          "snippet": "Ba năm sau khi Sony giới thiệu mẫu tai nghe cao cấp là Sony WH-1000XM5, phiên bản kế nhiệm cuối cùng cũng đang trong quá trình phát triển.",
+          "date": "29 thg 1, 2025",
+          "source": "Thegioididong.com",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnjTs5mTjhjQM8_vbIhl6t_9BlU4pAd_BqwH-PacG1ZrpOX2XJmnj-SPg&usqp=CAI&s"
+        },
+        {
+          "title": "Tai nghe chống ồn cao cấp Sony và Bose đọ sức",
+          "link": "https://vnexpress.net/tai-nghe-chong-on-cao-cap-sony-va-bose-do-suc-4572505.html",
+          "snippet": "Sony WH-1000XM5 có lợi thế về thiết kế, âm thanh vòm, nhiều tính năng trong khi Bose QuietComfort 45 dễ thao tác với nút bấm vật lý,...",
+          "date": "25 thg 2, 2023",
+          "source": "VnExpress",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQqP4Rvv-6kW0u6J6x_imxYSAhsqiGZGockfhaghw22B4SfrLUP75bj_Q&usqp=CAI&s"
+        },
+        {
+          "title": "So sánh Sony WH-1000XM6 và WH-1000XM5: Khác biệt gì giữa hai thế hệ, đâu là lựa chọn đáng giá hơn?",
+          "link": "https://cellphones.com.vn/sforum/so-sanh-sony-wh-1000xm6-va-wh-1000xm5",
+          "snippet": "Cả hai tai nghe đều có nhiều tính năng chung nhưng Sony WH-1000XM6 được nâng cấp với những công nghệ mới. Nâng cấp đáng chú ý đầu tiên trên WH-...",
+          "date": "10 thg 7, 2025",
+          "source": "CellphoneS",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0S1eB9OD0ZxHKFBtJ5R8ywsynYinKZYViOiWxftlpwta4cHxzWfN58Is&usqp=CAI&s"
+        },
+        {
+          "title": "Tai nghe chống ồn Sony WH-1000XM5 có giá 9,49 triệu đồng tại Việt Nam",
+          "link": "https://vietnamnet.vn/tai-nghe-chong-on-sony-wh-1000xm5-co-gia-949-trieu-dong-tai-viet-nam-i412390.html",
+          "snippet": "LinkBuds S chính thức ra mắt tại Việt Nam với giá 5,49 triệu đồng. Hải Đăng...",
+          "date": "2 thg 6, 2022",
+          "source": "Báo VietNamNet",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMx7_FVzdntGh3G-djNWrZj1m0UnF_tDnE9V4Rbu2JpYyQWPqg2030Fxk&usqp=CAI&s"
+        },
+        {
+          "title": "Tai nghe Bose QuietComfort Ultra, kẻ thách thức Sony WH-1000XM5, đã xuất hiện trực tuyến với trang bị âm thanh vòm ba chiều",
+          "link": "https://nghenhinvietnam.vn/tai-nghe-bose-quietcomfort-ultra-ke-thach-thuc-sony-wh-1000xm5-da-xuat-hien-truc-tuyen-voi-trang-bi-am-thanh-vom-ba-chieu",
+          "snippet": "Ở mỗi bên chụp tai là một bản lề để QC Ultras có thể được gấp lại trong hộp cứng đi kèm. Nhìn trong ảnh có thể thấy những chiếc cốc tai trông...",
+          "date": "14 thg 8, 2023",
+          "source": "NgheNhinVietNam",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgG9o244enaTwvxwS53pHdJ2aI428gtvTU2BaBLuc56J1Ts41f0sLA1Yw&usqp=CAI&s"
+        }
+      ],
+      "credits": 1
+    }
+  }
+}

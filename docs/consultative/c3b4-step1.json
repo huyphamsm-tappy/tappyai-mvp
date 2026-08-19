@@ -1,0 +1,2526 @@
+[
+  {
+    "id": "A1",
+    "rep": 1,
+    "kind": "brand-level VI",
+    "request": "Nên mua iPhone hay Samsung?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone latest price Vietnam",
+      "Samsung latest price Vietnam"
+    ],
+    "candidates": 27,
+    "deviceEvidence": 9,
+    "accessoryEvidence": 4,
+    "deviceTitles": [
+      "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+      "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+      "SAMSUNG Flagship Store Việt Nam Cửa Hàng Chính ...",
+      "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ..."
+    ],
+    "accessoryTitles": [
+      "Củ Sạc Samsung 45W sạc siêu nhanh Type C Model 2025",
+      "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ."
+    ],
+    "attributesToSearch": true,
+    "flagsInsufficient": false,
+    "clarifications": 2,
+    "promptTokens": 7884,
+    "completionTokens": 492,
+    "ms": 13891,
+    "text": "I'll search for current pricing and specs to help you compare these two options.Based on the search results, here's a quick comparison to help you decide:\n\n**iPhone** — Best for ecosystem & longevity. Apple devices integrate seamlessly if you use Mac/iPad, get longer software support (5-7 years), and hold resale value well. Pricier upfront but lasts longer.\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXRHiqLl-NbbMWaIVRjEJZHmuiVqqUgettSebWfeCKw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoBEoMPm5YE28OlGf_6seZfjaQ9keCoNR69e7uuqjYkQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GWW2k3W4ZDJx5oTTOJtXfM-NZE_VkvhOruMp3PzDYQ&s=10)\n\n**Samsung** — Better value & customization. Galaxy phones offer more features per dollar, wider range of models (budget to premium), and Android flexibility. Great if you want more control and variety.\n\n**Key differences:**\n- **Price**: Samsung typically cheaper for similar specs; iPhone premium for brand/ecosystem\n- **Software**: iOS is closed but smooth; Android is customizable but fragmented\n- **Camera**: Both excellent; iPhone consistent, Samsung more versatile (zoom, macro)\n\nThe real question is: **Do you already use Apple products (Mac, iPad), or do you prefer Android's flexibility?** That'll tip the scales. Also, what's your budget range? 💰\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFqF_w3NnKBGJ6fhIxXWvgDXdjZ31S40hcU29ABCDiEA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTENSY40EsVHgIZYQQZm0Eg2aYWvD6f1Iu8bKvL-2BVSQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-bWXcfByjAw4vneLRqAgaeoc85isMNhKQY5XcwVsVXA&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRkQhr4Xbyzj3tIWt9LbLHpwOyKuxWEaA8qDqm-KF_tg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAx458XoeLWcmhjes5WiNf-0gnEmiZSdVM_55d6dlIgA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHR8e2cvTEukShqhmeH8twUBL5ViTIDwvgHmGjukRHBg&s=10)\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone\",\"primary\":true},{\"label\":\"🛒 Find Samsung on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Budget range?|Already use Apple products?|Want best camera?[/FOLLOWUPS]",
+    "evidence": [
+      {
+        "title": "Củ Sạc Samsung 45W sạc siêu nhanh Type C Model 2025",
+        "snippet": "Samsung 45W sạc siêu nhanh Type C Model 2025- Shopee Việt Nam ・ 365.400₫ final price indicator ・ 4.9 Đánh giá 99% Phản ・ hãng Samsung VietNam",
+        "link": "https://shopee.vn/C%E1%BB%A7-S%E1%BA%A1c-Samsung-45W-s%E1%BA%A1c-si%C3%AAu-nhanh-Type-C-Model-2025-Tem-ph%E1%BB%A5-Nh%E1%BA%ADp-kh%E1%BA%A9u-Ch%C3%ADnh-h%C3%A3ng-Samsung-VietNam-i.1628646131.49252053724"
+      },
+      {
+        "title": "So sánh các sàn thương mại điện tử phổ biến hiện nay",
+        "snippet": "Trong bài viết này, hãy cùng Nhanh.vn tìm hiểu và so sánh các sàn thương mại điện tử phổ biến nhất hiện nay cùng như các quy định và giấy ...",
+        "link": "https://nhanh.vn/so-sanh-cac-san-thuong-mai-dien-tu-pho-bien-hien-nay-nen-chon-mua-lazada-tiki-shopee-hay-sendo-n61661.html"
+      },
+      {
+        "title": "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+        "snippet": "Xét về thương hiệu, 3 hãng smartphone là Apple, Samsung và Xiaomi có doanh thu cao nhất trong quý 2/2022 với lần lượt 997 tỷ, 608 tỷ, 315 tỷ ...",
+        "link": "https://cafef.vn/nguoi-viet-mua-gi-tren-shopee-lazada-tiki-nua-dau-nam-2022-2022081010160399.chn"
+      },
+      {
+        "title": "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+        "snippet": "Samsung và Apple là hai dòng điện thoại người Việt sẵn sàng dốc hầu bao để sở hữu nhiều nhất.",
+        "link": "https://nguoiquansat.vn/moi-thang-nguoi-viet-chi-nua-nghin-ty-mua-dien-thoai-thong-minh-tren-shopee-lazada-tiki-83003.html"
+      },
+      {
+        "title": "Đóng cửa trên 30.000 gian hàng trên Shopee, Tiki, Lazada ...",
+        "snippet": "Đóng cửa trên 30.000 gian hàng trên Shopee, Tiki, Lazada… vì \"thổi\" giá khẩu trang, nước rửa tay · Các sàn thương mại điện tử (TMĐT) đã rà soát ...",
+        "link": "https://vietnamnet.vn/dong-cua-tren-30000-gian-hang-tren-shopee-tiki-lazada-vi-thoi-gia-khau-trang-nuoc-rua-tay-i40882.html"
+      },
+      {
+        "title": "Từng là giấc mơ kỳ lân tỷ đô, Tiki giờ được định giá chỉ bằng ...",
+        "snippet": "Tôi vẫn trung thành ủng hộ Tiki bao năm qua, gần như nói không với Shopee và chưa bao giờ mua Lazada. Đơn giản, Tiki là đáng tin cậy nhất và là ...",
+        "link": "https://www.facebook.com/CafeF/posts/t%E1%BB%ABng-l%C3%A0-gi%E1%BA%A5c-m%C6%A1-k%E1%BB%B3-l%C3%A2n-t%E1%BB%B7-%C4%91%C3%B4-tiki-gi%E1%BB%9D-%C4%91%C6%B0%E1%BB%A3c-%C4%91%E1%BB%8Bnh-gi%C3%A1-ch%E1%BB%89-b%E1%BA%B1ng-m%E1%BB%99t-c%C4%83n-bi%E1%BB%87t-th%E1%BB%B1-t%C3%A2/1153146020172889/"
+      },
+      {
+        "title": "SAMSUNG Flagship Store Việt Nam Cửa Hàng Chính ...",
+        "snippet": "Điện thoại Samsung Galaxy Z Fold7 (256GB | 512GB), Điện thoại AI, Camera 200MP, Màn hình 8.0\" tối ưu đa nhiệm, Mỏng nhẹ nhất. Mua 1, giảm 1.000.000₫.",
+        "link": "https://www.lazada.vn/shop/samsung-flagship-store/?path=index.htm&srsltid=AfmBOoqWl8dvHuP0g6mJuUh0fNaGaRGICuq8nCsmZiw5Z2BfxqomO3BS"
+      },
+      {
+        "title": "Samsung | Ho Chi Minh City",
+        "snippet": "Tham gia ngay livestream Samsung để khám phá những sản phẩm nổi bật, săn voucher độc quyền, nhận quà tặng hấp dẫn và chốt loạt deal chỉ có trên Live Shop. 🎟️ ...",
+        "link": "https://www.facebook.com/SamsungVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "⚡ TẬN HƯỞNG ƯU ĐÃI NỘI BỘ CÙNG SAMSUNG SHOP ...",
+        "snippet": "Chỉ cần nhấc máy và gọi ngay hotline shop BHNB để đặt hàng SEVT: 0️⃣8️⃣8️⃣8️⃣5️⃣0️⃣9️⃣9️⃣8️⃣8️⃣ SEV: ...",
+        "link": "https://www.facebook.com/samsungxinchao/posts/-t%E1%BA%ADn-h%C6%B0%E1%BB%9Fng-%C6%B0u-%C4%91%C3%A3i-n%E1%BB%99i-b%E1%BB%99-c%C3%B9ng-samsung-shop-online-nh%E1%BA%A5c-m%C3%A1y-g%E1%BB%8Di-ngay-giao-h%C3%A0ng-t%E1%BA%AD/3158055024240904/"
+      },
+      {
+        "title": "Samsung Xin chào (@samsungxinchao)",
+        "snippet": "Samsung Xin chào. 156.949 lượt thích · 3.112 người đang nói về điều này. Fanpage chính thức của các đơn vị Samsung tại Việt Nam.",
+        "link": "https://www.facebook.com/samsungxinchao/?locale=vi_VN"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Địa điểm: 11 Trần Não, P. An Khánh, TP.HCM ⏰ Thời gian: 10:00 - 12:00 | Ngày 15.08.2026 ⚠️ Số lượng giới hạn: Chỉ 20 suất tham dự duy nhất! ĐĂNG KÝ ...",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "NỘI QUY (#NOIQUY) GROUP #SamfansCom ----- Group #SamfansCom là nơi tập hợp tất cả những anh chị em có cùng niềm đam mê, yêu thích & đang sử dụng các sản ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "SamCenter Việt Nam",
+        "snippet": "Địa điểm: SamCenter AEON Mall Long Biên ⏰ Khung giờ: 9h00 - 21h00 ... SAMSUNG GIÁ SIÊU HẠT DẺ! SamCenter bắt tay cùng Tạp hoá PewPew đem tới ...",
+        "link": "https://www.facebook.com/samcenter.hesman/?locale=vi_VN"
+      },
+      {
+        "title": "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+        "snippet": "Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro Max,In ・ 35.900₫ final price ・ ₫3k Ốp ・ 11/12/13/14/15/16/17 Pro Max,In",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-C%E1%BB%9D-Vi%E1%BB%87t-Nam-%C4%90%E1%BB%99c-L%E1%BA%ADp-T%E1%BB%B1-Do-Vietnam-Cho-iPhone-11-12-13-14-15-16-17-Pro-Max-In-H%C3%ACnh-Ngh%E1%BB%87-Thu%E1%BA%ADt-M%C3%A0u-C%E1%BB%9D-S%E1%BA%AFc-N%C3%A9t-i.1588230524.52709286855"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ iPhone 16 Pro Max/15 Pro ・ 27.965₫ final price indicator ・ ₫15k để ₫1k Ốp ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng",
+        "snippet": "Cho iPhone: Trong Suốt. Made In Vietnam giá tốt. 1/11 74.000₫ final price ・ ₫10k Ốp ・ 4.8 Đánh giá 98% Phản",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Cho-iPhone-Trong-Su%E1%BB%91t-Nh%E1%BB%B1a-C%E1%BB%A9ng-Kho%C3%A9t-C%E1%BA%A1nh-2-B%C3%AAn-Ch%E1%BB%91ng-%E1%BB%90-V%C3%A0ng-PCK-001-Made-In-Vietnam-i.322094848.44283294074?extraParams=%7B%22display_model_id%22%3A381323914645%2C%22model_selection_logic%22%3A3%7D"
+      },
+      {
+        "title": "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ...",
+        "snippet": "Mua Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS/XR/11/12/13/14/15/16/17/Plus/Pro/Max giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-Vietnam-In-My-Heart-Qu%E1%BB%91c-K%E1%BB%B3-%C4%90%E1%BB%8F-iP-X-XS-XR-11-12-13-14-15-16-17-Plus-Pro-Max-i.1625227902.56909465222"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Người Việt chi 1.150 tỷ đồng mua điện thoại trên Shopee ...",
+        "snippet": "Còn dòng iPhone 15 đến tuần cuối tháng 9 mới bắt đầu được mở bán trên sàn thương mại điện tử Shopee, Lazada và Tiki và mới thu về hơn 8 tỷ đồng ...",
+        "link": "https://mekongasean.vn/nguoi-viet-chi-1150-ty-dong-mua-dien-thoai-tren-shopee-lazada-va-tiki-3812.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh thu tuần trước ...",
+        "link": "https://www.funan.vn/vi/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki.1169594"
+      },
+      {
+        "title": "Hội iPhone Việt Nam",
+        "snippet": "Hội iPhone Việt Nam - Mục đích : * Giao lưu, chia sẻ, hỏi đáp các vấn đề liên quan đến iPhone & sản phẩm của Apple * Nơi các bạn có thể mua bán, trao...",
+        "link": "https://www.facebook.com/groups/1841472882821368/?locale=vi_VN"
+      },
+      {
+        "title": "Đánh vào tâm lý, nhu cầu mua sắm iPhone đời mới với giá rẻ ...",
+        "snippet": "iphone giá rẻ https://s.shopee.vn/6Ajqc2fRbG. 01:15. iphone giá rẻ https://s.shopee. vn/6Ajqc2fRbG. Jul 30, 2026 · 12K views. Giá ...",
+        "link": "https://www.facebook.com/baodientuvtv/videos/1000-ng%C6%B0%E1%BB%9Di-s%E1%BA%ADp-b%E1%BA%ABy-s%C4%83n-iphone-gi%C3%A1-r%E1%BA%BB/1930523144420545/"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Hệ thống bán lẻ điện thoại, máy tính bảng, đồng hồ, loa, phụ kiện, thiết bị công nghệ,... chính hãng. Đại lý uỷ quyền chính thức của Apple tại Việt Nam.",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "Hội iPhone TP.HCM ( Mua Bán Điện Thoại Cũ Mới Giá Rẻ)✅",
+        "snippet": "Cần bán iPhone 16promax 256gb Vn/a giá 21triệu hoặc tìm kèo giao lưu xuống đời Tình trạng : máy còn zin,pin cao hết bảo hành rùi nha mình ở Sài gòn · May be an ...",
+        "link": "https://www.facebook.com/groups/526647772980338/"
+      },
+      {
+        "title": "‎Ứng dụng Facebook - App Store",
+        "snippet": "Tải về Facebook của Meta Platforms, Inc. từ App Store. Xem ảnh chụp màn hình, xếp hạng và nhận xét, mẹo người dùng và các trò chơi khác như Facebook.",
+        "link": "https://apps.apple.com/vn/app/facebook/id284882215?l=vi"
+      },
+      {
+        "title": "Fogo Store - Fogostore.vn | Ho Chi Minh City",
+        "snippet": "FOGO STORE - #1 iPHONE, iPAD, MACBOOK STORE HCMC Địa chỉ: 298 Đ. Trần Hưng Đạo, Phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh Hotline: 0566 003 333 ...",
+        "link": "https://www.facebook.com/fogostorehcm/"
+      }
+    ]
+  },
+  {
+    "id": "A1",
+    "rep": 2,
+    "kind": "brand-level VI",
+    "request": "Nên mua iPhone hay Samsung?",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 2,
+    "promptTokens": 1149,
+    "completionTokens": 73,
+    "ms": 1769,
+    "text": "I need to understand your priorities better to give you a solid comparison. Let me ask: **what matters most to you — price, camera quality, performance, battery life, or something else?** Also, what's your budget range?\n\nOnce I know that, I can search for current models and prices to help you decide! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A1",
+    "rep": 3,
+    "kind": "brand-level VI",
+    "request": "Nên mua iPhone hay Samsung?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone latest price Vietnam",
+      "Samsung latest price Vietnam"
+    ],
+    "candidates": 27,
+    "deviceEvidence": 9,
+    "accessoryEvidence": 4,
+    "deviceTitles": [
+      "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+      "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+      "Người Việt chi 1.150 tỷ đồng mua điện thoại trên Shopee ...",
+      "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên Shopee, ..."
+    ],
+    "accessoryTitles": [
+      "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ..."
+    ],
+    "attributesToSearch": true,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7884,
+    "completionTokens": 516,
+    "ms": 10769,
+    "text": "I'll search for current pricing and specs to help you compare these two options.Based on the search results, here's a quick comparison to help you decide:\n\n**iPhone** — Best for ecosystem & longevity. Apple devices integrate seamlessly if you use Mac/iPad, get longer software support (5-7 years), and hold resale value well. Pricier upfront but lasts longer.\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1lzjchlHevbOzoQvZ4C9kQRsK3f457lFZU53mTHr4jQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqu4ajnAtJHZxAoizk-Ngj1fCtQD4LumGA1r2ZSfYJgg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8qg03WNo2VP1yhiJkALSjQIVQ1sAk7uMJljZtEx3MgA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp982eeitJCHVk0aXp3tqVX3HOmJpyrYmmyD0WUmnXvA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbqlzHRH3UWCDtJT_-KVeRl4U07UBW3tgVT6yantMfQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT16e27Qdg4ZcEBM6BYWGMrmtvHVlQImlltX6MFBwGPcA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXRHiqLl-NbbMWaIVRjEJZHmuiVqqUgettSebWfeCKw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GWW2k3W4ZDJx5oTTOJtXfM-NZE_VkvhOruMp3PzDYQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQOot3ovmhfYR0fbZbXNRrpiCXbCo78Dy_RucEXmNK8A&s)\n\n**Samsung** — Better value & customization. Galaxy phones offer more features per dollar, wider range of models (budget to premium), and Android flexibility. Great if you want options and don't need Apple's ecosystem.\n\n**Key differences:**\n- **Price**: Samsung typically cheaper for similar specs; iPhone premium for brand/ecosystem\n- **Software**: iOS is closed/optimized; Android is customizable\n- **Longevity**: iPhone wins on long-term updates; Samsung solid but shorter support window\n\nThe search results show both are top sellers in Vietnam on Shopee/Lazada/Tiki. Real prices vary by model and storage, so check current listings.\n\n**What matters most to you — budget, ecosystem (Mac/iPad), or customization?** That'll help narrow it down! 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 iPhone on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone\",\"primary\":true},{\"label\":\"🛒 Samsung on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]iPhone vs Samsung specs|Best budget phone|Gaming phone comparison[/FOLLOWUPS]",
+    "evidence": [
+      {
+        "title": "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+        "snippet": "Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro Max,In ・ 35.900₫ final price ・ ₫3k Ốp ・ 11/12/13/14/15/16/17 Pro Max,In",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-C%E1%BB%9D-Vi%E1%BB%87t-Nam-%C4%90%E1%BB%99c-L%E1%BA%ADp-T%E1%BB%B1-Do-Vietnam-Cho-iPhone-11-12-13-14-15-16-17-Pro-Max-In-H%C3%ACnh-Ngh%E1%BB%87-Thu%E1%BA%ADt-M%C3%A0u-C%E1%BB%9D-S%E1%BA%AFc-N%C3%A9t-i.1588230524.52709286855"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ iPhone 16 Pro Max/15 Pro ・ 27.965₫ final price indicator ・ ₫15k để ₫1k Ốp ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng",
+        "snippet": "Cho iPhone: Trong Suốt. Made In Vietnam giá tốt. 1/11 74.000₫ final price ・ ₫10k Ốp ・ 4.8 Đánh giá 98% Phản",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Cho-iPhone-Trong-Su%E1%BB%91t-Nh%E1%BB%B1a-C%E1%BB%A9ng-Kho%C3%A9t-C%E1%BA%A1nh-2-B%C3%AAn-Ch%E1%BB%91ng-%E1%BB%90-V%C3%A0ng-PCK-001-Made-In-Vietnam-i.322094848.44283294074?extraParams=%7B%22display_model_id%22%3A381323914645%2C%22model_selection_logic%22%3A3%7D"
+      },
+      {
+        "title": "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ...",
+        "snippet": "Mua Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS/XR/11/12/13/14/15/16/17/Plus/Pro/Max giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-Vietnam-In-My-Heart-Qu%E1%BB%91c-K%E1%BB%B3-%C4%90%E1%BB%8F-iP-X-XS-XR-11-12-13-14-15-16-17-Plus-Pro-Max-i.1625227902.56909465222"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Người Việt chi 1.150 tỷ đồng mua điện thoại trên Shopee ...",
+        "snippet": "Còn dòng iPhone 15 đến tuần cuối tháng 9 mới bắt đầu được mở bán trên sàn thương mại điện tử Shopee, Lazada và Tiki và mới thu về hơn 8 tỷ đồng ...",
+        "link": "https://mekongasean.vn/nguoi-viet-chi-1150-ty-dong-mua-dien-thoai-tren-shopee-lazada-va-tiki-3812.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh thu tuần trước ...",
+        "link": "https://www.funan.vn/vi/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki.1169594"
+      },
+      {
+        "title": "Hội iPhone Việt Nam",
+        "snippet": "Hội iPhone Việt Nam - Mục đích : * Giao lưu, chia sẻ, hỏi đáp các vấn đề liên quan đến iPhone & sản phẩm của Apple * Nơi các bạn có thể mua bán, trao...",
+        "link": "https://www.facebook.com/groups/1841472882821368/?locale=vi_VN"
+      },
+      {
+        "title": "Đánh vào tâm lý, nhu cầu mua sắm iPhone đời mới với giá rẻ ...",
+        "snippet": "iphone giá rẻ https://s.shopee.vn/6Ajqc2fRbG. 01:15. iphone giá rẻ https://s.shopee. vn/6Ajqc2fRbG. Jul 30, 2026 · 12K views. Giá ...",
+        "link": "https://www.facebook.com/baodientuvtv/videos/1000-ng%C6%B0%E1%BB%9Di-s%E1%BA%ADp-b%E1%BA%ABy-s%C4%83n-iphone-gi%C3%A1-r%E1%BA%BB/1930523144420545/"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Hệ thống bán lẻ điện thoại, máy tính bảng, đồng hồ, loa, phụ kiện, thiết bị công nghệ,... chính hãng. Đại lý uỷ quyền chính thức của Apple tại Việt Nam.",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "Hội iPhone TP.HCM ( Mua Bán Điện Thoại Cũ Mới Giá Rẻ)✅",
+        "snippet": "Cần bán iPhone 16promax 256gb Vn/a giá 21triệu hoặc tìm kèo giao lưu xuống đời Tình trạng : máy còn zin,pin cao hết bảo hành rùi nha mình ở Sài gòn · May be an ...",
+        "link": "https://www.facebook.com/groups/526647772980338/"
+      },
+      {
+        "title": "‎Ứng dụng Facebook - App Store",
+        "snippet": "Tải về Facebook của Meta Platforms, Inc. từ App Store. Xem ảnh chụp màn hình, xếp hạng và nhận xét, mẹo người dùng và các trò chơi khác như Facebook.",
+        "link": "https://apps.apple.com/vn/app/facebook/id284882215?l=vi"
+      },
+      {
+        "title": "Fogo Store - Fogostore.vn | Ho Chi Minh City",
+        "snippet": "FOGO STORE - #1 iPHONE, iPAD, MACBOOK STORE HCMC Địa chỉ: 298 Đ. Trần Hưng Đạo, Phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh Hotline: 0566 003 333 ...",
+        "link": "https://www.facebook.com/fogostorehcm/"
+      },
+      {
+        "title": "Củ Sạc Samsung 45W sạc siêu nhanh Type C Model 2025",
+        "snippet": "Samsung 45W sạc siêu nhanh Type C Model 2025- Shopee Việt Nam ・ 365.400₫ final price indicator ・ 4.9 Đánh giá 99% Phản ・ hãng Samsung VietNam",
+        "link": "https://shopee.vn/C%E1%BB%A7-S%E1%BA%A1c-Samsung-45W-s%E1%BA%A1c-si%C3%AAu-nhanh-Type-C-Model-2025-Tem-ph%E1%BB%A5-Nh%E1%BA%ADp-kh%E1%BA%A9u-Ch%C3%ADnh-h%C3%A3ng-Samsung-VietNam-i.1628646131.49252053724"
+      },
+      {
+        "title": "So sánh các sàn thương mại điện tử phổ biến hiện nay",
+        "snippet": "Trong bài viết này, hãy cùng Nhanh.vn tìm hiểu và so sánh các sàn thương mại điện tử phổ biến nhất hiện nay cùng như các quy định và giấy ...",
+        "link": "https://nhanh.vn/so-sanh-cac-san-thuong-mai-dien-tu-pho-bien-hien-nay-nen-chon-mua-lazada-tiki-shopee-hay-sendo-n61661.html"
+      },
+      {
+        "title": "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+        "snippet": "Xét về thương hiệu, 3 hãng smartphone là Apple, Samsung và Xiaomi có doanh thu cao nhất trong quý 2/2022 với lần lượt 997 tỷ, 608 tỷ, 315 tỷ ...",
+        "link": "https://cafef.vn/nguoi-viet-mua-gi-tren-shopee-lazada-tiki-nua-dau-nam-2022-2022081010160399.chn"
+      },
+      {
+        "title": "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+        "snippet": "Samsung và Apple là hai dòng điện thoại người Việt sẵn sàng dốc hầu bao để sở hữu nhiều nhất.",
+        "link": "https://nguoiquansat.vn/moi-thang-nguoi-viet-chi-nua-nghin-ty-mua-dien-thoai-thong-minh-tren-shopee-lazada-tiki-83003.html"
+      },
+      {
+        "title": "Đóng cửa trên 30.000 gian hàng trên Shopee, Tiki, Lazada ...",
+        "snippet": "Đóng cửa trên 30.000 gian hàng trên Shopee, Tiki, Lazada… vì \"thổi\" giá khẩu trang, nước rửa tay · Các sàn thương mại điện tử (TMĐT) đã rà soát ...",
+        "link": "https://vietnamnet.vn/dong-cua-tren-30000-gian-hang-tren-shopee-tiki-lazada-vi-thoi-gia-khau-trang-nuoc-rua-tay-i40882.html"
+      },
+      {
+        "title": "Từng là giấc mơ kỳ lân tỷ đô, Tiki giờ được định giá chỉ bằng ...",
+        "snippet": "Tôi vẫn trung thành ủng hộ Tiki bao năm qua, gần như nói không với Shopee và chưa bao giờ mua Lazada. Đơn giản, Tiki là đáng tin cậy nhất và là ...",
+        "link": "https://www.facebook.com/CafeF/posts/t%E1%BB%ABng-l%C3%A0-gi%E1%BA%A5c-m%C6%A1-k%E1%BB%B3-l%C3%A2n-t%E1%BB%B7-%C4%91%C3%B4-tiki-gi%E1%BB%9D-%C4%91%C6%B0%E1%BB%A3c-%C4%91%E1%BB%8Bnh-gi%C3%A1-ch%E1%BB%89-b%E1%BA%B1ng-m%E1%BB%99t-c%C4%83n-bi%E1%BB%87t-th%E1%BB%B1-t%C3%A2/1153146020172889/"
+      },
+      {
+        "title": "SAMSUNG Flagship Store Việt Nam Cửa Hàng Chính ...",
+        "snippet": "Điện thoại Samsung Galaxy Z Fold7 (256GB | 512GB), Điện thoại AI, Camera 200MP, Màn hình 8.0\" tối ưu đa nhiệm, Mỏng nhẹ nhất. Mua 1, giảm 1.000.000₫.",
+        "link": "https://www.lazada.vn/shop/samsung-flagship-store/?path=index.htm&srsltid=AfmBOoqWl8dvHuP0g6mJuUh0fNaGaRGICuq8nCsmZiw5Z2BfxqomO3BS"
+      },
+      {
+        "title": "Samsung | Ho Chi Minh City",
+        "snippet": "Tham gia ngay livestream Samsung để khám phá những sản phẩm nổi bật, săn voucher độc quyền, nhận quà tặng hấp dẫn và chốt loạt deal chỉ có trên Live Shop. 🎟️ ...",
+        "link": "https://www.facebook.com/SamsungVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "⚡ TẬN HƯỞNG ƯU ĐÃI NỘI BỘ CÙNG SAMSUNG SHOP ...",
+        "snippet": "Chỉ cần nhấc máy và gọi ngay hotline shop BHNB để đặt hàng SEVT: 0️⃣8️⃣8️⃣8️⃣5️⃣0️⃣9️⃣9️⃣8️⃣8️⃣ SEV: ...",
+        "link": "https://www.facebook.com/samsungxinchao/posts/-t%E1%BA%ADn-h%C6%B0%E1%BB%9Fng-%C6%B0u-%C4%91%C3%A3i-n%E1%BB%99i-b%E1%BB%99-c%C3%B9ng-samsung-shop-online-nh%E1%BA%A5c-m%C3%A1y-g%E1%BB%8Di-ngay-giao-h%C3%A0ng-t%E1%BA%AD/3158055024240904/"
+      },
+      {
+        "title": "Samsung Xin chào (@samsungxinchao)",
+        "snippet": "Samsung Xin chào. 156.949 lượt thích · 3.112 người đang nói về điều này. Fanpage chính thức của các đơn vị Samsung tại Việt Nam.",
+        "link": "https://www.facebook.com/samsungxinchao/?locale=vi_VN"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Địa điểm: 11 Trần Não, P. An Khánh, TP.HCM ⏰ Thời gian: 10:00 - 12:00 | Ngày 15.08.2026 ⚠️ Số lượng giới hạn: Chỉ 20 suất tham dự duy nhất! ĐĂNG KÝ ...",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "NỘI QUY (#NOIQUY) GROUP #SamfansCom ----- Group #SamfansCom là nơi tập hợp tất cả những anh chị em có cùng niềm đam mê, yêu thích & đang sử dụng các sản ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "SamCenter Việt Nam",
+        "snippet": "Địa điểm: SamCenter AEON Mall Long Biên ⏰ Khung giờ: 9h00 - 21h00 ... SAMSUNG GIÁ SIÊU HẠT DẺ! SamCenter bắt tay cùng Tạp hoá PewPew đem tới ...",
+        "link": "https://www.facebook.com/samcenter.hesman/?locale=vi_VN"
+      }
+    ]
+  },
+  {
+    "id": "A1",
+    "rep": 4,
+    "kind": "brand-level VI",
+    "request": "Nên mua iPhone hay Samsung?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone latest price Vietnam",
+      "Samsung latest price Vietnam"
+    ],
+    "candidates": 27,
+    "deviceEvidence": 9,
+    "accessoryEvidence": 4,
+    "deviceTitles": [
+      "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+      "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+      "Người Việt chi 1.150 tỷ đồng mua điện thoại trên Shopee ...",
+      "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên Shopee, ..."
+    ],
+    "accessoryTitles": [
+      "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ..."
+    ],
+    "attributesToSearch": true,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7896,
+    "completionTokens": 504,
+    "ms": 8789,
+    "text": "I'd be happy to help you decide between iPhone and Samsung! Let me search for current pricing and specs to give you a solid comparison.Based on the search results, here's a quick comparison to help you decide:\n\n**iPhone** — Best if you want a premium, closed ecosystem with strong resale value and consistent performance. Popular in Vietnam with good availability on Shopee, Lazada, and Tiki.\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1lzjchlHevbOzoQvZ4C9kQRsK3f457lFZU53mTHr4jQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqu4ajnAtJHZxAoizk-Ngj1fCtQD4LumGA1r2ZSfYJgg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8qg03WNo2VP1yhiJkALSjQIVQ1sAk7uMJljZtEx3MgA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp982eeitJCHVk0aXp3tqVX3HOmJpyrYmmyD0WUmnXvA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbqlzHRH3UWCDtJT_-KVeRl4U07UBW3tgVT6yantMfQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT16e27Qdg4ZcEBM6BYWGMrmtvHVlQImlltX6MFBwGPcA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXRHiqLl-NbbMWaIVRjEJZHmuiVqqUgettSebWfeCKw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GWW2k3W4ZDJx5oTTOJtXfM-NZE_VkvhOruMp3PzDYQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQOot3ovmhfYR0fbZbXNRrpiCXbCo78Dy_RucEXmNK8A&s)\n\n**Samsung** — Better choice if you want more variety (different price ranges, screen sizes, features), customization, and often better value for money. Galaxy series offers flagship models competing directly with iPhone.\n\n**Key differences:**\n- **Price**: Samsung typically offers more budget-friendly options; iPhone is premium-positioned\n- **Ecosystem**: iPhone locks you into Apple services; Samsung gives more flexibility with Android\n- **Camera & Display**: Both excellent — iPhone excels in video, Samsung in zoom & refresh rates\n- **Longevity**: iPhone gets longer software support (5-7 years); Samsung around 4-5 years\n\nBoth are widely available on **Shopee**, **Lazada**, and **Tiki** in Vietnam. \n\nWhat matters most to you — budget, camera quality, brand loyalty, or something else? 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone\",\"primary\":true},{\"label\":\"🛒 Find Samsung on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "evidence": [
+      {
+        "title": "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+        "snippet": "Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro Max,In ・ 35.900₫ final price ・ ₫3k Ốp ・ 11/12/13/14/15/16/17 Pro Max,In",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-C%E1%BB%9D-Vi%E1%BB%87t-Nam-%C4%90%E1%BB%99c-L%E1%BA%ADp-T%E1%BB%B1-Do-Vietnam-Cho-iPhone-11-12-13-14-15-16-17-Pro-Max-In-H%C3%ACnh-Ngh%E1%BB%87-Thu%E1%BA%ADt-M%C3%A0u-C%E1%BB%9D-S%E1%BA%AFc-N%C3%A9t-i.1588230524.52709286855"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ iPhone 16 Pro Max/15 Pro ・ 27.965₫ final price indicator ・ ₫15k để ₫1k Ốp ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng",
+        "snippet": "Cho iPhone: Trong Suốt. Made In Vietnam giá tốt. 1/11 74.000₫ final price ・ ₫10k Ốp ・ 4.8 Đánh giá 98% Phản",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Cho-iPhone-Trong-Su%E1%BB%91t-Nh%E1%BB%B1a-C%E1%BB%A9ng-Kho%C3%A9t-C%E1%BA%A1nh-2-B%C3%AAn-Ch%E1%BB%91ng-%E1%BB%90-V%C3%A0ng-PCK-001-Made-In-Vietnam-i.322094848.44283294074?extraParams=%7B%22display_model_id%22%3A381323914645%2C%22model_selection_logic%22%3A3%7D"
+      },
+      {
+        "title": "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ...",
+        "snippet": "Mua Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS/XR/11/12/13/14/15/16/17/Plus/Pro/Max giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-Vietnam-In-My-Heart-Qu%E1%BB%91c-K%E1%BB%B3-%C4%90%E1%BB%8F-iP-X-XS-XR-11-12-13-14-15-16-17-Plus-Pro-Max-i.1625227902.56909465222"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Người Việt chi 1.150 tỷ đồng mua điện thoại trên Shopee ...",
+        "snippet": "Còn dòng iPhone 15 đến tuần cuối tháng 9 mới bắt đầu được mở bán trên sàn thương mại điện tử Shopee, Lazada và Tiki và mới thu về hơn 8 tỷ đồng ...",
+        "link": "https://mekongasean.vn/nguoi-viet-chi-1150-ty-dong-mua-dien-thoai-tren-shopee-lazada-va-tiki-3812.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh thu tuần trước ...",
+        "link": "https://www.funan.vn/vi/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki.1169594"
+      },
+      {
+        "title": "Hội iPhone Việt Nam",
+        "snippet": "Hội iPhone Việt Nam - Mục đích : * Giao lưu, chia sẻ, hỏi đáp các vấn đề liên quan đến iPhone & sản phẩm của Apple * Nơi các bạn có thể mua bán, trao...",
+        "link": "https://www.facebook.com/groups/1841472882821368/?locale=vi_VN"
+      },
+      {
+        "title": "Đánh vào tâm lý, nhu cầu mua sắm iPhone đời mới với giá rẻ ...",
+        "snippet": "iphone giá rẻ https://s.shopee.vn/6Ajqc2fRbG. 01:15. iphone giá rẻ https://s.shopee. vn/6Ajqc2fRbG. Jul 30, 2026 · 12K views. Giá ...",
+        "link": "https://www.facebook.com/baodientuvtv/videos/1000-ng%C6%B0%E1%BB%9Di-s%E1%BA%ADp-b%E1%BA%ABy-s%C4%83n-iphone-gi%C3%A1-r%E1%BA%BB/1930523144420545/"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Hệ thống bán lẻ điện thoại, máy tính bảng, đồng hồ, loa, phụ kiện, thiết bị công nghệ,... chính hãng. Đại lý uỷ quyền chính thức của Apple tại Việt Nam.",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "Hội iPhone TP.HCM ( Mua Bán Điện Thoại Cũ Mới Giá Rẻ)✅",
+        "snippet": "Cần bán iPhone 16promax 256gb Vn/a giá 21triệu hoặc tìm kèo giao lưu xuống đời Tình trạng : máy còn zin,pin cao hết bảo hành rùi nha mình ở Sài gòn · May be an ...",
+        "link": "https://www.facebook.com/groups/526647772980338/"
+      },
+      {
+        "title": "‎Ứng dụng Facebook - App Store",
+        "snippet": "Tải về Facebook của Meta Platforms, Inc. từ App Store. Xem ảnh chụp màn hình, xếp hạng và nhận xét, mẹo người dùng và các trò chơi khác như Facebook.",
+        "link": "https://apps.apple.com/vn/app/facebook/id284882215?l=vi"
+      },
+      {
+        "title": "Fogo Store - Fogostore.vn | Ho Chi Minh City",
+        "snippet": "FOGO STORE - #1 iPHONE, iPAD, MACBOOK STORE HCMC Địa chỉ: 298 Đ. Trần Hưng Đạo, Phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh Hotline: 0566 003 333 ...",
+        "link": "https://www.facebook.com/fogostorehcm/"
+      },
+      {
+        "title": "Củ Sạc Samsung 45W sạc siêu nhanh Type C Model 2025",
+        "snippet": "Samsung 45W sạc siêu nhanh Type C Model 2025- Shopee Việt Nam ・ 365.400₫ final price indicator ・ 4.9 Đánh giá 99% Phản ・ hãng Samsung VietNam",
+        "link": "https://shopee.vn/C%E1%BB%A7-S%E1%BA%A1c-Samsung-45W-s%E1%BA%A1c-si%C3%AAu-nhanh-Type-C-Model-2025-Tem-ph%E1%BB%A5-Nh%E1%BA%ADp-kh%E1%BA%A9u-Ch%C3%ADnh-h%C3%A3ng-Samsung-VietNam-i.1628646131.49252053724"
+      },
+      {
+        "title": "So sánh các sàn thương mại điện tử phổ biến hiện nay",
+        "snippet": "Trong bài viết này, hãy cùng Nhanh.vn tìm hiểu và so sánh các sàn thương mại điện tử phổ biến nhất hiện nay cùng như các quy định và giấy ...",
+        "link": "https://nhanh.vn/so-sanh-cac-san-thuong-mai-dien-tu-pho-bien-hien-nay-nen-chon-mua-lazada-tiki-shopee-hay-sendo-n61661.html"
+      },
+      {
+        "title": "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+        "snippet": "Xét về thương hiệu, 3 hãng smartphone là Apple, Samsung và Xiaomi có doanh thu cao nhất trong quý 2/2022 với lần lượt 997 tỷ, 608 tỷ, 315 tỷ ...",
+        "link": "https://cafef.vn/nguoi-viet-mua-gi-tren-shopee-lazada-tiki-nua-dau-nam-2022-2022081010160399.chn"
+      },
+      {
+        "title": "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+        "snippet": "Samsung và Apple là hai dòng điện thoại người Việt sẵn sàng dốc hầu bao để sở hữu nhiều nhất.",
+        "link": "https://nguoiquansat.vn/moi-thang-nguoi-viet-chi-nua-nghin-ty-mua-dien-thoai-thong-minh-tren-shopee-lazada-tiki-83003.html"
+      },
+      {
+        "title": "Đóng cửa trên 30.000 gian hàng trên Shopee, Tiki, Lazada ...",
+        "snippet": "Đóng cửa trên 30.000 gian hàng trên Shopee, Tiki, Lazada… vì \"thổi\" giá khẩu trang, nước rửa tay · Các sàn thương mại điện tử (TMĐT) đã rà soát ...",
+        "link": "https://vietnamnet.vn/dong-cua-tren-30000-gian-hang-tren-shopee-tiki-lazada-vi-thoi-gia-khau-trang-nuoc-rua-tay-i40882.html"
+      },
+      {
+        "title": "Từng là giấc mơ kỳ lân tỷ đô, Tiki giờ được định giá chỉ bằng ...",
+        "snippet": "Tôi vẫn trung thành ủng hộ Tiki bao năm qua, gần như nói không với Shopee và chưa bao giờ mua Lazada. Đơn giản, Tiki là đáng tin cậy nhất và là ...",
+        "link": "https://www.facebook.com/CafeF/posts/t%E1%BB%ABng-l%C3%A0-gi%E1%BA%A5c-m%C6%A1-k%E1%BB%B3-l%C3%A2n-t%E1%BB%B7-%C4%91%C3%B4-tiki-gi%E1%BB%9D-%C4%91%C6%B0%E1%BB%A3c-%C4%91%E1%BB%8Bnh-gi%C3%A1-ch%E1%BB%89-b%E1%BA%B1ng-m%E1%BB%99t-c%C4%83n-bi%E1%BB%87t-th%E1%BB%B1-t%C3%A2/1153146020172889/"
+      },
+      {
+        "title": "SAMSUNG Flagship Store Việt Nam Cửa Hàng Chính ...",
+        "snippet": "Điện thoại Samsung Galaxy Z Fold7 (256GB | 512GB), Điện thoại AI, Camera 200MP, Màn hình 8.0\" tối ưu đa nhiệm, Mỏng nhẹ nhất. Mua 1, giảm 1.000.000₫.",
+        "link": "https://www.lazada.vn/shop/samsung-flagship-store/?path=index.htm&srsltid=AfmBOoqWl8dvHuP0g6mJuUh0fNaGaRGICuq8nCsmZiw5Z2BfxqomO3BS"
+      },
+      {
+        "title": "Samsung | Ho Chi Minh City",
+        "snippet": "Tham gia ngay livestream Samsung để khám phá những sản phẩm nổi bật, săn voucher độc quyền, nhận quà tặng hấp dẫn và chốt loạt deal chỉ có trên Live Shop. 🎟️ ...",
+        "link": "https://www.facebook.com/SamsungVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "⚡ TẬN HƯỞNG ƯU ĐÃI NỘI BỘ CÙNG SAMSUNG SHOP ...",
+        "snippet": "Chỉ cần nhấc máy và gọi ngay hotline shop BHNB để đặt hàng SEVT: 0️⃣8️⃣8️⃣8️⃣5️⃣0️⃣9️⃣9️⃣8️⃣8️⃣ SEV: ...",
+        "link": "https://www.facebook.com/samsungxinchao/posts/-t%E1%BA%ADn-h%C6%B0%E1%BB%9Fng-%C6%B0u-%C4%91%C3%A3i-n%E1%BB%99i-b%E1%BB%99-c%C3%B9ng-samsung-shop-online-nh%E1%BA%A5c-m%C3%A1y-g%E1%BB%8Di-ngay-giao-h%C3%A0ng-t%E1%BA%AD/3158055024240904/"
+      },
+      {
+        "title": "Samsung Xin chào (@samsungxinchao)",
+        "snippet": "Samsung Xin chào. 156.949 lượt thích · 3.112 người đang nói về điều này. Fanpage chính thức của các đơn vị Samsung tại Việt Nam.",
+        "link": "https://www.facebook.com/samsungxinchao/?locale=vi_VN"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Địa điểm: 11 Trần Não, P. An Khánh, TP.HCM ⏰ Thời gian: 10:00 - 12:00 | Ngày 15.08.2026 ⚠️ Số lượng giới hạn: Chỉ 20 suất tham dự duy nhất! ĐĂNG KÝ ...",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "NỘI QUY (#NOIQUY) GROUP #SamfansCom ----- Group #SamfansCom là nơi tập hợp tất cả những anh chị em có cùng niềm đam mê, yêu thích & đang sử dụng các sản ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "SamCenter Việt Nam",
+        "snippet": "Địa điểm: SamCenter AEON Mall Long Biên ⏰ Khung giờ: 9h00 - 21h00 ... SAMSUNG GIÁ SIÊU HẠT DẺ! SamCenter bắt tay cùng Tạp hoá PewPew đem tới ...",
+        "link": "https://www.facebook.com/samcenter.hesman/?locale=vi_VN"
+      }
+    ]
+  },
+  {
+    "id": "A1",
+    "rep": 5,
+    "kind": "brand-level VI",
+    "request": "Nên mua iPhone hay Samsung?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone latest price Vietnam",
+      "Samsung latest price Vietnam"
+    ],
+    "candidates": 27,
+    "deviceEvidence": 9,
+    "accessoryEvidence": 4,
+    "deviceTitles": [
+      "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+      "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+      "Người Việt chi 1.150 tỷ đồng mua điện thoại trên Shopee ...",
+      "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên Shopee, ..."
+    ],
+    "accessoryTitles": [
+      "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ..."
+    ],
+    "attributesToSearch": true,
+    "flagsInsufficient": true,
+    "clarifications": 1,
+    "promptTokens": 7884,
+    "completionTokens": 487,
+    "ms": 8772,
+    "text": "I'll search for current pricing and specs to help you compare these two options.Based on the search results, here's a quick comparison to help you decide:\n\n**iPhone** — Best for: Smooth performance, long software support (5-7 years), strong resale value, premium build quality. Downside: Higher price, less customization.\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1lzjchlHevbOzoQvZ4C9kQRsK3f457lFZU53mTHr4jQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqu4ajnAtJHZxAoizk-Ngj1fCtQD4LumGA1r2ZSfYJgg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8qg03WNo2VP1yhiJkALSjQIVQ1sAk7uMJljZtEx3MgA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp982eeitJCHVk0aXp3tqVX3HOmJpyrYmmyD0WUmnXvA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbqlzHRH3UWCDtJT_-KVeRl4U07UBW3tgVT6yantMfQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT16e27Qdg4ZcEBM6BYWGMrmtvHVlQImlltX6MFBwGPcA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXRHiqLl-NbbMWaIVRjEJZHmuiVqqUgettSebWfeCKw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoBEoMPm5YE28OlGf_6seZfjaQ9keCoNR69e7uuqjYkQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GWW2k3W4ZDJx5oTTOJtXfM-NZE_VkvhOruMp3PzDYQ&s=10)\n\n**Samsung** — Best for: More variety (budget to flagship), larger screens, customizable Android, faster charging on some models. Downside: Shorter software support (3-4 years), more bloatware.\n\n**Key differences:**\n- **Price**: Samsung offers more options across price ranges; iPhone is generally pricier\n- **Software**: iPhone gets longer updates; Samsung varies by model\n- **Customization**: Samsung (Android) > iPhone (iOS)\n- **Camera**: Both excellent, but different styles\n\nBoth are available on Shopee, Lazada, and Tiki in Vietnam. What's your main priority — budget, camera quality, or long-term support? 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone\",\"primary\":true},{\"label\":\"🛒 Find Samsung on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Budget range?|Prefer iOS or Android?|Camera priority?[/FOLLOWUPS]",
+    "evidence": [
+      {
+        "title": "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+        "snippet": "Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro Max,In ・ 35.900₫ final price ・ ₫3k Ốp ・ 11/12/13/14/15/16/17 Pro Max,In",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-C%E1%BB%9D-Vi%E1%BB%87t-Nam-%C4%90%E1%BB%99c-L%E1%BA%ADp-T%E1%BB%B1-Do-Vietnam-Cho-iPhone-11-12-13-14-15-16-17-Pro-Max-In-H%C3%ACnh-Ngh%E1%BB%87-Thu%E1%BA%ADt-M%C3%A0u-C%E1%BB%9D-S%E1%BA%AFc-N%C3%A9t-i.1588230524.52709286855"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ iPhone 16 Pro Max/15 Pro ・ 27.965₫ final price indicator ・ ₫15k để ₫1k Ốp ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng",
+        "snippet": "Cho iPhone: Trong Suốt. Made In Vietnam giá tốt. 1/11 74.000₫ final price ・ ₫10k Ốp ・ 4.8 Đánh giá 98% Phản",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Cho-iPhone-Trong-Su%E1%BB%91t-Nh%E1%BB%B1a-C%E1%BB%A9ng-Kho%C3%A9t-C%E1%BA%A1nh-2-B%C3%AAn-Ch%E1%BB%91ng-%E1%BB%90-V%C3%A0ng-PCK-001-Made-In-Vietnam-i.322094848.44283294074?extraParams=%7B%22display_model_id%22%3A381323914645%2C%22model_selection_logic%22%3A3%7D"
+      },
+      {
+        "title": "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ...",
+        "snippet": "Mua Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS/XR/11/12/13/14/15/16/17/Plus/Pro/Max giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-Vietnam-In-My-Heart-Qu%E1%BB%91c-K%E1%BB%B3-%C4%90%E1%BB%8F-iP-X-XS-XR-11-12-13-14-15-16-17-Plus-Pro-Max-i.1625227902.56909465222"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Người Việt chi 1.150 tỷ đồng mua điện thoại trên Shopee ...",
+        "snippet": "Còn dòng iPhone 15 đến tuần cuối tháng 9 mới bắt đầu được mở bán trên sàn thương mại điện tử Shopee, Lazada và Tiki và mới thu về hơn 8 tỷ đồng ...",
+        "link": "https://mekongasean.vn/nguoi-viet-chi-1150-ty-dong-mua-dien-thoai-tren-shopee-lazada-va-tiki-3812.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh thu tuần trước ...",
+        "link": "https://www.funan.vn/vi/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki.1169594"
+      },
+      {
+        "title": "Hội iPhone Việt Nam",
+        "snippet": "Hội iPhone Việt Nam - Mục đích : * Giao lưu, chia sẻ, hỏi đáp các vấn đề liên quan đến iPhone & sản phẩm của Apple * Nơi các bạn có thể mua bán, trao...",
+        "link": "https://www.facebook.com/groups/1841472882821368/?locale=vi_VN"
+      },
+      {
+        "title": "Đánh vào tâm lý, nhu cầu mua sắm iPhone đời mới với giá rẻ ...",
+        "snippet": "iphone giá rẻ https://s.shopee.vn/6Ajqc2fRbG. 01:15. iphone giá rẻ https://s.shopee. vn/6Ajqc2fRbG. Jul 30, 2026 · 12K views. Giá ...",
+        "link": "https://www.facebook.com/baodientuvtv/videos/1000-ng%C6%B0%E1%BB%9Di-s%E1%BA%ADp-b%E1%BA%ABy-s%C4%83n-iphone-gi%C3%A1-r%E1%BA%BB/1930523144420545/"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Hệ thống bán lẻ điện thoại, máy tính bảng, đồng hồ, loa, phụ kiện, thiết bị công nghệ,... chính hãng. Đại lý uỷ quyền chính thức của Apple tại Việt Nam.",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "Hội iPhone TP.HCM ( Mua Bán Điện Thoại Cũ Mới Giá Rẻ)✅",
+        "snippet": "Cần bán iPhone 16promax 256gb Vn/a giá 21triệu hoặc tìm kèo giao lưu xuống đời Tình trạng : máy còn zin,pin cao hết bảo hành rùi nha mình ở Sài gòn · May be an ...",
+        "link": "https://www.facebook.com/groups/526647772980338/"
+      },
+      {
+        "title": "‎Ứng dụng Facebook - App Store",
+        "snippet": "Tải về Facebook của Meta Platforms, Inc. từ App Store. Xem ảnh chụp màn hình, xếp hạng và nhận xét, mẹo người dùng và các trò chơi khác như Facebook.",
+        "link": "https://apps.apple.com/vn/app/facebook/id284882215?l=vi"
+      },
+      {
+        "title": "Fogo Store - Fogostore.vn | Ho Chi Minh City",
+        "snippet": "FOGO STORE - #1 iPHONE, iPAD, MACBOOK STORE HCMC Địa chỉ: 298 Đ. Trần Hưng Đạo, Phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh Hotline: 0566 003 333 ...",
+        "link": "https://www.facebook.com/fogostorehcm/"
+      },
+      {
+        "title": "Củ Sạc Samsung 45W sạc siêu nhanh Type C Model 2025",
+        "snippet": "Samsung 45W sạc siêu nhanh Type C Model 2025- Shopee Việt Nam ・ 365.400₫ final price indicator ・ 4.9 Đánh giá 99% Phản ・ hãng Samsung VietNam",
+        "link": "https://shopee.vn/C%E1%BB%A7-S%E1%BA%A1c-Samsung-45W-s%E1%BA%A1c-si%C3%AAu-nhanh-Type-C-Model-2025-Tem-ph%E1%BB%A5-Nh%E1%BA%ADp-kh%E1%BA%A9u-Ch%C3%ADnh-h%C3%A3ng-Samsung-VietNam-i.1628646131.49252053724"
+      },
+      {
+        "title": "So sánh các sàn thương mại điện tử phổ biến hiện nay",
+        "snippet": "Trong bài viết này, hãy cùng Nhanh.vn tìm hiểu và so sánh các sàn thương mại điện tử phổ biến nhất hiện nay cùng như các quy định và giấy ...",
+        "link": "https://nhanh.vn/so-sanh-cac-san-thuong-mai-dien-tu-pho-bien-hien-nay-nen-chon-mua-lazada-tiki-shopee-hay-sendo-n61661.html"
+      },
+      {
+        "title": "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+        "snippet": "Xét về thương hiệu, 3 hãng smartphone là Apple, Samsung và Xiaomi có doanh thu cao nhất trong quý 2/2022 với lần lượt 997 tỷ, 608 tỷ, 315 tỷ ...",
+        "link": "https://cafef.vn/nguoi-viet-mua-gi-tren-shopee-lazada-tiki-nua-dau-nam-2022-2022081010160399.chn"
+      },
+      {
+        "title": "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+        "snippet": "Samsung và Apple là hai dòng điện thoại người Việt sẵn sàng dốc hầu bao để sở hữu nhiều nhất.",
+        "link": "https://nguoiquansat.vn/moi-thang-nguoi-viet-chi-nua-nghin-ty-mua-dien-thoai-thong-minh-tren-shopee-lazada-tiki-83003.html"
+      },
+      {
+        "title": "Đóng cửa trên 30.000 gian hàng trên Shopee, Tiki, Lazada ...",
+        "snippet": "Đóng cửa trên 30.000 gian hàng trên Shopee, Tiki, Lazada… vì \"thổi\" giá khẩu trang, nước rửa tay · Các sàn thương mại điện tử (TMĐT) đã rà soát ...",
+        "link": "https://vietnamnet.vn/dong-cua-tren-30000-gian-hang-tren-shopee-tiki-lazada-vi-thoi-gia-khau-trang-nuoc-rua-tay-i40882.html"
+      },
+      {
+        "title": "Từng là giấc mơ kỳ lân tỷ đô, Tiki giờ được định giá chỉ bằng ...",
+        "snippet": "Tôi vẫn trung thành ủng hộ Tiki bao năm qua, gần như nói không với Shopee và chưa bao giờ mua Lazada. Đơn giản, Tiki là đáng tin cậy nhất và là ...",
+        "link": "https://www.facebook.com/CafeF/posts/t%E1%BB%ABng-l%C3%A0-gi%E1%BA%A5c-m%C6%A1-k%E1%BB%B3-l%C3%A2n-t%E1%BB%B7-%C4%91%C3%B4-tiki-gi%E1%BB%9D-%C4%91%C6%B0%E1%BB%A3c-%C4%91%E1%BB%8Bnh-gi%C3%A1-ch%E1%BB%89-b%E1%BA%B1ng-m%E1%BB%99t-c%C4%83n-bi%E1%BB%87t-th%E1%BB%B1-t%C3%A2/1153146020172889/"
+      },
+      {
+        "title": "SAMSUNG Flagship Store Việt Nam Cửa Hàng Chính ...",
+        "snippet": "Điện thoại Samsung Galaxy Z Fold7 (256GB | 512GB), Điện thoại AI, Camera 200MP, Màn hình 8.0\" tối ưu đa nhiệm, Mỏng nhẹ nhất. Mua 1, giảm 1.000.000₫.",
+        "link": "https://www.lazada.vn/shop/samsung-flagship-store/?path=index.htm&srsltid=AfmBOoqWl8dvHuP0g6mJuUh0fNaGaRGICuq8nCsmZiw5Z2BfxqomO3BS"
+      },
+      {
+        "title": "Samsung | Ho Chi Minh City",
+        "snippet": "Tham gia ngay livestream Samsung để khám phá những sản phẩm nổi bật, săn voucher độc quyền, nhận quà tặng hấp dẫn và chốt loạt deal chỉ có trên Live Shop. 🎟️ ...",
+        "link": "https://www.facebook.com/SamsungVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "⚡ TẬN HƯỞNG ƯU ĐÃI NỘI BỘ CÙNG SAMSUNG SHOP ...",
+        "snippet": "Chỉ cần nhấc máy và gọi ngay hotline shop BHNB để đặt hàng SEVT: 0️⃣8️⃣8️⃣8️⃣5️⃣0️⃣9️⃣9️⃣8️⃣8️⃣ SEV: ...",
+        "link": "https://www.facebook.com/samsungxinchao/posts/-t%E1%BA%ADn-h%C6%B0%E1%BB%9Fng-%C6%B0u-%C4%91%C3%A3i-n%E1%BB%99i-b%E1%BB%99-c%C3%B9ng-samsung-shop-online-nh%E1%BA%A5c-m%C3%A1y-g%E1%BB%8Di-ngay-giao-h%C3%A0ng-t%E1%BA%AD/3158055024240904/"
+      },
+      {
+        "title": "Samsung Xin chào (@samsungxinchao)",
+        "snippet": "Samsung Xin chào. 156.949 lượt thích · 3.112 người đang nói về điều này. Fanpage chính thức của các đơn vị Samsung tại Việt Nam.",
+        "link": "https://www.facebook.com/samsungxinchao/?locale=vi_VN"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Địa điểm: 11 Trần Não, P. An Khánh, TP.HCM ⏰ Thời gian: 10:00 - 12:00 | Ngày 15.08.2026 ⚠️ Số lượng giới hạn: Chỉ 20 suất tham dự duy nhất! ĐĂNG KÝ ...",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "NỘI QUY (#NOIQUY) GROUP #SamfansCom ----- Group #SamfansCom là nơi tập hợp tất cả những anh chị em có cùng niềm đam mê, yêu thích & đang sử dụng các sản ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "SamCenter Việt Nam",
+        "snippet": "Địa điểm: SamCenter AEON Mall Long Biên ⏰ Khung giờ: 9h00 - 21h00 ... SAMSUNG GIÁ SIÊU HẠT DẺ! SamCenter bắt tay cùng Tạp hoá PewPew đem tới ...",
+        "link": "https://www.facebook.com/samcenter.hesman/?locale=vi_VN"
+      }
+    ]
+  },
+  {
+    "id": "A2",
+    "rep": 1,
+    "kind": "brand-level EN",
+    "request": "Should I buy an iPhone or a Samsung?",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 8,
+    "promptTokens": 1149,
+    "completionTokens": 137,
+    "ms": 2144,
+    "text": "I'd love to help you decide! To give you the best comparison, I need to know a bit more:\n\n**What matters most to you?** For example:\n- Budget (price range)?\n- Camera quality?\n- Screen size/display?\n- Software preference (iOS vs Android)?\n- Battery life?\n- Specific features you need?\n\nAlso, **which models** are you comparing? (e.g., iPhone 15 vs Samsung Galaxy S24, or a specific price range?)\n\nOnce I know your priorities, I can search for current specs, prices, and reviews to help you choose! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A2",
+    "rep": 2,
+    "kind": "brand-level EN",
+    "request": "Should I buy an iPhone or a Samsung?",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 8,
+    "promptTokens": 1149,
+    "completionTokens": 137,
+    "ms": 2141,
+    "text": "I'd love to help you decide! To give you the best comparison, I need to know a bit more:\n\n**What matters most to you?** For example:\n- Budget (price range)?\n- Camera quality?\n- Screen size/display?\n- Software preference (iOS vs Android)?\n- Battery life?\n- Specific features you need?\n\nAlso, **which models** are you comparing? (e.g., iPhone 15 vs Samsung Galaxy S24, or a specific price range?)\n\nOnce I know your priorities, I can search for current prices and specs to help you make a solid choice! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A2",
+    "rep": 3,
+    "kind": "brand-level EN",
+    "request": "Should I buy an iPhone or a Samsung?",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 8,
+    "promptTokens": 1149,
+    "completionTokens": 136,
+    "ms": 2718,
+    "text": "I'd love to help you decide! To give you a solid comparison, I need to know a bit more:\n\n**What matters most to you?** For example:\n- Budget (price range)?\n- Camera quality?\n- Screen/display?\n- Software preference (iOS vs Android)?\n- Battery life?\n- Specific features you need?\n\nAlso, **which models** are you comparing? (e.g., iPhone 15 vs Samsung Galaxy S24, or a specific price range?)\n\nOnce I know your priorities, I can search for current prices and specs to help you make the right call! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A2",
+    "rep": 4,
+    "kind": "brand-level EN",
+    "request": "Should I buy an iPhone or a Samsung?",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 8,
+    "promptTokens": 1149,
+    "completionTokens": 133,
+    "ms": 2081,
+    "text": "I'd love to help you decide! To give you a solid comparison, I need to know a bit more:\n\n**What matters most to you?** For example:\n- Budget (price range)?\n- Camera quality?\n- Screen/display?\n- Software preference (iOS vs Android)?\n- Battery life?\n- Specific features you need?\n\nAlso, **which models** are you comparing? (e.g., iPhone 15 vs Samsung Galaxy S24, or a specific price range?)\n\nOnce I know your priorities, I can search for current prices and specs to help you choose! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A2",
+    "rep": 5,
+    "kind": "brand-level EN",
+    "request": "Should I buy an iPhone or a Samsung?",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 8,
+    "promptTokens": 1149,
+    "completionTokens": 136,
+    "ms": 2052,
+    "text": "I'd love to help you decide! To give you a solid comparison, I need to know a bit more:\n\n**What matters most to you?** For example:\n- Budget (price range)?\n- Camera quality?\n- Screen/display?\n- Software preference (iOS vs Android)?\n- Battery life?\n- Specific features you need?\n\nAlso, **which models** are you comparing? (e.g., iPhone 15 vs Samsung Galaxy S24, or a specific price range?)\n\nOnce I know your priorities, I can search for current prices and specs to help you make the right call! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A3",
+    "rep": 1,
+    "kind": "model-level VI (control)",
+    "request": "Nên chọn iPhone 15 hay Galaxy S24?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone 15 price Vietnam",
+      "Samsung Galaxy S24 price Vietnam"
+    ],
+    "candidates": 28,
+    "deviceEvidence": 21,
+    "accessoryEvidence": 2,
+    "deviceTitles": [
+      "Điện thoại Apple iPhone 15 128GB",
+      "Apple iPhone 15 128GB Chính hãng VN/A",
+      "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+      "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ..."
+    ],
+    "accessoryTitles": [
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7413,
+    "completionTokens": 558,
+    "ms": 12593,
+    "text": "I'll search for current pricing and specs to help you compare these two phones.Based on current pricing in Vietnam, here's the comparison:\n\n**iPhone 15** starts around **22.99 million VND** (128GB) — solid choice if you want a reliable, long-lasting phone with great camera quality and smooth performance. Apple's ecosystem is seamless if you already use other Apple devices.\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYCikxqReDxt2x6-nW_pJFrcLRexISkV4tc_uJHL1sA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyl6cQtA2vMh6qr3RCIs5iEC2y-df2ZIRJ9SieTF6n6Q&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-isuUpEisqNsyuWoyHpvJXVlLPfqoD7cec3RB8b014g&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVEx7ppExvw2VCi-VvpcpWOZaQG0vucfKI8sDrkGtQCw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuWfeirOHcLI4yXA1zy6DjMiCzHNdVTdCbLrJjCqJWg&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyGFl7bT2NsOINrDUgvpbpALLFr5SGu3IpRa7qhp-xSA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRSupW_5yOSw21oNlsm1UF5qguueXYA4yEWfjY6go3Iw&s=10)\n\n**Galaxy S24** is typically **18-20 million VND** range — better value for money, more customizable Android experience, and excellent AI features (Galaxy AI). The display is also sharper and more vibrant.\n\n**Key differences:**\n- **Price:** S24 is cheaper by ~3-5 million VND\n- **Camera:** Both are excellent; iPhone edges out in video, S24 better for AI photo editing\n- **Display:** S24 has a brighter, more colorful AMOLED screen\n- **Software:** iPhone = closed ecosystem (iOS), S24 = open Android with more customization\n\nI'd lean toward **S24 if you want better value and AI features**, or **iPhone 15 if you prefer simplicity and ecosystem lock-in**. \n\nWhat matters more to you — price, camera quality, or software experience? 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Find Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=iPhone+15+Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Camera quality|Battery life|Price difference[/FOLLOWUPS]",
+    "evidence": [
+      {
+        "title": "Điện thoại Apple iPhone 15 128GB",
+        "snippet": "Mua Điện thoại Apple iPhone 15 128GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM ...",
+        "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Apple-iPhone-15-128GB-i.88201679.18093055535"
+      },
+      {
+        "title": "Apple iPhone 15 128GB Chính hãng VN/A",
+        "snippet": "Mua Apple iPhone 15 128GB Chính hãng VN/A giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí.",
+        "link": "https://shopee.vn/Apple-iPhone-15-128GB-Ch%C3%ADnh-h%C3%A3ng-VN-A-i.308461157.21684104015"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ 27.965₫ final price indicator ・ ₫15k để ・ hàng miễn phí 15 ・ giá 90% Phản ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://baogialai.com.vn/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-post271158.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://tuoitre.vn/nld/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-1962403272129102.htm"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Tổng hợp ưu đãi đặt trước iPhone 15 series trên Shopee ...",
+        "snippet": "Giá bán của iPhone 15 series trên Lazada ; Phiên bản, 128GB, 256GB ; iPhone 15, 22.990.000đ, 25.990.000đ ; iPhone 15 Plus, 25.990.000đ, 28.990.000đ ...",
+        "link": "https://legacy.vatvostudio.vn/uu-dai-dat-iphone-15-series-tren-shopee-lazada/"
+      },
+      {
+        "title": "Iphone 15 pro max for sale in Hanoi",
+        "snippet": "iPhone 15 Pro Max 256GB, original condition, has a stain on the screen as shown in the picture. I'm selling it cheaply for 15 million VND.",
+        "link": "https://www.facebook.com/groups/1085733898269545/posts/3392676417575270/"
+      },
+      {
+        "title": "Hội iPhone 17 Pro Max - 16 Pro Max - 15 Pro Max Việt Nam",
+        "snippet": "Hà Nội shop sẵn iPhone : 16 Plus 128GB thay màn oled đẹp 🖥️ Màn oled – Hiển thị ổn định, sử dụng mượt Pin 94 % – Dùng thoải mái cả ngày ✨ Ngoại hình đẹp ...",
+        "link": "https://www.facebook.com/groups/dienthoaihanoiz/"
+      },
+      {
+        "title": "🔥 Bảng giá iPhone tháng 12 - Tháng cuối năm, ưu đãi bùng ...",
+        "snippet": "taoxanh.vn/ Website: https://taoxanh.vn. No photo description ... Visit iPhone dot Green Apple dot Vietnam to update price list every day ok.",
+        "link": "https://www.facebook.com/taoxanhh.com.vn/videos/%EF%B8%8Fb%E1%BA%A3ng-gi%C3%A1-iphone-th%C3%A1ng-12/1938993649990022/"
+      },
+      {
+        "title": "Hội Người Dùng iPhone 15 (Plus/Pro/Pro Max) tại TPHCM",
+        "snippet": "Giá chỉ #16xxx ✓Tặng full phụ kiện ✓ Hỗ trợ thu cũ đổi mới ---------------------------------------- Địa chỉ: Cửa hàng Táo Sâu ( 218A Trung Kính, Cầu Giấy, ...",
+        "link": "https://www.facebook.com/groups/3285526808346832/"
+      },
+      {
+        "title": "Hội iPhone 15 Pro Max & iPhone 15 Pro Việt Nam",
+        "snippet": "Dung lượng 256GB đáp ứng tốt nhu cầu lưu trữ hình ảnh, video và ứng dụng cá nhân. Giá: 18.5tr - Giao dịch trực tiếp TP.HCM Zalo/Call: 0333.",
+        "link": "https://www.facebook.com/groups/iphone14forum/"
+      },
+      {
+        "title": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https ...",
+        "snippet": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https://phongvu.vn/p/apple Đặc biệt ưu đãi trả góp 0% - Không phát sinh thêm bất kỳ ...",
+        "link": "https://www.facebook.com/phongvuvietnam/videos/s%C4%83n-apple-ch%E1%BB%8Dn-phong-v%C5%A9/852425996832416/"
+      },
+      {
+        "title": "Phim bảo vệ màn hình 2pcs UGREEN cho Samsung ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam … 134.460₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/Phim-b%E1%BA%A3o-v%E1%BB%87-m%C3%A0n-h%C3%ACnh-2pcs-UGREEN-cho-Samsung-Galaxy-S24-Ultra-d%C3%A0nh-cho-Samsung-S24-Ultra-Phim-b%E1%BA%A3o-v%E1%BB%87-i.1454455021.27231260152"
+      },
+      {
+        "title": "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam UGREEN … 107.070₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/UGREEN-%E1%BB%90p-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-M%E1%BB%81m-Trong-Su%E1%BB%91t-Ch%E1%BB%91ng-S%E1%BB%91c-Cho-Samsung-Galaxy-S24-Ultra-Samsung-S23-Ultra-i.1454455021.43053314293"
+      },
+      {
+        "title": "Mua Galaxy S24 Ultra Giá Tốt, Giao Nhanh",
+        "snippet": "Galax S24 Ultra điên thoại gia rẻ Full HD 16GB RAM +1TB ROM Hỗ trợ 2 SIM Mạng 3G/4G/5G Bộ Lớn 8000mAh. ₫1,199,000. Voucher save 45%. 5.0. Vietnam.",
+        "link": "https://www.lazada.vn/tag/galaxy-s24-ultra/?srsltid=AfmBOoojifDTv-BT_RCQYozjjMKJp6z0KKMypWACzoI6AntOAw4vkJDl"
+      },
+      {
+        "title": "🔥 Samsung S24 Ultra giá ngon nè AE: https://s.shopee.vn/ ...",
+        "snippet": "OCR: Galaxy S24 Ultra (12GB (12GB/253GB) (5) GB) Galaxy AI 社is is here Galaxy S24 Ultra ปน đãi đến 7.5 7 Triệu Đồng SPayLater Tragóp Trả ...",
+        "link": "https://www.facebook.com/groups/194682181279549/posts/1900196350728115/"
+      },
+      {
+        "title": "Báo cáo thị trường Samsung galaxy s24 sàn TMĐT ...",
+        "snippet": "Thị trường Samsung galaxy s24 trên TMĐT đạt quy mô 303,8 tỷ đồng và tăng trưởng 14.24% so với quý trước với thương hiệu nổi bật gồm samsung.",
+        "link": "https://metric.vn/ereport/samsung-galaxy-s24?srsltid=AfmBOorku179U5CdZY5MQAV-VCPf_J687K1IHq6ODoidbWjbQgNPDL8I"
+      },
+      {
+        "title": "Mua Samsung S24 Fe Giá Tốt, Giao Nhanh",
+        "snippet": "[SIÊU SALE GIỮA THÁNG 15-17.6] Điện thoại Samsung Galaxy S24 FE, điện thoại AI, màn hình 6.7\" 120Hz, chụp đêm Nightography, trợ lý chỉnh ảnh. ₫11,990,000.",
+        "link": "https://www.lazada.vn/tag/samsung-s24-fe/?srsltid=AfmBOooiB7Fblh2nu0Url3_VcHB-ZnLj7VSC_FB3nR1aOizrjFYrBo9P"
+      },
+      {
+        "title": "Samsung galaxy s24 - Giá Tốt, Sale Tháng 08, Ship 0 Đồng",
+        "snippet": "Shopee cung cấp đầy đủ điện thoại samsung galaxy s24 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, điện thoại samsung galaxy s24 sẽ luôn được ...",
+        "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20s24"
+      },
+      {
+        "title": "MUA SẮM TRÊN SÀN - NHẬN NGÀN ƯU ĐÃI - SHOPEE",
+        "snippet": "Cơ hội mua sắm và nhận ưu đãi vô cùng lớn từ thương hiệu Gia dụng chính hãng Masuto từ các sàn Shopee - Lazada - Tiki.",
+        "link": "https://masuto.vn/pages/mua-sam-tren-san-shopee-tiki-lazada?srsltid=AfmBOor_Zgqk15NoTkhpb6NorYWlsaxdLKBWYL6lgOxzxaFL45t78aFG"
+      },
+      {
+        "title": "Hội Samsung Galaxy S Việt Nam - S24, S24+, S24 Ultra",
+        "snippet": "S25 plus 12/256 zin all nguyên bản : 12.x Xem máy tại: 93 Tô Vĩnh Diện, Thanh Xuân, HN Chi tiết LH ( Zalo, Call): 0982022984 Hỗ trợ thu mua, trao đổi ...",
+        "link": "https://www.facebook.com/groups/2843533739205878/"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "Tải trên Galaxy Store ✅️ FV File Manager. Tải trên Google Play Store. . • Vào app S.A. - Tùy chỉnh bảng điều khiển âm lượng 》Bật. • Chưa từng tạo bất kì ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "Mua s24 với giá này được k ae",
+        "snippet": "Shopee : DEKEY VIETNAM STORE https://s.shopee.vn/707sr4NXAj ... [CHỈ 18.01] Điện thoại Samsung Galaxy S24 - Điện. 2y. 1. Profile photo ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/posts/3050268358439809/"
+      },
+      {
+        "title": "Hội Mua Bán SamSung Galaxy Việt Nam",
+        "snippet": "S24 plus 12/256 và 12/512 zin all đẹp giá từ : 8.x Sdt 0859044202 Địa chỉ : 30 ngõ 93 tô vĩnh diện khương trung thanh xuân hà nội · May be an image of phone. 0 ...",
+        "link": "https://www.facebook.com/groups/439175363654524/"
+      },
+      {
+        "title": "Samsung Galaxy S24, S24+, thanh toán trước giảm 1 triệu",
+        "snippet": "Khám phá điện thoại thông minh Galaxy S24 và S24 Plus, được hỗ trợ bởi Galaxy AI. Kết nối và sáng tạo với các tính năng AI như Circle to Search, ...",
+        "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/?srsltid=AfmBOorwMj9XayvDdNjbctgiAmv23AVrwEZwAEtEttm8KSZFqU0xqrH_"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+        "snippet": "Mua Samsung Galaxy S24 Ultra chính hãng - Sẵn hàng giá rẻ 08/2026, trợ giá thu cũ lên đời 1 triệu, trả góp 0%, giao toàn quốc. Mua S24 Ultra ngay.",
+        "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html"
+      }
+    ]
+  },
+  {
+    "id": "A3",
+    "rep": 2,
+    "kind": "model-level VI (control)",
+    "request": "Nên chọn iPhone 15 hay Galaxy S24?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone 15 price Vietnam",
+      "Samsung Galaxy S24 price Vietnam"
+    ],
+    "candidates": 28,
+    "deviceEvidence": 21,
+    "accessoryEvidence": 2,
+    "deviceTitles": [
+      "Điện thoại Apple iPhone 15 128GB",
+      "Apple iPhone 15 128GB Chính hãng VN/A",
+      "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+      "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ..."
+    ],
+    "accessoryTitles": [
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7413,
+    "completionTokens": 491,
+    "ms": 10874,
+    "text": "I'll search for current pricing and specs to help you compare these two phones.Based on current pricing in Vietnam, here's the comparison:\n\n**iPhone 15** starts around **18.99–22.99 million VND** (128GB), while\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYCikxqReDxt2x6-nW_pJFrcLRexISkV4tc_uJHL1sA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyl6cQtA2vMh6qr3RCIs5iEC2y-df2ZIRJ9SieTF6n6Q&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-isuUpEisqNsyuWoyHpvJXVlLPfqoD7cec3RB8b014g&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVEx7ppExvw2VCi-VvpcpWOZaQG0vucfKI8sDrkGtQCw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuWfeirOHcLI4yXA1zy6DjMiCzHNdVTdCbLrJjCqJWg&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyGFl7bT2NsOINrDUgvpbpALLFr5SGu3IpRa7qhp-xSA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRSupW_5yOSw21oNlsm1UF5qguueXYA4yEWfjY6go3Iw&s=10)\n\n**Galaxy S24** ranges from **18–20 million VND** depending on storage. Both are premium phones, so the choice depends on what matters most to you:\n\n• **iPhone 15** if you prefer iOS ecosystem, longer software support (typically 5+ years), and consistent performance. Great for creative work with Apple apps.\n\n• **Galaxy S24** if you want more customization, Galaxy AI features, and better value for specs. The S24 often has more RAM and storage at similar prices.\n\n**Key differences:** iPhone has better resale value & privacy focus; Galaxy offers more flexibility & AI tools. Both have excellent cameras, but iPhone's computational photography vs. Galaxy's hardware zoom are different strengths.\n\nWhat matters more to you — ecosystem loyalty, price, or specific features like AI tools or camera zoom? 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Find Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=iPhone+15+Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "evidence": [
+      {
+        "title": "Điện thoại Apple iPhone 15 128GB",
+        "snippet": "Mua Điện thoại Apple iPhone 15 128GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM ...",
+        "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Apple-iPhone-15-128GB-i.88201679.18093055535"
+      },
+      {
+        "title": "Apple iPhone 15 128GB Chính hãng VN/A",
+        "snippet": "Mua Apple iPhone 15 128GB Chính hãng VN/A giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí.",
+        "link": "https://shopee.vn/Apple-iPhone-15-128GB-Ch%C3%ADnh-h%C3%A3ng-VN-A-i.308461157.21684104015"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ 27.965₫ final price indicator ・ ₫15k để ・ hàng miễn phí 15 ・ giá 90% Phản ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://baogialai.com.vn/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-post271158.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://tuoitre.vn/nld/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-1962403272129102.htm"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Tổng hợp ưu đãi đặt trước iPhone 15 series trên Shopee ...",
+        "snippet": "Giá bán của iPhone 15 series trên Lazada ; Phiên bản, 128GB, 256GB ; iPhone 15, 22.990.000đ, 25.990.000đ ; iPhone 15 Plus, 25.990.000đ, 28.990.000đ ...",
+        "link": "https://legacy.vatvostudio.vn/uu-dai-dat-iphone-15-series-tren-shopee-lazada/"
+      },
+      {
+        "title": "Iphone 15 pro max for sale in Hanoi",
+        "snippet": "iPhone 15 Pro Max 256GB, original condition, has a stain on the screen as shown in the picture. I'm selling it cheaply for 15 million VND.",
+        "link": "https://www.facebook.com/groups/1085733898269545/posts/3392676417575270/"
+      },
+      {
+        "title": "Hội iPhone 17 Pro Max - 16 Pro Max - 15 Pro Max Việt Nam",
+        "snippet": "Hà Nội shop sẵn iPhone : 16 Plus 128GB thay màn oled đẹp 🖥️ Màn oled – Hiển thị ổn định, sử dụng mượt Pin 94 % – Dùng thoải mái cả ngày ✨ Ngoại hình đẹp ...",
+        "link": "https://www.facebook.com/groups/dienthoaihanoiz/"
+      },
+      {
+        "title": "🔥 Bảng giá iPhone tháng 12 - Tháng cuối năm, ưu đãi bùng ...",
+        "snippet": "taoxanh.vn/ Website: https://taoxanh.vn. No photo description ... Visit iPhone dot Green Apple dot Vietnam to update price list every day ok.",
+        "link": "https://www.facebook.com/taoxanhh.com.vn/videos/%EF%B8%8Fb%E1%BA%A3ng-gi%C3%A1-iphone-th%C3%A1ng-12/1938993649990022/"
+      },
+      {
+        "title": "Hội Người Dùng iPhone 15 (Plus/Pro/Pro Max) tại TPHCM",
+        "snippet": "Giá chỉ #16xxx ✓Tặng full phụ kiện ✓ Hỗ trợ thu cũ đổi mới ---------------------------------------- Địa chỉ: Cửa hàng Táo Sâu ( 218A Trung Kính, Cầu Giấy, ...",
+        "link": "https://www.facebook.com/groups/3285526808346832/"
+      },
+      {
+        "title": "Hội iPhone 15 Pro Max & iPhone 15 Pro Việt Nam",
+        "snippet": "Dung lượng 256GB đáp ứng tốt nhu cầu lưu trữ hình ảnh, video và ứng dụng cá nhân. Giá: 18.5tr - Giao dịch trực tiếp TP.HCM Zalo/Call: 0333.",
+        "link": "https://www.facebook.com/groups/iphone14forum/"
+      },
+      {
+        "title": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https ...",
+        "snippet": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https://phongvu.vn/p/apple Đặc biệt ưu đãi trả góp 0% - Không phát sinh thêm bất kỳ ...",
+        "link": "https://www.facebook.com/phongvuvietnam/videos/s%C4%83n-apple-ch%E1%BB%8Dn-phong-v%C5%A9/852425996832416/"
+      },
+      {
+        "title": "Phim bảo vệ màn hình 2pcs UGREEN cho Samsung ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam … 134.460₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/Phim-b%E1%BA%A3o-v%E1%BB%87-m%C3%A0n-h%C3%ACnh-2pcs-UGREEN-cho-Samsung-Galaxy-S24-Ultra-d%C3%A0nh-cho-Samsung-S24-Ultra-Phim-b%E1%BA%A3o-v%E1%BB%87-i.1454455021.27231260152"
+      },
+      {
+        "title": "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam UGREEN … 107.070₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/UGREEN-%E1%BB%90p-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-M%E1%BB%81m-Trong-Su%E1%BB%91t-Ch%E1%BB%91ng-S%E1%BB%91c-Cho-Samsung-Galaxy-S24-Ultra-Samsung-S23-Ultra-i.1454455021.43053314293"
+      },
+      {
+        "title": "Mua Galaxy S24 Ultra Giá Tốt, Giao Nhanh",
+        "snippet": "Galax S24 Ultra điên thoại gia rẻ Full HD 16GB RAM +1TB ROM Hỗ trợ 2 SIM Mạng 3G/4G/5G Bộ Lớn 8000mAh. ₫1,199,000. Voucher save 45%. 5.0. Vietnam.",
+        "link": "https://www.lazada.vn/tag/galaxy-s24-ultra/?srsltid=AfmBOoojifDTv-BT_RCQYozjjMKJp6z0KKMypWACzoI6AntOAw4vkJDl"
+      },
+      {
+        "title": "🔥 Samsung S24 Ultra giá ngon nè AE: https://s.shopee.vn/ ...",
+        "snippet": "OCR: Galaxy S24 Ultra (12GB (12GB/253GB) (5) GB) Galaxy AI 社is is here Galaxy S24 Ultra ปน đãi đến 7.5 7 Triệu Đồng SPayLater Tragóp Trả ...",
+        "link": "https://www.facebook.com/groups/194682181279549/posts/1900196350728115/"
+      },
+      {
+        "title": "Báo cáo thị trường Samsung galaxy s24 sàn TMĐT ...",
+        "snippet": "Thị trường Samsung galaxy s24 trên TMĐT đạt quy mô 303,8 tỷ đồng và tăng trưởng 14.24% so với quý trước với thương hiệu nổi bật gồm samsung.",
+        "link": "https://metric.vn/ereport/samsung-galaxy-s24?srsltid=AfmBOorku179U5CdZY5MQAV-VCPf_J687K1IHq6ODoidbWjbQgNPDL8I"
+      },
+      {
+        "title": "Mua Samsung S24 Fe Giá Tốt, Giao Nhanh",
+        "snippet": "[SIÊU SALE GIỮA THÁNG 15-17.6] Điện thoại Samsung Galaxy S24 FE, điện thoại AI, màn hình 6.7\" 120Hz, chụp đêm Nightography, trợ lý chỉnh ảnh. ₫11,990,000.",
+        "link": "https://www.lazada.vn/tag/samsung-s24-fe/?srsltid=AfmBOooiB7Fblh2nu0Url3_VcHB-ZnLj7VSC_FB3nR1aOizrjFYrBo9P"
+      },
+      {
+        "title": "Samsung galaxy s24 - Giá Tốt, Sale Tháng 08, Ship 0 Đồng",
+        "snippet": "Shopee cung cấp đầy đủ điện thoại samsung galaxy s24 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, điện thoại samsung galaxy s24 sẽ luôn được ...",
+        "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20s24"
+      },
+      {
+        "title": "MUA SẮM TRÊN SÀN - NHẬN NGÀN ƯU ĐÃI - SHOPEE",
+        "snippet": "Cơ hội mua sắm và nhận ưu đãi vô cùng lớn từ thương hiệu Gia dụng chính hãng Masuto từ các sàn Shopee - Lazada - Tiki.",
+        "link": "https://masuto.vn/pages/mua-sam-tren-san-shopee-tiki-lazada?srsltid=AfmBOor_Zgqk15NoTkhpb6NorYWlsaxdLKBWYL6lgOxzxaFL45t78aFG"
+      },
+      {
+        "title": "Hội Samsung Galaxy S Việt Nam - S24, S24+, S24 Ultra",
+        "snippet": "S25 plus 12/256 zin all nguyên bản : 12.x Xem máy tại: 93 Tô Vĩnh Diện, Thanh Xuân, HN Chi tiết LH ( Zalo, Call): 0982022984 Hỗ trợ thu mua, trao đổi ...",
+        "link": "https://www.facebook.com/groups/2843533739205878/"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "Tải trên Galaxy Store ✅️ FV File Manager. Tải trên Google Play Store. . • Vào app S.A. - Tùy chỉnh bảng điều khiển âm lượng 》Bật. • Chưa từng tạo bất kì ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "Mua s24 với giá này được k ae",
+        "snippet": "Shopee : DEKEY VIETNAM STORE https://s.shopee.vn/707sr4NXAj ... [CHỈ 18.01] Điện thoại Samsung Galaxy S24 - Điện. 2y. 1. Profile photo ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/posts/3050268358439809/"
+      },
+      {
+        "title": "Hội Mua Bán SamSung Galaxy Việt Nam",
+        "snippet": "S24 plus 12/256 và 12/512 zin all đẹp giá từ : 8.x Sdt 0859044202 Địa chỉ : 30 ngõ 93 tô vĩnh diện khương trung thanh xuân hà nội · May be an image of phone. 0 ...",
+        "link": "https://www.facebook.com/groups/439175363654524/"
+      },
+      {
+        "title": "Samsung Galaxy S24, S24+, thanh toán trước giảm 1 triệu",
+        "snippet": "Khám phá điện thoại thông minh Galaxy S24 và S24 Plus, được hỗ trợ bởi Galaxy AI. Kết nối và sáng tạo với các tính năng AI như Circle to Search, ...",
+        "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/?srsltid=AfmBOorwMj9XayvDdNjbctgiAmv23AVrwEZwAEtEttm8KSZFqU0xqrH_"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+        "snippet": "Mua Samsung Galaxy S24 Ultra chính hãng - Sẵn hàng giá rẻ 08/2026, trợ giá thu cũ lên đời 1 triệu, trả góp 0%, giao toàn quốc. Mua S24 Ultra ngay.",
+        "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html"
+      }
+    ]
+  },
+  {
+    "id": "A3",
+    "rep": 3,
+    "kind": "model-level VI (control)",
+    "request": "Nên chọn iPhone 15 hay Galaxy S24?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone 15 price Vietnam",
+      "Samsung Galaxy S24 price Vietnam"
+    ],
+    "candidates": 28,
+    "deviceEvidence": 21,
+    "accessoryEvidence": 2,
+    "deviceTitles": [
+      "Điện thoại Apple iPhone 15 128GB",
+      "Apple iPhone 15 128GB Chính hãng VN/A",
+      "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+      "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ..."
+    ],
+    "accessoryTitles": [
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7413,
+    "completionTokens": 500,
+    "ms": 8251,
+    "text": "I'll search for current pricing and specs to help you compare these two phones.Based on current pricing in Vietnam, here's the comparison:\n\n**iPhone 15** starts around **18.99–22.99 million VND** (128GB), while\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYCikxqReDxt2x6-nW_pJFrcLRexISkV4tc_uJHL1sA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyl6cQtA2vMh6qr3RCIs5iEC2y-df2ZIRJ9SieTF6n6Q&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-isuUpEisqNsyuWoyHpvJXVlLPfqoD7cec3RB8b014g&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVEx7ppExvw2VCi-VvpcpWOZaQG0vucfKI8sDrkGtQCw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuWfeirOHcLI4yXA1zy6DjMiCzHNdVTdCbLrJjCqJWg&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyGFl7bT2NsOINrDUgvpbpALLFr5SGu3IpRa7qhp-xSA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRSupW_5yOSw21oNlsm1UF5qguueXYA4yEWfjY6go3Iw&s=10)\n\n**Galaxy S24** ranges from **18–20 million VND** depending on storage. Both are premium phones, so the choice depends on what matters most to you:\n\n• **iPhone 15** if you prefer iOS ecosystem, longer software support (typically 5+ years), and consistent performance. Great for creative work with iCloud integration.\n\n• **Galaxy S24** if you want Android flexibility, Galaxy AI features, and often better value for specs. Better customization and file management.\n\n**Key differences**: iPhone has better resale value in Vietnam; Galaxy S24 offers more screen options (standard/Plus/Ultra) and usually more RAM/storage at similar prices. Both have excellent cameras, but iPhone's computational photography vs. Galaxy's AI processing are different approaches.\n\nWhat matters more to you — ecosystem loyalty, price, or specific features like AI tools or camera style? 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Find Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=iPhone+15+Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "evidence": [
+      {
+        "title": "Điện thoại Apple iPhone 15 128GB",
+        "snippet": "Mua Điện thoại Apple iPhone 15 128GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM ...",
+        "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Apple-iPhone-15-128GB-i.88201679.18093055535"
+      },
+      {
+        "title": "Apple iPhone 15 128GB Chính hãng VN/A",
+        "snippet": "Mua Apple iPhone 15 128GB Chính hãng VN/A giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí.",
+        "link": "https://shopee.vn/Apple-iPhone-15-128GB-Ch%C3%ADnh-h%C3%A3ng-VN-A-i.308461157.21684104015"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ 27.965₫ final price indicator ・ ₫15k để ・ hàng miễn phí 15 ・ giá 90% Phản ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://baogialai.com.vn/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-post271158.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://tuoitre.vn/nld/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-1962403272129102.htm"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Tổng hợp ưu đãi đặt trước iPhone 15 series trên Shopee ...",
+        "snippet": "Giá bán của iPhone 15 series trên Lazada ; Phiên bản, 128GB, 256GB ; iPhone 15, 22.990.000đ, 25.990.000đ ; iPhone 15 Plus, 25.990.000đ, 28.990.000đ ...",
+        "link": "https://legacy.vatvostudio.vn/uu-dai-dat-iphone-15-series-tren-shopee-lazada/"
+      },
+      {
+        "title": "Iphone 15 pro max for sale in Hanoi",
+        "snippet": "iPhone 15 Pro Max 256GB, original condition, has a stain on the screen as shown in the picture. I'm selling it cheaply for 15 million VND.",
+        "link": "https://www.facebook.com/groups/1085733898269545/posts/3392676417575270/"
+      },
+      {
+        "title": "Hội iPhone 17 Pro Max - 16 Pro Max - 15 Pro Max Việt Nam",
+        "snippet": "Hà Nội shop sẵn iPhone : 16 Plus 128GB thay màn oled đẹp 🖥️ Màn oled – Hiển thị ổn định, sử dụng mượt Pin 94 % – Dùng thoải mái cả ngày ✨ Ngoại hình đẹp ...",
+        "link": "https://www.facebook.com/groups/dienthoaihanoiz/"
+      },
+      {
+        "title": "🔥 Bảng giá iPhone tháng 12 - Tháng cuối năm, ưu đãi bùng ...",
+        "snippet": "taoxanh.vn/ Website: https://taoxanh.vn. No photo description ... Visit iPhone dot Green Apple dot Vietnam to update price list every day ok.",
+        "link": "https://www.facebook.com/taoxanhh.com.vn/videos/%EF%B8%8Fb%E1%BA%A3ng-gi%C3%A1-iphone-th%C3%A1ng-12/1938993649990022/"
+      },
+      {
+        "title": "Hội Người Dùng iPhone 15 (Plus/Pro/Pro Max) tại TPHCM",
+        "snippet": "Giá chỉ #16xxx ✓Tặng full phụ kiện ✓ Hỗ trợ thu cũ đổi mới ---------------------------------------- Địa chỉ: Cửa hàng Táo Sâu ( 218A Trung Kính, Cầu Giấy, ...",
+        "link": "https://www.facebook.com/groups/3285526808346832/"
+      },
+      {
+        "title": "Hội iPhone 15 Pro Max & iPhone 15 Pro Việt Nam",
+        "snippet": "Dung lượng 256GB đáp ứng tốt nhu cầu lưu trữ hình ảnh, video và ứng dụng cá nhân. Giá: 18.5tr - Giao dịch trực tiếp TP.HCM Zalo/Call: 0333.",
+        "link": "https://www.facebook.com/groups/iphone14forum/"
+      },
+      {
+        "title": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https ...",
+        "snippet": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https://phongvu.vn/p/apple Đặc biệt ưu đãi trả góp 0% - Không phát sinh thêm bất kỳ ...",
+        "link": "https://www.facebook.com/phongvuvietnam/videos/s%C4%83n-apple-ch%E1%BB%8Dn-phong-v%C5%A9/852425996832416/"
+      },
+      {
+        "title": "Phim bảo vệ màn hình 2pcs UGREEN cho Samsung ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam … 134.460₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/Phim-b%E1%BA%A3o-v%E1%BB%87-m%C3%A0n-h%C3%ACnh-2pcs-UGREEN-cho-Samsung-Galaxy-S24-Ultra-d%C3%A0nh-cho-Samsung-S24-Ultra-Phim-b%E1%BA%A3o-v%E1%BB%87-i.1454455021.27231260152"
+      },
+      {
+        "title": "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam UGREEN … 107.070₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/UGREEN-%E1%BB%90p-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-M%E1%BB%81m-Trong-Su%E1%BB%91t-Ch%E1%BB%91ng-S%E1%BB%91c-Cho-Samsung-Galaxy-S24-Ultra-Samsung-S23-Ultra-i.1454455021.43053314293"
+      },
+      {
+        "title": "Mua Galaxy S24 Ultra Giá Tốt, Giao Nhanh",
+        "snippet": "Galax S24 Ultra điên thoại gia rẻ Full HD 16GB RAM +1TB ROM Hỗ trợ 2 SIM Mạng 3G/4G/5G Bộ Lớn 8000mAh. ₫1,199,000. Voucher save 45%. 5.0. Vietnam.",
+        "link": "https://www.lazada.vn/tag/galaxy-s24-ultra/?srsltid=AfmBOoojifDTv-BT_RCQYozjjMKJp6z0KKMypWACzoI6AntOAw4vkJDl"
+      },
+      {
+        "title": "🔥 Samsung S24 Ultra giá ngon nè AE: https://s.shopee.vn/ ...",
+        "snippet": "OCR: Galaxy S24 Ultra (12GB (12GB/253GB) (5) GB) Galaxy AI 社is is here Galaxy S24 Ultra ปน đãi đến 7.5 7 Triệu Đồng SPayLater Tragóp Trả ...",
+        "link": "https://www.facebook.com/groups/194682181279549/posts/1900196350728115/"
+      },
+      {
+        "title": "Báo cáo thị trường Samsung galaxy s24 sàn TMĐT ...",
+        "snippet": "Thị trường Samsung galaxy s24 trên TMĐT đạt quy mô 303,8 tỷ đồng và tăng trưởng 14.24% so với quý trước với thương hiệu nổi bật gồm samsung.",
+        "link": "https://metric.vn/ereport/samsung-galaxy-s24?srsltid=AfmBOorku179U5CdZY5MQAV-VCPf_J687K1IHq6ODoidbWjbQgNPDL8I"
+      },
+      {
+        "title": "Mua Samsung S24 Fe Giá Tốt, Giao Nhanh",
+        "snippet": "[SIÊU SALE GIỮA THÁNG 15-17.6] Điện thoại Samsung Galaxy S24 FE, điện thoại AI, màn hình 6.7\" 120Hz, chụp đêm Nightography, trợ lý chỉnh ảnh. ₫11,990,000.",
+        "link": "https://www.lazada.vn/tag/samsung-s24-fe/?srsltid=AfmBOooiB7Fblh2nu0Url3_VcHB-ZnLj7VSC_FB3nR1aOizrjFYrBo9P"
+      },
+      {
+        "title": "Samsung galaxy s24 - Giá Tốt, Sale Tháng 08, Ship 0 Đồng",
+        "snippet": "Shopee cung cấp đầy đủ điện thoại samsung galaxy s24 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, điện thoại samsung galaxy s24 sẽ luôn được ...",
+        "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20s24"
+      },
+      {
+        "title": "MUA SẮM TRÊN SÀN - NHẬN NGÀN ƯU ĐÃI - SHOPEE",
+        "snippet": "Cơ hội mua sắm và nhận ưu đãi vô cùng lớn từ thương hiệu Gia dụng chính hãng Masuto từ các sàn Shopee - Lazada - Tiki.",
+        "link": "https://masuto.vn/pages/mua-sam-tren-san-shopee-tiki-lazada?srsltid=AfmBOor_Zgqk15NoTkhpb6NorYWlsaxdLKBWYL6lgOxzxaFL45t78aFG"
+      },
+      {
+        "title": "Hội Samsung Galaxy S Việt Nam - S24, S24+, S24 Ultra",
+        "snippet": "S25 plus 12/256 zin all nguyên bản : 12.x Xem máy tại: 93 Tô Vĩnh Diện, Thanh Xuân, HN Chi tiết LH ( Zalo, Call): 0982022984 Hỗ trợ thu mua, trao đổi ...",
+        "link": "https://www.facebook.com/groups/2843533739205878/"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "Tải trên Galaxy Store ✅️ FV File Manager. Tải trên Google Play Store. . • Vào app S.A. - Tùy chỉnh bảng điều khiển âm lượng 》Bật. • Chưa từng tạo bất kì ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "Mua s24 với giá này được k ae",
+        "snippet": "Shopee : DEKEY VIETNAM STORE https://s.shopee.vn/707sr4NXAj ... [CHỈ 18.01] Điện thoại Samsung Galaxy S24 - Điện. 2y. 1. Profile photo ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/posts/3050268358439809/"
+      },
+      {
+        "title": "Hội Mua Bán SamSung Galaxy Việt Nam",
+        "snippet": "S24 plus 12/256 và 12/512 zin all đẹp giá từ : 8.x Sdt 0859044202 Địa chỉ : 30 ngõ 93 tô vĩnh diện khương trung thanh xuân hà nội · May be an image of phone. 0 ...",
+        "link": "https://www.facebook.com/groups/439175363654524/"
+      },
+      {
+        "title": "Samsung Galaxy S24, S24+, thanh toán trước giảm 1 triệu",
+        "snippet": "Khám phá điện thoại thông minh Galaxy S24 và S24 Plus, được hỗ trợ bởi Galaxy AI. Kết nối và sáng tạo với các tính năng AI như Circle to Search, ...",
+        "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/?srsltid=AfmBOorwMj9XayvDdNjbctgiAmv23AVrwEZwAEtEttm8KSZFqU0xqrH_"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+        "snippet": "Mua Samsung Galaxy S24 Ultra chính hãng - Sẵn hàng giá rẻ 08/2026, trợ giá thu cũ lên đời 1 triệu, trả góp 0%, giao toàn quốc. Mua S24 Ultra ngay.",
+        "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html"
+      }
+    ]
+  },
+  {
+    "id": "A3",
+    "rep": 4,
+    "kind": "model-level VI (control)",
+    "request": "Nên chọn iPhone 15 hay Galaxy S24?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone 15 price Vietnam",
+      "Samsung Galaxy S24 price Vietnam"
+    ],
+    "candidates": 28,
+    "deviceEvidence": 21,
+    "accessoryEvidence": 2,
+    "deviceTitles": [
+      "Điện thoại Apple iPhone 15 128GB",
+      "Apple iPhone 15 128GB Chính hãng VN/A",
+      "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+      "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ..."
+    ],
+    "accessoryTitles": [
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7413,
+    "completionTokens": 520,
+    "ms": 8030,
+    "text": "I'll search for current pricing and specs to help you compare these two phones.Based on current pricing in Vietnam, here's the comparison:\n\n**iPhone 15** starts around **18.99–22.99 million VND** (128GB), while\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYCikxqReDxt2x6-nW_pJFrcLRexISkV4tc_uJHL1sA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyl6cQtA2vMh6qr3RCIs5iEC2y-df2ZIRJ9SieTF6n6Q&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-isuUpEisqNsyuWoyHpvJXVlLPfqoD7cec3RB8b014g&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6O-0vTEkBUKgFStQTyRNcIkwPYILGf2FdSg&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRnUSMNy27YD_oeDCnWefkCPxYL6khf5VLfQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlWcl0it03cHs6rFHs2ec9sM5Uw36t1S3shg&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyGFl7bT2NsOINrDUgvpbpALLFr5SGu3IpRa7qhp-xSA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmpAT8nTuHj5yMghiylFJwDJIK-LKDgPHXT-YnoTm1ug&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRSupW_5yOSw21oNlsm1UF5qguueXYA4yEWfjY6go3Iw&s=10)\n\n**Galaxy S24** ranges from **18–20 million VND** depending on storage. Both are premium phones, so the choice depends on what matters most to you:\n\n• **iPhone 15** if you prefer iOS ecosystem, longer software support (typically 5+ years), and consistent performance. Great for creative work with Apple apps.\n\n• **Galaxy S24** if you want more customization, Galaxy AI features, and better value for specs. The S24 often has a larger screen and more RAM at similar prices.\n\n**Key differences**: iPhone has better resale value & privacy focus; Galaxy offers more flexibility & AI tools. Both have excellent cameras, but iPhone's computational photography vs. Galaxy's hardware specs appeal to different users.\n\nWhat matters most to you — ecosystem loyalty, price, camera quality, or AI features? 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Find Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=iPhone+15+Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]iPhone 15 Pro vs S24 Ultra|Best camera phone|Budget Android alternative[/FOLLOWUPS]",
+    "evidence": [
+      {
+        "title": "Điện thoại Apple iPhone 15 128GB",
+        "snippet": "Mua Điện thoại Apple iPhone 15 128GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM ...",
+        "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Apple-iPhone-15-128GB-i.88201679.18093055535"
+      },
+      {
+        "title": "Apple iPhone 15 128GB Chính hãng VN/A",
+        "snippet": "Mua Apple iPhone 15 128GB Chính hãng VN/A giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí.",
+        "link": "https://shopee.vn/Apple-iPhone-15-128GB-Ch%C3%ADnh-h%C3%A3ng-VN-A-i.308461157.21684104015"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ 27.965₫ final price indicator ・ ₫15k để ・ hàng miễn phí 15 ・ giá 90% Phản ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://baogialai.com.vn/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-post271158.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://tuoitre.vn/nld/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-1962403272129102.htm"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Tổng hợp ưu đãi đặt trước iPhone 15 series trên Shopee ...",
+        "snippet": "Giá bán của iPhone 15 series trên Lazada ; Phiên bản, 128GB, 256GB ; iPhone 15, 22.990.000đ, 25.990.000đ ; iPhone 15 Plus, 25.990.000đ, 28.990.000đ ...",
+        "link": "https://legacy.vatvostudio.vn/uu-dai-dat-iphone-15-series-tren-shopee-lazada/"
+      },
+      {
+        "title": "Iphone 15 pro max for sale in Hanoi",
+        "snippet": "iPhone 15 Pro Max 256GB, original condition, has a stain on the screen as shown in the picture. I'm selling it cheaply for 15 million VND.",
+        "link": "https://www.facebook.com/groups/1085733898269545/posts/3392676417575270/"
+      },
+      {
+        "title": "Hội iPhone 17 Pro Max - 16 Pro Max - 15 Pro Max Việt Nam",
+        "snippet": "Hà Nội shop sẵn iPhone : 16 Plus 128GB thay màn oled đẹp 🖥️ Màn oled – Hiển thị ổn định, sử dụng mượt Pin 94 % – Dùng thoải mái cả ngày ✨ Ngoại hình đẹp ...",
+        "link": "https://www.facebook.com/groups/dienthoaihanoiz/"
+      },
+      {
+        "title": "🔥 Bảng giá iPhone tháng 12 - Tháng cuối năm, ưu đãi bùng ...",
+        "snippet": "taoxanh.vn/ Website: https://taoxanh.vn. No photo description ... Visit iPhone dot Green Apple dot Vietnam to update price list every day ok.",
+        "link": "https://www.facebook.com/taoxanhh.com.vn/videos/%EF%B8%8Fb%E1%BA%A3ng-gi%C3%A1-iphone-th%C3%A1ng-12/1938993649990022/"
+      },
+      {
+        "title": "Hội Người Dùng iPhone 15 (Plus/Pro/Pro Max) tại TPHCM",
+        "snippet": "Giá chỉ #16xxx ✓Tặng full phụ kiện ✓ Hỗ trợ thu cũ đổi mới ---------------------------------------- Địa chỉ: Cửa hàng Táo Sâu ( 218A Trung Kính, Cầu Giấy, ...",
+        "link": "https://www.facebook.com/groups/3285526808346832/"
+      },
+      {
+        "title": "Hội iPhone 15 Pro Max & iPhone 15 Pro Việt Nam",
+        "snippet": "Dung lượng 256GB đáp ứng tốt nhu cầu lưu trữ hình ảnh, video và ứng dụng cá nhân. Giá: 18.5tr - Giao dịch trực tiếp TP.HCM Zalo/Call: 0333.",
+        "link": "https://www.facebook.com/groups/iphone14forum/"
+      },
+      {
+        "title": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https ...",
+        "snippet": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https://phongvu.vn/p/apple Đặc biệt ưu đãi trả góp 0% - Không phát sinh thêm bất kỳ ...",
+        "link": "https://www.facebook.com/phongvuvietnam/videos/s%C4%83n-apple-ch%E1%BB%8Dn-phong-v%C5%A9/852425996832416/"
+      },
+      {
+        "title": "Phim bảo vệ màn hình 2pcs UGREEN cho Samsung ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam … 134.460₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/Phim-b%E1%BA%A3o-v%E1%BB%87-m%C3%A0n-h%C3%ACnh-2pcs-UGREEN-cho-Samsung-Galaxy-S24-Ultra-d%C3%A0nh-cho-Samsung-S24-Ultra-Phim-b%E1%BA%A3o-v%E1%BB%87-i.1454455021.27231260152"
+      },
+      {
+        "title": "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam UGREEN … 107.070₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/UGREEN-%E1%BB%90p-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-M%E1%BB%81m-Trong-Su%E1%BB%91t-Ch%E1%BB%91ng-S%E1%BB%91c-Cho-Samsung-Galaxy-S24-Ultra-Samsung-S23-Ultra-i.1454455021.43053314293"
+      },
+      {
+        "title": "Mua Galaxy S24 Ultra Giá Tốt, Giao Nhanh",
+        "snippet": "Galax S24 Ultra điên thoại gia rẻ Full HD 16GB RAM +1TB ROM Hỗ trợ 2 SIM Mạng 3G/4G/5G Bộ Lớn 8000mAh. ₫1,199,000. Voucher save 45%. 5.0. Vietnam.",
+        "link": "https://www.lazada.vn/tag/galaxy-s24-ultra/?srsltid=AfmBOoojifDTv-BT_RCQYozjjMKJp6z0KKMypWACzoI6AntOAw4vkJDl"
+      },
+      {
+        "title": "🔥 Samsung S24 Ultra giá ngon nè AE: https://s.shopee.vn/ ...",
+        "snippet": "OCR: Galaxy S24 Ultra (12GB (12GB/253GB) (5) GB) Galaxy AI 社is is here Galaxy S24 Ultra ปน đãi đến 7.5 7 Triệu Đồng SPayLater Tragóp Trả ...",
+        "link": "https://www.facebook.com/groups/194682181279549/posts/1900196350728115/"
+      },
+      {
+        "title": "Báo cáo thị trường Samsung galaxy s24 sàn TMĐT ...",
+        "snippet": "Thị trường Samsung galaxy s24 trên TMĐT đạt quy mô 303,8 tỷ đồng và tăng trưởng 14.24% so với quý trước với thương hiệu nổi bật gồm samsung.",
+        "link": "https://metric.vn/ereport/samsung-galaxy-s24?srsltid=AfmBOorku179U5CdZY5MQAV-VCPf_J687K1IHq6ODoidbWjbQgNPDL8I"
+      },
+      {
+        "title": "Mua Samsung S24 Fe Giá Tốt, Giao Nhanh",
+        "snippet": "[SIÊU SALE GIỮA THÁNG 15-17.6] Điện thoại Samsung Galaxy S24 FE, điện thoại AI, màn hình 6.7\" 120Hz, chụp đêm Nightography, trợ lý chỉnh ảnh. ₫11,990,000.",
+        "link": "https://www.lazada.vn/tag/samsung-s24-fe/?srsltid=AfmBOooiB7Fblh2nu0Url3_VcHB-ZnLj7VSC_FB3nR1aOizrjFYrBo9P"
+      },
+      {
+        "title": "Samsung galaxy s24 - Giá Tốt, Sale Tháng 08, Ship 0 Đồng",
+        "snippet": "Shopee cung cấp đầy đủ điện thoại samsung galaxy s24 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, điện thoại samsung galaxy s24 sẽ luôn được ...",
+        "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20s24"
+      },
+      {
+        "title": "MUA SẮM TRÊN SÀN - NHẬN NGÀN ƯU ĐÃI - SHOPEE",
+        "snippet": "Cơ hội mua sắm và nhận ưu đãi vô cùng lớn từ thương hiệu Gia dụng chính hãng Masuto từ các sàn Shopee - Lazada - Tiki.",
+        "link": "https://masuto.vn/pages/mua-sam-tren-san-shopee-tiki-lazada?srsltid=AfmBOor_Zgqk15NoTkhpb6NorYWlsaxdLKBWYL6lgOxzxaFL45t78aFG"
+      },
+      {
+        "title": "Hội Samsung Galaxy S Việt Nam - S24, S24+, S24 Ultra",
+        "snippet": "S25 plus 12/256 zin all nguyên bản : 12.x Xem máy tại: 93 Tô Vĩnh Diện, Thanh Xuân, HN Chi tiết LH ( Zalo, Call): 0982022984 Hỗ trợ thu mua, trao đổi ...",
+        "link": "https://www.facebook.com/groups/2843533739205878/"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "Tải trên Galaxy Store ✅️ FV File Manager. Tải trên Google Play Store. . • Vào app S.A. - Tùy chỉnh bảng điều khiển âm lượng 》Bật. • Chưa từng tạo bất kì ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "Mua s24 với giá này được k ae",
+        "snippet": "Shopee : DEKEY VIETNAM STORE https://s.shopee.vn/707sr4NXAj ... [CHỈ 18.01] Điện thoại Samsung Galaxy S24 - Điện. 2y. 1. Profile photo ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/posts/3050268358439809/"
+      },
+      {
+        "title": "Hội Mua Bán SamSung Galaxy Việt Nam",
+        "snippet": "S24 plus 12/256 và 12/512 zin all đẹp giá từ : 8.x Sdt 0859044202 Địa chỉ : 30 ngõ 93 tô vĩnh diện khương trung thanh xuân hà nội · May be an image of phone. 0 ...",
+        "link": "https://www.facebook.com/groups/439175363654524/"
+      },
+      {
+        "title": "Samsung Galaxy S24, S24+, thanh toán trước giảm 1 triệu",
+        "snippet": "Khám phá điện thoại thông minh Galaxy S24 và S24 Plus, được hỗ trợ bởi Galaxy AI. Kết nối và sáng tạo với các tính năng AI như Circle to Search, ...",
+        "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/?srsltid=AfmBOorwMj9XayvDdNjbctgiAmv23AVrwEZwAEtEttm8KSZFqU0xqrH_"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+        "snippet": "Mua Samsung Galaxy S24 Ultra chính hãng - Sẵn hàng giá rẻ 08/2026, trợ giá thu cũ lên đời 1 triệu, trả góp 0%, giao toàn quốc. Mua S24 Ultra ngay.",
+        "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html"
+      }
+    ]
+  },
+  {
+    "id": "A3",
+    "rep": 5,
+    "kind": "model-level VI (control)",
+    "request": "Nên chọn iPhone 15 hay Galaxy S24?",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone 15 price Vietnam",
+      "Samsung Galaxy S24 price Vietnam"
+    ],
+    "candidates": 28,
+    "deviceEvidence": 21,
+    "accessoryEvidence": 2,
+    "deviceTitles": [
+      "Điện thoại Apple iPhone 15 128GB",
+      "Apple iPhone 15 128GB Chính hãng VN/A",
+      "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+      "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ..."
+    ],
+    "accessoryTitles": [
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7413,
+    "completionTokens": 533,
+    "ms": 8603,
+    "text": "I'll search for current pricing and specs to help you compare these two phones.Based on current pricing in Vietnam, here's the comparison:\n\n**iPhone 15** starts around **18.99–22.99 million VND** (128GB), while\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYCikxqReDxt2x6-nW_pJFrcLRexISkV4tc_uJHL1sA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyl6cQtA2vMh6qr3RCIs5iEC2y-df2ZIRJ9SieTF6n6Q&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-isuUpEisqNsyuWoyHpvJXVlLPfqoD7cec3RB8b014g&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBu-Os2M21y-4NbvhT_JnP1LEB7Dp4FyW87BGh-yYwhQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVEx7ppExvw2VCi-VvpcpWOZaQG0vucfKI8sDrkGtQCw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRdAKgJFNxr8oXnwaMHhlsZ57FqNYlt10Jlx84fR8OMg&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyGFl7bT2NsOINrDUgvpbpALLFr5SGu3IpRa7qhp-xSA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRSupW_5yOSw21oNlsm1UF5qguueXYA4yEWfjY6go3Iw&s=10)\n\n**Galaxy S24** ranges from **18–20 million VND** depending on storage. Both are premium phones, so the choice depends on what matters most to you:\n\n• **iPhone 15** if you prefer iOS ecosystem, longer software support (typically 5+ years), and consistent performance. Better for Apple users with other devices.\n\n• **Galaxy S24** if you want more customization, Galaxy AI features, and competitive specs at a similar price. Great if you're already in the Android world.\n\n**Key difference**: iPhone has better resale value & longevity; Galaxy S24 offers more features upfront (AI tools, customization). Price-wise they're pretty close right now.\n\nWhat's your priority — ecosystem loyalty, camera quality, or AI features? That'll help narrow it down! 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Find Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=iPhone+15+Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dùng iPhone hay Android?|Ưu tiên camera hay pin?|Có máy cũ để đổi không?[/FOLLOWUPS]",
+    "evidence": [
+      {
+        "title": "Điện thoại Apple iPhone 15 128GB",
+        "snippet": "Mua Điện thoại Apple iPhone 15 128GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM ...",
+        "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Apple-iPhone-15-128GB-i.88201679.18093055535"
+      },
+      {
+        "title": "Apple iPhone 15 128GB Chính hãng VN/A",
+        "snippet": "Mua Apple iPhone 15 128GB Chính hãng VN/A giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí.",
+        "link": "https://shopee.vn/Apple-iPhone-15-128GB-Ch%C3%ADnh-h%C3%A3ng-VN-A-i.308461157.21684104015"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ 27.965₫ final price indicator ・ ₫15k để ・ hàng miễn phí 15 ・ giá 90% Phản ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 'đắt như tôm tươi' trên Shopee, Lazada ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://baogialai.com.vn/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-post271158.html"
+      },
+      {
+        "title": "Nhờ đâu iPhone 15 \"đắt như tôm tươi\" trên sàn Shopee, ...",
+        "snippet": "Cụ thể, trong tuần diễn ra siêu sale 10.10, doanh thu iPhone 15 Series trên ba sàn Shopee, Lazada, Tiki đạt 68,2 tỉ đồng, tăng 92% so với doanh ...",
+        "link": "https://tuoitre.vn/nld/nho-dau-iphone-15-dat-nhu-tom-tuoi-tren-shopee-lazada-va-tiki-1962403272129102.htm"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "‏Trong ‏‏ ba tháng sau khi mở bán (từ tháng 9 đến hết tháng 12/2023)‏‏, các dòng ‏‏iPhone 15‏‏ đã bán ra ‏‏27.400 sản phẩm‏‏ trên kênh thương ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Tổng hợp ưu đãi đặt trước iPhone 15 series trên Shopee ...",
+        "snippet": "Giá bán của iPhone 15 series trên Lazada ; Phiên bản, 128GB, 256GB ; iPhone 15, 22.990.000đ, 25.990.000đ ; iPhone 15 Plus, 25.990.000đ, 28.990.000đ ...",
+        "link": "https://legacy.vatvostudio.vn/uu-dai-dat-iphone-15-series-tren-shopee-lazada/"
+      },
+      {
+        "title": "Iphone 15 pro max for sale in Hanoi",
+        "snippet": "iPhone 15 Pro Max 256GB, original condition, has a stain on the screen as shown in the picture. I'm selling it cheaply for 15 million VND.",
+        "link": "https://www.facebook.com/groups/1085733898269545/posts/3392676417575270/"
+      },
+      {
+        "title": "Hội iPhone 17 Pro Max - 16 Pro Max - 15 Pro Max Việt Nam",
+        "snippet": "Hà Nội shop sẵn iPhone : 16 Plus 128GB thay màn oled đẹp 🖥️ Màn oled – Hiển thị ổn định, sử dụng mượt Pin 94 % – Dùng thoải mái cả ngày ✨ Ngoại hình đẹp ...",
+        "link": "https://www.facebook.com/groups/dienthoaihanoiz/"
+      },
+      {
+        "title": "🔥 Bảng giá iPhone tháng 12 - Tháng cuối năm, ưu đãi bùng ...",
+        "snippet": "taoxanh.vn/ Website: https://taoxanh.vn. No photo description ... Visit iPhone dot Green Apple dot Vietnam to update price list every day ok.",
+        "link": "https://www.facebook.com/taoxanhh.com.vn/videos/%EF%B8%8Fb%E1%BA%A3ng-gi%C3%A1-iphone-th%C3%A1ng-12/1938993649990022/"
+      },
+      {
+        "title": "Hội Người Dùng iPhone 15 (Plus/Pro/Pro Max) tại TPHCM",
+        "snippet": "Giá chỉ #16xxx ✓Tặng full phụ kiện ✓ Hỗ trợ thu cũ đổi mới ---------------------------------------- Địa chỉ: Cửa hàng Táo Sâu ( 218A Trung Kính, Cầu Giấy, ...",
+        "link": "https://www.facebook.com/groups/3285526808346832/"
+      },
+      {
+        "title": "Hội iPhone 15 Pro Max & iPhone 15 Pro Việt Nam",
+        "snippet": "Dung lượng 256GB đáp ứng tốt nhu cầu lưu trữ hình ảnh, video và ứng dụng cá nhân. Giá: 18.5tr - Giao dịch trực tiếp TP.HCM Zalo/Call: 0333.",
+        "link": "https://www.facebook.com/groups/iphone14forum/"
+      },
+      {
+        "title": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https ...",
+        "snippet": "iPhone 15 giá siêu hời chỉ từ 18 triệu 990 Xem ngay: https://phongvu.vn/p/apple Đặc biệt ưu đãi trả góp 0% - Không phát sinh thêm bất kỳ ...",
+        "link": "https://www.facebook.com/phongvuvietnam/videos/s%C4%83n-apple-ch%E1%BB%8Dn-phong-v%C5%A9/852425996832416/"
+      },
+      {
+        "title": "Phim bảo vệ màn hình 2pcs UGREEN cho Samsung ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam … 134.460₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/Phim-b%E1%BA%A3o-v%E1%BB%87-m%C3%A0n-h%C3%ACnh-2pcs-UGREEN-cho-Samsung-Galaxy-S24-Ultra-d%C3%A0nh-cho-Samsung-S24-Ultra-Phim-b%E1%BA%A3o-v%E1%BB%87-i.1454455021.27231260152"
+      },
+      {
+        "title": "UGREEN Ốp Điện Thoại Mềm Trong Suốt Chống Sốc Cho ...",
+        "snippet": "Samsung Galaxy S24 Ultra. Shopee Việt Nam UGREEN … 107.070₫ final price indicator. UGREEN VIETNAM Official Store Online 3 phút trước",
+        "link": "https://shopee.vn/UGREEN-%E1%BB%90p-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-M%E1%BB%81m-Trong-Su%E1%BB%91t-Ch%E1%BB%91ng-S%E1%BB%91c-Cho-Samsung-Galaxy-S24-Ultra-Samsung-S23-Ultra-i.1454455021.43053314293"
+      },
+      {
+        "title": "Mua Galaxy S24 Ultra Giá Tốt, Giao Nhanh",
+        "snippet": "Galax S24 Ultra điên thoại gia rẻ Full HD 16GB RAM +1TB ROM Hỗ trợ 2 SIM Mạng 3G/4G/5G Bộ Lớn 8000mAh. ₫1,199,000. Voucher save 45%. 5.0. Vietnam.",
+        "link": "https://www.lazada.vn/tag/galaxy-s24-ultra/?srsltid=AfmBOoojifDTv-BT_RCQYozjjMKJp6z0KKMypWACzoI6AntOAw4vkJDl"
+      },
+      {
+        "title": "🔥 Samsung S24 Ultra giá ngon nè AE: https://s.shopee.vn/ ...",
+        "snippet": "OCR: Galaxy S24 Ultra (12GB (12GB/253GB) (5) GB) Galaxy AI 社is is here Galaxy S24 Ultra ปน đãi đến 7.5 7 Triệu Đồng SPayLater Tragóp Trả ...",
+        "link": "https://www.facebook.com/groups/194682181279549/posts/1900196350728115/"
+      },
+      {
+        "title": "Báo cáo thị trường Samsung galaxy s24 sàn TMĐT ...",
+        "snippet": "Thị trường Samsung galaxy s24 trên TMĐT đạt quy mô 303,8 tỷ đồng và tăng trưởng 14.24% so với quý trước với thương hiệu nổi bật gồm samsung.",
+        "link": "https://metric.vn/ereport/samsung-galaxy-s24?srsltid=AfmBOorku179U5CdZY5MQAV-VCPf_J687K1IHq6ODoidbWjbQgNPDL8I"
+      },
+      {
+        "title": "Mua Samsung S24 Fe Giá Tốt, Giao Nhanh",
+        "snippet": "[SIÊU SALE GIỮA THÁNG 15-17.6] Điện thoại Samsung Galaxy S24 FE, điện thoại AI, màn hình 6.7\" 120Hz, chụp đêm Nightography, trợ lý chỉnh ảnh. ₫11,990,000.",
+        "link": "https://www.lazada.vn/tag/samsung-s24-fe/?srsltid=AfmBOooiB7Fblh2nu0Url3_VcHB-ZnLj7VSC_FB3nR1aOizrjFYrBo9P"
+      },
+      {
+        "title": "Samsung galaxy s24 - Giá Tốt, Sale Tháng 08, Ship 0 Đồng",
+        "snippet": "Shopee cung cấp đầy đủ điện thoại samsung galaxy s24 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, điện thoại samsung galaxy s24 sẽ luôn được ...",
+        "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20s24"
+      },
+      {
+        "title": "MUA SẮM TRÊN SÀN - NHẬN NGÀN ƯU ĐÃI - SHOPEE",
+        "snippet": "Cơ hội mua sắm và nhận ưu đãi vô cùng lớn từ thương hiệu Gia dụng chính hãng Masuto từ các sàn Shopee - Lazada - Tiki.",
+        "link": "https://masuto.vn/pages/mua-sam-tren-san-shopee-tiki-lazada?srsltid=AfmBOor_Zgqk15NoTkhpb6NorYWlsaxdLKBWYL6lgOxzxaFL45t78aFG"
+      },
+      {
+        "title": "Hội Samsung Galaxy S Việt Nam - S24, S24+, S24 Ultra",
+        "snippet": "S25 plus 12/256 zin all nguyên bản : 12.x Xem máy tại: 93 Tô Vĩnh Diện, Thanh Xuân, HN Chi tiết LH ( Zalo, Call): 0982022984 Hỗ trợ thu mua, trao đổi ...",
+        "link": "https://www.facebook.com/groups/2843533739205878/"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "Tải trên Galaxy Store ✅️ FV File Manager. Tải trên Google Play Store. . • Vào app S.A. - Tùy chỉnh bảng điều khiển âm lượng 》Bật. • Chưa từng tạo bất kì ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "Mua s24 với giá này được k ae",
+        "snippet": "Shopee : DEKEY VIETNAM STORE https://s.shopee.vn/707sr4NXAj ... [CHỈ 18.01] Điện thoại Samsung Galaxy S24 - Điện. 2y. 1. Profile photo ...",
+        "link": "https://www.facebook.com/groups/SamfansCom/posts/3050268358439809/"
+      },
+      {
+        "title": "Hội Mua Bán SamSung Galaxy Việt Nam",
+        "snippet": "S24 plus 12/256 và 12/512 zin all đẹp giá từ : 8.x Sdt 0859044202 Địa chỉ : 30 ngõ 93 tô vĩnh diện khương trung thanh xuân hà nội · May be an image of phone. 0 ...",
+        "link": "https://www.facebook.com/groups/439175363654524/"
+      },
+      {
+        "title": "Samsung Galaxy S24, S24+, thanh toán trước giảm 1 triệu",
+        "snippet": "Khám phá điện thoại thông minh Galaxy S24 và S24 Plus, được hỗ trợ bởi Galaxy AI. Kết nối và sáng tạo với các tính năng AI như Circle to Search, ...",
+        "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/?srsltid=AfmBOorwMj9XayvDdNjbctgiAmv23AVrwEZwAEtEttm8KSZFqU0xqrH_"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+        "snippet": "Mua Samsung Galaxy S24 Ultra chính hãng - Sẵn hàng giá rẻ 08/2026, trợ giá thu cũ lên đời 1 triệu, trả góp 0%, giao toàn quốc. Mua S24 Ultra ngay.",
+        "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html"
+      }
+    ]
+  },
+  {
+    "id": "A4",
+    "rep": 1,
+    "kind": "brand-level EN (grounding fail)",
+    "request": "Compare iPhone and Samsung",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone latest model price Vietnam",
+      "Samsung latest smartphone price Vietnam"
+    ],
+    "candidates": 26,
+    "deviceEvidence": 16,
+    "accessoryEvidence": 3,
+    "deviceTitles": [
+      "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+      "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+      "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên ...",
+      "Apple iPhones for sale in Ho Chi Minh City, Vietnam"
+    ],
+    "accessoryTitles": [
+      "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7017,
+    "completionTokens": 483,
+    "ms": 12239,
+    "text": "I'll search for current pricing and specs to help you compare these two brands.Based on current market data, here's how **iPhone** and\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1lzjchlHevbOzoQvZ4C9kQRsK3f457lFZU53mTHr4jQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqu4ajnAtJHZxAoizk-Ngj1fCtQD4LumGA1r2ZSfYJgg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8qg03WNo2VP1yhiJkALSjQIVQ1sAk7uMJljZtEx3MgA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp982eeitJCHVk0aXp3tqVX3HOmJpyrYmmyD0WUmnXvA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbqlzHRH3UWCDtJT_-KVeRl4U07UBW3tgVT6yantMfQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT16e27Qdg4ZcEBM6BYWGMrmtvHVlQImlltX6MFBwGPcA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXRHiqLl-NbbMWaIVRjEJZHmuiVqqUgettSebWfeCKw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GWW2k3W4ZDJx5oTTOJtXfM-NZE_VkvhOruMp3PzDYQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQOot3ovmhfYR0fbZbXNRrpiCXbCo78Dy_RucEXmNK8A&s)\n\n**Samsung** compare:\n\n**Price:** iPhone typically costs more (premium positioning), while Samsung offers options across budget to flagship ranges. Samsung A-series starts around **2.2–2.6M VND**, while iPhone 15+ starts higher.\n\n**Ecosystem:** iPhone locks you into Apple's ecosystem (iCloud, AirDrop, seamless Mac/iPad integration). Samsung uses Android with more flexibility to customize and switch between brands.\n\n**Camera & Performance:** Both are excellent—iPhone excels at video/color accuracy, Samsung offers more zoom range and customization. Performance is comparable at flagship level.\n\n**Durability:** iPhone typically holds value longer; Samsung has more repair options in Vietnam (more service centers).\n\n**Best for:** Choose **iPhone** if you want premium build, long software support (5+ years), and ecosystem lock-in. Pick **Samsung** if you want flexibility, more budget options, or prefer Android customization.\n\nWhat's your priority—budget, camera quality, or ecosystem preference?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone\",\"primary\":true},{\"label\":\"🛒 Find Samsung on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+smartphone\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "evidence": [
+      {
+        "title": "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+        "snippet": "Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro Max,In ・ 35.900₫ final price indicator ・ ₫3k Ốp ・ ự Do Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-C%E1%BB%9D-Vi%E1%BB%87t-Nam-%C4%90%E1%BB%99c-L%E1%BA%ADp-T%E1%BB%B1-Do-Vietnam-Cho-iPhone-11-12-13-14-15-16-17-Pro-Max-In-H%C3%ACnh-Ngh%E1%BB%87-Thu%E1%BA%ADt-M%C3%A0u-C%E1%BB%9D-S%E1%BA%AFc-N%C3%A9t-i.1588230524.52709286855"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ iPhone 16 Pro Max/15 Pro ・ 27.965₫ final price indicator ・ ₫15k để ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ...",
+        "snippet": "Lưng iPhone Vietnam In My Heart ・ 1/6 33.900₫ final price ・ m 4.4 Đánh giá 88% Phản ・ 16/17/Plus/Pro/Max",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-Vietnam-In-My-Heart-Qu%E1%BB%91c-K%E1%BB%B3-%C4%90%E1%BB%8F-iP-X-XS-XR-11-12-13-14-15-16-17-Plus-Pro-Max-i.1625227902.56909465222"
+      },
+      {
+        "title": "Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng",
+        "snippet": "Mua Ốp Lưng Cho iPhone: Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng - PCK-001 Made In Vietnam giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Cho-iPhone-Trong-Su%E1%BB%91t-Nh%E1%BB%B1a-C%E1%BB%A9ng-Kho%C3%A9t-C%E1%BA%A1nh-2-B%C3%AAn-Ch%E1%BB%91ng-%E1%BB%90-V%C3%A0ng-PCK-001-Made-In-Vietnam-i.322094848.44283294074"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "Trong đó, iPhone 15 Promax‏‏ là phiên bản bán chạy nhất của iPhone 15 Series, đóng góp đến ‏‏71,4%‏‏ trong GMV (tổng giá trị giao dịch) của ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên ...",
+        "snippet": "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên Shopee, Lazada, TikTok Shop.",
+        "link": "https://genk.vn/lan-dau-tien-nguoi-viet-co-the-dat-hang-iphone-16-tren-shopee-lazada-tiktok-shop-20240919220413624.chn"
+      },
+      {
+        "title": "Lên SHOPEE, LAZADA Mua 9 con IPHONE giá Siêu Rẻ. ...",
+        "snippet": "Mua 1 lần đến 9 con iPhone?? Mua chi nhiều vậy? Link mua Shopee: ▻ iPhone 5C: https://shp.ee/2vz665s ▻ iPhone 4s: https://shp.ee/fswkkwv ...",
+        "link": "https://www.youtube.com/watch?v=qZpBKXR55UU"
+      },
+      {
+        "title": "Apple iPhones for sale in Ho Chi Minh City, Vietnam",
+        "snippet": "Today's picks · Iphone 11 128G. Zin full CN, pin new 100. Mã vn/a. ₫3,950,000. Iphone 11 128G. Zin full CN, pin new 100. Mã vn/a · Iphone 13 128g lock for sale - ...",
+        "link": "https://www.facebook.com/marketplace/hochiminhcity/iphones/"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Đổi máy mới chỉ từ 2,5 triệu Thu cũ - giá lên đời tốt hơn đến 500k Trả góp 0% lãi suất, sở hữu dễ dàng. ❣️ Comment tên máy đang dùng + mẫu lên đời ...",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "iPhone Reseller Việt Nam – iPhone 17 / 17 Pro Max / ...",
+        "snippet": "17Air 256gb Gold VN fullbox chỉ 19tr Máy khá đẹp, sạc 81 lần, bh 02/2027 ———————————————————————— —— : Văn Miếu - Đống Đa - Hà Nội ☎️: O94.236.1111 - O332.",
+        "link": "https://www.facebook.com/groups/463895081380886/"
+      },
+      {
+        "title": "25 tuổi đã lập đường dây lừa đảo \"săn iPhone giá rẻ\" trên ...",
+        "snippet": "iphone giá rẻ https://s.shopee.vn/6Ajqc2fRbG. 01:15. iphone giá rẻ ... new generation iPhone models. After establishing trust in the ...",
+        "link": "https://www.facebook.com/baodientuvtv/videos/1000-ng%C6%B0%E1%BB%9Di-s%E1%BA%ADp-b%E1%BA%ABy-s%C4%83n-iphone-gi%C3%A1-r%E1%BA%BB/1930523144420545/"
+      },
+      {
+        "title": "iPhone - Apple (VN)",
+        "snippet": "Nhận 4.400.000đ–19.100.000đ dưới hình thức điểm tín dụng để mua iPhone 17, iPhone Air hoặc iPhone 17 Pro khi bạn trao đổi iPhone 13 trở lên.",
+        "link": "https://www.apple.com/vn/iphone/"
+      },
+      {
+        "title": "iPhone (Apple) chính hãng, giá tốt, góp 0% từ 0đ T08/2026",
+        "snippet": "Mua điện thoại iPhone chính hãng Apple bao gồm iPhone 17 Series, iPhone 16 Series, iPhone 15 Series, iPhone 14 Series giá rẻ tại CellphoneS.",
+        "link": "https://cellphones.com.vn/mobile/apple.html"
+      },
+      {
+        "title": "Samsung dẫn đầu thị phần smartphone trên sàn thương ...",
+        "snippet": "Dẫn dắt cho tăng trưởng tích cực của Samsung là dòng Samsung Galaxy S23 Ultra. Dòng máy flagship này tăng doanh thu 77% riêng trong tháng 5/2023 ...",
+        "link": "https://baomoi.com/samsung-dan-dau-thi-phan-smartphone-tren-san-thuong-mai-dien-tu-viet-c46163937.epi"
+      },
+      {
+        "title": "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+        "snippet": "Samsung và Apple là hai dòng điện thoại ... Mỗi tháng, người Việt chi nửa nghìn tỷ mua điện thoại thông minh trên Shopee, Lazada, Tiki.",
+        "link": "https://nguoiquansat.vn/moi-thang-nguoi-viet-chi-nua-nghin-ty-mua-dien-thoai-thong-minh-tren-shopee-lazada-tiki-83003.html"
+      },
+      {
+        "title": "Mua Samsung Vietnam Giá Tốt, Giao Nhanh",
+        "snippet": "Samsung A06 5G original Samsung Vietnam New 100% seal. ₫2,590,000 ; Original Samsung A05 (6GB/128GB) smartphone Samsung Vietnam new 100% sealed. ₫2,190,000.",
+        "link": "https://www.lazada.vn/tag/samsung-vietnam/?srsltid=AfmBOoow-m8riTTSRk4F18ummFexLSr-GhmkVn8LvKt8ZX7VPLpsVFc3"
+      },
+      {
+        "title": "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+        "snippet": "Xét về thương hiệu, 3 hãng smartphone là Apple, Samsung và Xiaomi có doanh thu cao nhất trong quý 2/2022 với lần lượt 997 tỷ, 608 tỷ, 315 tỷ ...",
+        "link": "https://cafef.vn/nguoi-viet-mua-gi-tren-shopee-lazada-tiki-nua-dau-nam-2022-2022081010160399.chn"
+      },
+      {
+        "title": "Mua hàng Tiki, Lazada, Shopee tăng cao mùa dịch",
+        "snippet": "Phía Tiki cho biết, trong 2 ngày cuối tuần vừa qua, mức độ tăng trưởng trên toàn sàn lên 30%. Đồng thời xu hướng tìm kiếm của người tiêu dùng ...",
+        "link": "https://vietnamnet.vn/mua-hang-tiki-lazada-shopee-tang-cao-mua-dich-i286122.html"
+      },
+      {
+        "title": "150K Cho Smartphone Samsung Và CÁI KẾT | KTheme",
+        "snippet": "Điện thoại Samsung Galaxy Grand Prime G530: [Lazada]: https://lzd.ooo/ssg530 [Shopee]: https://shopee.ooo/ssg530 [Tiki]: ...",
+        "link": "https://www.facebook.com/ktheme/videos/-150k-cho-smartphone-samsung-v%C3%A0-c%C3%A1i-k%E1%BA%BFt/1568605077426443/"
+      },
+      {
+        "title": "Samsung | Ho Chi Minh City",
+        "snippet": "Đã đến lúc sở hữu thế hệ smartphone gập mới nhất từ Samsung! Galaxy Z Fold8 Ultra, Galaxy Z Fold8 và Galaxy Z Flip8 mang đến sự kết hợp giữa thiết kế đẳng ...",
+        "link": "https://www.facebook.com/SamsungVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Hệ thống bán lẻ điện thoại, máy tính bảng, đồng hồ, loa, phụ kiện, thiết bị công nghệ,... chính hãng. Đại lý uỷ quyền chính thức của Apple tại Việt Nam.",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "CellphoneS - Hệ thống bán lẻ di động toàn quốc",
+        "snippet": "Hệ thống bán lẻ thiết bị công nghệ chính hãng hàng đầu tại Việt Nam với hơn 170 cửa hàng trên toàn quốc. Đa dạng sản phẩm công nghệ từ điện thoại, laptop, ...",
+        "link": "https://www.facebook.com/CellphoneSVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "NỘI QUY (#NOIQUY) GROUP #SamfansCom ----- Group #SamfansCom là nơi tập hợp tất cả những anh chị em có cùng niềm đam mê, yêu thích & đang sử dụng các sản...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "SamCenter Việt Nam",
+        "snippet": "SamCenter Việt Nam. 39053 likes · 3654 talking about this. SamCenter - Chuỗi cửa hàng Samsung chính hãng. Cam kết giá tốt nhất.",
+        "link": "https://www.facebook.com/samcenter.hesman/?locale=vi_VN"
+      },
+      {
+        "title": "Giá bán Điện Thoại Samsung Galaxy và Ưu Đãi",
+        "snippet": "Mua điện thoại Samsung Galaxy tại Việt Nam với miễn phí giao hàng toàn quốc, quà tặng độc quyền của Samsung và ưu đãi hấp dẫn cho điện thoại Galaxy tiếp ...",
+        "link": "https://www.samsung.com/vn/smartphones/all-smartphones/?srsltid=AfmBOoonDxqKkmdgKFfhjMOXz_wlKf-AWewY0f3wcZM2XHUR98tySR6E"
+      }
+    ]
+  },
+  {
+    "id": "A4",
+    "rep": 2,
+    "kind": "brand-level EN (grounding fail)",
+    "request": "Compare iPhone and Samsung",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 4,
+    "promptTokens": 1144,
+    "completionTokens": 131,
+    "ms": 2212,
+    "text": "I'd be happy to help you compare iPhones and Samsung phones! To give you the most useful comparison, I need a bit more info:\n\n**What matters most to you?**\n- Budget range (e.g., under $300, $500-800, premium $1000+)?\n- Specific models you're eyeing (e.g., iPhone 15 vs Galaxy S24)?\n- Key priorities (camera, battery life, performance, design, price)?\n\nOnce I know what you're looking for, I can search for current prices and specs to help you decide! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A4",
+    "rep": 3,
+    "kind": "brand-level EN (grounding fail)",
+    "request": "Compare iPhone and Samsung",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone latest model price Vietnam",
+      "Samsung latest smartphone price Vietnam"
+    ],
+    "candidates": 26,
+    "deviceEvidence": 16,
+    "accessoryEvidence": 3,
+    "deviceTitles": [
+      "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+      "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+      "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên ...",
+      "Apple iPhones for sale in Ho Chi Minh City, Vietnam"
+    ],
+    "accessoryTitles": [
+      "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7017,
+    "completionTokens": 517,
+    "ms": 8707,
+    "text": "I'll search for current pricing and specs to help you compare these two brands.Based on current market data, here's how **iPhone** and\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1lzjchlHevbOzoQvZ4C9kQRsK3f457lFZU53mTHr4jQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqu4ajnAtJHZxAoizk-Ngj1fCtQD4LumGA1r2ZSfYJgg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8qg03WNo2VP1yhiJkALSjQIVQ1sAk7uMJljZtEx3MgA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp982eeitJCHVk0aXp3tqVX3HOmJpyrYmmyD0WUmnXvA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbqlzHRH3UWCDtJT_-KVeRl4U07UBW3tgVT6yantMfQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIZAHLeGgXoddfFVqrZxTtXqPZmomwBSSP1NbvAWjlRQ&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXRHiqLl-NbbMWaIVRjEJZHmuiVqqUgettSebWfeCKw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GWW2k3W4ZDJx5oTTOJtXfM-NZE_VkvhOruMp3PzDYQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQOot3ovmhfYR0fbZbXNRrpiCXbCo78Dy_RucEXmNK8A&s)\n\n**Samsung** compare:\n\n**Price:** iPhone typically costs more (premium positioning), while Samsung offers options across budget to flagship ranges. Samsung A-series starts around **2.2–2.6M VND**, while iPhone 16+ starts higher.\n\n**Ecosystem:** iPhone locks you into Apple's ecosystem (iCloud, AirDrop, seamless Mac/iPad integration). Samsung uses Android with more flexibility to customize and switch between brands.\n\n**Camera & Performance:** Both are excellent—iPhone excels at video/computational photography; Samsung Galaxy S-series matches or beats iPhone on specs (higher refresh rates, zoom). For everyday use, both are top-tier.\n\n**Software:** iOS is simpler, more secure; Android (Samsung) offers more control but requires more management.\n\n**Durability & Support:** iPhone has longer software support (5–6 years). Samsung typically 4 years. Both are durable.\n\n**Best for:** Choose **iPhone** if you want simplicity, privacy, and Apple ecosystem. Pick **Samsung** if you want more choice, customization, and value across price ranges.\n\nWhat's your priority—budget, camera quality, or ecosystem preference?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone\",\"primary\":true},{\"label\":\"🛒 Find Samsung on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "evidence": [
+      {
+        "title": "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+        "snippet": "Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro Max,In ・ 35.900₫ final price indicator ・ ₫3k Ốp ・ ự Do Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-C%E1%BB%9D-Vi%E1%BB%87t-Nam-%C4%90%E1%BB%99c-L%E1%BA%ADp-T%E1%BB%B1-Do-Vietnam-Cho-iPhone-11-12-13-14-15-16-17-Pro-Max-In-H%C3%ACnh-Ngh%E1%BB%87-Thu%E1%BA%ADt-M%C3%A0u-C%E1%BB%9D-S%E1%BA%AFc-N%C3%A9t-i.1588230524.52709286855"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ iPhone 16 Pro Max/15 Pro ・ 27.965₫ final price indicator ・ ₫15k để ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ...",
+        "snippet": "Lưng iPhone Vietnam In My Heart ・ 1/6 33.900₫ final price ・ m 4.4 Đánh giá 88% Phản ・ 16/17/Plus/Pro/Max",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-Vietnam-In-My-Heart-Qu%E1%BB%91c-K%E1%BB%B3-%C4%90%E1%BB%8F-iP-X-XS-XR-11-12-13-14-15-16-17-Plus-Pro-Max-i.1625227902.56909465222"
+      },
+      {
+        "title": "Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng",
+        "snippet": "Mua Ốp Lưng Cho iPhone: Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng - PCK-001 Made In Vietnam giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Cho-iPhone-Trong-Su%E1%BB%91t-Nh%E1%BB%B1a-C%E1%BB%A9ng-Kho%C3%A9t-C%E1%BA%A1nh-2-B%C3%AAn-Ch%E1%BB%91ng-%E1%BB%90-V%C3%A0ng-PCK-001-Made-In-Vietnam-i.322094848.44283294074"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "Trong đó, iPhone 15 Promax‏‏ là phiên bản bán chạy nhất của iPhone 15 Series, đóng góp đến ‏‏71,4%‏‏ trong GMV (tổng giá trị giao dịch) của ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên ...",
+        "snippet": "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên Shopee, Lazada, TikTok Shop.",
+        "link": "https://genk.vn/lan-dau-tien-nguoi-viet-co-the-dat-hang-iphone-16-tren-shopee-lazada-tiktok-shop-20240919220413624.chn"
+      },
+      {
+        "title": "Lên SHOPEE, LAZADA Mua 9 con IPHONE giá Siêu Rẻ. ...",
+        "snippet": "Mua 1 lần đến 9 con iPhone?? Mua chi nhiều vậy? Link mua Shopee: ▻ iPhone 5C: https://shp.ee/2vz665s ▻ iPhone 4s: https://shp.ee/fswkkwv ...",
+        "link": "https://www.youtube.com/watch?v=qZpBKXR55UU"
+      },
+      {
+        "title": "Apple iPhones for sale in Ho Chi Minh City, Vietnam",
+        "snippet": "Today's picks · Iphone 11 128G. Zin full CN, pin new 100. Mã vn/a. ₫3,950,000. Iphone 11 128G. Zin full CN, pin new 100. Mã vn/a · Iphone 13 128g lock for sale - ...",
+        "link": "https://www.facebook.com/marketplace/hochiminhcity/iphones/"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Đổi máy mới chỉ từ 2,5 triệu Thu cũ - giá lên đời tốt hơn đến 500k Trả góp 0% lãi suất, sở hữu dễ dàng. ❣️ Comment tên máy đang dùng + mẫu lên đời ...",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "iPhone Reseller Việt Nam – iPhone 17 / 17 Pro Max / ...",
+        "snippet": "17Air 256gb Gold VN fullbox chỉ 19tr Máy khá đẹp, sạc 81 lần, bh 02/2027 ———————————————————————— —— : Văn Miếu - Đống Đa - Hà Nội ☎️: O94.236.1111 - O332.",
+        "link": "https://www.facebook.com/groups/463895081380886/"
+      },
+      {
+        "title": "25 tuổi đã lập đường dây lừa đảo \"săn iPhone giá rẻ\" trên ...",
+        "snippet": "iphone giá rẻ https://s.shopee.vn/6Ajqc2fRbG. 01:15. iphone giá rẻ ... new generation iPhone models. After establishing trust in the ...",
+        "link": "https://www.facebook.com/baodientuvtv/videos/1000-ng%C6%B0%E1%BB%9Di-s%E1%BA%ADp-b%E1%BA%ABy-s%C4%83n-iphone-gi%C3%A1-r%E1%BA%BB/1930523144420545/"
+      },
+      {
+        "title": "iPhone - Apple (VN)",
+        "snippet": "Nhận 4.400.000đ–19.100.000đ dưới hình thức điểm tín dụng để mua iPhone 17, iPhone Air hoặc iPhone 17 Pro khi bạn trao đổi iPhone 13 trở lên.",
+        "link": "https://www.apple.com/vn/iphone/"
+      },
+      {
+        "title": "iPhone (Apple) chính hãng, giá tốt, góp 0% từ 0đ T08/2026",
+        "snippet": "Mua điện thoại iPhone chính hãng Apple bao gồm iPhone 17 Series, iPhone 16 Series, iPhone 15 Series, iPhone 14 Series giá rẻ tại CellphoneS.",
+        "link": "https://cellphones.com.vn/mobile/apple.html"
+      },
+      {
+        "title": "Samsung dẫn đầu thị phần smartphone trên sàn thương ...",
+        "snippet": "Dẫn dắt cho tăng trưởng tích cực của Samsung là dòng Samsung Galaxy S23 Ultra. Dòng máy flagship này tăng doanh thu 77% riêng trong tháng 5/2023 ...",
+        "link": "https://baomoi.com/samsung-dan-dau-thi-phan-smartphone-tren-san-thuong-mai-dien-tu-viet-c46163937.epi"
+      },
+      {
+        "title": "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+        "snippet": "Samsung và Apple là hai dòng điện thoại ... Mỗi tháng, người Việt chi nửa nghìn tỷ mua điện thoại thông minh trên Shopee, Lazada, Tiki.",
+        "link": "https://nguoiquansat.vn/moi-thang-nguoi-viet-chi-nua-nghin-ty-mua-dien-thoai-thong-minh-tren-shopee-lazada-tiki-83003.html"
+      },
+      {
+        "title": "Mua Samsung Vietnam Giá Tốt, Giao Nhanh",
+        "snippet": "Samsung A06 5G original Samsung Vietnam New 100% seal. ₫2,590,000 ; Original Samsung A05 (6GB/128GB) smartphone Samsung Vietnam new 100% sealed. ₫2,190,000.",
+        "link": "https://www.lazada.vn/tag/samsung-vietnam/?srsltid=AfmBOoow-m8riTTSRk4F18ummFexLSr-GhmkVn8LvKt8ZX7VPLpsVFc3"
+      },
+      {
+        "title": "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+        "snippet": "Xét về thương hiệu, 3 hãng smartphone là Apple, Samsung và Xiaomi có doanh thu cao nhất trong quý 2/2022 với lần lượt 997 tỷ, 608 tỷ, 315 tỷ ...",
+        "link": "https://cafef.vn/nguoi-viet-mua-gi-tren-shopee-lazada-tiki-nua-dau-nam-2022-2022081010160399.chn"
+      },
+      {
+        "title": "Mua hàng Tiki, Lazada, Shopee tăng cao mùa dịch",
+        "snippet": "Phía Tiki cho biết, trong 2 ngày cuối tuần vừa qua, mức độ tăng trưởng trên toàn sàn lên 30%. Đồng thời xu hướng tìm kiếm của người tiêu dùng ...",
+        "link": "https://vietnamnet.vn/mua-hang-tiki-lazada-shopee-tang-cao-mua-dich-i286122.html"
+      },
+      {
+        "title": "150K Cho Smartphone Samsung Và CÁI KẾT | KTheme",
+        "snippet": "Điện thoại Samsung Galaxy Grand Prime G530: [Lazada]: https://lzd.ooo/ssg530 [Shopee]: https://shopee.ooo/ssg530 [Tiki]: ...",
+        "link": "https://www.facebook.com/ktheme/videos/-150k-cho-smartphone-samsung-v%C3%A0-c%C3%A1i-k%E1%BA%BFt/1568605077426443/"
+      },
+      {
+        "title": "Samsung | Ho Chi Minh City",
+        "snippet": "Đã đến lúc sở hữu thế hệ smartphone gập mới nhất từ Samsung! Galaxy Z Fold8 Ultra, Galaxy Z Fold8 và Galaxy Z Flip8 mang đến sự kết hợp giữa thiết kế đẳng ...",
+        "link": "https://www.facebook.com/SamsungVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Hệ thống bán lẻ điện thoại, máy tính bảng, đồng hồ, loa, phụ kiện, thiết bị công nghệ,... chính hãng. Đại lý uỷ quyền chính thức của Apple tại Việt Nam.",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "CellphoneS - Hệ thống bán lẻ di động toàn quốc",
+        "snippet": "Hệ thống bán lẻ thiết bị công nghệ chính hãng hàng đầu tại Việt Nam với hơn 170 cửa hàng trên toàn quốc. Đa dạng sản phẩm công nghệ từ điện thoại, laptop, ...",
+        "link": "https://www.facebook.com/CellphoneSVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "NỘI QUY (#NOIQUY) GROUP #SamfansCom ----- Group #SamfansCom là nơi tập hợp tất cả những anh chị em có cùng niềm đam mê, yêu thích & đang sử dụng các sản...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "SamCenter Việt Nam",
+        "snippet": "SamCenter Việt Nam. 39053 likes · 3654 talking about this. SamCenter - Chuỗi cửa hàng Samsung chính hãng. Cam kết giá tốt nhất.",
+        "link": "https://www.facebook.com/samcenter.hesman/?locale=vi_VN"
+      },
+      {
+        "title": "Giá bán Điện Thoại Samsung Galaxy và Ưu Đãi",
+        "snippet": "Mua điện thoại Samsung Galaxy tại Việt Nam với miễn phí giao hàng toàn quốc, quà tặng độc quyền của Samsung và ưu đãi hấp dẫn cho điện thoại Galaxy tiếp ...",
+        "link": "https://www.samsung.com/vn/smartphones/all-smartphones/?srsltid=AfmBOoonDxqKkmdgKFfhjMOXz_wlKf-AWewY0f3wcZM2XHUR98tySR6E"
+      }
+    ]
+  },
+  {
+    "id": "A4",
+    "rep": 4,
+    "kind": "brand-level EN (grounding fail)",
+    "request": "Compare iPhone and Samsung",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone latest model price Vietnam",
+      "Samsung latest smartphone price Vietnam"
+    ],
+    "candidates": 26,
+    "deviceEvidence": 16,
+    "accessoryEvidence": 3,
+    "deviceTitles": [
+      "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+      "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+      "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên ...",
+      "Apple iPhones for sale in Ho Chi Minh City, Vietnam"
+    ],
+    "accessoryTitles": [
+      "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7017,
+    "completionTokens": 507,
+    "ms": 9310,
+    "text": "I'll search for current pricing and specs to help you compare these two brands.Based on current market data, here's how **iPhone** and\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1lzjchlHevbOzoQvZ4C9kQRsK3f457lFZU53mTHr4jQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqu4ajnAtJHZxAoizk-Ngj1fCtQD4LumGA1r2ZSfYJgg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8qg03WNo2VP1yhiJkALSjQIVQ1sAk7uMJljZtEx3MgA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp982eeitJCHVk0aXp3tqVX3HOmJpyrYmmyD0WUmnXvA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbqlzHRH3UWCDtJT_-KVeRl4U07UBW3tgVT6yantMfQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT16e27Qdg4ZcEBM6BYWGMrmtvHVlQImlltX6MFBwGPcA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXRHiqLl-NbbMWaIVRjEJZHmuiVqqUgettSebWfeCKw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoBEoMPm5YE28OlGf_6seZfjaQ9keCoNR69e7uuqjYkQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GWW2k3W4ZDJx5oTTOJtXfM-NZE_VkvhOruMp3PzDYQ&s=10)\n\n**Samsung** compare:\n\n**Price:** iPhone typically costs more (premium positioning), while Samsung offers options across budget to flagship ranges. Samsung A-series starts around **2.2–2.6M VND**, while iPhone 16+ starts higher.\n\n**Ecosystem:** iPhone locks you into Apple's ecosystem (iCloud, AirDrop, seamless Mac/iPad integration). Samsung uses Android with more flexibility to customize and switch between brands.\n\n**Camera & Performance:** Both are excellent—iPhone excels at video/color accuracy, Samsung offers more zoom range and customization. Performance is comparable at flagship level.\n\n**Durability:** iPhone typically holds resale value better; Samsung has more repair options locally in Vietnam.\n\n**Best for:** Choose **iPhone** if you want simplicity, privacy, and ecosystem lock-in. Pick **Samsung** if you want flexibility, more budget options, and customization.\n\nWhat matters most to you—price, ecosystem, camera quality, or something else?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+latest\",\"primary\":true},{\"label\":\"🛒 Find Samsung on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+latest\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone+comparison\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Budget range?|Camera priority?|Want long-term support?[/FOLLOWUPS]",
+    "evidence": [
+      {
+        "title": "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+        "snippet": "Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro Max,In ・ 35.900₫ final price indicator ・ ₫3k Ốp ・ ự Do Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-C%E1%BB%9D-Vi%E1%BB%87t-Nam-%C4%90%E1%BB%99c-L%E1%BA%ADp-T%E1%BB%B1-Do-Vietnam-Cho-iPhone-11-12-13-14-15-16-17-Pro-Max-In-H%C3%ACnh-Ngh%E1%BB%87-Thu%E1%BA%ADt-M%C3%A0u-C%E1%BB%9D-S%E1%BA%AFc-N%C3%A9t-i.1588230524.52709286855"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ iPhone 16 Pro Max/15 Pro ・ 27.965₫ final price indicator ・ ₫15k để ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ...",
+        "snippet": "Lưng iPhone Vietnam In My Heart ・ 1/6 33.900₫ final price ・ m 4.4 Đánh giá 88% Phản ・ 16/17/Plus/Pro/Max",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-Vietnam-In-My-Heart-Qu%E1%BB%91c-K%E1%BB%B3-%C4%90%E1%BB%8F-iP-X-XS-XR-11-12-13-14-15-16-17-Plus-Pro-Max-i.1625227902.56909465222"
+      },
+      {
+        "title": "Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng",
+        "snippet": "Mua Ốp Lưng Cho iPhone: Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng - PCK-001 Made In Vietnam giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Cho-iPhone-Trong-Su%E1%BB%91t-Nh%E1%BB%B1a-C%E1%BB%A9ng-Kho%C3%A9t-C%E1%BA%A1nh-2-B%C3%AAn-Ch%E1%BB%91ng-%E1%BB%90-V%C3%A0ng-PCK-001-Made-In-Vietnam-i.322094848.44283294074"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "Trong đó, iPhone 15 Promax‏‏ là phiên bản bán chạy nhất của iPhone 15 Series, đóng góp đến ‏‏71,4%‏‏ trong GMV (tổng giá trị giao dịch) của ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên ...",
+        "snippet": "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên Shopee, Lazada, TikTok Shop.",
+        "link": "https://genk.vn/lan-dau-tien-nguoi-viet-co-the-dat-hang-iphone-16-tren-shopee-lazada-tiktok-shop-20240919220413624.chn"
+      },
+      {
+        "title": "Lên SHOPEE, LAZADA Mua 9 con IPHONE giá Siêu Rẻ. ...",
+        "snippet": "Mua 1 lần đến 9 con iPhone?? Mua chi nhiều vậy? Link mua Shopee: ▻ iPhone 5C: https://shp.ee/2vz665s ▻ iPhone 4s: https://shp.ee/fswkkwv ...",
+        "link": "https://www.youtube.com/watch?v=qZpBKXR55UU"
+      },
+      {
+        "title": "Apple iPhones for sale in Ho Chi Minh City, Vietnam",
+        "snippet": "Today's picks · Iphone 11 128G. Zin full CN, pin new 100. Mã vn/a. ₫3,950,000. Iphone 11 128G. Zin full CN, pin new 100. Mã vn/a · Iphone 13 128g lock for sale - ...",
+        "link": "https://www.facebook.com/marketplace/hochiminhcity/iphones/"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Đổi máy mới chỉ từ 2,5 triệu Thu cũ - giá lên đời tốt hơn đến 500k Trả góp 0% lãi suất, sở hữu dễ dàng. ❣️ Comment tên máy đang dùng + mẫu lên đời ...",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "iPhone Reseller Việt Nam – iPhone 17 / 17 Pro Max / ...",
+        "snippet": "17Air 256gb Gold VN fullbox chỉ 19tr Máy khá đẹp, sạc 81 lần, bh 02/2027 ———————————————————————— —— : Văn Miếu - Đống Đa - Hà Nội ☎️: O94.236.1111 - O332.",
+        "link": "https://www.facebook.com/groups/463895081380886/"
+      },
+      {
+        "title": "25 tuổi đã lập đường dây lừa đảo \"săn iPhone giá rẻ\" trên ...",
+        "snippet": "iphone giá rẻ https://s.shopee.vn/6Ajqc2fRbG. 01:15. iphone giá rẻ ... new generation iPhone models. After establishing trust in the ...",
+        "link": "https://www.facebook.com/baodientuvtv/videos/1000-ng%C6%B0%E1%BB%9Di-s%E1%BA%ADp-b%E1%BA%ABy-s%C4%83n-iphone-gi%C3%A1-r%E1%BA%BB/1930523144420545/"
+      },
+      {
+        "title": "iPhone - Apple (VN)",
+        "snippet": "Nhận 4.400.000đ–19.100.000đ dưới hình thức điểm tín dụng để mua iPhone 17, iPhone Air hoặc iPhone 17 Pro khi bạn trao đổi iPhone 13 trở lên.",
+        "link": "https://www.apple.com/vn/iphone/"
+      },
+      {
+        "title": "iPhone (Apple) chính hãng, giá tốt, góp 0% từ 0đ T08/2026",
+        "snippet": "Mua điện thoại iPhone chính hãng Apple bao gồm iPhone 17 Series, iPhone 16 Series, iPhone 15 Series, iPhone 14 Series giá rẻ tại CellphoneS.",
+        "link": "https://cellphones.com.vn/mobile/apple.html"
+      },
+      {
+        "title": "Samsung dẫn đầu thị phần smartphone trên sàn thương ...",
+        "snippet": "Dẫn dắt cho tăng trưởng tích cực của Samsung là dòng Samsung Galaxy S23 Ultra. Dòng máy flagship này tăng doanh thu 77% riêng trong tháng 5/2023 ...",
+        "link": "https://baomoi.com/samsung-dan-dau-thi-phan-smartphone-tren-san-thuong-mai-dien-tu-viet-c46163937.epi"
+      },
+      {
+        "title": "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+        "snippet": "Samsung và Apple là hai dòng điện thoại ... Mỗi tháng, người Việt chi nửa nghìn tỷ mua điện thoại thông minh trên Shopee, Lazada, Tiki.",
+        "link": "https://nguoiquansat.vn/moi-thang-nguoi-viet-chi-nua-nghin-ty-mua-dien-thoai-thong-minh-tren-shopee-lazada-tiki-83003.html"
+      },
+      {
+        "title": "Mua Samsung Vietnam Giá Tốt, Giao Nhanh",
+        "snippet": "Samsung A06 5G original Samsung Vietnam New 100% seal. ₫2,590,000 ; Original Samsung A05 (6GB/128GB) smartphone Samsung Vietnam new 100% sealed. ₫2,190,000.",
+        "link": "https://www.lazada.vn/tag/samsung-vietnam/?srsltid=AfmBOoow-m8riTTSRk4F18ummFexLSr-GhmkVn8LvKt8ZX7VPLpsVFc3"
+      },
+      {
+        "title": "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+        "snippet": "Xét về thương hiệu, 3 hãng smartphone là Apple, Samsung và Xiaomi có doanh thu cao nhất trong quý 2/2022 với lần lượt 997 tỷ, 608 tỷ, 315 tỷ ...",
+        "link": "https://cafef.vn/nguoi-viet-mua-gi-tren-shopee-lazada-tiki-nua-dau-nam-2022-2022081010160399.chn"
+      },
+      {
+        "title": "Mua hàng Tiki, Lazada, Shopee tăng cao mùa dịch",
+        "snippet": "Phía Tiki cho biết, trong 2 ngày cuối tuần vừa qua, mức độ tăng trưởng trên toàn sàn lên 30%. Đồng thời xu hướng tìm kiếm của người tiêu dùng ...",
+        "link": "https://vietnamnet.vn/mua-hang-tiki-lazada-shopee-tang-cao-mua-dich-i286122.html"
+      },
+      {
+        "title": "150K Cho Smartphone Samsung Và CÁI KẾT | KTheme",
+        "snippet": "Điện thoại Samsung Galaxy Grand Prime G530: [Lazada]: https://lzd.ooo/ssg530 [Shopee]: https://shopee.ooo/ssg530 [Tiki]: ...",
+        "link": "https://www.facebook.com/ktheme/videos/-150k-cho-smartphone-samsung-v%C3%A0-c%C3%A1i-k%E1%BA%BFt/1568605077426443/"
+      },
+      {
+        "title": "Samsung | Ho Chi Minh City",
+        "snippet": "Đã đến lúc sở hữu thế hệ smartphone gập mới nhất từ Samsung! Galaxy Z Fold8 Ultra, Galaxy Z Fold8 và Galaxy Z Flip8 mang đến sự kết hợp giữa thiết kế đẳng ...",
+        "link": "https://www.facebook.com/SamsungVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Hệ thống bán lẻ điện thoại, máy tính bảng, đồng hồ, loa, phụ kiện, thiết bị công nghệ,... chính hãng. Đại lý uỷ quyền chính thức của Apple tại Việt Nam.",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "CellphoneS - Hệ thống bán lẻ di động toàn quốc",
+        "snippet": "Hệ thống bán lẻ thiết bị công nghệ chính hãng hàng đầu tại Việt Nam với hơn 170 cửa hàng trên toàn quốc. Đa dạng sản phẩm công nghệ từ điện thoại, laptop, ...",
+        "link": "https://www.facebook.com/CellphoneSVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "NỘI QUY (#NOIQUY) GROUP #SamfansCom ----- Group #SamfansCom là nơi tập hợp tất cả những anh chị em có cùng niềm đam mê, yêu thích & đang sử dụng các sản...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "SamCenter Việt Nam",
+        "snippet": "SamCenter Việt Nam. 39053 likes · 3654 talking about this. SamCenter - Chuỗi cửa hàng Samsung chính hãng. Cam kết giá tốt nhất.",
+        "link": "https://www.facebook.com/samcenter.hesman/?locale=vi_VN"
+      },
+      {
+        "title": "Giá bán Điện Thoại Samsung Galaxy và Ưu Đãi",
+        "snippet": "Mua điện thoại Samsung Galaxy tại Việt Nam với miễn phí giao hàng toàn quốc, quà tặng độc quyền của Samsung và ưu đãi hấp dẫn cho điện thoại Galaxy tiếp ...",
+        "link": "https://www.samsung.com/vn/smartphones/all-smartphones/?srsltid=AfmBOoonDxqKkmdgKFfhjMOXz_wlKf-AWewY0f3wcZM2XHUR98tySR6E"
+      }
+    ]
+  },
+  {
+    "id": "A4",
+    "rep": 5,
+    "kind": "brand-level EN (grounding fail)",
+    "request": "Compare iPhone and Samsung",
+    "refused": false,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "searchProductsCalls": 2,
+    "queries": [
+      "iPhone latest model price Vietnam",
+      "Samsung latest smartphone price Vietnam"
+    ],
+    "candidates": 26,
+    "deviceEvidence": 16,
+    "accessoryEvidence": 3,
+    "deviceTitles": [
+      "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+      "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+      "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên ...",
+      "Apple iPhones for sale in Ho Chi Minh City, Vietnam"
+    ],
+    "accessoryTitles": [
+      "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+      "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & .",
+      "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ..."
+    ],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 1,
+    "promptTokens": 7017,
+    "completionTokens": 505,
+    "ms": 8910,
+    "text": "I'll search for current pricing and specs to help you compare these two brands.Based on current market data, here's how **iPhone** and\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1lzjchlHevbOzoQvZ4C9kQRsK3f457lFZU53mTHr4jQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqu4ajnAtJHZxAoizk-Ngj1fCtQD4LumGA1r2ZSfYJgg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8qg03WNo2VP1yhiJkALSjQIVQ1sAk7uMJljZtEx3MgA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp982eeitJCHVk0aXp3tqVX3HOmJpyrYmmyD0WUmnXvA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbqlzHRH3UWCDtJT_-KVeRl4U07UBW3tgVT6yantMfQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT16e27Qdg4ZcEBM6BYWGMrmtvHVlQImlltX6MFBwGPcA&s)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXRHiqLl-NbbMWaIVRjEJZHmuiVqqUgettSebWfeCKw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoBEoMPm5YE28OlGf_6seZfjaQ9keCoNR69e7uuqjYkQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GWW2k3W4ZDJx5oTTOJtXfM-NZE_VkvhOruMp3PzDYQ&s=10)\n\n**Samsung** compare:\n\n**Price:** iPhone typically costs more (premium positioning), while Samsung offers options across budget to flagship ranges. Samsung A-series starts around **2.2–2.6M VND**, while iPhone 16+ starts higher.\n\n**Ecosystem:** iPhone locks you into Apple's ecosystem (iCloud, AirDrop, seamless Mac/iPad integration). Samsung uses Android with more flexibility to customize and switch between brands.\n\n**Camera & Performance:** Both are excellent—iPhone excels at video/color accuracy, Samsung offers more zoom range and customization. Performance is comparable at flagship level.\n\n**Software:** iOS is simpler & more secure; Android (Samsung) offers more control but requires more management.\n\n**Durability:** Both solid, though iPhone typically holds resale value better.\n\n**My lean:** If you want simplicity + premium feel → **iPhone**. If you want flexibility + value for money → **Samsung** (especially Galaxy S-series or A-series depending on budget).\n\nWhat's your priority—budget, camera quality, or ecosystem preference?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+latest+model\",\"primary\":true},{\"label\":\"🛒 Find Samsung on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+latest+smartphone\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=smartphone+comparison\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "evidence": [
+      {
+        "title": "Ốp Lưng Cờ Việt Nam Độc Lập Tự Do Vietnam Cho ...",
+        "snippet": "Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro Max,In ・ 35.900₫ final price indicator ・ ₫3k Ốp ・ ự Do Vietnam Cho iPhone 11/12/13/14/15/16/17 Pro",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-C%E1%BB%9D-Vi%E1%BB%87t-Nam-%C4%90%E1%BB%99c-L%E1%BA%ADp-T%E1%BB%B1-Do-Vietnam-Cho-iPhone-11-12-13-14-15-16-17-Pro-Max-In-H%C3%ACnh-Ngh%E1%BB%87-Thu%E1%BA%ADt-M%C3%A0u-C%E1%BB%9D-S%E1%BA%AFc-N%C3%A9t-i.1588230524.52709286855"
+      },
+      {
+        "title": "Ốp lưng iPhone I ️ Vietnam | Bảo vệ full camera | Nón lá & ...",
+        "snippet": "Ốp lưng iPhone I ️ Vietnam | ・ iPhone 16 Pro Max/15 Pro ・ 27.965₫ final price indicator ・ ₫15k để ・ iPhone 16 Pro Max/15 Pro Ma",
+        "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-I-%EF%B8%8F-Vietnam-B%E1%BA%A3o-v%E1%BB%87-full-camera-N%C3%B3n-l%C3%A1-Xe-c%E1%BB%99-V%E1%BA%BB-%C4%91%E1%BA%B9p-v%C4%83n-h%C3%B3a-Vi%E1%BB%87t-c%E1%BA%A5p-iPhone-16-Pro-Max-15-Pro-Ma-i.1437238669.54708782964"
+      },
+      {
+        "title": "Ốp Lưng iPhone Vietnam In My Heart Quốc Kỳ Đỏ iP X/XS ...",
+        "snippet": "Lưng iPhone Vietnam In My Heart ・ 1/6 33.900₫ final price ・ m 4.4 Đánh giá 88% Phản ・ 16/17/Plus/Pro/Max",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-Vietnam-In-My-Heart-Qu%E1%BB%91c-K%E1%BB%B3-%C4%90%E1%BB%8F-iP-X-XS-XR-11-12-13-14-15-16-17-Plus-Pro-Max-i.1625227902.56909465222"
+      },
+      {
+        "title": "Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng",
+        "snippet": "Mua Ốp Lưng Cho iPhone: Trong Suốt Nhựa Cứng Khoét Cạnh 2 Bên - Chống Ố Vàng - PCK-001 Made In Vietnam giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+        "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Cho-iPhone-Trong-Su%E1%BB%91t-Nh%E1%BB%B1a-C%E1%BB%A9ng-Kho%C3%A9t-C%E1%BA%A1nh-2-B%C3%AAn-Ch%E1%BB%91ng-%E1%BB%90-V%C3%A0ng-PCK-001-Made-In-Vietnam-i.322094848.44283294074"
+      },
+      {
+        "title": "Shopee, Lazada, Tiki tranh giành thị phần bán iPhone từ ...",
+        "snippet": "Trong đó, iPhone 15 Promax‏‏ là phiên bản bán chạy nhất của iPhone 15 Series, đóng góp đến ‏‏71,4%‏‏ trong GMV (tổng giá trị giao dịch) của ...",
+        "link": "https://vietnambiz.vn/shopee-lazada-tiki-gianh-thi-phan-ban-iphone-tu-tay-the-gioi-di-dong-fpt-shop-202432712326349.htm"
+      },
+      {
+        "title": "Lý do Shopee, Tiki, Lazada không cho đặt trước iPhone 13",
+        "snippet": "Shopee, Tiki, Lazada bắt đầu bán iPhone 13 series vào ngày 22/10, không mở chương trình đặt trước như các nhà bán lẻ truyền thống.",
+        "link": "https://vietnamnet.vn/ly-do-shopee-tiki-lazada-khong-cho-dat-truoc-iphone-13-i395588.html"
+      },
+      {
+        "title": "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên ...",
+        "snippet": "Lần đầu tiên, người Việt có thể đặt hàng iPhone 16 trên Shopee, Lazada, TikTok Shop.",
+        "link": "https://genk.vn/lan-dau-tien-nguoi-viet-co-the-dat-hang-iphone-16-tren-shopee-lazada-tiktok-shop-20240919220413624.chn"
+      },
+      {
+        "title": "Lên SHOPEE, LAZADA Mua 9 con IPHONE giá Siêu Rẻ. ...",
+        "snippet": "Mua 1 lần đến 9 con iPhone?? Mua chi nhiều vậy? Link mua Shopee: ▻ iPhone 5C: https://shp.ee/2vz665s ▻ iPhone 4s: https://shp.ee/fswkkwv ...",
+        "link": "https://www.youtube.com/watch?v=qZpBKXR55UU"
+      },
+      {
+        "title": "Apple iPhones for sale in Ho Chi Minh City, Vietnam",
+        "snippet": "Today's picks · Iphone 11 128G. Zin full CN, pin new 100. Mã vn/a. ₫3,950,000. Iphone 11 128G. Zin full CN, pin new 100. Mã vn/a · Iphone 13 128g lock for sale - ...",
+        "link": "https://www.facebook.com/marketplace/hochiminhcity/iphones/"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Đổi máy mới chỉ từ 2,5 triệu Thu cũ - giá lên đời tốt hơn đến 500k Trả góp 0% lãi suất, sở hữu dễ dàng. ❣️ Comment tên máy đang dùng + mẫu lên đời ...",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "iPhone Reseller Việt Nam – iPhone 17 / 17 Pro Max / ...",
+        "snippet": "17Air 256gb Gold VN fullbox chỉ 19tr Máy khá đẹp, sạc 81 lần, bh 02/2027 ———————————————————————— —— : Văn Miếu - Đống Đa - Hà Nội ☎️: O94.236.1111 - O332.",
+        "link": "https://www.facebook.com/groups/463895081380886/"
+      },
+      {
+        "title": "25 tuổi đã lập đường dây lừa đảo \"săn iPhone giá rẻ\" trên ...",
+        "snippet": "iphone giá rẻ https://s.shopee.vn/6Ajqc2fRbG. 01:15. iphone giá rẻ ... new generation iPhone models. After establishing trust in the ...",
+        "link": "https://www.facebook.com/baodientuvtv/videos/1000-ng%C6%B0%E1%BB%9Di-s%E1%BA%ADp-b%E1%BA%ABy-s%C4%83n-iphone-gi%C3%A1-r%E1%BA%BB/1930523144420545/"
+      },
+      {
+        "title": "iPhone - Apple (VN)",
+        "snippet": "Nhận 4.400.000đ–19.100.000đ dưới hình thức điểm tín dụng để mua iPhone 17, iPhone Air hoặc iPhone 17 Pro khi bạn trao đổi iPhone 13 trở lên.",
+        "link": "https://www.apple.com/vn/iphone/"
+      },
+      {
+        "title": "iPhone (Apple) chính hãng, giá tốt, góp 0% từ 0đ T08/2026",
+        "snippet": "Mua điện thoại iPhone chính hãng Apple bao gồm iPhone 17 Series, iPhone 16 Series, iPhone 15 Series, iPhone 14 Series giá rẻ tại CellphoneS.",
+        "link": "https://cellphones.com.vn/mobile/apple.html"
+      },
+      {
+        "title": "Samsung dẫn đầu thị phần smartphone trên sàn thương ...",
+        "snippet": "Dẫn dắt cho tăng trưởng tích cực của Samsung là dòng Samsung Galaxy S23 Ultra. Dòng máy flagship này tăng doanh thu 77% riêng trong tháng 5/2023 ...",
+        "link": "https://baomoi.com/samsung-dan-dau-thi-phan-smartphone-tren-san-thuong-mai-dien-tu-viet-c46163937.epi"
+      },
+      {
+        "title": "Người Việt chi nửa nghìn tỷ mua điện thoại trên Shopee, ...",
+        "snippet": "Samsung và Apple là hai dòng điện thoại ... Mỗi tháng, người Việt chi nửa nghìn tỷ mua điện thoại thông minh trên Shopee, Lazada, Tiki.",
+        "link": "https://nguoiquansat.vn/moi-thang-nguoi-viet-chi-nua-nghin-ty-mua-dien-thoai-thong-minh-tren-shopee-lazada-tiki-83003.html"
+      },
+      {
+        "title": "Mua Samsung Vietnam Giá Tốt, Giao Nhanh",
+        "snippet": "Samsung A06 5G original Samsung Vietnam New 100% seal. ₫2,590,000 ; Original Samsung A05 (6GB/128GB) smartphone Samsung Vietnam new 100% sealed. ₫2,190,000.",
+        "link": "https://www.lazada.vn/tag/samsung-vietnam/?srsltid=AfmBOoow-m8riTTSRk4F18ummFexLSr-GhmkVn8LvKt8ZX7VPLpsVFc3"
+      },
+      {
+        "title": "Người Việt mua gì trên Shopee, Lazada, Tiki nửa đầu năm ...",
+        "snippet": "Xét về thương hiệu, 3 hãng smartphone là Apple, Samsung và Xiaomi có doanh thu cao nhất trong quý 2/2022 với lần lượt 997 tỷ, 608 tỷ, 315 tỷ ...",
+        "link": "https://cafef.vn/nguoi-viet-mua-gi-tren-shopee-lazada-tiki-nua-dau-nam-2022-2022081010160399.chn"
+      },
+      {
+        "title": "Mua hàng Tiki, Lazada, Shopee tăng cao mùa dịch",
+        "snippet": "Phía Tiki cho biết, trong 2 ngày cuối tuần vừa qua, mức độ tăng trưởng trên toàn sàn lên 30%. Đồng thời xu hướng tìm kiếm của người tiêu dùng ...",
+        "link": "https://vietnamnet.vn/mua-hang-tiki-lazada-shopee-tang-cao-mua-dich-i286122.html"
+      },
+      {
+        "title": "150K Cho Smartphone Samsung Và CÁI KẾT | KTheme",
+        "snippet": "Điện thoại Samsung Galaxy Grand Prime G530: [Lazada]: https://lzd.ooo/ssg530 [Shopee]: https://shopee.ooo/ssg530 [Tiki]: ...",
+        "link": "https://www.facebook.com/ktheme/videos/-150k-cho-smartphone-samsung-v%C3%A0-c%C3%A1i-k%E1%BA%BFt/1568605077426443/"
+      },
+      {
+        "title": "Samsung | Ho Chi Minh City",
+        "snippet": "Đã đến lúc sở hữu thế hệ smartphone gập mới nhất từ Samsung! Galaxy Z Fold8 Ultra, Galaxy Z Fold8 và Galaxy Z Flip8 mang đến sự kết hợp giữa thiết kế đẳng ...",
+        "link": "https://www.facebook.com/SamsungVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "Di Động Việt - Didongviet.vn",
+        "snippet": "Hệ thống bán lẻ điện thoại, máy tính bảng, đồng hồ, loa, phụ kiện, thiết bị công nghệ,... chính hãng. Đại lý uỷ quyền chính thức của Apple tại Việt Nam.",
+        "link": "https://www.facebook.com/didongviet/?locale=vi_VN"
+      },
+      {
+        "title": "CellphoneS - Hệ thống bán lẻ di động toàn quốc",
+        "snippet": "Hệ thống bán lẻ thiết bị công nghệ chính hãng hàng đầu tại Việt Nam với hơn 170 cửa hàng trên toàn quốc. Đa dạng sản phẩm công nghệ từ điện thoại, laptop, ...",
+        "link": "https://www.facebook.com/CellphoneSVietnam/?locale=vi_VN"
+      },
+      {
+        "title": "Cộng đồng người dùng Samsung Việt Nam (Samfans & ...",
+        "snippet": "NỘI QUY (#NOIQUY) GROUP #SamfansCom ----- Group #SamfansCom là nơi tập hợp tất cả những anh chị em có cùng niềm đam mê, yêu thích & đang sử dụng các sản...",
+        "link": "https://www.facebook.com/groups/SamfansCom/?locale=vi_VN"
+      },
+      {
+        "title": "SamCenter Việt Nam",
+        "snippet": "SamCenter Việt Nam. 39053 likes · 3654 talking about this. SamCenter - Chuỗi cửa hàng Samsung chính hãng. Cam kết giá tốt nhất.",
+        "link": "https://www.facebook.com/samcenter.hesman/?locale=vi_VN"
+      },
+      {
+        "title": "Giá bán Điện Thoại Samsung Galaxy và Ưu Đãi",
+        "snippet": "Mua điện thoại Samsung Galaxy tại Việt Nam với miễn phí giao hàng toàn quốc, quà tặng độc quyền của Samsung và ưu đãi hấp dẫn cho điện thoại Galaxy tiếp ...",
+        "link": "https://www.samsung.com/vn/smartphones/all-smartphones/?srsltid=AfmBOoonDxqKkmdgKFfhjMOXz_wlKf-AWewY0f3wcZM2XHUR98tySR6E"
+      }
+    ]
+  },
+  {
+    "id": "A5",
+    "rep": 1,
+    "kind": "brand-level VI",
+    "request": "So sánh iPhone với Samsung",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 3,
+    "promptTokens": 1008,
+    "completionTokens": 225,
+    "ms": 3530,
+    "text": "Mình hiểu bạn muốn so sánh iPhone và Samsung, nhưng để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn đang xem xét mua điện thoại nào cụ thể?** Ví dụ: iPhone 15 vs Samsung Galaxy S24, hay bạn chỉ muốn so sánh chung về 2 thương hiệu này?\n\nNgoài ra, **ưu tiên của bạn là gì** — giá cả, hiệu năng, camera, pin, hay thứ khác? Biết được điều này mình mới có thể so sánh hữu ích và tìm giá tốt nhất cho bạn trên Shopee/Lazada/Tiki 😊",
+    "evidence": []
+  },
+  {
+    "id": "A5",
+    "rep": 2,
+    "kind": "brand-level VI",
+    "request": "So sánh iPhone với Samsung",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 3,
+    "promptTokens": 1008,
+    "completionTokens": 218,
+    "ms": 3234,
+    "text": "Mình hiểu bạn muốn so sánh iPhone và Samsung, nhưng để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn đang xem xét mua điện thoại nào cụ thể?** Ví dụ: iPhone 15 vs Samsung Galaxy S24, hay bạn chưa biết model nào? Và **ngân sách của bạn khoảng bao nhiêu?** \n\nKhi bạn cho mình biết model cụ thể + giá tiền, mình sẽ tìm giá thực tế trên Shopee/Lazada/Tiki và so sánh chi tiết giúp bạn chọn được máy phù hợp nhất! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A5",
+    "rep": 3,
+    "kind": "brand-level VI",
+    "request": "So sánh iPhone với Samsung",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 3,
+    "promptTokens": 1008,
+    "completionTokens": 213,
+    "ms": 5420,
+    "text": "Mình hiểu bạn muốn so sánh iPhone và Samsung, nhưng để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn đang xem xét mua điện thoại nào cụ thể?** Ví dụ iPhone 15 vs Samsung Galaxy S24, hay bạn chưa biết chính xác model nào? Và **ngân sách của bạn khoảng bao nhiêu?** \n\nKhi biết rõ model + giá tiền, mình sẽ tìm giá thực tế trên Shopee/Lazada/Tiki và so sánh chi tiết giúp bạn chọn được máy phù hợp nhất! 📱",
+    "evidence": []
+  },
+  {
+    "id": "A5",
+    "rep": 4,
+    "kind": "brand-level VI",
+    "request": "So sánh iPhone với Samsung",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 3,
+    "promptTokens": 1008,
+    "completionTokens": 210,
+    "ms": 3104,
+    "text": "Mình cần biết thêm để gợi ý đúng ý bạn nhé! 📱\n\nBạn đang tìm **điện thoại nào cụ thể** (model/dòng)? Ví dụ iPhone 15 vs Samsung Galaxy S24, hay bạn muốn so sánh theo **tiêu chí nào** (giá, camera, pin, hiệu năng...)? Và **ngân sách của bạn** khoảng bao nhiêu?\n\nKhi bạn cho mình biết chi tiết, mình sẽ tìm giá thực tế trên Shopee/Lazada/Tiki để so sánh giúp bạn chọn máy phù hợp nhất! 👍",
+    "evidence": []
+  },
+  {
+    "id": "A5",
+    "rep": 5,
+    "kind": "brand-level VI",
+    "request": "So sánh iPhone với Samsung",
+    "refused": false,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "searchProductsCalls": 0,
+    "queries": [],
+    "candidates": 0,
+    "deviceEvidence": 0,
+    "accessoryEvidence": 0,
+    "deviceTitles": [],
+    "accessoryTitles": [],
+    "attributesToSearch": false,
+    "flagsInsufficient": false,
+    "clarifications": 3,
+    "promptTokens": 1008,
+    "completionTokens": 200,
+    "ms": 3915,
+    "text": "Mình hiểu bạn muốn so sánh iPhone và Samsung, nhưng để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn đang xem xét mua điện thoại nào cụ thể?** Ví dụ iPhone 15 vs Samsung Galaxy S24, hay bạn chưa biết chính xác model nào? Và **ngân sách của bạn khoảng bao nhiêu?** \n\nKhi biết rõ model + giá tiền, mình sẽ tìm giá thực tế trên Shopee/Lazada/Tiki để so sánh chi tiết cho bạn nhé! 📱",
+    "evidence": []
+  }
+]

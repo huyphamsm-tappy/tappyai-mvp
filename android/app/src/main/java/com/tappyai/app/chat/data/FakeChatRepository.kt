@@ -36,7 +36,11 @@ class FakeChatRepository @Inject constructor() : ChatRepository {
         """.trimIndent(),
     )
 
-    override fun streamReply(messages: List<ChatMessage>): Flow<String> = flow {
+    override fun streamReply(
+        messages: List<ChatMessage>,
+        conversationId: String?,
+        onConversationId: (String) -> Unit,
+    ): Flow<String> = flow {
         delay(RESPONDING_DURATION_MS)
         emit(sampleReplies[messages.size % sampleReplies.size])
     }

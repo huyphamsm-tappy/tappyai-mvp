@@ -1,6 +1,8 @@
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
+import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
+import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
 //   0:"<text delta>"                         — assistant text chunk
@@ -164,13 +166,30 @@ function placeContentLines(
   const lines: string[] = []
   // Images are checked one-by-one by exact URL, not by domain — the gallery can have several
   // gstatic.com images, and having ONE of them already in the text must not skip the other two.
-  const photos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : []))
+  // P3-S4: this is the one place retrieved content becomes user-visible markup
+  // WITHOUT passing through the model, so the structure has to be guaranteed
+  // here. Photo URLs come from a merchant's own og:image and from Serper image
+  // search — third-party strings — and link labels/URLs from the deterministic
+  // builders. Both are encoded so a retrieved value can never close the token
+  // it sits in. Encoding does not disturb the dedup below: imageUrlPresent
+  // percent-decodes both sides, so the encoded and raw forms compare equal.
+  const rawPhotos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : []))
+  const photos = rawPhotos.map(sanitizeUrlForMarkdown)
   const missingPhotos = photos.filter(url => !imageUrlPresent(url, decodedText))
-  for (const url of missingPhotos) lines.push(`![Ảnh địa điểm](${url})`)
+  // Sanitised again at the point the markup is built, even though `photos` is
+  // already canonical. The call is idempotent ('%' is never encoded), so the
+  // second pass costs a no-op scan and buys a LINE-LOCAL invariant: the
+  // architecture guard can require every markdown token in this layer to name
+  // its sanitiser, with no exemptions to keep correct as the file changes.
+  for (const url of missingPhotos) lines.push(`![Ảnh địa điểm](${sanitizeUrlForMarkdown(url)})`)
   const links = p.order_links || p.platform_links
   if (links && links.length > 0) {
     const missing = links.filter(l => !hasDomainNearName(ownName, domainOf(l.url), dedupText, windowEnd))
-    if (missing.length > 0) lines.push(missing.map(l => `[${l.name}](${l.url})`).join(' · '))
+    if (missing.length > 0) {
+      lines.push(missing
+        .map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`)
+        .join(' · '))
+    }
   }
   return { lines, missingPhotoCount: missingPhotos.length }
 }
@@ -429,11 +448,93 @@ function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText:
  *   to reading them out of the `a:` frames, which is how it worked before B4 and
  *   what the pre-B4 tests still exercise.
  */
+/**
+ * Tool-call scaffolding the MODEL emits into the TEXT channel by mistake.
+ *
+ * Observed live on two consecutive `search_products` turns that returned no
+ * results: the reply ended `[CTA_BUTTONS]{…}</parameter>\n</invoke>`. These tags
+ * are not ours — `invoke`/`parameter`/`function_calls`/`antml:*` appear nowhere
+ * in our prompts or tool definitions (grepped) — they are the provider's own
+ * tool-use syntax leaking out of the structured channel into prose.
+ *
+ * Two consequences, both user-visible:
+ *   1. Raw XML renders in the message.
+ *   2. Worse, it breaks CTA extraction. The clients' no-closing-tag fallback is
+ *      END-ANCHORED (`\[CTA_BUTTONS\](\{[\s\S]*\})\s*$` in Android's
+ *      ChatResponse.kt), so trailing junk stops it matching and the WHOLE CTA
+ *      JSON blob is left in the visible text while the buttons never render.
+ *
+ * Stripped server-side rather than in each client: the defect is in what the
+ * server emits, and one fix covers web, Android and iOS. This removes only
+ * complete, well-formed tags from this fixed vocabulary — it never touches the
+ * user-facing sentence, so it is not response rewriting.
+ */
+const MODEL_SCAFFOLDING_RE = /<\/?(?:antml:)?(?:invoke|parameter|function_calls|function_results)\b[^>]*>/gi
+
+export function stripModelScaffolding(text: string): string {
+  if (!text || text.indexOf('<') === -1) return text
+  return text.replace(MODEL_SCAFFOLDING_RE, '').replace(/[ \t]+\n/g, '\n').trimEnd()
+}
+
+/** Grounded evidence for one turn, handed over once the reply has been emitted. */
+export interface TurnEvidence {
+  places: PlaceLike[]
+  productRecords: EvidenceRecord[]
+  productQueries: string[]
+  /**
+   * OUTPUT ONLY — the candidates the assistant actually NAMED in the reply the
+   * user just read. Ignored when this shape is used as a pre-search seed.
+   *
+   * This is the ground truth for "these" in "I don't like these": the reply
+   * typically names 2-3 of the ~10 candidates held in state. Rejecting all held
+   * candidates threw away options the user never saw (observed: Cà Phê MVTTS
+   * and Cà Phê Linh rejected while never displayed); rejecting an arbitrary
+   * first-N was equally wrong in the other direction.
+   */
+  presentedNames?: string[]
+  /**
+   * INPUT — the candidates already held in state, so a turn that presents from
+   * the existing pool WITHOUT searching can still be recorded.
+   *
+   * Before this, "what was shown" was derived only from places a search
+   * returned this turn. Once the cost work made follow-up turns reuse held
+   * evidence instead of searching, those turns stopped updating the record:
+   * a reuse turn named MVTTS/Orick/Van Viet, the user rejected "quán đó", and
+   * the rejection landed on the three places shown two turns earlier while
+   * MVTTS stayed eligible.
+   */
+  heldCandidates?: Array<{ candidateId: string; name: string }>
+  /**
+   * OUTPUT — canonical ids of the candidates this reply actually named. Ids,
+   * not display names: two sellers can list the same title, and the id is the
+   * project's existing identity (productId -> link -> title).
+   */
+  presentedIds?: string[]
+}
+
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
   collector?: EnrichmentCollector,
   resolvePhotos?: PhotoResolver,
+  onEvidence?: (evidence: TurnEvidence) => Promise<void>,
+  /**
+   * Evidence gathered BEFORE the stream started (Task 3F-2.4 — preparation for
+   * the pre-search gate; nothing calls this yet).
+   *
+   * Today every signal this filter needs is read out of the LLM's own frames:
+   * `9:` sets bufferMode, the tool-name map and `productQueries`; `a:` fills
+   * `latestPlaces` and the money guard's `productRecords`. If a search ever runs
+   * server-side before generation, those frames never appear — and the failure
+   * is silent: photos and order links stop being injected and the money guard
+   * loses the entity list it needs to judge a price. This param is the explicit
+   * substitute, deliberately the SAME `TurnEvidence` shape the filter already
+   * hands back, so there is no second candidate schema.
+   *
+   * Purely additive: the `9:`/`a:` path below is untouched, and seeding plus
+   * live frames in the same turn de-duplicate rather than double up.
+   */
+  seed?: TurnEvidence,
 ): Response {
   const body = response.body
   if (!body) return response
@@ -443,11 +544,78 @@ export function applyPlaceEnrichmentStreamFilter(
   let lineRemainder = ''
   let mainText = '' // assistant text buffered AFTER a place-search tool call
   const toolNameByCallId = new Map<string, string>()
+  const productQueries: string[] = []   // C3-B.10: what search_products was asked for
+  const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
   let bufferMode = false
+  /** Candidate names this reply actually named — see TurnEvidence.presentedNames. */
+  let presentedNames: string[] = []
+  /** Canonical ids of HELD candidates this reply named — see TurnEvidence.presentedIds. */
+  let presentedIds: string[] = []
+  /**
+   * The live-path text, recorded purely so presentation tracking does not
+   * depend on bufferMode.
+   *
+   * Measured: a pure-reuse decision turn named Cosa Nostra and AnAn, but no
+   * tool ran, so nothing buffered, so `presentedIds` stayed empty and the next
+   * "quán đó" resolved against a reply two turns older.
+   */
+  let liveText = ''
+
+  /**
+   * Which HELD candidates does this text actually name?
+   *
+   * Presentation is about what the USER READ. Being held, ranked, or considered
+   * is explicitly not enough — only a name appearing in the finished reply.
+   */
+  const namedHeldIds = (text: string): string[] => {
+    if (!text) return []
+    const hay = normalizeVN(text.toLowerCase())
+    // ORDER OF APPEARANCE, not pool order: "quán đó" refers to the primary
+    // recommendation, which is the FIRST candidate the reply names. Returning
+    // pool order made that resolution arbitrary.
+    return (seed?.heldCandidates ?? [])
+      .map(c => ({ id: c.candidateId, at: c.name.trim() ? hay.indexOf(normalizeVN(c.name.trim().toLowerCase())) : -1 }))
+      .filter(x => x.at >= 0)
+      .sort((a, b) => a.at - b.at)
+      .map(x => x.id)
+  }
   let emitted = false
 
   const PLACE_TOOLS = new Set(['search_places', 'get_hotel_prices', 'search_products'])
+
+  /**
+   * Merge places by name, upgrading an entry that gains a photo later. Shared by
+   * the `a:` handler and the seed so the two can never inject the same place
+   * twice — CASE C in the tests.
+   */
+  const mergePlaces = (incoming: PlaceLike[]) => {
+    for (const p of incoming) {
+      const key = (p.name || '').trim().toLowerCase()
+      if (!key) continue
+      const existing = latestPlaces.find(q => (q.name || '').trim().toLowerCase() === key)
+      if (!existing) latestPlaces.push(p)
+      else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+    }
+  }
+
+  // Seed BEFORE the stream is read, so the very first frame already sees the
+  // same world the `9:`/`a:` path would have built. Presence of any evidence is
+  // what `bufferMode` really means ("a place tool produced something this
+  // turn"), so it is set from the same condition the `9:` frame uses.
+  if (seed) {
+    mergePlaces(Array.isArray(seed.places) ? seed.places : [])
+    for (const r of Array.isArray(seed.productRecords) ? seed.productRecords : []) {
+      const key = r?.link || r?.title
+      if (key && !productRecords.some(e => (e.link || e.title) === key)) productRecords.push(r)
+    }
+    for (const q of Array.isArray(seed.productQueries) ? seed.productQueries : []) {
+      if (q && !productQueries.includes(q)) productQueries.push(q)
+    }
+    if (latestPlaces.length > 0 || productRecords.length > 0 || productQueries.length > 0) {
+      bufferMode = true
+    }
+  }
 
   // Collector first (it holds the real enrichment post-B4), then anything found
   // in the stream for a name the collector didn't cover — so a slim frame and a
@@ -491,7 +659,29 @@ export function applyPlaceEnrichmentStreamFilter(
       }
     }
 
-    const finalText = injectPlaceEnrichment(places, mainText, lang)
+    const enriched = injectPlaceEnrichment(places, mainText, lang)
+    // C3-B.10: the last server-side point at which the COMPLETE prose exists and
+    // has not yet reached the client. A monetary claim the structured evidence
+    // does not support is removed here — deterministically, with no model call,
+    // no network call, and nothing written that was not already in the text.
+    // Inert unless the evidence carries structured prices (see moneyGuard).
+    const guarded = guardMoneyClaimsInText(enriched, productRecords, productQueries)
+    // Last point before the bytes leave the server: drop any provider tool-use
+    // tags that leaked into the prose, so no client has to defend against them
+    // (and so the end-anchored CTA fallback still matches).
+    const finalText = stripModelScaffolding(guarded.text)
+    // Record which candidates this reply actually named — the only reliable
+    // answer to "which ones did the user see?".
+    const seenIn = normalizeVN(finalText.toLowerCase())
+    presentedNames = [
+      ...places.map(p => p.name || ''),
+      ...productRecords.map(r => (r.title || '').split(' - ')[0]),
+    ].filter(n => n.trim() && seenIn.includes(normalizeVN(n.trim().toLowerCase())))
+    // Held candidates count too, and on a reuse turn they are the ONLY source —
+    // nothing was searched, so `places` and `productRecords` are both empty.
+    // A candidate is presented only if its name appears in the text the user
+    // actually read; being in the pool, or considered by ranking, is not enough.
+    presentedIds = namedHeldIds(finalText)
     if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
   }
 
@@ -507,13 +697,39 @@ export function applyPlaceEnrichmentStreamFilter(
             try { mainText += JSON.parse(line.slice(2)) as string } catch { /* skip malformed */ }
             // buffered — re-emitted (repositioned) at 'd:'; not streamed live
           } else {
-            controller.enqueue(encoder.encode(line + '\n')) // intro / chitchat — stream live
+            // Live path (intro / chitchat — no place tool ran, so nothing is
+            // buffered). Strip whole scaffolding tags that land inside a single
+            // delta. A tag split ACROSS deltas still gets through here: holding
+            // bytes back to reassemble it would buffer the live stream, which
+            // StreamingNotBufferedByLoggingTest exists to prevent. The buffered
+            // path below — which covers every tool turn, and every leak actually
+            // observed — sanitises the complete text instead.
+            let out = line
+            if (line.indexOf('<') !== -1) {
+              try {
+                const cleaned = stripModelScaffolding(JSON.parse(line.slice(2)) as string)
+                out = '0:' + JSON.stringify(cleaned)
+              } catch { /* malformed delta — forward untouched */ }
+            }
+            // Keep a copy of what went out, so presentation tracking works on
+            // turns where no tool ran. This is a RECORD, not a buffer: the
+            // chunk is enqueued on the next line either way, so nothing is held
+            // back and the live stream keeps its timing.
+            try { liveText += JSON.parse(out.slice(2)) as string } catch { /* skip malformed */ }
+            controller.enqueue(encoder.encode(out + '\n'))
           }
         } else if (line.startsWith('9:')) {
           try {
-            const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string }
+            const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
             if (call.toolName && PLACE_TOOLS.has(call.toolName)) bufferMode = true
+            // C3-B.10: the money guard needs to know WHAT was asked for. The
+            // tool's own query is the only deterministic source — and it is what
+            // distinguishes "đệm tai cho WH-1000XM5" (an accessory request,
+            // where an accessory price is correct) from "WH-1000XM5".
+            if (call.toolName === 'search_products' && call.args?.query && !productQueries.includes(call.args.query)) {
+              productQueries.push(call.args.query)
+            }
           } catch { /* ignore */ }
           controller.enqueue(encoder.encode(line + '\n'))
         } else if (line.startsWith('a:')) {
@@ -535,19 +751,24 @@ export function applyPlaceEnrichmentStreamFilter(
               const searchResults = res.result?.search_results
               if (Array.isArray(searchResults)) {
                 newPlaces = searchResults.map(r => ({ ...r, name: r.title?.split(' - ')[0]?.trim() }))
+                // C3-B.10: keep the records verbatim for the money guard. It
+                // reads ONLY the structured `price` field, never title/snippet.
+                if (toolName === 'search_products') {
+                  // Dedupe by link/title so a pre-seeded record and the same
+                  // record arriving live count once (CASE C).
+                  for (const r of searchResults as EvidenceRecord[]) {
+                    const key = r?.link || r?.title
+                    if (!key || !productRecords.some(e => (e.link || e.title) === key)) productRecords.push(r)
+                  }
+                }
               }
             }
             // ACCUMULATE across EVERY place-tool call, not just the last one: a trip plan runs
             // several searches (hotels, food, attractions) and each plan item must be able to
             // match its own photo. Dedupe by name; if a later call carries a photo for a name we
-            // saw without one, upgrade to the entry that has the photo.
-            for (const p of newPlaces) {
-              const key = (p.name || '').trim().toLowerCase()
-              if (!key) continue
-              const existing = latestPlaces.find(q => (q.name || '').trim().toLowerCase() === key)
-              if (!existing) latestPlaces.push(p)
-              else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
-            }
+            // saw without one, upgrade to the entry that has the photo. Same helper the seed
+            // uses, so seeded + live evidence for one place merges instead of duplicating.
+            mergePlaces(newPlaces)
           } catch { /* ignore */ }
           controller.enqueue(encoder.encode(line + '\n'))
         } else if (line.startsWith('d:')) {
@@ -561,6 +782,19 @@ export function applyPlaceEnrichmentStreamFilter(
     async flush(controller) {
       await emitReconstructed(controller)
       if (lineRemainder) controller.enqueue(encoder.encode(lineRemainder + '\n'))
+      // Task 3C: hand the turn's grounded evidence to the caller AFTER the reply
+      // is fully emitted, so persisting it can never delay a byte to the user.
+      // Deliberately awaited-but-swallowed: a failed write costs the next turn
+      // its candidates, never this turn's answer.
+      if (onEvidence) {
+        try {
+          // Presentation tracking is independent of bufferMode: buffered turns
+          // resolved it from the reconstructed text above, live turns resolve
+          // it here from what was actually streamed.
+          if (presentedIds.length === 0) presentedIds = namedHeldIds(liveText)
+          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], presentedIds: [...new Set(presentedIds)] })
+        } catch { /* state is best-effort; the reply already shipped */ }
+      }
     },
   })
 

@@ -1,0 +1,1334 @@
+[
+  {
+    "id": "01-vi",
+    "group": "food",
+    "name": "broad discovery",
+    "lang": "vi",
+    "turns": [
+      "Gợi ý quán ăn ngon ở Quận 1"
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 2188,
+    "outTok": 466,
+    "ms": 28035,
+    "langOk": true,
+    "proseChars": 417,
+    "sample": "Mình sẽ tìm những quán ăn ngon ở Quận 1 cho bạn nhé! 🍽️Mình vừa tìm kiếm nhưng chưa có kết quả cụ thể từ hệ thống. Bạn có thể xem danh sách quán ăn ngon ở Quận 1 trên [Google Maps](https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20ngon%20Qu%E1%BA%ADn%201%2C%20TP%20HCM) để khám phá thêm. Để mình "
+  },
+  {
+    "id": "01-en",
+    "group": "food",
+    "name": "broad discovery",
+    "lang": "en",
+    "turns": [
+      "Suggest good restaurants in District 1 Ho Chi Minh"
+    ],
+    "stage": null,
+    "boldSpans": 6,
+    "groundedNames": 5,
+    "ungroundedBold": [
+      "Nhà Hàng Aroma"
+    ],
+    "toolNamesReturned": 10,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 2535,
+    "outTok": 447,
+    "ms": 6704,
+    "langOk": true,
+    "proseChars": 1639,
+    "sample": "I'll find some great restaurants in District 1 for you!Here are some solid options in District 1! 🍽️ **Nhà Hàng Aroma** (Vietnamese) — 175/10-12 Phạm Ngũ Lão — specializes in authentic Vietnamese cuisine, great for trying local flavors. **Nhà Hàng Jaspas** — has WiFi, perfect if you want to grab a "
+  },
+  {
+    "id": "02-vi",
+    "group": "food",
+    "name": "budget-constrained",
+    "lang": "vi",
+    "turns": [
+      "Quán ăn ngon ở Quận 1 dưới 150k"
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 0,
+    "hasReasoning": true,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 3069,
+    "outTok": 487,
+    "ms": 27253,
+    "langOk": true,
+    "proseChars": 644,
+    "sample": "Mình tìm giúp bạn những quán ăn ngon ở Quận 1 với giá dưới 150k nhé! 🍜Hệ thống chưa tìm được kết quả cụ thể, nhưng mình gợi ý bạn xem trực tiếp trên Google Maps để khám phá những quán ăn ngon ở Quận 1 với giá phù hợp: [Tìm quán ăn dưới 150k ở Quận 1](https://maps.google.com/maps?q=qu%C3%A1n%20%C4%8"
+  },
+  {
+    "id": "02-en",
+    "group": "food",
+    "name": "budget-constrained",
+    "lang": "en",
+    "turns": [
+      "Good restaurants in District 1 under 150k VND"
+    ],
+    "stage": "comparison",
+    "boldSpans": 3,
+    "groundedNames": 1,
+    "ungroundedBold": [
+      "Aroma Vietnamese",
+      "Wrap & Roll"
+    ],
+    "toolNamesReturned": 10,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 2596,
+    "outTok": 465,
+    "ms": 6279,
+    "langOk": true,
+    "proseChars": 1393,
+    "sample": "I'll search for good restaurants in District 1, Ho Chi Minh City within your budget.Found some solid options in District 1! Here are a few standouts: **Aroma Vietnamese** (175/10-12 Phạm Ngũ Lão) — Vietnamese cuisine, great for authentic local flavors at budget-friendly prices. [View on Maps](https:"
+  },
+  {
+    "id": "03-vi",
+    "group": "food",
+    "name": "location-constrained",
+    "lang": "vi",
+    "turns": [
+      "Quán ăn gần Hồ Hoàn Kiếm"
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 1803,
+    "outTok": 500,
+    "ms": 27183,
+    "langOk": true,
+    "proseChars": 532,
+    "sample": "Mình tìm quán ăn gần Hồ Hoàn Kiếm cho bạn nhé! 🔍Mình vừa tìm kiếm trên Google Maps và có khá nhiều quán ăn xung quanh Hồ Hoàn Kiếm. Bạn có thể xem danh sách đầy đủ và chi tiết tại [đây](https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20g%E1%BA%A7n%20H%E1%BB%93%20Ho%C3%A0n%20Ki%E1%BA%BFm%20H%C3%A"
+  },
+  {
+    "id": "03-en",
+    "group": "food",
+    "name": "location-constrained",
+    "lang": "en",
+    "turns": [
+      "Restaurants near Hoan Kiem Lake"
+    ],
+    "stage": null,
+    "boldSpans": 5,
+    "groundedNames": 5,
+    "ungroundedBold": [],
+    "toolNamesReturned": 10,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 2586,
+    "outTok": 529,
+    "ms": 7758,
+    "langOk": true,
+    "proseChars": 1537,
+    "sample": "Great! I found some excellent restaurants around Hoan Kiem Lake. Here are my top picks: **Quán Ăn Ngon - Phan Bội Châu** serves authentic Vietnamese cuisine at 18 Phố Phan Bội Châu, open daily 6:45 AM–10 PM. It's a local favorite with a great reputation for traditional dishes. **Nha Hang Little Ital"
+  },
+  {
+    "id": "04-vi",
+    "group": "food",
+    "name": "preference-constrained",
+    "lang": "vi",
+    "turns": [
+      "Quán chay ngon ở Hà Nội"
+    ],
+    "stage": null,
+    "boldSpans": 3,
+    "groundedNames": 3,
+    "ungroundedBold": [],
+    "toolNamesReturned": 10,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 2,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 2587,
+    "outTok": 607,
+    "ms": 19693,
+    "langOk": true,
+    "proseChars": 1363,
+    "sample": "Mình tìm được vài quán chay ngon ở Hà Nội cho bạn: **Nhà Hàng Chay Phương Nam** — chuyên đồ chay, có đủ các món ăn chay ngon miệng 🌱 [ShopeeFood](https://shopeefood.vn/tim-kiem?q=Nh%C3%A0%20h%C3%A0ng%20Nam%20Ph%C6%B0%C6%A1ng%20H%C3%A0%20N%E1%BB%99i) · [GrabFood](https://food.grab.com/vn/en/s?search"
+  },
+  {
+    "id": "04-en",
+    "group": "food",
+    "name": "preference-constrained",
+    "lang": "en",
+    "turns": [
+      "Good vegetarian restaurants in Hanoi"
+    ],
+    "stage": null,
+    "boldSpans": 3,
+    "groundedNames": 3,
+    "ungroundedBold": [],
+    "toolNamesReturned": 10,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 2526,
+    "outTok": 553,
+    "ms": 17343,
+    "langOk": true,
+    "proseChars": 1605,
+    "sample": "I'll search for vegetarian restaurants in Hanoi for you.Great! Here are some solid vegetarian options in Hanoi: **Nhà Hàng Chay Phương Nam** — fully vegetarian restaurant with traditional Vietnamese dishes. Perfect if you want authentic flavors without meat. 🌱 [ShopeeFood](https://shopeefood.vn/tim"
+  },
+  {
+    "id": "05-vi",
+    "group": "food",
+    "name": "comparison",
+    "lang": "vi",
+    "turns": [
+      "Nên chọn quán phở hay quán bún bò cho bữa tối?"
+    ],
+    "stage": null,
+    "boldSpans": 2,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Phở",
+      "Bún bò"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": true,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 1019,
+    "outTok": 342,
+    "ms": 4840,
+    "langOk": true,
+    "proseChars": 549,
+    "sample": "Mình giúp bạn chọn nha! 🍜 Cả hai đều ngon, nhưng tùy vào tâm trạng: **Phở** - nếu bạn muốn cái gì nhẹ nhàng, thanh mát, dễ tiêu hóa. Nước dùng thanh, thơm mùi hành gừng, ăn kèm rau sống tươi mát. Phù hợp nếu bạn vừa làm việc nặng hay muốn ăn gì đó không quá nặng. **Bún bò** - nếu bạn thích cái gì đ"
+  },
+  {
+    "id": "05-en",
+    "group": "food",
+    "name": "comparison",
+    "lang": "en",
+    "turns": [
+      "Pho or bun bo for dinner, which should I pick?"
+    ],
+    "stage": null,
+    "boldSpans": 3,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Phở",
+      "Bún bò",
+      "Quick pick:"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 2,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 1149,
+    "outTok": 199,
+    "ms": 4290,
+    "langOk": true,
+    "proseChars": 683,
+    "sample": "I'd love to help you decide! Both are amazing Vietnamese classics. 🍜 **Phở** is perfect if you want something warm, comforting, and aromatic—great for a relaxed dinner. The broth is the star, and it's lighter on the stomach. **Bún bò** (bun bo Hue) is richer and spicier with that bold, complex flav"
+  },
+  {
+    "id": "06-vi",
+    "group": "food",
+    "name": "refinement",
+    "lang": "vi",
+    "turns": [
+      "Gợi ý quán ăn ngon ở Quận 1",
+      "Rẻ hơn."
+    ],
+    "stage": null,
+    "boldSpans": 4,
+    "groundedNames": 4,
+    "ungroundedBold": [],
+    "toolNamesReturned": 10,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 5177,
+    "outTok": 653,
+    "ms": 21313,
+    "langOk": true,
+    "proseChars": 1413,
+    "sample": "Mình tìm những quán ăn rẻ ở Quận 1 cho bạn nhé! 🍲Mình tìm được vài quán ăn rẻ ở Quận 1: **Nhà Hàng Wrap&Roll** - Chuyên bánh mì cuốn, giá bình dân, ăn nhanh gọn 👍 [ShopeeFood](https://shopeefood.vn/tim-kiem?q=Nh%C3%A0%20H%C3%A0ng%20Wrap%26Roll%20Qu%E1%BA%ADn%201%20TP%20HCM) · [GrabFood](https://fo"
+  },
+  {
+    "id": "06-en",
+    "group": "food",
+    "name": "refinement",
+    "lang": "en",
+    "turns": [
+      "Suggest good restaurants in District 1",
+      "Cheaper."
+    ],
+    "stage": "comparison",
+    "boldSpans": 3,
+    "groundedNames": 3,
+    "ungroundedBold": [],
+    "toolNamesReturned": 10,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_places"
+    ],
+    "inTok": 4904,
+    "outTok": 502,
+    "ms": 16772,
+    "langOk": true,
+    "proseChars": 1507,
+    "sample": "Got it! For budget-friendly eats in District 1, here are your best bets: **Wrap&Roll** — super cheap, quick wraps & rolls, perfect for a light meal under 50k VND 🌯 [ShopeeFood](https://shopeefood.vn/tim-kiem?q=Nh%C3%A0%20H%C3%A0ng%20Wrap%26Roll%20District%201%20Ho%20Chi%20Minh) · [GrabFood](https:/"
+  },
+  {
+    "id": "07-vi",
+    "group": "travel",
+    "name": "hotel discovery",
+    "lang": "vi",
+    "turns": [
+      "Tìm khách sạn ở Đà Nẵng"
+    ],
+    "stage": null,
+    "boldSpans": 1,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Giá tham khảo:"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_hotel_prices"
+    ],
+    "inTok": 2735,
+    "outTok": 690,
+    "ms": 30621,
+    "langOk": true,
+    "proseChars": 728,
+    "sample": "Mình sẽ tìm khách sạn ở Đà Nẵng cho bạn nhé! 🏨Mình tìm được một số thông tin về khách sạn ở Đà Nẵng. Hiện tại có nhiều lựa chọn từ khách sạn bình dân đến cao cấp: **Giá tham khảo:** Khách sạn Sài Gòn Tourane có phòng từ khoảng 500.000-600.000 VNĐ/đêm (loại Standard/Superior), còn các khách sạn trên"
+  },
+  {
+    "id": "07-en",
+    "group": "travel",
+    "name": "hotel discovery",
+    "lang": "en",
+    "turns": [
+      "Find hotels in Da Nang"
+    ],
+    "stage": null,
+    "boldSpans": 4,
+    "groundedNames": 3,
+    "ungroundedBold": [
+      "393,582 VND"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_hotel_prices"
+    ],
+    "inTok": 4613,
+    "outTok": 327,
+    "ms": 27930,
+    "langOk": true,
+    "proseChars": 574,
+    "sample": "I found several hotel options in Da Nang! 🏨 The search shows popular choices like **Stay Hotel Da Nang** and many other properties available through major booking platforms. Prices in Da Nang typically start from around **393,582 VND** and up, depending on the hotel class and season. To see real-ti"
+  },
+  {
+    "id": "08-vi",
+    "group": "travel",
+    "name": "hotel budget",
+    "lang": "vi",
+    "turns": [
+      "Khách sạn Đà Nẵng dưới 2 triệu"
+    ],
+    "stage": null,
+    "boldSpans": 3,
+    "groundedNames": 2,
+    "ungroundedBold": [
+      "500.000 - 600.000 VNĐ/đêm"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_hotel_prices"
+    ],
+    "inTok": 3382,
+    "outTok": 671,
+    "ms": 30510,
+    "langOk": true,
+    "proseChars": 783,
+    "sample": "Mình tìm khách sạn ở Đà Nẵng trong tầm giá dưới 2 triệu cho bạn nhé! 🏨Theo kết quả tìm kiếm, có khách sạn ở Đà Nẵng với giá rất hợp lý dưới 2 triệu: **Khách sạn Sài Gòn Tourane** có phòng từ **500.000 - 600.000 VNĐ/đêm** cho phòng Standard/Superior vào ngày thường. Ngoài ra, các khách sạn trên **đư"
+  },
+  {
+    "id": "08-en",
+    "group": "travel",
+    "name": "hotel budget",
+    "lang": "en",
+    "turns": [
+      "Hotels in Da Nang under 2 million VND"
+    ],
+    "stage": null,
+    "boldSpans": 4,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "393,582 VND",
+      "Budget hotels & guesthouses",
+      "Agoda & Booking.com",
+      "Location matters"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": true,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_hotel_prices"
+    ],
+    "inTok": 4625,
+    "outTok": 434,
+    "ms": 6126,
+    "langOk": true,
+    "proseChars": 900,
+    "sample": "Looking at Da Nang hotels under 2 million VND, I found several budget-friendly options. The search results show prices starting from around **393,582 VND** on Booking.com, so there are definitely good deals available in your budget! 🏨 Here are some solid options to explore: • **Budget hotels & gues"
+  },
+  {
+    "id": "09-vi",
+    "group": "travel",
+    "name": "hotel comparison",
+    "lang": "vi",
+    "turns": [
+      "Nên ở gần biển Mỹ Khê hay gần trung tâm Đà Nẵng?"
+    ],
+    "stage": "comparison",
+    "boldSpans": 3,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Gần biển Mỹ Khê:",
+      "Gần trung tâm Đà Nẵng (Hàn Mạc, Bạch Đằng):",
+      "Mình cần biết:"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": true,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 3,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 800,
+    "outTok": 393,
+    "ms": 5866,
+    "langOk": true,
+    "proseChars": 641,
+    "sample": "Mình giúp bạn so sánh hai khu vực này nhé! 🏖️ **Gần biển Mỹ Khê:** - Tuyệt vời nếu bạn muốn thư giãn, tắm biển, ngắm hoàng hôn - Không khí trong lành, yên tĩnh, phù hợp nghỉ dưỡng - Ít quán ăn/cafe hơn, cần đi lại để mua sắm/giải trí - Giá phòng thường cao hơn do vị trí đắc địa **Gần trung tâm Đà N"
+  },
+  {
+    "id": "09-en",
+    "group": "travel",
+    "name": "hotel comparison",
+    "lang": "en",
+    "turns": [
+      "Should I stay near My Khe beach or Da Nang city centre?"
+    ],
+    "stage": "comparison",
+    "boldSpans": 4,
+    "groundedNames": 3,
+    "ungroundedBold": [
+      "Leaf Beachfront Hotel"
+    ],
+    "toolNamesReturned": 12,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 2,
+    "tools": [
+      "get_hotel_prices",
+      "get_hotel_prices"
+    ],
+    "inTok": 8000,
+    "outTok": 547,
+    "ms": 29149,
+    "langOk": true,
+    "proseChars": 798,
+    "sample": "I'll help you compare those two areas! Let me search for accommodation options in both locations so you can see what's available.Here's the quick comparison: **My Khe Beach** — Perfect if you want to wake up to the ocean, relax on one of Vietnam's most beautiful beaches, and enjoy a laid-back vibe. "
+  },
+  {
+    "id": "10-vi",
+    "group": "travel",
+    "name": "trip planning",
+    "lang": "vi",
+    "turns": [
+      "Lên lịch trình du lịch Đà Nẵng 3 ngày ngân sách 5 triệu"
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 26,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 0,
+    "llmCalls": 3,
+    "toolCalls": 8,
+    "tools": [
+      "get_hotel_prices",
+      "search_places",
+      "search_places",
+      "get_weather",
+      "search_places",
+      "search_places",
+      "search_places",
+      "search_places"
+    ],
+    "inTok": 12324,
+    "outTok": 3428,
+    "ms": 67862,
+    "langOk": true,
+    "proseChars": 257,
+    "sample": "Mình sẽ tìm khách sạn, nhà hàng ngon và điểm tham quan ở Đà Nẵng cho bạn nhé! 🏖️Mình tìm lại với từ khóa cụ thể hơn nhé!Mình sẽ lên kế hoạch 3 ngày Đà Nẵng với ngân sách 5 triệu cho 1 người. Thời tiết hôm nay nắng đẹp (35°C), rất phù hợp để tham quan! 🌞 "
+  },
+  {
+    "id": "10-en",
+    "group": "travel",
+    "name": "trip planning",
+    "lang": "en",
+    "turns": [
+      "Plan a 3 day trip to Da Nang with a 5 million VND budget"
+    ],
+    "stage": null,
+    "boldSpans": 1,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "3-day Da Nang itinerary"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 0,
+    "llmCalls": 3,
+    "toolCalls": 8,
+    "tools": [
+      "get_hotel_prices",
+      "search_places",
+      "search_places",
+      "get_weather",
+      "search_places",
+      "search_places",
+      "search_places",
+      "search_places"
+    ],
+    "inTok": 14098,
+    "outTok": 2523,
+    "ms": 63313,
+    "langOk": true,
+    "proseChars": 391,
+    "sample": "I'll help you plan a 3-day Da Nang trip! Let me search for hotels, restaurants, and attractions to build the perfect itinerary.Let me search more specifically for Da Nang attractions and restaurants:Perfect! Here's your **3-day Da Nang itinerary** with a 5 million VND budget (assuming 1-2 people). T"
+  },
+  {
+    "id": "11-vi",
+    "group": "travel",
+    "name": "plan refinement",
+    "lang": "vi",
+    "turns": [
+      "Tìm khách sạn ở Đà Nẵng",
+      "Gần biển."
+    ],
+    "stage": null,
+    "boldSpans": 4,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Gợi ý khu vực:",
+      "Biển Mỹ Khê",
+      "Đường Võ Nguyên Giáp",
+      "Khu Sơn Trà"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": false,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_hotel_prices"
+    ],
+    "inTok": 4737,
+    "outTok": 804,
+    "ms": 8455,
+    "langOk": true,
+    "proseChars": 905,
+    "sample": "Khách sạn gần biển Mỹ Khê là lựa chọn tuyệt vời! Khu vực này có rất nhiều khách sạn từ bình dân đến cao cấp, hầu hết đều có view biển đẹp. 🌊 **Gợi ý khu vực:** - **Biển Mỹ Khê** (trung tâm): Khách sạn cao cấp, giá cao hơn nhưng view biển tuyệt đẹp, gần nhà hàng & quán cafe - **Đường Võ Nguyên Giáp*"
+  },
+  {
+    "id": "11-en",
+    "group": "travel",
+    "name": "plan refinement",
+    "lang": "en",
+    "turns": [
+      "Find hotels in Da Nang",
+      "Closer to the beach."
+    ],
+    "stage": "comparison",
+    "boldSpans": 2,
+    "groundedNames": 1,
+    "ungroundedBold": [
+      "and"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": true,
+    "hasAction": false,
+    "hasFollowups": true,
+    "clarifications": 0,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_hotel_prices"
+    ],
+    "inTok": 5902,
+    "outTok": 392,
+    "ms": 30864,
+    "langOk": true,
+    "proseChars": 915,
+    "sample": "Great! Here are some solid beachfront options in Da Nang: **[Sana Da Nang Beach Hotel](https://www.booking.com/hotel/vn/sana-da-nang-beach-hotel.vi.html)** — 4-star property with outdoor pool, restaurant & bar, free Wi-Fi, and ocean views. Perfect for a relaxing beach stay. **[AOA Da Nang Beach Hote"
+  },
+  {
+    "id": "12-vi",
+    "group": "shopping",
+    "name": "product discovery",
+    "lang": "vi",
+    "turns": [
+      "Mua tai nghe bluetooth ở đâu"
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 0,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 1079,
+    "outTok": 76,
+    "ms": 1737,
+    "langOk": false,
+    "proseChars": 86,
+    "sample": "I'll help you find Bluetooth headphones! Let me search for the best options available."
+  },
+  {
+    "id": "12-en",
+    "group": "shopping",
+    "name": "product discovery",
+    "lang": "en",
+    "turns": [
+      "Where can I buy bluetooth headphones"
+    ],
+    "stage": "comparison",
+    "boldSpans": 3,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Shopee",
+      "Tiki",
+      "Lazada"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 0,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_products"
+    ],
+    "inTok": 1883,
+    "outTok": 355,
+    "ms": 4563,
+    "langOk": true,
+    "proseChars": 613,
+    "sample": "I'll search for Bluetooth headphones available for purchase in Vietnam.You can find Bluetooth headphones on Vietnam's major e-commerce platforms. Here are the best places to shop: **Shopee** — huge selection, competitive prices, fast shipping **Tiki** — good warranty & customer service **Lazada** — "
+  },
+  {
+    "id": "13-vi",
+    "group": "shopping",
+    "name": "budget-constrained",
+    "lang": "vi",
+    "turns": [
+      "Tai nghe bluetooth dưới 1 triệu"
+    ],
+    "stage": "comparison",
+    "boldSpans": 6,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "tai nghe true wireless",
+      "tai nghe chụp tai",
+      "tai nghe gaming",
+      "Shopee",
+      "Tiki",
+      "Lazada"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_products"
+    ],
+    "inTok": 2582,
+    "outTok": 515,
+    "ms": 8782,
+    "langOk": true,
+    "proseChars": 561,
+    "sample": "Mình tìm được vài lựa chọn tai nghe Bluetooth dưới 1 triệu trên các sàn thương mại điện tử. Bạn có thể lọc theo giá và xem các mẫu phổ biến như **tai nghe true wireless**, **tai nghe chụp tai**, hoặc **tai nghe gaming** tùy theo nhu cầu của mình. Các sàn có khá nhiều lựa chọn với giá cạnh tranh: • *"
+  },
+  {
+    "id": "13-en",
+    "group": "shopping",
+    "name": "budget-constrained",
+    "lang": "en",
+    "turns": [
+      "Bluetooth headphones under 1 million VND"
+    ],
+    "stage": null,
+    "boldSpans": 5,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Shopee",
+      "Tiki",
+      "Lazada",
+      "true wireless earbuds",
+      "over-ear/on-ear headphones"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "search_products"
+    ],
+    "inTok": 1932,
+    "outTok": 395,
+    "ms": 4719,
+    "langOk": true,
+    "proseChars": 688,
+    "sample": "I found several Bluetooth headphone options under 1 million VND on major Vietnamese e-commerce platforms. You can browse through: • **Shopee** — wide selection with competitive prices and seller reviews • **Tiki** — good for comparing specs and customer ratings • **Lazada** — often has deals and fla"
+  },
+  {
+    "id": "14-vi",
+    "group": "shopping",
+    "name": "product comparison",
+    "lang": "vi",
+    "turns": [
+      "Nên mua iPhone hay Samsung?"
+    ],
+    "stage": "comparison",
+    "boldSpans": 1,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "tại Việt Nam.\n\nNếu bạn muốn"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 914,
+    "outTok": 256,
+    "ms": 3768,
+    "langOk": true,
+    "proseChars": 431,
+    "sample": "Mình hiểu bạn đang cân nhắc giữa hai thương hiệu điện thoại phổ biến. Tuy nhiên, câu hỏi này nằm ngoài chuyên môn của TappyAI 😊 TappyAI chỉ hỗ trợ bạn trong 5 lĩnh vực: **ăn uống, mua sắm sản phẩm cụ thể, du lịch, spa/làm đẹp, và giải trí** tại Việt Nam. Nếu bạn muốn **tìm mua iPhone hoặc Samsung**"
+  },
+  {
+    "id": "14-en",
+    "group": "shopping",
+    "name": "product comparison",
+    "lang": "en",
+    "turns": [
+      "Should I buy an iPhone or a Samsung?"
+    ],
+    "stage": "comparison",
+    "boldSpans": 2,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "dining, shopping, travel, spa & entertainment in Vietnam",
+      "But if you're in Vietnam and need help with:"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 914,
+    "outTok": 141,
+    "ms": 3356,
+    "langOk": true,
+    "proseChars": 528,
+    "sample": "I appreciate the question, but that's outside my wheelhouse! 🙂 I'm TappyAI — I specialize in helping you with **dining, shopping, travel, spa & entertainment in Vietnam**. For tech advice like iPhone vs Samsung, you'd be better off checking tech review sites or forums. **But if you're in Vietnam an"
+  },
+  {
+    "id": "15-vi",
+    "group": "shopping",
+    "name": "recommendation",
+    "lang": "vi",
+    "turns": [
+      "Tư vấn giúp mình chọn tai nghe để đi làm"
+    ],
+    "stage": null,
+    "boldSpans": 6,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Tai nghe không dây",
+      "có dây",
+      "Ngân sách",
+      "nghe nhạc",
+      "họp/call công việc",
+      "cả hai"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 3,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 721,
+    "outTok": 197,
+    "ms": 3133,
+    "langOk": true,
+    "proseChars": 369,
+    "sample": "Mình cần hiểu rõ hơn nhu cầu của bạn để gợi ý đúng ý nhé! 🎧 Bạn đang tìm tai nghe loại nào: - **Tai nghe không dây** (True Wireless / Bluetooth) hay **có dây**? - **Ngân sách** bao nhiêu? (dưới 500k, 500k-1M, trên 1M?) - Dùng chính cho **nghe nhạc**, **họp/call công việc**, hay **cả hai**? Những th"
+  },
+  {
+    "id": "15-en",
+    "group": "shopping",
+    "name": "recommendation",
+    "lang": "en",
+    "turns": [
+      "Help me choose headphones for commuting"
+    ],
+    "stage": "comparison",
+    "boldSpans": 1,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "What's your budget range?"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 2,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 846,
+    "outTok": 123,
+    "ms": 1858,
+    "langOk": true,
+    "proseChars": 413,
+    "sample": "I'd love to help you find the right headphones for commuting! To give you the best recommendations, I need to know a bit more: **What's your budget range?** (e.g., under $50, $50-150, $150+) Also, what matters most to you for commuting — **noise cancellation, battery life, comfort for long wear, or "
+  },
+  {
+    "id": "16-vi",
+    "group": "general",
+    "name": "factual",
+    "lang": "vi",
+    "turns": [
+      "Giá vàng SJC hôm nay"
+    ],
+    "stage": null,
+    "boldSpans": 3,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "SJC",
+      "SJC Ring",
+      "SJC 9999"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_gold_price"
+    ],
+    "inTok": 1883,
+    "outTok": 298,
+    "ms": 7731,
+    "langOk": true,
+    "proseChars": 293,
+    "sample": "Giá vàng **SJC** hôm nay (10/8/2026, cập nhật lúc 14:00): **SJC Ring**: Mua 140.6 triệu đ/lượng, Bán 143.6 triệu đ/lượng ↑ 600k **SJC 9999**: Mua 141.1 triệu đ/lượng, Bán 144.1 triệu đ/lượng ↑ 600k (1 lượng = 37.5g) Giá vàng tăng 600k so với hôm qua 👍 Bạn có định mua hay bán vàng không? "
+  },
+  {
+    "id": "16-en",
+    "group": "general",
+    "name": "factual",
+    "lang": "en",
+    "turns": [
+      "Gold price today"
+    ],
+    "stage": "comparison",
+    "boldSpans": 8,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Domestic Gold (VND/tael):",
+      "SJC Ring",
+      "SJC 9999",
+      "PNJ 24K",
+      "DOJI Hanoi",
+      "up 600,000 VND"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_gold_price"
+    ],
+    "inTok": 2114,
+    "outTok": 262,
+    "ms": 4464,
+    "langOk": true,
+    "proseChars": 494,
+    "sample": "Here's today's gold price (updated at 14:00, August 10, 2026): **Domestic Gold (VND/tael):** - **SJC Ring**: Buy 140.6M | Sell 143.6M VND - **SJC 9999**: Buy 141.1M | Sell 144.1M VND - **PNJ 24K**: Buy 141.1M | Sell 144.1M VND - **DOJI Hanoi**: Buy 141.1M | Sell 144.1M VND All domestic gold prices a"
+  },
+  {
+    "id": "17-vi",
+    "group": "general",
+    "name": "ambiguous",
+    "lang": "vi",
+    "turns": [
+      "Gợi ý cho mình cái gì đó đi"
+    ],
+    "stage": null,
+    "boldSpans": 5,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Ăn uống",
+      "Mua sắm",
+      "Du lịch",
+      "Spa & làm đẹp",
+      "Giải trí"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 1,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 716,
+    "outTok": 239,
+    "ms": 3700,
+    "langOk": true,
+    "proseChars": 406,
+    "sample": "Mình cần biết bạn đang cần gì để gợi ý cho phù hợp nhé! 😊 Mình chuyên giúp bạn với: • **Ăn uống** - tìm quán ngon, đặt đồ ăn online • **Mua sắm** - tìm sản phẩm, so giá trên các sàn • **Du lịch** - tìm khách sạn, vé máy bay, vận chuyển • **Spa & làm đẹp** - tìm địa điểm chất lượng • **Giải trí** - "
+  },
+  {
+    "id": "17-en",
+    "group": "general",
+    "name": "ambiguous",
+    "lang": "en",
+    "turns": [
+      "Recommend me something"
+    ],
+    "stage": null,
+    "boldSpans": 5,
+    "groundedNames": 0,
+    "ungroundedBold": [
+      "Food & drinks",
+      "Shopping",
+      "Travel",
+      "Relaxation",
+      "Entertainment"
+    ],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": true,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 7,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 842,
+    "outTok": 133,
+    "ms": 2218,
+    "langOk": true,
+    "proseChars": 444,
+    "sample": "Hey! I'd love to help, but I need a bit more context 😊 Are you looking for: - **Food & drinks** — a restaurant, cafe, or something to order? - **Shopping** — a product or item to buy? - **Travel** — a hotel, flight, or destination? - **Relaxation** — a spa or massage place? - **Entertainment** — a "
+  },
+  {
+    "id": "18-vi",
+    "group": "general",
+    "name": "confirmation",
+    "lang": "vi",
+    "turns": [
+      "Gợi ý quán ăn ngon ở Quận 1",
+      "Ok."
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 0,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 701,
+    "outTok": 76,
+    "ms": 1527,
+    "langOk": true,
+    "proseChars": 119,
+    "sample": "Okee, cứ hỏi mình khi cần gợi ý nhé! Mình sẵn sàng giúp bạn tìm quán ăn, mua sắm, du lịch hay spa ở Việt Nam anytime 👍"
+  },
+  {
+    "id": "18-en",
+    "group": "general",
+    "name": "confirmation",
+    "lang": "en",
+    "turns": [
+      "Suggest good restaurants in District 1",
+      "Sounds good."
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 0,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 1321,
+    "outTok": 41,
+    "ms": 2083,
+    "langOk": true,
+    "proseChars": 140,
+    "sample": "Nice! 😊 Let me know if you need more specific recs — like budget-friendly spots, romantic dinner vibes, or anything else. I'm here to help!"
+  },
+  {
+    "id": "19-vi",
+    "group": "general",
+    "name": "follow-up refinement",
+    "lang": "vi",
+    "turns": [
+      "Tìm khách sạn ở Đà Nẵng",
+      "Đổi sang Hội An."
+    ],
+    "stage": "comparison",
+    "boldSpans": 3,
+    "groundedNames": 2,
+    "ungroundedBold": [
+      "400.000 - 800.000 VNĐ/đêm"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 2,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_hotel_prices"
+    ],
+    "inTok": 6698,
+    "outTok": 556,
+    "ms": 28513,
+    "langOk": true,
+    "proseChars": 591,
+    "sample": "Mình tìm được khách sạn ở **Hội An** cho bạn! 🏨 Theo tìm kiếm, giá phòng tham chiếu khoảng **400.000 - 800.000 VNĐ/đêm** tùy loại phòng và vị trí. Hội An có khá nhiều lựa chọn từ khách sạn giá rẻ gần phố cổ đến resort 5 sao bên biển như **Hoiana Hotel & Suites**. Để xem giá chính xác theo ngày bạn "
+  },
+  {
+    "id": "19-en",
+    "group": "general",
+    "name": "follow-up refinement",
+    "lang": "en",
+    "turns": [
+      "Find hotels in Da Nang",
+      "Change to Hoi An."
+    ],
+    "stage": null,
+    "boldSpans": 5,
+    "groundedNames": 3,
+    "ungroundedBold": [
+      "Popular choices:",
+      "696,337 VND"
+    ],
+    "toolNamesReturned": 6,
+    "hasReasoning": true,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": true,
+    "hasFollowups": true,
+    "clarifications": 1,
+    "llmCalls": 2,
+    "toolCalls": 1,
+    "tools": [
+      "get_hotel_prices"
+    ],
+    "inTok": 5148,
+    "outTok": 359,
+    "ms": 29064,
+    "langOk": true,
+    "proseChars": 548,
+    "sample": "Great! Here are hotel options in **Hoi An**: **Popular choices:** - Prices start from around **696,337 VND** and up, depending on room type and season - **Booking.com** — save up to 75%, wide selection with guest reviews - **Agoda** — competitive rates, instant confirmation, free cancellation on man"
+  },
+  {
+    "id": "20-vi",
+    "group": "general",
+    "name": "chitchat",
+    "lang": "vi",
+    "turns": [
+      "Chào Tappy"
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 2,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 395,
+    "outTok": 23,
+    "ms": 1155,
+    "langOk": false,
+    "proseChars": 47,
+    "sample": "Hey! 👋 What's up? How can I help you today? 😊"
+  },
+  {
+    "id": "20-en",
+    "group": "general",
+    "name": "chitchat",
+    "lang": "en",
+    "turns": [
+      "Hi there"
+    ],
+    "stage": null,
+    "boldSpans": 0,
+    "groundedNames": 0,
+    "ungroundedBold": [],
+    "toolNamesReturned": 0,
+    "hasReasoning": false,
+    "hasTradeoff": false,
+    "hasPick": false,
+    "hasAction": false,
+    "hasFollowups": false,
+    "clarifications": 0,
+    "llmCalls": 1,
+    "toolCalls": 0,
+    "tools": [],
+    "inTok": 391,
+    "outTok": 48,
+    "ms": 6681,
+    "langOk": true,
+    "proseChars": 145,
+    "sample": "Hey! 👋 What's up? How can I help you today? Whether it's food, shopping, travel, spa stuff, or just hanging out in Vietnam — I'm here for it! 😊"
+  }
+]

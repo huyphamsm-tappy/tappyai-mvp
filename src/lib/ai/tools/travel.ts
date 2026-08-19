@@ -250,7 +250,6 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         hotel_list: hotelList,
         booking_link: bookingUrl,
         agoda_link: agodaUrl,
-        _debug_budget: maxBudgetVnd ? 'detected:' + maxBudgetVnd : 'null',
         note: messages.hotels.priceDisclaimer(lang)
       }
     } else {
@@ -259,7 +258,6 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         hotel_list: hotelList,
         booking_link: bookingUrl,
         agoda_link: agodaUrl,
-        _debug_budget: maxBudgetVnd ? 'detected:' + maxBudgetVnd : 'null',
         note: messages.hotels.seeBookingAt(lang, bookingUrl),
         search_url: bookingUrl,
       }

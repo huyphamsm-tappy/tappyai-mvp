@@ -108,9 +108,56 @@ export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<str
   }
 }
 
-// Encode ky tu '(' ')' trong URL de khong vo cu phap markdown link [text](url)
+// ── P3-S4: retrieved URLs are DATA and may never change rendered structure ──
+//
+// A URL from a merchant's og:image, a Serper image result or a web-search link
+// is third-party text. Interpolated raw into `![alt](url)` it can close the
+// markdown early and turn the remainder into attacker-authored markup in the
+// user's reply — with the model never involved.
+//
+// Every character below can terminate a markdown link or the line that holds
+// it, and every one of them is legal to percent-encode in a URL, so the target
+// still resolves: the URL is preserved, only its ability to act as syntax is
+// removed. `%` is deliberately NOT encoded, so already-encoded URLs stay intact.
+//
+//   ( )        close the link/image
+//   space tab  start a markdown "title" inside the parentheses
+//   LF CR      end the line entirely, letting arbitrary prose follow
+//   < >        autolink delimiters
+//   [ ]        would leave the surrounding token ambiguous to a parser
+const MARKDOWN_UNSAFE_IN_URL: ReadonlyArray<[RegExp, string]> = [
+  [/\(/g, '%28'], [/\)/g, '%29'],
+  [/ /g, '%20'], [/\t/g, '%09'],
+  [/\n/g, '%0A'], [/\r/g, '%0D'],
+  [/</g, '%3C'], [/>/g, '%3E'],
+  [/\[/g, '%5B'], [/\]/g, '%5D'],
+]
+
 export function sanitizeUrlForMarkdown(link: string): string {
-  return link.replace(/\(/g, '%28').replace(/\)/g, '%29')
+  let out = String(link ?? '')
+  for (const [pattern, replacement] of MARKDOWN_UNSAFE_IN_URL) out = out.replace(pattern, replacement)
+  return out
+}
+
+/**
+ * A link LABEL sits inside `[...]`, where text that closes the brackets could
+ * open a link of its own.
+ *
+ * The structural characters are REMOVED rather than backslash-escaped on
+ * purpose. Escaping only holds if the renderer honours markdown escapes, and
+ * the client renderer is not verified (P3 audit F7 — still open). Removal is
+ * renderer-agnostic: no parser, strict or naive, can rebuild a token out of
+ * characters that are not there.
+ *
+ * Lossless in practice: labels come from the deterministic platform-link
+ * builders ("ShopeeFood", "Google Maps", "Website"), none of which contain
+ * brackets, parentheses or backslashes.
+ */
+export function escapeMarkdownLabel(label: string): string {
+  return String(label ?? '')
+    .replace(/[[\]()\\]/g, '')
+    .replace(/[\r\n]+/g, ' ')
+    .trim()
 }
 
 // ===== EMBEDDABLE IMAGE PICKER =====
@@ -313,6 +360,68 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
       .slice(0, 6)
       .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '' }))
     return results
+  } catch {
+    return null
+  }
+}
+
+/** One row of google.serper.dev/shopping, as the provider actually returns it. */
+export interface SerperShoppingRow {
+  title: string
+  source: string
+  link: string
+  price: string
+  imageUrl?: string
+  productId?: string
+  rating?: number
+  ratingCount?: number
+  position?: number
+}
+
+/**
+ * Google Shopping via Serper.
+ *
+ * Separate from `serperSearch` because it is a different product: /search
+ * returns web pages (title, link, snippet), /shopping returns LISTINGS with a
+ * seller and a price. Product consultation needs the second — measured against
+ * the live endpoint, /search for "macbook pro m1 32gb 512gb cũ" returned a
+ * YouTube video and a market-research report, while /shopping returned 40 rows
+ * each carrying title, source, link and price.
+ *
+ * Contract verified against the provider on 2026-08-18: POST, X-API-KEY header,
+ * {q, gl, hl, num}; response {searchParameters, shopping[], credits}; title,
+ * source, link, price, imageUrl, productId, position on every row; rating and
+ * ratingCount on some. No spec fields — those live in the title (see
+ * productSpecs.ts). Bad auth returns 403 {message, statusCode}.
+ */
+export async function serperShopping(query: string, num = 20): Promise<SerperShoppingRow[] | null> {
+  const apiKey = process.env.SERPER_API_KEY
+  if (!apiKey) return null
+  try {
+    const resp = await Promise.race([
+      fetch('https://google.serper.dev/shopping', {
+        method: 'POST',
+        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num }),
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),
+    ])
+    if (!(resp as Response).ok) return null
+    const data = await (resp as Response).json()
+    const rows = (data?.shopping || []) as Array<Record<string, unknown>>
+    return rows
+      .filter(r => typeof r.title === 'string' && typeof r.link === 'string' && typeof r.price === 'string')
+      .map(r => ({
+        title: r.title as string,
+        source: typeof r.source === 'string' ? r.source : '',
+        link: sanitizeUrlForMarkdown(r.link as string),
+        price: r.price as string,
+        imageUrl: typeof r.imageUrl === 'string' ? r.imageUrl : undefined,
+        productId: typeof r.productId === 'string' ? r.productId : undefined,
+        rating: typeof r.rating === 'number' ? r.rating : undefined,
+        ratingCount: typeof r.ratingCount === 'number' ? r.ratingCount : undefined,
+        position: typeof r.position === 'number' ? r.position : undefined,
+      }))
   } catch {
     return null
   }

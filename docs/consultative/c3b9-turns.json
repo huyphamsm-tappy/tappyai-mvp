@@ -1,0 +1,995 @@
+[
+  {
+    "id": "T1 VI comparison variant-heavy",
+    "lang": "vi",
+    "request": "Nên chọn iPhone 15 hay Galaxy S24?",
+    "entities": [
+      "iPhone 15",
+      "Galaxy S24"
+    ],
+    "shoppingQueries": [
+      "iPhone 15 price Vietnam",
+      "Samsung Galaxy S24 price Vietnam"
+    ],
+    "toolCalls": [
+      "search_products",
+      "search_products"
+    ],
+    "records": [
+      {
+        "title": "iPhone 15 128GB (Chính Hãng VN/A) - Mới Nguyên Seal",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:12219672785809002089,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.990.000 ₫",
+        "source": "Điện Thoại Hay",
+        "productId": "12219672785809002089"
+      },
+      {
+        "title": "iPhone 15 128GB",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:12117093619435303590,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "18.490.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "12117093619435303590"
+      },
+      {
+        "title": "Apple iPhone 15 128GB",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:17749354682512051185,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "15.390.000 ₫",
+        "source": "Didongmoi.vn",
+        "productId": "17749354682512051185"
+      },
+      {
+        "title": "【Siêu Rẻ】iPhone 15 128GB | Chính Hãng Apple Việt Nam",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:1011084692649168921,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "17.790.000 ₫",
+        "source": "Điện Thoại Giá Kho",
+        "productId": "1011084692649168921"
+      },
+      {
+        "title": "IPhone 15 chính hãng VN/A siêu lướt Đen 128GB - Hà Nội",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:3803376356256121616,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.990.000 ₫",
+        "source": "Điện Thoại Hay",
+        "productId": "3803376356256121616"
+      },
+      {
+        "title": "Apple iPhone 15 128GB Black",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:12561420483770854677,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "16.390.000 ₫",
+        "source": "Táo Xinh",
+        "productId": "12561420483770854677"
+      },
+      {
+        "title": "iPhone 15 512GB",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:8680495832703175738,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "24.990.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "8680495832703175738"
+      },
+      {
+        "title": "iPhone 15 256GB (Chính Hãng) Cũ Like New",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:8603267195077480819,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.999.000 ₫",
+        "source": "Viettablet",
+        "productId": "8603267195077480819"
+      },
+      {
+        "title": "iPhone 15 128GB | Chính hãng VN/A | Giá rẻ",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:12730357926679541131,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "19.790.000 ₫",
+        "source": "dienthoaivui.com.vn",
+        "productId": "12730357926679541131"
+      },
+      {
+        "title": "Điện thoại iPhone 15 128GB quốc tế - Xanh dương",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:10012517907503366230,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.350.000 ₫",
+        "source": "Galaxy Di Động",
+        "productId": "10012517907503366230"
+      },
+      {
+        "title": "iPhone 15 128GB Mới 100% Fullbox Nguyên Seal (máy Mỹ xài Esim)",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:3709307993209961362,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "13.099.000 ₫",
+        "source": "Viettablet",
+        "productId": "3709307993209961362"
+      },
+      {
+        "title": "iPhone 15 128GB (chính hãng VN/A) -Xanh Dương / 128GB",
+        "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+price+Vietnam&prds=localAnnotatedOfferId:1,productid:13742857698810031248,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "16.990.000 ₫",
+        "source": "Hoàng Phát 360",
+        "productId": "13742857698810031248"
+      },
+      {
+        "title": "Samsung Galaxy S24 5G (8GB - 128GB) - Bản Mỹ Chip Snapdragon 8 Gen 3",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,productid:12152700753613305474,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.999.000 ₫",
+        "source": "Viettablet",
+        "productId": "12152700753613305474"
+      },
+      {
+        "title": "Galaxy S24 FE",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:2090468520740515803,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.690.000 ₫",
+        "source": "HungMobile",
+        "productId": "2090468520740515803"
+      },
+      {
+        "title": "Samsung Galaxy S24",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:167807945618240948,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "9.900.000 ₫",
+        "source": "sonpixel.vn",
+        "productId": "167807945618240948"
+      },
+      {
+        "title": "Điện thoại Samsung Galaxy S24 256GB Tím",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:1055997563012900246,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "11.299.000 ₫",
+        "source": "Viettablet",
+        "productId": "1055997563012900246"
+      },
+      {
+        "title": "Samsung Galaxy S24 FE 5G 128GB",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,productid:17191310858764104272,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.490.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "17191310858764104272"
+      },
+      {
+        "title": "Samsung S24+",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:17324921905341764901,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "13.799.000 ₫",
+        "source": "Đức Huy Mobile",
+        "productId": "17324921905341764901"
+      },
+      {
+        "title": "Samsung Galaxy S24 5G",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:13567003567920485780,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "13.290.000 ₫",
+        "source": "Viettablet",
+        "productId": "13567003567920485780"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 5G",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:7391814718029502424,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "19.490.000 ₫",
+        "source": "Didongmoi.vn",
+        "productId": "7391814718029502424"
+      },
+      {
+        "title": "Samsung Galaxy S24+ Vàng Amber Dual SIM",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:5350514300293346890,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.190.000 ₫",
+        "source": "Showroom123",
+        "productId": "5350514300293346890"
+      },
+      {
+        "title": "Điện thoại Samsung Galaxy S24 5G - RAM 8GB - 128GB - 99%",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,productid:4016013518775837197,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "9.490.000 ₫",
+        "source": "Oneway Mobile",
+        "productId": "4016013518775837197"
+      },
+      {
+        "title": "Samsung Galaxy S24 FE 5G (8GB - 128GB) - Cũ Like New",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,productid:12693827828112391328,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.499.000 ₫",
+        "source": "Viettablet",
+        "productId": "12693827828112391328"
+      },
+      {
+        "title": "Galaxy S24 Ultra Cam Titan",
+        "link": "https://www.google.com/search?ibp=oshop&q=Samsung+Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:13118091190693302148,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "16.490.000 ₫",
+        "source": "Alovietstore.com",
+        "productId": "13118091190693302148"
+      }
+    ],
+    "reply": "I'll search for current pricing and specs to help you compare these two phones.**iPhone 15** (128GB): ~12.3–18.5 million VND |\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyGFl7bT2NsOINrDUgvpbpALLFr5SGu3IpRa7qhp-xSA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEeBNZH4CHxqBdhfXfE4JnjGx5MUvwLteuyAeCnzf6dg&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyGFl7bT2NsOINrDUgvpbpALLFr5SGu3IpRa7qhp-xSA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXc2DF3knxg3DMlZ4k7v8yaBsuNI3HMw4FD1Eg3N52aA&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVEx7ppExvw2VCi-VvpcpWOZaQG0vucfKI8sDrkGtQCw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuWfeirOHcLI4yXA1zy6DjMiCzHNdVTdCbLrJjCqJWg&s=10)\n\n**Galaxy S24** (128GB): ~9.5–13.3 million VND\n\n**Price:** S24 is cheaper by 2–5 million VND depending on where you buy.\n\n**Key differences:**\n- **iPhone 15** → Apple ecosystem (iCloud, AirDrop, better resale value), A17 Pro chip, great for content creators\n- **Galaxy S24** → Android flexibility, better customization, Snapdragon 8 Gen 3 chip, excellent AI features, more affordable\n\nIf you prioritize **budget**, go **S24**. If you prefer **ecosystem lock-in & longevity**, pick **iPhone 15**. What matters more to you—price or staying in Apple's world?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find iPhone 15 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone+15\",\"primary\":true},{\"label\":\"🛒 Find Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Samsung+Galaxy+S24\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=iPhone+15+Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]iPhone 15 vs S24 Ultra|Best budget Android phone|iPhone trade-in value[/FOLLOWUPS]",
+    "steps": 2,
+    "promptTokens": 7312,
+    "outTok": 495
+  },
+  {
+    "id": "T2 VI comparison (total-fail case)",
+    "lang": "vi",
+    "request": "Nên chọn Sony WH-1000XM5 hay Bose QuietComfort Ultra?",
+    "entities": [
+      "Sony WH-1000XM5",
+      "Bose QuietComfort Ultra"
+    ],
+    "shoppingQueries": [
+      "Sony WH-1000XM5",
+      "Bose QuietComfort Ultra"
+    ],
+    "toolCalls": [
+      "search_products",
+      "search_products"
+    ],
+    "records": [
+      {
+        "title": "Sony Tai nghe không dây có công nghệ chống ồn WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:16864155713509914155,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Sony Store Online",
+        "productId": "16864155713509914155"
+      },
+      {
+        "title": "Tai nghe Bluetooth chụp Tai Sony WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:17217432158767688068,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "CellphoneS",
+        "productId": "17217432158767688068"
+      },
+      {
+        "title": "Tai nghe Sony WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:14556986932651510680,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Phong Vũ",
+        "productId": "14556986932651510680"
+      },
+      {
+        "title": "Tai nghe Bluetooth Chụp Tai Sony WH1000XM5 Đen",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:8364326124227300768,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Thế Giới Di Động",
+        "productId": "8364326124227300768"
+      },
+      {
+        "title": "SONY WH-1000XM5 Tai Nghe Chụp Tai Chống Ồn - Driver 30mm, Pin 40 Giờ, - Bảo Hành Chính Hãng 12 Tháng",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:11504913045381894126,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "8.090.000 ₫",
+        "source": "Shopee",
+        "productId": "11504913045381894126"
+      },
+      {
+        "title": "Tai nghe Sony WH-1000XM5 | Black (Chính Hãng)",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:6166396974495138187,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Anh Đức Digital",
+        "productId": "6166396974495138187"
+      },
+      {
+        "title": "Tai nghe Bluetooth choàng đầu Sony WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:15014324908206376720,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.890.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "15014324908206376720"
+      },
+      {
+        "title": "Tai Nghe Sony WH 1000XM5 Wireless Noise Cancelling ( Black ) -Hàng chính hãng",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:12359051741543514247,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.930.000 ₫",
+        "source": "PhuQuangKTS",
+        "productId": "12359051741543514247"
+      },
+      {
+        "title": "Tai nghe Bluetooth Chụp Tai Sony WH1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:18441164075223991914,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Điện máy XANH",
+        "productId": "18441164075223991914"
+      },
+      {
+        "title": "Sony WH-1000XM5 Bluetooth Wireless Over-Ear Headphones, BT 5.0, TWS, Noise Cancelling, Silver EU",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:10875756994041566763,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.967.575 ₫",
+        "source": "pclabcomputers.gr",
+        "productId": "10875756994041566763"
+      },
+      {
+        "title": "[WH 1000XM5] Tai nghe Sony không dây chống ồn WH-1000XM5 - Hành Chính Hãng Bảo Hành 12 Tháng Chính Hãng",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:2699168449164837937,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.950.000 ₫",
+        "source": "Shopee",
+        "productId": "2699168449164837937"
+      },
+      {
+        "title": "Tai nghe không dây choàng đầu Sony WH-1000XM5/PME",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:13127014286083544157,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Phong Vũ",
+        "productId": "13127014286083544157"
+      },
+      {
+        "title": "Tai nghe Tai nghe Bose Quietcomfort Ultra",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,catalogid:4412996866102029438,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.450.000 ₫",
+        "source": "CellphoneS",
+        "productId": "4412996866102029438"
+      },
+      {
+        "title": "Tai nghe chụp Tai Bose Quietcomfort Ultra Gen 2",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,catalogid:18005777686068683712,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.990.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "18005777686068683712"
+      },
+      {
+        "title": "Tai nghe Bluetooth True Wireless Bose Quietcomfort Ultra Earbuds 2",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,catalogid:14336211017630754680,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.490.000 ₫",
+        "source": "Điện tử Linh Anh",
+        "productId": "14336211017630754680"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones (Quốc tế)",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:15791141840470980271,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.990.000 ₫",
+        "source": "songlongmedia",
+        "productId": "15791141840470980271"
+      },
+      {
+        "title": "Tai Nghe Chụp Tai Bose QuietComfort Ultra Headphones, Chống Ồn, Pin 24 Giờ, Bluetooth 5.3",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:11187380073384918510,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "8.490.000 ₫",
+        "source": "HDRadio.vn",
+        "productId": "11187380073384918510"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:6351458566504097603,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.790.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "6351458566504097603"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones -White Smoke",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:5725696341905486504,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.990.000 ₫",
+        "source": "Chieu Duong Tech",
+        "productId": "5725696341905486504"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Earbuds (Quốc tế)",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:18113346230456732197,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "4.990.000 ₫",
+        "source": "songlongmedia",
+        "productId": "18113346230456732197"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Earbuds",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:4771100198838233983,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.390.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "4771100198838233983"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones | Black (Chính Hãng)",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:15162939429915448869,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "8.490.000 ₫",
+        "source": "Anh Đức Digital",
+        "productId": "15162939429915448869"
+      },
+      {
+        "title": "Bose QuietComfort Ultra Headphones - AZ Audio",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:5366131448854583987,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.990.000 ₫",
+        "source": "AZ Audio & Gaming Gear Store",
+        "productId": "5366131448854583987"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones 2",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:5941975895356118250,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "11.990.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "5941975895356118250"
+      }
+    ],
+    "reply": "I'll search for current pricing and specs on both headphones to help you compare.**Sony WH-1000XM5** starts around **6.49M VND** — excellent noise cancellation, 40-hour battery, lightweight & comfortable for long sessions.\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0TE5uw4jqYlC3t8zoBUJNBqoZJUBUyijQSae-zgr0EQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Ueh6LPTtWLj7fdgN8JefcNdEBVyXRx8YwOxOR4zpfw&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI3Yszlwl5ttD6Jk7nJv3zhfrS3FC6K8ixqkS-5I3tSQ&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFjxnYaUZNgske9XooBpmfbYU0AFYUlyyx2VfeF0mFoA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_CUcNEFNz6bDu44gqDyfWNYabPpM74eG7XgeadMU5w&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRORJ9a3stXUBrzR3heNSf4DdInNySaB0AsDXGMxxsVpA&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Ueh6LPTtWLj7fdgN8JefcNdEBVyXRx8YwOxOR4zpfw&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRORJ9a3stXUBrzR3heNSf4DdInNySaB0AsDXGMxxsVpA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqSzL4jm0BdZOyx8rqYApiXLAW9Z5PSCchdme-imZ2_g&s=10)\n\n**Bose QuietComfort Ultra** (headphones) ranges **7.99–10.99M VND** — premium sound quality, slightly better comfort for some, but shorter 24-hour battery.\n\n**Key difference:** Sony wins on battery life & price; Bose edges ahead on audio clarity if you prioritize sound quality over endurance. Both have top-tier ANC.\n\nWhat matters more to you — battery longevity & value, or premium audio quality? 🎧\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Sony WH-1000XM5 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Sony+WH-1000XM5\",\"primary\":true},{\"label\":\"🛒 Bose QuietComfort Ultra on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Bose+QuietComfort+Ultra\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=headphones+noise+cancelling\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "steps": 2,
+    "promptTokens": 7594,
+    "outTok": 447
+  },
+  {
+    "id": "T3 exact-model VI",
+    "lang": "vi",
+    "request": "Mua tai nghe Sony WH-1000XM5 ở đâu?",
+    "entities": [
+      "Sony WH-1000XM5"
+    ],
+    "shoppingQueries": [
+      "Sony WH-1000XM5"
+    ],
+    "toolCalls": [
+      "search_products"
+    ],
+    "records": [
+      {
+        "title": "Sony Tai nghe không dây có công nghệ chống ồn WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:16864155713509914155,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Sony Store Online",
+        "productId": "16864155713509914155"
+      },
+      {
+        "title": "Tai nghe Bluetooth chụp Tai Sony WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:17217432158767688068,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "CellphoneS",
+        "productId": "17217432158767688068"
+      },
+      {
+        "title": "Tai nghe Sony WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:14556986932651510680,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Phong Vũ",
+        "productId": "14556986932651510680"
+      },
+      {
+        "title": "Tai nghe Bluetooth Chụp Tai Sony WH1000XM5 Đen",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:8364326124227300768,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Thế Giới Di Động",
+        "productId": "8364326124227300768"
+      },
+      {
+        "title": "SONY WH-1000XM5 Tai Nghe Chụp Tai Chống Ồn - Driver 30mm, Pin 40 Giờ, - Bảo Hành Chính Hãng 12 Tháng",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:11504913045381894126,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "8.090.000 ₫",
+        "source": "Shopee",
+        "productId": "11504913045381894126"
+      },
+      {
+        "title": "Tai nghe Sony WH-1000XM5 | Black (Chính Hãng)",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:6166396974495138187,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Anh Đức Digital",
+        "productId": "6166396974495138187"
+      },
+      {
+        "title": "Tai nghe Bluetooth choàng đầu Sony WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:15014324908206376720,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.890.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "15014324908206376720"
+      },
+      {
+        "title": "Tai Nghe Sony WH 1000XM5 Wireless Noise Cancelling ( Black ) -Hàng chính hãng",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:12359051741543514247,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.930.000 ₫",
+        "source": "PhuQuangKTS",
+        "productId": "12359051741543514247"
+      },
+      {
+        "title": "Tai nghe Bluetooth Chụp Tai Sony WH1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:18441164075223991914,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Điện máy XANH",
+        "productId": "18441164075223991914"
+      },
+      {
+        "title": "Sony WH-1000XM5 Bluetooth Wireless Over-Ear Headphones, BT 5.0, TWS, Noise Cancelling, Silver EU",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:10875756994041566763,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.967.575 ₫",
+        "source": "pclabcomputers.gr",
+        "productId": "10875756994041566763"
+      },
+      {
+        "title": "[WH 1000XM5] Tai nghe Sony không dây chống ồn WH-1000XM5 - Hành Chính Hãng Bảo Hành 12 Tháng Chính Hãng",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:2699168449164837937,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.950.000 ₫",
+        "source": "Shopee",
+        "productId": "2699168449164837937"
+      },
+      {
+        "title": "Tai nghe không dây choàng đầu Sony WH-1000XM5/PME",
+        "link": "https://www.google.com/search?ibp=oshop&q=Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:13127014286083544157,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Phong Vũ",
+        "productId": "13127014286083544157"
+      }
+    ],
+    "reply": "Tai nghe **Sony WH-1000XM5** có giá khoảng **6.49 - 8.09 triệu đồng** tùy theo nơi bán. Bạn có thể mua tại các cửa hàng uy tín:\n\n• **CellphoneS, Phong Vũ, Thế Giới Di Động, Anh Đức Digital** — giá **6.49 triệu đồng** (giá tốt nhất hiện tại)\n• **Shopee** — từ **6.49 - 8.09 triệu đồng** (tùy shop)\n• **FPT Shop** — **6.89 triệu đồng**\n\nMình gợi ý ưu tiên các cửa hàng lớn như CellphoneS hay Phong Vũ vì có bảo hành chính hãng 12 tháng và dịch vụ sau bán hàng tốt. Bạn có muốn mình tìm link mua cụ thể trên Shopee hoặc các nền tảng khác không?\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0TE5uw4jqYlC3t8zoBUJNBqoZJUBUyijQSae-zgr0EQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Ueh6LPTtWLj7fdgN8JefcNdEBVyXRx8YwOxOR4zpfw&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI3Yszlwl5ttD6Jk7nJv3zhfrS3FC6K8ixqkS-5I3tSQ&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFjxnYaUZNgske9XooBpmfbYU0AFYUlyyx2VfeF0mFoA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_CUcNEFNz6bDu44gqDyfWNYabPpM74eG7XgeadMU5w&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRORJ9a3stXUBrzR3heNSf4DdInNySaB0AsDXGMxxsVpA&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Ueh6LPTtWLj7fdgN8JefcNdEBVyXRx8YwOxOR4zpfw&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRORJ9a3stXUBrzR3heNSf4DdInNySaB0AsDXGMxxsVpA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqSzL4jm0BdZOyx8rqYApiXLAW9Z5PSCchdme-imZ2_g&s=10)\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Sony+WH-1000XM5\",\"primary\":true},{\"label\":\"📦 Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=Sony+WH-1000XM5\",\"primary\":false},{\"label\":\"🛍️ Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=Sony+WH-1000XM5\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]So sánh với tai nghe khác|Giá tại CellphoneS|Bảo hành như thế nào[/FOLLOWUPS]",
+    "steps": 2,
+    "promptTokens": 4116,
+    "outTok": 569
+  },
+  {
+    "id": "T4 exact-model EN",
+    "lang": "en",
+    "request": "Where can I buy a Bose QuietComfort Ultra?",
+    "entities": [
+      "Bose QuietComfort Ultra"
+    ],
+    "shoppingQueries": [
+      "Bose QuietComfort Ultra"
+    ],
+    "toolCalls": [
+      "search_products"
+    ],
+    "records": [
+      {
+        "title": "Tai nghe Tai nghe Bose Quietcomfort Ultra",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,catalogid:4412996866102029438,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.450.000 ₫",
+        "source": "CellphoneS",
+        "productId": "4412996866102029438"
+      },
+      {
+        "title": "Tai nghe chụp Tai Bose Quietcomfort Ultra Gen 2",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,catalogid:18005777686068683712,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.990.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "18005777686068683712"
+      },
+      {
+        "title": "Tai nghe Bluetooth True Wireless Bose Quietcomfort Ultra Earbuds 2",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,catalogid:14336211017630754680,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.490.000 ₫",
+        "source": "Điện tử Linh Anh",
+        "productId": "14336211017630754680"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones (Quốc tế)",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:15791141840470980271,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.990.000 ₫",
+        "source": "songlongmedia",
+        "productId": "15791141840470980271"
+      },
+      {
+        "title": "Tai Nghe Chụp Tai Bose QuietComfort Ultra Headphones, Chống Ồn, Pin 24 Giờ, Bluetooth 5.3",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:11187380073384918510,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "8.490.000 ₫",
+        "source": "HDRadio.vn",
+        "productId": "11187380073384918510"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:6351458566504097603,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.790.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "6351458566504097603"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones -White Smoke",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:5725696341905486504,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.990.000 ₫",
+        "source": "Chieu Duong Tech",
+        "productId": "5725696341905486504"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Earbuds (Quốc tế)",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:18113346230456732197,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "4.990.000 ₫",
+        "source": "songlongmedia",
+        "productId": "18113346230456732197"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Earbuds",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:4771100198838233983,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.390.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "4771100198838233983"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones | Black (Chính Hãng)",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:15162939429915448869,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "8.490.000 ₫",
+        "source": "Anh Đức Digital",
+        "productId": "15162939429915448869"
+      },
+      {
+        "title": "Bose QuietComfort Ultra Headphones - AZ Audio",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:5366131448854583987,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.990.000 ₫",
+        "source": "AZ Audio & Gaming Gear Store",
+        "productId": "5366131448854583987"
+      },
+      {
+        "title": "Tai nghe Bose QuietComfort Ultra Headphones 2",
+        "link": "https://www.google.com/search?ibp=oshop&q=Bose+QuietComfort+Ultra&prds=localAnnotatedOfferId:1,productid:5941975895356118250,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "11.990.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "5941975895356118250"
+      }
+    ],
+    "reply": "I'll search for where you can buy the Bose QuietComfort Ultra headphones.Great! I found several options for the **Bose QuietComfort Ultra** headphones. Here are the best places to buy:\n\n**Best prices found:**\n- **CellphoneS**: ₫7,450,000 (most affordable)\n- **Điện tử Linh Anh**: ₫7,490,000\n- **songlongmedia**: ₫7,990,000\n- **FPTShop**: ₫10,790,000 - ₫10,990,000 (also has Gen 2 model)\n\nYou can also browse all options on major e-commerce platforms like **Shopee**, **Tiki**, and **Lazada** to compare prices and check for current deals.\n\n*Note: Prices shown are reference prices from the search results and may vary by retailer, color, and availability — check the links for exact current pricing.*\n\nAre you looking for the over-ear headphones or the earbuds version? 🎧\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD7AgirEp77in_Nd3TKfyPDZocSO3N9pRLL1suqA7vrA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlP1yzttTTcUpOASzOUeLxH8mdpgt3DzuWUSEsx_trrw&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReL-0JWpw7ykW3DVTly-h_eRKVDMzJ5iG_uTaEjykcxA&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTJDIB-gaPVYAqAfaFcZ73VSTAGMx7BrPlk0chfd6Mbw&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBOD37fXlehJqwqiJsORcdM_qHDffD6LU9KP59nMmk4g&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa9l_ODe-xTJq1cy36lkQOCsgOZUX0zPkEKEdwOX2chQ&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtL5PpRniBriKythaSKDfASY2U9yo2Z9R0EqCq800wDg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAnNjGN6prW95Go56M8CUg8NXCfraZnMNu6C9rARBCyw&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj3tqdYt2R8jJ7uNLl_rOBtQX3P6d3unHGhhKOzvUMVw&s=10)\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Bose+QuietComfort+Ultra\",\"primary\":true},{\"label\":\"📦 Find on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=Bose+QuietComfort+Ultra\",\"primary\":false},{\"label\":\"🛍️ Find on Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=Bose+QuietComfort+Ultra\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "steps": 2,
+    "promptTokens": 4020,
+    "outTok": 474
+  },
+  {
+    "id": "T5 accessory-heavy",
+    "lang": "vi",
+    "request": "Mua đệm tai cho Sony WH-1000XM5 ở đâu?",
+    "entities": [
+      "Sony WH-1000XM5"
+    ],
+    "shoppingQueries": [
+      "đệm tai Sony WH-1000XM5"
+    ],
+    "toolCalls": [
+      "search_products"
+    ],
+    "records": [
+      {
+        "title": "Đệm tai thay thế tai nghe WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:4808932699013272099,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "335.000 ₫",
+        "source": "Sony Store Online",
+        "productId": "4808932699013272099"
+      },
+      {
+        "title": "1 Cặp Miếng Đệm Tai Nghe Sony WH-1000XM5 (WH1000XM5) Chống Ồn Bằng Da Cừu / Protein",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:10188032246236989957,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "215.688 ₫",
+        "source": "Shopee",
+        "productId": "10188032246236989957"
+      },
+      {
+        "title": "Đệm tai nghe sony WH-1000XM5 (Pad-ears for WH-1000XM5)",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:13669806565209894390,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "250.000 ₫",
+        "source": "Tainghetot.com",
+        "productId": "13669806565209894390"
+      },
+      {
+        "title": "Đệm Tai Nghe Sony WH-1000XM5: Đệm Tai Nghe Chính Hãng",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:12746902643326305396,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "300.000 ₫",
+        "source": "Vinyl Sài Gòn",
+        "productId": "12746902643326305396"
+      },
+      {
+        "title": "Miếng Đệm Tai Nghe Bằng Da Protein Chống Ồn Thay Thế Cho Sony WH-1000XM5 (WH1000XM5)",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:11087749690444426224,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "283.866 ₫",
+        "source": "Shopee",
+        "productId": "11087749690444426224"
+      },
+      {
+        "title": "Sony Tai nghe không dây có công nghệ chống ồn WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:7787706825284187031,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Thế Giới Di Động",
+        "productId": "7787706825284187031"
+      },
+      {
+        "title": "Đệm Bọc Bảo Vệ Tai Nghe Tương Thích Với Sony WH-1000XM5 XM2 XM3 XM4 B-ose nc700 QC45",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:11127788293334693873,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "187.044 ₫",
+        "source": "Shopee",
+        "productId": "11127788293334693873"
+      },
+      {
+        "title": "Tai nghe Sony WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:10334165813310916847,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "5.790.000 ₫",
+        "source": "Oneway Mobile",
+        "productId": "10334165813310916847"
+      },
+      {
+        "title": "1 Cặp Đệm Tai Nghe Bằng Gel Làm Mát Cho Sony WH-1000XM5 XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:10205643249400587399,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "254.960 ₫",
+        "source": "Shopee",
+        "productId": "10205643249400587399"
+      },
+      {
+        "title": "1 Cặp đệm tai nghe thay thế Ice Skin cho Sony WH-1000XM5 (Đen tím)",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:1485519042535167074,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "161.241 ₫",
+        "source": "Sunsky Wholesale Dropshipping",
+        "productId": "1485519042535167074"
+      },
+      {
+        "title": "Dành cho sony wh-1000xm 3 / 1000xm4 / 1000xm5 / 1000xm6 Vỏ bảo vệ đệm tai nghe Earmuff Vỏ bảo vệ Đầu chùm đệm",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,productid:13010263352107892820,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "99.855 ₫",
+        "source": "Shopee",
+        "productId": "13010263352107892820"
+      },
+      {
+        "title": "Tai nghe Bluetooth chụp Tai Sony WH-1000XM5",
+        "link": "https://www.google.com/search?ibp=oshop&q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5&prds=localAnnotatedOfferId:1,catalogid:17217432158767688068,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "6.490.000 ₫",
+        "source": "Phong Vũ",
+        "productId": "17217432158767688068"
+      }
+    ],
+    "reply": "Mình tìm giúp bạn đệm tai cho Sony WH-1000XM5 nhé! 🎧Mình tìm được vài lựa chọn đệm tai cho Sony WH-1000XM5 với giá khác nhau:\n\n**Giá rẻ nhất:** [Đệm tai nghe bằng gel làm mát](https://shopee.vn/search?keyword=%C4%91%E1%BB%87m%20tai%20Sony%20WH-1000XM5) trên **Shopee** khoảng **161k - 215k đồng** (tùy loại da protein hay gel). **Sony Store Online** có đệm chính hãng **335k đồng**, còn **Tainghetot.com** bán **250k đồng**.\n\nBạn có thích loại đệm nào (da protein, gel làm mát, hay da cừu) không? 🎧\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5\",\"primary\":true},{\"label\":\"📦 Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5\",\"primary\":false},{\"label\":\"🛍️ Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=%C4%91%E1%BB%87m+tai+Sony+WH-1000XM5\",\"primary\":false}]}[/CTA_BUTTONS]\n\n📸 _Hình ảnh & link review:_\n\n**Đệm tai thay thế tai nghe WH-1000XM5**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpsRLEHWj-5deejoZ3oTuzlbWKryO4dZXV-HUgTGM3SA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSfF-M7RpuCrIyFy6ka0PIyBWX8EPO8exOLZDRXO6z7g&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCM8i9YtkJQsebvK9tCunOZGPtZMpqq3_HaaUNtqHMyQ&s=10)\n\n**1 Cặp Miếng Đệm Tai Nghe Sony WH-1000XM5 (WH1000XM5) Chống Ồn Bằng Da Cừu / Protein**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFiOU8_1LnN6oGJRDpPX_UanKYg1w2d0GeIAWrpUo5zA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY1HbnQtecUjOOI6N0HVfV1UVTUGVpjLzg1aIQ_86R9g&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjX8X8sA0o-AyjMQuNULOXjjDV3WPStCEcd4YqcFdJkg&s=10)\n\n**Đệm tai nghe sony WH-1000XM5 (Pad-ears for WH-1000XM5)**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpsRLEHWj-5deejoZ3oTuzlbWKryO4dZXV-HUgTGM3SA&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWuTxwZ1_SEUN1yWHfWgHAXPVej-1zWiDCSYIkfh_TmQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkyy_VBM_zcYvnTv9JSAr6Uc-9rKZfnY-P1PYhqpBbIQ&s=10)",
+    "steps": 2,
+    "promptTokens": 4207,
+    "outTok": 522
+  },
+  {
+    "id": "T6 variant-heavy ambiguous",
+    "lang": "vi",
+    "request": "Nên mua Galaxy S24 hay Galaxy S24 Ultra?",
+    "entities": [
+      "Galaxy S24",
+      "Galaxy S24 Ultra"
+    ],
+    "shoppingQueries": [
+      "Galaxy S24 price Vietnam",
+      "Galaxy S24 Ultra price Vietnam"
+    ],
+    "toolCalls": [
+      "search_products",
+      "search_products"
+    ],
+    "records": [
+      {
+        "title": "Samsung Galaxy S24 5G (8GB - 256GB) - Chính Hãng Like New",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,productid:10293039883514572323,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "10.099.000 ₫",
+        "source": "Viettablet",
+        "productId": "10293039883514572323"
+      },
+      {
+        "title": "Samsung Galaxy S24",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:8118829468129402337,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "13.299.000 ₫",
+        "source": "Đức Huy Mobile",
+        "productId": "8118829468129402337"
+      },
+      {
+        "title": "Điện thoại Samsung Galaxy S24 256GB Tím",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:1055997563012900246,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "11.299.000 ₫",
+        "source": "Viettablet",
+        "productId": "1055997563012900246"
+      },
+      {
+        "title": "Samsung Galaxy S24 FE 5G 128GB",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,productid:17191310858764104272,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.490.000 ₫",
+        "source": "Fptshop.com.vn",
+        "productId": "17191310858764104272"
+      },
+      {
+        "title": "Samsung Galaxy S24 FE 5G 8GB 128GB",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:14910524407590843479,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "9.199.000 ₫",
+        "source": "Đức Huy Mobile",
+        "productId": "14910524407590843479"
+      },
+      {
+        "title": "Samsung S24+",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:7838325980821611624,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.400.000 ₫",
+        "source": "Lê Quân Mobile",
+        "productId": "7838325980821611624"
+      },
+      {
+        "title": "Samsung Galaxy S24 5G",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:13567003567920485780,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "13.290.000 ₫",
+        "source": "Viettablet",
+        "productId": "13567003567920485780"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 5G",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:7391814718029502424,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "15.590.000 ₫",
+        "source": "didong3a.vn",
+        "productId": "7391814718029502424"
+      },
+      {
+        "title": "Điện thoại Samsung Galaxy S24 5G - RAM 8GB - 128GB - 99%",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,productid:4016013518775837197,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "9.490.000 ₫",
+        "source": "Oneway Mobile",
+        "productId": "4016013518775837197"
+      },
+      {
+        "title": "Samsung Galaxy S24+ Vàng Amber Dual SIM",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:5350514300293346890,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "12.190.000 ₫",
+        "source": "Showroom123",
+        "productId": "5350514300293346890"
+      },
+      {
+        "title": "Samsung Galaxy S24 FE 5G (8GB - 128GB) - Cũ Like New",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,productid:12693827828112391328,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "7.499.000 ₫",
+        "source": "Viettablet",
+        "productId": "12693827828112391328"
+      },
+      {
+        "title": "Galaxy S24 Ultra Cam Titan",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:13118091190693302148,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "13.890.000 ₫",
+        "source": "Showroom123",
+        "productId": "13118091190693302148"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 5G",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:7391814718029502424,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "15.590.000 ₫",
+        "source": "Didongmoi.vn",
+        "productId": "7391814718029502424"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 5G (256GB) - Chính Hãng Cũ Like New",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:6632847981406288631,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "15.499.000 ₫",
+        "source": "Viettablet",
+        "productId": "6632847981406288631"
+      },
+      {
+        "title": "Galaxy S24 Ultra Cam Titan",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,catalogid:13118091190693302148,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "13.890.000 ₫",
+        "source": "Showroom123",
+        "productId": "13118091190693302148"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:17331876245429945490,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "15.500.000 ₫",
+        "source": "sonpixel.vn",
+        "productId": "17331876245429945490"
+      },
+      {
+        "title": "Điện thoại Samsung Galaxy S24 Ultra 5G - RAM 12GB - 256GB - 99%",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:848767528446942805,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "16.490.000 ₫",
+        "source": "Oneway Mobile",
+        "productId": "848767528446942805"
+      },
+      {
+        "title": "SAMSUNG Galaxy S24 Ultra 5G công ty SSVN (12GB | 256GB) mới fullbox",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:15043872193259018935,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "20.990.000 ₫",
+        "source": "digiphone",
+        "productId": "15043872193259018935"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra (5G) 12GB 512GB - 1 đổi 1 12 tháng",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:14787802328824035478,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "23.390.000 ₫",
+        "source": "clickbuy.com.vn",
+        "productId": "14787802328824035478"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra 256GB/12GB Chính hãng",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:13656772910998234585,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "19.490.000 ₫",
+        "source": "Didongmoi.vn",
+        "productId": "13656772910998234585"
+      },
+      {
+        "title": "Điện thoại Samsung Galaxy S24 Ultra 5G - RAM 12GB - 512GB - 99%",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:181708773163242315,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "17.990.000 ₫",
+        "source": "Oneway Mobile",
+        "productId": "181708773163242315"
+      },
+      {
+        "title": "Samsung S24 Ultra 256GB Newseal VN",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:12501917865239559458,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "14.490.000 ₫",
+        "source": "Alovietstore.com",
+        "productId": "12501917865239559458"
+      },
+      {
+        "title": "Galaxy S24 Ultra 12G/256GB - Việt Nam - New Fullbox",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:10721307777232730977,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "20.690.000 ₫",
+        "source": "didong3a.vn",
+        "productId": "10721307777232730977"
+      },
+      {
+        "title": "Samsung Galaxy S24 Ultra Fullbox - ChungBlackBerry",
+        "link": "https://www.google.com/search?ibp=oshop&q=Galaxy+S24+Ultra+price+Vietnam&prds=localAnnotatedOfferId:1,productid:1683364968582274758,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+        "snippet": "",
+        "price": "15.890.000 ₫",
+        "source": "ChungBlackBerry",
+        "productId": "1683364968582274758"
+      }
+    ],
+    "reply": "I'll search for current pricing and specs to help you compare these two phones.Based on current prices in Vietnam:\n\n**Galaxy S24** starts around **11.3–13.3 million VND** (256GB) — solid everyday phone with great performance & battery life.\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0CAoR6GHj_YePLBpRebN_GIK7k7Qcwlu2zDsLP_W4eA&s)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQej_CYeNDBregSHIwqEz2sdgjMQnXOjouAk3tQhE2nZg&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmreBRSSV1JG0-o02nnA0Dz-n1WaIv5DKJ8bhUMcQpGg&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNCL_dDdcIeWWIJzV2iehFHBxAlpN9GcYpF-IA5yoEaQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABPmG4aklR-nigYF6ISFngnV9b0jEtibIrlzOMzyCiQ&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs4eGo1UhVJL8vHDHeX05bn-8MdrrvJv0ysvgyjQJvTw&s=10)\n\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmjm_o2XFgVY9zdG-0E599-OK2GkNdEDhlgSvfCGUa7A&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBSUz4prnnKRUsCqvO5gRhSw0g1w9i2DNCktc-GFqWKw&s=10)\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXurj_-kQNF81yvXpfduGKT7r1XG2faZM_bxUQOMqFIw&s=10)\n\n**Galaxy S24 Ultra** starts around **15.5–16.5 million VND** (256GB) — premium option with larger screen, better zoom camera (10x optical), and S Pen stylus.\n\n**Key difference:** The Ultra costs ~2–3 million VND more. You're paying extra for the bigger display, advanced camera zoom, and S Pen. If you mainly use your phone for scrolling, photos, and apps, the regular S24 handles everything well. But if you love photography (especially zoom), note-taking with a stylus, or want a bigger screen, the Ultra is worth it.\n\nWhat matters most to you — camera quality, screen size, or keeping costs down? 📱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Find Galaxy S24 on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Galaxy+S24\",\"primary\":true},{\"label\":\"🛒 Find Galaxy S24 Ultra on Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Galaxy+S24+Ultra\",\"primary\":false},{\"label\":\"📦 Compare on Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=Galaxy+S24\",\"primary\":false}]}[/CTA_BUTTONS]",
+    "steps": 2,
+    "promptTokens": 7278,
+    "outTok": 475
+  }
+]

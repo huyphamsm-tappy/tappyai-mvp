@@ -9,10 +9,30 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
+import { deriveChatRoutingHints } from '@/lib/ai/llm/routing/chatHints'
+import { validateClientInput } from '@/lib/ai/security/clientInput'
+import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, detectDecisionStage, isSimpleQuery } from '@/lib/ai/intent'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
-import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
+import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from '@/lib/ai/streamEnrichment'
+import { decideResponseMode, mediaBudgetFor, placesWithinBudget } from '@/lib/ai/mediaPolicy'
+import { buildGroundedFactsBlock } from '@/lib/ai/groundedFacts'
+import { normalizeToolCandidates } from '@/lib/ai/candidateEvidence'
+import { buildEvidenceStatusBlock, buildStateContextBlock, usableCandidates, visibleCandidates, type EvidenceStatus } from '@/lib/ai/stateContext'
+import { applyDelta, extractDelta, unseenCandidateCount, type ConsultationDelta } from '@/lib/ai/consultationDelta'
+import { buildRankingBlock, rankCandidates } from '@/lib/ai/candidateRanking'
+import { buildNoCandidateResponse, buildRejectionQuestionBlock, buildRejectionResponse, buildSearchFailedResponse, shouldUseDeterministicRejection, shouldUseDeterministicResponse, toDataStreamBody } from '@/lib/ai/noCandidateResponse'
+import { buildProductQuery, classifyProductResult, filterIrrelevantProducts, productRecordsFrom, shouldPreSearchProducts } from '@/lib/ai/productPreSearch'
+import {
+  createState,
+  isValidConversationId,
+  loadState,
+  newConversationId,
+  ownerScopeFor,
+  saveState,
+  type ConversationState,
+} from '@/lib/ai/conversationState'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
@@ -35,28 +55,43 @@ export async function POST(req: Request) {
     )
   }
 
-  const { messages, userLocation: rawUserLocation, userPreferences: rawUserPrefs, responseStyle: rawResponseStyle } = await req.json()
-
-  // Reject a non-array or oversized history BEFORE any expensive LLM/tool work.
-  // maxTokens bounds only OUTPUT and the IP limiter bounds request COUNT — neither
-  // caps input payload size, so an unbounded prompt is a real cost/DoS vector.
-  if (!Array.isArray(messages) || messages.length === 0) {
+  // ── P3-S1: the client input trust boundary ────────────────────────────────
+  // Everything below this point works on SERVER-CONSTRUCTED values. The client's
+  // objects are never forwarded: validateClientInput rebuilds each message from
+  // an allowlist, so a forged role, a fabricated tool result, or a
+  // provider-specific field cannot survive into prompt construction or reach a
+  // provider. It also applies the single bounded client-input budget, which the
+  // old per-messages char cap did not cover for preferences.
+  let rawBody: unknown
+  try {
+    rawBody = await req.json()
+  } catch {
     return new Response(
       JSON.stringify({ error: 'invalid_request' }),
       { status: 400, headers: { 'Content-Type': 'application/json' } },
     )
   }
-  const totalInputChars = (messages as Array<{ content?: unknown }>).reduce((sum, m) => {
-    const c = m?.content
-    if (typeof c === 'string') return sum + c.length
-    if (Array.isArray(c)) return sum + (c as Array<{ text?: string }>).reduce((s, p) => s + (p?.text?.length || 0), 0)
-    return sum
-  }, 0)
-  if (totalInputChars > 24_000) {
+
+  const validated = validateClientInput(rawBody)
+  if (!validated.ok) {
+    // Size rejections keep their existing 413 + user-facing copy; every other
+    // contract violation is a 400 with a machine-readable code.
+    const isSize = validated.code === 'message_too_long'
+      || validated.code === 'preference_budget_exceeded'
+      || validated.code === 'input_budget_exceeded'
+      || validated.code === 'image_too_large'
     return new Response(
-      JSON.stringify({ error: 'message_too_long', message: 'Tin nhắn quá dài. Vui lòng rút gọn.' }),
-      { status: 413, headers: { 'Content-Type': 'application/json' } },
+      JSON.stringify(isSize
+        ? { error: validated.code, message: 'Tin nhắn quá dài. Vui lòng rút gọn.' }
+        : { error: validated.code }),
+      { status: isSize ? 413 : 400, headers: { 'Content-Type': 'application/json' } },
     )
+  }
+
+  const messages = validated.messages
+  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle } = rawBody as {
+    userLocation?: { lat?: unknown; lng?: unknown; address?: string }
+    responseStyle?: unknown
   }
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
@@ -81,7 +116,7 @@ export async function POST(req: Request) {
   const lastText = typeof rawContent === 'string'
     ? rawContent
     : Array.isArray(rawContent)
-      ? rawContent.map((c: { text?: string }) => c.text || '').join(' ')
+      ? rawContent.map(c => (c.type === 'text' ? c.text : '')).join(' ')
       : ''
 
   // Detect if last message contains an image
@@ -117,6 +152,9 @@ export async function POST(req: Request) {
   let memoryBlock = ''
   let prefBlock = ''
   let authedUserId: string | null = null
+  // Anonymous *session* id (auth.uid() of the anonymous JWT). Used only to scope
+  // conversation state to the session that created it — never sent to a client.
+  let anonUserId: string | null = null
   let existingMemory: UserMemory | null = null
   let isPro = false
   // True once a token-based ANONYMOUS session's quota was enforced server-side
@@ -124,6 +162,7 @@ export async function POST(req: Request) {
   let anonQuotaByToken = false
   try {
     const { user, supabase } = await getRequestUser(req)
+    if (user?.is_anonymous) anonUserId = user.id
     if (user?.is_anonymous) {
       // Anonymous session minted by POST /api/auth/anonymous. Same Bearer
       // pipeline as logged-in users (getRequestUser verified the JWT); quota is
@@ -232,12 +271,14 @@ export async function POST(req: Request) {
     anonSetCookie = `tappy_anon=${today}:${anonCount + 1}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
   }
 
-  // Inject freeform user preferences from client request body
-  const rawPrefsArr = Array.isArray(rawUserPrefs)
-    ? (rawUserPrefs as unknown[]).filter(p => typeof p === 'string').slice(0, 50) as string[]
-    : []
+  // Freeform user preferences. Already bounded and normalised to single-line
+  // DATA at the trust boundary (P3-S1): an item can no longer carry a line
+  // break, so it cannot open a section or forge a block header inside the
+  // system prompt. P3-S2 additionally fences the items below as DATA, so they
+  // cannot be confused with the instruction that follows them.
+  const rawPrefsArr = validated.preferences
   if (rawPrefsArr.length > 0) {
-    const freeformBlock = `\n\n===== Sá»ž THÃCH & THÃ”NG TIN CÃ NHÃ‚N Cá»¦A USER =====\n${rawPrefsArr.map(p => `- ${p}`).join('\n')}\nHÃ£y luÃ´n ghi nhá»› vÃ  Ã¡p dá»¥ng nhá»¯ng sá»Ÿ thÃ­ch nÃ y khi gá»£i Ã½.\n==================================================`
+    const freeformBlock = `\n\n===== Sá»ž THÃCH & THÃ”NG TIN CÃ NHÃ‚N Cá»¦A USER =====\n${fenceUntrusted('user_preferences', rawPrefsArr.map(p => `- ${p}`).join('\n'))}\nHÃ£y luÃ´n ghi nhá»› vÃ  Ã¡p dá»¥ng nhá»¯ng sá»Ÿ thÃ­ch nÃ y khi gá»£i Ã½.\n==================================================`
     prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
   }
 
@@ -247,10 +288,60 @@ export async function POST(req: Request) {
   // applyPlaceEnrichmentStreamFilter injects them positionally afterwards. This
   // const lives and dies with this request: no module state, no key to collide
   // on, nothing shared between users or carried across warm invocations.
+  // ---- Consultative conversation state (Task 3C) -------------------------
+  // Placed after every gate above, so a rate-limited or over-quota request
+  // never mints state. Ownership is derived HERE, server-side: the client's
+  // conversationId is a lookup key and nothing more — `loadState` refuses it
+  // unless the caller's own scope matches. With neither an authenticated user
+  // nor an anonymous session there is no identity to scope to, so state stays
+  // off rather than being shared across callers.
+  const ownerScope = ownerScopeFor({ userId: authedUserId, anonId: anonUserId })
+  const requestedConvId = (rawBody as { conversationId?: unknown }).conversationId
+  let hadCandidatesBefore = false
+  let convState: ConversationState | null = null
+  let consultationDelta: ConsultationDelta | null = null
+  let conversationId = ''
+  if (ownerScope) {
+    if (isValidConversationId(requestedConvId)) {
+      convState = await loadState(requestedConvId, ownerScope)
+    }
+    // Unknown, expired, malformed, or someone else's id all land here and get a
+    // FRESH conversation — never an error that would confirm the id exists.
+    if (!convState) convState = createState(newConversationId(), ownerScope)
+    conversationId = convState.conversationId
+    // Read BEFORE this turn's delta touches anything: whether the user already
+    // had options in front of them is what separates the one illustrated turn
+    // from every follow-up.
+    hadCandidatesBefore = convState.candidates.length > 0
+    convState.turn += 1
+    if (decisionStage) convState.decisionStage = decisionStage
+
+    // Task 3E: read what THIS message does to the consultation, then fold it in.
+    // Accumulative — a short turn ("tầm 25 triệu") adds to the task, it never
+    // replaces it, so requirements stated several turns ago survive.
+    consultationDelta = extractDelta(lastText, convState, decisionStage, convState.turn)
+    convState = applyDelta(convState, consultationDelta)
+  }
+
   const enrichment = createEnrichmentCollector()
+  // Task 3D: candidates are harvested from the MODEL-facing half, which is where
+  // the facts are — B4 carves out only photos and order links, so address,
+  // rating, maps_link and price all survive here. (3C read the enrichment half
+  // instead, which is exactly why candidates persisted with `facts: {}`.)
+  const freshCandidates: ReturnType<typeof normalizeToolCandidates> = []
+  // Task 3F-2: "the provider errored" and "the provider found nothing" are
+  // different facts about the world and must not collapse into one message.
+  // Read from the tool result itself: our place/product tools return an `error`
+  // field on failure and an empty list when they genuinely found nothing.
+  let anySearchRan = false
+  let anySearchFailed = false
   const forModel = (toolName: string, result: unknown) => {
     const { model, enrichment: carved } = splitToolResult(toolName, result)
     enrichment.add(carved)
+    anySearchRan = true
+    const r = model as { error?: unknown; results?: unknown[]; search_results?: unknown[] } | null
+    if (r && typeof r === 'object' && r.error) anySearchFailed = true
+    if (convState) freshCandidates.push(...normalizeToolCandidates(toolName, model, Date.now()))
     return model
   }
 
@@ -274,7 +365,203 @@ export async function POST(req: Request) {
     budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
   )
   const systemShared = built?.shared
-  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
+  // Task 3D — THE READ PATH. Accumulated state and the previous turn's grounded
+  // candidates go into `dynamic`, never `shared`: this is request-shaped, so
+  // putting it in the cached prefix would break B1's byte-stability. Appended
+  // after styleBlock so it is among the last things read before generating.
+  // buildStateContextBlock is an allow-list projection — ownerScope, storage
+  // keys and auth ids have no path into it.
+  // ── Task 3F-2.5: product pre-search gate ─────────────────────────────────
+  // PRODUCTS ONLY. Place/hotel search stay on the LLM tool path untouched.
+  //
+  // Runs here — after the delta, before any prompt block or stream — so the
+  // server knows the search outcome BEFORE a token is generated. That is the
+  // whole point: an empty product search can no longer reach free-form
+  // generation, which is how T1 previously invented a machine, a price, and a
+  // 16GB answer to a stated 32GB requirement.
+  let preSearchSeed: TurnEvidence | undefined
+  let productPreSearched = false
+  if (shouldPreSearchProducts({ delta: consultationDelta, forcedTool, state: convState, locationIntent: locationIntent !== 'unknown' }) && convState) {
+    const query = buildProductQuery(convState, lastText)
+    const raw = await searchProducts(query, lang)
+    const filtered = budget ? applyBudgetFilter(raw, budget, query) : raw
+    // Same wrapper the tool path uses, so B4 carving, enrichment collection and
+    // candidate normalisation behave identically to an LLM-issued call.
+    const model = forModel('search_products', filtered)
+    const outcome = classifyProductResult(model)
+    convState.lastSearchOutcome = outcome
+    productPreSearched = true
+
+    if (outcome === 'ok') {
+      convState.candidates = filterIrrelevantProducts(freshCandidates.slice(), convState)
+      convState.lastSearchContext = { query, tool: 'search_products', at: Date.now() }
+      // Feed the stream filter what the missing `9:`/`a:` frames would have
+      // given it (Task 3F-2.4), so photos, order links and money-guard
+      // grounding survive the move.
+      preSearchSeed = {
+        places: [],
+        productRecords: productRecordsFrom(model) as TurnEvidence['productRecords'],
+        productQueries: [query],
+      }
+    } else if (outcome === 'failed' || convState.hardConstraints.length > 0) {
+      // Empty WITH stated requirements, or a provider failure -> answer
+      // deterministically, never via the model.
+      //
+      // An empty result with NO hard constraints deliberately falls through to
+      // the existing LLM path: there is no requirement to protect, the
+      // hard-constraint wording would render empty, and turning every
+      // no-result turn into a template is exactly the over-reach this gate is
+      // meant to avoid.
+      const text = outcome === 'failed'
+        ? buildSearchFailedResponse(convState, lang)
+        : buildNoCandidateResponse(convState, lang)
+      await saveState(convState)
+      const headers: Record<string, string> = {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'X-Conversation-Id': conversationId,
+        'Access-Control-Expose-Headers': 'X-Conversation-Id',
+      }
+      if (anonSetCookie) headers['Set-Cookie'] = anonSetCookie
+      console.log(JSON.stringify({ type: 'tappyai_product_presearch', outcome, hardConstraints: convState.hardConstraints.length }))
+      return new Response(toDataStreamBody(text), { headers })
+    }
+  }
+
+  const stateBlock = buildStateContextBlock(convState, consultationDelta?.searchImpact)
+  // Task 3F: the ranking is computed HERE, deterministically, from the candidates
+  // the previous turn grounded — the model receives an ordered set with reasons
+  // and exclusions rather than a raw list to summarise. Empty string when there
+  // is nothing held, so a cold first turn is unchanged.
+  const rankingBlock = convState && convState.candidates.length > 0
+    ? buildRankingBlock(rankCandidates(convState.candidates, convState), convState)
+    : ''
+  // Task 3F-2: the zero-evidence guard. Deliberately NOT gated on the candidate
+  // count being > 0 — it exists precisely when there is nothing to recommend
+  // from, which is when the model was observed inventing products and prices.
+  // Rejected options do NOT count as evidence. Reading `candidates.length` here
+  // announced 'candidates' on a turn whose state block listed none, because the
+  // array still holds what the user just turned down — the model was told it had
+  // options and shown none in the same prompt.
+  const visibleCount = convState ? visibleCandidates(convState).length : 0
+  // …and rows with nothing but a search snippet are not evidence at all. A
+  // product search that returns only articles must read as "the provider
+  // answered with nothing usable", which is what search_empty means — not as
+  // six things to choose between.
+  const usableCount = convState ? usableCandidates(convState).length : 0
+  const evidenceStatus: EvidenceStatus =
+    !convState ? 'none'
+      : usableCount > 0 ? 'candidates'
+        : convState.lastSearchOutcome === 'failed' ? 'search_failed'
+          // 'ok' with nothing usable is the same fact as 'empty' from the
+          // decision's point of view: the provider answered and none of it can
+          // support a recommendation. Saying 'none' here would drop the turn
+          // into the free-form path that fabricated the Air M2.
+          : convState.lastSearchOutcome === 'empty' || convState.lastSearchOutcome === 'ok' ? 'search_empty'
+            : 'none'
+  const evidenceBlock = buildEvidenceStatusBlock(evidenceStatus, convState)
+
+  // ── Task 3F-2.2: deterministic zero-candidate reply ───────────────────────
+  // The one path where the model is not asked at all. Prompt-level prohibition
+  // was measured failing here three times (12 unsupported numeric claims before
+  // the directives, 12-13 after), including recommending 16GB against a stated
+  // 32GB requirement. Composing the reply from state instead makes fabrication
+  // impossible by construction rather than by instruction.
+  //
+  // Returns BEFORE any LLM call. State is still saved and the conversation id
+  // still returned, so the next turn continues normally.
+  if (convState && shouldUseDeterministicResponse(convState, evidenceStatus, usableCount, consultationDelta?.searchImpact.required ?? false)) {
+    const text = buildNoCandidateResponse(convState, lang)
+    await saveState(convState)
+    const headers: Record<string, string> = {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'X-Conversation-Id': conversationId,
+      'Access-Control-Expose-Headers': 'X-Conversation-Id',
+    }
+    if (anonSetCookie) headers['Set-Cookie'] = anonSetCookie
+    console.log(JSON.stringify({ type: 'tappyai_no_candidate_deterministic', hardConstraints: convState.hardConstraints.length }))
+    return new Response(toDataStreamBody(text), { headers })
+  }
+
+  // ── Part E: deterministic rejection reply ─────────────────────────────────
+  // Fires only when every held candidate has been shown and rejected, so the
+  // same search would return the same turned-down options. Guarantees exactly
+  // one question on the turn where two were measured. See the module comment.
+  // USABLE, not merely visible: a rejection that leaves only rows with no
+  // price, spec or address has left nothing to consult over, and the free-form
+  // path is where the multi-question interrogations were measured.
+  if (convState && shouldUseDeterministicRejection(convState, decisionStage, usableCount)) {
+    const text = buildRejectionResponse(convState, lang)
+    await saveState(convState)
+    const headers: Record<string, string> = {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'X-Conversation-Id': conversationId,
+      'Access-Control-Expose-Headers': 'X-Conversation-Id',
+    }
+    if (anonSetCookie) headers['Set-Cookie'] = anonSetCookie
+    console.log(JSON.stringify({ type: 'tappyai_rejection_deterministic', rejected: convState.rejections.length }))
+    return new Response(toDataStreamBody(text), { headers })
+  }
+  // Rejection turns that still have something to offer keep the LLM — the
+  // deterministic reply above only covers an emptied table. What they do NOT
+  // keep is the model's freedom to choose WHICH dimension to probe: that choice
+  // was the questionnaire's source. One question, computed from state, is
+  // handed over as a finished sentence. Last block before generation.
+  // The search policy has to be ENFORCED, not advised. Measured: on "cho mình
+  // thêm vài quán khác" the policy computed required:false with seven unseen
+  // candidates held, and the model called search_places anyway — a provider
+  // call and a fresh candidate set the user never needed.
+  //
+  // Same shape as the product pre-search exception, narrowed to reuse: the tool
+  // is withheld ONLY when there is genuinely something to reuse. Initial
+  // discovery, a location change, a new hard constraint and an exhausted pool
+  // all set searchImpact.required, so all of them keep the tool.
+  const withholdPlaceSearch = !!convState
+    && consultationDelta?.searchImpact.required === false
+    && usableCount > 0
+    && unseenCandidateCount(convState) > 0
+  // The factual surface. Built from VISIBLE candidates only — this turn's
+  // rejection is already applied (applyDelta runs before ranking), so a
+  // just-rejected option has no facts to state and nothing to be recommended
+  // from. Facts are composed here; the model supplies the reasoning.
+  const groundedFactsBlock = convState ? buildGroundedFactsBlock(visibleCandidates(convState), lang) : ''
+  const rejectionQuestionBlock = convState && decisionStage === 'rejection' && visibleCount > 0
+    ? buildRejectionQuestionBlock(convState, lang)
+    : ''
+  // The server already searched, so `search_products` is withheld below. The
+  // rulebook still says "dùng tool search_products" for prices, which left the
+  // model reaching for a tool that was not there: measured finishReason
+  // 'tool-calls' with toolCalls 0 and an EMPTY reply on every pre-searched
+  // turn. This states the fact; it is not an instruction about behaviour.
+  const reuseBlock = withholdPlaceSearch
+    ? `\n\n===== LUOT NAY: DUNG LAI CAC LUA CHON DA CO =====
+Van con lua chon TRONG BANG CHUNG o tren ma user CHUA duoc xem. Hay tra loi tu nhung lua chon do.
+Tool search_places KHONG co trong danh sach tool cua luot nay — dung goi no.
+=================================================`
+    : ''
+  const preSearchedBlock = productPreSearched
+    ? `\n\n===== LUOT NAY: DA TIM SAN PHAM XONG (SERVER) =====
+Mot lan tim san pham da chay o server cho luot nay; ket qua chinh la BANG CHUNG o tren.
+Tool search_products KHONG co trong danh sach tool cua luot nay — dung goi no, se khong co ket qua tra ve.
+Hay tra loi TRUC TIEP tu du lieu da co.
+====================================================`
+    : ''
+  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + stateBlock + rankingBlock + evidenceBlock + groundedFactsBlock + reuseBlock + preSearchedBlock + rejectionQuestionBlock
+
+  // Routing hints (P2). These describe the KIND of job this turn is, built
+  // entirely from signals computed above — planning detection, image detection,
+  // budget extraction and language are NOT repeated here. No provider, no model,
+  // no user text: the router stays the sole authority on what serves the turn,
+  // and it is currently observed in shadow only.
+  const routingHints = deriveChatRoutingHints({
+    noToolTurn,
+    planningIntent,
+    hasImage,
+    hasBudget: budget !== null,
+    lang,
+  })
 
   let result
   try {
@@ -282,6 +569,7 @@ export async function POST(req: Request) {
   // prompt) are applied inside the active provider adapter — not here.
   result = AI.stream({
     role,
+    routing: routingHints,
     // Cancel the upstream generation (and skip the onFinish memory-extraction
     // call) if the client disconnects — otherwise it runs to maxDuration billing
     // tokens for a response nobody is receiving.
@@ -319,7 +607,7 @@ export async function POST(req: Request) {
     // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
     // the baseline and the post-B1 run. The tool path keeps its own lineage.
     tools: noToolTurn ? undefined : {
-      search_places: tool({
+      ...(withholdPlaceSearch ? {} : { search_places: tool({
         description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
@@ -331,13 +619,17 @@ export async function POST(req: Request) {
           const r = await searchPlaces(query, location, type, lang, userLocation)
           return forModel('search_places', budget ? applyBudgetFilter(r, budget, query) : r)
         }
-      }),
+      }) }),
       get_news: tool({
         description: 'Lay tin tuc moi nhat tu VnExpress, Tuoi Tre, Dan Tri',
         parameters: z.object({ query: z.string().describe('Tu khoa tin tuc can tim') }),
         execute: async ({ query }) => getNews(query, lang)
       }),
-      ...(locationIntent !== 'offline' ? { search_products: tool({
+      // Task 3F-2.5: withheld once the server has already searched this turn.
+      // Structural, not advisory — the model cannot re-run a search it no longer
+      // has, so the "searched exactly once" property does not depend on it
+      // choosing well.
+      ...(locationIntent !== 'offline' && !productPreSearched ? { search_products: tool({
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
@@ -431,20 +723,26 @@ export async function POST(req: Request) {
     },
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
-      // cache counters live in per-step providerMetadata (the top-level
-      // providerMetadata only carries the LAST step), so they are summed here.
-      // Anthropic reports promptTokens EXCLUDING cached tokens, so the real
-      // prompt size is promptTokens + cacheCreationTokens + cacheReadTokens —
-      // never read promptTokens alone as "how big was the prompt".
+      // cache counters are reported per step (any top-level copy carries only
+      // the LAST step), so they are summed here. The provider reports
+      // promptTokens EXCLUDING cached tokens, so the real prompt size is
+      // promptTokens + cacheCreationTokens + cacheReadTokens — never read
+      // promptTokens alone as "how big was the prompt".
+      //
+      // The per-step shape is vendor-specific and is read through the adapter
+      // (AI.usageMetrics), not here. Reading it inline used to bind this route
+      // to one vendor: the counters would silently go null under any other
+      // provider — cost telemetry going dark exactly when a provider change
+      // makes it matter most.
       let cacheReadTokens = 0
       let cacheCreationTokens = 0
       let sawCacheMetadata = false
       for (const step of steps ?? []) {
-        const meta = step.providerMetadata?.anthropic as
-          { cacheReadInputTokens?: number | null; cacheCreationInputTokens?: number | null } | undefined
-        if (!meta) continue
-        if (typeof meta.cacheReadInputTokens === 'number') { cacheReadTokens += meta.cacheReadInputTokens; sawCacheMetadata = true }
-        if (typeof meta.cacheCreationInputTokens === 'number') { cacheCreationTokens += meta.cacheCreationInputTokens; sawCacheMetadata = true }
+        // null means "not reported"; 0 means "reported as zero". Only the
+        // former leaves sawCacheMetadata false.
+        const { cacheReadTokens: read, cacheCreationTokens: created } = AI.usageMetrics(step)
+        if (read !== null) { cacheReadTokens += read; sawCacheMetadata = true }
+        if (created !== null) { cacheCreationTokens += created; sawCacheMetadata = true }
       }
       console.log(JSON.stringify({
         type: 'tappyai_usage',
@@ -466,6 +764,17 @@ export async function POST(req: Request) {
         elapsedMs: Date.now() - startTime,
         worthExtract,
         forcedTool,
+        // Consultative cost shape, per turn. `searchCalls` counts BOTH the
+        // model's tool calls and the server-side product pre-search, so a turn
+        // that reuses held evidence is visibly 0 and a duplicate search cannot
+        // hide behind the pre-search path.
+        responseMode,
+        searchCalls: (steps ?? []).reduce(
+          (n, s) => n + (s.toolCalls ?? []).filter(t => /search/i.test(t.toolName)).length, 0,
+        ) + (productPreSearched ? 1 : 0),
+        candidateCount: convState?.candidates.length ?? 0,
+        unseenCandidates: unseenCandidateCount(convState),
+        maxImages: mediaBudget.maxImages,
       }))
       if (authedUserId && worthExtract) {
         try {
@@ -507,29 +816,105 @@ export async function POST(req: Request) {
       { status: 502, headers: { 'Content-Type': 'application/json' } },
     )
   }
+  // What KIND of turn this is, and therefore how much media it may spend. Only
+  // the turn that first puts options in front of the user earns images.
+  const responseMode = decideResponseMode({
+    stage: decisionStage,
+    moreOptions: consultationDelta?.moreOptions ?? false,
+    hadCandidatesBefore,
+  })
+  const mediaBudget = mediaBudgetFor(responseMode)
+
   const baseResponse = result.toDataStreamResponse()
   // B7-A: photos are fetched only for the places the finished reply actually
   // names — the filter selects them, this resolves them. Each place degrades to
   // "no photo" independently; one slow or failing lookup never blocks the rest.
   const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang, enrichment, async (places) => {
     const byName = new Map<string, string[]>()
-    await Promise.all(places.map(async (p) => {
+    // Media policy decides BEFORE the provider is called, so a photo that would
+    // not be rendered is never paid for. Measured before this: three places
+    // named x three photos each = nine fetches and nine images, repeated on
+    // every follow-up turn about the same places.
+    const budgeted = placesWithinBudget(places, mediaBudget)
+    if (budgeted.length === 0) {
+      console.log(JSON.stringify({ type: 'tappyai_media', responseMode, photoResolveCalls: 0, imagesReturned: 0, placesNamed: places.length }))
+      return byName
+    }
+    let imagesReturned = 0
+    await Promise.all(budgeted.map(async (p) => {
       if (!p.name) return
       try {
         const urls = await resolvePlacePhotos(
           { place_id: p.place_id, name: p.name, website_uri: p.website_uri },
-          3,
+          mediaBudget.photosPerPlace,
         )
-        if (urls.length > 0) byName.set(p.name, urls)
+        if (urls.length > 0) {
+          const room = Math.max(0, mediaBudget.maxImages - imagesReturned)
+          const take = urls.slice(0, Math.min(mediaBudget.photosPerPlace, room))
+          if (take.length > 0) { byName.set(p.name, take); imagesReturned += take.length }
+        }
       } catch { /* this place simply gets no photo */ }
     }))
+    console.log(JSON.stringify({ type: 'tappyai_media', responseMode, photoResolveCalls: budgeted.length, imagesReturned, placesNamed: places.length }))
     return byName
+  }, async (evidence) => {
+    // Task 3C: record what the tools actually returned this turn, so the NEXT
+    // turn can recommend from evidence instead of from the model's own prose.
+    // Only tool-supplied fields are stored — there is no slot the model can fill.
+    if (!convState) return
+    // REPLACE, never merge: a new search answers a changed question, and mixing
+    // this turn's evidence with the previous turn's is exactly how a stale price
+    // gets presented as current. No search this turn -> keep what we had.
+    if (freshCandidates.length > 0) {
+      convState.candidates = filterIrrelevantProducts(freshCandidates, convState)
+      convState.lastSearchContext = { query: lastText.slice(0, 120), tool: 'mixed', at: Date.now() }
+    }
+    // Task 3F-2: record HOW the search ended, so the next turn can tell "there
+    // is nothing" apart from "we could not look". Only overwritten when a search
+    // actually ran — a no-tool turn must not erase the previous outcome.
+    // What the user was actually shown, as canonical ids. Two sources, one
+    // record: candidates a search produced this turn, and HELD candidates the
+    // reply named without searching. The second is what reuse turns depend on —
+    // without it a rejection after a reuse turn landed on whatever was shown
+    // several turns earlier, leaving the option the user just rejected eligible.
+    const shownIds = [
+      ...(evidence.presentedIds ?? []),
+      ...freshCandidates.filter(c => (evidence.presentedNames ?? []).includes(c.name)).map(c => c.candidateId),
+    ]
+    if (shownIds.length > 0) {
+      // ACCUMULATE across the consultation: everything the user has seen stays
+      // seen. Replacing the list would make a candidate shown two turns ago
+      // "unseen" again and offer it back as a fresh option.
+      convState.presentedCandidates = [...new Set([...(convState.presentedCandidates ?? []), ...shownIds])]
+      // …and record THIS reply separately, because "quán đó" means what was
+      // just said, not everything shown so far.
+      convState.lastPresentedCandidates = [...new Set(shownIds)]
+    }
+    if (anySearchRan) {
+      convState.lastSearchOutcome = anySearchFailed ? 'failed' : freshCandidates.length > 0 ? 'ok' : 'empty'
+    }
+    await saveState(convState)
+    // The filter needs the held pool to tell which candidates a NON-searching
+    // turn named. Names for matching, ids for the record.
+  }, {
+    places: preSearchSeed?.places ?? [],
+    productRecords: preSearchSeed?.productRecords ?? [],
+    productQueries: preSearchSeed?.productQueries ?? [],
+    heldCandidates: (convState?.candidates ?? []).map(c => ({ candidateId: c.candidateId, name: c.name })),
   })
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse
   // Persist the incremented anonymous question count for the day.
   if (anonSetCookie) finalResponse.headers.set('Set-Cookie', anonSetCookie)
+  // The client needs the id to continue this conversation on the next turn. A
+  // header rather than a stream frame: the AI SDK data protocol is shared with
+  // every existing client, and an unknown frame type would break the ones that
+  // have not been updated. Absent header simply means "state is off".
+  if (conversationId) {
+    finalResponse.headers.set('X-Conversation-Id', conversationId)
+    finalResponse.headers.set('Access-Control-Expose-Headers', 'X-Conversation-Id')
+  }
   return finalResponse
 }
 

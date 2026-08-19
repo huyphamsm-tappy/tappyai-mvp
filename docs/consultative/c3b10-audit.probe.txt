@@ -1,0 +1,147 @@
+// C3-B.10.1 — AUDIT ONLY. Exercises the shipped guard; changes nothing.
+import { guardMoneyClaimsInText, judgeMoneyClaims, classifyIdentity, extractMoneyClaims }
+  from 'file:///C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/src/lib/ai/moneyGuard.ts'
+
+const R = (title: string, price?: string) => ({ title, price, source: 'Shop', link: 'https://x.vn/p' })
+const line = (s: string) => console.log(s)
+const show = (name: string, out: { text: string; enforced: boolean }, orig: string) =>
+  line(`${name.padEnd(52)} enforced=${String(out.enforced).padEnd(5)} changed=${out.text !== orig ? 'YES' : 'no '}  -> ${JSON.stringify(out.text.slice(0, 92))}`)
+
+line('════ §2 CASE A — organic evidence, no structured price ════')
+{
+  const organic = [R('Sony WH-1000XM5'), R('Tai nghe Sony WH-1000XM5')]
+  const t = 'Sony WH-1000XM5 khoảng 7 triệu tại các cửa hàng.'
+  show('A: organic, money claim', guardMoneyClaimsInText(t, organic, ['Sony WH-1000XM5']), t)
+}
+
+line('\n════ §2 CASE B — structured evidence ════')
+{
+  const rs = [R('Tai nghe Sony WH-1000XM5', '6.490.000 ₫')]
+  const ok = 'Sony WH-1000XM5 giá 6.490.000₫.'
+  const bad = 'Sony WH-1000XM5 khoảng 12 triệu.'
+  show('B: exact price', guardMoneyClaimsInText(ok, rs, ['Sony WH-1000XM5']), ok)
+  show('B: unsupported price', guardMoneyClaimsInText(bad, rs, ['Sony WH-1000XM5']), bad)
+}
+
+line('\n════ §2 CASE C — MIXED: one product priced, the other NOT ════')
+{
+  // A has structured prices; B's records exist but carry NO price.
+  const mixed = [R('Samsung Galaxy S24 256GB', '13.299.000 ₫'), R('Tai nghe Bose QuietComfort Ultra')]
+  const t = 'Galaxy S24 giá 13.299.000₫. Bose QuietComfort Ultra khoảng 8 triệu.'
+  const out = guardMoneyClaimsInText(t, mixed, ['Galaxy S24', 'Bose QuietComfort Ultra'])
+  show('C: mixed turn', out, t)
+  line(`     -> S24 price kept?  ${out.text.includes('13.299.000') ? 'YES' : 'NO'}`)
+  line(`     -> Bose price kept? ${out.text.includes('8 triệu') ? 'YES  <-- unverified survived' : 'NO   <-- redacted'}`)
+
+  // The SAME Bose claim, in a turn where nothing is structured.
+  const organicOnly = [R('Tai nghe Bose QuietComfort Ultra')]
+  const t2 = 'Bose QuietComfort Ultra khoảng 8 triệu.'
+  const out2 = guardMoneyClaimsInText(t2, organicOnly, ['Bose QuietComfort Ultra'])
+  line(`     -> same Bose claim, organic-only turn: kept? ${out2.text.includes('8 triệu') ? 'YES' : 'NO'}  (enforced=${out2.enforced})`)
+}
+
+line('\n════ §3 authority boundary: evidence-unavailable vs claim-disproven ════')
+{
+  const rs = [R('Samsung Galaxy S24', '13.299.000 ₫')]
+  for (const [label, claims] of [
+    ['SUPPORTED', 'Galaxy S24 giá 13.299.000₫.'],
+    ['UNVERIFIED', 'Galaxy S24 khoảng 30 triệu.'],
+    ['ACCESSORY (product request)', 'Galaxy S24 giá 250.000₫.'],
+    ['AMBIGUOUS (variant only)', 'Galaxy S24 giá 22.399.000₫.'],
+  ] as const) {
+    const recs = label.startsWith('ACCESSORY') ? [R('Ốp lưng Samsung Galaxy S24', '250.000 ₫')]
+      : label.startsWith('AMBIGUOUS') ? [R('Samsung Galaxy S24 Ultra', '22.399.000 ₫')] : rs
+    const j = judgeMoneyClaims(claims, recs, ['Galaxy S24'])
+    line(`  ${label.padEnd(28)} verdict=${j[0]?.verdict ?? '(none)'}`)
+  }
+}
+
+line('\n════ §4 identity ════')
+{
+  const cases: Array<[string, string, string]> = [
+    ['Galaxy S24', 'Samsung Galaxy S24 256GB', 'EXACT_PRODUCT'],
+    ['Galaxy S24', 'Samsung Galaxy S24+ Dual SIM', 'VARIANT'],
+    ['Galaxy S24', 'Galaxy S24 FE Xám', 'VARIANT'],
+    ['Galaxy S24', 'Samsung Galaxy S24 Ultra 5G', 'VARIANT'],
+    ['Sony WH-1000XM5', 'Đệm tai nghe Sony WH-1000XM5', 'ACCESSORY'],
+    ['đệm tai Sony WH-1000XM5', 'Đệm tai nghe Sony WH-1000XM5', 'EXACT_PRODUCT'],
+    ['đệm tai Sony WH-1000XM5', 'Tai nghe Sony WH-1000XM5', 'UNRELATED'],
+    ['iPhone', 'Apple iPhone 17 Pro Max', 'VARIANT-or-EXACT?'],
+  ]
+  for (const [ent, title, expect] of cases) {
+    const got = classifyIdentity(ent, R(title, '1.000.000 ₫'))
+    line(`  ${ent.padEnd(26)} | ${title.slice(0, 34).padEnd(35)} -> ${String(got).padEnd(14)} expected ${expect}`)
+  }
+}
+
+line('\n════ §5 parser — must NOT be money ════')
+for (const t of ['iPhone 15', 'bản 128GB', 'đánh giá 4.8/5', 'giảm 50%', 'pin 40 giờ', 'năm 2026', 'mạng 5G']) {
+  line(`  ${t.padEnd(20)} claims=${extractMoneyClaims(t).length}`)
+}
+line('  -- must BE money --')
+for (const t of ['7 triệu', '7.5 triệu', '7,5 triệu', '7.500.000đ', '₫7,500,000', '7.5M VND', '$699', 'US$699', '699 USD', 'từ 7–8 triệu']) {
+  const c = extractMoneyClaims(t)
+  line(`  ${t.padEnd(20)} claims=${c.length}${c.length ? ` value=${c[0].lo}${c[0].kind === 'range' ? '-' + c[0].hi : ''} ${c[0].currency}` : '   <-- MISSED'}`)
+}
+
+line('\n════ §6 rounding ════')
+{
+  const rs = [R('Samsung Galaxy S24', '13.299.000 ₫')]
+  for (const t of ['Galaxy S24 khoảng 13.3M', 'Galaxy S24 khoảng 13.8M', 'Galaxy S24 khoảng 13.5M']) {
+    line(`  ${t.padEnd(34)} -> ${judgeMoneyClaims(t, rs, ['Galaxy S24'])[0].verdict}`)
+  }
+  line(`  rounding cannot upgrade a VARIANT: ${judgeMoneyClaims('Galaxy S24 khoảng 22.4M', [R('Samsung Galaxy S24 Ultra', '22.399.000 ₫')], ['Galaxy S24'])[0].verdict}`)
+  line(`  rounding cannot upgrade an ACCESSORY: ${judgeMoneyClaims('Galaxy S24 khoảng 250k', [R('Ốp lưng Galaxy S24', '250.000 ₫')], ['Galaxy S24'])[0].verdict}`)
+  line(`  one-endpoint range: ${judgeMoneyClaims('Galaxy S24 từ 13.3 - 40 triệu', rs, ['Galaxy S24'])[0].verdict}`)
+}
+
+line('\n════ §7 derived claims ════')
+{
+  const both = [R('Samsung Galaxy S24', '10.000.000 ₫'), R('Samsung Galaxy S24', '12.000.000 ₫')]
+  const a = judgeMoneyClaims('Bản này 10.000.000₫, bản kia 12.000.000₫, chênh 2 triệu.', both, ['Galaxy S24'])
+  line(`  both operands verified -> diff verdict = ${a.find(c => c.lo === 2e6)?.verdict}`)
+  const b = judgeMoneyClaims('Bản này 10.000.000₫, bản kia 30 triệu, chênh 20 triệu.', both, ['Galaxy S24'])
+  line(`  one operand unsupported -> diff verdict = ${b.find(c => c.lo === 20e6)?.verdict}`)
+  const c = judgeMoneyClaims('Bản A 30 triệu, bản B 32 triệu, chênh 2 triệu.', both, ['Galaxy S24'])
+  line(`  both operands unsupported -> verdicts = ${JSON.stringify(c.map(x => x.verdict))}`)
+}
+
+line('\n════ §8 redaction safety ════')
+{
+  const rs = [R('Samsung Galaxy S24', '13.299.000 ₫')]
+  const t1 = 'S24 rẻ hơn khoảng 3–5 triệu và phù hợp nếu bạn ưu tiên camera.'
+  line(`  IN : ${t1}`)
+  line(`  OUT: ${guardMoneyClaimsInText(t1, rs, ['Galaxy S24']).text}`)
+
+  const t2 = 'Galaxy S24 giá 13.299.000₫ tại FPT. Bản Ultra khoảng 30 triệu. Máy dùng chip Snapdragon 8 Gen 3.'
+  const o2 = guardMoneyClaimsInText(t2, rs, ['Galaxy S24'])
+  line(`\n  mixed IN : ${t2}`)
+  line(`  mixed OUT: ${o2.text}`)
+  line(`     verified kept?   ${o2.text.includes('13.299.000') ? 'YES' : 'NO'}`)
+  line(`     unsupported gone? ${!o2.text.includes('30 triệu') ? 'YES' : 'NO'}`)
+  line(`     unrelated fact kept? ${o2.text.includes('Snapdragon') ? 'YES' : 'NO'}`)
+
+  const t3 = 'Giá tầm 30 triệu. Xem thêm [Shopee](https://shopee.vn/s?k=1.000.000đ)\n[CTA_BUTTONS]{"buttons":[{"label":"🛒 Shopee","url":"https://shopee.vn/search?keyword=galaxy+s24"}]}[/CTA_BUTTONS]\n[FOLLOWUPS]giá 5 triệu|so sánh[/FOLLOWUPS]'
+  const o3 = guardMoneyClaimsInText(t3, rs, ['Galaxy S24'])
+  line(`\n  payload integrity:`)
+  line(`     CTA intact?       ${o3.text.includes('[CTA_BUTTONS]') && o3.text.includes('[/CTA_BUTTONS]') && o3.text.includes('keyword=galaxy+s24') ? 'YES' : 'NO'}`)
+  line(`     FOLLOWUPS intact? ${o3.text.includes('[FOLLOWUPS]') && o3.text.includes('giá 5 triệu') ? 'YES' : 'NO'}`)
+  line(`     URL intact?       ${o3.text.includes('https://shopee.vn/s?k=1.000.000đ') ? 'YES' : 'NO'}`)
+  line(`     bad price gone?   ${!o3.text.includes('30 triệu') ? 'YES' : 'NO'}`)
+  line(`     no new digits introduced? ${(o3.text.match(/\d/g) || []).length <= (t3.match(/\d/g) || []).length ? 'YES' : 'NO'}`)
+
+  const t4 = '[TAPPY_PLAN]{"budget_total":"5 triệu"}[/TAPPY_PLAN]\nTổng khoảng 30 triệu.'
+  const o4 = guardMoneyClaimsInText(t4, rs, ['Galaxy S24'])
+  line(`     TAPPY_PLAN intact? ${o4.text.includes('"budget_total":"5 triệu"') ? 'YES' : 'NO'}`)
+}
+
+line('\n════ §10 performance ════')
+{
+  const rs = Array.from({ length: 24 }, (_, i) => R(`Samsung Galaxy S24 variant ${i}`, `${13 + i}.299.000 ₫`))
+  for (const size of [500, 2000, 8000]) {
+    const text = ('Galaxy S24 khoảng 30 triệu. Máy tốt. '.repeat(Math.ceil(size / 37))).slice(0, size)
+    const t0 = process.hrtime.bigint()
+    for (let i = 0; i < 100; i++) guardMoneyClaimsInText(text, rs, ['Galaxy S24'])
+    line(`  ${String(size).padStart(5)} chars, 24 records -> ${(Number(process.hrtime.bigint() - t0) / 1e6 / 100).toFixed(3)} ms/call`)
+  }
+}

@@ -42,12 +42,14 @@ async function probe(sp: SystemPrompt): Promise<CacheStats> {
     prompt: 'ok',
     maxTokens: 8,
   })
-  const meta = (r.providerMetadata?.anthropic ?? {}) as {
-    cacheCreationInputTokens?: number | null
-    cacheReadInputTokens?: number | null
-  }
-  const create = meta.cacheCreationInputTokens ?? 0
-  const read = meta.cacheReadInputTokens ?? 0
+  // Read through the adapter boundary, not the vendor shape, so this harness
+  // keeps measuring whichever provider is active instead of silently reporting
+  // zeroes for every non-Anthropic one. Here "not reported" collapses to 0
+  // deliberately: the probe's job is to total tokens, and its own assertions
+  // (create>0 / read>0) are what distinguish a real hit from a missing counter.
+  const m = AI.usageMetrics(r)
+  const create = m.cacheCreationTokens ?? 0
+  const read = m.cacheReadTokens ?? 0
   const uncached = r.usage?.promptTokens ?? 0
   return { create, read, uncached, trueInput: create + read + uncached }
 }

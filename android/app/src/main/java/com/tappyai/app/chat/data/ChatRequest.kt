@@ -10,6 +10,13 @@ import kotlinx.serialization.json.put
 @Serializable
 data class ChatRequest(
     val messages: List<ChatMessageDto>,
+    /**
+     * Server-side consultative state id (Task 3D). Omitted on the first turn — the shared
+     * prod Json runs `encodeDefaults=false`, so a null never reaches the wire and the server
+     * mints a fresh conversation. Sent on every later turn so accumulated constraints and the
+     * previous turn's grounded candidates are loaded instead of being lost.
+     */
+    val conversationId: String? = null,
 )
 
 /**

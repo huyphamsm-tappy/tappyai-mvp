@@ -1,4 +1,5 @@
-import { getCache, setCache, serperSearch, fetchPlacePhotosByName } from './common'
+import { getCache, setCache, serperSearch, serperShopping, fetchPlacePhotosByName } from './common'
+import { parseProductSpecs, parseVndPrice } from '@/lib/ai/productSpecs'
 import { messages } from '@/lib/ai/messages'
 import { productsCacheKey } from './cacheKeys'
 
@@ -14,6 +15,49 @@ export async function searchProducts(query: string, lang = 'vi') {
   ]
 
   let result: unknown
+
+  // ── Shopping listings first ───────────────────────────────────────────────
+  // Google Shopping returns a SELLER and a PRICE per row; web search returns
+  // articles. Measured on the same query: /search gave a YouTube video, two
+  // marketplace tag pages and a market report — nothing a recommendation can
+  // rest on — while /shopping gave 40 priced listings from named sellers.
+  //
+  // ONE call, not the three the web path makes: the extra "gia Shopee Tiki
+  // Lazada" and "shop website địa chỉ facebook" variants exist to coax prices
+  // and sellers out of web results, and shopping rows already carry both.
+  try {
+    const rows = await serperShopping(query, 20)
+    if (rows && rows.length > 0) {
+      const search_results = rows.map(r => {
+        const specs = parseProductSpecs(r.title)
+        const priceVnd = parseVndPrice(r.price)
+        return {
+          title: r.title,
+          link: r.link,
+          price: r.price,                                   // exactly as the seller listed it
+          ...(priceVnd !== null ? { price_vnd: priceVnd } : {}),
+          ...(r.source ? { source: r.source } : {}),
+          ...(r.rating !== undefined ? { rating: r.rating } : {}),
+          ...(r.ratingCount !== undefined ? { rating_count: r.ratingCount } : {}),
+          ...(r.productId ? { product_id: r.productId } : {}),
+          ...(r.imageUrl ? { photo_url: r.imageUrl } : {}),  // ENRICHMENT_KEY — split out by B4
+          ...specs,                                          // only what the title actually stated
+        }
+      })
+      result = {
+        query,
+        source: 'Google Shopping (Serper)',
+        search_results,
+        links,
+        note: messages.shopping.priceDisclaimer(lang),
+      }
+      setCache(cacheKey, result, 15 * 60 * 1000)
+      return result
+    }
+  } catch {
+    // fall through to the web-search path below
+  }
+
   try {
     const [searchResultsRaw, directResults, shopInfoResults] = await Promise.all([
       serperSearch(query + ' gia Shopee Tiki Lazada'),

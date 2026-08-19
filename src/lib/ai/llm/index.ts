@@ -5,8 +5,8 @@
 // Never import '@ai-sdk/*' or a vendor SDK outside src/lib/ai/llm/providers/.
 
 export { AI } from './ai'
-export { getProvider } from './registry'
-export type { AIProvider } from './provider'
+export { getProvider, defaultProviderId, registeredProviderIds } from './registry'
+export type { AIProvider, UsageMetrics } from './provider'
 export type {
   ProviderId,
   ModelRole,
