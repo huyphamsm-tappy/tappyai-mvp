@@ -73,7 +73,29 @@ Merged, deployed and running in production. One production acceptance task remai
 | Database migrations applied | `20260803_platform_owner.sql` |
 | Platform Owner | bootstrapped, exactly one active |
 | `PLATFORM_OWNER_USER_ID` | configured in Production + Preview + Development |
-| Deferred hardening | **NOT applied** — staged for end of Foundation per [ADR-017](../architecture/ADR-017-service-role-hardening-strategy.md) |
+| Deferred hardening | ✅ **APPLIED 2026-08-19** — [ADR-017](../architecture/ADR-017-service-role-hardening-strategy.md) layer 3. This row read "**NOT applied**" until the gate (every Phase 1 component shipped and soaked) was met. See [Post-Foundation](#post-foundation-work) |
+
+---
+
+## Post-Foundation work
+
+Items whose gate was *"after the Foundation"* rather than *"inside a component"*. None of them blocks C1–C11 completion, for one of two reasons: [`OWNER_DECISIONS_2026-08-13.md`](OWNER_DECISIONS_2026-08-13.md) § Consequences 4 names BL-002, required checks, ADR-017 and all `BL-*` as non-blocking; the rest sit outside C1–C11 because their own contracts place them there. They are recorded here because two of them have now been executed, and this document is where their state is authoritative.
+
+| Item | Source | Status |
+|---|---|---|
+| **Service-role hardening** | [ADR-017](../architecture/ADR-017-service-role-hardening-strategy.md) | ✅ **APPLIED to production 2026-08-19.** Preconditions verified first: every Phase 1 component shipped and soaked · no direct `INSERT/UPDATE/DELETE` on `admin_roles` (4 call sites) or `platform_owner` (1 call site) anywhere in `src/` · all three functions `prosecdef = true`, owner `postgres`, `search_path = public, pg_temp` · rollback window agreed. **MEASURED after:** `service_role` on both tables went `DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE` → **`REFERENCES,SELECT,TRIGGER,TRUNCATE`**; `has_function_privilege('service_role', …, 'EXECUTE')` still true for all three RPCs, and still **false** for `anon` and `authenticated`; `service_role` reads returned 2 role rows and 1 active owner, no `42501`. Rollback was not needed and was not used |
+| **Required checks on `main`** | Owner Decision C | ✅ **ENABLED 2026-08-19.** Was *"Not yet executed"*. Required contexts are the four jobs the two named workflows actually publish — `Test suite` and `Types, lint, SQL grants` (`Regression Gate`), `AI architecture rules` and `Brand registry validation` (`Architecture Guard`) — with `enforce_admins = true`, matching "no bypass outside an approved policy". `strict` and PR-review requirements were left off because Decision C does not ask for them |
+| **Capability gate activation** | [ADR-018](../architecture/ADR-018-capability-registry-frozen.md), [`06_…CONTRACT`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md) §7 | ⏸️ **DEFERRED — and not yet due.** ADR-018 assigned activation to C6; C6's contract then placed it explicitly out of scope. **MEASURED:** `CAPABILITY_GATE_ENABLED = false`, `Actor.capabilities` is always `NO_CAPABILITIES`, and 18 permission definitions declare a `capability`. Enabling the gate today would deny all eighteen and lock the admin surface out. What is missing is a capability *producer* binding manifests to actors — not an authorisation |
+| **C6 rollback · health checks · migration versioning** | [`06_…CONTRACT`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md) §1 | ⏸️ **DEFERRED by Owner, 2026-08-13** — named debt, undefined in any authoritative source |
+| **Hub migration** | [`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §1 | ✅ registration complete — five hubs run through the kernel (`dashboard`, `analytics`, `commerce`, `configuration`, `security`), Commerce included. Route control is explicitly out of C6's scope (§7) |
+| **BL-\*** | [`BACKLOG.md`](BACKLOG.md) | ⏸️ non-blocking under Decision A ([§ Consequences 4](OWNER_DECISIONS_2026-08-13.md#consequences)). **BL-C7-01 is closed on production by measurement:** all three Component 1 `SECURITY DEFINER` functions report `EXECUTE` false for `anon` and `authenticated` |
+
+### Two observations recorded, not acted on
+
+Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
+
+1. **`TRUNCATE` remains granted to `service_role`** on both tables. ADR-017 targets privilege *escalation*; `TRUNCATE` is destruction, and it bypasses RLS. Closing it is a separate decision.
+2. **`anon` and `authenticated` hold table-level write grants** on both tables — the Supabase default, where RLS is the actual control. Verified still gated: anonymous reads of `admin_roles` and `platform_owner` return zero rows.
 
 ---
 
