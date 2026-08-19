@@ -518,6 +518,65 @@ Also still open: **Module 17 Settings** hub placement (no authoritative answer e
 
 **Phase 8 remains BLOCKED. Owner decision package ready.**
 
+### Phase 8 — the architecture DOES define module ordering (2026-08-19)
+
+Read-only. **No business-module code written. No migration proposed. No ADR created.**
+
+#### ⚠️ My Module 14 recommendation was wrong, twice over
+
+The previous entry ranked **Module 14 System Monitoring** as a candidate because *"smallest surface"* and *"`system_health_log` already exists"*. Both are convenience arguments, and the architecture answers the question directly.
+
+[`docs/backoffice/23_Implementation_Roadmap.md`](../backoffice/23_Implementation_Roadmap.md) §2 defines an explicit dependency graph:
+
+```
+Phase 0 Foundation ──► Phase 1 Analytics Core ──┐
+        │                                        ├──► Phase 3 Intelligence ──┐
+        └───────────► Phase 2 User Mgmt ─────────┘                           ├──► Phase 5 Reporting
+                              │                                              │
+                              └──────────────► Phase 4 Engagement ───────────┘
+```
+
+*"Phases 1 and 2 can run in parallel after Phase 0."*
+
+**Module 14 System Monitoring is in Phase 3** (roadmap lines 232–241, alongside AI Cost Monitoring), gated on Phases 1 **and** 2. It is not an early module. **Phase 2 — User Management & Moderation** is the next phase, and it depends on Phase 0 alone, which is complete.
+
+So the ordering is authoritative, and it is not the one I proposed.
+
+#### Phase 2 is a single phase containing BOTH modules
+
+Its deliverables and **Success Criteria** are enumerated (5 criteria — these are the acceptance criteria the earlier audit reported as missing). Named migrations: `moderation_queue`, `moderation_actions`, `user_notes`, and `is_vip` on `profiles`.
+
+#### Two blocking findings inside Phase 2
+
+**1. bo-23 and bo-10 disagree on the schema.** The roadmap's Phase 2 migration list adds only `is_vip` to `profiles`. [`10_User_Management.md`](../backoffice/10_User_Management.md) §4 requires `profiles.is_suspended`, `profiles.suspended_until` and `profiles.is_banned` — none of which the roadmap lists, and none of which exists (`profiles` has 10 columns, no status field). **Two frozen documents specify different schemas for the same feature.**
+
+**2. Suspension is not an admin-only behaviour.** bo-10 §4 defines it as: the user *"cannot post content, cannot comment, cannot use AI, can browse read-only"*. That is **consumer-app enforcement**. Building only the admin half produces a suspension flag that suspends nothing — a worse outcome than not building it. Ban additionally *"revokes ALL active Supabase sessions"* (C11 exists, so that half is met), and soft-delete anonymises PII in `profiles`, which meets the known *"Delete Account has no backend"* gap and bo-33 Privacy.
+
+Even the **read-only slice** — user list + User 360 — cannot be built cleanly: both the list columns and §3.1 require a *"Status badge (Active / Suspended / Banned)"* that no column can supply.
+
+**Module 09 Moderation** routes `/api/reviews/[id]/report` into `moderation_queue`, overlapping the Content Safety publication-gate workstream, which is out of scope here.
+
+#### Decision: **C — NO AUTHORIZED FIRST MODULE**
+
+Phase 2 is architecturally next and its contract is frozen, but it cannot begin: it requires unauthorized production schema mutation, it crosses into consumer-app behaviour, and its two governing documents disagree on the schema.
+
+Separating the two authorities, as they must be:
+
+| | |
+|---|---|
+| **CODE authority** | ✅ present — Phase 2's contract is inside approved, frozen v1.1 |
+| **DB authority** | ❌ absent — every path needs tables/columns that do not exist |
+| **Product-workstream authority** | ❌ absent — suspension requires consumer-app enforcement |
+
+#### 🔴 Owner decisions required, smallest set
+
+1. **Resolve the bo-23 ↔ bo-10 schema disagreement** for account status. A Design Change under Constitution §8.2 → requires an ADR. **Not created here** — creating one is not authorized.
+2. **Authorize the Phase 2 migration** under the ADR-017 pattern, once (1) is settled.
+3. **Authorize consumer-app enforcement of suspension**, or explicitly scope Phase 2 to admin-side only and accept that suspension does not yet restrict anything.
+4. Still open from before: **Module 17 Settings** hub, **Module 20** classification.
+
+**Phase 8 remains BLOCKED. Phase 7 remains PARTIAL.**
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
