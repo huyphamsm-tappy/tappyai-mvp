@@ -124,6 +124,9 @@ export const AI = {
       maxTokens: opts.maxTokens,
       maxSteps: opts.maxSteps,
       tools: opts.tools,
+      // Only ever set on a D3 decision turn, and only alongside maxSteps:1 —
+      // see the contract note on AIStreamOptions.toolChoice.
+      ...(opts.toolChoice ? { toolChoice: opts.toolChoice } : {}),
       onFinish: opts.onFinish,
       abortSignal: opts.abortSignal,
     })

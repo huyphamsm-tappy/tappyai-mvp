@@ -295,10 +295,27 @@ describe('no new model calls were introduced for consultative behaviour', () => 
   const code = (f: string) => readFileSync(f, 'utf8')
     .replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^\s*\/\/.*$/gm, ' ')
 
-  it('no forced tool: nothing sets toolChoice, and forcedTool never reaches the model', () => {
-    for (const f of ['src/app/api/chat/route.ts', 'src/lib/ai/llm/ai.ts', 'src/lib/ai/llm/types.ts']) {
-      expect(code(f), `${f} must not set toolChoice — 'auto' is the architecture`).not.toContain('toolChoice')
-    }
+  // AMENDED for D3 (2026-08-19), narrowly. The blanket "nothing sets toolChoice"
+  // rule assumed the model would always author the reply, which is precisely
+  // what D3 removes: on a decision turn it returns IDs and closed reason codes
+  // through `submit_recommendation`, and the server renders every candidate
+  // fact. That requires exactly one named-tool choice. Everything the original
+  // lock was protecting — no global forcing, no per-step forcing, no forcedTool
+  // reaching the model — is still asserted, and the pairing with maxSteps:1 is
+  // now asserted too, because toolChoice with maxSteps > 1 loops on this SDK
+  // and returns empty text.
+  it('forced tool ONLY as the named D3 decision tool, and forcedTool never reaches the model', () => {
+    const types = code('src/lib/ai/llm/types.ts')
+    expect(types, 'only a NAMED tool choice may be declarable')
+      .toContain("toolChoice?: { type: 'tool'; toolName: string }")
+    expect(types, "no string-form toolChoice ('required'/'any'/'auto') may be declarable")
+      .not.toMatch(/toolChoice\?:\s*['"]/)
+
+    const ai = code('src/lib/ai/llm/ai.ts')
+    expect(ai, 'the provider may only forward what the caller set')
+      .toContain('...(opts.toolChoice ? { toolChoice: opts.toolChoice } : {})')
+    expect(ai, 'the AI layer must not invent a tool choice of its own')
+      .not.toMatch(/toolChoice:\s*['"]/)
     // forcedTool may be COMPUTED (memory gating, telemetry) but must never be
     // handed to AI.stream. Assert on the call's own argument list.
     const stream = code('src/app/api/chat/route.ts')

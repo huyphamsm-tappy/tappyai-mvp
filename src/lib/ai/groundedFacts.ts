@@ -46,6 +46,13 @@ const DIMENSIONS: Array<{ field: string; vi: string; en: string; keys: string[] 
   { field: 'opening_hours', vi: 'giờ mở cửa', en: 'opening hours', keys: ['opening_hours'] },
   { field: 'price', vi: 'giá', en: 'price', keys: ['price', 'price_vnd', 'gia'] },
   { field: 'rating', vi: 'đánh giá', en: 'rating', keys: ['rating', 'google_rating'] },
+  // Ordinal price band and computed distance. Both are comparable dimensions,
+  // so they must be listed here — `comparableOn` reads this table, and a
+  // dimension missing from it silently disables the comparison that depends
+  // on it (measured: BETTER_PRICE_LEVEL and CLOSER were dropped as unsupported
+  // even when both candidates carried the field).
+  { field: 'price_level', vi: 'mức giá', en: 'price level', keys: ['price_level'] },
+  { field: 'distance_km', vi: 'khoảng cách', en: 'distance', keys: ['distance_km'] },
   { field: 'wifi', vi: 'wifi', en: 'wifi', keys: ['wifi'] },
   { field: 'size', vi: 'quy mô', en: 'size', keys: ['size', 'capacity', 'seats'] },
   { field: 'ram_gb', vi: 'RAM', en: 'RAM', keys: ['ram_gb'] },

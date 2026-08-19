@@ -58,6 +58,21 @@ export interface AIStreamOptions extends AIGenerateOptions {
   /** AI-SDK tool set (zod-defined) — provider-neutral by construction. */
   tools?: Parameters<typeof streamText>[0]['tools']
   maxSteps?: number
+  /**
+   * Force ONE named tool for this request (D3 decision turns only).
+   *
+   * Narrow amendment to the C2 "no toolChoice" rule, and narrow on purpose: the
+   * decision turn hands the model a schema instead of a blank page, so the
+   * candidate facts the user reads are rendered by the server rather than
+   * written by the model. Nothing else may set it — `recommendationContract`
+   * asserts the caller shape.
+   *
+   * MUST be paired with `maxSteps: 1`. ai@4.3.19 re-applies toolChoice on every
+   * step (prepareToolsAndToolChoice runs inside streamStep), so with maxSteps >
+   * 1 the model is forced to call the tool again on the follow-up step and the
+   * turn ends with finishReason 'tool-calls' and EMPTY text — measured.
+   */
+  toolChoice?: { type: 'tool'; toolName: string }
   // REMOVED (C2): a `prepareStep` option forwarded as experimental_prepareStep.
   // streamText in ai@4.3.19 does not accept it — only generateText does — so it
   // was silently discarded on every call while its @ts-ignore claimed the
