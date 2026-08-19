@@ -37,7 +37,9 @@ Branch or ruleset protection is to be configured on `main` so that **Regression 
 
 Measured at decision time: `branches/main/protection` → **404 "Branch not protected"**, `/rulesets` → empty. The repository is public and the token holds `admin`, so this is a genuine absence, not a permissions artifact. Until it is configured, CI-01 runs but does not block.
 
-**Not yet executed.** This is a repository-settings change and is scheduled separately; it is not a C1–C11 blocker under Decision A.
+~~**Not yet executed.**~~ ✅ **EXECUTED 2026-08-19.** This is a repository-settings change and is scheduled separately; it is not a C1–C11 blocker under Decision A.
+
+> **Execution note — appended, not a reinterpretation.** The decision above is unchanged. Branch protection now requires the four contexts the two named workflows actually publish: `Test suite` and `Types, lint, SQL grants` (from **Regression Gate**), `AI architecture rules` and `Brand registry validation` (from **Architecture Guard**). `enforce_admins` is on, which is how "no bypass outside an approved policy" is expressed while no such policy exists. `strict` and PR-review requirements were deliberately **not** set, because this decision does not ask for them. Full record in [`STATUS.md` § Post-Foundation work](STATUS.md#post-foundation-work).
 
 ### D — BL-002 (G1 production validation): **DEFER**
 

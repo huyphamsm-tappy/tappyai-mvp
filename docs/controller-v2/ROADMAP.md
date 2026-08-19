@@ -51,7 +51,8 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 
 | Item | Status |
 |---|---|
-| Service-role hardening (`REVOKE … ON admin_roles`) | staged in `supabase/migrations/deferred/`, **not applied** — gate is the end of Foundation, per [ADR-017](../architecture/ADR-017-service-role-hardening-strategy.md) |
+| Service-role hardening (`REVOKE … ON admin_roles`, `platform_owner`) | ✅ **APPLIED to production 2026-08-19** — the gate (every Phase 1 component shipped and soaked) was met. This row read "*staged … not applied*" until then. Evidence in [STATUS.md § Post-Foundation work](STATUS.md#post-foundation-work), per [ADR-017](../architecture/ADR-017-service-role-hardening-strategy.md) |
+| Required checks on `main` (Owner Decision C) | ✅ **ENABLED 2026-08-19** — four required contexts, `enforce_admins` on. See [STATUS.md § Post-Foundation work](STATUS.md#post-foundation-work) |
 | BL-001 ADR consolidation | backlog, gated on Foundation completion |
 
 ---

@@ -9,9 +9,9 @@ found one real dependency-order bug caused by lexicographic apply order, and a
 privilege-revoking migration applied early is a far worse failure mode than a
 mis-ordered `CREATE`.
 
-| File | Gate | Rationale |
-|---|---|---|
-| `FOUNDATION_END_service_role_hardening.sql` | End of Controller V2 Foundation (after all Phase 1 components ship and soak) | ADR-017 — Service Role Hardening Strategy |
+| File | Gate | Status | Rationale |
+|---|---|---|---|
+| `FOUNDATION_END_service_role_hardening.sql` | End of Controller V2 Foundation (after all Phase 1 components ship and soak) | ✅ **gate met · APPLIED to production 2026-08-19** — do **not** run it again; it is kept here as the record of what was executed. Evidence: [`docs/controller-v2/STATUS.md` § Post-Foundation work](../../../docs/controller-v2/STATUS.md#post-foundation-work) | ADR-017 — Service Role Hardening Strategy |
 
 ## Rules
 
