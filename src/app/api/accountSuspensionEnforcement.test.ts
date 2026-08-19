@@ -18,6 +18,15 @@ const h = vi.hoisted(() => {
   // These routes build Supabase clients at module scope, so the env must exist
   // before the imports below run. Values are placeholders — every client this
   // test can reach is replaced by the stub, and nothing here opens a socket.
+  // CI runs Node 20, which has no native WebSocket; a newer local Node does.
+  // @supabase/supabase-js throws on construction without one, so a route that
+  // builds a client at module scope loads locally and fails in CI. Removing the
+  // global here reproduces the CI platform in the harness rather than leaving
+  // the difference to be discovered by a red pipeline (ADR-019's principle:
+  // platform facts belong in the harness, not inside a test).
+  // vitest isolates test files, so this affects nothing else.
+  delete (globalThis as { WebSocket?: unknown }).WebSocket
+
   process.env.NEXT_PUBLIC_SUPABASE_URL ||= 'http://localhost:54321'
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||= 'test-anon-key'
   // No service-role key is set: `@/lib/supabase/admin` is mocked below, so the
@@ -66,6 +75,17 @@ vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: h.getRequestUser }
 // the guard rather than the notification pipeline, and so no test opens a socket.
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.builder }))
 vi.mock('@/lib/notifications/emit', () => ({ emitNotification: vi.fn(async () => undefined) }))
+// `@/modules/music/server` reaches musicRepository.ts, which builds a Supabase
+// client at MODULE scope. That construction needs a WebSocket, which Node 20 —
+// what CI runs — does not provide natively, so importing the reviews route for
+// real fails there while passing on a newer local Node. Mocking the module keeps
+// the eager client out of the graph entirely; none of it runs before the 403.
+vi.mock('@/modules/music/server', () => ({
+  createSelection: vi.fn(async () => null),
+  getTrack: vi.fn(async () => null),
+  recordUsage: vi.fn(async () => undefined),
+  createOriginalSound: vi.fn(async () => null),
+}))
 
 import { POST as reviewsPOST } from './reviews/route'
 import { POST as commentsPOST } from './reviews/[id]/comments/route'
