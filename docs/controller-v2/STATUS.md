@@ -192,6 +192,30 @@ The other three §1 rules (module→module imports, module→connector imports, 
 
 The rule engine gained exactly two fields: `scope` (a rule that applies only *within* prefixes — `allow` cannot express a boundary rule) and `exemptTests`. **Mutation: 6/6 killed**, including dropping the scope filter, widening the allowlist to the whole `supabase/` directory, removing the test exemption, and matching the permission *id shape* instead of the *argument position* — the last one matters because `'admin.nav.dashboard'` is shaped exactly like a permission id, so a shape-matching rule would condemn every nav label and then be loosened until it caught nothing.
 
+### Owner Decisions, 2026-08-19 (second set) — locked
+
+| ID | Decision | Effect |
+|---|---|---|
+| **B5** | ✅ **YES** — FOUNDATION-01 §13 approved as the implementation boundary; [`17_UI_UX_Standards.md`](../backoffice/17_UI_UX_Standards.md) promoted from DRAFT to implementation authority, **without widening the design** | Unlocks the six remaining Phase 7 surfaces |
+| **B15** | ✅ **YES — keep the shipped C3/C4 model.** `01_ARCH` §6.3 (*"roles are data in `role_definitions`"*) is **SUPERSEDED** by the accepted C3/C4 registry-in-code implementation | `role_definitions`, `permission_grants`, runtime role-as-data are **not** V2 blockers. **B13 drops out of scope; B12 (`DROP admin_permissions`) is no longer required to satisfy §6.3.** No migrations |
+| **B14** | ✅ **YES in principle** — module data ownership (`manifest.data.tables`, §2.1/§4.2) stays an architectural rule | **Contract first**: name the conflict with C6 §1, decide whether an ADR is needed, write the smallest clarification. **No DB change until the contract is resolved**, and existing modules do **not** thereby acquire tables |
+| **B6** | ✅ **YES** — Module 17 Settings goes to an existing business Hub, **not** a sixth invented "Configuration" hub | Re-read [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md) first; change only if the evidence supports it |
+| **B8** | ✅ **YES in principle** — an Owner break-glass recovery procedure will exist (R6) | **Design first**: threat model, recovery authority, DB + env authority, audit, failure modes, rollback → then ADR. No production mutation without separate authorization |
+| **B7** | ⏸️ **KEEP CURRENT DEPLOYMENT** — no split now | Guard rules §1.1–1.3 stay unwritten **on purpose**; they may be added only when the surfaces they guard exist |
+| B1 · B2 · B3 | ⏸️ **DEFER** | No invented actor↔capability mapping · no `platform_settings` migration · no demo Event Bus producer |
+| **B4** | ⛔ **CLOSED AS NON-BLOCKING** | `ADMIN_IDS` is notification-recipient configuration, not authorization. RBAC is **not** to be forced into that route merely to delete an env var |
+| B9 · B10 · B11 | ⏸️ **DEFER** | C7 was accepted without them, and C7 deferred B11 deliberately (*"no consumer for it yet"*) |
+
+### AUDIT-1 — the audit-coverage gap `01_ARCH` §3.3 names by path (2026-08-19)
+
+§3.3 records it in the architecture itself: *"`src/app/api/admin/deals/upload/route.ts` is authorized and rate-limited but writes **no audit row**."* MEASURED at the time of the fix: every other admin mutation route wrote 2–3 rows; this one wrote **zero**, while minting a signed client-direct write into object storage — an authorization the trail had no record of granting.
+
+Closed by calling the same `writeAuditLog` with the same field shape as `deals/route.ts`. **No audit infrastructure was redesigned.** Two distinct mutations get two distinct actions — `deals.media_upload_authorized` and `deals.media_upload_completed` — because authorising an upload and completing one are different grants. Only a **granted** one is recorded: a refused request authorized nothing, and PDP denials are already audited upstream by `requirePermission`.
+
+**Mutation: 7/7 killed**, including collapsing the two actions into one, dropping the object key so the row cannot say *what* was authorised, dropping the `is_platform_owner` marker, and auditing failed attempts.
+
+A sweep of all 8 admin mutation routes confirms this was **the only gap**: `org/memberships` writes no row directly but audits through `membershipService`, which is the canonical writer.
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
