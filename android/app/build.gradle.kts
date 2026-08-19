@@ -96,11 +96,16 @@ android {
         // already 36 (androidx.browser 1.9.0 forced it during Phase 1B.1), so this is a policy
         // change, not a toolchain one: no AGP/Gradle/Kotlin/dependency move came with it.
         targetSdk = 36
-        // 6, not 5: vc5 is already on Play (built from f49d6c0, which is not on any remote branch)
-        // and Play requires a strictly increasing versionCode. vc5 predates the Account Deletion
-        // entry that Play's own listing URL documents, so it must not be the artifact under test.
-        versionCode = 6
-        versionName = "0.1.0"
+        // 7, not 6. Play requires a strictly increasing versionCode, and 6 is SPENT: the vc6
+        // artifact was uploaded, reviewed and released to the closed "Alpha" track on 2026-08-16
+        // (Play Console: "Đã phát hành ... 16 thg 8 9:04"). Re-uploading 6 is rejected outright.
+        //
+        // Note the released vc6 targets API 35 — it was built before the targetSdk bump, from a
+        // tree that also predates the Deals crash fix. This build is the first artifact carrying
+        // both, so it cannot reuse that version code even though the branch was authored against
+        // it. versionName goes to 0.1.2 because 0.1.1 was also used (vc5).
+        versionCode = 7
+        versionName = "0.1.2"
 
         vectorDrawables {
             useSupportLibrary = true
