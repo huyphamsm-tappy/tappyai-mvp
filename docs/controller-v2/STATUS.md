@@ -159,6 +159,22 @@ Together those mean a first producer would **re-issue the function that closes G
 
 Nothing was declared to paper over it: no manifest was given an `events` block it cannot honour, and no handler was registered in the empty `ConsumerDispatch`. The forcing function in [`outbox.test.ts:181`](../../src/lib/controller/__tests__/outbox.test.ts) still pins the zero-consumer state, so the suite fails the day a real consumer is declared without a handler.
 
+### Phase 7 — V2 Shell (2026-08-19): **IN PROGRESS**
+
+First item only. The shell now renders **hubs**, not a flat list.
+
+Five hubs have been registered and governing modules since FOUNDATION-03, and the Navigation Provider has always returned `NavGroup[]` carrying each hub's label and order — [`AdminShell.tsx`](../../src/components/admin/layout/AdminShell.tsx) discarded it with `flatMap`. So the Hub layer existed in the registry and was **invisible in the product**, which is what [`FOUNDATION_01_CONTRACTS.md`](FOUNDATION_01_CONTRACTS.md) §2 (*a Hub "owns a permission scope + nav group"*) and §13 (*"Controller shell → **Hub shell** → module surface"*) require it not to be.
+
+This is not a redesign and claims no approval it does not have: it renders data the frozen contract already mandates the provider produce. The one visible consequence is stated plainly — **the sidebar now carries a heading per hub**.
+
+A latent defect surfaced and was fixed with it: every hub declared a `navigationGroup` i18n key (`admin.nav.group.*`) and **not one of them had a translation**, in either locale. Harmless only because the groups were being thrown away. §8 requires *"no raw strings"*, so all five now exist in `vi` and `en`, and a test asserts the two differ rather than one being a copy of the other.
+
+**Mutation: 6/6 killed** — re-flattening, an empty hub rendering a bare heading, reversed hub order, a raw key shown instead of translated text, every hub rendering every module, and a nav-group key losing its Vietnamese translation.
+
+The authorization boundary is untouched: `AdminShell` is presentational, and the PDP + hub `permissionScope` filter runs server-side in `deriveNavigation` (mutation-tested in Phase 4).
+
+**Blocked, and not attempted:** command palette (⌘K), context bar, alert well, the six layout presets, density comfortable/compact, and the Denial-UX 403 page. Each is named only by `01_CONTROLLER_V2_ARCHITECTURE.md` §8 and each is a **new UI surface**, while §13 holds the UI boundary **OWNER-APPROVAL-PENDING** and every `docs/backoffice/**` UI spec is **DRAFT — Awaiting Owner Approval** (verified in `17_UI_UX_Standards.md`). Density additionally needs a preference store, which depends on B2.
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.
