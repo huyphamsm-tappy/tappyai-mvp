@@ -19,6 +19,7 @@ import { permissionEngine } from './engine'
 import { auditAuthorizationDecision } from './decisionAudit'
 import type { Decision, PermissionId } from './types'
 import { loginPathFor } from '@/lib/auth/returnTo'
+import { denialPath } from '@/lib/admin/denial'
 
 export interface PermissionContext {
   user: User
@@ -48,7 +49,14 @@ function denialMessage(decision: Decision): string {
  * an in-Controller destination would re-run this same failing check and bounce
  * forever — see the redirect-loop note on `requirePagePermission`.
  */
-const CONTROLLER_UNAVAILABLE_REDIRECT = '/reviews'
+// B5 (01_ARCH §8): a refusal must explain itself. These targets are still
+// OUTSIDE /admin — the loop regression `guards.test.ts` pins is unchanged — but
+// they now carry a reason code instead of dropping the visitor on the consumer
+// site with no signal. The reason codes are coarse by design: `denial.ts`
+// collapses ENV_SET_BUT_NO_OWNER / ENV_MISMATCH into one, because those describe
+// the deployment's configuration rather than the visitor.
+const CONTROLLER_UNAVAILABLE_REDIRECT = denialPath('controller_unavailable')
+const NON_CORPORATE_REDIRECT = denialPath('not_corporate')
 
 /**
  * Resolve the Actor for a PAGE surface, translating a corporate-identity denial
@@ -76,7 +84,7 @@ export async function resolveActorForPage(
   try {
     return await resolveActorForUser(user, source)
   } catch (err) {
-    if (err instanceof AdminError && err.status === 403) redirect(CONTROLLER_UNAVAILABLE_REDIRECT)
+    if (err instanceof AdminError && err.status === 403) redirect(NON_CORPORATE_REDIRECT)
     throw err
   }
 }
@@ -152,7 +160,11 @@ export async function requirePagePermission(
   permission: PermissionId,
   options: { deniedRedirect?: string } = {}
 ): Promise<{ userId: string; email: string; actor: Actor }> {
-  const deniedRedirect = options.deniedRedirect ?? '/admin'
+  // B5: the default now EXPLAINS the refusal instead of bouncing the visitor to
+  // a dashboard that silently works. It names the permission, and the page shows
+  // which roles hold it. Callers may still override — /admin no longer needs to,
+  // because this target is already outside the Controller.
+  const deniedRedirect = options.deniedRedirect ?? denialPath('missing_permission', permission)
 
   const supabase = createClient()
   const {

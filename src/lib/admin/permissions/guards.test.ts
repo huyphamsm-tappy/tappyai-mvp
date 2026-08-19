@@ -114,13 +114,20 @@ describe('requirePagePermission — redirect loop regression', () => {
     expect(res).toEqual({ outcome: 'redirect', target: '/reviews' })
   })
 
-  it('a denial on a NON-root page still returns to the dashboard', async () => {
+  it('a denial on a NON-root page explains itself instead of bouncing to the dashboard', async () => {
     h.resolveActorForUser.mockResolvedValue(actor(['analyst']))
 
-    // analyst holds no audit permission; /admin is reachable and terminal.
+    // Was: '/admin' — reachable and terminal, but it told the analyst nothing
+    // about why /admin/audit vanished. 01_ARCH §8: "a dead end is a support
+    // ticket". The denial page names the permission and offers the way back.
     const res = await run(PERMISSIONS.AUDIT_LOG_READ)
 
-    expect(res).toEqual({ outcome: 'redirect', target: '/admin' })
+    expect(res).toEqual({
+      outcome: 'redirect',
+      target: '/access-denied?reason=missing_permission&permission=audit.log.read',
+    })
+    // The loop invariant this describe block exists for is unchanged.
+    expect(res.target).not.toMatch(/^\/admin/)
   })
 })
 
@@ -180,10 +187,16 @@ describe('requirePagePermission — authorization outcomes', () => {
     expect(res.outcome).toBe('rendered')
   })
 
-  it('an admin is denied a super_admin-only page', async () => {
+  it('an admin is denied a super_admin-only page, and is told which permission', async () => {
+    // B5 changed the target from '/admin' — which silently worked and explained
+    // nothing — to the denial page, which NAMES the missing permission. The
+    // force of the assertion is unchanged: denied, and never into /admin.
     const res = await run(PERMISSIONS.SECURITY_ROLES_READ)
 
-    expect(res).toEqual({ outcome: 'redirect', target: '/admin' })
+    expect(res).toEqual({
+      outcome: 'redirect',
+      target: '/access-denied?reason=missing_permission&permission=security.roles.read',
+    })
   })
 
   it('multiple roles union: analyst+admin reaches an admin-only page', async () => {
@@ -197,6 +210,59 @@ describe('requirePagePermission — authorization outcomes', () => {
   it('an undeclared permission fails CLOSED, it does not render', async () => {
     const res = await run('not.a.real.permission')
 
-    expect(res).toEqual({ outcome: 'redirect', target: '/admin' })
+    // Still denied. The denial page will not find this id in the registry, so it
+    // falls back to the generic message rather than echoing the id — the
+    // untrusted-input rule proved in denial.test.ts.
+    expect(res.outcome).toBe('redirect')
+    expect(res.target).toMatch(/^\/access-denied\?reason=missing_permission/)
+    expect(res.target).not.toMatch(/^\/admin/)
+  })
+})
+
+// ── B5: the corporate-identity boundary, which no test previously touched ────
+//
+// Added because a mutation SURVIVED: replacing the redirect in
+// `resolveActorForPage` with `return {} as Actor` — i.e. admitting a
+// non-corporate identity as a principal — broke nothing. That is the
+// FOUNDATION-10C boundary, so it must be impossible to remove silently.
+describe('resolveActorForPage — FOUNDATION-10C corporate boundary', () => {
+  beforeEach(() => {
+    h.getUser.mockResolvedValue({ data: { user: USER } })
+    h.checkOwnerGate.mockResolvedValue({ ok: true, enforced: true })
+  })
+
+  it('REFUSES a non-corporate identity and says so, instead of building an Actor', async () => {
+    const { AdminError } = await import('@/lib/admin/rbac')
+    h.resolveActorForUser.mockRejectedValue(new AdminError('FORBIDDEN', 'not corporate', 403))
+
+    const { resolveActorForPage } = await import('./guards')
+    const err = await resolveActorForPage(USER as never).catch((e) => e)
+
+    expect(err).toBeInstanceOf(RedirectError)
+    expect((err as RedirectError).target).toBe('/access-denied?reason=not_corporate')
+    // Distinct from a permission denial: this identity is not admitted at all.
+    expect((err as RedirectError).target).not.toContain('missing_permission')
+  })
+
+  it('never leaves the Controller reachable after that refusal', async () => {
+    const { AdminError } = await import('@/lib/admin/rbac')
+    h.resolveActorForUser.mockRejectedValue(new AdminError('FORBIDDEN', 'not corporate', 403))
+
+    const { resolveActorForPage } = await import('./guards')
+    const err = (await resolveActorForPage(USER as never).catch((e) => e)) as RedirectError
+
+    expect(err.target).not.toMatch(/^\/admin/)
+  })
+
+  it('RETHROWS anything that is not a corporate-identity refusal', async () => {
+    // Swallowing an unexpected failure here would turn a bug into a silent
+    // redirect — and would hide a database outage behind an access message.
+    h.resolveActorForUser.mockRejectedValue(new Error('database down'))
+
+    const { resolveActorForPage } = await import('./guards')
+    const err = await resolveActorForPage(USER as never).catch((e) => e)
+
+    expect(err).not.toBeInstanceOf(RedirectError)
+    expect((err as Error).message).toBe('database down')
   })
 })
