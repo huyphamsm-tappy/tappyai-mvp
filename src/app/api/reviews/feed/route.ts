@@ -2,6 +2,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { toExploreFeedItems, toProfileFeedItems } from '@/lib/media/servableMedia'
 import { observePrivacyForFeed } from '@/lib/policy/explore/reviewFeedObservation'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
+import { authorModerationPayload } from '@/lib/safety/gate/authorNotice'
 import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
@@ -25,6 +26,9 @@ export async function GET(req: NextRequest) {
   const city = req.nextUrl.searchParams.get('city')?.trim().toLowerCase() || ''
 
   const { user, supabase } = await getRequestUser(req)
+  // Identity-scoped: only the author's OWN profile steps past the publication
+  // boundary, and only that branch is told the moderation state.
+  const isOwnProfile = Boolean(filterUserId && user && filterUserId === user.id)
 
   // For "following" feed: get list of followed user IDs
   let followingIds: string[] | null = null
@@ -118,7 +122,10 @@ export async function GET(req: NextRequest) {
     // Latest, filtered, search, or following feed
     let query = supabase
       .from('reviews')
-      .select(EXPLORE_SELECT)
+      // The lifecycle columns are read ONLY on the author's own profile, and are
+      // stripped again before the response — see the enrichment below. Every
+      // other branch never even selects them.
+      .select(isOwnProfile ? `${EXPLORE_SELECT}, publication_state, safety_state` : EXPLORE_SELECT)
       .or('is_hidden.is.null,is_hidden.eq.false')
       .range(offset, offset + limit - 1)
 
@@ -140,7 +147,7 @@ export async function GET(req: NextRequest) {
     // the `.eq('user_id', filterUserId)` below keeps the query self-scoped, and
     // the database's own publication boundary independently refuses a held row
     // to anyone but its author.
-    const isOwnProfile = Boolean(filterUserId && user && filterUserId === user.id)
+    // (hoisted above the branch — see declaration near the top of the handler)
     if (!isOwnProfile) query = query.or(publishableFilter())
 
     if (filterUserId) query = query.eq('user_id', filterUserId)
@@ -190,12 +197,43 @@ export async function GET(req: NextRequest) {
   // trust the column directly instead of re-tallying review_comments on every
   // feed load (that extra query was only there while the RLS-blocked trigger
   // left the column drifting).
-  const enriched = (reviews || []).map(r => ({
-    ...r,
-    liked_by_me: likedIds.includes(r.id),
-    saved_by_me: savedIds.includes(r.id),
-    is_following: followedAuthorIds.includes(r.user_id),
-  }))
+  // Moderation state, for the author's own profile ONLY.
+  //
+  // Without this an author sees their rejected post sitting in their profile with
+  // no indication it is not public — which is the "it uploaded fine and then
+  // vanished" experience the gate is supposed to prevent. `isOwnProfile` is the
+  // same identity-scoped branch that let the row through at all, so nothing is
+  // exposed to anyone the row was not already served to.
+  //
+  // 🚨 The raw columns are STRIPPED and replaced by the author-facing payload:
+  // `publication_state` and `safety_state` never reach any client. What is
+  // returned is the visibility of the post plus honest wording — never a policy
+  // identity, a reason code or a coverage detail.
+  const lang =
+    req.nextUrl.searchParams.get('lang') ||
+    // Optional chaining throughout: a header bag is not guaranteed on every
+    // caller, and a missing Accept-Language must fall back to Vietnamese rather
+    // than throw and take the whole feed down for a wording lookup.
+    req.headers?.get?.('accept-language')?.split(',')[0]?.trim() ||
+    'vi'
+  const noticeLang = lang.toLowerCase().startsWith('en') ? 'en' : 'vi'
+
+  const enriched: any[] = (reviews || []).map(r => {
+    const { publication_state, safety_state, ...rest } = r as Record<string, unknown>
+    const moderation = isOwnProfile
+      ? authorModerationPayload(
+          { publication_state: publication_state as string, safety_state: safety_state as string },
+          noticeLang,
+        )
+      : null
+    return {
+      ...rest,
+      liked_by_me: likedIds.includes(r.id),
+      saved_by_me: savedIds.includes(r.id),
+      is_following: followedAuthorIds.includes(r.user_id),
+      ...(moderation ? { moderation } : {}),
+    }
+  })
 
   // Historical Vercel Blob media is dropped at the response boundary. The store
   // is suspended for data transfer, so those URLs 403 today — and would start

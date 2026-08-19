@@ -83,12 +83,24 @@ what the test suite exists to defend.
 
 ## 3. Decision states
 
+Every upload resolves. There is no state a post can be left in indefinitely.
+
+```
+CREATED → UNDER_REVIEW → ┬─ passes ─→ PUBLISHED  (public in Explore)
+                         └─ does not ─→ RESTRICTED (your profile only)
+```
+
 | State | Meaning | Publicly visible |
 |---|---|---|
-| `PUBLISHED` | Evaluated; nothing constituted a violation | ✅ yes |
-| `UNDER_REVIEW` | Held — uncertainty, a failure, or an open dependency | ❌ no |
-| `RESTRICTED` | A policy was constituted | ❌ no |
+| `PUBLISHED` | Checked; nothing prohibited was found | ✅ yes |
+| `RESTRICTED` | Not published — either a finding, or the check could not confirm it | ❌ no, author only |
+| `UNDER_REVIEW` | The check is running. Transient today, since it runs during upload | ❌ no |
 | `NULL` | Predates the gate | ✅ yes, unchanged |
+
+**Anything that cannot be positively established as safe becomes `RESTRICTED`** —
+a violation, insufficient evidence, a provider failure, an unexaminable video, a
+result about older content. This is deliberately fail-closed: there is no state,
+no failure and no missing evidence that reaches `PUBLISHED`.
 
 The underlying safety states are kept separate and are never collapsed: `SAFE`,
 `VIOLATION`, `UNDETERMINED`, `HUMAN_REVIEW_REQUIRED`, `LEGAL_REVIEW_REQUIRED`,
@@ -180,28 +192,39 @@ describes nothing.
 
 ---
 
-## 7. What happens to a held post
+## 7. What happens to a post that is not published
 
-The author is told, in Vietnamese or English, that their post is being checked
-and **that this is not a finding that they did anything wrong**. Uncertainty is
-never phrased as an accusation. The author can always see their own held post;
-they can edit or delete it. It is only other people who cannot see it.
+**It is not deleted, and it does not disappear.** It stays in your profile, where
+only you can see it, marked with a warning explaining that it was not published.
+You can still delete it yourself. Everyone else — Explore, other profiles,
+anonymous visitors, a direct link — is refused it, by the application and
+independently by the database.
 
-The author is **not** told which check held the post. That is deliberate: knowing
-which check fired is knowing what to change to get past it.
+The wording distinguishes the two reasons, because they are not the same thing:
 
-🔴 **There is no appeal, and no human review.** Governance requires an adverse
-action to carry notice *and* an appeal decided by someone other than the original
-decider — and with one person currently holding every role, that is not
-satisfiable. Until it is, no adverse enforcement action is enabled, and this
-document does not claim one.
+- **A finding.** "⚠️ This content can't be published because it doesn't meet
+  TappyAI's Community Guidelines."
+- **An unfinished check** — the far more common case today, and every video.
+  "The safety check could not confirm this content, so it was not published
+  publicly. It is still in your profile. This is not a finding that you did
+  anything wrong."
+
+Uncertainty is never phrased as an accusation. You are not told *which* check
+stopped it — knowing that is knowing what to change to get past it.
+
+🔴 **There is no appeal, and no human review. There are no reviewers.** Every
+decision described here is made by software. Human review is a capability
+TappyAI intends to add when it has the scale and the staff to operate one; it
+does not exist today, and nothing in this document should be read as promising
+it. Until it exists, a decision cannot be contested — you can delete the post and
+try again, and that is the whole of the recourse available.
 
 ---
 
 ## 8. Current operational reality — read this before relying on the gate
 
-✅ **A benign photo or text post now publishes.** A benign **video does not** —
-see below, and §6.
+✅ **A benign photo or text post now publishes.** **Videos are held back and
+rejected** — see below, and §6.
 
 **What was fixed.** Every policy used to answer `INSUFFICIENT_EVIDENCE` for every
 post, because the evidence model had no way to express "we examined this and the
@@ -240,10 +263,14 @@ a post. Material that raises any of them still goes to review. Both RESTRICTED
 policies also continue to evaluate and to report at the policy layer; only their
 publication authority changed.
 
-**Videos are held regardless of any of this**, because frames across the clip and
-audio are not examined (§6). That is a coverage gap, not a decision, and only
-frame sampling or human review closes it. There is still no human review to
-release anything held (§7).
+**Videos are held back regardless of any of this**, because frames across the clip
+and audio are not examined (§6). A video therefore cannot be confirmed safe, and
+under the MVP contract that means it is **rejected**: it stays in the author's
+profile with the "could not confirm" wording, and never becomes public. This is
+an accepted limitation of the current release, not a decision about video
+content. Closing it needs server-side frame sampling — which needs infrastructure
+this build does not have (no ffmpeg, no Cloud Run, no Video Intelligence, no
+speech-to-text) — or the human review that does not exist yet (§7).
 
 ---
 

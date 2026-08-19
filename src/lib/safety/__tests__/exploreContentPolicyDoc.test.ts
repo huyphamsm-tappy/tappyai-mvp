@@ -16,6 +16,9 @@ import { PUBLICATION_STATES, SAFETY_STATES } from '../gate/safetyResult';
 import { SUPPORTED_MODALITIES, UNSUPPORTED_MODALITIES } from '../evidence/modalities';
 
 const DOC = readFileSync('docs/policy/EXPLORE_CONTENT_POLICY.md', 'utf8');
+/** The same text with runs of whitespace collapsed, so a hard-wrapped sentence
+ *  can still be matched as one phrase. */
+const FLAT = DOC.replace(/\s+/g, ' ');
 
 /** Identities anywhere in the prose, however they are marked up. */
 function policyIdentitiesIn(text: string): Set<string> {
@@ -99,5 +102,42 @@ describe('Explore Content Policy document', () => {
     // lands, this assertion is what makes someone correct the document.
     expect(DOC).toMatch(/videos are held/i);
     expect(DOC).toMatch(/benign photo or text post now publishes/i);
+  });
+});
+
+/**
+ * The MVP contract, as a user would read it. These are the promises the product
+ * now makes, and the ones most damaging to break silently.
+ */
+describe('Explore Content Policy — the MVP contract', () => {
+  it('promises that every upload resolves, and describes both outcomes', () => {
+    expect(DOC).toMatch(/Every upload resolves/i);
+    expect(DOC).toMatch(/PUBLISHED/);
+    expect(DOC).toMatch(/RESTRICTED/);
+  });
+
+  it('promises a rejected post is kept, visible to its author, and marked', () => {
+    expect(DOC).toMatch(/not deleted|does not disappear/i);
+    expect(DOC).toMatch(/stays in your profile/i);
+    expect(DOC).toMatch(/Community Guidelines/);
+  });
+
+  it('separates a finding from an unfinished check, and never conflates them', () => {
+    // Whitespace-normalised: the document is hard-wrapped, so a sentence this
+    // long spans lines and a raw substring match would silently never fire.
+    expect(FLAT).toMatch(/not a finding that you did anything wrong/i);
+    expect(FLAT).toMatch(/unfinished check/i);
+    expect(FLAT).toMatch(/could not confirm/i);
+  });
+
+  it('says plainly that nothing unverified publishes', () => {
+    expect(DOC).toMatch(/cannot be positively established as safe/i);
+    expect(DOC).toMatch(/fail-closed/i);
+  });
+
+  it('does not promise human review or an appeal it does not have', () => {
+    expect(DOC).toMatch(/no appeal/i);
+    expect(DOC).toMatch(/There are no reviewers/i);
+    expect(DOC).toMatch(/does not exist today/i);
   });
 });
