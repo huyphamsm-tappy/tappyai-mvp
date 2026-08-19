@@ -194,11 +194,13 @@ describes nothing.
 
 ## 7. What happens to a post that is not published
 
-**It is not deleted, and it does not disappear.** It stays in your profile, where
-only you can see it, marked with a warning explaining that it was not published.
-You can still delete it yourself. Everyone else — Explore, other profiles,
-anonymous visitors, a direct link — is refused it, by the application and
-independently by the database.
+**It is not deleted, and it does not disappear.** You are told straight away, on
+the posting screen itself — a post that was not published is never reported to
+you as a success. It then stays in your profile, where only you can see it,
+marked with the same warning. You can still delete it yourself. Everyone else —
+Explore, other profiles, anonymous visitors, a direct link, and the post count
+on your public profile — is refused it, by the application and independently by
+the database.
 
 The wording distinguishes the two reasons, because they are not the same thing:
 
