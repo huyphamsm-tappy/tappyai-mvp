@@ -34,3 +34,20 @@ export function controllerConfig() {
 export function backofficeEnabled(): boolean {
   return configBoolean(provider, 'BACKOFFICE_ENABLED', true)
 }
+
+/** The three environments the Controller distinguishes. */
+export type ControllerEnv = 'production' | 'preview' | 'local'
+
+/**
+ * Map a raw `VERCEL_ENV` to what the Controller shows an operator.
+ *
+ * One mapping, not one per caller: the Home computed this inline and the
+ * Context Bar needs the same answer on every page. Two copies of a ternary is
+ * how "preview" starts rendering as "production" on exactly one screen.
+ *
+ * Anything unrecognised — including `development` and an unset variable — is
+ * `local`. An environment the deployment cannot name is not production.
+ */
+export function controllerEnv(raw: string | undefined = process.env.VERCEL_ENV): ControllerEnv {
+  return raw === 'production' ? 'production' : raw === 'preview' ? 'preview' : 'local'
+}

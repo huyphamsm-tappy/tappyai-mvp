@@ -49,7 +49,7 @@ const GROUPS: NavGroup[] = [
 
 function renderShell(navGroups: NavGroup[]) {
   return render(
-    <AdminShell role="super_admin" isOwner={false} email="a@tappyai.com" navGroups={navGroups}>
+    <AdminShell role="super_admin" isOwner={false} email="a@tappyai.com" env="local" navGroups={navGroups}>
       <div>child</div>
     </AdminShell>
   )

@@ -14,6 +14,8 @@ export const vi: Record<string, string> = {
   'admin.shell.app': 'Ứng dụng',
   'admin.shell.comingSoon': 'Sắp ra mắt',
   'admin.shell.comingLaterPhase': 'Sẽ có ở giai đoạn sau',
+  // Context Bar (B5, 01_ARCH §8 · UI standards §2 "context is always visible").
+  'admin.context.envLabel': 'Môi trường',
   // Denial UX (B5, 01_ARCH §8). Each reason says what was refused and what the
   // visitor can do — never what the deployment's configuration looks like.
   'admin.denied.heading': 'Không có quyền truy cập',
@@ -284,6 +286,7 @@ export const en: Record<string, string> = {
   'admin.shell.app': 'App',
   'admin.shell.comingSoon': 'soon',
   'admin.shell.comingLaterPhase': 'Coming in a later phase',
+  'admin.context.envLabel': 'Environment',
   'admin.denied.heading': 'Access denied',
   'admin.denied.backToSite': 'Back to the site',
   'admin.denied.backToController': 'Back to the Controller',
