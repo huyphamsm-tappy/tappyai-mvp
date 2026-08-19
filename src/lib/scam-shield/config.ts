@@ -18,6 +18,12 @@ export const SEVERITY_MULTIPLIERS: Record<string, number> = {
   critical: 1.0,
 }
 
+// Below this confidence, "no risk found" is not the same claim as "safe": too little of the
+// evidence base actually completed to stand behind it. Matches the UI's own low/medium
+// confidence boundary (ScamShieldResult's ConfidenceBadge), so the badge and the recommended
+// action can never disagree about whether a result is trustworthy.
+export const MIN_CONFIDENCE_FOR_SAFE = 50
+
 // Score thresholds for risk level classification.
 export const LEVEL_THRESHOLDS: { max: number; level: RiskLevel }[] = [
   { max: 10, level: 'SAFE' },
