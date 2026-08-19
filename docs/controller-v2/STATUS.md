@@ -92,6 +92,29 @@ Items whose gate was *"after the Foundation"* rather than *"inside a component"*
 | **Hub migration** | [`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §1 | ✅ registration complete — five hubs run through the kernel (`dashboard`, `analytics`, `commerce`, `configuration`, `security`), Commerce included. Route control is explicitly out of C6's scope (§7) |
 | **BL-\*** | [`BACKLOG.md`](BACKLOG.md) | ⏸️ non-blocking under Decision A ([§ Consequences 4](OWNER_DECISIONS_2026-08-13.md#consequences)). **BL-C7-01 is closed on production by measurement:** all three Component 1 `SECURITY DEFINER` functions report `EXECUTE` false for `anon` and `authenticated` |
 
+### Phase 4 — capability binding + Configuration Provider (2026-08-19)
+
+The first phase after Decision F. **PARTIAL** — what shipped, and what it is still blocked on.
+
+| Contract clause | Delivered |
+|---|---|
+| §1 *"disabled ⇒ route + nav + **capability** unreachable"* | ✅ `bindCapability` refuses a capability whose provider is disabled or has been isolated by a failure. It previously served the binding regardless |
+| §1 *"`resolveDependencies()` — **topological**"* | ✅ `registerAll()` orders a batch by dependency, detects cycles by name, and rolls the batch back on any refusal. `register()` alone was insertion-ordered, which made declaration order a hidden contract |
+| §4 capability record | ✅ `{id, version, owner, provider, permissions, dependencies, consumers}`, every field derived from the providing manifest. One provider per capability is now enforced; a second is refused rather than silently taking over |
+| §8 *"fail-closed, **audited**"* | ✅ a refused registration writes `controller.module.registration_failed` and emits. It previously returned errors in silence |
+| §2 *"a Hub … owns a permission scope"* | ✅ `permissionScope` gates every module in the hub. **MEASURED: a no-op for the current registry** — only `tappy.hub.security` declares one (`audit.log.read`), and every actor who can reach its modules already satisfies it. It is enforcement of a field that was previously decoration, not a behaviour change |
+| §7 module configuration + §11 `BACKOFFICE_ENABLED` REFACTOR | ✅ manifest-declared config and security keys; the flag now resolves through the provider, which had **zero** production consumers before |
+| **First real provides/requires** | ✅ `dashboard.home` requires `audit.read` from `security.audit`, and `/admin` resolves it through the kernel — disabling the Audit module closes Home's audit panel. Capability resolution had never been exercised by a shipped module |
+
+**Still blocked — not deferred by choice:**
+
+| Item | Blocker |
+|---|---|
+| **Capability gate activation** (`CAPABILITY_GATE_ENABLED`) | 🛑 **No contract defines an actor↔capability binding.** §4 defines capabilities as *module*-provided with *module* consumers; the PDP gate tests `actor.capabilities`. Nothing authoritative says how an actor acquires one. Enabling the gate today denies all 18 capability-declaring permissions to every non-Owner. Needs an Owner decision, not an implementation |
+| **Runtime (DB/API) configuration tier** | 🛑 Requires the `platform_settings` table of [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) §4.1, which has no migration. That is a production mutation and was not authorised in this phase. `deferredRuntimeSource()` continues to return `undefined` rather than fabricate a value |
+
+**Verification:** 8/8 mutations killed against the security guards — including one that survived first and exposed a rollback path no test held open.
+
 ### Two observations recorded, not acted on
 
 Found during the ADR-017 preflight and outside its contract. Neither is a defect of the migration, and neither was silently folded into it.

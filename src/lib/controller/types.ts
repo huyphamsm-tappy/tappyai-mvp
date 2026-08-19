@@ -76,6 +76,28 @@ export interface HubDescriptor {
 
 export type RegistrationResult = { ok: true } | { ok: false; errors: readonly string[] }
 
+/**
+ * A capability as the contract defines it (FOUNDATION-01 §4):
+ * `{id, version, owner, permissions[], dependencies[], provider(moduleId), consumers[]}`.
+ *
+ * Every field is DERIVED from the providing module's manifest — there is no
+ * second place to declare a capability. `consumers` is derived from the other
+ * manifests that named this capability in `dependencies`, so it cannot drift
+ * from what the registry actually resolved.
+ */
+export interface CapabilityRecord {
+  id: string
+  /** The provider's module version — capabilities version with their provider. */
+  version: string
+  owner: string
+  /** Module id of the single provider. A capability has exactly one. */
+  provider: string
+  permissions: readonly PermissionId[]
+  dependencies: readonly ModuleDependency[]
+  /** Module ids that declared this capability as a dependency. Sorted. */
+  consumers: readonly string[]
+}
+
 /** A controller event (FOUNDATION-01 §6 — fields FROZEN; delivery defined by C8). */
 export interface ControllerEvent {
   id: string

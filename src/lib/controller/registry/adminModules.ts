@@ -41,7 +41,8 @@ export const configurationHub: HubDescriptor = {
 
 function mod(
   id: string, name: string, hub: string, route: string, permission: string,
-  label: string, icon: string, order: number
+  label: string, icon: string, order: number,
+  over: Partial<ModuleManifest> = {}
 ): ModuleManifest {
   return {
     id, name, version: '1.0.0', owner: 'platform', hub,
@@ -49,11 +50,24 @@ function mod(
     routes: [route],
     navigation: { label, icon, order, visibilityPermission: permission },
     lifecycle: 'stable', status: 'enabled', compatibility: { controller: '^1' },
+    ...over,
   }
 }
 
 // ── Real modules (describe the shipped /admin pages) ─────────────────────────
-export const homeModule = mod('tappy.hub.dashboard.home', 'Home', dashboardHub.id, '/admin', PERMISSIONS.DASHBOARD_HOME_VIEW, 'admin.nav.dashboard', 'LayoutDashboard', 0)
+//
+// Home DECLARES its dependency on `audit.read` because it genuinely has one:
+// the Controller Home renders a recent-audit panel. The declaration is
+// load-bearing, not decorative — `src/app/admin/page.tsx` resolves it through
+// `bindCapability` and renders the panel as unavailable when the capability
+// does not resolve. That is the first real provides/requires relationship in
+// the registry; before it, capability resolution existed but no shipped module
+// had ever exercised it.
+export const homeModule = mod(
+  'tappy.hub.dashboard.home', 'Home', dashboardHub.id, '/admin', PERMISSIONS.DASHBOARD_HOME_VIEW,
+  'admin.nav.dashboard', 'LayoutDashboard', 0,
+  { dependencies: [{ capabilityId: 'audit.read', versionRange: '^1' }] }
+)
 export const analyticsContentModule = mod('tappy.hub.analytics.content', 'Content Analytics', analyticsHub.id, '/admin/analytics', PERMISSIONS.ANALYTICS_CONTENT_READ, 'admin.nav.analytics', 'BarChart3', 10)
 export const analyticsAuthModule = mod('tappy.hub.analytics.auth', 'Auth Analytics', analyticsHub.id, '/admin/analytics/auth', PERMISSIONS.ANALYTICS_AUTH_READ, 'admin.nav.authAnalytics', 'UserCheck', 20)
 export const analyticsActivationModule = mod('tappy.hub.analytics.activation', 'Activation Analytics', analyticsHub.id, '/admin/analytics/activation', PERMISSIONS.ANALYTICS_ACTIVATION_READ, 'admin.nav.activationAnalytics', 'Zap', 30)
@@ -73,6 +87,12 @@ export const ADMIN_MODULES: readonly ModuleManifest[] = [
 /**
  * Build a ControllerCore with every real admin hub + module registered.
  * Throws if any registration fails — a registry that half-loads is a defect.
+ *
+ * Uses `registerAll`, which orders the batch topologically. `ADMIN_MODULES` is
+ * listed in navigation order, and Home (order 0) depends on a capability the
+ * Audit module provides — so a loop calling `register()` in array order would
+ * fail on a batch that is perfectly satisfiable. Declaration order is a display
+ * concern and must not become a hidden dependency contract.
  */
 export function buildAdminController(opts: { audit?: AuditSink; events?: EventSink } = {}): ControllerCore {
   const core = new ControllerCore({ controllerVersion: '1.0.0', audit: opts.audit, events: opts.events })
@@ -80,9 +100,7 @@ export function buildAdminController(opts: { audit?: AuditSink; events?: EventSi
     const r = core.registerHub(hub)
     if (!r.ok) throw new Error(`admin hub "${hub.id}" failed to register: ${r.errors.join('; ')}`)
   }
-  for (const m of ADMIN_MODULES) {
-    const r = core.register(m)
-    if (!r.ok) throw new Error(`admin module "${m.id}" failed to register: ${r.errors.join('; ')}`)
-  }
+  const r = core.registerAll(ADMIN_MODULES)
+  if (!r.ok) throw new Error(`admin module registration failed: ${r.errors.join('; ')}`)
   return core
 }

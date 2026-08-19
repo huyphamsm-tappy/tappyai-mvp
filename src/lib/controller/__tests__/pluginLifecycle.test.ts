@@ -155,7 +155,8 @@ describe('C6 — `ready` is derived: enabled && available', () => {
 describe('C6 — deregister', () => {
   it('removes the module and releases its route and capability', () => {
     core.register(manifest('provider', { capabilities: ['cap.one'], routes: ['/admin/_test/shared'] }))
-    expect(core.bindCapability('cap.one')).toEqual({ moduleId: 'provider', version: '1.0.0' })
+    // Shape updated in Phase 4 to the FOUNDATION-01 §4 capability record.
+    expect(core.bindCapability('cap.one')).toMatchObject({ id: 'cap.one', provider: 'provider', version: '1.0.0' })
 
     expect(core.deregister('provider')).toEqual({ ok: true })
 
@@ -209,7 +210,12 @@ describe('C6 — deregister', () => {
     expect(core.deregister('base').ok).toBe(false)
 
     expect(core.discover().map((m) => `${m.manifest.id}:${m.status}:${m.available}`).sort()).toEqual(before)
-    expect(core.bindCapability('cap.k')).toEqual({ moduleId: 'base', version: '1.0.0' })
+    // Shape updated in Phase 4 to the FOUNDATION-01 §4 capability record. The
+    // assertion is unchanged in force: the binding still points at `base`, at
+    // the same version, and `consumer` is still recorded against it.
+    expect(core.bindCapability('cap.k')).toMatchObject({
+      id: 'cap.k', provider: 'base', version: '1.0.0', consumers: ['consumer'],
+    })
     expect(audits.some((a) => a.action === 'controller.module.deregistered')).toBe(false)
   })
 
