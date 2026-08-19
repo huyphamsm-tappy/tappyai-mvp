@@ -22,6 +22,7 @@ import { normalizeToolCandidates } from '@/lib/ai/candidateEvidence'
 import { buildEvidenceStatusBlock, buildStateContextBlock, usableCandidates, visibleCandidates, type EvidenceStatus } from '@/lib/ai/stateContext'
 import { applyDelta, extractDelta, unseenCandidateCount, type ConsultationDelta } from '@/lib/ai/consultationDelta'
 import { buildRankingBlock, rankCandidates } from '@/lib/ai/candidateRanking'
+import { RECOMMENDATION_SCHEMA, buildDecisionToolBlock, renderRecommendation, validateDecision, type RecommendationDecision } from '@/lib/ai/recommendationDecision'
 import { buildNoCandidateResponse, buildRejectionQuestionBlock, buildRejectionResponse, buildSearchFailedResponse, shouldUseDeterministicRejection, shouldUseDeterministicResponse, toDataStreamBody } from '@/lib/ai/noCandidateResponse'
 import { buildProductQuery, classifyProductResult, filterIrrelevantProducts, productRecordsFrom, shouldPreSearchProducts } from '@/lib/ai/productPreSearch'
 import {
@@ -562,6 +563,94 @@ Hay tra loi TRUC TIEP tu du lieu da co.
     hasBudget: budget !== null,
     lang,
   })
+
+  // ── D3: the grounded decision path ────────────────────────────────────────
+  // On a decision turn the model no longer writes the reply. It returns IDs and
+  // CLOSED reason codes through `submit_recommendation`; recommendationDecision
+  // validates both against each candidate's OWN evidence and renders every
+  // visible sentence. A code the evidence cannot support is dropped, so an
+  // unsupported claim has no path to the user.
+  //
+  // ONE request: maxSteps 1 with a forced named tool. Higher maxSteps re-applies
+  // toolChoice on the follow-up step (prepareToolsAndToolChoice runs inside
+  // streamStep on this SDK), which loops and returns empty text — measured.
+  const d3DecisionTurn = !!convState && decisionStage === 'decision' && usableCount > 0
+  if (d3DecisionTurn && convState) {
+    const ranked = rankCandidates(convState.candidates, convState).ranked.map(r => r.candidate)
+    const headers: Record<string, string> = {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'X-Conversation-Id': conversationId,
+      'Access-Control-Expose-Headers': 'X-Conversation-Id',
+    }
+    if (anonSetCookie) headers['Set-Cookie'] = anonSetCookie
+
+    try {
+      const decisionRun = AI.stream({
+        role,
+        routing: routingHints,
+        abortSignal: req.signal,
+        systemShared,
+        system: systemPrompt + buildDecisionToolBlock(ranked, convState, lang),
+        messages: trimmedMessages,
+        maxTokens: 600,
+        maxSteps: 1,
+        toolChoice: { type: 'tool', toolName: 'submit_recommendation' },
+        tools: {
+          submit_recommendation: tool({
+            description: 'Chot MOT lua chon cho user. Chi gui ID va ma ly do — KHONG viet cau mo ta ve lua chon.',
+            parameters: RECOMMENDATION_SCHEMA,
+          }),
+        },
+      })
+      // streamText's `toolCalls` promise only settles once the stream is
+      // drained. Nothing else reads this stream — the reply is composed here,
+      // not forwarded — so drain it explicitly or the await never returns.
+      await decisionRun.consumeStream()
+      const calls = await decisionRun.toolCalls
+      // This branch returns before the general path's onFinish, so its tokens
+      // would otherwise be invisible in tappyai_usage. Account for them here.
+      const decisionUsage = await decisionRun.usage.catch(() => null)
+      const args = calls.find(c => c.toolName === 'submit_recommendation')?.args as
+        | RecommendationDecision | undefined
+
+      // No tool call, or malformed arguments: fall through to the existing safe
+      // deterministic reply rather than to a free-form model answer, which is
+      // exactly the leakage this path exists to remove.
+      if (args) {
+        const validated = validateDecision(args, convState, ranked)
+        const text = renderRecommendation(validated, lang)
+        convState.presentedCandidates = [...new Set([
+          ...(convState.presentedCandidates ?? []),
+          ...[validated.recommended?.candidateId, validated.alternative?.candidateId].filter(Boolean) as string[],
+        ])]
+        convState.lastPresentedCandidates = [validated.recommended?.candidateId, validated.alternative?.candidateId]
+          .filter(Boolean) as string[]
+        await saveState(convState)
+        console.log(JSON.stringify({
+          type: 'tappyai_d3_decision', reasons: validated.reasons.length,
+          tradeoffs: validated.tradeoffs.length,
+          dropped: validated.dropped.length, recommended: !!validated.recommended,
+          llmCalls: 1, searchCalls: 0, photoResolveCalls: 0,
+          promptTokens: decisionUsage?.promptTokens ?? null,
+          completionTokens: decisionUsage?.completionTokens ?? null,
+          droppedCodes: validated.dropped.map(d => d.code),
+        }))
+        return new Response(toDataStreamBody(text, 'd3-decision'), { headers })
+      }
+      console.log(JSON.stringify({ type: 'tappyai_d3_fallback', why: 'no tool call' }))
+    } catch (e) {
+      console.log(JSON.stringify({ type: 'tappyai_d3_fallback', why: String(e).slice(0, 120) }))
+    }
+    // Fallback: facts we can stand behind, composed by the server. Never a
+    // free-form model recommendation.
+    const fallback = renderRecommendation(
+      validateDecision({ recommendedId: ranked[0]?.candidateId ?? '', reasonCodes: [] }, convState, ranked),
+      lang,
+    )
+    await saveState(convState)
+    return new Response(toDataStreamBody(fallback, 'd3-fallback'), { headers })
+  }
 
   let result
   try {

@@ -166,7 +166,9 @@ describe('products keep their richer grounding', () => {
     expect(v.reasons).toHaveLength(2)
     expect(out).toContain('22.390.000 ₫')
     expect(out).toContain('29.550.000 ₫')
-    expect(out).toMatch(/yêu cầu ram_gb[^)]*\(32\)/)
+    // The value is quoted intact; the storage key name is not shown to a reader.
+    expect(out).toMatch(/RAM bạn đặt ra \(32GB\)/)
+    expect(out).not.toContain('ram_gb')
   })
 
   it('price level is ordinal and never becomes an amount', () => {

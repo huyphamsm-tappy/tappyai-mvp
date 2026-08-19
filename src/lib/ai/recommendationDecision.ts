@@ -1,6 +1,7 @@
+import { z } from 'zod'
 import type { Candidate, ConversationState } from './conversationState'
 import { candidateMatchesRef, isRejected } from './conversationState'
-import { comparableOn, groundCandidate } from './groundedFacts'
+import { buildGroundedCandidateFactSentence, comparableOn, groundCandidate } from './groundedFacts'
 
 /**
  * D3: the decision turn's facts are composed here, not written by the model.
@@ -50,11 +51,57 @@ const PREFERENCE_EVIDENCE: Record<string, string> = {
   vegetarian: 'vegetarian',
 }
 
+/**
+ * Preference names PREFERENCE_UNVERIFIED may carry.
+ *
+ * That code renders its key into a sentence, and an unmapped key renders
+ * verbatim — which would be a free-text channel straight through the tool,
+ * the one thing this design exists to close. A key is allowed only if we have
+ * a phrasing for it, or if the user themselves stated it as a preference.
+ */
+const NAMED_PREFERENCES = new Set([
+  'quiet', 'wifi', 'cheaper', 'closer', 'battery', 'outdoor', 'vegetarian',
+])
+
+export interface ReasonEntry { code: string; candidateId?: string; otherId?: string; key?: string }
+
 export interface RecommendationDecision {
   recommendedId: string
   alternativeId?: string
-  reasonCodes: Array<{ code: string; candidateId?: string; otherId?: string; key?: string }>
+  reasonCodes: ReasonEntry[]
+  /** Why the pick is not free — validated exactly like reasonCodes. */
+  tradeoffCodes?: ReasonEntry[]
 }
+
+/**
+ * The tool's parameter schema.
+ *
+ * Anthropic enforces this one for real: `parameters` becomes `input_schema` on
+ * the request AND the arguments are re-validated locally by the SDK's
+ * `parseToolCall`, so a code outside the enum cannot arrive as a tool call.
+ * `validateDecision` is still the authority — the schema only keeps the shape
+ * honest, it knows nothing about which candidate has which evidence.
+ *
+ * `describe` text is deliberately about IDs and codes only. There is no free
+ * string field anywhere in here: a field the model can write prose into is a
+ * field whose prose reaches the user.
+ */
+export const RECOMMENDATION_SCHEMA = z.object({
+  recommendedId: z.string().describe('ID cua lua chon ban chot (lay dung tu danh sach)'),
+  alternativeId: z.string().optional().describe('ID cua lua chon thay the, neu co'),
+  reasonCodes: z.array(z.object({
+    code: z.enum(REASON_CODES).describe('Ma ly do'),
+    candidateId: z.string().optional().describe('Lua chon ma ly do nay noi ve'),
+    otherId: z.string().optional().describe('Lua chon bi so sanh (bat buoc voi cac ma BETTER_*/CLOSER)'),
+    key: z.string().optional().describe('Ten truong du lieu hoac ten uu tien'),
+  })).describe('Cac ly do chon. De trong neu bang chung khong du.'),
+  tradeoffCodes: z.array(z.object({
+    code: z.enum(REASON_CODES),
+    candidateId: z.string().optional(),
+    otherId: z.string().optional(),
+    key: z.string().optional(),
+  })).optional().describe('Diem danh doi cua lua chon da chot'),
+})
 
 export interface ValidatedReason {
   code: ReasonCode
@@ -67,6 +114,7 @@ export interface ValidatedDecision {
   recommended: Candidate | null
   alternative?: Candidate
   reasons: ValidatedReason[]
+  tradeoffs: ValidatedReason[]
   /** Codes thrown away, with why — surfaced so leakage attempts stay measurable. */
   dropped: Array<{ code: string; why: string }>
 }
@@ -104,16 +152,26 @@ export function validateDecision(
     alternative = undefined              // duplicate ids collapse
   }
 
-  const reasons: ValidatedReason[] = []
   const seen = new Set<string>()
 
-  for (const r of decision.reasonCodes ?? []) {
+  // One loop, used for reasons AND trade-offs. A trade-off is a claim about a
+  // candidate exactly like a reason is, so it has to clear the same evidence
+  // bar; a second, laxer path would be the leak.
+  const validateCodes = (entries: ReasonEntry[]): ValidatedReason[] => {
+  const reasons: ValidatedReason[] = []
+  for (const r of entries) {
     const code = r.code as ReasonCode
     if (!REASON_CODES.includes(code)) { dropped.push({ code: r.code, why: 'not in the closed vocabulary' }); continue }
 
     if (code === 'PREFERENCE_UNVERIFIED') {
       const key = r.key
       if (!key) { dropped.push({ code, why: 'no preference named' }); continue }
+      const stated = state.softPreferences.some(p => p.key === key)
+        || state.hardConstraints.some(h => h.key === key)
+      if (!NAMED_PREFERENCES.has(key) && !stated) {
+        dropped.push({ code, why: `unknown preference "${key}"` })
+        continue
+      }
       const dedupe = `${code}:${key}`
       if (seen.has(dedupe)) continue
       seen.add(dedupe)
@@ -135,9 +193,14 @@ export function validateDecision(
       }
     }
 
-    if (code === 'SATISFIES_HARD_CONSTRAINT') {
+    // Both of these render a named field's value. Measured on a live product
+    // turn: BETTER_SPEC arrived with key "ram_storage", a field no candidate
+    // carries, and rendered as "TGMT có ram_storage ." — a claim with an empty
+    // value where the evidence should be. Any code that quotes a field has to
+    // prove that field exists on that candidate first.
+    if (code === 'SATISFIES_HARD_CONSTRAINT' || code === 'BETTER_SPEC') {
       if (!r.key || factOf(candidate, r.key) === undefined) {
-        dropped.push({ code, why: `no evidence for constraint "${r.key}"` })
+        dropped.push({ code, why: `no evidence for field "${r.key}"` })
         continue
       }
     }
@@ -163,8 +226,13 @@ export function validateDecision(
     seen.add(dedupe)
     reasons.push({ code, candidate, other, key: r.key })
   }
+  return reasons
+  }
 
-  return { recommended, alternative, reasons, dropped }
+  const reasons = validateCodes(decision.reasonCodes ?? [])
+  const tradeoffs = validateCodes(decision.tradeoffCodes ?? [])
+
+  return { recommended, alternative, reasons, tradeoffs, dropped }
 }
 
 // ── Rendering ───────────────────────────────────────────────────────────────
@@ -180,17 +248,72 @@ const EN_PREF: Record<string, string> = {
   battery: 'battery life', outdoor: 'outdoor seating', vegetarian: 'vegetarian food',
 }
 
-function renderReason(r: ValidatedReason, vi: boolean): string | null {
-  const n = r.candidate.name
-  const o = r.other?.name
-  const f = (c: Candidate, k: string) => String(factOf(c, k) ?? '')
+/**
+ * Product listings carry seller-written titles — "Macbook Air - M2 / 16Gb /
+ * 512Gb - 13'6 inch 2022 - Likenew - Midnight". Repeating that once per sentence
+ * is unreadable, so the lead states it in full and the reasons use the head of
+ * it. Cut on the listing separators only; never invent a shorter name.
+ */
+function shortName(c: Candidate): string {
+  const parts = c.name.split(/\s*[-–—|]\s*|\s*\(/).map(p => p.trim()).filter(Boolean)
+  let head = ''
+  // Listings often open with a seller code — "TGMT - Laptop MacBook Neo …".
+  // Keep taking segments until the name actually identifies the thing.
+  for (const p of parts) {
+    head = head ? `${head} ${p}` : p
+    if (head.length >= 12) break
+  }
+  return head.length >= 4 && head.length < c.name.length ? head : c.name
+}
+
+/** Field keys are storage names. These are what a reader should see instead. */
+const FIELD_LABEL: Record<string, { vi: string; en: string }> = {
+  ram_gb: { vi: 'RAM', en: 'RAM' },
+  storage_gb: { vi: 'ổ cứng', en: 'storage' },
+  price_vnd: { vi: 'ngân sách', en: 'budget' },
+  price: { vi: 'giá', en: 'price' },
+  condition: { vi: 'tình trạng', en: 'condition' },
+  screen_inch: { vi: 'màn hình', en: 'screen' },
+  rating: { vi: 'đánh giá', en: 'rating' },
+  opening_hours: { vi: 'giờ mở cửa', en: 'opening hours' },
+  wifi: { vi: 'WiFi', en: 'Wi-Fi' },
+}
+
+/**
+ * Present a stored value the way a person writes it — grouped thousands for
+ * money, a unit on the sizes. The value itself is never changed, only spaced:
+ * 24800000 must still read as 24.800.000, never as "khoảng 25 triệu".
+ */
+function formatFact(key: string, raw: string, vi: boolean): string {
+  const n = Number(String(raw).replace(/[^\d.]/g, ''))
+  if (!Number.isFinite(n) || String(raw).trim() === '') return raw
+  if (/(_vnd|price)$/.test(key) && !/[₫đ]/.test(raw)) {
+    return `${n.toLocaleString(vi ? 'vi-VN' : 'en-US')}${vi ? ' ₫' : ' VND'}`
+  }
+  if (key === 'ram_gb' || key === 'storage_gb') return `${n}GB`
+  if (key === 'screen_inch') return `${n}"`
+  return raw
+}
+
+function renderReason(r: ValidatedReason, vi: boolean, repeatSubject = false): string | null {
+  // An unmapped key is still a storage name, so at least stop it reading like
+  // one. It can only get here having proved it carries a value.
+  const label = (k?: string) =>
+    (vi ? FIELD_LABEL[k ?? '']?.vi : FIELD_LABEL[k ?? '']?.en) ?? (k ?? '').replace(/_/g, ' ')
+  // Same candidate two sentences running: name it once, then refer back.
+  const backRef = vi
+    ? (r.candidate.type === 'place' ? 'Quán này' : 'Sản phẩm này')
+    : 'It'
+  const n = repeatSubject ? backRef : shortName(r.candidate)
+  const o = r.other ? shortName(r.other) : undefined
+  const f = (c: Candidate, k: string) => formatFact(k, String(factOf(c, k) ?? ''), vi)
   const pref = (k?: string) => (vi ? VI_PREF[k ?? ''] ?? k : EN_PREF[k ?? ''] ?? k)
 
   switch (r.code) {
     case 'SATISFIES_HARD_CONSTRAINT':
       return vi
-        ? `${n} đáp ứng yêu cầu ${r.key} của bạn (${f(r.candidate, r.key!)}).`
-        : `${n} meets your ${r.key} requirement (${f(r.candidate, r.key!)}).`
+        ? `${n} nằm trong ${label(r.key)} bạn đặt ra (${f(r.candidate, r.key!)}).`
+        : `${n} fits the ${label(r.key)} you set (${f(r.candidate, r.key!)}).`
     case 'MATCHES_PREFERENCE': {
       const field = PREFERENCE_EVIDENCE[r.key ?? '']
       return vi
@@ -216,8 +339,8 @@ function renderReason(r: ValidatedReason, vi: boolean): string | null {
         : `${n} is listed at ${f(r.candidate, 'price')}, versus ${o} at ${f(r.other!, 'price')}.`
     case 'BETTER_SPEC':
       return vi
-        ? `${n} có ${r.key} = ${f(r.candidate, r.key!)}.`
-        : `${n} has ${r.key} = ${f(r.candidate, r.key!)}.`
+        ? `${n} có ${label(r.key)} ${f(r.candidate, r.key!)}.`
+        : `${n} has ${f(r.candidate, r.key!)} of ${label(r.key)}.`
     case 'BETTER_CONDITION':
       return vi
         ? `${n} ở tình trạng ${f(r.candidate, 'condition')}, so với ${f(r.other!, 'condition')} của ${o}.`
@@ -253,17 +376,37 @@ export function renderRecommendation(v: ValidatedDecision, lang = 'vi'): string 
     ? `Nếu là mình thì mình chọn **${v.recommended.name}**.`
     : `If it were me, I'd choose **${v.recommended.name}**.`
 
-  const body = v.reasons.map(r => renderReason(r, vi)).filter(Boolean) as string[]
+  // Track the running subject so a chain of facts about one option does not
+  // restate its (often very long) listing title in every sentence.
+  const asSentences = (rs: ValidatedReason[], startsAfter?: string): string[] => {
+    let prev = startsAfter
+    const out: string[] = []
+    for (const r of rs) {
+      const s = renderReason(r, vi, prev === r.candidate.candidateId && !r.other)
+      prev = r.candidate.candidateId
+      if (s) out.push(s)
+    }
+    return out
+  }
+
+  const body = asSentences(v.reasons, v.recommended.candidateId)
 
   // Facts-only fallback: no reason survived validation, so state what is known
   // about the pick rather than inventing a justification for it.
   if (body.length === 0) {
     const g = groundCandidate(v.recommended, lang)
     const facts = g.verifiedFacts.map(f => `${f.label}: ${f.value}`).join('; ')
+    // "quán" is a venue. Saying it about a laptop was measured on a live turn.
+    const noun = v.recommended.type === 'place' ? 'quán này' : 'sản phẩm này'
     body.push(facts
-      ? (vi ? `Dữ liệu mình có về quán này: ${facts}.` : `What I can verify: ${facts}.`)
+      ? (vi ? `Dữ liệu mình có về ${noun}: ${facts}.` : `What I can verify: ${facts}.`)
       : (vi ? 'Mình chưa xác minh được thêm thông tin nào về lựa chọn này.' : 'I could not verify further details about this option.'))
   }
+
+  const traded = asSentences(v.tradeoffs)
+  const tradeoff = traded.length > 0
+    ? (vi ? `\n\nĐánh đổi: ${traded.join(' ')}` : `\n\nTrade-off: ${traded.join(' ')}`)
+    : ''
 
   const alt = v.alternative
     ? (vi
@@ -271,5 +414,41 @@ export function renderRecommendation(v: ValidatedDecision, lang = 'vi'): string 
       : `\n\nIf you want another option, **${v.alternative.name}** is the alternative.`)
     : ''
 
-  return `${lead}\n\n${body.join(' ')}${alt}`
+  return `${lead}\n\n${body.join(' ')}${tradeoff}${alt}`
+}
+
+/**
+ * What the model sees on a decision turn.
+ *
+ * It gets the candidate IDs, each candidate's verified facts, and the code
+ * vocabulary — and it is told plainly that its prose is discarded. That last
+ * part is not a politeness: the tool has no free-text field, so there is
+ * nowhere for prose to go even if it writes some.
+ */
+export function buildDecisionToolBlock(
+  ranked: Candidate[],
+  state: ConversationState,
+  lang = 'vi',
+): string {
+  const list = ranked
+    .filter(c => !isRejected(c, state))
+    .slice(0, 6)
+    .map(c => `  - id=${c.candidateId} | ${buildGroundedCandidateFactSentence(c, lang)}`)
+    .join('\n')
+
+  return `\n\n===== LUOT CHOT: TRA LOI BANG TOOL submit_recommendation =====
+Luot nay ban KHONG viet cau tra loi. He thong se soan cau tra loi tu ID va ma ly do ban gui.
+Goi dung MOT lan tool submit_recommendation.
+
+CAC LUA CHON (dung dung id o duoi):
+${list || '  (khong con lua chon nao)'}
+
+MA LY DO duoc phep: ${REASON_CODES.join(', ')}
+- BETTER_* va CLOSER: PHAI co ca candidateId lan otherId, va ca hai ben phai co du lieu cho chieu do.
+- SATISFIES_HARD_CONSTRAINT: key = ten truong du lieu co that o tren.
+- MATCHES_PREFERENCE: chi dung khi co du lieu chung minh (vd wifi).
+- PREFERENCE_UNVERIFIED: dung khi user muon dieu gi do ma khong co du lieu (vd yen tinh).
+Ma nao khong duoc bang chung chung minh se bi BO, khong duoc hien thi.
+Neu khong co ma nao dung, gui reasonCodes rong — he thong se chi neu su that da xac minh.
+==============================================================`
 }

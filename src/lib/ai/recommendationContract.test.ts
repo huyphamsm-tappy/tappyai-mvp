@@ -271,8 +271,41 @@ describe('no new model calls were introduced for consultative behaviour', () => 
   // call would be a cost regression the Cost Optimization phase explicitly ruled out.
   const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
 
-  it('the chat route still makes exactly one AI.stream call', () => {
-    expect((route.match(/AI\.stream\(/g) || []).length).toBe(1)
+  // The lock is ONE model request per turn, not one lexical call site. D3 adds a
+  // second site — the decision turn's forced-tool request — on a branch that
+  // always returns before the general one. Counting call sites can no longer
+  // express the contract, so the exclusivity is asserted directly instead: the
+  // decision branch must be closed (every exit returns a Response) and it must
+  // sit above the general call, which is what makes the two unreachable together.
+  it('declares at most the decision call and the general call', () => {
+    expect((route.match(/AI\.stream\(/g) || []).length).toBeLessThanOrEqual(2)
+  })
+
+  it('the decision turn returns before the general stream can run', () => {
+    const first = route.indexOf('AI.stream(')
+    const general = route.lastIndexOf('AI.stream(')
+    expect(first).toBeLessThan(general)
+
+    // Everything between the two call sites is the decision branch. It closes
+    // with a return, so no path reaches both requests.
+    const branch = route.slice(first, general)
+    expect(branch).toContain('return new Response(toDataStreamBody(')
+    const lastReturn = branch.lastIndexOf('return new Response(')
+    const branchEnd = branch.lastIndexOf('let result')
+    expect(lastReturn).toBeGreaterThan(-1)
+    expect(lastReturn).toBeLessThan(branchEnd)
+    // ...and nothing after that return except the closing brace of the branch.
+    expect(branch.slice(lastReturn, branchEnd)).not.toMatch(/\bAI\.\w+\(/)
+  })
+
+  it('the decision call is capped at a single step', () => {
+    const first = route.indexOf('AI.stream(')
+    const branch = route.slice(first, route.lastIndexOf('AI.stream('))
+    // A forced tool with maxSteps > 1 re-applies toolChoice on the follow-up
+    // step and loops with empty text — measured on this SDK. Every maxSteps in
+    // the branch, not just the presence of one, has to be 1.
+    const steps = [...branch.matchAll(/maxSteps:\s*([^,\n]+)/g)].map(m => m[1].trim())
+    expect(steps).toEqual(['1'])
   })
 
   it('the chat route adds no AI.generate call of its own', () => {
