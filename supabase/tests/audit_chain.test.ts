@@ -972,29 +972,115 @@ describe('PART 7 — PostgreSQL behaviour', () => {
   })
 
   it('PG-06/PG-07 VOLATILE takes a fresh snapshot; STABLE does not', async () => {
+    // Both probes must still be INSIDE the function when a second session
+    // commits a row. The first version of this test arranged that with two
+    // sleeps — pg_sleep(0.4) in the function against setTimeout(150) in the
+    // test — and went intermittently red on loaded CI runners, where the round
+    // trip for the concurrent INSERT could land after the probe had already
+    // woken up and counted. `expected +0 to be 1` there was a slow runner, not
+    // a PostgreSQL fact.
+    //
+    // A timing window is not a proof, so the rendezvous is now explicit: the
+    // probe blocks on an advisory lock the test holds, and the test does not
+    // release it until it has OBSERVED the concurrent row committed and
+    // visible to a third session. Every wait below is for a fact, never for a
+    // duration, so the property under test is the only thing that can fail.
+    const GATE_CLASS = 4771
+    const GATE_OBJ = 671
+
     await db.query(`
       CREATE FUNCTION probe_volatile() RETURNS bigint LANGUAGE plpgsql VOLATILE AS $$
-        BEGIN PERFORM pg_sleep(0.4); RETURN (SELECT count(*) FROM audit_log); END $$;
+        BEGIN
+          PERFORM pg_advisory_lock(${GATE_CLASS}, ${GATE_OBJ});
+          PERFORM pg_advisory_unlock(${GATE_CLASS}, ${GATE_OBJ});
+          RETURN (SELECT count(*) FROM audit_log);
+        END $$;
       CREATE FUNCTION probe_stable() RETURNS bigint LANGUAGE plpgsql STABLE AS $$
-        BEGIN PERFORM pg_sleep(0.4); RETURN (SELECT count(*) FROM audit_log); END $$;`)
+        BEGIN
+          PERFORM pg_advisory_lock(${GATE_CLASS}, ${GATE_OBJ});
+          PERFORM pg_advisory_unlock(${GATE_CLASS}, ${GATE_OBJ});
+          RETURN (SELECT count(*) FROM audit_log);
+        END $$;`)
 
-    const other = await connect()
-    const run = async (fn: string) => {
-      const p = db.query(`SELECT ${fn}() AS n`)
-      await new Promise((r) => setTimeout(r, 150))
-      await insert(other, { action: fn })
-      return Number((await p).rows[0].n)
+    const gate = await connect() // holds the rendezvous lock, and observes
+    const other = await connect() // commits the row mid-flight
+
+    /** Poll for a fact instead of sleeping. Bounded, so a real hang still fails. */
+    const until = async (what: string, fact: () => Promise<boolean>) => {
+      const deadline = Date.now() + 15_000
+      while (!(await fact())) {
+        if (Date.now() > deadline) throw new Error(`timed out waiting for ${what}`)
+        await new Promise((r) => setTimeout(r, 10))
+      }
+    }
+    /** How many backends are QUEUED on the gate — the holder is `granted`. */
+    const waitingOnGate = async () => {
+      const r = await gate.query(
+        `SELECT count(*)::int AS n FROM pg_locks
+          WHERE locktype = 'advisory' AND classid = $1 AND objid = $2 AND NOT granted`,
+        [GATE_CLASS, GATE_OBJ]
+      )
+      return r.rows[0].n as number
+    }
+    const committedRows = async () => {
+      const r = await gate.query('SELECT count(*)::int AS n FROM audit_log')
+      return r.rows[0].n as number
     }
 
-    const volatileSaw = await run('probe_volatile')
-    const before = (await rows()).length
-    const stableSaw = await run('probe_stable')
+    const run = async (fn: string) => {
+      // 1. Take the gate BEFORE the probe exists, so it cannot slip past.
+      await gate.query('SELECT pg_advisory_lock($1, $2)', [GATE_CLASS, GATE_OBJ])
+      const before = await committedRows()
 
-    // VOLATILE re-snapshots per query and sees the row committed mid-flight.
-    expect(volatileSaw).toBe(1)
+      // 2. Start the probe. PostgreSQL takes the calling query's snapshot here;
+      //    the body then parks on the gate. The outcome is recorded instead of
+      //    thrown, so a probe that fails early surfaces as a message at step 3
+      //    rather than as a wait for a lock nobody is queued on.
+      type Outcome = { n: number } | { err: unknown }
+      let settled: Outcome | null = null
+      const record = (o: Outcome) => { settled = o; return o }
+      const p = db.query(`SELECT ${fn}() AS n`).then(
+        (r) => record({ n: Number(r.rows[0].n) }),
+        (err) => record({ err })
+      )
+      const hasSettled = () => settled !== null
+
+      // 3. Wait for proof that the probe really is parked inside the function.
+      await until(`${fn} to block on the gate`, async () => {
+        if (hasSettled()) throw new Error(`${fn} returned before reaching the gate`)
+        return (await waitingOnGate()) === 1
+      })
+
+      // 4. Commit the concurrent row, then wait until a THIRD session can see
+      //    it. This is the premise the whole test turns on; establishing it
+      //    here means a later failure is about snapshot semantics and nothing
+      //    else.
+      await insert(other, { action: fn })
+      await until(`${fn}'s concurrent row to be committed and visible`, async () =>
+        (await committedRows()) === before + 1
+      )
+
+      // 5. Release. The probe now takes its count with the row already
+      //    committed — the only question left is which snapshot it uses.
+      const u = await gate.query('SELECT pg_advisory_unlock($1, $2) AS ok', [GATE_CLASS, GATE_OBJ])
+      expect(u.rows[0].ok, 'the test, not the probe, should have held the gate').toBe(true)
+
+      const s = await p
+      if ('err' in s) throw s.err
+      return { before, saw: s.n }
+    }
+
+    const vol = await run('probe_volatile')
+    const stab = await run('probe_stable')
+
+    // VOLATILE re-snapshots per statement and sees the row committed mid-flight.
+    expect(vol.saw, 'VOLATILE must see the mid-flight commit').toBe(vol.before + 1)
     // STABLE uses the calling query's snapshot and is blind to it. This is why
     // P4 is load-bearing rather than decorative.
-    expect(stableSaw).toBe(before)
+    expect(stab.saw, 'STABLE must be blind to the mid-flight commit').toBe(stab.before)
+    // Both runs faced the identical rendezvous, so the difference between them
+    // is the volatility class and not the shape of the two runs.
+    expect(stab.before).toBe(vol.before + 1)
   }, 30_000)
 
   it('PG-09 an EARLIER-sorting trigger is harmless: we hash what it produced', async () => {
