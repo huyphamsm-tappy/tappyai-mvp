@@ -91,7 +91,11 @@ android {
     defaultConfig {
         applicationId = "com.tappyai.app"
         minSdk = 26
-        targetSdk = 35
+        // Google Play target API level policy: from 2026-08-31 every new app and app update must
+        // target API 36 (Android 16). Raised from 35 for that reason alone — compileSdk was
+        // already 36 (androidx.browser 1.9.0 forced it during Phase 1B.1), so this is a policy
+        // change, not a toolchain one: no AGP/Gradle/Kotlin/dependency move came with it.
+        targetSdk = 36
         // 6, not 5: vc5 is already on Play (built from f49d6c0, which is not on any remote branch)
         // and Play requires a strictly increasing versionCode. vc5 predates the Account Deletion
         // entry that Play's own listing URL documents, so it must not be the artifact under test.
