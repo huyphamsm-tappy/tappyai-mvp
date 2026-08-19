@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { uploadMedia } from '@/lib/media/client'
 import {
-  Star, Camera, X, ArrowLeft, Loader2,
+  Star, Camera, X, ArrowLeft, Loader2, AlertTriangle,
   MapPin, Plus, Video, Link2, XCircle, Music,
 } from 'lucide-react'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -213,7 +213,7 @@ function SelectedMusicCard({
 /* ─── page ─── */
 
 export default function NewReviewPage() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const router = useRouter()
   const photoInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
@@ -230,6 +230,8 @@ export default function NewReviewPage() {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
+  /** The server's authoritative outcome when a post was NOT published. */
+  const [moderation, setModeration] = useState<{ title: string; detail: string } | null>(null)
 
   /* media mode */
   const [mediaMode, setMediaMode] = useState<'photo' | 'video' | 'url'>('photo')
@@ -547,7 +549,9 @@ export default function NewReviewPage() {
       }
 
       const tSubmit = vstart('submit-review', { content_type: payload.content_type, hasMedia: !!payload.media_url })
-      const res = await fetch('/api/reviews', {
+      // `?lang=` so the server words the moderation notice in the language the
+      // USER picked in-app, which is not necessarily their browser's.
+      const res = await fetch(`/api/reviews?lang=${encodeURIComponent(locale)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -555,6 +559,20 @@ export default function NewReviewPage() {
       const data = await res.json()
       if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.error || t('reviewNew.postError')) }
       vok('submit-review', tSubmit)
+
+      // The server decides whether this was published. Saving the row is not the
+      // same as publishing it, and reporting success for content the gate has
+      // just refused is the one thing this screen must never do.
+      //
+      // 🔑 This renders the server's outcome; it does not compute one. There is
+      // no second moderation engine in the client, and the wording comes from
+      // the response rather than from a code-to-string map here — so nothing on
+      // this page can disagree with the row that was stored.
+      if (data.moderation?.state === 'RESTRICTED') {
+        setModeration(data.moderation)
+        return
+      }
+
       setSuccess(true)
       // Land on the author's own profile grid, where the just-posted clip is at
       // the top — the default "for-you" feed is trending-ranked, so a brand-new
@@ -576,6 +594,38 @@ export default function NewReviewPage() {
     t('reviewNew.rating4'),
     t('reviewNew.rating5'),
   ]
+
+  /* ─── Not published ───
+     Shown INSTEAD of the success screen, and it does not auto-redirect: the
+     author has something to read, and being bounced away from it after 1.5s is
+     how the previous behaviour managed to be technically informative and
+     practically silent. Title and detail are the server's, already localized
+     and already stripped of any policy identity, reason code or evidence. */
+  if (moderation) {
+    return (
+      <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
+        <div className="max-w-md w-full px-6">
+          <div className="rounded-2xl border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-900/20 p-5">
+            <div className="flex items-start gap-3">
+              <AlertTriangle size={22} className="text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+              <div className="min-w-0">
+                <h2 className="text-base font-bold text-amber-900 dark:text-amber-200">{moderation.title}</h2>
+                <p className="text-sm text-amber-800 dark:text-amber-300/90 mt-2">{moderation.detail}</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-3 mt-5">
+            <Link
+              href="/reviews?tab=profile"
+              className="flex-1 text-center bg-interactive text-white px-5 py-2.5 rounded-full text-sm font-semibold"
+            >
+              {t('reviewNew.moderationGoToProfile')}
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   /* ─── Success screen ─── */
   if (success) {
