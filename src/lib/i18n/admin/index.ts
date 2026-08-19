@@ -14,6 +14,15 @@ export const vi: Record<string, string> = {
   'admin.shell.app': 'Ứng dụng',
   'admin.shell.comingSoon': 'Sắp ra mắt',
   'admin.shell.comingLaterPhase': 'Sẽ có ở giai đoạn sau',
+  // Hub nav-group headings. Every registered hub declares one of these as its
+  // `navigationGroup`; until Phase 7 the shell flattened the groups away, so the
+  // keys were referenced by the registry and never translated.
+  'admin.nav.group.dashboard': 'Bảng điều khiển',
+  'admin.nav.group.analytics': 'Phân tích',
+  'admin.nav.group.security': 'Bảo mật',
+  'admin.nav.group.commerce': 'Thương mại',
+  'admin.nav.group.configuration': 'Cấu hình',
+
   'admin.nav.dashboard': 'Tổng quan',
   'admin.nav.analytics': 'Phân tích',
   'admin.nav.authAnalytics': 'Phân tích đăng nhập',
@@ -244,6 +253,12 @@ export const en: Record<string, string> = {
   'admin.shell.app': 'App',
   'admin.shell.comingSoon': 'soon',
   'admin.shell.comingLaterPhase': 'Coming in a later phase',
+  'admin.nav.group.dashboard': 'Control Center',
+  'admin.nav.group.analytics': 'Analytics',
+  'admin.nav.group.security': 'Security',
+  'admin.nav.group.commerce': 'Commerce',
+  'admin.nav.group.configuration': 'Configuration',
+
   'admin.nav.dashboard': 'Dashboard',
   'admin.nav.analytics': 'Analytics',
   'admin.nav.authAnalytics': 'Auth Analytics',

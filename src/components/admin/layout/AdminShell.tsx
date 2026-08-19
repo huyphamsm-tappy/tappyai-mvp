@@ -44,7 +44,6 @@ export function AdminShell({
 }) {
   const pathname = usePathname()
   const { t, locale, setLocale } = useTranslation()
-  const items = navGroups.flatMap((g) => g.items)
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
@@ -55,23 +54,37 @@ export function AdminShell({
             <span className="text-lg font-bold">{t('admin.shell.brand')}</span>
             <Badge variant="muted">{t('admin.shell.badge')}</Badge>
           </div>
-          <nav className="flex-1 p-3 space-y-1">
-            {items.map((item) => {
-              const active =
-                pathname === item.route || (item.route !== '/admin' && pathname.startsWith(item.route))
-              const Icon = navIcon(item.icon)
+          <nav className="flex-1 p-3 space-y-4">
+            {navGroups.map((group) => {
+              // A hub with nothing visible renders nothing at all. deriveNavigation
+              // already drops empty groups; this guard means the shell cannot
+              // resurrect one as a bare heading if that ever changes.
+              if (group.items.length === 0) return null
+              const heading = t(group.label)
               return (
-                <Link
-                  key={item.route}
-                  href={item.route}
-                  className={cn(
-                    'flex items-center gap-3 rounded-admin-md px-3 py-2 text-sm transition-colors',
-                    active ? 'bg-interactive text-white' : 'text-foreground hover:bg-muted'
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
-                  {t(item.label)}
-                </Link>
+                <div key={group.hubId} role="group" aria-label={heading} className="space-y-1">
+                  <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {heading}
+                  </div>
+                  {group.items.map((item) => {
+                    const active =
+                      pathname === item.route || (item.route !== '/admin' && pathname.startsWith(item.route))
+                    const Icon = navIcon(item.icon)
+                    return (
+                      <Link
+                        key={item.route}
+                        href={item.route}
+                        className={cn(
+                          'flex items-center gap-3 rounded-admin-md px-3 py-2 text-sm transition-colors',
+                          active ? 'bg-interactive text-white' : 'text-foreground hover:bg-muted'
+                        )}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {t(item.label)}
+                      </Link>
+                    )
+                  })}
+                </div>
               )
             })}
           </nav>
