@@ -89,26 +89,43 @@ export function examinationOf(bundle: EvidenceBundle): ExaminationVerdict {
 
   const contentType = descriptorValue(bundle, 'contentType:');
   const mediaPresent = descriptorValue(bundle, 'mediaPresent:') === 'true';
+  const mediaKind = descriptorValue(bundle, 'mediaKind:') ?? 'unknown';
   const frame = resultFor(bundle, 'IMAGE_FRAME');
 
+  // No media at all: the text IS the whole item, and VIDEO_FRAMES/AUDIO_SPEECH
+  // being unavailable is irrelevant rather than a gap — there is no video and no
+  // audio to examine. This is the "safe to defer" case.
+  if (!mediaPresent)
+    return {
+      level: 'COMPLETE',
+      reason: 'the item carries no media; its text and metadata were fully examined',
+    };
+
   // A video is never fully examined in this build: VIDEO_FRAMES and AUDIO_SPEECH
-  // are both UNAVAILABLE, so most of the item was never seen or heard. This is
-  // the honest, load-bearing limitation — see EXPLORE_CONTENT_POLICY.md §6.
-  if (contentType === 'video')
+  // are both UNAVAILABLE, so most of the item was never seen and none of it was
+  // heard. The honest, load-bearing limitation — see EXPLORE_CONTENT_POLICY.md §6.
+  //
+  // 🚨 The DERIVED kind decides, not the declared one. `content_type` arrives
+  // from the client, so trusting it would let "declare photo, upload video" get a
+  // clip published on the strength of one poster frame. Either source saying
+  // video is enough, and a kind that is merely unrecognised is not treated as an
+  // image either.
+  if (contentType === 'video' || mediaKind === 'video')
     return {
       level: 'INCOMPLETE',
       reason: 'video: frames across the clip and audio are not examined in this build',
     };
 
-  if (mediaPresent && frame?.status !== 'OBSERVED')
+  if (mediaKind !== 'image')
+    return {
+      level: 'INCOMPLETE',
+      reason: 'the media kind could not be established, so it is not treated as fully examined',
+    };
+
+  if (frame?.status !== 'OBSERVED')
     return { level: 'INCOMPLETE', reason: 'the item carries media that was not examined' };
 
-  return {
-    level: 'COMPLETE',
-    reason: mediaPresent
-      ? 'caption, metadata and the item’s image were all examined'
-      : 'the item carries no media; its text and metadata were fully examined',
-  };
+  return { level: 'COMPLETE', reason: 'caption, metadata and the item’s image were all examined' };
 }
 
 // ---------------------------------------------------------------------------

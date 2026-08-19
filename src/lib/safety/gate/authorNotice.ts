@@ -193,6 +193,28 @@ export function authorModerationPayload(
   const state = columns.publication_state;
   if (state !== 'UNDER_REVIEW' && state !== 'PUBLISHED' && state !== 'RESTRICTED') return null;
 
+  // 🔑 PUBLICATION WINS OVER SAFETY STATE, and only here.
+  //
+  // The two layers answer different questions, and `safety_state` can legitimately
+  // read LEGAL_REVIEW_REQUIRED on a post the gate has PUBLISHED — the hate policy
+  // is Legal-blocked, so it reports an open dependency for every item while no
+  // longer holding publication. Keying the wording off the safety state would then
+  // tell an author their live post is "being checked", which is simply false.
+  //
+  // What the author is owed is the truth about their own post's visibility. It is
+  // published; that is what they are told.
+  if (state === 'PUBLISHED') {
+    const en = lang === 'en';
+    return {
+      state,
+      title: en ? 'Your post is live' : 'Bài của bạn đã được đăng',
+      detail: en
+        ? 'The safety check finished and your post is now visible on Explore.'
+        : 'Bài đã qua kiểm tra an toàn và hiện hiển thị trên Explore.',
+      assertsViolation: false,
+    };
+  }
+
   // The wording comes from the safety state when there is one. An unrecognised
   // or absent safety state falls back to the most conservative honest message —
   // "we have not finished" — never to silence and never to an accusation.

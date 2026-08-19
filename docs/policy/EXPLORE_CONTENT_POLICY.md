@@ -200,8 +200,8 @@ document does not claim one.
 
 ## 8. Current operational reality — read this before relying on the gate
 
-🔴 **As configured today, no new Explore post reaches `PUBLISHED`.** One decision
-stands between the system and a working publish path, and it is named below.
+✅ **A benign photo or text post now publishes.** A benign **video does not** —
+see below, and §6.
 
 **What was fixed.** Every policy used to answer `INSUFFICIENT_EVIDENCE` for every
 post, because the evidence model had no way to express "we examined this and the
@@ -216,33 +216,34 @@ positive finding, it is inert unless the examination was complete, and any
 observed indicator withholds it — so an indicator now costs a review where it
 previously cost nothing.
 
-**What still holds every post.** Two policies — `ts.graphic.presentation` and
-`ts.sexual.adult-content` — are the only ones left blocking a benign item, and
-they are the only two whose disposition is `RESTRICTED` rather than `PROHIBITED`.
-Both turn on a **presentation event**: whether the viewer chose to see the item,
-and whether an interstitial or audience condition was applied. No presentation
-event exists at publication time, so neither can ever be answered there.
+**The RESTRICTED decision (Owner, 2026-08-19).** Two policies —
+`ts.graphic.presentation` and `ts.sexual.adult-content` — no longer gate
+publication. They are the only two whose disposition is `RESTRICTED` rather than
+`PROHIBITED`, and both turn on a **presentation event**: whether the viewer chose
+to see the item, and whether an interstitial or audience condition was applied.
+No presentation event exists at publication time, so neither could ever be
+answered there.
 
-The awkward part is that a `RESTRICTED` policy, per the Owner's decision of
-2026-08-16, establishes **no violation even when fully constituted** — its
+They were also incoherent as blockers. Per the Owner's decision of 2026-08-16, a
+`RESTRICTED` policy establishes **no violation even when fully constituted** — its
 maximum adverse outcome is `APPLICABLE_NO_VIOLATION`, which does not withhold
-publication. So today the system withholds more for *not knowing* than it would
-for knowing the worst.
+publication. The system was withholding more for *not knowing* than it would for
+knowing the worst.
 
-🔵 **THE OPEN DECISION (Owner).** Should a `RESTRICTED`-disposition policy gate
-publication while it is merely undetermined? Making these two
-`DOES_NOT_BLOCK_PUBLICATION` removes **no prohibitive protection** — sexual harm
-is governed by `ts.sexual.exploitation-nonconsent` and the four `ts.child.*`
-policies, all `PROHIBITED`, all still blocking, all still requiring absence to be
-positively established. Measured under that configuration: benign photo and
-ordinary political and religious posts publish; threats, sexual wording, scam
-wording, self-harm and graphic wording all stay held; every video stays held.
+🚨 **THIS IS NOT A GENERAL PERMISSION.** It does not mean sexual content is
+allowed, and it does not mean graphic violence is allowed. Sexual harm is
+governed by `ts.sexual.exploitation-nonconsent` and by
+`ts.child.sexual-exploitation`, `ts.child.sexualization`, `ts.child.grooming` and
+`ts.child.abuse-harm` — every one `PROHIBITED`, every one still blocking, every
+one still requiring absence to be positively established before it stops holding
+a post. Material that raises any of them still goes to review. Both RESTRICTED
+policies also continue to evaluate and to report at the policy layer; only their
+publication authority changed.
 
-**Videos are held regardless**, under every configuration, because frames across
-the clip and audio are not examined (§6) — that is a coverage gap, not a
-decision, and only frame sampling or human review closes it.
-
-There is still no human review to release anything held (§7).
+**Videos are held regardless of any of this**, because frames across the clip and
+audio are not examined (§6). That is a coverage gap, not a decision, and only
+frame sampling or human review closes it. There is still no human review to
+release anything held (§7).
 
 ---
 

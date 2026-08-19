@@ -421,7 +421,14 @@ describe('the publication gate', () => {
 // ---------------------------------------------------------------------------
 
 describe('evaluating a real bundle', () => {
-  it('a benign clip with full text+metadata coverage is UNDER_REVIEW, not PUBLISHED', () => {
+  /**
+   * This test used to assert the bug. A completely benign, completely examined
+   * post was held, because "examined and not in play" had no representation —
+   * see `applicability.ts`. It now asserts the fix, and the two things that must
+   * remain true alongside it: every policy still evaluates, and the video/audio
+   * coverage gaps are still REPORTED even for an item they cannot apply to.
+   */
+  it('a benign, completely examined post PUBLISHES', () => {
     const b = bundle([
       textEvidence({ body: 'Quán bún chả ngon', hashtags: ['anuong'] }),
       metadataEvidence({ place_name: 'Bún Chả', place_address: '24 Lê Văn Hưu' }),
@@ -430,9 +437,16 @@ describe('evaluating a real bundle', () => {
       audioSpeechEvidence(),
     ]);
     const result = evaluateSafety(b, T);
-    expect(result.state).not.toBe('SAFE');
-    expect(result.publication).toBe('UNDER_REVIEW');
+    expect(result.publication).toBe('PUBLISHED');
+    // 🔑 The safety state still reports the open Legal dependency, because the
+    // hate policy is Legal-blocked for every item. The two layers answer
+    // different questions and neither is rewritten to agree with the other —
+    // which is exactly why `authorModerationPayload` keys its wording off the
+    // publication state rather than off this.
+    expect(result.state).toBe('LEGAL_REVIEW_REQUIRED');
     expect(result.policies).toHaveLength(18);
+    // The gaps are irrelevant to a post with no video and no audio, but they are
+    // still carried rather than quietly dropped.
     expect(result.coverageGaps).toHaveLength(2);
   });
 

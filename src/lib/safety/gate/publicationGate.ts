@@ -63,19 +63,17 @@ export type GateRule = (typeof GATE_RULES)[number];
  * `LEGAL_REVIEW_REQUIRED` at the policy layer.
  */
 export const PUBLICATION_GATE_RULES: Readonly<Record<string, GateRule>> = Object.freeze({
-  // Seventeen policies whose results speak for themselves: if one is
+  // Fifteen PROHIBITED policies whose results speak for themselves: if one is
   // constituted, that is a safety finding and it blocks publication.
   'ts.violence.graphic-harm': 'BLOCKS_PUBLICATION',
   'ts.violence.incitement-threats': 'BLOCKS_PUBLICATION',
   'ts.selfharm.promotion': 'BLOCKS_PUBLICATION',
   'ts.danger.harmful-activity': 'BLOCKS_PUBLICATION',
-  'ts.graphic.presentation': 'BLOCKS_PUBLICATION',
   'ts.child.sexual-exploitation': 'BLOCKS_PUBLICATION',
   'ts.child.sexualization': 'BLOCKS_PUBLICATION',
   'ts.child.grooming': 'BLOCKS_PUBLICATION',
   'ts.child.abuse-harm': 'BLOCKS_PUBLICATION',
   'ts.sexual.exploitation-nonconsent': 'BLOCKS_PUBLICATION',
-  'ts.sexual.adult-content': 'BLOCKS_PUBLICATION',
   'ts.harassment.targeted': 'BLOCKS_PUBLICATION',
   'ts.privacy.personal-information': 'BLOCKS_PUBLICATION',
   'ts.animal.cruelty': 'BLOCKS_PUBLICATION',
@@ -100,6 +98,36 @@ export const PUBLICATION_GATE_RULES: Readonly<Record<string, GateRule>> = Object
   // publication. `LEGAL_REVIEW_REQUIRED` at the policy layer no longer means an
   // automatic publication block.
   'ts.hate.protected-target-abuse': 'DOES_NOT_BLOCK_PUBLICATION',
+
+  // ✅ PRODUCT DECISION, Owner, 2026-08-19 — the two RESTRICTED-disposition policies.
+  //
+  // These are the only two policies whose `disposition` is `RESTRICTED` rather
+  // than `PROHIBITED`. Per the Owner's earlier decision (2026-08-16, option b),
+  // `RESTRICTED` means "permitted subject to presentation conditions", and
+  // `deriveOutcome` rule 7 therefore lands a FULLY CONSTITUTED RESTRICTED policy
+  // on `APPLICABLE_NO_VIOLATION` — an outcome that does not withhold publication.
+  //
+  // So the worst either could ever establish already does not block. Holding an
+  // upload because one of them is merely UNDETERMINED withheld more for not
+  // knowing than for knowing the worst. And undetermined is all they can be at
+  // publication time: both turn on a presentation event, which has not happened
+  // when the decision is made (`presentationEvidence.ts` — no surface emits a
+  // presentation-initiation signal).
+  //
+  // 🚨 WHAT THIS DECISION IS NOT:
+  //   · it does NOT allow sexual content or graphic violence generally
+  //   · it does NOT change either policy's own result, which still evaluates and
+  //     still reports at the policy layer
+  //   · it does NOT stop their evidence being gathered or their signals mapped
+  //   · it does NOT touch a single PROHIBITED policy
+  //
+  // Sexual harm remains governed by `ts.sexual.exploitation-nonconsent` and the
+  // four `ts.child.*` policies — every one PROHIBITED, every one still
+  // BLOCKS_PUBLICATION, every one still requiring absence to be positively
+  // established before it stops holding. Explicit material keeps those
+  // undetermined and therefore still goes to review.
+  'ts.graphic.presentation': 'DOES_NOT_BLOCK_PUBLICATION',
+  'ts.sexual.adult-content': 'DOES_NOT_BLOCK_PUBLICATION',
 });
 
 /**
@@ -124,6 +152,30 @@ export const GATE_RULE_DECISIONS: readonly {
       'G02-D-07b',
       'PROTECTED_TARGET_SET',
       'the policy result itself, which remains Legal blocked',
+    ],
+  },
+  {
+    policy: 'ts.graphic.presentation',
+    rule: 'DOES_NOT_BLOCK_PUBLICATION',
+    decidedBy: 'Product Owner — explicit decision, RESTRICTED dispositions',
+    decidedOn: '2026-08-19',
+    doesNotResolve: [
+      'whether graphic content is generally permitted — it is not',
+      'the presentation conditions themselves, which no surface emits',
+      'the policy result, which still evaluates and still reports',
+      'any PROHIBITED policy',
+    ],
+  },
+  {
+    policy: 'ts.sexual.adult-content',
+    rule: 'DOES_NOT_BLOCK_PUBLICATION',
+    decidedBy: 'Product Owner — explicit decision, RESTRICTED dispositions',
+    decidedOn: '2026-08-19',
+    doesNotResolve: [
+      'whether sexual content is generally permitted — it is not',
+      'ts.sexual.exploitation-nonconsent, which stays PROHIBITED and blocking',
+      'any ts.child.* policy, all of which stay PROHIBITED and blocking',
+      'the policy result, which still evaluates and still reports',
     ],
   },
 ]);

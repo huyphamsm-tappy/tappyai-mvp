@@ -99,6 +99,33 @@ export interface MetadataInput {
   readonly thumbnail?: unknown;
 }
 
+const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.heic', '.avif'];
+const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.webm', '.m4v', '.avi', '.mkv', '.3gp', '.hevc', '.m3u8'];
+
+/**
+ * `image` | `video` | `unknown`, from the stored object's own path.
+ *
+ * Fail-closed by construction: only a recognised IMAGE extension returns
+ * `image`. A recognised video extension, an unrecognised one, a missing one and
+ * an unparsable URL all return something the completeness check refuses to treat
+ * as fully examinable. Getting this wrong in the safe direction costs a review;
+ * getting it wrong the other way publishes an unexamined video.
+ */
+export function mediaKindOf(url: string): 'image' | 'video' | 'unknown' {
+  if (!url) return 'unknown';
+  let path = url;
+  try {
+    path = new URL(url).pathname;
+  } catch {
+    // Not absolute — fall back to the raw string, minus any query/fragment.
+    path = url.split(/[?#]/)[0] ?? url;
+  }
+  const lower = path.toLowerCase();
+  if (VIDEO_EXTENSIONS.some((e) => lower.endsWith(e))) return 'video';
+  if (IMAGE_EXTENSIONS.some((e) => lower.endsWith(e))) return 'image';
+  return 'unknown';
+}
+
 /**
  * Descriptors only — never a judgement. `businessContact:<id>` records that a
  * contact string belongs to the place the post is about, which is a fact the
@@ -113,10 +140,18 @@ export function metadataEvidence(input: MetadataInput): ModalityResult {
     if (typeof input.source_type === 'string' && input.source_type)
       descriptors.push(`sourceType:${input.source_type}`);
     // Presence only — never the URL, which carries an uploader-chosen filename.
+    const mediaUrl = typeof input.media_url === 'string' ? input.media_url.trim() : '';
     const hasMedia =
-      (typeof input.media_url === 'string' && input.media_url.trim().length > 0) ||
+      mediaUrl.length > 0 ||
       (typeof input.thumbnail === 'string' && input.thumbnail.trim().length > 0);
     descriptors.push(`mediaPresent:${hasMedia}`);
+    // 🚨 `content_type` is CLIENT-SUPPLIED. A client that declares "photo" while
+    // uploading a video would otherwise have only its poster frame examined and
+    // could publish an unexamined clip. So the media's own kind is derived here
+    // from the stored object's extension, independently of what was declared,
+    // and anything not positively recognisable as an image counts as unknown.
+    // Only the KIND is emitted — never the URL or the filename.
+    descriptors.push(`mediaKind:${mediaKindOf(mediaUrl)}`);
     for (const id of contactIdentifiersIn(placeText)) descriptors.push(`businessContact:${id}`);
     return { modality: 'METADATA', status: 'OBSERVED', descriptors, contactIdentifiers: [] };
   } catch {

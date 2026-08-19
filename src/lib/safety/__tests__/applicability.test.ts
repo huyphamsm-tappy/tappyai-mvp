@@ -29,13 +29,14 @@ import { signalsFor } from '../mapping/policySignals';
 const T = '2026-08-19T00:00:00.000Z';
 
 /**
- * The configuration in which the two RESTRICTED-disposition policies stop gating
- * publication. Explored through `aggregateWithRules`, which exists precisely so a
- * configuration can be examined without changing what production uses.
+ * The two RESTRICTED-disposition policies, restated as an explicit override.
  *
- * 🔴 NOT production. `PUBLICATION_GATE_RULES` is unchanged, and a test below
- * asserts that these two are still UNRESOLVED there, so this file can never be
- * mistaken for having made the decision.
+ * This now MATCHES production — the Owner approved the change on 2026-08-19 and
+ * `PUBLICATION_GATE_RULES` carries it. It is kept as an explicit override anyway
+ * so `heldBy` in these tests reports only PROHIBITED policies, which is the
+ * interesting question: what would still hold this post if the RESTRICTED pair
+ * were not part of the picture at all. A test below asserts the production rules
+ * really do agree, so the two can never silently diverge.
  */
 const RESTRICTED_OFF = {
   'ts.graphic.presentation': 'DOES_NOT_BLOCK_PUBLICATION',
@@ -211,18 +212,42 @@ describe('unknown never becomes safe', () => {
     expect(heldBy.length).toBeGreaterThan(10);
   });
 
-  it('a benign photo is held today, and only the RESTRICTED pair holds it', async () => {
-    // Documents the exact decision boundary: nothing prohibitive objects.
-    const { today, ifRestrictedOff, heldBy } = await outcomeOf(post());
-    expect(today).toBe('UNDER_REVIEW');
+  it('a benign, completely examined post publishes in PRODUCTION configuration', async () => {
+    const { today, heldBy } = await outcomeOf(post());
     expect(heldBy).toEqual([]);
-    expect(ifRestrictedOff).toBe('PUBLISHED');
+    expect(today).toBe('PUBLISHED');
   });
 
-  it('production rules are UNCHANGED — this file decides nothing', async () => {
+  it('the approved decision is live: exactly the two RESTRICTED policies', async () => {
     const { PUBLICATION_GATE_RULES } = await import('../gate/publicationGate');
-    expect(PUBLICATION_GATE_RULES['ts.graphic.presentation']).toBe('BLOCKS_PUBLICATION');
-    expect(PUBLICATION_GATE_RULES['ts.sexual.adult-content']).toBe('BLOCKS_PUBLICATION');
+    expect(PUBLICATION_GATE_RULES['ts.graphic.presentation']).toBe('DOES_NOT_BLOCK_PUBLICATION');
+    expect(PUBLICATION_GATE_RULES['ts.sexual.adult-content']).toBe('DOES_NOT_BLOCK_PUBLICATION');
+    // ...and it went no further than that.
+    for (const p of [
+      'ts.child.sexual-exploitation',
+      'ts.child.sexualization',
+      'ts.child.grooming',
+      'ts.child.abuse-harm',
+      'ts.sexual.exploitation-nonconsent',
+      'ts.violence.graphic-harm',
+      'ts.fraud.scam',
+    ])
+      expect(PUBLICATION_GATE_RULES[p], p).toBe('BLOCKS_PUBLICATION');
+  });
+
+  /** The bypass the completeness rule exists to close. */
+  it('a video declared as a photo is still treated as a video', async () => {
+    const { today } = await outcomeOf(
+      post({ content_type: 'photo', media_url: 'https://storage.googleapis.com/b/clip.mp4' }),
+    );
+    expect(today).toBe('UNDER_REVIEW');
+  });
+
+  it('media of an unrecognisable kind is never treated as fully examined', async () => {
+    const { today } = await outcomeOf(
+      post({ content_type: 'photo', media_url: 'https://storage.googleapis.com/b/object' }),
+    );
+    expect(today).toBe('UNDER_REVIEW');
   });
 });
 
@@ -248,5 +273,110 @@ describe('indicator matching', () => {
       ],
     } as never;
     expect(indicatorsPresentFor('ts.fraud.scam', observableSurface(bundle))).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The publication lifecycle, end to end through evaluateSafety
+// ---------------------------------------------------------------------------
+
+describe('SAFE → PUBLISHED for ordinary content', () => {
+  const benign: Record<string, string> = {
+    restaurant: 'Quán bún chả ngon, phục vụ nhanh',
+    travel: 'Biển Nha Trang đẹp quá, nước trong vắt',
+    shopping: 'Mua được đôi giày giảm giá ở đây',
+    'ordinary UGC': 'Hôm nay đi chơi với gia đình, vui lắm',
+    'negative review': 'Đồ ăn nguội, phục vụ chậm, không hài lòng',
+  };
+
+  for (const [name, body] of Object.entries(benign)) {
+    it(`${name} publishes`, async () => {
+      const { today, heldBy } = await outcomeOf(post({ body }));
+      expect(heldBy, name).toEqual([]);
+      expect(today, name).toBe('PUBLISHED');
+    });
+  }
+});
+
+describe('harmful variants of protected topics are still held', () => {
+  it('violent political content is held, while political criticism is not', async () => {
+    const violent = await outcomeOf(post({ body: 'Phải giết hết bọn quan chức đó' }));
+    expect(violent.today).toBe('UNDER_REVIEW');
+    expect(violent.heldBy).toContain('ts.violence.incitement-threats');
+
+    const ordinary = await outcomeOf(post({ body: 'Tôi phản đối chính sách thuế mới' }));
+    expect(ordinary.today).toBe('PUBLISHED');
+  });
+
+  it('religious incitement is held, while religious teaching is not', async () => {
+    const incite = await outcomeOf(post({ body: 'Giết hết bọn theo đạo đó đi' }));
+    expect(incite.today).toBe('UNDER_REVIEW');
+
+    const teaching = await outcomeOf(post({ body: 'Bài giảng về đạo Phật hôm nay rất hay' }));
+    expect(teaching.today).toBe('PUBLISHED');
+  });
+});
+
+describe('the publication boundary refuses everything it cannot stand behind', () => {
+  it('a failed modality is never published', async () => {
+    const { evaluateSafety: evalSafety } = await import('../gate/safetyResult');
+    const failed = {
+      contentId: 'x',
+      contentVersion: 'v1',
+      gatheredAt: T,
+      results: [{ modality: 'IMAGE_FRAME', status: 'FAILED', reason: 'vision call failed' }],
+    } as never;
+    const r = evalSafety(failed, T);
+    expect(r.state).toBe('ENGINE_ERROR');
+    expect(r.publication).toBe('UNDER_REVIEW');
+  });
+
+  it('a stale result cannot publish the current content', async () => {
+    const { mayPublish, publicationStateFor } = await import('../gate/safetyResult');
+    const { result } = await outcomeOf(post());
+    expect(result.publication).toBe('PUBLISHED');
+    expect(mayPublish(result, 'a-different-version')).toBe(false);
+    expect(publicationStateFor(result, 'a-different-version')).toBe('UNDER_REVIEW');
+  });
+
+  it('no result at all is held, never published', async () => {
+    const { publicationStateFor } = await import('../gate/safetyResult');
+    expect(publicationStateFor(null, 'v1')).toBe('UNDER_REVIEW');
+  });
+
+  it('a forged publication state on a write is rejected', async () => {
+    const { attemptsPublicationBypass } = await import('../gate/publicationAccess');
+    for (const forged of [
+      { publication_state: 'PUBLISHED' },
+      { safety_state: 'SAFE' },
+      { evaluated_version: 'v1' },
+    ])
+      expect(attemptsPublicationBypass(forged), JSON.stringify(forged)).toBe(true);
+  });
+
+  it('only PUBLISHED and legacy-NULL are publicly readable', async () => {
+    const { isPubliclyReadable } = await import('../gate/publicationAccess');
+    expect(isPubliclyReadable('PUBLISHED')).toBe(true);
+    expect(isPubliclyReadable(null)).toBe(true);
+    for (const s of ['UNDER_REVIEW', 'RESTRICTED', 'APPROVED', 'safe', ''])
+      expect(isPubliclyReadable(s as never), s).toBe(false);
+  });
+});
+
+describe('the author is told the truth about a published post', () => {
+  it('a published post reads as published, not as "being checked", in both languages', async () => {
+    const { authorModerationPayload } = await import('../gate/authorNotice');
+    const { result } = await outcomeOf(post());
+    const columns = { publication_state: result.publication, safety_state: result.state };
+    // safety_state is LEGAL_REVIEW_REQUIRED here — the wording must not follow it.
+    expect(result.state).toBe('LEGAL_REVIEW_REQUIRED');
+    for (const lang of ['vi', 'en']) {
+      const p = authorModerationPayload(columns, lang)!;
+      expect(p.state, lang).toBe('PUBLISHED');
+      expect(p.assertsViolation, lang).toBe(false);
+      expect(p.detail.trim(), lang).not.toBe('');
+    }
+    expect(authorModerationPayload(columns, 'en')!.title).toMatch(/live/i);
+    expect(authorModerationPayload(columns, 'vi')!.title).toMatch(/đã được đăng/);
   });
 });

@@ -31,13 +31,28 @@ describe('Explore Content Policy document', () => {
     for (const p of inDoc) expect(inEngine, `document invents: ${p}`).toContain(p);
   });
 
-  it('records the one policy that does not gate publication, and why it is not a resolution', () => {
+  it('records every policy that does not gate publication, and why', () => {
     const nonBlocking = Object.entries(PUBLICATION_GATE_RULES)
       .filter(([, rule]) => rule === 'DOES_NOT_BLOCK_PUBLICATION')
-      .map(([p]) => p);
-    expect(nonBlocking).toEqual(['ts.hate.protected-target-abuse']);
-    // It must be disclosed as an exception rather than listed silently as prohibited.
+      .map(([p]) => p)
+      .sort();
+    expect(nonBlocking).toEqual([
+      'ts.graphic.presentation',
+      'ts.hate.protected-target-abuse',
+      'ts.sexual.adult-content',
+    ]);
+    // Each must be disclosed as an exception rather than listed silently as prohibited.
     expect(DOC).toMatch(/not a legal ratification/i);
+    expect(DOC).toMatch(/RESTRICTED/);
+    // And the document must say plainly what the exception is NOT.
+    expect(DOC).toMatch(/does not mean sexual content|not a general permission/i);
+  });
+
+  /** The claim a reader is most likely to be misled by, if the doc drifts. */
+  it('states that child-safety and non-consent policies still block', () => {
+    for (const p of ['ts.child.sexual-exploitation', 'ts.sexual.exploitation-nonconsent'])
+      expect(DOC).toContain(p);
+    expect(DOC).toMatch(/still block|remain(s)? prohibited|continue to block/i);
   });
 
   it('states every publication and safety state the code can produce', () => {
@@ -74,9 +89,15 @@ describe('Explore Content Policy document', () => {
       expect(DOC.toLowerCase(), word).not.toContain(word);
   });
 
-  it('discloses that the gate currently publishes nothing', () => {
-    // The single most consequential operational fact. If it stops being true,
-    // this assertion should be the thing that makes someone update the document.
-    expect(DOC).toMatch(/no new Explore post reaches `PUBLISHED`/i);
+  it('discloses that video is held, which is now the consequential limitation', () => {
+    // The previous version of this assertion pinned "no post reaches PUBLISHED".
+    // That stopped being true when the RESTRICTED decision landed, and this guard
+    // is what forced the document to be updated rather than silently drift.
+    //
+    // The load-bearing fact is now narrower: photos and text publish, video does
+    // not, because most of a video is never examined. If frame sampling ever
+    // lands, this assertion is what makes someone correct the document.
+    expect(DOC).toMatch(/videos are held/i);
+    expect(DOC).toMatch(/benign photo or text post now publishes/i);
   });
 });
