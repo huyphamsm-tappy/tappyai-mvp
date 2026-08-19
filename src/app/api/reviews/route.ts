@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
+import { authorModerationPayload } from '@/lib/safety/gate/authorNotice'
 import { decidePublication } from '@/lib/safety/gate/publishDecision'
 import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
@@ -270,5 +271,17 @@ export async function POST(req: NextRequest) {
 
   rebuildProfile(user.id, supabase).catch(() => {})
 
-  return NextResponse.json({ ok: true, is_verified: isVerified })
+  // Tell the author what happened to their own post.
+  //
+  // Without this the gate is silent: the upload returns ok:true, the post is
+  // held, and it never appears — which reads as the product losing the post.
+  // `authorModerationPayload` returns null while the gate is inactive, so the
+  // response shape is unchanged for anyone who has not turned the gate on.
+  const lang =
+    req.nextUrl.searchParams.get('lang') ||
+    req.headers.get('accept-language')?.split(',')[0]?.trim() ||
+    'vi'
+  const moderation = authorModerationPayload(lifecycle, lang.toLowerCase().startsWith('en') ? 'en' : 'vi')
+
+  return NextResponse.json({ ok: true, is_verified: isVerified, ...(moderation ? { moderation } : {}) })
 }

@@ -178,14 +178,38 @@ describe('foundation freeze', () => {
 
   it('notification generation is truthful for every state, and sends nothing', () => {
     for (const s of SAFETY_STATES) expect(noticeIsTruthful(s), s).toBe(true);
-    // The notice is data. There is no transport in its shape.
+    // The notice is data. There is no transport in its shape. The two `_en`
+    // fields are the same kind of thing as `title`/`detail` — wording, carried
+    // in the record so a safety message can never resolve to nothing.
     for (const s of SAFETY_STATES)
       expect(Object.keys(NOTICE_FOR[s]).sort()).toEqual([
         'assertsViolation',
         'detail',
+        'detail_en',
         'notify',
         'title',
+        'title_en',
       ]);
+    // And the reason that list is pinned at all: nothing that delivers may enter it.
+    for (const s of SAFETY_STATES)
+      for (const key of Object.keys(NOTICE_FOR[s]))
+        expect(key, `${s}.${key}`).not.toMatch(/email|push|sms|webhook|send|recipient|token/i);
+  });
+
+  it('every state carries both languages, and neither is ever empty when notifying', () => {
+    // A missing translation on a safety notice shows the author a blank screen
+    // and no reason their post is not visible, which is worse than no feature.
+    for (const s of SAFETY_STATES) {
+      const n = NOTICE_FOR[s];
+      if (!n.notify) continue;
+      for (const [field, value] of Object.entries({
+        title: n.title,
+        detail: n.detail,
+        title_en: n.title_en,
+        detail_en: n.detail_en,
+      }))
+        expect(value.trim(), `${s}.${field}`).not.toBe('');
+    }
   });
 
   it('publication remains server-controlled', () => {
