@@ -67,9 +67,10 @@ const PRIVACY: LegalDoc = {
       headingKey: 'legal.privacy.s3.heading',
       blocks: [
         { kind: 'lead', key: 'legal.privacy.s3.lead' },
-        { kind: 'bullets', keys: bullets('legal.privacy.s3.b', 7) },
+        { kind: 'bullets', keys: bullets('legal.privacy.s3.b', 8) },
         { kind: 'p', key: 'legal.privacy.s3.p1' },
         { kind: 'p', key: 'legal.privacy.s3.p2' },
+        { kind: 'p', key: 'legal.privacy.s3.p3' },
       ],
     },
     {

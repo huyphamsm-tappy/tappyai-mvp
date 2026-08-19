@@ -11,6 +11,7 @@
     <string name="legal_privacy_section4_title">Data Security</string>
     <string name="legal_privacy_section5_title">Your Rights</string>
     <string name="legal_privacy_section6_title">Changes to This Policy</string>
+    <string name="legal_privacy_section7_title">Device Permissions</string>
 
     <string name="legal_terms_title">Terms of Service</string>
     <string name="legal_terms_section1_title">Introduction</string>

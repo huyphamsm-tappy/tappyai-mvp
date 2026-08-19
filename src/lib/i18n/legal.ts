@@ -54,7 +54,9 @@ export const en: Record<string, string> = {
   'legal.privacy.s3.b1': 'Anthropic Claude — generates the assistant’s responses.',
   'legal.privacy.s3.b2': 'Google search services and Serper — retrieve search and place results.',
   'legal.privacy.s3.b3': 'Supabase — hosts our database, authentication and file storage.',
-  'legal.privacy.s3.b4': 'Vercel — hosts the website and stores the photos, video and audio you upload.',
+  'legal.privacy.s3.b4': 'Vercel — hosts the website.',
+  'legal.privacy.s3.b8':
+    'Google Cloud Storage — stores the photos, video and audio you upload.',
   'legal.privacy.s3.b5':
     'OpenStreetMap Nominatim — turns coordinates into a place name when you share your location.',
   'legal.privacy.s3.b6': 'Stripe — processes payment if you subscribe to a paid plan.',
@@ -62,10 +64,12 @@ export const en: Record<string, string> = {
   'legal.privacy.s3.p1': 'These providers process data according to their own privacy policies.',
   'legal.privacy.s3.p2':
     'If you turn on notifications, your browser or device also creates a push subscription, which we store in order to deliver those notifications.',
+  'legal.privacy.s3.p3':
+    'If you use voice input, your speech is transcribed by your browser or device’s own speech service, which may process the audio on its provider’s servers. TappyAI receives only the resulting text and never records, stores or uploads the audio itself.',
 
   'legal.privacy.s4.heading': '4. Data Storage and Security',
   'legal.privacy.s4.p1':
-    'User data is securely stored using Supabase infrastructure with authentication and access controls. Photos, video and audio you upload are stored in Vercel Blob storage.',
+    'User data is securely stored using Supabase infrastructure with authentication and access controls. Photos, video and audio you upload are stored in Google Cloud Storage.',
   'legal.privacy.s4.p2':
     'Only authenticated users can access their own account information and conversation history.',
 
@@ -198,7 +202,9 @@ export const vi: Record<string, string> = {
   'legal.privacy.s3.b1': 'Anthropic Claude — tạo ra câu trả lời của trợ lý.',
   'legal.privacy.s3.b2': 'Dịch vụ tìm kiếm của Google và Serper — lấy kết quả tìm kiếm và địa điểm.',
   'legal.privacy.s3.b3': 'Supabase — lưu trữ cơ sở dữ liệu, xác thực và tệp của chúng tôi.',
-  'legal.privacy.s3.b4': 'Vercel — vận hành trang web và lưu trữ ảnh, video, âm thanh bạn tải lên.',
+  'legal.privacy.s3.b4': 'Vercel — vận hành trang web.',
+  'legal.privacy.s3.b8':
+    'Google Cloud Storage — lưu trữ ảnh, video và âm thanh bạn tải lên.',
   'legal.privacy.s3.b5':
     'OpenStreetMap Nominatim — chuyển tọa độ thành tên địa điểm khi bạn chia sẻ vị trí.',
   'legal.privacy.s3.b6': 'Stripe — xử lý thanh toán nếu bạn đăng ký gói trả phí.',
@@ -206,10 +212,12 @@ export const vi: Record<string, string> = {
   'legal.privacy.s3.p1': 'Các nhà cung cấp này xử lý dữ liệu theo chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p2':
     'Nếu bạn bật thông báo, trình duyệt hoặc thiết bị của bạn cũng tạo một đăng ký nhận thông báo đẩy, và chúng tôi lưu đăng ký đó để có thể gửi các thông báo này.',
+  'legal.privacy.s3.p3':
+    'Nếu bạn dùng nhập liệu bằng giọng nói, lời nói của bạn được chuyển thành văn bản bởi dịch vụ nhận dạng giọng nói của chính trình duyệt hoặc thiết bị, và dịch vụ đó có thể xử lý âm thanh trên máy chủ của họ. TappyAI chỉ nhận phần văn bản thu được, không ghi âm, không lưu và không tải lên âm thanh.',
 
   'legal.privacy.s4.heading': '4. Lưu trữ và bảo mật dữ liệu',
   'legal.privacy.s4.p1':
-    'Dữ liệu người dùng được lưu trữ an toàn trên hạ tầng Supabase với cơ chế xác thực và kiểm soát truy cập. Ảnh, video và âm thanh bạn tải lên được lưu trên Vercel Blob.',
+    'Dữ liệu người dùng được lưu trữ an toàn trên hạ tầng Supabase với cơ chế xác thực và kiểm soát truy cập. Ảnh, video và âm thanh bạn tải lên được lưu trên Google Cloud Storage.',
   'legal.privacy.s4.p2':
     'Chỉ người dùng đã đăng nhập mới có thể truy cập thông tin tài khoản và lịch sử trò chuyện của chính mình.',
 

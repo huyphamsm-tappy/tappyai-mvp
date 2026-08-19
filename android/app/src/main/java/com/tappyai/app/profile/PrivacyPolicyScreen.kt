@@ -56,6 +56,23 @@ fun PrivacyPolicyScreen(onBack: () -> Unit) {
                 body = "This policy may be updated from time to time. Any changes will be " +
                     "reflected in the new version of this page.",
             ),
+            // The app declares exactly two runtime permissions (RECORD_AUDIO and
+            // POST_NOTIFICATIONS) and neither was described anywhere in this policy. The
+            // microphone one matters most: voice input goes through Android's SpeechRecognizer,
+            // which is a platform service that transcribes off-device, so audio leaves the phone
+            // and a policy that never mentions it is incomplete rather than merely terse.
+            LegalSection(
+                title = stringResource(R.string.legal_privacy_section7_title),
+                body = "TappyAI asks for two device permissions, both optional and only when " +
+                    "you first use the feature that needs them. The microphone is used solely " +
+                    "for voice input in chat: speech is transcribed by your device's Android " +
+                    "speech service, which may process the audio on Google's servers under " +
+                    "Google's own privacy policy, and TappyAI receives only the resulting text " +
+                    "— it does not record, store, or upload audio itself. Notifications are used " +
+                    "to send you reminders and updates you have asked for; declining them leaves " +
+                    "every other part of the app working. You can revoke either permission at " +
+                    "any time in Android Settings.",
+            ),
         ),
         onBack = onBack,
     )
