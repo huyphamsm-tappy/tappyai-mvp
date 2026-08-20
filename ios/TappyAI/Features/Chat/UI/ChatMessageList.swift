@@ -360,7 +360,7 @@ private struct ChatErrorBanner: View {
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.primary)
                         Button(action: onLogin) {
-                            Text("Đăng nhập để tiếp tục")
+                            Text("chat.signInToContinue")
                                 .font(TappyFont.caption)
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, Spacing.sm)
@@ -375,7 +375,7 @@ private struct ChatErrorBanner: View {
                     .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
 
                 case .freeLimitReached:
-                    Text("Bạn đã dùng hết số tin nhắn miễn phí hôm nay. Hẹn gặp lại bạn vào ngày mai nhé! 🌅")
+                    Text("chat.dailyLimitReached")
                         .font(TappyFont.callout)
                         .foregroundStyle(TappyColor.secondary)
                         .padding(Spacing.sm)
@@ -393,7 +393,7 @@ private struct ChatErrorBanner: View {
                             HStack(spacing: Spacing.xxs) {
                                 Image(systemName: "arrow.counterclockwise")
                                     .font(.caption)
-                                Text("Thử lại")
+                                Text("common.retry.action")
                                     .font(TappyFont.caption)
                             }
                             .foregroundStyle(.white)

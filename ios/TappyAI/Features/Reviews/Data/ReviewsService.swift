@@ -30,6 +30,24 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: FeedResponse.self)
     }
 
+    // MARK: - The author's own posts
+
+    /// `GET /api/reviews/mine` — every post this user has made, INCLUDING ones they hid and ones
+    /// the safety gate did not publish.
+    ///
+    /// A separate endpoint from the feed, not a feed parameter, and the difference matters:
+    /// `/api/reviews/feed?userId=` excludes hidden rows even for their owner, so it can never be
+    /// the author's own view. This route is self-scoped server-side from the verified session, so
+    /// there is no caller-supplied id to get wrong.
+    ///
+    /// 🚨 This is the ONLY endpoint that returns `Review.moderation` for every row, which is what
+    /// tells an author WHY a post of theirs is not public. Without it the composer's one-time
+    /// notice is the only place they are ever told, and it is gone as soon as it is dismissed.
+    func fetchMyReviews() async throws -> FeedResponse {
+        let endpoint = Endpoint(path: "/api/reviews/mine", method: .get, requiresAuth: true)
+        return try await api.send(endpoint, as: FeedResponse.self)
+    }
+
     // MARK: - Like toggle
 
     func toggleLike(reviewId: String) async throws -> LikeResponse {

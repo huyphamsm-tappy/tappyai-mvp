@@ -26,7 +26,7 @@ struct ReviewCommentSheet: View {
                         Image(systemName: "bubble.left.and.bubble.right")
                             .font(.system(size: 40))
                             .foregroundStyle(TappyColor.textSecondary)
-                        Text("Chưa có bình luận")
+                        Text("review.comments.empty")
                             .font(TappyFont.headline)
                             .foregroundStyle(TappyColor.textPrimary)
                         Text("Hãy là người đầu tiên bình luận!")

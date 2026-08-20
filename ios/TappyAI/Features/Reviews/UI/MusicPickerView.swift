@@ -18,11 +18,11 @@ struct MusicPickerView: View {
                     browsePanel
                 }
             }
-            .navigationTitle("Chọn nhạc nền")
+            .navigationTitle("music.picker.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Đóng") {
+                    Button("common.close") {
                         audioPlayer.stop()
                         vm.closeMusicPicker()
                     }
@@ -50,7 +50,7 @@ struct MusicPickerView: View {
         HStack(spacing: Spacing.sm) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(TappyColor.textSecondary)
-            TextField("Tìm nhạc...", text: Binding(
+            TextField("music.search.placeholder", text: Binding(
                 get: { vm.musicSearchQuery },
                 set: { vm.searchMusic($0) }
             ))
@@ -76,7 +76,7 @@ struct MusicPickerView: View {
     private var categoryTabs: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Spacing.xs) {
-                categoryPill("Tất cả", id: nil)
+                categoryPill(NSLocalizedString("common.all", comment: ""), id: nil)
                 ForEach(vm.musicCategories) { cat in
                     categoryPill(cat.label, id: cat.id)
                 }
@@ -119,7 +119,7 @@ struct MusicPickerView: View {
                         Image(systemName: "music.note.list")
                             .font(.system(size: 36))
                             .foregroundStyle(TappyColor.textSecondary)
-                        Text("Không tìm thấy nhạc")
+                        Text("music.notFound")
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.textSecondary)
                     }
@@ -129,7 +129,7 @@ struct MusicPickerView: View {
                     }
 
                     if !isSearching && vm.musicHasMore {
-                        Button("Tải thêm") {
+                        Button("common.loadMore") {
                             vm.loadMoreMusic()
                         }
                         .font(TappyFont.callout)
@@ -264,7 +264,7 @@ struct MusicPickerView: View {
 
             VStack(spacing: Spacing.xxs) {
                 HStack {
-                    Text("Vị trí bắt đầu")
+                    Text("music.startPosition")
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                     Spacer()
@@ -285,7 +285,7 @@ struct MusicPickerView: View {
 
             VStack(spacing: Spacing.xxs) {
                 HStack {
-                    Text("Âm lượng")
+                    Text("music.volume")
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                     Spacer()
@@ -302,7 +302,7 @@ struct MusicPickerView: View {
                 audioPlayer.stop()
                 vm.selectMusic(selection)
             } label: {
-                Text("Chọn nhạc này")
+                Text("music.useThis")
                     .font(TappyFont.button)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)

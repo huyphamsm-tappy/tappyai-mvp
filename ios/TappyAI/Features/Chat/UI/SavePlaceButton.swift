@@ -54,7 +54,7 @@ struct SavePlaceButton: View {
                 placeName = ContentParser.detectFirstPlaceName(text: text, buttons: buttons)
                 isOpen = true
             } label: {
-                Text("🔖 Lưu địa điểm")
+                Text("chat.savePlace")
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                     .padding(.horizontal, 6)

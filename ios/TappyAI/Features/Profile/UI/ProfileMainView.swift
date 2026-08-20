@@ -147,9 +147,13 @@ struct ProfileMainView: View {
                     menuRow(icon: "link", label: "Kết nối", desc: "Liên kết ứng dụng bên ngoài", dest: .integrations)
                     Divider().padding(.leading, 52)
                 }
-                menuRow(icon: "star", label: "Bài đánh giá", desc: "Xem các review bạn đã viết", dest: nil, action: {
-                    router.switchTo(.explore)
-                })
+                // 🚨 Was `router.switchTo(.explore)`, which took "xem các review BẠN đã viết" to
+                // the PUBLIC feed — everyone's posts, and by construction none of the author's own
+                // held ones, since the gate keeps those out of Explore. The row promised the
+                // author's own posts and delivered the opposite. `.myPosts` is that screen.
+                menuRow(icon: "star", label: "Bài đánh giá", desc: "Xem các review bạn đã viết", dest: .myPosts)
+                Divider().padding(.leading, 52)
+                menuRow(icon: "bell", label: "Thông báo", desc: "Lượt thích, bình luận & nhắc nhở", dest: .notificationsInbox)
                 Divider().padding(.leading, 52)
                 menuRow(icon: "person.3", label: "Ăn nhóm", desc: "Tạo nhóm đi ăn cùng bạn bè", dest: nil, action: {
                     openGroupDining()

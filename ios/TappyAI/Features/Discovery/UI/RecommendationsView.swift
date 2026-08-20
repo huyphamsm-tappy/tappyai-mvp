@@ -28,7 +28,7 @@ struct RecommendationsView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("✨ Gợi ý cho bạn")
+        .navigationTitle("recommendations.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadRecommendations() }
     }
@@ -77,10 +77,10 @@ struct RecommendationsView: View {
         VStack(spacing: Spacing.md) {
             Text("🤖")
                 .font(.system(size: 48))
-            Text("Chưa đủ dữ liệu để gợi ý.")
+            Text("recommendations.empty.title")
                 .font(.system(size: 14))
                 .foregroundStyle(TappyColor.textSecondary)
-            Text("Dùng Tappy nhiều hơn (chat, lưu địa điểm, review) để Tappy hiểu bạn rõ hơn nhé!")
+            Text("recommendations.empty.detail")
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
                 .multilineTextAlignment(.center)
@@ -156,7 +156,7 @@ struct RecommendationsView: View {
                             HStack(spacing: 4) {
                                 Image(systemName: "bubble.left.fill")
                                     .font(.system(size: 10))
-                                Text("Hỏi Tappy về chỗ này")
+                                Text("recommendations.askAboutPlace")
                                     .font(.system(size: 11, weight: .medium))
                             }
                             .foregroundStyle(TappyColor.primary)

@@ -143,7 +143,7 @@ struct ServiceDetailView: View {
                         .background(Color.purple.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Mức giá")
+                        Text("service.priceLevel")
                             .font(TappyFont.caption)
                             .foregroundStyle(TappyColor.textSecondary)
                         Text(service.price)
@@ -221,7 +221,7 @@ struct ServiceDetailView: View {
 
     private var myBookingsCard: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Lịch đặt của bạn")
+            Text("service.yourBookings")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
             ForEach(bookings) { b in
@@ -262,7 +262,7 @@ struct ServiceDetailView: View {
     private var communityReviewsCard: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
             HStack {
-                Text("Đánh giá từ TappyAI")
+                Text("service.tappyReview")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(TappyColor.textPrimary)
                 Spacer()
@@ -317,7 +317,7 @@ struct ServiceDetailView: View {
         return Group {
             if !links.isEmpty {
                 VStack(alignment: .leading, spacing: Spacing.sm) {
-                    Text("Đặt qua nền tảng")
+                    Text("service.bookVia")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(TappyColor.textPrimary)
                     ForEach(links) { link in

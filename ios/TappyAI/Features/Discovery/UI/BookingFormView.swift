@@ -57,11 +57,11 @@ struct BookingFormView: View {
                 .font(.system(size: 40))
                 .foregroundStyle(.green)
 
-            Text("Đặt chỗ thành công! 🎉")
+            Text("booking.success")
                 .font(.system(size: 15, weight: .bold))
                 .foregroundStyle(TappyColor.textPrimary)
 
-            Text("Chúng tôi sẽ liên hệ xác nhận với bạn sớm nhất.")
+            Text("booking.success.detail")
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
                 .multilineTextAlignment(.center)
@@ -91,7 +91,7 @@ struct BookingFormView: View {
                 HStack(spacing: Spacing.sm) {
                     Image(systemName: "square.and.arrow.up")
                         .font(.system(size: 14))
-                    Text("Chia sẻ xác nhận")
+                    Text("booking.share")
                         .font(.system(size: 14, weight: .bold))
                 }
                 .frame(maxWidth: .infinity)
@@ -123,7 +123,7 @@ struct BookingFormView: View {
                 Image(systemName: "calendar")
                     .font(.system(size: 15))
                     .foregroundStyle(TappyColor.primary)
-                Text("Đặt chỗ ngay")
+                Text("booking.bookNow")
                     .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(TappyColor.textPrimary)
             }
@@ -149,7 +149,7 @@ struct BookingFormView: View {
             }
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
-                Text("Giờ (tùy chọn)")
+                Text("booking.timeOptional")
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -226,7 +226,7 @@ struct BookingFormView: View {
                         ProgressView()
                             .tint(.white)
                     } else {
-                        Text("✅ Xác nhận đặt chỗ")
+                        Text("booking.confirm")
                             .font(.system(size: 14, weight: .bold))
                     }
                 }
@@ -240,7 +240,7 @@ struct BookingFormView: View {
             .disabled(loading)
             .opacity(loading ? 0.6 : 1)
 
-            Text("Sau khi đặt, cơ sở sẽ liên hệ xác nhận với bạn")
+            Text("booking.confirmNote")
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
                 .frame(maxWidth: .infinity)

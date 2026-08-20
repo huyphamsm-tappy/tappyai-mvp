@@ -124,10 +124,10 @@ struct HomeAIEntrySection: View {
                     Text("🤖")
                         .font(.system(size: 36))
                     VStack(alignment: .leading, spacing: Spacing.xxs) {
-                        Text("Hỏi Tappy")
+                        Text("home.askTappy")
                             .font(TappyFont.headline)
                             .foregroundStyle(TappyColor.textPrimary)
-                        Text("Trợ lý AI cho cuộc sống hàng ngày")
+                        Text("home.askTappy.subtitle")
                             .font(TappyFont.footnote)
                             .foregroundStyle(TappyColor.textSecondary)
                     }

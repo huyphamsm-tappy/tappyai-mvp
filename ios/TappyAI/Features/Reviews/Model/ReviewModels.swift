@@ -42,11 +42,15 @@ struct Review: Codable, Sendable, Identifiable, Hashable {
     /// against the requested one. So a row carrying this is a row about the reader's own post,
     /// and a row without it says nothing about anyone else's.
     ///
-    /// 🔴 iOS has no own-posts screen yet, so nothing renders this today. It is decoded now
-    /// because the field is part of the response contract the other two clients already honour,
-    /// and because the screen that will render it (V2 iOS parity) must not have to rediscover
-    /// that a post can exist without being public.
+    /// Rendered by `MyPostsView`, which is the author's own view of their posts.
     let moderation: ReviewModeration?
+    /// The author hid this themselves.
+    ///
+    /// 🚨 NOT the same thing as [moderation]. Hiding is the author's OWN choice and they can undo
+    /// it; a moderation hold is the platform's and they cannot. Presenting one as the other would
+    /// tell someone their post is hidden by their own hand when it is not. Only
+    /// `GET /api/reviews/mine` returns this — the public feed excludes hidden rows entirely.
+    let isHidden: Bool?
 
     var isVideo: Bool {
         contentType == "video" && mediaUrl != nil

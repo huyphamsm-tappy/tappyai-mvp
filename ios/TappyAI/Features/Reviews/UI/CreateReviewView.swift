@@ -88,10 +88,10 @@ struct CreateReviewView: View {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 64))
                 .foregroundStyle(TappyColor.success)
-            Text("Đã đăng bài!")
+            Text("review.posted.title")
                 .font(TappyFont.title)
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Cảm ơn bạn đã chia sẻ")
+            Text("review.posted.subtitle")
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
             Spacer()
@@ -134,7 +134,7 @@ struct CreateReviewView: View {
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Bài viết mới")
+                    Text("review.new.title")
                         .font(TappyFont.bodyEmphasis)
                         .foregroundStyle(TappyColor.textPrimary)
                 }
@@ -147,7 +147,7 @@ struct CreateReviewView: View {
                                 .background(TappyColor.primary.opacity(0.6))
                                 .clipShape(Capsule())
                         } else {
-                            Text("Đăng")
+                            Text("review.post")
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, Spacing.lg)
@@ -244,7 +244,7 @@ struct CreateReviewView: View {
                             Image(systemName: "camera")
                                 .font(.system(size: 36))
                                 .foregroundStyle(TappyColor.textSecondary)
-                            Text("Thêm ảnh")
+                            Text("review.addPhoto")
                                 .font(TappyFont.callout)
                                 .foregroundStyle(TappyColor.textSecondary)
                             Text("Tối đa \(UploadLimits.maxPhotosPerReview) ảnh")
@@ -342,7 +342,7 @@ struct CreateReviewView: View {
                         Image(systemName: "video")
                             .font(.system(size: 36))
                             .foregroundStyle(TappyColor.textSecondary)
-                        Text("Chọn video")
+                        Text("review.pickVideo")
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.textSecondary)
                         Text("review.video.limitHint")
@@ -426,7 +426,7 @@ struct CreateReviewView: View {
                         HStack(spacing: Spacing.xxs) {
                             Image(systemName: "xmark.circle")
                                 .font(.system(size: 14))
-                            Text("Hủy")
+                            Text("common.cancel")
                                 .font(TappyFont.caption)
                         }
                         .foregroundStyle(TappyColor.textSecondary)
@@ -437,7 +437,7 @@ struct CreateReviewView: View {
                         HStack(spacing: Spacing.xxs) {
                             Image(systemName: "xmark.circle")
                                 .font(.system(size: 14))
-                            Text("Hủy")
+                            Text("common.cancel")
                                 .font(TappyFont.caption)
                         }
                         .foregroundStyle(TappyColor.textSecondary)
@@ -482,11 +482,11 @@ struct CreateReviewView: View {
                 .clipShape(RoundedRectangle(cornerRadius: Radius.xl, style: .continuous))
             }
             HStack {
-                Text("Video đã tải lên")
+                Text("review.video.uploaded")
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
-                Button("Xóa") { vm.removeVideo() }
+                Button("common.delete") { vm.removeVideo() }
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.danger)
             }
@@ -546,7 +546,7 @@ struct CreateReviewView: View {
             if vm.fetchingMeta {
                 HStack(spacing: Spacing.xs) {
                     ProgressView().tint(TappyColor.textSecondary)
-                    Text("Đang tải thông tin...")
+                    Text("common.loading")
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -620,7 +620,7 @@ struct CreateReviewView: View {
                 .scrollContentBackground(.hidden)
                 .overlay(alignment: .topLeading) {
                     if vm.body.isEmpty {
-                        Text("Chia sẻ trải nghiệm, cảm nhận của bạn...")
+                        Text("review.body.placeholder")
                             .font(TappyFont.body)
                             .foregroundStyle(TappyColor.textSecondary.opacity(0.6))
                             .padding(.top, 8)
@@ -703,7 +703,7 @@ struct CreateReviewView: View {
                                 .foregroundStyle(TappyColor.textSecondary)
                         }
                     } else {
-                        Text("Thêm đánh giá sao")
+                        Text("review.addRating")
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.primary)
                     }
@@ -736,7 +736,7 @@ struct CreateReviewView: View {
                         Image(systemName: "music.note")
                             .font(.system(size: 14))
                             .foregroundStyle(TappyColor.primary)
-                        Text("Thêm nhạc nền")
+                        Text("review.addMusic")
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.primary)
                     }

@@ -128,6 +128,10 @@ struct PlaceholderShellView: View {
                         TermsOfServiceView()
                     case .howToUse:
                         HowToUseView()
+                    case .myPosts:
+                        MyPostsView(deps: deps)
+                    case .notificationsInbox:
+                        NotificationsInboxView(deps: deps)
                     }
                 }
         default:

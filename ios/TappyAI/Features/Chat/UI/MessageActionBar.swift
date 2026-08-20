@@ -101,13 +101,13 @@ struct MessageActionBar: View {
                     Button {
                         UIPasteboard.general.string = TTSManager.stripMarkdown(text)
                     } label: {
-                        Label("Copy Plaintext", systemImage: "doc.plaintext")
+                        Label("chat.copyPlaintext", systemImage: "doc.plaintext")
                     }
 
                     Button {
                         UIPasteboard.general.string = msgId
                     } label: {
-                        Label("Copy ID", systemImage: "number")
+                        Label("chat.copyId", systemImage: "number")
                     }
 
                     Divider()

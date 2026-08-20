@@ -57,7 +57,7 @@ struct ImageZoomView: View {
                         .aspectRatio(contentMode: .fit)
                         .clipShape(RoundedRectangle(cornerRadius: Radius.sm))
                 case .failure:
-                    Text("Không tải được ảnh")
+                    Text("chat.image.loadFailed")
                         .foregroundStyle(.white)
                 case .empty:
                     ProgressView().tint(.white)
