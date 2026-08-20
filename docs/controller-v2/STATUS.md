@@ -828,6 +828,34 @@ The other two: widening the MAU window survived because the activity **pre-filte
 
 ---
 
+### Phase 8 — Module 04 User Analytics: **3 of 5 sections shipped** (2026-08-20)
+
+Merge `81bfa06` ([PR #126](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/126)). **No migration** — everything reads already-rolled-up tables.
+
+**The "M04 needs no new table" assumption was wrong, and measuring it was the point.** Retention D1/D7/D30 requires `cohort_metrics`, whose authoritative DDL is `04` §7 and which **does not exist**. That is a production migration with its own Owner authorization, so retention is not in this release — not faked, and not computed live off raw events behind §8's back.
+
+| M04 section | Source | Shipped |
+|---|---|---|
+| Growth — total / new / MoM | `daily_snapshots` (M01) | ✅ |
+| Engagement — DAU/WAU/MAU, stickiness | `daily_snapshots` | ✅ |
+| Subscription funnel — free / Pro / conversion | `subscriptions` | ✅ |
+| Demographics · acquisition | `user_acquisition` | ✅ **already served by `analytics/auth`** — not re-implemented |
+| Retention cohorts | `cohort_metrics` | 🔴 **table absent — needs its own migration authorization** |
+| Churn rate | — | ⚠️ **UNDEFINED** — no authoritative definition of churn |
+| Sessions · average duration | `user_events.session_id` | ⚠️ **UNDEFINED** — events carry no session END |
+
+The three absent sections are **named on the page itself**, so an operator learns why a section is missing rather than concluding the module is broken.
+
+**Three rules, each pinned by tests:** no data is not zero · **a ratio with no denominator is UNDEFINED, not zero** — stickiness with `MAU = 0` and conversion with no users both return `null`, never `0%`, `NaN` or `Infinity` · a period-over-period rate needs two **adjacent** periods, compared at each month's **last** day.
+
+New permission `analytics.users.read`, all four roles per `12_RBAC` §3. `REGISTRY_VERSION` → `2026-08-20.3`. Module order 40, so no existing analytics surface moved.
+
+**Mutation 21/21 killed.** One survived first and generalised a real gap: an unknown icon name falls back to `HelpCircle` **silently**, and the guard added for Module 08 covered only Module 08. It now runs across the whole registry — the same generalisation the i18n label guard received.
+
+⏳ **Insufficient production data for behavioural verification.** `daily_snapshots` holds 0 rows until the first post-migration cron run at **00:05 VN on 2026-08-21**, so growth and engagement correctly render the empty state. No data was fabricated.
+
+---
+
 ## Master completion burn-down (2026-08-20)
 
 Measured from the repository at `3a825c2`, not from the entries above.
@@ -837,7 +865,7 @@ Measured from the repository at `3a825c2`, not from the entries above.
 | **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
 
 | **Phase 8 — hubs** — ~~`user`~~ ✅ registered · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 4 | 4 | 2 | **0** |
-| **Phase 8 — modules** — 11 not started · ~~01 stub~~ ✅ **COMPLETE** · 04 partial · ~~08 unregistered~~ ✅ **COMPLETE** · 17 + 20 ambiguous | 16 | 16 | 3 | **0** |
+| **Phase 8 — modules** — 11 not started · ~~01 stub~~ ✅ · 04 **3/5 shipped; retention needs a migration** · ~~08~~ ✅ · 17 + 20 ambiguous | 16 | 16 | 4 | **0** |
 | **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · ~~K-6 B8~~ ✅ (migration awaiting production apply) · K-7 guard §1.1–1.3 · K-8 `module_registry` | 6 | 4 | 2 | **0** |
 | **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
 | **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |
