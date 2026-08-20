@@ -61,10 +61,17 @@ export const vi: Record<string, string> = {
 
   // ── Module 04 User Analytics ──────────────────────────────────────────────
   'admin.userAnalytics.title': 'Phân tích người dùng',
-  'admin.userAnalytics.subtitle': 'Tăng trưởng, mức độ gắn bó và phễu chuyển đổi gói Pro.',
+  'admin.userAnalytics.subtitle': 'Tăng trưởng, mức độ gắn bó, giữ chân theo nhóm và phễu chuyển đổi gói Pro.',
   'admin.userAnalytics.tab.growth': 'Tăng trưởng',
   'admin.userAnalytics.tab.engagement': 'Gắn bó',
   'admin.userAnalytics.tab.funnel': 'Phễu đăng ký',
+  'admin.userAnalytics.tab.retention': 'Giữ chân',
+  'admin.userAnalytics.retention.cohort': 'Nhóm đăng ký',
+  'admin.userAnalytics.retention.size': 'Số người',
+  'admin.userAnalytics.retention.notMeasurable':
+    'Chưa đo được — nhóm rỗng, hoặc ngày mốc chưa kết thúc. Đây không phải 0%.',
+  'admin.userAnalytics.retention.method':
+    'Giữ chân theo mốc (bracket): hoạt động đúng vào ngày C+1, C+7, C+30 — không phải "bất kỳ ngày nào sau đó". Ngày tính theo lịch Việt Nam.',
   'admin.userAnalytics.growth.total': 'Tổng người dùng',
   'admin.userAnalytics.growth.new': 'Người dùng mới',
   'admin.userAnalytics.growth.mom': 'Tăng trưởng so với tháng trước',
@@ -81,7 +88,8 @@ export const vi: Record<string, string> = {
   'admin.userAnalytics.empty': 'Chưa có số liệu. Tác vụ tổng hợp hằng ngày chưa chạy lần nào — đây không phải là con số 0.',
   'admin.userAnalytics.error': 'Không đọc được số liệu. Bảng tổng hợp hiện không truy cập được.',
   'admin.userAnalytics.notShipped.title': 'Chưa có trong bản này',
-  'admin.userAnalytics.notShipped.retention': 'Giữ chân D1/D7/D30 — cần bảng cohort_metrics, chưa tồn tại.',
+  'admin.userAnalytics.notShipped.rollingRetention':
+    'Giữ chân cộng dồn (hoạt động bất kỳ ngày nào từ C+N) — cần bảng user_active_days, chưa tồn tại.',
   'admin.userAnalytics.notShipped.churn': 'Tỷ lệ rời bỏ — chưa có định nghĩa chính thức.',
   'admin.userAnalytics.notShipped.session': 'Thời lượng phiên — sự kiện không ghi thời điểm kết thúc phiên.',
   // ── Module 01 Home Dashboard — business KPIs from daily_snapshots ─────────
@@ -422,10 +430,18 @@ export const en: Record<string, string> = {
 
   // ── Module 04 User Analytics ──────────────────────────────────────────────
   'admin.userAnalytics.title': 'User Analytics',
-  'admin.userAnalytics.subtitle': 'Growth, engagement and the free-to-Pro conversion funnel.',
+  'admin.userAnalytics.subtitle':
+    'Growth, engagement, cohort retention and the free-to-Pro conversion funnel.',
   'admin.userAnalytics.tab.growth': 'Growth',
   'admin.userAnalytics.tab.engagement': 'Engagement',
   'admin.userAnalytics.tab.funnel': 'Subscription funnel',
+  'admin.userAnalytics.tab.retention': 'Retention',
+  'admin.userAnalytics.retention.cohort': 'Signup cohort',
+  'admin.userAnalytics.retention.size': 'Users',
+  'admin.userAnalytics.retention.notMeasurable':
+    'Not measurable yet — the cohort is empty, or that day has not closed. This is not 0%.',
+  'admin.userAnalytics.retention.method':
+    'Classic (bracket) retention: active on exactly day C+1, C+7, C+30 — not "any day after". Days are Vietnam calendar days.',
   'admin.userAnalytics.growth.total': 'Total users',
   'admin.userAnalytics.growth.new': 'New users',
   'admin.userAnalytics.growth.mom': 'Month-over-month growth',
@@ -442,7 +458,8 @@ export const en: Record<string, string> = {
   'admin.userAnalytics.empty': 'No measurements yet. The daily rollup has not run — this is not a zero.',
   'admin.userAnalytics.error': 'Metrics could not be read. The rollup table is unreachable.',
   'admin.userAnalytics.notShipped.title': 'Not in this release',
-  'admin.userAnalytics.notShipped.retention': 'D1/D7/D30 retention — needs the cohort_metrics table, which does not exist.',
+  'admin.userAnalytics.notShipped.rollingRetention':
+    'Rolling retention (active on any day from C+N) — needs the user_active_days table, which does not exist.',
   'admin.userAnalytics.notShipped.churn': 'Churn rate — no authoritative definition exists.',
   'admin.userAnalytics.notShipped.session': 'Session duration — events carry no session end.',
   // ── Module 01 Home Dashboard — business KPIs from daily_snapshots ─────────

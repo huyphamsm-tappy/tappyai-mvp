@@ -17,3 +17,27 @@ export function reconcileWindow(vnTodayStr: string, days: number): { from: strin
   const from = d.toISOString().slice(0, 10)
   return { from, to }
 }
+
+/** The longest retention milestone Module 04 measures (`04` §3.3: D1/D7/D30). */
+const MAX_RETENTION_OFFSET = 30
+
+/**
+ * The COHORT window to recompute on a run whose activity window is
+ * `reconcileWindow(vnTodayStr, days)`.
+ *
+ * A cohort's row changes on any day one of its milestones falls in the
+ * reconciled range, so the range has to be walked BACKWARDS by the longest
+ * milestone: a cohort from 30 days ago reaches D30 today. Stopping at the
+ * activity window would recompute only the newest cohorts, whose D7 and D30 are
+ * the ones still unmeasurable — i.e. exactly the rows that never change.
+ *
+ * The upper bound stays `vnToday` rather than yesterday so a cohort that
+ * registered today still gets a row. It carries no measurable rate yet, and an
+ * absent row and an empty one are different facts.
+ */
+export function cohortWindow(vnTodayStr: string, days: number): { from: string; to: string } {
+  const { from: activityFrom, to } = reconcileWindow(vnTodayStr, days)
+  const d = new Date(`${activityFrom}T00:00:00Z`)
+  d.setUTCDate(d.getUTCDate() - MAX_RETENTION_OFFSET)
+  return { from: d.toISOString().slice(0, 10), to }
+}
