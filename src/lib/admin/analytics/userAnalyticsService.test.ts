@@ -4,7 +4,9 @@ import {
   deriveGrowth,
   deriveEngagement,
   deriveFunnel,
+  deriveRetention,
   userAnalyticsService,
+  type CohortRow,
   type GrowthRow,
   type SubscriptionRow,
 } from './userAnalyticsService'
@@ -190,6 +192,93 @@ describe('the subscription funnel counts only ACTIVE pro', () => {
   })
 })
 
+// ── Retention ───────────────────────────────────────────────────────────────
+//
+// The derivation layer for retention is deliberately THIN. `cohort_metrics`
+// already holds the decided rates, and the rollup is the only thing that knows
+// which milestone days have closed — so this layer reads them VERBATIM. The
+// tests below are mostly about the things it must NOT do.
+
+const cohortRow = (over: Partial<CohortRow> = {}): CohortRow => ({
+  cohort_date: '2026-08-01',
+  cohort_size: 100,
+  d1_retained: 40,
+  d7_retained: 20,
+  d30_retained: 10,
+  d1_rate: 0.4,
+  d7_rate: 0.2,
+  d30_rate: 0.1,
+  ...over,
+})
+
+describe('retention — the stored rate is read, never recomputed', () => {
+  it('an empty table is EMPTY, not a table of zero cohorts', () => {
+    expect(deriveRetention([]).status).toBe('empty')
+  })
+
+  it('maps a cohort onto its three milestones', () => {
+    const r = deriveRetention([cohortRow()])
+    expect(r.status).toBe('ok')
+    expect(r.cohorts[0]).toEqual({
+      cohortDate: '2026-08-01',
+      cohortSize: 100,
+      d1: { retained: 40, rate: 0.4 },
+      d7: { retained: 20, rate: 0.2 },
+      d30: { retained: 10, rate: 0.1 },
+    })
+  })
+
+  it('🔑 a NULL rate stays NULL even though retained/size would divide cleanly', () => {
+    // 40/100 = 0.4 is computable here, and computing it would be WRONG: the
+    // rollup returned NULL because that milestone day has not closed. This is
+    // the assertion that keeps a second definition of retention out of the
+    // codebase.
+    const r = deriveRetention([cohortRow({ d1_rate: null })])
+    expect(r.cohorts[0].d1.rate).toBeNull()
+    expect(r.cohorts[0].d1.retained).toBe(40) // the count was still measured
+  })
+
+  it('🔑 a zero rate is preserved as 0, not flattened to null', () => {
+    // The mirror image: nobody came back IS a measurement. Treating 0 as
+    // "missing" would hide the worst-performing cohorts entirely.
+    const r = deriveRetention([cohortRow({ d1_rate: 0, d1_retained: 0 })])
+    expect(r.cohorts[0].d1.rate).toBe(0)
+  })
+
+  it('a numeric arriving as a STRING is parsed', () => {
+    expect(deriveRetention([cohortRow({ d7_rate: '0.2500' })]).cohorts[0].d7.rate).toBe(0.25)
+  })
+
+  it('an unparseable rate becomes NULL, never NaN', () => {
+    const r = deriveRetention([cohortRow({ d7_rate: 'not-a-number' })])
+    expect(r.cohorts[0].d7.rate).toBeNull()
+  })
+
+  it('cohorts are returned oldest-first regardless of arrival order', () => {
+    const r = deriveRetention([
+      cohortRow({ cohort_date: '2026-08-03' }),
+      cohortRow({ cohort_date: '2026-08-01' }),
+      cohortRow({ cohort_date: '2026-08-02' }),
+    ])
+    expect(r.cohorts.map((c) => c.cohortDate)).toEqual(['2026-08-01', '2026-08-02', '2026-08-03'])
+  })
+
+  it('an empty cohort keeps its zero size and null rates', () => {
+    const r = deriveRetention([
+      cohortRow({ cohort_size: 0, d1_retained: 0, d7_retained: 0, d30_retained: 0, d1_rate: null, d7_rate: null, d30_rate: null }),
+    ])
+    expect(r.cohorts[0].cohortSize).toBe(0)
+    expect([r.cohorts[0].d1.rate, r.cohorts[0].d7.rate, r.cohorts[0].d30.rate]).toEqual([null, null, null])
+  })
+
+  it('carries no field that could identify a user', () => {
+    const shape = JSON.stringify(deriveRetention([cohortRow()]))
+    for (const pii of ['email', 'user_id', 'userId', 'full_name', 'name']) {
+      expect(shape).not.toContain(pii)
+    }
+  })
+})
+
 describe('reading — an unreachable table is not an empty one', () => {
   function client(result: { data: unknown; error: { message: string } | null } | Error): SupabaseClient {
     const terminal = () => (result instanceof Error ? Promise.reject(result) : Promise.resolve(result))
@@ -222,5 +311,26 @@ describe('reading — an unreachable table is not an empty one', () => {
   it('a successful empty read is EMPTY — the distinction survives the query layer', async () => {
     const g = await userAnalyticsService.getGrowth(client({ data: [], error: null }), {})
     expect(g.status).toBe('empty')
+  })
+
+  it('an unreachable cohort_metrics is ERROR, not "no cohorts yet"', async () => {
+    // Before the migration is applied this table does not exist at all, so the
+    // difference between "absent" and "empty" is not hypothetical here.
+    const r = await userAnalyticsService.getRetention(
+      client({ data: null, error: { message: 'relation "cohort_metrics" does not exist' } }),
+      {}
+    )
+    expect(r.status).toBe('error')
+    expect(r.cohorts).toEqual([])
+  })
+
+  it('a thrown failure reading cohorts is ERROR and does not propagate', async () => {
+    const r = await userAnalyticsService.getRetention(client(new Error('socket closed')), {})
+    expect(r.status).toBe('error')
+  })
+
+  it('an empty cohort_metrics is EMPTY — the rollup has not run yet', async () => {
+    const r = await userAnalyticsService.getRetention(client({ data: [], error: null }), {})
+    expect(r.status).toBe('empty')
   })
 })

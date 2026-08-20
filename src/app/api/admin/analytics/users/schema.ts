@@ -8,7 +8,7 @@ const dateStr = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'expected YYYY-MM-DD')
 
 export const UserAnalyticsQuerySchema = z
   .object({
-    view: z.enum(['growth', 'engagement', 'funnel']).default('growth'),
+    view: z.enum(['growth', 'engagement', 'funnel', 'retention']).default('growth'),
     // VN calendar days. `daily_snapshots.snapshot_date` is already bucketed to
     // Asia/Ho_Chi_Minh by the rollup (ADR-008), so these compare like-for-like
     // and no conversion happens at this boundary.

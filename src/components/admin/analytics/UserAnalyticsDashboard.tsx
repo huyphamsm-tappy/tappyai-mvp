@@ -5,9 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type {
+  CohortPoint,
   EngagementResult,
   FunnelResult,
   GrowthResult,
+  RetentionMilestone,
+  RetentionResult,
 } from '@/lib/admin/analytics/userAnalyticsService'
 
 // Module 04 User Analytics — presentation only.
@@ -22,10 +25,10 @@ import type {
 // `0%`. The server distinguishes all three; this component keeps them
 // distinguishable on screen.
 
-type View = 'growth' | 'engagement' | 'funnel'
-type Payload = GrowthResult | EngagementResult | FunnelResult
+type View = 'growth' | 'engagement' | 'funnel' | 'retention'
+type Payload = GrowthResult | EngagementResult | FunnelResult | RetentionResult
 
-const VIEWS: View[] = ['growth', 'engagement', 'funnel']
+const VIEWS: View[] = ['growth', 'engagement', 'funnel', 'retention']
 
 /** A value that has no denominator renders as an explanation, never as 0%. */
 function Ratio({ value, noneKey }: { value: number | null; noneKey: string }) {
@@ -36,6 +39,63 @@ function Ratio({ value, noneKey }: { value: number | null; noneKey: string }) {
     <span className="text-2xl font-bold tabular-nums text-foreground">
       {value > 0 ? `+${pct}%` : `${pct}%`}
     </span>
+  )
+}
+
+/**
+ * One retention cell. A milestone with no rate shows an em dash and a tooltip,
+ * NOT `0%` — the cohort is empty, or the day has not closed yet. The retained
+ * COUNT is still shown, because that part was measured.
+ */
+function RetentionCell({ m, noneLabel }: { m: RetentionMilestone; noneLabel: string }) {
+  if (m.rate === null) {
+    return (
+      <td className="px-3 py-2 text-right text-muted-foreground tabular-nums" title={noneLabel}>
+        —
+      </td>
+    )
+  }
+  return (
+    <td className="px-3 py-2 text-right tabular-nums text-foreground">
+      {(m.rate * 100).toFixed(1)}%
+      <span className="text-muted-foreground ml-1 text-xs">({m.retained})</span>
+    </td>
+  )
+}
+
+function CohortTable({ cohorts }: { cohorts: readonly CohortPoint[] }) {
+  const { t } = useTranslation()
+  const none = t('admin.userAnalytics.retention.notMeasurable')
+  return (
+    // The table scrolls inside its own box: on a phone the five columns must not
+    // make the whole admin page scroll sideways.
+    <div className="overflow-x-auto">
+      <table className="w-full min-w-[32rem] text-sm">
+        <thead>
+          <tr className="border-border text-muted-foreground border-b text-left">
+            <th className="px-3 py-2 font-medium">{t('admin.userAnalytics.retention.cohort')}</th>
+            <th className="px-3 py-2 text-right font-medium">{t('admin.userAnalytics.retention.size')}</th>
+            <th className="px-3 py-2 text-right font-medium">D1</th>
+            <th className="px-3 py-2 text-right font-medium">D7</th>
+            <th className="px-3 py-2 text-right font-medium">D30</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cohorts.map((c) => (
+            <tr key={c.cohortDate} className="border-border/50 border-b last:border-0">
+              <td className="px-3 py-2 tabular-nums">{c.cohortDate}</td>
+              <td className="px-3 py-2 text-right tabular-nums">{c.cohortSize.toLocaleString()}</td>
+              <RetentionCell m={c.d1} noneLabel={none} />
+              <RetentionCell m={c.d7} noneLabel={none} />
+              <RetentionCell m={c.d30} noneLabel={none} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {/* Which retention is on screen, stated rather than assumed — `25` §4
+          requires the bracket/rolling distinction to be labelled. */}
+      <p className="text-muted-foreground mt-3 text-xs">{t('admin.userAnalytics.retention.method')}</p>
+    </div>
   )
 }
 
@@ -140,6 +200,8 @@ export function UserAnalyticsDashboard() {
                 </div>
               </div>
             </div>
+          ) : view === 'retention' ? (
+            <CohortTable cohorts={(data as RetentionResult).cohorts} />
           ) : view === 'funnel' ? (
             <div className="space-y-4">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -172,7 +234,7 @@ export function UserAnalyticsDashboard() {
         </CardHeader>
         <CardContent>
           <ul className="text-muted-foreground list-disc space-y-1 pl-5 text-sm">
-            <li>{t('admin.userAnalytics.notShipped.retention')}</li>
+            <li>{t('admin.userAnalytics.notShipped.rollingRetention')}</li>
             <li>{t('admin.userAnalytics.notShipped.churn')}</li>
             <li>{t('admin.userAnalytics.notShipped.session')}</li>
           </ul>

@@ -194,6 +194,76 @@ export function deriveFunnel(subs: readonly SubscriptionRow[], totalUsers: numbe
   }
 }
 
+// ── Retention (`cohort_metrics`) ─────────────────────────────────────────────
+
+/** One `cohort_metrics` row as PostgREST returns it. */
+export interface CohortRow {
+  cohort_date: string
+  cohort_size: number
+  d1_retained: number
+  d7_retained: number
+  d30_retained: number
+  // `numeric` arrives as a number, but a string is a documented PostgREST
+  // possibility for wide numerics and costs nothing to accept.
+  d1_rate: number | string | null
+  d7_rate: number | string | null
+  d30_rate: number | string | null
+}
+
+export interface RetentionMilestone {
+  retained: number
+  /** null = not measurable: an empty cohort, or a day that has not closed. */
+  rate: number | null
+}
+
+export interface CohortPoint {
+  cohortDate: string
+  cohortSize: number
+  d1: RetentionMilestone
+  d7: RetentionMilestone
+  d30: RetentionMilestone
+}
+
+export interface RetentionResult {
+  status: AnalyticsStatus
+  cohorts: CohortPoint[]
+}
+
+/**
+ * A stored rate, read VERBATIM.
+ *
+ * Never recomputed from `retained / cohort_size` here. The rollup already
+ * decided whether the rate is measurable — it knows which days have closed, and
+ * this layer does not — so re-deriving it would resurrect the false `0%` for
+ * every cohort whose milestone has not arrived, and would put a second,
+ * disagreeing definition of retention in the codebase.
+ */
+function storedRate(v: number | string | null): number | null {
+  if (v === null || v === undefined) return null
+  const n = typeof v === 'number' ? v : Number(v)
+  return Number.isFinite(n) ? n : null
+}
+
+const milestone = (retained: number, rate: number | string | null): RetentionMilestone => ({
+  retained,
+  rate: storedRate(rate),
+})
+
+export function deriveRetention(rows: readonly CohortRow[]): RetentionResult {
+  if (rows.length === 0) return { status: 'empty', cohorts: [] }
+  const sorted = [...rows].sort((a, b) => a.cohort_date.localeCompare(b.cohort_date))
+  return {
+    status: 'ok',
+    cohorts: sorted.map((r) => ({
+      cohortDate: r.cohort_date,
+      cohortSize: r.cohort_size,
+      d1: milestone(r.d1_retained, r.d1_rate),
+      d7: milestone(r.d7_retained, r.d7_rate),
+      d30: milestone(r.d30_retained, r.d30_rate),
+    })),
+  }
+}
+
 // ── Reads ───────────────────────────────────────────────────────────────────
 
 const SNAPSHOT_COLUMNS = 'snapshot_date, total_users, new_users, returning_users, dau, wau, mau'
@@ -229,7 +299,44 @@ async function readSnapshots(
   }
 }
 
+const COHORT_COLUMNS =
+  'cohort_date, cohort_size, d1_retained, d7_retained, d30_retained, d1_rate, d7_rate, d30_rate'
+
+/** Read the cohort window. Same never-throws contract as `readSnapshots`. */
+async function readCohorts(
+  supabase: SupabaseClient,
+  filter: UserAnalyticsFilter
+): Promise<CohortRow[] | 'error'> {
+  try {
+    let q = supabase
+      .from('cohort_metrics')
+      .select(COHORT_COLUMNS)
+      .eq('platform', 'all')
+      .order('cohort_date', { ascending: false })
+      .limit(400)
+
+    if (filter.from) q = q.gte('cohort_date', filter.from)
+    if (filter.to) q = q.lte('cohort_date', filter.to)
+
+    const { data, error } = await q
+    if (error) {
+      console.error('[analytics][users] cohort read failed:', error.message)
+      return 'error'
+    }
+    return (data ?? []) as CohortRow[]
+  } catch (e) {
+    console.error('[analytics][users] cohort read threw:', e instanceof Error ? e.message : e)
+    return 'error'
+  }
+}
+
 export const userAnalyticsService = {
+  async getRetention(supabase: SupabaseClient, filter: UserAnalyticsFilter): Promise<RetentionResult> {
+    const rows = await readCohorts(supabase, filter)
+    if (rows === 'error') return { status: 'error', cohorts: [] }
+    return deriveRetention(rows)
+  },
+
   async getGrowth(supabase: SupabaseClient, filter: UserAnalyticsFilter): Promise<GrowthResult> {
     const rows = await readSnapshots(supabase, filter)
     if (rows === 'error') return { status: 'error', series: [], momGrowthRate: null }

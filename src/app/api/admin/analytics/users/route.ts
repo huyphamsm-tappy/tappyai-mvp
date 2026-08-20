@@ -4,7 +4,8 @@
 // contract: RBAC → same-origin → rate-limit → validate → service → uniform
 // envelope (21_Coding_Standards §2), matching the auth analytics endpoint.
 //
-// Sources are already-rolled-up tables — `daily_snapshots` and `subscriptions`.
+// Sources are already-rolled-up tables — `daily_snapshots`, `subscriptions` and
+// `cohort_metrics`.
 // No raw event is read here or anywhere downstream: `01_ARCH` §8 requires
 // dashboards to read pre-computed rollups, never live aggregate queries.
 
@@ -47,6 +48,9 @@ export async function GET(req: Request) {
     const data =
       q.view === 'engagement' ? await userAnalyticsService.getEngagement(supabase, filter)
       : q.view === 'funnel' ? await userAnalyticsService.getFunnel(supabase, filter)
+      // Retention reads `cohort_metrics`, whose rates the rollup has already
+      // decided. Nothing is recomputed here.
+      : q.view === 'retention' ? await userAnalyticsService.getRetention(supabase, filter)
       : await userAnalyticsService.getGrowth(supabase, filter)
 
     return Response.json({ data })

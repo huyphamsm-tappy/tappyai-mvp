@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { vnToday } from '@/lib/config/product'
-import { reconcileWindow } from '@/lib/admin/analytics/rollupWindow'
+import { reconcileWindow, cohortWindow } from '@/lib/admin/analytics/rollupWindow'
 import { acquisitionFromSignupEvent, upsertAcquisition, type AuthAnalyticsEvent } from '@/lib/admin/analytics/userAcquisitionService'
 import { evaluateAndUpsertActivation, type RawUserEventRow } from '@/lib/admin/analytics/activationEvaluationRunner'
 import { inCodeActivationRuleProvider } from '@/lib/admin/analytics/activationRuleProvider'
@@ -111,9 +111,29 @@ export async function GET(req: Request) {
     ? { error: null }
     : await supabase.rpc('fn_finalize_daily_snapshots', { p_before: from })
 
+  // 6. cohort_metrics (Module 04 retention) — D1/D7/D30 per registration cohort.
+  //
+  //    `06` §6 specifies a SEPARATE `cohort-rollup` cron at 00:10 UTC. That is
+  //    07:10 VN, seven hours INTO the Vietnamese day it would be measuring, so
+  //    every count would be a partial day that changes by evening. This runs at
+  //    00:05 VN instead, just after a VN day CLOSES — which is what ADR-008 is
+  //    for — and adds no second cron.
+  //
+  //    The cohort window reaches 30 days FURTHER BACK than the activity window:
+  //    a cohort from 30 days ago reaches its D30 milestone inside it. `vnToday`
+  //    is passed explicitly so the function can tell a closed day from an open
+  //    one without consulting the server clock.
+  const cohorts = cohortWindow(vnToday(), RECONCILE_DAYS)
+  const { error: cohortRollupError } = await supabase.rpc('fn_rollup_cohort_metrics', {
+    p_from: cohorts.from,
+    p_to: cohorts.to,
+    p_today: to,
+  })
+
   return NextResponse.json({
     ok: true,
     window: { from, to },
+    cohortWindow: cohorts,
     rollupError: rollupError?.message ?? null,
     signupReadError: signupErr?.message ?? null,
     acquisitionProcessed,
@@ -124,5 +144,6 @@ export async function GET(req: Request) {
     activationRollupError: activationRollupError?.message ?? null,
     snapshotRollupError: snapshotRollupError?.message ?? null,
     snapshotFinalizeError: snapshotFinalizeError?.message ?? null,
+    cohortRollupError: cohortRollupError?.message ?? null,
   })
 }
