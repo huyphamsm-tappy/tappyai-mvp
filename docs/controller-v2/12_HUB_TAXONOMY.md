@@ -25,7 +25,7 @@ Hub ids follow the shipped convention `tappy.hub.<name>` (see [`registry/adminMo
 | **🏠 Founder** `tappy.hub.founder` | Executive KPIs · Revenue · AI Cost · Growth · Alerts · Investor Report | **01** Home Dashboard | ⚠️ stub — `ControllerHome` shows registry counts, not KPIs |
 | | | **05** Business Analytics | ❌ not started |
 | | | **06** Investor Dashboard | ❌ not started |
-| **👥 User** `tappy.hub.user` | Users · Subscriptions · Devices · Sessions · Support · Moderation | **08** User Management | ❌ not started |
+| **👥 User** `tappy.hub.user` | Users · Subscriptions · Devices · Sessions · Support · Moderation | **08** User Management | 🟡 **backend complete, NOT registered** — schema `b474cff`, enforcement `30e78c1`, Admin API `3a825c2`, all live. No manifest, no hub, no page ([STATUS](STATUS.md)) |
 | | | **09** Content Moderation | ❌ not started |
 | | | **11** CRM (User 360) | ❌ not started |
 | | | *Sessions* — C11 | ⚠️ API only (`/api/admin/security/sessions`), no module, no UI |
@@ -43,7 +43,11 @@ Hub ids follow the shipped convention `tappy.hub.<name>` (see [`registry/adminMo
 | **🔒 Security** `tappy.hub.security` | RBAC ✅ · Audit ✅ · Sessions · Risk · Plugin Governance | **12** Audit Log | ✅ shipped |
 | | | **13** RBAC | ✅ shipped |
 
-**Coverage:** 17 of 20 v1.1 modules are placed. The remaining three are §2.
+**Coverage:** **18** of 20 v1.1 modules are placed — modules 01–16, 18, 19. The remaining two, **17 Settings** and **20 Shared Services**, are §2.
+
+> **Corrected 2026-08-20.** This line read *"17 of 20 … The remaining three"*, which counted Feature Flags / Experimentation — **not among the twenty numbered modules**, as §2 says itself — as a module. Counted directly from the table above: 18 placed, 2 unplaced.
+
+> **`tappy.hub.user` is still not registered, and that is now the gap rather than Module 08.** Module 08's backend shipped in three merges (see [STATUS](STATUS.md)); registering the hub requires a `/admin/users` surface, because `01_ARCH` §8 forbids a nav entry that opens onto nothing. That surface is a **new UI** and needs Owner authorization — the six B5 surfaces promoted `17_UI_UX_Standards.md` for themselves, not for a seventh.
 
 ## 2. AMBIGUOUS — not placed, and not guessed
 

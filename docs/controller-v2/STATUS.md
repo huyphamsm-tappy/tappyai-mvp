@@ -4,7 +4,9 @@
 > **This document is the only authoritative statement of Controller V2 project status.**
 > Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
-**Last updated:** 2026-08-15
+**Last updated:** 2026-08-20
+
+> ⚠️ **This header said `2026-08-15` while carrying entries dated 2026-08-19, and it had no entry at all for three merged, production-live commits.** That is exactly the drift the banner above exists to prevent, and it is corrected here rather than filed as a backlog item — the same discipline applied to the 2026-08-07 and 2026-08-13 corrections below.
 
 ---
 
@@ -27,7 +29,8 @@
 | **Component 11** — Session Security | ✅ **ACCEPTED · IN PRODUCTION** — merge commit `ed7ad3b` (PR #62); migration `20260814_c11_session_security.sql` applied to production 2026-08-15 and verified read-only: all four functions exist, every one `SECURITY DEFINER` with `search_path = public, pg_temp`, EXECUTE granted to **`service_role` only** (anon and authenticated have none), and **no function references `refresh_token_hmac_key` or `refresh_token_counter`**. Deployed bodies carry the `is_anonymous` exclusion, `fn_is_platform_owner` Owner protection, and the `AT TIME ZONE` conversion. P-1…P-7 ratified 2026-08-13; O-1 (revocation **immediate** — 403 `session_not_found` with 3597 s of token life left), O-2 (3600 s TTL, therefore **not** the guarantee) and O-3 measured 2026-08-14. Contract: [`11_COMPONENT11_SESSION_SECURITY_CONTRACT.md`](11_COMPONENT11_SESSION_SECURITY_CONTRACT.md) · [ADR-021](../architecture/ADR-021-c11-auth-sessions-dependency.md) |
 | **Definition of Done** | **FULL ARCHITECTURE** — Owner Decision **F**, 2026-08-19, which **supersedes** Decision A (*COMPONENT-COMPLETE, C1–C11*) by date. C1–C11 is now a **precondition**, not the definition: Controller V2 is complete when [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) is implemented and verified. See [`OWNER_DECISIONS_2026-08-19.md`](OWNER_DECISIONS_2026-08-19.md) |
 | **Foundation (C1–C11)** | ✅ **COMPLETE** — the precondition above is met. Every row in this table below is Foundation scope |
-| **Controller V2 overall** | ⏳ **NOT COMPLETE** — Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19 |
+| **Module 08 — User Management** | 🟡 **BACKEND COMPLETE · NOT REGISTERED AS A CONTROLLER MODULE** — schema `b474cff` ([#117](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/117)), consumer enforcement `30e78c1` ([#118](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/118)), Admin Users API `3a825c2` ([#119](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/119)), all live in production. [ADR-022](../architecture/ADR-022-account-status-isolation.md) · [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md). **What is NOT done:** no module manifest, no `tappy.hub.user`, no nav entry, no `/admin/users` page. See [Module 08](#phase-8--module-08-user-management-backend-complete-controller-integration-open-2026-08-20) |
+| **Controller V2 overall** | ⏳ **NOT COMPLETE** — Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. Remaining-work inventory: [Burn-down](#master-completion-burn-down-2026-08-20) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
 > "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
@@ -670,6 +673,55 @@ Scoped deliberately to Module 08. `user_notes` (CRM), `moderation_queue` and `mo
 The moment it lands, enforcement is unblocked and proceeds RED → implement → GREEN → mutation → regression → PR → CI → merge.
 
 **PHASE 8 BLOCKED — PENDING PRODUCTION MIGRATION AUTHORIZATION.**
+
+### Phase 8 — Module 08 User Management: backend COMPLETE, Controller integration OPEN (2026-08-20)
+
+The entry above ended at *"PHASE 8 BLOCKED — PENDING PRODUCTION MIGRATION AUTHORIZATION."* **That authorization was given, and three units shipped.** They are recorded here because this document had no entry for any of them.
+
+| Unit | Merge | What it delivers |
+|---|---|---|
+| Schema | `b474cff` ([#117](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/117)) | `public.account_status` — the four status fields, **isolated from `profiles`** rather than added to it ([ADR-022](../architecture/ADR-022-account-status-isolation.md)). Applied to production 2026-08-19, verified read-only from the catalog |
+| Consumer enforcement | `30e78c1` ([#118](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/118)) | `POST /api/reviews`, `POST /api/reviews/[id]/comments`, `POST /api/chat` → 403 for suspended/banned. **No GET is blocked** — bo-10 §4 permits read-only browsing |
+| Admin Users API | `3a825c2` ([#119](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/119)) | 6 routes, 8 permissions under a new `users` module, `REGISTRY_VERSION 2026-08-20.2`. Owner Decision A → [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md) |
+
+**ADR-022 corrected a defect this document's Phase-2 entries did not catch.** Those entries planned the four columns onto `profiles`, quoting bo-04 §7. A production preflight then measured `profiles` to be **public-read AND self-write** — RLS filters rows, never columns — so `ban_reason` would have been world-readable and a suspended user could have cleared their own `is_suspended`. The prepared artifact in `supabase/migrations/deferred/` is ⛔ **DO NOT APPLY**.
+
+**ADR-023 resolved a policy conflict that had never surfaced because no code needed it.** `05` §6 said the user list and detail views were `admin`+; `12_RBAC.md` §3, `10` §6 and `04` §8 all said `moderator`. Every document in the conflict is `v1.0`, `DRAFT`, dated 2026-07-13 — **none outranks another**, so it required an Owner decision, taken as **Decision A**: `moderator` reads the surface; `ban_reason` and email *search* stay `admin`+ behind their own permissions.
+
+**Consequence recorded, not decided:** `moderator` is no longer identical to `analyst` (4 → 8 permissions). That falsifies the stated premise of [BL-C3-02](BACKLOG.md#bl-c3-02--should-moderator-keep-analytics-read-access) and fires the trigger that item names for itself. **BL-C3-02 is unblocked, not answered.**
+
+#### 🔴 What Module 08 still needs — Controller integration
+
+MEASURED on `3a825c2`: `ADMIN_HUBS` holds 5 hubs and `ADMIN_MODULES` holds 8 modules. **Neither `tappy.hub.user` nor any users module is among them.** So Module 08's backend is live and reachable by direct API call, and it is **invisible to the Controller** — no manifest, no nav group, no `permissionScope`, no page.
+
+This is the same class of gap Phase 7 found in the shell: a layer that exists in the registry and is absent from the product. It cannot be closed by registering a manifest alone — `01_ARCH` §8 requires *"You never see a door you cannot open"*, and a nav entry pointing at a route that does not exist is a door that opens onto nothing.
+
+> **OWNER DECISION REQUIRED — authorize the `/admin/users` surface.** Registering `tappy.hub.user` + a `users` module manifest + the page is one unit; the page is new UI, and `17_UI_UX_Standards.md` is implementation authority only for the six B5 surfaces the Owner named. This is a seventh.
+
+**Also still open for Module 08, unchanged:** auto-unsuspend cron · session revocation on ban (a ban currently records state and does **not** end a session — the route returns `session_revocation_pending: true` and the audit row records `sessions_revoked: false`, so nothing claims otherwise) · soft delete · `POST /[id]/notes` (no `user_notes` table).
+
+---
+
+## Master completion burn-down (2026-08-20)
+
+Measured from the repository at `3a825c2`, not from the entries above.
+
+| Bucket | Remaining | Blocked | Owner decision | Unblocked + authorized |
+|---|---:|---:|---:|---:|
+| **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
+| **Phase 8 — hubs** — `user` · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 5 | 5 | 2 | **0** |
+| **Phase 8 — modules** — 12 not started · 01 stub · 04 partial · 08 unregistered · 17 + 20 ambiguous | 18 | 18 | 3 | **0** |
+| **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · K-5 B14 · K-6 B8 · K-7 guard §1.1–1.3 · K-8 `module_registry` | 8 | 4 | 2 | **2** |
+| **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
+| **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |
+
+**Every remaining implementation path is gated.** The only two work items that are both unblocked and already Owner-authorized are **K-5 (B14 — module data ownership contract, *"contract first"*)** and **K-6 (B8 — break-glass Owner recovery, *"design first, then ADR"*)**. Neither writes a migration and neither mutates production.
+
+**Schema reality, measured in-repo:** there is **no migration** for `platform_settings`, `module_registry`, `daily_snapshots`, `user_notes`, `moderation_queue`, `moderation_actions`, `role_definitions` or `permission_grants`. `role_definitions` and `permission_grants` are **out of scope** by Decision B15; the rest each gate a named workstream.
+
+**Legacy is genuinely closed**, and that is a completion criterion rather than a convenience: `src/lib/admin.ts` does not exist, `BACKOFFICE_ENABLED` resolves through the Config Provider, `ADMIN_IDS` survives only as a notification-recipient list (Decision B4, closed as non-blocking), and all 8 `/admin` pages route through `requirePagePermission`. **No duplicate authorization path remains.**
+
+---
 
 ### Two observations recorded, not acted on
 
