@@ -785,11 +785,26 @@ The third: downgrading the single-open-window index from `UNIQUE` survived, beca
 
 ---
 
-### Phase 8 — Module 01 Home Dashboard: **CODE COMPLETE, awaiting the production migration** (2026-08-20)
+### Phase 8 — Module 01 Home Dashboard: **COMPLETE — migration applied, deployed** (2026-08-20)
 
 Migration `supabase/migrations/20260820_m01_daily_snapshots.sql` · rollback alongside · Owner authorized **`daily_snapshots` and nothing else** on 2026-08-20.
 
-⚠️ **NOT APPLIED, and PR held at its merge gate.** Applying production DDL needs a Supabase **Personal Access Token**, which only the Owner can create ([`feedback_supabase_management_api_channel`]). MEASURED: absent from `.env.local`, absent from the environment, and the Supabase CLI is unauthenticated. The merge is held behind it on the M08 precedent — **code ships after schema** — because merging first would leave every admin's Home showing *"metrics unreachable"* until the table exists.
+✅ **APPLIED TO PRODUCTION 2026-08-20T06:21:56Z**, then merged as `a48761f`. Order was schema-then-code, per the M08 precedent: merging first would have left every admin's Home showing *"metrics unreachable"* until the table existed.
+
+| Apply record | |
+|---|---|
+| Project | `fwznnobrdctuskgrvuik` (`ACTIVE_HEALTHY`) — hard-pinned in the script; the account also holds `nhncoqyadofojjrnpiia` staging, which was not touched |
+| Migration SHA-256 | `483e4fd688e3c8061926e61e23e0e8d1153fb9b0a5abe123da7d015c238a89b1` — verified against the reviewed file before execution, so what ran is what PR #124 contained |
+| Pre-state | `to_regclass('public.daily_snapshots')` → `null`. The script **aborts** if the table already exists |
+| Transaction | `BEGIN … COMMIT`, HTTP 201 |
+| Rows created | **0.** The migration populates nothing; the cron does |
+| Unrelated objects | `platform_owner_recovery`, `user_notes`, `moderation_queue`, `platform_settings`, `module_registry` all still `null` — nothing else was applied |
+
+**Verified read-only after apply:** 13 columns with `snapshot_date` as `date` (not a timestamp) · table grants **`postgres` + `service_role` only**, no `anon`, no `authenticated` · `has_function_privilege` → anon `false`, authenticated `false`, service_role `true` for both RPCs · RLS on with **0 policies** · `UNIQUE (snapshot_date, platform)` + both §7 indexes · both functions `SECURITY DEFINER` with `search_path=public, pg_temp`.
+
+**Confirmed independently from outside**, using only the public anon key: `daily_snapshots` moved from `PGRST205 Could not find the table` to **`42501 permission denied`**, and the rollup RPC answers `42501` too. The `PGRST205 → 42501` transition proves both halves at once — the table now exists **and** it is closed to the public API. `account_status` served as the control, proving the probe can tell "absent" from "present but denied".
+
+⏳ **`daily_snapshots` holds 0 rows, and that is correct.** The cron runs 00:05 VN; today's run happened *before* this migration, so the first legitimate snapshot arrives **00:05 VN on 2026-08-21** (17:05 UTC, 2026-08-20). Until then the Home renders its explicit *"no measurements yet"* state. **No snapshot was manufactured to make the dashboard look populated.**
 
 **The Home was never an empty stub.** It showed registry counts; what it lacked was BUSINESS metrics. It now shows DAU/WAU/MAU and new/returning/total users from `daily_snapshots`, per M01 (*"pre-computed — no live queries to raw tables"*).
 
@@ -822,7 +837,7 @@ Measured from the repository at `3a825c2`, not from the entries above.
 | **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
 
 | **Phase 8 — hubs** — ~~`user`~~ ✅ registered · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 4 | 4 | 2 | **0** |
-| **Phase 8 — modules** — 12 not started · 01 stub · 04 partial · ~~08 unregistered~~ ✅ **COMPLETE** · 17 + 20 ambiguous | 17 | 17 | 3 | **0** |
+| **Phase 8 — modules** — 11 not started · ~~01 stub~~ ✅ **COMPLETE** · 04 partial · ~~08 unregistered~~ ✅ **COMPLETE** · 17 + 20 ambiguous | 16 | 16 | 3 | **0** |
 | **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · ~~K-6 B8~~ ✅ (migration awaiting production apply) · K-7 guard §1.1–1.3 · K-8 `module_registry` | 6 | 4 | 2 | **0** |
 | **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
 | **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |
