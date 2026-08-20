@@ -358,7 +358,7 @@ erDiagram
 
 | Rule | Detail |
 |---|---|
-| One module owns each table | Declared in `manifest.data.tables`. Cross-module reads go through the owning module's **capability**, never a direct join. |
+| One module owns each table | Declared in `manifest.data.tables`. Cross-module reads go through the owning module's **capability**, never a direct join. **Clarified by [ADR-024](../architecture/ADR-024-module-data-ownership.md), 2026-08-20:** `data` is **optional** and its **absence means the module owns no tables** — which is what all eight shipped manifests are. Collisions are rejected at registration, trimmed and case-folded. `data.migrations` from §2.1 is deliberately absent (migration versioning is undefined). The naming rule below is **not** enforced. |
 | Naming | `<hub>_<module>_<entity>` — e.g. `commerce_orders_line_item`. Kernel tables are unprefixed. |
 | Shared dimensions are read-only to everyone but their owner | `user_acquisition`, `auth_daily_rollup`, `activation_daily_rollup` stay owned by Analytics (already true today). |
 | RLS deny-by-default on every new table | No exceptions. Service-role is the only write path, and it is held only by repositories. |

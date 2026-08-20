@@ -702,6 +702,28 @@ This is the same class of gap Phase 7 found in the shell: a layer that exists in
 
 ---
 
+### K-5 / B14 — module data ownership contract: **RESOLVED** (2026-08-20)
+
+The first of the two items that were both unblocked and already Owner-authorized. [ADR-024](../architecture/ADR-024-module-data-ownership.md). **No migration, no DB change, no production mutation** — B14's own constraint, met by construction.
+
+**The contradiction, all three sides quoted:** `01_ARCH` §2.1 writes `data: { tables, migrations }` as a **required** manifest field and §4.2 makes it the mechanism for table ownership; C6 §1 and §5 state *"modules do not own tables in this codebase; there is nothing to collide"* and defer two items on that basis; and the implemented `ModuleManifest` had **no `data` field at all**.
+
+**The finding: C6 is not a repeal.** *"Modules do not own tables **in this codebase**"* is descriptive and was accurate. What was missing is the third statement nobody had written: **what the absence of `data` means.**
+
+| Decision | Effect |
+|---|---|
+| `data` is **OPTIONAL**; absence = owns no tables | The eight shipped manifests become **conformant** rather than silently non-conformant. §4.2 stays an architectural rule, per B14 |
+| **Table-collision validation implemented** | §5 already required it; C6 deferred it solely because *"there is nothing to collide"*, and that reason expires the moment the field exists. Comparison is **trimmed and case-folded** — an unquoted PostgreSQL identifier folds, so `USER_NOTES` and `user_notes` are one table |
+| `migrations` deliberately **not** added | Its reason for deferral — *"undefined anywhere"* — does **not** expire. C6 §1's migration-versioning deferral stands unchanged |
+| §4.2 naming rule **not** enforced | Every table a module could claim today predates V2, so enforcing `<hub>_<module>_<entity>` would reject the first genuine declaration. A test pins the non-enforcement so adding it later is deliberate |
+| **No module acquires a table** | B14 says it literally; a test asserts zero of the eight production manifests declare a `data` block |
+
+**Mutation 11/11 killed.** Two survived the first run and both were real: deleting a shape check let the input fall through to a *later* branch whose different error message still matched a `toContain('data')` assertion — the manifest was still rejected, so the tests were green for the wrong reason. They now assert the exact message, making each branch independently observable.
+
+**Residual, stated rather than hidden:** ownership is **declarative**. §4.2's *"no other module may query these"* is recorded, not enforced — nothing stops a module importing a repository and reading another's table. Enforcing it needs the `src/controller/modules/` shape that `01_ARCH` §1 rules 1–3 describe and the repository has not adopted, which is the same reason those three Architecture Guard rules are deliberately unwritten.
+
+---
+
 ## Master completion burn-down (2026-08-20)
 
 Measured from the repository at `3a825c2`, not from the entries above.
@@ -711,11 +733,11 @@ Measured from the repository at `3a825c2`, not from the entries above.
 | **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
 | **Phase 8 — hubs** — `user` · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 5 | 5 | 2 | **0** |
 | **Phase 8 — modules** — 12 not started · 01 stub · 04 partial · 08 unregistered · 17 + 20 ambiguous | 18 | 18 | 3 | **0** |
-| **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · K-5 B14 · K-6 B8 · K-7 guard §1.1–1.3 · K-8 `module_registry` | 8 | 4 | 2 | **2** |
+| **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · K-6 B8 · K-7 guard §1.1–1.3 · K-8 `module_registry` | 7 | 4 | 2 | **1** |
 | **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
 | **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |
 
-**Every remaining implementation path is gated.** The only two work items that are both unblocked and already Owner-authorized are **K-5 (B14 — module data ownership contract, *"contract first"*)** and **K-6 (B8 — break-glass Owner recovery, *"design first, then ADR"*)**. Neither writes a migration and neither mutates production.
+**Every remaining implementation path is gated.** **K-5 (B14) is RESOLVED** — see the entry above. The one remaining work item that is both unblocked and already Owner-authorized is **K-6 (B8 — break-glass Owner recovery, *"design first, then ADR"*)**. It writes no migration and mutates nothing in production.
 
 **Schema reality, measured in-repo:** there is **no migration** for `platform_settings`, `module_registry`, `daily_snapshots`, `user_notes`, `moderation_queue`, `moderation_actions`, `role_definitions` or `permission_grants`. `role_definitions` and `permission_grants` are **out of scope** by Decision B15; the rest each gate a named workstream.
 
