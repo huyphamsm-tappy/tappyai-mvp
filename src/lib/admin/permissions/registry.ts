@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-20.2'
+export const REGISTRY_VERSION = '2026-08-20.3'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -65,6 +65,26 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     defaultRoles: ['analyst', 'moderator', 'admin', 'super_admin'],
   }),
 
+  // Module 04 User Analytics — growth, engagement and the subscription funnel.
+  // `12_RBAC.md` §3 grants **User Analytics** to all four roles, which is also
+  // exactly what `analytics.auth.read` and `analytics.activation.read` carry —
+  // the other two surfaces of the same module. A separate id rather than a
+  // reuse: C6 §5 makes permission ownership exclusive per module, so a shared
+  // permission would have tied three surfaces to one manifest.
+  //
+  // Aggregate only. No PII, no revenue figures — the funnel reports population
+  // counts, never amounts, and Business Analytics stays `admin`+ in §3.
+  def({
+    id: 'analytics.users.read',
+    displayName: 'Read user analytics',
+    description:
+      'View user growth, engagement (DAU/WAU/MAU, stickiness) and the free→Pro subscription funnel. Aggregate counts only; no user PII and no revenue amounts.',
+    module: 'analytics',
+    capability: 'analytics.read',
+    category: 'read',
+    riskLevel: 'low',
+    defaultRoles: ['analyst', 'moderator', 'admin', 'super_admin'],
+  }),
   def({
     id: 'analytics.content.read',
     displayName: 'Read content analytics',
@@ -437,6 +457,7 @@ export const PERMISSIONS = {
   DASHBOARD_HOME_VIEW: 'dashboard.home.view',
   ANALYTICS_AUTH_READ: 'analytics.auth.read',
   ANALYTICS_ACTIVATION_READ: 'analytics.activation.read',
+  ANALYTICS_USERS_READ: 'analytics.users.read',
   ANALYTICS_CONTENT_READ: 'analytics.content.read',
   AUDIT_LOG_READ: 'audit.log.read',
   SETTINGS_CONFIG_READ: 'settings.config.read',

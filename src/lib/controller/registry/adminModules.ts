@@ -99,6 +99,10 @@ export const homeModule = mod(
 export const analyticsContentModule = mod('tappy.hub.analytics.content', 'Content Analytics', analyticsHub.id, '/admin/analytics', PERMISSIONS.ANALYTICS_CONTENT_READ, 'admin.nav.analytics', 'BarChart3', 10)
 export const analyticsAuthModule = mod('tappy.hub.analytics.auth', 'Auth Analytics', analyticsHub.id, '/admin/analytics/auth', PERMISSIONS.ANALYTICS_AUTH_READ, 'admin.nav.authAnalytics', 'UserCheck', 20)
 export const analyticsActivationModule = mod('tappy.hub.analytics.activation', 'Activation Analytics', analyticsHub.id, '/admin/analytics/activation', PERMISSIONS.ANALYTICS_ACTIVATION_READ, 'admin.nav.activationAnalytics', 'Zap', 30)
+// Module 04 User Analytics, third surface: growth + engagement + subscription
+// funnel from daily_snapshots and subscriptions. auth(20) and activation(30)
+// are the other two; this sits after them at 40 so neither moves.
+export const analyticsUsersModule = mod('tappy.hub.analytics.users', 'User Analytics', analyticsHub.id, '/admin/analytics/users', PERMISSIONS.ANALYTICS_USERS_READ, 'admin.nav.userAnalytics', 'TrendingUp', 40)
 export const commerceDealsModule = mod('tappy.hub.commerce.deals', 'Deals', commerceHub.id, '/admin/deals', PERMISSIONS.COMMERCE_DEALS_READ, 'admin.nav.deals', 'Tag', 10)
 export const securityRolesModule = mod('tappy.hub.security.rbac', 'RBAC', securityHub.id, '/admin/rbac', PERMISSIONS.SECURITY_ROLES_READ, 'admin.nav.roles', 'KeyRound', 30)
 export const configurationSettingsModule = mod('tappy.hub.configuration.settings', 'Settings', configurationHub.id, '/admin/settings', PERMISSIONS.SETTINGS_CONFIG_READ, 'admin.nav.settings', 'SettingsIcon', 10)
@@ -107,7 +111,7 @@ export const ADMIN_HUBS: readonly HubDescriptor[] = [founderHub, userHub, securi
 export const ADMIN_MODULES: readonly ModuleManifest[] = [
   homeModule,
   userManagementModule,
-  analyticsContentModule, analyticsAuthModule, analyticsActivationModule,
+  analyticsContentModule, analyticsAuthModule, analyticsActivationModule, analyticsUsersModule,
   securityAuditModule, securityRolesModule,
   commerceDealsModule,
   configurationSettingsModule,

@@ -30,7 +30,7 @@ Hub ids follow the shipped convention `tappy.hub.<name>` (see [`registry/adminMo
 | | | **11** CRM (User 360) | ❌ not started |
 | | | *Sessions* — C11 | ⚠️ API only (`/api/admin/security/sessions`), no module, no UI |
 | **📈 Analytics** `tappy.hub.analytics` | Auth ✅ · Activation ✅ · Retention · Funnels · Events · Custom Reports | **02** Product Analytics | ✅ shipped as `analytics.content` |
-| | | **04** User Analytics | ⚠️ partial — `analytics.auth` + `analytics.activation` shipped |
+| | | **04** User Analytics | 🟡 **3 of 5 sections shipped** — `analytics.auth` + `analytics.activation` + `analytics.users` (growth · engagement · subscription funnel, from `daily_snapshots` + `subscriptions`). **Retention needs `cohort_metrics`** (04 §7 DDL, table absent) ⇒ own migration authorization; churn and session duration are UNDEFINED ([STATUS](STATUS.md)) |
 | | | **07** Reporting | ❌ not started |
 | | | **19** Export Center | ❌ not started |
 | **📣 Marketing** `tappy.hub.marketing` | Campaigns · Push · Banners · Coupons · Referral · A/B Testing | **10** Engagement Center | ❌ not started |
