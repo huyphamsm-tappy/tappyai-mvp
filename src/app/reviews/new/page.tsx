@@ -49,6 +49,14 @@ const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 const MEDIA_READ_TIMEOUT_MS = 20000
 const THUMB_TIMEOUT_MS = 8000        // hard cap on thumbnail decode/seek — never freeze the UI
 const THUMB_UPLOAD_TIMEOUT_MS = 15000 // hard cap on the (best-effort) thumbnail blob upload
+/**
+ * How long the link field waits after the last keystroke before resolving.
+ *
+ * Long enough to collapse ordinary typing into one attempt, short enough that a PASTE — which is
+ * how most links arrive — still feels immediate. The cost this saves is real: see the note on
+ * `urlDebounceRef`.
+ */
+const URL_RESOLVE_DEBOUNCE_MS = 600
 
 /* Structured pipeline instrumentation. Every video stage emits START, then
    SUCCESS or FAIL with elapsed TIME (ms) and, on failure, the ERROR. Prefixed
@@ -218,6 +226,19 @@ export default function NewReviewPage() {
   const photoInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
   const uploadControllerRef = useRef<AbortController | null>(null)
+  // ── Link-field cost guards (V2-UAT-013) ───────────────────────────────────
+  //
+  // The URL field is an `onChange` handler, so it runs on EVERY KEYSTROKE. Once enough of a
+  // YouTube URL is present for `detectSource` to match — around character 20 of a ~43-character
+  // link — every remaining keystroke fired `/api/links/resolve` AND `/api/explore/process`, and
+  // the second of those is a real model call. Typing or editing a link cost ~20 AI calls to
+  // produce one post. Pasting cost one, which is why this never showed up in a demo.
+  //
+  // Two guards, and both are needed. The timer collapses a burst of keystrokes into one attempt;
+  // the last-resolved memo stops the SAME url being resolved twice when the user pastes, edits
+  // and reverts, or when a re-render replays the value.
+  const urlDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastResolvedUrlRef = useRef<string>('')
   const supabase = createClient()
 
   /* shared */
@@ -458,15 +479,30 @@ export default function NewReviewPage() {
     } catch { /* non-blocking */ }
   }
 
-  const handleUrlChange = async (val: string) => {
+  /**
+   * Typing in the link field. Local state updates immediately; anything that costs money waits.
+   *
+   * The split is the whole point — the input must stay responsive, so `setSource_url` and the
+   * cleared metadata happen on every keystroke exactly as before, while the resolve-and-analyse
+   * pair is deferred until the user stops typing. See the refs above for what this cost.
+   */
+  const handleUrlChange = (val: string) => {
     setSource_url(val); setUrlMeta(null); setAiHashtags([]); setUrlUnsupported(false)
+    if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current)
     const trimmed = val.trim()
-    if (!trimmed) return
+    if (!trimmed) { lastResolvedUrlRef.current = ''; return }
+    urlDebounceRef.current = setTimeout(() => { void resolveUrl(trimmed) }, URL_RESOLVE_DEBOUNCE_MS)
+  }
 
+  const resolveUrl = async (trimmed: string) => {
     const detected = detectSource(trimmed)
     // Unsupported provider (TikTok/Facebook/Instagram/other) → show a hint and
     // do not resolve. canPost stays false, so the post can't be created.
     if (!detected) { setUrlUnsupported(true); return }
+    // Already resolved this exact URL — the metadata and hashtags on screen are its own, so
+    // re-running would spend a model call to arrive back where we are.
+    if (lastResolvedUrlRef.current === trimmed) return
+    lastResolvedUrlRef.current = trimmed
     setSource_type(detected)
 
     // Backend owns all URL resolution (source, metadata, thumbnail, fallback).
