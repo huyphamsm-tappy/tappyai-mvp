@@ -22,7 +22,7 @@ Hub ids follow the shipped convention `tappy.hub.<name>` (see [`registry/adminMo
 
 | Hub | `01_ARCH` §2.2 entries | Backoffice v1.1 module | Status today |
 |---|---|---|---|
-| **🏠 Founder** `tappy.hub.founder` | Executive KPIs · Revenue · AI Cost · Growth · Alerts · Investor Report | **01** Home Dashboard | ⚠️ stub — `ControllerHome` shows registry counts, not KPIs |
+| **🏠 Founder** `tappy.hub.founder` | Executive KPIs · Revenue · AI Cost · Growth · Alerts · Investor Report | **01** Home Dashboard | 🟡 **code complete, awaiting the production migration** — DAU/WAU/MAU + new/returning/total users from `daily_snapshots`, fed by the existing 00:05 VN cron. Six metric columns, not §7's 34: the rest have no source table ([STATUS](STATUS.md)) |
 | | | **05** Business Analytics | ❌ not started |
 | | | **06** Investor Dashboard | ❌ not started |
 | **👥 User** `tappy.hub.user` ✅ **registered 2026-08-20** | Users · Subscriptions · Devices · Sessions · Support · Moderation | **08** User Management | ✅ **COMPLETE end-to-end** — schema `b474cff`, enforcement `30e78c1`, Admin API `3a825c2`, manifest `tappy.hub.user.management` + `/admin/users` ([STATUS](STATUS.md)) |

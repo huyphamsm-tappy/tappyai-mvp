@@ -785,6 +785,34 @@ The third: downgrading the single-open-window index from `UNIQUE` survived, beca
 
 ---
 
+### Phase 8 — Module 01 Home Dashboard: **CODE COMPLETE, awaiting the production migration** (2026-08-20)
+
+Migration `supabase/migrations/20260820_m01_daily_snapshots.sql` · rollback alongside · Owner authorized **`daily_snapshots` and nothing else** on 2026-08-20.
+
+⚠️ **NOT APPLIED, and PR held at its merge gate.** Applying production DDL needs a Supabase **Personal Access Token**, which only the Owner can create ([`feedback_supabase_management_api_channel`]). MEASURED: absent from `.env.local`, absent from the environment, and the Supabase CLI is unauthenticated. The merge is held behind it on the M08 precedent — **code ships after schema** — because merging first would leave every admin's Home showing *"metrics unreachable"* until the table exists.
+
+**The Home was never an empty stub.** It showed registry counts; what it lacked was BUSINESS metrics. It now shows DAU/WAU/MAU and new/returning/total users from `daily_snapshots`, per M01 (*"pre-computed — no live queries to raw tables"*).
+
+#### Six metric columns, not thirty-four
+
+`04` §7 defines 34. **Six have a real source in this database today**; the rest name tables that do not exist — `ai_usage_log`, `conversations`, `moderation_queue`, notification delivery, Stripe revenue. A column that can only ever hold its `DEFAULT` is worse than an absent one, because a dashboard renders `0` as a measurement: *"Revenue today: $0"* would be a false statement of fact. The omitted columns stay **additive**; §7 is not amended.
+
+#### The pipeline is the existing cron
+
+`/api/cron/analytics-snapshot` already runs `05 17 * * *` = **00:05 VN** (ADR-008) over a trailing 4-day window with recompute-and-overwrite. `daily_snapshots` is **step 5**, shaped exactly like `fn_rollup_auth_daily` (SR-4). **Two RPCs, not one:** the rollup writes provisional rows, finalisation closes days that fall out of the window (§7A) — separate so a failed recompute cannot silently finalise days it never reconciled. A finalised day is never rewritten.
+
+#### 🔴 Mutation found two tests passing for the wrong reason
+
+**28/28 killed.** Four survived first, and the first pair is the important one:
+
+> Dropping `AT TIME ZONE 'Asia/Ho_Chi_Minh'` **survived**. This machine is in Vietnam, so PostgreSQL inherited that zone and a bare `::date` cast was identical to the explicit conversion. **Every timezone assertion was passing for an environment-dependent reason** and would have behaved differently on a UTC CI runner. Fixed by pinning `SET TimeZone = 'UTC'` in the harness — plus a signup case at 22:00 UTC, because the profile helper seeded 09:00 VN, the one time of day where both calendars agree.
+
+The other two: widening the MAU window survived because the activity **pre-filter** removes rows before the window looks (the two look-backs are now pinned to each other); and collapsing a read error into `empty` survived because the read path was untested — two states that send an operator to different places, the cron or the database.
+
+**Verification:** 40 assertions against real PostgreSQL 17.5, 18 service, 17 UI. `tsc`, lint, Architecture Guard 10/10, SQL grant guard 0 errors, 4531 app tests.
+
+---
+
 ## Master completion burn-down (2026-08-20)
 
 Measured from the repository at `3a825c2`, not from the entries above.

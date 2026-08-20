@@ -96,6 +96,21 @@ export async function GET(req: Request) {
   // activation_daily_rollup (idempotent recompute of the window)
   const { error: activationRollupError } = await supabase.rpc('fn_rollup_activation_daily', { p_from: from, p_to: to })
 
+  // 5. daily_snapshots (Module 01 Home Dashboard) — the same window, the same
+  //    recompute-and-overwrite discipline as step 1, so a re-run reconciles
+  //    late events instead of double-counting. TWO calls, not one:
+  //
+  //      * the rollup recomputes [from, to] and writes provisional rows;
+  //      * finalisation closes every day OLDER than `from` (04 §7A).
+  //
+  //    They are separate so a failed recompute cannot silently finalise days it
+  //    never reconciled. Like every step above, the error is captured rather
+  //    than thrown — one failing rollup must not take the others down with it.
+  const { error: snapshotRollupError } = await supabase.rpc('fn_rollup_daily_snapshots', { p_from: from, p_to: to })
+  const { error: snapshotFinalizeError } = snapshotRollupError
+    ? { error: null }
+    : await supabase.rpc('fn_finalize_daily_snapshots', { p_before: from })
+
   return NextResponse.json({
     ok: true,
     window: { from, to },
@@ -107,5 +122,7 @@ export async function GET(req: Request) {
     activationProcessed,
     activatedCount,
     activationRollupError: activationRollupError?.message ?? null,
+    snapshotRollupError: snapshotRollupError?.message ?? null,
+    snapshotFinalizeError: snapshotFinalizeError?.message ?? null,
   })
 }
