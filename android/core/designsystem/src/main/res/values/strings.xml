@@ -8,4 +8,17 @@
     <string name="tappy_cd_close">Close</string>
     <string name="tappy_cd_loading">Loading</string>
     <string name="tappy_search_clear">Clear search</string>
+    <!-- TappyAvatar's TalkBack label. Two forms, because a signed-out avatar has no name to
+         announce and "'s avatar" with an empty name reads as nonsense. -->
+    <string name="tappy_cd_avatar_generic">Profile avatar</string>
+    <string name="tappy_cd_avatar_named">%1$s\'s avatar</string>
+    <!-- TappyMarkdown's copy-to-clipboard button on a fenced code block. -->
+    <string name="tappy_cd_copy_code">Copy code</string>
+    <!-- TappyDialog's default dismiss button. A DEFAULT, so it is what a caller that passes
+         nothing gets — which is why it has to be a resource and not a Kotlin string literal. -->
+    <string name="tappy_dialog_dismiss">Cancel</string>
+    <!-- The other two shared defaults with the same problem, found by the sweep rather than
+         reported: TappyErrorState's retry button and TappySearchBar's placeholder. -->
+    <string name="tappy_error_retry">Try again</string>
+    <string name="tappy_search_placeholder">Search</string>
 </resources>
