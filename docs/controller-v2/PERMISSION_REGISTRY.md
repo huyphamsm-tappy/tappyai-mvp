@@ -1,8 +1,13 @@
 # Permission Registry
 
-**Registry version:** `2026-08-04.2`
+**Registry version:** `2026-08-20.1`
 **Source of truth:** `src/lib/admin/permissions/registry.ts`
-**Count:** 14 permissions across 6 modules
+**Count:** 25 permissions across 7 modules
+
+> Transcribed from `registry.ts` on 2026-08-20, when Module 08 added the `users`
+> module. The previous revision of this file was written at 14 permissions and
+> had not been updated for Component 11 (`security.sessions.*`) or
+> FOUNDATION-07D (`security.membership.*`); those four rows are restored below.
 
 This document is generated from — and must stay consistent with — the code.
 `engine.test.ts` asserts a bijection between the `PERMISSIONS` constants and the
@@ -30,6 +35,27 @@ Legend — **Cat**: read / write / destructive / security · **Risk**: low / med
 | `security.roles.read` | security | read | medium | `security.rbac` | super_admin | See who holds which administrative role. |
 | `security.roles.grant` | security | **security** | **critical** | `security.rbac` | super_admin | Grant an administrative role. `super_admin` additionally requires the Platform Owner, enforced in the database, outside RBAC. |
 | `security.roles.revoke` | security | **security** | **critical** | `security.rbac` | super_admin | Revoke an administrative role. `super_admin` additionally requires the Platform Owner, enforced in the database, outside RBAC. |
+| `security.sessions.read` | security | read | **medium** | `security.sessions` | admin, super_admin | List a user's sessions: creation time, last activity, expiry and platform class. Credential material is never returned. |
+| `security.sessions.revoke` | security | **security** | **critical** | `security.sessions` | super_admin | End a specific session, or every session for one user. Cannot target the Platform Owner, and never affects anonymous sessions. |
+| `security.membership.read` | security | read | **medium** | `security.rbac` | super_admin | See which users belong to which department, with org role and scope. |
+| `security.membership.manage` | security | **security** | **critical** | `security.rbac` | super_admin | Assign, suspend, reactivate or remove a department membership. Bounded by department authority. |
+| `users.list.read` | users | read | **medium** | `users.manage` | moderator, admin, super_admin | Search and page the consumer user list, including each account's standing. Email addresses are withheld unless `users.email.read_full` is also held. |
+| `users.detail.read` | users | read | **medium** | `users.manage` | moderator, admin, super_admin | Open one consumer account: profile summary, account standing, ban reason and suspension expiry. |
+| `users.email.read_full` | users | read | **high** | `users.manage` | admin, super_admin | Read a consumer user's full email address. Without it the address is masked (`10_User_Management.md` §6). |
+| `users.account.suspend` | users | **write** | **high** | `users.manage` | moderator, admin, super_admin | Temporarily bar a consumer account from posting, commenting and AI, leaving browsing intact. Time-limited or indefinite. |
+| `users.account.unsuspend` | users | **write** | **medium** | `users.manage` | moderator, admin, super_admin | Return a suspended consumer account to active standing. |
+| `users.account.ban` | users | **destructive** | **critical** | `users.manage` | admin, super_admin | Permanently bar a consumer account. Records the ban and its internal reason; session revocation is a separate operation and is NOT performed by this permission. |
+| `users.account.unban` | users | **write** | **high** | `users.manage` | admin, super_admin | Restore a banned consumer account and clear its ban reason. |
+
+### Why `users.account.ban` is `destructive` and not `security`
+
+Invariant 9 pins every `security`-category permission to `super_admin` alone.
+Banning a consumer account is assigned to `admin` by `10_User_Management.md`
+§3.9, so classifying it as `security` would either break that invariant or
+silently narrow the documented policy. The `security` category means **power
+over the platform** — who holds a role, whose administrative session lives.
+Barring one consumer account is severe but confers no authority, so it is
+`destructive`, at `critical` risk.
 
 ## 2. By role — the effective permission set
 
@@ -39,16 +65,17 @@ own.
 | Role | Permissions | Count |
 |---|---|---:|
 | `analyst` | `dashboard.home.view`, `analytics.auth.read`, `analytics.activation.read`, `analytics.content.read` | 4 |
-| `moderator` | same as analyst | 4 |
-| `admin` | analyst's 4 + `audit.log.read`, `settings.config.read`, all 5 `commerce.deals.*` | 11 |
-| `super_admin` | admin's 11 + all 3 `security.roles.*` | 14 |
+| `moderator` | analyst's 4 + `users.list.read`, `users.detail.read`, `users.account.suspend`, `users.account.unsuspend` | 8 |
+| `admin` | analyst's 4 + `audit.log.read`, `settings.config.read`, all 5 `commerce.deals.*`, `security.sessions.read`, all 4 `users` reads/writes moderator holds, `users.email.read_full`, `users.account.ban`, `users.account.unban` | 19 |
+| `super_admin` | admin's 19 + all 3 `security.roles.*`, `security.sessions.revoke`, both `security.membership.*` | 25 |
 | **Platform Owner** | **not applicable** — the Owner bypasses the engine entirely (`OWNER_BYPASS`) and is never resolved against this table | — |
 
-`analyst` and `moderator` are currently identical (4 permissions each). That is inherited, not
-designed: under the old ROLE_RANK ladder `moderator` outranked `analyst`, so a
-moderator could already read analytics. Preserving it was a deliberate
-non-change (see design doc §9). Differentiating them belongs with the Moderation
-Hub, when moderator gains permissions of its own.
+**`moderator` stopped being a copy of `analyst` on 2026-08-20.** The previous
+revision of this file recorded them as identical and noted that differentiating
+them "belongs with the Moderation Hub, when moderator gains permissions of its
+own". Module 08 is where that happened: a moderator may now find a consumer
+account and suspend or unsuspend it (`10_User_Management.md` §3.9), but not ban,
+not unban, and not see an unmasked email address (§6).
 
 ## 3. Metadata contract
 
@@ -60,7 +87,7 @@ missing or malformed.
 | `id` | `module.resource.action`, lowercase, dot-separated. The `module` segment **must** equal the `module` field. |
 | `displayName` | Human label for the roles UI. Non-empty. |
 | `description` | What the holder can actually do, and what it exposes. Non-empty. |
-| `module` | Owning Hub. One of: dashboard, analytics, audit, settings, commerce, security. |
+| `module` | Owning Hub. One of: dashboard, analytics, audit, settings, commerce, security, users. |
 | `capability` | Capability required for this permission to be usable. Inert until Component 5. |
 | `category` | read / write / destructive / security |
 | `riskLevel` | low / medium / high / critical |

@@ -1,0 +1,573 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+
+// Module 08 — the ROUTE half of the admin user surface.
+//
+// `accountStatusAdmin.test.ts` covers what gets written. This file covers what
+// happens BEFORE and AFTER the write: who is refused, what the audit trail
+// records, and which facts the response is allowed to state.
+//
+// The guards asserted here are the ones with no second line of defence. There
+// is no SQL function behind these routes — `account_status` has no INSERT or
+// UPDATE policy at all and is reached purely by `service_role` BYPASSRLS — so
+// the handler IS the authority on who may be suspended or banned. A gap here is
+// not caught anywhere downstream.
+
+const h = vi.hoisted(() => ({
+  requirePermission: vi.fn(),
+  isSameOrigin: vi.fn(() => true),
+  rateLimit: vi.fn(),
+  writeAuditLog: vi.fn(),
+  rpc: vi.fn(),
+  getUserById: vi.fn(),
+  listUsers: vi.fn(),
+  can: vi.fn(),
+  queues: {} as Record<string, unknown[]>,
+  recorded: [] as { table: string; calls: [string, ...unknown[]][] }[],
+}))
+
+vi.mock('@/lib/admin/rbac', async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>
+  return { ...actual, isSameOrigin: h.isSameOrigin }
+})
+vi.mock('@/lib/admin/permissions', async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>
+  return { ...actual, requirePermission: h.requirePermission }
+})
+vi.mock('@/lib/admin/permissions/engine', () => ({ permissionEngine: { can: h.can } }))
+vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.rateLimit }))
+vi.mock('@/lib/admin/audit', () => ({ writeAuditLog: h.writeAuditLog }))
+vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => fakeClient() }))
+
+import { GET as LIST } from './route'
+import { GET as DETAIL } from './[id]/route'
+import { POST as SUSPEND } from './[id]/suspend/route'
+import { POST as UNSUSPEND } from './[id]/unsuspend/route'
+import { POST as BAN } from './[id]/ban/route'
+import { POST as UNBAN } from './[id]/unban/route'
+
+const ADMIN_ID = '22222222-2222-2222-2222-222222222222'
+const SUBJECT = '33333333-3333-3333-3333-333333333333'
+const OWNER_ID = '11111111-1111-1111-1111-111111111111'
+const REASON = 'coordinated review fraud across twelve accounts'
+const NOT_A_UUID = 'nope'
+
+/** The same chainable builder the domain tests use; see accountStatusAdmin.test.ts. */
+function fakeClient() {
+  return {
+    from(table: string) {
+      const entry = { table, calls: [] as [string, ...unknown[]][] }
+      h.recorded.push(entry)
+      const next = () => {
+        const queue = h.queues[table] ?? []
+        return queue.length > 1 ? queue.shift() : queue[0]
+      }
+      const proxy: Record<string, unknown> = new Proxy(
+        {},
+        {
+          get(_t, prop: string) {
+            if (prop === 'then') {
+              return (resolve: (v: unknown) => unknown) => Promise.resolve(next()).then(resolve)
+            }
+            return (...args: unknown[]) => {
+              entry.calls.push([prop, ...args])
+              if (prop === 'single' || prop === 'maybeSingle') return Promise.resolve(next())
+              return proxy
+            }
+          },
+        }
+      )
+      return proxy
+    },
+    rpc: h.rpc,
+    auth: { admin: { getUserById: h.getUserById, listUsers: h.listUsers } },
+  }
+}
+
+const ok = (data: unknown) => ({ data, error: null })
+const profile = (over = {}) => ({
+  id: SUBJECT,
+  full_name: 'Nguyễn Văn A',
+  avatar_url: null,
+  created_at: '2026-08-01T00:00:00+00:00',
+  language: 'vi',
+  onboarded: true,
+  follower_count: 3,
+  following_count: 5,
+  ...over,
+})
+const statusRow = (over = {}) => ({
+  user_id: SUBJECT,
+  is_suspended: false,
+  suspended_until: null,
+  is_banned: false,
+  ban_reason: null,
+  created_at: '2026-08-01T00:00:00+00:00',
+  updated_at: '2026-08-02T00:00:00+00:00',
+  ...over,
+})
+
+const ctx = (over = {}) => ({
+  user: { id: ADMIN_ID, email: 'admin@tappyai.com' },
+  actor: { userId: ADMIN_ID, isOwner: false, roles: ['admin'], capabilities: [] },
+  decision: { allowed: true, reason: 'ROLE_GRANT' },
+  ...over,
+})
+
+const list = (qs = '') => LIST(new Request(`https://www.tappyai.com/api/admin/users${qs}`))
+const detail = (id = SUBJECT) =>
+  DETAIL(new Request(`https://www.tappyai.com/api/admin/users/${id}`), { params: { id } })
+const post =
+  (handler: (req: Request, c: { params: { id: string } }) => Promise<Response>, path: string) =>
+  (body: unknown, id = SUBJECT) =>
+    handler(
+      new Request(`https://www.tappyai.com/api/admin/users/${id}/${path}`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      }),
+      { params: { id } }
+    )
+
+const suspend = post(SUSPEND, 'suspend')
+const unsuspend = post(UNSUSPEND, 'unsuspend')
+const ban = post(BAN, 'ban')
+const unban = post(UNBAN, 'unban')
+
+/** Tables the handler actually touched, in order. */
+const touched = () => h.recorded.map((r) => r.table)
+/** Methods called against the Nth builder for a table. */
+const callsFor = (table: string, nth = 0) =>
+  h.recorded.filter((r) => r.table === table)[nth]?.calls.map(([name]) => name) ?? []
+const argsFor = (table: string, method: string, nth = 0) =>
+  h.recorded.filter((r) => r.table === table)[nth]?.calls.find(([name]) => name === method)?.slice(1)
+
+beforeEach(() => {
+  vi.clearAllMocks()
+  h.recorded = []
+  h.queues = {}
+  h.requirePermission.mockResolvedValue(ctx())
+  h.isSameOrigin.mockReturnValue(true)
+  h.rateLimit.mockResolvedValue({ ok: true, retryAfter: 0 })
+  h.can.mockReturnValue(false)
+  h.rpc.mockResolvedValue(ok(false))
+  h.getUserById.mockResolvedValue({ data: { user: { email: 'huypham.sm@gmail.com' } }, error: null })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('GET /api/admin/users', () => {
+  it('rejects a filter it does not implement rather than returning an unfiltered list', async () => {
+    const res = await list('?platform=android')
+    expect(res.status).toBe(422)
+    expect(touched()).toEqual([])
+  })
+
+  it('reports a user with no status row as active', async () => {
+    h.queues = { profiles: [ok([profile()])], account_status: [ok([])] }
+
+    const body = await (await list()).json()
+    expect(body.data[0].standing).toBe('active')
+    expect(body.data[0].suspended_until).toBeNull()
+  })
+
+  it('reports a live suspension, with its expiry', async () => {
+    h.queues = {
+      profiles: [ok([profile()])],
+      account_status: [ok([statusRow({ is_suspended: true, suspended_until: '2099-01-01T00:00:00+00:00' })])],
+    }
+
+    const body = await (await list()).json()
+    expect(body.data[0].standing).toBe('suspended')
+    expect(body.data[0].suspended_until).toBe('2099-01-01T00:00:00+00:00')
+  })
+
+  it('withholds the expiry once the standing is no longer "suspended"', async () => {
+    // Banned while suspended: rendering a countdown here would tell a moderator
+    // the account frees itself on that date. It does not.
+    h.queues = {
+      profiles: [ok([profile()])],
+      account_status: [
+        ok([statusRow({ is_suspended: true, suspended_until: '2099-01-01T00:00:00+00:00', is_banned: true })]),
+      ],
+    }
+
+    const body = await (await list()).json()
+    expect(body.data[0].standing).toBe('banned')
+    expect(body.data[0].suspended_until).toBeNull()
+  })
+
+  it('asks for one row more than the page, and reports hasMore without a count query', async () => {
+    const rows = Array.from({ length: 3 }, (_, i) => profile({ id: `id-${i}` }))
+    h.queues = { profiles: [ok(rows)], account_status: [ok([])] }
+
+    const body = await (await list('?limit=2')).json()
+    expect(argsFor('profiles', 'limit')).toEqual([3])
+    expect(body.data).toHaveLength(2)
+    expect(body.meta.page.hasMore).toBe(true)
+    expect(body.meta.page.cursor).not.toBeNull()
+  })
+
+  it('returns no cursor on the last page', async () => {
+    h.queues = { profiles: [ok([profile()])], account_status: [ok([])] }
+
+    const body = await (await list('?limit=2')).json()
+    expect(body.meta.page.hasMore).toBe(false)
+    expect(body.meta.page.cursor).toBeNull()
+  })
+
+  it('refuses a malformed cursor instead of silently serving page one', async () => {
+    h.queues = { profiles: [ok([profile()])], account_status: [ok([])] }
+    const res = await list('?cursor=!!!!')
+    expect(res.status).toBe(422)
+    expect(touched()).toEqual([])
+  })
+
+  it('escapes ilike wildcards so a search for "%" does not match everyone', async () => {
+    h.queues = { profiles: [ok([])], account_status: [ok([])] }
+    await list('?q=%25a')
+    expect(argsFor('profiles', 'ilike')).toEqual(['full_name', '%\\%a%'])
+  })
+
+  it('REFUSES the status filter when the moderated set outgrew the in-memory cap', async () => {
+    const overflowing = Array.from({ length: 1001 }, (_, i) => ({
+      user_id: `id-${i}`,
+      is_suspended: false,
+      suspended_until: null,
+      is_banned: true,
+    }))
+    h.queues = { account_status: [ok(overflowing)], profiles: [ok([])] }
+
+    const res = await list('?status=active')
+    expect(res.status).toBe(503)
+    expect((await res.json()).error.code).toBe('FILTER_UNAVAILABLE')
+    // The point of failing: a truncated exclusion set would have listed banned
+    // accounts as active. The profiles query must not run at all.
+    expect(touched()).not.toContain('profiles')
+  })
+
+  it('short-circuits a status filter that matches nobody', async () => {
+    h.queues = { account_status: [ok([])], profiles: [ok([profile()])] }
+
+    const body = await (await list('?status=banned')).json()
+    expect(body.data).toEqual([])
+    expect(touched()).not.toContain('profiles')
+  })
+
+  it('applies status=active as an EXCLUSION, since an absent row is active', async () => {
+    h.queues = {
+      account_status: [ok([{ user_id: SUBJECT, is_suspended: false, suspended_until: null, is_banned: true }]), ok([])],
+      profiles: [ok([profile({ id: 'someone-else' })])],
+    }
+
+    await list('?status=active')
+    expect(argsFor('profiles', 'not')).toEqual(['id', 'in', `(${SUBJECT})`])
+  })
+
+  it('an @ in the query becomes an EXACT email lookup, not a substring scan', async () => {
+    h.listUsers.mockResolvedValue({ data: { users: [{ id: SUBJECT, email: 'huypham.sm@gmail.com' }] }, error: null })
+    h.queues = { profiles: [ok(profile())], account_status: [ok([statusRow()])] }
+
+    const body = await (await list('?q=huypham.sm%40gmail.com')).json()
+    expect(body.data).toHaveLength(1)
+    expect(body.data[0].id).toBe(SUBJECT)
+    // Matched on the whole address; `ilike` would have made it enumerable.
+    expect(callsFor('profiles')).not.toContain('ilike')
+  })
+
+  it('a truncated directory walk is a 503, never an empty list dressed up as an answer', async () => {
+    // Full pages every time: the walk hits its page bound with more to read.
+    h.listUsers.mockResolvedValue({
+      data: { users: Array.from({ length: 1000 }, (_, i) => ({ id: `u${i}`, email: `u${i}@x.com` })) },
+      error: null,
+    })
+
+    const res = await list('?q=nobody%40example.com')
+    expect(res.status).toBe(503)
+    expect((await res.json()).error.code).toBe('SEARCH_INCOMPLETE')
+  })
+
+  it('a complete walk that finds nothing IS an answer', async () => {
+    h.listUsers.mockResolvedValue({ data: { users: [{ id: 'u1', email: 'someone@else.com' }] }, error: null })
+
+    const res = await list('?q=nobody%40example.com')
+    expect(res.status).toBe(200)
+    expect((await res.json()).data).toEqual([])
+  })
+
+  it('carries Retry-After when rate limited', async () => {
+    h.rateLimit.mockResolvedValue({ ok: false, retryAfter: 30 })
+    const res = await list()
+    expect(res.status).toBe(429)
+    expect(res.headers.get('Retry-After')).toBe('30')
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('GET /api/admin/users/[id]', () => {
+  it('rejects a non-UUID before it reaches Postgres as a cast error', async () => {
+    const res = await detail(NOT_A_UUID)
+    expect(res.status).toBe(422)
+    expect(touched()).toEqual([])
+  })
+
+  it('404s an unknown user', async () => {
+    h.queues = { profiles: [ok(null)] }
+    expect((await detail()).status).toBe(404)
+  })
+
+  it('MASKS the address when the PDP withholds users.email.read_full', async () => {
+    h.can.mockReturnValue(false)
+    h.queues = { profiles: [ok(profile())], account_status: [ok(statusRow())] }
+
+    const body = await (await detail()).json()
+    expect(body.data.email).toBe('h***@gmail.com')
+    expect(body.data.email_masked).toBe(true)
+  })
+
+  it('reveals the address when the PDP grants it', async () => {
+    h.can.mockReturnValue(true)
+    h.queues = { profiles: [ok(profile())], account_status: [ok(statusRow())] }
+
+    const body = await (await detail()).json()
+    expect(body.data.email).toBe('huypham.sm@gmail.com')
+    expect(body.data.email_masked).toBe(false)
+  })
+
+  it('does not claim a hidden address exists when there is none on file', async () => {
+    h.getUserById.mockResolvedValue({ data: { user: { email: null } }, error: null })
+    h.queues = { profiles: [ok(profile())], account_status: [ok(statusRow())] }
+
+    const body = await (await detail()).json()
+    expect(body.data.email).toBeNull()
+    expect(body.data.email_masked).toBe(false)
+  })
+
+  it('shows the RAW flags next to the derived standing, so a stale row is visible', async () => {
+    // Suspension expired, cron has not tidied it: the app treats this user as
+    // free, and the admin deciding what to do needs to see both facts.
+    h.queues = {
+      profiles: [ok(profile())],
+      account_status: [ok(statusRow({ is_suspended: true, suspended_until: '2020-01-01T00:00:00+00:00' }))],
+    }
+
+    const body = await (await detail()).json()
+    expect(body.data.standing).toBe('active')
+    expect(body.data.is_suspended).toBe(true)
+    expect(body.data.suspended_until).toBeNull()
+  })
+
+  it('surfaces ban_reason — a column no PostgREST role can read', async () => {
+    h.queues = {
+      profiles: [ok(profile())],
+      account_status: [ok(statusRow({ is_banned: true, ban_reason: 'fraud ring' }))],
+    }
+
+    const body = await (await detail()).json()
+    expect(body.data.ban_reason).toBe('fraud ring')
+  })
+
+  it('reports a never-moderated user as active with no status timestamp', async () => {
+    h.queues = { profiles: [ok(profile())], account_status: [ok(null)] }
+
+    const body = await (await detail()).json()
+    expect(body.data.standing).toBe('active')
+    expect(body.data.status_updated_at).toBeNull()
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('the guards every mutation shares', () => {
+  const mutations = [
+    ['suspend', suspend, { reason: REASON }],
+    ['unsuspend', unsuspend, { reason: REASON }],
+    ['ban', ban, { reason: REASON }],
+    ['unban', unban, { reason: REASON }],
+  ] as const
+
+  it.each(mutations)('%s refuses a cross-origin request before touching anything', async (_n, run, body) => {
+    h.isSameOrigin.mockReturnValue(false)
+    const res = await run(body)
+    expect(res.status).toBe(403)
+    expect(touched()).toEqual([])
+  })
+
+  it.each(mutations)('%s refuses the Platform Owner as a target, and never writes', async (_n, run, body) => {
+    h.rpc.mockResolvedValue(ok(true))
+    h.queues = { profiles: [ok({ id: OWNER_ID })], account_status: [ok(null), ok(statusRow())] }
+
+    const res = await run(body, OWNER_ID)
+    expect(res.status).toBe(403)
+    expect(touched()).not.toContain('account_status')
+  })
+
+  it.each(mutations)('%s audits the Owner refusal — a denied attempt is the fact worth keeping', async (_n, run, body) => {
+    h.rpc.mockResolvedValue(ok(true))
+    await run(body, OWNER_ID)
+
+    expect(h.writeAuditLog).toHaveBeenCalledTimes(1)
+    expect(h.writeAuditLog.mock.calls[0][0]).toMatchObject({
+      action: 'user.action_denied',
+      targetId: OWNER_ID,
+      metadata: expect.objectContaining({ reason: 'owner_protected' }),
+    })
+  })
+
+  it.each(mutations)('%s FAILS CLOSED when the Owner check itself fails', async (_n, run, body) => {
+    // `isPlatformOwner()` degrades to false on a read error. Here that would be
+    // permission to ban the Owner, so this path must 500 instead.
+    h.rpc.mockResolvedValue({ data: null, error: { message: 'platform_owner unreachable' } })
+    h.queues = { profiles: [ok({ id: SUBJECT })], account_status: [ok(null), ok(statusRow())] }
+
+    const res = await run(body)
+    expect(res.status).toBe(500)
+    expect(touched()).not.toContain('account_status')
+  })
+
+  it.each(mutations)('%s refuses a self-target, before even asking who the Owner is', async (_n, run, body) => {
+    const res = await run(body, ADMIN_ID)
+    expect(res.status).toBe(403)
+    expect(h.rpc).not.toHaveBeenCalled()
+  })
+
+  it.each(mutations)('%s rejects a non-UUID target', async (_n, run, body) => {
+    expect((await run(body, NOT_A_UUID)).status).toBe(422)
+    expect(h.rpc).not.toHaveBeenCalled()
+  })
+
+  it.each(mutations)('%s 404s an unknown target rather than surfacing an FK violation', async (_n, run, body) => {
+    h.queues = { profiles: [ok(null)], account_status: [ok(null), ok(statusRow())] }
+
+    const res = await run(body)
+    expect(res.status).toBe(404)
+    expect(touched()).not.toContain('account_status')
+  })
+
+  it.each(mutations)('%s requires a stated reason', async (_n, run) => {
+    h.queues = { profiles: [ok({ id: SUBJECT })], account_status: [ok(null), ok(statusRow())] }
+
+    const res = await run({ reason: 'spam' })
+    expect(res.status).toBe(422)
+    expect(touched()).toEqual([])
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('POST /api/admin/users/[id]/suspend', () => {
+  beforeEach(() => {
+    h.queues = {
+      profiles: [ok({ id: SUBJECT })],
+      account_status: [ok(null), ok(statusRow({ is_suspended: true, suspended_until: '2026-08-21T12:00:00+00:00' }))],
+    }
+  })
+
+  it('writes the row and reports the resulting standing', async () => {
+    const body = await (await suspend({ reason: REASON, duration_hours: 24 })).json()
+    expect(body.data.standing).toBe('suspended')
+    expect(callsFor('account_status', 1)).toContain('upsert')
+  })
+
+  it('records duration and reason on the audit entry', async () => {
+    await suspend({ reason: REASON, duration_hours: 24 })
+
+    expect(h.writeAuditLog).toHaveBeenCalledTimes(1)
+    expect(h.writeAuditLog.mock.calls[0][0]).toMatchObject({
+      action: 'user.suspend',
+      targetType: 'user',
+      targetId: SUBJECT,
+      metadata: expect.objectContaining({ duration_hours: 24, indefinite: false, reason: REASON }),
+    })
+  })
+
+  it('an omitted duration is recorded as INDEFINITE, not as zero hours', async () => {
+    await suspend({ reason: REASON })
+
+    expect(h.writeAuditLog.mock.calls[0][0].metadata).toMatchObject({
+      duration_hours: null,
+      indefinite: true,
+    })
+    expect(argsFor('account_status', 'upsert', 1)?.[0]).toMatchObject({ suspended_until: null })
+  })
+
+  it('a first sanction leaves beforeState absent, distinguishing it from a re-suspension', async () => {
+    await suspend({ reason: REASON, duration_hours: 24 })
+    expect(h.writeAuditLog.mock.calls[0][0].beforeState).toBeUndefined()
+  })
+})
+
+describe('POST /api/admin/users/[id]/ban', () => {
+  beforeEach(() => {
+    h.queues = {
+      profiles: [ok({ id: SUBJECT })],
+      account_status: [ok(null), ok(statusRow({ is_banned: true, ban_reason: REASON }))],
+    }
+  })
+
+  it('states that the ban is recorded but sessions are NOT revoked', async () => {
+    // §4 defines a ban as also ending every session. That half is not built, so
+    // the response must not imply the user is gone — they are still signed in.
+    const body = await (await ban({ reason: REASON })).json()
+    expect(body.data.standing).toBe('banned')
+    expect(body.data.session_revocation_pending).toBe(true)
+  })
+
+  it('records the same gap on the audit entry, where it cannot be rewritten later', async () => {
+    await ban({ reason: REASON, notes: 'ticket #4821' })
+
+    expect(h.writeAuditLog.mock.calls[0][0]).toMatchObject({
+      action: 'user.ban',
+      metadata: expect.objectContaining({ sessions_revoked: false, notes: 'ticket #4821' }),
+    })
+  })
+
+  it('is rate limited harder than a suspension', async () => {
+    await ban({ reason: REASON })
+    expect(h.rateLimit).toHaveBeenCalledWith(`admin:users:ban:${ADMIN_ID}`, 10, 60_000)
+  })
+})
+
+describe('POST /api/admin/users/[id]/unban', () => {
+  it('carries the erased ban_reason into beforeState, or it is lost forever', async () => {
+    h.queues = {
+      profiles: [ok({ id: SUBJECT })],
+      account_status: [ok(statusRow({ is_banned: true, ban_reason: 'fraud ring' })), ok(statusRow())],
+    }
+
+    await unban({ reason: REASON })
+    expect(h.writeAuditLog.mock.calls[0][0].beforeState).toMatchObject({ ban_reason: 'fraud ring' })
+  })
+
+  it('reports the standing the row actually has — a still-suspended user is not active', async () => {
+    h.queues = {
+      profiles: [ok({ id: SUBJECT })],
+      account_status: [
+        ok(statusRow({ is_banned: true, is_suspended: true, suspended_until: '2099-01-01T00:00:00+00:00' })),
+        ok(statusRow({ is_banned: false, is_suspended: true, suspended_until: '2099-01-01T00:00:00+00:00' })),
+      ],
+    }
+
+    const body = await (await unban({ reason: REASON })).json()
+    expect(body.data.standing).toBe('suspended')
+  })
+})
+
+describe('POST /api/admin/users/[id]/unsuspend', () => {
+  it('is accepted for an already-active account rather than leaking its standing via a 409', async () => {
+    h.queues = { profiles: [ok({ id: SUBJECT })], account_status: [ok(null), ok(statusRow())] }
+
+    const res = await unsuspend({ reason: REASON })
+    expect(res.status).toBe(200)
+    expect((await res.json()).data.standing).toBe('active')
+  })
+
+  it('reports banned when lifting a suspension from an account that is also banned', async () => {
+    h.queues = {
+      profiles: [ok({ id: SUBJECT })],
+      account_status: [ok(statusRow({ is_suspended: true, is_banned: true })), ok(statusRow({ is_banned: true }))],
+    }
+
+    const body = await (await unsuspend({ reason: REASON })).json()
+    expect(body.data.standing).toBe('banned')
+  })
+})
