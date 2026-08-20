@@ -234,6 +234,20 @@ This is also the response to GDPR Subject Access Requests.
 
 PII access requires at minimum `admin` role. This is enforced in the API query layer, not just UI.
 
+> **Implementation, [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md) (Owner Decision A, 2026-08-20).** Enforced as the permission `users.email.read_full`, evaluated by the PDP — never as a role comparison, which would be a second authorization decision path. `analyst` does not reach the user surface at all, so their row above is moot in practice.
+>
+> The mask is **fixed width** (`h***@` regardless of local-part length). Reproducing the real length would leak it, and length plus domain narrows a guess — `h***@gmail.com` is this section's own example and encodes no length.
+>
+> **Two further fields follow the same `admin`+ boundary, each with its own permission:**
+>
+> | Field | Permission | Below the boundary |
+> |---|---|---|
+> | `email` | `users.email.read_full` | masked (`h***@gmail.com`), `email_masked: true` |
+> | `ban_reason` | `users.ban_reason.read` | withheld entirely, `ban_reason_withheld: true` |
+> | search by email address | `users.email.read_full` | 403 — an exact-address lookup is an existence oracle over this same data |
+>
+> `ban_reason` has **no masked form**: a half-shown moderation note is misleading rather than safer. The two permissions are deliberately separate — an address is user PII, a ban reason is an internal note whose `33_Privacy_Data_Governance.md` §3 classification is still an open Owner decision, and one permission covering both would prevent that answer from moving either field independently.
+
 ---
 
 ## 7. Bulk Actions

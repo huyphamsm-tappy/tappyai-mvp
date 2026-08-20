@@ -187,7 +187,11 @@ Returns aggregated AI usage from `ai_usage_log`.
 
 List users with search and filter.
 
-**Permissions:** `admin` or higher
+**Permissions:** ~~`admin` or higher~~ → **`moderator` or higher** (`users.list.read`)
+
+> **Amended by [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md), Owner Decision A, 2026-08-20.** The original line contradicted `12_RBAC.md` §3 (**User List — View** = moderator ✅), `10_User_Management.md` §6 (which defines email masking *for* `moderator`) and `04_Database_Architecture.md` §8 (`moderator`+). It was also inconsistent with this same section, which assigns suspend/unsuspend to `moderator` — an authority with no reachable subject if the list is closed to them. `analyst` remains denied.
+>
+> **Searching by email address is `admin`+**, gated on `users.email.read_full`: an exact-address lookup answers "does this address have an account here?", which is an existence oracle over the data §6 withholds from `moderator`. Name search is unaffected.
 
 **Query params:**
 - `q` — text search (full_name, email)
@@ -222,7 +226,11 @@ List users with search and filter.
 
 Full User 360 view.
 
-**Permissions:** `admin` or higher
+**Permissions:** ~~`admin` or higher~~ → **`moderator` or higher** (`users.detail.read`)
+
+> **Amended by [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md), Owner Decision A, 2026-08-20.** Same reasoning as the list endpoint above; `12_RBAC.md` §3 states **User — View full profile** = moderator ✅ (masked email).
+>
+> **Two fields are gated further, both `admin`+:** the email address is masked without `users.email.read_full` (`10` §6), and `ban_reason` is withheld without `users.ban_reason.read`. A `moderator` can neither ban nor unban, so no action of theirs is informed by the note — Constitution **Rule 9, Privacy by Default**. The *ban itself* stays visible; only the note is withheld, reported as `ban_reason_withheld: true` so a hidden note is distinguishable from an absent one.
 
 **Response includes:**
 - Profile data

@@ -15,7 +15,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { readAccountStatus, standingOf } from '@/lib/admin/users/accountStatusAdmin'
 import { getEmailById } from '@/lib/admin/users/authDirectory'
-import { canReadFullEmail, emailFor } from '@/lib/admin/users/emailVisibility'
+import { banReasonFor, canReadFullEmail, emailFor } from '@/lib/admin/users/fieldVisibility'
 import { isUuid } from '@/lib/admin/users/identity'
 import type { AdminUserDetail } from '../schema'
 
@@ -73,6 +73,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
     const standing = standingOf(status)
     const unmasked = canReadFullEmail(ctx.actor)
+    const banReason = banReasonFor(ctx.actor, status?.ban_reason)
 
     const detail: AdminUserDetail = {
       id: profile.id,
@@ -98,8 +99,11 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       // Service-role-only column (04 §7B section 3). No PostgREST role holds a
       // grant on it — not `anon`, not `authenticated`, not the subject of the
       // note. It reaches the Controller only because this handler is the
-      // service-role path.
-      ban_reason: status?.ban_reason ?? null,
+      // service-role path, and from there it is gated AGAIN on
+      // `users.ban_reason.read`: a `moderator` opens this view but does not
+      // read the note (ADR-023 sub-decision (a)).
+      ban_reason: banReason.value,
+      ban_reason_withheld: banReason.withheld,
       status_updated_at: status?.updated_at ?? null,
     }
 

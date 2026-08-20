@@ -8,6 +8,8 @@
 
 import { adminError, adminErrorResponse } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
+import { permissionEngine } from '@/lib/admin/permissions/engine'
+import { auditAuthorizationDecision } from '@/lib/admin/permissions/decisionAudit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import {
@@ -64,13 +66,38 @@ export async function GET(req: Request) {
     const keyset = cursor ? decodeCursor(cursor) : null
     if (cursor && !keyset) return adminError('VALIDATION_ERROR', 'Invalid cursor', 422)
 
-    const supabase = createAdminClient()
-
-    // ── Email search ────────────────────────────────────────────────────────
+    // ── Email search — admin+ only ──────────────────────────────────────────
     // An `@` means the caller is holding a full address, so this becomes an
     // EXACT lookup returning at most one user. It deliberately ignores `cursor`
     // and `status`: there is nothing to page, and filtering a single known
     // result by standing only hides the answer to the question that was asked.
+    //
+    // GATED ON `users.email.read_full` (ADR-023 sub-decision (b)). Searching by
+    // address is not "viewing" one, but it answers "does this address have an
+    // account here?" — an existence oracle over exactly the data `10` §6
+    // withholds from `moderator`. Sharing the permission that governs reading
+    // an address is what stops the two from drifting apart.
+    //
+    // Decided BEFORE the client is built and before the directory is touched:
+    // a refusal computed after the lookup would still have performed it, and
+    // response timing would answer the question anyway.
+    if (q?.includes('@')) {
+      const decision = permissionEngine.authorize(ctx.actor, PERMISSIONS.USERS_EMAIL_READ_FULL)
+      if (!decision.allowed) {
+        // Through the PDP's own audit path, not a bare 403: Component 4 records
+        // every denial, and a hand-rolled refusal here would be the one
+        // authorization decision on this surface that left no trace.
+        auditAuthorizationDecision({ actor: ctx.actor, decision, surface: 'api', req })
+        return adminError(
+          'FORBIDDEN',
+          'Searching by email address requires permission to read full addresses',
+          403
+        )
+      }
+    }
+
+    const supabase = createAdminClient()
+
     if (q?.includes('@')) {
       const lookup = await findIdByEmail(supabase, q)
       if (!lookup.userId) {

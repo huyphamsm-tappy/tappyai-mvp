@@ -17,12 +17,29 @@ const h = vi.hoisted(() => ({
   isSameOrigin: vi.fn(() => true),
   rateLimit: vi.fn(),
   writeAuditLog: vi.fn(),
+  auditDecision: vi.fn(),
   rpc: vi.fn(),
   getUserById: vi.fn(),
   listUsers: vi.fn(),
-  can: vi.fn(),
+  // The soft permission checks the handlers make through the PDP. Driven by a
+  // SET of granted ids rather than one boolean, because Owner Decision A
+  // (2026-08-20) created two independent admin+ gates on the same surface —
+  // `users.email.read_full` and `users.ban_reason.read` — and a single boolean
+  // could not tell a test which one it was exercising.
+  granted: new Set<string>(),
   queues: {} as Record<string, unknown[]>,
   recorded: [] as { table: string; calls: [string, ...unknown[]][] }[],
+}))
+
+// Defined inside the hoisted block: a `vi.mock` factory is lifted above every
+// top-level statement, so a factory closing over an ordinary `const` reads it
+// before initialization.
+const engine = vi.hoisted(() => ({
+  can: (_actor: unknown, permission: string) => h.granted.has(permission),
+  authorize: (_actor: unknown, permission: string) =>
+    h.granted.has(permission)
+      ? { allowed: true, reason: 'ROLE_GRANT', permission }
+      : { allowed: false, reason: 'NO_GRANT', permission },
 }))
 
 vi.mock('@/lib/admin/rbac', async (orig) => {
@@ -33,11 +50,16 @@ vi.mock('@/lib/admin/permissions', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>
   return { ...actual, requirePermission: h.requirePermission }
 })
-vi.mock('@/lib/admin/permissions/engine', () => ({ permissionEngine: { can: h.can } }))
+vi.mock('@/lib/admin/permissions/engine', () => ({ permissionEngine: engine }))
+vi.mock('@/lib/admin/permissions/decisionAudit', async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>
+  return { ...actual, auditAuthorizationDecision: h.auditDecision }
+})
 vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.rateLimit }))
 vi.mock('@/lib/admin/audit', () => ({ writeAuditLog: h.writeAuditLog }))
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => fakeClient() }))
 
+import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import { GET as LIST } from './route'
 import { GET as DETAIL } from './[id]/route'
 import { POST as SUSPEND } from './[id]/suspend/route'
@@ -147,7 +169,10 @@ beforeEach(() => {
   h.requirePermission.mockResolvedValue(ctx())
   h.isSameOrigin.mockReturnValue(true)
   h.rateLimit.mockResolvedValue({ ok: true, retryAfter: 0 })
-  h.can.mockReturnValue(false)
+  // Default actor: a `moderator` under Owner Decision A — holds the read
+  // surface, holds NEITHER admin+ gate. The stricter default is deliberate:
+  // a test that needs a gate open has to say so.
+  h.granted = new Set([PERMISSIONS.USERS_LIST_READ, PERMISSIONS.USERS_DETAIL_READ])
   h.rpc.mockResolvedValue(ok(false))
   h.getUserById.mockResolvedValue({ data: { user: { email: 'huypham.sm@gmail.com' } }, error: null })
 })
@@ -262,7 +287,47 @@ describe('GET /api/admin/users', () => {
     expect(argsFor('profiles', 'not')).toEqual(['id', 'in', `(${SUBJECT})`])
   })
 
+  // ── Owner Decision A (2026-08-20), sub-decision (b): email search is admin+ ─
+  //
+  // Searching by address is not "viewing" one, but it answers "does this
+  // address have an account here?" — an existence oracle over exactly the data
+  // `10 §6` withholds from `moderator`. It is gated on the same permission that
+  // governs reading an address, so the two cannot drift apart.
+
+  it('REFUSES an email search from an actor without users.email.read_full', async () => {
+    h.listUsers.mockResolvedValue({ data: { users: [{ id: SUBJECT, email: 'huypham.sm@gmail.com' }] }, error: null })
+
+    const res = await list('?q=huypham.sm%40gmail.com')
+    expect(res.status).toBe(403)
+    // The directory is never consulted — a 403 computed after the lookup would
+    // still have performed it, and timing would still answer the question.
+    expect(h.listUsers).not.toHaveBeenCalled()
+    expect(touched()).toEqual([])
+  })
+
+  it('audits that refusal through the PDP, not as a silent 403', async () => {
+    await list('?q=huypham.sm%40gmail.com')
+
+    expect(h.auditDecision).toHaveBeenCalledTimes(1)
+    expect(h.auditDecision.mock.calls[0][0]).toMatchObject({
+      surface: 'api',
+      decision: expect.objectContaining({
+        allowed: false,
+        permission: PERMISSIONS.USERS_EMAIL_READ_FULL,
+      }),
+    })
+  })
+
+  it('still allows a NAME search for the same actor — the gate is on addresses only', async () => {
+    h.queues = { profiles: [ok([profile()])], account_status: [ok([])] }
+
+    const res = await list('?q=Nguy%E1%BB%85n')
+    expect(res.status).toBe(200)
+    expect(h.auditDecision).not.toHaveBeenCalled()
+  })
+
   it('an @ in the query becomes an EXACT email lookup, not a substring scan', async () => {
+    h.granted.add(PERMISSIONS.USERS_EMAIL_READ_FULL)
     h.listUsers.mockResolvedValue({ data: { users: [{ id: SUBJECT, email: 'huypham.sm@gmail.com' }] }, error: null })
     h.queues = { profiles: [ok(profile())], account_status: [ok([statusRow()])] }
 
@@ -274,6 +339,7 @@ describe('GET /api/admin/users', () => {
   })
 
   it('a truncated directory walk is a 503, never an empty list dressed up as an answer', async () => {
+    h.granted.add(PERMISSIONS.USERS_EMAIL_READ_FULL)
     // Full pages every time: the walk hits its page bound with more to read.
     h.listUsers.mockResolvedValue({
       data: { users: Array.from({ length: 1000 }, (_, i) => ({ id: `u${i}`, email: `u${i}@x.com` })) },
@@ -286,6 +352,7 @@ describe('GET /api/admin/users', () => {
   })
 
   it('a complete walk that finds nothing IS an answer', async () => {
+    h.granted.add(PERMISSIONS.USERS_EMAIL_READ_FULL)
     h.listUsers.mockResolvedValue({ data: { users: [{ id: 'u1', email: 'someone@else.com' }] }, error: null })
 
     const res = await list('?q=nobody%40example.com')
@@ -316,7 +383,6 @@ describe('GET /api/admin/users/[id]', () => {
   })
 
   it('MASKS the address when the PDP withholds users.email.read_full', async () => {
-    h.can.mockReturnValue(false)
     h.queues = { profiles: [ok(profile())], account_status: [ok(statusRow())] }
 
     const body = await (await detail()).json()
@@ -325,7 +391,7 @@ describe('GET /api/admin/users/[id]', () => {
   })
 
   it('reveals the address when the PDP grants it', async () => {
-    h.can.mockReturnValue(true)
+    h.granted.add(PERMISSIONS.USERS_EMAIL_READ_FULL)
     h.queues = { profiles: [ok(profile())], account_status: [ok(statusRow())] }
 
     const body = await (await detail()).json()
@@ -356,7 +422,27 @@ describe('GET /api/admin/users/[id]', () => {
     expect(body.data.suspended_until).toBeNull()
   })
 
-  it('surfaces ban_reason — a column no PostgREST role can read', async () => {
+  // ── Owner Decision A (2026-08-20), sub-decision (a): ban_reason is admin+ ──
+  //
+  // A `moderator` reaches this route — that is the whole point of Decision A —
+  // but the internal moderation note is not theirs to read. They cannot ban or
+  // unban, so there is no action the note informs, and Constitution Rule 9
+  // (minimum data access per role) settles the rest.
+
+  it('WITHHOLDS ban_reason from an actor without users.ban_reason.read', async () => {
+    h.queues = {
+      profiles: [ok(profile())],
+      account_status: [ok(statusRow({ is_banned: true, ban_reason: 'fraud ring' }))],
+    }
+
+    const body = await (await detail()).json()
+    expect(body.data.ban_reason).toBeNull()
+    // Distinguishable from "there is no note", exactly as `email_masked` is.
+    expect(body.data.ban_reason_withheld).toBe(true)
+  })
+
+  it('surfaces ban_reason to an actor who holds users.ban_reason.read', async () => {
+    h.granted.add(PERMISSIONS.USERS_BAN_REASON_READ)
     h.queues = {
       profiles: [ok(profile())],
       account_status: [ok(statusRow({ is_banned: true, ban_reason: 'fraud ring' }))],
@@ -364,6 +450,31 @@ describe('GET /api/admin/users/[id]', () => {
 
     const body = await (await detail()).json()
     expect(body.data.ban_reason).toBe('fraud ring')
+    expect(body.data.ban_reason_withheld).toBe(false)
+  })
+
+  it('does not claim a withheld note exists when the account has none', async () => {
+    // A banned account whose reason was never recorded, read by a moderator:
+    // reporting `withheld: true` would invent a note that is not there.
+    h.queues = {
+      profiles: [ok(profile())],
+      account_status: [ok(statusRow({ is_banned: true, ban_reason: null }))],
+    }
+
+    const body = await (await detail()).json()
+    expect(body.data.ban_reason).toBeNull()
+    expect(body.data.ban_reason_withheld).toBe(false)
+  })
+
+  it('withholding the note does not withhold the standing it explains', async () => {
+    h.queues = {
+      profiles: [ok(profile())],
+      account_status: [ok(statusRow({ is_banned: true, ban_reason: 'fraud ring' }))],
+    }
+
+    const body = await (await detail()).json()
+    expect(body.data.standing).toBe('banned')
+    expect(body.data.is_banned).toBe(true)
   })
 
   it('reports a never-moderated user as active with no status timestamp', async () => {

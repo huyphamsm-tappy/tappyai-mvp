@@ -104,8 +104,14 @@ export interface AdminUserDetail extends AdminUserListItem {
   following_count: number | null
   is_suspended: boolean
   is_banned: boolean
-  /** Internal moderation note. Service-role-only column; never exposed to consumers. */
+  /**
+   * Internal moderation note. Service-role-only column, never exposed to
+   * consumers, and gated again on `users.ban_reason.read` for admin readers —
+   * null for an actor without it (ADR-023 sub-decision (a)).
+   */
   ban_reason: string | null
+  /** True only when a note exists and this actor may not read it. */
+  ban_reason_withheld: boolean
   /** Null when the user has never been moderated — there is no status row at all. */
   status_updated_at: string | null
 }

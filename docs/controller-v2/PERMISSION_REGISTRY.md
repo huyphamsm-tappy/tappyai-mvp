@@ -1,8 +1,8 @@
 # Permission Registry
 
-**Registry version:** `2026-08-20.1`
+**Registry version:** `2026-08-20.2`
 **Source of truth:** `src/lib/admin/permissions/registry.ts`
-**Count:** 25 permissions across 7 modules
+**Count:** 26 permissions across 7 modules
 
 > Transcribed from `registry.ts` on 2026-08-20, when Module 08 added the `users`
 > module. The previous revision of this file was written at 14 permissions and
@@ -40,8 +40,9 @@ Legend — **Cat**: read / write / destructive / security · **Risk**: low / med
 | `security.membership.read` | security | read | **medium** | `security.rbac` | super_admin | See which users belong to which department, with org role and scope. |
 | `security.membership.manage` | security | **security** | **critical** | `security.rbac` | super_admin | Assign, suspend, reactivate or remove a department membership. Bounded by department authority. |
 | `users.list.read` | users | read | **medium** | `users.manage` | moderator, admin, super_admin | Search and page the consumer user list, including each account's standing. Email addresses are withheld unless `users.email.read_full` is also held. |
-| `users.detail.read` | users | read | **medium** | `users.manage` | moderator, admin, super_admin | Open one consumer account: profile summary, account standing, ban reason and suspension expiry. |
-| `users.email.read_full` | users | read | **high** | `users.manage` | admin, super_admin | Read a consumer user's full email address. Without it the address is masked (`10_User_Management.md` §6). |
+| `users.detail.read` | users | read | **medium** | `users.manage` | moderator, admin, super_admin | Open one consumer account: profile summary, account standing and suspension expiry. The ban reason needs `users.ban_reason.read` on top. |
+| `users.email.read_full` | users | read | **high** | `users.manage` | admin, super_admin | Read a consumer user's full email address. Without it the address is masked (`10_User_Management.md` §6). Also gates **searching by** an address, which is an existence oracle over the same data. |
+| `users.ban_reason.read` | users | read | **high** | `users.manage` | admin, super_admin | Read the internal moderation note recorded when an account was banned. Withheld without it; the ban itself stays visible. |
 | `users.account.suspend` | users | **write** | **high** | `users.manage` | moderator, admin, super_admin | Temporarily bar a consumer account from posting, commenting and AI, leaving browsing intact. Time-limited or indefinite. |
 | `users.account.unsuspend` | users | **write** | **medium** | `users.manage` | moderator, admin, super_admin | Return a suspended consumer account to active standing. |
 | `users.account.ban` | users | **destructive** | **critical** | `users.manage` | admin, super_admin | Permanently bar a consumer account. Records the ban and its internal reason; session revocation is a separate operation and is NOT performed by this permission. |
@@ -66,16 +67,25 @@ own.
 |---|---|---:|
 | `analyst` | `dashboard.home.view`, `analytics.auth.read`, `analytics.activation.read`, `analytics.content.read` | 4 |
 | `moderator` | analyst's 4 + `users.list.read`, `users.detail.read`, `users.account.suspend`, `users.account.unsuspend` | 8 |
-| `admin` | analyst's 4 + `audit.log.read`, `settings.config.read`, all 5 `commerce.deals.*`, `security.sessions.read`, all 4 `users` reads/writes moderator holds, `users.email.read_full`, `users.account.ban`, `users.account.unban` | 19 |
-| `super_admin` | admin's 19 + all 3 `security.roles.*`, `security.sessions.revoke`, both `security.membership.*` | 25 |
+| `admin` | analyst's 4 + `audit.log.read`, `settings.config.read`, all 5 `commerce.deals.*`, `security.sessions.read`, the 4 `users` permissions moderator holds, `users.email.read_full`, `users.ban_reason.read`, `users.account.ban`, `users.account.unban` | 20 |
+| `super_admin` | admin's 20 + all 3 `security.roles.*`, `security.sessions.revoke`, both `security.membership.*` | 26 |
 | **Platform Owner** | **not applicable** — the Owner bypasses the engine entirely (`OWNER_BYPASS`) and is never resolved against this table | — |
 
-**`moderator` stopped being a copy of `analyst` on 2026-08-20.** The previous
-revision of this file recorded them as identical and noted that differentiating
-them "belongs with the Moderation Hub, when moderator gains permissions of its
-own". Module 08 is where that happened: a moderator may now find a consumer
-account and suspend or unsuspend it (`10_User_Management.md` §3.9), but not ban,
-not unban, and not see an unmasked email address (§6).
+**`moderator` stopped being a copy of `analyst` on 2026-08-20**, by
+[ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md) (Owner
+Decision A). The previous revision of this file recorded them as identical and
+noted that differentiating them "belongs with the Moderation Hub, when moderator
+gains permissions of its own". Module 08 is where that happened: a moderator may
+now find a consumer account and suspend or unsuspend it (`10_User_Management.md`
+§3.9), but not ban, not unban, not see an unmasked email address, not search by
+one, and not read a ban reason.
+
+⚠️ **This makes [`BACKLOG.md`](BACKLOG.md) BL-C3-02 actionable.** That item asks
+whether `moderator` should keep analytics read access, argues from the premise
+that the two roles "hold **identical** permission sets", and names its own
+trigger — *"when the Moderation Hub ships and `moderator` gains permissions of
+its own"*. The premise is now false and the trigger has fired. ADR-023 does not
+answer BL-C3-02; it unblocks it.
 
 ## 3. Metadata contract
 

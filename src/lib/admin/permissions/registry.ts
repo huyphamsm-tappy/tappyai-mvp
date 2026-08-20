@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-20.1'
+export const REGISTRY_VERSION = '2026-08-20.2'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -310,6 +310,27 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     riskLevel: 'high',
     defaultRoles: ['admin', 'super_admin'],
   }),
+  // Owner Decision A, 2026-08-20 (ADR-023) sub-decision (a). A `moderator`
+  // reaches the user detail view but not the internal moderation note: they can
+  // neither ban nor unban, so no action of theirs is informed by it, and
+  // Constitution Rule 9 (minimum data access per role) settles the rest.
+  //
+  // A SEPARATE permission from `users.email.read_full`, not a reuse. The two
+  // fields carry different data classifications — an address is user PII under
+  // `10` §6, a ban reason is an internal note whose `33` §3 classification is
+  // still an open Owner decision — and one permission covering both would make
+  // that future answer unable to move one without the other.
+  def({
+    id: 'users.ban_reason.read',
+    displayName: 'Read a ban reason',
+    description:
+      'Read the internal moderation note recorded when an account was banned. Withheld without it; the ban itself stays visible.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'read',
+    riskLevel: 'high',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
   def({
     id: 'users.account.suspend',
     displayName: 'Suspend a user',
@@ -434,6 +455,7 @@ export const PERMISSIONS = {
   USERS_LIST_READ: 'users.list.read',
   USERS_DETAIL_READ: 'users.detail.read',
   USERS_EMAIL_READ_FULL: 'users.email.read_full',
+  USERS_BAN_REASON_READ: 'users.ban_reason.read',
   USERS_SUSPEND: 'users.account.suspend',
   USERS_UNSUSPEND: 'users.account.unsuspend',
   USERS_BAN: 'users.account.ban',
