@@ -724,6 +724,7 @@ The first of the two items that were both unblocked and already Owner-authorized
 
 ---
 
+
 ### Phase 8 — Module 08 Controller surface: **COMPLETE** (2026-08-20)
 
 The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT REGISTERED AS A CONTROLLER MODULE"* — is closed. **The first business module to exist end-to-end in Controller V2.**
@@ -751,6 +752,37 @@ The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT 
 
 ⚠️ **Verification limitation, unchanged in kind.** `/admin/users` renders inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation/CI evidence only.** No account was impersonated, and no `account_status` row was created to manufacture a result.
 
+### K-6 / B8 — break-glass Owner recovery: **IMPLEMENTED** (2026-08-20)
+
+Design [`13_BREAK_GLASS_OWNER_RECOVERY_DESIGN.md`](13_BREAK_GLASS_OWNER_RECOVERY_DESIGN.md) · decision [**ADR-025**](../architecture/ADR-025-break-glass-owner-recovery.md) · migration `supabase/migrations/20260820_b8_owner_recovery.sql`.
+
+**Closes `01_ARCH` §10 R6 at the code level** — the only **Critical** risk in §10 with no mitigation built. D1–D4 were answered by Owner delegation on 2026-08-20.
+
+⚠️ **The migration is written and tested, NOT applied to production.** That remains an explicit ADR-017 gate.
+
+**R6 was less unbuilt than it read.** Four pieces shipped with Component 1 and were never described as recovery: `platform_owner.assigned_by` **already documents `'break_glass'`**, `active` + `revoked_at` already make transfer a revoke-and-insert, `uq_platform_owner_single_active` already makes two Owners impossible at the database, and `ON DELETE RESTRICT` already refuses to leave the platform ownerless. The dual control R6 names is **already enforced** by `checkOwnerGate`: a DB-only change yields `ENV_MISMATCH`, an env-only change `ENV_SET_BUT_NO_OWNER`, and either 403s the whole Controller — so a half-completed recovery **fails closed**.
+
+#### The shape: two steps, and the application cannot call any of it
+
+`arm → execute`, with `cancel` as the reversible exit. All four functions hold **EXECUTE for nobody — not even `service_role`**, the shape C8 gave `fn_outbox_publish` (P4). That is what makes *"break-glass must never become a hidden super-admin backdoor"* **structural rather than promised**: there is no application path at all, so no second authorization path can exist. A source-boundary suite asserts no `src/` file references the functions, the table, or the system actor sentinel.
+
+| Decision | Resolution |
+|---|---|
+| **D1** target | **Named, never derived.** The obvious implementation was wrong: the bootstrap seed derives from *the sole active `super_admin`*, and production's sole `super_admin` **is** the Owner — so on credential loss it would recover to the very account that was lost. The target is **not** required to hold an admin role; requiring one reproduces the lockout |
+| **D2** when | **Recovery-only.** The database cannot verify "normal control is unavailable" — the credential can be lost while the row is valid — so it is enforced by what can be: no application surface, a mandatory stored justification (≥ 20 chars, the `19` §5 floor), and an audit row for every arm/cancel/execute |
+| **D3** time bound | **One-time, 5–120 minute window**, consumed on execute, replay and expiry both refused, at most one open window (partial **unique** index). No permanent recovery credential exists |
+| **D4** audit | **System actor** — all-zero UUID, `break-glass@system.invalid` (RFC 2606 reserved), `actor_role = 'system'`. Carries operation, target, mechanism, correlation id, reason and outcome. **The write is inside the transaction, so a failed audit ABORTS the recovery** — the inverse of `writeAuditLog`'s deliberate fire-and-forget everywhere else |
+
+#### 🔴 Mutation testing found the central security property untested
+
+**22/22 killed** — but three survived the first run, and two of them were the property this whole change exists to provide:
+
+> Dropping `service_role` from the `REVOKE EXECUTE` list **survived** on both `arm` and `execute`. The harness modelled `ALTER DEFAULT PRIVILEGES … ON TABLES` but **not `ON FUNCTIONS`**, so PostgreSQL's own PUBLIC default was the only grant in play and revoking PUBLIC alone happened to be enough. **The assertion was passing vacuously.** This is exactly the trap ADR-019 names and the C8/C11 harnesses already avoid.
+
+The third: downgrading the single-open-window index from `UNIQUE` survived, because `arm`'s explicit guard still refused a second window on one connection — the index is the **concurrency** guarantee, which a single-connection test cannot exercise. It is now asserted from the catalog, as `uq_platform_owner_single_active` is.
+
+**Verification:** 43 assertions against real PostgreSQL 17.5 + 7 source-boundary assertions. `tsc` clean, lint clean, Architecture Guard 10/10.
+
 ---
 
 ## Master completion burn-down (2026-08-20)
@@ -760,13 +792,14 @@ Measured from the repository at `3a825c2`, not from the entries above.
 | Bucket | Remaining | Blocked | Owner decision | Unblocked + authorized |
 |---|---:|---:|---:|---:|
 | **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
+
 | **Phase 8 — hubs** — ~~`user`~~ ✅ registered · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 4 | 4 | 2 | **0** |
 | **Phase 8 — modules** — 12 not started · 01 stub · 04 partial · ~~08 unregistered~~ ✅ **COMPLETE** · 17 + 20 ambiguous | 17 | 17 | 3 | **0** |
-| **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · K-6 B8 · K-7 guard §1.1–1.3 · K-8 `module_registry` | 7 | 4 | 2 | **1** |
+| **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · ~~K-6 B8~~ ✅ (migration awaiting production apply) · K-7 guard §1.1–1.3 · K-8 `module_registry` | 6 | 4 | 2 | **0** |
 | **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
 | **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |
 
-**Every remaining implementation path is gated.** **K-5 (B14) is RESOLVED** — see the entry above. The one remaining work item that is both unblocked and already Owner-authorized is **K-6 (B8 — break-glass Owner recovery, *"design first, then ADR"*)**. It writes no migration and mutates nothing in production.
+**K-5 (B14) and K-6 (B8) are both RESOLVED** — see the entries above. **Module 08 is complete end-to-end.** What remains is gated on one of three things, and nothing else: an unapplied **production migration** (B8's, and one per remaining Phase 8 module), an **Owner decision** that no authoritative source answers (Phase 7's five, Module 17's hub, Module 20's classification), or an **authenticated production session** this workstream does not hold (BL-002, E2E, final UAT).
 
 **Schema reality, measured in-repo:** there is **no migration** for `platform_settings`, `module_registry`, `daily_snapshots`, `user_notes`, `moderation_queue`, `moderation_actions`, `role_definitions` or `permission_grants`. `role_definitions` and `permission_grants` are **out of scope** by Decision B15; the rest each gate a named workstream.
 
