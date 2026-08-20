@@ -23,6 +23,9 @@ const EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs'])
 // Zones where vendor knowledge is ALLOWED (posix-style path prefixes).
 const AI_LAYER = 'src/lib/ai/llm/' // the capability layer itself (uses the AI SDK core)
 const PROVIDER_LAYER = 'src/lib/ai/llm/providers/' // vendor SDKs, model ids, keys, cache logic
+// The client-input trust boundary. It must be able to NAME vendor option shapes in order to
+// strip them from client payloads — see the note on `no-vendor-cache-logic`.
+const SECURITY_BOUNDARY = 'src/lib/ai/security/'
 
 // The ONLY sanctioned construction point for a Supabase service-role client.
 // It applies `{ auth: { autoRefreshToken: false, persistSession: false } }`; an
@@ -161,7 +164,16 @@ const RULES = [
       /prompt-caching/,
       /providerOptions\s*:\s*\{\s*['"]?(anthropic|openai|google|xai|deepseek|mistral|vertex)\b/,
     ],
-    allow: [PROVIDER_LAYER],
+    // 🚨 The security boundary is allowed to NAME these, because naming them is how it REJECTS
+    // them. `validateClientInput` rebuilds every message from an allowlist precisely so a client
+    // cannot smuggle `providerOptions: { anthropic: { cacheControl: … } }` into a request, and its
+    // tests have to spell the forbidden shape out to prove the rejection works. Flagging those was
+    // the rule catching its own enforcement — the one place the pattern appearing is evidence the
+    // architecture is being upheld rather than broken.
+    //
+    // Narrow on purpose: `src/lib/ai/security/` only, not all tests. A vendor option constructed
+    // anywhere else, test or not, is still a violation.
+    allow: [PROVIDER_LAYER, SECURITY_BOUNDARY],
     hint: "vendor optimizations live in the adapter's decorateMessages() (src/lib/ai/llm/providers/*). The application must not know whether prompt caching exists.",
   },
   {

@@ -139,8 +139,11 @@ describe('stream filter — deferred photo resolution', () => {
     ], collector, resolve)
 
     expect(asked).toEqual([['Bún Chả']])          // resolved 1, not 4
-    expect(out).toContain('Bún Chả.jpg')
-    expect(out).not.toContain('Phở Gà.jpg')
+    // The space is percent-encoded since P3-S4. A literal space inside `(...)`
+    // is where CommonMark starts a link TITLE, so the un-encoded form was a
+    // broken image — the encoded one is the first that actually loads.
+    expect(out).toContain('Bún%20Chả.jpg')
+    expect(out).not.toContain('Phở%20Gà.jpg')
   })
 
   it('resolves every plan item, not just three', async () => {

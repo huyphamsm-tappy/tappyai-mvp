@@ -9,6 +9,8 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
+import { validateClientInput } from '@/lib/ai/security/clientInput'
+import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
@@ -42,28 +44,50 @@ export async function POST(req: Request) {
     )
   }
 
-  const { messages, userLocation: rawUserLocation, userPreferences: rawUserPrefs, responseStyle: rawResponseStyle } = await req.json()
-
-  // Reject a non-array or oversized history BEFORE any expensive LLM/tool work.
-  // maxTokens bounds only OUTPUT and the IP limiter bounds request COUNT — neither
-  // caps input payload size, so an unbounded prompt is a real cost/DoS vector.
-  if (!Array.isArray(messages) || messages.length === 0) {
+  // ── P3-S1: the client input trust boundary ────────────────────────────────
+  //
+  // Everything below this point works on SERVER-CONSTRUCTED values. The client's own objects are
+  // never forwarded: `validateClientInput` rebuilds each message from an allowlist, so a forged
+  // role (`system`/`assistant` claiming to be policy), a fabricated tool result, or a
+  // provider-specific field cannot survive into prompt construction or reach a provider.
+  //
+  // It replaces — rather than supplements — the previous shape check and 24k character cap. Those
+  // bounded the message array only; `userPreferences` was outside them entirely, so a caller could
+  // put an unbounded string there and have it interpolated straight into the system prompt. The
+  // single input budget covers every client-supplied field at once.
+  //
+  // Rejections keep the old user-facing behaviour where it existed: a size violation is still a
+  // 413 with the same Vietnamese copy, and every other contract violation is a 400 carrying a
+  // machine-readable code and nothing else.
+  let rawBody: unknown
+  try {
+    rawBody = await req.json()
+  } catch {
     return new Response(
       JSON.stringify({ error: 'invalid_request' }),
       { status: 400, headers: { 'Content-Type': 'application/json' } },
     )
   }
-  const totalInputChars = (messages as Array<{ content?: unknown }>).reduce((sum, m) => {
-    const c = m?.content
-    if (typeof c === 'string') return sum + c.length
-    if (Array.isArray(c)) return sum + (c as Array<{ text?: string }>).reduce((s, p) => s + (p?.text?.length || 0), 0)
-    return sum
-  }, 0)
-  if (totalInputChars > 24_000) {
+
+  const validated = validateClientInput(rawBody)
+  if (!validated.ok) {
+    const isSize = validated.code === 'message_too_long'
+      || validated.code === 'preference_budget_exceeded'
+      || validated.code === 'input_budget_exceeded'
+      || validated.code === 'image_too_large'
     return new Response(
-      JSON.stringify({ error: 'message_too_long', message: 'Tin nhắn quá dài. Vui lòng rút gọn.' }),
-      { status: 413, headers: { 'Content-Type': 'application/json' } },
+      JSON.stringify(isSize
+        ? { error: validated.code, message: 'Tin nhắn quá dài. Vui lòng rút gọn.' }
+        : { error: validated.code }),
+      { status: isSize ? 413 : 400, headers: { 'Content-Type': 'application/json' } },
     )
+  }
+
+  const messages = validated.messages
+  const rawUserPrefs = validated.preferences
+  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle } = (rawBody ?? {}) as {
+    userLocation?: { lat?: unknown; lng?: unknown; address?: string }
+    responseStyle?: unknown
   }
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
@@ -251,7 +275,11 @@ export async function POST(req: Request) {
     ? (rawUserPrefs as unknown[]).filter(p => typeof p === 'string').slice(0, 50) as string[]
     : []
   if (rawPrefsArr.length > 0) {
-    const freeformBlock = `\n\n===== SỞ THÍCH & THÔNG TIN CÁ NHÂN CỦA USER =====\n${rawPrefsArr.map(p => `- ${p}`).join('\n')}\nHãy luôn ghi nhớ và áp dụng những sở thích này khi gợi ý.\n==================================================`
+    // P3-S2: the VALUES are fenced, the header and the instruction are not. These are free text
+    // the user wrote, so they are untrusted on read even though they arrive from our own client;
+    // the surrounding line telling the model what to do with them is ours, and wrapping trusted
+    // policy as untrusted would be the inverse mistake (FENCE-02).
+    const freeformBlock = `\n\n===== SỞ THÍCH & THÔNG TIN CÁ NHÂN CỦA USER =====\n${fenceUntrusted('user_preferences', rawPrefsArr.map(p => `- ${p}`).join('\n'))}\nHãy luôn ghi nhớ và áp dụng những sở thích này khi gợi ý.\n==================================================`
     prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
   }
 
