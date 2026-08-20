@@ -29,7 +29,7 @@
 | **Component 11** — Session Security | ✅ **ACCEPTED · IN PRODUCTION** — merge commit `ed7ad3b` (PR #62); migration `20260814_c11_session_security.sql` applied to production 2026-08-15 and verified read-only: all four functions exist, every one `SECURITY DEFINER` with `search_path = public, pg_temp`, EXECUTE granted to **`service_role` only** (anon and authenticated have none), and **no function references `refresh_token_hmac_key` or `refresh_token_counter`**. Deployed bodies carry the `is_anonymous` exclusion, `fn_is_platform_owner` Owner protection, and the `AT TIME ZONE` conversion. P-1…P-7 ratified 2026-08-13; O-1 (revocation **immediate** — 403 `session_not_found` with 3597 s of token life left), O-2 (3600 s TTL, therefore **not** the guarantee) and O-3 measured 2026-08-14. Contract: [`11_COMPONENT11_SESSION_SECURITY_CONTRACT.md`](11_COMPONENT11_SESSION_SECURITY_CONTRACT.md) · [ADR-021](../architecture/ADR-021-c11-auth-sessions-dependency.md) |
 | **Definition of Done** | **FULL ARCHITECTURE** — Owner Decision **F**, 2026-08-19, which **supersedes** Decision A (*COMPONENT-COMPLETE, C1–C11*) by date. C1–C11 is now a **precondition**, not the definition: Controller V2 is complete when [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) is implemented and verified. See [`OWNER_DECISIONS_2026-08-19.md`](OWNER_DECISIONS_2026-08-19.md) |
 | **Foundation (C1–C11)** | ✅ **COMPLETE** — the precondition above is met. Every row in this table below is Foundation scope |
-| **Module 08 — User Management** | 🟡 **BACKEND COMPLETE · NOT REGISTERED AS A CONTROLLER MODULE** — schema `b474cff` ([#117](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/117)), consumer enforcement `30e78c1` ([#118](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/118)), Admin Users API `3a825c2` ([#119](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/119)), all live in production. [ADR-022](../architecture/ADR-022-account-status-isolation.md) · [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md). **What is NOT done:** no module manifest, no `tappy.hub.user`, no nav entry, no `/admin/users` page. See [Module 08](#phase-8--module-08-user-management-backend-complete-controller-integration-open-2026-08-20) |
+| **Module 08 — User Management** | ✅ **COMPLETE — backend + Controller surface** — schema `b474cff` ([#117](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/117)), consumer enforcement `30e78c1` ([#118](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/118)), Admin Users API `3a825c2` ([#119](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/119)), all live in production. [ADR-022](../architecture/ADR-022-account-status-isolation.md) · [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md). **Controller surface shipped 2026-08-20:** `tappy.hub.user` registered, manifest `tappy.hub.user.management`, nav entry, `/admin/users` page. **The first business module complete end-to-end in Controller V2.** Still out of scope: auto-unsuspend cron · session revocation on ban · soft delete · notes. See [Module 08](#phase-8--module-08-controller-surface-complete-2026-08-20) |
 | **Controller V2 overall** | ⏳ **NOT COMPLETE** — Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. Remaining-work inventory: [Burn-down](#master-completion-burn-down-2026-08-20) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
@@ -724,6 +724,35 @@ The first of the two items that were both unblocked and already Owner-authorized
 
 ---
 
+### Phase 8 — Module 08 Controller surface: **COMPLETE** (2026-08-20)
+
+The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT REGISTERED AS A CONTROLLER MODULE"* — is closed. **The first business module to exist end-to-end in Controller V2.**
+
+**Nothing in the backend was rebuilt.** `account_status`, consumer enforcement, the eight `users.*` permissions, the six API routes, ADR-022 and ADR-023 are all untouched. The manifest DESCRIBES the shipped surface, exactly as FOUNDATION-03 did for the other seven modules.
+
+| Piece | Detail |
+|---|---|
+| **Hub** | `tappy.hub.user` — id fixed by taxonomy §1, **navigationOrder 5** so it takes its architected second position **without renumbering a single existing hub**. A renumber would have moved four live surfaces to place one new one |
+| **`permissionScope`** | `users.list.read`. ⚠️ MEASURED **a no-op for the current registry** — the hub holds one module requiring the same permission — the same honest state Phase 4 recorded for `tappy.hub.security`. It becomes load-bearing when Moderation (09) and CRM (11) join |
+| **Manifest** | `tappy.hub.user.management`, declaring **only** `users.list.read`. Declaring all eight would claim them exclusively (C6 §5) and refuse any future module that legitimately needs one. The other seven stay enforced where they always were: in the API routes |
+| **`data`** | Deliberately **absent** (ADR-024). Whether Module 08 owns `account_status` — which the consumer app also reads through its own client — is a real question, and answering it inside a UI change would be smuggling |
+| **Page** | `/admin/users`, gated by `requirePagePermission(users.list.read)` |
+
+**The page contains no authorization logic.** `requirePagePermission` is enforcement; the `can` flags it passes to the client are UX, per `12_RBAC.md` §4.2 (*"UI permission checks are for UX only … Server-side checks are the security enforcement"*) and §8 (*"you never see a door you cannot open"*). Both come from the PDP. **There is no role comparison in the module** — the client receives booleans and never learns which role produced them. Field visibility is likewise the server's answer: the page renders `email_masked` and `ban_reason_withheld` as returned and re-derives neither, because two implementations of one rule is how they drift.
+
+**A ban is still reported honestly.** The surface shows the `session_revocation_pending` warning before the action and again after it, so an operator is never left to assume a banned user is gone.
+
+#### Two things the guards caught, both real
+
+1. **Architecture Guard §1.4.** The new kernel test imported `@/lib/i18n/admin` — the identical violation the Command Palette hit in Phase 7. A kernel test that cannot compile without the consumer app is a kernel that cannot be extracted. Translation coverage moved to `hubGrouping.test.tsx`, which is UI-layer, and was **generalized to every module label** — hub headings had that guard since Phase 7, module labels never did.
+2. **`/admin/users` was one of the four removed placeholders.** `adminNavigation.test.ts` pinned it as a route that must never appear, because FOUNDATION-03 deleted it as a *"COMING SOON"* door onto nothing. It is now a real surface, so the pin was moved rather than loosened: three placeholders remain, and `/admin/users` joined the expected route sets. **This is the first time `moderator`'s navigation differs from `analyst`'s** — the navigational consequence of ADR-023.
+
+**Verification:** RED first (15 failing). 956 tests green across controller + components + app. **Mutation 14/14 killed**, including *the page deleted while the nav entry stays*, *the route pointed at a path with no page*, *the module gated on a permission analyst also holds*, *the module silently claiming table ownership*, and *the Vietnamese label copied from English*. `tsc` clean, lint clean on every new file, Architecture Guard 10/10.
+
+⚠️ **Verification limitation, unchanged in kind.** `/admin/users` renders inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation/CI evidence only.** No account was impersonated, and no `account_status` row was created to manufacture a result.
+
+---
+
 ## Master completion burn-down (2026-08-20)
 
 Measured from the repository at `3a825c2`, not from the entries above.
@@ -731,8 +760,8 @@ Measured from the repository at `3a825c2`, not from the entries above.
 | Bucket | Remaining | Blocked | Owner decision | Unblocked + authorized |
 |---|---:|---:|---:|---:|
 | **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
-| **Phase 8 — hubs** — `user` · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 5 | 5 | 2 | **0** |
-| **Phase 8 — modules** — 12 not started · 01 stub · 04 partial · 08 unregistered · 17 + 20 ambiguous | 18 | 18 | 3 | **0** |
+| **Phase 8 — hubs** — ~~`user`~~ ✅ registered · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 4 | 4 | 2 | **0** |
+| **Phase 8 — modules** — 12 not started · 01 stub · 04 partial · ~~08 unregistered~~ ✅ **COMPLETE** · 17 + 20 ambiguous | 17 | 17 | 3 | **0** |
 | **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · K-6 B8 · K-7 guard §1.1–1.3 · K-8 `module_registry` | 7 | 4 | 2 | **1** |
 | **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
 | **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |

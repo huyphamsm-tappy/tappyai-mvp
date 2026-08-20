@@ -72,7 +72,10 @@ describe('the registry still builds, and nothing else moved', () => {
   it('keeps the same hub and module counts', () => {
     const core = buildAdminController()
 
-    expect(core.listHubs()).toHaveLength(5)
+    // 6 since 2026-08-20: tappy.hub.user joined for Module 08. This pin exists
+    // to catch an ACCIDENTAL change to the registry's shape, so it moves only
+    // when a hub is added deliberately.
+    expect(core.listHubs()).toHaveLength(6)
     expect(core.discover()).toHaveLength(ADMIN_MODULES.length)
   })
 
@@ -89,6 +92,10 @@ describe('the registry still builds, and nothing else moved', () => {
       'tappy.hub.configuration',
       'tappy.hub.founder',
       'tappy.hub.security',
+      // Added 2026-08-20 for Module 08. The Founder rename remains the only hub
+      // id this file's subject ever CHANGED; this one is an addition, and the
+      // pin is widened deliberately rather than loosened to a length check.
+      'tappy.hub.user',
     ])
   })
 })

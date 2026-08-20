@@ -11,7 +11,7 @@ import type { Actor, AdminRole } from '@/lib/admin/rbac'
 // MIGRATES the intent of the deleted nav.test.ts (permission-aware per-role
 // visibility, owner-sees-all, multi-role union, unauthenticated-empty, registry
 // consistency) onto the new authority, and additionally proves hub grouping,
-// deterministic order, that the four removed placeholders never appear, and
+// deterministic order, that the remaining removed placeholders never appear, and
 // direct-route security. Authorization flows through the REAL permissionEngine.
 
 function actor(roles: AdminRole[], opts: { isOwner?: boolean } = {}): Actor {
@@ -31,14 +31,29 @@ const routesFor = (a: Actor | null): string[] =>
   deriveNavigation(buildAdminController(), a).flatMap((g) => g.items.map((i) => i.route))
 
 const ANALYST_REAL = ['/admin', '/admin/analytics', '/admin/analytics/auth', '/admin/analytics/activation']
+
+// `/admin/users` MOVED OUT of PLACEHOLDERS on 2026-08-20, deliberately.
+//
+// FOUNDATION-03 removed it as a "COMING SOON" placeholder — a door that opened
+// onto nothing, which is exactly what §8 forbids. Module 08's surface now
+// exists: schema (#117), consumer enforcement (#118), the Admin Users API
+// (#119) and the page. So the route is real, and pinning it as a placeholder
+// would now be asserting the opposite of the truth.
+//
+// This is the FIRST time moderator's navigation differs from analyst's — the
+// navigational consequence of ADR-023, where moderator gained `users.list.read`
+// and stopped being a copy of analyst. The other three placeholders are
+// untouched.
+const USERS_REAL = '/admin/users'
+
 // Pinned from the pre-migration nav.test.ts EXPECTED, minus the removed placeholders.
 const EXPECTED: Record<string, string[]> = {
   unauthenticated: [],
-  analyst: ANALYST_REAL,
-  moderator: ANALYST_REAL, // moderator's only extra was the /admin/moderation placeholder (removed)
-  admin: [...ANALYST_REAL, '/admin/audit', '/admin/deals', '/admin/settings'],
-  super_admin: [...ANALYST_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
-  owner: [...ANALYST_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
+  analyst: ANALYST_REAL, // analyst holds no users permission (ADR-023)
+  moderator: [...ANALYST_REAL, USERS_REAL],
+  admin: [...ANALYST_REAL, USERS_REAL, '/admin/audit', '/admin/deals', '/admin/settings'],
+  super_admin: [...ANALYST_REAL, USERS_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
+  owner: [...ANALYST_REAL, USERS_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
 }
 
 const ACTOR: Record<string, Actor | null> = {
@@ -50,7 +65,8 @@ const ACTOR: Record<string, Actor | null> = {
   owner: actor([], { isOwner: true }),
 }
 
-const PLACEHOLDERS = ['/admin/users', '/admin/moderation', '/admin/engagement', '/admin/monitoring']
+// Three, not four: `/admin/users` graduated to a real surface — see USERS_REAL.
+const PLACEHOLDERS = ['/admin/moderation', '/admin/engagement', '/admin/monitoring']
 
 describe('registry nav — per-role visibility (migrated from nav.test.ts)', () => {
   for (const role of Object.keys(EXPECTED)) {
@@ -59,7 +75,7 @@ describe('registry nav — per-role visibility (migrated from nav.test.ts)', () 
     })
   }
 
-  it('the four removed placeholders never appear for any role', () => {
+  it('the remaining removed placeholders never appear for any role', () => {
     for (const role of Object.keys(ACTOR)) {
       for (const p of PLACEHOLDERS) expect(routesFor(ACTOR[role])).not.toContain(p)
     }
@@ -75,16 +91,21 @@ describe('registry nav — per-role visibility (migrated from nav.test.ts)', () 
 })
 
 describe('registry nav — hub grouping + deterministic order', () => {
-  it('groups are hub-ordered founder→analytics→security→commerce→configuration', () => {
+  it('groups are hub-ordered founder→user→analytics→security→commerce→configuration', () => {
+    // User was inserted at navigationOrder 5, between Founder (0) and Analytics
+    // (10), per taxonomy §1. No existing hub was renumbered, so every other
+    // hub's position in this list is unchanged.
     const groups = deriveNavigation(buildAdminController(), ACTOR.owner)
     expect(groups.map((g) => g.hubId)).toEqual([
-      'tappy.hub.founder', 'tappy.hub.analytics', 'tappy.hub.security', 'tappy.hub.commerce', 'tappy.hub.configuration',
+      'tappy.hub.founder', 'tappy.hub.user', 'tappy.hub.analytics', 'tappy.hub.security',
+      'tappy.hub.commerce', 'tappy.hub.configuration',
     ])
   })
 
   it('super_admin flattened order is deterministic', () => {
     expect(routesFor(ACTOR.super_admin)).toEqual([
-      '/admin', '/admin/analytics', '/admin/analytics/auth', '/admin/analytics/activation',
+      '/admin', '/admin/users',
+      '/admin/analytics', '/admin/analytics/auth', '/admin/analytics/activation',
       '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings',
     ])
   })
