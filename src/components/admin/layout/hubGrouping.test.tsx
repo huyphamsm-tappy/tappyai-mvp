@@ -131,4 +131,18 @@ describe('§8 — no raw strings: every registered hub has a translated nav grou
     )
     expect(differing).toHaveLength(ADMIN_MODULES.length)
   })
+
+  // The same generalisation for ICONS. `navIcon` falls back to HelpCircle for
+  // an unknown name, which is safe but silent — a typo'd icon renders a
+  // question mark in the sidebar and nothing fails. Module 08 had this guard
+  // for itself; mutation A21 showed it did not cover the module added after it,
+  // so it is asserted across the whole registry.
+  it.each(ADMIN_MODULES.map((m) => [m.id, m.navigation.icon] as const))(
+    '%s declares icon %s, and it resolves to a real icon',
+    async (_id, icon) => {
+      const { navIcon } = await import('./navIcons')
+      const { HelpCircle } = await import('lucide-react')
+      expect(navIcon(icon)).not.toBe(HelpCircle)
+    }
+  )
 })

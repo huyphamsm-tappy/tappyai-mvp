@@ -30,7 +30,17 @@ function actor(roles: AdminRole[], opts: { isOwner?: boolean } = {}): Actor {
 const routesFor = (a: Actor | null): string[] =>
   deriveNavigation(buildAdminController(), a).flatMap((g) => g.items.map((i) => i.route))
 
-const ANALYST_REAL = ['/admin', '/admin/analytics', '/admin/analytics/auth', '/admin/analytics/activation']
+// `/admin/analytics/users` joined 2026-08-20 — Module 04's third surface
+// (growth · engagement · subscription funnel). `12_RBAC.md` §3 grants User
+// Analytics to all four roles, exactly as `auth` and `activation` already are,
+// so it belongs in the ANALYST baseline rather than an admin-only set.
+const ANALYST_REAL = [
+  '/admin',
+  '/admin/analytics',
+  '/admin/analytics/auth',
+  '/admin/analytics/activation',
+  '/admin/analytics/users',
+]
 
 // `/admin/users` MOVED OUT of PLACEHOLDERS on 2026-08-20, deliberately.
 //
@@ -105,7 +115,9 @@ describe('registry nav — hub grouping + deterministic order', () => {
   it('super_admin flattened order is deterministic', () => {
     expect(routesFor(ACTOR.super_admin)).toEqual([
       '/admin', '/admin/users',
-      '/admin/analytics', '/admin/analytics/auth', '/admin/analytics/activation',
+      // Analytics hub, module order 10/20/30/40 — users last, so no existing
+      // analytics surface moved when it was added.
+      '/admin/analytics', '/admin/analytics/auth', '/admin/analytics/activation', '/admin/analytics/users',
       '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings',
     ])
   })

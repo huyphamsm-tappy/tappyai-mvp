@@ -7,7 +7,7 @@
 import type { ComponentType } from 'react'
 import {
   LayoutDashboard, BarChart3, UserCheck, Zap, ScrollText, KeyRound,
-  Tag, Settings, HelpCircle, Users,
+  Tag, Settings, HelpCircle, Users, TrendingUp,
 } from 'lucide-react'
 
 type IconComponent = ComponentType<{ className?: string }>
@@ -22,6 +22,7 @@ const REGISTRY: Record<string, IconComponent> = {
   Tag,
   SettingsIcon: Settings,
   Users,
+  TrendingUp,
 }
 
 /** Resolve a manifest icon name to a component; unknown names fall back safely. */
