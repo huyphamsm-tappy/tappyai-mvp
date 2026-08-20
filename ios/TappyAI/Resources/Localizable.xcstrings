@@ -547,6 +547,13 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "When in doubt, check the place’s own page before acting on an answer." } },
         "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khi còn phân vân, hãy kiểm tra trang của chính nơi đó trước khi làm theo câu trả lời." } }
       }
+    },
+    "review.moderation.acknowledge" : {
+      "comment" : "The only string the safety-gate notice needs on this side. Its title and body come from the server, already worded in the request language, because the notice must describe the row that was actually stored — see ReviewModeration. This is just the button that acknowledges it.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Got it" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đã hiểu" } }
+      }
     }
   }
 }

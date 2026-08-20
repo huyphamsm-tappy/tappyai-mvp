@@ -41,6 +41,10 @@ enum TappyColor {
     static let cardBackground = dynamic(light: 0xFFFFFF, dark: 0x1C1C1E)
     static let danger = Color(hex: 0xFF3B30)
     static let success = Color(hex: 0x34C759)
+    /// Amber. Deliberately neither `success` nor `danger`: it marks a state that needs attention
+    /// without asserting fault — the safety gate holding a post is not an accusation, and green
+    /// or red would both say something untrue about it.
+    static let warning = Color(hex: 0xF59E0B)
 
     // Reviews feed — locked dark (docs/ios/06)
     static let feedBackground = Color.black

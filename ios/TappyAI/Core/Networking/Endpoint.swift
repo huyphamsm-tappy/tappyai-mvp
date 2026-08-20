@@ -45,6 +45,22 @@ struct RequestBuilder {
         if let contentType = endpoint.contentType, endpoint.body != nil {
             request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         }
+
+        // The APP language, not the device's.
+        //
+        // 🚨 URLSession sets `Accept-Language` on its own, from `Locale.preferredLanguages` — the
+        // DEVICE's languages. Those differ from the app's exactly when it matters most: a user
+        // who chose English inside a Vietnamese phone. The backend localizes several responses
+        // from this header (`/api/deals`, `/api/reviews/feed`, and — the one that matters —
+        // `POST /api/reviews`, whose response tells an author their post was held), so leaving
+        // URLSession's default in place meant an English user could be told in Vietnamese why
+        // their video is not public.
+        //
+        // Set here rather than per call site so no future endpoint has to remember. Android does
+        // the same thing with an OkHttp interceptor; this is the same fix at the same layer.
+        // An endpoint that sets its own header still wins — the loop below runs afterwards.
+        request.setValue(LocalizationManager.currentLanguageCode, forHTTPHeaderField: "Accept-Language")
+
         for (k, v) in endpoint.headers { request.setValue(v, forHTTPHeaderField: k) }
         return request
     }

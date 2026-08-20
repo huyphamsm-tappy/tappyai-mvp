@@ -155,15 +155,75 @@ struct AIProcessResponse: Decodable, Sendable {
     let category: String?
 }
 
+/// The publication lifecycle state of a post, as the backend reports it.
+///
+/// 🔑 `unknown` is a real case, not defensive padding. Full server-side video examination is
+/// explicitly a future capability, so the backend may add a state this build has never heard of —
+/// and an older client meeting a new value must read it as "not published". `isPublished` is the
+/// single place that question is answered, and it answers it fail-closed.
+enum ReviewPublicationState: String, Codable, Sendable {
+    case published = "PUBLISHED"
+    case underReview = "UNDER_REVIEW"
+    case restricted = "RESTRICTED"
+    case unknown
+
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = ReviewPublicationState(rawValue: raw) ?? .unknown
+    }
+
+    /// Only an explicit `PUBLISHED` counts as public.
+    var isPublished: Bool { self == .published }
+}
+
+/// The safety gate's author-facing outcome (`authorModerationPayload`, web
+/// `src/lib/safety/gate/authorNotice.ts`).
+///
+/// 🚨 `title` and `detail` are SERVER TEXT, already worded in the request language, and are
+/// rendered verbatim. There is deliberately no code-to-string map on this side: the notice must
+/// describe the row that was actually stored, and a second wording maintained in the client is a
+/// second opinion that will eventually disagree with it. Android and the web both make the same
+/// choice, for the same reason.
+///
+/// What is deliberately absent: `safety_state`, policy identities, evidence, coverage. An author
+/// who learns WHICH check held their post learns what to change to get past it.
+struct ReviewModeration: Codable, Sendable, Hashable {
+    let state: ReviewPublicationState
+    let title: String
+    let detail: String
+    /// True only for an actual finding — a hold for "could not be checked" is not an accusation
+    /// and must not be presented as one.
+    let assertsViolation: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case state, title, detail, assertsViolation
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        state = (try? c.decode(ReviewPublicationState.self, forKey: .state)) ?? .unknown
+        title = (try? c.decode(String.self, forKey: .title)) ?? ""
+        detail = (try? c.decode(String.self, forKey: .detail)) ?? ""
+        assertsViolation = (try? c.decode(Bool.self, forKey: .assertsViolation)) ?? false
+    }
+}
+
 struct CreateReviewResponse: Decodable, Sendable {
     let ok: Bool?
     let isVerified: Bool?
     let error: String?
+    /// 🚨 `ok: true` DOES NOT MEAN PUBLISHED. The row was stored; whether it is public is this
+    /// field's business. iOS read only `ok`/`error` and set `success = true` for a review the
+    /// gate had just held — the "it uploaded fine and then vanished" experience the gate exists
+    /// to prevent. `nil` means the gate is inactive, which must stay indistinguishable from the
+    /// world before the gate existed.
+    let moderation: ReviewModeration?
 
     enum CodingKeys: String, CodingKey {
         case ok
         case isVerified = "is_verified"
         case error
+        case moderation
     }
 }
 

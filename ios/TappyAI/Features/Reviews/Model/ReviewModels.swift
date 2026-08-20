@@ -35,6 +35,18 @@ struct Review: Codable, Sendable, Identifiable, Hashable {
     let watchTimeAvg: Double?
     let score: Double?
     let music: ReviewMusic?
+    /// The safety gate's outcome, present ONLY on the author's own posts.
+    ///
+    /// The backend attaches it by IDENTITY, never by request shape — `GET /api/reviews/mine` is
+    /// self-scoped by construction, and the feed's own-profile branch compares the session user
+    /// against the requested one. So a row carrying this is a row about the reader's own post,
+    /// and a row without it says nothing about anyone else's.
+    ///
+    /// 🔴 iOS has no own-posts screen yet, so nothing renders this today. It is decoded now
+    /// because the field is part of the response contract the other two clients already honour,
+    /// and because the screen that will render it (V2 iOS parity) must not have to rediscover
+    /// that a post can exist without being public.
+    let moderation: ReviewModeration?
 
     var isVideo: Bool {
         contentType == "video" && mediaUrl != nil

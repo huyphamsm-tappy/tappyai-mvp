@@ -55,6 +55,13 @@ data class ReviewDto(
     val score: Double? = null,
     val music: MusicDto? = null,
     @SerialName("is_hidden") val isHidden: Boolean? = false,
+    /**
+     * Present ONLY on the author's own profile feed — the server attaches it when the requesting
+     * identity is the author, and strips the raw lifecycle columns for everyone. So a row that
+     * carries this is a row about the reader's own post, and a row without it says nothing about
+     * anyone else's.
+     */
+    val moderation: ModerationDto? = null,
 )
 
 @Serializable
@@ -277,10 +284,45 @@ data class MusicSelectionDto(
     }
 }
 
+/**
+ * The safety gate's author-facing outcome, as `POST /api/reviews` and `GET /api/reviews/feed`
+ * return it (`authorModerationPayload`, src/lib/safety/gate/authorNotice.ts).
+ *
+ * 🚨 THE WORDING COMES FROM THE SERVER, NOT FROM A STRING RESOURCE HERE. That is deliberate and
+ * matches the web: the notice must describe the row that was actually stored, and a client-side
+ * code-to-string map is a second opinion that can drift out of agreement with it. The server
+ * words it in the request language, which is why `AppLanguageInterceptor` sending the app's
+ * `Accept-Language` is a prerequisite for this being right in English.
+ *
+ * 🔑 ABSENT means the gate is inactive. Deliberately indistinguishable from the world before the
+ * gate existed — a nullable field, not a defaulted one, so "no moderation key" and "moderation
+ * says nothing" cannot be confused.
+ *
+ * What is NOT here, also deliberately: `safety_state`, policy identities, evidence, coverage. The
+ * author is owed the honest fact that their post is held and that it is not an accusation — not
+ * which check held it, which would tell them what to change to get past it.
+ */
+@Serializable
+data class ModerationDto(
+    /** `PUBLISHED` | `UNDER_REVIEW` | `RESTRICTED`. */
+    val state: String = "",
+    val title: String = "",
+    val detail: String = "",
+    /** True only for an actual finding. Lets the UI style a hold differently from a refusal. */
+    @SerialName("assertsViolation") val assertsViolation: Boolean = false,
+)
+
 @Serializable
 data class CreateReviewResponseDto(
     val ok: Boolean = false,
     @SerialName("is_verified") val isVerified: Boolean = false,
+    /**
+     * 🚨 `ok: true` DOES NOT MEAN PUBLISHED. The row was stored; whether it is public is this
+     * field's business. Android used to read only `ok` and told the author "posted!" for a review
+     * the gate had just held — the exact "it uploaded fine and then vanished" experience the gate
+     * exists to prevent, which the web already handled and the native clients did not.
+     */
+    val moderation: ModerationDto? = null,
 )
 
 // ---- DTO → domain mappers -------------------------------------------------------
@@ -311,11 +353,24 @@ fun ReviewDto.toDomain(): Review = Review(
     score = score,
     music = music?.toDomain(),
     isHidden = isHidden ?: false,
+    moderation = moderation?.toDomain(),
 )
 
 fun ProfileDto.toDomain(): ReviewProfile = ReviewProfile(
     fullName = fullName,
     avatarUrl = avatarUrl,
+)
+
+/**
+ * An unrecognised `state` becomes [ReviewPublicationState.Unknown], which is NOT published — the
+ * conservative reading, and the one that keeps an older client honest if the backend ever adds a
+ * lifecycle state. Text is carried through verbatim; nothing is re-worded on this side.
+ */
+fun ModerationDto.toDomain(): ReviewModeration = ReviewModeration(
+    state = ReviewPublicationState.fromWire(state),
+    title = title,
+    detail = detail,
+    assertsViolation = assertsViolation,
 )
 
 fun MusicDto.toDomain(): ReviewMusic = ReviewMusic(

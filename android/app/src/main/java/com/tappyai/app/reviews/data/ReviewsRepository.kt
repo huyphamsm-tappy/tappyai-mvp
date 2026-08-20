@@ -108,7 +108,14 @@ interface ReviewsRepository {
         musicVolume: Double = 1.0,
         photos: List<String>? = null,
         link: LinkAttachment? = null,
-    ): NetworkResult<Unit>
+        /**
+         * 🚨 Success is NOT the same as published. The returned [ReviewModeration] is the safety
+         * gate's outcome for this post: null when the gate is inactive, `PUBLISHED` when it went
+         * live, and `RESTRICTED` with the author-facing wording when it did not. A caller that
+         * treats [NetworkResult.Success] alone as "posted" is reintroducing the defect this
+         * return type exists to prevent.
+         */
+    ): NetworkResult<ReviewModeration?>
 
     /**
      * The tapped review, if it was served by a previous feed/search/profile fetch. There is no

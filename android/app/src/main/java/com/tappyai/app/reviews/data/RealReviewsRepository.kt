@@ -124,7 +124,7 @@ class RealReviewsRepository @Inject constructor(
         musicVolume: Double,
         photos: List<String>?,
         link: LinkAttachment?,
-    ): NetworkResult<Unit> = safeApiCall {
+    ): NetworkResult<ReviewModeration?> = safeApiCall {
         api.createReview(
             CreateReviewRequestDto(
                 placeId = placeId,
@@ -147,8 +147,10 @@ class RealReviewsRepository @Inject constructor(
                 sourceUrl = link?.sourceUrl,
                 thumbnail = link?.thumbnailUrl,
             ),
-        )
-        Unit
+        ).moderation?.toDomain()
+        // 🚨 Returns the gate's outcome rather than Unit. `ok: true` only means the row was
+        // stored; whether it is PUBLIC is what `moderation` says, and discarding it here is what
+        // made the composer announce "posted!" for a review the gate had just held.
     }
 
     override fun getCachedReview(reviewId: String): Review? = reviewCache[reviewId]

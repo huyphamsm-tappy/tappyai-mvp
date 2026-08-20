@@ -23,11 +23,61 @@ struct CreateReviewView: View {
     }
 
     var body: some View {
-        if vm.success {
+        if let notice = vm.moderationNotice {
+            // 🚨 CHECKED BEFORE `success`, and the two can never both be shown. The post was
+            // stored but the safety gate did not publish it, and the success screen would tell
+            // the author the opposite — a confirmation they only discover to be false when the
+            // video never appears on Explore.
+            moderationScreen(notice)
+        } else if vm.success {
             successScreen
         } else {
             composerScreen
         }
+    }
+
+    // MARK: - Held by the safety gate
+
+    /// What the author is told when their post was stored but not published.
+    ///
+    /// 🚨 The title and body are the SERVER's words, already in the request language, and are
+    /// rendered verbatim. Nothing here re-words them and nothing here decides what they mean —
+    /// the notice has to describe the row that was actually stored, and a client-side
+    /// code-to-string map is a second opinion that will eventually disagree with it. The web and
+    /// Android composers make the same choice for the same reason.
+    ///
+    /// No auto-dismiss, unlike the success screen: this needs to be read, and it is the one
+    /// moment the author is told at upload time. It stays until they acknowledge it.
+    private func moderationScreen(_ notice: ReviewModeration) -> some View {
+        VStack(spacing: Spacing.md) {
+            Spacer()
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 56))
+                .foregroundStyle(TappyColor.warning)
+            Text(notice.title)
+                .font(TappyFont.title)
+                .foregroundStyle(TappyColor.textPrimary)
+                .multilineTextAlignment(.center)
+            Text(notice.detail)
+                .font(TappyFont.callout)
+                .foregroundStyle(TappyColor.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, Spacing.lg)
+            Spacer()
+            Button {
+                vm.moderationNotice = nil
+                dismiss()
+            } label: {
+                Text("review.moderation.acknowledge")
+                    .font(TappyFont.body)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .padding(.horizontal, Spacing.lg)
+            .padding(.bottom, Spacing.lg)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(TappyColor.background.ignoresSafeArea())
     }
 
     // MARK: - Success screen
