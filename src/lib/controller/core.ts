@@ -34,6 +34,17 @@ import type {
 /** Internal, mutable form of CapabilityRecord — `consumers` grows as modules register. */
 type CapabilityEntry = Omit<CapabilityRecord, 'consumers'> & { consumers: Set<string> }
 
+/**
+ * Fold a declared table name for comparison (ADR-024).
+ *
+ * PostgreSQL lower-cases an unquoted identifier, so `USER_NOTES` and
+ * `user_notes` name one table. Comparing them raw would let two modules each
+ * "own" it while the collision check reported nothing.
+ */
+function normalizeTableName(name: string): string {
+  return name.trim().toLowerCase()
+}
+
 const NOOP_AUDIT: AuditSink = { record: () => {} }
 const NOOP_EVENTS: EventSink = { emit: () => {} }
 
@@ -152,6 +163,30 @@ export class ControllerCore {
       for (const other of this.modules.values()) {
         if (other.manifest.permissions.includes(permission)) {
           errors.push(`permission "${permission}" already declared by module "${other.manifest.id}"`)
+        }
+      }
+    }
+
+    // Table ownership is exclusive across modules — architecture §5 lists
+    // "table collisions" as a validate step, and §4.2 makes ownership the basis
+    // for "cross-module reads go through the owning module's capability, never
+    // a direct join". Two owners would make that rule unenforceable by leaving
+    // no single module to route the read through.
+    //
+    // C6 §5 deferred this check on the stated ground that "modules do not own
+    // tables in this codebase; there is nothing to collide". ADR-024 adds the
+    // `data` field, so that reason has expired — and a field that can be
+    // declared but never checked is worse than no field, because it reads as a
+    // guarantee.
+    //
+    // Comparison is normalized: an unquoted PostgreSQL identifier folds, so
+    // `USER_NOTES` and `user_notes` are the same table. Same-module repetition
+    // dedupes first, exactly as the permission check does.
+    for (const table of new Set((manifest.data?.tables ?? []).map(normalizeTableName))) {
+      for (const other of this.modules.values()) {
+        const owned = (other.manifest.data?.tables ?? []).map(normalizeTableName)
+        if (owned.includes(table)) {
+          errors.push(`table "${table}" already owned by module "${other.manifest.id}"`)
         }
       }
     }

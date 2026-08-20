@@ -67,6 +67,27 @@ export function validateManifest(input: unknown): ManifestValidation {
     if (typeof nav.order !== 'number' || !Number.isFinite(nav.order)) errors.push('navigation.order: required number')
   }
 
+  // `data` is OPTIONAL — absence means the module owns no tables (ADR-024).
+  // Validated only when present, and then strictly: a malformed ownership
+  // assertion must not register, because the collision check downstream is what
+  // keeps two modules off the same table.
+  if (m.data !== undefined) {
+    if (typeof m.data !== 'object' || m.data === null || Array.isArray(m.data)) {
+      errors.push('data: must be an object when present')
+    } else {
+      const tables = (m.data as Unknown).tables
+      if (!isStringArray(tables)) {
+        errors.push('data.tables: required string[]')
+      } else if (tables.length === 0) {
+        // Absence already expresses "owns nothing". An empty array only makes a
+        // manifest look like it answered the question.
+        errors.push('data.tables: must be non-empty — omit `data` to own no tables')
+      } else if (!tables.every(isNonEmptyString)) {
+        errors.push('data.tables: table names must be non-empty strings')
+      }
+    }
+  }
+
   if (!isNonEmptyString(m.lifecycle) || !LIFECYCLES.includes(m.lifecycle as Lifecycle)) {
     errors.push(`lifecycle: must be one of ${LIFECYCLES.join(', ')}`)
   }
