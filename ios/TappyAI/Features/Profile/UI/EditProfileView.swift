@@ -40,7 +40,7 @@ struct EditProfileView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Chỉnh sửa hồ sơ")
+        .navigationTitle("editProfile.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadProfile() }
         .onChange(of: selectedPhoto) { _, newValue in
@@ -92,7 +92,7 @@ struct EditProfileView: View {
                 .offset(x: 4, y: 4)
             }
 
-            Text("Nhấn vào 📷 để đổi ảnh · Tối đa 3MB")
+            Text("editProfile.avatarHint")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -131,7 +131,7 @@ struct EditProfileView: View {
                         .font(.system(size: 13))
                         .foregroundStyle(TappyColor.textSecondary)
                     Spacer()
-                    Text("Không thể thay đổi")
+                    Text("editProfile.locked")
                         .font(.system(size: 10))
                         .foregroundStyle(TappyColor.textSecondary)
                         .padding(.horizontal, Spacing.sm)
@@ -150,7 +150,7 @@ struct EditProfileView: View {
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("HỌ VÀ TÊN")
+                Text("editProfile.fullName")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
                 TextField("Nhập tên của bạn...", text: $fullName)
@@ -168,10 +168,10 @@ struct EditProfileView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
-                    Text("GIỚI THIỆU BẢN THÂN")
+                    Text("editProfile.bio")
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundStyle(TappyColor.textSecondary)
-                    Text("(tuỳ chọn)")
+                    Text("common.optional")
                         .font(.system(size: 10))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -208,13 +208,13 @@ struct EditProfileView: View {
             HStack(spacing: Spacing.sm) {
                 if saving {
                     ProgressView().tint(.white)
-                    Text("Đang lưu...")
+                    Text("common.saving")
                 } else if saved {
                     Image(systemName: "checkmark")
-                    Text("Đã lưu!")
+                    Text("common.saved")
                 } else {
                     Image(systemName: "square.and.arrow.down")
-                    Text("Lưu hồ sơ")
+                    Text("editProfile.save")
                 }
             }
             .font(.system(size: 15, weight: .bold))

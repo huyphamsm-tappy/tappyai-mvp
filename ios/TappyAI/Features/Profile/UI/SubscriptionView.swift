@@ -51,7 +51,7 @@ struct SubscriptionView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Nâng cấp TappyAI")
+        .navigationTitle("sub.title")
         .navigationBarTitleDisplayMode(.inline)
         .task {
             async let a: () = loadStatus()
@@ -82,7 +82,7 @@ struct SubscriptionView: View {
             Text("TappyAI Pro")
                 .font(.system(size: 22, weight: .black))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Trải nghiệm đầy đủ, không giới hạn")
+            Text("sub.hero.desc")
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -100,7 +100,7 @@ struct SubscriptionView: View {
                     .font(.system(size: 14))
                     .foregroundStyle(Color(red: 217/255, green: 119/255, blue: 6/255))
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Bạn đang dùng TappyAI Pro")
+                    Text("sub.onPro")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(Color(red: 146/255, green: 64/255, blue: 14/255))
                     if let end = s.currentPeriodEnd {
@@ -155,10 +155,10 @@ struct SubscriptionView: View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Gói Free")
+                    Text("sub.free")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text("Dùng thử miễn phí")
+                    Text("sub.free.desc")
                         .font(.system(size: 11))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -167,7 +167,7 @@ struct SubscriptionView: View {
                     Text("0đ")
                         .font(.system(size: 22, weight: .black))
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text("/tháng")
+                    Text("sub.perMonth")
                         .font(.system(size: 11))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -177,7 +177,7 @@ struct SubscriptionView: View {
                     featureRow(f, tint: TappyColor.textSecondary)
                 }
             }
-            Text("Gói hiện tại")
+            Text("sub.current")
                 .font(.system(size: 13, weight: .medium))
                 .foregroundStyle(TappyColor.textSecondary)
                 .frame(maxWidth: .infinity)
@@ -207,11 +207,11 @@ struct SubscriptionView: View {
                             Image(systemName: "crown.fill")
                                 .font(.system(size: 12))
                                 .foregroundStyle(Color(red: 252/255, green: 211/255, blue: 77/255))
-                            Text("Gói Pro")
+                            Text("sub.pro")
                                 .font(.system(size: 15, weight: .bold))
                                 .foregroundStyle(.white)
                         }
-                        Text("Không giới hạn, đầy đủ tính năng")
+                        Text("sub.pro.desc")
                             .font(.system(size: 11))
                             .foregroundStyle(.white.opacity(0.7))
                     }
@@ -220,7 +220,7 @@ struct SubscriptionView: View {
                         Text(storeProduct?.displayPrice ?? "99K")
                             .font(.system(size: 22, weight: .black))
                             .foregroundStyle(.white)
-                        Text("/tháng")
+                        Text("sub.perMonth")
                             .font(.system(size: 11))
                             .foregroundStyle(.white.opacity(0.7))
                     }
@@ -237,7 +237,7 @@ struct SubscriptionView: View {
                     VStack(spacing: Spacing.sm) {
                         HStack(spacing: Spacing.sm) {
                             Image(systemName: "crown.fill").font(.system(size: 14))
-                            Text("Bạn đang dùng Pro ✓").font(.system(size: 13, weight: .bold))
+                            Text("sub.alreadyPro").font(.system(size: 13, weight: .bold))
                         }
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
@@ -246,7 +246,7 @@ struct SubscriptionView: View {
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
 
                         Button { Task { await deps.paymentProvider.openSubscriptionManagement() } } label: {
-                            Text("Quản lý gói")
+                            Text("sub.manage")
                                 .font(.system(size: 12, weight: .medium))
                                 .foregroundStyle(.white.opacity(0.8))
                                 .frame(maxWidth: .infinity)
@@ -257,7 +257,7 @@ struct SubscriptionView: View {
                         .buttonStyle(.plain)
                     }
                 } else if purchasePending {
-                    Text("⏳ Giao dịch đang chờ xác nhận. Bạn sẽ nhận thông báo khi hoàn tất.")
+                    Text("sub.pending")
                         .font(.system(size: 12))
                         .foregroundStyle(.white.opacity(0.9))
                         .multilineTextAlignment(.center)
@@ -276,7 +276,7 @@ struct SubscriptionView: View {
                                         .font(.system(size: 14, weight: .bold))
                                         .foregroundStyle(.white)
                                 } else {
-                                    Text("Sắp ra mắt")
+                                    Text("common.comingSoon")
                                         .font(.system(size: 13, weight: .medium))
                                         .foregroundStyle(.white.opacity(0.8))
                                 }
@@ -334,7 +334,7 @@ struct SubscriptionView: View {
                     if restoreLoading {
                         ProgressView().tint(TappyColor.primary)
                     } else {
-                        Text("Khôi phục giao dịch")
+                        Text("sub.restore")
                             .font(.system(size: 13))
                             .foregroundStyle(TappyColor.primary)
                     }
@@ -356,7 +356,7 @@ struct SubscriptionView: View {
 
     private var faqCard: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
-            Text("Câu hỏi thường gặp")
+            Text("sub.faq")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
             faqRow("Thanh toán bằng gì?",
@@ -398,7 +398,7 @@ struct SubscriptionView: View {
                 .font(.system(size: 14))
                 .foregroundStyle(TappyColor.textSecondary)
                 .multilineTextAlignment(.center)
-            Button("Thử lại") { Task { await loadStatus() } }
+            Button("common.retry.action") { Task { await loadStatus() } }
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(TappyColor.primary)
         }

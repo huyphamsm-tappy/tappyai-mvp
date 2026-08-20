@@ -12,7 +12,7 @@ struct HomeGreetingSection: View {
                 Text(greeting)
                     .font(TappyFont.title)
                     .foregroundStyle(TappyColor.textPrimary)
-                Text("Tappy có thể giúp gì cho bạn?")
+                Text("home.hero")
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.textSecondary)
             }
@@ -36,7 +36,7 @@ struct HomeSearchSection: View {
             HStack(spacing: Spacing.sm) {
                 Image(systemName: TappyIcon.search)
                     .foregroundStyle(TappyColor.textSecondary)
-                Text("Hỏi TappyAI bất cứ điều gì...")
+                Text("home.askPlaceholder")
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
@@ -216,13 +216,13 @@ struct HomeRecentConversationsSection: View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             if isAuthenticated && !conversations.isEmpty {
                 HStack {
-                    Text("Trò chuyện gần đây")
+                    Text("home.recentChats")
                         .font(TappyFont.headline)
                         .foregroundStyle(TappyColor.textPrimary)
                     Spacer()
                     if let onSeeAll {
                         Button(action: onSeeAll) {
-                            Text("Xem tất cả")
+                            Text("common.seeAll")
                                 .font(TappyFont.caption)
                                 .foregroundStyle(TappyColor.primary)
                         }
@@ -290,10 +290,10 @@ struct HomeRecommendationsCard: View {
                     .background(TappyColor.surface)
                     .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
                 VStack(alignment: .leading, spacing: Spacing.xxs) {
-                    Text("✨ Gợi ý cho bạn")
+                    Text("recommendations.title")
                         .font(TappyFont.bodyEmphasis)
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text("Địa điểm hợp gu, cá nhân hóa")
+                    Text("home.recommendations.desc")
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                 }

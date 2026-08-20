@@ -55,7 +55,7 @@ struct TappyKnowsView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("🧠 Tappy biết gì về bạn")
+        .navigationTitle("memory.title")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if memory != nil && !cleared {
@@ -72,7 +72,7 @@ struct TappyKnowsView: View {
                         } else {
                             HStack(spacing: 4) {
                                 Image(systemName: "pencil")
-                                Text("Sửa")
+                                Text("common.edit")
                             }
                             .font(.system(size: 12, weight: .medium))
                         }
@@ -87,7 +87,7 @@ struct TappyKnowsView: View {
 
     private var headerRow: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Tappy học từ mỗi cuộc trò chuyện để phục vụ bạn tốt hơn")
+            Text("memory.intro")
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -102,12 +102,12 @@ struct TappyKnowsView: View {
                 Image(systemName: "sparkles")
                     .font(.system(size: 13))
                     .foregroundStyle(TappyColor.primary)
-                Text("PHONG CÁCH TRẢ LỜI CỦA TAPPY")
+                Text("memory.style.header")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
             }
 
-            Text("Giọng điệu")
+            Text("memory.style.tone")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
             HStack(spacing: Spacing.sm) {
@@ -116,7 +116,7 @@ struct TappyKnowsView: View {
                 stylePill("Lịch sự", key: "tone", value: "formal")
             }
 
-            Text("Độ dài")
+            Text("memory.style.length")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.top, 4)
@@ -125,7 +125,7 @@ struct TappyKnowsView: View {
                 stylePill("Đầy đủ", key: "length", value: "detailed")
             }
 
-            Text("Bỏ chọn tất cả = để Tappy tự điều chỉnh theo cách bạn nhắn.")
+            Text("memory.style.hint")
                 .font(.system(size: 10))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.top, 4)
@@ -167,7 +167,7 @@ struct TappyKnowsView: View {
             Text(cleared ? "Đã xóa bộ nhớ" : "Tappy chưa nhớ gì về bạn")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
-            Text("Chat với Tappy để Tappy bắt đầu học về bạn")
+            Text("memory.empty")
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -175,7 +175,7 @@ struct TappyKnowsView: View {
                 router.popToRoot(on: .chat)
                 router.switchTo(.chat)
             } label: {
-                Text("Bắt đầu chat")
+                Text("memory.startChat")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, Spacing.lg)
@@ -210,7 +210,7 @@ struct TappyKnowsView: View {
                             .font(.system(size: 12))
                             .foregroundStyle(.white.opacity(0.8))
                     } else {
-                        Text("Cập nhật tự động sau mỗi cuộc chat")
+                        Text("memory.autoUpdate")
                             .font(.system(size: 12))
                             .foregroundStyle(.white.opacity(0.8))
                     }
@@ -267,7 +267,7 @@ struct TappyKnowsView: View {
                             tagList(spa, color: .purple) { idx in removeTag("spa", idx) }
                         }
                         if let ent = m.preferences.entertainment, !ent.isEmpty {
-                            Text("Giải trí").font(.system(size: 10)).foregroundStyle(TappyColor.textSecondary)
+                            Text("category.entertainment").font(.system(size: 10)).foregroundStyle(TappyColor.textSecondary)
                             tagList(ent, color: .blue) { idx in removeTag("entertainment", idx) }
                         }
                     }
@@ -315,7 +315,7 @@ struct TappyKnowsView: View {
             // History
             if !m.history.isEmpty {
                 VStack(alignment: .leading, spacing: Spacing.sm) {
-                    Text("CHỦ ĐỀ HAY HỎI TAPPY")
+                    Text("memory.topics.header")
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundStyle(TappyColor.textSecondary)
                         .padding(.horizontal, 2)
@@ -360,10 +360,10 @@ struct TappyKnowsView: View {
 
     private var clearMemoryCard: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Xóa bộ nhớ")
+            Text("memory.clear")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Tappy sẽ quên tất cả và bắt đầu lại từ đầu với bạn.")
+            Text("memory.clear.confirm")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -375,7 +375,7 @@ struct TappyKnowsView: View {
                         HStack(spacing: 4) {
                             if clearing { ProgressView().tint(.white) }
                             else { Image(systemName: "trash").font(.system(size: 11)) }
-                            Text("Xác nhận xóa")
+                            Text("memory.clear.cta")
                                 .font(.system(size: 12, weight: .semibold))
                         }
                         .frame(maxWidth: .infinity)
@@ -388,7 +388,7 @@ struct TappyKnowsView: View {
                     .disabled(clearing)
 
                     Button { confirmClear = false } label: {
-                        Text("Hủy")
+                        Text("common.cancel")
                             .font(.system(size: 12, weight: .semibold))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
@@ -402,7 +402,7 @@ struct TappyKnowsView: View {
                 Button { confirmClear = true } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "trash").font(.system(size: 11))
-                        Text("Xóa bộ nhớ của Tappy")
+                        Text("memory.clear.title")
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(.red)

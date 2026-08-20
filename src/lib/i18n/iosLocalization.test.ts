@@ -168,7 +168,7 @@ describe('the conversion backlog is measured, not guessed', () => {
    *
    * Lower it whenever a batch lands. Raising it means a screen went backwards.
    */
-  const IOS_LITERAL_BACKLOG = 585
+  const IOS_LITERAL_BACKLOG = 487
 
   /**
    * Content, not chrome — excluded on purpose.

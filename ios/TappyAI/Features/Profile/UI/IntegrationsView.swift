@@ -36,7 +36,7 @@ struct IntegrationsView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Kết nối ứng dụng")
+        .navigationTitle("integrations.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadData() }
     }
@@ -44,7 +44,7 @@ struct IntegrationsView: View {
     // MARK: - Header
 
     private var headerText: some View {
-        Text("Tappy học thêm về bạn qua các app bạn dùng")
+        Text("integrations.intro")
             .font(.system(size: 13))
             .foregroundStyle(TappyColor.textSecondary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -55,7 +55,7 @@ struct IntegrationsView: View {
     private var privacyNote: some View {
         HStack(alignment: .top, spacing: Spacing.sm) {
             Text("🔒")
-            Text("Tappy chỉ đọc dữ liệu bạn cho phép, không đọc tin nhắn cá nhân, không chia sẻ với bên thứ ba. Bạn có thể ngắt kết nối bất cứ lúc nào.")
+            Text("integrations.privacy")
                 .font(.system(size: 11))
                 .foregroundStyle(.indigo)
         }
@@ -85,7 +85,7 @@ struct IntegrationsView: View {
                             HStack(spacing: 3) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.system(size: 9))
-                                Text("Đã kết nối")
+                                Text("integrations.connected")
                                     .font(.system(size: 10, weight: .medium))
                             }
                             .foregroundStyle(.green)
@@ -119,7 +119,7 @@ struct IntegrationsView: View {
 
             // What Tappy reads
             VStack(alignment: .leading, spacing: 3) {
-                Text("TAPPY CHỈ ĐỌC")
+                Text("integrations.readOnly")
                     .font(.system(size: 9, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
                 Text(info.whatTappyGets)
@@ -133,11 +133,11 @@ struct IntegrationsView: View {
 
             // Action
             if connected {
-                Text("Ngắt kết nối qua trang web TappyAI")
+                Text("integrations.disconnect")
                     .font(.system(size: 11))
                     .foregroundStyle(.red.opacity(0.7))
             } else {
-                Text("Kết nối qua trang web TappyAI")
+                Text("integrations.connect")
                     .font(.system(size: 11))
                     .foregroundStyle(TappyColor.primary)
             }
@@ -155,7 +155,7 @@ struct IntegrationsView: View {
 
     private var whatTappyDoesCard: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Tappy dùng dữ liệu này để làm gì?")
+            Text("integrations.whatFor")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
 

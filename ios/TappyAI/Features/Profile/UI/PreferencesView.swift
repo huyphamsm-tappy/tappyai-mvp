@@ -53,7 +53,7 @@ struct PreferencesView: View {
                     dietarySection
                     saveButton
                     if saveError {
-                        Text("Không thể lưu sở thích. Vui lòng thử lại.")
+                        Text("prefs.saveFailed")
                             .font(.system(size: 13))
                             .foregroundStyle(.red)
                     }
@@ -63,7 +63,7 @@ struct PreferencesView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Sở thích của tôi")
+        .navigationTitle("prefs.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadPreferences() }
     }
@@ -73,7 +73,7 @@ struct PreferencesView: View {
     private var infoBanner: some View {
         HStack(spacing: Spacing.sm) {
             Text("✨")
-            Text("TappyAI dùng thông tin này để gợi ý phù hợp hơn với bạn.")
+            Text("prefs.intro")
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.primary)
         }
@@ -91,10 +91,10 @@ struct PreferencesView: View {
 
     private var freeformSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("🧠 Tappy nhớ bạn")
+            Text("prefs.memory")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Thêm bất cứ thông tin nào để TappyAI gợi ý sát hơn — khu vực, ngân sách, dị ứng, thói quen...")
+            Text("prefs.memory.desc")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -132,7 +132,7 @@ struct PreferencesView: View {
                 Button { addPref(newPref) } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "plus").font(.system(size: 12))
-                        Text("Thêm").font(.system(size: 12, weight: .medium))
+                        Text("prefs.add").font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(.white)
                     .padding(.horizontal, Spacing.md)
@@ -166,7 +166,7 @@ struct PreferencesView: View {
                     }
                 }
             } else {
-                Text("Chưa có sở thích nào. Thêm bằng chips bên trên hoặc tự nhập.")
+                Text("prefs.empty")
                     .font(.system(size: 11))
                     .foregroundStyle(TappyColor.textSecondary)
                     .italic()
@@ -178,10 +178,10 @@ struct PreferencesView: View {
 
     private var genderSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("👤 Bạn là")
+            Text("prefs.youAre")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Giúp Tappy gợi ý câu hỏi phù hợp hơn với bạn")
+            Text("prefs.youAre.desc")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -220,7 +220,7 @@ struct PreferencesView: View {
 
     private var budgetSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("💰 Ngân sách ăn uống thường ngày")
+            Text("prefs.budget")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
 
@@ -262,7 +262,7 @@ struct PreferencesView: View {
 
     private var cuisineSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("🍜 Ẩm thực yêu thích")
+            Text("prefs.cuisine")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
 
@@ -290,10 +290,10 @@ struct PreferencesView: View {
 
     private var dietarySection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("🚫 Dị ứng / kiêng cữ")
+            Text("prefs.dietary")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Ví dụ: không ăn thịt heo, dị ứng hải sản, thuần chay...")
+            Text("prefs.dietary.placeholder")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -318,13 +318,13 @@ struct PreferencesView: View {
             HStack(spacing: Spacing.sm) {
                 if saving {
                     ProgressView().tint(.white)
-                    Text("Đang lưu...")
+                    Text("common.saving")
                 } else if saved {
                     Image(systemName: "checkmark")
-                    Text("Đã lưu!")
+                    Text("common.saved")
                 } else {
                     Image(systemName: "square.and.arrow.down")
-                    Text("Lưu sở thích")
+                    Text("prefs.save")
                 }
             }
             .font(.system(size: 15, weight: .bold))

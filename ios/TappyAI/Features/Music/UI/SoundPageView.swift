@@ -33,7 +33,7 @@ struct SoundPageView: View {
             .padding(.top, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Âm thanh")
+        .navigationTitle("sound.title")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -44,7 +44,7 @@ struct SoundPageView: View {
                     HStack(spacing: 2) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 14, weight: .semibold))
-                        Text("Quay lại")
+                        Text("common.back")
                             .font(.system(size: 14, weight: .medium))
                     }
                     .foregroundStyle(TappyColor.primary)
@@ -253,7 +253,7 @@ struct SoundPageView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "plus")
                         .font(.system(size: 16))
-                    Text("Sử dụng âm thanh này")
+                    Text("sound.useThis")
                         .font(.system(size: 14, weight: .semibold))
                 }
                 .frame(maxWidth: .infinity)
@@ -276,7 +276,7 @@ struct SoundPageView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "flag")
                         .font(.system(size: 12))
-                    Text("Báo cáo bản quyền")
+                    Text("sound.reportCopyright")
                         .font(.system(size: 12))
                 }
                 .foregroundStyle(TappyColor.textSecondary.opacity(0.7))
@@ -291,12 +291,12 @@ struct SoundPageView: View {
 
     private func videosGrid(_ data: SoundData) -> some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Video sử dụng bài nhạc này")
+            Text("sound.videosUsing")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
 
             if data.videos.isEmpty {
-                Text("Chưa có video nào dùng bài nhạc này. Hãy là người đầu tiên!")
+                Text("sound.noVideos")
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.textSecondary)
                     .frame(maxWidth: .infinity)
@@ -361,14 +361,14 @@ struct SoundPageView: View {
                 HStack {
                     Image(systemName: "flag.fill")
                         .foregroundStyle(.red)
-                    Text("Báo cáo bài nhạc")
+                    Text("sound.report.title")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(TappyColor.textPrimary)
                     Spacer()
                 }
 
                 if vm.reportSent {
-                    Text("Đã gửi báo cáo. Chúng tôi sẽ xử lý trong 24–48h. Cảm ơn bạn!")
+                    Text("sound.report.sent")
                         .font(TappyFont.callout)
                         .foregroundStyle(.green)
                         .padding(.vertical, Spacing.lg)
@@ -403,7 +403,7 @@ struct SoundPageView: View {
                         )
                         .overlay(alignment: .topLeading) {
                             if vm.reportDetails.isEmpty {
-                                Text("Mô tả thêm (tùy chọn)")
+                                Text("sound.report.detail")
                                     .font(TappyFont.callout)
                                     .foregroundStyle(TappyColor.textSecondary)
                                     .padding(.horizontal, Spacing.sm)
@@ -421,7 +421,7 @@ struct SoundPageView: View {
                                     .tint(.white)
                                     .scaleEffect(0.8)
                             }
-                            Text("Gửi báo cáo")
+                            Text("sound.report.submit")
                                 .font(.system(size: 14, weight: .semibold))
                         }
                         .frame(maxWidth: .infinity)
@@ -433,7 +433,7 @@ struct SoundPageView: View {
                     .buttonStyle(.plain)
                     .disabled(vm.reportBusy)
 
-                    Text("Xem Chính sách bản quyền")
+                    Text("sound.report.policy")
                         .font(.system(size: 11))
                         .foregroundStyle(TappyColor.textSecondary)
                         .frame(maxWidth: .infinity)
@@ -444,7 +444,7 @@ struct SoundPageView: View {
             .padding(Spacing.lg)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Đóng") {
+                    Button("common.close") {
                         vm.reportOpen = false
                     }
                 }
