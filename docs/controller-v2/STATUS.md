@@ -858,12 +858,11 @@ New permission `analytics.users.read`, all four roles per `12_RBAC` §3. `REGIST
 
 ## Master completion burn-down (2026-08-20)
 
-Measured from the repository at `3a825c2`, not from the entries above.
+Measured from the repository at `81bfa06`, not from the entries above. Registry as built: **6 hubs, 10 modules**.
 
 | Bucket | Remaining | Blocked | Owner decision | Unblocked + authorized |
 |---|---:|---:|---:|---:|
 | **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
-
 | **Phase 8 — hubs** — ~~`user`~~ ✅ registered · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 4 | 4 | 2 | **0** |
 | **Phase 8 — modules** — 11 not started · ~~01 stub~~ ✅ · 04 **3/5 shipped; retention needs a migration** · ~~08~~ ✅ · 17 + 20 ambiguous | 16 | 16 | 4 | **0** |
 | **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · ~~K-6 B8~~ ✅ (migration awaiting production apply) · K-7 guard §1.1–1.3 · K-8 `module_registry` | 6 | 4 | 2 | **0** |
@@ -872,7 +871,19 @@ Measured from the repository at `3a825c2`, not from the entries above.
 
 **K-5 (B14) and K-6 (B8) are both RESOLVED** — see the entries above. **Module 08 is complete end-to-end.** What remains is gated on one of three things, and nothing else: an unapplied **production migration** (B8's, and one per remaining Phase 8 module), an **Owner decision** that no authoritative source answers (Phase 7's five, Module 17's hub, Module 20's classification), or an **authenticated production session** this workstream does not hold (BL-002, E2E, final UAT).
 
-**Schema reality, measured in-repo:** there is **no migration** for `platform_settings`, `module_registry`, `daily_snapshots`, `user_notes`, `moderation_queue`, `moderation_actions`, `role_definitions` or `permission_grants`. `role_definitions` and `permission_grants` are **out of scope** by Decision B15; the rest each gate a named workstream.
+**Schema reality, re-measured in-repo at `81bfa06`** — one line per table, and the only thing that moved is `daily_snapshots`:
+
+| Table | Migration | Gates |
+|---|---|---|
+| `daily_snapshots` | ✅ `20260820_m01_daily_snapshots.sql`, **applied to production** | Module 01 ✅ · Module 04 growth + engagement ✅ |
+| `cohort_metrics` | 🔴 **absent** — DDL specified in `04` §7 | Module 04 **retention** — needs its own Owner migration authorization |
+| `platform_settings` | 🔴 absent | Module 20 / configuration |
+| `module_registry` | 🔴 absent | K-8 |
+| `user_notes` | 🔴 absent | Module 08 notes (explicitly out of scope) |
+| `moderation_queue` · `moderation_actions` | 🔴 absent | Module 09 moderation |
+| `role_definitions` · `permission_grants` | 🔴 absent | **out of scope by Decision B15** |
+
+`user_events`, `user_acquisition` and `subscriptions` all exist and are already migrated — which is why Module 04's funnel and the existing acquisition surface needed no schema work at all.
 
 **Legacy is genuinely closed**, and that is a completion criterion rather than a convenience: `src/lib/admin.ts` does not exist, `BACKOFFICE_ENABLED` resolves through the Config Provider, `ADMIN_IDS` survives only as a notification-recipient list (Decision B4, closed as non-blocking), and all 8 `/admin` pages route through `requirePagePermission`. **No duplicate authorization path remains.**
 
