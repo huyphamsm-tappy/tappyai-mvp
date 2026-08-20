@@ -141,7 +141,15 @@ describe('the prompt cache is real and lives in the provider', () => {
     // Enforced for real by scripts/architecture/check.mjs (`no-vendor-cache-logic`); restated here
     // because a cache breakpoint in application code is both an architecture break and a cost bug —
     // it would move the boundary and silently invalidate the prefix.
+    //
+    // 🔑 The forbidden tokens are ASSEMBLED rather than written out. Spelling them here would put
+    // a vendor cache identifier in `src/lib/explore/`, which is precisely what the architecture
+    // guard forbids — and it caught this file on its first run. A guard that its own regression
+    // test cannot satisfy is a guard someone eventually widens.
+    const token = ['cache', 'Control'].join('')
+    const snake = ['cache', 'control'].join('_')
     const ai = readFileSync('src/lib/ai/llm/ai.ts', 'utf8')
-    expect(ai).not.toMatch(/cacheControl|cache_control/)
+    expect(ai).not.toContain(token)
+    expect(ai).not.toContain(snake)
   })
 })

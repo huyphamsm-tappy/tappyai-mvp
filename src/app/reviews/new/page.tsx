@@ -480,7 +480,8 @@ export default function NewReviewPage() {
   }
 
   /**
-   * Typing in the link field. Local state updates immediately; anything that costs money waits.
+   * Typing in the link field. Local state updates immediately; anything that costs money is
+   * deferred until the typing stops.
    *
    * The split is the whole point — the input must stay responsive, so `setSource_url` and the
    * cleared metadata happen on every keystroke exactly as before, while the resolve-and-analyse
