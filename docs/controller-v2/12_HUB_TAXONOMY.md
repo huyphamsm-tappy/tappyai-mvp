@@ -25,7 +25,7 @@ Hub ids follow the shipped convention `tappy.hub.<name>` (see [`registry/adminMo
 | **🏠 Founder** `tappy.hub.founder` | Executive KPIs · Revenue · AI Cost · Growth · Alerts · Investor Report | **01** Home Dashboard | ⚠️ stub — `ControllerHome` shows registry counts, not KPIs |
 | | | **05** Business Analytics | ❌ not started |
 | | | **06** Investor Dashboard | ❌ not started |
-| **👥 User** `tappy.hub.user` | Users · Subscriptions · Devices · Sessions · Support · Moderation | **08** User Management | 🟡 **backend complete, NOT registered** — schema `b474cff`, enforcement `30e78c1`, Admin API `3a825c2`, all live. No manifest, no hub, no page ([STATUS](STATUS.md)) |
+| **👥 User** `tappy.hub.user` ✅ **registered 2026-08-20** | Users · Subscriptions · Devices · Sessions · Support · Moderation | **08** User Management | ✅ **COMPLETE end-to-end** — schema `b474cff`, enforcement `30e78c1`, Admin API `3a825c2`, manifest `tappy.hub.user.management` + `/admin/users` ([STATUS](STATUS.md)) |
 | | | **09** Content Moderation | ❌ not started |
 | | | **11** CRM (User 360) | ❌ not started |
 | | | *Sessions* — C11 | ⚠️ API only (`/api/admin/security/sessions`), no module, no UI |
@@ -47,7 +47,9 @@ Hub ids follow the shipped convention `tappy.hub.<name>` (see [`registry/adminMo
 
 > **Corrected 2026-08-20.** This line read *"17 of 20 … The remaining three"*, which counted Feature Flags / Experimentation — **not among the twenty numbered modules**, as §2 says itself — as a module. Counted directly from the table above: 18 placed, 2 unplaced.
 
-> **`tappy.hub.user` is still not registered, and that is now the gap rather than Module 08.** Module 08's backend shipped in three merges (see [STATUS](STATUS.md)); registering the hub requires a `/admin/users` surface, because `01_ARCH` §8 forbids a nav entry that opens onto nothing. That surface is a **new UI** and needs Owner authorization — the six B5 surfaces promoted `17_UI_UX_Standards.md` for themselves, not for a seventh.
+> **`tappy.hub.user` is registered as of 2026-08-20**, with Module 08 complete end-to-end — the first business module to exist in full under Controller V2. The hub took `navigationOrder` 5, its architected second position, **without renumbering any existing hub**.
+>
+> §3 below is now partly historical: two hubs predated this taxonomy, one has been renamed (Founder) and this third one was added under it rather than reconciled into it.
 
 ## 2. AMBIGUOUS — not placed, and not guessed
 

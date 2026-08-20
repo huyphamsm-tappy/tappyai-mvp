@@ -18,6 +18,7 @@ import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import { ControllerCore } from '../core'
 import type { AuditSink, EventSink, HubDescriptor, ModuleManifest } from '../types'
 import { securityHub, securityAuditModule } from '../modules/securityAuditModule'
+import { userHub, userManagementModule } from '../modules/userManagementModule'
 
 // ── Hubs (real, backed by shipped modules) ──────────────────────────────────
 /**
@@ -58,7 +59,10 @@ export const configurationHub: HubDescriptor = {
   navigationGroup: 'admin.nav.group.configuration', navigationOrder: 40, lifecycle: 'stable',
 }
 // securityHub (tappy.hub.security, order 20) is defined in ../modules/securityAuditModule.
-// Nav order: founder(0) → analytics(10) → security(20) → commerce(30) → configuration(40).
+// userHub (tappy.hub.user, order 5) is defined in ../modules/userManagementModule.
+// Nav order: founder(0) → user(5) → analytics(10) → security(20) → commerce(30) → configuration(40).
+// User slots at 5 rather than renumbering: taxonomy §1 orders it second, and a
+// renumber would move four live surfaces in order to place one new one.
 
 function mod(
   id: string, name: string, hub: string, route: string, permission: string,
@@ -99,9 +103,10 @@ export const commerceDealsModule = mod('tappy.hub.commerce.deals', 'Deals', comm
 export const securityRolesModule = mod('tappy.hub.security.rbac', 'RBAC', securityHub.id, '/admin/rbac', PERMISSIONS.SECURITY_ROLES_READ, 'admin.nav.roles', 'KeyRound', 30)
 export const configurationSettingsModule = mod('tappy.hub.configuration.settings', 'Settings', configurationHub.id, '/admin/settings', PERMISSIONS.SETTINGS_CONFIG_READ, 'admin.nav.settings', 'SettingsIcon', 10)
 
-export const ADMIN_HUBS: readonly HubDescriptor[] = [founderHub, securityHub, analyticsHub, commerceHub, configurationHub]
+export const ADMIN_HUBS: readonly HubDescriptor[] = [founderHub, userHub, securityHub, analyticsHub, commerceHub, configurationHub]
 export const ADMIN_MODULES: readonly ModuleManifest[] = [
   homeModule,
+  userManagementModule,
   analyticsContentModule, analyticsAuthModule, analyticsActivationModule,
   securityAuditModule, securityRolesModule,
   commerceDealsModule,

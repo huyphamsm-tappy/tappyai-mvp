@@ -2,7 +2,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { render, screen, within, cleanup } from '@testing-library/react'
 import { AdminShell } from './AdminShell'
-import { ADMIN_HUBS } from '@/lib/controller/registry/adminModules'
+import { ADMIN_HUBS, ADMIN_MODULES } from '@/lib/controller/registry/adminModules'
 import { vi as viStrings, en as enStrings } from '@/lib/i18n/admin'
 import type { NavGroup } from '@/lib/controller/adminNavigation'
 
@@ -111,5 +111,24 @@ describe('§8 — no raw strings: every registered hub has a translated nav grou
     // presence check while leaving the Vietnamese UI untranslated.
     const differing = ADMIN_HUBS.filter((h) => viStrings[h.navigationGroup] !== enStrings[h.navigationGroup])
     expect(differing).toHaveLength(ADMIN_HUBS.length)
+  })
+
+  // The same rule for MODULE labels. Hub headings were covered above from
+  // Phase 7; module labels were not, and a module registered with an
+  // untranslated label renders a raw i18n key in the sidebar — §8's "no raw
+  // strings" broken in the one place an operator looks most.
+  it.each(ADMIN_MODULES.map((m) => [m.id, m.navigation.label] as const))(
+    '%s declares %s, translated in both locales',
+    (_id, key) => {
+      expect(viStrings[key], `missing vi translation for ${key}`).toBeTruthy()
+      expect(enStrings[key], `missing en translation for ${key}`).toBeTruthy()
+    }
+  )
+
+  it('module labels differ between locales too', () => {
+    const differing = ADMIN_MODULES.filter(
+      (m) => viStrings[m.navigation.label] !== enStrings[m.navigation.label]
+    )
+    expect(differing).toHaveLength(ADMIN_MODULES.length)
   })
 })
