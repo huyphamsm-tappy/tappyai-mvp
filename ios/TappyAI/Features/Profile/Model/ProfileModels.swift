@@ -211,4 +211,6 @@ enum ProfileDestination: Hashable {
     /// The notification inbox — counterpart of Android's notifications screen. Distinct from
     /// [notifications], which is the SETTINGS screen for delivery preferences.
     case notificationsInbox
+    /// People search — the counterpart of Android's ReviewSearchSection and the web user search.
+    case userSearch
 }

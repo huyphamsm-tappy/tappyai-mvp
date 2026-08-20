@@ -108,6 +108,9 @@ describe('converted iOS screens stay converted', () => {
     'ios/TappyAI/Features/Discovery/UI/FavoritesView.swift',
     'ios/TappyAI/Features/Reviews/UI/MyPostsView.swift',
     'ios/TappyAI/Features/Reviews/UI/MusicPickerView.swift',
+    'ios/TappyAI/Features/Reviews/UI/UserSearchView.swift',
+    'ios/TappyAI/Features/Profile/UI/ProfileMainView.swift',
+    'ios/TappyAI/Features/Profile/UI/SettingsView.swift',
   ]
 
   // Vietnamese diacritics. A literal carrying one is unambiguously user-facing prose rather than
@@ -165,7 +168,7 @@ describe('the conversion backlog is measured, not guessed', () => {
    *
    * Lower it whenever a batch lands. Raising it means a screen went backwards.
    */
-  const IOS_LITERAL_BACKLOG = 627
+  const IOS_LITERAL_BACKLOG = 585
 
   /**
    * Content, not chrome — excluded on purpose.

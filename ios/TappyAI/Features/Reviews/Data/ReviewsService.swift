@@ -30,6 +30,26 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: FeedResponse.self)
     }
 
+    // MARK: - People search
+
+    /// `GET /api/users/search?q=` — the people search Web and Android both have and iOS did not.
+    ///
+    /// The server enforces a 2-character minimum and returns an empty list below it; that check is
+    /// mirrored here so a one-character query costs nothing rather than a round trip that can only
+    /// come back empty. `requiresAuth` because `is_following` is computed for the CALLER — an
+    /// anonymous request would get a result set whose follow state is meaningless.
+    func searchUsers(query: String) async throws -> [UserSearchResult] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.count >= 2 else { return [] }
+        let endpoint = Endpoint(
+            path: "/api/users/search",
+            method: .get,
+            query: [URLQueryItem(name: "q", value: trimmed)],
+            requiresAuth: true
+        )
+        return try await api.send(endpoint, as: UserSearchResponse.self).users
+    }
+
     // MARK: - The author's own posts
 
     /// `GET /api/reviews/mine` — every post this user has made, INCLUDING ones they hid and ones

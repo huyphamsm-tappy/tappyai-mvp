@@ -132,6 +132,8 @@ struct PlaceholderShellView: View {
                         MyPostsView(deps: deps)
                     case .notificationsInbox:
                         NotificationsInboxView(deps: deps)
+                    case .userSearch:
+                        UserSearchView(deps: deps)
                     }
                 }
         default:

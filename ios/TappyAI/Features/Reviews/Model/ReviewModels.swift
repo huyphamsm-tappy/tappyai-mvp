@@ -85,6 +85,29 @@ struct ReviewComment: Codable, Sendable, Identifiable, Hashable {
     }
 }
 
+/// One row of `GET /api/users/search?q=` — the people search Web and Android both have.
+///
+/// `isFollowing` is computed server-side FOR THE CALLER, so the button state is correct on first
+/// paint instead of after a second round trip. Snake-case keys are converted by the shared
+/// decoder's `convertFromSnakeCase`, the same as every other response here.
+struct UserSearchResult: Decodable, Sendable, Identifiable, Hashable {
+    let id: String
+    let fullName: String?
+    let avatarUrl: String?
+    let followerCount: Int?
+    let followingCount: Int?
+    let isFollowing: Bool?
+
+    var displayName: String {
+        let trimmed = fullName?.trimmingCharacters(in: .whitespaces) ?? ""
+        return trimmed.isEmpty ? NSLocalizedString("search.user.unnamed", comment: "") : trimmed
+    }
+}
+
+struct UserSearchResponse: Decodable, Sendable {
+    let users: [UserSearchResult]
+}
+
 struct FeedResponse: Decodable, Sendable {
     let reviews: [Review]
     let page: Int
