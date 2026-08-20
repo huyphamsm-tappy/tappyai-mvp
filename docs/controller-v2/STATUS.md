@@ -828,6 +828,38 @@ The other two: widening the MAU window survived because the activity **pre-filte
 
 ---
 
+### Phase 8 — Module 04 retention: `cohort_metrics` APPLIED TO PRODUCTION (2026-08-20)
+
+Merge `aa00abc` ([PR #128](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/128)). Owner authorized this migration specifically; M01's authorization was **not** reused.
+
+Migration SHA-256 `95f0d43f497bb2b99747d028443f711dca76f2c4ff9d1dcbd49d036cbfa600c9`, verified against the reviewed PR immediately before applying.
+
+**Authoritative DDL is `04` §3.3 — not §7.** §7 is "Existing Table Modifications" and does not define this table. Reproduced verbatim, including the rate columns' `DEFAULT 0`.
+
+**Production verification, read-only:**
+
+| | |
+|---|---|
+| External boundary | **`PGRST205` → `42501`** — the table now exists *and* stays closed to the public API |
+| Schema | 11 columns exactly. **Counts `NOT NULL`, rates nullable** — the asymmetry that lets a rate say "not measurable" |
+| Constraints | `PRIMARY KEY (id)` · `UNIQUE (cohort_date, platform)` |
+| Index | `idx_cohort_metrics_date` on `(cohort_date DESC)` |
+| Grants | `postgres` + `service_role` only — **`anon` and `authenticated` absent** |
+| RLS | enabled, **0 policies** — a missing policy is a denial |
+| Function | `fn_rollup_cohort_metrics(p_from date, p_to date, p_today date)` · `SECURITY DEFINER` · `search_path=public, pg_temp` |
+| EXECUTE | `anon` false · `authenticated` false · `PUBLIC` false · `service_role` true — checked with `has_function_privilege`, not by reading ACL text |
+| Rows | **0** — nothing was manufactured |
+
+**Only this migration ran.** `platform_owner_recovery` (B8), `user_notes` and `module_registry` all still probe `PGRST205`.
+
+**No new cron.** Still 8 entries; `analytics-snapshot` keeps `5 17 * * *` = 00:05 VN and gains step 6. `06` §6's separate `cohort-rollup` at 00:10 UTC was **not** built: 00:10 UTC is 07:10 VN, seven hours *into* the day it would measure.
+
+⏳ **PRODUCTION COHORT DATA NOT YET AVAILABLE.** `cohort_metrics` and `daily_snapshots` both hold 0 rows until the first post-migration cron at **00:05 VN on 2026-08-21**. Real source data exists (21 profiles, 7,909 events), so the first run produces genuine cohorts. Retention is **not** behaviourally verified, and no rows were created to make it look otherwise.
+
+**Module 04 remains PARTIAL.**
+
+---
+
 ### Phase 8 — Module 04 User Analytics: **3 of 5 sections shipped** (2026-08-20)
 
 Merge `81bfa06` ([PR #126](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/126)). **No migration** — everything reads already-rolled-up tables.
@@ -840,7 +872,7 @@ Merge `81bfa06` ([PR #126](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/1
 | Engagement — DAU/WAU/MAU, stickiness | `daily_snapshots` | ✅ |
 | Subscription funnel — free / Pro / conversion | `subscriptions` | ✅ |
 | Demographics · acquisition | `user_acquisition` | ✅ **already served by `analytics/auth`** — not re-implemented |
-| Retention cohorts | `cohort_metrics` | 🔴 **table absent — needs its own migration authorization** |
+| Retention cohorts — D1/D7/D30 | `cohort_metrics` | ✅ **shipped `aa00abc`; table applied to production 2026-08-20.** Awaiting first cron run for real data |
 | Churn rate | — | ⚠️ **UNDEFINED** — no authoritative definition of churn |
 | Sessions · average duration | `user_events.session_id` | ⚠️ **UNDEFINED** — events carry no session END |
 
@@ -864,7 +896,7 @@ Measured from the repository at `81bfa06`, not from the entries above. Registry 
 |---|---:|---:|---:|---:|
 | **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
 | **Phase 8 — hubs** — ~~`user`~~ ✅ registered · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 4 | 4 | 2 | **0** |
-| **Phase 8 — modules** — 11 not started · ~~01 stub~~ ✅ · 04 **3/5 shipped; retention needs a migration** · ~~08~~ ✅ · 17 + 20 ambiguous | 16 | 16 | 4 | **0** |
+| **Phase 8 — modules** — 11 not started · ~~01 stub~~ ✅ · 04 **retention applied; PARTIAL until real cohort data + UAT** · ~~08~~ ✅ · 17 + 20 ambiguous | 16 | 16 | 4 | **0** |
 | **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · ~~K-6 B8~~ ✅ (migration awaiting production apply) · K-7 guard §1.1–1.3 · K-8 `module_registry` | 6 | 4 | 2 | **0** |
 | **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
 | **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |
@@ -876,7 +908,8 @@ Measured from the repository at `81bfa06`, not from the entries above. Registry 
 | Table | Migration | Gates |
 |---|---|---|
 | `daily_snapshots` | ✅ `20260820_m01_daily_snapshots.sql`, **applied to production** | Module 01 ✅ · Module 04 growth + engagement ✅ |
-| `cohort_metrics` | 🔴 **absent** — DDL specified in `04` §7 | Module 04 **retention** — needs its own Owner migration authorization |
+| `cohort_metrics` | ✅ `20260820_m04_cohort_metrics.sql`, **applied to production** (DDL is `04` **§3.3**, not §7) | Module 04 **retention** ✅ |
+| `user_active_days` | 🔴 absent | Rolling retention only. `04` §7A and `06` §8C name it as retention's source, but §8C itself frames it as a *performance* structure over facts `user_events` already holds — so bracket retention did **not** need it |
 | `platform_settings` | 🔴 absent | Module 20 / configuration |
 | `module_registry` | 🔴 absent | K-8 |
 | `user_notes` | 🔴 absent | Module 08 notes (explicitly out of scope) |
