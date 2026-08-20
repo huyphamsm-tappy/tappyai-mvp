@@ -31,7 +31,7 @@ final class MusicUploadViewModel: AppObservableObject {
         error = nil
         let ext = (name as NSString).pathExtension.lowercased()
         guard MusicUploadLimits.allowedExtensions.contains(ext), !ext.isEmpty else {
-            error = "Vui lòng chọn file âm thanh (mp3, m4a, wav…)"
+            error = NSLocalizedString("music.upload.error.fileType", comment: "")
             return
         }
         guard data.count <= MusicUploadLimits.maxFileSizeBytes else {
@@ -59,7 +59,7 @@ final class MusicUploadViewModel: AppObservableObject {
             let durationSec = await readAudioDuration(data: data, ext: effectiveExt)
             guard durationSec >= MusicUploadLimits.minDurationSec,
                   durationSec <= MusicUploadLimits.maxDurationSec else {
-                error = "Nhạc phải dài 1 giây–10 phút"
+                error = NSLocalizedString("music.upload.error.duration", comment: "")
                 busy = false
                 return
             }
@@ -81,10 +81,10 @@ final class MusicUploadViewModel: AppObservableObject {
             } else if let id = response.id {
                 uploadedTrackId = id
             } else {
-                error = "Đăng nhạc thất bại"
+                error = NSLocalizedString("music.upload.error.failed", comment: "")
             }
         } catch {
-            self.error = "Có lỗi khi tải nhạc lên. Vui lòng thử lại."
+            self.error = NSLocalizedString("music.upload.error.retry", comment: "")
             log.error("music upload failed: \(error)")
         }
         busy = false

@@ -14,7 +14,7 @@ struct ReviewShareSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: Spacing.lg) {
-                Text("Chia sẻ bài review")
+                Text(NSLocalizedString("review.share.title", comment: ""))
                     .font(TappyFont.headline)
                     .foregroundStyle(TappyColor.textPrimary)
 
@@ -28,7 +28,7 @@ struct ReviewShareSheet: View {
                 } label: {
                     HStack {
                         Image(systemName: copied ? "checkmark" : "doc.on.doc")
-                        Text(copied ? "Đã sao chép!" : "Sao chép link")
+                        Text(copied ? NSLocalizedString("common.copied", comment: "") : NSLocalizedString("review.share.copyLink", comment: ""))
                     }
                     .font(TappyFont.button)
                     .frame(maxWidth: .infinity)
@@ -59,7 +59,7 @@ struct ReviewShareSheet: View {
                 } label: {
                     HStack {
                         Image(systemName: "square.and.arrow.up")
-                        Text("Chia sẻ qua...")
+                        Text(NSLocalizedString("review.share.via", comment: ""))
                     }
                     .font(TappyFont.button)
                     .frame(maxWidth: .infinity)
@@ -76,7 +76,7 @@ struct ReviewShareSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Đóng", action: onDismiss)
+                    Button(NSLocalizedString("common.close", comment: ""), action: onDismiss)
                 }
             }
         }

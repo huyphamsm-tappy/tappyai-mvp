@@ -9,8 +9,8 @@ struct SplitBillView: View {
     @State private var customTip = ""
     @State private var mode: SplitMode = .equal
     @State private var persons: [SplitPerson] = [
-        SplitPerson(id: 1, name: "Người 1", amount: ""),
-        SplitPerson(id: 2, name: "Người 2", amount: ""),
+        SplitPerson(id: 1, name: NSLocalizedString("splitbill.person1", comment: ""), amount: ""),
+        SplitPerson(id: 2, name: NSLocalizedString("splitbill.person2", comment: ""), amount: ""),
     ]
 
     private var activeTip: Double {
@@ -47,7 +47,7 @@ struct SplitBillView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("🧮 Chia bill")
+        .navigationTitle(NSLocalizedString("splitbill.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -56,10 +56,10 @@ struct SplitBillView: View {
     private var totalAndPeople: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             VStack(alignment: .leading, spacing: Spacing.xxs) {
-                Text("Tổng hoá đơn")
+                Text(NSLocalizedString("splitbill.total", comment: ""))
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
-                TextField("Nhập số tiền (VND)", text: $total)
+                TextField(NSLocalizedString("splitbill.amountPlaceholder", comment: ""), text: $total)
                     .font(.system(size: 24, weight: .black))
                     .keyboardType(.numberPad)
                     .foregroundStyle(TappyColor.textPrimary)
@@ -74,7 +74,7 @@ struct SplitBillView: View {
             }
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
-                Text("Số người")
+                Text(NSLocalizedString("splitbill.peopleCount", comment: ""))
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                 HStack(spacing: Spacing.md) {
@@ -101,7 +101,7 @@ struct SplitBillView: View {
                     }
                     .buttonStyle(.plain)
 
-                    Text("người")
+                    Text(NSLocalizedString("splitbill.peopleUnit", comment: ""))
                         .font(TappyFont.callout)
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -130,7 +130,7 @@ struct SplitBillView: View {
                         tip = preset
                         customTip = ""
                     } label: {
-                        Text(preset == 0 ? "Không" : "\(preset)%")
+                        Text(preset == 0 ? NSLocalizedString("splitbill.tip.none", comment: "") : "\(preset)%")
                             .font(.system(size: 13, weight: .semibold))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, Spacing.xs)
@@ -142,7 +142,7 @@ struct SplitBillView: View {
                 }
 
                 HStack(spacing: 2) {
-                    TextField("Khác", text: $customTip)
+                    TextField(NSLocalizedString("splitbill.tip.other", comment: ""), text: $customTip)
                         .font(.system(size: 13, weight: .semibold))
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
@@ -172,8 +172,8 @@ struct SplitBillView: View {
 
     private var modeToggle: some View {
         HStack(spacing: Spacing.xxs) {
-            modeButton("Chia đều", isActive: mode == .equal) { mode = .equal }
-            modeButton("Tuỳ chỉnh", isActive: mode == .custom) { mode = .custom }
+            modeButton(NSLocalizedString("splitbill.mode.equal", comment: ""), isActive: mode == .equal) { mode = .equal }
+            modeButton(NSLocalizedString("splitbill.mode.custom", comment: ""), isActive: mode == .custom) { mode = .custom }
         }
         .padding(4)
         .background(TappyColor.surface)
@@ -199,7 +199,7 @@ struct SplitBillView: View {
     private var equalResult: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             if totalNum > 0 {
-                Text("Mỗi người trả")
+                Text(NSLocalizedString("splitbill.perPerson", comment: ""))
                     .font(TappyFont.callout)
                     .foregroundStyle(.white.opacity(0.7))
                 Text("\(fmtVND(perPerson)) đ")
@@ -215,12 +215,12 @@ struct SplitBillView: View {
                 Divider().background(.white.opacity(0.2)).padding(.vertical, Spacing.xs)
 
                 HStack(spacing: 0) {
-                    statCol("Hoá đơn", fmtVND(totalNum))
+                    statCol(NSLocalizedString("splitbill.stat.bill", comment: ""), fmtVND(totalNum))
                     statCol("Tip", fmtVND(totalNum * activeTip / 100))
-                    statCol("Tổng", fmtVND(grandTotal))
+                    statCol(NSLocalizedString("splitbill.stat.grandTotal", comment: ""), fmtVND(grandTotal))
                 }
             } else {
-                Text("Nhập tổng hoá đơn để tính")
+                Text(NSLocalizedString("splitbill.enterTotalHint", comment: ""))
                     .font(TappyFont.callout)
                     .foregroundStyle(.white.opacity(0.6))
             }
@@ -253,13 +253,13 @@ struct SplitBillView: View {
 
     private var customSplit: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Nhập số tiền mỗi người đã dùng")
+            Text(NSLocalizedString("splitbill.enterPerPersonHint", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
 
             ForEach(Array(persons.enumerated()), id: \.element.id) { idx, person in
                 HStack(spacing: Spacing.xs) {
-                    TextField("Tên", text: binding(for: person.id, field: .name))
+                    TextField(NSLocalizedString("splitbill.field.name", comment: ""), text: binding(for: person.id, field: .name))
                         .font(.system(size: 13, weight: .medium))
                         .frame(width: 80)
                         .padding(.horizontal, Spacing.sm)
@@ -267,7 +267,7 @@ struct SplitBillView: View {
                         .background(TappyColor.surface)
                         .clipShape(RoundedRectangle(cornerRadius: Radius.md))
 
-                    TextField("Số tiền", text: binding(for: person.id, field: .amount))
+                    TextField(NSLocalizedString("splitbill.field.amount", comment: ""), text: binding(for: person.id, field: .amount))
                         .font(.system(size: 13))
                         .keyboardType(.numberPad)
                         .padding(.horizontal, Spacing.sm)
@@ -319,7 +319,7 @@ struct SplitBillView: View {
                 Divider().padding(.vertical, Spacing.xxs)
 
                 HStack {
-                    Text("Tổng (sau tip)")
+                    Text(NSLocalizedString("splitbill.grandAfterTip", comment: ""))
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(TappyColor.primary)
                     Spacer()
@@ -341,7 +341,7 @@ struct SplitBillView: View {
     // MARK: - Disclaimer
 
     private var disclaimer: some View {
-        Text("Công cụ hỗ trợ tính toán, chỉ mang tính tham khảo")
+        Text(NSLocalizedString("splitbill.disclaimer", comment: ""))
             .font(TappyFont.caption)
             .foregroundStyle(TappyColor.textSecondary)
             .multilineTextAlignment(.center)

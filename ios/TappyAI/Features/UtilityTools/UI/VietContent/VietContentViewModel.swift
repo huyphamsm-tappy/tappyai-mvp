@@ -32,17 +32,17 @@ final class VietContentViewModel: AppObservableObject {
     ]
 
     static let tones: [(id: String, label: String)] = [
-        ("funny", "Hài hước"),
-        ("emotional", "Xúc cảm"),
-        ("youthful", "Trẻ trung"),
-        ("inspiring", "Truyền cảm hứng"),
-        ("professional", "Chuyên nghiệp"),
+        ("funny", NSLocalizedString("vietcontent.tone.funny", comment: "")),
+        ("emotional", NSLocalizedString("vietcontent.tone.emotional", comment: "")),
+        ("youthful", NSLocalizedString("vietcontent.tone.youthful", comment: "")),
+        ("inspiring", NSLocalizedString("vietcontent.tone.inspiring", comment: "")),
+        ("professional", NSLocalizedString("vietcontent.tone.professional", comment: "")),
     ]
 
     static let lengths: [(id: String, label: String)] = [
-        ("short", "Ngắn"),
-        ("medium", "Vừa"),
-        ("long", "Dài"),
+        ("short", NSLocalizedString("vietcontent.length.short", comment: "")),
+        ("medium", NSLocalizedString("vietcontent.length.medium", comment: "")),
+        ("long", NSLocalizedString("vietcontent.length.long", comment: "")),
     ]
 
     func generate() async {
@@ -66,12 +66,12 @@ final class VietContentViewModel: AppObservableObject {
         } catch let appError as AppError {
             switch appError {
             case .authentication(reason: .anonLimitReached), .authentication(reason: .freeLimitReached):
-                error = "Bạn đã hết lượt tạo nội dung hôm nay"
+                error = NSLocalizedString("vietcontent.error.limit", comment: "")
             default:
-                error = "Không thể tạo nội dung. Vui lòng thử lại."
+                error = NSLocalizedString("vietcontent.error.failed", comment: "")
             }
         } catch {
-            self.error = "Không thể tạo nội dung. Vui lòng thử lại."
+            self.error = NSLocalizedString("vietcontent.error.failed", comment: "")
         }
         loading = false
     }

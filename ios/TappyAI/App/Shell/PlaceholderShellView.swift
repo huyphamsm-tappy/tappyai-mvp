@@ -30,7 +30,7 @@ struct PlaceholderShellView: View {
                                         Image(systemName: session.state.isAuthenticated
                                               ? "person.crop.circle.fill" : "person.crop.circle")
                                     }
-                                    .accessibilityLabel(Text("Tài khoản"))
+                                    .accessibilityLabel(Text(NSLocalizedString("account.title", comment: "")))
                                 }
                             }
                             #if DEBUG
@@ -50,9 +50,9 @@ struct PlaceholderShellView: View {
         .fullScreenCover(isPresented: $showAuth) {
             AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
         }
-        .confirmationDialog("Tài khoản", isPresented: $showSignOut, titleVisibility: .visible) {
-            Button("Đăng xuất", role: .destructive) { Task { await deps.authRepository.signOut() } }
-            Button("Huỷ", role: .cancel) {}
+        .confirmationDialog(NSLocalizedString("account.title", comment: ""), isPresented: $showSignOut, titleVisibility: .visible) {
+            Button(NSLocalizedString("auth.signOut", comment: ""), role: .destructive) { Task { await deps.authRepository.signOut() } }
+            Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
         }
         #if DEBUG
         .sheet(isPresented: $showDiagnostics) {

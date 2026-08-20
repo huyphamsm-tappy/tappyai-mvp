@@ -185,7 +185,7 @@ struct CreateReviewView: View {
 
     private var mediaModeTabs: some View {
         HStack(spacing: Spacing.xxs) {
-            mediaTab("Ảnh", icon: "camera", mode: .photo)
+            mediaTab(NSLocalizedString("review.tab.photo", comment: ""), icon: "camera", mode: .photo)
             mediaTab("Video", icon: "video", mode: .video)
             mediaTab("Link", icon: "link", mode: .url)
         }
@@ -453,9 +453,9 @@ struct CreateReviewView: View {
 
     private var uploadStepLabel: String {
         switch vm.uploadStep {
-        case .thumbnail: return "Đang tạo thumbnail..."
-        case .uploading: return "Đang tải video lên..."
-        case .processing: return "Đang phân tích nội dung..."
+        case .thumbnail: return NSLocalizedString("review.progress.thumbnail", comment: "")
+        case .uploading: return NSLocalizedString("review.progress.uploading", comment: "")
+        case .processing: return NSLocalizedString("review.progress.analyzing", comment: "")
         default: return ""
         }
     }
@@ -651,7 +651,7 @@ struct CreateReviewView: View {
                     Image(systemName: "mappin")
                         .font(.system(size: 14))
                         .foregroundStyle(TappyColor.primary)
-                    Text(vm.placeName.isEmpty ? "Thêm địa điểm" : vm.placeName)
+                    Text(vm.placeName.isEmpty ? NSLocalizedString("review.addPlace", comment: "") : vm.placeName)
                         .font(TappyFont.callout)
                         .foregroundStyle(TappyColor.primary)
                     if !vm.placeName.isEmpty {
@@ -666,7 +666,7 @@ struct CreateReviewView: View {
             .buttonStyle(.plain)
 
             if vm.showPlaceInput {
-                TextField("Tên quán, nhà hàng, địa điểm...", text: $vm.placeName)
+                TextField(NSLocalizedString("review.placePlaceholder", comment: ""), text: $vm.placeName)
                     .font(TappyFont.callout)
                     .padding(Spacing.sm)
                     .background(TappyColor.surface)

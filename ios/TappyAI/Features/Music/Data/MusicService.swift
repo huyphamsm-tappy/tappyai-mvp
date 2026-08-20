@@ -143,7 +143,7 @@ struct MusicService: Sendable {
 
         let result = try await api.send(endpoint, as: MediaUploadCompleteResponse.self)
         guard result.ok == true, let url = result.url, !url.isEmpty else {
-            throw AppError.unexpected(message: "Tải lên chưa hoàn tất. Vui lòng thử lại.")
+            throw AppError.unexpected(message: NSLocalizedString("upload.error.incomplete", comment: ""))
         }
         return url
     }
@@ -168,7 +168,7 @@ struct MusicService: Sendable {
               let uploadURLString = session.uploadUrl,
               let uploadURL = URL(string: uploadURLString),
               let key = session.key else {
-            throw AppError.unexpected(message: "Tải lên chưa khả dụng. Vui lòng thử lại sau.")
+            throw AppError.unexpected(message: NSLocalizedString("upload.error.unavailable", comment: ""))
         }
 
         var request = URLRequest(url: uploadURL)

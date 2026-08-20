@@ -7,6 +7,9 @@ const CATEGORY_MAP: Record<string, EvidenceCategory> = {
   redirect: 'network_behavior',
   dns: 'network_behavior',
   ssl: 'certificate',
+  // `brand_impersonation` has been a declared EvidenceCategory since the type was written, with
+  // nothing on the producing end — the category existed, the finding did not. B01.
+  impersonation: 'brand_impersonation',
 }
 
 export function buildEvidence(signals: ProviderSignal[]): EvidenceReport {

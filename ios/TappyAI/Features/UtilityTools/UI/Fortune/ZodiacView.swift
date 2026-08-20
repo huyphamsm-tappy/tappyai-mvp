@@ -21,7 +21,7 @@ struct ZodiacView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("✨ Cung hoàng đạo")
+        .navigationTitle(NSLocalizedString("fortune.zodiac.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -29,7 +29,7 @@ struct ZodiacView: View {
 
     private var signGrid: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Chọn cung của bạn")
+            Text(NSLocalizedString("fortune.zodiac.pickSign", comment: ""))
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
 
@@ -138,16 +138,16 @@ struct ZodiacView: View {
                 }
             }
 
-            fortuneRow(emoji: "💕", label: "Tình cảm", text: r.love)
-            fortuneRow(emoji: "💼", label: "Sự nghiệp", text: r.career)
-            fortuneRow(emoji: "💰", label: "Tài lộc", text: r.money)
-            fortuneRow(emoji: "🏥", label: "Sức khoẻ", text: r.health)
+            fortuneRow(emoji: "💕", label: NSLocalizedString("fortune.aspect.love", comment: ""), text: r.love)
+            fortuneRow(emoji: "💼", label: NSLocalizedString("fortune.aspect.career", comment: ""), text: r.career)
+            fortuneRow(emoji: "💰", label: NSLocalizedString("fortune.aspect.money", comment: ""), text: r.money)
+            fortuneRow(emoji: "🏥", label: NSLocalizedString("fortune.aspect.health", comment: ""), text: r.health)
 
             Divider()
 
             HStack(spacing: Spacing.lg) {
                 VStack(spacing: 2) {
-                    Text("Số may")
+                    Text(NSLocalizedString("fortune.luckyNumber", comment: ""))
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                     Text("\(r.luckyNumber)")
@@ -155,7 +155,7 @@ struct ZodiacView: View {
                         .foregroundStyle(TappyColor.primary)
                 }
                 VStack(spacing: 2) {
-                    Text("Màu may")
+                    Text(NSLocalizedString("fortune.luckyColor", comment: ""))
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                     Text(r.luckyColor)
@@ -164,7 +164,7 @@ struct ZodiacView: View {
                 }
             }
 
-            Text("Kết quả mang tính giải trí, không thay thế tư vấn chuyên nghiệp")
+            Text(NSLocalizedString("fortune.disclaimer", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
         }

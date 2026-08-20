@@ -136,7 +136,7 @@ final class CreateReviewViewModel: AppObservableObject {
                     let url = try await service.uploadPhoto(data: compressed, filename: "photo_\(Int(Date().timeIntervalSince1970 * 1000)).jpg")
                     uploaded.append(url)
                 } catch {
-                    self.error = "Lỗi tải ảnh"
+                    self.error = NSLocalizedString("review.error.photoUpload", comment: "")
                     log.error("photo upload failed: \(error)")
                 }
             }
@@ -163,7 +163,7 @@ final class CreateReviewViewModel: AppObservableObject {
             } catch is CancellationError {
                 // user cancelled
             } catch {
-                self.error = "Lỗi tải video"
+                self.error = NSLocalizedString("review.error.videoUpload", comment: "")
                 resetVideoState()
             }
         }
@@ -251,7 +251,7 @@ final class CreateReviewViewModel: AppObservableObject {
         uploadTask?.cancel()
         uploadTask = nil
         resetVideoState()
-        error = "Đã hủy tải lên"
+        error = NSLocalizedString("review.upload.cancelled", comment: "")
     }
 
     func removeVideo() {
@@ -463,7 +463,7 @@ final class CreateReviewViewModel: AppObservableObject {
     func submit() {
         guard canPost, !submitting, !isUploading else { return }
         guard isAuthenticated else {
-            error = "Cần đăng nhập để đăng bài"
+            error = NSLocalizedString("review.error.signInRequired", comment: "")
             return
         }
         error = nil
@@ -490,7 +490,7 @@ final class CreateReviewViewModel: AppObservableObject {
 
                 var payload = CreateReviewPayload(
                     placeId: placeId,
-                    placeName: trimmedPlace.isEmpty ? "Chia sẻ" : trimmedPlace,
+                    placeName: trimmedPlace.isEmpty ? NSLocalizedString("review.defaultPlaceName", comment: "") : trimmedPlace,
                     placeAddress: "",
                     rating: rating,
                     body: trimmedBody,
@@ -582,13 +582,13 @@ final class CreateReviewViewModel: AppObservableObject {
             } catch let appError as AppError {
                 switch appError {
                 case .network(status: let s, code: _) where s == 409:
-                    self.error = "Bạn đã đánh giá địa điểm này rồi"
+                    self.error = NSLocalizedString("review.error.alreadyReviewed", comment: "")
                 default:
-                    self.error = "Lỗi đăng bài"
+                    self.error = NSLocalizedString("review.error.post", comment: "")
                 }
                 log.error("submit review failed: \(appError)")
             } catch {
-                self.error = "Lỗi đăng bài"
+                self.error = NSLocalizedString("review.error.post", comment: "")
                 log.error("submit review failed: \(error)")
             }
             submitting = false

@@ -44,6 +44,9 @@ function swiftFiles(dir: string): string[] {
  */
 const DEV_ONLY = /\/(Diagnostics|Previews)\b|Previews\.swift$/
 
+/** Shared by the B03 guards below; the older describes keep their own local copy. */
+const VIETNAMESE_RE = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i
+
 describe('the iOS string catalogue is at EN/VI parity', () => {
   it('every key carries both languages', () => {
     const cat = catalogue()
@@ -215,6 +218,109 @@ describe('the iOS client asks the backend for the app language', () => {
   })
 })
 
+// ── B03 ──────────────────────────────────────────────────────────────────────
+//
+// The ratchet below used to allow 487 Vietnamese literals, and the final UAT read that number as
+// "iOS is not at EN/VI parity". Auditing it properly split it in two:
+//
+//   • 45 are the VIETNAMESE HALF OF AN EN/VI PAIR — `labelVi`/`labelEn` tuples, `thinkHintsVi`
+//     with a `thinkHintsEn` twin, `locale == "en" ? … : …`. An English user already saw English
+//     there. Wrong architecture, not wrong language on screen.
+//   • 463 were genuinely untranslated: Home, Preferences, Subscription, the Reviews feed,
+//     Account, Notifications, the tools — screens with NO localization mechanism at all, where an
+//     English user simply read Vietnamese.
+//
+// All 463 are now in the catalogue. What is left is the first group, which is why the assertion
+// below is on the SECOND number and not on the raw literal count: counting both together is what
+// made 487 unreadable as a measure of anything.
+describe('no shipped iOS screen is Vietnamese-only', () => {
+  /**
+   * Is this literal the Vietnamese half of a pair that already has an English half?
+   *
+   * Mirrors `scripts/ios-l10n-audit.mjs`. Deliberately duplicated rather than imported: the
+   * script is a developer tool that can be edited freely, and this is the gate. If they drift,
+   * the gate is what holds.
+   */
+  function isBilingual(lines: string[], idx: number): boolean {
+    const whole = lines.join('\n')
+    for (let i = idx; i >= Math.max(0, idx - 4); i--) {
+      if (/locale\s*==\s*"en"|language(\.rawValue)?\s*==\s*("en"|\.(en|english))|isEnglish|lang\s*==\s*"en"/.test(lines[i])) return true
+    }
+    if (/\b\w*En\b\s*:|\btextEn\b|\blabelEn\b|\bpromptEn\b/.test(lines[idx])) return true
+    for (let i = idx; i >= Math.max(0, idx - 25); i--) {
+      const decl = lines[i]
+      const named = decl.match(/\blet\s+(\w+)Vi\b/)
+      if (named && new RegExp(`\\b${named[1]}En\\b`).test(whole)) return true
+      if (/\blet\s+\w+\s*:\s*\[?\(/.test(decl) && /\w*Vi\s*:/.test(decl) && /\w*En\s*:/.test(decl)) return true
+      if (/\blet\s+vi\s*:/.test(decl)) return /\blet\s+en\s*:/.test(whole)
+      if (/\blet\s+en\s*:/.test(decl)) return true
+      if (/^\s*(private\s+)?(let|var|func|struct)\s/.test(decl) && i !== idx) break
+    }
+    return false
+  }
+
+  function untranslated(): string[] {
+    const out: string[] = []
+    for (const file of swiftFiles(IOS)) {
+      if (DEV_ONLY.test(file) || /\/Model\//.test(file)) continue
+      const lines = readFileSync(file, 'utf8').split(/\r?\n/)
+      lines.forEach((line, i) => {
+        if (/^\s*(\/\/|\*|\/\*)/.test(line)) return
+        if (/\bvalue:\s*"[^"]*"/.test(line)) return
+        if (/\bverbatim:/.test(line)) return   // Swift's own "this is data" marker
+        if (/l10n:exempt/.test(line)) return   // explicit, greppable, reviewable
+        for (const m of line.matchAll(/"([^"\\]{2,})"/g)) {
+          if (VIETNAMESE_RE.test(m[1]) && !isBilingual(lines, i)) out.push(`${file}:${i + 1} ${m[1].slice(0, 40)}`)
+        }
+      })
+    }
+    return out
+  }
+
+  it('ZERO user-facing strings are Vietnamese-only', () => {
+    // 🚨 `toEqual([])`, not `toBeLessThanOrEqual(N)`. A ceiling lets the next screen ship
+    // Vietnamese-only as long as someone deletes a literal elsewhere, and that is exactly how
+    // 487 accumulated. This cannot be satisfied by trading one screen against another.
+    expect(untranslated()).toEqual([])
+  })
+
+  it('the scan is not vacuous', () => {
+    // Guards the guard: if `swiftFiles` or the exclusions ever return nothing, the assertion
+    // above passes while proving nothing at all.
+    const scanned = swiftFiles(IOS).filter(f => !DEV_ONLY.test(f) && !/\/Model\//.test(f))
+    expect(scanned.length).toBeGreaterThan(100)
+    const withVietnamese = scanned.filter(f => VIETNAMESE_RE.test(readFileSync(f, 'utf8')))
+    expect(withVietnamese.length).toBeGreaterThan(5) // the bilingual pairs are still there
+  })
+
+  it('the core screens named in the UAT reference the catalogue', () => {
+    // Behavioural intent, stated per screen: these are the ones the UAT called out as showing
+    // Vietnamese to English users. Each must now go through the resource system.
+    const CORE = [
+      'Features/Home/UI/HomeSectionViews.swift',
+      'Features/Profile/UI/PreferencesView.swift',
+      'Features/Profile/UI/SubscriptionView.swift',
+      'Features/Reviews/UI/ReviewsFeedView.swift',
+      'Features/Profile/UI/AccountView.swift',
+      'Features/Profile/UI/NotificationsSettingsView.swift',
+      'Features/Chat/UI/ChatMessageList.swift',
+    ]
+    for (const rel of CORE) {
+      const src = readFileSync(`${IOS}/${rel}`, 'utf8')
+      expect(src, rel).toMatch(/NSLocalizedString\(|"[a-z]+\.[a-zA-Z.]+"/)
+    }
+  })
+
+  it('the iOS sources are structurally sound', () => {
+    // `scripts/ios-swift-syntax-check.mjs` exists because there is no Swift compiler here and a
+    // real syntax error — `Text("Nhắn Tappy: "Tappy theo dõi …"")`, unescaped inner quotes — sat
+    // in PriceWatchesView undetected until B03 read every string in the file by hand.
+    const { execFileSync } = require('node:child_process') as typeof import('node:child_process')
+    const out = execFileSync(process.execPath, ['scripts/ios-swift-syntax-check.mjs'], { encoding: 'utf8' })
+    expect(out).toContain('OK —')
+  })
+})
+
 describe('the conversion backlog is measured, not guessed', () => {
   /**
    * The number of Vietnamese literals still sitting in shipped iOS UI code.
@@ -225,7 +331,16 @@ describe('the conversion backlog is measured, not guessed', () => {
    *
    * Lower it whenever a batch lands. Raising it means a screen went backwards.
    */
-  const IOS_LITERAL_BACKLOG = 487
+  // 487 → 45 in B03. Every one of the 45 that remain is the Vietnamese half of a working EN/VI
+  // pair, which `no shipped iOS screen is Vietnamese-only` above asserts directly and far more
+  // usefully than a ceiling can. This number is kept as a second, blunter line of defence — it
+  // notices a NEW literal even in a file that happens to look bilingual to the smarter check.
+  //
+  // 47 rather than the 45 `scripts/ios-l10n-audit.mjs` prints: this describe uses the file's own
+  // narrower DEV_ONLY and does not honour `verbatim:`/`l10n:exempt`, so it scans slightly more.
+  // Left as-is deliberately — the two numbers measure different things and making them agree
+  // would mean loosening one of them.
+  const IOS_LITERAL_BACKLOG = 47
 
   /**
    * Content, not chrome — excluded on purpose.

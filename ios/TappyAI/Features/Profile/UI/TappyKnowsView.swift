@@ -111,9 +111,9 @@ struct TappyKnowsView: View {
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
             HStack(spacing: Spacing.sm) {
-                stylePill("Thân mật", key: "tone", value: "friendly")
-                stylePill("Trung lập", key: "tone", value: "neutral")
-                stylePill("Lịch sự", key: "tone", value: "formal")
+                stylePill(NSLocalizedString("memory.tone.friendly", comment: ""), key: "tone", value: "friendly")
+                stylePill(NSLocalizedString("memory.tone.neutral", comment: ""), key: "tone", value: "neutral")
+                stylePill(NSLocalizedString("memory.tone.formal", comment: ""), key: "tone", value: "formal")
             }
 
             Text("memory.style.length")
@@ -121,8 +121,8 @@ struct TappyKnowsView: View {
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.top, 4)
             HStack(spacing: Spacing.sm) {
-                stylePill("Ngắn gọn", key: "length", value: "short")
-                stylePill("Đầy đủ", key: "length", value: "detailed")
+                stylePill(NSLocalizedString("memory.length.short", comment: ""), key: "length", value: "short")
+                stylePill(NSLocalizedString("memory.length.detailed", comment: ""), key: "length", value: "detailed")
             }
 
             Text("memory.style.hint")
@@ -164,7 +164,10 @@ struct TappyKnowsView: View {
             Image(systemName: "brain")
                 .font(.system(size: 40))
                 .foregroundStyle(TappyColor.textSecondary.opacity(0.4))
-            Text(cleared ? "Đã xóa bộ nhớ" : "Tappy chưa nhớ gì về bạn")
+            // `memory.nothingYet`, not `memory.empty` — the latter already exists with different
+            // wording ("Chat with Tappy and it starts learning about you"), and reusing it here
+            // would have silently retranslated another screen.
+            Text(cleared ? NSLocalizedString("memory.cleared", comment: "") : NSLocalizedString("memory.nothingYet", comment: ""))
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
             Text("memory.empty")
@@ -223,7 +226,7 @@ struct TappyKnowsView: View {
 
             // Location
             if let loc = m.locationBase {
-                memoryCard(icon: "mappin", label: "Khu vực", iconColor: .blue) {
+                memoryCard(icon: "mappin", label: NSLocalizedString("memory.card.area", comment: ""), iconColor: .blue) {
                     editableRow(loc) { removeField("location_base") }
                 }
             }
@@ -232,12 +235,12 @@ struct TappyKnowsView: View {
             if m.companions != nil || m.timing != nil {
                 HStack(spacing: Spacing.sm) {
                     if let comp = m.companions {
-                        memoryCard(icon: "person.2", label: "Hay đi với", iconColor: .purple) {
+                        memoryCard(icon: "person.2", label: NSLocalizedString("memory.card.companions", comment: ""), iconColor: .purple) {
                             editableRow(comp) { removeField("companions") }
                         }
                     }
                     if let timing = m.timing {
-                        memoryCard(icon: "clock", label: "Thời gian hay đi", iconColor: .orange) {
+                        memoryCard(icon: "clock", label: NSLocalizedString("memory.card.times", comment: ""), iconColor: .orange) {
                             editableRow(timing) { removeField("timing") }
                         }
                     }
@@ -246,21 +249,21 @@ struct TappyKnowsView: View {
 
             // Personality
             if let personality = m.personality {
-                memoryCard(icon: "sparkles", label: "Phong cách", iconColor: .pink) {
+                memoryCard(icon: "sparkles", label: NSLocalizedString("memory.card.style", comment: ""), iconColor: .pink) {
                     editableRow(personality) { removeField("personality") }
                 }
             }
 
             // Food preferences
             if let food = m.preferences.food, !food.isEmpty {
-                memoryCard(icon: "fork.knife", label: "Ẩm thực yêu thích", iconColor: .orange) {
+                memoryCard(icon: "fork.knife", label: NSLocalizedString("memory.card.cuisine", comment: ""), iconColor: .orange) {
                     tagList(food, color: .orange) { idx in removeTag("food", idx) }
                 }
             }
 
             // Spa + Entertainment
             if (m.preferences.spa?.isEmpty == false) || (m.preferences.entertainment?.isEmpty == false) {
-                memoryCard(icon: "heart", label: "Giải trí & Thư giãn", iconColor: .pink) {
+                memoryCard(icon: "heart", label: NSLocalizedString("memory.card.leisure", comment: ""), iconColor: .pink) {
                     VStack(alignment: .leading, spacing: Spacing.xs) {
                         if let spa = m.preferences.spa, !spa.isEmpty {
                             Text("Spa").font(.system(size: 10)).foregroundStyle(TappyColor.textSecondary)
@@ -276,21 +279,21 @@ struct TappyKnowsView: View {
 
             // Shopping
             if let shopping = m.preferences.shopping, !shopping.isEmpty {
-                memoryCard(icon: "bag", label: "Mua sắm", iconColor: .green) {
+                memoryCard(icon: "bag", label: NSLocalizedString("memory.card.shopping", comment: ""), iconColor: .green) {
                     tagList(shopping, color: .green) { idx in removeTag("shopping", idx) }
                 }
             }
 
             // Avoid
             if let avoid = m.preferences.avoid, !avoid.isEmpty {
-                memoryCard(icon: "xmark.circle", label: "Không thích / Kiêng", iconColor: .red) {
+                memoryCard(icon: "xmark.circle", label: NSLocalizedString("memory.card.dislikes", comment: ""), iconColor: .red) {
                     tagList(avoid, color: .red) { idx in removeTag("avoid", idx) }
                 }
             }
 
             // Budget
             if !m.budget.isEmpty {
-                memoryCard(icon: "dollarsign.circle", label: "Ngân sách thường dùng", iconColor: .green) {
+                memoryCard(icon: "dollarsign.circle", label: NSLocalizedString("memory.card.budget", comment: ""), iconColor: .green) {
                     VStack(spacing: 6) {
                         ForEach(Array(m.budget.keys.sorted()), id: \.self) { cat in
                             if let range = m.budget[cat] {

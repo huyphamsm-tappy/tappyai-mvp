@@ -70,8 +70,8 @@ struct OnboardingView: View {
                     .frame(maxWidth: .infinity)
             case .failed:
                 TappyErrorState(
-                    presentation: .init(title: "Không tải được cấu hình",
-                                        message: "Kiểm tra kết nối mạng rồi thử lại.",
+                    presentation: .init(title: NSLocalizedString("onboarding.error.configTitle", comment: ""),
+                                        message: NSLocalizedString("onboarding.error.configBody", comment: ""),
                                         retryable: true),
                     onRetry: { Task { await vm.loadOptions() } }
                 )
@@ -98,8 +98,8 @@ struct OnboardingView: View {
 
     private var interestsStep: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Bạn quan tâm điều gì?").font(TappyFont.largeTitle).foregroundStyle(TappyColor.textPrimary)
-            Text("Chọn vài mục để Tappy gợi ý tốt hơn.").font(TappyFont.callout).foregroundStyle(TappyColor.textSecondary)
+            Text(NSLocalizedString("onboarding.interests.title", comment: "")).font(TappyFont.largeTitle).foregroundStyle(TappyColor.textPrimary)
+            Text(NSLocalizedString("onboarding.interests.subtitle", comment: "")).font(TappyFont.callout).foregroundStyle(TappyColor.textSecondary)
             FlowChips(options: vm.interestOptions.map { ($0.id, $0.label) },
                       selected: vm.selectedInterests) { vm.toggle($0) }
         }
@@ -107,8 +107,8 @@ struct OnboardingView: View {
 
     private var cityStep: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Bạn ở thành phố nào?").font(TappyFont.largeTitle).foregroundStyle(TappyColor.textPrimary)
-            TappyTextField(titleKey: "Thành phố", text: $vm.city)
+            Text(NSLocalizedString("onboarding.city.title", comment: "")).font(TappyFont.largeTitle).foregroundStyle(TappyColor.textPrimary)
+            TappyTextField(titleKey: "onboarding.city.field", text: $vm.city)
             FlowChips(options: vm.cityOptions.map { ($0, $0) },
                       selected: Set([vm.city])) { vm.city = $0 }
         }
@@ -116,8 +116,8 @@ struct OnboardingView: View {
 
     private var footer: some View {
         HStack(spacing: Spacing.sm) {
-            Button("Bỏ qua") { Task { await advanceOrFinish() } }.buttonStyle(.tappy(.tertiary))
-            Button(vm.step == 1 ? "Tiếp tục" : "Hoàn tất") { Task { await advanceOrFinish() } }
+            Button(NSLocalizedString("common.skip", comment: "")) { Task { await advanceOrFinish() } }.buttonStyle(.tappy(.tertiary))
+            Button(vm.step == 1 ? NSLocalizedString("common.continue", comment: "") : NSLocalizedString("common.done", comment: "")) { Task { await advanceOrFinish() } }
                 .buttonStyle(.tappy(.primary))
         }
     }

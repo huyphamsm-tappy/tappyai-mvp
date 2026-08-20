@@ -18,17 +18,17 @@ struct SubscriptionView: View {
 
     // Feature lists mirror subscription/page.tsx FREE_FEATURES / PRO_FEATURES
     private let freeFeatures = [
-        "15 tin nhắn / ngày",
-        "Tìm kiếm địa điểm cơ bản",
-        "Lưu lịch sử 7 ngày",
+        NSLocalizedString("sub.free.messages", comment: ""),
+        NSLocalizedString("sub.free.search", comment: ""),
+        NSLocalizedString("sub.free.history", comment: ""),
     ]
     private let proFeatures = [
-        "Tin nhắn không giới hạn",
-        "Tìm kiếm nâng cao + chính xác hơn",
-        "Lưu lịch sử không giới hạn",
-        "Nhận giọng nói (Voice Input)",
-        "AI nhớ sở thích cá nhân",
-        "Ưu tiên phản hồi nhanh hơn",
+        NSLocalizedString("sub.pro.messages", comment: ""),
+        NSLocalizedString("sub.pro.search", comment: ""),
+        NSLocalizedString("sub.pro.history", comment: ""),
+        NSLocalizedString("sub.pro.voice", comment: ""),
+        NSLocalizedString("sub.pro.memory", comment: ""),
+        NSLocalizedString("sub.pro.priority", comment: ""),
     ]
 
     var body: some View {
@@ -124,11 +124,11 @@ struct SubscriptionView: View {
                 .stroke(Color(red: 253/255, green: 230/255, blue: 138/255), lineWidth: 1))
         } else {
             HStack(spacing: 0) {
-                Text("🎁 Bạn đang dùng gói Free — còn ")
+                Text(NSLocalizedString("sub.freeBanner.prefix", comment: ""))
                     .font(.system(size: 13, weight: .medium))
                 Text("\(s.remaining) / \(s.freeDailyLimit)")
                     .font(.system(size: 13, weight: .bold))
-                Text(" tin nhắn hôm nay")
+                Text(NSLocalizedString("sub.freeBanner.suffix", comment: ""))
                     .font(.system(size: 13, weight: .medium))
             }
             .foregroundStyle(Color(red: 29/255, green: 78/255, blue: 216/255))
@@ -164,7 +164,7 @@ struct SubscriptionView: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
-                    Text("0đ")
+                    Text(verbatim: "0đ")
                         .font(.system(size: 22, weight: .black))
                         .foregroundStyle(TappyColor.textPrimary)
                     Text("sub.perMonth")
@@ -359,12 +359,12 @@ struct SubscriptionView: View {
             Text("sub.faq")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            faqRow("Thanh toán bằng gì?",
-                   "Hỗ trợ thẻ Visa/Mastercard và ví điện tử — sắp ra mắt.")
-            faqRow("Có thể hủy bất lúc nào không?",
-                   "Có, hủy bất kỳ lúc nào, dữ liệu vẫn được giữ nguyên.")
-            faqRow("Giới hạn Free được reset khi nào?",
-                   "Reset lúc 00:00 mỗi ngày theo giờ Việt Nam.")
+            faqRow(NSLocalizedString("sub.faq.payment.q", comment: ""),
+                   NSLocalizedString("sub.faq.payment.a", comment: ""))
+            faqRow(NSLocalizedString("sub.faq.cancel.q", comment: ""),
+                   NSLocalizedString("sub.faq.cancel.a", comment: ""))
+            faqRow(NSLocalizedString("sub.faq.reset.q", comment: ""),
+                   NSLocalizedString("sub.faq.reset.a", comment: ""))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.lg)
@@ -423,7 +423,7 @@ struct SubscriptionView: View {
                 purchasePending = true
             }
         } catch {
-            purchaseError = "Không thể thực hiện giao dịch. Vui lòng thử lại."
+            purchaseError = NSLocalizedString("sub.error.purchase", comment: "")
         }
         purchaseLoading = false
     }
@@ -435,12 +435,12 @@ struct SubscriptionView: View {
             let found = try await deps.paymentProvider.restorePurchases()
             if found {
                 await loadStatus()
-                restoreMessage = "Khôi phục thành công."
+                restoreMessage = NSLocalizedString("sub.restore.ok", comment: "")
             } else {
-                restoreMessage = "Không tìm thấy giao dịch nào để khôi phục."
+                restoreMessage = NSLocalizedString("sub.restore.none", comment: "")
             }
         } catch {
-            restoreMessage = "Không thể khôi phục. Vui lòng thử lại."
+            restoreMessage = NSLocalizedString("sub.restore.failed", comment: "")
         }
         restoreLoading = false
     }
@@ -455,11 +455,11 @@ struct SubscriptionView: View {
             let data = try await deps.api.send(endpoint)
             status = try ResponseDecoder.json.decode(SubscriptionStatusResponse.self, from: data)
         } catch AppError.authentication {
-            errorMessage = "Vui lòng đăng nhập để xem thông tin gói."
+            errorMessage = NSLocalizedString("sub.error.signInRequired", comment: "")
         } catch AppError.offline {
-            errorMessage = "Không có kết nối mạng. Kiểm tra lại nhé."
+            errorMessage = NSLocalizedString("sub.error.offline", comment: "")
         } catch {
-            errorMessage = "Không thể tải thông tin gói. Thử lại sau."
+            errorMessage = NSLocalizedString("sub.error.loadFailed", comment: "")
         }
         loading = false
     }

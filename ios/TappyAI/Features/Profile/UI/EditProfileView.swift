@@ -153,7 +153,7 @@ struct EditProfileView: View {
                 Text("editProfile.fullName")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
-                TextField("Nhập tên của bạn...", text: $fullName)
+                TextField(NSLocalizedString("editprofile.namePlaceholder", comment: ""), text: $fullName)
                     .font(.system(size: 13))
                     .textContentType(.name)
                     .padding(.horizontal, Spacing.md)
@@ -175,7 +175,7 @@ struct EditProfileView: View {
                         .font(.system(size: 10))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
-                TextField("Vài dòng về bạn...", text: $bio, axis: .vertical)
+                TextField(NSLocalizedString("editprofile.bioPlaceholder", comment: ""), text: $bio, axis: .vertical)
                     .font(.system(size: 13))
                     .lineLimit(3...6)
                     .padding(.horizontal, Spacing.md)
@@ -255,7 +255,7 @@ struct EditProfileView: View {
                 try? await Task.sleep(nanoseconds: 1_200_000_000)
                 router.pop(on: .profile)
             } catch {
-                self.error = "Lưu thất bại"
+                self.error = NSLocalizedString("editprofile.error.save", comment: "")
             }
             saving = false
         }
@@ -269,11 +269,11 @@ struct EditProfileView: View {
         guard let rawData = try? await item.loadTransferable(type: Data.self),
               let image = UIImage(data: rawData),
               let data = image.jpegData(compressionQuality: 0.85) else {
-            error = "Không đọc được ảnh"
+            error = NSLocalizedString("editprofile.error.readImage", comment: "")
             return
         }
         if data.count > 3 * 1024 * 1024 {
-            error = "Ảnh tối đa 3MB"
+            error = NSLocalizedString("editprofile.error.imageTooLarge", comment: "")
             return
         }
 
@@ -290,7 +290,7 @@ struct EditProfileView: View {
                 avatarUrl = url
             }
         } catch {
-            self.error = "Upload thất bại"
+            self.error = NSLocalizedString("editprofile.error.upload", comment: "")
         }
     }
 }

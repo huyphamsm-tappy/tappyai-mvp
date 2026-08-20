@@ -40,7 +40,7 @@ struct RecommendationsView: View {
             Image(systemName: "sparkles")
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.primary)
-            Text(personalized ? "Cá nhân hóa theo sở thích của bạn" : "Địa điểm nổi bật gần đây")
+            Text(personalized ? NSLocalizedString("recommendations.personalized", comment: "") : NSLocalizedString("recommendations.popularNearby", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -130,7 +130,7 @@ struct RecommendationsView: View {
                         .clipShape(Circle())
 
                     VStack(alignment: .leading, spacing: Spacing.xs) {
-                        Text(rec.placeName.isEmpty ? "Địa điểm" : rec.placeName)
+                        Text(rec.placeName.isEmpty ? NSLocalizedString("recommendations.placeFallback", comment: "") : rec.placeName)
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(TappyColor.textPrimary)
 
@@ -149,7 +149,7 @@ struct RecommendationsView: View {
                         }
 
                         Button {
-                            let q = "Kể mình nghe về \(rec.placeName.isEmpty ? "địa điểm này" : rec.placeName)"
+                            let q = "Kể mình nghe về \(rec.placeName.isEmpty ? NSLocalizedString("recommendations.thisPlace", comment: "") : rec.placeName)"
                             router.popToRoot(on: .chat)
                             router.switchTo(.chat)
                         } label: {
@@ -186,12 +186,12 @@ struct RecommendationsView: View {
             personalized = response.personalized ?? false
         } catch let err as AppError {
             if case .authentication = err {
-                error = "Cần đăng nhập để xem gợi ý."
+                error = NSLocalizedString("recommendations.error.signInRequired", comment: "")
             } else {
-                error = "Không tải được gợi ý, thử lại nhé."
+                error = NSLocalizedString("recommendations.error.loadFailed", comment: "")
             }
         } catch {
-            self.error = "Không tải được gợi ý, thử lại nhé."
+            self.error = NSLocalizedString("recommendations.error.loadFailed", comment: "")
         }
         loading = false
     }

@@ -211,3 +211,52 @@ export function siteTitle(locale: ShareLocale): string {
 export function isSiteTitle(title: string): boolean {
   return (Object.values(BRAND.title) as string[]).includes(title)
 }
+
+/**
+ * Titles for the STATIC routes that set their own, in both languages.
+ *
+ * ============================================================================
+ * WHY ONLY THESE ROUTES — B05
+ * ============================================================================
+ * R03 fixed the site title. It deliberately left every route-specific title alone, because
+ * `/reviews/[id]` sets the review's own subject and overwriting that would have been a worse bug
+ * than the one being fixed. The UAT then found the other half of the problem: the routes that set
+ * a FIXED title set it in one language only, and the eight of them do not even agree on which —
+ * `/privacy` and `/terms` are English, `/copyright` and `/viet-content` are Vietnamese. So a
+ * Vietnamese user reads "Privacy Policy" in their tab and an English user reads
+ * "Chính sách bản quyền âm nhạc".
+ *
+ * 🚨 This map is an ALLOW-LIST, and that is the whole safety property. A route is reconciled only
+ * if it appears here, so `/reviews/[id]`, `/chat/[id]` and anything else that computes a title
+ * from content is untouched by construction rather than by a heuristic that might misfire.
+ *
+ * 🚨 It also does NOT touch the server metadata. `generateMetadata` still emits exactly what it
+ * emitted before, so og:title, twitter:title and everything a crawler or a share preview reads are
+ * unchanged — this only reconciles the visible tab title on the client, where the locale is
+ * actually known.
+ */
+export const ROUTE_TITLES: Record<string, { vi: string; en: string }> = {
+  '/access-denied': { en: 'Access denied — TappyAI', vi: 'Không có quyền truy cập — TappyAI' },
+  '/copyright': { en: 'Music Copyright Policy — TappyAI', vi: 'Chính sách bản quyền âm nhạc — TappyAI' },
+  '/delete-account': { en: 'Delete Your TappyAI Account — TappyAI', vi: 'Xoá tài khoản TappyAI — TappyAI' },
+  '/how-to-use': { en: 'How to use TappyAI', vi: 'Hướng dẫn sử dụng TappyAI' },
+  '/privacy': { en: 'Privacy Policy — TappyAI', vi: 'Chính sách bảo mật — TappyAI' },
+  '/terms': { en: 'Terms of Service — TappyAI', vi: 'Điều khoản dịch vụ — TappyAI' },
+  '/viet-content': { en: 'Social media content writer — TappyAI', vi: 'Viết content mạng xã hội — TappyAI' },
+  '/game/supertux': { en: 'SuperTux — TappyAI Games', vi: 'SuperTux — Trò chơi TappyAI' },
+}
+
+/**
+ * The title this pathname should show in `locale`, or null if the route is not ours to retitle.
+ *
+ * Returns null unless the title currently in the DOM is one of the two this module knows for that
+ * route. That second condition matters: it means a route whose title has been changed by anything
+ * else — a future dynamic segment, an A/B test, a nested layout — is left alone rather than
+ * stamped over.
+ */
+export function routeTitleFor(pathname: string, locale: ShareLocale, currentTitle: string): string | null {
+  const entry = ROUTE_TITLES[pathname]
+  if (!entry) return null
+  if (currentTitle !== entry.vi && currentTitle !== entry.en) return null
+  return entry[locale]
+}

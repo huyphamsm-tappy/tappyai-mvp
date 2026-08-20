@@ -34,12 +34,12 @@ final class TranslateViewModel: AppObservableObject {
         } catch let appError as AppError {
             switch appError {
             case .authentication(reason: .anonLimitReached), .authentication(reason: .freeLimitReached):
-                error = "Bạn đã hết lượt dịch hôm nay (30/ngày)"
+                error = NSLocalizedString("translate.error.dailyLimit", comment: "")
             default:
-                error = "Không thể dịch. Vui lòng thử lại."
+                error = NSLocalizedString("translate.error.failed", comment: "")
             }
         } catch {
-            self.error = "Không thể dịch. Vui lòng thử lại."
+            self.error = NSLocalizedString("translate.error.failed", comment: "")
         }
         loading = false
     }

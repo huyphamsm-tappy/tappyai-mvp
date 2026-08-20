@@ -214,9 +214,9 @@ struct BookingsView: View {
     private func statusBadge(_ status: String) -> some View {
         let (text, color): (String, Color) = {
             switch status {
-            case "confirmed": return ("✅ Đã xác nhận", .green)
-            case "cancelled": return ("❌ Đã hủy", .red)
-            default: return ("⏳ Đang xử lý", .orange)
+            case "confirmed": return (NSLocalizedString("booking.status.confirmed", comment: ""), .green)
+            case "cancelled": return (NSLocalizedString("booking.status.cancelled", comment: ""), .red)
+            default: return (NSLocalizedString("booking.status.pending", comment: ""), .orange)
             }
         }()
         Text(text)
@@ -238,7 +238,7 @@ struct BookingsView: View {
 
     private func shareText(_ b: ProfileBooking) -> String {
         [
-            "📋 Xác nhận đặt chỗ — TappyAI",
+            NSLocalizedString("booking.confirmSubject", comment: ""),
             "🏠 \(b.serviceName)",
             "📅 Ngày: \(formatDate(b.date))\(b.time.map { " lúc \($0)" } ?? "")",
             "👤 \(b.customerName) | 📞 \(b.customerPhone)",

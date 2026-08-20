@@ -48,7 +48,7 @@ struct TuViView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("🧧 Tử vi")
+        .navigationTitle(NSLocalizedString("fortune.tuvi.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -60,10 +60,10 @@ struct TuViView: View {
                 .font(.system(size: 48))
 
             VStack(spacing: Spacing.xs) {
-                Text("Tử vi theo tuổi")
+                Text(NSLocalizedString("fortune.tuvi.heading", comment: ""))
                     .font(.system(size: 18, weight: .bold))
                     .foregroundStyle(TappyColor.textPrimary)
-                Text("Nhập ngày sinh dương lịch để xem luận giải")
+                Text(NSLocalizedString("fortune.tuvi.enterDob", comment: ""))
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.textSecondary)
             }
@@ -84,7 +84,7 @@ struct TuViView: View {
                 hasSubmitted = true
                 viewMode = .day
             } label: {
-                Text("Xem tử vi")
+                Text(NSLocalizedString("fortune.tuvi.action", comment: ""))
                     .font(.system(size: 15, weight: .semibold))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
@@ -151,16 +151,16 @@ struct TuViView: View {
     private var modeSelector: some View {
         VStack(spacing: Spacing.sm) {
             HStack(spacing: Spacing.xs) {
-                periodButton(.day, "Hôm nay")
-                periodButton(.week, "Tuần này")
-                periodButton(.month, "Tháng này")
+                periodButton(.day, NSLocalizedString("fortune.period.today", comment: ""))
+                periodButton(.week, NSLocalizedString("fortune.period.week", comment: ""))
+                periodButton(.month, NSLocalizedString("fortune.period.month", comment: ""))
             }
 
             HStack(spacing: Spacing.xs) {
                 Text("")
                     .frame(maxWidth: .infinity, maxHeight: 1)
                     .background(TappyColor.border)
-                Text("hoặc xem")
+                Text(NSLocalizedString("fortune.orSee", comment: ""))
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                 Text("")
@@ -169,8 +169,8 @@ struct TuViView: View {
             }
 
             HStack(spacing: Spacing.sm) {
-                extendedButton(.lifetime, "📖", "Trọn đời")
-                extendedButton(.year, "📅", "Theo năm")
+                extendedButton(.lifetime, "📖", NSLocalizedString("fortune.period.lifetime", comment: ""))
+                extendedButton(.year, "📅", NSLocalizedString("fortune.period.year", comment: ""))
             }
         }
     }
@@ -247,16 +247,16 @@ struct TuViView: View {
                 starRow(reading.score)
             }
 
-            fortuneRow(emoji: "💕", label: "Tình cảm", text: reading.love)
-            fortuneRow(emoji: "💼", label: "Sự nghiệp", text: reading.career)
-            fortuneRow(emoji: "💰", label: "Tài lộc", text: reading.money)
-            fortuneRow(emoji: "🏥", label: "Sức khoẻ", text: reading.health)
+            fortuneRow(emoji: "💕", label: NSLocalizedString("fortune.aspect.love", comment: ""), text: reading.love)
+            fortuneRow(emoji: "💼", label: NSLocalizedString("fortune.aspect.career", comment: ""), text: reading.career)
+            fortuneRow(emoji: "💰", label: NSLocalizedString("fortune.aspect.money", comment: ""), text: reading.money)
+            fortuneRow(emoji: "🏥", label: NSLocalizedString("fortune.aspect.health", comment: ""), text: reading.health)
 
             Divider()
 
             HStack(spacing: Spacing.lg) {
                 VStack(spacing: 2) {
-                    Text("Số may")
+                    Text(NSLocalizedString("fortune.luckyNumber", comment: ""))
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                     Text("\(reading.luckyNumber)")
@@ -264,7 +264,7 @@ struct TuViView: View {
                         .foregroundStyle(TappyColor.primary)
                 }
                 VStack(spacing: 2) {
-                    Text("Màu may")
+                    Text(NSLocalizedString("fortune.luckyColor", comment: ""))
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                     Text(reading.luckyColor)
@@ -293,7 +293,7 @@ struct TuViView: View {
                 HStack(spacing: Spacing.xs) {
                     Text("📅")
                         .font(.system(size: 14))
-                    Text("Chọn năm")
+                    Text(NSLocalizedString("fortune.pickYear", comment: ""))
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(TappyColor.textPrimary)
                 }
@@ -334,16 +334,16 @@ struct TuViView: View {
                     starRow(reading.score)
                 }
 
-                fortuneRow(emoji: "💕", label: "Tình cảm", text: reading.love)
-                fortuneRow(emoji: "💼", label: "Sự nghiệp", text: reading.career)
-                fortuneRow(emoji: "💰", label: "Tài lộc", text: reading.money)
-                fortuneRow(emoji: "🏥", label: "Sức khoẻ", text: reading.health)
+                fortuneRow(emoji: "💕", label: NSLocalizedString("fortune.aspect.love", comment: ""), text: reading.love)
+                fortuneRow(emoji: "💼", label: NSLocalizedString("fortune.aspect.career", comment: ""), text: reading.career)
+                fortuneRow(emoji: "💰", label: NSLocalizedString("fortune.aspect.money", comment: ""), text: reading.money)
+                fortuneRow(emoji: "🏥", label: NSLocalizedString("fortune.aspect.health", comment: ""), text: reading.health)
 
                 Divider()
 
                 HStack(spacing: Spacing.lg) {
                     VStack(spacing: 2) {
-                        Text("Số may")
+                        Text(NSLocalizedString("fortune.luckyNumber", comment: ""))
                             .font(TappyFont.caption)
                             .foregroundStyle(TappyColor.textSecondary)
                         Text("\(reading.luckyNumber)")
@@ -351,7 +351,7 @@ struct TuViView: View {
                             .foregroundStyle(TappyColor.primary)
                     }
                     VStack(spacing: 2) {
-                        Text("Màu may")
+                        Text(NSLocalizedString("fortune.luckyColor", comment: ""))
                             .font(TappyFont.caption)
                             .foregroundStyle(TappyColor.textSecondary)
                         Text(reading.luckyColor)
@@ -369,7 +369,7 @@ struct TuViView: View {
             )
 
             VStack(alignment: .leading, spacing: Spacing.sm) {
-                Text("Luận giải từng tháng")
+                Text(NSLocalizedString("fortune.monthByMonth", comment: ""))
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(TappyColor.textPrimary)
                     .padding(.horizontal, Spacing.lg)
@@ -417,12 +417,12 @@ struct TuViView: View {
                                 .frame(width: 2)
                         }
 
-                    fortuneRow(emoji: "💼", label: "Sự nghiệp cả đời", text: lt.career)
-                    fortuneRow(emoji: "💕", label: "Tình cảm", text: lt.love)
-                    fortuneRow(emoji: "🏥", label: "Sức khoẻ", text: lt.health)
+                    fortuneRow(emoji: "💼", label: NSLocalizedString("fortune.aspect.lifetimeCareer", comment: ""), text: lt.career)
+                    fortuneRow(emoji: "💕", label: NSLocalizedString("fortune.aspect.love", comment: ""), text: lt.love)
+                    fortuneRow(emoji: "🏥", label: NSLocalizedString("fortune.aspect.health", comment: ""), text: lt.health)
 
                     VStack(alignment: .leading, spacing: Spacing.xs) {
-                        Text("LỜI KHUYÊN")
+                        Text(NSLocalizedString("fortune.advice", comment: ""))
                             .font(.system(size: 11, weight: .bold))
                             .foregroundStyle(TappyColor.primary)
                         Text(lt.advice)
@@ -444,7 +444,7 @@ struct TuViView: View {
             }
 
             VStack(alignment: .leading, spacing: Spacing.sm) {
-                Text("Các giai đoạn cuộc đời")
+                Text(NSLocalizedString("fortune.lifeStages", comment: ""))
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(TappyColor.textPrimary)
                     .padding(.horizontal, Spacing.lg)
@@ -473,7 +473,7 @@ struct TuViView: View {
             HStack(spacing: Spacing.sm) {
                 Image(systemName: "arrow.counterclockwise")
                     .font(.system(size: 14))
-                Text("Xem với ngày sinh khác")
+                Text(NSLocalizedString("fortune.otherDob", comment: ""))
             }
             .font(.system(size: 14, weight: .medium))
             .frame(maxWidth: .infinity)
@@ -561,11 +561,11 @@ private struct MonthCardView: View {
 
             if expanded {
                 VStack(alignment: .leading, spacing: Spacing.sm) {
-                    monthRow("💕", "Tình cảm", monthData.love)
-                    monthRow("💼", "Sự nghiệp", monthData.career)
-                    monthRow("💰", "Tài lộc", monthData.money)
-                    monthRow("🏥", "Sức khoẻ", monthData.health)
-                    monthRow("📝", "Ghi chú", monthData.note)
+                    monthRow("💕", NSLocalizedString("fortune.aspect.love", comment: ""), monthData.love)
+                    monthRow("💼", NSLocalizedString("fortune.aspect.career", comment: ""), monthData.career)
+                    monthRow("💰", NSLocalizedString("fortune.aspect.money", comment: ""), monthData.money)
+                    monthRow("🏥", NSLocalizedString("fortune.aspect.health", comment: ""), monthData.health)
+                    monthRow("📝", NSLocalizedString("fortune.notes", comment: ""), monthData.note)
                 }
                 .padding(.horizontal, Spacing.lg)
                 .padding(.bottom, Spacing.md)
@@ -640,8 +640,8 @@ private struct LifeStageCardView: View {
                                 .frame(width: 2)
                         }
 
-                    stageRow("💼", "Sự nghiệp", stage.career)
-                    stageRow("💕", "Tình cảm", stage.love)
+                    stageRow("💼", NSLocalizedString("fortune.aspect.career", comment: ""), stage.career)
+                    stageRow("💕", NSLocalizedString("fortune.aspect.love", comment: ""), stage.love)
                 }
                 .padding(.horizontal, Spacing.lg)
                 .padding(.bottom, Spacing.md)

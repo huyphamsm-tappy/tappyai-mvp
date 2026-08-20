@@ -52,7 +52,12 @@ describe('the chat route derives consultative context, it does not store it', ()
   it('the stateful modules are not in the tree at all', () => {
     // Absent rather than present-and-unused: dead code in a release candidate is worse than no
     // code, and every one of these still lives on `feat/consultative-d3`, which is pushed.
-    for (const module of [
+    // `moduleName`, not `module` — B02. `next build` runs ESLint and treats
+    // `@next/next/no-assign-module-variable` as an ERROR, so a loop variable shadowing the CommonJS
+    // `module` binding failed the PRODUCTION BUILD outright: no BUILD_ID, nothing deployable. It
+    // passed every test and `tsc`, because none of those run the Next lint pass — and no CI
+    // workflow runs `npm run build` either, which is why it reached a release candidate.
+    for (const moduleName of [
       'conversationState',
       'stateContext',
       'consultationDelta',
@@ -61,7 +66,7 @@ describe('the chat route derives consultative context, it does not store it', ()
       'placePreSearch',
       'productPreSearch',
     ]) {
-      expect(existsSync(`src/lib/ai/${module}.ts`)).toBe(false)
+      expect(existsSync(`src/lib/ai/${moduleName}.ts`)).toBe(false)
     }
   })
 })

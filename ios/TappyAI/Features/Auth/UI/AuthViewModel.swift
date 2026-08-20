@@ -41,12 +41,12 @@ final class AuthViewModel: AppObservableObject {
     var codeValid: Bool { AuthValidation.isValidOTP(code) }
 
     func sendOTP() async {
-        guard emailValid else { errorMessage = "Email không hợp lệ"; return }
+        guard emailValid else { errorMessage = NSLocalizedString("auth.error.invalidEmail", comment: ""); return }
         await run { try await self.repo.sendEmailOTP(email: self.email); self.mode = .otpCode }
     }
 
     func verifyOTP() async {
-        guard codeValid else { errorMessage = "Mã gồm 6 chữ số"; return }
+        guard codeValid else { errorMessage = NSLocalizedString("auth.error.otpLength", comment: ""); return }
         await run { try await self.repo.verifyEmailOTP(email: self.email, code: self.code); self.onAuthenticated() }
     }
 

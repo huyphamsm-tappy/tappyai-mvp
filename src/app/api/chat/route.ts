@@ -10,6 +10,8 @@ import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
 import { validateClientInput } from '@/lib/ai/security/clientInput'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
@@ -77,7 +79,7 @@ export async function POST(req: Request) {
       || validated.code === 'image_too_large'
     return new Response(
       JSON.stringify(isSize
-        ? { error: validated.code, message: 'Tin nhắn quá dài. Vui lòng rút gọn.' }
+        ? { error: validated.code, message: serverMessage('chat.tooLong', requestLocale(req)) }
         : { error: validated.code }),
       { status: isSize ? 413 : 400, headers: { 'Content-Type': 'application/json' } },
     )
@@ -175,7 +177,7 @@ export async function POST(req: Request) {
           return new Response(
             JSON.stringify({
               error: 'anon_limit_reached',
-              message: `Bạn đã dùng hết ${ANON_DAILY_LIMIT} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!`,
+              message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_DAILY_LIMIT }),
               upgradeUrl: '/login',
             }),
             { status: 401, headers: { 'Content-Type': 'application/json' } }
@@ -227,7 +229,7 @@ export async function POST(req: Request) {
           return new Response(
             JSON.stringify({
               error: 'free_limit_reached',
-              message: `Bạn đã dùng hết ${FREE_DAILY_LIMIT} tin nhắn miễn phí hôm nay. Hẹn gặp lại bạn vào ngày mai nhé!`,
+              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
             }),
             { status: 429, headers: { 'Content-Type': 'application/json' } }
           )
@@ -261,7 +263,7 @@ export async function POST(req: Request) {
       return new Response(
         JSON.stringify({
           error: 'anon_limit_reached',
-          message: `Bạn đã dùng hết ${ANON_DAILY_LIMIT} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!`,
+          message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_DAILY_LIMIT }),
           upgradeUrl: '/login',
         }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }

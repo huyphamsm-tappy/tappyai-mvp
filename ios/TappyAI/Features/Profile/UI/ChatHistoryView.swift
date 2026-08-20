@@ -145,7 +145,7 @@ struct ChatHistoryView: View {
         f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         guard let date = f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return "" }
         let diff = Date().timeIntervalSince(date)
-        if diff < 60 { return "vừa xong" }
+        if diff < 60 { return NSLocalizedString("common.justNow", comment: "") }
         if diff < 3600 { return "\(Int(diff/60)) phút trước" }
         if diff < 86400 { return "\(Int(diff/3600)) giờ trước" }
         if diff < 604800 { return "\(Int(diff/86400)) ngày trước" }

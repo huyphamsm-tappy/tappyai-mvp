@@ -355,8 +355,8 @@ private struct ChatErrorBanner: View {
                 case .authRequired, .anonLimitReached:
                     VStack(alignment: .leading, spacing: Spacing.xs) {
                         Text(error == .anonLimitReached
-                             ? "Bạn đã dùng hết số câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy và mở khoá mọi tính năng!"
-                             : "Cần đăng nhập để trò chuyện với Tappy 💬 Tin nhắn của bạn được giữ nguyên — đăng nhập để tiếp tục ngay nhé!")
+                             ? NSLocalizedString("chat.error.anonLimit", comment: "")
+                             : NSLocalizedString("chat.error.authRequired", comment: ""))
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.primary)
                         Button(action: onLogin) {
@@ -385,8 +385,8 @@ private struct ChatErrorBanner: View {
                 case .generic, .offline:
                     VStack(alignment: .leading, spacing: Spacing.xs) {
                         Text(error == .offline
-                             ? "Không có kết nối mạng. Kiểm tra và thử lại nhé."
-                             : "Mình gặp trục trặc khi trả lời — tin nhắn của bạn vẫn được giữ nguyên. Bạn thử lại nhé?")
+                             ? NSLocalizedString("chat.error.offline", comment: "")
+                             : NSLocalizedString("chat.error.generic", comment: ""))
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.danger)
                         Button(action: onRetry) {

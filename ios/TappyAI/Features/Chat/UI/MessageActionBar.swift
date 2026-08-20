@@ -117,7 +117,7 @@ struct MessageActionBar: View {
                         onReport()
                     } label: {
                         Label(
-                            reportState == .reported ? "Đã báo cáo" : "Báo cáo lỗi",
+                            reportState == .reported ? NSLocalizedString("chat.action.reported", comment: "") : NSLocalizedString("chat.action.report", comment: ""),
                             systemImage: "flag"
                         )
                     }

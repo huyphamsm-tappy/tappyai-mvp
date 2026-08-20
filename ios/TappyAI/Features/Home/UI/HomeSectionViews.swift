@@ -49,7 +49,7 @@ struct HomeSearchSection: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
         }
         .buttonStyle(.plain)
-        .tappyAccessibleButton("Tìm kiếm")
+        .tappyAccessibleButton("home.a11y.search")
     }
 }
 
@@ -59,16 +59,16 @@ struct HomeCategorySection: View {
     let onSelect: (String) -> Void
 
     private let categories: [(emoji: String, key: String, labelVi: String)] = [
-        ("🍜", "food", "Ăn uống"),
-        ("🛍️", "shopping", "Mua sắm"),
-        ("🎭", "entertainment", "Giải trí"),
-        ("✈️", "travel", "Du lịch"),
+        ("🍜", "food", NSLocalizedString("category.food", comment: "")),
+        ("🛍️", "shopping", NSLocalizedString("category.shopping", comment: "")),
+        ("🎭", "entertainment", NSLocalizedString("category.entertainment", comment: "")),
+        ("✈️", "travel", NSLocalizedString("category.travel", comment: "")),
         ("💆", "spa", "Spa"),
     ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            SectionHeader(title: "Khám phá theo lĩnh vực")
+            SectionHeader(title: "home.exploreByCategory")
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: Spacing.xs) {
                     ForEach(categories, id: \.key) { cat in
@@ -89,17 +89,17 @@ struct HomeQuickActionsSection: View {
     let onSelect: (HomeDestination) -> Void
 
     private let actions: [(icon: String, label: String, dest: HomeDestination)] = [
-        ("dollarsign.circle", "Tỷ giá", .currency),
-        ("globe", "Dịch", .translate),
+        ("dollarsign.circle", NSLocalizedString("tool.currency", comment: ""), .currency),
+        ("globe", NSLocalizedString("tool.translate", comment: ""), .translate),
         ("doc.text.viewfinder", "Scan", .scan),
-        ("pencil.line", "Viết", .vietContent),
-        ("divide.circle", "Chia bill", .splitBill),
-        ("sparkles", "Bói", .fortune),
+        ("pencil.line", NSLocalizedString("tool.vietContent", comment: ""), .vietContent),
+        ("divide.circle", NSLocalizedString("tool.splitBill", comment: ""), .splitBill),
+        ("sparkles", NSLocalizedString("tool.fortune", comment: ""), .fortune),
     ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            SectionHeader(title: "🛠️ Công cụ tiện ích")
+            SectionHeader(title: "home.handyTools")
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: Spacing.sm)], spacing: Spacing.sm) {
                 ForEach(actions, id: \.label) { action in
                     Button { onSelect(action.dest) } label: {
@@ -138,7 +138,7 @@ struct HomeAIEntrySection: View {
             }
         }
         .buttonStyle(.plain)
-        .tappyAccessibleButton("Hỏi Tappy")
+        .tappyAccessibleButton("home.a11y.askTappy")
     }
 }
 
@@ -152,7 +152,7 @@ struct HomeSuggestedPromptsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            SectionHeader(title: "Gợi ý hôm nay")
+            SectionHeader(title: "home.todaySuggestions")
             switch state {
             case .idle, .loading:
                 HStack(spacing: Spacing.xs) {
@@ -165,7 +165,7 @@ struct HomeSuggestedPromptsSection: View {
                 if prompts.isEmpty {
                     TappyEmptyState(
                         systemImage: "lightbulb",
-                        title: "Gợi ý sẽ xuất hiện ở đây"
+                        title: "home.suggestions.empty"
                     )
                 } else {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -193,7 +193,7 @@ struct HomeSuggestedPromptsSection: View {
                 }
             case .failed:
                 TappyErrorState(
-                    presentation: .init(title: "Không tải được", message: "Thử lại sau.", retryable: true),
+                    presentation: .init(title: NSLocalizedString("common.loadFailed", comment: ""), message: NSLocalizedString("common.tryAgainLater", comment: ""), retryable: true),
                     onRetry: onRetry
                 )
             }
@@ -230,13 +230,13 @@ struct HomeRecentConversationsSection: View {
                     }
                 }
             } else {
-                SectionHeader(title: "Trò chuyện gần đây")
+                SectionHeader(title: "home.recentChats")
             }
 
             if !isAuthenticated {
                 TappyEmptyState(
                     systemImage: "bubble.left.and.bubble.right",
-                    title: "Đăng nhập để lưu lịch sử trò chuyện của bạn"
+                    title: "home.chats.signInPrompt"
                 )
             } else {
                 switch state {
@@ -250,8 +250,8 @@ struct HomeRecentConversationsSection: View {
                     if conversations.isEmpty {
                         TappyEmptyState(
                             systemImage: "bubble.left.and.bubble.right",
-                            title: "Bắt đầu trò chuyện đầu tiên với TappyAI!",
-                            actionTitle: "Chat ngay",
+                            title: "home.chats.empty",
+                            actionTitle: "home.chats.startNow",
                             action: onNewChat
                         )
                     } else {
@@ -266,7 +266,7 @@ struct HomeRecentConversationsSection: View {
                     }
                 case .failed:
                     TappyErrorState(
-                        presentation: .init(title: "Không tải được", message: "Thử lại sau.", retryable: true),
+                        presentation: .init(title: NSLocalizedString("common.loadFailed", comment: ""), message: NSLocalizedString("common.tryAgainLater", comment: ""), retryable: true),
                         onRetry: onRetry
                     )
                 }
@@ -307,7 +307,7 @@ struct HomeRecommendationsCard: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
         }
         .buttonStyle(.plain)
-        .tappyAccessibleButton("Xem gợi ý cho bạn")
+        .tappyAccessibleButton("home.a11y.viewSuggestions")
     }
 }
 
@@ -325,12 +325,17 @@ private struct ConversationRow: View {
                 .background(TappyColor.surface)
                 .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
             VStack(alignment: .leading, spacing: Spacing.xxs) {
-                Text(conversation.title ?? "Hội thoại")
+                Text(conversation.title ?? NSLocalizedString("chat.untitled", comment: ""))
                     .font(TappyFont.bodyEmphasis)
                     .foregroundStyle(TappyColor.textPrimary)
                     .lineLimit(1)
                 HStack(spacing: 0) {
-                    Text("\(conversation.messageCount) tin nhắn")
+                    // 🚨 An INTERPOLATED Vietnamese literal. The B03 ratchet matches
+                    // `"([^"\\]{2,})"` and so cannot see any string containing `\(…)` — this one
+                    // was never in the 487, and neither is any other interpolated label. Counted
+                    // or not, an English user was reading "tin nhắn"; localizing the format
+                    // string is also what lets the plural rules differ per language.
+                    Text(String(format: NSLocalizedString("chat.messageCount", comment: ""), conversation.messageCount))
                     if let date = conversation.updatedAt {
                         Text(" · ")
                         Text(date, style: .relative)
@@ -349,7 +354,7 @@ private struct ConversationRow: View {
         .frame(minHeight: 56)
         .background(TappyColor.surfaceElevated)
         .clipShape(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
-        .tappyAccessibleButton("Mở hội thoại")
+        .tappyAccessibleButton("home.a11y.openConversation")
     }
 }
 

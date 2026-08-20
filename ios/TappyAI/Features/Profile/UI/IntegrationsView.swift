@@ -9,10 +9,10 @@ struct IntegrationsView: View {
     private var service: ProfileService { ProfileService(api: deps.api) }
 
     private let integrationInfo: [(provider: String, name: String, desc: String, icon: String, whatTappyGets: String)] = [
-        ("google_calendar", "Google Calendar", "Kết nối lịch để Tappy gợi ý phù hợp với thời gian của bạn.", "📅",
-         "Tên sự kiện, thời gian, địa điểm trong 7 ngày tới (chỉ đọc)"),
-        ("zalo", "Zalo", "Kết nối tài khoản Zalo để Tappy biết tên và ảnh đại diện của bạn.", "💬",
-         "Tên hiển thị, ảnh đại diện Zalo (không đọc tin nhắn)"),
+        ("google_calendar", "Google Calendar", NSLocalizedString("integrations.calendar.desc", comment: ""), "📅",
+         NSLocalizedString("integrations.calendar.scope", comment: "")),
+        ("zalo", "Zalo", NSLocalizedString("integrations.zalo.desc", comment: ""), "💬",
+         NSLocalizedString("integrations.zalo.scope", comment: "")),
     ]
 
     var body: some View {
@@ -160,9 +160,9 @@ struct IntegrationsView: View {
                 .foregroundStyle(TappyColor.textPrimary)
 
             VStack(alignment: .leading, spacing: 6) {
-                usageRow("📅", "Google Calendar → Tappy gợi ý quán ăn gần lịch họp của bạn")
-                usageRow("💬", "Zalo → Hiển thị tên và ảnh thật của bạn trên review feed")
-                usageRow("📊", "Hành vi trong app → Tappy nhớ bạn thích gì, hay dùng lúc mấy giờ")
+                usageRow("📅", NSLocalizedString("integrations.usage.calendar", comment: ""))
+                usageRow("💬", NSLocalizedString("integrations.usage.zalo", comment: ""))
+                usageRow("📊", NSLocalizedString("integrations.usage.behaviour", comment: ""))
             }
         }
         .padding(Spacing.md)

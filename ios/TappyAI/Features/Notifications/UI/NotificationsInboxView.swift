@@ -24,13 +24,13 @@ struct NotificationsInboxView: View {
                 ProgressView().frame(maxWidth: .infinity, minHeight: 200)
             case .failed:
                 TappyErrorState(
-                    presentation: .init(title: "Không tải được", message: "Thử lại sau.", retryable: true),
+                    presentation: .init(title: NSLocalizedString("common.loadFailed", comment: ""), message: NSLocalizedString("common.tryAgainLater", comment: ""), retryable: true),
                     onRetry: { Task { await vm.load() } }
                 )
                 .padding(.top, 60)
             case .loaded:
                 if vm.items.isEmpty {
-                    TappyEmptyState(systemImage: "bell", title: "Chưa có thông báo")
+                    TappyEmptyState(systemImage: "bell", title: "notif.inbox.empty")
                         .padding(.top, 60)
                 } else {
                     list
@@ -38,12 +38,12 @@ struct NotificationsInboxView: View {
             }
         }
         .background(TappyColor.background)
-        .navigationTitle("Thông báo")
+        .navigationTitle(NSLocalizedString("notif.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if vm.unreadCount > 0 {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Đọc hết") { vm.markAllRead() }
+                    Button(NSLocalizedString("notif.markAllRead", comment: "")) { vm.markAllRead() }
                         .font(.system(size: 13, weight: .medium))
                 }
             }

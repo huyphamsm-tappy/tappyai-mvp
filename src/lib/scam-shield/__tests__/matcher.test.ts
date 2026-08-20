@@ -30,9 +30,24 @@ describe('findMatchingBrand', () => {
     expect(result?.id).toBe('shopee')
   })
 
-  it('does NOT match short brand slugs (< 4 chars)', () => {
+  it('matches a 3-letter brand when it stands as a whole token', () => {
+    // ⚠️ CHANGED IN B01, and the change is the fix rather than an accommodation to it.
+    //
+    // This case previously asserted `acb-phishing.com` → null, under the heading "does NOT match
+    // short brand slugs (< 4 chars)". The old matcher required a slug of 4+ characters for its
+    // substring rule, so ACB — and equally VIB, SHB, MSB — could not be detected as impersonated
+    // at ALL, and this test pinned that hole in place as though it were the specification.
+    //
+    // The length rule existed for a real reason: a bare 3-character substring match would flag
+    // `beacba.com`. `classifyBrand` keeps that protection by requiring a short brand to appear as
+    // a COMPLETE token rather than any substring — so `acb-phishing.com` is caught and
+    // `beacba.com` still is not, which is asserted directly below.
     const result = findMatchingBrand('acb-phishing.com', directory)
-    expect(result).toBeNull()
+    expect(result?.id).toBe('acb')
+  })
+
+  it('still does NOT match a short brand buried inside a longer token', () => {
+    expect(findMatchingBrand('beacba.com', directory)).toBeNull()
   })
 
   it('does NOT match MoMo substring (slug "momo" = 4 chars)', () => {

@@ -13,7 +13,7 @@ struct FortuneHubView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("🔮 Bói toán")
+        .navigationTitle(NSLocalizedString("fortune.hub.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: FortuneDestination.self) { dest in
             switch dest {
@@ -31,13 +31,13 @@ struct FortuneHubView: View {
 
     private var heroBanner: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text("Tâm linh & Vận mệnh")
+            Text(NSLocalizedString("fortune.hub.kicker", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(.white.opacity(0.8))
             Text("Khám phá vận số\ncủa bạn")
                 .font(.system(size: 24, weight: .black))
                 .foregroundStyle(.white)
-            Text("Bói bài Tarot, Tử vi và Cung hoàng đạo — 100% offline, miễn phí")
+            Text(NSLocalizedString("fortune.hub.subtitle", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(.white.opacity(0.8))
         }
@@ -61,9 +61,9 @@ struct FortuneHubView: View {
 
     private var featureList: some View {
         VStack(spacing: Spacing.sm) {
-            featureLink(emoji: "🔮", title: "Bói bài Tarot", desc: "Rút 1–3 lá bài, nhận thông điệp từ vũ trụ", gradient: [.purple.opacity(0.15), .purple.opacity(0.05)], destination: .tarot)
-            featureLink(emoji: "🧧", title: "Tử vi", desc: "Xem vận hạn theo tuổi Can Chi, Ngũ Hành", gradient: [.orange.opacity(0.15), .orange.opacity(0.05)], destination: .tuVi)
-            featureLink(emoji: "✨", title: "Cung hoàng đạo", desc: "Luận giải theo 12 chòm sao phương Tây", gradient: [Color(red: 0.2, green: 0.6, blue: 0.9).opacity(0.15), Color(red: 0.2, green: 0.6, blue: 0.9).opacity(0.05)], destination: .zodiac)
+            featureLink(emoji: "🔮", title: NSLocalizedString("fortune.tarot.name", comment: ""), desc: NSLocalizedString("fortune.tarot.desc", comment: ""), gradient: [.purple.opacity(0.15), .purple.opacity(0.05)], destination: .tarot)
+            featureLink(emoji: "🧧", title: NSLocalizedString("fortune.tuvi.name", comment: ""), desc: NSLocalizedString("fortune.tuvi.desc", comment: ""), gradient: [.orange.opacity(0.15), .orange.opacity(0.05)], destination: .tuVi)
+            featureLink(emoji: "✨", title: NSLocalizedString("fortune.zodiac.name", comment: ""), desc: "Luận giải theo 12 chòm sao phương Tây", gradient: [Color(red: 0.2, green: 0.6, blue: 0.9).opacity(0.15), Color(red: 0.2, green: 0.6, blue: 0.9).opacity(0.05)], destination: .zodiac)
         }
     }
 

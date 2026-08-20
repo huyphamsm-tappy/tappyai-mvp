@@ -19,22 +19,22 @@ struct PreferencesView: View {
     private var service: ProfileService { ProfileService(api: deps.api) }
 
     private let budgetOptions: [(value: String, label: String, desc: String, emoji: String)] = [
-        ("cheap", "Tiết kiệm", "Dưới 150k/người", "💚"),
-        ("mid", "Trung bình", "150k–500k/người", "💛"),
-        ("high", "Cao cấp", "500k+/người", "❤️"),
+        ("cheap", NSLocalizedString("pref.budget.cheap", comment: ""), NSLocalizedString("pref.budget.cheap.detail", comment: ""), "💚"),
+        ("mid", NSLocalizedString("pref.budget.mid", comment: ""), NSLocalizedString("pref.budget.mid.detail", comment: ""), "💛"),
+        ("high", NSLocalizedString("pref.budget.high", comment: ""), NSLocalizedString("pref.budget.high.detail", comment: ""), "❤️"),
     ]
 
     private let cuisineOptions = [
-        "Phở & Bún", "Cơm tấm", "Lẩu", "Nướng BBQ", "Hải sản",
-        "Chay & Thuần chay", "Sushi & Nhật", "Hàn Quốc", "Pizza & Burger",
-        "Dimsum & Trung Hoa", "Cà phê & Bánh", "Món miền Bắc", "Món miền Nam",
-        "Đồ ăn nhanh", "Kem & Tráng miệng",
+        NSLocalizedString("cuisine.phoBun", comment: ""), NSLocalizedString("cuisine.comTam", comment: ""), NSLocalizedString("cuisine.hotpot", comment: ""), NSLocalizedString("cuisine.bbq", comment: ""), NSLocalizedString("cuisine.seafood", comment: ""),
+        NSLocalizedString("cuisine.vegetarian", comment: ""), NSLocalizedString("cuisine.japanese", comment: ""), NSLocalizedString("cuisine.korean", comment: ""), "Pizza & Burger",
+        NSLocalizedString("cuisine.chinese", comment: ""), NSLocalizedString("cuisine.cafeBakery", comment: ""), NSLocalizedString("cuisine.northern", comment: ""), NSLocalizedString("cuisine.southern", comment: ""),
+        NSLocalizedString("cuisine.fastFood", comment: ""), NSLocalizedString("cuisine.dessert", comment: ""),
     ]
 
     private let quickChips = [
-        "Ăn chay thứ 6", "Ngân sách ăn trưa 60–80k", "Thích spa kiểu Nhật",
-        "Dị ứng hải sản", "Hay đi Quận 3", "Không ăn được cay",
-        "Hay đi Bình Thạnh", "Thích không gian yên tĩnh",
+        NSLocalizedString("pref.sample.vegFriday", comment: ""), NSLocalizedString("pref.sample.lunchBudget", comment: ""), NSLocalizedString("pref.sample.japaneseSpa", comment: ""),
+        NSLocalizedString("pref.sample.seafoodAllergy", comment: ""), NSLocalizedString("pref.sample.district3", comment: ""), NSLocalizedString("pref.sample.noSpicy", comment: ""),
+        NSLocalizedString("pref.sample.binhThanh", comment: ""), NSLocalizedString("pref.sample.quiet", comment: ""),
     ]
 
     var body: some View {
@@ -117,7 +117,7 @@ struct PreferencesView: View {
 
             // Input
             HStack(spacing: Spacing.sm) {
-                TextField("Thêm sở thích của bạn...", text: $newPref)
+                TextField(NSLocalizedString("pref.addPlaceholder", comment: ""), text: $newPref)
                     .font(.system(size: 13))
                     .onSubmit { addPref(newPref) }
                     .padding(.horizontal, Spacing.md)
@@ -186,7 +186,7 @@ struct PreferencesView: View {
                 .foregroundStyle(TappyColor.textSecondary)
 
             HStack(spacing: Spacing.sm) {
-                ForEach([("female", "Nữ", "👩"), ("male", "Nam", "👨")], id: \.0) { (value, label, emoji) in
+                ForEach([("female", NSLocalizedString("pref.gender.female", comment: ""), "👩"), ("male", NSLocalizedString("pref.gender.male", comment: ""), "👨")], id: \.0) { (value, label, emoji) in
                     Button {
                         gender = gender == value ? nil : value
                     } label: {
@@ -297,7 +297,7 @@ struct PreferencesView: View {
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
 
-            TextField("Ghi chú nếu có...", text: $dietary, axis: .vertical)
+            TextField(NSLocalizedString("pref.dietaryPlaceholder", comment: ""), text: $dietary, axis: .vertical)
                 .font(.system(size: 13))
                 .lineLimit(3...5)
                 .padding(.horizontal, Spacing.md)

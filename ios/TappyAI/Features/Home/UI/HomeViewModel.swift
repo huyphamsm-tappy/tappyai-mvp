@@ -23,7 +23,7 @@ final class HomeViewModel: AppObservableObject {
     func greeting(locale: String) -> String {
         switch locale {
         case "vi":
-            return isAuthenticated ? "Xin chào, bạn 👋" : "Chào mừng đến với TappyAI 👋"
+            return isAuthenticated ? NSLocalizedString("home.greeting.generic", comment: "") : NSLocalizedString("home.greeting.welcome", comment: "")
         default:
             return isAuthenticated ? "Hi there 👋" : "Welcome to TappyAI 👋"
         }

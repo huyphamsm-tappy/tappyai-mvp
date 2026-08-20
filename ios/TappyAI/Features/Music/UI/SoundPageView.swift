@@ -128,7 +128,7 @@ struct SoundPageView: View {
             }
             .padding(.top, Spacing.xs)
 
-            Text(data.track.artist ?? "Không rõ nghệ sĩ")
+            Text(data.track.artist ?? NSLocalizedString("music.unknownArtist", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -182,7 +182,7 @@ struct SoundPageView: View {
                         .foregroundStyle(.pink)
                     Text("\(fmtNumber(vm.savedCount))")
                         .fontWeight(.semibold)
-                    Text("lưu")
+                    Text(NSLocalizedString("music.savedCountUnit", comment: ""))
                 }
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textPrimary)
@@ -206,7 +206,7 @@ struct SoundPageView: View {
                     HStack(spacing: 6) {
                         Image(systemName: vm.saved ? "heart.fill" : "heart")
                             .font(.system(size: 16))
-                        Text(vm.saved ? "Đã lưu" : "Lưu")
+                        Text(vm.saved ? NSLocalizedString("common.saved", comment: "") : NSLocalizedString("common.save", comment: ""))
                             .font(.system(size: 14, weight: .semibold))
                     }
                     .frame(maxWidth: .infinity)
@@ -228,7 +228,7 @@ struct SoundPageView: View {
                     HStack(spacing: 6) {
                         Image(systemName: vm.followed ? "bell.fill" : "bell")
                             .font(.system(size: 16))
-                        Text(vm.followed ? "Đang theo dõi" : "Theo dõi")
+                        Text(vm.followed ? NSLocalizedString("profile.following", comment: "") : NSLocalizedString("profile.follow", comment: ""))
                             .font(.system(size: 14, weight: .semibold))
                     }
                     .frame(maxWidth: .infinity)

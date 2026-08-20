@@ -50,12 +50,12 @@ final class SoundPageViewModel: AppObservableObject {
         } catch let err as AppError {
             switch err {
             case .network(let status, _) where status == 404:
-                error = "Bài nhạc không tồn tại."
+                error = NSLocalizedString("music.error.notFound", comment: "")
             default:
-                error = "Không tải được, thử lại nhé."
+                error = NSLocalizedString("common.loadFailedRetry", comment: "")
             }
         } catch {
-            self.error = "Không tải được, thử lại nhé."
+            self.error = NSLocalizedString("common.loadFailedRetry", comment: "")
         }
         loading = false
     }

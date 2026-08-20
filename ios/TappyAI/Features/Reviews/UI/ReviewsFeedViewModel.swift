@@ -211,7 +211,7 @@ final class ReviewsFeedViewModel: AppObservableObject {
             comments = response.comments
             commentCount = response.count
         } catch {
-            commentError = "Không thể tải bình luận"
+            commentError = NSLocalizedString("review.comments.error.load", comment: "")
             log.error("comments load failed: \(error)")
         }
         isLoadingComments = false
@@ -236,7 +236,7 @@ final class ReviewsFeedViewModel: AppObservableObject {
                 }
             } catch {
                 commentText = savedText
-                commentError = "Không thể đăng bình luận"
+                commentError = NSLocalizedString("review.comments.error.post", comment: "")
                 log.error("post comment failed: \(error)")
             }
             isPostingComment = false

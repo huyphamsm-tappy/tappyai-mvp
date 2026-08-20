@@ -66,9 +66,9 @@ struct ReviewPostView: View {
             }
         }
         .confirmationDialog("", isPresented: $showOwnMenu, titleVisibility: .hidden) {
-            Button("Ẩn bài viết") { onHide() }
-            Button("Xoá bài viết", role: .destructive) { onDelete() }
-            Button("Huỷ", role: .cancel) {}
+            Button(NSLocalizedString("review.action.hide", comment: "")) { onHide() }
+            Button(NSLocalizedString("review.action.delete", comment: ""), role: .destructive) { onDelete() }
+            Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
         }
     }
 
@@ -128,9 +128,9 @@ struct ReviewPostView: View {
 
     private var externalLabel: String {
         switch review.sourceType {
-        case "youtube": return "Xem trên YouTube"
-        case "tiktok": return "Xem trên TikTok"
-        case "facebook": return "Xem trên Facebook"
+        case "youtube": return NSLocalizedString("review.watchOn.youtube", comment: "")
+        case "tiktok": return NSLocalizedString("review.watchOn.tiktok", comment: "")
+        case "facebook": return NSLocalizedString("review.watchOn.facebook", comment: "")
         default: return "Xem video"
         }
     }
@@ -192,7 +192,7 @@ struct ReviewPostView: View {
                             Button {
                                 onFollow()
                             } label: {
-                                Text("Theo dõi")
+                                Text(NSLocalizedString("profile.follow", comment: ""))
                                     .font(.system(size: 12, weight: .semibold))
                                     .foregroundStyle(.white)
                                     .padding(.horizontal, Spacing.sm)

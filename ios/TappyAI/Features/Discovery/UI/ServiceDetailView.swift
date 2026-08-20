@@ -124,15 +124,15 @@ struct ServiceDetailView: View {
     private var infoCard: some View {
         VStack(spacing: 0) {
             if !service.address.isEmpty {
-                infoRow(icon: "mappin", iconColor: .blue, label: "Địa chỉ", value: service.address, link: mapsURL)
+                infoRow(icon: "mappin", iconColor: .blue, label: NSLocalizedString("service.address", comment: ""), value: service.address, link: mapsURL)
                 Divider().padding(.leading, 52)
             }
             if !service.phone.isEmpty {
-                infoRow(icon: "phone.fill", iconColor: .green, label: "Điện thoại", value: service.phone, link: URL(string: "tel:\(service.phone)"))
+                infoRow(icon: "phone.fill", iconColor: .green, label: NSLocalizedString("service.phone", comment: ""), value: service.phone, link: URL(string: "tel:\(service.phone)"))
                 Divider().padding(.leading, 52)
             }
             if !service.hours.isEmpty {
-                infoRow(icon: "clock.fill", iconColor: .orange, label: "Giờ mở cửa", value: service.hours)
+                infoRow(icon: "clock.fill", iconColor: .orange, label: NSLocalizedString("service.openingHours", comment: ""), value: service.hours)
                 Divider().padding(.leading, 52)
             }
             if !service.price.isEmpty {

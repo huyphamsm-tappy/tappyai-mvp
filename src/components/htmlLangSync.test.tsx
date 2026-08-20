@@ -15,7 +15,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, cleanup, act } from '@testing-library/react'
 import HtmlLangSync from './HtmlLangSync'
 import { setLocale } from '@/lib/i18n/useTranslation'
-import { BRAND } from '@/lib/share/openGraph'
+import { BRAND, ROUTE_TITLES } from '@/lib/share/openGraph'
 
 const path = vi.hoisted(() => ({ current: '/' }))
 vi.mock('next/navigation', () => ({ usePathname: () => path.current }))
@@ -140,6 +140,102 @@ describe("a route's own title is not collateral damage", () => {
     document.title = VI // what Next just installed for the root route
     rerender(<HtmlLangSync />)
     expect(document.title).toBe(EN)
+  })
+})
+
+describe('a static route title follows the language too — B05', () => {
+  // The UAT found eight routes that set a FIXED title, in one language, and not even the same
+  // one: /privacy and /terms are English, /copyright and /viet-content are Vietnamese. So a
+  // Vietnamese user read "Privacy Policy" in their tab and an English user read
+  // "Chính sách bản quyền âm nhạc". R03 had deliberately scoped these out; this is that half.
+
+  it('an English-only route title is shown in Vietnamese to a VI session', () => {
+    path.current = '/privacy'
+    document.title = ROUTE_TITLES['/privacy'].en
+    act(() => setLocale('vi'))
+    render(<HtmlLangSync />)
+    expect(document.title).toBe(ROUTE_TITLES['/privacy'].vi)
+  })
+
+  it('a Vietnamese-only route title is shown in English to an EN session', () => {
+    path.current = '/copyright'
+    document.title = ROUTE_TITLES['/copyright'].vi
+    act(() => setLocale('en'))
+    render(<HtmlLangSync />)
+    expect(document.title).toBe(ROUTE_TITLES['/copyright'].en)
+  })
+
+  it('switching language while on the route retitles it live', () => {
+    path.current = '/terms'
+    document.title = ROUTE_TITLES['/terms'].en
+    act(() => setLocale('en'))
+    render(<HtmlLangSync />)
+    expect(document.title).toBe(ROUTE_TITLES['/terms'].en)
+
+    act(() => setLocale('vi'))
+    expect(document.title).toBe(ROUTE_TITLES['/terms'].vi)
+  })
+
+  it('every listed route resolves in both directions', () => {
+    for (const [route, titles] of Object.entries(ROUTE_TITLES)) {
+      for (const locale of ['vi', 'en'] as const) {
+        cleanup()
+        path.current = route
+        document.title = titles.en // whichever the server sent; both are recognised
+        act(() => setLocale(locale))
+        render(<HtmlLangSync />)
+        expect(document.title, `${route} → ${locale}`).toBe(titles[locale])
+      }
+    }
+  })
+
+  it('🚨 a DYNAMIC title is still never touched', () => {
+    // The property R03 established and B05 must not erode. `/reviews/[id]` is not on the
+    // allow-list, so it cannot be reached by this code path at all.
+    path.current = '/reviews/abc'
+    document.title = '★★★★★ Phở Lệ | TappyAI'
+    act(() => setLocale('en'))
+    render(<HtmlLangSync />)
+    expect(document.title).toBe('★★★★★ Phở Lệ | TappyAI')
+  })
+
+  it('a listed route whose title was changed by something else is left alone', () => {
+    // The second condition in `routeTitleFor`: it only acts when the DOM title is still one of
+    // the two it knows. Anything else means another owner, so it keeps its hands off.
+    path.current = '/privacy'
+    document.title = 'Privacy Policy (2026 revision)'
+    act(() => setLocale('vi'))
+    render(<HtmlLangSync />)
+    expect(document.title).toBe('Privacy Policy (2026 revision)')
+  })
+
+  it('an unlisted route is left alone', () => {
+    path.current = '/some/new/route'
+    document.title = 'Whatever this page decided'
+    act(() => setLocale('en'))
+    render(<HtmlLangSync />)
+    expect(document.title).toBe('Whatever this page decided')
+  })
+
+  it('every entry really is bilingual', () => {
+    for (const [route, t] of Object.entries(ROUTE_TITLES)) {
+      expect(t.vi.length, route).toBeGreaterThan(0)
+      expect(t.en.length, route).toBeGreaterThan(0)
+      expect(t.en, route).not.toBe(t.vi)
+    }
+    expect(Object.keys(ROUTE_TITLES).length).toBeGreaterThanOrEqual(8)
+  })
+
+  it('the server metadata was NOT changed', () => {
+    // 🚨 The constraint the owner set: preserve sharing metadata. This fix is client-side only,
+    // so `generateMetadata` still emits what it always did and og:title / twitter:title — what a
+    // crawler and a share preview read — are untouched.
+    const fs = require('node:fs') as typeof import('node:fs')
+    const privacy = fs.readFileSync('src/app/privacy/page.tsx', 'utf8')
+    expect(privacy).toContain('const TITLE')
+    expect(privacy).toMatch(/openGraph|twitter/)
+    const review = fs.readFileSync('src/app/reviews/[id]/page.tsx', 'utf8')
+    expect(review).toContain('generateMetadata')
   })
 })
 

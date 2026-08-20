@@ -23,7 +23,7 @@ struct NotificationsSettingsView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Thông báo")
+        .navigationTitle(NSLocalizedString("notif.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .task { await checkStatus() }
     }
@@ -36,10 +36,10 @@ struct NotificationsSettingsView: View {
                 .font(.system(size: 18))
                 .foregroundStyle(.orange)
             VStack(alignment: .leading, spacing: 4) {
-                Text("Thông báo đã bị tắt")
+                Text(NSLocalizedString("notif.disabledTitle", comment: ""))
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(TappyColor.textPrimary)
-                Text("Vào Cài đặt → TappyAI → Thông báo để bật lại")
+                Text(NSLocalizedString("notif.disabledBody", comment: ""))
                     .font(.system(size: 12))
                     .foregroundStyle(TappyColor.textSecondary)
             }
@@ -70,7 +70,7 @@ struct NotificationsSettingsView: View {
                     Text("Push Notification")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text(subscribed ? "Đang bật — bạn sẽ nhận thông báo từ Tappy" : "Tắt — bật để nhận tin hay ho từ Tappy")
+                    Text(subscribed ? NSLocalizedString("notif.state.on", comment: "") : NSLocalizedString("notif.state.off", comment: ""))
                         .font(.system(size: 11))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -109,19 +109,19 @@ struct NotificationsSettingsView: View {
 
     private var whatYouGetCard: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("BẠN SẼ NHẬN")
+            Text(NSLocalizedString("notif.youWillGet", comment: ""))
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
 
             VStack(alignment: .leading, spacing: 8) {
-                notifRow("🌅", "Tóm tắt buổi sáng")
-                notifRow("🛍️", "Ưu đãi hay ho gần bạn")
-                notifRow("🍜", "Gợi ý ăn trưa/tối")
-                notifRow("📅", "Nhắc nhở đặt chỗ")
-                notifRow("📊", "Tóm tắt tuần")
+                notifRow("🌅", NSLocalizedString("notif.item.morning", comment: ""))
+                notifRow("🛍️", NSLocalizedString("notif.item.deals", comment: ""))
+                notifRow("🍜", NSLocalizedString("notif.item.meals", comment: ""))
+                notifRow("📅", NSLocalizedString("notif.item.bookings", comment: ""))
+                notifRow("📊", NSLocalizedString("notif.item.weekly", comment: ""))
             }
 
-            Text("Không spam · Tối đa 2-3 thông báo/ngày")
+            Text(NSLocalizedString("notif.noSpam", comment: ""))
                 .font(.system(size: 10))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.top, 4)
@@ -167,10 +167,10 @@ struct NotificationsSettingsView: View {
                     let granted = try await deps.notificationManager.requestPermissionAndRegister()
                     subscribed = granted
                     if !granted {
-                        error = "Quyền thông báo bị từ chối. Vui lòng bật trong Cài đặt."
+                        error = NSLocalizedString("notif.error.denied", comment: "")
                     }
                 } catch {
-                    self.error = "Không thể bật thông báo"
+                    self.error = NSLocalizedString("notif.error.enableFailed", comment: "")
                 }
             }
             loading = false

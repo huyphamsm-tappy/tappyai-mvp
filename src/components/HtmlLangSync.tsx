@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { siteTitle, isSiteTitle } from '@/lib/share/openGraph'
+import { siteTitle, isSiteTitle, routeTitleFor } from '@/lib/share/openGraph'
 
 /**
  * Keeps `<html lang>` AND `document.title` equal to the language the page is actually rendered in.
@@ -60,7 +60,17 @@ export default function HtmlLangSync() {
     // /reviews/[id] sets the review's own subject — not ours to overwrite because the user changed
     // language. `isSiteTitle` is what keeps those two cases apart; without it this fix would trade
     // a stale-language tab for a destroyed one.
-    if (isSiteTitle(document.title)) document.title = siteTitle(locale)
+    if (isSiteTitle(document.title)) {
+      document.title = siteTitle(locale)
+    } else {
+      // B05. The routes that set their OWN fixed title each set it in one language, and not the
+      // same one — `/privacy` is English, `/copyright` is Vietnamese. `routeTitleFor` reconciles
+      // only the eight static routes on its allow-list, and only when the title in the DOM is
+      // still one of the two it knows, so `/reviews/[id]`'s review subject stays exactly as R03
+      // left it: untouched.
+      const routed = routeTitleFor(pathname, locale, document.title)
+      if (routed) document.title = routed
+    }
   }, [locale, pathname])
   // `pathname` is in the deps because a client-side navigation installs the new route's title
   // after this effect last ran. Returning from /privacy to a site-titled page would otherwise
