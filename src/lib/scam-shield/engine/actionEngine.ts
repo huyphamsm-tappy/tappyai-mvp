@@ -7,8 +7,13 @@ import { MIN_CONFIDENCE_FOR_SAFE } from '../config'
  *
  * A LOW/SAFE level means "no provider reported anything bad", which is indistinguishable from
  * "no provider reported anything at all": calculateRisk only sums COMPLETED signals, so a total
- * provider outage yields score 0, level SAFE, confidence 0. Telling someone a link "appears safe"
- * on the strength of zero completed checks is the one false negative this feature cannot afford.
+ * provider outage yields score 0, confidence 0, and — before `levelFor` — the level SAFE. Telling
+ * someone a link "appears safe" on the strength of zero completed checks is the one false
+ * negative this feature cannot afford.
+ *
+ * That rule now also lives one layer up, in `levelFor`, so `risk.level` itself reports
+ * `INCONCLUSIVE` rather than SAFE and no client can render a green shield over it. This function
+ * keeps its own check regardless — it is not reachable only through `calculateRisk`.
  *
  * A warning, on the other hand, is evidence-positive — some provider did complete and did find
  * something — so partial data never suppresses it. Low confidence can withdraw reassurance; it
@@ -78,9 +83,14 @@ export function getRecommendedActions(
       }
       break
 
+    case 'INCONCLUSIVE':
     case 'LOW':
     case 'SAFE':
-      if (confidence < MIN_CONFIDENCE_FOR_SAFE) {
+      // `INCONCLUSIVE` already IS this branch's conclusion — `levelFor` applied exactly the same
+      // rule upstream. The confidence check stays anyway, and stays first, because it also guards
+      // a caller that hands this function a level it derived itself; belt and braces on the one
+      // branch where being wrong means telling someone an unchecked link is fine.
+      if (level === 'INCONCLUSIVE' || confidence < MIN_CONFIDENCE_FOR_SAFE) {
         // Not a verdict — a statement that there is no verdict. It must not read as reassurance.
         actions.push({
           priority: 'primary', action: 'INCONCLUSIVE',

@@ -231,6 +231,9 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.result.medium': 'Cần cẩn thận',
     'scamShield.result.high': 'Nguy cơ cao',
     'scamShield.result.critical': 'Rất nguy hiểm',
+    // Không phải một mức trên thang đo — là lời nói rằng chưa có kết luận. Tuyệt đối không được
+    // dịch thành một biến thể của "An toàn".
+    'scamShield.result.inconclusive': 'Chưa kết luận được',
     'scamShield.confidence.high': 'Độ tin cậy cao',
     'scamShield.confidence.medium': 'Dữ liệu hạn chế',
     'scamShield.confidence.low': 'Dữ liệu không đủ',
@@ -478,6 +481,9 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.result.medium': 'Use caution',
     'scamShield.result.high': 'High risk',
     'scamShield.result.critical': 'Very dangerous',
+    // Not a point on the scale — a statement that there is no verdict. It must never be worded
+    // as a variant of "Safe".
+    'scamShield.result.inconclusive': 'Could not be checked',
     'scamShield.confidence.high': 'High confidence',
     'scamShield.confidence.medium': 'Limited data',
     'scamShield.confidence.low': 'Insufficient data',

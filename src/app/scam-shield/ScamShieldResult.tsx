@@ -9,8 +9,15 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 
+// 🚨 INCONCLUSIVE must never be styled like SAFE or LOW. It is what the engine reports when too
+// little of the evidence base completed to stand behind a reassuring answer, and a green shield
+// over it would put back exactly the false reassurance the engine was changed to stop. Neutral
+// slate + the alert glyph: visibly not a verdict, and visibly not a clean bill of health either.
+// `Record<RiskLevel, …>` is load-bearing — adding a level to the union fails the build here until
+// it has been given a deliberate appearance, rather than falling through to `undefined`.
 const LEVEL_STYLES: Record<RiskLevel, { bg: string; text: string; border: string; icon: typeof ShieldCheck }> = {
   SAFE: { bg: 'bg-green-50 dark:bg-green-900/20', text: 'text-green-700 dark:text-green-400', border: 'border-green-200 dark:border-green-800', icon: ShieldCheck },
+  INCONCLUSIVE: { bg: 'bg-slate-100 dark:bg-slate-800/40', text: 'text-slate-700 dark:text-slate-300', border: 'border-slate-300 dark:border-slate-600', icon: ShieldAlert },
   LOW: { bg: 'bg-blue-50 dark:bg-blue-900/20', text: 'text-blue-700 dark:text-blue-400', border: 'border-blue-200 dark:border-blue-800', icon: ShieldCheck },
   MEDIUM: { bg: 'bg-yellow-50 dark:bg-yellow-900/20', text: 'text-yellow-700 dark:text-yellow-400', border: 'border-yellow-200 dark:border-yellow-800', icon: ShieldAlert },
   HIGH: { bg: 'bg-orange-50 dark:bg-orange-900/20', text: 'text-orange-700 dark:text-orange-400', border: 'border-orange-200 dark:border-orange-800', icon: ShieldX },
@@ -19,6 +26,7 @@ const LEVEL_STYLES: Record<RiskLevel, { bg: string; text: string; border: string
 
 const LEVEL_KEY: Record<RiskLevel, string> = {
   SAFE: 'scamShield.result.safe',
+  INCONCLUSIVE: 'scamShield.result.inconclusive',
   LOW: 'scamShield.result.low',
   MEDIUM: 'scamShield.result.medium',
   HIGH: 'scamShield.result.high',
