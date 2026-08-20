@@ -1,6 +1,6 @@
 # Controller V2 — Break-Glass Owner Recovery (R6)
 
-**Status:** DESIGN — awaiting the Owner decisions in §7 · **Date:** 2026-08-20
+**Status:** ✅ **ACCEPTED AND IMPLEMENTED.** The §7 decisions were answered by Owner delegation on 2026-08-20 and are recorded in [**ADR-025**](../architecture/ADR-025-break-glass-owner-recovery.md). Migration `supabase/migrations/20260820_b8_owner_recovery.sql` is **written and tested, NOT applied to production** — that remains an explicit ADR-017 gate. · **Date:** 2026-08-20
 **Authority:** [Owner Decision B8, 2026-08-19](STATUS.md#owner-decisions-2026-08-19-second-set--locked) — *"YES in principle — an Owner break-glass recovery procedure will exist (R6). **Design first**: threat model, recovery authority, DB + env authority, audit, failure modes, rollback → then ADR. No production mutation without separate authorization."*
 **Risk being closed:** [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) §10 **R6 — Owner key loss = permanent lockout, severity Critical.** Its stated mitigation is *"a DB-level owner-reassignment procedure requiring both database and Vercel env access. This needs an owner decision before implementation."*
 
@@ -82,7 +82,18 @@ The actor is a **human operating the database directly**, so there is no session
 
 **Rollback** is the same procedure run in reverse — revoke the break-glass row, re-activate the prior Owner (`active = true`, `revoked_at = NULL`), restore the env. It is available **only while the prior Owner's credential is usable**, which in the T1 scenario it is not. So rollback protects against a *mistaken* recovery, not against a *correct* one, and that limit must be stated to whoever runs it.
 
-## 7. 🔴 Owner decisions required — the smallest set
+## 7. ✅ ANSWERED — Owner delegation, 2026-08-20
+
+> The four below were the open questions. They were answered by delegation and implemented; **[ADR-025](../architecture/ADR-025-break-glass-owner-recovery.md) is the record**, and the original questions are kept intact rather than rewritten, because the reasoning for *why* each was undecidable is what justifies the answer.
+>
+> | | Answer as implemented |
+> |---|---|
+> | **D1** | Explicit `p_target_user_id` parameter. Validated: profile exists, and **not already the active Owner**. Deliberately **not** required to hold an admin role — that would reproduce the lockout |
+> | **D2** | **Recovery-only.** Not verifiable in SQL; enforced by no-application-surface + mandatory stored justification + audit on every arm/cancel/execute |
+> | **D3** | **One-time, 5–120 minute window**, consumed on execute; replay and expiry refused; at most one open window via a partial **unique** index. Required a new table — the window describes a *pending* recovery, not an owner, so it is not a column on `platform_owner` |
+> | **D4** | All-zero UUID + `break-glass@system.invalid` + `actor_role = 'system'`, with operation/target/mechanism/correlation-id/reason/outcome. **Written inside the transaction, so a failed audit aborts the recovery** |
+
+## 7a. The original questions, kept as the record of why they were undecidable
 
 Four, and none can be guessed. §4 is why D1 is not a detail.
 
@@ -102,4 +113,8 @@ Two further items are **out of scope and named so they are not silently assumed*
 3. RED tests for the invariants that are testable without production: single-active-owner, no-op on re-run, abort when the target has no profile, abort when the audit write fails.
 4. A runbook, and an ADR-017-style authorization gate before it is ever executed.
 
-**Nothing in step 2–4 is written until D1–D4 are answered.** A recovery procedure built on a guess is worse than the lockout it exists to prevent — it would be the one procedure nobody rehearses and everybody trusts.
+~~**Nothing in step 2–4 is written until D1–D4 are answered.**~~ **All four steps are done** — [ADR-025](../architecture/ADR-025-break-glass-owner-recovery.md), the migration under `supabase/migrations/`, 43 assertions against real PostgreSQL 17.5 plus 7 source-boundary assertions, and the rollback script with its "STOP if any window was consumed" preflight.
+
+The one step that remains is the last: **production application is an explicit Owner/deployment gate under the ADR-017 sequence** — preflight → review → authorization → apply → verify → rollback window. Nothing here has touched production.
+
+The sentence that motivated the wait still holds, and is worth keeping: a recovery procedure built on a guess is worse than the lockout it exists to prevent — it would be the one procedure nobody rehearses and everybody trusts.
