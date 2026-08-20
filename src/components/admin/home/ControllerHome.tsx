@@ -7,6 +7,7 @@ import { CommandHeader } from './CommandHeader'
 import { PlatformHealth, type HealthStatus } from './PlatformHealth'
 import { PlatformSignals } from './PlatformSignals'
 import { AttentionPanel } from './AttentionPanel'
+import { BusinessKpis } from './BusinessKpis'
 import { QuickActions } from './QuickActions'
 import { DepartmentGrid } from './DepartmentGrid'
 import { NoWorkspace } from './NoWorkspace'
@@ -57,6 +58,9 @@ export function ControllerHome({ data }: { data: ControllerHomeData }) {
         <NoWorkspace />
       ) : (
         <>
+          {/* Module 01 business KPIs from daily_snapshots (pre-computed) */}
+          <BusinessKpis kpis={data.kpis} />
+
           {/* Performance signals (PDP-gated; null → restricted) */}
           <PlatformSignals signals={data.signals} platform={data.platform} />
 

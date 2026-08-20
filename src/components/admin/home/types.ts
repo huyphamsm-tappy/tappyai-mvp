@@ -35,6 +35,15 @@ export interface ControllerHomeData {
   }
   /** adminRoles is null when the actor lacks security.roles.read. */
   signals: { adminRoles: number | null }
+  /**
+   * Module 01's business KPIs, read from `daily_snapshots` (M01: pre-computed,
+   * no live queries to raw tables).
+   *
+   * Its own `status` distinguishes `empty` (the pipeline has not run) from a
+   * genuine zero day, and `stale` from fresh — so the UI never has to guess,
+   * and a missing measurement is never rendered as `0`.
+   */
+  kpis: import('@/lib/admin/analytics/homeSnapshotService').HomeKpis
   attention: {
     /** null when the actor lacks audit.log.read. */
     recentAudit: HomeAuditEvent[] | null
