@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
+import { searchParam } from '@/lib/http/searchParams'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
 
@@ -71,7 +72,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const limit = Math.min(50, parseInt(req.nextUrl.searchParams.get('limit') || '30'))
+  const limit = Math.min(50, parseInt(searchParam(req, 'limit') || '30'))
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -160,7 +161,7 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const commentId = req.nextUrl.searchParams.get('commentId')
+  const commentId = searchParam(req, 'commentId')
   if (!commentId) return NextResponse.json({ error: 'commentId required' }, { status: 400 })
 
   const { user, supabase } = await getRequestUser(req)

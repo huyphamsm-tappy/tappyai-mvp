@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 export const runtime = 'edge'
 
 // GET /api/explore/oembed?url={url}
@@ -60,7 +61,7 @@ async function safeFetch(u: URL, allowed: Set<string>, headers: Record<string, s
 }
 
 export async function GET(req: NextRequest) {
-  const raw = req.nextUrl.searchParams.get('url')
+  const raw = searchParam(req, 'url')
   if (!raw) return NextResponse.json({ error: 'url required' }, { status: 400 })
 
   // TikTok: the fetch target is the hardcoded TikTok oembed API; the user URL is

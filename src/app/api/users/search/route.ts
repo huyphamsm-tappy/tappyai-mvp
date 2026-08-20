@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 
 // Best-effort in-memory rate limit: 30 searches / 60s / IP — throttles enumeration
 // brute-force while leaving normal friend-search UX untouched. Same inline pattern
@@ -23,7 +24,7 @@ export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
   if (!checkSearchRL(ip)) return NextResponse.json({ error: 'Bạn tìm kiếm quá nhanh, thử lại sau chút nhé' }, { status: 429 })
 
-  const q = req.nextUrl.searchParams.get('q')?.trim() ?? ''
+  const q = searchParam(req, 'q')?.trim() ?? ''
   if (q.length < 2) return NextResponse.json({ users: [] })
 
   const isEmail = q.includes('@')

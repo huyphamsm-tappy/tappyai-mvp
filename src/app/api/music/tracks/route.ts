@@ -3,10 +3,11 @@ import { parseTracksQuery } from '@/modules/music/api'
 import { browseTracks } from '@/modules/music/services/musicService'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { isTrustedMediaUrl } from '@/lib/media/trustedHosts'
+import { requestSearchParams } from '@/lib/http/searchParams'
 
 // GET /api/music/tracks?categoryId=&page=&limit=
 export async function GET(req: NextRequest) {
-  const filter = parseTracksQuery(req.nextUrl.searchParams)
+  const filter = parseTracksQuery(requestSearchParams(req))
   const result = await browseTracks(filter)
   return NextResponse.json(result)
 }

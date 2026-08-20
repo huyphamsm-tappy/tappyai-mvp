@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { getMemory } from '@/lib/memory/memoryService'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
+import { requestSearchParams } from '@/lib/http/searchParams'
 
 // Reads per-request auth/searchParams — never statically prerender.
 export const dynamic = 'force-dynamic'
@@ -12,7 +13,7 @@ export async function GET(req: NextRequest) {
     const vnMs = now.getTime() + 7 * 60 * 60 * 1000
     const vnTime = new Date(vnMs)
 
-    const { searchParams } = req.nextUrl
+    const searchParams = requestSearchParams(req)
     const testHour = searchParams.get('hour')
     const testDay = searchParams.get('day')
 

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  const id = req.nextUrl.searchParams.get('id')
+  const id = searchParam(req, 'id')
   if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
   const supabase = createClient()

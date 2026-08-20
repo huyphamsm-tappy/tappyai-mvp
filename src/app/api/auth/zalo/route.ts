@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
+import { searchParam } from '@/lib/http/searchParams'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
 
@@ -14,10 +15,10 @@ function originOf(req: NextRequest): string {
 }
 
 export async function GET(req: NextRequest) {
-  const returnTo = req.nextUrl.searchParams.get('returnTo') || '/'
+  const returnTo = searchParam(req, 'returnTo') || '/'
   // platform=ios|android → the flow ends at the app's custom scheme instead of a
   // web redirect (see /auth/confirm). Strict allowlist — never a free-form value.
-  const platformParam = req.nextUrl.searchParams.get('platform')
+  const platformParam = searchParam(req, 'platform')
   const platform = platformParam === 'ios' ? 'ios' : platformParam === 'android' ? 'android' : 'web'
   const REDIRECT_URI = `${originOf(req)}/api/auth/zalo/callback`
 

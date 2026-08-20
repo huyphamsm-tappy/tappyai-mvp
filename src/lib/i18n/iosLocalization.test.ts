@@ -93,6 +93,63 @@ describe('the iOS string catalogue is at EN/VI parity', () => {
     expect(cat.sourceLanguage).toBe('en')
     expect(typeof cat.strings).toBe('object')
   })
+
+  // ── R02 ───────────────────────────────────────────────────────────────────
+  //
+  // Every key the code ASKS FOR must exist. This is a different failure from the hardcoded
+  // literals above, and a quieter one: the code was already calling the localization API
+  // correctly — the keys had simply never been added. `NSLocalizedString` returns the key itself
+  // when it misses, and `ErrorPresenter`'s `L(key, fallback)` helpfully substitutes an English
+  // fallback, so nothing looked broken. Thirteen of thirteen error keys were missing, which meant
+  // every user-facing error on iOS — offline, network, interrupted reply, validation, auth, the
+  // daily message limit — rendered in English no matter what language the app was in.
+  //
+  // A fallback that hides a missing translation is worse than a visible one: it converts a
+  // localization bug into something only a Vietnamese user on an error path would ever notice.
+  it('every key the Swift code references exists in the catalogue', () => {
+    const cat = catalogue()
+    const referenced = new Map<string, string>()
+    for (const file of swiftFiles(IOS)) {
+      const src = readFileSync(file, 'utf8')
+      for (const m of src.matchAll(/NSLocalizedString\("([^"]+)"/g)) referenced.set(m[1], file)
+      for (const m of src.matchAll(/\bL\("([^"]+)"/g)) referenced.set(m[1], file)
+    }
+    // Guards the guard: if the scan finds nothing, the assertion below proves nothing.
+    expect(referenced.size).toBeGreaterThan(20)
+    const missing = [...referenced].filter(([k]) => !cat.strings[k]).map(([k, f]) => `${k} (${f})`)
+    expect(missing).toEqual([])
+  })
+
+  it('every ErrorPresenter message exists in BOTH languages', () => {
+    // Named separately from the sweep above because these are the ones R02 was about, and because
+    // an error message is the one string a user reads at their least patient moment.
+    const cat = catalogue()
+    const src = readFileSync(`${IOS}/Core/ErrorHandling/ErrorPresenter.swift`, 'utf8')
+    const keys = [...src.matchAll(/\bL\("([^"]+)"/g)].map(m => m[1])
+    expect(keys.length).toBeGreaterThanOrEqual(13)
+    for (const key of keys) {
+      const locs = cat.strings[key]?.localizations ?? {}
+      expect(locs.en?.stringUnit?.value, `EN ${key}`).toBeTruthy()
+      expect(locs.vi?.stringUnit?.value, `VI ${key}`).toBeTruthy()
+    }
+  })
+
+  it('the four representative error paths are covered', () => {
+    // network, auth, validation, server/unexpected — the classes the UAT called out.
+    const cat = catalogue()
+    for (const key of [
+      'error.network.title', 'error.network.message',
+      'error.auth.title', 'error.auth.generic',
+      'error.validation.title',
+      'error.unexpected.title',
+    ]) {
+      const locs = cat.strings[key]?.localizations ?? {}
+      expect(locs.vi?.stringUnit?.value, `VI ${key}`).toBeTruthy()
+      // And the Vietnamese must not simply be the English string copied across.
+      expect(locs.vi?.stringUnit?.value, `VI ${key} is untranslated`)
+        .not.toBe(locs.en?.stringUnit?.value)
+    }
+  })
 })
 
 describe('converted iOS screens stay converted', () => {

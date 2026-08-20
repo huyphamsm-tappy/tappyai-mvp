@@ -4,6 +4,7 @@ import { observePrivacyForFeed } from '@/lib/policy/explore/reviewFeedObservatio
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { authorModerationPayload } from '@/lib/safety/gate/authorNotice'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 export const runtime = 'edge'
 
 const EXPLORE_SELECT = `
@@ -16,14 +17,14 @@ const EXPLORE_SELECT = `
 
 // GET /api/reviews/feed?page=0&limit=12&sort=latest|trending&userId=xxx&following=true&city=xxx
 export async function GET(req: NextRequest) {
-  const page = Math.max(0, parseInt(req.nextUrl.searchParams.get('page') || '0'))
-  const limit = Math.min(20, parseInt(req.nextUrl.searchParams.get('limit') || '12'))
+  const page = Math.max(0, parseInt(searchParam(req, 'page') || '0'))
+  const limit = Math.min(20, parseInt(searchParam(req, 'limit') || '12'))
   const offset = page * limit
-  const filterUserId = req.nextUrl.searchParams.get('userId')
-  const sort = req.nextUrl.searchParams.get('sort') || 'latest'
-  const search = req.nextUrl.searchParams.get('search')?.trim() || ''
-  const followingOnly = req.nextUrl.searchParams.get('following') === 'true'
-  const city = req.nextUrl.searchParams.get('city')?.trim().toLowerCase() || ''
+  const filterUserId = searchParam(req, 'userId')
+  const sort = searchParam(req, 'sort') || 'latest'
+  const search = searchParam(req, 'search')?.trim() || ''
+  const followingOnly = searchParam(req, 'following') === 'true'
+  const city = searchParam(req, 'city')?.trim().toLowerCase() || ''
 
   const { user, supabase } = await getRequestUser(req)
   // Identity-scoped: only the author's OWN profile steps past the publication
@@ -210,7 +211,7 @@ export async function GET(req: NextRequest) {
   // returned is the visibility of the post plus honest wording — never a policy
   // identity, a reason code or a coverage detail.
   const lang =
-    req.nextUrl.searchParams.get('lang') ||
+    searchParam(req, 'lang') ||
     // Optional chaining throughout: a header bag is not guaranteed on every
     // caller, and a missing Accept-Language must fall back to Vietnamese rather
     // than throw and take the whole feed down for a wording lookup.

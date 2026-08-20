@@ -107,7 +107,25 @@ describe('the html lang attribute follows the rendered language', () => {
   it('a client component syncs it to the active locale', () => {
     const source = read('src/components/HtmlLangSync.tsx')
     expect(source).toContain('document.documentElement.lang = locale')
-    expect(source).toMatch(/useEffect\([\s\S]*\[locale\]\)/)
+
+    // The property is that the effect RE-RUNS when the locale changes — an empty dependency array
+    // would freeze the attribute at first render, which is the bug this guards. Extra dependencies
+    // are legitimate, and there is one now: R03 added `pathname` so the title half re-runs after a
+    // client-side navigation installs a new route's title. Pinning the literal text `[locale])`
+    // would have made that correct addition look like a regression.
+    const deps = source.match(/\},\s*\[([^\]]*)\]\)/)?.[1]
+    expect(deps, 'no useEffect dependency array found').toBeDefined()
+    expect(deps!.split(',').map(s => s.trim())).toContain('locale')
+  })
+
+  it('the document title follows it too', () => {
+    // R03. `lang` and `title` describe the same thing to two different audiences — assistive
+    // technology and the person looking at their tab strip. Fixing one and leaving the other
+    // relocates the defect rather than removing it. Behaviour is proven in
+    // src/components/htmlLangSync.test.tsx; this pins that the two stay in one place.
+    const source = read('src/components/HtmlLangSync.tsx')
+    expect(source).toContain('document.title = siteTitle(locale)')
+    expect(source).toContain("from '@/lib/share/openGraph'")
   })
 
   it('the layout mounts it', () => {

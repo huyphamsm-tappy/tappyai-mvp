@@ -178,3 +178,36 @@ export function buildPrivateMetadata(
     },
   }
 }
+
+/**
+ * The site title for a locale, and the test for whether a title IS the site title.
+ *
+ * ============================================================================
+ * WHY THESE LIVE HERE — R03
+ * ============================================================================
+ * `document.title` stayed Vietnamese for the whole session no matter what language the user
+ * picked. `buildSiteMetadata` is a server function evaluated once at build time with a hardcoded
+ * `'vi'`, so the `<title>` in every response is the Vietnamese one — the browser tab, the bookmark
+ * name, the entry in the history menu and the label an OS task-switcher shows were all in a
+ * language the user had explicitly switched away from.
+ *
+ * The client half of that fix needs two things: what the title should be for a locale, and
+ * whether the title currently in the DOM is one this module produced. Both are questions about
+ * BRAND, so both belong next to BRAND rather than in a component — the alternative is a component
+ * with its own copy of the brand strings, which is exactly how the two would drift.
+ */
+export function siteTitle(locale: ShareLocale): string {
+  return BRAND.title[locale]
+}
+
+/**
+ * True only for a title this module produced for SOME locale.
+ *
+ * 🚨 This is the guard that keeps the client-side retitle from clobbering pages that set their
+ * own title. Eleven routes do — `/privacy`, `/terms`, `/reviews/[id]` and the rest — and a review
+ * page's title is the review's own subject, which must survive a language switch untouched.
+ * Rewriting it to the brand title would be a worse bug than the one being fixed.
+ */
+export function isSiteTitle(title: string): boolean {
+  return (Object.values(BRAND.title) as string[]).includes(title)
+}

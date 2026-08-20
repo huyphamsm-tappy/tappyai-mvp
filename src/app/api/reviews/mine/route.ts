@@ -2,6 +2,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { authorModerationPayload } from '@/lib/safety/gate/authorNotice'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 
 const EXPLORE_SELECT = `
   id, user_id, place_id, place_name, place_address,
@@ -65,7 +66,7 @@ export async function GET(req: NextRequest) {
   // and it is gone the moment it is dismissed. `authorModerationPayload` returns null while the
   // gate is inactive, so the response shape is unchanged for anyone who has not turned it on.
   const lang =
-    req.nextUrl.searchParams.get('lang') ||
+    searchParam(req, 'lang') ||
     req.headers?.get?.('accept-language')?.split(',')[0]?.trim() ||
     'vi'
   const noticeLang = lang.toLowerCase().startsWith('en') ? 'en' : 'vi'

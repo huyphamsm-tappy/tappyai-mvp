@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
@@ -46,7 +47,7 @@ export async function DELETE(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const placeId = req.nextUrl.searchParams.get('placeId')
+  const placeId = searchParam(req, 'placeId')
   if (!placeId) return NextResponse.json({ error: 'placeId required' }, { status: 400 })
 
   const { error } = await supabase

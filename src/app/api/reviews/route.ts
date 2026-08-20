@@ -9,6 +9,7 @@ import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
 import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
 import { isAcceptableVideoDuration, MAX_VIDEO_DURATION_ACCEPT_SEC } from '@/lib/config/product'
+import { searchParam } from '@/lib/http/searchParams'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -30,7 +31,7 @@ const DAILY_POST_LIMIT = 20
 
 // GET /api/reviews?placeId=ChIJxxx  → list visible reviews for a place
 export async function GET(req: NextRequest) {
-  const placeId = req.nextUrl.searchParams.get('placeId')
+  const placeId = searchParam(req, 'placeId')
   if (!placeId) return NextResponse.json({ error: 'placeId required' }, { status: 400 })
 
   const supabase = createClient()
@@ -278,7 +279,7 @@ export async function POST(req: NextRequest) {
   // `authorModerationPayload` returns null while the gate is inactive, so the
   // response shape is unchanged for anyone who has not turned the gate on.
   const lang =
-    req.nextUrl.searchParams.get('lang') ||
+    searchParam(req, 'lang') ||
     req.headers.get('accept-language')?.split(',')[0]?.trim() ||
     'vi'
   const moderation = authorModerationPayload(lifecycle, lang.toLowerCase().startsWith('en') ? 'en' : 'vi')

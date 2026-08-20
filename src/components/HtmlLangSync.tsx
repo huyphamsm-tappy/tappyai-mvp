@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { siteTitle, isSiteTitle } from '@/lib/share/openGraph'
 
 /**
- * Keeps `<html lang>` equal to the language the page is actually rendered in.
+ * Keeps `<html lang>` AND `document.title` equal to the language the page is actually rendered in.
  *
  * ============================================================================
  * WHAT WAS WRONG
@@ -42,10 +44,27 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
  */
 export default function HtmlLangSync() {
   const { locale } = useTranslation()
+  const pathname = usePathname()
 
   useEffect(() => {
     document.documentElement.lang = locale
-  }, [locale])
+
+    // R03. `metadata` in the root layout is evaluated once, on the server, with a hardcoded 'vi',
+    // so every response ships the Vietnamese <title>. The browser tab, the bookmark name, the
+    // history entry and the label an OS task-switcher shows all stayed Vietnamese for a session
+    // the user had explicitly switched to English. Same reasoning as the attribute above: the
+    // locale is only knowable on the client, so the client is where the title is reconciled — at
+    // the same moment the text it describes is.
+    //
+    // 🚨 Only a title this app produced for the SITE is replaced. Eleven routes set their own, and
+    // /reviews/[id] sets the review's own subject — not ours to overwrite because the user changed
+    // language. `isSiteTitle` is what keeps those two cases apart; without it this fix would trade
+    // a stale-language tab for a destroyed one.
+    if (isSiteTitle(document.title)) document.title = siteTitle(locale)
+  }, [locale, pathname])
+  // `pathname` is in the deps because a client-side navigation installs the new route's title
+  // after this effect last ran. Returning from /privacy to a site-titled page would otherwise
+  // reinstate the Vietnamese title and leave it there until the next language change.
 
   return null
 }
