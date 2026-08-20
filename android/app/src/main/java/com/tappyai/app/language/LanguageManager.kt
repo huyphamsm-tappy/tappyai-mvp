@@ -43,8 +43,18 @@ class LanguageManager @Inject constructor(
      *  falls back to the system locale, same "not yet set" state the web's `getStoredLocale()
      *  === null` first-visit case models). */
     val current: AppLanguage?
-        get() = AppCompatDelegate.getApplicationLocales().takeIf { !it.isEmpty }
-            ?.get(0)?.language?.let { AppLanguage.fromTag(it) }
+        get() = AppLanguageResolver.current()
+
+    /**
+     * The language the UI is ACTUALLY rendering in, as a BCP-47 primary tag. Never null.
+     *
+     * Delegates to [AppLanguageResolver], which is where the resolution lives so that the network
+     * layer can reach it without reaching this class — see that file for why. It used to be
+     * spelled out inside `RealDealsRepository`, and the next feature that needed the same answer
+     * (the author-facing safety notice on `POST /api/reviews`) did not know to look in the Deals
+     * repository and shipped without it.
+     */
+    fun currentLanguageTag(): String = AppLanguageResolver.currentTag()
 
     suspend fun setLanguage(language: AppLanguage) {
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language.tag))

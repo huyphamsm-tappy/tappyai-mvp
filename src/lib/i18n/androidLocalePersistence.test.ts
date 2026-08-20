@@ -28,6 +28,8 @@ const MANIFEST = 'android/app/src/main/AndroidManifest.xml'
 const BUILD_GRADLE = 'android/app/build.gradle.kts'
 const LANGUAGE_MANAGER =
   'android/app/src/main/java/com/tappyai/app/language/LanguageManager.kt'
+const LANGUAGE_RESOLVER =
+  'android/app/src/main/java/com/tappyai/app/language/AppLanguageResolver.kt'
 const DEALS_REPOSITORY =
   'android/app/src/main/java/com/tappyai/app/deals/data/RealDealsRepository.kt'
 
@@ -75,14 +77,17 @@ describe('Android persists the in-app language across a process restart', () => 
     expect(minSdk).toBeLessThan(33)
   })
 
-  it('LanguageManager still relies on the mechanism this guard protects', () => {
+  it('the app still relies on the mechanism this guard protects', () => {
     // If the app ever stops going through AppCompatDelegate — a DataStore of its own, say — the
     // manifest node stops being the thing that makes persistence work, and this guard would be
     // protecting a component nothing uses. Fail then, so the guard gets rewritten rather than
     // rotting into a green check that means nothing.
-    const source = read(LANGUAGE_MANAGER)
-    expect(source).toContain('AppCompatDelegate.setApplicationLocales')
-    expect(source).toContain('AppCompatDelegate.getApplicationLocales')
+    //
+    // The write and the read live in different files on purpose: the read had to be reachable
+    // without `LanguageManager`, which depends on AccountRepository and closed a Dagger cycle
+    // through the OkHttp client. Both halves are asserted so neither can quietly change.
+    expect(read(LANGUAGE_MANAGER)).toContain('AppCompatDelegate.setApplicationLocales')
+    expect(read(LANGUAGE_RESOLVER)).toContain('AppCompatDelegate.getApplicationLocales')
   })
 
   it('the Deals client reads the app language per request, not once per process', () => {

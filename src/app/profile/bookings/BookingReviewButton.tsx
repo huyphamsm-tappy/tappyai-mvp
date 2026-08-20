@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { Star, Send, CheckCircle2, Loader2, ImagePlus, X } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface Props {
   placeId: string
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function BookingReviewButton({ placeId, placeName, placeAddress }: Props) {
+  const { locale } = useTranslation()
   const [open, setOpen] = useState(false)
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
@@ -53,7 +55,10 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
         else { setError(data.error || 'Không thể tải ảnh lên.'); setLoading(false); return }
       }
 
-      const res = await fetch('/api/reviews', {
+      // `?lang=` for the same reason the main composer sends it: the response carries the
+      // safety gate's author-facing notice, and the server words it from the request
+      // language. Accept-Language is the browser's, which is not necessarily the app's.
+      const res = await fetch(`/api/reviews?lang=${encodeURIComponent(locale)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ placeId, placeName, placeAddress, rating, body: body.trim(), photos: uploadedUrls }),

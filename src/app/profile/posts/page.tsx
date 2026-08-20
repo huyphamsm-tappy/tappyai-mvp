@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AlertTriangle, ArrowLeft, Trash2, EyeOff, Eye, Loader2, Grid3X3 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import LinkPoster from '@/components/LinkPoster'
 
 interface Review {
@@ -33,12 +34,19 @@ export default function MyPostsPage() {
   const [selected, setSelected] = useState<string | null>(null)
   const router = useRouter()
   const supabase = createClient()
+  const { locale } = useTranslation()
 
   useEffect(() => {
     const load = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push('/login'); return }
-      const res = await fetch(`/api/reviews/feed?userId=${user.id}&limit=50`)
+      // `?lang=` because this is the author's OWN feed, so the response carries the
+      // moderation notice for any post the safety gate held — and the server words that
+      // notice from the request language. Without it the server falls back to
+      // Accept-Language, which is the BROWSER's locale, not the one the user picked in
+      // the app: an English user on a Vietnamese browser was told in Vietnamese why their
+      // post was not public. Same reason the composer already sends it.
+      const res = await fetch(`/api/reviews/feed?userId=${user.id}&limit=50&lang=${encodeURIComponent(locale)}`)
       const data = await res.json()
       // Also get hidden posts
       const { data: hidden } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at,content_type,thumbnail,source_type').eq('user_id', user.id).eq('is_hidden', true).order('created_at', { ascending: false })
@@ -48,7 +56,10 @@ export default function MyPostsPage() {
       setLoading(false)
     }
     load()
-  }, [supabase, router])
+    // `locale` is a dependency, not incidental: switching language must re-fetch, or the
+    // moderation notice keeps the wording it was first loaded with while the rest of the
+    // page changes language around it.
+  }, [supabase, router, locale])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Xoá bài viết này?')) return

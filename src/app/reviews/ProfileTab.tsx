@@ -154,7 +154,7 @@ function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Revie
 //                   edit-profile vs follow, the + upload badge, the private
 //                   Saved/Liked tabs, hidden posts, preferences, delete/hide.
 export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant = 'tab' }: { userId: string; viewerId: string | null; showBackButton?: boolean; onBack?: () => void; variant?: 'tab' | 'page' }) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const isOwnProfile = viewerId === userId
   const isPage = variant === 'page'
   const [profile, setProfile] = useState<{
@@ -182,7 +182,11 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
       try {
         const [profileRes, reviewsRes, likedRes, savedRes, prefsRes] = await Promise.all([
           fetch(`/api/users/${userId}`).then(r => { if (!r.ok) throw new Error('profile_failed'); return r.json() }),
-          fetch(`/api/reviews/feed?userId=${userId}&limit=50`).then(r => { if (!r.ok) throw new Error('feed_failed'); return r.json() }),
+          // `?lang=` because on your OWN profile the response carries the moderation notice
+          // for any post the safety gate held, and the server words it from the request
+          // language. Falling through to Accept-Language would word it in the BROWSER's
+          // language rather than the one picked in-app.
+          fetch(`/api/reviews/feed?userId=${userId}&limit=50&lang=${encodeURIComponent(locale)}`).then(r => { if (!r.ok) throw new Error('feed_failed'); return r.json() }),
           // Hidden posts, saved and liked are fetched ONLY for your own profile.
           // On someone else's profile they are not merely hidden from the UI —
           // they are never requested, so a misconfigured RLS policy cannot leak
@@ -224,8 +228,10 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
       }
     }
     load()
+    // `locale` re-fetches on a language switch, so the held-post notice changes language
+    // with the rest of the page instead of keeping whatever it loaded with.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, isOwnProfile, supabase])
+  }, [userId, isOwnProfile, supabase, locale])
 
   // Follow/unfollow the profile being VIEWED — only meaningful when it isn't your
   // own. Same optimistic + revert-on-failure pattern already used for review likes.

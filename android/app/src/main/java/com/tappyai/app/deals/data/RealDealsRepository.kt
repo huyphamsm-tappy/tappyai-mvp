@@ -1,11 +1,9 @@
 package com.tappyai.app.deals.data
 
 import com.tappyai.app.deals.Deal
-import com.tappyai.app.language.AppLanguage
 import com.tappyai.app.language.LanguageManager
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.core.network.safeApiCall
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,16 +18,13 @@ class RealDealsRepository @Inject constructor(
     /**
      * The language the UI is ACTUALLY rendering in, read at call time.
      *
-     * `current` is null until the user picks a language explicitly, and AppCompat then falls back
-     * to the system locale — so null must resolve the same way, or a device set to English with no
-     * explicit choice would get English chrome around Vietnamese data. Reading it per call (rather
-     * than injecting it once) means switching language in Settings takes effect on the next load
-     * instead of the next process start.
+     * The resolution itself moved to [LanguageManager.currentLanguageTag] — it used to be spelled
+     * out here, and the next endpoint that needed the same answer (`POST /api/reviews`, for the
+     * author-facing safety notice) did not know to look in the Deals repository and shipped
+     * without it. This stays as a named function because the explicit `?lang=` is part of the
+     * Deals endpoint's contract and worth reading at the call site.
      */
-    private fun languageTag(): String =
-        (languageManager.current
-            ?: AppLanguage.fromTag(Locale.getDefault().language)
-            ?: AppLanguage.Vietnamese).tag
+    private fun languageTag(): String = languageManager.currentLanguageTag()
 
     override suspend fun getDeals(): NetworkResult<List<Deal>> =
         safeApiCall { api.getDeals(languageTag()).deals.map { it.toDomain() } }

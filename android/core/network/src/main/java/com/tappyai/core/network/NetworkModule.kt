@@ -46,6 +46,7 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         authInterceptor: AuthInterceptor,
+        appLanguageInterceptor: AppLanguageInterceptor,
         tokenAuthenticator: TokenAuthenticator,
         @Named("isDebug") isDebug: Boolean,
     ): OkHttpClient {
@@ -67,6 +68,9 @@ object NetworkModule {
         }
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
+            // Before the logging interceptor, so a debug log shows the header the server will
+            // actually receive rather than the request as it looked one step earlier.
+            .addInterceptor(appLanguageInterceptor)
             .addInterceptor(loggingInterceptor)
             .authenticator(tokenAuthenticator)
             // Explicit rather than relying on OkHttp's undocumented-in-this-codebase implicit
