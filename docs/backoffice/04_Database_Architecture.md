@@ -759,6 +759,8 @@ Migration: `supabase/migrations/20260819_m08_account_status.sql` · rollback: `s
 
 **`ban_reason` classification is an open Owner decision** (`33_Privacy_Data_Governance.md` §3). It does not gate this table: the field is exposed to no PostgREST role under either answer.
 
+> **Admin-surface visibility IS decided** — [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md), Owner Decision A, 2026-08-20: reading `ban_reason` through the Controller requires `users.ban_reason.read` (`admin`+). A `moderator` opens the user detail view and sees the ban, but not the note. This is the narrower question of who reads it *through the API*; it does not assign the `33` §3 data classification, which stays open.
+
 Verified by `supabase/tests/account_status_boundary.test.ts` against a real PostgreSQL — 28 assertions, 9 mutations killed.
 
 ### `audit_log`

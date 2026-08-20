@@ -134,6 +134,22 @@ Contextual action buttons (permission-gated):
 
 ## 4. Account Status Management
 
+> **⚠️ The four status fields live in `public.account_status`, not `profiles`.**
+> Owner authorization 2026-08-19 ("Module 08 Candidate C"), recorded in
+> **ADR-022** and `04_Database_Architecture.md` §7B, which supersedes §7.
+> `profiles` is public-read *and* self-write, and RLS filters rows rather than
+> columns — a status flag stored there would be readable by the anonymous
+> internet and clearable by the suspended user themselves. The field names,
+> types and state machine below are unchanged; only their location is. Read
+> every `profiles.is_suspended` in this section as `account_status.is_suspended`.
+>
+> **Implementation status, 2026-08-20.** Schema (`b474cff`) and consumer
+> enforcement (`30e78c1`) are live in production. The admin write surface —
+> `GET /api/admin/users`, `GET /api/admin/users/[id]`, and the four
+> suspend / unsuspend / ban / unban routes — landed with this change. Still
+> unbuilt: the **auto-unsuspend cron**, **session revocation on ban** (see the
+> Ban subsection), and **soft delete**.
+
 ### Status State Machine
 
 ```mermaid
@@ -165,6 +181,18 @@ stateDiagram-v2
 - Sets `profiles.is_banned = true`
 - Revokes ALL active Supabase sessions for the user
 - User cannot log in — sees "account permanently suspended" message
+
+> **⚠️ NOT TRUE YET, as of 2026-08-20.** `POST /api/admin/users/[id]/ban` sets
+> the flag and records `ban_reason`. It does **not** revoke sessions and does
+> **not** prevent login — those are Auth Admin API operations against
+> `auth.sessions`, which is separate work. What a ban does today: consumer
+> enforcement ranks it above a suspension, so the account cannot post, comment
+> or use AI on any gated route. A banned user with a live session keeps
+> browsing. The route returns `session_revocation_pending: true` and the audit
+> entry records `sessions_revoked: false`, so neither the UI nor the log can
+> imply otherwise. Until that half ships, follow a ban with
+> `POST /api/admin/security/sessions/force-logout` (`security.sessions.revoke`,
+> `super_admin`).
 - Content remains (hidden from feed) unless moderator separately hides it
 
 ### Soft Delete
@@ -205,6 +233,20 @@ This is also the response to GDPR Subject Access Requests.
 | `super_admin` | Full email |
 
 PII access requires at minimum `admin` role. This is enforced in the API query layer, not just UI.
+
+> **Implementation, [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md) (Owner Decision A, 2026-08-20).** Enforced as the permission `users.email.read_full`, evaluated by the PDP — never as a role comparison, which would be a second authorization decision path. `analyst` does not reach the user surface at all, so their row above is moot in practice.
+>
+> The mask is **fixed width** (`h***@` regardless of local-part length). Reproducing the real length would leak it, and length plus domain narrows a guess — `h***@gmail.com` is this section's own example and encodes no length.
+>
+> **Two further fields follow the same `admin`+ boundary, each with its own permission:**
+>
+> | Field | Permission | Below the boundary |
+> |---|---|---|
+> | `email` | `users.email.read_full` | masked (`h***@gmail.com`), `email_masked: true` |
+> | `ban_reason` | `users.ban_reason.read` | withheld entirely, `ban_reason_withheld: true` |
+> | search by email address | `users.email.read_full` | 403 — an exact-address lookup is an existence oracle over this same data |
+>
+> `ban_reason` has **no masked form**: a half-shown moderation note is misleading rather than safer. The two permissions are deliberately separate — an address is user PII, a ban reason is an internal note whose `33_Privacy_Data_Governance.md` §3 classification is still an open Owner decision, and one permission covering both would prevent that answer from moving either field independently.
 
 ---
 

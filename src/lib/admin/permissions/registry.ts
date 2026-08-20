@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-14.1'
+export const REGISTRY_VERSION = '2026-08-20.2'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -256,6 +256,133 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     riskLevel: 'critical',
     defaultRoles: ['super_admin'],
   }),
+
+  // ── User management (Module 08) ───────────────────────────────────────────
+  // A DISTINCT capability from `security.rbac`: administering a CONSUMER
+  // account's standing is not the authority to grant administrative power, and
+  // folding them together would make a future capability gate unable to
+  // separate "can suspend a user" from "can create an admin".
+  //
+  // WHO GETS READ. `05_API_Architecture.md` §6 says "admin or higher" for the
+  // list and 360 views, while `10_User_Management.md` §6 defines an email
+  // MASKING policy for `moderator` — a policy that only means something if a
+  // moderator can open the list at all. §3.9 also assigns suspend/unsuspend to
+  // `moderator`, which is unusable without lookup. The two statements are
+  // reconciled here by admitting `moderator` to the read surface and moving the
+  // PII boundary onto `users.email.read_full`, which is where §6 actually puts
+  // it. `analyst` is NOT admitted: they hold no user-management duty in §3.9,
+  // and §6's analyst row is read as covering aggregate analytics surfaces.
+  def({
+    id: 'users.list.read',
+    displayName: 'List consumer users',
+    description:
+      'Search and page the consumer user list, including each account’s standing (active / suspended / banned). Email addresses are withheld unless `users.email.read_full` is also held.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'read',
+    riskLevel: 'medium',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+  def({
+    id: 'users.detail.read',
+    displayName: 'View a consumer user',
+    description:
+      'Open one consumer account: profile summary, account standing, ban reason and suspension expiry.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'read',
+    riskLevel: 'medium',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+  // The PII boundary of `10_User_Management.md` §6, expressed as a permission
+  // rather than a role comparison, so the PDP stays the only decision source.
+  // Its absence MASKS the address (`h***@gmail.com`); it never denies the
+  // request, which is why it is checked with `permissionEngine.can` and not
+  // with `requirePermission`.
+  def({
+    id: 'users.email.read_full',
+    displayName: 'See unmasked user email',
+    description:
+      'Read a consumer user’s full email address. Without it the address is masked. §6: PII access requires at minimum the `admin` role.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'read',
+    riskLevel: 'high',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  // Owner Decision A, 2026-08-20 (ADR-023) sub-decision (a). A `moderator`
+  // reaches the user detail view but not the internal moderation note: they can
+  // neither ban nor unban, so no action of theirs is informed by it, and
+  // Constitution Rule 9 (minimum data access per role) settles the rest.
+  //
+  // A SEPARATE permission from `users.email.read_full`, not a reuse. The two
+  // fields carry different data classifications — an address is user PII under
+  // `10` §6, a ban reason is an internal note whose `33` §3 classification is
+  // still an open Owner decision — and one permission covering both would make
+  // that future answer unable to move one without the other.
+  def({
+    id: 'users.ban_reason.read',
+    displayName: 'Read a ban reason',
+    description:
+      'Read the internal moderation note recorded when an account was banned. Withheld without it; the ban itself stays visible.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'read',
+    riskLevel: 'high',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'users.account.suspend',
+    displayName: 'Suspend a user',
+    description:
+      'Temporarily bar a consumer account from posting, commenting and AI, leaving browsing intact (§4). Time-limited or indefinite.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'write',
+    riskLevel: 'high',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+  def({
+    id: 'users.account.unsuspend',
+    displayName: 'Lift a suspension',
+    description: 'Return a suspended consumer account to active standing.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+  def({
+    id: 'users.account.ban',
+    displayName: 'Ban a user',
+    description:
+      'Permanently bar a consumer account. Records the ban and its internal reason; session revocation is a separate operation and is NOT performed by this permission.',
+    module: 'users',
+    capability: 'users.manage',
+    // NOT `security`. That category is reserved here for permissions that
+    // change who holds POWER over the platform — granting a role, ending an
+    // administrative session — and the registry pins it to `super_admin` alone
+    // (`engine.test.ts`). Barring a consumer account is severe but it confers
+    // no authority, and §3.9 assigns it to `admin`. `destructive` is the
+    // honest classification: irreversible-in-effect for the person it lands on.
+    category: 'destructive',
+    riskLevel: 'critical',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'users.account.unban',
+    displayName: 'Lift a ban',
+    description: 'Restore a banned consumer account and clear its ban reason.',
+    module: 'users',
+    capability: 'users.manage',
+    // A restoration, so not `destructive` — but it erases `ban_reason`, and it
+    // returns platform access to someone an admin removed it from. High, not
+    // medium, because getting it wrong is not visible from the outside.
+    category: 'write',
+    riskLevel: 'high',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+
 ] as const
 
 /** A registry instance. Injectable so tests can exercise fixtures without touching the real catalogue. */
@@ -325,6 +452,14 @@ export const PERMISSIONS = {
   SECURITY_MEMBERSHIP_MANAGE: 'security.membership.manage',
   SECURITY_SESSIONS_READ: 'security.sessions.read',
   SECURITY_SESSIONS_REVOKE: 'security.sessions.revoke',
+  USERS_LIST_READ: 'users.list.read',
+  USERS_DETAIL_READ: 'users.detail.read',
+  USERS_EMAIL_READ_FULL: 'users.email.read_full',
+  USERS_BAN_REASON_READ: 'users.ban_reason.read',
+  USERS_SUSPEND: 'users.account.suspend',
+  USERS_UNSUSPEND: 'users.account.unsuspend',
+  USERS_BAN: 'users.account.ban',
+  USERS_UNBAN: 'users.account.unban',
 } as const
 
 export type KnownPermissionId = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]
