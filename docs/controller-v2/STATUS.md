@@ -752,6 +752,33 @@ The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT 
 
 ⚠️ **Verification limitation, unchanged in kind.** `/admin/users` renders inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation/CI evidence only.** No account was impersonated, and no `account_status` row was created to manufacture a result.
 
+## ENGINEERING COMPLETE — OWNER UAT / OWNER DECISIONS ONLY (2026-08-21)
+
+`main` = `45f525d`, deployed. **Class A is empty and class B has no candidate.** Every remaining item needs an Owner UAT session or an Owner decision; none needs code.
+
+### Release-blocker audit — `45f525d` ([PR #140](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/140))
+
+A full sweep of the admin surface against the 15 checks. **Four defects, three of them in work shipped this same week** — recorded because how they escaped matters more than that they were fixed.
+
+**1. `admin.common.cancel` did not exist, and was live in two components.** `ModerationQueue` and `UserSessionsPanel` both call it, so both Cancel buttons rendered the raw key in production. It escaped because the i18n guard proved **vi ≡ en and nothing more** — symmetry was perfect, the catalogue simply lacked the key. An earlier check, `grep -c "'admin\.common\.(loading|cancel)'"` returning 2, looked like confirmation and was two hits on `loading`. The guard now scans every `t('admin.…')` literal under `components/admin` and `app/admin`; verified by deleting the key again and watching it fail.
+
+**2. `moderation.queue.assign` was invented.** `12_RBAC` §3 lists exactly seven moderation rows and none is "Assign". `04` §4.4 gives the queue an `assigned_to` column — but **a column is not an authority**: it says the queue can record an assignee, not who may set one. The permission carried a role set nobody granted and had no surface. Removed; `REGISTRY_VERSION` → `2026-08-21.3`. The moderation permission **set** is now asserted, not just each member's roles — nothing caught the extra id because nothing checked the set.
+
+**3. Module 09 created the repo's first module → module import.** `moderationModule.ts` imported `userHub` from `userManagementModule.ts`, so Content Moderation quietly stopped being removable independently of User Management. The root cause predates Module 09: `userHub` and `securityHub` were defined *inside* module files, which inverts §2's "a Hub contains and governs modules". Harmless while each hub had one module. Both descriptors now live in `modules/hubs.ts`.
+
+**4. K-7 rule 1 is implemented; rules 2–3 stay DEFERRED.** §1 rule 1 now has a real target *and* a real precedent — it would have caught #3 the day it was written. Verified by reintroducing the import: the guard fails. **11 architecture rules pass.** Rules 2 and 3 remain deferred on unchanged evidence: no connector directory, no `data/repositories` layer.
+
+### Final classification
+
+| Class | Items |
+|---|---|
+| **A — implement now** | **EMPTY** |
+| **B — needs a migration** | **NO CANDIDATE.** The last two tables with authoritative DDL are live. `platform_settings` and `module_registry` have **no DDL in `04`** to implement |
+| **C — Owner decision** | Module 17 hub · Module 20 classification · Phase 7 (5) · F-10 activation (+4) · who may assign a queue item |
+| **D — authenticated UAT** | M01 · M04 · M08 · M09 · C11 · B8 |
+
+---
+
 ### Module 09 Content Moderation — APPLIED TO PRODUCTION (2026-08-21)
 
 | | |
