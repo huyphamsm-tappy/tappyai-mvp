@@ -100,6 +100,68 @@ describe('baseline', () => {
   })
 })
 
+// F-1, found by the pre-UAT audit on 2026-08-21.
+//
+// The rule's two patterns both require `from` or `require(`:
+//
+//   from\s+['"](?!allowed)@/
+//   require\(\s*['"](?!allowed)@/
+//
+// A BARE SIDE-EFFECT IMPORT has neither:
+//
+//   import '@/lib/i18n/admin'
+//
+// Isolated by testing all four import forms against the guard: the three
+// `from`-bearing variants were caught, the side-effect one was not. It binds no
+// names, so it cannot be used to CALL consumer code — but it executes the
+// consumer module inside the Controller at load time, and it would break the
+// extraction §1.4 exists to protect. No such import existed in the repository
+// when the gap was found; this is a hole in the guard, not a broken boundary.
+describe('§1.4 — side-effect imports (F-1)', () => {
+  it('🔑 rejects a bare side-effect import of the consumer app', () => {
+    const { code, output } = withFixture(
+      'src/lib/controller/__arch_fixture__.ts',
+      "import '@/lib/i18n/admin'\nexport const x = 1\n"
+    )
+    expect(code).not.toBe(0)
+    expect(output).toContain('__arch_fixture__')
+  })
+
+  it('rejects a side-effect import of a consumer component', () => {
+    const { code } = withFixture(
+      'src/lib/controller/__arch_fixture__.ts',
+      "import '@/components/ui/badge'\nexport const x = 1\n"
+    )
+    expect(code).not.toBe(0)
+  })
+
+  it('🔑 still ACCEPTS the legitimate Security Core imports — side-effect form included', () => {
+    // The rule is an allowlist. Closing the side-effect hole must not close the
+    // door on the zones the Controller is permitted to reach; a guard that
+    // rejects everything is as useless as one that rejects nothing.
+    const { code } = withFixture(
+      'src/lib/controller/__arch_fixture__.ts',
+      [
+        "import '@/lib/admin/permissions/registry'",
+        "import '@/lib/security/distributedRateLimit'",
+        "import '@/lib/supabase/admin'",
+        "import { PERMISSIONS } from '@/lib/admin/permissions/registry'",
+        "import type { X } from '@/lib/controller/types'",
+        'export const x = 1',
+      ].join('\n') + '\n'
+    )
+    expect(code).toBe(0)
+  })
+
+  it('accepts a relative side-effect import — the rule is about `@/`, not about side effects', () => {
+    const { code } = withFixture(
+      'src/lib/controller/__arch_fixture__.ts',
+      "import './somethingLocal'\nexport const x = 1\n"
+    )
+    expect(code).toBe(0)
+  })
+})
+
 describe('§1.4 — no consumer-app import inside the Controller', () => {
   it('rejects a consumer-app import added under src/lib/controller/', () => {
     const { code, output } = withFixture(

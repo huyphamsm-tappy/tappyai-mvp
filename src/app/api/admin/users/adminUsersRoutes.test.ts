@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { AdminError } from '@/lib/admin/rbac'
 
 // Module 08 — the ROUTE half of the admin user surface.
 //
@@ -712,7 +713,7 @@ describe('POST /api/admin/users/[id]/ban — session revocation', () => {
     // The gate is `requirePermission`, and it is the only gate. Simulated the
     // way the PDP actually refuses: by throwing.
     h.requirePermission.mockRejectedValueOnce(
-      Object.assign(new Error('Forbidden'), { status: 403, code: 'FORBIDDEN' })
+      new AdminError('FORBIDDEN', 'Forbidden', 403)
     )
     h.granted = new Set([PERMISSIONS.SECURITY_SESSIONS_REVOKE])
     const res = await ban({ reason: REASON })

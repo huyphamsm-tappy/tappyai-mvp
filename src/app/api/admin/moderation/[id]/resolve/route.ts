@@ -16,7 +16,7 @@
 // path for one authority.
 
 import { adminError, adminErrorResponse, isSameOrigin } from '@/lib/admin/rbac'
-import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
+import { requirePermission, requireAdminIdentity, PERMISSIONS } from '@/lib/admin/permissions'
 import type { PermissionId } from '@/lib/admin/permissions/types'
 import { auditActorRole } from '@/lib/admin/permissions/decisionAudit'
 import { writeAuditLog } from '@/lib/admin/audit'
@@ -45,30 +45,45 @@ const PERMISSION_FOR: Record<Resolution['kind'], PermissionId> = {
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   try {
+    // 🔑 NOTHING IS PARSED BEFORE THE CALLER IS KNOWN.
+    //
+    // This route used to validate the id and the body FIRST, because `kind`
+    // decides which permission applies. The pre-UAT audit reproduced the
+    // consequence against production: an anonymous caller got **422** here
+    // while every sibling mutating route answered 401, and the zod error handed
+    // back the enum's members. No mutation and no data disclosure — but an
+    // input oracle, and `req.json()` plus a zod parse run for anyone on the
+    // internet, before any rate limit.
+    //
+    // Identity first, then origin, then the rate limit, and only then the body.
+    // `requireAdminIdentity` establishes WHO — it makes no authorization
+    // decision, so the design below is unchanged: the permission is still
+    // chosen from `kind`, and still asked for exactly once.
+    const { user, actor } = await requireAdminIdentity(req)
+    const actorRole = auditActorRole(actor)
+
+    if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
+
+    // Keyed on the AUTHENTICATED actor. A key derived from unauthenticated
+    // input would let a caller choose their own bucket.
+    const rl = await distributedRateLimit(`admin:moderation:resolve:${user.id}`, 30, 60_000)
+    if (!rl.ok) {
+      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
+    }
+
     if (!isUuid(params.id)) {
-      // Before authorization on purpose: a malformed id is not a permission
-      // question, and answering it as one would leak which ids exist.
       return adminError('VALIDATION_ERROR', 'Invalid queue item id', 422)
     }
 
-    // The body decides WHICH permission, so it is read before the PDP call.
-    // Nothing has been mutated at this point and nothing is audited yet.
     const parsed = ResolveSchema.safeParse(await req.json().catch(() => null))
     if (!parsed.success) {
       return adminError('VALIDATION_ERROR', parsed.error.issues[0]?.message ?? 'Invalid body', 422)
     }
     const { kind, reason, notes } = parsed.data
 
-    const ctx = await requirePermission(req, PERMISSION_FOR[kind])
-    const { user } = ctx
-    const actorRole = auditActorRole(ctx.actor)
-
-    if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
-
-    const rl = await distributedRateLimit(`admin:moderation:resolve:${user.id}`, 30, 60_000)
-    if (!rl.ok) {
-      return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
-    }
+    // The authorization decision, now that `kind` is known. Still ONE call, and
+    // still `requirePermission` — the only route-level authorization helper.
+    await requirePermission(req, PERMISSION_FOR[kind])
 
     const admin = createAdminClient()
 
