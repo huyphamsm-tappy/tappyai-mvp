@@ -19,6 +19,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { loginPathFor } from '@/lib/auth/returnTo'
 import { TappyMascot } from '@/components/TappyMascot'
 
 // Controller V2 — Public Home (Owner-approved design, 2026-08-21).
@@ -103,12 +104,23 @@ function LocaleToggle() {
   )
 }
 
-/** The one call to action. A LINK, never a button — it navigates. */
+/**
+ * The one call to action. A LINK, never a button — it navigates.
+ *
+ * 🔑 IT MUST CARRY A DESTINATION. `/login` serves two products and picks its
+ * card from `returnTo`; a bare `/login` gets the CONSUMER card, so the
+ * Controller's own front door offered Google and Zalo to somebody who came to
+ * sign in to the Controller. Both features' tests passed — this only appears
+ * when the two are on the same branch, and it was found by production E2E.
+ *
+ * `loginPathFor` is the same contract the Controller's page guards emit, so the
+ * two spellings cannot drift.
+ */
 function SignInLink({ className = '' }: { className?: string }) {
   const { t } = useTranslation()
   return (
     <Link
-      href="/login"
+      href={loginPathFor('/admin')}
       className={`inline-flex items-center justify-center gap-2 rounded-xl bg-[#2E7BF6] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#1B4FD8]/30 transition-colors hover:bg-[#1B4FD8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4C9AFF] ${className}`}
     >
       <Lock aria-hidden="true" className="h-4 w-4" />
