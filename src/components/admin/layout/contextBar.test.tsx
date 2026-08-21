@@ -24,7 +24,12 @@ import { controllerEnv, type ControllerEnv } from '@/lib/controller/adminConfig'
 // preview. `locale` already lived in the shell header and MOVES here — it is not
 // duplicated, because two controls for one setting can disagree.
 
-vi.mock('next/navigation', () => ({ usePathname: () => '/admin' }))
+// The shell now carries a real sign-out, which uses the router. Only the STUB
+// grows a function the component legitimately needs — no assertion changes.
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/admin',
+  useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+}))
 
 // setLocale persists to localStorage, so a click test would leave every later
 // render in Vietnamese. Clearing it keeps each test independent.
