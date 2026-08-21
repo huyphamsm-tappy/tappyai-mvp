@@ -132,7 +132,13 @@ describe('navigation is PDP-filtered — no role comparison anywhere', () => {
   })
 
   it('an admin sees it', () => {
+    // TWO items since 2026-08-21: User Management (order 10) and Content
+    // Moderation (order 20). Taxonomy §1 lists Moderation inside the User hub's
+    // scope, so this hub was always going to hold more than one surface —
+    // asserted as the ORDERED ids rather than a count, because a count says
+    // nothing about which surfaces arrived.
     const nav = deriveNavigation(core, actor({ roles: ['admin'], highestRole: 'admin' }))
-    expect(nav.find((g) => g.hubId === 'tappy.hub.user')?.items).toHaveLength(1)
+    const items = nav.find((g) => g.hubId === 'tappy.hub.user')?.items ?? []
+    expect(items.map((i) => i.route)).toEqual(['/admin/users', '/admin/moderation'])
   })
 })

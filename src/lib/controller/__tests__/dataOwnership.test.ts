@@ -67,11 +67,50 @@ describe('absence means the module owns no tables', () => {
     expect(core.register(manifest('m.b')).ok).toBe(true)
   })
 
+  // Owner Decision B14 reads: "existing modules do NOT thereby acquire tables."
+  //
+  // Every module that existed when B14 was taken. The list is written out
+  // rather than derived, because deriving it from `ADMIN_MODULES` would make it
+  // grow silently and assert nothing.
+  const PRE_B14_MODULES = [
+    'tappy.hub.dashboard.home',
+    'tappy.hub.user.management',
+    'tappy.hub.analytics.content',
+    'tappy.hub.analytics.auth',
+    'tappy.hub.analytics.activation',
+    'tappy.hub.analytics.users',
+    'tappy.hub.security.audit',
+    'tappy.hub.security.rbac',
+    'tappy.hub.commerce.deals',
+    'tappy.hub.configuration.settings',
+  ]
+
   it('EXISTING MODULES DO NOT ACQUIRE TABLES — Owner Decision B14, stated literally', () => {
-    // The decision reads: "existing modules do NOT thereby acquire tables."
-    // This is the assertion that keeps that true as manifests are edited later.
-    const owning = ADMIN_MODULES.filter((m) => m.data !== undefined)
-    expect(owning.map((m) => m.id)).toEqual([])
+    // Originally `expect(every module).toEqual([])`, which was the same thing
+    // while every module was pre-existing. Module 09 arrived on 2026-08-21 and
+    // declares its own two tables — which is what ADR-024 built the field FOR,
+    // and would have made a blanket assertion forbid the feature it guards.
+    //
+    // So the guard now names the modules the decision was about. A retroactive
+    // grant to any of them still fails; a NEW module declaring its own tables
+    // does not.
+    const owning = ADMIN_MODULES.filter((m) => m.data !== undefined).map((m) => m.id)
+    expect(owning.filter((id) => PRE_B14_MODULES.includes(id))).toEqual([])
+  })
+
+  it('the pre-B14 list is real — every id still exists in the registry', () => {
+    // Without this, renaming a module would quietly drop it from the guard.
+    const ids = ADMIN_MODULES.map((m) => m.id)
+    expect(PRE_B14_MODULES.filter((id) => !ids.includes(id))).toEqual([])
+  })
+
+  it('Module 09 owns exactly its own two tables, and no other module owns any', () => {
+    const owners = Object.fromEntries(
+      ADMIN_MODULES.filter((m) => m.data).map((m) => [m.id, [...m.data!.tables].sort()])
+    )
+    expect(owners).toEqual({
+      'tappy.hub.user.moderation': ['moderation_actions', 'moderation_queue'],
+    })
   })
 
   it('the real production registry still builds', () => {
