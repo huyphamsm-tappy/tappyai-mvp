@@ -31,6 +31,7 @@ vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.
 vi.mock('@/lib/admin/audit', () => ({ writeAuditLog: h.writeAuditLog }))
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => ({ rpc: h.rpc }) }))
 
+import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import { DELETE } from './[sessionId]/route'
 import { POST as FORCE_LOGOUT } from './force-logout/route'
 import { GET } from './route'
@@ -161,6 +162,79 @@ describe('C11 route — revoke one session', () => {
     const res = await del()
     expect(res.status).toBe(500)
     expect(JSON.stringify(await res.json())).not.toContain('schema auth')
+  })
+})
+
+// Owner Decision A (2026-08-21) lets `users.account.ban` perform the session
+// revocation that a ban is defined to include. These three assertions are the
+// other half of that decision: the ban permission buys nothing HERE. Direct,
+// arbitrary revocation stays on `security.sessions.revoke`, and this route is
+// the only way to reach it from outside a ban.
+describe('C11 routes — the ban permission opens no door here', () => {
+  it('🔑 forced logout still demands security.sessions.revoke, and only that', async () => {
+    await force({ userId: SUBJECT, reason: 'routine check' })
+    expect(h.requirePermission).toHaveBeenCalledTimes(1)
+    expect(h.requirePermission.mock.calls[0][1]).toBe(PERMISSIONS.SECURITY_SESSIONS_REVOKE)
+  })
+
+  it('🔑 no C11 route mentions the ban permission', async () => {
+    // A route that accepted `users.account.ban` as an alternative would turn
+    // "a ban may end sessions" into "a banner may end anyone's sessions".
+    const { readFileSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    for (const f of [
+      ['force-logout', 'route.ts'],
+      ['[sessionId]', 'route.ts'],
+      ['route.ts'],
+    ]) {
+      const src = readFileSync(join(__dirname, ...f), 'utf8')
+      expect(src, f.join('/')).not.toContain('USERS_BAN')
+      expect(src, f.join('/')).not.toContain('users.account.ban')
+    }
+  })
+
+  it('the revocation helper carries no authorization of its own', async () => {
+    // It is shared with the ban route, so a permission check inside it would
+    // be a second authorization path — evaluated in a place neither caller
+    // audits.
+    const { readFileSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    const src = readFileSync(
+      join(__dirname, '..', '..', '..', '..', '..', 'lib', 'admin', 'sessions', 'revokeSessions.ts'),
+      'utf8'
+    )
+    for (const forbidden of ['requirePermission', 'permissionEngine', 'PERMISSIONS', 'isOwner', 'roles']) {
+      expect(src, `helper references ${forbidden}`).not.toContain(forbidden)
+    }
+  })
+})
+
+describe('C11 route — forced logout, when the revocation itself fails', () => {
+  it('🔑 an RPC error is a 500, not a successful revocation of zero sessions', async () => {
+    // Without the explicit error branch the failure falls through to the
+    // success path and answers 200 `{revoked: 0}` — "nobody was signed in"
+    // rather than "we could not tell".
+    rpcPlan({
+      fn_is_platform_owner: { data: false, error: null },
+      fn_session_revoke_all: { data: null, error: { message: 'gotrue unreachable' } },
+    })
+    const res = await force({ userId: SUBJECT, reason: 'suspected compromise' })
+    expect(res.status).toBe(500)
+    expect(h.writeAuditLog).not.toHaveBeenCalled()
+  })
+
+  it('🔑 the SQL function’s Owner refusal is honoured even if the pre-check disagreed', async () => {
+    // §5.1.1 puts Owner protection in two independent places. The handler check
+    // runs first, so the second one is only ever reached when the two disagree
+    // — which is exactly the case it exists for, and the only case that can
+    // test it.
+    rpcPlan({
+      fn_is_platform_owner: { data: false, error: null },
+      fn_session_revoke_all: { data: [{ revoked: 0, reason: 'owner_protected' }], error: null },
+    })
+    const res = await force({ userId: SUBJECT, reason: 'racing the owner check' })
+    expect(res.status).toBe(403)
+    expect(h.writeAuditLog).not.toHaveBeenCalled()
   })
 })
 

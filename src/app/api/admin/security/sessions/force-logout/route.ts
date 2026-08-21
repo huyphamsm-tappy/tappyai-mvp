@@ -17,7 +17,8 @@ import { adminError, adminErrorResponse, isSameOrigin } from '@/lib/admin/rbac'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
-import { ForceLogoutSchema, type RevokeResult } from '../schema'
+import { revokeAllSessions } from '@/lib/admin/sessions/revokeSessions'
+import { ForceLogoutSchema } from '../schema'
 
 export const dynamic = 'force-dynamic'
 
@@ -65,14 +66,14 @@ export async function POST(req: Request) {
       return adminError('FORBIDDEN', 'The Platform Owner’s sessions cannot be revoked', 403)
     }
 
-    const { data, error } = await supabase.rpc('fn_session_revoke_all', { p_user_id: userId })
-    if (error) {
-      console.error('[admin][sessions] force logout failed:', error.message)
+    // Shared with the ban route, which now performs the same revocation as an
+    // internal step. One place decides what each outcome MEANS, so the two
+    // cannot drift apart over whether `owner_protected` counts as success.
+    const result = await revokeAllSessions(supabase, userId)
+    if (result.reason === 'error') {
       return adminError('INTERNAL_ERROR', 'Operation failed', 500)
     }
-
-    const result = (Array.isArray(data) ? data[0] : data) as RevokeResult | undefined
-    if (!result || result.reason === 'not_found') {
+    if (result.reason === 'not_found') {
       // Unknown or anonymous subject. Reported identically so this surface
       // cannot be used to tell one from the other.
       return adminError('NOT_FOUND', 'User not found', 404)

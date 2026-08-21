@@ -615,26 +615,251 @@ describe('POST /api/admin/users/[id]/ban', () => {
     }
   })
 
-  it('states that the ban is recorded but sessions are NOT revoked', async () => {
-    // §4 defines a ban as also ending every session. That half is not built, so
-    // the response must not imply the user is gone — they are still signed in.
-    const body = await (await ban({ reason: REASON })).json()
-    expect(body.data.standing).toBe('banned')
-    expect(body.data.session_revocation_pending).toBe(true)
-  })
-
-  it('records the same gap on the audit entry, where it cannot be rewritten later', async () => {
-    await ban({ reason: REASON, notes: 'ticket #4821' })
-
-    expect(h.writeAuditLog.mock.calls[0][0]).toMatchObject({
-      action: 'user.ban',
-      metadata: expect.objectContaining({ sessions_revoked: false, notes: 'ticket #4821' }),
-    })
-  })
-
   it('is rate limited harder than a suspension', async () => {
     await ban({ reason: REASON })
     expect(h.rateLimit).toHaveBeenCalledWith(`admin:users:ban:${ADMIN_ID}`, 10, 60_000)
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BAN → SESSION REVOCATION.
+//
+// `10_User_Management.md` §4 has always defined a ban as three things: set the
+// flag, revoke every active Supabase session, stop the user logging in. Only
+// the first was built, and the route said so in `session_revocation_pending`.
+// C11 shipped the revocation mechanism in production on 2026-08-15; this joins
+// the two halves.
+//
+// OWNER DECISION A (2026-08-21): `users.account.ban` authorizes the COMPLETE
+// ban operation, revocation included. Not a second authorization path — ONE
+// decision for one operation. Direct, arbitrary session revocation stays gated
+// on `security.sessions.revoke`, and holding the ban permission grants no
+// general power to end sessions outside a ban.
+//
+// The two subsystems cannot be made atomic: `account_status` is a table in this
+// database and `auth.sessions` belongs to GoTrue. So the rule is not atomicity,
+// which is unachievable — it is that a partial ban is never SILENT.
+// ─────────────────────────────────────────────────────────────────────────────
+describe('POST /api/admin/users/[id]/ban — session revocation', () => {
+  /** Dispatch by function name: one mock serves the Owner check and the revoke. */
+  function rpcs(revoke: unknown, owner: unknown = ok(false)) {
+    h.rpc.mockImplementation(async (fn: string) => {
+      if (fn === 'fn_is_platform_owner') return owner
+      if (fn === 'fn_session_revoke_all') return revoke
+      return ok(null)
+    })
+  }
+
+  beforeEach(() => {
+    h.granted = new Set([PERMISSIONS.USERS_BAN])
+    h.queues = {
+      profiles: [ok({ id: SUBJECT })],
+      account_status: [ok(null), ok(statusRow({ is_banned: true, ban_reason: REASON }))],
+    }
+    rpcs(ok([{ revoked: 2, reason: 'ok' }]))
+  })
+
+  const revokeCalls = () =>
+    h.rpc.mock.calls.filter(([fn]) => fn === 'fn_session_revoke_all')
+
+  it('🔑 a ban revokes ALL of the target’s sessions', async () => {
+    await ban({ reason: REASON })
+    expect(revokeCalls()).toHaveLength(1)
+    expect(revokeCalls()[0][1]).toEqual({ p_user_id: SUBJECT })
+  })
+
+  it('🔑 reuses fn_session_revoke_all — no second revocation mechanism', async () => {
+    // C11's SQL function is where the atomicity and the anonymous exclusion
+    // live. A route that revoked sessions its own way would have neither.
+    await ban({ reason: REASON })
+    const names = h.rpc.mock.calls.map(([fn]) => fn)
+    expect(names).toContain('fn_session_revoke_all')
+    expect(names.filter((n: string) => String(n).includes('revoke'))).toEqual(['fn_session_revoke_all'])
+  })
+
+  it('the response no longer claims the revocation is pending', async () => {
+    const body = await (await ban({ reason: REASON })).json()
+    expect(body.data.standing).toBe('banned')
+    expect(body.data.session_revocation_pending).toBe(false)
+    expect(body.data.sessions_revoked).toBe(2)
+  })
+
+  it('the audit entry records that sessions WERE revoked, and how many', async () => {
+    await ban({ reason: REASON, notes: 'ticket #4821' })
+    expect(h.writeAuditLog.mock.calls[0][0]).toMatchObject({
+      action: 'user.ban',
+      metadata: expect.objectContaining({ sessions_revoked: true, revoked_count: 2, notes: 'ticket #4821' }),
+    })
+  })
+
+  it('🔑 the ban permission ALONE is sufficient — Owner Decision A', async () => {
+    // The actor holds `users.account.ban` and NOT `security.sessions.revoke`.
+    // Requiring both would make the documented ban unperformable by the role
+    // the contract gives it to.
+    h.granted = new Set([PERMISSIONS.USERS_BAN])
+    const res = await ban({ reason: REASON })
+    expect(res.status).toBe(200)
+    expect(revokeCalls()).toHaveLength(1)
+  })
+
+  it('🔑 the PDP is consulted for the ban permission and for nothing else', async () => {
+    await ban({ reason: REASON })
+    expect(h.requirePermission).toHaveBeenCalledTimes(1)
+    expect(h.requirePermission.mock.calls[0][1]).toBe(PERMISSIONS.USERS_BAN)
+  })
+
+  it('🔑 holding only security.sessions.revoke cannot ban', async () => {
+    // The gate is `requirePermission`, and it is the only gate. Simulated the
+    // way the PDP actually refuses: by throwing.
+    h.requirePermission.mockRejectedValueOnce(
+      Object.assign(new Error('Forbidden'), { status: 403, code: 'FORBIDDEN' })
+    )
+    h.granted = new Set([PERMISSIONS.SECURITY_SESSIONS_REVOKE])
+    const res = await ban({ reason: REASON })
+    expect(res.status).toBeGreaterThanOrEqual(400)
+    expect(revokeCalls()).toHaveLength(0)
+  })
+
+  // ── a partial ban is never silent ─────────────────────────────────────────
+
+  it('🔑 a revocation FAILURE does not produce a ban that claims to be complete', async () => {
+    // The flag is written first, so this state is real: banned, still signed
+    // in. Exactly today's behaviour — and the response has to keep saying so
+    // rather than reporting a clean success.
+    rpcs({ data: null, error: { message: 'gotrue unreachable' } })
+    const body = await (await ban({ reason: REASON })).json()
+    expect(body.data.standing).toBe('banned')
+    expect(body.data.session_revocation_pending).toBe(true)
+    expect(body.data.sessions_revoked).toBe(0)
+  })
+
+  it('a revocation failure is recorded on the audit entry too', async () => {
+    rpcs({ data: null, error: { message: 'gotrue unreachable' } })
+    await ban({ reason: REASON })
+    expect(h.writeAuditLog.mock.calls[0][0]).toMatchObject({
+      metadata: expect.objectContaining({ sessions_revoked: false }),
+    })
+  })
+
+  it('🔑 the ban itself still succeeds when revocation fails — it is not rolled back', async () => {
+    // Rolling the flag back would leave the worse of the two states: an account
+    // that survived a ban attempt because an unrelated subsystem was down.
+    rpcs({ data: null, error: { message: 'gotrue unreachable' } })
+    const res = await ban({ reason: REASON })
+    expect(res.status).toBe(200)
+    expect(touched()).toContain('account_status')
+  })
+
+  it('🔑 the FLAG is written before the sessions are revoked', async () => {
+    // Ordering is the whole atomicity story. Flag-then-revoke fails to
+    // "banned but still signed in" — visible and recoverable. Revoke-then-flag
+    // fails to "sessions killed for an account that was never banned".
+    let statusWrittenFirst: boolean | null = null
+    h.rpc.mockImplementation(async (fn: string) => {
+      if (fn === 'fn_session_revoke_all') {
+        statusWrittenFirst = h.recorded.some((r) => r.table === 'account_status')
+        return ok([{ revoked: 1, reason: 'ok' }])
+      }
+      if (fn === 'fn_is_platform_owner') return ok(false)
+      return ok(null)
+    })
+    await ban({ reason: REASON })
+    expect(statusWrittenFirst).toBe(true)
+  })
+
+  it('🔑 an RPC that THROWS is a failed revocation, not a successful one', async () => {
+    // Every other failure case returns `{error}`. A rejected promise takes the
+    // helper's catch, and without this case swallowing it as `ok` survived.
+    h.rpc.mockImplementation(async (fn: string) => {
+      if (fn === 'fn_session_revoke_all') throw new TypeError('socket hang up')
+      if (fn === 'fn_is_platform_owner') return ok(false)
+      return ok(null)
+    })
+    const body = await (await ban({ reason: REASON })).json()
+    expect(body.data.standing).toBe('banned')
+    expect(body.data.session_revocation_pending).toBe(true)
+    expect(body.data.sessions_revoked).toBe(0)
+  })
+
+  it('🔑 an EMPTY result from the function is not a successful revocation', async () => {
+    // `{data: null, error: null}` — the function returned nothing at all. Read
+    // as success it would report a clean ban over an unknown session state.
+    rpcs(ok(null))
+    const body = await (await ban({ reason: REASON })).json()
+    expect(body.data.session_revocation_pending).toBe(true)
+    expect(body.data.sessions_revoked).toBe(0)
+  })
+
+  it('an anonymous or session-less subject is not reported as revoked', async () => {
+    // C11 §6.1: every read and write filters `is_anonymous = false`, and a
+    // forced logout aimed at an anonymous id returns not_found "rather than
+    // silently succeeding".
+    rpcs(ok([{ revoked: 0, reason: 'not_found' }]))
+    const body = await (await ban({ reason: REASON })).json()
+    expect(body.data.standing).toBe('banned')
+    expect(body.data.sessions_revoked).toBe(0)
+    expect(body.data.session_revocation_pending).toBe(true)
+  })
+
+  it('owner_protected from the SQL function is never reported as success', async () => {
+    // Unreachable in practice — `guardMutationTarget` refuses an Owner target
+    // before this point — but the two defences are independent on purpose.
+    rpcs(ok([{ revoked: 0, reason: 'owner_protected' }]))
+    const body = await (await ban({ reason: REASON })).json()
+    expect(body.data.sessions_revoked).toBe(0)
+    expect(body.data.session_revocation_pending).toBe(true)
+  })
+
+  // ── the existing guards must all survive ──────────────────────────────────
+
+  it('the Owner still cannot be banned, and no revocation is attempted', async () => {
+    rpcs(ok([{ revoked: 9, reason: 'ok' }]), ok(true))
+    const res = await ban({ reason: REASON }, OWNER_ID)
+    expect(res.status).toBe(403)
+    expect(revokeCalls()).toHaveLength(0)
+  })
+
+  it('the ban-reason gate still runs BEFORE anything is revoked', async () => {
+    const res = await ban({ reason: 'too short' })
+    expect(res.status).toBe(422)
+    expect(revokeCalls()).toHaveLength(0)
+  })
+
+  it('a cross-origin request revokes nothing', async () => {
+    h.isSameOrigin.mockReturnValueOnce(false)
+    const res = await ban({ reason: REASON })
+    expect(res.status).toBe(403)
+    expect(revokeCalls()).toHaveLength(0)
+  })
+
+  it('a rate-limited request revokes nothing', async () => {
+    h.rateLimit.mockResolvedValueOnce({ ok: false, retryAfter: 30 })
+    const res = await ban({ reason: REASON })
+    expect(res.status).toBe(429)
+    expect(revokeCalls()).toHaveLength(0)
+  })
+
+  it('🔑 the route performs no role comparison', async () => {
+    const { readFileSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    const raw = readFileSync(join(__dirname, '[id]', 'ban', 'route.ts'), 'utf8')
+    const code = raw.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:])\/\/.*$/gm, '$1')
+    expect(code.length).toBeLessThan(raw.length) // the stripper really strips
+    for (const role of ['super_admin', 'moderator', 'analyst', 'highestRole']) {
+      expect(code, `references ${role}`).not.toContain(role)
+    }
+  })
+
+  it('🔑 the route requires exactly ONE permission — no compound gate', async () => {
+    const { readFileSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    const code = readFileSync(join(__dirname, '[id]', 'ban', 'route.ts'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, ' ')
+      .replace(/(^|[^:])\/\/.*$/gm, '$1')
+    expect(code.match(/requirePermission\(/g) ?? []).toHaveLength(1)
+    // Naming the session permission here would be the compound gate Decision A
+    // rejects — and would make the documented ban unperformable.
+    expect(code).not.toContain('SECURITY_SESSIONS_REVOKE')
   })
 })
 
