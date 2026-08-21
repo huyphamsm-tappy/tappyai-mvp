@@ -31,13 +31,12 @@
 //    request — an admin suspending an already-suspended user is a different
 //    event from a first suspension, and only the row can say which happened.
 //
-// 4. A BAN DOES NOT END A SESSION. §4 says a ban revokes every Supabase
-//    session; that is an Auth Admin API operation against `auth.sessions`, not
-//    a column. Until that half ships, a banned user keeps a valid session and
-//    is stopped by consumer enforcement (blocked from posting, commenting and
-//    AI) but is NOT stopped from logging in. `banSessionRevocationPending` is
-//    returned on every ban so the caller reports the gap instead of implying a
-//    completeness this module does not have.
+// 4. THIS MODULE STILL WRITES ONLY COLUMNS. §4 defines a ban as also revoking
+//    every Supabase session — that is not a column, and it does not belong
+//    here. Since 2026-08-21 the ban ROUTE performs it, through C11's
+//    `fn_session_revoke_all`, and reports what actually happened. A banned user
+//    is therefore signed out as well as blocked by consumer enforcement; §4's
+//    third clause, preventing a fresh login, remains separate work.
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import {
@@ -281,11 +280,9 @@ export function unbanUser(admin: SupabaseClient, userId: string): Promise<Status
   return applyPatch(admin, userId, { is_banned: false, ban_reason: null })
 }
 
-/**
- * ⚠️ Session revocation on ban is NOT implemented — see note 4 in the header.
- *
- * Exported as a constant rather than left as a comment so the ban route returns
- * it to the caller and the gap is visible in the API response, not only to
- * someone reading this file.
- */
-export const BAN_SESSION_REVOCATION_PENDING = true
+// `BAN_SESSION_REVOCATION_PENDING` lived here as a hard-coded `true`, because
+// a ban could not end sessions and the API had to say so. It ended on
+// 2026-08-21: the ban route now performs the revocation through C11's
+// `fn_session_revoke_all`, and computes `session_revocation_pending` from what
+// actually happened. A constant that can only be `true` would now be a lie on
+// every successful ban.

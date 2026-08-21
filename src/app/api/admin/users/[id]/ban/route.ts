@@ -2,26 +2,33 @@
 //
 // Contract: docs/backoffice/05_API_Architecture.md §6, 10_User_Management.md §4.
 //
-// ⚠️ THIS ROUTE DOES NOT REVOKE SESSIONS, AND §4 SAYS A BAN SHOULD.
-//
 // §4 defines a ban as three things: set the flag, revoke every active Supabase
-// session, and stop the user logging in. Only the first is a column. The other
-// two are Auth Admin API operations against `auth.sessions`, which is a
-// separate piece of work with its own Owner authorization (Module 08 item 3).
+// session, and stop the user logging in. For a long time only the first was
+// built, and the response said so in `session_revocation_pending`. C11 put the
+// revocation mechanism into production on 2026-08-15 (ADR-021); this route now
+// uses it, so two of the three hold. Preventing a fresh login remains separate.
 //
-// So what a ban does TODAY: consumer enforcement blocks the account from
-// posting, commenting and using AI — `evaluateAccountStatus` ranks a ban above
-// a suspension, so a banned user is blocked on every gated route. What it does
-// NOT do: end an existing session, or prevent a fresh login. A banned user with
-// a live session keeps browsing.
+// AUTHORIZATION — Owner Decision A, 2026-08-21.
+// `users.account.ban` authorizes the COMPLETE ban operation, revocation
+// included. That is ONE decision for one operation, not a second authorization
+// path: the revocation here is an internal step of a ban, reached only through
+// this handler and only for this target.
 //
-// The response says so, in `session_revocation_pending`. A Controller that
-// renders "banned" without that caveat would tell a moderator the person is
-// gone when they are still signed in. Until session revocation ships, the
-// operational answer is to follow a ban with
-// `POST /api/admin/security/sessions/force-logout`, which does end every
-// session for one user — it is `security.sessions.revoke`, held by
-// `super_admin`, so it is not chained from here silently.
+// It is deliberately NOT a compound gate. §4 gives the ban to the ban
+// permission; also demanding `security.sessions.revoke` would make the
+// documented ban unperformable by the role the contract grants it to.
+//
+// And it grants nothing generic. Arbitrary session revocation stays behind
+// `security.sessions.revoke` on the C11 routes; holding the ban permission
+// confers no power to end sessions outside a ban.
+//
+// ATOMICITY IS NOT AVAILABLE, so honesty stands in for it. `account_status`
+// lives in this database; `auth.sessions` belongs to GoTrue. No transaction
+// spans them. The flag is written FIRST, because the reachable failure state is
+// then "banned but still signed in" — visible, recoverable, and exactly what
+// this route did before — rather than "sessions killed for an account that was
+// never banned". When revocation fails the ban STANDS and the response keeps
+// saying `session_revocation_pending: true`. A partial ban is never silent.
 
 import { adminError, adminErrorResponse, isSameOrigin } from '@/lib/admin/rbac'
 import { requirePermission, PERMISSIONS } from '@/lib/admin/permissions'
@@ -29,11 +36,8 @@ import { auditActorRole } from '@/lib/admin/permissions/decisionAudit'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
-import {
-  banUser,
-  standingOf,
-  BAN_SESSION_REVOCATION_PENDING,
-} from '@/lib/admin/users/accountStatusAdmin'
+import { banUser, standingOf } from '@/lib/admin/users/accountStatusAdmin'
+import { revokeAllSessions, revocationSucceeded } from '@/lib/admin/sessions/revokeSessions'
 import { guardMutationTarget } from '@/lib/admin/users/identity'
 import { BanUserSchema } from '../../schema'
 
@@ -73,6 +77,14 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
     const { before, after } = await banUser(supabase, params.id, reason)
 
+    // Then the sessions. Reached only after the flag is written and only after
+    // every guard above — including `guardMutationTarget`, which refuses an
+    // Owner target, so `owner_protected` should be unreachable here. C11's
+    // function refuses independently anyway; the two defences do not share a
+    // code path on purpose.
+    const revocation = await revokeAllSessions(supabase, params.id)
+    const sessionsRevoked = revocationSucceeded(revocation)
+
     writeAuditLog({
       actorId: user.id,
       actorEmail: user.email ?? '—',
@@ -84,10 +96,17 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         ? { is_banned: before.is_banned, is_suspended: before.is_suspended, ban_reason: before.ban_reason }
         : undefined,
       afterState: { is_banned: after.is_banned, ban_reason: after.ban_reason },
-      // Recorded on the entry so a later reader can tell that the ban did not
-      // include session revocation — a fact that will stop being true, and
-      // whose history must not be rewritten by the change that fixes it.
-      metadata: { reason, notes: notes ?? null, sessions_revoked: false },
+      // `sessions_revoked` stays a BOOLEAN, the shape it has always had, so
+      // entries written before and after this change stay comparable — the
+      // history of bans that did not revoke must remain readable. The count and
+      // the failure reason are new keys beside it.
+      metadata: {
+        reason,
+        notes: notes ?? null,
+        sessions_revoked: sessionsRevoked,
+        revoked_count: revocation.revoked,
+        ...(sessionsRevoked ? {} : { revocation_reason: revocation.reason }),
+      },
       req,
     })
 
@@ -95,9 +114,11 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       data: {
         id: params.id,
         standing: standingOf(after),
-        // See the header. This flag is the API's statement that the ban is
-        // recorded but not yet enforced at the session layer.
-        session_revocation_pending: BAN_SESSION_REVOCATION_PENDING,
+        sessions_revoked: revocation.revoked,
+        // Still true whenever the session half did not happen — a Controller
+        // that renders "banned" without this would tell a moderator the person
+        // is gone while they are still signed in.
+        session_revocation_pending: !sessionsRevoked,
       },
     })
   } catch (err) {
