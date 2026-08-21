@@ -752,6 +752,39 @@ The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT 
 
 ⚠️ **Verification limitation, unchanged in kind.** `/admin/users` renders inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation/CI evidence only.** No account was impersonated, and no `account_status` row was created to manufacture a result.
 
+### Module 08 internal admin notes — `user_notes` APPLIED TO PRODUCTION (2026-08-21)
+
+Merge `9f5a3d9` ([PR #135](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/135)). Applied under its own Owner authorization; no previous authorization was reused. Migration SHA-256 `5c799e0f4bbf46fe7191f8a5993d119b20e210327ec019504c9c290fed8053eb`, worktree ≡ git blob, re-verified immediately before applying.
+
+**Contract, all four parts already written down:** DDL `04` §4.6 · behaviour `10` §3.8 (*"Chronological internal notes… Pinned notes shown at top. Add new note inline."*) · authority `10` §3.9 (*"Add internal note — moderator"*) · role matrix `12_RBAC` §3 (analyst ❌ · moderator ✅ · admin ✅ · super_admin ✅).
+
+**Why this table is not like the others.** Every other user-scoped table here holds **facts** about an account. This one holds an operator's **opinion of a person**: free text, about a subject who cannot see it and never agreed to it. Three consequences, each verified in production rather than assumed:
+
+| Invariant | Verified |
+|---|---|
+| 🔑 The subject cannot read their own row | `has_table_privilege`: `anon`, `authenticated` and `PUBLIC` all **false** for SELECT *and* INSERT. **No own-row RLS policy** — the reflex that a `user_id` column deserves one would have handed every user the internal file kept on them |
+| 🔑 `author_id` does **not** cascade | `confdeltype = 'a'` — deleting an administrator cannot delete the notes they wrote. An audit trail that disappears with its author is not one |
+| `user_id` **does** cascade | `confdeltype = 'c'` — a deleted user's file has no subject left |
+| 🔑 The note text never reaches a second table | Audit records a length, a pin state and a count. `audit.log.read` is admin+, a **different population** from `users.notes.read` |
+| Columns | 7 exactly, `note` NOT NULL |
+| Indexes | `idx_user_notes_user (user_id, created_at DESC)` + pkey |
+| Grants | `postgres` + `service_role` only |
+| RLS | enabled, **0 policies** |
+| Rows | **0** — nothing manufactured |
+| Boundary | `PGRST205` → **`42501`**. No function, no policy, no other table created; the four existing tables kept their grants |
+
+**Two permissions, same roles.** §3 states the authority once, for *adding*, so `users.notes.read` carries exactly the roles §3 gives to writing — whoever may write a note may read them, and analyst gets neither. Two ids because the actions differ and because widening READ later must not also widen WRITE. `REGISTRY_VERSION` → `2026-08-21.1`.
+
+⚠️ **One assumption, stated rather than buried.** §3 does not name a separate READ authority. The encoding above is the most restrictive reading of the single line it gives. Widening READ to analyst is one array change and an Owner decision, not an implementation detail.
+
+**No edit, no delete, no unpin** — §3.8 describes a chronological record with an inline add and nothing else. Verified: the route exports `GET` and `POST` only.
+
+**Mutation 29/30 killed.** Findings kept: **N22/N30** survived everything until a *wiring* suite existed — the panel obeyed its capabilities perfectly, on the wrong input. **N09** survived twice because `adminErrorResponse` maps an unknown error to the *same* envelope as the deliberate guard, so status and body were byte-identical; what separates them is that a handled failure is silent while a crash logs `unhandled error`. **N18** was a mutation written wrong — `from` equalled `to`, so it mutated nothing and reported SKIPPED. And a test that stubbed the wrong response shape crashed the panel, exposing that it called `.map` on whatever arrived; a 200 whose payload is not a list is now the error state. **N10** is an equivalent mutant: reading `author_id` from the body is unreachable while `.strict()` rejects it, and N11 pins `.strict()`.
+
+**Production, read-only:** deployment built from `9f5a3d9`; both verbs **401** unauthenticated; **0/8** note labels or field names leak to an anonymous visitor; sessions, analytics, users and audit endpoints unchanged. **No production note was created.**
+
+---
+
 ### A ban now ends the banned user's sessions — Owner Decision A (2026-08-21)
 
 Merge `df53496` ([PR #133](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/133)). No migration, no new permission.
@@ -1001,7 +1034,26 @@ Measured from the repository at `81bfa06`, not from the entries above. Registry 
 
 **~~One Owner decision surfaced by this workstream~~ — ANSWERED.** `10_…` defines a ban as *"Revokes ALL active Supabase sessions"* and marked it **NOT TRUE YET**. The authorization question was whether ban's own permission covers the whole documented effect or whether revocation additionally requires `security.sessions.revoke`. **Owner Decision A, 2026-08-21: the ban permission owns the full effect of a ban.** Shipped as `df53496` — see the entry above.
 
-**Re-measured again at `df53496`. Class 1 is empty once more**, and the check was run rather than assumed. Every admin API route was compared against the pages that exist:
+### Re-measured at `9f5a3d9` (2026-08-21)
+
+Registry: **6 hubs · 10 modules · 29 permissions**. Production now holds **five** Controller tables: `account_status` · `daily_snapshots` · `cohort_metrics` · `platform_owner_recovery` · `user_notes`.
+
+**Still absent, and why each is blocked — measured, not restated:**
+
+| Table | DDL in `04`? | Class |
+|---|---|---|
+| `moderation_queue` · `moderation_actions` | ✅ **both present** | **2 — needs a migration authorization.** Module 09's hub is *not* an open question: taxonomy §1 places Content Moderation in `tappy.hub.user`, which is already registered, and `12_RBAC` §3 gives the seven moderation actions a full per-role matrix. **Contract-complete.** |
+| `platform_settings` | ❌ **no DDL** | 3 — contract incomplete, *and* Module 17's hub "needs an Owner decision" per taxonomy §2 |
+| `module_registry` | ❌ **no DDL** | 3 — K-8 has no authoritative schema |
+| `user_active_days` · `anon_identity_map` | ✅ (§7A) | 5 — rolling retention and anon stitching; §8C frames the first as a *performance* structure, so nothing is blocked on it |
+
+**Class 1 remains empty.** The route/page audit is unchanged from `df53496`: five page-less routes are sub-actions or utilities, `/security/sessions` is surfaced, and `/org/memberships` stays class 3 behind the F-10 gate — the repository contains no authorization that changes that.
+
+**K-7 stays DEFERRED** on unchanged evidence: `src/lib/controller/modules/` holds two files that do not import each other, and rule 2's connector layer has no directory.
+
+---
+
+**Re-measured at `df53496`. Class 1 was empty then too**, and the check was run rather than assumed. Every admin API route was compared against the pages that exist:
 
 | Route with no page | Verdict |
 |---|---|
