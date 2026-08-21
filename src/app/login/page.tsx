@@ -207,8 +207,20 @@ export default function LoginPage() {
   // — go through these two functions, so there is exactly one place that asks
   // for a code and exactly one place that redeems it. Adding a second pair
   // would be a second authentication path wearing the first one's name.
-  const requestOtpCode = (email: string) =>
-    supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } })
+  //
+  // 🔑 `createUser` IS A REQUIRED ARGUMENT, NOT A DEFAULT. The two products have
+  // OPPOSITE policies, and this is the single line where they meet:
+  //
+  //   consumer app  — open to the public, signing in IS how you sign up  → true
+  //   Controller    — corporate back-office, accounts are PROVISIONED    → false
+  //
+  // A default would let one product inherit the other's policy the next time
+  // somebody edits this line. Defaulting to `true` would silently re-open
+  // self-registration on the Controller; defaulting to `false` would break every
+  // public signup. Making each caller state its own policy is what stops a
+  // one-line edit here from changing a product it was not about.
+  const requestOtpCode = (email: string, createUser: boolean) =>
+    supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: createUser } })
 
   const redeemOtpCode = (email: string, token: string) =>
     supabase.auth.verifyOtp({ email, token, type: 'email' })
@@ -221,7 +233,9 @@ export default function LoginPage() {
       return
     }
     setOtpLoading(true)
-    const { error } = await requestOtpCode(email)
+    // CONSUMER policy: the app is open to the public and signing in with an
+    // address that has no account IS the signup. Unchanged.
+    const { error } = await requestOtpCode(email, true)
     setOtpLoading(false)
     if (error) {
       emitAuthLoginFailed('email_otp', 'network')
@@ -274,12 +288,18 @@ export default function LoginPage() {
   // These call the SAME Supabase functions the consumer email block above uses.
   // No new mechanism, no new provider, no second session path.
   //
-  // ⚠️ `shouldCreateUser: true` matches `handleSendOtp` exactly. Whether the
-  // Controller should instead refuse unknown addresses is an auth-configuration
-  // question with a real first-sign-in consequence, so it is raised with the
-  // Owner rather than guessed here.
+  // 🔑 CONTROLLER policy — Owner decision, 2026-08-21. Controller V2 is a
+  // corporate back-office: an account must ALREADY EXIST before anyone can sign
+  // in. `createUser: false` is what makes that true. Without it, typing an
+  // address into this form is self-registration — anyone who guesses a
+  // plausible `@tappyai.com` local part would mint a real Supabase user.
+  //
+  // The account is created and its roles assigned by the highest-authority
+  // Controller administrator, through the existing RBAC surfaces. This form
+  // AUTHENTICATES; it grants nothing. A signed-in account with no grant still
+  // gets nothing from `/admin`, because the PDP decides that server-side.
   const controllerSendCode = async (email: string): Promise<LoginOutcome> => {
-    const { error } = await requestOtpCode(email)
+    const { error } = await requestOtpCode(email, false)
     if (error) {
       emitAuthLoginFailed('email_otp', 'network')
       return { ok: false }

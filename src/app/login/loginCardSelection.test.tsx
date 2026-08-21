@@ -12,10 +12,18 @@ import { render, screen, cleanup, waitFor, fireEvent } from '@testing-library/re
 // keeps both cards and picks by destination — and these tests fail the moment
 // either half stops being true.
 
+type OtpArgs = { email: string; options: { shouldCreateUser: boolean } }
+type AuthResult = { error: { message: string } | null }
+
 const replace = vi.fn()
-const getUser = vi.fn(async () => ({ data: { user: null } }))
-const signInWithOtp = vi.fn(async () => ({ error: null }))
-const verifyOtp = vi.fn(async () => ({ error: null }))
+const getUser = vi.fn(async (): Promise<{ data: { user: { id: string } | null } }> => ({ data: { user: null } }))
+// Typed so the assertions below can read `.options.shouldCreateUser` and so a
+// refusal can be simulated — an untyped `vi.fn()` infers `error: null` and
+// `calls[0]` as an empty tuple, which type-checks the tests into uselessness.
+const signInWithOtp = vi.fn(async (_args: OtpArgs): Promise<AuthResult> => ({ error: null }))
+const verifyOtp = vi.fn(
+  async (_args: { email: string; token: string; type: string }): Promise<AuthResult> => ({ error: null })
+)
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ replace, push: vi.fn(), refresh: vi.fn(), back: vi.fn() }),
@@ -146,8 +154,112 @@ describe('a completed Controller sign-in lands on the Controller', () => {
 
     await waitFor(() => expect(signInWithOtp).toHaveBeenCalledWith({
       email: 'ops@tappyai.com',
-      options: { shouldCreateUser: true },
+      options: { shouldCreateUser: false },
     }))
+  })
+
+  it('🔑 NEVER creates an account — the Controller is provisioned, not self-served', async () => {
+    // OWNER DECISION 2026-08-21. Controller V2 is a corporate back-office: an
+    // account must ALREADY EXIST before anyone can sign in, and the
+    // highest-authority Controller administrator is the one who creates it and
+    // assigns its roles. `shouldCreateUser: true` would make typing an address
+    // into this form a self-registration — a stranger who guesses a plausible
+    // `@tappyai.com` local part would mint a real Supabase user.
+    //
+    // (It would still hold NO permissions — RBAC is separate and server-side —
+    // but an account that exists is an account that can be granted one later,
+    // and it is not the administrator who created it.)
+    const { getByLabelText, getByTestId } = await visit('?returnTo=%2Fadmin')
+    await waitFor(() => expect(getByTestId('controller-login-submit')).toBeTruthy())
+
+    fireEvent.change(getByLabelText(/e-?mail/i), { target: { value: 'newperson@tappyai.com' } })
+    fireEvent.click(getByTestId('controller-login-submit'))
+
+    await waitFor(() => expect(signInWithOtp).toHaveBeenCalledTimes(1))
+    const options = signInWithOtp.mock.calls[0][0].options
+    expect(options.shouldCreateUser).toBe(false)
+  })
+
+  it('an address with no account gets an error, no session and no navigation', async () => {
+    // With `shouldCreateUser: false` the backend refuses an unknown address.
+    // The visitor must simply be told, and must stay exactly where they are.
+    signInWithOtp.mockResolvedValue({ error: { message: 'Signups not allowed for otp' } })
+    const { getByLabelText, getByTestId } = await visit('?returnTo=%2Fadmin')
+    await waitFor(() => expect(getByTestId('controller-login-submit')).toBeTruthy())
+
+    fireEvent.change(getByLabelText(/e-?mail/i), { target: { value: 'newperson@tappyai.com' } })
+    fireEvent.click(getByTestId('controller-login-submit'))
+
+    await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
+    expect(verifyOtp).not.toHaveBeenCalled()
+    expect(replace).not.toHaveBeenCalled()
+    // Never advanced to the code step: there is no code to wait for.
+    expect(screen.queryByLabelText(/mã|code/i)).toBeNull()
+  })
+})
+
+describe('🔑 the consumer flow did NOT inherit the Controller policy', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.resetModules()
+    window.localStorage.clear()
+    getUser.mockResolvedValue({ data: { user: null } })
+    signInWithOtp.mockResolvedValue({ error: null })
+  })
+  afterEach(cleanup)
+
+  it('the consumer email sign-in still creates users, as it always did', async () => {
+    // THE HAZARD THE OWNER NAMED. Both cards go through one `signInWithOtp`
+    // call site — which is what keeps "one mechanism" true, and is also exactly
+    // how the Controller's stricter policy could silently become the consumer's.
+    // The consumer app is open to the public and MUST keep self-registration.
+    //
+    // `/login?email=1` is the existing entry point for the consumer email block.
+    const { container } = await visit('?email=1')
+    await waitFor(() => expect(screen.getAllByText(/google/i).length).toBeGreaterThan(0))
+
+    // The consumer email block starts collapsed behind its own "Sign in with
+    // Email" button; open it exactly the way a visitor would.
+    fireEvent.click(
+      [...container.querySelectorAll('button')].find((b) =>
+        /Đăng nhập bằng Email|Sign in with Email/i.test(b.textContent ?? '')
+      )!
+    )
+    const emailInput = container.querySelector('input[type="email"]') as HTMLInputElement
+    expect(emailInput, 'the consumer email block should be open at ?email=1').toBeTruthy()
+    fireEvent.change(emailInput, { target: { value: 'someone@gmail.com' } })
+
+    const sendButton = [...container.querySelectorAll('button')].find((b) =>
+      /gửi|send/i.test(b.textContent ?? '')
+    )!
+    fireEvent.click(sendButton)
+
+    await waitFor(() => expect(signInWithOtp).toHaveBeenCalledTimes(1))
+    expect(signInWithOtp.mock.calls[0][0].options.shouldCreateUser).toBe(true)
+  })
+
+  it('and a consumer address is NOT domain-restricted', async () => {
+    // The corporate rule belongs to the Controller card only. If it leaked into
+    // the consumer block, every public signup outside @tappyai.com would break.
+    const { container } = await visit('?email=1')
+    await waitFor(() => expect(screen.getAllByText(/google/i).length).toBeGreaterThan(0))
+
+    // The consumer email block starts collapsed behind its own "Sign in with
+    // Email" button; open it exactly the way a visitor would.
+    fireEvent.click(
+      [...container.querySelectorAll('button')].find((b) =>
+        /Đăng nhập bằng Email|Sign in with Email/i.test(b.textContent ?? '')
+      )!
+    )
+    const emailInput = container.querySelector('input[type="email"]') as HTMLInputElement
+    fireEvent.change(emailInput, { target: { value: 'someone@gmail.com' } })
+    const sendButton = [...container.querySelectorAll('button')].find((b) =>
+      /gửi|send/i.test(b.textContent ?? '')
+    )!
+    fireEvent.click(sendButton)
+
+    await waitFor(() => expect(signInWithOtp).toHaveBeenCalledTimes(1))
+    expect(signInWithOtp.mock.calls[0][0].email).toBe('someone@gmail.com')
   })
 
   it('a non-corporate address never reaches the backend', async () => {
