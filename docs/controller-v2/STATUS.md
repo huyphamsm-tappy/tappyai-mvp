@@ -752,6 +752,32 @@ The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT 
 
 ⚠️ **Verification limitation, unchanged in kind.** `/admin/users` renders inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation/CI evidence only.** No account was impersonated, and no `account_status` row was created to manufacture a result.
 
+### A ban now ends the banned user's sessions — Owner Decision A (2026-08-21)
+
+Merge `df53496` ([PR #133](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/133)). No migration, no new permission.
+
+`10_User_Management.md` §4 has always defined a ban as three things: set the flag, revoke every active Supabase session, stop the user logging in. Only the first was built — the doc marked it **NOT TRUE YET** and prescribed a manual `force-logout` after every ban. C11 shipped the mechanism on 2026-08-15; two of the three now hold. **§4's third clause, preventing a fresh login, remains separate work.**
+
+**Owner Decision A.** `users.account.ban` authorizes the **complete** ban operation, revocation included — one decision for one operation, not a second authorization path. Deliberately **not** a compound gate: §4 gives the ban to the ban permission, so also demanding `security.sessions.revoke` would make the documented ban unperformable by the role the contract grants it to. It grants nothing generic either — arbitrary revocation stays behind `security.sessions.revoke`, pinned by assertions that **no C11 route mentions the ban permission** and that the shared helper **carries no authorization of its own**.
+
+**Atomicity is not available, so honesty stands in for it.** `account_status` is a table here; `auth.sessions` belongs to GoTrue, and no transaction spans them. What can be built is a ban that never lies about itself:
+
+- the flag is written **first**, because the reachable failure state is then *"banned but still signed in"* — visible, recoverable, and exactly what this route did before — rather than *"sessions killed for an account that was never banned"*;
+- when revocation fails the ban **stands**, and the response keeps saying `session_revocation_pending: true`;
+- the audit keeps `sessions_revoked` as a **boolean**, the shape it has always had, so entries written before and after this change stay comparable. The count and failure reason are new keys beside it.
+
+**One revocation mechanism.** `revokeAllSessions` is extracted so both callers share not just the RPC but the *interpretation* of its result — otherwise the two could drift on whether `owner_protected` counts as success. The mechanism stays in SQL, where C11's single-statement atomicity and its `is_anonymous = false` filter (§6.1) already live.
+
+**Mutation 21/21 killed**, after two rounds that were themselves the finding:
+
+- 🚨 **Five anchors matched ZERO times** because these files are checked out with **CRLF** and the anchors were written with `\n`. The harness reported SURVIVED for mutations never applied. **A false SURVIVED is worse than a real one** — it sends you hunting a gap that does not exist. The harness now tries both forms.
+- **B03** survived because the mutation only *inserted* a line; it never reordered anything it was named after. Rewritten as a real reorder, and the ordering is now asserted directly.
+- **B10 · B11 · B20 · B21** were genuine gaps: an RPC that *throws* rather than returning `{error}`; a function returning no row at all; a force-logout RPC error answering `200 {revoked: 0}` instead of 500; and the SQL function's Owner refusal — reachable only when it disagrees with the handler's pre-check, which is the one case it exists for.
+
+**Production, read-only:** deployment built from `df53496`; ban, force-logout, single-revoke and inventory all **401** unauthenticated; no new unauthenticated route; unrelated surfaces unchanged. **No production user was banned and no production session was touched** — behavioural proof of the combined path belongs to Owner UAT.
+
+---
+
 ### C11 Session Security — the Controller surface (2026-08-21)
 
 Merge `8b9bf3b` ([PR #131](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/131)). **No migration, no new permission, no Owner decision** — everything this needed had already shipped.
@@ -973,7 +999,17 @@ Measured from the repository at `81bfa06`, not from the entries above. Registry 
 
 **K-7 is formally DEFERRED, and the check was run rather than assumed.** `src/lib/controller/modules/` holds **two** files and **neither imports the other**, so §1 rule 1 has nothing to catch; §1 rule 2's connector layer has no directory at all; §1 rule 3 is already covered in part by `no-adhoc-service-role-client`. A guard over an empty directory structure is a decorative test, and building it would have reduced the burn-down without protecting anything.
 
-**One Owner decision surfaced by this workstream, not decided here.** `10_…` defines a ban as *"Revokes ALL active Supabase sessions"* and marks it **NOT TRUE YET**, prescribing a manual `force-logout` after each ban. The mechanism now exists end-to-end. Wiring it raises a genuine authorization question this workstream must not answer: ban requires `users.account.ban`, revocation requires `security.sessions.revoke`, and an actor holding the first but not the second would cause a revocation they may not perform directly. Either ban's own permission covers the whole documented effect of a ban, or the revocation additionally requires the session permission. Both are defensible; choosing without the Owner would create the second authorization path §10 forbids.
+**~~One Owner decision surfaced by this workstream~~ — ANSWERED.** `10_…` defines a ban as *"Revokes ALL active Supabase sessions"* and marked it **NOT TRUE YET**. The authorization question was whether ban's own permission covers the whole documented effect or whether revocation additionally requires `security.sessions.revoke`. **Owner Decision A, 2026-08-21: the ban permission owns the full effect of a ban.** Shipped as `df53496` — see the entry above.
+
+**Re-measured again at `df53496`. Class 1 is empty once more**, and the check was run rather than assumed. Every admin API route was compared against the pages that exist:
+
+| Route with no page | Verdict |
+|---|---|
+| `/security/sessions` · `…/force-logout` | ✅ now surfaced — the C11 panel on the user detail |
+| `/deals/upload` · `/rbac/roles` | sub-actions of `/admin/deals` and `/admin/rbac`, which both have pages |
+| `/home/snapshot` | feeds `/admin` Home |
+| `/media/wif-check` | a diagnostic utility, not a module surface |
+| `/org/memberships` | 🔴 **class 3.** FOUNDATION-10B sits behind the F-10 feature gate, whose activation *"remains a separate, explicit Owner authorization"*, plus four further Owner decisions — first department, first Head account, membership-authority ratification, activation. Building a surface for a feature that is off, and whose switch is an Owner decision, is not dependency-safe work. |
 
 **K-5 (B14) and K-6 (B8) are both RESOLVED** — see the entries above. **Module 08 is complete end-to-end.** What remains is gated on one of three things, and nothing else: an unapplied **production migration** (B8's, and one per remaining Phase 8 module), an **Owner decision** that no authoritative source answers (Phase 7's five, Module 17's hub, Module 20's classification), or an **authenticated production session** this workstream does not hold (BL-002, E2E, final UAT).
 
