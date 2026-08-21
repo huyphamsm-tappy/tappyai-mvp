@@ -40,6 +40,11 @@ export default async function AdminUsersPage() {
     // keeps revocation on `security.sessions.revoke`.
     sessionsRead: permissionEngine.can(ctx.actor, PERMISSIONS.SECURITY_SESSIONS_READ),
     sessionsRevoke: permissionEngine.can(ctx.actor, PERMISSIONS.SECURITY_SESSIONS_REVOKE),
+    // Module 08 notes. `12_RBAC` §3 states ONE authority — "User — Add notes",
+    // moderator and up — so both ids carry the same roles. Two flags because
+    // the panel hides the form for a reader who may not write.
+    notesRead: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_NOTES_READ),
+    notesWrite: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_NOTES_WRITE),
   }
 
   return <UsersManager can={can} />

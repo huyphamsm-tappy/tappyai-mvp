@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { UserSessionsPanel } from './UserSessionsPanel'
+import { UserNotesPanel } from './UserNotesPanel'
 
 // Module 08 User Management — the Controller surface.
 //
@@ -57,6 +58,10 @@ export interface UsersCapabilities {
   sessionsRead: boolean
   /** C11 `security.sessions.revoke` — may end one. Independent of the above. */
   sessionsRevoke: boolean
+  /** M08 `users.notes.read` — may read internal notes. */
+  notesRead: boolean
+  /** M08 `users.notes.write` — may add one. */
+  notesWrite: boolean
 }
 
 const STANDING_BADGE: Record<Standing, BadgeProps['variant']> = {
@@ -416,6 +421,11 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
           userId={detail.id}
           can={{ read: can.sessionsRead, revoke: can.sessionsRevoke }}
         />
+      )}
+
+      {/* §3.8 places the notes on the user detail, beside the sessions. */}
+      {detail && !detailLoading && (
+        <UserNotesPanel userId={detail.id} can={{ read: can.notesRead, write: can.notesWrite }} />
       )}
     </div>
   )

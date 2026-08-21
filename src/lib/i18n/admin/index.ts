@@ -128,6 +128,18 @@ export const vi: Record<string, string> = {
   'admin.users.loadMore': 'Tải thêm',
   'admin.users.detail.title': 'Chi tiết tài khoản',
   // Component 11 Session Security — bảng phiên của MỘT người, theo `11_…` §7.
+  // Module 08 — ghi chú nội bộ (10_User_Management §3.8/§3.9)
+  'admin.notes.title': 'Ghi chú nội bộ',
+  'admin.notes.subtitle':
+    'Ghi chú của đội vận hành về tài khoản này. Người dùng KHÔNG bao giờ đọc được. Ghi chú đã lưu thì không sửa và không xoá.',
+  'admin.notes.empty': 'Chưa có ghi chú nào cho tài khoản này.',
+  'admin.notes.error': 'Không đọc được ghi chú. Điều này không có nghĩa là không có ghi chú nào.',
+  'admin.notes.addLabel': 'Thêm ghi chú',
+  'admin.notes.addPlaceholder': 'Ghi lại điều mà người sau cần biết…',
+  'admin.notes.add': 'Lưu ghi chú',
+  'admin.notes.addError': 'Không lưu được ghi chú. Chưa có gì thay đổi.',
+  'admin.notes.pin': 'Ghim lên đầu',
+  'admin.notes.pinned': 'Đã ghim',
   'admin.sessions.title': 'Phiên đăng nhập',
   'admin.sessions.subtitle':
     'Phiên của riêng tài khoản này. Không hiển thị địa chỉ IP, trình duyệt hay bất kỳ mã thông báo nào.',
@@ -522,6 +534,18 @@ export const en: Record<string, string> = {
   'admin.users.loadMore': 'Load more',
   'admin.users.detail.title': 'Account detail',
   // Component 11 Session Security — one subject's sessions, per `11_…` §7.
+  // Module 08 — internal notes (10_User_Management §3.8/§3.9)
+  'admin.notes.title': 'Internal notes',
+  'admin.notes.subtitle':
+    'Operator notes about this account. The user can never read them. A saved note cannot be edited or deleted.',
+  'admin.notes.empty': 'This account has no notes.',
+  'admin.notes.error': 'Could not read the notes. This does not mean there are none.',
+  'admin.notes.addLabel': 'Add a note',
+  'admin.notes.addPlaceholder': 'Record what the next person needs to know…',
+  'admin.notes.add': 'Save note',
+  'admin.notes.addError': 'Could not save the note. Nothing changed.',
+  'admin.notes.pin': 'Pin to top',
+  'admin.notes.pinned': 'Pinned',
   'admin.sessions.title': 'Sessions',
   'admin.sessions.subtitle':
     "This account's own sessions. No IP address, browser or token of any kind is shown.",
