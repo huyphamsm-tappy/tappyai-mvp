@@ -9,6 +9,7 @@ import { Badge, type BadgeProps } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { UserSessionsPanel } from './UserSessionsPanel'
 
 // Module 08 User Management — the Controller surface.
 //
@@ -52,6 +53,10 @@ export interface UsersCapabilities {
   ban: boolean
   unban: boolean
   emailSearch: boolean
+  /** C11 `security.sessions.read` — may list this subject's sessions. */
+  sessionsRead: boolean
+  /** C11 `security.sessions.revoke` — may end one. Independent of the above. */
+  sessionsRevoke: boolean
 }
 
 const STANDING_BADGE: Record<Standing, BadgeProps['variant']> = {
@@ -398,6 +403,19 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
             )}
           </CardContent>
         </Card>
+      )}
+
+      {/* Component 11, and it belongs HERE rather than at a route of its own.
+          `11_…` §7 refuses a platform-wide session list outright — "a
+          compromise-amplifying surface and nothing requires it" — and scopes
+          the inventory to one subject at a time. The user detail IS that
+          subject, and it is where an operator already stands when deciding
+          whether a ban needs a sign-out to go with it. */}
+      {detail && !detailLoading && (
+        <UserSessionsPanel
+          userId={detail.id}
+          can={{ read: can.sessionsRead, revoke: can.sessionsRevoke }}
+        />
       )}
     </div>
   )
