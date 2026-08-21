@@ -341,8 +341,6 @@ export const vi: Record<string, string> = {
   'admin.home.dept.readyNote': 'Phòng ban này đã sẵn sàng để cấu hình. Các mô-đun nghiệp vụ sẽ xuất hiện tại đây khi được kích hoạt.',
   'admin.home.none.title': 'Chưa có không gian phòng ban',
   'admin.home.none.note': 'Tài khoản của bạn đã được xác thực nhưng chưa được gán vào phòng ban nào. Vui lòng liên hệ chủ sở hữu để được cấp quyền truy cập.',
-  'admin.home.switcher.label': 'Đang xem',
-  'admin.home.switcher.all': 'Tất cả phòng ban',
 
   // Auth Analytics
   'admin.auth.title': 'Phân tích đăng nhập',
@@ -742,8 +740,6 @@ export const en: Record<string, string> = {
   'admin.home.dept.readyNote': 'This department is ready for configuration. Business modules will appear here when enabled.',
   'admin.home.none.title': 'No department workspace',
   'admin.home.none.note': 'Your account is authenticated but not yet assigned to a department. Contact the platform owner for access.',
-  'admin.home.switcher.label': 'Viewing',
-  'admin.home.switcher.all': 'All departments',
 
   'admin.role.superAdmin': 'Super Admin',
   'admin.role.admin': 'Admin',
