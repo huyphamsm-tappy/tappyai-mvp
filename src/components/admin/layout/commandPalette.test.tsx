@@ -13,7 +13,12 @@ import type { NavGroup } from '@/lib/controller/adminNavigation'
 // specified, so they are not built. Two tests below GUARD that decision: they
 // fail if a future edit grows an action or an entity search, which is the point.
 
-vi.mock('next/navigation', () => ({ usePathname: () => '/admin' }))
+// The shell now carries a real sign-out, which uses the router. Only the STUB
+// grows a function the component legitimately needs — no assertion changes.
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/admin',
+  useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+}))
 
 afterEach(() => {
   cleanup()

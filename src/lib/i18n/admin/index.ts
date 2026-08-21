@@ -12,6 +12,9 @@ export const vi: Record<string, string> = {
   'admin.shell.badge': 'Controller',
   'admin.shell.backToApp': 'Quay lại ứng dụng',
   'admin.shell.app': 'Ứng dụng',
+  // Ending the SESSION — distinct from `admin.shell.backToApp`, which only
+  // leaves the Controller and keeps the admin signed in.
+  'admin.shell.signOut': 'Đăng xuất',
   'admin.shell.comingSoon': 'Sắp ra mắt',
   'admin.shell.comingLaterPhase': 'Sẽ có ở giai đoạn sau',
   // Context Bar (B5, 01_ARCH §8 · UI standards §2 "context is always visible").
@@ -453,6 +456,8 @@ export const en: Record<string, string> = {
   'admin.shell.badge': 'Controller',
   'admin.shell.backToApp': 'Back to app',
   'admin.shell.app': 'App',
+  // See the Vietnamese block: this ENDS the session; `backToApp` does not.
+  'admin.shell.signOut': 'Sign out',
   'admin.shell.comingSoon': 'soon',
   'admin.shell.comingLaterPhase': 'Coming in a later phase',
   'admin.context.envLabel': 'Environment',
