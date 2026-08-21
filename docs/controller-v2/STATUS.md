@@ -752,7 +752,37 @@ The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT 
 
 ⚠️ **Verification limitation, unchanged in kind.** `/admin/users` renders inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation/CI evidence only.** No account was impersonated, and no `account_status` row was created to manufacture a result.
 
-### K-6 / B8 — break-glass Owner recovery: **IMPLEMENTED** (2026-08-20)
+### K-6 / B8 — break-glass Owner recovery: **ENGINEERING COMPLETE + PRODUCTION MIGRATION APPLIED** (2026-08-20)
+
+Applied under its own Owner authorization. Implementation was already merged as `25274b5` (PR #122); only the production schema was outstanding.
+
+**Applied the GIT BLOB, not the working copy.** The checked-out file carries CRLF from a Windows checkout and hashes `a962596…`; the reviewed, tested, CI-verified, merged artifact is the LF blob `f3c875aacd1c18f06928d751a8835070119f350a0247eaf0adac08d58da87df0`. A `diff` after stripping `\r` proved the two identical, so this changed no semantics — but a CR inside a `$$ … $$` body becomes part of each function's stored `prosrc`, and "apply the exact reviewed migration" means the bytes that were reviewed.
+
+**Security properties verified, read-only:**
+
+| | |
+|---|---|
+| External boundary | **`PGRST205` → `42501`** · `POST /rest/v1/rpc/fn_owner_recovery_*` → **404** |
+| 🔑 EXECUTE | **`PUBLIC`, `anon`, `authenticated` AND `service_role` all `false`**, on all four functions — via `has_function_privilege`, never by reading ACL text |
+| Table grants | **`postgres` only.** Not even `service_role` — stricter than any other table, and deliberately so |
+| RLS | enabled, 0 policies |
+| Functions | 4, all `SECURITY DEFINER` with `search_path=public, pg_temp`, owned by `postgres` |
+| One open window | `uq_platform_owner_recovery_open` — a partial UNIQUE index on `(closed_at IS NULL) WHERE closed_at IS NULL`, so a second open window cannot exist |
+| One-time semantics | `CHECK ((closed_at IS NULL) = (outcome IS NULL))` · `CHECK (outcome IN ('consumed','cancelled'))` |
+| Window validity | `CHECK (expires_at > requested_at)` |
+| 🔑 Audit is TRANSACTIONAL | **0 real `EXCEPTION WHEN` handlers** in any of the four functions — every `EXCEPTION` token is a `RAISE EXCEPTION` (5 · 0 · 2 · 3). An audit failure therefore propagates and aborts the recovery. Not fire-and-forget. |
+| Rows | **0** — no recovery window was armed |
+| Owner state | **unchanged** — 2 rows, 1 active, read only |
+
+**No application recovery surface, and that is the design (ADR-025).** `/api/admin/recovery`, `/api/admin/break-glass`, `/admin/recovery` → 404. **Zero non-test files** under `src/` name the functions, the table or the `break-glass@system.invalid` sentinel; the only file that names them is `breakGlassBoundary.test.ts`, which exists to assert nothing else does (7/7 green).
+
+**The recovery path was intentionally NOT exercised.** Proving it works would mean changing production ownership, so B8 is verified by structure and privilege, not by behaviour. This is **not** a break-glass UAT pass and is not recorded as one.
+
+**Only this migration ran** — `user_notes`, `moderation_queue`, `moderation_actions`, `platform_settings`, `module_registry`, `user_active_days` all still probe `PGRST205`; `cohort_metrics`, `daily_snapshots` and `account_status` are untouched.
+
+---
+
+### K-6 / B8 — break-glass Owner recovery: implementation (2026-08-20)
 
 Design [`13_BREAK_GLASS_OWNER_RECOVERY_DESIGN.md`](13_BREAK_GLASS_OWNER_RECOVERY_DESIGN.md) · decision [**ADR-025**](../architecture/ADR-025-break-glass-owner-recovery.md) · migration `supabase/migrations/20260820_b8_owner_recovery.sql`.
 
@@ -897,7 +927,7 @@ Measured from the repository at `81bfa06`, not from the entries above. Registry 
 | **Phase 7** — Layout Presets · Density · date range · CP `act` · CP `search` | 5 | 5 | 5 | **0** |
 | **Phase 8 — hubs** — ~~`user`~~ ✅ registered · `marketing` · `ai` · `operations` unregistered; `configuration` ambiguous | 4 | 4 | 2 | **0** |
 | **Phase 8 — modules** — 11 not started · ~~01 stub~~ ✅ · 04 **retention applied; PARTIAL until real cohort data + UAT** · ~~08~~ ✅ · 17 + 20 ambiguous | 16 | 16 | 4 | **0** |
-| **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · ~~K-6 B8~~ ✅ (migration awaiting production apply) · K-7 guard §1.1–1.3 · K-8 `module_registry` | 6 | 4 | 2 | **0** |
+| **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · ~~K-6 B8~~ ✅ **migration APPLIED to production** · K-7 guard §1.1–1.3 (near-vacuous today) · K-8 `module_registry` | 5 | 4 | 2 | **0** |
 | **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
 | **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |
 
