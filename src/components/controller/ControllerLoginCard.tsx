@@ -8,103 +8,47 @@ import { checkCorporateEmailAddress } from '@/lib/controller/auth/corporateIdent
 // Controller V2 — the sign-in card shown at `/login` when the visitor was sent
 // there from the Controller.
 //
-// PRESENTATION AND VALIDATION ONLY. The two async handlers are injected by
-// `/login`, which keeps calling the Supabase functions it already had
-// (`signInWithOtp` / `verifyOtp`). This component creates no session, adds no
-// provider, opens no second auth path, and never navigates.
+// EMAIL + PASSWORD (Owner correction, 2026-08-21). This replaced a one-time-code
+// flow: the Controller is a corporate back-office whose accounts are
+// PROVISIONED, so signing in is proving you hold a credential, not proving you
+// can read a mailbox.
 //
-// 🔑 THE DOMAIN CHECK HERE IS A COURTESY, NOT A BOUNDARY. It exists so a
-// personal address is refused BEFORE a one-time code is mailed to it, and so the
-// visitor is told why immediately instead of completing a whole sign-in and then
-// meeting `/access-denied?reason=not_corporate`. The address is unverified —
-// anyone can type `ceo@tappyai.com`. What makes the boundary real is
-// `checkCorporateIdentity` on a CONFIRMED session, server-side, which this
-// cannot reach, weaken, or stand in for. It calls the SAME rule
-// (`checkCorporateEmailAddress`) rather than restating it, so the two can never
-// drift into disagreeing about what a corporate address is.
+// 🔑 A REUSE, NOT A NEW AUTH ENGINE. The product already issues password
+// credentials — `/register` calls `supabase.auth.signUp({ email, password })`.
+// The provider is the same Supabase GoTrue every other sign-in path uses; only
+// the primitive on it differs. The consumer app keeps its OTP block, its Google
+// and its Zalo untouched.
+//
+// PRESENTATION AND VALIDATION ONLY. The `signIn` handler is injected by
+// `/login`, which owns the Supabase call and the destination. This component
+// creates no session and never navigates.
+//
+// 🔑 THE DOMAIN CHECK IS A COURTESY, NOT A BOUNDARY. It refuses a personal
+// address before a credential is sent anywhere, and tells the visitor why
+// immediately. Anyone can type `ceo@tappyai.com`; what makes the boundary real
+// is `checkCorporateIdentity` on a CONFIRMED session, server-side. It calls the
+// SAME rule rather than restating it, so the two cannot drift.
 
 export type LoginOutcome = { ok: true } | { ok: false; message?: string }
 
 export interface ControllerLoginCardProps {
-  /** Ask the existing backend to mail a one-time code. */
-  sendCode: (email: string) => Promise<LoginOutcome>
-  /** Hand the typed code to the existing backend. */
-  verifyCode: (email: string, code: string) => Promise<LoginOutcome>
+  /** Hand the credential to the existing password primitive. */
+  signIn: (email: string, password: string) => Promise<LoginOutcome>
   /** A session now exists. The PAGE owns where to go next. */
   onAuthenticated: () => void
 }
 
-const CODE_LENGTH = 6
-
-export function ControllerLoginCard({ sendCode, verifyCode, onAuthenticated }: ControllerLoginCardProps) {
+export function ControllerLoginCard({ signIn, onAuthenticated }: ControllerLoginCardProps) {
   const { t } = useTranslation()
-  const [step, setStep] = useState<'email' | 'code'>('email')
   const [email, setEmail] = useState('')
-  const [code, setCode] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
   // A REF, not the `busy` state, is what actually prevents a double submit.
-  // Three clicks dispatched before React re-renders all read the same stale
-  // `busy === false`; the ref is written synchronously inside the first one.
-  // The `disabled` attribute below is the visible half of the same rule.
+  // Two submits dispatched before React re-renders both read the same stale
+  // `busy === false`; the ref is written synchronously inside the first.
   const inFlight = useRef(false)
-
-  /** Map every failure — refusal or thrown — to one translated, opaque message. */
-  const fail = (key: string) => {
-    // Deliberately ignores the backend's own text. It can carry `PGRST…`,
-    // `jwt expired`, a hostname, or a rate-limit internal; none of that belongs
-    // on a sign-in screen, and it is never localized.
-    setError(t(key))
-  }
-
-  const submitEmail = async () => {
-    const typed = email.trim()
-    const verdict = checkCorporateEmailAddress(typed)
-
-    if (!verdict.ok) {
-      setError(
-        t(
-          verdict.reason === 'NO_EMAIL'
-            ? 'admin.login.errorEmailRequired'
-            : verdict.reason === 'NON_CORPORATE_DOMAIN'
-              ? 'admin.login.errorEmailDomain'
-              : 'admin.login.errorEmailMalformed'
-        )
-      )
-      return
-    }
-
-    try {
-      const outcome = await sendCode(typed)
-      if (!outcome?.ok) {
-        fail('admin.login.errorSendFailed')
-        return
-      }
-      setStep('code')
-    } catch {
-      fail('admin.login.errorSendFailed')
-    }
-  }
-
-  const submitCode = async () => {
-    const typed = code.trim()
-    if (typed.length < CODE_LENGTH) {
-      setError(t('admin.login.errorCodeRequired'))
-      return
-    }
-
-    try {
-      const outcome = await verifyCode(email.trim(), typed)
-      if (!outcome?.ok) {
-        fail('admin.login.errorVerifyFailed')
-        return
-      }
-      onAuthenticated()
-    } catch {
-      fail('admin.login.errorVerifyFailed')
-    }
-  }
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -112,17 +56,47 @@ export function ControllerLoginCard({ sendCode, verifyCode, onAuthenticated }: C
     inFlight.current = true
     setBusy(true)
     setError('')
+
     try {
-      await (step === 'email' ? submitEmail() : submitCode())
+      const typedEmail = email.trim()
+      const verdict = checkCorporateEmailAddress(typedEmail)
+      if (!verdict.ok) {
+        setError(
+          t(
+            verdict.reason === 'NO_EMAIL'
+              ? 'admin.login.errorEmailRequired'
+              : verdict.reason === 'NON_CORPORATE_DOMAIN'
+                ? 'admin.login.errorEmailDomain'
+                : 'admin.login.errorEmailMalformed'
+          )
+        )
+        return
+      }
+      if (password.length === 0) {
+        setError(t('admin.login.errorPasswordRequired'))
+        return
+      }
+
+      try {
+        const outcome = await signIn(typedEmail, password)
+        if (!outcome?.ok) {
+          // ONE message for every refusal, deliberately. GoTrue does not tell a
+          // wrong password apart from an unknown account, and the UI must not
+          // add a distinction the backend withholds — that is how a login form
+          // becomes an account-enumeration oracle. It also never echoes the
+          // provider's own text, which carries class names and hostnames.
+          setError(t('admin.login.errorSignInFailed'))
+          return
+        }
+        onAuthenticated()
+      } catch {
+        setError(t('admin.login.errorSignInFailed'))
+      }
     } finally {
       inFlight.current = false
       setBusy(false)
     }
   }
-
-  const cta = step === 'email'
-    ? busy ? t('admin.login.sending') : t('admin.login.sendCode')
-    : busy ? t('admin.login.verifying') : t('admin.login.verify')
 
   const field =
     'w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-white placeholder:text-white/30 outline-none transition-colors focus:border-[#4C9AFF] focus:ring-2 focus:ring-[#2E7BF6]/40 disabled:opacity-50'
@@ -141,73 +115,58 @@ export function ControllerLoginCard({ sendCode, verifyCode, onAuthenticated }: C
       </div>
 
       <form onSubmit={onSubmit} noValidate>
-        {step === 'email' ? (
-          <div>
-            <label htmlFor="controller-login-email" className="mb-2 block text-sm font-semibold text-white/85">
-              {t('admin.login.emailLabel')}
-            </label>
-            <div className="relative">
-              <Mail
-                aria-hidden="true"
-                className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35"
-              />
-              <input
-                id="controller-login-email"
-                type="email"
-                inputMode="email"
-                autoComplete="email"
-                autoFocus
-                dir="ltr"
-                disabled={busy}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t('admin.login.emailPlaceholder')}
-                aria-invalid={Boolean(error)}
-                className={`${field} pl-11`}
-              />
-            </div>
-          </div>
-        ) : (
-          <div>
-            <p className="mb-4 text-sm text-white/60">
-              {t('admin.login.codeSentTo')}{' '}
-              {/* The address is the visitor's own and is shown so a typo is
-                  recoverable without starting over. */}
-              <span className="font-semibold text-white/90" dir="ltr">
-                {email.trim()}
-              </span>
-            </p>
-            <label htmlFor="controller-login-code" className="mb-2 block text-sm font-semibold text-white/85">
-              {t('admin.login.codeLabel')}
-            </label>
-            <div className="relative">
-              <KeyRound
-                aria-hidden="true"
-                className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35"
-              />
-              <input
-                id="controller-login-code"
-                type="text"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                autoFocus
-                dir="ltr"
-                maxLength={CODE_LENGTH}
-                disabled={busy}
-                value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-                placeholder={t('admin.login.codePlaceholder')}
-                aria-invalid={Boolean(error)}
-                className={`${field} pl-11 tracking-[0.4em]`}
-              />
-            </div>
-          </div>
-        )}
+        <label htmlFor="controller-login-email" className="mb-2 block text-sm font-semibold text-white/85">
+          {t('admin.login.emailLabel')}
+        </label>
+        <div className="relative">
+          <Mail
+            aria-hidden="true"
+            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35"
+          />
+          <input
+            id="controller-login-email"
+            type="email"
+            inputMode="email"
+            autoComplete="username"
+            autoFocus
+            dir="ltr"
+            disabled={busy}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t('admin.login.emailPlaceholder')}
+            aria-invalid={Boolean(error)}
+            className={`${field} pl-11`}
+          />
+        </div>
+
+        <label
+          htmlFor="controller-login-password"
+          className="mb-2 mt-4 block text-sm font-semibold text-white/85"
+        >
+          {t('admin.login.passwordLabel')}
+        </label>
+        <div className="relative">
+          <KeyRound
+            aria-hidden="true"
+            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35"
+          />
+          <input
+            id="controller-login-password"
+            type="password"
+            autoComplete="current-password"
+            dir="ltr"
+            disabled={busy}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={t('admin.login.passwordPlaceholder')}
+            aria-invalid={Boolean(error)}
+            className={`${field} pl-11`}
+          />
+        </div>
 
         {/* The error slot is INSIDE the flow, so showing it moves the button
-            down rather than covering anything — and `min-h` is not used, so an
-            empty slot costs no space and the layout does not jump on the first
-            error either. `role="alert"` announces it. */}
+            down rather than covering anything, and an empty slot costs no space
+            — the layout does not jump on the first error either. */}
         {error ? (
           <p
             role="alert"
@@ -226,23 +185,15 @@ export function ControllerLoginCard({ sendCode, verifyCode, onAuthenticated }: C
           className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#2E7BF6] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#1B4FD8]/30 transition-colors hover:bg-[#1B4FD8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4C9AFF] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {busy ? <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> : null}
-          {cta}
+          {busy ? t('admin.login.signingIn') : t('admin.login.signIn')}
         </button>
 
-        {step === 'code' ? (
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => {
-              setStep('email')
-              setCode('')
-              setError('')
-            }}
-            className="mt-3 w-full text-center text-sm font-semibold text-white/60 transition-colors hover:text-white disabled:opacity-50"
-          >
-            {t('admin.login.changeEmail')}
-          </button>
-        ) : null}
+        {/* NO "forgot password" control. The product has no password-recovery
+            flow at all — `resetPasswordForEmail` has zero call sites in `src/`
+            — and inventing a recovery architecture is not this change's to make.
+            A button that leads nowhere would be worse than its absence: it
+            promises a way back in that does not exist. Raised with the Owner as
+            the one outstanding decision. */}
       </form>
     </div>
   )

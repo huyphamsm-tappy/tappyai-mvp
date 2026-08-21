@@ -21,6 +21,9 @@ const getUser = vi.fn(async (): Promise<{ data: { user: { id: string } | null } 
 // refusal can be simulated — an untyped `vi.fn()` infers `error: null` and
 // `calls[0]` as an empty tuple, which type-checks the tests into uselessness.
 const signInWithOtp = vi.fn(async (_args: OtpArgs): Promise<AuthResult> => ({ error: null }))
+const signInWithPassword = vi.fn(
+  async (_args: { email: string; password: string }): Promise<AuthResult> => ({ error: null })
+)
 const verifyOtp = vi.fn(
   async (_args: { email: string; token: string; type: string }): Promise<AuthResult> => ({ error: null })
 )
@@ -33,7 +36,7 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@/lib/supabase/client', () => ({
   createClient: () => ({
-    auth: { getUser, signInWithOtp, verifyOtp, signInWithOAuth: vi.fn(), signInAnonymously: vi.fn() },
+    auth: { getUser, signInWithOtp, verifyOtp, signInWithPassword, signInWithOAuth: vi.fn(), signInAnonymously: vi.fn() },
     from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null }) }) }) }),
   }),
 }))
@@ -121,11 +124,17 @@ describe('a completed Controller sign-in lands on the Controller', () => {
     window.localStorage.clear()
     getUser.mockResolvedValue({ data: { user: null } })
     signInWithOtp.mockResolvedValue({ error: null })
+    signInWithPassword.mockResolvedValue({ error: null })
     verifyOtp.mockResolvedValue({ error: null })
   })
   afterEach(cleanup)
 
-  it('sends a code, redeems it, and navigates to the destination the guard asked for', async () => {
+  const fill = (get: (m: RegExp) => HTMLElement, email: string, password: string) => {
+    fireEvent.change(get(/e-?mail/i), { target: { value: email } })
+    fireEvent.change(get(/mật khẩu|password/i), { target: { value: password } })
+  }
+
+  it('authenticates and navigates to the destination the guard asked for', async () => {
     // 🔑 THE GAP MUTATION S01 FOUND. The card's own suite proves it calls
     // `onAuthenticated`; nothing proved the PAGE then went anywhere. Deleting
     // the `router.replace` left every test green — a sign-in that succeeds and
@@ -133,68 +142,73 @@ describe('a completed Controller sign-in lands on the Controller', () => {
     const { getByLabelText, getByTestId } = await visit('?returnTo=%2Fadmin')
     await waitFor(() => expect(getByTestId('controller-login-submit')).toBeTruthy())
 
-    fireEvent.change(getByLabelText(/e-?mail/i), { target: { value: 'ops@tappyai.com' } })
-    fireEvent.click(getByTestId('controller-login-submit'))
-    await waitFor(() => expect(signInWithOtp).toHaveBeenCalledTimes(1))
-
-    await waitFor(() => expect(getByLabelText(/mã|code/i)).toBeTruthy())
-    fireEvent.change(getByLabelText(/mã|code/i), { target: { value: '123456' } })
+    fill(getByLabelText, 'ops@tappyai.com', 'correct horse')
     fireEvent.click(getByTestId('controller-login-submit'))
 
-    await waitFor(() => expect(verifyOtp).toHaveBeenCalledTimes(1))
+    await waitFor(() => expect(signInWithPassword).toHaveBeenCalledTimes(1))
     await waitFor(() => expect(replace).toHaveBeenCalledWith('/admin'))
   })
 
-  it('uses the EXISTING Supabase calls — no new mechanism', async () => {
+  it('uses the EXISTING provider — the password primitive, not a new mechanism', async () => {
     const { getByLabelText, getByTestId } = await visit('?returnTo=%2Fadmin')
     await waitFor(() => expect(getByTestId('controller-login-submit')).toBeTruthy())
 
-    fireEvent.change(getByLabelText(/e-?mail/i), { target: { value: 'ops@tappyai.com' } })
+    fill(getByLabelText, 'ops@tappyai.com', 'correct horse')
     fireEvent.click(getByTestId('controller-login-submit'))
 
-    await waitFor(() => expect(signInWithOtp).toHaveBeenCalledWith({
-      email: 'ops@tappyai.com',
-      options: { shouldCreateUser: false },
-    }))
+    await waitFor(() =>
+      expect(signInWithPassword).toHaveBeenCalledWith({
+        email: 'ops@tappyai.com',
+        password: 'correct horse',
+      })
+    )
   })
 
   it('🔑 NEVER creates an account — the Controller is provisioned, not self-served', async () => {
-    // OWNER DECISION 2026-08-21. Controller V2 is a corporate back-office: an
-    // account must ALREADY EXIST before anyone can sign in, and the
-    // highest-authority Controller administrator is the one who creates it and
-    // assigns its roles. `shouldCreateUser: true` would make typing an address
-    // into this form a self-registration — a stranger who guesses a plausible
-    // `@tappyai.com` local part would mint a real Supabase user.
+    // OWNER DECISION 2026-08-21, reaffirmed by the auth correction. An account
+    // must ALREADY EXIST; the highest-authority Controller administrator
+    // creates it and assigns its roles.
     //
-    // (It would still hold NO permissions — RBAC is separate and server-side —
-    // but an account that exists is an account that can be granted one later,
-    // and it is not the administrator who created it.)
+    // Under the old one-time-code flow this rested on a FLAG (`shouldCreateUser:
+    // false`) that could be flipped back. `signInWithPassword` has no create
+    // option at all, so self-registration is now impossible BY CONSTRUCTION —
+    // and the assertion changes accordingly: the Controller path must never
+    // reach an OTP call, which is the only thing on this page that can create a
+    // user.
     const { getByLabelText, getByTestId } = await visit('?returnTo=%2Fadmin')
     await waitFor(() => expect(getByTestId('controller-login-submit')).toBeTruthy())
 
-    fireEvent.change(getByLabelText(/e-?mail/i), { target: { value: 'newperson@tappyai.com' } })
+    fill(getByLabelText, 'newperson@tappyai.com', 'anything')
     fireEvent.click(getByTestId('controller-login-submit'))
 
-    await waitFor(() => expect(signInWithOtp).toHaveBeenCalledTimes(1))
-    const options = signInWithOtp.mock.calls[0][0].options
-    expect(options.shouldCreateUser).toBe(false)
+    await waitFor(() => expect(signInWithPassword).toHaveBeenCalledTimes(1))
+    expect(signInWithOtp).not.toHaveBeenCalled()
+    expect(verifyOtp).not.toHaveBeenCalled()
+  })
+
+  it('🔑 and the Controller never touches the OTP flow at all', async () => {
+    const { getByLabelText, getByTestId } = await visit('?returnTo=%2Fadmin')
+    await waitFor(() => expect(getByTestId('controller-login-submit')).toBeTruthy())
+    // No code field ever appears, whatever the outcome.
+    fill(getByLabelText, 'ops@tappyai.com', 'x')
+    fireEvent.click(getByTestId('controller-login-submit'))
+    await waitFor(() => expect(signInWithPassword).toHaveBeenCalled())
+    expect(document.querySelector('#controller-login-code')).toBeNull()
   })
 
   it('an address with no account gets an error, no session and no navigation', async () => {
-    // With `shouldCreateUser: false` the backend refuses an unknown address.
-    // The visitor must simply be told, and must stay exactly where they are.
-    signInWithOtp.mockResolvedValue({ error: { message: 'Signups not allowed for otp' } })
+    // GoTrue refuses an unknown address with the same error as a wrong
+    // password. The visitor is simply told, and stays exactly where they are.
+    signInWithPassword.mockResolvedValue({ error: { message: 'Invalid login credentials' } })
     const { getByLabelText, getByTestId } = await visit('?returnTo=%2Fadmin')
     await waitFor(() => expect(getByTestId('controller-login-submit')).toBeTruthy())
 
-    fireEvent.change(getByLabelText(/e-?mail/i), { target: { value: 'newperson@tappyai.com' } })
+    fill(getByLabelText, 'newperson@tappyai.com', 'anything')
     fireEvent.click(getByTestId('controller-login-submit'))
 
     await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
-    expect(verifyOtp).not.toHaveBeenCalled()
     expect(replace).not.toHaveBeenCalled()
-    // Never advanced to the code step: there is no code to wait for.
-    expect(screen.queryByLabelText(/mã|code/i)).toBeNull()
+    expect(screen.getByRole('alert').textContent ?? '').not.toMatch(/Invalid login credentials/i)
   })
 })
 
@@ -205,6 +219,7 @@ describe('🔑 the consumer flow did NOT inherit the Controller policy', () => {
     window.localStorage.clear()
     getUser.mockResolvedValue({ data: { user: null } })
     signInWithOtp.mockResolvedValue({ error: null })
+    signInWithPassword.mockResolvedValue({ error: null })
   })
   afterEach(cleanup)
 

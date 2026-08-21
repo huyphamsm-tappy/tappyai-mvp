@@ -284,34 +284,32 @@ export default function LoginPage() {
 
   const anyLoading = loadingGoogle || loadingFacebook || loadingZalo
 
-  // ── Controller sign-in ────────────────────────────────────────────────────
-  // These call the SAME Supabase functions the consumer email block above uses.
-  // No new mechanism, no new provider, no second session path.
+  // ── Controller sign-in — EMAIL + PASSWORD ─────────────────────────────────
+  // Owner correction, 2026-08-21. Controller V2 is a corporate back-office
+  // whose accounts are PROVISIONED by the highest-authority administrator, so
+  // signing in means proving you hold a credential — not proving you can read a
+  // mailbox. This replaced a one-time-code flow.
   //
-  // 🔑 CONTROLLER policy — Owner decision, 2026-08-21. Controller V2 is a
-  // corporate back-office: an account must ALREADY EXIST before anyone can sign
-  // in. `createUser: false` is what makes that true. Without it, typing an
-  // address into this form is self-registration — anyone who guesses a
-  // plausible `@tappyai.com` local part would mint a real Supabase user.
+  // 🔑 SAME PROVIDER, DIFFERENT PRIMITIVE. `signInWithPassword` is Supabase
+  // GoTrue, the same provider behind every other sign-in on this page, and the
+  // product already issues password credentials (`/register` calls `signUp`
+  // with one). No second auth engine, no new session mechanism.
   //
-  // The account is created and its roles assigned by the highest-authority
-  // Controller administrator, through the existing RBAC surfaces. This form
-  // AUTHENTICATES; it grants nothing. A signed-in account with no grant still
-  // gets nothing from `/admin`, because the PDP decides that server-side.
-  const controllerSendCode = async (email: string): Promise<LoginOutcome> => {
-    const { error } = await requestOtpCode(email, false)
+  // 🔑 SELF-REGISTRATION IS NOW IMPOSSIBLE BY CONSTRUCTION, not by a flag.
+  // `signInWithPassword` has no "create the user" option to get wrong; an
+  // unknown address simply fails. The consumer OTP block keeps its own
+  // `createUser: true`, untouched.
+  //
+  // This form AUTHENTICATES; it grants nothing. A signed-in account with no
+  // grant still gets nothing from `/admin` — the PDP decides that server-side.
+  const controllerSignIn = async (email: string, password: string): Promise<LoginOutcome> => {
+    markAuthPending('email')
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
-      emitAuthLoginFailed('email_otp', 'network')
-      return { ok: false }
-    }
-    return { ok: true }
-  }
-
-  const controllerVerifyCode = async (email: string, code: string): Promise<LoginOutcome> => {
-    markAuthPending('email_otp')
-    const { error } = await redeemOtpCode(email, code)
-    if (error) {
-      emitAuthLoginFailed('email_otp', 'invalid_credentials')
+      emitAuthLoginFailed('email', 'invalid_credentials')
+      // The provider's own text is deliberately NOT forwarded — the card shows
+      // one message for every refusal so the form cannot become an
+      // account-enumeration oracle.
       return { ok: false }
     }
     return { ok: true }
@@ -341,11 +339,7 @@ export default function LoginPage() {
           </span>
         </div>
 
-        <ControllerLoginCard
-          sendCode={controllerSendCode}
-          verifyCode={controllerVerifyCode}
-          onAuthenticated={controllerOnAuthenticated}
-        />
+        <ControllerLoginCard signIn={controllerSignIn} onAuthenticated={controllerOnAuthenticated} />
 
         <p className="text-center text-sm text-white/40">{t('admin.login.footer')}</p>
       </div>
