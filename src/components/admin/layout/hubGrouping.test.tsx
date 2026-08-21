@@ -22,7 +22,12 @@ import type { NavGroup } from '@/lib/controller/adminNavigation'
 // redesign: it renders data the frozen contract already requires the provider
 // to produce.
 
-vi.mock('next/navigation', () => ({ usePathname: () => '/admin' }))
+// The shell now carries a real sign-out, which uses the router. Only the STUB
+// grows a function the component legitimately needs — no assertion changes.
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/admin',
+  useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+}))
 
 // No global auto-cleanup in this config: without this, each render stacks another
 // copy of the sidebar into document.body and getAllByRole sees every one of them.

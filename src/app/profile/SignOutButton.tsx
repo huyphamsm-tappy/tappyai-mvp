@@ -1,18 +1,18 @@
 'use client'
 
-import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { LogOut } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { emitAuthLogout } from '@/lib/analytics/authEvents'
+import { performSignOut } from '@/lib/auth/signOut'
 
 export default function SignOutButton() {
   const router = useRouter()
-  const supabase = createClient()
   const { t } = useTranslation()
+  // The analytics event and the Supabase call moved into `performSignOut` so the
+  // Controller can end a session the same way instead of copying them. Behaviour
+  // here is unchanged: emit, tear down, go to /login, refresh.
   const handleSignOut = async () => {
-    emitAuthLogout() // emit before the session is torn down
-    await supabase.auth.signOut()
+    await performSignOut()
     router.push('/login')
     router.refresh()
   }

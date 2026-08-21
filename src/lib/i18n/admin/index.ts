@@ -12,6 +12,9 @@ export const vi: Record<string, string> = {
   'admin.shell.badge': 'Controller',
   'admin.shell.backToApp': 'Quay lại ứng dụng',
   'admin.shell.app': 'Ứng dụng',
+  // Ending the SESSION — distinct from `admin.shell.backToApp`, which only
+  // leaves the Controller and keeps the admin signed in.
+  'admin.shell.signOut': 'Đăng xuất',
   'admin.shell.comingSoon': 'Sắp ra mắt',
   'admin.shell.comingLaterPhase': 'Sẽ có ở giai đoạn sau',
   // Context Bar (B5, 01_ARCH §8 · UI standards §2 "context is always visible").
@@ -341,8 +344,6 @@ export const vi: Record<string, string> = {
   'admin.home.dept.readyNote': 'Phòng ban này đã sẵn sàng để cấu hình. Các mô-đun nghiệp vụ sẽ xuất hiện tại đây khi được kích hoạt.',
   'admin.home.none.title': 'Chưa có không gian phòng ban',
   'admin.home.none.note': 'Tài khoản của bạn đã được xác thực nhưng chưa được gán vào phòng ban nào. Vui lòng liên hệ chủ sở hữu để được cấp quyền truy cập.',
-  'admin.home.switcher.label': 'Đang xem',
-  'admin.home.switcher.all': 'Tất cả phòng ban',
 
   // Auth Analytics
   'admin.auth.title': 'Phân tích đăng nhập',
@@ -467,6 +468,37 @@ export const vi: Record<string, string> = {
   'admin.login.errorCodeRequired': 'Hãy nhập mã gồm 6 chữ số.',
   'admin.login.errorVerifyFailed': 'Mã không đúng hoặc đã hết hạn.',
   'admin.login.footer': '© 2025 TappyAI. All rights reserved.',
+
+  // Public Home — the Controller's front door (/controller). The ONE Controller
+  // screen an anonymous visitor can reach, so every string here is read by
+  // people who are not admins. Copy follows the Owner-approved design.
+  'admin.publicHome.badge': 'TappyAI Controller',
+  'admin.publicHome.headline': 'Trung tâm điều khiển',
+  'admin.publicHome.headlineBrand': 'TappyAI',
+  'admin.publicHome.tagline': 'Giám sát toàn diện. Vận hành thông minh.',
+  'admin.publicHome.subtagline': 'Ra quyết định nhanh chóng dựa trên dữ liệu thời gian thực.',
+  'admin.publicHome.signIn': 'Đăng nhập',
+  'admin.publicHome.learnMore': 'Tìm hiểu thêm',
+  'admin.publicHome.featuresTitle': 'TappyAI Controller giúp bạn',
+  'admin.publicHome.feature.monitor.title': 'Giám sát thời gian thực',
+  'admin.publicHome.feature.monitor.body': 'Theo dõi hiệu suất hệ thống, người dùng và hoạt động trên toàn nền tảng.',
+  'admin.publicHome.feature.secure.title': 'Vận hành an toàn',
+  'admin.publicHome.feature.secure.body': 'Kiểm soát bảo mật, phân quyền và nhật ký hoạt động minh bạch.',
+  'admin.publicHome.feature.insight.title': 'Hiểu người dùng hơn',
+  'admin.publicHome.feature.insight.body': 'Phân tích hành vi, kích hoạt và giữ chân người dùng hiệu quả.',
+  'admin.publicHome.feature.decide.title': 'Ra quyết định nhanh',
+  'admin.publicHome.feature.decide.body': 'Dữ liệu chính xác, trực quan giúp bạn đưa ra quyết định kịp thời.',
+  'admin.publicHome.trustedBy': 'Được tin tưởng bởi đội ngũ TappyAI',
+  'admin.publicHome.team.marketing': 'Marketing / Tăng trưởng',
+  'admin.publicHome.team.data': 'AI / Dữ liệu',
+  'admin.publicHome.team.sales': 'Kinh doanh / TMĐT',
+  'admin.publicHome.team.engineering': 'Kỹ thuật / Công nghệ',
+  'admin.publicHome.team.security': 'Bảo mật',
+  'admin.publicHome.team.support': 'Hỗ trợ khách hàng',
+  'admin.publicHome.footer': '© 2025 TappyAI. All rights reserved.',
+  'admin.publicHome.mascotAlt': 'Tappy vẫy tay chào',
+  'admin.publicHome.language': 'Ngôn ngữ',
+  'admin.publicHome.openMenu': 'Mở menu',
 }
 
 export const en: Record<string, string> = {
@@ -478,6 +510,8 @@ export const en: Record<string, string> = {
   'admin.shell.badge': 'Controller',
   'admin.shell.backToApp': 'Back to app',
   'admin.shell.app': 'App',
+  // See the Vietnamese block: this ENDS the session; `backToApp` does not.
+  'admin.shell.signOut': 'Sign out',
   'admin.shell.comingSoon': 'soon',
   'admin.shell.comingLaterPhase': 'Coming in a later phase',
   'admin.context.envLabel': 'Environment',
@@ -765,8 +799,6 @@ export const en: Record<string, string> = {
   'admin.home.dept.readyNote': 'This department is ready for configuration. Business modules will appear here when enabled.',
   'admin.home.none.title': 'No department workspace',
   'admin.home.none.note': 'Your account is authenticated but not yet assigned to a department. Contact the platform owner for access.',
-  'admin.home.switcher.label': 'Viewing',
-  'admin.home.switcher.all': 'All departments',
 
   'admin.role.superAdmin': 'Super Admin',
   'admin.role.admin': 'Admin',
@@ -922,4 +954,34 @@ export const en: Record<string, string> = {
   'admin.login.errorCodeRequired': 'Enter the 6-digit code.',
   'admin.login.errorVerifyFailed': 'That code is wrong or has expired.',
   'admin.login.footer': '© 2025 TappyAI. All rights reserved.',
+
+  // Public Home — see the Vietnamese block for why these are visitor-facing.
+  // The brand ("TappyAI", "Controller") is a proper noun and stays untranslated.
+  'admin.publicHome.badge': 'TappyAI Controller',
+  'admin.publicHome.headline': 'Control center for',
+  'admin.publicHome.headlineBrand': 'TappyAI',
+  'admin.publicHome.tagline': 'Complete oversight. Intelligent operations.',
+  'admin.publicHome.subtagline': 'Decide fast, on data that is current to the second.',
+  'admin.publicHome.signIn': 'Sign in',
+  'admin.publicHome.learnMore': 'Learn more',
+  'admin.publicHome.featuresTitle': 'What TappyAI Controller gives you',
+  'admin.publicHome.feature.monitor.title': 'Real-time monitoring',
+  'admin.publicHome.feature.monitor.body': 'Track system performance, users and activity across the whole platform.',
+  'admin.publicHome.feature.secure.title': 'Operate safely',
+  'admin.publicHome.feature.secure.body': 'Security controls, permissions and a transparent activity log.',
+  'admin.publicHome.feature.insight.title': 'Understand your users',
+  'admin.publicHome.feature.insight.body': 'Analyse behaviour, activation and retention that actually holds.',
+  'admin.publicHome.feature.decide.title': 'Decide quickly',
+  'admin.publicHome.feature.decide.body': 'Accurate, legible data so the call gets made in time.',
+  'admin.publicHome.trustedBy': 'Trusted by the TappyAI team',
+  'admin.publicHome.team.marketing': 'Marketing / Growth',
+  'admin.publicHome.team.data': 'AI / Data',
+  'admin.publicHome.team.sales': 'Sales / E-commerce',
+  'admin.publicHome.team.engineering': 'Engineering / Technology',
+  'admin.publicHome.team.security': 'Security',
+  'admin.publicHome.team.support': 'Customer support',
+  'admin.publicHome.footer': '© 2025 TappyAI. All rights reserved.',
+  'admin.publicHome.mascotAlt': 'Tappy waving hello',
+  'admin.publicHome.language': 'Language',
+  'admin.publicHome.openMenu': 'Open menu',
 }
