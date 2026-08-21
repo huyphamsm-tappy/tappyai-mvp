@@ -98,6 +98,8 @@ describe('admin i18n — the two locales carry the same keys', () => {
     'admin.role.superAdmin',
     'admin.shell.badge',
     'admin.users.detail.email',
+    // The copyright line is the same mark in both locales.
+    'admin.login.footer',
   ]
 
   it('🔑 no NEW Vietnamese value is a copy of its English one', () => {

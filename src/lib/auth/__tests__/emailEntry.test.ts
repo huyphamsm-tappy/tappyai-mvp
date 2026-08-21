@@ -135,11 +135,41 @@ describe('the parameter is presentation only', () => {
     expect(ENTRY).not.toMatch(/fetch\(|signIn|setSession|grantRole|\.role\b/i)
   })
 
-  it('the corporate boundary is NOT referenced by the login page (f)', () => {
-    // /admin enforcement lives server-side in rbac.ts; the login page must not
-    // gain any client-side copy of it via this change.
-    expect(LOGIN_PAGE).not.toContain('checkCorporateIdentity')
-    expect(LOGIN_PAGE).not.toContain('tappyai.com')
-    expect(LOGIN_PAGE).not.toContain('endsWith(')
+  it('the corporate boundary is NOT RE-IMPLEMENTED on the client (f)', () => {
+    // ORIGINAL RULE: "the login page must not gain any client-side copy of the
+    // corporate boundary." /admin enforcement lives server-side.
+    //
+    // WHAT CHANGED (Controller V2 Login, 2026-08-21): the Controller's sign-in
+    // card now refuses a non-corporate address BEFORE mailing a one-time code to
+    // it, so a visitor is told why immediately instead of completing a whole
+    // sign-in and only then meeting /access-denied?reason=not_corporate.
+    //
+    // The rule the original test protects is UNCHANGED and still asserted: there
+    // must be no SECOND implementation of what a corporate address is. The card
+    // calls `checkCorporateEmailAddress` — the same function
+    // `checkCorporateIdentity` calls — so the two cannot disagree. What it must
+    // never do is spell the rule out again: no domain literal, no `endsWith`.
+    //
+    // And it is still not the boundary. The address is unverified; only a
+    // CONFIRMED session passes `checkCorporateIdentity`, server-side.
+    const SOURCES = [
+      ['login page', LOGIN_PAGE],
+      ['controller login card', readFileSync(join(ROOT, 'src/components/controller/ControllerLoginCard.tsx'), 'utf8')],
+    ] as const
+
+    for (const [label, raw] of SOURCES) {
+      // Comments legitimately explain the posture; the invariant is about CODE.
+      const code = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '')
+      expect(code, `${label} must not hardcode the domain`).not.toContain('tappyai.com')
+      expect(code, `${label} must not re-implement the suffix test`).not.toContain('endsWith(')
+      // The identity-level check needs a CONFIRMED session and must stay server-side.
+      expect(code, `${label} must not run the identity check`).not.toContain('checkCorporateIdentity(')
+    }
+  })
+
+  it('the client consults the ONE shared rule rather than restating it (f)', () => {
+    const CARD = readFileSync(join(ROOT, 'src/components/controller/ControllerLoginCard.tsx'), 'utf8')
+    expect(CARD).toContain("from '@/lib/controller/auth/corporateIdentity'")
+    expect(CARD).toContain('checkCorporateEmailAddress(')
   })
 })

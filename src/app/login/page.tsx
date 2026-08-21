@@ -13,6 +13,8 @@ import { getTappyPose } from '@/lib/TappyMascotState'
 import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
 import { readReturnTo } from '@/lib/auth/returnTo'
 import { emailEntryRequested } from '@/lib/auth/emailEntry'
+import { isControllerLoginEntry } from '@/lib/auth/controllerLoginEntry'
+import { ControllerLoginCard, type LoginOutcome } from '@/components/controller/ControllerLoginCard'
 
 // V1 scope: Email OTP is intentionally hidden from the normal sign-in card
 // (owner decision 2026-07-21 — V1 = Google / Zalo / Guest). The OTP machinery
@@ -64,6 +66,14 @@ export default function LoginPage() {
   // false so the server-rendered card is the unchanged V1 card (no hydration
   // mismatch); the effect below reads the URL exactly like detectInAppBrowser.
   const [showEmailEntry, setShowEmailEntry] = useState(false)
+  // Controller V2. `/login` serves TWO products from one page: the consumer app,
+  // whose real users sign in with Google and Zalo, and the Controller, which is
+  // email-only and `@tappyai.com`-only. Deleting the consumer providers to
+  // satisfy the Controller would sign every real user out of the product, so the
+  // card is chosen by where the visitor was headed. Everything below this line —
+  // the session check, the destination contract, the Supabase calls — is shared
+  // and unchanged; only the rendered card differs.
+  const [controllerEntry, setControllerEntry] = useState(false)
   const [copied, setCopied] = useState(false)
 
   // Email OTP — Supabase-native, no password. Step 'email' asks for the address,
@@ -82,6 +92,9 @@ export default function LoginPage() {
   useEffect(() => {
     setInApp(detectInAppBrowser())
     setShowEmailEntry(emailEntryRequested(window.location.search))
+    // WHICH card this visit gets. Read here, with the other query-string
+    // decisions, because `window` does not exist during the server render.
+    setControllerEntry(isControllerLoginEntry(window.location.search))
   }, [])
 
   // Zalo (and other OAuth) failures redirect back here with ?error=… — emit the
@@ -189,6 +202,17 @@ export default function LoginPage() {
     return dest
   }
 
+  // ── The ONE email sign-in mechanism ───────────────────────────────────────
+  // Both cards on this page — the consumer email block and the Controller card
+  // — go through these two functions, so there is exactly one place that asks
+  // for a code and exactly one place that redeems it. Adding a second pair
+  // would be a second authentication path wearing the first one's name.
+  const requestOtpCode = (email: string) =>
+    supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } })
+
+  const redeemOtpCode = (email: string, token: string) =>
+    supabase.auth.verifyOtp({ email, token, type: 'email' })
+
   const handleSendOtp = async () => {
     setOtpError('')
     const email = otpEmail.trim()
@@ -197,10 +221,7 @@ export default function LoginPage() {
       return
     }
     setOtpLoading(true)
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { shouldCreateUser: true },
-    })
+    const { error } = await requestOtpCode(email)
     setOtpLoading(false)
     if (error) {
       emitAuthLoginFailed('email_otp', 'network')
@@ -219,11 +240,7 @@ export default function LoginPage() {
     }
     setOtpLoading(true)
     markAuthPending('email_otp')
-    const { error } = await supabase.auth.verifyOtp({
-      email: otpEmail.trim(),
-      token: code,
-      type: 'email',
-    })
+    const { error } = await redeemOtpCode(otpEmail.trim(), code)
     setOtpLoading(false)
     if (error) {
       emitAuthLoginFailed('email_otp', 'invalid_credentials')
@@ -252,6 +269,68 @@ export default function LoginPage() {
   }
 
   const anyLoading = loadingGoogle || loadingFacebook || loadingZalo
+
+  // ── Controller sign-in ────────────────────────────────────────────────────
+  // These call the SAME Supabase functions the consumer email block above uses.
+  // No new mechanism, no new provider, no second session path.
+  //
+  // ⚠️ `shouldCreateUser: true` matches `handleSendOtp` exactly. Whether the
+  // Controller should instead refuse unknown addresses is an auth-configuration
+  // question with a real first-sign-in consequence, so it is raised with the
+  // Owner rather than guessed here.
+  const controllerSendCode = async (email: string): Promise<LoginOutcome> => {
+    const { error } = await requestOtpCode(email)
+    if (error) {
+      emitAuthLoginFailed('email_otp', 'network')
+      return { ok: false }
+    }
+    return { ok: true }
+  }
+
+  const controllerVerifyCode = async (email: string, code: string): Promise<LoginOutcome> => {
+    markAuthPending('email_otp')
+    const { error } = await redeemOtpCode(email, code)
+    if (error) {
+      emitAuthLoginFailed('email_otp', 'invalid_credentials')
+      return { ok: false }
+    }
+    return { ok: true }
+  }
+
+  // The SAME destination call the consumer success path makes. `getReturnDest()`
+  // is the shared `returnTo` contract, so a Controller visitor lands where the
+  // guard sent them — and `/admin` still runs the corporate boundary and the PDP
+  // on arrival. This page grants nothing.
+  const controllerOnAuthenticated = async () => {
+    router.replace(await destWithOnboarding(getReturnDest()))
+  }
+
+  if (controllerEntry) {
+    return (
+      <div className="flex min-h-dvh flex-col items-center justify-center gap-8 bg-[#070E1F] p-5 sm:p-8">
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden="true"
+            className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#2E7BF6] to-[#1B4FD8] text-lg font-black text-white shadow-lg shadow-[#1B4FD8]/30"
+          >
+            T
+          </span>
+          <span className="flex items-baseline gap-2">
+            <span className="text-lg font-bold tracking-tight text-white">{t('admin.shell.brand')}</span>
+            <span className="text-lg font-semibold text-[#4C9AFF]">{t('admin.shell.badge')}</span>
+          </span>
+        </div>
+
+        <ControllerLoginCard
+          sendCode={controllerSendCode}
+          verifyCode={controllerVerifyCode}
+          onAuthenticated={controllerOnAuthenticated}
+        />
+
+        <p className="text-center text-sm text-white/40">{t('admin.login.footer')}</p>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-dvh bg-[#eef1f8] dark:bg-gray-950 flex items-center justify-center p-3 sm:p-6 lg:p-10">
