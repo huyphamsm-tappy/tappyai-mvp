@@ -49,6 +49,12 @@ function literalKeysUsedInCode(): { key: string; file: string }[] {
   const root = path.join(__dirname, '..', '..', '..')
   walk(path.join(root, 'components', 'admin'))
   walk(path.join(root, 'app', 'admin'))
+  // The Controller's PUBLIC surface lives outside /admin — it is the one
+  // Controller screen an anonymous visitor can reach, so it is also the one
+  // whose missing key would be visible to someone who is not an admin. It uses
+  // the same `admin.*` catalogue, so it needs the same scan.
+  walk(path.join(root, 'components', 'controller'))
+  walk(path.join(root, 'app', 'controller'))
   return out
 }
 
@@ -64,6 +70,16 @@ describe('🔑 admin i18n — every key the UI asks for actually exists', () => 
       .filter(({ key }) => !(key in viStrings) || !(key in enStrings))
       .map(({ key, file }) => `${key}  <-  ${file}`)
     expect(missing).toEqual([])
+  })
+
+  it('the scan reaches the Controller PUBLIC surface, not only /admin', () => {
+    // Without this the walk above can quietly stop covering a directory — the
+    // scan still finds 300+ keys from /admin and the suite stays green while
+    // the public page's strings go unchecked. It is the only Controller screen
+    // an anonymous visitor can reach, so a raw key there is the most visible
+    // kind there is.
+    const fromPublicHome = used.filter(({ file }) => /[\\/]controller[\\/]/.test(file))
+    expect(fromPublicHome.length).toBeGreaterThan(0)
   })
 })
 
@@ -83,10 +99,10 @@ describe('admin i18n — the two locales carry the same keys', () => {
     expect(blank).toEqual([])
   })
 
-  // Ten keys whose two locales are legitimately identical: acronyms ("DAU",
+  // Keys whose two locales are legitimately identical: acronyms ("DAU",
   // "MRR"), a loanword Vietnamese uses unchanged ("Email"), role names, and
   // proper nouns ("Super Admin", "Production", the brand). Pinned as a LIST
-  // rather than a pattern so adding an eleventh is a deliberate decision.
+  // rather than a pattern so adding another is a deliberate decision.
   const IDENTICAL_BY_DESIGN = [
     'admin.audit.filter.actorIdPlaceholder',
     'admin.role.admin',
@@ -98,6 +114,11 @@ describe('admin i18n — the two locales carry the same keys', () => {
     'admin.role.superAdmin',
     'admin.shell.badge',
     'admin.users.detail.email',
+    // Public Home: the product name and the copyright line are the same mark in
+    // both locales, exactly as the Owner-approved design shows them.
+    'admin.publicHome.badge',
+    'admin.publicHome.headlineBrand',
+    'admin.publicHome.footer',
   ]
 
   it('🔑 no NEW Vietnamese value is a copy of its English one', () => {
