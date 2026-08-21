@@ -19,6 +19,7 @@ import { ControllerCore } from '../core'
 import type { AuditSink, EventSink, HubDescriptor, ModuleManifest } from '../types'
 import { securityHub, securityAuditModule } from '../modules/securityAuditModule'
 import { userHub, userManagementModule } from '../modules/userManagementModule'
+import { moderationModule } from '../modules/moderationModule'
 
 // ── Hubs (real, backed by shipped modules) ──────────────────────────────────
 /**
@@ -111,6 +112,7 @@ export const ADMIN_HUBS: readonly HubDescriptor[] = [founderHub, userHub, securi
 export const ADMIN_MODULES: readonly ModuleManifest[] = [
   homeModule,
   userManagementModule,
+  moderationModule,
   analyticsContentModule, analyticsAuthModule, analyticsActivationModule, analyticsUsersModule,
   securityAuditModule, securityRolesModule,
   commerceDealsModule,

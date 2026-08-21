@@ -56,14 +56,24 @@ const ANALYST_REAL = [
 // untouched.
 const USERS_REAL = '/admin/users'
 
+// `/admin/moderation` MOVED OUT of PLACEHOLDERS on 2026-08-21, for the same
+// reason `/admin/users` did: it is no longer a door onto nothing. Module 09's
+// manifest, queue API, resolve API and page all exist, and taxonomy §1 places
+// Content Moderation in the already-registered `tappy.hub.user`.
+//
+// It sits in the SAME role set as `/admin/users` because `12_RBAC` §3 grants
+// "Moderation Queue — View" to moderator and up — the same population that
+// gained the user surface under ADR-023.
+const MODERATION_REAL = '/admin/moderation'
+
 // Pinned from the pre-migration nav.test.ts EXPECTED, minus the removed placeholders.
 const EXPECTED: Record<string, string[]> = {
   unauthenticated: [],
   analyst: ANALYST_REAL, // analyst holds no users permission (ADR-023)
-  moderator: [...ANALYST_REAL, USERS_REAL],
-  admin: [...ANALYST_REAL, USERS_REAL, '/admin/audit', '/admin/deals', '/admin/settings'],
-  super_admin: [...ANALYST_REAL, USERS_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
-  owner: [...ANALYST_REAL, USERS_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
+  moderator: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL],
+  admin: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, '/admin/audit', '/admin/deals', '/admin/settings'],
+  super_admin: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
+  owner: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
 }
 
 const ACTOR: Record<string, Actor | null> = {
@@ -75,8 +85,10 @@ const ACTOR: Record<string, Actor | null> = {
   owner: actor([], { isOwner: true }),
 }
 
-// Three, not four: `/admin/users` graduated to a real surface — see USERS_REAL.
-const PLACEHOLDERS = ['/admin/moderation', '/admin/engagement', '/admin/monitoring']
+// TWO, not three: `/admin/moderation` graduated on 2026-08-21 — see
+// MODERATION_REAL. Loosening this list instead of moving the entry out of it
+// would have turned the guard into a formality.
+const PLACEHOLDERS = ['/admin/engagement', '/admin/monitoring']
 
 describe('registry nav — per-role visibility (migrated from nav.test.ts)', () => {
   for (const role of Object.keys(EXPECTED)) {
@@ -114,7 +126,7 @@ describe('registry nav — hub grouping + deterministic order', () => {
 
   it('super_admin flattened order is deterministic', () => {
     expect(routesFor(ACTOR.super_admin)).toEqual([
-      '/admin', '/admin/users',
+      '/admin', '/admin/users', '/admin/moderation',
       // Analytics hub, module order 10/20/30/40 — users last, so no existing
       // analytics surface moved when it was added.
       '/admin/analytics', '/admin/analytics/auth', '/admin/analytics/activation', '/admin/analytics/users',

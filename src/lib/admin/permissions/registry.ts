@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-21.1'
+export const REGISTRY_VERSION = '2026-08-21.2'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -351,6 +351,80 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     riskLevel: 'high',
     defaultRoles: ['admin', 'super_admin'],
   }),
+  // ── Content Moderation (Module 09) ───────────────────────────────────────
+  //
+  // `12_RBAC.md` §3 gives seven moderation rows. FIVE become permissions here;
+  // TWO DO NOT, and that is the important part:
+  //
+  //   Moderation — Suspend user   →  reuses `users.account.suspend`
+  //   Moderation — Ban user       →  reuses `users.account.ban`
+  //
+  // §3 grants those two exactly the roles Module 08's existing permissions
+  // already carry (suspend moderator+, ban admin+). Minting `moderation.user.
+  // suspend` beside `users.account.suspend` would create two ids for one
+  // authority — a second authorization path, disagreeing the first time either
+  // is changed. A moderator suspending from the queue is the same act as a
+  // moderator suspending from the user detail, and it goes through the same id.
+  //
+  // `warn` is in §4.5's action enum but has NO permission here and no surface:
+  // a warning has to reach the user, and this platform has no in-app
+  // notification path a moderator can address. Building one would be inventing
+  // a product, not implementing a contract.
+  def({
+    id: 'moderation.queue.read',
+    displayName: 'View the moderation queue',
+    description:
+      'Read reported content and user reports awaiting review, including the report reason. Aggregated provenance only; reporter identity is never exposed (ADR-026).',
+    module: 'moderation',
+    capability: 'moderation.review',
+    category: 'read',
+    riskLevel: 'medium',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+  def({
+    id: 'moderation.report.dismiss',
+    displayName: 'Dismiss a report',
+    description: 'Close a queue item as no violation. The report is kept; only the queue item is resolved.',
+    module: 'moderation',
+    capability: 'moderation.review',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+  def({
+    id: 'moderation.content.hide',
+    displayName: 'Hide reported content',
+    description:
+      'Restrict a review so it leaves every public read path, and restore it again. Sets the Content Safety Gate’s own publication_state; no parallel mechanism.',
+    module: 'moderation',
+    capability: 'moderation.review',
+    category: 'write',
+    riskLevel: 'high',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+  def({
+    id: 'moderation.content.delete',
+    displayName: 'Delete reported content',
+    description: 'Permanently remove reported content. Not recoverable from the Controller.',
+    module: 'moderation',
+    capability: 'moderation.review',
+    category: 'destructive',
+    riskLevel: 'critical',
+    // §3: moderator ❌. Deleting is the one content action §3 withholds from
+    // the role that does the reviewing.
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'moderation.queue.assign',
+    displayName: 'Assign a queue item',
+    description: 'Take or reassign a queue item, so two moderators do not review the same report.',
+    module: 'moderation',
+    capability: 'moderation.review',
+    category: 'write',
+    riskLevel: 'low',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+
   // ── Internal admin notes (Module 08) ─────────────────────────────────────
   //
   // `12_RBAC.md` §3 states ONE authority for notes — "User — Add notes":
@@ -509,6 +583,11 @@ export const PERMISSIONS = {
   USERS_DETAIL_READ: 'users.detail.read',
   USERS_EMAIL_READ_FULL: 'users.email.read_full',
   USERS_BAN_REASON_READ: 'users.ban_reason.read',
+  MODERATION_QUEUE_READ: 'moderation.queue.read',
+  MODERATION_QUEUE_ASSIGN: 'moderation.queue.assign',
+  MODERATION_REPORT_DISMISS: 'moderation.report.dismiss',
+  MODERATION_CONTENT_HIDE: 'moderation.content.hide',
+  MODERATION_CONTENT_DELETE: 'moderation.content.delete',
   USERS_NOTES_READ: 'users.notes.read',
   USERS_NOTES_WRITE: 'users.notes.write',
   USERS_SUSPEND: 'users.account.suspend',

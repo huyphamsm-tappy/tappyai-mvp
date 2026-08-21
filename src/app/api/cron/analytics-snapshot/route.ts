@@ -130,6 +130,20 @@ export async function GET(req: Request) {
     p_today: to,
   })
 
+  // 7. moderation_queue (Module 09) — pull new reports from the two source
+  //    tables into the worklist.
+  //
+  //    NO NEW CRON, deliberately: this pipeline already runs daily and already
+  //    carries every other rollup. The function is INSERT-ONLY and idempotent
+  //    on `uq_modq_source`, so a re-run files nothing twice and — the part that
+  //    matters — never reopens an item a moderator has already resolved.
+  //
+  //    ADR-026 lives inside the SQL, not here: music reports carry the real
+  //    reporter id, content-safety reports carry NULL and an opaque provenance
+  //    id in `metadata`. This route passes no arguments and makes no such
+  //    decision.
+  const { error: moderationIngestError } = await supabase.rpc('fn_ingest_moderation_reports')
+
   return NextResponse.json({
     ok: true,
     window: { from, to },
@@ -145,5 +159,6 @@ export async function GET(req: Request) {
     snapshotRollupError: snapshotRollupError?.message ?? null,
     snapshotFinalizeError: snapshotFinalizeError?.message ?? null,
     cohortRollupError: cohortRollupError?.message ?? null,
+    moderationIngestError: moderationIngestError?.message ?? null,
   })
 }
