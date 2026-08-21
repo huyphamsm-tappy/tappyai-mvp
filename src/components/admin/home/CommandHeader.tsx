@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Badge } from '@/components/ui/badge'
-import { DepartmentSwitcher } from './DepartmentSwitcher'
 import type { ControllerHomeData } from './types'
 
 const ROLE_LABEL: Record<string, string> = {
@@ -47,9 +46,15 @@ export function CommandHeader({ data }: { data: ControllerHomeData }) {
             <Badge variant={data.actor.isOwner ? 'default' : 'muted'}>{roleLabel}</Badge>
             <span className="font-mono text-xs text-muted-foreground/60">{data.controllerVersion.slice(0, 7)}</span>
           </div>
-          {(data.mode === 'owner' || data.mode === 'department') && (
-            <DepartmentSwitcher isOwner={data.actor.isOwner} departments={data.departments} />
-          )}
+          {/* The department switcher stood here. Owner decision 2026-08-21,
+              option A: REMOVED. It offered a choice that changed nothing —
+              `selected` was read only by its own `value`, it took no callback,
+              no route accepted a department parameter, and `Actor` carries no
+              department field for the PDP to consider. Nothing in the repository
+              ever defined what selecting a department should DO
+              (FOUNDATION-10 §1/§28/§33), so rather than invent behaviour the
+              control is gone. Departments are still SHOWN below, and membership
+              still scopes navigation — that part is contract-defined and wired. */}
         </div>
       </div>
     </header>
