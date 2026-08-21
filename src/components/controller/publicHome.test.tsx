@@ -4,6 +4,7 @@ import { render, screen, cleanup, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ControllerPublicHome } from './ControllerPublicHome'
 import { setLocale } from '@/lib/i18n/useTranslation'
+import { isControllerLoginEntry } from '@/lib/auth/controllerLoginEntry'
 import { vi as viStrings, en as enStrings } from '@/lib/i18n/admin'
 
 // Controller V2 — Public Home, the VIEW.
@@ -52,9 +53,20 @@ describe('Controller Public Home — what the visitor sees', () => {
 
     // The design shows the button twice (header + hero). Both must be real
     // links to the same real destination — never a button that does nothing.
+    //
+    // ⚠️ THIS ASSERTION USED TO READ `toBe('/login')`, AND THAT PINNED A BUG.
+    // A bare `/login` gets the CONSUMER card: `/login` serves two products and
+    // chooses by `returnTo`. So the Controller's own front door offered Google
+    // and Zalo to somebody who came to sign in to the Controller. The test was
+    // green the whole time because the Public Home was written before the
+    // Controller card existed. Found by production E2E; see
+    // `publicHomeLoginDestination.test.tsx`, which checks the destination
+    // against the login page's own rule rather than against a literal.
     expect(signIn.length).toBeGreaterThan(0)
     for (const link of signIn) {
-      expect(link.getAttribute('href')).toBe('/login')
+      const href = link.getAttribute('href') ?? ''
+      expect(href.startsWith('/login')).toBe(true)
+      expect(isControllerLoginEntry(href.slice(href.indexOf('?')))).toBe(true)
     }
   })
 
