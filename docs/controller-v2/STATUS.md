@@ -752,6 +752,45 @@ The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT 
 
 ⚠️ **Verification limitation, unchanged in kind.** `/admin/users` renders inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation/CI evidence only.** No account was impersonated, and no `account_status` row was created to manufacture a result.
 
+### Module 09 Content Moderation — APPLIED TO PRODUCTION (2026-08-21)
+
+| | |
+|---|---|
+| Migration | `supabase/migrations/20260821_m09_moderation_queue.sql` |
+| SHA-256 | `55ffebe186cbfaba626eb5d88b060a542a921ae50d94f6478811e6098f38048b` (worktree ≡ git blob, re-verified immediately before applying) |
+| Production ref | `fwznnobrdctuskgrvuik` — staging `nhncoqyadofojjrnpiia` never targeted |
+| Apply | **HTTP 201** |
+| Merge | `16128c5` ([PR #138](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/138)) |
+| Deployment | built from `16128c5`; `/admin/moderation`, `/api/admin/moderation`, `/api/admin/moderation/[id]/resolve` all present |
+
+**Governed by [ADR-026](../architecture/ADR-026-moderation-queue-reporter-provenance.md) — Owner Decision B, 2026-08-21.** `04` §4.4 defines the queue with `reported_by UUID`; `content_reports` deliberately stores only an opaque, non-reversible `reporter_source_id`. Content-safety reports therefore carry `reported_by = NULL` and the opaque id in `metadata`; music reports keep the real reporter id. `content_reports` is not modified.
+
+**Read-only verification, 15 checks:**
+
+| | Verified |
+|---|---|
+| External boundary | **`PGRST205` → `42501`** on both tables · `POST /rest/v1/rpc/fn_ingest_moderation_reports` → **401** |
+| Enums | 3, label for label — `moderation_type` (5) · `moderation_status` (4) · `moderation_action_type` (9) |
+| Columns | queue 15, actions 10, exactly §4.4/§4.5. **`reported_by` nullable** — ADR-026 makes NULL a fact about the source |
+| FK delete behaviour | `moderation_actions.queue_id` → `SET NULL` (`n`) so a decision outlives its report · `actor_id` → **no action** (`a`) |
+| Indexes | 7 — the 4 from §4.4/§4.5, `uq_modq_source`, and 2 primary keys |
+| Privileges | `has_table_privilege`: `anon`, `authenticated`, `PUBLIC` all **false** for SELECT *and* INSERT on both tables |
+| Function | `fn_ingest_moderation_reports()` · `SECURITY DEFINER` · `search_path=public, pg_temp` · EXECUTE **service_role only** |
+| 🔑 ADR-026 I-3 | measured on the **deployed function body**: in the branch after `content_reports`, `auth.users` occurrences = **0**, `profiles` = **0**; `reported_by NULL` present; provenance carried |
+| ADR-026 I-4 | `content_reports` still has exactly its 8 original columns |
+| Rows | queue **0**, actions **0** — nothing manufactured, ingestion never called |
+| Boundary | `platform_settings`, `module_registry`, `user_active_days`, `anon_identity_map` all still absent; the five live Controller tables keep their grants |
+
+**Production, unauthenticated:** `/api/admin/moderation` **401** · `POST …/resolve` **401** · **0/8** moderation labels or field names leak from `/admin/moderation` · M01, M04, M08 and C11 endpoints unchanged.
+
+⚠️ **INGESTION IS MUSIC-TRACK REPORTS ONLY.** `content_reports` **has no writer anywhere in `src/`** — the table and its INSERT policy exist, but the reporting surface that would fill it was never built. `music_track_reports` does have a live writer (`POST /api/music/tracks/[id]/report`). The content-safety branch of the ingestion is implemented and verified, and produces no rows today. **Content-safety ingestion is NOT live**, and nothing here should be read as claiming it is.
+
+*(Measured twice: a first pass that scanned only `.ts` reported no writers, a second including `.tsx` reported two — both turned out to be comment lines in Module 09's own files. The conclusion is unchanged; the method was corrected.)*
+
+**Module 09 is not COMPLETE.** Schema and surface are live; behavioural verification needs an authenticated Owner session, and no moderation action has been exercised in production.
+
+---
+
 ### Module 08 internal admin notes — `user_notes` APPLIED TO PRODUCTION (2026-08-21)
 
 Merge `9f5a3d9` ([PR #135](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/135)). Applied under its own Owner authorization; no previous authorization was reused. Migration SHA-256 `5c799e0f4bbf46fe7191f8a5993d119b20e210327ec019504c9c290fed8053eb`, worktree ≡ git blob, re-verified immediately before applying.
@@ -1046,6 +1085,29 @@ Registry: **6 hubs · 10 modules · 29 permissions**. Production now holds **fiv
 | `platform_settings` | ❌ **no DDL** | 3 — contract incomplete, *and* Module 17's hub "needs an Owner decision" per taxonomy §2 |
 | `module_registry` | ❌ **no DDL** | 3 — K-8 has no authoritative schema |
 | `user_active_days` · `anon_identity_map` | ✅ (§7A) | 5 — rolling retention and anon stitching; §8C frames the first as a *performance* structure, so nothing is blocked on it |
+
+### Re-measured at `16128c5` (2026-08-21, after Module 09)
+
+Registry: **6 hubs · 11 modules · 34 permissions**. Production holds **seven** Controller tables: `account_status` · `daily_snapshots` · `cohort_metrics` · `platform_owner_recovery` · `user_notes` · `moderation_queue` · `moderation_actions`.
+
+**Every remaining item, and what actually blocks it:**
+
+| Item | Class | Blocker, measured |
+|---|---|---|
+| **All shipped modules** — 01, 04, 08, 09, C11, B8 | **4 — authenticated UAT** | This workstream holds no production session. Nothing else stands in the way of any of them. |
+| Module 17 Settings · Module 20 | 3 — Owner decision | `platform_settings` has **no DDL in `04`** (measured: 0 occurrences), *and* taxonomy §2 says Module 17's hub "needs an Owner decision" |
+| K-8 `module_registry` | 3 — Owner decision | **No DDL in `04`.** There is no authoritative schema to implement |
+| 11 unstarted Phase 8 modules | 2/3 | Each needs its own contract read; none has been measured as contract-complete |
+| Phase 7 (5 items) | 3 — Owner decision | Unchanged |
+| `/org/memberships` | 3 — Owner decision | F-10 gate plus four further decisions; the repository still contains no authorization |
+| K-1 · K-3 · K-4 · **K-7** | 5 — future infrastructure | K-7's evidence is unchanged: `src/lib/controller/modules/` holds three files and none imports another; rule 2's connector layer has no directory |
+| Rolling retention · anon stitching | 5 | `user_active_days` and `anon_identity_map` absent; `06` §8C frames the first as a *performance* structure, so nothing is blocked on it |
+
+**Class 1 is empty, and class 2 has no measured candidate.** The two tables with authoritative DDL that were still absent — `moderation_queue` and `moderation_actions` — are now live. What remains absent has **no DDL to implement**.
+
+**The next genuinely unblocked work is Owner UAT**, on five surfaces that are all shipped and production-verified.
+
+---
 
 #### 🛑 Correction: Module 09 is NOT contract-complete (2026-08-21)
 
