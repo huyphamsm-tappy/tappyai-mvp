@@ -124,30 +124,30 @@ const deny = (reason: CorporateIdentityDenial): CorporateIdentityResult => ({ ok
  * state, so it is trivially testable and cannot be made to depend on anything
  * the caller controls beyond the verified user object itself.
  */
-export function checkCorporateIdentity(
-  user: VerifiedIdentity | null | undefined
+/**
+ * The ADDRESS half of the rule: is this string shaped like a corporate mailbox?
+ *
+ * Extracted from `checkCorporateIdentity` (below) so the Controller's Login
+ * screen can refuse `someone@gmail.com` BEFORE mailing a one-time code to it,
+ * instead of letting the visitor finish a sign-in and only then meet
+ * `/access-denied?reason=not_corporate`.
+ *
+ * 🔑 EXTRACTED, NEVER DUPLICATED. This module warns above that the rule "can be
+ * silently weakened — or pointed at an attacker-controlled domain". A second
+ * copy living in a React component is precisely that failure mode. There is one
+ * implementation; `checkCorporateIdentity` calls it, and a test asserts the two
+ * cannot return different verdicts for the same address.
+ *
+ * ⚠️ THIS ALONE IS NOT THE BOUNDARY. The address here is UNVERIFIED — anybody
+ * can type `ceo@tappyai.com` into a form. What makes the boundary real is
+ * `checkCorporateIdentity`, which also demands a CONFIRMED address on a real
+ * session and runs server-side. Client-side use of this function is a courtesy
+ * to the visitor, not a gate.
+ */
+export function checkCorporateEmailAddress(
+  email: string | null | undefined
 ): CorporateIdentityResult {
-  if (!user) return deny('NO_IDENTITY')
-
-  // Anonymous sign-ins are a consumer-app feature on this shared project. They
-  // carry no email, so the NO_EMAIL branch would also catch them — this check
-  // exists so the denial reason is accurate and so a future Supabase change that
-  // gave anonymous users an address could not quietly reclassify them.
-  if (user.is_anonymous === true) return deny('ANONYMOUS_IDENTITY')
-
-  const email = user.email
   if (typeof email !== 'string' || email.length === 0) return deny('NO_EMAIL')
-
-  // `email_confirmed_at` specifically — NOT `confirmed_at`. The latter is
-  // Supabase's coalesce of email *and phone* confirmation, so a phone-confirmed
-  // account with an unconfirmed `@tappyai.com` address would satisfy it. That
-  // would let anyone who can type an address into signup claim a corporate
-  // identity, which is the entire attack this boundary exists to stop.
-  //
-  // A pending `new_email` is deliberately ignored: only the currently confirmed
-  // address counts, so an unconfirmed change request grants nothing.
-  const confirmedAt = user.email_confirmed_at
-  if (typeof confirmedAt !== 'string' || confirmedAt.length === 0) return deny('EMAIL_UNVERIFIED')
 
   if (hasControlOrSpace(email)) return deny('MALFORMED_EMAIL')
 
@@ -176,6 +176,38 @@ export function checkCorporateIdentity(
   if (normalized !== CORPORATE_EMAIL_DOMAIN) return deny('NON_CORPORATE_DOMAIN')
 
   return { ok: true, email, domain: normalized }
+}
+
+export function checkCorporateIdentity(
+  user: VerifiedIdentity | null | undefined
+): CorporateIdentityResult {
+  if (!user) return deny('NO_IDENTITY')
+
+  // Anonymous sign-ins are a consumer-app feature on this shared project. They
+  // carry no email, so the NO_EMAIL branch would also catch them — this check
+  // exists so the denial reason is accurate and so a future Supabase change that
+  // gave anonymous users an address could not quietly reclassify them.
+  if (user.is_anonymous === true) return deny('ANONYMOUS_IDENTITY')
+
+  const email = user.email
+  if (typeof email !== 'string' || email.length === 0) return deny('NO_EMAIL')
+
+  // `email_confirmed_at` specifically — NOT `confirmed_at`. The latter is
+  // Supabase's coalesce of email *and phone* confirmation, so a phone-confirmed
+  // account with an unconfirmed `@tappyai.com` address would satisfy it. That
+  // would let anyone who can type an address into signup claim a corporate
+  // identity, which is the entire attack this boundary exists to stop.
+  //
+  // A pending `new_email` is deliberately ignored: only the currently confirmed
+  // address counts, so an unconfirmed change request grants nothing.
+  const confirmedAt = user.email_confirmed_at
+  if (typeof confirmedAt !== 'string' || confirmedAt.length === 0) return deny('EMAIL_UNVERIFIED')
+
+  // The address rule itself lives in ONE place — see `checkCorporateEmailAddress`
+  // above. The identity-level checks (anonymous, present, CONFIRMED) stay here
+  // and deliberately run FIRST: an unconfirmed address must never reach a
+  // verdict that says "corporate".
+  return checkCorporateEmailAddress(email)
 }
 
 /** Denial text for logs and the 403 envelope. Names the policy, leaks no state. */

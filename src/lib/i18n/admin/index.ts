@@ -446,6 +446,29 @@ export const vi: Record<string, string> = {
   'admin.settings.no': 'Không',
   'admin.settings.editableNotice': '✏️ Cài đặt có thể chỉnh sửa cần bảng platform_settings, hiện chưa nằm trong schema Kiến trúc v1.1 đã được chốt. Việc thêm bảng này là một Thay đổi kiến trúc, cần có ADR mới và được chủ sở hữu phê duyệt trước khi triển khai.',
 
+  // Controller sign-in card — shown at /login ONLY when the visitor was sent
+  // there from the Controller. Email only; the consumer app's Google/Zalo card
+  // is untouched and still serves every other visitor.
+  'admin.login.title': 'Đăng nhập Controller',
+  'admin.login.subtitle': 'Chỉ dành cho hòm thư @tappyai.com đã được xác minh.',
+  'admin.login.emailLabel': 'Email công ty',
+  'admin.login.emailPlaceholder': 'ten@tappyai.com',
+  'admin.login.sendCode': 'Gửi mã đăng nhập',
+  'admin.login.sending': 'Đang gửi…',
+  'admin.login.codeSentTo': 'Đã gửi mã đăng nhập tới',
+  'admin.login.codeLabel': 'Mã xác minh',
+  'admin.login.codePlaceholder': '6 chữ số',
+  'admin.login.verify': 'Xác minh',
+  'admin.login.verifying': 'Đang xác minh…',
+  'admin.login.changeEmail': 'Dùng email khác',
+  'admin.login.errorEmailRequired': 'Hãy nhập email công ty của bạn.',
+  'admin.login.errorEmailMalformed': 'Địa chỉ email này không hợp lệ.',
+  'admin.login.errorEmailDomain': 'Controller chỉ nhận hòm thư @tappyai.com.',
+  'admin.login.errorSendFailed': 'Không gửi được mã đăng nhập. Hãy thử lại.',
+  'admin.login.errorCodeRequired': 'Hãy nhập mã gồm 6 chữ số.',
+  'admin.login.errorVerifyFailed': 'Mã không đúng hoặc đã hết hạn.',
+  'admin.login.footer': '© 2025 TappyAI. All rights reserved.',
+
   // Public Home — the Controller's front door (/controller). The ONE Controller
   // screen an anonymous visitor can reach, so every string here is read by
   // people who are not admins. Copy follows the Owner-approved design.
@@ -910,6 +933,27 @@ export const en: Record<string, string> = {
   'admin.settings.yes': 'Yes',
   'admin.settings.no': 'No',
   'admin.settings.editableNotice': '✏️ Editable settings require a platform_settings table, which is not part of the frozen Architecture v1.1 schema. Adding it is a Design Change that needs a new ADR + owner approval before implementation.',
+
+  // Controller sign-in card — see the Vietnamese block for the scoping rule.
+  'admin.login.title': 'Sign in to Controller',
+  'admin.login.subtitle': 'For verified @tappyai.com mailboxes only.',
+  'admin.login.emailLabel': 'Corporate email',
+  'admin.login.emailPlaceholder': 'you@tappyai.com',
+  'admin.login.sendCode': 'Send sign-in code',
+  'admin.login.sending': 'Sending…',
+  'admin.login.codeSentTo': 'Sign-in code sent to',
+  'admin.login.codeLabel': 'Verification code',
+  'admin.login.codePlaceholder': '6 digits',
+  'admin.login.verify': 'Verify',
+  'admin.login.verifying': 'Verifying…',
+  'admin.login.changeEmail': 'Use a different email',
+  'admin.login.errorEmailRequired': 'Enter your corporate email.',
+  'admin.login.errorEmailMalformed': 'That is not a valid email address.',
+  'admin.login.errorEmailDomain': 'The Controller accepts @tappyai.com mailboxes only.',
+  'admin.login.errorSendFailed': 'The sign-in code could not be sent. Please try again.',
+  'admin.login.errorCodeRequired': 'Enter the 6-digit code.',
+  'admin.login.errorVerifyFailed': 'That code is wrong or has expired.',
+  'admin.login.footer': '© 2025 TappyAI. All rights reserved.',
 
   // Public Home — see the Vietnamese block for why these are visitor-facing.
   // The brand ("TappyAI", "Controller") is a proper noun and stays untranslated.

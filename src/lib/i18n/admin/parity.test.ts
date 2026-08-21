@@ -119,6 +119,8 @@ describe('admin i18n — the two locales carry the same keys', () => {
     'admin.publicHome.badge',
     'admin.publicHome.headlineBrand',
     'admin.publicHome.footer',
+    // Controller Login: same copyright line, same reason.
+    'admin.login.footer',
   ]
 
   it('🔑 no NEW Vietnamese value is a copy of its English one', () => {
