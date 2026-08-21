@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-21.2'
+export const REGISTRY_VERSION = '2026-08-21.3'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -414,16 +414,18 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     // the role that does the reviewing.
     defaultRoles: ['admin', 'super_admin'],
   }),
-  def({
-    id: 'moderation.queue.assign',
-    displayName: 'Assign a queue item',
-    description: 'Take or reassign a queue item, so two moderators do not review the same report.',
-    module: 'moderation',
-    capability: 'moderation.review',
-    category: 'write',
-    riskLevel: 'low',
-    defaultRoles: ['moderator', 'admin', 'super_admin'],
-  }),
+  // `moderation.queue.assign` was here and has been REMOVED (2026-08-21).
+  //
+  // `12_RBAC.md` §3 lists exactly SEVEN moderation rows — View, Dismiss, Warn,
+  // Hide content, Delete content, Suspend user, Ban user — and none of them is
+  // "Assign". `04` §4.4 does give the queue an `assigned_to` column, but a
+  // COLUMN IS NOT AN AUTHORITY: it says the queue can record an assignee, not
+  // who is allowed to set one.
+  //
+  // So the permission was invented here, with a role set nobody granted, and it
+  // had no surface — a dead capability carrying a made-up authority. Removing
+  // it is the correction; adding assignment properly needs an Owner decision on
+  // who may assign, which §3 does not answer.
 
   // ── Internal admin notes (Module 08) ─────────────────────────────────────
   //
@@ -584,7 +586,6 @@ export const PERMISSIONS = {
   USERS_EMAIL_READ_FULL: 'users.email.read_full',
   USERS_BAN_REASON_READ: 'users.ban_reason.read',
   MODERATION_QUEUE_READ: 'moderation.queue.read',
-  MODERATION_QUEUE_ASSIGN: 'moderation.queue.assign',
   MODERATION_REPORT_DISMISS: 'moderation.report.dismiss',
   MODERATION_CONTENT_HIDE: 'moderation.content.hide',
   MODERATION_CONTENT_DELETE: 'moderation.content.delete',

@@ -236,6 +236,7 @@ export const vi: Record<string, string> = {
   'admin.role.owner': 'Chủ nền tảng',
 
   // Shared/common (loading, empty, errors, buttons — reused across dashboards)
+  'admin.common.cancel': 'Huỷ',
   'admin.common.loading': 'Đang tải…',
   'admin.common.loadMore': 'Tải thêm',
   'admin.common.noDataRange': 'Không có dữ liệu cho khoảng thời gian này.',
@@ -751,6 +752,7 @@ export const en: Record<string, string> = {
   'admin.role.owner': 'Platform Owner',
 
   // Shared/common (loading, empty, errors, buttons — reused across dashboards)
+  'admin.common.cancel': 'Cancel',
   'admin.common.loading': 'Loading…',
   'admin.common.loadMore': 'Load more',
   'admin.common.noDataRange': 'No data for this range.',
