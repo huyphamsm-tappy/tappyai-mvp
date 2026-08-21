@@ -1042,10 +1042,41 @@ Registry: **6 hubs · 10 modules · 29 permissions**. Production now holds **fiv
 
 | Table | DDL in `04`? | Class |
 |---|---|---|
-| `moderation_queue` · `moderation_actions` | ✅ **both present** | **2 — needs a migration authorization.** Module 09's hub is *not* an open question: taxonomy §1 places Content Moderation in `tappy.hub.user`, which is already registered, and `12_RBAC` §3 gives the seven moderation actions a full per-role matrix. **Contract-complete.** |
+| `moderation_queue` · `moderation_actions` | ✅ both present | **3 — Owner decision required.** ~~Contract-complete~~ — see the correction below. |
 | `platform_settings` | ❌ **no DDL** | 3 — contract incomplete, *and* Module 17's hub "needs an Owner decision" per taxonomy §2 |
 | `module_registry` | ❌ **no DDL** | 3 — K-8 has no authoritative schema |
 | `user_active_days` · `anon_identity_map` | ✅ (§7A) | 5 — rolling retention and anon stitching; §8C frames the first as a *performance* structure, so nothing is blocked on it |
+
+#### 🛑 Correction: Module 09 is NOT contract-complete (2026-08-21)
+
+The row above first said class 2. **That was wrong**, and the error is worth recording rather than quietly editing away: the hub *is* settled — taxonomy §1 places Content Moderation in `tappy.hub.user`, already registered, and `12_RBAC` §3 gives its seven actions a full per-role matrix — so the classification was made before asking **what would feed the queue**.
+
+Measured afterwards: **two report tables already exist and already receive real reports in production.**
+
+| Table | Source | Reporter identity |
+|---|---|---|
+| `music_track_reports` | live route `POST /api/music/tracks/[id]/report` | `reporter_id UUID REFERENCES auth.users(id)` — raw id stored |
+| `content_reports` | Content Safety Gate, `20260817` | 🔑 **`reporter_source_id TEXT` — opaque and non-reversible. The raw user id is deliberately absent** |
+
+`content_reports` states its design in its own comments: *"a report set is a map of who reported whom"*, which is why a reporter cannot read back even their own report, and why the raw id is not stored at all.
+
+`04` §4.4 defines the queue with **`reported_by UUID REFERENCES profiles(id)`** — the raw reporter id.
+
+**So the two authoritative sources disagree about a privacy property, not about a schema detail.** Ingesting `content_reports` into `moderation_queue` either leaves `reported_by` permanently NULL — making the column a lie about what the queue holds — or re-attaches identity the gate was built to discard, which is not merely disallowed but **impossible**: the derivation is non-reversible.
+
+Nothing here is derivable by measurement, and `00_Constitution` §8.2 makes a resolution of this kind a Design Change requiring an ADR — the same shape as the conflict Owner Decision A settled for ADR-023.
+
+**The migration itself is not what is blocked.** §4.4 and §4.5 are verbatim and could be applied. What is blocked is what feeds the queue, and a moderation queue with nothing feeding it is not Module 09 — it is an empty table with a page in front of it.
+
+**Minimum decision required — what does `reported_by` hold for a content-safety report?**
+
+| | Choice | Consequence |
+|---|---|---|
+| **A** | Leave `reported_by` NULL for content-safety reports | Gate anonymity preserved absolutely. Moderators cannot tell two reporters apart, so repeated reports from one source look like corroboration — the exact failure `content_reports`' UNIQUE constraint exists to prevent |
+| **B** | Carry `reporter_source_id` into `metadata`; `reported_by` stays NULL | Preserves the gate's design **and** restores the distinguish-without-identifying property it was built for. Strictly more useful than A at no privacy cost |
+| **C** | Store raw reporter ids in the gate | Reverses a shipped, deliberate privacy design. Needs its own ADR; recorded for completeness, not recommended |
+
+---
 
 **Class 1 remains empty.** The route/page audit is unchanged from `df53496`: five page-less routes are sub-actions or utilities, `/security/sessions` is surfaced, and `/org/memberships` stays class 3 behind the F-10 gate — the repository contains no authorization that changes that.
 
