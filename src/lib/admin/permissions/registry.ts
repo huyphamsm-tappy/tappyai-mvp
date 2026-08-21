@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-20.3'
+export const REGISTRY_VERSION = '2026-08-21.1'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -351,6 +351,38 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     riskLevel: 'high',
     defaultRoles: ['admin', 'super_admin'],
   }),
+  // ── Internal admin notes (Module 08) ─────────────────────────────────────
+  //
+  // `12_RBAC.md` §3 states ONE authority for notes — "User — Add notes":
+  // analyst ❌ · moderator ✅ · admin ✅ · super_admin ✅. It does not state a
+  // separate READ authority, so both ids carry the SAME roles: whoever may
+  // write a note may read the notes, and analyst gets neither.
+  //
+  // Two ids rather than one because the actions are genuinely different and
+  // the registry's shape requires it — and because widening READ later (should
+  // the Owner decide analyst may see notes) must not also widen WRITE.
+  def({
+    id: 'users.notes.read',
+    displayName: 'Read internal notes',
+    description:
+      'Read the internal admin notes kept about an account. The subject can never read these; they are an operator record, not a message to the user.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'read',
+    riskLevel: 'high',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
+  def({
+    id: 'users.notes.write',
+    displayName: 'Add an internal note',
+    description:
+      'Add or pin an internal admin note on an account (10_User_Management.md §3.9).',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['moderator', 'admin', 'super_admin'],
+  }),
   def({
     id: 'users.account.suspend',
     displayName: 'Suspend a user',
@@ -477,6 +509,8 @@ export const PERMISSIONS = {
   USERS_DETAIL_READ: 'users.detail.read',
   USERS_EMAIL_READ_FULL: 'users.email.read_full',
   USERS_BAN_REASON_READ: 'users.ban_reason.read',
+  USERS_NOTES_READ: 'users.notes.read',
+  USERS_NOTES_WRITE: 'users.notes.write',
   USERS_SUSPEND: 'users.account.suspend',
   USERS_UNSUSPEND: 'users.account.unsuspend',
   USERS_BAN: 'users.account.ban',
