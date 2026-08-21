@@ -752,6 +752,36 @@ The gap this document opened earlier the same day — *"BACKEND COMPLETE · NOT 
 
 ⚠️ **Verification limitation, unchanged in kind.** `/admin/users` renders inside `/admin`, which needs an authenticated `@tappyai.com` session this session does not hold. **Production render not visually verified; unit/mutation/CI evidence only.** No account was impersonated, and no `account_status` row was created to manufacture a result.
 
+### C11 Session Security — the Controller surface (2026-08-21)
+
+Merge `8b9bf3b` ([PR #131](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/131)). **No migration, no new permission, no Owner decision** — everything this needed had already shipped.
+
+**C11 had been accepted and in production since 2026-08-15** — migration `20260814_c11_session_security.sql`, ADR-021, three working APIs, two registry permissions — **and no surface at all.** An operator could ban somebody and had no way to see, let alone end, the session that ban does not touch. That gap was the highest-value dependency-safe work left in the repository.
+
+**A panel on the user detail, not a page.** `11_…` §7 refuses a platform-wide session list outright — *"a compromise-amplifying surface and nothing requires it"* — and scopes the inventory to **one subject at a time, addressed by `user_id`**. The user detail *is* that subject, and it is where an operator already stands when deciding whether a ban needs a sign-out with it. A `/admin/security/sessions` route would have contradicted the contract it implements.
+
+| Contract clause | How it is held |
+|---|---|
+| §7 listing → `security.sessions.read` | page derives it from that permission alone |
+| §5.1 revocation → `security.sessions.revoke` | **kept separate** — an operator may be trusted to *see* where somebody is signed in without being trusted to sign them out |
+| §7 never exposed: tokens, cookies, **IP**, **raw user-agent** | a test feeds the panel a response carrying all four and asserts none reaches the DOM |
+| §7 limit ≤ 50 | requests 20 |
+| §5.1 Owner may not be signed out | `owner_protected` renders as a **refusal**, never as "0 revoked" |
+| §6 a forced logout needs a recorded reason | one predicate gates both the button and the handler |
+
+**Mutation 22/23 killed.** Three findings kept:
+
+- **C06** survived because every failing case stubbed a non-2xx *response* and none stubbed a *rejected promise* — a network failure took the other branch and reported "no sessions".
+- **C11** survived because the other failure cases also produced unusable bodies, so the outer `catch` reached the right message **by accident**. A 403 carrying a well-formed success body separates the check from the accident.
+- **C17/C18/C19** exposed a real design flaw: the reason rule was written **twice**, once in the button's `disabled` and once in the handler, so either could be deleted with nothing failing. Now one predicate.
+- **C22/C23** survived the component suite entirely, by collapsing `sessions.revoke` into `sessions.read`. The panel behaved perfectly **on the wrong input** — component tests hand it capabilities directly, so they can prove it obeys them and cannot prove it is *given* the right ones. A second suite now covers that seam at both ends.
+
+C17 still survives and is an **equivalent mutant**, argued: with the button disabled by that same predicate, the handler's guard has no reachable caller. It stays because it is one rule applied at two layers, not two rules.
+
+**Production, read-only:** deployment built from `8b9bf3b`; `/api/admin/security/sessions` **401**, `POST …/force-logout` **401**, `DELETE …/[id]` **401**; **0/9** session labels or field names leak to an unauthenticated visitor; M01 and M04 endpoints unchanged.
+
+---
+
 ### K-6 / B8 — break-glass Owner recovery: **ENGINEERING COMPLETE + PRODUCTION MIGRATION APPLIED** (2026-08-20)
 
 Applied under its own Owner authorization. Implementation was already merged as `25274b5` (PR #122); only the production schema was outstanding.
@@ -930,6 +960,20 @@ Measured from the repository at `81bfa06`, not from the entries above. Registry 
 | **Kernel / security** — K-1 capability gate · K-2 runtime config · K-3 event producers · K-4 C6 debt · ~~K-5 B14~~ ✅ · ~~K-6 B8~~ ✅ **migration APPLIED to production** · K-7 guard §1.1–1.3 (near-vacuous today) · K-8 `module_registry` | 5 | 4 | 2 | **0** |
 | **Legacy migration** | 0 | — | — | ✅ **COMPLETE** |
 | **Verification / UAT** — BL-002 · authenticated E2E · Owner final UAT | 3 | 3 | 3 | **0** |
+
+**Re-measured at `8b9bf3b` (2026-08-21). Nothing dependency-safe remains.** Every classification below is from the repository, not from the previous table:
+
+| Class | Items | Why it cannot start |
+|---|---|---|
+| 1 — safe to implement now | **0** | — |
+| 2 — needs a NEW migration authorization | Module 09 moderation · Module 17/20 settings · K-2 · K-8 | `moderation_queue`, `moderation_actions`, `platform_settings`, `module_registry` all probe `PGRST205` |
+| 3 — Owner decision | Phase 7's five · Module 17 hub · Module 20 classification · 2 unregistered hubs · **ban → session revocation** | no authoritative source answers them |
+| 4 — authenticated UAT | M01 · M04 Part A · M04 retention · M08 · C11 | this workstream holds no production session |
+| 5 — future kernel | K-1 · K-3 · K-4 · **K-7** | the architecture they guard does not exist yet |
+
+**K-7 is formally DEFERRED, and the check was run rather than assumed.** `src/lib/controller/modules/` holds **two** files and **neither imports the other**, so §1 rule 1 has nothing to catch; §1 rule 2's connector layer has no directory at all; §1 rule 3 is already covered in part by `no-adhoc-service-role-client`. A guard over an empty directory structure is a decorative test, and building it would have reduced the burn-down without protecting anything.
+
+**One Owner decision surfaced by this workstream, not decided here.** `10_…` defines a ban as *"Revokes ALL active Supabase sessions"* and marks it **NOT TRUE YET**, prescribing a manual `force-logout` after each ban. The mechanism now exists end-to-end. Wiring it raises a genuine authorization question this workstream must not answer: ban requires `users.account.ban`, revocation requires `security.sessions.revoke`, and an actor holding the first but not the second would cause a revocation they may not perform directly. Either ban's own permission covers the whole documented effect of a ban, or the revocation additionally requires the session permission. Both are defensible; choosing without the Owner would create the second authorization path §10 forbids.
 
 **K-5 (B14) and K-6 (B8) are both RESOLVED** — see the entries above. **Module 08 is complete end-to-end.** What remains is gated on one of three things, and nothing else: an unapplied **production migration** (B8's, and one per remaining Phase 8 module), an **Owner decision** that no authoritative source answers (Phase 7's five, Module 17's hub, Module 20's classification), or an **authenticated production session** this workstream does not hold (BL-002, E2E, final UAT).
 
