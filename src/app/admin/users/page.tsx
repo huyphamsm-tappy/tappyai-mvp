@@ -34,6 +34,12 @@ export default async function AdminUsersPage() {
     // itself server-side; this stops the box from advertising a search that
     // will come back 403.
     emailSearch: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_EMAIL_READ_FULL),
+    // Component 11. Two independent permissions, not one: an operator may be
+    // trusted to SEE where somebody is signed in without being trusted to sign
+    // them out. `11_…` §7 grants listing to `security.sessions.read`; §5.1
+    // keeps revocation on `security.sessions.revoke`.
+    sessionsRead: permissionEngine.can(ctx.actor, PERMISSIONS.SECURITY_SESSIONS_READ),
+    sessionsRevoke: permissionEngine.can(ctx.actor, PERMISSIONS.SECURITY_SESSIONS_REVOKE),
   }
 
   return <UsersManager can={can} />
