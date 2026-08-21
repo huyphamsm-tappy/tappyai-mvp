@@ -17,8 +17,9 @@
 import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import { ControllerCore } from '../core'
 import type { AuditSink, EventSink, HubDescriptor, ModuleManifest } from '../types'
-import { securityHub, securityAuditModule } from '../modules/securityAuditModule'
-import { userHub, userManagementModule } from '../modules/userManagementModule'
+import { securityAuditModule } from '../modules/securityAuditModule'
+import { userManagementModule } from '../modules/userManagementModule'
+import { userHub, securityHub } from '../modules/hubs'
 import { moderationModule } from '../modules/moderationModule'
 
 // ── Hubs (real, backed by shipped modules) ──────────────────────────────────

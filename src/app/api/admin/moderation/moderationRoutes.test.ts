@@ -178,14 +178,31 @@ describe('🔑 authorization follows the action', () => {
   // registry's role set, the other collapsed the PAGE's derivation. Neither is
   // reachable through the route handlers, and both hand a moderator the delete
   // power `12_RBAC` §3 withholds.
-  it('🔑 §3’s role matrix for the five moderation permissions, pinned', async () => {
+  it('🔑 the registry holds EXACTLY the permissions §3 authorises — no more', async () => {
+    // `moderation.queue.assign` was invented here and removed on 2026-08-21:
+    // §3 lists seven moderation rows and none of them is "Assign". `04` §4.4
+    // does give the queue an `assigned_to` column, but a COLUMN IS NOT AN
+    // AUTHORITY. Nothing caught it because nothing asserted the SET.
+    const { permissionRegistry } = await import('@/lib/admin/permissions/registry')
+    // `byModule` rather than filtering `all` by prefix: the module field is
+    // what the registry itself groups by, so a permission filed under the wrong
+    // module would be caught here too.
+    const ids = permissionRegistry.byModule('moderation').map((d) => d.id)
+    expect([...ids].sort()).toEqual([
+      'moderation.content.delete',
+      'moderation.content.hide',
+      'moderation.queue.read',
+      'moderation.report.dismiss',
+    ])
+  })
+
+  it('🔑 §3’s role matrix for the four moderation permissions, pinned', async () => {
     const { permissionRegistry } = await import('@/lib/admin/permissions/registry')
     const roles = (id: string) => [...(permissionRegistry.get(id as never)!.defaultRoles as readonly string[])].sort()
     const MOD_PLUS = ['admin', 'moderator', 'super_admin']
     const ADMIN_PLUS = ['admin', 'super_admin']
 
     expect(roles('moderation.queue.read')).toEqual(MOD_PLUS)
-    expect(roles('moderation.queue.assign')).toEqual(MOD_PLUS)
     expect(roles('moderation.report.dismiss')).toEqual(MOD_PLUS)
     expect(roles('moderation.content.hide')).toEqual(MOD_PLUS)
     // §3: "Moderation — Delete content | ❌ analyst | ❌ moderator | ✅ | ✅"
@@ -195,7 +212,7 @@ describe('🔑 authorization follows the action', () => {
   it('🔑 analyst holds none of them — §3 gives analyst ❌ on every moderation row', async () => {
     const { permissionRegistry } = await import('@/lib/admin/permissions/registry')
     for (const id of [
-      'moderation.queue.read', 'moderation.queue.assign', 'moderation.report.dismiss',
+      'moderation.queue.read', 'moderation.report.dismiss',
       'moderation.content.hide', 'moderation.content.delete',
     ]) {
       expect(permissionRegistry.get(id as never)!.defaultRoles, id).not.toContain('analyst')

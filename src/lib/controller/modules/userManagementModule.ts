@@ -11,9 +11,13 @@
 // DESCRIBES the shipped surface exactly as `securityAuditModule` describes the
 // shipped Audit surface.
 //
-// Hub and module live in one file, following the Security Hub's precedent: a
-// hub whose modules are declared elsewhere has no single place that states what
-// it is for.
+// The hub USED to live in this file, following the Security Hub's precedent.
+// That reasoning — "a hub whose modules are declared elsewhere has no single
+// place that states what it is for" — held only while the hub had exactly one
+// module. `FOUNDATION_01_CONTRACTS.md` §2 says a Hub "contains and governs
+// modules", so once Module 09 joined, the container was being defined inside
+// one of the things it contains, and Moderation had to import THIS FILE to
+// reach it. `userHub` now lives in `hubs.ts` and is re-exported below.
 
 import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import type { HubDescriptor, ModuleManifest } from '../types'
@@ -38,16 +42,12 @@ import type { HubDescriptor, ModuleManifest } from '../types'
  * same state Phase 4 measured for `tappy.hub.security` and recorded rather than
  * overstated. It becomes load-bearing when Moderation (09) and CRM (11) join.
  */
-export const userHub: HubDescriptor = {
-  id: 'tappy.hub.user',
-  name: 'User',
-  version: '1.0.0',
-  owner: 'platform',
-  permissionScope: PERMISSIONS.USERS_LIST_READ,
-  navigationGroup: 'admin.nav.group.user',
-  navigationOrder: 5,
-  lifecycle: 'stable',
-}
+// Defined in `hubs.ts` since 2026-08-21 and re-exported here so existing
+// importers are unaffected. It moved because Module 09 joined this hub and had
+// to import the descriptor — from a MODULE file, which is the module → module
+// dependency §1 rule 1 forbids.
+export { userHub } from './hubs'
+import { userHub } from './hubs'
 
 /**
  * Module 08 — User Management.

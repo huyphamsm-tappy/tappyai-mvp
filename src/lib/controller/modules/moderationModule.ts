@@ -1,6 +1,6 @@
 import type { ModuleManifest } from '../types'
 import { PERMISSIONS } from '@/lib/admin/permissions/registry'
-import { userHub } from './userManagementModule'
+import { userHub } from './hubs'
 
 // Module 09 Content Moderation — the manifest.
 //

@@ -15,6 +15,58 @@ import { vi as viStrings, en as enStrings } from './index'
 const viKeys = Object.keys(viStrings).sort()
 const enKeys = Object.keys(enStrings).sort()
 
+/**
+ * Every literal key the admin UI passes to `t()`.
+ *
+ * 🔑 THE HOLE THIS CLOSES. The parity tests below prove vi and en carry the
+ * SAME keys — and say nothing about whether a key the code actually uses is in
+ * either. `admin.common.cancel` shipped to production in two components on
+ * 2026-08-21 with no entry at all, so both Cancel buttons rendered the raw key.
+ * Symmetry was perfect; the catalogue was simply missing it.
+ *
+ * Template keys (`t(\`admin.x.${v}\`)`) are deliberately not collected — they
+ * are covered by the enum-shaped assertions in the suites that own them.
+ */
+function literalKeysUsedInCode(): { key: string; file: string }[] {
+  const fs = require('node:fs') as typeof import('node:fs')
+  const path = require('node:path') as typeof import('node:path')
+  const out: { key: string; file: string }[] = []
+  const walk = (dir: string) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name)
+      if (e.isDirectory()) walk(p)
+      else if (/\.tsx?$/.test(e.name) && !e.name.includes('.test.')) {
+        const text = fs.readFileSync(p, 'utf8')
+        // `t('…')` only, and only keys shaped like ours — `.select('hashtags')`
+        // ends in `t(` too, which is how the first version of this scan
+        // produced three false positives from a Supabase query builder.
+        for (const m of text.matchAll(/\bt\('(admin\.[a-zA-Z0-9_.]+)'\)/g)) {
+          out.push({ key: m[1], file: p })
+        }
+      }
+    }
+  }
+  const root = path.join(__dirname, '..', '..', '..')
+  walk(path.join(root, 'components', 'admin'))
+  walk(path.join(root, 'app', 'admin'))
+  return out
+}
+
+describe('🔑 admin i18n — every key the UI asks for actually exists', () => {
+  const used = literalKeysUsedInCode()
+
+  it('the scan found keys at all — otherwise the assertion below is vacuous', () => {
+    expect(used.length).toBeGreaterThan(50)
+  })
+
+  it('🔑 no literal `t(...)` key is missing from the catalogue', () => {
+    const missing = used
+      .filter(({ key }) => !(key in viStrings) || !(key in enStrings))
+      .map(({ key, file }) => `${key}  <-  ${file}`)
+    expect(missing).toEqual([])
+  })
+})
+
 describe('admin i18n — the two locales carry the same keys', () => {
   it('every Vietnamese key exists in English', () => {
     expect(viKeys.filter((k) => !(k in enStrings))).toEqual([])
