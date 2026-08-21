@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { AdminError } from '@/lib/admin/rbac'
 
 // Module 09 — the ROUTE half.
 //
@@ -13,6 +14,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const h = vi.hoisted(() => ({
   requirePermission: vi.fn(),
+  requireAdminIdentity: vi.fn(),
   isSameOrigin: vi.fn(() => true),
   rateLimit: vi.fn(),
   writeAuditLog: vi.fn(),
@@ -38,7 +40,11 @@ vi.mock('@/lib/admin/rbac', async (orig) => {
 })
 vi.mock('@/lib/admin/permissions', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>
-  return { ...actual, requirePermission: h.requirePermission }
+  return {
+    ...actual,
+    requirePermission: h.requirePermission,
+    requireAdminIdentity: h.requireAdminIdentity,
+  }
 })
 vi.mock('@/lib/admin/permissions/engine', () => ({ permissionEngine: engine }))
 vi.mock('@/lib/admin/permissions/decisionAudit', async (orig) => {
@@ -125,6 +131,7 @@ beforeEach(() => {
   h.reviewDeleted = false
   h.listResult = { data: [{ id: QUEUE_ID, type: 'review_report', status: 'pending', priority: 1 }], error: null }
   h.requirePermission.mockResolvedValue(ctx())
+  h.requireAdminIdentity.mockResolvedValue({ user: ctx().user, actor: ctx().actor })
   h.isSameOrigin.mockReturnValue(true)
   h.rateLimit.mockResolvedValue({ ok: true, retryAfter: 0 })
 })
@@ -160,7 +167,7 @@ describe('🔑 authorization follows the action', () => {
 
   it('a refused actor changes nothing', async () => {
     h.requirePermission.mockRejectedValueOnce(
-      Object.assign(new Error('Forbidden'), { status: 403, code: 'FORBIDDEN' })
+      new AdminError('FORBIDDEN', 'Forbidden', 403)
     )
     const res = await resolve({ kind: 'delete', reason: REASON })
     expect(res.status).toBeGreaterThanOrEqual(400)
@@ -246,6 +253,135 @@ describe('🔑 authorization follows the action', () => {
         expect(code, `${f.join('/')} references ${r}`).not.toContain(r)
       }
     }
+  })
+})
+
+// ===========================================================================
+// 🔑 F-2 — NOTHING IS PARSED BEFORE THE CALLER IS KNOWN
+//
+// The pre-UAT audit reproduced this against production: `resolve` answered
+// **422** to an anonymous caller, because it validated the id and body BEFORE
+// `requirePermission`. Its four sibling mutating routes all answered 401.
+//
+//   resolve   isUuid → safeParse → requirePermission → isSameOrigin → rateLimit
+//   ban/notes/force-logout   requirePermission → isSameOrigin → rateLimit → safeParse
+//
+// So an unauthenticated, unrate-limited, cross-origin caller made the server
+// run `req.json()` and a zod parse, and received the enum's members back. No
+// mutation and no data disclosure — but an input oracle and an unmetered
+// parsing surface on a security endpoint.
+//
+// The body still decides WHICH permission is required — that design is intact.
+// What changes is that identity is established first: authenticate → origin →
+// rate-limit → parse → authorize(action). One authorization decision, still
+// made after `kind` is known.
+// ===========================================================================
+describe('🔑 F-2 — the gate order', () => {
+  const goodBody = { kind: 'dismiss' as const, reason: REASON }
+  const badBody = { kind: 'not-a-kind', reason: 'x' }
+
+  /** Simulate an anonymous caller the way the real guard refuses one. */
+  function anonymous() {
+    h.requireAdminIdentity.mockRejectedValue(
+      new AdminError('UNAUTHORIZED', 'Authentication required', 401)
+    )
+  }
+
+  it('🔑 unauthenticated + MALFORMED body → 401, and the body is never parsed', async () => {
+    anonymous()
+    const res = await resolve(badBody)
+    expect(res.status).toBe(401)
+    const body = await res.json()
+    // The enum members must not come back to someone we have not identified.
+    expect(JSON.stringify(body)).not.toContain('dismiss')
+    expect(h.requirePermission).not.toHaveBeenCalled()
+  })
+
+  it('🔑 unauthenticated + VALID body → 401, not 422 and not 200', async () => {
+    anonymous()
+    expect((await resolve(goodBody)).status).toBe(401)
+    expect(h.actionInsert).toBeNull()
+  })
+
+  it('🔑 unauthenticated + MALFORMED ID → 401, not 422', async () => {
+    // The id check used to run first, so `/not-a-uuid/resolve` answered 422 to
+    // the whole internet. Identity comes first now.
+    anonymous()
+    const res = await resolve(goodBody, 'not-a-uuid')
+    expect(res.status).toBe(401)
+  })
+
+  it('authenticated + MALFORMED body → 422', async () => {
+    expect((await resolve(badBody)).status).toBe(422)
+    expect(h.actionInsert).toBeNull()
+  })
+
+  it('authenticated + VALID body → 200', async () => {
+    const res = await resolve(goodBody)
+    expect(res.status).toBe(200)
+    expect(h.actionInsert).toMatchObject({ action: 'dismiss_report' })
+  })
+
+  it('🔑 SAME-ORIGIN boundary runs before parsing', async () => {
+    h.isSameOrigin.mockReturnValue(false)
+    const res = await resolve(badBody)
+    expect(res.status).toBe(403)
+    // 403 rather than 422: a cross-origin caller learns nothing about the body
+    // contract either.
+    expect(JSON.stringify(await res.json())).not.toContain('dismiss')
+  })
+
+  it('🔑 RATE-LIMIT boundary runs before parsing', async () => {
+    h.rateLimit.mockResolvedValue({ ok: false, retryAfter: 30 })
+    const res = await resolve(badBody)
+    expect(res.status).toBe(429)
+    expect(res.headers.get('Retry-After')).toBe('30')
+    expect(JSON.stringify(await res.json())).not.toContain('dismiss')
+  })
+
+  it('🔑 the PERMISSION boundary still follows the action', async () => {
+    // The whole point of parsing the body at all. Identity first did not
+    // collapse the four actions onto one permission.
+    await resolve({ kind: 'delete', reason: REASON })
+    expect(h.requirePermission.mock.calls[0][1]).toBe(PERMISSIONS.MODERATION_CONTENT_DELETE)
+    vi.clearAllMocks()
+    h.requirePermission.mockResolvedValue(ctx())
+    h.requireAdminIdentity.mockResolvedValue({ user: ctx().user, actor: ctx().actor })
+    h.isSameOrigin.mockReturnValue(true)
+    h.rateLimit.mockResolvedValue({ ok: true, retryAfter: 0 })
+    await resolve({ kind: 'hide', reason: REASON })
+    expect(h.requirePermission.mock.calls[0][1]).toBe(PERMISSIONS.MODERATION_CONTENT_HIDE)
+  })
+
+  it('🔑 identity is established BEFORE authorization, and exactly once each', async () => {
+    await resolve(goodBody)
+    expect(h.requireAdminIdentity).toHaveBeenCalledTimes(1)
+    expect(h.requirePermission).toHaveBeenCalledTimes(1)
+    expect(h.requireAdminIdentity.mock.invocationCallOrder[0])
+      .toBeLessThan(h.requirePermission.mock.invocationCallOrder[0])
+  })
+
+  it('🔑 the rate-limit key is the AUTHENTICATED actor, not something from the body', async () => {
+    // A key derived from unauthenticated input would let a caller pick their own
+    // bucket, which is the same as having no rate limit.
+    await resolve(goodBody)
+    expect(h.rateLimit).toHaveBeenCalledWith(`admin:moderation:resolve:${ACTOR}`, 30, 60_000)
+  })
+
+  it('🔑 requireAdminIdentity makes NO authorization decision', async () => {
+    // `singleDecisionPath` requires `requirePermission` to be the only route
+    // authorization helper. The new primitive authenticates — identity plus the
+    // Owner Gate — and must never call the engine.
+    const { readFileSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    const src = readFileSync(
+      join(__dirname, '..', '..', '..', '..', 'lib', 'admin', 'permissions', 'guards.ts'),
+      'utf8'
+    )
+    const fn = src.slice(src.indexOf('export async function requireAdminIdentity'))
+    const body = fn.slice(0, fn.indexOf('\nexport '))
+    expect(body).not.toContain('permissionEngine')
+    expect(body).not.toContain('authorize(')
   })
 })
 

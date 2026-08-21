@@ -97,14 +97,36 @@ export async function resolveActorForPage(
  * Component 4 deleted that function outright — there is no second way to gate
  * an API route.
  */
-export async function requirePermission(
-  req: Request,
-  permission: PermissionId
-): Promise<PermissionContext> {
+/**
+ * Establish WHO is calling — and nothing more.
+ *
+ * 🔑 THIS MAKES NO AUTHORIZATION DECISION. It resolves identity and asserts
+ * ownership; it never touches `permissionEngine`. `requirePermission` remains
+ * the only route-level *authorization* helper, as `singleDecisionPath.test.ts`
+ * requires.
+ *
+ * It exists for ONE shape of handler: where the request body decides WHICH
+ * permission applies. `POST /api/admin/moderation/[id]/resolve` is that handler
+ * — `kind` selects between four permissions per `12_RBAC` §3.
+ *
+ * Before this existed, that route had to parse the body first, which meant an
+ * unauthenticated, unrate-limited caller made the server run `req.json()` and a
+ * zod parse and got the enum's members back in the error (F-1/F-2, pre-UAT
+ * audit 2026-08-21 — reproduced against production, where it answered 422 while
+ * its four sibling mutating routes answered 401).
+ *
+ * With this, such a handler runs:
+ *
+ *     requireAdminIdentity → same-origin → rate-limit → parse → requirePermission
+ *
+ * Still one authorization decision, still made after `kind` is known.
+ */
+export async function requireAdminIdentity(
+  req: Request
+): Promise<{ user: User; actor: Actor }> {
   // 1. Identity.
   const resolved = await resolveActor(req)
   if (!resolved) throw new AdminError('UNAUTHORIZED', 'Authentication required', 401)
-  const { user, actor } = resolved
 
   // 2. Ownership assertion — unchanged from Component 1, still before RBAC.
   const gate = await checkOwnerGate()
@@ -112,6 +134,18 @@ export async function requirePermission(
     console.error('[controller][owner] gate failed:', gate.reason)
     throw new AdminError('FORBIDDEN', 'Controller unavailable: ownership assertion failed', 403)
   }
+
+  return resolved
+}
+
+export async function requirePermission(
+  req: Request,
+  permission: PermissionId
+): Promise<PermissionContext> {
+  // Steps 1 and 2 — identity and the Owner Gate — live in
+  // `requireAdminIdentity`, so there is exactly ONE implementation of them and
+  // a handler that needs identity early gets the same behaviour this does.
+  const { user, actor } = await requireAdminIdentity(req)
 
   // 3. Authorization.
   const decision = permissionEngine.authorize(actor, permission)

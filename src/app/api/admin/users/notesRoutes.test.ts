@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { AdminError } from '@/lib/admin/rbac'
 
 // Module 08 — the ROUTE half of internal admin notes.
 //
@@ -155,7 +156,7 @@ describe('authorization', () => {
 
   it('a refused actor reads nothing', async () => {
     h.requirePermission.mockRejectedValueOnce(
-      Object.assign(new Error('Forbidden'), { status: 403, code: 'FORBIDDEN' })
+      new AdminError('FORBIDDEN', 'Forbidden', 403)
     )
     const res = await list()
     expect(res.status).toBeGreaterThanOrEqual(400)

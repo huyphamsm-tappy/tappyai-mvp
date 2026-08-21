@@ -184,6 +184,21 @@ const RULES = [
       // consumer-app directory must not silently become permitted.
       new RegExp(`from\\s+['"](?!${CONTROLLER_ALLOWED_IMPORTS.source})@/`),
       new RegExp(`require\\(\\s*['"](?!${CONTROLLER_ALLOWED_IMPORTS.source})@/`),
+      // F-1 (pre-UAT audit, 2026-08-21). The two patterns above both require
+      // `from` or `require(`. A BARE SIDE-EFFECT IMPORT has neither:
+      //
+      //     import '@/lib/i18n/admin'
+      //
+      // It binds no name, so it cannot be used to CALL consumer code — but it
+      // executes the consumer module inside the Controller at load time, and it
+      // would break the extraction this rule exists to protect. Isolated by
+      // testing all four import forms: the three `from`-bearing ones were
+      // caught, this one was not.
+      //
+      // `import\s+['"]` matches ONLY the bare form: every other syntax puts an
+      // identifier, `{` or `*` between `import` and the quote. The guard tests
+      // line by line, so `^` needs no `m` flag.
+      new RegExp(`^\\s*import\\s+['"](?!${CONTROLLER_ALLOWED_IMPORTS.source})@/`),
     ],
     allow: [],
     scope: [CONTROLLER_LAYER],
