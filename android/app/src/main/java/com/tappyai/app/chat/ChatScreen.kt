@@ -81,6 +81,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -119,6 +120,12 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
     val dynamicPrompts by viewModel.dynamicPrompts.collectAsStateWithLifecycle()
     val reportedMessageIds by viewModel.reportedMessageIds.collectAsStateWithLifecycle()
     val isListening by viewModel.isListening.collectAsStateWithLifecycle()
+
+    // Keyed on the language the RESOURCES resolved to, so switching language reloads the welcome
+    // prompts in the new one instead of leaving the old language's prompts on screen. See
+    // [ChatViewModel.loadDynamicPrompts] — this used to run once in the ViewModel's init.
+    val promptsInEnglish = booleanResource(R.bool.resources_are_english)
+    LaunchedEffect(promptsInEnglish) { viewModel.loadDynamicPrompts(promptsInEnglish) }
 
     // Read-aloud problems surface through the app's existing Toast pattern (AccountEditScreen,
     // GroupDetailScreen, SoundDetailScreen all use it) rather than a second error system.

@@ -1,0 +1,4 @@
+<resources>
+    <!-- See `values/bools_language.xml`. Vietnamese resources are resolved, so this is false. -->
+    <bool name="resources_are_english">false</bool>
+</resources>
