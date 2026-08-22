@@ -34,7 +34,7 @@ The original Phase 1 scope table ([`03_PHASE1_FOUNDATION_DESIGN.md:321`](03_PHAS
 | **Permission-collision validation** | ✅ in scope (§5) |
 | **rollback** | ⏸️ **DEFERRED** — undefined anywhere; not implemented, not invented |
 | **health checks** | ⏸️ **DEFERRED** — undefined anywhere |
-| **migration versioning** | ⏸️ **DEFERRED** — undefined anywhere; modules do not own tables in this codebase |
+| **migration versioning** | ⏸️ **DEFERRED — still** ([ADR-024](../architecture/ADR-024-module-data-ownership.md)). Its reason is *"undefined anywhere"*, which does not expire; `manifest.data.migrations` was deliberately **not** added. The clause *"modules do not own tables in this codebase"* is superseded — ownership is now expressible, though no module declares any |
 
 The three deferred items remain named debt. They are not removed from the historical scope and are not silently reinterpreted.
 
@@ -108,7 +108,13 @@ Architecture §5 lists the validate step as *"schema · permission collisions ·
 
 Verified against the live registry: the 8 production modules declare 8 distinct permissions, so this rule does not reject the existing production registry — pinned by a test that builds the real `buildAdminController()`.
 
-**Table collisions are NOT implemented.** Modules do not own tables in this codebase; there is nothing to collide. Deferred with the same discipline as §1.
+~~**Table collisions are NOT implemented.** Modules do not own tables in this codebase; there is nothing to collide. Deferred with the same discipline as §1.~~
+
+> **SUPERSEDED 2026-08-20 by [ADR-024](../architecture/ADR-024-module-data-ownership.md).** The sentence above was **descriptive, not a repeal** of `01_ARCH` §4.2 — and it was accurate: `ModuleManifest` had no `data` field, so nothing could collide. ADR-024 adds `data.tables` as an **optional** field whose absence means *"owns no tables"*, which is what all eight shipped manifests are. The stated reason for this deferral therefore expired, and **table-collision validation is now implemented**: cross-module collision rejects the registration, same-module repetition dedupes first, and comparison is trimmed and case-folded because an unquoted PostgreSQL identifier folds.
+>
+> **§1's migration-versioning deferral is NOT affected.** Its reason — *"undefined anywhere"* — does not expire when the field exists, so `migrations` was deliberately not added.
+>
+> **No module owns a table.** ADR-024 makes ownership expressible and assigns none.
 
 ---
 

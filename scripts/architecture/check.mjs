@@ -196,10 +196,53 @@ const RULES = [
       // consumer-app directory must not silently become permitted.
       new RegExp(`from\\s+['"](?!${CONTROLLER_ALLOWED_IMPORTS.source})@/`),
       new RegExp(`require\\(\\s*['"](?!${CONTROLLER_ALLOWED_IMPORTS.source})@/`),
+      // F-1 (pre-UAT audit, 2026-08-21). The two patterns above both require
+      // `from` or `require(`. A BARE SIDE-EFFECT IMPORT has neither:
+      //
+      //     import '@/lib/i18n/admin'
+      //
+      // It binds no name, so it cannot be used to CALL consumer code — but it
+      // executes the consumer module inside the Controller at load time, and it
+      // would break the extraction this rule exists to protect. Isolated by
+      // testing all four import forms: the three `from`-bearing ones were
+      // caught, this one was not.
+      //
+      // `import\s+['"]` matches ONLY the bare form: every other syntax puts an
+      // identifier, `{` or `*` between `import` and the quote. The guard tests
+      // line by line, so `^` needs no `m` flag.
+      new RegExp(`^\\s*import\\s+['"](?!${CONTROLLER_ALLOWED_IMPORTS.source})@/`),
     ],
     allow: [],
     scope: [CONTROLLER_LAYER],
     hint: 'the Controller may import the Security Core (@/lib/admin/**, @/lib/security/**), the admin client (@/lib/supabase/admin) and itself — nothing else. Reach consumer-app behaviour through a capability, not an import: keeping this boundary is what makes extracting the Controller a build-config change instead of a rewrite (00_LEGACY_AUDIT.md §5.3).',
+  },
+  {
+    // Controller V2 — 01_CONTROLLER_V2_ARCHITECTURE.md §1, rule 1:
+    // "No module imports another module."
+    //
+    // Deferred for a long time as a guard with nothing to guard — and then, on
+    // 2026-08-21, Module 09's manifest imported `userHub` from
+    // `userManagementModule.ts`, because that is where the hub descriptor
+    // happened to live. It compiled, every test passed, and Content Moderation
+    // silently stopped being removable independently of User Management.
+    //
+    // The descriptor moved to `hubs.ts` and this rule now holds the line. It is
+    // not decorative: it is written because the violation already happened once.
+    //
+    // Scoped to `modules/` only. A module may import the kernel, the registry,
+    // shared descriptors (`hubs.ts`) and the Security Core — just not a sibling
+    // MODULE file, which is what creates the dependency.
+    id: 'no-module-imports-module',
+    title: 'A Controller module importing another Controller module',
+    patterns: [
+      // Relative import of a sibling ending in `Module` — the naming convention
+      // every module file in this directory follows.
+      /from\s+['"]\.\/[a-zA-Z]+Module['"]/,
+      /from\s+['"]\.\.\/modules\/[a-zA-Z]+Module['"]/,
+    ],
+    allow: [],
+    scope: ['src/lib/controller/modules/'],
+    hint: 'a module may not depend on a sibling module. If you need something a sibling declares — a hub descriptor, a shared constant — move it to `src/lib/controller/modules/hubs.ts` (or another shared file) and import it from there. A hub in particular CONTAINS modules (FOUNDATION_01_CONTRACTS §2), so defining it inside one of its members inverts the relationship and makes the other members depend on that member.',
   },
   {
     // Controller V2 — 01_CONTROLLER_V2_ARCHITECTURE.md §1, rule 5.

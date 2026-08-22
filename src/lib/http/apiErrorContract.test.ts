@@ -75,6 +75,42 @@ const ALLOWED_CODE_EXPRESSIONS = [
   'validated.code',
 ]
 
+/**
+ * Sites that put the machine code in a `code` field and prose in `error` — the INVERSE of this
+ * file's rule.
+ *
+ * ============================================================================
+ * 🚨 THIS IS AN EXEMPTION, NOT AN ENDORSEMENT — recorded as bug P02
+ * ============================================================================
+ * Module 08 (Controller V2) added account-restriction responses to three routes and did not use
+ * one shape for all three:
+ *
+ *   /api/chat                       → { error: <code>, message: <sentence> }   ← this file's rule
+ *   /api/reviews                    → { error: <sentence>, code: <code> }      ← listed below
+ *   /api/reviews/[id]/comments      → { error: <sentence>, code: <code> }      ← listed below
+ *
+ * The two below are pinned by main's own tests (`accountSuspensionEnforcement.test.ts` asserts
+ * `body.code === 'account_suspended'`), so changing them during a merge would break a contract
+ * somebody chose on purpose — and this guard is the newer rule, not the established one.
+ *
+ * So they are exempted HERE, visibly, rather than silently "fixed" or silently ignored. The
+ * inconsistency is a real finding and belongs to whoever owns Module 08. A client still gets a
+ * machine-readable code from every one of these routes; it just has to look in a different field
+ * depending on which route answered, which is the actual defect.
+ *
+ * 🔑 Not added to ALLOWED_CODE_EXPRESSIONS: that list is for expressions that PROVABLY yield a
+ * code, and `accountRestrictionMessage()` provably yields prose. Conflating the two would make the
+ * list a lie and let a genuine sentence through somewhere else later.
+ */
+const INVERTED_CODE_FIELD_SITES = [
+  'src/app/api/reviews/route.ts',
+  'src/app/api/reviews/[id]/comments/route.ts',
+].map((p) => p.replace(/\\/g, '/'))
+
+const usesInvertedCodeField = (file: string, expression: string) =>
+  expression === 'accountRestrictionMessage(restriction)' &&
+  INVERTED_CODE_FIELD_SITES.includes(file.replace(/\\/g, '/'))
+
 function routeFiles(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
     const p = join(dir, entry)
@@ -174,6 +210,8 @@ describe('W2 — `error` carries a machine code, never a sentence', () => {
     const offenders = HUMAN_SITES
       .filter((s) => unquote(s.expression) === null)
       .filter((s) => !ALLOWED_CODE_EXPRESSIONS.includes(s.expression))
+      // Module 08's inverted-field sites — see INVERTED_CODE_FIELD_SITES and bug P02.
+      .filter((s) => !usesInvertedCodeField(s.file, s.expression))
       .map((s) => `${s.file}:${s.line}  error: ${s.expression}`)
     expect(
       offenders,

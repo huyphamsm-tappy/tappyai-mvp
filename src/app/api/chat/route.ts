@@ -2,6 +2,7 @@ import { tool } from 'ai'
 import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
@@ -210,6 +211,21 @@ export async function POST(req: Request) {
         console.error('[chat] anon quota rpc failed, falling back to cookie cap:', quotaError?.message)
       }
     } else if (user) {
+      // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
+      // preferences, calendar and subscription lookups, so a blocked turn costs
+      // no LLM tokens and no third-party calls. Anonymous sessions are handled in
+      // the branch above and have no account_status row to read.
+      const restriction = await getAccountRestriction(supabase, user.id)
+      if (restriction.blocked) {
+        return new Response(
+          JSON.stringify({
+            error: accountRestrictionCode(restriction.reason!),
+            message: accountRestrictionMessage(restriction),
+          }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        )
+      }
+
       authedUserId = user.id
       const chatContext = await buildChatPromptContext(user.id, supabase)
       existingMemory = chatContext.memory

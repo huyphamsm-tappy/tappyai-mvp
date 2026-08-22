@@ -599,8 +599,21 @@ CREATE TABLE app_releases (
 
 ### `profiles` table — add columns:
 
+> **SUPERSEDED for these four fields — Owner authorization 2026-08-19, [ADR-022](../architecture/ADR-022-account-status-isolation.md).**
+> The block below was **never applied** and must not be. The four fields are unchanged in
+> name, type, default and meaning; they live in the dedicated privileged table
+> **`public.account_status`** (§7B) instead of on `profiles`, and `profiles` is not altered.
+>
+> Reason, measured on production 2026-08-19: `profiles` carries two permissive SELECT
+> policies with `qual = true` for `{public}` and grants `anon`/`authenticated`
+> SELECT/INSERT/UPDATE/DELETE. RLS filters rows, never columns. On this table
+> `ban_reason` would be readable by the anonymous internet, and a suspended user could
+> clear their own `is_suspended` over PostgREST. The original text is retained below as
+> the record of what was specified.
+
 ```sql
 -- Soft ban / suspension support
+-- SUPERSEDED — see §7B. Retained for the record; do not apply.
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_suspended BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS suspended_until TIMESTAMPTZ;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_banned BOOLEAN NOT NULL DEFAULT false;
@@ -685,12 +698,70 @@ Populated from `auth_anonymous_converted`. Lets funnels/cohorts follow a user ac
 
 ---
 
+## 7B. Account Status — Module 08 (Owner authorization 2026-08-19)
+
+Supersedes the `profiles` block in §7 for these four fields. Authority: [ADR-022](../architecture/ADR-022-account-status-isolation.md). The fields are unchanged; their location is.
+
+```sql
+CREATE TABLE account_status (
+    user_id         UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
+    is_suspended    BOOLEAN     NOT NULL DEFAULT false,
+    suspended_until TIMESTAMPTZ,
+    is_banned       BOOLEAN     NOT NULL DEFAULT false,
+    ban_reason      TEXT,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Mandatory: production pg_default_acl grants every new public table in full to
+-- anon and authenticated. Silence is not "closed" (ADR-019, extended to tables).
+REVOKE ALL ON TABLE account_status FROM PUBLIC, anon, authenticated;
+GRANT  ALL ON TABLE account_status TO service_role;
+ALTER TABLE account_status ENABLE ROW LEVEL SECURITY;
+
+-- Self-read of non-sensitive state only. ban_reason is withheld from every
+-- PostgREST role, including the subject of the note.
+GRANT SELECT (user_id, is_suspended, suspended_until, is_banned)
+  ON account_status TO authenticated;
+CREATE POLICY account_status_select_own ON account_status
+  FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+CREATE INDEX idx_account_status_suspended_until
+  ON account_status (suspended_until) WHERE is_suspended AND suspended_until IS NOT NULL;
+```
+
+**Absent row means ACTIVE.** No backfill and no signup trigger: a user with no row is active. Consumer enforcement must `LEFT JOIN` and `COALESCE(..., false)` — an inner join silently drops every never-moderated user.
+
+**A ban does not revoke sessions by virtue of this column.** Session revocation is an Auth Admin API operation performed by the admin surface (`10_User_Management.md` §4).
+
+Migration: `supabase/migrations/20260819_m08_account_status.sql` · rollback: `supabase/migrations/rollback/20260819_m08_account_status_rollback.sql` · boundary suite: `supabase/tests/account_status_boundary.test.ts`.
+
+---
+
 ## 8. Row Level Security
 
 ### Analytics tables
 - All reads: require authenticated admin session with `analyst` role or higher
 - All writes: service role only (cron jobs)
 - No direct user access
+
+### `account_status` — expected-access matrix (§29 §4, §29 §10)
+
+| Principal | SELECT | INSERT | UPDATE | DELETE | Enforced by |
+|---|---|---|---|---|---|
+| `anon` | ❌ none | ❌ | ❌ | ❌ | `REVOKE ALL` — no table or column privilege |
+| `authenticated` | ✅ `user_id`, `is_suspended`, `suspended_until`, `is_banned` — **own row only** | ❌ | ❌ | ❌ | column-list `GRANT` + policy `account_status_select_own`; no write grant and no write policy |
+| `authenticated` → `ban_reason` | ❌ **never** | ❌ | ❌ | ❌ | column omitted from the `GRANT` list |
+| `service_role` | ✅ all | ✅ | ✅ | ✅ | `GRANT ALL` + `BYPASSRLS`; authorization is the API layer's responsibility (`19_Security.md` §4) |
+| Back office roles (`moderator`+) | via service role | via service role | via service role | via service role | `12_RBAC.md`; every mutation writes `audit_log` (`13` §3: `user.suspend`, `user.ban`, …) |
+
+`SELECT *` is denied to `authenticated` — `*` expands to `ban_reason`. Readers name their columns.
+
+**`ban_reason` classification is an open Owner decision** (`33_Privacy_Data_Governance.md` §3). It does not gate this table: the field is exposed to no PostgREST role under either answer.
+
+> **Admin-surface visibility IS decided** — [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md), Owner Decision A, 2026-08-20: reading `ban_reason` through the Controller requires `users.ban_reason.read` (`admin`+). A `moderator` opens the user detail view and sees the ban, but not the note. This is the narrower question of who reads it *through the API*; it does not assign the `33` §3 data classification, which stays open.
+
+Verified by `supabase/tests/account_status_boundary.test.ts` against a real PostgreSQL — 28 assertions, 9 mutations killed.
 
 ### `audit_log`
 - Reads: `admin` role or higher

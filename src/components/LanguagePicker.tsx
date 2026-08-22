@@ -1,9 +1,18 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { getStoredLocale, setLocale } from '@/lib/i18n/useTranslation'
 import type { Locale } from '@/lib/i18n/dictionaries'
 import { TappyMascot } from '@/components/TappyMascot'
+
+// Surfaces that ask the language question THEMSELVES, in their own layout.
+// Rendering this modal on top of one of them puts two language choosers on
+// screen at once — and this one wins, because it is a full-screen z-[100]
+// overlay. On the Controller's public home that made the design's own VI/EN
+// toggle unclickable: it was visible, and `elementFromPoint` returned the
+// modal. Exact paths, never prefixes: `/controller-guide` is a different page.
+const OWNS_ITS_LANGUAGE_CONTROL = ['/controller']
 
 // First-visit language chooser. Shows once — the moment a locale is stored
 // (either here or later in Settings) getStoredLocale() stops returning null and
@@ -12,10 +21,13 @@ import { TappyMascot } from '@/components/TappyMascot'
 // best-effort sync for logged-in accounts and is ignored (401) otherwise.
 export default function LanguagePicker() {
   const [show, setShow] = useState(false)
+  const pathname = usePathname()
+  const suppressed = OWNS_ITS_LANGUAGE_CONTROL.includes(pathname ?? '')
 
   useEffect(() => {
+    if (suppressed) return
     if (getStoredLocale() === null) setShow(true)
-  }, [])
+  }, [suppressed])
 
   const choose = (lang: Locale) => {
     setLocale(lang)

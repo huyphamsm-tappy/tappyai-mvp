@@ -13,6 +13,7 @@ import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -76,6 +77,16 @@ export async function POST(req: NextRequest) {
   // B17 — an anonymous session is authenticated but is not an account; social writes need one.
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
+
+  // Module 08 §4 — a suspended account cannot post content. Checked before the
+  // body is parsed and before any upload work, so a blocked post costs nothing.
+  const restriction = await getAccountRestriction(supabase, user.id)
+  if (restriction.blocked) {
+    return NextResponse.json(
+      { error: accountRestrictionMessage(restriction), code: accountRestrictionCode(restriction.reason!) },
+      { status: 403 }
+    )
+  }
 
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]

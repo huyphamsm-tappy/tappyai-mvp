@@ -10,16 +10,7 @@
 import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import type { HubDescriptor, ModuleManifest } from '../types'
 
-export const securityHub: HubDescriptor = {
-  id: 'tappy.hub.security',
-  name: 'Security',
-  version: '1.0.0',
-  owner: 'platform',
-  permissionScope: PERMISSIONS.AUDIT_LOG_READ,
-  navigationGroup: 'admin.nav.group.security',
-  navigationOrder: 20,
-  lifecycle: 'stable',
-}
+export { securityHub } from './hubs'
 
 export const securityAuditModule: ModuleManifest = {
   id: 'tappy.hub.security.audit',

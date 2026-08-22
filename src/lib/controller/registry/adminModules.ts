@@ -17,12 +17,36 @@
 import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import { ControllerCore } from '../core'
 import type { AuditSink, EventSink, HubDescriptor, ModuleManifest } from '../types'
-import { securityHub, securityAuditModule } from '../modules/securityAuditModule'
+import { securityAuditModule } from '../modules/securityAuditModule'
+import { userManagementModule } from '../modules/userManagementModule'
+import { userHub, securityHub } from '../modules/hubs'
+import { moderationModule } from '../modules/moderationModule'
 
 // ── Hubs (real, backed by shipped modules) ──────────────────────────────────
-export const dashboardHub: HubDescriptor = {
-  id: 'tappy.hub.dashboard', name: 'Dashboard', version: '1.0.0', owner: 'platform',
-  navigationGroup: 'admin.nav.group.dashboard', navigationOrder: 0, lifecycle: 'stable',
+/**
+ * The Founder Hub (01_ARCH §2.2 · 12_HUB_TAXONOMY §3, under Owner Decision G).
+ *
+ * Registered as `tappy.hub.dashboard` until Phase 8 — a container of
+ * convenience invented by this registry before the taxonomy existed. §3's
+ * disposition is explicit: "RENAME to tappy.hub.founder. It is the Founder Hub
+ * under a placeholder name; module 01 is a Founder module."
+ *
+ * §3 called that "a migration with a real cutover", because a hub id lives in a
+ * module's manifest AND in the audit trail. MEASURED on production before
+ * acting, and the audit half was false: zero `controller.%` audit rows exist,
+ * zero rows reference a hub id, and `module_registry` does not exist. Every
+ * `buildAdminController()` call site uses the default NOOP audit sink, so hub
+ * registration has never been written anywhere. Nothing outside this file
+ * stores a hub id, so there is no data to migrate.
+ *
+ * The hub is now Founder in id and name. It is NOT yet the Founder Hub of
+ * §2.2 — Business Analytics and the Investor Dashboard do not exist, and
+ * `daily_snapshots` has no migration. This corrects an identity; it completes
+ * nothing.
+ */
+export const founderHub: HubDescriptor = {
+  id: 'tappy.hub.founder', name: 'Founder', version: '1.0.0', owner: 'platform',
+  navigationGroup: 'admin.nav.group.founder', navigationOrder: 0, lifecycle: 'stable',
 }
 export const analyticsHub: HubDescriptor = {
   id: 'tappy.hub.analytics', name: 'Analytics', version: '1.0.0', owner: 'platform',
@@ -37,7 +61,10 @@ export const configurationHub: HubDescriptor = {
   navigationGroup: 'admin.nav.group.configuration', navigationOrder: 40, lifecycle: 'stable',
 }
 // securityHub (tappy.hub.security, order 20) is defined in ../modules/securityAuditModule.
-// Flatten order: dashboard(0) → analytics(10) → security(20) → commerce(30) → configuration(40).
+// userHub (tappy.hub.user, order 5) is defined in ../modules/userManagementModule.
+// Nav order: founder(0) → user(5) → analytics(10) → security(20) → commerce(30) → configuration(40).
+// User slots at 5 rather than renumbering: taxonomy §1 orders it second, and a
+// renumber would move four live surfaces in order to place one new one.
 
 function mod(
   id: string, name: string, hub: string, route: string, permission: string,
@@ -64,21 +91,30 @@ function mod(
 // the registry; before it, capability resolution existed but no shipped module
 // had ever exercised it.
 export const homeModule = mod(
-  'tappy.hub.dashboard.home', 'Home', dashboardHub.id, '/admin', PERMISSIONS.DASHBOARD_HOME_VIEW,
+  // The MODULE id is unchanged: 01_ARCH §2.1 makes it "globally unique,
+  // immutable", and the taxonomy authorized renaming the HUB only. The mismatch
+  // between this id and its hub is a recorded consequence of honouring that.
+  'tappy.hub.dashboard.home', 'Home', founderHub.id, '/admin', PERMISSIONS.DASHBOARD_HOME_VIEW,
   'admin.nav.dashboard', 'LayoutDashboard', 0,
   { dependencies: [{ capabilityId: 'audit.read', versionRange: '^1' }] }
 )
 export const analyticsContentModule = mod('tappy.hub.analytics.content', 'Content Analytics', analyticsHub.id, '/admin/analytics', PERMISSIONS.ANALYTICS_CONTENT_READ, 'admin.nav.analytics', 'BarChart3', 10)
 export const analyticsAuthModule = mod('tappy.hub.analytics.auth', 'Auth Analytics', analyticsHub.id, '/admin/analytics/auth', PERMISSIONS.ANALYTICS_AUTH_READ, 'admin.nav.authAnalytics', 'UserCheck', 20)
 export const analyticsActivationModule = mod('tappy.hub.analytics.activation', 'Activation Analytics', analyticsHub.id, '/admin/analytics/activation', PERMISSIONS.ANALYTICS_ACTIVATION_READ, 'admin.nav.activationAnalytics', 'Zap', 30)
+// Module 04 User Analytics, third surface: growth + engagement + subscription
+// funnel from daily_snapshots and subscriptions. auth(20) and activation(30)
+// are the other two; this sits after them at 40 so neither moves.
+export const analyticsUsersModule = mod('tappy.hub.analytics.users', 'User Analytics', analyticsHub.id, '/admin/analytics/users', PERMISSIONS.ANALYTICS_USERS_READ, 'admin.nav.userAnalytics', 'TrendingUp', 40)
 export const commerceDealsModule = mod('tappy.hub.commerce.deals', 'Deals', commerceHub.id, '/admin/deals', PERMISSIONS.COMMERCE_DEALS_READ, 'admin.nav.deals', 'Tag', 10)
 export const securityRolesModule = mod('tappy.hub.security.rbac', 'RBAC', securityHub.id, '/admin/rbac', PERMISSIONS.SECURITY_ROLES_READ, 'admin.nav.roles', 'KeyRound', 30)
 export const configurationSettingsModule = mod('tappy.hub.configuration.settings', 'Settings', configurationHub.id, '/admin/settings', PERMISSIONS.SETTINGS_CONFIG_READ, 'admin.nav.settings', 'SettingsIcon', 10)
 
-export const ADMIN_HUBS: readonly HubDescriptor[] = [dashboardHub, securityHub, analyticsHub, commerceHub, configurationHub]
+export const ADMIN_HUBS: readonly HubDescriptor[] = [founderHub, userHub, securityHub, analyticsHub, commerceHub, configurationHub]
 export const ADMIN_MODULES: readonly ModuleManifest[] = [
   homeModule,
-  analyticsContentModule, analyticsAuthModule, analyticsActivationModule,
+  userManagementModule,
+  moderationModule,
+  analyticsContentModule, analyticsAuthModule, analyticsActivationModule, analyticsUsersModule,
   securityAuditModule, securityRolesModule,
   commerceDealsModule,
   configurationSettingsModule,

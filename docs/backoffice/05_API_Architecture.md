@@ -156,11 +156,42 @@ Returns aggregated AI usage from `ai_usage_log`.
 
 ## 6. User Management Endpoints
 
+> **Implementation status, 2026-08-20.** Shipped: `GET /api/admin/users`,
+> `GET /api/admin/users/[id]`, and the four `suspend` / `unsuspend` / `ban` /
+> `unban` routes. Not built: `POST /api/admin/users/[id]/notes` (no `user_notes`
+> table exists) and `DELETE /api/admin/users/[id]` (soft delete — its own
+> change, its own Owner authorization).
+>
+> Deviations from the contract below, each forced by something that postdates
+> it:
+>
+> * **The list carries no `email`.** `profiles.email` was removed by
+>   `add_profiles_email_isolation.sql`; the canonical address lives in
+>   `auth.users`, which PostgREST does not expose, so there is no join and no
+>   batch lookup. A 50-row page would cost 50 Admin API round trips. The detail
+>   view spends one lookup and masks per §6. A `q` containing `@` becomes an
+>   **exact** email lookup returning at most one user — a prefix match would be
+>   a user-enumeration primitive.
+> * **`subscription_tier` and `last_active_at` are absent**, along with the
+>   `role` / `platform` filters: they read `subscriptions` and `track_events`,
+>   which Module 08 does not own. Unknown query parameters are **rejected with
+>   422** rather than ignored, so a caller never believes a filter applied.
+> * **`status` is resolved in memory**, not in SQL: `active` means "no status
+>   row, or a row whose restrictions have expired", which an embedded PostgREST
+>   filter (an inner join) cannot express. Past 1000 moderated accounts the
+>   filter returns **503 `FILTER_UNAVAILABLE`** rather than a truncated answer.
+> * **Pagination is keyset on `(created_at DESC, id DESC)`**; the cursor carries
+>   both halves, because `created_at` alone is not unique.
+
 ### `GET /api/admin/users`
 
 List users with search and filter.
 
-**Permissions:** `admin` or higher
+**Permissions:** ~~`admin` or higher~~ → **`moderator` or higher** (`users.list.read`)
+
+> **Amended by [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md), Owner Decision A, 2026-08-20.** The original line contradicted `12_RBAC.md` §3 (**User List — View** = moderator ✅), `10_User_Management.md` §6 (which defines email masking *for* `moderator`) and `04_Database_Architecture.md` §8 (`moderator`+). It was also inconsistent with this same section, which assigns suspend/unsuspend to `moderator` — an authority with no reachable subject if the list is closed to them. `analyst` remains denied.
+>
+> **Searching by email address is `admin`+**, gated on `users.email.read_full`: an exact-address lookup answers "does this address have an account here?", which is an existence oracle over the data §6 withholds from `moderator`. Name search is unaffected.
 
 **Query params:**
 - `q` — text search (full_name, email)
@@ -195,7 +226,11 @@ List users with search and filter.
 
 Full User 360 view.
 
-**Permissions:** `admin` or higher
+**Permissions:** ~~`admin` or higher~~ → **`moderator` or higher** (`users.detail.read`)
+
+> **Amended by [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md), Owner Decision A, 2026-08-20.** Same reasoning as the list endpoint above; `12_RBAC.md` §3 states **User — View full profile** = moderator ✅ (masked email).
+>
+> **Two fields are gated further, both `admin`+:** the email address is masked without `users.email.read_full` (`10` §6), and `ban_reason` is withheld without `users.ban_reason.read`. A `moderator` can neither ban nor unban, so no action of theirs is informed by the note — Constitution **Rule 9, Privacy by Default**. The *ban itself* stays visible; only the note is withheld, reported as `ban_reason_withheld: true` so a hidden note is distinguishable from an absent one.
 
 **Response includes:**
 - Profile data

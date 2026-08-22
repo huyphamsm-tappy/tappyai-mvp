@@ -61,6 +61,10 @@ export {
 // Server-only.
 export {
   requirePermission,
+  // Authentication ONLY — makes no authorization decision. For the one handler
+  // shape whose request body selects which permission applies;
+  // `requirePermission` remains the sole authorization helper.
+  requireAdminIdentity,
   requirePagePermission,
   type PermissionContext,
 } from './guards'

@@ -39,6 +39,21 @@ export interface ModuleConfigSchema {
 }
 
 /** The canonical Module Manifest (FOUNDATION-01 §3). */
+/**
+ * A module's table-ownership assertion (`01_ARCH` §2.1, §4.2 · ADR-024).
+ *
+ * `tables` must be non-empty when the block is present: a present-but-empty
+ * declaration says nothing that absence does not already say, while looking
+ * like the ownership question was answered.
+ *
+ * Names are compared case-insensitively and trimmed, because an unquoted
+ * PostgreSQL identifier folds — `USER_NOTES` and `user_notes` are one table,
+ * and a collision check that missed that would be a check in name only.
+ */
+export interface ModuleDataOwnership {
+  tables: readonly string[]
+}
+
 export interface ModuleManifest {
   id: string
   name: string
@@ -54,6 +69,26 @@ export interface ModuleManifest {
   status: ModuleStatus
   // optional
   description?: string
+  /**
+   * Tables this module OWNS — `01_ARCH` §2.1 (*"ownership assertion; no other
+   * module may query these"*) and §4.2 (*"One module owns each table | Declared
+   * in `manifest.data.tables`"*), kept as an architectural rule by Owner
+   * Decision B14 and clarified by ADR-024.
+   *
+   * **OPTIONAL, and its ABSENCE means the module owns no tables.** That is the
+   * whole of the clarification: `01_ARCH` §2.1 writes `data` as a required
+   * field, every shipped manifest omits it, and C6 §1 records the consequence
+   * as *"modules do not own tables in this codebase"*. Making absence
+   * meaningful reconciles the three without repealing any of them — the eight
+   * production manifests become conformant rather than non-conformant, and the
+   * rule stays available for the first module that genuinely owns a table.
+   *
+   * `migrations` from §2.1 is deliberately NOT here. Its semantics are
+   * "migration versioning", which C6 §1 defers as *"undefined anywhere"* — and
+   * unlike table collisions, that reason does not expire when the field exists.
+   * A field nothing can consume is decoration.
+   */
+  data?: ModuleDataOwnership
   configuration?: ModuleConfigSchema
   events?: { produces?: readonly string[]; consumes?: readonly string[] }
   featureFlags?: readonly string[]

@@ -2,7 +2,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { render, screen, within, cleanup } from '@testing-library/react'
 import { AdminShell } from './AdminShell'
-import { ADMIN_HUBS } from '@/lib/controller/registry/adminModules'
+import { ADMIN_HUBS, ADMIN_MODULES } from '@/lib/controller/registry/adminModules'
 import { vi as viStrings, en as enStrings } from '@/lib/i18n/admin'
 import type { NavGroup } from '@/lib/controller/adminNavigation'
 
@@ -22,7 +22,12 @@ import type { NavGroup } from '@/lib/controller/adminNavigation'
 // redesign: it renders data the frozen contract already requires the provider
 // to produce.
 
-vi.mock('next/navigation', () => ({ usePathname: () => '/admin' }))
+// The shell now carries a real sign-out, which uses the router. Only the STUB
+// grows a function the component legitimately needs — no assertion changes.
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/admin',
+  useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+}))
 
 // No global auto-cleanup in this config: without this, each render stacks another
 // copy of the sidebar into document.body and getAllByRole sees every one of them.
@@ -35,7 +40,7 @@ const T = enStrings
 
 const GROUPS: NavGroup[] = [
   {
-    hubId: 'tappy.hub.dashboard', label: 'admin.nav.group.dashboard', order: 0,
+    hubId: 'tappy.hub.founder', label: 'admin.nav.group.founder', order: 0,
     items: [{ moduleId: 'm.home', label: 'admin.nav.dashboard', icon: 'LayoutDashboard', route: '/admin', order: 0 }],
   },
   {
@@ -58,7 +63,7 @@ function renderShell(navGroups: NavGroup[]) {
 describe('§2/§13 — the sidebar is hub-grouped', () => {
   it('renders a heading for every hub that has visible items', () => {
     renderShell(GROUPS)
-    expect(screen.getByText(T['admin.nav.group.dashboard'])).toBeDefined()
+    expect(screen.getByText(T['admin.nav.group.founder'])).toBeDefined()
     expect(screen.getByText(T['admin.nav.group.security'])).toBeDefined()
   })
 
@@ -75,7 +80,7 @@ describe('§2/§13 — the sidebar is hub-grouped', () => {
     renderShell(GROUPS)
     const headings = screen.getAllByRole('group').map((g) => g.getAttribute('aria-label'))
     expect(headings).toEqual([
-      T['admin.nav.group.dashboard'],
+      T['admin.nav.group.founder'],
       T['admin.nav.group.security'],
     ])
   })
@@ -112,4 +117,37 @@ describe('§8 — no raw strings: every registered hub has a translated nav grou
     const differing = ADMIN_HUBS.filter((h) => viStrings[h.navigationGroup] !== enStrings[h.navigationGroup])
     expect(differing).toHaveLength(ADMIN_HUBS.length)
   })
+
+  // The same rule for MODULE labels. Hub headings were covered above from
+  // Phase 7; module labels were not, and a module registered with an
+  // untranslated label renders a raw i18n key in the sidebar — §8's "no raw
+  // strings" broken in the one place an operator looks most.
+  it.each(ADMIN_MODULES.map((m) => [m.id, m.navigation.label] as const))(
+    '%s declares %s, translated in both locales',
+    (_id, key) => {
+      expect(viStrings[key], `missing vi translation for ${key}`).toBeTruthy()
+      expect(enStrings[key], `missing en translation for ${key}`).toBeTruthy()
+    }
+  )
+
+  it('module labels differ between locales too', () => {
+    const differing = ADMIN_MODULES.filter(
+      (m) => viStrings[m.navigation.label] !== enStrings[m.navigation.label]
+    )
+    expect(differing).toHaveLength(ADMIN_MODULES.length)
+  })
+
+  // The same generalisation for ICONS. `navIcon` falls back to HelpCircle for
+  // an unknown name, which is safe but silent — a typo'd icon renders a
+  // question mark in the sidebar and nothing fails. Module 08 had this guard
+  // for itself; mutation A21 showed it did not cover the module added after it,
+  // so it is asserted across the whole registry.
+  it.each(ADMIN_MODULES.map((m) => [m.id, m.navigation.icon] as const))(
+    '%s declares icon %s, and it resolves to a real icon',
+    async (_id, icon) => {
+      const { navIcon } = await import('./navIcons')
+      const { HelpCircle } = await import('lucide-react')
+      expect(navIcon(icon)).not.toBe(HelpCircle)
+    }
+  )
 })

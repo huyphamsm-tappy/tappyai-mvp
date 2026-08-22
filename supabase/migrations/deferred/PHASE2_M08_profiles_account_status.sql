@@ -1,0 +1,83 @@
+-- ============================================================================
+-- ⛔ SUPERSEDED — DO NOT APPLY. NEVER APPLIED.
+--
+--   Owner authorization 2026-08-19 (Candidate C) replaces this artifact with
+--   `supabase/migrations/20260819_m08_account_status.sql`, which creates the
+--   dedicated `public.account_status` table and leaves `profiles` untouched.
+--   Authority: docs/architecture/ADR-022-account-status-isolation.md.
+--
+--   A read-only production preflight blocked this file. `profiles` carries two
+--   permissive SELECT policies with `qual = true` for `{public}` and grants
+--   `anon`/`authenticated` SELECT/INSERT/UPDATE/DELETE. RLS filters rows, not
+--   columns — so on `profiles` these four columns would make `ban_reason`
+--   readable by the anonymous internet and let a suspended user clear their own
+--   `is_suspended` over PostgREST.
+--
+--   Retained as the record of what was specified by `04` §7 and why it changed.
+--   The four fields are unchanged; only their location is.
+-- ============================================================================
+--
+-- Controller V2 — Phase 2 / Module 08 User Management
+-- Account status columns on `profiles`
+--
+-- GATE: superseded — the gate can no longer be met. See the notice above.
+--       This file is in `deferred/` precisely so a bulk or directory-default
+--       apply cannot pick it up. It has NOT been applied.
+--
+-- AUTHORITY
+--   docs/backoffice/04_Database_Architecture.md §7 — the single authoritative
+--   schema source (ERRATA-005, Constitution §9.2). §7 is headed "Minimal
+--   modifications to existing tables. Only additions, never breaking changes."
+--   The four columns below are quoted from it; nothing here is invented.
+--
+--   `profiles` remains CONSUMER-APP-OWNED. §7 authorizes the Back Office to add
+--   columns to it; it transfers no ownership. Module 08 is an administrative
+--   facade over consumer-owned data.
+--
+-- WHY THIS MUST LAND BEFORE ANY ENFORCEMENT CODE
+--   Suspension is a cross-tier contract (10_User_Management.md §4): a suspended
+--   user "cannot post content, cannot comment, cannot use AI, can browse
+--   read-only". Those checks live in the consumer API layer. A check that reads
+--   `is_suspended` before the column exists does not fail softly — PostgREST
+--   rejects the query, so posting, commenting and chat would break for EVERY
+--   user. Order is not a preference here.
+--
+-- SAFETY
+--   Additive only. `IF NOT EXISTS` on every statement, so a re-run is a no-op.
+--   Both booleans are NOT NULL DEFAULT false, so every existing row becomes
+--   explicitly "not suspended, not banned" — no NULL third state to interpret.
+--   No column is dropped, renamed or retyped. No RLS policy is touched: these
+--   columns are administered through the admin surface, and the consumer app
+--   only ever reads its own row, which existing policy already governs.
+--
+-- ROLLBACK
+--   ALTER TABLE profiles DROP COLUMN IF EXISTS ban_reason;
+--   ALTER TABLE profiles DROP COLUMN IF EXISTS is_banned;
+--   ALTER TABLE profiles DROP COLUMN IF EXISTS suspended_until;
+--   ALTER TABLE profiles DROP COLUMN IF EXISTS is_suspended;
+--   Safe only while no enforcement code is deployed that reads them — i.e.
+--   inside the rollback window, before the Module 08 code ships.
+--
+-- VERIFY (read-only, after apply)
+--   SELECT column_name, data_type, is_nullable, column_default
+--     FROM information_schema.columns
+--    WHERE table_schema='public' AND table_name='profiles'
+--      AND column_name IN ('is_suspended','suspended_until','is_banned','ban_reason')
+--    ORDER BY column_name;
+--   Expect 4 rows; both booleans NOT NULL with default false.
+--
+--   SELECT count(*) FILTER (WHERE is_suspended) AS suspended,
+--          count(*) FILTER (WHERE is_banned)    AS banned
+--     FROM public.profiles;
+--   Expect 0 and 0 — this migration suspends and bans nobody.
+-- ============================================================================
+
+-- Soft ban / suspension support — 04_Database_Architecture.md §7, verbatim.
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_suspended BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS suspended_until TIMESTAMPTZ;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_banned BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS ban_reason TEXT;
+
+-- No GRANT/REVOKE block: this migration creates no object that carries its own
+-- privileges. `profiles` keeps the grants and RLS policies it already has, and
+-- widening or narrowing them is not part of §7's additive scope.

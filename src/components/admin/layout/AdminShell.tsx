@@ -3,12 +3,13 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LogOut } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import { type AdminRole } from '@/lib/admin/roles'
 import type { NavGroup } from '@/lib/controller/adminNavigation'
 import { navIcon } from './navIcons'
 import { ContextBar } from './ContextBar'
 import { CommandPalette } from './CommandPalette'
+import { ControllerSignOutButton } from './ControllerSignOutButton'
 import type { ControllerEnv } from '@/lib/controller/adminConfig'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -110,14 +111,20 @@ export function AdminShell({
                 <div className="text-sm font-medium truncate max-w-[180px]">{email}</div>
                 <div className="text-xs text-muted-foreground">{t(isOwner ? 'admin.role.owner' : ROLE_LABEL_KEY[role])}</div>
               </div>
+              {/* Leaving the Controller and ENDING THE SESSION are different
+                  intentions. This link used to carry a `LogOut` icon, which made
+                  it read as sign-out while the session stayed live — so it now
+                  carries an "external link" icon and sits beside a real
+                  sign-out. */}
               <Link
                 href="/reviews"
                 className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
                 title={t('admin.shell.backToApp')}
               >
-                <LogOut className="h-4 w-4" />
+                <ExternalLink className="h-4 w-4" />
                 <span className="hidden sm:inline">{t('admin.shell.app')}</span>
               </Link>
+              <ControllerSignOutButton />
             </div>
           </header>
           <main className="flex-1 p-6">{children}</main>

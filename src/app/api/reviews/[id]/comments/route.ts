@@ -8,6 +8,7 @@ import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
 
@@ -111,6 +112,15 @@ export async function POST(
   // so an uncapped POST is a spam vector against that owner.
   if (!rateLimit(`comment:${user.id}`, 10, 60_000).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('comment.tooFast', requestLocale(req)) }, { status: 429 })
+  }
+
+  // Module 08 §4 — a suspended account cannot comment.
+  const restriction = await getAccountRestriction(supabase, user.id)
+  if (restriction.blocked) {
+    return NextResponse.json(
+      { error: accountRestrictionMessage(restriction), code: accountRestrictionCode(restriction.reason!) },
+      { status: 403 }
+    )
   }
 
   let body: string

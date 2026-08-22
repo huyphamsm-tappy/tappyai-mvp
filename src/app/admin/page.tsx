@@ -9,6 +9,8 @@ import { ControllerHome } from '@/components/admin/home/ControllerHome'
 import type { ControllerHomeData, HomeAuditEvent } from '@/components/admin/home/types'
 import { homeMode, departmentSummaries } from '@/lib/controller/org'
 import { resolveDepartmentContext } from '@/lib/controller/org/server'
+import { fetchHomeKpis } from '@/lib/admin/analytics/homeSnapshotService'
+import { vnToday } from '@/lib/config/product'
 
 // Controller V2 — Home / Control Center (server component).
 //
@@ -55,6 +57,15 @@ export default async function AdminHomePage() {
   // of the actor — and the Owner bypasses (1) by constitutional rule.
   const auditCapability = core.bindCapability('audit.read')
   const canAudit = permissionEngine.can(actor, PERMISSIONS.AUDIT_LOG_READ) && auditCapability !== undefined
+
+  // Module 01's KPI block. Read on EVERY Home render, not behind an extra gate:
+  // the six metrics are user-activity aggregates, which 12_RBAC.md §3 places
+  // under User Analytics and grants to all four roles, and they carry no PII and
+  // no revenue. `dashboard.home.view` — already required above — is the gate.
+  //
+  // Server-rendered for first paint, as M01 requires ("no loading flicker").
+  // `fetchHomeKpis` never throws: one unreachable table must not 500 the Home.
+  const kpis = await fetchHomeKpis(createAdminClient(), vnToday())
 
   let adminRoles: number | null = null
   let recentAudit: HomeAuditEvent[] | null = null
@@ -104,6 +115,7 @@ export default async function AdminHomePage() {
     mode,
     platform,
     signals: { adminRoles },
+    kpis,
     attention: { recentAudit, alerts: deriveAlerts(core, actor) },
     quickActions,
     scope,
