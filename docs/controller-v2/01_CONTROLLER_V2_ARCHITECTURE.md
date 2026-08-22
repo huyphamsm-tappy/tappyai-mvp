@@ -108,7 +108,7 @@ export interface ModuleManifest {
   id: ModuleId                    // 'commerce.orders' — globally unique, immutable
   hub: HubId                      // 'commerce'
   version: string                 // semver; migrations gate on it
-  title: I18nKey                  // never a raw string — RULE 8 + doc 18
+  title: I18nKey                  // never a raw string — doc 18 (see §8 erratum)
 
   permissions: PermissionDef[]    // what this module OWNS. Source of truth.
   navigation: NavEntry[]          // what the shell may show. Each carries a permission.
@@ -527,7 +527,18 @@ Consumers are bound by the kernel from `manifest.events.consumes`. Marketing doe
 
 ## 8. UI/UX Architecture
 
-RULE 8: a premium operating system, not ERP. RULE 10: layout follows the business question. RULE 9: Tappy appears naturally, never as decoration.
+**UI PRINCIPLE 1** — a premium operating system, not ERP. **UI PRINCIPLE 2** — layout follows the business question. **UI PRINCIPLE 3** — Tappy appears naturally, never as decoration.
+
+> **ERRATUM, 2026-08-22 — these three were cited as "RULE 8 / RULE 10 / RULE 9" and no such rules exist.**
+> [`docs/backoffice/00_Constitution.md`](../backoffice/00_Constitution.md) — the authoritative rule set — defines
+> **Rule 8 as "AI Assists, Humans Decide"**, **Rule 9 as "Privacy by Default"** and **Rule 10 as "Immutable Audit
+> Log"**. None of them is a UI statement. MEASURED: the rule set this section cited exists **nowhere in the
+> repository**; only this section and two audit documents quoting it back.
+>
+> Under [Owner Decision D2.3, 2026-08-22](OWNER_DECISIONS_2026-08-22.md#d2--layout-presets) the Constitution's
+> numbering governs and **no alternative rule set is to be created**. The three statements are real design intent, so
+> they are kept and renumbered as *UI principles* of this section — which is what they always were. References
+> elsewhere in this document to "RULE 10" for layout presets and "RULE 9" for Tappy mean UI PRINCIPLE 2 and 3.
 
 ```mermaid
 flowchart TB

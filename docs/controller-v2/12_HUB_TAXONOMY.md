@@ -55,8 +55,8 @@ Hub ids follow the shipped convention `tappy.hub.<name>` (see [`registry/adminMo
 
 | Module | Why it is not placed |
 |---|---|
-| **17** Settings | Appears in **no** `01_ARCH` §2.2 Hub. It ships today under `tappy.hub.configuration`, a container invented by the registry, not by the architecture. Settings is plausibly Operations, plausibly its own governance surface. **Needs an Owner decision** before the Configuration hub is retired |
-| **20** Shared Services | Not a UI module. `03_Module_Architecture.md` describes it as a cross-cutting service layer, which in V2 terms is **kernel + capability territory**, not a Hub member. Placing it under a Hub would contradict `01_ARCH` §5 |
+| **17** Settings | Appears in **no** `01_ARCH` §2.2 Hub. It ships today under `tappy.hub.configuration`, a container invented by the registry, not by the architecture. Settings is plausibly Operations, plausibly its own governance surface. ⚖️ **Owner Decision D7, 2026-08-22: placement follows the existing architecture and this taxonomy, and `tappy.hub.configuration` is NOT retired** — the decision explicitly declined to supply a basis for retiring it. §3's **HOLD** therefore stands as written. Module 17 remains unbuilt for a second, independent reason: `platform_settings` has no table (see D1b) |
+| **20** Shared Services | Not a UI module. `03_Module_Architecture.md` describes it as a cross-cutting service layer, which in V2 terms is **kernel + capability territory**, not a Hub member. Placing it under a Hub would contradict `01_ARCH` §5. ✅ **RATIFIED by [Owner Decision D7, 2026-08-22](OWNER_DECISIONS_2026-08-22.md#d7--module-17-module-20-and-further-business-modules)** — this reading is now authoritative, not a proposal. Module 20 is **not a Hub member and not a module to build**; it leaves the "modules remaining" count. This row is closed |
 | **Feature Flags** ([bo-31](../backoffice/31_Feature_Flags.md)) · **Experimentation** ([bo-32](../backoffice/32_Experimentation_AB_Testing.md)) | Approved v1.1 documents that are **not** among the 20 numbered modules. `01_ARCH` §2.2 lists *A/B Testing* under Marketing, so Experimentation has a home; Feature Flags is a Configuration Provider concern (`FOUNDATION_01_CONTRACTS.md` §7), not a module. Recorded so the omission is deliberate |
 
 ## 3. Reconciling the two hubs registered today
@@ -79,4 +79,11 @@ Recorded because both mislead a reader, and neither is fixed here.
 
 ## 5. What this unblocks
 
-Phases 8–10 (business Hubs and their modules) may proceed against §1. Rows marked ❌ are scope, not commitments of date. Rows in §2 are **blocked pending an Owner decision** and must not be implemented on an assumption.
+Phases 8–10 (business Hubs and their modules) may proceed against §1. Rows marked ❌ are scope, not commitments of date. Rows in §2 were **blocked pending an Owner decision** and must not be implemented on an assumption.
+
+> **Updated 2026-08-22 — §2 is decided.** Both rows now carry [Owner Decision D7](OWNER_DECISIONS_2026-08-22.md).
+> **Module 20 is closed** (kernel/capability, not a Hub member, not built). **Module 17 keeps its current placement**
+> and `tappy.hub.configuration` stays. Neither row is open any longer, so nothing in §2 blocks anything.
+>
+> The same decision set holds that **no new business module enters V2** beyond those already authorized. The ❌ rows in
+> §1 are therefore scope for a later phase, not work this project will pick up.
