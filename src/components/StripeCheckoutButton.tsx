@@ -1,9 +1,11 @@
 'use client'
 
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useState } from 'react'
 import { Zap, Loader2 } from 'lucide-react'
 
 export default function StripeCheckoutButton() {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -16,11 +18,11 @@ export default function StripeCheckoutButton() {
       if (data.url) {
         window.location.href = data.url
       } else {
-        setError(data.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
+        setError(data.message || t('sub.checkout.error'))
         setLoading(false)
       }
     } catch {
-      setError('Không thể kết nối. Vui lòng thử lại.')
+      setError(t('sub.checkout.offline'))
       setLoading(false)
     }
   }
@@ -37,7 +39,7 @@ export default function StripeCheckoutButton() {
         ) : (
           <Zap size={16} />
         )}
-        {loading ? 'Đang chuyển hướng...' : 'Nâng cấp Pro — 99K/tháng'}
+        {loading ? t('sub.checkout.redirecting') : t('sub.checkout.upgrade')}
       </button>
       {error && <p className="text-red-300 text-xs mt-2 text-center">{error}</p>}
     </div>

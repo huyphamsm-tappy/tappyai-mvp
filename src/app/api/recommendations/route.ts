@@ -5,6 +5,8 @@ import { rankCandidates } from '@/lib/recommendation/recommendationEngine'
 import type { AIContextResult } from '@/types/aiContext'
 import type { CandidatePlace } from '@/types/recommendation'
 import { NextRequest, NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,7 +22,7 @@ const isShareOnlyPlace = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.h
 // a fallback) through the deterministic recommendation engine.
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   // 1. Personalization context. If the profile is too low-signal, buildAIContext
   //    returns null — fall back to an empty profile so the engine still ranks by

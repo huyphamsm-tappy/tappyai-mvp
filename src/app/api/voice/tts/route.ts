@@ -1,3 +1,5 @@
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
@@ -27,10 +29,10 @@ const MAX_CHARS = 2000
 
 export async function POST(req: NextRequest) {
   const { user } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   if (!rateLimit(`voice-tts:${user.id}`, 30, 60_000).ok) {
-    return NextResponse.json({ error: 'rate_limit' }, { status: 429 })
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
   }
 
   let text: string
@@ -40,25 +42,25 @@ export async function POST(req: NextRequest) {
     text = String(body.text ?? '').trim()
     declared = typeof body.language === 'string' ? body.language : undefined
   } catch {
-    return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_body', message: serverMessage('validation.badBody', requestLocale(req)) }, { status: 400 })
   }
 
-  if (!text) return NextResponse.json({ error: 'empty_text' }, { status: 400 })
+  if (!text) return NextResponse.json({ error: 'empty_text', message: serverMessage('voice.emptyText', requestLocale(req)) }, { status: 400 })
   if (text.length > MAX_CHARS) {
-    return NextResponse.json({ error: 'too_long', maxChars: MAX_CHARS }, { status: 413 })
+    return NextResponse.json({ error: 'too_long', message: serverMessage('voice.tooLong', requestLocale(req)), maxChars: MAX_CHARS }, { status: 413 })
   }
 
   // The authoritative decision. A declared language is a hint that must survive normalization;
   // anything unrecognised falls back to detection rather than being taken at face value.
   const language = normalizeVoiceLanguage(declared) ?? normalizeVoiceLanguage(detectLang(text))
   if (!language) {
-    return NextResponse.json({ error: 'language_unsupported' }, { status: 422 })
+    return NextResponse.json({ error: 'language_unsupported', message: serverMessage('voice.languageUnsupported', requestLocale(req)) }, { status: 422 })
   }
 
   const provider = getTtsProvider(req)
   if (!provider) {
     // Expected while the deployment has no voice identity configured — not a crash.
-    return NextResponse.json({ error: 'voice_unavailable', language }, { status: 503 })
+    return NextResponse.json({ error: 'voice_unavailable', message: serverMessage('voice.unavailable', requestLocale(req)), language }, { status: 503 })
   }
 
   try {
@@ -74,15 +76,15 @@ export async function POST(req: NextRequest) {
     if (e instanceof TtsNotConfiguredError) {
       // No voice chosen yet, or an unsupported language. The client shows a localized notice and
       // keeps the text on screen — it must never hear another language instead.
-      return NextResponse.json({ error: 'voice_unavailable', language }, { status: 503 })
+      return NextResponse.json({ error: 'voice_unavailable', message: serverMessage('voice.unavailable', requestLocale(req)), language }, { status: 503 })
     }
     if (e instanceof TtsSynthesisError) {
       // Logged server-side; the provider's own message names the project and permission and is
       // never returned to the caller.
       console.error('[voice-tts] synthesis failed', { status: e.status })
-      return NextResponse.json({ error: 'synthesis_failed' }, { status: 502 })
+      return NextResponse.json({ error: 'synthesis_failed', message: serverMessage('voice.synthesisFailed', requestLocale(req)) }, { status: 502 })
     }
     console.error('[voice-tts] unexpected failure')
-    return NextResponse.json({ error: 'synthesis_failed' }, { status: 502 })
+    return NextResponse.json({ error: 'synthesis_failed', message: serverMessage('voice.synthesisFailed', requestLocale(req)) }, { status: 502 })
   }
 }

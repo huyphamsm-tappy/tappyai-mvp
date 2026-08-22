@@ -37,7 +37,13 @@ const REVIEWS_BOUNDARY = readFileSync(
 const MUSIC_BOUNDARY = readFileSync(
   join(REPO, 'supabase/migrations/20260818b_music_tracks_publication_boundary.sql'), 'utf8')
 
-const PORT = 54350
+// 🚨 C52 — was 54350, the SAME port `c8_event_outbox.test.ts` uses. Vitest runs suites in
+// parallel, so whichever started second found the port held by the first, its `beforeAll` threw,
+// and the whole file failed — intermittently, depending on scheduling. Two consecutive full runs
+// of an unchanged tree reported different results because of this.
+//
+// Every other embedded-Postgres suite already has its own port; this one was the duplicate.
+const PORT = 54351
 
 const HELD_TRACK = '11111111-1111-4111-8111-111111111111'
 const ORPHAN_TRACK = '22222222-2222-4222-8222-222222222222'

@@ -47,6 +47,35 @@
         android:resizeableActivity="true"
         tools:targetApi="31">
 
+        <!-- Locale persistence below API 33 — NOT optional, and not a decorative service.
+
+             LanguageManager sets the app language through
+             AppCompatDelegate.setApplicationLocales(). On API 33+ the platform owns that value
+             and persists it. Below 33 AppCompat has to persist it itself, and it only does so
+             when it can find THIS component's autoStoreLocales metadata; without it AppCompat
+             logs "Checking for metadata for AppLocalesMetadataHolderService : Service not found"
+             and the locale lives in the current process only. minSdk is 26, so every device from
+             26 to 32 — including the SM-A127F (API 31) this release is UAT'd on — dropped the
+             user's choice on the next process start and fell back to the SYSTEM locale.
+
+             That is why an English user could not stay in English: force stop, relaunch, back to
+             Vietnamese. It also silently corrupted everything derived from the app language,
+             because LanguageManager.current reads AppCompat's state back — after a restart it
+             read null, and a caller that resolves null to the device locale (Deals sends ?lang=)
+             then requested Vietnamese DATA for an English UI. One root cause, two UAT findings.
+
+             android:enabled="false" is correct and deliberate: the service is never started and
+             never bound. It exists only as a manifest node AppCompat reads metadata off.
+             Guarded by src/lib/i18n/androidLocalePersistence.test.ts. -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
         <!-- FCM transport (V2-03). exported=false: only the Play Services client may bind, and
              nothing else on the device should be able to hand this app a notification. -->
         <service
@@ -57,11 +86,20 @@
             </intent-filter>
         </service>
 
+        <!-- windowSoftInputMode is REQUIRED here, not cosmetic. MainActivity calls
+             enableEdgeToEdge(), so decorFitsSystemWindows=false and Compose owns the IME
+             inset itself (ChatScreen's imePadding()). With nothing declared, the mode
+             resolved to ADJUST_PAN on a real device (measured: sim={adjust=pan}), so the
+             system panned the whole window up by the IME height AND imePadding() subtracted
+             it a second time: the composer was displaced 1093px instead of 672px and landed
+             at the top of the screen. adjustResize suppresses the pan and leaves the inset
+             to be applied exactly once. -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:resizeableActivity="true"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.TappyAI">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

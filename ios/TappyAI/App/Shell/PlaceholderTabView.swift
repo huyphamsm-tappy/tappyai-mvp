@@ -12,7 +12,9 @@ struct PlaceholderTabView: View {
             TappyEmptyState(
                 systemImage: tab.systemImage,
                 title: LocalizedStringKey(tab.titleKey),
-                message: "Coming soon"
+                // C36 — was a plain String while `title` above used LocalizedStringKey, so a
+                // Vietnamese user read a Vietnamese title over an English message.
+                message: LocalizedStringKey("placeholder.comingSoon")
             )
         }
     }

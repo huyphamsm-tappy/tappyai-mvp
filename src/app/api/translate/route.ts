@@ -1,6 +1,8 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
 import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // Daily cap via the shared limiter (lib/security/rateLimit) — one implementation
 // for every daily-capped route instead of per-route Maps.
@@ -18,8 +20,11 @@ const LANG_NAMES: Record<string, string> = {
 }
 
 export async function POST(req: NextRequest) {
+  // B04 — resolved once per request; the `error` codes below are unchanged machine contract and
+  // only the human sentence follows the caller's language.
+  const locale = requestLocale(req)
   if (!dailyRateLimit(`translate:${clientIp(req)}`, DAILY_LIMIT).ok) {
-    return NextResponse.json({ error: 'rate_limit', message: `Bạn đã dịch quá ${DAILY_LIMIT} lần hôm nay. Vui lòng thử lại vào ngày mai.` }, { status: 429 })
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('translate.dailyLimit', locale, { n: DAILY_LIMIT }) }, { status: 429 })
   }
 
   let text: string, targetLang: string
@@ -28,11 +33,11 @@ export async function POST(req: NextRequest) {
     text = (body.text || '').trim()
     targetLang = body.targetLang || 'vi'
   } catch {
-    return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_body', message: serverMessage('validation.badBody', requestLocale(req)) }, { status: 400 })
   }
 
-  if (!text) return NextResponse.json({ error: 'empty_text' }, { status: 400 })
-  if (text.length > 2000) return NextResponse.json({ error: 'too_long', message: 'Văn bản quá dài (tối đa 2000 ký tự).' }, { status: 400 })
+  if (!text) return NextResponse.json({ error: 'empty_text', message: serverMessage('voice.emptyText', requestLocale(req)) }, { status: 400 })
+  if (text.length > 2000) return NextResponse.json({ error: 'too_long', message: serverMessage('translate.tooLong', locale) }, { status: 400 })
   const langName = LANG_NAMES[targetLang] || 'Vietnamese'
 
   try {
@@ -43,6 +48,6 @@ export async function POST(req: NextRequest) {
     })
     return NextResponse.json({ translation: translation.trim() })
   } catch {
-    return NextResponse.json({ error: 'api_error', message: 'Lỗi dịch thuật. Vui lòng thử lại.' }, { status: 500 })
+    return NextResponse.json({ error: 'api_error', message: serverMessage('translate.failed', locale) }, { status: 500 })
   }
 }

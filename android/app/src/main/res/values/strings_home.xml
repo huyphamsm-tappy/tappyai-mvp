@@ -42,7 +42,7 @@
     <string name="home_scan_card_title">Snap a photo → AI extracts the text</string>
     <string name="home_scan_card_desc">Scan paper documents, receipts, menus — export to .TXT, .DOCX or share instantly.</string>
     <string name="home_together_title">Tappy Together</string>
-    <string name="home_together_desc">Pick a place as a group — AI suggests what suits everyone</string>
+    <string name="home_together_desc">Pick a place to eat as a group — AI suggests what suits everyone</string>
     <string name="home_music_title">🎵 Music library</string>
     <string name="home_music_desc">Listen &amp; pick soundtracks for reviews</string>
     <string name="home_tools_title">🛠️ Handy tools</string>

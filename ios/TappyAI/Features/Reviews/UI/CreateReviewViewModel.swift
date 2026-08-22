@@ -18,6 +18,10 @@ final class CreateReviewViewModel: AppObservableObject {
     @AppPublished var error: String?
     @AppPublished var submitting = false
     @AppPublished var success = false
+    /// Set when the safety gate stored the post but did not publish it. Mutually exclusive with
+    /// `success` — the composer must never show both, because "posted" and "not public" cannot
+    /// both be true of the same upload.
+    @AppPublished var moderationNotice: ReviewModeration?
 
     // Photo
     @AppPublished var photoURLs: [String] = []
@@ -132,7 +136,7 @@ final class CreateReviewViewModel: AppObservableObject {
                     let url = try await service.uploadPhoto(data: compressed, filename: "photo_\(Int(Date().timeIntervalSince1970 * 1000)).jpg")
                     uploaded.append(url)
                 } catch {
-                    self.error = "Lỗi tải ảnh"
+                    self.error = NSLocalizedString("review.error.photoUpload", comment: "")
                     log.error("photo upload failed: \(error)")
                 }
             }
@@ -159,7 +163,7 @@ final class CreateReviewViewModel: AppObservableObject {
             } catch is CancellationError {
                 // user cancelled
             } catch {
-                self.error = "Lỗi tải video"
+                self.error = NSLocalizedString("review.error.videoUpload", comment: "")
                 resetVideoState()
             }
         }
@@ -247,7 +251,7 @@ final class CreateReviewViewModel: AppObservableObject {
         uploadTask?.cancel()
         uploadTask = nil
         resetVideoState()
-        error = "Đã hủy tải lên"
+        error = NSLocalizedString("review.upload.cancelled", comment: "")
     }
 
     func removeVideo() {
@@ -459,7 +463,7 @@ final class CreateReviewViewModel: AppObservableObject {
     func submit() {
         guard canPost, !submitting, !isUploading else { return }
         guard isAuthenticated else {
-            error = "Cần đăng nhập để đăng bài"
+            error = NSLocalizedString("review.error.signInRequired", comment: "")
             return
         }
         error = nil
@@ -486,7 +490,7 @@ final class CreateReviewViewModel: AppObservableObject {
 
                 var payload = CreateReviewPayload(
                     placeId: placeId,
-                    placeName: trimmedPlace.isEmpty ? "Chia sẻ" : trimmedPlace,
+                    placeName: trimmedPlace.isEmpty ? NSLocalizedString("review.defaultPlaceName", comment: "") : trimmedPlace,
                     placeAddress: "",
                     rating: rating,
                     body: trimmedBody,
@@ -560,19 +564,31 @@ final class CreateReviewViewModel: AppObservableObject {
                 let response = try await service.createReview(payload: payload)
                 if let err = response.error, !err.isEmpty {
                     self.error = err
+                } else if let moderation = response.moderation, !moderation.state.isPublished {
+                    // 🚨 A THIRD OUTCOME — neither success nor failure.
+                    //
+                    // Nothing went wrong: the request succeeded, the post exists, it belongs to
+                    // the author and it is in their profile. But it is NOT public, and setting
+                    // `success` would dismiss the composer with a confirmation the author only
+                    // discovers to be false when their video never appears. Setting `error` would
+                    // be equally untrue and would invite them to post it again.
+                    //
+                    // The server decides this; nothing here computes it. The wording comes from
+                    // the response, so this screen cannot disagree with the row that was stored.
+                    self.moderationNotice = moderation
                 } else {
                     success = true
                 }
             } catch let appError as AppError {
                 switch appError {
                 case .network(status: let s, code: _) where s == 409:
-                    self.error = "Bạn đã đánh giá địa điểm này rồi"
+                    self.error = NSLocalizedString("review.error.alreadyReviewed", comment: "")
                 default:
-                    self.error = "Lỗi đăng bài"
+                    self.error = NSLocalizedString("review.error.post", comment: "")
                 }
                 log.error("submit review failed: \(appError)")
             } catch {
-                self.error = "Lỗi đăng bài"
+                self.error = NSLocalizedString("review.error.post", comment: "")
                 log.error("submit review failed: \(error)")
             }
             submitting = false

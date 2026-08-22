@@ -17,8 +17,17 @@ import javax.inject.Singleton
  * — critically — Android's own resource system then picks `values-vi/`/`values`(default) string
  * sets automatically, so there is no need for a hand-rolled dictionary/key-lookup layer the way
  * the web needed one (the web has no OS-level resource-qualifier system to lean on). AppCompat
- * persists the choice itself (an internal SharedPreferences-backed store), which is why there is
- * no separate DataStore write here — [current] simply reads AppCompat's own state back.
+ * persists the choice itself, which is why there is no separate DataStore write here — [current]
+ * simply reads AppCompat's own state back.
+ *
+ * 🚨 THAT PERSISTENCE IS CONDITIONAL BELOW API 33, AND THIS KDOC USED TO CLAIM OTHERWISE.
+ * On API 33+ the platform stores the value. Below 33 AppCompat stores it only if the manifest
+ * declares `androidx.appcompat.app.AppLocalesMetadataHolderService` with
+ * `autoStoreLocales=true`; with no such node it keeps the locale in memory for the life of the
+ * process and nothing more. `minSdk` is 26, so for six API levels the sentence above was simply
+ * false, and a language chosen here survived until the next force stop and no longer. The
+ * manifest node is now declared and carries the full account; do not remove it, and do not
+ * re-simplify this paragraph away — it is the reason V2-UAT-001 and V2-UAT-005 both existed.
  *
  * Backend sync (`PATCH /api/profile {language}`) is best-effort, matching the web's own
  * `LanguagePicker.tsx` behavior (fire-and-forget, ignored if it fails) — the in-app switch must
@@ -34,8 +43,18 @@ class LanguageManager @Inject constructor(
      *  falls back to the system locale, same "not yet set" state the web's `getStoredLocale()
      *  === null` first-visit case models). */
     val current: AppLanguage?
-        get() = AppCompatDelegate.getApplicationLocales().takeIf { !it.isEmpty }
-            ?.get(0)?.language?.let { AppLanguage.fromTag(it) }
+        get() = AppLanguageResolver.current()
+
+    /**
+     * The language the UI is ACTUALLY rendering in, as a BCP-47 primary tag. Never null.
+     *
+     * Delegates to [AppLanguageResolver], which is where the resolution lives so that the network
+     * layer can reach it without reaching this class — see that file for why. It used to be
+     * spelled out inside `RealDealsRepository`, and the next feature that needed the same answer
+     * (the author-facing safety notice on `POST /api/reviews`) did not know to look in the Deals
+     * repository and shipped without it.
+     */
+    fun currentLanguageTag(): String = AppLanguageResolver.currentTag()
 
     suspend fun setLanguage(language: AppLanguage) {
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language.tag))

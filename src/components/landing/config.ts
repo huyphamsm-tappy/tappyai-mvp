@@ -21,6 +21,16 @@ export const OG_IMAGE = '/feature-graphic.png'
 // address. Both are active Cloudflare Email Routing rules.
 export const SUPPORT_EMAIL = 'support@tappyai.com'
 export const FOUNDER_EMAIL = 'founder@tappyai.com'
+/**
+ * Where copyright takedown notices go. Deliberately NOT the support address: a notice sent to
+ * support is a notice in the wrong queue, and the policy page publishes this one specifically.
+ *
+ * 🔑 Lives here rather than in `app/copyright/page.tsx` because a Next.js page module may export
+ * only its own reserved names — exporting a constant from a page fails the build with
+ * "Property … is not assignable to type 'never'". The same constraint is why `getReview` sits
+ * beside the review page instead of inside it.
+ */
+export const COPYRIGHT_AGENT_EMAIL = 'copyright@tappyai.com'
 export const FOUNDER_LINKEDIN_URL = 'https://www.linkedin.com/in/ph%E1%BA%A1m-huy-313592253/'
 export const FOUNDER_LINKEDIN_LABEL = 'linkedin.com/in/phạm-huy-313592253'
 

@@ -1,11 +1,13 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // POST /api/notifications/subscribe — upsert a Web Push subscription for the current user
 export async function POST(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const body = await req.json()
 
@@ -26,14 +28,14 @@ export async function POST(req: Request) {
         token.length > 4096 ||
         !/^[A-Za-z0-9_:.\-]+$/.test(token)
       ) {
-        return NextResponse.json({ error: 'Invalid subscription data' }, { status: 400 })
+        return NextResponse.json({ error: 'invalid_input', message: serverMessage('notif.invalidSubscription', requestLocale(req)) }, { status: 400 })
       }
       provider = 'fcm'
       subscription_data = { token }
     } else {
       const { endpoint, keys } = body
       if (!endpoint || !keys?.p256dh || !keys?.auth) {
-        return NextResponse.json({ error: 'Invalid subscription data' }, { status: 400 })
+        return NextResponse.json({ error: 'invalid_input', message: serverMessage('notif.invalidSubscription', requestLocale(req)) }, { status: 400 })
       }
       provider = 'webpush'
       subscription_data = { endpoint, keys }
@@ -53,13 +55,13 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('[subscribe] Upsert error:', error)
-      return NextResponse.json({ error: 'Failed to save subscription' }, { status: 500 })
+      return NextResponse.json({ error: 'save_failed', message: serverMessage('notif.saveFailed', requestLocale(req)) }, { status: 500 })
     }
 
     return NextResponse.json({ ok: true })
   } catch (e) {
     console.error('[subscribe] Error:', e)
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }
 
@@ -67,7 +69,7 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const { error } = await supabase
       .from('notification_subscriptions')
@@ -77,12 +79,12 @@ export async function DELETE(req: Request) {
 
     if (error) {
       console.error('[subscribe] Disable error:', error)
-      return NextResponse.json({ error: 'Failed to disable subscription' }, { status: 500 })
+      return NextResponse.json({ error: 'disable_failed', message: serverMessage('notif.disableFailed', requestLocale(req)) }, { status: 500 })
     }
 
     return NextResponse.json({ ok: true })
   } catch (e) {
     console.error('[subscribe] Error:', e)
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }

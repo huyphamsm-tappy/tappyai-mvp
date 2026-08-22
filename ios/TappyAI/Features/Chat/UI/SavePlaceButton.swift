@@ -16,7 +16,7 @@ struct SavePlaceButton: View {
     var body: some View {
         if isOpen {
             HStack(spacing: Spacing.xs) {
-                TextField("Tên địa điểm muốn lưu?", text: $placeName)
+                TextField(NSLocalizedString("chat.savePlace.prompt", comment: ""), text: $placeName)
                     .font(TappyFont.caption)
                     .padding(.horizontal, Spacing.sm)
                     .padding(.vertical, 6)
@@ -54,7 +54,7 @@ struct SavePlaceButton: View {
                 placeName = ContentParser.detectFirstPlaceName(text: text, buttons: buttons)
                 isOpen = true
             } label: {
-                Text("🔖 Lưu địa điểm")
+                Text("chat.savePlace")
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                     .padding(.horizontal, 6)

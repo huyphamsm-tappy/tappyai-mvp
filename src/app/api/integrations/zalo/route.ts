@@ -1,6 +1,9 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
+import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
 const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/zalo/callback`
@@ -8,9 +11,9 @@ const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/zalo/c
 // GET /api/integrations/zalo → redirect to Zalo OAuth
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
-  const action = req.nextUrl.searchParams.get('action')
+  const action = searchParam(req, 'action')
 
   // Disconnect
   if (action === 'disconnect') {

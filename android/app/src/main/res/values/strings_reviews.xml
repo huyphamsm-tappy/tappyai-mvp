@@ -29,6 +29,14 @@
     <string name="reviews_composer_placeholder_link">Paste link</string>
     <string name="reviews_composer_body_placeholder">Share your experience...</string>
     <string name="reviews_composer_posted_toast">Posted</string>
+    <!-- The ONLY string the safety-gate notice needs on this side. The title and body come from
+         the server, already worded in the request language, because the notice must describe the
+         row that was actually stored — see ReviewModeration. This is just the button that
+         acknowledges it. -->
+    <string name="reviews_moderation_acknowledge">Got it</string>
+    <!-- Badge on the author's own post when the gate did not publish it. Short by necessity: it
+         sits on a grid tile. Tapping the post shows the server's full explanation. -->
+    <string name="reviews_moderation_not_public">Not public</string>
     <string name="reviews_composer_using_sound">Using: %1$s</string>
     <string name="reviews_composer_remove_sound">Remove sound</string>
     <string name="reviews_composer_add_music">Add music</string>

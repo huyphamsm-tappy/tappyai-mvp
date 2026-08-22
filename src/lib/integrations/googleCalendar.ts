@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { fenceUntrusted } from '@/lib/ai/security/fence'
 
 interface CalendarEvent {
   summary: string
@@ -99,5 +100,9 @@ export function formatEventsForPrompt(events: CalendarEvent[]): string {
     const dateStr = start.toLocaleDateString('vi-VN', { weekday: 'short', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' })
     return `• ${e.summary} — ${dateStr}${e.location ? ` @ ${e.location}` : ''}`
   })
-  return `\n===== LỊCH TUẦN NÀY =====\n${lines.join('\n')}\n========================`
+  // P3-S2: event summaries and locations are written by THIRD PARTIES — anyone
+  // who can send this user a calendar invite controls this text. That makes it
+  // the one untrusted source here that is not self-inflicted, so it is fenced
+  // like any other external data. The header stays outside (FENCE-02).
+  return `\n===== LỊCH TUẦN NÀY =====\n${fenceUntrusted('calendar_events', lines.join('\n'))}\n========================`
 }

@@ -25,7 +25,7 @@ struct VietContentView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("✍️ Viết nội dung")
+        .navigationTitle(NSLocalizedString("vietcontent.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -33,13 +33,13 @@ struct VietContentView: View {
 
     private var topicInput: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text("Chủ đề / ý tưởng")
+            Text(NSLocalizedString("vietcontent.topic", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
 
             ZStack(alignment: .topLeading) {
                 if vm.topic.isEmpty {
-                    Text("VD: Review quán cà phê mới mở ở Quận 1...")
+                    Text(NSLocalizedString("vietcontent.topicPlaceholder", comment: ""))
                         .font(TappyFont.body)
                         .foregroundStyle(TappyColor.textSecondary.opacity(0.5))
                         .padding(.horizontal, Spacing.md)
@@ -66,7 +66,7 @@ struct VietContentView: View {
                     .foregroundStyle(vm.isOverLimit ? .red : TappyColor.textSecondary)
                 Spacer()
                 if !vm.topic.isEmpty {
-                    Button("Xoá") { vm.clear() }
+                    Button(NSLocalizedString("common.clear", comment: "")) { vm.clear() }
                         .font(.system(size: 12, weight: .medium))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -85,9 +85,9 @@ struct VietContentView: View {
 
     private var optionsSection: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
-            optionRow("Nền tảng", options: VietContentViewModel.platforms, selection: $vm.platform)
-            optionRow("Giọng văn", options: VietContentViewModel.tones, selection: $vm.tone)
-            optionRow("Độ dài", options: VietContentViewModel.lengths, selection: $vm.length)
+            optionRow(NSLocalizedString("vietcontent.platform", comment: ""), options: VietContentViewModel.platforms, selection: $vm.platform)
+            optionRow(NSLocalizedString("vietcontent.tone", comment: ""), options: VietContentViewModel.tones, selection: $vm.tone)
+            optionRow(NSLocalizedString("vietcontent.length", comment: ""), options: VietContentViewModel.lengths, selection: $vm.length)
         }
         .padding(Spacing.lg)
         .background(TappyColor.cardBackground)
@@ -136,10 +136,10 @@ struct VietContentView: View {
                     ProgressView()
                         .tint(.white)
                         .scaleEffect(0.8)
-                    Text("Đang tạo...")
+                    Text(NSLocalizedString("vietcontent.generating", comment: ""))
                 } else {
                     Image(systemName: "sparkles")
-                    Text("Tạo nội dung")
+                    Text(NSLocalizedString("vietcontent.generate", comment: ""))
                 }
             }
             .font(.system(size: 15, weight: .semibold))
@@ -158,7 +158,7 @@ struct VietContentView: View {
     private var resultSection: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             HStack {
-                Text("Nội dung tạo")
+                Text(NSLocalizedString("vietcontent.result", comment: ""))
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
@@ -169,7 +169,7 @@ struct VietContentView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "doc.on.doc")
                             .font(.system(size: 11))
-                        Text("Sao chép")
+                        Text(NSLocalizedString("common.copy", comment: ""))
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(TappyColor.primary)

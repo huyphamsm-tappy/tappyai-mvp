@@ -2,12 +2,14 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { NextRequest, NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // GET /api/reviews/saved — the user's saved reviews (the "reference/bookmark" kind that,
 // together with Favorites, makes up the unified Saved library — MFS 4.9/4.11).
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   const { data: saves, error } = await supabase
     .from('review_saves')
@@ -16,7 +18,7 @@ export async function GET(req: NextRequest) {
     .order('created_at', { ascending: false })
     .limit(100)
 
-  if (error) return NextResponse.json({ error: 'Lỗi tải danh sách' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'load_failed', message: serverMessage('server.loadFailed', requestLocale(req)) }, { status: 500 })
 
   const ids = (saves || []).map(s => s.review_id)
   if (ids.length === 0) return NextResponse.json({ reviews: [] })

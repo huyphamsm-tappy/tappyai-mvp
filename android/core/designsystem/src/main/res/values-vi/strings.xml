@@ -4,4 +4,10 @@
     <string name="tappy_cd_close">Đóng</string>
     <string name="tappy_cd_loading">Đang tải</string>
     <string name="tappy_search_clear">Xóa tìm kiếm</string>
+    <string name="tappy_cd_avatar_generic">Ảnh đại diện</string>
+    <string name="tappy_cd_avatar_named">Ảnh đại diện của %1$s</string>
+    <string name="tappy_cd_copy_code">Sao chép mã</string>
+    <string name="tappy_dialog_dismiss">Hủy</string>
+    <string name="tappy_error_retry">Thử lại</string>
+    <string name="tappy_search_placeholder">Tìm kiếm</string>
 </resources>

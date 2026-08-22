@@ -5,7 +5,7 @@ import DealNotifyButton from './DealNotifyButton'
 import BrandLogo from '@/components/ui/BrandLogo'
 import { resolveBrand } from '@/config/brandRegistry'
 import { ExternalLink, Loader2, Clock, Copy, Check } from 'lucide-react'
-import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useTranslation, resolvedClientLocale } from '@/lib/i18n/useTranslation'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { promoCountdown } from '@/lib/deals/countdown'
@@ -49,7 +49,9 @@ function categoryColor(cat: string) {
 }
 
 function formatDate(locale: 'vi' | 'en') {
-  return new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
+  return new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-GB', {
+    // C17 — en-GB, not en-US: this product is day-first everywhere else, and "Friday, 8/21"
+    // is the only US-style date in the app.
     weekday: 'long', day: 'numeric', month: 'numeric', timeZone: 'Asia/Ho_Chi_Minh',
   }).format(new Date())
 }
@@ -65,6 +67,11 @@ export default function DealsView() {
   // instantly (the API localizes server-side and returns the same shape). The
   // request carries the current locale; the server falls back to vi per field.
   useEffect(() => {
+    // C40 — skip the hydration pass, when the store still reports the SSR default. Without this
+    // every load costs two /api/deals requests and discards the first.
+    const settled = resolvedClientLocale()
+    if (settled && settled !== locale) return
+
     let cancelled = false
     setLoading(true)
     fetch(`/api/deals?lang=${encodeURIComponent(locale)}`)

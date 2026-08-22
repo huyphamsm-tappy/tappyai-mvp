@@ -1,5 +1,7 @@
 import { AI } from '@/lib/ai/llm'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 const PLATFORM_GUIDE: Record<string, string> = {
   facebook: 'Facebook (phong cách thân thiện, có thể dùng emoji, phù hợp mọi lứa tuổi)',
@@ -27,14 +29,14 @@ export async function POST(req: Request) {
   const rl = rateLimit(`viet-content:${clientIp(req)}`, 10, 60_000)
   if (!rl.ok) {
     return Response.json(
-      { error: 'Bạn tạo nội dung quá nhanh, vui lòng thử lại sau giây lát.' },
+      { error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) },
       { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
     )
   }
 
   if (!AI.isConfigured()) {
     return Response.json(
-      { error: 'AI provider chưa được cấu hình trên server.' },
+      { error: 'not_configured', message: serverMessage('service.unavailable', requestLocale(req)) },
       { status: 500 },
     )
   }
@@ -43,16 +45,16 @@ export async function POST(req: Request) {
   try {
     body = await req.json()
   } catch {
-    return Response.json({ error: 'Request body không hợp lệ.' }, { status: 400 })
+    return Response.json({ error: 'invalid_body', message: serverMessage('validation.badBody', requestLocale(req)) }, { status: 400 })
   }
 
   const { topic, platform = 'facebook', tone = 'youthful', length = 'medium' } = body
 
   if (!topic?.trim()) {
-    return Response.json({ error: 'Vui lòng nhập chủ đề hoặc mô tả.' }, { status: 400 })
+    return Response.json({ error: 'topic_required', message: serverMessage('content.topicRequired', requestLocale(req)) }, { status: 400 })
   }
   if (topic.trim().length > 500) {
-    return Response.json({ error: 'Chủ đề quá dài (tối đa 500 ký tự).' }, { status: 400 })
+    return Response.json({ error: 'topic_too_long', message: serverMessage('content.topicTooLong', requestLocale(req)) }, { status: 400 })
   }
 
   const platformDesc = PLATFORM_GUIDE[platform] ?? PLATFORM_GUIDE.facebook
@@ -71,7 +73,7 @@ export async function POST(req: Request) {
     // Extract JSON from response (model may wrap it in markdown code blocks)
     const jsonMatch = text.match(/\{[\s\S]*?\}/)
     if (!jsonMatch) {
-      return Response.json({ error: 'Kết quả không đúng định dạng, vui lòng thử lại.' }, { status: 500 })
+      return Response.json({ error: 'bad_format', message: serverMessage('content.badFormat', requestLocale(req)) }, { status: 500 })
     }
 
     const parsed = JSON.parse(jsonMatch[0]) as { caption?: string; hashtags?: string }
@@ -79,16 +81,16 @@ export async function POST(req: Request) {
     const hashtags = (parsed.hashtags ?? '').trim()
 
     if (!caption) {
-      return Response.json({ error: 'Không tạo được nội dung, vui lòng thử lại.' }, { status: 500 })
+      return Response.json({ error: 'generate_failed', message: serverMessage('content.generateFailed', requestLocale(req)) }, { status: 500 })
     }
 
     return Response.json({ caption, hashtags })
   } catch (err) {
     const msg = err instanceof Error ? err.message : ''
     if (msg.includes('API key') || msg.includes('auth') || msg.includes('401')) {
-      return Response.json({ error: 'API key không hợp lệ hoặc chưa được kích hoạt.' }, { status: 500 })
+      return Response.json({ error: 'not_configured', message: serverMessage('service.unavailable', requestLocale(req)) }, { status: 500 })
     }
     console.error('[viet-content] API error:', err)
-    return Response.json({ error: 'Có lỗi xảy ra, vui lòng thử lại sau.' }, { status: 500 })
+    return Response.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }

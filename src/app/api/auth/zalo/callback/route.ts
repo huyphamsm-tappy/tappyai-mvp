@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
 const ZALO_APP_SECRET = process.env.ZALO_APP_SECRET!
@@ -14,8 +15,8 @@ function originOf(req: NextRequest): string {
 export async function GET(req: NextRequest) {
   const origin = originOf(req)
   const REDIRECT_URI = `${origin}/api/auth/zalo/callback`
-  const code = req.nextUrl.searchParams.get('code')
-  const state = req.nextUrl.searchParams.get('state')
+  const code = searchParam(req, 'code')
+  const state = searchParam(req, 'state')
   const codeVerifier = req.cookies.get('zalo_login_cv')?.value
   const savedState = req.cookies.get('zalo_login_state')?.value
   const returnTo = req.cookies.get('zalo_login_return')?.value || '/'

@@ -12,7 +12,7 @@ struct HomeGreetingSection: View {
                 Text(greeting)
                     .font(TappyFont.title)
                     .foregroundStyle(TappyColor.textPrimary)
-                Text("Tappy có thể giúp gì cho bạn?")
+                Text("home.hero")
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.textSecondary)
             }
@@ -36,7 +36,7 @@ struct HomeSearchSection: View {
             HStack(spacing: Spacing.sm) {
                 Image(systemName: TappyIcon.search)
                     .foregroundStyle(TappyColor.textSecondary)
-                Text("Hỏi TappyAI bất cứ điều gì...")
+                Text("home.askPlaceholder")
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
@@ -49,7 +49,7 @@ struct HomeSearchSection: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
         }
         .buttonStyle(.plain)
-        .tappyAccessibleButton("Tìm kiếm")
+        .tappyAccessibleButton("home.a11y.search")
     }
 }
 
@@ -59,16 +59,16 @@ struct HomeCategorySection: View {
     let onSelect: (String) -> Void
 
     private let categories: [(emoji: String, key: String, labelVi: String)] = [
-        ("🍜", "food", "Ăn uống"),
-        ("🛍️", "shopping", "Mua sắm"),
-        ("🎭", "entertainment", "Giải trí"),
-        ("✈️", "travel", "Du lịch"),
+        ("🍜", "food", NSLocalizedString("category.food", comment: "")),
+        ("🛍️", "shopping", NSLocalizedString("category.shopping", comment: "")),
+        ("🎭", "entertainment", NSLocalizedString("category.entertainment", comment: "")),
+        ("✈️", "travel", NSLocalizedString("category.travel", comment: "")),
         ("💆", "spa", "Spa"),
     ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            SectionHeader(title: "Khám phá theo lĩnh vực")
+            SectionHeader(title: "home.exploreByCategory")
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: Spacing.xs) {
                     ForEach(categories, id: \.key) { cat in
@@ -89,17 +89,21 @@ struct HomeQuickActionsSection: View {
     let onSelect: (HomeDestination) -> Void
 
     private let actions: [(icon: String, label: String, dest: HomeDestination)] = [
-        ("dollarsign.circle", "Tỷ giá", .currency),
-        ("globe", "Dịch", .translate),
-        ("doc.text.viewfinder", "Scan", .scan),
-        ("pencil.line", "Viết", .vietContent),
-        ("divide.circle", "Chia bill", .splitBill),
-        ("sparkles", "Bói", .fortune),
+        ("dollarsign.circle", NSLocalizedString("tool.currency", comment: ""), .currency),
+        ("globe", NSLocalizedString("tool.translate", comment: ""), .translate),
+        // B07-class: this label was a hardcoded English "Scan" while every tile around it was
+        // localized, so a Vietnamese session read one English word in the middle of the grid.
+        ("doc.text.viewfinder", NSLocalizedString("tool.scan", comment: ""), .scan),
+        // B09 — Scam Shield, in the same tools grid the web puts it in.
+        ("checkmark.shield", NSLocalizedString("tool.scamShield", comment: ""), .scamShield),
+        ("pencil.line", NSLocalizedString("tool.vietContent", comment: ""), .vietContent),
+        ("divide.circle", NSLocalizedString("tool.splitBill", comment: ""), .splitBill),
+        ("sparkles", NSLocalizedString("tool.fortune", comment: ""), .fortune),
     ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            SectionHeader(title: "🛠️ Công cụ tiện ích")
+            SectionHeader(title: "home.handyTools")
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: Spacing.sm)], spacing: Spacing.sm) {
                 ForEach(actions, id: \.label) { action in
                     Button { onSelect(action.dest) } label: {
@@ -124,10 +128,10 @@ struct HomeAIEntrySection: View {
                     Text("🤖")
                         .font(.system(size: 36))
                     VStack(alignment: .leading, spacing: Spacing.xxs) {
-                        Text("Hỏi Tappy")
+                        Text("home.askTappy")
                             .font(TappyFont.headline)
                             .foregroundStyle(TappyColor.textPrimary)
-                        Text("Trợ lý AI cho cuộc sống hàng ngày")
+                        Text("home.askTappy.subtitle")
                             .font(TappyFont.footnote)
                             .foregroundStyle(TappyColor.textSecondary)
                     }
@@ -138,7 +142,7 @@ struct HomeAIEntrySection: View {
             }
         }
         .buttonStyle(.plain)
-        .tappyAccessibleButton("Hỏi Tappy")
+        .tappyAccessibleButton("home.a11y.askTappy")
     }
 }
 
@@ -152,7 +156,7 @@ struct HomeSuggestedPromptsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            SectionHeader(title: "Gợi ý hôm nay")
+            SectionHeader(title: "home.todaySuggestions")
             switch state {
             case .idle, .loading:
                 HStack(spacing: Spacing.xs) {
@@ -165,7 +169,7 @@ struct HomeSuggestedPromptsSection: View {
                 if prompts.isEmpty {
                     TappyEmptyState(
                         systemImage: "lightbulb",
-                        title: "Gợi ý sẽ xuất hiện ở đây"
+                        title: "home.suggestions.empty"
                     )
                 } else {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -193,7 +197,7 @@ struct HomeSuggestedPromptsSection: View {
                 }
             case .failed:
                 TappyErrorState(
-                    presentation: .init(title: "Không tải được", message: "Thử lại sau.", retryable: true),
+                    presentation: .init(title: NSLocalizedString("common.loadFailed", comment: ""), message: NSLocalizedString("common.tryAgainLater", comment: ""), retryable: true),
                     onRetry: onRetry
                 )
             }
@@ -216,13 +220,13 @@ struct HomeRecentConversationsSection: View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             if isAuthenticated && !conversations.isEmpty {
                 HStack {
-                    Text("Trò chuyện gần đây")
+                    Text("home.recentChats")
                         .font(TappyFont.headline)
                         .foregroundStyle(TappyColor.textPrimary)
                     Spacer()
                     if let onSeeAll {
                         Button(action: onSeeAll) {
-                            Text("Xem tất cả")
+                            Text("common.seeAll")
                                 .font(TappyFont.caption)
                                 .foregroundStyle(TappyColor.primary)
                         }
@@ -230,13 +234,13 @@ struct HomeRecentConversationsSection: View {
                     }
                 }
             } else {
-                SectionHeader(title: "Trò chuyện gần đây")
+                SectionHeader(title: "home.recentChats")
             }
 
             if !isAuthenticated {
                 TappyEmptyState(
                     systemImage: "bubble.left.and.bubble.right",
-                    title: "Đăng nhập để lưu lịch sử trò chuyện của bạn"
+                    title: "home.chats.signInPrompt"
                 )
             } else {
                 switch state {
@@ -250,8 +254,8 @@ struct HomeRecentConversationsSection: View {
                     if conversations.isEmpty {
                         TappyEmptyState(
                             systemImage: "bubble.left.and.bubble.right",
-                            title: "Bắt đầu trò chuyện đầu tiên với TappyAI!",
-                            actionTitle: "Chat ngay",
+                            title: "home.chats.empty",
+                            actionTitle: "home.chats.startNow",
                             action: onNewChat
                         )
                     } else {
@@ -266,7 +270,7 @@ struct HomeRecentConversationsSection: View {
                     }
                 case .failed:
                     TappyErrorState(
-                        presentation: .init(title: "Không tải được", message: "Thử lại sau.", retryable: true),
+                        presentation: .init(title: NSLocalizedString("common.loadFailed", comment: ""), message: NSLocalizedString("common.tryAgainLater", comment: ""), retryable: true),
                         onRetry: onRetry
                     )
                 }
@@ -290,10 +294,10 @@ struct HomeRecommendationsCard: View {
                     .background(TappyColor.surface)
                     .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
                 VStack(alignment: .leading, spacing: Spacing.xxs) {
-                    Text("✨ Gợi ý cho bạn")
+                    Text("recommendations.title")
                         .font(TappyFont.bodyEmphasis)
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text("Địa điểm hợp gu, cá nhân hóa")
+                    Text("home.recommendations.desc")
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -307,7 +311,7 @@ struct HomeRecommendationsCard: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
         }
         .buttonStyle(.plain)
-        .tappyAccessibleButton("Xem gợi ý cho bạn")
+        .tappyAccessibleButton("home.a11y.viewSuggestions")
     }
 }
 
@@ -325,12 +329,17 @@ private struct ConversationRow: View {
                 .background(TappyColor.surface)
                 .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
             VStack(alignment: .leading, spacing: Spacing.xxs) {
-                Text(conversation.title ?? "Hội thoại")
+                Text(conversation.title ?? NSLocalizedString("chat.untitled", comment: ""))
                     .font(TappyFont.bodyEmphasis)
                     .foregroundStyle(TappyColor.textPrimary)
                     .lineLimit(1)
                 HStack(spacing: 0) {
-                    Text("\(conversation.messageCount) tin nhắn")
+                    // 🚨 An INTERPOLATED Vietnamese literal. The B03 ratchet matches
+                    // `"([^"\\]{2,})"` and so cannot see any string containing `\(…)` — this one
+                    // was never in the 487, and neither is any other interpolated label. Counted
+                    // or not, an English user was reading "tin nhắn"; localizing the format
+                    // string is also what lets the plural rules differ per language.
+                    Text(String(format: NSLocalizedString("chat.messageCount", comment: ""), conversation.messageCount))
                     if let date = conversation.updatedAt {
                         Text(" · ")
                         Text(date, style: .relative)
@@ -349,7 +358,7 @@ private struct ConversationRow: View {
         .frame(minHeight: 56)
         .background(TappyColor.surfaceElevated)
         .clipShape(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
-        .tappyAccessibleButton("Mở hội thoại")
+        .tappyAccessibleButton("home.a11y.openConversation")
     }
 }
 

@@ -98,7 +98,7 @@ export default function ScanPage() {
         body: JSON.stringify({ imageBase64: base64, mimeType }),
       })
       const data = await res.json()
-      if (!res.ok) setError(data.error || t('scan.errorGeneric'))
+      if (!res.ok) setError(data.message || data.error || t('scan.errorGeneric'))
       else setResult(data.text)
     } catch {
       setError(t('scan.errorNetwork'))

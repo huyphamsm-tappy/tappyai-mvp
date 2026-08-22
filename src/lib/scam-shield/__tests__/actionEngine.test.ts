@@ -74,3 +74,60 @@ describe('getRecommendedActions', () => {
     expect(actions.some(a => a.action === 'CALL_HOTLINE')).toBe(false)
   })
 })
+
+/**
+ * REGRESSION (permanent): confidence was never passed to getRecommendedActions, so a check in
+ * which every provider failed produced score 0 -> level SAFE -> "This link appears safe" while
+ * nothing had actually been verified. calculateRisk only sums COMPLETED signals, which makes
+ * "nothing bad found" and "nothing found at all" score identically; confidence is the only thing
+ * that distinguishes them, and the reassuring branch is the one place it must be consulted.
+ */
+describe('getRecommendedActions — reassurance requires evidence', () => {
+  it('does not claim safety when no provider completed', () => {
+    const actions = getRecommendedActions('SAFE', emptyEvidence, null, 0)
+
+    expect(actions[0].action).toBe('INCONCLUSIVE')
+    expect(actions.some(a => a.action === 'LIKELY_SAFE')).toBe(false)
+  })
+
+  it('withdraws reassurance for LOW on partial evidence too', () => {
+    const actions = getRecommendedActions('LOW', emptyEvidence, null, 20)
+
+    expect(actions[0].action).toBe('INCONCLUSIVE')
+  })
+
+  /** The boundary is the UI's own low/medium confidence split, so badge and action agree. */
+  it('reassures at the confidence threshold but not below it', () => {
+    expect(getRecommendedActions('SAFE', emptyEvidence, null, 50)[0].action).toBe('LIKELY_SAFE')
+    expect(getRecommendedActions('SAFE', emptyEvidence, null, 49)[0].action).toBe('INCONCLUSIVE')
+  })
+
+  /** Asymmetry is the point: low confidence may withdraw reassurance, never a warning. */
+  it('never suppresses a warning for low confidence', () => {
+    expect(getRecommendedActions('CRITICAL', emptyEvidence, null, 0)[0].action).toBe('DO_NOT_OPEN')
+    expect(getRecommendedActions('HIGH', emptyEvidence, null, 0)[0].action).toBe('DO_NOT_OPEN')
+    expect(getRecommendedActions('MEDIUM', emptyEvidence, null, 0)[0].action)
+      .toBe('PROCEED_WITH_CAUTION')
+  })
+
+  /** An unverified result must not read as reassurance in either language. */
+  it('states the check did not complete, in both languages', () => {
+    const [primary] = getRecommendedActions('SAFE', emptyEvidence, null, 0)
+
+    expect(primary.label_vi).toContain('chưa thể kết luận')
+    expect(primary.label_en).toContain('cannot be confirmed safe')
+    expect(primary.icon).not.toBe('check')
+  })
+
+  it('still points at the official site when one is known', () => {
+    const actions = getRecommendedActions('SAFE', emptyEvidence, mockEntity, 0)
+
+    expect(actions.some(a => a.action === 'CHECK_OFFICIAL')).toBe(true)
+    expect(actions.some(a => a.action === 'VERIFY_IDENTITY')).toBe(true)
+  })
+
+  /** Full evidence must still reassure — the guard above must not swallow the normal path. */
+  it('reassures normally when the evidence base completed', () => {
+    expect(getRecommendedActions('SAFE', emptyEvidence, null, 100)[0].action).toBe('LIKELY_SAFE')
+  })
+})

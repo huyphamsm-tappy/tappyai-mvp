@@ -55,6 +55,12 @@ final class SessionStore: AppObservableObject {
     /// Adopt a server-issued **anonymous** session (from the `POST /api/auth/anonymous` contract).
     /// The app remains logged-out (`state == .anonymous`) but now carries a bearer token so anon
     /// API calls (e.g. chat quota keyed on `anonymous_id`) work. Never overrides a real user session.
+    /// The raw access token as stored, for the anonymous→account history handoff (C33).
+    ///
+    /// Deliberately does NOT refresh: the caller needs the token that identifies the CURRENT
+    /// (anonymous) session as proof of possession, and a refresh could hand back a different one.
+    var currentAccessTokenForClaim: String? { tokens?.accessToken }
+
     func adoptAnonymousSession(_ tokens: AuthTokens, anonymousId: String) {
         guard !state.isAuthenticated else { return }
         if case .onboarding = state { return }

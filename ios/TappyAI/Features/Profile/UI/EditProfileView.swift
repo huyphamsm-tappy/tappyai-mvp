@@ -40,7 +40,7 @@ struct EditProfileView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Chỉnh sửa hồ sơ")
+        .navigationTitle("editProfile.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadProfile() }
         .onChange(of: selectedPhoto) { _, newValue in
@@ -92,7 +92,7 @@ struct EditProfileView: View {
                 .offset(x: 4, y: 4)
             }
 
-            Text("Nhấn vào 📷 để đổi ảnh · Tối đa 3MB")
+            Text("editProfile.avatarHint")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -131,7 +131,7 @@ struct EditProfileView: View {
                         .font(.system(size: 13))
                         .foregroundStyle(TappyColor.textSecondary)
                     Spacer()
-                    Text("Không thể thay đổi")
+                    Text("editProfile.locked")
                         .font(.system(size: 10))
                         .foregroundStyle(TappyColor.textSecondary)
                         .padding(.horizontal, Spacing.sm)
@@ -150,10 +150,10 @@ struct EditProfileView: View {
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("HỌ VÀ TÊN")
+                Text("editProfile.fullName")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
-                TextField("Nhập tên của bạn...", text: $fullName)
+                TextField(NSLocalizedString("editprofile.namePlaceholder", comment: ""), text: $fullName)
                     .font(.system(size: 13))
                     .textContentType(.name)
                     .padding(.horizontal, Spacing.md)
@@ -168,14 +168,14 @@ struct EditProfileView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
-                    Text("GIỚI THIỆU BẢN THÂN")
+                    Text("editProfile.bio")
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundStyle(TappyColor.textSecondary)
-                    Text("(tuỳ chọn)")
+                    Text("common.optional")
                         .font(.system(size: 10))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
-                TextField("Vài dòng về bạn...", text: $bio, axis: .vertical)
+                TextField(NSLocalizedString("editprofile.bioPlaceholder", comment: ""), text: $bio, axis: .vertical)
                     .font(.system(size: 13))
                     .lineLimit(3...6)
                     .padding(.horizontal, Spacing.md)
@@ -208,13 +208,13 @@ struct EditProfileView: View {
             HStack(spacing: Spacing.sm) {
                 if saving {
                     ProgressView().tint(.white)
-                    Text("Đang lưu...")
+                    Text("common.saving")
                 } else if saved {
                     Image(systemName: "checkmark")
-                    Text("Đã lưu!")
+                    Text("common.saved")
                 } else {
                     Image(systemName: "square.and.arrow.down")
-                    Text("Lưu hồ sơ")
+                    Text("editProfile.save")
                 }
             }
             .font(.system(size: 15, weight: .bold))
@@ -255,7 +255,7 @@ struct EditProfileView: View {
                 try? await Task.sleep(nanoseconds: 1_200_000_000)
                 router.pop(on: .profile)
             } catch {
-                self.error = "Lưu thất bại"
+                self.error = NSLocalizedString("editprofile.error.save", comment: "")
             }
             saving = false
         }
@@ -269,11 +269,11 @@ struct EditProfileView: View {
         guard let rawData = try? await item.loadTransferable(type: Data.self),
               let image = UIImage(data: rawData),
               let data = image.jpegData(compressionQuality: 0.85) else {
-            error = "Không đọc được ảnh"
+            error = NSLocalizedString("editprofile.error.readImage", comment: "")
             return
         }
         if data.count > 3 * 1024 * 1024 {
-            error = "Ảnh tối đa 3MB"
+            error = NSLocalizedString("editprofile.error.imageTooLarge", comment: "")
             return
         }
 
@@ -290,7 +290,7 @@ struct EditProfileView: View {
                 avatarUrl = url
             }
         } catch {
-            self.error = "Upload thất bại"
+            self.error = NSLocalizedString("editprofile.error.upload", comment: "")
         }
     }
 }

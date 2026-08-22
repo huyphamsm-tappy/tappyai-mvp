@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
@@ -7,6 +8,7 @@ import BottomNav from '@/components/BottomNav'
 import { Loader2, Users } from 'lucide-react'
 
 export default function GroupNewForm() {
+  const { t } = useTranslation()
   const router = useRouter()
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -25,13 +27,13 @@ export default function GroupNewForm() {
       })
       if (!res.ok) {
         const data = await res.json()
-        setError(data.error || 'Không thể tạo nhóm')
+        setError(data.message || t('groupNew.error.create'))
         return
       }
       const data = await res.json()
       router.push(`/group/${data.id}`)
     } catch {
-      setError('Lỗi kết nối, vui lòng thử lại')
+      setError(t('groupNew.error.network'))
     } finally {
       setLoading(false)
     }
@@ -41,7 +43,7 @@ export default function GroupNewForm() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
       <Header
         showBack
-        title="Tạo nhóm mới"
+        title={t('groupNew.title')}
         backHref="/"
       />
       <main className="max-w-2xl mx-auto px-4 py-8">
@@ -51,21 +53,21 @@ export default function GroupNewForm() {
               <Users className="text-white" size={22} />
             </div>
             <div>
-              <h1 className="font-bold text-gray-900 dark:text-white text-lg">Đi đâu ăn gì cả team?</h1>
-              <p className="text-sm text-content-secondary">Tạo nhóm, chia sẻ link, để Tappy gợi ý</p>
+              <h1 className="font-bold text-gray-900 dark:text-white text-lg">{t('groupNew.heading')}</h1>
+              <p className="text-sm text-content-secondary">{t('groupNew.subtitle')}</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Tên nhóm của bạn
+                {t('groupNew.nameLabel')}
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                placeholder="VD: Team Marketing, Hội bạn thân, Cả nhà..."
+                placeholder={t('groupNew.namePlaceholder')}
                 maxLength={80}
                 autoFocus
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition"
@@ -82,7 +84,7 @@ export default function GroupNewForm() {
               className="w-full py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95"
             >
               {loading ? <Loader2 size={18} className="animate-spin" /> : '🍽️'}
-              {loading ? 'Đang tạo...' : 'Tạo nhóm'}
+              {loading ? t('groupNew.submitting') : t('groupNew.submit')}
             </button>
           </form>
         </div>

@@ -1,4 +1,4 @@
-package com.tappyai.app.myreviews
+﻿package com.tappyai.app.myreviews
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -66,15 +66,15 @@ import com.tappyai.core.designsystem.theme.TappySpacing
 import com.tappyai.core.designsystem.theme.tappyCategoryColors
 
 /**
- * My Reviews — mirrors the web `/profile/posts` ("Bài viết của tôi"): a 3-column grid of the
+ * My Reviews â€” mirrors the web `/profile/posts` ("BÃ i viáº¿t cá»§a tÃ´i"): a 3-column grid of the
  * user's own reviews with a per-post hide/delete action sheet. Backed by `GET /api/reviews/mine`
  * (own reviews including hidden ones); hide/show and delete are optimistic and hit
  * `PATCH`/`DELETE /api/reviews/{id}`, reverting with a snackbar on failure. Tapping a tile opens a
- * [TappyBottomSheet] (not a review detail — matching the web). The empty state's "Post your first
+ * [TappyBottomSheet] (not a review detail â€” matching the web). The empty state's "Post your first
  * review" opens the real Reviews composer (`ProfileRoute.MyReviewsComposer`, reused from the
- * Reviews feature — matching the web's `/profile/posts` → `/reviews/new` link); returning from a
+ * Reviews feature â€” matching the web's `/profile/posts` â†’ `/reviews/new` link); returning from a
  * successful post reloads the grid via [onCreateReview]'s resume-triggered refresh below, since
- * this screen's own `NavBackStackEntry` — and its ViewModel — stays alive across that round trip.
+ * this screen's own `NavBackStackEntry` â€” and its ViewModel â€” stays alive across that round trip.
  * No comments/likes/detail/social feed here.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,7 +96,7 @@ fun MyReviewsScreen(
         }
     }
 
-    // The composer is a sibling destination on the same NavHost, not a fresh screen instance —
+    // The composer is a sibling destination on the same NavHost, not a fresh screen instance â€”
     // this ViewModel survives the round trip. Reload on every RESUME *after* the first (the
     // ViewModel's own init{} already covers the first) so a review posted from the composer
     // appears without the user having to manually retry.
@@ -219,6 +219,30 @@ private fun ReviewGridTile(review: Review, onClick: () -> Unit) {
             }
         }
 
+        // "Not public" â€” the safety gate held this post.
+        //
+        // ðŸš¨ Separate from the isHidden overlay above, and it must stay separate: hiding is the
+        // author's own reversible choice, this is the platform's and is not. Amber rather than
+        // the neutral black pill so it reads as a state that needs attention, and placed
+        // top-start so it cannot be confused with the like count. Tapping the tile opens the
+        // sheet, which carries the server's full explanation.
+        if (review.moderation != null) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(TappySpacing.xs)
+                    .clip(TappyShapes.pill)
+                    .background(tappyCategoryColors.amber.accent)
+                    .padding(horizontal = TappySpacing.sm, vertical = 2.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.reviews_moderation_not_public),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.White,
+                )
+            }
+        }
+
         Box(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -274,6 +298,34 @@ private fun ActionSheetContent(review: Review, onToggleHidden: () -> Unit, onDel
                         review.likeCount,
                         review.commentCount,
                     ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = colors.onSurfaceVariant,
+                )
+            }
+        }
+
+        // The full explanation, in the server's own words and already in the app's language.
+        //
+        // This is where the author actually finds out WHY a post is not public â€” the composer
+        // dialog says it once at upload time and is gone. Rendered above the actions so it is
+        // read before Hide/Delete are reached, since "delete it and try again" is the natural and
+        // wrong response to a post that seems to have silently failed.
+        review.moderation?.let { moderation ->
+            Column(
+                verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(TappyShapes.card)
+                    .background(colors.surfaceVariant)
+                    .padding(TappySpacing.md),
+            ) {
+                Text(
+                    text = moderation.title,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = colors.onSurface,
+                )
+                Text(
+                    text = moderation.detail,
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.onSurfaceVariant,
                 )

@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { clientIp, rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,7 +12,7 @@ export const dynamic = 'force-dynamic'
 // and-forget from the client — a failed increment never affects playback.
 export async function POST(req: NextRequest, { params }: { params: { trackId: string } }) {
   const trackId = params.trackId?.trim()
-  if (!trackId) return NextResponse.json({ error: 'trackId required' }, { status: 400 })
+  if (!trackId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   // Prevent rapid count inflation from a single IP.
   const { ok } = rateLimit(`play:${clientIp(req)}`, 30, 60_000)

@@ -99,3 +99,76 @@ describe('Android ships the deletion entry /delete-account promises', () => {
     }
   })
 })
+
+// ── iOS ──────────────────────────────────────────────────────────────────────
+//
+// 🚨 App Store Review Guideline 5.1.1(v): an app that lets people create an account must let them
+// START deleting it from inside the app. iOS had no such affordance at all — not a parity nicety,
+// a rejection on submission — while Android has carried the same row for the Play equivalent.
+//
+// The flow is deliberately IDENTICAL to Android's and to what /delete-account publishes: open a
+// prepared email, delete nothing client-side, and let support verify ownership first. Three
+// implementations of one published promise, so all three are held here rather than each drifting
+// toward its own idea of what the page says.
+describe('iOS offers the same account-deletion request', () => {
+  const settings = read('ios/TappyAI/Features/Profile/UI/SettingsView.swift')
+  const catalogue = JSON.parse(read('ios/TappyAI/Resources/Localizable.xcstrings')) as {
+    strings: Record<string, { localizations?: Record<string, { stringUnit?: { value?: string } }> }>
+  }
+  const value = (key: string, lang: string) =>
+    catalogue.strings[key]?.localizations?.[lang]?.stringUnit?.value
+
+  it('the settings screen offers the row', () => {
+    expect(settings).toContain('settings.deleteAccount')
+    expect(settings).toContain('confirmDeleteAccount')
+  })
+
+  it('confirms before sending', () => {
+    expect(settings).toContain('settings.deleteAccount.confirmTitle')
+    expect(settings).toContain('settings.deleteAccount.confirmBody')
+  })
+
+  it('opens a prepared email rather than deleting anything client-side', () => {
+    expect(settings).toContain('mailto:')
+    // The published flow is request-and-verify. A client-side delete would be a different promise
+    // from the one the store listing points reviewers at.
+    expect(settings).not.toMatch(/deleteUser|deleteAccount\(\)/)
+  })
+
+  it('addresses the request to the one published support address', () => {
+    expect(settings).toContain(SUPPORT_EMAIL)
+  })
+
+  it('handles a device with no mail client, rather than doing nothing', () => {
+    // `canOpenURL` is the iOS counterpart of Android's `resolveActivity` null check. Without it,
+    // `open` silently fails and the button appears broken.
+    expect(settings).toContain('canOpenURL')
+    expect(settings).toContain('settings.deleteAccount.noMailBody')
+  })
+
+  it('every deletion string exists in BOTH languages', () => {
+    for (const key of [
+      'settings.deleteAccount',
+      'settings.deleteAccount.confirmTitle',
+      'settings.deleteAccount.confirmBody',
+      'settings.deleteAccount.continue',
+      'settings.deleteAccount.emailSubject',
+      'settings.deleteAccount.emailBody',
+      'settings.deleteAccount.noMailTitle',
+      'settings.deleteAccount.noMailBody',
+    ]) {
+      expect(value(key, 'en'), `EN ${key}`).toBeTruthy()
+      expect(value(key, 'vi'), `VI ${key}`).toBeTruthy()
+    }
+  })
+
+  it('the three clients say the same thing in English', () => {
+    // The label is fixed word-for-word by step 3 of the published page, which is why Android
+    // asserts it too. If the page changes, all three fail together instead of one drifting.
+    const androidEn = read(STRINGS_EN)
+    expect(value('settings.deleteAccount', 'en'))
+      .toBe(androidString(androidEn, 'settings_delete_account'))
+    expect(value('settings.deleteAccount.confirmTitle', 'en'))
+      .toBe(androidString(androidEn, 'settings_delete_account_confirm_title'))
+  })
+})

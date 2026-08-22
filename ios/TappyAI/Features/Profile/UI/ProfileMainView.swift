@@ -31,7 +31,7 @@ struct ProfileMainView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Hồ sơ")
+        .navigationTitle(Text("profile.title"))
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadProfile() }
     }
@@ -51,7 +51,7 @@ struct ProfileMainView: View {
                     .foregroundStyle(TappyColor.textSecondary)
                     .lineLimit(1)
                 HStack(spacing: Spacing.xs) {
-                    Text("\(conversationCount) cuộc trò chuyện")
+                    Text("profile.conversationCount \(conversationCount)")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundStyle(TappyColor.primary)
                         .padding(.horizontal, Spacing.sm)
@@ -119,41 +119,45 @@ struct ProfileMainView: View {
 
     private var accountSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("TÀI KHOẢN")
+            Text("profile.section.account")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.horizontal, 2)
 
             VStack(spacing: 0) {
-                menuRow(icon: "person", label: "Tài khoản", desc: "Thông tin cá nhân", dest: .account)
+                menuRow(icon: "person", label: "profile.row.account", desc: "profile.row.account.desc", dest: .account)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "bubble.left.and.bubble.right", label: "Lịch sử chat", desc: "Xem lại các cuộc trò chuyện", dest: .history)
+                menuRow(icon: "bubble.left.and.bubble.right", label: "profile.row.history", desc: "profile.row.history.desc", dest: .history)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "calendar", label: "Lịch đặt chỗ", desc: "Đặt chỗ nhà hàng, spa, khách sạn", dest: .bookings)
+                menuRow(icon: "calendar", label: "profile.row.bookings", desc: "profile.row.bookings.desc", dest: .bookings)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "heart", label: "Sở thích", desc: "Tùy chỉnh gợi ý cho bạn", dest: .preferences)
+                menuRow(icon: "heart", label: "profile.row.preferences", desc: "profile.row.preferences.desc", dest: .preferences)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "bookmark", label: "Đã lưu", desc: "Địa điểm & bài viết yêu thích", dest: .favorites)
+                menuRow(icon: "bookmark", label: "profile.row.saved", desc: "profile.row.saved.desc", dest: .favorites)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "arrow.down.right", label: "Theo dõi giá", desc: "Tappy báo khi giá xuống", dest: .priceWatches)
+                menuRow(icon: "arrow.down.right", label: "profile.row.priceWatch", desc: "profile.row.priceWatch.desc", dest: .priceWatches)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "brain", label: "Tappy biết gì", desc: "Xem & quản lý bộ nhớ Tappy", dest: .tappyKnows)
+                menuRow(icon: "brain", label: "profile.row.memory", desc: "profile.row.memory.desc", dest: .tappyKnows)
                 Divider().padding(.leading, 52)
                 // Kết nối (App Connections) gated by the backend flag, mirroring Web's
                 // `{SHOW_APP_CONNECTIONS && <MenuItem integrations/>}`. Currently hidden
                 // (flag false, owner decision 2026-07-17); the screen/APIs stay intact
                 // and re-appear the moment the flag flips — no app release needed.
                 if showAppConnections {
-                    menuRow(icon: "link", label: "Kết nối", desc: "Liên kết ứng dụng bên ngoài", dest: .integrations)
+                    menuRow(icon: "link", label: "profile.row.integrations", desc: "profile.row.integrations.desc", dest: .integrations)
                     Divider().padding(.leading, 52)
                 }
-                menuRow(icon: "star", label: "Bài đánh giá", desc: "Xem các review bạn đã viết", dest: nil, action: {
-                    router.switchTo(.explore)
-                })
+                // 🚨 Was `router.switchTo(.explore)`, which took "xem các review BẠN đã viết" to
+                // the PUBLIC feed — everyone's posts, and by construction none of the author's own
+                // held ones, since the gate keeps those out of Explore. The row promised the
+                // author's own posts and delivered the opposite. `.myPosts` is that screen.
+                menuRow(icon: "star", label: "profile.row.myPosts", desc: "profile.row.myPosts.desc", dest: .myPosts)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "person.3", label: "Ăn nhóm", desc: "Tạo nhóm đi ăn cùng bạn bè", dest: nil, action: {
-                    openGroupDining()
-                })
+                menuRow(icon: "bell", label: "profile.row.notifications", desc: "profile.row.notifications.desc", dest: .notificationsInbox)
+                Divider().padding(.leading, 52)
+                menuRow(icon: "magnifyingglass", label: "profile.row.userSearch", desc: "profile.row.userSearch.desc", dest: .userSearch)
+                Divider().padding(.leading, 52)
+                menuRow(icon: "person.3", label: "profile.row.groupDining", desc: "profile.row.groupDining.desc", dest: .groupDining)
             }
             .background(TappyColor.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
@@ -174,7 +178,7 @@ struct ProfileMainView: View {
                 .padding(.horizontal, 2)
 
             VStack(spacing: 0) {
-                menuRow(icon: "crown", label: "Nâng cấp Pro", desc: "Tin nhắn không giới hạn & tính năng đầy đủ", dest: .subscription)
+                menuRow(icon: "crown", label: "profile.row.pro", desc: "profile.row.pro.desc", dest: .subscription)
             }
             .background(TappyColor.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
@@ -189,13 +193,13 @@ struct ProfileMainView: View {
 
     private var settingsSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("CÀI ĐẶT")
+            Text("profile.section.settings")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.horizontal, 2)
 
             VStack(spacing: 0) {
-                menuRow(icon: "gearshape", label: "Cài đặt", desc: "Ngôn ngữ, thông báo, quyền riêng tư", dest: .settings)
+                menuRow(icon: "gearshape", label: "profile.row.settings", desc: "profile.row.settings.desc", dest: .settings)
             }
             .background(TappyColor.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
@@ -209,7 +213,13 @@ struct ProfileMainView: View {
     // MARK: - Menu Row
 
     @ViewBuilder
-    private func menuRow(icon: String, label: String, desc: String, dest: ProfileDestination?, action: (() -> Void)? = nil) -> some View {
+    /// A profile menu row.
+    ///
+    /// [label] and [desc] are `LocalizedStringKey`, not `String`: SwiftUI resolves a literal in
+    /// that position through the catalogue, so passing a key is the whole conversion and passing
+    /// prose still compiles — which is exactly how the Vietnamese ended up hardcoded here. The
+    /// type change is what makes the next row hard to get wrong.
+    private func menuRow(icon: String, label: LocalizedStringKey, desc: LocalizedStringKey, dest: ProfileDestination?, action: (() -> Void)? = nil) -> some View {
         Button {
             if let action {
                 action()
@@ -248,12 +258,7 @@ struct ProfileMainView: View {
     // MARK: - Helpers
 
     private func firstName(_ p: UserProfile) -> String {
-        p.fullName.components(separatedBy: " ").last ?? p.email.components(separatedBy: "@").first ?? "bạn"
-    }
-
-    private func openGroupDining() {
-        guard let url = URL(string: "https://tappyai.vn/group/new") else { return }
-        UIApplication.shared.open(url)
+        p.fullName.components(separatedBy: " ").last ?? p.email.components(separatedBy: "@").first ?? NSLocalizedString("profile.fallbackName", comment: "")
     }
 
     private func loadProfile() async {

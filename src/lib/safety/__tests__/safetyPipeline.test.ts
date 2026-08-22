@@ -48,7 +48,7 @@ import {
   type PolicyOutcomeLine,
   type SafetyState,
 } from '../gate/safetyResult';
-import { NOTICE_FOR, noticeFor, noticeIsTruthful } from '../gate/authorNotice';
+import { NOTICE_FOR, authorModerationPayload, noticeFor, noticeIsTruthful } from '../gate/authorNotice';
 import { POLICY_REGISTRY } from '@/lib/policy/source/registry';
 
 const T = '2026-08-17T14:00:00Z';
@@ -360,10 +360,10 @@ describe('the publication gate', () => {
     expect(PUBLICATION_FOR).toEqual({
       SAFE: 'PUBLISHED',
       VIOLATION: 'RESTRICTED',
-      UNDETERMINED: 'UNDER_REVIEW',
-      HUMAN_REVIEW_REQUIRED: 'UNDER_REVIEW',
-      LEGAL_REVIEW_REQUIRED: 'UNDER_REVIEW',
-      ENGINE_ERROR: 'UNDER_REVIEW',
+      UNDETERMINED: 'RESTRICTED',
+      HUMAN_REVIEW_REQUIRED: 'RESTRICTED',
+      LEGAL_REVIEW_REQUIRED: 'RESTRICTED',
+      ENGINE_ERROR: 'RESTRICTED',
     });
     for (const s of SAFETY_STATES) {
       if (s !== 'SAFE') expect(publicationFor(s), s).not.toBe('PUBLISHED');
@@ -371,12 +371,12 @@ describe('the publication gate', () => {
   });
 
   it('a failure to evaluate never publishes', () => {
-    expect(publicationFor('ENGINE_ERROR')).toBe('UNDER_REVIEW');
-    expect(publicationFor('UNDETERMINED')).toBe('UNDER_REVIEW');
+    expect(publicationFor('ENGINE_ERROR')).toBe('RESTRICTED');
+    expect(publicationFor('UNDETERMINED')).toBe('RESTRICTED');
   });
 
-  it('no result at all means under review, not published', () => {
-    expect(publicationStateFor(null, 'v1')).toBe('UNDER_REVIEW');
+  it('no result at all is rejected, never published', () => {
+    expect(publicationStateFor(null, 'v1')).toBe('RESTRICTED');
   });
 
   it('a result for another version cannot publish this one', () => {
@@ -397,7 +397,7 @@ describe('the publication gate', () => {
     };
     expect(mayPublish(safe, 'v1')).toBe(true);
     expect(mayPublish(safe, 'v2')).toBe(false);
-    expect(publicationStateFor(safe, 'v2')).toBe('UNDER_REVIEW');
+    expect(publicationStateFor(safe, 'v2')).toBe('RESTRICTED');
   });
 
   it('the fingerprint changes when examined content changes, and not otherwise', () => {
@@ -421,7 +421,14 @@ describe('the publication gate', () => {
 // ---------------------------------------------------------------------------
 
 describe('evaluating a real bundle', () => {
-  it('a benign clip with full text+metadata coverage is UNDER_REVIEW, not PUBLISHED', () => {
+  /**
+   * This test used to assert the bug. A completely benign, completely examined
+   * post was held, because "examined and not in play" had no representation —
+   * see `applicability.ts`. It now asserts the fix, and the two things that must
+   * remain true alongside it: every policy still evaluates, and the video/audio
+   * coverage gaps are still REPORTED even for an item they cannot apply to.
+   */
+  it('a benign, completely examined post PUBLISHES', () => {
     const b = bundle([
       textEvidence({ body: 'Quán bún chả ngon', hashtags: ['anuong'] }),
       metadataEvidence({ place_name: 'Bún Chả', place_address: '24 Lê Văn Hưu' }),
@@ -430,9 +437,16 @@ describe('evaluating a real bundle', () => {
       audioSpeechEvidence(),
     ]);
     const result = evaluateSafety(b, T);
-    expect(result.state).not.toBe('SAFE');
-    expect(result.publication).toBe('UNDER_REVIEW');
+    expect(result.publication).toBe('PUBLISHED');
+    // 🔑 The safety state still reports the open Legal dependency, because the
+    // hate policy is Legal-blocked for every item. The two layers answer
+    // different questions and neither is rewritten to agree with the other —
+    // which is exactly why `authorModerationPayload` keys its wording off the
+    // publication state rather than off this.
+    expect(result.state).toBe('LEGAL_REVIEW_REQUIRED');
     expect(result.policies).toHaveLength(18);
+    // The gaps are irrelevant to a post with no video and no audio, but they are
+    // still carried rather than quietly dropped.
     expect(result.coverageGaps).toHaveLength(2);
   });
 
@@ -451,7 +465,7 @@ describe('evaluating a real bundle', () => {
     expect(hasFailure(b)).toBe(true);
     const result = evaluateSafety(b, T);
     expect(result.state).toBe('ENGINE_ERROR');
-    expect(result.publication).toBe('UNDER_REVIEW');
+    expect(result.publication).toBe('RESTRICTED');
   });
 
   it('the result carries no content, no identity and no raw text', () => {
@@ -488,8 +502,116 @@ describe('author notice', () => {
   it('the notice carries no action vocabulary — it is text, not enforcement', () => {
     for (const s of SAFETY_STATES) {
       const n = NOTICE_FOR[s];
-      expect(Object.keys(n).sort()).toEqual(['assertsViolation', 'detail', 'notify', 'title']);
+      expect(Object.keys(n).sort()).toEqual([
+        'assertsViolation',
+        'detail',
+        'detail_en',
+        'notify',
+        'title',
+        'title_en',
+      ]);
+      // Both languages, or the English edition becomes the place enforcement
+      // vocabulary can hide.
       expect(`${n.title} ${n.detail}`.toLowerCase()).not.toMatch(/xoá vĩnh viễn|khoá tài khoản|ban\b/);
+      expect(`${n.title_en} ${n.detail_en}`.toLowerCase()).not.toMatch(
+        /permanently deleted|account (locked|suspended|disabled)|banned|taken down/,
+      );
     }
+  });
+
+  it('English says the same thing as Vietnamese about violation vs uncertainty', () => {
+    // The risk of a second language is that it drifts into an accusation the
+    // first one does not make. Non-violation states must reassure in BOTH.
+    for (const s of SAFETY_STATES) {
+      if (s === 'SAFE' || s === 'VIOLATION') continue;
+      expect(noticeFor(s, 'en').detail, s).toContain('not a finding that you did anything wrong');
+      expect(noticeFor(s, 'vi').detail, s).toContain('không phải là kết luận vi phạm');
+      expect(noticeFor(s, 'en').assertsViolation, s).toBe(false);
+    }
+    expect(noticeFor('VIOLATION', 'en').assertsViolation).toBe(true);
+  });
+
+  it('an unrecognised locale degrades to Vietnamese, never to a blank notice', () => {
+    for (const s of SAFETY_STATES) {
+      if (s === 'SAFE') continue;
+      for (const lang of ['', 'fr', 'EN', 'vi-VN', 'xx']) {
+        const n = noticeFor(s, lang);
+        expect(n.title.trim(), `${s}/${lang}`).not.toBe('');
+        expect(n.detail.trim(), `${s}/${lang}`).not.toBe('');
+      }
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// What the author's own client is told
+// ---------------------------------------------------------------------------
+
+/**
+ * The gate was silent before this: a held post returned `ok: true` and then
+ * never appeared, which reads as the product losing the post. These pin the
+ * honest middle ground — the author learns the visibility of their own post and
+ * that it is not an accusation, and learns nothing about WHICH check held it.
+ */
+describe('author moderation payload', () => {
+  const held = { publication_state: 'UNDER_REVIEW', safety_state: 'LEGAL_REVIEW_REQUIRED' };
+
+  it('is null while the gate is inactive, so an off gate changes no response', () => {
+    expect(authorModerationPayload({}, 'vi')).toBeNull();
+    expect(authorModerationPayload({}, 'en')).toBeNull();
+  });
+
+  it('never invents a state it was not given', () => {
+    expect(authorModerationPayload({ publication_state: 'SOMETHING_NEW' }, 'vi')).toBeNull();
+    expect(authorModerationPayload({ safety_state: 'SAFE' }, 'vi')).toBeNull();
+  });
+
+  it('tells the author a held post is held, in both languages, without accusing them', () => {
+    for (const lang of ['vi', 'en']) {
+      const p = authorModerationPayload(held, lang)!;
+      expect(p.state).toBe('UNDER_REVIEW');
+      expect(p.assertsViolation).toBe(false);
+      expect(p.title.trim()).not.toBe('');
+      expect(p.detail.trim()).not.toBe('');
+    }
+    expect(authorModerationPayload(held, 'en')!.detail).toContain(
+      'not a finding that you did anything wrong',
+    );
+    expect(authorModerationPayload(held, 'vi')!.detail).toContain('không phải là kết luận vi phạm');
+  });
+
+  it('only a real violation is reported as one', () => {
+    const violation = { publication_state: 'RESTRICTED', safety_state: 'VIOLATION' };
+    expect(authorModerationPayload(violation, 'vi')!.assertsViolation).toBe(true);
+    expect(authorModerationPayload(held, 'vi')!.assertsViolation).toBe(false);
+  });
+
+  /** The bypass-relevant one: knowing WHICH check held it is knowing what to change. */
+  it('leaks no internal reason, policy identity or evidence detail', () => {
+    for (const lang of ['vi', 'en']) {
+      const serialised = JSON.stringify(authorModerationPayload(held, lang));
+      for (const leak of [
+        'LEGAL_REVIEW_REQUIRED',
+        'safety_state',
+        'evaluated_version',
+        'INSUFFICIENT_EVIDENCE',
+        'ts.',
+        'IMAGE_FRAME',
+        'modality',
+      ])
+        expect(serialised, `${lang}/${leak}`).not.toContain(leak);
+    }
+  });
+
+  it('an unrecognised safety state still produces an honest held message', () => {
+    // A state this build does not know about must not fall through to silence,
+    // and must not be upgraded into an accusation.
+    const p = authorModerationPayload(
+      { publication_state: 'UNDER_REVIEW', safety_state: 'SOMETHING_ADDED_LATER' },
+      'en',
+    )!;
+    expect(p.state).toBe('UNDER_REVIEW');
+    expect(p.assertsViolation).toBe(false);
+    expect(p.detail.trim()).not.toBe('');
   });
 });

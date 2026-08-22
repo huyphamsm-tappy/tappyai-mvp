@@ -16,6 +16,10 @@ export type LegalBlock =
   // set: a numbered <ol> is what assistive tech announces as "step 2 of 4".
   | { kind: 'steps'; keys: string[] }
   | { kind: 'contact' }
+  // A single named mailto address. Distinct from `contact`, which renders the SUPPORT address
+  // plus the website: the copyright policy has to publish its own agent address, and a notice
+  // sent to support instead of the agent is a notice that arrives in the wrong queue.
+  | { kind: 'email'; labelKey: string; address: string }
 
 export interface LegalSection {
   id: string

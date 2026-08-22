@@ -309,7 +309,7 @@ private fun ResultCard(
                         text = stringResource(
                             R.string.currency_rate_line,
                             from.code,
-                            formatAmount(rate, if (to.decimals > 0) 4 else 2, vnFormatter),
+                            formatAmount(rate, rateDecimals(rate, to.decimals), vnFormatter),
                             to.code,
                         ),
                         style = MaterialTheme.typography.bodySmall,
@@ -319,7 +319,7 @@ private fun ResultCard(
                         text = stringResource(
                             R.string.currency_rate_line,
                             to.code,
-                            formatAmount(1 / rate, if (from.decimals > 0) 4 else 2, vnFormatter),
+                            formatAmount(1 / rate, rateDecimals(1 / rate, from.decimals), vnFormatter),
                             from.code,
                         ),
                         style = MaterialTheme.typography.bodySmall,
@@ -429,6 +429,31 @@ private fun formatAmount(value: Double, decimals: Int, formatter: NumberFormat):
     formatter.minimumFractionDigits = decimals
     formatter.maximumFractionDigits = decimals
     return formatter.format(value)
+}
+
+/**
+ * How many decimals a RATE needs to actually say something — B15.
+ *
+ * The two rate lines used a fixed count derived from the currency (`4` for a decimal currency,
+ * `2` otherwise). That reads fine one way round and says nothing the other: 1 VND is 0.0000383
+ * USD, and four decimals render it as
+ *
+ *     1 VND = 0,0000 USD
+ *
+ * — a true statement with no information in it. The inverse line was simply unusable for VND,
+ * which is the app's primary currency.
+ *
+ * Rates are a SIGNIFICANT-FIGURES problem, not a fixed-decimals one. At or above 1 the old
+ * behaviour was already right and is kept exactly, so nothing that reads well today changes.
+ * Below 1, enough decimals are added to reach four significant figures — 0,00003828 — capped at 8
+ * so a pathological rate cannot produce an endless string.
+ */
+private fun rateDecimals(value: Double, currencyDecimals: Int): Int {
+    val base = if (currencyDecimals > 0) 4 else 2
+    if (!value.isFinite() || value <= 0.0 || value >= 1.0) return base
+    // leadingZeros(0.0000383) = 4; +4 significant figures = 8 decimals.
+    val leadingZeros = kotlin.math.ceil(-kotlin.math.log10(value)).toInt() - 1
+    return kotlin.math.min(8, kotlin.math.max(base, leadingZeros + 4))
 }
 
 /** Quick-amount chip labels — grouped, no decimals (matches `parseInt(v).toLocaleString('vi-VN')`). */

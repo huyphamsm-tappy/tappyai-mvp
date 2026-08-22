@@ -71,7 +71,7 @@ export default function MusicLibraryPage() {
             onClick={() => router.push('/music/upload')}
             className="flex items-center gap-1 text-sm font-medium text-link"
           >
-            <Upload size={16} /> Đăng
+            <Upload size={16} /> {t('music.uploadCta')}
           </button>
         </div>
       </header>

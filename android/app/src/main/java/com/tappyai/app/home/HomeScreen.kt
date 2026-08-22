@@ -42,6 +42,7 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.GppGood
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SportsEsports
@@ -116,6 +117,7 @@ fun HomeScreen(
     onOpenDeals: () -> Unit,
     onOpenGames: () -> Unit,
     onOpenScan: () -> Unit,
+    onOpenScamShield: () -> Unit,
     onOpenVietWriter: () -> Unit,
     onOpenTappyTogether: () -> Unit,
     onOpenSplitBill: () -> Unit,
@@ -158,6 +160,7 @@ fun HomeScreen(
             )
             ToolsSection(
                 onOpenCurrency = onOpenCurrency,
+                onOpenScamShield = onOpenScamShield,
                 onOpenTranslate = onOpenTranslate,
                 onOpenGames = onOpenGames,
                 onOpenSplitBill = onOpenSplitBill,
@@ -665,6 +668,7 @@ private fun TappyTogetherSection(onOpenTappyTogether: () -> Unit) {
  *  Translate, Games, in the web's order. */
 @Composable
 private fun ToolsSection(
+    onOpenScamShield: () -> Unit,
     onOpenCurrency: () -> Unit,
     onOpenTranslate: () -> Unit,
     onOpenGames: () -> Unit,
@@ -727,8 +731,21 @@ private fun ToolsSection(
             //
             // GamesScreen + GamesRoute are deliberately left wired in HomeTabHost so re-enabling
             // is a one-line change once the WASM/SAB story is solved (native port or a lighter
-            // game). The spacer keeps this odd-count row aligned with the 2-up grid above.
-            Spacer(modifier = Modifier.weight(1f))
+            // game).
+            //
+            // Scam Shield takes the slot Games vacated, which is also where the web puts it —
+            // second in the Translate row (HomeView.tsx §Tools). B09: mobile had no scam
+            // protection at all while the web treated a mis-scored link as a CRITICAL bug.
+            FeatureTile(
+                title = stringResource(R.string.home_scam_shield_title),
+                description = stringResource(R.string.home_scam_shield_desc),
+                onClick = onOpenScamShield,
+                iconGradient = GradEmeraldTeal,
+                icon = { Icon(Icons.Filled.GppGood, null, tint = Color(0xFF0D9488), modifier = Modifier.size(20.dp)) },
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+            )
         }
     }
 }

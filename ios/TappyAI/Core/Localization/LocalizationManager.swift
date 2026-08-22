@@ -6,7 +6,10 @@ import Combine
 enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
     case vi, en
     var id: String { rawValue }
-    var displayName: String { self == .vi ? "Tiếng Việt" : "English" }
+    /// Endonyms — each language named in ITSELF, which is what a language picker must show.
+    /// Localizing these would render "Vietnamese" to someone who cannot read English, which is
+    /// precisely the person the picker exists for.
+    var displayName: String { self == .vi ? "Tiếng Việt" : "English" } // l10n:exempt
     var localeIdentifier: String { rawValue }
 }
 

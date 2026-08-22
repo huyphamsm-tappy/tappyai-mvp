@@ -8,6 +8,8 @@ import {
 import { completeUploadResponse, isCompleteUploadBody } from '@/lib/media/uploadCompletion'
 import { getMediaProvider } from '@/lib/media'
 import type { MediaUploadKind } from '@/lib/media/uploadPolicy'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // Client-direct upload authorization for Original Sound audio. The browser
 // uploads straight to storage (bypassing the serverless body-size limit); the
@@ -24,18 +26,18 @@ const ALLOWED_KINDS: readonly MediaUploadKind[] = ['audio', 'audioCover']
 // the legacy Blob path, or kind='audioCover' on the session path.
 export async function POST(req: NextRequest) {
   const { user } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   // Cap upload authorization per user (each response authorizes one direct PUT).
   if (!rateLimit(`upload-audio:${user.id}`, 30, 60_000).ok) {
-    return NextResponse.json({ error: 'Bạn tải lên quá nhanh, thử lại sau giây lát.' }, { status: 429 })
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
   }
 
   let body: unknown
   try {
     body = await req.json()
   } catch {
-    return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
 
   // See /api/upload/video — the browser cannot read its own PUT response.
@@ -59,5 +61,5 @@ export async function POST(req: NextRequest) {
   }
 
   // The retired Blob client-token handshake — see the note in /api/upload/video.
-  return NextResponse.json({ error: 'Giao thức tải lên không còn được hỗ trợ' }, { status: 409 })
+  return NextResponse.json({ error: 'unsupported_protocol', message: serverMessage('media.uploadProtocol', requestLocale(req)) }, { status: 409 })
 }

@@ -36,7 +36,7 @@ struct BookingsView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Lịch đặt chỗ")
+        .navigationTitle("bookings.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadBookings() }
         .sheet(item: $reviewTarget) { booking in
@@ -50,10 +50,10 @@ struct BookingsView: View {
         VStack(spacing: Spacing.md) {
             Text("📅")
                 .font(.system(size: 48))
-            Text("Chưa có lịch đặt chỗ nào")
+            Text("bookings.empty")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Dùng chat để tìm nhà hàng, spa, khách sạn và đặt chỗ ngay!")
+            Text("bookings.empty.desc")
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.textSecondary)
                 .multilineTextAlignment(.center)
@@ -64,7 +64,7 @@ struct BookingsView: View {
                 router.switchTo(.home)
             } label: {
                 HStack(spacing: 4) {
-                    Text("Khám phá ngay")
+                    Text("saved.empty.action")
                         .font(.system(size: 13, weight: .semibold))
                     Image(systemName: "chevron.right")
                         .font(.system(size: 11))
@@ -87,7 +87,7 @@ struct BookingsView: View {
         if bookings.contains(where: { $0.status == "pending" }) {
             HStack(spacing: Spacing.sm) {
                 Text("⏳")
-                Text("Đang xử lý — TappyAI đã ghi nhận đặt chỗ. Cơ sở sẽ liên hệ xác nhận qua SĐT bạn đã cung cấp.")
+                Text("bookings.pending")
                     .font(.system(size: 11))
                     .foregroundStyle(.orange)
             }
@@ -174,7 +174,7 @@ struct BookingsView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "square.and.arrow.up")
                             .font(.system(size: 12))
-                        Text("Chia sẻ")
+                        Text("common.share")
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(TappyColor.primary)
@@ -189,7 +189,7 @@ struct BookingsView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "star")
                                 .font(.system(size: 12))
-                            Text("Đánh giá")
+                            Text("common.review")
                                 .font(.system(size: 12, weight: .medium))
                         }
                         .foregroundStyle(.orange)
@@ -214,9 +214,9 @@ struct BookingsView: View {
     private func statusBadge(_ status: String) -> some View {
         let (text, color): (String, Color) = {
             switch status {
-            case "confirmed": return ("✅ Đã xác nhận", .green)
-            case "cancelled": return ("❌ Đã hủy", .red)
-            default: return ("⏳ Đang xử lý", .orange)
+            case "confirmed": return (NSLocalizedString("booking.status.confirmed", comment: ""), .green)
+            case "cancelled": return (NSLocalizedString("booking.status.cancelled", comment: ""), .red)
+            default: return (NSLocalizedString("booking.status.pending", comment: ""), .orange)
             }
         }()
         Text(text)
@@ -238,7 +238,7 @@ struct BookingsView: View {
 
     private func shareText(_ b: ProfileBooking) -> String {
         [
-            "📋 Xác nhận đặt chỗ — TappyAI",
+            NSLocalizedString("booking.confirmSubject", comment: ""),
             "🏠 \(b.serviceName)",
             "📅 Ngày: \(formatDate(b.date))\(b.time.map { " lúc \($0)" } ?? "")",
             "👤 \(b.customerName) | 📞 \(b.customerPhone)",

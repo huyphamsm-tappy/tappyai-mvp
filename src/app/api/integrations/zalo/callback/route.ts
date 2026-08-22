@@ -1,14 +1,15 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
 const ZALO_APP_SECRET = process.env.ZALO_APP_SECRET!
 const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/zalo/callback`
 
 export async function GET(req: NextRequest) {
-  const code = req.nextUrl.searchParams.get('code')
-  const state = req.nextUrl.searchParams.get('state')
+  const code = searchParam(req, 'code')
+  const state = searchParam(req, 'state')
   const codeVerifier = req.cookies.get('zalo_cv')?.value
 
   if (!code || !state || !codeVerifier) {

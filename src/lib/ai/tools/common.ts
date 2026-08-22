@@ -108,9 +108,56 @@ export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<str
   }
 }
 
-// Encode ky tu '(' ')' trong URL de khong vo cu phap markdown link [text](url)
+// ── P3-S4: retrieved URLs are DATA and may never change rendered structure ──
+//
+// A URL from a merchant's og:image, a Serper image result or a web-search link
+// is third-party text. Interpolated raw into `![alt](url)` it can close the
+// markdown early and turn the remainder into attacker-authored markup in the
+// user's reply — with the model never involved.
+//
+// Every character below can terminate a markdown link or the line that holds
+// it, and every one of them is legal to percent-encode in a URL, so the target
+// still resolves: the URL is preserved, only its ability to act as syntax is
+// removed. `%` is deliberately NOT encoded, so already-encoded URLs stay intact.
+//
+//   ( )        close the link/image
+//   space tab  start a markdown "title" inside the parentheses
+//   LF CR      end the line entirely, letting arbitrary prose follow
+//   < >        autolink delimiters
+//   [ ]        would leave the surrounding token ambiguous to a parser
+const MARKDOWN_UNSAFE_IN_URL: ReadonlyArray<[RegExp, string]> = [
+  [/\(/g, '%28'], [/\)/g, '%29'],
+  [/ /g, '%20'], [/\t/g, '%09'],
+  [/\n/g, '%0A'], [/\r/g, '%0D'],
+  [/</g, '%3C'], [/>/g, '%3E'],
+  [/\[/g, '%5B'], [/\]/g, '%5D'],
+]
+
 export function sanitizeUrlForMarkdown(link: string): string {
-  return link.replace(/\(/g, '%28').replace(/\)/g, '%29')
+  let out = String(link ?? '')
+  for (const [pattern, replacement] of MARKDOWN_UNSAFE_IN_URL) out = out.replace(pattern, replacement)
+  return out
+}
+
+/**
+ * A link LABEL sits inside `[...]`, where text that closes the brackets could
+ * open a link of its own.
+ *
+ * The structural characters are REMOVED rather than backslash-escaped on
+ * purpose. Escaping only holds if the renderer honours markdown escapes, and
+ * the client renderer is not verified (P3 audit F7 — still open). Removal is
+ * renderer-agnostic: no parser, strict or naive, can rebuild a token out of
+ * characters that are not there.
+ *
+ * Lossless in practice: labels come from the deterministic platform-link
+ * builders ("ShopeeFood", "Google Maps", "Website"), none of which contain
+ * brackets, parentheses or backslashes.
+ */
+export function escapeMarkdownLabel(label: string): string {
+  return String(label ?? '')
+    .replace(/[[\]()\\]/g, '')
+    .replace(/[\r\n]+/g, ' ')
+    .trim()
 }
 
 // ===== EMBEDDABLE IMAGE PICKER =====
@@ -324,31 +371,63 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
  * `price` is AUTHORITATIVE — the provider returns it as its own field. Nothing
  * here is parsed out of `title`, which is the defect that produced a measured 20%
  * false-accept rate when prices were read from titles (C3-B.8).
+ *
+ * ============================================================================
+ * INTEGRATION NOTE — WHY THIS SHAPE AND NOT D3's
+ * ============================================================================
+ * The D3 branch defined a competing `SerperShoppingRow` carrying `price` as the raw provider
+ * STRING. It predates the money-guard work that landed on the release branch, and taking it would
+ * have removed `parseSerperPriceVnd` and with it MIN_PLAUSIBLE_PRICE_VND — the guard that exists
+ * because a real live response listed `1 ₫ | Mac24h | ThinkPad T14 Gen 7`, the "contact for price"
+ * convention. That row parses as a genuine 1 VND price and scores MAXIMUM on the price term, so a
+ * "ưu tiên giá rẻ" turn would have made a placeholder Tappy's Pick.
+ *
+ * So the guarded numeric field stays, and D3's need is met by carrying the provider's own display
+ * string ALONGSIDE it rather than instead of it. Both call sites get what they need and neither
+ * side's evidence is discarded.
  */
 export interface ShoppingRecord {
   title: string
   link: string
   /** Merchant/store, e.g. "Shopee", "Tiki". Absent when the provider omits it. */
   source?: string
-  /** VND, from the provider's own price field. Absent when not returned. */
+  /** VND, from the provider's own price field, and only when it passes the plausibility guard. */
   price?: number
+  /**
+   * The price EXACTLY as the seller listed it ("₫6.490.000"), for display.
+   *
+   * 🚨 Never for arithmetic, comparison or ranking — that is what [price] is for. This is
+   * deliberately carried separately so that a placeholder like `1 ₫`, which [price] rejects, can
+   * still be shown verbatim if a caller wants to show what the listing says, without ever
+   * entering a numeric comparison as if it were a real price.
+   */
+  priceText?: string
   productId?: string
   imageUrl?: string
   rating?: number
   ratingCount?: number
+  /** The provider's own ordering, when supplied. */
+  position?: number
 }
 
 /**
  * Serper `/shopping` — structured product candidates.
  *
- * Same client shape as serperSearch above (same key, same timeout, same
- * sanitisation): this is a second ENDPOINT on the provider already in use, not a
- * new provider or a new search service.
+ * Separate from `serperSearch` because it is a different product: /search returns web pages
+ * (title, link, snippet), /shopping returns LISTINGS with a seller and a price. Product
+ * consultation needs the second — measured against the live endpoint, /search for
+ * "macbook pro m1 32gb 512gb cũ" returned a YouTube video and a market-research report, while
+ * /shopping returned 40 rows each carrying title, source, link and price.
  *
- * Returns null when the key is absent or the call fails, so callers keep their
- * existing organic path as fallback rather than losing shopping entirely.
+ * Contract verified against the provider on 2026-08-18: POST, X-API-KEY header, {q, gl, hl, num};
+ * response {searchParameters, shopping[], credits}; title, source, link, price, imageUrl,
+ * productId, position on every row; rating and ratingCount on some. No spec fields — those live
+ * in the title (see productSpecs.ts). Bad auth returns 403 {message, statusCode}.
+ *
+ * Returns null when the key is absent or the call fails, so callers keep their existing organic
+ * path as fallback rather than losing shopping entirely.
  */
-export async function serperShopping(query: string): Promise<ShoppingRecord[] | null> {
+export async function serperShopping(query: string, num = 20): Promise<ShoppingRecord[] | null> {
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
   try {
@@ -356,16 +435,21 @@ export async function serperShopping(query: string): Promise<ShoppingRecord[] | 
       fetch('https://google.serper.dev/shopping', {
         method: 'POST',
         headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num: 12 })
+        // `num` is a parameter (D3) rather than the old hardcoded 12: the consultative path asks
+        // for 20 so the ranker has a real field to choose from, and the fallback path keeps the
+        // default. The timeout goes to D3's 8s for the same reason — a 20-row request is slower,
+        // and 6s was measured cutting it off.
+        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num }),
       }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),
     ])
     if (!(resp as Response).ok) return null
     const data = await (resp as Response).json()
     const rows = (data?.shopping || []) as Array<Record<string, unknown>>
     return rows
+      // The `.slice(0, 12)` cap is gone: `num` now bounds the request itself, so slicing here
+      // would silently discard rows the caller paid for and asked for.
       .filter(r => typeof r.title === 'string' && typeof r.link === 'string')
-      .slice(0, 12)
       .map(r => {
         const out: ShoppingRecord = {
           title: r.title as string,
@@ -377,10 +461,14 @@ export async function serperShopping(query: string): Promise<ShoppingRecord[] | 
         if (typeof r.source === 'string' && r.source) out.source = r.source
         const price = parseSerperPriceVnd(r.price)
         if (price !== null) out.price = price
+        // Kept even when the numeric guard rejected the value, so a caller can show what the
+        // listing SAYS without ever ranking on it. See the note on ShoppingRecord.priceText.
+        if (typeof r.price === 'string' && r.price) out.priceText = r.price
         if (typeof r.productId === 'string' && r.productId) out.productId = r.productId
         if (typeof r.imageUrl === 'string' && r.imageUrl) out.imageUrl = sanitizeUrlForMarkdown(r.imageUrl)
         if (typeof r.rating === 'number' && r.rating >= 0 && r.rating <= 5) out.rating = r.rating
         if (typeof r.ratingCount === 'number' && r.ratingCount >= 0) out.ratingCount = r.ratingCount
+        if (typeof r.position === 'number') out.position = r.position
         return out
       })
   } catch {

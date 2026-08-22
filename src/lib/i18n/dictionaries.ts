@@ -120,6 +120,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Home
     'home.greetingUser': 'Xin chào, {name} 👋',
+    'home.friend': 'bạn',
     'home.greetingGuest': 'Chào mừng đến với TappyAI 👋',
     'home.exploreByCategory': 'Khám phá theo lĩnh vực',
     'home.fortuneTitle': '🔮 Xem bói hôm nay',
@@ -231,6 +232,9 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.result.medium': 'Cần cẩn thận',
     'scamShield.result.high': 'Nguy cơ cao',
     'scamShield.result.critical': 'Rất nguy hiểm',
+    // Không phải một mức trên thang đo — là lời nói rằng chưa có kết luận. Tuyệt đối không được
+    // dịch thành một biến thể của "An toàn".
+    'scamShield.result.inconclusive': 'Chưa kết luận được',
     'scamShield.confidence.high': 'Độ tin cậy cao',
     'scamShield.confidence.medium': 'Dữ liệu hạn chế',
     'scamShield.confidence.low': 'Dữ liệu không đủ',
@@ -367,6 +371,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Home
     'home.greetingUser': 'Hi, {name} 👋',
+    'home.friend': 'there',
     'home.greetingGuest': 'Welcome to TappyAI 👋',
     'home.exploreByCategory': 'Explore by category',
     'home.fortuneTitle': '🔮 Fortune today',
@@ -379,7 +384,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'home.scanCardTitle': 'Snap a photo → AI extracts the text',
     'home.scanCardDesc': 'Scan paper documents, receipts, menus — export to .TXT, .DOCX or share instantly.',
     'home.togetherTitle': 'Tappy Together',
-    'home.togetherDesc': 'Pick a place as a group — AI suggests what suits everyone',
+    'home.togetherDesc': 'Pick a place to eat as a group — AI suggests what suits everyone',
     'home.recTitle': '✨ For you',
     'home.recDesc': 'Personalized places for your taste',
     'home.musicTitle': '🎵 Music library',
@@ -478,6 +483,9 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.result.medium': 'Use caution',
     'scamShield.result.high': 'High risk',
     'scamShield.result.critical': 'Very dangerous',
+    // Not a point on the scale — a statement that there is no verdict. It must never be worded
+    // as a variant of "Safe".
+    'scamShield.result.inconclusive': 'Could not be checked',
     'scamShield.confidence.high': 'High confidence',
     'scamShield.confidence.medium': 'Limited data',
     'scamShield.confidence.low': 'Insufficient data',

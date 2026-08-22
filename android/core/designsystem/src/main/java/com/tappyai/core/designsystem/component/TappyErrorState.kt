@@ -13,8 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.tappyai.core.designsystem.R
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import com.tappyai.core.designsystem.theme.TappySpacing
 
@@ -29,7 +31,10 @@ fun TappyErrorState(
     title: String,
     modifier: Modifier = Modifier,
     message: String? = null,
-    retryText: String? = "Try again",
+    // A resource, not a literal — same reason as TappyDialog's dismiss label. A default is what
+    // every unthinking caller ships, so an English default is an English button in a Vietnamese
+    // app on every error screen at once.
+    retryText: String? = stringResource(R.string.tappy_error_retry),
     onRetry: (() -> Unit)? = null,
 ) {
     Column(

@@ -13,7 +13,7 @@ struct SelectedMusicCard: View {
                     .clipShape(RoundedRectangle(cornerRadius: Radius.sm))
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(track?.title ?? "Đang tải...")
+                    Text(track?.title ?? NSLocalizedString("common.loading", comment: ""))
                         .font(TappyFont.callout)
                         .foregroundStyle(TappyColor.textPrimary)
                         .lineLimit(1)

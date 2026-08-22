@@ -63,6 +63,8 @@ import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.reviews.data.ReviewGroupedNotification
 import com.tappyai.app.reviews.data.isShareOnlyName
+import androidx.compose.runtime.saveable.listSaver
+import com.tappyai.core.designsystem.component.TappyDialog
 import com.tappyai.core.designsystem.component.TappyEmptyState
 import com.tappyai.core.designsystem.component.TappyErrorState
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
@@ -633,6 +635,22 @@ internal fun ReviewSearchScreen(
 /** Review photo cap — same value the composer screen and ViewModel enforce (backend caps at 6). */
 private const val MAX_COMPOSER_PHOTOS = 6
 
+/**
+ * Keeps the safety-gate notice across rotation and process death.
+ *
+ * Worth the eight lines: the notice is delivered exactly once, as a one-shot event. If the
+ * activity is recreated while the dialog is up, an unsaved value would leave the author with a
+ * post they were never told was held — and no way to ever be told, because the event has already
+ * been consumed.
+ */
+private val ComposerHeldNoticeSaver = listSaver<ComposerEvent.Held?, Any>(
+    save = { it?.let { n -> listOf(n.title, n.detail, n.assertsViolation) } ?: emptyList() },
+    restore = {
+        if (it.size < 3) null
+        else ComposerEvent.Held(it[0] as String, it[1] as String, it[2] as Boolean)
+    },
+)
+
 @Composable
 internal fun ReviewComposerHost(
     onBack: () -> Unit,
@@ -662,6 +680,12 @@ internal fun ReviewComposerHost(
     // The in-composer music picker (web MusicPickerSheet). The attached track itself now lives in the
     // ViewModel's uiState, so add/replace/remove/trim all go through the ViewModel.
     var showMusicPicker by rememberSaveable { mutableStateOf(false) }
+    // The safety gate's outcome when it did not publish. A dialog rather than a Toast, and
+    // deliberately: a Toast is dismissible by looking away, and this is the only moment the author
+    // is told their post is not public. The web gives this its own screen for the same reason.
+    var heldNotice by rememberSaveable(stateSaver = ComposerHeldNoticeSaver) {
+        mutableStateOf<ComposerEvent.Held?>(null)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -672,11 +696,29 @@ internal fun ReviewComposerHost(
                     Toast.makeText(context, context.getString(R.string.reviews_composer_posted_toast), Toast.LENGTH_SHORT).show()
                     onBack()
                 }
+                // 🚨 No success Toast and no immediate onBack(). The post was stored but is not
+                // public, and both of those would tell the author it went live.
+                is ComposerEvent.Held -> heldNotice = event
                 is ComposerEvent.Failed -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
                 }
             }
         }
+    }
+
+    heldNotice?.let { notice ->
+        TappyDialog(
+            // Server text, rendered verbatim and already in the app's language. Nothing here
+            // re-words it, and nothing here decides what it means.
+            title = notice.title,
+            message = notice.detail,
+            confirmText = stringResource(R.string.reviews_moderation_acknowledge),
+            onConfirm = { heldNotice = null; onBack() },
+            onDismiss = { heldNotice = null; onBack() },
+            // No "Cancel": there is nothing to cancel. The post is already stored and already
+            // held, so a two-button dialog would imply a choice the author does not have.
+            dismissText = null,
+        )
     }
 
     ReviewComposerScreen(

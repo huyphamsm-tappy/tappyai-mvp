@@ -26,9 +26,9 @@ struct BookingFormView: View {
 
     private var guestLabel: String {
         switch service.type {
-        case "hotel": return "Số phòng"
-        case "spa": return "Số người"
-        default: return "Số khách"
+        case "hotel": return NSLocalizedString("booking.unit.rooms", comment: "")
+        case "spa": return NSLocalizedString("booking.unit.people", comment: "")
+        default: return NSLocalizedString("booking.unit.guests", comment: "")
         }
     }
 
@@ -57,11 +57,11 @@ struct BookingFormView: View {
                 .font(.system(size: 40))
                 .foregroundStyle(.green)
 
-            Text("Đặt chỗ thành công! 🎉")
+            Text("booking.success")
                 .font(.system(size: 15, weight: .bold))
                 .foregroundStyle(TappyColor.textPrimary)
 
-            Text("Chúng tôi sẽ liên hệ xác nhận với bạn sớm nhất.")
+            Text("booking.success.detail")
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
                 .multilineTextAlignment(.center)
@@ -91,7 +91,7 @@ struct BookingFormView: View {
                 HStack(spacing: Spacing.sm) {
                     Image(systemName: "square.and.arrow.up")
                         .font(.system(size: 14))
-                    Text("Chia sẻ xác nhận")
+                    Text("booking.share")
                         .font(.system(size: 14, weight: .bold))
                 }
                 .frame(maxWidth: .infinity)
@@ -106,7 +106,7 @@ struct BookingFormView: View {
 
     private var shareText: String {
         [
-            "📋 Xác nhận đặt chỗ — TappyAI",
+            NSLocalizedString("booking.confirmSubject", comment: ""),
             "🏠 \(service.name)",
             "📅 Ngày: \(formattedDate)\(selectedTime.map { " lúc \($0)" } ?? "")",
             "👤 \(name) | 📞 \(phone)",
@@ -123,18 +123,18 @@ struct BookingFormView: View {
                 Image(systemName: "calendar")
                     .font(.system(size: 15))
                     .foregroundStyle(TappyColor.primary)
-                Text("Đặt chỗ ngay")
+                Text("booking.bookNow")
                     .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(TappyColor.textPrimary)
             }
 
             HStack(spacing: Spacing.sm) {
-                fieldGroup("Họ tên *") {
-                    TextField("Nguyễn Văn A", text: $name)
+                fieldGroup(NSLocalizedString("booking.field.name", comment: "")) {
+                    TextField(NSLocalizedString("booking.field.namePlaceholder", comment: ""), text: $name)
                         .font(.system(size: 13))
                         .textContentType(.name)
                 }
-                fieldGroup("Số điện thoại *") {
+                fieldGroup(NSLocalizedString("booking.field.phone", comment: "")) {
                     TextField("09xxxxxxxx", text: $phone)
                         .font(.system(size: 13))
                         .textContentType(.telephoneNumber)
@@ -142,14 +142,14 @@ struct BookingFormView: View {
                 }
             }
 
-            fieldGroup("Ngày *") {
+            fieldGroup(NSLocalizedString("booking.field.date", comment: "")) {
                 DatePicker("", selection: $date, in: Date()..., displayedComponents: .date)
                     .labelsHidden()
                     .datePickerStyle(.compact)
             }
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
-                Text("Giờ (tùy chọn)")
+                Text("booking.timeOptional")
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -208,8 +208,8 @@ struct BookingFormView: View {
                 }
             }
 
-            fieldGroup("Ghi chú thêm") {
-                TextField("Yêu cầu đặc biệt, dị ứng thực phẩm...", text: $notes, axis: .vertical)
+            fieldGroup(NSLocalizedString("booking.field.notes", comment: "")) {
+                TextField(NSLocalizedString("booking.field.notesPlaceholder", comment: ""), text: $notes, axis: .vertical)
                     .font(.system(size: 13))
                     .lineLimit(2...4)
             }
@@ -226,7 +226,7 @@ struct BookingFormView: View {
                         ProgressView()
                             .tint(.white)
                     } else {
-                        Text("✅ Xác nhận đặt chỗ")
+                        Text("booking.confirm")
                             .font(.system(size: 14, weight: .bold))
                     }
                 }
@@ -240,7 +240,7 @@ struct BookingFormView: View {
             .disabled(loading)
             .opacity(loading ? 0.6 : 1)
 
-            Text("Sau khi đặt, cơ sở sẽ liên hệ xác nhận với bạn")
+            Text("booking.confirmNote")
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
                 .frame(maxWidth: .infinity)
@@ -275,7 +275,7 @@ struct BookingFormView: View {
         let trimName = name.trimmingCharacters(in: .whitespaces)
         let trimPhone = phone.trimmingCharacters(in: .whitespaces)
         guard !trimName.isEmpty, !trimPhone.isEmpty else {
-            error = "Vui lòng điền đầy đủ thông tin bắt buộc."
+            error = NSLocalizedString("booking.error.required", comment: "")
             return
         }
         error = nil
@@ -298,7 +298,7 @@ struct BookingFormView: View {
                 try await PlacesService(api: deps.api).createBooking(request)
                 done = true
             } catch {
-                self.error = "Có lỗi xảy ra. Vui lòng thử lại."
+                self.error = NSLocalizedString("common.error.generic", comment: "")
             }
             loading = false
         }

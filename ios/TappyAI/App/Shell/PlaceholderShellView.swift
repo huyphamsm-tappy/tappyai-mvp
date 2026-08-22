@@ -20,6 +20,24 @@ struct PlaceholderShellView: View {
             ForEach(AppTab.allCases) { tab in
                 NavigationStack(path: router.path(for: tab)) {
                     tabRoot(for: tab)
+                        // Registered for EVERY tab, on purpose. A review detail is opened from
+                        // Explore, from Profile (favourites, my posts) and from Home; a public
+                        // profile is opened from a review's author row, from people search and
+                        // from a comment. A destination registered on one tab's root can only be
+                        // pushed on that tab — which is how Deals ended up unreachable — and the
+                        // back stack should stay inside the tab the user was already in.
+                        .navigationDestination(for: ReviewsDestination.self) { dest in
+                            switch dest {
+                            case .reviewDetail(let id):
+                                ReviewDetailView(deps: deps, reviewId: id)
+                            case .userProfile(let id):
+                                UserProfileView(deps: deps, userId: id)
+                            case .group(let id):
+                                GroupDetailView(deps: deps, groupId: id)
+                            case .copyrightPolicy:
+                                CopyrightPolicyView()
+                            }
+                        }
                         .navigationTitle(tab == .explore ? "" : LocalizedStringKey(tab.titleKey))
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationBarHidden(tab == .explore)
@@ -30,7 +48,7 @@ struct PlaceholderShellView: View {
                                         Image(systemName: session.state.isAuthenticated
                                               ? "person.crop.circle.fill" : "person.crop.circle")
                                     }
-                                    .accessibilityLabel(Text("Tài khoản"))
+                                    .accessibilityLabel(Text(NSLocalizedString("account.title", comment: "")))
                                 }
                             }
                             #if DEBUG
@@ -50,9 +68,9 @@ struct PlaceholderShellView: View {
         .fullScreenCover(isPresented: $showAuth) {
             AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
         }
-        .confirmationDialog("Tài khoản", isPresented: $showSignOut, titleVisibility: .visible) {
-            Button("Đăng xuất", role: .destructive) { Task { await deps.authRepository.signOut() } }
-            Button("Huỷ", role: .cancel) {}
+        .confirmationDialog(NSLocalizedString("account.title", comment: ""), isPresented: $showSignOut, titleVisibility: .visible) {
+            Button(NSLocalizedString("auth.signOut", comment: ""), role: .destructive) { Task { await deps.authRepository.signOut() } }
+            Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
         }
         #if DEBUG
         .sheet(isPresented: $showDiagnostics) {
@@ -76,6 +94,8 @@ struct PlaceholderShellView: View {
                         TranslateView(deps: deps)
                     case .scan:
                         ScanView(deps: deps)
+                    case .scamShield:
+                        ScamShieldView(deps: deps)
                     case .vietContent:
                         VietContentView(deps: deps)
                     case .splitBill:
@@ -94,6 +114,11 @@ struct PlaceholderShellView: View {
             ChatView(deps: deps)
         case .explore:
             ReviewsFeedView(deps: deps)
+        // C31 — Deals had NO case here, so a top-level tab every user can press fell through to
+        // `default:` and rendered "Coming soon", while a complete DealsView + DealsService +
+        // DealsViewModel sat in the tree with zero references. One missing line.
+        case .deals:
+            DealsView(deps: deps)
         case .profile:
             ProfileMainView(deps: deps)
                 .navigationDestination(for: ProfileDestination.self) { dest in
@@ -128,6 +153,14 @@ struct PlaceholderShellView: View {
                         TermsOfServiceView()
                     case .howToUse:
                         HowToUseView()
+                    case .myPosts:
+                        MyPostsView(deps: deps)
+                    case .notificationsInbox:
+                        NotificationsInboxView(deps: deps)
+                    case .userSearch:
+                        UserSearchView(deps: deps)
+                    case .groupDining:
+                        GroupDiningView(deps: deps)
                     }
                 }
         default:

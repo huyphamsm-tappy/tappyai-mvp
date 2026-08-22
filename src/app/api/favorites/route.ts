@@ -1,9 +1,12 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   const { data, error } = await supabase
     .from('favorites')
@@ -11,13 +14,13 @@ export async function GET(req: NextRequest) {
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
-  if (error) return NextResponse.json({ error: 'Lỗi tải danh sách' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'load_failed', message: serverMessage('server.loadFailed', requestLocale(req)) }, { status: 500 })
   return NextResponse.json({ favorites: data || [] })
 }
 
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   let placeId: string, placeName: string, placeAddress: string, placeType: string
   try {
@@ -28,7 +31,7 @@ export async function POST(req: NextRequest) {
     placeType = b.placeType?.trim() || ''
     if (!placeId || !placeName) throw new Error('missing')
   } catch {
-    return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
 
   const { error } = await supabase
@@ -38,16 +41,16 @@ export async function POST(req: NextRequest) {
       { onConflict: 'user_id,place_id', ignoreDuplicates: true }
     )
 
-  if (error) return NextResponse.json({ error: 'Không thể lưu' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'save_failed', message: serverMessage('server.saveFailed', requestLocale(req)) }, { status: 500 })
   return NextResponse.json({ ok: true })
 }
 
 export async function DELETE(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
-  const placeId = req.nextUrl.searchParams.get('placeId')
-  if (!placeId) return NextResponse.json({ error: 'placeId required' }, { status: 400 })
+  const placeId = searchParam(req, 'placeId')
+  if (!placeId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   const { error } = await supabase
     .from('favorites')
@@ -55,6 +58,6 @@ export async function DELETE(req: NextRequest) {
     .eq('user_id', user.id)
     .eq('place_id', placeId)
 
-  if (error) return NextResponse.json({ error: 'Không thể xóa' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'delete_failed', message: serverMessage('server.deleteFailed', requestLocale(req)) }, { status: 500 })
   return NextResponse.json({ ok: true })
 }

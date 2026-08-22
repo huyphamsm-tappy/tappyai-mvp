@@ -27,7 +27,7 @@ struct MusicLibraryView: View {
                 trackList
             }
             .background(TappyColor.background)
-            .navigationTitle("🎵 Thư viện nhạc")
+            .navigationTitle(NSLocalizedString("music.library.title", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -38,7 +38,7 @@ struct MusicLibraryView: View {
                         HStack(spacing: 2) {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 14, weight: .semibold))
-                            Text("Trang chủ")
+                            Text(NSLocalizedString("tab.home.label", comment: ""))
                                 .font(.system(size: 14, weight: .medium))
                         }
                         .foregroundStyle(TappyColor.primary)
@@ -51,7 +51,7 @@ struct MusicLibraryView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "square.and.arrow.up")
                                 .font(.system(size: 14))
-                            Text("Đăng")
+                            Text(NSLocalizedString("music.library.upload", comment: ""))
                                 .font(.system(size: 14, weight: .medium))
                         }
                         .foregroundStyle(TappyColor.primary)
@@ -108,7 +108,7 @@ struct MusicLibraryView: View {
         HStack(spacing: Spacing.sm) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(TappyColor.textSecondary)
-            TextField("Tìm nhạc...", text: Binding(
+            TextField(NSLocalizedString("music.library.searchPlaceholder", comment: ""), text: Binding(
                 get: { vm.searchQuery },
                 set: { vm.updateSearch($0) }
             ))
@@ -136,7 +136,7 @@ struct MusicLibraryView: View {
     private var categoryTabs: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Spacing.xs) {
-                categoryPill("Tất cả", id: nil)
+                categoryPill(NSLocalizedString("common.all", comment: ""), id: nil)
                 ForEach(vm.categories) { cat in
                     categoryPill(cat.label, id: cat.id)
                 }
@@ -190,7 +190,7 @@ struct MusicLibraryView: View {
                             .tint(TappyColor.textSecondary)
                             .padding(.vertical, Spacing.md)
                     } else {
-                        Button("Tải thêm") {
+                        Button(NSLocalizedString("common.loadMore", comment: "")) {
                             vm.loadMore()
                         }
                         .font(TappyFont.callout)
@@ -292,7 +292,7 @@ struct MusicLibraryView: View {
             Image(systemName: "music.note.list")
                 .font(.system(size: 36))
                 .foregroundStyle(TappyColor.textSecondary)
-            Text("Không tìm thấy nhạc")
+            Text(NSLocalizedString("music.library.noResults", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
             Spacer()
@@ -309,7 +309,7 @@ struct MusicLibraryView: View {
             Text(message)
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
-            Button("Thử lại") {
+            Button(NSLocalizedString("common.retry", comment: "")) {
                 vm.loadTracks()
             }
             .buttonStyle(.tappy(.tertiary))

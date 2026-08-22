@@ -71,7 +71,7 @@ final class MusicLibraryViewModel: AppObservableObject {
                 hasMore = result.hasMore
                 page = 1
             } catch {
-                self.error = "Không thể tải danh sách nhạc"
+                self.error = NSLocalizedString("music.error.loadList", comment: "")
                 log.error("load music tracks failed: \(error)")
             }
             loading = false
@@ -128,7 +128,7 @@ final class MusicLibraryViewModel: AppObservableObject {
                 searchResults = result.tracks
             } catch {
                 guard !Task.isCancelled else { return }
-                searchError = "Không thể tìm nhạc"
+                searchError = NSLocalizedString("music.error.search", comment: "")
                 log.error("music search failed: \(error)")
             }
             searchLoading = false

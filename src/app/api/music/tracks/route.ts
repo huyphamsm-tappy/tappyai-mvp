@@ -3,10 +3,14 @@ import { parseTracksQuery } from '@/modules/music/api'
 import { browseTracks } from '@/modules/music/services/musicService'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { isTrustedMediaUrl } from '@/lib/media/trustedHosts'
+import { requestSearchParams } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 // GET /api/music/tracks?categoryId=&page=&limit=
 export async function GET(req: NextRequest) {
-  const filter = parseTracksQuery(req.nextUrl.searchParams)
+  const filter = parseTracksQuery(requestSearchParams(req))
   const result = await browseTracks(filter)
   return NextResponse.json(result)
 }
@@ -16,30 +20,33 @@ export async function GET(req: NextRequest) {
 // enforces uploaded_by=self + music_type='original_sound' + rights_confirmed.
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   let body: { title?: string; artist?: string; audioUrl?: string; coverUrl?: string; durationSec?: number; rightsConfirmed?: boolean }
-  try { body = await req.json() } catch { return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 }) }
+  try { body = await req.json() } catch { return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 }) }
 
   const title = body.title?.trim()
   const audioUrl = body.audioUrl?.trim()
   const durationSec = Math.round(Number(body.durationSec) || 0)
 
-  if (!title || title.length > 120) return NextResponse.json({ error: 'Tên bài hát 1–120 ký tự' }, { status: 400 })
+  if (!title || title.length > 120) return NextResponse.json({ error: 'invalid_title', message: serverMessage('music.titleLength', requestLocale(req)) }, { status: 400 })
   // Must point at media storage we own — Blob for everything already stored,
   // Cloud Storage for anything the bridge writes.
   if (!audioUrl || !isTrustedMediaUrl(audioUrl)) {
-    return NextResponse.json({ error: 'File nhạc không hợp lệ' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_file', message: serverMessage('music.invalidFile', requestLocale(req)) }, { status: 400 })
   }
-  if (!durationSec || durationSec < 1 || durationSec > 600) return NextResponse.json({ error: 'Thời lượng không hợp lệ (tối đa 10 phút)' }, { status: 400 })
+  if (!durationSec || durationSec < 1 || durationSec > 600) return NextResponse.json({ error: 'invalid_duration', message: serverMessage('music.badDuration', requestLocale(req)) }, { status: 400 })
   // The rights confirmation is the whole point — refuse without it.
   if (body.rightsConfirmed !== true) {
-    return NextResponse.json({ error: 'Bạn cần xác nhận quyền sử dụng nhạc trước khi đăng' }, { status: 400 })
+    return NextResponse.json({ error: 'rights_required', message: serverMessage('music.rightsRequired', requestLocale(req)) }, { status: 400 })
   }
 
   // Resolve the 'internal' provider (all UGC lives under it).
   const { data: provider } = await supabase.from('music_providers').select('id').eq('slug', 'internal').single()
-  if (!provider) return NextResponse.json({ error: 'Thiếu cấu hình provider' }, { status: 500 })
+  if (!provider) return NextResponse.json({ error: 'not_configured', message: serverMessage('server.providerConfig', requestLocale(req)) }, { status: 500 })
 
   const { data: track, error } = await supabase
     .from('music_tracks')
@@ -61,7 +68,7 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     console.error('[music/tracks POST]', error)
-    return NextResponse.json({ error: 'Không thể đăng nhạc. Vui lòng thử lại.' }, { status: 500 })
+    return NextResponse.json({ error: 'publish_failed', message: serverMessage('music.publishFailed', requestLocale(req)) }, { status: 500 })
   }
   return NextResponse.json({ id: track.id, ok: true })
 }

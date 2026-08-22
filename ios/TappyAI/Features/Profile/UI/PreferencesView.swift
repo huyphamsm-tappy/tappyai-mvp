@@ -19,22 +19,22 @@ struct PreferencesView: View {
     private var service: ProfileService { ProfileService(api: deps.api) }
 
     private let budgetOptions: [(value: String, label: String, desc: String, emoji: String)] = [
-        ("cheap", "Tiết kiệm", "Dưới 150k/người", "💚"),
-        ("mid", "Trung bình", "150k–500k/người", "💛"),
-        ("high", "Cao cấp", "500k+/người", "❤️"),
+        ("cheap", NSLocalizedString("pref.budget.cheap", comment: ""), NSLocalizedString("pref.budget.cheap.detail", comment: ""), "💚"),
+        ("mid", NSLocalizedString("pref.budget.mid", comment: ""), NSLocalizedString("pref.budget.mid.detail", comment: ""), "💛"),
+        ("high", NSLocalizedString("pref.budget.high", comment: ""), NSLocalizedString("pref.budget.high.detail", comment: ""), "❤️"),
     ]
 
     private let cuisineOptions = [
-        "Phở & Bún", "Cơm tấm", "Lẩu", "Nướng BBQ", "Hải sản",
-        "Chay & Thuần chay", "Sushi & Nhật", "Hàn Quốc", "Pizza & Burger",
-        "Dimsum & Trung Hoa", "Cà phê & Bánh", "Món miền Bắc", "Món miền Nam",
-        "Đồ ăn nhanh", "Kem & Tráng miệng",
+        NSLocalizedString("cuisine.phoBun", comment: ""), NSLocalizedString("cuisine.comTam", comment: ""), NSLocalizedString("cuisine.hotpot", comment: ""), NSLocalizedString("cuisine.bbq", comment: ""), NSLocalizedString("cuisine.seafood", comment: ""),
+        NSLocalizedString("cuisine.vegetarian", comment: ""), NSLocalizedString("cuisine.japanese", comment: ""), NSLocalizedString("cuisine.korean", comment: ""), "Pizza & Burger",
+        NSLocalizedString("cuisine.chinese", comment: ""), NSLocalizedString("cuisine.cafeBakery", comment: ""), NSLocalizedString("cuisine.northern", comment: ""), NSLocalizedString("cuisine.southern", comment: ""),
+        NSLocalizedString("cuisine.fastFood", comment: ""), NSLocalizedString("cuisine.dessert", comment: ""),
     ]
 
     private let quickChips = [
-        "Ăn chay thứ 6", "Ngân sách ăn trưa 60–80k", "Thích spa kiểu Nhật",
-        "Dị ứng hải sản", "Hay đi Quận 3", "Không ăn được cay",
-        "Hay đi Bình Thạnh", "Thích không gian yên tĩnh",
+        NSLocalizedString("pref.sample.vegFriday", comment: ""), NSLocalizedString("pref.sample.lunchBudget", comment: ""), NSLocalizedString("pref.sample.japaneseSpa", comment: ""),
+        NSLocalizedString("pref.sample.seafoodAllergy", comment: ""), NSLocalizedString("pref.sample.district3", comment: ""), NSLocalizedString("pref.sample.noSpicy", comment: ""),
+        NSLocalizedString("pref.sample.binhThanh", comment: ""), NSLocalizedString("pref.sample.quiet", comment: ""),
     ]
 
     var body: some View {
@@ -53,7 +53,7 @@ struct PreferencesView: View {
                     dietarySection
                     saveButton
                     if saveError {
-                        Text("Không thể lưu sở thích. Vui lòng thử lại.")
+                        Text("prefs.saveFailed")
                             .font(.system(size: 13))
                             .foregroundStyle(.red)
                     }
@@ -63,7 +63,7 @@ struct PreferencesView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Sở thích của tôi")
+        .navigationTitle("prefs.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadPreferences() }
     }
@@ -73,7 +73,7 @@ struct PreferencesView: View {
     private var infoBanner: some View {
         HStack(spacing: Spacing.sm) {
             Text("✨")
-            Text("TappyAI dùng thông tin này để gợi ý phù hợp hơn với bạn.")
+            Text("prefs.intro")
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.primary)
         }
@@ -91,10 +91,10 @@ struct PreferencesView: View {
 
     private var freeformSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("🧠 Tappy nhớ bạn")
+            Text("prefs.memory")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Thêm bất cứ thông tin nào để TappyAI gợi ý sát hơn — khu vực, ngân sách, dị ứng, thói quen...")
+            Text("prefs.memory.desc")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -117,7 +117,7 @@ struct PreferencesView: View {
 
             // Input
             HStack(spacing: Spacing.sm) {
-                TextField("Thêm sở thích của bạn...", text: $newPref)
+                TextField(NSLocalizedString("pref.addPlaceholder", comment: ""), text: $newPref)
                     .font(.system(size: 13))
                     .onSubmit { addPref(newPref) }
                     .padding(.horizontal, Spacing.md)
@@ -132,7 +132,7 @@ struct PreferencesView: View {
                 Button { addPref(newPref) } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "plus").font(.system(size: 12))
-                        Text("Thêm").font(.system(size: 12, weight: .medium))
+                        Text("prefs.add").font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(.white)
                     .padding(.horizontal, Spacing.md)
@@ -166,7 +166,7 @@ struct PreferencesView: View {
                     }
                 }
             } else {
-                Text("Chưa có sở thích nào. Thêm bằng chips bên trên hoặc tự nhập.")
+                Text("prefs.empty")
                     .font(.system(size: 11))
                     .foregroundStyle(TappyColor.textSecondary)
                     .italic()
@@ -178,15 +178,15 @@ struct PreferencesView: View {
 
     private var genderSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("👤 Bạn là")
+            Text("prefs.youAre")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Giúp Tappy gợi ý câu hỏi phù hợp hơn với bạn")
+            Text("prefs.youAre.desc")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
 
             HStack(spacing: Spacing.sm) {
-                ForEach([("female", "Nữ", "👩"), ("male", "Nam", "👨")], id: \.0) { (value, label, emoji) in
+                ForEach([("female", NSLocalizedString("pref.gender.female", comment: ""), "👩"), ("male", NSLocalizedString("pref.gender.male", comment: ""), "👨")], id: \.0) { (value, label, emoji) in
                     Button {
                         gender = gender == value ? nil : value
                     } label: {
@@ -220,7 +220,7 @@ struct PreferencesView: View {
 
     private var budgetSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("💰 Ngân sách ăn uống thường ngày")
+            Text("prefs.budget")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
 
@@ -262,7 +262,7 @@ struct PreferencesView: View {
 
     private var cuisineSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("🍜 Ẩm thực yêu thích")
+            Text("prefs.cuisine")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
 
@@ -290,14 +290,14 @@ struct PreferencesView: View {
 
     private var dietarySection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("🚫 Dị ứng / kiêng cữ")
+            Text("prefs.dietary")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Ví dụ: không ăn thịt heo, dị ứng hải sản, thuần chay...")
+            Text("prefs.dietary.placeholder")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
 
-            TextField("Ghi chú nếu có...", text: $dietary, axis: .vertical)
+            TextField(NSLocalizedString("pref.dietaryPlaceholder", comment: ""), text: $dietary, axis: .vertical)
                 .font(.system(size: 13))
                 .lineLimit(3...5)
                 .padding(.horizontal, Spacing.md)
@@ -318,13 +318,13 @@ struct PreferencesView: View {
             HStack(spacing: Spacing.sm) {
                 if saving {
                     ProgressView().tint(.white)
-                    Text("Đang lưu...")
+                    Text("common.saving")
                 } else if saved {
                     Image(systemName: "checkmark")
-                    Text("Đã lưu!")
+                    Text("common.saved")
                 } else {
                     Image(systemName: "square.and.arrow.down")
-                    Text("Lưu sở thích")
+                    Text("prefs.save")
                 }
             }
             .font(.system(size: 15, weight: .bold))

@@ -23,11 +23,61 @@ struct CreateReviewView: View {
     }
 
     var body: some View {
-        if vm.success {
+        if let notice = vm.moderationNotice {
+            // 🚨 CHECKED BEFORE `success`, and the two can never both be shown. The post was
+            // stored but the safety gate did not publish it, and the success screen would tell
+            // the author the opposite — a confirmation they only discover to be false when the
+            // video never appears on Explore.
+            moderationScreen(notice)
+        } else if vm.success {
             successScreen
         } else {
             composerScreen
         }
+    }
+
+    // MARK: - Held by the safety gate
+
+    /// What the author is told when their post was stored but not published.
+    ///
+    /// 🚨 The title and body are the SERVER's words, already in the request language, and are
+    /// rendered verbatim. Nothing here re-words them and nothing here decides what they mean —
+    /// the notice has to describe the row that was actually stored, and a client-side
+    /// code-to-string map is a second opinion that will eventually disagree with it. The web and
+    /// Android composers make the same choice for the same reason.
+    ///
+    /// No auto-dismiss, unlike the success screen: this needs to be read, and it is the one
+    /// moment the author is told at upload time. It stays until they acknowledge it.
+    private func moderationScreen(_ notice: ReviewModeration) -> some View {
+        VStack(spacing: Spacing.md) {
+            Spacer()
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 56))
+                .foregroundStyle(TappyColor.warning)
+            Text(notice.title)
+                .font(TappyFont.title)
+                .foregroundStyle(TappyColor.textPrimary)
+                .multilineTextAlignment(.center)
+            Text(notice.detail)
+                .font(TappyFont.callout)
+                .foregroundStyle(TappyColor.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, Spacing.lg)
+            Spacer()
+            Button {
+                vm.moderationNotice = nil
+                dismiss()
+            } label: {
+                Text("review.moderation.acknowledge")
+                    .font(TappyFont.body)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .padding(.horizontal, Spacing.lg)
+            .padding(.bottom, Spacing.lg)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(TappyColor.background.ignoresSafeArea())
     }
 
     // MARK: - Success screen
@@ -38,10 +88,10 @@ struct CreateReviewView: View {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 64))
                 .foregroundStyle(TappyColor.success)
-            Text("Đã đăng bài!")
+            Text("review.posted.title")
                 .font(TappyFont.title)
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Cảm ơn bạn đã chia sẻ")
+            Text("review.posted.subtitle")
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
             Spacer()
@@ -84,7 +134,7 @@ struct CreateReviewView: View {
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Bài viết mới")
+                    Text("review.new.title")
                         .font(TappyFont.bodyEmphasis)
                         .foregroundStyle(TappyColor.textPrimary)
                 }
@@ -97,7 +147,7 @@ struct CreateReviewView: View {
                                 .background(TappyColor.primary.opacity(0.6))
                                 .clipShape(Capsule())
                         } else {
-                            Text("Đăng")
+                            Text("review.post")
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, Spacing.lg)
@@ -135,7 +185,7 @@ struct CreateReviewView: View {
 
     private var mediaModeTabs: some View {
         HStack(spacing: Spacing.xxs) {
-            mediaTab("Ảnh", icon: "camera", mode: .photo)
+            mediaTab(NSLocalizedString("review.tab.photo", comment: ""), icon: "camera", mode: .photo)
             mediaTab("Video", icon: "video", mode: .video)
             mediaTab("Link", icon: "link", mode: .url)
         }
@@ -194,7 +244,7 @@ struct CreateReviewView: View {
                             Image(systemName: "camera")
                                 .font(.system(size: 36))
                                 .foregroundStyle(TappyColor.textSecondary)
-                            Text("Thêm ảnh")
+                            Text("review.addPhoto")
                                 .font(TappyFont.callout)
                                 .foregroundStyle(TappyColor.textSecondary)
                             Text("Tối đa \(UploadLimits.maxPhotosPerReview) ảnh")
@@ -292,7 +342,7 @@ struct CreateReviewView: View {
                         Image(systemName: "video")
                             .font(.system(size: 36))
                             .foregroundStyle(TappyColor.textSecondary)
-                        Text("Chọn video")
+                        Text("review.pickVideo")
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.textSecondary)
                         Text("review.video.limitHint")
@@ -376,7 +426,7 @@ struct CreateReviewView: View {
                         HStack(spacing: Spacing.xxs) {
                             Image(systemName: "xmark.circle")
                                 .font(.system(size: 14))
-                            Text("Hủy")
+                            Text("common.cancel")
                                 .font(TappyFont.caption)
                         }
                         .foregroundStyle(TappyColor.textSecondary)
@@ -387,7 +437,7 @@ struct CreateReviewView: View {
                         HStack(spacing: Spacing.xxs) {
                             Image(systemName: "xmark.circle")
                                 .font(.system(size: 14))
-                            Text("Hủy")
+                            Text("common.cancel")
                                 .font(TappyFont.caption)
                         }
                         .foregroundStyle(TappyColor.textSecondary)
@@ -403,9 +453,9 @@ struct CreateReviewView: View {
 
     private var uploadStepLabel: String {
         switch vm.uploadStep {
-        case .thumbnail: return "Đang tạo thumbnail..."
-        case .uploading: return "Đang tải video lên..."
-        case .processing: return "Đang phân tích nội dung..."
+        case .thumbnail: return NSLocalizedString("review.progress.thumbnail", comment: "")
+        case .uploading: return NSLocalizedString("review.progress.uploading", comment: "")
+        case .processing: return NSLocalizedString("review.progress.analyzing", comment: "")
         default: return ""
         }
     }
@@ -432,11 +482,11 @@ struct CreateReviewView: View {
                 .clipShape(RoundedRectangle(cornerRadius: Radius.xl, style: .continuous))
             }
             HStack {
-                Text("Video đã tải lên")
+                Text("review.video.uploaded")
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
-                Button("Xóa") { vm.removeVideo() }
+                Button("common.delete") { vm.removeVideo() }
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.danger)
             }
@@ -496,7 +546,7 @@ struct CreateReviewView: View {
             if vm.fetchingMeta {
                 HStack(spacing: Spacing.xs) {
                     ProgressView().tint(TappyColor.textSecondary)
-                    Text("Đang tải thông tin...")
+                    Text("common.loading")
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -570,7 +620,7 @@ struct CreateReviewView: View {
                 .scrollContentBackground(.hidden)
                 .overlay(alignment: .topLeading) {
                     if vm.body.isEmpty {
-                        Text("Chia sẻ trải nghiệm, cảm nhận của bạn...")
+                        Text("review.body.placeholder")
                             .font(TappyFont.body)
                             .foregroundStyle(TappyColor.textSecondary.opacity(0.6))
                             .padding(.top, 8)
@@ -601,7 +651,7 @@ struct CreateReviewView: View {
                     Image(systemName: "mappin")
                         .font(.system(size: 14))
                         .foregroundStyle(TappyColor.primary)
-                    Text(vm.placeName.isEmpty ? "Thêm địa điểm" : vm.placeName)
+                    Text(vm.placeName.isEmpty ? NSLocalizedString("review.addPlace", comment: "") : vm.placeName)
                         .font(TappyFont.callout)
                         .foregroundStyle(TappyColor.primary)
                     if !vm.placeName.isEmpty {
@@ -616,7 +666,7 @@ struct CreateReviewView: View {
             .buttonStyle(.plain)
 
             if vm.showPlaceInput {
-                TextField("Tên quán, nhà hàng, địa điểm...", text: $vm.placeName)
+                TextField(NSLocalizedString("review.placePlaceholder", comment: ""), text: $vm.placeName)
                     .font(TappyFont.callout)
                     .padding(Spacing.sm)
                     .background(TappyColor.surface)
@@ -653,7 +703,7 @@ struct CreateReviewView: View {
                                 .foregroundStyle(TappyColor.textSecondary)
                         }
                     } else {
-                        Text("Thêm đánh giá sao")
+                        Text("review.addRating")
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.primary)
                     }
@@ -686,7 +736,7 @@ struct CreateReviewView: View {
                         Image(systemName: "music.note")
                             .font(.system(size: 14))
                             .foregroundStyle(TappyColor.primary)
-                        Text("Thêm nhạc nền")
+                        Text("review.addMusic")
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.primary)
                     }

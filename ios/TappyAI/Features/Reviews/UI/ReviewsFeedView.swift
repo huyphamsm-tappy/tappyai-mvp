@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ReviewsFeedView: View {
     @AppStateObject private var vm: ReviewsFeedViewModel
+    @AppEnvironmentState private var router: AppRouter
 
     private let deps: AppDependencies
     @State private var videoPlayers: [String: FeedVideoPlayer] = [:]
@@ -144,9 +145,9 @@ struct ReviewsFeedView: View {
     private var feedTabs: some View {
         VStack {
             HStack(spacing: Spacing.lg) {
-                tabButton("Theo dõi", tab: .following)
-                tabButton("Cho bạn", tab: .forYou)
-                tabButton("Mới nhất", tab: .latest)
+                tabButton(NSLocalizedString("feed.tab.following", comment: ""), tab: .following)
+                tabButton(NSLocalizedString("feed.tab.forYou", comment: ""), tab: .forYou)
+                tabButton(NSLocalizedString("feed.tab.latest", comment: ""), tab: .latest)
             }
             .padding(.top, Spacing.xxl)
 
@@ -206,7 +207,13 @@ struct ReviewsFeedView: View {
                 },
                 onDelete: { vm.deleteReview(reviewId: review.id) },
                 onHide: { vm.hideReview(reviewId: review.id) },
-                onCreatorTap: {},
+                // Was `{}` — the avatar and name in the feed were tappable and did nothing,
+                // because there was no profile screen to open. There is one now.
+                onCreatorTap: {
+                    if let uid = review.userId {
+                        router.push(ReviewsDestination.userProfile(id: uid), on: .explore)
+                    }
+                },
                 onMusicTap: review.music?.trackId != nil ? {
                     soundPageTrackId = review.music?.trackId
                 } : nil
@@ -226,36 +233,36 @@ struct ReviewsFeedView: View {
 
             switch vm.activeTab {
             case .following:
-                Text("Chưa theo dõi ai")
+                Text(NSLocalizedString("feed.following.emptyTitle", comment: ""))
                     .font(TappyFont.headline)
                     .foregroundStyle(TappyColor.feedTextPrimary)
-                Text("Theo dõi người dùng khác để xem bài review của họ ở đây")
+                Text(NSLocalizedString("feed.following.emptyBody", comment: ""))
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.feedTextSecondary)
                     .multilineTextAlignment(.center)
-                Button("Xem Đề xuất") {
+                Button(NSLocalizedString("feed.seeSuggestions", comment: "")) {
                     vm.switchTab(.forYou)
                 }
                 .buttonStyle(.tappy(.primary))
 
             case .forYou:
-                Text("Chưa có bài nào")
+                Text(NSLocalizedString("feed.empty", comment: ""))
                     .font(TappyFont.headline)
                     .foregroundStyle(TappyColor.feedTextPrimary)
-                Text("Hãy tạo bài review đầu tiên!")
+                Text(NSLocalizedString("feed.empty.createFirst", comment: ""))
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.feedTextSecondary)
                     .multilineTextAlignment(.center)
 
             case .latest:
-                Text("Chưa có bài nào")
+                Text(NSLocalizedString("feed.empty", comment: ""))
                     .font(TappyFont.headline)
                     .foregroundStyle(TappyColor.feedTextPrimary)
-                Text("Chưa có bài review mới nhất")
+                Text(NSLocalizedString("feed.latest.empty", comment: ""))
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.feedTextSecondary)
                     .multilineTextAlignment(.center)
-                Button("Xem Đề xuất") {
+                Button(NSLocalizedString("feed.seeSuggestions", comment: "")) {
                     vm.switchTab(.forYou)
                 }
                 .buttonStyle(.tappy(.primary))
@@ -270,13 +277,13 @@ struct ReviewsFeedView: View {
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 48))
                 .foregroundStyle(TappyColor.danger)
-            Text("Không thể tải feed")
+            Text(NSLocalizedString("feed.loadFailed", comment: ""))
                 .font(TappyFont.headline)
                 .foregroundStyle(TappyColor.feedTextPrimary)
-            Text("Vui lòng thử lại sau")
+            Text(NSLocalizedString("feed.tryAgainLater", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.feedTextSecondary)
-            Button("Thử lại") {
+            Button(NSLocalizedString("common.retry", comment: "")) {
                 Task { await vm.loadFeed() }
             }
             .buttonStyle(.tappy(.primary))

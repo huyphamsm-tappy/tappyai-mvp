@@ -78,4 +78,18 @@ enum TappyShare {
     static func reviewURL(_ reviewId: String) -> String {
         "\(canonicalOrigin)/reviews/\(reviewId)"
     }
+
+    /// Canonical public URL for a group-dining room.
+    ///
+    /// A group is USELESS without this: the whole mechanism is "create a room, send the link,
+    /// everyone fills in what they want to eat". Built here rather than in the view so it passes
+    /// the same `isShareableURL` rules as every other outbound link.
+    static func groupURL(_ groupId: String) -> String {
+        "\(canonicalOrigin)/group/\(groupId)"
+    }
+
+    /// Canonical public URL for someone's profile.
+    static func userProfileURL(_ userId: String) -> String {
+        "\(canonicalOrigin)/users/\(userId)"
+    }
 }

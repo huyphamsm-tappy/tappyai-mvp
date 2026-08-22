@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,6 +21,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tappyai.core.designsystem.R
 import com.tappyai.core.designsystem.theme.TappyAITheme
 
 enum class TappyAvatarSize(val dp: Dp, val fontSp: androidx.compose.ui.unit.TextUnit) {
@@ -45,7 +47,15 @@ fun TappyAvatar(
     size: TappyAvatarSize = TappyAvatarSize.ListRow,
 ) {
     val initials = remember(name) { initialsFor(name) }
-    val description = if (name.isBlank()) "Profile avatar" else "$name's avatar"
+    // TalkBack reads this, so it is user-facing text and belongs in resources like any other.
+    // It used to be two Kotlin literals, which meant a Vietnamese user heard "Huy Phạm's avatar"
+    // no matter what language the app was in (V2-UAT-010). Building it with stringResource lets
+    // Android's own resource qualifiers resolve it against the app locale, exactly like every
+    // visible string — and lets Vietnamese put the possessive the other way round, which a
+    // concatenated "$name's avatar" could never express.
+    val description =
+        if (name.isBlank()) stringResource(R.string.tappy_cd_avatar_generic)
+        else stringResource(R.string.tappy_cd_avatar_named, name)
 
     Box(
         modifier = modifier

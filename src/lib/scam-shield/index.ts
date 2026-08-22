@@ -5,6 +5,8 @@ import { executeProviders } from './orchestrator'
 import { calculateRisk } from './engine/riskEngine'
 import { buildEvidence } from './engine/evidenceEngine'
 import { getRecommendedActions } from './engine/actionEngine'
+import { impersonationSignal } from './engine/impersonationSignal'
+import { classifyBrand } from './directory/brandMatch'
 import { officialDirectory } from './directory/officialDirectory'
 import { decodeQrImage } from './qr/decoder'
 import { registerProvider } from './providers/registry'
@@ -76,11 +78,21 @@ export async function checkQr(imageBuffer: Uint8Array): Promise<CheckResult & { 
 }
 
 async function runCheck(target: CheckTarget, inputType: InputType): Promise<CheckResult> {
-  const signals = await executeProviders(target)
+  const providerSignals = await executeProviders(target)
+
+  // 🚨 ORDER — this is the whole of B01. The directory lookup used to happen HERE, on the line
+  // after `calculateRisk`, and its result went only to `getRecommendedActions`. So the system
+  // could print "Official website: https://vietcombank.com.vn" next to a score that had never
+  // been told the host was not Vietcombank. Classifying first, and folding the verdict in as a
+  // signal, is what puts the finding in front of the scorer instead of behind it.
+  const brandMatch = classifyBrand(target.hostname, await officialDirectory.getAll())
+  const impersonation = impersonationSignal(brandMatch)
+  const signals = impersonation ? [...providerSignals, impersonation] : providerSignals
+
   const risk = calculateRisk(signals)
   const evidence = buildEvidence(signals)
-  const directoryMatch = await officialDirectory.lookup(target.hostname)
-  const actions = getRecommendedActions(risk.level, evidence, directoryMatch)
+  const directoryMatch = brandMatch.entity
+  const actions = getRecommendedActions(risk.level, evidence, directoryMatch, risk.confidence)
 
   return {
     inputType,

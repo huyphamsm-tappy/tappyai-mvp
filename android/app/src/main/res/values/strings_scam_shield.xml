@@ -1,0 +1,39 @@
+<resources>
+    <string name="scam_shield_title">🛡️ Scam Shield</string>
+    <string name="scam_shield_subtitle">Paste a link and Tappy will check it against known scam sources before you open it.</string>
+    <string name="scam_shield_url_label">Link</string>
+    <string name="scam_shield_url_placeholder">example.com or https://…</string>
+    <string name="scam_shield_check">Check this link</string>
+    <string name="scam_shield_checking">Checking…</string>
+
+    <string name="scam_shield_level_safe">Looks safe</string>
+    <string name="scam_shield_level_low">Low risk</string>
+    <string name="scam_shield_level_medium">Be careful</string>
+    <string name="scam_shield_level_high">High risk</string>
+    <string name="scam_shield_level_critical">Do not open this</string>
+    <!--
+      Deliberately NOT worded like a mild pass. This is what the engine reports when too little of
+      its evidence base responded to stand behind a reassuring answer.
+    -->
+    <string name="scam_shield_level_inconclusive">Not enough evidence</string>
+
+    <string name="scam_shield_score">Risk score %1$d · confidence %2$d%%</string>
+    <string name="scam_shield_official_match">Official site of %1$s (%2$s)</string>
+    <string name="scam_shield_evidence">What we found</string>
+
+    <string name="scam_shield_unresolved_title">Couldn\'t check this link</string>
+    <string name="scam_shield_error_offline">No connection. This link has not been checked.</string>
+    <string name="scam_shield_error_timeout">The check took too long. This link has not been checked.</string>
+    <string name="scam_shield_error_generic">Something went wrong. This link has not been checked.</string>
+    <string name="scam_shield_error_rate_limit">Too many checks just now. Wait a moment and try again.</string>
+    <string name="scam_shield_error_daily_limit">You\'ve used all your checks for today.</string>
+    <string name="scam_shield_error_invalid_url">That doesn\'t look like a link. Check it and try again.</string>
+    <string name="scam_shield_error_private_url">That address is on a private network and can\'t be checked.</string>
+
+    <string name="scam_shield_disclaimer">Scam Shield helps you spot risky links, but it can\'t catch everything. Never send money or share codes based on a link alone.</string>
+
+    <!-- Home tile — mirrors the web (home.scamShieldTitle/Desc). The description says QR codes
+         because the web accepts them; the Android screen checks links only for now. -->
+    <string name="home_scam_shield_title">🛡️ Safety check</string>
+    <string name="home_scam_shield_desc">Check a link before you open it</string>
+</resources>

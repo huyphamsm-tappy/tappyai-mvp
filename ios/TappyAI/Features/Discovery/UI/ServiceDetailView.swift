@@ -124,15 +124,15 @@ struct ServiceDetailView: View {
     private var infoCard: some View {
         VStack(spacing: 0) {
             if !service.address.isEmpty {
-                infoRow(icon: "mappin", iconColor: .blue, label: "Địa chỉ", value: service.address, link: mapsURL)
+                infoRow(icon: "mappin", iconColor: .blue, label: NSLocalizedString("service.address", comment: ""), value: service.address, link: mapsURL)
                 Divider().padding(.leading, 52)
             }
             if !service.phone.isEmpty {
-                infoRow(icon: "phone.fill", iconColor: .green, label: "Điện thoại", value: service.phone, link: URL(string: "tel:\(service.phone)"))
+                infoRow(icon: "phone.fill", iconColor: .green, label: NSLocalizedString("service.phone", comment: ""), value: service.phone, link: URL(string: "tel:\(service.phone)"))
                 Divider().padding(.leading, 52)
             }
             if !service.hours.isEmpty {
-                infoRow(icon: "clock.fill", iconColor: .orange, label: "Giờ mở cửa", value: service.hours)
+                infoRow(icon: "clock.fill", iconColor: .orange, label: NSLocalizedString("service.openingHours", comment: ""), value: service.hours)
                 Divider().padding(.leading, 52)
             }
             if !service.price.isEmpty {
@@ -143,7 +143,7 @@ struct ServiceDetailView: View {
                         .background(Color.purple.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Mức giá")
+                        Text("service.priceLevel")
                             .font(TappyFont.caption)
                             .foregroundStyle(TappyColor.textSecondary)
                         Text(service.price)
@@ -221,7 +221,7 @@ struct ServiceDetailView: View {
 
     private var myBookingsCard: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Lịch đặt của bạn")
+            Text("service.yourBookings")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
             ForEach(bookings) { b in
@@ -262,7 +262,7 @@ struct ServiceDetailView: View {
     private var communityReviewsCard: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
             HStack {
-                Text("Đánh giá từ TappyAI")
+                Text("service.tappyReview")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(TappyColor.textPrimary)
                 Spacer()
@@ -317,7 +317,7 @@ struct ServiceDetailView: View {
         return Group {
             if !links.isEmpty {
                 VStack(alignment: .leading, spacing: Spacing.sm) {
-                    Text("Đặt qua nền tảng")
+                    Text("service.bookVia")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(TappyColor.textPrimary)
                     ForEach(links) { link in

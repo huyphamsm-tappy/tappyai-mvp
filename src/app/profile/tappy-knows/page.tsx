@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { RefreshCw, Trash2, Brain, MapPin, Users, Clock, Sparkles, UtensilsCrossed, Heart, X, Pencil, Check } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type Memory = {
   location_base: string | null
@@ -21,17 +22,22 @@ type Memory = {
   updated_at?: string
 }
 
-function fmtVND(n: number) {
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + ' triệu'
+// The million suffix is a word, not a symbol, so it has to come from the dictionary — hence the
+// parameter rather than a literal (B07).
+function fmtVND(n: number, million: string) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + million
   return (n / 1000).toFixed(0) + 'k'
 }
 
 function BudgetLabel({ range }: { range: { min: number; max: number } }) {
-  if (range.min > 0) return <>{fmtVND(range.min)}–{fmtVND(range.max)}</>
-  return <>dưới {fmtVND(range.max)}</>
+  const { t } = useTranslation()
+  const m = t('memory.million')
+  if (range.min > 0) return <>{fmtVND(range.min, m)}–{fmtVND(range.max, m)}</>
+  return <>{t('memory.under', { amount: fmtVND(range.max, m) })}</>
 }
 
 function TagList({ items, color = 'primary', editing, onRemove }: { items: string[]; color?: string; editing?: boolean; onRemove?: (i: number) => void }) {
+  const { t } = useTranslation()
   const colorMap: Record<string, string> = {
     primary: 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300',
     orange: 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300',
@@ -42,11 +48,11 @@ function TagList({ items, color = 'primary', editing, onRemove }: { items: strin
   }
   return (
     <div className="flex flex-wrap gap-1.5 mt-2">
-      {items.map((t, i) => (
+      {items.map((item, i) => (
         <span key={i} className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${colorMap[color] ?? colorMap.primary}`}>
-          {t}
+          {item}
           {editing && onRemove && (
-            <button type="button" onClick={() => onRemove(i)} aria-label={`Xóa ${t}`} className="hover:text-red-500 transition-colors">
+            <button type="button" onClick={() => onRemove(i)} aria-label={t('memory.removeItem', { item })} className="hover:text-red-500 transition-colors">
               <X size={11} />
             </button>
           )}
@@ -94,6 +100,7 @@ function countFacts(m: Memory) {
 // Response-style control (Personalization — MFS 2.6: tailors tone; lets the user
 // shape it). Stored in localStorage, sent with each chat request.
 function ResponseStyleCard() {
+  const { t } = useTranslation()
   const [style, setStyle] = useState<{ tone?: string; length?: string }>({})
   useEffect(() => {
     try { setStyle(JSON.parse(localStorage.getItem('tappy_response_style') || '{}')) } catch { /* ignore */ }
@@ -110,25 +117,26 @@ function ResponseStyleCard() {
     <div className="card p-4">
       <div className="flex items-center gap-2 mb-3">
         <Sparkles size={15} className="text-link" />
-        <span className="text-xs font-semibold text-content-secondary uppercase tracking-wide">Phong cách trả lời của Tappy</span>
+        <span className="text-xs font-semibold text-content-secondary uppercase tracking-wide">{t('memory.styleHeading')}</span>
       </div>
-      <p className="text-xs text-content-secondary mb-1.5">Giọng điệu</p>
+      <p className="text-xs text-content-secondary mb-1.5">{t('memory.tone')}</p>
       <div className="flex flex-wrap gap-2 mb-3">
-        <Pill active={style.tone === 'friendly'} onClick={() => update('tone', 'friendly')}>Thân mật</Pill>
-        <Pill active={style.tone === 'neutral'} onClick={() => update('tone', 'neutral')}>Trung lập</Pill>
-        <Pill active={style.tone === 'formal'} onClick={() => update('tone', 'formal')}>Lịch sự</Pill>
+        <Pill active={style.tone === 'friendly'} onClick={() => update('tone', 'friendly')}>{t('memory.tone.friendly')}</Pill>
+        <Pill active={style.tone === 'neutral'} onClick={() => update('tone', 'neutral')}>{t('memory.tone.neutral')}</Pill>
+        <Pill active={style.tone === 'formal'} onClick={() => update('tone', 'formal')}>{t('memory.tone.formal')}</Pill>
       </div>
-      <p className="text-xs text-content-secondary mb-1.5">Độ dài</p>
+      <p className="text-xs text-content-secondary mb-1.5">{t('memory.length')}</p>
       <div className="flex flex-wrap gap-2">
-        <Pill active={style.length === 'short'} onClick={() => update('length', 'short')}>Ngắn gọn</Pill>
-        <Pill active={style.length === 'detailed'} onClick={() => update('length', 'detailed')}>Đầy đủ</Pill>
+        <Pill active={style.length === 'short'} onClick={() => update('length', 'short')}>{t('memory.length.short')}</Pill>
+        <Pill active={style.length === 'detailed'} onClick={() => update('length', 'detailed')}>{t('memory.length.detailed')}</Pill>
       </div>
-      <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-3">Bỏ chọn tất cả = để Tappy tự điều chỉnh theo cách bạn nhắn.</p>
+      <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-3">{t('memory.styleHint')}</p>
     </div>
   )
 }
 
 export default function TappyKnowsPage() {
+  const { t, locale } = useTranslation()
   const [memory, setMemory] = useState<Memory | null>(null)
   const [loading, setLoading] = useState(true)
   const [clearing, setClearing] = useState(false)
@@ -218,15 +226,15 @@ export default function TappyKnowsPage() {
             ←
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">🧠 Tappy biết gì về bạn</h1>
-            <p className="text-sm text-content-secondary">Tappy học từ mỗi cuộc trò chuyện để phục vụ bạn tốt hơn</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('memory.title')}</h1>
+            <p className="text-sm text-content-secondary">{t('memory.subtitle')}</p>
           </div>
           {memory && !cleared && (
             <button
               onClick={() => setEditing(e => !e)}
               className={`ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${editing ? 'bg-interactive text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
             >
-              {editing ? <><Check size={14} /> Xong</> : <><Pencil size={14} /> Chỉnh sửa</>}
+              {editing ? <><Check size={14} /> {t('memory.done')}</> : <><Pencil size={14} /> {t('memory.edit')}</>}
             </button>
           )}
           <button
@@ -248,14 +256,14 @@ export default function TappyKnowsPage() {
           <div className="text-center py-16 text-gray-400 dark:text-gray-600">
             <Brain size={44} className="mx-auto mb-3 opacity-40" />
             <p className="font-semibold text-content-secondary">
-              {cleared ? 'Đã xóa bộ nhớ' : 'Tappy chưa nhớ gì về bạn'}
+              {cleared ? t('memory.cleared') : t('memory.empty')}
             </p>
-            <p className="text-sm mt-1">Chat với Tappy để Tappy bắt đầu học về bạn</p>
+            <p className="text-sm mt-1">{t('memory.emptyHint')}</p>
             <Link
               href="/"
               className="inline-flex mt-4 px-4 py-2 bg-interactive hover:bg-interactive-hover text-white rounded-xl text-sm font-semibold transition-colors"
             >
-              Bắt đầu chat
+              {t('memory.startChat')}
             </Link>
           </div>
         ) : (
@@ -268,11 +276,11 @@ export default function TappyKnowsPage() {
                   <Brain size={24} />
                 </div>
                 <div>
-                  <p className="font-bold text-lg">{factCount} điều Tappy nhớ về bạn</p>
+                  <p className="font-bold text-lg">{t('memory.factCount', { count: String(factCount) })}</p>
                   <p className="text-sm opacity-80">
                     {memory.updated_at
-                      ? `Cập nhật ${new Date(memory.updated_at).toLocaleDateString('vi-VN')}`
-                      : 'Cập nhật tự động sau mỗi cuộc chat'}
+                      ? t('memory.updatedOn', { date: new Date(memory.updated_at).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-GB') })
+                      : t('memory.updatedAuto')}
                   </p>
                 </div>
               </div>
@@ -280,10 +288,10 @@ export default function TappyKnowsPage() {
 
             {/* Location */}
             {memory.location_base && (
-              <MemoryCard icon={MapPin} label="Khu vực" iconColor="text-blue-500">
+              <MemoryCard icon={MapPin} label={t('memory.card.area')} iconColor="text-blue-500">
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-semibold text-gray-900 dark:text-white">{memory.location_base}</p>
-                  {editing && <RemoveBtn onClick={() => removeField('location_base')} label="Xóa khu vực" />}
+                  {editing && <RemoveBtn onClick={() => removeField('location_base')} label={t('memory.removeArea')} />}
                 </div>
               </MemoryCard>
             )}
@@ -292,18 +300,18 @@ export default function TappyKnowsPage() {
             {(memory.companions || memory.timing) && (
               <div className="grid grid-cols-2 gap-3">
                 {memory.companions && (
-                  <MemoryCard icon={Users} label="Hay đi với" iconColor="text-purple-500">
+                  <MemoryCard icon={Users} label={t('memory.card.companions')} iconColor="text-purple-500">
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{memory.companions}</p>
-                      {editing && <RemoveBtn onClick={() => removeField('companions')} label="Xóa" />}
+                      {editing && <RemoveBtn onClick={() => removeField('companions')} label={t('memory.remove')} />}
                     </div>
                   </MemoryCard>
                 )}
                 {memory.timing && (
-                  <MemoryCard icon={Clock} label="Thời gian hay đi" iconColor="text-amber-500">
+                  <MemoryCard icon={Clock} label={t('memory.card.timing')} iconColor="text-amber-500">
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{memory.timing}</p>
-                      {editing && <RemoveBtn onClick={() => removeField('timing')} label="Xóa" />}
+                      {editing && <RemoveBtn onClick={() => removeField('timing')} label={t('memory.remove')} />}
                     </div>
                   </MemoryCard>
                 )}
@@ -312,24 +320,24 @@ export default function TappyKnowsPage() {
 
             {/* Personality */}
             {memory.personality && (
-              <MemoryCard icon={Sparkles} label="Phong cách" iconColor="text-pink-500">
+              <MemoryCard icon={Sparkles} label={t('memory.card.personality')} iconColor="text-pink-500">
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{memory.personality}</p>
-                  {editing && <RemoveBtn onClick={() => removeField('personality')} label="Xóa phong cách" />}
+                  {editing && <RemoveBtn onClick={() => removeField('personality')} label={t('memory.removePersonality')} />}
                 </div>
               </MemoryCard>
             )}
 
             {/* Food preferences */}
             {prefs.food && prefs.food.length > 0 && (
-              <MemoryCard icon={UtensilsCrossed} label="Ẩm thực yêu thích" iconColor="text-orange-500">
+              <MemoryCard icon={UtensilsCrossed} label={t('memory.card.food')} iconColor="text-orange-500">
                 <TagList items={prefs.food} color="orange" editing={editing} onRemove={(i) => removeTag('food', i)} />
               </MemoryCard>
             )}
 
             {/* Spa + Entertainment */}
             {(prefs.spa?.length || prefs.entertainment?.length) ? (
-              <MemoryCard icon={Heart} label="Giải trí & Thư giãn" iconColor="text-pink-500">
+              <MemoryCard icon={Heart} label={t('memory.card.entertainment')} iconColor="text-pink-500">
                 {prefs.spa && prefs.spa.length > 0 && (
                   <div className="mb-1">
                     <span className="text-xs text-gray-400 dark:text-gray-500">Spa</span>
@@ -338,7 +346,7 @@ export default function TappyKnowsPage() {
                 )}
                 {prefs.entertainment && prefs.entertainment.length > 0 && (
                   <div>
-                    <span className="text-xs text-gray-400 dark:text-gray-500">Giải trí</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">{t('memory.card.leisure')}</span>
                     <TagList items={prefs.entertainment} color="blue" editing={editing} onRemove={(i) => removeTag('entertainment', i)} />
                   </div>
                 )}
@@ -347,21 +355,21 @@ export default function TappyKnowsPage() {
 
             {/* Shopping */}
             {prefs.shopping && prefs.shopping.length > 0 && (
-              <MemoryCard icon={Sparkles} label="Mua sắm" iconColor="text-green-500">
+              <MemoryCard icon={Sparkles} label={t('memory.card.shopping')} iconColor="text-green-500">
                 <TagList items={prefs.shopping} color="green" editing={editing} onRemove={(i) => removeTag('shopping', i)} />
               </MemoryCard>
             )}
 
             {/* Avoid */}
             {prefs.avoid && prefs.avoid.length > 0 && (
-              <MemoryCard icon={UtensilsCrossed} label="Không thích / Kiêng" iconColor="text-red-400">
+              <MemoryCard icon={UtensilsCrossed} label={t('memory.card.avoid')} iconColor="text-red-400">
                 <TagList items={prefs.avoid} color="red" editing={editing} onRemove={(i) => removeTag('avoid', i)} />
               </MemoryCard>
             )}
 
             {/* Budget */}
             {budgetEntries.length > 0 && (
-              <MemoryCard icon={Sparkles} label="Ngân sách thường dùng" iconColor="text-green-500">
+              <MemoryCard icon={Sparkles} label={t('memory.card.budget')} iconColor="text-green-500">
                 <div className="mt-2 space-y-1.5">
                   {budgetEntries.map(([cat, range]) => (
                     <div key={cat} className="flex items-center justify-between">
@@ -370,7 +378,7 @@ export default function TappyKnowsPage() {
                         <span className="text-sm font-semibold text-gray-900 dark:text-white">
                           <BudgetLabel range={range} />
                         </span>
-                        {editing && <RemoveBtn onClick={() => removeBudget(cat)} label={`Xóa ngân sách ${cat}`} />}
+                        {editing && <RemoveBtn onClick={() => removeBudget(cat)} label={t('memory.removeBudget', { category: cat })} />}
                       </div>
                     </div>
                   ))}
@@ -382,7 +390,7 @@ export default function TappyKnowsPage() {
             {memory.history && memory.history.length > 0 && (
               <div className="card p-4">
                 <p className="text-xs font-semibold text-content-secondary uppercase tracking-wide mb-2">
-                  Chủ đề hay hỏi Tappy
+                  {t('memory.topics')}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {memory.history.slice(-8).reverse().map((h, i) => (
@@ -392,7 +400,7 @@ export default function TappyKnowsPage() {
                     >
                       {h}
                       {editing && (
-                        <button type="button" onClick={() => removeHistory(h)} aria-label={`Xóa ${h}`} className="hover:text-red-500 transition-colors">
+                        <button type="button" onClick={() => removeHistory(h)} aria-label={t('memory.removeItem', { item: h })} className="hover:text-red-500 transition-colors">
                           <X size={11} />
                         </button>
                       )}
@@ -404,9 +412,9 @@ export default function TappyKnowsPage() {
 
             {/* Clear memory */}
             <div className="card p-4 border border-red-100 dark:border-red-900/30">
-              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Xóa bộ nhớ</p>
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">{t('memory.clear')}</p>
               <p className="text-xs text-content-secondary mb-3">
-                Tappy sẽ quên tất cả và bắt đầu lại từ đầu với bạn.
+                {t('memory.clearWarning')}
               </p>
               {confirmClear ? (
                 <div className="flex gap-2">
@@ -416,13 +424,13 @@ export default function TappyKnowsPage() {
                     className="flex-1 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5"
                   >
                     {clearing ? <RefreshCw size={13} className="animate-spin" /> : <Trash2 size={13} />}
-                    Xác nhận xóa
+                    {t('memory.confirmClear')}
                   </button>
                   <button
                     onClick={() => setConfirmClear(false)}
                     className="flex-1 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-sm font-semibold text-gray-600 dark:text-gray-300 transition-colors"
                   >
-                    Hủy
+                    {t('memory.cancel')}
                   </button>
                 </div>
               ) : (
@@ -431,7 +439,7 @@ export default function TappyKnowsPage() {
                   className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-red-200 dark:border-red-800 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium transition-colors"
                 >
                   <Trash2 size={13} />
-                  Xóa bộ nhớ của Tappy
+                  {t('memory.clearButton')}
                 </button>
               )}
             </div>

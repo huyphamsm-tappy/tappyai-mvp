@@ -39,22 +39,22 @@ struct ChatInputBar: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: Spacing.xs) {
                         actionChip(
-                            label: locale == "en" ? "📍 Nearby" : "📍 Tìm quanh đây",
+                            label: NSLocalizedString("chat.chip.nearby", comment: ""),
                             color: TappyColor.primary,
                             action: onNearby
                         )
                         actionChip(
-                            label: locale == "en" ? "🌙 Tappy Tonight" : "🌙 Tappy Tối Nay",
+                            label: NSLocalizedString("chat.chip.tonight", comment: ""),
                             color: TappyColor.secondary,
                             action: onTonight
                         )
                         actionChip(
-                            label: locale == "en" ? "✈️ Plan a trip" : "✈️ Lên kế hoạch trip",
+                            label: NSLocalizedString("chat.chip.planTrip", comment: ""),
                             color: Color.blue,
                             action: onTripPrefill
                         )
                         actionChip(
-                            label: locale == "en" ? "🎯 Price watch" : "🎯 Theo dõi giá",
+                            label: NSLocalizedString("chat.chip.priceWatch", comment: ""),
                             color: Color.green,
                             action: onPriceWatchPrefill
                         )
@@ -68,7 +68,7 @@ struct ChatInputBar: View {
                         Circle()
                             .fill(Color.orange)
                             .frame(width: 6, height: 6)
-                        Text("Đang nghe… nói xong Tappy tự gửi (bạn có 2 giây để sửa trước).")
+                        Text("chat.voice.listening")
                             .font(.system(size: 11))
                             .foregroundStyle(Color.orange)
                     }
@@ -81,7 +81,7 @@ struct ChatInputBar: View {
                             Circle()
                                 .fill(Color.orange)
                                 .frame(width: 6, height: 6)
-                            Text("Đang gửi trong giây lát… chạm để sửa trước khi gửi.")
+                            Text("chat.voice.sendingSoon")
                                 .font(.system(size: 11))
                                 .foregroundStyle(Color.orange)
                         }
@@ -100,7 +100,7 @@ struct ChatInputBar: View {
                 // Input row
                 HStack(alignment: .bottom, spacing: Spacing.xs) {
                     // Text input
-                    TextField(locale == "en" ? "Message TappyAI..." : "Nhắn tin với TappyAI...", text: $text, axis: .vertical)
+                    TextField("chat.input.placeholder", text: $text, axis: .vertical)
                         .font(TappyFont.body)
                         .foregroundStyle(TappyColor.textPrimary)
                         .lineLimit(1...6)
@@ -160,7 +160,7 @@ struct ChatInputBar: View {
                                 .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel(Text("Dừng"))
+                        .accessibilityLabel(Text("chat.stop"))
                     } else {
                         Button(action: onSend) {
                             Image(systemName: "paperplane.fill")
@@ -172,7 +172,7 @@ struct ChatInputBar: View {
                         }
                         .buttonStyle(.plain)
                         .disabled(!canSend)
-                        .accessibilityLabel(Text("Gửi"))
+                        .accessibilityLabel(Text("chat.send"))
                     }
                 }
                 .padding(.horizontal, Spacing.md)
@@ -191,7 +191,7 @@ struct ChatInputBar: View {
 
     private var emojiGrid: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text("Chọn biểu cảm")
+            Text("chat.pickEmoji")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
                 .textCase(.uppercase)

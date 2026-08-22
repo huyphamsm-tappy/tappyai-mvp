@@ -7,6 +7,7 @@ enum HomeDestination: Hashable {
     case currency
     case translate
     case scan
+    case scamShield
     case vietContent
     case splitBill
     case fortune

@@ -29,6 +29,8 @@
     <string name="reviews_composer_placeholder_link">Dán link</string>
     <string name="reviews_composer_body_placeholder">Chia sẻ trải nghiệm...</string>
     <string name="reviews_composer_posted_toast">Đã đăng bài</string>
+    <string name="reviews_moderation_acknowledge">Đã hiểu</string>
+    <string name="reviews_moderation_not_public">Chưa công khai</string>
     <string name="reviews_composer_using_sound">Đang dùng: %1$s</string>
     <string name="reviews_composer_remove_sound">Bỏ âm thanh</string>
     <string name="reviews_composer_add_music">Thêm nhạc</string>

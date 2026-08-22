@@ -34,7 +34,7 @@ struct PriceWatchesView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("🎯 Theo dõi giá")
+        .navigationTitle(NSLocalizedString("pricewatch.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -52,7 +52,7 @@ struct PriceWatchesView: View {
     // MARK: - Header
 
     private var headerInfo: some View {
-        Text("Tappy báo bạn khi giá xuống mức mong muốn")
+        Text(NSLocalizedString("pricewatch.subtitle", comment: ""))
             .font(.system(size: 13))
             .foregroundStyle(TappyColor.textSecondary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -62,10 +62,16 @@ struct PriceWatchesView: View {
 
     private var howToAdd: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text("💬 Cách thêm sản phẩm")
+            Text(NSLocalizedString("pricewatch.howTo", comment: ""))
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(TappyColor.primary)
-            Text("Nhắn Tappy: "Tappy theo dõi AirPods Pro, báo mình khi dưới 2 triệu"")
+            // 🚨 This line did not compile. It was written with UNESCAPED inner quotes —
+            // `Text("Nhắn Tappy: "Tappy theo dõi …"")` — so Swift closed the string at the second
+            // quote and read the rest as identifiers. Pre-existing at HEAD, not introduced by the
+            // localization work; found because B03 had to touch every user-facing string in the
+            // file. Moving the whole sentence into the catalogue removes the nesting problem
+            // rather than just escaping around it.
+            Text(NSLocalizedString("pricewatch.example", comment: ""))
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.primary.opacity(0.8))
 
@@ -75,7 +81,7 @@ struct PriceWatchesView: View {
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "bag").font(.system(size: 10))
-                    Text("Nhắn Tappy ngay")
+                    Text(NSLocalizedString("pricewatch.messageTappy", comment: ""))
                         .font(.system(size: 11, weight: .semibold))
                 }
                 .foregroundStyle(TappyColor.primary)
@@ -100,10 +106,10 @@ struct PriceWatchesView: View {
             Image(systemName: "arrow.down.right")
                 .font(.system(size: 36))
                 .foregroundStyle(TappyColor.textSecondary.opacity(0.4))
-            Text("Chưa theo dõi sản phẩm nào")
+            Text(NSLocalizedString("pricewatch.empty", comment: ""))
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(TappyColor.textSecondary)
-            Text("Nhắn Tappy để thêm sản phẩm đầu tiên")
+            Text(NSLocalizedString("pricewatch.emptyHint", comment: ""))
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -174,7 +180,7 @@ struct PriceWatchesView: View {
                     }
                 } else {
                     HStack(spacing: 4) {
-                        Text("Mục tiêu:")
+                        Text(NSLocalizedString("pricewatch.target", comment: ""))
                             .font(.system(size: 11))
                             .foregroundStyle(TappyColor.textSecondary)
                         Text(fmtVND(w.targetPrice))
@@ -191,7 +197,7 @@ struct PriceWatchesView: View {
                             .font(.system(size: 10))
                             .foregroundStyle(TappyColor.textSecondary)
                     } else {
-                        Text("Tappy sẽ kiểm tra giá trong vài giờ tới ⏳")
+                        Text(NSLocalizedString("pricewatch.checkingSoon", comment: ""))
                             .font(.system(size: 10))
                             .foregroundStyle(TappyColor.textSecondary)
                     }

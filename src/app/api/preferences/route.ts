@@ -1,10 +1,12 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export async function GET(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const { data } = await supabase
       .from('user_preferences')
@@ -23,17 +25,17 @@ export async function GET(req: Request) {
       } : null,
     })
   } catch {
-    return NextResponse.json({ error: 'Lỗi server' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }
 
 export async function POST(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const { preferences } = await req.json()
-    if (!Array.isArray(preferences)) return NextResponse.json({ error: 'Invalid data' }, { status: 400 })
+    if (!Array.isArray(preferences)) return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
 
     const limited = preferences
       .filter((p: unknown) => typeof p === 'string' && (p as string).trim().length > 0)
@@ -48,19 +50,19 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('Preferences POST error:', error)
-      return NextResponse.json({ error: 'Không thể lưu sở thích' }, { status: 500 })
+      return NextResponse.json({ error: 'save_failed', message: serverMessage('preferences.saveFailed', requestLocale(req)) }, { status: 500 })
     }
 
     return NextResponse.json({ ok: true })
   } catch {
-    return NextResponse.json({ error: 'Lỗi server' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }
 
 export async function PUT(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const { budget_level, cuisine_likes, dietary_restrictions } = await req.json()
 
@@ -79,11 +81,11 @@ export async function PUT(req: Request) {
 
     if (error) {
       console.error('Preferences upsert error:', error)
-      return NextResponse.json({ error: 'Không thể lưu sở thích' }, { status: 500 })
+      return NextResponse.json({ error: 'save_failed', message: serverMessage('preferences.saveFailed', requestLocale(req)) }, { status: 500 })
     }
 
     return NextResponse.json({ ok: true })
   } catch {
-    return NextResponse.json({ error: 'Lỗi server' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }

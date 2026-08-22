@@ -4,6 +4,10 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
+import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
@@ -72,7 +76,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const limit = Math.min(50, parseInt(req.nextUrl.searchParams.get('limit') || '30'))
+  const limit = Math.min(50, parseInt(searchParam(req, 'limit') || '30'))
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -83,7 +87,7 @@ export async function GET(
     .order('created_at', { ascending: true })
     .limit(limit)
 
-  if (error) return NextResponse.json({ error: 'Loi tai binh luan' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'load_failed', message: serverMessage('comment.loadFailed', requestLocale(req)) }, { status: 500 })
 
   const withProfiles = await attachProfiles(supabase, data || [])
   const [comments, count] = await Promise.all([
@@ -99,12 +103,15 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   // Burst cap: each comment inserts a row AND fires a push to the review owner,
   // so an uncapped POST is a spam vector against that owner.
   if (!rateLimit(`comment:${user.id}`, 10, 60_000).ok) {
-    return NextResponse.json({ error: 'Ban binh luan qua nhanh, thu lai sau giay lat.' }, { status: 429 })
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('comment.tooFast', requestLocale(req)) }, { status: 429 })
   }
 
   // Module 08 §4 — a suspended account cannot comment.
@@ -126,7 +133,7 @@ export async function POST(
     parentId = typeof b.parentId === 'string' && b.parentId.trim() ? b.parentId.trim() : null
     if (!body || body.length < 1 || body.length > 300) throw new Error('invalid')
   } catch {
-    return NextResponse.json({ error: 'Binh luan phai tu 1-300 ky tu' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_length', message: serverMessage('comment.length', requestLocale(req)) }, { status: 400 })
   }
 
   const { data: insertedComment, error } = await supabase
@@ -135,7 +142,7 @@ export async function POST(
     .select('id, body, created_at, user_id, parent_comment_id')
     .single()
 
-  if (error) return NextResponse.json({ error: 'Khong the gui binh luan' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'comment_failed', message: serverMessage('comment.postFailed', requestLocale(req)) }, { status: 500 })
 
   const [withProfile] = await attachProfiles(supabase, [insertedComment])
   const comment = { ...withProfile, reactions: {} as Record<string, number>, my_reaction: null as string | null }
@@ -170,11 +177,14 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const commentId = req.nextUrl.searchParams.get('commentId')
-  if (!commentId) return NextResponse.json({ error: 'commentId required' }, { status: 400 })
+  const commentId = searchParam(req, 'commentId')
+  if (!commentId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   const { error } = await supabase
     .from('review_comments')
@@ -182,7 +192,7 @@ export async function DELETE(
     .eq('id', commentId)
     .eq('user_id', user.id)
 
-  if (error) return NextResponse.json({ error: 'Khong the xoa' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'delete_failed', message: serverMessage('server.deleteFailed', requestLocale(req)) }, { status: 500 })
 
   const count = await getRealCommentCount(supabase, params.id)
   return NextResponse.json({ ok: true, count })

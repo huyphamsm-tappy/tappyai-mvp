@@ -72,14 +72,18 @@ export async function decidePublication(
       reason: `gate ${result.gate.decision}, safety ${result.state}`,
     };
   } catch {
+    // An evaluation that failed establishes nothing, and under the MVP contract
+    // "we could not check this" resolves to RESTRICTED rather than parking. The
+    // post is not deleted and stays visible to its author, who is told the check
+    // could not be completed — never that they violated anything.
     return {
       columns: {
-        publication_state: 'UNDER_REVIEW',
+        publication_state: 'RESTRICTED',
         safety_state: 'ENGINE_ERROR',
         evaluated_version: safetyContentVersion(subject),
         evaluated_at: now,
       },
-      reason: 'evaluation failed — held, not restricted',
+      reason: 'evaluation failed — not published, and not an accusation',
     };
   }
 }

@@ -26,10 +26,10 @@ struct ReviewCommentSheet: View {
                         Image(systemName: "bubble.left.and.bubble.right")
                             .font(.system(size: 40))
                             .foregroundStyle(TappyColor.textSecondary)
-                        Text("Chưa có bình luận")
+                        Text("review.comments.empty")
                             .font(TappyFont.headline)
                             .foregroundStyle(TappyColor.textPrimary)
-                        Text("Hãy là người đầu tiên bình luận!")
+                        Text(NSLocalizedString("review.comments.beFirst", comment: ""))
                             .font(TappyFont.callout)
                             .foregroundStyle(TappyColor.textSecondary)
                     }
@@ -61,7 +61,7 @@ struct ReviewCommentSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Đóng", action: onDismiss)
+                    Button(NSLocalizedString("common.close", comment: ""), action: onDismiss)
                 }
             }
         }
@@ -102,7 +102,7 @@ struct ReviewCommentSheet: View {
 
     private var commentInput: some View {
         HStack(spacing: Spacing.sm) {
-            TextField("Viết bình luận...", text: $text, axis: .vertical)
+            TextField(NSLocalizedString("review.comments.placeholder", comment: ""), text: $text, axis: .vertical)
                 .font(TappyFont.callout)
                 .lineLimit(1...3)
                 .textFieldStyle(.plain)
@@ -175,7 +175,7 @@ func ago(_ iso: String) -> String {
     guard let date = formatter.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return "" }
     let seconds = Int(Date().timeIntervalSince(date))
 
-    if seconds < 60 { return "vừa xong" }
+    if seconds < 60 { return NSLocalizedString("common.justNow", comment: "") }
     let minutes = seconds / 60
     if minutes < 60 { return "\(minutes)p" }
     let hours = minutes / 60

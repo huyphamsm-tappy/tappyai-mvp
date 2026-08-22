@@ -28,6 +28,22 @@ import javax.inject.Inject
 /** One-shot outcome of a submit, delivered once to the screen (Toast + navigate on success). */
 sealed interface ComposerEvent {
     data object Posted : ComposerEvent
+
+    /**
+     * The row was stored but the safety gate did not publish it.
+     *
+     * 🚨 A THIRD OUTCOME, not a flavour of [Posted] and not a flavour of [Failed]. Nothing went
+     * wrong — the request succeeded, the post exists, it belongs to the author and it is in their
+     * profile — but it is not public, and saying "posted!" would be a lie the author only
+     * discovers by noticing their video never appears. Nor is it a failure: telling someone their
+     * upload failed when it did not is equally untrue, and would invite them to post it again.
+     *
+     * [title] and [detail] are the server's own words, already in the request language. They are
+     * rendered verbatim; see [com.tappyai.app.reviews.data.ReviewModeration] for why there is no
+     * string resource for them here.
+     */
+    data class Held(val title: String, val detail: String, val assertsViolation: Boolean) : ComposerEvent
+
     data class Failed(val message: String) : ComposerEvent
 }
 
@@ -136,7 +152,28 @@ class ReviewComposerViewModel @Inject constructor(
             )
             _uiState.update { it.copy(isPosting = false) }
             when (result) {
-                is NetworkResult.Success -> _events.send(ComposerEvent.Posted)
+                is NetworkResult.Success -> {
+                    // The SERVER decides whether this was published. Saving the row is not the
+                    // same as publishing it, and reporting success for content the gate has just
+                    // refused is the one thing this screen must never do — the web composer's
+                    // comment says the same, and this is the half that was missing.
+                    //
+                    // 🔑 This renders the server's outcome; it does not compute one. There is no
+                    // second moderation engine in the client. A null moderation means the gate is
+                    // inactive, which must behave exactly as it did before the gate existed.
+                    val moderation = result.data
+                    if (moderation != null && !moderation.state.isPublished) {
+                        _events.send(
+                            ComposerEvent.Held(
+                                title = moderation.title,
+                                detail = moderation.detail,
+                                assertsViolation = moderation.assertsViolation,
+                            ),
+                        )
+                    } else {
+                        _events.send(ComposerEvent.Posted)
+                    }
+                }
                 is NetworkResult.Error -> {
                     logger.e(TAG, "Create review failed: ${result.error}")
                     _events.send(ComposerEvent.Failed(reviewErrorMessages.toPostFailureMessage(result.error)))

@@ -35,6 +35,9 @@ const USAGE_ACL = readFileSync(
   join(REPO, 'supabase/migrations/20260808_anon_chat_usage_acl_hardening.sql'), 'utf8')
 const CLAIM = readFileSync(
   join(REPO, 'supabase/migrations/20260808b_anon_claim_conversations.sql'), 'utf8')
+/** The read-only sibling that lets the paywall quote the number enforcement uses. */
+const USAGE_READ = readFileSync(
+  join(REPO, 'supabase/migrations/20260821_anon_chat_usage_read.sql'), 'utf8')
 
 const PRELUDE = `
   DO $$ BEGIN
@@ -132,6 +135,7 @@ beforeEach(async () => {
   await db.query(PRELUDE)
   await db.query(USAGE)
   await db.query(USAGE_ACL)
+  await db.query(USAGE_READ)
   await db.query(CLAIM)
   await asSession(null, false)
 })
@@ -208,6 +212,120 @@ describe('A. anon_chat_usage_increment', () => {
         AND a.privilege_type='EXECUTE'
         AND (a.grantee = 0 OR a.grantee::regrole::text = 'anon')`)
     expect(rows).toEqual([])
+  })
+})
+
+// ═══════════════ A2. anon_chat_usage_today — the DISPLAY side of the same quota ═══════════════
+//
+// The anonymous quota used to have two authorities: `/api/chat` enforced it from this table, and
+// `/api/subscription` DISPLAYED it from a count of `conversations` rows. Those count different
+// things — attempts versus turns that landed — so the paywall could say "3 remaining" above a chat
+// box answering 401. This function is what lets the display read the enforced number.
+//
+// 🚨 Everything below runs against real PostgreSQL with the real migration files, in production
+// order, so these are properties of the FUNCTION and not of a description of it.
+
+describe('A2. anon_chat_usage_today', () => {
+  it('rejects a request with no session', async () => {
+    await asSession(null, false)
+    await expect(db.query('SELECT public.anon_chat_usage_today()')).rejects.toThrow(/not authenticated/i)
+  })
+
+  it('rejects a real (non-anonymous) account', async () => {
+    // Returning 0 for a logged-in user would invite a caller to read it as "no quota used" and
+    // show a guest allowance on an account that has a different one entirely.
+    await asSession(ACCOUNT, false)
+    await expect(db.query('SELECT public.anon_chat_usage_today()')).rejects.toThrow(/not an anonymous session/i)
+  })
+
+  it('reads 0 before anything has been spent', async () => {
+    await asSession(ANON_A, true)
+    const { rows } = await db.query('SELECT public.anon_chat_usage_today() AS n')
+    expect(rows[0].n).toBe(0)
+  })
+
+  it('🚨 returns exactly what the ENFORCING function last returned', async () => {
+    // The whole point. If these two ever disagree, the number on the paywall is not the number
+    // that stops the user.
+    await asSession(ANON_A, true)
+    for (let i = 1; i <= ANON_DAILY_LIMIT; i++) {
+      const { rows: inc } = await db.query('SELECT public.anon_chat_usage_increment() AS n')
+      const { rows: read } = await db.query('SELECT public.anon_chat_usage_today() AS n')
+      expect(read[0].n, `after increment #${i}`).toBe(inc[0].n)
+    }
+  })
+
+  it('🚨 reading does NOT consume quota', async () => {
+    // If this function could increment, rendering the paywall would spend the allowance it is
+    // describing — and a user who merely opened the subscription screen would lose a message.
+    await asSession(ANON_A, true)
+    await db.query('SELECT public.anon_chat_usage_increment()')
+    for (let i = 0; i < 10; i++) await db.query('SELECT public.anon_chat_usage_today()')
+    const { rows } = await db.query('SELECT public.anon_chat_usage_today() AS n')
+    expect(rows[0].n).toBe(1)
+  })
+
+  it('is declared STABLE, so the database itself refuses a write in it', async () => {
+    const { rows } = await db.query(
+      `SELECT provolatile FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+        WHERE n.nspname='public' AND p.proname='anon_chat_usage_today'`)
+    expect(rows[0].provolatile).toBe('s')
+  })
+
+  it('counts per identity — one guest cannot read another\'s usage', async () => {
+    await asSession(ANON_A, true)
+    await db.query('SELECT public.anon_chat_usage_increment()')
+    await db.query('SELECT public.anon_chat_usage_increment()')
+    await asSession(ANON_B, true)
+    const { rows } = await db.query('SELECT public.anon_chat_usage_today() AS n')
+    expect(rows[0].n).toBe(0)
+  })
+
+  it('is scoped to TODAY — yesterday\'s usage does not count against today', async () => {
+    await asSession(ANON_A, true)
+    await db.query('RESET ROLE')
+    await db.query(
+      `INSERT INTO public.anon_chat_usage (user_id, day, count)
+       VALUES ($1, ((now() AT TIME ZONE 'Asia/Ho_Chi_Minh')::date - 1), 5)`, [ANON_A])
+    const { rows } = await db.query('SELECT public.anon_chat_usage_today() AS n')
+    expect(rows[0].n).toBe(0)
+  })
+
+  it('uses the SAME day boundary as the increment function', async () => {
+    // A different timezone here would reset the DISPLAYED count hours before or after the
+    // ENFORCED one — the same divergence, wearing a clock.
+    const { rows } = await db.query(
+      `SELECT p.proname, p.prosrc FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+        WHERE n.nspname='public' AND p.proname IN ('anon_chat_usage_today','anon_chat_usage_increment')`)
+    expect(rows).toHaveLength(2)
+    for (const r of rows) {
+      expect(r.prosrc, `${r.proname} uses a different day boundary`).toContain("AT TIME ZONE 'Asia/Ho_Chi_Minh'")
+    }
+  })
+
+  it('ACL: anon is denied, authenticated is allowed', async () => {
+    expect(await asRole('anon', 'SELECT public.anon_chat_usage_today()')).toBe('42501')
+    expect(await asRole('authenticated', 'SELECT public.anon_chat_usage_today()')).not.toBe('42501')
+  })
+
+  it('ACL: no anon/PUBLIC grant survives, despite the project\'s default privileges', async () => {
+    // 🚨 The PRELUDE applies this project's real ALTER DEFAULT PRIVILEGES, which grants EXECUTE on
+    // every NEW function in `public` to anon. A bare REVOKE ... FROM PUBLIC does not remove it —
+    // that is the F-04 / BL-C7-01 defect. This asserts the explicit `anon` revoke took.
+    const { rows } = await db.query(`
+      SELECT CASE WHEN a.grantee = 0 THEN 'PUBLIC' ELSE a.grantee::regrole::text END AS grantee
+      FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+      CROSS JOIN LATERAL aclexplode(COALESCE(p.proacl, acldefault('f', p.proowner))) a
+      WHERE n.nspname='public' AND p.proname='anon_chat_usage_today'
+        AND a.privilege_type='EXECUTE'
+        AND (a.grantee = 0 OR a.grantee::regrole::text = 'anon')`)
+    expect(rows).toEqual([])
+  })
+
+  it('the usage table stays unreachable — the function is the only way in', async () => {
+    await asSession(ANON_A, true)
+    await db.query('SELECT public.anon_chat_usage_increment()')
+    expect(await asRole('authenticated', 'SELECT * FROM public.anon_chat_usage')).not.toBeNull()
   })
 })
 

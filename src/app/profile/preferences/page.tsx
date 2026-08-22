@@ -6,35 +6,53 @@ import { createClient } from '@/lib/supabase/client'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Check, Save, Loader2, X, Plus } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const BUDGET_OPTIONS = [
-  { value: 'cheap', label: 'Tiết kiệm', desc: 'Dưới 150k/người', emoji: '💚' },
-  { value: 'mid',   label: 'Trung bình', desc: '150k–500k/người', emoji: '💛' },
-  { value: 'high',  label: 'Cao cấp',   desc: '500k+/người',      emoji: '❤️' },
+  { value: 'cheap', emoji: '💚' },
+  { value: 'mid',   emoji: '💛' },
+  { value: 'high',  emoji: '❤️' },
 ] as const
 
+// 🚨 `value` is what is PERSISTED and must not change: existing accounts already have these exact
+// Vietnamese strings saved, and swapping them for ids would silently deselect every cuisine every
+// current user has picked. Only the displayed label is localized (B07).
 const CUISINE_OPTIONS = [
-  'Phở & Bún', 'Cơm tấm', 'Lẩu', 'Nướng BBQ', 'Hải sản',
-  'Chay & Thuần chay', 'Sushi & Nhật', 'Hàn Quốc', 'Pizza & Burger',
-  'Dimsum & Trung Hoa', 'Cà phê & Bánh', 'Món miền Bắc', 'Món miền Nam',
-  'Đồ ăn nhanh', 'Kem & Tráng miệng',
+  { value: 'Phở & Bún', key: 'cuisine.pho' },
+  { value: 'Cơm tấm', key: 'cuisine.comTam' },
+  { value: 'Lẩu', key: 'cuisine.hotpot' },
+  { value: 'Nướng BBQ', key: 'cuisine.bbq' },
+  { value: 'Hải sản', key: 'cuisine.seafood' },
+  { value: 'Chay & Thuần chay', key: 'cuisine.vegetarian' },
+  { value: 'Sushi & Nhật', key: 'cuisine.japanese' },
+  { value: 'Hàn Quốc', key: 'cuisine.korean' },
+  { value: 'Pizza & Burger', key: 'cuisine.western' },
+  { value: 'Dimsum & Trung Hoa', key: 'cuisine.chinese' },
+  { value: 'Cà phê & Bánh', key: 'cuisine.cafe' },
+  { value: 'Món miền Bắc', key: 'cuisine.northern' },
+  { value: 'Món miền Nam', key: 'cuisine.southern' },
+  { value: 'Đồ ăn nhanh', key: 'cuisine.fastFood' },
+  { value: 'Kem & Tráng miệng', key: 'cuisine.dessert' },
 ]
 
-const QUICK_PREF_CHIPS = [
-  'Ăn chay thứ 6',
-  'Ngân sách ăn trưa 60–80k',
-  'Thích spa kiểu Nhật',
-  'Dị ứng hải sản',
-  'Hay đi Quận 3',
-  'Không ăn được cay',
-  'Hay đi Bình Thạnh',
-  'Thích không gian yên tĩnh',
+// Free-form suggestions — whatever is shown is what gets saved, so these are read straight from
+// the dictionary in the language the user is reading.
+const QUICK_PREF_CHIP_KEYS = [
+  'pref.chip.vegFriday',
+  'pref.chip.lunchBudget',
+  'pref.chip.japaneseSpa',
+  'pref.chip.seafoodAllergy',
+  'pref.chip.district3',
+  'pref.chip.noSpice',
+  'pref.chip.binhThanh',
+  'pref.chip.quiet',
 ]
 
 type BudgetLevel = 'cheap' | 'mid' | 'high' | null
 type Gender = 'male' | 'female' | null
 
 export default function PreferencesPage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const [budget, setBudget] = useState<BudgetLevel>(null)
   const [cuisines, setCuisines] = useState<string[]>([])
@@ -124,29 +142,29 @@ export default function PreferencesPage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header title="Sở thích của tôi" showBack backHref="/profile" />
+      <Header title={t('pref.title')} showBack backHref="/profile" />
 
       <main className="max-w-lg mx-auto px-4 py-5 space-y-6">
 
         {/* Info banner */}
         <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-100 dark:border-primary-800/40 rounded-2xl px-4 py-3">
           <p className="text-sm text-primary-700 dark:text-primary-300">
-            ✨ TappyAI dùng thông tin này để gợi ý phù hợp hơn với bạn.
+            {t('pref.intro')}
           </p>
         </div>
 
         {/* Freeform preferences — "Tappy nhớ bạn" */}
         <section>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
-            🧠 Tappy nhớ bạn
+            {t('pref.heading')}
           </h3>
           <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">
-            Thêm bất cứ thông tin nào để TappyAI gợi ý sát hơn — khu vực, ngân sách, dị ứng, thói quen...
+            {t('pref.hint')}
           </p>
 
           {/* Quick-add chips */}
           <div className="flex flex-wrap gap-2 mb-3">
-            {QUICK_PREF_CHIPS.filter(c => !preferences.includes(c)).map(chip => (
+            {QUICK_PREF_CHIP_KEYS.map(k => t(k)).filter(c => !preferences.includes(c)).map(chip => (
               <button
                 key={chip}
                 onClick={() => addPref(chip)}
@@ -163,7 +181,7 @@ export default function PreferencesPage() {
               value={newPref}
               onChange={e => setNewPref(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addPref(newPref) } }}
-              placeholder="Thêm sở thích của bạn..."
+              placeholder={t('pref.addPlaceholder')}
               maxLength={100}
               className="flex-1 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
             />
@@ -173,7 +191,7 @@ export default function PreferencesPage() {
               className="flex items-center gap-1 px-3 py-2 rounded-xl bg-interactive text-white text-sm font-medium disabled:opacity-40 hover:bg-interactive-hover transition-all"
             >
               <Plus size={15} />
-              Thêm
+              {t('pref.add')}
             </button>
           </div>
 
@@ -189,7 +207,7 @@ export default function PreferencesPage() {
                   <button
                     onClick={() => removePref(pref)}
                     className="hover:text-red-500 transition-colors"
-                    aria-label={`Xóa ${pref}`}
+                    aria-label={t('pref.remove', { item: pref })}
                   >
                     <X size={12} />
                   </button>
@@ -198,22 +216,22 @@ export default function PreferencesPage() {
             </div>
           )}
           {preferences.length === 0 && (
-            <p className="text-xs text-gray-400 dark:text-gray-500 italic">Chưa có sở thích nào. Thêm bằng chips bên trên hoặc tự nhập.</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 italic">{t('pref.empty')}</p>
           )}
         </section>
 
         {/* Gender */}
         <section>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
-            👤 Bạn là
+            {t('pref.youAre')}
           </h3>
           <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">
-            Giúp Tappy gợi ý câu hỏi phù hợp hơn với bạn
+            {t('pref.youAreHint')}
           </p>
           <div className="grid grid-cols-2 gap-3">
             {([
-              { value: 'female', label: 'Nữ', emoji: '👩' },
-              { value: 'male', label: 'Nam', emoji: '👨' },
+              { value: 'female', labelKey: 'pref.gender.female', emoji: '👩' },
+              { value: 'male', labelKey: 'pref.gender.male', emoji: '👨' },
             ] as const).map(opt => (
               <button
                 key={opt.value}
@@ -225,7 +243,7 @@ export default function PreferencesPage() {
                 }`}
               >
                 <span className="text-xl">{opt.emoji}</span>
-                {opt.label}
+                {t(opt.labelKey)}
                 {gender === opt.value && <Check size={14} className="text-link" />}
               </button>
             ))}
@@ -235,7 +253,7 @@ export default function PreferencesPage() {
         {/* Budget */}
         <section>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-            💰 Ngân sách ăn uống thường ngày
+            {t('pref.budget')}
           </h3>
           <div className="grid grid-cols-3 gap-3">
             {BUDGET_OPTIONS.map(opt => (
@@ -250,9 +268,9 @@ export default function PreferencesPage() {
               >
                 <span className="text-2xl">{opt.emoji}</span>
                 <span className={`text-sm font-semibold ${budget === opt.value ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-200'}`}>
-                  {opt.label}
+                  {t(`pref.budget.${opt.value}`)}
                 </span>
-                <span className="text-xs text-gray-400 dark:text-gray-500 text-center leading-tight">{opt.desc}</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500 text-center leading-tight">{t(`pref.budget.${opt.value}.detail`)}</span>
                 {budget === opt.value && (
                   <Check size={14} className="text-link mt-0.5" />
                 )}
@@ -264,20 +282,20 @@ export default function PreferencesPage() {
         {/* Cuisine */}
         <section>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-            🍜 Ẩm thực yêu thích
+            {t('pref.cuisine')}
           </h3>
           <div className="flex flex-wrap gap-2">
             {CUISINE_OPTIONS.map(item => (
               <button
-                key={item}
-                onClick={() => toggleCuisine(item)}
+                key={item.value}
+                onClick={() => toggleCuisine(item.value)}
                 className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
-                  cuisines.includes(item)
+                  cuisines.includes(item.value)
                     ? 'border-primary-500 bg-interactive text-white'
                     : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:border-primary-300'
                 }`}
               >
-                {item}
+                {t(item.key)}
               </button>
             ))}
           </div>
@@ -286,17 +304,17 @@ export default function PreferencesPage() {
         {/* Dietary restrictions */}
         <section>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-1.5">
-            🚫 Dị ứng / kiêng cữ
+            {t('pref.dietary')}
           </h3>
           <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">
-            Ví dụ: không ăn thịt heo, dị ứng hải sản, thuần chay...
+            {t('pref.dietaryHint')}
           </p>
           <textarea
             value={dietary}
             onChange={e => setDietary(e.target.value)}
             maxLength={200}
             rows={3}
-            placeholder="Ghi chú nếu có..."
+            placeholder={t('pref.dietaryPlaceholder')}
             className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
         </section>
@@ -312,15 +330,15 @@ export default function PreferencesPage() {
           }`}
         >
           {saving ? (
-            <><Loader2 size={18} className="animate-spin" /> Đang lưu...</>
+            <><Loader2 size={18} className="animate-spin" /> {t('pref.saving')}</>
           ) : saved ? (
-            <><Check size={18} /> Đã lưu!</>
+            <><Check size={18} /> {t('pref.saved')}</>
           ) : (
-            <><Save size={18} /> Lưu sở thích</>
+            <><Save size={18} /> {t('pref.save')}</>
           )}
         </button>
         {saveError && (
-          <p className="text-sm text-red-500 text-center">Không thể lưu sở thích. Vui lòng thử lại.</p>
+          <p className="text-sm text-red-500 text-center">{t('pref.saveError')}</p>
         )}
 
       </main>

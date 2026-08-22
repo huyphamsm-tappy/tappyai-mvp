@@ -534,6 +534,16 @@ export default function ReviewsPage() {
       // reconciliation effect below (id-first realign) — rows stay owned by
       // the fetch layer, position stays owned by ExploreSession (I2).
       if (feedTypeRef.current !== 'for-you') return
+
+      // C39 — only refetch when a signal actually arrived. With no city and no hashtags the
+      // request is byte-identical to the one that just completed and the client-side sort is a
+      // no-op, so this fired a second `?page=0&limit=12&sort=trending` on every load and threw
+      // the answer away. Measured: two identical requests 429 ms apart, both completing.
+      // A new or anonymous user has neither signal, which is exactly who pays for it.
+      const hasCity = !!cityRef.current
+      const hasHashtags = topHashtagsRef.current.length > 0
+      if (!hasCity && !hasHashtags) return
+
       abortRef.current?.abort()
       const ac = new AbortController()
       abortRef.current = ac

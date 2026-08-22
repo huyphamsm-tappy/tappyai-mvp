@@ -25,7 +25,7 @@ struct TranslateView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("🌐 Dịch thuật")
+        .navigationTitle(NSLocalizedString("translate.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -33,13 +33,13 @@ struct TranslateView: View {
 
     private var inputSection: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text("Nhập văn bản")
+            Text(NSLocalizedString("translate.inputHeading", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
 
             ZStack(alignment: .topLeading) {
                 if vm.inputText.isEmpty {
-                    Text("Nhập hoặc dán văn bản cần dịch...")
+                    Text(NSLocalizedString("translate.inputPlaceholder", comment: ""))
                         .font(TappyFont.body)
                         .foregroundStyle(TappyColor.textSecondary.opacity(0.5))
                         .padding(.horizontal, Spacing.md)
@@ -66,7 +66,7 @@ struct TranslateView: View {
                     .foregroundStyle(vm.isOverLimit ? .red : TappyColor.textSecondary)
                 Spacer()
                 if !vm.inputText.isEmpty {
-                    Button("Xoá") { vm.clear() }
+                    Button(NSLocalizedString("common.clear", comment: "")) { vm.clear() }
                         .font(.system(size: 12, weight: .medium))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -85,7 +85,7 @@ struct TranslateView: View {
 
     private var languagePicker: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text("Dịch sang")
+            Text(NSLocalizedString("translate.targetHeading", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -118,10 +118,10 @@ struct TranslateView: View {
                     ProgressView()
                         .tint(.white)
                         .scaleEffect(0.8)
-                    Text("Đang dịch...")
+                    Text(NSLocalizedString("translate.translating", comment: ""))
                 } else {
                     Image(systemName: "text.bubble")
-                    Text("Dịch")
+                    Text(NSLocalizedString("translate.action", comment: ""))
                 }
             }
             .font(.system(size: 15, weight: .semibold))
@@ -140,7 +140,7 @@ struct TranslateView: View {
     private var resultSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
             HStack {
-                Text("Kết quả")
+                Text(NSLocalizedString("translate.result", comment: ""))
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
@@ -150,7 +150,7 @@ struct TranslateView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "doc.on.doc")
                             .font(.system(size: 11))
-                        Text("Sao chép")
+                        Text(NSLocalizedString("common.copy", comment: ""))
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(TappyColor.primary)

@@ -21,7 +21,7 @@ struct CurrencyView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("💱 Quy đổi tiền tệ")
+        .navigationTitle(NSLocalizedString("currency.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .task { await vm.loadRates() }
     }
@@ -30,11 +30,11 @@ struct CurrencyView: View {
 
     private var amountInput: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Số tiền")
+            Text(NSLocalizedString("currency.amount", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
 
-            TextField("Nhập số tiền", text: $vm.amount)
+            TextField(NSLocalizedString("currency.amountPlaceholder", comment: ""), text: $vm.amount)
                 .font(.system(size: 28, weight: .black))
                 .keyboardType(.decimalPad)
                 .foregroundStyle(TappyColor.textPrimary)
@@ -70,7 +70,7 @@ struct CurrencyView: View {
     private var currencySelectors: some View {
         VStack(spacing: Spacing.sm) {
             HStack(spacing: Spacing.sm) {
-                currencyPicker(label: "Từ", code: $vm.fromCode)
+                currencyPicker(label: NSLocalizedString("currency.from", comment: ""), code: $vm.fromCode)
                 Button { vm.swap() } label: {
                     Image(systemName: "arrow.left.arrow.right")
                         .font(.system(size: 14, weight: .semibold))
@@ -123,7 +123,7 @@ struct CurrencyView: View {
                     ProgressView()
                         .tint(.white.opacity(0.7))
                         .scaleEffect(0.8)
-                    Text("Đang tải tỷ giá...")
+                    Text(NSLocalizedString("currency.loadingRates", comment: ""))
                         .font(TappyFont.callout)
                         .foregroundStyle(.white.opacity(0.7))
                 }
@@ -149,7 +149,7 @@ struct CurrencyView: View {
                     .font(TappyFont.caption)
                     .foregroundStyle(.white.opacity(0.6))
             } else {
-                Text("Nhập số tiền để quy đổi")
+                Text(NSLocalizedString("currency.enterAmountHint", comment: ""))
                     .font(TappyFont.callout)
                     .foregroundStyle(.white.opacity(0.7))
             }
@@ -171,7 +171,7 @@ struct CurrencyView: View {
     private var rateInfo: some View {
         VStack(spacing: Spacing.xxs) {
             if vm.isFallback {
-                Text("⚠️ Đang dùng tỷ giá dự phòng")
+                Text(NSLocalizedString("currency.fallbackRates", comment: ""))
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
             } else if let date = vm.formattedDate {
@@ -183,7 +183,7 @@ struct CurrencyView: View {
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
             }
-            Text("Tỷ giá tham khảo, không dùng cho giao dịch thực tế")
+            Text(NSLocalizedString("currency.disclaimer", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
         }

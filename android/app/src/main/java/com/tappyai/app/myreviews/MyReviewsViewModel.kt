@@ -121,6 +121,10 @@ class MyReviewsViewModel @Inject constructor(
         isHidden = isHidden,
         likeCount = likeCount,
         commentCount = commentCount,
+        // Carried only when the gate held the post — `GET /api/reviews/mine` attaches it for the
+        // author and strips the raw lifecycle columns. Without it the author saw a held post
+        // sitting in their grid with nothing to say it was not public.
+        moderation = moderation?.takeIf { !it.state.isPublished },
     )
 
     private companion object {

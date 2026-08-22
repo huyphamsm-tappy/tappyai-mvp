@@ -35,17 +35,17 @@ struct ChatHistoryView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Lịch sử trò chuyện")
+        .navigationTitle("history.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadData() }
-        .alert("Xóa cuộc trò chuyện này? Không thể hoàn tác.", isPresented: Binding(
+        .alert("history.delete.confirm", isPresented: Binding(
             get: { deleteTarget != nil },
             set: { if !$0 { deleteTarget = nil } }
         )) {
-            Button("Xóa", role: .destructive) {
+            Button("common.delete", role: .destructive) {
                 if let id = deleteTarget { Task { await deleteConversation(id) } }
             }
-            Button("Huỷ", role: .cancel) { deleteTarget = nil }
+            Button("common.cancel", role: .cancel) { deleteTarget = nil }
         }
     }
 
@@ -56,7 +56,7 @@ struct ChatHistoryView: View {
             Image(systemName: "bubble.left.and.bubble.right")
                 .font(.system(size: 32))
                 .foregroundStyle(TappyColor.textSecondary.opacity(0.4))
-            Text("Chưa có cuộc trò chuyện nào")
+            Text("history.empty")
                 .font(.system(size: 14))
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -64,7 +64,7 @@ struct ChatHistoryView: View {
                 router.popToRoot(on: .chat)
                 router.switchTo(.chat)
             } label: {
-                Text("Bắt đầu chat")
+                Text("memory.startChat")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, Spacing.lg)
@@ -145,7 +145,7 @@ struct ChatHistoryView: View {
         f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         guard let date = f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return "" }
         let diff = Date().timeIntervalSince(date)
-        if diff < 60 { return "vừa xong" }
+        if diff < 60 { return NSLocalizedString("common.justNow", comment: "") }
         if diff < 3600 { return "\(Int(diff/60)) phút trước" }
         if diff < 86400 { return "\(Int(diff/3600)) giờ trước" }
         if diff < 604800 { return "\(Int(diff/86400)) ngày trước" }

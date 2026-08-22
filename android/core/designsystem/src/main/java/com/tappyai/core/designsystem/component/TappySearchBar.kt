@@ -37,7 +37,10 @@ fun TappySearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "Search",
+    // A resource, not a literal — see TappyDialog. The placeholder is the first thing a user
+    // reads in an empty search field, and it was English in a Vietnamese app for every caller
+    // that did not pass its own.
+    placeholder: String = stringResource(R.string.tappy_search_placeholder),
     onClear: () -> Unit = { onQueryChange("") },
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current

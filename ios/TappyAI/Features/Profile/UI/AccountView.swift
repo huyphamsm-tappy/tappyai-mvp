@@ -28,7 +28,7 @@ struct AccountView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Tài khoản")
+        .navigationTitle(NSLocalizedString("account.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadData() }
     }
@@ -75,18 +75,18 @@ struct AccountView: View {
     @ViewBuilder
     private func infoSection(_ p: UserProfile) -> some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("THÔNG TIN")
+            Text(NSLocalizedString("account.section.info", comment: ""))
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.horizontal, 2)
 
             VStack(spacing: 0) {
-                infoRow(icon: "person", label: "Họ và tên", value: p.fullName.isEmpty ? "Chưa cập nhật" : p.fullName)
+                infoRow(icon: "person", label: NSLocalizedString("account.fullName", comment: ""), value: p.fullName.isEmpty ? NSLocalizedString("account.notSet", comment: "") : p.fullName)
                 Divider().padding(.leading, 52)
                 infoRow(icon: "envelope", label: "Email", value: p.email)
                 if let date = createdAt {
                     Divider().padding(.leading, 52)
-                    infoRow(icon: "calendar", label: "Ngày tham gia", value: date)
+                    infoRow(icon: "calendar", label: NSLocalizedString("account.joinedOn", comment: ""), value: date)
                 }
             }
             .background(TappyColor.cardBackground)
@@ -100,7 +100,7 @@ struct AccountView: View {
 
     private var editSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("CHỈNH SỬA")
+            Text(NSLocalizedString("account.section.edit", comment: ""))
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.horizontal, 2)
@@ -116,10 +116,10 @@ struct AccountView: View {
                         .background(TappyColor.surface)
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Chỉnh sửa hồ sơ")
+                        Text(NSLocalizedString("account.editProfile", comment: ""))
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(TappyColor.textPrimary)
-                        Text("Đổi tên hiển thị, ảnh đại diện")
+                        Text(NSLocalizedString("account.editProfile.detail", comment: ""))
                             .font(.system(size: 11))
                             .foregroundStyle(TappyColor.textSecondary)
                     }
@@ -166,7 +166,7 @@ struct AccountView: View {
     }
 
     private func firstName(_ p: UserProfile) -> String {
-        p.fullName.components(separatedBy: " ").last ?? p.email.components(separatedBy: "@").first ?? "bạn"
+        p.fullName.components(separatedBy: " ").last ?? p.email.components(separatedBy: "@").first ?? NSLocalizedString("account.youFallback", comment: "")
     }
 
     private func loadData() async {

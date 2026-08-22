@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.tappyai.core.designsystem.R
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
@@ -333,7 +335,10 @@ private fun MarkdownCodeBlock(code: String) {
         ) {
             Icon(
                 imageVector = Icons.Filled.ContentCopy,
-                contentDescription = "Copy code",
+                // Same class of defect as TappyAvatar's — a TalkBack label that ignored the app
+                // language because it was a Kotlin literal. Found by the V2-UAT-010 sweep rather
+                // than reported: it is the third and last one in the design system.
+                contentDescription = stringResource(R.string.tappy_cd_copy_code),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(16.dp),
             )

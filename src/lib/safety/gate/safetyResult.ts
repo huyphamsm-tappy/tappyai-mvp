@@ -146,10 +146,26 @@ export function deriveSafetyState(
 export const PUBLICATION_FOR: Readonly<Record<SafetyState, PublicationState>> = Object.freeze({
   SAFE: 'PUBLISHED',
   VIOLATION: 'RESTRICTED',
-  UNDETERMINED: 'UNDER_REVIEW',
-  HUMAN_REVIEW_REQUIRED: 'UNDER_REVIEW',
-  LEGAL_REVIEW_REQUIRED: 'UNDER_REVIEW',
-  ENGINE_ERROR: 'UNDER_REVIEW',
+  // ✅ PRODUCT DECISION, Owner, 2026-08-19 — the MVP resolves, it does not park.
+  //
+  // These four all used to store UNDER_REVIEW, which was correct only if
+  // something later came back to look. Nothing does: there are no reviewers, and
+  // for an unexaminable video a retry returns the same answer forever. So
+  // UNDER_REVIEW was not a holding state, it was a place uploads went to vanish.
+  //
+  // The MVP contract is two terminal outcomes. Anything the system cannot
+  // positively establish as safe resolves to RESTRICTED — never public, never
+  // deleted, always visible to its own author. UNDER_REVIEW stays a legal value
+  // for the future asynchronous path, but nothing writes it today.
+  //
+  // 🚨 RESTRICTED HERE IS NOT AN ACCUSATION. Only `VIOLATION` reaches it by way
+  // of a finding; the other three reach it by way of not knowing, and
+  // `authorNotice` keeps those two paths worded differently. Collapsing the
+  // OUTCOME must not collapse the REASON.
+  UNDETERMINED: 'RESTRICTED',
+  HUMAN_REVIEW_REQUIRED: 'RESTRICTED',
+  LEGAL_REVIEW_REQUIRED: 'RESTRICTED',
+  ENGINE_ERROR: 'RESTRICTED',
 });
 
 export function publicationFor(state: SafetyState): PublicationState {
@@ -173,8 +189,11 @@ export function publicationFromGate(
   state: SafetyState,
   gateDecision: PublicationDecision,
 ): PublicationState {
-  if (state === 'ENGINE_ERROR') return 'UNDER_REVIEW';
-  return storedStateFor(gateDecision);
+  if (state === 'ENGINE_ERROR') return 'RESTRICTED';
+  // The MVP has two terminal outcomes. Anything the gate did not positively
+  // publish — held, configuration-required, restricted — resolves to RESTRICTED
+  // rather than parking in a state nothing will ever come back to.
+  return storedStateFor(gateDecision) === 'PUBLISHED' ? 'PUBLISHED' : 'RESTRICTED';
 }
 
 // ---------------------------------------------------------------------------
@@ -259,7 +278,10 @@ export function publicationStateFor(
   result: SafetyResult | null,
   currentVersion: string,
 ): PublicationState {
-  if (result === null) return 'UNDER_REVIEW';
-  if (result.contentVersion !== currentVersion) return 'UNDER_REVIEW';
+  // No result, or a result about different content, both mean the same thing:
+  // nothing here establishes that THIS content is safe. Under the MVP contract
+  // that resolves rather than parks.
+  if (result === null) return 'RESTRICTED';
+  if (result.contentVersion !== currentVersion) return 'RESTRICTED';
   return result.publication;
 }

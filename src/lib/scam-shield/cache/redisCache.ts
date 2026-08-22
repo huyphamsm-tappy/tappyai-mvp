@@ -73,11 +73,43 @@ export async function setCachedSignal(
   }
 }
 
-export async function getCachedDirectory(): Promise<unknown[] | null> {
+/**
+ * The Redis key for the official directory, derived from the directory's own CONTENT.
+ *
+ * ============================================================================
+ * WHY THE KEY IS VERSIONED (C08 deployment hazard)
+ * ============================================================================
+ * This used to be the fixed key `ss:directory` with a one-hour TTL. That is fine while the
+ * directory never changes — and actively dangerous the moment it does.
+ *
+ * 🚨 C09 added `aliases` to fourteen entities, which is what makes `vcb-secure-login.net` score
+ * 79/HIGH instead of 19/LOW. With a fixed key, the first hour after that deploy would still serve
+ * the PREVIOUS directory out of Redis: the code would be new, the data would be old, and a bank
+ * phishing domain would keep scoring LOW. Anyone verifying the deploy in that window — which is
+ * exactly when a release is verified — would conclude the fix did not work, and the only remedy
+ * would be to know to flush a cache key nobody documented.
+ *
+ * Hashing the content means a changed directory simply lands on a different key. The new data is
+ * live on the first request after deploy, the old key expires on its own, and there is nothing to
+ * remember to invalidate. Cache invalidation stops being a step someone can forget.
+ */
+function directoryKey(entities: unknown[]): string {
+  const digest = createHash('sha256').update(JSON.stringify(entities)).digest('hex').slice(0, 12)
+  return `ss:directory:${digest}`
+}
+
+/**
+ * Reads the cached directory for THIS EXACT content.
+ *
+ * The caller passes the directory it is about to fall back to, which is what lets the key be
+ * content-addressed: a hit can only be a copy of the same data, so a stale one is impossible by
+ * construction rather than by TTL.
+ */
+export async function getCachedDirectory(expected: unknown[]): Promise<unknown[] | null> {
   const client = await getRedis()
   if (!client) return null
   try {
-    const raw = await client.get('ss:directory')
+    const raw = await client.get(directoryKey(expected))
     if (!raw) return null
     return (typeof raw === 'string' ? JSON.parse(raw) : raw) as unknown[]
   } catch {
@@ -90,7 +122,7 @@ export async function setCachedDirectory(entities: unknown[]): Promise<void> {
   if (!client) return
   const ttlMs = CACHE_TTLS.directory ?? 60 * 60_000
   try {
-    await client.set('ss:directory', JSON.stringify(entities), {
+    await client.set(directoryKey(entities), JSON.stringify(entities), {
       ex: Math.ceil(ttlMs / 1000),
     })
   } catch {

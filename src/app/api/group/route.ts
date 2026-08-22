@@ -1,10 +1,17 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   let name: string
   try {
@@ -12,7 +19,7 @@ export async function POST(req: NextRequest) {
     name = (body.name || '').trim()
     if (!name) throw new Error('missing name')
   } catch {
-    return NextResponse.json({ error: 'Tên nhóm không hợp lệ' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_name', message: serverMessage('group.invalidName', requestLocale(req)) }, { status: 400 })
   }
 
   const { data, error } = await supabase
@@ -21,13 +28,13 @@ export async function POST(req: NextRequest) {
     .select('id, name')
     .single()
 
-  if (error) return NextResponse.json({ error: 'Không thể tạo nhóm' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'create_failed', message: serverMessage('group.createFailed', requestLocale(req)) }, { status: 500 })
   return NextResponse.json(data)
 }
 
 export async function GET(req: NextRequest) {
-  const id = req.nextUrl.searchParams.get('id')
-  if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
+  const id = searchParam(req, 'id')
+  if (!id) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   const supabase = createClient()
 
@@ -37,7 +44,7 @@ export async function GET(req: NextRequest) {
     .eq('id', id)
     .single()
 
-  if (groupError || !group) return NextResponse.json({ error: 'Không tìm thấy nhóm' }, { status: 404 })
+  if (groupError || !group) return NextResponse.json({ error: 'group_not_found', message: serverMessage('group.notFound', requestLocale(req)) }, { status: 404 })
 
   const { data: members } = await supabase
     .from('group_members')

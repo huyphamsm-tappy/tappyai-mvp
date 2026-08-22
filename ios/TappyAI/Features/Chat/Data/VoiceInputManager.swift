@@ -47,11 +47,11 @@ final class VoiceInputManager: AppObservableObject {
                 case .authorized:
                     self.startRecognition()
                 case .denied, .restricted:
-                    self.error = "Cần cấp quyền micro để nói. Hãy bật quyền trong Cài đặt."
+                    self.error = NSLocalizedString("voice.error.micPermission", comment: "")
                 case .notDetermined:
-                    self.error = "Cần cấp quyền nhận diện giọng nói."
+                    self.error = NSLocalizedString("voice.error.speechPermission", comment: "")
                 @unknown default:
-                    self.error = "Có trục trặc khi nhận giọng nói, thử lại nhé."
+                    self.error = NSLocalizedString("voice.error.generic", comment: "")
                 }
             }
         }
@@ -73,7 +73,7 @@ final class VoiceInputManager: AppObservableObject {
 
     private func startRecognition() {
         guard let recognizer, recognizer.isAvailable else {
-            error = "Nhận diện giọng nói không khả dụng trên thiết bị này."
+            error = NSLocalizedString("voice.error.unavailable", comment: "")
             return
         }
 
@@ -85,7 +85,7 @@ final class VoiceInputManager: AppObservableObject {
             try session.setCategory(.record, mode: .measurement, options: .duckOthers)
             try session.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
-            self.error = "Không khởi động được micro."
+            self.error = NSLocalizedString("voice.error.micStart", comment: "")
             return
         }
 
@@ -103,7 +103,7 @@ final class VoiceInputManager: AppObservableObject {
             audioEngine.prepare()
             try audioEngine.start()
         } catch {
-            self.error = "Không khởi động được micro. Thử lại nhé."
+            self.error = NSLocalizedString("voice.error.micStartRetry", comment: "")
             return
         }
 
@@ -124,7 +124,7 @@ final class VoiceInputManager: AppObservableObject {
                     try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
                     self.isListening = false
                     if let e = error as NSError?, e.domain == "kAFAssistantErrorDomain" && e.code == 1110 {
-                        self.error = "Mình chưa nghe thấy gì — bấm micro và nói lại nhé."
+                        self.error = NSLocalizedString("voice.error.nothingHeard", comment: "")
                     }
                     let final = self.transcript
                     if !final.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {

@@ -35,11 +35,11 @@ struct MusicUploadView: View {
                 .padding(.vertical, Spacing.lg)
             }
             .background(TappyColor.background)
-            .navigationTitle("Đăng nhạc gốc")
+            .navigationTitle(NSLocalizedString("music.upload.title", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Huỷ") { dismiss() }
+                    Button(NSLocalizedString("common.cancel", comment: "")) { dismiss() }
                 }
             }
             .fileImporter(
@@ -65,7 +65,7 @@ struct MusicUploadView: View {
             Image(systemName: "music.note")
                 .font(.system(size: 16))
                 .foregroundStyle(TappyColor.textSecondary)
-            Text("Original Sound — nhạc do chính bạn tạo/sở hữu")
+            Text(NSLocalizedString("music.upload.subtitle", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -87,7 +87,7 @@ struct MusicUploadView: View {
                         .font(.system(size: 28))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
-                Text(vm.fileData != nil ? vm.fileName : "Chọn file nhạc (mp3, m4a, wav… tối đa 20MB)")
+                Text(vm.fileData != nil ? vm.fileName : NSLocalizedString("music.upload.pickFile", comment: ""))
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(TappyColor.textSecondary)
                     .multilineTextAlignment(.center)
@@ -109,7 +109,7 @@ struct MusicUploadView: View {
 
     private var formFields: some View {
         VStack(spacing: Spacing.sm) {
-            TextField("Tên bài hát *", text: $vm.title)
+            TextField(NSLocalizedString("music.upload.trackTitle", comment: ""), text: $vm.title)
                 .font(TappyFont.callout)
                 .padding(.horizontal, Spacing.md)
                 .padding(.vertical, 12)
@@ -125,7 +125,7 @@ struct MusicUploadView: View {
                     }
                 }
 
-            TextField("Nghệ sĩ (tùy chọn)", text: $vm.artist)
+            TextField(NSLocalizedString("music.upload.artist", comment: ""), text: $vm.artist)
                 .font(TappyFont.callout)
                 .padding(.horizontal, Spacing.md)
                 .padding(.vertical, 12)
@@ -154,7 +154,7 @@ struct MusicUploadView: View {
                     .font(.system(size: 18))
                     .foregroundStyle(vm.rights ? TappyColor.primary : TappyColor.textSecondary)
 
-                Text("Tôi xác nhận **tôi sở hữu hoặc có đầy đủ quyền** với bản nhạc này, và cho phép TappyAI cùng người dùng khác sử dụng nó trong video của họ. Tôi hiểu việc đăng nhạc vi phạm bản quyền có thể bị gỡ và chịu trách nhiệm pháp lý. Xem Chính sách bản quyền.")
+                Text(NSLocalizedString("music.upload.rightsConfirmation", comment: ""))
                     .font(.system(size: 12))
                     .foregroundStyle(Color(red: 0.5, green: 0.35, blue: 0))
                     .multilineTextAlignment(.leading)
@@ -190,10 +190,10 @@ struct MusicUploadView: View {
                     ProgressView()
                         .tint(.white)
                         .scaleEffect(0.8)
-                    Text("Đang đăng…")
+                    Text(NSLocalizedString("music.upload.publishing", comment: ""))
                         .font(.system(size: 14, weight: .semibold))
                 } else {
-                    Text("Đăng Original Sound")
+                    Text(NSLocalizedString("music.upload.publish", comment: ""))
                         .font(.system(size: 14, weight: .semibold))
                 }
             }
@@ -223,10 +223,10 @@ struct MusicUploadView: View {
                 let data = try Data(contentsOf: url)
                 vm.setFile(data: data, name: url.lastPathComponent)
             } catch {
-                vm.error = "Không thể đọc file"
+                vm.error = NSLocalizedString("music.upload.error.read", comment: "")
             }
         case .failure:
-            vm.error = "Không thể chọn file"
+            vm.error = NSLocalizedString("music.upload.error.pick", comment: "")
         }
     }
 }

@@ -22,7 +22,7 @@ final class RegisterViewModel: AppObservableObject {
     }
 
     func submit() async {
-        guard valid else { errorMessage = "Vui lòng nhập tên, email và mật khẩu ≥ 6 ký tự"; return }
+        guard valid else { errorMessage = NSLocalizedString("register.error.invalid", comment: ""); return }
         isWorking = true; errorMessage = nil
         defer { isWorking = false }
         do {
@@ -47,25 +47,25 @@ struct RegisterView: View {
         Group {
             if vm.needsEmailConfirmation {
                 TappyEmptyState(systemImage: "envelope.badge",
-                                title: "Kiểm tra email của bạn",
-                                message: "Chúng tôi đã gửi liên kết xác nhận tới email của bạn.")
+                                title: NSLocalizedString("register.checkEmail.title", comment: ""),
+                                message: NSLocalizedString("register.checkEmail.body", comment: ""))
             } else {
                 form
             }
         }
         .background(TappyColor.background)
-        .navigationTitle("Tạo tài khoản")
+        .navigationTitle(NSLocalizedString("register.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private var form: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.sm) {
-                TappyTextField(titleKey: "Họ và tên", text: $vm.fullName)
+                TappyTextField(titleKey: "account.fullName", text: $vm.fullName)
                 TappyTextField(titleKey: "Email", text: $vm.email)
                     .keyboardType(.emailAddress).textInputAutocapitalization(.never).autocorrectionDisabled()
-                TappyTextField(titleKey: "Mật khẩu", text: $vm.password, isSecure: true)
-                Button("Đăng ký") { Task { await vm.submit() } }
+                TappyTextField(titleKey: "auth.password", text: $vm.password, isSecure: true)
+                Button(NSLocalizedString("auth.signUp", comment: "")) { Task { await vm.submit() } }
                     .buttonStyle(.tappy(.primary))
                     .disabled(!vm.valid)
                 if let error = vm.errorMessage {

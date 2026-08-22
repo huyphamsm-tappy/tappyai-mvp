@@ -34,7 +34,7 @@ struct ReviewActionRail: View {
 
             railButton(
                 icon: review.savedByMe ? "bookmark.fill" : "bookmark",
-                label: "Lưu",
+                label: NSLocalizedString("common.save", comment: ""),
                 tint: review.savedByMe ? TappyColor.secondary : TappyColor.feedTextPrimary,
                 action: onSave
             )

@@ -1,4 +1,11 @@
 import SwiftUI
+import UIKit
+
+/// The one public support address. Mirrors `SUPPORT_EMAIL` in `src/components/landing/config.ts`
+/// and `SUPPORT_EMAIL` in Android's SettingsScreen; held to all three by
+/// `src/lib/legal/accountDeletionParity.test.ts`, because a deletion request sent to an address
+/// nobody reads is worse than no button at all.
+private let SUPPORT_EMAIL = "support@tappyai.com"
 
 struct ProfileSettingsView: View {
     let deps: AppDependencies
@@ -6,6 +13,8 @@ struct ProfileSettingsView: View {
     @AppEnvironmentState private var session: SessionStore
 
     @State private var showSignOutConfirm = false
+    @State private var confirmDeleteAccount = false
+    @State private var noMailAppMessage: String?
 
     var body: some View {
         ScrollView {
@@ -18,31 +27,72 @@ struct ProfileSettingsView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Cài đặt")
+        .navigationTitle(Text("settings.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .confirmationDialog("Đăng xuất", isPresented: $showSignOutConfirm, titleVisibility: .visible) {
-            Button("Đăng xuất", role: .destructive) {
+        .confirmationDialog(Text("settings.signOut"), isPresented: $showSignOutConfirm, titleVisibility: .visible) {
+            Button(role: .destructive) {
                 Task { await deps.authRepository.signOut() }
-            }
-            Button("Huỷ", role: .cancel) {}
+            } label: { Text("settings.signOut") }
+            Button(role: .cancel) {} label: { Text("common.cancel") }
         }
+        .alert(Text("settings.deleteAccount.confirmTitle"), isPresented: $confirmDeleteAccount) {
+            Button { openDeletionRequest() } label: { Text("settings.deleteAccount.continue") }
+            Button(role: .cancel) {} label: { Text("common.cancel") }
+        } message: {
+            Text("settings.deleteAccount.confirmBody")
+        }
+        .alert(
+            Text("settings.deleteAccount.noMailTitle"),
+            isPresented: Binding(get: { noMailAppMessage != nil }, set: { if !$0 { noMailAppMessage = nil } })
+        ) {
+            Button { noMailAppMessage = nil } label: { Text("common.ok") }
+        } message: {
+            Text(noMailAppMessage ?? "")
+        }
+    }
+
+    /// Opens the mail composer with the deletion request already written.
+    ///
+    /// 🚨 The app never deletes anything itself, and that is the published contract rather than a
+    /// shortcut: /delete-account tells people support verifies ownership before erasing data, so a
+    /// client-side delete would be a different promise from the one the store listing points
+    /// reviewers at.
+    ///
+    /// `mailto:` resolves to mail clients only. Not every device has one configured — the same
+    /// case Android handles with a toast — so the failure says what to do instead of doing nothing.
+    private func openDeletionRequest() {
+        confirmDeleteAccount = false
+        let subject = NSLocalizedString("settings.deleteAccount.emailSubject", comment: "")
+        let body = NSLocalizedString("settings.deleteAccount.emailBody", comment: "")
+        let allowed = CharacterSet.urlQueryAllowed.subtracting(CharacterSet(charactersIn: "&=+"))
+        let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: allowed) ?? ""
+        let encodedBody = body.addingPercentEncoding(withAllowedCharacters: allowed) ?? ""
+        guard let url = URL(string: "mailto:\(SUPPORT_EMAIL)?subject=\(encodedSubject)&body=\(encodedBody)"),
+              UIApplication.shared.canOpenURL(url) else {
+            noMailAppMessage = String(
+                format: NSLocalizedString("settings.deleteAccount.noMailBody", comment: ""),
+                SUPPORT_EMAIL
+            )
+            return
+        }
+        UIApplication.shared.open(url)
     }
 
     // MARK: - Options
 
     private var optionsSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("TÙY CHỌN")
+            Text("settings.section.options")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.horizontal, 2)
 
             VStack(spacing: 0) {
-                settingsRow(icon: "bell", label: "Thông báo", desc: "Push notification") {
+                settingsRow(icon: "bell", labelKey: "settings.notifications", desc: nil) {
                     router.push(ProfileDestination.notifications, on: .profile)
                 }
                 Divider().padding(.leading, 52)
-                settingsRow(icon: "brain", label: "Bộ nhớ Tappy", desc: "Quản lý trí nhớ AI") {
+                settingsRow(icon: "brain", labelKey: "settings.memory", desc: nil) {
                     router.push(ProfileDestination.tappyKnows, on: .profile)
                 }
                 Divider().padding(.leading, 52)
@@ -68,7 +118,7 @@ struct ProfileSettingsView: View {
                 .background(TappyColor.surface)
                 .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
 
-            Text("Ngôn ngữ")
+            Text("settings.language")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(TappyColor.textPrimary)
 
@@ -107,7 +157,7 @@ struct ProfileSettingsView: View {
 
     private var otherSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("KHÁC")
+            Text("settings.section.other")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TappyColor.textSecondary)
                 .padding(.horizontal, 2)
@@ -122,12 +172,36 @@ struct ProfileSettingsView: View {
                     router.push(ProfileDestination.howToUse, on: .profile)
                 }
                 Divider().padding(.leading, 52)
-                settingsRow(icon: "doc.text", label: "Điều khoản sử dụng", desc: nil) {
+                settingsRow(icon: "doc.text", labelKey: "settings.terms", desc: nil) {
                     router.push(ProfileDestination.terms, on: .profile)
                 }
                 Divider().padding(.leading, 52)
-                settingsRow(icon: "shield", label: "Chính sách bảo mật", desc: nil) {
+                settingsRow(icon: "shield", labelKey: "settings.privacyPolicy", desc: nil) {
                     router.push(ProfileDestination.privacy, on: .profile)
+                }
+                Divider().padding(.leading, 52)
+                // The music copyright / notice-and-takedown policy. Sits with the other two
+                // because it is the third document a user is bound by, and because a rights
+                // holder looking for where to send a complaint looks under legal, not under music.
+                settingsRow(icon: "music.note.list", labelKey: "settings.copyright", desc: nil) {
+                    router.push(ReviewsDestination.copyrightPolicy, on: .profile)
+                }
+                Divider().padding(.leading, 52)
+                // ── Account deletion ──────────────────────────────────────────────────────────
+                //
+                // 🚨 REQUIRED BY APP STORE REVIEW GUIDELINE 5.1.1(v): an app that lets people
+                // create an account must let them initiate deleting it from inside the app. iOS
+                // had no such affordance at all, which is a rejection on submission rather than a
+                // parity nicety — Android has carried this row for exactly the same reason on the
+                // Play side.
+                //
+                // Request-based on purpose, identical to Android and to what the public
+                // /delete-account page documents: support verifies the requester owns the account
+                // before anything is erased, and the app deletes nothing itself. The label is
+                // fixed word-for-word by step 3 of that page, which is why it is asserted rather
+                // than written freely.
+                settingsRow(icon: "trash", labelKey: "settings.deleteAccount", desc: nil) {
+                    confirmDeleteAccount = true
                 }
             }
             .background(TappyColor.cardBackground)
@@ -137,7 +211,10 @@ struct ProfileSettingsView: View {
                     .stroke(TappyColor.border, lineWidth: 1)
             )
 
-            Text("Phiên bản \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—")")
+            Text(String(
+                format: NSLocalizedString("settings.version", comment: ""),
+                Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
+            ))
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
                 .frame(maxWidth: .infinity)
@@ -152,7 +229,7 @@ struct ProfileSettingsView: View {
             HStack(spacing: Spacing.sm) {
                 Image(systemName: "rectangle.portrait.and.arrow.right")
                     .font(.system(size: 15))
-                Text("Đăng xuất")
+                Text("settings.signOut")
                     .font(.system(size: 14, weight: .medium))
             }
             .foregroundStyle(.red)

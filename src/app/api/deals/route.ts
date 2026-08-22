@@ -1,5 +1,6 @@
 import { getActiveDeals } from '@/lib/deals/partnerDeals'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParam } from '@/lib/http/searchParams'
 
 // GET /api/deals — public partner-deals feed, shared by web, Android and iOS.
 // Returns ONLY active deals within their valid date window, sorted by
@@ -15,9 +16,9 @@ import { NextRequest, NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
-  const country = (req.nextUrl.searchParams.get('country') || 'VN').toUpperCase()
+  const country = (searchParam(req, 'country') || 'VN').toUpperCase()
   const lang =
-    req.nextUrl.searchParams.get('lang') ||
+    searchParam(req, 'lang') ||
     // First tag of Accept-Language, e.g. "en-US,en;q=0.9" → "en-US".
     req.headers.get('accept-language')?.split(',')[0]?.trim() ||
     'vi'

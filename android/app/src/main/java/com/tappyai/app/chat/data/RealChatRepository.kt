@@ -143,12 +143,43 @@ class RealChatRepository @Inject constructor(
         )
     }
 
+    /**
+     * Is this string something a human wrote, or a machine code?
+     *
+     * Machine codes in this API are `lower_snake_case` throughout — `invalid_request`,
+     * `anon_limit_reached`, `group_not_found`. A sentence has a space in it, or a capital, or
+     * punctuation. Older routes did put real sentences in `error`, and those must keep working,
+     * so this admits anything that is not unambiguously a code rather than the reverse.
+     */
+    private fun looksLikeSentence(value: String): Boolean {
+        val trimmed = value.trim()
+        if (trimmed.isEmpty()) return false
+        return !trimmed.matches(Regex("^[a-z0-9]+(_[a-z0-9]+)*$"))
+    }
+
     private fun parseChatError(code: Int, body: String?): ChatException {
         val dto = body?.let {
             try { json.decodeFromString<ChatErrorDto>(it) } catch (_: Exception) { null }
         }
-        // dto.message is always human text; dto.error can be a code or a human sentence.
-        val message = dto?.message ?: dto?.error ?: stringProvider.get(R.string.chat_error_generic_with_code, code)
+        // `dto.message` is always human text. `dto.error` is NOT — it is a stable machine code, and
+        // only some older routes ever put a sentence there.
+        //
+        // ============================================================================
+        // 🚨 U07 — WHY `dto.error` IS NO LONGER A FALLBACK
+        // ============================================================================
+        // `POST /api/chat` answers a malformed request with `{"error":"invalid_request"}` and NO
+        // `message`, deliberately: the server treats a bad request shape as a client bug and takes
+        // the view that there is no sentence worth showing a user whose client sent something
+        // impossible. That is a defensible server decision — but this method used to fall through
+        // to `dto.error`, and `ChatViewModel` renders whatever it gets as an assistant chat
+        // bubble. The user was shown a bubble reading, in full, `invalid_request`.
+        //
+        // The two sides now agree: a machine code is never prose. Anything that is not a real
+        // sentence falls through to the localized generic message, which is also the only branch
+        // that respects the app's language — a machine code has no translation.
+        val serverSentence = dto?.message?.takeIf { it.isNotBlank() }
+            ?: dto?.error?.takeIf { looksLikeSentence(it) }
+        val message = serverSentence ?: stringProvider.get(R.string.chat_error_generic_with_code, code)
         return when {
             code == 429 && dto?.error == "free_limit_reached" ->
                 ChatException.DailyLimitReached(message)

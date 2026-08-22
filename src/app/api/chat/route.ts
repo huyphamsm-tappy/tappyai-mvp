@@ -10,6 +10,10 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
+import { validateClientInput } from '@/lib/ai/security/clientInput'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
@@ -38,33 +42,55 @@ export async function POST(req: Request) {
   const rl = rateLimit(`chat:${clientIp(req)}`, 30, 60_000)
   if (!rl.ok) {
     return new Response(
-      JSON.stringify({ error: 'Bạn gửi quá nhanh, vui lòng thử lại sau giây lát.' }),
+      JSON.stringify({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }),
       { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rl.retryAfter) } },
     )
   }
 
-  const { messages, userLocation: rawUserLocation, userPreferences: rawUserPrefs, responseStyle: rawResponseStyle } = await req.json()
-
-  // Reject a non-array or oversized history BEFORE any expensive LLM/tool work.
-  // maxTokens bounds only OUTPUT and the IP limiter bounds request COUNT — neither
-  // caps input payload size, so an unbounded prompt is a real cost/DoS vector.
-  if (!Array.isArray(messages) || messages.length === 0) {
+  // ── P3-S1: the client input trust boundary ────────────────────────────────
+  //
+  // Everything below this point works on SERVER-CONSTRUCTED values. The client's own objects are
+  // never forwarded: `validateClientInput` rebuilds each message from an allowlist, so a forged
+  // role (`system`/`assistant` claiming to be policy), a fabricated tool result, or a
+  // provider-specific field cannot survive into prompt construction or reach a provider.
+  //
+  // It replaces — rather than supplements — the previous shape check and 24k character cap. Those
+  // bounded the message array only; `userPreferences` was outside them entirely, so a caller could
+  // put an unbounded string there and have it interpolated straight into the system prompt. The
+  // single input budget covers every client-supplied field at once.
+  //
+  // Rejections keep the old user-facing behaviour where it existed: a size violation is still a
+  // 413 with the same Vietnamese copy, and every other contract violation is a 400 carrying a
+  // machine-readable code and nothing else.
+  let rawBody: unknown
+  try {
+    rawBody = await req.json()
+  } catch {
     return new Response(
       JSON.stringify({ error: 'invalid_request' }),
       { status: 400, headers: { 'Content-Type': 'application/json' } },
     )
   }
-  const totalInputChars = (messages as Array<{ content?: unknown }>).reduce((sum, m) => {
-    const c = m?.content
-    if (typeof c === 'string') return sum + c.length
-    if (Array.isArray(c)) return sum + (c as Array<{ text?: string }>).reduce((s, p) => s + (p?.text?.length || 0), 0)
-    return sum
-  }, 0)
-  if (totalInputChars > 24_000) {
+
+  const validated = validateClientInput(rawBody)
+  if (!validated.ok) {
+    const isSize = validated.code === 'message_too_long'
+      || validated.code === 'preference_budget_exceeded'
+      || validated.code === 'input_budget_exceeded'
+      || validated.code === 'image_too_large'
     return new Response(
-      JSON.stringify({ error: 'message_too_long', message: 'Tin nhắn quá dài. Vui lòng rút gọn.' }),
-      { status: 413, headers: { 'Content-Type': 'application/json' } },
+      JSON.stringify(isSize
+        ? { error: validated.code, message: serverMessage('chat.tooLong', requestLocale(req)) }
+        : { error: validated.code }),
+      { status: isSize ? 413 : 400, headers: { 'Content-Type': 'application/json' } },
     )
+  }
+
+  const messages = validated.messages
+  const rawUserPrefs = validated.preferences
+  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle } = (rawBody ?? {}) as {
+    userLocation?: { lat?: unknown; lng?: unknown; address?: string }
+    responseStyle?: unknown
   }
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
@@ -137,6 +163,26 @@ export async function POST(req: Request) {
   // True once a token-based ANONYMOUS session's quota was enforced server-side
   // (keyed by anonymous_id) — the legacy cookie counter below is then skipped.
   let anonQuotaByToken = false
+  /**
+   * The count the token authority reported, mirrored into the cookie.
+   *
+   * ============================================================================
+   * WHY THE COOKIE IS MIRRORED AND NOT MERELY SKIPPED — dual-authority closure
+   * ============================================================================
+   * There are two anonymous counters: the `anon_chat_usage` row (keyed by anonymous_id,
+   * durable) and the `tappy_anon` cookie (keyed by browser). The row is authoritative; the
+   * cookie exists so a guest is still capped when the RPC is unavailable.
+   *
+   * 🚨 They were INDEPENDENT, which made the fallback a second allowance: a guest who used
+   * all five through the RPC and then hit one transient RPC failure met a cookie counter that
+   * had never been written and started again at zero. "Authoritative with a fallback" only
+   * holds if the fallback inherits what the authority already counted.
+   *
+   * Mirroring costs one header on a request that is already setting none. The row stays the
+   * authority — the cookie is never read while the RPC answers, and a cleared cookie still
+   * cannot raise the cap, because the row is what the next successful call reads.
+   */
+  let anonTokenCount: number | null = null
   try {
     const { user, supabase } = await getRequestUser(req)
     if (user?.is_anonymous) {
@@ -148,11 +194,12 @@ export async function POST(req: Request) {
       const { data: usedToday, error: quotaError } = await supabase.rpc('anon_chat_usage_increment')
       if (!quotaError && typeof usedToday === 'number') {
         anonQuotaByToken = true
+        anonTokenCount = usedToday
         if (usedToday > ANON_DAILY_LIMIT) {
           return new Response(
             JSON.stringify({
               error: 'anon_limit_reached',
-              message: `Bạn đã dùng hết ${ANON_DAILY_LIMIT} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!`,
+              message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_DAILY_LIMIT }),
               upgradeUrl: '/login',
             }),
             { status: 401, headers: { 'Content-Type': 'application/json' } }
@@ -219,7 +266,7 @@ export async function POST(req: Request) {
           return new Response(
             JSON.stringify({
               error: 'free_limit_reached',
-              message: `Bạn đã dùng hết ${FREE_DAILY_LIMIT} tin nhắn miễn phí hôm nay. Hẹn gặp lại bạn vào ngày mai nhé!`,
+              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
             }),
             { status: 429, headers: { 'Content-Type': 'application/json' } }
           )
@@ -240,7 +287,12 @@ export async function POST(req: Request) {
   // which is acceptable for a top-of-funnel teaser). Everything past chat
   // (reviews, saves, upload, …) still requires an account.
   let anonSetCookie: string | null = null
-  if (!authedUserId && !anonQuotaByToken) {
+  if (anonTokenCount !== null) {
+    // Mirror the authoritative count into the fallback counter — see `anonTokenCount`. Written
+    // even when the RPC has already refused this request, so a guest at the cap stays at the cap
+    // if the next request has to fall back.
+    anonSetCookie = `tappy_anon=${vnToday()}:${anonTokenCount}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
+  } else if (!authedUserId && !anonQuotaByToken) {
     const today = vnToday()
     const cookieHeader = req.headers.get('cookie') || ''
     const m = cookieHeader.match(/(?:^|;\s*)tappy_anon=([^;]+)/)
@@ -253,7 +305,7 @@ export async function POST(req: Request) {
       return new Response(
         JSON.stringify({
           error: 'anon_limit_reached',
-          message: `Bạn đã dùng hết ${ANON_DAILY_LIMIT} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!`,
+          message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_DAILY_LIMIT }),
           upgradeUrl: '/login',
         }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
@@ -267,7 +319,11 @@ export async function POST(req: Request) {
     ? (rawUserPrefs as unknown[]).filter(p => typeof p === 'string').slice(0, 50) as string[]
     : []
   if (rawPrefsArr.length > 0) {
-    const freeformBlock = `\n\n===== SỞ THÍCH & THÔNG TIN CÁ NHÂN CỦA USER =====\n${rawPrefsArr.map(p => `- ${p}`).join('\n')}\nHãy luôn ghi nhớ và áp dụng những sở thích này khi gợi ý.\n==================================================`
+    // P3-S2: the VALUES are fenced, the header and the instruction are not. These are free text
+    // the user wrote, so they are untrusted on read even though they arrive from our own client;
+    // the surrounding line telling the model what to do with them is ours, and wrapping trusted
+    // policy as untrusted would be the inverse mistake (FENCE-02).
+    const freeformBlock = `\n\n===== SỞ THÍCH & THÔNG TIN CÁ NHÂN CỦA USER =====\n${fenceUntrusted('user_preferences', rawPrefsArr.map(p => `- ${p}`).join('\n'))}\nHãy luôn ghi nhớ và áp dụng những sở thích này khi gợi ý.\n==================================================`
     prefBlock = prefBlock ? prefBlock + freeformBlock : freeformBlock
   }
 
@@ -551,10 +607,15 @@ export async function POST(req: Request) {
                 .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
                 .select('id')
                 .single()
-              if (error) return { error: pw.saveError(pwLang, error.message) }
+              if (error) {
+                console.error('[chat/save_price_watch] insert failed:', error.code ?? error.message)
+                return { error: pw.saveError(pwLang) }
+              }
               return { ok: true, id: data.id, product_name, target_price, message: pw.saved(pwLang, product_name, Math.round(target_price)) }
             } catch (e) {
-              return { error: String(e) }
+              // W2/C44 — String(e) put a raw exception into a tool result the model then reads out.
+              console.error('[chat/save_price_watch] failed:', e instanceof Error ? e.message : e)
+              return { error: pw.saveError(pwLang) }
             }
           }
         }),

@@ -2,6 +2,9 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 // POST /api/users/[id]/follow → toggle follow/unfollow (optimistic insert, delete on 23505)
 export async function POST(
@@ -9,8 +12,11 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
-  if (user.id === params.id) return NextResponse.json({ error: 'Không thể tự follow' }, { status: 400 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
+  if (user.id === params.id) return NextResponse.json({ error: 'follow_self', message: serverMessage('social.followSelf', requestLocale(req)) }, { status: 400 })
 
   const targetId = params.id
 
@@ -37,7 +43,7 @@ export async function POST(
     return NextResponse.json({ following: false, follower_count: profile?.follower_count ?? 0 })
   }
 
-  if (error) return NextResponse.json({ error: 'Không thể follow' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'follow_failed', message: serverMessage('social.followFailed', requestLocale(req)) }, { status: 500 })
 
   // Insert succeeded → new follow: rebuild profile + fetch + notify
   rebuildProfile(user.id, supabase).catch(() => {})

@@ -1,0 +1,33 @@
+<resources>
+    <string name="scam_shield_title">🛡️ Lá chắn lừa đảo</string>
+    <string name="scam_shield_subtitle">Dán link vào đây, Tappy sẽ đối chiếu với các nguồn cảnh báo lừa đảo trước khi bạn mở.</string>
+    <string name="scam_shield_url_label">Đường dẫn</string>
+    <string name="scam_shield_url_placeholder">vidu.com hoặc https://…</string>
+    <string name="scam_shield_check">Kiểm tra link này</string>
+    <string name="scam_shield_checking">Đang kiểm tra…</string>
+
+    <string name="scam_shield_level_safe">Có vẻ an toàn</string>
+    <string name="scam_shield_level_low">Rủi ro thấp</string>
+    <string name="scam_shield_level_medium">Hãy cẩn thận</string>
+    <string name="scam_shield_level_high">Rủi ro cao</string>
+    <string name="scam_shield_level_critical">Đừng mở link này</string>
+    <string name="scam_shield_level_inconclusive">Chưa đủ căn cứ</string>
+
+    <string name="scam_shield_score">Điểm rủi ro %1$d · độ tin cậy %2$d%%</string>
+    <string name="scam_shield_official_match">Trang chính thức của %1$s (%2$s)</string>
+    <string name="scam_shield_evidence">Những gì Tappy tìm được</string>
+
+    <string name="scam_shield_unresolved_title">Chưa kiểm tra được link này</string>
+    <string name="scam_shield_error_offline">Không có kết nối. Link này CHƯA được kiểm tra.</string>
+    <string name="scam_shield_error_timeout">Kiểm tra quá lâu. Link này CHƯA được kiểm tra.</string>
+    <string name="scam_shield_error_generic">Có lỗi xảy ra. Link này CHƯA được kiểm tra.</string>
+    <string name="scam_shield_error_rate_limit">Bạn kiểm tra hơi nhanh. Chờ một chút rồi thử lại nhé.</string>
+    <string name="scam_shield_error_daily_limit">Bạn đã dùng hết lượt kiểm tra hôm nay.</string>
+    <string name="scam_shield_error_invalid_url">Đây không giống một đường dẫn. Kiểm tra lại giúp Tappy nhé.</string>
+    <string name="scam_shield_error_private_url">Địa chỉ này nằm trong mạng nội bộ nên không kiểm tra được.</string>
+
+    <string name="scam_shield_disclaimer">Lá chắn lừa đảo giúp bạn nhận ra link nguy hiểm, nhưng không thể phát hiện mọi trường hợp. Đừng bao giờ chuyển tiền hay đọc mã OTP chỉ vì một đường link.</string>
+
+    <string name="home_scam_shield_title">🛡️ Kiểm tra an toàn</string>
+    <string name="home_scam_shield_desc">Kiểm tra link trước khi mở</string>
+</resources>

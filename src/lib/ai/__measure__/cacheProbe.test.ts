@@ -42,6 +42,10 @@ async function probe(sp: SystemPrompt): Promise<CacheStats> {
     prompt: 'ok',
     maxTokens: 8,
   })
+  // 🔑 Reads the Anthropic shape directly, NOT through an adapter method. The D3 branch routed
+  // this through `AI.usageMetrics()`, which belongs to the multi-provider registry that is out of
+  // V2 scope and was not integrated — so the vendor read stays until a second provider exists to
+  // justify the seam.
   const meta = (r.providerMetadata?.anthropic ?? {}) as {
     cacheCreationInputTokens?: number | null
     cacheReadInputTokens?: number | null

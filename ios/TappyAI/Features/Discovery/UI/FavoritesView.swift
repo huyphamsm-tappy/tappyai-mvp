@@ -40,7 +40,7 @@ struct FavoritesView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("Đã lưu")
+        .navigationTitle("saved.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadData() }
     }
@@ -51,10 +51,10 @@ struct FavoritesView: View {
         VStack(spacing: Spacing.md) {
             Text("♡")
                 .font(.system(size: 48))
-            Text("Chưa lưu gì cả")
+            Text("saved.empty.title")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Bấm ♡ để lưu địa điểm yêu thích, hoặc 🔖 để lưu bài viết muốn xem lại — tất cả sẽ nằm ở đây.")
+            Text("saved.empty.detail")
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
                 .multilineTextAlignment(.center)
@@ -65,7 +65,7 @@ struct FavoritesView: View {
                 router.switchTo(.home)
             } label: {
                 HStack(spacing: Spacing.xs) {
-                    Text("Khám phá ngay")
+                    Text("saved.empty.action")
                         .font(.system(size: 13, weight: .semibold))
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12))
@@ -85,10 +85,10 @@ struct FavoritesView: View {
 
     private var errorState: some View {
         VStack(spacing: Spacing.sm) {
-            Text("Không tải được mục đã lưu")
+            Text("saved.error.title")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("Vui lòng thử lại sau nhé.")
+            Text("saved.error.detail")
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -103,7 +103,7 @@ struct FavoritesView: View {
                 Image(systemName: "heart.fill")
                     .font(.system(size: 10))
                     .foregroundStyle(.red)
-                Text("ĐỊA ĐIỂM YÊU THÍCH")
+                Text("saved.places.header")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
             }
@@ -176,7 +176,7 @@ struct FavoritesView: View {
                 Image(systemName: "bookmark.fill")
                     .font(.system(size: 10))
                     .foregroundStyle(TappyColor.primary)
-                Text("BÀI VIẾT ĐÃ LƯU")
+                Text("saved.posts.header")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
             }
@@ -201,7 +201,7 @@ struct FavoritesView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(s.placeName ?? "Bài viết")
+                        Text(s.placeName ?? NSLocalizedString("saved.post.fallbackTitle", comment: ""))
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundStyle(TappyColor.textPrimary)
                             .lineLimit(1)

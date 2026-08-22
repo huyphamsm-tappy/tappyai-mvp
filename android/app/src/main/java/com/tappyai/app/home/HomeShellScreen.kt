@@ -2,11 +2,14 @@ package com.tappyai.app.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -60,6 +63,9 @@ fun HomeShellScreen(
     } ?: HomeTab.Home
 
     val isExpanded = currentWindowWidthClass() == TappyWindowWidthClass.Expanded
+    // Read as a raw inset rather than the experimental WindowInsets.isImeVisible, so this does
+    // not depend on opt-in API. Non-zero bottom == the keyboard is taking screen space.
+    val imeVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
     val navItems = HomeTab.entries.map {
         val label = it.title()
         TappyNavItem(label = label, icon = it.icon, contentDescription = label)
@@ -83,7 +89,13 @@ fun HomeShellScreen(
                 .fillMaxHeight(),
             topBar = { TappyAppBar(title = currentTab.title()) },
             bottomBar = {
-                if (!isExpanded) {
+                // Collapsed while the IME is up. The bar would be BEHIND the keyboard anyway
+                // (measured: bar at y=1360..1467, IME top at y=928), but Scaffold still reserves
+                // its height in innerPadding, and ChatScreen adds imePadding() on top of that —
+                // so the composer was pushed a further ~251px and left a dead band of background
+                // between the input and the keyboard. Nothing is lost by hiding a bar the user
+                // cannot see or reach, and the messages get that space back while typing.
+                if (!isExpanded && !imeVisible) {
                     TappyBottomNavBar(
                         items = navItems,
                         selectedIndex = currentTab.ordinal,

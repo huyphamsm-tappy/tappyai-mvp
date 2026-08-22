@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit, dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // POST /api/auth/anonymous — mint an anonymous session.
 //
@@ -22,16 +24,19 @@ export async function POST(req: NextRequest) {
   // a flood can't mass-mint identities to dodge quotas or bloat the user table.
   // Legit clients call this once and refresh the same session thereafter.
   const ip = clientIp(req)
+  // B04. The `error` code is the machine contract and stays exactly as it was; only the human
+  // sentence follows the caller's language.
+  const locale = requestLocale(req)
   const flood = rateLimit(`anon-session:${ip}`, 5, 60_000)
   if (!flood.ok) {
     return NextResponse.json(
-      { error: 'rate_limit', message: 'Vui lòng thử lại sau giây lát.' },
+      { error: 'rate_limit', message: serverMessage('rate.retryShortly', locale) },
       { status: 429, headers: { 'Retry-After': String(flood.retryAfter) } },
     )
   }
   if (!dailyRateLimit(`anon-session-day:${ip}`, 30).ok) {
     return NextResponse.json(
-      { error: 'rate_limit', message: 'Vui lòng thử lại vào ngày mai.' },
+      { error: 'rate_limit', message: serverMessage('rate.retryTomorrow', locale) },
       { status: 429 },
     )
   }

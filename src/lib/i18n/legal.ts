@@ -54,7 +54,9 @@ export const en: Record<string, string> = {
   'legal.privacy.s3.b1': 'Anthropic Claude — generates the assistant’s responses.',
   'legal.privacy.s3.b2': 'Google search services and Serper — retrieve search and place results.',
   'legal.privacy.s3.b3': 'Supabase — hosts our database, authentication and file storage.',
-  'legal.privacy.s3.b4': 'Vercel — hosts the website and stores the photos, video and audio you upload.',
+  'legal.privacy.s3.b4': 'Vercel — hosts the website.',
+  'legal.privacy.s3.b8':
+    'Google Cloud Storage — stores the photos, video and audio you upload.',
   'legal.privacy.s3.b5':
     'OpenStreetMap Nominatim — turns coordinates into a place name when you share your location.',
   'legal.privacy.s3.b6': 'Stripe — processes payment if you subscribe to a paid plan.',
@@ -62,10 +64,12 @@ export const en: Record<string, string> = {
   'legal.privacy.s3.p1': 'These providers process data according to their own privacy policies.',
   'legal.privacy.s3.p2':
     'If you turn on notifications, your browser or device also creates a push subscription, which we store in order to deliver those notifications.',
+  'legal.privacy.s3.p3':
+    'If you use voice input, your speech is transcribed by your browser or device’s own speech service, which may process the audio on its provider’s servers. TappyAI receives only the resulting text and never records, stores or uploads the audio itself.',
 
   'legal.privacy.s4.heading': '4. Data Storage and Security',
   'legal.privacy.s4.p1':
-    'User data is securely stored using Supabase infrastructure with authentication and access controls. Photos, video and audio you upload are stored in Vercel Blob storage.',
+    'User data is securely stored using Supabase infrastructure with authentication and access controls. Photos, video and audio you upload are stored in Google Cloud Storage.',
   'legal.privacy.s4.p2':
     'Only authenticated users can access their own account information and conversation history.',
 
@@ -151,6 +155,37 @@ export const en: Record<string, string> = {
   'legal.delete.s5.p1':
     'If you need assistance, or want to check the status of a request you have already sent, contact us:',
 
+// -------------------------------------------------------------- copyright
+  'legal.copyright.title': 'Music Copyright Policy',
+  'legal.copyright.effective': 'Applies to music uploaded to TappyAI by its users.',
+
+  'legal.copyright.s1.heading': '1. Conditions for uploading music',
+  'legal.copyright.s1.p1':
+    'When you upload a track (an “Original Sound”), you confirm that you own it or hold every legal right to it, and you grant TappyAI and other users the right to use it on the platform — adding it to videos, and playing it back. You may not upload music owned by someone else without permission.',
+
+  'legal.copyright.s2.heading': '2. Responsibility',
+  'legal.copyright.s2.p1':
+    'Whoever uploads a track is legally responsible for it. TappyAI acts as an intermediary platform and will remove infringing content on receiving a valid notice.',
+
+  'legal.copyright.s3.heading': '3. Reporting infringement (notice and takedown)',
+  'legal.copyright.s3.p1':
+    'If you hold the rights to a work and believe a track on TappyAI infringes them, send a notice to the copyright agent below, or use the “Report” button on the track’s page.',
+  'legal.copyright.s3.lead': 'Your notice needs to include:',
+  'legal.copyright.s3.b1': 'The track or link that infringes your rights.',
+  'legal.copyright.s3.b2': 'Evidence that you are the rights holder.',
+  'legal.copyright.s3.b3': 'Your contact details.',
+  'legal.copyright.s3.note':
+    'We review valid notices and remove infringing content within 24–48 hours of receiving them.',
+
+  'legal.copyright.s4.heading': '4. Copyright agent',
+  'legal.copyright.s4.p1':
+    'We receive and handle every copyright complaint at this address:',
+  'legal.copyright.agent': 'Copyright agent',
+
+  'legal.copyright.s5.heading': '5. Repeat infringement',
+  'legal.copyright.s5.p1':
+    'An account that repeatedly uploads infringing content may lose the ability to upload music, or be suspended.',
+
   // ------------------------------------------------------------ shared bits
   'legal.contact.email': 'Email',
   'legal.contact.website': 'Website',
@@ -198,7 +233,9 @@ export const vi: Record<string, string> = {
   'legal.privacy.s3.b1': 'Anthropic Claude — tạo ra câu trả lời của trợ lý.',
   'legal.privacy.s3.b2': 'Dịch vụ tìm kiếm của Google và Serper — lấy kết quả tìm kiếm và địa điểm.',
   'legal.privacy.s3.b3': 'Supabase — lưu trữ cơ sở dữ liệu, xác thực và tệp của chúng tôi.',
-  'legal.privacy.s3.b4': 'Vercel — vận hành trang web và lưu trữ ảnh, video, âm thanh bạn tải lên.',
+  'legal.privacy.s3.b4': 'Vercel — vận hành trang web.',
+  'legal.privacy.s3.b8':
+    'Google Cloud Storage — lưu trữ ảnh, video và âm thanh bạn tải lên.',
   'legal.privacy.s3.b5':
     'OpenStreetMap Nominatim — chuyển tọa độ thành tên địa điểm khi bạn chia sẻ vị trí.',
   'legal.privacy.s3.b6': 'Stripe — xử lý thanh toán nếu bạn đăng ký gói trả phí.',
@@ -206,10 +243,12 @@ export const vi: Record<string, string> = {
   'legal.privacy.s3.p1': 'Các nhà cung cấp này xử lý dữ liệu theo chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p2':
     'Nếu bạn bật thông báo, trình duyệt hoặc thiết bị của bạn cũng tạo một đăng ký nhận thông báo đẩy, và chúng tôi lưu đăng ký đó để có thể gửi các thông báo này.',
+  'legal.privacy.s3.p3':
+    'Nếu bạn dùng nhập liệu bằng giọng nói, lời nói của bạn được chuyển thành văn bản bởi dịch vụ nhận dạng giọng nói của chính trình duyệt hoặc thiết bị, và dịch vụ đó có thể xử lý âm thanh trên máy chủ của họ. TappyAI chỉ nhận phần văn bản thu được, không ghi âm, không lưu và không tải lên âm thanh.',
 
   'legal.privacy.s4.heading': '4. Lưu trữ và bảo mật dữ liệu',
   'legal.privacy.s4.p1':
-    'Dữ liệu người dùng được lưu trữ an toàn trên hạ tầng Supabase với cơ chế xác thực và kiểm soát truy cập. Ảnh, video và âm thanh bạn tải lên được lưu trên Vercel Blob.',
+    'Dữ liệu người dùng được lưu trữ an toàn trên hạ tầng Supabase với cơ chế xác thực và kiểm soát truy cập. Ảnh, video và âm thanh bạn tải lên được lưu trên Google Cloud Storage.',
   'legal.privacy.s4.p2':
     'Chỉ người dùng đã đăng nhập mới có thể truy cập thông tin tài khoản và lịch sử trò chuyện của chính mình.',
 
@@ -288,6 +327,37 @@ export const vi: Record<string, string> = {
   'legal.delete.s5.heading': '5. Cần hỗ trợ?',
   'legal.delete.s5.p1':
     'Nếu cần hỗ trợ, hoặc muốn kiểm tra tình trạng yêu cầu đã gửi, vui lòng liên hệ:',
+
+// -------------------------------------------------------------- copyright
+  'legal.copyright.title': 'Chính sách bản quyền âm nhạc',
+  'legal.copyright.effective': 'Áp dụng cho nhạc do người dùng đăng tải lên TappyAI.',
+
+  'legal.copyright.s1.heading': '1. Điều kiện khi đăng nhạc',
+  'legal.copyright.s1.p1':
+    'Khi đăng một bản nhạc (“Original Sound”), bạn cam kết rằng bạn sở hữu hoặc có đầy đủ quyền hợp pháp đối với bản nhạc đó, và cấp cho TappyAI cùng người dùng khác quyền sử dụng nó (chèn vào video, phát lại) trên nền tảng. Bạn không được đăng nhạc có bản quyền của người khác khi chưa được phép.',
+
+  'legal.copyright.s2.heading': '2. Trách nhiệm',
+  'legal.copyright.s2.p1':
+    'Người đăng chịu trách nhiệm pháp lý về nội dung mình tải lên. TappyAI hoạt động như một nền tảng trung gian và sẽ gỡ bỏ nội dung vi phạm khi nhận được thông báo hợp lệ.',
+
+  'legal.copyright.s3.heading': '3. Báo cáo vi phạm (Notice-and-Takedown)',
+  'legal.copyright.s3.p1':
+    'Nếu bạn là chủ sở hữu quyền và cho rằng một bản nhạc trên TappyAI vi phạm bản quyền của bạn, hãy gửi thông báo tới đại diện bản quyền bên dưới, hoặc dùng nút “Báo cáo” trên trang bài nhạc.',
+  'legal.copyright.s3.lead': 'Thông báo cần gồm:',
+  'legal.copyright.s3.b1': 'Bản nhạc hoặc đường dẫn bị vi phạm.',
+  'legal.copyright.s3.b2': 'Bằng chứng bạn là chủ sở hữu quyền.',
+  'legal.copyright.s3.b3': 'Thông tin liên hệ của bạn.',
+  'legal.copyright.s3.note':
+    'Chúng tôi sẽ xem xét và gỡ bỏ nội dung vi phạm trong vòng 24–48 giờ kể từ khi nhận được thông báo hợp lệ.',
+
+  'legal.copyright.s4.heading': '4. Đại diện bản quyền',
+  'legal.copyright.s4.p1':
+    'Chúng tôi tiếp nhận và xử lý mọi khiếu nại bản quyền qua địa chỉ này:',
+  'legal.copyright.agent': 'Đại diện bản quyền',
+
+  'legal.copyright.s5.heading': '5. Xử lý vi phạm lặp lại',
+  'legal.copyright.s5.p1':
+    'Tài khoản nhiều lần đăng nội dung vi phạm bản quyền có thể bị hạn chế đăng nhạc hoặc khóa.',
 
   // ------------------------------------------------------------ shared bits
   'legal.contact.email': 'Email',

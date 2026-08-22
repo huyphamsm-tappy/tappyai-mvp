@@ -32,7 +32,7 @@ final class ScanViewModel: AppObservableObject {
 
         guard let resized = resizeImage(image),
               let data = resized.jpegData(compressionQuality: 0.8) else {
-            error = "Không thể xử lý ảnh"
+            error = NSLocalizedString("scan.error.image", comment: "")
             loading = false
             return
         }
@@ -46,12 +46,12 @@ final class ScanViewModel: AppObservableObject {
         } catch let appError as AppError {
             switch appError {
             case .authentication(reason: .anonLimitReached), .authentication(reason: .freeLimitReached):
-                error = "Bạn đã hết lượt scan hôm nay (20/ngày)"
+                error = NSLocalizedString("scan.error.dailyLimit", comment: "")
             default:
-                error = "Không thể nhận dạng văn bản. Vui lòng thử lại."
+                error = NSLocalizedString("scan.error.recognize", comment: "")
             }
         } catch {
-            self.error = "Không thể nhận dạng văn bản. Vui lòng thử lại."
+            self.error = NSLocalizedString("scan.error.recognize", comment: "")
         }
         loading = false
     }

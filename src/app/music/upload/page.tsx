@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -19,6 +20,7 @@ function readDuration(file: File): Promise<number> {
 }
 
 export default function MusicUploadPage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const [file, setFile] = useState<File | null>(null)
   const [title, setTitle] = useState('')
@@ -33,8 +35,8 @@ export default function MusicUploadPage() {
   const onPick = (f: File | null) => {
     setError('')
     if (!f) return
-    if (!f.type.startsWith('audio/')) { setError('Vui lòng chọn file âm thanh (mp3, m4a, wav…)'); return }
-    if (f.size > 20 * 1024 * 1024) { setError('File tối đa 20MB'); return }
+    if (!f.type.startsWith('audio/')) { setError(t('music.upload.err.notAudio')); return }
+    if (f.size > 20 * 1024 * 1024) { setError(t('music.upload.err.tooLarge')); return }
     setFile(f)
     if (!title) setTitle(f.name.replace(/\.[^.]+$/, '').slice(0, 120))
   }
@@ -44,7 +46,7 @@ export default function MusicUploadPage() {
     setBusy(true); setError('')
     try {
       const durationSec = await readDuration(file)
-      if (!durationSec || durationSec > 600) { setError('Nhạc phải dài 1 giây–10 phút'); setBusy(false); return }
+      if (!durationSec || durationSec > 600) { setError(t('music.upload.err.duration')); setBusy(false); return }
       // 1) Upload the audio straight to the active media provider.
       const ext = file.name.split('.').pop() || 'mp3'
       const blob = await uploadMedia({
@@ -65,21 +67,21 @@ export default function MusicUploadPage() {
         }),
       })
       const data = await res.json()
-      if (!res.ok) { setError(data.error || 'Đăng nhạc thất bại'); setBusy(false); return }
+      if (!res.ok) { setError(data.message || t('music.upload.err.failed')); setBusy(false); return }
       router.replace(`/sound/${data.id}`)
     } catch (e) {
       console.error(e)
-      setError('Có lỗi khi tải nhạc lên. Vui lòng thử lại.')
+      setError(t('music.upload.err.generic'))
       setBusy(false)
     }
   }
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header showBack backHref="/music" title="Đăng nhạc gốc" />
+      <Header showBack backHref="/music" title={t('music.upload.title')} />
       <main className="max-w-lg mx-auto px-4 py-6 space-y-5">
         <div className="flex items-center gap-2 text-sm text-content-secondary">
-          <Music size={16} /> Original Sound — nhạc do chính bạn tạo/sở hữu
+          <Music size={16} /> {t('music.upload.subtitle')}
         </div>
 
         {/* File picker */}
@@ -89,17 +91,17 @@ export default function MusicUploadPage() {
           className="w-full rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-6 flex flex-col items-center gap-2 text-content-secondary hover:border-primary-400 transition-colors"
         >
           {file ? <CheckCircle2 size={28} className="text-green-500" /> : <UploadCloud size={28} />}
-          <span className="text-sm font-medium">{file ? file.name : 'Chọn file nhạc (mp3, m4a, wav… tối đa 20MB)'}</span>
+          <span className="text-sm font-medium">{file ? file.name : t('music.upload.pickFile')}</span>
         </button>
         <input ref={inputRef} type="file" accept="audio/*" className="hidden" onChange={(e) => onPick(e.target.files?.[0] ?? null)} />
 
         <div className="space-y-3">
           <input
-            value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} placeholder="Tên bài hát *"
+            value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} placeholder={t('music.upload.titlePlaceholder')}
             className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-primary-400"
           />
           <input
-            value={artist} onChange={(e) => setArtist(e.target.value)} maxLength={120} placeholder="Nghệ sĩ (tùy chọn)"
+            value={artist} onChange={(e) => setArtist(e.target.value)} maxLength={120} placeholder={t('music.upload.artistPlaceholder')}
             className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-primary-400"
           />
         </div>
@@ -108,8 +110,8 @@ export default function MusicUploadPage() {
         <label className="flex gap-3 items-start rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 p-4 cursor-pointer">
           <input type="checkbox" checked={rights} onChange={(e) => setRights(e.target.checked)} className="mt-0.5 w-4 h-4 flex-shrink-0" />
           <span className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
-            Tôi xác nhận <strong>tôi sở hữu hoặc có đầy đủ quyền</strong> với bản nhạc này, và cho phép TappyAI cùng người dùng khác sử dụng nó trong video của họ. Tôi hiểu việc đăng nhạc vi phạm bản quyền có thể bị gỡ và chịu trách nhiệm pháp lý. Xem{' '}
-            <Link href="/copyright" className="underline font-medium">Chính sách bản quyền</Link>.
+            {t('music.upload.rights.before')}<strong>{t('music.upload.rights.emphasis')}</strong>{t('music.upload.rights.after')}{' '}
+            <Link href="/copyright" className="underline font-medium">{t('music.upload.rights.policyLink')}</Link>.
           </span>
         </label>
 
@@ -119,7 +121,7 @@ export default function MusicUploadPage() {
           onClick={submit} disabled={!canSubmit}
           className="w-full py-3 rounded-2xl bg-interactive text-white font-semibold text-sm disabled:opacity-40 flex items-center justify-center gap-2"
         >
-          {busy ? <><Loader2 size={16} className="animate-spin" /> Đang đăng…</> : 'Đăng Original Sound'}
+          {busy ? <><Loader2 size={16} className="animate-spin" /> {t('music.upload.publishing')}</> : t('music.upload.publish')}
         </button>
       </main>
     </div>

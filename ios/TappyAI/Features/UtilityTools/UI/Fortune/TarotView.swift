@@ -18,7 +18,7 @@ struct TarotView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("🔮 Bói bài Tarot")
+        .navigationTitle(NSLocalizedString("fortune.tarot.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -29,10 +29,10 @@ struct TarotView: View {
             VStack(spacing: Spacing.sm) {
                 Text("🔮")
                     .font(.system(size: 56))
-                Text("Chọn số lá bài để rút")
+                Text(NSLocalizedString("fortune.tarot.pickCount", comment: ""))
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(TappyColor.textPrimary)
-                Text("Tập trung vào câu hỏi của bạn, sau đó rút bài")
+                Text(NSLocalizedString("fortune.tarot.focus", comment: ""))
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.textSecondary)
                     .multilineTextAlignment(.center)
@@ -64,7 +64,7 @@ struct TarotView: View {
             } label: {
                 HStack(spacing: Spacing.sm) {
                     Image(systemName: "sparkles")
-                    Text("Rút bài")
+                    Text(NSLocalizedString("fortune.tarot.draw", comment: ""))
                 }
                 .font(.system(size: 15, weight: .semibold))
                 .frame(maxWidth: .infinity)
@@ -101,7 +101,7 @@ struct TarotView: View {
             } label: {
                 HStack(spacing: Spacing.sm) {
                     Image(systemName: "arrow.counterclockwise")
-                    Text("Rút lại")
+                    Text(NSLocalizedString("fortune.tarot.drawAgain", comment: ""))
                 }
                 .font(.system(size: 14, weight: .medium))
                 .frame(maxWidth: .infinity)
@@ -116,7 +116,7 @@ struct TarotView: View {
             }
             .buttonStyle(.plain)
 
-            Text("Kết quả mang tính giải trí, không thay thế tư vấn chuyên nghiệp")
+            Text(NSLocalizedString("fortune.disclaimer", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
                 .multilineTextAlignment(.center)

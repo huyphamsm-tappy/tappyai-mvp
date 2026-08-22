@@ -204,4 +204,20 @@ enum ProfileDestination: Hashable {
     case terms
     /// Feature usage guidance — the native counterpart of the web's /how-to-use.
     case howToUse
+    /// The author's own posts — the native counterpart of the web's /profile/posts and Android's
+    /// My Reviews. Release-critical rather than convenient: it is where a post the safety gate
+    /// held stays visible to its author, with the reason. See `MyPostsView`.
+    case myPosts
+    /// The notification inbox — counterpart of Android's notifications screen. Distinct from
+    /// [notifications], which is the SETTINGS screen for delivery preferences.
+    case notificationsInbox
+    /// People search — the counterpart of Android's ReviewSearchSection and the web user search.
+    case userSearch
+    /// Group dining — the counterpart of Android's GroupDiningScreen and the web's `/group/new`.
+    ///
+    /// 🚨 Was NOT a destination at all: the row called `UIApplication.shared.open` on a hardcoded
+    /// `https://tappyai.vn/group/new`. That left the app, landed on a domain that is not the
+    /// canonical origin, and arrived signed-out — where `/group/new` redirects to `/login`. The
+    /// feature existed as a row and nowhere else.
+    case groupDining
 }

@@ -2,17 +2,23 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { AI } from '@/lib/ai/llm'
 import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const groupId = params.id
-  if (!groupId) return NextResponse.json({ error: 'id required' }, { status: 400 })
+  if (!groupId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   // Per-user cap on this paid LLM call (creator-only, but still uncapped otherwise).
   if (!rateLimit(`group-suggest:${user.id}`, 5, 60_000).ok) {
-    return NextResponse.json({ error: 'Bạn thao tác quá nhanh, thử lại sau giây lát.' }, { status: 429 })
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
   }
 
   const { data: group, error: groupError } = await supabase
@@ -21,8 +27,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     .eq('id', groupId)
     .single()
 
-  if (groupError || !group) return NextResponse.json({ error: 'Không tìm thấy nhóm' }, { status: 404 })
-  if (group.creator_id !== user.id) return NextResponse.json({ error: 'Chỉ trưởng nhóm mới có thể gợi ý' }, { status: 403 })
+  if (groupError || !group) return NextResponse.json({ error: 'group_not_found', message: serverMessage('group.notFound', requestLocale(req)) }, { status: 404 })
+  if (group.creator_id !== user.id) return NextResponse.json({ error: 'owner_only', message: serverMessage('group.ownerOnly', requestLocale(req)) }, { status: 403 })
 
   const { data: members } = await supabase
     .from('group_members')
@@ -31,7 +37,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     .order('created_at', { ascending: true })
 
   if (!members || members.length === 0) {
-    return NextResponse.json({ error: 'Chưa có thành viên nào tham gia' }, { status: 400 })
+    return NextResponse.json({ error: 'no_members', message: serverMessage('group.noMembers', requestLocale(req)) }, { status: 400 })
   }
 
   const prompt = `Nhóm "${group.name}" có ${members.length} người muốn đi ăn cùng nhau:
@@ -53,6 +59,6 @@ Hãy gợi ý 3 địa điểm ăn uống phù hợp với TẤT CẢ mọi ngư
 
     return NextResponse.json({ suggestion })
   } catch {
-    return NextResponse.json({ error: 'Lỗi tạo gợi ý, vui lòng thử lại' }, { status: 500 })
+    return NextResponse.json({ error: 'suggest_failed', message: serverMessage('group.suggestFailed', requestLocale(req)) }, { status: 500 })
   }
 }

@@ -54,8 +54,8 @@ describe('PW-EN-05 — an English user gets English', () => {
   it('the login, limit and save-error messages are English', () => {
     expect(pw.needLogin('en')).toMatch(/sign in/i)
     expect(pw.limitReached('en')).toMatch(/at most 10/i)
-    expect(pw.saveError('en', 'db down')).toMatch(/couldn't save/i)
-    for (const s of [pw.needLogin('en'), pw.limitReached('en'), pw.saveError('en', 'x')]) {
+    expect(pw.saveError('en')).toMatch(/couldn't save/i)
+    for (const s of [pw.needLogin('en'), pw.limitReached('en'), pw.saveError('en')]) {
       expect(s).not.toMatch(VI_DIACRITIC)
     }
   })

@@ -61,7 +61,7 @@ export default function HomeView({
           <div className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-accent-300/20 blur-2xl pointer-events-none" />
           <div className="relative">
             <p className="text-white/80 text-sm font-medium mb-1">
-              {user ? t('home.greetingUser', { name: firstName }) : t('home.greetingGuest')}
+              {user ? t('home.greetingUser', { name: firstName || t('home.friend') }) : t('home.greetingGuest')}
             </p>
             <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl font-black leading-tight mb-5" dangerouslySetInnerHTML={{ __html: heroText }} />
             <SearchBar variant="hero" />
@@ -249,7 +249,7 @@ export default function HomeView({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{conv.title}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('home.messages', { n: String(conv.messageCount) })} · {formatRelativeTime(conv.updated_at)}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('home.messages', { n: String(conv.messageCount) })} · {formatRelativeTime(conv.updated_at, t, locale)}</p>
                   </div>
                   <ChevronRight size={16} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
                 </Link>

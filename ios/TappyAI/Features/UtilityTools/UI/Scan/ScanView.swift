@@ -33,7 +33,7 @@ struct ScanView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .navigationTitle("📷 Scan văn bản")
+        .navigationTitle(NSLocalizedString("scan.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .photosPicker(isPresented: $showPhotoPicker, selection: $photoPickerItem, matching: .images)
         .onChange(of: photoPickerItem) { item in
@@ -61,7 +61,7 @@ struct ScanView: View {
         } label: {
             HStack(spacing: Spacing.sm) {
                 Image(systemName: "doc.text.viewfinder")
-                Text("Scan văn bản")
+                Text(NSLocalizedString("scan.heading", comment: ""))
             }
             .font(.system(size: 15, weight: .semibold))
             .frame(maxWidth: .infinity)
@@ -85,8 +85,8 @@ struct ScanView: View {
                     .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
 
                 HStack(spacing: Spacing.sm) {
-                    pickButton("Chọn ảnh khác", icon: "photo", action: { showPhotoPicker = true })
-                    pickButton("Xoá", icon: "xmark", action: { vm.clear() })
+                    pickButton(NSLocalizedString("scan.pickAnother", comment: ""), icon: "photo", action: { showPhotoPicker = true })
+                    pickButton(NSLocalizedString("common.clear", comment: ""), icon: "xmark", action: { vm.clear() })
                 }
             } else {
                 VStack(spacing: Spacing.md) {
@@ -94,14 +94,14 @@ struct ScanView: View {
                         .font(.system(size: 40))
                         .foregroundStyle(TappyColor.textSecondary)
 
-                    Text("Chụp hoặc chọn ảnh có chữ để scan")
+                    Text(NSLocalizedString("scan.emptyHint", comment: ""))
                         .font(TappyFont.callout)
                         .foregroundStyle(TappyColor.textSecondary)
                         .multilineTextAlignment(.center)
 
                     HStack(spacing: Spacing.sm) {
-                        pickButton("Chụp ảnh", icon: "camera", action: { showCamera = true })
-                        pickButton("Thư viện", icon: "photo", action: { showPhotoPicker = true })
+                        pickButton(NSLocalizedString("scan.takePhoto", comment: ""), icon: "camera", action: { showCamera = true })
+                        pickButton(NSLocalizedString("scan.library", comment: ""), icon: "photo", action: { showPhotoPicker = true })
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -141,7 +141,7 @@ struct ScanView: View {
             ProgressView()
                 .tint(TappyColor.primary)
                 .scaleEffect(0.8)
-            Text("Đang nhận dạng văn bản...")
+            Text(NSLocalizedString("scan.recognizing", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
         }
@@ -156,7 +156,7 @@ struct ScanView: View {
     private var resultSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
             HStack {
-                Text("Văn bản nhận dạng")
+                Text(NSLocalizedString("scan.recognizedText", comment: ""))
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
@@ -166,7 +166,7 @@ struct ScanView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "doc.on.doc")
                             .font(.system(size: 11))
-                        Text("Sao chép")
+                        Text(NSLocalizedString("common.copy", comment: ""))
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(TappyColor.primary)
@@ -188,7 +188,7 @@ struct ScanView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "square.and.arrow.up")
                         .font(.system(size: 11))
-                    Text("Chia sẻ")
+                    Text(NSLocalizedString("common.share", comment: ""))
                         .font(.system(size: 12, weight: .medium))
                 }
                 .foregroundStyle(TappyColor.primary)

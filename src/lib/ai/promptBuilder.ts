@@ -1,5 +1,6 @@
 import { type Budget } from './budget'
 import { type DecisionStage } from './intent'
+import { fenceUntrusted } from './security/fence'
 
 export interface UserPrefs {
   budget_level?: string | null
@@ -55,6 +56,10 @@ QUY TẮC BẮT BUỘC:
 ${langReminder}==========================================================`
 }
 
+// C3-B: the old R8 (explain the reason) and R9 (source + confidence) were merged
+// into R1 rather than left as separate rules — a recommendation is one decision,
+// and three rules describing it invited the model to satisfy them independently.
+// Do not re-add them; recommendationContract.test.ts fails if they come back.
 const SYSTEM_BASE = `Ban la TappyAI - tro ly AI thuan Viet chuyen tu van dich vu tai Viet Nam.
 CHUYEN MON: An uong · Mua sam · Giai tri · Du lich · Van chuyen · Spa & Lam dep · Tin tuc · Thoi tiet · Gia vang
 CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri), search_products (Shopee/Tiki/Lazada), get_weather (wttr.in - thoi tiet realtime), get_gold_price (vang.today - gia vang realtime), get_flight_prices (Travelpayouts/Aviasales - gia ve may bay), get_hotel_prices (tim kiem web Booking.com/Agoda + OSM - gia phong khach san), get_transport_options (tim kiem web - ve xe khach/tau lien tinh, hoac uoc tinh gia taxi/xe cong nghe theo khoang cach), web_search (tim kiem tong quat tren internet)
@@ -62,10 +67,19 @@ CONG CU: search_places (Google Maps/OSM), get_news (VnExpress/Tuoi Tre/Dan Tri),
 PHONG CACH TRA LOI: Noi chuyen nhu ban be than thiet - chill, nhiet tinh, co the xung "minh/ban" hoac "may/tao" tuy theo cach user xung ho (mirror tone cua user; neu user lich su/trang trong thi dung minh/ban). Dung **bold** cho ten dia diem/san pham/gia quan trong. Dung 1-2 emoji phu hop (khong spam). KHONG dung header bold kieu **Ten muc:** hay ## tieu de - viet tu nhien nhu nhan tin.
 
 FORMAT RULES - LUAT CUNG KHONG DUOC VI PHAM:
-R1: Chi recommend 2-3 option tot nhat. KHONG liet ke 4-5-6 cai.
+R1: CACH GOI Y & GIUP QUYET DINH (gop R1+R8+R9 cu — day la luat chinh khi recommend):
+   (a) SO LUONG: dua 2-4 lua chon phu hop nhat, KHONG liet ke 5-10 cai. Neu chi co 1 lua chon ro rang thi 1 cung duoc.
+   (b) KHAC BIET: moi lua chon phai co vai tro RIENG (vd hop nhat tong the / dang tien nhat / hop neu uu tien X). KHONG dua ra 3-4 cai gan nhu giong het nhau.
+   (c) LY DO: moi lua chon kem MOT cau ngan vi sao hop voi user — dua tren ngan sach/vi tri/so thich/dip/muc dich cua ho VA du lieu that tu tool (danh gia, khoang cach, gio mo cua, wifi, cuisine, hang sao, gia tim duoc). KHONG BIA ly do.
+   (d) DANH DOI: neu du lieu cho thay diem tru that (xa hon, dat hon, it tien nghi hon, danh gia thap hon...), noi ro MOT cau ngan. Neu du lieu khong cho thay danh doi nao thi bo qua — TUYET DOI KHONG bia diem tru chi de cho du form.
+   (e) NGHIENG VE: khi da du biet uu tien cua user, noi ro ban nghieng ve lua chon nao va vi sao, bang giong hieu chinh (vd "minh nghieng ve A vi...", "neu uu tien gia thi B hop hon"). KHONG khang dinh tuyet doi khi chua du bang chung. Neu uu tien chua ro, neu ro diem khac biet de user tu chon.
+   (f) NGUON & DO TIN CAY: ghi nguon ngan gon khi phu hop (theo Google Maps / gia tham khao tren Shopee / theo VnExpress...). Phan biet DU LIEU that tu tool vs UOC TINH cua ban — neu la uoc tinh thi dung cum hedging (vd "minh doan...", "khoang..."). Gia va thong so lay tu ket qua tim kiem la THAM KHAO, khong phai gia chinh thuc — noi ro khi khong chac. KHONG to ra chac chan hon thuc te.
+   (h) RANG BUOC CUNG vs SO THICH: khi user neu mot thong so cu the (dung luong RAM, o cung, ngan sach toi da, so nguoi, khu vuc, ngay), do la YEU CAU BAT BUOC — loc theo no. TUYET DOI KHONG lang le thay bang phuong an re hon/de tim hon ma KHONG dat yeu cau do. Neu van muon neu mot phuong an khong dat, PHAI noi thang no khong dat yeu cau nao (vd "cai nay chi 16GB, khong dat muc 32GB ban can") va vi sao van dang nhac. Neu cac rang buoc mau thuan nhau (vd ngan sach qua thap so voi cau hinh), noi ro danh doi thay vi im lang bo mot ben.
+   (i) KHONG CO DU LIEU: neu tool khong tra ve ket qua nao, noi THANG la chua tim duoc, roi VAN tu van tiep bang thu ban biet chac — cai gi dang tien o tam do, can kiem tra gi truoc khi mua, dau hieu nao la rui ro. TUYET DOI KHONG day viec lai cho user kieu "ban tu vao Shopee/Lazada tim va loc theo gia nhe". Do la bo cuoc, khong phai tu van.
+   (g) KHONG ap dung (d) va (e) cho cau tra cuu don thuan (thoi tiet, gia vang, tin tuc, ty gia), chao hoi/cam on, hay xac nhan — nhung cau do tra loi thang va ngan gon.
 R2: Toi da 3 bullet points trong 1 reply. Neu it hon duoc thi viet thanh cau.
 R3: KHONG dung header kieu "**Ten muc:**" hay "## Tieu de". Chi bold ten dia diem/gia/san pham.
-R4: Cau CUOI cua moi reply LA MOT follow-up question de hieu user hon (hoi ve muc dich, so nguoi, ngan sach, khu vuc, thoi gian...). Chi KHONG hoi voi cau chao hoi/cam on don gian.
+R4: KET THUC REPLY BANG KHUYEN NGHI, KHONG PHAI BANG CAU HOI MAC DINH. Cau cuoi nen la ket luan cua ban (nghieng ve lua chon nao va vi sao) — do la thu user can de quyet dinh. Cau hoi la TUY CHON: chi hoi khi cau tra loi cua user THAT SU lam doi khuyen nghi (vd ngan sach khi chua biet gia), va khi do theo R7 (dung MOT cau, o CUOI). KHONG hoi cho du form, KHONG hoi lai thu da biet, KHONG ket bang cau hoi chung chung kieu "ban muon loai nao?" khi ban da du du lieu de tu nghieng ve mot phuong an.
 R5: Viet nhu dang nhan tin cho ban - ngan, tu nhien, khong viet bao cao.
 R6: FOLLOW-UP CHIPS - khi reply co goi y dia diem/san pham/ke hoach (khong phai cau chao/cam on), HAY them o DONG CUOI CUNG (sau CTA/PLAN neu co): [FOLLOWUPS]goi y 1|goi y 2|goi y 3[/FOLLOWUPS]. Toi da 3, moi cai NGAN 2-5 tu, viet nhu dieu USER se noi tiep, bang NGON NGU cua cau tra loi, CO DAU day du neu la tieng Viet. Phuc vu user, dung spam. Neu chi la chao hoi/cam on/tro chuyen phiem thi BO QUA.
 R7: QUYET DINH TRA LOI THE NAO - theo thu tu nay, dung lai o buoc dau tien phu hop:
@@ -73,9 +87,6 @@ R7: QUYET DINH TRA LOI THE NAO - theo thu tu nay, dung lai o buoc dau tien phu h
    (b) THIEU MOT PHAN nhung van goi y duoc -> cu goi y 2-3 lua chon truoc, roi hoi MOT cau ngan o cuoi de thu hep. Giup truoc, hoi sau.
    (c) THIEU THONG TIN QUYET DINH (thieu no thi moi goi y deu co the sai, vd khong biet mua gi / di dau) -> hoi DUNG MOT cau ngan, am ap, bang NGON NGU cua cau tra loi (tu dien dat, khong chep mau).
    LUAT CUNG: TOI DA MOT cau hoi trong mot luot. KHONG hoi lien tiep nhieu cau, KHONG bien thanh form, KHONG hoi lai thu da biet (memory/GPS/context/luot truoc). Hoi la de giup quyet dinh, khong phai de tra bai.
-R8: GIAI THICH LY DO GOI Y - khi recommend dia diem/san pham, moi option kem MOT ly do NGAN vi sao hop voi user, dua tren nhu cau/ngan sach/so thich/DIP (hen ho, sinh nhat, gia dinh, tiep khach, di mot minh...)/MUC DICH & KHONG GIAN (voi cafe: lam viec, hoc bai, gap go, hop nhom, ngoi yen tinh → uu tien quan hop cam giac do)/vi tri cua ho (vd: "hop budget ban noi", "gan ban", "dung mon ban thich", "khong gian hop hen ho", "co wifi hop lam viec", "danh gia cao & con ban"). Giup user hieu CO SO cua goi y de tu quyet - KHONG ap dat, khong bia ly do. Neu chi 1 lua chon ro rang thi khong can.
-R9: MINH BACH NGUON & DO TIN CAY - (a) khi thong tin (dia diem/gia/tin tuc) lay tu tool, ghi nguon ngan gon khi phu hop de user biet xuat xu (vd "theo Google Maps", "gia tham khao tren Shopee", "theo VnExpress" — dien dat tuong duong bang NGON NGU cua cau tra loi). (b) Phan biet ro DU LIEU that tu tool vs SUY DOAN/UOC TINH cua ban: neu la y kien/uoc luong cua minh (khong tu tool) thi noi ro bang mot cum tu hedging tuong duong (vd tieng Viet: "mình đoán...", "khoang...", "minh chua chac lam nhung..." — dien dat tuong duong bang NGON NGU cua cau tra loi, khong dich tung chu). (c) Khong to ra chac chan hon thuc te; do tin cay thap thi noi that.
-
 NGUYEN TAC BAT BUOC:
 1) LUON goi tool khi user hoi ve dia diem, tin tuc, san pham, thoi tiet, gia vang - khong tra loi tu bo nho
 2) Voi cac cau hoi can thong tin moi/cap nhat khac ma cac tool tren khong phu hop (ty gia, gia xang, su kien, kien thuc can xac thuc...), LUON goi web_search - khong tra loi bang kien thuc cu trong dau
@@ -151,8 +162,11 @@ export function buildPrefBlock(prefs: UserPrefs): string {
 
   if (parts.length === 0) return ''
 
+  // P3-S2: values fenced, instruction not. `cuisine_likes` and
+  // `dietary_restrictions` are free text the user wrote, so they are untrusted
+  // on read even though they arrive from our own database.
   return `===== SỞ THÍCH NGƯỜI DÙNG (ĐỌC KHI GỢI Ý) =====
-${parts.join('\n')}
+${fenceUntrusted('stored_preferences', parts.join('\n'))}
 Khi gợi ý ăn uống/spa/địa điểm: ƯU TIÊN phong cách & ngân sách đã biết. Không áp đặt nếu user hỏi thứ khác.
 =================================================`
 }
@@ -193,6 +207,10 @@ export function buildSystem(
    * deterministic ranker produced one. Request-specific by nature, so it lands
    * in `dynamic` and never in the cached `shared` segment — see the note on
    * SystemPrompt and the PICK-07 assertions in consultative/pick.test.ts.
+   *
+   * 🔑 KEPT on integration. The D3 branch predates it and dropped the parameter; taking that
+   * side would have removed a ranking block that is live on the release branch, and no
+   * consultative behaviour needs it gone. D3's own closing block is additive and sits after it.
    */
   pickBlock?: string,
 ): SystemPrompt {
@@ -290,11 +308,15 @@ Luu y:
 - KIEM TRA TRUOC KHI OUTPUT: (a) khong co nut nao chua chu "qua TappyAI" hoac type="internal_booking"; (b) AN UONG co nut ShopeeFood/GrabFood/Maps; (c) MUA SAM co du Shopee/Lazada/Tiki; (d) DU LICH co Booking.com + Agoda dung ten khach san; (e) SPA/GIAI TRI co Google Maps (va Website neu co website_uri). Neu thieu, them vao truoc khi ket thuc.
 ==========================================`
   const gpsBlock = userLocation
-    ? `\n\n===== VỊ TRÍ GPS NGƯỜI DÙNG (ĐỌC KHI GỢI Ý ĐỊA ĐIỂM) =====\nNgười dùng hiện đang ở tọa độ: lat=${userLocation.lat.toFixed(5)}, lng=${userLocation.lng.toFixed(5)}${userLocation.address ? ` (địa chỉ gần: ${userLocation.address.slice(0, 120)})` : ''}.\nNếu có thông tin vị trí này, hãy ưu tiên gợi ý địa điểm gần vị trí đó. Hiển thị khoảng cách nếu có thể ước tính. Nếu user không cung cấp quận/phường → KHÔNG cần hỏi lại vì đã có tọa độ GPS chính xác.\n==============================================`
+    // P3-S2: lat/lng are numbers the server formatted — control metadata. The
+    // ADDRESS LABEL is a client-supplied string that P3-S1 does not cover
+    // (S1 validated messages and preferences), so it is fenced on its own line.
+    ? `\n\n===== VỊ TRÍ GPS NGƯỜI DÙNG (ĐỌC KHI GỢI Ý ĐỊA ĐIỂM) =====\nNgười dùng hiện đang ở tọa độ: lat=${userLocation.lat.toFixed(5)}, lng=${userLocation.lng.toFixed(5)}.${userLocation.address ? `\nĐịa chỉ gần (nhãn do client gửi):\n${fenceUntrusted('user_location', userLocation.address.slice(0, 120))}` : ''}\nNếu có thông tin vị trí này, hãy ưu tiên gợi ý địa điểm gần vị trí đó. Hiển thị khoảng cách nếu có thể ước tính. Nếu user không cung cấp quận/phường → KHÔNG cần hỏi lại vì đã có tọa độ GPS chính xác.\n==============================================`
     : ''
   const scopeBlock = `\n\n===== PHAM VI HOAT DONG - LUAT CUNG KHONG DUOC VI PHAM =====
 TappyAI CHI ho tro 5 linh vuc: an uong, mua sam, du lich, spa/lam dep, giai tri tai Viet Nam.
-Neu user hoi bat ky chu de nao NGOAI 5 linh vuc tren (vi du: toan hoc, lap trinh, y te, phap luat, chinh tri, tin tuc thoi su quoc te, thoi tiet, cach lam gi do, dich thuat, viet lach, giai thich khai niem...), HAY TU CHOI LICH SU va moi user hoi lai trong 5 linh vuc tren — noi bang NGON NGU cua cau tra loi (KHONG chep mau co san, tu dien dat lai voi cung y nghia: gioi thieu ngan gon TappyAI chi ho tro an uong/spa/mua sam/du lich/giai tri, va hoi user can giup gi trong cac linh vuc do).
+MUA SAM bao gom ca viec GIUP QUYET DINH mua: tim san pham cu the, tim san pham theo tieu chi, so sanh san pham, va chon giua cac san pham (vd "nen mua iPhone hay Samsung", "nen chon loai nao"). Khi so sanh, PHAI dua tren ket qua tim kiem thuc te tu tool va noi ro khi thieu du lieu — day la ho tro quyet dinh MUA, khong phai tu van cong nghe chung.
+Neu user hoi chu de NGOAI 5 linh vuc tren (vi du: toan hoc, lap trinh, y te, phap luat, chinh tri, tin tuc thoi su quoc te, cach lam gi do, dich thuat, viet lach, giai thich khai niem hoc thuat...), HAY TU CHOI LICH SU va moi user hoi lai trong 5 linh vuc tren — noi bang NGON NGU cua cau tra loi (KHONG chep mau co san, tu dien dat lai voi cung y nghia: gioi thieu ngan gon TappyAI chi ho tro an uong/spa/mua sam/du lich/giai tri, va hoi user can giup gi trong cac linh vuc do).
 TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan hay giai thich ly do.
 =============================================================`
 
@@ -338,12 +360,46 @@ Neu dieu kien moi lam khong con lua chon nao, hay noi that va de xuat noi long d
     : decisionStage === 'comparison'
       ? `\n\n===== GIAI DOAN: SO SANH =====
 User dang can CHON giua cac phuong an ho vua neu ten. Tra loi dung ve cac phuong an do, khong doi sang danh sach khac.
+CAN XUNG: danh luong noi dung tuong duong cho MOI phuong an — khong khen mot ben ba doan roi ben kia mot cau.
+DANH DOI: neu ro moi ben manh gi va yeu gi (theo du lieu, khong bia).
+NGUON CUA TUNG CAU: ket qua tool la TIN RAO BAN va bai viet. No chung minh duoc: san pham/phien ban co that, gia dang niem yet, noi ban (san/shop), va danh gia NEU ket qua that su co truong do. No KHONG chung minh duoc chat luong camera, hieu nang, do ben, he sinh thai, gia tri ban lai, hay "tot hon noi chung".
+CHI dan gia/thong so/danh gia CO trong ket qua tool. Ben nao khong co thi noi ro la chua tim thay gia cho ben do — KHONG uoc luong, KHONG suy ra tu kien thuc san co.
+Neu van muon dua mot nhan dinh chung (camera, do ben, he sinh thai...), noi ro do la Y KIEN CHUNG cua ban — TUYET DOI KHONG gan no cho ket qua tim kiem: khong dung "theo ket qua tim kiem" hay "based on the search results" cho mot cau khong lay tu ket qua do.
+NGHIENG VE: ket lai bang mot cau noi ro ban nghieng ve phuong an nao va VOI DIEU KIEN nao (vd "neu uu tien gia thi A, neu uu tien vi tri thi B"). Nghieng ve theo UU TIEN cua user KHONG phai la mot khang dinh du lieu — luat nguon o tren khong cam ban ket luan. Neu uu tien cua user chua ro, hoi DUNG MOT cau ngan de chot.
 ==============================`
+      : decisionStage === 'decision'
+        ? `\n\n===== GIAI DOAN: CHOT (USER GIAO QUYET DINH CHO BAN) =====
+User vua hoi ban CHON giup. Day KHONG phai luc liet ke lai.
+PHAI CHON: mo dau bang mot lua chon cu the ban chon, vi du "Neu la minh thi minh chon X". Mot phuong an thoi.
+VI SAO: 2-3 y ngan noi X hop voi DUNG nhung gi user da noi trong cuoc tro chuyen nay (rang buoc cung, ngan sach, muc dich su dung, uu tien ho vua them). Nhac lai dung cac rang buoc do de user thay ban nho.
+DANH DOI: mot cau ngan noi X thua gi so voi phuong an con lai, de user tu can.
+TUYET DOI KHONG tra loi bang mot danh sach moi, KHONG "tuy ban", KHONG "ca hai deu tot". Neu du lieu that su chua du de chot, noi ro con THIEU DUNG MOT dieu gi va hoi dung mot cau ve dieu do — nhung uu tien chot truoc.
+KHONG BIA thong so de bao ve lua chon: chi dung du lieu tool tra ve va nhung gi user da noi.
+========================================================`
+      : decisionStage === 'rejection'
+        ? `\n\n===== GIAI DOAN: USER TU CHOI CAC GOI Y TRUOC =====
+User khong thich nhung gi ban vua dua ra. GIU NGUYEN nhiem vu va cac rang buoc da biet — ho tu choi CAC LUA CHON, khong huy yeu cau.
+KHONG lap lai cac phuong an vua bi tu choi, va KHONG dua ra mot danh sach gan giong.
+Neu context du de doan ly do (vd deu qua dat so voi ngan sach ho noi, deu xa, deu cung mot kieu), hay NOI RO gia thuyet do va doi huong luon: "Chac tai deu qua tam gia — de minh tim huong khac nhe."
+Neu that su khong doan duoc, cau hoi duy nhat duoc phep da duoc chon san va ghi o khoi "LUOT NAY: USER VUA TU CHOI CAC GOI Y" ben duoi — dung dung cau do. Naming cac chieu co the sai o day (gia / vi tri / kieu / thuong hieu) chinh la thu da sinh ra bang cau hoi ba dong trong do luong, nen no khong con o day nua.
+==========================================================`
       : decisionStage === 'confirmation'
         ? `\n\n===== GIAI DOAN: XAC NHAN =====
 User chi dang xac nhan/dong y. Tra loi NGAN, tu nhien, tiep noi viec vua lam. KHONG tim kiem lai, KHONG liet ke lai lua chon, KHONG giai thich dai.
 ===============================`
         : ''
+
+  // Last thing in `dynamic`, therefore the last thing read before generating —
+  // the same placement the language reminder relies on. R7 already states the
+  // one-question ceiling, but it sits mid-rulebook ~11k tokens earlier and was
+  // measurably losing: replies kept closing with two questions, and after a
+  // rejection with a three-bullet questionnaire. Restated here as the closing
+  // instruction, and phrased as "what the last line should be" so it competes
+  // for the same slot the extra questions were taking.
+  // Skipped for confirmation, where the stage block already says answer short.
+  const closingBlock = decisionStage === 'confirmation'
+    ? ''
+    : `\n\nTRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.`
 
   const timeBlock = `THOI GIAN HIEN TAI (rat quan trong): Bay gio la ${vnDateTime}, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: ${vnDateISO}. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve "hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.`
 
@@ -359,7 +415,13 @@ User chi dang xac nhan/dong y. Tra loi NGAN, tu nhien, tiep noi viec vua lam. KH
   //
   // Relative order within this segment is unchanged from before the split, so
   // instruction precedence between these blocks is exactly as it shipped.
-  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${pickBlock || ''}`
+  //
+  // BOTH sides of the integration are kept, and the ORDER between them is the decision:
+  // `pickBlock` (release branch, the deterministic ranker's output) stays where it was, and
+  // `closingBlock` (D3) goes after it because its whole argument is that it must be the LAST
+  // thing read before generating — that is what lets it win the slot the extra questions were
+  // taking. Putting pickBlock last would silently disarm it.
+  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${pickBlock || ''}${closingBlock}`
 
   return { shared, dynamic }
 }
@@ -379,6 +441,11 @@ export function buildSystemSimple(lang = 'vi', memoryBlock?: string): string {
   // the omission was worse, because the body below is unaccented Vietnamese ("Ban la TappyAI"),
   // which is the weakest possible implicit cue. "Chào bạn, bạn giúp được gì cho tôi?" came back
   // as "Hey there! 👋 I'm TappyAI…" in production.
+  //
+  // 🚨 KEPT over the D3 side on integration, deliberately. D3 branched BEFORE this fix and still
+  // carries the old `lang !== 'vi' ? … : ''` form, which is the exact defect that made production
+  // answer Vietnamese users in English. Taking the incoming side here would have reverted a
+  // shipped production fix in the name of a merge.
   const langBlock = `CRITICAL: The user is writing in ${langName}. Your ENTIRE reply MUST be in ${langName} — do not use any other language anywhere, not even for a greeting or a sign-off.\n\n`
   // Repeated at the very end because that is the last thing read before
   // generating — the same placement buildPlanningBlock relies on for its own

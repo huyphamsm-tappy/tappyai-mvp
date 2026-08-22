@@ -306,7 +306,10 @@ final class ChatViewModel: AppObservableObject {
     // MARK: - Nearby search (action chip)
 
     func nearbySearch() {
-        sendQuickPrompt("Gợi ý quán ăn và địa điểm vui chơi gần mình nhé")
+        // Localized because this is sent AS THE USER'S MESSAGE, not shown as UI. An English user
+        // tapping "Nearby" was silently sending Vietnamese on their behalf — it appears in their
+        // own transcript in a language they did not write, and it steers the model's reply.
+        sendQuickPrompt(NSLocalizedString("chat.quickPrompt.nearby", comment: ""))
     }
 
     // MARK: - Streaming

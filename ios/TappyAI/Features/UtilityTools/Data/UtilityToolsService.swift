@@ -59,4 +59,17 @@ final class UtilityToolsService: Sendable {
         let endpoint = Endpoint(path: "/api/viet-content", method: .post, body: body)
         return try await api.send(endpoint, as: VietContentResponse.self)
     }
+
+    /// Scam Shield (B09). `requiresAuth` so a signed-in user gets the higher daily quota the
+    /// backend grants them — exactly as on the web, where the same endpoint reads the session.
+    ///
+    /// 🚨 No local scoring: this sends the URL and returns whatever verdict the backend produced.
+    /// The engine, the provider fan-out, the official-brand directory and the thresholds all stay
+    /// on the server.
+    func checkScamShield(url: String) async throws -> ScamCheckResult {
+        let body = try JSONSerialization.data(withJSONObject: ["url": url])
+        let endpoint = Endpoint(path: "/api/scam-shield/check", method: .post, body: body,
+                                requiresAuth: true, timeout: 20)
+        return try await api.send(endpoint, as: ScamCheckResult.self)
+    }
 }

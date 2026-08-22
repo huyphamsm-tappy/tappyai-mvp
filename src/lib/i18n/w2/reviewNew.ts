@@ -8,6 +8,7 @@ export const vi: Record<string, string> = {
   // Success screen
   'reviewNew.successTitle': 'Đã đăng bài!',
   'reviewNew.successSubtitle': 'Cảm ơn bạn đã chia sẻ',
+  'reviewNew.moderationGoToProfile': 'Xem trong Hồ sơ của tôi',
 
   // Media tabs
   'reviewNew.tabPhoto': 'Ảnh',
@@ -76,6 +77,7 @@ export const en: Record<string, string> = {
   // Success screen
   'reviewNew.successTitle': 'Posted!',
   'reviewNew.successSubtitle': 'Thanks for sharing',
+  'reviewNew.moderationGoToProfile': 'View in my Profile',
 
   // Media tabs
   'reviewNew.tabPhoto': 'Photo',
