@@ -230,8 +230,29 @@ export const vi: Record<string, string> = {
   'admin.nav.auditLog': 'Nhật ký audit',
   'admin.nav.deals': 'Ưu đãi đối tác',
   'admin.nav.roles': 'Phân quyền',
+  'admin.nav.memberships': 'Thành viên phòng ban',
   'admin.nav.monitoring': 'Giám sát',
   'admin.nav.settings': 'Cài đặt',
+
+  // ── Department Memberships (Owner Decision D6) ────────────────────────────
+  // Read-only by decision: không có nút gán/tạm ngưng/gỡ ở đây.
+  'admin.memberships.title': 'Thành viên phòng ban',
+  'admin.memberships.subtitle':
+    'Ai thuộc phòng ban nào, với vai trò và phạm vi gì. Màn hình chỉ đọc — việc gán và thu hồi thực hiện qua API.',
+  'admin.memberships.active': 'Thành viên đang hoạt động',
+  'admin.memberships.empty': 'Chưa có thành viên phòng ban nào.',
+  'admin.memberships.error':
+    'Không đọc được danh sách thành viên. Điều này không có nghĩa là chưa có thành viên nào.',
+  'admin.memberships.col.department': 'Phòng ban',
+  'admin.memberships.col.user': 'Người dùng',
+  'admin.memberships.col.orgRole': 'Vai trò tổ chức',
+  'admin.memberships.col.scope': 'Phạm vi',
+  'admin.memberships.col.status': 'Trạng thái',
+  'admin.memberships.orgRole.ultimateOwner': 'Chủ sở hữu nền tảng',
+  'admin.memberships.orgRole.departmentHead': 'Trưởng phòng ban',
+  'admin.memberships.orgRole.member': 'Thành viên',
+  'admin.memberships.status.active': 'Đang hoạt động',
+  'admin.memberships.status.suspended': 'Tạm ngưng',
   'admin.role.superAdmin': 'Super Admin',
   'admin.role.admin': 'Admin',
   'admin.role.moderator': 'Kiểm duyệt viên',
@@ -719,8 +740,28 @@ export const en: Record<string, string> = {
   'admin.nav.auditLog': 'Audit Log',
   'admin.nav.deals': 'Partner Deals',
   'admin.nav.roles': 'Roles',
+  'admin.nav.memberships': 'Department Memberships',
   'admin.nav.monitoring': 'Monitoring',
   'admin.nav.settings': 'Settings',
+
+  // ── Department Memberships (Owner Decision D6) ────────────────────────────
+  // Read-only by decision: no assign / suspend / remove controls here.
+  'admin.memberships.title': 'Department Memberships',
+  'admin.memberships.subtitle':
+    'Who belongs to which department, with what org role and scope. Read-only — assignment and revocation go through the API.',
+  'admin.memberships.active': 'Active memberships',
+  'admin.memberships.empty': 'No department memberships yet.',
+  'admin.memberships.error': 'Could not read the roster. This does not mean there are no memberships.',
+  'admin.memberships.col.department': 'Department',
+  'admin.memberships.col.user': 'User',
+  'admin.memberships.col.orgRole': 'Org role',
+  'admin.memberships.col.scope': 'Scope',
+  'admin.memberships.col.status': 'Status',
+  'admin.memberships.orgRole.ultimateOwner': 'Ultimate Owner',
+  'admin.memberships.orgRole.departmentHead': 'Department Head',
+  'admin.memberships.orgRole.member': 'Member',
+  'admin.memberships.status.active': 'Active',
+  'admin.memberships.status.suspended': 'Suspended',
 
   // Controller V2 — Home / Control Center
   'admin.home.title': 'Control Center',

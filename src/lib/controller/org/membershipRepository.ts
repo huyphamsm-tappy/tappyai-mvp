@@ -10,6 +10,15 @@ import type { DepartmentId, DepartmentMembership } from './types'
 export interface MembershipRepository {
   /** Active memberships for a user — used to establish the ACTOR's own authority. */
   activeForUser(userId: string): Promise<readonly DepartmentMembership[]>
+  /**
+   * Every ACTIVE membership, across all users and departments — the roster the
+   * `/admin/org/memberships` surface renders (Owner Decision D6).
+   *
+   * Active only, matching `activeForUser`: a suspended membership grants
+   * nothing, and a roster that listed it as a member would contradict the
+   * navigation the same rows produce.
+   */
+  listAllActive(): Promise<readonly DepartmentMembership[]>
   /** Any membership (active or suspended) for user+department, or null. For before-state + status ops. */
   find(userId: string, departmentId: DepartmentId): Promise<DepartmentMembership | null>
   /** Create or replace a membership. */
@@ -34,6 +43,9 @@ export function inMemoryMembershipRepository(seed: readonly DepartmentMembership
   return {
     async activeForUser(userId) {
       return [...table.values()].filter((m) => m.userId === userId && m.status === 'active')
+    },
+    async listAllActive() {
+      return [...table.values()].filter((m) => m.status === 'active')
     },
     async find(userId, departmentId) {
       return table.get(key(userId, departmentId)) ?? null

@@ -204,6 +204,48 @@ async function authorizeManage(
   return { ok: true, existing }
 }
 
+/**
+ * The department ROSTER — every active membership, across all departments.
+ *
+ * Owner Decision D6 (2026-08-22) authorized `/admin/org/memberships`, and this
+ * is the read behind it. FOUNDATION-10B left the read unexposed because
+ * "F-10 does not require it, and adding CRUD 'for completeness' would widen the
+ * surface without a consumer". There is now a consumer, and this exists for it
+ * alone.
+ *
+ * IT ADDS NO AUTHORIZATION PATH. `security.membership.read` has existed since
+ * F-07D with `defaultRoles: ['super_admin']`; it was defined and never used.
+ * The gate is the canonical PDP, exactly as every other read in this service.
+ *
+ * AUDITED, on both outcomes. Who belongs to which department is org structure —
+ * C11 audits `session.listed`, Module 08 `user.notes_listed`, Module 09
+ * `moderation.queue_listed`, all for the same reason. The metadata carries a
+ * COUNT and never the rows: `audit.log.read` is admin+, a wider population than
+ * this permission's super_admin, so copying the roster into the audit trail
+ * would hand the org chart to everyone who can read it.
+ */
+export async function listDepartmentRoster(
+  actor: Actor | null,
+  deps: MembershipServiceDeps
+): Promise<{ ok: true; memberships: readonly DepartmentMembership[] } | { ok: false; reason: MembershipDenyReason }> {
+  const action = 'org.membership_listed'
+  if (!actor) return { ok: false, reason: 'UNAUTHENTICATED' }
+  if (!pdp(deps)(actor, READ).allowed) {
+    // Denied BEFORE the repository is touched. A denial that still ran the
+    // query would leak through timing and put org data on the return path.
+    deny(deps, actor, action, actor.userId, 'PERMISSION_DENIED')
+    return { ok: false, reason: 'PERMISSION_DENIED' }
+  }
+  const memberships = await deps.repo.listAllActive()
+  emit(deps, actor, {
+    action,
+    targetType: 'department_membership',
+    targetId: 'all',
+    metadata: { returned: memberships.length },
+  })
+  return { ok: true, memberships }
+}
+
 /** Read the memberships of a user — gated on the canonical read permission. */
 export async function listMemberships(
   actor: Actor | null,

@@ -7,6 +7,7 @@ import { orgMembershipEnabled, resolveActorMemberships } from '@/lib/controller/
 import { filterNavByDepartment } from '@/lib/controller/org/navDepartment'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
 import { controllerEnv } from '@/lib/controller/adminConfig'
+import { refreshPlatformSettings } from '@/lib/controller/platformSettingsServer'
 import { Toaster } from '@/components/ui/sonner'
 import { loginPathFor } from '@/lib/auth/returnTo'
 import { denialPath } from '@/lib/admin/denial'
@@ -20,6 +21,17 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect(loginPathFor('/admin'))
+
+  // K-2 (Owner Decision D1b): load the Configuration Provider's runtime tier.
+  // TTL-limited, so this is one read per instance per 30s rather than one per
+  // page, and it never throws — a settings outage falls through to
+  // flags/env/defaults, which is what FOUNDATION-01 §7 precedence is for.
+  //
+  // AFTER the authentication check, deliberately. An anonymous request must not
+  // be able to make the Controller touch a service-role table; middleware
+  // already redirects those, and relying on that alone would put the only guard
+  // in a different file from the thing it guards.
+  await refreshPlatformSettings()
 
   // POLICY CHANGE (declared — see RELEASE_READINESS §5): the previous gate was
   // `if (!resolveAdminRole(user.id)) redirect('/reviews')`, which locked the

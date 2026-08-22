@@ -13,13 +13,24 @@
 // architecture exists to remove.
 
 import { ADMIN_MODULES } from './registry/adminModules'
-import { createControllerConfigProvider, configBoolean } from './configProvider'
+import { createControllerConfigProvider, configBoolean, platformSettingsSource } from './configProvider'
+import { platformSettingsSnapshot } from './platformSettings'
 
 /**
  * Built once from the registered manifests. `envSource` reads `process.env` at
- * resolve time, not at construction, so this caches nothing that can go stale.
+ * resolve time, not at construction, so this caches nothing that can go stale —
+ * and `platformSettingsSource` reads the snapshot through a getter for exactly
+ * the same reason: this provider is constructed at module load, long before any
+ * request has loaded a setting.
+ *
+ * K-2 (Owner Decision D1b): the runtime tier is `platform_settings`, refreshed
+ * per request by `refreshPlatformSettings` in the Controller layout. This file
+ * stays PURE — it imports the snapshot, never the loader, so no client bundle
+ * reaches `createAdminClient` through it.
  */
-const provider = createControllerConfigProvider(ADMIN_MODULES)
+const provider = createControllerConfigProvider(ADMIN_MODULES, [
+  platformSettingsSource(platformSettingsSnapshot),
+])
 
 /** The Controller's own configuration provider. */
 export function controllerConfig() {

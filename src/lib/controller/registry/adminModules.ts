@@ -21,6 +21,7 @@ import { securityAuditModule } from '../modules/securityAuditModule'
 import { userManagementModule } from '../modules/userManagementModule'
 import { userHub, securityHub } from '../modules/hubs'
 import { moderationModule } from '../modules/moderationModule'
+import { orgMembershipModule } from '../modules/orgMembershipModule'
 
 // ── Hubs (real, backed by shipped modules) ──────────────────────────────────
 /**
@@ -115,7 +116,7 @@ export const ADMIN_MODULES: readonly ModuleManifest[] = [
   userManagementModule,
   moderationModule,
   analyticsContentModule, analyticsAuthModule, analyticsActivationModule, analyticsUsersModule,
-  securityAuditModule, securityRolesModule,
+  securityAuditModule, securityRolesModule, orgMembershipModule,
   commerceDealsModule,
   configurationSettingsModule,
 ]

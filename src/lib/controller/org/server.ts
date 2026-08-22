@@ -22,10 +22,12 @@ import type { MembershipRepository } from './membershipRepository'
 import type { MembershipServiceDeps } from './membershipService'
 import type { DepartmentContext, DepartmentId, DepartmentMembership, OrgRole, OrgScope } from './types'
 
-/** True once the operator has enabled DB-backed department memberships (post-apply). */
-export function orgMembershipEnabled(): boolean {
-  return process.env.CONTROLLER_ORG_MEMBERSHIP_ENABLED === 'true'
-}
+// The F-10 flag predicate moved to `./featureGate` (a pure module) so the module
+// registry can derive a manifest's status from it without importing this file
+// and its service-role client. Re-exported here so every existing importer is
+// unaffected — the same treatment `userHub` got when it moved to `hubs.ts`.
+export { orgMembershipEnabled } from './featureGate'
+import { orgMembershipEnabled } from './featureGate'
 
 /**
  * Active department memberships for an actor. [] when the feature is off (the
@@ -86,6 +88,17 @@ export function supabaseMembershipRepository(): MembershipRepository {
         .eq('status', 'active')
       if (error) throw new Error(`membership read failed: ${error.code ?? 'unknown'}`)
       return ((data ?? []) as Row[]).map((r) => toMembership(userId, r))
+    },
+    // D6: the roster. `user_id` is selected here and nowhere else in this repo,
+    // because every other read is already scoped to one known user.
+    async listAllActive() {
+      const { data, error } = await client
+        .from('department_membership')
+        .select('user_id, department_id, org_role, scope, status')
+        .eq('status', 'active')
+        .order('department_id', { ascending: true })
+      if (error) throw new Error(`membership roster read failed: ${error.code ?? 'unknown'}`)
+      return ((data ?? []) as Array<Row & { user_id: string }>).map((r) => toMembership(r.user_id, r))
     },
     async find(userId, departmentId) {
       const { data, error } = await client
