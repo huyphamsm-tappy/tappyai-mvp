@@ -1,5 +1,6 @@
 import { getCache, setCache, serperSearch, webSearch, fetchPlacePhotosByName } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
+import { cityInText, haversineKm } from './vietnamCities'
 import { LUXURY_KEYWORDS } from '@/lib/ai/budget'
 import { searchPlacesOSM } from './food'
 import { buildFlightLinks } from '@/lib/platformLinks/travel'
@@ -275,16 +276,10 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
 }
 
 // ===== TRANSPORT: xe khach/tau lien tinh (Serper search) + uoc tinh taxi/xe cong nghe theo khoang cach =====
-const TRANSPORT_CITY_COORDS: Record<string, [number, number]> = {
-  'ha noi': [21.0285, 105.8542], 'hanoi': [21.0285, 105.8542], 'hn': [21.0285, 105.8542],
-  'ho chi minh': [10.7769, 106.7009], 'hcm': [10.7769, 106.7009], 'saigon': [10.7769, 106.7009], 'sai gon': [10.7769, 106.7009], 'tp hcm': [10.7769, 106.7009], 'tphcm': [10.7769, 106.7009],
-  'da nang': [16.0544, 108.2022], 'danang': [16.0544, 108.2022],
-  'hue': [16.4637, 107.5909], 'can tho': [10.0452, 105.7469],
-  'hai phong': [20.8449, 106.6881], 'nha trang': [12.2388, 109.1967],
-  'da lat': [11.9404, 108.4583], 'dalat': [11.9404, 108.4583], 'vung tau': [10.3460, 107.0843],
-  'hoi an': [15.8801, 108.3380], 'phu quoc': [10.2270, 103.9648], 'quy nhon': [13.7820, 109.2192],
-  'sa pa': [22.3364, 103.8438], 'sapa': [22.3364, 103.8438], 'ninh binh': [20.2506, 105.9745],
-}
+// City coordinates now live in ./vietnamCities alongside each city's canonical provider query.
+// They were separate, and F01 is what that cost: the weather tool had no way to check where the
+// place it asked about actually was, so "Hue, Vietnam" answering 364 km inland looked fine.
+// One table, three consumers — this file, the weather tool, and the live provider matrix.
 
 // San bay lon - khoang cach toi trung tam thanh pho thuong qua xa de dung toa do trung tam
 const AIRPORT_COORDS: Record<string, [number, number]> = {
@@ -302,8 +297,8 @@ async function geocodeForTransport(loc: string): Promise<[number, number] | null
   const locKey = normalizeVN(loc.toLowerCase())
   const airportPreset = Object.entries(AIRPORT_COORDS).find(([k]) => locKey.includes(normalizeVN(k)))
   if (airportPreset) return airportPreset[1]
-  const preset = Object.entries(TRANSPORT_CITY_COORDS).find(([k]) => locKey.includes(normalizeVN(k)))
-  if (preset) return preset[1]
+  const preset = cityInText(locKey)
+  if (preset) return [preset.coords[0], preset.coords[1]]
   try {
     const geoResp = await Promise.race([
       fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
@@ -317,17 +312,7 @@ async function geocodeForTransport(loc: string): Promise<[number, number] | null
   return null
 }
 
-function haversineKm(a: [number, number], b: [number, number]): number {
-  const R = 6371
-  const dLat = (b[0] - a[0]) * Math.PI / 180
-  const dLon = (b[1] - a[1]) * Math.PI / 180
-  const lat1 = a[0] * Math.PI / 180
-  const lat2 = b[0] * Math.PI / 180
-  const sinDLat = Math.sin(dLat / 2)
-  const sinDLon = Math.sin(dLon / 2)
-  const h = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon
-  return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h))
-}
+
 
 const RIDE_HAILING_APPS = [
   { name: 'Grab', link: 'https://www.grab.com/vn/transport/car/' },

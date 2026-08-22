@@ -1,4 +1,9 @@
-import { normalizeVN } from '@/lib/ai/intent'
+import {
+  VIETNAM_CITY_ENTRIES,
+  cityForAlias,
+  cityForName,
+  cityInText,
+} from '@/lib/ai/tools/vietnamCities'
 
 // ── Tool cache keys ──────────────────────────────────────────────────────────
 //
@@ -33,64 +38,25 @@ export function cacheKeyPart(s: string | null | undefined): string {
     .trim()
 }
 
-/** The country every city in WEATHER_CITY_MAP must resolve to, spelled as wttr.in spells it. */
+/** The country every mapped city must resolve to, spelled as wttr.in spells it. */
 export const VIETNAM = 'Vietnam' as const
 
 /**
- * Cities whose weather resolves to one canonical wttr.in place.
+ * The city table itself now lives in `vietnamCities.ts`, together with each city's coordinates.
  *
- * 🚨 EVERY VALUE IS COUNTRY-QUALIFIED. That is the point of this table, not a style choice.
- * The provider geocodes whatever string we hand it, and a bare ASCII Vietnamese city name is
- * not unique on Earth — measured against wttr.in on 2026-08-22:
+ * 🔑 They were separate — the query here, the coordinates in travel.ts — and that gap is the whole
+ * of F01's second half. A country-qualified query ("Hue, Vietnam") can still resolve 364 km away,
+ * and nothing on this side of the split knew where Huế was, so nothing could tell. Merging them
+ * is what lets `getWeather` check the answer rather than only the country of the answer.
  *
- *     "Da Nang"  ->  Karlsruhe, GERMANY   12°C   (Da Nang was 35°C)
- *     "Hue"      ->  Ipartelep, HUNGARY   17°C
- *     "Ha Long"  ->  Nyane, LESOTHO        6°C
- *
- * The cruel part is that the diacritic form resolves correctly on its own: "Đà Nẵng" returns
- * Da Nang, Vietnam. `normalizeVN` strips the tone marks, this map handed back bare "Da Nang",
- * and the answer came from Germany — so the lookup meant to make the query unambiguous was the
- * thing making it ambiguous. A user asking in Vietnamese was told, in Vietnamese, that Đà Nẵng
- * was 12°C. Nothing errored; the number was simply another continent's.
- *
- * 🔑 Adding a city here WITHOUT ", Vietnam" reintroduces that bug. `weatherPlaceResolution.test.ts`
- * therefore asserts the qualifier on every entry, not on a remembered list of the three that
- * happened to be caught.
- *
- * Free-form locations are deliberately NOT in this table and are passed through untouched, so
- * "Paris", "Tokyo" and "Bangkok" keep resolving to Paris, Tokyo and Bangkok. Qualifying every
- * location with ", Vietnam" would fix these three cities by breaking every other country.
+ * Free-form locations are deliberately NOT in that table and pass through untouched, so "Paris",
+ * "Tokyo" and "Bangkok" keep resolving to Paris, Tokyo and Bangkok. Qualifying every location
+ * with ", Vietnam" would fix a few Vietnamese cities by breaking every other country.
  */
-const WEATHER_CITY_MAP: Record<string, string> = {
-  // "Ha Noi, Vietnam" rather than "Hanoi": the provider answers the former with Hanoi itself and
-  // the latter with Hao Nam, a ward inside it.
-  'ha noi': 'Ha Noi, Vietnam', 'hanoi': 'Ha Noi, Vietnam', 'hn': 'Ha Noi, Vietnam',
-  'ho chi minh': 'Ho Chi Minh City, Vietnam', 'tp hcm': 'Ho Chi Minh City, Vietnam',
-  'hcm': 'Ho Chi Minh City, Vietnam', 'sai gon': 'Ho Chi Minh City, Vietnam',
-  'saigon': 'Ho Chi Minh City, Vietnam', 'tphcm': 'Ho Chi Minh City, Vietnam',
-  'da nang': 'Da Nang, Vietnam', 'danang': 'Da Nang, Vietnam',
-  // The province, not the city: ", Vietnam" got the country right and the province wrong.
-  // "Hue, Vietnam" resolves to Ban Hong, 364 km south in the Lâm Đồng highlands — 26°C on a day
-  // Huế was 35°C. "Thua Thien Hue, Vietnam" resolves to Kim Long, a ward of Huế itself, 1 km out.
-  // ("Hue City, Vietnam" is worse still at 534 km; the provider is not reasoning about these
-  // strings, it is matching them.)
-  'hue': 'Thua Thien Hue, Vietnam',
-  // Ha Long was absent entirely, so it fell through to the pass-through branch as bare
-  // "Ha Long" — which is a place in Lesotho. Present here for the same reason as the rest.
-  //
-  // Named by its central ward rather than the city: "Ha Long, Vietnam" lands on Gia Mien Noi,
-  // 163 km away, while "Hong Gai, Vietnam" is Hạ Long's own centre, 0 km out. Hạ Long with its
-  // diacritics also resolves correctly, but every other value here is ASCII and one accented
-  // entry would invite the next one to be added without measuring.
-  'ha long': 'Hong Gai, Vietnam', 'halong': 'Hong Gai, Vietnam',
-  'can tho': 'Can Tho, Vietnam', 'hai phong': 'Hai Phong, Vietnam',
-  'nha trang': 'Nha Trang, Vietnam', 'da lat': 'Da Lat, Vietnam', 'dalat': 'Da Lat, Vietnam',
-  'vung tau': 'Vung Tau, Vietnam', 'hoi an': 'Hoi An, Vietnam', 'phu quoc': 'Phu Quoc, Vietnam',
-}
 
 /** Read-only view of the city table, for tests and for callers that need the same values. */
 export const WEATHER_CITY_ENTRIES: ReadonlyArray<readonly [string, string]> =
-  Object.entries(WEATHER_CITY_MAP)
+  VIETNAM_CITY_ENTRIES.map(([alias, city]) => [alias, city.query] as const)
 
 /** What getWeather will ask the provider, and what it is entitled to expect back. */
 export type WeatherPlace = {
@@ -104,6 +70,14 @@ export type WeatherPlace = {
    * and inventing an expectation for it would reject correct results.
    */
   expectedCountry: string | null
+  /**
+   * Where the requested city actually is, or `null` for a free-form location.
+   *
+   * 🚨 The country was never enough. "Hue, Vietnam" returned Ban Hong — right country, 364 km
+   * away, 26°C for a city that was 35°C — and a country check waves that through. This is the
+   * field that lets getWeather tell "a station across the city" from "a different province".
+   */
+  expectedCoords: readonly [number, number] | null
 }
 
 /**
@@ -114,12 +88,18 @@ export type WeatherPlace = {
  */
 export function weatherPlaceResolution(location: string | null | undefined): WeatherPlace {
   const raw = (location ?? '').trim()
-  const mapped = WEATHER_CITY_MAP[normalizeVN(raw.toLowerCase())]
-  if (mapped) return { query: mapped, expectedCountry: VIETNAM }
   // No location at all keeps the historical default, and that default is a known city, so it
-  // carries the same expectation as any other entry in the table.
-  if (!raw) return { query: WEATHER_CITY_MAP['ha noi'], expectedCountry: VIETNAM }
-  return { query: raw, expectedCountry: null }
+  // carries the same expectations as any other entry in the table.
+  //
+  // 🚨 The exact lookup is not enough on its own. The model sends what the user wrote, and
+  // "TP Hồ Chí Minh" is not an alias — it normalizes to "tp ho chi minh" while the table holds
+  // "tp hcm" and "ho chi minh". The live matrix caught it: the query went upstream unmapped, so
+  // it landed 0.7 km from the city by luck while carrying NO country and NO coordinates to check
+  // against. Right answer, no guard. `cityInText` matches whole tokens, so a longer phrase
+  // containing a city still finds it.
+  const city = raw ? (cityForName(raw) ?? cityInText(raw)) : cityForAlias('ha noi')
+  if (city) return { query: city.query, expectedCountry: VIETNAM, expectedCoords: city.coords }
+  return { query: raw, expectedCountry: null, expectedCoords: null }
 }
 
 /** The place getWeather will actually query wttr.in for. Exported so the cache
@@ -127,10 +107,6 @@ export function weatherPlaceResolution(location: string | null | undefined): Wea
 export function resolveWeatherPlace(location: string | null | undefined): string {
   return weatherPlaceResolution(location).query
 }
-
-/** Longest first, so "tp hcm" wins over "hcm" and a specific alias is never shadowed. */
-const WEATHER_CITY_ALIASES: readonly string[] =
-  Object.keys(WEATHER_CITY_MAP).sort((a, b) => b.length - a.length)
 
 /**
  * Finds a known city inside a free-text location string.
@@ -144,14 +120,12 @@ const WEATHER_CITY_ALIASES: readonly string[] =
  * cron kept its own copy, and that copy carried the same bare-ASCII defect as the map above —
  * two places to fix meant one of them stayed broken.
  *
- * Returns the matched alias (feed it to `resolveWeatherPlace`), or null when nothing matches.
- * Null means "we do not know this place", which a caller should treat as no answer rather than
- * guessing a default city at the user.
+ * Returns the city's canonical query (feed it straight to `getWeather`), or null when nothing
+ * matches. Null means "we do not know this place", which a caller should treat as no answer
+ * rather than guessing a default city at the user.
  */
 export function matchWeatherCityInText(text: string | null | undefined): string | null {
-  const hay = normalizeVN((text ?? '').toLowerCase())
-  if (!hay) return null
-  return WEATHER_CITY_ALIASES.find((alias) => hay.includes(alias)) ?? null
+  return cityInText(text)?.query ?? null
 }
 
 /** Keyed on the RESOLVED city: "Hà Nội", "ha noi" and "HN" are one upstream
