@@ -31,9 +31,9 @@
 | **Foundation (C1–C11)** | ✅ **COMPLETE** — the precondition above is met. Every row in this table below is Foundation scope |
 | **Module 08 — User Management** | ✅ **COMPLETE — backend + Controller surface** — schema `b474cff` ([#117](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/117)), consumer enforcement `30e78c1` ([#118](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/118)), Admin Users API `3a825c2` ([#119](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/119)), all live in production. [ADR-022](../architecture/ADR-022-account-status-isolation.md) · [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md). **Controller surface shipped 2026-08-20:** `tappy.hub.user` registered, manifest `tappy.hub.user.management`, nav entry, `/admin/users` page. **The first business module complete end-to-end in Controller V2.** ~~Still out of scope: auto-unsuspend cron · session revocation on ban · soft delete · notes.~~ **Corrected 2026-08-22:** two of those four shipped and this row went stale behind them — session revocation on ban is `df53496` (Owner Decision A) and notes are `9f5a3d9` (`user_notes`), both recorded below. Still out of scope: **auto-unsuspend cron · soft delete**. Read surface **UAT-verified on production 2026-08-22**. See [Module 08](#phase-8--module-08-controller-surface-complete-2026-08-20) |
 | **Owner decision set** | ✅ **CLOSED, 2026-08-22** — [`OWNER_DECISIONS_2026-08-22.md`](OWNER_DECISIONS_2026-08-22.md) answers D1–D7. **No Controller V2 item is waiting on an Owner decision any more.** See [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) |
-| **K-2 — Configuration Provider runtime tier** | ✅ **SHIPPED — code live, MIGRATION NOT APPLIED.** `platform_settings` (`01_ARCH` §4.1, authority granted by Decision D1b), merge `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)). Production **measured** 2026-08-22: the table still probes `PGRST205`, and every Controller page returns non-5xx — the loader's never-throw contract holds against the table's absence. **The tier is inert until the migration is applied under its own Owner authorization.** ⏳ **This is the last engineering item not fully in production** |
+| **K-2 — Configuration Provider runtime tier** | ✅ **COMPLETE · IN PRODUCTION.** Code merged `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)); **migration `20260822_k2_platform_settings.sql` APPLIED to production 2026-08-22** under its own Owner authorization, via the Management API against the pinned production ref, in one transaction. Verified read-only, **9/9**: five columns and no `updated_at` · `service_role` only · RLS on with **0 policies** · the three-scope CHECK · FK **no-cascade** · empty · index present · **`module_registry` NOT created** (Decision D1a). The loader's exact query went **`PGRST205` → `200 []`**, and anon went **`PGRST205` → `42501`**. See [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) |
 | **Module — Department Memberships** | ✅ **COMPLETE end-to-end** — Owner Decision D6. `tappy.hub.security.membership` + `/admin/org/memberships` + `GET /api/admin/org/memberships`, merge `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)). **Production UAT PASS 2026-08-22, EN + VI.** Read-only by decision. `/org/memberships` was the last admin route with no page |
-| **Controller V2 overall** | ⏳ **NOT COMPLETE** — but for a materially shorter list than before. Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. **What remains after 2026-08-22 is one migration authorization, one external prerequisite (BL-002), destructive UAT the Owner has withheld, and work explicitly DEFERRED by decision.** Remaining-work inventory: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
+| **Controller V2 overall** | ⏳ **NOT COMPLETE — but every authorized item is now done.** Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. **After 2026-08-22 nothing is waiting on engineering and nothing is waiting on an Owner decision.** What remains is **one external prerequisite** (BL-002 — a second `super_admin` only the Owner can create), **destructive UAT the Owner has explicitly withheld**, and **work DEFERRED by decision** with a stated end condition. Remaining-work inventory: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
 > "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
@@ -130,7 +130,7 @@ Both are corrected in place rather than quietly edited away, the same discipline
 
 | Item | Class | What it needs |
 |---|---|---|
-| **Apply the `platform_settings` migration** | **OWNER AUTHORIZATION** | The file, the rollback and the code are live. Every migration in this project has had its own explicitly named authorization (*"M01's authorization was NOT reused"*), and D1b authorized **creating** it. Until it is applied the runtime tier is inert — safely, by construction |
+| ~~**Apply the `platform_settings` migration**~~ | ✅ **DONE 2026-08-22** | Authorized explicitly and applied the same day — see [K-2 applied](#k-2--the-migration-is-applied-2026-08-22) below |
 | **BL-002** | **EXTERNAL PREREQUISITE** | A second `super_admin` only the Owner can create. **Not to be simulated** |
 | **B8 recovery · M08 ban/suspend · C11 revocation · M09 moderation action** | **OWNER AUTHORIZATION** | Explicitly withheld 2026-08-22 |
 | **Layout Presets · date range · Density** | **DEFERRED BY DECISION** (D2, D3) | Scope is now defined, so the deferral has an end condition. Density additionally needs the preference store `platform_settings` provides |
@@ -141,7 +141,36 @@ Both are corrected in place rather than quietly edited away, the same discipline
 | **M09 content-safety writer** | **OUT OF CONTROLLER V2 SCOPE** | Content Safety Gate under ADR-024, which `moderationModule.ts` declares |
 | **K-1 · K-3 · K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
 
-**Controller V2 is not declared COMPLETE.** Under Decision F the measure is the full architecture, and one authorized item — the migration — is not yet in production. **Class 1 is empty, class 3 (Owner decision) is empty, and what remains is one authorization, one external prerequisite, and work deferred on the record.**
+**Controller V2 is not declared COMPLETE, and the reason is now narrow enough to state in one line.** Under Decision F the measure is the full architecture. **Class 1 (engineering) is empty, class 3 (Owner decision) is empty, and the migration is applied** — so nothing is waiting on this workstream. What remains is **one external prerequisite** (BL-002), **destructive UAT the Owner has withheld**, and **work deferred on the record**. Calling that COMPLETE would mean calling a deferral a delivery.
+
+### K-2 — the migration is applied (2026-08-22)
+
+Authorized explicitly by the Owner for **this migration only**, and applied the same day. Runbook: [`runbooks/K2_PLATFORM_SETTINGS_APPLY_PACK.md`](runbooks/K2_PLATFORM_SETTINGS_APPLY_PACK.md).
+
+**Channel.** [ADR-014](../architecture/ADR-014-migration-apply-checklist.md) has stated since Phase 0 that *"Owner applies this migration to production. Claude cannot run DDL in this environment"* — no `SUPABASE_ACCESS_TOKEN`, no CLI link, and the service-role key is a PostgREST **data** JWT with no DDL path. That was re-measured and still true, so the work stopped at handover until the Owner minted a Personal Access Token. It then ran through the Supabase **Management API**.
+
+**What the apply script enforced rather than intended.** The token was read from `.env.local` (gitignored) and never printed. The project ref was **hard-pinned** — this account also holds `nhncoqyadofojjrnpiia` (staging), and a ref passed as an argument is a ref that can be passed wrong; the script additionally aborts if the target resolves to staging. The SQL was extracted with `git show origin/main:…` and its **SHA-256 asserted** against the hash recorded at handover, so no working-tree edit could reach production. The exact bytes being sent were re-scanned for `DROP/TRUNCATE/INSERT/UPDATE/DELETE` and for any object other than `public.platform_settings`. Everything ran inside `BEGIN … COMMIT`.
+
+| | |
+|---|---|
+| Target | `fwznnobrdctuskgrvuik` — *huyphamsm-tappy's Project* · `ap-northeast-2` · **production** |
+| SQL | `origin/main` `4fe6fd4`, blob `ec9b97f`, **5605 bytes**, SHA-256 `9c1333ab…8658` |
+| Scope of the bytes sent | 5 mutating statements, **all** on `public.platform_settings`; 0 forbidden verbs |
+| Pre-state | `platform_settings` **null** · `module_registry` **null** |
+| Apply | HTTP 201, `[]` — committed |
+
+**Verification, 9/9 PASS, read-only:** exactly `key · scope · updated_by · value · value_schema` with **no `updated_at`** · `scope` defaults `'global'::text` · grants **`service_role` + table owner `postgres` only**, with `anon`, `authenticated` and `PUBLIC` holding **nothing** · `relrowsecurity = true` with **`policy_count = 0`** · `CHECK (scope = ANY (ARRAY['global','hub','module']))` · `updated_by` FK `confdeltype = 'a'` (no cascade) · **0 rows** · `idx_platform_settings_scope` present · **`module_registry` still absent**, which Decision D1a requires.
+
+**What measurably changed at the app tier**
+
+| Probe | Before | After |
+|---|---|---|
+| anon `GET /rest/v1/platform_settings` | `PGRST205` (table unknown) | **`42501`** — present, and the anon role holds no privilege on it |
+| service_role, the loader's exact query `select=key,value,scope&scope=eq.global` | `PGRST205` → the store threw and the loader swallowed it on every Controller request | **`200 []`** — the store now succeeds |
+
+**Post-apply production UAT on `4fe6fd4`:** all eight Controller paths non-5xx · `/api/version` = `4fe6fd4` and the Controller Home prints `4fe6fd4` · signed in as `founder@tappyai.com` · `/admin/org/memberships` renders the real row in **VI** (`AI / Dữ liệu` · `Trưởng phòng ban` · `Đang hoạt động`) and **EN** (`AI / Data` · `Department Head` · `Active`) · **0 raw i18n keys, 0 `undefined`, 0 console errors, 0 Chrome-Translate `<font>` tags** in both locales.
+
+> ⚠️ **NOT MEASURED, and it is not measurable from outside.** *"A row in `platform_settings` changes a resolved value"* is **not observable on production**, and the reason is structural rather than an omission: the Controller exposes **no configuration-dump endpoint**, and the only key any shipped code consumes through the provider is `BACKOFFICE_ENABLED` — a kill switch. Proving the tier end-to-end from outside would mean writing a row that disables the Controller. The table is empty, so the runtime tier resolves nothing and behaviour is unchanged; what production proves is that **the read path now succeeds where it previously failed**. The resolution path itself is covered by 44 unit tests, two of which drive the **real exported provider** rather than a hand-assembled one.
 
 ### Gate evidence for `6d9aecc`
 
