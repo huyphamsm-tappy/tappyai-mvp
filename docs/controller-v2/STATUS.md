@@ -4,7 +4,7 @@
 > **This document is the only authoritative statement of Controller V2 project status.**
 > Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
-**Last updated:** 2026-08-20
+**Last updated:** 2026-08-22
 
 > ⚠️ **This header said `2026-08-15` while carrying entries dated 2026-08-19, and it had no entry at all for three merged, production-live commits.** That is exactly the drift the banner above exists to prevent, and it is corrected here rather than filed as a backlog item — the same discipline applied to the 2026-08-07 and 2026-08-13 corrections below.
 
@@ -29,7 +29,7 @@
 | **Component 11** — Session Security | ✅ **ACCEPTED · IN PRODUCTION** — merge commit `ed7ad3b` (PR #62); migration `20260814_c11_session_security.sql` applied to production 2026-08-15 and verified read-only: all four functions exist, every one `SECURITY DEFINER` with `search_path = public, pg_temp`, EXECUTE granted to **`service_role` only** (anon and authenticated have none), and **no function references `refresh_token_hmac_key` or `refresh_token_counter`**. Deployed bodies carry the `is_anonymous` exclusion, `fn_is_platform_owner` Owner protection, and the `AT TIME ZONE` conversion. P-1…P-7 ratified 2026-08-13; O-1 (revocation **immediate** — 403 `session_not_found` with 3597 s of token life left), O-2 (3600 s TTL, therefore **not** the guarantee) and O-3 measured 2026-08-14. Contract: [`11_COMPONENT11_SESSION_SECURITY_CONTRACT.md`](11_COMPONENT11_SESSION_SECURITY_CONTRACT.md) · [ADR-021](../architecture/ADR-021-c11-auth-sessions-dependency.md) |
 | **Definition of Done** | **FULL ARCHITECTURE** — Owner Decision **F**, 2026-08-19, which **supersedes** Decision A (*COMPONENT-COMPLETE, C1–C11*) by date. C1–C11 is now a **precondition**, not the definition: Controller V2 is complete when [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) is implemented and verified. See [`OWNER_DECISIONS_2026-08-19.md`](OWNER_DECISIONS_2026-08-19.md) |
 | **Foundation (C1–C11)** | ✅ **COMPLETE** — the precondition above is met. Every row in this table below is Foundation scope |
-| **Module 08 — User Management** | ✅ **COMPLETE — backend + Controller surface** — schema `b474cff` ([#117](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/117)), consumer enforcement `30e78c1` ([#118](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/118)), Admin Users API `3a825c2` ([#119](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/119)), all live in production. [ADR-022](../architecture/ADR-022-account-status-isolation.md) · [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md). **Controller surface shipped 2026-08-20:** `tappy.hub.user` registered, manifest `tappy.hub.user.management`, nav entry, `/admin/users` page. **The first business module complete end-to-end in Controller V2.** Still out of scope: auto-unsuspend cron · session revocation on ban · soft delete · notes. See [Module 08](#phase-8--module-08-controller-surface-complete-2026-08-20) |
+| **Module 08 — User Management** | ✅ **COMPLETE — backend + Controller surface** — schema `b474cff` ([#117](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/117)), consumer enforcement `30e78c1` ([#118](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/118)), Admin Users API `3a825c2` ([#119](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/119)), all live in production. [ADR-022](../architecture/ADR-022-account-status-isolation.md) · [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md). **Controller surface shipped 2026-08-20:** `tappy.hub.user` registered, manifest `tappy.hub.user.management`, nav entry, `/admin/users` page. **The first business module complete end-to-end in Controller V2.** ~~Still out of scope: auto-unsuspend cron · session revocation on ban · soft delete · notes.~~ **Corrected 2026-08-22:** two of those four shipped and this row went stale behind them — session revocation on ban is `df53496` (Owner Decision A) and notes are `9f5a3d9` (`user_notes`), both recorded below. Still out of scope: **auto-unsuspend cron · soft delete**. Read surface **UAT-verified on production 2026-08-22**. See [Module 08](#phase-8--module-08-controller-surface-complete-2026-08-20) |
 | **Controller V2 overall** | ⏳ **NOT COMPLETE** — Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. Remaining-work inventory: [Burn-down](#master-completion-burn-down-2026-08-20) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
@@ -776,6 +776,51 @@ A full sweep of the admin surface against the 15 checks. **Four defects, three o
 | **B — needs a migration** | **NO CANDIDATE.** The last two tables with authoritative DDL are live. `platform_settings` and `module_registry` have **no DDL in `04`** to implement |
 | **C — Owner decision** | Module 17 hub · Module 20 classification · Phase 7 (5) · F-10 activation (+4) · who may assign a queue item |
 | **D — authenticated UAT** | M01 · M04 · M08 · M09 · C11 · B8 |
+
+---
+
+### Owner UAT executed — class D is closed except where it is forbidden (2026-08-22)
+
+Production `4f23a66`, deployment `dpl_BbLLDSZcP937PHk4eKksbisw4NxE`, READY, aliased to www.tappyai.com. The Controller Home prints the commit, and it read `4f23a66` throughout — the surfaces below were measured on the build this document describes, not on a cached one.
+
+**The blocker this document names in five separate places is gone.** Every class D row was deferred with the same sentence — *"this workstream holds no production session"* — and that is no longer true: the Owner signed in and the session was used for all of the following. Nothing else ever stood in the way of these items.
+
+| Item | Result | What was actually measured |
+|---|---|---|
+| **M01 Home** | ✅ PASS | The six metrics with a real source render from `daily_snapshots` (0 · 12 · 16 · 0 · 0 · 22). Registry counts read **2 admin roles · 11 modules · 6 hubs**, which match the registry measured from source at the same commit. The three columns with no source render **NOT CONNECTED YET**, not `0` — the distinction §7 exists for. "provisional — may still change" is present. EN and VI, 0 raw keys, 0 console errors |
+| **M04 User Analytics** | ✅ PASS | All four tabs, EN and VI, 10/10 tab transitions, request↔view binding, both directions of the stale-response race, and the null/zero/em-dash semantics. See the entry below — this one did **not** pass first time |
+| **M08 Users** | ✅ PASS (read surface) | 22 rows; search narrows to 2 and restores to 22; the detail API returns **`email_masked`** and **`ban_reason_withheld`** as server-decided booleans, which the page renders rather than re-derives; notes API returns `{data:[]}` — genuinely empty, nothing was written. Suspend/Ban render. EN and VI |
+| **M09 Moderation** | ✅ PASS (surface) | Queue API 200 `{data:[]}`; the page states *"Reporter identity is never shown here"* and declares its three gaps rather than hiding them. EN and VI |
+| **C11 Sessions** | ✅ PASS (listing) | `/api/admin/security/sessions` returns eight fields and **none of the four §7 forbids**: no token, no cookie, no IP literal, no user-agent string, no JWT anywhere in the payload. `client_class` is a classification, not a raw UA. Limit requested 20, under §7's 50 |
+
+**What was deliberately not exercised, and why.** Ban, suspend, session revocation and any moderation action mutate production or end a real person's session; **B8 recovery is forbidden outright**. None was run, no account was created, and no row was written to make a screen look populated. `session_revocation_pending` is therefore **source-verified** (`UsersManager.tsx:183`) rather than runtime-verified — proving it at runtime requires banning somebody.
+
+**BL-002 is unchanged.** It needs a second `super_admin` that only the Owner can create.
+
+#### 🔴 M04 did not pass first time, and unit evidence had said it would
+
+Three of the four User Analytics tabs — Engagement, Subscription funnel, Retention — **crashed into the error boundary on production** the moment they were opened. `undefined.toLocaleString()` twice and `undefined.map()` once, thrown at measure time.
+
+One defect, four expressions of it: the component held a single `data` slot for four differently shaped payloads and **nothing in the runtime data said which view a payload came from**. `setView` re-rendered immediately while `data` still held the previous view's payload, and the `as` casts silenced TypeScript at exactly the point the runtime was wrong. `'series' in data` was never a discriminator — `GrowthResult` and `EngagementResult` both carry `series`, so the Engagement branch took a `GrowthPoint` and asked it for `.dau`. A second, independent defect sat behind it: per-view requests with no abort and no sequence guard, so a response for a view the operator had left could land last and win.
+
+Fixed by binding the payload to the view that requested it — a real discriminated union — and dropping a response whose request was abandoned. **PR [#151](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/151)**, merged as `8e229e6`. 19 tests written red first; **mutation 17/17 killed, 0 survivors**.
+
+**This is the entry that matters most in this section.** Module 04 shipped with unit, mutation and CI evidence and a burn-down that classified it as complete-pending-UAT. It was *broken for every operator who opened it*, and no amount of the evidence it already had could have said so. The verification limitation this document records for every module — *"production render not visually verified; unit/mutation/CI evidence only"* — is not a formality.
+
+#### Correction — Module 09 ingestion is not blocked on anything Controller V2 owns
+
+The burn-down below leaves the impression that Module 09 waits on ingestion. Measured on production at `4f23a66`:
+
+| Fact | Measured |
+|---|---|
+| `fn_ingest_moderation_reports()` has a caller | ✅ `src/app/api/cron/analytics-snapshot/route.ts:145`, daily |
+| `music_track_reports` | **0 rows** |
+| `content_reports` | **0 rows** |
+| `moderation_queue` · `moderation_actions` | **0 rows** |
+
+**The queue is empty because no report exists anywhere, not because ingestion is broken.** Every Controller V2 part is present and wired: both tables, the ingestion function, its caller, the API, the surface, the permission.
+
+What is missing is a screen that files a content-safety report, and **Module 09 does not own that**. `moderationModule.ts` records the boundary under ADR-024: *"this module owns the two moderation tables. It does NOT own `content_reports` or `music_track_reports` — those belong to the Content Safety Gate and the music module."* Building that writer from Module 09 would breach the ownership contract it declares. It is Content Safety Gate work, outside Controller V2, and it is neither an Owner decision for this project nor a Controller V2 engineering gap.
 
 ---
 
