@@ -4,6 +4,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getMemoryBatch } from '@/lib/memory/memoryService'
 import { getAllSubscribedUserIds } from '@/lib/notifications/send'
 import { emitNotification } from '@/lib/notifications/emit'
+import { getWeather } from '@/lib/ai/tools/weather'
+import { matchWeatherCityInText } from '@/lib/ai/tools/cacheKeys'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -33,41 +35,37 @@ function getVietnamContext(): { dayName: string; isWeekend: boolean; isFriday: b
   }
 }
 
-// Simple free weather fetch for a location string
+/**
+ * The weather line in the morning push.
+ *
+ * 🚨 This used to keep its OWN city table and its own fetch, and it carried the same defect as
+ * the chat tool: it mapped "đà nẵng" to bare "Da Nang", which wttr.in geocodes to Karlsruhe,
+ * Germany. A push notification is worse than a chat answer for this — nobody asked a question
+ * they could sanity-check, the number just arrives. It now goes through `matchWeatherCityInText`
+ * and `getWeather`, so the country-qualified map and the resolved-country guard cover this path
+ * too, and there is one list of cities instead of two to keep in sync.
+ *
+ * 🔑 An unrecognised location now yields NO weather line rather than Ho Chi Minh City's. The old
+ * default was a silent wrong answer for anyone outside its six cities — the same class of bug
+ * this change exists to remove — and the caller already treats '' as "omit the weather".
+ */
 async function getWeatherBrief(location: string): Promise<string> {
-  const cityMap: Record<string, string> = {
-    'hà nội': 'Hanoi', 'ha noi': 'Hanoi',
-    'hồ chí minh': 'Ho Chi Minh City', 'ho chi minh': 'Ho Chi Minh City',
-    'tp hcm': 'Ho Chi Minh City', 'hcm': 'Ho Chi Minh City', 'sài gòn': 'Ho Chi Minh City',
-    'đà nẵng': 'Da Nang', 'da nang': 'Da Nang',
-    'hội an': 'Hoi An', 'đà lạt': 'Da Lat', 'nha trang': 'Nha Trang',
+  const city = matchWeatherCityInText(location)
+  if (!city) return ''
+
+  const w = await getWeather(city, 'vi')
+  if (!w || typeof w !== 'object' || 'error' in w) return ''
+
+  const { temp_C, condition, chance_of_rain_percent } = w as {
+    temp_C?: string | number; condition?: string; chance_of_rain_percent?: string | number
   }
-  const loc = location.toLowerCase().trim()
-  const city = Object.entries(cityMap).find(([k]) => loc.includes(k))?.[1] || 'Ho Chi Minh City'
-  try {
-    const resp = await Promise.race([
-      fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`, {
-        headers: { 'User-Agent': 'curl/8.0', Accept: 'application/json' },
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
-    ])
-    const data = await (resp as Response).json()
-    const cur = data.current_condition?.[0]
-    const today = data.weather?.[0]
-    if (!cur) return ''
-    const desc = cur.weatherDesc?.[0]?.value || ''
-    const temp = cur.temp_C
-    const rain = today?.hourly?.find((h: { time: string }) => h.time === '1200')?.chanceofrain
-      ?? today?.hourly?.[4]?.chanceofrain
-      ?? 0
-    // Build short weather emoji+summary
-    const isRainy = parseInt(String(rain)) >= 40 || /rain|thunder|drizzle/i.test(desc)
-    const emoji = isRainy ? '🌧️' : temp <= 20 ? '🌤️' : '☀️'
-    const weatherStr = `${emoji} ${temp}°C${isRainy ? `, có mưa (${rain}%)` : ''}`
-    return weatherStr
-  } catch {
-    return ''
-  }
+  if (temp_C === undefined || temp_C === null) return ''
+
+  const rain = chance_of_rain_percent ?? 0
+  const isRainy = parseInt(String(rain)) >= 40 || /rain|thunder|drizzle/i.test(condition ?? '')
+  const temp = Number(temp_C)
+  const emoji = isRainy ? '🌧️' : temp <= 20 ? '🌤️' : '☀️'
+  return `${emoji} ${temp_C}°C${isRainy ? `, có mưa (${rain}%)` : ''}`
 }
 
 export async function GET(req: Request) {

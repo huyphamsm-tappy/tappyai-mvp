@@ -47,6 +47,7 @@ const INTENTIONAL_SKIPS = {
   'src/lib/ai/__measure__/refinementProbe.test.ts': 'MEASURE-gated: real network + paid model',
   'src/lib/ai/__measure__/reviewSourceProbe.test.ts': 'MEASURE-gated: real network + paid model',
   'src/lib/ai/__measure__/toolPayload.test.ts': 'MEASURE-gated: real network + paid model',
+  'src/lib/ai/__measure__/weatherCountryMatrix.test.ts': 'MEASURE-gated: real network (wttr.in) — F01 live country matrix',
 }
 
 const norm = (p) => String(p).replace(/\\/g, '/').replace(/^.*?(?=(src|supabase|scripts)\/)/, '')
