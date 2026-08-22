@@ -1,13 +1,13 @@
 import { getCache, setCache } from './common'
 import { messages } from '@/lib/ai/messages'
-import { goldCacheKey, resolveWeatherPlace, weatherCacheKey } from './cacheKeys'
+import { goldCacheKey, weatherCacheKey, weatherPlaceResolution } from './cacheKeys'
 
 // ===== WEATHER: wttr.in (free, no API key) =====
 export async function getWeather(location: string, lang = 'vi') {
   // Resolve BEFORE keying: wttr.in is called for the canonical city, so every
   // spelling that resolves to it ("Hà Nội", "ha noi", "HN") is one upstream call
   // and must share one entry. It used to be three keys for one result.
-  const place = resolveWeatherPlace(location)
+  const { query: place, expectedCountry } = weatherPlaceResolution(location)
   const cacheKey = weatherCacheKey(location, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -25,8 +25,40 @@ export async function getWeather(location: string, lang = 'vi') {
     const cur = data.current_condition?.[0]
     const today = data.weather?.[0]
     if (!cur) throw new Error('no data')
+
+    // ── The geocoder answered about somewhere else ────────────────────────────────────────────
+    //
+    // 🚨 This is the deterministic half of the Da Nang / Hue / Ha Long fix, and it is here
+    // because the map alone is not a guarantee. The map makes the OUTGOING string unambiguous;
+    // this checks the INCOMING answer actually came from the country we asked about.
+    //
+    // It exists because the failure mode is not an error — it is a confident wrong number. When
+    // "Da Nang" resolved to Karlsruhe the tool returned a perfectly well-formed result and the
+    // model reported 12°C for a city that was 35°C. Nothing downstream could tell.
+    //
+    // Refusing is the right answer, not "return it and let the model notice": the model DID
+    // sometimes notice, and what the user then saw was the assistant narrating its own
+    // correction mid-answer. A tool that cannot answer the question asked must say so.
+    //
+    // Scoped to a KNOWN mismatch. `expectedCountry` is null for free-form locations (Paris,
+    // Tokyo), where any country is legitimate, and a missing `nearest_area` is not evidence of
+    // anything — the provider is intermittently flaky, and refusing on absent metadata would
+    // turn a hiccup into an outage.
+    const resolvedCountry: string | null = data.nearest_area?.[0]?.country?.[0]?.value ?? null
+    if (expectedCountry && resolvedCountry && resolvedCountry !== expectedCountry) {
+      console.error(JSON.stringify({
+        type: 'tappyai_weather_country_mismatch',
+        requested: location, sent: place, expectedCountry, resolvedCountry,
+        resolvedArea: data.nearest_area?.[0]?.areaName?.[0]?.value ?? null,
+      }))
+      throw new Error('country mismatch')
+    }
+
     result = {
       location: data.nearest_area?.[0]?.areaName?.[0]?.value || place,
+      // Returned so the answer can never claim a place it did not come from. The guard above
+      // stops the known-wrong case; this keeps the honest case attributable.
+      country: resolvedCountry,
       temp_C: cur.temp_C,
       feels_like_C: cur.FeelsLikeC,
       condition: cur.weatherDesc?.[0]?.value?.trim(),
