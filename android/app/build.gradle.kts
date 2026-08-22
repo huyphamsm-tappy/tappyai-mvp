@@ -425,6 +425,9 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     testImplementation(libs.junit)
+    // Needed to drive a ViewModel under test: viewModelScope runs on Dispatchers.Main, which
+    // has no Android looper in a unit test until setMain() replaces it.
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

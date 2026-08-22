@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -68,6 +69,14 @@ fun DealsScreen(
 ) {
     val state = viewModel.uiState
     val uriHandler = LocalUriHandler.current
+
+    // The feed is localized SERVER-side — `category` and `description` arrive already translated,
+    // chosen by the `?lang=` the request carried — so switching language has to refetch, not just
+    // re-resolve strings. Keyed on the resolved resources, the same authority that chose the
+    // subtitle and the "via X" line beside the cards, so the two cannot disagree.
+    // See [DealsViewModel.onLanguageResolved]; this replaces a load in the ViewModel's init.
+    val english = booleanResource(R.bool.resources_are_english)
+    LaunchedEffect(english) { viewModel.onLanguageResolved(english) }
 
     Column(
         modifier = Modifier.fillMaxSize(),

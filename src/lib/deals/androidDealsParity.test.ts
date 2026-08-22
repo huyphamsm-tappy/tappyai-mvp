@@ -32,6 +32,7 @@ const ANDROID = {
   dto: 'android/app/src/main/java/com/tappyai/app/deals/data/DealsNetworkDtos.kt',
   model: 'android/app/src/main/java/com/tappyai/app/deals/Deal.kt',
   screen: 'android/app/src/main/java/com/tappyai/app/deals/DealsScreen.kt',
+  viewModel: 'android/app/src/main/java/com/tappyai/app/deals/DealsViewModel.kt',
   api: 'android/app/src/main/java/com/tappyai/app/deals/data/DealsApi.kt',
   stringsEn: 'android/app/src/main/res/values/strings_deals.xml',
   stringsVi: 'android/app/src/main/res/values-vi/strings_deals.xml',
@@ -136,6 +137,36 @@ describe('Android Deals renders the card the web renders', () => {
     expect(screen).toMatch(/if \(deal\.logoImage != null\) \{/)
     expect(screen).toMatch(/TappyImage\(url = deal\.logoImage/)
     expect(screen).toMatch(/deal\.partnerName\.firstOrNull\(\)\?\.uppercase\(\)/)
+  })
+
+  it('reloads the feed when the app language changes', () => {
+    // `category` and `description` are localized SERVER-side — they arrive already translated,
+    // chosen by the `?lang=` the request carried — so a language switch has to REFETCH, not just
+    // re-resolve strings. The ViewModel used to load once from `init`, and below API 33 a language
+    // switch re-resolves resources without recreating it, so the cards kept the language they were
+    // fetched in until the next force stop.
+    //
+    // Keyed on the resolved resources, which is the same authority that chose the subtitle and the
+    // "via X" line beside the cards, so the trigger cannot disagree with what the user is reading.
+    expect(screen).toMatch(
+      /val english = booleanResource\(R\.bool\.resources_are_english\)/,
+    )
+    expect(screen).toMatch(
+      /LaunchedEffect\(english\) \{ viewModel\.onLanguageResolved\(english\) \}/,
+    )
+
+    // Comments are stripped first. The KDoc explaining this fix contains the literal
+    // `init { load() }`, and the first version of this assertion matched its own documentation.
+    const vm = read(ANDROID.viewModel)
+      .split(/\r?\n/)
+      .filter((l) => !/^\s*(\*|\/\/|\/\*)/.test(l))
+      .join('\n')
+    // The load must NOT be back in `init` — that is the shape of the defect, and a screen-driven
+    // load plus an init load would silently spend two requests on first open.
+    expect(vm).not.toMatch(/init\s*\{[^}]*load\(\)/)
+    expect(vm).toMatch(/fun onLanguageResolved\(english: Boolean\)/)
+    // Skipping a reload when the language has not changed is what keeps returning to the tab free.
+    expect(vm).toMatch(/if \(loadedForEnglish == english && alreadyLoaded\) return/)
   })
 
   it('bumps the popularity counter on open, as the web does', () => {
