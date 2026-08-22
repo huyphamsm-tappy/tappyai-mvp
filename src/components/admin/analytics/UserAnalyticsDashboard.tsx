@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -26,9 +26,76 @@ import type {
 // distinguishable on screen.
 
 type View = 'growth' | 'engagement' | 'funnel' | 'retention'
-type Payload = GrowthResult | EngagementResult | FunnelResult | RetentionResult
 
 const VIEWS: View[] = ['growth', 'engagement', 'funnel', 'retention']
+
+// WHICH VIEW DOES A PAYLOAD BELONG TO?
+//
+// The four results are NOT a discriminated union: every one of them carries
+// `status` and nothing else names the view, and `GrowthResult` and
+// `EngagementResult` BOTH carry `series` — so a structural test such as
+// `'series' in data` cannot tell them apart. It answers "does this object have
+// a series?" when the question is "whose series is it?".
+//
+// The tag is therefore attached here, at the only place that knows the answer:
+// the code that issued the request. `kind` collapses the three outcomes the
+// screen distinguishes; `empty` and `error` carry no view-specific fields, so
+// only `ok` needs a payload and only `ok` is narrowed per view.
+type Received =
+  | { view: View; kind: 'error' }
+  | { view: View; kind: 'empty' }
+  | { view: 'growth'; kind: 'ok'; data: GrowthResult }
+  | { view: 'engagement'; kind: 'ok'; data: EngagementResult }
+  | { view: 'funnel'; kind: 'ok'; data: FunnelResult }
+  | { view: 'retention'; kind: 'ok'; data: RetentionResult }
+
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === 'object' && v !== null
+const isNum = (v: unknown): v is number => typeof v === 'number'
+/** A ratio is a number or an explicit `null` — never `undefined`, never 0-by-default. */
+const isRatio = (v: unknown): boolean => v === null || isNum(v)
+
+// Each guard checks EXACTLY the fields its view renders: no more, so it cannot
+// reject a payload over a field nobody reads; no less, so it cannot admit one
+// the renderer would then read as `undefined`.
+function isGrowth(d: unknown): d is GrowthResult {
+  return isRecord(d) && Array.isArray(d.series) && isRatio(d.momGrowthRate)
+    && d.series.every((p) => isRecord(p) && isNum(p.totalUsers) && isNum(p.newUsers))
+}
+function isEngagement(d: unknown): d is EngagementResult {
+  return isRecord(d) && Array.isArray(d.series)
+    && d.series.every((p) =>
+      isRecord(p) && isNum(p.dau) && isNum(p.wau) && isNum(p.mau) && isRatio(p.stickiness))
+}
+function isFunnel(d: unknown): d is FunnelResult {
+  return isRecord(d) && isNum(d.free) && isNum(d.pro) && isRatio(d.conversionRate)
+}
+const isMilestone = (v: unknown): boolean => isRecord(v) && isNum(v.retained) && isRatio(v.rate)
+function isRetention(d: unknown): d is RetentionResult {
+  return isRecord(d) && Array.isArray(d.cohorts)
+    && d.cohorts.every((c) =>
+      isRecord(c) && typeof c.cohortDate === 'string' && isNum(c.cohortSize)
+      && isMilestone(c.d1) && isMilestone(c.d7) && isMilestone(c.d30))
+}
+
+/**
+ * Bind one response to the view that asked for it.
+ *
+ * A body that does not satisfy the requested view's contract is an ERROR, not
+ * an empty dashboard and not a crash: something answered in the wrong shape,
+ * and an operator must be told that rather than shown a screen that quietly
+ * omits the numbers — or a blank one that reads as "nothing happened yet".
+ */
+function receive(view: View, ok: boolean, body: unknown): Received {
+  if (!ok || !isRecord(body)) return { view, kind: 'error' }
+  if (body.status === 'error') return { view, kind: 'error' }
+  if (body.status === 'empty') return { view, kind: 'empty' }
+  if (view === 'growth' && isGrowth(body)) return { view, kind: 'ok', data: body }
+  if (view === 'engagement' && isEngagement(body)) return { view, kind: 'ok', data: body }
+  if (view === 'funnel' && isFunnel(body)) return { view, kind: 'ok', data: body }
+  if (view === 'retention' && isRetention(body)) return { view, kind: 'ok', data: body }
+  return { view, kind: 'error' }
+}
 
 /** A value that has no denominator renders as an explanation, never as 0%. */
 function Ratio({ value, noneKey }: { value: number | null; noneKey: string }) {
@@ -111,33 +178,125 @@ function Stat({ label, value }: { label: string; value: string }) {
 export function UserAnalyticsDashboard() {
   const { t } = useTranslation()
   const [view, setView] = useState<View>('growth')
-  const [data, setData] = useState<Payload | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [received, setReceived] = useState<Received | null>(null)
 
-  const load = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch(`/api/admin/analytics/users?view=${view}`)
-      const json = await res.json()
-      // A non-2xx is surfaced as the error state rather than an empty one — the
-      // API already distinguishes them and the distinction must survive here.
-      setData(res.ok ? json.data : { status: 'error' as const })
-    } catch {
-      setData({ status: 'error' as const } as Payload)
-    } finally {
-      setLoading(false)
-    }
+  // One request per view. The cleanup marks this request abandoned, so a
+  // response for a view the operator has already left is DROPPED instead of
+  // overwriting the view they are actually looking at. Requests here are
+  // per-view and uncached, so without this a slow answer for the previous tab
+  // arrives last and wins.
+  useEffect(() => {
+    let abandoned = false
+    void (async () => {
+      try {
+        const res = await fetch(`/api/admin/analytics/users?view=${view}`)
+        const json: unknown = await res.json()
+        if (abandoned) return
+        // A non-2xx is surfaced as the error state rather than an empty one —
+        // the API already distinguishes them and the distinction must survive.
+        setReceived(receive(view, res.ok, isRecord(json) ? json.data : undefined))
+      } catch {
+        if (!abandoned) setReceived({ view, kind: 'error' })
+      }
+    })()
+    return () => { abandoned = true }
   }, [view])
 
-  useEffect(() => { void load() }, [load])
+  // THE INVARIANT: nothing is rendered from a payload belonging to another
+  // view — including on the render that happens the instant a tab is clicked,
+  // before the new request has even been issued.
+  //
+  // There is deliberately no separate `loading` flag. "No answer for THIS view
+  // yet" IS the loading state, and deriving it removes the ordering bug that
+  // caused the crashes: the flag used to be raised inside the effect, one
+  // render too late, leaving a window where the new view read the old payload.
+  const current = received && received.view === view ? received : null
 
-  const status = data?.status
-  const latestGrowth = data && 'series' in data && view === 'growth'
-    ? (data as GrowthResult).series.at(-1)
-    : undefined
-  const latestEngagement = data && 'series' in data && view === 'engagement'
-    ? (data as EngagementResult).series.at(-1)
-    : undefined
+  function body() {
+    if (!current) {
+      return <p className="text-muted-foreground text-sm">{t('admin.common.loading')}</p>
+    }
+    if (current.kind === 'error') {
+      return <p className="text-destructive text-sm">{t('admin.userAnalytics.error')}</p>
+    }
+    // NOT a grid of zeros — nothing has been measured yet.
+    const nothingMeasured = (
+      <p className="text-muted-foreground text-sm">{t('admin.userAnalytics.empty')}</p>
+    )
+    if (current.kind === 'empty') return nothingMeasured
+
+    switch (current.view) {
+      case 'growth': {
+        const latest = current.data.series.at(-1)
+        if (!latest) return nothingMeasured
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <Stat label={t('admin.userAnalytics.growth.total')} value={latest.totalUsers.toLocaleString()} />
+              <Stat label={t('admin.userAnalytics.growth.new')} value={latest.newUsers.toLocaleString()} />
+            </div>
+            <div className="rounded-admin-md border border-border bg-card p-4">
+              <div className="text-sm font-medium text-muted-foreground">
+                {t('admin.userAnalytics.growth.mom')}
+              </div>
+              <div className="mt-1">
+                <Ratio
+                  value={current.data.momGrowthRate}
+                  noneKey="admin.userAnalytics.growth.momNone"
+                />
+              </div>
+            </div>
+          </div>
+        )
+      }
+      case 'engagement': {
+        const latest = current.data.series.at(-1)
+        if (!latest) return nothingMeasured
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <Stat label={t('admin.userAnalytics.engagement.dau')} value={latest.dau.toLocaleString()} />
+              <Stat label={t('admin.userAnalytics.engagement.wau')} value={latest.wau.toLocaleString()} />
+              <Stat label={t('admin.userAnalytics.engagement.mau')} value={latest.mau.toLocaleString()} />
+            </div>
+            <div className="rounded-admin-md border border-border bg-card p-4">
+              <div className="text-sm font-medium text-muted-foreground">
+                {t('admin.userAnalytics.engagement.stickiness')}
+              </div>
+              <div className="mt-1">
+                <Ratio
+                  value={latest.stickiness}
+                  noneKey="admin.userAnalytics.engagement.stickinessNone"
+                />
+              </div>
+            </div>
+          </div>
+        )
+      }
+      case 'retention':
+        return <CohortTable cohorts={current.data.cohorts} />
+      case 'funnel':
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <Stat label={t('admin.userAnalytics.funnel.free')} value={current.data.free.toLocaleString()} />
+              <Stat label={t('admin.userAnalytics.funnel.pro')} value={current.data.pro.toLocaleString()} />
+            </div>
+            <div className="rounded-admin-md border border-border bg-card p-4">
+              <div className="text-sm font-medium text-muted-foreground">
+                {t('admin.userAnalytics.funnel.conversion')}
+              </div>
+              <div className="mt-1">
+                <Ratio
+                  value={current.data.conversionRate}
+                  noneKey="admin.userAnalytics.funnel.conversionNone"
+                />
+              </div>
+            </div>
+          </div>
+        )
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -156,73 +315,7 @@ export function UserAnalyticsDashboard() {
 
       <Card>
         <CardContent className="pt-6">
-          {loading ? (
-            <p className="text-muted-foreground text-sm">{t('admin.common.loading')}</p>
-          ) : status === 'error' ? (
-            <p className="text-destructive text-sm">{t('admin.userAnalytics.error')}</p>
-          ) : status === 'empty' ? (
-            // NOT a grid of zeros — nothing has been measured yet.
-            <p className="text-muted-foreground text-sm">{t('admin.userAnalytics.empty')}</p>
-          ) : view === 'growth' && latestGrowth ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <Stat label={t('admin.userAnalytics.growth.total')} value={latestGrowth.totalUsers.toLocaleString()} />
-                <Stat label={t('admin.userAnalytics.growth.new')} value={latestGrowth.newUsers.toLocaleString()} />
-              </div>
-              <div className="rounded-admin-md border border-border bg-card p-4">
-                <div className="text-sm font-medium text-muted-foreground">
-                  {t('admin.userAnalytics.growth.mom')}
-                </div>
-                <div className="mt-1">
-                  <Ratio
-                    value={(data as GrowthResult).momGrowthRate}
-                    noneKey="admin.userAnalytics.growth.momNone"
-                  />
-                </div>
-              </div>
-            </div>
-          ) : view === 'engagement' && latestEngagement ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                <Stat label={t('admin.userAnalytics.engagement.dau')} value={latestEngagement.dau.toLocaleString()} />
-                <Stat label={t('admin.userAnalytics.engagement.wau')} value={latestEngagement.wau.toLocaleString()} />
-                <Stat label={t('admin.userAnalytics.engagement.mau')} value={latestEngagement.mau.toLocaleString()} />
-              </div>
-              <div className="rounded-admin-md border border-border bg-card p-4">
-                <div className="text-sm font-medium text-muted-foreground">
-                  {t('admin.userAnalytics.engagement.stickiness')}
-                </div>
-                <div className="mt-1">
-                  <Ratio
-                    value={latestEngagement.stickiness}
-                    noneKey="admin.userAnalytics.engagement.stickinessNone"
-                  />
-                </div>
-              </div>
-            </div>
-          ) : view === 'retention' ? (
-            <CohortTable cohorts={(data as RetentionResult).cohorts} />
-          ) : view === 'funnel' ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <Stat label={t('admin.userAnalytics.funnel.free')} value={(data as FunnelResult).free.toLocaleString()} />
-                <Stat label={t('admin.userAnalytics.funnel.pro')} value={(data as FunnelResult).pro.toLocaleString()} />
-              </div>
-              <div className="rounded-admin-md border border-border bg-card p-4">
-                <div className="text-sm font-medium text-muted-foreground">
-                  {t('admin.userAnalytics.funnel.conversion')}
-                </div>
-                <div className="mt-1">
-                  <Ratio
-                    value={(data as FunnelResult).conversionRate}
-                    noneKey="admin.userAnalytics.funnel.conversionNone"
-                  />
-                </div>
-              </div>
-            </div>
-          ) : (
-            <p className="text-muted-foreground text-sm">{t('admin.userAnalytics.empty')}</p>
-          )}
+          {body()}
         </CardContent>
       </Card>
 
