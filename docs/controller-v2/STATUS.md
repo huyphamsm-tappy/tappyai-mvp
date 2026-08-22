@@ -30,7 +30,10 @@
 | **Definition of Done** | **FULL ARCHITECTURE** — Owner Decision **F**, 2026-08-19, which **supersedes** Decision A (*COMPONENT-COMPLETE, C1–C11*) by date. C1–C11 is now a **precondition**, not the definition: Controller V2 is complete when [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) is implemented and verified. See [`OWNER_DECISIONS_2026-08-19.md`](OWNER_DECISIONS_2026-08-19.md) |
 | **Foundation (C1–C11)** | ✅ **COMPLETE** — the precondition above is met. Every row in this table below is Foundation scope |
 | **Module 08 — User Management** | ✅ **COMPLETE — backend + Controller surface** — schema `b474cff` ([#117](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/117)), consumer enforcement `30e78c1` ([#118](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/118)), Admin Users API `3a825c2` ([#119](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/119)), all live in production. [ADR-022](../architecture/ADR-022-account-status-isolation.md) · [ADR-023](../architecture/ADR-023-module-08-admin-read-surface-roles.md). **Controller surface shipped 2026-08-20:** `tappy.hub.user` registered, manifest `tappy.hub.user.management`, nav entry, `/admin/users` page. **The first business module complete end-to-end in Controller V2.** ~~Still out of scope: auto-unsuspend cron · session revocation on ban · soft delete · notes.~~ **Corrected 2026-08-22:** two of those four shipped and this row went stale behind them — session revocation on ban is `df53496` (Owner Decision A) and notes are `9f5a3d9` (`user_notes`), both recorded below. Still out of scope: **auto-unsuspend cron · soft delete**. Read surface **UAT-verified on production 2026-08-22**. See [Module 08](#phase-8--module-08-controller-surface-complete-2026-08-20) |
-| **Controller V2 overall** | ⏳ **NOT COMPLETE** — Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. Remaining-work inventory: [Burn-down](#master-completion-burn-down-2026-08-20) |
+| **Owner decision set** | ✅ **CLOSED, 2026-08-22** — [`OWNER_DECISIONS_2026-08-22.md`](OWNER_DECISIONS_2026-08-22.md) answers D1–D7. **No Controller V2 item is waiting on an Owner decision any more.** See [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) |
+| **K-2 — Configuration Provider runtime tier** | ✅ **SHIPPED — code live, MIGRATION NOT APPLIED.** `platform_settings` (`01_ARCH` §4.1, authority granted by Decision D1b), merge `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)). Production **measured** 2026-08-22: the table still probes `PGRST205`, and every Controller page returns non-5xx — the loader's never-throw contract holds against the table's absence. **The tier is inert until the migration is applied under its own Owner authorization.** ⏳ **This is the last engineering item not fully in production** |
+| **Module — Department Memberships** | ✅ **COMPLETE end-to-end** — Owner Decision D6. `tappy.hub.security.membership` + `/admin/org/memberships` + `GET /api/admin/org/memberships`, merge `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)). **Production UAT PASS 2026-08-22, EN + VI.** Read-only by decision. `/org/memberships` was the last admin route with no page |
+| **Controller V2 overall** | ⏳ **NOT COMPLETE** — but for a materially shorter list than before. Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. **What remains after 2026-08-22 is one migration authorization, one external prerequisite (BL-002), destructive UAT the Owner has withheld, and work explicitly DEFERRED by decision.** Remaining-work inventory: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
 > "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
@@ -79,6 +82,72 @@ Merged, deployed and running in production. One production acceptance task remai
 | Platform Owner | bootstrapped, exactly one active |
 | `PLATFORM_OWNER_USER_ID` | configured in Production + Preview + Development |
 | Deferred hardening | ✅ **APPLIED 2026-08-19** — [ADR-017](../architecture/ADR-017-service-role-hardening-strategy.md) layer 3. This row read "**NOT applied**" until the gate (every Phase 1 component shipped and soaked) was met. See [Post-Foundation](#post-foundation-work) |
+
+---
+
+## 2026-08-22 — the Owner decision set is closed, and what it unblocked shipped
+
+`main` = **`6d9aecc`** ([PR #153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)), production **verified serving `6d9aecc` at runtime**: `/api/version` returns the full SHA and the Controller Home prints it on the page, so this is the build described below and not a deployment badge.
+
+Class 1 — work safe to implement without asking — had been empty since `8b9bf3b`. Every remaining item was an Owner decision, an external prerequisite, or an authenticated UAT. [`OWNER_DECISIONS_2026-08-22.md`](OWNER_DECISIONS_2026-08-22.md) closes the first category; this section records what followed.
+
+### 🛑 Two things this document was saying that were no longer true
+
+Both are corrected in place rather than quietly edited away, the same discipline as the 2026-08-07 and 2026-08-13 corrections.
+
+**1. `/org/memberships` was NOT blocked.** This document said it needed *"the F-10 activation gate plus four further Owner decisions — first department, first Head account, membership-authority ratification, activation"*. **MEASURED 2026-08-22: all five were resolved on 2026-08-10.** [`FOUNDATION-10_OWNER_DECISION_PACKAGE.md`](FOUNDATION-10_OWNER_DECISION_PACKAGE.md) records *"✅ DECISION C — RESOLVED: OPTION 1, by the Owner"*, with A, B, D and E executed, committed as `514505a`. Production carries **one active `DEPARTMENT_HEAD` membership** (`ai_data`, created 2026-08-10), read read-only from the live database, and `audit_log` holds the matching `org.membership_assigned` row from that date.
+
+**F-10 had been on for twelve days while this document said it was waiting for permission to start.** That is the failure mode the banner at the top of this file exists to prevent, and it is the second time in three days that a row here outlived the thing it described.
+
+**2. The unregistered `marketing` / `ai` / `operations` hubs were not Owner decisions.** Taxonomy §1 already assigns modules to all three under Decision G, and a hub with no module renders a bare heading — the case the Phase 7 mutation suite kills. They are **derived**: they register when their first module does.
+
+### What shipped
+
+| | |
+|---|---|
+| **K-2 — Configuration Provider runtime tier** | `platform_settings` migration + rollback + the tier. `configProvider.ts` had said for months that the runtime tier *"returns undefined rather than a fake value so precedence falls through honestly"* because the table did not exist, and the Configuration Provider is **named in Decision F's Definition of Done** — a provider whose highest-precedence tier is a stub is not that provider |
+| **Department Memberships** | `tappy.hub.security.membership` + `/admin/org/memberships` + `GET /api/admin/org/memberships`. **The last admin route with no page now has one** |
+| **Errata** | `01_ARCH` §8 cited *"RULE 8 / RULE 9 / RULE 10"* for three UI statements; `00_Constitution` defines those numbers as *AI Assists, Humans Decide*, *Privacy by Default* and *Immutable Audit Log*, and the cited set exists **nowhere in the repository**. Renumbered as UI principles of that section, with the erratum recorded in place. `12_HUB_TAXONOMY.md` §2 closed: Module 20 ratified as kernel/capability, Module 17 keeps its placement, `tappy.hub.configuration` **not** retired |
+
+### Production UAT — 2026-08-22, authenticated Owner session on `6d9aecc`
+
+| Check | Result |
+|---|---|
+| Runtime commit | ✅ `/api/version` → `6d9aecc…`; Controller Home prints `6d9aecc` |
+| `/admin/org/memberships`, **EN** | ✅ PASS — nav entry present and it opens; roster renders the real production row (`AI / Data` · `bafa6fc1…` · `Department Head` · `ai_data` · `Active`) |
+| `/admin/org/memberships`, **VI** | ✅ PASS — every string translated (`Thành viên phòng ban` · `AI / Dữ liệu` · `Trưởng phòng ban` · `Đang hoạt động`), **0 English leak** |
+| Raw i18n keys · `undefined` · `NaN` · console errors | ✅ **0 / 0 / 0 / 0** in both locales, on a fresh load |
+| Chrome-Translate contamination | ✅ `<font>` tags **0** — the measurement is of the app, not of a translated DOM |
+| Read-only, on the live surface | ✅ the only buttons on the page are the shell's (Quick find, VI, EN, Sign out) |
+| API payload, **raw production body** | ✅ `200 {"data":[{userId, departmentId, orgRole, scope, status}]}` — **no email, avatar, name, phone, token or cookie** |
+| Audit trail | ✅ `audit_log` holds `org.membership_listed`, `target_type: department_membership`, `metadata: {"returned": 1}` — **a count, never the rows** |
+| Regression — M01 · M04 · M08 | ✅ Home renders; **all four M04 tabs render with no error boundary and no `undefined`** (the #151 fix holds on the new build); Users lists 22 rows |
+| K-2 against a table that does not exist | ✅ `platform_settings` probes **`PGRST205`**, and `/admin`, `/admin/users`, `/admin/analytics/users`, `/admin/audit`, `/admin/rbac`, `/admin/org/memberships`, `/access-denied`, `/reviews` **all return non-5xx**. The loader runs in the Controller root layout on every request; if it threw, every one of those would be a 500 |
+
+**Not exercised, and why:** assignment, suspension, removal, ban, session revocation, moderation actions and B8 recovery all mutate production or end a real session. Decision D6 keeps the roster read-only precisely because destructive UAT is **not authorized**. No account was created and no row was written to make a screen look populated.
+
+### 🔴 What is left — nothing here is an open engineering question
+
+| Item | Class | What it needs |
+|---|---|---|
+| **Apply the `platform_settings` migration** | **OWNER AUTHORIZATION** | The file, the rollback and the code are live. Every migration in this project has had its own explicitly named authorization (*"M01's authorization was NOT reused"*), and D1b authorized **creating** it. Until it is applied the runtime tier is inert — safely, by construction |
+| **BL-002** | **EXTERNAL PREREQUISITE** | A second `super_admin` only the Owner can create. **Not to be simulated** |
+| **B8 recovery · M08 ban/suspend · C11 revocation · M09 moderation action** | **OWNER AUTHORIZATION** | Explicitly withheld 2026-08-22 |
+| **Layout Presets · date range · Density** | **DEFERRED BY DECISION** (D2, D3) | Scope is now defined, so the deferral has an end condition. Density additionally needs the preference store `platform_settings` provides |
+| **Command Palette `act` / `search`** | ✅ **COMPLETE BY DECISION** (D4, D5) | Navigate-only is final for V2. The two tests written when the gap was open are now the executable form of that decision |
+| **K-8 `module_registry`** | ✅ **OUT OF SCOPE** (D1a) | Superseded by registry-in-code, applying Decision B15 to an identical shape |
+| **Module 20** | ✅ **CLOSED** (D7) | Kernel/capability, not a Hub member, not built |
+| **Module 17 · 11 unstarted Phase 8 modules** | **DEFERRED BY DECISION** (D7) | No new business module enters V2 |
+| **M09 content-safety writer** | **OUT OF CONTROLLER V2 SCOPE** | Content Safety Gate under ADR-024, which `moderationModule.ts` declares |
+| **K-1 · K-3 · K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
+
+**Controller V2 is not declared COMPLETE.** Under Decision F the measure is the full architecture, and one authorized item — the migration — is not yet in production. **Class 1 is empty, class 3 (Owner decision) is empty, and what remains is one authorization, one external prerequisite, and work deferred on the record.**
+
+### Gate evidence for `6d9aecc`
+
+Full suite **7056 passed · 0 failed · 51 skipped** (all 7 intentional, MEASURE-gated) · required-suite gate **OK, 33/33 executed** including the embedded-PostgreSQL `supabase/tests` · mutation **18/18** (K-2) and **23/23** (D6), 0 survivors · `tsc --noEmit` 0 · ESLint clean · `npm run build` exit 0 · CI green on **both** the `push` and `pull_request` workflows.
+
+> **Two harness lessons recorded because both produce false confidence.** K-2's first mutation pass had three survivors: two were genuine coverage gaps (the supabase adapter had no test at all) and one was an *equivalent* mutant in a conditional this work had added — it provably changed no behaviour, so the conditional was removed rather than armoured with a test. Eight D6 mutants first reported as "not run": this repository's line endings are **not uniform**, and a multi-line anchor written with `\n` matches **zero** times in a CRLF file — which reads as a false SURVIVOR in any harness that does not assert the anchor count.
 
 ---
 
