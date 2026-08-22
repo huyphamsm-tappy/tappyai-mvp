@@ -568,9 +568,21 @@ describe('the guards every mutation shares', () => {
 
 describe('POST /api/admin/users/[id]/suspend', () => {
   beforeEach(() => {
+    // 🚨 `2099`, not a near-term date. `standing` is derived by comparing this timestamp to NOW —
+    // "an expired suspension is not a suspension", per accountStatus.ts — so a fixture set a few
+    // hours ahead stops representing an ACTIVE suspension the moment it passes, and the assertion
+    // below flips from 'suspended' to 'active' on its own.
+    //
+    // It did. This read `2026-08-21T12:00:00+00:00`; main's CI ran at 09:19Z that day and was
+    // green, and every run after 12:00Z failed. Nothing about the route changed.
+    //
+    // 2099 is this file's existing convention for a suspension that is still in force (see the
+    // list and ban fixtures), and 2020 is its convention for one that has expired (see "shows the
+    // RAW flags next to the derived standing"). Using them consistently is what keeps a date-
+    // dependent assertion deterministic.
     h.queues = {
       profiles: [ok({ id: SUBJECT })],
-      account_status: [ok(null), ok(statusRow({ is_suspended: true, suspended_until: '2026-08-21T12:00:00+00:00' }))],
+      account_status: [ok(null), ok(statusRow({ is_suspended: true, suspended_until: '2099-01-01T00:00:00+00:00' }))],
     }
   })
 
