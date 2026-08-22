@@ -17,12 +17,25 @@ import org.junit.Test
  */
 class DealListKeysTest {
 
+    /**
+     * A deal whose only identity is [url] (i.e. `officialUrl`), with a BLANK id.
+     *
+     * That is deliberate and is the shape the original crash had: the feed sends neither the field
+     * the DTO declares nor anything else usable, so identity falls all the way through. Every case
+     * below exercises the url fallback; the id-first cases are separate tests at the bottom.
+     */
     private fun deal(url: String, title: String = "Deal") = Deal(
-        title = title,
+        id = "",
+        partnerName = "Shopee",
         category = "Ăn uống",
-        discount = "-50%",
-        url = url,
-        source = "Shopee",
+        categoryKey = "Ăn uống",
+        title = title,
+        description = null,
+        officialUrl = url,
+        logoImage = null,
+        discountLabel = "-50%",
+        voucherCode = null,
+        endAt = null,
     )
 
     /** The regression: two blank urls both keyed `""` under the old `key = { it.url }`. */
@@ -96,5 +109,74 @@ class DealListKeysTest {
     @Test
     fun `an empty feed yields no keys`() {
         assertTrue(dealListKeys(emptyList()).isEmpty())
+    }
+
+    // ── id is the primary identity ────────────────────────────────────────────────────────────
+    // The feed does send a uuid `id`, so that is what identity should come from; `officialUrl` is
+    // the fallback. Both fields default to "" in the DTO, so both paths have to stay total.
+
+    private fun deal(id: String, url: String, title: String = "Deal") =
+        deal(url, title).copy(id = id)
+
+    /** id wins when present — two deals sharing a partner url are still distinct rows. */
+    @Test
+    fun `ids are preferred over urls as keys`() {
+        val keys = dealListKeys(
+            listOf(
+                deal(id = "uuid-a", url = "https://shopee.vn"),
+                deal(id = "uuid-b", url = "https://shopee.vn"),
+            ),
+        )
+
+        assertEquals(listOf("uuid-a", "uuid-b"), keys)
+    }
+
+    /** A blank id must not swallow a perfectly good url — that would lose key stability. */
+    @Test
+    fun `a blank id falls back to the url`() {
+        val keys = dealListKeys(listOf(deal(id = "", url = "https://shopee.vn")))
+
+        assertEquals(listOf("https://shopee.vn"), keys)
+    }
+
+    /** The next rename: if the backend drops `id`, seven blank ids must not collide. */
+    @Test
+    fun `duplicate ids get distinct keys`() {
+        val keys = dealListKeys(List(7) { deal(id = "same", url = "", title = "Partner $it") })
+
+        assertEquals(7, keys.size)
+        assertEquals(7, keys.toSet().size)
+    }
+
+    /** Both identity fields blank — the worst case, and still no collision and no throw. */
+    @Test
+    fun `deals with neither id nor url get distinct keys`() {
+        val keys = dealListKeys(List(7) { deal(id = "   ", url = "\n", title = "Partner $it") })
+
+        assertEquals(7, keys.toSet().size)
+    }
+
+    /**
+     * Why blanks get their own `deal-index:` namespace instead of just falling through to the
+     * duplicate counter.
+     *
+     * Dropping that branch still yields distinct keys among the blanks themselves — the counter
+     * would hand them `""`, `"#2"`, `"#3"` — which is why this looks like dead code until you put a
+     * real id next to them. `"#2"` is a string a backend is allowed to send, and then the synthetic
+     * key and the genuine one are the same value, and the tab dies exactly as before. Prefixing
+     * blanks moves them out of the space real identities live in.
+     */
+    @Test
+    fun `synthetic keys for blank deals cannot collide with a real id`() {
+        val keys = dealListKeys(
+            listOf(
+                deal(id = "", url = ""),
+                deal(id = "", url = ""),
+                deal(id = "#2", url = "https://a.vn"),
+            ),
+        )
+
+        assertEquals("blank deals must not be keyed into the same space as real ids", 3, keys.toSet().size)
+        assertEquals("#2", keys[2])
     }
 }

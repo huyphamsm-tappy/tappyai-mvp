@@ -58,18 +58,29 @@ class DealsWireContractTest {
 
         assertEquals(2, deals.size)
         val shopee = deals[0]
+        assertEquals("db25eb10-58b1-4f39-a602-d345174079bd", shopee.id)
         assertEquals("Shopee", shopee.title)
         assertEquals("Mua sắm", shopee.category)
-        assertEquals("Shopee", shopee.source)
-        assertEquals("https://shopee.vn", shopee.url)
+        assertEquals("Mua sắm", shopee.categoryKey)
+        assertEquals("Shopee", shopee.partnerName)
+        assertEquals("https://shopee.vn", shopee.officialUrl)
+        assertEquals("Sàn mua sắm online — mọi thứ bạn cần", shopee.description)
     }
 
-    /** The crash precondition: a blank url is what collapses every key onto `""`. */
+    /** The crash precondition: a blank officialUrl is what collapses every key onto `""`. */
     @Test
-    fun `no live deal decodes to a blank url`() {
-        val urls = decode().map { it.toDomain().url }
+    fun `no live deal decodes to a blank officialUrl`() {
+        val urls = decode().map { it.toDomain().officialUrl }
 
-        assertTrue("blank url decoded from a live row: $urls", urls.none { it.isBlank() })
+        assertTrue("blank officialUrl decoded from a live row: $urls", urls.none { it.isBlank() })
+    }
+
+    /** Identity now comes from `id` first, so that field has to survive decoding too. */
+    @Test
+    fun `no live deal decodes to a blank id`() {
+        val ids = decode().map { it.toDomain().id }
+
+        assertTrue("blank id decoded from a live row: $ids", ids.none { it.isBlank() })
     }
 
     /** The card is only tappable when the partner link survives decoding. */
@@ -78,16 +89,74 @@ class DealsWireContractTest {
         val keys = dealListKeys(decode().map { it.toDomain() })
 
         assertEquals(keys.size, keys.toSet().size)
-        assertEquals(listOf("https://shopee.vn", "https://www.tiktok.com/shop"), keys)
+        assertEquals(
+            listOf("db25eb10-58b1-4f39-a602-d345174079bd", "1e3b33f5-ce33-4297-9f2c-913e47bab632"),
+            keys,
+        )
     }
 
     /** discountLabel is genuinely absent on most deals — null, not "" — and must stay nullable. */
     @Test
-    fun `discountLabel maps to discount and tolerates null`() {
+    fun `discountLabel decodes and tolerates null`() {
         val deals = decode().map { it.toDomain() }
 
-        assertNull("a deal with no promotion must not invent one", deals[0].discount)
-        assertEquals("-30%", deals[1].discount)
+        assertNull("a deal with no promotion must not invent one", deals[0].discountLabel)
+        assertEquals("-30%", deals[1].discountLabel)
+    }
+
+    /**
+     * The bug that outlived the crash: after the keys were fixed the tab still rendered as seven
+     * grey rows, because the DTO declared none of the fields that carry the card's content. Every
+     * one of them is pinned here by name against the live response.
+     *
+     * `description` is the field that matters most on today's data — it is the only one of these
+     * that is actually populated, so dropping it is the difference between a real card and a bare
+     * row. The rest are null on every current row and must decode as ABSENT, not as "".
+     */
+    @Test
+    fun `the fields the card renders all decode from the live response`() {
+        val deals = decode().map { it.toDomain() }
+
+        assertEquals("Mua sắm giải trí ngay trên TikTok", deals[1].description)
+        assertEquals("TikTok Shop", deals[1].partnerName)
+        // Null on every live row today. Rendered as absent — never as an empty box or an empty pill.
+        deals.forEach { deal ->
+            assertNull("logoImage must stay absent, not blank", deal.logoImage)
+            assertNull("voucherCode must stay absent, not blank", deal.voucherCode)
+            assertNull("endAt must stay absent, not blank", deal.endAt)
+        }
+    }
+
+    /**
+     * `categoryKey` styles the chip and `category` labels it. They are equal on the Vietnamese
+     * response, which is exactly why collapsing them is easy to miss: it looks correct until the
+     * user switches to English, when the localized label stops matching the colour map and every
+     * chip silently loses its colour.
+     */
+    @Test
+    fun `a missing categoryKey falls back to the localized category`() {
+        val enRow = """{"deals":[{"id":"x","category":"Shopping","officialUrl":"https://a.vn"}]}"""
+
+        val deal = json.decodeFromString<DealsResponseDto>(enRow).deals.single().toDomain()
+
+        assertEquals("Shopping", deal.categoryKey)
+    }
+
+    /** Blank is the feed's other way of saying absent; the card must treat the two alike. */
+    @Test
+    fun `blank optional strings normalize to null`() {
+        val blanks = """
+            {"deals":[{"id":"x","officialUrl":"https://a.vn","description":"",
+             "logoImage":"  ","discountLabel":"","voucherCode":"","endAt":""}]}
+        """.trimIndent()
+
+        val deal = json.decodeFromString<DealsResponseDto>(blanks).deals.single().toDomain()
+
+        assertNull(deal.description)
+        assertNull(deal.logoImage)
+        assertNull(deal.discountLabel)
+        assertNull(deal.voucherCode)
+        assertNull(deal.endAt)
     }
 
     /** Unknown/absent `deals` must degrade to empty rather than throw. */

@@ -17,9 +17,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * State for the Deals screen (`/deals` on the web) — loads the daily-rotating curated deal pool
- * once from `GET /api/deals`. No pagination/filtering (the web has none either); tapping a card
- * opens its [Deal.url] externally, same as the web's `<a target="_blank">`.
+ * State for the Deals screen (`/deals` on the web) — loads the active partner-deal pool once from
+ * `GET /api/deals`. No pagination/filtering (the web has none either); tapping a card bumps the
+ * popularity counter and opens [Deal.officialUrl] externally, same as the web's
+ * `<a target="_blank">`.
  */
 @HiltViewModel
 class DealsViewModel @Inject constructor(
@@ -54,6 +55,17 @@ class DealsViewModel @Inject constructor(
     }
 
     fun retry() = load()
+
+    /**
+     * Fire-and-forget popularity counter for an opened deal (web parity: `DealsView.tsx` posts
+     * `/api/deals/{id}/click` on card click).
+     *
+     * Launched on [viewModelScope] and never awaited by the caller, so the link opens immediately
+     * whatever the network does. The repository already swallows failures; nothing is reported.
+     */
+    fun onDealOpen(deal: Deal) {
+        viewModelScope.launch { repository.recordClick(deal.id) }
+    }
 
     private companion object {
         const val TAG = "DealsViewModel"

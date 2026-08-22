@@ -1,6 +1,9 @@
 package com.tappyai.app.deals.data
 
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /** Retrofit contract for `GET /api/deals` — built from the shared singleton [retrofit2.Retrofit]
@@ -17,4 +20,15 @@ interface DealsApi {
      */
     @GET("api/deals")
     suspend fun getDeals(@Query("lang") lang: String): DealsResponseDto
+
+    /**
+     * Best-effort +1 on a deal's popularity counter (`increment_deal_click`, SECURITY DEFINER).
+     *
+     * The route swallows every failure and returns 200 with no body, so [Response]<[Unit]> is the
+     * honest type — there is nothing to decode and nothing to check. Fired fire-and-forget when a
+     * card is opened, mirroring the web's `fetch(..., { keepalive: true }).catch(() => {})`; it must
+     * never gate the link.
+     */
+    @POST("api/deals/{id}/click")
+    suspend fun postDealClick(@Path("id") id: String): Response<Unit>
 }

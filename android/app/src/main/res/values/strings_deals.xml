@@ -5,5 +5,19 @@
     <string name="deals_empty_title">No deals right now</string>
     <string name="deals_empty_message">Check back later for new deals.</string>
     <string name="deals_opens_externally_description">Opens externally</string>
-    <string name="deals_category_source_format">%1$s · via %2$s</string>
+    <string name="deals_via_source">via %1$s</string>
+    <!-- Web parity (deals.subtitle): count of curated deals, shown above the list -->
+    <string name="deals_subtitle">Tappy hand-picks the %1$d best deals — refreshed every day at 7:30 AM</string>
+    <!-- Countdown (PromoCountdown / web deals.endingSoon, dayLeft, daysLeft) -->
+    <string name="deals_ending_soon">🔥 Ending Soon</string>
+    <string name="deals_day_left">1 day left</string>
+    <string name="deals_days_left">%1$d days left</string>
+    <!-- Voucher chip (web deals.voucherLabel, copyCode, codeCopied) -->
+    <string name="deals_voucher_label">Code</string>
+    <string name="deals_copy_code">Copy code</string>
+    <string name="deals_code_copied">Copied!</string>
+    <!-- Web parity (deals.disclosurePrefix + disclosureEmphasis + disclosureSuffix, MFS 3.10):
+         commercial-nature disclosure under the list. The web bolds the middle clause; this is one
+         plain paragraph, so the three parts are joined into the same sentence. -->
+    <string name="deals_disclosure">These are offers from e-commerce platforms and partners — Tappy curates them for you, not paid advertising. Prices and offers are as published by each platform and may change — please double-check before you buy.</string>
 </resources>

@@ -9,29 +9,42 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.core.common.UiState
 import com.tappyai.core.designsystem.component.TappyEmptyState
+import com.tappyai.core.designsystem.component.TappyImage
+import kotlinx.coroutines.delay
 import com.tappyai.core.designsystem.component.TappyErrorState
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
 import com.tappyai.core.designsystem.theme.TappyContainers
@@ -91,74 +104,225 @@ fun DealsScreen(
                     title = stringResource(R.string.deals_empty_title),
                     message = stringResource(R.string.deals_empty_message),
                 )
-                is UiState.Success -> DealsList(deals = state.data, onOpen = { uriHandler.openUri(it) })
+                is UiState.Success -> DealsList(
+                    deals = state.data,
+                    onOpen = { deal ->
+                        // Web parity: fire the click counter, then open the link regardless.
+                        viewModel.onDealOpen(deal)
+                        uriHandler.openUri(deal.officialUrl)
+                    },
+                )
             }
         }
     }
 }
 
 @Composable
-private fun DealsList(deals: List<Deal>, onOpen: (String) -> Unit) {
-    // Keys are derived up front rather than inline: `it.url` alone is not unique (see
-    // [dealListKeys]), and a duplicate key crashes the whole tab during measure.
+private fun DealsList(deals: List<Deal>, onOpen: (Deal) -> Unit) {
+    val colors = MaterialTheme.colorScheme
     val keys = remember(deals) { dealListKeys(deals) }
     LazyColumn(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
+        // Web parity (deals.subtitle): curated-count line above the list.
+        item {
+            Text(
+                text = stringResource(R.string.deals_subtitle, deals.size),
+                style = MaterialTheme.typography.bodySmall,
+                color = colors.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = TappySpacing.xs),
+            )
+        }
+        // 🚨 Keys come from [dealListKeys], never straight from a field. Every DTO field decodes
+        // with a default, so one the backend stops sending turns every deal's key blank and
+        // Compose throws `Key "" was already used` at measure time — the whole tab dies before it
+        // draws. That happened once already, on `officialUrl`.
         itemsIndexed(items = deals, key = { index, _ -> keys[index] }) { _, deal ->
-            // A blank url has nothing to open — `openUri("")` throws ActivityNotFoundException,
-            // so such a card renders as plain (non-tappable) content instead.
-            val url = deal.url.trim()
-            DealCard(deal = deal, onClick = if (url.isEmpty()) null else ({ onOpen(url) }))
+            DealCard(deal = deal, onOpen = { onOpen(deal) })
+        }
+        // Web parity (deals.disclosure*, MFS 3.10): commercial-nature disclosure under the list.
+        item {
+            Text(
+                text = stringResource(R.string.deals_disclosure),
+                style = MaterialTheme.typography.labelSmall,
+                color = colors.onSurfaceVariant,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = TappySpacing.lg),
+            )
         }
     }
 }
 
-/** [onClick] is null for a deal with no url — the card then carries no tap affordance at all. */
+/** Maps a VN category label to a palette colour, mirroring the web `CATEGORY_COLORS` set. Each web
+ *  category maps to the nearest colour in Android's 7-colour palette (web sky→blue, yellow→amber,
+ *  emerald/teal→green, indigo→purple, rose→pink). Every category web colours must colour here too —
+ *  previously "Vận chuyển" (e.g. Grab/Be) and others fell through to no badge. */
 @Composable
-private fun DealCard(deal: Deal, onClick: (() -> Unit)?) {
+private fun categoryColor(category: String) = when (category) {
+    "Điện tử" -> tappyCategoryColors.blue
+    "Mua sắm" -> tappyCategoryColors.orange
+    "Ăn uống", "Gia dụng", "Siêu thị" -> tappyCategoryColors.green
+    "Du lịch", "Sách" -> tappyCategoryColors.purple
+    "Vận chuyển" -> tappyCategoryColors.blue
+    "Tiết kiệm" -> tappyCategoryColors.amber
+    "Thời trang", "Làm đẹp" -> tappyCategoryColors.pink
+    else -> null
+}
+
+@Composable
+private fun DealCard(deal: Deal, onOpen: () -> Unit) {
     val colors = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(TappyShapes.card)
             .background(colors.surfaceVariant)
-            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+            .clickable(onClick = onOpen)
             .padding(TappySpacing.lg),
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
     ) {
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
-            Text(
-                text = deal.title,
-                style = MaterialTheme.typography.bodyLarge,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            // Most deals carry no promotion — web renders the discount only when one exists.
-            val discount = deal.discount?.trim()
-            if (!discount.isNullOrEmpty()) {
-                Text(text = discount, style = MaterialTheme.typography.bodyMedium, color = tappyCategoryColors.green.accent)
+        // Logo (48dp) or an initial fallback on an orange tile — web parity.
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(TappyShapes.input)
+                .background(tappyCategoryColors.orange.container),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (deal.logoImage != null) {
+                TappyImage(url = deal.logoImage, contentDescription = null, modifier = Modifier.fillMaxSize().clip(TappyShapes.input))
+            } else {
+                Text(
+                    text = deal.partnerName.firstOrNull()?.uppercase() ?: "?",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = tappyCategoryColors.orange.onContainer,
+                )
             }
-            // "via <partner>" only when there is a partner to name — otherwise the format string
-            // leaves a dangling "· via " with nothing after it.
-            val source = deal.source.trim()
+        }
+
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs), verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = deal.title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false),
+                )
+                // Discount badge — only when the deal carries one (web parity).
+                deal.discountLabel?.let { label ->
+                    Box(
+                        modifier = Modifier
+                            .clip(TappyShapes.pill)
+                            .background(tappyCategoryColors.red.accent)
+                            .padding(horizontal = TappySpacing.sm, vertical = 2.dp),
+                    ) {
+                        Text(text = label, style = MaterialTheme.typography.labelSmall, color = colors.onError)
+                    }
+                }
+            }
+
+            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm), verticalAlignment = Alignment.CenterVertically) {
+                // Colour keyed by the language-independent categoryKey (stable vi label); the
+                // pill text shows the localized category.
+                categoryColor(deal.categoryKey)?.let { catColor ->
+                    Box(
+                        modifier = Modifier
+                            .clip(TappyShapes.pill)
+                            .background(catColor.container)
+                            .padding(horizontal = TappySpacing.sm, vertical = 2.dp),
+                    ) {
+                        Text(text = deal.category, style = MaterialTheme.typography.labelSmall, color = catColor.onContainer)
+                    }
+                }
+                CountdownLabel(endAt = deal.endAt)
+            }
+
+            deal.description?.takeIf { it.isNotBlank() }?.let { description ->
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = colors.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+
+            deal.voucherCode?.let { code -> VoucherChip(code = code) }
+
             Text(
-                text = if (source.isEmpty()) {
-                    deal.category
-                } else {
-                    stringResource(R.string.deals_category_source_format, deal.category, source)
-                },
+                text = stringResource(R.string.deals_via_source, deal.partnerName),
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.onSurfaceVariant,
             )
         }
 
-        // Only promise "opens externally" when there is actually something to open.
-        if (onClick != null) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                contentDescription = stringResource(R.string.deals_opens_externally_description),
-                tint = colors.onSurfaceVariant,
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+            contentDescription = stringResource(R.string.deals_opens_externally_description),
+            tint = colors.onSurfaceVariant,
+        )
+    }
+}
+
+/** Countdown pill: nothing / "🔥 Ending Soon" / "N days left" (with a clock), per [promoCountdown]. */
+@Composable
+private fun CountdownLabel(endAt: String?) {
+    val countdown = remember(endAt) { promoCountdown(endAt, System.currentTimeMillis()) }
+    when (countdown) {
+        PromoCountdown.None -> Unit
+        PromoCountdown.Soon -> Text(
+            text = stringResource(R.string.deals_ending_soon),
+            style = MaterialTheme.typography.labelSmall,
+            color = tappyCategoryColors.red.accent,
+        )
+        is PromoCountdown.Days -> Row(
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(Icons.Filled.Schedule, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(11.dp))
+            Text(
+                text = if (countdown.days == 1) stringResource(R.string.deals_day_left)
+                else stringResource(R.string.deals_days_left, countdown.days),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+/** Copyable voucher chip. Its own clickable — copying must NOT open the deal or fire the click POST
+ *  (web `stopPropagation` + `preventDefault`). Shows a 1.5s "copied" state. */
+@Composable
+private fun VoucherChip(code: String) {
+    val clipboard = LocalClipboardManager.current
+    var copied by remember { mutableStateOf(false) }
+    LaunchedEffect(copied) {
+        if (copied) { delay(1500); copied = false }
+    }
+    Row(
+        modifier = Modifier
+            .clip(TappyShapes.pill)
+            .background(tappyCategoryColors.orange.container)
+            .clickable {
+                clipboard.setText(AnnotatedString(code))
+                copied = true
+            }
+            .padding(horizontal = TappySpacing.sm, vertical = TappySpacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = if (copied) stringResource(R.string.deals_code_copied)
+            else "${stringResource(R.string.deals_voucher_label)}: $code",
+            style = MaterialTheme.typography.labelSmall,
+            color = tappyCategoryColors.orange.onContainer,
+        )
+        Icon(
+            imageVector = if (copied) Icons.Filled.Check else Icons.Filled.ContentCopy,
+            contentDescription = stringResource(R.string.deals_copy_code),
+            tint = tappyCategoryColors.orange.onContainer,
+            modifier = Modifier.size(12.dp),
+        )
     }
 }
