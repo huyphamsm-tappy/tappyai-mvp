@@ -53,6 +53,12 @@ describe('F01 · every mapped city is country-qualified', () => {
    * The specific strings that were measured to resolve abroad. A qualifier check alone would
    * still pass if someone "qualified" a value as "Da Nang, Viet Nam" — a spelling the provider
    * does not resolve — so the exact known-good values are pinned too.
+   *
+   * 🔑 "Known-good" means MEASURED good, and the bar rose once the measurement did. Huế and Hạ
+   * Long were pinned as "Hue, Vietnam" and "Ha Long, Vietnam" while the only question asked was
+   * which COUNTRY came back. Asking which PLACE came back showed those two answer from 364 km and
+   * 163 km away — the right country, the wrong province. The values below are the ones that
+   * resolve to the cities themselves; `weatherCountryMatrix.test.ts` is what holds them honest.
    */
   it.each([
     ['Đà Nẵng', 'Da Nang, Vietnam'],
@@ -60,10 +66,10 @@ describe('F01 · every mapped city is country-qualified', () => {
     ['Da Nang', 'Da Nang, Vietnam'],
     ['da nang', 'Da Nang, Vietnam'],
     ['DANANG', 'Da Nang, Vietnam'],
-    ['Huế', 'Hue, Vietnam'],
-    ['hue', 'Hue, Vietnam'],
-    ['Hạ Long', 'Ha Long, Vietnam'],
-    ['ha long', 'Ha Long, Vietnam'],
+    ['Huế', 'Thua Thien Hue, Vietnam'],
+    ['hue', 'Thua Thien Hue, Vietnam'],
+    ['Hạ Long', 'Hong Gai, Vietnam'],
+    ['ha long', 'Hong Gai, Vietnam'],
     ['Hà Nội', 'Ha Noi, Vietnam'],
     ['hn', 'Ha Noi, Vietnam'],
     ['Sài Gòn', 'Ho Chi Minh City, Vietnam'],

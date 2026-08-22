@@ -69,10 +69,20 @@ const WEATHER_CITY_MAP: Record<string, string> = {
   'hcm': 'Ho Chi Minh City, Vietnam', 'sai gon': 'Ho Chi Minh City, Vietnam',
   'saigon': 'Ho Chi Minh City, Vietnam', 'tphcm': 'Ho Chi Minh City, Vietnam',
   'da nang': 'Da Nang, Vietnam', 'danang': 'Da Nang, Vietnam',
-  'hue': 'Hue, Vietnam',
+  // The province, not the city: ", Vietnam" got the country right and the province wrong.
+  // "Hue, Vietnam" resolves to Ban Hong, 364 km south in the Lâm Đồng highlands — 26°C on a day
+  // Huế was 35°C. "Thua Thien Hue, Vietnam" resolves to Kim Long, a ward of Huế itself, 1 km out.
+  // ("Hue City, Vietnam" is worse still at 534 km; the provider is not reasoning about these
+  // strings, it is matching them.)
+  'hue': 'Thua Thien Hue, Vietnam',
   // Ha Long was absent entirely, so it fell through to the pass-through branch as bare
   // "Ha Long" — which is a place in Lesotho. Present here for the same reason as the rest.
-  'ha long': 'Ha Long, Vietnam', 'halong': 'Ha Long, Vietnam',
+  //
+  // Named by its central ward rather than the city: "Ha Long, Vietnam" lands on Gia Mien Noi,
+  // 163 km away, while "Hong Gai, Vietnam" is Hạ Long's own centre, 0 km out. Hạ Long with its
+  // diacritics also resolves correctly, but every other value here is ASCII and one accented
+  // entry would invite the next one to be added without measuring.
+  'ha long': 'Hong Gai, Vietnam', 'halong': 'Hong Gai, Vietnam',
   'can tho': 'Can Tho, Vietnam', 'hai phong': 'Hai Phong, Vietnam',
   'nha trang': 'Nha Trang, Vietnam', 'da lat': 'Da Lat, Vietnam', 'dalat': 'Da Lat, Vietnam',
   'vung tau': 'Vung Tau, Vietnam', 'hoi an': 'Hoi An, Vietnam', 'phu quoc': 'Phu Quoc, Vietnam',
