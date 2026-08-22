@@ -16,6 +16,7 @@ import {
   assignMembership,
   setMembershipStatus,
   removeMembership,
+  listDepartmentRoster,
   type MembershipResult,
 } from '@/lib/controller/org/membershipService'
 import { productionMembershipDeps, orgMembershipEnabled } from '@/lib/controller/org/server'
@@ -36,6 +37,38 @@ function respond(r: MembershipResult): Response {
   if (r.reason === 'UNAUTHENTICATED') return adminError('UNAUTHORIZED', r.reason, 401)
   if (r.reason === 'NOT_FOUND' || r.reason === 'UNKNOWN_DEPARTMENT') return adminError('NOT_FOUND', r.reason, 404)
   return adminError('FORBIDDEN', r.reason, 403)
+}
+
+/**
+ * GET — the department roster (Owner Decision D6, 2026-08-22).
+ *
+ * FOUNDATION-10B shipped this route with POST/PATCH/DELETE and no GET, and
+ * stated why: the read existed in the service but had no consumer. The
+ * `/admin/org/memberships` surface is that consumer.
+ *
+ * The permission is the READ one. Reading who belongs to a department must not
+ * require `security.membership.manage`, which is `riskLevel: critical` and
+ * exists to CHANGE the thing this only displays. Both are super_admin today, so
+ * this widens nothing — but wiring the read to the write permission would make
+ * a future widening of one silently widen the other.
+ */
+export async function GET(req: Request) {
+  try {
+    const gated = featureGate(); if (gated) return gated
+    const ctx = await requirePermission(req, PERMISSIONS.SECURITY_MEMBERSHIP_READ)
+    if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
+    const rl = await distributedRateLimit(`admin:org:roster:${ctx.user.id}`, 100, 60_000)
+    if (!rl.ok) return adminError('RATE_LIMITED', 'Too many requests', 429, { 'Retry-After': String(rl.retryAfter) })
+
+    const result = await listDepartmentRoster(ctx.actor, productionMembershipDeps(req))
+    if (!result.ok) {
+      if (result.reason === 'UNAUTHENTICATED') return adminError('UNAUTHORIZED', result.reason, 401)
+      return adminError('FORBIDDEN', result.reason, 403)
+    }
+    return Response.json({ data: result.memberships })
+  } catch (err) {
+    return adminErrorResponse(err)
+  }
 }
 
 export async function POST(req: Request) {
