@@ -49,12 +49,31 @@ export function envSource(prefix = ''): ConfigSource {
 }
 
 /**
- * Runtime (DB/API) source — DEFERRED. Explicitly returns undefined so precedence
- * falls through to flags/env/defaults. A real implementation is wired at a later
- * phase; this adapter documents the boundary rather than faking data.
+ * Runtime (DB/API) source — the honest-deferral adapter. Explicitly returns
+ * undefined so precedence falls through to flags/env/defaults.
+ *
+ * SUPERSEDED for the Controller by `platformSettingsSource` since K-2
+ * (Owner Decision D1b, 2026-08-22), and kept because it is still the correct
+ * source for any provider assembled without a settings store: absent must read
+ * as absent, not as a value nobody configured.
  */
 export function deferredRuntimeSource(): ConfigSource {
   return { tier: 'runtime', get: () => undefined }
+}
+
+/**
+ * Runtime (DB/API) source backed by `platform_settings` — K-2.
+ *
+ * Takes a GETTER, not a snapshot. `adminConfig.ts` builds its provider once at
+ * module load, before any request has run, so a source that closed over the
+ * snapshot value would be permanently empty. Reading through the getter at
+ * resolve time is what lets settings loaded later in the request be seen.
+ *
+ * `undefined` is the only absence. A stored JSONB `null` is a deliberate
+ * setting and wins over the environment, exactly as any other value does.
+ */
+export function platformSettingsSource(read: () => Record<string, unknown>): ConfigSource {
+  return { tier: 'runtime', get: (k) => read()[k] }
 }
 
 /**
@@ -127,6 +146,12 @@ export function createControllerConfigProvider(
   extra: readonly ConfigSource[] = []
 ): ConfigProvider & { isSecurityKey(key: string): boolean } {
   const declared = collectModuleConfig(manifests)
+  // The deferral adapter stays unconditionally, even when the caller supplies a
+  // real runtime source in `extra` (K-2: `platformSettingsSource`). Within one
+  // tier, `createConfigProvider` returns the first source to answer with
+  // anything other than `undefined` — and this one answers `undefined` always,
+  // so it can never shadow the real source. A conditional here would add a
+  // branch that provably changes no behaviour.
   const provider = createConfigProvider([
     deferredRuntimeSource(),
     envSource(),

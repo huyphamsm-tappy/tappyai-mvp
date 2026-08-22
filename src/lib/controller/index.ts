@@ -18,9 +18,21 @@ export {
   defaultsSource,
   envSource,
   deferredRuntimeSource,
+  platformSettingsSource,
   TIER_PRECEDENCE,
 } from './configProvider'
 export type { ConfigProvider, ConfigSource, ConfigTier } from './configProvider'
+// K-2. The pure half only: the snapshot and its projection. `platformSettingsServer`
+// is NOT re-exported here — it imports the service-role client, and this module
+// is reachable from client bundles.
+export {
+  platformSettingsSnapshot,
+  setPlatformSettings,
+  resetPlatformSettings,
+  snapshotFromRows,
+  loadPlatformSettings,
+} from './platformSettings'
+export type { PlatformSettingRow, PlatformSettingsStore } from './platformSettings'
 export { createNoopEventSink, createCollectingEventSink } from './events'
 export type { CollectingEventSink } from './events'
 export { securityHub, securityAuditModule } from './modules/securityAuditModule'
