@@ -7,9 +7,13 @@ Deferred work, deliberately not done now. Each item states its gate. Nothing her
 | ID | Title | Category | Type | Status | Blocks Component 3? |
 |---|---|---|---|---|---|
 | [BL-001](#bl-001--adr-consolidation--numbering-cleanup) | ADR Consolidation & Numbering Cleanup | Architecture / ADR cleanup | Development Task | Backlog | **No** |
-| [BL-002](#bl-002--g1-production-validation) | G1 Production Validation | Production validation | **Production Acceptance Task** | **OPEN** | **No** |
+| [BL-002](#bl-002--g1-production-validation) | G1 Production Validation | Production validation | **Production Acceptance Task** | ✅ **ACCEPTED — CLOSED 2026-08-22** | **No** |
 
-**Nothing in this backlog blocks Component 3.** BL-001 is gated on Foundation completion and is unrelated to RBAC. BL-002 validates behaviour that is *already deployed* — it gates only the final acceptance wording of Components 1 & 2, not any further work. These two items are the complete set of open Controller V2 backlog entries.
+**Nothing in this backlog blocks Component 3.** BL-001 is gated on Foundation completion and is unrelated to RBAC. BL-002 validated behaviour that was *already deployed* — it gated only the final acceptance wording of Components 1 & 2, not any further work.
+
+> ✅ **BL-002 is CLOSED, 2026-08-22.** Executed on production `eb42163` with a real second `super_admin` (`support@tappyai.com`, granted by the Platform Owner and revoked immediately after). All five acceptance criteria met; `active_super_admins` back to **1**. Evidence: [`STATUS.md` § BL-002](STATUS.md#bl-002--g1-is-closed-on-production-2026-08-22).
+>
+> **BL-001 is now the only open entry.**
 
 ---
 
@@ -110,13 +114,22 @@ WHERE role = 'super_admin' AND (expires_at IS NULL OR expires_at > NOW());
 
 All five must hold:
 
-- [ ] Request returned **HTTP 403**
-- [ ] Message was exactly `Only the Platform Owner may grant super_admin`
-- [ ] **No** `admin_roles` row was created for the attempted grant
-- [ ] Temporary role revoked; `active_super_admins` back to **1**
-- [ ] Grant and revocation both present in `audit_log`
+- [x] Request returned **HTTP 403**
+- [x] Message was exactly `Only the Platform Owner may grant super_admin`
+- [x] **No** `admin_roles` row was created for the attempted grant
+- [x] Temporary role revoked; `active_super_admins` back to **1**
+- [x] Grant and revocation both present in `audit_log`
 
-On completion, update [`STATUS.md`](STATUS.md) to **ACCEPTED** and close this item.
+✅ **EXECUTED AND ACCEPTED 2026-08-22** on production `eb42163`. Test account `support@tappyai.com`; `super_admin` granted by the Platform Owner at 10:52:49Z and revoked at 11:23:50Z, both audited under `owner.super_admin_granted` / `owner.super_admin_revoked` with `actor_id` = the Owner. Raw response:
+
+```
+POST https://www.tappyai.com/api/admin/rbac/roles   403 (Forbidden)
+403 {"error":{"code":"FORBIDDEN","message":"Only the Platform Owner may grant super_admin"}}
+```
+
+> **One prerequisite in this document turned out to be under-specified, and it cost a false start.** §Prerequisites says *"Production already has more than one profile; a brand-new account is not required."* True but insufficient: `requirePermission` runs the FOUNDATION-10C corporate-identity boundary, so the test account **must be a verified `@tappyai.com` mailbox**. Production's other `super_admin` is `huypham.sm@gmail.com` — it would have been refused at the identity gate with a different message, which §Expected classifies as **INVALID**, not PASS. Recorded here so the next reader does not repeat it.
+
+`STATUS.md` records the full evidence: [§ BL-002](STATUS.md#bl-002--g1-is-closed-on-production-2026-08-22). **This item is closed.**
 
 ### If it fails
 

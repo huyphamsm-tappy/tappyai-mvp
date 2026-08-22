@@ -15,8 +15,8 @@
 | Item | Status |
 |---|---|
 | **Foundation Phase** | **CLOSED** |
-| **Components 1 & 2** — Platform Owner + Identity | **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** |
-| **BL-002** — G1 Production Validation | **OPEN** · type: **Production Acceptance Task** |
+| **Components 1 & 2** — Platform Owner + Identity | ✅ **ACCEPTED — fully, 2026-08-22.** The open production validation task that qualified this row since 2026-08-04 is closed: see BL-002 |
+| **BL-002** — G1 Production Validation | ✅ **ACCEPTED · CLOSED 2026-08-22.** All five acceptance criteria measured on production `eb42163` with a real second `super_admin` session. **G1 — the defect the entire Foundation exists to close — is proven closed over real HTTP.** See [BL-002](#bl-002--g1-is-closed-on-production-2026-08-22) |
 | **Component 3** — RBAC | **ACCEPTED · IN PRODUCTION** — merge commit `933c4f8` |
 | **Component 4** — Audited PDP | **ACCEPTED · IN PRODUCTION** — merge commit `28f68c1` |
 | **Component 5** — Capability Registry | **FROZEN** — [ADR-018](../architecture/ADR-018-capability-registry-frozen.md), merges into Component 6 |
@@ -33,7 +33,7 @@
 | **Owner decision set** | ✅ **CLOSED, 2026-08-22** — [`OWNER_DECISIONS_2026-08-22.md`](OWNER_DECISIONS_2026-08-22.md) answers D1–D7. **No Controller V2 item is waiting on an Owner decision any more.** See [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) |
 | **K-2 — Configuration Provider runtime tier** | ✅ **COMPLETE · IN PRODUCTION.** Code merged `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)); **migration `20260822_k2_platform_settings.sql` APPLIED to production 2026-08-22** under its own Owner authorization, via the Management API against the pinned production ref, in one transaction. Verified read-only, **9/9**: five columns and no `updated_at` · `service_role` only · RLS on with **0 policies** · the three-scope CHECK · FK **no-cascade** · empty · index present · **`module_registry` NOT created** (Decision D1a). The loader's exact query went **`PGRST205` → `200 []`**, and anon went **`PGRST205` → `42501`**. See [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) |
 | **Module — Department Memberships** | ✅ **COMPLETE end-to-end** — Owner Decision D6. `tappy.hub.security.membership` + `/admin/org/memberships` + `GET /api/admin/org/memberships`, merge `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)). **Production UAT PASS 2026-08-22, EN + VI.** Read-only by decision. `/org/memberships` was the last admin route with no page |
-| **Controller V2 overall** | ⏳ **NOT COMPLETE — but every authorized item is now done.** Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. **After 2026-08-22 nothing is waiting on engineering and nothing is waiting on an Owner decision.** What remains is **one external prerequisite** (BL-002 — a second `super_admin` only the Owner can create), **destructive UAT the Owner has explicitly withheld**, and **work DEFERRED by decision** with a stated end condition. Remaining-work inventory: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
+| **Controller V2 overall** | ⏳ **NOT COMPLETE — but every authorized item is done, and nothing is blocked.** Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. **After 2026-08-22 nothing waits on engineering, nothing waits on an Owner decision, and no external prerequisite remains** — BL-002 is accepted. What is left is **destructive UAT the Owner has explicitly withheld** and **work DEFERRED by decision** with a stated end condition. Remaining-work inventory: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
 > "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
@@ -70,9 +70,11 @@
 
 ## Components 1 & 2 — Platform Owner + Identity
 
-# ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK
+# ACCEPTED
 
-Merged, deployed and running in production. One production acceptance task remains open — see [BL-002](BACKLOG.md#bl-002--g1-production-validation). It is **not** a blocker, **not** a failed deployment, and **not** development work.
+> **Updated 2026-08-22.** This heading read **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** from 2026-08-04. That task was [BL-002](BACKLOG.md#bl-002--g1-production-validation), and it is now **ACCEPTED** — executed end-to-end over real HTTP with a second `super_admin` session, 5/5 criteria, cleaned up. See [BL-002](#bl-002--g1-is-closed-on-production-2026-08-22).
+
+Merged, deployed and running in production, with the G1 property these components exist to guarantee **proven on production** rather than inferred from the database and unit layers.
 
 | | |
 |---|---|
@@ -131,7 +133,7 @@ Both are corrected in place rather than quietly edited away, the same discipline
 | Item | Class | What it needs |
 |---|---|---|
 | ~~**Apply the `platform_settings` migration**~~ | ✅ **DONE 2026-08-22** | Authorized explicitly and applied the same day — see [K-2 applied](#k-2--the-migration-is-applied-2026-08-22) below |
-| **BL-002** | **EXTERNAL PREREQUISITE** | A second `super_admin` only the Owner can create. **Not to be simulated** |
+| ~~**BL-002**~~ | ✅ **ACCEPTED 2026-08-22** | Executed with a real second `super_admin`, 5/5 criteria, and cleaned up. See [BL-002](#bl-002--g1-is-closed-on-production-2026-08-22) |
 | **B8 recovery · M08 ban/suspend · C11 revocation · M09 moderation action** | **OWNER AUTHORIZATION** | Explicitly withheld 2026-08-22 |
 | **Layout Presets · date range · Density** | **DEFERRED BY DECISION** (D2, D3) | Scope is now defined, so the deferral has an end condition. Density additionally needs the preference store `platform_settings` provides |
 | **Command Palette `act` / `search`** | ✅ **COMPLETE BY DECISION** (D4, D5) | Navigate-only is final for V2. The two tests written when the gap was open are now the executable form of that decision |
@@ -141,7 +143,7 @@ Both are corrected in place rather than quietly edited away, the same discipline
 | **M09 content-safety writer** | **OUT OF CONTROLLER V2 SCOPE** | Content Safety Gate under ADR-024, which `moderationModule.ts` declares |
 | **K-1 · K-3 · K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
 
-**Controller V2 is not declared COMPLETE, and the reason is now narrow enough to state in one line.** Under Decision F the measure is the full architecture. **Class 1 (engineering) is empty, class 3 (Owner decision) is empty, and the migration is applied** — so nothing is waiting on this workstream. What remains is **one external prerequisite** (BL-002), **destructive UAT the Owner has withheld**, and **work deferred on the record**. Calling that COMPLETE would mean calling a deferral a delivery.
+**Controller V2 is not declared COMPLETE, and the reason is now narrow enough to state in one line.** Under Decision F the measure is the full architecture. **Class 1 (engineering) is empty, class 3 (Owner decision) is empty, the migration is applied, and BL-002 is accepted** — so nothing is waiting on this workstream and no external prerequisite remains. What is left is **destructive UAT the Owner has explicitly withheld** and **work DEFERRED by decision, on the record, with a stated end condition**. Calling that COMPLETE would mean calling a deferral a delivery.
 
 ### K-2 — the migration is applied (2026-08-22)
 
@@ -171,6 +173,35 @@ Authorized explicitly by the Owner for **this migration only**, and applied the 
 **Post-apply production UAT on `4fe6fd4`:** all eight Controller paths non-5xx · `/api/version` = `4fe6fd4` and the Controller Home prints `4fe6fd4` · signed in as `founder@tappyai.com` · `/admin/org/memberships` renders the real row in **VI** (`AI / Dữ liệu` · `Trưởng phòng ban` · `Đang hoạt động`) and **EN** (`AI / Data` · `Department Head` · `Active`) · **0 raw i18n keys, 0 `undefined`, 0 console errors, 0 Chrome-Translate `<font>` tags** in both locales.
 
 > ⚠️ **NOT MEASURED, and it is not measurable from outside.** *"A row in `platform_settings` changes a resolved value"* is **not observable on production**, and the reason is structural rather than an omission: the Controller exposes **no configuration-dump endpoint**, and the only key any shipped code consumes through the provider is `BACKOFFICE_ENABLED` — a kill switch. Proving the tier end-to-end from outside would mean writing a row that disables the Controller. The table is empty, so the runtime tier resolves nothing and behaviour is unchanged; what production proves is that **the read path now succeeds where it previously failed**. The resolution path itself is covered by 44 unit tests, two of which drive the **real exported provider** rather than a hand-assembled one.
+
+### BL-002 — G1 is closed on production (2026-08-22)
+
+**ACCEPTED.** All five acceptance criteria met on production `eb42163`, with a real second `super_admin` session. This closes the last open item from the Foundation phase, raised 2026-08-04.
+
+`super_admin` was granted to `support@tappyai.com` **by the Platform Owner**, the test was issued from that account's own session, and the grant was revoked immediately afterwards. No account was created; no other role, membership or identity was touched.
+
+| Criterion | Result |
+|---|---|
+| HTTP **403** | ✅ |
+| Message exactly `Only the Platform Owner may grant super_admin` | ✅ character-for-character |
+| **No** `admin_roles` row created by the rejected grant | ✅ 0 rows naming the target uuid |
+| Temporary role revoked; `active_super_admins` back to **1** | ✅ and the test account is back to `analyst` alone |
+| Grant **and** revocation both in `audit_log`, both by the Owner | ✅ `owner.super_admin_granted` 10:52:49Z · `owner.super_admin_revoked` 11:23:50Z |
+
+Raw production response:
+
+```
+POST https://www.tappyai.com/api/admin/rbac/roles   403 (Forbidden)
+403 {"error":{"code":"FORBIDDEN","message":"Only the Platform Owner may grant super_admin"}}
+```
+
+**The rejected attempt is deliberately absent from the audit log, and that absence is the correct outcome** — `requireOwner` throws before the handler reaches `writeAuditLog`. Measured: 0 audit rows name the target uuid. What *is* recorded is the temporary grant and its revocation, which is what the contract asks for.
+
+#### Two things this cost, worth recording
+
+**The test account had to be corporate, and that was not obvious.** Production already held a `super_admin` who is not the Platform Owner — `huypham.sm@gmail.com`, the retired owner — so the prerequisite looked satisfied. It was not: `requirePermission` runs the FOUNDATION-10C corporate boundary, so a `gmail.com` identity is refused **at the identity gate** and never reaches `requireOwner`. That returns a different message, which the contract classifies as **INVALID**, not PASS. Only `support@tappyai.com` qualified.
+
+**`/admin/rbac` was reported as crashing into the error boundary, and it is not broken.** Measured on `eb42163`: `GET /admin/rbac` 200, `GET /api/admin/rbac/roles` 200, page renders fully in EN and VI with 0 console errors. The crash reproduced only while Chrome's page translation was active — `documentElement.className = "translated-ltr"`, 10 injected `<font>` tags, and the error-boundary string itself rewritten from *"Ối, có lỗi xảy ra"* to *"मूड, có lỗi xảy ra ra"*. The thrown error is `NotFoundError: Failed to execute 'removeChild'`, entirely inside the react-dom chunk with **no frame in this repository**: the translator replaces text nodes React owns, and React's next commit — reliably, a Radix `Select` portal unmounting, which is the control under the "Vai trò" label — removes a child that is no longer there. A fresh load of the same tab renders correctly with 0 `<font>` tags. **Not a production defect, and no fix was made.** A one-attribute hardening (`translate="no"` on the Controller root) would prevent the class entirely and is left as an unauthorized suggestion.
 
 ### Gate evidence for `6d9aecc`
 
@@ -1371,7 +1402,7 @@ Found during the ADR-017 preflight and outside its contract. Neither is a defect
 | **Boot Assertion** | ✅ | authenticated `GET /api/admin/settings` → **200**, no ownership-assertion failure |
 | **Owner Guard resolves `isOwner`** | ✅ | non-mutating probe reached the self-promotion check |
 | Self-promotion rule | ✅ | `403 "Self-promotion is not permitted"` on production |
-| **G1 end-to-end HTTP** | ⏳ **OPEN** | requires a second authenticated `super_admin` session — [BL-002](BACKLOG.md#bl-002--g1-production-validation) |
+| **G1 end-to-end HTTP** | ✅ **CLOSED 2026-08-22** | proven on production `eb42163` with a real second `super_admin` session — [BL-002](#bl-002--g1-is-closed-on-production-2026-08-22) |
 
 ---
 
@@ -1384,7 +1415,7 @@ The rule G1 tests is already enforced at two layers that *are* verified:
 - **Database** — `fn_grant_admin_role` raises `42501` unless the actor is the Platform Owner. This is the authoritative layer; the application check is explicitly documented as defence-in-depth only.
 - **Application** — `requireOwner()` is covered by a named regression test (`"a non-Owner super_admin CANNOT grant super_admin"`).
 
-What remains unproven is only the **end-to-end HTTP path** on live production.
+~~What remains unproven is only the **end-to-end HTTP path** on live production.~~ ✅ **Proven 2026-08-22.** All three layers now hold: the database raises `42501`, the application regression test covers `requireOwner()`, and the end-to-end HTTP path returned `403 Only the Platform Owner may grant super_admin` from a real non-Owner `super_admin` session on production `eb42163`. See [BL-002](#bl-002--g1-is-closed-on-production-2026-08-22).
 
 ---
 
