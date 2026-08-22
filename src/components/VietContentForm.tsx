@@ -64,10 +64,10 @@ export default function VietContentForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic: topic.trim(), platform, tone, length }),
       })
-      const data = await res.json() as { caption?: string; hashtags?: string; error?: string }
+      const data = await res.json() as { caption?: string; hashtags?: string; error?: string; message?: string }
 
       if (!res.ok || data.error) {
-        setError(data.error ?? t('vietContent.errorGeneric'))
+        setError(data.message ?? data.error ?? t('vietContent.errorGeneric'))
         return
       }
       setResult({ caption: data.caption ?? '', hashtags: data.hashtags ?? '' })

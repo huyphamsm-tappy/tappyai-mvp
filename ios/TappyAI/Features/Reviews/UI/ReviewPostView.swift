@@ -131,7 +131,10 @@ struct ReviewPostView: View {
         case "youtube": return NSLocalizedString("review.watchOn.youtube", comment: "")
         case "tiktok": return NSLocalizedString("review.watchOn.tiktok", comment: "")
         case "facebook": return NSLocalizedString("review.watchOn.facebook", comment: "")
-        default: return "Xem video"
+        // 🚨 Was the Vietnamese literal "Xem video". It survived the Vietnamese-only guard for one
+        // reason: the guard detects DIACRITICS, and that phrase happens to have none. Vietnamese
+        // without diacritics is still Vietnamese, and an English user read it.
+        default: return NSLocalizedString("review.watchOn.generic", comment: "")
         }
     }
 

@@ -173,6 +173,26 @@ export function validateClientInput(body: unknown): ValidationResult {
     const isUser = role === 'user'
     const content = raw.content
     if (typeof content === 'string') {
+      /**
+       * 🚨 C04. An empty string used to reach the provider and throw there, surfacing as
+       * **HTTP 200** with the stream frame `3:"An error occurred."` — hardcoded English, identical
+       * under `Accept-Language: vi`. Every other malformed shape is a clean 400 at validation.
+       *
+       * The two roles are NOT the same case, which is why this is not one blanket rejection:
+       *
+       *  - An empty USER turn is a client bug. There is nothing to answer, so it is refused here
+       *    and joins `invalid_role` and `forbidden_structure` as an honest 400.
+       *
+       *  - An empty ASSISTANT turn is a legitimate SDK shape — a tool-only turn, whose content
+       *    lived in `toolInvocations`. But this validator strips `toolInvocations` by design
+       *    (that is what stops a forged tool result reaching the model), so what is left carries
+       *    no information at all and is precisely what the provider rejects. Dropping it keeps the
+       *    conversation valid instead of failing it.
+       */
+      if (content.trim().length === 0) {
+        if (isUser) return reject('invalid_content', 'a user message must not be empty')
+        continue // emptied assistant turn — carry nothing rather than an empty message
+      }
       messageChars += content.length
       // Rebuilt, not reused: UI-only fields the SDK sends (id, createdAt,
       // toolInvocations, parts, annotations, data) are dropped by construction.
@@ -202,6 +222,13 @@ export function validateClientInput(body: unknown): ValidationResult {
     messages.push(isUser
       ? { role: 'user', content: parts }
       : { role: 'assistant', content: parts as TextPart[] })
+  }
+
+  // Dropping emptied assistant turns (above) can empty the whole conversation — a body of nothing
+  // but tool-only turns. Sending an empty array to the provider is the same 200-plus-stream-error
+  // this fix exists to remove, so it is refused here instead.
+  if (messages.length === 0) {
+    return reject('invalid_request', 'no message carried any content')
   }
 
   if (messageChars > L.maxMessageTextChars) {

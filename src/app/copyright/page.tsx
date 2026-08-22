@@ -1,52 +1,102 @@
-import Header from '@/components/Header'
-import Link from 'next/link'
+import type { Metadata } from 'next'
+import LegalDocument from '@/components/legal/LegalDocument'
+import { bullets, type LegalDoc } from '@/components/legal/legalDoc'
+import { COPYRIGHT_AGENT_EMAIL, OG_IMAGE, SITE_URL } from '@/components/landing/config'
 
-export const metadata = { title: 'Chính sách bản quyền âm nhạc — TappyAI' }
+/**
+ * Music copyright / notice-and-takedown policy for Original Sound.
+ *
+ * ============================================================================
+ * WHY THIS WAS REBUILT — U04
+ * ============================================================================
+ * This route used to be a hand-written page with the whole policy hardcoded in Vietnamese, and no
+ * connection to the localization system at all. Measured in a real browser with the app set to
+ * English: `<html lang="en">`, the tab title "Music Copyright Policy — TappyAI", an English "Back"
+ * control — and **197 of 237 words of the body in Vietnamese**.
+ *
+ * 🚨 The English chrome is what made it dangerous rather than merely untranslated. The page looked
+ * localized, so nothing about it invited a second look. And of all the pages to leave in one
+ * language, this is the notice-and-takedown policy: the terms a user accepts by uploading an
+ * Original Sound, and the instructions a rights holder is told to follow.
+ *
+ * It now uses the same `LegalDocument` renderer as /privacy, /terms and /delete-account, so it
+ * follows the LanguagePicker like every other screen and the two editions cannot drift apart
+ * structurally — the page holds the document's SHAPE and `src/lib/i18n/legal.ts` holds every
+ * string.
+ *
+ * The copyright agent address is deliberately NOT the `contact` block: that renders the general
+ * support address, and a takedown notice sent to support is a notice in the wrong queue.
+ */
 
-// Static notice-and-takedown policy for Original Sound (user-uploaded music).
+const PAGE_URL = `${SITE_URL}/copyright`
+const TITLE = 'Music Copyright Policy — TappyAI'
+const DESCRIPTION =
+  'How music uploaded to TappyAI as Original Sound is licensed, who is responsible for it, and how a rights holder sends a takedown notice.'
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: PAGE_URL },
+  openGraph: {
+    type: 'website',
+    url: PAGE_URL,
+    siteName: 'TappyAI',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: `${SITE_URL}${OG_IMAGE}` }],
+    locale: 'en_US',
+    alternateLocale: ['vi_VN'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [`${SITE_URL}${OG_IMAGE}`],
+  },
+  robots: { index: true, follow: true },
+}
+
+// Document structure only — every string lives in src/lib/i18n/legal.ts.
+const COPYRIGHT: LegalDoc = {
+  titleKey: 'legal.copyright.title',
+  effectiveKey: 'legal.copyright.effective',
+  sections: [
+    {
+      id: 'conditions-for-uploading-music',
+      headingKey: 'legal.copyright.s1.heading',
+      blocks: [{ kind: 'p', key: 'legal.copyright.s1.p1' }],
+    },
+    {
+      id: 'responsibility',
+      headingKey: 'legal.copyright.s2.heading',
+      blocks: [{ kind: 'p', key: 'legal.copyright.s2.p1' }],
+    },
+    {
+      id: 'reporting-infringement',
+      headingKey: 'legal.copyright.s3.heading',
+      blocks: [
+        { kind: 'p', key: 'legal.copyright.s3.p1' },
+        { kind: 'lead', key: 'legal.copyright.s3.lead' },
+        { kind: 'bullets', keys: bullets('legal.copyright.s3.b', 3) },
+        { kind: 'note', key: 'legal.copyright.s3.note' },
+      ],
+    },
+    {
+      id: 'copyright-agent',
+      headingKey: 'legal.copyright.s4.heading',
+      blocks: [
+        { kind: 'p', key: 'legal.copyright.s4.p1' },
+        { kind: 'email', labelKey: 'legal.copyright.agent', address: COPYRIGHT_AGENT_EMAIL },
+      ],
+    },
+    {
+      id: 'repeat-infringement',
+      headingKey: 'legal.copyright.s5.heading',
+      blocks: [{ kind: 'p', key: 'legal.copyright.s5.p1' }],
+    },
+  ],
+}
+
 export default function CopyrightPolicyPage() {
-  return (
-    <div className="min-h-dvh bg-white dark:bg-gray-950 pb-24">
-      <Header showBack backHref="/music" title="Chính sách bản quyền" />
-      <main className="max-w-2xl mx-auto px-5 py-6 prose-sm text-gray-800 dark:text-gray-200 space-y-6">
-        <section className="space-y-2">
-          <h1 className="text-xl font-bold">Chính sách bản quyền âm nhạc (Original Sound)</h1>
-          <p className="text-sm text-content-secondary">Áp dụng cho nhạc do người dùng đăng tải lên TappyAI.</p>
-        </section>
-
-        <section className="space-y-2">
-          <h2 className="font-semibold">1. Điều kiện khi đăng nhạc</h2>
-          <p className="text-sm leading-relaxed">Khi đăng một bản nhạc (“Original Sound”), bạn cam kết rằng bạn <strong>sở hữu hoặc có đầy đủ quyền hợp pháp</strong> đối với bản nhạc đó, và cấp cho TappyAI cùng người dùng khác quyền sử dụng nó (chèn vào video, phát lại) trên nền tảng. Bạn <strong>không</strong> được đăng nhạc có bản quyền của người khác khi chưa được phép.</p>
-        </section>
-
-        <section className="space-y-2">
-          <h2 className="font-semibold">2. Trách nhiệm</h2>
-          <p className="text-sm leading-relaxed">Người đăng chịu trách nhiệm pháp lý về nội dung mình tải lên. TappyAI hoạt động như một nền tảng trung gian và sẽ gỡ bỏ nội dung vi phạm khi nhận được thông báo hợp lệ.</p>
-        </section>
-
-        <section className="space-y-2">
-          <h2 className="font-semibold">3. Báo cáo vi phạm (Notice-and-Takedown)</h2>
-          <p className="text-sm leading-relaxed">Nếu bạn là chủ sở hữu quyền và cho rằng một bản nhạc trên TappyAI vi phạm bản quyền của bạn, hãy gửi thông báo tới đại diện bản quyền bên dưới, hoặc dùng nút <strong>“Báo cáo”</strong> trên trang bài nhạc. Thông báo cần gồm: (a) bản nhạc/đường dẫn bị vi phạm, (b) bằng chứng bạn là chủ sở hữu, (c) thông tin liên hệ.</p>
-          <p className="text-sm leading-relaxed">Chúng tôi sẽ <strong>xem xét và gỡ bỏ nội dung vi phạm trong vòng 24–48 giờ</strong> kể từ khi nhận được thông báo hợp lệ.</p>
-        </section>
-
-        <section className="space-y-2">
-          <h2 className="font-semibold">4. Đại diện bản quyền (Copyright Agent)</h2>
-          <p className="text-sm leading-relaxed">
-            Email: <a href="mailto:copyright@tappyai.com" className="text-link underline">copyright@tappyai.com</a><br />
-            Chúng tôi tiếp nhận và xử lý mọi khiếu nại bản quyền qua địa chỉ này.
-          </p>
-        </section>
-
-        <section className="space-y-2">
-          <h2 className="font-semibold">5. Xử lý vi phạm lặp lại</h2>
-          <p className="text-sm leading-relaxed">Tài khoản nhiều lần đăng nội dung vi phạm bản quyền có thể bị hạn chế đăng nhạc hoặc khóa.</p>
-        </section>
-
-        <p className="text-xs text-gray-400 pt-4">
-          Quay lại <Link href="/music" className="underline">Thư viện nhạc</Link>.
-        </p>
-      </main>
-    </div>
-  )
+  return <LegalDocument doc={COPYRIGHT} />
 }

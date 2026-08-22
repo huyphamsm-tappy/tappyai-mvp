@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   const rl = rateLimit(`chat:${clientIp(req)}`, 30, 60_000)
   if (!rl.ok) {
     return new Response(
-      JSON.stringify({ error: 'Bạn gửi quá nhanh, vui lòng thử lại sau giây lát.' }),
+      JSON.stringify({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }),
       { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rl.retryAfter) } },
     )
   }
@@ -162,6 +162,26 @@ export async function POST(req: Request) {
   // True once a token-based ANONYMOUS session's quota was enforced server-side
   // (keyed by anonymous_id) — the legacy cookie counter below is then skipped.
   let anonQuotaByToken = false
+  /**
+   * The count the token authority reported, mirrored into the cookie.
+   *
+   * ============================================================================
+   * WHY THE COOKIE IS MIRRORED AND NOT MERELY SKIPPED — dual-authority closure
+   * ============================================================================
+   * There are two anonymous counters: the `anon_chat_usage` row (keyed by anonymous_id,
+   * durable) and the `tappy_anon` cookie (keyed by browser). The row is authoritative; the
+   * cookie exists so a guest is still capped when the RPC is unavailable.
+   *
+   * 🚨 They were INDEPENDENT, which made the fallback a second allowance: a guest who used
+   * all five through the RPC and then hit one transient RPC failure met a cookie counter that
+   * had never been written and started again at zero. "Authoritative with a fallback" only
+   * holds if the fallback inherits what the authority already counted.
+   *
+   * Mirroring costs one header on a request that is already setting none. The row stays the
+   * authority — the cookie is never read while the RPC answers, and a cleared cookie still
+   * cannot raise the cap, because the row is what the next successful call reads.
+   */
+  let anonTokenCount: number | null = null
   try {
     const { user, supabase } = await getRequestUser(req)
     if (user?.is_anonymous) {
@@ -173,6 +193,7 @@ export async function POST(req: Request) {
       const { data: usedToday, error: quotaError } = await supabase.rpc('anon_chat_usage_increment')
       if (!quotaError && typeof usedToday === 'number') {
         anonQuotaByToken = true
+        anonTokenCount = usedToday
         if (usedToday > ANON_DAILY_LIMIT) {
           return new Response(
             JSON.stringify({
@@ -250,7 +271,12 @@ export async function POST(req: Request) {
   // which is acceptable for a top-of-funnel teaser). Everything past chat
   // (reviews, saves, upload, …) still requires an account.
   let anonSetCookie: string | null = null
-  if (!authedUserId && !anonQuotaByToken) {
+  if (anonTokenCount !== null) {
+    // Mirror the authoritative count into the fallback counter — see `anonTokenCount`. Written
+    // even when the RPC has already refused this request, so a guest at the cap stays at the cap
+    // if the next request has to fall back.
+    anonSetCookie = `tappy_anon=${vnToday()}:${anonTokenCount}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
+  } else if (!authedUserId && !anonQuotaByToken) {
     const today = vnToday()
     const cookieHeader = req.headers.get('cookie') || ''
     const m = cookieHeader.match(/(?:^|;\s*)tappy_anon=([^;]+)/)
@@ -565,10 +591,15 @@ export async function POST(req: Request) {
                 .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
                 .select('id')
                 .single()
-              if (error) return { error: pw.saveError(pwLang, error.message) }
+              if (error) {
+                console.error('[chat/save_price_watch] insert failed:', error.code ?? error.message)
+                return { error: pw.saveError(pwLang) }
+              }
               return { ok: true, id: data.id, product_name, target_price, message: pw.saved(pwLang, product_name, Math.round(target_price)) }
             } catch (e) {
-              return { error: String(e) }
+              // W2/C44 — String(e) put a raw exception into a tool result the model then reads out.
+              console.error('[chat/save_price_watch] failed:', e instanceof Error ? e.message : e)
+              return { error: pw.saveError(pwLang) }
             }
           }
         }),

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -15,6 +16,7 @@ interface ProfileData {
 }
 
 export default function EditProfilePage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -38,7 +40,7 @@ export default function EditProfilePage() {
       .then((data: ProfileData) => {
         setProfile(data)
       })
-      .catch(() => setError('Không thể tải thông tin'))
+      .catch(() => setError(t('editProfile.err.load')))
       .finally(() => setLoading(false))
   }, [])
 
@@ -47,11 +49,11 @@ export default function EditProfilePage() {
     if (!file) return
 
     if (file.size > 3 * 1024 * 1024) {
-      setError('Ảnh tối đa 3MB')
+      setError(t('editProfile.err.tooLarge'))
       return
     }
     if (!file.type.startsWith('image/')) {
-      setError('Chỉ chấp nhận file ảnh')
+      setError(t('editProfile.err.notImage'))
       return
     }
 
@@ -64,16 +66,16 @@ export default function EditProfilePage() {
 
     try {
       const res = await fetch('/api/profile', { method: 'POST', body: formData })
-      let data: { avatar_url?: string; error?: string } = {}
+      let data: { avatar_url?: string; error?: string; message?: string } = {}
       try { data = await res.json() } catch { /* non-JSON response */ }
-      if (!res.ok) throw new Error(data.error || `Lỗi upload ${res.status}`)
+      if (!res.ok) throw new Error(data.message || t('editProfile.err.upload'))
       if (data.avatar_url) {
         setProfile(prev => ({ ...prev, avatar_url: data.avatar_url! }))
         router.refresh()  // invalidate Next.js router cache so account page re-fetches
       }
       setPreviewUrl(null)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload thất bại')
+      setError(err instanceof Error ? err.message : t('editProfile.err.upload'))
       setPreviewUrl(null)
     } finally {
       setUploadingAvatar(false)
@@ -89,16 +91,16 @@ export default function EditProfilePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ full_name: profile.full_name, bio: profile.bio }),
       })
-      let data: { ok?: boolean; error?: string } = {}
+      let data: { ok?: boolean; error?: string; message?: string } = {}
       try { data = await res.json() } catch { /* non-JSON response */ }
-      if (!res.ok) throw new Error(data.error || `Lỗi ${res.status}`)
+      if (!res.ok) throw new Error(data.message || t('editProfile.err.save'))
       setSaved(true)
       setTimeout(() => {
         setSaved(false)
         router.push('/profile/account')
       }, 1200)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Lưu thất bại')
+      setError(err instanceof Error ? err.message : t('editProfile.err.save'))
     } finally {
       setSaving(false)
     }
@@ -117,7 +119,7 @@ export default function EditProfilePage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header title="Chỉnh sửa hồ sơ" showBack backHref="/profile/account" />
+      <Header title={t('editProfile.title')} showBack backHref="/profile/account" />
 
       <main className="max-w-lg mx-auto px-4 py-6 space-y-6">
 
@@ -146,12 +148,12 @@ export default function EditProfilePage() {
               onClick={() => fileRef.current?.click()}
               disabled={uploadingAvatar}
               className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-interactive hover:bg-interactive-hover flex items-center justify-center shadow-md transition-all disabled:opacity-50"
-              aria-label="Đổi ảnh đại diện"
+              aria-label={t('editProfile.changeAvatar')}
             >
               <Camera size={15} className="text-white" />
             </button>
           </div>
-          <p className="text-xs text-gray-400 dark:text-gray-500">Nhấn vào 📷 để đổi ảnh · Tối đa 3MB</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">{t('editProfile.avatarHint')}</p>
           <input
             ref={fileRef}
             type="file"
@@ -177,14 +179,14 @@ export default function EditProfilePage() {
             </label>
             <div className="flex items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 px-3 py-2.5">
               <span className="text-sm text-content-secondary flex-1">{profile.email}</span>
-              <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">Không thể thay đổi</span>
+              <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">{t('editProfile.locked')}</span>
             </div>
           </div>
 
           {/* Full name */}
           <div>
             <label htmlFor="full_name" className="block text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1.5">
-              Họ và tên
+              {t('editProfile.fullName')}
             </label>
             <input
               id="full_name"
@@ -192,7 +194,7 @@ export default function EditProfilePage() {
               value={profile.full_name}
               onChange={e => setProfile(prev => ({ ...prev, full_name: e.target.value }))}
               maxLength={100}
-              placeholder="Nhập tên của bạn..."
+              placeholder={t('editProfile.namePlaceholder')}
               className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
             />
           </div>
@@ -200,7 +202,7 @@ export default function EditProfilePage() {
           {/* Bio */}
           <div>
             <label htmlFor="bio" className="block text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1.5">
-              Giới thiệu bản thân <span className="normal-case font-normal text-gray-400">(tuỳ chọn)</span>
+              {t('editProfile.bio')} <span className="normal-case font-normal text-gray-400">{t('editProfile.optional')}</span>
             </label>
             <textarea
               id="bio"
@@ -208,7 +210,7 @@ export default function EditProfilePage() {
               onChange={e => setProfile(prev => ({ ...prev, bio: e.target.value }))}
               maxLength={200}
               rows={3}
-              placeholder="Vài dòng về bạn..."
+              placeholder={t('editProfile.bioPlaceholder')}
               className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-primary-400"
             />
             <p className="text-right text-xs text-gray-400 mt-1">{(profile.bio || '').length}/200</p>
@@ -226,11 +228,11 @@ export default function EditProfilePage() {
           }`}
         >
           {saving ? (
-            <><Loader2 size={18} className="animate-spin" /> Đang lưu...</>
+            <><Loader2 size={18} className="animate-spin" /> {t('editProfile.saving')}</>
           ) : saved ? (
-            <><Check size={18} /> Đã lưu!</>
+            <><Check size={18} /> {t('editProfile.saved')}</>
           ) : (
-            <><Save size={18} /> Lưu hồ sơ</>
+            <><Save size={18} /> {t('editProfile.save')}</>
           )}
         </button>
 

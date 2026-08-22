@@ -5,6 +5,13 @@ import SwiftUI
 /// convenient.
 struct MyPostsView: View {
     @AppStateObject private var vm: MyPostsViewModel
+    @AppEnvironmentState private var router: AppRouter
+
+    /// Whether this post exists at the public detail URL. A post the safety gate has held, or one
+    /// the author has hidden, does not — the route applies both filters with no author exemption.
+    private func isOpenable(_ post: Review) -> Bool {
+        post.moderation?.state.isPublished != false && post.isHidden != true
+    }
 
     init(deps: AppDependencies) {
         _vm = AppStateObject(wrappedValue: MyPostsViewModel(service: ReviewsService(api: deps.api)))
@@ -88,7 +95,23 @@ struct MyPostsView: View {
 
             LazyVGrid(columns: columns, spacing: Spacing.xs) {
                 ForEach(vm.posts) { post in
-                    tile(post)
+                    // A tile opens the post, matching Android's My Reviews and the web's grid.
+                    // The long-press menu (hide / delete) still hangs off `tile` itself.
+                    //
+                    // 🚨 Only for posts that are actually reachable. A held or hidden post 404s on
+                    // the public detail route by design, and sending its author there would answer
+                    // a question they did not ask ("is it public?") in the least useful way — with
+                    // an error. Its state is already explained above the grid.
+                    if isOpenable(post) {
+                        Button {
+                            router.push(ReviewsDestination.reviewDetail(id: post.id), on: .profile)
+                        } label: {
+                            tile(post)
+                        }
+                        .buttonStyle(.plain)
+                    } else {
+                        tile(post)
+                    }
                 }
             }
             .padding(Spacing.md)

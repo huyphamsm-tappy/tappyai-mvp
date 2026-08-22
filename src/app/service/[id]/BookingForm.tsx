@@ -60,7 +60,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         autoBackTimer.current = setTimeout(() => router.back(), 8000)
       } else {
         const d = await res.json()
-        setError(d.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
+        setError(d.message || d.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
       }
     } catch {
       setError('Không thể kết nối. Vui lòng thử lại.')

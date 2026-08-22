@@ -120,6 +120,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Home
     'home.greetingUser': 'Xin chào, {name} 👋',
+    'home.friend': 'bạn',
     'home.greetingGuest': 'Chào mừng đến với TappyAI 👋',
     'home.exploreByCategory': 'Khám phá theo lĩnh vực',
     'home.fortuneTitle': '🔮 Xem bói hôm nay',
@@ -370,6 +371,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Home
     'home.greetingUser': 'Hi, {name} 👋',
+    'home.friend': 'there',
     'home.greetingGuest': 'Welcome to TappyAI 👋',
     'home.exploreByCategory': 'Explore by category',
     'home.fortuneTitle': '🔮 Fortune today',

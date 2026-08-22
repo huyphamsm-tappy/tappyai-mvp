@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { getTrack } from '@/modules/music/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,10 +21,10 @@ const WEEK_MS = 7 * 24 * 60 * 60 * 1000
 // user's own state uses their authenticated client (own-row RLS).
 export async function GET(req: NextRequest, { params }: { params: { trackId: string } }) {
   const trackId = params.trackId?.trim()
-  if (!trackId) return NextResponse.json({ error: 'trackId required' }, { status: 400 })
+  if (!trackId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   const track = await getTrack(trackId)
-  if (!track) return NextResponse.json({ error: 'Bài nhạc không tồn tại' }, { status: 404 })
+  if (!track) return NextResponse.json({ error: 'track_not_found', message: serverMessage('music.trackNotFound', requestLocale(req)) }, { status: 404 })
 
   const supabase = createClient()
 

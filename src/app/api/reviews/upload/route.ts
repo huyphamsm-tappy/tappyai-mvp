@@ -2,6 +2,9 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { getMediaProvider, putMedia } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 // SQL required in Supabase:
 // ALTER TABLE public.reviews ADD COLUMN IF NOT EXISTS photos text[] DEFAULT '{}';
@@ -21,11 +24,14 @@ function checkRL(userId: string): boolean {
 
 export async function POST(req: NextRequest) {
   const { user } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập để tải ảnh' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('media.signInToUpload', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   if (!checkRL(user.id)) {
     return NextResponse.json(
-      { error: `Bạn đã tải lên ${MAX_UPLOADS_PER_DAY} ảnh hôm nay. Thử lại vào ngày mai.` },
+      { error: 'rate_limit', message: serverMessage('rate.uploadLimit', requestLocale(req), { n: MAX_UPLOADS_PER_DAY }) },
       { status: 429 }
     )
   }
@@ -34,18 +40,18 @@ export async function POST(req: NextRequest) {
   try {
     formData = await req.formData()
   } catch {
-    return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
 
   const file = formData.get('file') as File | null
-  if (!file) return NextResponse.json({ error: 'Không tìm thấy file' }, { status: 400 })
-  if (file.size > MAX_FILE_SIZE) return NextResponse.json({ error: 'File ảnh phải nhỏ hơn 5MB' }, { status: 400 })
+  if (!file) return NextResponse.json({ error: 'file_not_found', message: serverMessage('media.fileNotFound', requestLocale(req)) }, { status: 400 })
+  if (file.size > MAX_FILE_SIZE) return NextResponse.json({ error: 'image_too_large', message: serverMessage('media.imageTooLarge5', requestLocale(req)) }, { status: 400 })
 
   // Validate the REAL file type by its magic bytes, not the client-supplied
   // MIME/extension — blocks SVG/HTML-as-image (stored-XSS) and mislabeled files.
   const bytes = new Uint8Array(await file.arrayBuffer())
   const kind = sniffImageType(bytes)
-  if (!kind) return NextResponse.json({ error: 'Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF' }, { status: 400 })
+  if (!kind) return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
 
   try {
     const path = `reviews/${user.id}/${Date.now()}.${imageExt(kind)}`
@@ -60,6 +66,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: blob.url })
   } catch (e) {
     console.error('Media upload error:', e)
-    return NextResponse.json({ error: 'Không thể tải ảnh lên. Vui lòng thử lại.' }, { status: 500 })
+    return NextResponse.json({ error: 'upload_failed', message: serverMessage('media.uploadFailed', requestLocale(req)) }, { status: 500 })
   }
 }

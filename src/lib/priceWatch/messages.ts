@@ -70,9 +70,12 @@ export const pw = {
   needLogin: (l: PwLang) => isVi(l)
     ? 'Cần đăng nhập để theo dõi giá'
     : 'You need to sign in to track prices',
-  saveError: (l: PwLang, cause: string) => isVi(l)
-    ? `Lỗi lưu theo dõi: ${cause}`
-    : `Couldn't save the price watch: ${cause}`,
+  // W2/C44 — the cause is deliberately NOT interpolated. This string is returned as a TOOL
+  // RESULT, which the model reads and relays to the user, so a Postgres error here would be spoken
+  // aloud to a stranger. The detail is logged at the call site instead.
+  saveError: (l: PwLang) => isVi(l)
+    ? 'Lỗi lưu theo dõi. Vui lòng thử lại.'
+    : "Couldn't save the price watch. Please try again.",
   saved: (l: PwLang, product: string, targetVnd: number) => isVi(l)
     ? `Đã lưu! Tappy sẽ kiểm tra giá ${product} mỗi 6 tiếng và báo bạn khi xuống dưới ${fmtPriceVnd(targetVnd, 'vi')}.`
     : `Saved! Tappy will check the price of ${product} every 6 hours and let you know when it drops below ${fmtPriceVnd(targetVnd, 'en')}.`,

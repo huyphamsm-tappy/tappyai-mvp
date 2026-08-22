@@ -2,11 +2,13 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // GET /api/profile
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -37,7 +39,7 @@ export async function GET(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     let body: Record<string, unknown> = {}
     try { body = await req.json() } catch { /* empty body is OK */ }
@@ -55,7 +57,12 @@ export async function PATCH(req: NextRequest) {
         .from('profiles')
         .update(updates)
         .eq('id', user.id)
-      if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+      // W2/C44 — never hand a Postgres error to the client: it carries table and column names.
+      // Log the detail, return a code the client can branch on plus a sentence a user can read.
+      if (error) {
+        console.error('[profile] update failed:', error.code ?? error.message)
+        return NextResponse.json({ error: 'save_failed', message: serverMessage('server.saveFailed', requestLocale(req)) }, { status: 500 })
+      }
     }
 
     // Save bio + name to auth metadata (no DB schema needed)
@@ -69,32 +76,32 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ ok: true })
   } catch (e) {
-    const msg = e instanceof Error ? e.message : 'Lỗi không xác định'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    console.error('[profile] PATCH failed:', e instanceof Error ? e.message : e)
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }
 
 // POST /api/profile — upload avatar
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   let formData: FormData
   try { formData = await req.formData() }
-  catch { return NextResponse.json({ error: 'Invalid form data' }, { status: 400 }) }
+  catch { return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 }) }
 
   const file = formData.get('avatar') as File | null
-  if (!file) return NextResponse.json({ error: 'Không có file' }, { status: 400 })
+  if (!file) return NextResponse.json({ error: 'no_file', message: serverMessage('media.noFile', requestLocale(req)) }, { status: 400 })
 
   if (file.size > 3 * 1024 * 1024) {
-    return NextResponse.json({ error: 'Ảnh tối đa 3MB' }, { status: 400 })
+    return NextResponse.json({ error: 'image_too_large', message: serverMessage('media.imageTooLarge3', requestLocale(req)) }, { status: 400 })
   }
   // Validate by magic bytes, not the client-declared MIME/extension — blocks
   // SVG/HTML-as-avatar (stored-XSS) and mislabeled uploads.
   const bytes = new Uint8Array(await file.arrayBuffer())
   const kind = sniffImageType(bytes)
   if (!kind) {
-    return NextResponse.json({ error: 'Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF' }, { status: 400 })
+    return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
   }
 
   let blob: { url: string }
@@ -111,8 +118,8 @@ export async function POST(req: NextRequest) {
       getMediaProvider(process.env, req)
     )
   } catch (e) {
-    const msg = e instanceof Error ? e.message : 'Upload thất bại'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    console.error('[profile] avatar upload failed:', e instanceof Error ? e.message : e)
+    return NextResponse.json({ error: 'upload_failed', message: serverMessage('media.uploadFailed', requestLocale(req)) }, { status: 500 })
   }
 
   // Upsert avatar_url (creates row if not exists, updates if exists)
@@ -120,7 +127,10 @@ export async function POST(req: NextRequest) {
     .from('profiles')
     .upsert({ id: user.id, avatar_url: blob.url }, { onConflict: 'id' })
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) {
+    console.error('[profile] avatar upsert failed:', error.code ?? error.message)
+    return NextResponse.json({ error: 'save_failed', message: serverMessage('server.saveFailed', requestLocale(req)) }, { status: 500 })
+  }
 
   // Also save to auth metadata
   await supabase.auth.updateUser({ data: { avatar_url: blob.url } })

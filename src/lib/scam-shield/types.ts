@@ -93,6 +93,20 @@ export interface OfficialEntity {
   website: string
   hotline?: string
   email?: string
+  /**
+   * Other names this brand is impersonated under — abbreviations, app names, former names.
+   *
+   * 🚨 C09. The matcher derived its only token from `brand`, so it caught
+   * `vietcombank-online.com` and missed `vcb-secure-login.net`, `vcbdigibank-login.com`,
+   * `tcb-verify.duckdns.org`, `stb-otp.top` and `vtb-login.xyz` — all NO_MATCH, all scoring
+   * 19/LOW. In Vietnam the abbreviation IS the everyday name of a bank, and phishing domains use
+   * it far more than the full one. "VCB Digibank" is Vietcombank's actual banking app.
+   *
+   * Aliases are matched by exactly the same rules as `brand`, so adding one here protects the
+   * entity everywhere with no scorer change — the same property the directory already had for
+   * whole brands.
+   */
+  aliases?: string[]
 }
 
 export interface CheckResult {

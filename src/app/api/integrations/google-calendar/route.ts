@@ -1,6 +1,8 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!
 const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/google-calendar/callback`
@@ -8,7 +10,7 @@ const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/google
 // GET /api/integrations/google-calendar → redirect to Google OAuth
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   const action = searchParam(req, 'action')
 

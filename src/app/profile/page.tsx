@@ -1,3 +1,4 @@
+import { resolveFirstName } from '@/lib/i18n/displayName'
 import { createClient } from '@/lib/supabase/server'
 import GuestProfileView from './GuestProfileView'
 import ProfileView from './ProfileView'
@@ -27,7 +28,9 @@ export default async function ProfilePage() {
     avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url,
     email: profile?.email || user.email,
   }
-  const firstName = userInfo.full_name?.split(' ').pop() || userInfo.email?.split('@')[0] || 'bạn'
+  // C14 — no fallback here: this is a server component and cannot know the language.
+  // ProfileView applies the localized fallback.
+  const firstName = resolveFirstName(userInfo)
 
   return (
     <ProfileView

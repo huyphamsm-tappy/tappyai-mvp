@@ -6,6 +6,8 @@ import {
   clearMemory,
 } from '@/lib/memory/memoryService'
 import { NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // GET /api/memory — check if user has memory (for badge)
 export async function GET(req: Request) {
@@ -102,7 +104,7 @@ export async function PATCH(req: Request) {
       patch.budget = cleaned
     }
 
-    if (Object.keys(patch).length === 0) return NextResponse.json({ ok: false, error: 'no valid fields' }, { status: 400 })
+    if (Object.keys(patch).length === 0) return NextResponse.json({ ok: false, error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
 
     await updateMemory(user.id, patch, supabase)
     return NextResponse.json({ ok: true })

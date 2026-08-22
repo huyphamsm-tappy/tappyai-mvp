@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 export const runtime = 'edge'
 
 // GET /api/explore/oembed?url={url}
@@ -62,7 +64,7 @@ async function safeFetch(u: URL, allowed: Set<string>, headers: Record<string, s
 
 export async function GET(req: NextRequest) {
   const raw = searchParam(req, 'url')
-  if (!raw) return NextResponse.json({ error: 'url required' }, { status: 400 })
+  if (!raw) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   // TikTok: the fetch target is the hardcoded TikTok oembed API; the user URL is
   // only passed as a query value. We still validate it is a genuine TikTok URL.
@@ -107,5 +109,5 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ error: 'Unsupported URL' }, { status: 400 })
+  return NextResponse.json({ error: 'unsupported_url', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
 }

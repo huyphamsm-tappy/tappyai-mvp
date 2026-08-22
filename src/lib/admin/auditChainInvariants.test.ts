@@ -38,6 +38,20 @@ const ALL_SQL = sqlFiles(join(ROOT, 'supabase'))
 /** SQL comments cannot execute. Only code counts — and the migration is 40% comment. */
 function stripSqlComments(sql: string): string {
   return sql
+    // 🚨 NORMALISE FIRST. Without this the whole guard is line-ending dependent, and it fails on
+    // a Windows checkout while passing on CI — three permanent red assertions against a file
+    // nobody has touched, which is worse than no guard at all because it trains the reader to
+    // ignore the colour.
+    //
+    // Measured on the same bytes, one file, the two encodings:
+    //     CRLF → trigger body 4180 chars, `-- P7. No EXCEPTION handler` still in it,
+    //            2 EXCEPTION tokens reported as "not a RAISE" — both of them COMMENTS
+    //     LF   → trigger body 1298 chars, comment stripped, 0 offenders
+    //
+    // In JS regex `\r` is a line terminator, so `$` can anchor BEFORE the `\r` that `split('\n')`
+    // leaves at the end of every line of a CRLF file. `--.*$` then matches an empty span rather
+    // than the comment, and the comment survives into what the assertions read as "code".
+    .replace(/\r\n/g, '\n')
     .replace(/\/\*[\s\S]*?\*\//g, ' ')
     .split('\n')
     .map((l) => l.replace(/--.*$/, ''))

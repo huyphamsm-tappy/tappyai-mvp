@@ -1,3 +1,5 @@
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { rateLimit } from '@/lib/security/rateLimit'
@@ -25,11 +27,11 @@ const MAX_CHARS = 4000
 
 export async function POST(req: NextRequest) {
   const { user } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   // Cheap (no model call, no provider call) but not free — it still parses a body per request.
   if (!rateLimit(`voice-lang:${user.id}`, 60, 60_000).ok) {
-    return NextResponse.json({ error: 'rate_limit' }, { status: 429 })
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
   }
 
   let text: string
@@ -37,10 +39,10 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     text = String(body.text ?? '').trim()
   } catch {
-    return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_body', message: serverMessage('validation.badBody', requestLocale(req)) }, { status: 400 })
   }
 
-  if (!text) return NextResponse.json({ error: 'empty_text' }, { status: 400 })
+  if (!text) return NextResponse.json({ error: 'empty_text', message: serverMessage('voice.emptyText', requestLocale(req)) }, { status: 400 })
   // Detection only needs a sample; truncating keeps a long reply from costing anything to classify.
   const sample = text.length > MAX_CHARS ? text.slice(0, MAX_CHARS) : text
 

@@ -91,7 +91,11 @@ struct HomeQuickActionsSection: View {
     private let actions: [(icon: String, label: String, dest: HomeDestination)] = [
         ("dollarsign.circle", NSLocalizedString("tool.currency", comment: ""), .currency),
         ("globe", NSLocalizedString("tool.translate", comment: ""), .translate),
-        ("doc.text.viewfinder", "Scan", .scan),
+        // B07-class: this label was a hardcoded English "Scan" while every tile around it was
+        // localized, so a Vietnamese session read one English word in the middle of the grid.
+        ("doc.text.viewfinder", NSLocalizedString("tool.scan", comment: ""), .scan),
+        // B09 — Scam Shield, in the same tools grid the web puts it in.
+        ("checkmark.shield", NSLocalizedString("tool.scamShield", comment: ""), .scamShield),
         ("pencil.line", NSLocalizedString("tool.vietContent", comment: ""), .vietContent),
         ("divide.circle", NSLocalizedString("tool.splitBill", comment: ""), .splitBill),
         ("sparkles", NSLocalizedString("tool.fortune", comment: ""), .fortune),

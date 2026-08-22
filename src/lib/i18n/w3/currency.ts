@@ -13,6 +13,20 @@ export const vi: Record<string, string> = {
   'currency.fallbackNotice': 'Đang dùng tỷ giá ước tính (không kết nối được nguồn dữ liệu)',
   'currency.ratesUpdated': 'Tỷ giá cập nhật {date} · Nguồn: open.er-api.com',
   'currency.disclaimer': 'Tỷ giá chỉ mang tính tham khảo, không dùng cho giao dịch tài chính.',
+
+  // Currency names, keyed by ISO code (B07 — these were Vietnamese-only in the page itself).
+  'currency.VND': 'Việt Nam Đồng',
+  'currency.USD': 'Đô la Mỹ',
+  'currency.EUR': 'Euro',
+  'currency.JPY': 'Yên Nhật',
+  'currency.KRW': 'Won Hàn Quốc',
+  'currency.GBP': 'Bảng Anh',
+  'currency.AUD': 'Đô Úc',
+  'currency.SGD': 'Đô Singapore',
+  'currency.THB': 'Baht Thái',
+  'currency.CNY': 'Nhân dân tệ',
+  'currency.HKD': 'Đô Hồng Kông',
+  'currency.TWD': 'Đô Đài Loan',
 }
 
 export const en: Record<string, string> = {
@@ -28,4 +42,17 @@ export const en: Record<string, string> = {
   'currency.fallbackNotice': 'Using estimated rates (could not reach the data source)',
   'currency.ratesUpdated': 'Rates updated {date} · Source: open.er-api.com',
   'currency.disclaimer': 'Rates are for reference only, not for financial transactions.',
+
+  'currency.VND': 'Vietnamese Dong',
+  'currency.USD': 'US Dollar',
+  'currency.EUR': 'Euro',
+  'currency.JPY': 'Japanese Yen',
+  'currency.KRW': 'South Korean Won',
+  'currency.GBP': 'British Pound',
+  'currency.AUD': 'Australian Dollar',
+  'currency.SGD': 'Singapore Dollar',
+  'currency.THB': 'Thai Baht',
+  'currency.CNY': 'Chinese Yuan',
+  'currency.HKD': 'Hong Kong Dollar',
+  'currency.TWD': 'Taiwan Dollar',
 }

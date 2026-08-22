@@ -18,6 +18,9 @@ function keysOf(): string[] {
     keys.push(section.headingKey)
     for (const block of section.blocks) {
       if (block.kind === 'bullets' || block.kind === 'steps') keys.push(...block.keys)
+      // `contact` renders fixed labels and `email` carries a labelKey plus a literal address —
+      // neither has a `key`, so neither contributes to the document's translation keys here.
+      else if (block.kind === 'email') keys.push(block.labelKey)
       else if (block.kind !== 'contact') keys.push(block.key)
     }
   }

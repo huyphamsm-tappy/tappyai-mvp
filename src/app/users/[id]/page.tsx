@@ -1,50 +1,79 @@
-'use client'
+import type { Metadata } from 'next'
+import { createClient } from '@/lib/supabase/server'
+import { BRAND, absoluteUrl, safeOgImageUrl } from '@/lib/share/openGraph'
+import UserProfileView from './UserProfileView'
 
-// Author profile. The URL stays /users/[id] — this route renders the very same
-// ProfileTab the bottom-nav "Hồ sơ" tab uses, which brings its own clip grid and
-// its own ClipViewer (a thin wrapper around the Feed's Post). Before this, the
-// page had its own review-card list and linked clips to /reviews/[id], so tapping
-// a creator's avatar landed you in a completely different UI from the feed.
-//
-// viewerId is who is logged in, userId is whose profile this is — ProfileTab uses
-// the difference to decide what is public (the posts grid) and what is private
-// (saved/liked/hidden, edit-profile, delete/hide).
+interface Props {
+  params: { id: string }
+}
 
-import { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
-import { ProfileTab } from '@/app/reviews/ProfileTab'
+/**
+ * Share metadata for a public profile — U12.
+ *
+ * ============================================================================
+ * WHY THIS EXISTS
+ * ============================================================================
+ * This route was a `'use client'` module, and a client module cannot export `generateMetadata`.
+ * So every shared profile link previewed with the generic site title and tagline, while a shared
+ * REVIEW link previewed with the review's own subject. Two links to the same product, one of them
+ * anonymous.
+ *
+ * (The generic title is deliberately not quoted here: it is Vietnamese, and the hardcoded-strings
+ * ratchet counts quoted Vietnamese per line without knowing this one is an explanation.)
+ *
+ * The interactive part moved to `UserProfileView`; this file is the server shell. Same split as
+ * /profile/account and /profile/bookings, and for the same reason.
+ *
+ * 🚨 Only PUBLIC fields are read. `profiles` has a public SELECT policy, and the three columns
+ * below are the ones `GET /api/users/[id]` already serves to any caller — nothing here exposes
+ * anything a visitor could not already see. A profile that cannot be read falls back to a generic
+ * title rather than failing the page: a missing preview is a smaller problem than a 500.
+ */
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const fallback: Metadata = { title: `Profile | ${BRAND.name}` }
 
-export default function UserProfilePage() {
-  const params = useParams()
-  const router = useRouter()
-  const userId = params.id as string
-  const [viewerId, setViewerId] = useState<string | null>(null)
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
+  try {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data }) => {
-      setViewerId(data.user?.id ?? null)
-      setReady(true)
-    })
-  }, [])
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('full_name, avatar_url')
+      .eq('id', params.id)
+      .maybeSingle()
 
-  // Wait for the session before the first render: ProfileTab decides public vs
-  // private from viewerId, so mounting with a not-yet-known null would briefly
-  // render your own profile as if you were a stranger.
-  if (!ready) return <div className="h-dvh bg-black" />
+    if (!profile?.full_name) return fallback
 
-  return (
-    // variant="page" fixes this route's LAYOUT for every viewer — owner and
-    // visitor see the same shape here. Who is looking (viewerId) only changes
-    // permissions: edit vs follow, private tabs, delete/hide.
-    <ProfileTab
-      userId={userId}
-      viewerId={viewerId}
-      showBackButton
-      onBack={() => router.back()}
-      variant="page"
-    />
-  )
+    const name = String(profile.full_name).slice(0, 60)
+    const title = `${name} | ${BRAND.name}`
+    const description = `${name} on ${BRAND.name}`
+    const url = absoluteUrl(`/users/${params.id}`)
+    // The same guard the review page uses: an avatar a crawler cannot fetch produces a broken
+    // preview image, which looks worse than the branded card.
+    const image = safeOgImageUrl(profile.avatar_url ?? undefined)
+
+    return {
+      title,
+      description,
+      alternates: { canonical: url },
+      openGraph: {
+        type: 'profile',
+        title: name,
+        description,
+        url,
+        siteName: BRAND.name,
+        images: [{ url: image }],
+      },
+      twitter: {
+        card: 'summary',
+        title: name,
+        description,
+        images: [image],
+      },
+    }
+  } catch {
+    return fallback
+  }
+}
+
+export default function UserProfilePage({ params }: Props) {
+  return <UserProfileView userId={params.id} />
 }

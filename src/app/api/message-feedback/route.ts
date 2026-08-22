@@ -1,18 +1,20 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export async function POST(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const { conversationId, messageIndex, type, reason } = await req.json()
 
     if (!['like', 'dislike', 'report'].includes(type)) {
-      return NextResponse.json({ error: 'Invalid type' }, { status: 400 })
+      return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
     }
     if (!conversationId || messageIndex === undefined || messageIndex === null) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+      return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
     }
 
     const { error } = await supabase
@@ -28,22 +30,22 @@ export async function POST(req: Request) {
         { onConflict: 'user_id,conversation_id,message_index,type' }
       )
 
-    if (error) { console.error('[message-feedback]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
+    if (error) { console.error('[message-feedback]', error); return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 }) }
     return NextResponse.json({ ok: true })
   } catch {
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }
 
 export async function DELETE(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const { conversationId, messageIndex, type } = await req.json()
 
     if (!conversationId || messageIndex === undefined) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+      return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
     }
 
     const { error } = await supabase
@@ -54,9 +56,9 @@ export async function DELETE(req: Request) {
       .eq('message_index', messageIndex)
       .eq('type', type)
 
-    if (error) { console.error('[message-feedback]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
+    if (error) { console.error('[message-feedback]', error); return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 }) }
     return NextResponse.json({ ok: true })
   } catch {
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }

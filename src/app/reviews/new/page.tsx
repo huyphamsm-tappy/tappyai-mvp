@@ -320,7 +320,7 @@ export default function NewReviewPage() {
         fd.append('file', file)
         const res = await fetch('/api/reviews/upload', { method: 'POST', body: fd })
         const data = await res.json()
-        if (!res.ok) throw new Error(data.error || t('reviewNew.photoUploadError'))
+        if (!res.ok) throw new Error(data.message || data.error || t('reviewNew.photoUploadError'))
         uploaded.push(data.url)
       }
       setPhotos(prev => [...prev, ...uploaded])
@@ -594,7 +594,7 @@ export default function NewReviewPage() {
         body: JSON.stringify(payload),
       })
       const data = await res.json()
-      if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.error || t('reviewNew.postError')) }
+      if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.message || data.error || t('reviewNew.postError')) }
       vok('submit-review', tSubmit)
 
       // The server decides whether this was published. Saving the row is not the

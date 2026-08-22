@@ -229,9 +229,13 @@ function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[]
 }
 
 function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
+  const { t } = useTranslation()
+  // District names are proper nouns and stay as they are in both languages. The budget and
+  // dietary options are labels, so state holds a stable id and the dictionary supplies the text —
+  // otherwise the selection would change identity when the user switched language (B07).
   const DISTRICTS = ['Quận 1', 'Quận 3', 'Bình Thạnh', 'Thủ Đức', 'Gò Vấp']
-  const BUDGETS = ['Dưới 50k', '50–100k', '100–200k', 'Trên 200k']
-  const DIETARY_OPTS = ['Ăn chay', 'Không hải sản', 'Không cay', 'Không gluten', 'Không có']
+  const BUDGETS = ['under50', '50to100', '100to200', 'over200']
+  const DIETARY_OPTS = ['vegetarian', 'noSeafood', 'noSpicy', 'noGluten', 'none']
   const [district, setDistrict] = useState('')
   const [budget, setBudget] = useState('')
   const [dietary, setDietary] = useState<string[]>([])
@@ -239,9 +243,9 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
   const [saving, setSaving] = useState(false)
 
   const toggleDietary = (item: string) => {
-    if (item === 'Không có') { setDietary(['Không có']); return }
+    if (item === 'none') { setDietary(['none']); return }
     setDietary(prev => {
-      const without = prev.filter(d => d !== 'Không có')
+      const without = prev.filter(d => d !== 'none')
       return without.includes(item) ? without.filter(d => d !== item) : [...without, item]
     })
   }
@@ -250,9 +254,12 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
     setSaving(true)
     const prefs: string[] = []
     const loc = district || (customDistrict.trim() ? customDistrict.trim() : '')
-    if (loc) prefs.push(`Hay ở khu vực ${loc}`)
-    if (budget) prefs.push(`Ngân sách ăn uống/bữa: ${budget}`)
-    dietary.filter(d => d !== 'Không có').forEach(d => prefs.push(d))
+    // Stored in the language the user answered in. The preference text is shown back to them on
+    // /profile/preferences, and the model reads both languages, so writing it in their own
+    // language is both truer and no harder for Tappy to use.
+    if (loc) prefs.push(t('chatOnboarding.prefLocation', { area: loc }))
+    if (budget) prefs.push(t('chatOnboarding.prefBudget', { budget: t(`chatOnboarding.budget.${budget}`) }))
+    dietary.filter(d => d !== 'none').forEach(d => prefs.push(t(`chatOnboarding.diet.${d}`)))
     try {
       await fetch('/api/preferences', {
         method: 'POST',
@@ -278,12 +285,12 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
           <div className="w-16 h-16 mx-auto mb-2 select-none overflow-hidden rounded-2xl">
             <TappyMascot pose={getTappyPose({ isWelcome: true })} size={64} eager animated />
           </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white">Tappy muốn hiểu bạn hơn!</h2>
-          <p className="text-sm text-content-secondary mt-1">3 câu hỏi nhanh để gợi ý chuẩn hơn.</p>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white">{t('chatOnboarding.title')}</h2>
+          <p className="text-sm text-content-secondary mt-1">{t('chatOnboarding.subtitle')}</p>
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">1. Bạn thường ở khu vực nào?</p>
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('chatOnboarding.q1')}</p>
           <div className="flex flex-wrap gap-2 mb-2">
             {DISTRICTS.map(d => (
               <button key={d} onClick={() => { setDistrict(prev => prev === d ? '' : d); setCustomDistrict('') }}
@@ -295,30 +302,30 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
           <input
             value={customDistrict}
             onChange={e => { setCustomDistrict(e.target.value); setDistrict('') }}
-            placeholder="Hoặc nhập khu vực khác..."
+            placeholder={t('chatOnboarding.districtPlaceholder')}
             className="w-full text-sm px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">2. Ngân sách ăn uống/bữa?</p>
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('chatOnboarding.q2')}</p>
           <div className="flex flex-wrap gap-2">
             {BUDGETS.map(b => (
               <button key={b} onClick={() => setBudget(prev => prev === b ? '' : b)}
                 className={`px-3 py-1.5 rounded-full text-sm border transition-all ${budget === b ? 'border-primary-500 bg-interactive text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
-                {b}
+                {t(`chatOnboarding.budget.${b}`)}
               </button>
             ))}
           </div>
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">3. Có kiêng cữ gì không?</p>
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('chatOnboarding.q3')}</p>
           <div className="flex flex-wrap gap-2">
             {DIETARY_OPTS.map(d => (
               <button key={d} onClick={() => toggleDietary(d)}
                 className={`px-3 py-1.5 rounded-full text-sm border transition-all ${dietary.includes(d) ? 'border-primary-500 bg-interactive text-white' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300'}`}>
-                {d}
+                {t(`chatOnboarding.diet.${d}`)}
               </button>
             ))}
           </div>
@@ -329,10 +336,10 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
           disabled={saving}
           className="w-full py-3.5 rounded-2xl font-bold text-base bg-interactive hover:bg-interactive-hover text-white transition-all disabled:opacity-60"
         >
-          {saving ? '⌛ Đang lưu...' : '🎉 Bắt đầu khám phá!'}
+          {saving ? t('chatOnboarding.saving') : t('chatOnboarding.start')}
         </button>
         <button onClick={handleSkip} className="w-full text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 py-1">
-          Bỏ qua
+          {t('chatOnboarding.skip')}
         </button>
       </div>
     </div>
@@ -1484,7 +1491,7 @@ export default function ChatInterface({
                   ? 'bg-accent-100 dark:bg-accent-900/30 text-accent-500'
                   : 'bg-gray-100 dark:bg-gray-800 text-content-secondary hover:bg-accent-50 dark:hover:bg-accent-900/20 hover:text-accent-500'
               )}
-              aria-label="Chọn emoji"
+              aria-label={t('chat.a11y.pickEmoji')}
             >
               <Smile size={20} />
             </button>

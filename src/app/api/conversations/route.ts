@@ -1,40 +1,42 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 const MAX_MESSAGES = 200
 const MAX_PAYLOAD_BYTES = 512 * 1024 // 512 KB
 
 export async function GET(req: Request) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   const { data, error } = await supabase.from('conversations').select('id, title, category, updated_at, messages').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(20)
-  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
+  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 }) }
   return NextResponse.json(data)
 }
 
 export async function POST(req: Request) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   const { title, category, messages } = await req.json()
   if (Array.isArray(messages)) {
-    if (messages.length > MAX_MESSAGES) return NextResponse.json({ error: 'Too many messages' }, { status: 413 })
-    if (JSON.stringify(messages).length > MAX_PAYLOAD_BYTES) return NextResponse.json({ error: 'Payload too large' }, { status: 413 })
+    if (messages.length > MAX_MESSAGES) return NextResponse.json({ error: 'too_many_messages', message: serverMessage('conversation.tooMany', requestLocale(req)) }, { status: 413 })
+    if (JSON.stringify(messages).length > MAX_PAYLOAD_BYTES) return NextResponse.json({ error: 'payload_too_large', message: serverMessage('conversation.tooLarge', requestLocale(req)) }, { status: 413 })
   }
   const { data, error } = await supabase.from('conversations').insert({ user_id: user.id, title: title || 'Cuộc trò chuyện mới', category: category || 'general', messages: messages || [] }).select().single()
-  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
+  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 }) }
   return NextResponse.json(data)
 }
 
 export async function PUT(req: Request) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   const { id, title, messages } = await req.json()
   if (Array.isArray(messages)) {
-    if (messages.length > MAX_MESSAGES) return NextResponse.json({ error: 'Too many messages' }, { status: 413 })
-    if (JSON.stringify(messages).length > MAX_PAYLOAD_BYTES) return NextResponse.json({ error: 'Payload too large' }, { status: 413 })
+    if (messages.length > MAX_MESSAGES) return NextResponse.json({ error: 'too_many_messages', message: serverMessage('conversation.tooMany', requestLocale(req)) }, { status: 413 })
+    if (JSON.stringify(messages).length > MAX_PAYLOAD_BYTES) return NextResponse.json({ error: 'payload_too_large', message: serverMessage('conversation.tooLarge', requestLocale(req)) }, { status: 413 })
   }
   const { data, error } = await supabase.from('conversations').update({ title, messages, updated_at: new Date().toISOString() }).eq('id', id).eq('user_id', user.id).select().single()
-  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
+  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 }) }
   return NextResponse.json(data)
 }
 
@@ -42,11 +44,11 @@ export async function PUT(req: Request) {
 // and erasable). Scoped to the owner by user_id (defence-in-depth beyond RLS).
 export async function DELETE(req: Request) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   let id = new URL(req.url).searchParams.get('id')
   if (!id) { try { id = (await req.json())?.id } catch { /* no body */ } }
-  if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
+  if (!id) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
   const { error } = await supabase.from('conversations').delete().eq('id', id).eq('user_id', user.id)
-  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'Database error' }, { status: 500 }) }
+  if (error) { console.error('[conversations]', error); return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 }) }
   return NextResponse.json({ ok: true })
 }

@@ -1,14 +1,20 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const groupId = params.id
-  if (!groupId) return NextResponse.json({ error: 'id required' }, { status: 400 })
+  if (!groupId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   // Auth required — joining writes member data (budget/dietary/area) into a
   // group and must be attributed to the caller. Anonymous joins are rejected.
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   let name: string, budget: string, food_preferences: string, dietary_restrictions: string, area: string
   try {
@@ -20,7 +26,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     area = (body.area || '').trim()
     if (!name || !area) throw new Error('missing fields')
   } catch {
-    return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
 
   const { count } = await supabase
@@ -29,7 +35,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     .eq('group_id', groupId)
 
   if ((count ?? 0) >= 10) {
-    return NextResponse.json({ error: 'Nhóm đã đầy (tối đa 10 người)' }, { status: 400 })
+    return NextResponse.json({ error: 'group_full', message: serverMessage('group.full', requestLocale(req)) }, { status: 400 })
   }
 
   const { error } = await supabase
@@ -39,7 +45,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   if (error) {
     // Unique (group_id, user_id) violation → already a member; treat as success.
     if (error.code === '23505') return NextResponse.json({ ok: true, alreadyJoined: true })
-    return NextResponse.json({ error: 'Không thể tham gia nhóm' }, { status: 500 })
+    return NextResponse.json({ error: 'join_failed', message: serverMessage('group.joinFailed', requestLocale(req)) }, { status: 500 })
   }
   return NextResponse.json({ ok: true })
 }

@@ -124,7 +124,14 @@ describe('cross-platform parity — the same features are explained everywhere',
   const webKeys = new Set(
     HOW_TO_USE_DOC.sections.flatMap((s) => [
       s.headingKey,
-      ...s.blocks.flatMap((b) => (b.kind === 'bullets' || b.kind === 'steps' ? b.keys : b.kind === 'contact' ? [] : [b.key])),
+      // `contact` has no keys of its own; `email` contributes only its label key — the address
+      // beside it is a literal, not translated.
+      ...s.blocks.flatMap((b) =>
+        b.kind === 'bullets' || b.kind === 'steps' ? b.keys
+          : b.kind === 'contact' ? []
+          : b.kind === 'email' ? [b.labelKey]
+          : [b.key],
+      ),
     ]),
   )
   const iosKeys = new Set(iosKeysInView())

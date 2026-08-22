@@ -33,10 +33,10 @@ export async function POST(req: NextRequest) {
     text = (body.text || '').trim()
     targetLang = body.targetLang || 'vi'
   } catch {
-    return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_body', message: serverMessage('validation.badBody', requestLocale(req)) }, { status: 400 })
   }
 
-  if (!text) return NextResponse.json({ error: 'empty_text' }, { status: 400 })
+  if (!text) return NextResponse.json({ error: 'empty_text', message: serverMessage('voice.emptyText', requestLocale(req)) }, { status: 400 })
   if (text.length > 2000) return NextResponse.json({ error: 'too_long', message: serverMessage('translate.tooLong', locale) }, { status: 400 })
   const langName = LANG_NAMES[targetLang] || 'Vietnamese'
 

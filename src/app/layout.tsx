@@ -7,6 +7,7 @@ import LocationProvider from '@/components/LocationProvider'
 import TrackingProvider from '@/components/TrackingProvider'
 import LanguagePicker from '@/components/LanguagePicker'
 import HtmlLangSync from '@/components/HtmlLangSync'
+import AppLanguageFetch from '@/components/AppLanguageFetch'
 import VersionWatcher from '@/components/VersionWatcher'
 
 // og:image / og:url / og:site_name / twitter:* all come from buildSiteMetadata.
@@ -44,6 +45,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className="antialiased">
+        {/* C29 — attaches the chosen UI language to every request this app makes to its own API.
+            First in the tree so its module is evaluated before anything can fetch. */}
+        <AppLanguageFetch />
         <PostHogProvider>
           <NotificationProvider>{children}</NotificationProvider>
         </PostHogProvider>

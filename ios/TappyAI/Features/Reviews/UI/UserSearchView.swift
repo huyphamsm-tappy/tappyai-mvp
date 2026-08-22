@@ -103,9 +103,16 @@ struct UserSearchView: View {
                     .padding(.top, 40)
                 Spacer()
             } else {
+                // 🚨 C32 — this once pushed `ProfileDestination.account` for EVERY result, so
+                // tapping any person opened YOUR OWN account screen: the destination ignored the
+                // tapped user entirely. It was then left with no destination at all, because iOS
+                // had no public-profile screen to push and a wrong destination is worse than none.
+                //
+                // `UserProfileView` now exists and carries the user's id, so the tap goes where
+                // the row says it goes.
                 List(vm.results) { user in
                     Button {
-                        router.push(ProfileDestination.account, on: .profile)
+                        router.push(ReviewsDestination.userProfile(id: user.id))
                     } label: {
                         row(user)
                     }

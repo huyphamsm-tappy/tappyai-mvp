@@ -118,10 +118,32 @@ describe('no API route hardcodes user-facing Vietnamese any more', () => {
     }
     return out
   }
-  const files = routeFiles('src/app/api')
+  /**
+   * 🚨 Machine-to-machine routes are EXCLUDED, and the distinction is real rather than
+   * convenient.
+   *
+   * `cron/*` answers Vercel Cron, `webhooks/stripe` answers Stripe, `iap/apple/notifications`
+   * answers Apple. Their callers are servers, they authenticate by signature, and nobody ever
+   * reads their body. "Invalid signature" and "Missing signedPayload" are the CORRECT contract
+   * there — localizing them would be nonsense, and forcing them into the code+message shape would
+   * churn integrations for no reader.
+   *
+   * Everything else has a human on the other end, and that is what these guards cover.
+   */
+  const MACHINE_TO_MACHINE = /[\\/](cron|webhooks)[\\/]|iap[\\/]apple[\\/]notifications|debug-|test-/
+  const files = routeFiles('src/app/api').filter(f => !MACHINE_TO_MACHINE.test(f))
 
   it('there are route files to check', () => {
     expect(files.length).toBeGreaterThan(30)
+  })
+
+  it('the machine-to-machine exclusion is narrow', () => {
+    // Guards the exclusion itself: if that regex ever widened to hide user-facing routes, the
+    // guards below would quietly stop covering the product.
+    const all = routeFiles('src/app/api')
+    const excluded = all.filter(f => MACHINE_TO_MACHINE.test(f))
+    expect(excluded.length).toBeLessThan(all.length / 3)
+    for (const f of excluded) expect(f).toMatch(/cron|webhooks|iap|debug-|test-/)
   })
 
   it('no `message:` field is a Vietnamese literal', () => {
@@ -135,6 +157,59 @@ describe('no API route hardcodes user-facing Vietnamese any more', () => {
       })
     }
     expect(offenders).toEqual([])
+  })
+
+  it('🚨 no `error:` field is a Vietnamese literal either — B08', () => {
+    // THE BLIND SPOT THAT LET B08 SHIP.
+    //
+    // The assertion above greps `message:` and only `message:`. B04 moved three routes onto the
+    // catalogue and this file declared victory — while 96 Vietnamese sentences sat in the field
+    // immediately next door, in `error:`, across 29 other routes. Web clients read that field
+    // straight into `setError(data.error)`, so those sentences WERE the interface, and the guard
+    // could not see a single one of them.
+    //
+    // `error` is now a machine code and nothing else. A code is ASCII by construction, so any
+    // Vietnamese here means a human sentence has been put back into the machine-readable field.
+    const offenders: string[] = []
+    for (const f of files) {
+      readFileSync(f, 'utf8').split(/\r?\n/).forEach((line, i) => {
+        if (/^\s*(\/\/|\*)/.test(line)) return
+        const m = line.match(/\berror:\s*[`'"]([^`'"]*)[`'"]/)
+        if (m && VIETNAMESE.test(m[1])) offenders.push(`${f}:${i + 1} ${m[1].slice(0, 40)}`)
+      })
+    }
+    expect(offenders).toEqual([])
+  })
+
+  it('the two fields carry different contracts', () => {
+    // `error` is branched on, `message` is read. Proving the split holds in practice: every
+    // `error:` literal in the API is a lower-snake ASCII code.
+    const bad: string[] = []
+    for (const f of files) {
+      readFileSync(f, 'utf8').split(/\r?\n/).forEach((line, i) => {
+        if (/^\s*(\/\/|\*)/.test(line)) return
+        // 🚨 Anchored to an OBJECT FIELD — `{ error: '…'` or `, error: '…'`. An earlier version
+        // matched a bare `error:'` and picked up `console.error('[bookings] error:', e)`, where
+        // the text is a LOG PREFIX inside a string. It then ran `[^']+` across newlines to the
+        // next quote and reported multi-line garbage as a contract violation.
+        const m = line.match(/[{,]\s*error:\s*'([^'\n]+)'/)
+        if (m && !/^[a-z0-9_]+$/.test(m[1])) bad.push(`${f}:${i + 1} ${m[1].slice(0, 40)}`)
+      })
+    }
+    expect(bad).toEqual([])
+  })
+
+  it('server error text never names an internal subsystem', () => {
+    // 🚨 `viet-content` used to answer "AI provider chưa được cấu hình trên server." and "API key
+    // không hợp lệ hoặc chưa được kích hoạt." — telling an anonymous caller which subsystem is
+    // missing and whether a credential exists but is inactive. Both now resolve to one generic
+    // sentence; the operator still gets the distinction from the machine code and the log.
+    for (const key of Object.keys(SERVER_MESSAGES) as ServerMessageKey[]) {
+      for (const locale of ['vi', 'en'] as const) {
+        const m = serverMessage(key, locale)
+        expect(m, key).not.toMatch(/\bAPI key\b|\bAI provider\b|\bdatabase\b|\bDB\b/i)
+      }
+    }
   })
 
   it('the three routes the UAT identified resolve the locale from the request', () => {

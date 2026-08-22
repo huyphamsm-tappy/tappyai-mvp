@@ -259,7 +259,10 @@ describe('PW-05 — listing persisted watches', () => {
 // Nullable means "not set yet", which resolves to Vietnamese, so every existing
 // caller keeps today's behaviour. No new request parameter and no migration.
 
-const err = async (res: Response) => (await res.json() as { error: string }).error
+// C44 — the human sentence now lives in `message`; `error` carries the machine code beside it.
+// These read the half each assertion is actually about.
+const err = async (res: Response) => (await res.json() as { message?: string; error: string }).message ?? ''
+const code = async (res: Response) => (await res.json() as { error: string }).error
 const VI_DIACRITIC = /[àáâãèéêìíòóôõùúýăđĩũơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i
 
 describe('PW-VI-01 — existing Vietnamese behaviour is preserved', () => {
@@ -337,9 +340,17 @@ describe('language never weakens the contract', () => {
     }
   })
 
-  it('401 is unchanged in both — an unauthenticated caller has no known language', async () => {
+  it('401 carries a stable machine code, not a sentence', async () => {
+    // B08 split the two jobs `error` used to do at once. It was 'Unauthorized' — a human-ish
+    // string a client could neither branch on reliably nor show to a Vietnamese reader. Now
+    // `error` is the stable lowercase code and `message` is the localized sentence beside it.
     h.state.user = null
-    expect(await err(await GET(req('GET')))).toBe('Unauthorized')
+    const res = await GET(req('GET'))
+    expect(res.status).toBe(401)
+    const body = await res.json() as { error: string; message?: string }
+    expect(body.error).toBe('unauthorized')
+    expect(body.error, 'the code must stay machine-readable').toMatch(/^[a-z0-9_]+$/)
+    expect(body.message, 'a human sentence must accompany the code').toBeTruthy()
   })
 
   it('a profile lookup failure still allows the write, defaulting to Vietnamese', async () => {
@@ -347,5 +358,32 @@ describe('language never weakens the contract', () => {
     h.state.profileThrows = true
     const res = await POST(req('POST', VALID))
     expect(res.status).toBe(200)
+  })
+})
+
+describe('C44 — the error field is a machine code, in every language', () => {
+  /**
+   * Before this, `POST /api/price-watch {}` returned `{"error":"Thiếu thông tin bắt buộc"}` — a
+   * Vietnamese sentence in the field clients branch on, with no `message` at all. The B08 guard
+   * could not see it because it matched string LITERALS and this route computed the value.
+   */
+  it.each(['vi', 'en', null] as const)('profile language %s still yields a snake_case code', async (lang) => {
+    h.state.profileLanguage = lang
+    const res = await POST(req('POST', { ...VALID, target_price: undefined }))
+    const body = await res.json() as { error: string; message: string }
+    expect(body.error).toBe('missing_fields')
+    expect(body.error, 'a code, never a sentence').toMatch(/^[a-z][a-z0-9_]*$/)
+    expect(body.message, 'the human half must be present').toBeTruthy()
+  })
+
+  it('the code is identical across languages while the message differs', async () => {
+    h.state.profileLanguage = 'vi'
+    h.state.activeCount = 10
+    const vi = await (await POST(req('POST', VALID))).json() as { error: string; message: string }
+    h.state.profileLanguage = 'en'
+    h.state.activeCount = 10
+    const en = await (await POST(req('POST', VALID))).json() as { error: string; message: string }
+    expect(vi.error).toBe(en.error)
+    expect(vi.message).not.toBe(en.message)
   })
 })

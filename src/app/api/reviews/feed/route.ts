@@ -5,6 +5,8 @@ import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { authorModerationPayload } from '@/lib/safety/gate/authorNotice'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 export const runtime = 'edge'
 
 const EXPLORE_SELECT = `
@@ -170,7 +172,7 @@ export async function GET(req: NextRequest) {
 
   if (queryError) {
     console.error('[reviews/feed] query error:', queryError)
-    return NextResponse.json({ error: 'Loi tai feed' }, { status: 500 })
+    return NextResponse.json({ error: 'load_failed', message: serverMessage('feed.loadFailed', requestLocale(req)) }, { status: 500 })
   }
 
   // Fetch liked and saved IDs for current user

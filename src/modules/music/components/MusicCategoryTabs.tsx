@@ -9,7 +9,7 @@ interface MusicCategoryTabsProps {
 }
 
 export function MusicCategoryTabs({ categories, activeCategoryId, onSelect }: MusicCategoryTabsProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   if (categories.length === 0) return null
 
   return (
@@ -38,7 +38,7 @@ export function MusicCategoryTabs({ categories, activeCategoryId, onSelect }: Mu
               : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'
           }`}
         >
-          {getCategoryLabel(category)}
+          {getCategoryLabel(category, locale)}
         </button>
       ))}
     </div>

@@ -1,6 +1,8 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // Best-effort in-memory rate limit: 30 searches / 60s / IP — throttles enumeration
 // brute-force while leaving normal friend-search UX untouched. Same inline pattern
@@ -19,10 +21,10 @@ function checkSearchRL(ip: string): boolean {
 // Search users by name (partial), or by EXACT email / phone.
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
-  if (!checkSearchRL(ip)) return NextResponse.json({ error: 'Bạn tìm kiếm quá nhanh, thử lại sau chút nhé' }, { status: 429 })
+  if (!checkSearchRL(ip)) return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
 
   const q = searchParam(req, 'q')?.trim() ?? ''
   if (q.length < 2) return NextResponse.json({ users: [] })
@@ -36,20 +38,40 @@ export async function GET(req: NextRequest) {
     try {
       const { createAdminClient } = await import('@/lib/supabase/admin')
       const admin = createAdminClient()
-      const { data: authUsers } = await admin.auth.admin.listUsers({ perPage: 200 })
-      if (authUsers?.users) {
-        // EXACT match on email/phone (not substring) so a partial value like
-        // "gmail.com" can't enumerate users — you must know the full address/number.
-        const clean = q.replace(/\D/g, '')
-        matchedIds = authUsers.users
-          .filter(u => {
-            if (isEmail) return u.email?.toLowerCase() === q.toLowerCase()
-            return !!u.phone && u.phone.replace(/\D/g, '') === clean
-          })
-          .map(u => u.id)
-          .filter(id => id !== user.id)
-          .slice(0, 20)
+
+      /**
+       * 🚨 C03. This used to be a single `listUsers({ perPage: 200 })` — page ONE only. Searching
+       * the exact email of account #201 returned nothing, and the UI showed "no results", which
+       * is indistinguishable from "that person is not on TappyAI". Measured on production: page 1
+       * was already full at 200 users, of which 192 were anonymous — so the real accounts a person
+       * would actually search for were mostly beyond the cap.
+       *
+       * Paging is bounded rather than unbounded: this runs on a user-facing request, and an
+       * account base that grows past the ceiling should degrade into "slower to find" rather than
+       * "the search endpoint is now a full table scan". The ceiling is generous enough that the
+       * bug is gone and small enough that the request stays predictable.
+       */
+      const PER_PAGE = 200
+      const MAX_PAGES = 25 // 5 000 accounts
+      const clean = q.replace(/\D/g, '')
+      const matches: string[] = []
+
+      for (let page = 1; page <= MAX_PAGES && matches.length < 20; page++) {
+        const { data: authUsers } = await admin.auth.admin.listUsers({ page, perPage: PER_PAGE })
+        const users = authUsers?.users ?? []
+        if (users.length === 0) break
+
+        for (const u of users) {
+          // EXACT match on email/phone (not substring) so a partial value like
+          // "gmail.com" can't enumerate users — you must know the full address/number.
+          const hit = isEmail
+            ? u.email?.toLowerCase() === q.toLowerCase()
+            : !!u.phone && u.phone.replace(/\D/g, '') === clean
+          if (hit && u.id !== user.id) matches.push(u.id)
+        }
+        if (users.length < PER_PAGE) break // last page
       }
+      matchedIds = matches.slice(0, 20)
     } catch {
       // Admin unavailable — falls back to name-only search
     }

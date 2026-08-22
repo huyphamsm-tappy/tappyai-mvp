@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useEffect, useState } from 'react'
 import { Bell, BellOff, Trash2, RefreshCw, TrendingDown, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
@@ -15,18 +16,23 @@ type Watch = {
   created_at: string
 }
 
-function fmtVND(n: number) {
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + ' triệu'
+// C15 — the million suffix and the "not checked yet" text are words, so they come from the
+// dictionary; both helpers take them as parameters rather than owning a language.
+function fmtVND(n: number, million: string) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + million
   return (n / 1000).toFixed(0) + 'k'
 }
 
-function fmtDate(s: string | null) {
-  if (!s) return 'Chưa kiểm tra'
+function fmtDate(s: string | null, locale: string, neverChecked: string) {
+  if (!s) return neverChecked
   const d = new Date(s)
-  return d.toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'short' })
+  return d.toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-GB', { dateStyle: 'short', timeStyle: 'short' })
 }
 
 export default function PriceWatchesPage() {
+  const { t, locale } = useTranslation()
+  const fmtVNDLocalized = (n: number) => fmtVND(n, t('watch.million'))
+  const fmtDateLocalized = (s: string | null) => fmtDate(s, locale, t('watch.neverChecked'))
   const [watches, setWatches] = useState<Watch[]>([])
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState<string | null>(null)
@@ -72,14 +78,14 @@ export default function PriceWatchesPage() {
             ←
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">🎯 Theo dõi giá</h1>
-            <p className="text-sm text-content-secondary">Tappy báo bạn khi giá xuống mức mong muốn</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('watch.title')}</h1>
+            <p className="text-sm text-content-secondary">{t('watch.subtitle')}</p>
           </div>
           <button
             onClick={fetchWatches}
             disabled={loading}
             className="ml-auto p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-40"
-            aria-label="Refresh"
+            aria-label={t('watch.refreshAria')}
           >
             <RefreshCw size={16} className={`text-gray-400 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -87,16 +93,16 @@ export default function PriceWatchesPage() {
 
         {/* How to add */}
         <div className="card p-4 mb-5 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800">
-          <p className="text-sm font-semibold text-primary-700 dark:text-primary-300 mb-1">💬 Cách thêm sản phẩm</p>
+          <p className="text-sm font-semibold text-primary-700 dark:text-primary-300 mb-1">{t('watch.howHeading')}</p>
           <p className="text-xs text-primary-600 dark:text-primary-400 leading-relaxed">
-            Nhắn Tappy: <span className="font-mono bg-white/60 dark:bg-black/20 px-1.5 py-0.5 rounded">&ldquo;Tappy theo dõi AirPods Pro, báo mình khi dưới 2 triệu&rdquo;</span>
+            {t('watch.howBody')} <span className="font-mono bg-white/60 dark:bg-black/20 px-1.5 py-0.5 rounded">{t('watch.howExample')}</span>
           </p>
           <Link
             href="/"
             className="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline"
           >
             <ShoppingBag size={12} />
-            Nhắn Tappy ngay
+            {t('watch.chatCta')}
           </Link>
         </div>
 
@@ -107,8 +113,8 @@ export default function PriceWatchesPage() {
         ) : watches.length === 0 ? (
           <div className="text-center py-12 text-gray-400 dark:text-gray-600">
             <TrendingDown size={40} className="mx-auto mb-3 opacity-40" />
-            <p className="font-medium">Chưa theo dõi sản phẩm nào</p>
-            <p className="text-sm mt-1">Nhắn Tappy để thêm sản phẩm đầu tiên</p>
+            <p className="font-medium">{t('watch.empty')}</p>
+            <p className="text-sm mt-1">{t('watch.emptyHint')}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -116,7 +122,7 @@ export default function PriceWatchesPage() {
             {active.length > 0 && (
               <div>
                 <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                  <Bell size={11} /> Đang theo dõi ({active.length}/10)
+                  <Bell size={11} /> {t('watch.activeHeading', { n: String(active.length) })}
                 </p>
                 <div className="space-y-2">
                   {active.map(w => (
@@ -127,22 +133,22 @@ export default function PriceWatchesPage() {
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">{w.product_name}</p>
                         <p className="text-xs text-content-secondary mt-0.5">
-                          Mục tiêu: <span className="font-semibold text-primary-600 dark:text-primary-400">{fmtVND(w.target_price)}</span>
+                          {t('watch.target')} <span className="font-semibold text-primary-600 dark:text-primary-400">{fmtVNDLocalized(w.target_price)}</span>
                           {w.current_price && (
-                            <span className="ml-2 text-gray-400">· Hiện tại: {fmtVND(w.current_price)}</span>
+                            <span className="ml-2 text-gray-400">{t('watch.current', { price: fmtVNDLocalized(w.current_price) })}</span>
                           )}
                         </p>
                         <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                           {w.last_checked
-                            ? `Kiểm tra lần cuối: ${fmtDate(w.last_checked)}`
-                            : 'Tappy sẽ kiểm tra giá trong vài giờ tới ⏳'}
+                            ? t('watch.lastChecked', { date: fmtDateLocalized(w.last_checked) })
+                            : t('watch.pendingCheck')}
                         </p>
                       </div>
                       <button
                         onClick={() => handleDelete(w.id)}
                         disabled={deleting === w.id}
                         className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-400 hover:text-red-400 transition-colors disabled:opacity-40"
-                        aria-label="Hủy theo dõi"
+                        aria-label={t('watch.cancelAria')}
                       >
                         <Trash2 size={14} />
                       </button>
@@ -156,7 +162,7 @@ export default function PriceWatchesPage() {
             {triggered.length > 0 && (
               <div>
                 <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                  <BellOff size={11} /> Đã thông báo ({triggered.length})
+                  <BellOff size={11} /> {t('watch.notifiedHeading', { n: String(triggered.length) })}
                 </p>
                 <div className="space-y-2">
                   {triggered.map(w => (
@@ -167,11 +173,11 @@ export default function PriceWatchesPage() {
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">{w.product_name}</p>
                         <p className="text-xs text-content-secondary mt-0.5">
-                          Đã xuống mức <span className="font-semibold text-green-600">{w.current_price ? fmtVND(w.current_price) : fmtVND(w.target_price)}</span>
+                          {t('watch.droppedTo')} <span className="font-semibold text-green-600">{w.current_price ? fmtVNDLocalized(w.current_price) : fmtVNDLocalized(w.target_price)}</span>
                         </p>
                         {w.notified_at && (
                           <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
-                            Đã báo: {fmtDate(w.notified_at)}
+                            {t('watch.notifiedAt', { date: fmtDateLocalized(w.notified_at) })}
                           </p>
                         )}
                       </div>

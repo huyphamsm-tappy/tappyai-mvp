@@ -3,6 +3,8 @@ import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { authorModerationPayload } from '@/lib/safety/gate/authorNotice'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 const EXPLORE_SELECT = `
   id, user_id, place_id, place_name, place_address,
@@ -22,7 +24,7 @@ const EXPLORE_SELECT = `
 // query to "mine").
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   const { data: reviews, error } = await supabase
     .from('reviews')
@@ -33,7 +35,7 @@ export async function GET(req: NextRequest) {
 
   if (error) {
     console.error('[reviews/mine] query error:', error)
-    return NextResponse.json({ error: 'Lỗi tải review của bạn' }, { status: 500 })
+    return NextResponse.json({ error: 'load_failed', message: serverMessage('review.loadMineFailed', requestLocale(req)) }, { status: 500 })
   }
 
   let likedIds: string[] = []

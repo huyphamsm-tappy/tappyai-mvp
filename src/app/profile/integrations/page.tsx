@@ -7,6 +7,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { ArrowLeft, CheckCircle, AlertCircle, Loader2, Unlink, ExternalLink } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Suspense } from 'react'
 
 interface Integration {
@@ -22,28 +23,29 @@ interface Integration {
 
 const INTEGRATION_INFO: Record<string, {
   name: string
-  description: string
-  what_tappy_gets: string
+  descriptionKey: string
+  whatTappyGetsKey: string
   icon: string
   color: string
 }> = {
   google_calendar: {
     name: 'Google Calendar',
-    description: 'Kết nối lịch để Tappy gợi ý phù hợp với thời gian của bạn.',
-    what_tappy_gets: 'Tên sự kiện, thời gian, địa điểm trong 7 ngày tới (chỉ đọc)',
+    descriptionKey: 'integrations.calendar.description',
+    whatTappyGetsKey: 'integrations.calendar.gets',
     icon: '📅',
     color: 'bg-blue-50 dark:bg-blue-950/30',
   },
   zalo: {
     name: 'Zalo',
-    description: 'Kết nối tài khoản Zalo để Tappy biết tên và ảnh đại diện của bạn.',
-    what_tappy_gets: 'Tên hiển thị, ảnh đại diện Zalo (không đọc tin nhắn)',
+    descriptionKey: 'integrations.zalo.description',
+    whatTappyGetsKey: 'integrations.zalo.gets',
     icon: '💬',
     color: 'bg-blue-50 dark:bg-blue-950/30',
   },
 }
 
 function ToastMessage() {
+  const { t } = useTranslation()
   const searchParams = useSearchParams()
   const success = searchParams.get('success')
   const error = searchParams.get('error')
@@ -51,28 +53,28 @@ function ToastMessage() {
   if (!success && !error) return null
 
   const messages: Record<string, string> = {
-    google_calendar: 'Đã kết nối Google Calendar thành công!',
-    zalo: 'Đã kết nối Zalo thành công!',
+    google_calendar: t('integrations.connected.calendar'),
+    zalo: t('integrations.connected.zalo'),
   }
   const errorMessages: Record<string, string> = {
-    google_denied: 'Bạn đã huỷ kết nối Google.',
-    google_failed: 'Kết nối Google thất bại. Vui lòng thử lại.',
-    zalo_denied: 'Bạn đã huỷ kết nối Zalo.',
-    zalo_failed: 'Kết nối Zalo thất bại. Vui lòng thử lại.',
+    google_denied: t('integrations.denied.google'),
+    google_failed: t('integrations.failed.google'),
+    zalo_denied: t('integrations.denied.zalo'),
+    zalo_failed: t('integrations.failed.zalo'),
   }
 
   if (success) {
     return (
       <div className="flex items-center gap-2 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 px-4 py-3 rounded-xl text-sm">
         <CheckCircle size={16} />
-        {messages[success] || 'Kết nối thành công!'}
+        {messages[success] || t('integrations.connected.generic')}
       </div>
     )
   }
   return (
     <div className="flex items-center gap-2 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
       <AlertCircle size={16} />
-      {errorMessages[error!] || 'Có lỗi xảy ra. Vui lòng thử lại.'}
+      {errorMessages[error!] || t('integrations.failed.generic')}
     </div>
   )
 }
@@ -81,6 +83,7 @@ function IntegrationCard({ info, integration }: {
   info: typeof INTEGRATION_INFO[string]
   integration?: Integration
 }) {
+  const { t } = useTranslation()
   const connected = integration?.connected ?? false
   const meta = integration?.metadata
 
@@ -94,11 +97,11 @@ function IntegrationCard({ info, integration }: {
             {connected && (
               <span className="flex items-center gap-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
                 <CheckCircle size={10} />
-                Đã kết nối
+                {t('integrations.connectedBadge')}
               </span>
             )}
           </div>
-          <p className="text-xs text-content-secondary mt-0.5">{info.description}</p>
+          <p className="text-xs text-content-secondary mt-0.5">{t(info.descriptionKey)}</p>
 
           {connected && meta && (
             <div className="flex items-center gap-2 mt-2">
@@ -112,8 +115,8 @@ function IntegrationCard({ info, integration }: {
           )}
 
           <div className="mt-2 p-2 bg-white/50 dark:bg-gray-900/50 rounded-lg">
-            <p className="text-xs text-gray-400 uppercase font-semibold tracking-wide mb-0.5">Tappy chỉ đọc</p>
-            <p className="text-xs text-gray-600 dark:text-gray-400">{info.what_tappy_gets}</p>
+            <p className="text-xs text-gray-400 uppercase font-semibold tracking-wide mb-0.5">{t('integrations.onlyReads')}</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">{t(info.whatTappyGetsKey)}</p>
           </div>
         </div>
       </div>
@@ -126,7 +129,7 @@ function IntegrationCard({ info, integration }: {
               className="flex items-center gap-1.5 text-xs text-red-500 hover:text-red-600 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-xl transition-colors"
             >
               <Unlink size={12} />
-              Ngắt kết nối
+              {t('integrations.disconnect')}
             </a>
           </>
         ) : (
@@ -135,7 +138,7 @@ function IntegrationCard({ info, integration }: {
             className="flex items-center gap-1.5 text-xs bg-interactive hover:bg-interactive-hover text-white px-3 py-1.5 rounded-xl transition-colors font-medium"
           >
             <ExternalLink size={12} />
-            Kết nối
+            {t('integrations.connect')}
           </a>
         )}
       </div>
@@ -144,6 +147,7 @@ function IntegrationCard({ info, integration }: {
 }
 
 export default function IntegrationsPage() {
+  const { t } = useTranslation()
   const [integrations, setIntegrations] = useState<Integration[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -169,8 +173,8 @@ export default function IntegrationsPage() {
             <ArrowLeft size={22} />
           </Link>
           <div>
-            <h1 className="font-bold text-gray-900 dark:text-white">Kết nối ứng dụng</h1>
-            <p className="text-xs text-gray-500">Tappy học thêm về bạn qua các app bạn dùng</p>
+            <h1 className="font-bold text-gray-900 dark:text-white">{t('integrations.title')}</h1>
+            <p className="text-xs text-gray-500">{t('integrations.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -183,7 +187,7 @@ export default function IntegrationsPage() {
         {/* Privacy note */}
         <div className="flex gap-2 bg-indigo-50 dark:bg-indigo-950/30 p-3 rounded-xl text-xs text-indigo-700 dark:text-indigo-300">
           <span className="flex-shrink-0 mt-0.5">🔒</span>
-          <span>Tappy chỉ đọc dữ liệu bạn cho phép, không đọc tin nhắn cá nhân, không chia sẻ với bên thứ ba. Bạn có thể ngắt kết nối bất cứ lúc nào.</span>
+          <span>{t('integrations.privacy')}</span>
         </div>
 
         {loading ? (
@@ -204,11 +208,11 @@ export default function IntegrationsPage() {
 
         {/* What Tappy does with this data */}
         <div className="card p-4 space-y-2">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Tappy dùng dữ liệu này để làm gì?</h3>
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('integrations.usageHeading')}</h3>
           <ul className="space-y-1.5 text-xs text-gray-600 dark:text-gray-400">
-            <li className="flex gap-2"><span>📅</span>Google Calendar → Tappy gợi ý quán ăn gần lịch họp của bạn</li>
-            <li className="flex gap-2"><span>💬</span>Zalo → Hiển thị tên và ảnh thật của bạn trên review feed</li>
-            <li className="flex gap-2"><span>📊</span>Hành vi trong app → Tappy nhớ bạn thích gì, hay dùng lúc mấy giờ</li>
+            <li className="flex gap-2"><span>📅</span>{t('integrations.usage.calendar')}</li>
+            <li className="flex gap-2"><span>💬</span>{t('integrations.usage.zalo')}</li>
+            <li className="flex gap-2"><span>📊</span>{t('integrations.usage.behaviour')}</li>
           </ul>
         </div>
       </main>

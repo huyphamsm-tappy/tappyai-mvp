@@ -14,11 +14,13 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { isAppleIAPConfigured, isSubscriptionActive, getSubscriptionStatuses } from '@/lib/apple-iap/api'
 import { verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export async function POST(req: Request) {
   try {
     const { user } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const body = await req.json()
     const {
@@ -30,7 +32,7 @@ export async function POST(req: Request) {
     } = body
 
     if (!originalTransactionId || !productId) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+      return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
     }
 
     // ── Determine authoritative expiry ────────────────────────────────────
@@ -90,7 +92,7 @@ export async function POST(req: Request) {
     } else {
       // Production with no Apple credentials — cannot verify anything. Fail closed.
       console.error('[iap/apple/verify] APPLE_IAP_* not configured in production — cannot verify')
-      return NextResponse.json({ error: 'IAP verification unavailable' }, { status: 503 })
+      return NextResponse.json({ error: 'not_configured', message: serverMessage('subscription.verifyUnavailable', requestLocale(req)) }, { status: 503 })
     }
 
     // Cryptographically-verified client JWS is trustworthy in every environment.
@@ -105,7 +107,7 @@ export async function POST(req: Request) {
       } catch (err) {
         if (err instanceof JWSVerificationError) {
           console.error('[iap/apple/verify] Client-sent JWS invalid:', err.message)
-          return NextResponse.json({ error: 'Invalid transaction' }, { status: 400 })
+          return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
         }
       }
     }
@@ -113,7 +115,7 @@ export async function POST(req: Request) {
     // No trusted result (e.g. transient App Store API outage and no signed JWS):
     // return a retryable error without modifying the stored subscription.
     if (!authoritative) {
-      return NextResponse.json({ error: 'Verification unavailable, please retry' }, { status: 503 })
+      return NextResponse.json({ error: 'verify_unavailable', message: serverMessage('subscription.verifyUnavailable', requestLocale(req)) }, { status: 503 })
     }
 
     // ── Upsert subscriptions table ────────────────────────────────────────
@@ -138,7 +140,7 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('[iap/apple/verify] Upsert error:', error)
-      return NextResponse.json({ error: 'Failed to sync subscription' }, { status: 500 })
+      return NextResponse.json({ error: 'sync_failed', message: serverMessage('subscription.syncFailed', requestLocale(req)) }, { status: 500 })
     }
 
     return NextResponse.json({
@@ -147,6 +149,6 @@ export async function POST(req: Request) {
     })
   } catch (e) {
     console.error('[iap/apple/verify] Unexpected error:', e)
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }

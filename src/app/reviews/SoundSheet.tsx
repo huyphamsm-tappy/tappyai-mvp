@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -17,12 +18,15 @@ interface SoundData {
   savedByMe: boolean; videos: SoundVideo[]
 }
 
-const TYPE_LABEL: Record<string, string> = {
-  royalty_free: 'Miễn phí bản quyền', licensed: 'Có bản quyền',
-  original_sound: 'Âm thanh gốc', ai_generated: 'AI tạo nhạc', external: 'Liên kết ngoài',
+// C43 — keys, not sentences: the label is looked up through the dictionary at render time so it
+// follows the language the user chose rather than the one this file was written in.
+const TYPE_LABEL_KEY: Record<string, string> = {
+  royalty_free: 'music.royaltyFree', licensed: 'music.licensed',
+  original_sound: 'music.originalSound', ai_generated: 'music.aiGenerated', external: 'music.externalLink',
 }
 
 export default function SoundSheet({ trackId, onClose }: { trackId: string; onClose: () => void }) {
+  const { t } = useTranslation()
   const router = useRouter()
   const [data, setData] = useState<SoundData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -144,7 +148,7 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
                   <p className="text-sm text-content-secondary truncate">{data.track.artist ?? 'Không rõ nghệ sĩ'}</p>
                   <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
                     <MusicDuration seconds={data.track.durationSec} />
-                    <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5">{TYPE_LABEL[data.track.musicType] ?? data.track.musicType}</span>
+                    <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5">{TYPE_LABEL_KEY[data.track.musicType] ? t(TYPE_LABEL_KEY[data.track.musicType]) : data.track.musicType}</span>
                   </div>
                 </div>
               </div>

@@ -10,6 +10,8 @@ import { getMediaProvider } from '@/lib/media'
 import type { MediaUploadKind } from '@/lib/media/uploadPolicy'
 
 import { MAX_VIDEO_SIZE_MB } from '@/lib/config/product'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
@@ -32,18 +34,18 @@ const ALLOWED_KINDS: readonly MediaUploadKind[] = ['video', 'videoThumbnail']
 // cost problem, answered with Cloud Storage instead.)
 export async function POST(req: NextRequest) {
   const { user } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Can dang nhap' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   // Cap upload authorization per user (each response authorizes one direct PUT).
   if (!rateLimit(`upload-video:${user.id}`, 30, 60_000).ok) {
-    return NextResponse.json({ error: 'Ban tai len qua nhanh, thu lai sau giay lat.' }, { status: 429 })
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
   }
 
   let body: unknown
   try {
     body = await req.json()
   } catch {
-    return NextResponse.json({ error: 'Du lieu khong hop le' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
 
   // The browser cannot read its own PUT response to Cloud Storage, so it asks
@@ -70,5 +72,5 @@ export async function POST(req: NextRequest) {
   // Anything else is the retired Vercel Blob client-token handshake. It handed
   // out a token for a CLIENT-CHOSEN object name, bypassing the server-owned key
   // policy, so it is refused outright rather than gated behind a flag.
-  return NextResponse.json({ error: 'Giao thuc tai len khong con duoc ho tro' }, { status: 409 })
+  return NextResponse.json({ error: 'unsupported_protocol', message: serverMessage('media.uploadProtocol', requestLocale(req)) }, { status: 409 })
 }

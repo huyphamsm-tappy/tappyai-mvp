@@ -157,9 +157,7 @@ struct ProfileMainView: View {
                 Divider().padding(.leading, 52)
                 menuRow(icon: "magnifyingglass", label: "profile.row.userSearch", desc: "profile.row.userSearch.desc", dest: .userSearch)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "person.3", label: "profile.row.groupDining", desc: "profile.row.groupDining.desc", dest: nil, action: {
-                    openGroupDining()
-                })
+                menuRow(icon: "person.3", label: "profile.row.groupDining", desc: "profile.row.groupDining.desc", dest: .groupDining)
             }
             .background(TappyColor.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
@@ -261,11 +259,6 @@ struct ProfileMainView: View {
 
     private func firstName(_ p: UserProfile) -> String {
         p.fullName.components(separatedBy: " ").last ?? p.email.components(separatedBy: "@").first ?? NSLocalizedString("profile.fallbackName", comment: "")
-    }
-
-    private func openGroupDining() {
-        guard let url = URL(string: "https://tappyai.vn/group/new") else { return }
-        UIApplication.shared.open(url)
     }
 
     private func loadProfile() async {

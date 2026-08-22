@@ -52,7 +52,7 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
         const res = await fetch('/api/reviews/upload', { method: 'POST', body: fd })
         const data = await res.json()
         if (res.ok && data.url) uploadedUrls.push(data.url)
-        else { setError(data.error || 'Không thể tải ảnh lên.'); setLoading(false); return }
+        else { setError(data.message || data.error || 'Không thể tải ảnh lên.'); setLoading(false); return }
       }
 
       // `?lang=` for the same reason the main composer sends it: the response carries the
@@ -68,7 +68,7 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
         setDone(true)
         photos.forEach(p => URL.revokeObjectURL(p.preview))
       } else {
-        setError(data.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
+        setError(data.message || data.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
       }
     } catch {
       setError('Không thể kết nối. Vui lòng thử lại.')

@@ -1972,6 +1972,261 @@
         }
       }
     },
+    "copyright.heading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Music copyright policy (Original Sound)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chính sách bản quyền âm nhạc (Original Sound)"
+          }
+        }
+      }
+    },
+    "copyright.s1.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When you upload a track (an “Original Sound”), you confirm that you own it or hold every legal right to it, and you grant TappyAI and other users the right to use it on the platform (adding it to videos, playing it back). You may not upload music owned by someone else without permission."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi đăng một bản nhạc (“Original Sound”), bạn cam kết rằng bạn sở hữu hoặc có đầy đủ quyền hợp pháp đối với bản nhạc đó, và cấp cho TappyAI cùng người dùng khác quyền sử dụng nó (chèn vào video, phát lại) trên nền tảng. Bạn không được đăng nhạc có bản quyền của người khác khi chưa được phép."
+          }
+        }
+      }
+    },
+    "copyright.s1.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. Conditions for uploading music"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. Điều kiện khi đăng nhạc"
+          }
+        }
+      }
+    },
+    "copyright.s2.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whoever uploads a track is legally responsible for it. TappyAI acts as an intermediary platform and will remove infringing content on receiving a valid notice."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người đăng chịu trách nhiệm pháp lý về nội dung mình tải lên. TappyAI hoạt động như một nền tảng trung gian và sẽ gỡ bỏ nội dung vi phạm khi nhận được thông báo hợp lệ."
+          }
+        }
+      }
+    },
+    "copyright.s2.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2. Responsibility"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2. Trách nhiệm"
+          }
+        }
+      }
+    },
+    "copyright.s3.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If you hold the rights to a work and believe a track on TappyAI infringes them, send a notice to the copyright agent below, or use the “Report” button on the track’s page. Your notice needs: (a) the track or link that infringes, (b) evidence that you are the rights holder, (c) your contact details."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nếu bạn là chủ sở hữu quyền và cho rằng một bản nhạc trên TappyAI vi phạm bản quyền của bạn, hãy gửi thông báo tới đại diện bản quyền bên dưới, hoặc dùng nút “Báo cáo” trên trang bài nhạc. Thông báo cần gồm: (a) bản nhạc/đường dẫn bị vi phạm, (b) bằng chứng bạn là chủ sở hữu, (c) thông tin liên hệ."
+          }
+        }
+      }
+    },
+    "copyright.s3.sla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We review valid notices and remove infringing content within 24–48 hours of receiving them."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chúng tôi sẽ xem xét và gỡ bỏ nội dung vi phạm trong vòng 24–48 giờ kể từ khi nhận được thông báo hợp lệ."
+          }
+        }
+      }
+    },
+    "copyright.s3.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3. Reporting infringement (notice and takedown)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3. Báo cáo vi phạm (Notice-and-Takedown)"
+          }
+        }
+      }
+    },
+    "copyright.s4.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We receive and handle every copyright complaint at this address:"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chúng tôi tiếp nhận và xử lý mọi khiếu nại bản quyền qua địa chỉ này:"
+          }
+        }
+      }
+    },
+    "copyright.s4.emailAccessibility": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email the copyright agent"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi email cho đại diện bản quyền"
+          }
+        }
+      }
+    },
+    "copyright.s4.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4. Copyright agent"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4. Đại diện bản quyền"
+          }
+        }
+      }
+    },
+    "copyright.s5.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An account that repeatedly uploads infringing content may lose the ability to upload music, or be suspended."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tài khoản nhiều lần đăng nội dung vi phạm bản quyền có thể bị hạn chế đăng nhạc hoặc khóa."
+          }
+        }
+      }
+    },
+    "copyright.s5.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5. Repeat infringement"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5. Xử lý vi phạm lặp lại"
+          }
+        }
+      }
+    },
+    "copyright.scope": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applies to music uploaded to TappyAI by its users."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Áp dụng cho nhạc do người dùng đăng tải lên TappyAI."
+          }
+        }
+      }
+    },
+    "copyright.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright policy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chính sách bản quyền"
+          }
+        }
+      }
+    },
     "cuisine.bbq": {
       "extractionState": "manual",
       "localizations": {
@@ -3646,6 +3901,737 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nền tảng sẵn sàng"
+          }
+        }
+      }
+    },
+    "group.create.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create group"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tạo nhóm"
+          }
+        }
+      }
+    },
+    "group.create.heading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where should the team eat?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đi đâu ăn gì cả team?"
+          }
+        }
+      }
+    },
+    "group.create.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create a group, share the link, let Tappy suggest"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tạo nhóm, chia sẻ link, để Tappy gợi ý"
+          }
+        }
+      }
+    },
+    "group.error.creatorOnly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only the group creator can do that."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ trưởng nhóm mới có thể thực hiện thao tác này."
+          }
+        }
+      }
+    },
+    "group.error.generic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something went wrong. Please try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã có lỗi xảy ra. Vui lòng thử lại."
+          }
+        }
+      }
+    },
+    "group.error.joinRejected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't join — the group may be full (max 10) or your details are incomplete."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể tham gia — nhóm có thể đã đầy (tối đa 10 người) hoặc thông tin của bạn chưa đầy đủ."
+          }
+        }
+      }
+    },
+    "group.error.nameRequired": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please enter a group name."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vui lòng nhập tên nhóm."
+          }
+        }
+      }
+    },
+    "group.error.offline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No internet connection. Please check and try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có kết nối mạng. Vui lòng kiểm tra và thử lại."
+          }
+        }
+      }
+    },
+    "group.error.rateLimited": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're going a bit fast. Please try again in a moment."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đang thao tác hơi nhanh. Vui lòng thử lại sau một chút."
+          }
+        }
+      }
+    },
+    "group.error.server": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The server is having issues. Please try again later."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Máy chủ đang gặp sự cố. Vui lòng thử lại sau."
+          }
+        }
+      }
+    },
+    "group.error.signIn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please sign in to continue."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vui lòng đăng nhập để tiếp tục."
+          }
+        }
+      }
+    },
+    "group.full": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This group is full (max 10 people)."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhóm đã đầy (tối đa 10 người)."
+          }
+        }
+      }
+    },
+    "group.join.area": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convenient area *"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khu vực thuận tiện *"
+          }
+        }
+      }
+    },
+    "group.join.area.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. District 1, Binh Thanh, Thu Duc..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VD: Quận 1, Bình Thạnh, Thủ Đức..."
+          }
+        }
+      }
+    },
+    "group.join.budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget *"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngân sách *"
+          }
+        }
+      }
+    },
+    "group.join.budget.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. 200k a head"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VD: 200k một người"
+          }
+        }
+      }
+    },
+    "group.join.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join group"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tham gia nhóm"
+          }
+        }
+      }
+    },
+    "group.join.dietary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anything you avoid?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiêng gì không?"
+          }
+        }
+      }
+    },
+    "group.join.dietary.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. no pork, seafood allergy, vegetarian..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VD: không ăn thịt heo, dị ứng hải sản, ăn chay..."
+          }
+        }
+      }
+    },
+    "group.join.food": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What do you like to eat?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thích ăn gì?"
+          }
+        }
+      }
+    },
+    "group.join.food.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. pho, pizza, com tam, hotpot..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VD: bún bò, pizza, cơm tấm, lẩu..."
+          }
+        }
+      }
+    },
+    "group.join.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your name *"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tên bạn *"
+          }
+        }
+      }
+    },
+    "group.join.name.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. Minh, Lan, Tu..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VD: Minh, Lan, Tú..."
+          }
+        }
+      }
+    },
+    "group.join.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fill in your details"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điền thông tin của bạn"
+          }
+        }
+      }
+    },
+    "group.joined.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're in!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã tham gia!"
+          }
+        }
+      }
+    },
+    "group.joined.waiting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for the group leader to get a suggestion"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chờ trưởng nhóm gợi ý nhé"
+          }
+        }
+      }
+    },
+    "group.members.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No one has joined yet. Share the link above!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa có ai tham gia. Chia sẻ link ở trên nhé!"
+          }
+        }
+      }
+    },
+    "group.members.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Members"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thành viên"
+          }
+        }
+      }
+    },
+    "group.members.one": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d member joined"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d thành viên đã tham gia"
+          }
+        }
+      }
+    },
+    "group.members.other": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d members joined"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d thành viên đã tham gia"
+          }
+        }
+      }
+    },
+    "group.name.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group name"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tên nhóm của bạn"
+          }
+        }
+      }
+    },
+    "group.name.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. Team Marketing, Close friends, Family..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VD: Team Marketing, Hội bạn thân, Cả nhà..."
+          }
+        }
+      }
+    },
+    "group.notFound.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This group no longer exists."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhóm này không còn tồn tại."
+          }
+        }
+      }
+    },
+    "group.notFound.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group not found"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tìm thấy nhóm"
+          }
+        }
+      }
+    },
+    "group.share.copied": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã sao chép"
+          }
+        }
+      }
+    },
+    "group.share.copy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sao chép link"
+          }
+        }
+      }
+    },
+    "group.share.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share with your group"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ link với nhóm"
+          }
+        }
+      }
+    },
+    "group.share.share": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ link"
+          }
+        }
+      }
+    },
+    "group.signInRequired": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in to continue."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vui lòng đăng nhập để tiếp tục."
+          }
+        }
+      }
+    },
+    "group.suggest.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask Tappy to suggest"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy gợi ý ngay"
+          }
+        }
+      }
+    },
+    "group.suggest.working": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy is thinking..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy đang nghĩ..."
+          }
+        }
+      }
+    },
+    "group.suggestion.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy's suggestion"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gợi ý của Tappy"
+          }
+        }
+      }
+    },
+    "group.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group dining"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ăn nhóm"
           }
         }
       }
@@ -7570,6 +8556,23 @@
         }
       }
     },
+    "placeholder.comingSoon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coming soon"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sắp ra mắt"
+          }
+        }
+      }
+    },
     "pref.addPlaceholder": {
       "extractionState": "manual",
       "localizations": {
@@ -9049,6 +10052,23 @@
         }
       }
     },
+    "review.action.comment": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bình luận"
+          }
+        }
+      }
+    },
     "review.action.delete": {
       "extractionState": "manual",
       "localizations": {
@@ -9079,6 +10099,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ẩn bài viết"
+          }
+        }
+      }
+    },
+    "review.action.like": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thích"
+          }
+        }
+      }
+    },
+    "review.action.save": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lưu"
+          }
+        }
+      }
+    },
+    "review.action.share": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ"
           }
         }
       }
@@ -9193,6 +10264,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Chưa có bình luận"
+          }
+        }
+      }
+    },
+    "review.comments.error.delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't delete the comment."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không xoá được bình luận."
           }
         }
       }
@@ -9697,6 +10785,23 @@
         }
       }
     },
+    "review.watchOn.generic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Watch video"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem video"
+          }
+        }
+      }
+    },
     "review.watchOn.tiktok": {
       "extractionState": "manual",
       "localizations": {
@@ -9727,6 +10832,91 @@
           "stringUnit": {
             "state": "translated",
             "value": "Xem trên YouTube"
+          }
+        }
+      }
+    },
+    "reviewDetail.noBody": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No description"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có mô tả"
+          }
+        }
+      }
+    },
+    "reviewDetail.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bài review"
+          }
+        }
+      }
+    },
+    "reviewDetail.unavailable.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It may have been deleted, hidden by its author, or is not public."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bài này có thể đã bị xoá, được tác giả ẩn, hoặc chưa công khai."
+          }
+        }
+      }
+    },
+    "reviewDetail.unavailable.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This review is not available"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bài review không khả dụng"
+          }
+        }
+      }
+    },
+    "reviewDetail.viewAuthor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View profile"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem trang cá nhân"
           }
         }
       }
@@ -9871,6 +11061,380 @@
           "stringUnit": {
             "state": "translated",
             "value": "Đã lưu"
+          }
+        }
+      }
+    },
+    "scamShield.check": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check this link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiểm tra link này"
+          }
+        }
+      }
+    },
+    "scamShield.checking": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang kiểm tra…"
+          }
+        }
+      }
+    },
+    "scamShield.disclaimer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scam Shield helps you spot risky links, but it can't catch everything. Never send money or share codes based on a link alone."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lá chắn lừa đảo giúp bạn nhận ra link nguy hiểm, nhưng không thể phát hiện mọi trường hợp. Đừng bao giờ chuyển tiền hay đọc mã OTP chỉ vì một đường link."
+          }
+        }
+      }
+    },
+    "scamShield.error.dailyLimit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've used all your checks for today."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã dùng hết lượt kiểm tra hôm nay."
+          }
+        }
+      }
+    },
+    "scamShield.error.generic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something went wrong. This link has not been checked."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Có lỗi xảy ra. Link này CHƯA được kiểm tra."
+          }
+        }
+      }
+    },
+    "scamShield.error.invalidUrl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That doesn't look like a link. Check it and try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đây không giống một đường dẫn. Kiểm tra lại giúp Tappy nhé."
+          }
+        }
+      }
+    },
+    "scamShield.error.offline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No connection. This link has not been checked."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có kết nối. Link này CHƯA được kiểm tra."
+          }
+        }
+      }
+    },
+    "scamShield.error.privateUrl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That address is on a private network and can't be checked."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Địa chỉ này nằm trong mạng nội bộ nên không kiểm tra được."
+          }
+        }
+      }
+    },
+    "scamShield.error.rateLimit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many checks just now. Wait a moment and try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn kiểm tra hơi nhanh. Chờ một chút rồi thử lại nhé."
+          }
+        }
+      }
+    },
+    "scamShield.evidence": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What we found"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Những gì Tappy tìm được"
+          }
+        }
+      }
+    },
+    "scamShield.level.critical": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not open this"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đừng mở link này"
+          }
+        }
+      }
+    },
+    "scamShield.level.high": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High risk"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rủi ro cao"
+          }
+        }
+      }
+    },
+    "scamShield.level.inconclusive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough evidence"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa đủ căn cứ"
+          }
+        }
+      }
+    },
+    "scamShield.level.low": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low risk"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rủi ro thấp"
+          }
+        }
+      }
+    },
+    "scamShield.level.medium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Be careful"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy cẩn thận"
+          }
+        }
+      }
+    },
+    "scamShield.level.safe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Looks safe"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Có vẻ an toàn"
+          }
+        }
+      }
+    },
+    "scamShield.officialMatch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Official site of %1$@ (%2$@)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trang chính thức của %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "scamShield.score": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Risk score %1$d · confidence %2$d%%"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điểm rủi ro %1$d · độ tin cậy %2$d%%"
+          }
+        }
+      }
+    },
+    "scamShield.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste a link and Tappy will check it against known scam sources before you open it."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dán link vào đây, Tappy sẽ đối chiếu với các nguồn cảnh báo lừa đảo trước khi bạn mở."
+          }
+        }
+      }
+    },
+    "scamShield.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🛡️ Scam Shield"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🛡️ Lá chắn lừa đảo"
+          }
+        }
+      }
+    },
+    "scamShield.unresolvedTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't check this link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa kiểm tra được link này"
+          }
+        }
+      }
+    },
+    "scamShield.urlPlaceholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "example.com or https://…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vidu.com hoặc https://…"
           }
         }
       }
@@ -10301,6 +11865,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lịch đặt của bạn"
+          }
+        }
+      }
+    },
+    "settings.copyright": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Music copyright policy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chính sách bản quyền âm nhạc"
           }
         }
       }
@@ -11856,6 +13437,40 @@
         }
       }
     },
+    "tool.scamShield": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safety check"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiểm tra an toàn"
+          }
+        }
+      }
+    },
+    "tool.scan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quét tài liệu"
+          }
+        }
+      }
+    },
     "tool.splitBill": {
       "extractionState": "manual",
       "localizations": {
@@ -12090,6 +13705,193 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tải lên chưa khả dụng. Vui lòng thử lại sau."
+          }
+        }
+      }
+    },
+    "userProfile.empty.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This person hasn't posted anything public."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người này chưa đăng bài công khai nào."
+          }
+        }
+      }
+    },
+    "userProfile.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No posts yet"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa có bài viết"
+          }
+        }
+      }
+    },
+    "userProfile.follow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Follow"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theo dõi"
+          }
+        }
+      }
+    },
+    "userProfile.following": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Following"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang theo dõi"
+          }
+        }
+      }
+    },
+    "userProfile.notFound.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This account no longer exists."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tài khoản này không còn tồn tại."
+          }
+        }
+      }
+    },
+    "userProfile.notFound.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profile not found"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tìm thấy trang cá nhân"
+          }
+        }
+      }
+    },
+    "userProfile.openPost": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open post"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở bài viết"
+          }
+        }
+      }
+    },
+    "userProfile.stat.followers": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Followers"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người theo dõi"
+          }
+        }
+      }
+    },
+    "userProfile.stat.following": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Following"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang theo dõi"
+          }
+        }
+      }
+    },
+    "userProfile.stat.posts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posts"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bài viết"
+          }
+        }
+      }
+    },
+    "userProfile.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profile"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trang cá nhân"
           }
         }
       }

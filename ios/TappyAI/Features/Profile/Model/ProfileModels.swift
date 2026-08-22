@@ -213,4 +213,11 @@ enum ProfileDestination: Hashable {
     case notificationsInbox
     /// People search — the counterpart of Android's ReviewSearchSection and the web user search.
     case userSearch
+    /// Group dining — the counterpart of Android's GroupDiningScreen and the web's `/group/new`.
+    ///
+    /// 🚨 Was NOT a destination at all: the row called `UIApplication.shared.open` on a hardcoded
+    /// `https://tappyai.vn/group/new`. That left the app, landed on a domain that is not the
+    /// canonical origin, and arrived signed-out — where `/group/new` redirects to `/login`. The
+    /// feature existed as a row and nowhere else.
+    case groupDining
 }

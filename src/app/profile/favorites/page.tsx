@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight, Heart, Bookmark } from 'lucide-react'
@@ -46,6 +47,7 @@ function buildServiceUrl(f: Favorite) {
 }
 
 export default function FavoritesPage() {
+  const { t } = useTranslation()
   const [favorites, setFavorites] = useState<Favorite[]>([])
   const [saved, setSaved] = useState<SavedReview[]>([])
   const [loading, setLoading] = useState(true)
@@ -77,9 +79,9 @@ export default function FavoritesPage() {
         </Link>
         <h1 className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
           <Heart size={16} className="text-red-400" />
-          Đã lưu
+          {t('favorites.title')}
         </h1>
-        <span className="ml-auto text-xs text-gray-400 dark:text-gray-500">{total} mục</span>
+        <span className="ml-auto text-xs text-gray-400 dark:text-gray-500">{t('favorites.count', { n: String(total) })}</span>
       </div>
 
       <main className="max-w-lg mx-auto px-4 py-5 space-y-3">
@@ -93,23 +95,23 @@ export default function FavoritesPage() {
 
         {!loading && error && (
           <div className="text-center py-20">
-            <p className="font-semibold text-gray-700 dark:text-gray-200">Không tải được mục đã lưu</p>
-            <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Vui lòng thử lại sau nhé.</p>
+            <p className="font-semibold text-gray-700 dark:text-gray-200">{t('favorites.loadError')}</p>
+            <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">{t('favorites.loadErrorHint')}</p>
           </div>
         )}
 
         {!loading && !error && total === 0 && (
           <div className="text-center py-20">
             <span className="text-5xl">♡</span>
-            <p className="mt-4 font-semibold text-gray-700 dark:text-gray-200">Chưa lưu gì cả</p>
+            <p className="mt-4 font-semibold text-gray-700 dark:text-gray-200">{t('favorites.empty')}</p>
             <p className="text-gray-400 dark:text-gray-500 text-sm mt-1 px-6">
-              Bấm ♡ để lưu địa điểm yêu thích, hoặc 🔖 để lưu bài viết muốn xem lại — tất cả sẽ nằm ở đây.
+              {t('favorites.emptyHint')}
             </p>
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 mt-5 px-5 py-2.5 rounded-2xl bg-interactive text-white text-sm font-semibold hover:bg-interactive-hover transition-colors"
             >
-              Khám phá ngay
+              {t('favorites.exploreCta')}
               <ChevronRight size={16} />
             </Link>
           </div>
@@ -119,7 +121,7 @@ export default function FavoritesPage() {
         {!loading && !error && favorites.length > 0 && (
           <section className="space-y-3">
             <h2 className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide px-1">
-              <Heart size={12} className="text-red-400" /> Địa điểm yêu thích
+              <Heart size={12} className="text-red-400" /> {t('favorites.placesHeading')}
             </h2>
             {favorites.map(f => (
               <div key={f.id} className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-3 pr-2">
@@ -130,7 +132,7 @@ export default function FavoritesPage() {
                     {f.place_address && (
                       <p className="text-xs text-gray-400 dark:text-gray-500 truncate mt-0.5">{f.place_address}</p>
                     )}
-                    <p className="text-xs text-gray-300 dark:text-gray-600 mt-1">Đã lưu {formatDate(f.created_at)}</p>
+                    <p className="text-xs text-gray-300 dark:text-gray-600 mt-1">{t('favorites.savedAt', { date: formatDate(f.created_at) })}</p>
                   </div>
                 </Link>
                 <FavoriteDeleteButton placeId={f.place_id} onDeleted={() => handleDeleted(f.place_id)} />
@@ -143,7 +145,7 @@ export default function FavoritesPage() {
         {!loading && !error && saved.length > 0 && (
           <section className="space-y-3 pt-2">
             <h2 className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide px-1">
-              <Bookmark size={12} className="text-link" /> Bài viết đã lưu
+              <Bookmark size={12} className="text-link" /> {t('favorites.savedPostsHeading')}
             </h2>
             {saved.map(s => (
               <Link
@@ -158,9 +160,9 @@ export default function FavoritesPage() {
                   <span className="w-12 h-12 rounded-xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center text-xl shrink-0">📝</span>
                 )}
                 <div className="min-w-0">
-                  <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">{s.place_name || 'Bài viết'}</p>
+                  <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">{s.place_name || t('favorites.postFallback')}</p>
                   {s.body && <p className="text-xs text-gray-400 dark:text-gray-500 line-clamp-2 mt-0.5">{s.body}</p>}
-                  <p className="text-xs text-gray-300 dark:text-gray-600 mt-1">Đã lưu {formatDate(s.saved_at)}</p>
+                  <p className="text-xs text-gray-300 dark:text-gray-600 mt-1">{t('favorites.savedAt', { date: formatDate(s.saved_at) })}</p>
                 </div>
               </Link>
             ))}

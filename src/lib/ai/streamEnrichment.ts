@@ -649,6 +649,36 @@ export function applyPlaceEnrichmentStreamFilter(
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
   let bufferMode = false
+  /**
+   * A tool step has completed and the model has not spoken since — B12.
+   *
+   * A tool turn is two model steps: the model says what it is about to do ("I'll find some great
+   * coffee shops in District 1 for you!"), the tool runs, then the model answers ("Here are my
+   * top picks…"). Both steps emit ordinary `0:` text frames, and the frames were appended with
+   * nothing between them, so the reply read:
+   *
+   *     …in District 1 for you!Here are my top picks for you:
+   *
+   * Observed identically on Web and Android because both consume this same stream — which is why
+   * the separator belongs here, once, and not as a space bolted on in each client.
+   *
+   * Set when a tool call or result goes by; consumed by the next text frame, which is what makes
+   * it a BOUNDARY marker rather than a "did a tool ever run" flag.
+   */
+  let awaitingPostToolText = false
+  /**
+   * Everything the assistant has said this turn, across BOTH paths.
+   *
+   * 🚨 Needed because the two halves of a place turn live in different variables. The preamble
+   * arrives BEFORE the `9:` frame, so `bufferMode` is still false and it streams live into
+   * `liveText`; the answer arrives after and accumulates in `mainText`. A first attempt at this
+   * fix tested `mainText` alone, found it empty at the boundary, and inserted nothing — the
+   * concatenation survived on exactly the turn it was written for.
+   *
+   * Only the tail is ever read, but keeping the whole string costs nothing and keeps the meaning
+   * obvious.
+   */
+  let assistantSoFar = ''
   /** Candidate names this reply actually named — see TurnEvidence.presentedNames. */
   let presentedNames: string[] = []
   /** Canonical ids of HELD candidates this reply named — see TurnEvidence.presentedIds. */
@@ -821,8 +851,20 @@ export function applyPlaceEnrichmentStreamFilter(
 
       for (const line of lines) {
         if (line.startsWith('0:')) {
+          // B12 — the step boundary. Only ever inserted BETWEEN two pieces of model speech:
+          // nothing is added before the first word, after a tool that the model does not follow
+          // up on, or when the model already ended its preamble with a newline of its own.
+          const needsBreak = (): boolean =>
+            awaitingPostToolText && assistantSoFar.length > 0 && !/\s$/.test(assistantSoFar)
+
           if (bufferMode) {
-            try { mainText += JSON.parse(line.slice(2)) as string } catch { /* skip malformed */ }
+            if (needsBreak()) { mainText += '\n\n'; assistantSoFar += '\n\n' }
+            awaitingPostToolText = false
+            try {
+              const delta = JSON.parse(line.slice(2)) as string
+              mainText += delta
+              assistantSoFar += delta
+            } catch { /* skip malformed */ }
             // buffered — re-emitted (repositioned) at 'd:'; not streamed live
           } else {
             // Live path (intro / chitchat — no place tool ran, so nothing is
@@ -832,6 +874,17 @@ export function applyPlaceEnrichmentStreamFilter(
             // StreamingNotBufferedByLoggingTest exists to prevent. The buffered
             // path below — which covers every tool turn, and every leak actually
             // observed — sanitises the complete text instead.
+            // Same boundary on the live path. A non-place tool (weather, gold price, news) leaves
+            // bufferMode false, so its turn streams straight through and would run the two steps
+            // together exactly the same way. The break is emitted as its own frame so the live
+            // stream keeps its timing — nothing is held back.
+            if (needsBreak()) {
+              controller.enqueue(encoder.encode('0:' + JSON.stringify('\n\n') + '\n'))
+              liveText += '\n\n'
+              assistantSoFar += '\n\n'
+            }
+            awaitingPostToolText = false
+
             let out = line
             if (line.indexOf('<') !== -1) {
               try {
@@ -843,7 +896,11 @@ export function applyPlaceEnrichmentStreamFilter(
             // turns where no tool ran. This is a RECORD, not a buffer: the
             // chunk is enqueued on the next line either way, so nothing is held
             // back and the live stream keeps its timing.
-            try { liveText += JSON.parse(out.slice(2)) as string } catch { /* skip malformed */ }
+            try {
+              const delta = JSON.parse(out.slice(2)) as string
+              liveText += delta
+              assistantSoFar += delta
+            } catch { /* skip malformed */ }
             controller.enqueue(encoder.encode(out + '\n'))
           }
         } else if (line.startsWith('9:')) {
@@ -914,6 +971,9 @@ export function applyPlaceEnrichmentStreamFilter(
             // uses, so seeded + live evidence for one place merges instead of duplicating.
             mergePlaces(newPlaces)
           } catch { /* ignore */ }
+          // B12 — a tool result closes the step. Whatever the model says next is a new paragraph,
+          // not a continuation of the sentence it left off on.
+          awaitingPostToolText = true
           controller.enqueue(encoder.encode(line + '\n'))
         } else if (line.startsWith('d:')) {
           await emitReconstructed(controller)

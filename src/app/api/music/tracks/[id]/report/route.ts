@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { emitNotification } from '@/lib/notifications/emit'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 const REASONS = ['copyright', 'inappropriate', 'spam', 'other']
 
@@ -9,13 +12,16 @@ const REASONS = ['copyright', 'inappropriate', 'spam', 'other']
 // Stored for the copyright agent, who removes infringing tracks within 24–48h.
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập để báo cáo' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('music.signInToReport', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   let body: { reason?: string; details?: string }
-  try { body = await req.json() } catch { return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 }) }
+  try { body = await req.json() } catch { return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 }) }
 
   const reason = body.reason
-  if (!reason || !REASONS.includes(reason)) return NextResponse.json({ error: 'Lý do không hợp lệ' }, { status: 400 })
+  if (!reason || !REASONS.includes(reason)) return NextResponse.json({ error: 'invalid_reason', message: serverMessage('validation.invalidReason', requestLocale(req)) }, { status: 400 })
 
   const { error } = await supabase.from('music_track_reports').insert({
     track_id: params.id,
@@ -25,7 +31,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   })
   if (error) {
     console.error('[music report]', error)
-    return NextResponse.json({ error: 'Không thể gửi báo cáo' }, { status: 500 })
+    return NextResponse.json({ error: 'report_failed', message: serverMessage('music.reportFailed', requestLocale(req)) }, { status: 500 })
   }
 
   // Alert the copyright agent(s) so takedown can happen inside the 24–48h SLA.

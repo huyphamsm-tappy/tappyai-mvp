@@ -6,6 +6,8 @@ import {
   BACKFILL_DEFAULT_SINCE_DAYS,
   type RawFollow, type RawLike, type RawComment, type RawMilestone, type ReviewMeta,
 } from '@/lib/notifications/backfill'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -17,7 +19,7 @@ export const maxDuration = 60
 export async function POST(req: Request) {
   const secret = process.env.CRON_SECRET
   if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   }
 
   const admin = createAdminClient()

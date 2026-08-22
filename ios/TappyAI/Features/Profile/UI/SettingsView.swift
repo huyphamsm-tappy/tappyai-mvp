@@ -180,6 +180,13 @@ struct ProfileSettingsView: View {
                     router.push(ProfileDestination.privacy, on: .profile)
                 }
                 Divider().padding(.leading, 52)
+                // The music copyright / notice-and-takedown policy. Sits with the other two
+                // because it is the third document a user is bound by, and because a rights
+                // holder looking for where to send a complaint looks under legal, not under music.
+                settingsRow(icon: "music.note.list", labelKey: "settings.copyright", desc: nil) {
+                    router.push(ReviewsDestination.copyrightPolicy, on: .profile)
+                }
+                Divider().padding(.leading, 52)
                 // ── Account deletion ──────────────────────────────────────────────────────────
                 //
                 // 🚨 REQUIRED BY APP STORE REVIEW GUIDELINE 5.1.1(v): an app that lets people

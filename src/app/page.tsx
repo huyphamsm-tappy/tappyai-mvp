@@ -125,7 +125,9 @@ export default async function HomePage() {
       }
     : undefined
 
-  const firstName = userInfo?.full_name?.split(' ').pop() || userInfo?.email?.split('@')[0] || 'bạn'
+  // No Vietnamese fallback here: the name is rendered inside a localized greeting, so a hardcoded
+  // 'bạn' produced "Hi, bạn 👋" for English sessions. HomeView supplies the fallback word (B07).
+  const firstName = userInfo?.full_name?.split(' ').pop() || userInfo?.email?.split('@')[0] || ''
 
   const convList = (conversations ?? []).map((c) => ({
     id: c.id,

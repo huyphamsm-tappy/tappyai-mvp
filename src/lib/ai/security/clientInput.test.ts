@@ -129,8 +129,26 @@ describe('C · content shapes', () => {
     expect(ok(body({ messages: [msg('user', 'phở ở đâu ngon')] })).messages[0].content).toBe('phở ở đâu ngon')
   })
 
-  it('accepts an empty assistant string (tool-only turn)', () => {
-    expect(ok(body({ messages: [msg('assistant', '')] })).messages[0].content).toBe('')
+  /**
+   * 🚨 C04 changed what "accepts" means here, deliberately.
+   *
+   * An empty assistant string is the SDK's shape for a tool-only turn, and it is still not an
+   * ERROR. But this validator strips `toolInvocations` by design, so what survives carries nothing
+   * — and forwarding it made the provider throw, which surfaced as HTTP 200 plus the stream frame
+   * `3:"An error occurred."` in hardcoded English. So the turn is now DROPPED rather than passed
+   * on: the conversation stays valid instead of failing downstream.
+   */
+  it('drops an emptied assistant turn instead of forwarding it to the provider', () => {
+    const r = ok(body({ messages: [msg('user', 'xin chào'), msg('assistant', '')] }))
+    expect(r.messages.map((m) => m.role)).toEqual(['user'])
+  })
+
+  it('refuses a body whose every message was empty, rather than sending nothing', () => {
+    expect(rejected(body({ messages: [msg('assistant', '')] })).code).toBe('invalid_request')
+  })
+
+  it('refuses an empty USER turn — there is nothing to answer', () => {
+    expect(rejected(body({ messages: [msg('user', '   ')] })).code).toBe('invalid_content')
   })
 
   it('accepts a text+image parts array (Android vision turn)', () => {

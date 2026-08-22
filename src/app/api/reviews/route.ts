@@ -10,6 +10,9 @@ import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/m
 import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
 import { isAcceptableVideoDuration, MAX_VIDEO_DURATION_ACCEPT_SEC } from '@/lib/config/product'
 import { searchParam } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -32,7 +35,7 @@ const DAILY_POST_LIMIT = 20
 // GET /api/reviews?placeId=ChIJxxx  → list visible reviews for a place
 export async function GET(req: NextRequest) {
   const placeId = searchParam(req, 'placeId')
-  if (!placeId) return NextResponse.json({ error: 'placeId required' }, { status: 400 })
+  if (!placeId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
   const supabase = createClient()
   const { data, error } = await supabase
@@ -47,7 +50,7 @@ export async function GET(req: NextRequest) {
     .order('created_at', { ascending: false })
     .limit(50)
 
-  if (error) return NextResponse.json({ error: 'Lỗi tải đánh giá' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'load_failed', message: serverMessage('review.loadFailed', requestLocale(req)) }, { status: 500 })
 
   const avg = data && data.length > 0
     ? (() => { const rated = data.filter(r => r.rating > 0); return rated.length > 0 ? rated.reduce((s, r) => s + r.rating, 0) / rated.length : null })()
@@ -65,11 +68,14 @@ export async function GET(req: NextRequest) {
 // If user has a past booking at this place, is_verified = true (badge)
 export async function POST(req: NextRequest) {
   if (!dailyRateLimit(`reviews:${clientIp(req)}`, DAILY_POST_LIMIT).ok) {
-    return NextResponse.json({ error: `Bạn đã đăng quá ${DAILY_POST_LIMIT} bài hôm nay. Thử lại vào ngày mai.` }, { status: 429 })
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.postLimit', requestLocale(req), { n: DAILY_POST_LIMIT }) }, { status: 429 })
   }
 
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập để đánh giá' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('review.signInToReview', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]
@@ -106,7 +112,7 @@ export async function POST(req: NextRequest) {
     if (rating && (rating < 1 || rating > 5 || !Number.isInteger(rating))) throw new Error('invalid rating')
     if (body.length > 1000) throw new Error('body too long')
   } catch {
-    return NextResponse.json({ error: 'Cần có nội dung hoặc ảnh để đăng bài.' }, { status: 400 })
+    return NextResponse.json({ error: 'empty_post', message: serverMessage('review.contentRequired', requestLocale(req)) }, { status: 400 })
   }
 
   // Confirm the referenced track still exists (no DB-level FK to Music by
@@ -122,7 +128,7 @@ export async function POST(req: NextRequest) {
   // because plenty of posts carry no video at all.
   if (videoDuration > 0 && !isAcceptableVideoDuration(videoDuration)) {
     return NextResponse.json(
-      { error: `Video quá dài. Vui lòng chọn video tối đa ${MAX_VIDEO_DURATION_ACCEPT_SEC} giây.` },
+      { error: 'video_too_long', message: serverMessage('media.videoTooLongSec', requestLocale(req), { n: MAX_VIDEO_DURATION_ACCEPT_SEC }) },
       { status: 400 }
     )
   }
@@ -130,7 +136,7 @@ export async function POST(req: NextRequest) {
   if (music) {
     const track = await getTrack(music.trackId)
     if (!track) {
-      return NextResponse.json({ error: 'Bài nhạc không còn tồn tại, vui lòng chọn lại.' }, { status: 400 })
+      return NextResponse.json({ error: 'track_gone', message: serverMessage('music.trackGone', requestLocale(req)) }, { status: 400 })
     }
   }
 
@@ -156,7 +162,7 @@ export async function POST(req: NextRequest) {
     .maybeSingle()
 
   if (existing) {
-    return NextResponse.json({ error: 'Bạn đã đánh giá địa điểm này rồi.' }, { status: 409 })
+    return NextResponse.json({ error: 'already_reviewed', message: serverMessage('review.alreadyReviewed', requestLocale(req)) }, { status: 409 })
   }
 
   // Auto-register the clip's OWN audio as a reusable "original sound" (TikTok
@@ -251,7 +257,7 @@ export async function POST(req: NextRequest) {
   if (insertError) {
     // Log concise detail server-side for debugging; never leak DB error text to the client.
     console.error('Review insert error:', insertError.code ?? insertError.message)
-    return NextResponse.json({ error: 'Không thể lưu bài viết, vui lòng thử lại' }, { status: 500 })
+    return NextResponse.json({ error: 'save_failed', message: serverMessage('review.saveFailed', requestLocale(req)) }, { status: 500 })
   }
 
   // Record music usage for the "sound page" virality loop (how many videos use

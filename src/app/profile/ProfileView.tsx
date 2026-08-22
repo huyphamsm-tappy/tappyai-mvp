@@ -25,8 +25,11 @@ type ProfileViewProps = {
 // Client view for the Profile screen so all text is reactive to the language
 // toggle. The server page still does auth + profile/count fetch and passes the
 // data down as props (mirrors settings/SettingsView.tsx).
-export default function ProfileView({ userId, userInfo, firstName, conversationCount }: ProfileViewProps) {
+export default function ProfileView({ userId, userInfo, firstName: rawFirstName, conversationCount }: ProfileViewProps) {
   const { t } = useTranslation()
+  // C14 — the server cannot know the language, so it sends the bare name (possibly empty) and the
+  // localized fallback word is applied here, where the dictionary is.
+  const firstName = rawFirstName || t('home.friend')
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">

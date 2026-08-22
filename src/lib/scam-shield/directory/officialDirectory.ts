@@ -5,24 +5,24 @@ import { getCachedDirectory, setCachedDirectory } from '../cache/redisCache'
 
 const SEED_DATA: OfficialEntity[] = [
   // Banks
-  { id: 'vcb', brand: 'Vietcombank', category: 'bank', domains: ['vietcombank.com.vn'], website: 'https://vietcombank.com.vn', hotline: '1900 545413' },
-  { id: 'tcb', brand: 'Techcombank', category: 'bank', domains: ['techcombank.com.vn'], website: 'https://techcombank.com.vn', hotline: '1800 588822' },
+  { id: 'vcb', brand: 'Vietcombank', category: 'bank', domains: ['vietcombank.com.vn'], website: 'https://vietcombank.com.vn', hotline: '1900 545413', aliases: ['VCB', 'VCB Digibank'] },
+  { id: 'tcb', brand: 'Techcombank', category: 'bank', domains: ['techcombank.com.vn'], website: 'https://techcombank.com.vn', hotline: '1800 588822', aliases: ['TCB'] },
   { id: 'bidv', brand: 'BIDV', category: 'bank', domains: ['bidv.com.vn'], website: 'https://bidv.com.vn', hotline: '1900 9247' },
-  { id: 'vpb', brand: 'VPBank', category: 'bank', domains: ['vpbank.com.vn'], website: 'https://vpbank.com.vn', hotline: '1900 545415' },
+  { id: 'vpb', brand: 'VPBank', category: 'bank', domains: ['vpbank.com.vn'], website: 'https://vpbank.com.vn', hotline: '1900 545415', aliases: ['VPB', 'VPBank NEO'] },
   { id: 'acb', brand: 'ACB', category: 'bank', domains: ['acb.com.vn'], website: 'https://acb.com.vn', hotline: '1900 545486' },
-  { id: 'mb', brand: 'MBBank', category: 'bank', domains: ['mbbank.com.vn'], website: 'https://mbbank.com.vn', hotline: '1900 545426' },
-  { id: 'stb', brand: 'Sacombank', category: 'bank', domains: ['sacombank.com.vn'], website: 'https://sacombank.com.vn', hotline: '1900 5555 88' },
-  { id: 'agr', brand: 'Agribank', category: 'bank', domains: ['agribank.com.vn'], website: 'https://agribank.com.vn', hotline: '1900 558818' },
-  { id: 'tpb', brand: 'TPBank', category: 'bank', domains: ['tpb.vn', 'tpbank.vn'], website: 'https://tpb.vn', hotline: '1900 604668' },
+  { id: 'mb', brand: 'MBBank', category: 'bank', domains: ['mbbank.com.vn'], website: 'https://mbbank.com.vn', hotline: '1900 545426', aliases: ['MB', 'MBB', 'MB Bank'] },
+  { id: 'stb', brand: 'Sacombank', category: 'bank', domains: ['sacombank.com.vn'], website: 'https://sacombank.com.vn', hotline: '1900 5555 88', aliases: ['STB', 'Sacom'] },
+  { id: 'agr', brand: 'Agribank', category: 'bank', domains: ['agribank.com.vn'], website: 'https://agribank.com.vn', hotline: '1900 558818', aliases: ['AGR'] },
+  { id: 'tpb', brand: 'TPBank', category: 'bank', domains: ['tpb.vn', 'tpbank.vn'], website: 'https://tpb.vn', hotline: '1900 604668', aliases: ['TPB'] },
   { id: 'vib', brand: 'VIB', category: 'bank', domains: ['vib.com.vn'], website: 'https://vib.com.vn', hotline: '1800 8180' },
   { id: 'shb', brand: 'SHB', category: 'bank', domains: ['shb.com.vn'], website: 'https://shb.com.vn', hotline: '1900 5555 00' },
   { id: 'msb', brand: 'MSB', category: 'bank', domains: ['msb.com.vn'], website: 'https://msb.com.vn', hotline: '1900 6083' },
-  { id: 'hdbank', brand: 'HDBank', category: 'bank', domains: ['hdbank.com.vn'], website: 'https://hdbank.com.vn', hotline: '1900 6060' },
-  { id: 'vietinbank', brand: 'VietinBank', category: 'bank', domains: ['vietinbank.vn'], website: 'https://vietinbank.vn', hotline: '1900 558868' },
+  { id: 'hdbank', brand: 'HDBank', category: 'bank', domains: ['hdbank.com.vn'], website: 'https://hdbank.com.vn', hotline: '1900 6060', aliases: ['HDB', 'HD Bank'] },
+  { id: 'vietinbank', brand: 'VietinBank', category: 'bank', domains: ['vietinbank.vn'], website: 'https://vietinbank.vn', hotline: '1900 558868', aliases: ['VTB', 'CTG', 'Vietin'] },
 
   // E-Wallets
-  { id: 'momo', brand: 'MoMo', category: 'ewallet', domains: ['momo.vn'], website: 'https://momo.vn', hotline: '1900 5454 41' },
-  { id: 'zalopay', brand: 'ZaloPay', category: 'ewallet', domains: ['zalopay.vn'], website: 'https://zalopay.vn', hotline: '1900 5454 36' },
+  { id: 'momo', brand: 'MoMo', category: 'ewallet', domains: ['momo.vn'], website: 'https://momo.vn', hotline: '1900 5454 41', aliases: ['Momo Wallet', 'Vi MoMo'] },
+  { id: 'zalopay', brand: 'ZaloPay', category: 'ewallet', domains: ['zalopay.vn'], website: 'https://zalopay.vn', hotline: '1900 5454 36', aliases: ['Zalo Pay'] },
   { id: 'vnpay', brand: 'VNPAY', category: 'ewallet', domains: ['vnpay.vn'], website: 'https://vnpay.vn' },
   { id: 'shopeepay', brand: 'ShopeePay', category: 'ewallet', domains: ['shopeepay.vn'], website: 'https://shopeepay.vn' },
 
@@ -34,15 +34,15 @@ const SEED_DATA: OfficialEntity[] = [
   { id: 'ca', brand: 'Bộ Công An', category: 'government', domains: ['bocongan.gov.vn'], website: 'https://bocongan.gov.vn' },
 
   // Telecom
-  { id: 'viettel', brand: 'Viettel', category: 'telecom', domains: ['viettel.vn', 'viettel.com.vn'], website: 'https://viettel.vn', hotline: '18008098' },
+  { id: 'viettel', brand: 'Viettel', category: 'telecom', domains: ['viettel.vn', 'viettel.com.vn'], website: 'https://viettel.vn', hotline: '18008098', aliases: ['Viettel Pay', 'ViettelPay'] },
   { id: 'mobifone', brand: 'MobiFone', category: 'telecom', domains: ['mobifone.vn'], website: 'https://mobifone.vn', hotline: '18001090' },
   { id: 'vinaphone', brand: 'VinaPhone', category: 'telecom', domains: ['vinaphone.com.vn'], website: 'https://vinaphone.com.vn', hotline: '18001091' },
   { id: 'fpt', brand: 'FPT Telecom', category: 'telecom', domains: ['fpt.vn', 'fpt.com.vn'], website: 'https://fpt.vn', hotline: '19006600' },
   { id: 'vnpt', brand: 'VNPT', category: 'telecom', domains: ['vnpt.vn', 'vnpt.com.vn'], website: 'https://vnpt.vn', hotline: '18001260' },
 
   // Airlines
-  { id: 'vna', brand: 'Vietnam Airlines', category: 'airline', domains: ['vietnamairlines.com'], website: 'https://www.vietnamairlines.com', hotline: '1900 1100' },
-  { id: 'vj', brand: 'VietJet', category: 'airline', domains: ['vietjetair.com'], website: 'https://www.vietjetair.com', hotline: '1900 1886' },
+  { id: 'vna', brand: 'Vietnam Airlines', category: 'airline', domains: ['vietnamairlines.com'], website: 'https://www.vietnamairlines.com', hotline: '1900 1100', aliases: ['VNA', 'Vietnam Air'] },
+  { id: 'vj', brand: 'VietJet', category: 'airline', domains: ['vietjetair.com'], website: 'https://www.vietjetair.com', hotline: '1900 1886', aliases: ['VJ', 'Vietjet Air'] },
   { id: 'bba', brand: 'Bamboo Airways', category: 'airline', domains: ['bambooairways.com'], website: 'https://www.bambooairways.com', hotline: '1900 1166' },
 
   // E-Commerce
@@ -61,7 +61,10 @@ let directory: OfficialEntity[] | null = null
 async function loadDirectory(): Promise<OfficialEntity[]> {
   if (directory) return directory
 
-  const cached = await getCachedDirectory()
+  // The cache is content-addressed on SEED_DATA, so a hit can only ever be this same directory —
+  // see the note on `directoryKey`. A directory change (an added entity, an added alias) is live
+  // on the first request after deploy instead of waiting out a TTL on a stale copy.
+  const cached = await getCachedDirectory(SEED_DATA)
   if (cached) {
     directory = cached as OfficialEntity[]
     return directory

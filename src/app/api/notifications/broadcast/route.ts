@@ -1,6 +1,8 @@
 import { getAllSubscribedUserIds } from '@/lib/notifications/send'
 import { emitNotification } from '@/lib/notifications/emit'
 import { NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 function isAuthorized(req: Request): boolean {
   const secret = process.env.CRON_SECRET
@@ -22,13 +24,13 @@ function isAuthorized(req: Request): boolean {
  */
 export async function POST(req: Request) {
   if (!isAuthorized(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   }
 
   try {
     const { title, body, data } = await req.json()
     if (!title || !body) {
-      return NextResponse.json({ error: 'title and body are required' }, { status: 400 })
+      return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
     }
 
     const userIds = await getAllSubscribedUserIds()
@@ -51,6 +53,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, sent: userIds.length - failed, failed })
   } catch (e) {
     console.error('[broadcast] Error:', e)
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }

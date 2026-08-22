@@ -48,12 +48,37 @@ final class AppRouter: AppObservableObject {
     func dismissSheet() { presentedSheet = nil }
 
     /// Route a resolved deep-link target into navigation state.
+    ///
+    /// Content links pop the destination tab to its root before pushing. Without that, following
+    /// two shared links in a row stacks them, and Back from the second lands on the first — a
+    /// history the user never navigated.
     func handle(_ target: DeepLinkTarget) {
         log.info("deep link → \(String(describing: target))")
         switch target {
         case .tab(let tab):
             popToRoot(on: tab)
             switchTo(tab)
+
+        case .review(let id):
+            open(ReviewsDestination.reviewDetail(id: id), on: .explore)
+
+        case .userProfile(let id):
+            open(ReviewsDestination.userProfile(id: id), on: .profile)
+
+        case .group(let id):
+            open(ReviewsDestination.group(id: id), on: .profile)
+
+        case .groupCreate:
+            open(ProfileDestination.groupDining, on: .profile)
+
+        case .copyrightPolicy:
+            open(ReviewsDestination.copyrightPolicy, on: .profile)
         }
+    }
+
+    private func open<V: Hashable>(_ destination: V, on tab: AppTab) {
+        popToRoot(on: tab)
+        switchTo(tab)
+        push(destination, on: tab)
     }
 }

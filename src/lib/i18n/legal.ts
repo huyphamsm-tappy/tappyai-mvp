@@ -155,6 +155,37 @@ export const en: Record<string, string> = {
   'legal.delete.s5.p1':
     'If you need assistance, or want to check the status of a request you have already sent, contact us:',
 
+// -------------------------------------------------------------- copyright
+  'legal.copyright.title': 'Music Copyright Policy',
+  'legal.copyright.effective': 'Applies to music uploaded to TappyAI by its users.',
+
+  'legal.copyright.s1.heading': '1. Conditions for uploading music',
+  'legal.copyright.s1.p1':
+    'When you upload a track (an “Original Sound”), you confirm that you own it or hold every legal right to it, and you grant TappyAI and other users the right to use it on the platform — adding it to videos, and playing it back. You may not upload music owned by someone else without permission.',
+
+  'legal.copyright.s2.heading': '2. Responsibility',
+  'legal.copyright.s2.p1':
+    'Whoever uploads a track is legally responsible for it. TappyAI acts as an intermediary platform and will remove infringing content on receiving a valid notice.',
+
+  'legal.copyright.s3.heading': '3. Reporting infringement (notice and takedown)',
+  'legal.copyright.s3.p1':
+    'If you hold the rights to a work and believe a track on TappyAI infringes them, send a notice to the copyright agent below, or use the “Report” button on the track’s page.',
+  'legal.copyright.s3.lead': 'Your notice needs to include:',
+  'legal.copyright.s3.b1': 'The track or link that infringes your rights.',
+  'legal.copyright.s3.b2': 'Evidence that you are the rights holder.',
+  'legal.copyright.s3.b3': 'Your contact details.',
+  'legal.copyright.s3.note':
+    'We review valid notices and remove infringing content within 24–48 hours of receiving them.',
+
+  'legal.copyright.s4.heading': '4. Copyright agent',
+  'legal.copyright.s4.p1':
+    'We receive and handle every copyright complaint at this address:',
+  'legal.copyright.agent': 'Copyright agent',
+
+  'legal.copyright.s5.heading': '5. Repeat infringement',
+  'legal.copyright.s5.p1':
+    'An account that repeatedly uploads infringing content may lose the ability to upload music, or be suspended.',
+
   // ------------------------------------------------------------ shared bits
   'legal.contact.email': 'Email',
   'legal.contact.website': 'Website',
@@ -296,6 +327,37 @@ export const vi: Record<string, string> = {
   'legal.delete.s5.heading': '5. Cần hỗ trợ?',
   'legal.delete.s5.p1':
     'Nếu cần hỗ trợ, hoặc muốn kiểm tra tình trạng yêu cầu đã gửi, vui lòng liên hệ:',
+
+// -------------------------------------------------------------- copyright
+  'legal.copyright.title': 'Chính sách bản quyền âm nhạc',
+  'legal.copyright.effective': 'Áp dụng cho nhạc do người dùng đăng tải lên TappyAI.',
+
+  'legal.copyright.s1.heading': '1. Điều kiện khi đăng nhạc',
+  'legal.copyright.s1.p1':
+    'Khi đăng một bản nhạc (“Original Sound”), bạn cam kết rằng bạn sở hữu hoặc có đầy đủ quyền hợp pháp đối với bản nhạc đó, và cấp cho TappyAI cùng người dùng khác quyền sử dụng nó (chèn vào video, phát lại) trên nền tảng. Bạn không được đăng nhạc có bản quyền của người khác khi chưa được phép.',
+
+  'legal.copyright.s2.heading': '2. Trách nhiệm',
+  'legal.copyright.s2.p1':
+    'Người đăng chịu trách nhiệm pháp lý về nội dung mình tải lên. TappyAI hoạt động như một nền tảng trung gian và sẽ gỡ bỏ nội dung vi phạm khi nhận được thông báo hợp lệ.',
+
+  'legal.copyright.s3.heading': '3. Báo cáo vi phạm (Notice-and-Takedown)',
+  'legal.copyright.s3.p1':
+    'Nếu bạn là chủ sở hữu quyền và cho rằng một bản nhạc trên TappyAI vi phạm bản quyền của bạn, hãy gửi thông báo tới đại diện bản quyền bên dưới, hoặc dùng nút “Báo cáo” trên trang bài nhạc.',
+  'legal.copyright.s3.lead': 'Thông báo cần gồm:',
+  'legal.copyright.s3.b1': 'Bản nhạc hoặc đường dẫn bị vi phạm.',
+  'legal.copyright.s3.b2': 'Bằng chứng bạn là chủ sở hữu quyền.',
+  'legal.copyright.s3.b3': 'Thông tin liên hệ của bạn.',
+  'legal.copyright.s3.note':
+    'Chúng tôi sẽ xem xét và gỡ bỏ nội dung vi phạm trong vòng 24–48 giờ kể từ khi nhận được thông báo hợp lệ.',
+
+  'legal.copyright.s4.heading': '4. Đại diện bản quyền',
+  'legal.copyright.s4.p1':
+    'Chúng tôi tiếp nhận và xử lý mọi khiếu nại bản quyền qua địa chỉ này:',
+  'legal.copyright.agent': 'Đại diện bản quyền',
+
+  'legal.copyright.s5.heading': '5. Xử lý vi phạm lặp lại',
+  'legal.copyright.s5.p1':
+    'Tài khoản nhiều lần đăng nội dung vi phạm bản quyền có thể bị hạn chế đăng nhạc hoặc khóa.',
 
   // ------------------------------------------------------------ shared bits
   'legal.contact.email': 'Email',

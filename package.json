@@ -10,10 +10,11 @@
     "check:env": "node scripts/check-env.mjs",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest run",
+    "test": "vitest run --reporter=default --reporter=json --outputFile.json=vitest-report.json && node scripts/requiredSuites.mjs vitest-report.json",
     "architecture:check": "node scripts/architecture/check.mjs",
     "check:sql-grants": "node scripts/architecture/check-sql-grants.mjs",
-    "validate:brands": "vitest run src/config/brandRegistry.validation.test.ts"
+    "validate:brands": "vitest run src/config/brandRegistry.validation.test.ts",
+    "test:raw": "vitest run"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.0",

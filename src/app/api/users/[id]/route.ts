@@ -1,6 +1,8 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { NextRequest, NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 export const runtime = 'edge'
 
@@ -19,7 +21,7 @@ export async function GET(
     .single()
 
   if (error || !profile) {
-    return NextResponse.json({ error: 'Không tìm thấy người dùng' }, { status: 404 })
+    return NextResponse.json({ error: 'user_not_found', message: serverMessage('social.userNotFound', requestLocale(req)) }, { status: 404 })
   }
 
   // Check if current user follows this profile

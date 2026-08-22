@@ -68,15 +68,17 @@ describe('the features with NO native surface, and why', () => {
     expect(existsSync('android/app/src/main/java/com/tappyai/app/consultative')).toBe(false)
   })
 
-  it('Scam Shield is web-only, on BOTH native clients', () => {
-    // Determined rather than assumed, because "100% parity with Android + Web" is ambiguous when
-    // the two disagree: Web has Scam Shield, Android has never had a single line of it, and the
-    // 2026-08-03 release recorded it as a web feature. Building it on iOS alone would create a
-    // NEW asymmetry rather than remove one, so it stays a cross-platform gap for a later release
-    // and is recorded here so nobody re-discovers it as an iOS defect.
+  it('Scam Shield now exists on all three clients', () => {
+    // This used to assert the opposite, and said so on purpose: Web had Scam Shield, neither
+    // native client had a line of it, and building it on iOS alone would have created a NEW
+    // asymmetry rather than removed one. The B09 fix round closed the gap on both at once, so the
+    // reason for the exemption is gone.
+    //
+    // The detailed contract — no local scoring, and an unresolved check never presented as safe —
+    // lives in src/lib/scam-shield/nativeParity.test.ts.
     expect(existsSync('src/lib/scam-shield')).toBe(true)
-    expect(existsSync('android/app/src/main/java/com/tappyai/app/scamshield')).toBe(false)
-    expect(existsSync('ios/TappyAI/Features/ScamShield')).toBe(false)
+    expect(existsSync('android/app/src/main/java/com/tappyai/app/scamshield')).toBe(true)
+    expect(existsSync('ios/TappyAI/Features/UtilityTools/UI/ScamShield')).toBe(true)
   })
 
   it('Group dining has a web surface both native clients reach by link', () => {

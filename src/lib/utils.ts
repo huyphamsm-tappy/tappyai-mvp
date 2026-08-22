@@ -3,18 +3,30 @@ import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) { return twMerge(clsx(inputs)) }
 
-export function formatRelativeTime(date: string | Date): string {
+/**
+ * Relative timestamps for lists ("3 minutes ago").
+ *
+ * B07: this used to hardcode Vietnamese — including the long-lived typo "phúp trước" — and it is
+ * called from screens that are otherwise fully translated, so English sessions got a Vietnamese
+ * timestamp under an English heading. The translate function is passed in rather than imported so
+ * this module stays free of the client-only i18n store.
+ */
+export function formatRelativeTime(
+  date: string | Date,
+  t: (key: string, vars?: Record<string, string>) => string,
+  locale: 'vi' | 'en' = 'vi',
+): string {
   const d = new Date(date)
   const now = new Date()
   const diffMs = now.getTime() - d.getTime()
   const diffMins = Math.floor(diffMs / 60000)
   const diffHours = Math.floor(diffMins / 60)
   const diffDays = Math.floor(diffHours / 24)
-  if (diffMins < 1) return 'Vừa xong'
-  if (diffMins < 60) return `${diffMins} phúp trước`
-  if (diffHours < 24) return `${diffHours} giờ trước`
-  if (diffDays < 7) return `${diffDays} ngày trước`
-  return d.toLocaleDateString('vi-VN')
+  if (diffMins < 1) return t('time.justNow')
+  if (diffMins < 60) return t('time.minutesAgo', { n: String(diffMins) })
+  if (diffHours < 24) return t('time.hoursAgo', { n: String(diffHours) })
+  if (diffDays < 7) return t('time.daysAgo', { n: String(diffDays) })
+  return d.toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-GB')
 }
 
 export const CATEGORIES = [

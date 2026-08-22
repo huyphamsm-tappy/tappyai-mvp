@@ -106,9 +106,26 @@ describe('the parameterised messages', () => {
     expect(en).not.toMatch(/[àáâãèéêìíòóôõùúýăđĩũơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i)
   })
 
-  it('saveError keeps the underlying cause attached, in both languages', () => {
-    expect(pw.saveError('vi', 'duplicate key')).toContain('duplicate key')
-    expect(pw.saveError('en', 'duplicate key')).toContain('duplicate key')
+  /**
+   * 🚨 This test asserted the OPPOSITE until W2/C44, and the behaviour it protected was the defect.
+   *
+   * `saveError` is returned as a TOOL RESULT. The model reads it and relays it to the user in
+   * conversation, so interpolating a Postgres error meant a stranger could be told
+   * "Lỗi lưu theo dõi: duplicate key value violates unique constraint price_watches_pkey" —
+   * table and constraint names, spoken aloud. The cause is now logged at the call site instead.
+   */
+  it('saveError never carries the underlying cause into a user-visible sentence', () => {
+    for (const lang of ['vi', 'en'] as const) {
+      const text = pw.saveError(lang)
+      expect(text).not.toContain('duplicate key')
+      expect(text).not.toMatch(/constraint|relation|column|violates|null value|syntax error/i)
+      expect(text.length, 'still a real sentence, not an empty string').toBeGreaterThan(10)
+    }
+  })
+
+  it('saveError takes only a language — there is no argument to leak through', () => {
+    // Arity is the guard: a `cause` parameter would let the leak be reintroduced silently.
+    expect(pw.saveError.length).toBe(1)
   })
 })
 

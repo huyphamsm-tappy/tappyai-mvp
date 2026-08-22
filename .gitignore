@@ -58,3 +58,6 @@ do_push.ps1
 # meant to be public in a shipped APK (Production Audit Sprint finding: currently untracked,
 # adding this defensively so a future `git add -A` can't accidentally stage it).
 android/gradle.properties
+
+# U03 — vitest JSON report consumed by scripts/requiredSuites.mjs (regenerated every run)
+vitest-report.json

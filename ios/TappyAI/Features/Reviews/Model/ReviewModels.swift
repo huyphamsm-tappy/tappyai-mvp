@@ -61,7 +61,7 @@ struct Review: Codable, Sendable, Identifiable, Hashable {
     }
 
     var displayName: String {
-        profiles?.fullName ?? "Người dùng"
+        profiles?.fullName ?? NSLocalizedString("search.user.unnamed", comment: "")
     }
 
     var isShareOnly: Bool {
@@ -81,7 +81,7 @@ struct ReviewComment: Codable, Sendable, Identifiable, Hashable {
     let profiles: ReviewProfile?
 
     var displayName: String {
-        profiles?.fullName ?? "Người dùng"
+        profiles?.fullName ?? NSLocalizedString("search.user.unnamed", comment: "")
     }
 }
 

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ReviewsFeedView: View {
     @AppStateObject private var vm: ReviewsFeedViewModel
+    @AppEnvironmentState private var router: AppRouter
 
     private let deps: AppDependencies
     @State private var videoPlayers: [String: FeedVideoPlayer] = [:]
@@ -206,7 +207,13 @@ struct ReviewsFeedView: View {
                 },
                 onDelete: { vm.deleteReview(reviewId: review.id) },
                 onHide: { vm.hideReview(reviewId: review.id) },
-                onCreatorTap: {},
+                // Was `{}` — the avatar and name in the feed were tappable and did nothing,
+                // because there was no profile screen to open. There is one now.
+                onCreatorTap: {
+                    if let uid = review.userId {
+                        router.push(ReviewsDestination.userProfile(id: uid), on: .explore)
+                    }
+                },
                 onMusicTap: review.music?.trackId != nil ? {
                     soundPageTrackId = review.music?.trackId
                 } : nil

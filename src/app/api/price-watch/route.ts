@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { pw, resolveUserLang } from '@/lib/priceWatch/messages'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // STEP 13: user-facing strings are localised through the shared Price Watch
 // message layer. The language comes from `profiles.language` — the stored UI
@@ -14,7 +16,7 @@ import { pw, resolveUserLang } from '@/lib/priceWatch/messages'
 // GET — list user's price watches
 export async function GET(req: Request) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   const lang = await resolveUserLang(supabase, user.id)
 
   const { data, error } = await supabase
@@ -25,19 +27,19 @@ export async function GET(req: Request) {
     .order('created_at', { ascending: false })
     .limit(20)
 
-  if (error) { console.error('[price-watch]', error); return NextResponse.json({ error: pw.dbError(lang) }, { status: 500 }) }
+  if (error) { console.error('[price-watch]', error); return NextResponse.json({ error: 'server_error', message: pw.dbError(lang) }, { status: 500 }) }
   return NextResponse.json({ watches: data })
 }
 
 // POST — create a new price watch
 export async function POST(req: Request) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   const lang = await resolveUserLang(supabase, user.id)
 
   const { product_name, target_price, search_query } = await req.json()
   if (!product_name || !target_price || !search_query) {
-    return NextResponse.json({ error: pw.missingFields(lang) }, { status: 400 })
+    return NextResponse.json({ error: 'missing_fields', message: pw.missingFields(lang) }, { status: 400 })
   }
 
   // Max 10 active watches per user
@@ -48,7 +50,7 @@ export async function POST(req: Request) {
     .eq('status', 'active')
 
   if ((count ?? 0) >= 10) {
-    return NextResponse.json({ error: pw.limitReached(lang) }, { status: 429 })
+    return NextResponse.json({ error: 'limit_reached', message: pw.limitReached(lang) }, { status: 429 })
   }
 
   const { data, error } = await supabase
@@ -62,18 +64,18 @@ export async function POST(req: Request) {
     .select('id')
     .single()
 
-  if (error) { console.error('[price-watch]', error); return NextResponse.json({ error: pw.dbError(lang) }, { status: 500 }) }
+  if (error) { console.error('[price-watch]', error); return NextResponse.json({ error: 'server_error', message: pw.dbError(lang) }, { status: 500 }) }
   return NextResponse.json({ id: data.id, ok: true })
 }
 
 // DELETE — cancel a watch
 export async function DELETE(req: Request) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   const lang = await resolveUserLang(supabase, user.id)
 
   const { id } = await req.json()
-  if (!id) return NextResponse.json({ error: pw.missingId(lang) }, { status: 400 })
+  if (!id) return NextResponse.json({ error: 'missing_id', message: pw.missingId(lang) }, { status: 400 })
 
   const { data, error } = await supabase
     .from('price_watches')
@@ -83,8 +85,8 @@ export async function DELETE(req: Request) {
     .select('id')
 
   // Never report success if the cancel failed or matched nothing (wrong id / not owner).
-  if (error) return NextResponse.json({ error: pw.cancelFailed(lang) }, { status: 500 })
-  if (!data || data.length === 0) return NextResponse.json({ error: pw.notFound(lang) }, { status: 404 })
+  if (error) return NextResponse.json({ error: 'cancel_failed', message: pw.cancelFailed(lang) }, { status: 500 })
+  if (!data || data.length === 0) return NextResponse.json({ error: 'not_found', message: pw.notFound(lang) }, { status: 404 })
 
   return NextResponse.json({ ok: true })
 }

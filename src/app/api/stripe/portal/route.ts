@@ -3,6 +3,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { serverEnv } from '@/lib/config/env'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
 
@@ -12,7 +14,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06
 export async function POST(req: Request) {
   try {
     const { user } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     // stripe_customer_id lives in the restricted billing_customers table (service-role only).
     const admin = createAdminClient()
@@ -23,7 +25,7 @@ export async function POST(req: Request) {
       .maybeSingle()
 
     if (!billing?.stripe_customer_id) {
-      return NextResponse.json({ error: 'Chưa có thông tin đăng ký để quản lý.' }, { status: 400 })
+      return NextResponse.json({ error: 'no_subscription', message: serverMessage('subscription.noneToManage', requestLocale(req)) }, { status: 400 })
     }
 
     const siteUrl = serverEnv.siteUrl() ?? 'https://tappyai.vercel.app'
@@ -35,6 +37,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ url: session.url })
   } catch (e) {
     console.error('Stripe portal error:', e)
-    return NextResponse.json({ error: 'Không mở được trang quản lý đăng ký lúc này.' }, { status: 500 })
+    return NextResponse.json({ error: 'portal_failed', message: serverMessage('subscription.portalFailed', requestLocale(req)) }, { status: 500 })
   }
 }

@@ -94,7 +94,7 @@ export default function GroupPage() {
       })
       if (!res.ok) {
         const err = await res.json()
-        setJoinError(err.error || 'Lỗi tham gia nhóm')
+        setJoinError(err.message || err.error || 'Lỗi tham gia nhóm')
         return
       }
       localStorage.setItem(`joined_group_${id}`, 'true')
@@ -113,7 +113,7 @@ export default function GroupPage() {
       const res = await fetch(`/api/group/${id}/suggest`, { method: 'POST' })
       if (!res.ok) {
         const err = await res.json()
-        alert(err.error || 'Lỗi gợi ý')
+        alert(err.message || err.error || 'Lỗi gợi ý')
         return
       }
       const data = await res.json()

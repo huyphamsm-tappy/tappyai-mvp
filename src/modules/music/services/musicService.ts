@@ -83,9 +83,26 @@ export function getTrackDurationLabel(track: MusicTrack): string {
 }
 
 // --- Category helper ---
-// Resolves a category's localized label: requested locale -> the app's
-// primary locale -> the raw slug as a last resort (never renders blank).
-export function getCategoryLabel(category: MusicCategory, locale: string = DEFAULT_LOCALE): string {
+/**
+ * Resolves a category's localized label: requested locale → the app's primary locale → the raw
+ * slug as a last resort (never renders blank).
+ *
+ * ============================================================================
+ * WHY `locale` IS REQUIRED — B11
+ * ============================================================================
+ * 🚨 IT USED TO DEFAULT TO `DEFAULT_LOCALE`, WHICH IS `'vi'`, AND THAT DEFAULT WAS THE BUG.
+ *
+ * `MusicCategoryTabs` called `getCategoryLabel(category)` with no second argument, so every
+ * category rendered Vietnamese no matter what language the app was in — an English user saw
+ * "Thịnh hành" and "Sôi động". Nothing was missing: the API returns
+ * `labelI18n: { en: "Trending", vi: "Thịnh hành" }` and the English label was sitting right
+ * there, simply never asked for. Android reads the same payload and gets it right.
+ *
+ * The parameter is now REQUIRED, so forgetting it is a compile error rather than a screen in the
+ * wrong language. A default that silently picks a language is worse than no default at all —
+ * it turns an omission into plausible-looking output.
+ */
+export function getCategoryLabel(category: MusicCategory, locale: string): string {
   return category.labelI18n[locale] ?? category.labelI18n[DEFAULT_LOCALE] ?? category.slug
 }
 

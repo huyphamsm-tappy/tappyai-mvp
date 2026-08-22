@@ -8,24 +8,27 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatAmount, formatRate } from '@/lib/finance/format'
 import { crossRate, MissingCurrencyError } from '@/lib/finance/exchange'
 
+// Currency names are localized through `currency.<code>`; the code and flag identify the currency
+// on their own, so only the name varies by language (B07).
 const CURRENCIES = [
-  { code: 'VND', name: 'Việt Nam Đồng', flag: '🇻🇳', decimals: 0 },
-  { code: 'USD', name: 'US Dollar', flag: '🇺🇸', decimals: 2 },
-  { code: 'EUR', name: 'Euro', flag: '🇪🇺', decimals: 2 },
-  { code: 'JPY', name: 'Nhật Yên', flag: '🇯🇵', decimals: 0 },
-  { code: 'KRW', name: 'Won Hàn Quốc', flag: '🇰🇷', decimals: 0 },
-  { code: 'GBP', name: 'Bảng Anh', flag: '🇬🇧', decimals: 2 },
-  { code: 'AUD', name: 'Đô Úc', flag: '🇦🇺', decimals: 2 },
-  { code: 'SGD', name: 'Đô Singapore', flag: '🇸🇬', decimals: 2 },
-  { code: 'THB', name: 'Baht Thái', flag: '🇹🇭', decimals: 2 },
-  { code: 'CNY', name: 'Nhân dân tệ', flag: '🇨🇳', decimals: 2 },
-  { code: 'HKD', name: 'Đô Hồng Kông', flag: '🇭🇰', decimals: 2 },
-  { code: 'TWD', name: 'Đô Đài Loan', flag: '🇹🇼', decimals: 0 },
+  { code: 'VND', flag: '🇻🇳', decimals: 0 },
+  { code: 'USD', flag: '🇺🇸', decimals: 2 },
+  { code: 'EUR', flag: '🇪🇺', decimals: 2 },
+  { code: 'JPY', flag: '🇯🇵', decimals: 0 },
+  { code: 'KRW', flag: '🇰🇷', decimals: 0 },
+  { code: 'GBP', flag: '🇬🇧', decimals: 2 },
+  { code: 'AUD', flag: '🇦🇺', decimals: 2 },
+  { code: 'SGD', flag: '🇸🇬', decimals: 2 },
+  { code: 'THB', flag: '🇹🇭', decimals: 2 },
+  { code: 'CNY', flag: '🇨🇳', decimals: 2 },
+  { code: 'HKD', flag: '🇭🇰', decimals: 2 },
+  { code: 'TWD', flag: '🇹🇼', decimals: 0 },
 ]
 
 function CurrencySelect({
   value, onChange, label,
 }: { value: string; onChange: (v: string) => void; label: string }) {
+  const { t } = useTranslation()
   const cur = CURRENCIES.find(c => c.code === value)
   return (
     <div className="flex-1">
@@ -37,20 +40,20 @@ function CurrencySelect({
           className="w-full appearance-none bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl px-4 py-3 pr-8 text-sm font-semibold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40"
         >
           {CURRENCIES.map(c => (
-            <option key={c.code} value={c.code}>{c.flag} {c.code} — {c.name}</option>
+            <option key={c.code} value={c.code}>{c.flag} {c.code} — {t(`currency.${c.code}`)}</option>
           ))}
         </select>
         <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</div>
       </div>
       {cur && (
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 pl-1">{cur.flag} {cur.name}</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 pl-1">{cur.flag} {t(`currency.${cur.code}`)}</p>
       )}
     </div>
   )
 }
 
 export default function CurrencyPage() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [rates, setRates] = useState<Record<string, number> | null>(null)
   const [rateDate, setRateDate] = useState<string | null>(null)
   const [fallback, setFallback] = useState(false)
@@ -97,7 +100,7 @@ export default function CurrencyPage() {
   }
 
   const formattedDate = rateDate
-    ? new Date(rateDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    ? new Date(rateDate).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })
     : null
 
   return (
@@ -131,7 +134,7 @@ export default function CurrencyPage() {
                 onClick={() => setAmount(v)}
                 className={`px-3 py-1 rounded-xl text-xs font-medium transition-colors ${amount === v ? 'bg-interactive text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
               >
-                {parseInt(v).toLocaleString('vi-VN')}
+                {parseInt(v).toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-GB')}
               </button>
             ))}
           </div>

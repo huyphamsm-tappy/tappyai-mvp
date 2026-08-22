@@ -17,7 +17,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,7 +61,7 @@ internal fun ReviewFeedVideo(
         ReviewSourceType.YouTube -> ReviewYouTubeSurface(mediaUrl, thumbnail, active, modifier)
         ReviewSourceType.TikTok, ReviewSourceType.Facebook ->
             ReviewExternalClipPreview(thumbnail, sourceUrl, modifier)
-        else -> ReviewUploadVideoSurface(mediaUrl, active, audioUnlocked, paused, onDuration, modifier)
+        else -> ReviewUploadVideoSurface(mediaUrl, thumbnail, active, audioUnlocked, paused, onDuration, modifier)
     }
 }
 
@@ -76,6 +79,7 @@ internal fun ReviewFeedVideo(
 @Composable
 private fun ReviewUploadVideoSurface(
     url: String,
+    thumbnail: String?,
     active: Boolean,
     audioUnlocked: Boolean,
     paused: Boolean,
@@ -83,6 +87,17 @@ private fun ReviewUploadVideoSurface(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    // U08 — the poster frame, shown until ExoPlayer produces its first frame.
+    //
+    // This surface used to render the TextureView alone. A TextureView has nothing in it until the
+    // player has buffered enough to decode, so the FIRST slide of Explore — the app's primary
+    // visual surface — was solid black for as long as the clip took to start. Measured on a real
+    // device over WiFi with a 134 ms RTT: about ten seconds.
+    //
+    // 🔑 Nothing had to be fetched to fix it. `thumbnail` was already being passed into this file
+    // and already used by the YouTube and TikTok/Facebook branches; the native-upload branch was
+    // the one that ignored it. The feed serves a thumbnail distinct from the video for every clip.
+    var firstFrameRendered by remember(url) { mutableStateOf(false) }
     val player = remember(url) {
         ExoPlayer.Builder(context).build().apply {
             repeatMode = Player.REPEAT_MODE_ONE
@@ -99,6 +114,14 @@ private fun ReviewUploadVideoSurface(
                     if (durMs > 0) onDuration(durMs / 1000f)
                 }
             }
+
+            // 🚨 `onRenderedFirstFrame`, not STATE_READY. READY means "enough is buffered to
+            // start"; the TextureView can still be blank at that moment, and crossing the poster
+            // off then reintroduces a shorter version of the same black flash. This callback fires
+            // when a frame is actually on screen, which is exactly when the poster is redundant.
+            override fun onRenderedFirstFrame() {
+                firstFrameRendered = true
+            }
         }
         player.addListener(listener)
         onDispose {
@@ -112,7 +135,17 @@ private fun ReviewUploadVideoSurface(
         player.volume = if (audioUnlocked) 1f else 0f
         if (active && !paused) player.play() else player.pause()
     }
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize().background(Color.Black)) {
+        // Poster first, player on top. Drawn UNDER rather than instead of, so there is no swap and
+        // therefore no flash between the two.
+        if (!firstFrameRendered && thumbnail != null) {
+            TappyImage(
+                url = thumbnail,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
         AndroidView(
             factory = { ctx -> TextureView(ctx).also { player.setVideoTextureView(it) } },
             modifier = Modifier.fillMaxSize(),

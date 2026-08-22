@@ -4,6 +4,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { inferPreferencesFromEvents } from '@/lib/userMemory'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 
 // POST /api/reviews/[id]/like  → toggle like (optimistic insert, delete on 23505)
 export async function POST(
@@ -11,7 +14,10 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'Cần đăng nhập' }, { status: 401 })
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
+  const anonRefusal = refuseAnonymousSocialWrite(req, user)
+  if (anonRefusal) return anonRefusal
 
   const reviewId = params.id
 
@@ -30,7 +36,7 @@ export async function POST(
     return NextResponse.json({ liked: false })
   }
 
-  if (error) return NextResponse.json({ error: 'Không thể like' }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'like_failed', message: serverMessage('review.likeFailed', requestLocale(req)) }, { status: 500 })
 
   // Insert succeeded → liked=true
   rebuildProfile(user.id, supabase).catch(() => {})

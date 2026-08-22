@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 async function inferFromBooking(userId: string, serviceType: string | null) {
   try {
@@ -29,12 +31,12 @@ async function inferFromBooking(userId: string, serviceType: string | null) {
 export async function POST(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const { serviceId, serviceName, serviceType, date, time, guests, name, phone, notes, placeId } = await req.json()
 
     if (!date || !name || !phone) {
-      return NextResponse.json({ error: 'Thiếu thông tin bắt buộc' }, { status: 400 })
+      return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
     }
 
     const { data, error } = await supabase
@@ -58,7 +60,7 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('Booking insert error:', error)
-      return NextResponse.json({ error: 'Không thể tạo booking' }, { status: 500 })
+      return NextResponse.json({ error: 'create_failed', message: serverMessage('booking.createFailed', requestLocale(req)) }, { status: 500 })
     }
 
     // Fire-and-forget: cập nhật inferred_preferences từ lịch sử booking
@@ -67,14 +69,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, bookingId: data.id })
   } catch (e) {
     console.error('Booking error:', e)
-    return NextResponse.json({ error: 'Lỗi server' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }
 
 export async function GET(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     const { data } = await supabase
       .from('bookings')
@@ -86,6 +88,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ bookings: data || [] })
   } catch (e) {
     console.error('Get bookings error:', e)
-    return NextResponse.json({ error: 'Lỗi server' }, { status: 500 })
+    return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }

@@ -68,6 +68,52 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: FeedResponse.self)
     }
 
+    // MARK: - Single review
+
+    /// `GET /api/reviews/{id}` — one review, by id.
+    ///
+    /// 🔑 A REQUEST, not a cache read. Android's detail screen serves the review out of the
+    /// in-memory cache the feed populated, and its own comment says why: at the time, "the backend
+    /// has no single review GET". That works only when the review was already on screen — open a
+    /// SHARED link, which is the entire reason a detail page exists, and there is nothing cached
+    /// to show. The endpoint now exists, so this screen resolves from a cold start.
+    ///
+    /// `requiresAuth: false` — a review detail is a public page and must open for a signed-out
+    /// visitor following a shared link. The auth interceptor still attaches a token when there is
+    /// one, which is what makes `likedByMe`/`savedByMe` correct for the person reading.
+    func fetchReview(id: String) async throws -> Review {
+        let endpoint = Endpoint(path: "/api/reviews/\(id)", method: .get)
+        return try await api.send(endpoint, as: Review.self)
+    }
+
+    // MARK: - Public profile
+
+    /// `GET /api/users/{id}` — someone else's public profile header.
+    func fetchUserProfile(userId: String) async throws -> PublicUserProfile {
+        let endpoint = Endpoint(path: "/api/users/\(userId)", method: .get)
+        return try await api.send(endpoint, as: PublicUserProfile.self)
+    }
+
+    /// `GET /api/reviews/feed?userId=` — that person's public posts.
+    ///
+    /// 🚨 Deliberately NOT `fetchMyReviews`, even when the id is the caller's own. This feed
+    /// excludes hidden and unpublished rows for every viewer including the author, which is what
+    /// makes it the PUBLIC grid. The author's complete list, with the safety-gate reasons, is
+    /// `MyPostsView`.
+    func fetchUserReviews(userId: String, page: Int) async throws -> FeedResponse {
+        let endpoint = Endpoint(
+            path: "/api/reviews/feed",
+            method: .get,
+            query: [
+                URLQueryItem(name: "userId", value: userId),
+                URLQueryItem(name: "page", value: "\(page)"),
+                URLQueryItem(name: "limit", value: "12"),
+                URLQueryItem(name: "sort", value: FeedSort.latest.rawValue),
+            ]
+        )
+        return try await api.send(endpoint, as: FeedResponse.self)
+    }
+
     // MARK: - Like toggle
 
     func toggleLike(reviewId: String) async throws -> LikeResponse {

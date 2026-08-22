@@ -3,13 +3,15 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { serverEnv } from '@/lib/config/env'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
 
 export async function POST(req: Request) {
   try {
     const { user } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
     // stripe_customer_id lives in the restricted billing_customers table (not the
     // public profiles table), accessed only via the service-role client.
@@ -52,6 +54,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ url: session.url })
   } catch (e) {
     console.error('Stripe checkout error:', e)
-    return NextResponse.json({ error: 'Checkout failed' }, { status: 500 })
+    return NextResponse.json({ error: 'checkout_failed', message: serverMessage('subscription.checkoutFailed', requestLocale(req)) }, { status: 500 })
   }
 }

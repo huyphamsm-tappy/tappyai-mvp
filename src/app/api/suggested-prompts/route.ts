@@ -3,6 +3,8 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { getMemory } from '@/lib/memory/memoryService'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import { requestSearchParams } from '@/lib/http/searchParams'
+import { requestLocale } from '@/lib/i18n/requestLocale'
+import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // Reads per-request auth/searchParams — never statically prerender.
 export const dynamic = 'force-dynamic'
@@ -40,6 +42,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ prompts, hour, dayOfWeek, gender })
   } catch (e) {
     console.error('suggested-prompts error:', e)
-    return NextResponse.json({ prompts: [], error: 'Failed' }, { status: 500 })
+    return NextResponse.json({ prompts: [], error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
 }
