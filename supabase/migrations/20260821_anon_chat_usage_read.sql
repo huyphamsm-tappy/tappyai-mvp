@@ -71,14 +71,21 @@ BEGIN
 END;
 $$;
 
--- ACL, to the project standard (see 20260808_anon_chat_usage_acl_hardening.sql).
+-- ACL, per ADR-019 (Supabase grant model): revoke from EVERYTHING, then grant back only the role
+-- that actually calls the function.
 --
--- 🚨 A bare REVOKE ... FROM PUBLIC does NOT remove `anon` on this project: pg_default_acl
--- grants EXECUTE on every NEW function in `public` to anon, authenticated and
--- service_role as SEPARATE acl entries, which a PUBLIC revoke leaves in place. `anon`
--- must be named explicitly.
+-- 🚨 A bare REVOKE ... FROM PUBLIC does NOT remove `anon` on this project: pg_default_acl grants
+-- EXECUTE on every NEW function in `public` to anon, authenticated and service_role as SEPARATE
+-- acl entries, which a PUBLIC revoke leaves in place. Each role must be named.
+--
+-- 🔑 `authenticated` is named in the REVOKE even though it is granted back on the next line, and
+-- that is not redundant. The revoke-then-grant pair makes the resulting ACL a statement of intent
+-- rather than a function of whatever pg_default_acl happened to hand out — the end state is the
+-- same either way today, and only one of the two forms stays correct if the default privileges
+-- change. `20260808_anon_chat_usage_acl_hardening.sql` writes `FROM PUBLIC, anon` and is pinned in
+-- the guard's legacy list for exactly this reason; this file does not inherit that.
 REVOKE EXECUTE ON FUNCTION public.anon_chat_usage_today()
-  FROM PUBLIC, anon;
+  FROM PUBLIC, anon, authenticated;
 
 GRANT EXECUTE ON FUNCTION public.anon_chat_usage_today()
   TO authenticated;
