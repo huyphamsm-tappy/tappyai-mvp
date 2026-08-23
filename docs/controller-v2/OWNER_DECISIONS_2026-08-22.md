@@ -144,3 +144,96 @@ would ship a surface that cannot be verified.
 
 **Controller V2 is not declared COMPLETE by this record.** It records what may now be built and what stays deferred with
 a stated reason. Completion is measured against Decision F, in `STATUS.md`, after production UAT.
+
+---
+
+# D-K1 — the actor↔capability binding: **ROLE-DERIVED**
+
+**Taken 2026-08-22, after the decisions above.** Recorded here rather than in a new file because it is the same date and
+the same closure workstream.
+
+## The decision, as given
+
+> For Controller V2, effective capabilities are initially derived from the actor's effective role permissions.
+> Capabilities are a read-only derived abstraction, NOT an independently assigned authorization source.
+> `requirePermission()` remains the authoritative mechanism for action authorization.
+> The capability-resolution boundary MUST remain extensible so future policy, membership, or other explicitly
+> authorized capability sources can be introduced without changing the Actor contract or creating a second
+> authorization system.
+
+## What it closes
+
+`Actor.capabilities` has existed since Component 2 and was **permanently empty**. The gap was never an implementation
+gap: [`FOUNDATION_01_CONTRACTS.md`](FOUNDATION_01_CONTRACTS.md) §4 defines a capability as something a **module**
+provides, with a provider and consumers, while the PDP's third decision step tests **`actor.capabilities`**. Nothing
+authoritative said how an **actor** acquires one, so K-1 was classified as *"needs an Owner decision, not an
+implementation"*. D-K1 supplies that missing edge.
+
+## As implemented
+
+| Property | Effect |
+|---|---|
+| **Canonical source** | the permission registry, read through the **same `roleMap` the PDP resolves from** — one mapping, consulted twice, so the projection cannot drift from the permissions actually granted |
+| **Projection** | union of `capability` across every permission the actor's roles grant |
+| **Shape** | deterministic · de-duplicated · **sorted** · **frozen** |
+| **Role inheritance** | **none** — `roleMap` records exactly the permissions declared per role, so a role broad in one module and absent from another projects correctly |
+| **Empty case** | an actor with no roles receives `NO_CAPABILITIES` **by identity**, so nothing about the pre-K-1 behaviour changed |
+| **Not derived from** | membership · department · policy · per-user grant · any database table |
+| **Authority** | unchanged. `Actor.capabilities` is a read-only projection and **never** an authorization input |
+| **`CAPABILITY_GATE_ENABLED`** | **still `false`.** Enabling it is a separate decision and was not taken |
+
+Projection as measured from the registry:
+
+| Role | Capabilities |
+|---|---|
+| `analyst` | 2 — `analytics.read` · `controller.dashboard` |
+| `moderator` | 4 — + `moderation.review` · `users.manage` |
+| `admin` | 8 — + `audit.read` · `commerce.deals` · `security.sessions` · `settings.read` |
+| `super_admin` | 9 — + `security.rbac` (the full declared set) |
+
+## Extensibility — the boundary, and the one rule about it
+
+`CAPABILITY_SOURCES` is the extension point: a frozen list of sources, unioned by `resolveActorCapabilities`. Every
+consumer depends on `Actor.capabilities` and on nothing else — not on roles, not on the registry, not on how any source
+works. A future authorized source is therefore **appended to that list**, with no change to the Actor contract and no
+logic scattered across consumers.
+
+**Controller V2 has exactly ONE source: role-derived.** No second source was designed, sketched or stubbed, and none may
+be added without its own Owner decision.
+
+## ⚠️ The mathematical limitation — stated so it is never mis-sold
+
+**Role-derived capabilities make the PDP's capability gate vacuous.** The derived set is
+`{ P.capability : P ∈ granted(actor) }`, so any permission an actor holds necessarily contributes its own capability.
+Step 3 of `authorize()` therefore **can never deny anything step 4 would allow**.
+
+Turning the gate on would add **no security boundary**. It must not be described as a second authorization layer,
+because it is not one. The gate becomes meaningful only when a source can supply *or withhold* a capability
+**independently of the permission** — which is precisely why the boundary is a list of sources rather than a single
+function.
+
+## Relationship to ADR-018 and FOUNDATION-01 §4
+
+D-K1 **clarifies and supersedes the actor half only**:
+
+- ✅ **Superseded** — the statement that `capabilities.ts` and the PDP capability branch *"remain reserved and inert
+  until C6 activates them"*, insofar as it applies to **`Actor.capabilities`**. That field is now populated. The PDP
+  branch itself remains inert (`CAPABILITY_GATE_ENABLED = false`), so ADR-018's operative safety claim is untouched.
+- ❌ **NOT superseded** — the **module** capability axis. `{id, version, owner, permissions[], dependencies[],
+  provider(moduleId), consumers[]}`, provider/consumer binding, and `ControllerCore`'s registry are **unchanged** and
+  were not touched by this work. Module capability and actor capability are two different axes that happen to share an
+  id space.
+
+ADR-018 carries a dated pointer to this decision in its `Supersedes/relates` header. **No text was removed from it** — a
+decision record is a historical instrument, the same treatment Decision F gave Decision A.
+
+## Evidence
+
+45 targeted tests, written **red before implementation**; the RED was proven to be caused solely by the missing module
+(project-wide `tsc` reported exactly one error, the missing import). Mutation **13/14 killed**. Full suite
+**7102 passed · 0 failed**, required-suites gate **33/33**. One production behaviour changed: one line in
+`rbac.ts`. No migration, no schema, no API, no UI.
+
+The single surviving mutant is **equivalent and recorded as such**: the `if (capability)` guard cannot fire, because
+`roleMap` is built from the same registry the lookup consults, so every id it yields resolves. It is kept only because
+the return type of `registry.get` is optional.

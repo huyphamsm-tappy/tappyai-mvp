@@ -12,7 +12,11 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import type { User } from '@supabase/supabase-js'
 import { ROLE_RANK, hasRole, type AdminRole } from '@/lib/admin/roles'
 import { isPlatformOwner, checkOwnerGate } from '@/lib/admin/owner'
-import { NO_CAPABILITIES, type CapabilityId } from '@/lib/admin/capabilities'
+// `NO_CAPABILITIES` is no longer referenced here: since K-1 the empty case is
+// returned by the resolver itself, so this file has one way to obtain the field
+// rather than two.
+import { type CapabilityId } from '@/lib/admin/capabilities'
+import { resolveActorCapabilities } from '@/lib/admin/capabilityResolver'
 // FOUNDATION-10C (owner decision: Option B). Pure policy module — no DB, no
 // network, no PDP. It answers ONE question: is this verified Supabase identity
 // a corporate identity? It is authentication, never authorization.
@@ -131,9 +135,17 @@ export function invalidateRoleCache(userId: string): void {
  *
  * `capabilities` IS present from now on (owner decision, 2026-08-03) so the
  * interface does not change shape when the Capability Registry lands in
- * component 5. It is always `NO_CAPABILITIES` today — see the contract on that
- * constant: empty means "registry not installed", NOT "denied everything".
- * Nothing may gate on it until component 5.
+ * component 5.
+ *
+ * ~~It is always `NO_CAPABILITIES` today.~~ **K-1, Owner Decision D-K1,
+ * 2026-08-22:** it is now DERIVED from the actor's effective role permissions
+ * by `resolveActorCapabilities`. Empty still means "this actor derives no
+ * capability" — which, for an actor with no roles, is the same empty set the
+ * reserved-slot contract always returned.
+ *
+ * It remains a READ-ONLY projection and NOT an authorization input: nothing
+ * gates on it, `CAPABILITY_GATE_ENABLED` is still false, and the PDP decides
+ * from `roles` exactly as before.
  */
 export interface Actor {
   userId: string
@@ -213,7 +225,11 @@ export async function resolveActorForUser(
     isOwner,
     roles,
     highestRole: highestRole(roles),
-    capabilities: NO_CAPABILITIES,
+    // K-1 (D-K1): derived from the roles resolved immediately above, through
+    // the same role→permission map the PDP resolves from. A projection, not a
+    // grant — see capabilityResolver.ts. An actor with no roles still gets
+    // `NO_CAPABILITIES` itself, so nothing about the empty case changed.
+    capabilities: resolveActorCapabilities({ roles }),
     // `source` is retained so component 11 (Session Security) can reason about
     // web vs native without re-deriving it from headers.
     source,

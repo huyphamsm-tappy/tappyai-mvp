@@ -53,7 +53,17 @@ describe('resolveActor', () => {
     await expect(resolveActor(req())).resolves.toBeNull()
   })
 
-  it('builds an Actor with roles[] and capabilities[]', async () => {
+  // UPDATED for K-1 (Owner Decision D-K1, 2026-08-22). This asserted
+  // `capabilities: []`, which encoded the pre-K-1 contract — "the Capability
+  // Registry is not installed". Capabilities are now DERIVED from the actor's
+  // effective role permissions, so an `admin` projects a real set.
+  //
+  // The expectation is pinned to the exact eight rather than loosened to
+  // "an array": the old assertion was strong, and replacing a strong wrong
+  // expectation with a weak right one would trade a caught regression for an
+  // uncaught one. `capabilityResolver.test.ts` owns the projection contract;
+  // this test owns the fact that `resolveActor` actually applies it.
+  it('builds an Actor with roles[] and derived capabilities[]', async () => {
     const r = await resolveActor(req())
     expect(r?.actor).toMatchObject({
       userId: 'u1',
@@ -61,9 +71,20 @@ describe('resolveActor', () => {
       isOwner: false,
       roles: ['admin'],
       highestRole: 'admin',
-      capabilities: [],
+      capabilities: [
+        'analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard',
+        'moderation.review', 'security.sessions', 'settings.read', 'users.manage',
+      ],
       source: 'cookie',
     })
+  })
+
+  it('an Actor with no roles still carries the empty capability set', async () => {
+    // The reserved-slot contract survives K-1 for the case it was written for.
+    h.rolesQuery.mockResolvedValue({ data: [], error: null })
+    const r = await resolveActor(req())
+    expect(r?.actor.roles).toEqual([])
+    expect(r?.actor.capabilities).toEqual([])
   })
 
   it('returns ALL active roles, not just the highest', async () => {
