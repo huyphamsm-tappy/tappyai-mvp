@@ -9,7 +9,6 @@ import Link from 'next/link'
 import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useServerTTS } from '@/hooks/useServerTTS'
-import { noVoiceMessage } from '@/lib/tts/voiceSelection'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
@@ -910,22 +909,28 @@ export default function ChatInterface({
   // Read Aloud — audio synthesized server-side, so every platform hears the same Tappy voice.
   // The language of each reply is decided by the backend, not here.
   const tts = useServerTTS()
-  // The server cannot speak this reply's language → show a notice (reusing the voice-status line)
-  // rather than reading it with another language's voice.
+  // Read-aloud produced no audio → show a notice (reusing the voice-status line) rather than
+  // reading the reply with another language's voice.
+  //
+  // The sentence comes from the SERVER, which is the only party that knows why: an unconfigured
+  // voice provider and a language we cannot speak are different facts and read differently. This
+  // used to build its own sentence out of the language code alone — "This device has no Vietnamese
+  // voice" — which named the wrong culprit entirely, since the browser's voice list is not consulted
+  // anywhere on this path. The local string is only a fallback for a response that carried none.
   useEffect(() => {
-    if (!tts.unavailableLang) return
-    setVoiceError(noVoiceMessage(tts.unavailableLang, locale))
+    if (!tts.unavailableLang && !tts.unavailableMessage) return
+    setVoiceError(tts.unavailableMessage ?? t('voice.voiceUnavailable'))
     tts.clearUnavailableLang()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tts.unavailableLang, locale])
-  // Synthesis failed for a retryable reason — distinct from "no voice for this language", and it
-  // gets a different sentence: one says try again, the other says do not bother.
+  }, [tts.unavailableLang, tts.unavailableMessage, locale])
+  // Synthesis failed for a retryable reason — distinct from "no voice available", and it gets a
+  // different sentence: one says try again, the other says do not bother.
   useEffect(() => {
     if (!tts.failed) return
-    setVoiceError(t('voice.readAloudFailed'))
+    setVoiceError(tts.failedMessage ?? t('voice.readAloudFailed'))
     tts.clearFailed()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tts.failed])
+  }, [tts.failed, tts.failedMessage])
 
   useEffect(() => {
     fetch('/api/memory')

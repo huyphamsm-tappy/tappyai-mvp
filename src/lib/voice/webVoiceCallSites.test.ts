@@ -61,9 +61,10 @@ describe('voice messages are localized, not hardcoded', () => {
     }
   })
 
-  // The defect is a STRING LITERAL, not "did not call t()". `noVoiceMessage(code, uiLocale)` is a
-  // legitimate localization helper with its own EN/VI coverage, so requiring t() specifically would
-  // fail a correctly-localized call site and push someone to weaken the guard.
+  // The defect is a STRING LITERAL, not "did not call t()". A message localized by the SERVER —
+  // `setVoiceError(tts.unavailableMessage ?? t(...))` — arrives already in the user's language, so
+  // requiring t() specifically would fail a correctly-localized call site and push someone to
+  // weaken the guard.
   // A literal with CONTENT is the defect. `setVoiceError('')` and `setVoiceError(null)` clear the
   // banner and display nothing, so they are not user-facing text — flagging them would only teach
   // someone to route an empty string through the translator to satisfy a guard.
@@ -81,7 +82,7 @@ describe('voice messages are localized, not hardcoded', () => {
     expect(HARDCODED_MESSAGE.test("setVoiceError('Cần cấp quyền micro')")).toBe(true)
     expect(HARDCODED_MESSAGE.test('setVoiceError("Microphone blocked")')).toBe(true)
     expect(HARDCODED_MESSAGE.test("setVoiceError(t('voice.noSpeech'))")).toBe(false)
-    expect(HARDCODED_MESSAGE.test('setVoiceError(noVoiceMessage(x, locale))')).toBe(false)
+    expect(HARDCODED_MESSAGE.test("setVoiceError(tts.unavailableMessage ?? t('voice.voiceUnavailable'))")).toBe(false)
     expect(HARDCODED_MESSAGE.test("setVoiceError('')")).toBe(false)
     expect(HARDCODED_MESSAGE.test('setVoiceError(null)')).toBe(false)
   })

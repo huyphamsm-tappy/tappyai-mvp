@@ -43,18 +43,96 @@ describe('unavailable is not the same as failed', () => {
   it.each([503, 422])('treats %s as unavailable and reports the language', async (status) => {
     const fetchImpl = vi.fn(async () => jsonRes(status, { error: 'voice_unavailable', language: 'vi' })) as unknown as typeof fetch
     const out = await requestSpeech({ text: 'Xin chào', fetchImpl })
-    expect(out).toEqual({ status: 'unavailable', language: 'vi' })
+    expect(out).toEqual({ status: 'unavailable', language: 'vi', message: null })
   })
 
   it('falls back to the requested language when the server names none', async () => {
     const fetchImpl = vi.fn(async () => jsonRes(503, {})) as unknown as typeof fetch
     const out = await requestSpeech({ text: 'Hello', language: 'en', fetchImpl })
-    expect(out).toEqual({ status: 'unavailable', language: 'en' })
+    expect(out).toEqual({ status: 'unavailable', language: 'en', message: null })
   })
 
   it.each([401, 429, 500, 502])('treats %s as a retryable failure, not unavailable', async (status) => {
     const fetchImpl = vi.fn(async () => jsonRes(status, {})) as unknown as typeof fetch
-    expect(await requestSpeech({ text: 'Hi', fetchImpl })).toEqual({ status: 'failed' })
+    expect(await requestSpeech({ text: 'Hi', fetchImpl })).toEqual({ status: 'failed', message: null })
+  })
+})
+
+// ── The server's explanation must survive the trip ───────────────────────────
+//
+// Production (2026-08-23) answers 503 `voice_unavailable` for BOTH vi and en — the deployment has no
+// voice provider configured. The server says so, localized. This client used to keep only
+// `language`, leaving the UI with nothing but a language code to build a sentence from, and what it
+// built was "This device has no Vietnamese voice." The device is never consulted on this path.
+
+describe('the server explains the failure, and the client carries that explanation', () => {
+  const PROVIDER_MSG_EN = 'Voice is unavailable right now. Please try again later.'
+  const PROVIDER_MSG_VI = 'Giọng đọc chưa sẵn sàng. Vui lòng thử lại sau.'
+
+  it('preserves the server message on 503, for a Vietnamese reply', async () => {
+    const fetchImpl = vi.fn(async () => jsonRes(503, {
+      error: 'voice_unavailable', language: 'vi', message: PROVIDER_MSG_EN,
+    })) as unknown as typeof fetch
+    const out = await requestSpeech({ text: 'Xin chào, tôi có thể giúp bạn tìm một quán ăn phù hợp.', fetchImpl })
+
+    expect(out).toEqual({ status: 'unavailable', language: 'vi', message: PROVIDER_MSG_EN })
+  })
+
+  it('preserves the server message on 503, for an English reply — the same failure, not a vi-only one', async () => {
+    const fetchImpl = vi.fn(async () => jsonRes(503, {
+      error: 'voice_unavailable', language: 'en', message: PROVIDER_MSG_EN,
+    })) as unknown as typeof fetch
+    const out = await requestSpeech({ text: 'Hello, I can help you find a suitable restaurant.', fetchImpl })
+
+    expect(out).toEqual({ status: 'unavailable', language: 'en', message: PROVIDER_MSG_EN })
+  })
+
+  it('preserves a Vietnamese-locale server message verbatim rather than re-deriving one', async () => {
+    const fetchImpl = vi.fn(async () => jsonRes(503, { language: 'vi', message: PROVIDER_MSG_VI })) as unknown as typeof fetch
+    const out = await requestSpeech({ text: 'Xin chào', fetchImpl })
+
+    expect(out).toEqual({ status: 'unavailable', language: 'vi', message: PROVIDER_MSG_VI })
+  })
+
+  it('preserves the server message on 422, where the language really is the reason', async () => {
+    const fetchImpl = vi.fn(async () => jsonRes(422, {
+      error: 'language_unsupported', message: 'Voice is not supported for this language yet.',
+    })) as unknown as typeof fetch
+    const out = await requestSpeech({ text: 'こんにちは', language: 'ja', fetchImpl })
+
+    expect(out).toMatchObject({ status: 'unavailable', message: 'Voice is not supported for this language yet.' })
+  })
+
+  it('preserves the server message on a retryable failure too', async () => {
+    const fetchImpl = vi.fn(async () => jsonRes(502, {
+      error: 'synthesis_failed', message: "Couldn't generate the audio. Please try again.",
+    })) as unknown as typeof fetch
+
+    expect(await requestSpeech({ text: 'Hi', fetchImpl }))
+      .toEqual({ status: 'failed', message: "Couldn't generate the audio. Please try again." })
+  })
+
+  it('reports no message when the server sent none, instead of inventing one', async () => {
+    const fetchImpl = vi.fn(async () => jsonRes(503, { language: 'vi' })) as unknown as typeof fetch
+    const out = await requestSpeech({ text: 'Xin chào', fetchImpl })
+
+    // Null, not a fabricated sentence. The UI owns the fallback wording, and it must be truthful.
+    expect(out).toMatchObject({ status: 'unavailable', message: null })
+  })
+
+  it('ignores an empty-string message rather than showing a blank notice', async () => {
+    const fetchImpl = vi.fn(async () => jsonRes(503, { language: 'vi', message: '' })) as unknown as typeof fetch
+    expect(await requestSpeech({ text: 'Xin chào', fetchImpl })).toMatchObject({ message: null })
+  })
+
+  it('never returns a message that blames the device', async () => {
+    const fetchImpl = vi.fn(async () => jsonRes(503, {
+      error: 'voice_unavailable', language: 'vi', message: PROVIDER_MSG_EN,
+    })) as unknown as typeof fetch
+    const out = await requestSpeech({ text: 'Xin chào', fetchImpl })
+
+    const message = 'message' in out ? out.message ?? '' : ''
+    expect(message).not.toMatch(/this device|thiết bị/i)
   })
 })
 
@@ -68,19 +146,21 @@ describe('cancellation is its own outcome', () => {
 
   it('still reports a genuine network error as failed', async () => {
     const fetchImpl = vi.fn(async () => { throw new TypeError('network down') }) as unknown as typeof fetch
-    expect(await requestSpeech({ text: 'Hi', fetchImpl })).toEqual({ status: 'failed' })
+    // No server was reached, so there is no server sentence to carry.
+    expect(await requestSpeech({ text: 'Hi', fetchImpl })).toEqual({ status: 'failed', message: null })
   })
 })
 
 describe('malformed success responses do not become silent playback', () => {
   it('fails when the body carries no audio', async () => {
     const fetchImpl = vi.fn(async () => jsonRes(200, { mimeType: 'audio/mpeg' })) as unknown as typeof fetch
-    expect(await requestSpeech({ text: 'Hi', fetchImpl })).toEqual({ status: 'failed' })
+    // A 200 that carries no audio is malformed, not a failure the server explained.
+    expect(await requestSpeech({ text: 'Hi', fetchImpl })).toEqual({ status: 'failed', message: null })
   })
 
   it('fails when the body is not JSON at all', async () => {
     const fetchImpl = vi.fn(async () => ({ ok: true, status: 200, json: async () => { throw new Error('not json') } }) as unknown as Response) as unknown as typeof fetch
-    expect(await requestSpeech({ text: 'Hi', fetchImpl })).toEqual({ status: 'failed' })
+    expect(await requestSpeech({ text: 'Hi', fetchImpl })).toEqual({ status: 'failed', message: null })
   })
 
   it('passes through the language and voice the SERVER chose', async () => {

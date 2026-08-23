@@ -35,8 +35,18 @@ export function useServerTTS() {
   const [isLoading, setIsLoading] = useState(false)
   /** Set when the server cannot speak this language — the UI shows a notice and stays silent. */
   const [unavailableLang, setUnavailableLang] = useState<string | null>(null)
+  /**
+   * The server's own explanation for that, when it sent one.
+   *
+   * Kept separate from `unavailableLang` because the two answer different questions: the language is
+   * WHAT was being spoken, the message is WHY nothing came out. Deriving the second from the first
+   * is how the UI ended up blaming the user's device for an unconfigured provider.
+   */
+  const [unavailableMessage, setUnavailableMessage] = useState<string | null>(null)
   /** Set when synthesis failed for a retryable reason. Distinct from unavailable. */
   const [failed, setFailed] = useState(false)
+  /** The server's explanation for the failure, when it sent one. */
+  const [failedMessage, setFailedMessage] = useState<string | null>(null)
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const urlRef = useRef<string | null>(null)
@@ -82,7 +92,9 @@ export function useServerTTS() {
     if (!text) return
 
     setFailed(false)
+    setFailedMessage(null)
     setUnavailableLang(null)
+    setUnavailableMessage(null)
     setIsLoading(true)
     setSpeakingId(msgId)
 
@@ -100,11 +112,13 @@ export function useServerTTS() {
     if (result.status === 'unavailable') {
       // Never substitute another language's voice: show the notice, leave the text on screen.
       setUnavailableLang(result.language)
+      setUnavailableMessage(result.message)
       setSpeakingId(null)
       return
     }
     if (result.status === 'failed') {
       setFailed(true)
+      setFailedMessage(result.message)
       setSpeakingId(null)
       return
     }
@@ -164,9 +178,17 @@ export function useServerTTS() {
     totalSecs,
     isLoading,
     unavailableLang,
-    clearUnavailableLang: useCallback(() => setUnavailableLang(null), []),
+    unavailableMessage,
+    clearUnavailableLang: useCallback(() => {
+      setUnavailableLang(null)
+      setUnavailableMessage(null)
+    }, []),
     failed,
-    clearFailed: useCallback(() => setFailed(false), []),
+    failedMessage,
+    clearFailed: useCallback(() => {
+      setFailed(false)
+      setFailedMessage(null)
+    }, []),
     speak,
     togglePause,
     skipBack,

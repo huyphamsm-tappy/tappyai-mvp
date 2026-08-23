@@ -31,7 +31,11 @@ export const vi: Record<string, string> = {
   // Read aloud
   'voice.readAloud': 'Đọc to',
   'voice.stopReading': 'Dừng đọc',
-  'voice.voiceUnavailable': 'Thiết bị chưa có giọng đọc cho {language}. Bạn vẫn đọc được nội dung bên trên.',
+  // Nói về DỊCH VỤ, không nói về thiết bị: đường đọc-to chạy bằng giọng tổng hợp trên máy chủ và
+  // KHÔNG hề tra danh sách giọng của thiết bị. Câu cũ ("Thiết bị chưa có giọng đọc cho {language}")
+  // đổ lỗi cho máy người dùng vì một provider chưa được cấu hình — đo trên production 2026-08-23:
+  // cả vi lẫn en đều trả 503. Đây chỉ là câu dự phòng khi máy chủ không gửi kèm lời giải thích.
+  'voice.voiceUnavailable': 'Giọng đọc của Tappy hiện chưa sẵn sàng. Bạn vẫn đọc được nội dung bên trên.',
   // Khác với voiceUnavailable: đây là lỗi tạm thời, thử lại được.
   'voice.readAloudFailed': 'Chưa đọc được câu trả lời. Bạn thử lại giúp mình nhé.',
 }
@@ -60,7 +64,8 @@ export const en: Record<string, string> = {
   // Read aloud
   'voice.readAloud': 'Read aloud',
   'voice.stopReading': 'Stop reading',
-  'voice.voiceUnavailable': 'This device has no {language} voice. You can still read the text above.',
+  // Names the SERVICE, not the device — see the Vietnamese entry for the measurement behind this.
+  'voice.voiceUnavailable': "Tappy's read-aloud voice is unavailable right now. You can still read the text above.",
   // Unlike voiceUnavailable, this one is temporary and worth retrying.
   'voice.readAloudFailed': "Couldn't read that answer aloud. Please try again.",
 }

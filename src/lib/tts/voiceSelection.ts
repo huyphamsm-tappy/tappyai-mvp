@@ -1,5 +1,10 @@
 // Voice selection for browser Web Speech API TTS (Web V1).
 //
+// ⚠️ NOT ON THE LIVE CHAT PATH. Read-aloud in chat goes through `useServerTTS` → /api/voice/tts,
+// where the server detects the language and synthesizes the audio. The only remaining caller of
+// `pickVoice` is `useTTS`, which is not mounted anywhere; it is kept because `stripMarkdownForTTS`
+// still lives beside it. Do not reintroduce device-voice availability as a reason chat cannot speak.
+//
 // The hard rule (owner, 2026-07-25): NEVER read text with a voice of the wrong
 // language — no English voice reading Vietnamese. Language comes from the chat
 // pipeline's own detector (`detectLang` in @/lib/ai/intent), applied to the text
@@ -60,27 +65,14 @@ export function pickVoice<T extends VoiceLike>(voices: readonly T[], langCode: s
   return [...candidates].sort((a, b) => score(b) - score(a))[0]
 }
 
-/** Human name of a language for the "no voice" notice, in the UI locale. */
-const LANG_NAMES: Record<string, { vi: string; en: string }> = {
-  vi: { vi: 'tiếng Việt', en: 'Vietnamese' },
-  en: { vi: 'tiếng Anh', en: 'English' },
-  ja: { vi: 'tiếng Nhật', en: 'Japanese' },
-  ko: { vi: 'tiếng Hàn', en: 'Korean' },
-  zh: { vi: 'tiếng Trung', en: 'Chinese' },
-  th: { vi: 'tiếng Thái', en: 'Thai' },
-  ar: { vi: 'tiếng Ả Rập', en: 'Arabic' },
-}
-
-export function langDisplayName(code: string, uiLocale: string): string {
-  const n = LANG_NAMES[code]
-  if (!n) return code
-  return uiLocale === 'en' ? n.en : n.vi
-}
-
-/** The localized "this device has no <language> voice" notice. */
-export function noVoiceMessage(code: string, uiLocale: string): string {
-  const name = langDisplayName(code, uiLocale)
-  return uiLocale === 'en'
-    ? `This device has no ${name} voice, so the reply can't be read aloud.`
-    : `Thiết bị này không có giọng đọc ${name} nên chưa thể đọc câu trả lời.`
-}
+// ── REMOVED: noVoiceMessage() / langDisplayName() / LANG_NAMES ───────────────
+//
+// They produced "This device has no <language> voice, so the reply can't be read aloud." — and the
+// chat UI showed it for a failure that has nothing to do with the device. Read-aloud is synthesized
+// server-side; nothing on that path ever looks at the browser's voice list. Measured on production
+// (2026-08-23) BOTH vi and en answer 503 `voice_unavailable`, because the deployment has no voice
+// provider configured. The server says exactly that, in the user's locale, and the client now shows
+// the server's sentence instead of inventing one from a language code.
+//
+// Deleted rather than left unused: a helper that states something false is a trap for the next
+// caller, and "no runtime caller" was already true of the device path that produced it.

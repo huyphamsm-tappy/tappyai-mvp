@@ -46,9 +46,13 @@ describe('the two failure modes stay distinct', () => {
     const src = chat()
     expect(src).toContain('tts.unavailableLang')
     expect(src).toContain('tts.failed')
-    expect(src).toContain("t('voice.readAloudFailed')")
-    // unavailable keeps its own message, naming the language it cannot speak
-    expect(src).toContain('noVoiceMessage(tts.unavailableLang')
+    expect(src).toContain('voice.readAloudFailed')
+    // Both branches show the SERVER's sentence when there is one, and fall back to a local string
+    // only when there is not. The regression this replaces built a message out of the language code
+    // alone and told the user their DEVICE had no voice for it.
+    expect(src).toContain('tts.unavailableMessage ??')
+    expect(src).toContain('tts.failedMessage ??')
+    expect(src).not.toContain('noVoiceMessage(')
   })
 
   it('both messages exist in both languages', () => {
