@@ -263,3 +263,198 @@ describe('searchPlaces wires attribution the way the evidence allows', () => {
     expect(code).not.toContain('pickTikTokReviewUrl')
   })
 })
+
+// ── The substring collisions found by the production E2E ─────────────────────
+//
+// The first version of the matcher asked `haystack.includes(token)`. Every case below was
+// REPRODUCED against the real batch before this suite existed; each one attributed a video to a
+// restaurant the video says nothing about. They are kept as separate tests because they fail for
+// three different reasons, and a fix that only addresses one of them still ships a false claim.
+
+/**
+ * A batch whose only distinguishing word for the first place is the 2-character "ty".
+ *
+ * Two places, not one: "bún" and "bò" are only useless as evidence when more than one place in the
+ * batch uses them. Passing a single name would make every word in it distinctive — which is the
+ * frequency rule working correctly, and would test nothing about token length.
+ */
+const TY_BATCH = ['Bún Bò O Ty', 'Bún Bò Ngọc Hân']
+
+describe('a token must be a whole word, not a fragment of one', () => {
+  const url = 'https://www.tiktok.com/@x/video/9999999999999999999'
+
+  it('does not read "cao" out of "cacao"', () => {
+    const { perPlace, batch } = attributeTikTok(
+      [{ title: 'Quán bún bò cacao độc lạ Sài Gòn', link: url, snippet: '' }],
+      PLACES,
+    )
+
+    expect(perPlace.get('Quán Bún Bò Cao')).toBeUndefined()
+    expect([...perPlace.keys()]).toEqual([])
+    // The video is not discarded — it is offered as a batch-level related video instead.
+    expect(batch).toBe(url)
+  })
+
+  it('does not read "ty" out of "city"', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'city tour an bun bo', link: url, snippet: '' }],
+      TY_BATCH,
+    )
+
+    expect([...perPlace.keys()]).toEqual([])
+  })
+
+  it('does not read a token out of the middle of a longer word', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'Quan bun bo Thaomoc Hoangkim Dieuky', link: url, snippet: '' }],
+      PLACES,
+    )
+
+    expect(perPlace.get('BÚN BÒ HUẾ THẢO - HOÀNG DIỆU')).toBeUndefined()
+  })
+})
+
+describe('a token too short to identify anything never attributes', () => {
+  const url = 'https://www.tiktok.com/@x/video/8888888888888888888'
+
+  it('ignores 2-character tokens even when they appear as whole words', () => {
+    // "ty", "tu" and "on" are the only 2-char distinctive tokens the real batch produced, and each
+    // is a common Vietnamese word in its own right. A title using them is not naming a restaurant.
+    const { perPlace } = attributeTikTok(
+      [{ title: 'cong ty nay ban bun bo', link: url, snippet: '' }],
+      TY_BATCH,
+    )
+
+    expect([...perPlace.keys()]).toEqual([])
+  })
+
+  it('leaves a place whose only evidence is too short unmatchable, and falls back to the batch', () => {
+    const { perPlace, batch } = attributeTikTok(
+      [{ title: 'Bun bo O Ty ngon', link: url, snippet: '' }],
+      TY_BATCH,
+    )
+
+    expect([...perPlace.keys()]).toEqual([])
+    expect(batch).toBe(url)
+  })
+
+  it('still attributes on a 3-character token, because raising the floor to 4 destroys real evidence', () => {
+    // "Quán Bún Bò Cao" has exactly one distinctive token, "cao". A floor of 4 would silence a real
+    // place; the floor is 3 because 3 is the highest value that costs the measured batch nothing.
+    const { perPlace } = attributeTikTok(
+      [{ title: 'Review quan bun bo Cao o Phu Nhuan', link: url, snippet: '' }],
+      PLACES,
+    )
+
+    expect(perPlace.get('Quán Bún Bò Cao')).toBe(url)
+  })
+})
+
+describe('diacritics are evidence when the video bothers to write them', () => {
+  const url = 'https://www.tiktok.com/@x/video/7777777777777777777'
+
+  it('does not accept "tiện" as the "Tiền" of "Tràng Tiền"', () => {
+    // Folded, both are the string "tien" — spelling is the ONLY thing separating them.
+    const { perPlace } = attributeTikTok(
+      [{ title: 'Bun bo Tràng tiện đường ghé', link: url, snippet: '' }],
+      ['Bún Bò O Ty Tràng Tiền'],
+    )
+
+    expect([...perPlace.keys()]).toEqual([])
+  })
+
+  it('still accepts an undecorated title, because Serper often returns plain ASCII', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'REVIEW BUN BO HUE TRANG TIEN cuc pham', link: url, snippet: '' }],
+      ['Bún Bò O Ty Tràng Tiền'],
+    )
+
+    expect(perPlace.get('Bún Bò O Ty Tràng Tiền')).toBe(url)
+  })
+
+  it('accepts the place’s own spelling', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'Bún bò Tràng Tiền ngon nhất', link: url, snippet: '' }],
+      ['Bún Bò O Ty Tràng Tiền'],
+    )
+
+    expect(perPlace.get('Bún Bò O Ty Tràng Tiền')).toBe(url)
+  })
+})
+
+describe('the name must sit inside one clause', () => {
+  const url = 'https://www.tiktok.com/@x/video/6666666666666666666'
+
+  it('does not assemble "Tràng Tiền" out of "Nha Trang," plus "tiện đường"', () => {
+    // The exact title that exposed the bug in production.
+    const { perPlace, batch } = attributeTikTok(
+      [{ title: 'Bún bò ngon ở Nha Trang, tiện đường đi city tour', link: url, snippet: '' }],
+      PLACES,
+    )
+
+    expect(perPlace.get('Bún Bò O Ty Tràng Tiền')).toBeUndefined()
+    expect([...perPlace.keys()]).toEqual([])
+    expect(batch).toBe(url)
+  })
+
+  it('rejects a name split across a comma even when both words are spelled correctly', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'Ghé Tràng, Tiền cũng được', link: url, snippet: '' }],
+      ['Bún Bò O Ty Tràng Tiền'],
+    )
+
+    expect([...perPlace.keys()]).toEqual([])
+  })
+
+  it('never assembles a name out of one word in the title and one in the snippet', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'Bun bo Trang', link: url, snippet: 'Tien cho ngon' }],
+      ['Bún Bò O Ty Tràng Tiền'],
+    )
+
+    expect([...perPlace.keys()]).toEqual([])
+  })
+
+  it('does not split on the hyphen or pipe that real place names contain', () => {
+    // "BÚN BÒ HUẾ THẢO - HOÀNG DIỆU" and "Nhà Ôn | … | Cơm Trưa Văn Phòng" both carry them, so
+    // treating them as clause breaks would tear a genuine match in half.
+    const { perPlace } = attributeTikTok(
+      [{ title: 'Review BUN BO HUE THAO - HOANG DIEU ngon', link: url, snippet: '' }],
+      PLACES,
+    )
+
+    expect(perPlace.get('BÚN BÒ HUẾ THẢO - HOÀNG DIỆU')).toBe(url)
+  })
+})
+
+describe('the invariants the fix must not weaken', () => {
+  const url = 'https://www.tiktok.com/@x/video/5555555555555555555'
+
+  it('still requires EVERY distinctive token, not merely one of them', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'Review bun bo Thao ngon', link: url, snippet: '' }],
+      PLACES,
+    )
+
+    // "thao" is distinctive and present; "hoang" and "dieu" are not. One out of three is not evidence.
+    expect(perPlace.get('BÚN BÒ HUẾ THẢO - HOÀNG DIỆU')).toBeUndefined()
+  })
+
+  it('still refuses to attribute on tokens shared across the batch', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'bun bo hue ngon o phu nhuan', link: url, snippet: '' }],
+      PLACES,
+    )
+
+    expect([...perPlace.keys()]).toEqual([])
+  })
+
+  it('still gives one URL to at most one place', () => {
+    const { perPlace } = attributeTikTok(
+      [{ title: 'So sanh Quan Alpha va Quan Beta', link: url, snippet: '' }],
+      ['Quan Alpha', 'Quan Beta'],
+    )
+
+    expect([...perPlace.values()]).toEqual([url])
+  })
+})
