@@ -26,9 +26,9 @@ Hub ids follow the shipped convention `tappy.hub.<name>` (see [`registry/adminMo
 | | | **05** Business Analytics | ❌ not started |
 | | | **06** Investor Dashboard | ❌ not started |
 | **👥 User** `tappy.hub.user` ✅ **registered 2026-08-20** | Users · Subscriptions · Devices · Sessions · Support · Moderation | **08** User Management | ✅ **COMPLETE end-to-end** — schema `b474cff`, enforcement `30e78c1`, Admin API `3a825c2`, manifest `tappy.hub.user.management` + `/admin/users` ([STATUS](STATUS.md)) |
-| | | **09** Content Moderation | ❌ not started |
+| | | **09** Content Moderation | ✅ **COMPLETE (surface)** — corrected 2026-08-23; this row read *"❌ not started"* while `moderationModule` was registered in `ADMIN_MODULES`, `moderation_queue` + `moderation_actions` were applied to production 2026-08-21, and the surface passed Owner UAT 2026-08-22. The content-safety **writer** that would feed the queue is out of Controller V2 scope (ADR-024) |
 | | | **11** CRM (User 360) | ❌ not started |
-| | | *Sessions* — C11 | ⚠️ API only (`/api/admin/security/sessions`), no module, no UI |
+| | | *Sessions* — C11 | ✅ **surfaced** — corrected 2026-08-23; this row read *"no module, no UI"* while the C11 panel had shipped on the user detail (`/admin/users`) and passed Owner UAT 2026-08-22. The listing API projects eight fields and none of the four `§7` forbids |
 | **📈 Analytics** `tappy.hub.analytics` | Auth ✅ · Activation ✅ · Retention · Funnels · Events · Custom Reports | **02** Product Analytics | ✅ shipped as `analytics.content` |
 | | | **04** User Analytics | 🟡 **3 of 5 sections shipped** — `analytics.auth` + `analytics.activation` + `analytics.users` (growth · engagement · subscription funnel, from `daily_snapshots` + `subscriptions`). **Retention needs `cohort_metrics`** (04 §7 DDL, table absent) ⇒ own migration authorization; churn and session duration are UNDEFINED ([STATUS](STATUS.md)) |
 | | | **07** Reporting | ❌ not started |

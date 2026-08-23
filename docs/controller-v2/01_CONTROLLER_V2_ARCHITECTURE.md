@@ -593,6 +593,23 @@ flowchart TB
 | Denial UX | A 403 explains which permission is missing and who can grant it. A dead end is a support ticket. |
 | Dark mode | First-class, not an afterthought — operators work at night. |
 
+> **DEFERRAL NOTE, 2026-08-23 — two rows of the table above are not delivered by Controller V2.**
+> **No text is removed and no commitment is retired**; this records which of them V2 delivers, the same treatment the
+> ERRATUM above gives the UI principles.
+>
+> - **Density** — ⏸️ DEFERRED by [Owner Decision D8](OWNER_DECISIONS_2026-08-22.md#d8--density-deferred). A UX
+>   preference, not a kernel or security capability, and Controller V2 has **no actor/user preference contract**
+>   — `platform_settings` cannot supply one, its `CHECK` allows only `global`/`hub`/`module`, never `user`.
+> - **Dark mode** — ⏸️ DEFERRED by [Owner Decision D9](OWNER_DECISIONS_2026-08-22.md#d9--dark-mode-deferred). The
+>   back-office `.dark` tokens exist in full; what is missing is a **theme-preference contract on the Controller side**
+>   of the `no-consumer-app-import-in-controller` boundary §1 rule 4 enforces. **The Controller is light-only in V2.**
+>
+> Both carry explicit conditions for return in that record. Of the remaining five rows, **Navigation, Denial UX, i18n
+> and Performance are delivered** — the first three production-UAT-verified, Performance by construction (dashboards
+> read `daily_snapshots` / `cohort_metrics` rollups, never live aggregates). **Accessibility is inherited but never
+> measured:** this section derives WCAG AA from the semantic token layer, 34 of 51 admin components use it, and **no AA
+> audit has been run**. That is recorded as NOT MEASURED in [`STATUS.md`](STATUS.md), not claimed as done.
+
 The "premium OS" feeling is not a skin. It comes from the command palette making every action reachable in two keystrokes, from states that are designed rather than defaulted, from motion that means something, and from never showing an operator a control that will reject them.
 
 ---

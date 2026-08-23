@@ -4,7 +4,7 @@
 > **This document is the only authoritative statement of Controller V2 project status.**
 > Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
-**Last updated:** 2026-08-22
+**Last updated:** 2026-08-23 — **Controller V2 is COMPLETE.** Production `d1ae429`.
 
 > ⚠️ **This header said `2026-08-15` while carrying entries dated 2026-08-19, and it had no entry at all for three merged, production-live commits.** That is exactly the drift the banner above exists to prevent, and it is corrected here rather than filed as a backlog item — the same discipline applied to the 2026-08-07 and 2026-08-13 corrections below.
 
@@ -33,7 +33,10 @@
 | **Owner decision set** | ✅ **CLOSED, 2026-08-22** — [`OWNER_DECISIONS_2026-08-22.md`](OWNER_DECISIONS_2026-08-22.md) answers D1–D7. **No Controller V2 item is waiting on an Owner decision any more.** See [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) |
 | **K-2 — Configuration Provider runtime tier** | ✅ **COMPLETE · IN PRODUCTION.** Code merged `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)); **migration `20260822_k2_platform_settings.sql` APPLIED to production 2026-08-22** under its own Owner authorization, via the Management API against the pinned production ref, in one transaction. Verified read-only, **9/9**: five columns and no `updated_at` · `service_role` only · RLS on with **0 policies** · the three-scope CHECK · FK **no-cascade** · empty · index present · **`module_registry` NOT created** (Decision D1a). The loader's exact query went **`PGRST205` → `200 []`**, and anon went **`PGRST205` → `42501`**. See [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) |
 | **Module — Department Memberships** | ✅ **COMPLETE end-to-end** — Owner Decision D6. `tappy.hub.security.membership` + `/admin/org/memberships` + `GET /api/admin/org/memberships`, merge `6d9aecc` ([#153](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/153)). **Production UAT PASS 2026-08-22, EN + VI.** Read-only by decision. `/org/memberships` was the last admin route with no page |
-| **Controller V2 overall** | ⏳ **NOT COMPLETE — but every authorized item is done, and nothing is blocked.** Hub taxonomy fixed by [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md); the architecture gap is recorded in the Phase 0 reconciliation, 2026-08-19. **After 2026-08-22 nothing waits on engineering, nothing waits on an Owner decision, and no external prerequisite remains** — BL-002 is accepted. What is left is **destructive UAT the Owner has explicitly withheld** and **work DEFERRED by decision** with a stated end condition. Remaining-work inventory: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
+| **K-1** — actor↔capability binding | ✅ **COMPLETE · IN PRODUCTION** — Owner Decision [D-K1](OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived); merge `54c2f8a` ([#158](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/158)). `Actor.capabilities` is a **role-derived, read-only projection** — union · dedup · sorted · frozen, resolved through the same `roleMap` the PDP uses, wired at `rbac.ts:232`. No table, no API, no UI, no migration. **`CAPABILITY_GATE_ENABLED` stays `false`**, and D-K1 records why turning it on would add no boundary |
+| **K-3** — non-no-op Event Bus | ✅ **COMPLETE · IN PRODUCTION** — Owner Decision [D-K3](OWNER_DECISIONS_2026-08-22.md#d-k3--what-a-non-no-op-event-bus-means-for-controller-v2); merge `5e50e5a` ([#160](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/160)), production `d1ae429`. `createObservabilityEventSink()` is the default in `buildAdminController()`, so the kernel's seven `controller.*` lifecycle emit sites are observed instead of discarded. Failure-isolated, at-most-once, non-durable **by contract**. Not a second audit trail, not the outbox, no consumer, no producer, no migration |
+| **Shell UX — Density · Dark mode** | ⏸️ **DEFERRED BY DECISION** — [D8](OWNER_DECISIONS_2026-08-22.md#d8--density-deferred) and [D9](OWNER_DECISIONS_2026-08-22.md#d9--dark-mode-deferred), 2026-08-23. Both are `01_ARCH` §8 shell UX, neither is kernel or security, and each has explicit conditions for return. **The Controller is light-only, at one density, in V2** |
+| **Controller V2 overall** | ✅ **COMPLETE — 2026-08-23, production `d1ae429`.** Measured against **Decision F** (full architecture), not against Decision A. Every item `01_CONTROLLER_V2_ARCHITECTURE.md` names is delivered and verified, or classified by an Owner decision with conditions for return. Class 1 (engineering) empty · class 3 (Owner decision) empty **and measured empty** · migrations applied · BL-002 accepted · K-1 and K-3 shipped · D8/D9 close the last two unclassified items. **Deferrals are not counted as deliveries** and destructive UAT remains withheld rather than performed. Final audit: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
 > "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
@@ -135,16 +138,77 @@ Both are corrected in place rather than quietly edited away, the same discipline
 | ~~**Apply the `platform_settings` migration**~~ | ✅ **DONE 2026-08-22** | Authorized explicitly and applied the same day — see [K-2 applied](#k-2--the-migration-is-applied-2026-08-22) below |
 | ~~**BL-002**~~ | ✅ **ACCEPTED 2026-08-22** | Executed with a real second `super_admin`, 5/5 criteria, and cleaned up. See [BL-002](#bl-002--g1-is-closed-on-production-2026-08-22) |
 | **B8 recovery · M08 ban/suspend · C11 revocation · M09 moderation action** | **OWNER AUTHORIZATION** | Explicitly withheld 2026-08-22 |
-| **Layout Presets · date range · Density** | **DEFERRED BY DECISION** (D2, D3) | Scope is now defined, so the deferral has an end condition. Density additionally needs the preference store `platform_settings` provides |
+| **Layout Presets · date range** | **DEFERRED BY DECISION** (D2, D3) | Scope is now defined, so the deferral has an end condition |
+| **Density** | ⏸️ **DEFERRED BY DECISION** ([D8](OWNER_DECISIONS_2026-08-22.md#d8--density-deferred), 2026-08-23) | ⚠️ **This row said "(D2, D3)" and neither decision mentions Density** — see the correction below. A UX preference, not a kernel capability; V2 has no actor/user preference contract |
+| **Dark mode** | ⏸️ **DEFERRED BY DECISION** ([D9](OWNER_DECISIONS_2026-08-22.md#d9--dark-mode-deferred), 2026-08-23) | ⚠️ **This document had never classified dark mode at all** — see the correction below. Tokens exist; the *switch* needs a theme contract on the Controller side of Guard rule 4. **The Controller is light-only in V2** |
 | **Command Palette `act` / `search`** | ✅ **COMPLETE BY DECISION** (D4, D5) | Navigate-only is final for V2. The two tests written when the gap was open are now the executable form of that decision |
 | **K-8 `module_registry`** | ✅ **OUT OF SCOPE** (D1a) | Superseded by registry-in-code, applying Decision B15 to an identical shape |
 | **Module 20** | ✅ **CLOSED** (D7) | Kernel/capability, not a Hub member, not built |
 | **Module 17 · 11 unstarted Phase 8 modules** | **DEFERRED BY DECISION** (D7) | No new business module enters V2 |
 | **M09 content-safety writer** | **OUT OF CONTROLLER V2 SCOPE** | Content Safety Gate under ADR-024, which `moderationModule.ts` declares |
 | ~~**K-1**~~ | ✅ **RESOLVED 2026-08-22** | Owner Decision **D-K1**: actor capabilities are **role-derived**, a read-only projection. See [K-1](#k-1--the-actorcapability-binding-2026-08-22) |
-| **K-3 · K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
+| ~~**K-3**~~ — Event Bus non-no-op | ✅ **SHIPPED TO PRODUCTION 2026-08-23** — defined by [D-K3](OWNER_DECISIONS_2026-08-22.md#d-k3--what-a-non-no-op-event-bus-means-for-controller-v2) (the bar is the kernel's own `controller.*` lifecycle stream, **not** the `01_ARCH` §7 business flow, which needs three modules D7 forbids building) and implemented the same day. `createObservabilityEventSink()` is the default in `buildAdminController()`; production runtime is `d1ae429`. See [K-3](#k-3--event-bus-shipped-2026-08-23) |
+| **K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
 
-**Controller V2 is not declared COMPLETE, and the reason is now narrow enough to state in one line.** Under Decision F the measure is the full architecture. **Class 1 (engineering) is empty, class 3 (Owner decision) is empty, the migration is applied, and BL-002 is accepted** — so nothing is waiting on this workstream and no external prerequisite remains. What is left is **destructive UAT the Owner has explicitly withheld** and **work DEFERRED by decision, on the record, with a stated end condition**. Calling that COMPLETE would mean calling a deferral a delivery.
+> ### 🛑 Correction, 2026-08-23 — this table claimed a closure it had not earned
+>
+> The paragraph below used to end *"class 3 (Owner decision) is empty"*, and the table above used to carry Density as
+> deferred *"(D2, D3)"*. A final SSOT audit measured both claims and **both were false**:
+>
+> 1. **`density` appears zero times in all three Owner decision records.** D2 governs Layout Presets, D3 governs the
+>    date range. Density had never been put to the Owner — so class 3 was **not** empty, and a genuinely undecided item
+>    had been carrying a decided item's label since 2026-08-22.
+> 2. **Dark mode had never appeared in this document at all** — not COMPLETE, not DEFERRED, not OUT OF SCOPE — while
+>    `01_ARCH` §8 calls it *"first-class"*, `FOUNDATION_01` §13 names it inside the boundary B5 approved, and
+>    `17_UI_UX_Standards` §7 (promoted to implementation authority by B5) specifies it.
+> 3. The Density row's stated blocker — *"the preference store `platform_settings` provides"* — was also wrong:
+>    the applied migration constrains `CHECK (scope IN ('global','hub','module'))`, so that table **cannot** hold a
+>    per-user preference.
+>
+> Both items are now decided — [D8](OWNER_DECISIONS_2026-08-22.md#d8--density-deferred) and
+> [D9](OWNER_DECISIONS_2026-08-22.md#d9--dark-mode-deferred), 2026-08-23 — and corrected in place rather than quietly
+> edited away, the same discipline as the 2026-08-07, 2026-08-13 and 2026-08-22 corrections.
+
+**Controller V2 is COMPLETE as of 2026-08-23.** Under Decision F the measure is the full architecture. Every item that
+architecture names is now either **delivered and verified** or **classified by an Owner decision with conditions for
+return**: class 1 (engineering) is empty, class 3 (Owner decision) is empty *and has been measured empty rather than
+asserted*, the migration is applied, BL-002 is accepted, K-1 and K-3 are shipped, and D8/D9 close the last two
+unclassified items. **Nothing here counts a deferral as a delivery** — Layout Presets, date range, Density and dark
+mode are listed as DEFERRED, not as done, and destructive UAT remains withheld by the Owner rather than performed. What
+completion means is stated plainly: **the Definition of Done is met, and everything outside it is on the record with a
+reason and an end condition.**
+
+### 🔒 Closure index — every 🔴 below this point is ANSWERED (2026-08-23)
+
+This document keeps its historical entries intact by policy — *"Historical documents are deliberately not rewritten"* —
+so the dated sections further down still carry the 🔴 markers they had **on the day they were written**. Four times in
+three weeks a reader (including this workstream) treated one of those as live and re-opened a settled question. This
+index exists so that cannot happen again: **every open marker in this file is listed here with the decision that closed
+it.** If a 🔴 appears below and is not in this table, that is a defect in this table — not a new open item.
+
+| 🔴 in a dated section | Answered by | Outcome |
+|---|---|---|
+| Date range — *"needs an Owner decision"* | **D3** | ⏸️ DEFERRED — Analytics only · not persisted · page header |
+| Command Palette `act` and `search` | **D4 · D5** | ✅ COMPLETE BY DECISION — navigate-only is final for V2 |
+| Layout Presets — sequencing · semantics · RULE provenance | **D2.1 · D2.2 · D2.3** | ⏸️ DEFERRED with an end condition; §8's uncited rule set corrected as an erratum |
+| Phase 8 — next unit · first module · smallest decision set | **D7** | ⏸️ DEFERRED — no new business module enters V2 |
+| `platform_settings` — *"no DDL in `04`"* | **D1b** | ✅ `01_ARCH` §4.1 IS the schema authority; migration applied to production 2026-08-22 |
+| `module_registry` / K-8 | **D1a** | 🚫 OUT OF SCOPE — superseded by registry-in-code (applies B15) |
+| Module 17 hub · Module 20 classification | **D7** | Module 17 keeps its placement (`tappy.hub.configuration` not retired); Module 20 ratified as kernel, not built |
+| `/admin/users` — *"this is a seventh surface"* | Owner authorization, 2026-08-20 | ✅ SHIPPED and production-UAT'd; **D6** cites it as the precedent for the eighth |
+| `/org/memberships` — *"F-10 gate plus four decisions"* | Measured stale 2026-08-22 → **D6** | ✅ SHIPPED read-only; all five were resolved on 2026-08-10 |
+| Ban → session revocation | **Owner Decision A**, 2026-08-21 | ✅ SHIPPED as `df53496` — the ban permission owns the full effect |
+| `ADMIN_IDS` recipient policy | **B4** | 🚫 CLOSED AS NON-BLOCKING — notification config, not authorization |
+| Actor↔capability binding | **D-K1** | ✅ SHIPPED — role-derived; gate stays `false` |
+| *"non-no-op Event Bus"* undefined | **D-K3** | ✅ SHIPPED — kernel `controller.*` lifecycle stream |
+| **Density** | **D8** | ⏸️ DEFERRED — no actor/user preference contract exists |
+| **Dark mode** | **D9** | ⏸️ DEFERRED — needs a theme contract on the Controller side of Guard rule 4 |
+
+**Still genuinely not done, and correctly so:** destructive UAT (B8 recovery · ban/suspend · C11 revocation · M09
+moderation action) — **NOT authorized**, withheld by the Owner, not simulated. That is the only category in this file
+that is neither delivered nor deferred, and it is withheld by choice rather than blocked.
+
+---
 
 ### K-2 — the migration is applied (2026-08-22)
 
@@ -206,6 +270,16 @@ POST https://www.tappyai.com/api/admin/rbac/roles   403 (Forbidden)
 
 ### K-1 — the actor↔capability binding (2026-08-22)
 
+✅ **SHIPPED AND PRODUCTION-VERIFIED.** Merge `0ae343b` ([PR #158](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/158)), squash, one parent. Production serves `0ae343b` at **runtime**: `/api/version` returns it and the Controller Home prints it on the page. CI green on final `main`, both workflows.
+
+> **The CI evidence for this PR was re-earned rather than reused.** The first green run tested the merge against `a3049c3`; `main` then moved to `8448714` when PR #157 landed **two minutes and three seconds later**. Because this repository does not enforce `strict`, GitHub neither re-ran CI nor advanced the PR's base — measured: `refs/pull/158/merge` still had `a3049c3` as its parent, and re-running the workflow would have re-tested that same stale merge. `origin/main` was merged into the branch so GitHub would recompute the merge ref, and the checks were re-run against a ref whose parent is `8448714`. **The stale green was not used as evidence.**
+
+**Production UAT, Owner session, clean browser (`translated-ltr` absent, 0 `<font>` tags):** `/admin` and `/admin/rbac` render in **EN and VI** · **0 raw i18n keys · 0 `undefined` · 0 console errors** on a fresh load · all eight Controller paths non-5xx · `admin_roles` unchanged from the BL-002 baseline (`analyst`, `super_admin`).
+
+> ⚠️ **`Actor.capabilities` is NOT observable from production, by design.** It has **exactly one reader in the entire application** — the inert gate at `engine.ts:84` — and **no route, page or component serializes it**. No endpoint was created to observe it, and none should be. What production *does* prove is stronger than a value dump: the resolver runs inside **every** Actor construction, so if the projection threw or misbehaved, every `/admin` page would 500. They all return 200.
+>
+> 🔑 **And production demonstrates the central safety property directly.** The Platform Owner holds **no `admin_roles` row**, therefore derives **no capabilities** — yet reaches every Controller surface, via `OWNER_BYPASS`. If capabilities were an authorization input, the Owner would be locked out of their own Controller. They are not. That is the decision's core constraint, observed live rather than argued.
+
 **RESOLVED by Owner Decision [D-K1](OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived), and implemented.**
 
 K-1 was never an implementation gap. `Actor.capabilities` existed from Component 2 and was permanently empty because
@@ -258,7 +332,7 @@ Items whose gate was *"after the Foundation"* rather than *"inside a component"*
 |---|---|---|
 | **Service-role hardening** | [ADR-017](../architecture/ADR-017-service-role-hardening-strategy.md) | ✅ **APPLIED to production 2026-08-19.** Preconditions verified first: every Phase 1 component shipped and soaked · no direct `INSERT/UPDATE/DELETE` on `admin_roles` (4 call sites) or `platform_owner` (1 call site) anywhere in `src/` · all three functions `prosecdef = true`, owner `postgres`, `search_path = public, pg_temp` · rollback window agreed. **MEASURED after:** `service_role` on both tables went `DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE` → **`REFERENCES,SELECT,TRIGGER,TRUNCATE`**; `has_function_privilege('service_role', …, 'EXECUTE')` still true for all three RPCs, and still **false** for `anon` and `authenticated`; `service_role` reads returned 2 role rows and 1 active owner, no `42501`. Rollback was not needed and was not used |
 | **Required checks on `main`** | Owner Decision C | ✅ **ENABLED 2026-08-19.** Was *"Not yet executed"*. Required contexts are the four jobs the two named workflows actually publish — `Test suite` and `Types, lint, SQL grants` (`Regression Gate`), `AI architecture rules` and `Brand registry validation` (`Architecture Guard`) — with `enforce_admins = true`, matching "no bypass outside an approved policy". `strict` and PR-review requirements were left off because Decision C does not ask for them |
-| **Capability gate activation** | [ADR-018](../architecture/ADR-018-capability-registry-frozen.md), [`06_…CONTRACT`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md) §7 | ⏸️ **DEFERRED — and not yet due.** ADR-018 assigned activation to C6; C6's contract then placed it explicitly out of scope. **MEASURED:** `CAPABILITY_GATE_ENABLED = false`, `Actor.capabilities` is always `NO_CAPABILITIES`, and 18 permission definitions declare a `capability`. Enabling the gate today would deny all eighteen and lock the admin surface out. What is missing is a capability *producer* binding manifests to actors — not an authorisation |
+| **Capability gate activation** | [ADR-018](../architecture/ADR-018-capability-registry-frozen.md), [`06_…CONTRACT`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md) §7 | ⏸️ **DEFERRED — and not yet due.** ADR-018 assigned activation to C6; C6's contract then placed it explicitly out of scope. **MEASURED at the time:** `CAPABILITY_GATE_ENABLED = false`, `Actor.capabilities` always `NO_CAPABILITIES`, 18 permission definitions declaring a `capability`. ⚠️ **Half of that is superseded, 2026-08-22:** [D-K1](OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived) supplied the missing producer and `Actor.capabilities` is now **role-derived, not empty** (`rbac.ts:232`). **The gate itself is unchanged — `CAPABILITY_GATE_ENABLED` is still `false`** and stays deferred, but the reason has changed: enabling it would no longer lock anyone out, it would simply add **nothing**, because role-derived capabilities make step 3 of `authorize()` mathematically vacuous |
 | **C6 rollback · health checks · migration versioning** | [`06_…CONTRACT`](06_COMPONENT6_PLUGIN_REGISTRY_CONTRACT.md) §1 | ⏸️ **DEFERRED by Owner, 2026-08-13** — named debt, undefined in any authoritative source |
 | **Hub migration** | [`03_PHASE1_FOUNDATION_DESIGN.md`](03_PHASE1_FOUNDATION_DESIGN.md) §1 | ✅ registration complete — five hubs run through the kernel (`dashboard`, `analytics`, `commerce`, `configuration`, `security`), Commerce included. Route control is explicitly out of C6's scope (§7) |
 | **BL-\*** | [`BACKLOG.md`](BACKLOG.md) | ⏸️ non-blocking under Decision A ([§ Consequences 4](OWNER_DECISIONS_2026-08-13.md#consequences)). **BL-C7-01 is closed on production by measurement:** all three Component 1 `SECURITY DEFINER` functions report `EXECUTE` false for `anon` and `authenticated` |
@@ -281,7 +355,7 @@ The first phase after Decision F. **PARTIAL** — what shipped, and what it is s
 
 | Item | Blocker |
 |---|---|
-| **Capability gate activation** (`CAPABILITY_GATE_ENABLED`) | 🛑 **No contract defines an actor↔capability binding.** §4 defines capabilities as *module*-provided with *module* consumers; the PDP gate tests `actor.capabilities`. Nothing authoritative says how an actor acquires one. Enabling the gate today denies all 18 capability-declaring permissions to every non-Owner. Needs an Owner decision, not an implementation |
+| **Capability gate activation** (`CAPABILITY_GATE_ENABLED`) | 🛑 **No contract defines an actor↔capability binding.** §4 defines capabilities as *module*-provided with *module* consumers; the PDP gate tests `actor.capabilities`. Nothing authoritative says how an actor acquires one. Enabling the gate today denies all 18 capability-declaring permissions to every non-Owner. Needs an Owner decision, not an implementation. ✅ **RESOLVED 2026-08-22 by [D-K1](OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived)** — the binding is role-derived and shipped; **the gate stays `false` by decision** |
 | **Runtime (DB/API) configuration tier** | 🛑 Requires the `platform_settings` table of [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) §4.1, which has no migration. That is a production mutation and was not authorised in this phase. `deferredRuntimeSource()` continues to return `undefined` rather than fabricate a value |
 
 **Verification:** 8/8 mutations killed against the security guards — including one that survived first and exposed a rollback path no test held open.
@@ -301,7 +375,9 @@ Guards were added so the surface stays closed rather than merely being closed to
 
 **Corrected: the contract's stated migration does not fit the code.** [`FOUNDATION_01_CONTRACTS.md`](FOUNDATION_01_CONTRACTS.md) §11 gives the removal as *"REMOVE (after 1 caller migrates) — migrate `music/tracks/[id]/report` to `requirePermission`"*. MEASURED: that route never imported `src/lib/admin.ts` (it inlines the env parse), and its `ADMIN_IDS` read is a **notification recipient list**, not an authorization check — authorization there is `getRequestUser` + `401`, and reporting is deliberately open to any signed-in user under a 24–48 h takedown SLA. Applying `requirePermission` literally would make copyright reporting admin-only, which secures nothing and breaks the channel. The §11 row is **not edited** — it is a decision record — and the discrepancy is recorded here instead.
 
-**Still open — `ADMIN_IDS` is not retired as an environment concept.** `src/app/api/music/tracks/[id]/report/route.ts` still reads `process.env.ADMIN_IDS` to choose who is notified. Replacing it with an RBAC-derived recipient set needs a policy no authoritative source states — *which role receives copyright reports?* — so it is **F: OWNER DECISION REQUIRED**, not implemented on a guess.
+**~~Still open~~ — `ADMIN_IDS` is not retired as an environment concept.** `src/app/api/music/tracks/[id]/report/route.ts` still reads `process.env.ADMIN_IDS` to choose who is notified. Replacing it with an RBAC-derived recipient set needs a policy no authoritative source states — *which role receives copyright reports?* — so it is ~~**F: OWNER DECISION REQUIRED**~~, not implemented on a guess.
+
+> ✅ **CLOSED — this was already answered when it was written, 2026-08-19.** Owner Decision **B4** (recorded in the second decision set above) holds: *"`ADMIN_IDS` is notification-recipient configuration, **not authorization**. RBAC is **not** to be forced into that route merely to delete an env var."* That disposes of the question — there is no open Owner decision here, and the Definition-of-Done item is *"bypass paths removed"*, which is met: `src/lib/admin.ts` is gone with 0 importers and 0 `isAdmin()` call sites, and a notification recipient list is not an authorization path. Corrected 2026-08-23 during the final SSOT audit, which counted this line as an open class-3 item and had to prove it was not.
 
 **Also closed by Phase 4:** the §11 row `BACKOFFICE_ENABLED` = *REFACTOR → Config Provider flag* — done, see above.
 ### Phase 5 — Event Bus / Outbox (2026-08-19): **BLOCKED, mechanism verified**
@@ -329,6 +405,54 @@ Together those mean a first producer would **re-issue the function that closes G
 **The actual dependency.** [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) §7 names the first producer and consumers itself: Commerce.Orders publishes `commerce.order.refunded`, Analytics and Marketing consume it. Under [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md) all three are **not started**. Event wiring depends on the business modules, not the reverse — so this work belongs after the Hubs exist, not before them.
 
 Nothing was declared to paper over it: no manifest was given an `events` block it cannot honour, and no handler was registered in the empty `ConsumerDispatch`. The forcing function in [`outbox.test.ts:181`](../../src/lib/controller/__tests__/outbox.test.ts) still pins the zero-consumer state, so the suite fails the day a real consumer is declared without a handler.
+
+### K-3 — Event Bus: SHIPPED (2026-08-23)
+
+> ### 🛑 Correction, 2026-08-23 — this section described the commit that shipped it as if nothing had shipped
+>
+> The text below was written as a **read-only baseline at `1ef38de`** and opened *"No code was written."* It was then
+> merged **inside `d1ae429` — the very commit that wrote the code** — and the row in the table above still read *"Not
+> yet implemented"*. A document that declares itself the single source of truth is the worst place for that, so it is
+> corrected here rather than filed as a backlog item.
+>
+> **What actually shipped in `d1ae429` ([PR #160](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/160)):**
+> `createObservabilityEventSink()` in [`events.ts`](../../src/lib/controller/events.ts), wired as the **default** in
+> `buildAdminController()` (`events: opts.events ?? createObservabilityEventSink()`) so all three production call sites
+> stop falling through to `NOOP_EVENTS`; a caller supplying its own sink still wins. 34 tests driven through a real
+> `ControllerCore`, **mutation 10/10 killed**. No migration, no schema, no API, no UI, no consumer, no outbox producer.
+> **Production runtime verified: `/api/version` = `d1ae429`.**
+>
+> The baseline below is left intact — it is the measurement that decided the implementation, and its central finding
+> (seven emit sites already paired one-to-one with `audit.record()`) is *why* the sink writes to the platform log and
+> not to the C7 chain. Read the two rows of the flow table it marks 🔴 as **the state before `d1ae429`**.
+
+Read-only audit at `1ef38de`, **before the implementation**. Every number below is from the repository or from production, not from the entries above.
+
+**The bar is now defined.** Decision F names *"a non-no-op Event Bus"* and defines it nowhere; [D-K3](OWNER_DECISIONS_2026-08-22.md#d-k3--what-a-non-no-op-event-bus-means-for-controller-v2) sets it at the kernel's own `controller.*` lifecycle stream. That mattered: the `01_ARCH` §7 flow (`commerce.order.refunded`) needs **Commerce.Orders, Analytics and Marketing.Push, all three `❌ not started`** — and **D7 forbids adding a business module to V2**. Requiring §7 would have made Decision F demand what another Owner decision prohibits.
+
+#### Flow as built
+
+| Node | State |
+|---|---|
+| business action → event | **ABSENT** — no business mutation publishes anything |
+| kernel event creation | **IMPLEMENTED** — 7 emit sites, all `controller.*` lifecycle |
+| in-process `EventSink` | 🔴 **NO-OP** at `1ef38de` — `NOOP_EVENTS` at `core.ts:49`; **all 3 production `buildAdminController()` call sites passed no sink**. ✅ **CLOSED by `d1ae429`** — the default is now `createObservabilityEventSink()` |
+| `fn_outbox_publish` | **IMPLEMENTED but UNREACHABLE** — `EXECUTE` revoked from `PUBLIC`, `anon`, `authenticated` **and `service_role`** |
+| `event_outbox` | **IMPLEMENTED** — production **0 rows** (0 pending, 0 delivered, 0 dead) |
+| drain cron | **IMPLEMENTED** — registered in `vercel.json`, `DISPATCH` empty by design |
+| consumer | **ABSENT** — **0 manifests** declare `events` |
+
+**The two paths are not connected**: `core.ts` mentions `outbox` **zero times**. The in-process sink and the durable outbox are separate by construction.
+
+#### 🔑 The finding that decides the implementation
+
+**Every one of the 7 emit sites is already paired with an `audit.record()` of the same fact** — `core.ts` lines 90/91, 118/125, 243/250, 424/425, 433/434, 509/516, 576/583. Seven audit calls, seven emits, one-to-one.
+
+So a "real" `EventSink` that wrote to the C7 audit chain would write **exactly the facts the `AuditSink` already writes** — a duplicate trail inside a hash-chained log. **The Event Bus must not persist to audit; that axis is taken.**
+
+And the volume forbids it independently: one `buildAdminController()` emits **18 events** (6 hubs + 12 modules). `adminNavigation.ts` builds a controller on **every `/admin` request**, and the Home builds a second — so audit-writing this stream would add **~36 rows per page view**.
+
+> ⚠️ **A real production `AuditSink` already exists and is wired nowhere.** `createAuditSink()` maps the kernel onto C7's `writeAuditLog`; **0 non-test call sites**. That is a separate, pre-existing gap from K-3, and it is recorded here rather than folded into it.
 
 ### Phase 7 — V2 Shell (2026-08-19): **IN PROGRESS**
 
@@ -1426,6 +1550,22 @@ Found during the ADR-017 preflight and outside its contract. Neither is a defect
 
 ---
 
+## Known gaps OUTSIDE the Definition of Done (2026-08-23)
+
+Recorded at closure so that **COMPLETE is not read as "everything was proven"**. None of these is named by Decision F,
+so none blocks completion — and none is folded into a completed item to make it look larger than it is.
+
+| Gap | Measured | Why it is not a DoD blocker |
+|---|---|---|
+| **`createAuditSink()` is wired nowhere** | Exists in [`auditAdapter.ts:20`](../../src/lib/controller/auditAdapter.ts), **0 non-test call sites**; all three production `buildAdminController()` sites pass no `audit`, so kernel lifecycle audit falls to `NOOP_AUDIT` | Decision F names *"a non-no-op **Event Bus**"* and names no audit sink. C7 Audit Hardening is ACCEPTED on its own evidence and the **application** audit trail is live and proven — BL-002 read real `audit_log` rows over production HTTP. This is the kernel's *lifecycle* stream only. Pre-existing, separate from K-3, and deliberately not folded into it |
+| **Runtime config tier: "a row changes a resolved value"** | ⚠️ **NOT MEASURED, and not measurable from outside.** No configuration-dump endpoint exists, and the only key any shipped code reads through the provider is `BACKOFFICE_ENABLED` — a kill switch. Proving it end-to-end would mean writing a row that disables the Controller | What production proves is that the read path **succeeds where it previously failed** (`PGRST205` → `200 []`). Resolution is covered by 44 unit tests, two driving the real exported provider |
+| **K-3 sink emission on production** | ⚠️ **NOT MEASURED.** The sink writes `console.info('[controller][event]', …)` server-side; platform logs were not read | Covered by 34 tests through a real `ControllerCore` and **mutation 10/10**, including the mutant that makes the sink a no-op again. Exposing it as an API purely to observe it was explicitly declined |
+| **WCAG AA** | ⚠️ **NOT MEASURED.** `01_ARCH` §8 derives it from the semantic token layer; 34 of 51 admin components use that layer, 1 uses raw `gray-`/`white`. **No AA audit has been run** | §8 states it as *inherited*, not as a Controller V2 deliverable with its own acceptance criteria |
+| **Controller suites are not in the required-suites gate** | [`scripts/requiredSuites.mjs`](../../scripts/requiredSuites.mjs) sets `REQUIRED_DIRS = ['supabase/tests','src/lib/security','src/lib/safety','src/lib/auth']` — **`src/lib/controller` and `src/lib/admin` are not among them** | They still gate CI: `npm test` runs them and **Test suite** is a required check with `enforce_admins`. What they lack is the *anti-silent-skip* layer that gate adds. Recorded as an observation; widening it is not Controller V2 scope and was not done |
+| **Alert Well · Context Bar · Command Palette rendered on production** | ⚠️ **NOT MEASURED individually.** Each carries a 2026-08-19 note — *"production render not visually verified"* — and the 2026-08-22 authenticated UAT recorded modules, not these three surfaces by name | All three are inside `/admin`, which the Owner UAT loaded with **0 raw i18n keys, 0 `undefined`, 0 console errors, 24 nav entries** in both locales. Their unit + mutation evidence is 12/12, 13/13 and 13/13 |
+
+---
+
 ## Verification ledger
 
 | Gate | Status | Evidence |
@@ -1462,7 +1602,17 @@ The rule G1 tests is already enforced at two layers that *are* verified:
 
 > **Corrected 2026-08-13.** This section said *"**Component 3 — RBAC.** Not started"* while the table above recorded Component 3 as **ACCEPTED · IN PRODUCTION** since 2026-08-07 — the document contradicted itself. The stale line is replaced rather than preserved, because a *forward-looking* instruction that is wrong will be acted on, unlike a dated status snapshot.
 
-**C8 is merged and deployed; its migration is still pending.** C6, C9b and C10 are delivered. Under Owner Decision A (Definition of Done = C1–C11), exactly **two** things stand between the project and COMPLETE:
+> **Corrected 2026-08-23 — this section was stale in both of the ways it warns about.** It was still written under
+> **Decision A**, which [Decision F](OWNER_DECISIONS_2026-08-19.md#f--definition-of-done-full-architecture) superseded
+> on 2026-08-19, and it still named the C8 and C11 migrations as the two things standing between the project and
+> COMPLETE — **both were applied to production on 2026-08-15**, as the table at the top of this document records. By
+> its own banner above, *"a forward-looking instruction that is wrong will be acted on"*, so the correction goes here.
+>
+> **There is no next implementation target. Controller V2 is COMPLETE** — see the closure section above. The text below
+> is preserved as the dated record of what the target was under Decision A, and must not be read as current
+> instruction.
+
+**C8 is merged and deployed; its migration is still pending.** C6, C9b and C10 are delivered. Under Owner Decision A (Definition of Done = C1–C11), exactly **two** things stood between the project and COMPLETE:
 
 1. **The C8 migration** — Owner action. Everything else about C8 is done and its SQL is executed against a real PostgreSQL in CI.
 2. **The C11 migration** — Owner action, the same shape. C11 is implemented, contracted and tested; `20260814_c11_session_security.sql` opens with a guard that refuses to apply if GoTrue's `auth.sessions` has lost a column C11 reads, so a failed apply is information rather than a mystery.

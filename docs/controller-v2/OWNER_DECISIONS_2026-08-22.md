@@ -237,3 +237,155 @@ decision record is a historical instrument, the same treatment Decision F gave D
 The single surviving mutant is **equivalent and recorded as such**: the `if (capability)` guard cannot fire, because
 `roleMap` is built from the same registry the lookup consults, so every id it yields resolves. It is kept only because
 the return type of `registry.get` is optional.
+
+---
+
+# D-K3 — what "a non-no-op Event Bus" means for Controller V2
+
+**Taken 2026-08-23.** Decision F names *"a non-no-op Event Bus"* in the Definition of Done and **defines it nowhere**.
+This decision supplies the missing definition. Recorded here alongside the other decisions of this closure workstream.
+
+## The decision, as given
+
+> In Controller V2, *"non-no-op Event Bus"* is satisfied when the production `EventSink` has a real implementation that
+> receives and processes the existing `controller.*` lifecycle events.
+>
+> **K-3 in V2 does NOT require:** Commerce.Orders · `commerce.order.refunded` end-to-end · an Analytics consumer · a
+> Marketing.Push consumer · reopening Phase 8 / D7 · migrating existing business mutations to manufacture a demo event ·
+> changing `fn_grant_admin_role` or any G1 security-critical RPC.
+>
+> The Event Bus is **not** an authorization authority. `requirePermission()` remains the authority. Capability binding
+> is unchanged. The `ControllerCore` capability axis is unchanged.
+
+## Why the definition was needed — and why the §7 path was not available
+
+`01_ARCH` §7 names the first producer itself: **Commerce.Orders** publishes `commerce.order.refunded`, consumed by
+Analytics and Marketing.Push. **All three are `❌ not started`** in taxonomy §1, and **D7 forbids adding a new business
+module to V2**. Requiring the §7 flow would therefore have made Decision F demand something another Owner decision
+prohibits building — the Definition of Done would contradict D7 and be unreachable inside V2. This decision resolves
+that by defining the bar at the kernel's own event stream instead.
+
+Three independent sources also blocked a first producer on the durable path, and none of them is bypassed here:
+
+1. **C8 §10** — *"No producers · no consumers · … no migration of existing business mutations to create a demo event."*
+2. **C8 §5** — a producer must be a **database object**: `fn_outbox_publish` has `EXECUTE` revoked from `PUBLIC`, `anon`,
+   `authenticated` **and `service_role`**, so the only possible caller is another `SECURITY DEFINER` function. The one
+   realistic candidate is `fn_grant_admin_role` — the constitutional G1 fix, proven on production by BL-002 the day
+   before. Re-issuing it is explicitly excluded above.
+3. **C8 §8** — 0 consumers ⇒ **0 outbox rows**, arithmetically. A producer today would insert nothing.
+
+## ⚠️ What this decision does NOT claim
+
+It does not make the Event Bus durable, ordered, retried or delivered. Those are the **outbox's** guarantees, and the
+outbox still has zero consumers by design. `events.ts` already states the boundary — *"An EventSink emit is not an
+outbox publish and carries none of its guarantees."* — and that stays true.
+
+It also must not be described as adding a security or authorization property. It adds **observability of the kernel's
+own lifecycle**, nothing more.
+
+---
+
+# D8 — Density: **DEFERRED**
+
+**Taken 2026-08-23.** The last of the six Phase 7 shell surfaces B5 unlocked, and the only one that had never been put
+to the Owner at all. Recorded here alongside the other decisions of this closure workstream, the same treatment D-K3
+received.
+
+## The decision, as given
+
+> Density is **DEFERRED** for Controller V2. It is a UX preference, not a kernel or security capability. No
+> persistence, schema, API or state architecture may be created for the sole purpose of closing it.
+
+## Why it needed a decision rather than an implementation
+
+`01_ARCH` §8 Standards names it — *"User-selectable comfortable/compact. Operators live here all day; that is not a
+preference detail."* — and B5 unlocked it. It was then carried in `STATUS.md` as *"DEFERRED BY DECISION (D2, D3)"*.
+**MEASURED 2026-08-23: neither decision mentions it.** D2 governs Layout Presets, D3 governs the date range; the string
+`density` appears **zero times** across all three Owner decision records. It was an undecided item wearing a decided
+item's label.
+
+The same `STATUS.md` row gave its blocker as *"the preference store `platform_settings` provides"*. **That is also
+false, and measurably so:** `20260822_k2_platform_settings.sql` constrains
+`CHECK (scope IN ('global','hub','module'))`. There is **no `user` scope**, so the table cannot hold a per-user
+preference at all. Density's real dependency was never satisfied by K-2 and was never named correctly.
+
+So the honest position is that Controller V2 has **no actor/user preference contract**, and inventing one to render a
+two-value toggle would be the largest piece of new architecture in the entire closure workstream — added last, for the
+least consequential surface, purely to make a checklist read COMPLETE.
+
+## Conditions for return
+
+Density re-enters scope when **all three** hold, and not before:
+
+1. an official **actor/user preference contract** exists — where a per-user preference lives and who owns it;
+2. an official **persistence architecture** for user preferences exists (`platform_settings` is not it, by its own
+   CHECK constraint);
+3. the Owner decides that preference UX belongs in the Controller shell.
+
+## ⚠️ What this decision does NOT claim
+
+It does not claim Density is unnecessary, and it does not retire the `01_ARCH` §8 commitment — the architecture keeps
+saying what it says. It narrows what **Controller V2** delivers, exactly as D2 did for Layout Presets. Nothing shipped
+depends on Density: the Controller renders at a single density today and every surface is UAT-verified at it.
+
+---
+
+# D9 — Dark mode: **DEFERRED**
+
+**Taken 2026-08-23.** Same workstream, same shape, and it needs its own record because dark mode is named by **three**
+authorities rather than one.
+
+## The decision, as given
+
+> Dark mode in the Controller is **DEFERRED** for Controller V2. It is shell UX, not Controller kernel or security. No
+> theme persistence or theme-state architecture may be opened for the sole purpose of closing the Definition of Done.
+
+## The three authorities, stated so the deferral is not mistaken for an oversight
+
+| Source | What it says |
+|---|---|
+| `01_ARCH` §8 Standards | *"Dark mode — First-class, not an afterthought — operators work at night."* |
+| `FOUNDATION_01_CONTRACTS.md` §13 | names *"dark mode + responsive"* inside the UI architecture boundary — **the boundary B5 approved** |
+| `17_UI_UX_Standards.md` §7 | *"The Back Office supports light and dark mode… Implementation: Same Tailwind dark mode classes as existing app."* — **promoted to implementation authority by B5** |
+
+Deferring an item three sources name is a real narrowing of scope, and it is recorded as one. The precedent is exact:
+B5 *"unlocks the six remaining Phase 7 surfaces"*, and **D2 then deferred one of those six anyway.** An unlock is
+permission to build, not an obligation to build inside V2.
+
+## 🔑 The measured gap — narrower than "no dark mode exists", and that is why it still cannot be closed cheaply
+
+Measured on `d1ae429`, because the deferral must not imply a bigger hole than the one that is there:
+
+| Fact | Measured |
+|---|---|
+| Back-office `.dark` token block | ✅ **exists in full** — `globals.css:69-82`, every shadcn token has a dark value |
+| `darkMode: 'class'` | ✅ configured in `tailwind.config.ts` |
+| Admin components on semantic tokens | ✅ **34 of 51**; only 1 uses raw `gray-`/`white` |
+| Anything that puts `dark` on the document inside `/admin` | 🔴 **nothing.** `Header.tsx:57/77` is the only code in the repository that toggles it |
+| Does the Controller render `Header`? | 🔴 **No.** `src/app/admin/layout.tsx` renders `AdminShell` |
+
+So the tokens are ready and the surface is ready; what is missing is the **switch**, and the switch cannot simply be
+imported. `Header` is consumer-app code, and Architecture Guard rule `no-consumer-app-import-in-controller` — enforced
+in CI since 2026-08-19 — exists precisely to stop the Controller depending on it. Closing dark mode therefore means
+authoring a **theme-preference contract on the Controller side of that boundary**: where the preference lives, whether
+it is per-user or per-device, and how it is read server-side without a flash. That is the architecture this decision
+declines to open at closure time.
+
+> **A known consequence, recorded rather than discovered later.** Because `Header` sets `dark` on `<html>` and the
+> Controller shares the root layout, a client-side navigation from the consumer app with dark mode on can carry the
+> class into `/admin`. The back-office tokens would flip coherently; the 17 components not yet on semantic tokens would
+> not. **This is derived from the source, NOT runtime-measured** — reproducing it requires an authenticated
+> `@tappyai.com` session. It is a latent inconsistency, not a defect of any shipped surface, and it is a further reason
+> the switch needs a contract rather than an import.
+
+## Conditions for return
+
+1. an official **theme-preference contract** for the Controller side of the Guard rule 4 boundary;
+2. official **shell integration** for it;
+3. the Owner decides dark mode belongs in Controller shell UX.
+
+## ⚠️ What this decision does NOT claim
+
+It does not retire `01_ARCH` §8, `FOUNDATION_01` §13 or `17_UI_UX_Standards` §7 — no text is removed from any of them,
+and §8 carries a dated pointer to this decision instead. It does not claim the Controller is unusable at night; it
+claims the Controller is **light-only in V2**, deliberately, with the reason on the record.
