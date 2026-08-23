@@ -206,6 +206,16 @@ POST https://www.tappyai.com/api/admin/rbac/roles   403 (Forbidden)
 
 ### K-1 — the actor↔capability binding (2026-08-22)
 
+✅ **SHIPPED AND PRODUCTION-VERIFIED.** Merge `0ae343b` ([PR #158](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/158)), squash, one parent. Production serves `0ae343b` at **runtime**: `/api/version` returns it and the Controller Home prints it on the page. CI green on final `main`, both workflows.
+
+> **The CI evidence for this PR was re-earned rather than reused.** The first green run tested the merge against `a3049c3`; `main` then moved to `8448714` when PR #157 landed **two minutes and three seconds later**. Because this repository does not enforce `strict`, GitHub neither re-ran CI nor advanced the PR's base — measured: `refs/pull/158/merge` still had `a3049c3` as its parent, and re-running the workflow would have re-tested that same stale merge. `origin/main` was merged into the branch so GitHub would recompute the merge ref, and the checks were re-run against a ref whose parent is `8448714`. **The stale green was not used as evidence.**
+
+**Production UAT, Owner session, clean browser (`translated-ltr` absent, 0 `<font>` tags):** `/admin` and `/admin/rbac` render in **EN and VI** · **0 raw i18n keys · 0 `undefined` · 0 console errors** on a fresh load · all eight Controller paths non-5xx · `admin_roles` unchanged from the BL-002 baseline (`analyst`, `super_admin`).
+
+> ⚠️ **`Actor.capabilities` is NOT observable from production, by design.** It has **exactly one reader in the entire application** — the inert gate at `engine.ts:84` — and **no route, page or component serializes it**. No endpoint was created to observe it, and none should be. What production *does* prove is stronger than a value dump: the resolver runs inside **every** Actor construction, so if the projection threw or misbehaved, every `/admin` page would 500. They all return 200.
+>
+> 🔑 **And production demonstrates the central safety property directly.** The Platform Owner holds **no `admin_roles` row**, therefore derives **no capabilities** — yet reaches every Controller surface, via `OWNER_BYPASS`. If capabilities were an authorization input, the Owner would be locked out of their own Controller. They are not. That is the decision's core constraint, observed live rather than argued.
+
 **RESOLVED by Owner Decision [D-K1](OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived), and implemented.**
 
 K-1 was never an implementation gap. `Actor.capabilities` existed from Component 2 and was permanently empty because
