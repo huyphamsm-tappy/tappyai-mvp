@@ -128,6 +128,44 @@ export function splitToolResult(
  */
 export function createEnrichmentCollector(): EnrichmentCollector {
   const places: PlaceEnrichment[] = []
+  /** Every photo URL already claimed by an earlier entry, so no image is used twice. */
+  const claimedPhotos = new Set<string>()
+
+  /**
+   * Drops photo URLs another entry already owns.
+   *
+   * Two shopping listings from the same seller routinely carry the SAME provider image, and two
+   * venues occasionally do through a provider glitch. Rendering it under both is worse than
+   * rendering it once: it tells the reader the two entries are the same thing, which for a shopping
+   * result — where the rows genuinely differ in chip, condition and price — is exactly the false
+   * merge this pipeline must never imply. First claimant keeps it; later ones simply go without.
+   */
+  const claim = (p: PlaceEnrichment): PlaceEnrichment => {
+    // Each field is filtered in place. The shape is NOT rewritten — an entry that arrived with
+    // `photo_urls` keeps `photo_urls`, even when only one URL survives, because the stream filter
+    // and its tests read the two fields separately.
+    const take = (url: string | undefined): string | undefined => {
+      const u = (url ?? '').trim()
+      if (!u || claimedPhotos.has(u)) return undefined
+      claimedPhotos.add(u)
+      return u
+    }
+    const out: PlaceEnrichment = { ...p }
+    if (out.photo_urls) {
+      const kept = out.photo_urls.map(take).filter((u): u is string => !!u)
+      if (kept.length > 0) out.photo_urls = kept
+      else delete out.photo_urls
+    }
+    if (out.photo_url) {
+      const kept = take(out.photo_url)
+      // A `photo_url` already listed in this entry's own `photo_urls` was claimed a line ago;
+      // keeping it is correct, so only a URL claimed by a DIFFERENT entry removes it.
+      if (kept) out.photo_url = kept
+      else if (!p.photo_urls?.includes(out.photo_url)) delete out.photo_url
+    }
+    return out
+  }
+
   return {
     places,
     batchTikTokUrl: undefined as string | undefined,
@@ -137,15 +175,15 @@ export function createEnrichmentCollector(): EnrichmentCollector {
       if (url && !this.batchTikTokUrl) this.batchTikTokUrl = url
     },
     add(items) {
-      for (const p of items ?? []) {
-        const key = (p?.name || '').trim().toLowerCase()
+      for (const raw of items ?? []) {
+        const key = (raw?.name || '').trim().toLowerCase()
         if (!key) continue
         const existing = places.find(q => (q.name || '').trim().toLowerCase() === key)
         // Accumulate across EVERY place-tool call — a trip plan runs several
         // searches and each item needs its own photo. If a later call carries a
         // photo for a name we already saw without one, upgrade to it.
-        if (!existing) places.push(p)
-        else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+        if (!existing) places.push(claim(raw))
+        else if (!hasPhoto(existing) && hasPhoto(raw)) Object.assign(existing, claim(raw))
       }
     },
   }

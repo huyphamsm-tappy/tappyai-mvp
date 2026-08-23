@@ -22,7 +22,17 @@ const KOTLIN =
 const ANDROID_ASSETS = 'android/app/src/main/assets'
 const WEB_ASSETS = 'public'
 
-const source = () => readFileSync(KOTLIN, 'utf8')
+/**
+ * Reads a source file with line endings normalised.
+ *
+ * 🚨 Not cosmetic. This repo's line endings are not uniform — git checks Kotlin out as CRLF while a
+ * file written during a port arrives as LF — so a pattern ending `{\n` matched while the file was
+ * fresh and stopped matching after the next checkout. A guard that goes quiet is worse than one
+ * never written. Normalising here makes every pattern in this file line-ending agnostic.
+ */
+const read = (path: string) => readFileSync(path, 'utf8').replace(/\r\n/g, '\n')
+
+const source = () => read(KOTLIN)
 
 interface KotlinBrand {
   id: string
@@ -155,10 +165,7 @@ describe('name resolution agrees across platforms', () => {
 })
 
 describe('the Deals card walks the §8 fallback chain', () => {
-  const screen = readFileSync(
-    'android/app/src/main/java/com/tappyai/app/deals/DealsScreen.kt',
-    'utf8',
-  )
+  const screen = read('android/app/src/main/java/com/tappyai/app/deals/DealsScreen.kt')
 
   it('asks the registry first and keeps both later fallbacks', () => {
     // Order matters and is the whole contract: registry wins, then the content's own image, then
@@ -168,7 +175,9 @@ describe('the Deals card walks the §8 fallback chain', () => {
     // compared `indexOf` offsets, and a mutation that disabled the branch outright
     // (`if (false && hasBrandLogo(…))`) left every offset unchanged and sailed through — the
     // registry would never have won and the test would still have been green.
-    expect(screen).toMatch(/\n\s*if \(hasBrandLogo\(deal\.partnerName\)\) \{\n/)
+    // The exact branch text, so `if (false && hasBrandLogo(…))` — a mutation that disables the
+    // registry without moving anything — fails here rather than sailing through an offset check.
+    expect(screen).toContain('if (hasBrandLogo(deal.partnerName)) {')
     expect(screen).toMatch(/BrandLogo\(partnerName = deal\.partnerName, size = 48\.dp\)/)
 
     const registryAt = screen.indexOf('hasBrandLogo(deal.partnerName)')

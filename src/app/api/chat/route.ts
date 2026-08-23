@@ -19,6 +19,7 @@ import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative
 import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
+import { shortlistShopping } from '@/lib/ai/consultative/shortlist'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock } from '@/lib/ai/consultative/pick'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
 import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
@@ -382,14 +383,30 @@ export async function POST(req: Request) {
     // Reorder the array the model reads, by candidate identity — never by index,
     // so a normalizer that skipped a nameless entry cannot shift the mapping.
     const order = new Map(ranked.ranked.map((e, i) => [e.candidate.raw, i]))
-    const key = toolName === 'search_places' ? 'results'
-      : toolName === 'get_hotel_prices' ? 'search_results'
-        : 'shopping_results'
-    if (Array.isArray(r[key])) {
+    // 🚨 Every array a candidate could have come from, not one hardcoded name. `searchProducts`
+    // has two paths that collide on a key: when Serper /shopping answers, its structured rows land
+    // in `search_results` and there is no `shopping_results` at all. Naming only the latter meant
+    // the live shopping path was reordered by nothing.
+    const keys = toolName === 'search_places' ? ['results']
+      : toolName === 'get_hotel_prices' ? ['search_results']
+        : ['shopping_results', 'search_results']
+    for (const key of keys) {
+      if (!Array.isArray(r[key])) continue
       const rows = r[key] as unknown[]
       const kept = rows.filter(row => order.has(row))
       const untouched = rows.filter(row => !order.has(row))
-      r[key] = [...kept.sort((a, b) => (order.get(a) ?? 0) - (order.get(b) ?? 0)), ...untouched]
+      const sorted = kept.sort((a, b) => (order.get(a) ?? 0) - (order.get(b) ?? 0))
+
+      // Shopping is trimmed to the decision set; places are left whole (already capped at 8 by
+      // the tool, and each row is a genuinely distinct venue). See `shortlistShopping` for why
+      // this trims and must never group.
+      if (toolName === 'search_products') {
+        const { rows: shortlisted, totalFound } = shortlistShopping(sorted, untouched)
+        r[key] = shortlisted
+        if (totalFound !== null) r._tappy_total_found = totalFound
+      } else {
+        r[key] = [...sorted, ...untouched]
+      }
     }
 
     return { result: r, pick: derivePick(ranked, needProfile) }
