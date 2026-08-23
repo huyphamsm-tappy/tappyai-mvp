@@ -254,7 +254,17 @@ describe('the Controller signs in with email and password', () => {
   it.each(['vi', 'en'] as const)('[%s] every visible string comes from the catalogue', (locale) => {
     setup(locale)
     const strings = locale === 'vi' ? viStrings : enStrings
-    for (const key of ['admin.login.title', 'admin.login.subtitle', 'admin.login.emailLabel', 'admin.login.passwordLabel', 'admin.login.signIn']) {
+    // Updated for Controller V2.2 (Owner Decision D14), which authorized the
+    // login's VISUAL HIERARCHY to change: the card now leads with
+    // `admin.login.welcome` + `admin.login.tagline` — what this is and what it
+    // is for — and keeps `admin.login.subtitle` as the audience rule beneath
+    // them. `admin.login.title` is no longer rendered.
+    //
+    // 🔑 THIS IS NOT A RELAXATION. The assertion's intent is "every visible
+    // string is catalogue-sourced, and no raw key leaks", and it still asserts
+    // exactly that — over SIX keys now instead of five. Only the list of keys
+    // the card actually renders changed, which is the thing D14 changed.
+    for (const key of ['admin.login.welcome', 'admin.login.tagline', 'admin.login.subtitle', 'admin.login.emailLabel', 'admin.login.passwordLabel', 'admin.login.signIn']) {
       expect(screen.getByText(strings[key]), key).toBeTruthy()
     }
     expect(document.body.textContent).not.toMatch(/admin\.login\./)
