@@ -178,6 +178,38 @@ mode are listed as DEFERRED, not as done, and destructive UAT remains withheld b
 completion means is stated plainly: **the Definition of Done is met, and everything outside it is on the record with a
 reason and an end condition.**
 
+### 🔒 Closure index — every 🔴 below this point is ANSWERED (2026-08-23)
+
+This document keeps its historical entries intact by policy — *"Historical documents are deliberately not rewritten"* —
+so the dated sections further down still carry the 🔴 markers they had **on the day they were written**. Four times in
+three weeks a reader (including this workstream) treated one of those as live and re-opened a settled question. This
+index exists so that cannot happen again: **every open marker in this file is listed here with the decision that closed
+it.** If a 🔴 appears below and is not in this table, that is a defect in this table — not a new open item.
+
+| 🔴 in a dated section | Answered by | Outcome |
+|---|---|---|
+| Date range — *"needs an Owner decision"* | **D3** | ⏸️ DEFERRED — Analytics only · not persisted · page header |
+| Command Palette `act` and `search` | **D4 · D5** | ✅ COMPLETE BY DECISION — navigate-only is final for V2 |
+| Layout Presets — sequencing · semantics · RULE provenance | **D2.1 · D2.2 · D2.3** | ⏸️ DEFERRED with an end condition; §8's uncited rule set corrected as an erratum |
+| Phase 8 — next unit · first module · smallest decision set | **D7** | ⏸️ DEFERRED — no new business module enters V2 |
+| `platform_settings` — *"no DDL in `04`"* | **D1b** | ✅ `01_ARCH` §4.1 IS the schema authority; migration applied to production 2026-08-22 |
+| `module_registry` / K-8 | **D1a** | 🚫 OUT OF SCOPE — superseded by registry-in-code (applies B15) |
+| Module 17 hub · Module 20 classification | **D7** | Module 17 keeps its placement (`tappy.hub.configuration` not retired); Module 20 ratified as kernel, not built |
+| `/admin/users` — *"this is a seventh surface"* | Owner authorization, 2026-08-20 | ✅ SHIPPED and production-UAT'd; **D6** cites it as the precedent for the eighth |
+| `/org/memberships` — *"F-10 gate plus four decisions"* | Measured stale 2026-08-22 → **D6** | ✅ SHIPPED read-only; all five were resolved on 2026-08-10 |
+| Ban → session revocation | **Owner Decision A**, 2026-08-21 | ✅ SHIPPED as `df53496` — the ban permission owns the full effect |
+| `ADMIN_IDS` recipient policy | **B4** | 🚫 CLOSED AS NON-BLOCKING — notification config, not authorization |
+| Actor↔capability binding | **D-K1** | ✅ SHIPPED — role-derived; gate stays `false` |
+| *"non-no-op Event Bus"* undefined | **D-K3** | ✅ SHIPPED — kernel `controller.*` lifecycle stream |
+| **Density** | **D8** | ⏸️ DEFERRED — no actor/user preference contract exists |
+| **Dark mode** | **D9** | ⏸️ DEFERRED — needs a theme contract on the Controller side of Guard rule 4 |
+
+**Still genuinely not done, and correctly so:** destructive UAT (B8 recovery · ban/suspend · C11 revocation · M09
+moderation action) — **NOT authorized**, withheld by the Owner, not simulated. That is the only category in this file
+that is neither delivered nor deferred, and it is withheld by choice rather than blocked.
+
+---
+
 ### K-2 — the migration is applied (2026-08-22)
 
 Authorized explicitly by the Owner for **this migration only**, and applied the same day. Runbook: [`runbooks/K2_PLATFORM_SETTINGS_APPLY_PACK.md`](runbooks/K2_PLATFORM_SETTINGS_APPLY_PACK.md).
