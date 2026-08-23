@@ -151,6 +151,20 @@ an authorization one — the PDP has already run, and it never receives a depart
 
 ---
 
+## Outcome — released and accepted
+
+| | |
+|---|---|
+| **D10** fixed dark theme · **D11** derived department context · **D12/D13** SSOT capture | shipped `bdbade4` ([#164](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/164)) |
+| **Home design pass** (hierarchy · honest affordances · theme tokens) | shipped `eba35a9` ([#165](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/165)) |
+| Production | `eba35a9`, `/api/version` matching, `main` == production |
+| **Owner authenticated UAT, 2026-08-23** | ✅ **PASS on every checked item; no Home bugs found** |
+
+Evidence and the full checklist: [`STATUS.md` § Controller V2.1](STATUS.md#controller-v21--owner-uat-verified-2026-08-23).
+
+**D9 is unchanged by this outcome.** A fixed dark Controller shipped; a theme *preference* did not, and D9 stays
+deferred with its conditions for return intact.
+
 ## Consequences
 
 1. **Controller V2's Definition of Done is NOT reopened.** V2 remains COMPLETE and RELEASED at `afd18a0`.

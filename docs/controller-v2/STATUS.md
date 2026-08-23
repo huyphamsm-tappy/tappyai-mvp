@@ -36,8 +36,8 @@
 | **K-1** — actor↔capability binding | ✅ **COMPLETE · IN PRODUCTION** — Owner Decision [D-K1](OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived); merge `54c2f8a` ([#158](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/158)). `Actor.capabilities` is a **role-derived, read-only projection** — union · dedup · sorted · frozen, resolved through the same `roleMap` the PDP uses, wired at `rbac.ts:232`. No table, no API, no UI, no migration. **`CAPABILITY_GATE_ENABLED` stays `false`**, and D-K1 records why turning it on would add no boundary |
 | **K-3** — non-no-op Event Bus | ✅ **COMPLETE · IN PRODUCTION** — Owner Decision [D-K3](OWNER_DECISIONS_2026-08-22.md#d-k3--what-a-non-no-op-event-bus-means-for-controller-v2); merge `5e50e5a` ([#160](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/160)), production `d1ae429`. `createObservabilityEventSink()` is the default in `buildAdminController()`, so the kernel's seven `controller.*` lifecycle emit sites are observed instead of discarded. Failure-isolated, at-most-once, non-durable **by contract**. Not a second audit trail, not the outbox, no consumer, no producer, no migration |
 | **Shell UX — Density · Dark mode** | ⏸️ **DEFERRED BY DECISION** — [D8](OWNER_DECISIONS_2026-08-22.md#d8--density-deferred) and [D9](OWNER_DECISIONS_2026-08-22.md#d9--dark-mode-deferred), 2026-08-23. Both are `01_ARCH` §8 shell UX, neither is kernel or security, and each has explicit conditions for return. **The Controller is light-only, at one density, in V2** |
-| **Controller V2.1** — shell / presentation | 🚧 **IN PROGRESS, and it does NOT reopen the V2 DoD.** Owner decisions [D10–D13](OWNER_DECISIONS_2026-08-23.md), 2026-08-23: **D10** fixed dark Controller theme (presentation-only — **D9 stays DEFERRED**, because D9 is the *preference/switch* and D10 is the *palette*) · **D11** no department selection, context stays derived · **D12** the 2026-08-21 switcher removal captured in SSOT at last · **D13** `HomeMode` semantics captured, since no FOUNDATION-08 document exists. No DB, API, RBAC, PDP, `Actor` or authorization change |
-| **Controller V2 overall** | ✅ **COMPLETE — 2026-08-23, production `d1ae429`.** Measured against **Decision F** (full architecture), not against Decision A. Every item `01_CONTROLLER_V2_ARCHITECTURE.md` names is delivered and verified, or classified by an Owner decision with conditions for return. Class 1 (engineering) empty · class 3 (Owner decision) empty **and measured empty** · migrations applied · BL-002 accepted · K-1 and K-3 shipped · D8/D9 close the last two unclassified items. **Deferrals are not counted as deliveries** and destructive UAT remains withheld rather than performed. Final audit: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
+| **Controller V2.1** — shell / presentation | ✅ **RELEASED · OWNER UAT VERIFIED — 2026-08-23, production `eba35a9`.** It does **not** reopen the V2 DoD. Owner decisions [D10–D13](OWNER_DECISIONS_2026-08-23.md): **D10** fixed dark Controller theme (presentation-only — **D9 stays DEFERRED**, because D9 is the *preference/switch* and D10 is the *palette*) · **D11** no department selection, context stays derived · **D12** the 2026-08-21 switcher removal captured in SSOT at last · **D13** `HomeMode` semantics captured, since no FOUNDATION-08 document exists. Two PRs: [#164](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/164) `bdbade4` (theme + context) and [#165](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/165) `eba35a9` (Home design pass, **6 files, 100% under `src/components/admin/home/`**). No DB, API, RBAC, PDP, `Actor` or authorization change. See [V2.1 UAT](#controller-v21--owner-uat-verified-2026-08-23) |
+| **Controller V2 overall** | ✅ **COMPLETE — 2026-08-23**, declared on production `d1ae429` and **released at `afd18a0`**. *(Production has since advanced to `eba35a9` with V2.1; the V2 DoD is closed and was not reopened by it — the `src` tree at `afd18a0` is byte-identical to the Owner-UAT'd `d1ae429`.)* Measured against **Decision F** (full architecture), not against Decision A. Every item `01_CONTROLLER_V2_ARCHITECTURE.md` names is delivered and verified, or classified by an Owner decision with conditions for return. Class 1 (engineering) empty · class 3 (Owner decision) empty **and measured empty** · migrations applied · BL-002 accepted · K-1 and K-3 shipped · D8/D9 close the last two unclassified items. **Deferrals are not counted as deliveries** and destructive UAT remains withheld rather than performed. Final audit: [Closure](#2026-08-22--the-owner-decision-set-is-closed-and-what-it-unblocked-shipped) supersedes the [Burn-down](#master-completion-burn-down-2026-08-20) |
 
 > **Rows 3, 4 and 9a were corrected on 2026-08-07.** This table had said
 > "Component 3 — READY TO START · NOT STARTED" since 2026-08-04 while all three
@@ -179,6 +179,63 @@ mode are listed as DEFERRED, not as done, and destructive UAT remains withheld b
 completion means is stated plainly: **the Definition of Done is met, and everything outside it is on the record with a
 reason and an end condition.**
 
+## Controller V2.1 — OWNER UAT VERIFIED (2026-08-23)
+
+Production **`eba35a9`**, `/api/version` returning the same SHA — so the UAT below was performed on the build this
+section describes, not a cached one. `main` == production, no drift.
+
+| Shipped | Commit |
+|---|---|
+| **D10** fixed dark Controller theme · **D11** derived department context · **D12/D13** SSOT capture | [#164](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/164) → `bdbade4` |
+| **Home design pass** — hierarchy, honest affordances, theme tokens | [#165](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/165) → `eba35a9` |
+
+**Scope, measured rather than asserted:** the Home commit touches **6 files and 0 outside
+`src/components/admin/home/`**; the squash's six blobs were compared byte-for-byte against the reviewed PR head and are
+identical. No module page, API, migration, RBAC/PDP, `Actor`, `ControllerCore` or department-authorization change.
+
+### Owner authenticated UAT — PASS
+
+| Checked | Result |
+|---|---|
+| Controller Home renders | ✅ PASS |
+| Dark theme, no stray light panels | ✅ PASS |
+| Command Center header + context | ✅ PASS |
+| Department presentation | ✅ PASS |
+| Platform Health placement / layout | ✅ PASS |
+| Department cards **display-only** | ✅ PASS |
+| Quick Actions | ✅ PASS |
+| EN + VI | ✅ PASS |
+| Responsive / basic layout | ✅ PASS |
+| **Home bugs found** | **none** |
+
+### Automated gates on the released build
+
+`tsc` 0 · ESLint exit 0 · Architecture Guard 11/11 · registry + controller suites 273 passing · `next build` exit 0 ·
+full suite **7432 passed** · CI green on **both** workflow events for `bdbade4` and `eba35a9` · merge-ref parent¹
+verified equal to `origin/main` before each merge.
+
+> ⚠️ **What the Owner's UAT closed, and why it was needed.** This workstream could verify tokens, contrast, source and
+> the one publicly reachable `.admin-theme` surface (`/access-denied`), but **held no `@tappyai.com` session and the
+> Vercel preview is behind Vercel auth** — so 11 of the 12 Controller surfaces and the whole authenticated Home were
+> **NOT MEASURED** by it. The Owner's session is what turned that into evidence. Module 04 is the standing reason this
+> distinction is kept: it shipped with unit, mutation and CI evidence and was broken for every operator who opened it.
+
+### One design defect the UAT chain caught, recorded because of how it was found
+
+The Owner reported that department cards "did not respond to clicks". The audit found they were **never** clickable —
+correct per D11 — **but carried `hover:border-interactive/30` and a `group` class, so they lit up under the pointer.**
+A non-interactive element that reacts to hover promises something it cannot deliver, and that promise is what produced
+the report. The hover affordance was removed and a test now keeps it removed; the emphasis rail stays, because it marks
+a department that *owns modules* — state, not an invitation.
+
+### DEFERRED by this workstream — carried forward, untouched
+
+`/admin/analytics` still hard-codes `bg-gray-950`, and `DealsManager` carries 31 hard-coded colours with `dark:`
+variants (which now resolve, since V2.1 pairs the `dark` class). **Both are module pages and out of the Home-only
+scope.** Neither is a V2 or V2.1 Definition-of-Done item.
+
+---
+
 ### 🔒 Closure index — every 🔴 below this point is ANSWERED (2026-08-23)
 
 This document keeps its historical entries intact by policy — *"Historical documents are deliberately not rewritten"* —
@@ -203,7 +260,8 @@ it.** If a 🔴 appears below and is not in this table, that is a defect in this
 | Actor↔capability binding | **D-K1** | ✅ SHIPPED — role-derived; gate stays `false` |
 | *"non-no-op Event Bus"* undefined | **D-K3** | ✅ SHIPPED — kernel `controller.*` lifecycle stream |
 | **Density** | **D8** | ⏸️ DEFERRED — no actor/user preference contract exists |
-| **Dark mode** | **D9** | ⏸️ DEFERRED — needs a theme contract on the Controller side of Guard rule 4 |
+| **Dark mode** (user-selectable *preference / switch*) | **D9** | ⏸️ **still DEFERRED** — needs a theme-preference contract on the Controller side of Guard rule 4 |
+| Controller *appearance* — fixed dark **theme** | **D10** (V2.1) | ✅ **SHIPPED** `bdbade4`. Not the same item as D9: D10 is the **palette**, D9 is the **switch**. The Controller is dark with **no** toggle, preference, persistence or `prefers-color-scheme` |
 
 **Still genuinely not done, and correctly so:** destructive UAT (B8 recovery · ban/suspend · C11 revocation · M09
 moderation action) — **NOT authorized**, withheld by the Owner, not simulated. That is the only category in this file
