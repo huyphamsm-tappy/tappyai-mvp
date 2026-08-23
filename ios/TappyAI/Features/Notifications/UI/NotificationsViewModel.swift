@@ -7,19 +7,26 @@ final class NotificationsViewModel: AppObservableObject {
 
     @AppPublished var state: LoadState = .idle
     @AppPublished var items: [NotificationDTO] = []
-    @AppPublished var unreadCount: Int = 0
 
     private let service: NotificationsService
     private let supabase: SupabaseClient
     private let userId: String?
+    /// The app-scoped owner of the unread count. This view model deliberately keeps no copy of its
+    /// own: a badge and a screen disagreeing is exactly what a second count produces. Views that
+    /// need the number read `UnreadNotificationsStore` from the environment.
+    private let unread: UnreadNotificationsStore
     private let log = AppLogger.app
     private var realtimeTask: Task<Void, Never>?
     private var refetchDebounce: Task<Void, Never>?
 
-    init(service: NotificationsService, supabase: SupabaseClient, userId: String?) {
+    init(service: NotificationsService,
+         supabase: SupabaseClient,
+         userId: String?,
+         unread: UnreadNotificationsStore) {
         self.service = service
         self.supabase = supabase
         self.userId = userId
+        self.unread = unread
     }
 
     func load() async {
@@ -27,7 +34,9 @@ final class NotificationsViewModel: AppObservableObject {
         do {
             let response = try await service.fetchNotifications()
             items = response.notifications
-            unreadCount = response.unreadCount
+            // The inbox has just paid for an authoritative count — hand it to the badge rather
+            // than making the store fetch the same endpoint again.
+            unread.apply(unreadCount: response.unreadCount)
             state = .loaded
         } catch {
             state = Task.isCancelled ? .idle : .failed
@@ -41,6 +50,10 @@ final class NotificationsViewModel: AppObservableObject {
         Task {
             do {
                 try await service.markRead()
+                // Clear before the refetch so the badge drops the moment the server accepted it,
+                // rather than lingering for the round trip. `load()` then reconciles both the rows
+                // and the count against the server's answer.
+                unread.clear()
                 await load()
             } catch {
                 log.error("mark-all-read failed: \(error)")

@@ -21,6 +21,9 @@ final class AppDependencies: AppObservableObject {
     let authRepository: AuthRepository
     let configService: AppConfigService
     let notificationManager: NotificationManager
+    /// Injected into the environment on its own (see `TappyAIApp`) — reaching it through `deps`
+    /// inside a `body` would not re-render the view that reads it.
+    let unreadNotifications: UnreadNotificationsStore
 
     init(env: AppEnvironment = .current) {
         self.env = env
@@ -52,6 +55,7 @@ final class AppDependencies: AppObservableObject {
         self.entitlements = ServerEntitlementService(api: api)
         self.paymentProvider = StoreKitProvider(api: api)
         self.notificationManager = NotificationManager(api: api, deepLinks: deepLinks, router: router)
+        self.unreadNotifications = UnreadNotificationsStore(service: NotificationsService(api: api))
 
         // Auth feature wiring (Phase 1).
         let webAuth = WebAuthenticator()

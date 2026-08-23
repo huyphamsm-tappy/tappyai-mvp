@@ -6,6 +6,9 @@ import SwiftUI
 struct NotificationsInboxView: View {
     let deps: AppDependencies
     @AppEnvironmentState private var router: AppRouter
+    /// The unread count is read from the app-scoped store, not from the view model — one number,
+    /// one owner, and this view re-renders when the badge does.
+    @AppEnvironmentState private var unreadNotifications: UnreadNotificationsStore
     @AppStateObject private var vm: NotificationsViewModel
 
     init(deps: AppDependencies) {
@@ -13,7 +16,8 @@ struct NotificationsInboxView: View {
         _vm = AppStateObject(wrappedValue: NotificationsViewModel(
             service: NotificationsService(api: deps.api),
             supabase: deps.supabase,
-            userId: deps.session.userId
+            userId: deps.session.userId,
+            unread: deps.unreadNotifications
         ))
     }
 
@@ -41,7 +45,7 @@ struct NotificationsInboxView: View {
         .navigationTitle(NSLocalizedString("notif.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if vm.unreadCount > 0 {
+            if unreadNotifications.unreadCount > 0 {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(NSLocalizedString("notif.markAllRead", comment: "")) { vm.markAllRead() }
                         .font(.system(size: 13, weight: .medium))

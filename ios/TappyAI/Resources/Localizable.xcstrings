@@ -13437,6 +13437,23 @@
         }
       }
     },
+    "tool.music": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Music"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Âm nhạc"
+          }
+        }
+      }
+    },
     "tool.scamShield": {
       "extractionState": "manual",
       "localizations": {

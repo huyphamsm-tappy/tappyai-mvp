@@ -10,6 +10,9 @@ struct PlaceholderShellView: View {
     @AppEnvironmentState private var deps: AppDependencies
     @AppEnvironmentState private var session: SessionStore
     @AppEnvironmentState private var router: AppRouter
+    /// Read as its own environment object so the tab bar re-renders when the count changes.
+    /// `deps.unreadNotifications` would compile here and never update — see the store's own note.
+    @AppEnvironmentState private var unreadNotifications: UnreadNotificationsStore
 
     @State private var showAuth = false
     @State private var showSignOut = false
@@ -62,14 +65,31 @@ struct PlaceholderShellView: View {
                         }
                 }
                 .tabItem { Label(LocalizedStringKey(tab.titleKey), systemImage: tab.systemImage) }
+                // The inbox lives under Profile (`ProfileDestination.notificationsInbox`), so the
+                // badge goes on the tab that reaches it — web puts it on the tab hosting its own
+                // inbox for the same reason. `.badge("")` would still draw a dot, so an empty
+                // count must yield `nil`, not an empty string.
+                .badge(unreadBadgeText(for: tab))
                 .tag(tab)
             }
         }
         .fullScreenCover(isPresented: $showAuth) {
-            AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
+            AuthFlowView(repo: deps.authRepository, config: deps.configService) {
+                showAuth = false
+                // Signing in happens without the scene ever leaving `.active`, so the badge would
+                // otherwise stay at zero until the next foregrounding.
+                Task { await unreadNotifications.refresh() }
+            }
         }
         .confirmationDialog(NSLocalizedString("account.title", comment: ""), isPresented: $showSignOut, titleVisibility: .visible) {
-            Button(NSLocalizedString("auth.signOut", comment: ""), role: .destructive) { Task { await deps.authRepository.signOut() } }
+            Button(NSLocalizedString("auth.signOut", comment: ""), role: .destructive) {
+                Task {
+                    await deps.authRepository.signOut()
+                    // Same reason in reverse: no scene transition, and the departing account's
+                    // count must not stay on the tab bar for whoever signs in next.
+                    unreadNotifications.clear()
+                }
+            }
             Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
         }
         #if DEBUG
@@ -77,6 +97,16 @@ struct PlaceholderShellView: View {
             NavigationStack { FoundationDiagnosticsView() }
         }
         #endif
+    }
+
+    /// Badge text for one tab, or `nil` for no badge at all.
+    ///
+    /// Capped at "99+" to match web's `BottomNav`; an uncapped four-digit count would widen the
+    /// badge past the tab item. Returning `nil` rather than `""` matters: SwiftUI still renders a
+    /// dot for an empty string, so a user with nothing unread would see a permanent marker.
+    private func unreadBadgeText(for tab: AppTab) -> String? {
+        guard tab == .profile, unreadNotifications.unreadCount > 0 else { return nil }
+        return unreadNotifications.unreadCount > 99 ? "99+" : "\(unreadNotifications.unreadCount)"
     }
 
     @ViewBuilder
@@ -102,6 +132,8 @@ struct PlaceholderShellView: View {
                         SplitBillView()
                     case .fortune:
                         FortuneHubView(deps: deps)
+                    case .musicLibrary:
+                        MusicLibraryView(deps: deps)
                     case .recommendations:
                         RecommendationsView(deps: deps)
                     case .serviceDetail(let service):

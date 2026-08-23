@@ -74,6 +74,12 @@ Legend: **Anon** = usable logged-out · **Auth** = requires login · **Server** 
 ## E. Music ecosystem
 
 - [ ] Sound library `/music`: browse, search (diacritic-sensitive), categories, trending, providers
+  - iOS: the screen and its view model were complete and fully translated, but **nothing referenced
+    them** — there was no `HomeDestination` case, no Home tile and no shell registration, so the
+    library could not be opened from anywhere in the app. Entry point added via the Home tools grid
+    (`tool.music`), matching web's `/music` and Android's `MusicRoute`. Boxes in this document are
+    parity targets from the 2026-07-10 audit and are left unticked throughout, so this is recorded
+    as a note rather than a tick.
 - [ ] Client reads catalog directly via anon-key (`musicService.*`), APIs exist in parallel
 - [ ] Sound detail `/sound/[trackId]`: spinning disc, play, play-counter increment (RPC), "N video" count derived from `reviews`
 - [ ] Save sound / Follow sound (counts via RPC) — **Auth**

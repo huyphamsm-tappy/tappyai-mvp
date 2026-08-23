@@ -6,7 +6,6 @@ struct MusicLibraryView: View {
     @StateObject private var audioPlayer = MusicAudioPlayer()
     @State private var showUpload = false
     @State private var soundPageTrackId: String?
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
 
     private let deps: AppDependencies
@@ -17,56 +16,46 @@ struct MusicLibraryView: View {
         _vm = AppStateObject(wrappedValue: MusicLibraryViewModel(service: service))
     }
 
+    /// Pushed onto the Home stack, so it does NOT wrap itself in a `NavigationStack` — every other
+    /// `HomeDestination` view (Currency, Scan, Scam Shield, Split bill, Fortune, Favorites,
+    /// Recommendations) relies on the shell's stack the same way. Nesting a second stack here would
+    /// render two navigation bars and break the swipe-back gesture. The hand-rolled "back to Home"
+    /// toolbar button went with it: the system back item now does that job, and the audio it used
+    /// to stop is already stopped by `.onDisappear` below.
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                searchBar
-                if !vm.isSearching {
-                    categoryTabs
-                }
-                trackList
+        VStack(spacing: 0) {
+            searchBar
+            if !vm.isSearching {
+                categoryTabs
             }
-            .background(TappyColor.background)
-            .navigationTitle(NSLocalizedString("music.library.title", comment: ""))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        audioPlayer.stop()
-                        dismiss()
-                    } label: {
-                        HStack(spacing: 2) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 14, weight: .semibold))
-                            Text(NSLocalizedString("tab.home.label", comment: ""))
-                                .font(.system(size: 14, weight: .medium))
-                        }
-                        .foregroundStyle(TappyColor.primary)
+            trackList
+        }
+        .background(TappyColor.background)
+        .navigationTitle(NSLocalizedString("music.library.title", comment: ""))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    showUpload = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.system(size: 14))
+                        Text(NSLocalizedString("music.library.upload", comment: ""))
+                            .font(.system(size: 14, weight: .medium))
                     }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showUpload = true
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: 14))
-                            Text(NSLocalizedString("music.library.upload", comment: ""))
-                                .font(.system(size: 14, weight: .medium))
-                        }
-                        .foregroundStyle(TappyColor.primary)
-                    }
+                    .foregroundStyle(TappyColor.primary)
                 }
             }
-            .sheet(isPresented: $showUpload) {
-                MusicUploadView(deps: deps) { trackId in
-                    soundPageTrackId = trackId
-                }
+        }
+        .sheet(isPresented: $showUpload) {
+            MusicUploadView(deps: deps) { trackId in
+                soundPageTrackId = trackId
             }
-            .sheet(item: soundPageBinding) { wrapper in
-                NavigationStack {
-                    SoundPageView(trackId: wrapper.id, deps: deps)
-                }
+        }
+        .sheet(item: soundPageBinding) { wrapper in
+            NavigationStack {
+                SoundPageView(trackId: wrapper.id, deps: deps)
             }
         }
         .onAppear {

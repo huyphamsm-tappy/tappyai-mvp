@@ -99,6 +99,10 @@ struct HomeQuickActionsSection: View {
         ("pencil.line", NSLocalizedString("tool.vietContent", comment: ""), .vietContent),
         ("divide.circle", NSLocalizedString("tool.splitBill", comment: ""), .splitBill),
         ("sparkles", NSLocalizedString("tool.fortune", comment: ""), .fortune),
+        // The sound library had no entry point on iOS at all — the screen existed and was fully
+        // translated, but nothing referenced it. Web reaches it from `/music`, Android from
+        // `MusicRoute`; this tile is the iOS equivalent.
+        ("music.note.list", NSLocalizedString("tool.music", comment: ""), .musicLibrary),
     ]
 
     var body: some View {
