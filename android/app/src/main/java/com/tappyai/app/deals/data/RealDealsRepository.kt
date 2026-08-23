@@ -28,4 +28,12 @@ class RealDealsRepository @Inject constructor(
 
     override suspend fun getDeals(): NetworkResult<List<Deal>> =
         safeApiCall { api.getDeals(languageTag()).deals.map { it.toDomain() } }
+
+    // Deliberately NOT safeApiCall: that maps failures into a NetworkResult the caller is expected
+    // to react to, and there is nothing to react to here. The counter is best-effort and must never
+    // reach the UI or delay the link — same posture as the web's `.catch(() => {})` and as the route
+    // itself, which swallows its own errors and still answers 200.
+    override suspend fun recordClick(dealId: String) {
+        runCatching { api.postDealClick(dealId) }
+    }
 }

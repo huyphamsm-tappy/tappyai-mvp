@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.history.Conversation
 import com.tappyai.app.history.data.ChatHistoryRepository
-import com.tappyai.app.language.AppLanguage
-import com.tappyai.app.language.LanguageManager
 import com.tappyai.core.common.ClockProvider
 import com.tappyai.core.common.UiState
 import com.tappyai.core.network.NetworkResult
@@ -33,18 +31,38 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    clock: ClockProvider,
-    languageManager: LanguageManager,
+    private val clock: ClockProvider,
+    // No LanguageManager. Home deliberately does not consult the language store at all any more —
+    // the caller passes the language Android's resource system already resolved, which is the only
+    // way the greeting and the strings around it are guaranteed to agree.
     private val chatHistoryRepository: ChatHistoryRepository,
 ) : ViewModel() {
 
-    val greeting: String = run {
+    /**
+     * The hero greeting, for the language the CALLER is rendering in.
+     *
+     * 🚨 [english] is a parameter, and this is a function rather than the cached `val` it used to
+     * be. Both of those are the fix for a real, device-reproduced defect, so please do not fold it
+     * back into a property:
+     *
+     * It used to read `languageManager.current` once, in the constructor. Every other string on
+     * this screen comes from a string resource, which Android re-resolves on a configuration
+     * change — but below API 33 a language switch does NOT recreate the ViewModel. So after
+     * switching language the hero rendered the new language's "Hi there 👋" eyebrow directly above
+     * a greeting still in the old language, and stayed that way until the next force stop. The
+     * caller passes `booleanResource(R.bool.resources_are_english)`, which is the same authority
+     * that chose the surrounding strings, so the two can no longer disagree.
+     *
+     * Reading the clock here rather than in the constructor also means the greeting follows the
+     * time of day within a long-lived session instead of being pinned to when Home was first built.
+     */
+    fun greeting(english: Boolean): String {
         val now = Instant.ofEpochMilli(clock.nowMillis()).atZone(ZoneId.systemDefault())
-        HomeGreeting.heroText(
+        return HomeGreeting.heroText(
             hour = now.hour,
             isWeekend = now.dayOfWeek == DayOfWeek.SATURDAY || now.dayOfWeek == DayOfWeek.SUNDAY,
             dayOfMonth = now.dayOfMonth,
-            english = languageManager.current == AppLanguage.English,
+            english = english,
         )
     }
 

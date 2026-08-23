@@ -6,7 +6,15 @@ import com.tappyai.core.network.NetworkResult
 /** Abstraction over the deals backend. The ViewModel depends on this and the domain [Deal]
  *  only — never on Retrofit/OkHttp or the DTO. */
 interface DealsRepository {
-    /** The current daily-rotating deal pool (same for every user, reshuffled once per day
-     *  server-side — see `getShopeeDeals()`). */
+    /**
+     * The current active partner-deal pool (admin-managed `partner_deals`, filtered and ordered
+     * server-side).
+     *
+     * Was documented as a "daily-rotating pool ... see `getShopeeDeals()`" — that function and the
+     * hardcoded pool it described are gone; the feed has been admin-managed for some time.
+     */
     suspend fun getDeals(): NetworkResult<List<Deal>>
+
+    /** Records a click on [dealId] (popularity counter). Best-effort: never surfaces failures. */
+    suspend fun recordClick(dealId: String)
 }

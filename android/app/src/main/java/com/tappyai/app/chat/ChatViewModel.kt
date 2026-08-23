@@ -139,21 +139,32 @@ class ChatViewModel @Inject constructor(
     private val _dynamicPrompts = MutableStateFlow<List<String>>(emptyList())
     val dynamicPrompts: StateFlow<List<String>> = _dynamicPrompts.asStateFlow()
 
-    init {
-        // The general-category welcome shows dynamic, time/memory-aware prompts (the web's
-        // /api/suggested-prompts); specific categories keep their static starter prompts. Best-effort
-        // — a failure leaves the static fallback in place.
-        if (category == ChatCategory.General) {
-            viewModelScope.launch {
-                val english = languageManager.current == AppLanguage.English
-                when (val result = suggestedPromptsRepository.getPrompts(english)) {
-                    is NetworkResult.Success -> _dynamicPrompts.value = result.data
-                    is NetworkResult.Error ->
-                        logger.e("ChatViewModel", "Suggested prompts load failed: ${result.error}")
-                }
+    /**
+     * Loads the general-category welcome's dynamic, time/memory-aware prompts (the web's
+     * /api/suggested-prompts); specific categories keep their static starter prompts. Best-effort —
+     * a failure leaves the static fallback in place.
+     *
+     * 🚨 [english] is a parameter, and this is called from the screen rather than from `init`. Both
+     * are deliberate. It used to read `languageManager.current` inside `init`, which fixes the
+     * language at the moment the ViewModel is built — and below API 33 a language switch
+     * re-resolves resources without recreating the ViewModel, so the welcome kept offering prompts
+     * in the language the user had just left. The Home hero had the identical defect and was the
+     * one the owner reported. The caller passes `booleanResource(R.bool.resources_are_english)` and
+     * re-invokes on change, so the prompts follow the language the screen is actually rendering.
+     */
+    fun loadDynamicPrompts(english: Boolean) {
+        if (category != ChatCategory.General) return
+        promptsJob?.cancel()
+        promptsJob = viewModelScope.launch {
+            when (val result = suggestedPromptsRepository.getPrompts(english)) {
+                is NetworkResult.Success -> _dynamicPrompts.value = result.data
+                is NetworkResult.Error ->
+                    logger.e("ChatViewModel", "Suggested prompts load failed: ${result.error}")
             }
         }
     }
+
+    private var promptsJob: Job? = null
 
     private var nextId = 0L
     private var respondingJob: Job? = null

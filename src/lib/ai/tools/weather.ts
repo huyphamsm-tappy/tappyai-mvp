@@ -1,13 +1,14 @@
 import { getCache, setCache } from './common'
 import { messages } from '@/lib/ai/messages'
 import { goldCacheKey, weatherCacheKey, weatherPlaceResolution } from './cacheKeys'
+import { CITY_MATCH_RADIUS_KM, haversineKm, isSameCity } from './vietnamCities'
 
 // ===== WEATHER: wttr.in (free, no API key) =====
 export async function getWeather(location: string, lang = 'vi') {
   // Resolve BEFORE keying: wttr.in is called for the canonical city, so every
   // spelling that resolves to it ("Hà Nội", "ha noi", "HN") is one upstream call
   // and must share one entry. It used to be three keys for one result.
-  const { query: place, expectedCountry } = weatherPlaceResolution(location)
+  const { query: place, expectedCountry, expectedCoords } = weatherPlaceResolution(location)
   const cacheKey = weatherCacheKey(location, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -44,20 +45,48 @@ export async function getWeather(location: string, lang = 'vi') {
     // Tokyo), where any country is legitimate, and a missing `nearest_area` is not evidence of
     // anything — the provider is intermittently flaky, and refusing on absent metadata would
     // turn a hiccup into an outage.
-    const resolvedCountry: string | null = data.nearest_area?.[0]?.country?.[0]?.value ?? null
-    if (expectedCountry && resolvedCountry && resolvedCountry !== expectedCountry) {
+    // TWO CHECKS, because the first one is not enough:
+    //
+    //   COUNTRY   caught "Da Nang" -> Karlsruhe, Germany.
+    //   DISTANCE  catches "Hue, Vietnam" -> Ban Hong, Vietnam — right country, 364 km inland,
+    //             26°C for a city that was 35°C. A country check waves that straight through,
+    //             and it is the same class of defect: silently the wrong place.
+    //
+    // 🔑 Neither check compares NAMES, deliberately. The provider legitimately answers with a
+    // ward rather than the city ("Hao Nam" for Hanoi, "Đa Kao" for Ho Chi Minh City, "Kim Long"
+    // for Hue), so requiring the returned name to match the requested one would reject correct
+    // answers constantly. Where the answer is decides it; what it is called does not.
+    const area = data.nearest_area?.[0]
+    const resolvedCountry: string | null = area?.country?.[0]?.value ?? null
+    const lat = Number(area?.latitude)
+    const lon = Number(area?.longitude)
+    const resolvedCoords: [number, number] | null =
+      Number.isFinite(lat) && Number.isFinite(lon) ? [lat, lon] : null
+
+    const wrongCountry = Boolean(expectedCountry && resolvedCountry && resolvedCountry !== expectedCountry)
+    const wrongPlace = Boolean(
+      expectedCoords && resolvedCoords && !isSameCity(expectedCoords, resolvedCoords),
+    )
+
+    if (wrongCountry || wrongPlace) {
       console.error(JSON.stringify({
-        type: 'tappyai_weather_country_mismatch',
-        requested: location, sent: place, expectedCountry, resolvedCountry,
-        resolvedArea: data.nearest_area?.[0]?.areaName?.[0]?.value ?? null,
+        type: 'tappyai_weather_location_mismatch',
+        reason: wrongCountry ? 'country' : 'distance',
+        requested: location, sent: place,
+        expectedCountry, resolvedCountry,
+        expectedCoords, resolvedCoords,
+        distanceKm: expectedCoords && resolvedCoords
+          ? Math.round(haversineKm(expectedCoords, resolvedCoords)) : null,
+        radiusKm: CITY_MATCH_RADIUS_KM,
+        resolvedArea: area?.areaName?.[0]?.value ?? null,
       }))
-      throw new Error('country mismatch')
+      throw new Error(wrongCountry ? 'country mismatch' : 'location mismatch')
     }
 
     result = {
       location: data.nearest_area?.[0]?.areaName?.[0]?.value || place,
-      // Returned so the answer can never claim a place it did not come from. The guard above
-      // stops the known-wrong case; this keeps the honest case attributable.
+      // Returned so the answer can never claim a place it did not come from. The guards above
+      // stop the known-wrong cases; this keeps the honest case attributable.
       country: resolvedCountry,
       temp_C: cur.temp_C,
       feels_like_C: cur.FeelsLikeC,

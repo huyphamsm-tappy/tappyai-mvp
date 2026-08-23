@@ -71,6 +71,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -145,7 +146,13 @@ fun HomeScreen(
             // Section order mirrors the web Home (HomeView.tsx): hero (gradient card w/ greeting +
             // embedded search) → categories → fortune → scan → Tappy Together → recommendations+
             // music → tools → content writer → suggestions → recent.
-            HomeHero(greeting = viewModel.greeting, onOpenChat = { onNavigateToTab(HomeTab.Chat) })
+            // The greeting's language comes from the resolved resources, not from the language
+            // store, so it cannot drift out of step with the strings beside it — see
+            // [HomeViewModel.greeting]. Reading it here also means a language switch recomposes it.
+            HomeHero(
+                greeting = viewModel.greeting(booleanResource(R.bool.resources_are_english)),
+                onOpenChat = { onNavigateToTab(HomeTab.Chat) },
+            )
             CategoryChipsSection(onOpenCategory = onOpenChatWithCategory)
             FortuneSection(
                 onOpenTarot = onOpenTarot,

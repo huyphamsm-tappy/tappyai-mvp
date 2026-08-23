@@ -1,0 +1,18 @@
+<resources>
+    <!--
+      Whether the resources Android has actually resolved for this configuration are the English
+      set. `values/` is the default set and is English, so this is true here and false in
+      `values-vi/`.
+
+      This exists so that Kotlin-side content which has to pick a language (the Home hero greeting
+      is generated from templates, not from a string resource) asks the SAME authority that chose
+      the surrounding strings, instead of asking the language store separately and hoping the two
+      agree. They did not: `HomeViewModel` read `LanguageManager.current` once in its constructor,
+      and on API < 33 a language switch re-resolves resources without recreating the ViewModel — so
+      the hero rendered "Hi there 👋" above a Vietnamese greeting until the next force stop.
+
+      Read it with `booleanResource(R.bool.resources_are_english)` inside a composable, never
+      through a ViewModel: the point is that it is re-read on configuration change.
+    -->
+    <bool name="resources_are_english">true</bool>
+</resources>

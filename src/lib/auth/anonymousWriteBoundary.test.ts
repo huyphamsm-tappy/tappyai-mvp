@@ -61,7 +61,17 @@ const EXEMPT: Record<string, string> = {
   'onboarding': 'runs before an account exists, by design',
   'favorites': "the visitor's own saved places; private",
   'bookings': "the visitor's own bookings; private",
-  'price-watch': "the visitor's own price watches; private",
+  // 'price-watch' WAS here, on the same "private, self-scoped" reasoning as its neighbours.
+  //
+  // 🚨 That reasoning was true and insufficient. Privacy is one axis; recurring cost is another,
+  // and this list already knows it — see the group below, whose whole justification is "each
+  // carries its own cost control". Every other entry above is an inert row: a favourite, a
+  // booking, a preference sits in the database and costs nothing until its owner looks at it.
+  // A price watch is picked up by `/api/cron/price-check` every day and spends a paid search plus
+  // a paid model call on the visitor's behalf, indefinitely.
+  //
+  // It is now guarded, so it must NOT stay listed here: an exemption that sits next to a working
+  // guard is a loaded gun. Delete the guard and this line would silently make it legal again.
   'profile': 'self-scoped; an anonymous row is the visitor’s own and is claimed later',
   'notifications/subscribe': 'device push token registration, self-scoped',
   'notifications/read': 'marks the caller’s own notifications read, self-scoped',
