@@ -474,6 +474,11 @@ export const vi: Record<string, string> = {
   // is untouched and still serves every other visitor.
   'admin.login.title': 'Đăng nhập Controller',
   'admin.login.subtitle': 'Chỉ dành cho hòm thư @tappyai.com đã được xác minh.',
+  'admin.login.welcome': 'Chào mừng đến với Controller',
+  'admin.login.tagline': 'Trung tâm điều hành doanh nghiệp của bạn',
+  'admin.chooser.title': 'Chọn không gian làm việc',
+  'admin.chooser.subtitle': 'Chọn phòng ban bạn muốn làm việc.',
+  'admin.chooser.enter': 'Vào không gian làm việc',
   'admin.login.emailLabel': 'Email công ty',
   'admin.login.emailPlaceholder': 'ten@tappyai.com',
   'admin.login.passwordLabel': 'Mật khẩu',
@@ -980,6 +985,11 @@ export const en: Record<string, string> = {
   // Controller sign-in card — see the Vietnamese block for the scoping rule.
   'admin.login.title': 'Sign in to Controller',
   'admin.login.subtitle': 'For verified @tappyai.com mailboxes only.',
+  'admin.login.welcome': 'Welcome to Controller',
+  'admin.login.tagline': 'Your enterprise command center',
+  'admin.chooser.title': 'Choose your workspace',
+  'admin.chooser.subtitle': 'Select the department you want to work in.',
+  'admin.chooser.enter': 'Enter workspace',
   'admin.login.emailLabel': 'Corporate email',
   'admin.login.emailPlaceholder': 'you@tappyai.com',
   'admin.login.passwordLabel': 'Password',

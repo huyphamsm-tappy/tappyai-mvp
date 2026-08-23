@@ -9,6 +9,8 @@ import { ControllerHome } from '@/components/admin/home/ControllerHome'
 import type { ControllerHomeData, HomeAuditEvent } from '@/components/admin/home/types'
 import { homeMode, departmentSummaries } from '@/lib/controller/org'
 import { resolveDepartmentContext } from '@/lib/controller/org/server'
+import { resolveEntryContext } from '@/lib/controller/org/entryContext'
+import { WorkspaceChooser } from '@/components/controller/WorkspaceChooser'
 import { fetchHomeKpis } from '@/lib/admin/analytics/homeSnapshotService'
 import { vnToday } from '@/lib/config/product'
 
@@ -19,7 +21,7 @@ import { vnToday } from '@/lib/config/product'
 // registry + PDP (deriveNavigation), and PDP-GATED signals/attention. A field is
 // only populated if the actor is authorized — otherwise it is null (rendered as
 // "restricted"/"—"), never fabricated. No new authorization or audit path.
-export default async function AdminHomePage() {
+export default async function AdminHomePage({ searchParams }: { searchParams?: { dept?: string | string[] } }) {
   // The `deniedRedirect: '/reviews'` override is gone, and deliberately so: the
   // default used to be '/admin', which for THIS page was the redirect loop. B5
   // changed the default to the denial page, which is outside the Controller — so
@@ -104,6 +106,47 @@ export default async function AdminHomePage() {
   // Owner → all 15 (enterprise grid); department user → ONLY their departments
   // (isolation, server-enforced); none → []. Registry-derived, never fabricated.
   const departments = departmentSummaries(deptContext)
+
+  // ── V2.2 ENTRY CONTEXT (Owner Decision D14) ────────────────────────────────
+  //
+  // `?dept=` is PRESENTATION CONTEXT. It is validated against the actor's own
+  // active memberships and can only ever narrow what they already had; it
+  // reaches no authorization path, `Actor` gains no department field, and every
+  // page and API below still runs `requirePermission()`. An invalid, unknown,
+  // hostile or someone-else's id FAILS CLOSED — back to the question, never
+  // into a workspace.
+  //
+  // The URL is the ONLY storage D14 permits: no cookie, no localStorage, no
+  // preference row, no `active_department`. Refresh survives because the URL
+  // does, and nothing is written anywhere.
+  //
+  // ⚠️ SIDEBAR IS DELIBERATELY NOT SCOPED BY THIS, and that is an accepted V2.2
+  // limitation rather than an oversight: App Router layouts do not receive
+  // `searchParams`, and `admin/layout.tsx` is where nav filtering lives. Making
+  // it react would need middleware or injected headers, which D14 forbids. So
+  // the sidebar stays derived from the actor's full authorized membership set —
+  // it must NOT be described as "selected-department scoped".
+  const entry = resolveEntryContext(deptContext, typeof searchParams?.dept === 'string' ? searchParams.dept : undefined)
+
+  if (entry.kind === 'choose') {
+    // Only reachable for an actor with 2+ active memberships who has not yet
+    // chosen (or asked for one they do not hold). `departments` is already
+    // scope-filtered, so the options cannot name a department they lack.
+    return (
+      <WorkspaceChooser
+        departments={departments
+          .filter((d) => (entry.choosable as readonly string[]).includes(d.id))
+          .map((d) => ({ id: d.id, nameKey: d.nameKey, moduleCount: d.moduleCount }))}
+      />
+    )
+  }
+
+  // Entering with a chosen context narrows the HOME's department presentation to
+  // that department. Owner and `none` keep `selectedDepartmentId === null`, so
+  // both are byte-for-byte unchanged from V2.1.
+  const presentedDepartments = entry.selectedDepartmentId
+    ? departments.filter((d) => d.id === entry.selectedDepartmentId)
+    : departments
 
   // One env mapping for the whole Controller — see controllerEnv.
   const env = controllerEnv()

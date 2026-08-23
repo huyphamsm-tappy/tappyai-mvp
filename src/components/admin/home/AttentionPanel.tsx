@@ -31,7 +31,7 @@ export function AttentionPanel({ attention }: { attention: ControllerHomeData['a
             {events.map((e) => (
               <li key={e.id} className="flex items-baseline justify-between gap-3 text-sm">
                 <span className="truncate">
-                  <span className="font-mono text-xs text-[#007AFF]">{e.action}</span>
+                  <span className="font-mono text-xs text-ring">{e.action}</span>
                   <span className="text-muted-foreground"> · {e.actorEmail}</span>
                 </span>
                 <time className="shrink-0 text-xs text-muted-foreground/70" dateTime={e.createdAt}>

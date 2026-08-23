@@ -151,6 +151,97 @@ an authorization one — the PDP has already run, and it never receives a depart
 
 ---
 
+## D14 — Department entry: **a chooser is ALLOWED, at entry only** *(narrow exception to D11)*
+
+**Taken 2026-08-23, after V2.1 closed.** Scope: **Controller V2.2 — Login + Department Entry.**
+
+D11 anticipated this exact request and refused to answer it alone: *"Selection or switching requires its **own Owner
+decision** first."* This is that decision.
+
+### The decision, as given
+
+> **YES** — allow a department chooser **only during the post-auth ENTRY flow**. Multi-department users may choose
+> their initial navigation/presentation context immediately after authentication.
+
+### 🔑 Exactly what D14 supersedes — and what it does not
+
+**D14 supersedes D11 for one sentence only:** a multi-membership actor may choose an initial context at entry.
+
+**D11 remains authoritative for everything else, unchanged:**
+
+| Still forbidden by D11 |
+|---|
+| a department switcher on Controller Home |
+| any persistent department preference |
+| `active_department` database state |
+| department state in a cookie or `localStorage` |
+| department-based authorization |
+| department drill-down / resource authorization |
+
+**This must never be described as department authorization.** It is navigation and presentation context.
+
+### Selection storage — **URL only**
+
+`/admin?dept=<department-id>`. No DB column, no migration, no cookie, no `localStorage`, no preference table, no
+`active_department`, no new authorization state. Refresh preserves the context because the URL does.
+
+**The id is validated against the actor's existing memberships before it is accepted.** An actor may never select a
+department they are not a member of.
+
+> ⚠️ **That validation is CONTEXT validation, not resource authorization.** It decides what the actor is *shown*, never
+> what they may *do*. `requirePermission()` / the PDP remain the sole authority, and `Actor` still carries no
+> department field.
+
+### Switching after entry — deliberately absent
+
+No switcher on Home. No persistent workspace switcher. The V2.1 Home contract is untouched. A multi-department actor
+chooses once at entry; to choose differently they re-enter the Controller entry flow. **If no safe "return to chooser"
+mechanism already exists, none is to be invented.** Kept intentionally narrow.
+
+### The flows
+
+| | Condition | Destination |
+|---|---|---|
+| **A** | unauthenticated | `/login` → Controller sign-in |
+| **B** | Platform Owner | Enterprise Command Center directly — **no chooser** |
+| **C** | exactly one membership | that department workspace directly — **no chooser** |
+| **D** | multiple memberships | *"Choose your workspace"* |
+| **D1** | valid department chosen | `/admin?dept=<id>` → department workspace |
+| **D2** | invalid or unowned id | **fail closed** — do not enter that context; fall back to the safest existing behaviour |
+| **E** | zero memberships | existing `none` behaviour preserved; **no department fabricated** |
+
+### Production verification — bounded on purpose
+
+**No second production membership may be created to manufacture a UAT case**, and no identity or membership mutation is
+authorized. Flow D is therefore proven by **deterministic test fixtures** — membership validation, URL context, and
+rejection of an unowned department. **Production UAT of the chooser is OPTIONAL until a legitimate multi-department
+account exists.**
+
+Production carries **one** active membership today (`ai_data`), so Flow D is **not reachable in production** at the
+time of this decision. That is expected, not a defect.
+
+### Login redesign
+
+Authorized in the same scope: **visual hierarchy only.** The Controller login already uses the D10 dark palette
+(`#070E1F`), so **the theme infrastructure is not to be redesigned.** Authentication mechanism, corporate boundary,
+`returnTo` behaviour and access-denied behaviour are all preserved unchanged.
+
+---
+
+## Outcome — released and accepted
+
+| | |
+|---|---|
+| **D10** fixed dark theme · **D11** derived department context · **D12/D13** SSOT capture | shipped `bdbade4` ([#164](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/164)) |
+| **Home design pass** (hierarchy · honest affordances · theme tokens) | shipped `eba35a9` ([#165](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/165)) |
+| Production | `eba35a9`, `/api/version` matching, `main` == production |
+| **Owner authenticated UAT, 2026-08-23** | ✅ **PASS on every checked item; no Home bugs found** |
+
+Evidence and the full checklist: [`STATUS.md` § Controller V2.1](STATUS.md#controller-v21--owner-uat-verified-2026-08-23).
+
+**D9 is unchanged by this outcome.** A fixed dark Controller shipped; a theme *preference* did not, and D9 stays
+deferred with its conditions for return intact.
+
 ## Consequences
 
 1. **Controller V2's Definition of Done is NOT reopened.** V2 remains COMPLETE and RELEASED at `afd18a0`.

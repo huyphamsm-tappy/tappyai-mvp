@@ -13,10 +13,17 @@ export function DepartmentCard({ dept, emphasis = false }: { dept: HomeDepartmen
 
   return (
     <article
-      className={`group flex flex-col rounded-admin-md border bg-card p-4 transition-colors ${
-        emphasis ? 'border-interactive/40' : 'border-border hover:border-interactive/30'
+      // 🔑 NO hover affordance. The card is display-only (Owner Decision D11),
+      // and the previous `hover:border-interactive/30` made a non-interactive
+      // element react to the pointer — which is what led the Owner to try
+      // clicking one. An element that responds to hover is promising something.
+      // The emphasis rail marks a department that OWNS modules; it is state,
+      // not an invitation, and it uses the theme's accent token rather than a
+      // hard-coded hex so it follows the Controller theme.
+      className={`flex flex-col rounded-admin-md border bg-card p-4 ${
+        emphasis ? 'border-interactive/40' : 'border-border'
       }`}
-      style={emphasis ? { boxShadow: 'inset 3px 0 0 0 #007AFF' } : undefined}
+      style={emphasis ? { boxShadow: 'inset 3px 0 0 0 hsl(var(--ring))' } : undefined}
     >
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-foreground">{t(dept.nameKey)}</h3>
