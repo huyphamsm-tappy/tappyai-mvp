@@ -33,6 +33,6 @@ export {
   loadPlatformSettings,
 } from './platformSettings'
 export type { PlatformSettingRow, PlatformSettingsStore } from './platformSettings'
-export { createNoopEventSink, createCollectingEventSink } from './events'
-export type { CollectingEventSink } from './events'
+export { createNoopEventSink, createCollectingEventSink, createObservabilityEventSink } from './events'
+export type { CollectingEventSink, ObservabilityRecord, EventObservabilityWriter } from './events'
 export { securityHub, securityAuditModule } from './modules/securityAuditModule'

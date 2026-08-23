@@ -16,6 +16,7 @@
 
 import { PERMISSIONS } from '@/lib/admin/permissions/registry'
 import { ControllerCore } from '../core'
+import { createObservabilityEventSink } from '../events'
 import type { AuditSink, EventSink, HubDescriptor, ModuleManifest } from '../types'
 import { securityAuditModule } from '../modules/securityAuditModule'
 import { userManagementModule } from '../modules/userManagementModule'
@@ -132,7 +133,16 @@ export const ADMIN_MODULES: readonly ModuleManifest[] = [
  * concern and must not become a hidden dependency contract.
  */
 export function buildAdminController(opts: { audit?: AuditSink; events?: EventSink } = {}): ControllerCore {
-  const core = new ControllerCore({ controllerVersion: '1.0.0', audit: opts.audit, events: opts.events })
+  const core = new ControllerCore({
+    controllerVersion: '1.0.0',
+    audit: opts.audit,
+    // K-3 (Owner Decision D-K3): the production event sink. Previously this fell
+    // through to the kernel's NOOP, so registering 6 hubs and 12 modules
+    // observed nothing at all — which is precisely the "no-op Event Bus"
+    // Decision F's Definition of Done rules out. A caller may still supply its
+    // own sink; only the DEFAULT changed.
+    events: opts.events ?? createObservabilityEventSink(),
+  })
   for (const hub of ADMIN_HUBS) {
     const r = core.registerHub(hub)
     if (!r.ok) throw new Error(`admin hub "${hub.id}" failed to register: ${r.errors.join('; ')}`)
