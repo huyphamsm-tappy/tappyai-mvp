@@ -11,8 +11,15 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 | Item | Status |
 |---|---|
 | **Foundation Phase** | **CLOSED** |
-| **Components 1–2** | **ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK** |
-| **Component 3** | **READY TO START · NOT STARTED** |
+| **Components 1–2** | ✅ **ACCEPTED — fully, 2026-08-22.** The open production validation task (BL-002) is **CLOSED**: G1 proven over real HTTP on production with a genuine second `super_admin` |
+| **Component 3** | ✅ **ACCEPTED · IN PRODUCTION** — merge `933c4f8` |
+| **Controller V2** | ✅ **COMPLETE — 2026-08-23**, production `d1ae429`. Measured against Owner **Decision F** (full architecture), which superseded Decision A on 2026-08-19. See [`STATUS.md`](STATUS.md) |
+
+> **Corrected 2026-08-23.** The three rows above read *"Components 1–2: ACCEPTED WITH OPEN PRODUCTION VALIDATION TASK"*
+> and *"Component 3: READY TO START · NOT STARTED"* — the first stale since BL-002 closed on 2026-08-22, the second
+> stale since 2026-08-07, while `STATUS.md` recorded C3 as **ACCEPTED · IN PRODUCTION**. This is the same drift
+> `STATUS.md` corrected in row 10 of this file on 2026-08-13, and it is corrected here in the same style rather than
+> filed as a backlog item. `STATUS.md` remains the status authority; this document details sequencing only.
 
 "Foundation Phase: CLOSED" closes the Foundation *establishment* phase — audit, architecture, and Components 1–2 in production. Components 3–11 remain and are listed below; see [`STATUS.md`](STATUS.md) for the scope note.
 
