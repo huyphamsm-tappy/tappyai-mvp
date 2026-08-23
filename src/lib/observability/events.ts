@@ -47,13 +47,44 @@ export interface UsageEvent {
 }
 
 /**
- * A snapshot of TTS counters. `charactersSynthesized` is the figure Cloud TTS
- * actually bills on, which is the only reason this event exists: Chirp3-HD is
- * free to 1M characters/month and $30/M after, so the decision about whether a
- * persistent cache is worth building has to be made from a measured number.
+ * One TTS request, described in counts.
  *
- * A snapshot, not a per-utterance event — one utterance per log line would be
- * both noisier and closer to user content than anything here needs to be.
+ * `characters` is the LENGTH of the text, never the text. Length is what Cloud
+ * TTS bills on, and it is also the field a careless change would most likely
+ * turn into the utterance itself — so it is named for what it is.
+ *
+ * Per-request rather than periodic because the questions being asked are "how
+ * many characters, in which language, and how often did the cache save us",
+ * and a per-request row answers all three by summation with no assumptions
+ * about instance lifetime.
+ */
+export interface TtsRequestEvent {
+  type: 'tts_request'
+  /** Normalized language that decided the voice: 'vi' | 'en'. Never device locale. */
+  language: string
+  /** text.length — a COUNT. Billable only when cacheHit is false. */
+  characters: number
+  cacheHit: boolean
+  elapsedMs: number
+}
+
+/**
+ * The provider's own counters, as a DELTA since this instance last reported.
+ *
+ * `charactersSynthesized` is the figure Cloud TTS actually bills on — it counts
+ * only characters really sent, so a cache hit adds nothing and a failed call
+ * adds nothing. That makes it the authoritative cross-check against summing
+ * `tts_request`, and the number the persistent-cache decision must rest on:
+ * Chirp3-HD is free to 1M characters/month and $30/M after.
+ *
+ * A DELTA, not the snapshot, and that distinction is the whole design. The
+ * counters are module-level and cumulative for the life of a warm instance, so
+ * summing snapshots across a fleet double-counts and taking a max under-counts.
+ * Deltas sum correctly across every instance and every restart.
+ *
+ * Derived fields (hit rate, mean latency) are deliberately absent: they are
+ * meaningless as deltas and would disagree with the counters they came from.
+ * Compute them at query time from these.
  */
 export interface TtsMetricsEvent {
   type: 'tts_metrics'
@@ -62,9 +93,7 @@ export interface TtsMetricsEvent {
   cacheMisses: number
   charactersSynthesized: number
   errors: number
-  /** Share of requests served without calling the provider, 0..1. */
-  hitRate: number
-  avgSynthesisMs: number
+  totalLatencyMs: number
 }
 
 /** A TTS synthesis that failed. Carries no utterance and no voice text. */
@@ -139,6 +168,7 @@ export interface SystemErrorEvent {
 
 export type ObservabilityEvent =
   | UsageEvent
+  | TtsRequestEvent
   | TtsMetricsEvent
   | TtsFailureEvent
   | MediaFailureEvent
@@ -156,6 +186,7 @@ export type ObservabilityEvent =
  */
 const SEVERITY: Record<ObservabilityEvent['type'], EventSeverity> = {
   tappyai_usage: 'INFO',
+  tts_request: 'INFO',
   tts_metrics: 'INFO',
   tts_failure: 'ERROR',
   media_failure: 'ERROR',
@@ -192,8 +223,9 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   // model accounting — counters only
   'intent', 'finishReason', 'promptTokens', 'completionTokens', 'totalTokens',
   'cacheReadTokens', 'cacheCreationTokens', 'llmCalls', 'memoryExtract', 'toolCalls', 'elapsedMs',
-  // tts counters — charactersSynthesized is a COUNT, never the characters
-  'requests', 'cacheHits', 'cacheMisses', 'charactersSynthesized', 'errors', 'hitRate', 'avgSynthesisMs',
+  // tts counters — charactersSynthesized and characters are COUNTS, never the characters themselves
+  'requests', 'cacheHits', 'cacheMisses', 'charactersSynthesized', 'errors', 'totalLatencyMs',
+  'characters', 'cacheHit',
   // closed vocabularies and status codes
   'stage', 'status', 'language', 'operation', 'provider', 'kind', 'reason', 'identitySource',
   'providerId', 'role', 'route', 'code', 'scope', 'dropped',

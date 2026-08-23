@@ -34,9 +34,12 @@ const SAMPLES: Record<ObservabilityEvent['type'], ObservabilityEvent> = {
     cacheReadTokens: 4, cacheCreationTokens: 5, llmCalls: 1,
     memoryExtract: 0, toolCalls: 1, elapsedMs: 10,
   },
+  tts_request: {
+    type: 'tts_request', language: 'vi', characters: 137, cacheHit: false, elapsedMs: 812,
+  },
   tts_metrics: {
     type: 'tts_metrics', requests: 1, cacheHits: 1, cacheMisses: 0,
-    charactersSynthesized: 100, errors: 0, hitRate: 1, avgSynthesisMs: 12,
+    charactersSynthesized: 100, errors: 0, totalLatencyMs: 812,
   },
   tts_failure: { type: 'tts_failure', stage: 'synthesis', status: 500, language: 'vi' },
   media_failure: { type: 'media_failure', operation: 'put', provider: 'gcs', status: 403, kind: 'video' },
