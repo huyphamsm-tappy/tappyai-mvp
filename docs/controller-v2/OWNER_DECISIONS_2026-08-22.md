@@ -237,3 +237,48 @@ decision record is a historical instrument, the same treatment Decision F gave D
 The single surviving mutant is **equivalent and recorded as such**: the `if (capability)` guard cannot fire, because
 `roleMap` is built from the same registry the lookup consults, so every id it yields resolves. It is kept only because
 the return type of `registry.get` is optional.
+
+---
+
+# D-K3 — what "a non-no-op Event Bus" means for Controller V2
+
+**Taken 2026-08-23.** Decision F names *"a non-no-op Event Bus"* in the Definition of Done and **defines it nowhere**.
+This decision supplies the missing definition. Recorded here alongside the other decisions of this closure workstream.
+
+## The decision, as given
+
+> In Controller V2, *"non-no-op Event Bus"* is satisfied when the production `EventSink` has a real implementation that
+> receives and processes the existing `controller.*` lifecycle events.
+>
+> **K-3 in V2 does NOT require:** Commerce.Orders · `commerce.order.refunded` end-to-end · an Analytics consumer · a
+> Marketing.Push consumer · reopening Phase 8 / D7 · migrating existing business mutations to manufacture a demo event ·
+> changing `fn_grant_admin_role` or any G1 security-critical RPC.
+>
+> The Event Bus is **not** an authorization authority. `requirePermission()` remains the authority. Capability binding
+> is unchanged. The `ControllerCore` capability axis is unchanged.
+
+## Why the definition was needed — and why the §7 path was not available
+
+`01_ARCH` §7 names the first producer itself: **Commerce.Orders** publishes `commerce.order.refunded`, consumed by
+Analytics and Marketing.Push. **All three are `❌ not started`** in taxonomy §1, and **D7 forbids adding a new business
+module to V2**. Requiring the §7 flow would therefore have made Decision F demand something another Owner decision
+prohibits building — the Definition of Done would contradict D7 and be unreachable inside V2. This decision resolves
+that by defining the bar at the kernel's own event stream instead.
+
+Three independent sources also blocked a first producer on the durable path, and none of them is bypassed here:
+
+1. **C8 §10** — *"No producers · no consumers · … no migration of existing business mutations to create a demo event."*
+2. **C8 §5** — a producer must be a **database object**: `fn_outbox_publish` has `EXECUTE` revoked from `PUBLIC`, `anon`,
+   `authenticated` **and `service_role`**, so the only possible caller is another `SECURITY DEFINER` function. The one
+   realistic candidate is `fn_grant_admin_role` — the constitutional G1 fix, proven on production by BL-002 the day
+   before. Re-issuing it is explicitly excluded above.
+3. **C8 §8** — 0 consumers ⇒ **0 outbox rows**, arithmetically. A producer today would insert nothing.
+
+## ⚠️ What this decision does NOT claim
+
+It does not make the Event Bus durable, ordered, retried or delivered. Those are the **outbox's** guarantees, and the
+outbox still has zero consumers by design. `events.ts` already states the boundary — *"An EventSink emit is not an
+outbox publish and carries none of its guarantees."* — and that stays true.
+
+It also must not be described as adding a security or authorization property. It adds **observability of the kernel's
+own lifecycle**, nothing more.

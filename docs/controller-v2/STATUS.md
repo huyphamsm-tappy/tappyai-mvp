@@ -142,7 +142,8 @@ Both are corrected in place rather than quietly edited away, the same discipline
 | **Module 17 · 11 unstarted Phase 8 modules** | **DEFERRED BY DECISION** (D7) | No new business module enters V2 |
 | **M09 content-safety writer** | **OUT OF CONTROLLER V2 SCOPE** | Content Safety Gate under ADR-024, which `moderationModule.ts` declares |
 | ~~**K-1**~~ | ✅ **RESOLVED 2026-08-22** | Owner Decision **D-K1**: actor capabilities are **role-derived**, a read-only projection. See [K-1](#k-1--the-actorcapability-binding-2026-08-22) |
-| **K-3 · K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
+| **K-3** — Event Bus non-no-op | ⚖️ **DEFINED 2026-08-23 by [D-K3](OWNER_DECISIONS_2026-08-22.md#d-k3--what-a-non-no-op-event-bus-means-for-controller-v2)** — Decision F named it and defined it nowhere. The bar is now the kernel's own `controller.*` lifecycle stream, **not** the `01_ARCH` §7 business flow, which needs three modules D7 forbids building. **Not yet implemented** — see [K-3](#k-3--event-bus-the-baseline-measured-2026-08-23) |
+| **K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
 
 **Controller V2 is not declared COMPLETE, and the reason is now narrow enough to state in one line.** Under Decision F the measure is the full architecture. **Class 1 (engineering) is empty, class 3 (Owner decision) is empty, the migration is applied, and BL-002 is accepted** — so nothing is waiting on this workstream and no external prerequisite remains. What is left is **destructive UAT the Owner has explicitly withheld** and **work DEFERRED by decision, on the record, with a stated end condition**. Calling that COMPLETE would mean calling a deferral a delivery.
 
@@ -339,6 +340,36 @@ Together those mean a first producer would **re-issue the function that closes G
 **The actual dependency.** [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md) §7 names the first producer and consumers itself: Commerce.Orders publishes `commerce.order.refunded`, Analytics and Marketing consume it. Under [`12_HUB_TAXONOMY.md`](12_HUB_TAXONOMY.md) all three are **not started**. Event wiring depends on the business modules, not the reverse — so this work belongs after the Hubs exist, not before them.
 
 Nothing was declared to paper over it: no manifest was given an `events` block it cannot honour, and no handler was registered in the empty `ConsumerDispatch`. The forcing function in [`outbox.test.ts:181`](../../src/lib/controller/__tests__/outbox.test.ts) still pins the zero-consumer state, so the suite fails the day a real consumer is declared without a handler.
+
+### K-3 — Event Bus: the baseline, measured (2026-08-23)
+
+Read-only audit at `1ef38de`. **No code was written.** Every number below is from the repository or from production, not from the entries above.
+
+**The bar is now defined.** Decision F names *"a non-no-op Event Bus"* and defines it nowhere; [D-K3](OWNER_DECISIONS_2026-08-22.md#d-k3--what-a-non-no-op-event-bus-means-for-controller-v2) sets it at the kernel's own `controller.*` lifecycle stream. That mattered: the `01_ARCH` §7 flow (`commerce.order.refunded`) needs **Commerce.Orders, Analytics and Marketing.Push, all three `❌ not started`** — and **D7 forbids adding a business module to V2**. Requiring §7 would have made Decision F demand what another Owner decision prohibits.
+
+#### Flow as built
+
+| Node | State |
+|---|---|
+| business action → event | **ABSENT** — no business mutation publishes anything |
+| kernel event creation | **IMPLEMENTED** — 7 emit sites, all `controller.*` lifecycle |
+| in-process `EventSink` | 🔴 **NO-OP** — `NOOP_EVENTS` at `core.ts:49`; **all 3 production `buildAdminController()` call sites pass no sink** |
+| `fn_outbox_publish` | **IMPLEMENTED but UNREACHABLE** — `EXECUTE` revoked from `PUBLIC`, `anon`, `authenticated` **and `service_role`** |
+| `event_outbox` | **IMPLEMENTED** — production **0 rows** (0 pending, 0 delivered, 0 dead) |
+| drain cron | **IMPLEMENTED** — registered in `vercel.json`, `DISPATCH` empty by design |
+| consumer | **ABSENT** — **0 manifests** declare `events` |
+
+**The two paths are not connected**: `core.ts` mentions `outbox` **zero times**. The in-process sink and the durable outbox are separate by construction.
+
+#### 🔑 The finding that decides the implementation
+
+**Every one of the 7 emit sites is already paired with an `audit.record()` of the same fact** — `core.ts` lines 90/91, 118/125, 243/250, 424/425, 433/434, 509/516, 576/583. Seven audit calls, seven emits, one-to-one.
+
+So a "real" `EventSink` that wrote to the C7 audit chain would write **exactly the facts the `AuditSink` already writes** — a duplicate trail inside a hash-chained log. **The Event Bus must not persist to audit; that axis is taken.**
+
+And the volume forbids it independently: one `buildAdminController()` emits **18 events** (6 hubs + 12 modules). `adminNavigation.ts` builds a controller on **every `/admin` request**, and the Home builds a second — so audit-writing this stream would add **~36 rows per page view**.
+
+> ⚠️ **A real production `AuditSink` already exists and is wired nowhere.** `createAuditSink()` maps the kernel onto C7's `writeAuditLog`; **0 non-test call sites**. That is a separate, pre-existing gap from K-3, and it is recorded here rather than folded into it.
 
 ### Phase 7 — V2 Shell (2026-08-19): **IN PROGRESS**
 
