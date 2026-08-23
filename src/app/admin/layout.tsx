@@ -68,7 +68,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   }
 
   return (
-    <div className="admin-theme">
+    // D10 (V2.1): `admin-theme` supplies the Controller's fixed dark palette;
+    // `dark` is paired with it so Tailwind's `dark:` variants — which components
+    // like DealsManager already ship in full — actually resolve inside the
+    // Controller. Both are STATIC classes on this subtree: no toggle, no
+    // preference, no persistence, and `<html>` is untouched, so the consumer app
+    // is unaffected. `.admin-theme` is declared after `.dark` in globals.css, so
+    // the Controller palette wins wherever the two define the same token.
+    <div className="admin-theme dark">
       <AdminShell
         role={actor.highestRole ?? 'analyst'}
         isOwner={actor.isOwner}
