@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
-import { pickVoice, bcp47ForLang, langDisplayName, noVoiceMessage, type VoiceLike } from './voiceSelection'
+import { readFileSync } from 'node:fs'
+import { pickVoice, bcp47ForLang, type VoiceLike } from './voiceSelection'
 
 const v = (name: string, lang: string, extra: Partial<VoiceLike> = {}): VoiceLike => ({ name, lang, ...extra })
 
@@ -52,10 +53,12 @@ describe('bcp47 + display names', () => {
     expect(bcp47ForLang('ja')).toBe('ja-JP')
   })
 
-  it('localizes the language name and the no-voice notice', () => {
-    expect(langDisplayName('vi', 'vi')).toBe('tiếng Việt')
-    expect(langDisplayName('vi', 'en')).toBe('Vietnamese')
-    expect(noVoiceMessage('vi', 'vi')).toContain('tiếng Việt')
-    expect(noVoiceMessage('vi', 'en')).toContain('Vietnamese')
+  it('no longer ships a device-blaming notice for anyone to reach for', () => {
+    // `noVoiceMessage`/`langDisplayName` were deleted, not merely unused: they claimed the DEVICE
+    // had no voice for a language, and the chat UI showed that for an unconfigured SERVER provider.
+    const src = readFileSync(new URL('./voiceSelection.ts', import.meta.url), 'utf8')
+    expect(src).not.toMatch(/export function noVoiceMessage/)
+    expect(src).not.toMatch(/export function langDisplayName/)
+    expect(src).not.toContain("This device has no ${name} voice")
   })
 })

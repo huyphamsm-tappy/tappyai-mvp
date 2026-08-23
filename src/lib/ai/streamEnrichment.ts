@@ -613,6 +613,17 @@ export function ungroundedNamesIn(
   return [...new Set(out)]
 }
 
+/**
+ * Wording for a TikTok result that belongs to the SEARCH, not to a place.
+ *
+ * "Video liên quan" rather than "Review TikTok" is the whole point: the batch search cannot show
+ * which restaurant a video is about, so the label must not say it reviews one. Same `lang === 'vi'`
+ * convention as the images/review-links header above.
+ */
+function relatedVideoLabel(lang: string): string {
+  return lang === 'vi' ? 'Video liên quan trên TikTok' : 'Related video on TikTok'
+}
+
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
@@ -826,7 +837,23 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
-    const finalText = stripModelScaffolding(specGuarded)
+    const scaffoldStripped = stripModelScaffolding(specGuarded)
+    /**
+     * The batch-level TikTok link, appended once at the very end of the reply.
+     *
+     * Deliberately OUTSIDE any place block, and under wording that says "related video": the TikTok
+     * search is ONE query for the whole batch, so nothing establishes which restaurant a result is
+     * about. It used to be attached to `results[0]` and captioned "Review TikTok" inside that
+     * restaurant's card — measured on production, the video was about somewhere else entirely.
+     *
+     * 🔑 Folded in BEFORE the detector below, not after the enqueue. The reply the grounding
+     * detector reads must be byte-identical to the reply the user gets; appending afterwards would
+     * have made the detector analyse a different string than the one that shipped.
+     */
+    const batchTikTok = collector?.batchTikTokUrl
+    const finalText = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
+      ? `${scaffoldStripped}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})`
+      : scaffoldStripped
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())

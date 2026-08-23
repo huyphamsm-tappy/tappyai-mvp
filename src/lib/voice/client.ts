@@ -12,13 +12,25 @@
 //
 // 'unavailable' NEVER means "use a different voice". The caller shows a notice and leaves the text
 // on screen. Reading Vietnamese aloud in English sounds broken; saying nothing sounds unavailable.
+//
+// THE SERVER'S OWN MESSAGE IS CARRIED, NOT DISCARDED. This type used to keep only `language`, so the
+// UI had nothing left to say and manufactured a sentence out of it: "This device has no Vietnamese
+// voice." Measured on production (2026-08-23), BOTH languages answer 503 `voice_unavailable` — the
+// deployment has no voice provider configured, and the device is never consulted at all. The server
+// already knows which of those it is and says so; only the client was throwing that away.
 
 export type SpeechResult =
   | { status: 'ok'; audioBase64: string; mimeType: string; language: string; voiceName: string; cacheHit: boolean }
-  /** No voice configured for this language yet, or the deployment has none. Show the notice. */
-  | { status: 'unavailable'; language: string | null }
+  /**
+   * No voice configured for this language yet, or the deployment has none. Show the notice.
+   *
+   * `message` is the SERVER's localized explanation — the only party that knows whether this is an
+   * unconfigured provider (503) or a language we do not speak (422). Null only when the response
+   * carried none, and the caller must then fall back to something equally truthful.
+   */
+  | { status: 'unavailable'; language: string | null; message: string | null }
   /** The provider failed. Distinct from unavailable: retrying may work. */
-  | { status: 'failed' }
+  | { status: 'failed'; message: string | null }
   /** The caller cancelled — the user pressed stop or navigated away. Show nothing. */
   | { status: 'cancelled' }
 
@@ -44,21 +56,30 @@ export async function requestSpeech(opts: RequestSpeechOptions): Promise<SpeechR
     })
   } catch (e) {
     if ((e as { name?: string })?.name === 'AbortError') return { status: 'cancelled' }
-    return { status: 'failed' }
+    // The request never reached the server, so there is no server message to carry.
+    return { status: 'failed', message: null }
   }
 
   // 503 = no voice selected / not configured. 422 = language we cannot speak. Both mean "say
   // nothing and explain", never "substitute a voice".
   if (res.status === 503 || res.status === 422) {
-    const body = (await res.json().catch(() => ({}))) as { language?: string }
-    return { status: 'unavailable', language: body.language ?? opts.language ?? null }
+    const body = (await res.json().catch(() => ({}))) as { language?: string; message?: string }
+    return {
+      status: 'unavailable',
+      language: body.language ?? opts.language ?? null,
+      message: typeof body.message === 'string' && body.message ? body.message : null,
+    }
   }
-  if (!res.ok) return { status: 'failed' }
+  if (!res.ok) {
+    const body = (await res.json().catch(() => ({}))) as { message?: string }
+    return { status: 'failed', message: typeof body.message === 'string' && body.message ? body.message : null }
+  }
 
   const body = (await res.json().catch(() => null)) as
     | { audioBase64?: string; mimeType?: string; language?: string; voiceName?: string; cacheHit?: boolean }
     | null
-  if (!body?.audioBase64) return { status: 'failed' }
+  // A 200 with no audio is a malformed success, not a server-explained failure.
+  if (!body?.audioBase64) return { status: 'failed', message: null }
 
   return {
     status: 'ok',
