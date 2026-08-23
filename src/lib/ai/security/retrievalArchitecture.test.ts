@@ -193,18 +193,30 @@ describe('retrieved content cannot acquire authority', () => {
     // If this count grows, a new injection path exists and G1 must be re-read
     // rather than the number bumped.
     //
-    // THREE, and each one was read before the number moved. The security work this file comes
+    // FOUR, and each one was read before the number moved. The security work this file comes
     // from knew two — the photo `![…](url)` and the order/platform `[label](url)`. The release
     // branch has a third: the backend-validated TikTok review link, a feature that branch predates
     // entirely. It is a legitimate site by the same rule as the other two — a system-owned link,
     // positionally injected, whose URL goes through `sanitizeUrlForMarkdown` and whose label goes
     // through `escapeMarkdownLabel`, and whose URL is additionally re-validated at the boundary by
     // `isValidTikTokContentUrl` so the model can never be its source.
+    //
+    // The FOURTH is the BATCH-level TikTok link, and it passes the same reading. Same origin (a
+    // provider search result, never the model), same sanitiser and label escaper on its own line,
+    // same `isValidTikTokContentUrl` re-validation at the boundary. What makes it a separate site
+    // rather than a variant of the third is what it may CLAIM: the third sits inside a place block
+    // and says "Review TikTok" about that place, and it may only do so when the video's own title
+    // named that place. This one sits outside every block and says "related video", because the
+    // TikTok search is one query for the whole batch and cannot establish which place a result is
+    // about. Measured on production for "bún bò huế phú nhuận": 8 places, 6 videos, none of the six
+    // titles naming any of the eight — under the old `i === 0` attribution the card that showed
+    // "Review TikTok" was showing a video about a different restaurant.
     const sites = PROD.flatMap(f =>
       f.body.split(/\r?\n/)
         .map((text, i) => ({ file: f.path, line: i + 1, text }))
         .filter(l => AI_LAYER(l.file) && !isCommentOnly(l.text) && /\]\(\$\{/.test(l.text)))
     expect(sites.map(s => s.file)).toEqual([
+      'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',

@@ -335,8 +335,11 @@ export async function POST(req: Request) {
   // on, nothing shared between users or carried across warm invocations.
   const enrichment = createEnrichmentCollector()
   const forModel = (toolName: string, result: unknown) => {
-    const { model, enrichment: carved } = splitToolResult(toolName, result)
+    const { model, enrichment: carved, batchTikTokUrl } = splitToolResult(toolName, result)
     enrichment.add(carved)
+    // A TikTok result the search could not tie to any one place. Kept out of the model's context
+    // like every other link, and rendered at the end as a related video rather than inside a card.
+    enrichment.setBatchTikTokUrl(batchTikTokUrl)
     return model
   }
 

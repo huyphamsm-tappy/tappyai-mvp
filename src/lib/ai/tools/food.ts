@@ -2,7 +2,7 @@ import { getCache, setCache, serperSearch } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
-import { pickTikTokReviewUrl } from '@/lib/links/tiktokReview'
+import { attributeTikTok } from '@/lib/links/tiktokAttribution'
 import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { messages, isVi } from '@/lib/ai/messages'
@@ -328,22 +328,32 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           // Inject per-place search links using the exact restaurant name on each platform
           const places = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined
           if (Array.isArray(places)) {
-            // One validated TikTok review for the batch, matched to the first place: the query
-            // was "<what the user asked> review site:tiktok.com", so the result belongs to the
-            // search as a whole, not to any particular row. Attributing it to every place would
-            // claim coverage that was never established.
-            const tiktokUrl = pickTikTokReviewUrl(tiktokResults)
-            extra.results = places.map((place, i) => ({
-              ...place,
-              order_links: buildFoodOrderLinks(
-                place.name as string || '',
-                place.address as string | undefined,
-                location
-              ),
-              ...(i === 0 && tiktokUrl
-                ? { tiktok_review_url: tiktokUrl, has_tiktok_review: true }
-                : { has_tiktok_review: false }),
-            }))
+            // The TikTok query is "<what the user asked> review site:tiktok.com" — ONE search for
+            // the whole batch — so a result is only this restaurant's review if its own title says
+            // so. `attributeTikTok` decides that from the text; anything it cannot tie to a place
+            // stays a batch-level discovery link and is never captioned as somebody's review.
+            //
+            // 🚨 This replaces `i === 0`, which handed the first URL to the first row. Measured on
+            // production for "bún bò huế phú nhuận": 8 places, 6 videos, none of the six titles
+            // naming any of the eight — so the card that showed "Review TikTok" was showing a video
+            // about a different restaurant.
+            const placeNames = places.map(p => (p.name as string) || '').filter(Boolean)
+            const tiktok = attributeTikTok(tiktokResults, placeNames)
+            if (tiktok.batch) extra.tiktok_discovery_url = tiktok.batch
+            extra.results = places.map((place) => {
+              const own = tiktok.perPlace.get((place.name as string) || '')
+              return {
+                ...place,
+                order_links: buildFoodOrderLinks(
+                  place.name as string || '',
+                  place.address as string | undefined,
+                  location
+                ),
+                ...(own
+                  ? { tiktok_review_url: own, has_tiktok_review: true }
+                  : { has_tiktok_review: false }),
+              }
+            })
           }
         } else if (isSpa) {
           const places = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined

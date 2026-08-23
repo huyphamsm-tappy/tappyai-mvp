@@ -463,3 +463,78 @@ describe('applyPlaceEnrichmentStreamFilter — enrichment from the request-scope
     expect(out).toContain('legacy.jpg')
   })
 })
+
+// ── The batch-level TikTok link, driven through the real filter ─────────────
+//
+// Source assertions elsewhere prove the wiring exists; this proves the bytes. A search-level video
+// must reach the reader as a RELATED VIDEO at the end, never as a place's review inside its card —
+// the claim the old `i === 0` attribution made, which production measurement showed was usually
+// about a different restaurant entirely.
+describe('a search-level TikTok result renders as a related video', () => {
+  const BATCH = 'https://www.tiktok.com/@lulureview_/video/7536948899538373896'
+  const FRAME = 'a:{"toolCallId":"t1","result":{"results":[{"name":"Quán A","address":"1 X"}]}}'
+  const enc = (s: string) => '0:' + JSON.stringify(s)
+
+  async function run(lang: string, batch?: string): Promise<string> {
+    const collector = createEnrichmentCollector()
+    collector.add([{ name: 'Quán A', photo_url: 'https://lh3.googleusercontent.com/a.jpg' }])
+    collector.setBatchTikTokUrl(batch)
+    const filtered = applyPlaceEnrichmentStreamFilter(
+      new Response([
+        'f:{"messageId":"m1"}',
+        '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+        FRAME,
+        enc('Quán A ngon lắm.'),
+        'e:{"finishReason":"stop"}',
+        'd:{"finishReason":"stop"}',
+      ].join('\n') + '\n'),
+      lang,
+      collector,
+    )
+    return await new Response(filtered.body).text()
+  }
+
+  it('appends the link with related-video wording in Vietnamese', async () => {
+    const out = await run('vi', BATCH)
+
+    expect(out).toContain('Video liên quan trên TikTok')
+    expect(out).toContain(BATCH)
+  })
+
+  it('uses English wording under an English turn', async () => {
+    const out = await run('en', BATCH)
+
+    expect(out).toContain('Related video on TikTok')
+  })
+
+  it('never captions it as that place\u2019s review', async () => {
+    const out = await run('vi', BATCH)
+
+    expect(out).not.toContain('Review TikTok')
+  })
+
+  it('places it after the prose, not inside the place block', async () => {
+    const out = await run('vi', BATCH)
+    const text = out.split('\n').filter(l => l.startsWith('0:'))
+      .map(l => JSON.parse(l.slice(2))).join('')
+
+    // The photo belongs to Quán A and sits with it; the video belongs to the search and comes last.
+    expect(text.lastIndexOf('Video liên quan')).toBeGreaterThan(text.indexOf('Quán A'))
+    expect(text.trimEnd().endsWith(')')).toBe(true)
+  })
+
+  it('renders nothing when the search produced no video', async () => {
+    const out = await run('vi', undefined)
+
+    expect(out).not.toContain('tiktok.com')
+    expect(out).not.toContain('Video liên quan')
+  })
+
+  it('refuses a URL that is not TikTok content', async () => {
+    const out = await run('vi', 'https://www.tiktok.com/discover/bun-bo')
+
+    // A /discover/ page is a search page, not a video — it may never be shown as one.
+    expect(out).not.toContain('/discover/')
+    expect(out).not.toContain('Video liên quan')
+  })
+})

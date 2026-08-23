@@ -43,6 +43,14 @@ export interface PlaceEnrichment {
 export interface EnrichmentCollector {
   readonly places: PlaceEnrichment[]
   add(items: PlaceEnrichment[]): void
+  /**
+   * The batch-level TikTok link, if any tool produced one this turn.
+   *
+   * Deliberately NOT a `PlaceEnrichment`: it belongs to the search, not to a place, and modelling
+   * it as one is how it ended up captioned as a restaurant's review in the first place.
+   */
+  batchTikTokUrl?: string
+  setBatchTikTokUrl(url: string | undefined): void
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */
@@ -68,20 +76,32 @@ const isRecord = (v: unknown): v is Record<string, unknown> =>
 export function splitToolResult(
   toolName: string,
   result: unknown,
-): { model: unknown; enrichment: PlaceEnrichment[] } {
+): { model: unknown; enrichment: PlaceEnrichment[]; batchTikTokUrl?: string } {
   if (!PLACE_TOOLS.has(toolName) || !isRecord(result)) return { model: result, enrichment: [] }
+
+  /**
+   * A TikTok result the search found but could NOT tie to any one place.
+   *
+   * Root-level rather than per-place, because that is exactly what it is: the query was one search
+   * for the whole batch. It is carved off like every other link so the model never writes it — and
+   * so it can be rendered under wording that says "related video", not "this restaurant's review".
+   */
+  const { tiktok_discovery_url, ...withoutBatch } = result as Record<string, unknown>
+  const batchTikTokUrl = typeof tiktok_discovery_url === 'string' ? tiktok_discovery_url : undefined
+  result = withoutBatch
 
   // search_places carries results[] keyed by `name`; get_hotel_prices and
   // search_products carry search_results[] where `title` stands in for the name.
   // Raw titles read "Hotel Name - City - Booking.com" but the model writes just
   // "Hotel Name", so match on the part before the first " - " — the same rule
   // the stream filter already used when it parsed these frames itself.
-  const listKey = Array.isArray(result.results) ? 'results'
-    : Array.isArray(result.search_results) ? 'search_results'
+  const root = result as Record<string, unknown>
+  const listKey = Array.isArray(root.results) ? 'results'
+    : Array.isArray(root.search_results) ? 'search_results'
       : null
-  if (!listKey) return { model: result, enrichment: [] }
+  if (!listKey) return { model: root, enrichment: [], batchTikTokUrl }
 
-  const items = result[listKey] as unknown[]
+  const items = root[listKey] as unknown[]
   const enrichment: PlaceEnrichment[] = []
   const slimItems = items.map((item) => {
     if (!isRecord(item)) return item
@@ -94,7 +114,7 @@ export function splitToolResult(
     return rest
   })
 
-  return { model: { ...result, [listKey]: slimItems }, enrichment }
+  return { model: { ...root, [listKey]: slimItems }, enrichment, batchTikTokUrl }
 }
 
 /**
@@ -110,6 +130,12 @@ export function createEnrichmentCollector(): EnrichmentCollector {
   const places: PlaceEnrichment[] = []
   return {
     places,
+    batchTikTokUrl: undefined as string | undefined,
+    setBatchTikTokUrl(url) {
+      // First one wins: a trip plan runs several place searches and the answer carries one
+      // "related video" line, not one per search.
+      if (url && !this.batchTikTokUrl) this.batchTikTokUrl = url
+    },
     add(items) {
       for (const p of items ?? []) {
         const key = (p?.name || '').trim().toLowerCase()
