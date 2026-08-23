@@ -104,11 +104,15 @@ describe('🔑 D14 — chooser cards are REAL controls (the opposite of the Home
 describe('D14 — the redesigned Controller login keeps its security contract', () => {
   const noop = async () => ({ ok: true as const })
 
-  it('states the product and its purpose', () => {
+  it('identifies itself as the Controller sign-in', () => {
+    // V2.3 moved the welcome line and the "enterprise command center" purpose
+    // OUT of this card and into the entry page's hero — that relocation IS the
+    // redesign. They are asserted at their new level in
+    // `src/app/login/controllerLoginLayout.test.tsx`, so nothing stopped being
+    // checked; this assertion now covers what the CARD itself claims.
     const { container } = render(<ControllerLoginCard signIn={noop} onAuthenticated={() => {}} />)
     const text = container.textContent ?? ''
-    expect(text).toMatch(/Welcome to Controller|Chào mừng .*Controller/i)
-    expect(text).toMatch(/enterprise command center|trung tâm điều hành/i)
+    expect(text).toMatch(/Sign in to Controller|Đăng nhập Controller/i)
   })
 
   it('still says who may enter, and still asks for email + password', () => {
