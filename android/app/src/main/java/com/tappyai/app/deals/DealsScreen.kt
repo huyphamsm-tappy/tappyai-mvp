@@ -42,6 +42,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
+import com.tappyai.app.brand.BrandLogo
+import com.tappyai.app.brand.hasBrandLogo
 import com.tappyai.core.common.UiState
 import com.tappyai.core.designsystem.component.TappyEmptyState
 import com.tappyai.core.designsystem.component.TappyImage
@@ -190,22 +192,33 @@ private fun DealCard(deal: Deal, onOpen: () -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         verticalAlignment = Alignment.Top,
     ) {
-        // Logo (48dp) or an initial fallback on an orange tile — web parity.
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(TappyShapes.input)
-                .background(tappyCategoryColors.orange.container),
-            contentAlignment = Alignment.Center,
-        ) {
-            if (deal.logoImage != null) {
-                TappyImage(url = deal.logoImage, contentDescription = null, modifier = Modifier.fillMaxSize().clip(TappyShapes.input))
-            } else {
-                Text(
-                    text = deal.partnerName.firstOrNull()?.uppercase() ?: "?",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = tappyCategoryColors.orange.onContainer,
-                )
+        // Logo tile (48dp), three-step fallback — BRAND_ASSETS.md §8, identical on every platform:
+        //   1. the registry's official mark, which WINS for a known partner
+        //   2. the deal's own logoImage from the API
+        //   3. the partner's initial
+        // Android shipped only step 3, so every card showed "S", "T", "G" where the web showed the
+        // real Shopee, TikTok Shop and Grab marks. The API is not at fault and needs no change:
+        // `logoImage` is null on every current row by design, and the registry deliberately
+        // outranks per-content images for partners it knows.
+        if (hasBrandLogo(deal.partnerName)) {
+            BrandLogo(partnerName = deal.partnerName, size = 48.dp)
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(TappyShapes.input)
+                    .background(tappyCategoryColors.orange.container),
+                contentAlignment = Alignment.Center,
+            ) {
+                if (deal.logoImage != null) {
+                    TappyImage(url = deal.logoImage, contentDescription = null, modifier = Modifier.fillMaxSize().clip(TappyShapes.input))
+                } else {
+                    Text(
+                        text = deal.partnerName.firstOrNull()?.uppercase() ?: "?",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = tappyCategoryColors.orange.onContainer,
+                    )
+                }
             }
         }
 
