@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, ExternalLink, Copy, Check, Mail, ArrowLeft, User, ShieldCheck, MessageCircle, MapPin, Star } from 'lucide-react'
+import { Loader2, ExternalLink, Copy, Check, Mail, ArrowLeft, User, ShieldCheck, MessageCircle, MapPin, Star, Boxes, ScrollText, KeyRound } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AUTH_PROVIDERS } from '@/lib/auth/providers'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -325,23 +325,102 @@ export default function LoginPage() {
 
   if (controllerEntry) {
     return (
-      <div className="flex min-h-dvh flex-col items-center justify-center gap-8 bg-[#070E1F] p-5 sm:p-8">
-        <div className="flex items-center gap-3">
-          <span
-            aria-hidden="true"
-            className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#2E7BF6] to-[#1B4FD8] text-lg font-black text-white shadow-lg shadow-[#1B4FD8]/30"
-          >
-            T
-          </span>
-          <span className="flex items-baseline gap-2">
-            <span className="text-lg font-bold tracking-tight text-white">{t('admin.shell.brand')}</span>
-            <span className="text-lg font-semibold text-[#4C9AFF]">{t('admin.shell.badge')}</span>
-          </span>
+      // Controller V2.3 — the entry page, REDESIGNED.
+      //
+      // 🔑 WHY THE STRUCTURE CHANGED, NOT JUST THE WORDS. V2.2 rewrote this
+      // screen's copy and the result still read as the old one, because the
+      // SHAPE was unchanged: a single narrow card floating in the middle of a
+      // dark page. This adopts the consumer login's proven composition — one
+      // large elevated container, a brand header, and a two-column body pairing
+      // a product hero with the auth panel — and renders it entirely in the
+      // Controller's fixed dark palette (#070E1F page, #0B1428 container,
+      // #0E1A33 raised surfaces, #4C9AFF accent).
+      //
+      // What is deliberately NOT borrowed from the consumer page: its providers,
+      // its wordmark treatment, its violet gradients, and its marketing voice.
+      // The Controller stays corporate, email + password, @tappyai.com only.
+      <div className="flex min-h-dvh items-center justify-center bg-[#070E1F] p-4 sm:p-6 lg:p-10">
+        <div className="w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0B1428] shadow-[0_28px_90px_rgba(0,0,0,0.55)]">
+          {/* Brand header — the mark that tells an operator which product this is. */}
+          <div className="flex items-center justify-between gap-4 border-b border-white/[0.06] px-6 py-5 sm:px-10">
+            <div className="flex items-center gap-3">
+              <span
+                aria-hidden="true"
+                className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#2E7BF6] to-[#1B4FD8] text-lg font-black text-white shadow-lg shadow-[#1B4FD8]/30"
+              >
+                T
+              </span>
+              <span className="flex items-baseline gap-2">
+                <span className="text-lg font-bold tracking-tight text-white">{t('admin.shell.brand')}</span>
+                <span className="text-lg font-semibold text-[#4C9AFF]">{t('admin.shell.badge')}</span>
+              </span>
+            </div>
+            <span className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-white/50 sm:flex">
+              <ShieldCheck className="h-3.5 w-3.5 text-[#4C9AFF]" aria-hidden />
+              {t('admin.login.subtitle')}
+            </span>
+          </div>
+
+          <div className="grid gap-10 px-6 py-8 sm:px-10 sm:py-10 lg:grid-cols-[1fr_minmax(340px,400px)] lg:gap-8">
+            {/* LEFT — the hero. This column is the redesign: it is the space a
+                lone card never had, and it is what makes the page state what the
+                Controller IS before asking who you are. */}
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-white/45">{t('admin.login.welcome')}</p>
+              <h1 className="mt-1.5 text-3xl font-black leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
+                {t('admin.login.tagline')}
+              </h1>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/50">{t('admin.login.heroLead')}</p>
+
+              {/* Three statements that are TRUE of this product and verifiable in
+                  the codebase — registry-derived navigation, the C7 audit chain,
+                  and server-side PDP authorization. No invented capability. */}
+              <ul className="mt-8 space-y-4">
+                {[
+                  { Icon: Boxes, t: 'admin.login.cap1Title', n: 'admin.login.cap1Note' },
+                  { Icon: ScrollText, t: 'admin.login.cap2Title', n: 'admin.login.cap2Note' },
+                  { Icon: KeyRound, t: 'admin.login.cap3Title', n: 'admin.login.cap3Note' },
+                ].map(({ Icon, t: title, n: note }) => (
+                  <li key={title} className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/[0.06] bg-[#0E1A33] text-[#4C9AFF]"
+                    >
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[13px] font-bold leading-tight text-white/90">{t(title)}</span>
+                      <span className="mt-0.5 block text-xs leading-snug text-white/45">{t(note)}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* The approved otter, already the Controller Home's brand anchor.
+                  Decorative here, so it is hidden from assistive tech. */}
+              <Image
+                src="/branding/otter-logo.png"
+                alt=""
+                aria-hidden
+                width={96}
+                height={96}
+                className="mt-8 hidden h-20 w-20 rounded-full opacity-50 lg:block"
+              />
+            </div>
+
+            {/* RIGHT — the auth panel. `mx-auto` matters below `lg`: the grid
+                collapses to one column wider than the card's own `max-w-md`, so
+                without it the card sits hard left in a 634px column at tablet
+                width. Measured, not guessed. */}
+            <div className="mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
+              <ControllerLoginCard signIn={controllerSignIn} onAuthenticated={controllerOnAuthenticated} />
+            </div>
+          </div>
+
+          <p className="border-t border-white/[0.06] px-6 py-4 text-center text-xs text-white/30 sm:px-10">
+            {t('admin.login.footer')}
+          </p>
         </div>
-
-        <ControllerLoginCard signIn={controllerSignIn} onAuthenticated={controllerOnAuthenticated} />
-
-        <p className="text-center text-sm text-white/40">{t('admin.login.footer')}</p>
       </div>
     )
   }

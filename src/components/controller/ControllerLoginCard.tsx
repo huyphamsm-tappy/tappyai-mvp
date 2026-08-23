@@ -103,13 +103,13 @@ export function ControllerLoginCard({ signIn, onAuthenticated }: ControllerLogin
 
   return (
     <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0B1428]/90 p-7 shadow-2xl sm:p-8">
-      {/* V2.2 — VISUAL HIERARCHY ONLY (Owner Decision D14). Three lines that
-          answer, in order: what is this, what is it for, and who may enter.
-          Previously the card led with "Sign in to Controller" and put the
-          audience rule directly under it, so the product's PURPOSE was never
-          stated on the page an operator sees first. Nothing about
-          authentication, the corporate boundary, returnTo or access-denied
-          changes here — this block is copy and layout. */}
+      {/* V2.3 — the card is now the RIGHT-HAND AUTH PANEL of a composed entry
+          page, not the whole screen. The welcome + purpose moved OUT to the
+          page's hero, so this heading drops to h2 and reclaims
+          `admin.login.title` — the key V2.2 orphaned when it promoted the
+          welcome line into the card. One h1 on the page, one h2 here.
+          Authentication, the corporate boundary, returnTo and access-denied are
+          untouched; only the heading level and surrounding layout changed. */}
       <div className="mb-6">
         <span
           aria-hidden="true"
@@ -117,11 +117,8 @@ export function ControllerLoginCard({ signIn, onAuthenticated }: ControllerLogin
         >
           <Lock className="h-5 w-5" />
         </span>
-        <h1 className="text-xl font-bold text-white sm:text-2xl">{t('admin.login.welcome')}</h1>
-        <p className="mt-1.5 text-sm font-medium text-[#4C9AFF]">{t('admin.login.tagline')}</p>
-        <p className="mt-3 border-t border-white/10 pt-3 text-xs leading-relaxed text-white/50">
-          {t('admin.login.subtitle')}
-        </p>
+        <h2 className="text-xl font-bold text-white">{t('admin.login.title')}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-white/55">{t('admin.login.subtitle')}</p>
       </div>
 
       <form onSubmit={onSubmit} noValidate>
