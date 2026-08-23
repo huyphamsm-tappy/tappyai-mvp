@@ -10,6 +10,7 @@ import { getMediaProvider } from '@/lib/media'
 import type { MediaUploadKind } from '@/lib/media/uploadPolicy'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { flushPending } from '@/lib/observability'
 
 // Client-direct upload authorization for Original Sound audio. The browser
 // uploads straight to storage (bypassing the serverless body-size limit); the
@@ -25,6 +26,11 @@ const ALLOWED_KINDS: readonly MediaUploadKind[] = ['audio', 'audioCover']
 // POST /api/upload/audio — pass clientPayload='cover' for the cover image on
 // the legacy Blob path, or kind='audioCover' on the session path.
 export async function POST(req: NextRequest) {
+  // Deliver events buffered by earlier requests on this instance. Never awaited:
+  // it overlaps with the auth lookup below, so it costs the caller nothing and
+  // cannot fail into this handler.
+  void flushPending(req)
+
   const { user } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 

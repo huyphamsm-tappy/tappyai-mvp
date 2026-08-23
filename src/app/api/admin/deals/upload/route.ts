@@ -19,6 +19,7 @@ import {
 import { completeUploadResponse, isCompleteUploadBody } from '@/lib/media/uploadCompletion'
 import { getMediaProvider } from '@/lib/media'
 import type { MediaUploadKind } from '@/lib/media/uploadPolicy'
+import { flushPending } from '@/lib/observability'
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml']
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024 // 5MB — logos/banners are small
@@ -63,6 +64,11 @@ function auditMediaMutation(
 }
 
 export async function POST(req: NextRequest) {
+  // Deliver events buffered by earlier requests on this instance. Never awaited:
+  // it overlaps with the permission check below, so it costs the caller nothing
+  // and cannot fail into this handler.
+  void flushPending(req)
+
   try {
     const { user, actor } = await requirePermission(req, PERMISSIONS.COMMERCE_DEALS_UPLOAD_MEDIA)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)

@@ -15,6 +15,7 @@
 // disabled, because a disabled path comes back the moment an env var is wrong.
 
 import { getMediaProvider } from './index'
+import { recordEvent } from '@/lib/observability'
 import {
   MediaUploadRejectedError,
   resolveUploadTarget,
@@ -147,6 +148,18 @@ export async function createUploadSessionResponse(
       status,
       reason,
       audience,
+      kind: String(input.kind ?? 'unknown'),
+    })
+    // Same facts, to a durable sink. Buffer-only: an array push, no I/O, no
+    // throw — safe inside a catch that is already handling a production
+    // failure. `audience` is deliberately omitted: it is safe but it is a
+    // configuration echo, and the allow-list stays as small as it can be.
+    recordEvent({ type: 'wif_failure', stage, status, reason })
+    recordEvent({
+      type: 'media_failure',
+      operation: 'session',
+      provider: provider.id,
+      status,
       kind: String(input.kind ?? 'unknown'),
     })
     return { status: 502, body: { error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.' } }
