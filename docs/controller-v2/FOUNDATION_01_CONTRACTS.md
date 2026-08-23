@@ -88,6 +88,15 @@ C5 folds into C6; not standalone; `capabilities.ts` inert until C6. A capability
 consumers[]}`. Providers register via manifest; consumers declare in `dependencies`;
 binding is Core-resolved, fail-closed.
 
+> **Clarified 2026-08-22 — the section above describes the MODULE axis, and only that.** It says what a capability is,
+> who provides it and who consumes it. It never said how an **actor** acquires one, which is why `Actor.capabilities`
+> stayed empty and K-1 was classified as needing an Owner decision rather than an implementation.
+>
+> [**Owner Decision D-K1**](OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived) supplies that
+> missing edge: for Controller V2 an actor's capabilities are **derived from the actor's effective role permissions** —
+> a read-only projection, never an authorization source. The module axis defined above is **unchanged**; the two share
+> an id space but are different relationships.
+
 ## 5. Plugin / Module contract — **FROZEN (pending ratification)**
 A **Plugin** = a distributable bundle of Module(s) + Capabilities; every Module is
 manifest-describable. **Initial scope: first-party only** (no third-party loading).

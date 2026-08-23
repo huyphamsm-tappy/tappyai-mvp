@@ -141,7 +141,8 @@ Both are corrected in place rather than quietly edited away, the same discipline
 | **Module 20** | ✅ **CLOSED** (D7) | Kernel/capability, not a Hub member, not built |
 | **Module 17 · 11 unstarted Phase 8 modules** | **DEFERRED BY DECISION** (D7) | No new business module enters V2 |
 | **M09 content-safety writer** | **OUT OF CONTROLLER V2 SCOPE** | Content Safety Gate under ADR-024, which `moderationModule.ts` declares |
-| **K-1 · K-3 · K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
+| ~~**K-1**~~ | ✅ **RESOLVED 2026-08-22** | Owner Decision **D-K1**: actor capabilities are **role-derived**, a read-only projection. See [K-1](#k-1--the-actorcapability-binding-2026-08-22) |
+| **K-3 · K-4 · K-7** | **FUTURE KERNEL** | Unchanged: the architecture they guard does not exist yet |
 
 **Controller V2 is not declared COMPLETE, and the reason is now narrow enough to state in one line.** Under Decision F the measure is the full architecture. **Class 1 (engineering) is empty, class 3 (Owner decision) is empty, the migration is applied, and BL-002 is accepted** — so nothing is waiting on this workstream and no external prerequisite remains. What is left is **destructive UAT the Owner has explicitly withheld** and **work DEFERRED by decision, on the record, with a stated end condition**. Calling that COMPLETE would mean calling a deferral a delivery.
 
@@ -202,6 +203,44 @@ POST https://www.tappyai.com/api/admin/rbac/roles   403 (Forbidden)
 **The test account had to be corporate, and that was not obvious.** Production already held a `super_admin` who is not the Platform Owner — `huypham.sm@gmail.com`, the retired owner — so the prerequisite looked satisfied. It was not: `requirePermission` runs the FOUNDATION-10C corporate boundary, so a `gmail.com` identity is refused **at the identity gate** and never reaches `requireOwner`. That returns a different message, which the contract classifies as **INVALID**, not PASS. Only `support@tappyai.com` qualified.
 
 **`/admin/rbac` was reported as crashing into the error boundary, and it is not broken.** Measured on `eb42163`: `GET /admin/rbac` 200, `GET /api/admin/rbac/roles` 200, page renders fully in EN and VI with 0 console errors. The crash reproduced only while Chrome's page translation was active — `documentElement.className = "translated-ltr"`, 10 injected `<font>` tags, and the error-boundary string itself rewritten from *"Ối, có lỗi xảy ra"* to *"मूड, có lỗi xảy ra ra"*. The thrown error is `NotFoundError: Failed to execute 'removeChild'`, entirely inside the react-dom chunk with **no frame in this repository**: the translator replaces text nodes React owns, and React's next commit — reliably, a Radix `Select` portal unmounting, which is the control under the "Vai trò" label — removes a child that is no longer there. A fresh load of the same tab renders correctly with 0 `<font>` tags. **Not a production defect, and no fix was made.** A one-attribute hardening (`translate="no"` on the Controller root) would prevent the class entirely and is left as an unauthorized suggestion.
+
+### K-1 — the actor↔capability binding (2026-08-22)
+
+**RESOLVED by Owner Decision [D-K1](OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived), and implemented.**
+
+K-1 was never an implementation gap. `Actor.capabilities` existed from Component 2 and was permanently empty because
+`FOUNDATION_01_CONTRACTS.md` §4 defines a capability as **module**-provided, while the PDP's third step tests
+**`actor.capabilities`** — and nothing authoritative said how an **actor** acquires one. D-K1 supplies that edge:
+capabilities are **derived from the actor's effective role permissions**, read-only, and never an authorization source.
+
+| | |
+|---|---|
+| Source | the permission registry, through the **same `roleMap` the PDP resolves from** |
+| Shape | deterministic · de-duplicated · sorted · frozen · no role inheritance |
+| Empty case | an actor with no roles gets `NO_CAPABILITIES` **by identity** — pre-K-1 behaviour unchanged |
+| Not derived from | membership · department · policy · per-user grant · any table |
+| Authority | unchanged — `requirePermission()` / the PDP still decide everything |
+| `CAPABILITY_GATE_ENABLED` | **still `false`** — enabling it is a separate decision and was not taken |
+| Extension point | `CAPABILITY_SOURCES`, frozen, **exactly one source in V2** |
+
+Projection: `analyst` 2 · `moderator` 4 · `admin` 8 · `super_admin` 9 (the full declared set).
+
+> ⚠️ **Role-derived capabilities make the PDP capability gate vacuous, and this must not be mis-sold.** The derived set
+> is `{ P.capability : P ∈ granted(actor) }`, so any permission an actor holds contributes its own capability — step 3
+> can never deny what step 4 would allow. **Enabling the gate would add no security boundary.** It becomes meaningful
+> only once a source can supply or withhold a capability *independently of the permission*, which is why the boundary
+> is a list of sources rather than a single function.
+
+**ADR-018 is partially superseded — the actor half only.** The module capability axis (provider/consumers,
+`ControllerCore`) is untouched, and the PDP branch stays inert, so that ADR's operative safety claim is intact. It
+carries a dated pointer in its header; **no text was removed from it**. `FOUNDATION_01_CONTRACTS.md` §4 carries the
+matching clarification.
+
+**Evidence.** 45 targeted tests, written red first, with the RED proven to come solely from the missing module
+(project-wide `tsc` reported exactly one error). Mutation **13/14 killed**; the single survivor is **equivalent and
+recorded** — the `if (capability)` guard cannot fire because `roleMap` is built from the registry the lookup consults.
+Full suite **7102 passed · 0 failed**, required-suites **33/33**, `tsc` 0, ESLint clean, build exit 0. **One production
+behaviour changed: one line in `rbac.ts`.** No migration, no schema, no API, no UI.
 
 ### Gate evidence for `6d9aecc`
 
@@ -1268,7 +1307,7 @@ Measured from the repository at `81bfa06`, not from the entries above. Registry 
 | 2 — needs a NEW migration authorization | Module 09 moderation · Module 17/20 settings · K-2 · K-8 | `moderation_queue`, `moderation_actions`, `platform_settings`, `module_registry` all probe `PGRST205` |
 | 3 — Owner decision | Phase 7's five · Module 17 hub · Module 20 classification · 2 unregistered hubs · **ban → session revocation** | no authoritative source answers them |
 | 4 — authenticated UAT | M01 · M04 Part A · M04 retention · M08 · C11 | this workstream holds no production session |
-| 5 — future kernel | K-1 · K-3 · K-4 · **K-7** | the architecture they guard does not exist yet |
+| 5 — future kernel | ~~K-1~~ ✅ **resolved 2026-08-22 (D-K1)** · K-3 · K-4 · **K-7** | the architecture the remaining three guard does not exist yet |
 
 **K-7 is formally DEFERRED, and the check was run rather than assumed.** `src/lib/controller/modules/` holds **two** files and **neither imports the other**, so §1 rule 1 has nothing to catch; §1 rule 2's connector layer has no directory at all; §1 rule 3 is already covered in part by `no-adhoc-service-role-client`. A guard over an empty directory structure is a decorative test, and building it would have reduced the burn-down without protecting anything.
 
@@ -1301,7 +1340,7 @@ Registry: **6 hubs · 11 modules · 34 permissions**. Production holds **seven**
 | 11 unstarted Phase 8 modules | 2/3 | Each needs its own contract read; none has been measured as contract-complete |
 | Phase 7 (5 items) | 3 — Owner decision | Unchanged |
 | `/org/memberships` | 3 — Owner decision | F-10 gate plus four further decisions; the repository still contains no authorization |
-| K-1 · K-3 · K-4 · **K-7** | 5 — future infrastructure | K-7's evidence is unchanged: `src/lib/controller/modules/` holds three files and none imports another; rule 2's connector layer has no directory |
+| ~~K-1~~ ✅ **resolved (D-K1)** · K-3 · K-4 · **K-7** | 5 — future infrastructure | K-7's evidence is unchanged: `src/lib/controller/modules/` holds three files and none imports another; rule 2's connector layer has no directory |
 | Rolling retention · anon stitching | 5 | `user_active_days` and `anon_identity_map` absent; `06` §8C frames the first as a *performance* structure, so nothing is blocked on it |
 
 **Class 1 is empty, and class 2 has no measured candidate.** The two tables with authoritative DDL that were still absent — `moderation_queue` and `moderation_actions` — are now live. What remains absent has **no DDL to implement**.

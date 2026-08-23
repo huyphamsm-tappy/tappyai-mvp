@@ -6,6 +6,26 @@
 [`docs/controller-v2/STATUS.md`](../controller-v2/STATUS.md) and
 [`docs/controller-v2/ROADMAP.md`](../controller-v2/ROADMAP.md). Does not touch the
 security foundation (C1–C4, C7, C9a) or PH-0.
+**Partially superseded 2026-08-22 by [Owner Decision D-K1](../controller-v2/OWNER_DECISIONS_2026-08-22.md#d-k1--the-actorcapability-binding-role-derived)
+— the ACTOR half only. See the note below.**
+
+> ### ⚠️ PARTIALLY SUPERSEDED — `Actor.capabilities`, 2026-08-22
+>
+> Under the Decision section below, this ADR holds that `src/lib/admin/capabilities.ts` and the PDP capability branch
+> *"remain reserved and inert … until C6 activates them"*. **Owner Decision D-K1 supersedes that for the ACTOR axis:**
+> `Actor.capabilities` is now **derived** from the actor's effective role permissions and is no longer empty.
+>
+> **What this ADR still governs, unchanged:**
+> - the **module** capability axis — `{id, version, owner, permissions[], dependencies[], provider(moduleId),
+>   consumers[]}`, provider/consumer binding, and `ControllerCore`'s registry;
+> - the folding of Component 5 into Component 6;
+> - **the PDP capability branch itself**, which remains inert — `CAPABILITY_GATE_ENABLED` is still `false`. This ADR's
+>   operative safety claim, that nothing gates on the field, is therefore intact.
+>
+> D-K1 also records why enabling that gate would add no security boundary while capabilities are role-derived.
+>
+> **No text below has been altered or removed.** An ADR is a historical instrument; the amendment lives in the decision
+> record, and this banner points at it.
 
 ---
 
