@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -369,7 +370,20 @@ internal fun ReviewDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(ScreenBackground),
+            .background(ScreenBackground)
+            // 🚨 Without this the comment composer is unusable. MainActivity declares
+            // `adjustResize` and calls `enableEdgeToEdge()`, which is a deliberate pair: the window
+            // does NOT pan, and each screen consumes the IME inset itself so it is subtracted
+            // exactly once (see ImeInsetContractTest). ChatScreen does that; this screen never did,
+            // so opening the keyboard left the composer where it was — measured on SM-A127F at
+            // y=1418..1465 with the IME top at y≈930, i.e. entirely behind the keyboard. The user
+            // could not see what they were typing and could not reach Send.
+            //
+            // It belongs on the Column rather than on the input bar: the Column shrinks, so the
+            // LazyColumn above gives up the height instead and the comments stay scrollable. The
+            // shell already hides the bottom nav while the IME is up, so there is nothing to
+            // overlap once the composer moves.
+            .imePadding(),
     ) {
         ScreenHeader(title = stringResource(R.string.reviews_detail_title), onBack = onBack)
         if (review == null) {

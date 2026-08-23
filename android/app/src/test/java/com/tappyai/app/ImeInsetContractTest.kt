@@ -74,4 +74,35 @@ class ImeInsetContractTest {
             chatScreen.readText().contains(".imePadding()"),
         )
     }
+
+    /**
+     * The half of the contract that was never applied.
+     *
+     * Handing ownership to Compose is a per-screen obligation, not a global setting, and the Explore
+     * review detail never met it. Device-measured on SM-A127F: focusing the comment field put the
+     * input bar at y=1418..1465 with the IME starting at y≈930 — the composer was entirely behind
+     * the keyboard, so the user could neither read what they typed nor reach Send. Everything in the
+     * manifest was already correct; only this screen was missing.
+     *
+     * Keyed on the comment bar rather than on the file, so any screen that adopts the bar in future
+     * inherits the requirement instead of quietly repeating the defect.
+     */
+    @Test
+    fun `every screen hosting the comment input bar applies the IME inset`() {
+        val hosts = File("src/main/java/com/tappyai/app/reviews/ui")
+            .walkTopDown()
+            .filter { it.isFile && it.extension == "kt" }
+            .filter { it.readText().contains("ReviewCommentInputBar(") }
+            .filterNot { it.name == "ReviewCommentSection.kt" } // where it is declared, not hosted
+            .toList()
+
+        assertTrue("no screen hosts ReviewCommentInputBar — this guard would pass vacuously", hosts.isNotEmpty())
+
+        val unpadded = hosts.filterNot { it.readText().contains(".imePadding()") }
+        assertTrue(
+            "these screens host the comment composer but never consume the IME inset, so the " +
+                "keyboard covers it: ${unpadded.map { it.name }}",
+            unpadded.isEmpty(),
+        )
+    }
 }

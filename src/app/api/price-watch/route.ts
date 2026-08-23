@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { pw, resolveUserLang } from '@/lib/priceWatch/messages'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -35,6 +36,19 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // 🚨 F03 — a price watch is not an inert private row, and that is why it is refused here while
+  // favourites, bookings and preferences are not. Every active watch is picked up by the daily
+  // `/api/cron/price-check` worker, which spends a paid Serper search AND a paid model call on it,
+  // every day, until it triggers or is cancelled. Anonymous identities are mintable without limit
+  // and the per-identity ceiling is 10, so the cost has no upper bound — and because the worker
+  // orders by `last_checked` with `nullsFirst: true`, freshly created watches go to the FRONT of
+  // its 100-row daily budget, displacing real users' watches rather than merely adding to them.
+  //
+  // 🔑 Before the body is read and before any query runs, so a refused call creates no row, no
+  // scheduled work and no upstream spend. Moving it below the insert would make the guard a
+  // formality — `priceWatchAccess.test.ts` mutation-tests exactly that.
+  const refusal = refuseAnonymousSocialWrite(req, user)
+  if (refusal) return refusal
   const lang = await resolveUserLang(supabase, user.id)
 
   const { product_name, target_price, search_query } = await req.json()
@@ -72,6 +86,11 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  // An anonymous identity can no longer own a watch, so it has nothing here to cancel. Refusing
+  // rather than letting it run keeps ONE answer to "may this identity mutate price watches?" —
+  // a guard on create alone would leave the mutating surface half-covered.
+  const refusalD = refuseAnonymousSocialWrite(req, user)
+  if (refusalD) return refusalD
   const lang = await resolveUserLang(supabase, user.id)
 
   const { id } = await req.json()
