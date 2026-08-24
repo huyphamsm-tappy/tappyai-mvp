@@ -19,11 +19,11 @@ const SPEC = 'src/lib/ai/tools/shoppingValidity.test.ts'
 const hash = (s) => createHash('sha256').update(s).digest('hex').slice(0, 16)
 const orig = readFileSync(F, 'utf8')
 
+// NOTE: the "!title || !link" guard was removed as an EQUIVALENT mutant — an
+// empty title fails the relevance check and an empty link makes hostOf() return
+// null, so the two halves killed nothing. Its behaviour is still pinned by the
+// "an empty title or empty link is rejected" test.
 const M = [
-  { n: 'M01 drop the title requirement (a listing needs no title)',
-    from: '  if (!title || !link) return false', to: '  if (!link) return false' },
-  { n: 'M02 drop the URL requirement',
-    from: '  if (!title || !link) return false', to: '  if (!title) return false' },
   { n: 'M03 allow a bare URL as the title',
     from: "  if (/^https?:\\/\\//i.test(title)) return false           // the title is just a URL", to: '' },
   { n: 'M04 stop rejecting news/social/video hosts',

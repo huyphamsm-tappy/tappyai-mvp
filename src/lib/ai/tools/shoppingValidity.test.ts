@@ -53,6 +53,25 @@ describe('isValidShoppingResult — the four measured junk classes are rejected'
     // cannot drop it — the non-commerce host check is what does.
     expect(isValidShoppingResult(Q, DISCOUNT_ARTICLE)).toBe(false)
   })
+
+  it('a bare URL as the title is rejected EVEN when the URL contains the product word', () => {
+    // Isolates the title-is-URL check: relevance would pass ("macbook-pro"), so
+    // only the URL-as-title rule can reject this.
+    const urlTitle = { title: 'https://shopee.vn/macbook-pro-i.1.2', link: 'https://shopee.vn/macbook-pro-i.1.2' }
+    expect(isValidShoppingResult(Q, urlTitle)).toBe(false)
+  })
+
+  it('a news host is rejected EVEN when the title is on-topic', () => {
+    // Isolates the non-commerce-host check: the title is fully relevant, so only
+    // the host rule can reject a "MacBook Pro" article on cafef.vn.
+    const newsButRelevant = { title: 'MacBook Pro M1 giá rẻ nhất 2026 có nên mua', link: 'https://cafef.vn/macbook-pro-m1-gia-re.chn' }
+    expect(isValidShoppingResult(Q, newsButRelevant)).toBe(false)
+  })
+
+  it('an empty title or empty link is rejected', () => {
+    expect(isValidShoppingResult(Q, { title: '', link: 'https://shopee.vn/macbook-pro-i.1.2' })).toBe(false)
+    expect(isValidShoppingResult(Q, { title: 'MacBook Pro M1', link: '' })).toBe(false)
+  })
 })
 
 describe('isValidShoppingResult — category/search pages are rejected', () => {
@@ -84,6 +103,11 @@ describe('isValidShoppingResult — genuine listings survive', () => {
 describe('isRelevant — the token bar', () => {
   it('"mac" matches "macbook" (title starts with query token)', () => {
     expect(isRelevant('mac pro', 'MacBook Pro 14 M1')).toBe(true)
+  })
+  it('a single-token "mac" query still matches "MacBook" by prefix, not exact', () => {
+    // Kills the exact-token mutation: "mac" !== "macbook", so an exact-match rule
+    // would drop a real MacBook listing for the query "mac".
+    expect(isRelevant('mac', 'MacBook Pro 14 inch 2021')).toBe(true)
   })
   it('the noise word "Mã" does not satisfy "mac"', () => {
     // Only title-startsWith-query counts, never the reverse, so "ma" ≠ "mac".

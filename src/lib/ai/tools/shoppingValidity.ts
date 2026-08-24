@@ -106,7 +106,10 @@ function hostOf(link: string): string | null {
 export function isValidShoppingResult(query: string, r: OrganicResult): boolean {
   const title = (r.title || '').trim()
   const link = (r.link || '').trim()
-  if (!title || !link) return false
+  // No explicit "title/link present" guard: an empty title carries no relevant
+  // token so it fails the relevance check below, and an empty link makes hostOf
+  // return null so it fails the host check — both covered without a redundant
+  // clause (a mutation on which would be equivalent).
   if (/^https?:\/\//i.test(title)) return false           // the title is just a URL
   const host = hostOf(link)
   if (!host) return false
