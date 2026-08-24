@@ -79,7 +79,7 @@ describe('missing fields are not merged over (safety > aggregation)', () => {
     const noSize = { title: 'MacBook Pro M1 32GB 512GB', source: 'B', price_vnd: 26_000_000, ram_gb: 32, storage_gb: 512, link: 'https://b.vn/p' }
     const e = groupIntoEntities([n(known), n(noSize)])
     expect(e).toHaveLength(2)
-    expect(e.map(x => x.identity.size).sort()).toEqual([UNKNOWN, '14 inch'])
+    expect(new Set(e.map(x => x.identity.size))).toEqual(new Set(['14 inch', UNKNOWN]))
   })
 })
 
