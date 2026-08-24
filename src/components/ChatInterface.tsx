@@ -13,6 +13,8 @@ import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
+import ShoppingDecision from '@/components/chat/ShoppingDecision'
+import type { SynthesisView } from '@/lib/ai/consultative/synthesisView'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -448,6 +450,38 @@ export function formatMessage(content: string) {
     .replace(/^(\d+)\.\s+(.+)$\n?/gm, '<div class="flex gap-2 my-1"><span class="text-gray-400 dark:text-gray-500 tabular-nums flex-shrink-0">$1.</span><span>$2</span></div>')
     .replace(/^- (.+)$\n?/gm, '<li>$1</li>')
     .replace(/(?:<li>.*?<\/li>)+/g, (m) => `<ul class="list-disc pl-5 my-2 space-y-1">${m}</ul>`)
+}
+
+// Phase 9 — the backend's OWN shopping decision, if this reply carried one.
+// Read straight off the finished `search_products` tool result; the UI groups
+// and infers NOTHING. Exported for test.
+export function shoppingViewOf(msg: { toolInvocations?: unknown }): SynthesisView | null {
+  const invs = (msg as { toolInvocations?: Array<Record<string, unknown>> }).toolInvocations
+  if (!Array.isArray(invs)) return null
+  for (const inv of invs) {
+    if (inv?.toolName !== 'search_products' || inv?.state !== 'result') continue
+    const result = inv.result
+    const view = result && typeof result === 'object' ? (result as Record<string, unknown>)._tappy_synthesis_view : undefined
+    if (view && typeof view === 'object' && Array.isArray((view as SynthesisView).entities) && (view as SynthesisView).entities.length > 0) {
+      return view as SynthesisView
+    }
+  }
+  return null
+}
+
+// When a shopping decision is rendered, the raw listing photos the stream filter
+// injected become a 9-image flood the decision replaces. Strip the image
+// markdown (never the order/platform LINKS — those have no `!`) and keep the
+// first image as the decision's representative hero. Only ever called for a
+// message that HAS a synthesis view, so place/food photo galleries are untouched.
+// Exported for test.
+export function stripProductImages(text: string): { text: string; firstImage: string | null } {
+  const re = /!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g
+  let firstImage: string | null = null
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text))) { if (!firstImage) firstImage = m[1] }
+  const stripped = text.replace(/!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g, '').replace(/\n{3,}/g, '\n\n').trim()
+  return { text: stripped, firstImage }
 }
 
 // Smooth typewriter reveal for the streaming reply.
@@ -1190,14 +1224,24 @@ export default function ChatInterface({
                 const { text: textAfterCta, buttons } = parseCTA(textAfterPlan)
                 const { text, followups } = parseFollowups(textAfterCta)
                 const isLastMessage = msgIdx === messages.length - 1
+                // Phase 9 — a shopping reply renders a DECISION, not the raw
+                // listing-photo flood. When the tool result carries the backend's
+                // grouped view, strip the injected product images (keeping the
+                // first as the hero) and show ShoppingDecision below the prose.
+                const shopView = shoppingViewOf(msg)
+                const rawBody = isLoading && isLastMessage ? smoothedLastText : text
+                const { text: bodyText, firstImage: heroImage } = shopView
+                  ? stripProductImages(rawBody)
+                  : { text: rawBody, firstImage: null }
                 return (
                   <div key={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
-                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(isLoading && isLastMessage ? smoothedLastText : text) }} />
+                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
                       </div>
                       {plan && <TripPlanCard plan={plan} />}
+                      {shopView && <ShoppingDecision view={shopView} heroImage={heroImage} />}
                       {/* Action bar (copy/share/like/dislike/TTS/regenerate) — only
                           once the reply is done, fading in for a polished finish. */}
                       {!(isLoading && isLastMessage) && (
@@ -1206,13 +1250,13 @@ export default function ChatInterface({
                             msgId={msg.id}
                             messageIndex={msgIdx}
                             conversationId={conversationId}
-                            text={text}
+                            text={bodyText}
                             isThisSpeaking={tts.speakingId === msg.id}
                             isPaused={tts.isPaused}
                             ttsElapsed={tts.elapsed}
                             ttsTotal={tts.totalSecs}
                             ttsSpeed={tts.speed}
-                            onSpeak={() => tts.speak(msg.id, text)}
+                            onSpeak={() => tts.speak(msg.id, bodyText)}
                             onTTSPause={tts.togglePause}
                             onTTSSkipBack={tts.skipBack}
                             onTTSSkipForward={tts.skipForward}

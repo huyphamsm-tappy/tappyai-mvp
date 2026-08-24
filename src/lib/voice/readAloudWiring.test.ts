@@ -30,7 +30,9 @@ describe('the chat UI reads aloud through the server', () => {
 
   it('does not pass a language to speak() — the backend decides it', () => {
     const src = chat()
-    expect(src).toMatch(/tts\.speak\(msg\.id,\s*text\)/)
+    // The 2nd arg is the message body (`text`, or `bodyText` once the shopping
+    // decision strips its injected images) — a plain identifier, never a language.
+    expect(src).toMatch(/tts\.speak\(msg\.id,\s*(?:text|bodyText)\)/)
     // The specific regression: re-adding client-side detection at the call site.
     expect(src).not.toMatch(/tts\.speak\([^)]*detectLang/)
   })
