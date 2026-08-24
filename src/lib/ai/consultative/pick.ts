@@ -1,6 +1,7 @@
 import type { NeedProfile } from './needProfile'
 import type { Candidate } from './candidate'
 import type { RankedResult, Reason } from './rank'
+import { normalizeVN } from '../intent'
 
 // ── Tappy's Pick (Phase 2 §5) ───────────────────────────────────────────────
 //
@@ -33,9 +34,73 @@ export interface Pick {
   unverified: string[]
 }
 
-/** Does the user's need contain anything a Pick could be FOR? */
-function hasDecidableNeed(need: NeedProfile): boolean {
+/**
+ * The user asked Tappy to choose, in so many words.
+ *
+ * 🚨 MEASURED ON PRODUCTION (4c47753). Asked "MacBook Pro 14 M1 32GB 512GB, tư vấn giúp mình chọn",
+ * the reply listed two shops and ended "bạn đã quyết định chọn shop nào rồi?" — it handed the
+ * decision back to someone who had just asked to be given one. The tool result proved why: it
+ * carried `_tappy_total_found` (set during ranking) but no `_tappy_ranking`, the exact signature of
+ * ranking alive and Pick null.
+ *
+ * The cause was that `hasDecidableNeed` asked whether the user had stated CRITERIA, and a bare
+ * product name states none — `needProfile` classifies "32GB", "512GB" and "M1" as SPEC, which by
+ * design set no priority. So the one turn where a user most explicitly wants a decision was the one
+ * turn the Pick machinery stayed dark.
+ *
+ * Matched against `normalizeVN()` output — lowercase, diacritics stripped — the same convention
+ * `needProfile` uses, so an accented message and an unaccented one behave identically.
+ *
+ * Deliberately narrow. It looks for an ASK DIRECTED AT TAPPY ("chọn giúp mình", "theo bạn nên mua
+ * cái nào", "which should I get"), not for the mere presence of the word "chọn": a user saying "mình
+ * đã chọn xong rồi" is reporting a decision, not requesting one.
+ */
+const CHOICE_REQUEST = new RegExp([
+  // "tư vấn/gợi ý ... giúp/cho mình" — an ask aimed at Tappy
+  'tu van (giup|cho|ho) ?(minh|toi|em|tui|mik)?',
+  '(chon|lua chon|goi y|recommend) (giup|ho|cho) ?(minh|toi|em|tui|mik)',
+  // "nên mua/chọn/lấy cái nào" — with or without "theo bạn"
+  '(theo (ban|cau|anh|chi) )?nen (mua|chon|lay|dung|lam) (cai |con |chiec |may |quan |shop )?nao',
+  '(ban|cau) (chon|thay) (cai |con |chiec |may |shop )?nao',
+  'cai nao (tot|ngon|dang|hop|phu hop) (hon|nhat)',
+  // English
+  'which (one )?(should|would) (i|you)',
+  'what (do you|would you) recommend',
+  'help me (choose|pick|decide)',
+  'recommend (one|me one|something)',
+  '\\bpick one for me\\b',
+].join('|'))
+
+/** Signals about the TURN that the ranked result alone cannot carry. */
+export interface PickSignals {
+  /** The user explicitly asked Tappy to make the choice. */
+  explicitChoiceRequest?: boolean
+}
+
+/**
+ * True when the user asked Tappy to decide.
+ *
+ * Pure and exported so the gate is testable without a route, and so the route
+ * stays the only place that knows which message is "the current one".
+ */
+export function isExplicitChoiceRequest(text: string | null | undefined): boolean {
+  if (!text) return false
+  return CHOICE_REQUEST.test(normalizeVN(text.toLowerCase()))
+}
+
+/**
+ * Does the user's need contain anything a Pick could be FOR?
+ *
+ * Two ways to qualify, and they are not the same thing:
+ *   · the user stated CRITERIA — a priority, a must-have, a budget; or
+ *   · the user asked for a DECISION.
+ *
+ * The second was missing and is the whole of the production defect above. It
+ * widens WHEN a Pick may be considered; it does not lower WHAT a Pick requires.
+ */
+function hasDecidableNeed(need: NeedProfile, signals?: PickSignals): boolean {
   return need.priorities.length > 0 || need.mustHave.length > 0 || need.budget !== null
+    || signals?.explicitChoiceRequest === true
 }
 
 /**
@@ -43,16 +108,24 @@ function hasDecidableNeed(need: NeedProfile): boolean {
  *
  * Null is a first-class outcome, not a failure: the turn then runs exactly as it
  * does today — R7's clarification ladder, or the comparison block's conditional
- * lean. Forcing a Pick because the user asked for a recommendation is precisely
- * the fabricated confidence §14 of the product contract forbids.
+ * lean.
+ *
+ * 🚨 An explicit request to choose is now a decidable need, which an earlier
+ * version of this comment called "the fabricated confidence §14 forbids". That
+ * conflated two different things. Asking to be told which one is not evidence
+ * ABOUT the candidates, and it still buys none: every grounding guard below is
+ * unchanged, so a request to choose with a tie, a single candidate, an unrankable
+ * list, or no grounded reason still yields null. What the request changes is only
+ * that the question was ASKED — and refusing to answer a question the evidence
+ * can support is its own failure, which is what production measured.
  */
-export function derivePick(result: RankedResult, need: NeedProfile): Pick | null {
+export function derivePick(result: RankedResult, need: NeedProfile, signals?: PickSignals): Pick | null {
   // Ordering the provider's own list is not a decision.
   if (!result.rankable) return null
   // One candidate is an answer, not a choice.
   if (result.ranked.length < 2) return null
-  // Nothing was asked for, so nothing can be picked FOR.
-  if (!hasDecidableNeed(need)) return null
+  // Nothing was asked for, and nothing was asked OF us, so nothing can be picked FOR.
+  if (!hasDecidableNeed(need, signals)) return null
 
   const top = result.ranked[0]
   const second = result.ranked[1]
@@ -185,6 +258,37 @@ Viet gon. Khong mo ta dai dong tung tin dang, khong lap lai thong tin da co o do
 Neu ket qua co truong '_tappy_total_found': do la TONG so tin dang tim duoc, con danh sach ban nhan
 duoc la phan da chon loc. Duoc phep noi "trong N ket qua, day la vai lua chon dang xem", nhung KHONG
 duoc noi hay ngu y rang chi co bay nhieu tin dang ton tai.
+
+KHI USER DA NHO BAN CHON, PHAI CHON NGAY O CAU TRA LOI DAU TIEN:
+Neu user hoi kieu "tu van giup minh chon", "nen mua cai nao", "theo ban chon cai nao" thi viec ho
+nho ban chon CHINH LA du can cu de chon — dung doi ho noi them tieu chi roi moi chon.
+- PHAI dua ra MOT de xuat ro rang ngay o luot dau. TUYET DOI KHONG ket thuc bang "ban chon cai nao?"
+  hay "ban da quyet dinh chua?" roi de ho tu chon.
+- Chi duoc hoi lai thay vi chon khi bang chung THUC SU khong du de phan biet (vi du moi dong deu
+  thieu gia va danh gia) — luc do noi RO thieu gi.
+
+DE XUAT PHAI KEM LY DO VA DANH DOI:
+- VI SAO chon: 1-2 ly do CO THAT trong ket qua (gia, danh gia, so luot danh gia, noi ban).
+- DANH DOI: mot cau ve diem ma lua chon kia hon — khong bia diem tru.
+- CAC LUA CHON KHONG CHON: neu trong danh sach con phuong an DANG KE khac (gia thap hon ro ret,
+  danh gia cao hon, cau hinh khac), noi NGAN GON vi sao khong chon — moi phuong an mot ve la du.
+  KHONG liet ke lai ca danh sach; day la giai thich quyet dinh, khong phai catalogue.
+
+PHAM VI CUA MOI SO SANH — TUYET DOI KHONG NOI "NHAT THI TRUONG":
+Ban chi nhin thay nhung tin dang da duoc tim ve, KHONG phai ca thi truong. Moi so sanh nhat/tot nhat
+PHAI duoc gioi han vao dung pham vi do.
+- CAM: "re nhat tren thi truong", "gia tot nhat thi truong", "re nhat hien nay", "khong dau re hon",
+  "cheapest on the market", "best price on the market".
+- DUNG: "re nhat trong cac lua chon minh tim duoc", "gia tot nhat trong danh sach hien co",
+  "thap nhat trong N ket qua tren".
+Co '_tappy_total_found' cang chung to ban chi thay MOT PHAN — cang khong duoc noi "nhat thi truong".
+
+KHONG KHANG DINH HAI TIN DANG CUNG CAU HINH NEU BANG CHUNG KHONG NOI THE:
+"M1" va "M1 Pro" la HAI chip khac nhau; "32GB/512GB" giong nhau khong lam hai may thanh cung cau hinh.
+- CAM noi "cau hinh hoan toan giong nhau", "y het nhau", "cung cau hinh" khi tieu de hai dong khong
+  ghi ro CUNG chip VA CUNG dung luong VA cung tinh trang.
+- Neu khong chac: so sanh theo dung nhung gi tieu de ghi, hoac noi ro la tieu de khong ghi ro.
+- Day la luat ve LOI KHANG DINH, khong phai luat gop dong: van giu moi dong la mot tin dang rieng.
 ==========================================`
 }
 

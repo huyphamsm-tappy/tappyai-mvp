@@ -20,7 +20,7 @@ import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping } from '@/lib/ai/consultative/shortlist'
-import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock } from '@/lib/ai/consultative/pick'
+import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest } from '@/lib/ai/consultative/pick'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
 import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
@@ -356,6 +356,11 @@ export async function POST(req: Request) {
     gps: userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null,
   })
 
+  // Whether this turn ASKED Tappy to decide. The need profile cannot carry it —
+  // it models what the user wants from the PRODUCT, not what they want from us —
+  // and only the route knows which message is the current one.
+  const pickSignals = { explicitChoiceRequest: isExplicitChoiceRequest(lastText) }
+
   /**
    * Rank a place/hotel tool result against this turn's need, in place.
    *
@@ -409,7 +414,7 @@ export async function POST(req: Request) {
       }
     }
 
-    return { result: r, pick: derivePick(ranked, needProfile) }
+    return { result: r, pick: derivePick(ranked, needProfile, pickSignals) }
   }
   /** The Pick for this turn, set by whichever tool produced rankable candidates. */
   let turnPick: ReturnType<typeof derivePick> = null
