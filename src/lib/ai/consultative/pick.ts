@@ -289,6 +289,14 @@ KHONG KHANG DINH HAI TIN DANG CUNG CAU HINH NEU BANG CHUNG KHONG NOI THE:
   ghi ro CUNG chip VA CUNG dung luong VA cung tinh trang.
 - Neu khong chac: so sanh theo dung nhung gi tieu de ghi, hoac noi ro la tieu de khong ghi ro.
 - Day la luat ve LOI KHANG DINH, khong phai luat gop dong: van giu moi dong la mot tin dang rieng.
+
+TINH TRANG / NGUON GOC LA THUOC TINH RIENG CUA TUNG TIN DANG:
+"Chinh hang", "likenew", "cu", "sealed", "refurb" chi duoc noi ve DUNG tin dang ma TIEU DE cua chinh no ghi ro dieu do.
+- KHONG suy ra tinh trang tu: ten shop, ten mien, uy tin nguoi ban, gia, ten chip, thuong hieu, hay ngu canh xung quanh.
+- KHONG chuyen tinh trang tu dong nay sang dong khac: mot dong ghi "Chinh Hang" KHONG lam nhung dong con lai chinh hang.
+- CAM cach noi gop nhu "cac lua chon chinh hang", "ca hai deu chinh hang" khi khong phai MOI dong deu ghi ro.
+- Cung cau hinh KHONG suy ra cung tinh trang: day la HAI chieu bang chung khac nhau.
+- Neu tieu de khong ghi tinh trang: DUNG NOI GI ve tinh trang, hoac noi thang la tieu de khong ghi. Khong doan.
 ==========================================`
 }
 

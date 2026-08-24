@@ -13,6 +13,7 @@ import {
   hasUnscopedSuperlative,
   claimsConfigEquivalence,
   titlesSupportConfigEquivalence,
+  unsupportedConditionClaim,
 } from './claimScope'
 
 // ── Decision quality — the four gaps production UAT exposed on 4c47753 ──────
@@ -26,6 +27,9 @@ import {
 //   · four of the six shortlisted rows were dropped without a word;
 //   · the follow-up called an "M1" and an "M1 Pro" listing "cấu hình hoàn toàn
 //     giống nhau".
+//
+// H below is the follow-up defect from the 2026-08-23 UAT on 6b4e9b2: a CONDITION
+// asserted for listings whose titles state none.
 
 function listing(name: string, attrs: Candidate['attrs'] = {}): Candidate {
   return { id: name, name, domain: 'shopping', attrs, link: `https://shop/${encodeURIComponent(name)}`, raw: { title: name } }
@@ -261,6 +265,111 @@ describe('F — equivalence may not be inferred from incomplete titles', () => {
   })
 
   it('is stated as a rule the model receives', () => {
+    expect(buildShoppingGroundingBlock()).toContain('KHONG KHANG DINH HAI TIN DANG CUNG CAU HINH')
+  })
+})
+
+// ── TEST H — condition / provenance (follow-up defect, prod UAT 2026-08-23) ─
+//
+// On 6b4e9b2 the reply asserted "Giá rẻ nhất trong các lựa chọn chính hãng".
+// Neither the pick nor the runner-up states any condition; the ONE row that says
+// "Chính Hãng" is a different, far more expensive machine. Gap D above does not
+// reach this — it governs CONFIGURATION equivalence, and none was claimed.
+
+describe('H — a condition belongs only to the listing whose title states it', () => {
+  /** The rows production actually had. Only ROW_3 states a condition. */
+  const ROW_0 = { title: 'Macbook Pro M1 14,2inch, Apple M1 | 32GB | 512GB', seller: 'Zin100.vn' }
+  const ROW_1 = { title: 'Macbook Pro 14inch 2021 M1 (8CPU/14GPU) 32GB/512GB', seller: 'Tín Phát' }
+  const ROW_3 = { title: 'MacBook Pro M4 10CPU/10GPU 16GB/512GB Chính Hãng', seller: 'Vender' }
+  const SHIPPED = [ROW_0, ROW_1, ROW_3]
+
+  it('rejects the exact sentence production shipped', () => {
+    expect(unsupportedConditionClaim('Giá rẻ nhất trong các lựa chọn chính hãng.', SHIPPED)).toBe(true)
+  })
+
+  it('an unstated condition may not be claimed for a single listing', () => {
+    expect(unsupportedConditionClaim('Máy này là hàng chính hãng.', [{ title: 'M1 32GB 512GB' }])).toBe(true)
+  })
+
+  it('the same sentence is fine when that listing states it', () => {
+    expect(unsupportedConditionClaim('Máy này là hàng chính hãng.', [{ title: 'M1 32GB 512GB Chính Hãng' }])).toBe(false)
+  })
+
+  it('one row stating a condition does not make it true of both', () => {
+    const rows = [{ title: 'M1 32GB 512GB Chính Hãng' }, { title: 'M1 32GB 512GB' }]
+    expect(unsupportedConditionClaim('Cả hai đều chính hãng.', rows)).toBe(true)
+  })
+
+  it('attributing each condition to the row that states it is fine', () => {
+    const rows = [{ title: 'M1 32GB 512GB Chính Hãng' }, { title: 'M1 32GB 512GB cũ' }]
+    expect(unsupportedConditionClaim('Máy đầu là hàng chính hãng, còn máy sau là máy cũ.', rows)).toBe(false)
+  })
+
+  it('a shop name is not evidence of provenance', () => {
+    const rows = [{ title: 'M1 32GB 512GB', seller: 'Apple Official Store' }]
+    expect(unsupportedConditionClaim('Apple Official Store nên máy chính hãng.', rows)).toBe(true)
+    expect(unsupportedConditionClaim('Đây là máy chính hãng.', rows)).toBe(true)
+  })
+
+  it('naming a shop pins the claim to THAT row, not to whichever row suits', () => {
+    // Zin100 states no condition; the "Chính Hãng" row is a different machine.
+    expect(unsupportedConditionClaim('Zin100 bán hàng chính hãng, 25.8 triệu.', SHIPPED)).toBe(true)
+  })
+
+  it('protects the whole condition vocabulary, not only "chính hãng"', () => {
+    const bare = [{ title: 'M1 32GB 512GB' }]
+    for (const claim of [
+      'Máy này like new.',
+      'Đây là máy cũ.',
+      'Hàng còn nguyên seal.',
+      'Máy refurbished.',
+      'This one is sealed.',
+    ]) expect(unsupportedConditionClaim(claim, bare), claim).toBe(true)
+  })
+
+  it('judges per sentence — a correct attribution cannot launder a wrong one', () => {
+    expect(unsupportedConditionClaim('Vender ghi rõ Chính Hãng. Zin100 cũng chính hãng.', SHIPPED)).toBe(true)
+    // Judged as one blob, the shop named in the first sentence would answer for
+    // the collective claim in the second, and this would read as compliant.
+    expect(unsupportedConditionClaim('Vender là hàng chính hãng. Cả hai máy còn lại đều chính hãng.', SHIPPED)).toBe(true)
+  })
+
+  it('leaves the row that DOES state the condition alone', () => {
+    expect(unsupportedConditionClaim('Vender bán bản Chính Hãng, 48 triệu.', SHIPPED)).toBe(false)
+  })
+
+  it('does not over-block ordinary product and price language', () => {
+    for (const ok of [
+      'Zin100.vn 25.8 triệu, Tín Phát 27.5 triệu — chênh 1.7 triệu.',
+      'Bản M4 mới hơn nhưng đắt gần gấp đôi.',
+      'Mình nói cụ thể hơn về giá nhé.',
+    ]) expect(unsupportedConditionClaim(ok, SHIPPED), ok).toBe(false)
+  })
+
+  it('saying the title does NOT state a condition is the compliant behaviour', () => {
+    expect(unsupportedConditionClaim('Tiêu đề không ghi rõ máy chính hãng hay máy cũ.', SHIPPED)).toBe(false)
+  })
+
+  it('matching configurations establish nothing about condition', () => {
+    // The two evidence dimensions are independent: identical specs, no provenance.
+    const rows = [{ title: 'MacBook Pro 14 M1 Pro 32GB 512GB' }, { title: 'MacBook Pro 14 M1 Pro 32GB 512GB' }]
+    expect(titlesSupportConfigEquivalence(rows[0].title, rows[1].title)).toBe(false)
+    expect(unsupportedConditionClaim('Cả hai đều chính hãng.', rows)).toBe(true)
+  })
+
+  it('says nothing when there is no evidence to judge against', () => {
+    expect(unsupportedConditionClaim('Máy này là hàng chính hãng.', [])).toBe(false)
+  })
+
+  it('is stated as a rule the model receives', () => {
+    const block = buildShoppingGroundingBlock()
+    expect(block).toContain('TINH TRANG / NGUON GOC LA THUOC TINH RIENG CUA TUNG TIN DANG')
+    expect(block).toContain('KHONG suy ra tinh trang tu: ten shop')
+    expect(block).toContain('KHONG chuyen tinh trang tu dong nay sang dong khac')
+    expect(block).toContain('cac lua chon chinh hang')
+  })
+
+  it('does not displace the configuration rule shipped in #171', () => {
     expect(buildShoppingGroundingBlock()).toContain('KHONG KHANG DINH HAI TIN DANG CUNG CAU HINH')
   })
 })

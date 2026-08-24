@@ -2,8 +2,8 @@ import { normalizeVN } from '../intent'
 
 // ── Claim-scope detectors ────────────────────────────────────────────────────
 //
-// Two narrow checks, and deliberately only two. They exist so the rules added to
-// the shopping rulebook can be tested against REPLY TEXT — including the verbatim
+// A short list of narrow checks, and deliberately narrow. They exist so the rules
+// added to the shopping rulebook can be tested against REPLY TEXT — including the verbatim
 // sentence production actually produced — rather than by asserting that a string
 // appears in a prompt. A test that greps the prompt proves the rule was written;
 // these prove the failure it targets is recognisable.
@@ -107,4 +107,93 @@ export function titlesSupportConfigEquivalence(a: string, b: string): boolean {
   const [dx, dy] = [condition(x), condition(y)]
   if (!dx || !dy || dx !== dy) return false
   return true
+}
+
+// ── Condition / provenance is bound to ONE listing ──────────────────────────
+//
+// Production 2026-08-23 shipped "Giá rẻ nhất trong các lựa chọn chính hãng"
+// over rows whose titles state no condition at all: the pick ("Macbook Pro M1
+// 14,2inch, Apple M1 | 32GB | 512GB", Zin100.vn) and the runner-up said nothing
+// about condition, and the ONLY row that said "Chính Hãng" was a different, far
+// more expensive machine.
+//
+// The equivalence check above cannot see this — it answers whether two titles
+// state the same CONFIGURATION, and `claimsConfigEquivalence` correctly returned
+// false because no equivalence was claimed. Configuration and condition are
+// separate evidence dimensions; matching specs establish nothing about provenance.
+
+/**
+ * The condition/provenance vocabulary this rule protects, one entry per term.
+ *
+ * "moi"/"new" are deliberately ABSENT. "model mới", "mới ra mắt" are ordinary
+ * product language, and protecting them would reject sentences that claim no
+ * condition at all.
+ */
+const CONDITION_TERMS: { key: string; re: RegExp }[] = [
+  { key: 'chinh hang', re: /\bchinh hang\b/ },
+  { key: 'likenew', re: /\b(likenew|like new)\b/ },
+  { key: 'cu', re: /\bcu\b(?!\s+the\b)/ },
+  { key: 'sealed', re: /\b(sealed|nguyen seal)\b/ },
+  { key: 'refurb', re: /\brefurb(ished)?\b/ },
+]
+
+/**
+ * The sentence speaks for the whole retrieved set rather than for one listing.
+ *
+ * This is the shape the shipped defect took: "các lựa chọn chính hãng" attributes
+ * a condition to every option at once, on the strength of one row that stated it.
+ */
+const COLLECTIVE = /\b(ca hai|ca 2|ca ba|ca 3|deu|tat ca|cac lua chon|cac tin dang|cac may|nhung lua chon|both|all (of )?(the )?(options|listings)|every (option|listing))\b/
+
+/** The sentence DECLINES to claim a condition — the behaviour the rule asks for. */
+const NOT_ASSERTED = /\b(khong ghi|khong noi|khong neu|khong ro|khong de cap|khong xac nhan|khong chac|chua ghi|chua noi|chua ro|chua chac|not stated|does not say|unclear)\b/
+
+/** What the evidence for one row actually is: its title, and the shop it came from. */
+export type ListingEvidence = { title: string; seller?: string | null }
+
+/** The shop as a reply would name it — "Zin100.vn" is written "Zin100" as often as not. */
+function sellerStem(seller: string): string | null {
+  const stem = normalizeVN(seller.toLowerCase()).replace(/\.(vn|com|net|org|shop)\b.*$/, '').trim()
+  return stem.length >= 4 ? stem : null
+}
+
+/**
+ * True when a sentence asserts a condition/provenance attribute that the listing
+ * it is about does not state.
+ *
+ * "The listing it is about" is resolved from the sentence itself, in the only
+ * three ways a sentence offers:
+ *
+ *   · it names a shop → that row must state the term;
+ *   · it speaks collectively ("cả hai đều...", "các lựa chọn...") → EVERY row must;
+ *   · it names neither → at least one row must, or nothing supports the word.
+ *
+ * Silence in a title is never evidence of a condition, and a term stated by one
+ * row is never evidence for another. Judged per sentence, like the superlative
+ * check above, so a correct attribution cannot launder a wrong one beside it.
+ */
+export function unsupportedConditionClaim(
+  text: string | null | undefined,
+  listings: ListingEvidence[],
+): boolean {
+  if (!text || listings.length === 0) return false
+  const rows = listings.map(l => ({
+    title: normalizeVN(l.title.toLowerCase()),
+    seller: l.seller ? sellerStem(l.seller) : null,
+  }))
+  const claims = sentences(normalizeVN(text.toLowerCase()))
+  for (const s of claims) {
+    if (NOT_ASSERTED.test(s)) continue
+    for (const term of CONDITION_TERMS) {
+      if (!term.re.test(s)) continue
+      const named = rows.filter(r => r.seller !== null && s.includes(r.seller))
+      const subjects = named.length > 0 ? named : COLLECTIVE.test(s) ? rows : null
+      if (subjects === null) {
+        if (!rows.some(r => term.re.test(r.title))) return true
+        continue
+      }
+      if (subjects.some(r => !term.re.test(r.title))) return true
+    }
+  }
+  return false
 }
