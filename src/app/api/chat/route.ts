@@ -24,6 +24,7 @@ import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping } from '@/lib/ai/consultative/shortlist'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest } from '@/lib/ai/consultative/pick'
 import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructionBlock } from '@/lib/ai/consultative/synthesis'
+import { buildSynthesisView } from '@/lib/ai/consultative/synthesisView'
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
 import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
@@ -685,9 +686,15 @@ export async function POST(req: Request) {
           // a recommendation from the same Pick, and how each group compares to
           // what the user asked. No new model call — dynamic tool-result content
           // on the single AI.stream(), same as _tappy_ranking/_tappy_evidence.
-          const synthesis = shortlistedCandidates
-            ? buildSynthesisPayload(buildShoppingSynthesis(shortlistedCandidates, pick, lastText))
+          const shoppingSynthesis = shortlistedCandidates
+            ? buildShoppingSynthesis(shortlistedCandidates, pick, lastText)
             : null
+          const synthesis = shoppingSynthesis ? buildSynthesisPayload(shoppingSynthesis) : null
+          // Phase 9 — the SAME grouping/recommendation, projected for the chat UI:
+          // it adds only each offer's own link/price (already in the rows above)
+          // so the client renders a decision instead of the raw listing grid. No
+          // image and no new grouping — see synthesisView.ts.
+          const synthesisView = shoppingSynthesis ? buildSynthesisView(shoppingSynthesis) : null
           return forModel('search_products', {
             ...(result as Record<string, unknown>),
             _tappy_ranking: buildPickPayload(pick),
@@ -697,6 +704,7 @@ export async function POST(req: Request) {
             // filled in with "32GB/512GB".
             ...(evidenceBlock ? { _tappy_evidence: evidenceBlock } : {}),
             ...(synthesis ? { _tappy_synthesis: synthesis } : {}),
+            ...(synthesisView ? { _tappy_synthesis_view: synthesisView } : {}),
           })
         }
       }) } : {}),
