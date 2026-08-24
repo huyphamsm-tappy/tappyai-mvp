@@ -40,8 +40,8 @@ const M = [
     from: "  parts.push(id.ramGb === UNKNOWN ? 'RAM ?' : `${id.ramGb}GB`)",
     to: '  parts.push(`${id.ramGb}GB`)' },
   { n: 'M10 sellers list keeps UNKNOWN sellers (leaks the marker as a name)',
-    from: "      sellers: e.offers.map(o => o.seller).filter((x): x is string => typeof x === 'string'),",
-    to: '      sellers: e.offers.map(o => String(o.seller)),' },
+    from: "      sellers: e.offers.map(o => o.seller).filter((x): x is string => typeof x === 'string' && x !== UNKNOWN),",
+    to: "      sellers: e.offers.map(o => o.seller).filter((x): x is string => typeof x === 'string')," },
 ]
 
 let killed = 0, skipped = 0

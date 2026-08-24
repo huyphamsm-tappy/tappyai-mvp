@@ -131,7 +131,7 @@ export function buildSynthesisPayload(s: ShoppingSynthesis): Record<string, unkn
       offerCount: e.offers.length,
       priceLow: low,
       priceHigh: high,
-      sellers: e.offers.map(o => o.seller).filter((x): x is string => typeof x === 'string'),
+      sellers: e.offers.map(o => o.seller).filter((x): x is string => typeof x === 'string' && x !== UNKNOWN),
       recommended: !!s.recommendation && e.entityKey === s.recommendation.entityKey,
       matchesRequest: matchOf(s.requested.model, s.requested.ramGb, s.requested.storageGb, e.identity),
     }
