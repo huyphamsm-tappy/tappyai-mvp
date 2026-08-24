@@ -100,8 +100,8 @@ const M = [
 
   // ── 6. the follow-up must not answer from memory ──────────────────────────
   { f: EV, spec: UNIT, n: 'M21 drop the "do not recall from memory" instruction',
-    from: "    ? 'Day la bang chung cua LUOT TRUOC, do he thong luu lai. Luot nay KHONG tim kiem lai. Moi con so ben duoi la SO THAT — dung dung nguyen van, TUYET DOI KHONG nho lai, KHONG uoc luong, KHONG lam tron.'",
-    to: "    ? 'Day la bang chung cua luot truoc.'" },
+    from: '    ? `Day la bang chung cua LUOT TRUOC, do he thong luu lai. Moi con so ben duoi la SO THAT — dung dung nguyen van, TUYET DOI KHONG nho lai, KHONG uoc luong, KHONG lam tron.',
+    to: '    ? `Day la bang chung cua luot truoc.' },
   { f: EV, spec: UNIT, n: 'M22 make the fail-safe permissive instead of forbidding recall',
     from: '- TUYET DOI KHONG nho lai gia, danh gia, RAM, dung luong, chip, tinh trang hay ten shop tu tri nho.',
     to: '- Ban co the nho lai neu can.' },
