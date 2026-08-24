@@ -1,5 +1,7 @@
 import { tool } from 'ai'
 import { z } from 'zod'
+import { randomUUID } from 'crypto'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
@@ -10,17 +12,18 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
-import { validateClientInput } from '@/lib/ai/security/clientInput'
+import { validateClientInput, readDecisionEvidenceId } from '@/lib/ai/security/clientInput'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
-import { normalizePlaces, normalizeHotels, normalizeShopping } from '@/lib/ai/consultative/candidate'
+import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping } from '@/lib/ai/consultative/shortlist'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest } from '@/lib/ai/consultative/pick'
+import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
 import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
@@ -184,8 +187,32 @@ export async function POST(req: Request) {
    * cannot raise the cap, because the row is what the next successful call reads.
    */
   let anonTokenCount: number | null = null
+
+  // ── ADR-024: decision evidence state ──────────────────────────────────────
+  //
+  // The id is minted HERE, before AI.stream(), and that ordering is load-bearing
+  // rather than tidy. The shopping tool runs DURING the stream, by which point
+  // the response headers have already been committed — so an id created inside
+  // execute() could never be returned. Minting up front is the only way to hand
+  // the client a key without adding a second round trip.
+  //
+  // Always minted, even on turns that never shop: a header pointing at a row
+  // that was never written costs nothing, and the alternative is a conditional
+  // that has to guess what the model will do.
+  const evidenceId = randomUUID()
+  /** The caller's own Supabase client, kept for the RPCs. Null when unidentified. */
+  let evidenceDb: SupabaseClient | null = null
+  /** Evidence from a PREVIOUS turn, loaded when the client presented its id. */
+  let priorEvidence: DecisionEvidence | null = null
+  /** True when an id WAS presented but did not resolve — the fail-safe path. */
+  let priorEvidenceMissing = false
+
   try {
     const { user, supabase } = await getRequestUser(req)
+    // Anonymous sessions qualify: a Supabase anonymous identity is a real
+    // auth.uid() on the `authenticated` role, which is exactly what the RPCs
+    // key on. Guests are the majority web path and the one that fabricated.
+    if (user) evidenceDb = supabase
     if (user?.is_anonymous) {
       // Anonymous session minted by POST /api/auth/anonymous. Same Bearer
       // pipeline as logged-in users (getRequestUser verified the JWT); quota is
@@ -280,6 +307,51 @@ export async function POST(req: Request) {
     // the daily cap for THIS request may be skipped. Log it so the fail-open is
     // observable rather than silent.
     console.error('[chat] auth/quota resolution failed (proceeding unmetered):', e)
+  }
+
+  // ── ADR-024: recover the PREVIOUS turn's evidence ─────────────────────────
+  //
+  // The id is a lookup key and nothing else. Ownership is enforced inside
+  // decision_evidence_load() against auth.uid(), so a caller presenting another
+  // user's id gets NULL back — the same answer as expired or never-existed, and
+  // deliberately indistinguishable from it.
+  //
+  // Facts are NEVER read from the request. The client supplies the key; the
+  // server supplies the values. That asymmetry is the point: the rejected design
+  // had the client echo the evidence back, which would let a page dictate the
+  // price the assistant quotes.
+  const presentedEvidenceId = readDecisionEvidenceId(rawBody)
+  if (presentedEvidenceId) {
+    try {
+      const { data } = evidenceDb
+        ? await evidenceDb.rpc('decision_evidence_load', { p_id: presentedEvidenceId })
+        : { data: null }
+      // A jsonb row comes back as an object; anything else means "nothing usable".
+      if (data && typeof data === 'object') priorEvidence = data as DecisionEvidence
+      else priorEvidenceMissing = true
+    } catch (e) {
+      // Fail SAFE, not open: an unreachable RPC must not become licence to
+      // answer from memory, which is the exact failure this feature exists for.
+      console.error('[chat] decision evidence load failed (degrading to no-evidence):', e)
+      priorEvidenceMissing = true
+    }
+  }
+
+  // Carry it forward under THIS turn's id.
+  //
+  // A fresh id is minted every turn, so the client always stores the newest one.
+  // Without this re-save, the second follow-up would present an id belonging to a
+  // turn that never shopped, find nothing, and lose the evidence for the rest of
+  // the conversation — the chain would survive exactly one hop.
+  //
+  // If this turn DOES shop, `freezeShoppingEvidence` writes the same id again
+  // with fresher facts and wins; the RPC upserts, so the order is safe either way.
+  if (priorEvidence && evidenceDb) {
+    try {
+      await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: priorEvidence })
+    } catch (e) {
+      console.error('[chat] decision evidence carry-forward failed:', e)
+    }
   }
 
   // Freemium policy: anonymous visitors get a small taste — FREE_ANON_LIMIT basic
@@ -385,6 +457,13 @@ export async function POST(req: Request) {
     const ranked = rankCandidates(candidates, needProfile)
     if (!ranked.rankable) return { result, pick: null }
 
+    // ADR-024: the rows that survive the shortlist, as CANDIDATES. The evidence
+    // builder needs `attrs` and `raw` per listing, and the array below holds raw
+    // provider rows — so the identity map is rebuilt here rather than re-derived,
+    // which would risk a different answer than the one the model was shown.
+    const byRaw = new Map<unknown, Candidate>(candidates.map(c => [c.raw, c]))
+    let shortlistedCandidates: Candidate[] | null = null
+
     // Reorder the array the model reads, by candidate identity — never by index,
     // so a normalizer that skipped a nameless entry cannot shift the mapping.
     const order = new Map(ranked.ranked.map((e, i) => [e.candidate.raw, i]))
@@ -409,12 +488,45 @@ export async function POST(req: Request) {
         const { rows: shortlisted, totalFound } = shortlistShopping(sorted, untouched)
         r[key] = shortlisted
         if (totalFound !== null) r._tappy_total_found = totalFound
+        shortlistedCandidates = shortlisted.map(row => byRaw.get(row)).filter((c): c is Candidate => !!c)
       } else {
         r[key] = [...sorted, ...untouched]
       }
     }
 
-    return { result: r, pick: derivePick(ranked, needProfile, pickSignals) }
+    return { result: r, pick: derivePick(ranked, needProfile, pickSignals), shortlistedCandidates }
+  }
+
+  /**
+   * ADR-024 — freeze this turn's shopping facts and carry them forward.
+   *
+   * Returns the rendered block for the tool result, and persists the object so
+   * the NEXT turn reads the same numbers instead of remembering them. Persisting
+   * is awaited: a follow-up can arrive seconds later, and a fire-and-forget write
+   * on a serverless function is not guaranteed to survive the response.
+   *
+   * Every failure path returns the block anyway. Turn-1 grounding does not depend
+   * on the database being reachable — only the follow-up does, and that degrades
+   * to `renderMissingEvidenceBlock()`, which is honest rather than inventive.
+   */
+  const freezeShoppingEvidence = async (
+    result: unknown,
+    pick: NonNullable<ReturnType<typeof derivePick>>,
+    shortlisted: Candidate[] | null,
+  ): Promise<string> => {
+    if (!shortlisted || shortlisted.length === 0) return ''
+    const totalFound = (result as Record<string, unknown>)?._tappy_total_found
+    const evidence = buildDecisionEvidence(
+      pick, shortlisted, typeof totalFound === 'number' ? totalFound : null, lastText,
+    )
+    if (evidenceDb) {
+      try {
+        await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: evidence })
+      } catch (e) {
+        console.error('[chat] decision evidence save failed (this turn stays grounded):', e)
+      }
+    }
+    return renderDecisionEvidenceBlock(evidence, false)
   }
   /** The Pick for this turn, set by whichever tool produced rankable candidates. */
   let turnPick: ReturnType<typeof derivePick> = null
@@ -461,6 +573,13 @@ export async function POST(req: Request) {
     // model must be told what it may NOT assert — measured live 2026-08-17
     // asserting weight and battery that no candidate supplied.
     needProfile.domain === 'shopping' ? buildShoppingGroundingBlock() : '',
+    // ADR-024. The follow-up turn makes no tool call, so without this the
+    // listing table is simply absent and the model answers from its own prose —
+    // measured on 7deee03 as "khoảng 28-29 triệu" against an actual 24,490,000.
+    // Either the real numbers go in, or an explicit instruction not to invent
+    // them does; there is no third branch that leaves the model guessing.
+    priorEvidence ? renderDecisionEvidenceBlock(priorEvidence, true) : '',
+    priorEvidenceMissing ? renderMissingEvidenceBlock() : '',
     tripContext.shouldAskTransportMode ? buildTransportModeBlock() : '',
   ].filter(Boolean).join('')
 
@@ -545,11 +664,19 @@ export async function POST(req: Request) {
         execute: async ({ query }) => {
           const r = await searchProducts(query, lang)
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
-          const { result, pick } = rankForModel('search_products', filtered)
+          const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
-          return forModel('search_products', pick
-            ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result)
+          if (!pick) return forModel('search_products', result)
+          const evidenceBlock = await freezeShoppingEvidence(result, pick, shortlistedCandidates)
+          return forModel('search_products', {
+            ...(result as Record<string, unknown>),
+            _tappy_ranking: buildPickPayload(pick),
+            // The exact figures, plus what the evidence does NOT establish. The
+            // rows above carry the same numbers, but silently: a listing with no
+            // `ram_gb` simply has no key, and that silence is what production
+            // filled in with "32GB/512GB".
+            ...(evidenceBlock ? { _tappy_evidence: evidenceBlock } : {}),
+          })
         }
       }) } : {}),
       web_search: tool({
@@ -747,6 +874,10 @@ export async function POST(req: Request) {
     : enrichedResponse
   // Persist the incremented anonymous question count for the day.
   if (anonSetCookie) finalResponse.headers.set('Set-Cookie', anonSetCookie)
+  // ADR-024. The key to this turn's evidence, if a shopping decision writes one.
+  // Not a capability: decision_evidence_load() still refuses it unless the
+  // caller's auth.uid() owns the row, so holding the id grants nothing.
+  finalResponse.headers.set('X-Decision-Evidence-Id', evidenceId)
   return finalResponse
 }
 

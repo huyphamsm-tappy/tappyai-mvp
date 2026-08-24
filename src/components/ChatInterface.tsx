@@ -609,48 +609,54 @@ export default function ChatInterface({
     try { return JSON.parse(localStorage.getItem('tappy_response_style') || '{}') } catch { return {} }
   })
 
-  // Server-side consultative state id (Task 3D). The server mints it on the
-  // first reply and returns it as a header; every later turn sends it back so
-  // the accumulated constraints and grounded candidates are loaded instead of a
-  // fresh conversation being created per message. Held in state (not a ref) so
-  // the change re-renders and `useChat` picks it up: the SDK reads the static
-  // `body` option through `extraMetadataRef`, which it refreshes each render.
+  // ── ADR-024: the decision-evidence key ────────────────────────────────────
+  //
+  // The server mints a key on EVERY reply and returns it as a header; the next
+  // turn sends it back so the exact listing facts of the previous turn are
+  // reloaded server-side instead of remembered by the model. Held in state (not
+  // a ref) so the change re-renders and `useChat` picks it up: the SDK reads the
+  // static `body` option through `extraMetadataRef`, refreshed each render.
   // Added to `body` rather than via experimental_prepareRequestBody, because
   // that hook receives only the per-call body — using it would silently drop
   // userLocation / userPreferences / responseStyle from every request.
-  // NOTE: deliberately NOT named `conversationId` — that prop is the Supabase row
-  // id this chat is saved as. Different lifetime, different owner: that one
-  // survives across sessions and comes from our own save, this one is minted by
-  // /api/chat and expires in 24h.
+  //
+  // NOTE: deliberately NOT `conversationId` — that prop is the Supabase row id
+  // this chat is saved as. Different lifetime, different owner. Reusing it would
+  // key server state on a client-supplied row id.
+  //
+  // 🚨 LATEST id wins, not first. The server re-saves the evidence under each new
+  // turn's key, so the newest key is always the live one; keeping the first would
+  // pin the chat to a key whose row is pruned after three turns.
+  //
   // Survives ONE remount on purpose: after the first reply the page saves the
   // chat and `router.replace`s /chat -> /chat/{rowId}, which unmounts this
-  // component. Plain useState was reset by that, so turn 2 minted a second
-  // server conversation and the accumulated state was orphaned (observed live).
-  // Keyed by the history row id, falling back to the pre-save 'new' entry so the
-  // id carries across exactly that navigation.
-  // sessionStorage, and only the ID — never the state itself, which stays
-  // server-owned. The id is not a capability: `loadState` still refuses it
-  // unless the caller's owner scope matches.
-  const consultKey = `tappy_consult:${conversationId ?? 'new'}`
-  const [consultationId, setConsultationIdState] = useState<string | null>(() => {
+  // component. Plain useState was reset by that, so turn 2 arrived with no key
+  // and the evidence was orphaned. Keyed by the history row id, falling back to
+  // the pre-save 'new' entry so the key carries across exactly that navigation.
+  //
+  // sessionStorage, and only the KEY — never the facts, which stay server-owned.
+  // The key is not a capability: `decision_evidence_load()` refuses it unless the
+  // caller's auth.uid() owns the row.
+  const consultKey = `tappy_evidence:${conversationId ?? 'new'}`
+  const [evidenceKey, setEvidenceKeyState] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null
     try {
-      return sessionStorage.getItem(consultKey) ?? sessionStorage.getItem('tappy_consult:new')
+      return sessionStorage.getItem(consultKey) ?? sessionStorage.getItem('tappy_evidence:new')
     } catch { return null }
   })
-  const setConsultationId = useCallback((id: string) => {
-    setConsultationIdState(prev => {
-      if (prev) return prev // first id wins for this chat
-      try { sessionStorage.setItem(consultKey, id); sessionStorage.setItem('tappy_consult:new', id) } catch { /* private mode */ }
+  const setEvidenceKey = useCallback((id: string) => {
+    setEvidenceKeyState(prev => {
+      if (prev === id) return prev
+      try { sessionStorage.setItem(consultKey, id); sessionStorage.setItem('tappy_evidence:new', id) } catch { /* private mode */ }
       return id
     })
   }, [consultKey])
 
   // A signed-out visitor has no identity, and the server (correctly) refuses to
-  // scope conversation state to nobody — so without this, server-side state is
-  // off for most web users. Mint on mount rather than on first send: the session
-  // has to exist BEFORE the first request, and awaiting it inside submit would
-  // put a network round-trip in front of the user's first message.
+  // scope evidence to nobody — so without this, grounded follow-ups would be off
+  // for most web users. Mint on mount rather than on first send: the session has
+  // to exist BEFORE the first request, and awaiting it inside submit would put a
+  // network round-trip in front of the user's first message.
   // Fail-open by design; see ensureAnonymousSession.
   useEffect(() => {
     void ensureAnonymousSession()
@@ -662,14 +668,12 @@ export default function ChatInterface({
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
       ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
-      ...(consultationId ? { conversationId: consultationId } : {}),
+      ...(evidenceKey ? { decisionEvidenceId: evidenceKey } : {}),
     },
     onResponse: (response) => {
-      // First id wins for the life of this chat — the server echoes the same id
-      // back on later turns, and overwriting on every response would be a no-op
-      // at best and a conversation split at worst.
-      const cid = response.headers.get('X-Conversation-Id')
-      if (cid) setConsultationId(cid)
+      // Latest key wins — see the note on setEvidenceKey.
+      const eid = response.headers.get('X-Decision-Evidence-Id')
+      if (eid) setEvidenceKey(eid)
     },
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
