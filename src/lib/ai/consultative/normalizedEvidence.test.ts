@@ -100,6 +100,24 @@ describe('rule 6 — a different configuration stays different', () => {
   it('M4 is not M1', () => {
     expect(normalizeShoppingRow(VENDER).identity.model).toBe('M4')
   })
+
+  it('a minimal pair differing ONLY in chip has different keys (model is in the key)', () => {
+    // Everything else identical (32/512, no condition, no size), so the key can
+    // only differ because the model does — this pins the model into identityKey.
+    const m1 = normalizeShoppingRow({ title: 'MacBook Pro M1 32GB 512GB', link: 'https://a.vn/p' })
+    const m1pro = normalizeShoppingRow({ title: 'MacBook Pro M1 Pro 32GB 512GB', link: 'https://b.vn/p' })
+    expect(m1.identity.ramGb).toBe(m1pro.identity.ramGb)
+    expect(m1.identity.condition).toBe(m1pro.identity.condition)   // both UNKNOWN
+    expect(m1.identityKey).not.toBe(m1pro.identityKey)
+  })
+
+  it('a minimal pair differing ONLY in RAM has different keys (RAM is in the key)', () => {
+    const g16 = normalizeShoppingRow({ title: 'MacBook Pro M1 Pro 16GB 512GB', link: 'https://a.vn/p' })
+    const g32 = normalizeShoppingRow({ title: 'MacBook Pro M1 Pro 32GB 512GB', link: 'https://b.vn/p' })
+    expect(g16.identity.model).toBe(g32.identity.model)            // both M1 Pro
+    expect(g16.identity.storageGb).toBe(g32.identity.storageGb)    // both 512
+    expect(g16.identityKey).not.toBe(g32.identityKey)
+  })
 })
 
 describe('rule 5 — multiple sellers of the SAME config share an identity key', () => {
