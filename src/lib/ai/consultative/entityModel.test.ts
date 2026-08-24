@@ -111,6 +111,14 @@ describe('deduping and uncertain identity', () => {
     expect(e[0].offers).toHaveLength(2)
   })
 
+  it('same seller + price + condition but DIFFERENT urls keeps both offers (url is the identity of a listing)', () => {
+    const a = { title: 'MacBook Pro M1 32GB 512GB', source: 'Shop', price_vnd: 25_000_000, ram_gb: 32, storage_gb: 512, link: 'https://shop.vn/listing-a' }
+    const b = { ...a, link: 'https://shop.vn/listing-b' }
+    const e = groupIntoEntities([n(a), n(b)])
+    expect(e).toHaveLength(1)
+    expect(e[0].offers).toHaveLength(2)
+  })
+
   it('uncertain identity (missing RAM/storage) never merges — each stands alone', () => {
     // Ngọc Nguyễn states a chip but no capacity → identityCertain false. Two such
     // rows must NOT collapse into one entity even though both are "M1 Pro".
@@ -120,6 +128,23 @@ describe('deduping and uncertain identity', () => {
     expect(e).toHaveLength(2)
     expect(e.every(x => x.identityCertain === false)).toBe(true)
     expect(e.every(x => x.offers.length === 1)).toBe(true)
+  })
+
+  it('a certain entity\'s key is its identityKey; different configs get different keys', () => {
+    // Kills the "constant entity key" mutation: the key must reflect identity.
+    const one = groupIntoEntities([n(rowZin100)])
+    expect(one[0].entityKey).toBe(n(rowZin100).identityKey)
+    const two = groupIntoEntities([n(rowZin100), n(rowBachLong)])   // M1 vs M1 Pro
+    expect(two[0].entityKey).not.toBe(two[1].entityKey)
+  })
+
+  it('two uncertain entities get DISTINCT keys, so they can never collide', () => {
+    // Kills the "uncertain:0 for all" mutation.
+    const a = rowNgocNguyen
+    const b = { ...rowNgocNguyen, source: 'Another', link: 'https://other.vn/mac' }
+    const e = groupIntoEntities([n(a), n(b)])
+    expect(e).toHaveLength(2)
+    expect(e[0].entityKey).not.toBe(e[1].entityKey)
   })
 
   it('a malformed/empty row stays its own uncertain entity, never merged', () => {
