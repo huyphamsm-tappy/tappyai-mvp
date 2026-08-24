@@ -1,10 +1,14 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach } from 'vitest'
 import { render, cleanup } from '@testing-library/react'
+import ShoppingDecision from './ShoppingDecision'
+import { setLocale } from '@/lib/i18n/useTranslation'
+import type { SynthesisView, SynthesisEntityView } from '@/lib/ai/consultative/synthesisView'
 
 afterEach(cleanup)
-import ShoppingDecision from './ShoppingDecision'
-import type { SynthesisView, SynthesisEntityView } from '@/lib/ai/consultative/synthesisView'
+// Labels are localised; pin Vietnamese so the assertions are deterministic. A
+// dedicated case below proves the English edition renders English.
+beforeEach(() => setLocale('vi'))
 
 // ── Phase 9 — the decision UI renders exactly what the view says ─────────────
 //
@@ -105,6 +109,15 @@ describe('ShoppingDecision', () => {
     const view: SynthesisView = { ...REC_VIEW, recommendation: { ...REC_VIEW.recommendation!, conditional: true } }
     const { getByTestId } = render(<ShoppingDecision view={view} />)
     expect(getByTestId('recommended-entity').textContent).toContain('Tùy nhu cầu')
+  })
+
+  it('renders an ENGLISH decision for an English session', () => {
+    setLocale('en')
+    const { getByTestId, container } = render(<ShoppingDecision view={REC_VIEW} />)
+    expect(getByTestId('recommended-entity').textContent).toContain('Best pick')
+    expect(container.textContent).toContain('Matches what you asked for')
+    expect(container.textContent).toContain('Other options')
+    expect(container.textContent).not.toContain('Nên chọn')
   })
 
   it('empty synthesis renders nothing (safe)', () => {

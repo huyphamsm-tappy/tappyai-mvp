@@ -204,7 +204,10 @@ describe('the route wires synthesis into the shopping turn', () => {
     .replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^\s*\/\/.*$/gm, ' ')
   it('injects _tappy_synthesis on the shopping tool result', () => {
     expect(route).toContain('_tappy_synthesis')
-    expect(route).toContain('buildSynthesisPayload(buildShoppingSynthesis(')
+    // Built from the same two Phase-4 helpers (Phase 9 split them across two
+    // lines to also project a client view — see buildSynthesisView).
+    expect(route).toContain('buildShoppingSynthesis(')
+    expect(route).toContain('buildSynthesisPayload(')
   })
   it('adds the synthesis instruction block on shopping turns', () => {
     expect(route).toContain('buildSynthesisInstructionBlock()')
