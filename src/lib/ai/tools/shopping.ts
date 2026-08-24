@@ -1,4 +1,5 @@
 import { getCache, setCache, serperSearch, serperShopping, fetchPlacePhotosByName } from './common'
+import { filterShoppingResults } from './shoppingValidity'
 import { parseProductSpecs, parseVndPrice } from '@/lib/ai/productSpecs'
 import { messages } from '@/lib/ai/messages'
 import { productsCacheKey } from './cacheKeys'
@@ -84,10 +85,18 @@ export async function searchProducts(query: string, lang = 'vi') {
       } catch { return false }
     })
 
-    let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined = searchResultsRaw || undefined
+    // Phase 1 — bad input must not become advice. The organic query
+    // ("<query> gia Shopee Tiki Lazada") returns news articles, mask promos and
+    // generic sale pages for an ambiguous query like "mac pro"; those are not
+    // listings and must not reach the model. `directProductLinks` are already
+    // validated (they matched a specific product-URL pattern), so only the raw
+    // organic rows are put through the validity bar. See shoppingValidity.ts.
+    const filteredOrganic = filterShoppingResults(query, searchResultsRaw || [])
+    let searchResults: Array<{ title: string; link: string; snippet: string }> | undefined =
+      filteredOrganic.length > 0 ? filteredOrganic : undefined
     if (directProductLinks.length > 0) {
       const seen = new Set<string>()
-      searchResults = [...directProductLinks, ...(searchResults || [])].filter(r => {
+      searchResults = [...directProductLinks, ...filteredOrganic].filter(r => {
         if (seen.has(r.link)) return false
         seen.add(r.link)
         return true
