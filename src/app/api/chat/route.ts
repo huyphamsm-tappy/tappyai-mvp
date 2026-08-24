@@ -23,6 +23,7 @@ import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } f
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping } from '@/lib/ai/consultative/shortlist'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest } from '@/lib/ai/consultative/pick'
+import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructionBlock } from '@/lib/ai/consultative/synthesis'
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
 import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
@@ -580,6 +581,10 @@ export async function POST(req: Request) {
     // model must be told what it may NOT assert — measured live 2026-08-17
     // asserting weight and battery that no candidate supplied.
     needProfile.domain === 'shopping' ? buildShoppingGroundingBlock() : '',
+    // Phase 4 — tells the model how to read `_tappy_synthesis`: give general
+    // education freely, but ground every listing-specific claim, and present the
+    // grouped entities as a decision rather than a catalogue.
+    needProfile.domain === 'shopping' ? buildSynthesisInstructionBlock() : '',
     // ADR-024. The follow-up turn makes no tool call, so without this the
     // listing table is simply absent and the model answers from its own prose —
     // measured on 7deee03 as "khoảng 28-29 triệu" against an actual 24,490,000.
@@ -675,6 +680,14 @@ export async function POST(req: Request) {
           if (pick) turnPick = pick
           if (!pick) return forModel('search_products', result)
           const evidenceBlock = await freezeShoppingEvidence(result, pick, shortlistedCandidates)
+          // Phase 4 — the grounded, GROUPED decision the model verbalises instead
+          // of dumping rows: entities (one per configuration) with their offers,
+          // a recommendation from the same Pick, and how each group compares to
+          // what the user asked. No new model call — dynamic tool-result content
+          // on the single AI.stream(), same as _tappy_ranking/_tappy_evidence.
+          const synthesis = shortlistedCandidates
+            ? buildSynthesisPayload(buildShoppingSynthesis(shortlistedCandidates, pick, lastText))
+            : null
           return forModel('search_products', {
             ...(result as Record<string, unknown>),
             _tappy_ranking: buildPickPayload(pick),
@@ -683,6 +696,7 @@ export async function POST(req: Request) {
             // `ram_gb` simply has no key, and that silence is what production
             // filled in with "32GB/512GB".
             ...(evidenceBlock ? { _tappy_evidence: evidenceBlock } : {}),
+            ...(synthesis ? { _tappy_synthesis: synthesis } : {}),
           })
         }
       }) } : {}),
