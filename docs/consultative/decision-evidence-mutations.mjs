@@ -24,13 +24,14 @@ const EV = ROOT + '/src/lib/ai/consultative/decisionEvidence.ts'
 const ROUTE = ROOT + '/src/app/api/chat/route.ts'
 const INPUT = ROOT + '/src/lib/ai/security/clientInput.ts'
 const SQL = ROOT + '/supabase/migrations/20260824_decision_evidence_state.sql'
+const CLIENT = ROOT + '/src/components/ChatInterface.tsx'
 
 const UNIT = 'src/lib/ai/consultative/decisionEvidence.test.ts'
 const ARCH = 'src/lib/ai/consultativeArchitecture.test.ts'
 const DB = 'supabase/tests/decision_evidence_boundary.test.ts'
 
 const hash = (s) => createHash('sha256').update(s).digest('hex').slice(0, 16)
-const FILES = [EV, ROUTE, INPUT, SQL]
+const FILES = [EV, ROUTE, INPUT, SQL, CLIENT]
 const orig = Object.fromEntries(FILES.map(f => [f, readFileSync(f, 'utf8')]))
 
 const M = [
@@ -145,6 +146,16 @@ const M = [
     to: "  VALUES (p_id, auth.uid(), p_evidence, now() + interval '24 hours')" },
   { f: SQL, spec: DB, n: 'M38 make the prune global instead of caller-scoped',
     from: '   WHERE owner_id = auth.uid() AND expires_at <= now();', to: '   WHERE expires_at <= now();' },
+
+  // ── 10. found in review, not by the tests (PHASE B) ───────────────────────
+  { f: EV, spec: UNIT, n: 'M39 assert unconditionally that this turn did not search',
+    from: '🚨 THU TU UU TIEN: NEU luot nay CO ket qua tim kiem MOI (tool tra ve danh sach san pham moi), thi ket qua MOI la dung, con khoi nay da CU — BO QUA hoan toan khoi nay, khong duoc tron so cua hai lan tim kiem. Chi dung khoi nay khi luot nay KHONG tim kiem lai.',
+    to: 'Luot nay KHONG tim kiem lai.' },
+  { f: ROUTE, spec: UNIT, n: 'M40 collapse "malformed key" back into "no key"',
+    from: '  if (!presentedEvidenceId && evidenceIdWasOffered) priorEvidenceMissing = true', to: '' },
+  { f: CLIENT, spec: UNIT, n: 'M41 let a fresh chat adopt the previous conversation key',
+    from: "    if (typeof window === 'undefined' || !isContinuation) return null",
+    to: "    if (typeof window === 'undefined') return null" },
 ]
 
 let killed = 0, skipped = 0

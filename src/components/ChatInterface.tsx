@@ -637,9 +637,17 @@ export default function ChatInterface({
   // sessionStorage, and only the KEY — never the facts, which stay server-owned.
   // The key is not a capability: `decision_evidence_load()` refuses it unless the
   // caller's auth.uid() owns the row.
+  //
+  // 🚨 The 'new' slot is shared, so adopting it unconditionally leaks evidence
+  // BETWEEN conversations: finish a chat about MacBooks, click "new chat", and
+  // the fresh conversation would present the MacBook chat's key and be handed
+  // its listing facts. A chat is a CONTINUATION only if it already has a row id
+  // or restored messages — the same predicate this component already uses to
+  // decide whether a chat is untouched. A genuinely fresh chat adopts nothing.
   const consultKey = `tappy_evidence:${conversationId ?? 'new'}`
+  const isContinuation = !!conversationId || !!(savedMessages && savedMessages.length)
   const [evidenceKey, setEvidenceKeyState] = useState<string | null>(() => {
-    if (typeof window === 'undefined') return null
+    if (typeof window === 'undefined' || !isContinuation) return null
     try {
       return sessionStorage.getItem(consultKey) ?? sessionStorage.getItem('tappy_evidence:new')
     } catch { return null }

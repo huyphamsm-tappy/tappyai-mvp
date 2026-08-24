@@ -341,6 +341,32 @@ describe('follow-up — the same numbers, not a memory of them', () => {
     expect(renderDecisionEvidenceBlock(revived, true)).toBe(FOLLOW_UP)
   })
 
+  it('a NEW search this turn overrides the stored block — no mixing', () => {
+    // Turn 3 of a conversation: the client still presents a key, so the stored
+    // evidence is injected, AND the model runs a fresh search. Both fact sets
+    // are then in context. Without an explicit precedence rule the block asserts
+    // "this turn did not search", which is false, and the turn-1 price could be
+    // quoted for a turn-3 product — the same fabrication class, re-entered
+    // through the fix itself.
+    expect(FOLLOW_UP).toContain('THU TU UU TIEN')
+    expect(FOLLOW_UP).toMatch(/ket qua MOI la dung/)
+    expect(FOLLOW_UP).toMatch(/BO QUA hoan toan khoi nay/)
+    expect(FOLLOW_UP).toMatch(/khong duoc tron so cua hai lan tim kiem/)
+  })
+
+  it('does not claim "this turn did not search" as an unconditional fact', () => {
+    // The claim is now conditional. A bare assertion would be a false statement
+    // injected into the prompt on every turn that DOES search.
+    const unconditional = /Luot nay KHONG tim kiem lai\./
+    expect(FOLLOW_UP).not.toMatch(unconditional)
+    expect(FOLLOW_UP).toMatch(/Chi dung khoi nay khi luot nay KHONG tim kiem lai/)
+  })
+
+  it('the turn-1 block carries no follow-up precedence text', () => {
+    expect(BLOCK).not.toContain('THU TU UU TIEN')
+    expect(BLOCK).not.toContain('LUOT TRUOC')
+  })
+
   it('the fail-safe forbids reconstructing anything at all', () => {
     const miss = renderMissingEvidenceBlock()
     expect(miss).toMatch(/TUYET DOI KHONG nho lai gia/)
@@ -420,6 +446,20 @@ describe('the route wires evidence into both turns', () => {
     const beforeStream = route.slice(0, route.indexOf('AI.stream('))
     expect(beforeStream).toContain('const evidenceId = randomUUID()')
     expect(route).toContain("finalResponse.headers.set('X-Decision-Evidence-Id', evidenceId)")
+  })
+
+  it('a PRESENT but unusable key still triggers the fail-safe', () => {
+    // "malformed id" and "no id" must not collapse into the same branch: the
+    // first means the client was pointing at evidence that cannot be resolved,
+    // and a turn with no instruction is a turn free to answer from memory.
+    expect(route).toContain('evidenceIdWasOffered')
+    expect(route).toContain('if (!presentedEvidenceId && evidenceIdWasOffered) priorEvidenceMissing = true')
+  })
+
+  it('a fresh chat does not adopt another conversation\'s key', () => {
+    const client = readFileSync('src/components/ChatInterface.tsx', 'utf8')
+    expect(client).toContain('const isContinuation =')
+    expect(client).toMatch(/if \(typeof window === 'undefined' \|\| !isContinuation\) return null/)
   })
 
   it('never reads product facts from the request body', () => {

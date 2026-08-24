@@ -321,6 +321,13 @@ export async function POST(req: Request) {
   // had the client echo the evidence back, which would let a page dictate the
   // price the assistant quotes.
   const presentedEvidenceId = readDecisionEvidenceId(rawBody)
+  // A key that is PRESENT but unusable is not the same as no key at all. The
+  // client was pointing at evidence; it just cannot be resolved. Treating that
+  // as "no key" would leave the turn with no instruction, which is exactly the
+  // 7deee03 behaviour that reconstructed a price from memory.
+  const evidenceIdWasOffered = !!(rawBody && typeof rawBody === 'object'
+    && (rawBody as Record<string, unknown>).decisionEvidenceId !== undefined)
+  if (!presentedEvidenceId && evidenceIdWasOffered) priorEvidenceMissing = true
   if (presentedEvidenceId) {
     try {
       const { data } = evidenceDb

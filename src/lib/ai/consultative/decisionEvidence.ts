@@ -332,7 +332,8 @@ export function renderDecisionEvidenceBlock(ev: DecisionEvidence, followUp: bool
 
   return `\n\n===== BANG CHUNG QUYET DINH (DU LIEU THAT, DA CHOT) =====
 ${followUp
-    ? 'Day la bang chung cua LUOT TRUOC, do he thong luu lai. Luot nay KHONG tim kiem lai. Moi con so ben duoi la SO THAT — dung dung nguyen van, TUYET DOI KHONG nho lai, KHONG uoc luong, KHONG lam tron.'
+    ? `Day la bang chung cua LUOT TRUOC, do he thong luu lai. Moi con so ben duoi la SO THAT — dung dung nguyen van, TUYET DOI KHONG nho lai, KHONG uoc luong, KHONG lam tron.
+🚨 THU TU UU TIEN: NEU luot nay CO ket qua tim kiem MOI (tool tra ve danh sach san pham moi), thi ket qua MOI la dung, con khoi nay da CU — BO QUA hoan toan khoi nay, khong duoc tron so cua hai lan tim kiem. Chi dung khoi nay khi luot nay KHONG tim kiem lai.`
     : 'He thong da chon tu du lieu that. Moi con so ben duoi da duoc chot.'}
 
 ${listingLines('DA CHON', ev.pick)}
