@@ -127,6 +127,31 @@ describe('matchesRequest — a different config is flagged, not passed off', () 
   })
 })
 
+describe('grounding boundaries', () => {
+  it('exactly ONE group is flagged recommended (the Pick\'s entity), not all', () => {
+    const groups = buildSynthesisPayload(buildShoppingSynthesis(SHORTLIST, PICK, REQUEST)).nhom_san_pham as Array<Record<string, unknown>>
+    expect(groups.filter(g => g.recommended === true)).toHaveLength(1)
+  })
+  it('a reason with no contribution is dropped from the recommendation', () => {
+    const pickZero: Pick = { ...PICK, reasons: [
+      { key: 'rating', detail: 'rated 4.7', contribution: 1 },
+      { key: 'weight', detail: 'nhẹ', contribution: 0 },   // ungrounded → must not appear
+    ] }
+    const rec = buildSynthesisPayload(buildShoppingSynthesis(SHORTLIST, pickZero, REQUEST)).de_xuat as Record<string, unknown>
+    expect(rec.ly_do).toEqual([{ attribute: 'rating', evidence: 'rated 4.7' }])
+  })
+  it('an UNKNOWN seller is not leaked into the sellers list', () => {
+    const noSeller = cand('MacBook Pro M1 32GB 512GB', 'TEMP', 25_000_000, { ram_gb: 32, storage_gb: 512 })
+    delete (noSeller.raw as Record<string, unknown>).source
+    const groups = buildSynthesisPayload(buildShoppingSynthesis([noSeller], null, REQUEST)).nhom_san_pham as Array<Record<string, unknown>>
+    expect(groups[0].sellers).toEqual([])
+  })
+  it('a bare product query with no stated config → every group is "chua_ro" (nothing to compare)', () => {
+    const groups = buildSynthesisPayload(buildShoppingSynthesis(SHORTLIST, PICK, 'mac pro')).nhom_san_pham as Array<Record<string, unknown>>
+    expect(groups.every(g => g.matchesRequest === 'chua_ro')).toBe(true)
+  })
+})
+
 describe('UNKNOWN and no-pick states', () => {
   it('an entity with no priced offers reports UNKNOWN price range', () => {
     const s = buildShoppingSynthesis([NGOC_NGUYEN], PICK, REQUEST)
