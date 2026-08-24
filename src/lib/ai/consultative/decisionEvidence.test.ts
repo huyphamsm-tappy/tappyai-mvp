@@ -186,9 +186,20 @@ describe('2,3,4 — condition may not come from seller, domain or reputation', (
     expect(buildListingEvidence(seller).source).toBe('Chính Hãng Apple Store')
   })
 
-  it('a domain containing a condition word is not evidence either', () => {
-    const domain = listing('Macbook Pro 14 M1 512GB', 'chinhhang-store.vn', 1)
+  it('a URL path containing a condition word is not evidence either', () => {
+    // Mutation M06 survived until this existed. A domain cannot contain "chính
+    // hãng" — URLs have no spaces — but a PATH SEGMENT very much can carry a
+    // condition: "/laptop-cu/" is how Vietnamese shops spell a used-goods
+    // category, and the hyphen leaves "cu" standing as its own word. If the
+    // builder ever read `link`, this listing would come back as "Cũ".
+    const domain: Candidate = {
+      ...listing('Macbook Pro 14 M1 512GB', 'Zin100.vn', 1),
+      link: 'https://zin100.vn/laptop-cu/macbook-m1-512gb',
+    }
     expect(buildListingEvidence(domain).condition).toBe(UNKNOWN)
+    expect(buildListingEvidence(domain).chip).toEqual({ value: 'M1', evidence: 'title' })
+    // …and the link is still carried as a link.
+    expect(buildListingEvidence(domain).link).toBe('https://zin100.vn/laptop-cu/macbook-m1-512gb')
   })
 
   it('every condition carries its evidence source, and only "title" exists', () => {
@@ -387,8 +398,16 @@ describe('the route wires evidence into both turns', () => {
 
   it('freezes and persists on the shopping turn', () => {
     expect(route).toContain('freezeShoppingEvidence')
-    expect(route).toContain('decision_evidence_save')
     expect(route).toContain('_tappy_evidence')
+    // Mutation M23 survived until the assertion was scoped to the FUNCTION.
+    // `decision_evidence_save` also appears in the carry-forward block, so a
+    // bare file-level grep stayed green with the persist call deleted — the
+    // first turn would write nothing and every follow-up would fail safe.
+    const start = route.indexOf('const freezeShoppingEvidence')
+    expect(start).toBeGreaterThan(-1)
+    const body = route.slice(start, route.indexOf('\n  }', start))
+    expect(body).toContain('decision_evidence_save')
+    expect(body).toContain('buildDecisionEvidence(')
   })
 
   it('loads prior evidence and injects it, or injects the fail-safe', () => {
