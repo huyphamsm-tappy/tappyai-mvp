@@ -50,9 +50,14 @@ const M = [
   { f: EV, spec: UNIT, n: 'M05 let the SELLER NAME supply the condition',
     from: '    condition: conditionFromTitle(c.name),',
     to: "    condition: conditionFromTitle(`${c.name} ${String(raw.source ?? '')}`)," },
+  // 🚨 This anchor is shared with M05 on purpose — each mutation is applied
+  // separately, and the uniqueness check counts occurrences in the FILE.
+  // The first attempt at M06 INSERTED a second `condition:` key ahead of the
+  // real one; the later duplicate won, so the mutant was a no-op and "SURVIVED"
+  // meant nothing. Replace the line instead of racing it.
   { f: EV, spec: UNIT, n: 'M06 let the LINK/domain supply the condition',
-    from: '    chip: chipFromTitle(c.name),',
-    to: "    chip: chipFromTitle(`${c.name} ${String(c.link ?? '')}`),\n    condition: conditionFromTitle(`${c.name} ${String(c.link ?? '')}`)," },
+    from: '    condition: conditionFromTitle(c.name),',
+    to: "    condition: conditionFromTitle(`${c.name} ${String(c.link ?? '')}`)," },
   { f: EV, spec: UNIT, n: 'M07 drop "dai ly chinh thuc" from the vocabulary',
     from: "  { re: /\\bdai ly chinh thuc\\b/, label: 'Đại lý chính thức' },", to: '' },
   { f: EV, spec: UNIT, n: 'M08 drop "bao hanh chinh hang" from the vocabulary',
