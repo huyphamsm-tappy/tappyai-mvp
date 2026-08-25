@@ -1,38 +1,47 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
-import { shoppingViewOf, stripProductImages } from './ChatInterface'
+import { stripProductImages } from './ChatInterface'
+import { renderShoppingMarker, parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import type { SynthesisView } from '@/lib/ai/consultative/synthesisView'
 
-// ── Phase 9 — the wiring that makes the UI consume `_tappy_synthesis_view` ───
+// ── Phase 9 — the DURABLE delivery: a text marker, parsed client-side ────────
+//
+// The decision must survive reload, so it rides in the message TEXT (like
+// [TAPPY_PLAN]) — not a tool-result field, which is gone after persistence.
 
 const VIEW: SynthesisView = {
   v: 1,
-  entities: [{ key: 'm1', config: 'M1 · 32GB · 512GB', matchesRequest: 'khop', recommended: true, priceLow: 25_800_000, priceHigh: 27_500_000, offers: [] }],
+  entities: [{ key: 'm1', config: 'M1 · 32GB · 512GB', matchesRequest: 'khop', recommended: true, priceLow: 25_800_000, priceHigh: 27_500_000, offers: [{ seller: 'Zin100', url: 'https://shop/zin', price: 25_800_000, currency: 'VND', condition: null }] }],
   recommendation: null,
 }
 
-describe('shoppingViewOf — reads the backend view off the tool result', () => {
-  it('returns the view from a finished search_products result', () => {
-    const msg = { toolInvocations: [{ toolName: 'search_products', state: 'result', result: { search_results: [], _tappy_synthesis_view: VIEW } }] }
-    expect(shoppingViewOf(msg)?.entities[0].config).toBe('M1 · 32GB · 512GB')
+describe('renderShoppingMarker / parseShoppingMarker — the persistent channel', () => {
+  it('round-trips the view through a marker embedded in reply text', () => {
+    const reply = 'Mình gợi ý cấu hình này.\n\n' + renderShoppingMarker(VIEW)
+    const { text, view } = parseShoppingMarker(reply)
+    expect(view?.entities[0].config).toBe('M1 · 32GB · 512GB')
+    expect(view?.entities[0].offers[0].url).toBe('https://shop/zin')
+    // The marker is stripped from what the user reads.
+    expect(text).toBe('Mình gợi ý cấu hình này.')
+    expect(text).not.toContain('TAPPY_SHOPPING')
   })
 
-  it('ignores a result that carries no view (non-shopping / older turn)', () => {
-    expect(shoppingViewOf({ toolInvocations: [{ toolName: 'search_places', state: 'result', result: { results: [] } }] })).toBeNull()
-    expect(shoppingViewOf({ toolInvocations: [{ toolName: 'search_products', state: 'result', result: { search_results: [] } }] })).toBeNull()
+  it('a reply with no marker returns the text unchanged and no view', () => {
+    const { text, view } = parseShoppingMarker('Chỉ là văn bản thường.')
+    expect(view).toBeNull()
+    expect(text).toBe('Chỉ là văn bản thường.')
   })
 
-  it('ignores a tool call that has not produced a result yet', () => {
-    expect(shoppingViewOf({ toolInvocations: [{ toolName: 'search_products', state: 'call' }] })).toBeNull()
+  it('an empty-entities view is treated as no decision (falls back to text)', () => {
+    const reply = 'x ' + renderShoppingMarker({ v: 1, entities: [], recommendation: null })
+    expect(parseShoppingMarker(reply).view).toBeNull()
   })
 
-  it('ignores an empty view (no entities) — falls back to plain text', () => {
-    const empty: SynthesisView = { v: 1, entities: [], recommendation: null }
-    expect(shoppingViewOf({ toolInvocations: [{ toolName: 'search_products', state: 'result', result: { _tappy_synthesis_view: empty } }] })).toBeNull()
-  })
-
-  it('no toolInvocations at all → null', () => {
-    expect(shoppingViewOf({})).toBeNull()
+  it('malformed marker JSON never throws — degrades to no view, marker still stripped', () => {
+    const reply = 'Trước.[TAPPY_SHOPPING]{not json[/TAPPY_SHOPPING]Sau.'
+    const { text, view } = parseShoppingMarker(reply)
+    expect(view).toBeNull()
+    expect(text).not.toContain('TAPPY_SHOPPING')
   })
 })
 

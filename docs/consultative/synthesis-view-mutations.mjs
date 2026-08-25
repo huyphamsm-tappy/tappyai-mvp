@@ -42,6 +42,15 @@ const M = [
     from: '        reasons: rec.reasons,', to: '        reasons: [],' },
   { n: 'M12 recommendation seller leaks the UNKNOWN sentinel (no nn)',
     from: '        seller: nn(rec.seller),', to: '        seller: rec.seller,' },
+  { n: 'M13 parse reads to end-of-string, swallowing the close tag (JSON breaks)',
+    from: '    const view = JSON.parse(content.slice(from, end).trim()) as SynthesisView',
+    to: '    const view = JSON.parse(content.slice(from).trim()) as SynthesisView' },
+  { n: 'M14 the marker is NOT stripped from the displayed text',
+    from: '  const text = (content.slice(0, open) + content.slice(close === -1 ? content.length : close + SHOPPING_MARKER_CLOSE.length)).trim()',
+    to: '  const text = content.trim()' },
+  { n: 'M15 an empty-entities marker is treated as a real decision',
+    from: '    if (!view || !Array.isArray(view.entities) || view.entities.length === 0) return { text, view: null }',
+    to: '    if (!view || !Array.isArray(view.entities)) return { text, view: null }' },
 ]
 
 let killed = 0, skipped = 0

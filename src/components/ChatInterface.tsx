@@ -14,7 +14,7 @@ import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
-import type { SynthesisView } from '@/lib/ai/consultative/synthesisView'
+import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -450,23 +450,6 @@ export function formatMessage(content: string) {
     .replace(/^(\d+)\.\s+(.+)$\n?/gm, '<div class="flex gap-2 my-1"><span class="text-gray-400 dark:text-gray-500 tabular-nums flex-shrink-0">$1.</span><span>$2</span></div>')
     .replace(/^- (.+)$\n?/gm, '<li>$1</li>')
     .replace(/(?:<li>.*?<\/li>)+/g, (m) => `<ul class="list-disc pl-5 my-2 space-y-1">${m}</ul>`)
-}
-
-// Phase 9 — the backend's OWN shopping decision, if this reply carried one.
-// Read straight off the finished `search_products` tool result; the UI groups
-// and infers NOTHING. Exported for test.
-export function shoppingViewOf(msg: { toolInvocations?: unknown }): SynthesisView | null {
-  const invs = (msg as { toolInvocations?: Array<Record<string, unknown>> }).toolInvocations
-  if (!Array.isArray(invs)) return null
-  for (const inv of invs) {
-    if (inv?.toolName !== 'search_products' || inv?.state !== 'result') continue
-    const result = inv.result
-    const view = result && typeof result === 'object' ? (result as Record<string, unknown>)._tappy_synthesis_view : undefined
-    if (view && typeof view === 'object' && Array.isArray((view as SynthesisView).entities) && (view as SynthesisView).entities.length > 0) {
-      return view as SynthesisView
-    }
-  }
-  return null
 }
 
 // When a shopping decision is rendered, the raw listing photos the stream filter
@@ -1222,14 +1205,17 @@ export default function ChatInterface({
               if (msg.role === 'assistant') {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
                 const { text: textAfterCta, buttons } = parseCTA(textAfterPlan)
-                const { text, followups } = parseFollowups(textAfterCta)
+                const { text: textAfterFollowups, followups } = parseFollowups(textAfterCta)
+                // Phase 9 — the shopping DECISION arrives as a persistent text
+                // marker (like [TAPPY_PLAN]), so it survives reload. Parse it out
+                // of the message content; the card renders from the parsed view.
+                const { text, view: shopView } = parseShoppingMarker(textAfterFollowups)
                 const isLastMessage = msgIdx === messages.length - 1
-                // Phase 9 — a shopping reply renders a DECISION, not the raw
-                // listing-photo flood. When the tool result carries the backend's
-                // grouped view, strip the injected product images (keeping the
-                // first as the hero) and show ShoppingDecision below the prose.
-                const shopView = shoppingViewOf(msg)
-                const rawBody = isLoading && isLastMessage ? smoothedLastText : text
+                // Display body: while streaming use the smoothed text. Always strip
+                // the marker from what's shown; when this is a shopping decision,
+                // also strip the injected product-image flood (keeping the first as
+                // the hero) so the decision replaces the raw grid.
+                const rawBody = isLoading && isLastMessage ? parseShoppingMarker(smoothedLastText).text : text
                 const { text: bodyText, firstImage: heroImage } = shopView
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }

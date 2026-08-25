@@ -51,6 +51,14 @@ export interface EnrichmentCollector {
    */
   batchTikTokUrl?: string
   setBatchTikTokUrl(url: string | undefined): void
+  /**
+   * The Phase-9 shopping-decision marker, appended once to the very end of the
+   * reply text so it PERSISTS with the message (a tool-result field does not —
+   * see synthesisView.renderShoppingMarker). Batch-level like the TikTok URL:
+   * one decision per shopping turn, owned by the app, never written by the model.
+   */
+  shoppingMarker?: string
+  setShoppingMarker(marker: string | undefined): void
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */
@@ -173,6 +181,11 @@ export function createEnrichmentCollector(): EnrichmentCollector {
       // First one wins: a trip plan runs several place searches and the answer carries one
       // "related video" line, not one per search.
       if (url && !this.batchTikTokUrl) this.batchTikTokUrl = url
+    },
+    shoppingMarker: undefined as string | undefined,
+    setShoppingMarker(marker) {
+      // First one wins, mirroring the TikTok URL: one shopping decision per turn.
+      if (marker && !this.shoppingMarker) this.shoppingMarker = marker
     },
     add(items) {
       for (const raw of items ?? []) {

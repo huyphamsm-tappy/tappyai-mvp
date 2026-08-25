@@ -867,7 +867,14 @@ export function applyPlaceEnrichmentStreamFilter(
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
     ungroundedNames = ungroundedNamesIn(finalText, places, productRecords, seed?.heldCandidates ?? [])
-    if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
+    // Phase 9: the shopping DECISION marker rides at the very end of the text —
+    // AFTER every grounding/money/spec check and the presented-name accounting,
+    // which must read the prose the user sees, not this app-owned payload. It is
+    // part of the message text, so it persists and survives reload (a tool-result
+    // field does not). The client parses and strips it; see parseShoppingMarker.
+    const marker = collector?.shoppingMarker
+    const outText = finalText && marker ? `${finalText}\n\n${marker}` : finalText
+    if (outText) controller.enqueue(encoder.encode('0:' + JSON.stringify(outText) + '\n'))
   }
 
   const transform = new TransformStream<any, any>({
