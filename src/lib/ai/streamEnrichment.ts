@@ -851,19 +851,18 @@ export function applyPlaceEnrichmentStreamFilter(
      * have made the detector analyse a different string than the one that shipped.
      */
     const batchTikTok = collector?.batchTikTokUrl
-    const withTikTok = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
-      ? `${scaffoldStripped}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})`
-      : scaffoldStripped
     // Phase 9: the app-owned shopping DECISION marker is folded into the SAME
-    // string the detector analyses and the client receives — never appended
-    // afterwards — so "detector in == user out" holds (the TikTok line above
-    // obeys the same rule). It carries only grounded synthesis data
+    // string the detector analyses and the client receives — part of `finalText`,
+    // never appended afterwards — so "detector in == user out" holds (the TikTok
+    // line obeys the same rule). It carries only grounded synthesis data
     // (config/seller/price/url), has no prose or bold names for the grounding
-    // detector to trip on, and — being part of the message text — persists so the
-    // decision survives reload (a tool-result field does not). The client parses
-    // it out and strips it; see parseShoppingMarker.
-    const shoppingMarker = collector?.shoppingMarker
-    const finalText = withTikTok && shoppingMarker ? `${withTikTok}\n\n${shoppingMarker}` : withTikTok
+    // detector to trip on, and — being in the message text — persists so the
+    // decision survives reload (a tool-result field does not). Client parses +
+    // strips it; see parseShoppingMarker.
+    const markerSuffix = collector?.shoppingMarker ? `\n\n${collector.shoppingMarker}` : ''
+    const finalText = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
+      ? `${scaffoldStripped}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})${markerSuffix}`
+      : `${scaffoldStripped}${markerSuffix}`
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
