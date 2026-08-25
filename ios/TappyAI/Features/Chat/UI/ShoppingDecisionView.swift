@@ -1,0 +1,234 @@
+import SwiftUI
+
+/// Renders the grounded shopping DECISION parsed from the `[TAPPY_SHOPPING]` marker — the native
+/// equivalent of Web's `ShoppingDecision.tsx`. It groups NOTHING and infers NOTHING: every config,
+/// price range, match verdict and recommendation is read straight from the server object. One
+/// recommended configuration leads; other configs stay compact; missing values read "chưa rõ",
+/// never a fabricated number.
+struct ShoppingDecisionView: View {
+    let view: ShoppingDecision
+
+    // MARK: Derived
+
+    private var recommended: ShoppingDecision.Entity? { view.entities.first { $0.recommended } }
+
+    private var others: [ShoppingDecision.Entity] {
+        guard let rec = recommended else { return view.entities }
+        return view.entities.filter { $0.id != rec.id }
+    }
+
+    /// The offer to feature: the recommended seller's, else the entity's first.
+    private var recOffer: ShoppingDecision.Offer? {
+        guard let rec = recommended else { return nil }
+        if let seller = view.recommendation?.seller,
+           let match = rec.offers.first(where: { $0.seller == seller }) { return match }
+        return rec.offers.first
+    }
+
+    private var restOffers: [ShoppingDecision.Offer] {
+        guard let rec = recommended, let feat = recOffer else { return recommended?.offers ?? [] }
+        return rec.offers.filter { $0.id != feat.id }
+    }
+
+    private var reasons: [ShoppingDecision.Reason] {
+        guard let rec = recommended, view.recommendation?.entityKey == rec.key else { return [] }
+        return view.recommendation?.reasons ?? []
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            if let rec = recommended {
+                recommendedCard(rec)
+            } else {
+                Text(L("Các lựa chọn phù hợp", "Your options"))
+                    .font(TappyFont.bodyEmphasis)
+                    .foregroundStyle(TappyColor.textPrimary)
+            }
+
+            if !others.isEmpty {
+                if recommended != nil {
+                    Text(L("Lựa chọn khác", "Other options"))
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.textSecondary)
+                }
+                ForEach(others) { altRow($0) }
+            }
+        }
+    }
+
+    // MARK: Recommended card
+
+    @ViewBuilder
+    private func recommendedCard(_ e: ShoppingDecision.Entity) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .top, spacing: Spacing.sm) {
+                if let image = e.image, let url = URL(string: image) {
+                    AsyncImage(url: url) { phase in
+                        if let img = phase.image {
+                            img.resizable().aspectRatio(contentMode: .fill)
+                        } else {
+                            TappyColor.surfaceElevated
+                        }
+                    }
+                    .frame(width: 72, height: 72)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(L("Nên chọn", "Best pick").uppercased())
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.primary)
+                    HStack(spacing: Spacing.xs) {
+                        Text(e.config)
+                            .font(TappyFont.bodyEmphasis)
+                            .foregroundStyle(TappyColor.textPrimary)
+                        matchBadge(e.matchesRequest)
+                    }
+                    Text(priceRange(e))
+                        .font(TappyFont.callout)
+                        .foregroundStyle(TappyColor.textPrimary)
+
+                    ForEach(Array(reasons.enumerated()), id: \.offset) { _, r in
+                        Text("· \(r.evidence)")
+                            .font(TappyFont.caption)
+                            .foregroundStyle(TappyColor.textSecondary)
+                    }
+                    if let trade = view.recommendation?.tradeOff {
+                        Text("\(L("Đánh đổi", "Trade-off")): \(trade.evidence)")
+                            .font(TappyFont.caption)
+                            .foregroundStyle(TappyColor.warning)
+                    }
+                    if view.recommendation?.conditional == true {
+                        Text(L("Tùy nhu cầu của bạn.", "Depends on your needs."))
+                            .font(TappyFont.caption)
+                            .foregroundStyle(TappyColor.textSecondary)
+                    }
+                }
+            }
+            .padding(Spacing.sm)
+
+            Divider().background(TappyColor.separator)
+
+            VStack(spacing: 0) {
+                if let feat = recOffer { offerRow(feat) }
+                ForEach(restOffers) { offerRow($0) }
+            }
+            .padding(.horizontal, Spacing.sm)
+        }
+        .background(TappyColor.surface)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: Radius.md, style: .continuous)
+                .strokeBorder(TappyColor.primary.opacity(0.35), lineWidth: 1)
+        )
+    }
+
+    // MARK: Offer row
+
+    @ViewBuilder
+    private func offerRow(_ o: ShoppingDecision.Offer) -> some View {
+        HStack(spacing: Spacing.xs) {
+            Text(o.seller ?? L("Người bán chưa rõ", "Seller unknown"))
+                .font(TappyFont.callout)
+                .foregroundStyle(TappyColor.textPrimary)
+                .lineLimit(1)
+            if let cond = o.condition {
+                Text("· \(cond)")
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+                    .lineLimit(1)
+            }
+            Spacer(minLength: Spacing.xs)
+            Text(money(o.price) ?? L("chưa rõ giá", "price unknown"))
+                .font(TappyFont.callout)
+                .foregroundStyle(TappyColor.textPrimary)
+            if let urlStr = o.url, let url = URL(string: urlStr) {
+                Link(L("Xem", "View"), destination: url)
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.primary)
+            }
+        }
+        .padding(.vertical, Spacing.xs)
+    }
+
+    // MARK: Alternative entity row
+
+    @ViewBuilder
+    private func altRow(_ e: ShoppingDecision.Entity) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(e.config)
+                    .font(TappyFont.callout)
+                    .foregroundStyle(TappyColor.textPrimary)
+                Spacer(minLength: Spacing.xs)
+                matchBadge(e.matchesRequest)
+            }
+            HStack(spacing: Spacing.xs) {
+                Text(priceRange(e))
+                Text("·")
+                Text(sellerCount(e.offers.count))
+            }
+            .font(TappyFont.caption)
+            .foregroundStyle(TappyColor.textSecondary)
+        }
+        .padding(Spacing.sm)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(
+            RoundedRectangle(cornerRadius: Radius.md, style: .continuous)
+                .strokeBorder(TappyColor.border, lineWidth: 1)
+        )
+    }
+
+    // MARK: Match badge
+
+    @ViewBuilder
+    private func matchBadge(_ match: String) -> some View {
+        let (label, color): (String, Color) = {
+            switch match {
+            case "khop": return (L("Đúng cấu hình bạn cần", "Matches what you asked for"), TappyColor.success)
+            case "khac": return (L("Khác cấu hình", "Different config"), TappyColor.warning)
+            default:     return (L("Chưa rõ cấu hình", "Config unclear"), TappyColor.textSecondary)
+            }
+        }()
+        Text(label)
+            .font(TappyFont.caption)
+            .foregroundStyle(color)
+            .padding(.horizontal, Spacing.xs)
+            .padding(.vertical, 2)
+            .background(color.opacity(0.12))
+            .clipShape(Capsule())
+    }
+
+    // MARK: Formatting helpers
+
+    private var isVI: Bool { LocalizationManager.currentLanguageCode == "vi" }
+    private func L(_ vi: String, _ en: String) -> String { isVI ? vi : en }
+
+    private func sellerCount(_ n: Int) -> String { isVI ? "\(n) nơi bán" : "\(n) sellers" }
+
+    /// VND → "25,8 triệu" (vi) / "25.8M" (en). nil number → nil so the caller shows an honest label.
+    private func money(_ n: Double?) -> String? {
+        guard let n, n.isFinite else { return nil }
+        if n >= 1_000_000 {
+            let v = fmtMillions(n / 1_000_000)
+            return isVI ? "\(v) triệu" : "\(v)M"
+        }
+        let f = NumberFormatter()
+        f.numberStyle = .decimal
+        let grouped = f.string(from: NSNumber(value: n)) ?? String(Int(n))
+        return "\(grouped)₫"
+    }
+
+    private func fmtMillions(_ m: Double) -> String {
+        let rounded = (m * 10).rounded() / 10
+        let str = rounded == rounded.rounded() ? String(Int(rounded)) : String(format: "%.1f", rounded)
+        return isVI ? str.replacingOccurrences(of: ".", with: ",") : str
+    }
+
+    private func priceRange(_ e: ShoppingDecision.Entity) -> String {
+        let lo = money(e.priceLow), hi = money(e.priceHigh)
+        if lo == nil && hi == nil { return L("chưa rõ giá", "price unknown") }
+        if let lo, let hi, e.priceLow != e.priceHigh { return "\(lo) – \(hi)" }
+        return (lo ?? hi) ?? L("chưa rõ giá", "price unknown")
+    }
+}

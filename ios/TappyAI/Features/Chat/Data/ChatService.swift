@@ -173,10 +173,17 @@ final class ChatService: Sendable {
     // MARK: - Streaming chat with enrichment
 
     func chatWithContext(messages: [MessagePayload], userPreferences: [String]?, responseStyle: String?,
-                        userLocation: [String: Double]? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
+                        userLocation: [String: Double]? = nil,
+                        decisionEvidenceId: String? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
         var bodyDict: [String: Any] = [
             "messages": messages.map { ["role": $0.role, "content": $0.content] }
         ]
+        // ADR-024: the client supplies the KEY; the server supplies the values. Ownership is enforced
+        // server-side against auth.uid(), so a malformed / expired / foreign id resolves to nothing —
+        // safely — and never lets the client dictate the facts the assistant quotes.
+        if let evId = decisionEvidenceId, !evId.isEmpty {
+            bodyDict["decisionEvidenceId"] = evId
+        }
         if let prefs = userPreferences, !prefs.isEmpty {
             bodyDict["userPreferences"] = prefs
         }
