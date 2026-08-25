@@ -51,6 +51,10 @@ const M = [
   { n: 'M15 an empty-entities marker is treated as a real decision',
     from: '    if (!view || !Array.isArray(view.entities) || view.entities.length === 0) return { text, view: null }',
     to: '    if (!view || !Array.isArray(view.entities)) return { text, view: null }' },
+  { n: 'M16 the entity image is dropped (card loses its hero)',
+    from: '      image: entityImage(e),', to: '      image: null,' },
+  { n: 'M17 the image reads only imageUrl, ignoring the real photo_url field',
+    from: '    const url = raw.photo_url ?? raw.imageUrl', to: '    const url = raw.imageUrl' },
 ]
 
 let killed = 0, skipped = 0

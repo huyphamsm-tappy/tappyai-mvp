@@ -92,6 +92,9 @@ export default function ShoppingDecision({ view, heroImage }: { view: SynthesisV
       ? (recommended.offers.find(o => o.seller && rec.seller && o.seller === rec.seller) ?? recommended.offers[0] ?? null)
       : null
   const restOffers = recommended ? recommended.offers.filter(o => o !== recOffer) : []
+  // The entity's own representative photo (from the marker) is authoritative; the
+  // scraped `heroImage` from injected prose is only a fallback for older replies.
+  const hero = recommended?.image ?? heroImage ?? null
 
   return (
     <div className="mt-3 animate-fade-in" data-testid="shopping-decision">
@@ -101,9 +104,9 @@ export default function ShoppingDecision({ view, heroImage }: { view: SynthesisV
           data-testid="recommended-entity"
         >
           <div className="flex gap-3 p-3">
-            {heroImage && (
+            {hero && (
               <img
-                src={heroImage}
+                src={hero}
                 alt={recommended.config}
                 data-zoomable="true"
                 loading="lazy"

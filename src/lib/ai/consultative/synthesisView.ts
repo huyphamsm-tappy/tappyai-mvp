@@ -1,4 +1,5 @@
 import { UNKNOWN } from './normalizedEvidence'
+import type { Entity } from './entityModel'
 import type { ShoppingSynthesis, EntitySummary, ConfigMatch } from './synthesis'
 import { buildSynthesisPayload } from './synthesis'
 
@@ -38,6 +39,8 @@ export interface SynthesisEntityView {
   recommended: boolean
   priceLow: number | null
   priceHigh: number | null
+  /** A representative product photo for this entity, if any offer carried one. */
+  image: string | null
   offers: SynthesisOfferView[]
 }
 
@@ -58,6 +61,16 @@ export interface SynthesisView {
 /** UNKNOWN → null; everything else through unchanged. */
 function nn<T>(v: T | typeof UNKNOWN): T | null {
   return v === UNKNOWN ? null : (v as T)
+}
+
+/** A representative product photo for an entity, from the first offer that carried one. */
+function entityImage(e: Entity): string | null {
+  for (const o of e.offers) {
+    const raw = o.evidence.raw
+    const url = raw.photo_url ?? raw.imageUrl
+    if (typeof url === 'string' && url.startsWith('http')) return url
+  }
+  return null
 }
 
 // ── The DELIVERY channel: a text marker, exactly like [TAPPY_PLAN] ───────────
@@ -116,6 +129,7 @@ export function buildSynthesisView(s: ShoppingSynthesis): SynthesisView {
       recommended: g ? g.recommended : false,
       priceLow: g ? nn(g.priceLow) : null,
       priceHigh: g ? nn(g.priceHigh) : null,
+      image: entityImage(e),
       offers: e.offers.map(o => ({
         seller: nn(o.seller),
         url: nn(o.url),

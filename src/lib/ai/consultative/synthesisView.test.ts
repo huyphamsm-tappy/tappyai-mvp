@@ -134,6 +134,18 @@ describe('buildSynthesisView — faithful, additive projection', () => {
     expect(parsed.view!.entities.filter(e => e.recommended).length).toBe(1)
   })
 
+  it('carries a representative image from an offer that has a photo (else null)', () => {
+    const withPhoto = cand('MacBook Air M2 16GB 512GB', 'Mac18', 24_500_000, { ram_gb: 16, storage_gb: 512, photo_url: 'https://cdn/air.jpg' })
+    const noPhoto = cand('MacBook Air M2 8GB 256GB', 'ShopX', 20_000_000, { ram_gb: 8, storage_gb: 256 })
+    const v = buildSynthesisView(buildShoppingSynthesis([withPhoto, noPhoto], null, REQUEST))
+    const withImg = v.entities.find(e => e.offers.some(o => o.seller === 'Mac18'))!
+    const withoutImg = v.entities.find(e => e.offers.some(o => o.seller === 'ShopX'))!
+    expect(withImg.image).toBe('https://cdn/air.jpg')
+    expect(withoutImg.image).toBeNull()
+    // and it survives the marker round-trip
+    expect(parseShoppingMarker(renderShoppingMarker(v)).view!.entities.find(e => e.offers.some(o => o.seller === 'Mac18'))!.image).toBe('https://cdn/air.jpg')
+  })
+
   it('an empty-entities marker parses to NO view (falls back to prose)', () => {
     const reply = 'x ' + renderShoppingMarker({ v: 1, entities: [], recommendation: null })
     const parsed = parseShoppingMarker(reply)

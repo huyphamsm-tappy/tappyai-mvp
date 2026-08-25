@@ -11,7 +11,7 @@ import type { SynthesisView } from '@/lib/ai/consultative/synthesisView'
 
 const VIEW: SynthesisView = {
   v: 1,
-  entities: [{ key: 'm1', config: 'M1 · 32GB · 512GB', matchesRequest: 'khop', recommended: true, priceLow: 25_800_000, priceHigh: 27_500_000, offers: [{ seller: 'Zin100', url: 'https://shop/zin', price: 25_800_000, currency: 'VND', condition: null }] }],
+  entities: [{ key: 'm1', config: 'M1 · 32GB · 512GB', matchesRequest: 'khop', recommended: true, priceLow: 25_800_000, priceHigh: 27_500_000, image: null, offers: [{ seller: 'Zin100', url: 'https://shop/zin', price: 25_800_000, currency: 'VND', condition: null }] }],
   recommendation: null,
 }
 
@@ -68,5 +68,16 @@ describe('stripProductImages — replaces the raw photo flood, keeps prose + lin
     const { text: out, firstImage } = stripProductImages('Không có ảnh ở đây.')
     expect(out).toBe('Không có ảnh ở đây.')
     expect(firstImage).toBeNull()
+  })
+
+  it('removes the trailing "📸 Hình ảnh & link review" media block whole (VI + EN)', () => {
+    const vi = 'Tư vấn của mình ở trên.\n\n📸 _Hình ảnh & link review:_\n\n**MacBook Pro 14 M1** [Xem](https://shop/x)\n![](https://cdn/a.jpg)'
+    const outVi = stripProductImages(vi).text
+    expect(outVi).toBe('Tư vấn của mình ở trên.')
+    expect(outVi).not.toContain('Hình ảnh & link review')
+    expect(outVi).not.toContain('shop/x')
+
+    const en = 'My advice above.\n\n📸 _Images & review links:_\n\n**MacBook Pro 14 M1** [View](https://shop/y)'
+    expect(stripProductImages(en).text).toBe('My advice above.')
   })
 })
