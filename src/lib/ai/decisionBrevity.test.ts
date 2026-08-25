@@ -12,11 +12,14 @@ import { buildSystem, FIRST_REPLY_WORD_CAP, CONTEXT_REPLY_WORD_CAP } from './pro
 // So these tests assert the SHAPE survives the cut, not just that the number
 // moved. Every rule here is one the owner named as non-removable.
 
-/** Flatten whatever buildSystem returns into the full prompt text. */
+/**
+ * The full prompt the model reads: the cached `shared` rulebook plus the
+ * request-shaped `dynamic` half, which is where the word-limit block lives.
+ * Both are joined because a rule may legitimately sit in either.
+ */
 function prompt(...args: Parameters<typeof buildSystem>): string {
-  const p = buildSystem(...args)
-  if (typeof p === 'string') return p
-  return Object.values(p as Record<string, unknown>).filter(v => typeof v === 'string').join('\n')
+  const { shared, dynamic } = buildSystem(...args)
+  return `${shared}\n${dynamic}`
 }
 
 const FIRST = () => prompt(null, 'unknown', true, '', 'vi', '', null, null, false)
