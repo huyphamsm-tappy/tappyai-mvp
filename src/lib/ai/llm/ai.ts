@@ -60,6 +60,7 @@ export const AI = {
       maxSteps: opts.maxSteps,
       tools: opts.tools,
       onFinish: opts.onFinish,
+      onChunk: opts.onChunk,
       abortSignal: opts.abortSignal,
     })
   },
