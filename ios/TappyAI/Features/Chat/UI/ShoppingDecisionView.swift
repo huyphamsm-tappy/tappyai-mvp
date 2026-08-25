@@ -181,27 +181,24 @@ struct ShoppingDecisionView: View {
 
     // MARK: Match badge
 
-    @ViewBuilder
-    private func matchBadge(_ match: String) -> some View {
-        let label: String
-        let color: Color
+    /// Label + colour for a match verdict. Plain function (not a result builder), so the switch is
+    /// a normal control-flow statement — a @ViewBuilder cannot build an assigning switch.
+    private func matchMeta(_ match: String) -> (label: String, color: Color) {
         switch match {
-        case "khop":
-            label = NSLocalizedString("shoppingDecision.matchExact", comment: "")
-            color = TappyColor.success
-        case "khac":
-            label = NSLocalizedString("shoppingDecision.matchDifferent", comment: "")
-            color = TappyColor.warning
-        default:
-            label = NSLocalizedString("shoppingDecision.matchUnknown", comment: "")
-            color = TappyColor.textSecondary
+        case "khop": return (NSLocalizedString("shoppingDecision.matchExact", comment: ""), TappyColor.success)
+        case "khac": return (NSLocalizedString("shoppingDecision.matchDifferent", comment: ""), TappyColor.warning)
+        default:     return (NSLocalizedString("shoppingDecision.matchUnknown", comment: ""), TappyColor.textSecondary)
         }
-        Text(label)
+    }
+
+    private func matchBadge(_ match: String) -> some View {
+        let meta = matchMeta(match)
+        return Text(meta.label)
             .font(TappyFont.caption)
-            .foregroundStyle(color)
+            .foregroundStyle(meta.color)
             .padding(.horizontal, Spacing.xs)
             .padding(.vertical, 2)
-            .background(color.opacity(0.12))
+            .background(meta.color.opacity(0.12))
             .clipShape(Capsule())
     }
 
