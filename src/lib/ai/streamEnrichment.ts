@@ -203,7 +203,15 @@ function placeContentLines(
   // percent-decodes both sides, so the encoded and raw forms compare equal.
   const rawPhotos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : []))
   const photos = rawPhotos.map(sanitizeUrlForMarkdown)
-  const missingPhotos = photos.filter(url => !imageUrlPresent(url, decodedText))
+  // Universal Plan (cross-domain): ONE representative photo per place, not a
+  // per-place gallery. Several places EACH with a 3-photo gallery turns a food /
+  // spa / places reply into a visual catalogue — the "9-image flood" — which
+  // reads as "here are N listings" instead of a decision. A single representative
+  // image per place keeps the reply decision-oriented (the shopping standard),
+  // while every place still keeps its order/platform links and TikTok review
+  // below. Trip plans are unaffected: injectPlanPhotos already injects exactly
+  // one photo per plan item and never calls this.
+  const missingPhotos = photos.filter(url => !imageUrlPresent(url, decodedText)).slice(0, 1)
   // Sanitised again at the point the markup is built, even though `photos` is
   // already canonical. The call is idempotent ('%' is never encoded), so the
   // second pass costs a no-op scan and buys a LINE-LOCAL invariant: the
