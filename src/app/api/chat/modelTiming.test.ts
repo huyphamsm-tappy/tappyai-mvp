@@ -114,6 +114,36 @@ describe('retry metadata is reported as unavailable, not invented', () => {
   })
 })
 
+describe('the client-emit side and step/tool split are emitted (Phase 0)', () => {
+  // TTUA (first content the client can SEE), the enrichment/emit tail, and the
+  // per-step/per-tool split are the marks that separate a buffered turn (whole
+  // reply withheld to the end) from a live one — the whole point of the phase.
+  const NEW_MARKS = ['ttuaMs', 'modelFinishMs', 'postModelMs', 'firstStepFinishMs', 'toolMs'] as const
+
+  it.each(NEW_MARKS)('%s is a field of the tappyai_usage record', (field) => {
+    expect(hasField(usageRecord(), field), `${field} must be emitted`).toBe(true)
+  })
+
+  it('ships the record from the client-emit transform, not onFinish', () => {
+    // On a buffered turn the first visible byte leaves AFTER onFinish, so the one
+    // record must be emitted once the stream has flushed — through a byte-identical
+    // pass-through, never by rewriting the stream.
+    expect(CODE).toMatch(/timeClientEmit\(/)
+    expect(CODE).toMatch(/\.pipeThrough\(/)
+  })
+
+  it('keeps modelFinishMs as the generation-complete mark (T9), distinct from total', () => {
+    expect(usageRecord()).toMatch(/modelFinishMs\s*:\s*modelFinishAt\s*===\s*null\s*\?\s*null/)
+  })
+
+  it('measures the step boundary and tool time from SDK hooks, never inferred', () => {
+    expect(CODE).toMatch(/onStepFinish\s*:/)
+    expect(CODE).toMatch(/firstStepFinishMs\s*=\s*Date\.now\(\)\s*-\s*startTime/)
+    // toolMs accrues around execute(); it is a measured duration, not derived.
+    expect(CODE).toMatch(/toolMs\s*\+=\s*Date\.now\(\)\s*-/)
+  })
+})
+
 describe('the record stays free of prompt and response content', () => {
   const FORBIDDEN = ['text', 'content', 'prompt', 'systemPrompt', 'messages', 'answer', 'query', 'lastText']
 

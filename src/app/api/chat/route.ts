@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { randomUUID } from 'crypto'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { timeClientEmit } from './emitTiming'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
@@ -647,6 +648,41 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const preModelMs = Date.now() - startTime
   /** Wall-clock of the first token, or null if the stream produced none. */
   let firstTokenAt: number | null = null
+  // ── Phase-0 additions ───────────────────────────────────────────────────────
+  // Diagnostic marks only; nothing branches on them and they extend the same
+  // tappyai_usage record. A tool turn is ≥2 provider round-trips inside one
+  // stream: firstStepFinishMs closes the tool-planning step and toolMs is the
+  // summed tool execute() time, which together split the tool-turn gap into
+  // model-vs-tool. modelFinishAt is the generation-complete vantage (T9) the
+  // model-side stage fields are measured from even though the record now ships
+  // at final emit (so a buffered turn's enrichment tail is included in total).
+  /** t0 → first step (tool-planning round-trip) finished. */
+  let firstStepFinishMs: number | null = null
+  /** Summed wall-clock inside tool execute()s. 0 when no tool ran. */
+  let toolMs = 0
+  /** Times each tool's execute() in place — one wrap point, no per-tool edits. */
+  const timeTools = <T extends Record<string, unknown>>(tools: T): T => {
+    for (const t of Object.values(tools)) {
+      const def = t as { execute?: (...a: unknown[]) => Promise<unknown> }
+      const orig = def.execute
+      if (typeof orig === 'function') {
+        def.execute = async (...a: unknown[]) => {
+          const started = Date.now()
+          try { return await orig(...a) } finally { toolMs += Date.now() - started }
+        }
+      }
+    }
+    return tools
+  }
+  /** Set once at onFinish: absolute ms of model generation complete (T9). */
+  let modelFinishAt: number | null = null
+  /** onFinish accounting, captured synchronously so the flush-time record can ship it. */
+  let usageAcct: {
+    finishReason: string
+    promptTokens: number | null; completionTokens: number | null; totalTokens: number | null
+    cacheReadTokens: number | null; cacheCreationTokens: number | null
+    llmCalls: number | null; toolCalls: number
+  } | null = null
 
   let result
   try {
@@ -660,6 +696,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // tool round-trip as model latency — the exact confusion this exists to end.
     onChunk: ({ chunk }) => {
       if (firstTokenAt === null && chunk.type === 'text-delta') firstTokenAt = Date.now()
+    },
+    // Closes the first step (the tool-planning round-trip on a tool turn; the
+    // only step on a chitchat turn). Diagnostic — nothing branches on it.
+    onStepFinish: () => {
+      if (firstStepFinishMs === null) firstStepFinishMs = Date.now() - startTime
     },
     // Cancel the upstream generation (and skip the onFinish memory-extraction
     // call) if the client disconnects — otherwise it runs to maxDuration billing
@@ -697,7 +738,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // cacheable size, so it was never cached to begin with — measured
     // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
     // the baseline and the post-B1 run. The tool path keeps its own lineage.
-    tools: noToolTurn ? undefined : {
+    tools: noToolTurn ? undefined : timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
       // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
@@ -857,7 +898,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           }
         }),
       } : {}),
-    },
+    }),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
@@ -875,9 +916,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         if (typeof meta.cacheReadInputTokens === 'number') { cacheReadTokens += meta.cacheReadInputTokens; sawCacheMetadata = true }
         if (typeof meta.cacheCreationInputTokens === 'number') { cacheCreationTokens += meta.cacheCreationInputTokens; sawCacheMetadata = true }
       }
-      console.log(JSON.stringify({
-        type: 'tappyai_usage',
-        intent,
+      // Phase-0: capture the model-side accounting synchronously at generation
+      // complete (T9). The single tappyai_usage record now ships from the
+      // client-emit transform (logUsage / timeClientEmit) so a buffered turn's
+      // enrichment tail lands in the SAME record instead of being missed.
+      modelFinishAt = Date.now()
+      usageAcct = {
         finishReason,
         promptTokens: usage?.promptTokens ?? null,
         completionTokens: usage?.completionTokens ?? null,
@@ -886,43 +930,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         // "caching is off/unsupported" stays distinguishable from "0 hits".
         cacheReadTokens: sawCacheMetadata ? cacheReadTokens : null,
         cacheCreationTokens: sawCacheMetadata ? cacheCreationTokens : null,
-        // One LLM request per step — the direct measure the cost work is judged on.
-        // The memory-extraction generate() below is a SEPARATE call not counted
-        // here; memoryExtract is its 0/1 flag, so total LLM calls = llmCalls + memoryExtract.
+        // One LLM request per step. The memory-extraction generate() below is a
+        // SEPARATE call, so total LLM calls = llmCalls + memoryExtract.
         llmCalls: steps?.length ?? null,
-        memoryExtract: (authedUserId && worthExtract) ? 1 : 0,
         toolCalls: (steps ?? []).reduce((n, s) => n + (s.toolCalls?.length ?? 0), 0),
-        elapsedMs: Date.now() - startTime,
-        // ── Stage split (diagnostic) ──────────────────────────────────────
-        // t0 = request received (startTime). Every value below is ms from t0,
-        // so they read as a timeline and stay comparable across requests.
-        //
-        //   preModelMs   t0 → model request sent (auth, quota, memory, prompt)
-        //   ttftMs       t0 → first text token back from the provider
-        //   generationMs first token → generation complete
-        //
-        // ttftMs is null when the turn produced no text at all (aborted, or a
-        // tool-only step). generationMs is null in the same case rather than
-        // being back-filled from elapsedMs, which would silently report a
-        // failed turn as a fast one.
-        preModelMs,
-        ttftMs: firstTokenAt === null ? null : firstTokenAt - startTime,
-        generationMs: firstTokenAt === null ? null : Date.now() - firstTokenAt,
-        // Which provider/model actually served it — the same turn can resolve
-        // to a different model by role, and a provider-side slowdown is only
-        // interpretable once you know which model it was.
-        providerId: AI.providerId(),
-        modelRole: role,
-        // 'unknown' is a real answer, not a placeholder to fill in later: the
-        // AI SDK accepts maxRetries but reports no attempt count, status or
-        // reason to onFinish. Recording a number here would be inventing one,
-        // and a retry-caused delay would be indistinguishable from provider
-        // queueing. Distinguishing those needs provider-side data this record
-        // cannot see.
-        retryCount: 'unknown',
-        worthExtract,
-        forcedTool,
-      }))
+      }
       if (authedUserId && worthExtract) {
         try {
           const convMessages = [
@@ -990,6 +1002,52 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.
   finalResponse.headers.set('X-Decision-Evidence-Id', evidenceId)
-  return finalResponse
+
+  // Phase-0: emit the single tappyai_usage record once the LAST byte has left, so
+  // a buffered turn's client-emit side (TTUA, enrichment tail, true total) rides
+  // the SAME record as the model-side accounting captured at onFinish. The
+  // transform is a byte-identical pass-through; it changes nothing on the wire.
+  const logUsage = (ttuaMs: number | null) => {
+    const a = usageAcct
+    console.log(JSON.stringify({
+      type: 'tappyai_usage',
+      intent,
+      finishReason: a?.finishReason ?? 'unknown',
+      promptTokens: a?.promptTokens ?? null,
+      completionTokens: a?.completionTokens ?? null,
+      totalTokens: a?.totalTokens ?? null,
+      cacheReadTokens: a?.cacheReadTokens ?? null,
+      cacheCreationTokens: a?.cacheCreationTokens ?? null,
+      llmCalls: a?.llmCalls ?? null,
+      memoryExtract: (authedUserId && worthExtract) ? 1 : 0,
+      toolCalls: a?.toolCalls ?? 0,
+      // Total: t0 → final byte to the client (T10). Wider than the model-finish it
+      // used to mark — on a buffered turn it now also covers the enrichment tail
+      // the user waits through. modelFinishMs keeps the old T9 value.
+      elapsedMs: Date.now() - startTime,
+      preModelMs,
+      ttftMs: firstTokenAt === null ? null : firstTokenAt - startTime,
+      generationMs: firstTokenAt === null ? null : (modelFinishAt ?? Date.now()) - firstTokenAt,
+      // T9 generation complete; T7 first content the client can SEE (== ttft on a
+      // live turn, the whole-reply emit on a buffered one); postModelMs is the
+      // enrichment/emit tail between T9 and the final byte.
+      modelFinishMs: modelFinishAt === null ? null : modelFinishAt - startTime,
+      ttuaMs,
+      postModelMs: modelFinishAt === null ? null : Date.now() - modelFinishAt,
+      // Splits the tool-turn gap: firstStepFinishMs closes the tool-planning step,
+      // toolMs is the summed tool execute() time.
+      firstStepFinishMs,
+      toolMs: toolMs > 0 ? toolMs : null,
+      providerId: AI.providerId(),
+      modelRole: role,
+      retryCount: 'unknown',
+      worthExtract,
+      forcedTool,
+    }))
+  }
+  const timedBody = finalResponse.body
+    ? finalResponse.body.pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
+    : finalResponse.body
+  return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
 }
 
