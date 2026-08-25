@@ -443,6 +443,30 @@ export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   return null
 }
 
+// A MOVIE/SHOW something-to-watch cue: the reply is a recommendation from film
+// knowledge, not a venue search.
+const movieRe = /\bphim\b|\bmovie\b|\bseries\b|phim bo|\banime\b|\bnetflix\b|\bshow\b/
+// The user is asking us to SUGGEST what to watch (not to find a place).
+const recommendWatchRe = /muon xem|thich xem|xem gi|coi gi|phim gi|xem phim gi|nao hay|\bhay\b|dang xem|nen xem|goi y|de xuat|recommend|co gi hay|xem gi toi nay|nhe nhang|hai huoc|kinh di|tinh cam|hanh dong|vien tuong|tam ly/
+// A cinema / showtime / ticket ask — a place search IS appropriate, so this
+// DISABLES the recommendation route even when a movie word is present.
+const cinemaVenueRe = /\brap\b|rap phim|rap chieu|cinema|\bcgv\b|galaxy|lotte|\bbhd\b|suat chieu|lich chieu|dang chieu|\bve\b|gia ve|dat ve|o dau|gan\s+(day|nha|minh|quan|toi|q\.)|showtime|nearby cinema|where to watch/
+
+/**
+ * True when the turn is a MOVIE/SHOW RECOMMENDATION request ("what should I
+ * watch"), NOT a cinema / showtime / ticket lookup. Used to keep such a request
+ * from being routed to the place search (which answers with cinemas) — the model
+ * should recommend titles from general film knowledge instead. A venue/showtime
+ * cue (rạp, suất chiếu, vé, "gần Q1", "đang chiếu") always wins, so a mixed
+ * "phim nào hay và rạp nào gần tôi" keeps the place tool.
+ */
+export function detectMovieRecommendationIntent(text: string): boolean {
+  const t = normalizeVN(text.toLowerCase())
+  if (!movieRe.test(t)) return false
+  if (cinemaVenueRe.test(t)) return false
+  return recommendWatchRe.test(t)
+}
+
 /** Asks WHERE without naming anywhere — a weak signal, never decisive alone. */
 const weakWhereRe = /\bo\s+dau\b|\bcho\s+nao\b/
 
