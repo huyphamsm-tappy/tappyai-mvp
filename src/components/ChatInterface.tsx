@@ -463,7 +463,14 @@ export function stripProductImages(text: string): { text: string; firstImage: st
   let firstImage: string | null = null
   let m: RegExpExecArray | null
   while ((m = re.exec(text))) { if (!firstImage) firstImage = m[1] }
-  const stripped = text.replace(/!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g, '').replace(/\n{3,}/g, '\n\n').trim()
+  const stripped = text
+    // Drop the trailing app-injected media block ("📸 Hình ảnh & link review" /
+    // "📸 Images & review links") whole — header, listing names and links: the
+    // decision card presents the offers, so this raw list is pure duplication.
+    .replace(/\n*📸 _(?:Hình ảnh & link review|Images & review links):_[\s\S]*$/u, '')
+    // …and any inline product image markdown left in the prose.
+    .replace(/!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g, '')
+    .replace(/\n{3,}/g, '\n\n').trim()
   return { text: stripped, firstImage }
 }
 

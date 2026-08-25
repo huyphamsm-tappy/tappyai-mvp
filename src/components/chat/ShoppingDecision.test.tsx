@@ -21,6 +21,7 @@ function ent(p: Partial<SynthesisEntityView>): SynthesisEntityView {
     key: p.key ?? 'k', config: p.config ?? 'M1 · 32GB · 512GB · 14 inch',
     matchesRequest: p.matchesRequest ?? 'khop', recommended: p.recommended ?? false,
     priceLow: p.priceLow ?? 25_800_000, priceHigh: p.priceHigh ?? 27_500_000,
+    image: p.image ?? null,
     offers: p.offers ?? [{ seller: 'Zin100.vn', url: 'https://shop/zin', price: 25_800_000, currency: 'VND', condition: null }],
   }
 }
@@ -76,7 +77,15 @@ describe('ShoppingDecision', () => {
     expect(container.querySelectorAll('img').length).toBeLessThanOrEqual(1)
   })
 
-  it('renders the representative hero image when provided, and only one', () => {
+  it("uses the recommended entity's OWN image as the hero, and only one", () => {
+    const view: SynthesisView = { ...REC_VIEW, entities: REC_VIEW.entities.map((e, i) => i === 0 ? { ...e, image: 'https://cdn/m1.jpg' } : e) }
+    const { container } = render(<ShoppingDecision view={view} heroImage="https://cdn/fallback.jpg" />)
+    const imgs = container.querySelectorAll('img')
+    expect(imgs.length).toBe(1)
+    expect(imgs[0].getAttribute('src')).toBe('https://cdn/m1.jpg')   // entity image wins over the prop
+  })
+
+  it('falls back to the scraped hero prop when the entity has no image', () => {
     const { container } = render(<ShoppingDecision view={REC_VIEW} heroImage="https://cdn/hero.jpg" />)
     const imgs = container.querySelectorAll('img')
     expect(imgs.length).toBe(1)
