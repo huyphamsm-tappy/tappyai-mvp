@@ -547,9 +547,15 @@ describe('a search-level TikTok result renders as a related video', () => {
   })
 })
 
-// ── Phase 9 — the shopping DECISION marker rides at the end of the reply text ──
-// Delivered through the collector (like the batch TikTok URL), appended once so
-// it PERSISTS with the message and survives reload. The client parses+strips it.
+// ── Phase 9 — the shopping DECISION marker, now delivered EARLY ─────────────
+// Delivered through the collector (like the batch TikTok URL) and still as TEXT,
+// so it PERSISTS with the message and survives reload. The client parses+strips it.
+//
+// Changed in Phase 1 (safe-speed): the decision is complete the moment the tool
+// result lands — route.ts builds it inside the tool's own execute() from frozen
+// evidence — so it is sent there instead of waiting behind the prose buffer.
+// It must still appear EXACTLY ONCE; a second copy at the end would render a
+// duplicate card.
 describe('applyPlaceEnrichmentStreamFilter — shopping decision marker', () => {
   const line0 = (s: string) => '0:' + JSON.stringify(s)
   async function runFilter(inputLines: string[], collector?: ReturnType<typeof createEnrichmentCollector>): Promise<string> {
@@ -564,16 +570,49 @@ describe('applyPlaceEnrichmentStreamFilter — shopping decision marker', () => 
   ]
   const MARKER = '[TAPPY_SHOPPING]{"v":1,"entities":[{"key":"m1","config":"M1 · 32GB · 512GB","matchesRequest":"khop","recommended":true,"priceLow":25800000,"priceHigh":25800000,"offers":[]}],"recommendation":null}[/TAPPY_SHOPPING]'
 
-  it('appends the marker to the reply text when the collector carries one', async () => {
+  /** Every `0:` text payload, in stream order. */
+  const textFrames = (out: string) =>
+    out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string)
+
+  it('sends the marker in the reply text when the collector carries one', async () => {
     const collector = createEnrichmentCollector()
     collector.setShoppingMarker(MARKER)
     const out = await runFilter(SHOP_TURN, collector)
-    const full = out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2))).sort((a, b) => b.length - a.length)[0]
-    expect(full).toContain('[TAPPY_SHOPPING]')
-    expect(full).toContain('[/TAPPY_SHOPPING]')
-    // The prose is still there, and the marker sits at the very end.
-    expect(full).toContain('Mình gợi ý cấu hình')
-    expect(full.trimEnd().endsWith('[/TAPPY_SHOPPING]')).toBe(true)
+    const frames = textFrames(out)
+    const joined = frames.join('')
+    expect(joined).toContain('[TAPPY_SHOPPING]')
+    expect(joined).toContain('[/TAPPY_SHOPPING]')
+    // The prose still ships too — the early send replaces nothing.
+    expect(joined).toContain('Mình gợi ý cấu hình')
+  })
+
+  it('sends it EARLY — before the prose, not appended after it', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setShoppingMarker(MARKER)
+    const out = await runFilter(SHOP_TURN, collector)
+    const frames = textFrames(out)
+    const markerFrame = frames.findIndex(f => f.includes('[TAPPY_SHOPPING]'))
+    const proseFrame = frames.findIndex(f => f.includes('Mình gợi ý cấu hình'))
+    expect(markerFrame, 'the marker must be emitted').toBeGreaterThan(-1)
+    expect(proseFrame, 'the prose must be emitted').toBeGreaterThan(-1)
+    expect(markerFrame, 'the decision must arrive before the prose').toBeLessThan(proseFrame)
+  })
+
+  it('sends it EXACTLY ONCE — no duplicate card', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setShoppingMarker(MARKER)
+    const out = await runFilter(SHOP_TURN, collector)
+    const joined = textFrames(out).join('')
+    expect((joined.match(/\[TAPPY_SHOPPING\]/g) ?? []).length).toBe(1)
+    expect((joined.match(/\[\/TAPPY_SHOPPING\]/g) ?? []).length).toBe(1)
+  })
+
+  it('leaves the marker out of the prose frame once it has gone early', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setShoppingMarker(MARKER)
+    const out = await runFilter(SHOP_TURN, collector)
+    const prose = textFrames(out).find(f => f.includes('Mình gợi ý cấu hình'))!
+    expect(prose).not.toContain('[TAPPY_SHOPPING]')
   })
 
   it('adds nothing when the collector has no marker (non-shopping / no decision)', async () => {
