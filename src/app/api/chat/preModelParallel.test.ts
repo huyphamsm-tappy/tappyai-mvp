@@ -120,11 +120,14 @@ describe('calendar cannot take the batch down with it', () => {
   it('still only extends the memory block, never replaces it', () => {
     // Order matters: buildMemoryBlock first, calendar appended after. Reversing
     // it would drop the user's stored memory on any turn with calendar events.
-    const built = CODE.indexOf('buildMemoryBlock')
-    const appended = CODE.search(/memoryBlock\s*=\s*\(\s*memoryBlock\s*\|\|\s*''\s*\)\s*\+/)
-    expect(built).toBeGreaterThan(-1)
-    expect(appended).toBeGreaterThan(-1)
-    expect(appended, 'calendar must be appended AFTER memory is built').toBeGreaterThan(built)
+    // Anchored to the CALL, not the identifier: `buildMemoryBlock` also appears
+    // in the import at the top of the file, and matching that made this
+    // comparison trivially true — mutation M6 survived on exactly that.
+    const built = CODE.search(/memoryBlock\s*=\s*buildMemoryBlock\s*\(/)
+    const appends = [...CODE.matchAll(/memoryBlock\s*=\s*\(\s*memoryBlock\s*\|\|\s*''\s*\)\s*\+/g)]
+    expect(built, 'the memory block must actually be built').toBeGreaterThan(-1)
+    expect(appends, 'calendar must be appended exactly once').toHaveLength(1)
+    expect(appends[0].index, 'calendar must be appended AFTER memory is built').toBeGreaterThan(built)
   })
 })
 

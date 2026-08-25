@@ -60,12 +60,17 @@ describe('the prose budget actually shrank', () => {
 })
 
 describe('what must survive the cut — every element the owner named', () => {
+  // Anchored to the NUMBERED rule, not the bare phrase. "DANH DOI" already
+  // appears three other times in the rulebook (the consultative blocks at
+  // promptBuilder.ts:100/390/401), so a plain /DANH DOI/ passes even after this
+  // block's trade-off rule is deleted — mutation M11 survived on exactly that.
+  // The other four phrases were checked and occur once each.
   const REQUIRED: Array<[string, RegExp]> = [
-    ['recommendation comes first', /CHON TRUOC/],
-    ['grounded reasons', /LY DO[\s\S]{0,80}CO CAN CU/],
-    ['a real trade-off', /DANH DOI/],
-    ['rejected alternatives', /LUA CHON KHAC/],
-    ['reasons are tool-grounded, not invented', /tu ket qua tool/],
+    ['recommendation comes first', /1\.\s*CHON TRUOC/],
+    ['grounded reasons', /2\.\s*LY DO:[\s\S]{0,80}CO CAN CU/],
+    ['a real trade-off', /3\.\s*DANH DOI/],
+    ['rejected alternatives', /4\.\s*LUA CHON KHAC/],
+    ['reasons are tool-grounded, not invented', /CO CAN CU tu ket qua tool/],
   ]
 
   it.each(REQUIRED)('%s — present in the first-reply prompt', (_label, re) => {
