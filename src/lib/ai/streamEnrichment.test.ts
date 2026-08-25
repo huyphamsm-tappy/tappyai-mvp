@@ -42,17 +42,23 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(out).toContain('**3. Phở Thìn Lò Đúc**')
   })
 
-  it('emits a place\'s multiple photos as CONSECUTIVE image lines (carousel input)', () => {
+  it('injects ONE representative photo per place — not a per-place gallery (anti-flood)', () => {
+    // Cross-domain fix: several places EACH with a gallery is the "9-image flood"
+    // that reads as a catalogue. A place with three photos contributes exactly one.
     const places = [
       { name: 'Phở Gà Huyền Hương', photo_url: `${IMG}/ga.jpg` },
       { name: 'Phở Bát Đàn', photo_urls: [`${IMG}/bd1.jpg`, `${IMG}/bd2.jpg`, `${IMG}/bd3.jpg`] },
       { name: 'Phở Thìn Lò Đúc', photo_url: `${IMG}/thin.jpg` },
     ]
     const out = injectPlaceEnrichment(places, TEXT_3)
-    const carousel = `![Ảnh địa điểm](${IMG}/bd1.jpg)\n![Ảnh địa điểm](${IMG}/bd2.jpg)\n![Ảnh địa điểm](${IMG}/bd3.jpg)`
-    expect(out).toContain(carousel)
-    // all three still inside place 2's window
-    expect(idx(out, 'bd3.jpg')).toBeLessThan(idx(out, 'Phở Thìn Lò Đúc'))
+    // Exactly the first photo, under place 2's window; the other two are dropped.
+    expect(out).toContain(`![Ảnh địa điểm](${IMG}/bd1.jpg)`)
+    expect(out).not.toContain('bd2.jpg')
+    expect(out).not.toContain('bd3.jpg')
+    expect(idx(out, 'bd1.jpg')).toBeGreaterThan(idx(out, 'Phở Bát Đàn'))
+    expect(idx(out, 'bd1.jpg')).toBeLessThan(idx(out, 'Phở Thìn Lò Đúc'))
+    // and every place still gets its one photo → one per place, three total, never nine
+    expect(count(out, '![Ảnh địa điểm]')).toBe(3)
   })
 
   it('strips an LLM-written TikTok review line — TikTok is not a review source in V1', () => {
@@ -215,15 +221,16 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
       'Bạn muốn đặt online hay đi trực tiếp? 😊',
     ].join('\n')
     const out = injectPlaceEnrichment(places, text)
-    // O Lạc's whole gallery + review + order sits BEFORE the next place, not trailing.
+    // O Lạc's representative photo + review + order sits BEFORE the next place, not trailing.
     expect(idx(out, 'olac1.jpg')).toBeGreaterThan(idx(out, 'Bún Bò Huế O Lạc CN 2'))
     expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
-    expect(idx(out, 'olac3.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
     expect(idx(out, 'shopeefood.vn/olac')).toBeLessThan(idx(out, 'GÓC HUẾ'))
     // NOT dumped after the closing line.
     expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'Bạn muốn đặt'))
-    // 3 consecutive image lines → carousel input.
-    expect(out).toContain(`![Ảnh địa điểm](${IMG}/olac1.jpg)\n![Ảnh địa điểm](${IMG}/olac2.jpg)\n![Ảnh địa điểm](${IMG}/olac3.jpg)`)
+    // ONE representative photo, not the whole gallery (anti-flood).
+    expect(out).toContain(`![Ảnh địa điểm](${IMG}/olac1.jpg)`)
+    expect(out).not.toContain('olac2.jpg')
+    expect(out).not.toContain('olac3.jpg')
   })
 
   it('STRIPS the LLM\'s own trailing enrichment and re-places it under the place (system owns layout)', () => {
@@ -251,9 +258,10 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
       '[ShopeeFood](https://shopeefood.vn/olac)',
     ].join('\n')
     const out = injectPlaceEnrichment(places, text)
-    // No duplication — each owned URL appears exactly once.
+    // No duplication — the representative URL appears exactly once, and the
+    // second gallery photo is dropped (one photo per place, anti-flood).
     expect(count(out, 'olac1.jpg')).toBe(1)
-    expect(count(out, 'olac2.jpg')).toBe(1)
+    expect(count(out, 'olac2.jpg')).toBe(0)
     // TikTok is unsupported in V1: the LLM's TikTok line is STRIPPED, not re-placed.
     expect(count(out, 'tiktok.com/@olac')).toBe(0)
     expect(count(out, 'shopeefood.vn/olac')).toBe(1)

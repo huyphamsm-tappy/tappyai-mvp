@@ -209,12 +209,15 @@ describe('B · a retrieved URL cannot change the rendered structure', () => {
     expect(imageTokens(out)).toBe(1)
   })
 
-  it('multiple photos stay exactly as many tokens as photos', () => {
+  it('one representative photo per place, and a crafted URL cannot inject an extra image token', () => {
+    // Anti-flood: one photo per place. The FIRST (rendered) URL carries the
+    // injection attempt — `) ![x](…)` — so the sanitiser is still exercised on
+    // the URL that actually reaches the output; the second is dropped by the cap.
     const out = render({
       name: 'Quán A',
-      photo_urls: ['https://c.example/1.jpg', 'https://c.example/2.jpg) ![x](https://e/3.jpg'],
+      photo_urls: ['https://c.example/1.jpg) ![x](https://e/3.jpg', 'https://c.example/2.jpg'],
     })
-    expect(imageTokens(out)).toBe(2)
+    expect(imageTokens(out)).toBe(1)       // exactly one token — the `) ![x](…)` did NOT open a second image
   })
 })
 
