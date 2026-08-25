@@ -60,6 +60,42 @@ function nn<T>(v: T | typeof UNKNOWN): T | null {
   return v === UNKNOWN ? null : (v as T)
 }
 
+// ── The DELIVERY channel: a text marker, exactly like [TAPPY_PLAN] ───────────
+//
+// The chat renders from message TEXT and persists ONLY text; a tool-result field
+// (`toolInvocations`) is present on the live turn but GONE after reload. So the
+// decision travels as a marker block the server appends to the assistant text
+// (see streamEnrichment) and the client parses (see ChatInterface) — the same
+// durable path `[TAPPY_PLAN]` uses. The model never writes it; the app owns it.
+export const SHOPPING_MARKER_OPEN = '[TAPPY_SHOPPING]'
+export const SHOPPING_MARKER_CLOSE = '[/TAPPY_SHOPPING]'
+
+/** Server: the marker block carrying the view as compact JSON. */
+export function renderShoppingMarker(view: SynthesisView): string {
+  return `${SHOPPING_MARKER_OPEN}${JSON.stringify(view)}${SHOPPING_MARKER_CLOSE}`
+}
+
+/**
+ * Client: pull the view out of an assistant reply and return the text WITHOUT
+ * the marker (so it never reaches formatMessage / TTS / copy). A missing or
+ * malformed marker degrades to `{ text, view: null }` — never throws.
+ */
+export function parseShoppingMarker(content: string): { text: string; view: SynthesisView | null } {
+  const open = content.indexOf(SHOPPING_MARKER_OPEN)
+  if (open === -1) return { text: content, view: null }
+  const from = open + SHOPPING_MARKER_OPEN.length
+  const close = content.indexOf(SHOPPING_MARKER_CLOSE, from)
+  const end = close === -1 ? content.length : close
+  const text = (content.slice(0, open) + content.slice(close === -1 ? content.length : close + SHOPPING_MARKER_CLOSE.length)).trim()
+  try {
+    const view = JSON.parse(content.slice(from, end).trim()) as SynthesisView
+    if (!view || !Array.isArray(view.entities) || view.entities.length === 0) return { text, view: null }
+    return { text, view }
+  } catch {
+    return { text, view: null }
+  }
+}
+
 /**
  * Project the finished synthesis into the shape the chat UI renders.
  *

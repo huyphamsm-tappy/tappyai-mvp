@@ -7,8 +7,8 @@ import type { SynthesisView, SynthesisEntityView, SynthesisOfferView } from '@/l
 
 // ── Phase 9: render the DECISION, not the catalogue ─────────────────────────
 //
-// Consumes `_tappy_synthesis_view` — the backend's OWN grouping/recommendation,
-// projected for display (see synthesisView.ts). It groups NOTHING and infers
+// Consumes the SynthesisView parsed from the [TAPPY_SHOPPING] marker — the
+// backend's OWN grouping/recommendation (see synthesisView.ts). It groups NOTHING and infers
 // NOTHING: every config, price range, match verdict and recommendation is read
 // straight from the view. One recommended configuration leads; the other groups
 // are kept as compact rows so a valid alternative is never hidden, but no offer

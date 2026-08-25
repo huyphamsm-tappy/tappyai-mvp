@@ -538,3 +538,40 @@ describe('a search-level TikTok result renders as a related video', () => {
     expect(out).not.toContain('Video liên quan')
   })
 })
+
+// ── Phase 9 — the shopping DECISION marker rides at the end of the reply text ──
+// Delivered through the collector (like the batch TikTok URL), appended once so
+// it PERSISTS with the message and survives reload. The client parses+strips it.
+describe('applyPlaceEnrichmentStreamFilter — shopping decision marker', () => {
+  const line0 = (s: string) => '0:' + JSON.stringify(s)
+  async function runFilter(inputLines: string[], collector?: ReturnType<typeof createEnrichmentCollector>): Promise<string> {
+    const filtered = applyPlaceEnrichmentStreamFilter(new Response(inputLines.join('\n') + '\n'), 'vi', collector)
+    return await new Response(filtered.body).text()
+  }
+  const SHOP_TURN = [
+    '9:{"toolCallId":"t1","toolName":"search_products","args":{}}',
+    'a:{"toolCallId":"t1","result":{"search_results":[{"title":"MacBook Pro 14 M1 32GB 512GB","price":"25.800.000đ"}]}}',
+    line0('Mình gợi ý cấu hình M1 32GB/512GB cho bạn.'),
+    'd:{"finishReason":"stop"}',
+  ]
+  const MARKER = '[TAPPY_SHOPPING]{"v":1,"entities":[{"key":"m1","config":"M1 · 32GB · 512GB","matchesRequest":"khop","recommended":true,"priceLow":25800000,"priceHigh":25800000,"offers":[]}],"recommendation":null}[/TAPPY_SHOPPING]'
+
+  it('appends the marker to the reply text when the collector carries one', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setShoppingMarker(MARKER)
+    const out = await runFilter(SHOP_TURN, collector)
+    const full = out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2))).sort((a, b) => b.length - a.length)[0]
+    expect(full).toContain('[TAPPY_SHOPPING]')
+    expect(full).toContain('[/TAPPY_SHOPPING]')
+    // The prose is still there, and the marker sits at the very end.
+    expect(full).toContain('Mình gợi ý cấu hình')
+    expect(full.trimEnd().endsWith('[/TAPPY_SHOPPING]')).toBe(true)
+  })
+
+  it('adds nothing when the collector has no marker (non-shopping / no decision)', async () => {
+    const collector = createEnrichmentCollector()
+    const out = await runFilter(SHOP_TURN, collector)
+    const full = out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2))).sort((a, b) => b.length - a.length)[0]
+    expect(full).not.toContain('TAPPY_SHOPPING')
+  })
+})

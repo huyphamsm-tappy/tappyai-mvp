@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { buildShoppingSynthesis, buildSynthesisPayload, type EntitySummary } from './synthesis'
-import { buildSynthesisView } from './synthesisView'
+import { buildSynthesisView, renderShoppingMarker, parseShoppingMarker } from './synthesisView'
 import type { Candidate } from './candidate'
 import type { Pick } from './pick'
 
@@ -121,5 +121,27 @@ describe('buildSynthesisView — faithful, additive projection', () => {
     const v3 = buildSynthesisView(buildShoppingSynthesis([], null, REQUEST))
     expect(v3.entities).toEqual([])
     expect(v3.recommendation).toBeNull()
+  })
+
+  it('survives the marker round-trip a real reply uses — offers/links intact', () => {
+    const reply = 'Mình gợi ý cho bạn.\n\n' + renderShoppingMarker(view)
+    const parsed = parseShoppingMarker(reply)
+    expect(parsed.text).toBe('Mình gợi ý cho bạn.')                 // marker stripped
+    expect(parsed.view).not.toBeNull()
+    const m1 = parsed.view!.entities.find(e => e.config.startsWith('M1 · 32GB · 512GB'))!
+    expect(m1.offers.map(o => o.seller)).toEqual(['Zin100.vn', 'Tín Phát-Apple'])
+    expect(m1.offers.every(o => o.url!.startsWith('https://'))).toBe(true)
+    expect(parsed.view!.entities.filter(e => e.recommended).length).toBe(1)
+  })
+
+  it('an empty-entities marker parses to NO view (falls back to prose)', () => {
+    const reply = 'x ' + renderShoppingMarker({ v: 1, entities: [], recommendation: null })
+    const parsed = parseShoppingMarker(reply)
+    expect(parsed.view).toBeNull()
+    expect(parsed.text).not.toContain('TAPPY_SHOPPING')
+  })
+
+  it('a reply with no marker returns text unchanged, view null', () => {
+    expect(parseShoppingMarker('chỉ prose')).toEqual({ text: 'chỉ prose', view: null })
   })
 })
