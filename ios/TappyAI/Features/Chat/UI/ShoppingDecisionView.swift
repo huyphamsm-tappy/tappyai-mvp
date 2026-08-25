@@ -4,7 +4,7 @@ import SwiftUI
 /// equivalent of Web's `ShoppingDecision.tsx`. It groups NOTHING and infers NOTHING: every config,
 /// price range, match verdict and recommendation is read straight from the server object. One
 /// recommended configuration leads; other configs stay compact; missing values read "chưa rõ",
-/// never a fabricated number.
+/// never a fabricated number. All chrome strings go through the String Catalogue (EN/VI).
 struct ShoppingDecisionView: View {
     let view: ShoppingDecision
 
@@ -40,14 +40,14 @@ struct ShoppingDecisionView: View {
             if let rec = recommended {
                 recommendedCard(rec)
             } else {
-                Text(L("Các lựa chọn phù hợp", "Your options"))
+                Text(NSLocalizedString("shoppingDecision.optionsTitle", comment: ""))
                     .font(TappyFont.bodyEmphasis)
                     .foregroundStyle(TappyColor.textPrimary)
             }
 
             if !others.isEmpty {
                 if recommended != nil {
-                    Text(L("Lựa chọn khác", "Other options"))
+                    Text(NSLocalizedString("shoppingDecision.otherOptions", comment: ""))
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                 }
@@ -75,7 +75,7 @@ struct ShoppingDecisionView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(L("Nên chọn", "Best pick").uppercased())
+                    Text(NSLocalizedString("shoppingDecision.recommended", comment: "").uppercased())
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.primary)
                     HStack(spacing: Spacing.xs) {
@@ -94,12 +94,12 @@ struct ShoppingDecisionView: View {
                             .foregroundStyle(TappyColor.textSecondary)
                     }
                     if let trade = view.recommendation?.tradeOff {
-                        Text("\(L("Đánh đổi", "Trade-off")): \(trade.evidence)")
+                        Text("\(NSLocalizedString("shoppingDecision.tradeOff", comment: "")): \(trade.evidence)")
                             .font(TappyFont.caption)
                             .foregroundStyle(TappyColor.warning)
                     }
                     if view.recommendation?.conditional == true {
-                        Text(L("Tùy nhu cầu của bạn.", "Depends on your needs."))
+                        Text(NSLocalizedString("shoppingDecision.conditional", comment: ""))
                             .font(TappyFont.caption)
                             .foregroundStyle(TappyColor.textSecondary)
                     }
@@ -128,7 +128,7 @@ struct ShoppingDecisionView: View {
     @ViewBuilder
     private func offerRow(_ o: ShoppingDecision.Offer) -> some View {
         HStack(spacing: Spacing.xs) {
-            Text(o.seller ?? L("Người bán chưa rõ", "Seller unknown"))
+            Text(o.seller ?? NSLocalizedString("shoppingDecision.unknownSeller", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textPrimary)
                 .lineLimit(1)
@@ -139,11 +139,11 @@ struct ShoppingDecisionView: View {
                     .lineLimit(1)
             }
             Spacer(minLength: Spacing.xs)
-            Text(money(o.price) ?? L("chưa rõ giá", "price unknown"))
+            Text(money(o.price) ?? NSLocalizedString("shoppingDecision.noPrice", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textPrimary)
             if let urlStr = o.url, let url = URL(string: urlStr) {
-                Link(L("Xem", "View"), destination: url)
+                Link(NSLocalizedString("shoppingDecision.view", comment: ""), destination: url)
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.primary)
             }
@@ -183,13 +183,19 @@ struct ShoppingDecisionView: View {
 
     @ViewBuilder
     private func matchBadge(_ match: String) -> some View {
-        let (label, color): (String, Color) = {
-            switch match {
-            case "khop": return (L("Đúng cấu hình bạn cần", "Matches what you asked for"), TappyColor.success)
-            case "khac": return (L("Khác cấu hình", "Different config"), TappyColor.warning)
-            default:     return (L("Chưa rõ cấu hình", "Config unclear"), TappyColor.textSecondary)
-            }
-        }()
+        let label: String
+        let color: Color
+        switch match {
+        case "khop":
+            label = NSLocalizedString("shoppingDecision.matchExact", comment: "")
+            color = TappyColor.success
+        case "khac":
+            label = NSLocalizedString("shoppingDecision.matchDifferent", comment: "")
+            color = TappyColor.warning
+        default:
+            label = NSLocalizedString("shoppingDecision.matchUnknown", comment: "")
+            color = TappyColor.textSecondary
+        }
         Text(label)
             .font(TappyFont.caption)
             .foregroundStyle(color)
@@ -202,21 +208,22 @@ struct ShoppingDecisionView: View {
     // MARK: Formatting helpers
 
     private var isVI: Bool { LocalizationManager.currentLanguageCode == "vi" }
-    private func L(_ vi: String, _ en: String) -> String { isVI ? vi : en }
 
-    private func sellerCount(_ n: Int) -> String { isVI ? "\(n) nơi bán" : "\(n) sellers" }
+    private func sellerCount(_ n: Int) -> String {
+        String(format: NSLocalizedString("shoppingDecision.sellerCount", comment: ""), n)
+    }
 
     /// VND → "25,8 triệu" (vi) / "25.8M" (en). nil number → nil so the caller shows an honest label.
     private func money(_ n: Double?) -> String? {
         guard let n, n.isFinite else { return nil }
         if n >= 1_000_000 {
             let v = fmtMillions(n / 1_000_000)
-            return isVI ? "\(v) triệu" : "\(v)M"
+            return String(format: NSLocalizedString("shoppingDecision.priceMillions", comment: ""), v)
         }
         let f = NumberFormatter()
         f.numberStyle = .decimal
         let grouped = f.string(from: NSNumber(value: n)) ?? String(Int(n))
-        return "\(grouped)₫"
+        return String(format: NSLocalizedString("shoppingDecision.priceDong", comment: ""), grouped)
     }
 
     private func fmtMillions(_ m: Double) -> String {
@@ -227,8 +234,8 @@ struct ShoppingDecisionView: View {
 
     private func priceRange(_ e: ShoppingDecision.Entity) -> String {
         let lo = money(e.priceLow), hi = money(e.priceHigh)
-        if lo == nil && hi == nil { return L("chưa rõ giá", "price unknown") }
+        if lo == nil && hi == nil { return NSLocalizedString("shoppingDecision.noPrice", comment: "") }
         if let lo, let hi, e.priceLow != e.priceHigh { return "\(lo) – \(hi)" }
-        return (lo ?? hi) ?? L("chưa rõ giá", "price unknown")
+        return (lo ?? hi) ?? NSLocalizedString("shoppingDecision.noPrice", comment: "")
     }
 }
