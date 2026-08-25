@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
+import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from './streamEnrichment'
 import { createEnrichmentCollector } from './toolResultSplit'
 import { parseShoppingMarker } from './consultative/synthesisView'
-import type { TurnEvidence } from './toolResultSplit'
 
 // ── Safe-speed Phase 1: the shopping decision ships as soon as it exists ─────
 //
