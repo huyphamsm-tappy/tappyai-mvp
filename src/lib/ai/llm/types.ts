@@ -65,6 +65,13 @@ export interface AIStreamOptions extends AIGenerateOptions {
    * untouched, exactly like onFinish above.
    */
   onChunk?: Parameters<typeof streamText>[0]['onChunk']
+  /**
+   * Per-step callback. Diagnostic only, forwarded untouched like onChunk/onFinish.
+   * A tool turn is ≥2 provider round-trips inside one stream (the tool-planning
+   * step, then the answer step); this is the only vantage point for when the
+   * first step ends, which separates "model chose a tool" time from tool latency.
+   */
+  onStepFinish?: Parameters<typeof streamText>[0]['onStepFinish']
   /** Abort the upstream generation when the caller's request is cancelled
    * (client disconnect). Wire the route's `req.signal` here so a dropped
    * connection stops billing tokens instead of running to completion. */

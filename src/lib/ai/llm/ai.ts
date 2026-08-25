@@ -61,6 +61,7 @@ export const AI = {
       tools: opts.tools,
       onFinish: opts.onFinish,
       onChunk: opts.onChunk,
+      onStepFinish: opts.onStepFinish,
       abortSignal: opts.abortSignal,
     })
   },
