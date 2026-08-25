@@ -668,6 +668,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
   let bufferMode = false
+  /** True once the shopping decision has gone out early, so it is not sent twice. */
+  let earlyShoppingMarkerSent = false
   /**
    * A tool step has completed and the model has not spoken since — B12.
    *
@@ -868,9 +870,16 @@ export function applyPlaceEnrichmentStreamFilter(
     // decision survives reload (a tool-result field does not). Client parses +
     // strips it; see parseShoppingMarker.
     const markerSuffix = collector?.shoppingMarker ? `\n\n${collector.shoppingMarker}` : ''
-    const finalText = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
-      ? `${scaffoldStripped}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})${markerSuffix}`
-      : `${scaffoldStripped}${markerSuffix}`
+    const prose = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
+      ? `${scaffoldStripped}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})`
+      : scaffoldStripped
+    // `finalText` keeps carrying the marker whether or not it was already sent.
+    // It is not only what ships — it is what the money/spec/grounding detectors
+    // read and what presentedNames/presentedIds are resolved against, so the
+    // early send must not change it. Splitting delivery is allowed to change
+    // WHEN the user sees the decision; it is not allowed to change what the
+    // guards analysed or which candidates the turn recorded as presented.
+    const finalText = `${prose}${markerSuffix}`
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
@@ -884,7 +893,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
     ungroundedNames = ungroundedNamesIn(finalText, places, productRecords, seed?.heldCandidates ?? [])
-    if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
+    // What still needs sending. When the decision already went out after the
+    // tool result, only the prose is left — re-sending the marker here would
+    // put a second copy in the message text and render a duplicate card.
+    const outText = earlyShoppingMarkerSent ? prose : finalText
+    if (outText) controller.enqueue(encoder.encode('0:' + JSON.stringify(outText) + '\n'))
   }
 
   const transform = new TransformStream<any, any>({
@@ -1019,6 +1032,28 @@ export function applyPlaceEnrichmentStreamFilter(
           // not a continuation of the sentence it left off on.
           awaitingPostToolText = true
           controller.enqueue(encoder.encode(line + '\n'))
+          // ── Early shopping decision ───────────────────────────────────────
+          //
+          // The decision card is FINISHED here. route.ts builds it from the
+          // frozen shopping evidence inside the tool's own execute(), so by the
+          // time this result frame lands `collector.shoppingMarker` is already
+          // complete — grouping, recommendation, prices and seller URLs all
+          // settled. Holding it until the end bought nothing: it waited on prose
+          // it does not depend on, through a buffer it does not need.
+          //
+          // So send it now, as text. Text is the only channel that survives
+          // reload — the chat renders from and persists `msg.content`, and a
+          // tool-result field is gone on the next load. That is why the card
+          // travels as a marker at all, and it is why the early copy is a `0:`
+          // frame rather than a new frame type the client would have to learn
+          // and the reload path would not see.
+          //
+          // Nothing model-authored rides along: this is the same server-built
+          // object as before, emitted earlier and unchanged.
+          if (!earlyShoppingMarkerSent && collector?.shoppingMarker) {
+            earlyShoppingMarkerSent = true
+            controller.enqueue(encoder.encode('0:' + JSON.stringify(collector.shoppingMarker + '\n\n') + '\n'))
+          }
         } else if (line.startsWith('d:')) {
           await emitReconstructed(controller)
           controller.enqueue(encoder.encode(line + '\n'))

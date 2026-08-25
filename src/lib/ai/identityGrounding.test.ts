@@ -91,12 +91,36 @@ describe('the detector reports and never rewrites', () => {
     expect(fn).not.toContain('text =')
   })
 
-  it('the enqueued reply is the same string the detector was given', () => {
+  it('the enqueued reply is never derived from what the detector found', () => {
     const emit = filter.slice(filter.indexOf('ungroundedNames = ungroundedNamesIn('))
-      .slice(0, 300)
-    // Detector in, `finalText` out — unchanged, and not derived from the result.
-    expect(emit).toContain("controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText)")
+      .slice(0, 600)
+    // The property this protects: the detector REPORTS and never rewrites.
+    //
+    // The emitted variable is no longer `finalText` itself. Phase 1 sends the
+    // shopping decision early, so the final emit carries the prose alone once
+    // the decision has already gone out. That is a DELIVERY split — `outText`
+    // depends only on whether the early frame fired — and it leaves the
+    // property untouched: nothing between detection and emit consults the
+    // detector's result.
+    expect(emit).toContain("controller.enqueue(encoder.encode('0:' + JSON.stringify(outText)")
     expect(emit).not.toContain('ungroundedNames.')
+    expect(emit).not.toContain('presentedNames.')
+  })
+
+  it('the emitted text is chosen by delivery state alone, not by any finding', () => {
+    // Pins WHY the emit may differ from the detector's input. If `outText` ever
+    // starts depending on anything but the early-send flag, this fails — which
+    // is the moment "we noticed a fabricated name" could turn into "we silently
+    // edited the user's reply".
+    expect(filter).toMatch(/const outText = earlyShoppingMarkerSent \? prose : finalText/)
+  })
+
+  it('the detector still reads the reply WITH the decision in it', () => {
+    // `finalText` — what ungroundedNamesIn analyses — must keep carrying the
+    // marker even though the marker may already have shipped separately.
+    expect(filter).toMatch(/const finalText = `\$\{prose\}\$\{markerSuffix\}`/)
+    const detectAt = filter.indexOf('ungroundedNames = ungroundedNamesIn(')
+    expect(filter.indexOf('const finalText = `${prose}${markerSuffix}`')).toBeLessThan(detectAt)
   })
 
   // REMOVED ON INTEGRATION: this asserted how `/api/chat` CONSUMES the detector's finding, and
