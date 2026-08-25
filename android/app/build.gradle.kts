@@ -219,8 +219,13 @@ android {
         // `versionCode=7 versionName=0.1.2` were compared during that UAT: `aapt2 dump strings`
         // found Scam Shield in one and not the other. Nothing on a device, in a bug report or in
         // Play could have told them apart, and Play rejects a reused versionCode outright.
-        versionCode = 8
-        versionName = "0.1.3"
+        // 9, not 8 — vc8 (0.1.3) is SPENT: its AAB was produced as the V2 release candidate and
+        // handed to the owner for Play upload. This build carries the gallery-scan decode fix
+        // (decodeSampledBitmap bailed on every gallery image because the null-guard sat on the
+        // bounds-only decode, which returns null by design). A shipped versionCode is never reused
+        // even if the prior one was never actually uploaded — Play rejects a reused code outright.
+        versionCode = 9
+        versionName = "0.1.4"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -359,6 +364,14 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    testOptions {
+        unitTests {
+            // Robolectric needs the merged Android resources/assets/manifest on the unit-test
+            // classpath to bring up a real Application + BitmapFactory sandbox.
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -428,6 +441,9 @@ dependencies {
     // Needed to drive a ViewModel under test: viewModelScope runs on Dispatchers.Main, which
     // has no Android looper in a unit test until setMain() replaces it.
     testImplementation(libs.kotlinx.coroutines.test)
+    // Robolectric runs the real android.graphics.BitmapFactory + ContentResolver on the JVM, so
+    // ScanViewModel's two-pass gallery decode can be exercised as a plain unit test (no device).
+    testImplementation(libs.robolectric)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

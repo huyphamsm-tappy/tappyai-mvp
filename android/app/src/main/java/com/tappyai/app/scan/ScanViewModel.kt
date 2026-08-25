@@ -82,9 +82,15 @@ class ScanViewModel @Inject constructor(
      * stream generally can't be reset after bounds-only reading it once.
      */
     private fun decodeSampledBitmap(uri: Uri, targetPx: Int): Bitmap? {
+        // The null-guard must apply to opening the stream, NOT to the bounds decode's return
+        // value: `inJustDecodeBounds = true` makes BitmapFactory.decodeStream ALWAYS return null
+        // (it only populates outWidth/outHeight, it allocates no pixels). Guarding on that null
+        // — `openInputStream(uri)?.use { decodeStream(bounds) } ?: return null` — bailed out on
+        // every gallery image even when the stream opened fine, so the real decode below never
+        // ran. Open once for bounds, discard the (expected-null) return, keep the dimensions.
         val boundsOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, boundsOptions) }
-            ?: return null
+        val boundsStream = context.contentResolver.openInputStream(uri) ?: return null
+        boundsStream.use { BitmapFactory.decodeStream(it, null, boundsOptions) }
 
         var inSampleSize = 1
         val longerSide = maxOf(boundsOptions.outWidth, boundsOptions.outHeight)
