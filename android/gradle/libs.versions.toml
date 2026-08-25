@@ -95,6 +95,7 @@ googleId = "1.1.1"
 junit = "4.13.2"
 androidxJunit = "1.2.1"
 espresso = "3.6.1"
+robolectric = "4.14.1"
 
 # QR generation — used by the Profile "QR profile" sheet (Feature Completion Sprint). ZXing's
 # `core` module is the encoder only (no camera/scanning), the standard, actively-maintained choice
@@ -182,6 +183,7 @@ media3-common = { group = "androidx.media3", name = "media3-common", version.ref
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 
