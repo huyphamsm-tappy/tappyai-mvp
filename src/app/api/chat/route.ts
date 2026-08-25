@@ -16,7 +16,7 @@ import { validateClientInput, readDecisionEvidenceId } from '@/lib/ai/security/c
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -133,6 +133,10 @@ export async function POST(req: Request) {
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
   const planningIntent = detectPlanningIntent(lastText)
+  // A "recommend me a movie/show" turn must NOT be routed to the place search
+  // (which answers with cinemas). We drop search_places for the turn so the model
+  // recommends titles from film knowledge; a venue/showtime ask keeps the tool.
+  const movieRecommend = detectMovieRecommendationIntent(lastText)
   // Response language = the user's LATEST message, unless they explicitly ask
   // for another one ("Answer in English", "Trả lời bằng tiếng Việt") — that
   // request always wins. Never derived from UI locale, browser language,
@@ -594,6 +598,16 @@ export async function POST(req: Request) {
     priorEvidence ? renderDecisionEvidenceBlock(priorEvidence, true) : '',
     priorEvidenceMissing ? renderMissingEvidenceBlock() : '',
     tripContext.shouldAskTransportMode ? buildTransportModeBlock() : '',
+    // Movie/show recommendation turn: the place tool is already dropped above, so
+    // the model answers from film knowledge. This keeps that answer grounded —
+    // recommend a few titles with why, never invent current showtimes/platform/price.
+    movieRecommend ? `\n\n===== GOI Y PHIM (KHONG PHAI TIM RAP) =====
+Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
+- Goi y 2-3 phim hop yeu cau (the loai/tone, vi sao hop "nhe nhang" hoac tam trang ho muon), tu kien thuc dien anh chung cua ban.
+- Moi phim: ten + 1 dong VI SAO hop. Ngan gon, khong liet ke dai dong.
+- KHONG khang dinh lich chieu, rap dang chieu, gia ve, nen tang xem (Netflix/Disney+/...), hay danh gia HIEN TAI — tru khi co du lieu that duoc lay ve. Neu khong chac ho xem duoc o dau, noi that va nhac ho tu kiem tra.
+- Chi khi nguoi dung hoi RO "xem o dau / rap gan / lich chieu / gia ve" moi can tim dia diem.
+=====================================` : '',
   ].filter(Boolean).join('')
 
   const built = noToolTurn ? null : buildSystem(
@@ -646,7 +660,10 @@ export async function POST(req: Request) {
     // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
     // the baseline and the post-B1 run. The tool path keeps its own lineage.
     tools: noToolTurn ? undefined : {
-      search_places: tool({
+      // A movie/show RECOMMENDATION turn drops the place search entirely, so the
+      // model can't answer "recommend a movie" with a list of cinemas — it
+      // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
+      ...(movieRecommend ? {} : { search_places: tool({
         description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
@@ -665,7 +682,7 @@ export async function POST(req: Request) {
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result)
         }
-      }),
+      }) }),
       get_news: tool({
         description: 'Lay tin tuc moi nhat tu VnExpress, Tuoi Tre, Dan Tri',
         parameters: z.object({ query: z.string().describe('Tu khoa tin tuc can tim') }),
