@@ -632,12 +632,35 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const systemShared = built?.shared
   const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
 
+  // ── Model timing instrumentation ────────────────────────────────────────
+  //
+  // Production measurement on 7e15dfe found authenticated TTFB ranging 1.8s to
+  // 13.7s on identical request shapes, and independent probes put every
+  // application stage well under it: bare lambda ~294ms, one Supabase
+  // round-trip ~5ms, the whole authenticated pre-model block ~640ms. That
+  // located the variance in "model request sent → first token", but could not
+  // separate the causes INSIDE that interval from the outside.
+  //
+  // These two marks close that gap. They are diagnostic only — nothing branches
+  // on them — and they extend the existing tappyai_usage record rather than
+  // starting a second telemetry channel.
+  const preModelMs = Date.now() - startTime
+  /** Wall-clock of the first token, or null if the stream produced none. */
+  let firstTokenAt: number | null = null
+
   let result
   try {
   // Provider-specific optimizations (e.g. prompt caching of this large system
   // prompt) are applied inside the active provider adapter — not here.
   result = AI.stream({
     role,
+    // First text delta only. Tool-call and reasoning chunks are deliberately
+    // NOT counted: a turn that calls a tool emits its first text long after the
+    // model actually started answering, and conflating the two would report a
+    // tool round-trip as model latency — the exact confusion this exists to end.
+    onChunk: ({ chunk }) => {
+      if (firstTokenAt === null && chunk.type === 'text-delta') firstTokenAt = Date.now()
+    },
     // Cancel the upstream generation (and skip the onFinish memory-extraction
     // call) if the client disconnects — otherwise it runs to maxDuration billing
     // tokens for a response nobody is receiving.
@@ -870,6 +893,33 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         memoryExtract: (authedUserId && worthExtract) ? 1 : 0,
         toolCalls: (steps ?? []).reduce((n, s) => n + (s.toolCalls?.length ?? 0), 0),
         elapsedMs: Date.now() - startTime,
+        // ── Stage split (diagnostic) ──────────────────────────────────────
+        // t0 = request received (startTime). Every value below is ms from t0,
+        // so they read as a timeline and stay comparable across requests.
+        //
+        //   preModelMs   t0 → model request sent (auth, quota, memory, prompt)
+        //   ttftMs       t0 → first text token back from the provider
+        //   generationMs first token → generation complete
+        //
+        // ttftMs is null when the turn produced no text at all (aborted, or a
+        // tool-only step). generationMs is null in the same case rather than
+        // being back-filled from elapsedMs, which would silently report a
+        // failed turn as a fast one.
+        preModelMs,
+        ttftMs: firstTokenAt === null ? null : firstTokenAt - startTime,
+        generationMs: firstTokenAt === null ? null : Date.now() - firstTokenAt,
+        // Which provider/model actually served it — the same turn can resolve
+        // to a different model by role, and a provider-side slowdown is only
+        // interpretable once you know which model it was.
+        providerId: AI.providerId(),
+        modelRole: role,
+        // 'unknown' is a real answer, not a placeholder to fill in later: the
+        // AI SDK accepts maxRetries but reports no attempt count, status or
+        // reason to onFinish. Recording a number here would be inventing one,
+        // and a retry-caused delay would be indistinguishable from provider
+        // queueing. Distinguishing those needs provider-side data this record
+        // cannot see.
+        retryCount: 'unknown',
         worthExtract,
         forcedTool,
       }))

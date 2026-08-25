@@ -53,6 +53,18 @@ export interface AIStreamOptions extends AIGenerateOptions {
   // streamText actually supports it, and re-measure: forcing a tool changes both
   // cost and clarification behaviour.
   onFinish?: Parameters<typeof streamText>[0]['onFinish']
+  /**
+   * Per-chunk callback. Exposed for ONE reason: time-to-first-token cannot be
+   * observed anywhere else. `onFinish` fires after generation ends, and the
+   * caller's own stream transform sees bytes only after the SDK has already
+   * emitted them, so the interval "model request sent → first token back" —
+   * the interval production measurement put the entire TTFB variance in — has
+   * no other vantage point.
+   *
+   * Provider-neutral by construction: the SDK's own chunk type, forwarded
+   * untouched, exactly like onFinish above.
+   */
+  onChunk?: Parameters<typeof streamText>[0]['onChunk']
   /** Abort the upstream generation when the caller's request is cancelled
    * (client disconnect). Wire the route's `req.signal` here so a dropped
    * connection stops billing tokens instead of running to completion. */
