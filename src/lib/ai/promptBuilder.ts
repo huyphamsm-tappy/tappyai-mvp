@@ -16,6 +16,32 @@ export interface UserPrefs {
 // English. Naming Vietnamese makes the guards unnecessary instead of load-bearing.
 const LANG_NAMES: Record<string, string> = { vi: 'Vietnamese', en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
 
+// ── Prose budget ─────────────────────────────────────────────────────────────
+//
+// Measured on prod 1e6c867 with the old 150/250 caps: a shopping turn produced
+// 142 words of prose, a food turn 183. Generation is sequential, so those words
+// are wall-clock — but they are also the ONLY part of the reply the model pays
+// for. The rest of the bytes a user sees (place photos, order/review links, the
+// [TAPPY_SHOPPING] card) are injected server-side after generation at zero model
+// cost, which is why the caps count displayed prose only and always have.
+//
+// Halving the cap targets the generated half. It does NOT drop candidates,
+// evidence, the recommendation, reasons, trade-offs or alternatives — those are
+// required by DECISION_SHAPE_RULES below. What it removes is restatement: the
+// per-row catalogue in prose that duplicates the card the UI already renders.
+export const FIRST_REPLY_WORD_CAP = 90
+export const CONTEXT_REPLY_WORD_CAP = 150
+
+/**
+ * How the words in that budget must be spent. Appended to BOTH word-limit blocks
+ * so a shorter reply stays a DECISION and does not decay into a shorter list.
+ *
+ * Written as "keep X" rather than "drop Y" on purpose: a cap alone makes the
+ * model shed whatever is cheapest to cut, and what is cheapest to cut is the
+ * reasoning — the one part that cannot be re-rendered from structured data.
+ */
+const DECISION_SHAPE_RULES = `\nTHU TU BAT BUOC (uu tien khi phai cat chu):\n1. CHON TRUOC: mo dau bang lua chon ban de xuat + ten cu the. Khong mo bai, khong tom tat lai cau hoi.\n2. LY DO: 1-2 ly do CO CAN CU tu ket qua tool (rating, gia, khoang cach, dac diem). Khong ly do chung chung.\n3. DANH DOI: neu du lieu co, neu DUNG 1 danh doi that (vd dat hon nhung gan hon / re hon nhung xa hon).\n4. LUA CHON KHAC: nhac ngan ten 1-2 lua chon con lai va LY DO KHONG chon, moi cai 1 ve cau.\nCAM: liet ke lai tung dong ket qua thanh danh muc trong van xuoi; lap lai gia/cau hinh/dia chi nhieu lan; mo ta lai du lieu ma the giao dien da hien thi. Moi con so chi noi DUNG 1 LAN.`
+
 export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi'): string {
   const toolsNeeded = planType === 'trip'
     ? `- get_hotel_prices → tìm khách sạn phù hợp budget\n- search_places (type=restaurant) → tìm nhà hàng ngon ở điểm đến\n- search_places (type=attraction) → tìm điểm tham quan, thắng cảnh, hoạt động thú vị ở điểm đến\n- get_weather → thời tiết nếu biết ngày đi`
@@ -252,8 +278,8 @@ LUAT 3: Neu khong con option nao trong tam gia, hay noi ro (bang NGON NGU cua ca
 ==========================================`
     : ''
   const wordLimitBlock = isFirstReply
-    ? `\n\n===== WORD LIMIT - REPLY DAU TIEN =====\nDay la reply DAU TIEN trong conversation. GIOI HAN: toi da 150 tu (chi tinh van ban CHU hien thi cho user - KHONG tinh block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh). Anh va link dat do HE THONG tu chen - ban KHONG viet nen khong lo vuot gioi han. Viet ngan, chon loc, de hieu. Cau cuoi phai la follow-up question.\n==========================================`
-    : `\n\n===== WORD LIMIT - CO CONTEXT =====\nUser da tra loi follow-up. Duoc phep reply chi tiet hon, toi da 250 tu (chi tinh van ban CHU hien thi - KHONG tinh block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh). Anh va link dat do HE THONG tu chen - ban KHONG viet. Nhung van phai ngan gon, khong viet bao cao. Cau cuoi van nen co follow-up question neu con thong tin can lam ro.\n==========================================`
+    ? `\n\n===== WORD LIMIT - REPLY DAU TIEN =====\nDay la reply DAU TIEN trong conversation. GIOI HAN: toi da ${FIRST_REPLY_WORD_CAP} tu (chi tinh van ban CHU hien thi cho user - KHONG tinh block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh). Anh va link dat do HE THONG tu chen - ban KHONG viet nen khong lo vuot gioi han. Viet ngan, chon loc, de hieu. Cau cuoi phai la follow-up question.${DECISION_SHAPE_RULES}\n==========================================`
+    : `\n\n===== WORD LIMIT - CO CONTEXT =====\nUser da tra loi follow-up. Duoc phep reply chi tiet hon, toi da ${CONTEXT_REPLY_WORD_CAP} tu (chi tinh van ban CHU hien thi - KHONG tinh block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh). Anh va link dat do HE THONG tu chen - ban KHONG viet. Nhung van phai ngan gon, khong viet bao cao. Cau cuoi van nen co follow-up question neu con thong tin can lam ro.${DECISION_SHAPE_RULES}\n==========================================`
   const locationBlock = locationIntent === 'offline'
     ? `\n\n===== VI TRI: CUA HANG VAT LY - LUAT BAT BUOC =====\nBắt buộc: User đang tìm ĐỊA ĐIỂM VẬT LÝ để đến trực tiếp (dấu hiệu: "gần đây", "gần tôi", "gần nha", "ở Q.", địa chỉ cụ thể, "cửa hàng", "tiệm", v.v.). PHẢI dùng search_places NGAY ở bước đầu tiên. TUYỆT ĐỐI KHÔNG dùng search_products. search_places sẽ tìm cửa hàng có địa chỉ, giờ mở cửa, rating - user muốn đến tận nơi mua, không phải mua online.\n==========================================`
     : ''

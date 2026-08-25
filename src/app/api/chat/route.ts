@@ -261,50 +261,65 @@ export async function POST(req: Request) {
       }
 
       authedUserId = user.id
-      const chatContext = await buildChatPromptContext(user.id, supabase)
+
+      // Four reads that need nothing but `user.id` and never feed each other.
+      // Run serially they were ~2-3s of dead air before the model was even
+      // called (measured on prod 1e6c867: authenticated TTFB 3.6-4.0s against
+      // 1.0s anonymous on the same tool-free question).
+      //
+      // Their position AFTER the restriction gate is deliberately unchanged: a
+      // blocked account still returns above, so it still costs no LLM tokens and
+      // no third-party calls. Only the four post-gate reads move in parallel.
+      const [chatContext, calendarBlock, subResult, todayMsgCount] = await Promise.all([
+        buildChatPromptContext(user.id, supabase),
+        // Calendar keeps its own catch INSIDE the batch. Hoisting it without one
+        // would let an integration outage reject the whole Promise.all and take
+        // memory, subscription and quota down with it — which the sequential
+        // version, with its own try/catch, never did.
+        (async () => {
+          try {
+            const { getUpcomingEvents, formatEventsForPrompt } = await import('@/lib/integrations/googleCalendar')
+            const calEvents = await getUpcomingEvents(user.id)
+            return calEvents.length > 0 ? formatEventsForPrompt(calEvents) : ''
+          } catch { return '' /* calendar optional */ }
+        })(),
+        // Kiểm tra subscription từ DB
+        supabase
+          .from('subscriptions')
+          .select('status, current_period_end')
+          .eq('user_id', user.id)
+          .single(),
+        // Speculative on purpose. The count is only ENFORCED for non-Pro users,
+        // but waiting for `isPro` to decide whether to ask would put this read
+        // straight back on the serial path it was moved off. A Pro user's count
+        // is computed and then ignored: one read, no behavioural change.
+        //
+        // Shared VN-day measurement from @/lib/config/product — the same helper
+        // the subscription page displays from, so display and enforcement can
+        // never disagree.
+        countTodayUserMessages(supabase, user.id),
+      ])
+
       existingMemory = chatContext.memory
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool)
       if (chatContext.prefs) { prefBlock = buildPrefBlock(chatContext.prefs); storedPrefs = chatContext.prefs }
+      // Appended AFTER the memory block is built, exactly as the sequential
+      // version did — calendar events extend the memory block, never replace it.
+      if (calendarBlock) memoryBlock = (memoryBlock || '') + calendarBlock
 
-      // Inject Google Calendar events if connected
-      try {
-        const { getUpcomingEvents, formatEventsForPrompt } = await import('@/lib/integrations/googleCalendar')
-        const calEvents = await getUpcomingEvents(user.id)
-        if (calEvents.length > 0) {
-          memoryBlock = (memoryBlock || '') + formatEventsForPrompt(calEvents)
-        }
-      } catch { /* calendar optional */ }
-
-        // Kiểm tra subscription từ DB
-      const { data: subData } = await supabase
-        .from('subscriptions')
-        .select('status, current_period_end')
-        .eq('user_id', user.id)
-        .single()
+      const subData = subResult.data
       if (subData?.status === 'active' && subData?.current_period_end) {
         isPro = new Date(subData.current_period_end) > new Date()
       }
 
-      if (!isPro) {
-        // Đếm số tin nhắn user đã gửi hôm nay (theo giờ VN UTC+7).
-
-        // Ước tính số message từ conversations hôm nay — đơn giản: nếu vượt FREE_DAILY_LIMIT thì chặn.
-        // Cách chính xác hơn cần track message count riêng — dùng tạm cách này cho MVP.
-        // Shared VN-day measurement from @/lib/config/product — the same helper
-        // the subscription page displays from, so display and enforcement can
-        // never disagree. (Also drops a redundant count-only query this route
-        // used to run and never read.)
-        const totalMsgs = await countTodayUserMessages(supabase, user.id)
-
-        if (totalMsgs >= FREE_DAILY_LIMIT) {
-          return new Response(
-            JSON.stringify({
-              error: 'free_limit_reached',
-              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
-            }),
-            { status: 429, headers: { 'Content-Type': 'application/json' } }
-          )
-        }
+      if (!isPro && todayMsgCount >= FREE_DAILY_LIMIT) {
+        return new Response(
+          JSON.stringify({
+            error: 'free_limit_reached',
+            message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
+          }),
+          { status: 429, headers: { 'Content-Type': 'application/json' } }
+        )
       }
     }
   } catch (e) {
