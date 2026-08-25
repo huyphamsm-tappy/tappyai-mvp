@@ -975,22 +975,50 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       { status: 502, headers: { 'Content-Type': 'application/json' } },
     )
   }
+  // ── Phase 2: photo-enrichment tail instrumentation ────────────────────────
+  // Declared out here because the resolver closure fills them while the usage
+  // record — emitted after the last byte leaves — reads them. Diagnostic only.
+  type PhotoStepAgg = { n: number; totalMs: number; maxMs: number; hits: number; timeouts: number }
+  const photoSteps: Partial<Record<'website' | 'places_detail' | 'places_media' | 'serper', PhotoStepAgg>> = {}
+  let photoPlacesSelected = 0
+  let photoPlacesEnriched = 0
+  let photoTotalMs = 0
+  let photoMaxPlaceMs = 0
+
   const baseResponse = result.toDataStreamResponse()
   // B7-A: photos are fetched only for the places the finished reply actually
   // names — the filter selects them, this resolves them. Each place degrades to
   // "no photo" independently; one slow or failing lookup never blocks the rest.
   const enrichedResponse = applyPlaceEnrichmentStreamFilter(baseResponse, lang, enrichment, async (places) => {
     const byName = new Map<string, string[]>()
+    // Phase 2 instrumentation. postModelMs measured 1,490 ms median on
+    // production and this resolver is the tail's only network work — but it is
+    // a four-step fallback chain with four different timeouts, so the aggregate
+    // does not say which step to look at. Recorded here, reported once on the
+    // existing usage record. Nothing branches on any of it.
+    const photoStart = Date.now()
+    photoPlacesSelected = places.length
     await Promise.all(places.map(async (p) => {
       if (!p.name) return
+      const placeStart = Date.now()
       try {
         const urls = await resolvePlacePhotos(
           { place_id: p.place_id, name: p.name, website_uri: p.website_uri },
           3,
+          (t) => {
+            const s = (photoSteps[t.step] ??= { n: 0, totalMs: 0, maxMs: 0, hits: 0, timeouts: 0 })
+            s.n++; s.totalMs += t.ms; s.maxMs = Math.max(s.maxMs, t.ms)
+            if (t.hit) s.hits++
+            if (t.timedOut) s.timeouts++
+          },
         )
-        if (urls.length > 0) byName.set(p.name, urls)
+        if (urls.length > 0) { byName.set(p.name, urls); photoPlacesEnriched++ }
       } catch { /* this place simply gets no photo */ }
+      // Recorded for every place, enriched or not: the slowest place sets the
+      // tail, and a place that found nothing can still be the slow one.
+      photoMaxPlaceMs = Math.max(photoMaxPlaceMs, Date.now() - placeStart)
     }))
+    photoTotalMs = Date.now() - photoStart
     return byName
   })
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
@@ -1038,6 +1066,19 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // toolMs is the summed tool execute() time.
       firstStepFinishMs,
       toolMs: toolMs > 0 ? toolMs : null,
+      // ── Photo-enrichment tail (Phase 2) ──────────────────────────────────
+      // postModelMs says the tail is ~1.5s; these say where inside it. null on
+      // turns that resolved no photos, so "no enrichment ran" stays distinct
+      // from "enrichment ran and took 0ms".
+      photoTotalMs: photoPlacesSelected > 0 ? photoTotalMs : null,
+      photoMaxPlaceMs: photoPlacesSelected > 0 ? photoMaxPlaceMs : null,
+      photoPlacesSelected: photoPlacesSelected > 0 ? photoPlacesSelected : null,
+      photoPlacesEnriched: photoPlacesSelected > 0 ? photoPlacesEnriched : null,
+      // Per step of the fallback chain: how often it ran, how long it cost, how
+      // often it actually contributed a URL, and how often it burned its own
+      // timeout. A step that runs every turn and contributes nothing is the
+      // clearest possible signal, and only this breakdown can show it.
+      photoSteps: photoPlacesSelected > 0 ? photoSteps : null,
       providerId: AI.providerId(),
       modelRole: role,
       retryCount: 'unknown',
