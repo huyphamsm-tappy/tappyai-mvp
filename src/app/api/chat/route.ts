@@ -34,6 +34,7 @@ import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptB
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
+import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantContent'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
@@ -574,6 +575,35 @@ export async function POST(req: Request) {
   // Truncate history to last 10 messages to control token costs
   const trimmedMessages = messages.length > 10 ? messages.slice(-10) : messages
 
+  // V2 highlighted regression: on a tool-less follow-up ("Giá cả thế nào?",
+  // "cụ thể hơn", "chọn giúp tôi"), no PLACE_TOOL runs so bufferMode stays
+  // false in streamEnrichment and every `0:` frame streams straight to the
+  // client with no strip pass. If the model echoes prior turns' image markdown,
+  // `[TAPPY_PLAN]`, `[TAPPY_SHOPPING]`, `[CTA_BUTTONS]`, `[FOLLOWUPS]` from
+  // context, the client re-renders the same cards even though the user did not
+  // ask for a new search. The prompt-level "do not write these" is not a
+  // structural guarantee. Strip those decorations from prior assistant text
+  // BEFORE the model sees them — the model cannot echo what it cannot read.
+  // Applied ONLY to the messages fed to the LLM: the memory extractor below
+  // still uses raw `trimmedMessages` because it summarizes what happened.
+  const modelMessages = trimmedMessages.map((m) => {
+    if (m.role !== 'assistant') return m
+    if (typeof m.content === 'string') {
+      return { ...m, content: sanitizePriorAssistantContent(m.content) }
+    }
+    if (Array.isArray(m.content)) {
+      const parts = m.content.map((part) => {
+        if (part && typeof part === 'object' && (part as { type?: string }).type === 'text') {
+          const p = part as { type: 'text'; text: string }
+          return { ...p, text: sanitizePriorAssistantContent(p.text) }
+        }
+        return part
+      })
+      return { ...m, content: parts as typeof m.content }
+    }
+    return m
+  })
+
   // Split so the provider can cache the invariant rulebook and leave everything
   // request-shaped (clock, language, memory, prefs, budget, GPS, style) after
   // the breakpoint. The chitchat path has no rulebook to share — its prompt is
@@ -708,7 +738,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     abortSignal: req.signal,
     systemShared,
     system: systemPrompt,
-    messages: trimmedMessages,
+    messages: modelMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
     // now injected by streamEnrichment instead of written by the LLM (see prompt),
