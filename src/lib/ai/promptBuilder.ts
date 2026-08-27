@@ -1,6 +1,7 @@
 import { type Budget } from './budget'
 import { type DecisionStage } from './intent'
 import { fenceUntrusted } from './security/fence'
+import { renderEvidencePolicyBlock } from './consultative/evidenceProvenance'
 
 export interface UserPrefs {
   budget_level?: string | null
@@ -432,7 +433,10 @@ User chi dang xac nhan/dong y. Tra loi NGAN, tu nhien, tiep noi viec vua lam. KH
   // The rulebook. Every piece below is a module-scope constant or a literal —
   // no interpolation, so this string cannot vary between requests. The
   // "shared segment is invariant" test in promptBuilder.test.ts holds the line.
-  const shared = `${SYSTEM_BASE}${reviewBlock}${ctaBlock}${scopeBlock}${safetyBlock}`
+  // A5.1: the evidence-provenance policy rides the SHARED (cached) prompt so it is
+  // byte-identical across requests and costs nothing after the first.
+  const evidenceBlock = `\n\n${renderEvidencePolicyBlock()}`
+  const shared = `${SYSTEM_BASE}${reviewBlock}${ctaBlock}${scopeBlock}${safetyBlock}${evidenceBlock}`
 
   // Request-shaped, and deliberately AFTER the rulebook: it sits past the
   // provider's cache breakpoint, so a new minute or a different user no longer

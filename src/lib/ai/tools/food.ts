@@ -8,6 +8,7 @@ import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace } from '@/lib/ai/consultative/reviewAction'
 import { messages, isVi } from '@/lib/ai/messages'
 import { newsCacheKey, placesCacheKey } from './cacheKeys'
+import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
 
 export async function getNews(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
@@ -322,6 +323,10 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         if (priceResults && priceResults.length > 0) {
           extra.price_search_results = priceResults
           extra.price_note = messages.places.priceNote(lang)
+          // A5.1: grade the evidence WITH the data. Snippet prices are search-text
+          // (REVIEW-level), never a structured/authoritative price — the model reads
+          // this and must qualify accordingly (evidence policy block), never FACT.
+          extra.price_evidence = { evidence_type: classifyEvidence('search_snippet'), source_type: 'search_snippet' }
         }
         if (isFood) {
           const directOrder = (orderResults || []).filter(r => isDirectFoodOrderLink(r.link))
