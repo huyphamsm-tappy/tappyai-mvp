@@ -71,10 +71,62 @@ const CHOICE_REQUEST = new RegExp([
   '\\bpick one for me\\b',
 ].join('|'))
 
+/**
+ * A purchase / consultation intent word said in bare form — no criteria attached.
+ *
+ * Historical stance: a bare "muon mua op lung" stated no priority, no budget, no must-have —
+ * so `hasDecidableNeed` refused a Pick and the reply degenerated into a listing with a
+ * clarifying question ("bạn ưu tiên gì? — giá rẻ / chất lượng / Magsafe?"). The product
+ * philosophy behind that was "don't fabricate a preference". Owner-measured on production
+ * (screenshots 2026-08-27): the receptionist behaviour is a worse failure than a mild
+ * preference default — it turns a paid subscription into Google in a chat wrapper.
+ *
+ * New stance: the ACT of asking to buy / try / eat / go somewhere IS the priority when no
+ * explicit one is given — and the natural default is "best social proof" (rating × review
+ * count), which is exactly what the ranker uses when nothing else fires. This regex names
+ * that intent CONSERVATIVELY: it matches only ways to say "I want to buy/find/eat/go" —
+ * not the mere presence of a noun. A pick still requires ≥2 rankable candidates and a
+ * grounded reason (`derivePick` guards below), so this widens WHEN a Pick may be
+ * considered, never WHAT one requires.
+ */
+const IMPLICIT_PURCHASE_INTENT = new RegExp([
+  // Vietnamese purchase / consumption / travel VERBs stated (diacritics stripped by
+  // normalizeVN). The `.{0,3}` between the verb and the object allows a short particle
+  // ("gi", "mot", "cai") but not a whole clause.
+  '\\b(muon|can|toi muon|em muon|minh muon) (mua|an|uong|di|choi|thu|book|dat|xai|dung|hoc|thue)\\b',
+  '\\bmuon ' + '(mua|an|uong|choi|thue|di|book|dat)\\b',
+  // "tim/kiem/goi y X" where X is a common shopping/food/travel target noun
+  '\\b(tim|kiem|tim giup|kiem giup|gioi thieu|goi y) (mua|an|uong|di|choi|thu|book|dat|thue)\\b',
+  '\\b(tim|kiem|tim giup|kiem giup) (quan|nha hang|shop|cua hang|khach san|noi|cho|dia diem|san pham|hang|vien|tour|voucher|dich vu|thuoc|do)',
+  // Bare "an X o dau", "mua X o dau", "an gi", "mua gi"
+  '\\b(an|mua|uong|choi|thu|di|xem) (o dau|cai gi|gi|the nao|nao)',
+  '\\bmua (op|ban|dien thoai|laptop|may|tai nghe|dong ho|xe|do|cuon|quan|ao|giay|balo|nhan|vo|ung|dau|mat|kinh|nuoc hoa|do choi|thuoc|thu)\\b',
+  // English
+  '\\bi (?:want to|would like to|need to|wanna) (buy|find|eat|drink|try|book|go|rent)\\b',
+  '\\blooking (for|to buy|to eat|to book|to rent)\\b',
+  '\\bwhere (can|should|do) i (buy|find|eat|go|stay|book)\\b',
+  '\\brecommend (?:me )?(?:a |some |the )?(good|nice|best)?',
+].join('|'))
+
+/**
+ * True when the user's message expresses a purchase / consumption / travel intent WITHOUT
+ * stating criteria. Falls out of the ranker's ordinary path — see `hasDecidableNeed`.
+ */
+export function hasImplicitPurchaseIntent(text: string | null | undefined): boolean {
+  if (!text) return false
+  return IMPLICIT_PURCHASE_INTENT.test(normalizeVN(text.toLowerCase()))
+}
+
 /** Signals about the TURN that the ranked result alone cannot carry. */
 export interface PickSignals {
   /** The user explicitly asked Tappy to make the choice. */
   explicitChoiceRequest?: boolean
+  /**
+   * The user has said "I want to buy / find / eat / go" without naming criteria.
+   * Turns the ranker's natural default — best social proof — into a real Pick.
+   * A pick still needs ≥2 rankable candidates and a grounded reason.
+   */
+  implicitPurchaseIntent?: boolean
 }
 
 /**
@@ -101,6 +153,11 @@ export function isExplicitChoiceRequest(text: string | null | undefined): boolea
 function hasDecidableNeed(need: NeedProfile, signals?: PickSignals): boolean {
   return need.priorities.length > 0 || need.mustHave.length > 0 || need.budget !== null
     || signals?.explicitChoiceRequest === true
+    // A bare purchase / consumption / travel intent — "muốn mua op lung", "mua tai nghe",
+    // "tim quan pho ngon" — states no criteria but still asks for a decision. The natural
+    // default is best social proof (rating × review count), which the ranker already
+    // computes. Refusing to pick here turns a paid consultative product into a listing.
+    || signals?.implicitPurchaseIntent === true
 }
 
 /**
