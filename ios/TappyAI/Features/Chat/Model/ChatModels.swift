@@ -54,6 +54,54 @@ struct ParsedContent: Equatable, Sendable {
     let plan: TappyPlan?
     let followups: [String]
     let images: [ParsedImage]
+    /// The grounded shopping decision, parsed from the `[TAPPY_SHOPPING]` marker (nil otherwise).
+    let shopping: ShoppingDecision?
+}
+
+// MARK: - Shopping decision (the [TAPPY_SHOPPING] marker payload)
+
+/// The server-produced semantic decision object — the exact shape Web's
+/// `SynthesisView` (synthesisView.ts) delivers. iOS decodes and renders it; it
+/// never regroups or re-infers. Nullable JSON fields are optionals; a decode
+/// failure yields no card and the marker is still stripped (ContentParser).
+struct ShoppingDecision: Equatable, Sendable, Decodable {
+    let entities: [Entity]
+    let recommendation: Recommendation?
+
+    struct Entity: Equatable, Sendable, Decodable, Identifiable {
+        let key: String
+        let config: String
+        /// "khop" (matches) | "khac" (different) | "chua_ro" (unclear).
+        let matchesRequest: String
+        let recommended: Bool
+        let priceLow: Double?
+        let priceHigh: Double?
+        let image: String?
+        let offers: [Offer]
+        var id: String { key }
+    }
+
+    struct Offer: Equatable, Sendable, Decodable, Identifiable {
+        let seller: String?
+        let url: String?
+        let price: Double?
+        let currency: String?
+        let condition: String?
+        var id: String { (url ?? "") + "|" + (seller ?? "") + "|" + (price.map { String($0) } ?? "") }
+    }
+
+    struct Recommendation: Equatable, Sendable, Decodable {
+        let entityKey: String?
+        let seller: String?
+        let reasons: [Reason]
+        let tradeOff: Reason?
+        let conditional: Bool
+    }
+
+    struct Reason: Equatable, Sendable, Decodable {
+        let attribute: String
+        let evidence: String
+    }
 }
 
 struct ParsedImage: Equatable, Sendable, Identifiable {

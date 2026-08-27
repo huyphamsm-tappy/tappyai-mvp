@@ -2,6 +2,104 @@
   "sourceLanguage": "en",
   "version": "1.0",
   "strings": {
+    "shoppingDecision.conditional": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Depends on your needs." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tùy nhu cầu của bạn." } }
+      }
+    },
+    "shoppingDecision.matchDifferent": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Different config" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Khác cấu hình" } }
+      }
+    },
+    "shoppingDecision.matchExact": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Matches what you asked for" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đúng cấu hình bạn cần" } }
+      }
+    },
+    "shoppingDecision.matchUnknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Config unclear" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa rõ cấu hình" } }
+      }
+    },
+    "shoppingDecision.noPrice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "price unknown" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "chưa rõ giá" } }
+      }
+    },
+    "shoppingDecision.optionsTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Your options" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Các lựa chọn phù hợp" } }
+      }
+    },
+    "shoppingDecision.otherOptions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Other options" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Lựa chọn khác" } }
+      }
+    },
+    "shoppingDecision.priceDong": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%@₫" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%@₫" } }
+      }
+    },
+    "shoppingDecision.priceMillions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%@M" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%@ triệu" } }
+      }
+    },
+    "shoppingDecision.recommended": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Best pick" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nên chọn" } }
+      }
+    },
+    "shoppingDecision.sellerCount": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d sellers" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d nơi bán" } }
+      }
+    },
+    "shoppingDecision.tradeOff": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Trade-off" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đánh đổi" } }
+      }
+    },
+    "shoppingDecision.unknownSeller": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Seller unknown" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Người bán chưa rõ" } }
+      }
+    },
+    "shoppingDecision.view": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "View" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xem" } }
+      }
+    },
     "account.editProfile": {
       "extractionState": "manual",
       "localizations": {

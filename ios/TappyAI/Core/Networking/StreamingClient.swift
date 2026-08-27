@@ -10,6 +10,9 @@ enum StreamFrame: Equatable, Sendable {
     case toolResult(Data)
     case stepEnd
     case done
+    /// ADR-024. The `X-Decision-Evidence-Id` response header, surfaced as a frame so the caller can
+    /// store it and echo it back next turn. It is a lookup KEY only — never the evidence facts.
+    case decisionEvidenceId(String)
     case unknown(prefix: String, payload: Data)
 }
 
@@ -73,6 +76,14 @@ final class URLSessionStreamingClient: StreamingClient {
                             if body.count > 64 * 1024 { break }
                         }
                         throw URLSessionAPIClient.mapHTTP(status: http.statusCode, data: body)
+                    }
+                    // ADR-024: surface the decision-evidence key BEFORE the body streams, so the
+                    // ViewModel has it stored by the time the next turn is sent. A header the server
+                    // does not set (non-shopping turns) simply yields no frame.
+                    if let http = response as? HTTPURLResponse,
+                       let evId = http.value(forHTTPHeaderField: "X-Decision-Evidence-Id"),
+                       !evId.isEmpty {
+                        continuation.yield(.decisionEvidenceId(evId))
                     }
                     for try await line in bytes.lines {
                         try Task.checkCancellation()

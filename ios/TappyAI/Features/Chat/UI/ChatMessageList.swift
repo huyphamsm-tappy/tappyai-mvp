@@ -59,6 +59,7 @@ struct ChatMessageList: View {
                                 status: msg.status,
                                 ctaButtons: parsed.ctaButtons,
                                 plan: parsed.plan,
+                                shopping: parsed.shopping,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
                                 isLastMessage: isLast,
                                 tts: tts,
@@ -163,6 +164,7 @@ private struct AssistantBubble: View {
     let status: MessageStatus
     let ctaButtons: [CTAButton]
     let plan: TappyPlan?
+    let shopping: ShoppingDecision?
     let followups: [String]
     let isLastMessage: Bool
     let tts: TTSManager
@@ -202,6 +204,11 @@ private struct AssistantBubble: View {
                 // Plan card
                 if let plan {
                     TripPlanCardView(plan: plan)
+                }
+
+                // Shopping decision card (from the [TAPPY_SHOPPING] marker)
+                if let shopping {
+                    ShoppingDecisionView(view: shopping)
                 }
 
                 // Full action bar (not streaming)

@@ -40,6 +40,11 @@ final class ChatViewModel: AppObservableObject {
     private let locationCoordinator = LocationCoordinator()
     private var cachedLocation: [String: Double]?
     private var streamTask: Task<Void, Never>?
+    /// ADR-024. The latest decision-evidence key for THIS conversation, echoed on the next turn so a
+    /// shopping follow-up is grounded in the frozen listing facts instead of the model's memory.
+    /// Instance-scoped = conversation-scoped: a new conversation gets a fresh view model and thus a
+    /// nil key, so it never inherits the previous conversation's evidence.
+    private var decisionEvidenceId: String?
     private var thinkTimer: AnyCancellable?
     private var autoSendTask: Task<Void, Never>?
     private let log = AppLogger.chat
@@ -338,7 +343,8 @@ final class ChatViewModel: AppObservableObject {
                 messages: payloads,
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
                 responseStyle: nil,
-                userLocation: self.cachedLocation
+                userLocation: self.cachedLocation,
+                decisionEvidenceId: self.decisionEvidenceId
             )
 
             do {
@@ -369,6 +375,11 @@ final class ChatViewModel: AppObservableObject {
 
                     case .stepEnd:
                         self.activeTool = nil
+
+                    case .decisionEvidenceId(let id):
+                        // Store the key for this conversation; the next turn echoes it back so the
+                        // follow-up is grounded (ADR-024). Never the evidence facts themselves.
+                        self.decisionEvidenceId = id
 
                     case .done:
                         break

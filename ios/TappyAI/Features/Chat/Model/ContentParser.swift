@@ -8,9 +8,34 @@ enum ContentParser {
         let (textAfterPlan, plan) = parsePlan(content)
         let (textAfterCta, buttons) = parseCTA(textAfterPlan)
         let (textAfterFollowups, followups) = parseFollowups(textAfterCta)
-        let images = extractImages(textAfterFollowups)
-        let text = stripImages(textAfterFollowups)
-        return ParsedContent(text: text, ctaButtons: buttons, plan: plan, followups: followups, images: images)
+        let (textAfterShopping, shopping) = parseShopping(textAfterFollowups)
+        let images = extractImages(textAfterShopping)
+        let text = stripImages(textAfterShopping)
+        return ParsedContent(text: text, ctaButtons: buttons, plan: plan, followups: followups, images: images, shopping: shopping)
+    }
+
+    // MARK: - Shopping decision
+
+    /// Extracts the `[TAPPY_SHOPPING]{json}[/TAPPY_SHOPPING]` block: returns the text WITHOUT the
+    /// marker (never a raw JSON leak) and the decoded decision (nil if absent / malformed / empty).
+    /// Exact port of Web's `parseShoppingMarker` — the app owns delivery; the model never writes it.
+    static func parseShopping(_ content: String) -> (text: String, shopping: ShoppingDecision?) {
+        guard let regex = try? NSRegularExpression(pattern: #"\[TAPPY_SHOPPING\]([\s\S]*?)\[/TAPPY_SHOPPING\]"#, options: .caseInsensitive) else {
+            return (content, nil)
+        }
+        let range = NSRange(content.startIndex..., in: content)
+        guard let m = regex.firstMatch(in: content, range: range),
+              let jsonRange = Range(m.range(at: 1), in: content) else {
+            return (content, nil)
+        }
+        let text = regex.stringByReplacingMatches(in: content, range: range, withTemplate: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let jsonStr = String(content[jsonRange]).trimmingCharacters(in: .whitespaces)
+        guard let data = jsonStr.data(using: .utf8),
+              let decision = try? JSONDecoder().decode(ShoppingDecision.self, from: data),
+              !decision.entities.isEmpty else {
+            return (text, nil)
+        }
+        return (text, decision)
     }
 
     // MARK: - CTA Buttons
