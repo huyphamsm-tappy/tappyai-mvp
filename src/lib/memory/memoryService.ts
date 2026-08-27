@@ -182,9 +182,22 @@ export function buildMemoryBlock(memory: UserMemory, forcedTool?: string | null)
   // is untrusted data on every later turn — but the surrounding line telling the
   // model what to do with it is ours, and wrapping trusted policy as untrusted
   // would be the inverse mistake (FENCE-02).
+  // 🚨 "Khong can hoi lai nhung gi da biet" used to end this block, and it is why a remembered
+  // product could quietly become the answer to a different question. Asked "minh muon mua may Mac
+  // Pro" by someone whose memory held a MacBook Pro 14 M1, the model had been told not to ask —
+  // so it searched the remembered machine instead of the one that was just named. Memory is
+  // CONTEXT; the message in front of you is the request. The wording below says both, and says
+  // what to do when they disagree, because "prefer the current message" alone still leaves an
+  // ambiguous message resolvable from memory.
   return `===== THONG TIN VE USER NAY =====
 ${fenceUntrusted('user_memory', parts.join('\n'))}
-Dung thong tin nay de ca nhan hoa response. Khong can hoi lai nhung gi da biet.
+Dung thong tin nay de ca nhan hoa response.
+QUAN TRONG: day chi la NGU CANH. Tin nhan hien tai cua user moi la yeu cau that.
+- Neu tin nhan hien tai noi ro thu khac voi thong tin tren: LAM THEO TIN NHAN HIEN TAI.
+- Neu tin nhan hien tai con mo ho va thong tin tren se dan den mot SAN PHAM/DIA DIEM/LOAI khac:
+  hoi lai mot cau ngan de xac nhan TRUOC KHI tim kiem. Vi du: "Ban dang muon MacBook Pro hay Mac
+  Pro desktop?"
+- Chi dung thong tin tren de bo sung chi tiet user khong nhac lai (vi tri, ngan sach, so thich).
 ==================================`
 }
 

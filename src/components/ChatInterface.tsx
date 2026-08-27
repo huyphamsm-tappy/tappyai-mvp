@@ -13,6 +13,8 @@ import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
+import ShoppingDecision from '@/components/chat/ShoppingDecision'
+import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -74,21 +76,83 @@ interface ChatInterfaceProps {
   onSave?: (messages: Array<{ role: string; content: string }>, title: string) => void | Promise<void>
 }
 
-function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
-  // Match with closing tag, or fall back to bare [CTA_BUTTONS]{...} at end of content
+const CTA_MARKER = '[CTA_BUTTONS]'
+
+/**
+ * Locates the `{…}` payload that follows `marker`, by matching braces.
+ *
+ * Brace matching rather than a regex because the block's POSITION is not fixed. The bare form
+ * used to be anchored to end-of-content (`\[CTA_BUTTONS\](\{[\s\S]*\})\s*$`), which is how the
+ * raw block reached users: the model emits `[FOLLOWUPS]` after the CTA block, and followups are
+ * parsed after this step, so something still trailed the block, the anchor failed, and nothing
+ * was stripped — leaving the JSON orphaned in the visible text once the followups line went.
+ *
+ * The obvious loosening (dropping the `$`) is worse, not better: `\{[\s\S]*\}` runs greedily to
+ * the LAST brace in the message and swallows trailing prose. Braces inside JSON strings are
+ * skipped, and `\"` is honoured, so a `}` in a label or URL cannot end the scan early.
+ */
+function findMarkerJson(content: string, marker: string): { start: number; end: number; json: string } | null {
+  const start = content.toLowerCase().indexOf(marker.toLowerCase())
+  if (start < 0) return null
+
+  let open = start + marker.length
+  while (open < content.length && /\s/.test(content[open])) open++
+  if (content[open] !== '{') return null
+
+  let depth = 0
+  let inString = false
+  let escaped = false
+  for (let i = open; i < content.length; i++) {
+    const c = content[i]
+    if (escaped) { escaped = false; continue }
+    if (inString) {
+      if (c === '\\') escaped = true
+      else if (c === '"') inString = false
+      continue
+    }
+    if (c === '"') inString = true
+    else if (c === '{') depth++
+    else if (c === '}' && --depth === 0) return { start, end: i + 1, json: content.slice(open, i + 1) }
+  }
+  return null // payload still arriving — braces do not balance yet
+}
+
+export function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
   const withTag = /\[CTA_BUTTONS\]([\s\S]*?)\[\/CTA_BUTTONS\]/i
-  const noTag   = /\[CTA_BUTTONS\](\{[\s\S]*\})\s*$/i
 
-  const ctaMatch = content.match(withTag) ?? content.match(noTag)
-  if (!ctaMatch) return { text: content, buttons: [] }
+  let text = content
+  let payload: string | null = null
 
-  const text = content
-    .replace(withTag, '')
-    .replace(noTag, '')
-    .trimEnd()
+  const tagged = text.match(withTag)
+  if (tagged) {
+    payload = tagged[1]
+    text = text.replace(withTag, '')
+  } else {
+    const span = findMarkerJson(text, CTA_MARKER)
+    if (span) {
+      payload = span.json
+      text = text.slice(0, span.start) + text.slice(span.end)
+    }
+  }
+
+  // Any further block is stripped without rendering: only the first has ever produced buttons,
+  // and a leftover second block would otherwise show as raw JSON.
+  for (let span = findMarkerJson(text, CTA_MARKER); span; span = findMarkerJson(text, CTA_MARKER)) {
+    text = text.slice(0, span.start) + text.slice(span.end)
+  }
+  // A marker whose payload has not finished arriving; then orphan tags; then the marker itself
+  // still being typed out character by character (`…[CTA_BU`), so none of it flickers mid-stream.
+  text = text
+    .replace(/\[CTA_BUTTONS\][\s\S]*$/i, '')
+    .replace(/\[\/?CTA_BUTTONS\]/gi, '')
+    .replace(/\[C(?:T(?:A(?:_(?:B(?:U(?:T(?:T(?:O(?:N(?:S)?)?)?)?)?)?)?)?)?)?$/i, '')
+
+  if (text === content) return { text: content, buttons: [] }
+  text = text.trimEnd()
+  if (payload === null) return { text, buttons: [] }
 
   try {
-    const parsed = JSON.parse(ctaMatch[1].trim())
+    const parsed = JSON.parse(payload.trim())
     const buttons: CTAButton[] = Array.isArray(parsed.buttons) ? parsed.buttons : []
     return { text, buttons }
   } catch {
@@ -96,7 +160,7 @@ function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
   }
 }
 
-function parsePlan(content: string): { text: string; plan: TappyPlan | null } {
+export function parsePlan(content: string): { text: string; plan: TappyPlan | null } {
   const planMatch = content.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/i)
   if (!planMatch) return { text: content, plan: null }
   const text = content.replace(/\[TAPPY_PLAN\][\s\S]*?\[\/TAPPY_PLAN\]/i, '').trimEnd()
@@ -112,7 +176,7 @@ function parsePlan(content: string): { text: string; plan: TappyPlan | null } {
 // Optional follow-up suggestions the model may emit at the very end.
 // Rendered as tappable chips (only on the latest reply) — a helpful next step,
 // never a push. MFS 2.7.
-function parseFollowups(content: string): { text: string; followups: string[] } {
+export function parseFollowups(content: string): { text: string; followups: string[] } {
   // The model is meant to emit a single-line [FOLLOWUPS]a|b|c[/FOLLOWUPS] block,
   // but it sometimes omits/malforms the closing tag (and stream enrichment appends
   // an image block after it). Bound extraction to the followups LINE so a missing
@@ -450,6 +514,28 @@ export function formatMessage(content: string) {
     .replace(/(?:<li>.*?<\/li>)+/g, (m) => `<ul class="list-disc pl-5 my-2 space-y-1">${m}</ul>`)
 }
 
+// When a shopping decision is rendered, the raw listing photos the stream filter
+// injected become a 9-image flood the decision replaces. Strip the image
+// markdown (never the order/platform LINKS — those have no `!`) and keep the
+// first image as the decision's representative hero. Only ever called for a
+// message that HAS a synthesis view, so place/food photo galleries are untouched.
+// Exported for test.
+export function stripProductImages(text: string): { text: string; firstImage: string | null } {
+  const re = /!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g
+  let firstImage: string | null = null
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text))) { if (!firstImage) firstImage = m[1] }
+  const stripped = text
+    // Drop the trailing app-injected media block ("📸 Hình ảnh & link review" /
+    // "📸 Images & review links") whole — header, listing names and links: the
+    // decision card presents the offers, so this raw list is pure duplication.
+    .replace(/\n*📸 _(?:Hình ảnh & link review|Images & review links):_[\s\S]*$/u, '')
+    // …and any inline product image markdown left in the prose.
+    .replace(/!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g, '')
+    .replace(/\n{3,}/g, '\n\n').trim()
+  return { text: stripped, firstImage }
+}
+
 // Smooth typewriter reveal for the streaming reply.
 // The server/network delivers tokens in big bursts (measured: a 398-char reply
 // arrived in just 3 chunks of 71/147/116 chars), which reads as text "jumping"
@@ -609,48 +695,62 @@ export default function ChatInterface({
     try { return JSON.parse(localStorage.getItem('tappy_response_style') || '{}') } catch { return {} }
   })
 
-  // Server-side consultative state id (Task 3D). The server mints it on the
-  // first reply and returns it as a header; every later turn sends it back so
-  // the accumulated constraints and grounded candidates are loaded instead of a
-  // fresh conversation being created per message. Held in state (not a ref) so
-  // the change re-renders and `useChat` picks it up: the SDK reads the static
-  // `body` option through `extraMetadataRef`, which it refreshes each render.
+  // ── ADR-024: the decision-evidence key ────────────────────────────────────
+  //
+  // The server mints a key on EVERY reply and returns it as a header; the next
+  // turn sends it back so the exact listing facts of the previous turn are
+  // reloaded server-side instead of remembered by the model. Held in state (not
+  // a ref) so the change re-renders and `useChat` picks it up: the SDK reads the
+  // static `body` option through `extraMetadataRef`, refreshed each render.
   // Added to `body` rather than via experimental_prepareRequestBody, because
   // that hook receives only the per-call body — using it would silently drop
   // userLocation / userPreferences / responseStyle from every request.
-  // NOTE: deliberately NOT named `conversationId` — that prop is the Supabase row
-  // id this chat is saved as. Different lifetime, different owner: that one
-  // survives across sessions and comes from our own save, this one is minted by
-  // /api/chat and expires in 24h.
+  //
+  // NOTE: deliberately NOT `conversationId` — that prop is the Supabase row id
+  // this chat is saved as. Different lifetime, different owner. Reusing it would
+  // key server state on a client-supplied row id.
+  //
+  // 🚨 LATEST id wins, not first. The server re-saves the evidence under each new
+  // turn's key, so the newest key is always the live one; keeping the first would
+  // pin the chat to a key whose row is pruned after three turns.
+  //
   // Survives ONE remount on purpose: after the first reply the page saves the
   // chat and `router.replace`s /chat -> /chat/{rowId}, which unmounts this
-  // component. Plain useState was reset by that, so turn 2 minted a second
-  // server conversation and the accumulated state was orphaned (observed live).
-  // Keyed by the history row id, falling back to the pre-save 'new' entry so the
-  // id carries across exactly that navigation.
-  // sessionStorage, and only the ID — never the state itself, which stays
-  // server-owned. The id is not a capability: `loadState` still refuses it
-  // unless the caller's owner scope matches.
-  const consultKey = `tappy_consult:${conversationId ?? 'new'}`
-  const [consultationId, setConsultationIdState] = useState<string | null>(() => {
-    if (typeof window === 'undefined') return null
+  // component. Plain useState was reset by that, so turn 2 arrived with no key
+  // and the evidence was orphaned. Keyed by the history row id, falling back to
+  // the pre-save 'new' entry so the key carries across exactly that navigation.
+  //
+  // sessionStorage, and only the KEY — never the facts, which stay server-owned.
+  // The key is not a capability: `decision_evidence_load()` refuses it unless the
+  // caller's auth.uid() owns the row.
+  //
+  // 🚨 The 'new' slot is shared, so adopting it unconditionally leaks evidence
+  // BETWEEN conversations: finish a chat about MacBooks, click "new chat", and
+  // the fresh conversation would present the MacBook chat's key and be handed
+  // its listing facts. A chat is a CONTINUATION only if it already has a row id
+  // or restored messages — the same predicate this component already uses to
+  // decide whether a chat is untouched. A genuinely fresh chat adopts nothing.
+  const consultKey = `tappy_evidence:${conversationId ?? 'new'}`
+  const isContinuation = !!conversationId || !!(savedMessages && savedMessages.length)
+  const [evidenceKey, setEvidenceKeyState] = useState<string | null>(() => {
+    if (typeof window === 'undefined' || !isContinuation) return null
     try {
-      return sessionStorage.getItem(consultKey) ?? sessionStorage.getItem('tappy_consult:new')
+      return sessionStorage.getItem(consultKey) ?? sessionStorage.getItem('tappy_evidence:new')
     } catch { return null }
   })
-  const setConsultationId = useCallback((id: string) => {
-    setConsultationIdState(prev => {
-      if (prev) return prev // first id wins for this chat
-      try { sessionStorage.setItem(consultKey, id); sessionStorage.setItem('tappy_consult:new', id) } catch { /* private mode */ }
+  const setEvidenceKey = useCallback((id: string) => {
+    setEvidenceKeyState(prev => {
+      if (prev === id) return prev
+      try { sessionStorage.setItem(consultKey, id); sessionStorage.setItem('tappy_evidence:new', id) } catch { /* private mode */ }
       return id
     })
   }, [consultKey])
 
   // A signed-out visitor has no identity, and the server (correctly) refuses to
-  // scope conversation state to nobody — so without this, server-side state is
-  // off for most web users. Mint on mount rather than on first send: the session
-  // has to exist BEFORE the first request, and awaiting it inside submit would
-  // put a network round-trip in front of the user's first message.
+  // scope evidence to nobody — so without this, grounded follow-ups would be off
+  // for most web users. Mint on mount rather than on first send: the session has
+  // to exist BEFORE the first request, and awaiting it inside submit would put a
+  // network round-trip in front of the user's first message.
   // Fail-open by design; see ensureAnonymousSession.
   useEffect(() => {
     void ensureAnonymousSession()
@@ -662,14 +762,12 @@ export default function ChatInterface({
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
       ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
-      ...(consultationId ? { conversationId: consultationId } : {}),
+      ...(evidenceKey ? { decisionEvidenceId: evidenceKey } : {}),
     },
     onResponse: (response) => {
-      // First id wins for the life of this chat — the server echoes the same id
-      // back on later turns, and overwriting on every response would be a no-op
-      // at best and a conversation split at worst.
-      const cid = response.headers.get('X-Conversation-Id')
-      if (cid) setConsultationId(cid)
+      // Latest key wins — see the note on setEvidenceKey.
+      const eid = response.headers.get('X-Decision-Evidence-Id')
+      if (eid) setEvidenceKey(eid)
     },
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
@@ -1176,16 +1274,29 @@ export default function ChatInterface({
               if (msg.role === 'assistant') {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
                 const { text: textAfterCta, buttons } = parseCTA(textAfterPlan)
-                const { text, followups } = parseFollowups(textAfterCta)
+                const { text: textAfterFollowups, followups } = parseFollowups(textAfterCta)
+                // Phase 9 — the shopping DECISION arrives as a persistent text
+                // marker (like [TAPPY_PLAN]), so it survives reload. Parse it out
+                // of the message content; the card renders from the parsed view.
+                const { text, view: shopView } = parseShoppingMarker(textAfterFollowups)
                 const isLastMessage = msgIdx === messages.length - 1
+                // Display body: while streaming use the smoothed text. Always strip
+                // the marker from what's shown; when this is a shopping decision,
+                // also strip the injected product-image flood (keeping the first as
+                // the hero) so the decision replaces the raw grid.
+                const rawBody = isLoading && isLastMessage ? parseShoppingMarker(smoothedLastText).text : text
+                const { text: bodyText, firstImage: heroImage } = shopView
+                  ? stripProductImages(rawBody)
+                  : { text: rawBody, firstImage: null }
                 return (
                   <div key={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
-                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(isLoading && isLastMessage ? smoothedLastText : text) }} />
+                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
                       </div>
                       {plan && <TripPlanCard plan={plan} />}
+                      {shopView && <ShoppingDecision view={shopView} heroImage={heroImage} />}
                       {/* Action bar (copy/share/like/dislike/TTS/regenerate) — only
                           once the reply is done, fading in for a polished finish. */}
                       {!(isLoading && isLastMessage) && (
@@ -1194,13 +1305,13 @@ export default function ChatInterface({
                             msgId={msg.id}
                             messageIndex={msgIdx}
                             conversationId={conversationId}
-                            text={text}
+                            text={bodyText}
                             isThisSpeaking={tts.speakingId === msg.id}
                             isPaused={tts.isPaused}
                             ttsElapsed={tts.elapsed}
                             ttsTotal={tts.totalSecs}
                             ttsSpeed={tts.speed}
-                            onSpeak={() => tts.speak(msg.id, text)}
+                            onSpeak={() => tts.speak(msg.id, bodyText)}
                             onTTSPause={tts.togglePause}
                             onTTSSkipBack={tts.skipBack}
                             onTTSSkipForward={tts.skipForward}

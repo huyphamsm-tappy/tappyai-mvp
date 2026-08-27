@@ -91,6 +91,31 @@ const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
 /** Weaker domain hints — set the domain but never the subject, and never reset. */
 const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
   [/\ban gi\b|\bdo an\b|\ban ngon\b|\bmon an\b/, 'places'],
+  // 🚨 DISH NAMES — measured gap, 2026-08-27. `SUBJECTS` covers the venue nouns
+  // ("quan an", "nha hang", "cafe") but NOT the dish, and the most common
+  // Vietnamese food query names the DISH, not the venue: "tìm quán hủ tiếu Phú
+  // Nhuận", "quán phở ngon Hà Nội", "bún bò Huế quận 1". All of those resolved
+  // to `domain: null`, and null domain silently disabled two things that matter:
+  //
+  //   1. `isDecisionDomain` (route.ts) — which gates `buildRankingInstructionBlock()`,
+  //      the block that tells the model "the system already picked, you only
+  //      explain". Without it the model receives `_tappy_ranking` data with no
+  //      instruction for what it means, and does what an unguided model does:
+  //      lists the options. This is the "AI trả lời như liệt kê" report.
+  //   2. `taskSwitched()` — which guards `if (before.domain === null) return false`,
+  //      so a food → hotel switch was structurally undetectable.
+  //
+  // Precision over recall, per this file's stated policy: only multi-syllable
+  // dish names that cannot collide with another domain. A false positive here
+  // sets `places`, and every listed term is a place-seeking query anyway, so
+  // the failure mode is benign. Single ambiguous syllables ("lau" = lẩu/lau
+  // nhà, "che" = chè/che giấu, "oc" = ốc) are deliberately EXCLUDED.
+  // `pho` is included bare despite the "phở"/"phố" homograph after normalization.
+  // It is safe on both counts: SUBJECTS is matched FIRST (so "mua điện thoại ở
+  // phố Huế" resolves to shopping before this line is reached), and DOMAIN_HINTS
+  // only fires when no domain is set at all. A genuine "phố cổ Hà Nội" false
+  // positive resolves to `places`, which is the correct domain for it anyway.
+  [/\b(hu tieu|pho|bun bo|bun cha|bun rieu|bun dau|bun thit nuong|com tam|com ga|com nieu|banh mi|banh xeo|banh cuon|banh canh|mi quang|hai san|chao long|goi cuon|ga ran|tra sua|nem nuong|bo kho|ca kho|thit nuong|lau nuong|do nuong)\b/, 'places'],
 ]
 
 /**

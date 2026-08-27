@@ -297,21 +297,56 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
 //   3. Serper image search — last resort
 // All three are live-only and never persisted (Maps Platform + Serper terms).
 // Any single source failing is skipped; the caller gets whatever was found.
+/**
+ * One step of the photo fallback chain, timed. Diagnostic only — nothing reads
+ * these to decide anything, and emitting them cannot change what is fetched.
+ */
+export interface PhotoStepTiming {
+  step: 'website' | 'places_detail' | 'places_media' | 'serper'
+  ms: number
+  /** The step produced at least one usable URL. */
+  hit: boolean
+  /** The step ended on its own timeout/abort rather than on a result. */
+  timedOut: boolean
+}
+
 export async function resolvePlacePhotos(
   place: { place_id?: string; name?: string; website_uri?: string },
   max = 3,
+  /**
+   * Per-step timing sink (Phase 2 instrumentation).
+   *
+   * The enrichment tail measured 1,490 ms median on production and this chain is
+   * its only network work, but the chain is four conditional steps with four
+   * different timeouts (1,800 / 2,500 / 3,000 / 4,000 ms) — so "the tail is slow"
+   * says nothing about WHICH step to look at. Passing a sink is the only way to
+   * see that from outside without changing what runs.
+   *
+   * Deliberately a callback, not a return value: the return type is the photo
+   * list every caller already depends on, and timing must not ride on it.
+   */
+  onStep?: (t: PhotoStepTiming) => void,
 ): Promise<string[]> {
   const collected: string[] = []
   const addUnique = (url: string | null | undefined) => {
     if (url && !collected.includes(url)) collected.push(url)
   }
+  // Marks a step without altering it: same call, same order, same result. `hit`
+  // is measured as "did `collected` grow", so it reports what the step actually
+  // contributed rather than whether it merely returned.
+  const mark = (step: PhotoStepTiming['step'], startedAt: number, before: number, timedOut = false) =>
+    onStep?.({ step, ms: Date.now() - startedAt, hit: collected.length > before, timedOut })
 
   if (place.website_uri) {
+    const t = Date.now(); const before = collected.length
     addUnique(await fetchOfficialWebsiteImage(place.website_uri))
+    mark('website', t, before)
   }
 
   const key = process.env.GOOGLE_PLACES_API_KEY
   if (collected.length < max && key && place.place_id) {
+    const tDetail = Date.now(); const beforeDetail = collected.length
+    let detailTimedOut = false
     try {
       const detailResp = await Promise.race([
         fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=photos&key=${key}`),
@@ -319,15 +354,29 @@ export async function resolvePlacePhotos(
       ])
       const detail = await (detailResp as Response).json()
       const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
-      if (photoRef) addUnique(await fetchPlacePhoto(place.place_id, photoRef))
-    } catch { /* skip on timeout or error, fall through to Serper */ }
+      mark('places_detail', tDetail, beforeDetail)
+      if (photoRef) {
+        const tMedia = Date.now(); const beforeMedia = collected.length
+        addUnique(await fetchPlacePhoto(place.place_id, photoRef))
+        mark('places_media', tMedia, beforeMedia)
+      }
+    } catch (e) {
+      // Unchanged behaviour: skip on timeout or error, fall through to Serper.
+      // The mark is emitted from the catch too, because a step that BURNED its
+      // timeout is exactly the one worth seeing — reporting only the successes
+      // would hide the slowest case there is.
+      detailTimedOut = e instanceof Error && e.message === 'timeout'
+      mark('places_detail', tDetail, beforeDetail, detailTimedOut)
+    }
   }
 
   if (collected.length < max && place.name) {
+    const t = Date.now(); const before = collected.length
     const serperPhotos = await fetchPlacePhotosByName(
       place.place_id || place.name, place.name, max - collected.length,
     )
     serperPhotos.forEach(addUnique)
+    mark('serper', t, before)
   }
 
   return collected.slice(0, max)

@@ -5,8 +5,10 @@ import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
 import { attributeTikTok } from '@/lib/links/tiktokAttribution'
 import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
+import { reviewActionsForPlace } from '@/lib/ai/consultative/reviewAction'
 import { messages, isVi } from '@/lib/ai/messages'
 import { newsCacheKey, placesCacheKey } from './cacheKeys'
+import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
 
 export async function getNews(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
@@ -321,6 +323,10 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         if (priceResults && priceResults.length > 0) {
           extra.price_search_results = priceResults
           extra.price_note = messages.places.priceNote(lang)
+          // A5.1: grade the evidence WITH the data. Snippet prices are search-text
+          // (REVIEW-level), never a structured/authoritative price — the model reads
+          // this and must qualify accordingly (evidence policy block), never FACT.
+          extra.price_evidence = { evidence_type: classifyEvidence('search_snippet'), source_type: 'search_snippet' }
         }
         if (isFood) {
           const directOrder = (orderResults || []).filter(r => isDirectFoodOrderLink(r.link))
@@ -342,6 +348,20 @@ export async function searchPlaces(query: string, location?: string, type?: stri
             if (tiktok.batch) extra.tiktok_discovery_url = tiktok.batch
             extra.results = places.map((place) => {
               const own = tiktok.perPlace.get((place.name as string) || '')
+              const tiktokFields = own
+                ? { tiktok_review_url: own, has_tiktok_review: true }
+                : { has_tiktok_review: false }
+              // Phase A A11 — structural review/social action data. The LLM
+              // reads `review_actions` and references URLs; it never invents.
+              // Priority order enforced in `reviewActionsForPlace`.
+              const reviewActions = reviewActionsForPlace({
+                name: place.name as string || '',
+                place_id: place.place_id as string | undefined,
+                maps_link: place.maps_link as string | undefined,
+                website_uri: place.website_uri as string | undefined,
+                tiktok_review_url: tiktokFields.has_tiktok_review ? (own as string) : undefined,
+                has_tiktok_review: tiktokFields.has_tiktok_review,
+              })
               return {
                 ...place,
                 order_links: buildFoodOrderLinks(
@@ -349,9 +369,8 @@ export async function searchPlaces(query: string, location?: string, type?: stri
                   place.address as string | undefined,
                   location
                 ),
-                ...(own
-                  ? { tiktok_review_url: own, has_tiktok_review: true }
-                  : { has_tiktok_review: false }),
+                ...tiktokFields,
+                review_actions: reviewActions,
               }
             })
           }
@@ -364,7 +383,13 @@ export async function searchPlaces(query: string, location?: string, type?: stri
                 place.name as string || '',
                 place.website_uri as string | undefined,
                 place.maps_link as string | undefined
-              )
+              ),
+              review_actions: reviewActionsForPlace({
+                name: place.name as string || '',
+                place_id: place.place_id as string | undefined,
+                maps_link: place.maps_link as string | undefined,
+                website_uri: place.website_uri as string | undefined,
+              }),
             }))
           }
         } else if (isEntertainment) {
@@ -376,7 +401,13 @@ export async function searchPlaces(query: string, location?: string, type?: stri
                 place.name as string || '',
                 place.website_uri as string | undefined,
                 place.maps_link as string | undefined
-              )
+              ),
+              review_actions: reviewActionsForPlace({
+                name: place.name as string || '',
+                place_id: place.place_id as string | undefined,
+                maps_link: place.maps_link as string | undefined,
+                website_uri: place.website_uri as string | undefined,
+              }),
             }))
           }
         }
