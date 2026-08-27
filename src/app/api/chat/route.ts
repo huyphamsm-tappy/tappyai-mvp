@@ -22,7 +22,8 @@ import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative
 import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
-import { shortlistShopping } from '@/lib/ai/consultative/shortlist'
+import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
+import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest, hasImplicitPurchaseIntent } from '@/lib/ai/consultative/pick'
 import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructionBlock } from '@/lib/ai/consultative/synthesis'
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
@@ -488,7 +489,43 @@ export async function POST(req: Request) {
     if (candidates.length < 2) return { result, pick: null }
 
     const ranked = rankCandidates(candidates, needProfile)
+
+    // Phase A A8 — relaxation proposal. When the hard filter removed EVERY
+    // candidate, expose a structured proposal on the tool result so the
+    // synthesizer can render it. The engine never silently relaxes — the
+    // caller (user) confirms, then a subsequent turn re-runs the pipeline.
+    if (ranked.ranked.length === 0 && ranked.filtered.length > 0) {
+      const proposal = proposeRelaxation(ranked, needProfile)
+      if (proposal.triggered) {
+        (result as Record<string, unknown>)._tappy_relaxation = {
+          options: proposal.options.map(o => ({
+            axis: o.axis,
+            detail: o.detail,
+            new_value: o.newValue,
+            admits_count: o.admits.length,
+          })),
+        }
+      }
+    }
+
     if (!ranked.rankable) return { result, pick: null }
+
+    // Phase A A5 — Rule-of-1–3 shortlist metadata. Does NOT trim the underlying
+    // `results` array (that stays whole per the existing "places are left
+    // whole" contract just below). Emits `_tappy_shortlist` so the model can
+    // reference the 1–3 top-of-decision entries + their role. Never
+    // manufactures a third slot; dedupes on canonical id.
+    if (toolName === 'search_places' || toolName === 'get_hotel_prices') {
+      const sl = shortlistCandidates(ranked.ranked, 3)
+      if (sl.selected.length > 0) {
+        (result as Record<string, unknown>)._tappy_shortlist = sl.selected.map((s, idx) => ({
+          rank: idx,
+          id: s.entry.candidate.id,
+          name: s.entry.candidate.name,
+          role: s.role,
+        }))
+      }
+    }
 
     // ADR-024: the rows that survive the shortlist, as CANDIDATES. The evidence
     // builder needs `attrs` and `raw` per listing, and the array below holds raw
