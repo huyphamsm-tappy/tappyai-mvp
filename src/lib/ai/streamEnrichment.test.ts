@@ -622,3 +622,41 @@ describe('applyPlaceEnrichmentStreamFilter — shopping decision marker', () => 
     expect(full).not.toContain('TAPPY_SHOPPING')
   })
 })
+
+// Food identity flow regression: the collector holds enrichment carved by
+// splitToolResult (order_links / photos when present), and the `a:` frame the
+// model sees carries the Google Places identity (place_id, website_uri). Both
+// paths must land on the same object so resolvePlaces() delivers a record the
+// late photo resolver (resolvePlacePhotos in tools/common) can use for the
+// identity-driven photo path. The old merge gated on hasPhoto() and would
+// silently drop identity in the real post-B7-A case where the collector holds
+// order_links but no photo.
+describe('applyPlaceEnrichmentStreamFilter — Food identity flow (place_id / website_uri)', () => {
+  const line0 = (s: string) => '0:' + JSON.stringify(s)
+
+  it('identity from the `a:` frame merges onto the collector entry (post-B7-A Food shape)', async () => {
+    const collector = createEnrichmentCollector()
+    collector.add([{
+      name: 'Example Cafe',
+      order_links: [{ name: 'ShopeeFood', url: 'https://shopeefood.vn/x' }],
+    }])
+    let seen: { places?: Array<{ name?: string; place_id?: string; website_uri?: string }> } | undefined
+    const filtered = applyPlaceEnrichmentStreamFilter(
+      new Response([
+        '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+        'a:{"toolCallId":"t1","result":{"results":[{"name":"Example Cafe","place_id":"google-place-id","website_uri":"https://example.com"}]}}',
+        line0('**Example Cafe** ngon.'),
+        'd:{"finishReason":"stop"}',
+      ].join('\n') + '\n'),
+      'vi',
+      collector,
+      undefined,
+      async (evidence) => { seen = evidence as typeof seen },
+    )
+    await new Response(filtered.body).text()
+    expect(seen?.places).toBeDefined()
+    const cafe = seen!.places!.find(p => p.name === 'Example Cafe')
+    expect(cafe?.place_id).toBe('google-place-id')
+    expect(cafe?.website_uri).toBe('https://example.com')
+  })
+})
