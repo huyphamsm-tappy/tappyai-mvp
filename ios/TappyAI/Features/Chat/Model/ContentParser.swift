@@ -21,14 +21,16 @@ enum ContentParser {
     /// Exact port of Web's `parseShoppingMarker` — the app owns delivery; the model never writes it.
     static func parseShopping(_ content: String) -> (text: String, shopping: ShoppingDecision?) {
         guard let regex = try? NSRegularExpression(pattern: #"\[TAPPY_SHOPPING\]([\s\S]*?)\[/TAPPY_SHOPPING\]"#, options: .caseInsensitive) else {
-            return (content, nil)
+            return (stripShoppingRemnants(content), nil)
         }
         let range = NSRange(content.startIndex..., in: content)
         guard let m = regex.firstMatch(in: content, range: range),
               let jsonRange = Range(m.range(at: 1), in: content) else {
-            return (content, nil)
+            // No closed pair. This is the mid-stream frame: the opening marker has arrived and the
+            // payload has not. Strip rather than draw raw JSON.
+            return (stripShoppingRemnants(content), nil)
         }
-        let text = regex.stringByReplacingMatches(in: content, range: range, withTemplate: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let text = stripShoppingRemnants(regex.stringByReplacingMatches(in: content, range: range, withTemplate: ""))
         let jsonStr = String(content[jsonRange]).trimmingCharacters(in: .whitespaces)
         guard let data = jsonStr.data(using: .utf8),
               let decision = try? JSONDecoder().decode(ShoppingDecision.self, from: data),
@@ -38,30 +40,62 @@ enum ContentParser {
         return (text, decision)
     }
 
+    /// Removes what the closed-pair match cannot: a marker whose payload is still arriving, and any
+    /// orphan half-tag.
+    ///
+    /// `ChatMessageList` re-parses on every render, INCLUDING mid-stream, so the frame before the
+    /// closing tag lands carries `[TAPPY_SHOPPING]{"v":1,"entit…`. Without this it is drawn as raw
+    /// JSON for as long as the rest takes to arrive — the leak Android shipped and fixed in vc10.
+    /// Web does the same thing by treating a missing close tag as "strip to end of content".
+    private static func stripShoppingRemnants(_ content: String) -> String {
+        // No marker token at all ⇒ return the string untouched, so the trim below cannot silently
+        // reshape whitespace on every ordinary reply. The bare token (no brackets) is checked so an
+        // opening marker, a lone closing tag and a half-typed one all qualify.
+        guard content.range(of: "TAPPY_SHOPPING", options: .caseInsensitive) != nil else { return content }
+        var out = content
+        if let partial = try? NSRegularExpression(pattern: #"\[TAPPY_SHOPPING\][\s\S]*$"#, options: .caseInsensitive) {
+            out = partial.stringByReplacingMatches(in: out, range: NSRange(out.startIndex..., in: out), withTemplate: "")
+        }
+        if let orphan = try? NSRegularExpression(pattern: #"\[/?TAPPY_SHOPPING\]"#, options: .caseInsensitive) {
+            out = orphan.stringByReplacingMatches(in: out, range: NSRange(out.startIndex..., in: out), withTemplate: "")
+        }
+        return out.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     // MARK: - CTA Buttons
 
     static func parseCTA(_ content: String) -> (text: String, buttons: [CTAButton]) {
-        // Match [CTA_BUTTONS]...[/CTA_BUTTONS] or bare [CTA_BUTTONS]{...} at end
+        // [CTA_BUTTONS]…[/CTA_BUTTONS] first; otherwise the bare [CTA_BUTTONS]{…} form.
+        //
+        // The bare form used to be anchored to end-of-content (`…\}\s*$`). The model emits
+        // [FOLLOWUPS] AFTER the CTA block and followups are parsed after this step, so something
+        // still trailed the block, the anchor failed, nothing was stripped — and once the followups
+        // line went, the CTA JSON was left sitting in the visible text. Found in a live Web reply
+        // and fixed there in #197; iOS carried the identical pattern.
+        //
+        // Dropping the `$` would be worse: `\{[\s\S]*\}` runs greedily to the LAST brace in the
+        // message and swallows trailing prose. The payload is located by matching braces instead,
+        // so its position stops mattering.
         let withTag = try? NSRegularExpression(pattern: #"\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]"#, options: .caseInsensitive)
-        let noTag = try? NSRegularExpression(pattern: #"\[CTA_BUTTONS\](\{[\s\S]*\})\s*$"#, options: .caseInsensitive)
-
         let range = NSRange(content.startIndex..., in: content)
-        var match: NSTextCheckingResult?
-        var regex: NSRegularExpression?
 
-        if let r = withTag, let m = r.firstMatch(in: content, range: range) {
-            match = m; regex = r
-        } else if let r = noTag, let m = r.firstMatch(in: content, range: range) {
-            match = m; regex = r
+        var text: String
+        let jsonStr: String
+
+        if let r = withTag, let m = r.firstMatch(in: content, range: range),
+           let jsonRange = Range(m.range(at: 1), in: content) {
+            text = r.stringByReplacingMatches(in: content, range: range, withTemplate: "")
+            jsonStr = String(content[jsonRange]).trimmingCharacters(in: .whitespaces)
+        } else if let span = markerJSONSpan(content, marker: "[CTA_BUTTONS]") {
+            text = content.replacingCharacters(in: span.full, with: "")
+            jsonStr = String(content[span.json])
+        } else {
+            // No decodable block. Anything marker-shaped left over is still stripped below so a
+            // half-arrived payload or an orphan tag can never be drawn.
+            return (stripCTARemnants(content), [])
         }
 
-        guard let m = match, let r = regex,
-              let jsonRange = Range(m.range(at: 1), in: content) else {
-            return (content, [])
-        }
-
-        let text = r.stringByReplacingMatches(in: content, range: range, withTemplate: "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let jsonStr = String(content[jsonRange]).trimmingCharacters(in: .whitespaces)
+        text = stripCTARemnants(text).trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard let data = jsonStr.data(using: .utf8),
               let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -78,6 +112,66 @@ enum ContentParser {
         }
 
         return (text, buttons)
+    }
+
+    /// Locates `marker` followed by a JSON object, by matching braces.
+    ///
+    /// Returns the range covering marker+payload (to remove) and the payload's own range (to
+    /// decode), or nil when the marker is absent or its braces never balance — which is what a
+    /// still-arriving payload looks like.
+    ///
+    /// Braces inside JSON strings are skipped and `\"` is honoured, so a `}` in a label or a
+    /// URL-encoded `%7B` cannot end the scan early.
+    private static func markerJSONSpan(
+        _ content: String,
+        marker: String
+    ) -> (full: Range<String.Index>, json: Range<String.Index>)? {
+        guard let markerRange = content.range(of: marker, options: .caseInsensitive) else { return nil }
+
+        var i = markerRange.upperBound
+        while i < content.endIndex, content[i].isWhitespace { i = content.index(after: i) }
+        guard i < content.endIndex, content[i] == "{" else { return nil }
+        let jsonStart = i
+
+        var depth = 0
+        var inString = false
+        var escaped = false
+        while i < content.endIndex {
+            let c = content[i]
+            if escaped {
+                escaped = false
+            } else if inString {
+                if c == "\\" { escaped = true } else if c == "\"" { inString = false }
+            } else if c == "\"" {
+                inString = true
+            } else if c == "{" {
+                depth += 1
+            } else if c == "}" {
+                depth -= 1
+                if depth == 0 {
+                    let after = content.index(after: i)
+                    return (markerRange.lowerBound..<after, jsonStart..<after)
+                }
+            }
+            i = content.index(after: i)
+        }
+        return nil
+    }
+
+    /// Strips a CTA payload whose braces never balanced (still streaming) and any orphan tag, so
+    /// neither is ever drawn. Mirrors the safety net FOLLOWUPS already has.
+    private static func stripCTARemnants(_ content: String) -> String {
+        // No marker token ⇒ untouched. The trim below must not silently reshape whitespace on every
+        // ordinary reply; callers that matched a block trim for themselves, as they always did.
+        guard content.range(of: "CTA_BUTTONS", options: .caseInsensitive) != nil else { return content }
+        var out = content
+        if let partial = try? NSRegularExpression(pattern: #"\[CTA_BUTTONS\][\s\S]*$"#, options: .caseInsensitive) {
+            out = partial.stringByReplacingMatches(in: out, range: NSRange(out.startIndex..., in: out), withTemplate: "")
+        }
+        if let orphan = try? NSRegularExpression(pattern: #"\[/?CTA_BUTTONS\]"#, options: .caseInsensitive) {
+            out = orphan.stringByReplacingMatches(in: out, range: NSRange(out.startIndex..., in: out), withTemplate: "")
+        }
+        return out.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     // MARK: - Trip Plan
