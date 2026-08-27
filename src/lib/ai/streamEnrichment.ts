@@ -666,6 +666,14 @@ export function applyPlaceEnrichmentStreamFilter(
   travelIntent = false,
   /** The user's own message this turn — numbers in it are never redacted. */
   userText = '',
+  /**
+   * A5 P0. True when this turn is about places (food/spa/venues), whether or not it retrieves
+   * anything. Like `travelIntent` it forces buffering, so the fail-closed price guard sees the
+   * complete prose even when the model answered from memory with NO tool call — which is exactly
+   * how a fabricated menu price reached production on 5708211 ("Thường ... khoảng 30.000 -
+   * 50.000đ/tô" on a follow-up that searched nothing).
+   */
+  placeIntent = false,
 ): Response {
   const body = response.body
   if (!body) return response
@@ -691,6 +699,12 @@ export function applyPlaceEnrichmentStreamFilter(
   // redact a fabricated fare BEFORE any byte reaches the client — even when the
   // model answered from memory with no tool call at all.
   if (travelIntent) bufferMode = true
+  // Same reasoning, same shape, for food/spa: a place turn that runs no tool would otherwise
+  // stream straight through, and a price already sent cannot be redacted. A turn that DOES search
+  // already buffers (a PLACE_TOOLS `9:` frame sets it below), so this only adds buffering to the
+  // no-retrieval turns — short conversational replies, where the cost is small and the exposure
+  // is highest.
+  if (placeIntent) bufferMode = true
   /** True once the shopping decision has gone out early, so it is not sent twice. */
   let earlyShoppingMarkerSent = false
   /**
@@ -894,7 +908,13 @@ export function applyPlaceEnrichmentStreamFilter(
     // number in no snippet is fabricated and removed. Snippet-traceable prices
     // survive (framed as reference by the prompt, never FACT). Only search_places
     // turns that aren't already travel-guarded; shopping keeps its own money guard.
-    const foodGuarded = (hadPlaceSearch && !travelIntent)
+    //
+    // A5 P0 FIX: `|| placeIntent`. `hadPlaceSearch` is per-turn, so a follow-up answered from
+    // context left the guard inert and a reconstructed price sailed through. A place turn is now
+    // guarded whether or not it retrieved anything — with no snippets collected, `snippetPrices`
+    // is empty and EVERY stated price is unsupported, which is the fail-closed direction travel
+    // already takes. No evidence is carried between turns.
+    const foodGuarded = ((hadPlaceSearch || placeIntent) && !travelIntent)
       ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText).text
       : travelGuarded
     // Last point before the bytes leave the server: drop any provider tool-use

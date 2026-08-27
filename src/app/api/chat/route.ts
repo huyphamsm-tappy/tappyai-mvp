@@ -1135,7 +1135,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }))
     photoTotalMs = Date.now() - photoStart
     return byName
-  }, undefined, undefined, travelIntent, lastText)
+    // A5 P0: a places turn (food/spa/venue) buffers and runs the fail-closed price guard even when
+    // it retrieves nothing this turn — "Giá bao nhiêu?" after a restaurant recommendation used to
+    // skip the boundary entirely and state a price reconstructed from general knowledge.
+    // `needProfile.domain` is already derived above and is task-scoped, so a follow-up that carries
+    // no place word of its own is still recognised; nothing new is persisted.
+  }, undefined, undefined, travelIntent, lastText, needProfile.domain === 'places')
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse
