@@ -244,7 +244,11 @@ describe('what WAS taken from D3 is still here', () => {
 
     const builder = readFileSync('src/lib/ai/promptBuilder.ts', 'utf8')
     expect(builder).toContain("vi: 'Vietnamese'")
-    expect(builder).toContain('18b) REVIEW TIKTOK')
+    // Rule 18b's title was renamed from "REVIEW TIKTOK" to "REVIEW & SOCIAL LINK" in
+    // Round 2 wiring, when the pipeline started supplying a structured `review_actions`
+    // array on each place. The rule itself still shipped after D3 forked — anchor on
+    // the shared prefix ("18b) REVIEW") so the wholesale-merge guard survives the rename.
+    expect(builder).toMatch(/^18b\) REVIEW/m)
 
     const common = readFileSync('src/lib/ai/tools/common.ts', 'utf8')
     expect(common).toContain('MIN_PLAUSIBLE_PRICE_VND')
