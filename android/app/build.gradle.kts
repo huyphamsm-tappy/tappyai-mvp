@@ -239,8 +239,12 @@ android {
         // message, and persisted text is raw by contract (the web saves `m.content` verbatim and
         // re-parses at render). Reproduced on vc11 against a real stored payload. A shipped
         // versionCode is never reused even when the prior was never uploaded.
-        versionCode = 12
-        versionName = "0.1.7"
+        // 🚨 13, not 12 — vc12 (0.1.7) is SPENT: built, signed and installed on the SM-A127F, and
+        // the live production Shopping verification it was built for found a THIRD marker leak on
+        // it — a real reply rendered the raw `[CTA_BUTTONS]{…}` JSON as text, because the bare-form
+        // CTA regex was anchored to end-of-content and the model emits `[FOLLOWUPS]` after it.
+        versionCode = 13
+        versionName = "0.1.8"
 
         vectorDrawables {
             useSupportLibrary = true

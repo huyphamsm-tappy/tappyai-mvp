@@ -166,7 +166,11 @@ object ChatResponseParser {
     // crashed the app in ChatResponseParser.<clinit> on the first AI reply. Keep them escaped.
     private val PLAN_RE = Regex("""\[TAPPY_PLAN\]([\s\S]*?)\[/TAPPY_PLAN\]""", RegexOption.IGNORE_CASE)
     private val CTA_TAG_RE = Regex("""\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]""", RegexOption.IGNORE_CASE)
-    private val CTA_NOTAG_RE = Regex("""\[CTA_BUTTONS\](\{[\s\S]*\})\s*$""", RegexOption.IGNORE_CASE)
+    private const val CTA_MARKER = "[CTA_BUTTONS]"
+    // Used only when the payload's braces do not balance (a block still streaming in).
+    private val CTA_PARTIAL_RE = Regex("""\[CTA_BUTTONS\][\s\S]*$""", RegexOption.IGNORE_CASE)
+    private val CTA_STRIP_RE = Regex("""\[/?CTA_BUTTONS\]""", RegexOption.IGNORE_CASE)
+    private val PLAN_STRIP_RE = Regex("""\[/?TAPPY_PLAN\]""", RegexOption.IGNORE_CASE)
     private val FOLLOWUPS_RE = Regex("""\[FOLLOWUPS\]([^\n]*?)(?:\[/FOLLOWUPS\]|\n|$)""", RegexOption.IGNORE_CASE)
     private val FOLLOWUPS_STRIP_RE = Regex("""\[/?FOLLOWUPS\]""", RegexOption.IGNORE_CASE)
     // Shopping decision. Three regexes, applied in this order, mirroring the web
@@ -210,15 +214,37 @@ object ChatResponseParser {
         }
         if (planMatch != null) text = PLAN_RE.replace(text, "").trimEnd()
 
-        // 2. CTA buttons (closing tag, or a bare block at end of content).
-        val ctaMatch = CTA_TAG_RE.find(text) ?: CTA_NOTAG_RE.find(text)
-        val buttons = ctaMatch?.let {
-            runCatching { json.decodeFromString<CtaEnvelope>(it.groupValues[1].trim()).buttons }.getOrNull()
-        } ?: emptyList()
-        if (ctaMatch != null) {
-            text = CTA_TAG_RE.replace(text, "")
-            text = CTA_NOTAG_RE.replace(text, "").trimEnd()
+        // 2. CTA buttons — closing tag first, then the bare `[CTA_BUTTONS]{…}` form.
+        //
+        // The bare form used to be anchored to the end of the content (`…\}\s*$`), which is how the
+        // raw block leaked into a production reply: the model emits `[FOLLOWUPS]` after it, and
+        // followups are parsed further down, so at THIS point something still followed the block,
+        // the anchor failed and nothing was stripped. Removing the followups line later then left
+        // the CTA JSON orphaned in the visible text.
+        //
+        // The bare form is now located by brace matching instead, so its position does not matter.
+        // A simple un-anchored regex would not do: `\{[\s\S]*\}` runs greedily to the LAST brace in
+        // the message and would swallow trailing prose.
+        val ctaTagMatch = CTA_TAG_RE.find(text)
+        var ctaBody: String? = ctaTagMatch?.groupValues?.get(1)
+        if (ctaTagMatch != null) {
+            text = CTA_TAG_RE.replace(text, "").trimEnd()
+        } else {
+            val span = findMarkerJson(text, CTA_MARKER)
+            if (span != null) {
+                ctaBody = span.second
+                text = (text.substring(0, span.first.first) + text.substring(span.first.last + 1))
+                    .trimEnd()
+            } else {
+                // Braces do not balance: the block is still streaming in, so nothing after it can
+                // be content yet. Strip to the end rather than show a half-arrived payload — the
+                // same rule the shopping marker follows.
+                text = CTA_PARTIAL_RE.replace(text, "").trimEnd()
+            }
         }
+        val buttons = ctaBody?.let {
+            runCatching { json.decodeFromString<CtaEnvelope>(it.trim()).buttons }.getOrNull()
+        } ?: emptyList()
 
         // 2b. Shopping decision card. Runs before followups for the same reason plan runs before
         // CTA: each step strips its own block so a later regex cannot match inside it. Only the
@@ -243,8 +269,13 @@ object ChatResponseParser {
             ?: emptyList()
         if (fuMatch != null) text = FOLLOWUPS_RE.replace(text, "")
 
-        // Safety net: strip any orphan markers so implementation details never show.
-        text = FOLLOWUPS_STRIP_RE.replace(text, "").trim()
+        // Safety net: strip any orphan markers so implementation details never show. CTA and PLAN
+        // tags are included because a bare `[CTA_BUTTONS]` with no payload at all reaches this far
+        // — findMarkerJson needs a `{` to work with, and the partial pass needs the marker to be
+        // followed by something.
+        text = FOLLOWUPS_STRIP_RE.replace(text, "")
+        text = CTA_STRIP_RE.replace(text, "")
+        text = PLAN_STRIP_RE.replace(text, "").trim()
 
         // 4. Positional segmentation — each run of image lines becomes an inline gallery at its
         // position (web formatMessage), and the clean text keeps its pre-segments shape for
@@ -258,6 +289,43 @@ object ChatResponseParser {
             segments = segment(text),
             shopping = shopping,
         )
+    }
+
+    /**
+     * Finds [marker] followed by a JSON object, returning the range covering marker+payload and the
+     * payload itself, or null when the marker is absent or its braces do not balance.
+     *
+     * Brace matching rather than a regex, because the payload's position is not fixed: anchoring to
+     * end-of-content is what let a real reply leak (`[FOLLOWUPS]` follows the CTA block), and an
+     * un-anchored `\{[\s\S]*\}` would run greedily to the last brace in the message and swallow
+     * trailing prose. Braces inside JSON strings are skipped, so a `}` in a URL or label cannot end
+     * the scan early.
+     */
+    private fun findMarkerJson(text: String, marker: String): Pair<IntRange, String>? {
+        val start = text.indexOf(marker, ignoreCase = true)
+        if (start < 0) return null
+        var open = start + marker.length
+        while (open < text.length && text[open].isWhitespace()) open++
+        if (open >= text.length || text[open] != '{') return null
+
+        var depth = 0
+        var inString = false
+        var escaped = false
+        for (i in open until text.length) {
+            val c = text[i]
+            when {
+                escaped -> escaped = false
+                inString && c == '\\' -> escaped = true
+                c == '"' -> inString = !inString
+                inString -> Unit
+                c == '{' -> depth++
+                c == '}' -> {
+                    depth--
+                    if (depth == 0) return (start..i) to text.substring(open, i + 1)
+                }
+            }
+        }
+        return null
     }
 
     /**
