@@ -534,6 +534,7 @@ class ChatViewModel @Inject constructor(
                         text = parsed.text,
                         plan = parsed.plan,
                         ctaButtons = parsed.ctaButtons,
+                        shopping = parsed.shopping,
                         segments = parsed.segments,
                         followups = followups,
                     )

@@ -68,6 +68,60 @@ data class CtaButton(
 @Serializable
 private data class CtaEnvelope(val buttons: List<CtaButton> = emptyList())
 
+// ── Shopping decision (server marker `[TAPPY_SHOPPING]{…}`) ──────────────────
+//
+// Mirrors the server's `SynthesisView` (src/lib/ai/consultative/synthesisView.ts) and the iOS
+// `ShoppingDecision` on the parity branch. Field names match the wire exactly — the payload is
+// camelCase, so no @SerialName mapping is needed here (unlike TappyPlan, whose wire is snake_case).
+//
+// 🚨 EVERY field is nullable-with-default ON PURPOSE. The server writes `null` explicitly for a
+// value it does not know ("KHONG CO DU LIEU" is modelled as JSON null, never as a fabricated 0 or
+// ""), and the decision contract requires the client to show that honestly rather than invent one.
+// A non-nullable field would also throw on an explicit null and silently drop the whole card.
+@Serializable
+data class ShoppingOffer(
+    val seller: String? = null,
+    val url: String? = null,
+    val price: Double? = null,
+    val currency: String? = null,
+    val condition: String? = null,
+)
+
+/** How this configuration compares to what the user asked for: khop | khac | chua_ro. */
+@Serializable
+data class ShoppingEntity(
+    val key: String = "",
+    val config: String = "",
+    val matchesRequest: String? = null,
+    val recommended: Boolean? = null,
+    val priceLow: Double? = null,
+    val priceHigh: Double? = null,
+    val image: String? = null,
+    val offers: List<ShoppingOffer> = emptyList(),
+)
+
+@Serializable
+data class ShoppingReason(
+    val attribute: String = "",
+    val evidence: String = "",
+)
+
+@Serializable
+data class ShoppingRecommendation(
+    val entityKey: String? = null,
+    val seller: String? = null,
+    val reasons: List<ShoppingReason> = emptyList(),
+    val tradeOff: ShoppingReason? = null,
+    val conditional: Boolean? = null,
+)
+
+@Serializable
+data class ShoppingDecision(
+    val v: Int = 1,
+    val entities: List<ShoppingEntity> = emptyList(),
+    val recommendation: ShoppingRecommendation? = null,
+)
+
 /**
  * One positional piece of an assistant reply: markdown text, or a run of consecutive place photos
  * that renders as an inline gallery exactly where it appeared in the reply. Mirrors the web's
@@ -95,6 +149,7 @@ data class ParsedAssistantReply(
     val ctaButtons: List<CtaButton>,
     val followups: List<String>,
     val segments: List<ReplySegment>,
+    val shopping: ShoppingDecision? = null,
 )
 
 /**
@@ -114,6 +169,27 @@ object ChatResponseParser {
     private val CTA_NOTAG_RE = Regex("""\[CTA_BUTTONS\](\{[\s\S]*\})\s*$""", RegexOption.IGNORE_CASE)
     private val FOLLOWUPS_RE = Regex("""\[FOLLOWUPS\]([^\n]*?)(?:\[/FOLLOWUPS\]|\n|$)""", RegexOption.IGNORE_CASE)
     private val FOLLOWUPS_STRIP_RE = Regex("""\[/?FOLLOWUPS\]""", RegexOption.IGNORE_CASE)
+    // Shopping decision. Three regexes, applied in this order, mirroring the web
+    // `parseShoppingMarker` (synthesisView.ts) which also handles the unclosed case:
+    //   1. complete pair — the normal, fully-arrived marker;
+    //   2. UNCLOSED open marker to end of text — the streaming snapshot. The web computes
+    //      `end = content.length` when the close tag is absent; without this the half-arrived
+    //      `[TAPPY_SHOPPING]{"v":1,"entit…` renders as raw JSON for the seconds it takes the rest
+    //      of the payload to stream in. That partial leak is exactly the P0 this fixes, so it is
+    //      stripped rather than shown;
+    //   3. orphan half-tags — the same safety net FOLLOWUPS_STRIP_RE provides.
+    private val SHOPPING_RE = Regex("""\[TAPPY_SHOPPING\]([\s\S]*?)\[/TAPPY_SHOPPING\]""", RegexOption.IGNORE_CASE)
+    private val SHOPPING_PARTIAL_RE = Regex("""\[TAPPY_SHOPPING\][\s\S]*$""", RegexOption.IGNORE_CASE)
+    private val SHOPPING_STRIP_RE = Regex("""\[/?TAPPY_SHOPPING\]""", RegexOption.IGNORE_CASE)
+
+    /**
+     * Shopping payloads carry explicit JSON `null` for every unknown value, so this decoder adds
+     * `coerceInputValues` — without it an explicit null lands on a defaulted field and throws,
+     * which would drop the whole card. Deliberately a SEPARATE instance: adding the flag to the
+     * shared [json] above would change how the plan and CTA blocks decode, which is out of scope
+     * for this fix.
+     */
+    private val shoppingJson = Json { ignoreUnknownKeys = true; isLenient = true; coerceInputValues = true }
     // Markdown image `![alt](url)` — TappyMarkdown drops images, so they render via segments
     // (mirrors the web formatMessage grouping place photos into a horizontal strip).
     private val IMAGE_RE = Regex("""!\[[^\]]*\]\((https?://[^\s)]+)\)""")
@@ -144,6 +220,22 @@ object ChatResponseParser {
             text = CTA_NOTAG_RE.replace(text, "").trimEnd()
         }
 
+        // 2b. Shopping decision card. Runs before followups for the same reason plan runs before
+        // CTA: each step strips its own block so a later regex cannot match inside it. Only the
+        // FIRST marker is decoded — a reply carrying two would otherwise render two cards for one
+        // decision; the rest are stripped as text by the partial/orphan passes below.
+        val shopMatch = SHOPPING_RE.find(text)
+        val shopping = shopMatch?.let {
+            runCatching { shoppingJson.decodeFromString<ShoppingDecision>(it.groupValues[1].trim()) }
+                .getOrNull()
+                ?.takeIf { d -> d.entities.isNotEmpty() }
+        }
+        if (shopMatch != null) text = SHOPPING_RE.replace(text, "").trimEnd()
+        // An unclosed marker still streaming in, then any orphan half-tag. Both strip to text so
+        // no raw JSON is ever displayed, matching the always-strip rule the plan/CTA blocks follow.
+        text = SHOPPING_PARTIAL_RE.replace(text, "").trimEnd()
+        text = SHOPPING_STRIP_RE.replace(text, "").trimEnd()
+
         // 3. Follow-up suggestion chips.
         val fuMatch = FOLLOWUPS_RE.find(text)
         val followups = fuMatch?.groupValues?.get(1)
@@ -164,6 +256,7 @@ object ChatResponseParser {
             ctaButtons = buttons,
             followups = followups,
             segments = segment(text),
+            shopping = shopping,
         )
     }
 

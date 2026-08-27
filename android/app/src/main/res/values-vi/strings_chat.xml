@@ -122,4 +122,16 @@
     <!-- Đọc to. Hai tình huống khác nhau: một cái bảo đừng thử nữa, một cái bảo thử lại. -->
     <string name="chat_tts_language_unsupported">Câu trả lời này ở ngôn ngữ Tappy chưa đọc được. Bạn vẫn xem được nội dung bên trên.</string>
     <string name="chat_tts_language_failed">Chưa đọc được câu trả lời. Bạn thử lại giúp mình nhé.</string>
+    <!-- Thẻ quyết định mua sắm (marker `[TAPPY_SHOPPING]` từ server). Chỗ nào server gửi null thì
+         hiển thị "Chưa rõ" — hợp đồng quyết định cấm bịa giá trị. -->
+    <string name="chat_shopping_recommended">Nên chọn</string>
+    <string name="chat_shopping_why">Vì sao chọn</string>
+    <string name="chat_shopping_tradeoff">Đánh đổi</string>
+    <string name="chat_shopping_other_options">Lựa chọn khác</string>
+    <string name="chat_shopping_view">Xem</string>
+    <string name="chat_shopping_unknown">Chưa rõ</string>
+    <string name="chat_shopping_match_khop">Khớp yêu cầu</string>
+    <string name="chat_shopping_match_khac">Cấu hình khác</string>
+    <string name="chat_shopping_match_chua_ro">Chưa rõ cấu hình</string>
+    <string name="chat_shopping_conditional">Sát nút — tuỳ ưu tiên của bạn</string>
 </resources>

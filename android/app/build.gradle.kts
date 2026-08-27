@@ -224,8 +224,13 @@ android {
         // (decodeSampledBitmap bailed on every gallery image because the null-guard sat on the
         // bounds-only decode, which returns null by design). A shipped versionCode is never reused
         // even if the prior one was never actually uploaded — Play rejects a reused code outright.
-        versionCode = 9
-        versionName = "0.1.4"
+        // 10, not 9 — vc9 (0.1.4) is SPENT: that AAB was built, signed, installed on the
+        // Samsung SM-A127F and physically UAT'd as the V2 release candidate. This build adds the
+        // `[TAPPY_SHOPPING]` parser that vc9 lacked — without it a Shopping question rendered the
+        // raw server marker JSON into the chat (production P0). A shipped versionCode is never
+        // reused even when the prior one was never uploaded — Play rejects a reused code outright.
+        versionCode = 10
+        versionName = "0.1.5"
 
         vectorDrawables {
             useSupportLibrary = true

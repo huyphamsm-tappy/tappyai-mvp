@@ -239,6 +239,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                 }
                             }
                             message.plan?.let { plan -> TripPlanCard(plan) }
+                            message.shopping?.let { decision -> ShoppingDecisionCard(decision) }
                             if (!isResponding && !message.isError) {
                                 Box(modifier = Modifier.fadeIn()) {
                                     MessageActionBar(

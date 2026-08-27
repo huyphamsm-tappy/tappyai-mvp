@@ -123,4 +123,16 @@
     <!-- Read aloud. Two distinct outcomes: one says do not bother, the other says try again. -->
     <string name="chat_tts_language_unsupported">This reply is in a language Tappy can\'t read aloud yet. You can still read it above.</string>
     <string name="chat_tts_language_failed">Couldn\'t read that answer aloud. Please try again.</string>
+    <!-- Shopping decision card (server `[TAPPY_SHOPPING]` marker). "Unknown" is shown verbatim
+         wherever the server sent null: the decision contract forbids inventing a value. -->
+    <string name="chat_shopping_recommended">Recommended</string>
+    <string name="chat_shopping_why">Why this one</string>
+    <string name="chat_shopping_tradeoff">Trade-off</string>
+    <string name="chat_shopping_other_options">Other options</string>
+    <string name="chat_shopping_view">View</string>
+    <string name="chat_shopping_unknown">Not stated</string>
+    <string name="chat_shopping_match_khop">Matches your request</string>
+    <string name="chat_shopping_match_khac">Different config</string>
+    <string name="chat_shopping_match_chua_ro">Config unclear</string>
+    <string name="chat_shopping_conditional">Close call — depends on your priority</string>
 </resources>
