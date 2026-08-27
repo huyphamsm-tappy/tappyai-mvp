@@ -2,6 +2,7 @@ import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
+import { guardTravelClaimsInText } from './travelGuard'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
@@ -655,6 +656,15 @@ export function applyPlaceEnrichmentStreamFilter(
    * live frames in the same turn de-duplicate rather than double up.
    */
   seed?: TurnEvidence,
+  /**
+   * P0 travel guard. When the turn is travel-intent, it ALWAYS buffers and any
+   * dynamic travel fact (fare/price/schedule/availability) not backed by live
+   * fetched evidence is redacted before a byte reaches the client — the
+   * fail-closed boundary for the flight/hotel price hallucination.
+   */
+  travelIntent = false,
+  /** The user's own message this turn — numbers in it are never redacted. */
+  userText = '',
 ): Response {
   const body = response.body
   if (!body) return response
@@ -668,6 +678,13 @@ export function applyPlaceEnrichmentStreamFilter(
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
   let bufferMode = false
+  /** Live VND fares fetched by get_flight_prices this turn. Empty ⇒ every travel
+   *  price the model states is unverifiable and gets redacted by the travel guard. */
+  const travelFares: number[] = []
+  // Travel-intent turns ALWAYS buffer, so the fail-closed guard can inspect and
+  // redact a fabricated fare BEFORE any byte reaches the client — even when the
+  // model answered from memory with no tool call at all.
+  if (travelIntent) bufferMode = true
   /** True once the shopping decision has gone out early, so it is not sent twice. */
   let earlyShoppingMarkerSent = false
   /**
@@ -858,6 +875,14 @@ export function applyPlaceEnrichmentStreamFilter(
     const specGuarded = specRecords.length > 0
       ? guardSpecClaimsInText(guarded.text, specRecords).text
       : guarded.text
+    // P0 FAIL-CLOSED TRAVEL GUARD. On a travel-intent turn, redact any fare/price/
+    // schedule/availability the model asserted that no live fetched evidence backs
+    // (empty travelFares ⇒ all of them). Only travel turns are touched, so shopping/
+    // food/etc. are unaffected. Runs after the shopping guards so it reads prose
+    // whose shopping prices are already settled.
+    const travelGuarded = travelIntent
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText).text
+      : specGuarded
     // Last point before the bytes leave the server: drop any provider tool-use
     // tags that leaked into the prose, so no client has to defend against them
     // (and so the end-anchored CTA fallback still matches).
@@ -866,7 +891,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
-    const scaffoldStripped = stripModelScaffolding(specGuarded)
+    const scaffoldStripped = stripModelScaffolding(travelGuarded)
     /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *
@@ -1018,6 +1043,16 @@ export function applyPlaceEnrichmentStreamFilter(
                 for (const r of structured) {
                   if (r?.title) specRecords.push({ name: r.title, weightKg: r.weightKg, batteryHours: r.batteryHours })
                 }
+              }
+            }
+            // P0 travel guard evidence: the ONLY live, structured travel price we
+            // have. get_flight_prices returns `flights[].price_vnd` on success and
+            // no price at all on error/missing-token, so an empty travelFares means
+            // "no live fare" and the guard redacts every fare the model states.
+            if (toolName === 'get_flight_prices') {
+              const flights = (res.result as { flights?: Array<{ price_vnd?: number }> } | undefined)?.flights
+              if (Array.isArray(flights)) {
+                for (const f of flights) if (typeof f?.price_vnd === 'number') travelFares.push(f.price_vnd)
               }
             }
             if (toolName === 'get_hotel_prices' || toolName === 'search_products') {

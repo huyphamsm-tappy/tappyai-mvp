@@ -157,3 +157,22 @@ describe('buildSystem — cache-stable split', () => {
     expect(shared.length).toBeGreaterThan(dynamic.length * 10)
   })
 })
+
+describe('P0 — travel dynamic-fact rules are in the shared rulebook', () => {
+  const shared = buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false).shared
+
+  it('the "do not answer from memory" rule now names flights and hotels', () => {
+    expect(shared).toMatch(/chuyen bay\/gia ve may bay/)
+    expect(shared).toMatch(/khach san\/gia phong/)
+  })
+
+  it('has the fail-closed DU LIEU DU LICH DONG rule', () => {
+    expect(shared).toMatch(/DU LIEU DU LICH DONG/)
+    expect(shared).toMatch(/TUYET DOI KHONG uoc luong/)
+    expect(shared).toMatch(/CHI la link hanh dong, KHONG phai bang chung ve gia/)
+  })
+
+  it('Rule 13 no longer authorizes stating snippet hotel prices as fact', () => {
+    expect(shared).toMatch(/CHUA duoc xac thuc/)
+  })
+})

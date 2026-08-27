@@ -234,6 +234,24 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
   return null
 }
 
+/**
+ * Is this a TRAVEL turn (flight / hotel / route / trip)? — the trigger for the
+ * fail-closed travel guard (P0). Deliberately BROADER than detectForcedTool's
+ * per-tool patterns: it must catch a bare route like "đi từ HCM đi Nha Trang"
+ * that names no tool keyword, because that is exactly the phrasing that led the
+ * model to invent a fare. Over-detecting is SAFE — the guard only ever removes an
+ * UNGROUNDED dynamic fact, so a non-travel turn with no fabricated price is
+ * untouched; the only cost of a false positive is that the turn buffers.
+ */
+export function detectTravelIntent(text: string): boolean {
+  const t = normalizeVN(text.toLowerCase().trim())
+  if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|\bmay bay\b|vietjet|bamboo|pacific airlines|vietnam airlines|gia phong|gia ve|khach san|resort|dat phong|homestay|nha nghi|du lich|flight|airfare|\bhotel\b|xe khach|tau hoa|tau lua|duong sat|ve xe|ve tau|di chuyen (tu|den|toi)/.test(t)) return true
+  // A route: "(đi) từ X đi/đến/tới/ra/sang Y", or English "from X to Y".
+  if (/\btu\b .+ \b(di|den|toi|ra|sang|ve)\b .+/.test(t)) return true
+  if (/\bfrom\b .+ \bto\b .+/.test(t)) return true
+  return false
+}
+
 // ── Where in a decision is the user? (C2) ────────────────────────────────────
 //
 // The existing signals answer "which tool?". This one answers "which STAGE?" —
