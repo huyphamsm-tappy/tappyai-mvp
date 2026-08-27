@@ -30,7 +30,11 @@ enum ContentParser {
             // payload has not. Strip rather than draw raw JSON.
             return (stripShoppingRemnants(content), nil)
         }
+        // Trimmed explicitly: once both tags are gone `stripShoppingRemnants` finds no token and
+        // returns its input untouched, so without this the function would stop trimming on the
+        // success path — which it has always done.
         let text = stripShoppingRemnants(regex.stringByReplacingMatches(in: content, range: range, withTemplate: ""))
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         let jsonStr = String(content[jsonRange]).trimmingCharacters(in: .whitespaces)
         guard let data = jsonStr.data(using: .utf8),
               let decision = try? JSONDecoder().decode(ShoppingDecision.self, from: data),
