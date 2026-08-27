@@ -227,13 +227,9 @@ class ChatViewModel @Inject constructor(
             viewModelScope.launch {
                 when (val result = chatHistoryRepository.getConversationMessages(id)) {
                     is NetworkResult.Success -> {
-                        _messages.value = result.data.map { stored ->
-                            ChatMessage(
-                                id = nextId++,
-                                role = if (stored.role == "user") TappyChatRole.User else TappyChatRole.Assistant,
-                                text = stored.content,
-                            )
-                        }
+                        val restored = restoredMessages(result.data, nextId)
+                        nextId += restored.size
+                        _messages.value = restored
                     }
                     is NetworkResult.Error -> {
                         // Resume is best-effort: an id that fails to load (deleted, network error)

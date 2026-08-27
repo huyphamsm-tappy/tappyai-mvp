@@ -233,8 +233,14 @@ android {
         // SM-A127F. This build adds the nested-inline markdown fix, without which a bolded link
         // (`**[Hotel](url)**`, the shape rule R13 asks the model to write) rendered as raw
         // markdown. A shipped versionCode is never reused even when the prior was never uploaded.
-        versionCode = 11
-        versionName = "0.1.6"
+        // 🚨 12, not 11 — vc11 (0.1.6) is SPENT: that AAB was built, signed and installed on the
+        // SM-A127F. This build fixes the SECOND path the `[TAPPY_SHOPPING]` marker leaked through:
+        // resuming a conversation from Chat history assigned the persisted text straight to the
+        // message, and persisted text is raw by contract (the web saves `m.content` verbatim and
+        // re-parses at render). Reproduced on vc11 against a real stored payload. A shipped
+        // versionCode is never reused even when the prior was never uploaded.
+        versionCode = 12
+        versionName = "0.1.7"
 
         vectorDrawables {
             useSupportLibrary = true
