@@ -24,6 +24,7 @@ import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } f
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
+import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest, hasImplicitPurchaseIntent } from '@/lib/ai/consultative/pick'
 import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructionBlock } from '@/lib/ai/consultative/synthesis'
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
@@ -163,6 +164,35 @@ export async function POST(req: Request) {
   // actually changed — "nâng ngân sách lên 35 triệu" is a refinement because a
   // budget moved, not because it contains a keyword. See consultative/refinement.ts.
   const decisionStage = resolveDecisionStage(messages)
+
+  // Phase A A2 — Turn Intent Gate. `assistantAskedClarification` heuristic
+  // reads the LAST assistant message: if it ends with "?" or the recognisable
+  // clarifying pattern ("bạn muốn X hay Y?" / "which do you prefer?"), the
+  // current user turn is a clarification response. The gate is a soft signal
+  // consumed by the synthesizer/route side-effects (see turnIntent below).
+  const lastAssistantText = (() => {
+    const priorAssistants = messages.filter((m: { role: string; content: unknown }) => m.role === 'assistant')
+    const last = priorAssistants[priorAssistants.length - 1]
+    if (!last) return ''
+    const c = last.content
+    if (typeof c === 'string') return c
+    if (Array.isArray(c)) {
+      return c.map((p: unknown) => {
+        if (p && typeof p === 'object' && (p as { type?: string }).type === 'text') return (p as { text?: string }).text ?? ''
+        return ''
+      }).join(' ')
+    }
+    return ''
+  })()
+  const assistantAskedClarification = /[?？]\s*$/.test(lastAssistantText.trim())
+    || /(bạn muốn|ban muon|ưu tiên|uu tien|would you prefer|which one|what.{0,20}prefer|hay là|hay la).{0,80}[?？]/i.test(lastAssistantText)
+  const turnIntent = classifyTurnIntent({
+    stage: decisionStage,
+    hasPriorAssistantTurn,
+    taskSwitched: false, // task-switch detection lives inside resolveDecisionStage's veto; leave conservative here
+    assistantAskedClarification,
+  })
+  console.log(JSON.stringify({ type: 'tappyai_intent_gate', turnIntent, decisionStage, hasPriorAssistantTurn, assistantAskedClarification }))
 
   // Load user memory + kiểm tra freemium limit. Quota values + measurement live
   // in @/lib/config/product — the single owner of every business value.
