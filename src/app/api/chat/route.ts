@@ -19,7 +19,7 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
-import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
+import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
@@ -186,10 +186,22 @@ export async function POST(req: Request) {
   })()
   const assistantAskedClarification = /[?？]\s*$/.test(lastAssistantText.trim())
     || /(bạn muốn|ban muon|ưu tiên|uu tien|would you prefer|which one|what.{0,20}prefer|hay là|hay la).{0,80}[?？]/i.test(lastAssistantText)
+  // 🚨 `taskSwitched` was hardcoded false in the first wiring pass because the
+  // detector appeared inert. The A.5 audit found WHY it was inert: it guards on
+  // `domain === null`, and `deriveNeedProfile` had no dish-name lexicon, so every
+  // "tìm quán hủ tiếu / phở / bún bò" resolved to a null domain and the guard
+  // short-circuited. With the lexicon fixed (needProfile DOMAIN_HINTS) the
+  // detector works, so the real value is read here — a food → hotel switch is a
+  // new consultation, not a follow-up to the meal.
   const turnIntent = classifyTurnIntent({
     stage: decisionStage,
     hasPriorAssistantTurn,
-    taskSwitched: false, // task-switch detection lives inside resolveDecisionStage's veto; leave conservative here
+    // Called with default opts, exactly like `resolveDecisionStage(messages)` above:
+    // `taskSwitched` compares only the DOMAIN before/after, and neither
+    // storedPreferences (cuisine/dietary/budget) nor gps (location) participates
+    // in domain detection. Passing them would also cross a temporal dead zone —
+    // `storedPrefs` is not assigned until the memory load further down.
+    taskSwitched: taskSwitched(messages),
     assistantAskedClarification,
   })
   console.log(JSON.stringify({ type: 'tappyai_intent_gate', turnIntent, decisionStage, hasPriorAssistantTurn, assistantAskedClarification }))
