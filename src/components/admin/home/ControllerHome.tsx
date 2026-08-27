@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { CommandHeader } from './CommandHeader'
 import { PlatformHealth, type HealthStatus } from './PlatformHealth'
@@ -37,35 +36,32 @@ export function ControllerHome({ data }: { data: ControllerHomeData }) {
     <div className="space-y-6 max-w-[1400px]">
       <CommandHeader data={data} />
 
-      {/* Health + AI insight — shown in every mode */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <PlatformHealth appStatus={health} platform={data.platform} />
-        <div
-          className="lg:col-span-2 rounded-admin-md border border-border bg-card p-5 flex items-center gap-4"
-          style={{ boxShadow: 'inset 3px 0 0 0 #007AFF' }}
-        >
-          <Image src="/branding/otter-logo.png" alt="" width={56} height={56} className="shrink-0 rounded-full" aria-hidden />
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#FF9500' }}>
-              {t('admin.home.ai.title')}
-            </div>
-            <p className="mt-1 text-sm text-foreground">{insight}</p>
-          </div>
-        </div>
-      </div>
+      {/* PLATFORM STATE — "is the thing I operate healthy right now". Shown in
+          every mode, including `none`: an actor with no workspace can still be
+          told the platform is up. The AI read-out is now this section's footer
+          rather than a card of its own; see PlatformHealth's `note` prop. */}
+      <PlatformHealth appStatus={health} platform={data.platform} note={insight} />
 
       {data.mode === 'none' ? (
         <NoWorkspace />
       ) : (
         <>
-          {/* Module 01 business KPIs from daily_snapshots (pre-computed) */}
+          {/* PRIMARY WORKSPACE — Module 01 business KPIs from daily_snapshots
+              (pre-computed). Real numbers rank above structure. */}
           <BusinessKpis kpis={data.kpis} />
 
-          {/* Performance signals (PDP-gated; null → restricted) */}
-          <PlatformSignals signals={data.signals} platform={data.platform} />
-
-          {/* Enterprise overview (owner: 15) / department workspace (member: own) */}
+          {/* ORGANIZATION — enterprise overview (owner: 15) / department
+              workspace (member: own). Display-only, by Owner Decision D11. */}
           <DepartmentGrid departments={data.departments} mode={data.mode} />
+
+          {/* CAPABILITY — what the Controller currently exposes: registry
+              counts plus honest not-connected slots.
+
+              🔑 ORDER CHANGED (V2.1): this used to sit ABOVE the department
+              grid. Organization before capability is the command-center
+              reading order — who the enterprise is, then what the tooling
+              currently covers. Nothing about the data changed. */}
+          <PlatformSignals signals={data.signals} platform={data.platform} />
 
           {/* Attention + actions */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

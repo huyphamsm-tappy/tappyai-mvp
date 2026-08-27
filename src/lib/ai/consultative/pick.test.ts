@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { derivePick, buildPickBlock, buildPickPayload, buildRankingInstructionBlock, PICK_MARGIN } from './pick'
+import { derivePick, buildPickBlock, buildPickPayload, buildRankingInstructionBlock, PICK_MARGIN, hasImplicitPurchaseIntent } from './pick'
 import { rankCandidates, type Candidate } from './rank'
 import { deriveNeedProfile, type NeedProfile } from './needProfile'
 import { buildSystem } from '../promptBuilder'
@@ -280,5 +280,118 @@ describe('the Pick block tells the model to EXPLAIN, not to re-decide', () => {
     const need = profile({ priorities: [prio('distance')], avoid: ['non-vegetarian'] })
     const p = derivePick(rankCandidates(DECISIVE, need), need)!
     expect(buildPickBlock(p)).toMatch(/UNVERIFIED|chua xac nhan/i)
+  })
+})
+
+// ── PICK-08 — implicit purchase intent widens the Pick gate (2026-08-27) ────
+//
+// Owner-measured on production: bare purchase intents like "muốn mua ốp lưng cho iphone 17
+// promax" produced NO Pick because the user stated no priority / must-have / budget, so
+// `hasDecidableNeed` returned false. The reply degraded into a listing with a clarifying
+// question ("bạn ưu tiên gì? — giá / chất lượng / Magsafe?") — the exact receptionist
+// behaviour a paid consultative product exists to prevent.
+//
+// Fix: the ACT of asking to buy / find / eat / go IS the priority when no explicit one
+// is given. Ranker default (rating × review count) provides the grounded reason. Every
+// downstream grounding guard is unchanged: still needs ≥2 candidates, still needs a
+// grounded reason, still yields null on ties or unrankable input.
+describe('PICK-08 — implicit purchase intent enables a Pick without stated criteria', () => {
+  it('detects Vietnamese purchase intents ("muốn mua …")', () => {
+    expect(hasImplicitPurchaseIntent('muốn mua ốp lưng cho iphone 17 promax')).toBe(true)
+    expect(hasImplicitPurchaseIntent('mua tai nghe không dây dưới 3 triệu')).toBe(true)
+    expect(hasImplicitPurchaseIntent('em muốn mua laptop cho sinh viên')).toBe(true)
+  })
+
+  it('detects Vietnamese find / eat / travel intents ("tìm …", "kiếm …")', () => {
+    expect(hasImplicitPurchaseIntent('tìm quán phở ngon ở Hà Nội')).toBe(true)
+    expect(hasImplicitPurchaseIntent('kiếm chỗ nghỉ dưỡng Đà Lạt 2 đêm')).toBe(true)
+    expect(hasImplicitPurchaseIntent('gợi ý mua đồng hồ nam')).toBe(true)
+  })
+
+  it('detects English purchase intents', () => {
+    expect(hasImplicitPurchaseIntent('i want to buy wireless earbuds')).toBe(true)
+    expect(hasImplicitPurchaseIntent('looking for a good phone case')).toBe(true)
+    expect(hasImplicitPurchaseIntent('where can i find fresh sushi')).toBe(true)
+  })
+
+  it('does NOT match the mere presence of a noun (no verb)', () => {
+    expect(hasImplicitPurchaseIntent('iPhone 17 ProMax rất đẹp')).toBe(false)
+    expect(hasImplicitPurchaseIntent('phở ngon quá')).toBe(false)
+    expect(hasImplicitPurchaseIntent('the earbuds are nice')).toBe(false)
+  })
+
+  it('does NOT match a reported decision (past-tense "mình đã mua")', () => {
+    expect(hasImplicitPurchaseIntent('mình đã mua xong rồi')).toBe(false)
+    expect(hasImplicitPurchaseIntent('vừa mua hôm qua')).toBe(false)
+    expect(hasImplicitPurchaseIntent('đã ăn ở đó rồi')).toBe(false)
+  })
+
+  it('handles empty / null gracefully', () => {
+    expect(hasImplicitPurchaseIntent(null)).toBe(false)
+    expect(hasImplicitPurchaseIntent(undefined)).toBe(false)
+    expect(hasImplicitPurchaseIntent('')).toBe(false)
+    expect(hasImplicitPurchaseIntent('   ')).toBe(false)
+  })
+
+  // Round-2 owner-reported: the assistant asked "bạn muốn loại nào?" and the user
+  // answered "ốp nhựa cứng (bảo vệ tốt, giá trung bình) hàng chính hãng nha" — a
+  // refinement turn with a noun + qualifiers, no bare verb. The Round-1 regex did
+  // NOT catch this and the model then asked ANOTHER clarification ("hãng nào?").
+  it('Round-2 regression: catches "op nhua cung hang chinh hang" (refinement noun-first pattern)', () => {
+    expect(hasImplicitPurchaseIntent('ốp nhựa cứng (bảo vệ tốt, giá trung bình) hàng chính hãng nha')).toBe(true)
+    expect(hasImplicitPurchaseIntent('ốp lưng silicone chống sốc cho iphone')).toBe(true)
+    expect(hasImplicitPurchaseIntent('tai nghe chống sốc chính hãng')).toBe(true)
+  })
+
+  it('Round-2: bare "hàng chính hãng" / "chính hãng" is an intent signal on its own', () => {
+    // Round-2 refinement pattern — the user's SECOND turn narrows to "chính hãng"
+    // without repeating "muốn mua". This is a decidable narrowing, not a clarification.
+    expect(hasImplicitPurchaseIntent('hàng chính hãng nha')).toBe(true)
+    expect(hasImplicitPurchaseIntent('chính hãng thôi')).toBe(true)
+    expect(hasImplicitPurchaseIntent('hàng xách tay cũng được')).toBe(true)
+  })
+
+  it('Round-2: English equivalents "authentic / official / genuine"', () => {
+    expect(hasImplicitPurchaseIntent('authentic product please')).toBe(true)
+    expect(hasImplicitPurchaseIntent('official version only')).toBe(true)
+    expect(hasImplicitPurchaseIntent('genuine one thanks')).toBe(true)
+  })
+
+  it('Round-2: still does NOT match a bare non-purchase noun ("cái ốp đẹp quá")', () => {
+    expect(hasImplicitPurchaseIntent('cái ốp đẹp quá')).toBe(false)
+    expect(hasImplicitPurchaseIntent('the phone case is nice')).toBe(false)
+  })
+
+  it('with no priority stated, the signal enables a Pick when candidates are rankable', () => {
+    const need = profile({ priorities: [] })  // no explicit criteria
+    const r = rankCandidates(DECISIVE, need)
+    // Without the signal — the old strict behaviour that produced the receptionist reply.
+    expect(derivePick(r, need)).toBeNull()
+    // With the signal — the ranker's default (rating × reviewCount) becomes the grounded
+    // reason. Same grounding guards; the WHEN widens, the WHAT does not.
+    const withSignal = derivePick(r, need, { implicitPurchaseIntent: true })
+    expect(withSignal).not.toBeNull()
+    expect(withSignal!.reasons.length).toBeGreaterThan(0)
+  })
+
+  it('the signal STILL yields null on ties (grounding guards unchanged)', () => {
+    const tied = [
+      place('A', { rating: 4.5, reviewCount: 100 }),
+      place('B', { rating: 4.5, reviewCount: 100 }),
+    ]
+    const need = profile()
+    expect(derivePick(rankCandidates(tied, need), need, { implicitPurchaseIntent: true })).toBeNull()
+  })
+
+  it('the signal STILL yields null when candidates carry no rankable evidence', () => {
+    const empty = [place('A', {}), place('B', {})]
+    const need = profile()
+    expect(derivePick(rankCandidates(empty, need), need, { implicitPurchaseIntent: true })).toBeNull()
+  })
+
+  it('the signal STILL yields null when there is only one candidate', () => {
+    const one = [place('Duy Nhất', { rating: 4.6, reviewCount: 500 })]
+    const need = profile()
+    expect(derivePick(rankCandidates(one, need), need, { implicitPurchaseIntent: true })).toBeNull()
   })
 })

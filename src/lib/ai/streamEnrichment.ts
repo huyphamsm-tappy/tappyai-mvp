@@ -2,6 +2,8 @@ import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
+import { guardTravelClaimsInText } from './travelGuard'
+import { guardSnippetPricesInText, pricesFromSnippets } from './snippetPriceGuard'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
@@ -203,7 +205,15 @@ function placeContentLines(
   // percent-decodes both sides, so the encoded and raw forms compare equal.
   const rawPhotos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : []))
   const photos = rawPhotos.map(sanitizeUrlForMarkdown)
-  const missingPhotos = photos.filter(url => !imageUrlPresent(url, decodedText))
+  // Universal Plan (cross-domain): ONE representative photo per place, not a
+  // per-place gallery. Several places EACH with a 3-photo gallery turns a food /
+  // spa / places reply into a visual catalogue — the "9-image flood" — which
+  // reads as "here are N listings" instead of a decision. A single representative
+  // image per place keeps the reply decision-oriented (the shopping standard),
+  // while every place still keeps its order/platform links and TikTok review
+  // below. Trip plans are unaffected: injectPlanPhotos already injects exactly
+  // one photo per plan item and never calls this.
+  const missingPhotos = photos.filter(url => !imageUrlPresent(url, decodedText)).slice(0, 1)
   // Sanitised again at the point the markup is built, even though `photos` is
   // already canonical. The call is idempotent ('%' is never encoded), so the
   // second pass costs a no-op scan and buys a LINE-LOCAL invariant: the
@@ -647,6 +657,23 @@ export function applyPlaceEnrichmentStreamFilter(
    * live frames in the same turn de-duplicate rather than double up.
    */
   seed?: TurnEvidence,
+  /**
+   * P0 travel guard. When the turn is travel-intent, it ALWAYS buffers and any
+   * dynamic travel fact (fare/price/schedule/availability) not backed by live
+   * fetched evidence is redacted before a byte reaches the client — the
+   * fail-closed boundary for the flight/hotel price hallucination.
+   */
+  travelIntent = false,
+  /** The user's own message this turn — numbers in it are never redacted. */
+  userText = '',
+  /**
+   * A5 P0. True when this turn is about places (food/spa/venues), whether or not it retrieves
+   * anything. Like `travelIntent` it forces buffering, so the fail-closed price guard sees the
+   * complete prose even when the model answered from memory with NO tool call — which is exactly
+   * how a fabricated menu price reached production on 5708211 ("Thường ... khoảng 30.000 -
+   * 50.000đ/tô" on a follow-up that searched nothing).
+   */
+  placeIntent = false,
 ): Response {
   const body = response.body
   if (!body) return response
@@ -660,6 +687,26 @@ export function applyPlaceEnrichmentStreamFilter(
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
   let bufferMode = false
+  /** Live VND fares fetched by get_flight_prices this turn. Empty ⇒ every travel
+   *  price the model states is unverifiable and gets redacted by the travel guard. */
+  const travelFares: number[] = []
+  /** VND amounts that appeared in food/spa price snippets (search_places). A stated
+   *  price must trace to one of these (A5); a number in no snippet is fabricated. */
+  const snippetPrices: number[] = []
+  /** True once a search_places (food/spa/places) tool result was seen this turn. */
+  let hadPlaceSearch = false
+  // Travel-intent turns ALWAYS buffer, so the fail-closed guard can inspect and
+  // redact a fabricated fare BEFORE any byte reaches the client — even when the
+  // model answered from memory with no tool call at all.
+  if (travelIntent) bufferMode = true
+  // Same reasoning, same shape, for food/spa: a place turn that runs no tool would otherwise
+  // stream straight through, and a price already sent cannot be redacted. A turn that DOES search
+  // already buffers (a PLACE_TOOLS `9:` frame sets it below), so this only adds buffering to the
+  // no-retrieval turns — short conversational replies, where the cost is small and the exposure
+  // is highest.
+  if (placeIntent) bufferMode = true
+  /** True once the shopping decision has gone out early, so it is not sent twice. */
+  let earlyShoppingMarkerSent = false
   /**
    * A tool step has completed and the model has not spoken since — B12.
    *
@@ -747,8 +794,17 @@ export function applyPlaceEnrichmentStreamFilter(
       const key = (p.name || '').trim().toLowerCase()
       if (!key) continue
       const existing = latestPlaces.find(q => (q.name || '').trim().toLowerCase() === key)
-      if (!existing) latestPlaces.push(p)
-      else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+      if (!existing) { latestPlaces.push(p); continue }
+      const savedPlaceId = existing.place_id
+      const savedWebsiteUri = existing.website_uri
+      if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+      // Identity flows independently of photo — a later frame may carry
+      // place_id / website_uri for a name we already saw. Preserve any valid
+      // existing identity value; otherwise fill from incoming.
+      if (!existing.place_id && savedPlaceId) existing.place_id = savedPlaceId
+      if (!existing.website_uri && savedWebsiteUri) existing.website_uri = savedWebsiteUri
+      if (!existing.place_id && typeof p.place_id === 'string') existing.place_id = p.place_id
+      if (!existing.website_uri && typeof p.website_uri === 'string') existing.website_uri = p.website_uri
     }
   }
 
@@ -781,8 +837,18 @@ export function applyPlaceEnrichmentStreamFilter(
       const key = (p.name || '').trim().toLowerCase()
       if (!key) continue
       const existing = merged.find(q => (q.name || '').trim().toLowerCase() === key)
-      if (!existing) { merged.push(p); seen.add(key) }
-      else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+      if (!existing) { merged.push(p); seen.add(key); continue }
+      const savedPlaceId = existing.place_id
+      const savedWebsiteUri = existing.website_uri
+      if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+      // Identity flows independently of photo — the collector holds enrichment
+      // (photos / order links) while latestPlaces from the `a:` frame carries
+      // the Google Places identity. Both must land on the same object so the
+      // late photo resolver (resolvePlacePhotos) can use place_id / website_uri.
+      if (!existing.place_id && savedPlaceId) existing.place_id = savedPlaceId
+      if (!existing.website_uri && savedWebsiteUri) existing.website_uri = savedWebsiteUri
+      if (!existing.place_id && typeof p.place_id === 'string') existing.place_id = p.place_id
+      if (!existing.website_uri && typeof p.website_uri === 'string') existing.website_uri = p.website_uri
     }
     return merged
   }
@@ -829,6 +895,28 @@ export function applyPlaceEnrichmentStreamFilter(
     const specGuarded = specRecords.length > 0
       ? guardSpecClaimsInText(guarded.text, specRecords).text
       : guarded.text
+    // P0 FAIL-CLOSED TRAVEL GUARD. On a travel-intent turn, redact any fare/price/
+    // schedule/availability the model asserted that no live fetched evidence backs
+    // (empty travelFares ⇒ all of them). Only travel turns are touched, so shopping/
+    // food/etc. are unaffected. Runs after the shopping guards so it reads prose
+    // whose shopping prices are already settled.
+    const travelGuarded = travelIntent
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText).text
+      : specGuarded
+    // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
+    // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
+    // number in no snippet is fabricated and removed. Snippet-traceable prices
+    // survive (framed as reference by the prompt, never FACT). Only search_places
+    // turns that aren't already travel-guarded; shopping keeps its own money guard.
+    //
+    // A5 P0 FIX: `|| placeIntent`. `hadPlaceSearch` is per-turn, so a follow-up answered from
+    // context left the guard inert and a reconstructed price sailed through. A place turn is now
+    // guarded whether or not it retrieved anything — with no snippets collected, `snippetPrices`
+    // is empty and EVERY stated price is unsupported, which is the fail-closed direction travel
+    // already takes. No evidence is carried between turns.
+    const foodGuarded = ((hadPlaceSearch || placeIntent) && !travelIntent)
+      ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText).text
+      : travelGuarded
     // Last point before the bytes leave the server: drop any provider tool-use
     // tags that leaked into the prose, so no client has to defend against them
     // (and so the end-anchored CTA fallback still matches).
@@ -837,7 +925,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
-    const scaffoldStripped = stripModelScaffolding(specGuarded)
+    const scaffoldStripped = stripModelScaffolding(foodGuarded)
     /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *
@@ -851,9 +939,25 @@ export function applyPlaceEnrichmentStreamFilter(
      * have made the detector analyse a different string than the one that shipped.
      */
     const batchTikTok = collector?.batchTikTokUrl
-    const finalText = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
+    // Phase 9: the app-owned shopping DECISION marker is folded into the SAME
+    // string the detector analyses and the client receives — part of `finalText`,
+    // never appended afterwards — so "detector in == user out" holds (the TikTok
+    // line obeys the same rule). It carries only grounded synthesis data
+    // (config/seller/price/url), has no prose or bold names for the grounding
+    // detector to trip on, and — being in the message text — persists so the
+    // decision survives reload (a tool-result field does not). Client parses +
+    // strips it; see parseShoppingMarker.
+    const markerSuffix = collector?.shoppingMarker ? `\n\n${collector.shoppingMarker}` : ''
+    const prose = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
       ? `${scaffoldStripped}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})`
       : scaffoldStripped
+    // `finalText` keeps carrying the marker whether or not it was already sent.
+    // It is not only what ships — it is what the money/spec/grounding detectors
+    // read and what presentedNames/presentedIds are resolved against, so the
+    // early send must not change it. Splitting delivery is allowed to change
+    // WHEN the user sees the decision; it is not allowed to change what the
+    // guards analysed or which candidates the turn recorded as presented.
+    const finalText = `${prose}${markerSuffix}`
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
@@ -867,7 +971,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
     ungroundedNames = ungroundedNamesIn(finalText, places, productRecords, seed?.heldCandidates ?? [])
-    if (finalText) controller.enqueue(encoder.encode('0:' + JSON.stringify(finalText) + '\n'))
+    // What still needs sending. When the decision already went out after the
+    // tool result, only the prose is left — re-sending the marker here would
+    // put a second copy in the message text and render a duplicate card.
+    const outText = earlyShoppingMarkerSent ? prose : finalText
+    if (outText) controller.enqueue(encoder.encode('0:' + JSON.stringify(outText) + '\n'))
   }
 
   const transform = new TransformStream<any, any>({
@@ -955,6 +1063,9 @@ export function applyPlaceEnrichmentStreamFilter(
                 search_results?: SearchResultLike[]
                 /** Structured /shopping records — the spec guard's evidence. */
                 shopping_results?: Array<{ title?: string; weightKg?: number; batteryHours?: number }>
+                /** Food/spa price snippets (title/link/snippet) — A5 evidence: a price
+                 *  the reply states must trace to one of these, else it's fabricated. */
+                price_search_results?: Array<{ title?: string; snippet?: string }>
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
@@ -962,6 +1073,12 @@ export function applyPlaceEnrichmentStreamFilter(
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results
+              // A5: the only evidence a food/spa price may trace to.
+              hadPlaceSearch = true
+              const priceSnips = res.result?.price_search_results
+              if (Array.isArray(priceSnips)) {
+                snippetPrices.push(...pricesFromSnippets(priceSnips.map(r => `${r.title ?? ''} ${r.snippet ?? ''}`)))
+              }
             }
             if (toolName === 'search_products') {
               const structured = res.result?.shopping_results
@@ -969,6 +1086,16 @@ export function applyPlaceEnrichmentStreamFilter(
                 for (const r of structured) {
                   if (r?.title) specRecords.push({ name: r.title, weightKg: r.weightKg, batteryHours: r.batteryHours })
                 }
+              }
+            }
+            // P0 travel guard evidence: the ONLY live, structured travel price we
+            // have. get_flight_prices returns `flights[].price_vnd` on success and
+            // no price at all on error/missing-token, so an empty travelFares means
+            // "no live fare" and the guard redacts every fare the model states.
+            if (toolName === 'get_flight_prices') {
+              const flights = (res.result as { flights?: Array<{ price_vnd?: number }> } | undefined)?.flights
+              if (Array.isArray(flights)) {
+                for (const f of flights) if (typeof f?.price_vnd === 'number') travelFares.push(f.price_vnd)
               }
             }
             if (toolName === 'get_hotel_prices' || toolName === 'search_products') {
@@ -1002,6 +1129,28 @@ export function applyPlaceEnrichmentStreamFilter(
           // not a continuation of the sentence it left off on.
           awaitingPostToolText = true
           controller.enqueue(encoder.encode(line + '\n'))
+          // ── Early shopping decision ───────────────────────────────────────
+          //
+          // The decision card is FINISHED here. route.ts builds it from the
+          // frozen shopping evidence inside the tool's own execute(), so by the
+          // time this result frame lands `collector.shoppingMarker` is already
+          // complete — grouping, recommendation, prices and seller URLs all
+          // settled. Holding it until the end bought nothing: it waited on prose
+          // it does not depend on, through a buffer it does not need.
+          //
+          // So send it now, as text. Text is the only channel that survives
+          // reload — the chat renders from and persists `msg.content`, and a
+          // tool-result field is gone on the next load. That is why the card
+          // travels as a marker at all, and it is why the early copy is a `0:`
+          // frame rather than a new frame type the client would have to learn
+          // and the reload path would not see.
+          //
+          // Nothing model-authored rides along: this is the same server-built
+          // object as before, emitted earlier and unchanged.
+          if (!earlyShoppingMarkerSent && collector?.shoppingMarker) {
+            earlyShoppingMarkerSent = true
+            controller.enqueue(encoder.encode('0:' + JSON.stringify(collector.shoppingMarker + '\n\n') + '\n'))
+          }
         } else if (line.startsWith('d:')) {
           await emitReconstructed(controller)
           controller.enqueue(encoder.encode(line + '\n'))

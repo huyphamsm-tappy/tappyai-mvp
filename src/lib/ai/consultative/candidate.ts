@@ -170,24 +170,47 @@ export function normalizePlaces(toolResult: unknown): Candidate[] {
 /**
  * Normalizes a `search_products` result into common candidates.
  *
- * Reads ONLY `shopping_results` — the structured records from Serper's
- * `/shopping` endpoint, where `price`, `source` and `productId` are the
- * provider's own fields. The organic `search_results` array is deliberately NOT
- * normalized: it carries title/link/snippet only, and C3-B.9 measured that shape
- * returning phone cases and news articles for an iPhone-vs-Samsung comparison.
- * Ranking it would be provider order dressed up as a score.
+ * Reads only rows carrying the provider's OWN structured fields — never organic web results.
  *
- * When only organic results exist this returns [], the ranker reports
- * `rankable:false`, and the turn behaves exactly as it does today.
+ * The rule is about EVIDENCE, not about which array a row sits in, because the two
+ * `searchProducts` paths collide on one key name:
+ *
+ *   Serper /shopping succeeded  -> rows land in `search_results` WITH `price_vnd`/`product_id`
+ *   organic fallback            -> `shopping_results` holds structured rows, and `search_results`
+ *                                  holds articles with title/link/snippet only
+ *
+ * So `shopping_results` is always normalized, and a `search_results` row is normalized only when
+ * it carries structured evidence. That keeps C3-B.9's protection — that shape was measured
+ * returning phone cases and news articles for an iPhone-vs-Samsung comparison, and ranking it
+ * would be provider order dressed up as a score — while fixing the defect it was masking.
+ *
+ * 🚨 THE DEFECT: reading `shopping_results` alone produced ZERO candidates on the path that
+ * actually runs, so `rankForModel` bailed at its `length < 2` guard and ranking, the Pick and the
+ * ranking instruction block were silently dead for every shopping turn. Measured on production: a
+ * MacBook query returned 40 rows in `search_results`, `shopping_results` absent, no `_tappy_ranking`.
+ *
+ * When nothing structured exists this still returns [], the ranker reports `rankable:false`, and
+ * the turn behaves exactly as it did.
  */
 export function normalizeShopping(toolResult: unknown): Candidate[] {
   const root = (toolResult && typeof toolResult === 'object') ? toolResult as Record<string, unknown> : {}
   const out: Candidate[] = []
   const seen = new Set<string>()
 
-  for (const item of asArray(root.shopping_results)) {
-    if (!item || typeof item !== 'object') continue
-    const r = item as Record<string, unknown>
+  /**
+   * A row earns normalization by carrying a field only the provider can supply — a structured
+   * price or its own product id. An organic article has neither, so the fallback path's
+   * `search_results` contributes nothing, exactly as before.
+   */
+  const isStructured = (r: Record<string, unknown>): boolean =>
+    typeof r.price === 'number' || typeof r.price_vnd === 'number'
+    || typeof r.productId === 'string' || typeof r.product_id === 'string'
+
+  const rows = [...asArray(root.shopping_results), ...asArray(root.search_results)]
+    .filter((i): i is Record<string, unknown> => !!i && typeof i === 'object')
+    .filter(isStructured)
+
+  for (const r of rows) {
     const name = str(r.title).trim()
     const link = str(r.link)
     if (!name) continue
@@ -195,14 +218,17 @@ export function normalizeShopping(toolResult: unknown): Candidate[] {
     if (link) seen.add(link)
 
     const attrs: CandidateAttrs = {}
-    // `price` here is the provider's structured field, carried through by
-    // serperShopping — never parsed from the title.
-    put(attrs, 'priceVnd', typeof r.price === 'number' ? r.price : undefined)
+    // Always the provider's own structured number, never a figure parsed out of a title:
+    // `price` on a ShoppingRecord, `price_vnd` on a `/shopping` row (whose `price` is the
+    // seller's display string, e.g. "₫25.800.000", and must never be ranked on).
+    put(attrs, 'priceVnd', typeof r.price === 'number' ? r.price
+      : typeof r.price_vnd === 'number' ? r.price_vnd : undefined)
     put(attrs, 'rating', typeof r.rating === 'number' ? r.rating : undefined)
-    put(attrs, 'reviewCount', typeof r.ratingCount === 'number' ? r.ratingCount : undefined)
+    put(attrs, 'reviewCount', typeof r.ratingCount === 'number' ? r.ratingCount
+      : typeof r.rating_count === 'number' ? r.rating_count : undefined)
 
     out.push({
-      id: str(r.productId) || link || name,
+      id: str(r.productId) || str(r.product_id) || link || name,
       name,
       domain: 'shopping',
       attrs,

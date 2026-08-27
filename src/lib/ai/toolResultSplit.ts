@@ -37,6 +37,14 @@ export interface PlaceEnrichment {
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
   tiktok_review_url?: string
+  // Identity from Google Places New (search_places). The late photo resolver
+  // (resolvePlacePhotos in tools/common) uses these to fetch official website /
+  // Places Details photos when the tool result did not carry any. Copied into
+  // the carved enrichment so it reaches resolvePlaces() via collector.places —
+  // and STILL remains in the model-facing `rest` payload, so the model can cite
+  // website_uri as before.
+  place_id?: string
+  website_uri?: string
 }
 
 /** Request-scoped. One per HTTP request, created in the route and never shared. */
@@ -51,6 +59,14 @@ export interface EnrichmentCollector {
    */
   batchTikTokUrl?: string
   setBatchTikTokUrl(url: string | undefined): void
+  /**
+   * The Phase-9 shopping-decision marker, appended once to the very end of the
+   * reply text so it PERSISTS with the message (a tool-result field does not —
+   * see synthesisView.renderShoppingMarker). Batch-level like the TikTok URL:
+   * one decision per shopping turn, owned by the app, never written by the model.
+   */
+  shoppingMarker?: string
+  setShoppingMarker(marker: string | undefined): void
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */
@@ -109,7 +125,16 @@ export function splitToolResult(
     const name = listKey === 'results'
       ? (item.name as string | undefined)
       : String((item.title as string | undefined) ?? '').split(' - ')[0].trim() || undefined
-    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url }
+    // Identity fields ride along with enrichment WITHOUT being destructured out
+    // of `rest`, so the model still sees place_id / website_uri and the late
+    // photo resolver (which reads collector.places) sees them too. Only present
+    // on search_places output today; search_products lacks them by construction,
+    // so the guard is `typeof x === 'string'` — no fake / inferred values.
+    const place_id = typeof (item as { place_id?: unknown }).place_id === 'string'
+      ? (item as { place_id: string }).place_id : undefined
+    const website_uri = typeof (item as { website_uri?: unknown }).website_uri === 'string'
+      ? (item as { website_uri: string }).website_uri : undefined
+    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url, place_id, website_uri }
     if (name && hasEnrichment(carved)) enrichment.push(carved)
     return rest
   })
@@ -128,6 +153,44 @@ export function splitToolResult(
  */
 export function createEnrichmentCollector(): EnrichmentCollector {
   const places: PlaceEnrichment[] = []
+  /** Every photo URL already claimed by an earlier entry, so no image is used twice. */
+  const claimedPhotos = new Set<string>()
+
+  /**
+   * Drops photo URLs another entry already owns.
+   *
+   * Two shopping listings from the same seller routinely carry the SAME provider image, and two
+   * venues occasionally do through a provider glitch. Rendering it under both is worse than
+   * rendering it once: it tells the reader the two entries are the same thing, which for a shopping
+   * result — where the rows genuinely differ in chip, condition and price — is exactly the false
+   * merge this pipeline must never imply. First claimant keeps it; later ones simply go without.
+   */
+  const claim = (p: PlaceEnrichment): PlaceEnrichment => {
+    // Each field is filtered in place. The shape is NOT rewritten — an entry that arrived with
+    // `photo_urls` keeps `photo_urls`, even when only one URL survives, because the stream filter
+    // and its tests read the two fields separately.
+    const take = (url: string | undefined): string | undefined => {
+      const u = (url ?? '').trim()
+      if (!u || claimedPhotos.has(u)) return undefined
+      claimedPhotos.add(u)
+      return u
+    }
+    const out: PlaceEnrichment = { ...p }
+    if (out.photo_urls) {
+      const kept = out.photo_urls.map(take).filter((u): u is string => !!u)
+      if (kept.length > 0) out.photo_urls = kept
+      else delete out.photo_urls
+    }
+    if (out.photo_url) {
+      const kept = take(out.photo_url)
+      // A `photo_url` already listed in this entry's own `photo_urls` was claimed a line ago;
+      // keeping it is correct, so only a URL claimed by a DIFFERENT entry removes it.
+      if (kept) out.photo_url = kept
+      else if (!p.photo_urls?.includes(out.photo_url)) delete out.photo_url
+    }
+    return out
+  }
+
   return {
     places,
     batchTikTokUrl: undefined as string | undefined,
@@ -136,16 +199,33 @@ export function createEnrichmentCollector(): EnrichmentCollector {
       // "related video" line, not one per search.
       if (url && !this.batchTikTokUrl) this.batchTikTokUrl = url
     },
+    shoppingMarker: undefined as string | undefined,
+    setShoppingMarker(marker) {
+      // First one wins, mirroring the TikTok URL: one shopping decision per turn.
+      if (marker && !this.shoppingMarker) this.shoppingMarker = marker
+    },
     add(items) {
-      for (const p of items ?? []) {
-        const key = (p?.name || '').trim().toLowerCase()
+      for (const raw of items ?? []) {
+        const key = (raw?.name || '').trim().toLowerCase()
         if (!key) continue
         const existing = places.find(q => (q.name || '').trim().toLowerCase() === key)
         // Accumulate across EVERY place-tool call — a trip plan runs several
         // searches and each item needs its own photo. If a later call carries a
         // photo for a name we already saw without one, upgrade to it.
-        if (!existing) places.push(p)
-        else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+        if (!existing) { places.push(claim(raw)); continue }
+        // Snapshot identity that Object.assign below could otherwise clobber
+        // with an undefined value from the incoming record (its own keys include
+        // place_id / website_uri even when the record has no such value).
+        const savedPlaceId = existing.place_id
+        const savedWebsiteUri = existing.website_uri
+        if (!hasPhoto(existing) && hasPhoto(raw)) Object.assign(existing, claim(raw))
+        // Identity propagation is INDEPENDENT of hasPhoto — a later frame may
+        // carry place_id / website_uri for a name we already saw. Prefer any
+        // valid existing value; otherwise fill from incoming. Never overwrite.
+        if (!existing.place_id && savedPlaceId) existing.place_id = savedPlaceId
+        if (!existing.website_uri && savedWebsiteUri) existing.website_uri = savedWebsiteUri
+        if (!existing.place_id && typeof raw.place_id === 'string') existing.place_id = raw.place_id
+        if (!existing.website_uri && typeof raw.website_uri === 'string') existing.website_uri = raw.website_uri
       }
     },
   }

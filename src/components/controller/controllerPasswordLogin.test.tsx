@@ -254,6 +254,16 @@ describe('the Controller signs in with email and password', () => {
   it.each(['vi', 'en'] as const)('[%s] every visible string comes from the catalogue', (locale) => {
     setup(locale)
     const strings = locale === 'vi' ? viStrings : enStrings
+    // Controller V2.3 — the card is now the RIGHT-HAND AUTH PANEL of a composed
+    // entry page. `admin.login.welcome` and `admin.login.tagline` moved OUT to
+    // the page hero (asserted in `src/app/login/controllerLoginLayout.test.tsx`),
+    // and the card reclaimed `admin.login.title` as its own h2 — so this list is
+    // back to the five keys the card actually renders.
+    //
+    // 🔑 STILL NOT A RELAXATION. The intent — "every visible string is
+    // catalogue-sourced and no raw key leaks" — is unchanged, and the strings
+    // that left this list are asserted at the level they now render at, not
+    // dropped. The raw-key assertion below is untouched.
     for (const key of ['admin.login.title', 'admin.login.subtitle', 'admin.login.emailLabel', 'admin.login.passwordLabel', 'admin.login.signIn']) {
       expect(screen.getByText(strings[key]), key).toBeTruthy()
     }

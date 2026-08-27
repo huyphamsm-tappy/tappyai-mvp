@@ -216,11 +216,19 @@ describe('the rendered wording matches what the evidence supports', () => {
   })
 
   it('folds the batch link in BEFORE the grounding detector reads the reply', () => {
-    // The detector must analyse byte-for-byte what the user receives.
-    const foldAt = filter.indexOf('const finalText = (scaffoldStripped && batchTikTok')
+    // The detector must analyse the link the user receives.
+    //
+    // The fold moved out of `finalText` and into `prose` when Phase 1 split the
+    // shopping decision off for early delivery. It still happens first, and
+    // `finalText` — the detector's input — is still built from it, so the link
+    // is still inside what gets analysed. Both halves are asserted: a fold that
+    // no longer reached `finalText` would leave the link unanalysed.
+    const foldAt = filter.indexOf('const prose = (scaffoldStripped && batchTikTok')
+    const composeAt = filter.indexOf('const finalText = `${prose}${markerSuffix}`')
     const detectAt = filter.indexOf('ungroundedNames = ungroundedNamesIn(')
     expect(foldAt).toBeGreaterThan(-1)
-    expect(detectAt).toBeGreaterThan(foldAt)
+    expect(composeAt).toBeGreaterThan(foldAt)
+    expect(detectAt).toBeGreaterThan(composeAt)
   })
 
   it('re-validates the URL at the render boundary', () => {

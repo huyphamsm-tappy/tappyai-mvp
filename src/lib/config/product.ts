@@ -15,6 +15,25 @@ export const FREE_DAILY_LIMIT = 15
 /** Anonymous visitors: questions per VN day (httpOnly cookie `tappy_anon`). */
 export const ANON_DAILY_LIMIT = 5
 
+/**
+ * How many ranked shopping listings reach the model — the decision set, not the search dump.
+ *
+ * Serper `/shopping` returns up to 40 priced listings for one query. Every one of them used to be
+ * handed to the model, which then wrote about them: measured 3,646–3,803 characters of reply and
+ * ~73% of a 14-second turn spent generating text. The ranker has already ordered them, so the tail
+ * only ever made the answer longer, never better informed.
+ *
+ * 🚨 This is a PRESENTATION cap, not a grouping rule. Rows are trimmed, never merged: Serper's
+ * `productId` is per-listing (measured: 40 rows, 40 distinct ids) and the rows in one result mix
+ * different chips and conditions, so merging them into "one product, many offers" would invent a
+ * bargain that does not exist. `_tappy_total_found` travels with the trimmed array so the reply can
+ * still say how many listings were found.
+ *
+ * Six because a shortlist has to hold the shape of a real decision — a cheapest, a best-specified,
+ * a most-trusted, and room for the variants that differ — while staying readable in one screen.
+ */
+export const SHOPPING_SHORTLIST = 6
+
 // ── Feature flags ────────────────────────────────────────────────────────────
 /** Pro upsell hidden app-wide during the free test phase. Mirrored by the
  * Android `SHOW_PRO_UPGRADE` gate — flip BOTH together when Pro launches. */

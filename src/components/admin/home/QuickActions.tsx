@@ -23,11 +23,11 @@ export function QuickActions({ actions }: { actions: ControllerHomeData['quickAc
             <Link
               key={a.route}
               href={a.route}
-              className="group flex items-center gap-3 rounded-admin-md border border-border bg-background px-3 py-2.5 text-sm text-foreground transition-colors hover:border-[#007AFF] hover:bg-muted"
+              className="group flex items-center gap-3 rounded-admin-md border border-border bg-background px-3 py-2.5 text-sm text-foreground transition-colors hover:border-ring hover:bg-muted"
             >
-              <Icon className="h-4 w-4 text-muted-foreground group-hover:text-[#007AFF]" aria-hidden />
+              <Icon className="h-4 w-4 text-muted-foreground group-hover:text-ring" aria-hidden />
               <span className="flex-1 truncate">{t(a.label)}</span>
-              <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-[#007AFF]" aria-hidden />
+              <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-ring" aria-hidden />
             </Link>
           )
         })}

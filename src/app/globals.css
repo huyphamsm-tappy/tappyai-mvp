@@ -82,6 +82,66 @@
   --ring: 212.7 26.8% 83.9%;
 }
 
+/* ------------------------------------------------------------------ */
+/* CONTROLLER THEME — Owner Decision D10, 2026-08-23 (Controller V2.1) */
+/*                                                                      */
+/* The Controller is a FIXED DARK enterprise surface. This is the       */
+/* canonical Controller theme boundary: `.admin-theme` was applied as a */
+/* wrapper class since Phase 0 but was never DEFINED as a rule, so its  */
+/* tokens resolved from the light `:root` and the back office rendered  */
+/* white — while its own login page was already `#070E1F`.              */
+/*                                                                      */
+/* 🔑 THIS IS A THEME, NOT A THEME MODE. D9 (user-selectable dark mode) */
+/* stays DEFERRED: it needs a theme-PREFERENCE contract, and there is   */
+/* none here. No switch, no persistence, no per-user state, and         */
+/* deliberately no `prefers-color-scheme` — the Controller does not ask */
+/* the operating system what an internal tool should look like.         */
+/*                                                                      */
+/* SCOPED, NEVER GLOBAL. It is a class, so it themes the Controller     */
+/* subtree only. The consumer app keeps `:root` above and its own       */
+/* Header toggle. `ui/dialog.tsx` carries this class and was MEASURED   */
+/* to have exactly one importer (CommandPalette, admin), so no consumer */
+/* dialog changes.                                                      */
+/*                                                                      */
+/* PALETTE ADOPTED, NOT INVENTED — the values the Controller login and  */
+/* public home already ship: page #070E1F, card #0B1428, elevated       */
+/* #0E1A33, accent #2E7BF6/#4C9AFF. Contrast vs the page, WCAG 2.1:     */
+/* foreground 16.2:1 · muted 8.8:1 · accent 6.8:1 — all above AA (4.5). */
+/*                                                                      */
+/* Placed AFTER `.dark` deliberately: both are single-class selectors,  */
+/* so source order decides, and the Controller palette must win inside  */
+/* the Controller even if `.dark` is also present on an ancestor.       */
+/* ------------------------------------------------------------------ */
+.admin-theme {
+  /* Surfaces — elevation reads UPWARD: page → card → popover. */
+  --background: 222.5 63.2% 7.5%;        /* #070E1F — page */
+  --foreground: 220 45% 93.5%;           /* #E6ECF7 — 16.2:1 on page */
+  --card: 221.4 56.9% 10%;               /* #0B1428 */
+  --card-foreground: 220 45% 93.5%;
+  --popover: 220.5 56.9% 12.7%;          /* #0E1A33 — elevated */
+  --popover-foreground: 220 45% 93.5%;
+  --muted: 220.5 56.9% 12.7%;            /* #0E1A33 — filled/inactive */
+  --muted-foreground: 218 25% 71%;       /* #9FB0CC — 8.8:1 on page */
+  --secondary: 220.5 56.9% 12.7%;
+  --secondary-foreground: 220 45% 93.5%;
+  /* Lines and focus. `--ring` is the brand blue the login card uses. */
+  --border: 220 38% 19%;
+  --input: 220 38% 19%;
+  --ring: 213.9 100% 64.9%;              /* #4C9AFF */
+
+  /* Semantic layer — the roles that carry text-sized contrast. These take
+     the dark values so call sites need no `dark:` variants, exactly as the
+     comment on the `:root` semantic block above intends. */
+  --interactive: 46 123 246;             /* #2E7BF6 — white text 4.68:1 */
+  --interactive-hover: 76 154 255;       /* #4C9AFF */
+  --interactive-active: 27 79 216;       /* #1B4FD8 */
+  --on-interactive: 255 255 255;
+  --link: 76 154 255;                    /* #4C9AFF — 6.8:1 on page */
+  --content: 230 236 247;                /* #E6ECF7 — 16.2:1 */
+  --content-secondary: 159 176 204;      /* #9FB0CC — 8.8:1 */
+  --content-muted: 138 152 180;          /* #8A98B4 — 6.6:1, still AA */
+}
+
 @layer base {
   * { box-sizing: border-box; padding: 0; margin: 0; }
   html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
