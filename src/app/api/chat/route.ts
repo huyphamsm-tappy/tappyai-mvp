@@ -23,7 +23,7 @@ import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping } from '@/lib/ai/consultative/shortlist'
-import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest } from '@/lib/ai/consultative/pick'
+import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest, hasImplicitPurchaseIntent } from '@/lib/ai/consultative/pick'
 import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructionBlock } from '@/lib/ai/consultative/synthesis'
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
@@ -461,7 +461,10 @@ export async function POST(req: Request) {
   // Whether this turn ASKED Tappy to decide. The need profile cannot carry it —
   // it models what the user wants from the PRODUCT, not what they want from us —
   // and only the route knows which message is the current one.
-  const pickSignals = { explicitChoiceRequest: isExplicitChoiceRequest(lastText) }
+  const pickSignals = {
+    explicitChoiceRequest: isExplicitChoiceRequest(lastText),
+    implicitPurchaseIntent: hasImplicitPurchaseIntent(lastText),
+  }
 
   /**
    * Rank a place/hotel tool result against this turn's need, in place.
