@@ -17,7 +17,7 @@ import { validateClientInput, readDecisionEvidenceId } from '@/lib/ai/security/c
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -147,6 +147,9 @@ export async function POST(req: Request) {
   // profile, country, or earlier turns (none of those are read here).
   const lang = detectExplicitLangRequest(lastText) ?? detectLang(lastText)
   const forcedTool = detectForcedTool(lastText)
+  // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
+  // fabricated fare/price/schedule/availability can reach the user.
+  const travelIntent = detectTravelIntent(lastText)
   // Whether this turn earns a third LLM call for memory extraction. Was
   // `lastText.length > 20`, which measured wrong in both directions: it fired on
   // weather/gold/news lookups that store nothing, and dropped "Tôi ăn chay."
@@ -1132,7 +1135,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }))
     photoTotalMs = Date.now() - photoStart
     return byName
-  })
+  }, undefined, undefined, travelIntent, lastText)
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse
