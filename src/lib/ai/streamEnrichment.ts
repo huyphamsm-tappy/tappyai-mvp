@@ -3,6 +3,7 @@ import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText } from './travelGuard'
+import { guardSnippetPricesInText, pricesFromSnippets } from './snippetPriceGuard'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
@@ -681,6 +682,11 @@ export function applyPlaceEnrichmentStreamFilter(
   /** Live VND fares fetched by get_flight_prices this turn. Empty ⇒ every travel
    *  price the model states is unverifiable and gets redacted by the travel guard. */
   const travelFares: number[] = []
+  /** VND amounts that appeared in food/spa price snippets (search_places). A stated
+   *  price must trace to one of these (A5); a number in no snippet is fabricated. */
+  const snippetPrices: number[] = []
+  /** True once a search_places (food/spa/places) tool result was seen this turn. */
+  let hadPlaceSearch = false
   // Travel-intent turns ALWAYS buffer, so the fail-closed guard can inspect and
   // redact a fabricated fare BEFORE any byte reaches the client — even when the
   // model answered from memory with no tool call at all.
@@ -883,6 +889,14 @@ export function applyPlaceEnrichmentStreamFilter(
     const travelGuarded = travelIntent
       ? guardTravelClaimsInText(specGuarded, travelFares, userText).text
       : specGuarded
+    // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
+    // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
+    // number in no snippet is fabricated and removed. Snippet-traceable prices
+    // survive (framed as reference by the prompt, never FACT). Only search_places
+    // turns that aren't already travel-guarded; shopping keeps its own money guard.
+    const foodGuarded = (hadPlaceSearch && !travelIntent)
+      ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText).text
+      : travelGuarded
     // Last point before the bytes leave the server: drop any provider tool-use
     // tags that leaked into the prose, so no client has to defend against them
     // (and so the end-anchored CTA fallback still matches).
@@ -891,7 +905,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
-    const scaffoldStripped = stripModelScaffolding(travelGuarded)
+    const scaffoldStripped = stripModelScaffolding(foodGuarded)
     /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *
@@ -1029,6 +1043,9 @@ export function applyPlaceEnrichmentStreamFilter(
                 search_results?: SearchResultLike[]
                 /** Structured /shopping records — the spec guard's evidence. */
                 shopping_results?: Array<{ title?: string; weightKg?: number; batteryHours?: number }>
+                /** Food/spa price snippets (title/link/snippet) — A5 evidence: a price
+                 *  the reply states must trace to one of these, else it's fabricated. */
+                price_search_results?: Array<{ title?: string; snippet?: string }>
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
@@ -1036,6 +1053,12 @@ export function applyPlaceEnrichmentStreamFilter(
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results
+              // A5: the only evidence a food/spa price may trace to.
+              hadPlaceSearch = true
+              const priceSnips = res.result?.price_search_results
+              if (Array.isArray(priceSnips)) {
+                snippetPrices.push(...pricesFromSnippets(priceSnips.map(r => `${r.title ?? ''} ${r.snippet ?? ''}`)))
+              }
             }
             if (toolName === 'search_products') {
               const structured = res.result?.shopping_results
