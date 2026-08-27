@@ -37,6 +37,14 @@ export interface PlaceEnrichment {
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
   tiktok_review_url?: string
+  // Identity from Google Places New (search_places). The late photo resolver
+  // (resolvePlacePhotos in tools/common) uses these to fetch official website /
+  // Places Details photos when the tool result did not carry any. Copied into
+  // the carved enrichment so it reaches resolvePlaces() via collector.places —
+  // and STILL remains in the model-facing `rest` payload, so the model can cite
+  // website_uri as before.
+  place_id?: string
+  website_uri?: string
 }
 
 /** Request-scoped. One per HTTP request, created in the route and never shared. */
@@ -117,7 +125,16 @@ export function splitToolResult(
     const name = listKey === 'results'
       ? (item.name as string | undefined)
       : String((item.title as string | undefined) ?? '').split(' - ')[0].trim() || undefined
-    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url }
+    // Identity fields ride along with enrichment WITHOUT being destructured out
+    // of `rest`, so the model still sees place_id / website_uri and the late
+    // photo resolver (which reads collector.places) sees them too. Only present
+    // on search_places output today; search_products lacks them by construction,
+    // so the guard is `typeof x === 'string'` — no fake / inferred values.
+    const place_id = typeof (item as { place_id?: unknown }).place_id === 'string'
+      ? (item as { place_id: string }).place_id : undefined
+    const website_uri = typeof (item as { website_uri?: unknown }).website_uri === 'string'
+      ? (item as { website_uri: string }).website_uri : undefined
+    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url, place_id, website_uri }
     if (name && hasEnrichment(carved)) enrichment.push(carved)
     return rest
   })
@@ -195,8 +212,20 @@ export function createEnrichmentCollector(): EnrichmentCollector {
         // Accumulate across EVERY place-tool call — a trip plan runs several
         // searches and each item needs its own photo. If a later call carries a
         // photo for a name we already saw without one, upgrade to it.
-        if (!existing) places.push(claim(raw))
-        else if (!hasPhoto(existing) && hasPhoto(raw)) Object.assign(existing, claim(raw))
+        if (!existing) { places.push(claim(raw)); continue }
+        // Snapshot identity that Object.assign below could otherwise clobber
+        // with an undefined value from the incoming record (its own keys include
+        // place_id / website_uri even when the record has no such value).
+        const savedPlaceId = existing.place_id
+        const savedWebsiteUri = existing.website_uri
+        if (!hasPhoto(existing) && hasPhoto(raw)) Object.assign(existing, claim(raw))
+        // Identity propagation is INDEPENDENT of hasPhoto — a later frame may
+        // carry place_id / website_uri for a name we already saw. Prefer any
+        // valid existing value; otherwise fill from incoming. Never overwrite.
+        if (!existing.place_id && savedPlaceId) existing.place_id = savedPlaceId
+        if (!existing.website_uri && savedWebsiteUri) existing.website_uri = savedWebsiteUri
+        if (!existing.place_id && typeof raw.place_id === 'string') existing.place_id = raw.place_id
+        if (!existing.website_uri && typeof raw.website_uri === 'string') existing.website_uri = raw.website_uri
       }
     },
   }

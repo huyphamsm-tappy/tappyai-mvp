@@ -757,8 +757,17 @@ export function applyPlaceEnrichmentStreamFilter(
       const key = (p.name || '').trim().toLowerCase()
       if (!key) continue
       const existing = latestPlaces.find(q => (q.name || '').trim().toLowerCase() === key)
-      if (!existing) latestPlaces.push(p)
-      else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+      if (!existing) { latestPlaces.push(p); continue }
+      const savedPlaceId = existing.place_id
+      const savedWebsiteUri = existing.website_uri
+      if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+      // Identity flows independently of photo — a later frame may carry
+      // place_id / website_uri for a name we already saw. Preserve any valid
+      // existing identity value; otherwise fill from incoming.
+      if (!existing.place_id && savedPlaceId) existing.place_id = savedPlaceId
+      if (!existing.website_uri && savedWebsiteUri) existing.website_uri = savedWebsiteUri
+      if (!existing.place_id && typeof p.place_id === 'string') existing.place_id = p.place_id
+      if (!existing.website_uri && typeof p.website_uri === 'string') existing.website_uri = p.website_uri
     }
   }
 
@@ -791,8 +800,18 @@ export function applyPlaceEnrichmentStreamFilter(
       const key = (p.name || '').trim().toLowerCase()
       if (!key) continue
       const existing = merged.find(q => (q.name || '').trim().toLowerCase() === key)
-      if (!existing) { merged.push(p); seen.add(key) }
-      else if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+      if (!existing) { merged.push(p); seen.add(key); continue }
+      const savedPlaceId = existing.place_id
+      const savedWebsiteUri = existing.website_uri
+      if (!hasPhoto(existing) && hasPhoto(p)) Object.assign(existing, p)
+      // Identity flows independently of photo — the collector holds enrichment
+      // (photos / order links) while latestPlaces from the `a:` frame carries
+      // the Google Places identity. Both must land on the same object so the
+      // late photo resolver (resolvePlacePhotos) can use place_id / website_uri.
+      if (!existing.place_id && savedPlaceId) existing.place_id = savedPlaceId
+      if (!existing.website_uri && savedWebsiteUri) existing.website_uri = savedWebsiteUri
+      if (!existing.place_id && typeof p.place_id === 'string') existing.place_id = p.place_id
+      if (!existing.website_uri && typeof p.website_uri === 'string') existing.website_uri = p.website_uri
     }
     return merged
   }
