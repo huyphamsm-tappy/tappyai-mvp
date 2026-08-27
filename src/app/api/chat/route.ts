@@ -19,11 +19,12 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
-import { resolveDecisionStage } from '@/lib/ai/consultative/refinement'
+import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
+import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest, hasImplicitPurchaseIntent } from '@/lib/ai/consultative/pick'
 import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructionBlock } from '@/lib/ai/consultative/synthesis'
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
@@ -163,6 +164,47 @@ export async function POST(req: Request) {
   // actually changed — "nâng ngân sách lên 35 triệu" is a refinement because a
   // budget moved, not because it contains a keyword. See consultative/refinement.ts.
   const decisionStage = resolveDecisionStage(messages)
+
+  // Phase A A2 — Turn Intent Gate. `assistantAskedClarification` heuristic
+  // reads the LAST assistant message: if it ends with "?" or the recognisable
+  // clarifying pattern ("bạn muốn X hay Y?" / "which do you prefer?"), the
+  // current user turn is a clarification response. The gate is a soft signal
+  // consumed by the synthesizer/route side-effects (see turnIntent below).
+  const lastAssistantText = (() => {
+    const priorAssistants = messages.filter((m: { role: string; content: unknown }) => m.role === 'assistant')
+    const last = priorAssistants[priorAssistants.length - 1]
+    if (!last) return ''
+    const c = last.content
+    if (typeof c === 'string') return c
+    if (Array.isArray(c)) {
+      return c.map((p: unknown) => {
+        if (p && typeof p === 'object' && (p as { type?: string }).type === 'text') return (p as { text?: string }).text ?? ''
+        return ''
+      }).join(' ')
+    }
+    return ''
+  })()
+  const assistantAskedClarification = /[?？]\s*$/.test(lastAssistantText.trim())
+    || /(bạn muốn|ban muon|ưu tiên|uu tien|would you prefer|which one|what.{0,20}prefer|hay là|hay la).{0,80}[?？]/i.test(lastAssistantText)
+  // 🚨 `taskSwitched` was hardcoded false in the first wiring pass because the
+  // detector appeared inert. The A.5 audit found WHY it was inert: it guards on
+  // `domain === null`, and `deriveNeedProfile` had no dish-name lexicon, so every
+  // "tìm quán hủ tiếu / phở / bún bò" resolved to a null domain and the guard
+  // short-circuited. With the lexicon fixed (needProfile DOMAIN_HINTS) the
+  // detector works, so the real value is read here — a food → hotel switch is a
+  // new consultation, not a follow-up to the meal.
+  const turnIntent = classifyTurnIntent({
+    stage: decisionStage,
+    hasPriorAssistantTurn,
+    // Called with default opts, exactly like `resolveDecisionStage(messages)` above:
+    // `taskSwitched` compares only the DOMAIN before/after, and neither
+    // storedPreferences (cuisine/dietary/budget) nor gps (location) participates
+    // in domain detection. Passing them would also cross a temporal dead zone —
+    // `storedPrefs` is not assigned until the memory load further down.
+    taskSwitched: taskSwitched(messages),
+    assistantAskedClarification,
+  })
+  console.log(JSON.stringify({ type: 'tappyai_intent_gate', turnIntent, decisionStage, hasPriorAssistantTurn, assistantAskedClarification }))
 
   // Load user memory + kiểm tra freemium limit. Quota values + measurement live
   // in @/lib/config/product — the single owner of every business value.
