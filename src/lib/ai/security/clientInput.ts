@@ -272,3 +272,27 @@ export function validateClientInput(body: unknown): ValidationResult {
 
   return { ok: true, messages, preferences, totalChars }
 }
+
+/** A canonical UUID. Anything else is not a key we minted. */
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+/**
+ * ADR-024 — read the client's decision-evidence key, or null.
+ *
+ * The key is the ONLY thing a client may contribute to the evidence path. The
+ * facts themselves are read server-side from what the provider returned; a
+ * design where the page echoes the listing values back was rejected precisely
+ * because it would let a client dictate the price the assistant quotes.
+ *
+ * So this validates SHAPE and nothing more, and it deliberately does not reject
+ * the request on a bad value. Ownership is the real check and it lives in
+ * `decision_evidence_load()` against `auth.uid()` — a malformed id, a foreign
+ * id and an expired id all arrive at the same place: no evidence, and a reply
+ * that says so. Refusing the turn outright would turn a stale tab into an error
+ * screen for something the user cannot see or fix.
+ */
+export function readDecisionEvidenceId(body: unknown): string | null {
+  if (!isRecord(body)) return null
+  const raw = body.decisionEvidenceId
+  return typeof raw === 'string' && UUID_RE.test(raw) ? raw : null
+}

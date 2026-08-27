@@ -12,6 +12,7 @@ import type { MediaUploadKind } from '@/lib/media/uploadPolicy'
 import { MAX_VIDEO_SIZE_MB } from '@/lib/config/product'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { flushPending } from '@/lib/observability'
 
 const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
@@ -33,6 +34,11 @@ const ALLOWED_KINDS: readonly MediaUploadKind[] = ['video', 'videoThumbnail']
 // (Supersedes the earlier TODO to move video egress to Cloudflare R2 — the same
 // cost problem, answered with Cloud Storage instead.)
 export async function POST(req: NextRequest) {
+  // Deliver events buffered by earlier requests on this instance. Never awaited:
+  // it overlaps with the auth lookup below, so it costs the caller nothing and
+  // cannot fail into this handler.
+  void flushPending(req)
+
   const { user } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 

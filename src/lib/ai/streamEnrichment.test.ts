@@ -42,17 +42,23 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
     expect(out).toContain('**3. Phở Thìn Lò Đúc**')
   })
 
-  it('emits a place\'s multiple photos as CONSECUTIVE image lines (carousel input)', () => {
+  it('injects ONE representative photo per place — not a per-place gallery (anti-flood)', () => {
+    // Cross-domain fix: several places EACH with a gallery is the "9-image flood"
+    // that reads as a catalogue. A place with three photos contributes exactly one.
     const places = [
       { name: 'Phở Gà Huyền Hương', photo_url: `${IMG}/ga.jpg` },
       { name: 'Phở Bát Đàn', photo_urls: [`${IMG}/bd1.jpg`, `${IMG}/bd2.jpg`, `${IMG}/bd3.jpg`] },
       { name: 'Phở Thìn Lò Đúc', photo_url: `${IMG}/thin.jpg` },
     ]
     const out = injectPlaceEnrichment(places, TEXT_3)
-    const carousel = `![Ảnh địa điểm](${IMG}/bd1.jpg)\n![Ảnh địa điểm](${IMG}/bd2.jpg)\n![Ảnh địa điểm](${IMG}/bd3.jpg)`
-    expect(out).toContain(carousel)
-    // all three still inside place 2's window
-    expect(idx(out, 'bd3.jpg')).toBeLessThan(idx(out, 'Phở Thìn Lò Đúc'))
+    // Exactly the first photo, under place 2's window; the other two are dropped.
+    expect(out).toContain(`![Ảnh địa điểm](${IMG}/bd1.jpg)`)
+    expect(out).not.toContain('bd2.jpg')
+    expect(out).not.toContain('bd3.jpg')
+    expect(idx(out, 'bd1.jpg')).toBeGreaterThan(idx(out, 'Phở Bát Đàn'))
+    expect(idx(out, 'bd1.jpg')).toBeLessThan(idx(out, 'Phở Thìn Lò Đúc'))
+    // and every place still gets its one photo → one per place, three total, never nine
+    expect(count(out, '![Ảnh địa điểm]')).toBe(3)
   })
 
   it('strips an LLM-written TikTok review line — TikTok is not a review source in V1', () => {
@@ -215,15 +221,16 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
       'Bạn muốn đặt online hay đi trực tiếp? 😊',
     ].join('\n')
     const out = injectPlaceEnrichment(places, text)
-    // O Lạc's whole gallery + review + order sits BEFORE the next place, not trailing.
+    // O Lạc's representative photo + review + order sits BEFORE the next place, not trailing.
     expect(idx(out, 'olac1.jpg')).toBeGreaterThan(idx(out, 'Bún Bò Huế O Lạc CN 2'))
     expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
-    expect(idx(out, 'olac3.jpg')).toBeLessThan(idx(out, 'GÓC HUẾ'))
     expect(idx(out, 'shopeefood.vn/olac')).toBeLessThan(idx(out, 'GÓC HUẾ'))
     // NOT dumped after the closing line.
     expect(idx(out, 'olac1.jpg')).toBeLessThan(idx(out, 'Bạn muốn đặt'))
-    // 3 consecutive image lines → carousel input.
-    expect(out).toContain(`![Ảnh địa điểm](${IMG}/olac1.jpg)\n![Ảnh địa điểm](${IMG}/olac2.jpg)\n![Ảnh địa điểm](${IMG}/olac3.jpg)`)
+    // ONE representative photo, not the whole gallery (anti-flood).
+    expect(out).toContain(`![Ảnh địa điểm](${IMG}/olac1.jpg)`)
+    expect(out).not.toContain('olac2.jpg')
+    expect(out).not.toContain('olac3.jpg')
   })
 
   it('STRIPS the LLM\'s own trailing enrichment and re-places it under the place (system owns layout)', () => {
@@ -251,9 +258,10 @@ describe('injectPlaceEnrichment — position-aware grouping', () => {
       '[ShopeeFood](https://shopeefood.vn/olac)',
     ].join('\n')
     const out = injectPlaceEnrichment(places, text)
-    // No duplication — each owned URL appears exactly once.
+    // No duplication — the representative URL appears exactly once, and the
+    // second gallery photo is dropped (one photo per place, anti-flood).
     expect(count(out, 'olac1.jpg')).toBe(1)
-    expect(count(out, 'olac2.jpg')).toBe(1)
+    expect(count(out, 'olac2.jpg')).toBe(0)
     // TikTok is unsupported in V1: the LLM's TikTok line is STRIPPED, not re-placed.
     expect(count(out, 'tiktok.com/@olac')).toBe(0)
     expect(count(out, 'shopeefood.vn/olac')).toBe(1)
@@ -536,5 +544,119 @@ describe('a search-level TikTok result renders as a related video', () => {
     // A /discover/ page is a search page, not a video — it may never be shown as one.
     expect(out).not.toContain('/discover/')
     expect(out).not.toContain('Video liên quan')
+  })
+})
+
+// ── Phase 9 — the shopping DECISION marker, now delivered EARLY ─────────────
+// Delivered through the collector (like the batch TikTok URL) and still as TEXT,
+// so it PERSISTS with the message and survives reload. The client parses+strips it.
+//
+// Changed in Phase 1 (safe-speed): the decision is complete the moment the tool
+// result lands — route.ts builds it inside the tool's own execute() from frozen
+// evidence — so it is sent there instead of waiting behind the prose buffer.
+// It must still appear EXACTLY ONCE; a second copy at the end would render a
+// duplicate card.
+describe('applyPlaceEnrichmentStreamFilter — shopping decision marker', () => {
+  const line0 = (s: string) => '0:' + JSON.stringify(s)
+  async function runFilter(inputLines: string[], collector?: ReturnType<typeof createEnrichmentCollector>): Promise<string> {
+    const filtered = applyPlaceEnrichmentStreamFilter(new Response(inputLines.join('\n') + '\n'), 'vi', collector)
+    return await new Response(filtered.body).text()
+  }
+  const SHOP_TURN = [
+    '9:{"toolCallId":"t1","toolName":"search_products","args":{}}',
+    'a:{"toolCallId":"t1","result":{"search_results":[{"title":"MacBook Pro 14 M1 32GB 512GB","price":"25.800.000đ"}]}}',
+    line0('Mình gợi ý cấu hình M1 32GB/512GB cho bạn.'),
+    'd:{"finishReason":"stop"}',
+  ]
+  const MARKER = '[TAPPY_SHOPPING]{"v":1,"entities":[{"key":"m1","config":"M1 · 32GB · 512GB","matchesRequest":"khop","recommended":true,"priceLow":25800000,"priceHigh":25800000,"offers":[]}],"recommendation":null}[/TAPPY_SHOPPING]'
+
+  /** Every `0:` text payload, in stream order. */
+  const textFrames = (out: string) =>
+    out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string)
+
+  it('sends the marker in the reply text when the collector carries one', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setShoppingMarker(MARKER)
+    const out = await runFilter(SHOP_TURN, collector)
+    const frames = textFrames(out)
+    const joined = frames.join('')
+    expect(joined).toContain('[TAPPY_SHOPPING]')
+    expect(joined).toContain('[/TAPPY_SHOPPING]')
+    // The prose still ships too — the early send replaces nothing.
+    expect(joined).toContain('Mình gợi ý cấu hình')
+  })
+
+  it('sends it EARLY — before the prose, not appended after it', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setShoppingMarker(MARKER)
+    const out = await runFilter(SHOP_TURN, collector)
+    const frames = textFrames(out)
+    const markerFrame = frames.findIndex(f => f.includes('[TAPPY_SHOPPING]'))
+    const proseFrame = frames.findIndex(f => f.includes('Mình gợi ý cấu hình'))
+    expect(markerFrame, 'the marker must be emitted').toBeGreaterThan(-1)
+    expect(proseFrame, 'the prose must be emitted').toBeGreaterThan(-1)
+    expect(markerFrame, 'the decision must arrive before the prose').toBeLessThan(proseFrame)
+  })
+
+  it('sends it EXACTLY ONCE — no duplicate card', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setShoppingMarker(MARKER)
+    const out = await runFilter(SHOP_TURN, collector)
+    const joined = textFrames(out).join('')
+    expect((joined.match(/\[TAPPY_SHOPPING\]/g) ?? []).length).toBe(1)
+    expect((joined.match(/\[\/TAPPY_SHOPPING\]/g) ?? []).length).toBe(1)
+  })
+
+  it('leaves the marker out of the prose frame once it has gone early', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setShoppingMarker(MARKER)
+    const out = await runFilter(SHOP_TURN, collector)
+    const prose = textFrames(out).find(f => f.includes('Mình gợi ý cấu hình'))!
+    expect(prose).not.toContain('[TAPPY_SHOPPING]')
+  })
+
+  it('adds nothing when the collector has no marker (non-shopping / no decision)', async () => {
+    const collector = createEnrichmentCollector()
+    const out = await runFilter(SHOP_TURN, collector)
+    const full = out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2))).sort((a, b) => b.length - a.length)[0]
+    expect(full).not.toContain('TAPPY_SHOPPING')
+  })
+})
+
+// Food identity flow regression: the collector holds enrichment carved by
+// splitToolResult (order_links / photos when present), and the `a:` frame the
+// model sees carries the Google Places identity (place_id, website_uri). Both
+// paths must land on the same object so resolvePlaces() delivers a record the
+// late photo resolver (resolvePlacePhotos in tools/common) can use for the
+// identity-driven photo path. The old merge gated on hasPhoto() and would
+// silently drop identity in the real post-B7-A case where the collector holds
+// order_links but no photo.
+describe('applyPlaceEnrichmentStreamFilter — Food identity flow (place_id / website_uri)', () => {
+  const line0 = (s: string) => '0:' + JSON.stringify(s)
+
+  it('identity from the `a:` frame merges onto the collector entry (post-B7-A Food shape)', async () => {
+    const collector = createEnrichmentCollector()
+    collector.add([{
+      name: 'Example Cafe',
+      order_links: [{ name: 'ShopeeFood', url: 'https://shopeefood.vn/x' }],
+    }])
+    let seen: { places?: Array<{ name?: string; place_id?: string; website_uri?: string }> } | undefined
+    const filtered = applyPlaceEnrichmentStreamFilter(
+      new Response([
+        '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+        'a:{"toolCallId":"t1","result":{"results":[{"name":"Example Cafe","place_id":"google-place-id","website_uri":"https://example.com"}]}}',
+        line0('**Example Cafe** ngon.'),
+        'd:{"finishReason":"stop"}',
+      ].join('\n') + '\n'),
+      'vi',
+      collector,
+      undefined,
+      async (evidence) => { seen = evidence as typeof seen },
+    )
+    await new Response(filtered.body).text()
+    expect(seen?.places).toBeDefined()
+    const cafe = seen!.places!.find(p => p.name === 'Example Cafe')
+    expect(cafe?.place_id).toBe('google-place-id')
+    expect(cafe?.website_uri).toBe('https://example.com')
   })
 })

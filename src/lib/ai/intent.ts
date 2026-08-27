@@ -234,6 +234,24 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
   return null
 }
 
+/**
+ * Is this a TRAVEL turn (flight / hotel / route / trip)? — the trigger for the
+ * fail-closed travel guard (P0). Deliberately BROADER than detectForcedTool's
+ * per-tool patterns: it must catch a bare route like "đi từ HCM đi Nha Trang"
+ * that names no tool keyword, because that is exactly the phrasing that led the
+ * model to invent a fare. Over-detecting is SAFE — the guard only ever removes an
+ * UNGROUNDED dynamic fact, so a non-travel turn with no fabricated price is
+ * untouched; the only cost of a false positive is that the turn buffers.
+ */
+export function detectTravelIntent(text: string): boolean {
+  const t = normalizeVN(text.toLowerCase().trim())
+  if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|\bmay bay\b|vietjet|bamboo|pacific airlines|vietnam airlines|gia phong|gia ve|khach san|resort|dat phong|homestay|nha nghi|du lich|flight|airfare|\bhotel\b|xe khach|tau hoa|tau lua|duong sat|ve xe|ve tau|di chuyen (tu|den|toi)/.test(t)) return true
+  // A route: "(đi) từ X đi/đến/tới/ra/sang Y", or English "from X to Y".
+  if (/\btu\b .+ \b(di|den|toi|ra|sang|ve)\b .+/.test(t)) return true
+  if (/\bfrom\b .+ \bto\b .+/.test(t)) return true
+  return false
+}
+
 // ── Where in a decision is the user? (C2) ────────────────────────────────────
 //
 // The existing signals answer "which tool?". This one answers "which STAGE?" —
@@ -441,6 +459,30 @@ export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   if (hasTripKw && hasDestination) return 'trip'
 
   return null
+}
+
+// A MOVIE/SHOW something-to-watch cue: the reply is a recommendation from film
+// knowledge, not a venue search.
+const movieRe = /\bphim\b|\bmovie\b|\bseries\b|phim bo|\banime\b|\bnetflix\b|\bshow\b/
+// The user is asking us to SUGGEST what to watch (not to find a place).
+const recommendWatchRe = /muon xem|thich xem|xem gi|coi gi|phim gi|xem phim gi|nao hay|\bhay\b|dang xem|nen xem|goi y|de xuat|recommend|co gi hay|xem gi toi nay|nhe nhang|hai huoc|kinh di|tinh cam|hanh dong|vien tuong|tam ly/
+// A cinema / showtime / ticket ask — a place search IS appropriate, so this
+// DISABLES the recommendation route even when a movie word is present.
+const cinemaVenueRe = /\brap\b|rap phim|rap chieu|cinema|\bcgv\b|galaxy|lotte|\bbhd\b|suat chieu|lich chieu|dang chieu|\bve\b|gia ve|dat ve|o dau|gan\s+(day|nha|minh|quan|toi|q\.)|showtime|nearby cinema|where to watch/
+
+/**
+ * True when the turn is a MOVIE/SHOW RECOMMENDATION request ("what should I
+ * watch"), NOT a cinema / showtime / ticket lookup. Used to keep such a request
+ * from being routed to the place search (which answers with cinemas) — the model
+ * should recommend titles from general film knowledge instead. A venue/showtime
+ * cue (rạp, suất chiếu, vé, "gần Q1", "đang chiếu") always wins, so a mixed
+ * "phim nào hay và rạp nào gần tôi" keeps the place tool.
+ */
+export function detectMovieRecommendationIntent(text: string): boolean {
+  const t = normalizeVN(text.toLowerCase())
+  if (!movieRe.test(t)) return false
+  if (cinemaVenueRe.test(t)) return false
+  return recommendWatchRe.test(t)
 }
 
 /** Asks WHERE without naming anywhere — a weak signal, never decisive alone. */
