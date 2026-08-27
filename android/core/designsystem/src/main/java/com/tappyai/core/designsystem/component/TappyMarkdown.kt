@@ -181,11 +181,46 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
 // scan; any unterminated marker is emitted literally.
 // ---------------------------------------------------------------------------------------------
 
-private fun buildInlineAnnotated(
+internal fun buildInlineAnnotated(
     text: String,
     codeBackground: Color,
     linkColor: Color,
 ): AnnotatedString = buildAnnotatedString {
+    appendInline(text, codeBackground, linkColor, depth = 0)
+}
+
+/**
+ * How deep nested inline markup is followed before the remainder is emitted literally.
+ *
+ * Bold cannot nest inside bold (the scan closes on the FIRST `**`), so real content sits at depth
+ * 1-2 — `**[label](url)**` is one level. The cap exists only so a pathological string such as
+ * `*_*_*_*_…` cannot recurse far enough to overflow the stack; markdown that hits it degrades to
+ * literal text, which is this renderer's documented behaviour for anything it cannot parse.
+ */
+private const val MAX_INLINE_DEPTH = 8
+
+/**
+ * Appends [text] with inline markup applied, RECURSING into the content of bold, italic and link
+ * spans instead of appending it raw.
+ *
+ * 🚨 REGRESSION (permanent): the bold branch used to do `append(text.substring(i + 2, end))`, which
+ * emitted everything between the `**` pairs as literal characters. So a bolded link —
+ * `**[Golden Line Hotel Danang](https://booking.com/…)**`, exactly the shape prompt rule R13 asks
+ * the model to write for hotels — rendered the raw markdown to the user instead of a bold,
+ * clickable name. Italic had the same defect, and link text could not carry emphasis.
+ *
+ * Code spans deliberately do NOT recurse: their content is literal by definition.
+ */
+private fun AnnotatedString.Builder.appendInline(
+    text: String,
+    codeBackground: Color,
+    linkColor: Color,
+    depth: Int,
+) {
+    if (depth >= MAX_INLINE_DEPTH) {
+        append(text)
+        return
+    }
     var i = 0
     val n = text.length
     while (i < n) {
@@ -195,6 +230,7 @@ private fun buildInlineAnnotated(
                 val end = text.indexOf('`', i + 1)
                 if (end > i) {
                     withStyle(SpanStyle(fontFamily = FontFamily.Monospace, background = codeBackground)) {
+                        // Literal on purpose — markup inside a code span is content, not formatting.
                         append(text.substring(i + 1, end))
                     }
                     i = end + 1
@@ -206,7 +242,7 @@ private fun buildInlineAnnotated(
                 val end = text.indexOf("**", i + 2)
                 if (end > i) {
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(text.substring(i + 2, end))
+                        appendInline(text.substring(i + 2, end), codeBackground, linkColor, depth + 1)
                     }
                     i = end + 2
                 } else {
@@ -217,7 +253,7 @@ private fun buildInlineAnnotated(
                 val end = text.indexOf(c, i + 1)
                 if (end > i) {
                     withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                        append(text.substring(i + 1, end))
+                        appendInline(text.substring(i + 1, end), codeBackground, linkColor, depth + 1)
                     }
                     i = end + 1
                 } else {
@@ -245,7 +281,8 @@ private fun buildInlineAnnotated(
                                 ),
                             ),
                         ) {
-                            append(linkText)
+                            // Recurse so `[Hotel **details**](url)` keeps its emphasis.
+                            appendInline(linkText, codeBackground, linkColor, depth + 1)
                         }
                         i = closeParen + 1
                     } else {

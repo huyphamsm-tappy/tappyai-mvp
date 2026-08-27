@@ -42,4 +42,9 @@ dependencies {
     implementation(libs.coil.compose)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    // Unit tests for the pure inline-markdown builder. `buildInlineAnnotated` returns an
+    // AnnotatedString — plain data — so its spans and link annotations are assertable without
+    // Compose UI testing, Robolectric or a device.
+    testImplementation(libs.junit)
 }

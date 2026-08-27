@@ -229,8 +229,12 @@ android {
         // `[TAPPY_SHOPPING]` parser that vc9 lacked — without it a Shopping question rendered the
         // raw server marker JSON into the chat (production P0). A shipped versionCode is never
         // reused even when the prior one was never uploaded — Play rejects a reused code outright.
-        versionCode = 10
-        versionName = "0.1.5"
+        // 11, not 10 — vc10 (0.1.5) is SPENT: that AAB was built, signed and installed on the
+        // SM-A127F. This build adds the nested-inline markdown fix, without which a bolded link
+        // (`**[Hotel](url)**`, the shape rule R13 asks the model to write) rendered as raw
+        // markdown. A shipped versionCode is never reused even when the prior was never uploaded.
+        versionCode = 11
+        versionName = "0.1.6"
 
         vectorDrawables {
             useSupportLibrary = true
