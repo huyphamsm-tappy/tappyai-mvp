@@ -101,11 +101,21 @@ const IMPLICIT_PURCHASE_INTENT = new RegExp([
   // Bare "an X o dau", "mua X o dau", "an gi", "mua gi"
   '\\b(an|mua|uong|choi|thu|di|xem) (o dau|cai gi|gi|the nao|nao)',
   '\\bmua (op|ban|dien thoai|laptop|may|tai nghe|dong ho|xe|do|cuon|quan|ao|giay|balo|nhan|vo|ung|dau|mat|kinh|nuoc hoa|do choi|thuoc|thu)\\b',
+  // Product-noun-first refinement pattern — the 2026-08-27 "hàng chính hãng"
+  // case: user said "ốp nhựa cứng (bảo vệ tốt, giá trung bình) hàng chính hãng"
+  // as a refinement of a prior "muốn mua ốp lưng". The verb "muốn/mua" was in the
+  // prior turn; the refinement carries the noun + qualifiers only. Match the
+  // Vietnamese shopping-object nouns followed by common qualifiers, and the
+  // "hang chinh hang" / "chinh hang" quality phrase alone as an intent signal.
+  '\\b(op|op lung|op dien thoai|tai nghe|laptop|dien thoai|dong ho|balo|giay|ao|quan|kinh|dau|mat|nuoc hoa|do choi|thuoc|may|xe) (silicone|nhua|nhua cung|da|kim loai|thep|carbon|magsafe|magnetic|chong soc|chinh hang|hang chinh hang)',
+  '\\b(hang chinh hang|chinh hang|hang chuan|hang thuong|hang xach tay)\\b',
   // English
   '\\bi (?:want to|would like to|need to|wanna) (buy|find|eat|drink|try|book|go|rent)\\b',
   '\\blooking (for|to buy|to eat|to book|to rent)\\b',
   '\\bwhere (can|should|do) i (buy|find|eat|go|stay|book)\\b',
   '\\brecommend (?:me )?(?:a |some |the )?(good|nice|best)?',
+  // English refinement — quality qualifiers stated after a prior purchase turn
+  '\\b(genuine|authentic|official|brand[- ]new|original|premium) (product|item|one|version)?\\b',
 ].join('|'))
 
 /**

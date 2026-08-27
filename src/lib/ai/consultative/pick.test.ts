@@ -333,6 +333,35 @@ describe('PICK-08 — implicit purchase intent enables a Pick without stated cri
     expect(hasImplicitPurchaseIntent('   ')).toBe(false)
   })
 
+  // Round-2 owner-reported: the assistant asked "bạn muốn loại nào?" and the user
+  // answered "ốp nhựa cứng (bảo vệ tốt, giá trung bình) hàng chính hãng nha" — a
+  // refinement turn with a noun + qualifiers, no bare verb. The Round-1 regex did
+  // NOT catch this and the model then asked ANOTHER clarification ("hãng nào?").
+  it('Round-2 regression: catches "op nhua cung hang chinh hang" (refinement noun-first pattern)', () => {
+    expect(hasImplicitPurchaseIntent('ốp nhựa cứng (bảo vệ tốt, giá trung bình) hàng chính hãng nha')).toBe(true)
+    expect(hasImplicitPurchaseIntent('ốp lưng silicone chống sốc cho iphone')).toBe(true)
+    expect(hasImplicitPurchaseIntent('tai nghe chống sốc chính hãng')).toBe(true)
+  })
+
+  it('Round-2: bare "hàng chính hãng" / "chính hãng" is an intent signal on its own', () => {
+    // Round-2 refinement pattern — the user's SECOND turn narrows to "chính hãng"
+    // without repeating "muốn mua". This is a decidable narrowing, not a clarification.
+    expect(hasImplicitPurchaseIntent('hàng chính hãng nha')).toBe(true)
+    expect(hasImplicitPurchaseIntent('chính hãng thôi')).toBe(true)
+    expect(hasImplicitPurchaseIntent('hàng xách tay cũng được')).toBe(true)
+  })
+
+  it('Round-2: English equivalents "authentic / official / genuine"', () => {
+    expect(hasImplicitPurchaseIntent('authentic product please')).toBe(true)
+    expect(hasImplicitPurchaseIntent('official version only')).toBe(true)
+    expect(hasImplicitPurchaseIntent('genuine one thanks')).toBe(true)
+  })
+
+  it('Round-2: still does NOT match a bare non-purchase noun ("cái ốp đẹp quá")', () => {
+    expect(hasImplicitPurchaseIntent('cái ốp đẹp quá')).toBe(false)
+    expect(hasImplicitPurchaseIntent('the phone case is nice')).toBe(false)
+  })
+
   it('with no priority stated, the signal enables a Pick when candidates are rankable', () => {
     const need = profile({ priorities: [] })  // no explicit criteria
     const r = rankCandidates(DECISIVE, need)
