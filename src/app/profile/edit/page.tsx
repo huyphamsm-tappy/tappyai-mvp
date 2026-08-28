@@ -94,6 +94,11 @@ export default function EditProfilePage() {
       let data: { ok?: boolean; error?: string; message?: string } = {}
       try { data = await res.json() } catch { /* non-JSON response */ }
       if (!res.ok) throw new Error(data.message || t('editProfile.err.save'))
+      // Same reason as the avatar upload above: /profile/account is a server component and Next
+      // keeps its RSC payload in the CLIENT router cache for ~30s. Save → push() lands back on
+      // it well inside that window, so without this the user is returned to the copy rendered
+      // before the edit and the new name looks like it never saved.
+      router.refresh()
       setSaved(true)
       setTimeout(() => {
         setSaved(false)
