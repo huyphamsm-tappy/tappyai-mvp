@@ -36,9 +36,12 @@ describe('the temporary Zalo diagnostic is gone', () => {
   it('nothing anywhere still references the recorder or its storage key', () => {
     // The listener, the storage key and the reader all have to go together — leaving any one of
     // them is how a "removed" diagnostic keeps writing.
+    // This file is excluded because it names those identifiers itself, in the pattern below and
+    // in the prose above. Without the exclusion the test matches its own text and fails — which
+    // it did in CI, where the file is tracked, while passing locally where it was not yet added.
     const { execSync } = require('node:child_process') as typeof import('node:child_process')
     const hits = execSync(
-      'git grep -l -E "ClientErrorDiag|clientErrorRecord|tappy_diag_v1|DIAG_KEY" -- src || true',
+      'git grep -l -E "ClientErrorDiag|clientErrorRecord|tappy_diag_v1|DIAG_KEY" -- src ":!src/app/temporaryDiagnosticRemoved.test.ts" || true',
       { encoding: 'utf8' },
     ).trim()
     expect(hits, `still referenced in:\n${hits}`).toBe('')
