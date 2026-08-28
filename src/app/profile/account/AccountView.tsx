@@ -1,10 +1,11 @@
 'use client'
 
-import Image from 'next/image'
+import Link from 'next/link'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
-import { Mail, User as UserIcon, Calendar, Edit3 } from 'lucide-react'
+import UserAvatar from '@/components/UserAvatar'
+import { Mail, User as UserIcon, Calendar, Edit3, Camera } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // C14 + C15 — the page next door was a server component, so its copy was written in Vietnamese and
@@ -37,19 +38,19 @@ export default function AccountView({ userInfo, firstName: rawFirstName, joinDat
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         <div className="card p-6 flex flex-col items-center text-center">
-          {userInfo.avatar_url ? (
-            <Image
+          {/* The avatar is the affordance: tapping it goes to /profile/edit, which already owns
+              the picker and the upload. Users were looking for it here, not in a menu row. */}
+          <Link href="/profile/edit" data-testid="account-avatar-edit" aria-label={t('editProfile.changeAvatar')} className="relative">
+            <UserAvatar
               src={userInfo.avatar_url}
-              alt={userInfo.full_name || t('account.avatarAlt')}
-              width={80}
-              height={80}
-              className="w-20 h-20 rounded-2xl object-cover ring-2 ring-primary-100 dark:ring-primary-900"
+              name={userInfo.full_name || firstName}
+              size={80}
+              className="ring-2 ring-primary-100 dark:ring-primary-900"
             />
-          ) : (
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
-              <span className="text-white text-3xl font-bold">{firstName[0]?.toUpperCase()}</span>
-            </div>
-          )}
+            <span className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-interactive flex items-center justify-center shadow-md">
+              <Camera size={13} className="text-white" />
+            </span>
+          </Link>
           <h2 className="font-bold text-gray-900 dark:text-white text-lg mt-3">{userInfo.full_name || firstName}</h2>
           <p className="w-full truncate text-content-secondary text-sm">{userInfo.email}</p>
         </div>

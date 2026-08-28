@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import UserAvatar from '@/components/UserAvatar'
 import { ChevronLeft, Sun, Moon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -118,34 +119,20 @@ export default function Header({ user, showBack, backHref, backFallbackHref, tit
               {dark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <Link href="/profile" className="flex items-center">
-              {user.avatar_url ? (
-                <Image
-                  src={user.avatar_url}
-                  alt={user.full_name || 'Avatar'}
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 rounded-full object-cover ring-2 ring-primary-500/20"
-                />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">
-                    {firstName[0]?.toUpperCase()}
-                  </span>
-                </div>
-              )}
+              <UserAvatar
+                src={user.avatar_url}
+                name={user.full_name || firstName}
+                size={32}
+                rounded="rounded-full"
+                className="ring-2 ring-primary-500/20"
+              />
             </Link>
           </div>
         )}
 
         {user && showBack && title && (
           <Link href="/profile" className="flex-shrink-0">
-            {user.avatar_url ? (
-              <Image src={user.avatar_url} alt="Avatar" width={32} height={32} className="w-8 h-8 rounded-full object-cover" />
-            ) : (
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
-                <span className="text-white text-sm font-semibold">{firstName[0]?.toUpperCase()}</span>
-              </div>
-            )}
+            <UserAvatar src={user.avatar_url} name={user.full_name || firstName} size={32} rounded="rounded-full" />
           </Link>
         )}
       </div>

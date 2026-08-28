@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import UserAvatar from '@/components/UserAvatar'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import MenuItem from '@/components/MenuItem'
@@ -39,19 +39,12 @@ export default function ProfileView({ userId, userInfo, firstName: rawFirstName,
         {/* Profile card */}
         <div className="card p-6">
           <div className="flex items-center gap-4">
-            {userInfo.avatar_url ? (
-              <Image
-                src={userInfo.avatar_url}
-                alt={userInfo.full_name || 'Avatar'}
-                width={64}
-                height={64}
-                className="w-16 h-16 rounded-2xl object-cover ring-2 ring-primary-100 dark:ring-primary-900"
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
-                <span className="text-white text-2xl font-bold">{firstName[0]?.toUpperCase()}</span>
-              </div>
-            )}
+            <UserAvatar
+              src={userInfo.avatar_url}
+              name={userInfo.full_name || firstName}
+              size={64}
+              className="ring-2 ring-primary-100 dark:ring-primary-900"
+            />
             <div className="min-w-0 flex-1">
               <h2 className="font-bold text-gray-900 dark:text-white text-lg">{userInfo.full_name || firstName}</h2>
               <p className="truncate text-content-secondary text-sm">{userInfo.email}</p>
