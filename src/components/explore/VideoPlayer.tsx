@@ -60,6 +60,16 @@ export type VideoPlayerHandle = PlaybackSession
    subsequent clips play with sound automatically. No mute button — sound is
    always on once unlocked (owner's TikTok-style choice). */
 let feedAudioUnlocked = false
+
+/**
+ * Whether the page has already been granted audio by a user gesture.
+ *
+ * The feed reads this to keep its single-tap pause off the ONE tap that does the unlocking.
+ * Measured on production 432cc7e: that tap started the sound and the pause timer then aborted it
+ * 330ms later (`play REJECTED AbortError`), which is why sound only appeared on the second tap.
+ */
+export function isFeedAudioUnlocked(): boolean { return feedAudioUnlocked }
+
 const audioSubs = new Set<() => void>()
 function notifyAudio() { audioSubs.forEach(fn => { try { fn() } catch {} }) }
 if (typeof window !== 'undefined') {

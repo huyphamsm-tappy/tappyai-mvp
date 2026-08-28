@@ -16,7 +16,7 @@ import {
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff,
   X, Loader2, Plus, AlertCircle,
 } from 'lucide-react'
-import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
+import VideoPlayer, { isFeedAudioUnlocked, type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicDisc from './ReviewMusicDisc'
@@ -406,6 +406,12 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
       // first tap → wait; if no second tap lands, it's a single tap → pause/resume
       lastTapRef.current = now
       cancelPendingTap()
+      // ...unless this is the tap that unlocks page audio. Pointer events fire before `click`,
+      // so the unlock flag is still false here for exactly that tap. Measured on production
+      // 432cc7e: the unlock started the sound and this timer paused the clip 330ms later, which
+      // aborted it (`play REJECTED AbortError`) — the reason sound only arrived on tap two.
+      // Costs one tap per session, only while sound is locked; every later tap pauses as before.
+      if (!isFeedAudioUnlocked()) return
       singleTapTimer.current = setTimeout(() => {
         singleTapTimer.current = null
         // Feed expresses INTENT to the session; it never commands a player or
