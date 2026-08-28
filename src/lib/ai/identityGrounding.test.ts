@@ -92,17 +92,21 @@ describe('the detector reports and never rewrites', () => {
   })
 
   it('the enqueued reply is never derived from what the detector found', () => {
+    // The whole span between detection and the emit. Widened from 600 when the second delivery
+    // split (A5-P1) was documented above it — the window must still reach the enqueue, or this
+    // stops checking anything.
     const emit = filter.slice(filter.indexOf('ungroundedNames = ungroundedNamesIn('))
-      .slice(0, 600)
+      .slice(0, 1600)
     // The property this protects: the detector REPORTS and never rewrites.
     //
-    // The emitted variable is no longer `finalText` itself. Phase 1 sends the
-    // shopping decision early, so the final emit carries the prose alone once
-    // the decision has already gone out. That is a DELIVERY split — `outText`
-    // depends only on whether the early frame fired — and it leaves the
-    // property untouched: nothing between detection and emit consults the
-    // detector's result.
-    expect(emit).toContain("controller.enqueue(encoder.encode('0:' + JSON.stringify(outText)")
+    // The emitted variable is no longer `finalText` itself. There are now TWO delivery splits,
+    // and both leave the property untouched because both depend only on what has already been
+    // sent, never on what the detector found:
+    //   · Phase 1 sends the shopping decision early, so the final emit carries the prose alone
+    //     once the decision has gone out (`outText`);
+    //   · A5-P1 releases the money-free opening of a places reply while it streams, so the final
+    //     emit drops that already-sent prefix (`send`).
+    expect(emit).toContain("controller.enqueue(encoder.encode('0:' + JSON.stringify(send)")
     expect(emit).not.toContain('ungroundedNames.')
     expect(emit).not.toContain('presentedNames.')
   })
@@ -113,6 +117,11 @@ describe('the detector reports and never rewrites', () => {
     // is the moment "we noticed a fabricated name" could turn into "we silently
     // edited the user's reply".
     expect(filter).toMatch(/const outText = earlyShoppingMarkerSent \? prose : finalText/)
+    // The second split obeys the same rule: `send` subtracts what was already streamed, and its
+    // only inputs are `flushedText` (delivery state) and `outText`. If a detector result ever
+    // appears in this expression, this fails — which is the moment "we noticed a fabricated name"
+    // could turn into "we silently edited the user's reply".
+    expect(filter).toMatch(/const send = flushedText && outText\.startsWith\(flushedText\)/)
   })
 
   it('the detector still reads the reply WITH the decision in it', () => {

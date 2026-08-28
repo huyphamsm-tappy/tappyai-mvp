@@ -319,7 +319,7 @@ function protectedSpans(text: string): Array<[number, number]> {
 }
 
 /** Sentence spans, bounded so a sentence can never swallow a machine block. */
-function sentenceSpans(text: string): Array<[number, number]> {
+export function sentenceSpans(text: string): Array<[number, number]> {
   const prot = protectedSpans(text)
   const inProtected = (i: number) => prot.some(([a, b]) => i >= a && i < b)
   const bounds = new Set<number>([0, text.length])
