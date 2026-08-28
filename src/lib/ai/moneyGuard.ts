@@ -67,7 +67,29 @@ function maskNonProse(text: string): string {
 // and "5G" out. JS \b is ASCII-only and treats Vietnamese "à" as a non-word
 // character, so "2 màu" matched `M\b` as 2 million — every unit boundary is a
 // Unicode lookahead instead.
-const UNIT_ALT = 'triệu|trieu|tr|million|M|k|nghìn|nghin|ngàn|ngan|₫|đ|VNĐ|VND|USD|dollars?'
+// P0 2026-08-28 — "đồng" spelled out. `đ` was already here, so the engine matched the "đ" of
+// "đồng" and then the mandatory boundary above saw "ồ" and threw the match away; no other
+// alternative could match the word, so "40.000 - 60.000 đồng/tô" was invisible and an invented
+// price reached production. Ten other money forms were probed and already seen — even "1,2 triệu
+// đồng", via "triệu" — which is why reading this line was not enough to notice.
+//
+// It cannot simply be added, because "đồng" also opens compounds and proper nouns that follow a
+// number in perfectly correct replies:
+//
+//   "5 đồng hồ Casio"        a watch — the shopping vocabulary itself
+//   "20 Đồng Khởi, Quận 1"   a street number, in every places reply that prints an address
+//
+// and a false claim is not harmless: the guard REMOVES the sentence carrying it, so a careless
+// widening deletes addresses and product names from correct answers.
+//
+// What separates them is the shape of the AMOUNT, not the word: a VND price is written in
+// thousands ("40.000", "500.000"), while a street number or a count is bare ("20", "5"). So the
+// word counts as a unit only behind a grouped number. Case cannot be used for this — these
+// patterns carry the `i` flag, which makes `\p{Lu}` match lowercase too, so a "next word is
+// capitalised" rule would silently match everything. The one compound that does take a grouped
+// number ("3.000 đồng hồ") is excluded by name.
+const DONG = '(?<=[.,]\\d{3}\\s*)(?:đồng|dong)(?!\\s*(?:hồ|ho|phục|phuc)(?![\\p{L}]))'
+const UNIT_ALT = `triệu|trieu|tr|million|M|k|nghìn|nghin|ngàn|ngan|₫|${DONG}|đ|VNĐ|VND|USD|dollars?`
 const UNIT = `(${UNIT_ALT})(?![\\p{L}\\d])`
 const NUM = '(\\d{1,3}(?:[.,]\\d{3})+|\\d+(?:[.,]\\d{1,2})?)'
 const RANGE_RE = new RegExp(`${NUM}\\s*[–—-]\\s*${NUM}\\s*${UNIT}`, 'giu')

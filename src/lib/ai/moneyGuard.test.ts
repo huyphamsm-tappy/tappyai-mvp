@@ -6,6 +6,7 @@ import {
   classifyIdentity, requestedEntity, structuredPrice, proseOnly, ROUNDING_TOLERANCE,
   type EvidenceRecord,
 } from './moneyGuard'
+import { guardSnippetPricesInText } from './snippetPriceGuard'
 
 // ── C3-B.10 contract for the deterministic money guard ───────────────────────
 //
@@ -397,5 +398,113 @@ describe('C3-B.9 fixtures — real replies against same-turn structured evidence
     const claims = judgeMoneyClaims(f.reply, f.records, f.shoppingQueries)
     const bose = claims.filter(c => (c.entity ?? '').includes('bose'))
     for (const c of bose) expect(c.verdict).not.toBe('VERIFIED')
+  })
+})
+
+// ── P0 2026-08-28 — the guard was blind to the WORD "đồng" ───────────────────
+//
+// Found on production 1867835 while verifying the latency fix. A food follow-up with no
+// retrieval answered:
+//
+//   "…hủ tiếu nam vang ở Phú Nhuận thường có giá khoảng **40.000 - 60.000 đồng/tô**…"
+//
+// and guardSnippetPricesInText(reply, [], '') returned redacted = 0. An invented price reached
+// the user through the guard that exists to stop exactly that.
+//
+// The cause was one character of boundary. `đ` was in UNIT_ALT, so the engine matched the "đ" of
+// "đồng" and then the mandatory unit boundary `(?![\p{L}\d])` saw "ồ" and rejected the whole
+// match — no other alternative could match "đồng", so the amount was invisible.
+//
+// Probing eleven money forms found ten already seen and exactly this one blind, which is why
+// reading UNIT_ALT was not enough to notice: even "1,2 triệu đồng" is caught, via "triệu". Only a
+// bare amount whose ONLY unit is the spelled-out word slipped. Every A5/A5.1 fixture writes "đ";
+// production writes "đồng".
+//
+// 🚨 The list below is the probe. It stays as one table so a future edit to UNIT_ALT is measured
+// against every form at once, not just the one being added.
+describe('P0 — the spelled-out currency word "đồng" is a money claim', () => {
+  const PRODUCTION = 'Hủ tiếu nam vang ở Phú Nhuận thường có giá khoảng **40.000 - 60.000 đồng/tô** tùy loại.'
+
+  it('reproduces the production escape: the fabricated price is redacted', () => {
+    const out = guardSnippetPricesInText(PRODUCTION, [], '')
+    expect(out.redacted).toBeGreaterThan(0)
+    expect(out.text).not.toContain('40.000')
+    expect(out.text).not.toContain('60.000')
+  })
+
+  describe('every spelling of the word is caught', () => {
+    for (const form of ['40.000 - 60.000 đồng/tô', '40.000 - 60.000 Đồng/tô', '40.000 - 60.000 ĐỒNG/tô', '40.000 - 60.000 dong/tô', '50.000 đồng.', '50.000 đồng một tô']) {
+      it(`"${form}"`, () => {
+        const claims = extractMoneyClaims(`Món này thường có giá khoảng ${form}`)
+        expect(claims).toHaveLength(1)
+        expect(claims[0].lo).toBe(form.startsWith('50') ? 50000 : 40000)
+        expect(claims[0].currency).toBe('VND')
+      })
+    }
+  })
+
+  describe('the forms that already worked still work', () => {
+    // The regression this table exists to prevent: "fixing đồng" by rewriting the unit grammar
+    // and silently dropping one of these.
+    // Each row lists EVERY amount the form yields. "40k - 60k" is deliberately two claims, not a
+    // range: the dash follows the "k", so RANGE_RE cannot span it and each amount is matched on
+    // its own. Pinning the count keeps a widened unit grammar from quietly merging or splitting.
+    for (const [form, los] of [
+      ['40.000 - 60.000 đ/tô', [40000]], ['40.000 - 60.000 VNĐ/tô', [40000]], ['40.000 - 60.000 VND/tô', [40000]],
+      ['40k - 60k/tô', [40000, 60000]], ['40 - 60 nghìn/tô', [40000]], ['40 - 60 ngàn/tô', [40000]],
+      ['1,2 triệu đồng/đêm', [1.2e6]], ['7.000.000₫', [7e6]], ['$699', [699]],
+    ] as const) {
+      it(`"${form}"`, () => {
+        const c = extractMoneyClaims(`Giá khoảng ${form}`)
+        expect(c.map(x => x.lo)).toEqual([...los])
+      })
+    }
+  })
+
+  // ── The false positives that make this more than a one-token edit ──────────
+  //
+  // "đồng" is also the first syllable of compounds and of proper nouns, and BOTH forms follow a
+  // number in ordinary replies:
+  //
+  //   "5 đồng hồ Casio"        — a watch is the shopping vocabulary itself (see pick.test.ts)
+  //   "20 Đồng Khởi, Quận 1"   — a street number, in every places reply that prints an address
+  //
+  // A false claim here is not harmless: the guard REMOVES the sentence that carries it, so a
+  // careless widening would delete addresses and product names from correct replies.
+  describe('ordinary prose does not become a money claim', () => {
+    for (const text of [
+      'Mình tìm được 5 đồng hồ Casio cho bạn.',
+      'Cửa hàng có hơn 3.000 đồng hồ đang bán.',
+      'Quán ở 20 Đồng Khởi, Quận 1.',
+      'Địa chỉ 15 Đồng Nai, Tân Bình.',
+      'Quán nằm ở 100 Đồng Đen.',
+      'Shop bán 10 đồng phục học sinh.',
+      'Số 20 Dong Khoi, Quan 1.',
+    ]) {
+      it(`"${text}"`, () => expect(extractMoneyClaims(text)).toEqual([]))
+    }
+
+    it('KNOWN RESIDUAL: a street number written in thousands is read as an amount', () => {
+      // "1.000 Đồng Khởi" is indistinguishable from a price by amount shape, which is the only
+      // signal available — the `i` flag rules out testing the following word's case. It is
+      // recorded rather than fixed: Vietnamese house numbers are not written with a thousands
+      // separator, and the alternative (refusing "đồng" before any word) would reopen the P0 for
+      // "50.000 đồng một tô". Left deliberately, and pinned so a future reader sees the trade.
+      expect(extractMoneyClaims('Quán số 1.000 Đồng Khởi.')).toHaveLength(1)
+    })
+  })
+
+  describe('the surrounding policy is unchanged', () => {
+    it('a "đồng" price backed by snippet evidence stays visible', () => {
+      const out = guardSnippetPricesInText('Tô hủ tiếu khoảng 50.000 đồng.', [50_000], '')
+      expect(out.redacted).toBe(0)
+      expect(out.text).toContain('50.000 đồng')
+    })
+
+    it("the user's own number is still exempt", () => {
+      const out = guardSnippetPricesInText('Với ngân sách 500.000 đồng bạn có nhiều lựa chọn.', [], 'dưới 500.000 đồng')
+      expect(out.redacted).toBe(0)
+      expect(out.text).toContain('500.000 đồng')
+    })
   })
 })
