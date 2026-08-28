@@ -9,6 +9,8 @@ import LanguagePicker from '@/components/LanguagePicker'
 import HtmlLangSync from '@/components/HtmlLangSync'
 import AppLanguageFetch from '@/components/AppLanguageFetch'
 import VersionWatcher from '@/components/VersionWatcher'
+// TEMPORARY DIAGNOSTIC — remove with the Zalo/Chat/Home P0 fix.
+import ClientErrorDiag from '@/components/ClientErrorDiag'
 
 // og:image / og:url / og:site_name / twitter:* all come from buildSiteMetadata.
 // They were absent before, which is why a pasted TappyAI link rendered as bare
@@ -45,6 +47,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className="antialiased">
+        {/* TEMPORARY DIAGNOSTIC — remove with the Zalo/Chat/Home P0 fix. Passive listeners that
+            record a client exception into this tab's sessionStorage so it can be read at /diag on
+            an iPhone, where no console is reachable without a Mac. Sends nothing, suppresses
+            nothing, renders nothing. First in the tree so it is listening before anything else
+            can throw. */}
+        <ClientErrorDiag />
         {/* C29 — attaches the chosen UI language to every request this app makes to its own API.
             First in the tree so its module is evaluated before anything can fetch. */}
         <AppLanguageFetch />
