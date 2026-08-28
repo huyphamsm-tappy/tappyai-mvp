@@ -4,6 +4,7 @@ import type { EnrichmentCollector } from './toolResultSplit'
 import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText } from './travelGuard'
 import { guardSnippetPricesInText, pricesFromSnippets } from './snippetPriceGuard'
+import { safeFlushPoint } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
@@ -705,6 +706,22 @@ export function applyPlaceEnrichmentStreamFilter(
   // no-retrieval turns — short conversational replies, where the cost is small and the exposure
   // is highest.
   if (placeIntent) bufferMode = true
+  /**
+   * A5-P1. Buffering the WHOLE places reply was broader than the danger: measured on production
+   * 63313d5, shopping showed content at 2.2s and food at 15.4s with the same pipeline and the same
+   * total — 13.5s of blank screen.
+   *
+   * So the reply still buffers and the guard still runs on all of it, but the part that is
+   * PROVABLY not redactable is released as it arrives. `safeFlushPoint` only ever returns whole
+   * sentences containing no money claim, and the guard only ever removes sentences that contain
+   * one — so nothing released here could have been taken away later.
+   *
+   * Stops the moment a place tool appears: after that, `injectPlaceEnrichment` rewrites the text
+   * to position photos, and text already sent cannot be repositioned.
+   */
+  const progressive = placeIntent && !travelIntent
+  let placeToolSeen = false
+  let flushedText = ''
   /** True once the shopping decision has gone out early, so it is not sent twice. */
   let earlyShoppingMarkerSent = false
   /**
@@ -975,7 +992,16 @@ export function applyPlaceEnrichmentStreamFilter(
     // tool result, only the prose is left — re-sending the marker here would
     // put a second copy in the message text and render a duplicate card.
     const outText = earlyShoppingMarkerSent ? prose : finalText
-    if (outText) controller.enqueue(encoder.encode('0:' + JSON.stringify(outText) + '\n'))
+    // A5-P1: whatever was already released early must not be sent a second time. The released
+    // prefix is money-free whole sentences taken from before any place tool, so neither the guard
+    // (which only removes sentences carrying a money claim) nor the photo injector (which writes
+    // around place names, all of which arrive after the tool) rewrites it — `outText` still starts
+    // with it. The `startsWith` check is the belt: if that ever stopped holding, repeating a short
+    // opening line is a far better failure than silently dropping the reply.
+    const send = flushedText && outText.startsWith(flushedText)
+      ? outText.slice(flushedText.length)
+      : outText
+    if (send) controller.enqueue(encoder.encode('0:' + JSON.stringify(send) + '\n'))
   }
 
   const transform = new TransformStream<any, any>({
@@ -1000,7 +1026,17 @@ export function applyPlaceEnrichmentStreamFilter(
               mainText += delta
               assistantSoFar += delta
             } catch { /* skip malformed */ }
-            // buffered — re-emitted (repositioned) at 'd:'; not streamed live
+            // A5-P1: release the part that the guard provably cannot touch, instead of making the
+            // user wait for the whole reply. Only before a place tool — see `progressive`.
+            if (progressive && !placeToolSeen) {
+              const point = safeFlushPoint(mainText)
+              if (point > flushedText.length) {
+                const slice = mainText.slice(flushedText.length, point)
+                flushedText = mainText.slice(0, point)
+                controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+              }
+            }
+            // the rest stays buffered — re-emitted (repositioned) at 'd:'
           } else {
             // Live path (intro / chitchat — no place tool ran, so nothing is
             // buffered). Strip whole scaffolding tags that land inside a single
@@ -1042,7 +1078,7 @@ export function applyPlaceEnrichmentStreamFilter(
           try {
             const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
-            if (call.toolName && PLACE_TOOLS.has(call.toolName)) bufferMode = true
+            if (call.toolName && PLACE_TOOLS.has(call.toolName)) { bufferMode = true; placeToolSeen = true }
             // C3-B.10: the money guard needs to know WHAT was asked for. The
             // tool's own query is the only deterministic source — and it is what
             // distinguishes "đệm tai cho WH-1000XM5" (an accessory request,
