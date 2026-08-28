@@ -29,6 +29,13 @@ const nextConfig = {
       // Music-library cover art hotlinked from Jamendo (CC-BY tracks) — without
       // this the next/image optimizer 400s and the covers render broken.
       { protocol: 'https', hostname: '*.jamendo.com' },
+      // Zalo profile photos. A Zalo sign-in stores the avatar Zalo gives us
+      // (graph.zalo.me → picture.data.url), which is served from Zalo's own CDN:
+      // s120-ava-talk.zadn.vn, photo-talk-cdn.zadn.vn, and other shards. Missing
+      // here, the optimizer answered 400 for every Zalo user and their avatar was
+      // a broken image on every screen — measured on production 53052c9. Google's
+      // host was already listed, which is why only Zalo sign-ins were affected.
+      { protocol: 'https', hostname: '*.zadn.vn' },
     ],
   },
   async headers() {

@@ -3,7 +3,7 @@
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
+import UserAvatar from '@/components/UserAvatar'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Check, Save, Loader2, Camera } from 'lucide-react'
@@ -126,19 +126,12 @@ export default function EditProfilePage() {
         {/* Avatar */}
         <div className="flex flex-col items-center gap-3">
           <div className="relative">
-            {displayAvatar ? (
-              <Image
-                src={displayAvatar}
-                alt="Avatar"
-                width={96}
-                height={96}
-                className={`w-24 h-24 rounded-2xl object-cover ring-2 ring-primary-100 dark:ring-primary-900 transition-opacity ${uploadingAvatar ? 'opacity-60' : ''}`}
-              />
-            ) : (
-              <div className={`w-24 h-24 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center transition-opacity ${uploadingAvatar ? 'opacity-60' : ''}`}>
-                <span className="text-white text-4xl font-bold">{firstName[0]?.toUpperCase()}</span>
-              </div>
-            )}
+            <UserAvatar
+              src={displayAvatar}
+              name={profile.full_name || firstName}
+              size={96}
+              className={`ring-2 ring-primary-100 dark:ring-primary-900 transition-opacity ${uploadingAvatar ? 'opacity-60' : ''}`}
+            />
             {uploadingAvatar && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <Loader2 size={28} className="animate-spin text-white drop-shadow" />
