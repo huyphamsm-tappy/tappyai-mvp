@@ -1078,7 +1078,22 @@ export function applyPlaceEnrichmentStreamFilter(
           try {
             const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
-            if (call.toolName && PLACE_TOOLS.has(call.toolName)) { bufferMode = true; placeToolSeen = true }
+            if (call.toolName && PLACE_TOOLS.has(call.toolName)) {
+              // The pre-tool segment is now COMPLETE, so its final sentence is a real sentence end
+              // and may be released — the usual "the last one might still be arriving" caution no
+              // longer applies. Without this the common "one opening sentence, then the tool" shape
+              // released nothing and the user still stared at ~13.6s of blank screen.
+              if (progressive && !placeToolSeen) {
+                const point = safeFlushPoint(mainText, true)
+                if (point > flushedText.length) {
+                  const slice = mainText.slice(flushedText.length, point)
+                  flushedText = mainText.slice(0, point)
+                  controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+                }
+              }
+              bufferMode = true
+              placeToolSeen = true
+            }
             // C3-B.10: the money guard needs to know WHAT was asked for. The
             // tool's own query is the only deterministic source — and it is what
             // distinguishes "đệm tai cho WH-1000XM5" (an accessory request,

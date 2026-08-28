@@ -159,3 +159,26 @@ describe('mutation guards — the safety condition must be load-bearing', () => 
     expect(safeFlushPoint(partial)).toBeLessThan(partial.length)
   })
 })
+
+describe('segmentComplete — the pre-tool segment has finished arriving', () => {
+  it('releases the final sentence once the caller knows no more text is coming', () => {
+    const text = 'Mình tìm quán bún bò ở Quận 3 nhé.'
+    // Mid-stream the last sentence waits...
+    expect(safeFlushPoint(text)).toBe(0)
+    // ...but at the tool frame the segment is complete, so it may go.
+    expect(safeFlushPoint(text, true)).toBe(text.length)
+  })
+
+  it('still refuses to release a priced final sentence, complete or not', () => {
+    const text = `Mình tìm quán nhé. ${FABRICATED}`
+    const cut = text.slice(0, safeFlushPoint(text, true))
+
+    expect(cut).toBe('Mình tìm quán nhé.')
+    expect(cut).not.toContain('30.000')
+    expect(guardSnippetPricesInText(cut, [], '').redacted).toBe(0)
+  })
+
+  it('releases nothing when the whole complete segment carries a price', () => {
+    expect(safeFlushPoint(FABRICATED, true)).toBe(0)
+  })
+})

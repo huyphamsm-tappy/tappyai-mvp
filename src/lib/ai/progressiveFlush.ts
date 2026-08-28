@@ -40,7 +40,7 @@ import { extractMoneyClaims, sentenceSpans } from './moneyGuard'
  * 0 means "release nothing yet". The result never decreases as `accumulated` grows, so a caller
  * can simply track how much it has already sent.
  */
-export function safeFlushPoint(accumulated: string): number {
+export function safeFlushPoint(accumulated: string, segmentComplete = false): number {
   if (!accumulated) return 0
 
   // Where the money claims are. One pass over the whole text: cheap, and it is the same reading
@@ -51,9 +51,15 @@ export function safeFlushPoint(accumulated: string): number {
   let point = 0
   for (const [, end] of sentenceSpans(accumulated)) {
     // Never release a sentence that has not finished arriving: its amount may still be in flight.
-    // `sentenceSpans` always closes the final span at text end, so that last span is only a real
-    // boundary when the text genuinely ends there — which, mid-stream, it does not.
-    if (end >= accumulated.length) break
+    // `sentenceSpans` always closes the final span at text end, so mid-stream that last span is
+    // not a real boundary — it is just where the text happens to stop.
+    //
+    // `segmentComplete` says the caller KNOWS no more text is coming for this segment (it has
+    // reached the tool call), so the final span is a genuine sentence end and may be released.
+    // Without this, the common shape "one short opening sentence, then the tool" released nothing
+    // at all: measured on production d54e9e9, spa and the food follow-up still waited ~13.6s while
+    // food — whose opening ran longer — dropped to 3.2s.
+    if (end >= accumulated.length && !segmentComplete) break
     // Stop at the first sentence that reaches into a money claim.
     if (end > firstClaimStart) break
     point = end
