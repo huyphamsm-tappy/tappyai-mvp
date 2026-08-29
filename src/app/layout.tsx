@@ -18,6 +18,14 @@ const share = buildSiteMetadata('vi')
 export const metadata: Metadata = {
   ...share,
   manifest: '/manifest.json',
+  // Official TappyAI app icon (public/branding/otter-logo.png) as the favicon /
+  // shortcut / apple-touch-icon, so Chrome shows the brand icon instead of the
+  // generated "T" letter tile. Reuses the existing asset — no new image.
+  icons: {
+    icon: '/branding/otter-logo.png',
+    shortcut: '/branding/otter-logo.png',
+    apple: '/branding/otter-logo.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
