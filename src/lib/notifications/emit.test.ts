@@ -71,7 +71,9 @@ describe('emitNotification — persist + push (single writer)', () => {
   it('records push_status=sent with attempts+sent_at when a device received it', async () => {
     h.sendMock.mockResolvedValue({ attempted: 1, sent: 1, failed: 0, gone: 0 })
     const res = await emitNotification({ userId: 'u1', type: 'follow', category: 'social', title: 'T', body: 'B' })
-    expect(res).toEqual({ id: 'n1', pushStatus: 'sent' })
+    // `push` added 2026-08-29 (additive). Asserted in full rather than relaxed
+    // to `toMatchObject`, so an unintended extra field still fails here.
+    expect(res).toEqual({ id: 'n1', pushStatus: 'sent', push: { attempted: 1, sent: 1, failed: 0, gone: 0 } })
     expect(h.state.updated.push_status).toBe('sent')
     expect(h.state.updated.push_attempts).toBe(1)
     expect(h.state.updated.push_sent_at).toBeTruthy()

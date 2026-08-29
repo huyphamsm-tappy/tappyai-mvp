@@ -10,6 +10,7 @@ import type { ControllerHomeData, HomeAuditEvent } from '@/components/admin/home
 import { homeMode, departmentSummaries } from '@/lib/controller/org'
 import { resolveDepartmentContext } from '@/lib/controller/org/server'
 import { resolveEntryContext } from '@/lib/controller/org/entryContext'
+import { moduleDepartment } from '@/lib/controller/org/navDepartment'
 import { WorkspaceChooser } from '@/components/controller/WorkspaceChooser'
 import { fetchHomeKpis } from '@/lib/admin/analytics/homeSnapshotService'
 import { vnToday } from '@/lib/config/product'
@@ -38,9 +39,10 @@ export default async function AdminHomePage({ searchParams }: { searchParams?: {
     hubsTotal: core.listHubs().length,
   }
 
-  const quickActions = deriveNavigation(core, actor)
-    .flatMap((g) => g.items)
-    .map((i) => ({ moduleId: i.moduleId, label: i.label, icon: i.icon, route: i.route }))
+  // PDP-derived navigation items. Department scoping is applied further down,
+  // once `resolveEntryContext` has said which department (if any) was chosen —
+  // the two are separate decisions and are kept that way.
+  const navItems = deriveNavigation(core, actor).flatMap((g) => g.items)
 
   // PDP-gated real signals — only what THIS actor may see.
   const canRoles = permissionEngine.can(actor, PERMISSIONS.SECURITY_ROLES_READ)
@@ -144,9 +146,56 @@ export default async function AdminHomePage({ searchParams }: { searchParams?: {
   // Entering with a chosen context narrows the HOME's department presentation to
   // that department. Owner and `none` keep `selectedDepartmentId === null`, so
   // both are byte-for-byte unchanged from V2.1.
+  //
+  // 🔑 V2.4 BUG FIX. This value was computed here and then NEVER USED — the data
+  // object below passed the unfiltered `departments`, so `?dept=` narrowed
+  // nothing and a member with three memberships still saw all three on Home.
+  // The variable name and the comment made it read as implemented; only a grep
+  // for its single occurrence exposed it. `d14EntryIntegration.test.tsx` now
+  // covers this wiring at page level, which is where the gap was — the resolver
+  // itself was correct and well tested throughout.
+  //
+  // Presentation only: `departments` is ALREADY the isolation boundary
+  // (`authorizedScopes` → active memberships), so this can only narrow a set the
+  // actor was already entitled to see. No authorization decision reads it.
   const presentedDepartments = entry.selectedDepartmentId
     ? departments.filter((d) => d.id === entry.selectedDepartmentId)
     : departments
+
+  // ── V2.4 — WHICH FUNCTIONS THIS HOME OFFERS ────────────────────────────────
+  //
+  // `navItems` is already PDP-filtered. Entering with a chosen department also
+  // narrows it: another department's modules are not this workspace's functions.
+  // Department-NEUTRAL modules (Home, Settings — anything no department owns)
+  // always stay; their PDP guard is their only gate, and hiding them would make
+  // a scoped Home less usable without making anything safer.
+  //
+  // ⚠️ PRESENTATION ONLY, AND ONLY ON SELECTION. With no `?dept=` this is the
+  // identity function, so the Owner view and the `none` view are unchanged. The
+  // SIDEBAR is not touched here at all — `admin/layout.tsx` keeps deriving it
+  // from the actor's full membership set, exactly as D14 requires.
+  const scopedNavItems = entry.selectedDepartmentId
+    ? navItems.filter((i) => {
+        const owner = moduleDepartment(i.moduleId)
+        return owner === null || owner === entry.selectedDepartmentId
+      })
+    : navItems
+
+  const toLink = (i: (typeof navItems)[number]) => ({
+    moduleId: i.moduleId,
+    label: i.label,
+    icon: i.icon,
+    route: i.route,
+  })
+
+  const quickActions = scopedNavItems.map(toLink)
+
+  // The department's OWN functions — ownership ∩ authorization. Empty for the
+  // Owner and for `none` (no selection), and empty for a department that owns
+  // nothing the actor may open, which is what renders the approved empty state.
+  const departmentModules = entry.selectedDepartmentId
+    ? scopedNavItems.filter((i) => moduleDepartment(i.moduleId) === entry.selectedDepartmentId).map(toLink)
+    : []
 
   // One env mapping for the whole Controller — see controllerEnv.
   const env = controllerEnv()
@@ -161,8 +210,12 @@ export default async function AdminHomePage({ searchParams }: { searchParams?: {
     kpis,
     attention: { recentAudit, alerts: deriveAlerts(core, actor) },
     quickActions,
+    // `scope` stays UN-narrowed on purpose: it is the authorization-derived
+    // scope, and D14 says department selection is presentation context. Only the
+    // presented list narrows.
     scope,
-    departments,
+    departments: presentedDepartments,
+    departmentModules,
   }
 
   return <ControllerHome data={data} />

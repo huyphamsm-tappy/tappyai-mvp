@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-21.3'
+export const REGISTRY_VERSION = '2026-08-29.2'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -126,6 +126,239 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     category: 'read',
     riskLevel: 'low',
     defaultRoles: ['admin', 'super_admin'],
+  }),
+
+  // ── Notifications (Controller send tool, Owner decision 2026-08-29) ────────
+  //
+  // The platform already has a complete notification system — `emitNotification`
+  // is its single writer, and web push + FCM are already wired. What it has
+  // never had is a PDP-governed way for a HUMAN to use it: the existing
+  // `/api/notifications/broadcast` is gated by `CRON_SECRET`, a shared machine
+  // token. These three permissions exist so the Controller tool can be
+  // authorized per-actor instead, and the CRON path is not extended to people.
+  //
+  // 🔑 SENDING TO ONE PERSON AND SENDING TO EVERYONE ARE DIFFERENT AUTHORITIES.
+  // They are split because they differ by orders of magnitude in blast radius:
+  // a targeted send is bounded and correctable by a follow-up message, while a
+  // broadcast reaches the whole subscribed base at once and cannot be recalled.
+  // One permission covering both would mean anyone who may message a single
+  // user may also message everyone — which is precisely the escalation this
+  // split prevents. `send.broadcast` is therefore super_admin ONLY, and it is
+  // NOT implied by `send.user`.
+  //
+  // The Platform Owner reaches all three through `Actor.isOwner`, the existing
+  // constitutional bypass. No email is read anywhere in this decision.
+  def({
+    id: 'notifications.send.user',
+    displayName: 'Send a notification to selected users',
+    description:
+      'Send a push/in-app notification to one or more specifically selected users. Every recipient id is re-authorized server-side.',
+    module: 'notifications',
+    capability: 'notifications.send',
+    category: 'write',
+    // HIGH: it reaches real people on their devices and cannot be unsent.
+    riskLevel: 'high',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'notifications.send.broadcast',
+    displayName: 'Broadcast a notification to all subscribed users',
+    description:
+      'Send a notification to every subscribed user at once. Irreversible and unbounded; deliberately NOT implied by notifications.send.user.',
+    module: 'notifications',
+    capability: 'notifications.send',
+    category: 'write',
+    // CRITICAL: the only permission in this module that is unbounded in reach.
+    riskLevel: 'critical',
+    defaultRoles: ['super_admin'],
+  }),
+  def({
+    id: 'notifications.history.read',
+    displayName: 'Read notification send history',
+    description:
+      'View what was sent, to how many recipients, and the per-recipient delivery outcome. Aggregate and status only; no message targeting is possible from this permission.',
+    module: 'notifications',
+    capability: 'notifications.history',
+    category: 'read',
+    riskLevel: 'low',
+    defaultRoles: ['analyst', 'moderator', 'admin', 'super_admin'],
+  }),
+
+  // ── Marketing (Marketing V1 foundation, Owner-frozen contract 2026-08-29) ──
+  //
+  // FIVE module groups, no more: Campaigns, Content, Audience, Promotions,
+  // Analytics. Owned by the `marketing` department in `org/departments.ts`.
+  //
+  // 🔑 NO `delete` ANYWHERE, deliberately. Deactivate is the approved reversal
+  // for campaigns and promotions — a campaign that has already sent messages
+  // must keep its history, and a destructive verb nobody needs is a permission
+  // that can only ever be misused.
+  //
+  // 🔑 `activate` IS SEPARATE FROM `update`, and rated `high`. Activating a
+  // campaign SENDS MESSAGES TO REAL USERS and cannot be recalled; editing a
+  // draft cannot. Collapsing the two would mean anyone who may fix a typo may
+  // also broadcast.
+  //
+  // These declare permissions ONLY. No route, table, or API exists yet — the
+  // Phase-1 pages render the coming-soon state behind these same guards.
+  def({
+    id: 'marketing.campaigns.read',
+    displayName: 'List marketing campaigns',
+    description: 'View marketing campaigns in the Controller, including drafts.',
+    module: 'marketing',
+    capability: 'marketing.campaigns',
+    category: 'read',
+    riskLevel: 'low',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.campaigns.create',
+    displayName: 'Create marketing campaign',
+    description: 'Create a campaign draft. Creating does not send anything.',
+    module: 'marketing',
+    capability: 'marketing.campaigns',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.campaigns.update',
+    displayName: 'Update marketing campaign',
+    description: 'Edit a campaign draft. Editing does not send anything.',
+    module: 'marketing',
+    capability: 'marketing.campaigns',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.campaigns.activate',
+    displayName: 'Activate or deactivate a marketing campaign',
+    description:
+      'Start or stop a campaign. Activating DELIVERS push/in-app messages to real users and cannot be undone.',
+    module: 'marketing',
+    capability: 'marketing.campaigns',
+    category: 'write',
+    riskLevel: 'high',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.content.read',
+    displayName: 'List marketing content',
+    description: 'View reusable marketing content items.',
+    module: 'marketing',
+    capability: 'marketing.content',
+    category: 'read',
+    riskLevel: 'low',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.content.create',
+    displayName: 'Create marketing content',
+    description: 'Create a reusable marketing content item.',
+    module: 'marketing',
+    capability: 'marketing.content',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.content.update',
+    displayName: 'Update marketing content',
+    description: 'Edit an existing marketing content item.',
+    module: 'marketing',
+    capability: 'marketing.content',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.audience.read',
+    displayName: 'List audience segments',
+    description:
+      'View segment definitions and their aggregate size. Aggregate only — never individual users, and counts below the minimum size are suppressed.',
+    module: 'marketing',
+    capability: 'marketing.audience',
+    category: 'read',
+    // MEDIUM, not low, and the distinction is load-bearing: this reads USER
+    // data. It is aggregate-only by contract, but a permission that touches
+    // people should not be rated like one that lists content rows.
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.audience.create',
+    displayName: 'Create audience segment',
+    description: 'Create a named segment definition over the approved attribute set.',
+    module: 'marketing',
+    capability: 'marketing.audience',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.audience.update',
+    displayName: 'Update audience segment',
+    description: 'Edit an existing segment definition.',
+    module: 'marketing',
+    capability: 'marketing.audience',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.promotions.read',
+    displayName: 'List marketing promotions',
+    description:
+      'View marketing promotional programs. Distinct from Commerce partner deals, which belong to the commerce department.',
+    module: 'marketing',
+    capability: 'marketing.promotions',
+    category: 'read',
+    riskLevel: 'low',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.promotions.create',
+    displayName: 'Create marketing promotion',
+    description: 'Create a marketing promotional program.',
+    module: 'marketing',
+    capability: 'marketing.promotions',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.promotions.update',
+    displayName: 'Update marketing promotion',
+    description: 'Edit an existing marketing promotional program.',
+    module: 'marketing',
+    capability: 'marketing.promotions',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.promotions.activate',
+    displayName: 'Activate or deactivate a marketing promotion',
+    description: 'Start or stop a promotional program.',
+    module: 'marketing',
+    capability: 'marketing.promotions',
+    category: 'write',
+    riskLevel: 'high',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'marketing.analytics.read',
+    displayName: 'Read marketing analytics',
+    description:
+      'View marketing performance. Aggregate data only; no user PII. Distinct from the AI/Data analytics surface, which covers product and system analytics.',
+    module: 'marketing',
+    capability: 'marketing.analytics',
+    category: 'read',
+    riskLevel: 'low',
+    // Mirrors the existing `analytics.*` grants rather than the marketing CRUD
+    // grants: reading performance is an analyst activity.
+    defaultRoles: ['analyst', 'moderator', 'admin', 'super_admin'],
   }),
 
   // ── Commerce / Deals ─────────────────────────────────────────────────────
@@ -569,6 +802,24 @@ export const PERMISSIONS = {
   ANALYTICS_CONTENT_READ: 'analytics.content.read',
   AUDIT_LOG_READ: 'audit.log.read',
   SETTINGS_CONFIG_READ: 'settings.config.read',
+  NOTIFICATIONS_SEND_USER: 'notifications.send.user',
+  NOTIFICATIONS_SEND_BROADCAST: 'notifications.send.broadcast',
+  NOTIFICATIONS_HISTORY_READ: 'notifications.history.read',
+  MARKETING_CAMPAIGNS_READ: 'marketing.campaigns.read',
+  MARKETING_CAMPAIGNS_CREATE: 'marketing.campaigns.create',
+  MARKETING_CAMPAIGNS_UPDATE: 'marketing.campaigns.update',
+  MARKETING_CAMPAIGNS_ACTIVATE: 'marketing.campaigns.activate',
+  MARKETING_CONTENT_READ: 'marketing.content.read',
+  MARKETING_CONTENT_CREATE: 'marketing.content.create',
+  MARKETING_CONTENT_UPDATE: 'marketing.content.update',
+  MARKETING_AUDIENCE_READ: 'marketing.audience.read',
+  MARKETING_AUDIENCE_CREATE: 'marketing.audience.create',
+  MARKETING_AUDIENCE_UPDATE: 'marketing.audience.update',
+  MARKETING_PROMOTIONS_READ: 'marketing.promotions.read',
+  MARKETING_PROMOTIONS_CREATE: 'marketing.promotions.create',
+  MARKETING_PROMOTIONS_UPDATE: 'marketing.promotions.update',
+  MARKETING_PROMOTIONS_ACTIVATE: 'marketing.promotions.activate',
+  MARKETING_ANALYTICS_READ: 'marketing.analytics.read',
   COMMERCE_DEALS_READ: 'commerce.deals.read',
   COMMERCE_DEALS_CREATE: 'commerce.deals.create',
   COMMERCE_DEALS_UPDATE: 'commerce.deals.update',

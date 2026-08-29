@@ -72,10 +72,11 @@ describe('the registry still builds, and nothing else moved', () => {
   it('keeps the same hub and module counts', () => {
     const core = buildAdminController()
 
-    // 6 since 2026-08-20: tappy.hub.user joined for Module 08. This pin exists
-    // to catch an ACCIDENTAL change to the registry's shape, so it moves only
-    // when a hub is added deliberately.
-    expect(core.listHubs()).toHaveLength(6)
+    // 7 since 2026-08-29: tappy.hub.marketing joined for Marketing V1 (6 since
+    // 2026-08-20, when tappy.hub.user joined for Module 08). This pin exists to
+    // catch an ACCIDENTAL change to the registry's shape, so it moves only when
+    // a hub is added deliberately.
+    expect(core.listHubs()).toHaveLength(7)
     expect(core.discover()).toHaveLength(ADMIN_MODULES.length)
   })
 
@@ -91,10 +92,13 @@ describe('the registry still builds, and nothing else moved', () => {
       'tappy.hub.commerce',
       'tappy.hub.configuration',
       'tappy.hub.founder',
+      // Added 2026-08-29 for Marketing V1 — an addition, like tappy.hub.user
+      // below. The list is `.sort()`ed, so this sits before security.
+      'tappy.hub.marketing',
       'tappy.hub.security',
       // Added 2026-08-20 for Module 08. The Founder rename remains the only hub
-      // id this file's subject ever CHANGED; this one is an addition, and the
-      // pin is widened deliberately rather than loosened to a length check.
+      // id this file's subject ever CHANGED; these are additions, and the pin is
+      // widened deliberately rather than loosened to a length check.
       'tappy.hub.user',
     ])
   })

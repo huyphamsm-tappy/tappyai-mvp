@@ -68,17 +68,35 @@ describe('K-1 · A. role → permission → capability projection', () => {
   // if every permission's capability is rewritten; these fail loudly, which is
   // the point — the projection is a published contract, not an implementation
   // detail.
+  // Marketing V1 (2026-08-29) added five capabilities. `marketing.analytics`
+  // reaches every role because reading marketing performance is an analyst
+  // activity, mirroring `analytics.read`; the four CRUD capabilities stop at
+  // admin, mirroring `commerce.deals`. Updated here rather than loosened: the
+  // sets below are still exhaustive and still fail on any unintended grant.
   it.each([
-    ['analyst', ['analytics.read', 'controller.dashboard']],
-    ['moderator', ['analytics.read', 'controller.dashboard', 'moderation.review', 'users.manage']],
+    ['analyst', ['analytics.read', 'controller.dashboard', 'marketing.analytics', 'notifications.history']],
+    [
+      'moderator',
+      ['analytics.read', 'controller.dashboard', 'marketing.analytics', 'moderation.review',
+       'notifications.history', 'users.manage'],
+    ],
     [
       'admin',
-      ['analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard', 'moderation.review',
+      ['analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard',
+       'marketing.analytics', 'marketing.audience', 'marketing.campaigns', 'marketing.content',
+       'marketing.promotions', 'moderation.review',
+       // Notifications (2026-08-29): `history` reaches every role, `send` stops
+       // at admin. `notifications.broadcast` is NOT a capability — broadcast is
+       // super_admin-only and shares the `notifications.send` capability id.
+       'notifications.history', 'notifications.send',
        'security.sessions', 'settings.read', 'users.manage'],
     ],
     [
       'super_admin',
-      ['analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard', 'moderation.review',
+      ['analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard',
+       'marketing.analytics', 'marketing.audience', 'marketing.campaigns', 'marketing.content',
+       'marketing.promotions', 'moderation.review',
+       'notifications.history', 'notifications.send',
        'security.rbac', 'security.sessions', 'settings.read', 'users.manage'],
     ],
   ])('%s resolves to exactly its architected capability set', (role, expected) => {

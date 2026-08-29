@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Boxes } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -40,13 +41,29 @@ export function WorkspaceChooser({ departments }: { departments: readonly Worksp
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-8 bg-background px-5 py-12 sm:px-8">
+      {/* V2.4 — BRANDING CONSISTENCY ONLY. This was a `<span>T</span>` in a
+          gradient box: an invented typographic mark for a product that has a
+          real logo. The Controller login now opens with `/branding/otter-logo.png`
+          — the app's established mark, also used by the site Header, onboarding
+          and the Controller's own CommandHeader — and the chooser is the very
+          next screen in the same flow, so two different marks back to back read
+          as two different products.
+
+          Same asset, same 40px box, same `aria-hidden` treatment as the login
+          header (the logo art carries the TappyAI wordmark, which the text
+          beside it already says). Nothing else about this screen changes: the
+          list stays membership-derived, the links stay `?dept=<id>`, and D14's
+          selection semantics are untouched. */}
       <div className="flex items-center gap-3">
-        <span
-          aria-hidden="true"
-          className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#2E7BF6] to-[#1B4FD8] text-lg font-black text-white shadow-lg shadow-[#1B4FD8]/30"
-        >
-          T
-        </span>
+        <Image
+          src="/branding/otter-logo.png"
+          alt=""
+          aria-hidden
+          width={88}
+          height={88}
+          priority
+          className="h-10 w-10 shrink-0 rounded-xl ring-1 ring-white/10"
+        />
         <span className="flex items-baseline gap-2">
           <span className="text-lg font-bold tracking-tight text-foreground">{t('admin.shell.brand')}</span>
           <span className="text-lg font-semibold text-ring">{t('admin.shell.badge')}</span>

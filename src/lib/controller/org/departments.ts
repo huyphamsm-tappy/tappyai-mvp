@@ -26,9 +26,30 @@ export const DEPARTMENTS: Readonly<Record<DepartmentId, Department>> = Object.fr
   marketing: {
     id: 'marketing', name: 'admin.dept.marketing', displayName: 'Marketing / Growth',
     status: 'defined',
-    ownedPermissions: [],   // identity established; no owned operational capability in the repo yet.
-    modules: [],
-    notes: 'Identity + scope reserved. No established owned capability yet — do not invent marketing.* modules.',
+    // Marketing V1 foundation — Owner-frozen contract, 2026-08-29. Exactly five
+    // module groups: Campaigns, Content, Audience, Promotions, Analytics.
+    //
+    // 🔑 This entry previously read "do not invent marketing.* modules", and
+    // that instruction did its job: nothing here was invented. These ids and
+    // permissions exist because the Owner defined and froze them, not because a
+    // department name suggested them. The same rule still applies to a SIXTH
+    // module — the set is closed at five.
+    ownedPermissions: [
+      'marketing.campaigns.read', 'marketing.campaigns.create', 'marketing.campaigns.update', 'marketing.campaigns.activate',
+      'marketing.content.read', 'marketing.content.create', 'marketing.content.update',
+      'marketing.audience.read', 'marketing.audience.create', 'marketing.audience.update',
+      'marketing.promotions.read', 'marketing.promotions.create', 'marketing.promotions.update', 'marketing.promotions.activate',
+      'marketing.analytics.read',
+    ],
+    modules: [
+      'tappy.hub.marketing.campaigns',
+      'tappy.hub.marketing.content',
+      'tappy.hub.marketing.audience',
+      'tappy.hub.marketing.promotions',
+      'tappy.hub.marketing.analytics',
+    ],
+    notes:
+      'Marketing V1 FOUNDATION: module identities, permissions and navigation only — no table, API or CRUD behind any of them yet. Promotions is deliberately DISTINCT from Commerce partner_deals (first-party programs vs partner inventory) and must never read or write them. Marketing Analytics is a separate surface from AI/Data analytics.',
   },
   ai_data: {
     id: 'ai_data', name: 'admin.dept.aiData', displayName: 'AI / Data',

@@ -1,5 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
-import { sendNotificationToUser } from './send'
+import { sendNotificationToUser, type PushResult } from './send'
 
 // ─── Contract (ADR-014) ─────────────────────────────────────────────────────
 // One notification `type` per generator; `category` is the coarse grouping used
@@ -46,8 +46,28 @@ export interface EmitNotificationInput {
 
 export interface EmitResult {
   id: string | null
+  /**
+   * The value PERSISTED on the row. Unchanged, and deliberately so.
+   *
+   * ⚠️ It is lossy: `pushStatusFor` receives only `{attempted, failed}`, so a
+   * send whose only subscription was dead (`gone: 1`) is stored as `'sent'`.
+   * That is a known, Owner-DEFERRED persistence defect — not something to work
+   * around here. Use `push` below for anything a human will read.
+   */
   pushStatus: PushStatus
+  /**
+   * The COMPLETE transport result, added 2026-08-29 (Owner-approved, additive).
+   *
+   * `pushStatus` collapses four distinct outcomes into one word and destroys
+   * `gone` entirely, which makes it unable to answer "did this actually reach a
+   * device". Callers that report to a person must read this instead. No existing
+   * caller reads `EmitResult` at all, so adding a field breaks nothing.
+   */
+  push: PushResult
 }
+
+/** Nothing was dispatched — used for the early returns below. */
+const NO_PUSH: PushResult = { attempted: 0, sent: 0, failed: 0, gone: 0 }
 
 // Derive the stored push_status from a PushResult (see send.ts for the rules).
 export function pushStatusFor(r: { attempted: number; failed: number }): PushStatus {
@@ -98,14 +118,14 @@ export async function emitNotification(input: EmitNotificationInput): Promise<Em
 
   if (error || !row) {
     console.error('[emitNotification] insert failed:', error)
-    return { id: null, pushStatus: 'pending' }
+    return { id: null, pushStatus: 'pending', push: NO_PUSH }
   }
   const id = row.id as string
 
   if (backfilled) {
     // Row already persisted for Inbox history; no push, mark skipped.
     await admin.from('notifications').update({ push_status: 'skipped' }).eq('id', id)
-    return { id, pushStatus: 'skipped' }
+    return { id, pushStatus: 'skipped', push: NO_PUSH }
   }
 
   // Dispatch the device push from the same payload.
@@ -135,7 +155,8 @@ export async function emitNotification(input: EmitNotificationInput): Promise<Em
     .eq('id', id)
   if (updErr) console.error('[emitNotification] push_status update failed:', updErr)
 
-  return { id, pushStatus }
+  // `push` carries what actually happened; `pushStatus` carries what was stored.
+  return { id, pushStatus, push }
 }
 
 /**

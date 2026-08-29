@@ -45,9 +45,22 @@ describe('Department registry (data, not logic)', () => {
       }
     }
   })
-  it('marketing is defined but honestly owns no established capability yet', () => {
+  it('marketing owns exactly the five Owner-frozen module groups', () => {
+    // Superseded 2026-08-29. This used to assert marketing owned NOTHING, which
+    // was the honest state until the Owner defined and froze the V1 contract.
+    // It is now the closure pin: exactly five module groups, no sixth.
     expect(DEPARTMENTS.marketing.status).toBe('defined')
-    expect(DEPARTMENTS.marketing.ownedPermissions).toHaveLength(0)
+    expect([...DEPARTMENTS.marketing.modules].sort()).toEqual([
+      'tappy.hub.marketing.analytics',
+      'tappy.hub.marketing.audience',
+      'tappy.hub.marketing.campaigns',
+      'tappy.hub.marketing.content',
+      'tappy.hub.marketing.promotions',
+    ])
+    // 4 campaigns + 3 content + 3 audience + 4 promotions + 1 analytics.
+    expect(DEPARTMENTS.marketing.ownedPermissions).toHaveLength(15)
+    // No `delete` anywhere, by contract.
+    expect(DEPARTMENTS.marketing.ownedPermissions.filter((p) => p.endsWith('.delete'))).toEqual([])
   })
 })
 

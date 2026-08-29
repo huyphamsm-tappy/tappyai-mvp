@@ -114,8 +114,18 @@ describe('§8 — no raw strings: every registered hub has a translated nav grou
   it('vi and en are actually different text, not a copied placeholder', () => {
     // A key added to both maps with the same English text would pass a mere
     // presence check while leaving the Vietnamese UI untranslated.
-    const differing = ADMIN_HUBS.filter((h) => viStrings[h.navigationGroup] !== enStrings[h.navigationGroup])
-    expect(differing).toHaveLength(ADMIN_HUBS.length)
+    //
+    // ONE exception, named rather than counted: "Marketing" is the word used in
+    // Vietnamese too. Listing the key means a SECOND untranslated hub heading
+    // still fails — which a loosened count assertion would have allowed through.
+    const IDENTICAL_BY_DESIGN = ['admin.nav.group.marketing']
+    const copied = ADMIN_HUBS.filter(
+      (h) => viStrings[h.navigationGroup] === enStrings[h.navigationGroup] &&
+        !IDENTICAL_BY_DESIGN.includes(h.navigationGroup)
+    )
+    expect(copied).toEqual([])
+    // The exception must stay real: if it is ever translated differently, drop it.
+    expect(viStrings['admin.nav.group.marketing']).toBe(enStrings['admin.nav.group.marketing'])
   })
 
   // The same rule for MODULE labels. Hub headings were covered above from
