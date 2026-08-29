@@ -25,9 +25,19 @@ describe('buildDepartmentContext', () => {
     expect(c.allowedModules).toContain('tappy.hub.commerce.deals')
     expect(c.allowedModules.length).toBeGreaterThan(0)
   })
-  it('a commerce member gets the commerce module; a marketing member gets none (marketing owns nothing yet)', () => {
+  it('a member gets exactly their own modules, and never another department’s', () => {
+    // Marketing owned nothing until the V1 contract was frozen (2026-08-29); it
+    // now owns five. The invariant under test never changed: you get YOUR
+    // department's modules, never another's.
     expect(dept(member('commerce')).allowedModules).toEqual(['tappy.hub.commerce.deals'])
-    expect(dept(member('marketing')).allowedModules).toEqual([])
+    expect([...dept(member('marketing')).allowedModules].sort()).toEqual([
+      'tappy.hub.marketing.analytics',
+      'tappy.hub.marketing.audience',
+      'tappy.hub.marketing.campaigns',
+      'tappy.hub.marketing.content',
+      'tappy.hub.marketing.promotions',
+    ])
+    expect(dept(member('marketing')).allowedModules).not.toContain('tappy.hub.commerce.deals')
   })
   it('suspended memberships confer nothing', () => {
     const c = dept(member('commerce', 'EMPLOYEE', 'commerce', 'suspended'))
@@ -62,7 +72,7 @@ describe('departmentSummaries — the Home data isolation boundary', () => {
     const s = departmentSummaries(owner())
     expect(s).toHaveLength(15)
     expect(s.find((d) => d.id === 'commerce')?.moduleCount).toBe(1)
-    expect(s.find((d) => d.id === 'marketing')?.moduleCount).toBe(0)
+    expect(s.find((d) => d.id === 'marketing')?.moduleCount).toBe(5)
     expect(s.filter((d) => d.status === 'defined').map((d) => d.id).sort()).toEqual(['ai_data', 'commerce', 'marketing'])
   })
   it('a department user sees ONLY their department — never another (no cross-department leakage)', () => {

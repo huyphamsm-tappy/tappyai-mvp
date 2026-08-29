@@ -23,6 +23,7 @@ import { userManagementModule } from '../modules/userManagementModule'
 import { userHub, securityHub } from '../modules/hubs'
 import { moderationModule } from '../modules/moderationModule'
 import { orgMembershipModule } from '../modules/orgMembershipModule'
+import { notificationsModule } from '../modules/notificationsModule'
 
 // ── Hubs (real, backed by shipped modules) ──────────────────────────────────
 /**
@@ -57,6 +58,14 @@ export const analyticsHub: HubDescriptor = {
 export const commerceHub: HubDescriptor = {
   id: 'tappy.hub.commerce', name: 'Commerce', version: '1.0.0', owner: 'platform',
   navigationGroup: 'admin.nav.group.commerce', navigationOrder: 30, lifecycle: 'stable',
+}
+// Marketing V1 foundation. Slots at 35 — between commerce(30) and
+// configuration(40) — for the same reason userHub slots at 5: adding a hub must
+// not renumber live surfaces. Marketing sits next to Commerce because an
+// operator reads the two as adjacent business functions.
+export const marketingHub: HubDescriptor = {
+  id: 'tappy.hub.marketing', name: 'Marketing', version: '1.0.0', owner: 'platform',
+  navigationGroup: 'admin.nav.group.marketing', navigationOrder: 35, lifecycle: 'stable',
 }
 export const configurationHub: HubDescriptor = {
   id: 'tappy.hub.configuration', name: 'Configuration', version: '1.0.0', owner: 'platform',
@@ -108,17 +117,42 @@ export const analyticsActivationModule = mod('tappy.hub.analytics.activation', '
 // are the other two; this sits after them at 40 so neither moves.
 export const analyticsUsersModule = mod('tappy.hub.analytics.users', 'User Analytics', analyticsHub.id, '/admin/analytics/users', PERMISSIONS.ANALYTICS_USERS_READ, 'admin.nav.userAnalytics', 'TrendingUp', 40)
 export const commerceDealsModule = mod('tappy.hub.commerce.deals', 'Deals', commerceHub.id, '/admin/deals', PERMISSIONS.COMMERCE_DEALS_READ, 'admin.nav.deals', 'Tag', 10)
+
+// ── Marketing V1 (FOUNDATION ENTRIES) ────────────────────────────────────────
+//
+// The five Owner-frozen module groups. Each declares a real route, a real
+// permission and a real navigation entry, and each is owned by the `marketing`
+// department in `org/departments.ts`.
+//
+// ⚠️ FOUNDATION ONLY. The pages behind these routes render the coming-soon
+// state; there is no table, API, server action or CRUD behind any of them yet.
+// They are declared now so the department, its permissions and its navigation
+// are real and testable — a module that exists in the registry but not in the
+// database is honest; a card that pretends to work is not.
+//
+// The `visibilityPermission` each carries is the module's READ permission, so
+// the nav entry and the Department Home card appear only for an actor the PDP
+// would actually admit — availability is department ownership INTERSECTED with
+// authorization, never one without the other.
+export const marketingCampaignsModule = mod('tappy.hub.marketing.campaigns', 'Campaigns', marketingHub.id, '/admin/marketing/campaigns', PERMISSIONS.MARKETING_CAMPAIGNS_READ, 'admin.nav.campaigns', 'Megaphone', 10)
+export const marketingContentModule = mod('tappy.hub.marketing.content', 'Marketing Content', marketingHub.id, '/admin/marketing/content', PERMISSIONS.MARKETING_CONTENT_READ, 'admin.nav.marketingContent', 'FileText', 20)
+export const marketingAudienceModule = mod('tappy.hub.marketing.audience', 'Audience', marketingHub.id, '/admin/marketing/audience', PERMISSIONS.MARKETING_AUDIENCE_READ, 'admin.nav.audience', 'Users', 30)
+export const marketingPromotionsModule = mod('tappy.hub.marketing.promotions', 'Promotions', marketingHub.id, '/admin/marketing/promotions', PERMISSIONS.MARKETING_PROMOTIONS_READ, 'admin.nav.promotions', 'BadgePercent', 40)
+export const marketingAnalyticsModule = mod('tappy.hub.marketing.analytics', 'Marketing Analytics', marketingHub.id, '/admin/marketing/analytics', PERMISSIONS.MARKETING_ANALYTICS_READ, 'admin.nav.marketingAnalytics', 'LineChart', 50)
 export const securityRolesModule = mod('tappy.hub.security.rbac', 'RBAC', securityHub.id, '/admin/rbac', PERMISSIONS.SECURITY_ROLES_READ, 'admin.nav.roles', 'KeyRound', 30)
 export const configurationSettingsModule = mod('tappy.hub.configuration.settings', 'Settings', configurationHub.id, '/admin/settings', PERMISSIONS.SETTINGS_CONFIG_READ, 'admin.nav.settings', 'SettingsIcon', 10)
 
-export const ADMIN_HUBS: readonly HubDescriptor[] = [founderHub, userHub, securityHub, analyticsHub, commerceHub, configurationHub]
+export const ADMIN_HUBS: readonly HubDescriptor[] = [founderHub, userHub, securityHub, analyticsHub, commerceHub, marketingHub, configurationHub]
 export const ADMIN_MODULES: readonly ModuleManifest[] = [
   homeModule,
   userManagementModule,
   moderationModule,
   analyticsContentModule, analyticsAuthModule, analyticsActivationModule, analyticsUsersModule,
+  notificationsModule,
   securityAuditModule, securityRolesModule, orgMembershipModule,
   commerceDealsModule,
+  marketingCampaignsModule, marketingContentModule, marketingAudienceModule,
+  marketingPromotionsModule, marketingAnalyticsModule,
   configurationSettingsModule,
 ]
 

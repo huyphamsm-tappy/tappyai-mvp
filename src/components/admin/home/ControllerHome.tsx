@@ -9,6 +9,7 @@ import { AttentionPanel } from './AttentionPanel'
 import { BusinessKpis } from './BusinessKpis'
 import { QuickActions } from './QuickActions'
 import { DepartmentGrid } from './DepartmentGrid'
+import { DepartmentModules } from './DepartmentModules'
 import { NoWorkspace } from './NoWorkspace'
 import type { ControllerHomeData } from './types'
 
@@ -53,6 +54,18 @@ export function ControllerHome({ data }: { data: ControllerHomeData }) {
           {/* ORGANIZATION — enterprise overview (owner: 15) / department
               workspace (member: own). Display-only, by Owner Decision D11. */}
           <DepartmentGrid departments={data.departments} mode={data.mode} />
+
+          {/* DEPARTMENT FUNCTIONS (V2.4). Shown only on a SCOPED Home — an actor
+              who entered with `?dept=`. The enterprise Owner view has no single
+              department to offer functions for, so this stays out of it and the
+              Owner's Home is unchanged.
+
+              Separate component from DepartmentCard on purpose: the grid above
+              states WHO the department is and stays display-only per D11; this
+              states WHAT it can do and is real navigation. */}
+          {data.mode === 'department' && data.departmentModules !== undefined && (
+            <DepartmentModules modules={data.departmentModules} />
+          )}
 
           {/* CAPABILITY — what the Controller currently exposes: registry
               counts plus honest not-connected slots.

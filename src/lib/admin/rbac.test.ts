@@ -73,7 +73,13 @@ describe('resolveActor', () => {
       highestRole: 'admin',
       capabilities: [
         'analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard',
-        'moderation.review', 'security.sessions', 'settings.read', 'users.manage',
+        // Marketing V1 (2026-08-29): admin holds all five.
+        'marketing.analytics', 'marketing.audience', 'marketing.campaigns',
+        'marketing.content', 'marketing.promotions',
+        'moderation.review',
+        // Controller Notifications (2026-08-29): admin holds history + send.
+        'notifications.history', 'notifications.send',
+        'security.sessions', 'settings.read', 'users.manage',
       ],
       source: 'cookie',
     })

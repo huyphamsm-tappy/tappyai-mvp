@@ -340,16 +340,29 @@ export default function LoginPage() {
       // its wordmark treatment, its violet gradients, and its marketing voice.
       // The Controller stays corporate, email + password, @tappyai.com only.
       <div className="flex min-h-dvh items-center justify-center bg-[#070E1F] p-4 sm:p-6 lg:p-10">
-        <div className="w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0B1428] shadow-[0_28px_90px_rgba(0,0,0,0.55)]">
-          {/* Brand header — the mark that tells an operator which product this is. */}
+        <div className="w-full max-w-6xl overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0B1428] shadow-[0_28px_90px_rgba(0,0,0,0.55)]">
+          {/* Brand header — the mark that tells an operator which product this is.
+              V2.4: the real TappyAI logo. This was a `<span>T</span>` in a
+              gradient box — an invented typographic mark for a product that has
+              an actual one. `/branding/otter-logo.png` is the app's established
+              logo (the site Header, onboarding and the Controller's own
+              CommandHeader all use it), and it carries the TappyAI wordmark, so
+              the brand is present as artwork and not only as adjacent text.
+
+              Decorative on purpose: the wordmark it contains is repeated in the
+              text beside it, and announcing "TappyAI" twice helps nobody. The
+              MASCOT below is the opposite case and carries a real alt. */}
           <div className="flex items-center justify-between gap-4 border-b border-white/[0.06] px-6 py-5 sm:px-10">
             <div className="flex items-center gap-3">
-              <span
-                aria-hidden="true"
-                className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#2E7BF6] to-[#1B4FD8] text-lg font-black text-white shadow-lg shadow-[#1B4FD8]/30"
-              >
-                T
-              </span>
+              <Image
+                src="/branding/otter-logo.png"
+                alt=""
+                aria-hidden
+                width={88}
+                height={88}
+                priority
+                className="h-10 w-10 shrink-0 rounded-xl ring-1 ring-white/10 sm:h-11 sm:w-11"
+              />
               <span className="flex items-baseline gap-2">
                 <span className="text-lg font-bold tracking-tight text-white">{t('admin.shell.brand')}</span>
                 <span className="text-lg font-semibold text-[#4C9AFF]">{t('admin.shell.badge')}</span>
@@ -365,17 +378,42 @@ export default function LoginPage() {
             {/* LEFT — the hero. This column is the redesign: it is the space a
                 lone card never had, and it is what makes the page state what the
                 Controller IS before asking who you are. */}
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-white/45">{t('admin.login.welcome')}</p>
-              <h1 className="mt-1.5 text-3xl font-black leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
-                {t('admin.login.tagline')}
-              </h1>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/50">{t('admin.login.heroLead')}</p>
+            {/* V2.4 — ONE MASCOT ELEMENT THAT MOVES, not two that hide.
+                A phone-only copy plus a desktop-only copy is how the otter
+                vanished below `lg` in V2.3. Here the hero column is a GRID and
+                the otter is placed into it — `order-*` while the column is a
+                single stack, an explicit cell once it is two — so the same
+                element serves both arrangements and cannot go missing at any
+                width.
+
+                Phone: the otter greets you first, centred above the heading.
+                Desktop: it sits beside the capability rows, which is what keeps
+                the hero's mass level with the auth card. Placing it BELOW the
+                rows instead left a 250px dead zone under the card — measured at
+                1440, and the reason this is a grid rather than a stack. */}
+            <div className="grid min-w-0 grid-cols-1 items-start gap-y-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-10">
+              <TappyMascot
+                pose="welcome"
+                size={288}
+                alt={t('admin.login.mascotAlt')}
+                eager
+                className="order-1 mx-auto w-40 max-w-full self-center sm:w-44 lg:order-none lg:col-start-2 lg:row-start-2 lg:mx-0 lg:w-60"
+              />
+
+              <div className="order-2 text-center lg:order-none lg:col-span-2 lg:row-start-1 lg:text-left">
+                <p className="text-sm font-medium text-white/45">{t('admin.login.welcome')}</p>
+                <h1 className="mt-1.5 text-3xl font-black leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
+                  {t('admin.login.tagline')}
+                </h1>
+                <p className="mt-3 text-sm leading-relaxed text-white/50 lg:max-w-md">
+                  {t('admin.login.heroLead')}
+                </p>
+              </div>
 
               {/* Three statements that are TRUE of this product and verifiable in
                   the codebase — registry-derived navigation, the C7 audit chain,
                   and server-side PDP authorization. No invented capability. */}
-              <ul className="mt-8 space-y-4">
+              <ul className="order-3 mx-auto w-full max-w-sm space-y-4 self-center lg:order-none lg:col-start-1 lg:row-start-2 lg:mx-0 lg:max-w-none lg:self-start">
                 {[
                   { Icon: Boxes, t: 'admin.login.cap1Title', n: 'admin.login.cap1Note' },
                   { Icon: ScrollText, t: 'admin.login.cap2Title', n: 'admin.login.cap2Note' },
@@ -396,16 +434,6 @@ export default function LoginPage() {
                 ))}
               </ul>
 
-              {/* The approved otter, already the Controller Home's brand anchor.
-                  Decorative here, so it is hidden from assistive tech. */}
-              <Image
-                src="/branding/otter-logo.png"
-                alt=""
-                aria-hidden
-                width={96}
-                height={96}
-                className="mt-8 hidden h-20 w-20 rounded-full opacity-50 lg:block"
-              />
             </div>
 
             {/* RIGHT — the auth panel. `mx-auto` matters below `lg`: the grid

@@ -34,6 +34,41 @@ export const NOTIF_COLOR: Record<string, string> = {
   like: '#ff6b35', follow: '#1D9E75', profile_view: '#534AB7', comment: '#378ADD',
 }
 
+/**
+ * The official TappyAI mark on a platform-originated notification row.
+ *
+ * The SAME asset Web Push already uses — `dispatchWebPush` in `send.ts` sets it
+ * as both `icon` and `badge`, and `public/push-sw.js` repeats it as its own
+ * fallback. A notification and its inbox entry are the same message, so they
+ * must not carry different marks.
+ *
+ * ⚠️ THIS LITERAL EXISTS IN THREE PLACES AND CANNOT BE SHARED FROM ONE.
+ * `send.ts` is server-only; `push-sw.js` is a static file the bundler never
+ * touches, so it can import nothing. `inbox.test.ts` asserts this constant
+ * still matches the one in `send.ts`, so the three cannot drift silently.
+ *
+ * NOT `/logo.png` or `/logo.svg` — those are the retired infinity mark, named
+ * as retired in `send.ts` and `push-sw.js`.
+ */
+export const TAPPY_NOTIFICATION_MARK = '/tappy/wave.png'
+
+/**
+ * The brand mark for a NON-SOCIAL row, or null to keep the category emoji.
+ *
+ * 🔑 KEYED ON `category`, NEVER ON THE SENDER. `category: 'system'` is what the
+ * existing contract calls a platform-originated message, and every caller that
+ * goes through `dispatchNotification` — the Controller today, Marketing
+ * campaigns later — arrives with it. Branching on who sent it would be how
+ * Controller and Marketing end up with two different-looking notifications for
+ * the same product; there is deliberately no way to express that here.
+ *
+ * `deal` and `explore` keep their emoji: they are product categories, not the
+ * platform speaking, and this change is not a redesign of the inbox.
+ */
+export function notificationBrandMark(category: string): string | null {
+  return category === 'system' ? TAPPY_NOTIFICATION_MARK : null
+}
+
 // v1 contract row → Inbox model.
 export function mapDtoToInbox(dto: NotificationDTO): InboxNotif {
   return {

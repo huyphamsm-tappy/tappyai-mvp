@@ -19,7 +19,7 @@ import LinkPoster from '@/components/LinkPoster'
 import { ProfileTab } from './ProfileTab'
 import { useNotifications } from '@/components/NotificationProvider'
 import { getExploreSession, reportAuthState } from '@/lib/explore/webExploreSession'
-import { mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
+import { mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
 
 // ADR-014: notifications now come from the app-level NotificationProvider (server
 // `notifications` table + server-side read_at). No client `notifSeenAt` marker.
@@ -132,13 +132,26 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
   // Must return before the actor-based derivations below (they index g.actors[0]).
   if (!isSocialGroup(g)) {
     const cat = CATEGORY_STYLE[g.category] ?? CATEGORY_STYLE.system
+    const brandMark = notificationBrandMark(g.category)
     const go = () => { if (g.url) notifRouter.push(g.url); else onNav() }
     return (
       <div role={g.url ? 'button' : undefined} onClick={go}
         className={'flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors' + (g.url ? ' cursor-pointer' : '')}
         style={{ borderColor: cat.color }}>
-        <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 mr-3" style={{ background: `${cat.color}22` }}>
-          <span className="text-xl">{cat.icon}</span>
+        {/* Platform-originated rows (`category: 'system'` — Controller sends
+            today, Marketing campaigns later) carry the official TappyAI otter,
+            the same mark Web Push already shows. Product categories (deal,
+            explore) keep their emoji: this is a branding fix, not an inbox
+            redesign. The mark is decorative — the title and body beside it say
+            everything — so it is hidden from assistive tech rather than given
+            an alt that would be read out before every message. */}
+        <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 mr-3 overflow-hidden" style={{ background: `${cat.color}22` }}>
+          {brandMark ? (
+            // eslint-disable-next-line @next/next/no-img-element -- fixed-size static mark from /public; next/image adds nothing here and this row renders inside a virtualised list
+            <img src={brandMark} alt="" aria-hidden="true" width={36} height={36} className="w-9 h-9 object-contain" />
+          ) : (
+            <span className="text-xl">{cat.icon}</span>
+          )}
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-white text-sm leading-snug font-semibold line-clamp-2">{g.title}</p>

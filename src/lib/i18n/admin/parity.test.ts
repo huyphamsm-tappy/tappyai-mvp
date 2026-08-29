@@ -121,6 +121,11 @@ describe('admin i18n — the two locales carry the same keys', () => {
     'admin.publicHome.footer',
     // Controller Login: same copyright line, same reason.
     'admin.login.footer',
+    // Marketing V1: "Marketing" is the word used in Vietnamese too — it is a
+    // loanword in ordinary business use, not an untranslated string. The other
+    // five Marketing keys ARE translated ('Chiến dịch', 'Khuyến mãi', …), which
+    // is what makes this one a deliberate exception rather than a pattern.
+    'admin.nav.group.marketing',
   ]
 
   it('🔑 no NEW Vietnamese value is a copy of its English one', () => {

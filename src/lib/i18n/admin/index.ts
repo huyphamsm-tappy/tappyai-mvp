@@ -54,6 +54,8 @@ export const vi: Record<string, string> = {
   'admin.nav.group.analytics': 'Phân tích',
   'admin.nav.group.security': 'Bảo mật',
   'admin.nav.group.commerce': 'Thương mại',
+  // Marketing V1 foundation (Owner-frozen contract 2026-08-29).
+  'admin.nav.group.marketing': 'Marketing',
   'admin.nav.group.configuration': 'Cấu hình',
 
   'admin.nav.dashboard': 'Tổng quan',
@@ -113,6 +115,8 @@ export const vi: Record<string, string> = {
   'admin.nav.users': 'Người dùng',
   'admin.nav.userManagement': 'Quản lý người dùng',
   'admin.nav.moderation': 'Kiểm duyệt',
+  // Controller Notifications (Phase A foundation, Owner decision 2026-08-29).
+  'admin.nav.notifications': 'Thông báo',
 
   // ── Module 08 User Management surface ─────────────────────────────────────
   'admin.users.title': 'Quản lý người dùng',
@@ -229,6 +233,13 @@ export const vi: Record<string, string> = {
   'admin.nav.engagement': 'Tương tác',
   'admin.nav.auditLog': 'Nhật ký audit',
   'admin.nav.deals': 'Ưu đãi đối tác',
+  'admin.nav.campaigns': 'Chiến dịch',
+  // `marketingContent`, not `content`: `admin.nav.*` already carries moderation
+  // surfaces, and a bare `content` would be ambiguous between the two.
+  'admin.nav.marketingContent': 'Nội dung marketing',
+  'admin.nav.audience': 'Phân khúc người dùng',
+  'admin.nav.promotions': 'Khuyến mãi',
+  'admin.nav.marketingAnalytics': 'Hiệu quả marketing',
   'admin.nav.roles': 'Phân quyền',
   'admin.nav.memberships': 'Thành viên phòng ban',
   'admin.nav.monitoring': 'Giám sát',
@@ -357,6 +368,54 @@ export const vi: Record<string, string> = {
   'admin.home.dept.defined': 'Đã có năng lực',
   'admin.home.dept.placeholder': 'Sẵn sàng nền tảng',
   'admin.home.dept.foundationNote': 'Nền tảng phòng ban đã sẵn sàng. Năng lực nghiệp vụ được bổ sung theo quyết định của chủ sở hữu — không tạo số liệu giả cho các phòng ban chưa có phạm vi được thiết lập.',
+  // OWNER-APPROVED copy, verbatim. Shown when a department owns no module the
+  // actor may open — today that is the twelve placeholder departments.
+  'admin.home.modules.empty': 'Phòng ban này chưa có chức năng nào.',
+  // ── Controller Notifications (Phase A shell) ──────────────────────────────
+  'admin.notifications.title': 'Thông báo',
+  'admin.notifications.subtitle': 'Gửi thông báo đẩy / trong ứng dụng tới người dùng từ Controller.',
+  'admin.notifications.capsTitle': 'Quyền của bạn',
+  'admin.notifications.cap.targeted': 'Gửi tới người dùng đã chọn',
+  'admin.notifications.cap.targetedNote': 'Chọn một hoặc nhiều người dùng cụ thể rồi gửi thông báo cho họ.',
+  'admin.notifications.cap.broadcast': 'Gửi tới toàn bộ người đăng ký',
+  'admin.notifications.cap.broadcastNote': 'Gửi tới mọi người dùng đã bật thông báo. Không thể thu hồi — chỉ super_admin.',
+  'admin.notifications.cap.history': 'Xem lịch sử gửi',
+  'admin.notifications.cap.historyNote': 'Xem đã gửi gì, tới bao nhiêu người và kết quả của từng người nhận.',
+  'admin.notifications.granted': 'Được cấp',
+  'admin.notifications.notGranted': 'Không được cấp',
+  'admin.notifications.phaseA': 'Nền tảng đã sẵn sàng: quyền, điều hướng và bảo vệ truy cập đã hoạt động. Chức năng soạn và gửi sẽ được bổ sung ở giai đoạn sau.',
+  // Phase B — targeted send.
+  'admin.notifications.noSendPermission': 'Bạn không có quyền gửi thông báo.',
+  'admin.notifications.recipients': 'Người nhận',
+  'admin.notifications.searchPlaceholder': 'Tìm theo tên…',
+  'admin.notifications.search': 'Tìm',
+  'admin.notifications.add': 'Thêm',
+  'admin.notifications.remove': 'Bỏ',
+  'admin.notifications.unnamedUser': 'Người dùng chưa đặt tên',
+  'admin.notifications.message': 'Nội dung',
+  'admin.notifications.titleLabel': 'Tiêu đề',
+  'admin.notifications.bodyLabel': 'Nội dung thông báo',
+  'admin.notifications.linkLabel': 'Liên kết (tuỳ chọn, đường dẫn nội bộ)',
+  'admin.notifications.linkInvalid': 'Liên kết phải là đường dẫn nội bộ, bắt đầu bằng “/”.',
+  'admin.notifications.preview': 'Xem trước',
+  'admin.notifications.previewNote': 'Đây là bản xem trước các trường sẽ được gửi. Giao diện thật trên thiết bị do hệ điều hành và ứng dụng quyết định, nên có thể khác.',
+  'admin.notifications.send': 'Gửi',
+  'admin.notifications.sending': 'Đang gửi…',
+  'admin.notifications.result': 'Kết quả',
+  'admin.notifications.result.recipients': 'Người nhận',
+  'admin.notifications.result.accepted': 'Nhà cung cấp đã nhận',
+  'admin.notifications.result.failed': 'Thất bại',
+  'admin.notifications.result.gone': 'Thiết bị không còn hiệu lực',
+  'admin.notifications.result.unreachable': 'Không có thiết bị đăng ký',
+  'admin.notifications.result.errored': 'Lỗi khi tạo',
+  'admin.notifications.result.note': '“Nhà cung cấp đã nhận” nghĩa là dịch vụ đẩy đã tiếp nhận thông báo — KHÔNG bảo đảm thiết bị đã hiển thị. Thông báo trong ứng dụng vẫn được tạo cho mọi người nhận.',
+  'admin.notifications.error.generic': 'Không gửi được. Hãy thử lại.',
+  'admin.home.modules.title': 'Chức năng phòng ban',
+  // PROPOSED copy — NOT yet Owner-approved. Rendered on a Marketing module page
+  // that has no implementation behind it. The approved empty state above is a
+  // DEPARTMENT-level sentence and would be untrue on a module page.
+  'admin.module.comingSoon.title': 'Chức năng đang được xây dựng',
+  'admin.module.comingSoon.body': 'Chức năng này đã được đăng ký trong Controller nhưng chưa có dữ liệu hay thao tác nào. Sẽ được bổ sung ở giai đoạn sau.',
   'admin.home.command.greeting': 'Chào mừng trở lại',
   'admin.home.command.owner': 'Trung tâm điều hành doanh nghiệp',
   'admin.home.command.department': 'Không gian làm việc phòng ban',
@@ -483,6 +542,9 @@ export const vi: Record<string, string> = {
   'admin.login.cap3Title': 'Phân quyền theo vai trò',
   'admin.login.cap3Note': 'Quyền truy cập do PDP quyết định phía máy chủ, trên mọi tuyến.',
   'admin.login.tagline': 'Trung tâm điều hành doanh nghiệp của bạn',
+  // V2.4 — the mascot is a subject on this page, not decoration, so it needs a
+  // real accessible name rather than an empty alt.
+  'admin.login.mascotAlt': 'Tappy — linh vật của TappyAI',
   'admin.chooser.title': 'Chọn không gian làm việc',
   'admin.chooser.subtitle': 'Chọn phòng ban bạn muốn làm việc.',
   'admin.chooser.enter': 'Vào không gian làm việc',
@@ -577,6 +639,8 @@ export const en: Record<string, string> = {
   'admin.nav.group.analytics': 'Analytics',
   'admin.nav.group.security': 'Security',
   'admin.nav.group.commerce': 'Commerce',
+  // Marketing V1 foundation (Owner-frozen contract 2026-08-29).
+  'admin.nav.group.marketing': 'Marketing',
   'admin.nav.group.configuration': 'Configuration',
 
   'admin.nav.dashboard': 'Dashboard',
@@ -637,6 +701,8 @@ export const en: Record<string, string> = {
   'admin.nav.users': 'Users',
   'admin.nav.userManagement': 'User Management',
   'admin.nav.moderation': 'Moderation',
+  // Controller Notifications (Phase A foundation, Owner decision 2026-08-29).
+  'admin.nav.notifications': 'Notifications',
 
   // ── Module 08 User Management surface ─────────────────────────────────────
   'admin.users.title': 'User Management',
@@ -753,6 +819,13 @@ export const en: Record<string, string> = {
   'admin.nav.engagement': 'Engagement',
   'admin.nav.auditLog': 'Audit Log',
   'admin.nav.deals': 'Partner Deals',
+  'admin.nav.campaigns': 'Campaigns',
+  // See the Vietnamese block: `marketingContent` avoids colliding with the
+  // moderation content surfaces already under `admin.nav.*`.
+  'admin.nav.marketingContent': 'Content',
+  'admin.nav.audience': 'Audience',
+  'admin.nav.promotions': 'Promotions',
+  'admin.nav.marketingAnalytics': 'Marketing analytics',
   'admin.nav.roles': 'Roles',
   'admin.nav.memberships': 'Department Memberships',
   'admin.nav.monitoring': 'Monitoring',
@@ -844,6 +917,51 @@ export const en: Record<string, string> = {
   'admin.home.dept.defined': 'Capability defined',
   'admin.home.dept.placeholder': 'Foundation ready',
   'admin.home.dept.foundationNote': 'Department foundation is in place. Business capabilities are added per owner decision — no metrics are fabricated for departments without established scope.',
+  // OWNER-APPROVED copy, verbatim.
+  'admin.home.modules.empty': 'No modules are available for this department yet.',
+  // ── Controller Notifications (Phase A shell) ──────────────────────────────
+  'admin.notifications.title': 'Notifications',
+  'admin.notifications.subtitle': 'Send push / in-app notifications to users from the Controller.',
+  'admin.notifications.capsTitle': 'What you are allowed to do',
+  'admin.notifications.cap.targeted': 'Send to selected users',
+  'admin.notifications.cap.targetedNote': 'Pick one or more specific users and send a notification to them.',
+  'admin.notifications.cap.broadcast': 'Broadcast to all subscribers',
+  'admin.notifications.cap.broadcastNote': 'Reach every subscribed user at once. Cannot be recalled — super_admin only.',
+  'admin.notifications.cap.history': 'Read send history',
+  'admin.notifications.cap.historyNote': 'See what was sent, to how many people, and each recipient outcome.',
+  'admin.notifications.granted': 'Granted',
+  'admin.notifications.notGranted': 'Not granted',
+  'admin.notifications.phaseA': 'The foundation is in place: permissions, navigation and the access guard all work. Composing and sending arrive in a later phase.',
+  // Phase B — targeted send.
+  'admin.notifications.noSendPermission': 'You do not have permission to send notifications.',
+  'admin.notifications.recipients': 'Recipients',
+  'admin.notifications.searchPlaceholder': 'Search by name…',
+  'admin.notifications.search': 'Search',
+  'admin.notifications.add': 'Add',
+  'admin.notifications.remove': 'Remove',
+  'admin.notifications.unnamedUser': 'Unnamed user',
+  'admin.notifications.message': 'Message',
+  'admin.notifications.titleLabel': 'Title',
+  'admin.notifications.bodyLabel': 'Body',
+  'admin.notifications.linkLabel': 'Link (optional, internal path)',
+  'admin.notifications.linkInvalid': 'The link must be an internal path beginning with “/”.',
+  'admin.notifications.preview': 'Preview',
+  'admin.notifications.previewNote': 'A preview of the fields that will be sent. The real appearance on a device is decided by the operating system and the app, so it may differ.',
+  'admin.notifications.send': 'Send',
+  'admin.notifications.sending': 'Sending…',
+  'admin.notifications.result': 'Result',
+  'admin.notifications.result.recipients': 'Recipients',
+  'admin.notifications.result.accepted': 'Provider accepted',
+  'admin.notifications.result.failed': 'Failed',
+  'admin.notifications.result.gone': 'Dead subscription',
+  'admin.notifications.result.unreachable': 'No subscription',
+  'admin.notifications.result.errored': 'Could not create',
+  'admin.notifications.result.note': '“Provider accepted” means the push service took the message — it does NOT confirm any device displayed it. The in-app notification is created for every recipient regardless.',
+  'admin.notifications.error.generic': 'The send failed. Please try again.',
+  'admin.home.modules.title': 'Department functions',
+  // PROPOSED copy — NOT yet Owner-approved. See the Vietnamese block.
+  'admin.module.comingSoon.title': 'This function is being built',
+  'admin.module.comingSoon.body': 'This function is registered in the Controller but has no data or actions behind it yet. It arrives in a later phase.',
   'admin.home.command.greeting': 'Welcome back',
   'admin.home.command.owner': 'Enterprise Command Center',
   'admin.home.command.department': 'Department Workspace',
@@ -1001,6 +1119,8 @@ export const en: Record<string, string> = {
   'admin.login.cap3Title': 'Role-based access',
   'admin.login.cap3Note': 'Every route is decided server-side by the PDP, on every request.',
   'admin.login.tagline': 'Your enterprise command center',
+  // See the Vietnamese block: the mascot is a subject, not decoration.
+  'admin.login.mascotAlt': 'Tappy — the TappyAI mascot',
   'admin.chooser.title': 'Choose your workspace',
   'admin.chooser.subtitle': 'Select the department you want to work in.',
   'admin.chooser.enter': 'Enter workspace',

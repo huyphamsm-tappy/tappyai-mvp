@@ -64,4 +64,20 @@ export interface ControllerHomeData {
    * department. Registry-derived; moduleCount is real, never a fabricated KPI.
    */
   departments: HomeDepartmentSummary[]
+  /**
+   * The SELECTED department's own functions — its registry-owned modules,
+   * intersected with what the PDP actually grants this actor.
+   *
+   * 🔑 BOTH HALVES, ALWAYS. A module appears here only if the department owns
+   * it AND the actor is authorized for it. Department ownership alone would
+   * offer a commerce `analyst` a Deals card the PDP will refuse; authorization
+   * alone would offer a marketing member AI/Data's analytics. Neither mechanism
+   * substitutes for the other, and neither is authorization on its own — every
+   * route behind these cards runs its own guard.
+   *
+   * Empty when no department is selected (Owner, or an actor with none), and
+   * empty for a department that owns no module the actor may open — which is
+   * what the approved "no modules available" state renders.
+   */
+  departmentModules: HomeModuleLink[]
 }

@@ -8,6 +8,7 @@ import type { ComponentType } from 'react'
 import {
   LayoutDashboard, BarChart3, UserCheck, Zap, ScrollText, KeyRound,
   Tag, Settings, HelpCircle, Users, TrendingUp, ShieldAlert, Building2,
+  Megaphone, FileText, BadgePercent, LineChart, Bell,
 } from 'lucide-react'
 
 type IconComponent = ComponentType<{ className?: string }>
@@ -28,6 +29,14 @@ const REGISTRY: Record<string, IconComponent> = {
   // back to HelpCircle — a question mark in the sidebar rather than an error —
   // which is why `hubGrouping.test.tsx` asserts every declared name resolves.
   Building2,
+  // Marketing V1. `Users` above is reused for Audience rather than adding a
+  // near-identical glyph.
+  Megaphone,
+  FileText,
+  BadgePercent,
+  LineChart,
+  // Controller Notifications (Phase A).
+  Bell,
 }
 
 /** Resolve a manifest icon name to a component; unknown names fall back safely. */

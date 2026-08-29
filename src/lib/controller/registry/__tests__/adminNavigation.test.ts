@@ -66,14 +66,34 @@ const USERS_REAL = '/admin/users'
 // gained the user surface under ADR-023.
 const MODERATION_REAL = '/admin/moderation'
 
+// Marketing V1 foundation (2026-08-29). Five registered modules whose routes
+// render the coming-soon placeholder — they are real registry entries with real
+// PDP guards, so they belong in the navigation contract from the moment they
+// exist. Split by role because `marketing.analytics.read` reaches analyst and up
+// (mirroring `analytics.*`) while the four CRUD reads stop at admin (mirroring
+// `commerce.deals.read`).
+// Controller Notifications (2026-08-29). Gated on `notifications.history.read`,
+// which every role holds, so it appears for all of them — and it sits in the
+// Founder hub, NOT the User hub, whose permissionScope would have hidden it from
+// analyst and voided that grant.
+const NOTIFICATIONS = '/admin/notifications'
+
+const MARKETING_ANALYTICS = '/admin/marketing/analytics'
+const MARKETING_CRUD = [
+  '/admin/marketing/campaigns',
+  '/admin/marketing/content',
+  '/admin/marketing/audience',
+  '/admin/marketing/promotions',
+]
+
 // Pinned from the pre-migration nav.test.ts EXPECTED, minus the removed placeholders.
 const EXPECTED: Record<string, string[]> = {
   unauthenticated: [],
-  analyst: ANALYST_REAL, // analyst holds no users permission (ADR-023)
-  moderator: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL],
-  admin: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, '/admin/audit', '/admin/deals', '/admin/settings'],
-  super_admin: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
-  owner: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings'],
+  analyst: [...ANALYST_REAL, NOTIFICATIONS, MARKETING_ANALYTICS], // analyst holds no users permission (ADR-023)
+  moderator: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, NOTIFICATIONS, MARKETING_ANALYTICS],
+  admin: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, NOTIFICATIONS, '/admin/audit', '/admin/deals', ...MARKETING_CRUD, MARKETING_ANALYTICS, '/admin/settings'],
+  super_admin: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, NOTIFICATIONS, '/admin/audit', '/admin/rbac', '/admin/deals', ...MARKETING_CRUD, MARKETING_ANALYTICS, '/admin/settings'],
+  owner: [...ANALYST_REAL, USERS_REAL, MODERATION_REAL, NOTIFICATIONS, '/admin/audit', '/admin/rbac', '/admin/deals', ...MARKETING_CRUD, MARKETING_ANALYTICS, '/admin/settings'],
 }
 
 const ACTOR: Record<string, Actor | null> = {
@@ -113,24 +133,31 @@ describe('registry nav — per-role visibility (migrated from nav.test.ts)', () 
 })
 
 describe('registry nav — hub grouping + deterministic order', () => {
-  it('groups are hub-ordered founder→user→analytics→security→commerce→configuration', () => {
+  it('groups are hub-ordered founder→user→analytics→security→commerce→marketing→configuration', () => {
     // User was inserted at navigationOrder 5, between Founder (0) and Analytics
-    // (10), per taxonomy §1. No existing hub was renumbered, so every other
-    // hub's position in this list is unchanged.
+    // (10), per taxonomy §1. Marketing was inserted at 35, between Commerce (30)
+    // and Configuration (40), for the same reason and with the same result: no
+    // existing hub was renumbered, so every other hub's position is unchanged.
     const groups = deriveNavigation(buildAdminController(), ACTOR.owner)
     expect(groups.map((g) => g.hubId)).toEqual([
       'tappy.hub.founder', 'tappy.hub.user', 'tappy.hub.analytics', 'tappy.hub.security',
-      'tappy.hub.commerce', 'tappy.hub.configuration',
+      'tappy.hub.commerce', 'tappy.hub.marketing', 'tappy.hub.configuration',
     ])
   })
 
   it('super_admin flattened order is deterministic', () => {
     expect(routesFor(ACTOR.super_admin)).toEqual([
-      '/admin', '/admin/users', '/admin/moderation',
+      // Founder hub: Home(0) then Notifications(10).
+      '/admin', '/admin/notifications', '/admin/users', '/admin/moderation',
       // Analytics hub, module order 10/20/30/40 — users last, so no existing
       // analytics surface moved when it was added.
       '/admin/analytics', '/admin/analytics/auth', '/admin/analytics/activation', '/admin/analytics/users',
-      '/admin/audit', '/admin/rbac', '/admin/deals', '/admin/settings',
+      '/admin/audit', '/admin/rbac', '/admin/deals',
+      // Marketing hub (35), module order 10/20/30/40/50. Sits after Commerce and
+      // before Settings; nothing above it moved.
+      '/admin/marketing/campaigns', '/admin/marketing/content', '/admin/marketing/audience',
+      '/admin/marketing/promotions', '/admin/marketing/analytics',
+      '/admin/settings',
     ])
   })
 
