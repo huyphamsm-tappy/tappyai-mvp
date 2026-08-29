@@ -43,7 +43,7 @@ export type ShareLocale = 'vi' | 'en'
  * refresh. To publish a new design, bump the version segment — that is the
  * documented way to make a platform re-fetch.
  */
-export const OG_IMAGE_PATH = '/og/tappyai-v1.png'
+export const OG_IMAGE_PATH = '/og/tappyai-v2.png'
 export const OG_IMAGE_WIDTH = 1200
 export const OG_IMAGE_HEIGHT = 630
 
