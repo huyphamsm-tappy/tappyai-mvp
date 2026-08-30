@@ -95,7 +95,7 @@ describe('locale stays exactly one control', () => {
     // Two controls for one setting can disagree; the Context Bar is where §8
     // puts this one.
     render(
-      <AdminShell role="admin" isOwner={false} email="a@tappyai.com" env="production" navGroups={[]}>
+      <AdminShell canonicalOrigin={null} role="admin" isOwner={false} email="a@tappyai.com" env="production" navGroups={[]}>
         <div>child</div>
       </AdminShell>
     )
@@ -136,7 +136,7 @@ describe('the shell keeps everything it had', () => {
 
   it('still renders hub-grouped navigation and the page content', () => {
     render(
-      <AdminShell role="admin" isOwner={false} email="a@tappyai.com" env="preview" navGroups={navGroups}>
+      <AdminShell canonicalOrigin={null} role="admin" isOwner={false} email="a@tappyai.com" env="preview" navGroups={navGroups}>
         <p>page content</p>
       </AdminShell>
     )
@@ -148,7 +148,7 @@ describe('the shell keeps everything it had', () => {
 
   it('still shows the actor identity and the way back to the app', () => {
     render(
-      <AdminShell role="admin" isOwner={false} email="a@tappyai.com" env="production" navGroups={[]}>
+      <AdminShell canonicalOrigin={null} role="admin" isOwner={false} email="a@tappyai.com" env="production" navGroups={[]}>
         <div />
       </AdminShell>
     )
@@ -159,7 +159,7 @@ describe('the shell keeps everything it had', () => {
 
   it('shows the environment on EVERY page, not only the Home', () => {
     render(
-      <AdminShell role="admin" isOwner={false} email="a@tappyai.com" env="preview" navGroups={navGroups}>
+      <AdminShell canonicalOrigin={null} role="admin" isOwner={false} email="a@tappyai.com" env="preview" navGroups={navGroups}>
         <div>some other page</div>
       </AdminShell>
     )

@@ -45,7 +45,7 @@ const ROOT = process.cwd()
 const shell = (locale: 'vi' | 'en' = 'vi') => {
   setLocale(locale)
   return render(
-    <AdminShell
+    <AdminShell canonicalOrigin={null}
       role="admin"
       isOwner={false}
       email="ops@tappyai.com"

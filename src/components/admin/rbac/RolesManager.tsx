@@ -9,6 +9,7 @@ import { Badge, type BadgeProps } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 type Role = 'super_admin' | 'admin' | 'moderator' | 'analyst'
 
@@ -38,6 +39,7 @@ const ROLE_LABEL_KEY: Record<Role, string> = {
 
 export function RolesManager() {
   const { t, locale } = useTranslation()
+  const guard = useGuardedActionProps()
   const [rows, setRows] = useState<RoleRow[]>([])
   const [loading, setLoading] = useState(true)
   const [userId, setUserId] = useState('')
@@ -129,7 +131,7 @@ export function RolesManager() {
             <label className="text-xs text-muted-foreground">{t('admin.rbac.notesLabel')}</label>
             <Input value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t('admin.rbac.notesPlaceholder')} />
           </div>
-          <Button onClick={grant} disabled={!isUuid || submitting}>{t('admin.rbac.grantButton')}</Button>
+          <Button onClick={grant} title={guard.title} disabled={!isUuid || submitting || guard.disabled}>{t('admin.rbac.grantButton')}</Button>
         </CardContent>
       </Card>
 

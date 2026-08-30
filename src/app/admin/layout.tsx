@@ -7,6 +7,7 @@ import { orgMembershipEnabled, resolveActorMemberships } from '@/lib/controller/
 import { filterNavByDepartment } from '@/lib/controller/org/navDepartment'
 import { AdminShell } from '@/components/admin/layout/AdminShell'
 import { controllerEnv } from '@/lib/controller/adminConfig'
+import { serverEnv } from '@/lib/config/env'
 import { refreshPlatformSettings } from '@/lib/controller/platformSettingsServer'
 import { Toaster } from '@/components/ui/sonner'
 import { loginPathFor } from '@/lib/auth/returnTo'
@@ -75,6 +76,13 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     // preference, no persistence, and `<html>` is untouched, so the consumer app
     // is unaffected. `.admin-theme` is declared after `.dark` in globals.css, so
     // the Controller palette wins wherever the two define the same token.
+    //
+    // `canonicalOrigin` is read HERE, from the same `serverEnv.siteUrl()` that
+    // `isSameOrigin` reads on every guarded /api/admin/* request. Handing it
+    // down means the UI's answer and the server's answer come from one value; a
+    // client component reading the environment for itself would be a second
+    // source, and two sources eventually disagree. It is presentation only —
+    // the server guard decides, exactly as before.
     <div className="admin-theme dark">
       <AdminShell
         role={actor.highestRole ?? 'analyst'}
@@ -82,6 +90,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         email={user.email ?? '—'}
         navGroups={navGroups}
         env={controllerEnv()}
+        canonicalOrigin={serverEnv.siteUrl() ?? null}
       >
         {children}
       </AdminShell>

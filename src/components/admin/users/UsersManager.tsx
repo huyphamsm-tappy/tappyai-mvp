@@ -11,6 +11,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { UserSessionsPanel } from './UserSessionsPanel'
 import { UserNotesPanel } from './UserNotesPanel'
+import { GuardedSurface, useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 // Module 08 User Management — the Controller surface.
 //
@@ -77,6 +78,7 @@ const REASON_MIN = 20
 
 export function UsersManager({ can }: { can: UsersCapabilities }) {
   const { t, locale } = useTranslation()
+  const guard = useGuardedActionProps()
 
   const [rows, setRows] = useState<UserRow[]>([])
   const [cursor, setCursor] = useState<string | null>(null)
@@ -396,7 +398,8 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
                 <div className="flex gap-2">
                   <Button
                     onClick={() => void submitAction()}
-                    disabled={submitting || reason.trim().length < REASON_MIN}
+                    disabled={submitting || reason.trim().length < REASON_MIN || guard.disabled}
+                    title={guard.title}
                   >
                     {t('admin.users.action.confirm')}
                   </Button>
@@ -425,7 +428,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
 
       {/* §3.8 places the notes on the user detail, beside the sessions. */}
       {detail && !detailLoading && (
-        <UserNotesPanel userId={detail.id} can={{ read: can.notesRead, write: can.notesWrite }} />
+        <GuardedSurface><UserNotesPanel userId={detail.id} can={{ read: can.notesRead, write: can.notesWrite }} /></GuardedSurface>
       )}
     </div>
   )

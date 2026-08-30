@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 // Controller V2 — Component 11 Session Security: the Controller surface.
 //
@@ -78,6 +79,7 @@ export function UserSessionsPanel({
   can: SessionsCapabilities
 }) {
   const { t } = useTranslation()
+  const guard = useGuardedActionProps()
   const [rows, setRows] = useState<SessionRow[]>([])
   const [load, setLoad] = useState<Load>('loading')
   const [notice, setNotice] = useState<string | null>(null)
@@ -165,7 +167,7 @@ export function UserSessionsPanel({
       <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="text-base">{t('admin.sessions.title')}</CardTitle>
         {can.revoke && rows.length > 0 && !forcing && (
-          <Button variant="outline" size="sm" onClick={() => setForcing(true)} disabled={busy}>
+          <Button variant="outline" size="sm" onClick={() => setForcing(true)} title={guard.title} disabled={busy || guard.disabled}>
             {t('admin.sessions.forceLogout')}
           </Button>
         )}
@@ -190,7 +192,8 @@ export function UserSessionsPanel({
                 variant="destructive"
                 size="sm"
                 onClick={() => void forceLogout()}
-                disabled={busy || !forceLogoutReady(reason)}
+                disabled={busy || !forceLogoutReady(reason) || guard.disabled}
+                title={guard.title}
               >
                 {t('admin.sessions.forceLogoutConfirm')}
               </Button>
@@ -243,7 +246,8 @@ export function UserSessionsPanel({
                     variant="outline"
                     size="sm"
                     onClick={() => void revokeOne(s.id)}
-                    disabled={busy}
+                    disabled={busy || guard.disabled}
+                    title={guard.title}
                   >
                     {t('admin.sessions.revoke')}
                   </Button>

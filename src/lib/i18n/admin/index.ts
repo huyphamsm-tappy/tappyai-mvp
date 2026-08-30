@@ -281,6 +281,16 @@ export const vi: Record<string, string> = {
   'admin.common.unknown': 'Không xác định',
   'admin.common.failedToLoad': 'Tải dữ liệu thất bại',
 
+  // Origin gate — the Controller is served on more than one hostname, but the
+  // same-origin guard on /api/admin/* accepts only the canonical one. These
+  // strings say so, instead of letting each request fail with a bare 403.
+  'admin.origin.notice.title': 'Controller chỉ hoạt động đầy đủ trên địa chỉ chính thức',
+  'admin.origin.notice.body':
+    'Bạn đang mở Controller ở một địa chỉ khác. Các thao tác ghi và một số bảng dữ liệu sẽ bị máy chủ từ chối trên địa chỉ này.',
+  'admin.origin.notice.cta': 'Mở trên địa chỉ chính thức',
+  'admin.origin.actionUnavailable': 'Không khả dụng trên địa chỉ này',
+  'admin.origin.dataUnavailable': 'Dữ liệu này chỉ tải được trên địa chỉ chính thức.',
+
   // Dashboard home
   'admin.dashboard.title': 'Tổng quan',
   // ORPHANED by FOUNDATION-08: the Home this described (HomeDashboard) was
@@ -989,6 +999,14 @@ export const en: Record<string, string> = {
   'admin.common.actions': 'Actions',
   'admin.common.unknown': 'Unknown',
   'admin.common.failedToLoad': 'Failed to load',
+
+  // Origin gate — see the Vietnamese block for why these exist.
+  'admin.origin.notice.title': 'The Controller only works fully on its canonical address',
+  'admin.origin.notice.body':
+    'You are viewing the Controller on a different address. Write actions and some data panels will be refused by the server here.',
+  'admin.origin.notice.cta': 'Open on the canonical address',
+  'admin.origin.actionUnavailable': 'Unavailable on this address',
+  'admin.origin.dataUnavailable': 'This data only loads on the canonical address.',
 
   // Dashboard home
   'admin.dashboard.title': 'Dashboard',

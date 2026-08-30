@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 // Module 09 — the moderation queue.
 //
@@ -58,6 +59,7 @@ const PRIORITY_VARIANT: Record<number, 'default' | 'warning' | 'destructive'> = 
 
 export function ModerationQueue({ can }: { can: ModerationCapabilities }) {
   const { t } = useTranslation()
+  const guard = useGuardedActionProps()
   const [items, setItems] = useState<QueueItem[]>([])
   const [load, setLoad] = useState<Load>('loading')
   const [acting, setActing] = useState<{ id: string; kind: Kind } | null>(null)
@@ -166,7 +168,8 @@ export function ModerationQueue({ can }: { can: ModerationCapabilities }) {
                           size="sm"
                           variant={acting.kind === 'delete' ? 'destructive' : 'default'}
                           onClick={() => void submit()}
-                          disabled={busy || !reasonReady(reason)}
+                          disabled={busy || !reasonReady(reason) || guard.disabled}
+                          title={guard.title}
                         >
                           {t(`admin.moderation.confirm.${acting.kind}`)}
                         </Button>

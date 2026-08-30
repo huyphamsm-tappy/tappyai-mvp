@@ -1,5 +1,6 @@
 import { requirePagePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { UserAnalyticsDashboard } from '@/components/admin/analytics/UserAnalyticsDashboard'
+import { GuardedSurface } from '@/components/admin/layout/GuardedSurface'
 
 // Module 04 User Analytics — growth, engagement, subscription funnel.
 //
@@ -9,5 +10,10 @@ import { UserAnalyticsDashboard } from '@/components/admin/analytics/UserAnalyti
 // no aggregation outside `userAnalyticsService`.
 export default async function UserAnalyticsPage() {
   await requirePagePermission(PERMISSIONS.ANALYTICS_USERS_READ)
-  return <UserAnalyticsDashboard />
+  return (
+    // Guarded read: this data comes from an /api/admin route that carries the
+    // same-origin guard, so on a non-canonical origin it is refused. Say so
+    // rather than rendering an empty panel.
+    <GuardedSurface><UserAnalyticsDashboard /></GuardedSurface>
+  )
 }
