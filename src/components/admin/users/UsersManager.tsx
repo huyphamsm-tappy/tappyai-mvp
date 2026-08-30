@@ -281,8 +281,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
                 <Button
                   variant="outline"
                   className="mt-4"
-                  disabled={loading || guard.disabled}
-                  title={guard.title}
+                  disabled={loading}
                   onClick={() => void load({ append: true, cursor })}
                 >
                   {t('admin.users.loadMore')}
