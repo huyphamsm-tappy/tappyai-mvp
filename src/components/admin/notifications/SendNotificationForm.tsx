@@ -3,6 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react'
 import { Loader2, Send, Search, X, AlertCircle } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 // Controller Notifications — the targeted send form (Phase B).
 //
@@ -32,6 +33,7 @@ export interface SendOutcome {
 
 export function SendNotificationForm() {
   const { t } = useTranslation()
+  const guard = useGuardedActionProps()
 
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<Recipient[]>([])
@@ -309,7 +311,8 @@ export function SendNotificationForm() {
       <button
         type="submit"
         data-testid="notification-send"
-        disabled={!canSubmit}
+        disabled={!canSubmit || guard.disabled}
+        title={guard.title}
         aria-busy={busy}
         className="flex items-center justify-center gap-2 rounded-admin-sm bg-ring px-5 py-2.5 text-sm font-semibold text-background disabled:cursor-not-allowed disabled:opacity-50"
       >

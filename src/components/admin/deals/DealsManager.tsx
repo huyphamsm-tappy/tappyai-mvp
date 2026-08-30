@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { uploadMedia } from '@/lib/media/client'
 import { Loader2, Plus, Pencil, Trash2, ArrowUp, ArrowDown, Eye, EyeOff, X, ImagePlus } from 'lucide-react'
+import { useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 const PARTNER_TYPES = ['ecommerce', 'food', 'ride', 'travel'] as const
 
@@ -54,6 +55,7 @@ const toLocal = (v: string | null) => {
 }
 
 export function DealsManager() {
+  const guard = useGuardedActionProps()
   const [deals, setDeals] = useState<Deal[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -263,7 +265,7 @@ export function DealsManager() {
             </div>
             <div className="mt-5 flex justify-end gap-2">
               <button onClick={() => setEditing(null)} disabled={saving} className="rounded-lg px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Huỷ</button>
-              <button onClick={save} disabled={saving} className="flex items-center gap-1.5 rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-60">
+              <button onClick={save} title={guard.title} disabled={saving || guard.disabled} className="flex items-center gap-1.5 rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-60">
                 {saving && <Loader2 size={14} className="animate-spin" />} Lưu
               </button>
             </div>
@@ -284,6 +286,7 @@ function ImageField({ label, value, busy, inputRef, onPick, onClear }: {
   label: string; value: string; busy: boolean; inputRef: RefObject<HTMLInputElement>
   onPick: (f: File) => void; onClear: () => void
 }) {
+  const guard = useGuardedActionProps()
   return (
     <div>
       <span className="mb-1 block text-xs font-medium text-gray-500">{label}</span>
@@ -291,7 +294,7 @@ function ImageField({ label, value, busy, inputRef, onPick, onClear }: {
         {value
           ? <img src={value} alt="" className="w-9 h-9 rounded-lg object-cover border border-gray-200 dark:border-gray-700" />
           : <div className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400"><ImagePlus size={16} /></div>}
-        <button type="button" onClick={() => inputRef.current?.click()} disabled={busy} className="rounded-lg border border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-60">
+        <button type="button" onClick={() => inputRef.current?.click()} title={guard.title} disabled={busy || guard.disabled} className="rounded-lg border border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-60">
           {busy ? '...' : 'Tải lên'}
         </button>
         {value && <button type="button" onClick={onClear} className="text-xs text-gray-400 hover:text-red-500">Xoá</button>}

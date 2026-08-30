@@ -1,5 +1,6 @@
 import { requirePagePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { MembershipRoster } from '@/components/admin/org/MembershipRoster'
+import { GuardedSurface } from '@/components/admin/layout/GuardedSurface'
 
 // Department Memberships — the Controller surface over the shipped membership
 // API (FOUNDATION-10B), authorized by Owner Decision D6, 2026-08-22.
@@ -22,5 +23,7 @@ import { MembershipRoster } from '@/components/admin/org/MembershipRoster'
 // you never see a door you cannot open.
 export default async function AdminOrgMembershipsPage() {
   await requirePagePermission(PERMISSIONS.SECURITY_MEMBERSHIP_READ)
-  return <MembershipRoster />
+  return (
+    <GuardedSurface><MembershipRoster /></GuardedSurface>
+  )
 }

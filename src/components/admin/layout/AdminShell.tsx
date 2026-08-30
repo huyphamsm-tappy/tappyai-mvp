@@ -10,6 +10,8 @@ import { navIcon } from './navIcons'
 import { ContextBar } from './ContextBar'
 import { CommandPalette } from './CommandPalette'
 import { ControllerSignOutButton } from './ControllerSignOutButton'
+import { OriginNotice } from './OriginNotice'
+import { ControllerOriginProvider } from './originGate'
 import type { ControllerEnv } from '@/lib/controller/adminConfig'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -29,6 +31,7 @@ export function AdminShell({
   isOwner,
   navGroups,
   env,
+  canonicalOrigin,
   children,
 }: {
   /** Display only — the role badge. Authorization + navigation are decided server-side. */
@@ -47,12 +50,20 @@ export function AdminShell({
   navGroups: readonly NavGroup[]
   /** Which deployment this is. UI standards §2: context is always in view. */
   env: ControllerEnv
+  /**
+   * The origin the server's same-origin guard accepts, from `serverEnv.siteUrl()`
+   * — the same read `isSameOrigin` makes. Passed down rather than read on the
+   * client so the UI and the guard cannot end up with two different answers.
+   * `null` when unset or malformed, which the gate treats as fail-closed.
+   */
+  canonicalOrigin: string | null
   children: ReactNode
 }) {
   const pathname = usePathname()
   const { t } = useTranslation()
 
   return (
+    <ControllerOriginProvider canonicalOrigin={canonicalOrigin}>
     <div className="min-h-dvh bg-background text-foreground">
       <div className="flex">
         {/* Sidebar */}
@@ -127,9 +138,11 @@ export function AdminShell({
               <ControllerSignOutButton />
             </div>
           </header>
+          <OriginNotice />
           <main className="flex-1 p-6">{children}</main>
         </div>
       </div>
     </div>
+    </ControllerOriginProvider>
   )
 }

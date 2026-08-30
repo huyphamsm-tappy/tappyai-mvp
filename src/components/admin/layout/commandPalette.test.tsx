@@ -194,7 +194,7 @@ describe('nothing internal is rendered', () => {
 describe('the shell keeps everything it had', () => {
   it('renders the palette alongside hub navigation, the Context Bar and the identity', () => {
     render(
-      <AdminShell role="admin" isOwner={false} email="a@tappyai.com" env="preview" navGroups={GROUPS}>
+      <AdminShell canonicalOrigin={null} role="admin" isOwner={false} email="a@tappyai.com" env="preview" navGroups={GROUPS}>
         <p>page content</p>
       </AdminShell>
     )

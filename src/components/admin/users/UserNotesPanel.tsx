@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 // Module 08 — internal admin notes.
 //
@@ -55,6 +56,7 @@ const fmt = (iso: string) => new Date(iso).toLocaleString()
 
 export function UserNotesPanel({ userId, can }: { userId: string; can: NotesCapabilities }) {
   const { t } = useTranslation()
+  const guard = useGuardedActionProps()
   const [notes, setNotes] = useState<NoteRow[]>([])
   const [load, setLoad] = useState<Load>('loading')
   const [draft, setDraft] = useState('')
@@ -142,7 +144,7 @@ export function UserNotesPanel({ userId, can }: { userId: string; can: NotesCapa
                 <input type="checkbox" checked={pinned} onChange={(e) => setPinned(e.target.checked)} />
                 {t('admin.notes.pin')}
               </label>
-              <Button size="sm" onClick={() => void submit()} disabled={busy || !noteReady(draft)}>
+              <Button size="sm" onClick={() => void submit()} title={guard.title} disabled={busy || !noteReady(draft) || guard.disabled}>
                 {t('admin.notes.add')}
               </Button>
             </div>

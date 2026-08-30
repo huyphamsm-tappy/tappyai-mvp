@@ -1,6 +1,7 @@
 import { requirePagePermission, PERMISSIONS } from '@/lib/admin/permissions'
 import { permissionEngine } from '@/lib/admin/permissions/engine'
 import { ModerationQueue } from '@/components/admin/moderation/ModerationQueue'
+import { GuardedSurface } from '@/components/admin/layout/GuardedSurface'
 
 // Module 09 Content Moderation — the Controller surface.
 //
@@ -26,5 +27,10 @@ export default async function AdminModerationPage() {
     delete: permissionEngine.can(ctx.actor, PERMISSIONS.MODERATION_CONTENT_DELETE),
   }
 
-  return <ModerationQueue can={can} />
+  return (
+    // Guarded read: this data comes from an /api/admin route that carries the
+    // same-origin guard, so on a non-canonical origin it is refused. Say so
+    // rather than rendering an empty panel.
+    <GuardedSurface><ModerationQueue can={can} /></GuardedSurface>
+  )
 }
