@@ -1,6 +1,6 @@
 # Controller V2 — Roadmap
 
-**Last updated:** 2026-08-04 · **Status authority:** [`STATUS.md`](STATUS.md) is the single source of truth; this document details sequencing only.
+**Last updated:** 2026-08-30 · **Status authority:** [`STATUS.md`](STATUS.md) is the single source of truth; this document details sequencing only.
 
 Approved scope: three ordered blocks (owner decision 2026-08-03). Each component ships through **PR → Review → Merge → Deploy**, with database steps gated by a runbook.
 
@@ -20,6 +20,14 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 > stale since 2026-08-07, while `STATUS.md` recorded C3 as **ACCEPTED · IN PRODUCTION**. This is the same drift
 > `STATUS.md` corrected in row 10 of this file on 2026-08-13, and it is corrected here in the same style rather than
 > filed as a backlog item. `STATUS.md` remains the status authority; this document details sequencing only.
+>
+> **Corrected 2026-08-30 — Component 7.** Row 7 in Block C read *"IMPLEMENTED · DEPLOYED · **NOT YET UAT-VERIFIED**"*
+> while [`STATUS.md`](STATUS.md) recorded C7 as **ACCEPTED · IN PRODUCTION** on production evidence under Owner
+> Decision E (2026-08-13). Two documents disagreeing about whether a security component has been UAT-verified is the
+> one kind of drift that cannot be left to a reader's judgement, so it was **put to the Owner rather than settled by
+> whoever noticed it**. Owner decision **2026-08-30: C7 is UAT-VERIFIED**, on Decision E plus the production evidence
+> already recorded. Row 7 is synchronised. **No C7 implementation or scope changed** — this is a documentation
+> correction only.
 
 "Foundation Phase: CLOSED" closes the Foundation *establishment* phase — audit, architecture, and Components 1–2 in production. Components 3–11 remain and are listed below; see [`STATUS.md`](STATUS.md) for the scope note.
 
@@ -47,7 +55,7 @@ Approved scope: three ordered blocks (owner decision 2026-08-03). Each component
 
 | # | Component | Status |
 |---|---|---|
-| 7 | **Audit Hardening** — tamper-evident hash chain over `audit_log` | ✅ **IMPLEMENTED · DEPLOYED · NOT YET UAT-VERIFIED** — merge `f3caf59`, live in production `526157a` (F-04 PR #18 + PH-0 applied). Corrected 2026-08-08 (FOUNDATION-01); see [STATUS.md](STATUS.md) row 7 note |
+| 7 | **Audit Hardening** — tamper-evident hash chain over `audit_log` | ✅ **ACCEPTED · IN PRODUCTION · UAT-VERIFIED** — merge `f3caf59`, live in production `526157a` (F-04 PR #18 + PH-0 applied). Accepted on production evidence per **Owner Decision E, 2026-08-13**; UAT confirmed by the Owner **2026-08-30**. Corrected 2026-08-08 (FOUNDATION-01); see [STATUS.md](STATUS.md) row 7 note |
 | 8 | **Event Bus** — transactional outbox, at-least-once fan-out | ✅ **ACCEPTED · IN PRODUCTION** — merge `0ce30a9` (PR #58); migration applied and verified read-only on production 2026-08-15 (P4 boundary, grants, constraints, indexes, RLS, deployed function bodies, 8 cron). Mechanism only: no producers, no consumers. See [`08_COMPONENT8_EVENT_BUS_CONTRACT.md`](08_COMPONENT8_EVENT_BUS_CONTRACT.md) |
 | 9a | Single admin-client construction point | ✅ **IN PRODUCTION** — merge commit `e8d4eb9` |
 | 9b | **Secret Manager — typed boot-time config validation** | ✅ **IMPLEMENTED** — deploy-time gate over 5 required variables + typed runtime boundary; closes **D5**. See [`09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md`](09B_COMPONENT9B_TYPED_CONFIG_CONTRACT.md) |
@@ -94,3 +102,26 @@ Carried into Component 3 from this Foundation:
 
 - Any `.sql` file must be executed against a real PostgreSQL before it is called verified — see the regression suite added in `supabase/tests/`
 - DDL is confirmed by querying system catalogs, never by reading UI text
+
+---
+
+## Post-V2 — Controller V2.2
+
+**Owner decision, 2026-08-30.** Both items below are **outside the Controller V2 Definition of Done** and are scheduled
+as **Controller V2.2**. Decision F is **not** changed retroactively, and **Controller V2 stays COMPLETE**: the DoD is
+pinned to [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md), which names `notification` 0 times and
+`broadcast` 0 times.
+
+Sequencing only — see [`STATUS.md § Post-V2 work`](STATUS.md#post-v2-work-2026-08-29--2026-08-30) for the measured state.
+
+| # | Item | State | Gate before implementation |
+|---|---|---|---|
+| V2.2-1 | **Phase C — broadcast** | 🔴 NOT STARTED | A design/contract document must exist and be approved first. `notifications.send.broadcast` already exists in the canonical registry — **`super_admin` only, deliberately NOT implied by `notifications.send.user`** — and is pinned by tests, but there is no route and no UI. A broadcast is **irreversible**, so the order is design → review → test → implement → dry run → Owner approval → first real send |
+| V2.2-2 | **Marketing Phase 2 — CRUD** | 🔴 NOT STARTED | A contract document per module must exist first: purpose · data model · API · authorization · validation · lifecycle · audit · acceptance criteria. Today the five modules under `/admin/marketing/*` are **real guards over a placeholder** — `requirePagePermission(...)` then `<ModuleComingSoon />`, 16 lines each, **0 API routes, 0 tables** — and `docs/` contains **no Marketing document at all**, in a contract-first repository |
+
+### The one thing V2.2-1 must not get wrong
+
+`getAllSubscribedUserIds()` deduplicates **user ids, not credentials**. That is safe *today* only because the
+`20260830_push_credential_ownership.sql` invariant guarantees at most one enabled owner per credential — so any future
+relaxation of that invariant silently turns a broadcast into a per-device fan-out. The audience calculation must be
+specified at **credential/device** level and tested there, not assumed from the user-id dedup that exists now.
