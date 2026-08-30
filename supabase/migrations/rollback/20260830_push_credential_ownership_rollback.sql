@@ -50,8 +50,12 @@
 --      WHERE NOT enabled
 --      ORDER BY updated_at DESC;
 --
--- 🚨 Export the HASH, never the credential. A Web Push endpoint / FCM token is a
--- bearer capability: anyone holding it can push to that device.
+-- 🚨 Export the HASH, never the credential. An endpoint does not by itself let
+-- its holder send a push — that needs the VAPID private key and the
+-- subscription's encryption keys — but it is a device identifier that names one
+-- person's browser, and inside this feature it is exactly what
+-- disown_push_credential acts on. An export of raw endpoints is a list of
+-- devices plus the means to silence each of them.
 -- (`digest` needs pgcrypto; on Supabase it lives in the `extensions` schema —
 -- use extensions.digest(...) if the bare name does not resolve.)
 -- ============================================================================

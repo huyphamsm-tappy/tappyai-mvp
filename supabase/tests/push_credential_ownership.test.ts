@@ -70,7 +70,8 @@ const B = '22222222-2222-2222-2222-222222222222' // the account that arrives lat
 const C = '33333333-3333-3333-3333-333333333333'
 
 // A stand-in for the shape a real FCM Web Push endpoint has. Never a real one:
-// an endpoint is a bearer capability to push to that device.
+// an endpoint names a specific person's browser, and inside this feature it is
+// what disown_push_credential acts on.
 const DEVICE_1 = 'https://fcm.googleapis.com/fcm/send/TEST-DEVICE-ONE:APA91bExample'
 const DEVICE_2 = 'https://fcm.googleapis.com/fcm/send/TEST-DEVICE-TWO:APA91bExample'
 

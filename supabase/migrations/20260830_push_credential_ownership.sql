@@ -239,11 +239,29 @@ CREATE TRIGGER trg_notif_subs_single_owner
 -- test pins ("never lets the request body decide who the subscription belongs
 -- to"). A parameter would let anyone disown anyone.
 --
--- WHY THIS CAN DISABLE WITHOUT CONSENT. It only ever DISABLES; it can never
--- enable, create, or move a claim to the caller. The worst a caller can do is
--- silence a device whose raw credential they already hold — and holding that
--- credential already lets them PUSH to that device, which is strictly worse. No
--- new capability is created.
+-- WHAT IT CAN AND CANNOT DO. It only ever DISABLES: it can never enable, create,
+-- or move a claim to the caller. So the whole of its power is "silence the
+-- device named by this credential".
+--
+-- 🚨 BE PRECISE ABOUT WHAT AN ENDPOINT IS WORTH — an earlier draft of this
+-- comment was wrong about it. A raw Web Push endpoint does NOT let its holder
+-- send a push: that needs the VAPID PRIVATE key the subscription was created
+-- against, plus the subscription's p256dh/auth keys to encrypt the payload, and
+-- none of those is in the endpoint. So the endpoint is not a send capability,
+-- and "they could already push anyway" is not an argument this function may
+-- lean on.
+--
+-- It is still a sensitive device identifier, and in THIS context it is precisely
+-- the thing that grants the one power above. That makes an unrestricted caller a
+-- denial-of-push surface, which is why:
+--
+--   · EXECUTE is granted to `authenticated` and to nobody else (below), and
+--   · 🚨 THAT IS NOT SUFFICIENT ON ITS OWN. A Supabase ANONYMOUS session is a
+--     real auth.users row whose JWT role is `authenticated`, so it satisfies
+--     this grant and has a non-null auth.uid(). Excluding it is an API-layer
+--     decision, made in the route (POST /api/notifications/subscribe/reconcile
+--     refuses `is_anonymous` callers with 403). Applying this migration WITHOUT
+--     that route leaves the function reachable by any visitor session.
 CREATE OR REPLACE FUNCTION public.disown_push_credential(p_credential text)
 RETURNS boolean
 LANGUAGE plpgsql
