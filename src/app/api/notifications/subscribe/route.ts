@@ -54,7 +54,10 @@ export async function POST(req: Request) {
       )
 
     if (error) {
-      console.error('[subscribe] Upsert error:', error)
+      // Code and message only — NEVER the whole error object. A unique-violation
+      // from notification_subscriptions_one_owner_per_credential carries the
+      // offending key in `details`, and that key IS the push credential.
+      console.error('[subscribe] Upsert error:', error.code ?? error.message)
       return NextResponse.json({ error: 'save_failed', message: serverMessage('notif.saveFailed', requestLocale(req)) }, { status: 500 })
     }
 
@@ -66,19 +69,78 @@ export async function POST(req: Request) {
 }
 
 // DELETE /api/notifications/subscribe — disable the subscription for the current user
+//
+// Body: { provider?: 'webpush' | 'fcm' }, defaulting to 'webpush'.
+//
+// 🚨 THE FILTER STAYS. Before this, DELETE was hard-wired to 'webpush', so an
+// Android FCM row could never be switched off through the app at all. The fix is
+// to make the provider selectable — NOT to drop the filter: without it, turning
+// push off on the web would silently switch off the same person's Android
+// notifications, which nothing in the UI says it does.
+//
+// The default keeps a client that sends no body behaving exactly as it did.
+//
+// It also accepts `credential`, and both client call sites now send it:
+//
+//   { provider?: 'webpush' | 'fcm', credential?: string }
+//
+// 🔑 WHY THE CREDENTIAL MATTERS HERE. One account holds at most one webpush row
+// (UNIQUE(user_id, provider)). If somebody subscribed on a second browser
+// afterwards, that row points at the OTHER device while this browser still holds
+// a stale local subscription — and a provider-only DELETE from here would switch
+// off push on the device they are still using. Naming the credential makes the
+// statement say what it means: release THIS device.
+//
+// It stays OPTIONAL rather than required, deliberately. Somebody who cleared
+// site data no longer has a credential to name, and making it mandatory would
+// leave them permanently unable to switch their own stale row off through the
+// app. Absent, the old provider-scoped behaviour applies.
+//
+// 🚨 The credential NARROWS; it never widens. `user_id = <session>` is applied
+// first and unconditionally, so no body can reach another account's row — the
+// same rule POST already pins.
 export async function DELETE(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
-    const { error } = await supabase
+    // The provider names a TRANSPORT, never an identity — the user still comes
+    // from the verified session, exactly as in POST.
+    const body = await req.json().catch(() => null)
+    const requested = body?.provider
+    if (requested !== undefined && requested !== 'webpush' && requested !== 'fcm') {
+      return NextResponse.json({ error: 'invalid_input', message: serverMessage('notif.invalidSubscription', requestLocale(req)) }, { status: 400 })
+    }
+    const provider = requested ?? 'webpush'
+
+    const rawCredential = body?.credential
+    if (
+      rawCredential !== undefined &&
+      (typeof rawCredential !== 'string' || !rawCredential.trim() || rawCredential.length > 4096)
+    ) {
+      return NextResponse.json({ error: 'invalid_input', message: serverMessage('notif.invalidSubscription', requestLocale(req)) }, { status: 400 })
+    }
+    const credential = typeof rawCredential === 'string' ? rawCredential.trim() : null
+
+    let query = supabase
       .from('notification_subscriptions')
       .update({ enabled: false })
       .eq('user_id', user.id)
-      .eq('provider', 'webpush')
+      .eq('provider', provider)
+
+    if (credential) {
+      // Where the credential lives differs by transport, which is exactly why
+      // the provider is resolved first.
+      query = query.eq(
+        provider === 'fcm' ? 'subscription_data->>token' : 'subscription_data->>endpoint',
+        credential,
+      )
+    }
+
+    const { error } = await query
 
     if (error) {
-      console.error('[subscribe] Disable error:', error)
+      console.error('[subscribe] Disable error:', error.code ?? error.message)
       return NextResponse.json({ error: 'disable_failed', message: serverMessage('notif.disableFailed', requestLocale(req)) }, { status: 500 })
     }
 
