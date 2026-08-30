@@ -1678,6 +1678,10 @@ move during either phase.
 Neither is named by Decision F. Recording them here states that they exist and are unbuilt — it does **not** add them
 to the Definition of Done.
 
+**Owner decision, 2026-08-30: both are scheduled as Controller V2.2**, sequenced in
+[`ROADMAP.md § Post-V2 — Controller V2.2`](ROADMAP.md#post-v2--controller-v22). Decision F is **not** changed
+retroactively and **Controller V2 stays COMPLETE** — a later release existing does not reopen a closed one.
+
 ---
 
 ## Verification ledger
