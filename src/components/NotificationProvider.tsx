@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { usePushIdentityReconcile } from '@/hooks/usePushIdentityReconcile'
 import type { NotificationDTO } from '@/lib/notifications/contract'
 
 interface NotificationContextValue {
@@ -38,6 +39,12 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const [unreadCount, setUnreadCount] = useState(0)
   const [loading, setLoading] = useState(false)
   const [uid, setUid] = useState<string | null>(null)
+
+  // Push identity belongs here, and nowhere else. This provider already owns
+  // "notification state follows the current account", it is mounted once in the
+  // root layout, and keeping the listener in a single provider is what stops two
+  // copies from both writing on every sign-in.
+  usePushIdentityReconcile()
 
   const refetch = useCallback(async () => {
     try {

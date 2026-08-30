@@ -74,6 +74,21 @@ const EXEMPT: Record<string, string> = {
   // guard is a loaded gun. Delete the guard and this line would silently make it legal again.
   'profile': 'self-scoped; an anonymous row is the visitor’s own and is claimed later',
   'notifications/subscribe': 'device push token registration, self-scoped',
+  // 'notifications/subscribe/reconcile' is NOT here, and the first draft of it
+  // was.
+  //
+  // 🚨 The exemption was argued on "it only disables, and whoever holds a push
+  // credential can already push to that device anyway, which is worse". THE
+  // SECOND HALF IS FALSE. Sending a Web Push needs the VAPID PRIVATE key that
+  // the subscription was created against, plus the p256dh/auth keys to encrypt
+  // with — none of which is in the endpoint. So the endpoint alone buys exactly
+  // one power, and this route is it: silencing that device. That makes it a
+  // denial-of-push surface rather than a no-op, and an anonymous session costs
+  // one request to mint.
+  //
+  // It is also unnecessary. The incident it exists for had the arriving account
+  // signed in, and sign-out now releases the claim on the way out. So the route
+  // refuses anonymous callers and lives behind the boundary instead.
   'notifications/read': 'marks the caller’s own notifications read, self-scoped',
   'message-feedback': "feedback on the visitor's own chat message; not public content",
 
