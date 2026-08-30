@@ -4,9 +4,13 @@
 > **This document is the only authoritative statement of Controller V2 project status.**
 > Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
-**Last updated:** 2026-08-23 — **Controller V2 is COMPLETE.** Production `d1ae429`.
+**Last updated:** 2026-08-30 — **Controller V2 is COMPLETE.** Production `defa21f`.
 
 > ⚠️ **This header said `2026-08-15` while carrying entries dated 2026-08-19, and it had no entry at all for three merged, production-live commits.** That is exactly the drift the banner above exists to prevent, and it is corrected here rather than filed as a backlog item — the same discipline applied to the 2026-08-07 and 2026-08-13 corrections below.
+>
+> ⚠️ **And it happened again — the same shape, the same count.** This header read `2026-08-23 … Production d1ae429` while **three further PRs were merged and live**: [#211](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/211), [#212](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/212) and [#213](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/213). MEASURED 2026-08-30: `origin/main` is `defa21f`, `GET https://www.tappyai.com/api/version` returns `defa21f96ce125f1dd673ca6b4076d501553c829`, and a grep of this file for `211`, `212`, `213` and `broadcast` returned **0 hits each**. One of those three closed a **production privacy defect**. A single-source-of-truth that does not know about a closed security incident is the worst possible place for that gap, so it is recorded in [Post-V2 work](#post-v2-work-2026-08-29--2026-08-30) below.
+>
+> 🔑 **None of it reopens the Definition of Done.** Decision F pins the DoD to [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md), and that document names **`notification` 0 times, `broadcast` 0 times, `Engagement` 0 times**. The three PRs are *post-V2* work on a platform that was already complete. They are recorded as history and as production state — **not** as DoD items, and not folded into any completed row to make it look larger.
 
 ---
 
@@ -1621,7 +1625,58 @@ so none blocks completion — and none is folded into a completed item to make i
 | **K-3 sink emission on production** | ⚠️ **NOT MEASURED.** The sink writes `console.info('[controller][event]', …)` server-side; platform logs were not read | Covered by 34 tests through a real `ControllerCore` and **mutation 10/10**, including the mutant that makes the sink a no-op again. Exposing it as an API purely to observe it was explicitly declined |
 | **WCAG AA** | ⚠️ **NOT MEASURED.** `01_ARCH` §8 derives it from the semantic token layer; 34 of 51 admin components use that layer, 1 uses raw `gray-`/`white`. **No AA audit has been run** | §8 states it as *inherited*, not as a Controller V2 deliverable with its own acceptance criteria |
 | **Controller suites are not in the required-suites gate** | [`scripts/requiredSuites.mjs`](../../scripts/requiredSuites.mjs) sets `REQUIRED_DIRS = ['supabase/tests','src/lib/security','src/lib/safety','src/lib/auth']` — **`src/lib/controller` and `src/lib/admin` are not among them** | They still gate CI: `npm test` runs them and **Test suite** is a required check with `enforce_admins`. What they lack is the *anti-silent-skip* layer that gate adds. Recorded as an observation; widening it is not Controller V2 scope and was not done |
+| **`anonymousWriteBoundary` U02 is a source-text guard, not a behavioural one** *(observed 2026-08-30)* | [`anonymousWriteBoundary.test.ts`](../../src/lib/auth/anonymousWriteBoundary.test.ts) decides whether a route is guarded by scanning its **source** for `refuseAnonymousSocialWrite(`. MEASURED: disabling the refusal on a live route with `if (false && anonRefusal)` left U02 **green**; the behavioural test in that route's own suite is what caught it | It still gates CI and it still catches the case it was written for — a new mutating route that never calls the refusal at all. What it cannot see is a call site that is present but inert. Recorded as an observation; hardening it is not Controller V2 scope and was not done. Any route relying on this boundary should carry its own behavioural test, as `/api/notifications/subscribe/reconcile` does |
 | **Alert Well · Context Bar · Command Palette rendered on production** | ⚠️ **NOT MEASURED individually.** Each carries a 2026-08-19 note — *"production render not visually verified"* — and the 2026-08-22 authenticated UAT recorded modules, not these three surfaces by name | All three are inside `/admin`, which the Owner UAT loaded with **0 raw i18n keys, 0 `undefined`, 0 console errors, 24 nav entries** in both locales. Their unit + mutation evidence is 12/12, 13/13 and 13/13 |
+
+---
+
+## Post-V2 work (2026-08-29 → 2026-08-30)
+
+**This section is history and production state. It is not the Definition of Done, and nothing in it reopens it.**
+Decision F pins the DoD to [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md); that document names
+`notification` 0 times and `broadcast` 0 times. Recorded here because the alternative — a single-source-of-truth that
+does not know a production privacy defect was found and closed — is worse than a slightly longer document.
+
+| Work | Merged | Production | Evidence |
+|---|---|---|---|
+| **Controller Notification Tool** — Phase A (permissions) · B (targeted send) · B.1 (otter branding) | [#211](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/211) `e2f3520` | ✅ live | `/admin/notifications` page + `POST /api/admin/notifications/send`. Three permissions in the canonical registry: `notifications.send.user` (admin, super_admin) · `notifications.send.broadcast` (**super_admin ONLY, deliberately NOT implied by `send.user`**) · `notifications.history.read` (all four roles). Delivery goes through `src/lib/notifications/dispatchService.ts`, a shared seam with **zero authorization primitives** — each caller keeps its own guard, which is what lets Marketing reuse delivery without inheriting the Controller's authority |
+| **Push credential ownership** (DB) — I1 · I1′ | [#212](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/212) `e2c3262` | ✅ migration applied 2026-08-30 | `20260830_push_credential_ownership.sql`. Verified read-only from the PostgreSQL catalog: 5/5 objects · `disown_push_credential(p_credential text)` — `pronargs=1`, `SECURITY DEFINER`, `search_path=public, pg_temp` · EXECUTE for **`authenticated` only** (anon, PUBLIC and `service_role` all false) · trigger function executable by **nobody** · RLS unchanged, 1 policy, `force_rls=false` · 0 credentials claimed by more than one user · backfill a **no-op** on production data |
+| **Push identity reconcile** (app) — I2 | [#213](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/213) `defa21f` | ✅ live | `POST /api/notifications/subscribe/reconcile`, an app-wide login listener in `NotificationProvider`, and claim release on sign-out. `subscribed` now means *registered to me* and is answered by the server, fail-closed |
+
+### The defect these closed
+
+A Web Push subscription belongs to a **browser**; the row belonged to a **user**, and nothing reconciled the two when
+the person at the browser changed. Measured on production 2026-08-29: a browser signed in as one account displayed a
+notification addressed to a different account.
+
+🚨 **The duplicate-detecting query returns `0` against the broken state.** Production held exactly **one** row and
+**zero** credentials claimed by more than one user. The failing state was never "two accounts claim one endpoint" — it
+was "the one account claiming this endpoint is no longer the account using this browser". Anyone reading a `0` from a
+duplicate scan as *"no problem"* is reading a false negative.
+
+Three invariants, and only two of them are database properties:
+
+| | Invariant | Enforced by | Verified |
+|---|---|---|---|
+| **I1** | At most one **enabled** row per credential | partial unique index `WHERE enabled` | ✅ production, catalog |
+| **I1′** | Subscribing **transfers** ownership, atomically | `BEFORE` trigger inside the upsert's own statement | ✅ production, catalog |
+| **I2** | The enabled row belongs to the account **signed in on that browser** | ❌ not a database property — the database cannot know who is signed in | ✅ production, controlled test |
+
+**I2 was verified by a controlled production transition on 2026-08-30**, not inferred from I1/I1′ and not inferred from
+CI. On the incident device itself (credential unchanged across the transition): account A subscribed → `enabled=true`,
+one enabled owner. Account B then signed in → reconcile ran → **A's claim disabled, B given no claim at all, zero
+enabled owners, B's UI reporting OFF while the browser still held the subscription**. The `notifications` table did not
+move during either phase.
+
+### Not started, and outside the DoD
+
+| Item | State | Note |
+|---|---|---|
+| **Phase C — broadcast** | 🔴 NOT STARTED | `notifications.send.broadcast` exists in the registry and is pinned by tests; there is **no route and no UI**. 🚨 `getAllSubscribedUserIds()` deduplicates **user ids, not credentials** — safe only because I1 now guarantees one enabled owner per credential, so any future relaxation of I1 turns a broadcast into a per-device fan-out bug. Irreversible by nature: design and acceptance criteria belong in their own document before any code |
+| **Marketing Phase 2 — CRUD** | 🔴 NOT STARTED | The five modules under `/admin/marketing/*` are **real guards over a placeholder**: `requirePagePermission(...)` then `<ModuleComingSoon />`, 16 lines each, **0 API routes, 0 tables**. There is no Marketing contract document anywhere in `docs/`, and this repository is contract-first |
+
+Neither is named by Decision F. Recording them here states that they exist and are unbuilt — it does **not** add them
+to the Definition of Done.
 
 ---
 
