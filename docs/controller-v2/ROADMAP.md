@@ -116,7 +116,7 @@ Sequencing only — see [`STATUS.md § Post-V2 work`](STATUS.md#post-v2-work-202
 
 | # | Item | State | Gate before implementation |
 |---|---|---|---|
-| V2.2-1 | **Phase C — broadcast** | 🔴 NOT STARTED | A design/contract document must exist and be approved first. `notifications.send.broadcast` already exists in the canonical registry — **`super_admin` only, deliberately NOT implied by `notifications.send.user`** — and is pinned by tests, but there is no route and no UI. A broadcast is **irreversible**, so the order is design → review → test → implement → dry run → Owner approval → first real send |
+| V2.2-1 | **Phase C — broadcast** | 🔴 NOT STARTED · contract DRAFTED, awaiting approval — [`V2.2_PHASE_C_BROADCAST_CONTRACT.md`](V2.2_PHASE_C_BROADCAST_CONTRACT.md) | A design/contract document must exist and be approved first. `notifications.send.broadcast` already exists in the canonical registry — **`super_admin` only, deliberately NOT implied by `notifications.send.user`** — and is pinned by tests, but there is no route and no UI. A broadcast is **irreversible**, so the order is design → review → test → implement → dry run → Owner approval → first real send |
 | V2.2-2 | **Marketing Phase 2 — CRUD** | 🔴 NOT STARTED | A contract document per module must exist first: purpose · data model · API · authorization · validation · lifecycle · audit · acceptance criteria. Today the five modules under `/admin/marketing/*` are **real guards over a placeholder** — `requirePagePermission(...)` then `<ModuleComingSoon />`, 16 lines each, **0 API routes, 0 tables** — and `docs/` contains **no Marketing document at all**, in a contract-first repository |
 
 ### The one thing V2.2-1 must not get wrong
