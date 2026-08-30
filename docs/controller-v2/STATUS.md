@@ -4,11 +4,18 @@
 > **This document is the only authoritative statement of Controller V2 project status.**
 > Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
-**Last updated:** 2026-08-30 — **Controller V2 is COMPLETE.** Production `defa21f`.
+**Last updated:** 2026-08-30 — **Controller V2 is COMPLETE.** Production `d0553f3`.
 
 > ⚠️ **This header said `2026-08-15` while carrying entries dated 2026-08-19, and it had no entry at all for three merged, production-live commits.** That is exactly the drift the banner above exists to prevent, and it is corrected here rather than filed as a backlog item — the same discipline applied to the 2026-08-07 and 2026-08-13 corrections below.
 >
 > ⚠️ **And it happened again — the same shape, the same count.** This header read `2026-08-23 … Production d1ae429` while **three further PRs were merged and live**: [#211](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/211), [#212](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/212) and [#213](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/213). MEASURED 2026-08-30: `origin/main` is `defa21f`, `GET https://www.tappyai.com/api/version` returns `defa21f96ce125f1dd673ca6b4076d501553c829`, and a grep of this file for `211`, `212`, `213` and `broadcast` returned **0 hits each**. One of those three closed a **production privacy defect**. A single-source-of-truth that does not know about a closed security incident is the worst possible place for that gap, so it is recorded in [Post-V2 work](#post-v2-work-2026-08-29--2026-08-30) below.
+>
+> ⚠️ **A third time, in the same file, within one day — and it is worth naming why.** This header was corrected to
+> `defa21f` in [#214](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/214), and [#215](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/215) merged **after** it, so the correction was stale the moment it landed.
+> That is not carelessness — it is structural: **a revision number written by hand is stale as soon as the next merge
+> happens.** MEASURED 2026-08-30: `origin/main` and `GET https://www.tappyai.com/api/version` both return
+> `d0553f3cb8421480f58bed0e0ba583e0cd66daf5`. The number is corrected here, and the standing advice for a reader is
+> unchanged and more reliable than this line: **ask `/api/version`, do not trust a SHA written in a document.**
 >
 > 🔑 **None of it reopens the Definition of Done.** Decision F pins the DoD to [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md), and that document names **`notification` 0 times, `broadcast` 0 times, `Engagement` 0 times**. The three PRs are *post-V2* work on a platform that was already complete. They are recorded as history and as production state — **not** as DoD items, and not folded into any completed row to make it look larger.
 
