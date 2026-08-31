@@ -96,6 +96,23 @@ export interface DispatchRequest {
   origin: NotificationOrigin
   /** Forwarded to the audit writer for ip/user-agent. Never used for authorization. */
   req?: Request
+  /**
+   * Opaque metadata stamped onto each notification row's `data` column.
+   *
+   * 🔑 ADDED FOR PHASE C, AND DELIBERATELY THE SMALLEST POSSIBLE ADDITION. A
+   * chunked broadcast has to be able to ask "has this person already been
+   * notified for this campaign?" after a process died mid-run, and the only
+   * answer that cannot drift from reality is the notification row itself. So
+   * the campaign id rides on the row it created.
+   *
+   * 🚨 WHAT THIS IS NOT. It is not an authorization primitive, it does not
+   * touch `MAX_RECIPIENTS_PER_DISPATCH`, it does not change what the audit
+   * record contains, and the seam never READS it — it is passed through to
+   * `emitNotification`, which has accepted `data` since it was written. The
+   * seam still knows nothing about campaigns; it forwards a value it does not
+   * interpret.
+   */
+  data?: Record<string, unknown>
 }
 
 /**
@@ -137,6 +154,12 @@ export function dispatchFingerprint(req: DispatchRequest, recipients: readonly s
     req.message.body,
     req.message.link ?? '',
     [...recipients].sort(),
+    // Appended CONDITIONALLY so a caller that passes no `data` produces exactly
+    // the fingerprint it produced before this field existed. Two campaigns with
+    // identical text to identical recipients inside the 60s window are
+    // genuinely different sends, and without this the second would be
+    // suppressed as a duplicate of the first.
+    ...(req.data ? [req.data] : []),
   ])
   return createHash('sha256').update(material).digest('hex').slice(0, 32)
 }
@@ -178,6 +201,7 @@ export async function dispatchNotification(req: DispatchRequest): Promise<Dispat
         title: req.message.title,
         body: req.message.body,
         entityUrl: req.message.link ?? null,
+        ...(req.data ? { data: req.data } : {}),
       })
     )
   )

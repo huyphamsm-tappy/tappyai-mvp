@@ -43,6 +43,25 @@ export const serverEnv = {
    * returns `undefined` rather than throwing so existing fallbacks still apply.
    */
   siteUrl: (): string | undefined => read('NEXT_PUBLIC_SITE_URL'),
+
+  /**
+   * Controller broadcast — OFF unless explicitly enabled (Phase C, C-26).
+   *
+   * 🔑 THREE SEPARATE ACTS: merging, deploying, and enabling. A broadcast
+   * cannot be recalled, so the code ships inert and the first thing that makes
+   * it live is a configuration change — not a deploy, and certainly not a
+   * merge.
+   *
+   * 🔑 IT IS ALSO THE KILL SWITCH (C-13). Because it is read at request time
+   * rather than at module load, clearing the variable stops the surface without
+   * a deploy: the next request, and the next resume of an in-flight campaign,
+   * are refused.
+   *
+   * Strict equality with `'true'`, not truthiness. `'false'`, `'0'` and `'off'`
+   * all read as strings and would enable a broadcast if this asked merely
+   * whether the value was set.
+   */
+  broadcastEnabled: (): boolean => read('CONTROLLER_BROADCAST_ENABLED') === 'true',
 } as const
 
 /**
