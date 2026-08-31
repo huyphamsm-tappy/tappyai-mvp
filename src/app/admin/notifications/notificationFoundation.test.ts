@@ -231,14 +231,42 @@ describe('8–10 · Phase A sends nothing and touches nothing', () => {
     expect(broadcast).toContain('CRON_SECRET')
   })
 
-  it('the Controller send route exists and is the ONLY notification API the Controller owns', async () => {
-    // SUPERSEDED by Phase B (2026-08-29). This asserted the route did NOT exist,
-    // which was the correct Phase A statement. The invariant that actually
-    // matters survives and is stronger: exactly one Controller-owned notification
-    // endpoint, and it is the targeted send. A broadcast route appearing here
-    // would be Phase C arriving without its own review.
+  it('the Controller owns EXACTLY the notification APIs that have been reviewed', async () => {
+    // The history of this assertion is the point, so it is kept rather than
+    // rewritten:
+    //
+    //   Phase A (original): the send route did NOT exist.
+    //   Phase B (2026-08-29): exactly one Controller-owned endpoint — the
+    //     targeted send. The comment then read: "A broadcast route appearing
+    //     here would be Phase C arriving without its own review."
+    //   Phase C (2026-08-30): that review HAPPENED. The contract is
+    //     docs/controller-v2/V2.2_PHASE_C_BROADCAST_CONTRACT.md, and the Owner
+    //     answered O-1 = B, O-2 = A, O-3 = A, O-4 = C, O-5 = A before any code
+    //     was written.
+    //
+    // 🚨 THE LOCK IS WIDENED BY EXACTLY ONE ENTRY, NOT REMOVED. Deleting it
+    // would retire the only mechanism that makes a THIRD, unreviewed
+    // Controller notification endpoint fail a test rather than ship quietly —
+    // and that mechanism is the whole reason Phase C had a contract at all.
     const { existsSync, readdirSync } = await import('node:fs')
     expect(existsSync('src/app/api/admin/notifications/send/route.ts')).toBe(true)
-    expect(readdirSync('src/app/api/admin/notifications')).toEqual(['send'])
+    expect(existsSync('src/app/api/admin/notifications/broadcast/route.ts')).toBe(true)
+    expect(readdirSync('src/app/api/admin/notifications').sort()).toEqual(['broadcast', 'send'])
+  })
+
+  it('🚨 the Controller broadcast route is the GOVERNED one — not the CRON_SECRET path', async () => {
+    // The distinction the whole of O-4 rests on. Both files are named
+    // "broadcast"; only one of them authorizes a person.
+    const governed = stripComments(
+      readFileSync('src/app/api/admin/notifications/broadcast/route.ts', 'utf8'),
+    )
+    expect(governed).toContain('requirePermission')
+    expect(governed).toContain('NOTIFICATIONS_SEND_BROADCAST')
+    expect(governed).toContain('isSameOrigin')
+    expect(governed).not.toContain('CRON_SECRET')
+
+    // …and the legacy machine path is still exactly where it was (O-4 = C:
+    // retirement comes after the replacement is verified, never with it).
+    expect(readFileSync('src/app/api/notifications/broadcast/route.ts', 'utf8')).toContain('CRON_SECRET')
   })
 })
