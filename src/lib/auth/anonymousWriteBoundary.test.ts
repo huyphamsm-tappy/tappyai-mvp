@@ -73,7 +73,21 @@ const EXEMPT: Record<string, string> = {
   // It is now guarded, so it must NOT stay listed here: an exemption that sits next to a working
   // guard is a loaded gun. Delete the guard and this line would silently make it legal again.
   'profile': 'self-scoped; an anonymous row is the visitor’s own and is claimed later',
-  'notifications/subscribe': 'device push token registration, self-scoped',
+  // 🗑️ `notifications/subscribe` removed 2026-09-01: the route now calls
+  // `refuseAnonymousSocialWrite`, so it is guarded rather than exempt.
+  //
+  // The exemption read "device push token registration, self-scoped" — true as
+  // far as it went, and still not the whole picture. It is the ONLY path that
+  // creates an enabled `notification_subscriptions` row, and an anonymous
+  // session costs one request to mint. The broadcast audience recognises
+  // anonymous identities by the ABSENCE of a profile, which only holds for
+  // accounts created after `20260808c`; a legacy anonymous account keeps its
+  // profile and would pass. Closing the creation path is the preventive half of
+  // that gap.
+  //
+  // It is removed for the reason stated four lines above about `price-watch`:
+  // an exemption sitting next to a working guard is a loaded gun. Delete the
+  // guard and this line would silently make it legal again.
   // 'notifications/subscribe/reconcile' is NOT here, and the first draft of it
   // was.
   //

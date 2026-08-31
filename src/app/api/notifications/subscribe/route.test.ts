@@ -132,6 +132,68 @@ describe('POST /api/notifications/subscribe — two transports, one contract', (
   })
 })
 
+describe('🚨 anonymous sessions may not register a device', () => {
+  // THIS IS THE ONLY PATH THAT CREATES AN ENABLED SUBSCRIPTION. Every other
+  // writer either reads the table or sets `enabled = false`. So the assertion
+  // that matters is not "403 was returned" — it is that NO ROW WAS WRITTEN.
+  // A route that refused with the right status after upserting would satisfy a
+  // status-only test and none of the intent.
+
+  it('🚨 an anonymous POST is refused AND writes nothing', async () => {
+    h.state.user = { id: 'anon-1', is_anonymous: true }
+    const res = await POST(post(WEBPUSH))
+
+    expect(res.status).toBe(403)
+    expect(h.state.upsert, 'a subscription row was written for an anonymous session').toBeNull()
+  })
+
+  it('🚨 the FCM transport is refused on the same terms', async () => {
+    // Two transports, one contract — including this one. A guard that covered
+    // only web push would leave Android as the way in.
+    h.state.user = { id: 'anon-1', is_anonymous: true }
+    const res = await POST(post({ provider: 'fcm', token: 'x'.repeat(64) }))
+
+    expect(res.status).toBe(403)
+    expect(h.state.upsert).toBeNull()
+  })
+
+  it('returns the shared account-required code, not a bespoke one', async () => {
+    h.state.user = { id: 'anon-1', is_anonymous: true }
+    const body = await (await POST(post(WEBPUSH))).json()
+    expect(body.error).toBe('account_required')
+  })
+
+  it('🔑 a REAL account is unaffected — the row is still written', async () => {
+    // The positive control. Without it, a guard that refused everybody would
+    // pass every assertion above.
+    h.state.user = { id: 'u1', is_anonymous: false }
+    const res = await POST(post(WEBPUSH))
+
+    expect(res.status).toBe(200)
+    expect(h.state.upsert).toMatchObject({ user_id: 'u1', provider: 'webpush', enabled: true })
+  })
+
+  it('🔑 an account with no `is_anonymous` field at all is treated as real', async () => {
+    // Supabase omits the field for accounts created before anonymous auth
+    // existed. Reading a missing field as "anonymous" would lock out the oldest
+    // real users — the fail-safe direction is the other way.
+    h.state.user = { id: 'legacy-1' }
+    expect((await POST(post(WEBPUSH))).status).toBe(200)
+    expect(h.state.upsert).toMatchObject({ user_id: 'legacy-1', enabled: true })
+  })
+
+  it('🚨 DELETE is NOT guarded — an anonymous caller can still disown a claim', async () => {
+    // Deliberate asymmetry. DELETE only sets `enabled = false`; refusing it
+    // would strand a claim on a device rather than protect anything.
+    h.state.user = { id: 'anon-1', is_anonymous: true }
+    const res = await DELETE(del())
+
+    expect(res.status).toBe(200)
+    expect(h.state.update).toEqual({ enabled: false })
+    expect(h.state.eqs).toContainEqual(['user_id', 'anon-1'])
+  })
+})
+
 describe('DELETE /api/notifications/subscribe — one transport at a time', () => {
   it('with no body, disables exactly the caller\'s web push row', async () => {
     // The shipped web client sends no body. Its behaviour must not change.
