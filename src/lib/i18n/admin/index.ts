@@ -396,6 +396,47 @@ export const vi: Record<string, string> = {
   'admin.notifications.phaseA': 'Nền tảng đã sẵn sàng: quyền, điều hướng và bảo vệ truy cập đã hoạt động. Chức năng soạn và gửi sẽ được bổ sung ở giai đoạn sau.',
   // Phase B — targeted send.
   'admin.notifications.noSendPermission': 'Bạn không có quyền gửi thông báo.',
+  'admin.notifications.composeHeading': 'Soạn thông báo',
+  'admin.notifications.tab.targeted': 'Gửi tới người cụ thể',
+  'admin.notifications.tab.broadcast': 'Gửi tới tất cả',
+
+  // ── Broadcast (V2.2 Phase C, C-14) ────────────────────────────────────────
+  // 🔑 `{phrase}` is interpolated with the constant `BROADCAST`, never
+  // translated. A confirmation phrase that changed with the interface language
+  // would be a different guard per locale; the one thing this control must be is
+  // identical for everybody.
+  'admin.broadcast.warning':
+    'Thông báo gửi đi KHÔNG THỂ thu hồi. Hãy chạy thử (dry run) để xem chính xác bao nhiêu người sẽ nhận, trước khi gửi thật.',
+  'admin.broadcast.message': 'Nội dung',
+  'admin.broadcast.titleLabel': 'Tiêu đề',
+  'admin.broadcast.bodyLabel': 'Nội dung thông báo',
+  'admin.broadcast.linkLabel': 'Đường dẫn (tuỳ chọn, phải bắt đầu bằng "/")',
+  'admin.broadcast.linkInvalid': 'Đường dẫn phải là đường dẫn nội bộ, bắt đầu bằng "/".',
+  'admin.broadcast.dryRun': 'Chạy thử — không gửi gì cả',
+  'admin.broadcast.dryRunning': 'Đang tính toán…',
+  'admin.broadcast.review': 'Kết quả chạy thử',
+  'admin.broadcast.audience': 'Sẽ nhận',
+  'admin.broadcast.chunks': 'Số lô',
+  'admin.broadcast.excluded': 'Bị loại',
+  'admin.broadcast.fingerprint': 'Mã đối chiếu',
+  'admin.broadcast.excludedBreakdown':
+    'Bị loại: {banned} tài khoản bị khoá, {suspended} tạm khoá, {noProfile} không có hồ sơ.',
+  'admin.broadcast.emptyAudience':
+    'Không có ai đủ điều kiện nhận. Không có gì để gửi.',
+  'admin.broadcast.confirmLabel': 'Gõ {phrase} để xác nhận',
+  'admin.broadcast.sendNow': 'Gửi thật tới {count} người',
+  'admin.broadcast.sending': 'Đang gửi…',
+  'admin.broadcast.expired':
+    'Kết quả chạy thử đã quá 5 phút. Hãy chạy thử lại để xem số người nhận hiện tại.',
+  'admin.broadcast.result': 'Kết quả gửi',
+  'admin.broadcast.accepted': 'Đã tiếp nhận',
+  'admin.broadcast.failed': 'Thất bại',
+  'admin.broadcast.gone': 'Thiết bị không còn',
+  'admin.broadcast.unreachable': 'Không có thiết bị',
+  'admin.broadcast.campaignId': 'Mã chiến dịch',
+  'admin.broadcast.result.note':
+    '"Đã tiếp nhận" nghĩa là dịch vụ đẩy đã nhận thông báo — không phải là thiết bị đã hiển thị nó.',
+  'admin.broadcast.error.generic': 'Không thực hiện được. Vui lòng thử lại.',
   'admin.notifications.recipients': 'Người nhận',
   'admin.notifications.searchPlaceholder': 'Tìm theo tên…',
   'admin.notifications.search': 'Tìm',
@@ -944,6 +985,45 @@ export const en: Record<string, string> = {
   'admin.notifications.phaseA': 'The foundation is in place: permissions, navigation and the access guard all work. Composing and sending arrive in a later phase.',
   // Phase B — targeted send.
   'admin.notifications.noSendPermission': 'You do not have permission to send notifications.',
+  'admin.notifications.composeHeading': 'Compose a notification',
+  'admin.notifications.tab.targeted': 'Targeted',
+  'admin.notifications.tab.broadcast': 'Broadcast',
+
+  // ── Broadcast (V2.2 Phase C, C-14) ────────────────────────────────────────
+  // `{phrase}` is interpolated with the constant `BROADCAST` and is deliberately
+  // NOT translated — see the note on the Vietnamese block.
+  'admin.broadcast.warning':
+    'A sent broadcast CANNOT be recalled. Run a dry run to see exactly how many people it resolves before sending anything for real.',
+  'admin.broadcast.message': 'Message',
+  'admin.broadcast.titleLabel': 'Title',
+  'admin.broadcast.bodyLabel': 'Body',
+  'admin.broadcast.linkLabel': 'Link (optional, must start with "/")',
+  'admin.broadcast.linkInvalid': 'The link must be a relative path beginning with "/".',
+  'admin.broadcast.dryRun': 'Dry run — sends nothing',
+  'admin.broadcast.dryRunning': 'Resolving…',
+  'admin.broadcast.review': 'Dry run result',
+  'admin.broadcast.audience': 'Will receive',
+  'admin.broadcast.chunks': 'Chunks',
+  'admin.broadcast.excluded': 'Excluded',
+  'admin.broadcast.fingerprint': 'Fingerprint',
+  'admin.broadcast.excludedBreakdown':
+    'Excluded: {banned} banned, {suspended} suspended, {noProfile} without a profile.',
+  'admin.broadcast.emptyAudience':
+    'Nobody is eligible to receive this. There is nothing to send.',
+  'admin.broadcast.confirmLabel': 'Type {phrase} to confirm',
+  'admin.broadcast.sendNow': 'Send for real to {count} people',
+  'admin.broadcast.sending': 'Sending…',
+  'admin.broadcast.expired':
+    'The dry run is more than 5 minutes old. Run it again to see the current audience.',
+  'admin.broadcast.result': 'Send result',
+  'admin.broadcast.accepted': 'Accepted',
+  'admin.broadcast.failed': 'Failed',
+  'admin.broadcast.gone': 'Gone',
+  'admin.broadcast.unreachable': 'Unreachable',
+  'admin.broadcast.campaignId': 'Campaign ID',
+  'admin.broadcast.result.note':
+    '"Accepted" means the push service took the message — not that a device displayed it.',
+  'admin.broadcast.error.generic': 'That did not work. Please try again.',
   'admin.notifications.recipients': 'Recipients',
   'admin.notifications.searchPlaceholder': 'Search by name…',
   'admin.notifications.search': 'Search',
