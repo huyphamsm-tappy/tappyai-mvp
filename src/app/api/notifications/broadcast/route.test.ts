@@ -17,7 +17,7 @@ const h = vi.hoisted(() => ({
 
 vi.mock('@/lib/admin/audit', async () => {
   const real = await vi.importActual<typeof import('@/lib/admin/audit')>('@/lib/admin/audit')
-  return { ...real, writeAuditLog: h.audit }
+  return { ...real, writeAuditLog: h.audit, writeAuditLogAwaited: h.audit }
 })
 vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.rateLimit }))
 // If the handler ever reaches for these again, the spies record it.
@@ -38,6 +38,7 @@ const post = (init: RequestInit = {}) =>
 beforeEach(() => {
   vi.clearAllMocks()
   h.rateLimit.mockResolvedValue({ ok: true, retryAfter: 0 })
+  h.audit.mockResolvedValue(true)
 })
 
 describe('the endpoint is gone', () => {
@@ -129,6 +130,60 @@ describe('evidence for the retirement window', () => {
     h.rateLimit.mockResolvedValue({ ok: false, retryAfter: 30 })
     await POST(post())
     expect(h.audit).not.toHaveBeenCalled()
+  })
+})
+
+describe('🚨🚨 THE RECORDER IS AWAITED — ordering, not just invocation', () => {
+  // MEASURED on production 2026-08-31: of four hits, the FIRST — on a cold
+  // serverless instance — wrote no audit row, while three on a warm instance
+  // did. Vercel can freeze an instance the moment the response is returned,
+  // discarding un-awaited work. A rare real caller is exactly the request most
+  // likely to arrive cold, so the un-awaited recorder was weakest precisely
+  // where the retirement evidence had to be strongest.
+  //
+  // These tests assert the ORDER, which is the only thing that fixes it.
+  // "writeAuditLog was called" would pass against the broken version.
+
+  it('🚨 the audit write RESOLVES BEFORE the response is returned', async () => {
+    const order: string[] = []
+    let release!: () => void
+    const blocked = new Promise<void>((r) => { release = () => { order.push('audit-resolved'); r() } })
+    h.audit.mockImplementation(() => blocked)
+
+    const inFlight = POST(post()).then((res) => { order.push('response-returned'); return res })
+
+    // Give the handler every chance to resolve early if it is NOT awaiting.
+    await new Promise((r) => setTimeout(r, 50))
+    expect(order, 'the handler responded before the audit write finished').toEqual([])
+
+    release()
+    const res = await inFlight
+    expect(res.status).toBe(410)
+    expect(order).toEqual(['audit-resolved', 'response-returned'])
+  })
+
+  it('🚨 a SLOW audit write delays the response rather than being abandoned', async () => {
+    h.audit.mockImplementation(() => new Promise((r) => setTimeout(() => r(true), 120)))
+    const t0 = Date.now()
+    const res = await POST(post())
+    expect(res.status).toBe(410)
+    // Un-awaited, this returns in ~0ms. Awaited, it cannot beat the write.
+    expect(Date.now() - t0).toBeGreaterThanOrEqual(100)
+  })
+
+  it('🔑 a FAILED write is not reported as recorded — it returns false, and the 410 still stands', async () => {
+    // The danger of awaiting is inventing a new failure mode: treating a
+    // resolved promise as proof the row landed. writeAuditLogAwaited resolves
+    // `false` on failure, so a caller can tell the difference.
+    h.audit.mockResolvedValue(false)
+    const res = await POST(post())
+    expect(res.status).toBe(410)
+    expect(h.audit).toHaveBeenCalledTimes(1)
+  })
+
+  it('🚨 a REJECTED write still yields 410 — evidence never gates the response', async () => {
+    h.audit.mockRejectedValue(new Error('insert exploded'))
+    expect((await POST(post())).status).toBe(410)
   })
 })
 
