@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { readFileSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 
 // ─── WHAT PHASE C PROMISED NOT TO TOUCH ──────────────────────────────────────
 //
@@ -89,23 +90,39 @@ describe('C-21 — the deal-notifications cron keeps its own audience', () => {
   })
 })
 
-describe('O-4 = C — the legacy route is RETIRED (410), not yet deleted', () => {
-  const LEGACY = readFileSync('src/app/api/notifications/broadcast/route.ts', 'utf8')
+describe('O-4 = C — the legacy route is DELETED (§14.2 step 8, 2026-09-01)', () => {
+  // The full sequence, completed in order and each step separately approved:
+  //   step 6  → 410 Gone, route kept                      (#220)
+  //   step 6b → recorder awaited, cold-start drop fixed    (#221)
+  //   step 7  → observation window, 0 unexpected hits, evidence from the
+  //             recorder rather than from elapsed time or absent logs
+  //   step 8  → deleted, here
+  //
+  // 🚨 THE INVARIANT CHANGED SHAPE. While the file existed the question was
+  // "does it answer 410"; now it is "has it come back". A second
+  // CRON_SECRET-gated broadcast path is what O-4 = C removed, and re-adding one
+  // is the regression this file now guards.
 
-  it('🚨 still EXISTS — 410 is step 6; deletion is step 8 and a separate decision', () => {
-    // A deleted route answers 404, indistinguishable from a typo. Keeping the
-    // file is what lets a stranded caller be told the endpoint went away on
-    // purpose, and what makes the observation window measurable at all.
-    expect(LEGACY.length).toBeGreaterThan(0)
+  it('🚨 the route file and its directory are GONE', () => {
+    expect(existsSync('src/app/api/notifications/broadcast/route.ts')).toBe(false)
+    expect(existsSync('src/app/api/notifications/broadcast')).toBe(false)
   })
 
-  it('🚨 answers 410 BEHAVIOURALLY — the old source-text pin passed against a retired route', () => {
-    // The removed assertion was `expect(LEGACY).toContain('CRON_SECRET')`. It
-    // survives retirement, because the header explains that the secret is no
-    // longer checked — a substring match cannot tell an explanation from an
-    // implementation. This is the U02 failure mode, caught here by running the
-    // handler instead of reading it.
-    expect(LEGACY).toContain('410')
+  it('🚨 no CRON_SECRET-gated broadcast path exists anywhere under /api/notifications', () => {
+    // Asserted over the tree rather than one filename, so re-adding the route
+    // under a different name is caught too. Renaming was always the cheapest way
+    // to dodge a path-shaped guard.
+    const dir = 'src/app/api/notifications'
+    const walk = (d: string): string[] =>
+      readdirSync(d, { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? walk(join(d, e.name)) : [join(d, e.name)],
+      )
+    const offenders = walk(dir).filter((f) => {
+      if (!f.endsWith('.ts') || f.endsWith('.test.ts')) return false
+      const code = stripComments(readFileSync(f, 'utf8'))
+      return code.includes('CRON_SECRET') && /broadcast/i.test(code)
+    })
+    expect(offenders, `a CRON_SECRET broadcast path reappeared: ${offenders.join(', ')}`).toEqual([])
   })
 
   it('🚨 Phase C does not import, call or wrap it', () => {

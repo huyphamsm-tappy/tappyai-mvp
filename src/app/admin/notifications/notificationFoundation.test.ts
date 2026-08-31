@@ -200,9 +200,11 @@ describe('8–10 · Phase A sends nothing and touches nothing', () => {
   })
 
   it('🔑 no Phase A file uses CRON_SECRET — the Controller never reuses the machine token', () => {
-    // The existing /api/notifications/broadcast is gated by CRON_SECRET. Handing
-    // that to a human surface would replace a per-actor decision with a shared
-    // credential, which is the one thing the Owner explicitly ruled out.
+    // The legacy /api/notifications/broadcast WAS gated by CRON_SECRET, and was
+    // deleted in §14.2 step 8 (2026-09-01). Handing a machine token to a human
+    // surface would replace a per-actor decision with a shared credential, which
+    // is the one thing the Owner explicitly ruled out — and that remains live
+    // guidance, because the nine cron routes still hold that secret.
     for (const f of PHASE_A_FILES) {
       expect(stripComments(readFileSync(f, 'utf8'))).not.toContain('CRON_SECRET')
     }
@@ -226,15 +228,14 @@ describe('8–10 · Phase A sends nothing and touches nothing', () => {
     const send = readFileSync('src/lib/notifications/send.ts', 'utf8')
     expect(send).toContain('export async function sendNotificationToUser')
     expect(send).toContain('export async function getAllSubscribedUserIds')
-    // 🚨 The legacy route is RETIRED (410) as of §14.2 step 6, so the old
-    // assertion here — `toContain('CRON_SECRET')` — is deliberately gone.
+    // 🚨 The legacy route is DELETED (§14.2 step 8, 2026-09-01). The original
+    // assertion here — `toContain('CRON_SECRET')` on that file — is gone twice
+    // over: first because it passed against the 410 (the header still named the
+    // secret while explaining it was no longer read — the U02 failure mode), and
+    // now because the file does not exist at all.
     //
-    // It would still PASS: the retired handler's header explains that it no
-    // longer checks the secret, and a substring match cannot tell an
-    // explanation from an implementation. A green test asserting the opposite
-    // of the truth is worse than no test, and is exactly the U02 failure mode
-    // recorded in STATUS.md. What replaces it is behavioural and lives in
-    // `src/app/api/notifications/broadcast/route.test.ts`.
+    // Its replacement is the absence check in "the Controller owns EXACTLY the
+    // notification APIs that have been reviewed" below.
   })
 
   it('the Controller owns EXACTLY the notification APIs that have been reviewed', async () => {
@@ -275,17 +276,17 @@ describe('8–10 · Phase A sends nothing and touches nothing', () => {
     // O-4 = C was satisfied in order: the replacement was verified in
     // production first (2026-08-31), and only then was the old path closed.
     //
-    // 🚨 Asserted BEHAVIOURALLY, because the source-text version of this check
-    // passes against a retired route — the header still names `CRON_SECRET`
-    // while explaining that it is no longer read.
-    const { POST: legacyPost } = await import('@/app/api/notifications/broadcast/route')
-    const gone = await legacyPost(
-      new Request('http://localhost/api/notifications/broadcast', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', authorization: 'Bearer anything' },
-        body: JSON.stringify({ title: 'x', body: 'y' }),
-      }),
-    )
-    expect(gone.status).toBe(410)
+    // 🚨 STEP 8 COMPLETED 2026-09-01: the route file is now DELETED, so the
+    // previous assertion here — importing it and expecting 410 — cannot run.
+    // What replaces it asserts the absence, which is the invariant that now
+    // matters: the module must not come back.
+    //
+    // Asserted by resolution, not by grep. `existsSync` on the path is the
+    // whole check: if someone re-adds the file, this fails immediately, and a
+    // second CRON_SECRET-gated broadcast path is exactly what O-4 = C spent
+    // three PRs and a verified observation window removing.
+    const { existsSync } = await import('node:fs')
+    expect(existsSync('src/app/api/notifications/broadcast/route.ts')).toBe(false)
+    expect(existsSync('src/app/api/notifications/broadcast')).toBe(false)
   })
 })
