@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { writeAuditLog } from '@/lib/admin/audit'
+import { writeAuditLogAwaited } from '@/lib/admin/audit'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import {
   LEGACY_BROADCAST_RETIRED_ACTION,
@@ -73,12 +73,28 @@ const EVIDENCE_WINDOW_MS = 60_000
  * that could 500 would be worse than the route it replaced.
  */
 export async function POST(req: Request) {
-  // Evidence first, but never as a gate. Wrapped so that a limiter outage, an
-  // audit failure, or anything else leaves the 410 untouched.
+  // 🚨 AWAITED, UNLIKE EVERY OTHER AUDIT CALL IN THIS CODEBASE — and that is
+  // the whole point of this handler.
+  //
+  // MEASURED on production 2026-08-31: of four hits here, the first — on a cold
+  // serverless instance — wrote **no** audit row, while the three that followed
+  // on a warm one all did. Vercel can freeze an instance the moment the response
+  // is returned, discarding un-awaited work. For an endpoint whose retirement
+  // evidence IS the audit trail, that is fatal: a rare real caller is exactly
+  // the request most likely to arrive cold, so the recorder was weakest
+  // precisely where the evidence needed to be strongest.
+  //
+  // Awaiting costs a few milliseconds on a route that does nothing else, and
+  // buys the difference between "we observed zero calls" and "we cannot see
+  // calls" — which is the distinction §14.4 exists to protect.
+  //
+  // 🔑 IT IS STILL NOT A GATE. `writeAuditLogAwaited` never throws, and the 410
+  // is returned whether the row landed or not. What changes is that the handler
+  // can no longer *believe* a hit was recorded when it was not.
   try {
     const rl = await distributedRateLimit('legacy:broadcast:gone', EVIDENCE_LIMIT, EVIDENCE_WINDOW_MS)
     if (rl.ok) {
-      writeAuditLog({
+      await writeAuditLogAwaited({
         actorId: NO_ACTOR_ID,
         actorEmail: '—',
         actorRole: 'none',

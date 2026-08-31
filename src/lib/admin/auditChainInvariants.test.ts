@@ -210,7 +210,18 @@ describe('C7 compatibility — the application does not know the chain exists', 
   ]
 
   it('writeAuditLog inserts exactly the pre-Component-7 column set', () => {
-    const insert = AUDIT_TS.match(/\.insert\(\{([\s\S]*?)\n {6}\}\)/)
+    // ⚠️ RE-ANCHORED 2026-08-31, and made indentation-agnostic on the way.
+    //
+    // The previous pattern ended `\n {6}\}\)` — it required the closing brace at
+    // exactly six spaces, i.e. the insert being nested inside the fire-and-forget
+    // IIFE. Extracting that body into `writeAuditLogAwaited` un-nested it to four
+    // spaces and the match returned null, failing with this assertion's own
+    // "re-anchor this" message rather than with anything about columns.
+    //
+    // The invariant here is the COLUMN SET, which was never in question. Matching
+    // `\n *\}\)` keeps the check while making it survive the next reindent —
+    // a test that breaks on whitespace teaches people to edit the test.
+    const insert = AUDIT_TS.match(/\.insert\(\{([\s\S]*?)\n *\}\)/)
     expect(insert, 'the .insert({...}) block moved — re-anchor this assertion').not.toBeNull()
     const cols = [...insert![1].matchAll(/^\s*([a-z_]+):/gm)].map((m) => m[1])
     expect(cols.sort()).toEqual([...INSERT_COLS].sort())

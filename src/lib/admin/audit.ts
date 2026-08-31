@@ -43,30 +43,65 @@ export interface AuditParams {
  * response path — call it, then return the response. Errors are logged, never thrown.
  */
 export function writeAuditLog(params: AuditParams): void {
+  // Intentionally not awaited by the caller. We swallow all errors so a failed
+  // audit insert can never break the underlying admin action (safety net, not a gate).
+  //
+  // 🔑 THE BODY MOVED, THE BEHAVIOUR DID NOT. Every existing caller still gets
+  // exactly what it got before: a synchronous `void` return, a write that
+  // happens in the background, and errors that are logged and swallowed. The
+  // work was extracted only so that ONE caller — the retired legacy broadcast
+  // route — can await it; see `writeAuditLogAwaited` below for why that matters.
+  void writeAuditLogAwaited(params)
+}
+
+/**
+ * The same audit write, awaitable, and reporting whether it landed.
+ *
+ * 🚨 WHY THIS EXISTS — A MEASURED SERVERLESS DEFECT, NOT A PREFERENCE.
+ * `writeAuditLog` is fire-and-forget, which is right for an admin action: the
+ * action already happened, and a failed audit must not fail it. But on Vercel a
+ * serverless instance can be frozen as soon as the response is returned, and
+ * un-awaited work is then simply discarded.
+ *
+ * MEASURED on production 2026-08-31: of four hits on the retired
+ * `/api/notifications/broadcast`, the first — the one that landed on a cold
+ * instance — produced **no audit row**; the three that followed, on a warm one,
+ * all recorded. For an endpoint whose retirement evidence IS the audit trail,
+ * that is fatal: a rare real caller is precisely the request most likely to
+ * arrive cold, so the recorder was weakest exactly where the evidence had to be
+ * strongest.
+ *
+ * Resolves `true` when the row was written, `false` when it was not. It never
+ * throws, so a caller can await it without the audit becoming a gate on the
+ * response — the retirement route awaits this and returns 410 either way, but
+ * can no longer report a hit as recorded when it was not.
+ */
+export async function writeAuditLogAwaited(params: AuditParams): Promise<boolean> {
   const ip = params.req ? clientIp(params.req) : null
   const userAgent = params.req?.headers.get('user-agent') ?? null
 
-  // Intentionally not awaited by the caller. We swallow all errors so a failed
-  // audit insert can never break the underlying admin action (safety net, not a gate).
-  void (async () => {
-    try {
-      const supabase = createAdminClient()
-      const { error } = await supabase.from('audit_log').insert({
-        actor_id: params.actorId,
-        actor_email: params.actorEmail,
-        actor_role: params.actorRole,
-        action: params.action,
-        target_type: params.targetType ?? null,
-        target_id: params.targetId ?? null,
-        before_state: params.beforeState ?? null,
-        after_state: params.afterState ?? null,
-        metadata: params.metadata ?? null,
-        ip_address: ip === 'unknown' ? null : ip,
-        user_agent: userAgent,
-      })
-      if (error) console.error('[admin][audit] insert failed:', error.message)
-    } catch (err) {
-      console.error('[admin][audit] write failed:', err)
+  try {
+    const supabase = createAdminClient()
+    const { error } = await supabase.from('audit_log').insert({
+      actor_id: params.actorId,
+      actor_email: params.actorEmail,
+      actor_role: params.actorRole,
+      action: params.action,
+      target_type: params.targetType ?? null,
+      target_id: params.targetId ?? null,
+      before_state: params.beforeState ?? null,
+      after_state: params.afterState ?? null,
+      metadata: params.metadata ?? null,
+      ip_address: ip === 'unknown' ? null : ip,
+      user_agent: userAgent,
+    })
+    if (error) {
+      console.error('[admin][audit] insert failed:', error.message)
+      return false
     }
-  })()
+    return true
+  } catch (err) {
+    console.error('[admin][audit] write failed:', err)
+    return false
+  }
 }
