@@ -226,9 +226,15 @@ describe('8–10 · Phase A sends nothing and touches nothing', () => {
     const send = readFileSync('src/lib/notifications/send.ts', 'utf8')
     expect(send).toContain('export async function sendNotificationToUser')
     expect(send).toContain('export async function getAllSubscribedUserIds')
-    const broadcast = readFileSync('src/app/api/notifications/broadcast/route.ts', 'utf8')
-    // Still CRON-gated, still not a Controller surface.
-    expect(broadcast).toContain('CRON_SECRET')
+    // 🚨 The legacy route is RETIRED (410) as of §14.2 step 6, so the old
+    // assertion here — `toContain('CRON_SECRET')` — is deliberately gone.
+    //
+    // It would still PASS: the retired handler's header explains that it no
+    // longer checks the secret, and a substring match cannot tell an
+    // explanation from an implementation. A green test asserting the opposite
+    // of the truth is worse than no test, and is exactly the U02 failure mode
+    // recorded in STATUS.md. What replaces it is behavioural and lives in
+    // `src/app/api/notifications/broadcast/route.test.ts`.
   })
 
   it('the Controller owns EXACTLY the notification APIs that have been reviewed', async () => {
@@ -265,8 +271,21 @@ describe('8–10 · Phase A sends nothing and touches nothing', () => {
     expect(governed).toContain('isSameOrigin')
     expect(governed).not.toContain('CRON_SECRET')
 
-    // …and the legacy machine path is still exactly where it was (O-4 = C:
-    // retirement comes after the replacement is verified, never with it).
-    expect(readFileSync('src/app/api/notifications/broadcast/route.ts', 'utf8')).toContain('CRON_SECRET')
+    // …and the legacy machine path is now RETIRED rather than merely present.
+    // O-4 = C was satisfied in order: the replacement was verified in
+    // production first (2026-08-31), and only then was the old path closed.
+    //
+    // 🚨 Asserted BEHAVIOURALLY, because the source-text version of this check
+    // passes against a retired route — the header still names `CRON_SECRET`
+    // while explaining that it is no longer read.
+    const { POST: legacyPost } = await import('@/app/api/notifications/broadcast/route')
+    const gone = await legacyPost(
+      new Request('http://localhost/api/notifications/broadcast', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: 'Bearer anything' },
+        body: JSON.stringify({ title: 'x', body: 'y' }),
+      }),
+    )
+    expect(gone.status).toBe(410)
   })
 })
