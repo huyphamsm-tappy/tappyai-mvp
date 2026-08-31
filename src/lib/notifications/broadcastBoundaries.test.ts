@@ -89,12 +89,23 @@ describe('C-21 — the deal-notifications cron keeps its own audience', () => {
   })
 })
 
-describe('O-4 = C — the legacy CRON_SECRET route is untouched and unused', () => {
+describe('O-4 = C — the legacy route is RETIRED (410), not yet deleted', () => {
   const LEGACY = readFileSync('src/app/api/notifications/broadcast/route.ts', 'utf8')
 
-  it('🚨 still exists — retirement happens AFTER the replacement is verified, never in the same change', () => {
+  it('🚨 still EXISTS — 410 is step 6; deletion is step 8 and a separate decision', () => {
+    // A deleted route answers 404, indistinguishable from a typo. Keeping the
+    // file is what lets a stranded caller be told the endpoint went away on
+    // purpose, and what makes the observation window measurable at all.
     expect(LEGACY.length).toBeGreaterThan(0)
-    expect(LEGACY).toContain('CRON_SECRET')
+  })
+
+  it('🚨 answers 410 BEHAVIOURALLY — the old source-text pin passed against a retired route', () => {
+    // The removed assertion was `expect(LEGACY).toContain('CRON_SECRET')`. It
+    // survives retirement, because the header explains that the secret is no
+    // longer checked — a substring match cannot tell an explanation from an
+    // implementation. This is the U02 failure mode, caught here by running the
+    // handler instead of reading it.
+    expect(LEGACY).toContain('410')
   })
 
   it('🚨 Phase C does not import, call or wrap it', () => {
