@@ -93,6 +93,9 @@ describe('feed / clip viewer — the count is not the heart', () => {
     // The heart is the count button's sibling inside the same rail item.
     const heart = countBtn(container)!.parentElement!.querySelector('button') as HTMLButtonElement
     expect(heart).not.toBe(countBtn(container))
+    // 🚨 Unsplit, this button's accessible name was the count text it wrapped. Split, it is
+    // icon-only — without its own label the split would silently cost a screen reader the control.
+    expect(heart.getAttribute('aria-label')).toBe('reviews.likeAction')
 
     fireEvent.click(heart)
     expect(onLike).toHaveBeenCalledTimes(1)

@@ -537,6 +537,7 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
           onClick={() => onLike(r.id)}
           onLabelClick={onOpenLikes ? () => onOpenLikes(r) : undefined}
           labelAriaLabel={t('reviews.likesOpen')}
+          iconAriaLabel={r.liked_by_me ? t('reviews.unlikeAction') : t('reviews.likeAction')}
         />
         {/* Comment */}
         <RAction icon={<MessageCircle size={26} className="text-white" />} label={r.comment_count} onClick={() => onComment(r)} />
@@ -575,19 +576,23 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
 // list, not toggle the like, and the two used to be a single <button> so the number inherited the
 // heart's job. A <button> may not contain a <button>, so the wrapper drops to a <div> in that
 // case; without the split the markup is byte-for-byte what it always was.
-function RAction({ icon, label, onClick, onLabelClick, labelAriaLabel }: {
+function RAction({ icon, label, onClick, onLabelClick, labelAriaLabel, iconAriaLabel }: {
   icon: React.ReactNode
   label?: string | number
   onClick?: () => void
   onLabelClick?: () => void
   labelAriaLabel?: string
+  iconAriaLabel?: string
 }) {
   const labelClass = 'text-white text-xs font-semibold drop-shadow-md'
 
   if (label !== undefined && onLabelClick) {
     return (
       <div className="flex flex-col items-center gap-1">
-        <button type="button" onClick={onClick} className="active:scale-90 transition-transform">{icon}</button>
+        {/* 🔑 `iconAriaLabel` is required here, not decoration. Unsplit, this button's accessible
+            name came from the count text it wrapped ("3"); split, it is icon-only and would have
+            NO name at all — the split would have quietly cost a screen reader the control. */}
+        <button type="button" aria-label={iconAriaLabel} onClick={onClick} className="active:scale-90 transition-transform">{icon}</button>
         <button
           type="button"
           aria-label={labelAriaLabel}
