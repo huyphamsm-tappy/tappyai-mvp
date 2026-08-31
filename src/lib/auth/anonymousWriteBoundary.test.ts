@@ -117,7 +117,10 @@ const EXEMPT: Record<string, string> = {
   'stripe/portal': 'billing portal for the calling account',
   'webhooks/stripe': 'Stripe webhook, signature-verified',
   'notifications/backfill': 'internal job, CRON_SECRET',
-  'notifications/broadcast': 'internal job, CRON_SECRET',
+  // 🗑️ `notifications/broadcast` removed 2026-09-01: the route was DELETED
+  // (contract §14.2 step 8), so its exemption became stale — and the test below
+  // is what caught it. Nothing about U02's guard changed; a name was removed
+  // because the thing it named no longer exists.
 }
 
 /** Controller V2 has its own RBAC and is explicitly out of this boundary's scope. */

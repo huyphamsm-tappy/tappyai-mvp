@@ -326,7 +326,7 @@ The iOS app shares the same Supabase project and holds only the **anon key** →
 - **Milestones / view-inflation-sensitive counters:** `review_milestones` inserts are service-role only.
 - **Push:** register token in `notification_subscriptions` (schema is FCM-ready via `provider='fcm'`), but delivery is server/cron side.
 - **Crons:** all `/api/cron/*` require `CRON_SECRET` — server only, not callable by iOS. `CRON_SECRET` remains in use and unchanged.
-- **Broadcasts:** `/api/notifications/broadcast` is 🚫 **RETIRED (`410 Gone`, 2026-08-31)** and no longer checks `CRON_SECRET`. Broadcasting now goes through `POST /api/admin/notifications/broadcast`, gated by the `notifications.send.broadcast` permission **and** a same-origin check — server/Controller only, and not callable by iOS either.
+- **Broadcasts:** `/api/notifications/broadcast` is 🗑️ **DELETED (2026-09-01)** and now returns `404`. It was retired to `410 Gone` on 2026-08-31, observed for an hour with zero hits, then removed. Broadcasting goes through `POST /api/admin/notifications/broadcast`, gated by the `notifications.send.broadcast` permission **and** a same-origin check — server/Controller only, and not callable by iOS either.
 
 **Watch-outs for iOS:**
 1. `reviews`, `review_saves`, `favorites` base DDL is prod-only — trust live column shapes, verify constraints against prod, don't assume repo migrations define them.

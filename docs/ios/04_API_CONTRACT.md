@@ -94,7 +94,7 @@
 - `GET/POST /api/preferences` + `/api/preferences/profile` — **Auth**. Read/write preference profile (budget/cuisine/dietary/gender/freeform).
 - `GET /api/notifications` — **Auth**. Pull-based inbox (follow/like/milestone).
 - `POST /api/notifications/subscribe` — **Auth**. Register push subscription `(user_id, provider)`; single master `enabled`. **iOS: add `provider='apns'` + device token (backend delta).**
-- `POST /api/notifications/broadcast` — 🚫 **RETIRED 2026-08-31. Returns `410 Gone`.** Was `CRON_SECRET`-gated and server-only; never callable by a native client. Replaced by `POST /api/admin/notifications/broadcast`, which requires the `notifications.send.broadcast` permission and a same-origin request — **not reachable from iOS**. No iOS implementation change is required, because nothing called it.
+- `POST /api/notifications/broadcast` — 🗑️ **DELETED 2026-09-01. Now returns `404`.** Was `CRON_SECRET`-gated and server-only; never callable by a native client, and it had zero callers. Retired to `410` on 2026-08-31, observed for an hour with zero hits, then removed. Broadcasting is `POST /api/admin/notifications/broadcast` — permission-gated and same-origin only, so **not reachable from iOS**. No iOS implementation change is or was required.
 - `GET/POST /api/price-watch` — **Auth**. Create/list watches; `price-check` cron notifies.
 
 ### 2.11 Discovery / Groups / Bookings
@@ -172,7 +172,7 @@
 | `/api/preferences/profile` | GET/POST | Bearer | |
 | `/api/notifications` | GET | Bearer | inbox |
 | `/api/notifications/subscribe` | POST | Bearer | push reg (add APNs) |
-| `/api/notifications/broadcast` | POST | — | 🚫 **RETIRED — `410 Gone`** (2026-08-31). Superseded by `/api/admin/notifications/broadcast`, permission-gated and same-origin only |
+| `/api/notifications/broadcast` | — | — | 🗑️ **DELETED** (2026-09-01) — returns `404`. Superseded by `/api/admin/notifications/broadcast`, permission-gated and same-origin only |
 | `/api/price-watch` | GET/POST | Bearer | |
 | `/api/bookings` | POST | Bearer | lead capture, pending |
 | `/api/group` | GET/POST | Bearer | |
