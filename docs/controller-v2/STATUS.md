@@ -4,20 +4,23 @@
 > **This document is the only authoritative statement of Controller V2 project status.**
 > Every other document in `docs/controller-v2/` is either a historical record or a design artefact. Where any of them states a status — `READY`, `NOT READY`, `NOT EXECUTED`, `Draft`, `Awaiting approval` — **this document overrides it**. Historical documents are deliberately not rewritten; they carry a banner pointing here.
 
-**Last updated:** 2026-08-31 — **Controller V2 is COMPLETE.** Production `67ee69a`.
+**Last updated:** 2026-08-31 — **Controller V2 is COMPLETE.**
+**Production revision: ask `GET https://www.tappyai.com/api/version`.** This document deliberately no longer names one.
 
 > ⚠️ **This header said `2026-08-15` while carrying entries dated 2026-08-19, and it had no entry at all for three merged, production-live commits.** That is exactly the drift the banner above exists to prevent, and it is corrected here rather than filed as a backlog item — the same discipline applied to the 2026-08-07 and 2026-08-13 corrections below.
 >
 > ⚠️ **And it happened again — the same shape, the same count.** This header read `2026-08-23 … Production d1ae429` while **three further PRs were merged and live**: [#211](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/211), [#212](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/212) and [#213](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/213). MEASURED 2026-08-30: `origin/main` is `defa21f`, `GET https://www.tappyai.com/api/version` returns `defa21f96ce125f1dd673ca6b4076d501553c829`, and a grep of this file for `211`, `212`, `213` and `broadcast` returned **0 hits each**. One of those three closed a **production privacy defect**. A single-source-of-truth that does not know about a closed security incident is the worst possible place for that gap, so it is recorded in [Post-V2 work](#post-v2-work-2026-08-29--2026-08-30) below.
 >
-> 🚨 **A FOURTH time — while this very PR was open, and by the merge of [#218](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/218).** This branch was opened to correct the header to `d0553f3`; #218 merged before it did, and the correction was stale again before it landed. That is not an argument for trying harder. **It is proof that the line cannot be kept correct by hand**, which is what the note below already said and what the number now demonstrates twice over. MEASURED 2026-08-31: `origin/main` and `GET https://www.tappyai.com/api/version` both return `67ee69a18d4d7b16b7bbb9cd1c381717a5e43b52`.
+> 🚨 **THE SHA IS GONE FROM THIS HEADER, AND THAT IS THE FIX.** It went stale four times in two days — `d1ae429` → `defa21f` ([#214](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/214)) → stale on [#215](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/215) → `d0553f3` → **stale on [#218](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/218) while the correcting PR was still open.** The fourth time was not carelessness on top of three others; four failures of the same kind are a fact about the **method**, not about the care taken.
 >
-> ⚠️ **A third time, in the same file, within one day — and it is worth naming why.** This header was corrected to
+> A hand-written revision is stale the moment the next merge happens, and no amount of diligence changes that. So this header now names **no** revision and points at the only thing that cannot go stale: **`GET /api/version`**, which reports what is actually serving. What is recorded below instead are facts that do not rot — **which PRs merged, and when**.
+>
+> ⚠️ **The three earlier corrections, kept as the evidence for the above.** This header was corrected to
 > `defa21f` in [#214](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/214), and [#215](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/215) merged **after** it, so the correction was stale the moment it landed.
 > That is not carelessness — it is structural: **a revision number written by hand is stale as soon as the next merge
 > happens.** MEASURED 2026-08-30: `origin/main` and `GET https://www.tappyai.com/api/version` both return
-> `d0553f3cb8421480f58bed0e0ba583e0cd66daf5`. The number is corrected here, and the standing advice for a reader is
-> unchanged and more reliable than this line: **ask `/api/version`, do not trust a SHA written in a document.**
+> `d0553f3cb8421480f58bed0e0ba583e0cd66daf5`. That correction, too, was overtaken — by #218, before this PR merged.
+> The advice it already carried is now the whole policy: **ask `/api/version`, do not trust a SHA written in a document.**
 >
 > 🔑 **None of it reopens the Definition of Done.** Decision F pins the DoD to [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md), and that document names **`notification` 0 times, `broadcast` 0 times, `Engagement` 0 times**. The three PRs are *post-V2* work on a platform that was already complete. They are recorded as history and as production state — **not** as DoD items, and not folded into any completed row to make it look larger.
 
@@ -1641,6 +1644,8 @@ so none blocks completion — and none is folded into a completed item to make i
 
 ## Post-V2 work (2026-08-29 → 2026-08-30)
 
+*(The heading's date range is kept verbatim because other documents link to this section by its generated anchor; the table below now runs to **2026-08-31**. Renaming the heading to gain two characters of accuracy would break a cross-document link and make the correct merge order of two open PRs load-bearing — a bad trade for a date.)*
+
 **This section is history and production state. It is not the Definition of Done, and nothing in it reopens it.**
 Decision F pins the DoD to [`01_CONTROLLER_V2_ARCHITECTURE.md`](01_CONTROLLER_V2_ARCHITECTURE.md); that document names
 `notification` 0 times and `broadcast` 0 times. Recorded here because the alternative — a single-source-of-truth that
@@ -1651,6 +1656,12 @@ does not know a production privacy defect was found and closed — is worse than
 | **Controller Notification Tool** — Phase A (permissions) · B (targeted send) · B.1 (otter branding) | [#211](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/211) `e2f3520` | ✅ live | `/admin/notifications` page + `POST /api/admin/notifications/send`. Three permissions in the canonical registry: `notifications.send.user` (admin, super_admin) · `notifications.send.broadcast` (**super_admin ONLY, deliberately NOT implied by `send.user`**) · `notifications.history.read` (all four roles). Delivery goes through `src/lib/notifications/dispatchService.ts`, a shared seam with **zero authorization primitives** — each caller keeps its own guard, which is what lets Marketing reuse delivery without inheriting the Controller's authority |
 | **Push credential ownership** (DB) — I1 · I1′ | [#212](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/212) `e2c3262` | ✅ migration applied 2026-08-30 | `20260830_push_credential_ownership.sql`. Verified read-only from the PostgreSQL catalog: 5/5 objects · `disown_push_credential(p_credential text)` — `pronargs=1`, `SECURITY DEFINER`, `search_path=public, pg_temp` · EXECUTE for **`authenticated` only** (anon, PUBLIC and `service_role` all false) · trigger function executable by **nobody** · RLS unchanged, 1 policy, `force_rls=false` · 0 credentials claimed by more than one user · backfill a **no-op** on production data |
 | **Push identity reconcile** (app) — I2 | [#213](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/213) `defa21f` | ✅ live | `POST /api/notifications/subscribe/reconcile`, an app-wide login listener in `NotificationProvider`, and claim release on sign-out. `subscribed` now means *registered to me* and is answered by the server, fail-closed |
+| **Controller origin gate** — alias 403 UX | [#215](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/215) | ✅ live | The deployment answers on two hostnames; on the non-canonical one every guarded `/api/admin/*` request is refused 403 by `isSameOrigin`, and the Controller used to find out only after a form was filled in. The gate models the **actual** dependency — 18 mutations and **7 guarded GET reads** across 25 call sites — and deliberately leaves unguarded reads (audit, users list, home snapshot, settings) working on any origin. **Presentation only; `isSameOrigin` is unchanged and remains the authority** |
+| **V2.2 Phase C — broadcast BACKEND** | [#218](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/218) | 🟡 **live, SENDING OFF** | Contract-first: [`V2.2_PHASE_C_BROADCAST_CONTRACT.md`](V2.2_PHASE_C_BROADCAST_CONTRACT.md), all five Owner decisions answered before any code. Own audience builder (the deal cron's `getAllSubscribedUserIds()` untouched) · chunks ≤ 500 through the existing seam · recipient-level idempotency using the notification row itself as the ledger · `POST /api/admin/notifications/broadcast` behind `notifications.send.broadcast` + `isSameOrigin`. 8652 tests pass, **19/19 mutants killed** with execution proof, **0 migrations**. Verified on production unauthenticated: **401**, against **404** for a non-existent route — deployed and gated |
+
+> 🚨 **PHASE C IS NOT COMPLETE, AND THE ROW ABOVE IS AMBER FOR SIX REASONS.** Sending is **DISABLED** (`CONTROLLER_BROADCAST_ENABLED` unset) · the production dry run has **NOT BEEN RUN** · the first real broadcast is **NOT AUTHORISED** · the C-14 confirmation **UI DOES NOT EXIST** · the **anonymous-eligibility gap is OPEN** (exclusion is by profile absence; a pre-2026-08-08 anonymous account may still hold a profile row) · and the legacy `CRON_SECRET` route is **NOT RETIRED**, by design — O-4 = C puts that after a verified real send, never alongside it.
+>
+> Each remaining step is its own Owner decision and **none is implied by the one before it**. A broadcast cannot be recalled, which is why merging did not authorise deploying, deploying did not authorise enabling, and enabling will not authorise sending.
 
 ### The defect these closed
 
