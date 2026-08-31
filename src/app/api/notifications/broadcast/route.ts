@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
 import { writeAuditLog } from '@/lib/admin/audit'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
+import {
+  LEGACY_BROADCAST_RETIRED_ACTION,
+  LEGACY_BROADCAST_RETIRED_TARGET,
+} from '@/lib/notifications/legacyBroadcastRetirement'
 
 // ─── RETIRED: THE LEGACY CRON_SECRET BROADCAST ROUTE ─────────────────────────
 //
@@ -33,8 +37,12 @@ import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 // the nine cron routes and the backfill route that still use it; retiring this
 // endpoint neither removes nor weakens it.
 
-/** Every hit is recorded under this action, so the window can be queried. */
-export const LEGACY_BROADCAST_RETIRED_ACTION = 'notification.broadcast.legacy_gone'
+// 🚨 The action/target constants live in
+// `@/lib/notifications/legacyBroadcastRetirement`, NOT here. A Next.js route
+// module may only export the fields the framework recognises; any other named
+// export fails `npm run build` with "is not a valid Route export field" — a
+// failure that `npm test`, `tsc`, `lint` and the architecture checks all miss,
+// because CI does not run a build.
 
 /**
  * The actor for a hit on a retired machine endpoint.
@@ -75,7 +83,7 @@ export async function POST(req: Request) {
         actorEmail: '—',
         actorRole: 'none',
         action: LEGACY_BROADCAST_RETIRED_ACTION,
-        targetType: 'notification_broadcast_legacy',
+        targetType: LEGACY_BROADCAST_RETIRED_TARGET,
         metadata: {
           // 🔑 WHETHER a credential was presented, never the credential. This is
           // the signal the delete decision needs: a hit carrying an

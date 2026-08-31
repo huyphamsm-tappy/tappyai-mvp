@@ -24,7 +24,8 @@ vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.
 vi.mock('@/lib/notifications/emit', () => ({ emitNotification: h.emit }))
 vi.mock('@/lib/notifications/send', () => ({ getAllSubscribedUserIds: h.audience }))
 
-import { POST, LEGACY_BROADCAST_RETIRED_ACTION } from './route'
+import { POST } from './route'
+import { LEGACY_BROADCAST_RETIRED_ACTION } from '@/lib/notifications/legacyBroadcastRetirement'
 
 const post = (init: RequestInit = {}) =>
   new Request('http://localhost/api/notifications/broadcast', {
