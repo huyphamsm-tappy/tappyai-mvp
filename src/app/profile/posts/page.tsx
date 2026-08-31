@@ -8,6 +8,7 @@ import { AlertTriangle, ArrowLeft, Trash2, EyeOff, Eye, Loader2, Grid3X3 } from 
 import { createClient } from '@/lib/supabase/client'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import LinkPoster from '@/components/LinkPoster'
+import LikeListSheet from '@/app/reviews/LikeListSheet'
 
 interface Review {
   id: string; place_name: string; body: string; photos: string[] | null
@@ -32,6 +33,8 @@ export default function MyPostsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState<string | null>(null)
+  // The post whose like list is open — the count on each tile is its own control now.
+  const [likesOf, setLikesOf] = useState<string | null>(null)
   const router = useRouter()
   const supabase = createClient()
   const { t, locale } = useTranslation()
@@ -102,26 +105,35 @@ export default function MyPostsPage() {
           <div className="grid grid-cols-3 gap-1">
             {reviews.map(r => {
               return (
-                <button key={r.id} onClick={() => setSelected(selected === r.id ? null : r.id)}
+                // The tile and its like count are two controls, so the wrapper is a <div>: a
+                // <button> may not contain a <button>, and the count needs its own handler —
+                // tapping it used to open the post's action sheet. The tile button keeps the
+                // whole square (absolute inset-0), so the action sheet's tap area is unchanged.
+                <div key={r.id}
                   className={`relative aspect-square rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-800 ${selected === r.id ? 'ring-2 ring-primary-500' : ''}`}>
-                  {/* Shared poster: photo → thumbnail → platform placeholder. Never blank. */}
-                  <LinkPoster review={r} />
-                  {r.is_hidden && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                      <EyeOff size={20} className="text-white" />
-                    </div>
-                  )}
-                  {/* Not published. The post is still here and still theirs — it
-                      simply is not public — so it is marked, never hidden. */}
-                  {r.moderation?.state === 'RESTRICTED' && !r.is_hidden && (
-                    <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
-                      <AlertTriangle size={20} className="text-amber-300" />
-                    </div>
-                  )}
-                  <div className="absolute bottom-1 left-1 flex items-center gap-1">
+                  <button type="button" onClick={() => setSelected(selected === r.id ? null : r.id)}
+                    className="absolute inset-0 w-full h-full">
+                    {/* Shared poster: photo → thumbnail → platform placeholder. Never blank. */}
+                    <LinkPoster review={r} />
+                    {r.is_hidden && (
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <EyeOff size={20} className="text-white" />
+                      </div>
+                    )}
+                    {/* Not published. The post is still here and still theirs — it
+                        simply is not public — so it is marked, never hidden. */}
+                    {r.moderation?.state === 'RESTRICTED' && !r.is_hidden && (
+                      <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
+                        <AlertTriangle size={20} className="text-amber-300" />
+                      </div>
+                    )}
+                  </button>
+                  <button type="button" aria-label={t('reviews.likesOpen')}
+                    onClick={e => { e.stopPropagation(); setLikesOf(r.id) }}
+                    className="absolute bottom-1 left-1 flex items-center gap-1">
                     <span className="text-white text-xs drop-shadow">❤️ {r.like_count}</span>
-                  </div>
-                </button>
+                  </button>
+                </div>
               )
             })}
           </div>
@@ -178,6 +190,7 @@ export default function MyPostsPage() {
           </>
         )
       })()}
+      {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
   )
 }

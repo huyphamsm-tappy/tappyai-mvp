@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft, Play, Pause, Loader2, Music2, Heart, Bell, Plus, TrendingUp, Flag, X } from 'lucide-react'
 import { MusicThumbnail, MusicDuration } from '@/modules/music'
+import LikeListSheet from '@/app/reviews/LikeListSheet'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface SoundVideo {
   id: string
@@ -59,9 +61,12 @@ export default function SoundPage() {
   const params = useParams<{ trackId: string }>()
   const trackId = params?.trackId
 
+  const { t } = useTranslation()
   const [data, setData] = useState<SoundData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  // The clip whose like list is open — the count in each tile is its own control now.
+  const [likesOf, setLikesOf] = useState<string | null>(null)
 
   // Local, optimistic interaction state (seeded from the fetched data).
   const [playing, setPlaying] = useState(false)
@@ -302,9 +307,14 @@ export default function SoundPage() {
                           <Music2 size={20} />
                         </div>
                       )}
-                      <div className="absolute bottom-1 left-1 right-1 flex items-center gap-1 text-[11px] text-white drop-shadow">
+                      {/* The count sits INSIDE the tile's <Link>, so without its own handler a
+                          tap on it navigated to the post. It is the like list's control now;
+                          every other part of the tile still opens the clip. */}
+                      <button type="button" aria-label={t('reviews.likesOpen')}
+                        onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(v.id) }}
+                        className="absolute bottom-1 left-1 right-1 flex items-center gap-1 text-[11px] text-white drop-shadow">
                         <Heart size={11} className="fill-white/90 text-white/90" /> {v.likeCount}
-                      </div>
+                      </button>
                     </Link>
                   ))}
                 </div>
@@ -354,6 +364,8 @@ export default function SoundPage() {
           </div>
         </>
       )}
+
+      {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
 
       {/* eslint-disable-next-line jsx-a11y/media-has-caption -- instrumental preview clip */}
       <audio ref={audioRef} onEnded={() => setPlaying(false)} className="hidden" />

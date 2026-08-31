@@ -16,6 +16,7 @@ import { trailingFillerCount } from '@/lib/ui/gridFill'
 import { getUserPreferences } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import SoundSheet from './SoundSheet'
+import LikeListSheet from './LikeListSheet'
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from './feedShared'
@@ -40,6 +41,7 @@ function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Revie
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
+  const [likesOf, setLikesOf] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Jump straight to the tapped clip on open.
@@ -121,7 +123,8 @@ function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Revie
             <Post key={r.id} r={r} me={me} feedType="latest" showFeedTabs={false}
               renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex}
               onFeedTypeChange={() => {}} onLike={like} onLikeDouble={likeOnly} onSave={save}
-              onComment={setCommentOf} onShare={setShareOf} onDelete={del} onSoundTap={setSoundTrackId} />
+              onComment={setCommentOf} onShare={setShareOf} onDelete={del} onSoundTap={setSoundTrackId}
+              onOpenLikes={rev => setLikesOf(rev.id)} />
           ))}
         </div>
         {/* Desktop prev/next — no swipe on desktop */}
@@ -135,6 +138,7 @@ function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Revie
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
       {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
+      {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
   )
 }

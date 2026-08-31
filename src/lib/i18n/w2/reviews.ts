@@ -18,6 +18,14 @@ export const vi: Record<string, string> = {
   'reviews.railSave': 'Lưu',
   'reviews.railShare': 'Chia sẻ',
 
+  // Like list — the count is its own control, separate from the heart
+  'reviews.likesOpen': 'Xem những người đã thích',
+  'reviews.likesTitle': 'Lượt thích',
+  'reviews.likesEmpty': 'Chưa có ai thích bài viết này',
+  'reviews.likesError': 'Không tải được danh sách lượt thích',
+  'reviews.likesMore': 'Xem thêm',
+  'reviews.likesClose': 'Đóng',
+
   // Post overflow menu
   'reviews.deletePost': 'Xoá bài',
   'reviews.hidePost': 'Ẩn bài',
@@ -153,6 +161,14 @@ export const en: Record<string, string> = {
   // Action rail
   'reviews.railSave': 'Save',
   'reviews.railShare': 'Share',
+
+  // Like list — the count is its own control, separate from the heart
+  'reviews.likesOpen': 'See who liked this',
+  'reviews.likesTitle': 'Likes',
+  'reviews.likesEmpty': 'No likes on this post yet',
+  'reviews.likesError': "Couldn't load the like list",
+  'reviews.likesMore': 'Show more',
+  'reviews.likesClose': 'Close',
 
   // Post overflow menu
   'reviews.deletePost': 'Delete post',

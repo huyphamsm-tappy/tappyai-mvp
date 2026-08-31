@@ -282,7 +282,7 @@ export function ShareModal({ review, onClose }: { review: Review; onClose: () =>
 }
 
 /* ─── Single post (TikTok style) ─── */
-export function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onSoundTap, onFollow }: {
+export function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onSoundTap, onFollow, onOpenLikes }: {
   r: Review; me: string | null
   // Only the active slide (± 1 neighbour) mounts a real <video>. Off-screen
   // slides render just the thumbnail. iOS Safari caps how many HTMLMediaElements
@@ -302,6 +302,9 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   // Optional: the profile clip viewer doesn't pass it, and without it the "+" is
   // not rendered at all — an inert badge was the bug (WEB-EXPLORE-FOLLOW-002).
   onFollow?: (userId: string) => void
+  // Tapping the like COUNT (not the heart) asks the host to show who liked this clip. Optional:
+  // without it the count renders exactly as before, as plain text inside the heart's button.
+  onOpenLikes?: (r: Review) => void
 }) {
   const { t } = useTranslation()
   const photos = (r.photos || []).filter(Boolean)
@@ -528,7 +531,13 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
         </div>
 
         {/* Like */}
-        <RAction icon={<Heart size={28} className={r.liked_by_me ? 'fill-[#fe2c55] text-[#fe2c55]' : 'text-white'} />} label={r.like_count} onClick={() => onLike(r.id)} />
+        <RAction
+          icon={<Heart size={28} className={r.liked_by_me ? 'fill-[#fe2c55] text-[#fe2c55]' : 'text-white'} />}
+          label={r.like_count}
+          onClick={() => onLike(r.id)}
+          onLabelClick={onOpenLikes ? () => onOpenLikes(r) : undefined}
+          labelAriaLabel={t('reviews.likesOpen')}
+        />
         {/* Comment */}
         <RAction icon={<MessageCircle size={26} className="text-white" />} label={r.comment_count} onClick={() => onComment(r)} />
         {/* Save */}
@@ -561,11 +570,40 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   )
 }
 
-function RAction({ icon, label, onClick }: { icon: React.ReactNode; label?: string | number; onClick?: () => void }) {
+// `onLabelClick` splits the rail item into TWO controls: the icon keeps the primary action, the
+// label becomes its own button. Only the Like item passes it — tapping "3" must open the like
+// list, not toggle the like, and the two used to be a single <button> so the number inherited the
+// heart's job. A <button> may not contain a <button>, so the wrapper drops to a <div> in that
+// case; without the split the markup is byte-for-byte what it always was.
+function RAction({ icon, label, onClick, onLabelClick, labelAriaLabel }: {
+  icon: React.ReactNode
+  label?: string | number
+  onClick?: () => void
+  onLabelClick?: () => void
+  labelAriaLabel?: string
+}) {
+  const labelClass = 'text-white text-xs font-semibold drop-shadow-md'
+
+  if (label !== undefined && onLabelClick) {
+    return (
+      <div className="flex flex-col items-center gap-1">
+        <button type="button" onClick={onClick} className="active:scale-90 transition-transform">{icon}</button>
+        <button
+          type="button"
+          aria-label={labelAriaLabel}
+          onClick={e => { e.preventDefault(); e.stopPropagation(); onLabelClick() }}
+          className={`${labelClass} active:scale-90 transition-transform`}
+        >
+          {label}
+        </button>
+      </div>
+    )
+  }
+
   return (
     <button onClick={onClick} className="flex flex-col items-center gap-1 active:scale-90 transition-transform">
       {icon}
-      {label !== undefined && <span className="text-white text-xs font-semibold drop-shadow-md">{label}</span>}
+      {label !== undefined && <span className={labelClass}>{label}</span>}
     </button>
   )
 }
