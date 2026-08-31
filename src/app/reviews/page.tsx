@@ -13,6 +13,7 @@ import { track } from '@/lib/tracking/tracker'
 import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import SoundSheet from './SoundSheet'
+import LikeListSheet from './LikeListSheet'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
 import LinkPoster from '@/components/LinkPoster'
@@ -475,6 +476,9 @@ export default function ReviewsPage() {
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
   const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
+  // The review whose like list is open. Holds an id, not a Review: the search grid opens it too
+  // and its rows are a different shape from the feed's.
+  const [likesOf, setLikesOf] = useState<string | null>(null)
   // ADR-014: notifications + unread badge come from the app-level store.
   const { notifications, unreadCount, loading: notifsLoading, markAllRead } = useNotifications()
   const notifs = useMemo<Notification[]>(() => notifications.map(mapDtoToInbox), [notifications])
@@ -1055,7 +1059,7 @@ export default function ReviewsPage() {
                 </div>
               : <>
                   <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} onSoundTap={setSoundTrackId} onFollow={followFromFeed} />)}
+                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} onSoundTap={setSoundTrackId} onFollow={followFromFeed} onOpenLikes={rev => setLikesOf(rev.id)} />)}
                   </div>
                   {/* Desktop prev/next — no swipe on desktop, so surface arrows to the right of the column. */}
                   <div className="hidden md:flex flex-col gap-3 absolute left-full ml-4 top-1/2 -translate-y-1/2 z-20">
@@ -1129,7 +1133,11 @@ export default function ReviewsPage() {
                               <p className="text-white text-xs font-semibold line-clamp-1">{r.place_name}</p>
                               {r.body && <p className="text-gray-300 text-[10px] line-clamp-1 mt-0.5">{r.body}</p>}
                               <div className="flex items-center gap-2 mt-1">
-                                <span className="text-white text-[10px] flex items-center gap-0.5"><Heart size={9} className="fill-white" /> {r.like_count}</span>
+                                {/* The count is the like list's control here too, so the number
+                                    means the same thing on every surface that shows it. */}
+                                <button type="button" aria-label={t('reviews.likesOpen')}
+                                  onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(r.id) }}
+                                  className="text-white text-[10px] flex items-center gap-0.5 active:scale-90 transition-transform"><Heart size={9} className="fill-white" /> {r.like_count}</button>
                                 {r.rating > 0 && <span className="text-amber-400 text-[10px]">{'\u2605'.repeat(r.rating)}</span>}
                               </div>
                             </div>
@@ -1220,6 +1228,7 @@ export default function ReviewsPage() {
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
       {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
+      {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
   )
 }

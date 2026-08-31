@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { ArrowLeft, Heart, Play, Loader2, UserPlus, UserCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import LinkPoster from '@/components/LinkPoster'
+import LikeListSheet from '@/app/reviews/LikeListSheet'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface CreatorProfile {
   id: string
@@ -43,8 +45,11 @@ export default function CreatorPage() {
   const creatorId = params.id as string
   const supabase = createClient()
 
+  const { t } = useTranslation()
   const [profile, setProfile] = useState<CreatorProfile | null>(null)
   const [posts, setPosts] = useState<Post[]>([])
+  // The post whose like list is open — the count in each tile is its own control now.
+  const [likesOf, setLikesOf] = useState<string | null>(null)
   const [totalViews, setTotalViews] = useState(0)
   const [totalWatchMin, setTotalWatchMin] = useState(0)
   const [totalLikes, setTotalLikes] = useState(0)
@@ -198,15 +203,20 @@ export default function CreatorPage() {
                       <Play size={10} className="text-white fill-white" />
                     </div>
                   )}
-                  <div className="absolute bottom-1 left-1 flex items-center gap-1">
+                  {/* Own control: inside the tile's <Link>, a tap here used to navigate to the
+                      post. The rest of the tile still does. */}
+                  <button type="button" aria-label={t('reviews.likesOpen')}
+                    onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(p.id) }}
+                    className="absolute bottom-1 left-1 flex items-center gap-1">
                     <Heart size={10} className="text-white fill-white" />
                     <span className="text-white text-[10px]">{p.like_count}</span>
-                  </div>
+                  </button>
                 </Link>
               )
             })}
           </div>}
       </div>
+      {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
   )
 }

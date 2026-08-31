@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { X, Play, Pause, Loader2, Music2, Heart, Plus } from 'lucide-react'
 import { MusicThumbnail, MusicDuration } from '@/modules/music'
+import LikeListSheet from './LikeListSheet'
 
 interface SoundTrack {
   id: string; title: string; artist: string | null; durationSec: number
@@ -35,6 +36,8 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
   const [saved, setSaved] = useState(false)
   const [savedCount, setSavedCount] = useState(0)
   const [busy, setBusy] = useState(false)
+  // The clip whose like list is open — the count in each tile is its own control now.
+  const [likesOf, setLikesOf] = useState<string | null>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
   const countedPlay = useRef(false)
 
@@ -198,9 +201,13 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-gray-400"><Music2 size={16} /></div>
                         )}
-                        <div className="absolute bottom-0.5 left-0.5 text-[10px] text-white drop-shadow flex items-center gap-0.5">
+                        {/* Own control: inside the tile's <Link>, a tap here used to navigate to
+                            the post. The rest of the tile still does. */}
+                        <button type="button" aria-label={t('reviews.likesOpen')}
+                          onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(v.id) }}
+                          className="absolute bottom-0.5 left-0.5 text-[10px] text-white drop-shadow flex items-center gap-0.5">
                           <Heart size={9} className="fill-white/90" /> {v.likeCount}
-                        </div>
+                        </button>
                       </Link>
                     ))}
                   </div>
@@ -213,6 +220,8 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <audio ref={audioRef} onEnded={() => setPlaying(false)} className="hidden" />
       </div>
+      {/* z-[70] — above this sheet's own z-[60] backdrop, so it stacks rather than hides behind. */}
+      {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </>
   )
 }

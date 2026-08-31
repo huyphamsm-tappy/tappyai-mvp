@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { Heart } from 'lucide-react'
+import LikeListSheet from '@/app/reviews/LikeListSheet'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 export default function ReviewLikeButton({
   reviewId,
@@ -12,9 +14,11 @@ export default function ReviewLikeButton({
   initialLiked: boolean
   initialCount: number
 }) {
+  const { t } = useTranslation()
   const [liked, setLiked] = useState(initialLiked)
   const [count, setCount] = useState(initialCount)
   const [pending, setPending] = useState(false)
+  const [listOpen, setListOpen] = useState(false)
 
   const toggle = async () => {
     if (pending) return
@@ -36,18 +40,33 @@ export default function ReviewLikeButton({
     }
   }
 
+  // 🔑 The heart and the count are two controls, not one. They used to share a single <button>,
+  // so tapping the number toggled the like — a user asking "who liked this?" silently unliked the
+  // post instead. The heart keeps the toggle; the number opens the like list.
   return (
-    <button
-      onClick={toggle}
-      className="flex flex-col items-center gap-1 active:scale-90 transition-transform"
-      aria-label={liked ? 'Bỏ thích' : 'Thích'}
-    >
-      <Heart
-        size={28}
-        className={liked ? 'fill-[#fe2c55] text-[#fe2c55]' : 'text-white'}
-        style={{ transition: 'all 0.15s' }}
-      />
-      <span className="text-white text-xs font-semibold drop-shadow-md">{count}</span>
-    </button>
+    <>
+      <div className="flex flex-col items-center gap-1">
+        <button
+          onClick={toggle}
+          className="active:scale-90 transition-transform"
+          aria-label={liked ? 'Bỏ thích' : 'Thích'}
+        >
+          <Heart
+            size={28}
+            className={liked ? 'fill-[#fe2c55] text-[#fe2c55]' : 'text-white'}
+            style={{ transition: 'all 0.15s' }}
+          />
+        </button>
+        <button
+          type="button"
+          onClick={() => setListOpen(true)}
+          aria-label={t('reviews.likesOpen')}
+          className="text-white text-xs font-semibold drop-shadow-md active:scale-90 transition-transform"
+        >
+          {count}
+        </button>
+      </div>
+      {listOpen && <LikeListSheet reviewId={reviewId} onClose={() => setListOpen(false)} />}
+    </>
   )
 }
