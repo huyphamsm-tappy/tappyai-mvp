@@ -44,11 +44,21 @@ import { describe, it, expect, beforeEach, afterAll } from 'vitest'
 import net from 'node:net'
 import { generateText, type LanguageModelV1 } from 'ai'
 
-/** Counts TCP connections. If the SDK downloads, the connection lands here. */
+/**
+ * Counts TCP connections. If the SDK downloads, the connection lands here.
+ *
+ * 🚨 It answers with a real (tiny) HTTP response rather than destroying the socket. An earlier
+ * version did destroy it, which passed locally and TIMED OUT on CI: the assertion then depended on
+ * how fast the HTTP client gives up on a reset connection, which is a property of the platform and
+ * not of the thing being tested. Serving a valid response means the SDK's happy path runs
+ * everywhere, and the only variable left is whether a connection happened at all.
+ */
 const connections: string[] = []
 const server = net.createServer(sock => {
   connections.push(sock.remoteAddress ?? '?')
-  sock.destroy()
+  sock.end(
+    'HTTP/1.1 200 OK\r\nContent-Type: image/jpeg\r\nContent-Length: 3\r\nConnection: close\r\n\r\nabc',
+  )
 })
 const port: number = await new Promise(resolve => {
   server.listen(0, '127.0.0.1', () => resolve((server.address() as net.AddressInfo).port))
@@ -132,10 +142,14 @@ describe('what that flag actually decides', () => {
     //
     // If this ever reports 0, the SDK's behaviour has changed and the reasoning above needs
     // rechecking — the test failing in EITHER direction is a signal worth reading.
-    await run(stubModel(false))
+    const outcome = await run(stubModel(false))
 
     expect(connections.length).toBe(1)
-  })
+    // The download succeeded and the model was handed BYTES, not the url — which is the whole
+    // difference. Anything else means the branch was not actually taken.
+    expect(outcome).toBe('ok')
+    expect(JSON.stringify(seenPrompt)).not.toContain('127.0.0.1')
+  }, 15_000)
 })
 
 describe('the safe download primitive is available to the adapter layer', () => {
