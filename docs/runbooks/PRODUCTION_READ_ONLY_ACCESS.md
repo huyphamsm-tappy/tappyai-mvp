@@ -1,8 +1,12 @@
 # Production read-only database access
 
-**Status as of 2026-09-01: NO WORKING CHANNEL.** Read-only production measurement is **unavailable**, and the correct response is to report the missing number as **UNKNOWN**, never to infer it.
+**Status as of 2026-09-01: the SQL Editor WORKS.** A direct read-only production measurement was performed through it the same day — see §2.
 
-This document exists because the same blocker has now been rediscovered twice, ten days apart, by two separate pieces of work. It is written to stop that happening a third time.
+> 🚨 **THIS FILE'S FIRST VERSION SAID THE OPPOSITE, AND IT WAS WRONG.** It reported "NO WORKING CHANNEL" on the strength of DOM probes that returned zero buttons, zero text and zero Monaco models. **A screenshot of the same page showed a fully rendered SQL Editor.** The instrument was fine; the *measurement of the instrument* was broken, and the wrong conclusion was published rather than checked.
+>
+> That is the same failure this document warns about in §5, committed by the document itself. It is corrected here rather than quietly overwritten, because a runbook that hid its own false negative would be teaching the wrong lesson.
+>
+> 🔑 **The operational takeaway: when a page appears empty, LOOK AT IT.** A screenshot is one call and settles in seconds what a DOM query can get confidently wrong — a client-rendered app can be fully painted while a scripted probe sees nothing, and "the page is broken" is a much bigger claim than "my selector found nothing."
 
 ---
 
@@ -25,11 +29,12 @@ There is **no separate read-only path**. The SQL Editor is both the apply channe
 |---|---|
 | **2026-08-22** | [`K2_PLATFORM_SETTINGS_APPLY_PACK.md`](../controller-v2/runbooks/K2_PLATFORM_SETTINGS_APPLY_PACK.md) §1 records: **apply channel BLOCKED** — no owner access token in either worktree, the session environment, `~/.supabase` or `%APPDATA%`; `supabase projects list` fails auth. The SQL Editor still worked, so work continued through it. |
 | **2026-08-30** | The SQL Editor was used successfully for production verification. |
-| **2026-09-01** | 🔴 **The SQL Editor and the project dashboard no longer render.** Measured: the page returns ~35 KB of HTML with `readyState: complete`, but **0 buttons, 0 text, 0 Monaco editor models**, across repeated attempts on `/sql/new` and the project root. `api.supabase.com` platform endpoints answer **401** to a cookie-only request, and the Supabase CLI's stored token is **also 401**. |
+| **2026-09-01 (first, WRONG)** | The SQL Editor was reported as not rendering — ~35 KB of HTML, `readyState: complete`, but 0 buttons, 0 text, 0 Monaco models from DOM probes. **This diagnosis was false and is superseded.** |
+| **2026-09-01 (corrected)** | ✅ **The SQL Editor works.** A screenshot showed it fully rendered — Run button, `Primary Database`, role `postgres`, branch banner `main PRODUCTION`. The editor's Monaco model was then set via `window.monaco.editor.getModels()[0].setValue(...)` and the query run from the UI. **A direct read-only measurement of `auth.users` was completed**, recorded in [`V2.2_PHASE_C_BROADCAST_CONTRACT.md`](../controller-v2/V2.2_PHASE_C_BROADCAST_CONTRACT.md) §15.3. |
 
-**The project has therefore gone from one working channel to zero, and nothing in `docs/` describes how to restore either.**
+**Still true:** the Supabase **CLI** has no owner token (`~/.supabase` holds only `telemetry.json` and `traces`; `SUPABASE_ACCESS_TOKEN` is unset), and `api.supabase.com` answers **401** to a cookie-only request. So the CLI/platform-API route remains unavailable — but **the SQL Editor, which is the canonical channel in §1, is not**.
 
-> 🚨 **This is an operational blocker, not a reason to weaken an acceptance criterion.** The security requirement that needed the measurement is unchanged. What is missing is the ability to *take* the measurement — and those are different problems with different fixes.
+> 🚨 **The lesson worth keeping is not "the dashboard was down."** It never was. The lesson is that a broken *observation* was mistaken for a broken *system*, and an acceptance criterion was nearly parked as UNKNOWN because of it. Verify the instrument before reporting what it shows — visually, if the alternative is a scripted probe you have not validated.
 
 ---
 
@@ -81,17 +86,19 @@ There is no supported client-side remedy documented for this, and this file will
 
 ---
 
-## 7. What this currently blocks — Controller V2.2-1
+## 7. What this channel unblocked — Controller V2.2-1
 
-Recorded here so the blocker and its consequence stay attached to each other:
+Recorded here so the channel and what depended on it stay attached to each other:
 
 | Item | State |
 |---|---|
 | C-14 two-step confirmation UI | ✅ **DONE** — [#223](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/223), `ff419cd` |
 | Anonymous subscription **creation** prevention | ✅ **DONE** — [#225](https://github.com/huyphamsm-tappy/tappyai-mvp/pull/225), `3b0a2fe` |
-| Historical anonymous + profile + enabled subscription population | 🔴 **UNKNOWN / UNPROVEN** — needs the channel in §1 |
-| **V2.2-1 overall** | 🔴 **NOT COMPLETE** |
+| Historical anonymous + profile + enabled subscription population | ✅ **MEASURED ZERO** — 2026-09-01, direct read through §1 |
+| **V2.2-1 overall** | ✅ **CLOSED on current production state** |
 
-The open question is one query away, and is stated in full in the Phase 5 record: *does any user with `auth.users.is_anonymous = true` currently hold both a `profiles` row and an enabled `notification_subscriptions` row?*
+The question was one query away, and the query was run: *does any user with `auth.users.is_anonymous = true` currently hold both a `profiles` row and an enabled `notification_subscriptions` row?* **No.** Full result, control query and caveats: [`V2.2_PHASE_C_BROADCAST_CONTRACT.md`](../controller-v2/V2.2_PHASE_C_BROADCAST_CONTRACT.md) §15.3.
 
-> ⚠️ **Preventive is not curative.** #225 guarantees no **new** anonymous claim can be created. It does not remove one that already exists. Until §1 is available again, the historical population stays **UNKNOWN**, and V2.2-1 stays **NOT COMPLETE**.
+> ⚠️ **Preventive is not curative, and the measurement is point-in-time.** #225 guarantees no **new** anonymous claim can be created; it does not remove one that already exists. The measurement says none exists **on 2026-09-01**. Neither statement is a guarantee about the future — together they are simply the strongest thing that can honestly be said.
+>
+> 🔑 And note what the control query showed: **324 anonymous users exist, one with a legacy profile.** "Measured zero" means zero satisfying *all three* conditions. It does not mean there are no anonymous users, and this file should never be cited as if it did.
