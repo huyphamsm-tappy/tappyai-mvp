@@ -240,7 +240,25 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
       <Link href={profileUrl} className={rowBase} style={{ borderColor: color }}>
         {avatarStack}{mainText}
         <button
-          onClick={async e => { e.preventDefault(); e.stopPropagation(); if (followed || !g.actors[0]?.id) return; setFollowed(true); await fetch(`/api/users/${g.actors[0].id}/follow`, { method: 'POST' }) }}
+          // 🚨 This was optimistic with NO verification and NO try/catch: `fetch` resolves on 401 /
+          // 403 / 500, so a refused follow still read "Đang theo dõi" for the rest of the session,
+          // and a network failure became an unhandled rejection inside an onClick. The server's
+          // own `{ following }` decides, and a failure puts the button back — the same contract
+          // ProfileTab.handleFollow and followFromFeed already honour.
+          onClick={async e => {
+            e.preventDefault(); e.stopPropagation()
+            const actorId = g.actors[0]?.id
+            if (followed || !actorId) return
+            setFollowed(true)
+            try {
+              const res = await fetch(`/api/users/${actorId}/follow`, { method: 'POST' })
+              if (!res.ok) throw new Error('follow_failed')
+              const data = await res.json().catch(() => null)
+              if (typeof data?.following === 'boolean') setFollowed(data.following)
+            } catch {
+              setFollowed(false)
+            }
+          }}
           className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full ml-2 transition-all"
           style={{ background: followed ? 'rgba(255,255,255,0.08)' : `${color}22`, color: followed ? '#666' : color }}>
           {followed ? t('reviews.followed') : t('reviews.followBack')}
