@@ -11,8 +11,34 @@
  * the entire thing being prevented.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { redirectProvider } from '../providers/redirect'
 import type { CheckTarget } from '../types'
+
+/**
+ * The follower no longer calls `fetch`. It goes through `safeHeadRequest`, which resolves the
+ * hostname once, refuses any answer pointing inward, and pins the socket to the address it
+ * approved — see `dnsPinning.test.ts`, which measures that part against a real listening socket.
+ *
+ * This file keeps testing what it always tested: URL-level policy per hop, asserted on the
+ * requests that actually went out. Only the seam being recorded has moved.
+ */
+const h = vi.hoisted(() => ({
+  requested: [] as string[],
+  map: {} as Record<string, { status: number; location?: string }>,
+}))
+
+vi.mock('@/lib/security/safeFetch', async importOriginal => {
+  const actual = await importOriginal<typeof import('@/lib/security/safeFetch')>()
+  return {
+    ...actual,
+    safeHeadRequest: vi.fn(async (url: string) => {
+      h.requested.push(url)
+      const r = h.map[url] ?? { status: 200 }
+      return { status: r.status, location: r.location ?? null }
+    }),
+  }
+})
+
+const { redirectProvider } = await import('../providers/redirect')
 
 const target = (url: string): CheckTarget => {
   const u = new URL(url)
@@ -20,23 +46,15 @@ const target = (url: string): CheckTarget => {
 }
 
 /** Every url this run actually requested. */
-let requested: string[] = []
+const requested = h.requested
 
 function respondWith(map: Record<string, { status: number; location?: string }>) {
-  vi.stubGlobal('fetch', vi.fn(async (input: unknown) => {
-    const url = String(input)
-    requested.push(url)
-    const r = map[url] ?? { status: 200 }
-    return {
-      status: r.status,
-      headers: { get: (k: string) => (k.toLowerCase() === 'location' ? r.location ?? null : null) },
-    }
-  }) as any)
+  h.map = map
 }
 
 const run = (url: string) => redirectProvider.check(target(url), new AbortController().signal)
 
-beforeEach(() => { requested = []; vi.unstubAllGlobals() })
+beforeEach(() => { h.requested.length = 0; h.map = {} })
 
 describe('redirect follower — no hop reaches an internal address', () => {
   const INTERNAL = [

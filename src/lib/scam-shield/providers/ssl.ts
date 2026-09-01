@@ -19,7 +19,17 @@ export const sslProvider: ScamShieldProvider = {
 
     try {
       const sslChecker = (await import('ssl-checker')).default
-      const result = await sslChecker(target.hostname)
+      // 🚨 This is the SECOND place Scam Shield opens a socket to a host a stranger named — it
+      // reads a certificate, which means a TLS connection to whatever the name resolves to. A
+      // hostname pointing at `10.0.0.5` would have had us knocking on port 443 inside the network.
+      //
+      // The same pinning resolver as the redirect follower. Verified by measurement rather than
+      // by its type: `ssl-checker` declares `https.RequestOptions` (which includes `lookup`) but
+      // only forwards it on the plain-https path — its STARTTLS and cipher-grading paths build
+      // their own connect options and drop it. Neither of those runs here (no `protocol`, no
+      // `grade`), so the option does reach the socket; `__tests__/dnsPinning.test.ts` holds that.
+      const { safeLookup } = await import('@/lib/security/safeFetch')
+      const result = await sslChecker(target.hostname, { lookup: safeLookup })
 
       if (signal.aborted) {
         return { ...base, status: 'timeout', finding: 'TIMEOUT', severity: 'info', weight: 0, detail: 'SSL check timed out' }

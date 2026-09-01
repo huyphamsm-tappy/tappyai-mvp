@@ -1,6 +1,7 @@
 import type { CheckResult, CheckTarget, InputType } from './types'
 import { registrableDomain } from './domain'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { isAllowedDestinationAddress } from '@/lib/security/addressPolicy'
 import { executeProviders } from './orchestrator'
 import { calculateRisk } from './engine/riskEngine'
 import { buildEvidence } from './engine/evidenceEngine'
@@ -53,12 +54,58 @@ function normalizeTarget(raw: string): CheckTarget {
  * Both call this now, so the policy cannot drift again: adding a third entry point that skips it
  * is the only way to reintroduce the hole, and there is nothing else left to copy.
  */
-function assertSafeTarget(target: CheckTarget): void {
+async function assertSafeTarget(target: CheckTarget): Promise<void> {
   if (target.url.protocol === 'http:') {
     target.url = new URL(target.url.toString().replace('http:', 'https:'))
   }
   if (!isSafeHttpsUrl(target.url.toString())) {
     throw new Error('URL is not allowed (private/internal network)')
+  }
+  if (!(await resolvesToPublicAddress(target.hostname))) {
+    throw new Error('URL is not allowed (private/internal network)')
+  }
+}
+
+/**
+ * Does this hostname currently resolve somewhere we are willing to go?
+ *
+ * 🔑 This is NOT the security boundary — `safeFetch` is, because it pins the connection to the
+ * address it validated and this cannot (whatever it learns is stale the moment it returns). What
+ * it buys is honest SEMANTICS: without it, `https://points-inward.example/` sails past the string
+ * check, every provider fails on its own, and the visitor gets a muddled "check failed" for what
+ * is really the same refusal as typing `http://10.0.0.5/`. With it they get one clear answer, and
+ * the providers are never handed the target at all.
+ *
+ * 🚨 A resolution FAILURE is not a refusal. Scam Shield's job includes reporting on domains that
+ * are dead, parked, or newly registered — the DNS provider scores "no A record" as a signal in
+ * its own right. Failing closed here would refuse to examine exactly the domains most worth
+ * examining. Unresolvable names proceed; the pinned sinks can still not reach anything internal.
+ *
+ * 🚨 And it is BOUNDED. This lookup sits in front of everything, so an unresolvable name that
+ * hangs would stall the whole check rather than just this part of it — CI caught exactly that,
+ * timing out on `random-site.xyz` where a local resolver answers NXDOMAIN instantly. A slow
+ * resolver is treated the same as a failed one: carry on, because the security guarantee never
+ * depended on this answer in the first place.
+ */
+const GATE_DNS_TIMEOUT_MS = 1500
+
+async function resolvesToPublicAddress(hostname: string): Promise<boolean> {
+  let timer: NodeJS.Timeout | undefined
+  try {
+    const { lookup } = await import('node:dns/promises')
+    const addresses = await Promise.race([
+      lookup(hostname, { all: true, verbatim: true }),
+      new Promise<null>(resolve => {
+        timer = setTimeout(() => resolve(null), GATE_DNS_TIMEOUT_MS)
+        timer.unref?.()   // never hold the process open for a lookup nobody is waiting on
+      }),
+    ])
+    if (addresses === null) return true   // too slow to be worth blocking on
+    return addresses.every(a => isAllowedDestinationAddress(a.address))
+  } catch {
+    return true
+  } finally {
+    if (timer) clearTimeout(timer)
   }
 }
 
@@ -66,7 +113,7 @@ export async function checkUrl(rawUrl: string): Promise<CheckResult> {
   ensureProviders()
 
   const target = normalizeTarget(rawUrl)
-  assertSafeTarget(target)
+  await assertSafeTarget(target)
 
   return runCheck(target, 'url')
 }
@@ -89,7 +136,7 @@ export async function checkQr(imageBuffer: Uint8Array): Promise<CheckResult & { 
 
   // 🔑 Same boundary as `checkUrl`. A URL is no safer for having arrived inside an image.
   const target = normalizeTarget(decoded.url.toString())
-  assertSafeTarget(target)
+  await assertSafeTarget(target)
 
   const result = await runCheck(target, 'qr')
   return { ...result, qrText: decoded.text }

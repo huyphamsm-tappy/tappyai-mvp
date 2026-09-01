@@ -1,5 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
+// 🚨 The entry gate resolves the hostname now (a public name that points at `10.0.0.5` has to be
+// refused, and only DNS can say). Every provider below is mocked to keep this test hermetic, so
+// the resolver has to be too — otherwise `random-site.xyz` goes to a real resolver and the test
+// passes or fails on how fast that machine answers. It timed out on CI at exactly that, while
+// answering instantly here.
+vi.mock('node:dns/promises', async importOriginal => {
+  const actual = await importOriginal<typeof import('node:dns/promises')>()
+  return { ...actual, default: actual, lookup: async () => [{ address: '93.184.216.34', family: 4 }] }
+})
+
 vi.mock('../cache/redisCache', () => ({
   getCachedSignals: vi.fn().mockResolvedValue(new Map()),
   setCachedSignal: vi.fn().mockResolvedValue(undefined),
