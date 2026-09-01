@@ -49,6 +49,10 @@ vi.mock('@/lib/supabase/server', () => ({
   }),
 }))
 vi.mock('./ReviewDetailView', () => ({ default: () => null }))
+// The route now also imports the clip view for video rows. Stubbed for the same reason as its
+// sibling: pulling the real one drags in the music module, which builds a Supabase client at
+// import time and cannot run here. Nothing in this file renders either of them.
+vi.mock('./ReviewClipView', () => ({ default: () => null }))
 
 import ReviewDetailPage, { generateMetadata } from './page'
 
