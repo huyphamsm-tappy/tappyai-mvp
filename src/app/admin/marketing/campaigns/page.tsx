@@ -27,6 +27,7 @@ export default async function MarketingCampaignsPage() {
     <CampaignsShell
       canCreate={permissionEngine.can(actor, PERMISSIONS.MARKETING_CAMPAIGNS_CREATE)}
       canUpdate={permissionEngine.can(actor, PERMISSIONS.MARKETING_CAMPAIGNS_UPDATE)}
+      canActivate={permissionEngine.can(actor, PERMISSIONS.MARKETING_CAMPAIGNS_ACTIVATE)}
     />
   )
 }
