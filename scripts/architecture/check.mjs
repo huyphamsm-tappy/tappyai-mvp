@@ -176,6 +176,33 @@ const RULES = [
     allow: [PROVIDER_LAYER, SECURITY_BOUNDARY],
     hint: "vendor optimizations live in the adapter's decorateMessages() (src/lib/ai/llm/providers/*). The application must not know whether prompt caching exists.",
   },
+  // 🚨 SSRF. Today no adapter opens a socket, and that is the only reason a user-supplied image
+  // URL is not a TappyAI SSRF sink: `@ai-sdk/anthropic` reports `supportsImageUrls: true`, so the
+  // AI SDK's `downloadAssets` skips the download and Anthropic fetches the URL itself.
+  //
+  // Flip that flag — a new adapter, or an SDK upgrade — and the SDK downloads the URL instead,
+  // using a bare `fetch()` inside `node_modules/ai` that nothing here can reach: the call site
+  // does not pass `downloadImplementation`, and it is absent from the package's public types.
+  // There is no interception point. The only safe answer at that moment is for the adapter to
+  // fetch the URL ITSELF through `safeFetch` and hand the model bytes.
+  //
+  // So the rule is placed where that code would have to be written. It costs nothing today and
+  // turns "someone quietly adds a download" into a CI failure and a security review.
+  // `src/lib/ai/llm/__tests__/imageUrlSsrfGuardrail.test.ts` holds the flag itself.
+  {
+    id: 'no-raw-network-in-provider-layer',
+    title: 'Raw network call inside the AI provider layer',
+    patterns: [
+      /\bfetch\s*\(/,
+      /\b(?:https?|axios|undici)\s*\.\s*(?:get|post|request)\s*\(/,
+      /\bnew\s+Request\s*\(/,
+      /from\s+['"]node:(?:https?|net|dns)['"]/,
+      /require\(\s*['"]node:(?:https?|net|dns)['"]/,
+    ],
+    allow: [],
+    scope: [PROVIDER_LAYER],
+    hint: "adapters must not open sockets themselves. If a provider needs TappyAI to download a user-supplied URL (an image the model cannot fetch for itself), use safeGetText/safeHeadRequest from '@/lib/security/safeFetch' — it validates the resolved ADDRESS and pins the connection to it.",
+  },
   {
     id: 'no-adhoc-service-role-client',
     title: 'Supabase service-role client constructed outside the admin module',
