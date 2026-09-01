@@ -190,6 +190,31 @@ describe('the rebinding window is closed, not narrowed', () => {
   })
 })
 
+describe('the refusal does not become an oracle', () => {
+  it('🚨 nothing about the resolved address reaches the evidence report', async () => {
+    // The evidence report is returned to whoever submitted the URL. If a refusal said "10.0.0.5",
+    // an attacker could point a hostname at candidate addresses and read our own error text to map
+    // the internal network — trading an SSRF for an information leak is not a fix.
+    const { redirectProvider } = await import('../providers/redirect')
+    dnsAnswer.addresses = [v4('10.11.12.13')]
+
+    const url = new URL('https://looks-fine.example/pay')
+    const sig = await redirectProvider.check(
+      { url, hostname: url.hostname, domain: url.hostname },
+      AbortSignal.timeout(1200),
+    )
+
+    expect(sig.finding).toBe('UNSAFE_REDIRECT')     // the right verdict, not a vague "check failed"
+    expect(sig.severity).toBe('critical')
+
+    const serialised = JSON.stringify(sig)
+    expect(serialised).not.toContain('10.11.12.13')
+    // No address of any shape, and no leaked internals to reconstruct one from.
+    expect(serialised).not.toMatch(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/)
+    expect(connections.length).toBe(0)
+  })
+})
+
 describe('an address the policy allows is not blocked by it', () => {
   it('a public answer passes the policy — the guard is not just "reject everything"', async () => {
     // TEST-NET-1: shaped like a public address, guaranteed not to route anywhere real. The
