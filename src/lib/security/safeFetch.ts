@@ -141,3 +141,106 @@ export function safeHeadRequest(rawUrl: string, signal: AbortSignal): Promise<Sa
     req.end()
   })
 }
+
+export interface SafeTextResponse {
+  /** Body text, truncated at `maxBytes` or at `stopAt`, whichever comes first. */
+  text: string
+  /** The url the body actually came from — redirects move it, and relative links resolve against it. */
+  finalUrl: string
+  contentType: string
+}
+
+/**
+ * A bounded GET of a page a stranger chose, following redirects ONE VALIDATED HOP AT A TIME.
+ *
+ * 🚨 This exists because `fetch(url, { redirect: 'follow' })` cannot be made safe. The following
+ * happens inside the HTTP client, so there is no seam at which to inspect hop two: a public host
+ * answering `302 Location: http://169.254.169.254/` is fetched before any of our code runs again.
+ * Validating the URL the caller passed in says nothing about where it ends up.
+ *
+ * So the loop is ours. Every hop is checked as a string (scheme, credentials, literal addresses)
+ * and then connected through the pinned resolver, which refuses any hop whose NAME resolves
+ * inward. The body is read incrementally and abandoned at `maxBytes` or once `stopAt` appears, so
+ * a hostile server cannot stream forever.
+ */
+export async function safeGetText(
+  rawUrl: string,
+  signal: AbortSignal,
+  opts: { maxBytes: number; stopAt?: RegExp; maxRedirects?: number },
+): Promise<SafeTextResponse> {
+  const maxRedirects = opts.maxRedirects ?? 5
+  let currentUrl = rawUrl
+
+  for (let hop = 0; hop <= maxRedirects; hop++) {
+    const res = await getOnce(currentUrl, signal, opts)
+    if (res.kind === 'body') return { text: res.text, finalUrl: currentUrl, contentType: res.contentType }
+
+    // A redirect with nowhere to go is the end of the chain, not a failure.
+    if (!res.location) throw new Error('Redirect without a location')
+    currentUrl = new URL(res.location, currentUrl).toString()
+  }
+  throw new Error('Too many redirects')
+}
+
+type OnceResult =
+  | { kind: 'body'; text: string; contentType: string }
+  | { kind: 'redirect'; location: string | null }
+
+function getOnce(
+  rawUrl: string,
+  signal: AbortSignal,
+  opts: { maxBytes: number; stopAt?: RegExp },
+): Promise<OnceResult> {
+  return new Promise((resolve, reject) => {
+    let url: URL
+    try { url = new URL(rawUrl) } catch { return reject(new BlockedDestinationError()) }
+    if (url.protocol !== 'https:') return reject(new BlockedDestinationError())
+    if (url.username || url.password) return reject(new BlockedDestinationError())
+
+    const req = https.request(
+      {
+        hostname: url.hostname,
+        port: url.port ? Number(url.port) : 443,
+        path: url.pathname + url.search,
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; TappyAI/1.0; +https://tappyai.com)',
+          Host: url.host,
+        },
+        servername: url.hostname,
+        lookup: safeLookup,
+        agent: false,
+        signal,
+      },
+      res => {
+        const status = res.statusCode ?? 0
+        if (status >= 300 && status < 400) {
+          res.resume()
+          return resolve({ kind: 'redirect', location: (res.headers.location as string | undefined) ?? null })
+        }
+        if (status < 200 || status >= 300) {
+          res.resume()
+          return reject(new Error(`HTTP ${status}`))
+        }
+
+        const contentType = (res.headers['content-type'] as string | undefined) ?? ''
+        let text = ''
+        let bytes = 0
+        res.setEncoding('utf8')
+        res.on('data', (chunk: string) => {
+          bytes += Buffer.byteLength(chunk)
+          text += chunk
+          // Stop reading the moment we have what we came for, or once the budget is spent.
+          if (bytes >= opts.maxBytes || (opts.stopAt && opts.stopAt.test(text))) {
+            res.destroy()
+            resolve({ kind: 'body', text, contentType })
+          }
+        })
+        res.on('end', () => resolve({ kind: 'body', text, contentType }))
+        res.on('error', reject)
+      },
+    )
+    req.on('error', reject)
+    req.end()
+  })
+}
