@@ -41,17 +41,32 @@ function normalizeTarget(raw: string): CheckTarget {
   return { url, hostname, domain }
 }
 
-export async function checkUrl(rawUrl: string): Promise<CheckResult> {
-  ensureProviders()
-
-  const target = normalizeTarget(rawUrl)
-
+/**
+ * The SSRF boundary for this module: nothing reaches a provider until it has passed here.
+ *
+ * 🚨 It exists because the two entry points did NOT agree. `checkUrl` upgraded http→https and
+ * refused anything `isSafeHttpsUrl` rejects; `checkQr` did neither and went straight to
+ * `runCheck`. The QR decoder accepts `http:` as well as `https:`, so an image encoding
+ * `http://169.254.169.254/…` made the server issue that request, and the redirect provider handed
+ * the resulting hops back through the evidence report. One door was bolted, the other was open.
+ *
+ * Both call this now, so the policy cannot drift again: adding a third entry point that skips it
+ * is the only way to reintroduce the hole, and there is nothing else left to copy.
+ */
+function assertSafeTarget(target: CheckTarget): void {
   if (target.url.protocol === 'http:') {
     target.url = new URL(target.url.toString().replace('http:', 'https:'))
   }
   if (!isSafeHttpsUrl(target.url.toString())) {
     throw new Error('URL is not allowed (private/internal network)')
   }
+}
+
+export async function checkUrl(rawUrl: string): Promise<CheckResult> {
+  ensureProviders()
+
+  const target = normalizeTarget(rawUrl)
+  assertSafeTarget(target)
 
   return runCheck(target, 'url')
 }
@@ -72,7 +87,10 @@ export async function checkQr(imageBuffer: Uint8Array): Promise<CheckResult & { 
     )
   }
 
+  // 🔑 Same boundary as `checkUrl`. A URL is no safer for having arrived inside an image.
   const target = normalizeTarget(decoded.url.toString())
+  assertSafeTarget(target)
+
   const result = await runCheck(target, 'qr')
   return { ...result, qrText: decoded.text }
 }

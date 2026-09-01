@@ -38,7 +38,12 @@ export const redirectProvider: ScamShieldProvider = {
         if (visited.has(currentUrl)) break
         visited.add(currentUrl)
 
-        if (!isSafeHttpsUrl(currentUrl) && i > 0) {
+        // 🚨 `&& i > 0` used to sit here, exempting the FIRST url from the check. That was safe
+        // only while every caller validated before arriving — and one did not (`checkQr`), which
+        // is how BUG-007 happened. The exemption bought nothing and hid a hole, so it is gone:
+        // every hop is checked before it is fetched, including the first, and a public host that
+        // 302s to `169.254.169.254` is refused before that second request goes out.
+        if (!isSafeHttpsUrl(currentUrl)) {
           return {
             ...base, finding: 'UNSAFE_REDIRECT', severity: 'critical',
             weight: maxWeight * SEVERITY_MULTIPLIERS.critical,
