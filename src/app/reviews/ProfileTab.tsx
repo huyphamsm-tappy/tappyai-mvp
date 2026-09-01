@@ -35,7 +35,10 @@ import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from '.
      (`viewerStart`), closing is `onClose` — no pushState, no hash, no route.
    - Links inside the viewer that leave /reviews are the PAGE's departure
      (caught by the page-root click capture), not the viewer's concern. */
-function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
+// Exported so the Inbox can reuse it: a notification about a CLIP has to land in the clip
+// experience, not on the article-style detail page. It needs nothing from the profile grid —
+// `posts` may be a single review fetched by id — so there is no second viewer to build.
+export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
   const [items, setItems] = useState<Review[]>(posts)
   const [activeIndex, setActiveIndex] = useState(startIndex)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
