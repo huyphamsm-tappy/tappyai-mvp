@@ -59,6 +59,21 @@ export function readReturnTo(search: string): string {
  * Producers MUST use this rather than hand-writing the query string: it is what
  * makes the producer/consumer contract mechanical instead of remembered.
  */
+/**
+ * The page the visitor is on right now, as a destination to come back to.
+ *
+ * 🚨 Producers kept writing `'/reviews'` by hand, which was true for the page that literal was
+ * written on and false everywhere the component was later reused. `ClipViewer` is the case that
+ * proved it: once it became the destination of every share link and push notification, signing in
+ * from a shared clip returned to the feed and the clip was gone.
+ *
+ * Reading the location instead of naming it removes the class, not one instance of it.
+ */
+export function currentDestination(): string {
+  if (typeof window === 'undefined') return DEFAULT_RETURN_TO
+  return window.location.pathname + window.location.search
+}
+
 export function loginPathFor(destination: string): string {
   const dest = safeReturnTo(destination)
   if (dest === DEFAULT_RETURN_TO) return '/login'

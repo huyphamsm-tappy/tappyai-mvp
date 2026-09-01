@@ -22,6 +22,7 @@ import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import ReviewMusicDisc from './ReviewMusicDisc'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 
 /* ─── types ─── */
 export interface Profile { full_name: string | null; avatar_url: string | null }
@@ -124,7 +125,8 @@ export function CommentDrawer({ review, me, onClose, onAdded }: { review: Review
   }
   const send = async () => {
     // Anonymous can read comments but must log in to post one.
-    if (!me) { window.location.href = '/login?returnTo=' + encodeURIComponent('/reviews'); return }
+    // Rendered inside ClipViewer as well as the feed, so the destination is the page we are on.
+    if (!me) { window.location.href = loginPathFor(currentDestination()); return }
     if (!text.trim() || sending) return
     setSending(true)
     setSendError(false)
@@ -152,7 +154,8 @@ export function CommentDrawer({ review, me, onClose, onAdded }: { review: Review
   }
   // One reaction per user: change shifts it, tapping the current one removes it.
   const react = async (commentId: string, key: string) => {
-    if (!me) { window.location.href = '/login?returnTo=' + encodeURIComponent('/reviews'); return }
+    // Rendered inside ClipViewer as well as the feed, so the destination is the page we are on.
+    if (!me) { window.location.href = loginPathFor(currentDestination()); return }
     setPickerFor(null)
     const target = comments.find(c => c.id === commentId)
     if (!target) return
@@ -597,7 +600,15 @@ function RAction({ icon, label, onClick, onLabelClick, labelAriaLabel, iconAriaL
           type="button"
           aria-label={labelAriaLabel}
           onClick={e => { e.preventDefault(); e.stopPropagation(); onLabelClick() }}
-          className={`${labelClass} active:scale-90 transition-transform`}
+          // 🚨 Measured on production at 375×812: this button was 5×16 = 77px², because its label
+          // is a single character and a button shrink-wraps its text. The next smallest control on
+          // the rail was 784px². It failed WCAG 2.2's 24×24 minimum by a wide margin, so the like
+          // list was effectively unreachable by thumb on the platform this feed is built for.
+          //
+          // The hit area grows; the glyph does not. 44 wide because nothing sits beside it, and 24
+          // tall rather than 44 DELIBERATELY: the heart is 4px above (`gap-1`), and a taller box
+          // would start swallowing taps meant for it — trading one broken target for a worse one.
+          className={`${labelClass} min-w-[44px] min-h-[24px] flex items-center justify-center active:scale-90 transition-transform`}
         >
           {label}
         </button>

@@ -1191,7 +1191,11 @@ function ReviewsPageInner() {
                                     means the same thing on every surface that shows it. */}
                                 <button type="button" aria-label={t('reviews.likesOpen')}
                                   onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(r.id) }}
-                                  className="text-white text-[10px] flex items-center gap-0.5 active:scale-90 transition-transform"><Heart size={9} className="fill-white" /> {r.like_count}</button>
+                                  // 24 rather than 44 here: unlike the rails and the tile overlays,
+                                  // this control shares a flex row with the rating stars, so extra
+                                  // width would push them. 24×24 is the WCAG 2.2 minimum and the
+                                  // most that can be taken without moving a neighbour.
+                                  className="text-white text-[10px] flex items-center justify-center gap-0.5 min-w-[24px] min-h-[24px] active:scale-90 transition-transform"><Heart size={9} className="fill-white" /> {r.like_count}</button>
                                 {r.rating > 0 && <span className="text-amber-400 text-[10px]">{'\u2605'.repeat(r.rating)}</span>}
                               </div>
                             </div>

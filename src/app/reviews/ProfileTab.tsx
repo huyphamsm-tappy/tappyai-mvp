@@ -20,6 +20,7 @@ import LikeListSheet from './LikeListSheet'
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from './feedShared'
+import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 
 /* ─── Swipeable clip viewer — opens from the profile grid with the SAME UX as
    the main feed: swipe/arrow between clips, single-tap pause, double-tap like,
@@ -53,7 +54,11 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
     if (c) c.scrollTo({ top: startIndex * c.clientHeight, behavior: 'auto' })
   }, [startIndex])
 
-  const requireLogin = () => { if (me) return false; window.location.href = '/login?returnTo=/reviews'; return true }
+  // 🔑 The destination is the page we are ON, never a literal. This viewer is mounted by the
+  // profile grid AND by `/reviews/[id]` — every share link and push notification lands there — so
+  // a hardcoded `/reviews` meant: receive a link, tap the heart, sign in, and the clip is gone.
+  // `loginPathFor` is the producer half of the contract `lib/auth/returnTo` already defines.
+  const requireLogin = () => { if (me) return false; window.location.href = loginPathFor(currentDestination()); return true }
 
   const like = async (id: string) => {
     if (requireLogin()) return
