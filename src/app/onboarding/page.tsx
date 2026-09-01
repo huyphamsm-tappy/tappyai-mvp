@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { MapPin, ChevronRight, Loader2 } from 'lucide-react'
@@ -9,7 +9,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 // Single source: the same lists native clients receive via GET /api/config.
 import { ONBOARDING_INTERESTS as INTERESTS, ONBOARDING_CITIES as CITIES } from '@/lib/config/product'
 
-export default function OnboardingPage() {
+function OnboardingPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { t } = useTranslation()
@@ -150,5 +150,17 @@ export default function OnboardingPage() {
         )}
       </div>
     </div>
+  )
+}
+
+// `useSearchParams()` needs a Suspense boundary above it. It used to get one for free from the
+// app-root `loading.tsx`; that file now lives in the `(home)` route group, because at the root it
+// also swallowed every page's `notFound()` and forced HTTP 200 (see that file's note). The
+// boundary this page actually needs is therefore declared here, where it belongs.
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={null}>
+      <OnboardingPageInner />
+    </Suspense>
   )
 }
