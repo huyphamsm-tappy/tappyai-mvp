@@ -17,7 +17,7 @@ import LikeListSheet from './LikeListSheet'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
 import LinkPoster from '@/components/LinkPoster'
-import { ProfileTab } from './ProfileTab'
+import { ProfileTab, ClipViewer } from './ProfileTab'
 import { useNotifications } from '@/components/NotificationProvider'
 import { getExploreSession, reportAuthState } from '@/lib/explore/webExploreSession'
 import { mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
@@ -122,7 +122,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
 }
 
 /* ─── Notification row ─── */
-function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
+function NotifRow({ g, onNav, onOpenTarget }: { g: GroupedNotif; onNav: () => void; onOpenTarget?: (reviewId: string) => void }) {
   const { t } = useTranslation()
   const color = NOTIF_COLOR[g.type] || '#666'
   const [followed, setFollowed] = useState(false)
@@ -209,11 +209,17 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 
   const rowBase = "flex items-center px-4 py-3.5 border-l-[3px] active:bg-gray-900/40 transition-colors"
 
+  // 🔑 Every review in this product is a clip, and "someone liked your clip" used to land on
+  // `/reviews/[id]` — the article-style detail page (a 55vh hero with a content card over it)
+  // rather than the vertical viewer the clip was watched in. `onOpenTarget` hands the id to the
+  // page, which reads the row and decides: a video opens the SAME ClipViewer the profile grid and
+  // the feed use; anything else keeps this route exactly as it was.
   const handleReviewNav = () => {
     const match = g.url?.match(/\/reviews\/([0-9a-f-]{36})/i)
     const reviewId = match?.[1]
     if (reviewId) {
-      notifRouter.push('/reviews/' + reviewId)
+      if (onOpenTarget) onOpenTarget(reviewId)
+      else notifRouter.push('/reviews/' + reviewId)
     } else {
       onNav()
     }
@@ -278,7 +284,7 @@ function NotifRow({ g, onNav }: { g: GroupedNotif; onNav: () => void }) {
 }
 
 /* ─── Inbox Tab ─── */
-function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange, userPrefs }: {
+function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoading, onSetTab, onFeedTypeChange, userPrefs, onOpenTarget }: {
   notifs: Notification[]
   notifsLoading: boolean
   notifsError: boolean
@@ -287,6 +293,8 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
   onSetTab: (t: string) => void
   onFeedTypeChange: (ft: 'for-you' | 'following') => void
   userPrefs: UserPreferences | null
+  /** Opens the review a notification points at, in the presentation that review deserves. */
+  onOpenTarget?: (reviewId: string) => void
 }) {
   const { t } = useTranslation()
   const grouped = groupNotifs(notifs)
@@ -373,7 +381,7 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
               sections.map(({ label, items }) => (
                 <div key={label}>
                   <p className="text-gray-500 text-[10px] font-bold px-4 pt-4 pb-1.5 tracking-widest">{sectionLabel[label] ?? label}</p>
-                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => onSetTab('home')} />)}
+                  {items.map(g => <NotifRow key={g.id} g={g} onNav={() => onSetTab('home')} onOpenTarget={onOpenTarget} />)}
                 </div>
               ))
             )}
@@ -497,6 +505,8 @@ function ReviewsPageInner() {
   // The review whose like list is open. Holds an id, not a Review: the search grid opens it too
   // and its rows are a different shape from the feed's.
   const [likesOf, setLikesOf] = useState<string | null>(null)
+  // The clip a notification opened, held as the full row because ClipViewer renders from it.
+  const [clipOf, setClipOf] = useState<Review | null>(null)
   // ADR-014: notifications + unread badge come from the app-level store.
   const { notifications, unreadCount, loading: notifsLoading, markAllRead } = useNotifications()
   const notifs = useMemo<Notification[]>(() => notifications.map(mapDtoToInbox), [notifications])
@@ -747,6 +757,32 @@ function ReviewsPageInner() {
       setUserSearchError(true)
     } finally { setUserSearching(false) }
   }, [])
+
+  /**
+   * A notification names one review. Open it the way that review is meant to be seen.
+   *
+   * 🔑 A video opens the SAME `ClipViewer` the profile grid and the feed already use — one post,
+   * `startIndex` 0, so the clip on screen is exactly the one the notification is about and never
+   * the feed's first. Anything else (photo posts) keeps the existing `/reviews/[id]` navigation.
+   *
+   * 🚨 A row this viewer cannot read — deleted, hidden, or not publishable — falls through to the
+   * route on purpose. That page answers a real HTTP 404 (BUG-004), and deciding it here would
+   * duplicate the publication rules in a second place.
+   *
+   * This is a READ. It never likes, saves, follows or writes anything, and the count the viewer
+   * shows is `like_count` off the row — current state, never the notification's actor count.
+   */
+  const openNotificationTarget = useCallback(async (reviewId: string) => {
+    try {
+      const res = await fetch(`/api/reviews/${reviewId}`)
+      if (!res.ok) { router.push('/reviews/' + reviewId); return }
+      const review = await res.json()
+      if (review?.content_type === 'video' && review?.media_url) setClipOf(review as Review)
+      else router.push('/reviews/' + reviewId)
+    } catch {
+      router.push('/reviews/' + reviewId)
+    }
+  }, [router])
 
   // Follow an author from the feed's avatar "+" (WEB-EXPLORE-FOLLOW-002). Separate
   // from toggleFollow above, which owns the Search tab's userResults list: this one
@@ -1236,6 +1272,7 @@ function ReviewsPageInner() {
               onSetTab={handleSetTab}
               onFeedTypeChange={handleFeedTypeChange}
               userPrefs={userPrefs}
+              onOpenTarget={openNotificationTarget}
             />
           )}
         </div>
@@ -1247,6 +1284,9 @@ function ReviewsPageInner() {
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
       {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
+      {/* Opened from the Inbox. Closing returns to the notification list the user came from,
+          which is why this lives here rather than behind a route change. */}
+      {clipOf && <ClipViewer posts={[clipOf]} startIndex={0} me={me} onClose={() => setClipOf(null)} />}
     </div>
   )
 }
