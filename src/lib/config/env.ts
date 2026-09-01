@@ -62,6 +62,26 @@ export const serverEnv = {
    * whether the value was set.
    */
   broadcastEnabled: (): boolean => read('CONTROLLER_BROADCAST_ENABLED') === 'true',
+
+  /**
+   * V2.2-2 Marketing — the operational half of the send switch.
+   *
+   * 🚨 A SEPARATE VARIABLE FROM `CONTROLLER_BROADCAST_ENABLED`, DELIBERATELY.
+   * Reusing the Phase C switch would mean arming a Controller broadcast for one
+   * message also armed every Marketing campaign — two different authorities,
+   * two different audiences, one lever. The contract forbids exactly that
+   * (DoD 13: the Phase C switch "is not reused as a Marketing switch").
+   *
+   * ⚠️ THIS IS NOT THE ONLY GATE, AND ON ITS OWN IT CANNOT ENABLE ANYTHING.
+   * `canActivateSend()` also requires `CONSENT_EXPORT_SATISFIED`, a source
+   * constant that is currently `false` because M-30 is unsatisfied and Q6 is
+   * open. Setting this variable today changes nothing — which is the intended
+   * behaviour, not an oversight.
+   *
+   * Strict equality with `'true'`, for the same reason as above: `'false'`,
+   * `'0'` and `'off'` are all truthy strings.
+   */
+  marketingSendingEnabled: (): boolean => read('MARKETING_SENDING_ENABLED') === 'true',
 } as const
 
 /**
