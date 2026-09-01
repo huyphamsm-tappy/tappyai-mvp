@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { CampaignActivation } from './CampaignActivation'
 
 // ─── V2.2-2 — the Marketing campaigns surface ────────────────────────────────
 //
@@ -34,9 +35,16 @@ const ENDPOINT = '/api/admin/marketing/campaigns'
 export function CampaignsShell({
   canCreate,
   canUpdate,
+  canActivate,
 }: {
   canCreate: boolean
   canUpdate: boolean
+  /**
+   * Presentation only. The activate route calls `requirePermission` itself on
+   * every request (M-22), and the activation gate refuses regardless of who is
+   * asking while M-30 is unsatisfied.
+   */
+  canActivate: boolean
 }) {
   const { t } = useTranslation()
   const [campaigns, setCampaigns] = useState<Campaign[] | null>(null)
@@ -229,29 +237,45 @@ export function CampaignsShell({
         ) : (
           <ul className="divide-y divide-gray-100 dark:divide-gray-800">
             {campaigns.map((c) => (
-              <li key={c.id} className="py-3 flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                    {c.title}
-                  </p>
-                  <p className="text-xs text-content-secondary truncate">{c.body}</p>
-                  <span className="mt-1 inline-block rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-[11px] text-gray-600 dark:text-gray-300">
-                    {t(`admin.marketing.campaigns.status.${c.status}`)}
-                  </span>
+              <li key={c.id} className="py-3">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                      {c.title}
+                    </p>
+                    <p className="text-xs text-content-secondary truncate">{c.body}</p>
+                    <span className="mt-1 inline-block rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-[11px] text-gray-600 dark:text-gray-300">
+                      {t(`admin.marketing.campaigns.status.${c.status}`)}
+                    </span>
+                  </div>
+
+                  {/*
+                    Edit appears only for a draft (M-16). An active campaign is
+                    mid-send and a completed one is a record of something that
+                    already happened — the route refuses both independently.
+                  */}
+                  {canUpdate && c.status === 'draft' && (
+                    <button
+                      onClick={() => startEdit(c)}
+                      className="shrink-0 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-1.5 text-xs"
+                    >
+                      {t('admin.marketing.campaigns.edit')}
+                    </button>
+                  )}
                 </div>
 
                 {/*
-                  Edit appears only for a draft (M-16). An active campaign is
-                  mid-send and a completed one is a record of something that
-                  already happened — the route refuses both independently.
+                  Dry run and confirmation, for a DRAFT only. A real send is
+                  still refused by the server (M-30, Q6) — the dry run is what
+                  makes the audience and the governance counts inspectable on
+                  production without any capability to send, which is the whole
+                  reason this ships inert.
                 */}
-                {canUpdate && c.status === 'draft' && (
-                  <button
-                    onClick={() => startEdit(c)}
-                    className="shrink-0 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-1.5 text-xs"
-                  >
-                    {t('admin.marketing.campaigns.edit')}
-                  </button>
+                {canActivate && c.status === 'draft' && (
+                  <CampaignActivation
+                    campaignId={c.id}
+                    signature={`${c.title} ${c.body} ${c.link ?? ''}`}
+                  />
                 )}
               </li>
             ))}

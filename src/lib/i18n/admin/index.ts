@@ -671,6 +671,27 @@ export const vi: Record<string, string> = {
   // 🚨 Ghi rõ trạng thái: chưa có nút kích hoạt, và đó là chủ ý.
   'admin.marketing.campaigns.activationBlocked':
     'Chưa thể kích hoạt gửi. Yêu cầu M-30 (xuất dữ liệu đồng ý) chưa được đáp ứng và câu hỏi Q6 về quyền sở hữu vẫn đang mở.',
+
+  // Dry run + xác nhận (C-14). Nút gửi KHÔNG tồn tại trước khi có dry run.
+  'admin.marketing.campaigns.dryRun': 'Chạy thử',
+  'admin.marketing.campaigns.dryRunHeading': 'Kết quả chạy thử',
+  'admin.marketing.campaigns.audienceSize': 'Số người sẽ nhận',
+  'admin.marketing.campaigns.candidates': 'Tổng số ứng viên',
+  'admin.marketing.campaigns.chunks': 'Số lô',
+  'admin.marketing.campaigns.fingerprint': 'Dấu vân tay danh sách',
+  'admin.marketing.campaigns.skippedHeading': 'Bị loại (chỉ hiện số lượng)',
+  'admin.marketing.campaigns.skip.consent': 'Chưa đồng ý',
+  'admin.marketing.campaigns.skip.unsubscribed': 'Đã ngừng nhận',
+  'admin.marketing.campaigns.skip.frequency_24h': 'Quá giới hạn 24 giờ',
+  'admin.marketing.campaigns.skip.frequency_7d': 'Quá giới hạn 7 ngày',
+  'admin.marketing.campaigns.skip.quiet_hours': 'Giờ im lặng',
+  'admin.marketing.campaigns.skip.ineligible': 'Không đủ điều kiện',
+  'admin.marketing.campaigns.confirmLabel': 'Gõ BROADCAST để xác nhận',
+  'admin.marketing.campaigns.send': 'Gửi ngay',
+  'admin.marketing.campaigns.dryRunStale': 'Kết quả chạy thử đã hết hạn. Hãy chạy thử lại.',
+  'admin.marketing.campaigns.belowFloor':
+    'Danh sách người nhận chưa đạt mức tối thiểu. Không hiển thị con số cụ thể để tránh lộ danh tính.',
+  'admin.marketing.campaigns.sendRefused': 'Không gửi được:',
 }
 
 export const en: Record<string, string> = {
@@ -1317,4 +1338,26 @@ export const en: Record<string, string> = {
   // 🚨 Say the state plainly: there is no activation control yet, on purpose.
   'admin.marketing.campaigns.activationBlocked':
     'Sending cannot be enabled yet. M-30 (consent export) is unsatisfied and Q6 — who owns delivering it — is still open.',
+
+  // Dry run + confirmation (C-14). The send control does not EXIST before a dry
+  // run returns — absent, not disabled.
+  'admin.marketing.campaigns.dryRun': 'Dry run',
+  'admin.marketing.campaigns.dryRunHeading': 'Dry run result',
+  'admin.marketing.campaigns.audienceSize': 'Would reach',
+  'admin.marketing.campaigns.candidates': 'Candidates considered',
+  'admin.marketing.campaigns.chunks': 'Chunks',
+  'admin.marketing.campaigns.fingerprint': 'Audience fingerprint',
+  'admin.marketing.campaigns.skippedHeading': 'Skipped (counts only)',
+  'admin.marketing.campaigns.skip.consent': 'Never opted in',
+  'admin.marketing.campaigns.skip.unsubscribed': 'Unsubscribed',
+  'admin.marketing.campaigns.skip.frequency_24h': 'Over the 24-hour cap',
+  'admin.marketing.campaigns.skip.frequency_7d': 'Over the 7-day cap',
+  'admin.marketing.campaigns.skip.quiet_hours': 'Quiet hours',
+  'admin.marketing.campaigns.skip.ineligible': 'Not eligible',
+  'admin.marketing.campaigns.confirmLabel': 'Type BROADCAST to confirm',
+  'admin.marketing.campaigns.send': 'Send now',
+  'admin.marketing.campaigns.dryRunStale': 'The dry run has expired. Run it again.',
+  'admin.marketing.campaigns.belowFloor':
+    'The audience does not meet the minimum size. No figure is shown, deliberately — reading the shortfall back would identify people.',
+  'admin.marketing.campaigns.sendRefused': 'Not sent:',
 }
