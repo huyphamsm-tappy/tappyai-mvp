@@ -74,7 +74,10 @@ export async function GET(req: Request) {
     // channel comes back present and `false`.
     return NextResponse.json({ data: toConsentView(rows) })
   } catch {
-    return NextResponse.json({ error: 'server_error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'server_error', message: serverMessage('server.error', requestLocale(req)) },
+      { status: 500 },
+    )
   }
 }
 
@@ -101,14 +104,17 @@ export async function PUT(req: Request) {
     const rl = await distributedRateLimit(`consent:marketing:${user.id}`, WRITE_LIMIT, WRITE_WINDOW_MS)
     if (!rl.ok) {
       return NextResponse.json(
-        { error: 'rate_limited' },
+        { error: 'rate_limited', message: serverMessage('rate.retryShortly', requestLocale(req)) },
         { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
       )
     }
 
     const parsed = BodySchema.safeParse(await req.json().catch(() => null))
     if (!parsed.success) {
-      return NextResponse.json({ error: 'invalid_input' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'invalid_input', message: serverMessage('notif.invalidConsent', requestLocale(req)) },
+        { status: 400 },
+      )
     }
 
     const admin = createAdminClient()
@@ -126,6 +132,9 @@ export async function PUT(req: Request) {
     const rows = await readConsent(admin, user.id)
     return NextResponse.json({ data: toConsentView(rows) })
   } catch {
-    return NextResponse.json({ error: 'server_error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'server_error', message: serverMessage('server.error', requestLocale(req)) },
+      { status: 500 },
+    )
   }
 }
