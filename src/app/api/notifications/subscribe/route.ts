@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -8,6 +9,35 @@ export async function POST(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+
+    // ── ANONYMOUS SESSIONS MAY NOT REGISTER A DEVICE ─────────────────────────
+    //
+    // 🚨 THIS IS THE ONLY PATH THAT CREATES AN ENABLED SUBSCRIPTION. Audited on
+    // `ff419cd`: every other writer to `notification_subscriptions` either reads
+    // it or sets `enabled = false` (the dead-endpoint prune in `send.ts`, the
+    // disown in DELETE). So this one line is where the whole population comes
+    // from, and closing it closes creation entirely.
+    //
+    // WHY IT MATTERS FOR BROADCAST. The audience excludes accounts with no
+    // `profiles` row, which is how anonymous identities are recognised since
+    // `20260808c` — the signup trigger stops creating profiles for them. But
+    // that migration deleted nothing, so an anonymous account created BEFORE
+    // 2026-08-08 still holds a profile and would pass the audience filter. The
+    // authoritative signal, `auth.users.is_anonymous`, is unreachable from
+    // PostgREST, which is why the audience uses a proxy at all.
+    //
+    // ⚠️ PREVENTIVE, NOT CURATIVE — and the difference matters. This guarantees
+    // no NEW anonymous claim can be created. It does not remove one that already
+    // exists. Production measured 1 enabled subscription, belonging to a real
+    // authenticated account, so the legacy set is currently empty — but "empty
+    // today" is a measurement, not an invariant, and only a read of
+    // `auth.users` could prove it stays that way.
+    //
+    // 🔑 DELETE IS DELIBERATELY NOT GUARDED. It only ever sets `enabled = false`.
+    // Refusing an anonymous caller there would strand a claim rather than
+    // protect anything — the opposite of the point.
+    const anonRefusal = refuseAnonymousSocialWrite(req, user)
+    if (anonRefusal) return anonRefusal
 
     const body = await req.json()
 
