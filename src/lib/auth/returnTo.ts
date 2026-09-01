@@ -59,6 +59,12 @@ export function readReturnTo(search: string): string {
  * Producers MUST use this rather than hand-writing the query string: it is what
  * makes the producer/consumer contract mechanical instead of remembered.
  */
+export function loginPathFor(destination: string): string {
+  const dest = safeReturnTo(destination)
+  if (dest === DEFAULT_RETURN_TO) return '/login'
+  return `/login?${RETURN_TO_PARAM}=${encodeURIComponent(dest)}`
+}
+
 /**
  * The page the visitor is on right now, as a destination to come back to.
  *
@@ -67,15 +73,10 @@ export function readReturnTo(search: string): string {
  * proved it: once it became the destination of every share link and push notification, signing in
  * from a shared clip returned to the feed and the clip was gone.
  *
- * Reading the location instead of naming it removes the class, not one instance of it.
+ * Reading the location instead of naming it removes the class, not one instance of it. Pair it
+ * with `loginPathFor` above; on the server there is no location, so it falls back to the default.
  */
 export function currentDestination(): string {
   if (typeof window === 'undefined') return DEFAULT_RETURN_TO
   return window.location.pathname + window.location.search
-}
-
-export function loginPathFor(destination: string): string {
-  const dest = safeReturnTo(destination)
-  if (dest === DEFAULT_RETURN_TO) return '/login'
-  return `/login?${RETURN_TO_PARAM}=${encodeURIComponent(dest)}`
 }
