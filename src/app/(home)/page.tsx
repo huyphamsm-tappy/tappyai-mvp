@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import { getMemory } from '@/lib/memory/memoryService'
-import HomeView from './HomeView'
+import HomeView from '../HomeView'
 
 export default async function HomePage() {
   const supabase = createClient()
