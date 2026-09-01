@@ -212,6 +212,11 @@ const MESSAGES = {
   'notif.invalidSubscription': { vi: 'Thông tin đăng ký thông báo không hợp lệ.', en: 'That notification registration is not valid.' },
   'notif.saveFailed': { vi: 'Không bật được thông báo. Vui lòng thử lại.', en: "Couldn't turn on notifications. Please try again." },
   'notif.disableFailed': { vi: 'Không tắt được thông báo. Vui lòng thử lại.', en: "Couldn't turn off notifications. Please try again." },
+  // V2.2-2 marketing consent. Its own key rather than reusing
+  // `notif.invalidSubscription`: that message says a *device registration* is
+  // invalid, which would be a confusing thing to read after changing a
+  // marketing preference.
+  'notif.invalidConsent': { vi: 'Lựa chọn nhận tin không hợp lệ.', en: 'That notification preference is not valid.' },
 
   // Scam Shield. 🚨 These were hardcoded ENGLISH — the mirror image of B08, and just as wrong:
   // a Vietnamese user asking the safety feature about a suspicious link got an English error.

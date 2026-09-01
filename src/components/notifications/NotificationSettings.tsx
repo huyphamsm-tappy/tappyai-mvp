@@ -3,6 +3,7 @@
 import { usePushNotifications } from '@/hooks/usePushNotifications'
 import { Bell, BellOff, Loader2 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import MarketingConsentSettings from './MarketingConsentSettings'
 
 export default function NotificationSettings() {
   const { permission, subscribed, loading, error, subscribe, unsubscribe } = usePushNotifications()
@@ -117,6 +118,14 @@ export default function NotificationSettings() {
           </p>
         </div>
       )}
+
+      {/*
+        Marketing consent (V2.2-2). Rendered OUTSIDE the `subscribed` guard on
+        purpose: a person must be able to opt out of marketing without first
+        granting a device push permission, and their choice has to survive
+        turning push off and on again.
+      */}
+      <MarketingConsentSettings />
     </div>
   )
 }
