@@ -24,6 +24,7 @@ import { describe, it, expect, vi, beforeEach, afterAll } from 'vitest'
 import net from 'node:net'
 import https from 'node:https'
 import type { LookupAddress } from 'node:dns'
+import type { LookupFunction } from 'node:net'
 
 /**
  * What the fake resolver answers with, and how many times it was asked.
@@ -90,8 +91,8 @@ describe('the harness can see a connection at all', () => {
       const req = https.request(
         {
           hostname: 'attacker.example', port, method: 'HEAD', agent: false,
-          lookup: (_h: string, o: { all?: boolean }, cb: (e: null, a: unknown, f?: number) => void) =>
-            o?.all ? cb(null, [v4('127.0.0.1')]) : cb(null, '127.0.0.1', 4),
+          lookup: ((_h, o, cb) =>
+            o.all ? cb(null, [v4('127.0.0.1')]) : cb(null, '127.0.0.1', 4)) satisfies LookupFunction,
         },
         () => resolve(),
       )

@@ -42,6 +42,7 @@
 
 import https from 'node:https'
 import { lookup as dnsLookup, type LookupAddress } from 'node:dns'
+import type { LookupFunction } from 'node:net'
 import { isAllowedDestinationAddress } from './addressPolicy'
 
 /**
@@ -72,25 +73,24 @@ type ResolveAll = (
  * happened to pick" is. A name with two A records, one public and one private, is a name the
  * attacker only has to get lucky with once; and a resolver is free to return them in any order.
  */
-export function createSafeLookup(resolveAll: ResolveAll) {
-  return function safeLookupImpl(
-    hostname: string,
-    options: unknown,
-    callback: (err: NodeJS.ErrnoException | null, address?: string | LookupAddress[], family?: number) => void,
-  ): void {
+export function createSafeLookup(resolveAll: ResolveAll): LookupFunction {
+  return function safeLookupImpl(hostname, options, callback): void {
+    // The socket layer ignores the address argument whenever the error is set, but the type
+    // requires one, so refusals pass a placeholder rather than being cast away.
+    const refuse = (err: NodeJS.ErrnoException) => callback(err, '', 4)
+
     resolveAll(hostname, { all: true, verbatim: true }, (err, addresses) => {
-      if (err) return callback(err)
+      if (err) return refuse(err)
       if (!addresses || addresses.length === 0) {
-        return callback(Object.assign(new Error('No address'), { code: 'ENOTFOUND' }))
+        return refuse(Object.assign(new Error('No address'), { code: 'ENOTFOUND' }))
       }
       for (const a of addresses) {
         if (!isAllowedDestinationAddress(a.address)) {
-          return callback(Object.assign(new BlockedDestinationError(), { code: 'ENOTFOUND' }))
+          return refuse(Object.assign(new BlockedDestinationError(), { code: 'ENOTFOUND' }))
         }
       }
       // `all: true` and `all: false` are different callback shapes; the socket layer picks.
-      const wantsAll = typeof options === 'object' && options !== null && (options as { all?: boolean }).all === true
-      if (wantsAll) return callback(null, addresses)
+      if (options.all === true) return callback(null, addresses)
       return callback(null, addresses[0].address, addresses[0].family)
     })
   }
@@ -120,7 +120,7 @@ export function safeHeadRequest(rawUrl: string, signal: AbortSignal): Promise<Sa
     const req = https.request(
       {
         hostname: url.hostname,
-        port: url.port || 443,
+        port: url.port ? Number(url.port) : 443,
         path: url.pathname + url.search,
         method: 'HEAD',
         headers: { 'User-Agent': 'TappyAI-ScamShield/1.0', Host: url.host },
