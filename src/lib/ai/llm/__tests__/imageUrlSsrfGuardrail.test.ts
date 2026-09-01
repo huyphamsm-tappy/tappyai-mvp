@@ -67,7 +67,9 @@ function stubModel(supportsImageUrls: boolean): LanguageModelV1 {
     modelId: 'test-vision',
     defaultObjectGenerationMode: undefined,
     supportsImageUrls,
-    async doGenerate(options) {
+    // Typed from the SDK's own signature rather than `any`: the point of this stub is that the
+    // real `generateText` accepts it, and a loosely typed parameter would hide the day it stops.
+    async doGenerate(options: Parameters<LanguageModelV1['doGenerate']>[0]) {
       seenPrompt = options.prompt
       return {
         text: 'ok',
