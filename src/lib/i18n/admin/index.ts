@@ -645,6 +645,32 @@ export const vi: Record<string, string> = {
   'admin.publicHome.mascotAlt': 'Tappy vẫy tay chào',
   'admin.publicHome.language': 'Ngôn ngữ',
   'admin.publicHome.openMenu': 'Mở menu',
+
+  // ── V2.2-2 Marketing campaigns ────────────────────────────────────────────
+  'admin.marketing.campaigns.heading': 'Chiến dịch marketing',
+  'admin.marketing.campaigns.blurb':
+    'Chiến dịch chỉ gửi cho người đã đồng ý nhận tin. Giới hạn 1 tin/24 giờ và 4 tin/7 ngày mỗi người, không gửi từ 22:00 đến 07:00 (giờ VN).',
+  'admin.marketing.campaigns.empty': 'Chưa có chiến dịch nào.',
+  'admin.marketing.campaigns.listHeading': 'Danh sách',
+  'admin.marketing.campaigns.newHeading': 'Tạo chiến dịch',
+  'admin.marketing.campaigns.editHeading': 'Sửa bản nháp',
+  'admin.marketing.campaigns.title': 'Tiêu đề',
+  'admin.marketing.campaigns.body': 'Nội dung',
+  'admin.marketing.campaigns.link': 'Đường dẫn (tuỳ chọn)',
+  'admin.marketing.campaigns.linkHint': 'Chỉ nhận đường dẫn nội bộ, bắt đầu bằng "/".',
+  'admin.marketing.campaigns.create': 'Tạo bản nháp',
+  'admin.marketing.campaigns.save': 'Lưu bản nháp',
+  'admin.marketing.campaigns.cancel': 'Huỷ',
+  'admin.marketing.campaigns.edit': 'Sửa',
+  'admin.marketing.campaigns.status.draft': 'Bản nháp',
+  'admin.marketing.campaigns.status.active': 'Đang chạy',
+  'admin.marketing.campaigns.status.completed': 'Đã hoàn tất',
+  'admin.marketing.campaigns.readOnlyNote': 'Chỉ bản nháp mới sửa được.',
+  'admin.marketing.campaigns.loadError': 'Không tải được danh sách chiến dịch.',
+  'admin.marketing.campaigns.saveError': 'Không lưu được. Vui lòng thử lại.',
+  // 🚨 Ghi rõ trạng thái: chưa có nút kích hoạt, và đó là chủ ý.
+  'admin.marketing.campaigns.activationBlocked':
+    'Chưa thể kích hoạt gửi. Yêu cầu M-30 (xuất dữ liệu đồng ý) chưa được đáp ứng và câu hỏi Q6 về quyền sở hữu vẫn đang mở.',
 }
 
 export const en: Record<string, string> = {
@@ -1265,4 +1291,30 @@ export const en: Record<string, string> = {
   'admin.publicHome.mascotAlt': 'Tappy waving hello',
   'admin.publicHome.language': 'Language',
   'admin.publicHome.openMenu': 'Open menu',
+
+  // ── V2.2-2 Marketing campaigns ────────────────────────────────────────────
+  'admin.marketing.campaigns.heading': 'Marketing campaigns',
+  'admin.marketing.campaigns.blurb':
+    'A campaign reaches only people who opted in. At most 1 message per 24 hours and 4 per 7 days per person, and never between 10 PM and 7 AM Vietnam time.',
+  'admin.marketing.campaigns.empty': 'No campaigns yet.',
+  'admin.marketing.campaigns.listHeading': 'Campaigns',
+  'admin.marketing.campaigns.newHeading': 'New campaign',
+  'admin.marketing.campaigns.editHeading': 'Edit draft',
+  'admin.marketing.campaigns.title': 'Title',
+  'admin.marketing.campaigns.body': 'Message',
+  'admin.marketing.campaigns.link': 'Link (optional)',
+  'admin.marketing.campaigns.linkHint': 'Relative paths only, beginning with "/".',
+  'admin.marketing.campaigns.create': 'Create draft',
+  'admin.marketing.campaigns.save': 'Save draft',
+  'admin.marketing.campaigns.cancel': 'Cancel',
+  'admin.marketing.campaigns.edit': 'Edit',
+  'admin.marketing.campaigns.status.draft': 'Draft',
+  'admin.marketing.campaigns.status.active': 'Active',
+  'admin.marketing.campaigns.status.completed': 'Completed',
+  'admin.marketing.campaigns.readOnlyNote': 'Only a draft can be edited.',
+  'admin.marketing.campaigns.loadError': "Couldn't load campaigns.",
+  'admin.marketing.campaigns.saveError': "Couldn't save. Please try again.",
+  // 🚨 Say the state plainly: there is no activation control yet, on purpose.
+  'admin.marketing.campaigns.activationBlocked':
+    'Sending cannot be enabled yet. M-30 (consent export) is unsatisfied and Q6 — who owns delivering it — is still open.',
 }
