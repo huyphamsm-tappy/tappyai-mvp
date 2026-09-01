@@ -33,6 +33,7 @@ const h = vi.hoisted(() => ({
   decoded: 'https://example.com/',
   resolved: [] as { address: string; family: number }[],
   resolveFails: false,
+  resolveHangsMs: 0,
   executeProviders: vi.fn(async (_t: { url: URL }) => [] as unknown[]),
 }))
 
@@ -42,6 +43,7 @@ vi.mock('node:dns/promises', async importOriginal => {
     ...actual,
     default: actual,
     lookup: async () => {
+      if (h.resolveHangsMs > 0) await new Promise(r => setTimeout(r, h.resolveHangsMs))
       if (h.resolveFails) throw Object.assign(new Error('ENOTFOUND'), { code: 'ENOTFOUND' })
       return h.resolved
     },
@@ -74,6 +76,7 @@ const refused = async (run: () => Promise<unknown>): Promise<boolean> => {
 
 beforeEach(() => {
   h.resolveFails = false
+  h.resolveHangsMs = 0
   h.decoded = PUBLIC_LOOKING
   h.resolved = [{ address: '93.184.216.34', family: 4 }]
 })
@@ -130,6 +133,23 @@ describe('what the gate must NOT refuse', () => {
     await expect(checkUrl('https://probably-parked.example/')).resolves.toBeTruthy()
     expect(h.executeProviders).toHaveBeenCalled()
   })
+
+  it('🚨 a resolver that hangs does not hang the check', async () => {
+    // This gate sits in front of everything, so an unbounded lookup here stalls the WHOLE request
+    // rather than one provider. CI found it: `random-site.xyz` timed out on the runner while a
+    // local resolver answered NXDOMAIN instantly, and the added latency was invisible until then.
+    //
+    // A slow answer is treated like a failed one — proceed — because the security guarantee never
+    // rested on this lookup. `safeFetch` pins the socket regardless of what the gate concluded.
+    h.resolveHangsMs = 4000
+
+    const started = Date.now()
+    await expect(checkUrl(PUBLIC_LOOKING)).resolves.toBeTruthy()
+    const elapsed = Date.now() - started
+
+    expect(elapsed).toBeLessThan(3000)   // the 1500ms cap, with generous slack for a loaded runner
+    expect(h.executeProviders).toHaveBeenCalled()
+  }, 10_000)
 
   it('the two doors stay the same size', async () => {
     // Whatever the URL path refuses, the QR path refuses too — the asymmetry between them is

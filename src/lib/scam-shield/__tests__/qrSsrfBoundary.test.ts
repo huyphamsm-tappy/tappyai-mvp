@@ -29,6 +29,14 @@ const h = vi.hoisted(() => ({
   executeProviders: vi.fn(async (_target: { url: URL }) => [] as unknown[]),
 }))
 
+// The gate resolves the hostname as well as reading it — pinned here so these cases stay about
+// the URL policy and never touch a real resolver. The DNS half of the same gate has its own file,
+// `dnsGateBoundary.test.ts`.
+vi.mock('node:dns/promises', async importOriginal => {
+  const actual = await importOriginal<typeof import('node:dns/promises')>()
+  return { ...actual, default: actual, lookup: async () => [{ address: '93.184.216.34', family: 4 }] }
+})
+
 vi.mock('../qr/decoder', () => ({
   decodeQrImage: async () => ({ success: true, text: h.decoded, url: new URL(h.decoded) }),
 }))

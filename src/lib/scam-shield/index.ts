@@ -80,14 +80,32 @@ async function assertSafeTarget(target: CheckTarget): Promise<void> {
  * are dead, parked, or newly registered — the DNS provider scores "no A record" as a signal in
  * its own right. Failing closed here would refuse to examine exactly the domains most worth
  * examining. Unresolvable names proceed; the pinned sinks can still not reach anything internal.
+ *
+ * 🚨 And it is BOUNDED. This lookup sits in front of everything, so an unresolvable name that
+ * hangs would stall the whole check rather than just this part of it — CI caught exactly that,
+ * timing out on `random-site.xyz` where a local resolver answers NXDOMAIN instantly. A slow
+ * resolver is treated the same as a failed one: carry on, because the security guarantee never
+ * depended on this answer in the first place.
  */
+const GATE_DNS_TIMEOUT_MS = 1500
+
 async function resolvesToPublicAddress(hostname: string): Promise<boolean> {
+  let timer: NodeJS.Timeout | undefined
   try {
     const { lookup } = await import('node:dns/promises')
-    const addresses = await lookup(hostname, { all: true, verbatim: true })
+    const addresses = await Promise.race([
+      lookup(hostname, { all: true, verbatim: true }),
+      new Promise<null>(resolve => {
+        timer = setTimeout(() => resolve(null), GATE_DNS_TIMEOUT_MS)
+        timer.unref?.()   // never hold the process open for a lookup nobody is waiting on
+      }),
+    ])
+    if (addresses === null) return true   // too slow to be worth blocking on
     return addresses.every(a => isAllowedDestinationAddress(a.address))
   } catch {
     return true
+  } finally {
+    if (timer) clearTimeout(timer)
   }
 }
 
