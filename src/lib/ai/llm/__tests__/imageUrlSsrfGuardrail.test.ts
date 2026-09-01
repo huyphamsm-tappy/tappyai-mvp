@@ -102,7 +102,12 @@ describe('the production configuration', () => {
     // The tripwire. Swap the provider, upgrade the SDK, or add an adapter that answers `false`,
     // and this fails — which is the entire point. Read through the sanctioned registry rather
     // than importing the vendor SDK, which the architecture guard forbids outside the adapter.
-    process.env.ANTHROPIC_API_KEY ??= 'test-key-not-used-for-network'
+    //
+    // 🔑 No API key is set up, deliberately. An earlier draft assigned `ANTHROPIC_API_KEY` here
+    // and the architecture guard rejected it — correctly: naming a vendor key outside the adapter
+    // is the thing that rule exists to stop, and a test is not an exemption. It turned out to be
+    // unnecessary anyway; building the model does not read the key, only sending a request does,
+    // and this asks the model about itself without sending anything.
     const { getProvider } = await import('../registry')
 
     const model = getProvider().model('vision')
