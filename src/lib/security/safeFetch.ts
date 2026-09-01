@@ -29,10 +29,16 @@
 //   · an error from the lookup ⇒ ZERO connections observed at the destination
 //   · TLS still verifies the certificate against the HOSTNAME, so pinning does not become MITM
 //
-// 🚨 `agent: false` is load-bearing. Node 19+ enables keepAlive on the global agent, and a pooled
-// socket is reused WITHOUT calling `lookup` at all. A pooled connection already points at a
-// validated address so it is not itself a hole, but it makes the guarantee untestable and depends
-// on pool internals for its safety. One connection per request keeps the property observable.
+// `agent: false` — Node 19+ enables keepAlive on the global agent, and a reused socket skips
+// `lookup` entirely. That is NOT an SSRF hole on its own: a pooled socket is already connected to
+// an address this policy approved, so reuse cannot reach anywhere new. It is here so that one
+// request means one validation, rather than the guarantee resting on pool internals.
+//
+// 🚨 Honesty about coverage: no test in this repo distinguishes this line, because pooling only
+// engages on a connection that SUCCEEDS, and the test harness has no TLS endpoint to succeed
+// against. Mutating it away leaves the suite green. It was measured by hand instead — a scratch
+// probe against a local TLS server showed a second request reusing the socket with zero lookup
+// calls. Kept because it is correct and free, not because anything is holding it in place.
 
 import https from 'node:https'
 import { lookup as dnsLookup, type LookupAddress } from 'node:dns'
