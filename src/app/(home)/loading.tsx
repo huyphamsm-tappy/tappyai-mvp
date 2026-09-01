@@ -1,3 +1,20 @@
+// 🔑 This lives in the `(home)` route group, NOT at `src/app/`, and the move is load-bearing.
+//
+// At the app root it was the Suspense boundary for EVERY route, and a Suspense boundary above a
+// page swallows that page's `notFound()`: the not-found UI rendered, but the response stayed
+// HTTP 200. Measured — a deleted review, a malformed id, and a synchronous `notFound()` in a
+// throwaway probe route all answered 200, while an unmatched URL (which renders no page at all)
+// correctly answered 404. Moving this file into the group restored real 404s everywhere and
+// changed nothing else measurable: TTFB was unchanged across `/`, `/reviews`, `/profile` and
+// `/reviews/[id]`.
+//
+// It is also the only place the skeleton was ever right. It draws the HOME layout — header, hero,
+// category grid — and used to be shown while `/reviews` (a black full-screen feed), `/profile` and
+// every other route loaded. Scoped here it covers exactly the route it was drawn for, which is
+// still an async server component (auth + memory) and so still wants it.
+//
+// 🚨 Do NOT move a `loading.tsx` back to `src/app/`. That single file decides whether `notFound()`
+// can set a status code anywhere in the application.
 export default function HomeLoading() {
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-20 animate-pulse">

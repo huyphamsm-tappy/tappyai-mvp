@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef, useMemo, type MouseEvent as ReactMouseEvent, type WheelEvent as ReactWheelEvent } from 'react'
+import { useEffect, useState, useCallback, useRef, useMemo, Suspense, type MouseEvent as ReactMouseEvent, type WheelEvent as ReactWheelEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -386,7 +386,7 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
 }
 
 /* ─── Main ─── */
-export default function ReviewsPage() {
+function ReviewsPageInner() {
   const { t } = useTranslation()
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
@@ -1248,5 +1248,20 @@ export default function ReviewsPage() {
       {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
+  )
+}
+
+// `useSearchParams()` needs a Suspense boundary above it. It used to get one for free from the
+// app-root `loading.tsx`; that file now lives in the `(home)` route group, because at the root it
+// also swallowed every page's `notFound()` and forced HTTP 200 (see that file's note). The
+// boundary this page actually needs is therefore declared here, where it belongs.
+//
+// `fallback={null}`, not the old Home skeleton: this route is a black full-screen feed, and the
+// skeleton it used to inherit drew a light Home header, hero and category grid over it.
+export default function ReviewsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ReviewsPageInner />
+    </Suspense>
   )
 }
