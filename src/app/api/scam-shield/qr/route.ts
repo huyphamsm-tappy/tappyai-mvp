@@ -93,6 +93,15 @@ export async function POST(req: Request) {
         { status: 400 },
       )
     }
+    // A QR pointing at a private/internal address is the CALLER's input, not a server fault — the
+    // same 400 the URL route already answers for it. Without this branch the refusal fell through
+    // to the catch-all below and reported 500, which reads as "we broke" and invites a retry.
+    if (message.includes('private') || message.includes('internal')) {
+      return NextResponse.json(
+        { error: 'private_url', message: 'Could not check an internal address.' },
+        { status: 400 },
+      )
+    }
     console.error('[scam-shield] qr error:', message)
     return NextResponse.json(
       { error: 'check_failed', message: 'Could not check QR code' },
