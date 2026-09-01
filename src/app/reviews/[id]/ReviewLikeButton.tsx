@@ -61,7 +61,9 @@ export default function ReviewLikeButton({
           type="button"
           onClick={() => setListOpen(true)}
           aria-label={t('reviews.likesOpen')}
-          className="text-white text-xs font-semibold drop-shadow-md active:scale-90 transition-transform"
+          // Same hit-area rule as the feed rail — see `RAction` in feedShared.tsx for the
+          // measurement and for why the box is 44 wide but only 24 tall.
+          className="text-white text-xs font-semibold drop-shadow-md min-w-[44px] min-h-[24px] flex items-center justify-center active:scale-90 transition-transform"
         >
           {count}
         </button>

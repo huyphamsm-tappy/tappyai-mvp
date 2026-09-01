@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { X, Play, Pause, Loader2, Music2, Heart, Plus } from 'lucide-react'
 import { MusicThumbnail, MusicDuration } from '@/modules/music'
 import LikeListSheet from './LikeListSheet'
+import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 
 interface SoundTrack {
   id: string; title: string; artist: string | null; durationSec: number
@@ -96,7 +97,8 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
     setSavedCount(c => c + (next ? 1 : -1))
     try {
       const res = await fetch(`/api/sound/${trackId}/save`, { method: next ? 'POST' : 'DELETE' })
-      if (res.status === 401) { router.push(`/login?returnTo=/reviews`); return }
+      // Opened from the feed AND from ClipViewer at /reviews/[id]; come back to whichever.
+      if (res.status === 401) { router.push(loginPathFor(currentDestination())); return }
       if (!res.ok) throw new Error()
     } catch {
       setSaved(!next)
@@ -205,7 +207,8 @@ export default function SoundSheet({ trackId, onClose }: { trackId: string; onCl
                             the post. The rest of the tile still does. */}
                         <button type="button" aria-label={t('reviews.likesOpen')}
                           onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(v.id) }}
-                          className="absolute bottom-0.5 left-0.5 text-[10px] text-white drop-shadow flex items-center gap-0.5">
+                          // Hit area only — grows over the thumbnail, so the layout is untouched.
+                          className="absolute bottom-0.5 left-0.5 text-[10px] text-white drop-shadow flex items-center gap-0.5 min-w-[44px] min-h-[24px]">
                           <Heart size={9} className="fill-white/90" /> {v.likeCount}
                         </button>
                       </Link>

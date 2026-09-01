@@ -1191,7 +1191,13 @@ function ReviewsPageInner() {
                                     means the same thing on every surface that shows it. */}
                                 <button type="button" aria-label={t('reviews.likesOpen')}
                                   onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(r.id) }}
-                                  className="text-white text-[10px] flex items-center gap-0.5 active:scale-90 transition-transform"><Heart size={9} className="fill-white" /> {r.like_count}</button>
+                                  // This one shares a flex row with the rating stars, so widening it
+                                  // could have pushed them. Measured at 375px: the row is 171px and
+                                  // 44 + gap + ★★★★★ comes to ~102px, so the stars stay put.
+                                  // No `justify-center`: the glyph stays flush left where it has
+                                  // always been and the box grows into the empty space to its
+                                  // right, so the heart does not visibly shift.
+                                  className="text-white text-[10px] flex items-center gap-0.5 min-w-[44px] min-h-[24px] active:scale-90 transition-transform"><Heart size={9} className="fill-white" /> {r.like_count}</button>
                                 {r.rating > 0 && <span className="text-amber-400 text-[10px]">{'\u2605'.repeat(r.rating)}</span>}
                               </div>
                             </div>
