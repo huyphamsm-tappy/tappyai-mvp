@@ -207,7 +207,8 @@ export default function CreatorPage() {
                       post. The rest of the tile still does. */}
                   <button type="button" aria-label={t('reviews.likesOpen')}
                     onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(p.id) }}
-                    className="absolute bottom-1 left-1 flex items-center gap-1">
+                    // Hit area only — grows over the thumbnail, so the layout is untouched.
+                    className="absolute bottom-1 left-1 flex items-center gap-1 min-w-[44px] min-h-[24px]">
                     <Heart size={10} className="text-white fill-white" />
                     <span className="text-white text-[10px]">{p.like_count}</span>
                   </button>

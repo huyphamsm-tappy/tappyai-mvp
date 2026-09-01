@@ -130,7 +130,9 @@ export default function MyPostsPage() {
                   </button>
                   <button type="button" aria-label={t('reviews.likesOpen')}
                     onClick={e => { e.stopPropagation(); setLikesOf(r.id) }}
-                    className="absolute bottom-1 left-1 flex items-center gap-1">
+                    // Hit area only — the box grows over the thumbnail it already sits on, so
+                    // nothing moves and nothing new is drawn. See `RAction` in feedShared.tsx.
+                    className="absolute bottom-1 left-1 flex items-center gap-1 min-w-[44px] min-h-[24px]">
                     <span className="text-white text-xs drop-shadow">❤️ {r.like_count}</span>
                   </button>
                 </div>

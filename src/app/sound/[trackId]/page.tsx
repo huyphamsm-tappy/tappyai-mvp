@@ -312,7 +312,8 @@ export default function SoundPage() {
                           every other part of the tile still opens the clip. */}
                       <button type="button" aria-label={t('reviews.likesOpen')}
                         onClick={e => { e.preventDefault(); e.stopPropagation(); setLikesOf(v.id) }}
-                        className="absolute bottom-1 left-1 right-1 flex items-center gap-1 text-[11px] text-white drop-shadow">
+                        // Already spans the tile's width; only the 15px height failed the target.
+                        className="absolute bottom-1 left-1 right-1 flex items-center gap-1 text-[11px] text-white drop-shadow min-h-[24px]">
                         <Heart size={11} className="fill-white/90 text-white/90" /> {v.likeCount}
                       </button>
                     </Link>
