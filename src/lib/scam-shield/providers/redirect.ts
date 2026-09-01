@@ -2,6 +2,7 @@ import type { ScamShieldProvider } from './types'
 import type { CheckTarget, ProviderSignal } from '../types'
 import { PROVIDER_MAX_WEIGHTS, SEVERITY_MULTIPLIERS, REDIRECT_WARNING_COUNT, REDIRECT_CRITICAL_COUNT } from '../config'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { safeHeadRequest, BlockedDestinationError } from '@/lib/security/safeFetch'
 import { registrableDomain } from '../domain'
 
 interface RedirectHop {
@@ -24,9 +25,12 @@ export const redirectProvider: ScamShieldProvider = {
     }
     const maxWeight = PROVIDER_MAX_WEIGHTS[this.id]
 
+    // Declared out here so the catch below can report WHICH hop was refused — a blocked
+    // destination is thrown from inside the loop, and the chain so far is the useful part.
+    const hops: RedirectHop[] = []
+    let currentUrl = target.url.toString()
+
     try {
-      const hops: RedirectHop[] = []
-      let currentUrl = target.url.toString()
       const maxRedirects = 10
       const visited = new Set<string>()
 
@@ -52,18 +56,17 @@ export const redirectProvider: ScamShieldProvider = {
           }
         }
 
-        const res = await fetch(currentUrl, {
-          method: 'HEAD',
-          redirect: 'manual',
-          signal,
-          headers: { 'User-Agent': 'TappyAI-ScamShield/1.0' },
-        })
+        // 🔑 The check above reads the URL; this call decides where the socket goes. They are
+        // different questions, and only the second one is binding — `https://looks-fine.example/`
+        // passes the string check and can still resolve to `10.0.0.5`. `safeHeadRequest` resolves
+        // once, validates every answer, and connects to what it validated, so a hop that points
+        // inward is refused with no connection rather than reported after one.
+        const res = await safeHeadRequest(currentUrl, signal)
 
         if (res.status >= 300 && res.status < 400) {
-          const location = res.headers.get('location')
-          if (!location) break
+          if (!res.location) break
 
-          const nextUrl = new URL(location, currentUrl).toString()
+          const nextUrl = new URL(res.location, currentUrl).toString()
           hops.push({ url: currentUrl, statusCode: res.status })
           currentUrl = nextUrl
         } else {
@@ -108,6 +111,21 @@ export const redirectProvider: ScamShieldProvider = {
     } catch (err) {
       if (signal.aborted) {
         return { ...base, status: 'timeout', finding: 'TIMEOUT', severity: 'info', weight: 0, detail: 'Redirect check timed out' }
+      }
+      // A hostname that resolved inward is the same finding as a URL that named an internal
+      // address outright — the visitor was pointed at our network either way, and calling it a
+      // generic "check failed" would score it as a shrug.
+      //
+      // 🚨 Nothing about the resolved address goes into `raw`. `finalUrl` is the URL the attacker
+      // supplied, which they already know; the ADDRESS it resolved to is ours, and the evidence
+      // report is returned to the client. Echoing it would answer "what is on your network?"
+      if (err instanceof BlockedDestinationError) {
+        return {
+          ...base, finding: 'UNSAFE_REDIRECT', severity: 'critical',
+          weight: maxWeight * SEVERITY_MULTIPLIERS.critical,
+          detail: 'Redirect chain leads to unsafe URL',
+          raw: { hops, finalUrl: currentUrl },
+        }
       }
       return { ...base, status: 'error', finding: 'ERROR', severity: 'info', weight: 0, detail: 'Redirect check failed', raw: String(err) }
     }

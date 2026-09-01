@@ -1,10 +1,20 @@
 // SSRF guard for user-supplied external URLs.
 // Allows ONLY https:// URLs pointing at public hosts. Rejects every other
 // scheme (http, file, ftp, data, gopher, …), embedded credentials, and any
-// hostname that is / resolves to a loopback, private, link-local, CGNAT, or
-// internal-TLD address. Hostname/IP-literal filtering does not stop DNS
-// rebinding (a public name resolving to a private IP); callers that fetch the
-// URL server-side should additionally avoid following redirects.
+// hostname that IS a loopback, private, link-local, CGNAT, or internal-TLD
+// address.
+//
+// 🚨 SCOPE — this is a check on a STRING, and a string is not a destination.
+// It cannot see that `https://looks-fine.example/` resolves to `10.0.0.5`, so
+// it is a cheap pre-filter and NOT the SSRF boundary. Anything that actually
+// opens a socket to a user-supplied URL must go through `safeFetch`, which
+// pins the connection to an address it validated. See `addressPolicy.ts`.
+//
+// The IP-literal branch below delegates to that same policy so the two cannot
+// drift: a range fixed in one table and forgotten in the other is exactly the
+// kind of gap that stays invisible until someone probes it.
+import { isAllowedDestinationAddress } from './addressPolicy'
+
 export function isSafeHttpsUrl(raw: string): boolean {
   let u: URL
   try {
@@ -24,22 +34,11 @@ export function isSafeHttpsUrl(raw: string): boolean {
     return false
   }
 
-  // IPv4 literal → block loopback / private / link-local / CGNAT / reserved.
-  const m = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/)
-  if (m) {
-    const a = Number(m[1]), b = Number(m[2])
-    if (a === 0 || a === 10 || a === 127) return false
-    if (a === 169 && b === 254) return false          // link-local (169.254/16)
-    if (a === 172 && b >= 16 && b <= 31) return false // private (172.16/12)
-    if (a === 192 && b === 168) return false          // private (192.168/16)
-    if (a === 100 && b >= 64 && b <= 127) return false // CGNAT (100.64/10)
-    if (a >= 224) return false                        // multicast / reserved
-    return true
-  }
-
-  // IPv6 loopback / unique-local / link-local.
-  if (h === '::1' || h === '0:0:0:0:0:0:0:1') return false
-  if (h.startsWith('fc') || h.startsWith('fd') || h.startsWith('fe80') || h.startsWith('::ffff:')) return false
+  // An IP literal is already a destination, so ask the destination policy rather than keeping a
+  // second copy of the range table here. It also parses forms the old inline check missed —
+  // `0:0:0:0:0:ffff:7f00:1` is 127.0.0.1 spelled in hex, and no string prefix catches it.
+  const looksLikeAddress = /^\d{1,3}(\.\d{1,3}){3}$/.test(h) || h.includes(':')
+  if (looksLikeAddress) return isAllowedDestinationAddress(h)
 
   return true
 }
