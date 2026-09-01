@@ -17,8 +17,32 @@ export type NotificationType =
   | 'price'
   | 'broadcast'
   | 'system'
+  /**
+   * A Marketing campaign send (V2.2-2, contract M-4).
+   *
+   * Deliberately NOT reused from `'broadcast'`: that type means "an operator
+   * composed one message for the platform" and is Controller's. Marketing
+   * sends are governed by consent, frequency caps and quiet hours that
+   * `'broadcast'` is not, and the Inbox should be able to tell them apart
+   * without consulting a second column.
+   */
+  | 'marketing'
 
-export type NotificationCategory = 'social' | 'deal' | 'explore' | 'system'
+/**
+ * The coarse grouping. `'marketing'` was added for V2.2-2 (contract M-4).
+ *
+ * 🔑 THIS UNION MEMBER IS LOAD-BEARING, NOT COSMETIC. `27` §4 exempts
+ * transactional notifications from the frequency cap, so the cap needs
+ * something to key on. Without a distinct category there is no server-side way
+ * to tell a marketing push from a security notification, and consent, caps,
+ * quiet hours and unsubscribe all become unenforceable at once.
+ *
+ * 🚨 THE OTHER FOUR ARE TRANSACTIONAL BY DEFINITION and stay exempt from all
+ * of it (M-4) — `33` §5: auth, security and transactional events are not
+ * opt-out. Widening what counts as `'marketing'`, or narrowing it, changes who
+ * is legally allowed to receive what.
+ */
+export type NotificationCategory = 'social' | 'deal' | 'explore' | 'system' | 'marketing'
 
 export type PushStatus = 'pending' | 'sent' | 'failed' | 'skipped'
 
