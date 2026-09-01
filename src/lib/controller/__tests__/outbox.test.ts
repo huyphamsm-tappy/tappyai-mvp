@@ -432,6 +432,13 @@ describe('C8 — the drain is wired as a daily cron', () => {
 
   it('stays within the verified Hobby limit of 100 cron jobs per project', () => {
     expect(vercelJson.crons.length).toBeLessThanOrEqual(100)
-    expect(vercelJson.crons.length).toBe(8)
+    // Pinned deliberately: adding a scheduled job is a decision, and this
+    // assertion makes it one that has to be made on purpose rather than
+    // noticed later in a bill or a deploy failure.
+    //
+    // 8 -> 9 on 2026-09-01: `/api/cron/marketing-retention` (V2.2-2, contract
+    // M-26/M-27) prunes marketing deliveries and campaigns past one year. It
+    // deletes rows and cannot notify anybody.
+    expect(vercelJson.crons.length).toBe(9)
   })
 })
