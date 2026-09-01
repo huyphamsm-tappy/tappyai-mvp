@@ -142,6 +142,7 @@ export default function TappyKnowsPage() {
   const [clearing, setClearing] = useState(false)
   const [cleared, setCleared] = useState(false)
   const [confirmClear, setConfirmClear] = useState(false)
+  const [clearFailed, setClearFailed] = useState(false)
 
   const fetchMemory = async () => {
     setLoading(true)
@@ -158,14 +159,24 @@ export default function TappyKnowsPage() {
 
   useEffect(() => { fetchMemory() }, [])
 
+  // 🚨 This screen makes a PRIVACY claim — "your memory is cleared" — so it may only make it once
+  // the server has confirmed. It used to announce success unconditionally: `fetch` resolves on
+  // 401 (an expired session) and on 500, neither of which throws, so the page hid the memory and
+  // said `memory.cleared` while every fact was still on the server. The user is told their data
+  // is gone when it is not, and nothing on screen contradicts it until a reload.
   const handleClear = async () => {
     if (!confirmClear) { setConfirmClear(true); return }
     setClearing(true)
+    setClearFailed(false)
     try {
-      await fetch('/api/memory', { method: 'DELETE' })
+      const res = await fetch('/api/memory', { method: 'DELETE' })
+      if (!res.ok) throw new Error('clear_failed')
       setMemory(null)
       setCleared(true)
       setConfirmClear(false)
+    } catch {
+      // Nothing was deleted, so nothing on screen may change except saying so.
+      setClearFailed(true)
     } finally {
       setClearing(false)
     }
@@ -416,6 +427,11 @@ export default function TappyKnowsPage() {
               <p className="text-xs text-content-secondary mb-3">
                 {t('memory.clearWarning')}
               </p>
+              {/* The refusal, stated in the same card that offered the action — the memory below
+                  is still there and still theirs, so the only thing that changes is this line. */}
+              {clearFailed && (
+                <p className="text-xs font-medium text-red-500 mb-3">{t('memory.clearFailed')}</p>
+              )}
               {confirmClear ? (
                 <div className="flex gap-2">
                   <button
