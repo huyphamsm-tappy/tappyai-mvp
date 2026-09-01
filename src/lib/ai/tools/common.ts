@@ -68,29 +68,28 @@ export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<str
   const controller = new AbortController()
   const tid = setTimeout(() => controller.abort(), 1800)
   try {
-    const resp = await fetch(websiteUri, {
-      signal: controller.signal,
-      redirect: 'follow',
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TappyAI/1.0; +https://tappyai.com)' },
+    // 🚨 BUG-010. This used to be `fetch(websiteUri, { redirect: 'follow' })`, and the guard above
+    // was the only thing in front of it. Both halves were wrong for the same reason: the guard
+    // reads a STRING, and `websiteUri` is whatever a business owner typed into their Google
+    // listing. `https://looks-fine.example/` passes it and can resolve to `169.254.169.254`; and
+    // even a genuinely public host could answer `302 Location: http://10.0.0.5/`, which
+    // `redirect: 'follow'` obeys inside the HTTP client where no code of ours ever sees it.
+    //
+    // Anyone with a Google Business Profile could point it at their own domain and then simply
+    // ask TappyAI about their own place — the og:image we extract comes back to them, so this was
+    // a read primitive and not merely a blind request.
+    //
+    // `safeGetText` resolves once, refuses any address that points inward, connects to exactly
+    // what it validated, and walks redirects one validated hop at a time. Same primitive as Scam
+    // Shield uses; see `lib/security/safeFetch.ts`.
+    const { safeGetText } = await import('@/lib/security/safeFetch')
+    const resp = await safeGetText(websiteUri, controller.signal, {
+      maxBytes: 100_000,
+      stopAt: /<\/head>/i,
     })
-    if (!resp.ok || !resp.body) { clearTimeout(tid); return null }
-    const contentType = resp.headers.get('content-type') || ''
-    if (!contentType.includes('text/html')) { clearTimeout(tid); return null }
-
-    const reader = resp.body.getReader()
-    const decoder = new TextDecoder()
-    let html = ''
-    let bytesRead = 0
-    const MAX_BYTES = 100_000
-    while (bytesRead < MAX_BYTES) {
-      const { done, value } = await reader.read()
-      if (done) break
-      bytesRead += value.length
-      html += decoder.decode(value, { stream: true })
-      if (/<\/head>/i.test(html)) break
-    }
-    reader.cancel().catch(() => {})
     clearTimeout(tid)
+    if (!resp.contentType.includes('text/html')) return null
+    const html = resp.text
 
     const match =
       html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
@@ -100,7 +99,11 @@ export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<str
     // HTML attribute values commonly escape '&' as '&amp;' (valid HTML) — without decoding,
     // a URL with multiple query params (typical for CDN tracking links) comes out malformed.
     const decoded = raw.replace(/&amp;/g, '&')
-    return new URL(decoded, websiteUri).toString()
+    // Resolved against the url the body actually came FROM, not the one we asked for. A site that
+    // redirects `example.com` → `www.example.com/en/` publishes relative og:image paths that mean
+    // nothing against the original; the old code could not tell the difference because the HTTP
+    // client swallowed the redirect chain.
+    return new URL(decoded, resp.finalUrl).toString()
   } catch (e) {
     clearTimeout(tid)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'website_image_failed', websiteUri: websiteUri.slice(0, 60), error: String(e).slice(0, 80) }))

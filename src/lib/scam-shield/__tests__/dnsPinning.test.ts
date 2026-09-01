@@ -54,7 +54,7 @@ vi.mock('node:dns', async importOriginal => {
   }
 })
 
-import { safeHeadRequest, BlockedDestinationError } from '@/lib/security/safeFetch'
+import { safeHeadRequest, safeGetText, BlockedDestinationError } from '@/lib/security/safeFetch'
 
 /** A socket that counts arrivals and says nothing back. Enough to answer "did a packet land?". */
 const connections: string[] = []
@@ -188,6 +188,38 @@ describe('the rebinding window is closed, not narrowed', () => {
     expect(connections.length).toBe(0)
     expect(dnsAnswer.calls).toBe(1)
     expect(first).not.toBe('resolved')   // that public address does not serve us TLS
+  })
+})
+
+describe('safeGetText refuses a hop before it dials', () => {
+  // 🚨 These exist because a mutant survived without them: deleting the scheme check in `getOnce`
+  // broke nothing. It matters most on hop TWO — the first url is vetted by the caller, but a
+  // redirect to `http://10.0.0.5/` is only ever stopped here, and following redirects is exactly
+  // what this primitive was written to do safely.
+  const get = (url: string) =>
+    safeGetText(url, AbortSignal.timeout(1200), { maxBytes: 1000 })
+      .then(() => 'fetched' as const)
+      .catch((e: unknown) => (e instanceof BlockedDestinationError ? 'blocked' : 'other'))
+
+  it('🚨 a plain-http url is refused with no connection', async () => {
+    dnsAnswer.addresses = [v4('93.184.216.34')]
+
+    expect(await get(`http://attacker.example:${port}/`)).toBe('blocked')
+    expect(connections.length).toBe(0)
+  })
+
+  it('🚨 embedded credentials are refused with no connection', async () => {
+    dnsAnswer.addresses = [v4('93.184.216.34')]
+
+    expect(await get(`https://user:pass@attacker.example:${port}/`)).toBe('blocked')
+    expect(connections.length).toBe(0)
+  })
+
+  it('a hostname resolving inward is refused with no connection', async () => {
+    dnsAnswer.addresses = [v4('169.254.169.254')]
+
+    expect(await get(`https://attacker.example:${port}/`)).toBe('blocked')
+    expect(connections.length).toBe(0)
   })
 })
 
