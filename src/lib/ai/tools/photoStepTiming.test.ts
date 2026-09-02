@@ -183,16 +183,28 @@ describe('the usage record carries the tail breakdown, and no content', () => {
    * record and the assertion would still pass. Mutation M9 survived on exactly
    * that.
    */
-  function usageRecord(): string {
-    const anchor = CODE.indexOf("type: 'tappyai_usage'")
-    expect(anchor, 'the usage record must exist').toBeGreaterThan(-1)
-    const open = CODE.lastIndexOf('{', anchor)
+  function literalAt(from: number, what: string): string {
+    expect(from, `${what} must exist`).toBeGreaterThan(-1)
+    const open = CODE.lastIndexOf('{', from)
     let depth = 0
     for (let i = open; i < CODE.length; i++) {
       if (CODE[i] === '{') depth++
       else if (CODE[i] === '}') { depth--; if (depth === 0) return CODE.slice(open, i + 1) }
     }
-    throw new Error('unterminated usage literal')
+    throw new Error(`unterminated ${what} literal`)
+  }
+
+  /**
+   * P1-3 split the record in two: `usageEvent` is the typed, allow-listed half that goes to the
+   * cost pipeline, and the console line spreads it and adds console-only diagnostics — which is
+   * where the photo breakdown lives, deliberately (it is operational detail, not cost input).
+   * Both halves are emitted on the same line, so both are in scope. Reading only the first would
+   * report every field below as missing, which is exactly what happened.
+   */
+  function usageRecord(): string {
+    const event = literalAt(CODE.indexOf("type: 'tappyai_usage'"), 'the usageEvent record')
+    const printed = literalAt(CODE.indexOf('...usageEvent,'), 'the console line')
+    return `${event}\n${printed}`
   }
 
   it.each(['photoTotalMs', 'photoMaxPlaceMs', 'photoPlacesSelected', 'photoPlacesEnriched', 'photoSteps'])(
@@ -212,8 +224,8 @@ describe('the usage record carries the tail breakdown, and no content', () => {
   })
 
   it('logs no place name, URL or photo payload', () => {
-    const rec = CODE.slice(CODE.indexOf("type: 'tappyai_usage'"))
-      .slice(0, CODE.slice(CODE.indexOf("type: 'tappyai_usage'")).indexOf('}))'))
+    // Both halves of the record — see usageRecord() on why there are two.
+    const rec = usageRecord()
     for (const forbidden of ['placeName', 'photoUrl', 'photoUrls', 'byName', 'urls']) {
       expect(rec, `${forbidden} must never be logged`).not.toMatch(new RegExp(`(^|[{,\\s])${forbidden}\\s*(:|,)`))
     }

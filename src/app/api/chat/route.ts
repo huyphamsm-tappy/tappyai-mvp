@@ -30,7 +30,9 @@ import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructio
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
-import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
+import { normalizePwLang } from '@/lib/priceWatch/messages'
+import { runAiWriteAction } from '@/lib/ai/actions/runAction'
+import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
@@ -39,12 +41,26 @@ import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantContent'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
 
 export const maxDuration = 60
 
 export async function POST(req: Request) {
   const startTime = Date.now()
+
+  // ── P1-3: deliver whatever the previous request buffered ───────────────────
+  //
+  // Events are recorded synchronously into a module-level buffer and delivered at the START of a
+  // LATER request, where the network call overlaps work the handler was already going to await.
+  // Never awaited: awaiting it would put Cloud Logging's latency in front of the user's reply,
+  // which is the exact cost this design exists to avoid. It cannot reject.
+  //
+  // Chat is where this call belongs. Before P1-3 the only flush sites were TTS and the three media
+  // uploads — all low-traffic — so a chat-dominant workload would record usage events into a
+  // 200-entry buffer and overflow it long before anything drained. Recording without flushing here
+  // would have produced a cost pipeline that silently measured a small, biased sample.
+  void flushPending(req)
 
   // Flood guard: cap requests per client IP (applies to anonymous and
   // authenticated callers alike, before any expensive LLM/tool work). The
@@ -981,35 +997,27 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             target_price: z.number().describe('Giá mục tiêu bằng VND (số nguyên), ví dụ: 2000000'),
             search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
           }),
-          execute: async ({ product_name, target_price, search_query }) => {
-            if (!authedUserId) return { error: pw.needLogin(pwLang) }
-            try {
-              // authedUserId is already verified above via getRequestUser (cookie or
-              // Bearer JWT) — use the admin client for this write instead of a fresh
-              // cookie-based createClient(), which would silently find no session for
-              // a Bearer-authenticated (native) request.
-              const supabaseW = createAdminClient()
-              const { count } = await supabaseW
-                .from('price_watches')
-                .select('id', { count: 'exact', head: true })
-                .eq('user_id', authedUserId)
-                .eq('status', 'active')
-              if ((count ?? 0) >= 10) return { error: pw.limitReached(pwLang) }
-              const { data, error } = await supabaseW
-                .from('price_watches')
-                .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
-                .select('id')
-                .single()
-              if (error) {
-                console.error('[chat/save_price_watch] insert failed:', error.code ?? error.message)
-                return { error: pw.saveError(pwLang) }
-              }
-              return { ok: true, id: data.id, product_name, target_price, message: pw.saved(pwLang, product_name, Math.round(target_price)) }
-            } catch (e) {
-              // W2/C44 — String(e) put a raw exception into a tool result the model then reads out.
-              console.error('[chat/save_price_watch] failed:', e instanceof Error ? e.message : e)
-              return { error: pw.saveError(pwLang) }
-            }
+          // ── P0-2: the ONE AI write, routed through the action boundary ────
+          //
+          // The permission, argument, scope, execute and audit steps used to live inline here and
+          // were correct only because this particular function was written carefully. They now run
+          // in `runAiWriteAction`, so the next write tool inherits them instead of copying them.
+          //
+          // NOTHING THE MODEL OR THE CLIENTS SEE HAS CHANGED: same parameters, same limit, same
+          // messages, same returned object. `authedUserId` is passed as the ACTOR — resolved from
+          // the verified session far above — and the model has no way to name an owner.
+          execute: async (rawArgs) => {
+            const outcome = await runAiWriteAction({
+              tool: 'save_price_watch',
+              actor: { userId: authedUserId },
+              rawArgs,
+              policy: savePriceWatchPolicy(pwLang),
+              req,
+            })
+            // The tool result shape is part of the model-facing contract: `{ ok, id, … }` on
+            // success, `{ error }` on refusal. A denial reason is never handed to the model — it
+            // gets the user-facing sentence and nothing about why the boundary said no.
+            return outcome.ok ? outcome.result : { error: outcome.message }
           }
         }),
       } : {}),
@@ -1157,7 +1165,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // transform is a byte-identical pass-through; it changes nothing on the wire.
   const logUsage = (ttuaMs: number | null) => {
     const a = usageAcct
-    console.log(JSON.stringify({
+    const now = Date.now()
+
+    // ── P1-3: the cost record, built ONCE ────────────────────────────────────
+    //
+    // This object is both the structured event and the shared half of the console line. Building
+    // it once is the point: the two used to be one literal, and the moment a field was added to
+    // only one of them the reconciliation the event type promises ("mirrors the console line
+    // field-for-field") would quietly stop being true.
+    //
+    // Typed as UsageEvent, so a field that is not on the allow-listed vocabulary does not compile.
+    const usageEvent: UsageEvent = {
       type: 'tappyai_usage',
       intent,
       finishReason: a?.finishReason ?? 'unknown',
@@ -1172,20 +1190,35 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // Total: t0 → final byte to the client (T10). Wider than the model-finish it
       // used to mark — on a buffered turn it now also covers the enrichment tail
       // the user waits through. modelFinishMs keeps the old T9 value.
-      elapsedMs: Date.now() - startTime,
+      elapsedMs: now - startTime,
       preModelMs,
       ttftMs: firstTokenAt === null ? null : firstTokenAt - startTime,
-      generationMs: firstTokenAt === null ? null : (modelFinishAt ?? Date.now()) - firstTokenAt,
       // T9 generation complete; T7 first content the client can SEE (== ttft on a
       // live turn, the whole-reply emit on a buffered one); postModelMs is the
       // enrichment/emit tail between T9 and the final byte.
       modelFinishMs: modelFinishAt === null ? null : modelFinishAt - startTime,
       ttuaMs,
-      postModelMs: modelFinishAt === null ? null : Date.now() - modelFinishAt,
+      postModelMs: modelFinishAt === null ? null : now - modelFinishAt,
+      toolMs: toolMs > 0 ? toolMs : null,
+      providerId: AI.providerId(),
+      modelRole: role,
+    }
+
+    // Buffered for delivery by a LATER request's flushPending (see the top of this handler).
+    // recordEvent is an array push that cannot throw — an observability failure must never be
+    // able to break the reply it is observing.
+    recordEvent(usageEvent)
+
+    console.log(JSON.stringify({
+      ...usageEvent,
+      // ── Console-only diagnostics ─────────────────────────────────────────
+      // Deliberately NOT on the event. The allow-listed vocabulary is a privacy surface, and each
+      // of these is either derivable from the fields above or too fine-grained to justify a
+      // permanent field: keep the cost record small and the diagnostics where they already were.
+      generationMs: firstTokenAt === null ? null : (modelFinishAt ?? now) - firstTokenAt,
       // Splits the tool-turn gap: firstStepFinishMs closes the tool-planning step,
       // toolMs is the summed tool execute() time.
       firstStepFinishMs,
-      toolMs: toolMs > 0 ? toolMs : null,
       // ── Photo-enrichment tail (Phase 2) ──────────────────────────────────
       // postModelMs says the tail is ~1.5s; these say where inside it. null on
       // turns that resolved no photos, so "no enrichment ran" stays distinct
@@ -1199,8 +1232,6 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // timeout. A step that runs every turn and contributes nothing is the
       // clearest possible signal, and only this breakdown can show it.
       photoSteps: photoPlacesSelected > 0 ? photoSteps : null,
-      providerId: AI.providerId(),
-      modelRole: role,
       retryCount: 'unknown',
       worthExtract,
       forcedTool,

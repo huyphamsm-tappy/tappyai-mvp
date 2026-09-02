@@ -1,5 +1,6 @@
 import { AI } from '@/lib/ai/llm'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -26,7 +27,10 @@ const LENGTH_GUIDE: Record<string, string> = {
 export async function POST(req: Request) {
   // Cost-abuse guard: this is an unauthenticated LLM endpoint. Cap bursts per IP
   // before doing any Claude work (protects Anthropic billing from floods).
-  const rl = rateLimit(`viet-content:${clientIp(req)}`, 10, 60_000)
+  //
+  // P1-5: the cap is now SHARED across instances where a store is configured (production is). It
+  // counted per lambda before, so the real ceiling was N × 10/min with N chosen by the platform.
+  const rl = await publicRateLimit(`viet-content:${clientIp(req)}`, 10, 60_000)
   if (!rl.ok) {
     return Response.json(
       { error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) },

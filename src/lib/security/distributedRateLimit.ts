@@ -106,6 +106,28 @@ function resolveStore(): RateLimitStore | null {
   return store
 }
 
+/**
+ * Is a shared store CONFIGURED for this deployment?
+ *
+ * P1-5 needs to tell two failures apart that `distributedRateLimit` deliberately collapses:
+ *
+ *   NOT CONFIGURED     no credentials in the environment. A permanent, deployment-wide state.
+ *   CONFIGURED, DOWN   credentials present, the store did not answer. Transient.
+ *
+ * For an admin route the collapse is right — both mean "refuse", per the C10 contract. For a
+ * PUBLIC endpoint they are opposite: refusing everyone forever because a deployment never had
+ * credentials would turn a hardening change into an outage, while refusing during a store outage
+ * is the correct, temporary conservative answer. See publicRateLimit.ts.
+ *
+ * Reads the environment directly rather than calling `resolveStore()`, because that memoises a
+ * CLIENT and this question is about configuration. Same two pairs, same precedence, no I/O.
+ */
+export function isDistributedStoreConfigured(env: NodeJS.ProcessEnv = process.env): boolean {
+  const url = env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL
+  const token = env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN
+  return !!url && !!token
+}
+
 /** Test seam. Injecting a store lets the real limiter run against a real
  *  shared store; it does not replace the limiter's own logic. */
 export function __setRateLimitStore(next: RateLimitStore | null): void {

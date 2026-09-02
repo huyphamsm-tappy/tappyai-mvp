@@ -93,9 +93,19 @@ export function renderShoppingMarker(view: SynthesisView): string {
  * the marker (so it never reaches formatMessage / TTS / copy). A missing or
  * malformed marker degrades to `{ text, view: null }` — never throws.
  */
+/** Removes any marker tag the block extraction below did not consume. A lone closing tag has no
+ *  opening to anchor on, so the span logic never sees it — and it rendered as message body. */
+function stripOrphanShoppingTags(text: string): string {
+  const orphan = text.split(SHOPPING_MARKER_CLOSE).join('').split(SHOPPING_MARKER_OPEN).join('')
+  return orphan === text ? text : orphan.trim()
+}
+
 export function parseShoppingMarker(content: string): { text: string; view: SynthesisView | null } {
   const open = content.indexOf(SHOPPING_MARKER_OPEN)
-  if (open === -1) return { text: content, view: null }
+  // P0-1: no opening tag does NOT mean nothing to clean. A reply carrying only
+  // `[/TAPPY_SHOPPING]` — an opening consumed upstream, or a truncated stream — used to be handed
+  // back untouched and the bare tag reached the user.
+  if (open === -1) return { text: stripOrphanShoppingTags(content), view: null }
   const from = open + SHOPPING_MARKER_OPEN.length
   const close = content.indexOf(SHOPPING_MARKER_CLOSE, from)
   const end = close === -1 ? content.length : close

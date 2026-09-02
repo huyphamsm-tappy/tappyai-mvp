@@ -1,15 +1,23 @@
 import Foundation
 
 /// Parses assistant message content for structured blocks — exact port of Web's
-/// parseCTA / parsePlan / parseFollowups pipeline (ChatInterface.tsx).
+/// parsePlan / parseCTA / parseFollowups / parseShoppingMarker pipeline (ChatInterface.tsx).
+///
+/// 🚨 THE MARKER CONTRACT. The server owns a CLOSED set of marker blocks and injects them into the
+/// assistant TEXT stream — the only channel that survives persistence and reload. It does not know
+/// or care which client is reading. So every marker the server can emit must be handled HERE, or
+/// its raw JSON renders as message body. `[TAPPY_SHOPPING]` shipped web-only and did exactly that
+/// (P0-1), the same way `[CTA_BUTTONS]` did before it. When a marker is added server-side, this
+/// file and Android `ChatResponseParser` are part of that change, not a follow-up to it.
 enum ContentParser {
 
     static func parse(_ content: String) -> ParsedContent {
         let (textAfterPlan, plan) = parsePlan(content)
         let (textAfterCta, buttons) = parseCTA(textAfterPlan)
         let (textAfterFollowups, followups) = parseFollowups(textAfterCta)
-        let images = extractImages(textAfterFollowups)
-        let text = stripImages(textAfterFollowups)
+        let clean = stripMarkerResidue(textAfterFollowups)
+        let images = extractImages(clean)
+        let text = stripImages(clean)
         return ParsedContent(text: text, ctaButtons: buttons, plan: plan, followups: followups, images: images)
     }
 
@@ -103,6 +111,54 @@ enum ContentParser {
             text = orphan.stringByReplacingMatches(in: text, range: NSRange(text.startIndex..., in: text), withTemplate: "")
         }
         return (text.trimmingCharacters(in: .whitespacesAndNewlines), followups)
+    }
+
+    // MARK: - Marker residue (P0-1)
+
+    /// Every marker block name the server can emit.
+    ///
+    /// ONE list, so "which markers exist" is a single fact rather than a property spread across
+    /// four parse functions that each learned about markers at a different time. That drift is
+    /// what produced this bug: `[TAPPY_SHOPPING]` was added server-side and taught to the web
+    /// only, and iOS rendered its JSON as message body. When the server gains a marker, it is
+    /// added here.
+    static let markerNames = ["TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING"]
+
+    /// Removes every marker block the decode steps did not consume.
+    ///
+    /// Runs AFTER parsePlan / parseCTA / parseFollowups, so each of those has already taken the
+    /// block it understands; what is left here is residue, and residue must never render.
+    ///
+    /// Three shapes per marker, because one is not enough — the lesson `[CTA_BUTTONS]` taught
+    /// and `[TAPPY_SHOPPING]` repeated:
+    ///
+    ///   closed        a whole block nothing claimed (a second CTA block, or the shopping block,
+    ///                 which iOS decodes into nothing: the decision CARD is V3 UX/UI work, but the
+    ///                 JSON must not reach the user in the meantime).
+    ///   unterminated  a block whose closing tag never arrived. Reachable, not defensive: a
+    ///                 planning turn runs at maxTokens 4096 and the rulebook tells the model not
+    ///                 to shorten a plan, so a reply that stops at finishReason "length" ends
+    ///                 mid-JSON. END-ANCHORED on purpose — a mid-text open tag falls through to
+    ///                 the orphan strip instead of swallowing the rest of the reply.
+    ///   orphan        a lone opening or closing tag whose partner was consumed upstream.
+    static func stripMarkerResidue(_ content: String) -> String {
+        var text = content
+        for name in markerNames {
+            let patterns = [
+                #"\[\#(name)\][\s\S]*?\[/\#(name)\]"#,
+                #"\[\#(name)\][\s\S]*$"#,
+                #"\[/?\#(name)\]"#,
+            ]
+            for pattern in patterns {
+                guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else { continue }
+                text = regex.stringByReplacingMatches(
+                    in: text,
+                    range: NSRange(text.startIndex..., in: text),
+                    withTemplate: ""
+                )
+            }
+        }
+        return text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     // MARK: - Extract markdown images

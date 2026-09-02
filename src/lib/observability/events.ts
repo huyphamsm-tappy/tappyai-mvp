@@ -44,6 +44,40 @@ export interface UsageEvent {
   memoryExtract: number
   toolCalls: number
   elapsedMs: number
+
+  // ── P1-3: the fields a cost model actually needs ──────────────────────────
+  //
+  // Token counts alone cannot answer "what does a turn cost": the same 12k
+  // tokens bill at three different rates depending on whether they were
+  // written to cache, read from cache, or sent fresh, and WHICH MODEL served
+  // them decides the rate card. `providerId` + `modelRole` supply that half.
+  //
+  // The latency marks are here for a cost reason, not a performance one: they
+  // are what separates provider time from our own work, so a rise in spend can
+  // be attributed to more inference rather than to a slower tail. They were
+  // already computed and already printed on the console line — this only stops
+  // them being thrown away.
+  //
+  // Every field is a number, a null, or a closed vocabulary string. Nothing
+  // here can carry a prompt, a completion, or anything identifying a person;
+  // ALLOWED_PAYLOAD_KEYS and privacy.test.ts hold that line independently.
+
+  /** Which adapter served the turn ('claude'). Never a model id — that stays inside the adapter. */
+  providerId: string
+  /** Semantic role the route asked for: 'fast' | 'smart' | 'planning' | 'vision'. */
+  modelRole: string
+  /** t0 → the model request being sent. Our own pre-flight work (auth, quota, prompt build). */
+  preModelMs: number | null
+  /** t0 → first text token back. null when the turn produced no text. */
+  ttftMs: number | null
+  /** t0 → generation complete (T9). */
+  modelFinishMs: number | null
+  /** t0 → first byte the client can render (T7). Differs from ttft on a buffered turn. */
+  ttuaMs: number | null
+  /** Generation-complete → final byte out: the enrichment/emit tail. */
+  postModelMs: number | null
+  /** Summed wall-clock inside tool execute()s. null when no tool ran. */
+  toolMs: number | null
 }
 
 /**
@@ -223,6 +257,9 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   // model accounting — counters only
   'intent', 'finishReason', 'promptTokens', 'completionTokens', 'totalTokens',
   'cacheReadTokens', 'cacheCreationTokens', 'llmCalls', 'memoryExtract', 'toolCalls', 'elapsedMs',
+  // P1-3 cost attribution: which adapter/role served the turn, and the latency marks that
+  // separate provider time from our own. Numbers and closed vocabularies only.
+  'modelRole', 'preModelMs', 'ttftMs', 'modelFinishMs', 'ttuaMs', 'postModelMs', 'toolMs',
   // tts counters — charactersSynthesized and characters are COUNTS, never the characters themselves
   'requests', 'cacheHits', 'cacheMisses', 'charactersSynthesized', 'errors', 'totalLatencyMs',
   'characters', 'cacheHit',

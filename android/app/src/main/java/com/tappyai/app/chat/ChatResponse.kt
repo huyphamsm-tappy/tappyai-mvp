@@ -98,10 +98,18 @@ data class ParsedAssistantReply(
 )
 
 /**
- * Kotlin port of the web ChatInterface parse chain (parsePlan → parseCTA → parseFollowups). Order
- * matters: plan first, then CTA, then followups, each stripping its own block from the text before
- * the next runs, exactly like the web. Recognised marker blocks are always stripped (even when the
- * JSON fails to parse) so a malformed block can never leak the raw marker to the user.
+ * Kotlin port of the web ChatInterface parse chain
+ * (parsePlan → parseCTA → parseFollowups → parseShoppingMarker). Order matters: each step strips
+ * its own block from the text before the next runs, exactly like the web. Recognised marker blocks
+ * are always stripped (even when the JSON fails to parse) so a malformed block can never leak the
+ * raw marker to the user.
+ *
+ * 🚨 THE MARKER CONTRACT. The server owns a CLOSED set of marker blocks and injects them into the
+ * assistant TEXT stream — the only channel that survives persistence and reload. It does not know
+ * or care which client is reading. So every marker the server can emit must be handled HERE, or
+ * its raw JSON renders as message body. `[TAPPY_SHOPPING]` shipped web-only and did exactly that
+ * (P0-1), the same way `[CTA_BUTTONS]` did before it. When a marker is added server-side, this
+ * object and iOS `ContentParser` are part of that change, not a follow-up to it.
  */
 object ChatResponseParser {
     private val json = Json { ignoreUnknownKeys = true; isLenient = true }
@@ -110,10 +118,31 @@ object ChatResponseParser {
     // used for unit tests) rejects a lone unescaped ']' or '}' with PatternSyntaxException, which
     // crashed the app in ChatResponseParser.<clinit> on the first AI reply. Keep them escaped.
     private val PLAN_RE = Regex("""\[TAPPY_PLAN\]([\s\S]*?)\[/TAPPY_PLAN\]""", RegexOption.IGNORE_CASE)
+    // A plan block whose closing tag never arrived. REACHABLE, not defensive: a planning turn runs
+    // at maxTokens 4096 and the rulebook tells the model not to shorten a plan, so a reply that
+    // stops at finishReason "length" ends mid-JSON — and every frame before the closing tag is a
+    // snapshot the screen renders. End-anchored so a mid-text open tag is left to the orphan strip
+    // instead of swallowing the rest of the reply.
+    private val PLAN_PARTIAL_RE = Regex("""\[TAPPY_PLAN\][\s\S]*$""", RegexOption.IGNORE_CASE)
+    private val PLAN_STRIP_RE = Regex("""\[/?TAPPY_PLAN\]""", RegexOption.IGNORE_CASE)
     private val CTA_TAG_RE = Regex("""\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]""", RegexOption.IGNORE_CASE)
     private val CTA_NOTAG_RE = Regex("""\[CTA_BUTTONS\](\{[\s\S]*\})\s*$""", RegexOption.IGNORE_CASE)
+    // CTA_NOTAG_RE requires a `{…}` body, so it does NOT match a bare `[CTA_BUTTONS]` with nothing
+    // after it — which is what a block whose payload never arrived looks like. That shape had no
+    // handler at all and rendered as body text.
+    private val CTA_STRIP_RE = Regex("""\[/?CTA_BUTTONS\]""", RegexOption.IGNORE_CASE)
     private val FOLLOWUPS_RE = Regex("""\[FOLLOWUPS\]([^\n]*?)(?:\[/FOLLOWUPS\]|\n|$)""", RegexOption.IGNORE_CASE)
     private val FOLLOWUPS_STRIP_RE = Regex("""\[/?FOLLOWUPS\]""", RegexOption.IGNORE_CASE)
+    // P0-1. The server-built shopping DECISION block. Android does not render the decision card
+    // (that is V3 UX/UI work); it must never render the block's JSON either, which is what it did
+    // before this. Three layers, because one is not enough — the same lesson `[CTA_BUTTONS]`
+    // taught: a closed block, an UNTERMINATED one at the tail of a streaming snapshot, and any
+    // orphan tag left behind by either.
+    private val SHOPPING_RE = Regex("""\[TAPPY_SHOPPING\][\s\S]*?\[/TAPPY_SHOPPING\]""", RegexOption.IGNORE_CASE)
+    // End-anchored: only a trailing, still-arriving block. A mid-text open tag is left to the
+    // orphan strip rather than swallowing the rest of the reply.
+    private val SHOPPING_PARTIAL_RE = Regex("""\[TAPPY_SHOPPING\][\s\S]*$""", RegexOption.IGNORE_CASE)
+    private val SHOPPING_STRIP_RE = Regex("""\[/?TAPPY_SHOPPING\]""", RegexOption.IGNORE_CASE)
     // Markdown image `![alt](url)` — TappyMarkdown drops images, so they render via segments
     // (mirrors the web formatMessage grouping place photos into a horizontal strip).
     private val IMAGE_RE = Regex("""!\[[^\]]*\]\((https?://[^\s)]+)\)""")
@@ -133,6 +162,10 @@ object ChatResponseParser {
                 ?.takeIf { p -> p.days.isNotEmpty() }
         }
         if (planMatch != null) text = PLAN_RE.replace(text, "").trimEnd()
+        // Whatever a complete block did not consume: a truncated plan at the tail, then any
+        // orphan tag. Unconditional — a reply can carry an unterminated block with no complete
+        // one, which is exactly the truncated-plan case above.
+        text = PLAN_PARTIAL_RE.replace(text, "").trimEnd()
 
         // 2. CTA buttons (closing tag, or a bare block at end of content).
         val ctaMatch = CTA_TAG_RE.find(text) ?: CTA_NOTAG_RE.find(text)
@@ -151,8 +184,19 @@ object ChatResponseParser {
             ?: emptyList()
         if (fuMatch != null) text = FOLLOWUPS_RE.replace(text, "")
 
-        // Safety net: strip any orphan markers so implementation details never show.
-        text = FOLLOWUPS_STRIP_RE.replace(text, "").trim()
+        // 4. Shopping decision block (P0-1). Stripped, never rendered: the server emits it as a
+        // `0:` text frame BEFORE the prose on a shopping turn, so an unhandled block is the first
+        // thing the user reads. Closed form first, then a trailing unterminated one.
+        text = SHOPPING_RE.replace(text, "")
+        text = SHOPPING_PARTIAL_RE.replace(text, "")
+
+        // Safety net: strip any orphan markers so implementation details never show. Every marker
+        // the server owns is listed here — an entry missing from this line is a marker that leaks
+        // the moment its block arrives in any shape the steps above did not match.
+        text = PLAN_STRIP_RE.replace(text, "")
+        text = CTA_STRIP_RE.replace(text, "")
+        text = FOLLOWUPS_STRIP_RE.replace(text, "")
+        text = SHOPPING_STRIP_RE.replace(text, "").trim()
 
         // 4. Positional segmentation — each run of image lines becomes an inline gallery at its
         // position (web formatMessage), and the clean text keeps its pre-segments shape for
