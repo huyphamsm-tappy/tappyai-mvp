@@ -126,11 +126,70 @@ object ChatResponseParser {
     private val PLAN_PARTIAL_RE = Regex("""\[TAPPY_PLAN\][\s\S]*$""", RegexOption.IGNORE_CASE)
     private val PLAN_STRIP_RE = Regex("""\[/?TAPPY_PLAN\]""", RegexOption.IGNORE_CASE)
     private val CTA_TAG_RE = Regex("""\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]""", RegexOption.IGNORE_CASE)
-    private val CTA_NOTAG_RE = Regex("""\[CTA_BUTTONS\](\{[\s\S]*\})\s*$""", RegexOption.IGNORE_CASE)
-    // CTA_NOTAG_RE requires a `{…}` body, so it does NOT match a bare `[CTA_BUTTONS]` with nothing
-    // after it — which is what a block whose payload never arrived looks like. That shape had no
-    // handler at all and rendered as body text.
+    // D2 FIX (P4-02). The bare form is located by BRACE MATCHING (findMarkerJson), not by a regex.
+    //
+    // It used to be `\[CTA_BUTTONS\](\{[\s\S]*\})\s*$` — end-anchored — which is exactly how the
+    // raw block reached users on 2026-08-27: the model emits `[FOLLOWUPS]` AFTER the CTA block, and
+    // followups are stripped at step 3, so at step 2 something still trailed the block, `\s*$` could
+    // not match, nothing was stripped, and the buttons were silently lost. The orphan-tag safety net
+    // then removed `[CTA_BUTTONS]` and left `{"buttons":…}` sitting in the message text.
+    //
+    // Dropping the `$` is worse, not better: `\{[\s\S]*\}` runs greedily to the LAST brace in the
+    // message and swallows any trailing prose. Web hit both failures and settled on brace matching;
+    // this is the same algorithm, so the two platforms cannot drift again without the shared
+    // fixtures failing (shared/structured-content/marker-fixtures.json).
+    private const val CTA_MARKER = "[CTA_BUTTONS]"
+    // A CTA block whose payload never finished arriving — braces do not balance, so findMarkerJson
+    // declines it. END-ANCHORED on purpose: a mid-text open tag falls through to the orphan strip
+    // rather than swallowing the rest of the reply. Android had NO equivalent of this pattern,
+    // which is why the JSON body survived while the tag was removed.
+    private val CTA_PARTIAL_RE = Regex("""\[CTA_BUTTONS\][\s\S]*$""", RegexOption.IGNORE_CASE)
     private val CTA_STRIP_RE = Regex("""\[/?CTA_BUTTONS\]""", RegexOption.IGNORE_CASE)
+
+    /** Where a brace-matched marker payload sits inside the content. */
+    private data class MarkerSpan(val start: Int, val end: Int, val json: String)
+
+    /**
+     * Locates the `{…}` payload that follows [marker] by matching braces — the Kotlin twin of web's
+     * `findMarkerJson` (ChatInterface.tsx).
+     *
+     * Brace matching rather than a regex because the block's POSITION is not fixed: another marker
+     * may follow it. Braces inside JSON strings are skipped and `\"` is honoured, so a `}` in a
+     * label or URL cannot end the scan early. Returns null when the braces do not balance, which is
+     * a payload still arriving mid-stream — a normal outcome, not a corrupt stream.
+     */
+    private fun findMarkerJson(content: String, marker: String): MarkerSpan? {
+        val start = content.indexOf(marker, ignoreCase = true)
+        if (start < 0) return null
+
+        var open = start + marker.length
+        while (open < content.length && content[open].isWhitespace()) open++
+        if (open >= content.length || content[open] != '{') return null
+
+        var depth = 0
+        var inString = false
+        var escaped = false
+        for (i in open until content.length) {
+            val c = content[i]
+            if (escaped) { escaped = false; continue }
+            if (inString) {
+                when (c) {
+                    '\\' -> escaped = true
+                    '"' -> inString = false
+                }
+                continue
+            }
+            when (c) {
+                '"' -> inString = true
+                '{' -> depth++
+                '}' -> {
+                    depth--
+                    if (depth == 0) return MarkerSpan(start, i + 1, content.substring(open, i + 1))
+                }
+            }
+        }
+        return null // payload still arriving — braces do not balance yet
+    }
     private val FOLLOWUPS_RE = Regex("""\[FOLLOWUPS\]([^\n]*?)(?:\[/FOLLOWUPS\]|\n|$)""", RegexOption.IGNORE_CASE)
     private val FOLLOWUPS_STRIP_RE = Regex("""\[/?FOLLOWUPS\]""", RegexOption.IGNORE_CASE)
     // P0-1. The server-built shopping DECISION block. Android does not render the decision card
@@ -167,15 +226,36 @@ object ChatResponseParser {
         // one, which is exactly the truncated-plan case above.
         text = PLAN_PARTIAL_RE.replace(text, "").trimEnd()
 
-        // 2. CTA buttons (closing tag, or a bare block at end of content).
-        val ctaMatch = CTA_TAG_RE.find(text) ?: CTA_NOTAG_RE.find(text)
-        val buttons = ctaMatch?.let {
-            runCatching { json.decodeFromString<CtaEnvelope>(it.groupValues[1].trim()).buttons }.getOrNull()
-        } ?: emptyList()
-        if (ctaMatch != null) {
+        // 2. CTA buttons — closed form first, then the bare form located by brace matching.
+        //
+        // The strip is UNCONDITIONAL and independent of whether the payload decoded: a block we
+        // cannot understand is still a block the user must not read. (Same shape parsePlan already
+        // uses after its own leak.)
+        var ctaPayload: String? = null
+        val ctaTagMatch = CTA_TAG_RE.find(text)
+        if (ctaTagMatch != null) {
+            ctaPayload = ctaTagMatch.groupValues[1]
             text = CTA_TAG_RE.replace(text, "")
-            text = CTA_NOTAG_RE.replace(text, "").trimEnd()
+        } else {
+            val span = findMarkerJson(text, CTA_MARKER)
+            if (span != null) {
+                ctaPayload = span.json
+                text = text.substring(0, span.start) + text.substring(span.end)
+            }
         }
+        // Any FURTHER block is stripped without rendering: only the first has ever produced
+        // buttons, and a leftover second block would otherwise show as raw JSON.
+        var extraCta = findMarkerJson(text, CTA_MARKER)
+        while (extraCta != null) {
+            text = text.substring(0, extraCta.start) + text.substring(extraCta.end)
+            extraCta = findMarkerJson(text, CTA_MARKER)
+        }
+        // Whatever brace matching declined: a block whose payload never finished arriving.
+        text = CTA_PARTIAL_RE.replace(text, "").trimEnd()
+
+        val buttons = ctaPayload?.let {
+            runCatching { json.decodeFromString<CtaEnvelope>(it.trim()).buttons }.getOrNull()
+        } ?: emptyList()
 
         // 3. Follow-up suggestion chips.
         val fuMatch = FOLLOWUPS_RE.find(text)
