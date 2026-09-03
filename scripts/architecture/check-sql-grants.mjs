@@ -328,6 +328,71 @@ function ruleG5(sql) {
   return findings
 }
 
+// ── G6: sensitive-table isolation may not be removed by a migration ──────────
+//
+// `conversations`, `user_memory` and `profiles` carry the most sensitive data in
+// the product and their RLS lives ONLY in production — applied out of band, so
+// there is no policy text in this repository to test against
+// (docs/ios/05_DATABASE_CONTRACT.md §Clients records it from live introspection).
+//
+// That leaves two ways isolation could disappear, and they are not equally
+// visible:
+//
+//   · someone drops or disables it IN THE DASHBOARD — CI cannot see this at all,
+//     and it stays an infrastructure limitation with an owner verification query
+//     recorded in V3_THREAT_MODEL.md;
+//   · someone drops or disables it IN A MIGRATION — which is exactly what this
+//     rule makes impossible to do quietly.
+//
+// A DROP paired with a CREATE on the same table in the same file is a REPLACE,
+// which is the legitimate shape (20260904_group_read_boundary.sql does it). A
+// DROP with nothing putting a policy back is a removal.
+
+/** Tables whose row isolation is load-bearing. Removing it is never routine. */
+const SENSITIVE_TABLES = new Set([
+  'conversations', 'user_memory', 'profiles', 'user_integrations',
+  'billing_customers', 'subscriptions', 'price_watches', 'user_preferences',
+  'user_events', 'user_notes', 'audit_log', 'account_status',
+  'groups', 'group_members', 'decision_evidence', 'notification_subscriptions',
+])
+
+function ruleG6(sql) {
+  const findings = []
+  const stripped = stripComments(sql)
+  const lineOf = (i) => stripped.slice(0, i).split('\n').length
+
+  const disable = /ALTER\s+TABLE\s+(?:public\.)?("?[a-z_]+"?)\s+DISABLE\s+ROW\s+LEVEL\s+SECURITY/gi
+  let m
+  while ((m = disable.exec(stripped)) !== null) {
+    const table = m[1].replace(/"/g, '')
+    if (!SENSITIVE_TABLES.has(table)) continue
+    findings.push({
+      ruleId: 'sql-sensitive-isolation-removed',
+      line: lineOf(m.index),
+      text: `${table} has ROW LEVEL SECURITY disabled`,
+      hint: 'the anon key is public, so disabling RLS publishes this table to the internet. If this is genuinely intended, it needs an owner decision on the record — not a migration.',
+    })
+  }
+
+  // Which tables does this file put a policy back on?
+  const replaced = new Set()
+  const create = /CREATE\s+POLICY\s+(?:"[^"]+"|\S+)\s+ON\s+(?:public\.)?("?[a-z_]+"?)/gi
+  while ((m = create.exec(stripped)) !== null) replaced.add(m[1].replace(/"/g, ''))
+
+  const drop = /DROP\s+POLICY\s+(?:IF\s+EXISTS\s+)?(?:"[^"]+"|\S+)\s+ON\s+(?:public\.)?("?[a-z_]+"?)/gi
+  while ((m = drop.exec(stripped)) !== null) {
+    const table = m[1].replace(/"/g, '')
+    if (!SENSITIVE_TABLES.has(table) || replaced.has(table)) continue
+    findings.push({
+      ruleId: 'sql-sensitive-isolation-removed',
+      line: lineOf(m.index),
+      text: `${table} loses a policy with nothing replacing it in this file`,
+      hint: 'a DROP paired with a CREATE on the same table is a replace and passes. A DROP on its own removes isolation from a table holding sensitive data — restate the policy, or make the removal an explicit owner decision.',
+    })
+  }
+  return findings
+}
+
 function validateConfig() {
   const problems = []
   for (const name of INTENTIONAL_ANON.keys()) {
@@ -399,7 +464,7 @@ const legacySeen = new Set()
 for (const full of sqlFiles(MIGRATIONS)) {
   const file = toPosix(relative(ROOT, full))
   const sql = stripComments(readFileSync(full, 'utf8'))
-  const findings = [...ruleG1(sql), ...ruleG2(sql), ...ruleG5(sql)]
+  const findings = [...ruleG1(sql), ...ruleG2(sql), ...ruleG5(sql), ...ruleG6(sql)]
   if (findings.length === 0) continue
 
   const isChanged = changed.has(file)
@@ -458,7 +523,7 @@ if (retired.length > 0) {
 }
 
 console.log(`Base ref: ${base.ref} (${base.sha.slice(0, 7)})  ·  changed files in scope: ${[...changed].filter((f) => f.startsWith('supabase/migrations/')).length}`)
-console.log(`Rules: G1 declare-roles · G2 revoke-public-is-not-enough · G3 allowlist-integrity · G4 legacy-ratchet · G5 world-readable-select`)
+console.log(`Rules: G1 declare-roles · G2 revoke-public-is-not-enough · G3 allowlist-integrity · G4 legacy-ratchet · G5 world-readable-select · G6 sensitive-isolation`)
 console.log(`Result: ${errors.length} error(s), ${info.length} info, ${LEGACY_UNCOMPLIANT.size} pinned legacy file(s).`)
 
 process.exit(errors.length === 0 ? 0 : 1)

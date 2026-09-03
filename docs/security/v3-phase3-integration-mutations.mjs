@@ -129,6 +129,32 @@ const MUTATIONS = [
     to: 'function guardPlanLinks(text: string, allowed: ReadonlySet<string>): string { if (1) return text;',
     test: LINK_TEST,
   },
+
+  // ── C-1 · disconnect must revoke, not just forget ─────────────────────────
+  {
+    id: 'MI13',
+    what: 'revocation becomes a no-op (the grant survives the disconnect)',
+    file: ROOT + '/src/lib/integrations/googleCalendar.ts',
+    from: '  if (typeof token !== \'string\' || token.length === 0) return false',
+    to: '  if (true) return false',
+    test: 'src/lib/integrations/tokenRevocation.test.ts',
+  },
+  {
+    id: 'MI14',
+    what: 'the token is sent in the URL, where every proxy log would capture it',
+    file: ROOT + '/src/lib/integrations/googleCalendar.ts',
+    from: "    const res = await fetchImpl(GOOGLE_REVOKE_ENDPOINT, {",
+    to: "    const res = await fetchImpl(GOOGLE_REVOKE_ENDPOINT + '?token=' + token, {",
+    test: 'src/lib/integrations/tokenRevocation.test.ts',
+  },
+  {
+    id: 'MI15',
+    what: 'the route goes back to deleting the row without revoking',
+    file: ROOT + '/src/app/api/integrations/google-calendar/route.ts',
+    from: '    const revoked = await revokeGoogleToken(existing?.refresh_token ?? existing?.access_token)',
+    to: '    const revoked = true',
+    test: 'src/app/api/integrations/google-calendar/disconnectRevokes.test.ts',
+  },
 ]
 
 let killed = 0
