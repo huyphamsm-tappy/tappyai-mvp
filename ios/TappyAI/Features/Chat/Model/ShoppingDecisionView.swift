@@ -39,6 +39,27 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
 
     var id: String { key }
 
+    /// Restores the memberwise initialiser that `init(from:)` below suppresses.
+    init(
+        key: String,
+        config: String,
+        matchesRequest: String,
+        recommended: Bool = false,
+        priceLow: Double? = nil,
+        priceHigh: Double? = nil,
+        image: String? = nil,
+        offers: [ShoppingOfferView] = []
+    ) {
+        self.key = key
+        self.config = config
+        self.matchesRequest = matchesRequest
+        self.recommended = recommended
+        self.priceLow = priceLow
+        self.priceHigh = priceHigh
+        self.image = image
+        self.offers = offers
+    }
+
     // Defaults on decode: a field the server omitted must not fail the whole decision, but it must
     // also never acquire a value. Optionals stay nil; only identity and the closed-set verdict get
     // a fallback, and the verdict falls back to "unknown" rather than to a claim.
@@ -68,6 +89,21 @@ struct ShoppingRecommendationView: Codable, Equatable, Sendable {
     let tradeOff: ShoppingReason?
     let conditional: Bool
 
+    /// Restores the memberwise initialiser that `init(from:)` below suppresses.
+    init(
+        entityKey: String?,
+        seller: String? = nil,
+        reasons: [ShoppingReason] = [],
+        tradeOff: ShoppingReason? = nil,
+        conditional: Bool = false
+    ) {
+        self.entityKey = entityKey
+        self.seller = seller
+        self.reasons = reasons
+        self.tradeOff = tradeOff
+        self.conditional = conditional
+    }
+
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         entityKey = try? c.decode(String.self, forKey: .entityKey)
@@ -82,6 +118,14 @@ struct ShoppingDecisionView: Codable, Equatable, Sendable {
     let v: Int
     let entities: [ShoppingEntityView]
     let recommendation: ShoppingRecommendationView?
+
+    /// Declaring `init(from:)` below suppresses Swift's synthesised memberwise initialiser, so it
+    /// is restored explicitly. Tests and previews construct these values directly.
+    init(v: Int = 1, entities: [ShoppingEntityView], recommendation: ShoppingRecommendationView? = nil) {
+        self.v = v
+        self.entities = entities
+        self.recommendation = recommendation
+    }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)

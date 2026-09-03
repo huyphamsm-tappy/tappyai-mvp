@@ -281,8 +281,16 @@ export default function ReviewDetailView({
           <p className="text-gray-400 text-sm mb-3 leading-snug">
             {t('reviewDetail.ctaPrompt')} <span className="font-semibold text-white">{review.place_name}</span>?
           </p>
+          {/* P4-12 — the bridge now CARRIES the place (DD-004).
+              This CTA already existed and already said "Ask Tappy", but it linked to a bare
+              /chat: the user arrived in an empty thread and had to retype the place they had
+              just been reading about. That is the discovery dead-end the audit named (IA-5),
+              and it is fixed by adding context to the href — nothing about Explore's identity,
+              styling or behaviour changes (OD-2).
+              The prompt names the place and asks about it; it does not decide what the user
+              wants, because this text appears as if they typed it. */}
           <Link
-            href="/chat"
+            href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: review.place_name }))}`}
             className="inline-flex items-center gap-2 text-white text-sm font-bold px-5 py-2.5 rounded-full"
             style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #e91e8c 100%)' }}
           >

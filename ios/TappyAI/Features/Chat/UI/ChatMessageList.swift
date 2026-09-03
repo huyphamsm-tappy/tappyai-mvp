@@ -167,6 +167,8 @@ private struct AssistantBubble: View {
     /// D1 — the shopping decision for this turn, when the reply carried one.
     /// Defaulted so existing call sites keep compiling unchanged.
     var shopping: ShoppingDecisionView? = nil
+    /// Whether the comparison sheet is open for this row.
+    @State private var showComparison = false
     let followups: [String]
     let isLastMessage: Bool
     let tts: TTSManager
@@ -213,6 +215,24 @@ private struct AssistantBubble: View {
                 // mid-stream is how partial JSON reached users in the first place.
                 if let shopping, !isStreaming {
                     ShoppingDecisionCardView(view: shopping)
+
+                    // Comparison (DD-005), derived from the SAME payload the card above renders —
+                    // no extra request, nothing inferred. Opens in a sheet: a four-column grid is
+                    // unreadable inline at phone width, so the container differs while the data
+                    // does not.
+                    if let comparison = shoppingComparison(from: shopping, labels: .localized) {
+                        Button {
+                            showComparison = true
+                        } label: {
+                            Text(String(localized: "comparison.titleShort"))
+                                .font(TappyFont.body)
+                                .foregroundStyle(TappyColor.primary)
+                        }
+                        .minimumTapTarget()
+                        .sheet(isPresented: $showComparison) {
+                            ShoppingComparisonSheet(comparison: comparison) { showComparison = false }
+                        }
+                    }
                 }
 
                 // Full action bar (not streaming)
