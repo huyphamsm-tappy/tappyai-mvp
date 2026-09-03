@@ -133,6 +133,8 @@ undifferentiated density was.
 | **Current** | Single column at every width. |
 | **Target** | Desktop: sidebar + multi-column grid. Tablet: sidebar collapses to icons, grid reflows to 2 columns. Mobile: no sidebar, bottom tab bar returns, panels stack in the same priority order. |
 | **Change** | The hierarchy survives the reflow — the assistant stays first at every width. |
+| **Verified** | ✅ Rendered at 1440 (desktop), 768 (tablet) and 375 (mobile) on the Phase 4B worktree. Sidebar present at desktop, `display:none` below `lg`; grid reflows 12-col → 2-col → 1-col; bottom nav returns on mobile; AI Agent panel first at every width; **no horizontal overflow at any width** on Home, Deals, Marketplace, Profile or Explore. |
+| **Fixed while verifying** | 🚨 **The shell hosted app-level components in their LIGHT variants** — a white bottom nav and a white deal-notify pill on a `#0A0F1C` page. Those components have designed dark variants keyed on Tailwind's class strategy, so the shell now carries `dark` alongside `v3-theme`, the same mechanism the chat routes use. 🚨 **Home's suggestion tiles clipped their text mid-word**: `line-clamp-*` resolves its `display` to `flow-root` on this surface, so the clamp degrades to a hard clip with no ellipsis. The tiles now grow to their content. 🚨 **The Inbox entries pointed at `/profile`**, so the Inbox row opened an account menu and standing on Profile lit the "Inbox" tab; they now point at `/profile/notifications`, and the duplicate "Notifications" sidebar row — a second label for the same idea leading somewhere else again — is gone. |
 
 ---
 

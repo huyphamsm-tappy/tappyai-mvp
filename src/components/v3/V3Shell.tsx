@@ -86,8 +86,12 @@ const GROUPS: NavGroup[] = [
   {
     titleKey: 'v3.nav.account',
     items: [
-      { href: '/profile', labelKey: 'v3.nav.inbox', icon: InboxIcon },
-      { href: '/profile/settings', labelKey: 'v3.nav.notifications', icon: Bell },
+      // 🚨 The inbox is `/profile/notifications`, not `/profile`. Pointing it at the account menu
+      // meant the Inbox row opened a settings list, and standing on Profile lit the "Inbox" tab.
+      // The route is auth-gated, which is right for a personal inbox. A separate "Notifications"
+      // row used to sit here pointing at `/profile/settings`; it was a second label for the same
+      // idea leading somewhere else again, so it is gone rather than duplicated.
+      { href: '/profile/notifications', labelKey: 'v3.nav.inbox', icon: InboxIcon },
       { href: '/profile', labelKey: 'v3.nav.profile', icon: UserCircle },
       { href: '/profile', labelKey: 'v3.nav.qr', icon: QrCode },
       { href: '/subscription', labelKey: 'v3.nav.wallet', icon: Wallet },
@@ -117,7 +121,7 @@ const TABS: { href: string; labelKey: string; icon: typeof Home; badge?: boolean
   { href: '/reviews', labelKey: 'nav.explore', icon: PlayCircle },
   { href: '/deals', labelKey: 'nav.deals', icon: Tag },
   { href: '/marketplace', labelKey: 'v3.nav.marketplace', icon: Store },
-  { href: '/profile', labelKey: 'v3.nav.inbox', icon: MessageCircle, badge: true },
+  { href: '/profile/notifications', labelKey: 'v3.nav.inbox', icon: MessageCircle, badge: true },
   { href: '/#smart-tools', labelKey: 'v3.nav.smartTools', icon: Grid3x3 },
 ]
 
@@ -138,7 +142,12 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
   const { unreadCount } = useNotifications()
 
   return (
-    <div className="v3-theme min-h-dvh">
+    // `dark` sits alongside `v3-theme` on purpose. The V3 surface is dark by design regardless of
+    // the user's theme choice, and it hosts app-level components that are NOT V3 components —
+    // BottomNav, DealNotifyButton, Header. Those already have designed dark variants, but those
+    // variants key on Tailwind's class strategy, so without `dark` here a white bottom bar and a
+    // white notify pill render on a #0A0F1C page. Same mechanism the chat routes use.
+    <div className="v3-theme dark min-h-dvh">
       <div className="flex">
         {/* ── Sidebar (desktop only) ────────────────────────────────────── */}
         <aside
@@ -271,7 +280,7 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
 
               <div className="flex items-center gap-2">
                 <Link
-                  href="/profile"
+                  href="/profile/notifications"
                   aria-label={t('v3.top.notifications')}
                   className="relative flex h-9 w-9 items-center justify-center rounded-lg"
                   style={{ background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-secondary)' }}

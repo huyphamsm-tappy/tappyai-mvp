@@ -178,12 +178,16 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 <Link
                   key={s.text}
                   href={`/chat?q=${encodeURIComponent(text)}&category=${s.category}`}
-                  className="v3-tile w-[136px] flex-shrink-0 overflow-hidden"
+                  className="v3-tile flex w-[152px] flex-shrink-0 flex-col overflow-hidden"
                 >
-                  <div className={cn('flex h-16 items-center justify-center bg-gradient-to-br text-2xl', s.gradient)}>
+                  <div className={cn('flex h-14 flex-shrink-0 items-center justify-center bg-gradient-to-br text-2xl', s.gradient)}>
                     {s.emoji}
                   </div>
-                  <p className="line-clamp-2 p-2 text-[11px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>
+                  {/* Deliberately NOT clamped. `line-clamp-2` resolves its display to `flow-root`
+                      on this surface, so the clamp degrades to a hard clip with no ellipsis and
+                      the suggestion reads as broken text. Letting the tile grow to its content is
+                      the honest failure mode: these strings are one short sentence. */}
+                  <p className="p-2 text-[11px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>
                     {text}
                   </p>
                 </Link>
@@ -213,7 +217,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           title={t('v3.panel.inbox')}
           tone="rose"
           icon={<InboxIcon size={13} />}
-          action={{ label: t('v3.action.seeAll'), href: '/profile' }}
+          action={{ label: t('v3.action.seeAll'), href: '/profile/notifications' }}
           className="xl:col-span-3"
         >
           <ChipRow
@@ -230,7 +234,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             <ul className="mt-3 space-y-2.5">
               {inboxRows.slice(0, 4).map(n => (
                 <li key={n.id}>
-                  <Link href={n.entity_url || '/profile'} className="flex items-start gap-2.5">
+                  <Link href={n.entity_url || '/profile/notifications'} className="flex items-start gap-2.5">
                     <span
                       className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full"
                       style={{ background: 'rgba(255,255,255,0.06)', color: INBOX_TONE[n.category] ?? 'var(--v3-fg-secondary)' }}
@@ -254,7 +258,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             </ul>
           )}
           <Link
-            href="/profile"
+            href="/profile/notifications"
             className="mt-3 flex min-h-[36px] items-center justify-center rounded-lg text-[12px] font-medium"
             style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
           >
@@ -266,7 +270,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
       {/* ── Row 2 — commerce, safety, planning, posting ─────────────────── */}
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
         {/* Continue — the real conversations, not a placeholder. */}
-        <Panel title={t('v3.panel.continue')} tone="accent" icon={<MessageCircle size={13} />} action={{ label: t('v3.action.seeAll'), href: '/profile' }}>
+        <Panel title={t('v3.panel.continue')} tone="accent" icon={<MessageCircle size={13} />} action={{ label: t('v3.action.seeAll'), href: '/profile/history' }}>
           {user && conversations.length > 0 ? (
             <ul className="space-y-2">
               {conversations.slice(0, 3).map(c => (
