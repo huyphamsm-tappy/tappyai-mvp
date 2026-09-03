@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
@@ -56,6 +57,19 @@ fun HomeShellScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val navController = rememberNavController()
+
+    // P4-14 — a notification asked for a destination inside this shell.
+    //
+    // The deep-link layer cannot navigate here: [HomeRoute] is private to this screen by design.
+    // So it leaves the destination in [PendingShellDestination] and navigates to the shell; the
+    // shell reads it once, on composition, and drives its OWN NavController. Ownership of this
+    // navigation space never leaves this file.
+    //
+    // Consumed rather than observed: a tap is a one-shot event, and re-reading it on a later
+    // recomposition would silently yank a user who had since navigated somewhere else.
+    LaunchedEffect(Unit) {
+        viewModel.consumePendingDestination()?.let { navController.navigate(it) }
+    }
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentTab = HomeTab.entries.firstOrNull { tab ->

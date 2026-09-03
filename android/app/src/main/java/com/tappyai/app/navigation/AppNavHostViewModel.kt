@@ -3,6 +3,7 @@ package com.tappyai.app.navigation
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tappyai.app.BuildConfig
 import com.tappyai.app.R
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.deeplink.DeepLinkParser
@@ -41,6 +42,7 @@ class AppNavHostViewModel @Inject constructor(
     private val onboardingRepository: OnboardingRepository,
     private val groupDeepLinkParser: GroupDeepLinkParser,
     private val webLinkDeepLinkParser: WebLinkDeepLinkParser,
+    private val pendingShellDestination: PendingShellDestination,
     private val authDeepLinkParser: DeepLinkParser,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
@@ -112,9 +114,22 @@ class AppNavHostViewModel @Inject constructor(
             // throws on a malformed link is contained, because a bad link in a payload the app did
             // not write must not become a crash on tap.
             val link = uri.toString()
-            listOf(groupDeepLinkParser, webLinkDeepLinkParser)
+            val appRoute = listOf(groupDeepLinkParser, webLinkDeepLinkParser)
                 .firstNotNullOfOrNull { parser -> runCatching { parser.parse(link) }.getOrNull() }
-                ?.let { _deepLinkTarget.value = it }
+
+            if (appRoute != null) {
+                _deepLinkTarget.value = appRoute
+            } else {
+                // No app-wide route matched. The link may still name a destination INSIDE the
+                // post-auth shell, whose vocabulary is deliberately private to it. Navigate to the
+                // shell — a route that already exists — and hand the nested destination across for
+                // the shell to consume itself, rather than promoting its tabs into the global
+                // vocabulary for the sake of one entry point.
+                ShellDeepLink.destinationFor(link, BuildConfig.WEB_APP_URL)?.let { shellRoute ->
+                    pendingShellDestination.set(shellRoute)
+                    _deepLinkTarget.value = AppRoute.HomeShell
+                }
+            }
         }
     }
 }
