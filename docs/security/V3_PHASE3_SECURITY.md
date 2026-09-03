@@ -1,7 +1,7 @@
 # V3 Phase 3 — Security Baseline, Threat Model and Finding Matrix
 
 Base commit: `0e9a31e` (V3 Phase 0, "harden production AI and client protocol").
-Branch: `security/v3-phase3`. Phase 1 and Phase 2 run concurrently on their own branches.
+Branch: `security/v3-phase3`, integrated onto Phase 1+2 as `integration/v3-foundation`.
 
 Scope is the security work **deferred from Phase 0**, not a re-audit of what Phase 0 closed.
 
