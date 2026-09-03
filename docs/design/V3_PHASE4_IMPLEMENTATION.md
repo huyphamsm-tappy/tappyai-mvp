@@ -9,6 +9,67 @@
 
 ---
 
+## 0a. Phase 4B closure status
+
+**IMPLEMENTATION COMPLETE — PLATFORM/ENVIRONMENT VERIFICATION PENDING.**
+
+Every approved item that can be implemented and verified in this environment is done. The two
+outstanding items are environmental, not unfinished work.
+
+| # | Package | Status |
+|---|---|---|
+| P4-01 | Design foundation | ✅ Existing systems reused on all three platforms. No second design system; no spacing migration (OD-5 held). |
+| P4-02 | Structured content contract | ✅ Shared fixtures; D2 fixed on Android + iOS. Web/Android verified. |
+| P4-03 | AI response system | ✅ ComparisonBlock, ConfirmationPrompt, EntityCard/RecommendationCard, OfferRow, MatchBadge, DecisionBlock, FollowUpChips. |
+| P4-04 | Interaction states | ✅ Across V3 surfaces, incl. offline and partial/unknown data. |
+| P4-05 | Web | ✅ Blocks reach a real reply; Home, Chat, Explore, Deals, Profile; responsive, no sidebar. |
+| P4-06 | Android | ✅ D1, D2, comparison sheet, confirmation sheet, Home. |
+| P4-07 | iOS | ⚠️ **IMPLEMENTED, NOT VERIFIED** — no Swift toolchain. See `V3_IOS_VERIFICATION_PLAN.md`. |
+| P4-08 | Cross-platform parity | ✅ Shared fixtures + 26 parity assertions incl. Home order. |
+| P4-09 | Accessibility | ✅ 19 assertions; reduced-motion gap in the chat closed. |
+| P4-10 | Visual QA | ⚠️ **UNVERIFIED — ENVIRONMENTAL.** See below. |
+| P4-11 | Home | ✅ Web, Android, iOS. |
+| P4-12 | Discovery/tool → Chat | ✅ Explore, Deals, tool result. |
+| P4-13 | Device context | ✅ Web + iOS (Android sends no location, so nothing to disclose). |
+| P4-14 | Notifications | ✅ https entity links resolve; a chat link opens that thread. `/reviews` and `/deals` remain unmapped **by design** — see below. |
+| P4-15 | Offline / resilience | ✅ Web. |
+| P4-16 | Entity primitives | ✅ Entity-agnostic; no commerce affordance (asserted). |
+
+### Verification performed at closure
+
+| Check | Result |
+|---|---|
+| Full Web suite | **8868 passed, 0 failed**, 44 skipped (pre-existing) |
+| Full Android suite | **309 passed, 0 failed, 0 skipped** |
+| TypeScript (`tsc -p`) | **0 application errors** (102 in `supabase/tests` from `embedded-postgres`/`pg` absent in this worktree's junctioned `node_modules` — environmental) |
+| Parity / conformance | **149 passed** |
+| Commerce leakage | None. The only diff lines naming cart/checkout are the guard forbidding them. |
+| Phase 1 / 2 / 3 boundaries | `src/lib/ai`, `src/app/api`, `src/lib/security`, `middleware`, `supabase`, `src/lib/auth` — **all untouched** |
+| Production | **UNCHANGED. No deployment.** |
+
+### The two environmental gaps
+
+**iOS verification.** `swift`, `swiftc` and `xcodebuild` are all absent from the development
+machine — confirmed, not assumed. Every iOS file is written and internally consistent, and two real
+bugs were caught by reading (a suppressed memberwise initialiser; a non-reactive `@Published`), but
+**IMPLEMENTED is not VERIFIED** and is not reported as such.
+
+**Visual QA.** `preview_start` resolves `.claude/launch.json` from the main checkout, not from this
+worktree — its own error listed the main checkout's configs after a worktree-local one was placed.
+Modifying the main checkout is out of bounds, and running a dev server from that root would render
+the wrong code. No safe route exists here.
+
+### P4-14: what is deliberately not mapped
+
+`/reviews/{id}` and `/deals/{id}` resolve to no destination. Their tabs exist, but the object-level
+destinations live inside each tab's own nested graph and are not addressable from the deep-link
+layer. Landing a user on a generic tab would break the rule the design states plainly — a
+notification lands on the specific object, never a tab — so the app opens normally instead.
+Reaching those requires destinations that do not exist yet; that is a feature, not a deep-link
+problem, and is out of Phase 4 scope.
+
+---
+
 ## 0. Phase 4A / 4B split and the approval gate
 
 | | Phase 4A | Phase 4B |
