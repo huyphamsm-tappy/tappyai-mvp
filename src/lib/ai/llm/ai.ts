@@ -47,6 +47,7 @@ export const AI = {
       messages: buildMessages(opts),
       maxTokens: opts.maxTokens,
       temperature: opts.temperature,
+      maxRetries: opts.maxRetries,
     })
   },
 
@@ -63,6 +64,9 @@ export const AI = {
       onChunk: opts.onChunk,
       onStepFinish: opts.onStepFinish,
       abortSignal: opts.abortSignal,
+      // Undefined leaves the SDK default in place, so every existing caller is
+      // unchanged; the chat route names it explicitly. See AIGenerateOptions.
+      maxRetries: opts.maxRetries,
     })
   },
 

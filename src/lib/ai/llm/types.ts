@@ -39,6 +39,26 @@ export interface AIGenerateOptions {
   messages?: CoreMessage[]
   maxTokens?: number
   temperature?: number
+  /**
+   * How many times the SDK may re-send a failed request. `2` means up to three
+   * attempts in total.
+   *
+   * ── Why this is an option at all (P2 cost safeguard) ─────────────────────
+   * It was never passed anywhere, so every call ran at the AI SDK's own default
+   * — which is 2. That is a defensible number, but it was not a DECISION: it
+   * was a default nobody had read, sitting under the most expensive call in the
+   * product. A provider 5xx therefore multiplies input tokens by three, and
+   * nothing in the telemetry can see it: `llmCalls` counts STEPS, not attempts,
+   * and `usage` reports only the attempt that succeeded. So a retry storm looks
+   * exactly like ordinary traffic on the cost dashboard, at three times the
+   * price.
+   *
+   * Naming it changes no behaviour today and is not meant to. What it changes
+   * is that the ceiling is now reviewable, and an SDK upgrade that moves the
+   * default cannot move our spend without a diff — the same class of silent
+   * drift the removed `prepareStep` note in this file describes.
+   */
+  maxRetries?: number
 }
 
 export interface AIStreamOptions extends AIGenerateOptions {

@@ -855,6 +855,20 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call) if the client disconnects — otherwise it runs to maxDuration billing
     // tokens for a response nobody is receiving.
     abortSignal: req.signal,
+    // ── P2: the retry ceiling, stated instead of inherited ──────────────────
+    //
+    // 2 is what the SDK was already doing, so this changes nothing today — that
+    // is the point. The most expensive call in the product was running on an
+    // unexamined default, and a retried attempt re-bills the whole prompt (13k
+    // cached + tools) while being INVISIBLE downstream: `llmCalls` counts steps
+    // and `usage` reports only the attempt that succeeded, so three attempts and
+    // one attempt produce identical telemetry at three times the cost.
+    //
+    // Lowering it is a reliability decision and needs production error rates we
+    // do not have yet (GCP_LOGGING_ENABLED is still off), so the value is
+    // deliberately unchanged. What is fixed is that it can no longer move
+    // without a diff.
+    maxRetries: 2,
     systemShared,
     system: systemPrompt,
     messages: modelMessages,
@@ -1220,6 +1234,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       toolMs: toolMs > 0 ? toolMs : null,
       providerId: AI.providerId(),
       modelRole: role,
+      // Cost per FEATURE (P2). `intent` only distinguishes chitchat from tool, so a
+      // weather lookup and a laptop comparison — which differ by thousands of tokens
+      // and by whether the ranking pipeline runs at all — were the same bucket.
+      decisionDomain: needProfile.domain,
     }
 
     // Buffered for delivery by a LATER request's flushPending (see the top of this handler).

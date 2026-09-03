@@ -34,7 +34,7 @@ const SAMPLES: Record<ObservabilityEvent['type'], ObservabilityEvent> = {
     cacheReadTokens: 4, cacheCreationTokens: 5, llmCalls: 1,
     memoryExtract: 0, toolCalls: 1, elapsedMs: 10,
     // P1-3 cost-attribution fields, populated so the allow-list is exercised at its widest.
-    providerId: 'claude', modelRole: 'smart',
+    providerId: 'claude', modelRole: 'smart', decisionDomain: 'places',
     preModelMs: 6, ttftMs: 7, modelFinishMs: 8, ttuaMs: 9, postModelMs: 2, toolMs: 3,
   },
   tts_request: {
