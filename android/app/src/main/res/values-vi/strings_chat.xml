@@ -135,4 +135,23 @@
     <string name="shopping_decision_options_title">Các lựa chọn phù hợp</string>
     <string name="shopping_decision_other_options">Lựa chọn khác</string>
     <string name="shopping_decision_view">Xem</string>
+
+    <!-- P4-06 — comparison (DD-005) and confirmation (DD-006). -->
+    <string name="comparison_title">So sánh %1$d lựa chọn</string>
+    <string name="comparison_attribute">Tiêu chí</string>
+    <string name="comparison_recommended">Đề xuất</string>
+    <string name="comparison_unknown">chưa rõ</string>
+    <string name="comparison_same_for_all">Giống nhau ở mọi lựa chọn</string>
+    <string name="comparison_reason">Vì sao đề xuất</string>
+    <string name="comparison_open">So sánh %1$d lựa chọn</string>
+    <string name="comparison_attr_price">Giá</string>
+    <string name="comparison_attr_match">Khớp yêu cầu</string>
+    <string name="comparison_attr_sellers">Nơi bán</string>
+    <string name="comparison_seller_count">%1$d nơi bán</string>
+    <string name="confirm_confirm">Xác nhận</string>
+    <string name="confirm_cancel">Huỷ</string>
+    <string name="confirm_what_changes">Thay đổi</string>
+    <string name="confirm_booking_consequence">Tappy sẽ mở trang đặt chỗ của %1$s. Bạn xem lại thông tin rồi mới gửi yêu cầu.</string>
+    <string name="confirm_booking_confirm">Tiếp tục đặt chỗ</string>
+    <string name="confirm_this_place">chỗ này</string>
 </resources>
