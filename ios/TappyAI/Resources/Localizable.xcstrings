@@ -2227,6 +2227,40 @@
         }
       }
     },
+    "context.nearYou": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Near you"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gần bạn"
+          }
+        }
+      }
+    },
+    "context.removeLocation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop using my location"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bỏ vị trí khỏi câu hỏi"
+          }
+        }
+      }
+    },
     "copyright.heading": {
       "extractionState": "manual",
       "localizations": {
