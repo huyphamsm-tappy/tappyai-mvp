@@ -50,6 +50,7 @@ export const UNTRUSTED_SOURCES = [
   'user_memory',         // LLM-extracted memory, persisted per user
   'calendar_events',     // Google Calendar — third parties can write this
   'user_location',       // client-supplied address label
+  'explore_content',     // P3-F3: caption/title a caller submits for extraction
 ] as const
 
 export type UntrustedSource = (typeof UNTRUSTED_SOURCES)[number]

@@ -129,3 +129,26 @@ export function isAllowedDestinationAddress(address: string): boolean {
 
   return false
 }
+
+/**
+ * SYNTAX ONLY — is this text an IP address at all? (P3-F1)
+ *
+ * Deliberately NOT `isAllowedDestinationAddress`. That function answers "may we open a socket to
+ * this?", and its answer for `127.0.0.1` is a correct `false`. The question here is a different
+ * one and carries no policy: does this string denote an address, so that it can be used as a
+ * rate-limit key and stored in an `INET` column?
+ *
+ * It lives beside the policy, and reuses the same two parsers, for the reason stated at the top of
+ * this file: a second copy of the address grammar drifts from this one, and the drift stays
+ * invisible until someone probes it. `010.1.1.1`, `1.2.3` and `999.999.999.999` are refused here
+ * exactly as they are refused there.
+ *
+ * Returns the normalised address (trimmed, lower-cased, de-bracketed) or `null`.
+ */
+export function normalizeIpAddress(address: unknown): string | null {
+  if (typeof address !== 'string') return null
+  let s = address.trim().toLowerCase()
+  if (s.startsWith('[') && s.endsWith(']')) s = s.slice(1, -1)
+  if (s === '') return null
+  return parseIPv4(s) || parseIPv6(s) ? s : null
+}

@@ -176,12 +176,87 @@ function stripUnvalidatedTikTokLinks(text: string, owned: Owned): string {
     /(^|\.)tiktok\.com$/.test(domainOf(url)) && !owned.tiktokUrls.has(url) ? label : whole)
 }
 
+/**
+ * P3-F2 · Remove every markdown IMAGE whose URL the server did not source.
+ *
+ * The same rule as `stripUnvalidatedTikTokLinks` directly above, and it is here because the
+ * reasoning recorded there — "removing an UNvalidated one is what makes invention impossible" —
+ * was always equally true of images and had only ever been applied to TikTok.
+ *
+ * 🚨 WHY THE LINE-WISE PASS WAS NOT ENOUGH, and was in fact inverted.
+ * `isOwnedEnrichmentLine` returns true only when EVERY image on the line is owned, so it removed
+ * the safe lines (for `injectPlaceEnrichment` to re-place) and KEPT the one carrying a URL nobody
+ * vouched for. `promptBuilder.ts:293` tells the model never to write `![...](...)` at all, so an
+ * image in the model's own prose is either a copy of ours — re-injected below — or something it
+ * was talked into by retrieved content. Neither needs to survive.
+ *
+ * That matters because the client renders `![alt](url)` into `<img src=...>` and the browser
+ * fetches it with no click, which makes an invented URL an exfiltration channel for everything in
+ * the turn's context: remembered home area, preferences, GPS label, calendar.
+ *
+ * Reduced to the ALT TEXT rather than deleted outright, exactly as the TikTok rule keeps its
+ * label: a sentence stays readable, and the removal is visible rather than silent.
+ */
+function stripUnownedImages(text: string, owned: Owned): string {
+  return text.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (whole, alt: string, url: string) =>
+    isOwnedImageUrl(url, owned) ? whole : alt)
+}
+
+/**
+ * Past this many characters, an unclosed `![` is not a URL that is still arriving — it is prose
+ * that happens to contain the two characters. Release it rather than hold it for ever.
+ */
+const FORMING_IMAGE_LIMIT = 2048
+
+/**
+ * P3-F2 on the LIVE path — the prefix of `text` that is safe to release NOW.
+ *
+ * 🚨 The live path is not a corner case, it is where the attack lands. `bufferMode` turns on only
+ * for PLACE tools, so a `web_search` or `get_news` turn — precisely the turns that pull in
+ * attacker-authored content — streams straight through and used to reach `if (!bufferMode) return`
+ * without ever being inspected.
+ *
+ * On such a turn NOTHING has been injected, so no image is legitimate: every one is either
+ * invented or copied from retrieved content, and both are removed (reduced to their alt text).
+ *
+ * WHY A PREFIX FUNCTION RATHER THAN A PER-DELTA `.replace()`.
+ * A URL is far longer than one delta, so `![anh](https://…)` arrives in pieces and a per-chunk
+ * filter sees no complete token in any of them — the leak passes through in fragments and
+ * reassembles in the browser. This works on the ACCUMULATED text instead and withholds only a
+ * trailing, still-forming token.
+ *
+ * It is a bounded hold-back, not a buffer: with no `![` in the text the result is the input, byte
+ * for byte, so an ordinary turn keeps exactly the timing and the frame count it had before —
+ * which is what `StreamingNotBufferedByLoggingTest` is there to protect.
+ *
+ * Monotonic by construction: whatever was releasable stays a prefix of what is releasable later,
+ * so the caller can emit the difference and never has to retract a byte it already sent.
+ */
+export function releasableLiveText(text: string, endOfStream = false): string {
+  // Every COMPLETE token goes first, reduced to its alt text. What can still be left is at most
+  // one token that has not finished arriving.
+  const stripped = text.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_whole, alt: string) => alt)
+  const open = stripped.lastIndexOf('![')
+  if (open === -1) return stripped
+
+  // At end of stream nothing further is coming, so the same slice that was a hold-back becomes a
+  // permanent drop — an unterminated `![anh](https://attacker…` must not be released just because
+  // the model stopped mid-token.
+  if (endOfStream || stripped.length - open <= FORMING_IMAGE_LIMIT) return stripped.slice(0, open)
+
+  // Past the limit this is prose containing the two characters, not a URL in flight.
+  // (An image token longer than the limit would make this function non-monotonic; the caller
+  // detects that by prefix check and stops releasing, which truncates rather than leaks.)
+  return stripped
+}
+
 function stripOwnedEnrichment(places: PlaceLike[], text: string): string {
   const owned = buildOwned(places)
   // Always run: even with no owned images/links there may be an LLM-emitted TikTok
   // review line to strip (unsupported provider in V1).
   const kept = text.split('\n').filter(line => !isOwnedEnrichmentLine(line, owned))
-  return stripUnvalidatedTikTokLinks(kept.join('\n'), owned).replace(/\n{3,}/g, '\n\n')
+  const withoutTikTok = stripUnvalidatedTikTokLinks(kept.join('\n'), owned)
+  return stripUnownedImages(withoutTikTok, owned).replace(/\n{3,}/g, '\n\n')
 }
 
 // The image/review/order-link markdown a place is still MISSING from the text (dedup-aware),
@@ -771,6 +846,43 @@ export function applyPlaceEnrichmentStreamFilter(
   let liveText = ''
 
   /**
+   * P3-F2. Exactly what the live path has already put on the wire, so the next release can send
+   * the difference. Tracked as the STRING rather than a length because `releasableLiveText` can
+   * shorten the text it returns (an image becomes its alt), and a length would silently mis-slice
+   * the moment it did.
+   */
+  let liveReleased = ''
+
+  /**
+   * The one place live assistant text leaves this filter.
+   *
+   * Both callers — the B12 step break and the model's own deltas — go through here so the guard
+   * cannot be bypassed by whichever of them a future change happens to touch. Releases only the
+   * prefix `releasableLiveText` vouches for, which for a turn with no image markdown is all of it.
+   */
+  const emitLive = (controller: TransformStreamDefaultController, addition: string) => {
+    liveText += addition
+    assistantSoFar += addition
+    const releasable = releasableLiveText(liveText)
+    if (!releasable.startsWith(liveReleased) || releasable.length === liveReleased.length) return
+    const slice = releasable.slice(liveReleased.length)
+    liveReleased = releasable
+    controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+  }
+
+  /**
+   * At end of stream a still-forming `![` is no longer forming — nothing more is coming. Release
+   * what it turned out to be, sanitised, so a truncated reply does not silently lose its tail.
+   */
+  const flushLive = (controller: TransformStreamDefaultController) => {
+    if (bufferMode) return
+    const final = releasableLiveText(liveText, true)
+    if (!final.startsWith(liveReleased) || final.length === liveReleased.length) return
+    controller.enqueue(encoder.encode('0:' + JSON.stringify(final.slice(liveReleased.length)) + '\n'))
+    liveReleased = final
+  }
+
+  /**
    * Which HELD candidates does this text actually name?
    *
    * Presentation is about what the USER READ. Being held, ranked, or considered
@@ -1050,9 +1162,7 @@ export function applyPlaceEnrichmentStreamFilter(
             // together exactly the same way. The break is emitted as its own frame so the live
             // stream keeps its timing — nothing is held back.
             if (needsBreak()) {
-              controller.enqueue(encoder.encode('0:' + JSON.stringify('\n\n') + '\n'))
-              liveText += '\n\n'
-              assistantSoFar += '\n\n'
+              emitLive(controller, '\n\n')
             }
             awaitingPostToolText = false
 
@@ -1064,15 +1174,16 @@ export function applyPlaceEnrichmentStreamFilter(
               } catch { /* malformed delta — forward untouched */ }
             }
             // Keep a copy of what went out, so presentation tracking works on
-            // turns where no tool ran. This is a RECORD, not a buffer: the
-            // chunk is enqueued on the next line either way, so nothing is held
-            // back and the live stream keeps its timing.
+            // turns where no tool ran. `emitLive` appends to `liveText` and
+            // releases everything P3-F2 can prove is safe, which on a turn with
+            // no image markdown is the whole delta — same bytes, same frame,
+            // same timing as before the guard existed.
+            let delta: string | null = null
             try {
-              const delta = JSON.parse(out.slice(2)) as string
-              liveText += delta
-              assistantSoFar += delta
-            } catch { /* skip malformed */ }
-            controller.enqueue(encoder.encode(out + '\n'))
+              delta = JSON.parse(out.slice(2)) as string
+            } catch { /* malformed delta — forward untouched */ }
+            if (delta === null) controller.enqueue(encoder.encode(out + '\n'))
+            else emitLive(controller, delta)
           }
         } else if (line.startsWith('9:')) {
           try {
@@ -1211,6 +1322,9 @@ export function applyPlaceEnrichmentStreamFilter(
       }
     },
     async flush(controller) {
+      // P3-F2: release the live tail before the reconstructed block, so a held-back
+      // token that turned out to be harmless still arrives in reading order.
+      flushLive(controller)
       await emitReconstructed(controller)
       if (lineRemainder) controller.enqueue(encoder.encode(lineRemainder + '\n'))
       // Task 3C: hand the turn's grounded evidence to the caller AFTER the reply
