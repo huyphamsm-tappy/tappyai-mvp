@@ -21,6 +21,10 @@ const PRODUCERS: Array<[string, string]> = [
   ['stored preferences + GPS label', 'src/lib/ai/promptBuilder.ts'],
   ['calendar events', 'src/lib/integrations/googleCalendar.ts'],
   ['client preferences', 'src/app/api/chat/route.ts'],
+  // P3-F3. The caption/title an upload submits were interpolated into the extraction
+  // prompt raw; they are the fifth producer, and registering it here is what keeps
+  // `explore_content` from becoming a label with no enforced user.
+  ['explore content', 'src/lib/explore/contentProcessor.ts'],
 ]
 
 describe('the fence is the single implementation', () => {
