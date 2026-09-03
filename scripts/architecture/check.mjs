@@ -216,6 +216,15 @@ const RULES = [
     hint: 'import { createAdminClient } from "@/lib/supabase/admin". A hand-rolled client omits the auth hardening (autoRefreshToken:false, persistSession:false) and quietly becomes a second admin factory — Component 9a removed two of those.',
   },
   {
+    id: 'no-privileged-client-in-chat',
+    title: 'Service-role client inside the chat route',
+    patterns: [/\bcreateAdminClient\b/],
+    allow: [],
+    scope: ['src/app/api/chat/'],
+    exemptTests: true,
+    hint: 'use the request-scoped client `getRequestUser` already returned (held as `evidenceDb`). /api/chat is the most-attacked surface in the product and it no longer performs a privileged operation: memory writes go through the caller\'s own client, so RLS refuses a row that is not theirs even if updateMemory\'s user_id pinning were ever broken. Keeping it unprivileged is also what would let this route move to a deployment that does not hold the service-role key.',
+  },
+  {
     id: 'no-adhoc-forwarded-ip',
     title: 'Request IP read straight from a forwarded header',
     patterns: [

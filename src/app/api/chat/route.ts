@@ -4,7 +4,6 @@ import { randomUUID } from 'crypto'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { timeClientEmit } from './emitTiming'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
@@ -1100,10 +1099,37 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             { role: 'assistant', content: text },
           ]
           const extracted = await extractMemoryFromConversation(convMessages, existingMemory)
-          if (Object.keys(extracted).length > 0) {
-            // Write with the admin client (pinned user_id) so the upsert works
-            // under Bearer-token (native) auth — a fresh cookie client would
-            // have no session and RLS would silently drop the write.
+          if (Object.keys(extracted).length > 0 && evidenceDb) {
+            // ── Least privilege: the CALLER's client, not the service role ───
+            //
+            // This was `createAdminClient()`. The reason given was that "a fresh
+            // cookie client would have no session under Bearer-token auth" — true
+            // of `createClient()`, but `evidenceDb` is not that. It is the
+            // REQUEST-SCOPED client `getRequestUser` already built, which carries
+            // the caller's session on both the cookie and the Bearer path, and
+            // which this route has been using for the evidence RPCs all along.
+            //
+            // Two things this buys, and neither is "it stops an RCE" — the key is
+            // still in the process environment:
+            //
+            //  1. MEMORY WRITES GET A SECOND LAYER. Until now the only thing
+            //     stopping a cross-user memory write here was `updateMemory`
+            //     spreading the patch BEFORE pinning `user_id`. That ordering is
+            //     correct and tested, but it was the sole guarantee. Under the
+            //     caller's client, RLS refuses a row that is not theirs even if
+            //     that ordering is ever broken.
+            //  2. /api/chat NO LONGER PERFORMS A PRIVILEGED OPERATION AT ALL,
+            //     which is what would let the most-attacked route in the product
+            //     move to a deployment that does not hold the service-role key.
+            //     While chat needed it, that split was not available.
+            //
+            // Safe by evidence, not by hope: `/api/onboarding` already creates a
+            // user's FIRST memory row under RLS, and `/api/memory` PATCH updates
+            // one — so owner INSERT and UPDATE both work in production today.
+            //
+            // Skipped rather than downgraded when there is no request client:
+            // falling back would either write with elevated privileges or with a
+            // sessionless client whose failure `updateMemory` swallows.
             await updateMemory(authedUserId, {
               location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
               companions: extracted.companions ?? existingMemory?.companions ?? null,
@@ -1112,7 +1138,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
               preferences: { ...(existingMemory?.preferences || {}), ...(extracted.preferences || {}) },
               budget: { ...(existingMemory?.budget || {}), ...(extracted.budget || {}) },
               history: extracted.history ?? existingMemory?.history ?? [],
-            }, createAdminClient())
+            }, evidenceDb)
           }
         } catch (e) {
           console.error('Memory extract/save error:', e)

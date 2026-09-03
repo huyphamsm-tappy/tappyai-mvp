@@ -101,7 +101,7 @@ infrastructure was added in this session.
 | --- | --- | --- |
 | **1 · Keep current architecture** | — | Residual risk: RCE in *any* function ⇒ full database. Quantified below. |
 | **2 · Separate privileged functions in the same Vercel project** | **No** | Vercel environment variables are scoped per project and environment, not per function. `vercel.json` has no `env`/`functions` block, and none is available. Every function's `process.env` contains the key regardless of whether its code uses it. **This option does not exist on this platform.** |
-| **3 · Separate Vercel project for privileged jobs** | **Yes, and it is the real answer** | Crons and admin move to their own deployment that alone holds the service-role key; user-facing routes keep only the anon key and operate under RLS. Cost: a second project, a shared-secret call path for the few user-facing routes that genuinely need elevation (`/api/group`, `/api/users/search`, the chat memory write), and a deployment-coupling change. **Meaningful containment, real migration risk, owner decision.** |
+| **3 · Separate Vercel project for privileged jobs** | **Yes, and it is the real answer** | Crons and admin move to their own deployment that alone holds the service-role key; user-facing routes keep only the anon key and operate under RLS. Cost: a second project, a shared-secret call path for the few user-facing routes that genuinely need elevation (`/api/group`, `/api/users/search`, the OAuth callbacks — chat is no longer among them, see §7), and a deployment-coupling change. **Meaningful containment, real migration risk, owner decision.** |
 | **4 · Supabase scoped keys** | **Unknown** | Supabase has been rolling out a publishable/secret key model with narrower scopes. This project is on `@supabase/supabase-js ^2.45.0`; whether the project is opted in cannot be determined from the repository. **OPERATIONAL VERIFICATION REQUIRED** — if available, this is the cheapest real improvement. |
 
 **Honest conclusion:** the credential is already contained *in code* — one construction module, an
@@ -111,7 +111,7 @@ infrastructure decisions rather than Phase 3 changes. **No architectural change 
 
 ### What normal request handling actually needs
 
-Of the user-facing routes, only three use elevated access, each for a narrow reason:
+Of the user-facing routes, only a few use elevated access, each for a narrow reason:
 `/api/group` (serve a share-link holder by UUID), `/api/users/search` (`auth.admin.listUsers` for
 exact email/phone), and `/api/chat` (one memory upsert, id from the verified session). Everything
 else that touches user data uses the caller's own client under RLS. That is a good baseline for
@@ -150,3 +150,57 @@ attached.
 Only Tier 1 is a *secondary* breach — data that opens a door somewhere else. That is why it is the
 one ranked above private conversations here, despite conversations being more voluminous and more
 intimate.
+
+---
+
+## 7. Closure pass — what changed, and what could not
+
+### The chat route no longer performs a privileged operation
+
+`/api/chat` held one `createAdminClient()` call: the memory upsert. It is now the request-scoped
+client (`evidenceDb`) that `getRequestUser` already built — the same client this route has used
+for the evidence RPCs all along.
+
+The original comment justified the service role with "a fresh cookie client would have no session
+under Bearer-token auth". That is true of `createClient()` and not of the request-scoped client,
+which carries the caller's session on both the cookie and the Bearer path.
+
+**Safe by evidence rather than by hope:** `/api/onboarding` already creates a user's FIRST memory
+row under RLS, and `/api/memory` PATCH updates one. Owner INSERT and UPDATE therefore both work
+in production today; this route was the outlier.
+
+Two things it buys, and neither is "it stops an RCE" — the key is still in the process env:
+
+1. **Memory writes now have two layers instead of one.** Previously the sole guarantee against a
+   cross-user memory write here was `updateMemory` spreading the patch *before* pinning `user_id`.
+   That ordering is correct and tested, but it was alone. Under the caller's client, RLS refuses a
+   row that is not theirs even if that ordering were ever broken.
+2. **It makes the separate-deployment option real for the route that matters most.** While chat
+   needed the service role, the most-attacked surface in the product could not have moved to a
+   tier that does not hold it.
+
+Locked by the `no-privileged-client-in-chat` architecture rule, verified to fire: restoring the
+call reports one violation.
+
+### What could NOT be verified from the repository
+
+| Question | Status |
+| --- | --- |
+| Does this Supabase project support scoped/secret keys, restricted keys, or Vault? | **REQUIRES LIVE SUPABASE PROJECT VERIFICATION.** The repository shows `@supabase/supabase-js ^2.45.0` and a single service-role credential. Nothing here establishes which key models the project is opted into, and I will not infer it. |
+| Can privileged functions be split within this Vercel project? | **No — established, not assumed.** Vercel scopes env vars per project/environment; `vercel.json` has no `env` or `functions` block and none is available. |
+| Does Zalo offer token revocation? | **UNVERIFIED.** No endpoint invented. |
+| Has production RLS drifted on `conversations` / `user_memory` / `profiles`? | **Not detectable from CI.** Owner query in `V3_THREAT_MODEL.md` §D I-1. |
+
+### Operational follow-ups, in priority order
+
+1. **Check whether Supabase scoped/secret keys are available on this project.** One dashboard
+   look. If they are, it is the cheapest material reduction of the RCE blast radius available —
+   a key that cannot bypass RLS for the user-facing tier.
+2. **Run the RLS verification query** for the three production-only tables.
+3. **Decide on Vault** for `user_integrations.access_token` / `refresh_token`. It defeats a
+   read-only database or backup leak — the threat that actually matters for these two columns —
+   and does not defeat RCE or service-role compromise, because the same code path would decrypt.
+4. **Consider a separate deployment** for crons + admin. The user-facing privileged surface is now
+   `/api/group`, `/api/users/search`, and the OAuth callbacks — chat is out of that set as of this
+   pass.
+5. **Confirm Zalo revocation** and, if it exists, mirror the Google change.
