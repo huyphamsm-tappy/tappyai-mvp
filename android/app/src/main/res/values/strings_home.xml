@@ -76,4 +76,5 @@
     <string name="home_category_spa">Spa &amp; Beauty</string>
     <string name="home_tab_placeholder_message">The %1$s experience is coming soon.</string>
 
+    <string name="home_section_tools_group">Tools</string>
 </resources>

@@ -165,6 +165,68 @@ describe('MUST MATCH — the action boundary (DD-006)', () => {
   })
 })
 
+describe('MUST MATCH — the AI-first Home order (DD-002 / P4-11)', () => {
+  // The rule is an ORDER, so each platform is checked by the position of its own section calls.
+  // The section NAMES legitimately differ; where they sit relative to each other does not.
+  const order = (src: string, marks: string[]) => marks.map(m => src.indexOf(m))
+
+  it('web puts the assistant and Continue above the tools', () => {
+    const src = read('src/app/HomeView.tsx')
+    const [suggestions, cont, tools] = order(src, [
+      "t('home.suggestionsTitle')",
+      "t('home.recentTitle')",
+      "t('home.toolsTitle')",
+    ])
+    expect(suggestions).toBeGreaterThan(-1)
+    expect(suggestions).toBeLessThan(tools)
+    expect(cont).toBeLessThan(tools)
+  })
+
+  it('android puts the assistant and Continue above the tools', () => {
+    const src = read('android/app/src/main/java/com/tappyai/app/home/HomeScreen.kt')
+    const body = src.slice(src.indexOf('HomeHero('))
+    const [suggestions, cont, tools] = order(body, [
+      'SuggestionsSection(',
+      'RecentActivitySection(',
+      'FortuneSection(',
+    ])
+    expect(suggestions).toBeGreaterThan(-1)
+    expect(suggestions).toBeLessThan(tools)
+    expect(cont).toBeLessThan(tools)
+  })
+
+  it('ios puts the assistant and Continue above the tools', () => {
+    const src = read('ios/TappyAI/Features/Home/UI/HomeView.swift')
+    const body = src.slice(src.indexOf('HomeGreetingSection('))
+    const [suggestions, cont, tools] = order(body, [
+      'HomeSuggestedPromptsSection(',
+      'HomeRecentConversationsSection(',
+      'HomeQuickActionsSection',
+    ])
+    expect(suggestions).toBeGreaterThan(-1)
+    expect(suggestions).toBeLessThan(tools)
+    expect(cont).toBeLessThan(tools)
+  })
+
+  it('no platform renders a conversation thread on Home', () => {
+    // Home is a door, not a room — every entry point navigates to the Chat surface.
+    expect(stripComments(read('android/app/src/main/java/com/tappyai/app/home/HomeScreen.kt')))
+      .not.toContain('TappyChatBubble')
+    expect(stripComments(read('ios/TappyAI/Features/Home/UI/HomeView.swift')))
+      .not.toContain('ChatMessageList')
+    expect(stripComments(read('src/app/HomeView.tsx')))
+      .not.toContain('ChatInterface')
+  })
+
+  it('no platform fabricates a For You section it has no source for (ND-001)', () => {
+    // Web renders it only when given items; the two mobile platforms have no source wired, so the
+    // section must be absent rather than filled with samples.
+    expect(read('src/app/HomeView.tsx')).toContain('forYou && forYou.length > 0')
+    expect(read('android/app/src/main/java/com/tappyai/app/home/HomeScreen.kt')).not.toContain('ForYouSection(')
+    expect(read('ios/TappyAI/Features/Home/UI/HomeView.swift')).not.toContain('HomeForYouSection(')
+  })
+})
+
 describe('MAY DIFFER — recorded, not enforced', () => {
   it('the container legitimately differs: inline on web, sheet on mobile', () => {
     expect(read(WEB_BLOCK), 'web renders the comparison inline').toContain('<table')
