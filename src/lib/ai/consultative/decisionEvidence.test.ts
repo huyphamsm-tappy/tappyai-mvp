@@ -74,6 +74,7 @@ const PICK: Pick = {
   runnerUp: { candidate: LAM_PHONG, leadsOn: null },
   conditional: true,
   unverified: [],
+  cannotVerify: [],
 }
 
 const EV = buildDecisionEvidence(PICK, SHORTLIST, 40, REQUEST)

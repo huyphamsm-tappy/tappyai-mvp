@@ -25,6 +25,7 @@ import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
+import { renderNeedBrief, buildClarificationAnsweredBlock } from '@/lib/ai/consultative/needBrief'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest, hasImplicitPurchaseIntent } from '@/lib/ai/consultative/pick'
 import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructionBlock } from '@/lib/ai/consultative/synthesis'
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
@@ -728,6 +729,16 @@ export async function POST(req: Request) {
   const tripContext = resolveTripContext(messages)
 
   const consultativeBlock = [
+    // What the SYSTEM already understands about this decision, said back to the
+    // model. First in the block because everything after it is an instruction
+    // about how to use it.
+    //
+    // Gated on a resolved domain rather than on `isDecisionDomain`: transport is
+    // a real consultation too, and the gate's purpose here is only to keep the
+    // brief off turns that are not choosing anything. "Thời tiết Đà Nẵng" sets a
+    // location and no domain, so it pays nothing — which is the case the gate
+    // exists for. renderNeedBrief self-gates again on actually holding a fact.
+    needProfile.domain ? renderNeedBrief(needProfile) : '',
     isDecisionDomain ? buildRankingInstructionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
     // model must be told what it may NOT assert — measured live 2026-08-17
@@ -755,6 +766,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
 - KHONG khang dinh lich chieu, rap dang chieu, gia ve, nen tang xem (Netflix/Disney+/...), hay danh gia HIEN TAI — tru khi co du lieu that duoc lay ve. Neu khong chac ho xem duoc o dau, noi that va nhac ho tu kiem tra.
 - Chi khi nguoi dung hoi RO "xem o dau / rap gan / lich chieu / gia ve" moi can tim dia diem.
 =====================================` : '',
+    // LAST, because it overrides the question budget every block above assumes.
+    // `turnIntent` has been computed since Phase A and consumed by nothing —
+    // logged, then dropped. This is its first real reader: R7 caps a reply at
+    // ONE question, which on its own permits an endless chain of single
+    // questions, and answering a clarification with another clarification is the
+    // interview the product contract forbids.
+    turnIntent === 'clarification_response' ? buildClarificationAnsweredBlock() : '',
   ].filter(Boolean).join('')
 
   const built = noToolTurn ? null : buildSystem(

@@ -42,6 +42,7 @@ const PICK: Pick = {
   runnerUp: { candidate: TIN_PHAT, leadsOn: { key: 'seller', detail: 'chuyên Apple', contribution: 0.1 } },
   conditional: false,
   unverified: [],
+  cannotVerify: [],
 }
 
 const SHORTLIST = [ZIN100, TIN_PHAT, BACH_LONG, LAM_PHONG, NGOC_NGUYEN]

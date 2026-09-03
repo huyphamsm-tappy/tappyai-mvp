@@ -38,6 +38,17 @@ export interface NeedProfile {
   /** The amount the user actually said. Language-independent; what continuity is asserted on. */
   budgetStated: number | null
   location: { text: string | null; gps: { lat: number; lng: number } | null }
+  /**
+   * How many people the choice is FOR.
+   *
+   * Decision-critical and previously invisible: "tìm nhà hàng tổ chức sinh nhật
+   * cho 10 người" folded to a profile that knew the city and nothing about the
+   * party, so the reply could recommend a two-seat cafe and be asked to justify
+   * it. Nothing in the ranker reads this — no candidate source supplies capacity
+   * — so it exists to be STATED back (needBrief) rather than scored, which is
+   * exactly the honest treatment for a fact we hold and cannot verify against.
+   */
+  partySize: number | null
   useCases: string[]
   priorities: Priority[]
   /** Hard requirements — a candidate that CONTRADICTS one is eliminated. */
@@ -116,7 +127,74 @@ const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
   // only fires when no domain is set at all. A genuine "phố cổ Hà Nội" false
   // positive resolves to `places`, which is the correct domain for it anyway.
   [/\b(hu tieu|pho|bun bo|bun cha|bun rieu|bun dau|bun thit nuong|com tam|com ga|com nieu|banh mi|banh xeo|banh cuon|banh canh|mi quang|hai san|chao long|goi cuon|ga ran|tra sua|nem nuong|bo kho|ca kho|thit nuong|lau nuong|do nuong)\b/, 'places'],
+  // 🚨 VENUE-SEEKING VERBS — measured gap, this phase. "Đặt bàn kỷ niệm ngày
+  // cưới, lãng mạn, dưới 2 triệu" and "Mình ăn chay, tìm quán gần Quận 1" both
+  // resolved to `domain: null`, which silently disables the ranking instruction
+  // (see the note above). Neither names a venue NOUN from SUBJECTS, but "đặt
+  // bàn" and "tìm quán" are unambiguously requests for a place to go.
+  //
+  // "quan" alone is deliberately NOT here: it is also the district word ("quận
+  // 1"), and DOMAIN_HINTS fires whenever no domain is set at all, so a bare
+  // match would claim every "ở Quận 3" query for `places`. The verb is what
+  // disambiguates, so the verb is what is matched.
+  [/\bdat ban\b|\btim quan\b|\bkiem quan\b|book a table|table for/, 'places'],
 ]
+
+/**
+ * The OCCASION a choice is being made for.
+ *
+ * Kept apart from USE_CASES in intent even though both land in `useCases`: a use
+ * case says what the THING is for ("coding", "travel"), an occasion says what the
+ * OUTING is for. The distinction matters to nothing downstream today — the
+ * ranker reads neither — but the omission was measurable: "để tiếp khách" and
+ * "for a business dinner" are the single most decision-shaping words in their
+ * sentences and BOTH folded to an empty `useCases`, so the reply had no way to
+ * weigh "quiet" as anything other than a stylistic preference.
+ *
+ * Precision over recall, like every lexicon in this file. Only phrases that
+ * cannot mean anything else:
+ *   · "ngay cuoi" is EXCLUDED from anniversary — "ngày cuối tuần" is a weekend.
+ *   · "khao" is EXCLUDED from celebration — "khảo sát" normalizes into it.
+ *   · bare "tiec" is EXCLUDED — it appears in "tiệc tùng" as a generic noun.
+ */
+const OCCASIONS: ReadonlyArray<[RegExp, string]> = [
+  [/tiep khach|tiep doi tac|dai khach|com khach|business (dinner|lunch|meal)|client (dinner|lunch)|work dinner|team dinner/, 'business_meal'],
+  [/sinh nhat|thoi noi|birthday|\bbday\b/, 'birthday'],
+  [/ky niem|anniversary/, 'anniversary'],
+  [/hop mat|hop lop|hop nhom|gap mat|tu tap|lien hoan|tat nien|\breunion\b|get.?together/, 'gathering'],
+  [/an mung|chuc mung|celebrat(e|ion|ing)/, 'celebration'],
+  [/dam cuoi|tiec cuoi|\bwedding\b/, 'wedding'],
+]
+
+/**
+ * How many people the choice is for.
+ *
+ * Ordered most-specific first and stopped at the first hit, so "table for 8"
+ * is read by the explicit form rather than by the loose English fallback.
+ *
+ * The Vietnamese form requires the digits to be IMMEDIATELY adjacent to the
+ * head noun, which is what keeps "khoảng 500k/người" out: there the digits are
+ * followed by "k/", so nothing matches and the budget stays a budget.
+ *
+ * Capped at 2 digits and range-checked by the caller — a number outside 1..50 is
+ * not a party, it is a price, a year or a typo.
+ */
+const PARTY_SIZE: ReadonlyArray<RegExp> = [
+  /\b(?:party of|group of|table for|ban cho)\s*(\d{1,2})\b/,
+  /\bfor\s*(\d{1,2})\s*(?:people|persons|guests|pax|adults)\b/,
+  /\b(\d{1,2})\s*(?:nguoi|khach|thuc khach|pax)\b/,
+]
+
+/** The party size this turn states, or null. Range-checked, never guessed. */
+function extractPartySize(t: string): number | null {
+  for (const re of PARTY_SIZE) {
+    const m = t.match(re)
+    if (!m) continue
+    const n = parseInt(m[1], 10)
+    if (Number.isFinite(n) && n >= 1 && n <= 50) return n
+  }
+  return null
+}
 
 /**
  * Attribute lexicon: how a user names a rankable property, in either language.
@@ -325,6 +403,7 @@ function emptyProfile(gps: { lat: number; lng: number } | null): NeedProfile {
     budget: null,
     budgetStated: null,
     location: { text: null, gps },
+    partySize: null,
     useCases: [],
     priorities: [],
     mustHave: [],
@@ -518,6 +597,26 @@ export function deriveNeedProfile(
         p.useCases.push(key)
         p.changedAtTurn.useCases = turn
       }
+    }
+
+    // ── Occasion ───────────────────────────────────────────────────────────
+    // Accumulates into the same list, and is deliberately NOT subject to the
+    // travel-habit veto above: "hay đi công tác" describes the user, but "tiếp
+    // khách" describes THIS outing, and the two never collide.
+    for (const [re, key] of OCCASIONS) {
+      if (re.test(t) && !p.useCases.includes(key)) {
+        p.useCases.push(key)
+        p.changedAtTurn.useCases = turn
+      }
+    }
+
+    // ── Party size ─────────────────────────────────────────────────────────
+    // Overrides, like every other single-valued field: a later "thật ra 6 người
+    // thôi" is a correction, not a second party.
+    const party = extractPartySize(t)
+    if (party !== null) {
+      p.partySize = party
+      p.changedAtTurn.partySize = turn
     }
 
     // ── Priorities ─────────────────────────────────────────────────────────

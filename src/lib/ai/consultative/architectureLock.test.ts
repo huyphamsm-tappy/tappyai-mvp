@@ -69,6 +69,10 @@ describe('prompt building and need extraction never reach for a model', () => {
     'src/lib/ai/consultative/candidate.ts',
     'src/lib/ai/consultative/refinement.ts',
     'src/lib/ai/consultative/replyAnalysis.ts',
+    // The need brief turns the folded profile into prompt text. It is the one
+    // consultative module that WRITES instructions for the model, which is
+    // exactly why it must never be tempted to ask one to write them.
+    'src/lib/ai/consultative/needBrief.ts',
   ]) {
     it(`${f} stays model-free`, () => {
       expect(code(f)).not.toContain('@/lib/ai/llm')
@@ -76,7 +80,7 @@ describe('prompt building and need extraction never reach for a model', () => {
   }
 
   it('the whole consultative module is network-free and clock-free', () => {
-    for (const f of ['needProfile', 'rank', 'pick', 'candidate', 'refinement', 'replyAnalysis']) {
+    for (const f of ['needProfile', 'rank', 'pick', 'candidate', 'refinement', 'replyAnalysis', 'needBrief']) {
       const src = code(`src/lib/ai/consultative/${f}.ts`)
       expect(src, `${f} must not fetch`).not.toContain('fetch(')
       expect(src, `${f} must be deterministic — no clock`).not.toContain('Date.now(')
@@ -158,7 +162,7 @@ describe('the consultative layer never AUTHORS a link of any kind', () => {
   // consultative layer ORDERS and EXPLAINS evidence. It never authors a URL — of
   // any provider. Preservation is proven positively in tiktokPreservation.test.ts.
   it('no consultative module contains a hardcoded URL or provider host', () => {
-    for (const f of ['needProfile', 'rank', 'pick', 'candidate', 'refinement', 'replyAnalysis']) {
+    for (const f of ['needProfile', 'rank', 'pick', 'candidate', 'refinement', 'replyAnalysis', 'needBrief']) {
       const src = code(`src/lib/ai/consultative/${f}.ts`)
       expect(src, `${f} must not author URLs`).not.toMatch(/https?:\/\//)
       expect(src.toLowerCase(), `${f} must not special-case a provider`).not.toContain('tiktok')
