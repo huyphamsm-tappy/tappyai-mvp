@@ -21,7 +21,9 @@ const ROOT = process.env.TAPPY_ROOT
   || 'C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/v3-integration'
 
 const NEED_PROFILE = ROOT + '/src/lib/ai/consultative/needProfile.ts'
+const STREAM = ROOT + '/src/lib/ai/streamEnrichment.ts'
 const TEST = 'src/lib/ai/security/needBriefBoundary.test.ts'
+const LINK_TEST = 'src/lib/ai/security/linkEgressBoundary.test.ts'
 
 const MUTATIONS = [
   {
@@ -37,6 +39,95 @@ const MUTATIONS = [
     file: NEED_PROFILE,
     from: 'p.location.text = place',
     to: 'p.location.text = t',
+  },
+
+  // ── P3-F4 · the link egress boundary ──────────────────────────────────────
+  //
+  // Two directions, and BOTH have to be detected. Removing the filter lets an
+  // invented URL out; removing the allow-set deletes every legitimate link in
+  // the product. A test that only noticed the first would let a "fix" ship that
+  // silently broke booking links.
+  {
+    id: 'MI03',
+    what: 'the link filter becomes a pass-through',
+    file: STREAM,
+    from: 'if (!allowed) return text',
+    to: 'if (true) return text',
+    test: LINK_TEST,
+  },
+  {
+    id: 'MI04',
+    what: 'every markdown link is treated as owned',
+    file: STREAM,
+    from: '(allowed.has(normalizeUrl(url)) ? whole : label)',
+    to: '(whole)',
+    test: LINK_TEST,
+  },
+  {
+    id: 'MI05',
+    what: 'bare URLs stop being checked (drop the brackets, bypass the guard)',
+    file: STREAM,
+    from: 'return allowed.has(normalizeUrl(bare)) ? url : trailing',
+    to: 'return url',
+    test: LINK_TEST,
+  },
+  {
+    id: 'MI06',
+    what: 'tool-result URLs are never harvested (legitimate links would vanish)',
+    file: STREAM,
+    from: 'for (const u of extractUrls(line)) allowUrl(u)',
+    to: 'void 0',
+    test: LINK_TEST,
+  },
+  {
+    id: 'MI07',
+    what: 'already-published URLs are forgotten (a repeated link would vanish)',
+    file: STREAM,
+    from: 'for (const prior of publishedHistory) for (const u of extractUrls(prior)) allowUrl(u)',
+    to: 'void 0',
+    test: LINK_TEST,
+  },
+  {
+    id: 'MI08',
+    what: 'the live gate stops holding a half-arrived token',
+    file: STREAM,
+    from: 'function formingStart(text: string): number {',
+    to: 'function formingStart(text: string): number { if (1) return -1;',
+    test: LINK_TEST,
+  },
+
+  // ── P3-F5 · the CTA button block ──────────────────────────────────────────
+  {
+    id: 'MI09',
+    what: 'any host is accepted for a CTA button',
+    file: STREAM,
+    from: "return CTA_ALLOWED_HOSTS.some(a => host === a || host.endsWith('.' + a))",
+    to: 'return true',
+    test: LINK_TEST,
+  },
+  {
+    id: 'MI10',
+    what: 'the CTA button policy becomes a pass-through',
+    file: STREAM,
+    from: 'function guardCtaButtons(text: string, allowed: ReadonlySet<string>): string {',
+    to: 'function guardCtaButtons(text: string, allowed: ReadonlySet<string>): string { if (1) return text;',
+    test: LINK_TEST,
+  },
+  {
+    id: 'MI11',
+    what: 'prose rules run over structured blocks too (deletes every button url)',
+    file: STREAM,
+    from: '  const cut = earliestMarker(text)\r\n  const prose = text.slice(0, cut)',
+    to: '  const cut = text.length\r\n  const prose = text.slice(0, cut)',
+    test: LINK_TEST,
+  },
+  {
+    id: 'MI12',
+    what: 'the plan-link policy becomes a pass-through (the other structured channel)',
+    file: STREAM,
+    from: 'function guardPlanLinks(text: string, allowed: ReadonlySet<string>): string {',
+    to: 'function guardPlanLinks(text: string, allowed: ReadonlySet<string>): string { if (1) return text;',
+    test: LINK_TEST,
   },
 ]
 
@@ -55,7 +146,7 @@ for (const m of MUTATIONS) {
 
   writeFileSync(m.file, original.split(m.from).join(m.to))
   try {
-    execSync(`npx vitest run ${TEST}`, { cwd: ROOT, stdio: 'ignore' })
+    execSync(`npx vitest run ${m.test ?? TEST}`, { cwd: ROOT, stdio: 'ignore' })
     console.log(`SURVIVED  ${m.id} ${m.what}`)
     survived++
   } catch {

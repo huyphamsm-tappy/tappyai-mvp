@@ -1180,7 +1180,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // skip the boundary entirely and state a price reconstructed from general knowledge.
     // `needProfile.domain` is already derived above and is task-scoped, so a follow-up that carries
     // no place word of its own is still recognised; nothing new is persisted.
-  }, undefined, undefined, travelIntent, lastText, needProfile.domain === 'places')
+    // P3-F4: the URLs this conversation has ALREADY shown the user. A URL is
+    // publishable only if it came from this turn's tool results or from a reply
+    // we already published — otherwise the model invented it, and an invented
+    // URL is an exfiltration channel wearing the product's own "Xem thêm kết
+    // quả" clothing. Assistant turns only: what the USER typed was never
+    // vetted by the guard, so echoing it back must not launder it.
+  }, undefined, undefined, travelIntent, lastText, needProfile.domain === 'places',
+    messages.filter(m => m.role === 'assistant').map(m => (typeof m.content === 'string' ? m.content : '')))
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse

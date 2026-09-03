@@ -206,6 +206,190 @@ function stripUnownedImages(text: string, owned: Owned): string {
  * Past this many characters, an unclosed `![` is not a URL that is still arriving — it is prose
  * that happens to contain the two characters. Release it rather than hold it for ever.
  */
+// ── P3-F4: the model may publish a URL only by COPYING one it was given ──────
+//
+// Images (P3-F2) are simple: the system injects them and the model is told never
+// to write one, so any image URL in its prose is invented and goes.
+//
+// Links are the opposite. The rulebook ORDERS the model to write them — rule 4
+// (google_maps_search / search_url), rule 9 (web_search search_url), rule 12
+// ("COPY CHINH XAC nguyen van tung 'url'" for flight booking_links), rule 13
+// (Booking/Agoda), rule 14 (a price_search_results item's own link). Deleting
+// what the model wrote would delete the product.
+//
+// So the property is the one the rulebook states and never enforced: a URL is
+// publishable only if it appears, byte for byte, in something we handed the
+// model — this turn's tool results, or a reply we already published.
+//
+// THAT is what makes it safe against exfiltration. An attacker who ranks for a
+// query can get their URL into a tool result, but they cannot get the VICTIM'S
+// DATA into it: the tool result is fixed before the model ever sees the user's
+// memory. The moment the model appends a payload the URL stops matching, and
+// appending a payload is the whole attack.
+//
+// Bare URLs are covered too. `formatMessage` auto-links any `https://…` in
+// prose, so handling only `[label](url)` would be bypassed by omitting the
+// brackets.
+
+/** Every http(s) URL appearing in a string — used on raw tool-result frames. */
+const URL_IN_TEXT = /https?:\/\/[^\s"'<>()\\[\]]+/g
+
+export function extractUrls(text: string): string[] {
+  return text.match(URL_IN_TEXT) ?? []
+}
+
+/**
+ * The form two spellings of the same URL are compared in.
+ *
+ * Percent-encoding is decoded because `sanitizeUrlForMarkdown` encodes a URL on
+ * the way out while the model copies the raw one out of the tool JSON — the same
+ * destination, two spellings. Trailing sentence punctuation is dropped because
+ * prose attaches it ("xem tại https://x.vn/a.") and it is not part of the URL.
+ */
+function normalizeUrl(url: string): string {
+  return decodeSafe(url).replace(/[.,;:!?]+$/, '').toLowerCase()
+}
+
+/**
+ * Remove every link whose URL we did not give the model. Markdown links are
+ * reduced to their label, bare URLs are removed outright — the same "keep the
+ * words, drop the destination" treatment `stripUnvalidatedTikTokLinks` applies.
+ *
+ * `allowed` undefined means "do not run": `injectPlaceEnrichment` is called
+ * directly by tests and by nothing else that can know the turn's URL set, and a
+ * silently-empty set would strip every legitimate link in the product.
+ */
+/**
+ * P3-F5 · the CTA button URL policy.
+ *
+ * The buttons are a machine-read block, so the prose rule cannot apply to them:
+ * the rulebook tells the model to CONSTRUCT these URLs — a Shopee search built
+ * from the product's name, a Booking search built from the hotel's name — so
+ * demanding a verbatim match against a tool result would delete every button in
+ * the product.
+ *
+ * What can be demanded is the DESTINATION. Exfiltration needs the data to reach
+ * a host the attacker controls; a query string on shopee.vn is worth nothing to
+ * them. So a button may point at a platform the rulebook itself names, or at a
+ * URL this turn actually produced (`{website_uri}` and `{maps_link}` are copied
+ * from tool data, not constructed).
+ */
+const CTA_ALLOWED_HOSTS = [
+  // Food ordering — the rulebook's AN UONG set.
+  'shopeefood.vn', 'grab.com', 'be.com.vn',
+  // Shopping — MUA SAM.
+  'shopee.vn', 'lazada.vn', 'tiki.vn',
+  // Travel — DU LICH / KHACH SAN.
+  'booking.com', 'agoda.com', 'xanhsm.com', 'traveloka.com',
+  // Maps and search.
+  'google.com', 'goo.gl',
+]
+
+function isAllowedCtaHost(url: string): boolean {
+  const host = domainOf(url)
+  if (!host) return false
+  return CTA_ALLOWED_HOSTS.some(a => host === a || host.endsWith('.' + a))
+}
+
+/**
+ * May a structured block publish this URL? A named platform, or something this
+ * turn actually produced. A relative path has no host and satisfies neither —
+ * which is what stops `type:"internal_booking"` + `router.push(btn.url)` from
+ * becoming model-driven navigation, a rule the prompt states (⛔ LUAT TOI
+ * THUONG) and nothing enforced.
+ */
+function isPublishableStructuredUrl(url: unknown, allowed: ReadonlySet<string>): boolean {
+  return typeof url === 'string' && (isAllowedCtaHost(url) || allowed.has(normalizeUrl(url)))
+}
+
+/**
+ * [TAPPY_PLAN] carries `maps_link` and `booking_link` per item, and TripPlanCard
+ * renders both as `href=`. Same channel as a CTA button, same policy — an
+ * attacker who could only be stopped in one block would simply use the other.
+ *
+ * The offending value is BLANKED rather than the item dropped: the card renders
+ * a link only `{item.maps_link && …}`, so an empty string removes the link and
+ * keeps the plan step, which is the smaller loss.
+ */
+function guardPlanLinks(text: string, allowed: ReadonlySet<string>): string {
+  return text.replace(/(\[TAPPY_PLAN\])([\s\S]*?)(\[\/TAPPY_PLAN\]|$)/g, (whole, open: string, body: string, close: string) => {
+    try {
+      const plan = JSON.parse(body.trim()) as { days?: Array<{ items?: Array<Record<string, unknown>> }> }
+      if (!Array.isArray(plan.days)) return whole
+      let changed = false
+      for (const day of plan.days) {
+        for (const item of day?.items ?? []) {
+          for (const field of ['maps_link', 'booking_link'] as const) {
+            if (item[field] && !isPublishableStructuredUrl(item[field], allowed)) {
+              item[field] = ''
+              changed = true
+            }
+          }
+        }
+      }
+      return changed ? open + JSON.stringify(plan) + close : whole
+    } catch {
+      return whole
+    }
+  })
+}
+
+/**
+ * Drop buttons pointing somewhere neither the rulebook nor this turn justifies.
+ *
+ * A button is a bigger prize than a link: it renders as a styled call to action
+ * with `href={btn.url}`, so an injected destination is clicked far more readily
+ * than a URL in prose. Dropping only the offending button keeps the rest of the
+ * block working — a malformed payload is left alone, because the client parses
+ * it with the same JSON.parse and will ignore it too.
+ */
+function guardCtaButtons(text: string, allowed: ReadonlySet<string>): string {
+  return text.replace(/(\[CTA_BUTTONS\])([\s\S]*?)(\[\/CTA_BUTTONS\]|$)/g, (whole, open: string, body: string, close: string) => {
+    try {
+      const parsed = JSON.parse(body.trim()) as { buttons?: Array<{ url?: unknown }> }
+      if (!Array.isArray(parsed.buttons)) return whole
+      const kept = parsed.buttons.filter(b =>
+        isPublishableStructuredUrl(b?.url, allowed))
+      if (kept.length === parsed.buttons.length) return whole
+      return open + JSON.stringify({ ...parsed, buttons: kept }) + close
+    } catch {
+      return whole
+    }
+  })
+}
+
+function stripUnownedLinks(text: string, allowed?: ReadonlySet<string>): string {
+  if (!allowed) return text
+
+  // 🚨 PROSE RULES APPLY TO PROSE ONLY. `[CTA_BUTTONS]`, `[FOLLOWUPS]` and
+  // `[TAPPY_PLAN]` are computer-parsed blocks — this file already says never to
+  // splice markdown inside them — and running the bare-URL pass over CTA JSON
+  // deleted the `url` of every button on a live turn. Measured, not reasoned
+  // about: the block came back as `…"url":"` with the value gone.
+  const cut = earliestMarker(text)
+  const prose = text.slice(0, cut)
+  const tail = text.slice(cut)
+
+  // Markdown links, but never the `[alt](url)` inside an IMAGE token — those are
+  // governed by ownership of the image, which is resolved separately and later.
+  const withLinks = prose.replace(
+    /(?<!!)\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
+    (whole, label: string, url: string) => (allowed.has(normalizeUrl(url)) ? whole : label),
+  )
+  // Bare URLs. The lookbehind keeps this off a URL that is already inside a
+  // markdown token, whose fate the pass above (or the image rules) decided.
+  const guardedProse = withLinks.replace(
+    /(?<!\]\()https?:\/\/[^\s<>()\\[\]]+/g,
+    (url: string) => {
+      const trailing = url.match(/[.,;:!?]+$/)?.[0] ?? ''
+      const bare = trailing ? url.slice(0, -trailing.length) : url
+      return allowed.has(normalizeUrl(bare)) ? url : trailing
+    },
+  )
+
+  return guardedProse + guardPlanLinks(guardCtaButtons(tail, allowed), allowed)
+}
+
 const FORMING_IMAGE_LIMIT = 2048
 
 /**
@@ -232,12 +416,75 @@ const FORMING_IMAGE_LIMIT = 2048
  * Monotonic by construction: whatever was releasable stays a prefix of what is releasable later,
  * so the caller can emit the difference and never has to retract a byte it already sent.
  */
-export function releasableLiveText(text: string, endOfStream = false): string {
+/**
+ * Where a link/image/URL token appears to still be arriving, or -1.
+ *
+ * Two openings, and the EARLIEST wins so both are covered by one hold-back:
+ *
+ *   `[` or `![` with no `)` after it — a markdown token mid-flight. It has to be
+ *     the bracket rather than the URL, because `Xong. [` arrives in a delta of
+ *     its own, before any scheme exists to hold on.
+ *   a scheme with no whitespace after it — a BARE url mid-flight, which has no
+ *     bracket to hold on at all.
+ *
+ * Bounded by FORMING_IMAGE_LIMIT: past that this is prose that happens to
+ * contain the characters, and holding it for ever would be worse than releasing
+ * it (a stray `[` cannot become an egress channel on its own).
+ */
+function formingStart(text: string): number {
+  // A structured block has begun. Hold the whole tail until the stream ends: it
+  // is machine-read, the client already hides a partial marker so nothing is
+  // waiting on it, and holding it is what lets the CTA policy see a COMPLETE
+  // payload instead of a fragment it cannot parse. Costs no perceived latency —
+  // the prose before it has already been released.
+  const marker = earliestMarker(text)
+  if (marker < text.length) return marker
+
+  const candidates: number[] = []
+
+  const bracket = text.lastIndexOf('[')
+  if (bracket !== -1 && !text.slice(bracket).includes(')')) {
+    candidates.push(bracket > 0 && text[bracket - 1] === '!' ? bracket - 1 : bracket)
+  }
+
+  // A BARE url ends at whitespace and never contains ')'. So a ')' after the
+  // scheme means this URL is inside a markdown token that has already CLOSED —
+  // complete, judgeable now, and holding it would re-hold a finished token and
+  // leak its label as literal text.
+  const scheme = Math.max(text.lastIndexOf('http://'), text.lastIndexOf('https://'))
+  if (scheme !== -1 && !/[\s)]/.test(text.slice(scheme))) candidates.push(scheme)
+
+  if (candidates.length === 0) return -1
+  const from = Math.min(...candidates)
+  return text.length - from <= FORMING_IMAGE_LIMIT ? from : -1
+}
+
+export function releasableLiveText(
+  text: string,
+  endOfStream = false,
+  allowedUrls?: ReadonlySet<string>,
+): string {
+  if (!endOfStream) {
+    const from = formingStart(text)
+    // Judge the token whole or not at all. Releasing `[Xem them](` and deciding
+    // later would already have shown the user half of a token whose destination
+    // is still unknown — and, because the decision can SHORTEN the text, would
+    // break the prefix the caller emits differences against and truncate the
+    // rest of the reply.
+    if (from !== -1) return releasableLiveText(text.slice(0, from), true, allowedUrls)
+  }
+
   // Every COMPLETE token goes first, reduced to its alt text. What can still be left is at most
   // one token that has not finished arriving.
-  const stripped = text.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_whole, alt: string) => alt)
-  const open = stripped.lastIndexOf('![')
-  if (open === -1) return stripped
+  const stripped = stripUnownedLinks(
+    text.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_whole, alt: string) => alt),
+    allowedUrls,
+  )
+  // Prose only, again: a `![` inside a structured block belongs to that block's
+  // payload, and truncating there would cut the CTA/plan JSON in half.
+  const proseEnd = earliestMarker(stripped)
+  const open = stripped.lastIndexOf('![', proseEnd)
+  if (open === -1 || open >= proseEnd) return stripped
 
   // At end of stream nothing further is coming, so the same slice that was a hold-back becomes a
   // permanent drop — an unterminated `![anh](https://attacker…` must not be released just because
@@ -250,13 +497,14 @@ export function releasableLiveText(text: string, endOfStream = false): string {
   return stripped
 }
 
-function stripOwnedEnrichment(places: PlaceLike[], text: string): string {
+function stripOwnedEnrichment(places: PlaceLike[], text: string, allowedUrls?: ReadonlySet<string>): string {
   const owned = buildOwned(places)
   // Always run: even with no owned images/links there may be an LLM-emitted TikTok
   // review line to strip (unsupported provider in V1).
   const kept = text.split('\n').filter(line => !isOwnedEnrichmentLine(line, owned))
   const withoutTikTok = stripUnvalidatedTikTokLinks(kept.join('\n'), owned)
-  return stripUnownedImages(withoutTikTok, owned).replace(/\n{3,}/g, '\n\n')
+  const withoutInvented = stripUnownedLinks(stripUnownedImages(withoutTikTok, owned), allowedUrls)
+  return withoutInvented.replace(/\n{3,}/g, '\n\n')
 }
 
 // The image/review/order-link markdown a place is still MISSING from the text (dedup-aware),
@@ -476,7 +724,7 @@ function namesMatch(itemKey: string, placeKey: string): boolean {
   return placeKey.length >= 4 && (itemKey.includes(placeKey) || placeKey.includes(itemKey))
 }
 
-export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lang = 'vi'): string {
+export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lang = 'vi', allowedUrls?: ReadonlySet<string>): string {
   // A photo is no longer a precondition for enrichment. It used to be, which
   // meant a failed photo lookup silently took the order/platform links down with
   // it — nothing about an order link needs a photo to exist (B4 finding).
@@ -493,7 +741,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lan
   if (fullText.includes('[TAPPY_PLAN]')) return injectPlanPhotos(places, fullText)
 
   // System owns placement: drop the LLM's own copies of owned enrichment, then re-inject.
-  const text = stripOwnedEnrichment(places, fullText)
+  const text = stripOwnedEnrichment(places, fullText, allowedUrls)
   const decodedText = decodeSafe(text)
 
   // We insert into the RAW text, so name positions must be found in a normalized view that
@@ -750,9 +998,32 @@ export function applyPlaceEnrichmentStreamFilter(
    * 50.000đ/tô" on a follow-up that searched nothing).
    */
   placeIntent = false,
+  /**
+   * P3-F4. Text of replies ALREADY PUBLISHED in this conversation, so a URL the
+   * user was legitimately shown can be repeated on a later turn that runs no
+   * tool ("cho mình xem lại link đặt vé").
+   *
+   * Sound because these URLs already passed this same guard when they were first
+   * emitted. It arrives from the client with the conversation, which is not a
+   * weakness in the threat model that matters: a malicious client exfiltrating
+   * to itself already holds the data. The attack this defends against is
+   * injected content steering an HONEST client, and an honest client's history
+   * contains only what we published.
+   */
+  publishedHistory: string[] = [],
 ): Response {
   const body = response.body
   if (!body) return response
+
+  /**
+   * Every URL the model is allowed to publish this turn: what we already showed
+   * the user, plus whatever this turn's tool results contain. Normalised, so the
+   * raw URL in a tool's JSON and the percent-encoded one in markdown compare
+   * equal.
+   */
+  const allowedUrls = new Set<string>()
+  const allowUrl = (u: string) => allowedUrls.add(normalizeUrl(u))
+  for (const prior of publishedHistory) for (const u of extractUrls(prior)) allowUrl(u)
 
   const decoder = new TextDecoder()
   const encoder = new TextEncoder()
@@ -863,7 +1134,7 @@ export function applyPlaceEnrichmentStreamFilter(
   const emitLive = (controller: TransformStreamDefaultController, addition: string) => {
     liveText += addition
     assistantSoFar += addition
-    const releasable = releasableLiveText(liveText)
+    const releasable = releasableLiveText(liveText, false, allowedUrls)
     if (!releasable.startsWith(liveReleased) || releasable.length === liveReleased.length) return
     const slice = releasable.slice(liveReleased.length)
     liveReleased = releasable
@@ -876,7 +1147,7 @@ export function applyPlaceEnrichmentStreamFilter(
    */
   const flushLive = (controller: TransformStreamDefaultController) => {
     if (bufferMode) return
-    const final = releasableLiveText(liveText, true)
+    const final = releasableLiveText(liveText, true, allowedUrls)
     if (!final.startsWith(liveReleased) || final.length === liveReleased.length) return
     controller.enqueue(encoder.encode('0:' + JSON.stringify(final.slice(liveReleased.length)) + '\n'))
     liveReleased = final
@@ -1007,7 +1278,7 @@ export function applyPlaceEnrichmentStreamFilter(
       }
     }
 
-    const enriched = injectPlaceEnrichment(places, mainText, lang)
+    const enriched = injectPlaceEnrichment(places, mainText, lang, allowedUrls)
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
@@ -1217,6 +1488,13 @@ export function applyPlaceEnrichmentStreamFilter(
           } catch { /* ignore */ }
           controller.enqueue(encoder.encode(line + '\n'))
         } else if (line.startsWith('a:')) {
+          // P3-F4. Harvest from the RAW frame, before any typed parse: every tool
+          // has its own result shape (search_url, booking_links, booking_link,
+          // price_search_results[].link, order_links…) and a per-shape reader
+          // would silently miss the next one — which fails CLOSED into deleting
+          // a legitimate link. Scanning the JSON text catches all of them and
+          // needs no maintenance when a tool grows a field.
+          for (const u of extractUrls(line)) allowUrl(u)
           try {
             const res = JSON.parse(line.slice(2)) as {
               toolCallId?: string

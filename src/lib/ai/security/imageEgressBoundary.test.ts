@@ -113,6 +113,23 @@ describe('P3-F2 · live turns — the path indirect injection actually lands on'
     expect(rendered(out)).toBe('Chao ban! Minh co the giup gi?')
   })
 
+  it('🚨 a reply that STOPS mid-image-token does not release the half-written URL', async () => {
+    // Reachable, not theoretical: a turn that hits `finishReason: "length"` ends
+    // wherever the token ran out — Phase 0 shipped a fix for exactly this shape
+    // on [TAPPY_PLAN]. The bare-URL pass deliberately skips a URL preceded by
+    // `](`, and the image regex needs a closing `)`, so an unterminated token is
+    // caught by nothing except the end-of-stream drop.
+    //
+    // Found by mutation M7, which survived until this test existed.
+    const out = await run([
+      toolCall('web_search'),
+      toolResult([]),
+      text(`Day nhe ![anh](${EXFIL}`),
+      'd:{"finishReason":"length"}',
+    ])
+    expect(out).not.toContain('attacker.example')
+  })
+
   it('a bare image with no tool call at all is still stripped', async () => {
     const out = await run([text(`Day nhe ![p](${EXFIL})`), finish])
     expect(out).not.toContain('attacker.example')
