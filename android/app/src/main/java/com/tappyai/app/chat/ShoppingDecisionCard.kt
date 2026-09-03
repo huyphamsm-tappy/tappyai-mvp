@@ -19,8 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -251,15 +250,18 @@ private fun OfferRow(offer: ShoppingOfferView) {
             .fillMaxWidth()
             .then(
                 if (offer.url != null) {
-                    Modifier
-                        .clickable {
-                            runCatching {
-                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(offer.url)))
-                            }
+                    Modifier.clickable {
+                        runCatching {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(offer.url)))
                         }
-                        .clearAndSetSemantics { contentDescription = "$seller · $price · $viewLabel" }
+                    }
                 } else Modifier,
             )
+            // One TalkBack node per offer ("CellphoneS · 18.9 triệu · Xem") built from the child
+            // Text nodes, rather than a hand-assembled contentDescription. The strings are already
+            // localised where they are read; re-stating them here would be a second place to
+            // forget to translate, which is what `androidHardcodedUiStrings` guards against.
+            .semantics(mergeDescendants = true) {}
             .padding(top = TappySpacing.md),
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         verticalAlignment = Alignment.CenterVertically,

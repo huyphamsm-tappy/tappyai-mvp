@@ -15,10 +15,47 @@ enum ContentParser {
         let (textAfterPlan, plan) = parsePlan(content)
         let (textAfterCta, buttons) = parseCTA(textAfterPlan)
         let (textAfterFollowups, followups) = parseFollowups(textAfterCta)
+        // D1 — decode the shopping decision instead of discarding it. Decode and strip stay
+        // independent: `stripMarkerResidue` below runs regardless, because a block we cannot
+        // understand is still a block the user must not read.
+        let shopping = decodeShoppingDecision(textAfterFollowups)
         let clean = stripMarkerResidue(textAfterFollowups)
         let images = extractImages(clean)
         let text = stripImages(clean)
-        return ParsedContent(text: text, ctaButtons: buttons, plan: plan, followups: followups, images: images)
+        return ParsedContent(
+            text: text,
+            ctaButtons: buttons,
+            plan: plan,
+            followups: followups,
+            images: images,
+            shopping: shopping
+        )
+    }
+
+    // MARK: - Shopping decision (D1)
+
+    /// Decodes the `[TAPPY_SHOPPING]` payload into its model.
+    ///
+    /// Reads only the CLOSED form: an unterminated block is a decision still arriving, and half a
+    /// decision is not a decision. It never mutates the text — stripping remains the residue pass's
+    /// job, so a payload that fails to decode still cannot reach the user.
+    static func decodeShoppingDecision(_ content: String) -> ShoppingDecisionView? {
+        guard let regex = try? NSRegularExpression(
+            pattern: #"\[TAPPY_SHOPPING\]([\s\S]*?)\[/TAPPY_SHOPPING\]"#,
+            options: .caseInsensitive
+        ) else { return nil }
+
+        let range = NSRange(content.startIndex..., in: content)
+        guard let m = regex.firstMatch(in: content, range: range),
+              let bodyRange = Range(m.range(at: 1), in: content) else { return nil }
+
+        let body = String(content[bodyRange]).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let data = body.data(using: .utf8),
+              let view = try? JSONDecoder().decode(ShoppingDecisionView.self, from: data),
+              !view.entities.isEmpty // an empty decision is not a decision
+        else { return nil }
+
+        return view
     }
 
     // MARK: - CTA Buttons

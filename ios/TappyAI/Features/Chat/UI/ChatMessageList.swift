@@ -59,6 +59,7 @@ struct ChatMessageList: View {
                                 status: msg.status,
                                 ctaButtons: parsed.ctaButtons,
                                 plan: parsed.plan,
+                                shopping: parsed.shopping,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
                                 isLastMessage: isLast,
                                 tts: tts,
@@ -163,6 +164,9 @@ private struct AssistantBubble: View {
     let status: MessageStatus
     let ctaButtons: [CTAButton]
     let plan: TappyPlan?
+    /// D1 — the shopping decision for this turn, when the reply carried one.
+    /// Defaulted so existing call sites keep compiling unchanged.
+    var shopping: ShoppingDecisionView? = nil
     let followups: [String]
     let isLastMessage: Bool
     let tts: TTSManager
@@ -202,6 +206,13 @@ private struct AssistantBubble: View {
                 // Plan card
                 if let plan {
                     TripPlanCardView(plan: plan)
+                }
+
+                // D1 — the shopping DECISION. Rendered only once streaming ends, like every other
+                // structured block: a half-arrived decision is not a decision, and showing one
+                // mid-stream is how partial JSON reached users in the first place.
+                if let shopping, !isStreaming {
+                    ShoppingDecisionCardView(view: shopping)
                 }
 
                 // Full action bar (not streaming)
