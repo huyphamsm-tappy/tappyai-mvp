@@ -27,16 +27,21 @@ import HomeV3 from './HomeV3'
 
 // P4-11 + V3 Web redesign — the AI-first Home (DD-002 / OD-1) and its limits.
 //
-// ⚠️ THIS FILE FOLLOWED THE ROUTE. It used to render `HomeView`, the pre-V3 single-column
-// composition. The Home route now renders `HomeV3`, so testing `HomeView` would have left a green
-// suite guarding a component nothing renders — the exact "passes while asserting nothing" failure
-// this project has been bitten by before. The assertions below are unchanged in substance; only
-// the component under test moved.
+// 🚨 THE RULE THIS FILE NOW GUARDS FIRST: **Home is ONE PAGE.**
 //
-// Three rules:
+// The first V3 build read the implementation roadmap (shell → Home → Explore → Deals →
+// Marketplace → Inbox → Tools → Profile → Chat) as a list of panels to put ON Home, and shipped a
+// fifteen-panel grid rendering a slice of every destination in the product. The tests written
+// alongside it were green the whole time, because they asserted "every capability is reachable
+// from Home" — which the dashboard satisfied perfectly. They measured the wrong thing.
+//
+// So the inventory check below is inverted: it asserts what Home must NOT contain. Reachability is
+// the SHELL's job and is guarded where the shell lives.
+//
+// The three older rules still stand:
 //   1. asking Tappy is the PRIMARY action and comes first in the document;
 //   2. Home is NOT Chat — no thread, no streaming, every entry navigates;
-//   3. no tool was removed to make either true.
+//   3. no tool was dropped to make either true.
 
 afterEach(cleanup)
 
@@ -67,10 +72,60 @@ function hrefs(container: HTMLElement): string[] {
   return Array.from(container.querySelectorAll('a[href]')).map(a => a.getAttribute('href')!)
 }
 
+/** Home's own content region — everything the shell renders is excluded. */
+function homeRegion(container: HTMLElement): HTMLElement {
+  const first = container.querySelector('[data-home-section]')!
+  return first.parentElement as HTMLElement
+}
+
+describe('Home is ONE PAGE, not an ecosystem dashboard', () => {
+  it('renders exactly the four approved sections, in order', () => {
+    const { container } = renderHome()
+    const sections = [...container.querySelectorAll('[data-home-section]')]
+      .map(s => s.getAttribute('data-home-section'))
+    expect(sections).toEqual(['hero', 'continue', 'for-you', 'tools'])
+  })
+
+  it('renders no other destination inside Home', () => {
+    // Each of these is its OWN page. A Home card may LINK to one; Home may not BE one. The check
+    // is on Home's content region, because the shell legitimately links to all of them.
+    const { container } = renderHome()
+    const region = homeRegion(container)
+    const own = new Set([...region.querySelectorAll('[data-home-section]')].map(s => s.getAttribute('data-home-section')))
+    expect(own.size, 'Home owns only its four sections').toBe(4)
+
+    // No destination's content is reproduced here: no feed, no inbox rows, no deal cards,
+    // no marketplace, no profile panel.
+    const text = region.textContent ?? ''
+    for (const [what, pattern] of [
+      ['an Explore feed', /video feed|feed video/i],
+      ['an Inbox', /messages & notifications|tin nhắn & thông báo/i],
+      ['a Deals surface', /groupon/i],
+      ['Marketplace', /marketplace/i],
+      ['a Profile panel', /profile \(me\)/i],
+    ] as const) {
+      expect(text, `Home must not render ${what} — it is its own page`).not.toMatch(pattern)
+    }
+  })
+
+  it('does not reproduce a destination page inside a Home card', () => {
+    const { container } = renderHome()
+    const region = homeRegion(container)
+    // The dashboard version put a filter-chip row on Home for Explore, Inbox and Deals — each the
+    // top of somebody else's page. Home's only chip row is its own contextual prompts, and those
+    // are buttons that ask Tappy, not filters over a feed Home does not have.
+    const chipRows = region.querySelectorAll('.v3-chip')
+    for (const chip of chipRows) {
+      expect(chip.tagName, 'Home chips ask Tappy; they do not filter another page').toBe('BUTTON')
+    }
+  })
+})
+
 describe('Home is AI-first (DD-002)', () => {
   it('puts a way into the assistant above the tool strip', () => {
     const { container } = renderHome()
-    const order = hrefs(container)
+    const region = homeRegion(container)
+    const order = hrefs(region)
 
     // The first /chat entry in document order must precede the first tool destination.
     const firstChatEntry = order.findIndex(h => h.startsWith('/chat'))
@@ -84,10 +139,14 @@ describe('Home is AI-first (DD-002)', () => {
     expect(firstChatEntry, 'asking Tappy comes before the tool strip').toBeLessThan(firstTool)
   })
 
-  it('renders the assistant panel first among the panels', () => {
-    renderHome()
-    const titles = screen.getAllByRole('heading', { level: 2 }).map(h => h.textContent)
-    expect(titles[0]).toMatch(/AI Agent/i)
+  it('leads with the greeting and the composer, not with a section header', () => {
+    const { container } = renderHome()
+    const hero = container.querySelector('[data-home-section="hero"]')!
+    expect(hero, 'the hero is the first section').toBe(container.querySelector('[data-home-section]'))
+    // The greeting is the page's first heading, and the composer lives in the hero.
+    const firstHeading = screen.getAllByRole('heading', { level: 2 })[0]
+    expect(hero.contains(firstHeading), 'the greeting heads the page').toBe(true)
+    expect(hero.querySelector('form input')).toBeTruthy()
   })
 
   it('carries the suggestion text and its category into the chat route', () => {
@@ -115,53 +174,37 @@ describe('Home is NOT Chat (DD-002 — binding limit)', () => {
 
   it('has a composer that navigates rather than answering in place', () => {
     const { container } = renderHome()
-    // There IS a composer now — but it must submit by routing to /chat, and the page must not
+    // There IS a composer — but it must submit by routing to /chat, and the page must not
     // contain any surface that renders an assistant reply.
     expect(container.querySelector('form input[type="text"], form input:not([type])')).toBeTruthy()
     expect(hrefs(container).some(h => h.startsWith('/chat'))).toBe(true)
   })
 })
 
-describe('no capability was removed by the V3 redesign', () => {
-  // The inventory the approved design promised to preserve. A future tidy-up that drops one of
-  // these fails here rather than in production.
-  const REQUIRED = [
+describe('no tool was dropped when Home stopped being a dashboard', () => {
+  // Tools belong to Home by the approved layout (grouped, with a hierarchy). Losing one while
+  // trimming the page would be a real capability loss, so the list is pinned.
+  const REQUIRED_TOOLS = [
     '/boi', '/scan', '/group/new', '/currency', '/split-bill',
-    '/translate', '/scam-shield', '/music', '/viet-content',
-    '/deals', '/reviews', '/profile',
+    '/translate', '/scam-shield', '/music', '/viet-content', '/recommendations',
   ]
 
-  it('still links to every tool and destination it linked to before', () => {
+  it('still links to every tool route', () => {
     const { container } = renderHome()
-    const all = hrefs(container)
-    const missing = REQUIRED.filter(r => !all.some(h => h.startsWith(r)))
-    expect(missing, 'DD-002: capabilities are de-emphasised, never removed').toEqual([])
+    const all = hrefs(homeRegion(container))
+    const missing = REQUIRED_TOOLS.filter(r => !all.some(h => h.startsWith(r)))
+    expect(missing, 'DD-002: capabilities are regrouped, never removed').toEqual([])
+  })
+
+  it('groups them instead of showing one flat wall of tiles', () => {
+    const { container } = renderHome()
+    const tools = container.querySelector('[data-home-section="tools"]')!
+    // Three named groups — the whole point of the change (IA-2).
+    expect(tools.querySelectorAll('.grid').length).toBe(3)
   })
 })
 
-describe('Marketplace is reserved, not built (DD-013)', () => {
-  it('states it is coming rather than showing a catalogue', () => {
-    // "Sắp có" appears twice by design — the sidebar tag and the panel body — so this asserts
-    // the PANEL says it, not merely that the phrase exists somewhere.
-    renderHome()
-    // Locale-agnostic: the panel must say it is not open and must not list products.
-    const panel = [...document.querySelectorAll('section')]
-      .find(sec => /marketplace/i.test(sec.querySelector('.v3-panel-title')?.textContent ?? ''))!
-    expect(panel, 'the Marketplace panel must exist').toBeTruthy()
-    expect(panel.textContent).toMatch(/Sắp có|Coming soon/i)
-    expect(panel.textContent).toMatch(/chưa có sản phẩm|no products/i)
-  })
-
-  it('shows no cart, checkout or fabricated product prices', () => {
-    const { container } = renderHome()
-    const html = container.innerHTML.toLowerCase()
-    for (const forbidden of ['add-to-cart', 'checkout', 'giỏ hàng', 'thanh toán']) {
-      expect(html, 'commerce is FUTURE').not.toContain(forbidden)
-    }
-  })
-})
-
-describe('guest and empty states survive the redesign', () => {
+describe('guest and empty states survive the correction', () => {
   it('a guest is offered login rather than a broken Continue', () => {
     const { container } = renderHome({ user: false, conversations: [] })
     expect(hrefs(container)).toContain('/login')
@@ -170,5 +213,11 @@ describe('guest and empty states survive the redesign', () => {
   it('a signed-in user with no history gets the empty state', () => {
     const { container } = renderHome({ conversations: [] })
     expect(hrefs(container)).toContain('/chat')
+  })
+
+  it('omits "Dành cho bạn" entirely when there is nothing to show (ND-001)', () => {
+    // Not an empty box, and above all not a filled one: no source, no section.
+    const { container } = renderHome({ suggestions: [] })
+    expect(container.querySelector('[data-home-section="for-you"]')).toBeNull()
   })
 })

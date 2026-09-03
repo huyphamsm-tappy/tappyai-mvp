@@ -171,14 +171,18 @@ describe('MUST MATCH — the AI-first Home order (DD-002 / P4-11)', () => {
   const order = (src: string, marks: string[]) => marks.map(m => src.indexOf(m))
 
   it('web puts the assistant and Continue above the tools', () => {
-    // Follows the ROUTE: the Home surface is now the V3 panel grid (`HomeV3`), not the pre-V3
-    // `HomeView`. Asserting against the old file would leave this guard green while checking a
-    // component nothing renders.
+    // Follows the ROUTE: the Home surface is `HomeV3`, not the pre-V3 `HomeView`. Asserting
+    // against the old file would leave this guard green while checking a component nothing renders.
+    //
+    // Marked on the SECTIONS, not on their titles. The earlier version keyed off dictionary keys
+    // (`t('v3.panel.aiAgent')`), which tied a structural rule to whatever a section happened to be
+    // called — so correcting Home from a panel dashboard to a page broke the guard without
+    // breaking the rule. `data-home-section` is the landmark the page actually renders.
     const src = read('src/app/HomeV3.tsx')
     const [assistant, cont, tools] = order(src, [
-      "t('v3.panel.aiAgent')",
-      "t('v3.panel.continue')",
-      "t('v3.panel.smartTools')",
+      'data-home-section="hero"',
+      'data-home-section="continue"',
+      'data-home-section="tools"',
     ])
     expect(assistant, 'the assistant panel must exist').toBeGreaterThan(-1)
     expect(assistant, 'the assistant comes before the tool strip').toBeLessThan(tools)

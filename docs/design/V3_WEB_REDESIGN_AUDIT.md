@@ -42,6 +42,43 @@ undifferentiated density was.
 
 ---
 
+## 0.0 CORRECTION — the roadmap is an order of PAGES, not a Home composition
+
+> **What went wrong.** The implementation roadmap — shell → Home → Explore → Deals → Marketplace
+> → Inbox → Tools → Profile → Chat → responsive — was read as a **list of panels to put on Home**.
+> The result was a fifteen-panel Home rendering a slice of every destination in the product:
+> an Explore feed, an Inbox, Deals, Marketplace, Scam Shield, AI Planner, Post/Upload, Saved,
+> History, AI Capabilities and a Profile panel, all on one screen.
+>
+> **What it actually means.** Each roadmap item is a **separate page with its own route and its
+> own composition**. Design page 1 → finish it → visually review it → design page 2. Never
+> page 1 + page 2's content underneath it.
+
+**Home now contains exactly the four sections `V3_WEB_DESIGN_PROPOSAL §2.1` approves** and nothing
+else:
+
+| # | Section | Source |
+|---|---|---|
+| 1 | Greeting · Tappy · Ask-Tappy composer · contextual chips | — |
+| 2 | **Tiếp tục** — ≤2 recent threads, or the guest/empty state | server `conversations` |
+| 3 | **Dành cho bạn** — discovery/content preview, **omitted entirely when empty** (ND-001) | server `suggestions` |
+| 4 | **Công cụ** — ten tools in the three named groups the layout specifies | existing routes |
+
+**Nothing was deleted.** Every destination removed from Home is reached through the shell's
+navigation, and every tool route still has a tile on Home — `/recommendations` gained one it never
+had. "Off Home" is not "gone".
+
+**Why the tests did not catch it.** They asserted *every capability is reachable from Home*, which
+a dashboard satisfies perfectly — they measured the wrong property. `homeAiFirst.test.tsx` now
+asserts the inverse: Home renders **exactly four** `data-home-section` regions and reproduces no
+other destination's content. Reachability is the shell's job and is guarded where the shell lives.
+
+**Still to do, one page at a time.** §3–§9 below were implemented under the previous reading. Each
+is a real separate route with its own composition — none of them is Home content — but each still
+needs its own design pass and its own visual review gate, in roadmap order, before it can be
+called done.
+
+---
 ## 1. Global Web Shell
 
 | | |
