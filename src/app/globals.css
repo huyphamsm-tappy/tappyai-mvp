@@ -253,6 +253,23 @@
 
 @media (prefers-reduced-motion: reduce) {
   [class*="tappy-motion-"] { animation: none !important; }
+
+  /* P4-09. The mascot motion above was already handled; the chat's own two INFINITE loops were
+     not, and they are the ones a user sits and watches. `typing-dot` pulses for as long as the
+     model is thinking and `streaming-cursor` blinks for the whole of a long reply — for someone
+     with vestibular sensitivity that is the most punishing motion in the product.
+     Both are disabled rather than removed: the dots stay visible at full scale so the "Tappy is
+     thinking" signal survives, and the cursor becomes a steady bar instead of a blinking one.
+     Nothing about what the interface COMMUNICATES changes — only that it stops moving. */
+  .typing-dot { animation: none !important; transform: scale(1); opacity: 1; }
+  .streaming-cursor::after { animation: none !important; opacity: 1; }
+  .animate-pop-in { animation: none !important; }
+
+  /* Tailwind's animation utilities and the config's own keyframes (fade-in, slide-up, pulse-dot,
+     shake, heart-pop) — a blanket stop so a future `animate-*` call site is covered by default
+     rather than by remembering to add a line here. Opacity-only transitions are left alone; they
+     do not move anything. */
+  [class*="animate-"] { animation: none !important; }
 }
 .message-content { line-height: 1.6; }
 .message-content ul { list-style-type: disc; }

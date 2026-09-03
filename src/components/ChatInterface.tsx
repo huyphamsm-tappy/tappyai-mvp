@@ -17,6 +17,7 @@ import ShoppingDecision from '@/components/chat/ShoppingDecision'
 import ComparisonBlock from '@/components/chat/structured/ComparisonBlock'
 import ConfirmationPrompt from '@/components/chat/structured/ConfirmationPrompt'
 import { comparisonFromSynthesis } from '@/lib/structuredContent/comparisonFromSynthesis'
+import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
@@ -693,6 +694,9 @@ export default function ChatInterface({
   const [voiceError, setVoiceError] = useState<string | null>(null)
   // After dictation ends, auto-send with a short grace window the user can cancel.
   const [pendingSend, setPendingSend] = useState(false)
+  // P4-15 — used only to disable the send control and say why. Never to decide that a
+  // request failed: the normal error path already preserves the user's message.
+  const isOnline = useOnlineStatus()
   // ── The action boundary (DD-006) ──────────────────────────────────────────
   //
   // `internal_booking` is the one CTA where Tappy acts on the user's behalf rather than handing
@@ -1627,6 +1631,46 @@ export default function ChatInterface({
           onChange={handleImageSelect}
         />
         <form id="chat-form" onSubmit={handleFormSubmit} className="max-w-container-content mx-auto w-full flex flex-col gap-2">
+          {/* P4-15 — offline. The thread stays readable and whatever the user typed stays in the
+              box; only sending is withheld, with a plain reason. No stack trace, no status code,
+              and no auto-retry — the moment the connection returns the send button re-enables and
+              the draft is still there. */}
+          {!isOnline && (
+            <div
+              role="status"
+              aria-live="polite"
+              data-testid="offline-notice"
+              className="self-start rounded-xl bg-gray-100 px-3 py-1.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+            >
+              {t('offline.composer')}
+            </div>
+          )}
+          {/* ── Device context, visible and revocable (DD-011) ──────────────────
+              The user's location was already being attached to every request, and the user could
+              not see that anywhere. Silent context is a trust problem twice over: the person
+              cannot tell why an answer came out the way it did, and cannot correct it without
+              guessing. So the chip states what Tappy is using, and the × removes it from every
+              subsequent request.
+              This asks for nothing and grants nothing — the permission model is untouched; it only
+              makes an existing input legible and refusable. */}
+          {userLocation && (
+            <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              <span aria-hidden="true">📍</span>
+              <span data-testid="location-context">{userLocation.address || t('context.nearYou')}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setUserLocation(null)
+                  try { localStorage.removeItem('tappy_location') } catch { /* private mode */ }
+                }}
+                aria-label={t('context.removeLocation')}
+                data-testid="location-context-remove"
+                className="ml-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
+                <X size={11} />
+              </button>
+            </div>
+          )}
           {/* Image preview */}
           {imagePreviewUrl && (
             <div className="relative inline-flex self-start ml-1">
@@ -1744,7 +1788,7 @@ export default function ChatInterface({
               <Square size={15} className="text-gray-700 dark:text-gray-200 fill-current" />
             </button>
           ) : (
-            <button type="submit" disabled={!input.trim() && !imageFile} aria-label={t('chat.send')} className="w-11 h-11 rounded-2xl bg-interactive hover:bg-interactive-hover disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
+            <button type="submit" disabled={(!input.trim() && !imageFile) || !isOnline} aria-label={t('chat.send')} className="w-11 h-11 rounded-2xl bg-interactive hover:bg-interactive-hover disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
               <Send size={18} className="text-white" />
             </button>
           )}

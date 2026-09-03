@@ -41,6 +41,14 @@ export const vi: Record<string, string> = {
   'bridge.continueInChat': 'Tiếp tục trong chat',
   'bridge.promptEntity': 'Cho mình biết thêm về {subject}',
   'bridge.promptResult': 'Về kết quả này: {subject}',
+
+  // ── Device context, visible and revocable (DD-011) ──────────────────────
+  'context.nearYou': 'Gần bạn',
+  'context.removeLocation': 'Bỏ vị trí khỏi câu hỏi',
+
+  // ── Offline (P4-15) ─────────────────────────────────────────────────────
+  // Plain language, no status code, and it says what is still possible.
+  'offline.composer': 'Đang mất kết nối. Bạn vẫn đọc được đoạn chat; tin nhắn sẽ gửi được khi có mạng lại.',
 }
 
 export const en: Record<string, string> = {
@@ -78,4 +86,11 @@ export const en: Record<string, string> = {
   'bridge.continueInChat': 'Continue in chat',
   'bridge.promptEntity': 'Tell me more about {subject}',
   'bridge.promptResult': 'About this result: {subject}',
+
+  // ── Device context, visible and revocable (DD-011) ──────────────────────
+  'context.nearYou': 'Near you',
+  'context.removeLocation': 'Stop using my location',
+
+  // ── Offline (P4-15) ─────────────────────────────────────────────────────
+  'offline.composer': 'You are offline. You can still read this chat; your message will send once you are back online.',
 }
