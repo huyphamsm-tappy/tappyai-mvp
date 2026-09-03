@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { clientIp } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -23,8 +24,22 @@ export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
-  if (!checkSearchRL(ip)) return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
+  // S-2. `clientIp`, not the raw header.
+  //
+  // 🚨 THIS IS THE ONE ENDPOINT WHERE THE THROTTLE IS THE WHOLE CONTROL. Below,
+  // the admin API answers "does this exact email/phone have an account?" — an
+  // existence oracle, deliberately exact-match so a partial value cannot
+  // enumerate. What stops it being a bulk oracle is the 30/minute cap, and the
+  // cap was keyed on the LEFTMOST `x-forwarded-for` entry: text the caller
+  // writes. `curl -H 'x-forwarded-for: <random>'` landed in a fresh bucket every
+  // time, so the limit did not exist and an attacker could test the entire
+  // address book against the user base.
+  //
+  // P3-F1 fixed exactly this in `clientIp()` — platform headers first, never a
+  // caller-authored hop — and this route was the last one still reading the
+  // header itself. The architecture guard `no-adhoc-forwarded-ip` now keeps it
+  // the last one.
+  if (!checkSearchRL(clientIp(req))) return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
 
   const q = searchParam(req, 'q')?.trim() ?? ''
   if (q.length < 2) return NextResponse.json({ users: [] })
