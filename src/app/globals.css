@@ -373,3 +373,115 @@
 .pl-safe { padding-left: env(safe-area-inset-left); }
 .pr-safe { padding-right: env(safe-area-inset-right); }
 .min-h-screen-safe { min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+
+/* ------------------------------------------------------------------ */
+/* V3 WEB THEME — the consumer app's V3 surface.                        */
+/*                                                                      */
+/* SCOPED, NEVER GLOBAL, for the same reason `.admin-theme` above is:   */
+/* it is a class on the V3 shell subtree, so every route not yet        */
+/* migrated keeps the light `:root` palette and nothing regresses while */
+/* the redesign lands surface by surface.                               */
+/*                                                                      */
+/* THIS IS A THEME, NOT A THEME MODE. There is no switch and no         */
+/* persistence: V3's Web surface is dark by design, the way the Explore */
+/* feed already is. `prefers-color-scheme` is deliberately not read —   */
+/* the product does not ask the OS what its own identity should be.     */
+/*                                                                      */
+/* Palette derived from the approved V3 reference: page #0A0F1C, panel  */
+/* #111827 with a #1F2937 hairline, elevated #161F32. Brand #007AFF is  */
+/* unchanged (V3_DESIGN_SYSTEM §2.1); on this ground the interactive    */
+/* tint lifts to #3391FF, the value the design system already specifies */
+/* for links in dark mode.                                              */
+/*                                                                      */
+/* Contrast vs the page: foreground 17.4:1 · secondary 7.9:1 · accent   */
+/* 6.4:1 — all above AA for normal text.                                */
+/* ------------------------------------------------------------------ */
+.v3-theme {
+  --v3-page: #0A0F1C;
+  --v3-panel: #111827;
+  --v3-panel-elevated: #161F32;
+  --v3-border: #1F2937;
+  --v3-border-strong: #2B3648;
+  --v3-fg: #F3F4F6;
+  --v3-fg-secondary: #9CA3AF;
+  --v3-fg-muted: #6B7280;
+  --v3-accent: #3391FF;
+  --v3-accent-soft: rgba(51, 145, 255, 0.12);
+  --v3-violet: #8B5CF6;
+  --v3-amber: #F59E0B;
+  --v3-emerald: #34D399;
+  --v3-rose: #FB7185;
+
+  background-color: var(--v3-page);
+  color: var(--v3-fg);
+}
+
+/* The panel IS the visual language of this surface: one card shape, one
+   hairline, one header rhythm. Everything on the V3 grid is one of these,
+   which is what stops a dense page reading as a pile of unrelated widgets. */
+.v3-panel {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border);
+  border-radius: 16px;
+}
+.v3-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--v3-border);
+}
+.v3-panel-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--v3-fg);
+}
+/* The small tinted glyph tile each panel header carries. Colour identifies the
+   panel at a glance; the title beside it always says the same thing in words,
+   so the tint is never the only carrier of meaning. */
+.v3-panel-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.v3-seeall {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--v3-accent);
+}
+.v3-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--v3-border-strong);
+  background-color: var(--v3-panel-elevated);
+  color: var(--v3-fg-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color 150ms, background-color 150ms, border-color 150ms;
+}
+.v3-chip:hover { color: var(--v3-fg); border-color: var(--v3-accent); }
+.v3-chip-active {
+  background-color: var(--v3-accent);
+  border-color: var(--v3-accent);
+  color: #fff;
+}
+.v3-tile {
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border);
+  border-radius: 12px;
+  transition: border-color 150ms, transform 150ms;
+}
+.v3-tile:hover { border-color: var(--v3-border-strong); transform: translateY(-1px); }
+.v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
+.v3-scroll-x::-webkit-scrollbar { display: none; }

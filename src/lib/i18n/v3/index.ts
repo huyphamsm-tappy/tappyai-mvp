@@ -6,8 +6,9 @@
 //
 // Same contract as w2/w3/w4/w5: flat namespaced maps, merged by useTranslation.
 import * as structuredAi from './structuredAi'
+import * as web from './web'
 
-const modules = [structuredAi]
+const modules = [structuredAi, web]
 
 export const v3vi: Record<string, string> = Object.assign({}, ...modules.map((m) => m.vi))
 export const v3en: Record<string, string> = Object.assign({}, ...modules.map((m) => m.en))

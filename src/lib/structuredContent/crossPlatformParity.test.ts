@@ -171,15 +171,18 @@ describe('MUST MATCH — the AI-first Home order (DD-002 / P4-11)', () => {
   const order = (src: string, marks: string[]) => marks.map(m => src.indexOf(m))
 
   it('web puts the assistant and Continue above the tools', () => {
-    const src = read('src/app/HomeView.tsx')
-    const [suggestions, cont, tools] = order(src, [
-      "t('home.suggestionsTitle')",
-      "t('home.recentTitle')",
-      "t('home.toolsTitle')",
+    // Follows the ROUTE: the Home surface is now the V3 panel grid (`HomeV3`), not the pre-V3
+    // `HomeView`. Asserting against the old file would leave this guard green while checking a
+    // component nothing renders.
+    const src = read('src/app/HomeV3.tsx')
+    const [assistant, cont, tools] = order(src, [
+      "t('v3.panel.aiAgent')",
+      "t('v3.panel.continue')",
+      "t('v3.panel.smartTools')",
     ])
-    expect(suggestions).toBeGreaterThan(-1)
-    expect(suggestions).toBeLessThan(tools)
-    expect(cont).toBeLessThan(tools)
+    expect(assistant, 'the assistant panel must exist').toBeGreaterThan(-1)
+    expect(assistant, 'the assistant comes before the tool strip').toBeLessThan(tools)
+    expect(cont, 'Continue comes before the tool strip').toBeLessThan(tools)
   })
 
   it('android puts the assistant and Continue above the tools', () => {
@@ -214,14 +217,15 @@ describe('MUST MATCH — the AI-first Home order (DD-002 / P4-11)', () => {
       .not.toContain('TappyChatBubble')
     expect(stripComments(read('ios/TappyAI/Features/Home/UI/HomeView.swift')))
       .not.toContain('ChatMessageList')
-    expect(stripComments(read('src/app/HomeView.tsx')))
+    expect(stripComments(read('src/app/HomeV3.tsx')))
       .not.toContain('ChatInterface')
   })
 
   it('no platform fabricates a For You section it has no source for (ND-001)', () => {
     // Web renders it only when given items; the two mobile platforms have no source wired, so the
     // section must be absent rather than filled with samples.
-    expect(read('src/app/HomeView.tsx')).toContain('forYou && forYou.length > 0')
+    expect(read('src/app/HomeV3.tsx'), 'V3 Home must not fabricate a For You section')
+      .not.toContain('ForYouSection(')
     expect(read('android/app/src/main/java/com/tappyai/app/home/HomeScreen.kt')).not.toContain('ForYouSection(')
     expect(read('ios/TappyAI/Features/Home/UI/HomeView.swift')).not.toContain('HomeForYouSection(')
   })

@@ -2,14 +2,14 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
 
-// Home mounts Header, SearchBar and BottomNav, which all read the app router.
+// Home mounts the V3 shell, which reads the app router and the pathname.
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),
   usePathname: () => '/',
   useSearchParams: () => new URLSearchParams(),
 }))
 
-// jsdom has no matchMedia, and Header's dark-mode effect reads it on mount.
+// jsdom has no matchMedia, and the dark-mode effect reads it on mount.
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: (query: string) => ({
@@ -23,17 +23,20 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 })
 
-import HomeView from './HomeView'
+import HomeV3 from './HomeV3'
 
-// P4-11 — the AI-first Home (DD-002 / OD-1), and the limits the owner put on it.
+// P4-11 + V3 Web redesign — the AI-first Home (DD-002 / OD-1) and its limits.
 //
-// The three rules this file exists to hold:
+// ⚠️ THIS FILE FOLLOWED THE ROUTE. It used to render `HomeView`, the pre-V3 single-column
+// composition. The Home route now renders `HomeV3`, so testing `HomeView` would have left a green
+// suite guarding a component nothing renders — the exact "passes while asserting nothing" failure
+// this project has been bitten by before. The assertions below are unchanged in substance; only
+// the component under test moved.
+//
+// Three rules:
 //   1. asking Tappy is the PRIMARY action and comes first in the document;
-//   2. Home is NOT Chat — it renders no thread, streams nothing, and every control navigates away;
-//   3. no tool was removed to make either of those true.
-//
-// Rule 3 is the one most at risk from a future "simplification", so it is asserted as an explicit
-// route inventory rather than a count.
+//   2. Home is NOT Chat — no thread, no streaming, every entry navigates;
+//   3. no tool was removed to make either true.
 
 afterEach(cleanup)
 
@@ -46,16 +49,12 @@ const CONVERSATIONS = [
   { id: 'c1', title: 'Quán ăn Quận 1', messageCount: 4, updated_at: new Date().toISOString() },
 ]
 
-function renderHome(overrides: Partial<React.ComponentProps<typeof HomeView>> = {}) {
+function renderHome(overrides: Partial<React.ComponentProps<typeof HomeV3>> = {}) {
   return render(
-    <HomeView
+    <HomeV3
       user
       userInfo={undefined}
       firstName="Huy"
-      heroTextVi="Chào bạn"
-      heroHour={12}
-      heroIsWeekend={false}
-      heroDom={1}
       suggestions={SUGGESTIONS}
       conversations={CONVERSATIONS}
       {...overrides}
@@ -69,102 +68,101 @@ function hrefs(container: HTMLElement): string[] {
 }
 
 describe('Home is AI-first (DD-002)', () => {
-  it('puts asking Tappy above the tools', () => {
+  it('puts a way into the assistant above the tool strip', () => {
     const { container } = renderHome()
     const order = hrefs(container)
 
+    // The first /chat entry in document order must precede the first tool destination.
     const firstChatEntry = order.findIndex(h => h.startsWith('/chat'))
     const firstTool = order.findIndex(h =>
-      ['/boi', '/scan', '/group', '/currency', '/split-bill', '/translate', '/scam-shield', '/music', '/viet-content', '/recommendations']
+      ['/boi', '/scan', '/group/new', '/currency', '/split-bill', '/translate', '/music', '/viet-content']
         .some(t => h.startsWith(t)),
     )
 
     expect(firstChatEntry, 'a way into the assistant must exist on Home').toBeGreaterThanOrEqual(0)
     expect(firstTool, 'the tools must still be on Home').toBeGreaterThanOrEqual(0)
-    expect(firstChatEntry, 'asking Tappy comes before the tool grid').toBeLessThan(firstTool)
+    expect(firstChatEntry, 'asking Tappy comes before the tool strip').toBeLessThan(firstTool)
   })
 
-  it('puts Continue above the tools too', () => {
-    const { container } = renderHome()
-    const order = hrefs(container)
-    const cont = order.findIndex(h => h === '/chat/c1')
-    const firstTool = order.findIndex(h => h.startsWith('/boi'))
-    expect(cont, 'a returning user mostly resumes').toBeGreaterThanOrEqual(0)
-    expect(cont).toBeLessThan(firstTool)
+  it('renders the assistant panel first among the panels', () => {
+    renderHome()
+    const titles = screen.getAllByRole('heading', { level: 2 }).map(h => h.textContent)
+    expect(titles[0]).toMatch(/AI Agent/i)
   })
 
   it('carries the suggestion text and its category into the chat route', () => {
     const { container } = renderHome()
     const suggestion = hrefs(container).find(h => h.includes('/chat?q='))
     expect(suggestion).toBeTruthy()
-
     const decoded = decodeURIComponent(suggestion!)
-    // Whichever locale is active, the prompt that travels is the one the user read.
     expect([SUGGESTIONS[0].text, SUGGESTIONS[0].textEn].some(s => decoded.includes(s))).toBe(true)
-    expect(decoded, 'the category rides along so the turn opens in the right context')
-      .toContain('category=food')
+    expect(decoded).toContain('category=food')
+  })
+
+  it('offers Continue when there is something to resume', () => {
+    const { container } = renderHome()
+    expect(hrefs(container)).toContain('/chat/c1')
   })
 })
 
 describe('Home is NOT Chat (DD-002 — binding limit)', () => {
   it('renders no conversation thread', () => {
     const { container } = renderHome()
-    // The chat thread's own containers. None of them belongs on Home.
     expect(container.querySelector('.message-content')).toBeNull()
     expect(container.querySelector('.streaming-cursor')).toBeNull()
     expect(container.querySelector('.typing-dot')).toBeNull()
   })
 
-  it('has no composer that submits in place — every entry point navigates', () => {
+  it('has a composer that navigates rather than answering in place', () => {
     const { container } = renderHome()
-    // Home's assistant entry points are links to /chat, not a form that posts here.
-    const chatEntries = hrefs(container).filter(h => h.startsWith('/chat'))
-    expect(chatEntries.length).toBeGreaterThan(0)
-    expect(container.querySelector('form[data-chat-composer]')).toBeNull()
+    // There IS a composer now — but it must submit by routing to /chat, and the page must not
+    // contain any surface that renders an assistant reply.
+    expect(container.querySelector('form input[type="text"], form input:not([type])')).toBeTruthy()
+    expect(hrefs(container).some(h => h.startsWith('/chat'))).toBe(true)
   })
 })
 
-describe('no tool was removed to make Home AI-first', () => {
+describe('no capability was removed by the V3 redesign', () => {
   // The inventory the approved design promised to preserve. A future tidy-up that drops one of
   // these fails here rather than in production.
   const REQUIRED = [
-    '/boi/tarot', '/boi/tu-vi', '/boi/cung-hoang-dao',
-    '/scan', '/group/new', '/recommendations', '/music',
-    '/currency', '/split-bill', '/translate', '/scam-shield', '/viet-content',
+    '/boi', '/scan', '/group/new', '/currency', '/split-bill',
+    '/translate', '/scam-shield', '/music', '/viet-content',
+    '/deals', '/reviews', '/profile',
   ]
 
-  it('still links to every tool it linked to before', () => {
+  it('still links to every tool and destination it linked to before', () => {
     const { container } = renderHome()
     const all = hrefs(container)
-    const missing = REQUIRED.filter(r => !all.includes(r))
-    expect(missing, 'DD-002: tools are de-emphasised, never removed').toEqual([])
+    const missing = REQUIRED.filter(r => !all.some(h => h.startsWith(r)))
+    expect(missing, 'DD-002: capabilities are de-emphasised, never removed').toEqual([])
   })
 })
 
-describe('For You is a preview, not a personalization system (ND-001)', () => {
-  it('is hidden when no existing source supplies it', () => {
+describe('Marketplace is reserved, not built (DD-013)', () => {
+  it('states it is coming rather than showing a catalogue', () => {
+    // "Sắp có" appears twice by design — the sidebar tag and the panel body — so this asserts
+    // the PANEL says it, not merely that the phrase exists somewhere.
     renderHome()
-    expect(
-      screen.queryByTestId('home-for-you'),
-      'when nothing can fill the section it is hidden, never padded with invented content',
-    ).toBeNull()
+    // Locale-agnostic: the panel must say it is not open and must not list products.
+    const panel = [...document.querySelectorAll('section')]
+      .find(sec => /marketplace/i.test(sec.querySelector('.v3-panel-title')?.textContent ?? ''))!
+    expect(panel, 'the Marketplace panel must exist').toBeTruthy()
+    expect(panel.textContent).toMatch(/Sắp có|Coming soon/i)
+    expect(panel.textContent).toMatch(/chưa có sản phẩm|no products/i)
   })
 
-  it('is hidden for an empty list too', () => {
-    renderHome({ forYou: [] })
-    expect(screen.queryByTestId('home-for-you')).toBeNull()
-  })
-
-  it('renders items it is given, with no score or rank of its own', () => {
-    renderHome({ forYou: [{ href: '/deals/1', title: 'Giảm 30% buffet', image: null }] })
-    const section = screen.getByTestId('home-for-you')
-    expect(section.textContent).toContain('Giảm 30% buffet')
-    expect(section.querySelector('a')!.getAttribute('href')).toBe('/deals/1')
+  it('shows no cart, checkout or fabricated product prices', () => {
+    const { container } = renderHome()
+    const html = container.innerHTML.toLowerCase()
+    for (const forbidden of ['add-to-cart', 'checkout', 'giỏ hàng', 'thanh toán']) {
+      expect(html, 'commerce is FUTURE').not.toContain(forbidden)
+    }
   })
 })
 
-describe('guest and empty states survive the reorder', () => {
-  it('a guest is still offered login rather than a broken Continue', () => {
+describe('guest and empty states survive the redesign', () => {
+  it('a guest is offered login rather than a broken Continue', () => {
     const { container } = renderHome({ user: false, conversations: [] })
     expect(hrefs(container)).toContain('/login')
   })

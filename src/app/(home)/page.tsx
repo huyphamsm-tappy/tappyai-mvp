@@ -1,7 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import { getMemory } from '@/lib/memory/memoryService'
-import HomeView from '../HomeView'
+// V3 Web redesign — the Home surface is now the V3 panel grid. `HomeView` (the
+// pre-V3 single-column composition) is retained in the tree unreferenced so the
+// old layout stays available for comparison during the visual review gate.
+import HomeV3 from '../HomeV3'
 
 export default async function HomePage() {
   const supabase = createClient()
@@ -137,14 +140,10 @@ export default async function HomePage() {
   }))
 
   return (
-    <HomeView
+    <HomeV3
       user={!!user}
       userInfo={userInfo}
       firstName={firstName}
-      heroTextVi={heroTextVi}
-      heroHour={vnHour}
-      heroIsWeekend={isWeekend}
-      heroDom={dayOfMonth}
       suggestions={SUGGESTIONS}
       conversations={convList}
     />
