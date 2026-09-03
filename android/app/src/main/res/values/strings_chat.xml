@@ -123,4 +123,18 @@
     <!-- Read aloud. Two distinct outcomes: one says do not bother, the other says try again. -->
     <string name="chat_tts_language_unsupported">This reply is in a language Tappy can\'t read aloud yet. You can still read it above.</string>
     <string name="chat_tts_language_failed">Couldn\'t read that answer aloud. Please try again.</string>
+
+    <!-- D1 — the shopping DECISION card (web parity: ShoppingDecision.tsx / w5/shoppingDecision.ts).
+         A value the server did not supply renders as "price unknown", never as a fabricated number. -->
+    <string name="shopping_decision_recommended">Best pick</string>
+    <string name="shopping_decision_match_exact">Matches what you asked for</string>
+    <string name="shopping_decision_match_different">Different config</string>
+    <string name="shopping_decision_match_unknown">Config unclear</string>
+    <string name="shopping_decision_no_price">price unknown</string>
+    <string name="shopping_decision_unknown_seller">Seller unknown</string>
+    <string name="shopping_decision_trade_off">Trade-off</string>
+    <string name="shopping_decision_conditional">Depends on your needs.</string>
+    <string name="shopping_decision_options_title">Your options</string>
+    <string name="shopping_decision_other_options">Other options</string>
+    <string name="shopping_decision_view">View</string>
 </resources>

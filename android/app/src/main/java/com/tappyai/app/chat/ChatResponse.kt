@@ -95,6 +95,8 @@ data class ParsedAssistantReply(
     val ctaButtons: List<CtaButton>,
     val followups: List<String>,
     val segments: List<ReplySegment>,
+    /** D1 — the decoded shopping decision, or null when the turn carried none. */
+    val shopping: ShoppingDecisionView? = null,
 )
 
 /**
@@ -264,9 +266,25 @@ object ChatResponseParser {
             ?: emptyList()
         if (fuMatch != null) text = FOLLOWUPS_RE.replace(text, "")
 
-        // 4. Shopping decision block (P0-1). Stripped, never rendered: the server emits it as a
-        // `0:` text frame BEFORE the prose on a shopping turn, so an unhandled block is the first
-        // thing the user reads. Closed form first, then a trailing unterminated one.
+        // 4. Shopping decision block.
+        //
+        // D1 (P4-06). This block used to be stripped and DISCARDED, so a mobile user on a shopping
+        // turn read the prose and silently lost the decision itself. It is now decoded into
+        // [ShoppingDecisionView] and rendered as a card, matching web.
+        //
+        // Decode and strip stay independent, in that order: the strip below runs whether or not the
+        // JSON parsed, because a block we cannot understand is still a block the user must not read.
+        val shoppingBody = SHOPPING_RE.find(text)?.value
+            ?.removePrefix("[TAPPY_SHOPPING]")?.removePrefix("[tappy_shopping]")
+            ?.removeSuffix("[/TAPPY_SHOPPING]")?.removeSuffix("[/tappy_shopping]")
+        val shopping = shoppingBody?.let { body ->
+            runCatching { json.decodeFromString<ShoppingDecisionView>(body.trim()) }
+                .getOrNull()
+                ?.takeIf { it.entities.isNotEmpty() }
+        }
+        // The server emits this block as a `0:` text frame BEFORE the prose on a shopping turn, so
+        // an unhandled block is the first thing the user reads. Closed form, then a trailing
+        // unterminated one.
         text = SHOPPING_RE.replace(text, "")
         text = SHOPPING_PARTIAL_RE.replace(text, "")
 
@@ -288,6 +306,7 @@ object ChatResponseParser {
             ctaButtons = buttons,
             followups = followups,
             segments = segment(text),
+            shopping = shopping,
         )
     }
 

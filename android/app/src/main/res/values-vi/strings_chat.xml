@@ -122,4 +122,17 @@
     <!-- Đọc to. Hai tình huống khác nhau: một cái bảo đừng thử nữa, một cái bảo thử lại. -->
     <string name="chat_tts_language_unsupported">Câu trả lời này ở ngôn ngữ Tappy chưa đọc được. Bạn vẫn xem được nội dung bên trên.</string>
     <string name="chat_tts_language_failed">Chưa đọc được câu trả lời. Bạn thử lại giúp mình nhé.</string>
+
+    <!-- D1 — the shopping DECISION card (web parity: ShoppingDecision.tsx / w5/shoppingDecision.ts). -->
+    <string name="shopping_decision_recommended">Nên chọn</string>
+    <string name="shopping_decision_match_exact">Đúng cấu hình bạn cần</string>
+    <string name="shopping_decision_match_different">Khác cấu hình</string>
+    <string name="shopping_decision_match_unknown">Chưa rõ cấu hình</string>
+    <string name="shopping_decision_no_price">chưa rõ giá</string>
+    <string name="shopping_decision_unknown_seller">Người bán chưa rõ</string>
+    <string name="shopping_decision_trade_off">Đánh đổi</string>
+    <string name="shopping_decision_conditional">Tùy nhu cầu của bạn.</string>
+    <string name="shopping_decision_options_title">Các lựa chọn phù hợp</string>
+    <string name="shopping_decision_other_options">Lựa chọn khác</string>
+    <string name="shopping_decision_view">Xem</string>
 </resources>

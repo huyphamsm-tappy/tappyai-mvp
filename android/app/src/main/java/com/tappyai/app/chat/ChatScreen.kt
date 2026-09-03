@@ -239,6 +239,13 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                 }
                             }
                             message.plan?.let { plan -> TripPlanCard(plan) }
+                            // D1 — the shopping DECISION. Rendered only once generation is done,
+                            // like every other structured block: a half-arrived decision is not a
+                            // decision, and showing one mid-stream is how partial JSON reached
+                            // users in the first place.
+                            message.shopping?.let { view ->
+                                if (!isResponding) ShoppingDecisionCard(view)
+                            }
                             if (!isResponding && !message.isError) {
                                 Box(modifier = Modifier.fadeIn()) {
                                     MessageActionBar(
