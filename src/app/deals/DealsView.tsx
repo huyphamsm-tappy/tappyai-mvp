@@ -9,6 +9,7 @@ import { useTranslation, resolvedClientLocale } from '@/lib/i18n/useTranslation'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { promoCountdown } from '@/lib/deals/countdown'
+import AskTappyButton from '@/components/chat/AskTappyButton'
 
 // Public deal shape from GET /api/deals (kept local so this client component
 // never imports the server-only data layer). discountLabel/voucherCode/endAt are
@@ -225,6 +226,14 @@ function DealCard({ deal }: { deal: PartnerDeal }) {
           </button>
         )}
         <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('deals.viaSource', { source: deal.partnerName })}</p>
+
+        {/* P4-12 — the bridge into the assistant (DD-004). A deal used to dead-end at the
+            partner's site; now the user can carry it into a conversation instead. The card
+            itself is an <a>, so this button stops propagation the same way the voucher copy
+            button above it does. Deals remains Deals — no commerce behaviour is added. */}
+        <div className="mt-2">
+          <AskTappyButton subject={deal.title} category="shopping" />
+        </div>
       </div>
 
       <ExternalLink

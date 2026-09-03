@@ -50,7 +50,7 @@ function renderHome(overrides: Partial<React.ComponentProps<typeof HomeView>> = 
   return render(
     <HomeView
       user
-      userInfo={null}
+      userInfo={undefined}
       firstName="Huy"
       heroTextVi="Chào bạn"
       heroHour={12}

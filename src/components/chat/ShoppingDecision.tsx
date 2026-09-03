@@ -1,9 +1,10 @@
 'use client'
 
-import { ExternalLink } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { formatVndShort, formatVndRange, type PriceLocale } from '@/lib/format/vndPrice'
-import type { SynthesisView, SynthesisEntityView, SynthesisOfferView } from '@/lib/ai/consultative/synthesisView'
+import { formatVndRange, type PriceLocale } from '@/lib/format/vndPrice'
+import type { SynthesisView, SynthesisEntityView } from '@/lib/ai/consultative/synthesisView'
+import MatchBadge from '@/components/chat/structured/MatchBadge'
+import OfferRow from '@/components/chat/structured/OfferRow'
 
 // ── Phase 9: render the DECISION, not the catalogue ─────────────────────────
 //
@@ -16,47 +17,13 @@ import type { SynthesisView, SynthesisEntityView, SynthesisOfferView } from '@/l
 // "chưa rõ", never a fabricated number. All labels come from i18n so an English
 // session gets an English decision, matching the localised prose above it.
 
-const MATCH_CLS: Record<SynthesisEntityView['matchesRequest'], string> = {
-  khop:    'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
-  khac:    'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
-  chua_ro: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300',
-}
-const MATCH_KEY: Record<SynthesisEntityView['matchesRequest'], string> = {
-  khop: 'shoppingDecision.matchExact',
-  khac: 'shoppingDecision.matchDifferent',
-  chua_ro: 'shoppingDecision.matchUnknown',
-}
-
-function MatchBadge({ m }: { m: SynthesisEntityView['matchesRequest'] }) {
-  const { t } = useTranslation()
-  return <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-medium ${MATCH_CLS[m]}`}>{t(MATCH_KEY[m])}</span>
-}
-
-function OfferRow({ o }: { o: SynthesisOfferView }) {
-  const { t, locale } = useTranslation()
-  const seller = o.seller ?? t('shoppingDecision.unknownSeller')
-  const cond = o.condition ? ` · ${o.condition}` : ''
-  return (
-    <div className="flex items-center justify-between gap-2 py-1.5 text-sm">
-      <span className="min-w-0 truncate text-gray-700 dark:text-gray-300">
-        {seller}<span className="text-gray-400 dark:text-gray-500">{cond}</span>
-      </span>
-      <span className="flex items-center gap-2 flex-shrink-0">
-        <span className="tabular-nums font-medium text-gray-900 dark:text-gray-100">{formatVndShort(o.price, locale as PriceLocale) ?? t("shoppingDecision.noPrice")}</span>
-        {o.url && (
-          <a
-            href={o.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-primary-600 dark:text-primary-400 hover:underline"
-          >
-            {t('shoppingDecision.view')}<ExternalLink className="w-3 h-3" />
-          </a>
-        )}
-      </span>
-    </div>
-  )
-}
+// MatchBadge and OfferRow used to live here. They were EXTRACTED to
+// `structured/` (DD-008) so a place, product or merchant entity can reuse the
+// same badge and the same offer row without a second implementation.
+//
+// This was a move, not a redesign: the markup, the labels, the colours and the
+// unknown-value handling are unchanged, and this component's existing tests pass
+// untouched — which is the point of doing it this way round.
 
 /** A non-recommended configuration, kept compact so alternatives stay visible. */
 function AltEntity({ e }: { e: SynthesisEntityView }) {

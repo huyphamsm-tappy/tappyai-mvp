@@ -14,6 +14,9 @@ import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
+import ComparisonBlock from '@/components/chat/structured/ComparisonBlock'
+import ConfirmationPrompt from '@/components/chat/structured/ConfirmationPrompt'
+import { comparisonFromSynthesis } from '@/lib/structuredContent/comparisonFromSynthesis'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
@@ -690,6 +693,19 @@ export default function ChatInterface({
   const [voiceError, setVoiceError] = useState<string | null>(null)
   // After dictation ends, auto-send with a short grace window the user can cancel.
   const [pendingSend, setPendingSend] = useState(false)
+  // ── The action boundary (DD-006) ──────────────────────────────────────────
+  //
+  // `internal_booking` is the one CTA where Tappy acts on the user's behalf rather than handing
+  // them off to somebody else's site, so it is the one that must not happen on a single implicit
+  // tap. Holding the pending action in state means the navigation below cannot run until the user
+  // explicitly confirms; navigating away or cancelling simply drops it, so an abandoned prompt
+  // FAILS CLOSED.
+  //
+  // Deliberately NOT every CTA. Maps, search, call and external booking links hand off to a
+  // destination the user can see and back out of, and confirming all of them would be exactly the
+  // confirmation fatigue the UX spec rejects — which destroys the signal for the action that
+  // genuinely needs it.
+  const [pendingBooking, setPendingBooking] = useState<{ url: string; name: string; address: string } | null>(null)
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const [userPreferences, setUserPreferences] = useState<string[]>([])
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -1104,6 +1120,28 @@ export default function ChatInterface({
   }, [])
 
   // Save the current (anonymous) transcript so it survives the /login round-trip.
+  /**
+   * Performs the booking navigation the user just confirmed (DD-006).
+   *
+   * This is the ORIGINAL `internal_booking` handler, moved behind the confirmation rather than
+   * rewritten: it still waits for any in-flight place save so the booking page opens with the saved
+   * record present, then refreshes and navigates. Nothing about the action changed — only that the
+   * user now has to say yes first.
+   */
+  const runPendingBooking = async () => {
+    const target = pendingBooking
+    if (!target) return
+    if (savePendingRef.current || savePromiseRef.current) {
+      const deadline = Date.now() + 2000
+      while (savePendingRef.current && !savePromiseRef.current && Date.now() < deadline) {
+        await new Promise(r => setTimeout(r, 20))
+      }
+      if (savePromiseRef.current) await savePromiseRef.current
+    }
+    router.refresh()
+    router.push(target.url)
+  }
+
   const stashPendingChat = () => {
     try {
       const msgs = messagesRef.current
@@ -1322,6 +1360,21 @@ export default function ChatInterface({
                       </div>
                       {plan && <TripPlanCard plan={plan} />}
                       {shopView && <ShoppingDecision view={shopView} heroImage={heroImage} />}
+                      {/* Comparison (DD-005). Derived from the SAME payload the decision above
+                          renders — no extra request, nothing inferred. Offered only once the reply
+                          is complete, like every other structured action, and only when there are
+                          at least two options to compare. */}
+                      {shopView && !(isLoading && isLastMessage) && (() => {
+                        const cmp = comparisonFromSynthesis(shopView, t, locale)
+                        return cmp ? (
+                          <ComparisonBlock
+                            entities={cmp.entities}
+                            attributes={cmp.attributes}
+                            recommendedKey={cmp.recommendedKey}
+                            reason={cmp.reason}
+                          />
+                        ) : null
+                      })()}
                       {/* Action bar (copy/share/like/dislike/TTS/regenerate) — only
                           once the reply is done, fading in for a polished finish. */}
                       {!(isLoading && isLastMessage) && (
@@ -1357,19 +1410,18 @@ export default function ChatInterface({
                                   href={btn.url}
                                   target={btn.type === 'internal_booking' ? undefined : '_blank'}
                                   rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
-                                  onClick={async (e) => {
+                                  onClick={(e) => {
                                     logCTAClick(btn)
                                     if (btn.type === 'internal_booking') {
+                                      // Ask before acting (DD-006). The navigation itself is
+                                      // unchanged — it now runs from `runPendingBooking` only
+                                      // after an explicit confirm.
                                       e.preventDefault()
-                                      if (savePendingRef.current || savePromiseRef.current) {
-                                        const deadline = Date.now() + 2000
-                                        while (savePendingRef.current && !savePromiseRef.current && Date.now() < deadline) {
-                                          await new Promise(r => setTimeout(r, 20))
-                                        }
-                                        if (savePromiseRef.current) await savePromiseRef.current
-                                      }
-                                      router.refresh()
-                                      router.push(btn.url)
+                                      setPendingBooking({
+                                        url: btn.url,
+                                        name: place?.name || detectFirstPlaceName(text, buttons),
+                                        address: place?.address || '',
+                                      })
                                     }
                                   }}
                                   className={cn(
@@ -1436,6 +1488,18 @@ export default function ChatInterface({
                 </div>
               )
             })}
+            {/* The action boundary, made visible (DD-006). Rendered in the thread rather than as a
+                floating dialog so the user can still read the recommendation they are acting on.
+                Cancel — and navigating away — simply drop the pending action. */}
+            {pendingBooking && (
+              <ConfirmationPrompt
+                consequence={t('confirm.bookingConsequence', { place: pendingBooking.name || t('confirm.thisPlace') })}
+                changes={[pendingBooking.address].filter(Boolean)}
+                confirmLabel={t('confirm.bookingConfirm')}
+                onConfirm={runPendingBooking}
+                onCancel={() => setPendingBooking(null)}
+              />
+            )}
             {waitingForReply && (
               <div className="flex gap-3 animate-fade-in">
                 <TappyAvatar category={category} active searching={!!activeTool} />
