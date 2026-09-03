@@ -1,19 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import Header from '@/components/Header'
-import BottomNav from '@/components/BottomNav'
-import MenuItem from '@/components/MenuItem'
+import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
+import Panel from '@/components/v3/Panel'
 import { TappyMascot } from '@/components/TappyMascot'
-import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users, TrendingDown, Brain, Star, Plug } from 'lucide-react'
+import { Settings, UserCircle } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-// Same product gates as the signed-in view — a guest must never be shown an
-// entry point that is hidden for real users.
-import { SHOW_PRO_UPGRADE, SHOW_APP_CONNECTIONS } from '@/lib/config/product'
-
-/** /login honours `returnTo` (relative paths only — validated in login/page.tsx),
- * so a guest who signs in from a locked row lands on the row they wanted. */
-const signInHref = (to: string) => `/login?returnTo=${encodeURIComponent(to)}`
+import { ProfileRowList, accountRows, settingsRows, signInHref } from './ProfileRows'
 
 // Signed-out Profile screen. The "Me" tab is one of five primary tabs, so
 // ejecting anonymous visitors to a full-page /login made the whole product look
@@ -21,78 +14,60 @@ const signInHref = (to: string) => `/login?returnTo=${encodeURIComponent(to)}`
 // questions/day). This mirrors the signed-in layout instead: the same rows in
 // the same order, locked, each linking to /login?returnTo=<that row>.
 //
+// The row inventory is now shared with ProfileView (see ProfileRows) rather than
+// hand-written twice, so the two screens cannot drift apart — which matters more
+// here than anywhere, since "same rows, same order" IS this screen's whole point.
+//
 // This is presentation only. Every destination still runs its own server-side
 // auth check — nothing here grants access to anything.
+
 export default function GuestProfileView() {
   const { t } = useTranslation()
-  const locked = t('profile.guest.locked')
 
   return (
-    <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header />
-
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
+    <V3Shell title={t('v3.panel.profile')} subtitle={t('profile.guest.title')} activeTab="/profile">
+      <div className="space-y-4">
         {/* Guest identity card — occupies the same slot as the profile card so
             the screen reads as "your account, not set up yet" rather than a wall. */}
-        <div className="card p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center flex-shrink-0">
-              <TappyMascot pose="wave" size={40} className="w-10 h-10" />
+        <section className="v3-panel">
+          <div className="p-5">
+            <div className="flex items-center gap-4">
+              <span
+                className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl"
+                style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.30), rgba(51,145,255,0.26))' }}
+              >
+                <TappyMascot pose="wave" size={40} className="h-10 w-10" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-bold" style={{ color: 'var(--v3-fg)' }}>{t('profile.guest.title')}</h2>
+                <p className="mt-0.5 text-[13px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+                  {t('profile.guest.subtitle')}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="font-bold text-gray-900 dark:text-white text-lg">
-                {t('profile.guest.title')}
-              </h2>
-              <p className="text-content-secondary text-sm mt-0.5">
-                {t('profile.guest.subtitle')}
-              </p>
-            </div>
-          </div>
 
-          <Link
-            href={signInHref('/profile')}
-            className="mt-5 flex w-full items-center justify-center rounded-xl bg-interactive px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-interactive-hover"
-          >
-            {t('profile.guest.signIn')}
-          </Link>
+            <Link
+              href={signInHref('/profile')}
+              className="mt-5 flex min-h-[44px] w-full items-center justify-center rounded-xl px-5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
+              style={{ background: 'var(--v3-accent)' }}
+            >
+              {t('profile.guest.signIn')}
+            </Link>
+          </div>
+        </section>
+
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <Panel title={t('profile.accountSection')} tone="accent" icon={<UserCircle size={13} />} bodyClassName="p-2">
+            <ProfileRowList rows={accountRows()} locked />
+          </Panel>
+
+          <Panel title={t('profile.settingsSection')} tone="violet" icon={<Settings size={13} />} bodyClassName="p-2">
+            <ProfileRowList rows={settingsRows()} locked />
+          </Panel>
         </div>
 
-        {/* Account group — same rows as ProfileView, locked. */}
-        <section>
-          <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-1">
-            {t('profile.accountSection')}
-          </h3>
-          <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={User} label={t('profile.account')} description={t('profile.account.desc')} href={signInHref('/profile/account')} locked lockedLabel={locked} />
-            <MenuItem icon={MessageCircle} label={t('profile.chatHistory')} description={t('profile.chatHistory.desc')} href={signInHref('/profile/history')} locked lockedLabel={locked} />
-            <MenuItem icon={CalendarDays} label={t('profile.bookings')} description={t('profile.bookings.desc')} href={signInHref('/profile/bookings')} locked lockedLabel={locked} />
-            <MenuItem icon={Heart} label={t('profile.preferences')} description={t('profile.preferences.desc')} href={signInHref('/profile/preferences')} locked lockedLabel={locked} />
-            <MenuItem icon={Bookmark} label={t('profile.saved')} description={t('profile.saved.desc')} href={signInHref('/profile/favorites')} locked lockedLabel={locked} />
-            <MenuItem icon={TrendingDown} label={t('profile.priceWatch')} description={t('profile.priceWatch.desc')} href={signInHref('/profile/price-watches')} locked lockedLabel={locked} />
-            <MenuItem icon={Brain} label={t('profile.tappyKnows')} description={t('profile.tappyKnows.desc')} href={signInHref('/profile/tappy-knows')} locked lockedLabel={locked} />
-            {SHOW_APP_CONNECTIONS && (
-              <MenuItem icon={Plug} label={t('profile.integrations')} description={t('profile.integrations.desc')} href={signInHref('/profile/integrations')} locked lockedLabel={locked} />
-            )}
-            <MenuItem icon={Star} label={t('profile.myReviews')} description={t('profile.myReviews.desc')} href={signInHref('/reviews')} locked lockedLabel={locked} />
-            <MenuItem icon={Users} label={t('profile.groupDining')} description={t('profile.groupDining.desc')} href={signInHref('/group/new')} locked lockedLabel={locked} />
-            {SHOW_PRO_UPGRADE && (
-              <MenuItem icon={Crown} label={t('profile.upgradePro')} description={t('profile.upgradePro.desc')} href={signInHref('/subscription')} locked lockedLabel={locked} />
-            )}
-          </div>
-        </section>
-
-        {/* Settings group */}
-        <section>
-          <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-1">
-            {t('profile.settingsSection')}
-          </h3>
-          <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={Settings} label={t('profile.settings')} description={t('profile.settings.desc')} href={signInHref('/profile/settings')} locked lockedLabel={locked} />
-          </div>
-        </section>
-      </main>
-
-      <BottomNav />
-    </div>
+        <V3Footer />
+      </div>
+    </V3Shell>
   )
 }

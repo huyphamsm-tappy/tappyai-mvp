@@ -9,6 +9,7 @@ import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
 import Panel, { ChipRow } from '@/components/v3/Panel'
 import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useNotifications } from '@/components/NotificationProvider'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import {
   Sparkles, PlayCircle, Inbox as InboxIcon, Tag, Store, ShieldCheck,
@@ -66,6 +67,15 @@ const SMART_TOOLS = [
   { href: '/viet-content', icon: PenLine, labelKey: 'v3.tool.captions', descKey: 'v3.tool.captionsDesc', tone: 'var(--v3-rose)' },
 ]
 
+/** Notification categories, tinted from the V3 palette. The title always says what it is —
+ *  colour identifies at a glance but is never the only signal. */
+const INBOX_TONE: Record<string, string> = {
+  social: 'var(--v3-rose)',
+  deal: 'var(--v3-amber)',
+  explore: 'var(--v3-violet)',
+  system: 'var(--v3-fg-secondary)',
+}
+
 const AI_CAPABILITIES = [
   { icon: Sparkles, labelKey: 'v3.cap.consultant', descKey: 'v3.cap.consultantDesc' },
   { icon: ScanText, labelKey: 'v3.cap.search', descKey: 'v3.cap.searchDesc' },
@@ -79,6 +89,17 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
   const { t, locale } = useTranslation()
   const router = useRouter()
   const [draft, setDraft] = useState('')
+  const [inboxFilter, setInboxFilter] = useState(0)
+
+  // Presentation only (V3 §6): the app-level store already fetches these for the bottom-nav badge
+  // (ADR-014). Nothing about delivery, consent or push identity changes here.
+  const { notifications } = useNotifications()
+  const inboxRows = notifications.filter(n => {
+    if (inboxFilter === 1) return n.category === 'social' && (n.type === 'comment' || n.type === 'follow')
+    if (inboxFilter === 2) return n.category === 'system' || n.type === 'broadcast'
+    if (inboxFilter === 3) return n.category === 'social'
+    return true
+  })
 
   /** Submitting NAVIGATES. Home never answers in place. */
   function ask(text: string) {
@@ -195,10 +216,43 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           action={{ label: t('v3.action.seeAll'), href: '/profile' }}
           className="xl:col-span-3"
         >
-          <ChipRow items={[t('v3.inbox.all'), t('v3.inbox.messages'), t('v3.inbox.announcements'), t('v3.inbox.activity')]} />
+          <ChipRow
+            items={[t('v3.inbox.all'), t('v3.inbox.messages'), t('v3.inbox.announcements'), t('v3.inbox.activity')]}
+            activeIndex={inboxFilter}
+            onSelect={setInboxFilter}
+          />
           {/* Real notifications only. A fake "someone liked your post" is a claim about
-              another person's behaviour, which is the worst possible thing to invent. */}
-          <p className="mt-4 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.inbox.empty')}</p>
+              another person's behaviour, which is the worst possible thing to invent — so this
+              reads the app-level store (ADR-014) and shows nothing when it has nothing. */}
+          {inboxRows.length === 0 ? (
+            <p className="mt-4 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.inbox.empty')}</p>
+          ) : (
+            <ul className="mt-3 space-y-2.5">
+              {inboxRows.slice(0, 4).map(n => (
+                <li key={n.id}>
+                  <Link href={n.entity_url || '/profile'} className="flex items-start gap-2.5">
+                    <span
+                      className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full"
+                      style={{ background: 'rgba(255,255,255,0.06)', color: INBOX_TONE[n.category] ?? 'var(--v3-fg-secondary)' }}
+                      aria-hidden="true"
+                    >
+                      <Bell size={13} />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center gap-1.5">
+                        <span className="truncate text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{n.title}</span>
+                        {!n.read_at && (
+                          <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{ background: 'var(--v3-rose)' }} aria-hidden="true" />
+                        )}
+                      </span>
+                      <span className="line-clamp-1 text-[11px]" style={{ color: 'var(--v3-fg-secondary)' }}>{n.body}</span>
+                      <span className="text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{formatRelativeTime(n.created_at, t, locale)}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
           <Link
             href="/profile"
             className="mt-3 flex min-h-[36px] items-center justify-center rounded-lg text-[12px] font-medium"
@@ -301,7 +355,10 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
 
       {/* ── Row 3 — tools, one strip, de-emphasised but complete ────────── */}
       <div id="smart-tools" className="mt-4">
-        <Panel title={t('v3.panel.smartTools')} tone="accent" icon={<Grid3x3 size={13} />} action={{ label: t('v3.action.openAll'), href: '/#smart-tools' }}>
+        {/* No "open all" action: every one of the nine tools is already on the strip, so the
+            link would scroll to the panel the user is looking at. An affordance that does
+            nothing is worse than no affordance. */}
+        <Panel title={t('v3.panel.smartTools')} tone="accent" icon={<Grid3x3 size={13} />}>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-9">
             {SMART_TOOLS.map(({ href, icon: Icon, labelKey, descKey, tone }) => (
               <Link key={labelKey} href={href} className="v3-tile flex flex-col gap-1.5 p-2.5">

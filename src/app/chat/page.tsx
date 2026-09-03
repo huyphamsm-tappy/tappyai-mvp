@@ -33,8 +33,12 @@ function ChatPageContent() {
     } catch (e) { console.error('Save failed:', e) }
   }, [category])
 
+  // V3 §9 — Chat joins the V3 ground. `v3-theme` supplies the palette and `dark` switches the
+  // thread's existing, already-designed dark treatment on, so the conversation reads as part of
+  // the same product instead of a light page reached from a dark one. No behaviour changes: the
+  // marker contract, the action boundary and the honesty rule are untouched.
   return (
-    <div className="flex flex-col h-dvh bg-white dark:bg-gray-950">
+    <div className="v3-theme dark flex flex-col h-dvh">
       <Header showBack backHref="/" title={catInfo ? `${catInfo.emoji} ${t(`tag.${catInfo.id}`)}` : 'TappyAI'} />
       <div className="flex-1 overflow-hidden">
         <ChatInterface initialMessage={query} initialCategory={category} onSave={handleSave} />

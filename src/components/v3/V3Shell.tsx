@@ -13,6 +13,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
+import { useNotifications } from '@/components/NotificationProvider'
 
 // ── V3 Web · Shell ──────────────────────────────────────────────────────────
 //
@@ -104,9 +105,15 @@ const GROUPS: NavGroup[] = [
   },
 ]
 
-/** The primary tab bar — the same five destinations as the bottom nav, plus reserved Marketplace. */
+/** The primary tab bar — the same five destinations as the bottom nav, plus reserved Marketplace.
+ *
+ *  🚨 `badge` marks the tab that shows the UNREAD COUNT, not a tab that always shows a dot. The
+ *  first draft of this shell painted a permanent rose dot here, which told every user they had
+ *  something waiting whether or not they did — a claim about their account with nothing behind it.
+ *  The count comes from the app-level notification store (ADR-014), the same source the bottom nav
+ *  and Explore already read, so a zero renders nothing. */
 const TABS: { href: string; labelKey: string; icon: typeof Home; badge?: boolean }[] = [
-  { href: '/', labelKey: 'v3.footer.aiCore', icon: Sparkles },
+  { href: '/', labelKey: 'v3.tab.aiAgent', icon: Sparkles },
   { href: '/reviews', labelKey: 'nav.explore', icon: PlayCircle },
   { href: '/deals', labelKey: 'nav.deals', icon: Tag },
   { href: '/marketplace', labelKey: 'v3.nav.marketplace', icon: Store },
@@ -126,6 +133,9 @@ export interface V3ShellProps {
 export default function V3Shell({ title, subtitle, activeTab = '/', user, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
+  // Presentation only: delivery, consent and push identity are untouched — this reads a count the
+  // store already maintains for the bottom nav.
+  const { unreadCount } = useNotifications()
 
   return (
     <div className="v3-theme min-h-dvh">
@@ -244,12 +254,13 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
                     >
                       <span className="relative">
                         <Icon size={18} aria-hidden="true" />
-                        {tab.badge && (
+                        {tab.badge && unreadCount > 0 && (
                           <span
-                            className="absolute -right-1.5 -top-1 h-1.5 w-1.5 rounded-full"
+                            className="absolute -right-2 -top-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[9px] font-bold leading-none text-white"
                             style={{ background: 'var(--v3-rose)' }}
-                            aria-hidden="true"
-                          />
+                          >
+                            {unreadCount > 99 ? '99+' : unreadCount}
+                          </span>
                         )}
                       </span>
                       {t(tab.labelKey)}
@@ -266,6 +277,14 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
                   style={{ background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-secondary)' }}
                 >
                   <Bell size={17} aria-hidden="true" />
+                  {unreadCount > 0 && (
+                    <span
+                      className="absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[9px] font-bold leading-none text-white"
+                      style={{ background: 'var(--v3-rose)' }}
+                    >
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
                 </Link>
                 <Link
                   href="/profile"

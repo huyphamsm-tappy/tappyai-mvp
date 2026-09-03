@@ -1,15 +1,29 @@
 'use client'
 
 import UserAvatar from '@/components/UserAvatar'
-import Header from '@/components/Header'
-import BottomNav from '@/components/BottomNav'
-import MenuItem from '@/components/MenuItem'
 import QRProfileButton from '@/components/QRProfileButton'
-import { User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users, TrendingDown, Brain, Star, Plug } from 'lucide-react'
+import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
+import Panel from '@/components/v3/Panel'
+import { Settings, UserCircle } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-// Pro visibility is a product decision owned by the shared config (single
-// source — also served to native clients via GET /api/config).
-import { SHOW_PRO_UPGRADE, SHOW_APP_CONNECTIONS } from '@/lib/config/product'
+import { ProfileRowList, accountRows, settingsRows } from './ProfileRows'
+
+// ── V3 Web redesign · §8 Profile ────────────────────────────────────────────
+//
+// PRESENTATION ONLY. Auth is untouched: `page.tsx` still does the server-side
+// `getUser()`, still renders `GuestProfileView` for anonymous visitors, and every
+// destination keeps its own server-side check. Nothing here reads or writes
+// account state.
+//
+// 🚨 EVERY ROW SURVIVED. The old screen was a light two-group `MenuItem` list; this
+// is the same inventory in V3 panels, both product flags still gating their rows
+// (see ProfileRows). A restyle that quietly drops a destination is a capability
+// loss wearing a coat of paint.
+//
+// 🚨 NO INVENTED IDENTITY. The reference shows post/follower/following counts. This
+// screen is given a conversation count and nothing else, so the conversation count
+// is what it shows. A "0 followers" the server never sent is a claim about the
+// user's account.
 
 type ProfileViewProps = {
   userId: string
@@ -30,75 +44,46 @@ export default function ProfileView({ userId, userInfo, firstName: rawFirstName,
   // C14 — the server cannot know the language, so it sends the bare name (possibly empty) and the
   // localized fallback word is applied here, where the dictionary is.
   const firstName = rawFirstName || t('home.friend')
+  const displayName = userInfo.full_name || firstName
 
   return (
-    <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header user={userInfo} />
-
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
-        {/* Profile card */}
-        <div className="card p-6">
-          <div className="flex items-center gap-4">
-            <UserAvatar
-              src={userInfo.avatar_url}
-              name={userInfo.full_name || firstName}
-              size={64}
-              className="ring-2 ring-primary-100 dark:ring-primary-900"
-            />
+    <V3Shell
+      title={t('v3.panel.profile')}
+      subtitle={displayName}
+      activeTab="/profile"
+      user={{ name: displayName, avatarUrl: userInfo.avatar_url }}
+    >
+      <div className="space-y-4">
+        {/* Identity */}
+        <section className="v3-panel">
+          <div className="flex items-center gap-4 p-5">
+            <UserAvatar src={userInfo.avatar_url} name={displayName} size={64} />
             <div className="min-w-0 flex-1">
-              <h2 className="font-bold text-gray-900 dark:text-white text-lg">{userInfo.full_name || firstName}</h2>
-              <p className="truncate text-content-secondary text-sm">{userInfo.email}</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-xs bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 px-2 py-0.5 rounded-full font-medium">
-                  {t('profile.conversationCount', { n: String(conversationCount) })}
-                </span>
-              </div>
+              <h2 className="truncate text-lg font-bold" style={{ color: 'var(--v3-fg)' }}>{displayName}</h2>
+              <p className="truncate text-[13px]" style={{ color: 'var(--v3-fg-secondary)' }}>{userInfo.email}</p>
+              <span
+                className="mt-1.5 inline-block rounded-full px-2 py-0.5 text-[11px] font-medium"
+                style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
+              >
+                {t('profile.conversationCount', { n: String(conversationCount) })}
+              </span>
             </div>
-            <QRProfileButton userId={userId} name={userInfo.full_name || firstName} />
+            <QRProfileButton userId={userId} name={displayName} />
           </div>
+        </section>
+
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <Panel title={t('profile.accountSection')} tone="accent" icon={<UserCircle size={13} />} bodyClassName="p-2">
+            <ProfileRowList rows={accountRows()} />
+          </Panel>
+
+          <Panel title={t('profile.settingsSection')} tone="violet" icon={<Settings size={13} />} bodyClassName="p-2">
+            <ProfileRowList rows={settingsRows()} />
+          </Panel>
         </div>
 
-        {/* Account group */}
-        <section>
-          <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-1">
-            {t('profile.accountSection')}
-          </h3>
-          <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={User} label={t('profile.account')} description={t('profile.account.desc')} href="/profile/account" />
-            <MenuItem icon={MessageCircle} label={t('profile.chatHistory')} description={t('profile.chatHistory.desc')} href="/profile/history" />
-            <MenuItem icon={CalendarDays} label={t('profile.bookings')} description={t('profile.bookings.desc')} href="/profile/bookings" />
-            <MenuItem icon={Heart} label={t('profile.preferences')} description={t('profile.preferences.desc')} href="/profile/preferences" />
-            <MenuItem icon={Bookmark} label={t('profile.saved')} description={t('profile.saved.desc')} href="/profile/favorites" />
-            <MenuItem icon={TrendingDown} label={t('profile.priceWatch')} description={t('profile.priceWatch.desc')} href="/profile/price-watches" />
-            <MenuItem icon={Brain} label={t('profile.tappyKnows')} description={t('profile.tappyKnows.desc')} href="/profile/tappy-knows" />
-            {/* App Connections entry point hidden app-wide (owner product decision
-                2026-07-17). Page + APIs stay intact; flip SHOW_APP_CONNECTIONS +
-                the Android gate together to re-enable. */}
-            {SHOW_APP_CONNECTIONS && (
-              <MenuItem icon={Plug} label={t('profile.integrations')} description={t('profile.integrations.desc')} href="/profile/integrations" />
-            )}
-            <MenuItem icon={Star} label={t('profile.myReviews')} description={t('profile.myReviews.desc')} href="/reviews" />
-            <MenuItem icon={Users} label={t('profile.groupDining')} description={t('profile.groupDining.desc')} href="/group/new" />
-            {/* Pro upgrade tạm ẩn trong giai đoạn test miễn phí (chưa có pháp nhân
-                để thanh toán). Đổi false → true để bật lại khi lên Pro. */}
-            {SHOW_PRO_UPGRADE && (
-              <MenuItem icon={Crown} label={t('profile.upgradePro')} description={t('profile.upgradePro.desc')} href="/subscription" />
-            )}
-          </div>
-        </section>
-
-        {/* Settings group */}
-        <section>
-          <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-1">
-            {t('profile.settingsSection')}
-          </h3>
-          <div className="card divide-y divide-gray-100 dark:divide-gray-800">
-            <MenuItem icon={Settings} label={t('profile.settings')} description={t('profile.settings.desc')} href="/profile/settings" />
-          </div>
-        </section>
-      </main>
-
-      <BottomNav />
-    </div>
+        <V3Footer />
+      </div>
+    </V3Shell>
   )
 }

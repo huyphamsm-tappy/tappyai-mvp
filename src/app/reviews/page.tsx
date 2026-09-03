@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Heart, MessageCircle, ChevronRight, ChevronUp, ChevronDown,
-  X, Loader2, Home, Search, Plus, Bell, User, AlertCircle, Compass
+  X, Loader2, Home, Search, Plus, Bell, User, AlertCircle, Compass, Sparkles
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { track } from '@/lib/tracking/tracker'
@@ -47,9 +47,12 @@ const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
 function TikNav({ tab, setTab, userId, unreadCount = 0 }: { tab: string; setTab: (t: string) => void; userId: string | null; unreadCount?: number }) {
   const { t } = useTranslation()
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur border-t border-gray-800 flex items-center h-[60px]">
+    <div
+      className="fixed bottom-0 left-0 right-0 z-30 backdrop-blur border-t flex items-center h-[60px]"
+      style={{ background: 'color-mix(in srgb, var(--v3-panel) 92%, transparent)', borderColor: 'var(--v3-border)' }}
+    >
       {/* App Home — TappyAI has exactly one Home: the AI Chat home at "/". Reviews never redefines it. */}
-      <Link href="/" className="flex-1 flex flex-col items-center gap-0.5 py-1 text-gray-500">
+      <Link href="/" className="flex-1 flex flex-col items-center gap-0.5 py-1" style={{ color: 'var(--v3-fg-muted)' }}>
         <Home size={24} /><span className="text-[10px]">{t('reviews.navHome')}</span>
       </Link>
       {[
@@ -57,28 +60,30 @@ function TikNav({ tab, setTab, userId, unreadCount = 0 }: { tab: string; setTab:
         { id: 'explore', icon: <Search size={24} />, label: t('reviews.navSearch') },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
-          className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === item.id ? 'text-white' : 'text-gray-500'}`}>
+          className="flex-1 flex flex-col items-center gap-0.5 py-1"
+          style={{ color: tab === item.id ? 'var(--v3-accent)' : 'var(--v3-fg-muted)' }}>
           {item.icon}<span className="text-[10px]">{item.label}</span>
         </button>
       ))}
-      {/* Post button */}
-      <Link href="/reviews/new" className="flex-1 flex justify-center">
-        <div className="relative w-11 h-7 flex items-center justify-center">
-          <div className="absolute inset-0 bg-[#69c9d0] rounded-lg" style={{ right: 4 }} />
-          <div className="absolute inset-0 bg-[#fe2c55] rounded-lg" style={{ left: 4 }} />
-          <div className="relative bg-white rounded-lg w-[38px] h-full flex items-center justify-center">
-            <Plus size={20} className="text-black" strokeWidth={2.5} />
-          </div>
+      {/* Post button — the V3 accent, not TikTok's red/cyan lockup. */}
+      <Link href="/reviews/new" className="flex-1 flex justify-center" aria-label={t('reviews.sidebarPost')}>
+        <div
+          className="w-11 h-8 rounded-lg flex items-center justify-center"
+          style={{ background: 'var(--v3-accent)' }}
+        >
+          <Plus size={20} className="text-white" strokeWidth={2.5} />
         </div>
       </Link>
-      <button onClick={() => setTab('inbox')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === 'inbox' ? 'text-white' : 'text-gray-500'}`}>
+      <button onClick={() => setTab('inbox')} className="flex-1 flex flex-col items-center gap-0.5 py-1"
+        style={{ color: tab === 'inbox' ? 'var(--v3-accent)' : 'var(--v3-fg-muted)' }}>
         <span className="relative">
           <Bell size={24} />
           {unreadCount > 0 && (
             // key on the value so the badge re-mounts and re-pops each time the
             // count changes (tailwindcss-animate is already enabled app-wide).
             <span key={unreadCount}
-              className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-[#fe2c55] text-white text-[9px] font-bold leading-none flex items-center justify-center ring-2 ring-black animate-in zoom-in-50 duration-200"
+              className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full text-white text-[9px] font-bold leading-none flex items-center justify-center ring-2 ring-[color:var(--v3-panel)] animate-in zoom-in-50 duration-200"
+              style={{ background: 'var(--v3-rose)' }}
               aria-label={t('reviews.navInbox')}>
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>
@@ -86,7 +91,8 @@ function TikNav({ tab, setTab, userId, unreadCount = 0 }: { tab: string; setTab:
         </span>
         <span className="text-[10px]">{t('reviews.navInbox')}</span>
       </button>
-      <button onClick={() => setTab('profile')} className={`flex-1 flex flex-col items-center gap-0.5 py-1 ${tab === 'profile' ? 'text-white' : 'text-gray-500'}`}>
+      <button onClick={() => setTab('profile')} className="flex-1 flex flex-col items-center gap-0.5 py-1"
+        style={{ color: tab === 'profile' ? 'var(--v3-accent)' : 'var(--v3-fg-muted)' }}>
         <User size={24} /><span className="text-[10px]">{t('reviews.navProfile')}</span>
       </button>
     </div>
@@ -94,27 +100,49 @@ function TikNav({ tab, setTab, userId, unreadCount = 0 }: { tab: string; setTab:
 }
 
 /* ─── Desktop sidebar ─── */
+//
+// V3 Web redesign · §3 Explore. OD-2 keeps Explore's IDENTITY — the feed mechanics, the tab set and
+// the always-dark treatment are untouched. What changes is the CHROME where Explore meets the rest
+// of the app: this sidebar used to be TikTok's (pure black, #fe2c55 CTA, white/10 active state), so
+// walking from Home into Explore read as leaving TappyAI for a different product. It now speaks the
+// same V3 vocabulary as `V3Shell` — same brand lockup, same panel surface, same accent — while the
+// media stage behind it stays black, because video wants black.
 function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) {
   const { t } = useTranslation()
+  const itemBase = 'flex items-center gap-3.5 px-3 py-2.5 rounded-xl text-[14px] transition-colors'
   return (
-    <aside className="hidden md:flex flex-col w-[240px] xl:w-[260px] fixed left-[max(0px,calc(50vw-500px))] top-0 h-screen py-6 px-4 gap-1 border-r border-gray-800">
+    <aside
+      className="hidden md:flex flex-col w-[240px] xl:w-[260px] fixed left-[max(0px,calc(50vw-500px))] top-0 h-screen py-5 px-3 gap-0.5 border-r"
+      style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel)' }}
+    >
       {/* Logo returns to the app's single Home (AI Chat at "/") */}
-      <Link href="/" className="text-white font-black text-2xl px-3 mb-4 block">TappyAI</Link>
+      <Link href="/" className="mb-5 flex items-center gap-2 px-2">
+        <Sparkles size={18} style={{ color: 'var(--v3-amber)' }} aria-hidden="true" />
+        <span className="flex flex-col leading-tight">
+          <span className="text-lg font-extrabold" style={{ color: 'var(--v3-accent)' }}>TappyAI</span>
+          <span className="text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.brand.tagline')}</span>
+        </span>
+      </Link>
       {/* App Home — TappyAI has exactly one Home: the AI Chat home at "/". Reviews never redefines it. */}
-      <Link href="/" className="flex items-center gap-4 px-3 py-2.5 rounded-xl text-[15px] font-medium text-gray-300 hover:bg-white/5 transition-colors">
-        <Home size={22} />{t('reviews.navHome')}
+      <Link href="/" className={`${itemBase} hover:bg-white/5`} style={{ color: 'var(--v3-fg-secondary)' }}>
+        <Home size={18} />{t('reviews.navHome')}
       </Link>
       {[
-        { id: 'home', icon: <Compass size={22} />, label: t('reviews.navDiscover') },
-        { id: 'explore', icon: <Search size={22} />, label: t('reviews.navSearch') },
-        { id: 'profile', icon: <User size={22} />, label: t('reviews.navProfileAndPosts') },
+        { id: 'home', icon: <Compass size={18} />, label: t('reviews.navDiscover') },
+        { id: 'explore', icon: <Search size={18} />, label: t('reviews.navSearch') },
+        { id: 'profile', icon: <User size={18} />, label: t('reviews.navProfileAndPosts') },
       ].map(item => (
         <button key={item.id} onClick={() => setTab(item.id)}
-          className={`flex items-center gap-4 px-3 py-2.5 rounded-xl text-[15px] font-${tab === item.id ? 'bold text-white bg-white/10' : 'medium text-gray-300 hover:bg-white/5'} transition-colors`}>
+          className={`${itemBase} ${tab === item.id ? 'font-semibold' : 'hover:bg-white/5'}`}
+          style={tab === item.id
+            ? { background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }
+            : { color: 'var(--v3-fg-secondary)' }}>
           {item.icon}{item.label}
         </button>
       ))}
-      <Link href="/reviews/new" className="mt-4 mx-1 bg-[#fe2c55] hover:bg-[#ef2950] text-white font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors">
+      <Link href="/reviews/new"
+        className="mt-4 mx-1 text-white font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
+        style={{ background: 'var(--v3-accent)' }}>
         <Plus size={18} />{t('reviews.sidebarPost')}
       </Link>
     </aside>
@@ -316,8 +344,8 @@ function InboxTab({ notifs, notifsLoading, notifsError, hotPlaces, hotPlacesLoad
   const sections = ['VỪA XONG', 'HÔM NAY', 'TUẦN NÀY'].filter(l => bySection.has(l)).map(l => ({ label: l, items: bySection.get(l)! }))
 
   return (
-    <div className="h-dvh flex flex-col bg-black overflow-hidden">
-      <div className="flex-shrink-0 pt-14 px-4 pb-3 border-b border-gray-800">
+    <div className="h-dvh flex flex-col overflow-hidden">
+      <div className="flex-shrink-0 pt-14 px-4 pb-3 border-b border-[color:var(--v3-border)]">
         <h2 className="text-white font-bold text-lg">{t('reviews.notificationsTitle')}</h2>
       </div>
 
@@ -1085,7 +1113,7 @@ function ReviewsPageInner() {
   }
 
   return (
-    <div className="bg-black h-dvh overflow-hidden flex" onClickCapture={onLeaveByLink} onWheel={onPageWheel}>
+    <div className="v3-theme h-dvh overflow-hidden flex" onClickCapture={onLeaveByLink} onWheel={onPageWheel}>
       <Sidebar tab={tab} setTab={handleSetTab} />
 
       {/* Content */}
@@ -1112,7 +1140,7 @@ function ReviewsPageInner() {
                     : <Link href="/reviews/new" className="bg-[#fe2c55] text-white px-6 py-2.5 rounded-full font-semibold">{t('reviews.postNow')}</Link>}
                 </div>
               : <>
-                  <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+                  <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory bg-black" style={{ scrollbarWidth: 'none' }}>
                     {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} onSoundTap={setSoundTrackId} onFollow={followFromFeed} onOpenLikes={rev => setLikesOf(rev.id)} />)}
                   </div>
                   {/* Desktop prev/next — no swipe on desktop, so surface arrows to the right of the column. */}
@@ -1131,10 +1159,10 @@ function ReviewsPageInner() {
 
           {/* Explore / Search */}
           {tab === 'explore' && (
-            <div className="h-dvh flex flex-col bg-black overflow-hidden">
+            <div className="h-dvh flex flex-col overflow-hidden">
               {/* Search bar + mode toggle */}
-              <div className="flex-shrink-0 pt-12 px-4 pb-3 border-b border-gray-800 space-y-2">
-                <div className="flex items-center gap-2 bg-gray-900 rounded-2xl px-4 py-2.5">
+              <div className="flex-shrink-0 pt-12 px-4 pb-3 border-b border-[color:var(--v3-border)] space-y-2">
+                <div className="flex items-center gap-2 bg-[color:var(--v3-panel-elevated)] rounded-2xl px-4 py-2.5">
                   <Search size={18} className="text-gray-500 flex-shrink-0" />
                   <input
                     autoFocus

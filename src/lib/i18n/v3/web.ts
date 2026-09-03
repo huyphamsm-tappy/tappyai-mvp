@@ -42,6 +42,7 @@ export const vi: Record<string, string> = {
   'v3.nav.help': 'Help Center',
   'v3.nav.feedback': 'Feedback',
   'v3.nav.logout': 'Logout',
+  'v3.tab.aiAgent': 'AI Agent',
   'v3.tag.new': 'Mới',
   'v3.tag.comingSoon': 'Sắp có',
   'v3.premium.title': 'TappyAI Premium',
@@ -126,6 +127,7 @@ export const vi: Record<string, string> = {
   'v3.deals.travel': 'Du lịch',
   'v3.deals.beauty': 'Làm đẹp',
   'v3.deals.empty': 'Chưa có ưu đãi nào để hiển thị.',
+  'v3.deals.get': 'Lấy deal',
 
   // ── Marketplace — reserved, never fabricated ────────────────────────────
   'v3.marketplace.title': 'Sắp có',
@@ -238,6 +240,7 @@ export const en: Record<string, string> = {
   'v3.nav.help': 'Help Center',
   'v3.nav.feedback': 'Feedback',
   'v3.nav.logout': 'Logout',
+  'v3.tab.aiAgent': 'AI Agent',
   'v3.tag.new': 'New',
   'v3.tag.comingSoon': 'Coming soon',
   'v3.premium.title': 'TappyAI Premium',
@@ -322,6 +325,7 @@ export const en: Record<string, string> = {
   'v3.deals.travel': 'Travel',
   'v3.deals.beauty': 'Beauty',
   'v3.deals.empty': 'No offers to show yet.',
+  'v3.deals.get': 'Get deal',
 
   // ── Marketplace — reserved, never fabricated ────────────────────────────
   'v3.marketplace.title': 'Coming soon',
