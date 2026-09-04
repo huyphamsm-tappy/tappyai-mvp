@@ -291,8 +291,12 @@ export default function ReviewDetailView({
               wants, because this text appears as if they typed it. */}
           <Link
             href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: review.place_name }))}`}
+            /* V3: the bridge is the one thing this pass touches on Explore, so it is the one
+               thing that speaks the product's colour. The orange/pink gradient here predated the
+               design system and was the only place on the surface using it. Explore's own
+               identity — the feed, the dark stage, like/comment/share — is untouched (OD-2). */
             className="inline-flex items-center gap-2 text-white text-sm font-bold px-5 py-2.5 rounded-full"
-            style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #e91e8c 100%)' }}
+            style={{ background: 'var(--v3-accent)' }}
           >
             🤖 {t('reviewDetail.askTappy')}
           </Link>

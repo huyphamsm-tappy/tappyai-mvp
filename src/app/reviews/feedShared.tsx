@@ -14,7 +14,7 @@ import { absoluteUrl } from '@/lib/share/openGraph'
 import {
   Heart, MessageCircle, Bookmark, Share2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff,
-  X, Loader2, Plus, AlertCircle,
+  X, Loader2, Plus, AlertCircle, Sparkles,
 } from 'lucide-react'
 import VideoPlayer, { isFeedAudioUnlocked, type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
@@ -548,6 +548,7 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
         <RAction icon={<Bookmark size={24} className={r.saved_by_me ? 'fill-amber-400 text-amber-400' : 'text-white'} />} label={t('reviews.railSave')} onClick={() => onSave(r.id)} />
         {/* Share */}
         <RAction icon={<Share2 size={24} className="text-white" />} label={t('reviews.railShare')} onClick={() => onShare(r)} />
+
         {/* The clip's sound — tap to open its sound page ("use this sound").
             Shown for ALL upload video clips. If the clip has a registered track
             (music.trackId), the disc links to the sound page; otherwise it's
@@ -564,10 +565,38 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
         </Link>
         {r.body ? <p className="text-white text-sm leading-snug line-clamp-3 drop-shadow">{r.body}</p> : null}
         {!isShareOnlyName(r.place_name) && (
-          <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">
-            <span className="text-sm">📍</span> {r.place_name}
-            {r.rating > 0 && <span className="ml-2 text-amber-400">{'★'.repeat(r.rating)}</span>}
-          </p>
+          <>
+            <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">
+              <span className="text-sm">📍</span> {r.place_name}
+              {r.rating > 0 && <span className="ml-2 text-amber-400">{'★'.repeat(r.rating)}</span>}
+            </p>
+
+            {/* ── Ask Tappy — the ONE thing V3 adds to Explore (OD-2 / IA-5) ────
+                It sits here, under the caption and the place, exactly where the
+                approved layout puts it — NOT in the action rail. On the rail it
+                would have been the largest, brightest control on the surface,
+                outweighing like/comment/share; those are Explore's own identity
+                and this pass does not touch them.
+
+                🚨 It carries WHAT THE ITEM IS, never what the user wants. The
+                prompt names the place and asks about it; it does not decide the
+                intent, because this text arrives in the thread as if the user
+                had typed it themselves.
+
+                🚨 It shares this `isShareOnlyName` guard with the place line for
+                a reason: no place, no subject. A bridge built from an empty name
+                would look like a working button and open a thread about nothing.
+                Same rule as Home's "Dành cho bạn" — no source, no affordance. */}
+            <Link
+              href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: r.place_name }))}`}
+              onClick={e => e.stopPropagation()}
+              className="mt-2.5 inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] font-semibold text-white active:scale-95 transition-transform"
+              style={{ background: 'var(--v3-accent)' }}
+            >
+              <Sparkles size={15} aria-hidden="true" />
+              {t('reviews.askAboutPlace')}
+            </Link>
+          </>
         )}
       </div>
     </div>

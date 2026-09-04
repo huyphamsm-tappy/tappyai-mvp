@@ -17,6 +17,7 @@ export const vi: Record<string, string> = {
   // Action rail
   'reviews.railSave': 'Lưu',
   'reviews.railShare': 'Chia sẻ',
+  'reviews.askAboutPlace': 'Hỏi Tappy về chỗ này',
 
   // Like list — the count is its own control, separate from the heart
   'reviews.likeAction': 'Thích',
@@ -163,6 +164,7 @@ export const en: Record<string, string> = {
   // Action rail
   'reviews.railSave': 'Save',
   'reviews.railShare': 'Share',
+  'reviews.askAboutPlace': 'Ask Tappy about this place',
 
   // Like list — the count is its own control, separate from the heart
   'reviews.likeAction': 'Like',
