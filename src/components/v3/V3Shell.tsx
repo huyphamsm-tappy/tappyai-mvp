@@ -198,6 +198,12 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
 
                 Opt-in: Deals, Marketplace and Profile still render the icon lockup, because
                 this pass is Home only. */}
+            {/* The reference DOES carry a small sparkle before the wordmark — "no app-icon
+                treatment" is not "no glyph". A 4-point star in the accent, not the cropped
+                otter tile. */}
+            {wordmarkOnly && (
+              <Sparkles size={17} aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-accent)' }} />
+            )}
             {!wordmarkOnly && (
               <Image
                 src="/branding/otter-logo.png"

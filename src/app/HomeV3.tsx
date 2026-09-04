@@ -134,7 +134,10 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           same grid; Home adding a second, narrower cap inside it was what left the content
           stranded in empty space on a wide screen. Sections below choose their COLUMN COUNT,
           never their width. */}
-      <div className="space-y-6">
+      {/* `v3-home` is the surface scope — see globals.css. It redefines the panel/tile/border
+          tokens to charcoal for everything below, which is what stops Home reading as a blue
+          dashboard. Scoped here so no other destination inherits it. */}
+      <div className="v3-home space-y-9">
 
         {/* ── 1. Ask Tappy — the primary action, first and most prominent ──
             Compact by design. It was 284px tall at 1440 because three things each added height
@@ -164,7 +167,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 </span>
                 {t('v3.home.cardLabel')}
               </p>
-              <h2 className="mt-3 text-[24px] font-light leading-[1.2] tracking-[-0.015em] sm:text-[26px]" style={{ color: 'var(--v3-fg)' }}>
+              <h2 className="mt-3 text-[26px] font-light leading-[1.15] tracking-[-0.02em] sm:text-[32px]" style={{ color: 'var(--v3-fg)' }}>
                 {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
                 <span aria-hidden="true">👋</span>
               </h2>
@@ -257,7 +260,16 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
         {suggestions.length > 0 && (
           <section data-home-section="for-you" aria-label={t('v3.home.forYouTitle')}>
             <SectionHeading title={t('v3.home.forYouTitle')} />
-            <div className="v3-scroll-x mt-2 flex gap-3 pb-1">
+            {/* Card FORMAT from the reference — dark surface, rounded, an accent icon badge at
+                the top, title beneath.
+
+                🚨 Card CONTENT stays what the server sends. The reference's cards carry place
+                photographs and a "📍 Đà Lạt" line; this page has neither. `getDynamicPrompts`
+                returns prompt suggestions — text, an emoji, a gradient — with no photo, no
+                place and no location. Rendering a picture and a city under each one would be
+                inventing content to match a mockup, so the format is reproduced and the
+                fabricated parts are not. The emoji takes the icon slot. */}
+            <div className="v3-scroll-x mt-3 flex gap-4 pb-1">
               {suggestions.slice(0, 6).map(s => {
                 const text = locale === 'en' ? s.textEn || s.text : s.text
                 // 168px fixed is right where the strip must scroll (375: 319 of 708 visible) and
@@ -269,15 +281,15 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                   <Link
                     key={s.text}
                     href={`/chat?q=${encodeURIComponent(text)}&category=${s.category}`}
-                    className="v3-tile flex w-[168px] flex-shrink-0 flex-col overflow-hidden lg:flex-1"
+                    className="v3-tile flex min-h-[140px] w-[200px] flex-shrink-0 flex-col justify-between overflow-hidden p-4 lg:flex-1"
                   >
-                    <span className={cn('flex h-16 flex-shrink-0 items-center justify-center bg-gradient-to-br text-2xl', s.gradient)}>
+                    <span className={cn('flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-[20px]', s.gradient)}>
                       {s.emoji}
                     </span>
                     {/* Not clamped: `line-clamp-*` resolves its display to `flow-root` on this
                         surface, so the clamp degrades to a hard clip with no ellipsis. Letting
                         the tile grow is the honest failure mode for a one-sentence string. */}
-                    <span className="p-2.5 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>
+                    <span className="mt-3 text-[13.5px] font-light leading-snug" style={{ color: 'var(--v3-fg)' }}>
                       {text}
                     </span>
                   </Link>
@@ -290,27 +302,27 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
         {/* ── 4. Công cụ — grouped, so equal tiles become a hierarchy ────── */}
         <section data-home-section="tools" aria-label={t('v3.panel.smartTools')}>
           <SectionHeading title={t('v3.panel.smartTools')} />
-          <div className="mt-2 space-y-3">
+          <div className="mt-3 space-y-5">
             {TOOL_GROUPS.map(group => (
               <div key={group.titleKey}>
                 <p data-scenic-heading className="mb-2 text-[10px] font-medium uppercase tracking-[0.12em]" style={{ color: 'var(--v3-fg-muted)' }}>
                   {t(group.titleKey)}
                 </p>
-                <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+                <div className="grid grid-cols-3 gap-4 sm:grid-cols-5">
                   {group.tools.map(({ href, icon: Icon, labelKey, tone }) => (
                     <Link
                       key={href}
                       href={href}
-                      className="v3-tile flex min-h-[78px] flex-col items-center justify-center gap-1.5 p-3 text-center"
+                      className="v3-tile flex min-h-[104px] flex-col items-center justify-center gap-2.5 p-4 text-center"
                     >
                       <span
-                        className="flex h-8 w-8 items-center justify-center rounded-xl"
-                        style={{ background: 'rgba(255,255,255,0.06)', color: tone }}
+                        className="flex h-11 w-11 items-center justify-center rounded-xl"
+                        style={{ background: 'rgba(255,255,255,0.055)', color: tone }}
                         aria-hidden="true"
                       >
-                        <Icon size={16} />
+                        <Icon size={19} />
                       </span>
-                      <span className="text-[11px] font-medium leading-tight" style={{ color: 'var(--v3-fg)' }}>
+                      <span className="text-[12px] font-normal leading-tight" style={{ color: 'var(--v3-fg)' }}>
                         {t(labelKey)}
                       </span>
                     </Link>
@@ -343,13 +355,13 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               {/* ≤2 recent threads, as the approved layout specifies. */}
               {conversations.slice(0, 2).map(c => (
                 <li key={c.id}>
-                  <Link href={`/chat/${c.id}`} className="v3-tile flex items-center gap-3 p-3">
+                  <Link href={`/chat/${c.id}`} className="v3-tile flex items-center gap-3.5 p-4">
                     <span
-                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl"
+                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full"
                       style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
                       aria-hidden="true"
                     >
-                      <MessageCircle size={15} />
+                      <MessageCircle size={17} />
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[13px] font-medium" style={{ color: 'var(--v3-fg)' }}>{c.title}</span>
@@ -388,7 +400,7 @@ function SectionHeading({ title, action }: { title: string; action?: { label: st
     // cards sit on, which is exactly the kind of near-miss that reads as sloppy.
     <div className="flex items-baseline justify-between gap-3">
       {/* `data-scenic-heading`: this one sits on the photograph with no panel behind it. */}
-      <h2 data-scenic-heading className="text-[15px] font-medium tracking-[-0.01em]" style={{ color: 'var(--v3-fg)' }}>{title}</h2>
+      <h2 data-scenic-heading className="text-[17px] font-normal tracking-[-0.01em]" style={{ color: 'var(--v3-fg)' }}>{title}</h2>
       {action && (
         <Link href={action.href} className="flex items-center gap-0.5 text-[12px]" style={{ color: 'var(--v3-accent)' }}>
           {action.label}

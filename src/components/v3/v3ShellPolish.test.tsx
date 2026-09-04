@@ -72,19 +72,33 @@ function themeControl(): HTMLButtonElement {
 }
 
 describe('the brand mark is the approved asset, not a drawn one', () => {
-  it('renders the shipped logo file', () => {
+  it('renders the shipped logo file by default', () => {
     const { container } = renderShell()
     const img = container.querySelector('img[src*="otter-logo"], img[srcset*="otter-logo"]')
       ?? [...container.querySelectorAll('img')].find(i => (i.getAttribute('src') ?? '').includes('otter-logo'))
     expect(img, 'the sidebar must render /branding/otter-logo.png — the app\'s established mark').toBeTruthy()
   })
 
-  it('does not draw a wordmark out of an icon font', () => {
-    // `Sparkles` beside styled text is what this replaced. The brand block must not go back to it.
-    const src = read('src/components/v3/V3Shell.tsx')
-    const code = stripComments(src)
-    const brandBlock = code.slice(code.indexOf('<aside'), code.indexOf('<nav'))
-    expect(brandBlock, 'the brand lockup must use the asset, not a lucide glyph').not.toContain('<Sparkles')
+  it('still renders the shipped asset in the DEFAULT lockup', () => {
+    // 🚨 This assertion USED to be "the brand block contains no <Sparkles>", which was right when
+    // the only lockup was asset-plus-text and a lucide glyph would have been a drawn substitute
+    // for the logo. It is now wrong in one specific way: the approved Home reference DOES show a
+    // small sparkle beside the wordmark, so Home opts into a type-only lockup with that accent.
+    //
+    // The rule worth keeping is narrower than the old one and survives that change: a page that
+    // does NOT opt in must still render `/branding/otter-logo.png`, so no future edit can quietly
+    // replace the product's mark with type on Deals, Marketplace or Profile.
+    const { container } = render(<V3Shell title="Deals"><div /></V3Shell>)
+    const img = [...container.querySelectorAll('img')]
+      .find(i => (i.getAttribute('src') ?? '').includes('otter-logo'))
+    expect(img, 'the default lockup must keep the shipped mark').toBeTruthy()
+  })
+
+  it('drops the mark only where the page opts in', () => {
+    const { container } = render(<V3Shell title="Trang chủ" wordmarkOnly><div /></V3Shell>)
+    const img = [...container.querySelectorAll('img')]
+      .find(i => (i.getAttribute('src') ?? '').includes('otter-logo'))
+    expect(img, 'Home renders the wordmark as type, per the reference').toBeUndefined()
   })
 })
 

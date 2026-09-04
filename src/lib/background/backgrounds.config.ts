@@ -56,11 +56,17 @@ export const BACKGROUNDS = {
     id: 'default',
     src: '/backgrounds/home-desktop-v5.webp',
     alt: '',
-    // Bottom-anchored: the skyline, river and foreground are the subject; the sky
-    // is what the fill can extend without anyone noticing.
-    position: 'center bottom',
-    fit: 'contain',
-    fill: 'rgb(14, 114, 228)',
+    // 🚨 `cover`, NOT `contain` — and this is a REVERSAL, recorded so it does not get
+    // "fixed" back. `contain` was chosen to show 100% of the artwork, and it did: it also
+    // left a 140px band of flat sampled sky across the top, which reads as a blue strip
+    // rather than as a photograph. The approved reference has no band; the scene fills the
+    // canvas and is simply cropped by it. Showing every pixel is not the goal — matching
+    // the reference composition is.
+    //
+    // Anchored slightly above centre so the crop keeps the skyline and the water, which are
+    // the subject, and gives away the empty upper sky first.
+    position: 'center 42%',
+    fit: 'cover',
     // Both overlays are RETUNED for the V3 surface, and the reason is that the
     // readability work moved. The 0.4 dark tint was set when content sat directly
     // on the photograph and the overlay was the only thing keeping text legible.

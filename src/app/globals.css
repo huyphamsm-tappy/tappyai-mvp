@@ -526,6 +526,63 @@
 
    Not flat #000: at 8/10/16 with 74% alpha the scene still moves underneath it,
    which is what keeps it from looking like a hole punched in the page. */
+/* ── HOME'S SURFACE FAMILY ────────────────────────────────────────────────
+   🚨 THE "BLUE DASHBOARD" FIX, AND IT IS ONE RULE RATHER THAN TWENTY.
+
+   Every card on Home took `--v3-panel` (#111827). That value is visibly NAVY,
+   and over a blue skyline the whole page read as blue cards on a blue photo with
+   blue borders — the exact thing the approved reference is not. The hero was
+   fixed first and in isolation, which only made the mismatch louder: one black
+   card sitting in a field of navy ones.
+
+   So the surface tokens are redefined ONCE, on Home's content wrapper, and every
+   descendant inherits: panels, tiles, chips, borders. Charcoal, neutral, no hue.
+   Scoped to `.v3-home` — Deals, Marketplace, Profile and Explore are untouched,
+   which is why this is not a change to `.v3-theme` itself.
+
+   The accents stay: blue and violet still carry icons, links and the send button.
+   Colour belongs to the ACCENTS, not to the surfaces. */
+.v3-home {
+  --v3-panel: #0E0F12;
+  --v3-panel-elevated: #16181D;
+  --v3-border: #23262D;
+  --v3-border-strong: #31353E;
+}
+
+/* 🚨 THE TEXT COLOURS BELONG TO THE SURFACES, NOT TO THE PAGE. They were first set on
+   `.v3-home` itself, which also captured the section headings — and those sit on the
+   PHOTOGRAPH, not on a card. In dark theme that passed; in light theme it put white
+   headings on a bright sky and they nearly vanished. Only elements actually on a dark
+   surface get the dark-surface text. */
+.v3-home .v3-panel,
+.v3-home .v3-tile {
+  --v3-fg: #FFFFFF;
+  --v3-fg-secondary: #C6CCD8;
+  --v3-fg-muted: #99A1B0;
+}
+
+/* Scenic makes panels translucent so the scene shows through. On Home the BASE has to
+   stay neutral or the photograph tints it straight back to navy — which is what
+   "the human eye should perceive the card as BLACK" means in practice. Higher alpha
+   than the generic scenic panel, and the backdrop is desaturated rather than saturated. */
+@media (min-width: 768px) {
+  .v3-theme.v3-scenic .v3-home .v3-panel {
+    background-color: rgba(14, 15, 18, 0.86);
+    backdrop-filter: blur(16px) saturate(0.75);
+    -webkit-backdrop-filter: blur(16px) saturate(0.75);
+  }
+  .v3-theme.v3-scenic .v3-home .v3-tile {
+    background-color: rgba(18, 20, 24, 0.84);
+    backdrop-filter: blur(12px) saturate(0.75);
+    -webkit-backdrop-filter: blur(12px) saturate(0.75);
+  }
+}
+
+@supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
+  .v3-theme.v3-scenic .v3-home .v3-panel { background-color: #0E0F12; }
+  .v3-theme.v3-scenic .v3-home .v3-tile { background-color: #16181D; }
+}
+
 /* 🚨 Selector is `.v3-panel.v3-ai-surface`, not `.v3-ai-surface`. At equal
    specificity source order decides, and in the COMPILED stylesheet `.v3-panel`
    lands after this block — so the plain class lost, silently, and the card
