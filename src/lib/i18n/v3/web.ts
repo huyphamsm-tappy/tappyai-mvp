@@ -9,7 +9,11 @@
 
 export const vi: Record<string, string> = {
   // ── Shell ───────────────────────────────────────────────────────────────
-  'v3.brand.tagline': 'Your Personal AI Agent',
+  // The approved wordmark reference reads "Personal AI Agent" — no "Your".
+  // 🚨 Shared with Explore's own sidebar lockup (src/app/reviews/page.tsx), which
+  // therefore inherits the same one-word change. That is brand consistency, not an
+  // Explore edit; Explore's lockup is otherwise untouched by this pass.
+  'v3.brand.tagline': 'Personal AI Agent',
   'v3.home.title': 'Trang chủ',
   'v3.home.subtitle': 'Hỏi Tappy bất cứ điều gì',
   'v3.page.title': 'TappyAI',
@@ -103,6 +107,9 @@ export const vi: Record<string, string> = {
   'v3.home.askAria': 'Hỏi TappyAI',
   'v3.home.voiceAria': 'Nhập bằng giọng nói',
   'v3.home.sendAria': 'Gửi',
+  // The hero card names itself in the reference: "AI AGENT – HOME", en dash, uppercased
+  // by CSS. `v3.tab.aiAgent` ("AI Agent") is the TAB's label and is not this string.
+  'v3.home.cardLabel': 'AI Agent – Home',
   'v3.home.quickTitle': 'Gợi ý nhanh',
   'v3.home.forYouTitle': 'Gợi ý dành cho bạn',
   'v3.chip.cafe': 'Quán cafe view đẹp',
@@ -214,7 +221,11 @@ export const vi: Record<string, string> = {
 
 export const en: Record<string, string> = {
   // ── Shell ───────────────────────────────────────────────────────────────
-  'v3.brand.tagline': 'Your Personal AI Agent',
+  // The approved wordmark reference reads "Personal AI Agent" — no "Your".
+  // 🚨 Shared with Explore's own sidebar lockup (src/app/reviews/page.tsx), which
+  // therefore inherits the same one-word change. That is brand consistency, not an
+  // Explore edit; Explore's lockup is otherwise untouched by this pass.
+  'v3.brand.tagline': 'Personal AI Agent',
   'v3.home.title': 'Home',
   'v3.home.subtitle': 'Ask Tappy anything',
   'v3.page.title': 'TappyAI',
@@ -308,6 +319,7 @@ export const en: Record<string, string> = {
   'v3.home.askAria': 'Ask TappyAI',
   'v3.home.voiceAria': 'Speak your message',
   'v3.home.sendAria': 'Send',
+  'v3.home.cardLabel': 'AI Agent – Home',
   'v3.home.quickTitle': 'Quick suggestions',
   'v3.home.forYouTitle': 'Suggested for you',
   'v3.chip.cafe': 'Cafés with a view',

@@ -452,6 +452,14 @@
   --v3-on-accent: #FFFFFF;
   --v3-accent-soft: rgba(0, 105, 219, 0.10);
   --v3-violet: #6D28D9;
+  /* The violet FILL, split from the tint for exactly the reason `--v3-accent` was:
+     `--v3-violet` is an icon tint at 3.9:1 on dark and must never sit under white
+     text. The reference's send button and card badge are a filled violet, measured
+     off the approved screenshot at #402BAE mean / #4529C1 peak. White on this value
+     is 7.1:1 — the tint would have been 4.2:1. Same value in both themes: it reads
+     on the white card and on the dark one, and the reference only shows dark. */
+  --v3-violet-fill: #6D28D9;
+  --v3-on-violet: #FFFFFF;
   --v3-amber: #A25007;
   --v3-emerald: #046C4E;
   --v3-rose: #A81133;
@@ -474,6 +482,8 @@
   --v3-on-accent: #FFFFFF;
   --v3-accent-soft: rgba(51, 145, 255, 0.14);
   --v3-violet: #8B5CF6;
+  --v3-violet-fill: #6D28D9;
+  --v3-on-violet: #FFFFFF;
   --v3-amber: #F59E0B;
   --v3-emerald: #34D399;
   --v3-rose: #FB7185;

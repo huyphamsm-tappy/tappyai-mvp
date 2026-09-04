@@ -129,31 +129,49 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             the composer and the chips are ONE composition, so they sit close together and the
             mascot is sized to the text beside it rather than the other way round. */}
         <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel p-4 sm:p-5">
-          {/* The card says what it is, the way the sections below it do. */}
-          <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--v3-fg-muted)' }}>
-            <Sparkles size={12} style={{ color: 'var(--v3-accent)' }} aria-hidden="true" />
-            {t('v3.tab.aiAgent')}
-          </p>
-
-          <div className="mt-2 flex items-center justify-between gap-3">
+          {/* 🔑 The label, the greeting and the mascot are ONE row in the reference, not a label
+              stacked above a greeting-and-mascot row. The mascot's head sits level with the label
+              at the card's top-right and its body runs down past the greeting — so the text column
+              and the mascot are siblings here, and the mascot spans the whole column's height
+              rather than being centred against the greeting alone. */}
+          <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h2 className="text-[20px] font-bold leading-tight sm:text-[22px]" style={{ color: 'var(--v3-fg)' }}>
+              {/* The card names itself. In the approved reference this is a filled violet badge
+                  carrying the glyph, followed by "AI AGENT – HOME" in the ACCENT blue (measured
+                  #2D5BE7 off the screenshot) — not the muted grey a section heading uses. The
+                  label is the card's identity, so it reads as brand, not as a caption. */}
+              <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--v3-accent)' }}>
+                <span
+                  className="flex h-[18px] w-[18px] items-center justify-center rounded-md"
+                  style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
+                  aria-hidden="true"
+                >
+                  <Sparkles size={11} />
+                </span>
+                {t('v3.home.cardLabel')}
+              </p>
+              <h2 className="mt-2.5 text-[22px] font-bold leading-tight sm:text-[26px]" style={{ color: 'var(--v3-fg)' }}>
                 {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
                 <span aria-hidden="true">👋</span>
               </h2>
-              <p className="mt-0.5 text-[13px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>
+              <p className="mt-1 text-[13px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>
                 {t('v3.home.greetSub')}
               </p>
             </div>
             {/* The approved mascot asset — `/tappy/welcome.png` from the owner's 18-pose library.
-                No new art, no altered pose. Sized to sit BESIDE the two lines of text rather than
-                setting the row height itself: at 104px it was the tallest thing in the card and
-                dragged the whole composition open. `-my-1` lets it overhang the text block
-                slightly so the two read as one lockup instead of two stacked objects. */}
+                No new art, no altered pose, no substitute.
+
+                SCALE COMES FROM THE REFERENCE, not from taste. Measured on the approved
+                screenshot: the mascot stands 2.7× the height of the composer beside it and runs
+                from the card's top padding down to where the composer begins, its lower body
+                passing behind that field. At 72px it was an ornament sitting politely in a
+                corner; the reference makes it the second-loudest thing on the page after the
+                greeting. `-mb-4` reproduces the overlap — the mascot ends underneath the
+                composer's top edge rather than stacking above it. */}
             <TappyMascot
               pose="welcome"
-              size={72}
-              className="-my-1 h-14 w-14 flex-shrink-0 sm:h-[72px] sm:w-[72px]"
+              size={128}
+              className="-mt-1 -mb-4 h-[84px] w-[84px] flex-shrink-0 sm:h-[112px] sm:w-[112px] lg:h-[128px] lg:w-[128px]"
             />
           </div>
 
@@ -182,17 +200,24 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             <button
               type="submit"
               aria-label={t('v3.home.sendAria')}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-white"
-              style={{ background: 'var(--v3-accent-fill)' }}
+              className="flex h-8 w-8 items-center justify-center rounded-lg"
+              style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
             >
               <ArrowUp size={16} aria-hidden="true" />
             </button>
           </form>
 
-          {/* Contextual chips — the fastest path to a formed question. Tucked directly under the
-              composer: they belong to it, so the gap between them is smaller than the gap to
+          {/* The reference labels the chip row "Gợi ý nhanh". `v3.home.quickTitle` was already in
+              both dictionaries — the string had been written for this and never wired to anything,
+              so the row arrived unlabelled. */}
+          <p className="mt-3 text-[11px]" style={{ color: 'var(--v3-fg-muted)' }}>
+            {t('v3.home.quickTitle')}
+          </p>
+
+          {/* Contextual chips — the fastest path to a formed question. Tucked directly under their
+              label: they belong to it, so the gap between them is smaller than the gap to
               anything else. */}
-          <div className="v3-scroll-x mt-2 flex gap-2 pb-0.5">
+          <div className="v3-scroll-x mt-1.5 flex gap-2 pb-0.5">
             {QUICK_CHIPS.map(c => (
               <button key={c} type="button" onClick={() => ask(t(c))} className="v3-chip flex-shrink-0">
                 {t(c)}

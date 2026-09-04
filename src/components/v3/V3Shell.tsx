@@ -188,7 +188,14 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
               className="h-8 w-8 flex-shrink-0 rounded-[22%] object-cover"
             />
             <span className="flex min-w-0 flex-col leading-tight">
-              <span className="text-[17px] font-extrabold tracking-tight" style={{ color: 'var(--v3-fg)' }}>TappyAI</span>
+              {/* Two-tone, as the approved wordmark reference shows: "Tappy" in the foreground
+                  colour, "AI" in the accent (measured #2172E1 off the reference). The otter mark
+                  to the left is unchanged — the reference crop is cut at the "T" and cannot show
+                  whether a mark precedes it, so the shipped asset stays and only the type changes.
+                  Nothing here is drawn: the mark is still /branding/otter-logo.png. */}
+              <span className="text-[17px] font-extrabold tracking-tight" style={{ color: 'var(--v3-fg)' }}>
+                Tappy<span style={{ color: 'var(--v3-accent)' }}>AI</span>
+              </span>
               <span className="truncate text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.brand.tagline')}</span>
             </span>
           </Link>
