@@ -141,7 +141,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             on its own, and a 16/12px gap stacked between every block. The greeting, the mascot,
             the composer and the chips are ONE composition, so they sit close together and the
             mascot is sized to the text beside it rather than the other way round. */}
-        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel p-5 sm:p-6 lg:p-7">
+        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel v3-ai-surface p-5 sm:p-6 lg:p-7">
           {/* 🔑 The label, the greeting and the mascot are ONE row in the reference, not a label
               stacked above a greeting-and-mascot row. The mascot's head sits level with the label
               at the card's top-right and its body runs down past the greeting — so the text column
@@ -238,51 +238,6 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           </div>
         </section>
 
-        {/* ── 2. Tiếp tục — resume, or the guest/empty state in its place ── */}
-        <section data-home-section="continue" aria-label={t('v3.panel.continue')}>
-          <SectionHeading
-            title={t('v3.panel.continue')}
-            action={hasContinue ? { label: t('v3.action.seeAll'), href: '/profile/history' } : undefined}
-          />
-          {hasContinue ? (
-            <ul className="mt-2.5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {/* ≤2 recent threads, as the approved layout specifies. */}
-              {conversations.slice(0, 2).map(c => (
-                <li key={c.id}>
-                  <Link href={`/chat/${c.id}`} className="v3-tile flex items-center gap-3 p-3">
-                    <span
-                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl"
-                      style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
-                      aria-hidden="true"
-                    >
-                      <MessageCircle size={15} />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[13px] font-medium" style={{ color: 'var(--v3-fg)' }}>{c.title}</span>
-                      <span className="block text-[11px]" style={{ color: 'var(--v3-fg-muted)' }}>
-                        {t('home.messages', { n: String(c.messageCount) })} · {formatRelativeTime(c.updated_at, t, locale)}
-                      </span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="v3-panel mt-2 px-4 py-6 text-center">
-              <p className="text-[13px]" style={{ color: 'var(--v3-fg-secondary)' }}>
-                {user ? t('home.emptyChat') : t('home.loginPrompt')}
-              </p>
-              <Link
-                href={user ? '/chat' : '/login'}
-                className="mt-3 inline-flex min-h-[40px] items-center rounded-xl px-5 text-[13px] font-semibold"
-                style={{ background: 'var(--v3-accent-fill)' }}
-              >
-                {user ? t('home.chatNow') : t('home.login')}
-              </Link>
-            </div>
-          )}
-        </section>
-
         {/* ── 3. Dành cho bạn — rendered ONLY when the server sent items ─── */}
         {/* ND-001: a discovery/content preview drawn from an EXISTING source, never a
             personalisation system and never fabricated. No items, no section. */}
@@ -351,6 +306,62 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               </div>
             ))}
           </div>
+        </section>
+
+        {/* ── 4. Tiếp tục — LAST, deliberately ─────────────────────────────
+            Owner decision, and an ORDER change rather than a behaviour change: the page now
+            reads ask → discover → do → resume. Continue used to sit directly under the
+            assistant, which put "what you did before" ahead of "what you could do now" on a
+            surface whose entire point is the first question.
+
+            🚨 This makes WEB DIVERGE from Android and iOS, which still place recent
+            conversations above their quick actions. `crossPlatformParity.test.ts` enforced that
+            shared order; it is UPDATED to record the divergence rather than deleted, because the
+            rule underneath it — the assistant comes first on every platform — still holds.
+
+            Nothing about Continue's data, wording or behaviour changed. */}
+        <section data-home-section="continue" aria-label={t('v3.panel.continue')}>
+          <SectionHeading
+            title={t('v3.panel.continue')}
+            action={hasContinue ? { label: t('v3.action.seeAll'), href: '/profile/history' } : undefined}
+          />
+          {hasContinue ? (
+            <ul className="mt-2.5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {/* ≤2 recent threads, as the approved layout specifies. */}
+              {conversations.slice(0, 2).map(c => (
+                <li key={c.id}>
+                  <Link href={`/chat/${c.id}`} className="v3-tile flex items-center gap-3 p-3">
+                    <span
+                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl"
+                      style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
+                      aria-hidden="true"
+                    >
+                      <MessageCircle size={15} />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[13px] font-medium" style={{ color: 'var(--v3-fg)' }}>{c.title}</span>
+                      <span className="block text-[11px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                        {t('home.messages', { n: String(c.messageCount) })} · {formatRelativeTime(c.updated_at, t, locale)}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="v3-panel mt-2 px-4 py-6 text-center">
+              <p className="text-[13px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+                {user ? t('home.emptyChat') : t('home.loginPrompt')}
+              </p>
+              <Link
+                href={user ? '/chat' : '/login'}
+                className="mt-3 inline-flex min-h-[40px] items-center rounded-xl px-5 text-[13px] font-semibold"
+                style={{ background: 'var(--v3-accent-fill)' }}
+              >
+                {user ? t('home.chatNow') : t('home.login')}
+              </Link>
+            </div>
+          )}
         </section>
       </div>
     </V3Shell>

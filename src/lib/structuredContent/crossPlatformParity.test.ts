@@ -165,12 +165,22 @@ describe('MUST MATCH — the action boundary (DD-006)', () => {
   })
 })
 
-describe('MUST MATCH — the AI-first Home order (DD-002 / P4-11)', () => {
+describe('MUST MATCH — the assistant comes first on every platform (DD-002 / P4-11)', () => {
   // The rule is an ORDER, so each platform is checked by the position of its own section calls.
   // The section NAMES legitimately differ; where they sit relative to each other does not.
   const order = (src: string, marks: string[]) => marks.map(m => src.indexOf(m))
 
-  it('web puts the assistant and Continue above the tools', () => {
+  // 🚨 WEB DIVERGES ON CONTINUE'S POSITION — recorded, not drifted.
+  //
+  // Owner decision on the V3 Home visual pass: Web reads ask → discover → do → resume, so
+  // Continue moved to the FOOT of the page. Android and iOS still put recent conversations
+  // above their quick actions.
+  //
+  // The shared rule this describe block exists to protect is unchanged and still enforced on
+  // all three: THE ASSISTANT COMES FIRST, above the tools. Only Continue's position relative to
+  // the tools now differs, and only on Web. Deleting the web case would have been the easy move
+  // and would have left the assistant-first rule unguarded on the one platform that changed.
+  it('web puts the assistant above the tools, with Continue moved below them', () => {
     // Follows the ROUTE: the Home surface is `HomeV3`, not the pre-V3 `HomeView`. Asserting
     // against the old file would leave this guard green while checking a component nothing renders.
     //
@@ -186,7 +196,7 @@ describe('MUST MATCH — the AI-first Home order (DD-002 / P4-11)', () => {
     ])
     expect(assistant, 'the assistant panel must exist').toBeGreaterThan(-1)
     expect(assistant, 'the assistant comes before the tool strip').toBeLessThan(tools)
-    expect(cont, 'Continue comes before the tool strip').toBeLessThan(tools)
+    expect(cont, 'on WEB, Continue now sits BELOW the tools').toBeGreaterThan(tools)
   })
 
   it('android puts the assistant and Continue above the tools', () => {

@@ -511,71 +511,127 @@
    Mobile: `HomeBackground` hides itself below `md`, so on a phone these rules
    composite over the ordinary page colour and simply look like the normal
    surface. Nothing to special-case. */
-.v3-theme.v3-scenic {
-  background-color: transparent;
+/* ── THE AI SURFACE ───────────────────────────────────────────────────────
+   Home's assistant card is a NEAR-BLACK translucent surface, not the navy
+   `--v3-panel` the other cards use. `--v3-panel` is #111827 — visibly blue, and
+   over a blue skyline it read as one more blue rectangle on a blue photograph
+   instead of as the product's own surface.
+
+   🔑 It is dark in BOTH themes on purpose: this is the AI surface's identity,
+   not a dark-mode variant. That means the text inside it cannot use the page's
+   tokens — in light theme `--v3-fg` is #111827, which would be black text on a
+   black card. So the card REDEFINES the tokens for its own subtree, and every
+   descendant (greeting, composer, chips, labels) inherits the dark values with
+   no per-element overrides and no `dark:` variants at the call sites.
+
+   Not flat #000: at 8/10/16 with 74% alpha the scene still moves underneath it,
+   which is what keeps it from looking like a hole punched in the page. */
+/* 🚨 Selector is `.v3-panel.v3-ai-surface`, not `.v3-ai-surface`. At equal
+   specificity source order decides, and in the COMPILED stylesheet `.v3-panel`
+   lands after this block — so the plain class lost, silently, and the card
+   rendered navy while the rule sat right there looking correct. Two classes
+   beat one regardless of where either ends up in the output. */
+.v3-panel.v3-ai-surface {
+  background-color: rgba(8, 10, 16, 0.74);
+  border-color: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+
+  --v3-fg: #F3F4F6;
+  --v3-fg-secondary: #A8B0BF;
+  --v3-fg-muted: #8B93A3;
+  --v3-panel-elevated: rgba(255, 255, 255, 0.06);
+  --v3-border: rgba(255, 255, 255, 0.09);
+  --v3-border-strong: rgba(255, 255, 255, 0.16);
+  --v3-accent: #4C9DFF;
 }
 
-/* 🚨 THE SURFACE GOING TRANSPARENT IS NOT ENOUGH. `body` paints an opaque
-   `bg-white` / `dark:bg-gray-950` from the base layer, and `HomeBackground` is a
-   fixed layer at `-z-10` — so the document's own background sat on top of the
-   photograph and the scene was invisible even though the image had loaded,
-   painted, and measured 1436×950. It was found by forcing the layer's z-index
-   forward: the image appeared instantly, which proved it was covered rather
-   than broken.
+/* 🚨 GATED TO THE BREAKPOINT THAT ACTUALLY HAS A SCENE.
+   `HomeBackground` renders `hidden md:block` — below 768px there is no image at
+   all. Ungated, these rules stripped the page colour on a phone and left the
+   browser canvas showing through, with white section headings and their dark
+   halos stranded on it. Scenic mode may only engage where the scene exists. */
+@media (min-width: 768px) {
 
-   Scoped with `:has()` so ONLY a document actually containing a scenic surface
-   is affected — Deals, Profile and every other page keep their opaque body.
-   Where `:has()` is unsupported the rule is dropped and the background simply
-   stays hidden, which is exactly how Home looked before this change: a safe
-   degradation, not a broken one. */
-html:has(.v3-scenic),
-body:has(.v3-scenic) {
-  background-color: transparent;
-}
+  .v3-theme.v3-scenic {
+    background-color: transparent;
+  }
 
-.v3-theme.v3-scenic .v3-panel {
-  background-color: color-mix(in srgb, var(--v3-panel) 84%, transparent);
-  backdrop-filter: blur(10px) saturate(1.08);
-  -webkit-backdrop-filter: blur(10px) saturate(1.08);
-}
+  /* 🚨 THE SURFACE GOING TRANSPARENT IS NOT ENOUGH. `body` paints an opaque
+     `bg-white` / `dark:bg-gray-950` from the base layer, and `HomeBackground` is a
+     fixed layer at `-z-10` — so the document's own background sat on top of the
+     photograph and the scene was invisible even though the image had loaded,
+     painted, and measured 1436×950. It was found by forcing the layer's z-index
+     forward: the image appeared instantly, which proved it was covered rather
+     than broken.
 
-.v3-theme.v3-scenic .v3-tile {
-  background-color: color-mix(in srgb, var(--v3-panel-elevated) 78%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
+     Scoped with `:has()` so ONLY a document actually containing a scenic surface
+     is affected — Deals, Profile and every other page keep their opaque body.
+     Where `:has()` is unsupported the rule is dropped and the background simply
+     stays hidden, which is exactly how Home looked before this change: a safe
+     degradation, not a broken one. */
+  html:has(.v3-scenic),
+  body:has(.v3-scenic) {
+    background-color: transparent;
+  }
 
-/* Section headings sit OUTSIDE the panels, directly on the photograph, so they
-   get no panel to carry their contrast. A soft halo keeps them legible over any
-   part of the image without darkening the image itself — the alternative was a
-   heavier overlay, which is the thing this mode exists to avoid.
+  .v3-theme.v3-scenic .v3-panel {
+    background-color: color-mix(in srgb, var(--v3-panel) 84%, transparent);
+    backdrop-filter: blur(10px) saturate(1.08);
+    -webkit-backdrop-filter: blur(10px) saturate(1.08);
+  }
 
-   The halo is theme-matched: light text needs a dark shadow, dark text needs a
-   light one. Panels handle their own headings, so this deliberately targets only
-   the ones the scenic layer exposes. */
-.v3-theme.v3-scenic [data-scenic-heading] {
-  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.55);
-}
-.dark .v3-theme.v3-scenic [data-scenic-heading] {
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
-}
+  .v3-theme.v3-scenic .v3-tile {
+    background-color: color-mix(in srgb, var(--v3-panel-elevated) 78%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 
-/* Chrome is more transparent than content: the sidebar and header frame the
-   scene rather than covering it. */
-.v3-theme.v3-scenic .v3-scenic-chrome {
-  background-color: color-mix(in srgb, var(--v3-panel) 76%, transparent) !important;
-  backdrop-filter: blur(14px) saturate(1.05);
-  -webkit-backdrop-filter: blur(14px) saturate(1.05);
-}
 
-/* `color-mix` is well supported but not universal. Without it the declarations
-   above are dropped and the panels would render fully transparent over a photo,
-   which is unreadable — so restate the opaque colour as the floor. */
-@supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
-  .v3-theme.v3-scenic .v3-panel { background-color: var(--v3-panel); }
-  .v3-theme.v3-scenic .v3-tile { background-color: var(--v3-panel-elevated); }
-  .v3-theme.v3-scenic .v3-scenic-chrome { background-color: var(--v3-panel) !important; }
+  /* Scenic mode makes `.v3-panel` translucent; the AI surface has already chosen
+     its own alpha, so it must not be overridden by that rule. */
+  .v3-theme.v3-scenic .v3-panel.v3-ai-surface {
+    background-color: rgba(8, 10, 16, 0.74);
+  }
+
+  @supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
+    .v3-theme.v3-scenic .v3-panel.v3-ai-surface { background-color: rgb(10, 12, 18); }
+  }
+
+  /* Section headings sit OUTSIDE the panels, directly on the photograph, so they
+     get no panel to carry their contrast. A soft halo keeps them legible over any
+     part of the image without darkening the image itself — the alternative was a
+     heavier overlay, which is the thing this mode exists to avoid.
+
+     The halo is theme-matched: light text needs a dark shadow, dark text needs a
+     light one. Panels handle their own headings, so this deliberately targets only
+     the ones the scenic layer exposes. */
+  .v3-theme.v3-scenic [data-scenic-heading] {
+    text-shadow: 0 1px 10px rgba(255, 255, 255, 0.55);
+  }
+  .dark .v3-theme.v3-scenic [data-scenic-heading] {
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Chrome is more transparent than content: the sidebar and header frame the
+     scene rather than covering it. */
+  .v3-theme.v3-scenic .v3-scenic-chrome {
+    background-color: color-mix(in srgb, var(--v3-panel) 76%, transparent) !important;
+    backdrop-filter: blur(14px) saturate(1.05);
+    -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  }
+
+  /* `color-mix` is well supported but not universal. Without it the declarations
+     above are dropped and the panels would render fully transparent over a photo,
+     which is unreadable — so restate the opaque colour as the floor. */
+  @supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
+    .v3-theme.v3-scenic .v3-panel { background-color: var(--v3-panel); }
+    .v3-theme.v3-scenic .v3-tile { background-color: var(--v3-panel-elevated); }
+    .v3-theme.v3-scenic .v3-scenic-chrome { background-color: var(--v3-panel) !important; }
+  }
 }
+/* ── end scenic (md and up) ────────────────────────────────────────────── */
+
 
 /* The one content container. Every V3 page puts its content in this, so the
    left edge of Home's hero, Deals' grid and Profile's rows all land on the

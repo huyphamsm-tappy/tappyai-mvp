@@ -21,6 +21,26 @@ export interface BackgroundDescriptor {
   alt: string
   /** CSS object-position for the image (e.g. 'center', 'center 40%'). */
   position: string
+  /**
+   * How the image meets the viewport.
+   *
+   * `cover` fills the viewport and CROPS whatever does not fit. `contain` shows
+   * the WHOLE image and leaves a band, which `fill` then continues.
+   *
+   * 🚨 This exists because "cover" quietly hides a lot of artwork on any viewport
+   * that is taller than the asset. Measured on this asset (1672×941, 16:9):
+   * 1920×1080 shows 99.9%, but 1440×950 shows 85.3% and 1280×850 shows 84.8% —
+   * a quarter of the width gone, and invisibly, because a cropped photo still
+   * looks like a photo.
+   */
+  fit?: 'cover' | 'contain'
+  /**
+   * Colour behind the image, continuing it into the band `contain` leaves.
+   * MEASURED FROM THE ASSET, never picked by eye: the mean of its top rows, which
+   * are near-uniform sky (spread of 47/255 across 1672px), so the join reads as
+   * more sky rather than as a letterbox.
+   */
+  fill?: string
   /** Optional CSS background applied over the image in LIGHT theme (V1: none). */
   overlayLight?: string
   /** Optional CSS background applied over the image in DARK theme. */
@@ -36,7 +56,11 @@ export const BACKGROUNDS = {
     id: 'default',
     src: '/backgrounds/home-desktop-v5.webp',
     alt: '',
-    position: 'center',
+    // Bottom-anchored: the skyline, river and foreground are the subject; the sky
+    // is what the fill can extend without anyone noticing.
+    position: 'center bottom',
+    fit: 'contain',
+    fill: 'rgb(14, 114, 228)',
     // Both overlays are RETUNED for the V3 surface, and the reason is that the
     // readability work moved. The 0.4 dark tint was set when content sat directly
     // on the photograph and the overlay was the only thing keeping text legible.

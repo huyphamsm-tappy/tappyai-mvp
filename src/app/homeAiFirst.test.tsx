@@ -83,7 +83,11 @@ describe('Home is ONE PAGE, not an ecosystem dashboard', () => {
     const { container } = renderHome()
     const sections = [...container.querySelectorAll('[data-home-section]')]
       .map(s => s.getAttribute('data-home-section'))
-    expect(sections).toEqual(['hero', 'continue', 'for-you', 'tools'])
+    // Order is an OWNER DECISION and it changed: ask → discover → do → resume. Continue moved
+    // from directly under the assistant to the foot of the page, so "what you could do now"
+    // comes before "what you did before". Only the position changed — not the data, the
+    // wording, or the behaviour.
+    expect(sections).toEqual(['hero', 'for-you', 'tools', 'continue'])
   })
 
   it('renders no other destination inside Home', () => {
