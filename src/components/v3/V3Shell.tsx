@@ -132,13 +132,16 @@ const TABS: { href: string; labelKey: string; icon: typeof Home; badge?: boolean
 export interface V3ShellProps {
   title: string
   subtitle?: string
+  /** Brand tagline under the wordmark. Defaults to the SHARED string; Home overrides it with the
+   *  approved reference's wording so that wording cannot leak to the other destinations. */
+  brandTagline?: string
   /** Which tab reads as current. */
   activeTab?: string
   user?: { name?: string | null; avatarUrl?: string | null; plan?: string | null } | null
   children: ReactNode
 }
 
-export default function V3Shell({ title, subtitle, activeTab = '/', user, children }: V3ShellProps) {
+export default function V3Shell({ title, subtitle, brandTagline, activeTab = '/', user, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
   // Presentation only: delivery, consent and push identity are untouched — this reads a count the
@@ -196,7 +199,7 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
               <span className="text-[17px] font-extrabold tracking-tight" style={{ color: 'var(--v3-fg)' }}>
                 Tappy<span style={{ color: 'var(--v3-accent)' }}>AI</span>
               </span>
-              <span className="truncate text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.brand.tagline')}</span>
+              <span className="truncate text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{brandTagline ?? t('v3.brand.tagline')}</span>
             </span>
           </Link>
 

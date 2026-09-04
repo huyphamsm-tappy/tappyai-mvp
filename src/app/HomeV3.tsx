@@ -113,6 +113,9 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
     <V3Shell
       title={t('v3.home.title')}
       subtitle={t('v3.home.subtitle')}
+      /* Home-only wording, passed explicitly. Editing the shared dictionary string instead
+         changed Deals, Marketplace, Profile and Explore along with it. */
+      brandTagline={t('v3.brand.taglineHome')}
       activeTab="/"
       user={{ name: userInfo?.full_name || firstName, avatarUrl: userInfo?.avatar_url, plan: user ? t('v3.top.plan') : null }}
     >

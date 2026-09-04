@@ -9,11 +9,14 @@
 
 export const vi: Record<string, string> = {
   // ── Shell ───────────────────────────────────────────────────────────────
-  // The approved wordmark reference reads "Personal AI Agent" — no "Your".
-  // 🚨 Shared with Explore's own sidebar lockup (src/app/reviews/page.tsx), which
-  // therefore inherits the same one-word change. That is brand consistency, not an
-  // Explore edit; Explore's lockup is otherwise untouched by this pass.
-  'v3.brand.tagline': 'Personal AI Agent',
+  // 🚨 SHARED. Read by Explore's own sidebar (src/app/reviews/page.tsx) as well as the
+  // V3 shell, so changing it edits Deals, Marketplace, Profile AND Explore. It briefly
+  // carried the Home reference's wording and silently changed all of them. The Home-only
+  // wording is the next key down and reaches the shell as a PROP.
+  'v3.brand.tagline': 'Your Personal AI Agent',
+  // Home only — the approved wordmark reference reads "Personal AI Agent", no "Your".
+  // Passed explicitly by HomeV3; no other page opts in, so none can inherit it.
+  'v3.brand.taglineHome': 'Personal AI Agent',
   'v3.home.title': 'Trang chủ',
   'v3.home.subtitle': 'Hỏi Tappy bất cứ điều gì',
   'v3.page.title': 'TappyAI',
@@ -221,11 +224,14 @@ export const vi: Record<string, string> = {
 
 export const en: Record<string, string> = {
   // ── Shell ───────────────────────────────────────────────────────────────
-  // The approved wordmark reference reads "Personal AI Agent" — no "Your".
-  // 🚨 Shared with Explore's own sidebar lockup (src/app/reviews/page.tsx), which
-  // therefore inherits the same one-word change. That is brand consistency, not an
-  // Explore edit; Explore's lockup is otherwise untouched by this pass.
-  'v3.brand.tagline': 'Personal AI Agent',
+  // 🚨 SHARED. Read by Explore's own sidebar (src/app/reviews/page.tsx) as well as the
+  // V3 shell, so changing it edits Deals, Marketplace, Profile AND Explore. It briefly
+  // carried the Home reference's wording and silently changed all of them. The Home-only
+  // wording is the next key down and reaches the shell as a PROP.
+  'v3.brand.tagline': 'Your Personal AI Agent',
+  // Home only — the approved wordmark reference reads "Personal AI Agent", no "Your".
+  // Passed explicitly by HomeV3; no other page opts in, so none can inherit it.
+  'v3.brand.taglineHome': 'Personal AI Agent',
   'v3.home.title': 'Home',
   'v3.home.subtitle': 'Ask Tappy anything',
   'v3.page.title': 'TappyAI',
