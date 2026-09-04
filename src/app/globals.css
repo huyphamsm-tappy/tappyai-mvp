@@ -532,18 +532,45 @@
    rendered navy while the rule sat right there looking correct. Two classes
    beat one regardless of where either ends up in the output. */
 .v3-panel.v3-ai-surface {
-  background-color: rgba(8, 10, 16, 0.74);
-  border-color: rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(16px) saturate(1.15);
-  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  /* 🚨 IT WAS READING BLUE, AND `saturate()` WAS THE CULPRIT. The fill was already
+     near-black (8,10,16) — but at 74% alpha a blue skyline shows through, and
+     `saturate(1.15)` on the backdrop then INTENSIFIED exactly that blue before
+     compositing. The card was tinting itself with the background it sits on.
 
-  --v3-fg: #F3F4F6;
-  --v3-fg-secondary: #A8B0BF;
-  --v3-fg-muted: #8B93A3;
-  --v3-panel-elevated: rgba(255, 255, 255, 0.06);
-  --v3-border: rgba(255, 255, 255, 0.09);
-  --v3-border-strong: rgba(255, 255, 255, 0.16);
-  --v3-accent: #4C9DFF;
+     Now: a neutral near-black at a higher alpha, and the backdrop is DESATURATED
+     rather than saturated, so what little scene comes through arrives as
+     luminance instead of colour. Still translucent — the scene must move under
+     it — but it reads black, not navy. */
+  background-color: rgba(10, 10, 13, 0.88);
+  border-color: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(18px) saturate(0.72);
+  -webkit-backdrop-filter: blur(18px) saturate(0.72);
+
+  /* Text on a black surface can afford to be BRIGHTER and LIGHTER at once — the
+     previous values were mid-greys chosen against the navy panel, and on black
+     they read washed out. Brightened one step each; the weights stay light. */
+  --v3-fg: #FFFFFF;
+  --v3-fg-secondary: #CBD3E1;
+  --v3-fg-muted: #A6AFC0;
+  --v3-panel-elevated: rgba(255, 255, 255, 0.055);
+  --v3-border: rgba(255, 255, 255, 0.10);
+  --v3-border-strong: rgba(255, 255, 255, 0.20);
+  --v3-accent: #5AA6FF;
+}
+
+/* The composer placeholder was the browser's default grey — nearly invisible on
+   black. It is muted ON PURPOSE, but it has to be readable muted. */
+.v3-ai-surface input::placeholder {
+  color: var(--v3-fg-muted);
+  opacity: 1;
+}
+
+/* Chips inside the hero: brighter text, quieter border. They were reading as
+   grey pills; they should read as soft-white suggestions. */
+.v3-ai-surface .v3-chip {
+  color: #E6EAF2;
+  border-color: rgba(255, 255, 255, 0.18);
+  background-color: rgba(255, 255, 255, 0.045);
 }
 
 /* 🚨 GATED TO THE BREAKPOINT THAT ACTUALLY HAS A SCENE.
@@ -591,7 +618,15 @@
   /* Scenic mode makes `.v3-panel` translucent; the AI surface has already chosen
      its own alpha, so it must not be overridden by that rule. */
   .v3-theme.v3-scenic .v3-panel.v3-ai-surface {
-    background-color: rgba(8, 10, 16, 0.74);
+    /* 🚨 The FILTER has to be restated here, not just the colour. Scenic's
+       `.v3-theme.v3-scenic .v3-panel` is three classes deep and outranks the
+       two-class `.v3-panel.v3-ai-surface`, so the hero kept scenic's
+       `saturate(1.08)` — still intensifying exactly the blue this card was
+       being blackened to escape. Measured as `blur(10px) saturate(1.08)` on
+       the rendered element while the rule below said otherwise. */
+    background-color: rgba(10, 10, 13, 0.88);
+    backdrop-filter: blur(18px) saturate(0.72);
+    -webkit-backdrop-filter: blur(18px) saturate(0.72);
   }
 
   @supports not (background-color: color-mix(in srgb, red 50%, transparent)) {

@@ -135,6 +135,9 @@ export interface V3ShellProps {
   /** Brand tagline under the wordmark. Defaults to the SHARED string; Home overrides it with the
    *  approved reference's wording so that wording cannot leak to the other destinations. */
   brandTagline?: string
+  /** Render the wordmark as TYPE ALONE, with no app-icon beside it. OPT-IN, so Deals,
+   *  Marketplace and Profile keep the lockup they already ship. */
+  wordmarkOnly?: boolean
   /** Let a scenic background show through the surface. OPT-IN, and Home is the only caller —
    *  the page ground goes transparent and the chrome becomes translucent, which is wrong for
    *  every destination that has no background layer mounted behind it. */
@@ -145,7 +148,7 @@ export interface V3ShellProps {
   children: ReactNode
 }
 
-export default function V3Shell({ title, subtitle, brandTagline, scenic = false, activeTab = '/', user, children }: V3ShellProps) {
+export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = false, scenic = false, activeTab = '/', user, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
   // Presentation only: delivery, consent and push identity are untouched — this reads a count the
@@ -186,24 +189,41 @@ export default function V3Shell({ title, subtitle, brandTagline, scenic = false,
             className="flex flex-shrink-0 items-center gap-2.5 border-b px-4"
             style={{ height: 'var(--v3-header-h)', borderColor: 'var(--v3-border)' }}
           >
-            <Image
-              src="/branding/otter-logo.png"
-              alt=""
-              aria-hidden="true"
-              width={32}
-              height={32}
-              className="h-8 w-8 flex-shrink-0 rounded-[22%] object-cover"
-            />
+            {/* 🚨 TYPE ALONE ON HOME. The app icon used to sit here beside the words. The
+                approved lockup is the wordmark and its line — "no unnecessary surrounding
+                treatment, no unrelated icon beside the wordmark" — and the repository has no
+                standalone wordmark ASSET (the lettering exists only baked into the app icon,
+                the OG card and the Play graphic), so the faithful reproduction is the styled
+                text the app already uses elsewhere, not a cropped picture of a logo.
+
+                Opt-in: Deals, Marketplace and Profile still render the icon lockup, because
+                this pass is Home only. */}
+            {!wordmarkOnly && (
+              <Image
+                src="/branding/otter-logo.png"
+                alt=""
+                aria-hidden="true"
+                width={32}
+                height={32}
+                className="h-8 w-8 flex-shrink-0 rounded-[22%] object-cover"
+              />
+            )}
             <span className="flex min-w-0 flex-col leading-tight">
-              {/* Two-tone, as the approved wordmark reference shows: "Tappy" in the foreground
-                  colour, "AI" in the accent (measured #2172E1 off the reference). The otter mark
-                  to the left is unchanged — the reference crop is cut at the "T" and cannot show
-                  whether a mark precedes it, so the shipped asset stays and only the type changes.
-                  Nothing here is drawn: the mark is still /branding/otter-logo.png. */}
-              <span className="text-[17px] font-extrabold tracking-tight" style={{ color: 'var(--v3-fg)' }}>
+              {/* "Tappy" white, "AI" in the brand blue. Semibold rather than extrabold: the
+                  brief asks for elegant, and a black wordmark in a 240px rail reads as a
+                  dashboard header. */}
+              <span
+                className={cn('tracking-tight', wordmarkOnly ? 'text-[19px] font-semibold' : 'text-[17px] font-extrabold')}
+                style={{ color: 'var(--v3-fg)' }}
+              >
                 Tappy<span style={{ color: 'var(--v3-accent)' }}>AI</span>
               </span>
-              <span className="truncate text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{brandTagline ?? t('v3.brand.tagline')}</span>
+              <span
+                className={cn('truncate', wordmarkOnly ? 'mt-0.5 text-[10.5px] font-light tracking-[0.02em]' : 'text-[10px]')}
+                style={{ color: 'var(--v3-fg-muted)' }}
+              >
+                {brandTagline ?? t('v3.brand.tagline')}
+              </span>
             </span>
           </Link>
 

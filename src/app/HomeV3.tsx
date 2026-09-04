@@ -117,6 +117,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
       /* Home-only wording, passed explicitly. Editing the shared dictionary string instead
          changed Deals, Marketplace, Profile and Explore along with it. */
       brandTagline={t('v3.brand.taglineHome')}
+      wordmarkOnly
       scenic
       activeTab="/"
       user={{ name: userInfo?.full_name || firstName, avatarUrl: userInfo?.avatar_url, plan: user ? t('v3.top.plan') : null }}
@@ -141,7 +142,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             on its own, and a 16/12px gap stacked between every block. The greeting, the mascot,
             the composer and the chips are ONE composition, so they sit close together and the
             mascot is sized to the text beside it rather than the other way round. */}
-        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel v3-ai-surface p-5 sm:p-6 lg:p-7">
+        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel v3-ai-surface overflow-hidden p-5 sm:p-6 lg:p-7">
           {/* 🔑 The label, the greeting and the mascot are ONE row in the reference, not a label
               stacked above a greeting-and-mascot row. The mascot's head sits level with the label
               at the card's top-right and its body runs down past the greeting — so the text column
@@ -163,7 +164,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 </span>
                 {t('v3.home.cardLabel')}
               </p>
-              <h2 className="mt-3 text-[26px] font-light leading-[1.15] tracking-[-0.02em] sm:text-[32px]" style={{ color: 'var(--v3-fg)' }}>
+              <h2 className="mt-3 text-[24px] font-light leading-[1.2] tracking-[-0.015em] sm:text-[26px]" style={{ color: 'var(--v3-fg)' }}>
                 {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
                 <span aria-hidden="true">👋</span>
               </h2>
@@ -182,15 +183,21 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 greeting. `-mb-4` reproduces the overlap — the mascot ends underneath the
                 composer's top edge rather than stacking above it. */}
             {/* Composed, not placed — see TappyPresence.
+                🚨 The card is `overflow-hidden` BECAUSE of this: the aura is an absolutely
+                positioned field 1.9x the character's width, so at 1280 — where the column is
+                narrower and the mascot sits nearer the edge — it reached past the card and gave
+                the whole document a horizontal scrollbar. Measured as OVERFLOWS at 1280 while
+                1440 was clean, which is exactly how a decorative layer escapes review. The card
+                clips it; the glow stays inside the surface it belongs to.
                 🔑 `wave`, NOT `welcome`. Both are waving poses and only those two of the owner's
                 eighteen are; `welcome` was the component default rather than a choice, and the
                 owner identified `wave` against the approved reference. It is framed closer (its
                 content box is 176x182 against welcome's 130x172 in the same 288² canvas) and
                 cropped at the legs rather than showing the feet, so it reads larger at the same
                 declared size — the sizes below are set against THIS asset. */}
-            <TappyPresence pose="wave" size={116} className="-mt-1 hidden lg:block" />
-            <TappyPresence pose="wave" size={96} className="-mt-1 hidden sm:block lg:hidden" />
-            <TappyPresence pose="wave" size={72} className="-mt-1 sm:hidden" />
+            <TappyPresence pose="wave" size={168} className="-mt-2 hidden lg:block" />
+            <TappyPresence pose="wave" size={132} className="-mt-2 hidden sm:block lg:hidden" />
+            <TappyPresence pose="wave" size={88} className="-mt-1 sm:hidden" />
           </div>
 
           {/* A composer, not a search box: it promises consultation, not retrieval. */}

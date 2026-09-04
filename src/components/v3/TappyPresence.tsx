@@ -41,7 +41,10 @@ export interface TappyPresenceProps {
 export default function TappyPresence({ pose = 'wave', size, className = '' }: TappyPresenceProps) {
   // The aura is wider than the character so the light reads as coming from
   // behind it, not as a disc drawn around it.
-  const field = Math.round(size * 1.5)
+  // Wider than before (1.5 -> 1.9): a tight halo reads as a disc BEHIND the character,
+  // which is what made the old treatment look like an avatar chip. Spread out, the same
+  // light reads as atmosphere the character is standing in.
+  const field = Math.round(size * 1.9)
 
   return (
     <div
@@ -61,24 +64,19 @@ export default function TappyPresence({ pose = 'wave', size, className = '' }: T
           className="absolute inset-0 rounded-full"
           style={{
             background:
-              'radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--v3-violet) 14%, transparent) 0%, transparent 72%)',
+              'radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--v3-violet) 17%, transparent) 0%, color-mix(in srgb, var(--v3-accent) 7%, transparent) 42%, transparent 74%)',
           }}
         />
-        {/* One ring, deliberately off-centre and thin. Two would be a target;
-            one is depth. */}
-        <div
-          className="absolute rounded-full"
-          style={{
-            inset: '11%',
-            border: '1px solid color-mix(in srgb, var(--v3-accent) 16%, transparent)',
-            transform: 'translate(2%, -3%)',
-          }}
-        />
+        {/* 🚨 NO RING. There was a thin circle here at inset 11%, and whatever it was
+            meant to be it read as an AVATAR BORDER — a small character inside a
+            circular frame, which is a profile picture, not a hero visual. The glow
+            alone carries the depth; a closed circle around a character always
+            reads as a container. */}
         {/* Sparkles. Three, small, low, and slow — placed off the character's
             silhouette so they never sit on its face. */}
-        <Sparkle className="left-[6%] top-[26%] motion-safe:animate-[tappyFloat_7s_ease-in-out_infinite]" tone="var(--v3-accent)" px={5} />
-        <Sparkle className="right-[9%] top-[14%] motion-safe:animate-[tappyFloat_9s_ease-in-out_infinite_0.8s]" tone="var(--v3-violet)" px={4} />
-        <Sparkle className="right-[16%] bottom-[22%] motion-safe:animate-[tappyFloat_8s_ease-in-out_infinite_1.6s]" tone="var(--v3-accent)" px={3} />
+        <Sparkle className="left-[3%] top-[24%] motion-safe:animate-[tappyFloat_7s_ease-in-out_infinite]" tone="var(--v3-accent)" px={5} />
+        <Sparkle className="right-[5%] top-[11%] motion-safe:animate-[tappyFloat_9s_ease-in-out_infinite_0.8s]" tone="var(--v3-violet)" px={4} />
+        <Sparkle className="right-[9%] bottom-[20%] motion-safe:animate-[tappyFloat_8s_ease-in-out_infinite_1.6s]" tone="var(--v3-accent)" px={3} />
       </div>
 
       {/* ── The approved asset, untouched. ─────────────────────────────── */}
