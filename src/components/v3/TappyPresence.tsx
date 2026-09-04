@@ -14,7 +14,7 @@ import { TappyMascot, type TappyPose } from '@/components/TappyMascot'
 //   · a soft radial glow, so the mascot sits IN light rather than on a surface;
 //   · one thin ring, off-centre, reading as ambient depth rather than a badge;
 //   · three sparkles, drawn from the brand's own accent and violet;
-//   · a contact shadow, so it stands on something.
+//   (a contact shadow used to sit here; see the note at the end for why `wave` drops it.)
 //
 // 🚨 RESTRAINT IS THE DESIGN. Every element is under 20% opacity and none of it
 // is interactive. The brief was "premium and restrained, not a game UI" — the
@@ -31,14 +31,14 @@ import { TappyMascot, type TappyPose } from '@/components/TappyMascot'
 // here carries meaning that is lost when it stops.
 
 export interface TappyPresenceProps {
-  /** Which pose from the owner's library. Home uses `welcome`. */
+  /** Which pose from the owner's library. Home uses `wave`. */
   pose?: TappyPose
   /** Rendered size of the character itself, px. The composition scales with it. */
   size: number
   className?: string
 }
 
-export default function TappyPresence({ pose = 'welcome', size, className = '' }: TappyPresenceProps) {
+export default function TappyPresence({ pose = 'wave', size, className = '' }: TappyPresenceProps) {
   // The aura is wider than the character so the light reads as coming from
   // behind it, not as a disc drawn around it.
   const field = Math.round(size * 1.5)
@@ -88,19 +88,13 @@ export default function TappyPresence({ pose = 'welcome', size, className = '' }
         className="relative h-full w-full"
       />
 
-      {/* Contact shadow, so the character stands on the card instead of
-          hovering above it. Elliptical and very soft — a hard shadow would
-          read as a sticker. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 -translate-x-1/2 rounded-[50%]"
-        style={{
-          bottom: '-3%',
-          width: '58%',
-          height: '9%',
-          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.22) 0%, transparent 72%)',
-        }}
-      />
+      {/* 🚨 NO CONTACT SHADOW. There was one, and it was right for `welcome`: that pose shows the
+          otter's feet, so a soft ellipse underneath read as the character standing on the card.
+          `wave` is cropped at the legs — it is not standing on anything, and a ground shadow under
+          a crop reads as a smudge rather than as depth. The aura and ring already carry the depth,
+          which is the trade the brief asked for: the correct mascot with simpler effects beats
+          effects propping up the wrong one. */
+      }
     </div>
   )
 }

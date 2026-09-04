@@ -175,16 +175,22 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 No new art, no altered pose, no substitute.
 
                 SCALE COMES FROM THE REFERENCE, not from taste. Measured on the approved
-                screenshot: the mascot stands 2.7× the height of the composer beside it and runs
+                screenshot: the mascot stands 2.7x the height of the composer beside it and runs
                 from the card's top padding down to where the composer begins, its lower body
                 passing behind that field. At 72px it was an ornament sitting politely in a
                 corner; the reference makes it the second-loudest thing on the page after the
                 greeting. `-mb-4` reproduces the overlap — the mascot ends underneath the
                 composer's top edge rather than stacking above it. */}
-            {/* Composed, not placed — see TappyPresence. Same asset, same pose. */}
-            <TappyPresence pose="welcome" size={128} className="-mt-1 -mb-4 hidden lg:block" />
-            <TappyPresence pose="welcome" size={104} className="-mt-1 -mb-3 hidden sm:block lg:hidden" />
-            <TappyPresence pose="welcome" size={80} className="-mt-1 sm:hidden" />
+            {/* Composed, not placed — see TappyPresence.
+                🔑 `wave`, NOT `welcome`. Both are waving poses and only those two of the owner's
+                eighteen are; `welcome` was the component default rather than a choice, and the
+                owner identified `wave` against the approved reference. It is framed closer (its
+                content box is 176x182 against welcome's 130x172 in the same 288² canvas) and
+                cropped at the legs rather than showing the feet, so it reads larger at the same
+                declared size — the sizes below are set against THIS asset. */}
+            <TappyPresence pose="wave" size={116} className="-mt-1 hidden lg:block" />
+            <TappyPresence pose="wave" size={96} className="-mt-1 hidden sm:block lg:hidden" />
+            <TappyPresence pose="wave" size={72} className="-mt-1 sm:hidden" />
           </div>
 
           {/* A composer, not a search box: it promises consultation, not retrieval. */}
