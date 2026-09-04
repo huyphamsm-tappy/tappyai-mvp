@@ -216,10 +216,10 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
             )}
             <span className="flex min-w-0 flex-col leading-tight">
               {/* "Tappy" white, "AI" in the brand blue. Semibold rather than extrabold: the
-                  brief asks for elegant, and a black wordmark in a 240px rail reads as a
+                  brief asks for elegant, and a black wordmark in a narrow rail reads as a
                   dashboard header. */}
               <span
-                className={cn('tracking-tight', wordmarkOnly ? 'text-[19px] font-semibold' : 'text-[17px] font-extrabold')}
+                className={cn('tracking-tight', wordmarkOnly ? 'text-[18px] font-semibold' : 'text-[16px] font-extrabold')}
                 style={{ color: 'var(--v3-fg)' }}
               >
                 Tappy<span style={{ color: 'var(--v3-accent)' }}>AI</span>
@@ -238,9 +238,9 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
               // Sidebar rhythm is tight on purpose. Six groups and twenty-two rows is more than a
               // 900px-tall window can show, so every 4px of row padding is a row of navigation
               // pushed under the fold — and what sat under it was the whole Tài khoản group.
-              <div key={group.titleKey} className="mb-2">
+              <div key={group.titleKey} className="mb-1">
                 <p
-                  className="px-2 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider"
+                  className="px-2.5 pb-1.5 pt-4 text-[9.5px] font-semibold uppercase tracking-[0.11em]"
                   style={{ color: 'var(--v3-fg-muted)' }}
                 >
                   {t(group.titleKey)}
@@ -254,14 +254,14 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                         <Link
                           href={item.href}
                           className={cn(
-                            'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13px] transition-colors',
-                            active ? 'font-semibold' : 'hover:bg-white/5',
+                            'flex items-center gap-2.5 rounded-lg px-2.5 py-[7px] text-[12.5px] font-normal transition-colors',
+                            active ? 'font-medium' : 'hover:bg-white/5',
                           )}
                           style={active
                             ? { background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }
                             : { color: 'var(--v3-fg-secondary)' }}
                         >
-                          <Icon size={16} aria-hidden="true" className="flex-shrink-0" />
+                          <Icon size={15} aria-hidden="true" className="flex-shrink-0" />
                           <span className="truncate">{t(item.labelKey)}</span>
                           {item.tagKey && (
                             <span
@@ -289,8 +289,8 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                 border: '1px solid var(--v3-border-strong)',
               }}
             >
-              <p className="flex items-center gap-1.5 text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
-                <Sparkles size={13} style={{ color: 'var(--v3-amber)' }} aria-hidden="true" />
+              <p className="flex items-center gap-1.5 text-[11.5px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
+                <Sparkles size={12} style={{ color: 'var(--v3-amber)' }} aria-hidden="true" />
                 {t('v3.premium.title')}
               </p>
               <p className="mt-0.5 text-[10px]" style={{ color: 'var(--v3-fg-secondary)' }}>
@@ -298,7 +298,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
               </p>
               <Link
                 href="/subscription"
-                className="mt-2.5 flex min-h-[36px] items-center justify-center rounded-lg text-[12px] font-semibold text-white"
+                className="mt-2.5 flex min-h-[34px] items-center justify-center rounded-lg text-[11.5px] font-semibold text-white"
                 style={{ background: 'var(--v3-accent-fill)' }}
               >
                 {t('v3.premium.cta')}
@@ -323,9 +323,9 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                 wraps to its own row, so the height has to stay natural. */}
             <div className="v3-container flex flex-wrap items-center gap-3 py-3 lg:h-[calc(var(--v3-header-h)-1px)] lg:flex-nowrap lg:py-0">
               <div className="min-w-0 flex-1">
-                <h1 className="truncate text-lg font-bold lg:text-xl" style={{ color: 'var(--v3-fg)' }}>{title}</h1>
+                <h1 className="truncate text-[19px] font-semibold tracking-[-0.01em] lg:text-[21px]" style={{ color: 'var(--v3-fg)' }}>{title}</h1>
                 {subtitle && (
-                  <p className="truncate text-[12px]" style={{ color: 'var(--v3-fg-secondary)' }}>{subtitle}</p>
+                  <p className="truncate text-[12px] font-light" style={{ color: 'var(--v3-fg-secondary)' }}>{subtitle}</p>
                 )}
               </div>
 
@@ -338,7 +338,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                       key={tab.labelKey}
                       href={tab.href}
                       aria-current={active ? 'page' : undefined}
-                      className="flex min-w-[64px] flex-col items-center gap-1 rounded-xl px-3 py-2 text-[11px] font-medium transition-colors"
+                      className="flex min-w-[68px] flex-col items-center gap-1 rounded-xl px-3.5 py-1.5 text-[11px] font-normal transition-colors"
                       style={active
                         ? { background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }
                         : { color: 'var(--v3-fg-secondary)' }}
@@ -360,7 +360,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                 })}
               </nav>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 {/* Light/Dark. Same size and treatment as the notification control beside it.
                     🚨 The icon is `Moon` until `mounted`, deliberately: the stored choice cannot
                     be read during SSR, so rendering the real state on the first client pass is a
@@ -414,7 +414,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                 </Link>
                 <Link
                   href="/reviews/new"
-                  className="hidden min-h-[36px] items-center gap-1.5 rounded-lg px-3 text-[12px] font-semibold text-white sm:flex"
+                  className="ml-1 hidden min-h-[36px] items-center gap-1.5 rounded-full px-4 text-[12.5px] font-medium text-white sm:flex"
                   style={{ background: 'var(--v3-accent-fill)' }}
                 >
                   <Plus size={15} aria-hidden="true" />

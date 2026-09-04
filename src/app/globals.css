@@ -434,8 +434,12 @@
 /* ------------------------------------------------------------------ */
 .v3-theme {
   /* ── Layout grid ── */
-  --v3-sidebar-w: 240px;
-  --v3-header-h: 64px;
+  /* Measured off the approved full-page reference: its sidebar's right edge sits at
+     208/1536 of the frame and its header's baseline at 70/1536-scale. 240px was a round
+     number picked before there was a reference to check it against, and at that width the
+     rail reads as an admin nav rather than the product's. */
+  --v3-sidebar-w: 212px;
+  --v3-header-h: 68px;
   --v3-content-max: 1160px;
   --v3-gutter: 28px;
   --v3-gap: 16px;
