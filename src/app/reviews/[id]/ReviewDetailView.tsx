@@ -295,8 +295,11 @@ export default function ReviewDetailView({
                thing that speaks the product's colour. The orange/pink gradient here predated the
                design system and was the only place on the surface using it. Explore's own
                identity — the feed, the dark stage, like/comment/share — is untouched (OD-2). */
-            className="inline-flex items-center gap-2 text-white text-sm font-bold px-5 py-2.5 rounded-full"
-            style={{ background: 'var(--v3-accent)' }}
+            /* Same 44px floor and focus ring as the feed's copy of this control
+               (cross-screen invariant 5). It is the same affordance on the same
+               surface; two different sizes for it would be an accident. */
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            style={{ background: 'var(--v3-accent-fill)' }}
           >
             🤖 {t('reviewDetail.askTappy')}
           </Link>

@@ -79,6 +79,62 @@ needs its own design pass and its own visual review gate, in roadmap order, befo
 called done.
 
 ---
+## 0.1 VISUAL POLISH PASS — grid, theme control, brand art
+
+A correction pass against the approved reference. No page structure changed; Home is still Home,
+Explore still Explore, Marketplace still reserved.
+
+### The grid was never defined anywhere
+
+The sidebar width, the header height and the content width were written as literals at each call
+site, so pages had no shared grid to disagree about — and duly disagreed. They are tokens now
+(`--v3-sidebar-w` 240 · `--v3-header-h` 64 · `--v3-content-max` 1160 · `--v3-gutter` 28), and one
+`.v3-container` carries both the header row and `<main>`, so a page title and the content under it
+share a left edge by construction rather than by coincidence.
+
+**Measured after the change, at 1440:** header title, hero, "Tiếp tục" heading and "Công cụ"
+heading all begin at **x=286**; the header's right control ends at **x=1390**, the same line the
+content ends on; no horizontal overflow.
+
+Two misalignments were found by measuring rather than looking, and both were invisible in a
+screenshot but wrong:
+
+| | |
+|---|---|
+| **1px hairline stagger** | The sidebar's brand block put its border *inside* a 64px box (border-box); the header put its border *outside* one. The two hairlines across the top of every page sat at y=64 and y=65. |
+| **2px heading inset** | `px-0.5` on the section headings pushed every one of them 2px right of the grid line its own cards sit on. |
+
+Home also stopped declaring its own `max-w-[720px]`: a second, narrower container inside the
+shell's container is what left the page stranded in empty space on a wide screen. Pages now choose
+a **column count**, never a width.
+
+### The Light/Dark control
+
+Added to the header, beside the notification control. It reuses the app's existing mechanism and
+adds no second one: the `dark` class on `<html>`, persisted under `localStorage.theme` — exactly
+what `Header.tsx` has always done. That logic moved into `useThemeMode` so the two surfaces share
+one implementation instead of holding two copies that drift.
+
+🚨 The shell used to render `className="v3-theme dark"` — it pinned itself to dark. With that
+literal in place a toggle could exist, look right, pass tests and change nothing on screen. The
+class is gone and `.v3-theme` / `.dark .v3-theme` carry the two palettes.
+
+### The accent was one token doing two contradictory jobs
+
+`--v3-accent` was both interactive **text** on a dark ground (wants to be light) and a **fill**
+under white text (wants to be dark). It cannot be both, and the shipped value was not: **white on
+`#3391FF` measures 3.17:1**, so every filled button on the surface — send, "Chat ngay", "Lấy deal",
+the Premium upsell — was below AA while the palette comment claimed the accent passed. Split into
+`--v3-accent` (text/icon) and `--v3-accent-fill` + `--v3-on-accent`; 11 filled controls moved.
+
+### Brand art — found, not drawn
+
+| | |
+|---|---|
+| **Logo** | The sidebar drew a `Sparkles` glyph beside hand-styled text — a wordmark invented at the call site. It now renders `/branding/otter-logo.png`, the app's established mark (favicon, `Header`, login, onboarding; `controllerLoginComposition.test.tsx` already names it approved brand art) with Header's own `rounded-[22%] object-cover` treatment. |
+| **Mascot** | Already the approved asset — `TappyMascot` over the owner's 18-pose library at `/tappy/<pose>.png`, `welcome` on Home. Two real faults fixed: it was declared `size={40}` (the default) and stretched to 80px by a class, so its intrinsic size disagreed with its layout; and at a fixed 104px it squeezed the greeting on a 375px screen hard enough to push the wave emoji onto its own line. It is declared at its rendered size and scales down on narrow screens. **No new mascot art was made, and none of the 18 poses was altered — art is the owner's domain.** |
+
+---
 ## 1. Global Web Shell
 
 | | |

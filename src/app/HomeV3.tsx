@@ -116,12 +116,14 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
       activeTab="/"
       user={{ name: userInfo?.full_name || firstName, avatarUrl: userInfo?.avatar_url, plan: user ? t('v3.top.plan') : null }}
     >
-      {/* One readable column. Home is a focused page — the shell already carries the
-          product's breadth, so this page does not have to. */}
-      <div className="mx-auto w-full max-w-[720px] space-y-5">
+      {/* No width of its own. The shell's `.v3-container` caps and centres every V3 page on the
+          same grid; Home adding a second, narrower cap inside it was what left the content
+          stranded in empty space on a wide screen. Sections below choose their COLUMN COUNT,
+          never their width. */}
+      <div className="space-y-6">
 
         {/* ── 1. Ask Tappy — the primary action, first and largest ───────── */}
-        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel p-5">
+        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel p-6 lg:p-7">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <h2 className="text-2xl font-bold" style={{ color: 'var(--v3-fg)' }}>
@@ -132,7 +134,15 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 {t('v3.home.greetSub')}
               </p>
             </div>
-            <TappyMascot pose="welcome" className="h-20 w-20 flex-shrink-0" />
+            {/* Tappy is the approved mascot asset (`/tappy/welcome.png`, the pose library the
+                    owner ships), declared at its rendered size. It scales down on narrow screens:
+                    at 104px on a 375px viewport it squeezed the greeting hard enough to push the
+                    wave emoji onto its own line. */}
+            <TappyMascot
+              pose="welcome"
+              size={104}
+              className="h-16 w-16 flex-shrink-0 sm:h-24 sm:w-24 lg:h-[104px] lg:w-[104px]"
+            />
           </div>
 
           {/* A composer, not a search box: it promises consultation, not retrieval. */}
@@ -161,7 +171,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               type="submit"
               aria-label={t('v3.home.sendAria')}
               className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
-              style={{ background: 'var(--v3-accent)' }}
+              style={{ background: 'var(--v3-accent-fill)' }}
             >
               <ArrowUp size={17} aria-hidden="true" />
             </button>
@@ -184,7 +194,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             action={hasContinue ? { label: t('v3.action.seeAll'), href: '/profile/history' } : undefined}
           />
           {hasContinue ? (
-            <ul className="mt-2 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            <ul className="mt-2.5 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {/* ≤2 recent threads, as the approved layout specifies. */}
               {conversations.slice(0, 2).map(c => (
                 <li key={c.id}>
@@ -213,8 +223,8 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               </p>
               <Link
                 href={user ? '/chat' : '/login'}
-                className="mt-3 inline-flex min-h-[40px] items-center rounded-xl px-5 text-[13px] font-semibold text-white"
-                style={{ background: 'var(--v3-accent)' }}
+                className="mt-3 inline-flex min-h-[40px] items-center rounded-xl px-5 text-[13px] font-semibold"
+                style={{ background: 'var(--v3-accent-fill)' }}
               >
                 {user ? t('home.chatNow') : t('home.login')}
               </Link>
@@ -262,7 +272,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider" style={{ color: 'var(--v3-fg-muted)' }}>
                   {t(group.titleKey)}
                 </p>
-                <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-5">
+                <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
                   {group.tools.map(({ href, icon: Icon, labelKey, tone }) => (
                     <Link
                       key={href}
@@ -294,7 +304,9 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
 /** One heading rhythm for the three sections below the hero. */
 function SectionHeading({ title, action }: { title: string; action?: { label: string; href: string } }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 px-0.5">
+        // No optical inset: `px-0.5` put every heading 2px right of the grid line its own
+    // cards sit on, which is exactly the kind of near-miss that reads as sloppy.
+    <div className="flex items-baseline justify-between gap-3">
       <h2 className="text-[15px] font-bold" style={{ color: 'var(--v3-fg)' }}>{title}</h2>
       {action && (
         <Link href={action.href} className="flex items-center gap-0.5 text-[12px]" style={{ color: 'var(--v3-accent)' }}>

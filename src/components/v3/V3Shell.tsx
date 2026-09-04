@@ -7,13 +7,14 @@ import { usePathname } from 'next/navigation'
 import {
   Home, PlayCircle, Search, Upload, Users, Bookmark, Star, History,
   Tag, Store, Wrench, CalendarRange, ShieldCheck, Inbox as InboxIcon,
-  Bell, UserCircle, QrCode, Wallet, Settings, Languages, HelpCircle,
+  Bell, Sun, Moon, UserCircle, QrCode, Wallet, Settings, Languages, HelpCircle,
   MessageSquare, LogOut, Sparkles, MessageCircle, Grid3x3, Plus, ChevronRight,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
 import { useNotifications } from '@/components/NotificationProvider'
+import { useThemeMode } from '@/lib/theme/useThemeMode'
 
 // ── V3 Web · Shell ──────────────────────────────────────────────────────────
 //
@@ -140,25 +141,52 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
   // Presentation only: delivery, consent and push identity are untouched — this reads a count the
   // store already maintains for the bottom nav.
   const { unreadCount } = useNotifications()
+  const { isDark, mounted: themeMounted, toggle: toggleTheme } = useThemeMode()
 
   return (
-    // `dark` sits alongside `v3-theme` on purpose. The V3 surface is dark by design regardless of
-    // the user's theme choice, and it hosts app-level components that are NOT V3 components —
-    // BottomNav, DealNotifyButton, Header. Those already have designed dark variants, but those
-    // variants key on Tailwind's class strategy, so without `dark` here a white bottom bar and a
-    // white notify pill render on a #0A0F1C page. Same mechanism the chat routes use.
-    <div className="v3-theme dark min-h-dvh">
+    // 🚨 This used to be `v3-theme dark` — the surface pinned itself to dark and ignored the
+    // user. The header now carries a Light/Dark control, so the class comes off and the palette
+    // follows `dark` on <html>, which is the app's existing mechanism (`useThemeMode`). That one
+    // class also drives the Tailwind `dark:` variants of the app-level components hosted in here
+    // — BottomNav, DealNotifyButton, Header — so they stay in step instead of rendering a white
+    // bar on a dark page, which is what the forced class was working around.
+    <div className="v3-theme min-h-dvh">
       <div className="flex">
         {/* ── Sidebar (desktop only) ────────────────────────────────────── */}
         <aside
-          className="sticky top-0 hidden h-dvh w-[236px] flex-shrink-0 flex-col border-r lg:flex"
-          style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel)' }}
+          className="sticky top-0 hidden h-dvh flex-shrink-0 flex-col border-r lg:flex"
+          style={{
+            width: 'var(--v3-sidebar-w)',
+            borderColor: 'var(--v3-border)',
+            background: 'var(--v3-panel)',
+          }}
         >
-          <Link href="/" className="flex items-center gap-2 px-4 py-4">
-            <Sparkles size={18} style={{ color: 'var(--v3-amber)' }} aria-hidden="true" />
-            <span className="flex flex-col leading-tight">
-              <span className="text-lg font-extrabold" style={{ color: 'var(--v3-accent)' }}>TappyAI</span>
-              <span className="text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.brand.tagline')}</span>
+          {/* 🚨 The mark is the SHIPPED brand asset, not a lucide glyph. This was a `Sparkles`
+              icon beside hand-styled text — a wordmark invented at the call site, which is not
+              the product's logo. `/branding/otter-logo.png` is the app's established mark: the
+              favicon, the Header lockup, the login and onboarding screens all use it, and
+              `controllerLoginComposition.test.tsx` already names it as approved brand art.
+              `rounded-[22%] object-cover` is Header's treatment, reused verbatim — the source
+              is a 1254² app icon with a white margin, and object-cover crops to the blue tile.
+
+              The brand block is exactly header-height so the sidebar's first hairline lands on
+              the same line as the top bar's. */}
+          <Link
+            href="/"
+            className="flex flex-shrink-0 items-center gap-2.5 border-b px-4"
+            style={{ height: 'var(--v3-header-h)', borderColor: 'var(--v3-border)' }}
+          >
+            <Image
+              src="/branding/otter-logo.png"
+              alt=""
+              aria-hidden="true"
+              width={32}
+              height={32}
+              className="h-8 w-8 flex-shrink-0 rounded-[22%] object-cover"
+            />
+            <span className="flex min-w-0 flex-col leading-tight">
+              <span className="text-[17px] font-extrabold tracking-tight" style={{ color: 'var(--v3-fg)' }}>TappyAI</span>
+              <span className="truncate text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.brand.tagline')}</span>
             </span>
           </Link>
 
@@ -225,7 +253,7 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
               <Link
                 href="/subscription"
                 className="mt-2.5 flex min-h-[36px] items-center justify-center rounded-lg text-[12px] font-semibold text-white"
-                style={{ background: 'var(--v3-accent)' }}
+                style={{ background: 'var(--v3-accent-fill)' }}
               >
                 {t('v3.premium.cta')}
               </Link>
@@ -235,11 +263,19 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
 
         {/* ── Main column ───────────────────────────────────────────────── */}
         <div className="min-w-0 flex-1">
+          {/* The background was a hardcoded `rgba(10,15,28,0.85)` — the dark page colour written
+              as a literal, so it stayed dark when the palette went light. It reads the token now. */}
           <header
             className="sticky top-0 z-30 border-b backdrop-blur"
-            style={{ borderColor: 'var(--v3-border)', background: 'rgba(10,15,28,0.85)' }}
+            style={{
+              borderColor: 'var(--v3-border)',
+              background: 'color-mix(in srgb, var(--v3-page) 88%, transparent)',
+            }}
           >
-            <div className="flex flex-wrap items-center gap-3 px-4 py-3 lg:px-6">
+            {/* Fixed height from `lg` up so the header bottom, the sidebar's brand-block hairline
+                and the top of the content column all land on one line. Below `lg` the tab strip
+                wraps to its own row, so the height has to stay natural. */}
+            <div className="v3-container flex flex-wrap items-center gap-3 py-3 lg:h-[calc(var(--v3-header-h)-1px)] lg:flex-nowrap lg:py-0">
               <div className="min-w-0 flex-1">
                 <h1 className="truncate text-lg font-bold lg:text-xl" style={{ color: 'var(--v3-fg)' }}>{title}</h1>
                 {subtitle && (
@@ -279,6 +315,24 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
               </nav>
 
               <div className="flex items-center gap-2">
+                {/* Light/Dark. Same size and treatment as the notification control beside it.
+                    🚨 The icon is `Moon` until `mounted`, deliberately: the stored choice cannot
+                    be read during SSR, so rendering the real state on the first client pass is a
+                    hydration mismatch and a visible flicker. Rendering the same icon on both
+                    passes and correcting it after the effect avoids both — and rendering the
+                    button either way keeps the header from shifting 36px on hydration. */}
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  aria-label={t(themeMounted && isDark ? 'v3.theme.toLight' : 'v3.theme.toDark')}
+                  aria-pressed={themeMounted ? isDark : false}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors"
+                  style={{ background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-secondary)' }}
+                >
+                  {themeMounted && isDark
+                    ? <Sun size={17} aria-hidden="true" />
+                    : <Moon size={17} aria-hidden="true" />}
+                </button>
                 <Link
                   href="/profile/notifications"
                   aria-label={t('v3.top.notifications')}
@@ -315,7 +369,7 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
                 <Link
                   href="/reviews/new"
                   className="hidden min-h-[36px] items-center gap-1.5 rounded-lg px-3 text-[12px] font-semibold text-white sm:flex"
-                  style={{ background: 'var(--v3-accent)' }}
+                  style={{ background: 'var(--v3-accent-fill)' }}
                 >
                   <Plus size={15} aria-hidden="true" />
                   {t('v3.top.post')}
@@ -324,7 +378,9 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
             </div>
           </header>
 
-          <main className="px-4 pb-24 pt-4 lg:px-6 lg:pb-8">{children}</main>
+          {/* Same container as the header, so the page's left edge lines up with the title
+              above it instead of each choosing its own padding. */}
+          <main className="v3-container pb-24 pt-5 lg:pb-10">{children}</main>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { render, cleanup } from '@testing-library/react'
+import { render, cleanup, act } from '@testing-library/react'
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),
@@ -21,6 +21,8 @@ vi.mock('@/modules/music', () => ({
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
 
 import { Post, type Review } from './feedShared'
+// Aliased: `vi` is already vitest's mocking utility in this file.
+import { en as enCopy, vi as viCopy } from '@/lib/i18n/w2/reviews'
 
 // V3 Web · Explore (`/reviews`) — the ONE approved change to this surface.
 //
@@ -109,5 +111,86 @@ describe('Explore → Chat bridge (the one thing V3 adds to Explore)', () => {
     const { container } = renderPost()
     const buttons = container.querySelectorAll('button')
     expect(buttons.length, 'the feed rail must keep its own actions').toBeGreaterThanOrEqual(4)
+  })
+
+  it('meets the 44px touch floor and shows focus (cross-screen invariant 5)', () => {
+    // The feed's neighbouring gesture layer turns an undersized target into a
+    // swipe. The class is asserted rather than the computed height because jsdom
+    // does not apply Tailwind — what ships is the class, so that is the contract.
+    const { container } = renderPost()
+    const cls = bridge(container)!.className
+    expect(cls, 'the bridge must meet the 44x44 floor').toContain('min-h-[44px]')
+    expect(cls, 'an invisible focus ring is an invisible control').toContain('focus-visible:ring')
+  })
+})
+
+// ── S-07 offline state ──────────────────────────────────────────────────────
+//
+// The spec is precise about what offline means here: cached items stay READABLE
+// and the ask affordance is DISABLED. Both halves are asserted, because either
+// one alone is the wrong behaviour — a feed that blanks out, or a live button
+// that cannot work.
+
+describe('offline', () => {
+  const setOnline = (value: boolean) => {
+    Object.defineProperty(window.navigator, 'onLine', { value, configurable: true })
+  }
+  afterEach(() => setOnline(true))
+
+  it('withholds the bridge, and says why in words rather than only in colour', () => {
+    setOnline(false)
+    const { container, getByTestId, getByText } = renderPost()
+    expect(bridge(container), 'offline: the bridge must not be a live link').toBeNull()
+    // Still present, still named — inert, not vanished. A control that disappears
+    // when the connection drops reads as a broken page.
+    const disabled = getByTestId('ask-tappy-offline')
+    expect(disabled.getAttribute('aria-disabled')).toBe('true')
+    // Asserted against the dictionary rather than a hard-coded string: this suite
+    // renders in English, and pinning the Vietnamese copy here would make the test
+    // a statement about the test harness's locale instead of about the control.
+    expect(disabled.textContent).toContain(enCopy['reviews.askAboutPlace'])
+    // Invariant 6: the reason is carried by text, not by the dimming alone.
+    expect(getByText(enCopy['reviews.askOfflineReason'])).toBeTruthy()
+  })
+
+  it('leaves the item itself readable — offline hides nothing but the bridge', () => {
+    setOnline(false)
+    const { getByText } = renderPost()
+    expect(getByText('Bún bò Huế Cô Ba'), 'the place must still be readable offline').toBeTruthy()
+    expect(getByText('Ngon bá cháy'), 'the caption must still be readable offline').toBeTruthy()
+  })
+
+  it('has the copy in BOTH languages — a Vietnamese user must not meet English here', () => {
+    // The offline reason is new copy, and new copy is exactly what ships
+    // half-translated. Both dictionaries carry it, and neither falls back.
+    for (const key of ['reviews.askAboutPlace', 'reviews.askOfflineReason']) {
+      expect(viCopy[key], `${key} missing from vi`).toBeTruthy()
+      expect(enCopy[key], `${key} missing from en`).toBeTruthy()
+      expect(viCopy[key], `${key} was not translated`).not.toBe(enCopy[key])
+    }
+  })
+
+  it('offers no bridge at all offline when there was no subject either', () => {
+    // The two rules compose: no place means no control, disabled or otherwise.
+    setOnline(false)
+    const { container } = renderPost({ place_name: '' })
+    expect(container.querySelector('[data-testid="ask-tappy-offline"]')).toBeNull()
+  })
+
+  it('comes back when the connection does — the browser event, not a reload', () => {
+    setOnline(false)
+    const { container } = renderPost()
+    expect(container.querySelector('[data-testid="ask-tappy-offline"]')).toBeTruthy()
+
+    // The hook listens for the real 'online' event, so recovery must not need a
+    // navigation. If it did, a user who regained signal would sit looking at a
+    // dead control until they scrolled away and back.
+    act(() => {
+      setOnline(true)
+      window.dispatchEvent(new Event('online'))
+    })
+
+    expect(bridge(container), 'the bridge must return without a reload').toBeTruthy()
+    expect(container.querySelector('[data-testid="ask-tappy-offline"]')).toBeNull()
   })
 })

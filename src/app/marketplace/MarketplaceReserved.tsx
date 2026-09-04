@@ -53,7 +53,7 @@ export default function MarketplaceReserved() {
               <Link
                 href="/deals"
                 className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl px-4 text-[13px] font-semibold text-white"
-                style={{ background: 'var(--v3-accent)' }}
+                style={{ background: 'var(--v3-accent-fill)' }}
               >
                 <Tag size={15} aria-hidden="true" />
                 {t('deals.title')}

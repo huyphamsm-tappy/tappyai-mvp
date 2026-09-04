@@ -49,7 +49,7 @@ export default function GuestProfileView() {
             <Link
               href={signInHref('/profile')}
               className="mt-5 flex min-h-[44px] w-full items-center justify-center rounded-xl px-5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ background: 'var(--v3-accent)' }}
+              style={{ background: 'var(--v3-accent-fill)' }}
             >
               {t('profile.guest.signIn')}
             </Link>

@@ -69,7 +69,7 @@ function TikNav({ tab, setTab, userId, unreadCount = 0 }: { tab: string; setTab:
       <Link href="/reviews/new" className="flex-1 flex justify-center" aria-label={t('reviews.sidebarPost')}>
         <div
           className="w-11 h-8 rounded-lg flex items-center justify-center"
-          style={{ background: 'var(--v3-accent)' }}
+          style={{ background: 'var(--v3-accent-fill)' }}
         >
           <Plus size={20} className="text-white" strokeWidth={2.5} />
         </div>
@@ -142,7 +142,7 @@ function Sidebar({ tab, setTab }: { tab: string; setTab: (t: string) => void }) 
       ))}
       <Link href="/reviews/new"
         className="mt-4 mx-1 text-white font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
-        style={{ background: 'var(--v3-accent)' }}>
+        style={{ background: 'var(--v3-accent-fill)' }}>
         <Plus size={18} />{t('reviews.sidebarPost')}
       </Link>
     </aside>

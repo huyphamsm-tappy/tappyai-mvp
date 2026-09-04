@@ -7,6 +7,7 @@ import { ChevronLeft, Sun, Moon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useThemeMode } from '@/lib/theme/useThemeMode'
 import { displayName } from '@/lib/i18n/displayName'
 
 interface HeaderProps {
@@ -48,15 +49,10 @@ export default function Header({ user, showBack, backHref, backFallbackHref, tit
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale])
 
-  // Dark mode toggle
-  const [dark, setDark] = useState(false)
-  useEffect(() => {
-    const saved = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const isDark = saved ? saved === 'dark' : prefersDark
-    setDark(isDark)
-    document.documentElement.classList.toggle('dark', isDark)
-  }, [])
+  // Dark mode. The logic used to live inline here; it moved to `useThemeMode`
+  // when the V3 shell needed the same control, so the two surfaces cannot drift
+  // apart about the default or the storage key. Behaviour is unchanged.
+  const { isDark: dark, toggle: toggleDark } = useThemeMode()
   // Back pops history rather than pushing a destination, so the user returns to
   // wherever they actually came from. Only used when no fixed `backHref` is
   // given. history.length === 1 means this tab opened directly on the page (a
@@ -70,13 +66,6 @@ export default function Header({ user, showBack, backHref, backFallbackHref, tit
       return
     }
     router.back()
-  }
-
-  const toggleDark = () => {
-    const next = !dark
-    setDark(next)
-    document.documentElement.classList.toggle('dark', next)
-    localStorage.setItem('theme', next ? 'dark' : 'light')
   }
 
   return (

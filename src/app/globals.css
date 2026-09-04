@@ -382,34 +382,85 @@
 /* migrated keeps the light `:root` palette and nothing regresses while */
 /* the redesign lands surface by surface.                               */
 /*                                                                      */
-/* THIS IS A THEME, NOT A THEME MODE. There is no switch and no         */
-/* persistence: V3's Web surface is dark by design, the way the Explore */
-/* feed already is. `prefers-color-scheme` is deliberately not read —   */
-/* the product does not ask the OS what its own identity should be.     */
+/* ── LAYOUT GRID ─────────────────────────────────────────────────────*/
+/* One set of numbers the whole surface aligns to. Before this, the     */
+/* sidebar width, the header height and the content width were literals */
+/* re-typed at each call site, so pages quietly disagreed about the     */
+/* grid and nothing lined up across routes. Change a number here and    */
+/* every V3 page moves together.                                        */
 /*                                                                      */
-/* Palette derived from the approved V3 reference: page #0A0F1C, panel  */
-/* #111827 with a #1F2937 hairline, elevated #161F32. Brand #007AFF is  */
-/* unchanged (V3_DESIGN_SYSTEM §2.1); on this ground the interactive    */
-/* tint lifts to #3391FF, the value the design system already specifies */
-/* for links in dark mode.                                              */
+/* ── LIGHT AND DARK ──────────────────────────────────────────────────*/
+/* This block used to declare "a theme, not a theme mode" and force     */
+/* dark. The approved header carries a Light/Dark control, so the       */
+/* surface has to answer to it.                                         */
 /*                                                                      */
-/* MEASURED contrast, worst case (against the ELEVATED surface #161F32, */
-/* which is the lightest of the three grounds and therefore the hardest):*/
-/*   fg 14.9:1 · secondary 6.5:1 · muted 4.8:1 · accent 5.2:1 ·         */
-/*   amber 7.7:1 · emerald 8.6:1 · rose 6.1:1 — all above AA (4.5:1)    */
-/*   for normal text.                                                   */
+/* 🔑 It reuses the app's EXISTING mechanism rather than growing a      */
+/* second one: the `dark` class on <html>, persisted under localStorage */
+/* `theme`, which `Header.tsx` has always used and Tailwind is already  */
+/* configured for (`darkMode: 'class'`). `.v3-theme` is light; `.dark   */
+/* .v3-theme` is dark. No provider, no context, no new storage key.     */
 /*                                                                      */
-/* 🚨 `--v3-fg-muted` was #6B7280 and measured 3.4–4.0:1 — BELOW AA on  */
-/* every one of the three grounds, while the comment here listed only   */
-/* the three ratios that happened to pass. Tertiary labels all over the */
-/* V3 surface use it. Lifted to #828A9B, which clears AA on the worst   */
-/* ground and still sits a clear step below `--v3-fg-secondary`, so the */
-/* three-level text hierarchy survives. Measure these; do not estimate. */
+/* ── THE ACCENT IS TWO TOKENS, NOT ONE ───────────────────────────────*/
+/* 🚨 `--v3-accent` was doing two contradictory jobs: interactive TEXT  */
+/* on a dark ground (which wants a LIGHT blue) and a FILL under white   */
+/* text (which wants a DARK one). One value cannot satisfy both, and    */
+/* the shipped one did not: white on #3391FF measures 3.17:1, so every  */
+/* filled button on the surface — send, "Chat ngay", "Lấy deal", the    */
+/* Premium upsell — was below AA while the palette comment claimed the  */
+/* accent passed. Split into `--v3-accent` (text/icon) and              */
+/* `--v3-accent-fill` (+ `--v3-on-accent` for the text on it).          */
 /*                                                                      */
-/* `--v3-violet` measures 3.9:1 on the elevated surface — it is an ICON */
-/* tint only (AA for graphics is 3:1) and must never carry text.        */
+/* ── MEASURED CONTRAST ───────────────────────────────────────────────*/
+/* Worst case across that mode's three grounds; computed, not judged.   */
+/*                                                                      */
+/*   DARK   (grounds #0A0F1C / #111827 / #161F32)                       */
+/*     fg 14.9 · secondary 6.5 · muted 4.8 · accent 5.2 ·               */
+/*     amber 7.7 · emerald 8.6 · rose 6.1 · white-on-fill 5.07          */
+/*                                                                      */
+/*   LIGHT  (grounds #F5F7FA / #FFFFFF / #EEF1F6)                       */
+/*     fg 15.7 · secondary 6.7 · muted 4.6 · accent 4.6 ·               */
+/*     amber 5.0 · emerald 5.7 · rose 6.6 · white-on-fill 5.19          */
+/*                                                                      */
+/* All ≥ 4.5:1, the AA threshold for normal text. Two earlier tokens    */
+/* did NOT clear it and were caught only by measuring — #6B7280 muted   */
+/* at 3.4-4.0, and the accent fill above. MEASURE THESE. Do not judge   */
+/* them by eye, and do not list only the ones that pass.                */
+/*                                                                      */
+/* `--v3-violet` is 3.9:1 on the dark elevated surface — an ICON tint   */
+/* only (AA for graphics is 3:1); it must never carry text.             */
 /* ------------------------------------------------------------------ */
 .v3-theme {
+  /* ── Layout grid ── */
+  --v3-sidebar-w: 240px;
+  --v3-header-h: 64px;
+  --v3-content-max: 1160px;
+  --v3-gutter: 28px;
+  --v3-gap: 16px;
+  --v3-radius: 16px;
+
+  /* ── Light palette (default; `.dark .v3-theme` below overrides) ── */
+  --v3-page: #F5F7FA;
+  --v3-panel: #FFFFFF;
+  --v3-panel-elevated: #EEF1F6;
+  --v3-border: #E3E8EF;
+  --v3-border-strong: #CBD3DF;
+  --v3-fg: #111827;
+  --v3-fg-secondary: #4B5563;
+  --v3-fg-muted: #646E7E;
+  --v3-accent: #0069DB;
+  --v3-accent-fill: #0069DB;
+  --v3-on-accent: #FFFFFF;
+  --v3-accent-soft: rgba(0, 105, 219, 0.10);
+  --v3-violet: #6D28D9;
+  --v3-amber: #A25007;
+  --v3-emerald: #046C4E;
+  --v3-rose: #A81133;
+
+  background-color: var(--v3-page);
+  color: var(--v3-fg);
+}
+
+.dark .v3-theme {
   --v3-page: #0A0F1C;
   --v3-panel: #111827;
   --v3-panel-elevated: #161F32;
@@ -419,14 +470,23 @@
   --v3-fg-secondary: #9CA3AF;
   --v3-fg-muted: #828A9B;
   --v3-accent: #3391FF;
-  --v3-accent-soft: rgba(51, 145, 255, 0.12);
+  --v3-accent-fill: #0A6BDB;
+  --v3-on-accent: #FFFFFF;
+  --v3-accent-soft: rgba(51, 145, 255, 0.14);
   --v3-violet: #8B5CF6;
   --v3-amber: #F59E0B;
   --v3-emerald: #34D399;
   --v3-rose: #FB7185;
+}
 
-  background-color: var(--v3-page);
-  color: var(--v3-fg);
+/* The one content container. Every V3 page puts its content in this, so the
+   left edge of Home's hero, Deals' grid and Profile's rows all land on the
+   same vertical line, and none of them invents its own width. */
+.v3-container {
+  width: 100%;
+  max-width: var(--v3-content-max);
+  margin-inline: auto;
+  padding-inline: var(--v3-gutter);
 }
 
 /* The panel IS the visual language of this surface: one card shape, one
