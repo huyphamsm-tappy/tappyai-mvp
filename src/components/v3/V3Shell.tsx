@@ -135,13 +135,17 @@ export interface V3ShellProps {
   /** Brand tagline under the wordmark. Defaults to the SHARED string; Home overrides it with the
    *  approved reference's wording so that wording cannot leak to the other destinations. */
   brandTagline?: string
+  /** Let a scenic background show through the surface. OPT-IN, and Home is the only caller —
+   *  the page ground goes transparent and the chrome becomes translucent, which is wrong for
+   *  every destination that has no background layer mounted behind it. */
+  scenic?: boolean
   /** Which tab reads as current. */
   activeTab?: string
   user?: { name?: string | null; avatarUrl?: string | null; plan?: string | null } | null
   children: ReactNode
 }
 
-export default function V3Shell({ title, subtitle, brandTagline, activeTab = '/', user, children }: V3ShellProps) {
+export default function V3Shell({ title, subtitle, brandTagline, scenic = false, activeTab = '/', user, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
   // Presentation only: delivery, consent and push identity are untouched — this reads a count the
@@ -156,11 +160,11 @@ export default function V3Shell({ title, subtitle, brandTagline, activeTab = '/'
     // class also drives the Tailwind `dark:` variants of the app-level components hosted in here
     // — BottomNav, DealNotifyButton, Header — so they stay in step instead of rendering a white
     // bar on a dark page, which is what the forced class was working around.
-    <div className="v3-theme min-h-dvh">
+    <div className={cn('v3-theme min-h-dvh', scenic && 'v3-scenic')}>
       <div className="flex">
         {/* ── Sidebar (desktop only) ────────────────────────────────────── */}
         <aside
-          className="sticky top-0 hidden h-dvh flex-shrink-0 flex-col border-r lg:flex"
+          className={cn('sticky top-0 hidden h-dvh flex-shrink-0 flex-col border-r lg:flex', scenic && 'v3-scenic-chrome')}
           style={{
             width: 'var(--v3-sidebar-w)',
             borderColor: 'var(--v3-border)',
@@ -282,7 +286,7 @@ export default function V3Shell({ title, subtitle, brandTagline, activeTab = '/'
           {/* The background was a hardcoded `rgba(10,15,28,0.85)` — the dark page colour written
               as a literal, so it stayed dark when the palette went light. It reads the token now. */}
           <header
-            className="sticky top-0 z-30 border-b backdrop-blur"
+            className={cn('sticky top-0 z-30 border-b backdrop-blur', scenic && 'v3-scenic-chrome')}
             style={{
               borderColor: 'var(--v3-border)',
               background: 'color-mix(in srgb, var(--v3-page) 88%, transparent)',

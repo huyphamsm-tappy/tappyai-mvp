@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation'
 import type { ComponentProps } from 'react'
 import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
-import { TappyMascot } from '@/components/TappyMascot'
+import HomeBackground from '@/components/HomeBackground'
+import TappyPresence from '@/components/v3/TappyPresence'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import {
@@ -116,9 +117,18 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
       /* Home-only wording, passed explicitly. Editing the shared dictionary string instead
          changed Deals, Marketplace, Profile and Explore along with it. */
       brandTagline={t('v3.brand.taglineHome')}
+      scenic
       activeTab="/"
       user={{ name: userInfo?.full_name || firstName, avatarUrl: userInfo?.avatar_url, plan: user ? t('v3.top.plan') : null }}
     >
+      {/* 🔑 REUSED, not created. `HomeBackground` + `backgroundManager` +
+          `backgrounds.config.ts` are the Home background system this project already had:
+          the asset (/backgrounds/home-desktop-v5.webp), its object-position, and its
+          per-theme overlays. It was built for Home and the V3 redesign simply stopped
+          rendering it, which is why Home became a flat dark panel. It hides itself below
+          `md` on its own, so the phone layout is untouched. */}
+      <HomeBackground />
+
       {/* No width of its own. The shell's `.v3-container` caps and centres every V3 page on the
           same grid; Home adding a second, narrower cap inside it was what left the content
           stranded in empty space on a wide screen. Sections below choose their COLUMN COUNT,
@@ -131,7 +141,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             on its own, and a 16/12px gap stacked between every block. The greeting, the mascot,
             the composer and the chips are ONE composition, so they sit close together and the
             mascot is sized to the text beside it rather than the other way round. */}
-        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel p-4 sm:p-5">
+        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel p-5 sm:p-6 lg:p-7">
           {/* 🔑 The label, the greeting and the mascot are ONE row in the reference, not a label
               stacked above a greeting-and-mascot row. The mascot's head sits level with the label
               at the card's top-right and its body runs down past the greeting — so the text column
@@ -143,7 +153,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                   carrying the glyph, followed by "AI AGENT – HOME" in the ACCENT blue (measured
                   #2D5BE7 off the screenshot) — not the muted grey a section heading uses. The
                   label is the card's identity, so it reads as brand, not as a caption. */}
-              <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--v3-accent)' }}>
+              <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--v3-accent)' }}>
                 <span
                   className="flex h-[18px] w-[18px] items-center justify-center rounded-md"
                   style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
@@ -153,11 +163,11 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 </span>
                 {t('v3.home.cardLabel')}
               </p>
-              <h2 className="mt-2.5 text-[22px] font-bold leading-tight sm:text-[26px]" style={{ color: 'var(--v3-fg)' }}>
+              <h2 className="mt-3 text-[26px] font-light leading-[1.15] tracking-[-0.02em] sm:text-[32px]" style={{ color: 'var(--v3-fg)' }}>
                 {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
                 <span aria-hidden="true">👋</span>
               </h2>
-              <p className="mt-1 text-[13px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>
+              <p className="mt-1.5 text-[14px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
                 {t('v3.home.greetSub')}
               </p>
             </div>
@@ -171,11 +181,10 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 corner; the reference makes it the second-loudest thing on the page after the
                 greeting. `-mb-4` reproduces the overlap — the mascot ends underneath the
                 composer's top edge rather than stacking above it. */}
-            <TappyMascot
-              pose="welcome"
-              size={128}
-              className="-mt-1 -mb-4 h-[84px] w-[84px] flex-shrink-0 sm:h-[112px] sm:w-[112px] lg:h-[128px] lg:w-[128px]"
-            />
+            {/* Composed, not placed — see TappyPresence. Same asset, same pose. */}
+            <TappyPresence pose="welcome" size={128} className="-mt-1 -mb-4 hidden lg:block" />
+            <TappyPresence pose="welcome" size={104} className="-mt-1 -mb-3 hidden sm:block lg:hidden" />
+            <TappyPresence pose="welcome" size={80} className="-mt-1 sm:hidden" />
           </div>
 
           {/* A composer, not a search box: it promises consultation, not retrieval. */}
@@ -189,7 +198,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               onChange={(e) => setDraft(e.target.value)}
               placeholder={t('v3.home.askPlaceholder')}
               aria-label={t('v3.home.askAria')}
-              className="min-w-0 flex-1 bg-transparent text-[14px] outline-none"
+              className="min-w-0 flex-1 bg-transparent text-[14px] font-light outline-none placeholder:font-light"
               style={{ color: 'var(--v3-fg)' }}
             />
             <button
@@ -213,7 +222,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           {/* The reference labels the chip row "Gợi ý nhanh". `v3.home.quickTitle` was already in
               both dictionaries — the string had been written for this and never wired to anything,
               so the row arrived unlabelled. */}
-          <p className="mt-3 text-[11px]" style={{ color: 'var(--v3-fg-muted)' }}>
+          <p className="mt-4 text-[11px] font-normal tracking-[0.04em]" style={{ color: 'var(--v3-fg-muted)' }}>
             {t('v3.home.quickTitle')}
           </p>
 
@@ -316,7 +325,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           <div className="mt-2 space-y-3">
             {TOOL_GROUPS.map(group => (
               <div key={group.titleKey}>
-                <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider" style={{ color: 'var(--v3-fg-muted)' }}>
+                <p data-scenic-heading className="mb-2 text-[10px] font-medium uppercase tracking-[0.12em]" style={{ color: 'var(--v3-fg-muted)' }}>
                   {t(group.titleKey)}
                 </p>
                 <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
@@ -354,7 +363,8 @@ function SectionHeading({ title, action }: { title: string; action?: { label: st
         // No optical inset: `px-0.5` put every heading 2px right of the grid line its own
     // cards sit on, which is exactly the kind of near-miss that reads as sloppy.
     <div className="flex items-baseline justify-between gap-3">
-      <h2 className="text-[15px] font-bold" style={{ color: 'var(--v3-fg)' }}>{title}</h2>
+      {/* `data-scenic-heading`: this one sits on the photograph with no panel behind it. */}
+      <h2 data-scenic-heading className="text-[15px] font-medium tracking-[-0.01em]" style={{ color: 'var(--v3-fg)' }}>{title}</h2>
       {action && (
         <Link href={action.href} className="flex items-center gap-0.5 text-[12px]" style={{ color: 'var(--v3-accent)' }}>
           {action.label}

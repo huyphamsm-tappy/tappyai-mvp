@@ -37,10 +37,21 @@ export const BACKGROUNDS = {
     src: '/backgrounds/home-desktop-v5.webp',
     alt: '',
     position: 'center',
-    // Light: no overlay (rely on a clean-centre asset). Dark: subtle tint so
-    // card/text stay readable when the UI is in dark theme — this preserves the
-    // existing production behavior, it is not a new light-mode overlay.
-    overlayDark: 'rgba(0, 0, 0, 0.4)',
+    // Both overlays are RETUNED for the V3 surface, and the reason is that the
+    // readability work moved. The 0.4 dark tint was set when content sat directly
+    // on the photograph and the overlay was the only thing keeping text legible.
+    // V3 puts translucent panels over the scene, so the panels now carry that job
+    // and the overlay only has to stop the artwork competing — at 0.4 on top of
+    // those panels the skyline flattened into a grey field, which is precisely the
+    // "so darkened the artwork becomes invisible" failure. Measured by eye against
+    // the render at 0.4 / 0.22 / 0.28.
+    //
+    // `overlayLight` was reserved in this interface for exactly this ("add only if
+    // post-UAT readability requires it"). It is required now: in light theme the
+    // dark section headings that sit OUTSIDE a panel fell onto the bright flower
+    // bed at the foot of the photo and lost their contrast.
+    overlayLight: 'rgba(255, 255, 255, 0.42)',
+    overlayDark: 'rgba(0, 0, 0, 0.28)',
   },
 } satisfies Record<string, BackgroundDescriptor>
 

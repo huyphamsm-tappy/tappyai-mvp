@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;900&family=Cinzel:wght@400;500;600&display=swap');
+/* Inter 300 is loaded for the V3 surface: the family was imported at 400-700, so the
+   lightest thing any heading could be was Regular and every title read heavy. This is
+   the SAME family, one more weight — not a second webfont. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=Cinzel:wght@400;500;600&display=swap');
 
 :root {
   --primary: #007AFF;
@@ -489,6 +492,91 @@
   --v3-rose: #FB7185;
 }
 
+/* ── SCENIC MODE ──────────────────────────────────────────────────────────
+   Opt-in, and Home is the only page that opts in. `V3Shell` takes a `scenic`
+   prop the same way it takes `brandTagline`, so no other destination can
+   inherit this by default.
+
+   The surface normally paints `--v3-page` as a solid colour. Under scenic mode
+   it steps back and lets `HomeBackground` — the project's existing, already
+   designed Home background layer — show through, and the chrome becomes
+   translucent instead of opaque.
+
+   🚨 The point is that the artwork stays VISIBLE. The panels sit at ~78-84%
+   with a modest blur: enough that text keeps its contrast, not so much that the
+   photograph turns into a grey field. The blur is small on purpose — a heavy
+   `backdrop-filter` reads as frosted glass and erases the skyline behind it,
+   which is the failure this mode exists to avoid.
+
+   Mobile: `HomeBackground` hides itself below `md`, so on a phone these rules
+   composite over the ordinary page colour and simply look like the normal
+   surface. Nothing to special-case. */
+.v3-theme.v3-scenic {
+  background-color: transparent;
+}
+
+/* 🚨 THE SURFACE GOING TRANSPARENT IS NOT ENOUGH. `body` paints an opaque
+   `bg-white` / `dark:bg-gray-950` from the base layer, and `HomeBackground` is a
+   fixed layer at `-z-10` — so the document's own background sat on top of the
+   photograph and the scene was invisible even though the image had loaded,
+   painted, and measured 1436×950. It was found by forcing the layer's z-index
+   forward: the image appeared instantly, which proved it was covered rather
+   than broken.
+
+   Scoped with `:has()` so ONLY a document actually containing a scenic surface
+   is affected — Deals, Profile and every other page keep their opaque body.
+   Where `:has()` is unsupported the rule is dropped and the background simply
+   stays hidden, which is exactly how Home looked before this change: a safe
+   degradation, not a broken one. */
+html:has(.v3-scenic),
+body:has(.v3-scenic) {
+  background-color: transparent;
+}
+
+.v3-theme.v3-scenic .v3-panel {
+  background-color: color-mix(in srgb, var(--v3-panel) 84%, transparent);
+  backdrop-filter: blur(10px) saturate(1.08);
+  -webkit-backdrop-filter: blur(10px) saturate(1.08);
+}
+
+.v3-theme.v3-scenic .v3-tile {
+  background-color: color-mix(in srgb, var(--v3-panel-elevated) 78%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Section headings sit OUTSIDE the panels, directly on the photograph, so they
+   get no panel to carry their contrast. A soft halo keeps them legible over any
+   part of the image without darkening the image itself — the alternative was a
+   heavier overlay, which is the thing this mode exists to avoid.
+
+   The halo is theme-matched: light text needs a dark shadow, dark text needs a
+   light one. Panels handle their own headings, so this deliberately targets only
+   the ones the scenic layer exposes. */
+.v3-theme.v3-scenic [data-scenic-heading] {
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.55);
+}
+.dark .v3-theme.v3-scenic [data-scenic-heading] {
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Chrome is more transparent than content: the sidebar and header frame the
+   scene rather than covering it. */
+.v3-theme.v3-scenic .v3-scenic-chrome {
+  background-color: color-mix(in srgb, var(--v3-panel) 76%, transparent) !important;
+  backdrop-filter: blur(14px) saturate(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+}
+
+/* `color-mix` is well supported but not universal. Without it the declarations
+   above are dropped and the panels would render fully transparent over a photo,
+   which is unreadable — so restate the opaque colour as the floor. */
+@supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
+  .v3-theme.v3-scenic .v3-panel { background-color: var(--v3-panel); }
+  .v3-theme.v3-scenic .v3-tile { background-color: var(--v3-panel-elevated); }
+  .v3-theme.v3-scenic .v3-scenic-chrome { background-color: var(--v3-panel) !important; }
+}
+
 /* The one content container. Every V3 page puts its content in this, so the
    left edge of Home's hero, Deals' grid and Profile's rows all land on the
    same vertical line, and none of them invents its own width. */
@@ -548,8 +636,11 @@
   border: 1px solid var(--v3-border-strong);
   background-color: var(--v3-panel-elevated);
   color: var(--v3-fg-secondary);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 12.5px;
+  /* 400, not 500: at chip size the extra weight was doing nothing but making the
+     row look dense. The chips are suggestions, not commands. */
+  font-weight: 400;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   transition: color 150ms, background-color 150ms, border-color 150ms;
 }
