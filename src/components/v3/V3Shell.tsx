@@ -101,7 +101,10 @@ const GROUPS: NavGroup[] = [
   {
     titleKey: 'v3.nav.settings',
     items: [
-      { href: '/profile/settings', labelKey: 'nav.settings', icon: Settings },
+      // 🚨 This read `nav.settings` — a key with no `v3.` prefix and no entry in any dictionary,
+      // so the row rendered the literal string "nav.settings" on screen. It sat below the
+      // sidebar's scroll fold, which is why every review of a screenshot missed it.
+      { href: '/profile/settings', labelKey: 'v3.action.settings', icon: Settings },
       { href: '/profile/settings', labelKey: 'v3.nav.language', icon: Languages },
       { href: '/how-to-use', labelKey: 'v3.nav.help', icon: HelpCircle },
       { href: '/profile', labelKey: 'v3.nav.feedback', icon: MessageSquare },
@@ -192,9 +195,12 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
 
           <nav className="flex-1 overflow-y-auto px-2 pb-4" aria-label={t('v3.nav.ariaMain')}>
             {GROUPS.map(group => (
-              <div key={group.titleKey} className="mb-4">
+              // Sidebar rhythm is tight on purpose. Six groups and twenty-two rows is more than a
+              // 900px-tall window can show, so every 4px of row padding is a row of navigation
+              // pushed under the fold — and what sat under it was the whole Tài khoản group.
+              <div key={group.titleKey} className="mb-2">
                 <p
-                  className="px-2 pb-1.5 pt-2 text-[10px] font-semibold uppercase tracking-wider"
+                  className="px-2 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider"
                   style={{ color: 'var(--v3-fg-muted)' }}
                 >
                   {t(group.titleKey)}
@@ -208,7 +214,7 @@ export default function V3Shell({ title, subtitle, activeTab = '/', user, childr
                         <Link
                           href={item.href}
                           className={cn(
-                            'flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] transition-colors',
+                            'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13px] transition-colors',
                             active ? 'font-semibold' : 'hover:bg-white/5',
                           )}
                           style={active

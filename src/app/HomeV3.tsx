@@ -10,7 +10,7 @@ import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import {
-  MessageCircle, Mic, ArrowUp, ChevronRight,
+  MessageCircle, Mic, ArrowUp, ChevronRight, Sparkles,
   ScanText, ArrowLeftRight, Calculator, Music2, Languages, Sparkle, PenLine, Users,
   ShieldCheck, Star,
 } from 'lucide-react'
@@ -122,33 +122,45 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           never their width. */}
       <div className="space-y-6">
 
-        {/* ── 1. Ask Tappy — the primary action, first and largest ───────── */}
-        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel p-6 lg:p-7">
-          <div className="flex items-start justify-between gap-3">
+        {/* ── 1. Ask Tappy — the primary action, first and most prominent ──
+            Compact by design. It was 284px tall at 1440 because three things each added height
+            independently: 28px of card padding, a 104px mascot that set the greeting row's height
+            on its own, and a 16/12px gap stacked between every block. The greeting, the mascot,
+            the composer and the chips are ONE composition, so they sit close together and the
+            mascot is sized to the text beside it rather than the other way round. */}
+        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel p-4 sm:p-5">
+          {/* The card says what it is, the way the sections below it do. */}
+          <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--v3-fg-muted)' }}>
+            <Sparkles size={12} style={{ color: 'var(--v3-accent)' }} aria-hidden="true" />
+            {t('v3.tab.aiAgent')}
+          </p>
+
+          <div className="mt-2 flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <h2 className="text-2xl font-bold" style={{ color: 'var(--v3-fg)' }}>
+              <h2 className="text-[20px] font-bold leading-tight sm:text-[22px]" style={{ color: 'var(--v3-fg)' }}>
                 {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
                 <span aria-hidden="true">👋</span>
               </h2>
-              <p className="mt-1 text-[14px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+              <p className="mt-0.5 text-[13px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>
                 {t('v3.home.greetSub')}
               </p>
             </div>
-            {/* Tappy is the approved mascot asset (`/tappy/welcome.png`, the pose library the
-                    owner ships), declared at its rendered size. It scales down on narrow screens:
-                    at 104px on a 375px viewport it squeezed the greeting hard enough to push the
-                    wave emoji onto its own line. */}
+            {/* The approved mascot asset — `/tappy/welcome.png` from the owner's 18-pose library.
+                No new art, no altered pose. Sized to sit BESIDE the two lines of text rather than
+                setting the row height itself: at 104px it was the tallest thing in the card and
+                dragged the whole composition open. `-my-1` lets it overhang the text block
+                slightly so the two read as one lockup instead of two stacked objects. */}
             <TappyMascot
               pose="welcome"
-              size={104}
-              className="h-16 w-16 flex-shrink-0 sm:h-24 sm:w-24 lg:h-[104px] lg:w-[104px]"
+              size={72}
+              className="-my-1 h-14 w-14 flex-shrink-0 sm:h-[72px] sm:w-[72px]"
             />
           </div>
 
           {/* A composer, not a search box: it promises consultation, not retrieval. */}
           <form
             onSubmit={(e) => { e.preventDefault(); ask(draft) }}
-            className="mt-4 flex items-center gap-2 rounded-2xl px-4 py-2.5"
+            className="mt-3 flex items-center gap-2 rounded-2xl px-3.5 py-2"
             style={{ background: 'var(--v3-panel-elevated)', border: '1px solid var(--v3-border-strong)' }}
           >
             <input
@@ -162,23 +174,25 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             <button
               type="button"
               aria-label={t('v3.home.voiceAria')}
-              className="flex h-9 w-9 items-center justify-center rounded-xl"
+              className="flex h-8 w-8 items-center justify-center rounded-lg"
               style={{ color: 'var(--v3-fg-secondary)' }}
             >
-              <Mic size={17} aria-hidden="true" />
+              <Mic size={16} aria-hidden="true" />
             </button>
             <button
               type="submit"
               aria-label={t('v3.home.sendAria')}
-              className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-white"
               style={{ background: 'var(--v3-accent-fill)' }}
             >
-              <ArrowUp size={17} aria-hidden="true" />
+              <ArrowUp size={16} aria-hidden="true" />
             </button>
           </form>
 
-          {/* Contextual chips — the fastest path to a formed question. */}
-          <div className="v3-scroll-x mt-3 flex gap-2 pb-1">
+          {/* Contextual chips — the fastest path to a formed question. Tucked directly under the
+              composer: they belong to it, so the gap between them is smaller than the gap to
+              anything else. */}
+          <div className="v3-scroll-x mt-2 flex gap-2 pb-0.5">
             {QUICK_CHIPS.map(c => (
               <button key={c} type="button" onClick={() => ask(t(c))} className="v3-chip flex-shrink-0">
                 {t(c)}
@@ -241,11 +255,16 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             <div className="v3-scroll-x mt-2 flex gap-3 pb-1">
               {suggestions.slice(0, 6).map(s => {
                 const text = locale === 'en' ? s.textEn || s.text : s.text
+                // 168px fixed is right where the strip must scroll (375: 319 of 708 visible) and
+                // exact where it just fits (768: 708 of 708). At desktop the same fixed width left
+                // 396px of the 1104px row empty — a third of the row, and the most visible
+                // imbalance on the page. `lg:flex-1` gives the tiles basis 0 so the four of them
+                // share the row instead of hugging its left edge.
                 return (
                   <Link
                     key={s.text}
                     href={`/chat?q=${encodeURIComponent(text)}&category=${s.category}`}
-                    className="v3-tile flex w-[168px] flex-shrink-0 flex-col overflow-hidden"
+                    className="v3-tile flex w-[168px] flex-shrink-0 flex-col overflow-hidden lg:flex-1"
                   >
                     <span className={cn('flex h-16 flex-shrink-0 items-center justify-center bg-gradient-to-br text-2xl', s.gradient)}>
                       {s.emoji}

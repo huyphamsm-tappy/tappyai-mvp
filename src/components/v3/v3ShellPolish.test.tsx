@@ -190,3 +190,30 @@ describe('the grid is defined once, in tokens', () => {
     }
   })
 })
+
+describe('the shell says words, not keys', () => {
+  /**
+   * 🚨 The Settings row was written `labelKey: 'nav.settings'` — no `v3.` prefix, no entry in any
+   * dictionary — so it rendered the literal string "nav.settings" to users. It survived a design
+   * pass, a responsive pass and a polish pass because it sits BELOW the sidebar's scroll fold:
+   * every review looked at a screenshot, and the screenshot could not contain it.
+   *
+   * Asserting on that one key would only pin that one row. What actually failed was the class of
+   * defect, so the assertion is the class: nothing the shell renders may be shaped like a
+   * translation key. A new row with a typo'd key fails here without anyone thinking to add a case.
+   */
+  it('renders no raw i18n key as visible text', () => {
+    const { container } = renderShell()
+
+    const offenders: string[] = []
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT)
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      const text = (n.textContent ?? '').trim()
+      // A whole text node that is exactly `word.word[.word…]` and nothing else. Prose containing a
+      // full stop has spaces and does not match; a missed key has no spaces and always does.
+      if (/^[a-z][a-zA-Z0-9]*(?:\.[a-zA-Z0-9]+)+$/.test(text)) offenders.push(text)
+    }
+
+    expect(offenders, 'these rendered their translation key instead of a translation').toEqual([])
+  })
+})
