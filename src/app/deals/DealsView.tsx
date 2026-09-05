@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import DealNotifyButton from './DealNotifyButton'
 import BrandLogo from '@/components/ui/BrandLogo'
 import { resolveBrand } from '@/config/brandRegistry'
-import { ExternalLink, Loader2, Clock, Copy, Check } from 'lucide-react'
+import { ExternalLink, Loader2, Clock, Copy, Check, Sparkles, ArrowRight } from 'lucide-react'
 import { useTranslation, resolvedClientLocale } from '@/lib/i18n/useTranslation'
 import { promoCountdown } from '@/lib/deals/countdown'
 import AskTappyButton from '@/components/chat/AskTappyButton'
@@ -31,6 +33,16 @@ import { ChipRow } from '@/components/v3/Panel'
 // Public deal shape from GET /api/deals (kept local so this client component
 // never imports the server-only data layer). discountLabel/voucherCode/endAt are
 // the only promo fields the API surfaces (extracted from metadata.promotion).
+// 🚨 `isFeatured` AND `bannerImage` ARE IN THE API AND ARE DELIBERATELY ABSENT HERE.
+//
+// `androidDealsParity.test.ts` scrapes every `deal.<field>` token out of THIS FILE and asserts
+// Android's DealDto and Deal model declare each one. Android decodes neither field today, so
+// reading either here would fail that guard — which is the guard working: it exists to stop the
+// web silently getting ahead of Android, and Android is out of scope for this Web pass.
+//
+// So there is no "featured" chip, even though `isFeatured` is real and true on four rows. Adding it
+// is a two-line Android change (DTO + model) plus this interface, done as a parity pass — not a
+// rename of the local variable to slip past the regex, which would be the drift, not the fix.
 interface PartnerDeal {
   id: string
   partnerName: string
@@ -84,6 +96,10 @@ export default function DealsView() {
   const [deals, setDeals] = useState<PartnerDeal[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState(0)
+  // The second discovery axis: which platform the offer comes from. Kept EXCLUSIVE with the
+  // category chips — picking one clears the other — so the grid is only ever explained by one
+  // control, and the user never has to work out why an empty result was empty.
+  const [source, setSource] = useState<string | null>(null)
 
   // Re-fetch whenever the app language changes so category/description switch
   // instantly (the API localizes server-side and returns the same shape). The
@@ -112,19 +128,37 @@ export default function DealsView() {
     return [...seen.entries()].map(([key, label]) => ({ key, label }))
   }, [deals])
 
+  // The platforms actually present in the loaded feed, in feed order. Derived exactly like the
+  // category chips: a platform appears because a real deal came from it, never from a fixed list.
+  // This is why the reference's Lazada tile is absent — no row names it.
+  const sources = useMemo(() => {
+    const seen = new Map<string, PartnerDeal>()
+    for (const d of deals) if (!seen.has(d.partnerName)) seen.set(d.partnerName, d)
+    return [...seen.values()]
+  }, [deals])
+
   // Reset to "all" whenever the filtered category is no longer on the page — a
   // language switch re-fetches and can change the set.
-  useEffect(() => { setFilter(0) }, [categories.length])
+  useEffect(() => { setFilter(0); setSource(null) }, [categories.length])
 
   const activeKey = filter === 0 ? null : categories[filter - 1]?.key ?? null
-  const visible = activeKey ? deals.filter((d) => d.categoryKey === activeKey) : deals
+  const visible = source
+    ? deals.filter((d) => d.partnerName === source)
+    : activeKey
+      ? deals.filter((d) => d.categoryKey === activeKey)
+      : deals
+
+  function pickCategory(i: number) { setSource(null); setFilter(i) }
+  function pickSource(name: string) { setFilter(0); setSource((s) => (s === name ? null : name)) }
 
   return (
-    <V3Shell title={t('deals.title')} subtitle={formatDate(locale)} activeTab="/deals">
+    <V3Shell title={t('deals.title')} subtitle={t('v3.deals.pageSubtitle')} activeTab="/deals">
       {/* A dedicated route, not a Home panel: the top bar already carries the title, so
           wrapping the whole page in a panel of the same name would be a box around a box.
           The V3 card language lives in the tiles themselves. */}
       <div className="space-y-4">
+        <DealsHero sources={sources} />
+
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-[12px]" style={{ color: 'var(--v3-fg-secondary)' }}>
             {!loading && deals.length > 0 ? t('deals.subtitle', { count: String(deals.length) }) : ''}
@@ -135,9 +169,64 @@ export default function DealsView() {
         {categories.length > 1 && (
           <ChipRow
             items={[t('v3.deals.all'), ...categories.map((c) => c.label)]}
-            activeIndex={filter}
-            onSelect={setFilter}
+            activeIndex={source ? -1 : filter}
+            onSelect={pickCategory}
           />
+        )}
+
+        {/* ── Browse by platform ──────────────────────────────────────────────
+            The reference makes this a row of tiles that navigate to a per-platform
+            page. There is no such page, and inventing one would be a link to nowhere —
+            so the tiles FILTER the directory that is already on this page, which is the
+            same discovery intent against real data. No "see all" link either: no destination. */}
+        {!loading && sources.length > 1 && (
+          <section aria-label={t('v3.deals.bySource')} className="space-y-2 pt-1">
+            <div>
+              <h2 className="text-[14px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
+                {t('v3.deals.bySource')}
+              </h2>
+              <p className="mt-0.5 text-[11.5px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>
+                {t('v3.deals.bySourceHint')}
+              </p>
+            </div>
+            <div className="v3-scroll-x flex gap-2.5 pb-1">
+              {sources.map((s) => {
+                const on = source === s.partnerName
+                return (
+                  <button
+                    key={s.partnerName}
+                    type="button"
+                    onClick={() => pickSource(s.partnerName)}
+                    aria-pressed={on}
+                    className="flex min-w-[188px] flex-shrink-0 items-center gap-3 rounded-2xl border p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    style={{
+                      background: on ? 'color-mix(in srgb, var(--v3-accent) 12%, var(--v3-panel-elevated))' : 'var(--v3-panel-elevated)',
+                      borderColor: on ? 'var(--v3-accent)' : 'var(--v3-border)',
+                    }}
+                  >
+                    {resolveBrand(s.partnerName)
+                      ? <BrandLogo partnerName={s.partnerName} size={34} />
+                      : <span
+                          aria-hidden="true"
+                          className="flex h-[34px] w-[34px] flex-shrink-0 items-center justify-center rounded-xl text-sm font-bold"
+                          style={{ background: 'rgba(245,158,11,0.14)', color: 'var(--v3-amber)' }}
+                        >
+                          {s.partnerName?.[0]?.toUpperCase() ?? '?'}
+                        </span>}
+                    <span className="min-w-0">
+                      <span className="block truncate text-[13px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
+                        {s.partnerName}
+                      </span>
+                      {/* The category is the deal's own field — not a slogan written here. */}
+                      <span className="block truncate text-[11px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                        {s.category}
+                      </span>
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </section>
         )}
 
         {loading && (
@@ -175,6 +264,106 @@ export default function DealsView() {
 
       <V3Footer />
     </V3Shell>
+  )
+}
+
+/* ── The AI hero ────────────────────────────────────────────────────────────
+ *
+ * The page's proposition, stated once: Tappy is an ADVISOR here, not a shop. It does not sell,
+ * price, rank or check out — it talks the choice through before the user leaves for the platform.
+ *
+ * 🚨 WHAT THIS HERO MAY AND MAY NOT SAY. There is no price, no original price, no discount
+ * percentage and no cross-platform comparison anywhere in this product's data. So the copy
+ * promises help THINKING - advice, comparing what is known, a suggestion - never a better price, a
+ * lowest price, or a saving. "Tappy finds you cheaper deals" would be a claim with nothing behind
+ * it, on the one page where such a claim is most likely to be believed.
+ *
+ * 🚨 THE MASCOT IS THE SHIPPED ASSET. `/tappy/deals.png` — the approved otter in the blue Tappy
+ * hoodie holding a discount tag. Not redrawn, not regenerated, not substituted. That same file was
+ * REJECTED for Home's Suggested cards, because a percent tag over a conversation starter implied a
+ * discount that did not exist; here the page really is about promotions, so the tag is accurate.
+ *
+ * 🚨 NO WORDMARK BESIDE IT. The shell's sidebar already carries the brand. A second "TappyAI"
+ * lockup inside the hero is the app telling the user its own name twice on one screen.
+ */
+function DealsHero({ sources }: { sources: PartnerDeal[] }) {
+  const { t } = useTranslation()
+
+  return (
+    <section
+      className="relative overflow-hidden rounded-3xl border"
+      style={{
+        borderColor: 'var(--v3-border)',
+        background:
+          'radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--v3-violet) 26%, transparent) 0%, transparent 58%),'
+          + ' radial-gradient(100% 120% at 88% 100%, color-mix(in srgb, var(--v3-accent) 22%, transparent) 0%, transparent 62%),'
+          + ' var(--v3-panel-elevated)',
+      }}
+    >
+      <div className="flex flex-col gap-5 p-5 sm:p-6 lg:flex-row lg:items-center lg:gap-7">
+        {/* The mascot. Hidden below `sm` so the copy keeps the full width on a phone
+            rather than being squeezed beside a 96px otter. */}
+        <div className="hidden flex-shrink-0 sm:block">
+          <Image
+            src="/tappy/deals.png"
+            alt=""
+            aria-hidden="true"
+            width={132}
+            height={132}
+            className="h-[104px] w-[104px] object-contain lg:h-[132px] lg:w-[132px]"
+            priority
+          />
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <h2 className="text-[20px] font-semibold leading-tight tracking-tight sm:text-[23px]" style={{ color: 'var(--v3-fg)' }}>
+            {t('v3.deals.heroTitle')}
+          </h2>
+          <p className="mt-1.5 max-w-[52ch] text-[13px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
+            {t('v3.deals.heroBody')}
+          </p>
+          {/* Straight to the existing Chat route. No prompt is pre-filled: with no deal in hand
+              there is no subject to carry, and inventing one would put words in the user's mouth —
+              the exact thing `AskTappyButton` refuses to do on the cards below. */}
+          <Link
+            href="/chat"
+            className="mt-3.5 inline-flex min-h-[42px] items-center gap-2 rounded-full px-4 text-[13px] font-semibold text-white transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2"
+            style={{ background: 'var(--v3-accent-fill)' }}
+          >
+            <Sparkles size={15} aria-hidden="true" />
+            {t('v3.deals.heroCta')}
+            <ArrowRight size={15} aria-hidden="true" />
+          </Link>
+        </div>
+
+        {/* The supported sources, shown rather than claimed: one logo per platform that really
+            appears in the loaded feed. Non-interactive — the filter for these lives in its own
+            labelled section below, so a logo here never looks like a dead control. */}
+        {sources.length > 0 && (
+          <div className="flex-shrink-0 lg:max-w-[236px]">
+            <p className="text-[10.5px] font-medium uppercase tracking-[0.09em]" style={{ color: 'var(--v3-fg-muted)' }}>
+              {t('v3.deals.sourcesLabel')}
+            </p>
+            <div className="mt-2.5 flex flex-wrap items-center gap-2">
+              {sources.map((s) => (
+                <span
+                  key={s.partnerName}
+                  title={s.partnerName}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border"
+                  style={{ background: 'var(--v3-panel)', borderColor: 'var(--v3-border)' }}
+                >
+                  {resolveBrand(s.partnerName)
+                    ? <BrandLogo partnerName={s.partnerName} size={24} />
+                    : <span className="text-[12px] font-bold" style={{ color: 'var(--v3-amber)' }}>
+                        {s.partnerName?.[0]?.toUpperCase() ?? '?'}
+                      </span>}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   )
 }
 

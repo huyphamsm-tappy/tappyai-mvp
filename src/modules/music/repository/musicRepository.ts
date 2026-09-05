@@ -3,6 +3,7 @@ import type { MusicTrack } from '../types/track'
 import type { MusicCategory } from '../types/category'
 import type { MusicProvider } from '../types/provider'
 import type { MusicBrowseFilter, MusicSearchFilter, MusicTracksPage } from '../types/search'
+import { isServableMediaUrl } from '@/lib/media/servableMedia'
 
 // All four read policies on these tables are unconditionally public
 // (no auth.uid() dependency), so a bare anon-key client — with no cookie or
@@ -37,7 +38,27 @@ function mapTrackRow(row: TrackRow): MusicTrack {
     durationSec: row.duration_sec,
     audioUrl: row.audio_url,
     previewUrl: row.preview_url,
-    coverUrl: row.cover_url,
+    /**
+     * 🚨 THE RETIRED BLOB HOST IS FILTERED OUT HERE, AND THAT IS THE MUSIC
+     * LIBRARY'S BROKEN-THUMBNAIL BUG.
+     *
+     * Every "Âm thanh gốc" track is auto-registered when a video review is
+     * posted (`/api/reviews` sets `coverUrl: thumbnail`), so its cover is
+     * whatever poster that review had. Posters written before the storage move
+     * live on Vercel Blob, and those objects are GONE — measured against
+     * production data: the one GCS cover answers 200 and every
+     * `*.public.blob.vercel-storage.com` cover answers 404. That host is in
+     * `next.config` `remotePatterns`, so the optimizer happily tried, failed,
+     * and the browser fell back to rendering the alt text — which is why the
+     * first row showed art and the rest showed the words "Âm thanh gốc".
+     *
+     * `isServableMediaUrl` is the app's existing answer to exactly this, and
+     * `cover_url` is already one of its `MEDIA_FIELDS`. The reviews routes all
+     * apply it; the music routes were the ones that never did. Nulling here
+     * rather than at each route covers browse, search and by-id in one place,
+     * and `MusicThumbnail` already draws a real fallback for a null cover.
+     */
+    coverUrl: isServableMediaUrl(row.cover_url) ? row.cover_url : null,
     categoryId: row.category_id,
     providerId: row.provider_id,
   }

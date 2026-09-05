@@ -5,10 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   Search, ChevronLeft, ChevronRight, Heart, MessageCircle, Share2, Bookmark,
-  Sparkles, Loader2, AlertCircle, PlayCircle, Music2,
+  Sparkles, Loader2, AlertCircle, PlayCircle, Music2, Play,
 } from 'lucide-react'
 import V3Shell from '@/components/v3/V3Shell'
-import VideoPlayer from '@/components/explore/VideoPlayer'
+import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { isShareOnlyName, type Review } from './feedShared'
@@ -472,6 +472,30 @@ function ExploreCard({
   const [busy, setBusy] = useState(false)
   const [avatarBroken, setAvatarBroken] = useState(false)
 
+  /**
+   * 🚨 THE CLIP COULD NOT BE PAUSED ON DESKTOP, AND THIS IS THE WHOLE OF THE FIX.
+   *
+   * The frame-sized button below sits at `z-[5]`, above the player, and its only
+   * job was `onSelect()`. On the card that was ALREADY active that call is a
+   * no-op, so every click on a playing clip did nothing — the click never
+   * reached the <video>, and nothing else was listening.
+   *
+   * The player has expressed pause through `PlaybackSession.onUserPauseToggle()`
+   * all along, and the mobile feed has called it since WEB-EXPLORE-YOUTUBE-001.
+   * Desktop simply never took the handle. It does now.
+   *
+   * 🔑 STICKY BY CONSTRUCTION, so autoplay cannot undo a deliberate pause: the
+   * session owns that intent (`isUserPaused`), not this component. Autoplay on
+   * becoming active is untouched — `active` still starts playback, and a clip
+   * the user paused stays paused while it remains on screen.
+   */
+  const playerRef = useRef<VideoPlayerHandle>(null)
+  const [userPaused, setUserPaused] = useState(false)
+
+  // Selecting a different clip unmounts this player; the next one starts fresh
+  // rather than inheriting a pause the user asked for on another card.
+  useEffect(() => { if (!active) setUserPaused(false) }, [active])
+
   /** Optimistic, and it ROLLS BACK. The endpoint's own `{ liked }` is the truth;
    *  a failure puts the heart back rather than leaving a like that never landed. */
   const toggle = async (kind: 'like' | 'save') => {
@@ -562,6 +586,7 @@ function ExploreCard({
       <div className="absolute inset-0">
         {active ? (
           <VideoPlayer
+            ref={playerRef}
             url={r.media_url as string}
             thumbnail={r.thumbnail ?? undefined}
             sourceType={r.source_type ?? 'upload'}
@@ -575,16 +600,40 @@ function ExploreCard({
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/88 via-black/10 to-black/45" />
       </div>
 
-      {/* The whole frame selects this clip. A button rather than a div: it is the
-          primary control on the card and must be reachable by keyboard. */}
+      {/* The frame does two things, depending on which card it is. On an inactive
+          card it selects the clip; on the playing one it toggles pause. A button
+          rather than a div: it is the primary control on the card and must be
+          reachable by keyboard, which also gives Space/Enter pause for free.
+
+          🔑 It stays ABOVE the player and keeps swallowing the click, which is
+          what protects the rail (like / save / share) and the author link from
+          being triggered by a stray tap — those sit at a higher z-index and stop
+          propagation themselves. Nothing about scrolling or the carousel arrows
+          changes. */}
       <button
         type="button"
-        onClick={onSelect}
-        aria-label={t('v3.explore.playThis')}
+        onClick={() => {
+          if (!active) { onSelect(); return }
+          playerRef.current?.onUserPauseToggle()
+          setUserPaused(v => !v)
+        }}
+        aria-label={active ? t('v3.explore.togglePlay') : t('v3.explore.playThis')}
         aria-pressed={active}
         className="absolute inset-0 z-[5] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset"
         style={{ background: 'transparent' }}
       />
+
+      {/* Paused affordance. Only while the USER paused — an autoplay that has not
+          started yet is not a paused clip and must not claim to be one. */}
+      {active && userPaused && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-[6] flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full backdrop-blur"
+          style={{ background: 'rgba(8,9,13,0.55)' }}
+        >
+          <Play size={26} className="translate-x-[1px] fill-white text-white" />
+        </span>
+      )}
 
       {/* ── Top: the clip's own first hashtag. Real metadata, not a taxonomy. ── */}
       {tags.length > 0 && (
@@ -624,7 +673,22 @@ function ExploreCard({
             placeholder avatar, no "@unknown", no follower count — the feed sends
             none of those and this page does not manufacture them. */}
         {author && (
-          <div className="mb-2 flex items-center gap-2">
+          /* 🚨 THE AUTHOR PROFILE EXISTED AND THIS SURFACE HAD NO WAY IN.
+             `/users/[id]` ships (`UserProfileView`), and the MOBILE feed has
+             linked to it from the avatar for as long as it has existed
+             (`feedShared.tsx`). The desktop card rendered the same name and
+             picture as plain spans, so the profile was simply unreachable from
+             Explore on a wide screen — unreachable, not missing.
+
+             `stopPropagation` is what keeps this from also selecting the card:
+             the frame button underneath owns every other click on the tile. */
+          <Link
+            href={`/users/${r.user_id}`}
+            onClick={e => e.stopPropagation()}
+            aria-label={t('v3.explore.viewAuthor', { name: author })}
+            className="mb-2 flex w-fit items-center gap-2 rounded-full transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            style={{ position: 'relative', zIndex: 10 }}
+          >
             {/* The initial-letter disc is the feed's own fallback for a profile with no
                 picture, reused. It also catches a picture that FAILS to load — a real
                 avatar_url whose host is slow or unreachable otherwise leaves a broken
@@ -644,7 +708,7 @@ function ExploreCard({
                   {author.slice(0, 1).toUpperCase()}
                 </span>}
             <span className="truncate text-[12px] font-medium text-white">{author}</span>
-          </div>
+          </Link>
         )}
 
         {caption && (

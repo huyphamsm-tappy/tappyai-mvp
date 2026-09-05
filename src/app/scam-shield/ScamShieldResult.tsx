@@ -3,28 +3,57 @@
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { CheckResult, RiskLevel, RecommendedAction, EvidenceItem, OfficialEntity } from '@/lib/scam-shield/types'
 import {
-  ShieldCheck, ShieldAlert, ShieldX, AlertTriangle,
+  ShieldCheck, ShieldAlert, ShieldX, ShieldQuestion, AlertTriangle,
   ExternalLink, Phone, Flag, Search, CircleCheck, CircleAlert,
   ChevronDown, ChevronUp, Globe,
 } from 'lucide-react'
 import { useState } from 'react'
 
-// 🚨 INCONCLUSIVE must never be styled like SAFE or LOW. It is what the engine reports when too
-// little of the evidence base completed to stand behind a reassuring answer, and a green shield
-// over it would put back exactly the false reassurance the engine was changed to stop. Neutral
-// slate + the alert glyph: visibly not a verdict, and visibly not a clean bill of health either.
-// `Record<RiskLevel, …>` is load-bearing — adding a level to the union fails the build here until
-// it has been given a deliberate appearance, rather than falling through to `undefined`.
-const LEVEL_STYLES: Record<RiskLevel, { bg: string; text: string; border: string; icon: typeof ShieldCheck }> = {
-  SAFE: { bg: 'bg-green-50 dark:bg-green-900/20', text: 'text-green-700 dark:text-green-400', border: 'border-green-200 dark:border-green-800', icon: ShieldCheck },
-  INCONCLUSIVE: { bg: 'bg-slate-100 dark:bg-slate-800/40', text: 'text-slate-700 dark:text-slate-300', border: 'border-slate-300 dark:border-slate-600', icon: ShieldAlert },
-  LOW: { bg: 'bg-blue-50 dark:bg-blue-900/20', text: 'text-blue-700 dark:text-blue-400', border: 'border-blue-200 dark:border-blue-800', icon: ShieldCheck },
-  MEDIUM: { bg: 'bg-yellow-50 dark:bg-yellow-900/20', text: 'text-yellow-700 dark:text-yellow-400', border: 'border-yellow-200 dark:border-yellow-800', icon: ShieldAlert },
-  HIGH: { bg: 'bg-orange-50 dark:bg-orange-900/20', text: 'text-orange-700 dark:text-orange-400', border: 'border-orange-200 dark:border-orange-800', icon: ShieldX },
-  CRITICAL: { bg: 'bg-red-50 dark:bg-red-900/20', text: 'text-red-700 dark:text-red-400', border: 'border-red-200 dark:border-red-800', icon: ShieldX },
+/**
+ * The appearance of every risk level, in the V3 palette. Exported because the history rows in
+ * `ScamShieldView` render the same verdicts and must not invent a second colour language for
+ * them — one definition, two call sites.
+ *
+ * 🚨 SIX LEVELS, EACH WITH ITS OWN HUE, AND THE SCALE IS THE ENGINE'S — NOT A MOCKUP'S.
+ * The visual reference showed three badges (safe / warning / danger). Mapping six onto three
+ * would be a scoring change made in a stylesheet, so the reference was followed for SHAPE and
+ * the engine for MEANING.
+ *
+ * 🔑 HIGH IS THE ONE HUE THE V3 PALETTE DOES NOT HAVE. It sits between MEDIUM (amber) and
+ * CRITICAL (rose), and sharing a colour with either neighbour erases a distinction the engine
+ * went to some trouble to make. It reads `--ss-high`, which is declared by THIS FEATURE on the
+ * Scam Shield page root (see `ScamShieldView`) rather than by `globals.css` — a colour used on
+ * one surface is not a design token, and adding it to `:root` would offer every other page a
+ * seventh brand colour nothing in the system asks for. The literal fallback keeps the light
+ * value if the component is ever rendered outside that root.
+ *
+ * Both values are tuned the way the V3 palette tunes its own: dark and saturated for AA on the
+ * white card, bright for the dark one.
+ *
+ * 🚨 INCONCLUSIVE IS NEUTRAL, DELIBERATELY. It is not a point on the scale — it is what the
+ * engine reports when too little of the evidence base responded to stand behind ANY answer. A
+ * green shield over it would restore precisely the false reassurance the engine was changed to
+ * stop, and a red one would invent a threat nobody found. Slate plus the question glyph: visibly
+ * not a verdict, and visibly not a clean bill of health.
+ *
+ * `Record<RiskLevel, …>` is load-bearing — adding a level to the union fails the build here
+ * until it has been given a deliberate appearance, rather than rendering as `undefined`.
+ */
+export const LEVEL_TONE: Record<RiskLevel, {
+  fg: string
+  soft: string
+  border: string
+  icon: typeof ShieldCheck
+}> = {
+  SAFE:         { fg: 'var(--v3-emerald)', soft: 'rgba(16,185,129,0.14)',  border: 'rgba(16,185,129,0.34)',  icon: ShieldCheck },
+  LOW:          { fg: 'var(--v3-accent)',  soft: 'var(--v3-accent-soft)',  border: 'rgba(51,145,255,0.34)',  icon: ShieldCheck },
+  MEDIUM:       { fg: 'var(--v3-amber)',   soft: 'rgba(245,158,11,0.16)',  border: 'rgba(245,158,11,0.38)',  icon: ShieldAlert },
+  HIGH:         { fg: 'var(--ss-high, #B4400C)', soft: 'rgba(249,115,22,0.16)', border: 'rgba(249,115,22,0.40)', icon: ShieldAlert },
+  CRITICAL:     { fg: 'var(--v3-rose)',    soft: 'rgba(244,63,94,0.16)',   border: 'rgba(244,63,94,0.42)',   icon: ShieldX },
+  INCONCLUSIVE: { fg: 'var(--v3-fg-secondary)', soft: 'var(--v3-panel-elevated)', border: 'var(--v3-border-strong)', icon: ShieldQuestion },
 }
 
-const LEVEL_KEY: Record<RiskLevel, string> = {
+export const LEVEL_KEY: Record<RiskLevel, string> = {
   SAFE: 'scamShield.result.safe',
   INCONCLUSIVE: 'scamShield.result.inconclusive',
   LOW: 'scamShield.result.low',
@@ -45,23 +74,36 @@ const ACTION_ICONS: Record<string, typeof ShieldCheck> = {
 
 function ConfidenceBadge({ confidence }: { confidence: number }) {
   const { t } = useTranslation()
-  if (confidence >= 80) {
-    return <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">{t('scamShield.confidence.high')}</span>
-  }
-  if (confidence >= 50) {
-    return <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400">{t('scamShield.confidence.medium')}</span>
-  }
-  return <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">{t('scamShield.confidence.low')}</span>
+  const [key, tone] = confidence >= 80
+    ? ['scamShield.confidence.high', LEVEL_TONE.SAFE]
+    : confidence >= 50
+      ? ['scamShield.confidence.medium', LEVEL_TONE.MEDIUM]
+      : ['scamShield.confidence.low', LEVEL_TONE.INCONCLUSIVE]
+  return (
+    <span
+      className="rounded-full px-2 py-0.5 text-[11px] font-medium"
+      style={{ background: tone.soft, color: tone.fg }}
+    >
+      {t(key as string)}
+    </span>
+  )
+}
+
+const SEVERITY_COLOR: Record<string, string> = {
+  safe: 'var(--v3-emerald)',
+  info: 'var(--v3-accent)',
+  warning: 'var(--v3-amber)',
+  critical: 'var(--v3-rose)',
 }
 
 function SeverityDot({ severity }: { severity: string }) {
-  const colors: Record<string, string> = {
-    safe: 'bg-green-500',
-    info: 'bg-blue-500',
-    warning: 'bg-yellow-500',
-    critical: 'bg-red-500',
-  }
-  return <span className={`inline-block w-2 h-2 rounded-full ${colors[severity] ?? 'bg-gray-400'}`} />
+  return (
+    <span
+      className="mt-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full"
+      style={{ background: SEVERITY_COLOR[severity] ?? 'var(--v3-fg-muted)' }}
+      aria-hidden="true"
+    />
+  )
 }
 
 function EvidenceSection({ items }: { items: EvidenceItem[] }) {
@@ -74,19 +116,25 @@ function EvidenceSection({ items }: { items: EvidenceItem[] }) {
     <div className="mt-4">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+        aria-expanded={open}
+        className="flex w-full items-center justify-between py-2 text-[13px] font-semibold"
+        style={{ color: 'var(--v3-fg-secondary)' }}
       >
         {t('scamShield.evidence')}
-        {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
       {open && (
-        <div className="space-y-2 mt-1">
+        <div className="mt-1 space-y-2">
           {items.map((item, i) => (
-            <div key={i} className="flex items-start gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-sm">
+            <div
+              key={i}
+              className="flex items-start gap-2.5 rounded-lg p-2.5"
+              style={{ background: 'var(--v3-panel-elevated)' }}
+            >
               <SeverityDot severity={item.severity} />
-              <div className="flex-1 min-w-0">
-                <p className="text-gray-900 dark:text-white font-medium text-xs">{item.source}</p>
-                <p className="text-gray-600 dark:text-gray-400 text-xs mt-0.5">{item.summary}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{item.source}</p>
+                <p className="mt-0.5 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{item.summary}</p>
               </div>
             </div>
           ))}
@@ -98,26 +146,27 @@ function EvidenceSection({ items }: { items: EvidenceItem[] }) {
 
 function ActionsSection({ actions, locale }: { actions: RecommendedAction[]; locale: string }) {
   const { t } = useTranslation()
+  if (actions.length === 0) return null
 
   return (
     <div className="mt-4">
-      <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <p className="mb-2 text-[13px] font-semibold" style={{ color: 'var(--v3-fg-secondary)' }}>
         {t('scamShield.actions')}
       </p>
       <div className="space-y-2">
         {actions.map((action, i) => {
           const Icon = ACTION_ICONS[action.icon] ?? CircleAlert
           const label = locale === 'vi' ? action.label_vi : action.label_en
+          const primary = action.priority === 'primary'
           return (
             <div
               key={i}
-              className={`flex items-start gap-3 p-3 rounded-lg text-sm ${
-                action.priority === 'primary'
-                  ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 font-medium'
-                  : 'bg-gray-50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300'
-              }`}
+              className="flex items-start gap-3 rounded-lg p-3 text-[13px] leading-snug"
+              style={primary
+                ? { background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)', fontWeight: 600 }
+                : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-secondary)' }}
             >
-              <Icon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <Icon size={16} className="mt-0.5 flex-shrink-0" />
               <span>{label}</span>
             </div>
           )
@@ -129,23 +178,31 @@ function ActionsSection({ actions, locale }: { actions: RecommendedAction[]; loc
 
 function OfficialSection({ entity }: { entity: OfficialEntity }) {
   const { t } = useTranslation()
+  const tone = LEVEL_TONE.SAFE
 
   return (
-    <div className="mt-4 p-3 rounded-xl border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20">
-      <p className="text-sm font-medium text-green-800 dark:text-green-300 flex items-center gap-2">
-        <Globe className="w-4 h-4" />
+    <div
+      className="mt-4 rounded-xl border p-3.5"
+      style={{ background: tone.soft, borderColor: tone.border }}
+    >
+      <p className="flex items-center gap-2 text-[13px] font-semibold" style={{ color: tone.fg }}>
+        <Globe size={15} />
         {t('scamShield.official')}
       </p>
-      <div className="mt-2 space-y-1.5 text-xs text-green-700 dark:text-green-400">
-        <p className="font-semibold text-sm">{entity.brand}</p>
-        <p>
-          <span className="text-green-600 dark:text-green-500">{t('scamShield.official.website')}: </span>
-          <a href={entity.website} target="_blank" rel="noopener noreferrer" className="underline">{entity.website}</a>
+      <div className="mt-2 space-y-1.5">
+        <p className="text-[14px] font-bold" style={{ color: 'var(--v3-fg)' }}>{entity.brand}</p>
+        <p className="text-[12px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+          {t('scamShield.official.website')}:{' '}
+          <a href={entity.website} target="_blank" rel="noopener noreferrer" className="underline" style={{ color: tone.fg }}>
+            {entity.website}
+          </a>
         </p>
         {entity.hotline && (
-          <p>
-            <span className="text-green-600 dark:text-green-500">{t('scamShield.official.hotline')}: </span>
-            <a href={`tel:${entity.hotline.replace(/\s/g, '')}`} className="underline">{entity.hotline}</a>
+          <p className="text-[12px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+            {t('scamShield.official.hotline')}:{' '}
+            <a href={`tel:${entity.hotline.replace(/\s/g, '')}`} className="underline" style={{ color: tone.fg }}>
+              {entity.hotline}
+            </a>
           </p>
         )}
       </div>
@@ -155,39 +212,55 @@ function OfficialSection({ entity }: { entity: OfficialEntity }) {
 
 export default function ScamShieldResult({ result }: { result: CheckResult }) {
   const { t, locale } = useTranslation()
-  const style = LEVEL_STYLES[result.risk.level]
-  const Icon = style.icon
+  const tone = LEVEL_TONE[result.risk.level]
+  const Icon = tone.icon
 
   return (
-    <div className={`mt-5 rounded-2xl border ${style.border} ${style.bg} overflow-hidden`}>
-      {/* Score header */}
-      <div className="p-4 flex items-center gap-3">
-        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${style.bg}`}>
-          <Icon className={`w-6 h-6 ${style.text}`} />
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className={`text-lg font-bold ${style.text}`}>
+    <section
+      className="v3-panel overflow-hidden"
+      // The verdict is the one place on this page where colour carries meaning rather than
+      // decoration, so the whole card takes the level's tint instead of a neutral panel.
+      style={{ background: tone.soft, borderColor: tone.border }}
+      aria-live="polite"
+    >
+      <div className="flex items-center gap-3.5 p-4 sm:p-5">
+        <span
+          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl"
+          style={{ background: 'var(--v3-panel)', color: tone.fg }}
+          aria-hidden="true"
+        >
+          <Icon size={26} strokeWidth={2.2} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[17px] font-extrabold leading-tight" style={{ color: tone.fg }}>
               {t(LEVEL_KEY[result.risk.level])}
             </span>
             <ConfidenceBadge confidence={result.risk.confidence} />
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+          <p className="mt-0.5 truncate text-[12px]" style={{ color: 'var(--v3-fg-muted)' }} title={result.url}>
             {result.url}
           </p>
         </div>
-        <div className="text-right">
-          <div className={`text-2xl font-bold ${style.text}`}>{result.risk.score}</div>
-          <div className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider">Score</div>
+        <div className="flex-shrink-0 text-right">
+          <div className="text-[24px] font-extrabold leading-none" style={{ color: tone.fg }}>
+            {result.risk.score}
+          </div>
+          <div
+            className="mt-1 text-[9.5px] font-semibold uppercase tracking-[0.11em]"
+            style={{ color: 'var(--v3-fg-muted)' }}
+          >
+            {/* Language-neutral; the same word in both dictionaries. */}
+            Score
+          </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="px-4 pb-4">
+      <div className="px-4 pb-4 sm:px-5 sm:pb-5">
         {result.officialMatch && <OfficialSection entity={result.officialMatch} />}
         <ActionsSection actions={result.actions} locale={locale} />
         <EvidenceSection items={result.evidence.items} />
       </div>
-    </div>
+    </section>
   )
 }

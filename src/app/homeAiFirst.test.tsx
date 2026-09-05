@@ -213,9 +213,27 @@ describe('no tool was dropped when Home stopped being a dashboard', () => {
   })
 
   it('curates Home itself down to five', () => {
+    // 🚨 COUNTS TOOL CARDS, NOT LINKS — and that is a TIGHTENING, not a loosening.
+    //
+    // This used to count every `a[href]` in the section, which worked only while the heading had
+    // no action. The section now carries a "see all" into /tools, so a link count of 5 would have
+    // failed for the right structure and, worse, a future sixth tool would have passed the moment
+    // someone removed the see-all. `[data-tool]` is on the tool cards and nothing else, so the
+    // curation is now pinned directly instead of inferred from a total.
     const { container } = renderHome()
     const tools = container.querySelector('[data-home-section="tools"]')!
-    expect(tools.querySelectorAll('a[href]').length, 'Home shows five, not the catalogue').toBe(5)
+    expect(tools.querySelectorAll('[data-tool]').length, 'Home shows five, not the catalogue').toBe(5)
+    // And the only other link in the section is that see-all, at the REAL destination.
+    const others = [...tools.querySelectorAll('a[href]')].filter(a => !a.hasAttribute('data-tool'))
+    expect(others.map(a => a.getAttribute('href')), 'one see-all, pointing at the Tools page').toEqual(['/tools'])
+  })
+
+  it('the tools section carries the anchor two nav entries spent months pointing at', () => {
+    // `/#smart-tools` was the sidebar row's and the tab bar's href, and nothing in the codebase
+    // had that id — both scrolled to the top of Home. They point at /tools now; the id is here so
+    // the old anchor also lands.
+    const { container } = renderHome()
+    expect(container.querySelector('#smart-tools'), 'the Home anchor must exist').toBeTruthy()
   })
 
   it('presents them as one row, not labelled groups', () => {

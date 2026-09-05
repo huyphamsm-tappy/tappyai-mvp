@@ -23,6 +23,19 @@ export const vi: Record<string, string> = {
   // Video tab
   'reviewNew.selectVideo': 'Chọn video',
   'reviewNew.videoHint': 'mp4 · mov · webm  ·  tối đa 5 phút · 150MB',
+  // ── Media step (V3) ──────────────────────────────────────────────────────
+  // 🚨 EVERY FORMAT AND NUMBER BELOW IS THE ONE THE SERVER ACTUALLY ENFORCES. The design
+  // reference offered "MP4, MOV – Tối đa 2GB"; the real policy is mp4/mov/webm at 150MB and five
+  // minutes, and photos are jpg/png/gif/webp at 5MB each. Copy that promises more than the
+  // upload accepts turns a validation error into a broken product.
+  'reviewNew.mediaSubtitle': 'Chia sẻ hình ảnh, video hoặc nội dung của bạn',
+  'reviewNew.dropTitle': 'Kéo thả file vào đây',
+  'reviewNew.dropHint': 'hoặc nhấn nút bên dưới để chọn',
+  'reviewNew.dropActive': 'Thả file để tải lên',
+  'reviewNew.photoHint': 'jpg · png · gif · webp  ·  tối đa {n}MB mỗi ảnh',
+  'reviewNew.choosePhotos': 'Chọn ảnh',
+  'reviewNew.linkHint': 'Hỗ trợ: {list}',
+  'reviewNew.communityNote': 'Hãy tuân thủ chính sách cộng đồng khi đăng tải nội dung.',
   'reviewNew.creatingThumbnail': 'Đang tạo thumbnail...',
   'reviewNew.uploadingVideo': 'Đang tải video lên...',
   'reviewNew.analyzingContent': 'Đang phân tích nội dung...',
@@ -92,6 +105,15 @@ export const en: Record<string, string> = {
   // Video tab
   'reviewNew.selectVideo': 'Choose a video',
   'reviewNew.videoHint': 'mp4 · mov · webm  ·  up to 5 minutes · 150MB',
+  // ── Media step (V3) — see the note in the Vietnamese block above ─────────
+  'reviewNew.mediaSubtitle': 'Share images, videos or your content',
+  'reviewNew.dropTitle': 'Drop a file here',
+  'reviewNew.dropHint': 'or use the button below to choose one',
+  'reviewNew.dropActive': 'Release to upload',
+  'reviewNew.photoHint': 'jpg · png · gif · webp  ·  up to {n}MB each',
+  'reviewNew.choosePhotos': 'Choose photos',
+  'reviewNew.linkHint': 'Supported: {list}',
+  'reviewNew.communityNote': 'Please follow the community policy when posting content.',
   'reviewNew.creatingThumbnail': 'Creating thumbnail...',
   'reviewNew.uploadingVideo': 'Uploading video...',
   'reviewNew.analyzingContent': 'Analyzing content...',

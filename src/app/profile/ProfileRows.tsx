@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import {
-  User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, Heart, Users,
-  TrendingDown, Brain, Star, Plug, ChevronRight, Lock,
+  User, MessageCircle, Bookmark, Settings, Crown, CalendarDays, CalendarRange, Heart, Users,
+  TrendingDown, Brain, Plug, ChevronRight, Lock,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 // Same product gates on both views — a guest must never be shown an entry point
@@ -38,13 +38,25 @@ export function accountRows(): ProfileRow[] {
     { icon: Heart, labelKey: 'profile.preferences', descKey: 'profile.preferences.desc', href: '/profile/preferences' },
     { icon: Bookmark, labelKey: 'profile.saved', descKey: 'profile.saved.desc', href: '/profile/favorites' },
     { icon: TrendingDown, labelKey: 'profile.priceWatch', descKey: 'profile.priceWatch.desc', href: '/profile/price-watches' },
+    // 🚨 THE PLANNER'S ONLY WAY IN ON MOBILE. `/planner` is reached from the V3 sidebar, and
+    // the sidebar is `hidden lg:flex` — below that breakpoint navigation belongs to the five-tab
+    // `BottomNav`, whose tab set is fixed (DD-003). So the destination existed and no phone could
+    // open it. This row is the fix, and it is a ROW rather than a sixth tab for that reason.
+    //
+    // 🔑 SAME LABEL AND SAME ICON AS THE SIDEBAR ROW, deliberately: `v3.nav.planner` and
+    // `CalendarRange` are what the desktop entry point already uses, so the two are legible as one
+    // destination reached two ways rather than as two features. The description is the Planner
+    // page's own subtitle — no new key was invented for this row.
+    { icon: CalendarRange, labelKey: 'v3.nav.planner', descKey: 'v3.planner.subtitle', href: '/planner' },
     { icon: Brain, labelKey: 'profile.tappyKnows', descKey: 'profile.tappyKnows.desc', href: '/profile/tappy-knows' },
     // App Connections entry point hidden app-wide (owner product decision 2026-07-17).
     // Page + APIs stay intact; flip SHOW_APP_CONNECTIONS + the Android gate together.
     ...(SHOW_APP_CONNECTIONS
       ? [{ icon: Plug, labelKey: 'profile.integrations', descKey: 'profile.integrations.desc', href: '/profile/integrations' }]
       : []),
-    { icon: Star, labelKey: 'profile.myReviews', descKey: 'profile.myReviews.desc', href: '/reviews' },
+    // 🚨 "Review của tôi" removed with the V3 sidebar row it duplicated. This one was the
+    // clearer case of the two: its href was `/reviews` — Explore itself — so the row was a
+    // second name for a destination already in the nav.
     { icon: Users, labelKey: 'profile.groupDining', descKey: 'profile.groupDining.desc', href: '/group/new' },
     // Pro upgrade hidden during the free test period (no payment entity yet).
     ...(SHOW_PRO_UPGRADE

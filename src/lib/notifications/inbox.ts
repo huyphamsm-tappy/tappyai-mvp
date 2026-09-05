@@ -28,6 +28,18 @@ export interface GroupedNotif {
   comment_body?: string
   created_at: string
   count: number
+  /**
+   * True when ANY notification collapsed into this row is still unread.
+   *
+   * 🔑 IT LIVES HERE BECAUSE GROUPING IS WHERE THE INFORMATION IS LOST. `read_at` is per
+   * notification, and a "like" row can carry twenty of them; a consumer holding only the group
+   * cannot recover which members were unread without re-deriving the grouping key, which would be
+   * a second copy of the rule below and free to drift from it.
+   *
+   * ANY, not ALL: one unread like inside a collapsed stack means the row has something the user
+   * has not seen, and marking it read is what clears it.
+   */
+  unread: boolean
 }
 
 export const NOTIF_COLOR: Record<string, string> = {
@@ -97,6 +109,7 @@ export function groupNotifs(notifs: InboxNotif[]): GroupedNotif[] {
       if (n.actor_id && !existing.actors.find(a => a.id === n.actor_id))
         existing.actors.push({ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id })
       existing.count++
+      if (!n.read_at) existing.unread = true
       if (new Date(n.created_at) > new Date(existing.created_at)) existing.created_at = n.created_at
     } else {
       map.set(key, {
@@ -106,6 +119,7 @@ export function groupNotifs(notifs: InboxNotif[]): GroupedNotif[] {
         text: n.text,
         comment_body: n.type === 'comment' ? n.text : undefined,
         created_at: n.created_at, count: 1,
+        unread: !n.read_at,
       })
     }
   }

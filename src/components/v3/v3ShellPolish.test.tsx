@@ -80,41 +80,38 @@ describe('the brand mark is the approved asset, not a drawn one', () => {
   })
 
   it('still renders the shipped asset in the DEFAULT lockup', () => {
-    // 🚨 This assertion USED to be "the brand block contains no <Sparkles>", which was right when
-    // the only lockup was asset-plus-text and a lucide glyph would have been a drawn substitute
-    // for the logo. It is now wrong in one specific way: the approved Home reference DOES show a
-    // small sparkle beside the wordmark, so Home opts into a type-only lockup with that accent.
-    //
-    // The rule worth keeping is narrower than the old one and survives that change: a page that
-    // does NOT opt in must still render `/branding/otter-logo.png`, so no future edit can quietly
-    // replace the product's mark with type on Deals, Marketplace or Profile.
+    // 🚨 This assertion USED to be "the brand block contains no <Sparkles>", written when a
+    // lucide glyph stood in for the logo. The glyph is gone and the rule outlived it in a more
+    // durable form: every lockup - opted in or not - must render `/branding/otter-logo.png`, so
+    // no future edit can quietly replace the product's mark with type on any destination.
     const { container } = render(<V3Shell title="Deals"><div /></V3Shell>)
     const img = [...container.querySelectorAll('img')]
       .find(i => (i.getAttribute('src') ?? '').includes('otter-logo'))
     expect(img, 'the default lockup must keep the shipped mark').toBeTruthy()
   })
 
-  it('gives Home the WORDMARK ALONE — no app icon, no cropped stand-in', () => {
-    // 🚨 THIS RULE HAS MOVED TWICE AND IS NOW SETTLED ON A FACT, NOT A PREFERENCE.
+  it('renders the shipped mark on HOME too, and never gates it behind a layout prop', () => {
+    // 🚨 THIS RULE HAS MOVED THREE TIMES AND IS NOW PINNED TO THE BRAND, NOT TO A HOME
+    // EXCEPTION.
     //
-    // It first asserted Home rendered no mark; then, when the brief asked for a small brand mark
-    // from an existing asset, that Home rendered `/branding/otter-logo.png` at 22px. That second
-    // version was rejected on inspection, because of what the file IS: an APP ICON — a blue
-    // rounded tile containing the otter, a speech bubble, and the "TappyAI" wordmark baked into
-    // the artwork. Beside the text wordmark it showed the same words twice.
+    // It asserted, in order: that Home rendered no mark; that Home rendered
+    // `/branding/otter-logo.png` at 22px; then that Home's lockup contained NO IMAGE at all.
+    // That last state is the one the owner reported as a regression - the Home sidebar showed
+    // "TappyAI / Personal AI Agent" as type with an empty space where the brand mark had been.
     //
-    // The owner refused the obvious workaround (cropping the otter's head out of the icon) as a
-    // manufactured mark. So Home is type alone until a real standalone mark asset exists.
-    //
-    // What this pins is therefore narrow and durable: NO IMAGE in Home's lockup. It fails if the
-    // app icon comes back at any size, and it fails if someone crops it in. A future genuine
-    // mark asset is a deliberate change that updates this test with it.
+    // What is pinned now: Home renders the SHIPPED asset, at the same 32px every other V3
+    // destination renders it. Nothing cropped, nothing redrawn, nothing substituted. And
+    // `wordmarkOnly` - which is a TYPE SCALE - must not decide whether the mark exists, which is
+    // exactly how it went missing. Passing the prop here is the point of the test.
     const { container } = render(<V3Shell title="Trang chủ" wordmarkOnly><div /></V3Shell>)
     const lockup = container.querySelector('a[href="/"]')!
-    expect(lockup.querySelectorAll('img').length, 'Home renders no image in the brand lockup').toBe(0)
+    const img = [...lockup.querySelectorAll('img')]
+      .find(i => (i.getAttribute('src') ?? '').includes('otter-logo'))
+    expect(img, 'Home must render /branding/otter-logo.png - the shipped brand mark').toBeTruthy()
+    expect(img!.getAttribute('width'), 'at the size it ships at everywhere else').toBe('32')
 
-    // The wordmark itself is still there, and still two-tone: "Tappy" in the foreground colour,
-    // "AI" in the accent. Removing the picture must not quietly remove the brand.
+    // The wordmark itself is unchanged, and still two-tone: "Tappy" in the foreground colour,
+    // "AI" in the accent. Restoring the picture must not disturb the type beside it.
     expect(lockup.textContent).toContain('TappyAI')
     const accent = [...lockup.querySelectorAll('span')]
       .find(s => s.textContent === 'AI' && /--v3-accent/.test(s.getAttribute('style') ?? ''))
@@ -122,9 +119,9 @@ describe('the brand mark is the approved asset, not a drawn one', () => {
   })
 
   it('keeps the app icon on the pages where an app icon is correct', () => {
-    // The counterpart to the rule above: dropping the mark is a HOME decision. Deals,
-    // Marketplace and Profile still ship the icon lockup, and a future edit that removes the
-    // image everywhere — reading the Home rule as global — fails here.
+    // The counterpart to the rule above, from the other side: Deals, Marketplace and Profile
+    // ship the icon lockup at 32px, and an edit that drops the image from the default lockup
+    // fails here just as dropping it from Home fails above.
     const { container } = render(<V3Shell title="Deals"><div /></V3Shell>)
     const img = [...container.querySelectorAll('a[href="/"] img')]
       .find(i => (i.getAttribute('src') ?? '').includes('otter-logo'))

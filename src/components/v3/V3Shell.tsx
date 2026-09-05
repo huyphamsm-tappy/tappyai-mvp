@@ -5,17 +5,19 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
-  Home, PlayCircle, Search, Upload, Users, Bookmark, Star, History,
+  Home, PlayCircle, Search, Upload, Users, Bookmark, History,
   Tag, Store, Wrench, CalendarRange, ShieldCheck, Inbox as InboxIcon,
   Bell, Sun, Moon, UserCircle, QrCode, Wallet, Settings, Languages, HelpCircle,
   MessageSquare, LogOut, Sparkles, MessageCircle, Grid3x3, Plus, ChevronRight,
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { SHOW_MARKETPLACE } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
 import { useNotifications } from '@/components/NotificationProvider'
 import { useThemeMode } from '@/lib/theme/useThemeMode'
+import { smartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
 // ── V3 Web · Shell ──────────────────────────────────────────────────────────
 //
@@ -63,9 +65,19 @@ const GROUPS: NavGroup[] = [
     titleKey: 'v3.nav.community',
     items: [
       { href: '/reviews/new', labelKey: 'v3.nav.post', icon: Upload },
-      { href: '/profile/posts', labelKey: 'v3.nav.following', icon: Users },
+      // 🚨 THIS ROW POINTED AT `/profile/posts` — a list of the viewer's own posts, not
+      // friends. Two nav entries went to that same page and one of them was labelled
+      // "Following / Friends", so the label named a destination that did not exist. It now
+      // points at the page it is named for. (The other of the two was "My Reviews"; both it
+      // and the page they shared have since been removed — see the note below.)
+      { href: '/social', labelKey: 'v3.nav.following', icon: Users },
       { href: '/profile/favorites', labelKey: 'v3.nav.saved', icon: Bookmark },
-      { href: '/profile/posts', labelKey: 'v3.nav.myReviews', icon: Star },
+      // 🚨 "MY REVIEWS" IS GONE, AND IT WAS A DUPLICATE RATHER THAN A LOSS.
+      // It pointed at `/profile/posts`, whose content is the same user-posted
+      // clips Explore already shows — one more surface over the `reviews` table,
+      // with its own copy of the tile, the delete and the hide. That page is gone
+      // too: the profile grid already renders an author's own and hidden posts and
+      // offers the same delete/hide. The post system underneath is untouched.
       { href: '/profile/history', labelKey: 'v3.nav.history', icon: History },
     ],
   },
@@ -73,16 +85,38 @@ const GROUPS: NavGroup[] = [
     titleKey: 'v3.nav.commerce',
     items: [
       { href: '/deals', labelKey: 'v3.nav.deals', icon: Tag },
-      // Reserved only — the destination states plainly that it is not built yet.
-      { href: '/marketplace', labelKey: 'v3.nav.marketplace', icon: Store, tagKey: 'v3.tag.comingSoon' },
+      // 🚨 MARKETPLACE IS HIDDEN, NOT DELETED. It was listed here with a "Sắp có"
+      // tag, which is still an unbuilt feature occupying a navigation slot — and
+      // the tab bar below carried it a second time with no tag at all. The route,
+      // the component and its test are untouched; `SHOW_MARKETPLACE` brings both
+      // entries back together when the phase that builds it arrives.
+      ...(SHOW_MARKETPLACE
+        ? [{ href: '/marketplace', labelKey: 'v3.nav.marketplace', icon: Store, tagKey: 'v3.tag.comingSoon' }]
+        : []),
     ],
   },
   {
     titleKey: 'v3.nav.tools',
     items: [
-      { href: '/#smart-tools', labelKey: 'v3.nav.smartTools', icon: Wrench },
-      { href: '/profile/price-watches', labelKey: 'v3.nav.planner', icon: CalendarRange },
-      { href: '/scam-shield', labelKey: 'v3.nav.scamShield', icon: ShieldCheck },
+      // 🚨 THIS WAS `/#smart-tools`, AN ANCHOR NOTHING CARRIED. No element in the codebase
+      // had `id="smart-tools"`, so the row scrolled to the top of Home and read as working.
+      // `/tools` is the real page — the "Page 7 (Tools)" the debt note below names.
+      { href: SMART_TOOLS_HREF, labelKey: 'v3.nav.smartTools', icon: Wrench },
+      // 🚨 THIS POINTED AT `/profile/price-watches`, AND THAT WAS A ROW LYING ABOUT ITS
+      // DESTINATION. "AI Planner (My Plans)" opened the price-watch list — a different feature
+      // with a different data model, reached under a name that promised plans. It is the same
+      // class of bug the Inbox row had (see the note in the Account group): a label pointing
+      // somewhere else is worse than a missing label, because nobody files a bug against a link
+      // that opens *something*. `/planner` now exists and this is where it is reached.
+      { href: '/planner', labelKey: 'v3.nav.planner', icon: CalendarRange },
+      // 🚨 GATED, VIA THE REGISTRY. `SHOW_SCAM_SHIELD` was exported to native through
+      // GET /api/config and read by NO Web surface: flipping it false hid the tool on
+      // Android and left this row, Home's tile and /tools untouched. `smartTools()` is the
+      // one place that decides, so the three can no longer disagree. Same convention as
+      // SHOW_APP_CONNECTIONS in ProfileRows — a hidden ENTRY POINT, route left intact.
+      ...(smartTools().some((t) => t.id === 'safety')
+        ? [{ href: '/scam-shield', labelKey: 'v3.nav.scamShield', icon: ShieldCheck }]
+        : []),
       // 🚨 KNOWN NAVIGATION DEBT — remove when Page 7 (Tools) exists.
       //
       // Home was curated down to five tools, and MEASUREMENT showed these four had no
@@ -116,7 +150,9 @@ const GROUPS: NavGroup[] = [
       // idea leading somewhere else again, so it is gone rather than duplicated.
       { href: '/profile/notifications', labelKey: 'v3.nav.inbox', icon: InboxIcon },
       { href: '/profile', labelKey: 'v3.nav.profile', icon: UserCircle },
-      { href: '/profile', labelKey: 'v3.nav.qr', icon: QrCode },
+      // 🚨 POINTED AT `/profile`, where the QR was an icon in the header rather than a
+      // destination — the row named a page that did not exist. `/profile/qr` is it.
+      { href: '/profile/qr', labelKey: 'v3.nav.qr', icon: QrCode },
       { href: '/subscription', labelKey: 'v3.nav.wallet', icon: Wallet },
     ],
   },
@@ -146,9 +182,12 @@ const TABS: { href: string; labelKey: string; icon: typeof Home; badge?: boolean
   { href: '/', labelKey: 'v3.tab.aiAgent', icon: Sparkles },
   { href: '/reviews', labelKey: 'nav.explore', icon: PlayCircle },
   { href: '/deals', labelKey: 'nav.deals', icon: Tag },
-  { href: '/marketplace', labelKey: 'v3.nav.marketplace', icon: Store },
+  // Gated with the sidebar row above — see `SHOW_MARKETPLACE`.
+  ...(SHOW_MARKETPLACE
+    ? [{ href: '/marketplace', labelKey: 'v3.nav.marketplace', icon: Store }]
+    : []),
   { href: '/profile/notifications', labelKey: 'v3.nav.inbox', icon: MessageCircle, badge: true },
-  { href: '/#smart-tools', labelKey: 'v3.nav.smartTools', icon: Grid3x3 },
+  { href: SMART_TOOLS_HREF, labelKey: 'v3.nav.smartTools', icon: Grid3x3 },
 ]
 
 export interface V3ShellProps {
@@ -157,8 +196,10 @@ export interface V3ShellProps {
   /** Brand tagline under the wordmark. Defaults to the SHARED string; Home overrides it with the
    *  approved reference's wording so that wording cannot leak to the other destinations. */
   brandTagline?: string
-  /** Render the wordmark as TYPE ALONE, with no app-icon beside it. OPT-IN, so Deals,
-   *  Marketplace and Profile keep the lockup they already ship. */
+  /** Home's wordmark TYPE SCALE - larger, semibold, a lighter tagline beneath. OPT-IN, so
+   *  Deals, Marketplace and Profile keep the compact type they already ship.
+   *  ⚠️ This does NOT gate the brand mark. It used to, and that is what made the logo
+   *  disappear from Home's sidebar; the mark now renders on every destination. */
   wordmarkOnly?: boolean
   /** Let a scenic background show through the surface. OPT-IN, and Home is the only caller —
    *  the page ground goes transparent and the chrome becomes translucent, which is wrong for
@@ -212,45 +253,35 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
             className="flex flex-shrink-0 items-center gap-2.5 border-b px-4"
             style={{ height: 'var(--v3-header-h)', borderColor: 'var(--v3-border)' }}
           >
-            {/* 🚨 TYPE ALONE ON HOME — NO MARK. DO NOT PUT A PICTURE BACK HERE.
+            {/* 🚨 THE MARK RENDERS ON EVERY DESTINATION, HOME INCLUDED. IT IS NOT GATED.
              *
-             *  This slot has now held three different things, and the history is the reason the
-             *  rule is worth stating rather than just obeying:
+             *  This slot has held three things, and the history is why the rule is written down
+             *  rather than just obeyed:
              *
-             *    1. a lucide `Sparkles` glyph — a wordmark invented at the call site;
-             *    2. nothing, when the brief said "no unrelated icon beside the wordmark";
-             *    3. `/branding/otter-logo.png` at 22px, when the brief asked for a small mark
-             *       using an existing repository asset.
+             *    1. a lucide `Sparkles` glyph - a mark invented at the call site, not the
+             *       product's logo;
+             *    2. `{!wordmarkOnly && <Image .../>}` - the shipped mark gated OFF on Home. That
+             *       is the change that emptied the Home sidebar's brand block, leaving
+             *       "TappyAI / Personal AI Agent" as type with no mark beside it;
+             *    3. this - the shipped asset, ungated, at the size it already ships at.
              *
-             *  (3) was inspected at 6x in the browser and rejected by the owner, for a reason
-             *  that is a fact about the FILE rather than a matter of taste: `otter-logo.png` is
-             *  the APP ICON. It is a blue rounded-square tile containing the otter, a speech
-             *  bubble, and the "TappyAI" WORDMARK BAKED INTO THE ARTWORK. Rendered at 22px next
-             *  to the text below, the page showed the wordmark twice — once as type and once
-             *  illegibly inside a tile — which is why it read as an app icon pasted into the
-             *  header. It read that way because that is what it is.
+             *  `/branding/otter-logo.png` is the app's established mark: the favicon, the Header
+             *  lockup, the login and onboarding screens all use it, and
+             *  `controllerLoginComposition.test.tsx` already names it as approved brand art. It
+             *  is used AS SHIPPED - `rounded-[22%] object-cover` is Header's treatment reused
+             *  verbatim, and the 32px box is the one every other V3 page renders. Nothing here
+             *  is cropped, redrawn, re-sized per page or substituted with type.
              *
-             *  🚨 CROPPING IT IS NOT THE FIX, and was explicitly refused. Framing the otter's
-             *  head out of the app icon manufactures a brand mark that the brand does not have.
-             *  The other candidates are worse: `/logo.svg` and `/logo.png` are recorded as the
-             *  RETIRED infinity mark (see `src/lib/notifications/inbox.ts`), and drawing a new
-             *  one is inventing a logo.
-             *
-             *  So Home is the wordmark alone until a genuine standalone mark asset exists. When
-             *  one does, it drops in here — that is a new file, not a crop of this one.
-             *
-             *  Opt-in and Home-only: Deals, Marketplace and Profile still render the icon
-             *  lockup below, because the app icon is correct AS an app icon. */}
-            {!wordmarkOnly && (
-              <Image
-                src="/branding/otter-logo.png"
-                alt=""
-                aria-hidden="true"
-                width={32}
-                height={32}
-                className="h-8 w-8 flex-shrink-0 rounded-[22%] object-cover"
-              />
-            )}
+             *  If the mark is ever to leave a page again, it leaves by replacing this asset with
+             *  a real standalone one - not by hiding it behind a layout prop. */}
+            <Image
+              src="/branding/otter-logo.png"
+              alt=""
+              aria-hidden="true"
+              width={32}
+              height={32}
+              className="h-8 w-8 flex-shrink-0 rounded-[22%] object-cover"
+            />
             <span className="flex min-w-0 flex-col leading-tight">
               {/* "Tappy" white, "AI" in the brand blue. Semibold rather than extrabold: the
                   brief asks for elegant, and a black wordmark in a narrow rail reads as a

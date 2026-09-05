@@ -92,9 +92,15 @@ describe('every V3 shell destination resolves', () => {
   // can point at a route nobody created. This checks the whole inventory at once.
   it('has no nav entry pointing at a route that does not exist', () => {
     const shell = readFileSync(resolve(process.cwd(), 'src/components/v3/V3Shell.tsx'), 'utf8')
+    // 🔑 THE REGISTRY IS PART OF THE INVENTORY NOW. The shell's Smart Tools row and its Scam
+    // Shield row take their hrefs from `src/lib/tools/registry.ts`, so a literal-only scan of
+    // this file would have quietly stopped covering them — and would have kept passing. Both
+    // sources are unioned, which widens what this guard sees rather than narrowing it.
+    const registry = readFileSync(resolve(process.cwd(), 'src/lib/tools/registry.ts'), 'utf8')
     const targets = new Set(
-      [...shell.matchAll(/href: '([^']+)'/g)]
-        .map(m => m[1].split('#')[0])          // '/#smart-tools' is the Home anchor
+      [...shell.matchAll(/href: '([^']+)'/g), ...registry.matchAll(/href: '([^']+)'/g),
+       ...registry.matchAll(/SMART_TOOLS_HREF = '([^']+)'/g)]
+        .map(m => m[1].split('#')[0])          // an anchor's page is what has to exist
         .map(h => (h === '' ? '/' : h))
         .filter(h => h.startsWith('/')),
     )

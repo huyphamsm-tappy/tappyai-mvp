@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { uploadMedia } from '@/lib/media/client'
 import {
   Star, Camera, X, ArrowLeft, Loader2, AlertTriangle,
-  MapPin, Plus, Video, Link2, XCircle, Music,
+  MapPin, Plus, Video, Link2, XCircle, Music, UploadCloud, Info,
 } from 'lucide-react'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
@@ -29,10 +29,37 @@ import {
   MAX_VIDEO_DURATION_ACCEPT_SEC as MAX_VIDEO_DURATION_ACCEPT,
   isAcceptableVideoDuration,
   MAX_VIDEO_SIZE_MB,
+  MAX_PHOTO_SIZE_MB,
 } from '@/lib/config/product'
 
 const MAX_VIDEO_SIZE = MAX_VIDEO_SIZE_MB * 1024 * 1024
+
+/**
+ * Lets a DROPPED file reach the existing `handlePhotoSelect` / `handleVideoSelect` unchanged.
+ *
+ * 🔑 Both read `e.target.files` and nothing else, so drag-and-drop is a second way to hand them a
+ * file — not a second upload path. Every format, size and duration check they already run is the
+ * one that runs here too. Writing a separate drop handler would have meant a second copy of that
+ * validation, and the copy is always the one that falls behind.
+ */
+function fileChangeEvent(files: File[]): React.ChangeEvent<HTMLInputElement> {
+  return { target: { files, value: '' } } as unknown as React.ChangeEvent<HTMLInputElement>
+}
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
+
+/**
+ * The media modes this composer actually has. One row per REAL capability - adding a mode is an
+ * entry here plus its surface, and nothing else counts them.
+ *
+ * 🚨 Not on this list, deliberately: a "short clip" mode (no distinct backend - one `content_type`,
+ * one duration rule, so it would be a second label for `video`) and "Livestream" (no
+ * implementation anywhere in web, Android or iOS). A tile is a promise the product has to keep.
+ */
+const MODES = [
+  { id: 'photo', icon: Camera, labelKey: 'reviewNew.tabPhoto' },
+  { id: 'video', icon: Video,  labelKey: 'reviewNew.tabVideo' },
+  { id: 'url',   icon: Link2,  labelKey: 'reviewNew.tabLink'  },
+] as const
 
 /* ─── helpers ─── */
 
@@ -256,6 +283,7 @@ export default function NewReviewPage() {
 
   /* media mode */
   const [mediaMode, setMediaMode] = useState<'photo' | 'video' | 'url'>('photo')
+  const [dragging, setDragging] = useState(false)
 
   /* photo */
   const [photos, setPhotos] = useState<string[]>([])
@@ -532,6 +560,21 @@ export default function NewReviewPage() {
   /* ─── Submit ─── */
   const isUploading = uploadStep === 'thumb' || uploadStep === 'video' || uploadStep === 'ai'
 
+  /** A drop is the same action as picking from the file dialog, routed by the ACTIVE mode. */
+  const acceptDrop = (files: File[]) => {
+    setDragging(false)
+    if (isUploading || photoUploading || files.length === 0) return
+    if (mediaMode === 'photo') {
+      const images = files.filter(f => f.type.startsWith('image/'))
+      if (images.length > 0) handlePhotoSelect(fileChangeEvent(images))
+    } else if (mediaMode === 'video') {
+      const video = files.find(f => f.type.startsWith('video/'))
+      // A non-video dropped on the video zone still goes through `handleVideoSelect`, so the
+      // user gets the composer's real "unsupported format" message rather than silence.
+      handleVideoSelect(fileChangeEvent([video ?? files[0]]))
+    }
+  }
+
   const canPost = (() => {
     if (mediaMode === 'photo') return body.trim().length > 0 || photos.length > 0
     if (mediaMode === 'video') return uploadStep === 'done'
@@ -699,194 +742,317 @@ export default function NewReviewPage() {
 
       <div className="flex-1 container-content py-4 space-y-4">
 
-        {/* Media mode tabs */}
-        <div className="flex bg-gray-100 dark:bg-gray-900 rounded-xl p-1 gap-1">
-          {([
-            { id: 'photo', icon: <Camera size={15} />, label: t('reviewNew.tabPhoto') },
-            { id: 'video', icon: <Video size={15} />, label: t('reviewNew.tabVideo') },
-            { id: 'url',   icon: <Link2 size={15} />, label: t('reviewNew.tabLink') },
-          ] as const).map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => { if (!isUploading) { setMediaMode(tab.id); setError('') } }}
-              disabled={isUploading}
-              className={`flex-1 flex items-center justify-center gap-1.5 text-sm font-semibold py-2 rounded-lg transition-colors ${
-                mediaMode === tab.id
-                  ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
+        {/* -- Media step . V3 ---------------------------------------------------------
+            Redesigned in place. The composer around it - body, place, rating, music, submit,
+            moderation and the restricted flow - is untouched, and so is every upload path: this
+            block still calls `handlePhotoSelect`, `handleVideoSelect` and `handleUrlChange`.
+
+            🚨 IT SHOWS THREE MODES BECAUSE THERE ARE THREE. The design reference drew four tiles
+            - Photo, Video, "short clip" and Livestream. A short clip is not a capability of its
+            own: there is ONE
+            `content_type: 'video'` and one duration rule, so a third tile would be a third name
+            for this same flow. Livestream has no implementation in web, Android or iOS - not
+            even behind a flag - so it is not offered, and not advertised as "coming soon"
+            either. Link (YouTube) is real, ships today, and the reference omitted it.
+
+            Adding a mode later is one entry in MODES plus its surface; nothing else here
+            hardcodes the count.
+
+            🔑 `v3-theme` scopes the V3 tokens to this block. The background is cleared because
+            the class paints `--v3-page` on itself, and this is a section inside the composer
+            rather than a page of its own. */}
+        <div className="v3-theme space-y-4" style={{ background: 'transparent' }}>
+
+          {/* Identity */}
+          <div className="flex items-center gap-3">
+            <span
+              className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
+              aria-hidden="true"
             >
-              {tab.icon}{tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* ── Photo tab ── */}
-        {mediaMode === 'photo' && (
-          <div>
-            {photos.length === 0 ? (
-              <button type="button" onClick={() => photoInputRef.current?.click()} disabled={photoUploading}
-                className="w-full aspect-video rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-[#fe2c55] hover:border-[#fe2c55]/50 transition-all">
-                {photoUploading
-                  ? <Loader2 size={32} className="animate-spin text-[#fe2c55]" />
-                  : <>
-                      <Camera size={40} />
-                      <span className="text-sm font-medium">{t('reviewNew.addPhoto')}</span>
-                      <span className="text-xs text-gray-400">{t('reviewNew.maxPhotos', { n: String(MAX_PHOTOS) })}</span>
-                    </>}
-              </button>
-            ) : (
-              <div className={`grid gap-1.5 ${photos.length === 1 ? 'grid-cols-1' : photos.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
-                {photos.map((url, i) => (
-                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden">
-                    <Image src={url} alt="" fill className="object-cover" sizes="33vw" />
-                    <button type="button" onClick={() => setPhotos(prev => prev.filter((_, j) => j !== i))}
-                      className="absolute top-1.5 right-1.5 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center">
-                      <X size={13} className="text-white" />
-                    </button>
-                  </div>
-                ))}
-                {photos.length < MAX_PHOTOS && (
-                  <button type="button" onClick={() => photoInputRef.current?.click()} disabled={photoUploading}
-                    className="aspect-square rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:text-[#fe2c55] hover:border-[#fe2c55]/50 disabled:opacity-50 transition-all">
-                    {photoUploading ? <Loader2 size={20} className="animate-spin" /> : <Plus size={24} />}
-                  </button>
-                )}
-              </div>
-            )}
-            <input ref={photoInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoSelect} />
+              <UploadCloud size={22} strokeWidth={2.2} />
+            </span>
+            <div className="min-w-0">
+              <h2
+                className="text-[15px] font-extrabold uppercase leading-tight tracking-[0.06em]"
+                style={{ color: 'var(--v3-fg)' }}
+              >
+                {t('v3.nav.post')}
+              </h2>
+              <p className="mt-0.5 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
+                {t('reviewNew.mediaSubtitle')}
+              </p>
+            </div>
           </div>
-        )}
 
-        {/* ── Video tab ── */}
-        {mediaMode === 'video' && (
-          <div>
-            {/* Empty state */}
-            {uploadStep === '' && (
-              <button type="button" onClick={() => videoInputRef.current?.click()}
-                className="w-full aspect-video rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-[#fe2c55] hover:border-[#fe2c55]/50 transition-all">
-                <Video size={40} />
-                <span className="text-sm font-medium">{t('reviewNew.selectVideo')}</span>
-                <span className="text-xs text-gray-400">{t('reviewNew.videoLimitHint')}</span>
-                <span className="text-xs text-gray-400">{t('reviewNew.videoHint')}</span>
-              </button>
-            )}
-
-            {/* Uploading */}
-            {(uploadStep === 'thumb' || uploadStep === 'video' || uploadStep === 'ai') && (
-              <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                {thumbPreview && (
-                  <div className="relative w-full aspect-video bg-black">
-                    <img src={thumbPreview} alt="" className="w-full h-full object-cover opacity-50" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Loader2 size={32} className="text-white animate-spin" />
+          {/* -- Anh -- */}
+          {mediaMode === 'photo' && (
+            <div>
+              {photos.length === 0 ? (
+                <div
+                  onDragOver={e => { e.preventDefault(); setDragging(true) }}
+                  onDragLeave={() => setDragging(false)}
+                  onDrop={e => { e.preventDefault(); acceptDrop(Array.from(e.dataTransfer.files)) }}
+                  className="rounded-2xl border border-dashed px-5 py-8 text-center transition-colors"
+                  style={{
+                    borderColor: dragging ? 'var(--v3-accent)' : 'var(--v3-border-strong)',
+                    background: dragging ? 'var(--v3-accent-soft)' : 'var(--v3-panel-elevated)',
+                  }}
+                >
+                  <span
+                    className="mx-auto flex h-14 w-14 items-center justify-center rounded-full"
+                    style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
+                    aria-hidden="true"
+                  >
+                    {photoUploading ? <Loader2 size={26} className="animate-spin" /> : <UploadCloud size={26} />}
+                  </span>
+                  <p className="mt-3 text-[15px] font-bold" style={{ color: 'var(--v3-fg)' }}>
+                    {dragging ? t('reviewNew.dropActive') : t('reviewNew.dropTitle')}
+                  </p>
+                  <p className="mt-0.5 text-[12.5px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+                    {t('reviewNew.dropHint')}
+                  </p>
+                  {/* Real formats, real per-file cap - both from the server's own policy. */}
+                  <p className="mt-2 text-[11.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                    {t('reviewNew.photoHint', { n: String(MAX_PHOTO_SIZE_MB) })}
+                    {' · '}
+                    {t('reviewNew.maxPhotos', { n: String(MAX_PHOTOS) })}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => photoInputRef.current?.click()}
+                    disabled={photoUploading}
+                    className="mt-4 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl text-[14.5px] font-semibold transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
+                    style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+                  >
+                    <Plus size={18} />
+                    {t('reviewNew.choosePhotos')}
+                  </button>
+                </div>
+              ) : (
+                <div className={`grid gap-1.5 ${photos.length === 1 ? 'grid-cols-1' : photos.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+                  {photos.map((url, i) => (
+                    <div key={i} className="relative aspect-square overflow-hidden rounded-xl">
+                      <Image src={url} alt="" fill className="object-cover" sizes="33vw" />
+                      <button type="button" onClick={() => setPhotos(prev => prev.filter((_, j) => j !== i))}
+                        className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-black/60">
+                        <X size={13} className="text-white" />
+                      </button>
                     </div>
-                  </div>
-                )}
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {uploadStep === 'thumb' && t('reviewNew.creatingThumbnail')}
-                      {uploadStep === 'video' && t('reviewNew.uploadingVideo')}
-                      {uploadStep === 'ai'    && t('reviewNew.analyzingContent')}
-                    </span>
+                  ))}
+                  {photos.length < MAX_PHOTOS && (
+                    <button type="button" onClick={() => photoInputRef.current?.click()} disabled={photoUploading}
+                      className="flex aspect-square items-center justify-center rounded-xl border border-dashed transition-colors disabled:opacity-50"
+                      style={{ borderColor: 'var(--v3-border-strong)', background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-muted)' }}>
+                      {photoUploading ? <Loader2 size={20} className="animate-spin" /> : <Plus size={24} />}
+                    </button>
+                  )}
+                </div>
+              )}
+              <input ref={photoInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoSelect} />
+            </div>
+          )}
+
+          {/* -- Video -- */}
+          {mediaMode === 'video' && (
+            <div>
+              {uploadStep === '' && (
+                <div
+                  onDragOver={e => { e.preventDefault(); setDragging(true) }}
+                  onDragLeave={() => setDragging(false)}
+                  onDrop={e => { e.preventDefault(); acceptDrop(Array.from(e.dataTransfer.files)) }}
+                  className="rounded-2xl border border-dashed px-5 py-8 text-center transition-colors"
+                  style={{
+                    borderColor: dragging ? 'var(--v3-accent)' : 'var(--v3-border-strong)',
+                    background: dragging ? 'var(--v3-accent-soft)' : 'var(--v3-panel-elevated)',
+                  }}
+                >
+                  <span
+                    className="mx-auto flex h-14 w-14 items-center justify-center rounded-full"
+                    style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
+                    aria-hidden="true"
+                  >
+                    <UploadCloud size={26} />
+                  </span>
+                  <p className="mt-3 text-[15px] font-bold" style={{ color: 'var(--v3-fg)' }}>
+                    {dragging ? t('reviewNew.dropActive') : t('reviewNew.dropTitle')}
+                  </p>
+                  <p className="mt-0.5 text-[12.5px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+                    {t('reviewNew.dropHint')}
+                  </p>
+                  {/* 🚨 mp4 . mov . webm . 5 minutes . 150MB - the existing string, which already
+                      matches `ALLOWED_VIDEO_TYPES` and the shared config. The reference said
+                      "MP4, MOV - 2GB"; that would invite a file the upload refuses. */}
+                  <p className="mt-2 text-[11.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                    {t('reviewNew.videoHint')}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => videoInputRef.current?.click()}
+                    className="mt-4 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl text-[14.5px] font-semibold transition-opacity"
+                    style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+                  >
+                    <Plus size={18} />
+                    {t('reviewNew.selectVideo')}
+                  </button>
+                </div>
+              )}
+
+              {(uploadStep === 'thumb' || uploadStep === 'video' || uploadStep === 'ai') && (
+                <div className="overflow-hidden rounded-2xl border" style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel-elevated)' }}>
+                  {thumbPreview && (
+                    <div className="relative aspect-video w-full bg-black">
+                      <img src={thumbPreview} alt="" className="h-full w-full object-cover opacity-50" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Loader2 size={32} className="animate-spin text-white" />
+                      </div>
+                    </div>
+                  )}
+                  <div className="space-y-3 p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[13px] font-semibold" style={{ color: 'var(--v3-fg-secondary)' }}>
+                        {uploadStep === 'thumb' && t('reviewNew.creatingThumbnail')}
+                        {uploadStep === 'video' && t('reviewNew.uploadingVideo')}
+                        {uploadStep === 'ai'    && t('reviewNew.analyzingContent')}
+                      </span>
+                      {uploadStep === 'video' && (
+                        <span className="text-[13px] font-bold" style={{ color: 'var(--v3-accent)' }}>{uploadProgress}%</span>
+                      )}
+                    </div>
+                    {/* Real bytes, reported by the direct-to-storage upload. Nothing simulated. */}
                     {uploadStep === 'video' && (
-                      <span className="text-sm font-bold text-[#fe2c55]">{uploadProgress}%</span>
+                      <div className="h-2 w-full overflow-hidden rounded-full" style={{ background: 'var(--v3-border)' }}>
+                        <div className="h-full rounded-full transition-all duration-200"
+                          style={{ width: `${uploadProgress}%`, background: 'var(--v3-accent-fill)' }} />
+                      </div>
+                    )}
+                    {(uploadStep === 'thumb' || uploadStep === 'video') && (
+                      <button onClick={cancelUpload}
+                        className="flex items-center gap-1.5 text-[13px] transition-colors hover:underline"
+                        style={{ color: 'var(--v3-fg-muted)' }}>
+                        <XCircle size={16} /> {t('reviewNew.cancel')}
+                      </button>
                     )}
                   </div>
-                  {uploadStep === 'video' && (
-                    <div className="w-full h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#fe2c55] rounded-full transition-all duration-200"
-                        style={{ width: `${uploadProgress}%` }} />
+                </div>
+              )}
+
+              {uploadStep === 'done' && (
+                <div className="overflow-hidden rounded-2xl border" style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel-elevated)' }}>
+                  <div className="relative aspect-video w-full bg-black">
+                    {thumbPreview && <img src={thumbPreview} alt="" className="h-full w-full object-cover" />}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+                        <Video size={24} className="text-white" />
+                      </div>
                     </div>
-                  )}
-                  {(uploadStep === 'thumb' || uploadStep === 'video') && (
-                    <button onClick={cancelUpload}
-                      className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-red-500 transition-colors">
-                      <XCircle size={16} /> {t('reviewNew.cancel')}
+                  </div>
+                  <div className="flex items-center justify-between px-4 py-2.5">
+                    <span className="text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('reviewNew.videoUploaded')}</span>
+                    <button onClick={resetVideoState} className="text-[12px] font-semibold hover:underline" style={{ color: 'var(--v3-rose)' }}>
+                      {t('reviewNew.remove')}
                     </button>
+                  </div>
+                </div>
+              )}
+
+              <input ref={videoInputRef} type="file" accept="video/mp4,video/quicktime,video/webm" className="hidden" onChange={handleVideoSelect} />
+            </div>
+          )}
+
+          {/* -- Link -- */}
+          {mediaMode === 'url' && (
+            <div className="space-y-3">
+              {/* Rendered from the backend-owned provider list - the composer never hardcodes
+                  which platforms are importable. */}
+              <div className="flex gap-2">
+                {SUPPORTED_LINK_SOURCES.map(src => (
+                  <button key={src}
+                    onClick={() => { setSource_type(src); setSource_url(''); setUrlMeta(null); setUrlUnsupported(false) }}
+                    className="flex-1 rounded-xl border py-2 text-[12px] font-semibold transition-colors"
+                    style={source_type === src
+                      ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)', borderColor: 'transparent' }
+                      : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-muted)', borderColor: 'var(--v3-border)' }}>
+                    {LINK_SOURCE_LABEL[src]}
+                  </button>
+                ))}
+              </div>
+
+              <input
+                type="url"
+                value={source_url}
+                onChange={e => handleUrlChange(e.target.value)}
+                placeholder={t('reviewNew.pasteYoutube')}
+                className="w-full rounded-xl border px-4 py-3 text-[14px] outline-none transition-colors focus:border-[var(--v3-accent)]"
+                style={{ background: 'var(--v3-panel-elevated)', borderColor: 'var(--v3-border)', color: 'var(--v3-fg)' }}
+              />
+
+              {/* Only worth saying once there is a CHOICE. With a single provider the selector
+                  above is already one full-width button reading "YouTube", so a line underneath
+                  repeating it is noise; the moment `SUPPORTED_LINK_SOURCES` grows, this earns its
+                  place and lists whatever the backend actually allows. */}
+              {SUPPORTED_LINK_SOURCES.length > 1 && (
+                <p className="text-[11.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                  {t('reviewNew.linkHint', { list: SUPPORTED_LINK_SOURCES.map(src => LINK_SOURCE_LABEL[src]).join(' · ') })}
+                </p>
+              )}
+
+              {urlUnsupported && (
+                <p className="text-[12px]" style={{ color: 'var(--v3-amber)' }}>{t('reviewNew.linkUnsupported')}</p>
+              )}
+
+              {fetchingMeta && (
+                <div className="flex items-center gap-2 text-[13px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                  <Loader2 size={16} className="animate-spin" /> {t('reviewNew.loadingMeta')}
+                </div>
+              )}
+
+              {urlMeta?.thumbnail_url && (
+                <div className="overflow-hidden rounded-2xl border" style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel-elevated)' }}>
+                  <div className="relative aspect-video w-full bg-black">
+                    <img src={urlMeta.thumbnail_url} alt="" className="h-full w-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
+                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/30">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+                        <span className="text-2xl">▶</span>
+                      </div>
+                    </div>
+                  </div>
+                  {urlMeta.title && (
+                    <p className="line-clamp-1 px-3 py-2 text-[12px]" style={{ color: 'var(--v3-fg-secondary)' }}>{urlMeta.title}</p>
                   )}
                 </div>
-              </div>
-            )}
-
-            {/* Done */}
-            {uploadStep === 'done' && (
-              <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div className="relative w-full aspect-video bg-black">
-                  {thumbPreview && <img src={thumbPreview} alt="" className="w-full h-full object-cover" />}
-                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                    <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <Video size={24} className="text-white" />
-                    </div>
-                  </div>
-                </div>
-                <div className="px-4 py-2.5 flex items-center justify-between">
-                  <span className="text-xs text-gray-500">{t('reviewNew.videoUploaded')}</span>
-                  <button onClick={resetVideoState} className="text-xs text-red-400 hover:text-red-600">{t('reviewNew.remove')}</button>
-                </div>
-              </div>
-            )}
-
-            <input ref={videoInputRef} type="file" accept="video/mp4,video/quicktime,video/webm" className="hidden" onChange={handleVideoSelect} />
-          </div>
-        )}
-
-        {/* ── URL tab ── */}
-        {mediaMode === 'url' && (
-          <div className="space-y-3">
-            {/* Source selector — rendered from the backend-owned provider list */}
-            <div className="flex gap-2">
-              {SUPPORTED_LINK_SOURCES.map(src => (
-                <button key={src}
-                  onClick={() => { setSource_type(src); setSource_url(''); setUrlMeta(null); setUrlUnsupported(false) }}
-                  className={`flex-1 text-xs py-2 rounded-xl font-semibold transition-colors border ${
-                    source_type === src
-                      ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
-                      : 'bg-white dark:bg-gray-900 text-gray-500 border-gray-200 dark:border-gray-700 hover:border-gray-400'
-                  }`}>
-                  {LINK_SOURCE_LABEL[src]}
-                </button>
-              ))}
+              )}
             </div>
+          )}
 
-            {/* URL input */}
-            <input
-              type="url"
-              value={source_url}
-              onChange={e => handleUrlChange(e.target.value)}
-              placeholder={t('reviewNew.pasteYoutube')}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40"
-            />
-
-            {urlUnsupported && (
-              <p className="text-xs text-amber-600 dark:text-amber-400">{t('reviewNew.linkUnsupported')}</p>
-            )}
-
-            {fetchingMeta && (
-              <div className="flex items-center gap-2 text-gray-400 text-sm">
-                <Loader2 size={16} className="animate-spin" /> {t('reviewNew.loadingMeta')}
-              </div>
-            )}
-
-            {urlMeta?.thumbnail_url && (
-              <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div className="relative w-full aspect-video bg-black">
-                  <img src={urlMeta.thumbnail_url} alt="" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
-                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
-                    <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <span className="text-2xl">▶</span>
-                    </div>
-                  </div>
-                </div>
-                {urlMeta.title && (
-                  <p className="px-3 py-2 text-xs text-gray-600 dark:text-gray-400 line-clamp-1">{urlMeta.title}</p>
-                )}
-              </div>
-            )}
-
+          {/* -- Mode tiles -- */}
+          <div className="grid grid-cols-3 gap-2">
+            {MODES.map(mode => {
+              const active = mediaMode === mode.id
+              return (
+                <button
+                  key={mode.id}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => { if (!isUploading) { setMediaMode(mode.id); setDragging(false); setError('') } }}
+                  disabled={isUploading}
+                  className="flex flex-col items-center justify-center gap-1.5 rounded-2xl border py-3.5 text-[12.5px] font-semibold transition-colors disabled:opacity-50"
+                  style={active
+                    ? { background: 'var(--v3-accent-soft)', borderColor: 'var(--v3-accent)', color: 'var(--v3-accent)' }
+                    : { background: 'var(--v3-panel-elevated)', borderColor: 'var(--v3-border)', color: 'var(--v3-fg-secondary)' }}
+                >
+                  <mode.icon size={20} aria-hidden="true" />
+                  {t(mode.labelKey)}
+                </button>
+              )
+            })}
           </div>
-        )}
+
+          <p className="flex items-start gap-2 text-[11.5px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
+            <Info size={13} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
+            {t('reviewNew.communityNote')}
+          </p>
+        </div>
 
         {/* AI hashtag chips */}
         {aiHashtags.length > 0 && (

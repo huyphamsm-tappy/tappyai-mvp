@@ -61,7 +61,6 @@ const SEALED = [
   'src/app/profile/bookings/page.tsx',
   'src/app/profile/bookings/BookingsView.tsx',
   'src/app/profile/favorites/page.tsx',
-  'src/app/profile/posts/page.tsx',
   'src/app/profile/price-watches/page.tsx',
   'src/app/group/new/GroupNewForm.tsx',
   'src/app/music/page.tsx',

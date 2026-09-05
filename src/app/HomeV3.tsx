@@ -10,10 +10,10 @@ import HomeBackground from '@/components/HomeBackground'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatRelativeTime, cn } from '@/lib/utils'
+import { homeSmartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import {
   MessageCircle, Mic, ArrowUp, ChevronRight, Sparkles,
-  ScanText, ArrowLeftRight, Calculator, Music2, Languages, Sparkle, PenLine, Users,
-  ShieldCheck, Star,
+  Music2, Sparkle, PenLine, Users, Star,
 } from 'lucide-react'
 
 // ── V3 Web · Home ───────────────────────────────────────────────────────────
@@ -218,17 +218,11 @@ const QUICK_CHIPS = [
   'v3.chip.scam',
 ]
 
-interface Tool { href: string; icon: typeof ScanText; labelKey: string; tone: string }
-
-/** The FIVE tools Home curates. Every entry is an EXISTING route, and the five that are not
- *  here are reachable from the sidebar — see the note at the render site. */
-const HOME_TOOLS: Tool[] = [
-  { href: '/scan', icon: ScanText, labelKey: 'v3.tool.scan', tone: 'var(--v3-accent)' },
-  { href: '/split-bill', icon: Calculator, labelKey: 'v3.tool.split', tone: 'var(--v3-amber)' },
-  { href: '/translate', icon: Languages, labelKey: 'v3.tool.translate', tone: 'var(--v3-accent)' },
-  { href: '/currency', icon: ArrowLeftRight, labelKey: 'v3.tool.currency', tone: 'var(--v3-emerald)' },
-  { href: '/scam-shield', icon: ShieldCheck, labelKey: 'v3.tool.safety', tone: 'var(--v3-emerald)' },
-]
+// 🔑 THE FIVE TOOLS HOME CURATES NOW COME FROM THE REGISTRY, NOT FROM A LIST HERE.
+// The same five, in the same order, with the same icons and tones — `homeSmartTools()` is
+// `smartTools()` filtered to `home: true`, which is the Everyday group. Two consequences worth
+// naming: `SHOW_SCAM_SHIELD` finally reaches this page, and Home can no longer drift from the
+// sidebar or from /tools, because none of the three keeps its own copy any more.
 
 export default function HomeV3({ user, userInfo, firstName, suggestions, conversations }: HomeV3Props) {
   const { t, locale } = useTranslation()
@@ -479,8 +473,15 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
         )}
 
         {/* ── 4. Công cụ — grouped, so equal tiles become a hierarchy ────── */}
-        <section data-home-section="tools" aria-label={t('v3.panel.smartTools')}>
-          <SectionHeading title={t('v3.panel.smartTools')} />
+        {/* 🚨 `id="smart-tools"` — THE ANCHOR THAT WAS NEVER HERE. The sidebar row and the top
+            tab both linked to `/#smart-tools` and no element in the codebase carried that id, so
+            both scrolled to the top of Home. They point at `/tools` now, but any bookmark or
+            deep link to the old anchor lands correctly from here on. */}
+        <section id="smart-tools" data-home-section="tools" aria-label={t('v3.panel.smartTools')}>
+          <SectionHeading
+            title={t('v3.panel.smartTools')}
+            action={{ label: t('v3.action.seeAll'), href: SMART_TOOLS_HREF }}
+          />
           {/* 🚨 FIVE, IN ONE ROW — Home is a CURATED ENTRY POINT, not the tools catalogue.
               This went through three shapes before landing here: three labelled groups (the old
               written spec), then all ten flattened into two rows (my reading of "five across"),
@@ -494,23 +495,33 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               guessed — so cutting them from Home would have orphaned four working routes. They
               are in the sidebar's tools group now. The Tools page that will eventually hold them
               is a later item; until it exists, the sidebar is their home. */}
+          {/* 🚨 STILL FIVE, STILL ONE ROW ON DESKTOP — Home did not become the catalogue.
+              What each card gained is the DESCRIPTION that was already written for it: every
+              `v3.tool.*Desc` key has existed in both languages since the first V3 pass and was
+              rendered nowhere, so a tile showed a one-word label and left the user to guess what
+              the tool actually did. Two up at 360px rather than three, because a description
+              needs the width; nothing here scrolls the page sideways at any step. */}
           <div className="mt-3">
-            <div className="grid grid-cols-3 gap-4 sm:grid-cols-5">
-              {HOME_TOOLS.map(({ href, icon: Icon, labelKey, tone }) => (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+              {homeSmartTools().map(({ id, href, icon: Icon, labelKey, descKey, tone }) => (
                     <Link
-                      key={href}
+                      key={id}
                       href={href}
-                      className="v3-tile flex min-h-[104px] flex-col items-center justify-center gap-2.5 p-4 text-center"
+                      data-tool={id}
+                      className="v3-tile flex min-h-[104px] flex-col gap-2 p-3.5 focus-visible:outline-none focus-visible:ring-2 active:scale-[0.99]"
                     >
                       <span
-                        className="flex h-11 w-11 items-center justify-center rounded-xl"
+                        className="flex h-10 w-10 items-center justify-center rounded-xl"
                         style={{ background: 'rgba(255,255,255,0.055)', color: tone }}
                         aria-hidden="true"
                       >
-                        <Icon size={19} />
+                        <Icon size={18} />
                       </span>
-                      <span className="text-[12px] font-normal leading-tight" style={{ color: 'var(--v3-fg)' }}>
+                      <span className="block text-[12.5px] font-medium leading-tight" style={{ color: 'var(--v3-fg)' }}>
                         {t(labelKey)}
+                      </span>
+                      <span className="block text-[11px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
+                        {t(descKey)}
                       </span>
                     </Link>
               ))}

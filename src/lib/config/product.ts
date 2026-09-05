@@ -46,11 +46,36 @@ export const SHOW_APP_CONNECTIONS = false
 /** Scam Shield — URL/Website/QR risk checker. Mirrors Android
  * `SHOW_SCAM_SHIELD` gate — flip BOTH together. */
 export const SHOW_SCAM_SHIELD = true
+/**
+ * Marketplace — HIDDEN, NOT DELETED.
+ *
+ * 🚨 The V3 shell advertised Marketplace in the sidebar AND the top tab bar, and
+ * the destination behind both was `MarketplaceReserved` — a "Sắp có" page. That
+ * is a feature the product does not have, presented in the navigation as one it
+ * does, on a build that has not shipped yet. Hidden until it is built.
+ *
+ * Same shape as `SHOW_APP_CONNECTIONS`: the page, its component and its test all
+ * stay exactly where they are, and flipping this one boolean back to `true`
+ * restores every entry point at once. Nothing about Marketplace was deleted or
+ * refactored, so a later phase picks it up from here rather than rebuilding it.
+ *
+ * NOT exported through `GET /api/config`: Marketplace has no native counterpart,
+ * so there is no gate on Android or iOS for this to mirror, and adding a field
+ * to a contract both clients read would be a change they neither need nor expect.
+ */
+export const SHOW_MARKETPLACE = false
 export const SCAM_SHIELD_DAILY_LIMIT_AUTH = 30
 export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
+/** Maximum size of ONE photo, in binary megabytes. Enforced by `POST /api/reviews/upload`.
+ *
+ * 🚨 It lives here because the composer now TELLS the user this number, and a limit the UI
+ * advertises must be the one the server applies. It was a private literal in the route, which is
+ * exactly how a picker comes to accept a file the upload then rejects. The route reads this too,
+ * so there is one number and no second place to update. */
+export const MAX_PHOTO_SIZE_MB = 5
 /** Maximum video file size, in BINARY megabytes: every layer multiplies this by 1024 * 1024, so
  * 150 means 157,286,400 bytes. The ceiling is inclusive — a file of exactly that many bytes is
  * accepted and one byte more is not. Raised 50 → 150 once five-minute clips were allowed, since a

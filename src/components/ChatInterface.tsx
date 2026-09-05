@@ -12,7 +12,8 @@ import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
-import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
+import TripPlanCard from '@/components/TripPlanCard'
+import { parsePlan } from '@/lib/structuredContent/parsePlan'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
 import ComparisonBlock from '@/components/chat/structured/ComparisonBlock'
 import ConfirmationPrompt from '@/components/chat/structured/ConfirmationPrompt'
@@ -164,43 +165,16 @@ export function parseCTA(content: string): { text: string; buttons: CTAButton[] 
   }
 }
 
-/**
- * Extracts the trip/evening plan block and removes every trace of it from the visible text.
- *
- * P0-1. This used to handle only the CLOSED form, and returned the ORIGINAL content whenever the
- * payload failed to parse — so four shapes leaked the raw block to the user:
- *
- *   • unterminated — a planning turn runs at maxTokens 4096 and the rulebook explicitly tells the
- *     model not to shorten a plan, so a reply that stops at finishReason "length" ends mid-JSON.
- *     That is a normal outcome, not a corrupt stream.
- *   • orphan open / orphan close — a tag whose partner never arrived.
- *   • malformed — `JSON.parse` threw and the early return handed back the untouched content.
- *
- * The strip is now unconditional and independent of whether a plan was successfully decoded, which
- * is the same shape parseCTA already uses after its own leak incident. Stripping is deliberately
- * separated from decoding: a block we cannot understand is still a block the user must not read.
- */
-export function parsePlan(content: string): { text: string; plan: TappyPlan | null } {
-  const planMatch = content.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/i)
-
-  // Closed block, then a still-arriving one at the tail, then any orphan tag. The unterminated
-  // pattern is END-ANCHORED so a mid-text open tag falls through to the orphan strip instead of
-  // swallowing the rest of the reply.
-  const text = content
-    .replace(/\[TAPPY_PLAN\][\s\S]*?\[\/TAPPY_PLAN\]/gi, '')
-    .replace(/\[TAPPY_PLAN\][\s\S]*$/i, '')
-    .replace(/\[\/?TAPPY_PLAN\]/gi, '')
-    .trimEnd()
-
-  if (!planMatch) return { text, plan: null }
-  try {
-    const plan = JSON.parse(planMatch[1].trim()) as TappyPlan
-    if (!plan.days || !Array.isArray(plan.days)) return { text, plan: null }
-    return { text, plan }
-  } catch {
-    return { text, plan: null }
-  }
-}
+// ── [TAPPY_PLAN] ────────────────────────────────────────────────────────────
+//
+// 🔑 THE PARSER MOVED, THE EXPORT DID NOT. `parsePlan` now lives in
+// `@/lib/structuredContent/parsePlan` so the Planner (`/planner`) can read the same
+// persisted marker from a SERVER component without importing this 'use client' module.
+// It is re-exported here because four test files and the render path below import it
+// from this path, and there is no reason to churn them for a file move.
+//
+// 🚨 DO NOT re-implement it here or anywhere else. One wire format, one reader.
+export { parsePlan }
 
 // Optional follow-up suggestions the model may emit at the very end.
 // Rendered as tappable chips (only on the latest reply) — a helpful next step,

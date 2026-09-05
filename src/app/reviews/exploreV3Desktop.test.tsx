@@ -9,13 +9,27 @@ vi.mock('next/navigation', () => ({
 }))
 
 /** The real player mounts media. Here it is a MARKER, so the tests can count the
- *  thing that actually matters: how many players exist at once. */
-vi.mock('@/components/explore/VideoPlayer', () => ({
-  __esModule: true,
-  default: ({ url, active }: { url: string; active?: boolean }) =>
-    <div data-testid="player" data-url={url} data-active={String(!!active)} />,
-  isFeedAudioUnlocked: () => true,
-}))
+ *  thing that actually matters: how many players exist at once.
+ *
+ *  🔑 It FORWARDS A REF exposing the one method the card is supposed to call.
+ *  The card cannot pause a clip it never took a handle to, and that omission is
+ *  exactly the bug the pause tests below pin — a marker with no ref would have
+ *  let the regression back in silently. */
+const pauseToggle = vi.fn()
+vi.mock('@/components/explore/VideoPlayer', async () => {
+  const { forwardRef, useImperativeHandle } = await import('react')
+  return {
+    __esModule: true,
+    default: forwardRef(function MockPlayer(
+      { url, active }: { url: string; active?: boolean },
+      ref: React.Ref<unknown>,
+    ) {
+      useImperativeHandle(ref, () => ({ onUserPauseToggle: pauseToggle }), [])
+      return <div data-testid="player" data-url={url} data-active={String(!!active)} />
+    }),
+    isFeedAudioUnlocked: () => true,
+  }
+})
 
 /** The off-screen poster: an image, never a player. */
 vi.mock('@/components/LinkPoster', () => ({
@@ -80,7 +94,7 @@ const players = () => screen.queryAllByTestId('player')
 const posters = () => screen.queryAllByTestId('poster')
 const cards = () => document.querySelectorAll('[data-explore-card]')
 
-beforeEach(() => { vi.unstubAllGlobals() })
+beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear() })
 afterEach(cleanup)
 
 describe('five visible, ONE playing', () => {
@@ -341,5 +355,96 @@ describe('it uses the mechanisms that already exist', () => {
     render(<ExploreV3Desktop />)
     await waitFor(() => expect(cards().length).toBe(1))
     expect(cards()[0].querySelector('a[href^="/chat?q="]'), 'no subject, no bridge').toBeNull()
+  })
+})
+
+describe('the author is a way into the profile that already exists', () => {
+  it('links the creator block to /users/[id]', async () => {
+    // 🚨 THE PROFILE WAS NEVER MISSING — THIS SURFACE HAD NO WAY IN.
+    // `/users/[id]` ships, and the MOBILE feed has linked to it from the avatar
+    // all along. The desktop card rendered the same name and picture as plain
+    // spans, so on a wide screen the author was simply not clickable.
+    mockFeed([clip('a', { user_id: 'author-9', profiles: { full_name: 'Mai Anh', avatar_url: null } })])
+    render(<ExploreV3Desktop />)
+    await waitFor(() => expect(cards().length).toBe(1))
+
+    const link = screen.getByRole('link', { name: /mai anh/i })
+    expect(link.getAttribute('href')).toBe('/users/author-9')
+  })
+
+  it('does not also select the card when the author is clicked', async () => {
+    // The frame button underneath owns every other click on the tile; without
+    // stopPropagation the author link would fight it.
+    mockFeed([clip('a'), clip('b')])
+    render(<ExploreV3Desktop />)
+    await waitFor(() => expect(cards().length).toBe(2))
+
+    const link = screen.getAllByRole('link', { name: /huy/i })[0]
+    fireEvent.click(link)
+    // Still exactly one player, and still on the first card: nothing was reselected.
+    expect(players()).toHaveLength(1)
+  })
+
+  it('renders no author link when the feed sent no profile', async () => {
+    // Nothing invented: no profile, no name, no link to a page about nobody.
+    mockFeed([clip('a', { profiles: null })])
+    render(<ExploreV3Desktop />)
+    await waitFor(() => expect(cards().length).toBe(1))
+    expect(screen.queryByRole('link', { name: /huy/i })).toBeNull()
+  })
+})
+
+describe('the playing clip can be paused', () => {
+  it('tells the session the user toggled pause, instead of re-selecting the card', async () => {
+    /**
+     * 🚨 THE BUG: the frame-sized button sits above the player and its only job
+     * was `onSelect()`. On the card that is ALREADY active that call is a no-op,
+     * so a click on a playing clip did nothing at all — the click never reached
+     * the <video>, and nothing else was listening.
+     *
+     * The fix is not a new pause implementation: `PlaybackSession.onUserPauseToggle()`
+     * has existed since WEB-EXPLORE-YOUTUBE-001 and the mobile feed has called it
+     * for as long. Desktop simply never took the handle.
+     */
+    mockFeed([clip('a')])
+    render(<ExploreV3Desktop />)
+    await waitFor(() => expect(players()).toHaveLength(1))
+
+    const frame = screen.getAllByRole('button', { pressed: true })
+      .find(b => /phát|pause|play/i.test(b.getAttribute('aria-label') ?? ''))!
+    fireEvent.click(frame)
+    expect(pauseToggle).toHaveBeenCalledTimes(1)
+
+    // And again to resume — the session owns the sticky intent, the card only reports the tap.
+    fireEvent.click(frame)
+    expect(pauseToggle).toHaveBeenCalledTimes(2)
+  })
+
+  it('selects an inactive card rather than pausing it', async () => {
+    mockFeed([clip('a'), clip('b')])
+    render(<ExploreV3Desktop />)
+    await waitFor(() => expect(cards().length).toBe(2))
+
+    const inactiveFrame = screen.getAllByRole('button', { pressed: false })
+      .find(b => /phát|play/i.test(b.getAttribute('aria-label') ?? ''))!
+    fireEvent.click(inactiveFrame)
+
+    // A card that is not playing has nothing to pause; the click selects it.
+    expect(pauseToggle).not.toHaveBeenCalled()
+    await waitFor(() => expect(players()).toHaveLength(1))
+  })
+
+  it('shows the paused affordance only after the user pauses', async () => {
+    mockFeed([clip('a')])
+    const { container } = render(<ExploreV3Desktop />)
+    await waitFor(() => expect(players()).toHaveLength(1))
+
+    // An autoplaying clip is not a paused one and must not claim to be.
+    expect(container.querySelector('svg.lucide-play')).toBeNull()
+
+    const frame = screen.getAllByRole('button', { pressed: true })
+      .find(b => /phát|pause|play/i.test(b.getAttribute('aria-label') ?? ''))!
+    fireEvent.click(frame)
+    await waitFor(() => expect(container.querySelector('svg.lucide-play')).toBeTruthy())
   })
 })

@@ -25,6 +25,15 @@ const USER = {
   userInfo: { full_name: 'Huy', avatar_url: null, email: 'huy@example.com' },
   firstName: 'Huy',
   conversationCount: 3,
+  // The hub props. Deliberately NULL/empty here: this fixture stands for "the server sent no
+  // social data", which is the case the honesty assertion below depends on.
+  bio: null,
+  joinedAt: null,
+  followerCount: null,
+  followingCount: null,
+  isPremium: false,
+  stats: { posts: 0, videos: 0, likes: 0, savedReviews: 0, savedPlaces: 0, conversations: 3 },
+  following: [],
 }
 
 /** The row destinations rendered inside the two account/settings panels, in document order. */
@@ -67,8 +76,22 @@ describe('the signed-in Profile invents no account facts', () => {
     const { container } = render(<ProfileView {...USER} />)
     const text = container.textContent ?? ''
     expect(text).toContain('3')
-    // The V3 reference shows post/follower/following counts. The server sends none of them, so
-    // none may appear — a fabricated "0 followers" is a claim about the user's account.
+    // 🔑 THE RULE IS UNCHANGED; WHAT CHANGED IS WHERE IT BITES.
+    //
+    // This used to read "the server sends none of them, so none may appear". Follower and
+    // following counts are now REAL trigger-maintained columns on `profiles`, and the hub renders
+    // them — but only when the server actually sends a number. This fixture sends null for both,
+    // which is the "no data" case the original assertion was protecting, so the same expectation
+    // still holds and now tests the harder half: a null must render NOTHING, not a zero.
     expect(text).not.toMatch(/follower|người theo dõi/i)
+  })
+
+  it('renders a social stat when — and only when — the server sent a number', () => {
+    // The other half of the pair above. Given real counts, they appear; given null, they do not.
+    const { container } = render(<ProfileView {...USER} followerCount={12} followingCount={0} />)
+    const hero = container.querySelector('[data-profile-hero]')!
+    expect(hero.querySelector('[data-stat="Người theo dõi"], [data-stat="Followers"]')).toBeTruthy()
+    // 0 is a number the server sent, so it renders — it is only NULL that must draw nothing.
+    expect(hero.querySelector('[data-stat="Đang theo dõi"], [data-stat="Following"]')).toBeTruthy()
   })
 })
