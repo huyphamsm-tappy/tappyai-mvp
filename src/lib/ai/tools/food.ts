@@ -8,6 +8,7 @@ import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace } from '@/lib/ai/consultative/reviewAction'
 import { messages, isVi } from '@/lib/ai/messages'
 import { newsCacheKey, placesCacheKey } from './cacheKeys'
+import { cityForName, cityInText, isSameCity, type VietnamCity } from './vietnamCities'
 import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
 
 export async function getNews(query: string, lang = 'vi') {
@@ -67,6 +68,64 @@ function haversineKmLocal(lat1: number, lon1: number, lat2: number, lon2: number
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
+/**
+ * Where a place search is allowed to look — BUG-011.
+ *
+ * ============================================================================
+ * THE DEFECT THIS EXISTS TO CLOSE
+ * ============================================================================
+ * Production, verified: the user asked about **Quy Nhơn** while standing in Ho Chi Minh City, and
+ * the reply recommended "Công viên bờ sông Sài Gòn (~0.9km)". Nothing hallucinated it — the OSM
+ * search had replaced the requested destination with the caller's GPS and returned a real Saigon
+ * park, with a real distance measured from the user. The ranker then scored it 0.91 on proximity
+ * and promoted it to the recommendation.
+ *
+ * THE RULE: a destination the caller NAMED is never silently replaced by their current position.
+ * GPS answers "near me"; it does not answer "in Quy Nhơn".
+ *
+ * `remote` is decided with `isSameCity` — the repository's existing, measured answer to "is this
+ * the same place" (25 km, see vietnamCities.ts). Using the SAME predicate for the search centre
+ * (D1) and the output guard (D3) keeps them in lockstep: the guard can never reject a result that
+ * the centre choice would legitimately have produced.
+ *
+ * Resolution reads the ORIGINAL `location` argument, never `searchPlacesOSM`'s `'Ha Noi'` default —
+ * resolving the default would make every location-less "near me" search look like a Hanoi trip.
+ */
+export function resolveSearchScope(
+  location: string | undefined,
+  locationBias: { lat: number; lng: number } | null | undefined,
+): { destination: VietnamCity | null; remote: boolean } {
+  // Exact alias first, then a phrase match, mirroring how weatherPlaceResolution orders the two.
+  const destination = location ? (cityForName(location) ?? cityInText(location)) : null
+  const remote = !!destination && !!locationBias
+    && !isSameCity(destination.coords, [locationBias.lat, locationBias.lng])
+  return { destination, remote }
+}
+
+/**
+ * Does a result belong to the requested destination? BUG-011 output guard (D3).
+ *
+ * Deliberately asymmetric, and that asymmetry is the whole design:
+ *   • coordinates present   → keep only what is within CITY_MATCH_RADIUS_KM of the destination.
+ *   • address resolves to a DIFFERENT known city → reject.
+ *   • nothing resolvable    → KEEP.
+ *
+ * The last line is the one that matters. "I cannot tell which city this is" must never become
+ * "this is the wrong city": inventing a classification would quietly drop legitimate places whose
+ * OSM tags happen to carry no address, which is most of them.
+ */
+export function belongsToDestination(
+  destination: VietnamCity | null,
+  coords: readonly [number, number] | null,
+  address: string | null | undefined,
+): boolean {
+  if (!destination) return true
+  if (coords) return isSameCity(destination.coords, coords)
+  const addressCity = cityInText(address)
+  if (!addressCity) return true
+  return addressCity.query === destination.query
+}
+
 export async function searchPlacesOSM(query: string, location?: string, type?: string, locationBias?: { lat: number; lng: number } | null, lang = 'vi') {
   const loc = location || 'Ha Noi'
   const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
@@ -89,16 +148,32 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     // mirrors in Hanoi/HCMC (measured: 504 after 12.7s at 5km vs 0.98s at 1.5km, same query).
     // Other cities/locations are less venue-dense — keep the larger 5km radius there.
     const DENSE_METRO_KEYS = new Set(['ha noi', 'hanoi', 'hn', 'ho chi minh', 'hcm', 'saigon', 'sai gon'])
+    // ── BUG-011 (D1): a NAMED destination outranks the caller's GPS ───────────
+    // `remote` is true only when the caller named a city we know AND they are not in it. Every
+    // other shape — no location, an unresolvable location, or a location that IS the city they
+    // are standing in — leaves the branches below exactly as they shipped.
+    const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
     let lat: number
     let lon: number
     let searchRadius: number
-    if (locationBias) {
+    /** True when the centre IS the user's position. Gates `distance_km` below (D2). */
+    let centeredOnUser = false
+    if (locationBias && !remoteDestination) {
       // Real device GPS → search around the user's ACTUAL position with a tight
       // "right here, right now" radius (MFS 3.7 Nearby). Skip geocoding a city string;
       // the precise coords are what "gần đây" actually means.
       lat = locationBias.lat
       lon = locationBias.lng
       searchRadius = 2000
+      centeredOnUser = true
+    } else if (remoteDestination && destination) {
+      // The user is asking about somewhere else. Centre on the destination and drop the GPS
+      // entirely — a bias toward where they happen to be standing is what produced a Saigon park
+      // for a Quy Nhơn question. Radius keeps the SAME dense-metro rule as the geocoded path
+      // below, so the tuned values are unchanged; only the centre moved.
+      lat = destination.coords[0]
+      lon = destination.coords[1]
+      searchRadius = preset && DENSE_METRO_KEYS.has(preset[0]) ? 1500 : 5000
     } else {
       lat = preset ? preset[1][0] : 21.0285
       lon = preset ? preset[1][1] : 105.8542
@@ -165,7 +240,20 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     }
     if (!overpassData) return { note: messages.places.searchOnMaps(lang, googleMapsUrl), google_maps_search: googleMapsUrl, results: [] }
     type El = { tags?: Record<string, string>; lat?: number; lon?: number; center?: { lat: number; lon: number } }
-    const baseResults = ((overpassData.elements || []) as El[]).slice(0, 10).map(el => {
+    // ── BUG-011 (D3): geographic output guard ────────────────────────────────
+    // Applied BEFORE the slice, so dropping an out-of-scope row lets an in-scope one take its
+    // place instead of shortening the list. Inert when no destination resolved, and a no-op on a
+    // nearby search (a 2km radius around the user is trivially inside their own city).
+    const inScope = ((overpassData.elements || []) as El[]).filter(el => {
+      const la = el.lat ?? el.center?.lat
+      const lo = el.lon ?? el.center?.lon
+      return belongsToDestination(
+        destination,
+        typeof la === 'number' && typeof lo === 'number' ? [la, lo] : null,
+        null,
+      )
+    })
+    const baseResults = inScope.slice(0, 10).map(el => {
       const tags = el.tags || {}
       const elat = el.lat ?? el.center?.lat
       const elon = el.lon ?? el.center?.lon
@@ -199,7 +287,14 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         ...(outdoor ? { outdoor_seating: true } : {}),
         ...(stars ? { stars } : {}),
         // Distance from the user, only when we have both their GPS and the place's coords.
-        ...((locationBias && elat && elon) ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, elat, elon) * 10) / 10 } : {}),
+        //
+        // BUG-011 (D2): and ONLY when the search was actually centred on the user. On a remote
+        // destination search this used to emit a GPS-relative number that promptBuilder renders as
+        // "cách bạn ~0.9km" — the exact sentence that shipped a Saigon park as a Quy Nhơn
+        // recommendation. There is no correct distance to report for a place the user is not near,
+        // so the field is omitted; the prompt only mentions distance when the field exists, and
+        // the ranker only scores it when present, so both degrade to silence rather than to a lie.
+        ...((centeredOnUser && locationBias && elat && elon) ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, elat, elon) * 10) / 10 } : {}),
       }
     }).filter(r => r.name)
     // B7-A: no eager photo lookup here either — this branch used to fire one
@@ -235,7 +330,14 @@ export async function searchPlaces(query: string, location?: string, type?: stri
   }
 
   const key = process.env.GOOGLE_PLACES_API_KEY
-  console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, placeType: type }))
+  // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
+  // fallback can never disagree about which city this search is for.
+  const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
+  console.log(JSON.stringify({
+    type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, placeType: type,
+    // Operational only — a city name we resolved, never user text.
+    destination: destination?.query ?? null, remoteDestination,
+  }))
   let result: unknown = null
   if (key) {
     try {
@@ -245,7 +347,12 @@ export async function searchPlaces(query: string, location?: string, type?: stri
       const includedType = type ? (typeMap[type] || type) : undefined
       const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: lang, regionCode: 'VN' }
       if (includedType) bodyObj.includedType = includedType
-      if (locationBias) {
+      // BUG-011 (D1): the bias is dropped for a remote destination. `textQuery` already carries
+      // the city name, and `locationBias` is only a SOFT hint — Google is free to honour it, which
+      // is how a "công viên Quy Nhơn" query could still surface Saigon parks for a caller in
+      // Saigon. Nearby searches are untouched: without a resolved remote destination the bias is
+      // applied exactly as before.
+      if (locationBias && !remoteDestination) {
         bodyObj.locationBias = {
           circle: { center: { latitude: locationBias.lat, longitude: locationBias.lng }, radius: 5000.0 }
         }
@@ -265,11 +372,27 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
       ])
       const d = await (resp as Response).json()
-      if ((resp as Response).ok && d.places?.length) {
-        const placesData = (d.places as Record<string, unknown>[]).slice(0, 8)
+      // ── BUG-011 (D3): geographic output guard, address-based ───────────────
+      // The field mask does not request coordinates, so scope is judged from `formattedAddress`
+      // via the same city resolver the rest of the repo uses. Reject only when the address
+      // resolves to a DIFFERENT known city; an address that resolves to nothing is KEPT, because
+      // "unrecognised" must never be treated as "wrong".
+      //
+      // Filtered BEFORE the slice, so an out-of-scope row does not consume one of the 8 places.
+      // If nothing survives, `result` stays null and the OSM fallback below runs — now correctly
+      // centred on the destination — instead of returning an empty set for a real city.
+      const inScope = ((resp as Response).ok && Array.isArray(d.places))
+        ? (d.places as Record<string, unknown>[]).filter(r =>
+          belongsToDestination(destination, null, r.formattedAddress as string | undefined))
+        : []
+      if (inScope.length) {
+        const placesData = inScope.slice(0, 8)
         console.log(JSON.stringify({
           type: 'tappyai_photo_debug', step: 'places_textsearch_new',
-          placesCount: d.places.length,
+          // Both numbers: what the provider returned, and what survived the destination guard.
+          // A large gap is the signal that a search was being pulled out of scope.
+          placesCount: (d.places as unknown[]).length,
+          inScopeCount: inScope.length,
           topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
@@ -282,7 +405,9 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         // (see resolvePlacePhotos in ./common). place_id and website_uri below
         // are what it resolves from.
         result = {
-          source: 'Google Maps', count: d.places.length,
+          // The count the model reads must describe the rows it was GIVEN, not the rows the
+          // provider offered before the destination guard ran.
+          source: 'Google Maps', count: inScope.length,
           results: placesData.map((r, idx) => ({
             place_id: r.id as string,
             name: (r.displayName as { text?: string })?.text || '',
