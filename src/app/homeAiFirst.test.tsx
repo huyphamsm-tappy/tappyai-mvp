@@ -193,18 +193,38 @@ describe('no tool was dropped when Home stopped being a dashboard', () => {
     '/translate', '/scam-shield', '/music', '/viet-content', '/recommendations',
   ]
 
-  it('still links to every tool route', () => {
+  it('leaves no tool route unreachable from the page', () => {
+    // 🚨 THE RULE CHANGED SHAPE, AND THIS IS THE POINT OF THE FILE.
+    //
+    // It used to be "Home links every tool", which conflated a capability rule with an
+    // information-architecture one. Home is a CURATED entry point — the owner cut it to five —
+    // and reading "no capability may be lost" as "every route must appear on Home" is what
+    // produced a two-row tool wall nobody asked for.
+    //
+    // What actually matters is that no route is ORPHANED. So the check is on the whole rendered
+    // page, Home content plus shell: five tools live on Home, the rest live in the sidebar.
+    // Measured before this change, `/group/new`, `/music`, `/boi` and `/viet-content` had zero
+    // navigation anywhere — cutting Home to five without moving them would have stranded four
+    // working routes, and a Home-only assertion would not have noticed.
     const { container } = renderHome()
-    const all = hrefs(homeRegion(container))
+    const all = hrefs(container)
     const missing = REQUIRED_TOOLS.filter(r => !all.some(h => h.startsWith(r)))
-    expect(missing, 'DD-002: capabilities are regrouped, never removed').toEqual([])
+    expect(missing, 'every tool must be reachable from Home or the shell').toEqual([])
   })
 
-  it('groups them instead of showing one flat wall of tiles', () => {
+  it('curates Home itself down to five', () => {
     const { container } = renderHome()
     const tools = container.querySelector('[data-home-section="tools"]')!
-    // Three named groups — the whole point of the change (IA-2).
-    expect(tools.querySelectorAll('.grid').length).toBe(3)
+    expect(tools.querySelectorAll('a[href]').length, 'Home shows five, not the catalogue').toBe(5)
+  })
+
+  it('presents them as one row, not labelled groups', () => {
+    // Was `.grid === 3` (three named groups from the older written spec), then briefly asserted
+    // ten tiles. The approved reference shows a single row of five; the count lives in the test
+    // above so this one only pins the shape.
+    const { container } = renderHome()
+    const tools = container.querySelector('[data-home-section="tools"]')!
+    expect(tools.querySelectorAll('.grid').length, 'one grid, not a group per row').toBe(1)
   })
 })
 

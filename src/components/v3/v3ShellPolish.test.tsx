@@ -94,11 +94,42 @@ describe('the brand mark is the approved asset, not a drawn one', () => {
     expect(img, 'the default lockup must keep the shipped mark').toBeTruthy()
   })
 
-  it('drops the mark only where the page opts in', () => {
+  it('gives Home the WORDMARK ALONE — no app icon, no cropped stand-in', () => {
+    // 🚨 THIS RULE HAS MOVED TWICE AND IS NOW SETTLED ON A FACT, NOT A PREFERENCE.
+    //
+    // It first asserted Home rendered no mark; then, when the brief asked for a small brand mark
+    // from an existing asset, that Home rendered `/branding/otter-logo.png` at 22px. That second
+    // version was rejected on inspection, because of what the file IS: an APP ICON — a blue
+    // rounded tile containing the otter, a speech bubble, and the "TappyAI" wordmark baked into
+    // the artwork. Beside the text wordmark it showed the same words twice.
+    //
+    // The owner refused the obvious workaround (cropping the otter's head out of the icon) as a
+    // manufactured mark. So Home is type alone until a real standalone mark asset exists.
+    //
+    // What this pins is therefore narrow and durable: NO IMAGE in Home's lockup. It fails if the
+    // app icon comes back at any size, and it fails if someone crops it in. A future genuine
+    // mark asset is a deliberate change that updates this test with it.
     const { container } = render(<V3Shell title="Trang chủ" wordmarkOnly><div /></V3Shell>)
-    const img = [...container.querySelectorAll('img')]
+    const lockup = container.querySelector('a[href="/"]')!
+    expect(lockup.querySelectorAll('img').length, 'Home renders no image in the brand lockup').toBe(0)
+
+    // The wordmark itself is still there, and still two-tone: "Tappy" in the foreground colour,
+    // "AI" in the accent. Removing the picture must not quietly remove the brand.
+    expect(lockup.textContent).toContain('TappyAI')
+    const accent = [...lockup.querySelectorAll('span')]
+      .find(s => s.textContent === 'AI' && /--v3-accent/.test(s.getAttribute('style') ?? ''))
+    expect(accent, '"AI" must keep the brand accent').toBeTruthy()
+  })
+
+  it('keeps the app icon on the pages where an app icon is correct', () => {
+    // The counterpart to the rule above: dropping the mark is a HOME decision. Deals,
+    // Marketplace and Profile still ship the icon lockup, and a future edit that removes the
+    // image everywhere — reading the Home rule as global — fails here.
+    const { container } = render(<V3Shell title="Deals"><div /></V3Shell>)
+    const img = [...container.querySelectorAll('a[href="/"] img')]
       .find(i => (i.getAttribute('src') ?? '').includes('otter-logo'))
-    expect(img, 'Home renders the wordmark as type, per the reference').toBeUndefined()
+    expect(img, 'the default lockup keeps the shipped icon').toBeTruthy()
+    expect(img!.getAttribute('width'), 'at its own size, unchanged by the Home decision').toBe('32')
   })
 })
 

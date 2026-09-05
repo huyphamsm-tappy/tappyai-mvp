@@ -32,7 +32,11 @@ export default async function HomePage() {
   // Dynamic prompts — VN time UTC+7, shuffled fresh on each server render
   const vnTime = new Date(Date.now() + 7 * 60 * 60 * 1000)
   const gender = user?.user_metadata?.gender === 'male' ? 'male' : user?.user_metadata?.gender === 'female' ? 'female' : null
-  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory, gender)
+  // 5, not the default 4: the approved Home reference shows five cards across the
+  // "Suggested for you" row. This is a DISPLAY COUNT, not new content — the extra prompt is
+  // drawn from the same real pool by the same generator, and nothing here fabricates a
+  // suggestion to fill the row.
+  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory, gender, 5)
 
   // Dynamic hero heading theo giờ VN (Vietnamese — the client localizes to EN)
   const vnHour = vnTime.getUTCHours()

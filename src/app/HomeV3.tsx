@@ -45,7 +45,20 @@ import {
 // to /chat — nothing here renders a thread, streams a reply, or shows assistant
 // output in place. Home is a door, not a room.
 
-interface Suggestion { text: string; textEn: string; category: string; emoji: string; gradient: string }
+/** 🔑 `imageUrl` is the ONE optional field, and it is the seam for real recommendation data: when a
+ *  suggestion eventually arrives carrying a real photograph, it renders instead of the placeholder
+ *  pool and stops being marked as a stand-in. The generator does not set it today, and adding it
+ *  here changes nothing the generator does — that code is untouched. Everything a real
+ *  recommendation would additionally carry (merchant, price, discount, rating, sales) is
+ *  deliberately still ABSENT: there is no data behind those, and a field invites a render. */
+interface Suggestion {
+  text: string
+  textEn: string
+  category: string
+  emoji: string
+  gradient: string
+  imageUrl?: string
+}
 interface Conv { id: string; title: string; messageCount: number; updated_at: string }
 
 /** Server-provided. Nothing on this page is invented — see ND-001. */
@@ -55,6 +68,146 @@ export interface HomeV3Props {
   firstName: string
   suggestions: Suggestion[]
   conversations: Conv[]
+}
+
+/** The prompt generator emits exactly these five categories. Three already had labels on the
+ *  Explore surface; two needed one. This is METADATA THE SERVER ALREADY SENDS getting a display
+ *  name — not a field invented to make the card look fuller. */
+/** The pool of card art, and the rule that hands one picture to each card.
+ *
+ *  🚧🚧 PLACEHOLDER ART — NOT THE INTENDED VISUAL TREATMENT. THIS MUST BE REPLACED. 🚧🚧
+ *
+ *  What the brief asks for here is real-looking curated lifestyle imagery: food, travel, cafe,
+ *  wellness, entertainment. These five files are NOT that. They are authored gradient scenes —
+ *  designed vector placeholders standing in until curated imagery exists. They are marked in the
+ *  DOM too (`data-art-placeholder`), so this cannot ship unnoticed.
+ *
+ *  🔍 WHY NOT REAL IMAGERY: the whole repository was audited, including every image path that has
+ *  ever existed in git history. There is no lifestyle photography anywhere in it. The complete
+ *  set of non-icon, non-screenshot imagery is:
+ *
+ *    · public/backgrounds/home-desktop-v2 / -v5 .webp — Vietnam skyline panoramas. Both are the
+ *      SAME subject (city, lake, boat), and one of them is already the background BEHIND this very
+ *      page. They cannot stand for five different categories.
+ *    · public/branding/hero-bg.webp — a cinematic skyline. Same problem, one subject.
+ *    · public/branding/founder.jpg — a photograph of a real person. Never card decoration.
+ *    · public/landing/screen-*.webp — screenshots of this app.
+ *    · public/tappy/*.png — the previously created TappyAI character set (see below).
+ *
+ *  🚨 WHY THE TAPPY CHARACTER SET IS NOT THE ANSWER EITHER. `public/tappy/` looks at first like an
+ *  exact match: it has food, travel, shopping, spa and entertainment. Three problems, checked by
+ *  opening the files rather than by reading their names:
+ *
+ *    1. `shopping.png` is visually the SAME artwork as `travel.png` — otter with a camera. Two of
+ *       the five cards would carry one picture.
+ *    2. `entertainment.png` is an otter holding a green PERCENT-DISCOUNT TAG. On a Suggested card
+ *       that reads as a promotional badge — exactly the fabricated commerce claim this section is
+ *       forbidden to make. It is the "deals" concept under the wrong filename.
+ *    3. They are the MASCOT, who already owns the hero at 320px on this same page. Five more
+ *       Tappys below him is not "five beautiful things I might want to ask Tappy about"; it is
+ *       five more otters.
+ *
+ *  ✅ HOW TO FIX THIS WHEN IMAGERY ARRIVES: drop the files into `public/home/inspire/`, change the
+ *  pool below, and delete the `data-art-placeholder` attribute at the render site. Nothing else
+ *  moves — not the card markup, not the data shape. `homeSuggestedArt.test.tsx` fails until the
+ *  attribute is gone, which is the reminder. */
+const ART_POOL: readonly string[] = [
+  '/home/inspire/food.svg',
+  '/home/inspire/travel.svg',
+  '/home/inspire/cafe.svg',
+  '/home/inspire/spa.svg',
+  '/home/inspire/entertainment.svg',
+]
+
+/** 🚨 A HINT, NOT A MAPPING — and the distinction is the whole point of this file's last defect.
+ *
+ *  The art used to be looked up as `CATEGORY_ART[category]`, one immutable picture per category.
+ *  The live generator is free to emit the same category twice — it really did return two `travel`
+ *  suggestions — and a per-category lookup then hands both of those cards the SAME picture. Two
+ *  identical scenes side by side in a five-card row is the most visible defect on the page, and no
+ *  amount of art fixes it, because the wrong thing was the abstraction.
+ *
+ *  So art is assigned PER CARD (see `assignCardArt`), and this table only expresses a preference:
+ *  where a themed scene happens to be free, the card that thematically suits it gets it. When it is
+ *  taken, the card takes a different scene and nothing is lost — these are presentation artwork,
+ *  not factual category illustrations. A spa scene above a travel prompt is a picture, not a claim.
+ *  The card's CATEGORY LABEL stays the real semantic metadata and is never derived from the art. */
+const CATEGORY_PREFERRED_ART: Record<string, string> = {
+  food: '/home/inspire/food.svg',
+  travel: '/home/inspire/travel.svg',
+  shopping: '/home/inspire/cafe.svg',
+  spa: '/home/inspire/spa.svg',
+  entertainment: '/home/inspire/entertainment.svg',
+}
+
+/** What the presentation layer needs to choose a picture. Deliberately narrower than `Suggestion`:
+ *  the choice must not be able to depend on the prompt text or the emoji. */
+export interface ArtAssignable {
+  category: string
+  /** 🔑 FUTURE-PROOFING, AS CODE RATHER THAN AS A COMMENT. When a real recommendation object
+   *  arrives carrying its own photograph, it wins outright — a real picture of a real thing beats
+   *  any placeholder, and it does not compete for a slot in the pool. Nothing sets this today. */
+  imageUrl?: string
+}
+
+/**
+ * One picture per card, all of them different, and the same every time for the same input.
+ *
+ * 🚨 THE GUARANTEE THAT MATTERS: **no two cards in a row share a picture**, however the categories
+ * repeat. Categories may repeat freely — that is the generator's business and is left alone.
+ *
+ * 🚨 DETERMINISTIC ON PURPOSE. No `Math.random`, no clock. A row that reshuffles its own artwork on
+ * every render is a page that looks broken while it hydrates and unrecognisable on a revisit, so
+ * the only inputs are the cards' order and their categories.
+ *
+ * Three passes, in this order because each one earns its place ahead of the next:
+ *   1. real imagery, which is never overridden by a stand-in;
+ *   2. the thematic preference, taken only while that scene is still free;
+ *   3. the next free scene in the pool, walked from the card's own position so the fallback is a
+ *      function of order alone.
+ */
+export function assignCardArt(cards: readonly ArtAssignable[]): string[] {
+  const out: string[] = new Array(cards.length)
+  const used = new Set<string>()
+
+  cards.forEach((card, i) => {
+    if (card.imageUrl) out[i] = card.imageUrl
+  })
+
+  cards.forEach((card, i) => {
+    if (out[i]) return
+    const preferred = CATEGORY_PREFERRED_ART[card.category]
+    if (preferred && !used.has(preferred)) {
+      out[i] = preferred
+      used.add(preferred)
+    }
+  })
+
+  cards.forEach((_card, i) => {
+    if (out[i]) return
+    for (let step = 0; step < ART_POOL.length; step++) {
+      const candidate = ART_POOL[(i + step) % ART_POOL.length]
+      if (!used.has(candidate)) {
+        out[i] = candidate
+        used.add(candidate)
+        return
+      }
+    }
+    // More cards than the pool holds. Uniqueness is then arithmetically impossible, so fall back to
+    // position rather than to nothing — a repeated scene beats a missing one. Home renders five and
+    // the pool holds five, so this is unreachable today and exists so a sixth card cannot crash it.
+    out[i] = ART_POOL[i % ART_POOL.length]
+  })
+
+  return out
+}
+
+const CATEGORY_LABEL: Record<string, string> = {
+  food: 'v3.explore.food',
+  travel: 'v3.explore.travel',
+  shopping: 'v3.explore.shopping',
+  entertainment: 'v3.cat.entertainment',
+  spa: 'v3.cat.spa',
 }
 
 const QUICK_CHIPS = [
@@ -67,33 +220,14 @@ const QUICK_CHIPS = [
 
 interface Tool { href: string; icon: typeof ScanText; labelKey: string; tone: string }
 
-/** The tools, in the three groups the approved Home layout names. Every entry is an EXISTING route. */
-const TOOL_GROUPS: { titleKey: string; tools: Tool[] }[] = [
-  {
-    titleKey: 'v3.tools.daily',
-    tools: [
-      { href: '/scan', icon: ScanText, labelKey: 'v3.tool.scan', tone: 'var(--v3-accent)' },
-      { href: '/split-bill', icon: Calculator, labelKey: 'v3.tool.split', tone: 'var(--v3-amber)' },
-      { href: '/translate', icon: Languages, labelKey: 'v3.tool.translate', tone: 'var(--v3-accent)' },
-      { href: '/currency', icon: ArrowLeftRight, labelKey: 'v3.tool.currency', tone: 'var(--v3-emerald)' },
-      { href: '/scam-shield', icon: ShieldCheck, labelKey: 'v3.tool.safety', tone: 'var(--v3-emerald)' },
-    ],
-  },
-  {
-    titleKey: 'v3.tools.discover',
-    tools: [
-      { href: '/recommendations', icon: Star, labelKey: 'v3.tool.suggest', tone: 'var(--v3-amber)' },
-      { href: '/group/new', icon: Users, labelKey: 'v3.tool.together', tone: 'var(--v3-rose)' },
-      { href: '/music', icon: Music2, labelKey: 'v3.tool.music', tone: 'var(--v3-violet)' },
-    ],
-  },
-  {
-    titleKey: 'v3.tools.fun',
-    tools: [
-      { href: '/boi', icon: Sparkle, labelKey: 'v3.tool.fortune', tone: 'var(--v3-violet)' },
-      { href: '/viet-content', icon: PenLine, labelKey: 'v3.tool.captions', tone: 'var(--v3-rose)' },
-    ],
-  },
+/** The FIVE tools Home curates. Every entry is an EXISTING route, and the five that are not
+ *  here are reachable from the sidebar — see the note at the render site. */
+const HOME_TOOLS: Tool[] = [
+  { href: '/scan', icon: ScanText, labelKey: 'v3.tool.scan', tone: 'var(--v3-accent)' },
+  { href: '/split-bill', icon: Calculator, labelKey: 'v3.tool.split', tone: 'var(--v3-amber)' },
+  { href: '/translate', icon: Languages, labelKey: 'v3.tool.translate', tone: 'var(--v3-accent)' },
+  { href: '/currency', icon: ArrowLeftRight, labelKey: 'v3.tool.currency', tone: 'var(--v3-emerald)' },
+  { href: '/scam-shield', icon: ShieldCheck, labelKey: 'v3.tool.safety', tone: 'var(--v3-emerald)' },
 ]
 
 export default function HomeV3({ user, userInfo, firstName, suggestions, conversations }: HomeV3Props) {
@@ -109,6 +243,12 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
   }
 
   const hasContinue = user && conversations.length > 0
+
+  // The five cards, and one distinct picture for each. Sliced once here rather than twice in the
+  // JSX so the art is assigned across exactly the cards that render — assigning over the full list
+  // and then slicing would leave the visible row free to repeat a picture again.
+  const forYou = suggestions.slice(0, 5)
+  const forYouArt = assignCardArt(forYou)
 
   return (
     <V3Shell
@@ -151,106 +291,113 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               at the card's top-right and its body runs down past the greeting — so the text column
               and the mascot are siblings here, and the mascot spans the whole column's height
               rather than being centred against the greeting alone. */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              {/* The card names itself. In the approved reference this is a filled violet badge
-                  carrying the glyph, followed by "AI AGENT – HOME" in the ACCENT blue (measured
-                  #2D5BE7 off the screenshot) — not the muted grey a section heading uses. The
-                  label is the card's identity, so it reads as brand, not as a caption. */}
-              <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--v3-accent)' }}>
-                <span
-                  className="flex h-[18px] w-[18px] items-center justify-center rounded-md"
-                  style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
-                  aria-hidden="true"
-                >
-                  <Sparkles size={11} />
-                </span>
-                {t('v3.home.cardLabel')}
-              </p>
-              <h2 className="mt-3 text-[26px] font-light leading-[1.15] tracking-[-0.02em] sm:text-[32px]" style={{ color: 'var(--v3-fg)' }}>
-                {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
-                <span aria-hidden="true">👋</span>
-              </h2>
-              <p className="mt-1.5 text-[14px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
-                {t('v3.home.greetSub')}
-              </p>
-            </div>
-            {/* The approved mascot asset — `/tappy/welcome.png` from the owner's 18-pose library.
-                No new art, no altered pose, no substitute.
+          {/* 🔑 TWO COLUMNS. The left one owns every interactive thing — label, greeting,
+              subtitle, composer, chips. The right one is Tappy's, and it is a real column with
+              a real width rather than whatever space the text left over. That single structural
+              change is what stops the character reading as an ornament in a corner: at 168px in
+              a shared row it was the smallest thing in the hero, and no amount of enlarging it
+              inside that row would have fixed the composition. */}
+          <div className="flex items-stretch gap-6">
+            <div className="min-w-0 flex-1">
+                {/* The card names itself. In the approved reference this is a filled violet badge
+                    carrying the glyph, followed by "AI AGENT – HOME" in the ACCENT blue (measured
+                    #2D5BE7 off the screenshot) — not the muted grey a section heading uses. The
+                    label is the card's identity, so it reads as brand, not as a caption. */}
+                <div className="flex items-start justify-between gap-3">
+                  {/* One stack, one flex ITEM. Without this wrapper the label, the greeting and
+                      the subtitle each became a flex item and laid out ACROSS the row. */}
+                  <div className="min-w-0">
+                  <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--v3-accent)' }}>
+                  <span
+                    className="flex h-[18px] w-[18px] items-center justify-center rounded-md"
+                    style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
+                    aria-hidden="true"
+                  >
+                    <Sparkles size={11} />
+                  </span>
+                  {t('v3.home.cardLabel')}
+                </p>
+                <h2 className="mt-3 text-[26px] font-light leading-[1.15] tracking-[-0.02em] sm:text-[32px]" style={{ color: 'var(--v3-fg)' }}>
+                  {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
+                  <span aria-hidden="true">👋</span>
+                </h2>
+                <p className="mt-1.5 text-[14px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
+                  {t('v3.home.greetSub')}
+                </p>
+                  </div>
+                {/* Below `lg` Tappy rides beside the greeting instead of owning a column. */}
+                <TappyPresence pose="wave" size={132} className="-mt-2 hidden flex-shrink-0 sm:block lg:hidden" />
+                <TappyPresence pose="wave" size={88} className="-mt-1 flex-shrink-0 sm:hidden" />
+              </div>
 
-                SCALE COMES FROM THE REFERENCE, not from taste. Measured on the approved
-                screenshot: the mascot stands 2.7x the height of the composer beside it and runs
-                from the card's top padding down to where the composer begins, its lower body
-                passing behind that field. At 72px it was an ornament sitting politely in a
-                corner; the reference makes it the second-loudest thing on the page after the
-                greeting. `-mb-4` reproduces the overlap — the mascot ends underneath the
-                composer's top edge rather than stacking above it. */}
-            {/* Composed, not placed — see TappyPresence.
-                🚨 The card is `overflow-hidden` BECAUSE of this: the aura is an absolutely
-                positioned field 1.9x the character's width, so at 1280 — where the column is
-                narrower and the mascot sits nearer the edge — it reached past the card and gave
-                the whole document a horizontal scrollbar. Measured as OVERFLOWS at 1280 while
-                1440 was clean, which is exactly how a decorative layer escapes review. The card
-                clips it; the glow stays inside the surface it belongs to.
-                🔑 `wave`, NOT `welcome`. Both are waving poses and only those two of the owner's
-                eighteen are; `welcome` was the component default rather than a choice, and the
-                owner identified `wave` against the approved reference. It is framed closer (its
-                content box is 176x182 against welcome's 130x172 in the same 288² canvas) and
-                cropped at the legs rather than showing the feet, so it reads larger at the same
-                declared size — the sizes below are set against THIS asset. */}
-            <TappyPresence pose="wave" size={168} className="-mt-2 hidden lg:block" />
-            <TappyPresence pose="wave" size={132} className="-mt-2 hidden sm:block lg:hidden" />
-            <TappyPresence pose="wave" size={88} className="-mt-1 sm:hidden" />
-          </div>
-
-          {/* A composer, not a search box: it promises consultation, not retrieval. */}
-          <form
-            onSubmit={(e) => { e.preventDefault(); ask(draft) }}
-            className="mt-3 flex items-center gap-2 rounded-2xl px-3.5 py-2"
-            style={{ background: 'var(--v3-panel-elevated)', border: '1px solid var(--v3-border-strong)' }}
-          >
-            <input
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              placeholder={t('v3.home.askPlaceholder')}
-              aria-label={t('v3.home.askAria')}
-              className="min-w-0 flex-1 bg-transparent text-[14px] font-light outline-none placeholder:font-light"
-              style={{ color: 'var(--v3-fg)' }}
-            />
-            <button
-              type="button"
-              aria-label={t('v3.home.voiceAria')}
-              className="flex h-8 w-8 items-center justify-center rounded-lg"
-              style={{ color: 'var(--v3-fg-secondary)' }}
+            {/* A composer, not a search box: it promises consultation, not retrieval. */}
+            <form
+              onSubmit={(e) => { e.preventDefault(); ask(draft) }}
+              className="mt-3 flex items-center gap-2 rounded-2xl px-3.5 py-2"
+              style={{ background: 'var(--v3-panel-elevated)', border: '1px solid var(--v3-border-strong)' }}
             >
-              <Mic size={16} aria-hidden="true" />
-            </button>
-            <button
-              type="submit"
-              aria-label={t('v3.home.sendAria')}
-              className="flex h-8 w-8 items-center justify-center rounded-lg"
-              style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
-            >
-              <ArrowUp size={16} aria-hidden="true" />
-            </button>
-          </form>
-
-          {/* The reference labels the chip row "Gợi ý nhanh". `v3.home.quickTitle` was already in
-              both dictionaries — the string had been written for this and never wired to anything,
-              so the row arrived unlabelled. */}
-          <p className="mt-4 text-[11px] font-normal tracking-[0.04em]" style={{ color: 'var(--v3-fg-muted)' }}>
-            {t('v3.home.quickTitle')}
-          </p>
-
-          {/* Contextual chips — the fastest path to a formed question. Tucked directly under their
-              label: they belong to it, so the gap between them is smaller than the gap to
-              anything else. */}
-          <div className="v3-scroll-x mt-1.5 flex gap-2 pb-0.5">
-            {QUICK_CHIPS.map(c => (
-              <button key={c} type="button" onClick={() => ask(t(c))} className="v3-chip flex-shrink-0">
-                {t(c)}
+              <input
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder={t('v3.home.askPlaceholder')}
+                aria-label={t('v3.home.askAria')}
+                className="min-w-0 flex-1 bg-transparent text-[14px] font-light outline-none placeholder:font-light"
+                style={{ color: 'var(--v3-fg)' }}
+              />
+              <button
+                type="button"
+                aria-label={t('v3.home.voiceAria')}
+                className="flex h-8 w-8 items-center justify-center rounded-lg"
+                style={{ color: 'var(--v3-fg-secondary)' }}
+              >
+                <Mic size={16} aria-hidden="true" />
               </button>
-            ))}
+              <button
+                type="submit"
+                aria-label={t('v3.home.sendAria')}
+                className="flex h-8 w-8 items-center justify-center rounded-lg"
+                style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
+              >
+                <ArrowUp size={16} aria-hidden="true" />
+              </button>
+            </form>
+
+            {/* The reference labels the chip row "Gợi ý nhanh". `v3.home.quickTitle` was already in
+                both dictionaries — the string had been written for this and never wired to anything,
+                so the row arrived unlabelled. */}
+            <p className="mt-4 text-[11px] font-normal tracking-[0.04em]" style={{ color: 'var(--v3-fg-muted)' }}>
+              {t('v3.home.quickTitle')}
+            </p>
+
+              {/* Contextual chips — the fastest path to a formed question. Tucked directly under
+                  their label: they belong to it, so the gap between them is smaller than the gap
+                  to anything else. */}
+              <div className="v3-scroll-x mt-1.5 flex gap-2 pb-0.5">
+                {QUICK_CHIPS.map(c => (
+                  <button key={c} type="button" onClick={() => ask(t(c))} className="v3-chip flex-shrink-0">
+                    {t(c)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Tappy's column ─────────────────────────────────────────────
+                🚨 SCALE IS THE POINT. 320px against a hero of roughly the same height, not the
+                168px it was — the brief was explicit that nudging 168 to 200 would miss it. The
+                character is meant to fill this zone, so the column is sized to the character
+                rather than the character squeezed into the column.
+
+                `-my-7 -mr-2` lets it bleed into the card's own padding: the reference has Tappy
+                touching the hero's edges rather than sitting politely inside them, which is most
+                of why it reads cinematic instead of decorative. The card is `overflow-hidden`,
+                so the bleed clips cleanly at the rounded corner.
+
+                Hidden below `lg`: at those widths the text column needs the whole card, and a
+                character competing for it is what produced the cramped mobile hero earlier. The
+                smaller instances below keep Tappy present without taking the row. */}
+            <div className="relative hidden flex-shrink-0 items-center justify-center lg:flex" style={{ width: 360 }}>
+              <TappyPresence pose="wave" size={320} className="-my-7 -mr-2" />
+            </div>
           </div>
         </section>
 
@@ -270,8 +417,9 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 inventing content to match a mockup, so the format is reproduced and the
                 fabricated parts are not. The emoji takes the icon slot. */}
             <div className="v3-scroll-x mt-3 flex gap-4 pb-1">
-              {suggestions.slice(0, 6).map(s => {
+              {forYou.map((s, i) => {
                 const text = locale === 'en' ? s.textEn || s.text : s.text
+                const art = forYouArt[i]
                 // 168px fixed is right where the strip must scroll (375: 319 of 708 visible) and
                 // exact where it just fits (768: 708 of 708). At desktop the same fixed width left
                 // 396px of the 1104px row empty — a third of the row, and the most visible
@@ -281,16 +429,47 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                   <Link
                     key={s.text}
                     href={`/chat?q=${encodeURIComponent(text)}&category=${s.category}`}
-                    className="v3-tile flex min-h-[140px] w-[200px] flex-shrink-0 flex-col justify-between overflow-hidden p-4 lg:flex-1"
+                    className="v3-tile group flex min-h-[210px] w-[210px] flex-shrink-0 flex-col overflow-hidden transition-colors lg:flex-1"
                   >
-                    <span className={cn('flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-[20px]', s.gradient)}>
-                      {s.emoji}
+                    {/* The art. `aria-hidden` and empty alt: it is decoration behind a link whose
+                        text already says where it goes, so a screen reader gains nothing from it. */}
+                    <span className="relative block h-[108px] w-full flex-shrink-0 overflow-hidden">
+                      {art && (
+                        <img
+                          src={art}
+                          alt=""
+                          aria-hidden="true"
+                          /* 🚧 The greppable marker that this picture is a stand-in, and a test
+                             asserts it is present for exactly as long as that is true. It is
+                             CONDITIONAL rather than constant: a card carrying a real photograph
+                             from a recommendation is not a placeholder, so marking it as one would
+                             make the marker a lie the moment real data arrives. */
+                          data-art-placeholder={s.imageUrl ? undefined : 'authored-vector-scene'}
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        />
+                      )}
+                      <span className={cn('absolute bottom-2 left-3 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br text-[17px] shadow-lg', s.gradient)}>
+                        {s.emoji}
+                      </span>
                     </span>
-                    {/* Not clamped: `line-clamp-*` resolves its display to `flow-root` on this
-                        surface, so the clamp degrades to a hard clip with no ellipsis. Letting
-                        the tile grow is the honest failure mode for a one-sentence string. */}
-                    <span className="mt-3 text-[13.5px] font-light leading-snug" style={{ color: 'var(--v3-fg)' }}>
-                      {text}
+
+                    <span className="flex flex-1 flex-col p-3.5">
+                      {/* Not clamped: `line-clamp-*` resolves its display to `flow-root` on this
+                          surface, so the clamp degrades to a hard clip with no ellipsis. Letting
+                          the tile grow is the honest failure mode for a one-sentence string. */}
+                      <span className="text-[13px] font-normal leading-snug" style={{ color: 'var(--v3-fg)' }}>
+                        {text}
+                      </span>
+                      {/* 🚨 The metadata slot carries the CATEGORY, which the server really sends —
+                          never an invented place, price, discount or rating. The reference shows a
+                          location here; this data has none, and a made-up city would be a factual
+                          claim rather than a conversation starter. */}
+                      {CATEGORY_LABEL[s.category] && (
+                        <span className="mt-auto flex items-center gap-1.5 pt-2 text-[11px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>
+                          <span className="h-1 w-1 rounded-full" style={{ background: 'var(--v3-accent)' }} aria-hidden="true" />
+                          {t(CATEGORY_LABEL[s.category])}
+                        </span>
+                      )}
                     </span>
                   </Link>
                 )
@@ -302,14 +481,22 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
         {/* ── 4. Công cụ — grouped, so equal tiles become a hierarchy ────── */}
         <section data-home-section="tools" aria-label={t('v3.panel.smartTools')}>
           <SectionHeading title={t('v3.panel.smartTools')} />
-          <div className="mt-3 space-y-5">
-            {TOOL_GROUPS.map(group => (
-              <div key={group.titleKey}>
-                <p data-scenic-heading className="mb-2 text-[10px] font-medium uppercase tracking-[0.12em]" style={{ color: 'var(--v3-fg-muted)' }}>
-                  {t(group.titleKey)}
-                </p>
-                <div className="grid grid-cols-3 gap-4 sm:grid-cols-5">
-                  {group.tools.map(({ href, icon: Icon, labelKey, tone }) => (
+          {/* 🚨 FIVE, IN ONE ROW — Home is a CURATED ENTRY POINT, not the tools catalogue.
+              This went through three shapes before landing here: three labelled groups (the old
+              written spec), then all ten flattened into two rows (my reading of "five across"),
+              and now the five the approved reference actually shows. Two rows of ten was the
+              wrong instinct — it treated "no capability may be lost" as "every route must appear
+              on Home", which is an information-architecture decision, not a safety rule.
+
+              🚨 The other five stay reachable, and that had to be MADE true rather than assumed.
+              `/recommendations` was already in the sidebar as Search, but `/group/new`, `/music`,
+              `/boi` and `/viet-content` had ZERO navigation anywhere else — measured, not
+              guessed — so cutting them from Home would have orphaned four working routes. They
+              are in the sidebar's tools group now. The Tools page that will eventually hold them
+              is a later item; until it exists, the sidebar is their home. */}
+          <div className="mt-3">
+            <div className="grid grid-cols-3 gap-4 sm:grid-cols-5">
+              {HOME_TOOLS.map(({ href, icon: Icon, labelKey, tone }) => (
                     <Link
                       key={href}
                       href={href}
@@ -326,10 +513,8 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                         {t(labelKey)}
                       </span>
                     </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 

@@ -128,7 +128,30 @@ export const vi: Record<string, string> = {
   'v3.explore.travel': 'Du lịch',
   'v3.explore.lifestyle': 'Đời sống',
   'v3.explore.shopping': 'Mua sắm',
+  'v3.cat.entertainment': 'Giải trí',
+  'v3.cat.spa': 'Thư giãn',
   'v3.explore.empty': 'Chưa có video nào để hiển thị.',
+
+  // ── Explore, the destination (Page 3, desktop) ──────────────────────────
+  // 🚨 There is no topic taxonomy here on purpose. `reviews` has no category
+  // column, so the filter row carries the three sorts the feed endpoint really
+  // accepts — `forYou` and `following` above, plus `latest`.
+  'v3.explore.title': 'Khám phá',
+  'v3.explore.subtitle': 'Video ngắn về những trải nghiệm thú vị quanh bạn',
+  'v3.explore.searchPlaceholder': 'Tìm video, địa điểm, món ăn, trải nghiệm...',
+  'v3.explore.latest': 'Mới nhất',
+  'v3.explore.prev': 'Video trước',
+  'v3.explore.next': 'Video tiếp theo',
+  'v3.explore.navHint': 'Dùng phím mũi tên hoặc kéo ngang để xem video tiếp theo',
+  'v3.explore.playThis': 'Phát video này',
+  'v3.explore.askAboutVideo': 'Hỏi Tappy về video này',
+  'v3.explore.like': 'Thích',
+  'v3.explore.comment': 'Bình luận',
+  'v3.explore.share': 'Chia sẻ',
+  'v3.explore.save': 'Lưu',
+  'v3.explore.originalSound': 'Âm thanh gốc',
+  // The low-content state, stated rather than implied by empty slots.
+  'v3.explore.growing': 'Explore sẽ có thêm video khi cộng đồng đăng tải',
 
   // ── Inbox panel ─────────────────────────────────────────────────────────
   'v3.inbox.all': 'Tất cả',
@@ -341,7 +364,26 @@ export const en: Record<string, string> = {
   'v3.explore.travel': 'Travel',
   'v3.explore.lifestyle': 'Lifestyle',
   'v3.explore.shopping': 'Shopping',
+  'v3.cat.entertainment': 'Entertainment',
+  'v3.cat.spa': 'Wellness',
   'v3.explore.empty': 'No videos to show yet.',
+
+  // ── Explore, the destination (Page 3, desktop) ──────────────────────────
+  'v3.explore.title': 'Explore',
+  'v3.explore.subtitle': 'Short videos of interesting things around you',
+  'v3.explore.searchPlaceholder': 'Search videos, places, food, experiences…',
+  'v3.explore.latest': 'Latest',
+  'v3.explore.prev': 'Previous video',
+  'v3.explore.next': 'Next video',
+  'v3.explore.navHint': 'Use the arrow keys or drag sideways for the next video',
+  'v3.explore.playThis': 'Play this video',
+  'v3.explore.askAboutVideo': 'Ask Tappy about this video',
+  'v3.explore.like': 'Like',
+  'v3.explore.comment': 'Comment',
+  'v3.explore.share': 'Share',
+  'v3.explore.save': 'Save',
+  'v3.explore.originalSound': 'Original sound',
+  'v3.explore.growing': 'More videos will appear here as people post them',
 
   // ── Inbox panel ─────────────────────────────────────────────────────────
   'v3.inbox.all': 'All',

@@ -9,6 +9,7 @@ import {
   Tag, Store, Wrench, CalendarRange, ShieldCheck, Inbox as InboxIcon,
   Bell, Sun, Moon, UserCircle, QrCode, Wallet, Settings, Languages, HelpCircle,
   MessageSquare, LogOut, Sparkles, MessageCircle, Grid3x3, Plus, ChevronRight,
+  Music2, Sparkle, PenLine,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -82,6 +83,27 @@ const GROUPS: NavGroup[] = [
       { href: '/#smart-tools', labelKey: 'v3.nav.smartTools', icon: Wrench },
       { href: '/profile/price-watches', labelKey: 'v3.nav.planner', icon: CalendarRange },
       { href: '/scam-shield', labelKey: 'v3.nav.scamShield', icon: ShieldCheck },
+      // 🚨 KNOWN NAVIGATION DEBT — remove when Page 7 (Tools) exists.
+      //
+      // Home was curated down to five tools, and MEASUREMENT showed these four had no
+      // navigation anywhere else: not one reference in the shell, the bottom nav, or any
+      // rendered page. (`HomeView.tsx`, the pre-V3 Home that used to list them, is still in the
+      // tree but is referenced by nothing.) Cutting them from Home without this would have
+      // orphaned four working routes.
+      //
+      // The codebase was searched for an existing mechanism that could hold them instead — a
+      // tools route, a consumer command palette, an "all tools" surface. There is none; the
+      // only command palette is admin-only. Rather than invent an IA for four links, they sit
+      // here temporarily and this comment is the record.
+      //
+      // COST, stated plainly: it makes Tools & Utilities the largest group in the sidebar (7
+      // rows) and adds ~120px to a nav that already overflowed at 22 rows. When Page 7 lands,
+      // these four belong there and these lines should go. Existing routes, existing dictionary
+      // keys; nothing new was invented for them.
+      { href: '/group/new', labelKey: 'v3.tool.together', icon: Users },
+      { href: '/music', labelKey: 'v3.tool.music', icon: Music2 },
+      { href: '/boi', labelKey: 'v3.tool.fortune', icon: Sparkle },
+      { href: '/viet-content', labelKey: 'v3.tool.captions', icon: PenLine },
     ],
   },
   {
@@ -171,7 +193,8 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
           style={{
             width: 'var(--v3-sidebar-w)',
             borderColor: 'var(--v3-border)',
-            background: 'var(--v3-panel)',
+            // The SHELL surface, not the card surface — see the token note in globals.css.
+            background: 'var(--v3-shell)',
           }}
         >
           {/* 🚨 The mark is the SHIPPED brand asset, not a lucide glyph. This was a `Sparkles`
@@ -189,21 +212,35 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
             className="flex flex-shrink-0 items-center gap-2.5 border-b px-4"
             style={{ height: 'var(--v3-header-h)', borderColor: 'var(--v3-border)' }}
           >
-            {/* 🚨 TYPE ALONE ON HOME. The app icon used to sit here beside the words. The
-                approved lockup is the wordmark and its line — "no unnecessary surrounding
-                treatment, no unrelated icon beside the wordmark" — and the repository has no
-                standalone wordmark ASSET (the lettering exists only baked into the app icon,
-                the OG card and the Play graphic), so the faithful reproduction is the styled
-                text the app already uses elsewhere, not a cropped picture of a logo.
-
-                Opt-in: Deals, Marketplace and Profile still render the icon lockup, because
-                this pass is Home only. */}
-            {/* The reference DOES carry a small sparkle before the wordmark — "no app-icon
-                treatment" is not "no glyph". A 4-point star in the accent, not the cropped
-                otter tile. */}
-            {wordmarkOnly && (
-              <Sparkles size={17} aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-accent)' }} />
-            )}
+            {/* 🚨 TYPE ALONE ON HOME — NO MARK. DO NOT PUT A PICTURE BACK HERE.
+             *
+             *  This slot has now held three different things, and the history is the reason the
+             *  rule is worth stating rather than just obeying:
+             *
+             *    1. a lucide `Sparkles` glyph — a wordmark invented at the call site;
+             *    2. nothing, when the brief said "no unrelated icon beside the wordmark";
+             *    3. `/branding/otter-logo.png` at 22px, when the brief asked for a small mark
+             *       using an existing repository asset.
+             *
+             *  (3) was inspected at 6x in the browser and rejected by the owner, for a reason
+             *  that is a fact about the FILE rather than a matter of taste: `otter-logo.png` is
+             *  the APP ICON. It is a blue rounded-square tile containing the otter, a speech
+             *  bubble, and the "TappyAI" WORDMARK BAKED INTO THE ARTWORK. Rendered at 22px next
+             *  to the text below, the page showed the wordmark twice — once as type and once
+             *  illegibly inside a tile — which is why it read as an app icon pasted into the
+             *  header. It read that way because that is what it is.
+             *
+             *  🚨 CROPPING IT IS NOT THE FIX, and was explicitly refused. Framing the otter's
+             *  head out of the app icon manufactures a brand mark that the brand does not have.
+             *  The other candidates are worse: `/logo.svg` and `/logo.png` are recorded as the
+             *  RETIRED infinity mark (see `src/lib/notifications/inbox.ts`), and drawing a new
+             *  one is inventing a logo.
+             *
+             *  So Home is the wordmark alone until a genuine standalone mark asset exists. When
+             *  one does, it drops in here — that is a new file, not a crop of this one.
+             *
+             *  Opt-in and Home-only: Deals, Marketplace and Profile still render the icon
+             *  lockup below, because the app icon is correct AS an app icon. */}
             {!wordmarkOnly && (
               <Image
                 src="/branding/otter-logo.png"
@@ -315,7 +352,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
             className={cn('sticky top-0 z-30 border-b backdrop-blur', scenic && 'v3-scenic-chrome')}
             style={{
               borderColor: 'var(--v3-border)',
-              background: 'color-mix(in srgb, var(--v3-page) 88%, transparent)',
+              background: 'color-mix(in srgb, var(--v3-shell-header) 88%, transparent)',
             }}
           >
             {/* Fixed height from `lg` up so the header bottom, the sidebar's brand-block hairline

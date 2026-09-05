@@ -18,6 +18,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
 import LinkPoster from '@/components/LinkPoster'
 import { ProfileTab, ClipViewer } from './ProfileTab'
+import ExploreV3Desktop from './ExploreV3Desktop'
 import { useNotifications } from '@/components/NotificationProvider'
 import { getExploreSession, reportAuthState } from '@/lib/explore/webExploreSession'
 import { mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
@@ -1332,7 +1333,50 @@ function ReviewsPageInner() {
 //
 // `fallback={null}`, not the old Home skeleton: this route is a black full-screen feed, and the
 // skeleton it used to inherit drew a light Home header, hero and category grid over it.
+/** The breakpoint that separates the two Explore surfaces. Matches Tailwind `lg`. */
+const DESKTOP_QUERY = '(min-width: 1024px)'
+
+/**
+ * 🚨 EXACTLY ONE EXPLORE SURFACE IS MOUNTED, AND IT IS A JS DECISION ON PURPOSE.
+ *
+ * V3 gives desktop its own Explore (`ExploreV3Desktop`): the approved global shell,
+ * a five-card horizontal video feed, one clip playing. The surface below is the
+ * existing mobile feed and is UNTOUCHED by that work.
+ *
+ * The obvious way to do this would be `hidden lg:block` / `lg:hidden`, and it would
+ * be wrong here. `display:none` hides an element; it does not unmount it. Both feeds
+ * would mount, both would create <video> elements, and the desktop page's entire
+ * contract — five visible, ONE playing — would be decided by whichever hidden player
+ * happened to autoplay. So the choice is made in JS and only the winner renders.
+ *
+ * `null` on the first paint is deliberate: the media query cannot be read during SSR,
+ * and guessing would either hydrate the wrong feed or flash it. This route already
+ * rendered `fallback={null}` for the same reason.
+ */
 export default function ReviewsPage() {
+  const [isDesktop, setIsDesktop] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    // 🪤 `matchMedia` is not guaranteed. jsdom omits it unless a suite installs it, and this
+    // component threw for every existing test that renders this route — the notification tests
+    // do, and they are about the mobile feed, not about breakpoints. Absent the API the honest
+    // answer is "not desktop": the mobile feed is the surface that works everywhere, so it is
+    // the fallback rather than a blank page.
+    if (typeof window.matchMedia !== 'function') { setIsDesktop(false); return }
+    const mq = window.matchMedia(DESKTOP_QUERY)
+    const apply = () => setIsDesktop(mq.matches)
+    apply()
+    // Safari below 14 has `addListener` but not `addEventListener` on MediaQueryList.
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', apply)
+      return () => mq.removeEventListener('change', apply)
+    }
+    return undefined
+  }, [])
+
+  if (isDesktop === null) return null
+  if (isDesktop) return <ExploreV3Desktop />
+
   return (
     <Suspense fallback={null}>
       <ReviewsPageInner />

@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 220" width="440" height="220" role="img" aria-hidden="true">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="3" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.055"/></feComponentTransfer>
+    </filter>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="softer" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="haze" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <filter id="bokeh" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5.5"/>
+    </filter>
+
+    <linearGradient id="room" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2B1109"/><stop offset="60%" stop-color="#4A1E10"/>
+      <stop offset="100%" stop-color="#71301A"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6B3A20"/><stop offset="100%" stop-color="#2E1509"/>
+    </linearGradient>
+    <radialGradient id="lamp" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#FFD9A0" stop-opacity=".85"/>
+      <stop offset="55%" stop-color="#FFA751" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#FF8A2B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ceramic" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF6EA"/><stop offset="55%" stop-color="#E7D3BE"/>
+      <stop offset="100%" stop-color="#9C7C63"/>
+    </linearGradient>
+    <radialGradient id="broth" cx="42%" cy="34%" r="70%">
+      <stop offset="0%" stop-color="#D98A34"/><stop offset="70%" stop-color="#A75418"/>
+      <stop offset="100%" stop-color="#6E3410"/>
+    </radialGradient>
+
+    <radialGradient id="vig" cx="50%" cy="45%" r="72%">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".42"/>
+    </radialGradient>
+    <clipPath id="frame"><rect width="440" height="220"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+
+    <rect width="440" height="220" fill="url(#room)"/>
+    <!-- the room behind, thrown out of focus: warm lamps and a doorway -->
+    <g filter="url(#bokeh)" opacity=".85">
+      <circle cx="52" cy="34" r="15" fill="#FFC172" opacity=".55"/>
+      <circle cx="106" cy="20" r="9"  fill="#FF9B4A" opacity=".45"/>
+      <circle cx="392" cy="30" r="17" fill="#FFB25E" opacity=".5"/>
+      <circle cx="342" cy="14" r="8"  fill="#FFD79B" opacity=".4"/>
+      <rect x="196" y="0" width="46" height="74" rx="10" fill="#8A4A22" opacity=".5"/>
+    </g>
+    <!-- the pendant's cone of light, falling on the table -->
+    <ellipse cx="196" cy="6" rx="210" ry="150" fill="url(#lamp)"/>
+
+    <!-- table: a plane, not a band. The far edge is lighter because the lamp is above it. -->
+    <path d="M0 132 L440 118 L440 220 L0 220 Z" fill="url(#wood)"/>
+    <path d="M0 132 L440 118 L440 128 L0 143 Z" fill="#93542F" opacity=".55"/>
+    <g stroke="#1F0E06" stroke-width="1" opacity=".33">
+      <path d="M0 158 L440 146"/><path d="M0 182 L440 172"/><path d="M0 205 L440 197"/>
+    </g>
+
+    <!-- side plate, further away and therefore smaller and dimmer -->
+    <g opacity=".92">
+      <ellipse cx="364" cy="150" rx="44" ry="14" fill="#C9AE95"/>
+      <ellipse cx="364" cy="147" rx="36" ry="10" fill="#E8DAC8"/>
+      <path d="M346 145 q10 -8 20 -2 q10 6 18 0" stroke="#4E7A31" stroke-width="3.5"
+            fill="none" stroke-linecap="round"/>
+      <circle cx="378" cy="146" r="4.5" fill="#C4392B"/>
+      <circle cx="352" cy="149" r="3.5" fill="#D9A72F"/>
+    </g>
+
+    <!-- chopsticks, resting across the far rim -->
+    <g stroke="#D8B183" stroke-width="4" stroke-linecap="round" opacity=".95">
+      <path d="M232 118 L300 96"/><path d="M236 126 L306 104"/>
+    </g>
+
+    <!-- the bowl -->
+    <path d="M84 152 q66 62 132 0 q-6 46 -66 46 q-60 0 -66 -46 Z" fill="url(#ceramic)"/>
+    <ellipse cx="150" cy="152" rx="67" ry="22" fill="#F3E4D3"/>
+    <ellipse cx="150" cy="153" rx="60" ry="18" fill="url(#broth)"/>
+    <!-- noodles: strokes that follow the broth's surface, not straight lines -->
+    <g stroke="#F6E3BE" stroke-width="2.6" fill="none" opacity=".9" stroke-linecap="round">
+      <path d="M108 154 q22 -9 44 -2 q20 6 40 -4"/>
+      <path d="M112 160 q26 -6 48 1 q18 5 34 -5"/>
+      <path d="M120 148 q22 -7 42 -1"/>
+    </g>
+    <!-- beef slices, egg, herbs, chilli — the things that make it a specific dish -->
+    <ellipse cx="128" cy="150" rx="16" ry="7" fill="#8E3B26" transform="rotate(-8 128 150)"/>
+    <ellipse cx="128" cy="148" rx="12" ry="4.5" fill="#B15238" transform="rotate(-8 128 148)"/>
+    <ellipse cx="176" cy="155" rx="14" ry="6" fill="#7E3421" transform="rotate(6 176 155)"/>
+    <ellipse cx="152" cy="145" rx="13" ry="9" fill="#FFF7EA"/>
+    <ellipse cx="152" cy="145" rx="6.5" ry="5" fill="#F0A828"/>
+    <path d="M186 146 q9 -7 17 -3" stroke="#5C8F36" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M110 143 q7 -6 15 -3" stroke="#4E8330" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <circle cx="168" cy="141" r="3.4" fill="#CE3B24"/>
+    <!-- rim light: the lamp is above and slightly left -->
+    <path d="M84 150 q66 -26 132 0" stroke="#FFE9CB" stroke-width="2.4" fill="none" opacity=".75"/>
+
+    <!-- steam. Blurred, low opacity, rising and drifting — the one moving thing. -->
+    <g filter="url(#soft)" opacity=".5" stroke="#FFF3E2" fill="none" stroke-linecap="round">
+      <path d="M124 132 q-12 -30 6 -50 q16 -18 4 -40" stroke-width="7"/>
+      <path d="M158 128 q10 -32 -4 -54 q-12 -20 4 -38" stroke-width="6"/>
+      <path d="M188 134 q14 -26 2 -46" stroke-width="5"/>
+    </g>
+
+    <rect width="440" height="220" fill="url(#vig)"/>
+    <rect width="440" height="220" filter="url(#grain)" opacity=".5"/>
+  </g>
+</svg>

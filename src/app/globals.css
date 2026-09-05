@@ -438,10 +438,25 @@
      208/1536 of the frame and its header's baseline at 70/1536-scale. 240px was a round
      number picked before there was a reference to check it against, and at that width the
      rail reads as an admin nav rather than the product's. */
-  --v3-sidebar-w: 212px;
+  --v3-sidebar-w: 208px;
   --v3-header-h: 68px;
-  --v3-content-max: 1160px;
-  --v3-gutter: 28px;
+  /* 🚨 WIDENED, and this is the "overly narrow centered dashboard" fix. At 1160 the
+     container was centred inside a 1500px main column, which threw ~170px away on EACH
+     side and pushed Home's left edge to x≈425 on a 1720 viewport. The approved reference
+     gives Home substantially more of the row. 1440 + 40 puts the left edge near x≈284 and
+     lets the hero run about 1360 wide.
+
+     🚨 The reference's two measurements cannot both hold: content starting at x=354 implies
+     a 146px gutter after a 208px sidebar, but a 1078px hero would then end at 1432 and leave
+     288px on the right — not a centred grid. Optimised for the stated intent (more usable
+     width, left edge further left) rather than reproducing one number and missing the point. */
+  /* 🚨 1440 was an OVERCORRECTION. 1160 left the content stranded in a centred puddle, so
+     I widened it — and then treated the extra width as the win, which produced a 1360px hero
+     at 1720 and simply traded one imbalance for another. The reference's hero is about 71% of
+     the main column with real margin either side; 1240 lands near that instead of filling
+     whatever space happens to exist. More width is not the goal; balance is. */
+  --v3-content-max: 1240px;
+  --v3-gutter: 40px;
   --v3-gap: 16px;
   --v3-radius: 16px;
 
@@ -458,6 +473,19 @@
   --v3-accent-fill: #0069DB;
   --v3-on-accent: #FFFFFF;
   --v3-accent-soft: rgba(0, 105, 219, 0.10);
+  /* 🚨 THE SHELL GETS ITS OWN SURFACE, and this is why: the sidebar and header were painted
+     with `--v3-panel`, which is the CARD colour. In dark theme that is #111827 — measurably
+     navy (blue bias +18 by B minus the average of R and G). Sitting beside a blue skyline it
+     read as a blue chrome around a blue photo, and the white type had nothing to separate from.
+
+     The cards were neutralised earlier via `.v3-home`, but that scope covers the CONTENT
+     wrapper only — the shell sits outside it, so the fix never reached the sidebar or the
+     header. Splitting the token is what makes the two independently correct.
+
+     Light theme keeps the panel colour: the complaint was about the dark render, and a
+     near-black rail in a light UI would be a different bug. */
+  --v3-shell: var(--v3-panel);
+  --v3-shell-header: var(--v3-panel);
   --v3-violet: #6D28D9;
   /* The violet FILL, split from the tint for exactly the reason `--v3-accent` was:
      `--v3-violet` is an icon tint at 3.9:1 on dark and must never sit under white
@@ -482,12 +510,35 @@
   --v3-border: #1F2937;
   --v3-border-strong: #2B3648;
   --v3-fg: #F3F4F6;
-  --v3-fg-secondary: #9CA3AF;
-  --v3-fg-muted: #828A9B;
+  /* 🚨 THE ROOT CAUSE OF "grey UI text", found by auditing scope rather than by patching
+     elements. Home brightens its text — but only INSIDE `.v3-panel` / `.v3-tile`. Everything
+     that is not in a card falls through to these two values: the sidebar's nav labels and
+     group headings, the top bar's tab labels and subtitle, and the section headings. That is
+     exactly the list of things that read as faded, and it is one token pair, not twenty
+     components.
+
+     Raised from #9CA3AF / #828A9B. Measured against every ground they actually sit on
+     (#111827 sidebar-header, #0E0F12 card, #16181D tile, #0A0A0D AI surface):
+       secondary  6.99-7.79  ->  11.54-12.86
+       muted      5.12-5.70  ->   8.21-9.15
+     Hierarchy deliberately preserved: white->secondary is a 1.54x step and
+     secondary->muted 1.41x, so primary still reads as primary. This is BRIGHTER, not FLATTER.
+
+     ⚠️ SHARED. This is the V3 dark text hierarchy, so Deals, Marketplace, Profile and the
+     chat routes get the same lift. That is the token doing its job — it is explicitly the
+     shared hierarchy, not a Home-only value — but it is a change outside Home and is called
+     out here rather than left to be discovered. */
+  --v3-fg-secondary: #DCE2EC;
+  --v3-fg-muted: #B8C0CD;
   --v3-accent: #3391FF;
   --v3-accent-fill: #0A6BDB;
   --v3-on-accent: #FFFFFF;
   --v3-accent-soft: rgba(51, 145, 255, 0.14);
+  /* Near-black and near-neutral. Blue bias drops from +18 (#111827) to +4, so it reads as
+     black rather than navy while keeping a trace of warmth off pure #000. The header is one
+     step lighter than the rail — a subtle separation rather than a hard edge. */
+  --v3-shell: #08090D;
+  --v3-shell-header: #0B0C11;
   --v3-violet: #8B5CF6;
   --v3-violet-fill: #6D28D9;
   --v3-on-violet: #FFFFFF;
@@ -561,8 +612,10 @@
 .v3-home .v3-panel,
 .v3-home .v3-tile {
   --v3-fg: #FFFFFF;
-  --v3-fg-secondary: #C6CCD8;
-  --v3-fg-muted: #99A1B0;
+  /* One step above the base: these grounds (#0E0F12 / #16181D) are darker than the
+     sidebar's, so the same values would read dimmer here than they do there. */
+  --v3-fg-secondary: #D2D9E4;
+  --v3-fg-muted: #B2BAC8;
 }
 
 /* Scenic makes panels translucent so the scene shows through. On Home the BASE has to
@@ -611,8 +664,8 @@
      previous values were mid-greys chosen against the navy panel, and on black
      they read washed out. Brightened one step each; the weights stay light. */
   --v3-fg: #FFFFFF;
-  --v3-fg-secondary: #CBD3E1;
-  --v3-fg-muted: #A6AFC0;
+  --v3-fg-secondary: #D6DCE7;
+  --v3-fg-muted: #B6BECB;
   --v3-panel-elevated: rgba(255, 255, 255, 0.055);
   --v3-border: rgba(255, 255, 255, 0.10);
   --v3-border-strong: rgba(255, 255, 255, 0.20);
@@ -711,10 +764,16 @@
 
   /* Chrome is more transparent than content: the sidebar and header frame the
      scene rather than covering it. */
+  /* 🚨 OPAQUE. This is why the shell still RENDERED blue after its token was neutralised:
+     the token was #08090D, but the surface was painted at 82% alpha over a blue skyline and
+     its backdrop was `saturate(1.05)` — so 18% of the photograph came through and got its
+     blue boosted on the way. The computed background read `srgb(0.031 0.035 0.051 / 0.82)`,
+     and I reported the neutral part while the alpha was doing the damage.
+     A token is not a render. Measuring the declaration proves nothing about the pixel. */
   .v3-theme.v3-scenic .v3-scenic-chrome {
-    background-color: color-mix(in srgb, var(--v3-panel) 76%, transparent) !important;
-    backdrop-filter: blur(14px) saturate(1.05);
-    -webkit-backdrop-filter: blur(14px) saturate(1.05);
+    background-color: var(--v3-shell) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   /* `color-mix` is well supported but not universal. Without it the declarations
@@ -723,7 +782,7 @@
   @supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
     .v3-theme.v3-scenic .v3-panel { background-color: var(--v3-panel); }
     .v3-theme.v3-scenic .v3-tile { background-color: var(--v3-panel-elevated); }
-    .v3-theme.v3-scenic .v3-scenic-chrome { background-color: var(--v3-panel) !important; }
+    .v3-theme.v3-scenic .v3-scenic-chrome { background-color: var(--v3-shell) !important; }
   }
 }
 /* ── end scenic (md and up) ────────────────────────────────────────────── */
