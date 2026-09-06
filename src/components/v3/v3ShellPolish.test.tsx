@@ -4,9 +4,13 @@ import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
+const push = vi.fn()
+// Mutable: the header deliberately differs on Home (which owns the composer) from every other
+// page, so these tests have to be able to stand somewhere else.
+let pathname = '/'
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),
-  usePathname: () => '/',
+  useRouter: () => ({ push, replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),
+  usePathname: () => pathname,
   useSearchParams: () => new URLSearchParams(),
 }))
 
@@ -257,5 +261,80 @@ describe('the shell says words, not keys', () => {
     }
 
     expect(offenders, 'these rendered their translation key instead of a translation').toEqual([])
+  })
+})
+
+describe('the AI-first chrome', () => {
+  // The shell was a page-title bar with a tab strip: correct, and silent about what the product
+  // is. It now carries the one input that does the product's primary action from anywhere.
+
+  beforeEach(() => { push.mockClear(); pathname = '/deals' })
+  afterEach(() => { pathname = '/' })
+
+  it('carries a global command search that ASKS TAPPY', () => {
+    renderShell()
+    const input = screen.getByLabelText(/ask tappyai|hỏi tappyai/i) as HTMLInputElement
+    fireEvent.change(input, { target: { value: 'quán phở gần đây' } })
+    fireEvent.submit(input.closest('form')!)
+    // 🚨 IT GOES TO /chat. There is no site-search index in this product, and a header field
+    // that looked like one would promise retrieval the backend cannot do. It is the same door
+    // Home's composer and every suggestion chip already use.
+    expect(push).toHaveBeenCalledWith(`/chat?q=${encodeURIComponent('quán phở gần đây')}`)
+  })
+
+  it('does not navigate on an empty submit', () => {
+    renderShell()
+    const input = screen.getByLabelText(/ask tappyai|hỏi tappyai/i) as HTMLInputElement
+    fireEvent.submit(input.closest('form')!)
+    expect(push).not.toHaveBeenCalled()
+  })
+
+  it('offers NO second input on Home — the hero owns the one composer', () => {
+    // 🚨 THE DUPLICATE THIS REMOVES. Home has a 46px headline over a lit composer; a second
+    // "ask Tappy" field in the chrome 250px above it made the page argue with itself about
+    // where to type. Home gets a compact action instead, and it still reaches the assistant.
+    pathname = '/'
+    const { container } = renderShell()
+    expect(container.querySelector('form[role="search"]'), 'no header search on Home').toBeNull()
+    const action = [...container.querySelectorAll('header a[href="/chat"]')]
+    expect(action.length, 'but a way into the assistant survives').toBe(1)
+  })
+
+  it('the search field can never collapse into a stub', () => {
+    // At 1280 it measured 87px wide with a 38px input. The tab strip scrolls; the field does not
+    // shrink below a width that can hold its placeholder.
+    pathname = '/deals'
+    const { container } = renderShell()
+    expect(container.querySelector('form[role="search"]')!.className).toMatch(/min-w-\[\d+px\]/)
+  })
+
+  it('groups the rail by what the product IS, agent first', () => {
+    const { container } = renderShell()
+    const groups = [...container.querySelectorAll('aside nav > div > p')].map(p => p.textContent?.trim())
+    // Agent, then what Tappy can do, then the community around it. Account/Settings follow.
+    expect(groups.slice(0, 3)).toEqual(['AI Agent', 'Capabilities', 'Community'])
+  })
+
+  it('renders no heading for a group with no rows', () => {
+    // `SHOW_MARKETPLACE` is false and Deals moved into the agent group, which left "Commerce" as
+    // a label above nothing on every page of the app.
+    const { container } = renderShell()
+    for (const group of container.querySelectorAll('aside nav > div')) {
+      expect(group.querySelectorAll('a').length, `${group.querySelector('p')?.textContent} is empty`).toBeGreaterThan(0)
+    }
+  })
+
+  it('keeps every destination reachable after the regrouping', () => {
+    // The regroup moved rows between blocks; it must not have dropped one.
+    const { container } = renderShell()
+    const hrefs = [...container.querySelectorAll('aside a[href]')].map(a => a.getAttribute('href'))
+    for (const route of ['/', '/reviews', '/deals', '/profile/notifications', '/tools', '/planner',
+                         '/recommendations', '/social', '/profile/favorites', '/profile/history',
+                         '/profile', '/subscription', '/profile/settings']) {
+      expect(hrefs, `${route} must stay in the sidebar`).toContain(route)
+    }
+    // ...and must not have duplicated one.
+    expect(hrefs.filter(h => h === '/profile/notifications').length, 'one Inbox row, not two').toBe(1)
+    expect(hrefs.filter(h => h === '/deals').length, 'one Deals row, not two').toBe(1)
   })
 })

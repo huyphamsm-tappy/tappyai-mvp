@@ -79,15 +79,37 @@ function homeRegion(container: HTMLElement): HTMLElement {
 }
 
 describe('Home is ONE PAGE, not an ecosystem dashboard', () => {
-  it('renders exactly the four approved sections, in order', () => {
+  it('renders exactly the five approved sections, in order', () => {
     const { container } = renderHome()
     const sections = [...container.querySelectorAll('[data-home-section]')]
       .map(s => s.getAttribute('data-home-section'))
-    // Order is an OWNER DECISION and it changed: ask → discover → do → resume. Continue moved
-    // from directly under the assistant to the foot of the page, so "what you could do now"
-    // comes before "what you did before". Only the position changed — not the data, the
-    // wording, or the behaviour.
-    expect(sections).toEqual(['hero', 'for-you', 'tools', 'continue'])
+    // 🚨 FIVE NOW, AND THE FIFTH IS THE POINT OF THE AI-FIRST PASS — but the RULE this file
+    // exists to enforce is unchanged and is asserted just as hard below: Home may not reproduce
+    // another destination. `capabilities` does not: every tile opens /chat with one of the five
+    // real `CATEGORIES` preselected, so it is a way to START A CONVERSATION, not a slice of
+    // Explore, Deals or Marketplace. The dashboard this file was written against was fifteen
+    // panels of OTHER PAGES' CONTENT; a capability strip that only leads into the assistant is
+    // the opposite of that, and the next test proves it rather than trusting this comment.
+    //
+    // Order is an OWNER DECISION: ask → what Tappy can do → discover → tools → resume.
+    expect(sections).toEqual(['hero', 'capabilities', 'for-you', 'tools', 'continue'])
+  })
+
+  it('the capabilities strip leads into the assistant, never into another destination', () => {
+    // The guard on the new section. Each tile must open the chat with a REAL category, and the
+    // only tile allowed to leave the assistant is the "more" one, which goes to the Tools page.
+    const { container } = renderHome()
+    const tiles = [...container.querySelectorAll('[data-capability]')]
+    expect(tiles.length, 'five real categories plus the way out').toBe(6)
+    for (const tile of tiles) {
+      const href = tile.getAttribute('href')!
+      const id = tile.getAttribute('data-capability')
+      if (id === 'more') { expect(href).toBe('/tools'); continue }
+      expect(href, `${id} must open the assistant`).toBe(`/chat?category=${id}`)
+    }
+    // The ids are the product's own vocabulary, not a taxonomy invented for the grid.
+    expect(tiles.map(t => t.getAttribute('data-capability')))
+      .toEqual(['food', 'shopping', 'travel', 'entertainment', 'spa', 'more'])
   })
 
   it('renders no other destination inside Home', () => {
@@ -96,7 +118,7 @@ describe('Home is ONE PAGE, not an ecosystem dashboard', () => {
     const { container } = renderHome()
     const region = homeRegion(container)
     const own = new Set([...region.querySelectorAll('[data-home-section]')].map(s => s.getAttribute('data-home-section')))
-    expect(own.size, 'Home owns only its four sections').toBe(4)
+    expect(own.size, 'Home owns only its five sections').toBe(5)
 
     // No destination's content is reproduced here: no feed, no inbox rows, no deal cards,
     // no marketplace, no profile panel.

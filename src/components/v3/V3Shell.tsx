@@ -3,7 +3,8 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   Home, PlayCircle, Search, Upload, Users, Bookmark, History,
   Tag, Store, Wrench, CalendarRange, ShieldCheck, Inbox as InboxIcon,
@@ -54,50 +55,28 @@ interface NavGroup {
 /** The sidebar's groups. Every entry is an EXISTING route — nothing here is new. */
 const GROUPS: NavGroup[] = [
   {
-    titleKey: 'v3.nav.main',
+    // 🚨 REGROUPED, NOT REROUTED. Every href in this file is byte-identical to what it was;
+    // what changed is which block a row sits in and what the block is called. The rail said
+    // "Trang chính / Cộng đồng / Thương mại / Công cụ" — four groups named after an internal
+    // taxonomy, which told a first-time user nothing about what the product IS. It now opens
+    // with the agent, then what Tappy can DO, then the community around it, so the sidebar
+    // says the same thing the hero says.
+    //
+    // Deals and the Inbox moved UP into this group (they are places the agent takes you), and
+    // Search moved DOWN into Capabilities (it is a thing Tappy does). Nothing was dropped.
+    titleKey: 'v3.nav.groupAgent',
     items: [
       { href: '/', labelKey: 'v3.nav.home', icon: Home },
       { href: '/reviews', labelKey: 'v3.nav.explore', icon: PlayCircle, tagKey: 'v3.tag.new' },
-      { href: '/recommendations', labelKey: 'v3.nav.search', icon: Search },
-    ],
-  },
-  {
-    titleKey: 'v3.nav.community',
-    items: [
-      { href: '/reviews/new', labelKey: 'v3.nav.post', icon: Upload },
-      // 🚨 THIS ROW POINTED AT `/profile/posts` — a list of the viewer's own posts, not
-      // friends. Two nav entries went to that same page and one of them was labelled
-      // "Following / Friends", so the label named a destination that did not exist. It now
-      // points at the page it is named for. (The other of the two was "My Reviews"; both it
-      // and the page they shared have since been removed — see the note below.)
-      { href: '/social', labelKey: 'v3.nav.following', icon: Users },
-      { href: '/profile/favorites', labelKey: 'v3.nav.saved', icon: Bookmark },
-      // 🚨 "MY REVIEWS" IS GONE, AND IT WAS A DUPLICATE RATHER THAN A LOSS.
-      // It pointed at `/profile/posts`, whose content is the same user-posted
-      // clips Explore already shows — one more surface over the `reviews` table,
-      // with its own copy of the tile, the delete and the hide. That page is gone
-      // too: the profile grid already renders an author's own and hidden posts and
-      // offers the same delete/hide. The post system underneath is untouched.
-      { href: '/profile/history', labelKey: 'v3.nav.history', icon: History },
-    ],
-  },
-  {
-    titleKey: 'v3.nav.commerce',
-    items: [
       { href: '/deals', labelKey: 'v3.nav.deals', icon: Tag },
-      // 🚨 MARKETPLACE IS HIDDEN, NOT DELETED. It was listed here with a "Sắp có"
-      // tag, which is still an unbuilt feature occupying a navigation slot — and
-      // the tab bar below carried it a second time with no tag at all. The route,
-      // the component and its test are untouched; `SHOW_MARKETPLACE` brings both
-      // entries back together when the phase that builds it arrives.
-      ...(SHOW_MARKETPLACE
-        ? [{ href: '/marketplace', labelKey: 'v3.nav.marketplace', icon: Store, tagKey: 'v3.tag.comingSoon' }]
-        : []),
+      { href: '/profile/notifications', labelKey: 'v3.nav.inbox', icon: InboxIcon },
     ],
   },
   {
-    titleKey: 'v3.nav.tools',
+    titleKey: 'v3.nav.groupCapabilities',
     items: [
+      // Search is a capability, not a destination — it moved here out of the old "main" group.
+      { href: '/recommendations', labelKey: 'v3.nav.search', icon: Search },
       // 🚨 THIS WAS `/#smart-tools`, AN ANCHOR NOTHING CARRIED. No element in the codebase
       // had `id="smart-tools"`, so the row scrolled to the top of Home and read as working.
       // `/tools` is the real page — the "Page 7 (Tools)" the debt note below names.
@@ -141,14 +120,46 @@ const GROUPS: NavGroup[] = [
     ],
   },
   {
+    titleKey: 'v3.nav.community',
+    items: [
+      { href: '/reviews/new', labelKey: 'v3.nav.post', icon: Upload },
+      // 🚨 THIS ROW POINTED AT `/profile/posts` — a list of the viewer's own posts, not
+      // friends. Two nav entries went to that same page and one of them was labelled
+      // "Following / Friends", so the label named a destination that did not exist. It now
+      // points at the page it is named for. (The other of the two was "My Reviews"; both it
+      // and the page they shared have since been removed — see the note below.)
+      { href: '/social', labelKey: 'v3.nav.following', icon: Users },
+      { href: '/profile/favorites', labelKey: 'v3.nav.saved', icon: Bookmark },
+      // 🚨 "MY REVIEWS" IS GONE, AND IT WAS A DUPLICATE RATHER THAN A LOSS.
+      // It pointed at `/profile/posts`, whose content is the same user-posted
+      // clips Explore already shows — one more surface over the `reviews` table,
+      // with its own copy of the tile, the delete and the hide. That page is gone
+      // too: the profile grid already renders an author's own and hidden posts and
+      // offers the same delete/hide. The post system underneath is untouched.
+      { href: '/profile/history', labelKey: 'v3.nav.history', icon: History },
+    ],
+  },
+  {
+    titleKey: 'v3.nav.commerce',
+    items: [
+      // Deals moved into the AI Agent group above — same route, same tag, one entry only.
+      // 🚨 MARKETPLACE IS HIDDEN, NOT DELETED. It was listed here with a "Sắp có"
+      // tag, which is still an unbuilt feature occupying a navigation slot — and
+      // the tab bar below carried it a second time with no tag at all. The route,
+      // the component and its test are untouched; `SHOW_MARKETPLACE` brings both
+      // entries back together when the phase that builds it arrives.
+      ...(SHOW_MARKETPLACE
+        ? [{ href: '/marketplace', labelKey: 'v3.nav.marketplace', icon: Store, tagKey: 'v3.tag.comingSoon' }]
+        : []),
+    ],
+  },
+  {
     titleKey: 'v3.nav.account',
     items: [
-      // 🚨 The inbox is `/profile/notifications`, not `/profile`. Pointing it at the account menu
-      // meant the Inbox row opened a settings list, and standing on Profile lit the "Inbox" tab.
-      // The route is auth-gated, which is right for a personal inbox. A separate "Notifications"
-      // row used to sit here pointing at `/profile/settings`; it was a second label for the same
-      // idea leading somewhere else again, so it is gone rather than duplicated.
-      { href: '/profile/notifications', labelKey: 'v3.nav.inbox', icon: InboxIcon },
+      // 🚨 The Inbox row MOVED UP into the AI Agent group; it did not disappear, and it still
+      // points at `/profile/notifications`. (The note that lived here recorded why it is that
+      // route and not `/profile` — that fix stands, the row simply sits with the agent now,
+      // which is where a message from Tappy belongs. One entry, not two.)
       { href: '/profile', labelKey: 'v3.nav.profile', icon: UserCircle },
       // 🚨 POINTED AT `/profile`, where the QR was an icon in the header rather than a
       // destination — the row named a page that did not exist. `/profile/qr` is it.
@@ -207,16 +218,24 @@ export interface V3ShellProps {
   scenic?: boolean
   /** Which tab reads as current. */
   activeTab?: string
+  /** Widen the content canvas from 1240px to 1480px. Home only — see the note at `<main>`. */
+  wide?: boolean
   user?: { name?: string | null; avatarUrl?: string | null; plan?: string | null } | null
   children: ReactNode
 }
 
-export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = false, scenic = false, activeTab = '/', user, children }: V3ShellProps) {
+export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = false, scenic = false, wide = false, activeTab = '/', user, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
   // Presentation only: delivery, consent and push identity are untouched — this reads a count the
   // store already maintains for the bottom nav.
   const { unreadCount } = useNotifications()
+  const router = useRouter()
+  const [query, setQuery] = useState('')
+  // Home is the one page that already has the composer, so the chrome must not offer a second
+  // one. Derived from the route rather than a prop: a prop can drift out of sync with where the
+  // user actually is; `usePathname` cannot.
+  const onHome = pathname === '/'
   const { isDark, mounted: themeMounted, toggle: toggleTheme } = useThemeMode()
 
   return (
@@ -302,7 +321,11 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
           </Link>
 
           <nav className="flex-1 overflow-y-auto px-2 pb-4" aria-label={t('v3.nav.ariaMain')}>
-            {GROUPS.map(group => (
+            {/* 🚨 A GROUP WITH NO ROWS DOES NOT RENDER ITS HEADING. `SHOW_MARKETPLACE` is false,
+                and Deals moved up into the AI Agent group — which left the Commerce group as a label
+                floating above nothing. An empty section heading is a promise of navigation that
+                is not there, and it was visible on every page of the app. */}
+            {GROUPS.filter(group => group.items.length > 0).map(group => (
               // Sidebar rhythm is tight on purpose. Six groups and twenty-two rows is more than a
               // 900px-tall window can show, so every 4px of row padding is a row of navigation
               // pushed under the fold — and what sat under it was the whole Tài khoản group.
@@ -389,15 +412,73 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
             {/* Fixed height from `lg` up so the header bottom, the sidebar's brand-block hairline
                 and the top of the content column all land on one line. Below `lg` the tab strip
                 wraps to its own row, so the height has to stay natural. */}
-            <div className="v3-container flex flex-wrap items-center gap-3 py-3 lg:h-[calc(var(--v3-header-h)-1px)] lg:flex-nowrap lg:py-0">
-              <div className="min-w-0 flex-1">
-                <h1 className="truncate text-[19px] font-semibold tracking-[-0.01em] lg:text-[21px]" style={{ color: 'var(--v3-fg)' }}>{title}</h1>
+            {/* 🚨 NAVIGATION LABELS ARE ATOMIC: THEY FIT OR THEY COLLAPSE, NEVER WRAP.
+                At 1280 "AI Agent", "Smart Tools", "Hỏi Tappy" and "Post / Upload" each broke onto
+                a second line, which turned a 68px header into a ragged two-line strip — wrapping
+                used as a responsive strategy, which it is not. Every label below now carries
+                `whitespace-nowrap`; the tab strip already scrolls, so when the row genuinely runs
+                out of width the strip gives, not the words. Everything else here is tightening:
+                smaller gaps, smaller padding, one step down in type. */}
+            <div className="v3-container flex flex-wrap items-center gap-2 py-3 lg:h-[calc(var(--v3-header-h)-1px)] lg:flex-nowrap lg:gap-2.5 lg:py-0">
+              {/* 🚨 THE PAGE IDENTITY IS QUIETER NOW. It was a 21px semibold title with a
+                  subtitle — the loudest thing in the bar, on every page, saying what the user
+                  had just clicked. The bar's job is to hold the global controls; the page says
+                  what it is in its own content. */}
+              <div className="min-w-0 flex-shrink-0 lg:w-[150px] xl:w-[176px]">
+                <h1 className="truncate text-[15px] font-medium tracking-[-0.01em] lg:text-[16px]" style={{ color: 'var(--v3-fg)' }}>{title}</h1>
                 {subtitle && (
-                  <p className="truncate text-[12px] font-light" style={{ color: 'var(--v3-fg-secondary)' }}>{subtitle}</p>
+                  <p className="truncate text-[11.5px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>{subtitle}</p>
                 )}
               </div>
 
-              <nav className="v3-scroll-x order-3 flex w-full gap-1 lg:order-none lg:w-auto" aria-label={t('v3.nav.ariaTabs')}>
+              {/* ── Global command entry ───────────────────────────────────
+                  🚨 ON HOME THIS IS A BUTTON, NOT A FIELD, AND THAT IS THE FIX.
+                  Home already owns the product's primary input — a 46px headline above a lit
+                  composer. Putting a second "ask Tappy" field 250px above it made the page
+                  argue with itself about where to type, and weakened the one claim the hero
+                  exists to make. Everywhere else the field earns its place: it is the only way
+                  to reach the assistant without going back to Home.
+
+                  🚨 IT ALSO REMOVES THE 1280 STUB. Title + field + six tabs + four controls
+                  could not share one row at 1280: the field collapsed to 87px with a 38px input
+                  showing three truncated characters of its placeholder. Home spends nothing on it now,
+                  carries a `min-w` so it can never degrade into a stub again — the tab strip,
+                  which already scrolls, gives up the space instead. */}
+              {onHome ? (
+                <Link
+                  href="/chat"
+                  className="ml-auto hidden items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/5 lg:inline-flex"
+                  style={{ border: '1px solid var(--v3-border)', color: 'var(--v3-fg-secondary)' }}
+                >
+                  <Sparkles size={13} aria-hidden="true" style={{ color: 'var(--v3-accent)' }} />
+                  {t('v3.top.askAction')}
+                </Link>
+              ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  const q = query.trim()
+                  if (!q) return
+                  setQuery('')
+                  router.push(`/chat?q=${encodeURIComponent(q)}`)
+                }}
+                role="search"
+                className="hidden min-w-[220px] flex-1 items-center gap-2 rounded-xl px-3 py-1.5 transition-colors lg:flex"
+                style={{ background: 'var(--v3-panel-elevated)', border: '1px solid var(--v3-border)' }}
+              >
+                <Search size={15} aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-fg-muted)' }} />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={t('v3.top.searchPlaceholder')}
+                  aria-label={t('v3.top.searchAria')}
+                  className="min-w-0 flex-1 bg-transparent text-[13px] font-light outline-none placeholder:font-light"
+                  style={{ color: 'var(--v3-fg)' }}
+                />
+              </form>
+              )}
+
+              <nav className="v3-scroll-x order-3 flex w-full min-w-0 gap-1 lg:order-none lg:w-auto lg:flex-shrink" aria-label={t('v3.nav.ariaTabs')}>
                 {TABS.map(tab => {
                   const Icon = tab.icon
                   const active = tab.href === activeTab
@@ -406,7 +487,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                       key={tab.labelKey}
                       href={tab.href}
                       aria-current={active ? 'page' : undefined}
-                      className="flex min-w-[68px] flex-col items-center gap-1 rounded-xl px-3.5 py-1.5 text-[11px] font-normal transition-colors"
+                      className="flex flex-col items-center gap-1 whitespace-nowrap rounded-xl px-2.5 py-1.5 text-[10.5px] font-normal transition-colors lg:px-3 xl:text-[11px]"
                       style={active
                         ? { background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }
                         : { color: 'var(--v3-fg-secondary)' }}
@@ -472,7 +553,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                     ? <Image src={user.avatarUrl} alt="" width={26} height={26} className="h-[26px] w-[26px] rounded-full object-cover" />
                     : <UserCircle size={24} style={{ color: 'var(--v3-fg-secondary)' }} aria-hidden="true" />}
                   <span className="hidden flex-col leading-tight sm:flex">
-                    <span className="text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
+                    <span className="max-w-[104px] truncate whitespace-nowrap text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
                       {user?.name || t('v3.top.guest')}
                     </span>
                     {user?.plan && (
@@ -480,13 +561,20 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                     )}
                   </span>
                 </Link>
+                {/* 🚨 COMPACT BELOW `xl`, NOT WRAPPED. "Post / Upload" is two words with a
+                    slash and it was the first thing to break onto a second line at 1280. From
+                    `xl` it reads in full; below that it collapses to the glyph with the label as
+                    its accessible name and its tooltip — the label is never truncated and never
+                    wrapped, which is the whole rule. */}
                 <Link
                   href="/reviews/new"
-                  className="ml-1 hidden min-h-[36px] items-center gap-1.5 rounded-full px-4 text-[12.5px] font-medium text-white sm:flex"
+                  aria-label={t('v3.top.post')}
+                  title={t('v3.top.post')}
+                  className="ml-1 hidden min-h-[36px] items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[12.5px] font-medium text-white sm:flex xl:px-4"
                   style={{ background: 'var(--v3-accent-fill)' }}
                 >
                   <Plus size={15} aria-hidden="true" />
-                  {t('v3.top.post')}
+                  <span className="hidden xl:inline">{t('v3.top.post')}</span>
                 </Link>
               </div>
             </div>
@@ -494,7 +582,12 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
 
           {/* Same container as the header, so the page's left edge lines up with the title
               above it instead of each choosing its own padding. */}
-          <main className="v3-container pb-24 pt-5 lg:pb-10">{children}</main>
+          {/* 🚨 `wide` IS OPT-IN, AND THAT IS DELIBERATE. `--v3-content-max` is 1240px and every
+              approved V3 page — Deals, Inbox, Profile, Explore — is composed against it; raising
+              the token would silently re-lay-out all of them. Home asks for the wider canvas
+              because its hero is an environment rather than a column of cards, and it is the
+              only caller. */}
+          <main className={cn('v3-container pb-24 pt-5 lg:pb-10', wide && 'v3-container-wide')}>{children}</main>
         </div>
       </div>
 

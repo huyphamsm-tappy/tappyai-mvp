@@ -42,17 +42,34 @@ export interface TappyPresenceProps {
   /** Rendered size of the character itself, px. The composition scales with it. */
   size: number
   className?: string
+  /**
+   * How much atmosphere to draw around the character.
+   *
+   * 🚨 `calm` IS THE DEFAULT, AND IT IS A CORRECTION. `full` draws the reference's wide tilted
+   * orbit, four particles and two four-point stars. Reviewed on the finished AI-first Home, that
+   * arc measured wider than any other graphic on the page, swept back across the 46px headline,
+   * and at 1280 crowded the text — so the loudest thing on a page about an AI agent was the
+   * decoration around its mascot. `calm` keeps the character and its bloom and drops the orbit
+   * and the stars: a companion with a light behind it rather than a promotional illustration.
+   *
+   * `full` is kept, not deleted, because it is what the owner's reference image shows and the
+   * note below is its record. Nothing renders it today.
+   */
+  aura?: 'calm' | 'full'
 }
 
-export default function TappyPresence({ pose = 'wave', size, className = '' }: TappyPresenceProps) {
+export default function TappyPresence({ pose = 'wave', size, className = '', aura = 'calm' }: TappyPresenceProps) {
   // 🚨 `useId`, not a constant: Home mounts THREE of these (one per breakpoint), so a
   // hardcoded gradient id would be duplicated three times in one document. Browsers
   // resolve a duplicate id to the first match, which happens to look right — until the
   // first instance is the hidden one and the visible orbit silently loses its gradient.
   const gid = useId().replace(/:/g, '')
 
-  // The field the atmosphere occupies. Much wider than the character, per the reference.
-  const field = Math.round(size * 1.9)
+  const full = aura === 'full'
+  // The field the atmosphere occupies. `full` is much wider than the character, per the
+  // reference; `calm` keeps the glow close so it reads as light on the character rather than a
+  // halo competing with the headline beside it.
+  const field = Math.round(size * (full ? 1.9 : 1.5))
   // The orbit is wider still and deliberately runs past the field: the reference's arc
   // leaves the frame on both sides. The hero card clips it.
   const orbitW = Math.round(size * 2.55)
@@ -63,7 +80,7 @@ export default function TappyPresence({ pose = 'wave', size, className = '' }: T
   // arc is 224px wide against an 88px character, so it swept back across the greeting and the
   // subtitle — decoration crossing the copy. Below this size the bloom and particles carry the
   // atmosphere alone, which is an adaptation rather than a shrunken desktop layout.
-  const showOrbit = size >= 110
+  const showOrbit = full && size >= 110
 
   return (
     <div
@@ -82,9 +99,14 @@ export default function TappyPresence({ pose = 'wave', size, className = '' }: T
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            background:
-              'radial-gradient(circle at 46% 40%, color-mix(in srgb, var(--v3-violet) 26%, transparent) 0%, '
-              + 'color-mix(in srgb, var(--v3-accent) 10%, transparent) 40%, transparent 72%)',
+            background: full
+              ? 'radial-gradient(circle at 46% 40%, color-mix(in srgb, var(--v3-violet) 26%, transparent) 0%, '
+                + 'color-mix(in srgb, var(--v3-accent) 10%, transparent) 40%, transparent 72%)'
+              // Calm: one soft violet-to-blue pool with no edge anywhere near the copy. Tuned
+              // UP from the first calm pass, which removed so much that the character read as a
+              // sticker pasted on flat dark — the orbit was the problem, not the light.
+              : 'radial-gradient(circle at 48% 44%, color-mix(in srgb, var(--v3-violet) 22%, transparent) 0%, '
+                + 'color-mix(in srgb, var(--v3-accent) 11%, transparent) 46%, transparent 72%)',
           }}
         />
 
@@ -127,14 +149,23 @@ export default function TappyPresence({ pose = 'wave', size, className = '' }: T
         {showOrbit && (
           <Dot className="left-[16%] bottom-[16%] motion-safe:animate-[tappyFloat_11s_ease-in-out_infinite_1.2s]" tone="var(--v3-violet)" px={3} />
         )}
-        <Dot className="right-[4%] top-[22%] motion-safe:animate-[tappyFloat_9s_ease-in-out_infinite_0.8s]" tone="var(--v3-violet)" px={4} />
-        <Dot className="right-[14%] bottom-[24%] motion-safe:animate-[tappyFloat_8s_ease-in-out_infinite_1.6s]" tone="var(--v3-accent)" px={3} />
+        {/* 🚨 THE PARTICLES ARE PART OF THE NOISE, NOT AN EXCEPTION TO IT. Two of the four were
+            unconditional, so `calm` would still have sparkled. Sparkle around a mascot is the
+            single strongest "consumer app" signal on the page. */}
+        {full && (
+          <Dot className="right-[4%] top-[22%] motion-safe:animate-[tappyFloat_9s_ease-in-out_infinite_0.8s]" tone="var(--v3-violet)" px={4} />
+        )}
+        {full && (
+          <Dot className="right-[14%] bottom-[24%] motion-safe:animate-[tappyFloat_8s_ease-in-out_infinite_1.6s]" tone="var(--v3-accent)" px={3} />
+        )}
 
         {/* Four-point stars — the reference has a couple of these among the dots. */}
         {showOrbit && (
           <Star className="left-[9%] top-[16%] motion-safe:animate-[tappyFloat_10s_ease-in-out_infinite_0.4s]" px={13} />
         )}
-        <Star className="right-[9%] top-[46%] motion-safe:animate-[tappyFloat_12s_ease-in-out_infinite_2s]" px={9} />
+        {full && (
+          <Star className="right-[9%] top-[46%] motion-safe:animate-[tappyFloat_12s_ease-in-out_infinite_2s]" px={9} />
+        )}
       </div>
 
       {/* ── The approved asset, untouched. ─────────────────────────────── */}

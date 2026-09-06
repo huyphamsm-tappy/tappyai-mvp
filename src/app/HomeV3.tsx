@@ -6,13 +6,13 @@ import { useRouter } from 'next/navigation'
 import type { ComponentProps } from 'react'
 import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
-import HomeBackground from '@/components/HomeBackground'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { homeSmartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import {
-  MessageCircle, Mic, ArrowUp, ChevronRight, Sparkles,
+  MessageCircle, Mic, ArrowUp, ChevronRight, Sparkles, Search, Plus,
+  UtensilsCrossed, ShoppingBag, Plane, Clapperboard, Flower2,
   Music2, Sparkle, PenLine, Users, Star,
 } from 'lucide-react'
 
@@ -210,6 +210,26 @@ const CATEGORY_LABEL: Record<string, string> = {
   spa: 'v3.cat.spa',
 }
 
+/**
+ * The capability strip.
+ *
+ * 🚨 IDS, ICONS AND LABELS ALL COME FROM WHAT ALREADY EXISTS. The five ids are exactly the five
+ * in `CATEGORIES` (src/lib/utils) — the vocabulary `/api/chat`, the composer and the suggestion
+ * cards already speak — and each label is resolved through `CATEGORY_LABEL` above, which was
+ * already wired to `v3.explore.*` / `v3.cat.*`. Only the one-line descriptions are new copy.
+ *
+ * 🚨 NOT A SIXTH CATEGORY IN THE DATA. The "more" tile is rendered separately at the call site
+ * and points at /tools, because there is no sixth category and inventing one to square the grid
+ * is exactly the failure this file's header warns about.
+ */
+const CAPABILITIES: { id: string; icon: typeof Search; tone: string }[] = [
+  { id: 'food', icon: UtensilsCrossed, tone: 'var(--v3-amber)' },
+  { id: 'shopping', icon: ShoppingBag, tone: 'var(--v3-rose)' },
+  { id: 'travel', icon: Plane, tone: 'var(--v3-accent)' },
+  { id: 'entertainment', icon: Clapperboard, tone: 'var(--v3-violet)' },
+  { id: 'spa', icon: Flower2, tone: 'var(--v3-emerald)' },
+]
+
 const QUICK_CHIPS = [
   'v3.chip.cafe',
   'v3.chip.plan',
@@ -252,17 +272,20 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
          changed Deals, Marketplace, Profile and Explore along with it. */
       brandTagline={t('v3.brand.taglineHome')}
       wordmarkOnly
-      scenic
+      wide
       activeTab="/"
       user={{ name: userInfo?.full_name || firstName, avatarUrl: userInfo?.avatar_url, plan: user ? t('v3.top.plan') : null }}
     >
-      {/* 🔑 REUSED, not created. `HomeBackground` + `backgroundManager` +
-          `backgrounds.config.ts` are the Home background system this project already had:
-          the asset (/backgrounds/home-desktop-v5.webp), its object-position, and its
-          per-theme overlays. It was built for Home and the V3 redesign simply stopped
-          rendering it, which is why Home became a flat dark panel. It hides itself below
-          `md` on its own, so the phone layout is untouched. */}
-      <HomeBackground />
+      {/* 🚨 THE CITYSCAPE IS GONE, AND THAT IS THE HEADLINE CHANGE.
+          A full-bleed photograph of Hanoi behind everything made the strongest visual claim on
+          the page, and the claim it made was "travel site". `HomeBackground`, `backgroundManager`
+          and `backgrounds.config.ts` are NOT deleted — they still work and still resolve their
+          asset; Home simply stops mounting them, and `V3Shell`'s `scenic` prop stops being
+          passed. Turning the scene back on is one import and one line.
+
+          What replaces it is light rather than imagery: wide, very low-opacity blue/violet
+          fields that pool behind the hero and fall off to near-black. See `.v3-ai-ambience`. */}
+      <div className="v3-ai-ambience" aria-hidden="true" />
 
       {/* No width of its own. The shell's `.v3-container` caps and centres every V3 page on the
           same grid; Home adding a second, narrower cap inside it was what left the content
@@ -271,127 +294,194 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
       {/* `v3-home` is the surface scope — see globals.css. It redefines the panel/tile/border
           tokens to charcoal for everything below, which is what stops Home reading as a blue
           dashboard. Scoped here so no other destination inherits it. */}
-      <div className="v3-home space-y-9">
+      {/* 🚨 `overflow-x: clip` BOUNDS TAPPY'S AURA. `TappyPresence` draws a decorative orbit
+          that is deliberately wider than the character, and it used to be clipped for free by the
+          hero's `v3-panel overflow-hidden`. The hero is not a panel any more, so the ring escaped
+          the content column and pushed the document 108px wide — a horizontal scrollbar on the
+          home page of the product. `clip` rather than `hidden`: it bounds the overflow without
+          creating a scroll container, so nothing inside becomes focus-scrollable, and it is
+          horizontal-only so sticky/vertical behaviour is untouched. */}
+      <div className="v3-home relative z-[1] space-y-10" style={{ overflowX: 'clip' }}>
 
-        {/* ── 1. Ask Tappy — the primary action, first and most prominent ──
-            Compact by design. It was 284px tall at 1440 because three things each added height
-            independently: 28px of card padding, a 104px mascot that set the greeting row's height
-            on its own, and a 16/12px gap stacked between every block. The greeting, the mascot,
-            the composer and the chips are ONE composition, so they sit close together and the
-            mascot is sized to the text beside it rather than the other way round. */}
-        <section data-home-section="hero" aria-label={t('v3.home.askAria')} className="v3-panel v3-ai-surface overflow-hidden p-5 sm:p-6 lg:p-7">
-          {/* 🔑 The label, the greeting and the mascot are ONE row in the reference, not a label
-              stacked above a greeting-and-mascot row. The mascot's head sits level with the label
-              at the card's top-right and its body runs down past the greeting — so the text column
-              and the mascot are siblings here, and the mascot spans the whole column's height
-              rather than being centred against the greeting alone. */}
-          {/* 🔑 TWO COLUMNS. The left one owns every interactive thing — label, greeting,
-              subtitle, composer, chips. The right one is Tappy's, and it is a real column with
-              a real width rather than whatever space the text left over. That single structural
-              change is what stops the character reading as an ornament in a corner: at 168px in
-              a shared row it was the smallest thing in the hero, and no amount of enlarging it
-              inside that row would have fixed the composition. */}
-          <div className="flex items-stretch gap-6">
-            <div className="min-w-0 flex-1">
-                {/* The card names itself. In the approved reference this is a filled violet badge
-                    carrying the glyph, followed by "AI AGENT – HOME" in the ACCENT blue (measured
-                    #2D5BE7 off the screenshot) — not the muted grey a section heading uses. The
-                    label is the card's identity, so it reads as brand, not as a caption. */}
-                <div className="flex items-start justify-between gap-3">
-                  {/* One stack, one flex ITEM. Without this wrapper the label, the greeting and
-                      the subtitle each became a flex item and laid out ACROSS the row. */}
-                  <div className="min-w-0">
-                  <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--v3-accent)' }}>
-                  <span
-                    className="flex h-[18px] w-[18px] items-center justify-center rounded-md"
-                    style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
-                    aria-hidden="true"
-                  >
-                    <Sparkles size={11} />
-                  </span>
-                  {t('v3.home.cardLabel')}
-                </p>
-                <h2 className="mt-3 text-[26px] font-light leading-[1.15] tracking-[-0.02em] sm:text-[32px]" style={{ color: 'var(--v3-fg)' }}>
-                  {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
-                  <span aria-hidden="true">👋</span>
-                </h2>
-                <p className="mt-1.5 text-[14px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
-                  {t('v3.home.greetSub')}
-                </p>
-                  </div>
-                {/* Below `lg` Tappy rides beside the greeting instead of owning a column. */}
-                <TappyPresence pose="wave" size={132} className="-mt-2 hidden flex-shrink-0 sm:block lg:hidden" />
-                <TappyPresence pose="wave" size={88} className="-mt-1 flex-shrink-0 sm:hidden" />
+        {/* ── 1. THE AI AGENT — the page is this, and everything else supports it ──
+            🚨 NOT A PANEL ANY MORE. The hero used to be one `v3-panel` among four, which is
+            precisely why Home read as a dashboard that happened to contain a search box: a card
+            competing on equal terms with the cards below it. It is now the page's own opening —
+            no card border, no card background, lit from behind by `.v3-ai-hero`, with real
+            vertical air around it. Rank is expressed by SPACE and LIGHT, not by another box.
+
+            The order is deliberate and is the product's own sentence: who is speaking (eyebrow),
+            what it asks (headline), what it promises (subtext), how you answer (composer), and
+            what you might say (chips). */}
+        <section
+          data-home-section="hero"
+          aria-label={t('v3.home.askAria')}
+          className="v3-ai-hero relative pb-4 pt-7 sm:pt-11"
+        >
+          {/* 🚨 ONE COMPOSITION, NOT TWO COLUMNS.
+              This was `flex` with a text column and a 240px mascot column, and the consequence
+              was structural rather than cosmetic: the mascot set the width of everything beside
+              it, so the composer — the product's primary control — was capped at whatever the
+              character left over, and the hero read as "content on the left, art on the right".
+
+              Only the HEADLINE now shares a row with Tappy. The subtext, the composer and the
+              prompts span the full width of the hero, so the AI experience is as wide as the
+              page and the character sits INSIDE that environment rather than next to it. */}
+          <div className="flex items-start justify-between gap-6">
+            <div className="min-w-0">
+              {/* The eyebrow names the product category before anything else on the page does. */}
+              <p className="flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--v3-accent)' }}>
+                <span
+                  className="flex h-[19px] w-[19px] items-center justify-center rounded-md"
+                  style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
+                  aria-hidden="true"
+                >
+                  <Sparkles size={11} />
+                </span>
+                {t('v3.home.eyebrow')}
+              </p>
+
+              {/* 🚨 TWO LINES, AND THE SECOND ONE IS THE PRODUCT'S QUESTION. The greeting alone
+                  is hospitality; the question underneath it is the whole proposition, so it
+                  carries the weight and the accent. */}
+              <h2 className="mt-4 text-[30px] font-semibold leading-[1.08] tracking-[-0.025em] sm:text-[42px] lg:text-[52px]" style={{ color: 'var(--v3-fg)' }}>
+                {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
+                <span aria-hidden="true">👋</span>
+                <span className="mt-1 block" style={{ color: 'var(--v3-accent)' }}>{t('v3.home.askHeadline')}</span>
+              </h2>
+
+              <p className="mt-4 max-w-[62ch] text-[15px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
+                {t('v3.home.askSub')}
+              </p>
+            </div>
+
+            {/* ── Tappy ──────────────────────────────────────────────────────
+                Layered into the composition, not given a column of its own: `flex-shrink-0` with
+                no width, so it takes only the space the character occupies and never dictates how
+                wide the headline beside it may be. Its glow is restored — restrained, close in,
+                and behind — because a companion with no light on it read as a sticker.
+
+                The asset is untouched: same `TappyPresence`, same pose, same calm aura. */}
+            <div className="relative hidden flex-shrink-0 flex-col items-center pt-1 lg:flex">
+              <div
+                className="mb-1 rounded-2xl rounded-br-sm px-3 py-1.5 text-[12px] font-medium"
+                style={{
+                  background: 'color-mix(in srgb, var(--v3-panel) 88%, transparent)',
+                  border: '1px solid var(--v3-border)',
+                  color: 'var(--v3-fg-secondary)',
+                }}
+              >
+                {t('v3.home.mascotSays')}
               </div>
+              <TappyPresence pose="wave" size={224} />
+            </div>
+          </div>
 
-            {/* A composer, not a search box: it promises consultation, not retrieval. */}
-            <form
-              onSubmit={(e) => { e.preventDefault(); ask(draft) }}
-              className="mt-3 flex items-center gap-2 rounded-2xl px-3.5 py-2"
-              style={{ background: 'var(--v3-panel-elevated)', border: '1px solid var(--v3-border-strong)' }}
+          {/* 🚨 THE COMMAND CENTRE, AT FULL HERO WIDTH. This is the primary action of the entire
+              product; on a 1480px canvas it is now roughly 1400px of lit surface rather than the
+              ~640px the mascot column used to leave it. It still NAVIGATES to /chat — Home is a
+              door, not a room (DD-002), and nothing here streams a reply. */}
+          <form
+            onSubmit={(e) => { e.preventDefault(); ask(draft) }}
+            className="v3-ai-composer mt-7 flex items-center gap-3 rounded-2xl px-5 py-3 sm:py-3.5"
+          >
+            <Search size={19} aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-fg-muted)' }} />
+            <input
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder={t('v3.home.askPlaceholder')}
+              aria-label={t('v3.home.askAria')}
+              className="min-w-0 flex-1 bg-transparent text-[15px] font-light outline-none placeholder:font-light sm:text-[16.5px]"
+              style={{ color: 'var(--v3-fg)' }}
+            />
+            <button
+              type="button"
+              aria-label={t('v3.home.voiceAria')}
+              className="flex h-10 w-10 items-center justify-center rounded-xl transition-colors hover:bg-white/5"
+              style={{ color: 'var(--v3-fg-secondary)' }}
             >
-              <input
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                placeholder={t('v3.home.askPlaceholder')}
-                aria-label={t('v3.home.askAria')}
-                className="min-w-0 flex-1 bg-transparent text-[14px] font-light outline-none placeholder:font-light"
-                style={{ color: 'var(--v3-fg)' }}
-              />
-              <button
-                type="button"
-                aria-label={t('v3.home.voiceAria')}
-                className="flex h-8 w-8 items-center justify-center rounded-lg"
-                style={{ color: 'var(--v3-fg-secondary)' }}
-              >
-                <Mic size={16} aria-hidden="true" />
-              </button>
-              <button
-                type="submit"
-                aria-label={t('v3.home.sendAria')}
-                className="flex h-8 w-8 items-center justify-center rounded-lg"
-                style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
-              >
-                <ArrowUp size={16} aria-hidden="true" />
-              </button>
-            </form>
+              <Mic size={18} aria-hidden="true" />
+            </button>
+            <button
+              type="submit"
+              aria-label={t('v3.home.sendAria')}
+              className="flex h-10 w-10 items-center justify-center rounded-xl transition-opacity hover:opacity-90"
+              style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+            >
+              <ArrowUp size={18} aria-hidden="true" />
+            </button>
+          </form>
 
-            {/* The reference labels the chip row "Gợi ý nhanh". `v3.home.quickTitle` was already in
-                both dictionaries — the string had been written for this and never wired to anything,
-                so the row arrived unlabelled. */}
-            <p className="mt-4 text-[11px] font-normal tracking-[0.04em]" style={{ color: 'var(--v3-fg-muted)' }}>
-              {t('v3.home.quickTitle')}
+          <p className="mt-2.5 pl-1 text-[11.5px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>
+            {t('v3.home.askHint')}
+          </p>
+
+          {/* 🚨 "TRY ASKING TAPPY", NOT "QUICK SUGGESTIONS". These are not category navigation
+              and not filters — each one is a whole sentence a person could say out loud, and
+              pressing it asks Tappy exactly that. The label says so. */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <p className="text-[11.5px] font-medium" style={{ color: 'var(--v3-fg-muted)' }}>
+              {t('v3.home.tryAsking')}
             </p>
-
-              {/* Contextual chips — the fastest path to a formed question. Tucked directly under
-                  their label: they belong to it, so the gap between them is smaller than the gap
-                  to anything else. */}
-              <div className="v3-scroll-x mt-1.5 flex gap-2 pb-0.5">
-                {QUICK_CHIPS.map(c => (
-                  <button key={c} type="button" onClick={() => ask(t(c))} className="v3-chip flex-shrink-0">
-                    {t(c)}
-                  </button>
-                ))}
-              </div>
+            <div className="v3-scroll-x flex gap-2 pb-0.5">
+              {QUICK_CHIPS.map(c => (
+                <button key={c} type="button" onClick={() => ask(t(c))} className="v3-chip flex-shrink-0">
+                  {t(c)}
+                </button>
+              ))}
             </div>
+          </div>
+        </section>
 
-            {/* ── Tappy's column ─────────────────────────────────────────────
-                🚨 SCALE IS THE POINT. 320px against a hero of roughly the same height, not the
-                168px it was — the brief was explicit that nudging 168 to 200 would miss it. The
-                character is meant to fill this zone, so the column is sized to the character
-                rather than the character squeezed into the column.
+        {/* ── 2. CAPABILITIES — what the agent can actually do ──────────────
+            🚨 THESE ARE THE FIVE REAL CATEGORIES, NOT AN INVENTED TAXONOMY. `CATEGORIES` in
+            `src/lib/utils` is the shared vocabulary the composer, the chat route and the
+            suggestion cards already use — food, shopping, entertainment, travel, spa — and
+            `v3.cat.*` already carried a localized label for each. Every card opens /chat with
+            that category preselected, which is the same mechanism the "for you" cards use.
 
-                `-my-7 -mr-2` lets it bleed into the card's own padding: the reference has Tappy
-                touching the hero's edges rather than sitting politely inside them, which is most
-                of why it reads cinematic instead of decorative. The card is `overflow-hidden`,
-                so the bleed clips cleanly at the rounded corner.
+            🚨 THEY ARE CAPABILITIES, NOT DESTINATIONS. Nothing here links to Explore, Deals or
+            Marketplace, and no card reproduces another page's content — the rule `homeAiFirst`
+            has enforced since the fifteen-panel dashboard was taken apart. Each one is a way to
+            start a conversation, which is why they sit directly under the composer.
 
-                Hidden below `lg`: at those widths the text column needs the whole card, and a
-                character competing for it is what produced the cramped mobile hero earlier. The
-                smaller instances below keep Tappy present without taking the row. */}
-            <div className="relative hidden flex-shrink-0 items-center justify-center lg:flex" style={{ width: 360 }}>
-              <TappyPresence pose="wave" size={320} className="-my-7 -mr-2" />
-            </div>
+            🚨 SOFT TILES — the middle ground. See `.v3-cap-tile`: this was six dashboard cards,
+            then six bare pills, and both were wrong. A faint surface and a hairline border make
+            them read as capabilities rather than as modules or as tags. They share the row
+            evenly so the section spans the same width as the composer above it. */}
+        <section data-home-section="capabilities" aria-label={t('v3.home.canHelpTitle')}>
+          <p className="text-[12.5px] font-medium" style={{ color: 'var(--v3-fg-secondary)' }}>
+            {t('v3.home.canHelpTitle')}
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
+            {CAPABILITIES.map(({ id, icon: Icon, tone }) => (
+              <Link
+                key={id}
+                href={`/chat?category=${id}`}
+                data-capability={id}
+                className="v3-cap-tile group flex items-center gap-2.5 rounded-xl px-3.5 py-3 focus-visible:outline-none focus-visible:ring-2"
+              >
+                <span aria-hidden="true" className="flex-shrink-0" style={{ color: tone }}>
+                  <Icon size={17} />
+                </span>
+                <span className="truncate text-[13px] font-medium" style={{ color: 'var(--v3-fg)' }}>
+                  {t(CATEGORY_LABEL[id])}
+                </span>
+              </Link>
+            ))}
+            {/* Not a sixth category — the way out to everything else, at the same weight. */}
+            <Link
+              href="/tools"
+              data-capability="more"
+              className="v3-cap-tile group flex items-center gap-2.5 rounded-xl px-3.5 py-3 focus-visible:outline-none focus-visible:ring-2"
+            >
+              <span aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-fg-muted)' }}>
+                <Plus size={17} />
+              </span>
+              <span className="truncate text-[13px] font-medium" style={{ color: 'var(--v3-fg-secondary)' }}>
+                {t('v3.home.capMore')}
+              </span>
+            </Link>
           </div>
         </section>
 
@@ -590,13 +680,19 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
 }
 
 /** One heading rhythm for the three sections below the hero. */
-function SectionHeading({ title, action }: { title: string; action?: { label: string; href: string } }) {
+function SectionHeading({ title, subtitle, action }: { title: string; subtitle?: string; action?: { label: string; href: string } }) {
   return (
         // No optical inset: `px-0.5` put every heading 2px right of the grid line its own
     // cards sit on, which is exactly the kind of near-miss that reads as sloppy.
     <div className="flex items-baseline justify-between gap-3">
-      {/* `data-scenic-heading`: this one sits on the photograph with no panel behind it. */}
-      <h2 data-scenic-heading className="text-[17px] font-normal tracking-[-0.01em]" style={{ color: 'var(--v3-fg)' }}>{title}</h2>
+      {/* `data-scenic-heading` is kept: the halo it carries is harmless now that Home is opaque,
+          and removing it would touch the scenic rule other surfaces may still use. */}
+      <div className="min-w-0">
+        <h2 data-scenic-heading className="text-[17px] font-normal tracking-[-0.01em]" style={{ color: 'var(--v3-fg)' }}>{title}</h2>
+        {subtitle && (
+          <p className="mt-0.5 text-[12px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>{subtitle}</p>
+        )}
+      </div>
       {action && (
         <Link href={action.href} className="flex items-center gap-0.5 text-[12px]" style={{ color: 'var(--v3-accent)' }}>
           {action.label}

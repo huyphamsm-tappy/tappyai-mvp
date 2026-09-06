@@ -322,9 +322,14 @@ describe('it uses the mechanisms that already exist', () => {
     const { container } = render(<ExploreV3Desktop />)
     await waitFor(() => expect(cards().length).toBe(1))
 
-    const input = container.querySelector('input')!
+    // 🔑 TARGETS EXPLORE'S OWN FIELD BY NAME, not "the first input on the page".
+    // The V3 header now carries a global command search (it asks Tappy — see V3Shell), so a
+    // page hosting the shell has two search inputs and this used to drive whichever came first
+    // in the DOM. Selecting by accessible name is what this test always meant: prove EXPLORE's
+    // search goes through the feed endpoint.
+    const input = screen.getByLabelText(/search videos|tìm video/i) as HTMLInputElement
     fireEvent.change(input, { target: { value: 'bún bò' } })
-    fireEvent.submit(container.querySelector('form')!)
+    fireEvent.submit(input.closest('form')!)
     await waitFor(() => expect(lastUrl).toContain('search='))
     expect(lastUrl, 'no second search service').toContain('/api/reviews/feed')
   })

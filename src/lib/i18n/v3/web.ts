@@ -114,6 +114,26 @@ export const vi: Record<string, string> = {
   'v3.home.greetSub': 'TappyAI có thể giúp gì cho bạn hôm nay?',
   'v3.home.askPlaceholder': 'Bạn muốn tìm gì, hỏi gì, làm gì?',
   'v3.home.askAria': 'Hỏi TappyAI',
+  // ── Home · AI-first hero ────────────────────────────────────────────────
+  // The eyebrow, the headline question and the two-line promise. Together they say what the
+  // product IS before the user has to work it out from a grid of cards.
+  'v3.home.eyebrow': 'Trợ lý AI cá nhân của bạn',
+  'v3.home.askHeadline': 'Bạn muốn làm gì hôm nay?',
+  'v3.home.askSub': 'Nói cho Tappy biết bạn cần gì. Tappy sẽ giúp bạn tìm, lên kế hoạch và thực hiện.',
+  'v3.home.askHint': 'Ví dụ: tìm quán cà phê gần đây, lên kế hoạch du lịch, chia hóa đơn…',
+  'v3.home.tryAsking': 'Thử hỏi Tappy',
+  'v3.home.mascotSays': 'Mình giúp nhé?',
+  // The capability strip. These are the FIVE real categories in `CATEGORIES` (src/lib/utils),
+  // the same vocabulary the composer and the suggestion cards already send to /chat.
+  'v3.home.canHelpTitle': 'Tappy có thể giúp bạn',
+  'v3.home.capMore': 'Khám phá thêm',
+  // Header search — a command entry point, not a second composer.
+  'v3.top.searchPlaceholder': 'Hỏi TappyAI bất cứ điều gì…',
+  'v3.top.searchAria': 'Hỏi TappyAI',
+  'v3.top.askAction': 'Hỏi Tappy',
+  // Sidebar groups, renamed so the rail says what each block IS.
+  'v3.nav.groupAgent': 'AI Agent',
+  'v3.nav.groupCapabilities': 'Khả năng',
   'v3.home.voiceAria': 'Nhập bằng giọng nói',
   'v3.home.sendAria': 'Gửi',
   // The hero card names itself in the reference: "AI AGENT – HOME", en dash, uppercased
@@ -583,6 +603,20 @@ export const en: Record<string, string> = {
   'v3.home.greetSub': 'What can TappyAI help you with today?',
   'v3.home.askPlaceholder': 'What do you want to find, ask or do?',
   'v3.home.askAria': 'Ask TappyAI',
+  // ── Home · AI-first hero ────────────────────────────────────────────────
+  'v3.home.eyebrow': 'Your personal AI agent',
+  'v3.home.askHeadline': 'What would you like to do today?',
+  'v3.home.askSub': 'Tell Tappy what you need. Tappy will find it, plan it and help you do it.',
+  'v3.home.askHint': 'For example: find a cafe nearby, plan a trip, split a bill…',
+  'v3.home.tryAsking': 'Try asking Tappy',
+  'v3.home.mascotSays': 'Need a hand?',
+  'v3.home.canHelpTitle': 'Tappy can help with',
+  'v3.home.capMore': 'Explore more',
+  'v3.top.searchPlaceholder': 'Ask TappyAI anything…',
+  'v3.top.searchAria': 'Ask TappyAI',
+  'v3.top.askAction': 'Ask Tappy',
+  'v3.nav.groupAgent': 'AI Agent',
+  'v3.nav.groupCapabilities': 'Capabilities',
   'v3.home.voiceAria': 'Speak your message',
   'v3.home.sendAria': 'Send',
   'v3.home.cardLabel': 'AI Agent – Home',

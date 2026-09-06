@@ -597,7 +597,13 @@
 
    The accents stay: blue and violet still carry icons, links and the send button.
    Colour belongs to the ACCENTS, not to the surfaces. */
-.v3-home {
+/* 🚨 DARK ONLY, AND THAT IS A FIX. These four overrides used to apply in BOTH themes,
+   which was correct while Home was permanently a dark scenic surface — the page ignored
+   the theme, so the charcoal was always right. Home follows the theme now, and an
+   unconditional override meant a user on Light got a white page carrying black cards and
+   a black composer. Charcoal is the dark-theme treatment; in light theme Home uses the
+   same panel tokens every other V3 page uses. */
+.dark .v3-home {
   --v3-panel: #0E0F12;
   --v3-panel-elevated: #16181D;
   --v3-border: #23262D;
@@ -609,8 +615,8 @@
    PHOTOGRAPH, not on a card. In dark theme that passed; in light theme it put white
    headings on a bright sky and they nearly vanished. Only elements actually on a dark
    surface get the dark-surface text. */
-.v3-home .v3-panel,
-.v3-home .v3-tile {
+.dark .v3-home .v3-panel,
+.dark .v3-home .v3-tile {
   --v3-fg: #FFFFFF;
   /* One step above the base: these grounds (#0E0F12 / #16181D) are darker than the
      sidebar's, so the same values would read dimmer here than they do there. */
@@ -788,6 +794,165 @@
 /* ── end scenic (md and up) ────────────────────────────────────────────── */
 
 
+/* ══════════════════════════════════════════════════════════════════════════
+   HOME · AI AMBIENT SURFACE
+   ══════════════════════════════════════════════════════════════════════════
+
+   🚨 THIS REPLACES THE CITYSCAPE, AND THAT IS THE POINT OF THE REDESIGN.
+
+   Home rendered a full-bleed photograph of Hanoi behind everything. It is a
+   beautiful asset and it was making a claim about the product: a page whose
+   dominant visual is a travel photo reads as a travel site with a search box on
+   it, whichever words are in the panels. The scene is gone from Home and what
+   replaces it is LIGHT, not imagery — two wide, very low-opacity radial fields
+   that pool behind the hero and fall off to near-black.
+
+   🚨 THE SCENIC SUBSYSTEM IS NOT DELETED. `HomeBackground`, `backgroundManager`
+   and `backgrounds.config.ts` are untouched and still work; Home simply stops
+   mounting them, and `V3Shell`'s `scenic` prop stops being passed. Anything that
+   wants the photograph back turns it on again in one line.
+
+   🚨 IT ALSO REMOVES THE TOP-LEFT JUNCTION ARTIFACT. Scenic mode made `html` and
+   `body` transparent so a fixed image could show through, which left the sidebar,
+   the header and the content each painting their own surface over a shared hole —
+   the seam where those three met is the corner that read as a cut-out. With the
+   page opaque again the three surfaces meet as one flat 90° junction. */
+/* 🔑 A REAL ELEMENT, NOT A ::before ON THE WRAPPER. The scenic system learned this the hard
+   way: `body` paints an opaque colour, so a `z-index:-1` layer sits BEHIND the document and is
+   invisible however correct it looks in the inspector. This renders as the first child of the
+   content column at z-index 0, with the sections above it at z-index 1 — no transparent html,
+   no `:has()`, nothing for the sidebar/header/content junction to fall through. */
+.v3-ai-ambience {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(90rem 44rem at 62% -14%, rgba(0, 122, 255, 0.16), transparent 62%),
+    radial-gradient(64rem 40rem at 8% -6%, rgba(124, 92, 246, 0.13), transparent 60%),
+    radial-gradient(70rem 36rem at 96% 34%, rgba(0, 122, 255, 0.07), transparent 66%);
+}
+
+/* Light theme gets the same composition at a fraction of the strength: the point
+   is a hint of depth behind the hero, not a blue wash over white cards. */
+/* 🚨 LIGHT IS NOT "DARK WITH THE BACKGROUND REMOVED". At 0.09/0.07 over pure white the
+   ambience was effectively invisible, so the light hero lost the lighting that gives the
+   dark one its depth and read as a flat white page. It is strengthened here AND given a
+   cool ground to sit on — an off-white page tinted a few points toward blue, which is what
+   lets a low-contrast glow register at all. Still no hard edges and no visible banding. */
+:root:not(.dark) .v3-ai-ambience {
+  background:
+    radial-gradient(90rem 46rem at 62% -16%, rgba(0, 122, 255, 0.17), transparent 64%),
+    radial-gradient(62rem 40rem at 6% -8%, rgba(124, 92, 246, 0.13), transparent 62%),
+    radial-gradient(70rem 38rem at 98% 30%, rgba(0, 122, 255, 0.08), transparent 66%),
+    /* A cool wash across the whole field. Pure white gives a low-contrast glow nothing to
+       register against; a few points toward blue is what makes the light hero read as lit
+       rather than blank. */
+    linear-gradient(180deg, rgba(0, 90, 200, 0.05), rgba(0, 90, 200, 0.02) 40%, transparent 70%);
+}
+
+:root:not(.dark) .v3-ai-composer {
+  /* An opaque white field against that tinted ground: the input is the one thing on the page
+     that should read as lit from within, in both themes. */
+  background: #FFFFFF;
+  box-shadow:
+    0 0 0 1px rgba(0, 122, 255, 0.06),
+    0 16px 40px -22px rgba(0, 82, 204, 0.35);
+}
+
+/* The hero's own pool of light — a single soft field behind the composer so the
+   input reads as the lit centre of the page rather than one more card. */
+.v3-ai-hero {
+  position: relative;
+  isolation: isolate;
+}
+/* 🚨 DEPTH WAS LOST IN THE CALM-DOWN PASS, AND THIS PUTS IT BACK WITHOUT THE NOISE.
+   Removing the orbit and the particles was right; the side effect was that the hero
+   flattened into plain dark, which reads as a SaaS dashboard rather than a premium AI
+   surface. What returns is LIGHT only — a wide blue pool under the composer, a violet
+   secondary offset behind the character, and nothing with an edge. No ring, no
+   particles, no stars. */
+.v3-ai-hero::before {
+  content: '';
+  position: absolute;
+  inset: -22% -12% -34%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(62% 66% at 42% 46%, rgba(0, 122, 255, 0.20), transparent 72%),
+    radial-gradient(38% 54% at 82% 26%, rgba(124, 92, 246, 0.16), transparent 70%);
+}
+:root:not(.dark) .v3-ai-hero::before {
+  background:
+    radial-gradient(62% 66% at 42% 46%, rgba(0, 122, 255, 0.13), transparent 72%),
+    radial-gradient(38% 54% at 82% 26%, rgba(124, 92, 246, 0.10), transparent 70%);
+}
+
+/* ── Capability tiles — the middle ground ───────────────────────────────────
+   🚨 THIS HAS NOW BEEN WRONG IN BOTH DIRECTIONS, WHICH IS WHY THE TARGET IS WRITTEN DOWN.
+   First it was six equal `v3-tile` cards with icon, bold title and description — a
+   dashboard module grid. Correcting that produced bare transparent pills, which went
+   too far the other way and read as tags rather than as capabilities of a product.
+
+   What is right is a SOFT TILE: it has a surface, so it reads as a thing rather than a
+   label; the surface is faint and the border is a hairline, so six of them in a row do
+   not compete with the composer above. No description, no image, no arrow, no fixed
+   card height. */
+.v3-cap-tile {
+  border: 1px solid var(--v3-border);
+  background: color-mix(in srgb, var(--v3-panel) 62%, transparent);
+  transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+.v3-cap-tile:hover {
+  background: color-mix(in srgb, var(--v3-accent) 10%, var(--v3-panel));
+  border-color: color-mix(in srgb, var(--v3-accent) 45%, var(--v3-border));
+  transform: translateY(-1px);
+}
+:root:not(.dark) .v3-cap-tile {
+  background: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+/* ── Recommendation art ─────────────────────────────────────────────────────
+   🚨 THE HERO WON ON SIZE AND LOST ON SATURATION. Full-colour artwork starting at
+   the fold was the highest-contrast thing on a near-black page, so the eye went
+   there first and the composer — the actual product — came second. This pulls the
+   art back a step so the strip reads as RESULTS FROM Tappy rather than as a feed
+   competing with him. Content is untouched; only intensity is. */
+.v3-home [data-home-section='for-you'] img {
+  filter: saturate(0.82) brightness(0.88) contrast(0.96);
+  transition: filter 200ms ease, transform 500ms ease;
+}
+.v3-home [data-home-section='for-you'] a:hover img {
+  filter: saturate(1) brightness(1) contrast(1);
+}
+:root:not(.dark) .v3-home [data-home-section='for-you'] img {
+  /* On white the same art is already softer; dimming it as hard as on black would
+     make it look muddy rather than calm. */
+  filter: saturate(0.88) brightness(0.97);
+}
+
+/* The AI composer. Larger than a search field on purpose — this is the primary
+   action of the product, so it gets the height, the ring and the focus state. */
+.v3-ai-composer {
+  border: 1px solid color-mix(in srgb, var(--v3-accent) 26%, var(--v3-border));
+  background: color-mix(in srgb, var(--v3-panel) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 0 1px rgba(0, 122, 255, 0.08),
+    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 24px 64px -28px rgba(0, 122, 255, 0.75);
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+.v3-ai-composer:focus-within {
+  border-color: color-mix(in srgb, var(--v3-accent) 62%, transparent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--v3-accent) 18%, transparent),
+    0 22px 56px -22px rgba(0, 122, 255, 0.7);
+}
+
+
+
 /* The one content container. Every V3 page puts its content in this, so the
    left edge of Home's hero, Deals' grid and Profile's rows all land on the
    same vertical line, and none of them invents its own width. */
@@ -796,6 +961,20 @@
   max-width: var(--v3-content-max);
   margin-inline: auto;
   padding-inline: var(--v3-gutter);
+}
+
+/* 🚨 THE WIDE CANVAS. At 1240px Home's hero left roughly 400px of dead space on a 27-inch
+   screen — the composition read as a website floating in a canvas rather than as the
+   product filling it. `min(100% - gutters, 1480px)` is what `.v3-container` already
+   computes; only the cap moves, so the gutters, the centring and the grid line every
+   section shares are untouched. Opt-in via `V3Shell`'s `wide`; nothing else uses it. */
+.v3-container-wide {
+  max-width: 1480px;
+}
+@media (min-width: 1600px) {
+  /* Past 1600 the gutters grow with the screen instead of the content stranding at a fixed
+     cap — the page keeps breathing rather than pinning to one edge. */
+  .v3-container-wide { --v3-gutter: 64px; }
 }
 
 /* The panel IS the visual language of this surface: one card shape, one
