@@ -53,6 +53,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className="antialiased">
+        {/* ── The stored theme, applied BEFORE first paint ──────────────────
+            This is not a second theme mechanism. It reads the same
+            `localStorage.theme` key that `useThemeMode` owns and sets the same
+            `dark` class on <html> that Tailwind's `darkMode: 'class'` keys off;
+            the hook stays the authority for every change after this point.
+
+            It exists because the hook can only run in an effect, i.e. after
+            hydration. Two consequences, both of which the owner hit:
+
+              - a dark session repaints light for the length of the bundle
+                download and then flips, which is the classic theme flash;
+              - if hydration never happens at all - a broken bundle, blocked or
+                slow JS - the stored choice is silently lost and the toggle is
+                inert, which reads as "dark mode is broken".
+
+            Blocking and inline on purpose: it must run before the first paint,
+            so it cannot be `next/script` (deferred) or an effect. It is the
+            first node in <body>, so it executes before any markup below it is
+            painted. <html> already carries `suppressHydrationWarning`, which is
+            what lets the class it adds differ from the server's markup without
+            a hydration warning.
+
+            The no-stored-value branch mirrors the hook's own fallback to the OS
+            preference. If it did not, a dark-OS visitor with no saved choice
+            would still get the flash this is here to remove. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{var s=localStorage.getItem('theme');var d=s==='dark'||(s!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}",
+          }}
+        />
         {/* C29 — attaches the chosen UI language to every request this app makes to its own API.
             First in the tree so its module is evaluated before anything can fetch. */}
         <AppLanguageFetch />
