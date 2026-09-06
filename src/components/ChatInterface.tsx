@@ -20,6 +20,7 @@ import ConfirmationPrompt from '@/components/chat/structured/ConfirmationPrompt'
 import { comparisonFromSynthesis } from '@/lib/structuredContent/comparisonFromSynthesis'
 import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
+import { parsePlacesMarker } from '@/lib/recommendation/marker'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -867,7 +868,7 @@ export default function ChatInterface({
   // out fluidly instead of jumping in bursts. Called unconditionally at the top
   // level (hooks rule); only the last streaming message uses the smoothed value.
   const lastAssistantRaw = lastMsg && lastMsg.role === 'assistant' && typeof lastMsg.content === 'string'
-    ? parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text
+    ? parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text
     : ''
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
 
@@ -1319,13 +1320,18 @@ export default function ChatInterface({
                 // Phase 9 — the shopping DECISION arrives as a persistent text
                 // marker (like [TAPPY_PLAN]), so it survives reload. Parse it out
                 // of the message content; the card renders from the parsed view.
-                const { text, view: shopView } = parseShoppingMarker(textAfterFollowups)
+                const { text: textAfterShopping, view: shopView } = parseShoppingMarker(textAfterFollowups)
+                // The unified recommendation block. Parsed and STRIPPED here so a
+                // marker can never reach the reader as raw JSON; nothing renders
+                // from it yet — the card layer is a separate, later task. Strip
+                // is unconditional and independent of decode (fixture rule 1).
+                const { text } = parsePlacesMarker(textAfterShopping)
                 const isLastMessage = msgIdx === messages.length - 1
                 // Display body: while streaming use the smoothed text. Always strip
                 // the marker from what's shown; when this is a shopping decision,
                 // also strip the injected product-image flood (keeping the first as
                 // the hero) so the decision replaces the raw grid.
-                const rawBody = isLoading && isLastMessage ? parseShoppingMarker(smoothedLastText).text : text
+                const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text : text
                 const { text: bodyText, firstImage: heroImage } = shopView
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }

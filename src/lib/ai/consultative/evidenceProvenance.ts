@@ -57,12 +57,45 @@ export function classifyEvidence(source: EvidenceSource): EvidenceType {
   }
 }
 
+/**
+ * WHICH provider supplied a value, as opposed to what KIND of source it was.
+ *
+ * 🔑 `EvidenceSource` answers "how well is this supported" — a search snippet is
+ * REVIEW_SUPPORTED whoever ran the search. `SourceId` answers a different
+ * question the canonical entity has to answer and could not: with fields on one
+ * entity arriving from different providers, a card must be able to say why a row
+ * is empty, and a bug report has to be traceable to the provider that produced
+ * the value.
+ *
+ * 🚨 This is NOT a second confidence scale. It carries no ordering and no
+ * policy; nothing may branch on it to decide what the model is allowed to say.
+ * That decision belongs to `evidence_type` alone, which the shipped guards
+ * already enforce.
+ */
+export type SourceId =
+  | 'google_places'
+  | 'osm'
+  | 'serper_shopping'
+  | 'serper_search'
+  | 'serper_images'
+  | 'travelpayouts'
+  | 'tappy_reviews'
+  | 'official_website'
+  /** The application computed it (distance, price range, rank). Provenance is "us". */
+  | 'computed'
+  | 'user'
+
 /** A dynamic value that carries its own provenance into the model-facing payload. */
 export interface ProvenancedClaim<T = number> {
   /** The value, or the UNKNOWN sentinel when unsupported (Known<T> — one absence model). */
   value: Known<T>
   evidence_type: EvidenceType
   source_type: EvidenceSource
+  /**
+   * Optional by design. Every existing producer keeps working unchanged, and a
+   * claim whose provider genuinely does not matter is not forced to invent one.
+   */
+  source_id?: SourceId
 }
 
 /** Only a FACT may be stated as a plain, unqualified fact. */
@@ -75,12 +108,23 @@ export function isUserConstraint(source: EvidenceSource): boolean {
   return source === 'user'
 }
 
-/** Build a classified claim. A null/absent value is UNKNOWN — never reconstructed. */
-export function provenancedClaim<T>(value: T | null | undefined, source: EvidenceSource): ProvenancedClaim<T> {
+/**
+ * Build a classified claim. A null/absent value is UNKNOWN — never reconstructed.
+ *
+ * `sourceId` is optional and additive: omitting it produces exactly the object
+ * this function produced before it existed, which is what keeps every shipped
+ * caller and its tests unchanged.
+ */
+export function provenancedClaim<T>(
+  value: T | null | undefined,
+  source: EvidenceSource,
+  sourceId?: SourceId,
+): ProvenancedClaim<T> {
+  const id = sourceId ? { source_id: sourceId } : {}
   if (value === null || value === undefined) {
-    return { value: UNKNOWN, evidence_type: 'UNKNOWN', source_type: source }
+    return { value: UNKNOWN, evidence_type: 'UNKNOWN', source_type: source, ...id }
   }
-  return { value, evidence_type: classifyEvidence(source), source_type: source }
+  return { value, evidence_type: classifyEvidence(source), source_type: source, ...id }
 }
 
 /**

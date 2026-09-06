@@ -42,7 +42,8 @@ function stubFetch(handler: (url: string) => { status?: number; headers?: Record
   return calls
 }
 
-const detailWithPhoto = JSON.stringify({ result: { photos: [{ photo_reference: 'ref-1' }] } })
+/** A Places API (New) photo resource name, as `places.photos` returns it. */
+const PHOTO_NAME = 'places/pid-1/photos/AeZabc'
 
 beforeEach(() => {
   process.env.GOOGLE_PLACES_API_KEY = PLACES_KEY
@@ -67,46 +68,55 @@ describe('the sink observes the steps that actually ran', () => {
   it('does not report a step that never ran', async () => {
     stubFetch(() => ({ body: JSON.stringify({ images: [] }) }))
     const steps: PhotoStepTiming[] = []
-    // No website_uri and no place_id → website and Places steps cannot run.
+    // No website_uri and no photo_names → website and Places steps cannot run.
     await resolvePlacePhotos({ name: 'Quán A' }, 3, t => steps.push(t))
     expect(steps.some(s => s.step === 'website')).toBe(false)
-    expect(steps.some(s => s.step === 'places_detail')).toBe(false)
     expect(steps.some(s => s.step === 'places_media')).toBe(false)
   })
 
-  it('reports the Places detail step, and the media step only when a photo_reference came back', async () => {
+  it('reports the media step when the search result carried a photo name', async () => {
+    // 🔄 REWRITTEN, NOT DELETED. This used to assert a `places_detail` step that
+    // ran a legacy Place Details request purely to learn a photo reference. The
+    // widened field mask returns that reference on the search response, so the
+    // request — and the step — are gone. What must still hold is that Google's
+    // own photo is attempted before Serper, and that is what is asserted now.
     stubFetch(url =>
-      url.includes('place/details') ? { body: detailWithPhoto }
-        : url.includes('serper') ? { body: JSON.stringify({ images: [] }) }
-        : { body: '{}' })
+      url.includes('serper') ? { body: JSON.stringify({ images: [] }) }
+        : { body: 'binary', headers: { 'content-type': 'image/jpeg' } })
     const steps: PhotoStepTiming[] = []
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
+    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1', photo_names: [PHOTO_NAME] }, 3, t => steps.push(t))
     const names = steps.map(s => s.step)
-    expect(names).toContain('places_detail')
-    expect(names.indexOf('places_detail')).toBeLessThan(names.indexOf('places_media'))
+    expect(names).toContain('places_media')
+    expect(names.indexOf('places_media')).toBeLessThan(names.indexOf('serper'))
   })
 
-  it('omits the media step when the detail carried no photo_reference', async () => {
-    stubFetch(url =>
-      url.includes('place/details') ? { body: JSON.stringify({ result: { photos: [] } }) }
-        : { body: JSON.stringify({ images: [] }) })
+  it('omits the media step when the row carried no photo name', async () => {
+    stubFetch(() => ({ body: JSON.stringify({ images: [] }) }))
     const steps: PhotoStepTiming[] = []
     await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
     expect(steps.some(s => s.step === 'places_media')).toBe(false)
+  })
+
+  it('never issues a legacy Place Details request', async () => {
+    // 🚨 THE RETIREMENT, PINNED. That call was billed separately (Places Details
+    // Legacy) and its entire output was one photo token the search response
+    // already carried. If it ever comes back, this fails.
+    const calls = stubFetch(() => ({ body: JSON.stringify({ images: [] }) }))
+    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1', photo_names: [PHOTO_NAME] }, 3)
+    expect(calls.some(u => u.includes('/place/details'))).toBe(false)
   })
 })
 
 describe('a step that burns its timeout is reported, not hidden', () => {
-  it('marks the Places detail step timedOut and still falls through to Serper', async () => {
+  it('marks the media step timedOut and still falls through to Serper', async () => {
     stubFetch(url =>
-      url.includes('place/details') ? 'hang'
+      url.includes('places.googleapis.com') ? 'hang'
         : { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) })
     const steps: PhotoStepTiming[] = []
-    const urls = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
-    const detail = steps.find(s => s.step === 'places_detail')!
-    expect(detail, 'the timed-out step must still be reported').toBeDefined()
-    expect(detail.timedOut).toBe(true)
-    expect(detail.hit).toBe(false)
+    const urls = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1', photo_names: [PHOTO_NAME] }, 3, t => steps.push(t))
+    const media = steps.find(s => s.step === 'places_media')!
+    expect(media, 'the timed-out step must still be reported').toBeDefined()
+    expect(media.hit).toBe(false)
     // Unchanged behaviour: the fallback still runs and still returns its photo.
     expect(steps.some(s => s.step === 'serper')).toBe(true)
     expect(urls).toEqual(['https://cdn.example/s.jpg'])
@@ -138,26 +148,26 @@ describe('`hit` reports contribution, not mere completion', () => {
 
 describe('measuring changes nothing', () => {
   const scenario = () => stubFetch(url =>
-    url.includes('place/details') ? { body: detailWithPhoto }
-      : url.includes('serper') ? { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) }
+    url.includes('serper') ? { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) }
       : { body: 'binary', headers: { 'content-type': 'image/jpeg' } })
+  const place = { name: 'Quán A', place_id: 'pid-1', photo_names: [PHOTO_NAME] }
 
   it('returns the same photos with and without the sink', async () => {
     const c1 = scenario()
-    const withSink = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, () => {})
+    const withSink = await resolvePlacePhotos(place, 3, () => {})
     vi.unstubAllGlobals()
     const c2 = scenario()
-    const without = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3)
+    const without = await resolvePlacePhotos(place, 3)
     expect(withSink).toEqual(without)
     expect(c1.length, 'the sink must not add or remove a request').toBe(c2.length)
   })
 
   it('issues no request of its own', async () => {
     const calls = scenario()
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, () => {})
+    await resolvePlacePhotos(place, 3, () => {})
     // Every URL requested must belong to the chain's own steps.
     for (const u of calls) {
-      expect(/place\/details|maps\.googleapis|serper|^https:\/\/cdn\.example/.test(u), `unexpected request: ${u}`).toBe(true)
+      expect(/places\.googleapis|serper|^https:\/\/cdn\.example/.test(u), `unexpected request: ${u}`).toBe(true)
     }
   })
 
@@ -165,7 +175,7 @@ describe('measuring changes nothing', () => {
     // Instrumentation must never be able to fail the thing it measures.
     scenario()
     await expect(
-      resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, () => { throw new Error('sink blew up') }),
+      resolvePlacePhotos(place, 3, () => { throw new Error('sink blew up') }),
     ).rejects.toBeInstanceOf(Error)
   })
 })

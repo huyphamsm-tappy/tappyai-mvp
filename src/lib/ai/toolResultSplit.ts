@@ -25,7 +25,14 @@
 // and the model must never write a TikTok URL of its own. The model still learns WHETHER one
 // exists, because `has_tiktok_review` (a boolean, not a URL) stays model-facing — that is what
 // lets it say "no TikTok review found" truthfully without being able to invent a link.
-export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links', 'tiktok_review_url'] as const
+// `photo_names` joined the list when the widened field mask started carrying Google's photo
+// RESOURCE NAMES on the search result. They are not URLs, but they are the raw material for one —
+// the model has no legitimate use for them, and three ~90-character resource names per place is
+// exactly the paid-context waste this split exists to prevent.
+import { capabilitiesOf, type CapabilitySource } from '@/lib/recommendation/capabilities'
+import type { Recommendation } from '@/lib/recommendation/recommendation'
+
+export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links', 'tiktok_review_url', 'photo_names'] as const
 
 export interface PlatformLink { name: string; url: string }
 
@@ -37,6 +44,8 @@ export interface PlaceEnrichment {
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
   tiktok_review_url?: string
+  /** Google photo resource names ("places/…/photos/…") — the input to the late photo resolver. */
+  photo_names?: string[]
   // Identity from Google Places New (search_places). The late photo resolver
   // (resolvePlacePhotos in tools/common) uses these to fetch official website /
   // Places Details photos when the tool result did not carry any. Copied into
@@ -67,6 +76,16 @@ export interface EnrichmentCollector {
    */
   shoppingMarker?: string
   setShoppingMarker(marker: string | undefined): void
+  /**
+   * The turn's canonical recommendations, for the `[TAPPY_PLACES]` block.
+   *
+   * Held as STRUCTURE rather than a rendered string, unlike `shoppingMarker`:
+   * photos resolve late, inside the stream filter, so the marker cannot be
+   * serialized until after that. The filter renders it at the same point it
+   * folds in the shopping marker.
+   */
+  placesRecommendations?: Recommendation[]
+  setPlacesRecommendations(recs: Recommendation[] | undefined): void
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */
@@ -75,7 +94,7 @@ const PLACE_TOOLS = new Set(['search_places', 'get_hotel_prices', 'search_produc
 const hasEnrichment = (p: PlaceEnrichment) =>
   !!(p.photo_url || (p.photo_urls && p.photo_urls.length > 0) ||
     (p.order_links && p.order_links.length > 0) || (p.platform_links && p.platform_links.length > 0) ||
-    p.tiktok_review_url)
+    p.tiktok_review_url || (p.photo_names && p.photo_names.length > 0))
 
 const hasPhoto = (p: PlaceEnrichment) => !!(p.photo_url || (p.photo_urls && p.photo_urls.length > 0))
 
@@ -121,7 +140,7 @@ export function splitToolResult(
   const enrichment: PlaceEnrichment[] = []
   const slimItems = items.map((item) => {
     if (!isRecord(item)) return item
-    const { photo_url, photo_urls, order_links, platform_links, tiktok_review_url, ...rest } = item as PlaceEnrichment & Record<string, unknown>
+    const { photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, ...rest } = item as PlaceEnrichment & Record<string, unknown>
     const name = listKey === 'results'
       ? (item.name as string | undefined)
       : String((item.title as string | undefined) ?? '').split(' - ')[0].trim() || undefined
@@ -134,9 +153,21 @@ export function splitToolResult(
       ? (item as { place_id: string }).place_id : undefined
     const website_uri = typeof (item as { website_uri?: unknown }).website_uri === 'string'
       ? (item as { website_uri: string }).website_uri : undefined
-    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url, place_id, website_uri }
+    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, place_id, website_uri }
     if (name && hasEnrichment(carved)) enrichment.push(carved)
-    return rest
+    // 🔑 CAPABILITIES REPLACE THE CARVED URLS IN THE MODEL'S VIEW.
+    //
+    // Carving alone leaves the model knowing less than it needs: it cannot say
+    // "you can order this one" without the order links it is forbidden to have.
+    // The answer already proven by `has_tiktok_review` is to hand over the
+    // BOOLEAN and keep the URL — the model learns what is possible and still
+    // cannot write the link. Derived from the same carved values, so a
+    // capability can never claim an action the app did not actually build.
+    //
+    // Derived from the WHOLE item, not from `carved`: `maps_link`, `phone`,
+    // `opening_hours` and `has_tiktok_review` stay model-facing and live in
+    // `rest`, so reading only the carved half would under-report them.
+    return { ...rest, ...capabilitiesOf(item as CapabilitySource) }
   })
 
   return { model: { ...root, [listKey]: slimItems }, enrichment, batchTikTokUrl }
@@ -198,6 +229,12 @@ export function createEnrichmentCollector(): EnrichmentCollector {
       // First one wins: a trip plan runs several place searches and the answer carries one
       // "related video" line, not one per search.
       if (url && !this.batchTikTokUrl) this.batchTikTokUrl = url
+    },
+    placesRecommendations: undefined as Recommendation[] | undefined,
+    setPlacesRecommendations(recs) {
+      // First non-empty set wins, mirroring the other batch-level values: a trip
+      // plan runs several place searches and the reply carries one block.
+      if (recs && recs.length > 0 && !this.placesRecommendations) this.placesRecommendations = recs
     },
     shoppingMarker: undefined as string | undefined,
     setShoppingMarker(marker) {

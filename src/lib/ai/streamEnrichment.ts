@@ -8,6 +8,11 @@ import { safeFlushPoint } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
+import { EMIT_TAPPY_PLACES, SERVER_AUTHORED_CTA } from '@/lib/config/product'
+import { renderPlacesMarker } from '@/lib/recommendation/marker'
+import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
+import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
+import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
 //   0:"<text delta>"                         — assistant text chunk
@@ -28,6 +33,13 @@ type PlaceLike = {
   place_id?: string
   website_uri?: string
   address?: string
+  /**
+   * Google photo RESOURCE NAMES from the widened search field mask. Carried on
+   * the carved enrichment (never model-facing) so the late resolver can build a
+   * media URL directly, instead of paying a legacy Place Details call to learn
+   * a reference the search response already returned.
+   */
+  photo_names?: string[]
   /** Backend-validated TikTok review/video URL, or absent when the provider found none. */
   tiktok_review_url?: string
 }
@@ -252,10 +264,14 @@ function placeContentLines(
 // only the *enriched* places let a first place's gallery run past its photo-less
 // neighbours all the way to the end of the message.) Index-aligned to the raw text.
 function placeMentionOffsets(places: PlaceLike[], dedupText: string, headers: Header[]): number[] {
+  const allNames = places.map(p => p.name || '').filter(Boolean)
   const offs: number[] = []
   for (const p of places) {
     if (!p.name) continue
-    const i = findPlaceOffset(p.name, dedupText, headers)
+    // Competitors = every OTHER place this turn. Without them a token-overlap
+    // match cannot know it is contested, which is how a link landed on the wrong
+    // restaurant (see headerIsContested in placeMatch.ts).
+    const i = findPlaceOffset(p.name, dedupText, headers, allNames.filter(n => n !== p.name))
     if (i !== -1) offs.push(i)
   }
   return offs
@@ -374,7 +390,8 @@ export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: str
   if (normRaw.length !== text.length) return named.slice(0, 3)
   const dedupText = normRaw.slice(0, earliestMarker(text))
   const headers = proseHeaders(dedupText)
-  const mentioned = named.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
+  const rivals = named.map(p => (p.name as string) || '').filter(Boolean)
+  const mentioned = named.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
   return (mentioned.length > 0 ? mentioned : named).slice(0, 3)
 }
 
@@ -438,12 +455,13 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lan
   const headers = proseHeaders(dedupText)
   const mentionOffsets = placeMentionOffsets(places, dedupText, headers)
 
-  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
+  const rivals = places.map(p => (p.name as string) || '').filter(Boolean)
+  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const insertions: { offset: number; text: string }[] = []
   for (const p of chosen) {
-    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers)
+    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name))
     if (ownIdx === -1) continue
     const windowEnd = boundaryAfter(ownIdx, mentionOffsets, textEnd)
     const { lines } = placeContentLines(p, decodedText, dedupText, windowEnd)
@@ -483,12 +501,13 @@ function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText:
   const textEnd = dedupText.length
   const headers = proseHeaders(dedupText)
   const mentionOffsets = placeMentionOffsets(places, dedupText, headers)
-  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
+  const rivals = places.map(p => (p.name as string) || '').filter(Boolean)
+  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const parts: string[] = []
   for (const p of chosen) {
-    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers)
+    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name))
     const windowEnd = boundaryAfter(ownIdx === -1 ? 0 : ownIdx, mentionOffsets, textEnd)
     const { lines, missingPhotoCount } = placeContentLines(p, decodedText, dedupText, windowEnd)
     if (missingPhotoCount > 0) parts.push([`**${p.name}**`, ...lines].join('\n'))
@@ -635,6 +654,24 @@ function relatedVideoLabel(lang: string): string {
   return lang === 'vi' ? 'Video liên quan trên TikTok' : 'Related video on TikTok'
 }
 
+/**
+ * Copy the photos the late resolver found onto the recommendations, by name.
+ *
+ * The recommendations were built at tool time, before any photo existed. Matching
+ * is by trimmed lowercase name because that is the only identity both sides
+ * carry here; a place whose photos never resolved simply keeps none.
+ */
+function withResolvedPhotos(recs: Recommendation[], resolved: PlaceLike[]): Recommendation[] {
+  const byName = new Map(resolved.map(p => [(p.name || '').trim().toLowerCase(), p]))
+  return recs.map(r => {
+    const hit = byName.get(r.entity.identity.name.trim().toLowerCase())
+    const urls = hit?.photo_urls?.length ? hit.photo_urls : (hit?.photo_url ? [hit.photo_url] : [])
+    if (urls.length === 0) return r
+    const gallery = urls.map(url => ({ url, source: 'serper_images' as const, stability: 'volatile' as const }))
+    return { ...r, entity: { ...r.entity, images: { primary: gallery[0], gallery } } }
+  })
+}
+
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
@@ -721,6 +758,11 @@ export function applyPlaceEnrichmentStreamFilter(
    */
   const progressive = placeIntent && !travelIntent
   let placeToolSeen = false
+  /**
+   * Defaults to `not_run` and only moves when a place tool result actually arrives, so a
+   * recall turn or a non-place conversation is left exactly as it was before this existed.
+   */
+  let placeSearchStatus: PlaceSearchStatus = 'not_run'
   let flushedText = ''
   /** True once the shopping decision has gone out early, so it is not sent twice. */
   let earlyShoppingMarkerSent = false
@@ -944,6 +986,30 @@ export function applyPlaceEnrichmentStreamFilter(
     // this conflict alone would have silently dropped one of the two.
     const scaffoldStripped = stripModelScaffolding(foodGuarded)
     /**
+     * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
+     * enforcement. Applied HERE, before the TikTok fold and before `finalText`
+     * is composed, so every downstream consumer — the detectors, `presentedNames`,
+     * `presentedIds`, and the bytes the user receives — sees the same gated text.
+     *
+     * Safe to run this late because place-list prose is BUFFERED: `flushedText`
+     * is only released while `!placeToolSeen`, so nothing naming a venue has
+     * been streamed yet and there is nothing to retract.
+     */
+    const gated = suppressUngroundedVenues(
+      scaffoldStripped,
+      [
+        ...places.map(p => p.name || ''),
+        ...productRecords.map(r => r.title || ''),
+        ...(seed?.heldCandidates ?? []).map(c => c.name),
+      ],
+      lang,
+      // The turn's retrieval verdict. Without it the gate cannot tell "nothing to check
+      // against because nothing was retrieved" from "nothing to check against because this
+      // is a recall turn" — and it stood down for both.
+      { placeSearch: placeSearchStatus },
+    )
+    const groundedProse = gated.text
+    /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *
      * Deliberately OUTSIDE any place block, and under wording that says "related video": the TikTok
@@ -965,16 +1031,51 @@ export function applyPlaceEnrichmentStreamFilter(
     // decision survives reload (a tool-result field does not). Client parses +
     // strips it; see parseShoppingMarker.
     const markerSuffix = collector?.shoppingMarker ? `\n\n${collector.shoppingMarker}` : ''
-    const prose = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
-      ? `${scaffoldStripped}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})`
-      : scaffoldStripped
+    /**
+     * The unified `[TAPPY_PLACES]` block, folded into `finalText` on exactly the
+     * same terms as the shopping marker above — part of the string the detectors
+     * read and the user receives, never appended afterwards.
+     *
+     * 🚨 EMISSION IS FLAG-GATED OFF. Two independent blockers, both recorded in
+     * `config/product.ts`: Android and iOS cannot strip a marker they have never
+     * been told about (shared fixture contract, rule 6), and a marker is
+     * permanent storage, which Google Places terms forbid for Places content.
+     * The recommendations are still BUILT on every turn — the data layer is
+     * exercised and tested — they are simply not written into the reply.
+     *
+     * Built here rather than at tool time because photos resolve late, inside
+     * this filter: serializing earlier would persist a block with no images.
+     */
+    const placesSuffix = (EMIT_TAPPY_PLACES && collector?.placesRecommendations?.length)
+      ? `\n\n${renderPlacesMarker(withResolvedPhotos(collector.placesRecommendations, places))}`
+      : ''
+
+    /**
+     * Server-authored CTA. The model's own block is stripped FIRST — a prompt
+     * rule is not a guarantee, and the client's parser takes the first match, so
+     * leaving both would make the button set depend on ordering.
+     *
+     * 🚨 Also flag-gated off: the prompt still instructs the model to emit its
+     * own block, and deleting that instruction is what must ship alongside this.
+     * Until then the shipped behaviour is untouched.
+     */
+    const serverCta = (SERVER_AUTHORED_CTA && collector?.placesRecommendations?.length)
+      ? renderCtaBlock(collector.placesRecommendations, lang)
+      : ''
+    const prose = (groundedProse && batchTikTok && isValidTikTokContentUrl(batchTikTok))
+      ? `${groundedProse}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})`
+      : groundedProse
     // `finalText` keeps carrying the marker whether or not it was already sent.
     // It is not only what ships — it is what the money/spec/grounding detectors
     // read and what presentedNames/presentedIds are resolved against, so the
     // early send must not change it. Splitting delivery is allowed to change
     // WHEN the user sees the decision; it is not allowed to change what the
     // guards analysed or which candidates the turn recorded as presented.
-    const finalText = `${prose}${markerSuffix}`
+    // With the server authoring the CTA, the model's block is removed from the
+    // prose before anything is appended; without the flag, `prose` is untouched.
+    const ctaOwnedProse = serverCta ? stripModelCta(prose) : prose
+    const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
+    const finalText = `${ctaOwnedProse}${markerSuffix}${placesSuffix}${ctaSuffix}`
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
@@ -987,7 +1088,13 @@ export function applyPlaceEnrichmentStreamFilter(
     // A candidate is presented only if its name appears in the text the user
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
-    ungroundedNames = ungroundedNamesIn(finalText, places, productRecords, seed?.heldCandidates ?? [])
+    // The gate removed these, so the detector can no longer see them in
+    // `finalText`. Both are kept: the gate's own record is what shipped, and the
+    // detector still runs as defence in depth against a shape the gate missed.
+    ungroundedNames = [...new Set([
+      ...gated.suppressed,
+      ...ungroundedNamesIn(finalText, places, productRecords, seed?.heldCandidates ?? []),
+    ])]
     // What still needs sending. When the decision already went out after the
     // tool result, only the prose is left — re-sending the marker here would
     // put a second copy in the message text and render a duplicate card.
@@ -1117,6 +1224,8 @@ export function applyPlaceEnrichmentStreamFilter(
                 /** Food/spa price snippets (title/link/snippet) — A5 evidence: a price
                  *  the reply states must trace to one of these, else it's fabricated. */
                 price_search_results?: Array<{ title?: string; snippet?: string }>
+                /** The tool's own verdict on retrieval — see `PlaceSearchStatus`. */
+                place_search_status?: PlaceSearchStatus
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
@@ -1124,6 +1233,19 @@ export function applyPlaceEnrichmentStreamFilter(
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results
+              /**
+               * 🚨 READ FROM THE TOOL, NEVER RE-DERIVED HERE.
+               *
+               * `searchPlaces` stamps this from the provider's rows before enrichment runs.
+               * Recomputing it locally would be a second classifier free to disagree with the
+               * one that actually saw the response — and the older `results?.length` reading
+               * available here cannot see WHY the array is empty.
+               *
+               * The fallback is `has_results` only when rows exist, so a result from an older
+               * shape without the field degrades to today's behaviour rather than to silence.
+               */
+              placeSearchStatus = res.result?.place_search_status
+                ?? (Array.isArray(results) && results.length > 0 ? 'has_results' : 'empty')
               // A5: the only evidence a food/spa price may trace to.
               hadPlaceSearch = true
               const priceSnips = res.result?.price_search_results

@@ -223,9 +223,16 @@ describe('the rendered wording matches what the evidence supports', () => {
     // `finalText` — the detector's input — is still built from it, so the link
     // is still inside what gets analysed. Both halves are asserted: a fold that
     // no longer reached `finalText` would leave the link unanalysed.
-    const foldAt = filter.indexOf('const prose = (scaffoldStripped && batchTikTok')
-    const composeAt = filter.indexOf('const finalText = `${prose}${markerSuffix}`')
-    const detectAt = filter.indexOf('ungroundedNames = ungroundedNamesIn(')
+    // The fold now reads the GROUNDED prose (the grounding gate runs first), so
+    // the anchor moved. The ordering property this test owns is unchanged: the
+    // TikTok link is folded in before `finalText` is composed and therefore
+    // before the detector reads it.
+    const foldAt = filter.indexOf('const prose = (groundedProse && batchTikTok')
+    // The composition gained more suffixes (see identityGrounding.test.ts); the
+    // ordering property this test owns is unchanged, so it anchors on the start
+    // of the expression rather than its exact parts.
+    const composeAt = filter.indexOf('const finalText = `')
+    const detectAt = filter.indexOf('ungroundedNames = [...new Set([')
     expect(foldAt).toBeGreaterThan(-1)
     expect(composeAt).toBeGreaterThan(foldAt)
     expect(detectAt).toBeGreaterThan(composeAt)

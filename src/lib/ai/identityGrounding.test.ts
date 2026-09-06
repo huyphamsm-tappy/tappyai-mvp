@@ -95,7 +95,12 @@ describe('the detector reports and never rewrites', () => {
     // The whole span between detection and the emit. Widened from 600 when the second delivery
     // split (A5-P1) was documented above it — the window must still reach the enqueue, or this
     // stops checking anything.
-    const emit = filter.slice(filter.indexOf('ungroundedNames = ungroundedNamesIn('))
+    // 🔄 ANCHOR UPDATED, PROTECTION WIDENED. The assignment gained a second
+    // source (the grounding gate's own record of what it removed), so the old
+    // literal no longer appears. The property is unchanged and now also covers
+    // the gate: neither the detector's finding nor the gate's finding may be
+    // read back to decide what is emitted.
+    const emit = filter.slice(filter.indexOf('ungroundedNames = [...new Set(['))
       .slice(0, 1600)
     // The property this protects: the detector REPORTS and never rewrites.
     //
@@ -109,6 +114,14 @@ describe('the detector reports and never rewrites', () => {
     expect(emit).toContain("controller.enqueue(encoder.encode('0:' + JSON.stringify(send)")
     expect(emit).not.toContain('ungroundedNames.')
     expect(emit).not.toContain('presentedNames.')
+    // The grounding gate runs BEFORE composition and is deterministic; its
+    // result may be RECORDED on the evidence (that is the assignment this slice
+    // opens with) but must never be READ BACK to decide what is emitted. So the
+    // check is on everything after that assignment ends, and it forbids uses —
+    // any property access — exactly as the two lines above do for the detector.
+    const afterRecord = emit.slice(emit.indexOf('])]') + 3)
+    expect(afterRecord).not.toContain('gated.')
+    expect(afterRecord).not.toContain('ungroundedNames')
   })
 
   it('the emitted text is chosen by delivery state alone, not by any finding', () => {
@@ -124,12 +137,26 @@ describe('the detector reports and never rewrites', () => {
     expect(filter).toMatch(/const send = flushedText && outText\.startsWith\(flushedText\)/)
   })
 
-  it('the detector still reads the reply WITH the decision in it', () => {
+  it('the detector still reads the reply WITH every appended block in it', () => {
     // `finalText` — what ungroundedNamesIn analyses — must keep carrying the
     // marker even though the marker may already have shipped separately.
-    expect(filter).toMatch(/const finalText = `\$\{prose\}\$\{markerSuffix\}`/)
-    const detectAt = filter.indexOf('ungroundedNames = ungroundedNamesIn(')
-    expect(filter.indexOf('const finalText = `${prose}${markerSuffix}`')).toBeLessThan(detectAt)
+    //
+    // 🔄 THE COMPOSITION GREW; THE PROPERTY DID NOT CHANGE. The unified
+    // recommendation work added two more suffixes ([TAPPY_PLACES] and the
+    // server-authored CTA) and renamed `prose` to `ctaOwnedProse` at this line.
+    // What must still hold — and is what this asserts — is that the detector's
+    // input is the SAME string the user receives, composed before it runs. So
+    // the assertion is written against the parts rather than one frozen
+    // expression: every appended block has to be inside `finalText`.
+    const compose = /const finalText = `((?:\$\{\w+\})+)`/.exec(filter)
+    expect(compose, 'finalText must be a single template of composed parts').not.toBeNull()
+    const parts = [...compose![1].matchAll(/\$\{(\w+)\}/g)].map(m => m[1])
+    expect(parts, 'the prose must lead').toContain('ctaOwnedProse')
+    expect(parts, 'the shopping decision must be analysed').toContain('markerSuffix')
+    expect(parts, 'the recommendation block must be analysed').toContain('placesSuffix')
+    expect(parts, 'the server CTA must be analysed').toContain('ctaSuffix')
+    const detectAt = filter.indexOf('ungroundedNames = [...new Set([')
+    expect(filter.indexOf('const finalText = `')).toBeLessThan(detectAt)
   })
 
   // REMOVED ON INTEGRATION: this asserted how `/api/chat` CONSUMES the detector's finding, and

@@ -30,6 +30,7 @@ import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructio
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
+import { placeRecommendations, productRecommendations, stayRecommendations } from '@/lib/recommendation/fromToolResult'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
@@ -888,6 +889,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // order it reads is already the order that fits this user.
           const { result, pick } = rankForModel('search_places', filtered)
           if (pick) turnPick = pick
+          // Unified recommendation architecture — canonical entities and their
+          // recommendations are built on EVERY place turn, whether or not the
+          // `[TAPPY_PLACES]` block is emitted. Building unconditionally is what
+          // keeps the data layer exercised (and its tests honest) while the
+          // emission flag stays off; the collector holds them until the stream
+          // filter has photos to fold in.
+          enrichment.setPlacesRecommendations(placeRecommendations(result, location))
           return forModel('search_places', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result)
@@ -906,6 +914,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
+          enrichment.setPlacesRecommendations(productRecommendations(result))
           if (!pick) return forModel('search_products', result)
           const evidenceBlock = await freezeShoppingEvidence(result, pick, shortlistedCandidates)
           // Phase 4 — the grounded, GROUPED decision the model verbalises instead
@@ -975,6 +984,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
+          enrichment.setPlacesRecommendations(stayRecommendations(result))
           return forModel('get_hotel_prices', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result)
@@ -1102,7 +1112,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Declared out here because the resolver closure fills them while the usage
   // record — emitted after the last byte leaves — reads them. Diagnostic only.
   type PhotoStepAgg = { n: number; totalMs: number; maxMs: number; hits: number; timeouts: number }
-  const photoSteps: Partial<Record<'website' | 'places_detail' | 'places_media' | 'serper', PhotoStepAgg>> = {}
+  const photoSteps: Partial<Record<'website' | 'places_media' | 'serper', PhotoStepAgg>> = {}
   let photoPlacesSelected = 0
   let photoPlacesEnriched = 0
   let photoTotalMs = 0
@@ -1126,7 +1136,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       const placeStart = Date.now()
       try {
         const urls = await resolvePlacePhotos(
-          { place_id: p.place_id, name: p.name, website_uri: p.website_uri },
+          { place_id: p.place_id, name: p.name, website_uri: p.website_uri, photo_names: p.photo_names },
           3,
           (t) => {
             const s = (photoSteps[t.step] ??= { n: 0, totalMs: 0, maxMs: 0, hits: 0, timeouts: 0 })

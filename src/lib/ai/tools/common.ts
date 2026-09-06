@@ -305,7 +305,10 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
  * these to decide anything, and emitting them cannot change what is fetched.
  */
 export interface PhotoStepTiming {
-  step: 'website' | 'places_detail' | 'places_media' | 'serper'
+  // `places_detail` was removed when the legacy Place Details photo lookup was
+  // retired (approved architecture rev 2, §4.3). Nothing emits it any more, so
+  // it is gone from the union rather than left as a step that can never appear.
+  step: 'website' | 'places_media' | 'serper'
   ms: number
   /** The step produced at least one usable URL. */
   hit: boolean
@@ -314,7 +317,7 @@ export interface PhotoStepTiming {
 }
 
 export async function resolvePlacePhotos(
-  place: { place_id?: string; name?: string; website_uri?: string },
+  place: { place_id?: string; name?: string; website_uri?: string; photo_names?: string[] },
   max = 3,
   /**
    * Per-step timing sink (Phase 2 instrumentation).
@@ -346,31 +349,30 @@ export async function resolvePlacePhotos(
     mark('website', t, before)
   }
 
-  const key = process.env.GOOGLE_PLACES_API_KEY
-  if (collected.length < max && key && place.place_id) {
-    const tDetail = Date.now(); const beforeDetail = collected.length
-    let detailTimedOut = false
-    try {
-      const detailResp = await Promise.race([
-        fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=photos&key=${key}`),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500)),
-      ])
-      const detail = await (detailResp as Response).json()
-      const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
-      mark('places_detail', tDetail, beforeDetail)
-      if (photoRef) {
-        const tMedia = Date.now(); const beforeMedia = collected.length
-        addUnique(await fetchPlacePhoto(place.place_id, photoRef))
-        mark('places_media', tMedia, beforeMedia)
-      }
-    } catch (e) {
-      // Unchanged behaviour: skip on timeout or error, fall through to Serper.
-      // The mark is emitted from the catch too, because a step that BURNED its
-      // timeout is exactly the one worth seeing — reporting only the successes
-      // would hide the slowest case there is.
-      detailTimedOut = e instanceof Error && e.message === 'timeout'
-      mark('places_detail', tDetail, beforeDetail, detailTimedOut)
-    }
+  /**
+   * ── STEP 2 — Google's own photo, WITHOUT the legacy Place Details lookup ────
+   *
+   * 🚨 WHAT WAS REMOVED, AND WHY IT WAS SAFE TO REMOVE. This step used to call
+   * `maps.googleapis.com/maps/api/place/details/json?fields=photos` for the sole
+   * purpose of learning a photo reference — a separately billed request (Places
+   * Details Legacy) whose entire output was one token. `places.photos` in the
+   * search field mask now carries those references already, so the Details call
+   * asked Google for something the search response had handed over for free.
+   *
+   * 🔑 ONE photo is taken here, exactly as before. The old code read
+   * `photos[0].photo_reference` and stopped; taking three now would triple the
+   * billed Place Photo calls, which is a cost decision nobody approved. Serper
+   * still fills the rest of the gallery, so what the user sees is unchanged.
+   *
+   * A place with no `photo_names` — every OSM-sourced row, and any Google row
+   * whose venue has no photos — simply falls through to Serper, which is what
+   * happened whenever the Details call came back empty.
+   */
+  const photoName = place.photo_names?.[0]
+  if (collected.length < max && photoName && place.place_id) {
+    const tMedia = Date.now(); const beforeMedia = collected.length
+    addUnique(await fetchPlacePhoto(place.place_id, photoName))
+    mark('places_media', tMedia, beforeMedia)
   }
 
   if (collected.length < max && place.name) {

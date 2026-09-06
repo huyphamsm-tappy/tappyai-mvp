@@ -171,3 +171,39 @@ export async function countTodayUserMessages(supabase: SupabaseClient, userId: s
     return sum + msgs.filter((m: { role: string }) => m.role === 'user').length
   }, 0)
 }
+
+// ── Unified Recommendation Data Architecture (rev 2) ─────────────────────────
+//
+// Two staged flags. Both default OFF, and both gate BEHAVIOUR, not code: the
+// pipeline builds canonical entities and recommendations either way, so the data
+// layer is exercised and tested on every turn while what reaches a client stays
+// exactly what reaches it today.
+
+/**
+ * Emit the `[TAPPY_PLACES]` marker into the assistant text.
+ *
+ * 🚨 OFF UNTIL ALL THREE CLIENTS CAN STRIP IT. Rule 6 of
+ * `shared/structured-content/marker-fixtures.json`: adding a marker server-side
+ * requires web, Android and iOS updated in the same change. Android and iOS are
+ * outside this task's scope, and a marker they cannot strip renders as raw JSON
+ * in the chat — which is exactly the defect that suite was created to catch,
+ * twice, in production.
+ *
+ * 🚨 A SECOND BLOCKER, INDEPENDENT OF THE CLIENTS. A marker is permanent
+ * storage, and Google Places terms forbid storing Places content (see
+ * `mayPersist` in lib/recommendation/marker.ts). While Google is the place
+ * source, the persisted payload for a place is limited to exempt identifiers and
+ * our own derived values.
+ */
+export const EMIT_TAPPY_PLACES = false
+
+/**
+ * Let the SERVER author `[CTA_BUTTONS]` from the deterministic action list,
+ * instead of the model writing URLs from prompt templates.
+ *
+ * Same wire format, same three parsers, same fixtures — only the author changes.
+ * OFF until the prompt rule that tells the model to stop emitting its own block
+ * ships with it, because two blocks in one reply means the first one wins and
+ * the choice of which is arbitrary.
+ */
+export const SERVER_AUTHORED_CTA = false

@@ -44,6 +44,14 @@ export const messages = {
     priceNote: (lang: Lang) => isVi(lang)
       ? 'Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.'
       : 'Prices are for reference from current search results (menu/service/ticket...) and may vary by branch, time, or change over time.',
+    /**
+     * Carried on a place result that retrieved NOTHING, so the model is told in the result
+     * itself rather than left to infer it. The stream gate enforces the same rule afterwards;
+     * this is what lets the reply be honest in the first place instead of merely censored.
+     */
+    noResultsInstruction: (lang: Lang) => isVi(lang)
+      ? 'KHONG tim thay dia diem nao cho yeu cau nay. TUYET DOI KHONG duoc neu ten bat ky dia diem, dia chi hay gia nao — khong co du lieu nao de dua vao. Hay noi thang la chua tim thay, va co the goi y mo rong khu vuc hoac doi tu khoa.'
+      : 'NO places were found for this request. Do NOT name any venue, address or price — there is no data behind them. Say plainly that nothing was found, and you may suggest widening the area or changing the keywords.',
   },
   shopping: {
     priceDisclaimer: (lang: Lang) => isVi(lang)

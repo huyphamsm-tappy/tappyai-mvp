@@ -7,6 +7,7 @@ import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace } from '@/lib/ai/consultative/reviewAction'
 import { messages, isVi } from '@/lib/ai/messages'
+import { detectFoodConstraints, osmFilterFor, unmetConstraintNote } from '@/lib/ai/foodConstraints'
 import { newsCacheKey, placesCacheKey } from './cacheKeys'
 import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
 
@@ -144,7 +145,28 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     else if (ql.match(/pharmacy|thuoc/)) osmValue = 'pharmacy'
     else if (ql.match(/atm|ngan hang|bank/)) osmValue = 'bank'
     const amenity = osmOp === '~' ? 'attraction' : osmValue
-    const oql = '[out:json][timeout:10];(node["' + osmKey + '"' + osmOp + '"' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + ');way["' + osmKey + '"' + osmOp + '"' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + '););out center 10;'
+
+    /**
+     * 🚨 BUG 2 — THE USER'S CONSTRAINT REACHES THE PROVIDER.
+     *
+     * "nhà hàng buffet" used to become `amenity=restaurant` and nothing else, so
+     * the reply was built from ten ordinary restaurants and the model invented
+     * buffet venues to close the gap. `cuisine` and `diet:*` are real, widely
+     * used OSM keys — nothing here invents provider syntax.
+     *
+     * 🔑 CONSTRAINED FIRST, THEN AN HONEST FALLBACK. OSM tagging is sparse, so a
+     * constrained query can legitimately return nothing. Rather than show an
+     * empty list (or, worse, silently drop the constraint as before), the
+     * unconstrained set is fetched and travels with `constraint_unmet` plus a
+     * note telling the model to say the constraint was NOT verified.
+     */
+    const foodConstraints = detectFoodConstraints(query)
+    const constraintFilter = osmFilterFor(foodConstraints)
+    const sel = (extra: string) =>
+      'node["' + osmKey + '"' + osmOp + '"' + osmValue + '"]["name"]' + extra + '(around:' + searchRadius + ',' + lat + ',' + lon + ');' +
+      'way["' + osmKey + '"' + osmOp + '"' + osmValue + '"]["name"]' + extra + '(around:' + searchRadius + ',' + lat + ',' + lon + ');'
+    const buildOql = (extra: string) => '[out:json][timeout:10];(' + sel(extra) + ');out center 10;'
+    const oql = buildOql(constraintFilter)
     // overpass.kumi.systems is dead (serves an HTML/XML error page with HTTP 200, so the
     // .json() below throws and the fallback is silently useless). maps.mail.ru is a live,
     // fast Overpass mirror with full VN coverage — verified returning valid JSON. Keeping a
@@ -162,6 +184,22 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         ])
         if ((resp as Response).ok) { overpassData = await (resp as Response).json(); break }
       } catch { continue }
+    }
+    // The constraint found nothing. Fall back to the unconstrained set so the
+    // user still gets nearby options — but flagged, never passed off as matching.
+    let constraintUnmet = false
+    if (constraintFilter && (!overpassData || (overpassData.elements ?? []).length === 0)) {
+      constraintUnmet = true
+      const fallbackOql = buildOql('')
+      for (const endpoint of endpoints) {
+        try {
+          const resp = await Promise.race([
+            fetch(endpoint + '?data=' + encodeURIComponent(fallbackOql), { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
+            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
+          ])
+          if ((resp as Response).ok) { overpassData = await (resp as Response).json(); break }
+        } catch { continue }
+      }
     }
     if (!overpassData) return { note: messages.places.searchOnMaps(lang, googleMapsUrl), google_maps_search: googleMapsUrl, results: [] }
     type El = { tags?: Record<string, string>; lat?: number; lon?: number; center?: { lat: number; lon: number } }
@@ -198,6 +236,10 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         ...(wifi ? { wifi: true } : {}),
         ...(outdoor ? { outdoor_seating: true } : {}),
         ...(stars ? { stars } : {}),
+        // Coordinates are EMITTED now, not just consumed. They were computed here
+        // for `maps_link` and `distance_km` and then dropped, which left an
+        // OSM-sourced entity with no position of its own.
+        ...((elat && elon) ? { lat: elat, lng: elon } : {}),
         // Distance from the user, only when we have both their GPS and the place's coords.
         ...((locationBias && elat && elon) ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, elat, elon) * 10) / 10 } : {}),
       }
@@ -208,6 +250,16 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     return {
       location: loc, amenity_type: amenity, source: 'OpenStreetMap', count: results.length, results,
       google_maps_search: googleMapsUrl,
+      // The constraint travels WITH the data, satisfied or not. A model that is
+      // told "these are not confirmed buffet" can say so; one that is told
+      // nothing fills the gap itself, which is the bug this fixes.
+      ...(foodConstraints.length > 0
+        ? {
+            requested_constraints: foodConstraints.map(c => c.label),
+            constraint_unmet: constraintUnmet,
+            ...(constraintUnmet ? { constraint_note: unmetConstraintNote(foodConstraints, lang) } : {}),
+          }
+        : {}),
       note: results.length === 0 ? messages.places.noOsmData(lang, googleMapsUrl) : messages.places.osmSourceNote(lang, googleMapsUrl)
     }
   } catch (e) { return { error: String(e), results: [], google_maps_search: googleMapsUrl } }
@@ -224,6 +276,90 @@ function isDirectFoodOrderLink(link: string): boolean {
   } catch {
     return false
   }
+}
+
+// ── Readers for the widened field mask (approved architecture rev 2, §4) ─────
+//
+// Each returns `undefined` when Google did not supply the field. NOTHING here
+// infers, defaults or reconstructs: an absent value stays absent so the
+// canonical entity can mark it UNKNOWN rather than guess. The row keys below are
+// the snake_case names the rest of the pipeline already speaks, so the OSM
+// fallback rows and the Google rows stay shape-compatible.
+
+interface GoogleOpeningHours { openNow?: boolean; weekdayDescriptions?: string[] }
+interface GooglePriceAmount { currencyCode?: string; units?: string | number }
+interface GooglePriceRange { startPrice?: GooglePriceAmount; endPrice?: GooglePriceAmount }
+
+/** Weekly hours as Google already formats them for the requested language. */
+function readOpeningHours(r: Record<string, unknown>): string | undefined {
+  const reg = r.regularOpeningHours as GoogleOpeningHours | undefined
+  const lines = reg?.weekdayDescriptions
+  if (!Array.isArray(lines) || lines.length === 0) return undefined
+  return lines.join('; ')
+}
+
+/**
+ * Open right now.
+ *
+ * 🔑 `currentOpeningHours` accounts for holidays and special hours;
+ * `regularOpeningHours` does not. Prefer the former, fall back to the latter,
+ * and return `undefined` — never `false` — when neither states it. "We don't
+ * know" and "closed" are different answers and must not collapse.
+ */
+function readOpenNow(r: Record<string, unknown>): boolean | undefined {
+  const cur = (r.currentOpeningHours as GoogleOpeningHours | undefined)?.openNow
+  if (typeof cur === 'boolean') return cur
+  const reg = (r.regularOpeningHours as GoogleOpeningHours | undefined)?.openNow
+  return typeof reg === 'boolean' ? reg : undefined
+}
+
+/** `PRICE_LEVEL_MODERATE` → 2. Unspecified and unknown members yield undefined. */
+const PRICE_LEVELS: Record<string, number> = {
+  PRICE_LEVEL_FREE: 0,
+  PRICE_LEVEL_INEXPENSIVE: 1,
+  PRICE_LEVEL_MODERATE: 2,
+  PRICE_LEVEL_EXPENSIVE: 3,
+  PRICE_LEVEL_VERY_EXPENSIVE: 4,
+}
+function readPriceLevel(r: Record<string, unknown>): number | undefined {
+  const raw = r.priceLevel
+  return typeof raw === 'string' && raw in PRICE_LEVELS ? PRICE_LEVELS[raw] : undefined
+}
+
+/** Provider price band. Only emitted when at least one bound and a currency exist. */
+function readPriceRange(r: Record<string, unknown>): { low?: number; high?: number; currency: string } | undefined {
+  const pr = r.priceRange as GooglePriceRange | undefined
+  if (!pr) return undefined
+  const amount = (a?: GooglePriceAmount) => {
+    const n = Number(a?.units)
+    return Number.isFinite(n) ? n : undefined
+  }
+  const low = amount(pr.startPrice)
+  const high = amount(pr.endPrice)
+  const currency = pr.startPrice?.currencyCode || pr.endPrice?.currencyCode
+  if ((low === undefined && high === undefined) || !currency) return undefined
+  return { ...(low !== undefined ? { low } : {}), ...(high !== undefined ? { high } : {}), currency }
+}
+
+function readCoords(r: Record<string, unknown>): { lat: number; lng: number } | undefined {
+  const loc = r.location as { latitude?: number; longitude?: number } | undefined
+  const lat = loc?.latitude
+  const lng = loc?.longitude
+  return typeof lat === 'number' && typeof lng === 'number' ? { lat, lng } : undefined
+}
+
+/**
+ * Photo RESOURCE NAMES ("places/ChIJ.../photos/AeZ..."), never URLs.
+ *
+ * 🚨 These are carved out of the model-facing payload by splitToolResult — the
+ * model must never see or write an image reference. They exist so
+ * resolvePlacePhotos can skip the legacy Place Details lookup entirely.
+ */
+function readPhotoNames(r: Record<string, unknown>): string[] | undefined {
+  const photos = r.photos as Array<{ name?: string }> | undefined
+  if (!Array.isArray(photos)) return undefined
+  const names = photos.map(p => p?.name).filter((n): n is string => typeof n === 'string' && n.length > 0)
+  return names.length > 0 ? names : undefined
 }
 
 export async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi', locationBias?: { lat: number; lng: number } | null) {
@@ -250,8 +386,42 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           circle: { center: { latitude: locationBias.lat, longitude: locationBias.lng }, radius: 5000.0 }
         }
       }
-      // places.photos excluded: key is restricted to old Places API only — new API silently returns 0 photos
-      const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.websiteUri'
+      /**
+       * ── FIELD MASK — approved architecture rev 2, Option A ──────────────────
+       *
+       * 🔑 THE MASK WAS ALREADY BILLED AT ENTERPRISE. `rating`, `userRatingCount`
+       * and `websiteUri` are Enterprise-tier fields, and Google bills a Text
+       * Search request at the HIGHEST tier present in the mask. Everything added
+       * below sits at or under that tier — Pro (`location`, `types`, `photos`) or
+       * Enterprise (`regularOpeningHours`, `currentOpeningHours`,
+       * `nationalPhoneNumber`, `priceLevel`, `priceRange`) — so the search cost
+       * delta is ZERO. Nothing here reaches Enterprise + Atmosphere, which is a
+       * separate, unapproved decision (`editorialSummary`, `reviews`).
+       *
+       * 🚨 `places.photos` returns photo RESOURCE NAMES, not URLs, and it replaces
+       * the legacy Place Details lookup in resolvePlacePhotos — that call was
+       * billed separately at Places Details Legacy. It was excluded here because
+       * the API key is restricted to the legacy Places API; that restriction is
+       * an environment problem, and while it stands this whole branch 403s and
+       * the OSM fallback answers instead.
+       */
+      const SEARCH_FIELD_MASK = [
+        'places.id',
+        'places.displayName',
+        'places.formattedAddress',
+        'places.googleMapsUri',
+        'places.websiteUri',
+        'places.rating',
+        'places.userRatingCount',
+        'places.regularOpeningHours',
+        'places.currentOpeningHours',
+        'places.nationalPhoneNumber',
+        'places.priceLevel',
+        'places.priceRange',
+        'places.location',
+        'places.types',
+        'places.photos',
+      ].join(',')
       const resp = await Promise.race([
         fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
@@ -283,14 +453,44 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         // are what it resolves from.
         result = {
           source: 'Google Maps', count: d.places.length,
-          results: placesData.map((r, idx) => ({
-            place_id: r.id as string,
-            name: (r.displayName as { text?: string })?.text || '',
-            address: r.formattedAddress,
-            google_rating: r.rating ? messages.places.googleRating(lang, r.rating as number, r.userRatingCount as number | undefined) : null,
-            maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
-            ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
-          }))
+          results: placesData.map((r) => {
+            const coords = readCoords(r)
+            const openingHours = readOpeningHours(r)
+            const openNow = readOpenNow(r)
+            const priceLevel = readPriceLevel(r)
+            const priceRange = readPriceRange(r)
+            const photoNames = readPhotoNames(r)
+            const types = Array.isArray(r.types) ? (r.types as string[]) : undefined
+            const ratingValue = typeof r.rating === 'number' ? r.rating : undefined
+            const ratingCount = typeof r.userRatingCount === 'number' ? r.userRatingCount : undefined
+            return {
+              place_id: r.id as string,
+              name: (r.displayName as { text?: string })?.text || '',
+              address: r.formattedAddress,
+              // The formatted string stays — the prompt, the injector and the
+              // ranker's back-parser all read it, and changing it would be an
+              // unrelated behavioural change.
+              google_rating: ratingValue !== undefined ? messages.places.googleRating(lang, ratingValue, ratingCount) : null,
+              // …and the NUMBERS travel beside it. `candidate.ts` currently reads
+              // the rating back out of our own formatted string; the canonical
+              // entity reads these instead, so the round trip stops here.
+              ...(ratingValue !== undefined ? { rating_value: ratingValue } : {}),
+              ...(ratingCount !== undefined ? { rating_count: ratingCount } : {}),
+              maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
+              ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
+              ...(openingHours ? { opening_hours: openingHours } : {}),
+              ...(openNow !== undefined ? { open_now: openNow } : {}),
+              ...(typeof r.nationalPhoneNumber === 'string' ? { phone: r.nationalPhoneNumber } : {}),
+              ...(priceLevel !== undefined ? { price_level: priceLevel } : {}),
+              ...(priceRange ? { price_range: priceRange } : {}),
+              ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
+              ...(types ? { place_types: types } : {}),
+              ...(photoNames ? { photo_names: photoNames } : {}),
+              ...(coords && locationBias
+                ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, coords.lat, coords.lng) * 10) / 10 }
+                : {}),
+            }
+          })
         }
       } else {
         console.log(JSON.stringify({ type: 'tappyai_places_debug', apiVersion: 'new', httpStatus: (resp as Response).status, errorMessage: (d.error as { message?: string })?.message || null }))
@@ -306,7 +506,63 @@ export async function searchPlaces(query: string, location?: string, type?: stri
   const isFood = type === 'restaurant' || type === 'cafe' || /nha hang|quan an|an gi|an ngon|mon an|thuc don|\bcafe\b|ca phe|coffee|quan nhau|bun|pho|com/.test(qNorm)
   const isSpa = type === 'spa' || /\bspa\b|massage|lam dep|tham my|nail|cham soc da|goi dau/.test(qNorm)
   const isEntertainment = type === 'cinema' || type === 'bar' || type === 'gym' || /rap chieu|cinema|xem phim|ve phim|karaoke|cong vien|khu vui choi|giai tri|bowling|billiard|\bgym\b|fitness|\bbar\b|\bpub\b|ve vao cong/.test(qNorm)
-  if (isFood || isSpa || isEntertainment) {
+  /**
+   * The resolved place domain, carried on the result.
+   *
+   * 🔑 The three booleans below are computed HERE and nowhere else, from the
+   * query text and the caller's `type`. The canonical entity builder needs the
+   * same answer, and re-deriving it downstream would be a second classifier that
+   * could disagree with the one that actually chose the enrichment. One
+   * classifier, one answer, carried as data.
+   *
+   * A place query that matches none of the three (a generic "địa điểm ở Quận 1")
+   * stays `place` — a real place with no domain-specific enrichment, not a
+   * miscategorised restaurant.
+   */
+  if (result && typeof result === 'object') {
+    (result as Record<string, unknown>)._tappy_place_domain =
+      isFood ? 'food' : isSpa ? 'spa' : isEntertainment ? 'entertainment' : 'place'
+  }
+
+  /**
+   * 🚨🚨 THE RETRIEVAL VERDICT, STAMPED HERE AND NOWHERE ELSE.
+   *
+   * Computed from the provider's own rows BEFORE any enrichment runs, so nothing added
+   * below can turn "found nothing" into something that reads like a find. That ordering is
+   * the guarantee, not a convention: the Serper calls in the block underneath fetch price and
+   * order SNIPPETS, and snippets are full of venue names. Asked for "spa tốt Hà Nội" the
+   * provider returned zero rows, the snippets arrived anyway, and the reply named four spas
+   * with addresses and prices that had never been retrieved.
+   *
+   * DOMAIN-AGNOSTIC BY CONSTRUCTION. It is one line on the shared result of `searchPlaces`,
+   * which every place query flows through — food, cafe, spa, entertainment and the generic
+   * `place` alike — so there is no per-domain branch to keep in sync, and a sixth domain
+   * inherits it for free.
+   */
+  const placeRows = (result && typeof result === 'object')
+    ? (result as { results?: unknown }).results
+    : undefined
+  const placeSearchEmpty = !Array.isArray(placeRows) || placeRows.length === 0
+  if (result && typeof result === 'object') {
+    (result as Record<string, unknown>).place_search_status = placeSearchEmpty ? 'empty' : 'has_results'
+    if (placeSearchEmpty) {
+      // Said in the result itself, because the model reads this and the gate downstream is
+      // defence-in-depth rather than the first line of defence. An honest empty answer is
+      // still a useful one — offering to widen the search is fine; naming a venue is not.
+      (result as Record<string, unknown>).no_results_instruction = messages.places.noResultsInstruction(lang)
+    }
+  }
+
+  /**
+   * 🚨 ENRICHMENT IS SKIPPED ENTIRELY ON AN EMPTY RETRIEVAL.
+   *
+   * These snippets exist to price and to order FROM the rows above. With no rows there is
+   * nothing to price and nothing to order, and handing the model a list of venue-bearing
+   * search snippets next to an empty result set is precisely how the fabricated spa prices
+   * ("99.000 - 399.000 VND", "massage từ 490.000đ/buổi") got authored. Skipping also keeps
+   * `snippetPrices` empty downstream, so the A5 money guard has nothing to license either.
+   */
+  if (!placeSearchEmpty && (isFood || isSpa || isEntertainment)) {
     try {
       const suffix = isFood ? 'gia menu thuc don' : isSpa ? 'gia dich vu bang gia spa massage' : 'gia ve dich vu'
       const [priceResults, orderResults, tiktokResults] = await Promise.all([

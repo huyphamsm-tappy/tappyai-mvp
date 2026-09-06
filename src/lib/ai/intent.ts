@@ -143,14 +143,52 @@ export function detectLang(text: string): string {
   let lowercaseAccentedWords = 0
   let viFunctionWords = 0
   let enFunctionWords = 0
-  for (const w of words) {
-    let accented = false
+  const accentedFlags = words.map(w => {
     for (const ch of w) {
-      if (isAccentedLatin(ch.codePointAt(0) ?? 0)) { accented = true; break }
+      if (isAccentedLatin(ch.codePointAt(0) ?? 0)) return true
     }
+    return false
+  })
+
+  /**
+   * 🚨 THE FIRST WORD OF A SENTENCE IS CAPITALISED BY ORTHOGRAPHY, NOT BECAUSE IT
+   * IS A PROPER NOUN — and treating it as one is what answered a Vietnamese
+   * query in English.
+   *
+   * Measured: `detectLang('Quán cafe view đẹp')` returned 'en'. `Quán` is an
+   * ordinary Vietnamese noun (shop/eatery), accented, and capitalised only
+   * because it opens the sentence. The uppercase filter dropped it from the
+   * Vietnamese evidence, leaving `đẹp` alone against the two undiacriticked
+   * loanwords Vietnamese speakers actually write — `cafe` and `view`. Score
+   * 1/3 = 0.333, below the 0.4 threshold, so the answer came back in English.
+   *
+   * Counting it needs two guards, because the uppercase filter is doing real work
+   * the rest of the time — a place name must never turn an English sentence
+   * Vietnamese ("Phú Quốc is nice", "Best bún chả in Hà Nội?"):
+   *
+   *   1. NOT FOLLOWED BY ANOTHER CAPITALISED WORD. "Đà Nẵng is beautiful" opens
+   *      with a two-word proper noun; "Quán cafe …" does not. A capitalised word
+   *      followed by a lowercase one is a sentence opening, not a name.
+   *   2. THE MESSAGE CARRIES OTHER VIETNAMESE EVIDENCE. Without this a lone
+   *      loanword would decide on its own — "Café recommendations?" is English
+   *      and has to stay English.
+   *
+   * This only ever ADDS to the numerator; the denominator is untouched, so no
+   * sentence that already resolved to Vietnamese can be pulled the other way.
+   */
+  const sentenceInitialIsVietnamese =
+    words.length > 1 &&
+    accentedFlags[0] &&
+    STARTS_UPPERCASE.test(words[0]) &&
+    !STARTS_UPPERCASE.test(words[1]) &&
+    accentedFlags.slice(1).some(Boolean)
+
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i]
+    const accented = accentedFlags[i]
     if (accented) {
       accentedWords++
-      if (!STARTS_UPPERCASE.test(w)) lowercaseAccentedWords++
+      if (!STARTS_UPPERCASE.test(w) || (i === 0 && sentenceInitialIsVietnamese)) lowercaseAccentedWords++
     }
     const bare = normalizeVN(w.toLowerCase()).replace(/[^a-z]/g, '')
     if (bare && VI_FUNCTION_WORDS.has(bare)) viFunctionWords++
