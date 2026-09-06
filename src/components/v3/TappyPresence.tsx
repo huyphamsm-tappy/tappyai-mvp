@@ -56,9 +56,20 @@ export interface TappyPresenceProps {
    * note below is its record. Nothing renders it today.
    */
   aura?: 'calm' | 'full'
+  /**
+   * Size from the CONTAINER instead of the `size` prop.
+   *
+   * 🚨 THIS EXISTS TO STOP THE MASCOT BEING POSITIONED BY NUMBERS. Every previous attempt set a
+   * pixel size and then nudged `top` until it looked right, which is why it kept reading as an
+   * image parked in a corner: the character had no relationship to the composition around it.
+   * In `fill` mode the hero's headline band gives the character its height, so Tappy is as tall
+   * as the block he stands in — head at the top of it, feet at the bottom — at every width, with
+   * no scale transform and no magic offsets. `size` still supplies the atmosphere's proportions.
+   */
+  fill?: boolean
 }
 
-export default function TappyPresence({ pose = 'wave', size, className = '', aura = 'calm' }: TappyPresenceProps) {
+export default function TappyPresence({ pose = 'wave', size, className = '', aura = 'calm', fill = false }: TappyPresenceProps) {
   // 🚨 `useId`, not a constant: Home mounts THREE of these (one per breakpoint), so a
   // hardcoded gradient id would be duplicated three times in one document. Browsers
   // resolve a duplicate id to the first match, which happens to look right — until the
@@ -84,8 +95,8 @@ export default function TappyPresence({ pose = 'wave', size, className = '', aur
 
   return (
     <div
-      className={`relative flex-shrink-0 ${className}`}
-      style={{ width: size, height: size }}
+      className={`relative flex-shrink-0 ${fill ? 'h-full' : ''} ${className}`}
+      style={fill ? { aspectRatio: '1 / 1' } : { width: size, height: size }}
     >
       {/* ── Atmosphere. Decorative, behind, never announced. ───────────── */}
       <div

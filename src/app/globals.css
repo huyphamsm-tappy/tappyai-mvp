@@ -887,27 +887,42 @@
     radial-gradient(38% 54% at 82% 26%, rgba(124, 92, 246, 0.10), transparent 70%);
 }
 
-/* ── Capability tiles — the middle ground ───────────────────────────────────
-   🚨 THIS HAS NOW BEEN WRONG IN BOTH DIRECTIONS, WHICH IS WHY THE TARGET IS WRITTEN DOWN.
-   First it was six equal `v3-tile` cards with icon, bold title and description — a
-   dashboard module grid. Correcting that produced bare transparent pills, which went
-   too far the other way and read as tags rather than as capabilities of a product.
+/* ── Capability cards ───────────────────────────────────────────────────────
+   🚨 THIRD AND FINAL SHAPE, AND THE TWO WRONG ONES ARE WORTH NAMING. First: six
+   `v3-tile` cards with icon, bold title and a description — a dashboard module
+   grid. Then bare pills, which read as tags. Then soft tiles, which still read
+   as horizontal nav rows because a label on a flat bar is a menu item.
 
-   What is right is a SOFT TILE: it has a surface, so it reads as a thing rather than a
-   label; the surface is faint and the border is a hairline, so six of them in a row do
-   not compete with the composer above. No description, no image, no arrow, no fixed
-   card height. */
-.v3-cap-tile {
+   What the approved mockup actually shows is IMAGE-LED: a scene, a scrim, a
+   title and one short line. That is what makes them read as places the agent can
+   take you rather than as buttons. The discipline is HEIGHT — 104px against the
+   recommendation strip's 210px, so they stay a bridge between the hero and the
+   recommendations and never compete with either. */
+.v3-cap-card {
   border: 1px solid var(--v3-border);
-  background: color-mix(in srgb, var(--v3-panel) 62%, transparent);
-  transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+  background: var(--v3-panel-elevated);
+  transition: border-color 150ms ease, transform 150ms ease;
 }
-.v3-cap-tile:hover {
-  background: color-mix(in srgb, var(--v3-accent) 10%, var(--v3-panel));
-  border-color: color-mix(in srgb, var(--v3-accent) 45%, var(--v3-border));
-  transform: translateY(-1px);
+.v3-cap-card:hover .v3-cap-arrow {
+  background: var(--v3-accent-fill);
+  color: var(--v3-on-accent);
 }
-:root:not(.dark) .v3-cap-tile {
+.v3-cap-card:hover {
+  border-color: color-mix(in srgb, var(--v3-accent) 50%, var(--v3-border));
+  transform: translateY(-2px);
+}
+/* A short fade from the art into the card's own surface, so the scene and the
+   text below it read as one object rather than as a picture with a bar under it.
+   `--v3-panel-elevated` is the card ground, so the fade lands exactly on it. */
+.v3-cap-fade {
+  background: linear-gradient(to bottom, transparent, var(--v3-panel-elevated));
+}
+
+/* The one card with no scene behind it. Same silhouette, no scrim, page colours. */
+.v3-cap-card-plain {
+  background: color-mix(in srgb, var(--v3-panel) 70%, transparent);
+}
+:root:not(.dark) .v3-cap-card-plain {
   background: #FFFFFF;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
 }
@@ -918,17 +933,21 @@
    there first and the composer — the actual product — came second. This pulls the
    art back a step so the strip reads as RESULTS FROM Tappy rather than as a feed
    competing with him. Content is untouched; only intensity is. */
+/* 🚨 RETUNED FOR PHOTOGRAPHY. These values (0.82 / 0.88) were set against the dark authored
+   VECTOR scenes, where heavy damping was what kept a flat illustration from shouting over the
+   hero. Real photographs carry their own depth and read as muddy under the same treatment —
+   the approved mockup's imagery is bright and saturated. This is now a light touch: enough to
+   keep the strip below the composer in the visual order, not enough to grey the picture out. */
 .v3-home [data-home-section='for-you'] img {
-  filter: saturate(0.82) brightness(0.88) contrast(0.96);
+  filter: saturate(0.96) brightness(0.95);
   transition: filter 200ms ease, transform 500ms ease;
 }
 .v3-home [data-home-section='for-you'] a:hover img {
   filter: saturate(1) brightness(1) contrast(1);
 }
 :root:not(.dark) .v3-home [data-home-section='for-you'] img {
-  /* On white the same art is already softer; dimming it as hard as on black would
-     make it look muddy rather than calm. */
-  filter: saturate(0.88) brightness(0.97);
+  /* On white the photograph needs no damping at all beyond a whisper. */
+  filter: saturate(0.98) brightness(0.99);
 }
 
 /* The AI composer. Larger than a search field on purpose — this is the primary
@@ -963,18 +982,31 @@
   padding-inline: var(--v3-gutter);
 }
 
-/* 🚨 THE WIDE CANVAS. At 1240px Home's hero left roughly 400px of dead space on a 27-inch
-   screen — the composition read as a website floating in a canvas rather than as the
-   product filling it. `min(100% - gutters, 1480px)` is what `.v3-container` already
-   computes; only the cap moves, so the gutters, the centring and the grid line every
-   section shares are untouched. Opt-in via `V3Shell`'s `wide`; nothing else uses it. */
+/* ══════════════════════════════════════════════════════════════════════════
+   HOME · THE AI CANVAS
+   ══════════════════════════════════════════════════════════════════════════
+
+   🚨 A FIXED CAP IS THE THING THAT WAS WRONG, AND RAISING IT DID NOT FIX IT.
+   This was 1240px, then 1480px. Both produced the same composition on the
+   owner's 27-inch monitor: sidebar, a centred island, and two obvious empty
+   regions either side of it. 1480 inside the ~1712px left after the sidebar
+   still stranded 118px on each edge, which is exactly wide enough to read as
+   dead space rather than as margin.
+
+   The canvas is FLUID now. Width is whatever remains after the sidebar, minus
+   gutters that scale with the viewport — so the composition expands with the
+   screen instead of pinning to a number and letting the screen grow around it.
+   At 1920 that is roughly 1570px of content against 72px gutters: margin, not
+   emptiness. The cap that remains is a sanity stop for ultrawide displays,
+   far beyond any acceptance width.
+
+   🚨 THE GUTTER IS THE ONLY HORIZONTAL CONSTRAINT. Every section — hero,
+   composer, capabilities, recommendations, tools — inherits this one width, so
+   none of them can become an island inside the canvas. There is no second
+   container anywhere in Home. */
 .v3-container-wide {
-  max-width: 1480px;
-}
-@media (min-width: 1600px) {
-  /* Past 1600 the gutters grow with the screen instead of the content stranding at a fixed
-     cap — the page keeps breathing rather than pinning to one edge. */
-  .v3-container-wide { --v3-gutter: 64px; }
+  max-width: 2040px;
+  --v3-gutter: clamp(20px, 3.4vw, 72px);
 }
 
 /* The panel IS the visual language of this surface: one card shape, one

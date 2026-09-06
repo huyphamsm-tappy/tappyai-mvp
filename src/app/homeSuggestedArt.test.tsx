@@ -93,9 +93,15 @@ function suggested(container: HTMLElement): HTMLElement {
   return el!
 }
 
-const cardsIn = (container: HTMLElement) => [...suggested(container).querySelectorAll('a')]
+/** 🔑 THE CARDS, NOT EVERY ANCHOR IN THE SECTION. This read `querySelectorAll('a')`, which was
+ *  exact while the heading had no action — the approved mockup gives this section a "see all"
+ *  link, and that anchor carries no `?category=`, so it arrived as a sixth card with a null
+ *  category. `[data-suggested-card]` is on the cards and nothing else, so the assertions below
+ *  now name what they always meant. */
+const cardsIn = (container: HTMLElement) =>
+  [...suggested(container).querySelectorAll<HTMLElement>('[data-suggested-card]')]
 const artIn = (container: HTMLElement) =>
-  [...suggested(container).querySelectorAll('img')].map(i => i.getAttribute('src') ?? '')
+  cardsIn(container).flatMap(c => [...c.querySelectorAll('img')]).map(i => i.getAttribute('src') ?? '')
 
 describe('every card gets its own picture, whatever the categories do', () => {
   it('gives five cards five different pictures when the categories REPEAT', () => {
@@ -249,7 +255,7 @@ describe('real imagery, when it exists, wins', () => {
       { category: 'travel', imageUrl: '/branding/hero-bg.webp' },
       { category: 'travel' },
     ])
-    expect(art[1], 'the placeholder card keeps the travel scene').toBe('/home/inspire/travel.svg')
+    expect(art[1], 'the placeholder card keeps the travel scene').toBe('/home/inspire/travel.webp')
   })
 })
 

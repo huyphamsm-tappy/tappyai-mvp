@@ -11,7 +11,8 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { homeSmartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import {
-  MessageCircle, Mic, ArrowUp, ChevronRight, Sparkles, Search, Plus,
+  MessageCircle, Mic, ArrowUp, ArrowRight, ChevronRight, Sparkles, Search, Plus,
+  Coffee, Languages, ShieldCheck,
   UtensilsCrossed, ShoppingBag, Plane, Clapperboard, Flower2,
   Music2, Sparkle, PenLine, Users, Star,
 } from 'lucide-react'
@@ -112,11 +113,11 @@ export interface HomeV3Props {
  *  moves — not the card markup, not the data shape. `homeSuggestedArt.test.tsx` fails until the
  *  attribute is gone, which is the reminder. */
 const ART_POOL: readonly string[] = [
-  '/home/inspire/food.svg',
-  '/home/inspire/travel.svg',
-  '/home/inspire/cafe.svg',
-  '/home/inspire/spa.svg',
-  '/home/inspire/entertainment.svg',
+  '/home/inspire/food.webp',
+  '/home/inspire/travel.webp',
+  '/home/inspire/shopping.webp',
+  '/home/inspire/spa.webp',
+  '/home/inspire/entertainment.webp',
 ]
 
 /** 🚨 A HINT, NOT A MAPPING — and the distinction is the whole point of this file's last defect.
@@ -131,13 +132,18 @@ const ART_POOL: readonly string[] = [
  *  where a themed scene happens to be free, the card that thematically suits it gets it. When it is
  *  taken, the card takes a different scene and nothing is lost — these are presentation artwork,
  *  not factual category illustrations. A spa scene above a travel prompt is a picture, not a claim.
+ *
+ *  🚨 THE POOL IS PHOTOGRAPHY NOW, AND `shopping` IS ITS OWN PICTURE. The five entries were dark
+ *  authored SVG scenes, and `shopping` borrowed the CAFE scene because no shopping scene existed —
+ *  a retail prompt sat under a coffee table. The owner supplied five approved photographs, one per
+ *  real category, so the borrow is gone and every category now has its own.
  *  The card's CATEGORY LABEL stays the real semantic metadata and is never derived from the art. */
 const CATEGORY_PREFERRED_ART: Record<string, string> = {
-  food: '/home/inspire/food.svg',
-  travel: '/home/inspire/travel.svg',
-  shopping: '/home/inspire/cafe.svg',
-  spa: '/home/inspire/spa.svg',
-  entertainment: '/home/inspire/entertainment.svg',
+  food: '/home/inspire/food.webp',
+  travel: '/home/inspire/travel.webp',
+  shopping: '/home/inspire/shopping.webp',
+  spa: '/home/inspire/spa.webp',
+  entertainment: '/home/inspire/entertainment.webp',
 }
 
 /** What the presentation layer needs to choose a picture. Deliberately narrower than `Suggestion`:
@@ -222,20 +228,24 @@ const CATEGORY_LABEL: Record<string, string> = {
  * and points at /tools, because there is no sixth category and inventing one to square the grid
  * is exactly the failure this file's header warns about.
  */
-const CAPABILITIES: { id: string; icon: typeof Search; tone: string }[] = [
-  { id: 'food', icon: UtensilsCrossed, tone: 'var(--v3-amber)' },
-  { id: 'shopping', icon: ShoppingBag, tone: 'var(--v3-rose)' },
-  { id: 'travel', icon: Plane, tone: 'var(--v3-accent)' },
-  { id: 'entertainment', icon: Clapperboard, tone: 'var(--v3-violet)' },
-  { id: 'spa', icon: Flower2, tone: 'var(--v3-emerald)' },
+const CAPABILITIES: { id: string; icon: typeof Search; descKey: string; tone: string }[] = [
+  { id: 'food', descKey: 'v3.home.capFood', icon: UtensilsCrossed, tone: 'var(--v3-amber)' },
+  { id: 'shopping', descKey: 'v3.home.capShopping', icon: ShoppingBag, tone: 'var(--v3-rose)' },
+  { id: 'travel', descKey: 'v3.home.capTravel', icon: Plane, tone: 'var(--v3-accent)' },
+  { id: 'entertainment', descKey: 'v3.home.capEntertainment', icon: Clapperboard, tone: 'var(--v3-violet)' },
+  { id: 'spa', descKey: 'v3.home.capSpa', icon: Flower2, tone: 'var(--v3-emerald)' },
 ]
 
-const QUICK_CHIPS = [
-  'v3.chip.cafe',
-  'v3.chip.plan',
-  'v3.chip.translate',
-  'v3.chip.split',
-  'v3.chip.scam',
+/** 🚨 THE PROMPTS ARE ICON + TEXT, AS THE APPROVED MOCKUP SHOWS. They were bare strings.
+ *  Each glyph is an existing lucide icon and is chosen for what the prompt ASKS — a cup for the
+ *  cafe prompt, a plane for the trip, a shield for the scam check — so the row reads as things a
+ *  person could say rather than as a set of filter tags. The keys and the strings are unchanged. */
+const QUICK_CHIPS: { key: string; icon: typeof Search; tone: string }[] = [
+  { key: 'v3.chip.cafe', icon: Coffee, tone: 'var(--v3-amber)' },
+  { key: 'v3.chip.plan', icon: Plane, tone: 'var(--v3-accent)' },
+  { key: 'v3.chip.translate', icon: Languages, tone: 'var(--v3-violet)' },
+  { key: 'v3.chip.split', icon: Users, tone: 'var(--v3-emerald)' },
+  { key: 'v3.chip.scam', icon: ShieldCheck, tone: 'var(--v3-rose)' },
 ]
 
 // 🔑 THE FIVE TOOLS HOME CURATES NOW COME FROM THE REGISTRY, NOT FROM A LIST HERE.
@@ -301,7 +311,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           home page of the product. `clip` rather than `hidden`: it bounds the overflow without
           creating a scroll container, so nothing inside becomes focus-scrollable, and it is
           horizontal-only so sticky/vertical behaviour is untouched. */}
-      <div className="v3-home relative z-[1] space-y-10" style={{ overflowX: 'clip' }}>
+      <div className="v3-home relative z-[1] space-y-7 xl:space-y-8" style={{ overflowX: 'clip' }}>
 
         {/* ── 1. THE AI AGENT — the page is this, and everything else supports it ──
             🚨 NOT A PANEL ANY MORE. The hero used to be one `v3-panel` among four, which is
@@ -316,80 +326,116 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
         <section
           data-home-section="hero"
           aria-label={t('v3.home.askAria')}
-          className="v3-ai-hero relative pb-4 pt-7 sm:pt-11"
+          className="v3-ai-hero relative pb-0 pt-7 sm:pt-11 xl:pt-12"
         >
-          {/* 🚨 ONE COMPOSITION, NOT TWO COLUMNS.
-              This was `flex` with a text column and a 240px mascot column, and the consequence
-              was structural rather than cosmetic: the mascot set the width of everything beside
-              it, so the composer — the product's primary control — was capped at whatever the
-              character left over, and the hero read as "content on the left, art on the right".
+          {/* ── Tappy — ONE PRESENCE BLOCK INSIDE THE HERO ──────────────────
+              🚨 THE CHARACTER IS SIZED BY THE COMPOSITION, NOT BY A NUMBER.
+              Every earlier attempt gave Tappy a pixel size and then nudged `top` and `scale`
+              until it looked acceptable — which is exactly why it kept reading as an image
+              parked in a corner: the character had no relationship to anything around it.
 
-              Only the HEADLINE now shares a row with Tappy. The subtext, the composer and the
-              prompts span the full width of the hero, so the AI experience is as wide as the
-              page and the character sits INSIDE that environment rather than next to it. */}
-          <div className="flex items-start justify-between gap-6">
-            <div className="min-w-0">
-              {/* The eyebrow names the product category before anything else on the page does. */}
-              <p className="flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--v3-accent)' }}>
-                <span
-                  className="flex h-[19px] w-[19px] items-center justify-center rounded-md"
-                  style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
-                  aria-hidden="true"
+              This block is stretched to the HEADLINE BAND (`top-0 -bottom-6`), and Tappy fills
+              it (`fill`). So his head sits at the top of the band, level with the eyebrow, and
+              his feet land on the composer's top edge — the reference's relationship, holding at
+              every width with no scale transform and no magic offsets. The band grows with the
+              type, and Tappy grows with the band.
+
+              🚨 INSET FROM THE RIGHT, NOT PINNED TO IT. `right-[4%]` and up: in the reference the
+              pair stops well short of the canvas edge, and pinning it to `right-0` is what made
+              the right side read as "mascot parked against the wall" rather than as part of the
+              scene.
+
+              🚨 THE BUBBLE IS TOP-ALIGNED BESIDE HIS HEAD. `items-start` puts the card level with
+              the top of the character, which is where the reference has it — beside the head,
+              speaking. Centring it against his body (the previous `mt-6`) detached it into a
+              floating chip. It is inside the same absolutely-positioned block, so the two move
+              together as one presence and can never drift apart. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-6 right-[10%] top-0 hidden items-end lg:flex xl:right-[8.5%] 2xl:right-[7%]"
+          >
+            {/* 🚨 THE BUBBLE IS ANCHORED TO THE ARTWORK, NOT TO THE BAND. Two earlier passes
+                aligned it to this CONTAINER, and both stranded it: the container is as tall as the
+                headline band, so `top` on it lands near the header while the character — capped and
+                bottom-aligned — has its head far below. `wave.png` is square and the mascot box
+                letterboxes it, so the square overlay below reproduces exactly where the artwork
+                sits (full width, centred, `aspect-ratio: 1/1`) and the bubble is placed in ITS
+                coordinates. The card now tracks his head at every size, with no pixel offsets. */}
+            <div className="relative flex h-full items-end">
+              {/* 🚨 CAPPED, AND GROUNDED AT THE BOTTOM. `h-full aspect-square` alone created a
+                  feedback loop at 1280: a taller band made the square WIDER, which squeezed the
+                  headline into a third line, which made the band taller again — and the box ended
+                  up overlapping the copy. The cap stops the growth; `items-end` keeps his feet on
+                  the composer's edge even when the cap makes him shorter than the band. */}
+              <TappyPresence pose="wave" size={252} fill className="max-w-[236px] xl:max-w-[288px] 2xl:max-w-[330px]" />
+
+              {/* The artwork's own square: same width as the mascot box, centred in it. Nothing is
+                  drawn here — it exists so the bubble can be positioned in percentages of the
+                  character rather than in pixels off a container edge.
+
+                  🚨 THE PERCENTAGES BELOW ARE MEASURED FROM wave.png, NOT CHOSEN BY EYE. Reading the
+                  alpha channel of the 288px square source: the drawing occupies x 19.1–80.6% and y
+                  13.9–77.1%, and the HEAD is the blob at x 29–75%, y 17–43%. So `left-[78%]` puts the
+                  card just past the ear with a few pixels of daylight, and `top-[23%]` centres its
+                  ~39px height on the face at ~30% rather than floating above the head. Anything
+                  derived from the outer container instead of these numbers drifts, because the box
+                  letterboxes the square and its height is the headline band's, not the art's. */}
+              <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2" style={{ aspectRatio: '1 / 1' }}>
+                <div
+                  className="absolute left-[78%] top-[23%] w-[136px] rounded-2xl rounded-bl-sm px-3.5 py-2.5 text-[12.5px] font-medium leading-snug 2xl:w-[168px]"
+                  style={{
+                    background: 'color-mix(in srgb, var(--v3-panel) 94%, transparent)',
+                    border: '1px solid color-mix(in srgb, var(--v3-accent) 30%, var(--v3-border))',
+                    color: 'var(--v3-fg-secondary)',
+                    boxShadow: '0 12px 32px -18px rgba(0,122,255,0.6)',
+                  }}
                 >
-                  <Sparkles size={11} />
-                </span>
-                {t('v3.home.eyebrow')}
-              </p>
-
-              {/* 🚨 TWO LINES, AND THE SECOND ONE IS THE PRODUCT'S QUESTION. The greeting alone
-                  is hospitality; the question underneath it is the whole proposition, so it
-                  carries the weight and the accent. */}
-              <h2 className="mt-4 text-[30px] font-semibold leading-[1.08] tracking-[-0.025em] sm:text-[42px] lg:text-[52px]" style={{ color: 'var(--v3-fg)' }}>
-                {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
-                <span aria-hidden="true">👋</span>
-                <span className="mt-1 block" style={{ color: 'var(--v3-accent)' }}>{t('v3.home.askHeadline')}</span>
-              </h2>
-
-              <p className="mt-4 max-w-[62ch] text-[15px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
-                {t('v3.home.askSub')}
-              </p>
-            </div>
-
-            {/* ── Tappy ──────────────────────────────────────────────────────
-                Layered into the composition, not given a column of its own: `flex-shrink-0` with
-                no width, so it takes only the space the character occupies and never dictates how
-                wide the headline beside it may be. Its glow is restored — restrained, close in,
-                and behind — because a companion with no light on it read as a sticker.
-
-                The asset is untouched: same `TappyPresence`, same pose, same calm aura. */}
-            <div className="relative hidden flex-shrink-0 flex-col items-center pt-1 lg:flex">
-              <div
-                className="mb-1 rounded-2xl rounded-br-sm px-3 py-1.5 text-[12px] font-medium"
-                style={{
-                  background: 'color-mix(in srgb, var(--v3-panel) 88%, transparent)',
-                  border: '1px solid var(--v3-border)',
-                  color: 'var(--v3-fg-secondary)',
-                }}
-              >
-                {t('v3.home.mascotSays')}
+                  {t('v3.home.mascotSays')}
+                </div>
               </div>
-              <TappyPresence pose="wave" size={224} />
             </div>
           </div>
 
-          {/* 🚨 THE COMMAND CENTRE, AT FULL HERO WIDTH. This is the primary action of the entire
-              product; on a 1480px canvas it is now roughly 1400px of lit surface rather than the
-              ~640px the mascot column used to leave it. It still NAVIGATES to /chat — Home is a
-              door, not a room (DD-002), and nothing here streams a reply. */}
+          {/* The copy reserves the pair's width so nothing can collide with it. */}
+          <div className="min-w-0 lg:pr-[360px] xl:pr-[460px] 2xl:pr-[520px]">
+            <p className="flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--v3-accent)' }}>
+              <span
+                className="flex h-[19px] w-[19px] items-center justify-center rounded-md"
+                style={{ background: 'var(--v3-violet-fill)', color: 'var(--v3-on-violet)' }}
+                aria-hidden="true"
+              >
+                <Sparkles size={11} />
+              </span>
+              {t('v3.home.eyebrow')}
+            </p>
+
+            <h2 className="mt-4 text-[30px] font-semibold leading-[1.08] tracking-[-0.025em] sm:text-[42px] lg:text-[50px] 2xl:text-[56px]" style={{ color: 'var(--v3-fg)' }}>
+              {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
+              <span aria-hidden="true">👋</span>
+              <span className="mt-1 block" style={{ color: 'var(--v3-accent)' }}>{t('v3.home.askHeadline')}</span>
+            </h2>
+
+            <p className="mt-3.5 max-w-[62ch] text-[15px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
+              {t('v3.home.askSub')}
+            </p>
+          </div>
+
+          {/* 🚨 THE COMPOSER STOPS SHORT OF THE CANVAS EDGE, AS IT DOES IN THE MOCKUP.
+              It ran the full width here; in the approved composition it ends roughly where
+              Tappy's column begins, which is what keeps the hero reading as one scene with the
+              character in it rather than as a full-bleed bar with art parked above it. */}
           <form
             onSubmit={(e) => { e.preventDefault(); ask(draft) }}
-            className="v3-ai-composer mt-7 flex items-center gap-3 rounded-2xl px-5 py-3 sm:py-3.5"
+            className="v3-ai-composer mt-6 flex items-center gap-3 rounded-2xl px-5 py-3 sm:py-3.5 lg:mr-[132px] xl:mr-[176px] 2xl:mr-[216px]"
           >
             <Search size={19} aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-fg-muted)' }} />
             <input
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              placeholder={t('v3.home.askPlaceholder')}
+              /* 🚨 ONE LINE, AS IN THE MOCKUP. The example lived in a grey line UNDER the
+                  composer; the approved design puts it inside the field itself, which removes a
+                  row from the hero and is why the mockup's composer sits closer to the prompts. */
+              placeholder={`${t('v3.home.askPlaceholder')} ${t('v3.home.askHint')}`}
               aria-label={t('v3.home.askAria')}
               className="min-w-0 flex-1 bg-transparent text-[15px] font-light outline-none placeholder:font-light sm:text-[16.5px]"
               style={{ color: 'var(--v3-fg)' }}
@@ -412,21 +458,25 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             </button>
           </form>
 
-          <p className="mt-2.5 pl-1 text-[11.5px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>
-            {t('v3.home.askHint')}
-          </p>
-
-          {/* 🚨 "TRY ASKING TAPPY", NOT "QUICK SUGGESTIONS". These are not category navigation
-              and not filters — each one is a whole sentence a person could say out loud, and
-              pressing it asks Tappy exactly that. The label says so. */}
-          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
+          {/* 🚨 THE PROMPTS CARRY ICONS. In the mockup each pill opens with a semantic glyph —
+              a cup, a plane, cutlery, a shield, people — and that iconography is a large part of
+              why the row reads as things you could SAY rather than as filter tags. They were
+              plain text here. Every glyph is an existing lucide icon already used elsewhere in
+              this product, chosen to match what the prompt actually asks for. */}
+          <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 lg:pr-[132px]">
             <p className="text-[11.5px] font-medium" style={{ color: 'var(--v3-fg-muted)' }}>
               {t('v3.home.tryAsking')}
             </p>
             <div className="v3-scroll-x flex gap-2 pb-0.5">
-              {QUICK_CHIPS.map(c => (
-                <button key={c} type="button" onClick={() => ask(t(c))} className="v3-chip flex-shrink-0">
-                  {t(c)}
+              {QUICK_CHIPS.map(({ key, icon: ChipIcon, tone }) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => ask(t(key))}
+                  className="v3-chip flex flex-shrink-0 items-center gap-1.5"
+                >
+                  <ChipIcon size={13} aria-hidden="true" style={{ color: tone }} />
+                  {t(key)}
                 </button>
               ))}
             </div>
@@ -436,50 +486,100 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
         {/* ── 2. CAPABILITIES — what the agent can actually do ──────────────
             🚨 THESE ARE THE FIVE REAL CATEGORIES, NOT AN INVENTED TAXONOMY. `CATEGORIES` in
             `src/lib/utils` is the shared vocabulary the composer, the chat route and the
-            suggestion cards already use — food, shopping, entertainment, travel, spa — and
-            `v3.cat.*` already carried a localized label for each. Every card opens /chat with
-            that category preselected, which is the same mechanism the "for you" cards use.
+            suggestion cards already use, and `CATEGORY_PREFERRED_ART` already maps one authored
+            scene to each. Every card opens /chat with that category preselected.
 
-            🚨 THEY ARE CAPABILITIES, NOT DESTINATIONS. Nothing here links to Explore, Deals or
-            Marketplace, and no card reproduces another page's content — the rule `homeAiFirst`
-            has enforced since the fifteen-panel dashboard was taken apart. Each one is a way to
-            start a conversation, which is why they sit directly under the composer.
-
-            🚨 SOFT TILES — the middle ground. See `.v3-cap-tile`: this was six dashboard cards,
-            then six bare pills, and both were wrong. A faint surface and a hairline border make
-            them read as capabilities rather than as modules or as tags. They share the row
-            evenly so the section spans the same width as the composer above it. */}
+            🚨 IMAGE ON TOP, TEXT ON THE CARD BELOW IT — the mockup's structure, and the fourth
+            shape this row has taken. Dashboard cards, then bare pills, then soft bars, then a
+            full-bleed image with the words scrimmed over it. The mockup does none of those: the
+            scene occupies the upper band, the card's own surface carries the title and one line
+            under it, and a small round chevron sits at the right. */}
         <section data-home-section="capabilities" aria-label={t('v3.home.canHelpTitle')}>
-          <p className="text-[12.5px] font-medium" style={{ color: 'var(--v3-fg-secondary)' }}>
-            {t('v3.home.canHelpTitle')}
-          </p>
-          <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
-            {CAPABILITIES.map(({ id, icon: Icon, tone }) => (
+          {/* 🚨 NO HEADING. The approved mockup runs the prompt row straight into these cards —
+              they are part of the hero's own offer, not a titled section of the page. The label
+              this carried is an element the mockup does not have, and
+              it was what made the row read as the start of a dashboard. The section keeps its
+              accessible name via `aria-label`, so nothing is lost to assistive tech. */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {CAPABILITIES.map(({ id, icon: Icon, descKey, tone }) => (
               <Link
                 key={id}
                 href={`/chat?category=${id}`}
                 data-capability={id}
-                className="v3-cap-tile group flex items-center gap-2.5 rounded-xl px-3.5 py-3 focus-visible:outline-none focus-visible:ring-2"
+                className="v3-cap-card group flex flex-col overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2"
               >
-                <span aria-hidden="true" className="flex-shrink-0" style={{ color: tone }}>
-                  <Icon size={17} />
+                <span className="relative block h-[62px] w-full flex-shrink-0 overflow-hidden">
+                  {/* The authored scene this page already owns — no new asset, no photograph. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={CATEGORY_PREFERRED_ART[id]}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                  />
+                  {/* A short fade into the card's surface so the image and the text below read as
+                      one object rather than as a picture with a bar under it. */}
+                  <span aria-hidden="true" className="v3-cap-fade absolute inset-x-0 bottom-0 h-8" />
                 </span>
-                <span className="truncate text-[13px] font-medium" style={{ color: 'var(--v3-fg)' }}>
-                  {t(CATEGORY_LABEL[id])}
+
+                <span className="flex flex-1 items-center gap-2 px-3 py-2">
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-1.5">
+                      <span aria-hidden="true" className="flex-shrink-0" style={{ color: tone }}>
+                        <Icon size={13} />
+                      </span>
+                      <span className="truncate text-[12.5px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
+                        {t(CATEGORY_LABEL[id])}
+                      </span>
+                    </span>
+                    <span className="mt-0.5 block truncate text-[10.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                      {t(descKey)}
+                    </span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="v3-cap-arrow flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full transition-colors"
+                    style={{ background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-secondary)' }}
+                  >
+                    <ArrowRight size={12} />
+                  </span>
                 </span>
               </Link>
             ))}
-            {/* Not a sixth category — the way out to everything else, at the same weight. */}
+            {/* 🚨 NO ART FOR "MORE". The pool holds exactly five scenes, one per real category.
+                Borrowing one would put a spa or a plane over a link to the Tools page — a picture
+                that says something untrue about where it goes. Same silhouette, no scene. */}
             <Link
               href="/tools"
               data-capability="more"
-              className="v3-cap-tile group flex items-center gap-2.5 rounded-xl px-3.5 py-3 focus-visible:outline-none focus-visible:ring-2"
+              className="v3-cap-card v3-cap-card-plain group flex flex-col overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2"
             >
-              <span aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-fg-muted)' }}>
-                <Plus size={17} />
+              <span className="flex h-[62px] w-full flex-shrink-0 items-center justify-center">
+                <span
+                  aria-hidden="true"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl"
+                  style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
+                >
+                  <Plus size={17} />
+                </span>
               </span>
-              <span className="truncate text-[13px] font-medium" style={{ color: 'var(--v3-fg-secondary)' }}>
-                {t('v3.home.capMore')}
+              <span className="flex flex-1 items-center gap-2 px-3 py-2.5">
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[12.5px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
+                    {t('v3.home.capMore')}
+                  </span>
+                  <span className="mt-0.5 block truncate text-[10.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                    {t('v3.home.capMoreDesc')}
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="v3-cap-arrow flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full transition-colors"
+                  style={{ background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-secondary)' }}
+                >
+                  <ArrowRight size={12} />
+                </span>
               </span>
             </Link>
           </div>
@@ -490,7 +590,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             personalisation system and never fabricated. No items, no section. */}
         {suggestions.length > 0 && (
           <section data-home-section="for-you" aria-label={t('v3.home.forYouTitle')}>
-            <SectionHeading title={t('v3.home.forYouTitle')} />
+            <SectionHeading title={t('v3.home.forYouTitle')} subtitle={t('v3.home.forYouSub')} action={{ label: t('v3.action.seeAll'), href: '/recommendations' }} />
             {/* Card FORMAT from the reference — dark surface, rounded, an accent icon badge at
                 the top, title beneath.
 
@@ -500,7 +600,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 place and no location. Rendering a picture and a city under each one would be
                 inventing content to match a mockup, so the format is reproduced and the
                 fabricated parts are not. The emoji takes the icon slot. */}
-            <div className="v3-scroll-x mt-3 flex gap-4 pb-1">
+            <div className="v3-scroll-x mt-3 flex gap-3.5 pb-1">
               {forYou.map((s, i) => {
                 const text = locale === 'en' ? s.textEn || s.text : s.text
                 const art = forYouArt[i]
@@ -512,12 +612,13 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                 return (
                   <Link
                     key={s.text}
+                    data-suggested-card={s.category}
                     href={`/chat?q=${encodeURIComponent(text)}&category=${s.category}`}
-                    className="v3-tile group flex min-h-[210px] w-[210px] flex-shrink-0 flex-col overflow-hidden transition-colors lg:flex-1"
+                    className="v3-tile group flex min-h-[152px] w-[210px] flex-shrink-0 flex-col overflow-hidden transition-colors lg:flex-1"
                   >
                     {/* The art. `aria-hidden` and empty alt: it is decoration behind a link whose
                         text already says where it goes, so a screen reader gains nothing from it. */}
-                    <span className="relative block h-[108px] w-full flex-shrink-0 overflow-hidden">
+                    <span className="relative block h-[94px] w-full flex-shrink-0 overflow-hidden">
                       {art && (
                         <img
                           src={art}
@@ -532,12 +633,24 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                         />
                       )}
-                      <span className={cn('absolute bottom-2 left-3 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br text-[17px] shadow-lg', s.gradient)}>
+                      {/* 🚨 THE CATEGORY IS A BADGE ON THE ART, WHICH IS WHERE THE MOCKUP PUTS
+                          IT — it was a dotted line of text under the title. Same value, same
+                          source: the category the server really sent. Still never a place, a
+                          price or a rating, none of which this data has. */}
+                      {CATEGORY_LABEL[s.category] && (
+                        <span
+                          className="absolute bottom-2 left-2.5 rounded-md px-2 py-[3px] text-[9.5px] font-bold uppercase tracking-[0.06em] text-white backdrop-blur-sm"
+                          style={{ background: 'rgba(8,11,18,0.66)' }}
+                        >
+                          {t(CATEGORY_LABEL[s.category])}
+                        </span>
+                      )}
+                      <span className={cn('absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br text-[15px] shadow-lg', s.gradient)}>
                         {s.emoji}
                       </span>
                     </span>
 
-                    <span className="flex flex-1 flex-col p-3.5">
+                    <span className="flex flex-1 flex-col px-3 py-2.5">
                       {/* Not clamped: `line-clamp-*` resolves its display to `flow-root` on this
                           surface, so the clamp degrades to a hard clip with no ellipsis. Letting
                           the tile grow is the honest failure mode for a one-sentence string. */}
@@ -548,12 +661,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                           never an invented place, price, discount or rating. The reference shows a
                           location here; this data has none, and a made-up city would be a factual
                           claim rather than a conversation starter. */}
-                      {CATEGORY_LABEL[s.category] && (
-                        <span className="mt-auto flex items-center gap-1.5 pt-2 text-[11px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>
-                          <span className="h-1 w-1 rounded-full" style={{ background: 'var(--v3-accent)' }} aria-hidden="true" />
-                          {t(CATEGORY_LABEL[s.category])}
-                        </span>
-                      )}
+
                     </span>
                   </Link>
                 )
@@ -570,6 +678,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
         <section id="smart-tools" data-home-section="tools" aria-label={t('v3.panel.smartTools')}>
           <SectionHeading
             title={t('v3.panel.smartTools')}
+            subtitle={t('v3.home.toolsSub')}
             action={{ label: t('v3.action.seeAll'), href: SMART_TOOLS_HREF }}
           />
           {/* 🚨 FIVE, IN ONE ROW — Home is a CURATED ENTRY POINT, not the tools catalogue.
