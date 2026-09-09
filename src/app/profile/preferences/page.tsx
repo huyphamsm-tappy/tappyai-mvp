@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Check, Save, Loader2, X, Plus } from 'lucide-react'
@@ -49,7 +48,9 @@ const QUICK_PREF_CHIP_KEYS = [
 ]
 
 type BudgetLevel = 'cheap' | 'mid' | 'high' | null
-type Gender = 'male' | 'female' | null
+// V3 — the canonical option set (`GENDER_VALUES`). The previous pair of values
+// could not represent a user who is neither, and had no way to decline.
+type Gender = 'female' | 'male' | 'other' | 'prefer_not_to_say' | null
 
 export default function PreferencesPage() {
   const { t } = useTranslation()
@@ -60,25 +61,27 @@ export default function PreferencesPage() {
   const [preferences, setPreferences] = useState<string[]>([])
   const [newPref, setNewPref] = useState('')
   const [gender, setGender] = useState<Gender>(null)
+  const [genderSelfDescribe, setGenderSelfDescribe] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [saveError, setSaveError] = useState(false)
 
   useEffect(() => {
-    const supabase = createClient()
+    // V3 — gender is read from the canonical profile contract, the same one
+    // Android consumes, rather than from `auth.users.raw_user_meta_data`.
     Promise.all([
       fetch('/api/preferences').then(r => r.json()),
-      supabase.auth.getUser(),
-    ]).then(([{ preferences: prefs, structured }, { data: { user } }]) => {
+      fetch('/api/profile').then(r => (r.ok ? r.json() : null)),
+    ]).then(([{ preferences: prefs, structured }, profile]) => {
       if (structured) {
         setBudget((structured.budget_level as BudgetLevel) || null)
         setCuisines(structured.cuisine_likes || [])
         setDietary(structured.dietary_restrictions || '')
       }
       if (Array.isArray(prefs)) setPreferences(prefs)
-      const g = user?.user_metadata?.gender
-      if (g === 'male' || g === 'female') setGender(g)
+      if (profile?.gender) setGender(profile.gender as Gender)
+      if (profile?.genderSelfDescribe) setGenderSelfDescribe(profile.genderSelfDescribe)
     })
     .catch(() => {})
     .finally(() => setLoading(false))
@@ -117,16 +120,23 @@ export default function PreferencesPage() {
           body: JSON.stringify({ preferences }),
         }),
       ])
-      if (r1.ok && r2.ok) {
+      // Gender goes to the canonical profile. `null` is sent explicitly so
+      // deselecting clears the stored value (§30) rather than leaving the old
+      // one behind — the metadata write it replaces could only ever set.
+      const r3 = await fetch('/api/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          gender,
+          genderSelfDescribe: gender === 'other' ? genderSelfDescribe.trim() : null,
+        }),
+      })
+
+      if (r1.ok && r2.ok && r3.ok) {
         setSaved(true)
         setTimeout(() => { setSaved(false); router.push('/profile') }, 1200)
       } else {
         setSaveError(true)
-      }
-      // Save gender to user metadata
-      if (gender !== null) {
-        const supabase = createClient()
-        await supabase.auth.updateUser({ data: { gender } })
       }
     } catch { setSaveError(true) }
     finally { setSaving(false) }
@@ -230,8 +240,10 @@ export default function PreferencesPage() {
           </p>
           <div className="grid grid-cols-2 gap-3">
             {([
-              { value: 'female', labelKey: 'pref.gender.female', emoji: '👩' },
-              { value: 'male', labelKey: 'pref.gender.male', emoji: '👨' },
+              { value: 'female', labelKey: 'profile.gender.female', emoji: '👩' },
+              { value: 'male', labelKey: 'profile.gender.male', emoji: '👨' },
+              { value: 'other', labelKey: 'profile.gender.other', emoji: '🌈' },
+              { value: 'prefer_not_to_say', labelKey: 'profile.gender.preferNotToSay', emoji: '🤐' },
             ] as const).map(opt => (
               <button
                 key={opt.value}
@@ -248,6 +260,20 @@ export default function PreferencesPage() {
               </button>
             ))}
           </div>
+          {/* Only meaningful alongside `other` — the database CHECK enforces the
+              same pairing, so showing it otherwise would offer a write that
+              cannot land. */}
+          {gender === 'other' && (
+            <input
+              type="text"
+              maxLength={60}
+              value={genderSelfDescribe}
+              onChange={e => setGenderSelfDescribe(e.target.value)}
+              placeholder={t('profile.gender.selfDescribe')}
+              className="mt-3 w-full px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
+            />
+          )}
+          <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">{t('profile.private')}</p>
         </section>
 
         {/* Budget */}

@@ -13,6 +13,7 @@ import { MAX_VIDEO_SIZE_MB } from '@/lib/config/product'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { flushPending } from '@/lib/observability'
+import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 
 const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
   // cannot fail into this handler.
   void flushPending(req)
 
-  const { user } = await getRequestUser(req)
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   // Cap upload authorization per user (each response authorizes one direct PUT).
@@ -66,6 +67,22 @@ export async function POST(req: NextRequest) {
   }
 
   if (isCreateUploadSessionBody(body)) {
+    // V3 User Data Foundation - a review video and its poster frame are
+    // user-generated product content, so minting the authorization to store
+    // them is 18+. Same canonical decision as POST /api/reviews, never a copy.
+    //
+    // WHY HERE AND NOT ON THE WHOLE HANDLER. This endpoint serves two
+    // protocols. Creating a session is the ACTUAL write authorization - the
+    // browser PUTs bytes straight to Cloud Storage with the URI minted here,
+    // so refusing at this point means an ineligible account can never open a
+    // path to storage at all. Completing an upload only CONFIRMS an object a
+    // previously-authorized session already created; gating that too would
+    // mean a transient eligibility-read failure could refuse the confirmation
+    // of bytes that are already stored, stranding the object with nothing
+    // referencing it. The gate belongs where the write is authorized.
+    const ageRefusal = await refuseIneligible(req, supabase)
+    if (ageRefusal) return ageRefusal
+
     const result = await createUploadSessionResponse(
       body,
       { ownerId: user.id, allowedKinds: ALLOWED_KINDS },

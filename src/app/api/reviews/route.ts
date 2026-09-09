@@ -14,6 +14,7 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -87,6 +88,12 @@ export async function POST(req: NextRequest) {
       { status: 403 }
     )
   }
+
+  // V3 User Data Foundation — posting content is product functionality, so it
+  // is 18+. Same position as the suspension gate: before the body is parsed and
+  // before any upload work, so a refused post costs nothing.
+  const ageRefusal = await refuseIneligible(req, supabase)
+  if (ageRefusal) return ageRefusal
 
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]

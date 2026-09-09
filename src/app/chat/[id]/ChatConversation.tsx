@@ -6,6 +6,7 @@ import BottomNav from '@/components/BottomNav'
 import ChatInterface from '@/components/ChatInterface'
 import { CATEGORIES } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { apiFetch } from '@/lib/account/ageGateClient'
 
 interface Conversation {
   id: string
@@ -23,7 +24,9 @@ export default function ChatConversation({ conversation }: { conversation: Conve
     title: string
   ) => {
     try {
-      await fetch('/api/conversations', {
+      // Age refusals redirect to /age-check via the ONE shared handler; every other
+      // response behaves exactly as before.
+      await apiFetch('/api/conversations', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: conversation.id, title, messages: msgs }),

@@ -5,6 +5,7 @@ import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 
 // SQL required in Supabase:
 // ALTER TABLE public.reviews ADD COLUMN IF NOT EXISTS photos text[] DEFAULT '{}';
@@ -23,11 +24,24 @@ function checkRL(userId: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  const { user } = await getRequestUser(req)
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('media.signInToUpload', requestLocale(req)) }, { status: 401 })
   // B17 — an anonymous session is authenticated but is not an account; social writes need one.
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
+
+  // V3 User Data Foundation - review media is user-generated product content,
+  // so it is 18+. Same canonical decision as POST /api/reviews itself
+  // (`getAgeEligibility` via `refuseIneligible`), never a second copy of the rule.
+  //
+  // POSITION IS THE POINT. This sits before the rate-limit counter, before the
+  // body is read and - decisively - before `putMedia`. The composers upload
+  // photos FIRST and post the review afterwards, so gating only the post left an
+  // ineligible account able to write media into storage and be refused one call
+  // later, leaving the object behind with nothing referencing it. Refusing here
+  // writes nothing at all, and costs the user none of their daily quota.
+  const ageRefusal = await refuseIneligible(req, supabase)
+  if (ageRefusal) return ageRefusal
 
   if (!checkRL(user.id)) {
     return NextResponse.json(

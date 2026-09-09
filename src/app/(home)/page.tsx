@@ -1,6 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import { getMemory } from '@/lib/memory/memoryService'
+import { getDemographics, toPromptGender } from '@/lib/account/demographics'
+import { getAgeEligibility } from '@/lib/account/ageEligibility'
+import { redirect } from 'next/navigation'
 import HomeView from '../HomeView'
 
 export default async function HomePage() {
@@ -10,9 +13,32 @@ export default async function HomePage() {
   let profile = null
   let conversations: { id: string; title: string; category: string; updated_at: string; messages: unknown }[] | null = null
   let memory = null
+  // V3 — gender now comes from the canonical `user_demographics` row rather
+  // than `auth.users.raw_user_meta_data`, which any signed-in user could write
+  // to with `supabase.auth.updateUser` and which offered only male/female.
+  let promptGender: 'male' | 'female' | null = null
+
+  // ── V3 User Data Foundation: the web counterpart of Android's cold-start check ──
+  //
+  // 🚨 THE EXISTING USER BASE NEVER PASSES THE AUTH-CALLBACK GATE.
+  //    That redirect fires on a LOGIN transition. Everyone already holding a
+  //    session when this ships walks straight past it, so without this they
+  //    reach the app and meet a bare 403 on their first action.
+  //
+  // Server-side and inside the batch that was already running, so it costs one
+  // more parallel read on the entry point rather than a client round trip. It is
+  // convenience, not enforcement — every product API refuses independently, so
+  // deep-linking past this page changes nothing about what the account can do.
+  //
+  // Anonymous sessions are excluded: no age data is collected for them, they
+  // have no `profiles` row to hold one, and public/marketing surfaces stay open.
+  if (user && !user.is_anonymous) {
+    const eligibility = await getAgeEligibility(supabase)
+    if (eligibility.status !== 'eligible') redirect('/age-check')
+  }
 
   if (user) {
-    const [{ data: profileData }, { data: convData }, mem] = await Promise.all([
+    const [{ data: profileData }, { data: convData }, mem, demographics] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', user.id).single(),
       supabase.from('conversations')
         .select('id, title, category, updated_at, messages')
@@ -20,16 +46,17 @@ export default async function HomePage() {
         .order('updated_at', { ascending: false })
         .limit(5),
       getMemory(user.id),
+      getDemographics(supabase, user.id),
     ])
     profile = profileData
     conversations = convData
     memory = mem
+    promptGender = toPromptGender(demographics.gender)
   }
 
   // Dynamic prompts — VN time UTC+7, shuffled fresh on each server render
   const vnTime = new Date(Date.now() + 7 * 60 * 60 * 1000)
-  const gender = user?.user_metadata?.gender === 'male' ? 'male' : user?.user_metadata?.gender === 'female' ? 'female' : null
-  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory, gender)
+  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory, promptGender)
 
   // Dynamic hero heading theo giờ VN (Vietnamese — the client localizes to EN)
   const vnHour = vnTime.getUTCHours()

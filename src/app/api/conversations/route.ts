@@ -1,8 +1,20 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { requireEligibleUser, productAccessResponse } from '@/lib/account/requireEligibleUser'
 import { NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
+// ── V3 User Data Foundation: which verbs are gated, and why not all four ─────
+//
+// POST and PUT are product usage — they are how a conversation comes into
+// existence and grows — so they require an account and 18+.
+//
+// GET and DELETE are deliberately NOT gated. A blocked user must still be able
+// to see the history they already have and to erase it (MFS 6.5: private,
+// controllable, erasable). Gating those would strand a person's own data behind
+// a refusal, which is a worse privacy outcome than the one the gate protects,
+// and would take away the one action a blocked account should always be able to
+// take. Both remain scoped to the owner by `user_id` and by RLS.
 const MAX_MESSAGES = 200
 const MAX_PAYLOAD_BYTES = 512 * 1024 // 512 KB
 
@@ -15,8 +27,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const access = await requireEligibleUser(req)
+  if (!access.ok) return productAccessResponse(access)
+  const { user, supabase } = access
   const { title, category, messages } = await req.json()
   if (Array.isArray(messages)) {
     if (messages.length > MAX_MESSAGES) return NextResponse.json({ error: 'too_many_messages', message: serverMessage('conversation.tooMany', requestLocale(req)) }, { status: 413 })
@@ -28,8 +41,9 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const access = await requireEligibleUser(req)
+  if (!access.ok) return productAccessResponse(access)
+  const { user, supabase } = access
   const { id, title, messages } = await req.json()
   if (Array.isArray(messages)) {
     if (messages.length > MAX_MESSAGES) return NextResponse.json({ error: 'too_many_messages', message: serverMessage('conversation.tooMany', requestLocale(req)) }, { status: 413 })

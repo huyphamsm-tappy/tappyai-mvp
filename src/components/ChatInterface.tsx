@@ -16,6 +16,7 @@ import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
@@ -1431,7 +1432,35 @@ export default function ChatInterface({
               <div className="flex gap-3 animate-fade-in">
                 <TappyAvatar category={category} error />
                 <div className="flex-1 min-w-0">
-                  {/auth_required|Unauthorized/i.test(error.message || '') ? (
+                  {isAgeGateMessage(error.message) ? (
+                    // ── V3 User Data Foundation: the 18+ gate ────────────────
+                    //
+                    // 🚨 THIS BRANCH IS WHAT THE EXISTING USER BASE ACTUALLY HITS.
+                    //    The auth-callback redirect to /age-check only fires on a
+                    //    LOGIN transition. Everyone already signed in when this
+                    //    ships never passes through it — their first contact with
+                    //    the gate is a 403 here. Without this branch they fall to
+                    //    the generic "something went wrong, try again" message and
+                    //    can retry forever, because retrying is not what fixes it.
+                    //
+                    // Message text comes from the server, which owns the wording
+                    // for both states and knows which one applies; this side only
+                    // decides where the button goes.
+                    <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
+                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? t('age.ask.desc')}</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          stashPendingChat() // keep the transcript across the age flow
+                          // The same redirect every other gated surface uses.
+                          redirectToAgeCheck()
+                        }}
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-interactive hover:bg-interactive-hover text-white text-xs font-medium transition-colors"
+                      >
+                        {t('age.submit')}
+                      </button>
+                    </div>
+                  ) : /auth_required|Unauthorized/i.test(error.message || '') ? (
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
                       <p className="leading-relaxed">{t('chat.loginPrompt')}</p>
                       <button

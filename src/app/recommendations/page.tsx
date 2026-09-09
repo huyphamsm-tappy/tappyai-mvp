@@ -6,6 +6,7 @@ import { ChevronLeft, Sparkles, Loader2, MessageCircle } from 'lucide-react'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { apiFetch } from '@/lib/account/ageGateClient'
 
 interface Rec {
   placeId: string
@@ -25,7 +26,9 @@ export default function RecommendationsPage() {
 
   useEffect(() => {
     let cancelled = false
-    fetch('/api/recommendations')
+    // Age refusals redirect to /age-check via the ONE shared handler; every other
+    // response behaves exactly as before.
+    apiFetch('/api/recommendations')
       .then(async (r) => {
         if (r.status === 401) throw new Error('auth')
         if (!r.ok) throw new Error('load')
