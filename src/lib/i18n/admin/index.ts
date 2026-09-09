@@ -177,6 +177,18 @@ export const vi: Record<string, string> = {
   'admin.notes.addError': 'Không lưu được ghi chú. Chưa có gì thay đổi.',
   'admin.notes.pin': 'Ghim lên đầu',
   'admin.notes.pinned': 'Đã ghim',
+  // Module 08 — administrative date-of-birth correction. The subtitle says
+  // out loud that the current value is not shown, so an operator does not
+  // read its absence as a loading failure.
+  'admin.dob.title': 'Sửa ngày sinh',
+  'admin.dob.subtitle':
+    'Chỉ dùng khi người dùng đã hết lượt tự sửa. Ngày sinh hiện tại KHÔNG hiển thị ở đây — sửa một giá trị không đòi hỏi phải nhìn thấy nó. Thay đổi và bản ghi kiểm toán được ghi trong cùng một giao dịch.',
+  'admin.dob.dateLabel': 'Ngày sinh mới',
+  'admin.dob.reasonLabel': 'Lý do',
+  'admin.dob.reasonPlaceholder': 'Nêu mã phiếu hỗ trợ và căn cứ đã xác minh…',
+  'admin.dob.submit': 'Lưu ngày sinh',
+  'admin.dob.done': 'Đã cập nhật ngày sinh.',
+  'admin.dob.error': 'Không cập nhật được. Chưa có gì thay đổi.',
   'admin.sessions.title': 'Phiên đăng nhập',
   'admin.sessions.subtitle':
     'Phiên của riêng tài khoản này. Không hiển thị địa chỉ IP, trình duyệt hay bất kỳ mã thông báo nào.',
@@ -861,6 +873,15 @@ export const en: Record<string, string> = {
   'admin.notes.addError': 'Could not save the note. Nothing changed.',
   'admin.notes.pin': 'Pin to top',
   'admin.notes.pinned': 'Pinned',
+  'admin.dob.title': 'Correct date of birth',
+  'admin.dob.subtitle':
+    'For an account whose single self-correction is spent. The current date of birth is deliberately NOT shown here — correcting a value does not require seeing it. The change and its audit record commit together.',
+  'admin.dob.dateLabel': 'New date of birth',
+  'admin.dob.reasonLabel': 'Reason',
+  'admin.dob.reasonPlaceholder': 'Name the support ticket and what verified it…',
+  'admin.dob.submit': 'Save date of birth',
+  'admin.dob.done': 'Date of birth updated.',
+  'admin.dob.error': 'Could not update it. Nothing changed.',
   'admin.sessions.title': 'Sessions',
   'admin.sessions.subtitle':
     "This account's own sessions. No IP address, browser or token of any kind is shown.",

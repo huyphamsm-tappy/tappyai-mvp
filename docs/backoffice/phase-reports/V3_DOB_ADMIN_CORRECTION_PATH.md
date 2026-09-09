@@ -1,8 +1,8 @@
 # Date-of-birth correction after the self-service allowance is spent
 
-**Status:** Database primitive IMPLEMENTED. User-facing entry point IMPLEMENTED (§3a).
-Admin/support **HTTP surface DEFERRED to the Controller task — LAUNCH BLOCKER.**
-**Date:** 2026-09-08 (§3a and the Controller constraints added 2026-09-09)
+**Status:** COMPLETE. Database primitive, user-facing entry point (§3a) and the
+Controller HTTP surface (§3b) are all implemented. **No longer a launch blocker.**
+**Date:** 2026-09-08 (§3a and the Controller constraints added 2026-09-09; §3b shipped 2026-09-09)
 **Related:** [ADR-027](../../architecture/ADR-027-user-demographics-isolation.md) · [ADR-023](../../architecture/ADR-023-module-08-admin-read-surface-roles.md) · [`20260908_user_demographics_foundation.sql`](../../../supabase/migrations/20260908_user_demographics_foundation.sql) §6
 
 ---
@@ -37,9 +37,12 @@ Covered by 13 tests in [`user_demographics_boundary.test.ts`](../../../supabase/
 
 Banding was extracted to `public.age_band_of(date)` in the same change, so `user_age_status()` and this path cannot disagree about which band a date falls in.
 
-## 3. What is NOT implemented — the launch blocker
+## 3. The Controller surface — what was missing, and the contract it had to meet
 
-**There is no way for a human to invoke this.** Three pieces are missing, and all three are Controller-owned:
+**Originally there was no way for a human to invoke this.** Three pieces were
+missing, all three Controller-owned. All three now exist — see §3b. The
+requirements below are kept verbatim because they are what the implementation
+was held to, and what any future change to it is still held to:
 
 1. **HTTP route** — `POST /api/admin/users/[id]/date-of-birth`, following the Module 08 handler contract (RBAC → origin → rate-limit → validate → operate → audit → uniform envelope).
 2. **RBAC permission** — a new entry in the permission registry, e.g. `users.date_of_birth.correct`. Under ADR-023's reasoning this should sit with the *most* restricted tier: correcting a date of birth changes whether an account may use the product at all, which is closer to `users.ban` than to a profile edit. **The role assignment is an Owner decision, not one taken here.**
@@ -47,7 +50,7 @@ Banding was extracted to `public.age_band_of(date)` in the same change, so `user
 
 §34 of this task's brief states: *"Do NOT modify TappyAI Controller in this task."* `/api/admin/*`, the permission registry and the admin UI are all Controller V2. Building them here would violate that constraint, so they are deferred rather than done.
 
-### Why this is a launch blocker, not a nice-to-have
+### Why this WAS a launch blocker, not a nice-to-have
 
 Without the surface, the remedy exists but is reachable only by someone with the production `service_role` key running SQL by hand. That is:
 
@@ -55,7 +58,9 @@ Without the surface, the remedy exists but is reachable only by someone with the
 - **not delegable** — support staff cannot hold the service-role key, so every case escalates to whoever can;
 - **not survivable at volume** — every existing account is prompted for a date of birth at once when this ships (see [the migration UX audit](./V3_AGE_GATE_EXISTING_USER_MIGRATION.md)), so mis-taps arrive in a burst, not a trickle.
 
-**Recommendation:** do not enable the 18+ gate in production until item 3.1 and 3.2 exist. 3.3 (the UI) can follow if support can call the route directly in the interim.
+**Recommendation (met).** The 18+ gate was not to be enabled in production until
+3.1 and 3.2 existed. All three items now ship — §3b. This blocker is closed;
+legal review remains a separate and independent one.
 
 ### Constraints the Controller implementation MUST satisfy
 
@@ -123,14 +128,61 @@ and it is the piece the affected user actually touches. The full chain:
 |---|---|---|
 | 1 | User is locked out; `/age-check` shows the support address | ✅ implemented |
 | 2 | User emails support; support raises a ticket | process, not code |
-| 3 | Staff invoke the correction | ❌ **blocked** — no route (§3), raw SQL only (§4) |
+| 3 | Staff invoke the correction | ✅ implemented — `POST /api/admin/users/[id]/date-of-birth` (§3b) |
 | 4 | `admin_set_user_date_of_birth()` writes the change + audit row | ✅ implemented |
 
-Step 3 remains the launch blocker. Steps 1 and 4 exist today.
+All four steps exist. Step 2 is process; the rest is code.
 
 ---
 
-## 4. Interim procedure, if the gate ships before the surface
+## 3b. The Controller surface — implemented
+
+Shipped 2026-09-09, against the seven constraints in the section above. Each one
+is satisfied, and each is pinned by a test rather than by intention.
+
+| Piece | Where |
+|---|---|
+| Permission | `users.date_of_birth.correct` — `registry.ts`, `super_admin` **only** (Owner, 2026-09-09) |
+| Route | `POST /api/admin/users/[id]/date-of-birth` |
+| Service wrapper | `src/lib/admin/users/dateOfBirthAdmin.ts` |
+| UI | `UserDobCorrectionPanel` on the user detail |
+| Tests | `src/app/api/admin/users/[id]/date-of-birth/route.test.ts` |
+
+**Authorization.** `requirePermission(req, PERMISSIONS.USERS_DOB_CORRECT)` runs
+first, and the privileged client is created only after it answers —
+`service_role` is the credential the operation needs, never a way around the
+check that precedes it. The route then reuses `guardMutationTarget`, which
+refuses a non-UUID target, an actor targeting themselves, and the Platform
+Owner, and which **fails closed** if the Owner check itself errors.
+
+**The route does not audit.** The SQL function writes the `audit_log` row in the
+same transaction as the change, so `writeAuditLog`/`writeAuditLogAwaited` are
+deliberately absent — a second write would produce two entries for one event,
+and the second would survive a transaction that rolled back. The one audit this
+path can emit from the handler is `guardMutationTarget`'s `user.action_denied`
+on an Owner-protected target, which is a denial event and shared with every
+other Module 08 mutation.
+
+**No read was added.** The route makes exactly two RPCs — the Owner check and
+the correction — plus the existence lookup `guardMutationTarget` already
+performed for suspend and ban. It never calls `user_age_status()`, never selects
+`date_of_birth`, and the UI shows no current value. Constraint 2 above holds.
+
+**Nothing is echoed back.** A success returns `{ id, corrected: true }`. Tests
+assert that no response body — success or refusal — contains a
+calendar-date-shaped string at all, and that the operator's reason is not
+returned either.
+
+**Validation is shared, not duplicated.** The date goes through
+`parseDateOfBirthInput`, the same function the consumer path uses; the reason
+through the same `ReasonSchema` as every other sanction, whose twenty-character
+floor already matched the SQL function's own check. The database remains the
+backstop: its status vocabulary is mapped explicitly, and an unrecognised value
+is a 500 rather than a success.
+
+---
+
+## 4. Fallback procedure (superseded by §3b — kept for break-glass)
 
 Stated so it is a decision rather than an improvisation. An operator with `service_role` runs:
 
@@ -147,9 +199,18 @@ SELECT public.admin_set_user_date_of_birth(
 
 They must use **this function** and never a direct `UPDATE`: the function is what writes the audit row. A raw UPDATE would leave the correction invisible.
 
-## 5. Open questions for the Owner
+## 5. Owner decisions, and what is still open
 
-1. Which RBAC role may correct a date of birth (`admin`? `owner` only?).
-2. Whether a correction should notify the affected user.
-3. Whether `admin_corrections` should have a ceiling, and what happens at it.
+Decided 2026-09-09. Recorded here because each one is a constraint the
+implementation now embodies, and reopening any of them is a change to shipped
+behaviour rather than a preference.
+
+| # | Question | Decision |
+|---|---|---|
+| 1 | Which RBAC role may correct a date of birth | **`super_admin` alone.** Not `admin`, not `moderator`, not `analyst` |
+| 2 | Should a correction notify the affected user | **No**, not in this phase |
+| 3 | Should `admin_corrections` have a ceiling | **No limit** in this phase. Existing behaviour and full auditability preserved |
+
+Still open:
+
 4. Retention of the `audit_log` rows this produces — inherits Controller's policy, which is itself open.

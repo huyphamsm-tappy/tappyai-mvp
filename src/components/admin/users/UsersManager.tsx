@@ -11,6 +11,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { UserSessionsPanel } from './UserSessionsPanel'
 import { UserNotesPanel } from './UserNotesPanel'
+import { UserDobCorrectionPanel } from './UserDobCorrectionPanel'
 import { GuardedSurface, useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 // Module 08 User Management — the Controller surface.
@@ -63,6 +64,14 @@ export interface UsersCapabilities {
   notesRead: boolean
   /** M08 `users.notes.write` — may add one. */
   notesWrite: boolean
+  /**
+   * V3 `users.date_of_birth.correct` — may set a date of birth after the
+   * subject's single self-correction is spent. `super_admin` alone.
+   *
+   * A WRITE authority and nothing more: it does not imply, and must never be
+   * extended to imply, permission to READ a date of birth.
+   */
+  correctDob: boolean
 }
 
 const STANDING_BADGE: Record<Standing, BadgeProps['variant']> = {
@@ -429,6 +438,15 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
       {/* §3.8 places the notes on the user detail, beside the sessions. */}
       {detail && !detailLoading && (
         <GuardedSurface><UserNotesPanel userId={detail.id} can={{ read: can.notesRead, write: can.notesWrite }} /></GuardedSurface>
+      )}
+
+      {/* V3 User Data Foundation — the remedy of last resort for an account
+          locked out by a mis-typed year. It sits on the user detail because
+          that is where support already stands when a ticket says "I cannot
+          get in". The panel shows no current value and renders nothing at
+          all without the permission. */}
+      {detail && !detailLoading && (
+        <GuardedSurface><UserDobCorrectionPanel userId={detail.id} can={can.correctDob} /></GuardedSurface>
       )}
     </div>
   )
