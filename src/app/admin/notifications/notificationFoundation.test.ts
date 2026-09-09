@@ -70,7 +70,7 @@ describe('1 · the three approved permissions exist and are the only ones', () =
     // Adding permissions without this leaves already-resolved actors on a stale
     // set — they would not gain (or be denied) the new grants until the cache
     // happened to expire.
-    expect(REGISTRY_VERSION).toBe('2026-08-29.2')
+    expect(REGISTRY_VERSION).toBe('2026-09-09.1')
   })
 })
 
