@@ -7,6 +7,7 @@ import BottomNav from '@/components/BottomNav'
 import ChatInterface from '@/components/ChatInterface'
 import { CATEGORIES } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { apiFetch } from '@/lib/account/ageGateClient'
 
 function ChatPageContent() {
   const searchParams = useSearchParams()
@@ -21,7 +22,9 @@ function ChatPageContent() {
     title: string
   ) => {
     try {
-      const res = await fetch('/api/conversations', {
+      // Age refusals redirect to /age-check via the ONE shared handler; every other
+      // response behaves exactly as before.
+      const res = await apiFetch('/api/conversations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, category, messages }),

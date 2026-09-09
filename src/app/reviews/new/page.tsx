@@ -30,6 +30,7 @@ import {
   isAcceptableVideoDuration,
   MAX_VIDEO_SIZE_MB,
 } from '@/lib/config/product'
+import { apiFetch, isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 
 const MAX_VIDEO_SIZE = MAX_VIDEO_SIZE_MB * 1024 * 1024
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
@@ -318,7 +319,9 @@ export default function NewReviewPage() {
       for (const file of files.slice(0, MAX_PHOTOS - photos.length)) {
         const fd = new FormData()
         fd.append('file', file)
-        const res = await fetch('/api/reviews/upload', { method: 'POST', body: fd })
+        // The upload route is age-gated too, so this can 403 exactly as the review
+        // POST does. Same ONE shared handler; every other response is unchanged.
+        const res = await apiFetch('/api/reviews/upload', { method: 'POST', body: fd })
         const data = await res.json()
         if (!res.ok) throw new Error(data.message || data.error || t('reviewNew.photoUploadError'))
         uploaded.push(data.url)
@@ -423,7 +426,7 @@ export default function NewReviewPage() {
       setUploadStep('ai')
       const tAi = vstart('ai-process')
       try {
-        const aiRes = await fetch('/api/explore/process', {
+        const aiRes = await apiFetch('/api/explore/process', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -443,6 +446,20 @@ export default function NewReviewPage() {
 
       setUploadStep('done')
     } catch (e) {
+      // `/api/upload/video` is age-gated, and an age refusal surfaces HERE as a
+      // `MediaUploadError` whose message is the server's machine code —
+      // `uploadMedia` owns its own request (XMLHttpRequest, for the progress
+      // bar) so it cannot go through `apiFetch`. Same situation as the chat
+      // transport, and answered the same way: share the DETECTOR rather than
+      // keep a second copy of the code list. Checked before the generic
+      // branches, which would otherwise paint "video upload failed" over a
+      // refusal the user can actually act on.
+      if (isAgeGateMessage((e as Error)?.message)) {
+        vfail('video-upload', tVideo, e, { note: 'age refusal' })
+        resetVideoState()
+        redirectToAgeCheck()
+        return
+      }
       if ((e as Error)?.name === 'AbortError') {
         vfail('video-upload', tVideo, e, { note: 'user aborted' })
         setError(t('reviewNew.uploadCancelled'))
@@ -462,7 +479,7 @@ export default function NewReviewPage() {
   const triggerUrlAI = async (thumbnail_url: string, title: string) => {
     if (!thumbnail_url && !title) return
     try {
-      const aiRes = await fetch('/api/explore/process', {
+      const aiRes = await apiFetch('/api/explore/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -588,7 +605,9 @@ export default function NewReviewPage() {
       const tSubmit = vstart('submit-review', { content_type: payload.content_type, hasMedia: !!payload.media_url })
       // `?lang=` so the server words the moderation notice in the language the
       // USER picked in-app, which is not necessarily their browser's.
-      const res = await fetch(`/api/reviews?lang=${encodeURIComponent(locale)}`, {
+      // Age refusals redirect to /age-check via the ONE shared handler; every other
+      // response behaves exactly as before.
+      const res = await apiFetch(`/api/reviews?lang=${encodeURIComponent(locale)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { Star, Send, CheckCircle2, Loader2, ImagePlus, X } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { apiFetch } from '@/lib/account/ageGateClient'
 
 interface Props {
   placeId: string
@@ -49,7 +50,9 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
       for (const { file } of photos) {
         const fd = new FormData()
         fd.append('file', file)
-        const res = await fetch('/api/reviews/upload', { method: 'POST', body: fd })
+        // The upload route is age-gated too, so this can 403 exactly as the review
+        // POST does. Same ONE shared handler; every other response is unchanged.
+        const res = await apiFetch('/api/reviews/upload', { method: 'POST', body: fd })
         const data = await res.json()
         if (res.ok && data.url) uploadedUrls.push(data.url)
         else { setError(data.message || data.error || 'Không thể tải ảnh lên.'); setLoading(false); return }
@@ -58,7 +61,10 @@ export function BookingReviewButton({ placeId, placeName, placeAddress }: Props)
       // `?lang=` for the same reason the main composer sends it: the response carries the
       // safety gate's author-facing notice, and the server words it from the request
       // language. Accept-Language is the browser's, which is not necessarily the app's.
-      const res = await fetch(`/api/reviews?lang=${encodeURIComponent(locale)}`, {
+      // Age refusals redirect to /age-check via the ONE shared handler; every other
+      // response behaves exactly as before. This is the SECOND surface that posts a
+      // review, so it gates identically to the main composer.
+      const res = await apiFetch(`/api/reviews?lang=${encodeURIComponent(locale)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ placeId, placeName, placeAddress, rating, body: body.trim(), photos: uploadedUrls }),

@@ -4,17 +4,55 @@ import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { getAgeEligibility, setDateOfBirth, parseDateOfBirthInput } from '@/lib/account/ageEligibility'
+import {
+  getDemographics,
+  buildDemographicsUpdate,
+  updateDemographics,
+} from '@/lib/account/demographics'
+
+// ─────────────────────────────────────────────────────────────────────────────
+// The ONE canonical profile contract, consumed verbatim by Web and Android
+// (`android/.../account/data/AccountApi.kt`). There is no second profile API and
+// no client-specific representation.
+//
+// 🚨 THIS ROUTE IS DELIBERATELY NOT BEHIND THE 18+ GATE.
+//    It is the remediation path for that gate: a user whose eligibility is
+//    `unknown` reaches it precisely so they can supply a date of birth, and a
+//    user who is `ineligible` reaches it to spend their single self-correction.
+//    Gating it would make both states unrecoverable. Authentication is still
+//    required, and an anonymous session is refused by `setDateOfBirth`'s own
+//    check rather than by this route.
+//
+// WHAT THIS ROUTE WILL NOT RETURN
+//    `date_of_birth`. No PostgREST role holds a privilege on that column, so it
+//    is not merely omitted here — it is unreachable from a request-scoped
+//    client. The derived `age` and `ageBand` answer everything the profile UI
+//    asks, and the correction flow collects a fresh date rather than pre-filling
+//    the stored one. See `userDataClassification.ts` → OWNER_PROFILE_FIELDS.
+// ─────────────────────────────────────────────────────────────────────────────
 
 // GET /api/profile
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('full_name, avatar_url, created_at, language, onboarded')
-    .eq('id', user.id)
-    .single()
+  // Three independent reads that need nothing but the resolved session. Run in
+  // parallel: serially they are three round trips on the app's most-hit
+  // authenticated endpoint, and none of them feeds another.
+  const [profileRes, eligibility, demographics] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('full_name, avatar_url, created_at, language, onboarded')
+      .eq('id', user.id)
+      .single(),
+    // An anonymous identity has no `profiles` row and therefore no demographic
+    // row; both of these return their empty/unknown shape rather than erroring.
+    getAgeEligibility(supabase),
+    getDemographics(supabase, user.id),
+  ])
+
+  const profile = profileRes.data
 
   return NextResponse.json({
     full_name: profile?.full_name || user.user_metadata?.full_name || '',
@@ -32,14 +70,38 @@ export async function GET(req: NextRequest) {
     // clients (no direct Postgrest access) read it here to make the same
     // "route new users to onboarding" decision. Existing (public-safe) column.
     onboarded: profile?.onboarded ?? false,
+
+    // ── 18+ eligibility (derived; never the underlying date) ─────────────────
+    // `ageStatus` is what a client branches on: 'eligible' | 'unknown' |
+    // 'ineligible'. `canCorrectAge` says whether the single self-correction is
+    // still available, so the blocked screen knows whether to offer the form or
+    // the support message.
+    ageStatus: eligibility.status,
+    age: eligibility.age,
+    ageBand: eligibility.ageBand,
+    canCorrectAge: eligibility.canSelfCorrect,
+
+    // ── Demographic + professional profile (private to the owner) ───────────
+    gender: demographics.gender,
+    genderSelfDescribe: demographics.genderSelfDescribe,
+    city: demographics.city,
+    country: demographics.country,
+    occupation: demographics.occupation,
+    industry: demographics.industry,
+    educationLevel: demographics.educationLevel,
   })
 }
 
-// PATCH /api/profile — update name, bio, and UI language
+// PATCH /api/profile — update name, bio, UI language, demographics, date of birth.
+//
+// Every field is optional and a partial body updates only what it names. That
+// is the contract Android already relies on (it PATCHes `{ language }` alone
+// from the language picker), so the demographic fields follow the same rule.
 export async function PATCH(req: NextRequest) {
   try {
     const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+    const locale = requestLocale(req)
 
     let body: Record<string, unknown> = {}
     try { body = await req.json() } catch { /* empty body is OK */ }
@@ -47,6 +109,46 @@ export async function PATCH(req: NextRequest) {
     const full_name = typeof body.full_name === 'string' ? body.full_name.trim().slice(0, 100) : undefined
     const bio = typeof body.bio === 'string' ? body.bio.trim().slice(0, 200) : undefined
     const language = body.language === 'vi' || body.language === 'en' ? body.language : undefined
+
+    // ── Date of birth ───────────────────────────────────────────────────────
+    // Handled FIRST and returned on separately, because it is the only field
+    // here that can be refused for a reason the user must act on (the single
+    // correction is spent). Folding that into a generic save_failed would tell
+    // them to retry something that will never succeed.
+    //
+    // Written through `set_user_date_of_birth()`, never by an UPDATE: the
+    // one-correction rule lives in the database because every signed-in user
+    // holds their own access token and could otherwise write the column
+    // directly. (They cannot — no role is granted it — which is the same
+    // guarantee stated from the other side.)
+    if ('dateOfBirth' in body) {
+      const iso = parseDateOfBirthInput(body.dateOfBirth)
+      if (!iso) {
+        return NextResponse.json(
+          { error: 'invalid_date_of_birth', message: serverMessage('age.invalidDate', locale) },
+          { status: 400 }
+        )
+      }
+      const { ok, result } = await setDateOfBirth(supabase, iso)
+      if (!ok) {
+        if (result === 'correction_exhausted') {
+          return NextResponse.json(
+            { error: 'age_correction_exhausted', message: serverMessage('age.correctionExhausted', locale) },
+            { status: 409 }
+          )
+        }
+        if (result === 'anonymous_not_eligible') {
+          return NextResponse.json(
+            { error: 'auth_required', message: serverMessage('auth.accountRequired', locale) },
+            { status: 401 }
+          )
+        }
+        return NextResponse.json(
+          { error: 'invalid_date_of_birth', message: serverMessage('age.invalidDate', locale) },
+          { status: 400 }
+        )
+      }
+    }
 
     // Update profiles table (only columns that definitely exist)
     if (full_name !== undefined || language !== undefined) {
@@ -61,7 +163,18 @@ export async function PATCH(req: NextRequest) {
       // Log the detail, return a code the client can branch on plus a sentence a user can read.
       if (error) {
         console.error('[profile] update failed:', error.code ?? error.message)
-        return NextResponse.json({ error: 'save_failed', message: serverMessage('server.saveFailed', requestLocale(req)) }, { status: 500 })
+        return NextResponse.json({ error: 'save_failed', message: serverMessage('server.saveFailed', locale) }, { status: 500 })
+      }
+    }
+
+    // ── Demographic + professional fields ───────────────────────────────────
+    // Their own table, their own upsert. A `null` clears a field (§30); a field
+    // absent from the body is left alone.
+    const demographicUpdates = buildDemographicsUpdate(body)
+    if (demographicUpdates) {
+      const { ok } = await updateDemographics(supabase, user.id, demographicUpdates)
+      if (!ok) {
+        return NextResponse.json({ error: 'save_failed', message: serverMessage('server.saveFailed', locale) }, { status: 500 })
       }
     }
 
@@ -74,7 +187,26 @@ export async function PATCH(req: NextRequest) {
       await supabase.auth.updateUser({ data: metaUpdates })
     }
 
-    return NextResponse.json({ ok: true })
+    // The eligibility a client needs in order to decide where to go next after
+    // supplying a date of birth. Re-read rather than inferred: the band and the
+    // eligibility decision are derived in one place (`user_age_status()`), and
+    // computing them a second time here is how Web and Android would come to
+    // disagree.
+    const eligibility = 'dateOfBirth' in body
+      ? await getAgeEligibility(supabase)
+      : null
+
+    return NextResponse.json(
+      eligibility
+        ? {
+            ok: true,
+            ageStatus: eligibility.status,
+            age: eligibility.age,
+            ageBand: eligibility.ageBand,
+            canCorrectAge: eligibility.canSelfCorrect,
+          }
+        : { ok: true }
+    )
   } catch (e) {
     console.error('[profile] PATCH failed:', e instanceof Error ? e.message : e)
     return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })

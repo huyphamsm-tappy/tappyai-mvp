@@ -60,6 +60,16 @@ const h = vi.hoisted(() => {
     lastTable === 'account_status'
       ? { data: state.status, error: state.error }
       : { data: null, error: null }
+  // V3 User Data Foundation — the 18+ gate reads `user_age_status()` through the
+  // request-scoped client. This stub answers it as an ELIGIBLE adult so these
+  // tests keep measuring what they were written to measure; the age gate has its
+  // own suite (`src/lib/account/requireEligibleUser.test.ts`). Without this the
+  // RPC is missing from the stub, `getAgeEligibility` fails closed to `unknown`,
+  // and every case here 403s for the wrong reason.
+  builder.rpc = async (fn: string) =>
+    fn === 'user_age_status'
+      ? { data: [{ has_dob: true, age_years: 30, age_band: '25_34', corrections_used: 0 }], error: null }
+      : { data: null, error: null }
   builder.then = (res: (v: unknown) => unknown) =>
     Promise.resolve(
       lastTable === 'review_comments'
