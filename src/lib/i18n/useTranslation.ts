@@ -28,9 +28,27 @@ const STORAGE_KEY = 'tappy_lang'
 let current: Locale | null = null
 const listeners = new Set<() => void>()
 
-function detectLocale(): Locale {
-  if (typeof navigator === 'undefined' || !navigator.language) return 'en'
-  return navigator.language.toLowerCase().startsWith('vi') ? 'vi' : 'en'
+/**
+ * The product's language, and what the client answers with until the user chooses otherwise.
+ *
+ * 🚨 ONE default, read by everything. It used to be `navigator.language`, which meant an en-US
+ * browser rendered the whole UI in English even though every string is translated — the same
+ * defect Android had when an en-US handset resolved the default resource set. SSR already renders
+ * `'vi'` (getServerSnapshot), so the browser hint also produced a hydration mismatch.
+ *
+ * Anything that needs "what language is this client speaking" must come through [[appLocale]] —
+ * the store, `resolvedClientLocale`, and the `Accept-Language` interceptor all do. Three copies of
+ * `?? something` is how the UI and the header came to disagree in the first place (ADR-027 §3).
+ */
+const PRODUCT_LOCALE: Locale = 'vi'
+
+/**
+ * The language this client is actually speaking: the user's explicit choice, else the product
+ * default. Safe outside React and outside the browser — on the server there is no stored choice,
+ * and the answer is the same default SSR renders in.
+ */
+export function appLocale(): Locale {
+  return getStoredLocale() ?? PRODUCT_LOCALE
 }
 
 /**
@@ -47,7 +65,7 @@ function detectLocale(): Locale {
  */
 export function resolvedClientLocale(): Locale | null {
   if (typeof window === 'undefined') return null
-  return getStoredLocale() ?? detectLocale()
+  return appLocale()
 }
 
 export function getStoredLocale(): Locale | null {
@@ -63,7 +81,7 @@ export function setStoredLocale(locale: Locale) {
 
 function getSnapshot(): Locale {
   if (current) return current
-  current = getStoredLocale() ?? detectLocale()
+  current = appLocale()
   return current
 }
 
@@ -82,8 +100,8 @@ function subscribe(cb: () => void): () => void {
 // subscriber so the whole UI re-renders in the new language immediately.
 export function setLocale(next: Locale) {
   // ALWAYS persist the explicit choice first — even when `next` already equals the
-  // in-memory `current`. On first visit `current` is seeded to the auto-detected
-  // locale (getSnapshot → detectLocale) BEFORE the user picks, so a user choosing the
+  // in-memory `current`. On first visit `current` is seeded to the product default
+  // (getSnapshot → appLocale) BEFORE the user picks, so a user choosing the
   // language that matches their browser (the common case) hit the old early-return and
   // `tappy_lang` was never written → getStoredLocale() stayed null → the first-visit
   // LanguagePicker reappeared on every refresh / restart / logout. Writing here fixes it.

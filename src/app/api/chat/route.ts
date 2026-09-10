@@ -17,7 +17,7 @@ import { validateClientInput, readDecisionEvidenceId } from '@/lib/ai/security/c
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -141,11 +141,26 @@ export async function POST(req: Request) {
   // (which answers with cinemas). We drop search_places for the turn so the model
   // recommends titles from film knowledge; a venue/showtime ask keeps the tool.
   const movieRecommend = detectMovieRecommendationIntent(lastText)
-  // Response language = the user's LATEST message, unless they explicitly ask
-  // for another one ("Answer in English", "Trả lời bằng tiếng Việt") — that
-  // request always wins. Never derived from UI locale, browser language,
-  // profile, country, or earlier turns (none of those are read here).
-  const lang = detectExplicitLangRequest(lastText) ?? detectLang(lastText)
+  // Response language, in priority order:
+  //   1. an explicit request in the message ("Answer in English", "Trả lời bằng tiếng Việt"),
+  //   2. the language the CLIENT says the user is using (`Accept-Language` / `?lang`),
+  //   3. detection from the message text.
+  //
+  // Step 2 is new, and it reverses the previous rule, which read the language out of the message
+  // text alone and deliberately ignored the UI locale. That rule breaks on the most ordinary
+  // Vietnamese input there is: typing without diacritics. "Tim quan bun bo ngon o TPHCM" has no
+  // accented characters and no Vietnamese function words that `detectLang` weighs, so it scores as
+  // English and the assistant answers a Vietnamese user in English — reproduced repeatedly on
+  // 2026-09-08 against the live pipeline.
+  //
+  // Text detection remains the fallback for a client that sends no locale at all, so nothing
+  // regresses for callers that never had one, and an explicit in-message request still wins over
+  // both — asking for English in a Vietnamese app still gets English, for that turn.
+  const clientLocale = requestLocale(req)
+  const lang = detectExplicitLangRequest(lastText)
+    ?? detectLangConfident(lastText)
+    ?? clientLocale
+    ?? detectLang(lastText)
   const forcedTool = detectForcedTool(lastText)
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
