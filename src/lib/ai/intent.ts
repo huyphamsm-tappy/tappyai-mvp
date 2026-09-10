@@ -402,6 +402,14 @@ const CONSTRAINT_ADDITION = new RegExp([
   '\\b(must|has to|needs to) (be|have)\\b',
   // Who is coming / what the occasion is — changes the answer as much as a budget does.
   '\\b(dan theo|di voi|di cung|cung voi|co them|dat cho|cho ca nha)\\b',
+  // 🚨 PARTY SIZE, the plainest form of the same thing. "Cho 2 nguoi" after
+  // "Massage thu gian o Quan 1" scored no stage at all, so the refinement block
+  // never rendered and the reply re-opened the request from scratch, asking again
+  // for the district it had already been told. The group above already covers
+  // "di cung" and "cho ca nha"; it simply never covered the bare count.
+  '\\b(cho|di|dat|book) \\d+ (nguoi|khach)\\b',
+  '^\\d+ (nguoi|khach)\\b',
+  '\\bfor \\d+ (people|persons|guests|adults|pax)\\b',
   "\\b(bringing|with my|for my|i'?ll have)\\b",
 ].join('|'), 'i')
 

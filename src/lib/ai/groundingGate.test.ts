@@ -187,3 +187,65 @@ describe('the matching primitives', () => {
     expect(isGrounded('ab', ['khong lien quan'])).toBe(true)
   })
 })
+
+describe('a lead-in must not outlive the list it introduced', () => {
+  // 🚨 REPRODUCED from the phone UAT 2026-09-09. The model answered that the
+  // venue had no public number, wrote "Bạn có thể:" and listed alternatives.
+  // Every alternative was ungrounded and cut; the colon survived, so the reply
+  // promised options and then said there were none.
+  const DANGLING = [
+    'Tuy nhiên, quán này hiện chưa có số điện thoại công khai trong hệ thống.',
+    '',
+    'Bạn có thể:',
+    '',
+    '- **Quán Bún Bò Không Có Thật** — 12 Lê Lợi',
+    '- **Bún Bò Ảo** — 34 Nguyễn Huệ',
+  ].join('\n')
+
+  it('removes the colon lead-in when every venue it introduced was suppressed', () => {
+    const out = suppressUngroundedVenues(DANGLING, [], 'vi', { placeSearch: 'empty' })
+    expect(out.suppressed.length).toBeGreaterThan(0)
+    expect(out.text).not.toContain('Bạn có thể:')
+    // The honest parts stay: the real answer, and the not-found line.
+    expect(out.text).toContain('chưa có số điện thoại công khai')
+    expect(out.text).toContain('Mình chưa tìm thấy địa điểm nào đủ dữ liệu')
+  })
+
+  it('keeps the lead-in when a grounded venue still follows it', () => {
+    const partial = [
+      'Bạn có thể:',
+      '',
+      '- **Bún Bò Huế Đông Ba** — 19 Trần Cao Vân',
+      '- **Bún Bò Ảo** — 34 Nguyễn Huệ',
+    ].join('\n')
+    const out = suppressUngroundedVenues(partial, ['Bún Bò Huế Đông Ba'], 'vi', { placeSearch: 'has_results' })
+    expect(out.text).toContain('Bạn có thể:')
+    expect(out.text).toContain('Bún Bò Huế Đông Ba')
+    expect(out.text).not.toContain('Bún Bò Ảo')
+  })
+
+  it('leaves prose that simply ends in a colon alone when nothing was suppressed', () => {
+    const text = 'Các lựa chọn của bạn:\n\n- **Bún Bò Huế Đông Ba** — 19 Trần Cao Vân'
+    const out = suppressUngroundedVenues(text, ['Bún Bò Huế Đông Ba'], 'vi', { placeSearch: 'has_results' })
+    expect(out.text).toBe(text)
+  })
+})
+
+describe('a lead-in at the end of prose still goes', () => {
+  // The reply keeps an EARLIER grounded venue and then ends on a lead-in whose
+  // only item was suppressed. A `groundedRemain === 0` guard would leave it —
+  // this is the case that proves the guard is wrong, not merely redundant.
+  it('strips a trailing lead-in even when an earlier venue survived', () => {
+    const text = [
+      '- **Bún Bò Huế Đông Ba** — 19 Trần Cao Vân',
+      '',
+      'Bạn có thể xem thêm:',
+      '',
+      '- **Bún Bò Ảo** — 34 Nguyễn Huệ',
+    ].join('\n')
+    const out = suppressUngroundedVenues(text, ['Bún Bò Huế Đông Ba'], 'vi', { placeSearch: 'has_results' })
+    expect(out.text).toContain('Bún Bò Huế Đông Ba')
+    expect(out.text).not.toContain('Bún Bò Ảo')
+    expect(out.text).not.toContain('Bạn có thể xem thêm:')
+  })
+})

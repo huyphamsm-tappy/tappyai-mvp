@@ -162,6 +162,33 @@ export function webSearchCacheKey(query: string, lang: string): string {
   return `websearch:${cacheKeyPart(query)}:${lang}`
 }
 
+/**
+ * Serper `/search`, keyed on the query alone.
+ *
+ * Serper is billed per request, and the SAME query was being paid for several
+ * times over: `webSearch` cached its own result but the direct callers in
+ * food/travel/shopping did not, so a repeated place turn re-bought identical
+ * organic results. Language is not in the key because the request does not carry
+ * it - `serperSearch` sends a fixed `gl: 'vn', hl: 'vi'` for every caller, so a
+ * per-language key would split one upstream answer into two paid entries.
+ */
+export function serperSearchCacheKey(query: string): string {
+  return `serpsearch:${cacheKeyPart(query)}`
+}
+
+/**
+ * Serper `/images` for one place, keyed on exactly what varies the response.
+ *
+ * `max` and `context` both change the RESULT (context drops food imagery for
+ * shopping, max truncates), so both are in the key - keying on the name alone
+ * would hand a shopping card the food-filtered list. `placeId` is deliberately
+ * absent: it is only an opaque label the caller passes for logging, and the
+ * upstream query is the NAME, so including it would split one answer per caller.
+ */
+export function placePhotosCacheKey(placeName: string, max: number, context: string): string {
+  return `photos:${cacheKeyPart(placeName)}:${max}:${context}`
+}
+
 export function productsCacheKey(query: string, lang: string): string {
   return `products:${cacheKeyPart(query)}:${lang}`
 }

@@ -1,6 +1,6 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { messages } from '@/lib/ai/messages'
-import { webSearchCacheKey } from './cacheKeys'
+import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey } from './cacheKeys'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
@@ -11,6 +11,19 @@ export function getCache(key: string): unknown | null {
   if (hit && hit.expires > Date.now()) return hit.data
   if (hit) cache.delete(key)
   return null
+}
+
+/**
+ * Empties the in-memory tool cache.
+ *
+ * A TEST SEAM, and named so it cannot be mistaken for product behaviour. The
+ * cache is module-scoped, so a suite that calls the same tool twice with the
+ * same arguments would otherwise read the previous test answer - which is what
+ * the photo-step timing tests hit the moment image lookups became memoised.
+ * Clearing between tests keeps each one measuring the call it actually makes.
+ */
+export function __clearToolCache(): void {
+  cache.clear()
 }
 
 export function setCache(key: string, data: unknown, ttlMs: number) {
@@ -258,6 +271,22 @@ export function pickEmbeddableImageUrl(images: SerperImage[] | undefined): strin
 // sole responsibility of those who make it available"), so it is treated the same as Google:
 // last-resort fallback, resolved fresh on every call, never written to a database.
 export async function fetchPlacePhotosByName(placeId: string, placeName: string, max = 3, context: ImageContext = 'default'): Promise<string[]> {
+  /**
+   * 🚨 THE SAME VENUE WAS BOUGHT OVER AND OVER.
+   *
+   * Serper bills per request and this is the highest-volume call in the product:
+   * every place a reply names, plus every hotel row, plus every product row.
+   * Nothing memoised it, so the same restaurant in the same city cost a request
+   * on every turn - and a travel turn fetching 8 hotels re-bought whichever ones
+   * the route-level resolver then asked for again by name.
+   *
+   * ONLY NON-EMPTY RESULTS ARE STORED. Caching a miss would let one timeout
+   * suppress a venue images for the whole TTL, which trades cost for quality -
+   * the exact trade this optimisation is forbidden to make.
+   */
+  const photoCacheKey = placePhotosCacheKey(placeName, max, context)
+  const cachedPhotos = getCache(photoCacheKey)
+  if (Array.isArray(cachedPhotos) && cachedPhotos.length > 0) return cachedPhotos as string[]
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !placeName) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_skip', reason: !apiKey ? 'no_key' : 'no_name', placeId }))
@@ -280,6 +309,9 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
     const images = data?.images as SerperImage[] | undefined
     const photoUris = pickEmbeddableImageUrls(images, max, context)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
+    // 15 minutes, matching the products cache: long enough that a conversation
+    // and its follow-ups pay once, short enough that these stay live URLs.
+    if (photoUris.length > 0) setCache(photoCacheKey, photoUris, 15 * 60 * 1000)
     return photoUris
   } catch (e) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
@@ -395,6 +427,20 @@ export async function fetchPlacePhotoByName(placeId: string, placeName: string):
 
 // ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====
 export async function serperSearch(query: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
+  /**
+   * 🚨 `webSearch` CACHED; ITS SIBLINGS DID NOT.
+   *
+   * Every direct caller - the food price/order/TikTok queries, travel four
+   * hotel queries, shopping three organic queries - went straight out to a
+   * billed endpoint with no memoisation, so an identical query on the next turn
+   * was paid for again. Same rule as the photo cache: only a non-empty result is
+   * stored, so a timeout never becomes a 5-minute hole in the data.
+   */
+  const searchCacheKey = serperSearchCacheKey(query)
+  const cachedSearch = getCache(searchCacheKey)
+  if (Array.isArray(cachedSearch) && cachedSearch.length > 0) {
+    return cachedSearch as Array<{ title: string; link: string; snippet: string }>
+  }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
   try {
@@ -413,6 +459,8 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
       .filter(r => r.title && r.link)
       .slice(0, 6)
       .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '' }))
+    // 5 minutes, matching webSearch's own TTL for the same upstream endpoint.
+    if (results.length > 0) setCache(searchCacheKey, results, 5 * 60 * 1000)
     return results
   } catch {
     return null

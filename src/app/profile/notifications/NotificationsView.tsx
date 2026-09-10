@@ -13,7 +13,7 @@ import { useNotifications } from '@/components/NotificationProvider'
 import { MessagesProvider, useMessages } from '@/components/messaging/MessagesProvider'
 import MessagesTab from '@/components/messaging/MessagesTab'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import {
+import { CATEGORY_STYLE,
   mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark,
   NOTIF_COLOR, type GroupedNotif,
 } from '@/lib/notifications/inbox'
@@ -71,12 +71,6 @@ const CATEGORIES = [
 ] as const
 
 /** Category → the tint and glyph a non-social row wears. Same map the mobile inbox uses. */
-const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
-  social: { color: '#ff6b35', icon: '🎉' },
-  deal: { color: '#F59E0B', icon: '🏷️' },
-  explore: { color: '#8B5CF6', icon: '✨' },
-  system: { color: '#64748B', icon: '🔔' },
-}
 
 /** Clock time for a row, in the reader's locale. The date lives in the section heading. */
 function timeOf(iso: string, locale: 'vi' | 'en') {

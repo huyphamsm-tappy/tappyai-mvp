@@ -1,5 +1,5 @@
 import { buildPlaceEntity, buildProductEntity, buildStayEntity, sourceOf, type PlaceRow, type ProductRow, type StayRow } from './buildEntity'
-import { buildRecommendations, type Recommendation, type ShortlistEntry } from './recommendation'
+import { buildRecommendations, type Recommendation, type RecommendationReason, type ShortlistEntry } from './recommendation'
 import type { CanonicalEntity, EntityDomain } from './entity'
 import { applyEligibility } from './eligibility'
 
@@ -22,14 +22,57 @@ const DOMAINS = new Set<EntityDomain>(['food', 'shopping', 'travel', 'entertainm
  * to `food` for action purposes only because that is the default place
  * treatment; no food-specific field is invented for it.
  */
-function domainOf(r: Record<string, unknown>): EntityDomain {
+function statedDomainOf(r: Record<string, unknown>): EntityDomain | null {
   const d = r._tappy_place_domain
-  return typeof d === 'string' && DOMAINS.has(d as EntityDomain) ? (d as EntityDomain) : 'food'
+  return typeof d === 'string' && DOMAINS.has(d as EntityDomain) ? (d as EntityDomain) : null
 }
+
+/**
+ * 🚨 AN UNKNOWN DOMAIN WAS BEING ANSWERED AS "food".
+ *
+ * `_tappy_place_domain` is `place` for any query matching none of the enrichment
+ * classes, and `place` is not an `EntityDomain` — so the old fallback declared it
+ * FOOD and then judged its rows against `OSM_ADMIT.food`. A generic place set
+ * therefore entered the food boundary, where a cinema, a mall or a gym counts as
+ * a different domain's venue and is REJECTED outright. An unknown domain silently
+ * became a wrong one.
+ *
+ * The two uses are now separated, because they need opposite defaults:
+ *
+ *   · the ELIGIBILITY BOUNDARY is skipped entirely when the domain is unknown.
+ *     `classifyEligibility` already has three outcomes and treats absent evidence
+ *     as `unknown` (keep, do not reject); an unknown DOMAIN deserves the same
+ *     treatment, and asserting one we do not have is the unsafe direction.
+ *
+ *   · ENTITY CONSTRUCTION still needs a concrete domain, and `food` remains the
+ *     default place treatment it always was. Nothing food-specific is invented
+ *     for it — this only labels the entity, and it is what shipped before.
+ */
+const ENTITY_DOMAIN_DEFAULT: EntityDomain = 'food'
 
 const rows = (r: Record<string, unknown>, key: string): Record<string, unknown>[] => {
   const v = r[key]
   return Array.isArray(v) ? v.filter((x): x is Record<string, unknown> => !!x && typeof x === 'object') : []
+}
+
+/**
+ * The turn's Pick, as the caller already computed it.
+ *
+ * 🚨 WITHOUT THIS THE PICK NEVER ARRIVED. `withShortlist` read the chosen name
+ * off `result._tappy_ranking`, but the route builds that block INSIDE the value
+ * it returns to the model (`{ ...result, _tappy_ranking }`) — the object handed
+ * to this adapter never carried it. So every recommendation came back with
+ * `recommended: false`, and the decision the engine had already made could not
+ * be rendered by anything downstream.
+ *
+ * The fields mirror `buildPickPayload` exactly, from the same `Pick`: the same
+ * positive reasons, capped the same way, and the runner-up's genuine advantage
+ * as the trade-off. Nothing here re-derives a decision.
+ */
+export interface PickContext {
+  name: string
+  reasons?: RecommendationReason[]
+  tradeOff?: RecommendationReason | null
 }
 
 const shortlistOf = (r: Record<string, unknown>): ShortlistEntry[] => {
@@ -43,13 +86,14 @@ const shortlistOf = (r: Record<string, unknown>): ShortlistEntry[] => {
  * Returns `[]` for anything unusable, which is how a non-place turn, an errored
  * tool and an empty search all behave — the caller never has to distinguish.
  */
-export function placeRecommendations(result: unknown, location?: string): Recommendation[] {
+export function placeRecommendations(result: unknown, location?: string, pick?: PickContext): Recommendation[] {
   if (!result || typeof result !== 'object') return []
   const r = result as Record<string, unknown>
   const list = rows(r, 'results')
   if (list.length === 0) return []
 
-  const domain = domainOf(r)
+  const statedDomain = statedDomainOf(r)
+  const domain = statedDomain ?? ENTITY_DOMAIN_DEFAULT
   const source = sourceOf(r as { source?: unknown })
 
   /**
@@ -67,17 +111,19 @@ export function placeRecommendations(result: unknown, location?: string): Recomm
   // one `amenity`, and the envelope records it as `amenity_type`. That envelope
   // value therefore applies to every row in the set.
   const envelopeAmenity = typeof r.amenity_type === 'string' ? r.amenity_type : undefined
-  const { eligible } = applyEligibility(list, domain, row => ({
+  // No stated domain ⇒ no boundary to enforce. Keeping every row is the safe
+  // direction: the alternative is judging them against a domain nobody claimed.
+  const eligible = statedDomain === null ? list : applyEligibility(list, statedDomain, row => ({
     amenity: typeof row.amenity === 'string' ? row.amenity : envelopeAmenity,
     osmCategory: typeof row.tourism === 'string' ? row.tourism : undefined,
     placeTypes: Array.isArray(row.place_types) ? (row.place_types as string[]) : undefined,
-  }))
+  })).eligible
 
   const entities = eligible
     .map(row => buildPlaceEntity(row as PlaceRow, { domain, source, location }))
     .filter(e => e.identity.name.length > 0)
 
-  return withShortlist(entities, r, e => e.identity.name)
+  return withShortlist(entities, r, e => e.identity.name, pick)
 }
 
 /** Build recommendations from a `search_products` result. */
@@ -93,7 +139,7 @@ export function productRecommendations(result: unknown): Recommendation[] {
 }
 
 /** Build recommendations from a `get_hotel_prices` result. */
-export function stayRecommendations(result: unknown): Recommendation[] {
+export function stayRecommendations(result: unknown, pick?: PickContext): Recommendation[] {
   if (!result || typeof result !== 'object') return []
   const r = result as Record<string, unknown>
   const list = [...rows(r, 'search_results'), ...rows(r, 'hotel_list')]
@@ -103,7 +149,7 @@ export function stayRecommendations(result: unknown): Recommendation[] {
   const entities = list
     .map(row => buildStayEntity(row as StayRow, { bookingLink, agodaLink }))
     .filter(e => e.identity.name.length > 0)
-  return withShortlist(entities, r, e => e.identity.name)
+  return withShortlist(entities, r, e => e.identity.name, pick)
 }
 
 /**
@@ -118,6 +164,7 @@ function withShortlist(
   entities: CanonicalEntity[],
   r: Record<string, unknown>,
   nameOf: (e: CanonicalEntity) => string,
+  pick?: PickContext,
 ): Recommendation[] {
   const sl = shortlistOf(r)
   const byName = new Map(sl.map(s => [(s.name || '').trim().toLowerCase(), s]))
@@ -126,7 +173,9 @@ function withShortlist(
     const hit = byName.get(nameOf(e).trim().toLowerCase())
     if (hit) shortlist.push({ ...hit, id: e.id })
   }
-  const picked = (r._tappy_ranking as { id?: string; name?: string } | undefined)?.name
+  // The caller's Pick first; the result block second, for any caller that still
+  // carries it there. Matched by name, like the shortlist above.
+  const picked = pick?.name ?? (r._tappy_ranking as { id?: string; name?: string } | undefined)?.name
   const pickedEntity = picked
     ? entities.find(e => nameOf(e).trim().toLowerCase() === picked.trim().toLowerCase())
     : undefined
@@ -134,5 +183,7 @@ function withShortlist(
     rankedIds: entities.map(e => e.id),
     shortlist,
     pickedId: pickedEntity?.id ?? null,
+    ...(pickedEntity && pick?.reasons?.length ? { reasons: { [pickedEntity.id]: pick.reasons } } : {}),
+    ...(pickedEntity && pick?.tradeOff ? { tradeOffs: { [pickedEntity.id]: pick.tradeOff } } : {}),
   })
 }

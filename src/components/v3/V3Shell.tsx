@@ -13,11 +13,13 @@ import {
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SHOW_MARKETPLACE } from '@/lib/config/product'
+import { SHOW_MARKETPLACE, SHOW_WALLET } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
 import { useNotifications } from '@/components/NotificationProvider'
 import { useThemeMode } from '@/lib/theme/useThemeMode'
+import { useAuthStatus } from '@/hooks/useAuthStatus'
+import { performSignOut } from '@/lib/auth/signOut'
 import { smartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
 // ── V3 Web · Shell ──────────────────────────────────────────────────────────
@@ -45,6 +47,11 @@ interface NavItem {
   labelKey: string
   icon: typeof Home
   tagKey?: string
+  /**
+   * The session row. Renders Logout for a signed-in member and Login for a
+   * visitor — see `AuthNavRow`, and the note on the row itself below.
+   */
+  authRow?: true
 }
 
 interface NavGroup {
@@ -164,7 +171,13 @@ const GROUPS: NavGroup[] = [
       // 🚨 POINTED AT `/profile`, where the QR was an icon in the header rather than a
       // destination — the row named a page that did not exist. `/profile/qr` is it.
       { href: '/profile/qr', labelKey: 'v3.nav.qr', icon: QrCode },
-      { href: '/subscription', labelKey: 'v3.nav.wallet', icon: Wallet },
+      // 🚨 WALLET IS HIDDEN, NOT DELETED - AND IT NEVER POINTED AT A WALLET. This row read
+      // "Wallet / Tappy Points" and its destination was `/subscription`; no wallet route, API or
+      // table exists in this repo. Gated rather than removed so the entry comes back with one
+      // boolean once the feature is real - see `SHOW_WALLET`.
+      ...(SHOW_WALLET
+        ? [{ href: '/subscription', labelKey: 'v3.nav.wallet', icon: Wallet }]
+        : []),
     ],
   },
   {
@@ -177,7 +190,21 @@ const GROUPS: NavGroup[] = [
       { href: '/profile/settings', labelKey: 'v3.nav.language', icon: Languages },
       { href: '/how-to-use', labelKey: 'v3.nav.help', icon: HelpCircle },
       { href: '/profile', labelKey: 'v3.nav.feedback', icon: MessageSquare },
-      { href: '/login', labelKey: 'v3.nav.logout', icon: LogOut },
+      /**
+       * 🚨 THIS ROW SAID "LOGOUT" TO EVERYONE, AND IT WAS A LINK TO `/login`.
+       *
+       * Not a bug of wording: there was no auth check anywhere in this file, and
+       * `V3Shell`'s own `user` prop is passed by no caller in the app, so the row
+       * was static. It offered Logout to a visitor who had never signed in, and
+       * clicking it signed nobody out — it navigated to `/login`, which then saw
+       * the browser's anonymous session, called it "signed in" and replaced the
+       * route with `/`. Hence the reported loop: click Logout, land on Home, still
+       * see Logout, refresh, still see Logout.
+       *
+       * It is now the one row whose label is DERIVED from the session, and whose
+       * Logout actually tears one down. Same group, same position, same styling.
+       */
+      { href: '/login', labelKey: 'v3.nav.logout', icon: LogOut, authRow: true },
     ],
   },
 ]
@@ -189,6 +216,72 @@ const GROUPS: NavGroup[] = [
  *  something waiting whether or not they did — a claim about their account with nothing behind it.
  *  The count comes from the app-level notification store (ADR-014), the same source the bottom nav
  *  and Explore already read, so a zero renders nothing. */
+/** The row's own styling, shared so the session row cannot drift from its neighbours. */
+const NAV_ROW_CLASS = 'flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[7px] text-[12.5px] font-normal transition-colors hover:bg-white/5'
+
+/**
+ * The one navigation row that depends on who is here.
+ *
+ * MEMBER   → Logout, which performs the real teardown (`performSignOut`, the
+ *            single `auth.signOut()` call site) and then goes Home.
+ * VISITOR  → Login, a plain link to `/login`.
+ * LOADING  → nothing at all. Rendering a guess would flash the wrong word on
+ *            every page load, and the wrong word here is the whole bug.
+ *
+ * 🚨 THE LABEL IS NEVER SET BY THE CLICK. It is derived from the session via
+ * `useAuthStatus`, which listens to `onAuthStateChange` — so if sign-out fails
+ * and the session survives, the row stays Logout instead of telling somebody
+ * they are signed out when they are not. `performSignOut` never throws by
+ * contract; this does not rely on that.
+ *
+ * Server-side authorization is untouched: nothing here is sent anywhere, and no
+ * route trusts it. It decides one word on screen.
+ */
+function AuthNavRow({ icon: Icon }: { icon: typeof Home }) {
+  const { t } = useTranslation()
+  const router = useRouter()
+  const status = useAuthStatus()
+  const [busy, setBusy] = useState(false)
+
+  if (status === 'loading') return null
+
+  if (status === 'visitor') {
+    return (
+      <li>
+        <Link href="/login" className={NAV_ROW_CLASS} style={{ color: 'var(--v3-fg-secondary)' }} data-testid="nav-login">
+          <Icon size={15} aria-hidden="true" className="flex-shrink-0" />
+          <span className="truncate">{t('v3.nav.login')}</span>
+        </Link>
+      </li>
+    )
+  }
+
+  return (
+    <li>
+      <button
+        type="button"
+        disabled={busy}
+        data-testid="nav-logout"
+        onClick={async () => {
+          setBusy(true)
+          await performSignOut()
+          // Home, not `/login`: a signed-out person belongs on the public surface,
+          // and `/login` is where they go to come back. `refresh()` re-runs the
+          // server components so nothing rendered for the old session survives.
+          router.replace('/')
+          router.refresh()
+          setBusy(false)
+        }}
+        className={NAV_ROW_CLASS}
+        style={{ color: 'var(--v3-fg-secondary)' }}
+      >
+        <Icon size={15} aria-hidden="true" className="flex-shrink-0" />
+        <span className="truncate">{t('v3.nav.logout')}</span>
+      </button>
+    </li>
+  )
+}
+
 const TABS: { href: string; labelKey: string; icon: typeof Home; badge?: boolean }[] = [
   { href: '/', labelKey: 'v3.tab.aiAgent', icon: Sparkles },
   { href: '/reviews', labelKey: 'nav.explore', icon: PlayCircle },
@@ -340,6 +433,9 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                   {group.items.map(item => {
                     const Icon = item.icon
                     const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href.split('#')[0])
+                    if (item.authRow) {
+                      return <AuthNavRow key={`${group.titleKey}-${item.labelKey}`} icon={Icon} />
+                    }
                     return (
                       <li key={`${group.titleKey}-${item.labelKey}`}>
                         <Link
@@ -478,7 +574,19 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
               </form>
               )}
 
-              <nav className="v3-scroll-x order-3 flex w-full min-w-0 gap-1 lg:order-none lg:w-auto lg:flex-shrink" aria-label={t('v3.nav.ariaTabs')}>
+              {/*
+                🚨 DESKTOP ONLY. This row had no breakpoint gate, so below `lg` it rendered as a
+                full-width scroll row AT THE SAME TIME as `BottomNav` — measured at 375x812 on
+                /deals: TABS visible h=50 top=104, BottomNav visible h=65 top=747, with `/`,
+                `/reviews` and `/deals` reachable from both. That contradicts the ownership rule
+                stated at the top of this file: BottomNav owns navigation below `lg` (DD-003).
+
+                Nothing else moves: no route, no destination, no tab set. The two entries this row
+                carries that BottomNav does not keep their mobile paths — `/tools` from Home's
+                Smart Tools "see all", and the Inbox via the Explore tab, which BottomNav already
+                badges for exactly that reason (see BottomNav: "Explore (/reviews) hosts the Inbox").
+              */}
+              <nav className="v3-scroll-x order-3 hidden w-full min-w-0 gap-1 lg:order-none lg:flex lg:w-auto lg:flex-shrink" aria-label={t('v3.nav.ariaTabs')}>
                 {TABS.map(tab => {
                   const Icon = tab.icon
                   const active = tab.href === activeTab

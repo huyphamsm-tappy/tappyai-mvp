@@ -62,6 +62,25 @@ export const NOTIF_COLOR: Record<string, string> = {
  * NOT `/logo.png` or `/logo.svg` — those are the retired infinity mark, named
  * as retired in `send.ts` and `push-sw.js`.
  */
+/**
+ * The colour + emoji a notification category is drawn with.
+ *
+ * 🚨 THIS WAS DECLARED TWICE, BYTE-IDENTICAL. `reviews/page.tsx` and
+ * `profile/notifications/NotificationsView.tsx` each carried their own copy, and
+ * each renders its own `NotifRow` from it — so a branding change (a new
+ * category, a recoloured chip) had to be made in two places or the two inboxes
+ * would disagree. They had not drifted yet; this is the cheap moment to stop it.
+ *
+ * It lives here because `NOTIF_COLOR` and `notificationBrandMark` already do:
+ * the notification taxonomy has one owner, and this is it.
+ */
+export const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
+  social: { color: '#ff6b35', icon: '🎉' },
+  deal: { color: '#F59E0B', icon: '🏷️' },
+  explore: { color: '#8B5CF6', icon: '✨' },
+  system: { color: '#64748B', icon: '🔔' },
+}
+
 export const TAPPY_NOTIFICATION_MARK = '/tappy/wave.png'
 
 /**

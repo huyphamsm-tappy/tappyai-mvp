@@ -21,7 +21,11 @@ import { comparisonFromSynthesis } from '@/lib/structuredContent/comparisonFromS
 import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { parsePlacesMarker } from '@/lib/recommendation/marker'
+import { readPlacesLiveView } from '@/lib/recommendation/liveView'
+import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
+import PlaceDecision from '@/components/chat/PlaceDecision'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
@@ -164,6 +168,30 @@ export function parseCTA(content: string): { text: string; buttons: CTAButton[] 
   } catch {
     return { text, buttons: [] }
   }
+}
+
+/**
+ * The same parse, with every model-authored button checked against its own URL.
+ *
+ * 🚨 `parseCTA` RETURNS THE MODEL'S BUTTONS VERBATIM — label, type and url — so
+ * a purchase promise pointing at an aggregator homepage reached the user on a
+ * turn that had just reported finding no events (measured 2026-09-09). The card
+ * layer never had that problem: `actionLabel` renders a search URL as a SEARCH
+ * label. A model-authored button simply never went through it.
+ *
+ * 🔑 THE URL DECIDES THE KIND, THE LABEL DOES NOT. The rule, the measured
+ * examples and the tests live in `lib/recommendation/ctaValidation` — kept out
+ * of this file because the B07 ratchet scans `src/components` for Vietnamese
+ * text and a quoted example in a COMMENT is enough to trip it.
+ *
+ * Kept as a separate export so `parseCTA`'s own tests still assert the raw parse.
+ */
+export function parseCTAValidated(
+  content: string,
+  t: (key: string, vars?: Record<string, string>) => string,
+): { text: string; buttons: CTAButton[] } {
+  const { text, buttons } = parseCTA(content)
+  return { text, buttons: validateModelCtaButtons(buttons, t) as CTAButton[] }
 }
 
 // ── [TAPPY_PLAN] ────────────────────────────────────────────────────────────
@@ -778,6 +806,18 @@ export default function ChatInterface({
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({
     api: '/api/chat',
+    /**
+     * Which surface is asking.
+     *
+     * 🚨 THE PROMPT IS SHARED WITH ANDROID AND iOS, AND THEY HAVE NO CARD. Web
+     * renders the place decision as structured UI, so its reply should spend prose
+     * on interpretation instead of re-listing the rating and the opening hours the
+     * card already shows. Telling the model that unconditionally would strip those
+     * facts from the native clients, where the prose is the only place they appear.
+     * The header is how the route tells the two apart; a client that sends nothing
+     * keeps exactly today's behaviour.
+     */
+    headers: { 'x-tappy-surface': 'web' },
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
@@ -1315,7 +1355,9 @@ export default function ChatInterface({
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
-                const { text: textAfterCta, buttons } = parseCTA(textAfterPlan)
+                // Validated, not raw: a model-authored purchase promise backed by a
+                // homepage or a search page is downgraded to the honest search label.
+                const { text: textAfterCta, buttons: modelButtons } = parseCTAValidated(textAfterPlan, t)
                 const { text: textAfterFollowups, followups } = parseFollowups(textAfterCta)
                 // Phase 9 — the shopping DECISION arrives as a persistent text
                 // marker (like [TAPPY_PLAN]), so it survives reload. Parse it out
@@ -1326,6 +1368,44 @@ export default function ChatInterface({
                 // from it yet — the card layer is a separate, later task. Strip
                 // is unconditional and independent of decode (fixture rule 1).
                 const { text } = parsePlacesMarker(textAfterShopping)
+                /**
+                 * The place decision, from this message's ANNOTATIONS.
+                 *
+                 * 🚨 NOT FROM THE TEXT, DELIBERATELY. The durable marker above is
+                 * still gated off for Android/iOS and for Google Places storage terms
+                 * (see `EMIT_PLACES_ANNOTATION`), so the card is fed by a frame that
+                 * never enters the message body and is never saved. The consequence is
+                 * visible and intended: a reloaded conversation shows the prose without
+                 * the card, because nothing about the place was stored.
+                 */
+                const annotated = readPlacesLiveView(msg.annotations as unknown[] | undefined)
+                /**
+                 * 🚨 THE SAVE NAVIGATES AWAY, AND THE ANNOTATION DOES NOT SURVIVE IT.
+                 * A completed turn is persisted and `router.replace`d to `/chat/<id>`,
+                 * where ChatInterface remounts from `savedMessages` - `{role, content}`
+                 * only. Measured on localhost: the card rendered, then vanished about a
+                 * second later. The in-memory hand-off keeps it for the session without
+                 * writing anything anywhere; see `liveViewCache`.
+                 */
+                if (annotated) rememberPlacesView(msg.content, annotated)
+                const placeView = annotated ?? recallPlacesView(msg.content)
+                /**
+                 * 🚨 THE SAME BUTTON TWICE IS STILL DUPLICATION. The model authors its
+                 * own `[CTA_BUTTONS]` for clients that have no card, and it writes the ones
+                 * the card already owns: a "see all of these on the map" button sat directly under
+                 * a card block whose last row is exactly that link. With a card rendering, a
+                 * model button survives only when the card does not already offer that
+                 * destination - matched on URL, so a genuinely different action is kept.
+                 */
+                const cardUrls = placeView
+                  ? new Set([
+                    ...placeView.items.flatMap(i => i.actions.map(a => a.url)),
+                    ...(placeView.mapsSearchUrl ? [placeView.mapsSearchUrl] : []),
+                  ].map(u => u.split('?')[0]))
+                  : null
+                const buttons = cardUrls
+                  ? modelButtons.filter(b => !cardUrls.has((b.url || '').split('?')[0]))
+                  : modelButtons
                 const isLastMessage = msgIdx === messages.length - 1
                 // Display body: while streaming use the smoothed text. Always strip
                 // the marker from what's shown; when this is a shopping decision,
@@ -1343,7 +1423,32 @@ export default function ChatInterface({
                         <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
                       </div>
                       {plan && <TripPlanCard plan={plan} />}
-                      {shopView && <ShoppingDecision view={shopView} heroImage={heroImage} />}
+                      {shopView && (
+                        <ShoppingDecision
+                          view={shopView}
+                          heroImage={heroImage}
+                          /**
+                           * Price watch, from the product that is already on screen.
+                           *
+                           * It prefills the SAME phrasing the composer chip prefills, so the
+                           * request goes through the shipped `save_price_watch` tool - the one
+                           * with the permission, argument and audit steps in
+                           * `runAiWriteAction`. No second write path, and the user still sends
+                           * the message: nothing is saved by pressing a button on a card.
+                           */
+                          onPriceWatch={(name) => {
+                            posthog.capture('chat_message_sent', { input_method: 'price_watch_card' })
+                            setInput(t('chat.chipPriceWatchPrefill') + name)
+                          }}
+                        />
+                      )}
+                      {/* One card per turn, and never while the reply is still
+                          arriving: the annotation is sent once the text is final, so a
+                          card can neither flash mid-stream nor appear twice. Shopping
+                          owns its own decision surface, so the two are mutually
+                          exclusive by construction (the projection returns null for a
+                          product). */}
+                      {placeView && !shopView && !(isLoading && isLastMessage) && <PlaceDecision view={placeView} />}
                       {/* Comparison (DD-005). Derived from the SAME payload the decision above
                           renders — no extra request, nothing inferred. Offered only once the reply
                           is complete, like every other structured action, and only when there are
@@ -1430,9 +1535,19 @@ export default function ChatInterface({
                           })}
                         </div>
                       )}
-                      {/* Optional follow-up suggestions — only on the latest reply, never a push (MFS 2.7) */}
+                      {/* Optional follow-up suggestions — only on the latest reply, never a push (MFS 2.7).
+                          The heading is the approved composition's "a few more ideas": the same
+                          model-authored chips, now introduced so they read as offered refinements
+                          rather than as loose buttons under the answer. Shown only alongside a
+                          decision, because that is the turn where refining means something. */}
                       {followups.length > 0 && isLastMessage && !isLoading && (
-                        <div className="flex flex-wrap gap-2 mt-3">
+                        <div className="mt-3">
+                          {placeView && (
+                            <p className="mb-1.5 text-xs font-medium text-gray-600 dark:text-gray-400">
+                              {t('placeDecision.moreIdeas')}
+                            </p>
+                          )}
+                        <div className="flex flex-wrap gap-2">
                           {followups.map((f, i) => (
                             <button
                               key={i}
@@ -1444,6 +1559,7 @@ export default function ChatInterface({
                               {f}
                             </button>
                           ))}
+                        </div>
                         </div>
                       )}
                     </div>

@@ -2,6 +2,7 @@ import { normalizeShoppingRow, UNKNOWN, type Known, type NormalizedEvidence } fr
 import { groupIntoEntities, type Entity } from './entityModel'
 import type { Candidate } from './candidate'
 import type { Pick } from './pick'
+import { requestedSpecs } from './shoppingConstraints'
 
 // ── Universal Plan — Phase 4: SYNTHESIS / DECISION ──────────────────────────
 //
@@ -27,7 +28,9 @@ import type { Pick } from './pick'
 export type ConfigMatch = 'khop' | 'khac' | 'chua_ro'
 
 export interface EntitySummary {
-  config: string                 // "M1 · 32GB · 512GB · 14 inch" (+ condition if stated)
+  /** The listing's own title — what the reply should actually call this thing. */
+  name: string
+  config: string                 // "M1 · 32GB · 512GB · 14 inch" — only what was stated; the LABELLED, localized form is SynthesisEntityView.specs
   offerCount: number
   priceLow: Known<number>
   priceHigh: Known<number>
@@ -43,8 +46,9 @@ export interface ShoppingSynthesis {
   recommendation: {
     entityKey: string | null
     seller: Known<string>
-    reasons: { attribute: string; evidence: string }[]
-    tradeOff: { attribute: string; evidence: string } | null
+    /** `params` rides along so a client can say the reason in its own language. */
+    reasons: { attribute: string; evidence: string; params?: Record<string, string | number> }[]
+    tradeOff: { attribute: string; evidence: string; params?: Record<string, string | number> } | null
     conditional: boolean
   } | null
 }
@@ -77,14 +81,44 @@ function matchOf(reqModel: Known<string>, reqRam: Known<number>, reqStore: Known
   return sawUnknown ? 'chua_ro' : 'khop'
 }
 
+/**
+ * The configuration, as the listing stated it.
+ *
+ * 🚨 "chip ?" IS NOT A SPECIFICATION, AND IT WAS THE PRODUCT'S NAME ON SCREEN.
+ * This used to emit a placeholder for every unknown field, so a Dell IdeaPad -
+ * which states RAM and storage but no chip the Apple-silicon matcher knows -
+ * rendered as "chip ? · 16GB · 512GB", and the card showed THAT as the product's
+ * identity. Two defects in one string: a question mark presented as a fact, and a
+ * config line standing in for a name.
+ *
+ * An unstated field is now simply absent, which is the same rule the rest of the
+ * pipeline follows (rule 1: never invent a missing field). The identity itself
+ * comes from the listing's own title - see `entityName`.
+ */
 function configLabel(id: NormalizedEvidence['identity']): string {
   const parts: string[] = []
-  parts.push(id.model === UNKNOWN ? 'chip ?' : String(id.model))
-  parts.push(id.ramGb === UNKNOWN ? 'RAM ?' : `${id.ramGb}GB`)
-  parts.push(id.storageGb === UNKNOWN ? 'storage ?' : `${id.storageGb}GB`)
+  if (id.model !== UNKNOWN) parts.push(String(id.model))
+  if (id.ramGb !== UNKNOWN) parts.push(`${id.ramGb}GB`)
+  if (id.storageGb !== UNKNOWN) parts.push(`${id.storageGb}GB`)
   if (id.size !== UNKNOWN) parts.push(String(id.size))
   if (id.condition !== UNKNOWN) parts.push(String(id.condition))
   return parts.join(' · ')
+}
+
+/**
+ * The product's own name: the title of the first offer in the group.
+ *
+ * Not derived, not shortened, not re-cased - the seller's listing title, which is
+ * where the brand and the model number actually live ("Laptop Dell 15 DC15250").
+ * A grouped entity's offers all share an identity key, so any of their titles
+ * names the same product; the first is taken for determinism.
+ */
+export function entityName(e: Entity): string {
+  for (const o of e.offers) {
+    const n = o.evidence.identity.name
+    if (typeof n === 'string' && n.trim()) return n.trim()
+  }
+  return ''
 }
 
 /**
@@ -100,7 +134,25 @@ export function buildShoppingSynthesis(
 ): ShoppingSynthesis {
   const evidence = shortlisted.map(c => normalizeShoppingRow(rowOf(c), 'Google Shopping (Serper)'))
   const entities = groupIntoEntities(evidence)
-  const req = normalizeShoppingRow({ title: requestText }).identity
+  const titleRead = normalizeShoppingRow({ title: requestText }).identity
+  /**
+   * What the user asked for, read as a SENTENCE as well as a title.
+   *
+   * 🚨 "16GB RAM 512GB" LOST ITS CAPACITY. `normalizeShoppingRow` parses a
+   * LISTING, where a capacity carries a label or sits in a slash-separated block;
+   * a person writes it bare. So a request that named a configuration outright
+   * produced `ban_hoi: null` and every group scored "chua_ro" — the match verdict
+   * was blank on exactly the turns where the user had been most specific.
+   *
+   * The title reading still wins where it found something; the sentence reader
+   * only fills what it left UNKNOWN, so nothing that parses today changes.
+   */
+  const asked = requestedSpecs(requestText)
+  const req = {
+    ...titleRead,
+    ramGb: titleRead.ramGb === UNKNOWN && asked.ramGb !== null ? asked.ramGb : titleRead.ramGb,
+    storageGb: titleRead.storageGb === UNKNOWN && asked.storageGb !== null ? asked.storageGb : titleRead.storageGb,
+  }
 
   let recommendation: ShoppingSynthesis['recommendation'] = null
   if (pick) {
@@ -108,8 +160,15 @@ export function buildShoppingSynthesis(
     recommendation = {
       entityKey: ent ? ent.entityKey : null,
       seller: normalizeShoppingRow(rowOf(pick.candidate)).offer.seller,
-      reasons: pick.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => ({ attribute: r.key, evidence: r.detail })),
-      tradeOff: pick.runnerUp?.leadsOn ? { attribute: pick.runnerUp.leadsOn.key, evidence: pick.runnerUp.leadsOn.detail } : null,
+      reasons: pick.reasons.filter(r => r.contribution > 0).slice(0, 3)
+        .map(r => ({ attribute: r.key, evidence: r.detail, ...(r.params ? { params: r.params } : {}) })),
+      tradeOff: pick.runnerUp?.leadsOn
+        ? {
+          attribute: pick.runnerUp.leadsOn.key,
+          evidence: pick.runnerUp.leadsOn.detail,
+          ...(pick.runnerUp.leadsOn.params ? { params: pick.runnerUp.leadsOn.params } : {}),
+        }
+        : null,
       conditional: pick.conditional,
     }
   }
@@ -127,6 +186,7 @@ export function buildSynthesisPayload(s: ShoppingSynthesis): Record<string, unkn
   const summaries: EntitySummary[] = s.entities.map(e => {
     const { low, high } = priceRange(e)
     return {
+      name: entityName(e),
       config: configLabel(e.identity),
       offerCount: e.offers.length,
       priceLow: low,
@@ -137,7 +197,7 @@ export function buildSynthesisPayload(s: ShoppingSynthesis): Record<string, unkn
     }
   })
   return {
-    ban_hoi: configLabel({ name: '', model: s.requested.model, ramGb: s.requested.ramGb, storageGb: s.requested.storageGb, size: UNKNOWN, condition: UNKNOWN }),
+    ban_hoi: configLabel({ name: '', model: s.requested.model, ramGb: s.requested.ramGb, storageGb: s.requested.storageGb, size: UNKNOWN, condition: UNKNOWN }) || null,
     nhom_san_pham: summaries,
     de_xuat: s.recommendation
       ? {
@@ -169,6 +229,10 @@ TANG 2 — QUYET DINH CO CAN CU (moi con so/thuoc tinh cua tin dang cu the phai 
 - \`nhom_san_pham\`: moi phan tu la MOT cau hinh (khong phai mot tin dang). \`gia_thap\`/\`gia_cao\` la KHOANG GIA THAT tu cac noi ban trong nhom. \`matchesRequest\`: "khop" = dung cau hinh user hoi, "khac" = KHAC (phai noi ro), "chua_ro" = tieu de khong ghi du.
 - Trinh bay theo NHOM, KHONG do tung tin dang. Neu co \`de_xuat\`: neu MOT de xuat ro rang + VI SAO (dung \`ly_do\`), kem DANH DOI neu \`danh_doi\` co, va nhac ngan cac nhom dang chu y khac. Neu \`nghieng_ve\` = true: dien dat co dieu kien, khong tuyet doi.
 - KHONG trinh bay mot cau hinh KHAC nhu dung cai user hoi. KHONG gop cac nhom KHAC cau hinh lai voi nhau — he thong da gom an toan, ban KHONG duoc gom lai khac di.
+- Neu KHONG co \`de_xuat\` (null): he thong DA xep hang nhung khong co phuong an nao vuot han. Noi ro rang co vai lua chon deu hop ly va trinh bay theo THU TU da xep, KHONG duoc tu chon mot cai va goi do la de xuat cua Tappy, KHONG bia ly do hay danh doi. Duoc phep hoi DUNG MOT cau ve tieu chu con thieu de lan sau chon duoc.
+- The o duoi da co the hien du: ten san pham, gia, noi ban, danh gia, cau hinh va nut mua. KHONG liet ke lai cac con so do thanh danh sach trong phan chu; danh phan chu cho VI SAO, danh doi va dieu user nen can nhac.
+- Neu ket qua co \`_tappy_constraint_unmet\`: KHONG CO san pham nao thoa man dieu kien user da noi ro (ngan sach / loai san pham / thuong hieu / cau hinh). NOI THANG dieu do bang mot cau, va DE NGHI noi dieu kien (vd nang ngan sach, doi cau hinh) de user tu quyet. TUYET DOI KHONG gioi thieu mot san pham vuot dieu kien nhu the no thoa man.
+- KHONG khen chung chung khi khong co bang chung: 'rat dang mua', 'chat luong tot', 'hieu nang manh', 'pin tot', 'may nhe' chi duoc noi khi du lieu that su ghi. Neu khong co, bo han cau do.
 - Muc tieu: mot QUYET DINH co the hanh dong duoc, khong phai danh sach. Ngan gon.
 =====================================================`
 }

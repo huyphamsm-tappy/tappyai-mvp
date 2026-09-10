@@ -173,7 +173,33 @@ export function suppressUngroundedVenues(
 
   // Nothing verifiable left to show: say so rather than leave an answer that
   // promised recommendations and now has none. Never invent a substitute.
-  const body = groundedRemain === 0 ? `${out}\n\n${notFoundLine(lang)}`.trim() : out
+  /**
+   * 🚨 A LEAD-IN WITHOUT ITS LIST IS A PROMISE THE REPLY NO LONGER KEEPS.
+   *
+   * A block starts at its HEADING's line, which is what stops a cut from eating
+   * the fragment before it — but that also means a line INTRODUCING the list sits
+   * outside every cut and survives it. Measured on the phone UAT 2026-09-09:
+   *
+   *     Tuy nhiên, quán này hiện chưa có số điện thoại công khai trong hệ thống.
+   *     Bạn có thể:
+   *     <venue headings — all suppressed>
+   *
+   * left the reply reading "Bạn có thể:" and then the not-found line: a colon
+   * promising options, followed by the news that there are none.
+   *
+   * 🔑 THE `$` ANCHOR IS THE WHOLE CONDITION. A colon line is stripped only
+   * when it now ENDS the prose — i.e. everything it introduced is gone. A
+   * lead-in that still has a grounded venue under it does not match, so no
+   * separate `groundedRemain` test is needed.
+   *
+   * 🚨 AND SUCH A GUARD WOULD BE WRONG, NOT MERELY REDUNDANT. A reply can keep
+   * an earlier grounded venue and still END on a lead-in whose only item was
+   * cut; scoping to "nothing survived" would leave that one dangling. The
+   * first version of this code had that guard and it SURVIVED mutation because
+   * it was equivalent — the case that distinguishes it is now a test.
+   */
+  const withoutLeadIn = out.replace(/(?:^|\n)[^\n]*:[ \t]*$/, '').trimEnd()
+  const body = groundedRemain === 0 ? `${withoutLeadIn}\n\n${notFoundLine(lang)}`.trim() : withoutLeadIn
   return { text: `${body}${cleanedTail}`, suppressed }
 }
 

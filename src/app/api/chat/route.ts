@@ -23,6 +23,7 @@ import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refine
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
+import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest, hasImplicitPurchaseIntent } from '@/lib/ai/consultative/pick'
@@ -35,7 +36,7 @@ import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
-import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
+import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -542,13 +543,78 @@ export async function POST(req: Request) {
    * removed from the model's view exactly as applyBudgetFilter already does, and
    * every surviving record keeps its own link, photo and enrichment fields.
    */
+  /**
+   * The Pick, in the shape the recommendation adapter reads.
+   *
+   * 🚨 THE DECISION USED TO STOP HERE. `placeRecommendations` looked for the
+   * chosen name on `result._tappy_ranking`, and that block is built INSIDE the
+   * object returned to the model - never on the result this adapter receives. So
+   * every canonical recommendation came back `recommended: false`, and the card
+   * layer had no pick to render even though the engine had made one.
+   *
+   * Same source and same caps as `buildPickPayload`, so the model's text and the
+   * rendered card can never describe different choices.
+   */
+  const pickContext = (pick: ReturnType<typeof derivePick> | null) => {
+    if (!pick) return undefined
+    const leadsOn = pick.runnerUp?.leadsOn
+    return {
+      name: pick.candidate.name,
+      reasons: pick.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => ({ attribute: r.key, evidence: r.detail })),
+      tradeOff: leadsOn ? { attribute: leadsOn.key, evidence: leadsOn.detail } : null,
+    }
+  }
+
+  /**
+   * The explicit shopping constraints this CONVERSATION carries.
+   *
+   * Folded from every user turn, not just the last one: a "cheaper options?"
+   * follow-up names no product, and one that forgot the subject came back
+   * with laptop screens and a mouse. The budget falls back to the last turn that
+   * stated one for the same reason.
+   */
+  const shoppingConstraints = deriveShoppingConstraints(
+    messages,
+    budget ?? budgetFromHistory(messages, extractBudget),
+  )
+
   const rankForModel = (toolName: 'search_places' | 'get_hotel_prices' | 'search_products', result: unknown) => {
     if (!result || typeof result !== 'object') return { result, pick: null }
     const r = result as Record<string, unknown>
-    const candidates = toolName === 'search_places' ? normalizePlaces(r)
+    const allCandidates = toolName === 'search_places' ? normalizePlaces(r)
       : toolName === 'get_hotel_prices' ? normalizeHotels(r)
         : normalizeShopping(r)
-    if (candidates.length < 2) return { result, pick: null }
+
+    /**
+     * 🚨 VALIDATE, THEN RANK — IN THAT ORDER, AND ONLY FOR SHOPPING.
+     *
+     * Ranking answers "which of these fits best". It has no way to say "this is
+     * not the thing you asked for", so a 399k laptop SCREEN scored brilliantly on
+     * the price term and became recommendation #1 on the "cheaper?" turn. Measured,
+     * with a laptop chassis at #3 and a mouse alongside.
+     *
+     * The rejected rows are removed from the array the MODEL reads as well, not
+     * just from the ranking — otherwise the prose can still cite a product the
+     * card refuses to show. See `shoppingConstraints.ts` for the four rules and
+     * for what they deliberately do NOT do.
+     */
+    let candidates = allCandidates
+    if (toolName === 'search_products' && allCandidates.length > 0) {
+      const { kept, rejected } = validateShoppingCandidates(allCandidates, shoppingConstraints)
+      if (rejected.length > 0) {
+        const rejectedRaw = new Set(rejected.map(x => x.candidate.raw))
+        for (const key of ['shopping_results', 'search_results']) {
+          if (Array.isArray(r[key])) r[key] = (r[key] as unknown[]).filter(row => !rejectedRaw.has(row))
+        }
+        // Fail closed, and say why. Nothing is relaxed here and nothing is put
+        // back: the model is told the constraint could not be met so it can offer
+        // to widen it, which is the user's call to make, not ours.
+        if (kept.length === 0) r._tappy_constraint_unmet = unmetConstraintPayload(shoppingConstraints, rejected)
+      }
+      candidates = kept
+    }
+
+    if (candidates.length < 2) return { result: r, pick: null }
 
     const ranked = rankCandidates(candidates, needProfile)
 
@@ -728,8 +794,17 @@ export async function POST(req: Request) {
   // question is asked exactly once and never on a non-trip turn.
   const tripContext = resolveTripContext(messages)
 
+  // Which client is asking. Only the web chat renders the decision as a card, so
+  // only the web reply is told to stop repeating what the card shows. A client
+  // that sends no header - Android, iOS, anything older - keeps today's prose.
+  const rendersDecisionCard = req.headers.get('x-tappy-surface') === 'web'
+  // The stream filter reads this to decide whether the per-place photo/link block
+  // still belongs in the text: with a card, it is the same content twice.
+  enrichment.setRendersDecisionCard(rendersDecisionCard)
+
   const consultativeBlock = [
     isDecisionDomain ? buildRankingInstructionBlock() : '',
+    isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
     // model must be told what it may NOT assert — measured live 2026-08-17
     // asserting weight and battery that no candidate supplied.
@@ -879,7 +954,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
           location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
-          type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema', 'attraction']).optional()
+          // 'mall' exists because without it the model had no way to say "shopping
+          // centre" and picked 'attraction' instead - measured on "Trung tam mua sam
+          // lon Sai Gon", which then searched tourist attractions and produced a reply
+          // that told the user its own results were wrong.
+          type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema', 'attraction', 'mall']).optional()
         }),
         execute: async ({ query, location, type }) => {
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
@@ -895,7 +974,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // keeps the data layer exercised (and its tests honest) while the
           // emission flag stays off; the collector holds them until the stream
           // filter has photos to fold in.
-          enrichment.setPlacesRecommendations(placeRecommendations(result, location))
+          enrichment.setPlacesRecommendations(placeRecommendations(result, location, pickContext(pick)))
+          // The map destination the provider itself returned for this search.
+          const mapsUrl = (result as Record<string, unknown>).google_maps_search
+            ?? (result as Record<string, unknown>).search_url
+          enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
           return forModel('search_places', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result)
@@ -915,8 +998,29 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
           enrichment.setPlacesRecommendations(productRecommendations(result))
-          if (!pick) return forModel('search_products', result)
-          const evidenceBlock = await freezeShoppingEvidence(result, pick, shortlistedCandidates)
+          /**
+           * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
+           *
+           * This used to `return` here when `derivePick` declined, before
+           * evidence, synthesis or the marker were built - so a turn that ranked
+           * 31 laptops and shortlisted 6 of them reached the user as unstructured
+           * prose with no card at all. Measured on localhost three times running:
+           * every live shopping turn produced `_tappy_total_found` (proving the
+           * ranker HAD ranked) and no `_tappy_ranking`, no `_tappy_synthesis` and
+           * no `[TAPPY_SHOPPING]` marker.
+           *
+           * `derivePick` declining is not "nothing to show". It means no option
+           * won by enough to crown one - a tie, or a need too vague to decide
+           * FOR. The ranker's order is still the answer to "which of these should
+           * I look at first", and `buildShoppingSynthesis` already accepts a null
+           * pick and returns `recommendation: null`, which the card renders as a
+           * shortlist without a winner.
+           *
+           * What stays gated on a real Pick: `_tappy_ranking`, the ADR-024
+           * evidence freeze (it is built FROM the pick), and `recommended: true`
+           * on any entity. Nothing here manufactures a winner.
+           */
+          const evidenceBlock = pick ? await freezeShoppingEvidence(result, pick, shortlistedCandidates) : ''
           // Phase 4 — the grounded, GROUPED decision the model verbalises instead
           // of dumping rows: entities (one per configuration) with their offers,
           // a recommendation from the same Pick, and how each group compares to
@@ -935,7 +1039,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           if (synthesisView) enrichment.setShoppingMarker(renderShoppingMarker(synthesisView))
           return forModel('search_products', {
             ...(result as Record<string, unknown>),
-            _tappy_ranking: buildPickPayload(pick),
+            ...(pick ? { _tappy_ranking: buildPickPayload(pick) } : {}),
             // The exact figures, plus what the evidence does NOT establish. The
             // rows above carry the same numbers, but silently: a listing with no
             // `ram_gb` simply has no key, and that silence is what production
@@ -984,7 +1088,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
-          enrichment.setPlacesRecommendations(stayRecommendations(result))
+          enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)))
           return forModel('get_hotel_prices', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result)

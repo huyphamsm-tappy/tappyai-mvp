@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { buildActions } from './actions'
+import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
 import { capabilitiesOf } from './capabilities'
 import { buildCtaButtons, stripModelCta, labelFor } from './cta'
 import { buildPlaceEntity } from './buildEntity'
@@ -27,6 +28,52 @@ const FOOD_ROW = {
   tiktok_review_url: 'https://www.tiktok.com/@a/video/1',
   has_tiktok_review: true,
 }
+
+describe('an order button must land somewhere that names the venue', () => {
+  // 🚨 THE MEASURED DEFECT: `buildFoodOrderLinks` returns BeFood as the bare
+  // site root for every restaurant, because BeFood publishes no search page. Shown
+  // beside ShopeeFood and GrabFood - both of which carry the venue's name in the
+  // query - it looked like a third way to order this meal and was a homepage.
+  //
+  // The rule is about the destination, not the brand: BeFood support stays in the
+  // builder and the data, and a venue-specific BeFood URL still shows.
+
+  it('drops a homepage-only order link, and keeps ShopeeFood and GrabFood', () => {
+    const actions = buildActions({ ...FOOD_ROW, order_links: undefined }, 'food')
+    const order = actions.filter(a => a.kind === 'order')
+    expect(order.map(a => a.platform)).toEqual(['ShopeeFood', 'GrabFood'])
+    expect(order.every(a => a.url.includes('B%C3%BAn') || a.url.includes('C%C3%B4'))).toBe(true)
+    expect(actions.some(a => a.url === 'https://be.com.vn/')).toBe(false)
+  })
+
+  it('the builder still offers BeFood — this is visibility, not deletion', () => {
+    expect(buildFoodOrderLinks('Bún Bò Huế Cô Ba', '12 Lê Lợi', 'Quận 1').map(l => l.name))
+      .toEqual(['ShopeeFood', 'GrabFood', 'BeFood'])
+  })
+
+  it('shows BeFood when the row carries a venue-specific destination', () => {
+    const order = buildActions({
+      ...FOOD_ROW,
+      order_links: [
+        { name: 'ShopeeFood', url: 'https://shopeefood.vn/tim-kiem?q=x' },
+        { name: 'BeFood', url: 'https://be.com.vn/olac' },
+      ],
+    }, 'food').filter(a => a.kind === 'order')
+    expect(order.map(a => a.platform)).toEqual(['ShopeeFood', 'BeFood'])
+    expect(order.find(a => a.platform === 'BeFood')!.url).toBe('https://be.com.vn/olac')
+  })
+
+  it('applies to any platform, and never to a link that does name the venue', () => {
+    const order = buildActions({
+      ...FOOD_ROW,
+      order_links: [
+        { name: 'ShopeeFood', url: 'https://shopeefood.vn/' },
+        { name: 'GrabFood', url: 'https://food.grab.com/vn/en/s?searchKeyword=x' },
+      ],
+    }, 'food').filter(a => a.kind === 'order')
+    expect(order.map(a => a.platform)).toEqual(['GrabFood'])
+  })
+})
 
 describe('every URL comes from the application', () => {
   const actions = buildActions(FOOD_ROW, 'food')

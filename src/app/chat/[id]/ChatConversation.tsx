@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import ChatInterface from '@/components/ChatInterface'
 import { CATEGORIES } from '@/lib/utils'
+import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface Conversation {
@@ -37,7 +38,19 @@ export default function ChatConversation({ conversation }: { conversation: Conve
   // marker contract, the action boundary and the honesty rule are untouched.
   return (
     <div className="v3-theme dark flex flex-col h-dvh">
-      <Header showBack backHref="/" title={catInfo ? `${catInfo.emoji} ${t(`tag.${catInfo.id}`)}` : conversation.title} />
+      {/* The saved-conversation header carries the same approved pose as the live
+        * one — the two are the same surface and must not disagree. See the note
+        * in src/app/chat/page.tsx. */}
+      <Header
+        showBack
+        backHref="/"
+        title={catInfo ? (
+          <span className="inline-flex items-center justify-center gap-2">
+            <TappyMascot pose={catInfo.id} size={24} alt="" />
+            {t(`tag.${catInfo.id}`)}
+          </span>
+        ) : conversation.title}
+      />
       <div className="flex-1 overflow-hidden">
         <ChatInterface
           initialCategory={conversation.category}

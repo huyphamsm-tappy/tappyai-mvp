@@ -86,6 +86,26 @@ export interface EnrichmentCollector {
    */
   placesRecommendations?: Recommendation[]
   setPlacesRecommendations(recs: Recommendation[] | undefined): void
+  /**
+   * The provider's own map search for this turn, straight off the tool result.
+   *
+   * The approved composition ends the recommendation block with "see all of these
+   * on the map". That destination is the tool's `google_maps_search` /
+   * `search_url` - a real URL the provider built - and never one assembled here.
+   */
+  placesMapsUrl?: string
+  setPlacesMapsUrl(url: string | undefined): void
+  /**
+   * True when THIS request will render the decision as a card.
+   *
+   * The per-place photo/link block below is injected into the reply text for
+   * clients that have no card. When the card is rendering the same photo, the
+   * same order links and the same review link, injecting them too is the
+   * duplication the approved design forbids - so the injection is skipped for
+   * that request only. Native clients never set it and are untouched.
+   */
+  rendersDecisionCard?: boolean
+  setRendersDecisionCard(on: boolean): void
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */
@@ -230,6 +250,14 @@ export function createEnrichmentCollector(): EnrichmentCollector {
       // "related video" line, not one per search.
       if (url && !this.batchTikTokUrl) this.batchTikTokUrl = url
     },
+    placesMapsUrl: undefined as string | undefined,
+    setPlacesMapsUrl(url: string | undefined) {
+      // First writer wins, like the recommendations above: one search per turn
+      // owns the map link, and a later tool must not repoint it.
+      if (url && !this.placesMapsUrl) this.placesMapsUrl = url
+    },
+    rendersDecisionCard: false,
+    setRendersDecisionCard(on: boolean) { this.rendersDecisionCard = on },
     placesRecommendations: undefined as Recommendation[] | undefined,
     setPlacesRecommendations(recs) {
       // First non-empty set wins, mirroring the other batch-level values: a trip

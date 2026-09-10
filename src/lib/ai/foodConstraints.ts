@@ -1,4 +1,5 @@
 import { normalizeVN } from './intent'
+import { detectDish, rowServesDish, type DishSpec } from './foodDish'
 
 // ── BUG 2 — the user's constraint must survive retrieval ─────────────────────
 //
@@ -18,7 +19,7 @@ import { normalizeVN } from './intent'
 // it is carried as a post-retrieval fact the reply must account for. What must
 // not happen is "buffet in Hanoi" quietly becoming "restaurants in Hanoi".
 
-export type FoodConstraintKind = 'buffet' | 'vegetarian' | 'vegan' | 'cafe' | 'bar' | 'seafood' | 'hotpot'
+export type FoodConstraintKind = 'buffet' | 'vegetarian' | 'vegan' | 'cafe' | 'bar' | 'seafood' | 'hotpot' | 'dish'
 
 export interface FoodConstraint {
   kind: FoodConstraintKind
@@ -30,6 +31,16 @@ export interface FoodConstraint {
   osmFilter: string | null
   /** What the user asked for, for the model to reference honestly. */
   label: string
+  /**
+   * Set only on a `dish` constraint: the dish this row must be shown to serve.
+   *
+   * 🚨 A DISH IS ENFORCED AFTER RETRIEVAL, NOT BY THE PROVIDER ALONE. Overpass
+   * matches `name` over raw UTF-8 BYTES, which makes its regex a useful way to
+   * ask a smaller question but a poor boundary to trust. `rowSatisfies` re-runs
+   * the check here through `normalizeVN`, so a row only counts when its own
+   * name or cuisine says so.
+   */
+  dish?: DishSpec
 }
 
 /**
@@ -62,6 +73,12 @@ export function detectFoodConstraints(query: string): FoodConstraint[] {
   const q = normalizeVN((query || '').toLowerCase())
   const out: FoodConstraint[] = []
   for (const [re, c] of CONSTRAINTS) if (re.test(q)) out.push(c)
+  // 🚨 THE DISH IS THE CONSTRAINT THE USER CARES MOST ABOUT, and it used to be
+  // dropped entirely: "bún bò ở Quận 1" became a bare `amenity=restaurant`
+  // search and the card led with Jaspas and Crazy Buffalo. It goes FIRST so the
+  // note names the dish before any diet/style qualifier.
+  const dish = detectDish(query)
+  if (dish) out.unshift({ kind: 'dish', osmFilter: '["name"~"' + dish.osm + '",i]', label: dish.label, dish })
   return out
 }
 
@@ -94,6 +111,9 @@ export function rowSatisfies(row: ConstraintCheckRow, c: FoodConstraint): boolea
   const types = (row.place_types || []).join(' ').toLowerCase()
 
   switch (c.kind) {
+    case 'dish':
+      // The venue's own name is the evidence; silence is not a match.
+      return c.dish ? rowServesDish({ name: row.name, cuisine: row.cuisine }, c.dish) : null
     case 'buffet':
       if (cuisine.includes('buffet') || name.includes('buffet')) return true
       return cuisine ? false : null

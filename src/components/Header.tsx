@@ -26,7 +26,11 @@ interface HeaderProps {
    * plain `router.back()` behaviour.
    */
   backFallbackHref?: string
-  title?: string
+  /**
+   * A node, not just a string, so a caller can put the approved Tappy pose beside
+   * the label. Every existing caller passes a string and is unaffected.
+   */
+  title?: React.ReactNode
   /** Hide the brand logo (Home floats over the background image; Hero carries the branding). */
   hideLogo?: boolean
 }

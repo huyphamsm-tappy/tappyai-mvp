@@ -47,6 +47,17 @@ export interface EntityCardProps {
   /** Rendered under the card body — offers, reasons, whatever the caller owns. */
   children?: ReactNode
   highlighted?: boolean
+  /**
+   * Whether an absent price is worth SAYING is unknown.
+   *
+   * 🚨 DEFAULT TRUE, BECAUSE FOR A PRODUCT IT IS. A listing with no price is a
+   * gap the buyer must notice, so the card says so rather than leaving a blank.
+   * A cafe is the opposite case: Google publishes a price band for a minority of
+   * venues, so an explicit unknown under every second place is noise about
+   * nothing, and the honesty rule ("a slot collapses when it has nothing to
+   * say") is better served by omitting it. Callers opt out; the default stands.
+   */
+  showUnknownPrice?: boolean
 }
 
 const MAX_METADATA = 3
@@ -87,6 +98,7 @@ export default function EntityCard({
   secondaryAction,
   children,
   highlighted = false,
+  showUnknownPrice = true,
 }: EntityCardProps) {
   const { t } = useTranslation()
   const meta = metadata.filter((m): m is string => typeof m === 'string' && m.length > 0).slice(0, MAX_METADATA)
@@ -128,9 +140,11 @@ export default function EntityCard({
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{meta.join(' · ')}</p>
           )}
 
-          <p className="mt-1 text-sm tabular-nums text-gray-700 dark:text-gray-300">
-            {price ?? t('entity.unknown')}
-          </p>
+          {(price || showUnknownPrice) && (
+            <p className="mt-1 text-sm tabular-nums text-gray-700 dark:text-gray-300">
+              {price ?? t('entity.unknown')}
+            </p>
+          )}
         </div>
       </div>
 

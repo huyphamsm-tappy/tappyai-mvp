@@ -21,7 +21,7 @@ import { ProfileTab, ClipViewer } from './ProfileTab'
 import ExploreV3Desktop from './ExploreV3Desktop'
 import { useNotifications } from '@/components/NotificationProvider'
 import { getExploreSession, reportAuthState } from '@/lib/explore/webExploreSession'
-import { mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
+import { CATEGORY_STYLE, mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
 
 // ADR-014: notifications now come from the app-level NotificationProvider (server
 // `notifications` table + server-side read_at). No client `notifSeenAt` marker.
@@ -37,12 +37,6 @@ interface HotPlace { place_name: string; count: number }
 // GroupedNotif / NOTIF_COLOR / groupNotifs / notifSection moved to
 // '@/lib/notifications/inbox' (unit-tested). Imported above.
 // Icon + accent for non-social notification rows, keyed by category.
-const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
-  social: { color: '#ff6b35', icon: '🎉' },
-  deal: { color: '#F59E0B', icon: '🏷️' },
-  explore: { color: '#8B5CF6', icon: '✨' },
-  system: { color: '#64748B', icon: '🔔' },
-}
 
 /* ─── TikTok Bottom Nav ─── */
 function TikNav({ tab, setTab, userId, unreadCount = 0 }: { tab: string; setTab: (t: string) => void; userId: string | null; unreadCount?: number }) {

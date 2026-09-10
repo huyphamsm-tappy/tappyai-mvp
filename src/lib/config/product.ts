@@ -64,6 +64,23 @@ export const SHOW_SCAM_SHIELD = true
  * to a contract both clients read would be a change they neither need nor expect.
  */
 export const SHOW_MARKETPLACE = false
+/**
+ * Wallet / Tappy Points - HIDDEN, NOT DELETED.
+ *
+ * 🚨 THE ROW PROMISED A FEATURE THAT DOES NOT EXIST YET, AND IT DID NOT EVEN GO THERE.
+ * The V3 sidebar carried "Wallet / Tappy Points" under the account group, and its href was
+ * `/subscription` - the pricing page. There is no wallet route, no wallet API and no wallet or
+ * points table anywhere in this repository, so the row named a product surface the app has never
+ * had and then landed the user somewhere else. That is the same class of claim `SHOW_MARKETPLACE`
+ * was added for.
+ *
+ * Same shape as the flags above: nothing is deleted. The row, its label and its icon stay in
+ * `V3Shell`, and flipping this one boolean restores it when a wallet is actually built - at which
+ * point its `href` should point at the wallet, not at the subscription page.
+ *
+ * NOT exported through `GET /api/config`: there is no Android or iOS wallet gate to mirror.
+ */
+export const SHOW_WALLET = false
 export const SCAM_SHIELD_DAILY_LIMIT_AUTH = 30
 export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 
@@ -196,6 +213,34 @@ export async function countTodayUserMessages(supabase: SupabaseClient, userId: s
  * our own derived values.
  */
 export const EMIT_TAPPY_PLACES = false
+
+/**
+ * Send the turn's place decision to the WEB client as a message ANNOTATION.
+ *
+ * 🚨 THIS IS NOT `EMIT_TAPPY_PLACES` WITH A DIFFERENT NAME, AND IT DOES NOT
+ * LIFT EITHER OF THAT FLAG'S BLOCKERS - it renders them inapplicable:
+ *
+ *   1. A MARKER IS A SHARED CONTRACT. `[TAPPY_PLACES]` lives in the message
+ *      TEXT, so a client that has never been told to strip it renders raw JSON.
+ *      An annotation is a separate frame on the data stream (`8:`). Android
+ *      reads only `0:` frames (`RealChatRepository`) and iOS maps every unknown
+ *      prefix to `.unknown` (`StreamingClient`), so both ignore it by
+ *      construction - there is nothing for them to fail to strip.
+ *
+ *   2. A MARKER IS STORAGE. It is frozen into the text and saved with the
+ *      conversation, which Google Places terms forbid for Places content. An
+ *      annotation is never persisted: the chat saves `{role, content}` only, so
+ *      the decision lives for the session and is gone on reload. That is the
+ *      "use it for the request, do not store it" shape the terms require, and it
+ *      is why the card can carry the name, rating and hours that the persisted
+ *      projection has to drop.
+ *
+ * The trade-off is honest and is the reason both flags exist rather than one:
+ * a reloaded conversation shows the prose without the card. Making it durable
+ * needs the marker, and the marker needs Android, iOS and a provider whose terms
+ * allow storage - which is exactly what `EMIT_TAPPY_PLACES` is waiting for.
+ */
+export const EMIT_PLACES_ANNOTATION = true
 
 /**
  * Let the SERVER author `[CTA_BUTTONS]` from the deterministic action list,

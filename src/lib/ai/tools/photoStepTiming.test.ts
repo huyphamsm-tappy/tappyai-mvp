@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { resolvePlacePhotos, type PhotoStepTiming } from './common'
+import { resolvePlacePhotos, __clearToolCache, type PhotoStepTiming } from './common'
 
 // ── Phase 2: the photo chain must be measurable WITHOUT becoming different ──
 //
@@ -46,6 +46,8 @@ function stubFetch(handler: (url: string) => { status?: number; headers?: Record
 const PHOTO_NAME = 'places/pid-1/photos/AeZabc'
 
 beforeEach(() => {
+  // Image lookups are memoised; clear between tests so each measures its own call.
+  __clearToolCache()
   process.env.GOOGLE_PLACES_API_KEY = PLACES_KEY
   process.env.SERPER_API_KEY = SERPER_KEY
 })
@@ -156,6 +158,11 @@ describe('measuring changes nothing', () => {
     const c1 = scenario()
     const withSink = await resolvePlacePhotos(place, 3, () => {})
     vi.unstubAllGlobals()
+    // The two halves must make the SAME calls to be comparable. Image lookups
+    // are memoised, so without this the second half is served from the first
+    // half's answer and "same number of requests" would compare 2 against 0 —
+    // measuring the cache instead of the sink this test is about.
+    __clearToolCache()
     const c2 = scenario()
     const without = await resolvePlacePhotos(place, 3)
     expect(withSink).toEqual(without)

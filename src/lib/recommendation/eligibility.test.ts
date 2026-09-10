@@ -132,3 +132,61 @@ describe('every domain has a working boundary', () => {
     expect(classifyEligibility({ amenity: foreign }, domain)).toBe('reject')
   })
 })
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🚨 AN UNKNOWN DOMAIN MUST NOT BE ANSWERED AS "food".
+//
+// `_tappy_place_domain` is `place` for any query matching none of the enrichment
+// classes, and `place` is not an EntityDomain — so `domainOf` declared it FOOD
+// and judged its rows against OSM_ADMIT.food, where a cinema, a mall or a gym is
+// "a different domain's venue" and is REJECTED. An unknown domain silently
+// became a wrong one, and the rows vanished before any card could be built.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('🚨 unknown domain fails safe, not into food', () => {
+  const row = (name: string, amenity: string) => ({ name, amenity, maps_link: 'https://maps.google.com/?cid=1' })
+
+  const result = (domain: string | undefined, rows: Array<Record<string, unknown>>) => ({
+    source: 'OpenStreetMap',
+    ...(domain ? { _tappy_place_domain: domain } : {}),
+    results: rows,
+  })
+
+  it('keeps rows a food boundary would have thrown away', () => {
+    // A generic `place` set carrying venues from several categories.
+    const recs = placeRecommendations(result('place', [
+      row('CGV Vincom', 'cinema'),
+      row('Lotte Mart', 'mall'),
+      row('Fit24', 'fitness_centre'),
+    ]))
+    expect(recs.map(r => r.entity.identity.name)).toEqual(['CGV Vincom', 'Lotte Mart', 'Fit24'])
+  })
+
+  it('an absent domain field behaves the same way', () => {
+    const recs = placeRecommendations(result(undefined, [row('Lotte Mart', 'mall')]))
+    expect(recs).toHaveLength(1)
+  })
+
+  it('🚨 a STATED domain still enforces its boundary — nothing was loosened', () => {
+    // food + a cinema row is a genuine mismatch and must still be rejected.
+    const recs = placeRecommendations(result('food', [
+      row('Quán Ăn Ngon', 'restaurant'),
+      row('CGV Vincom', 'cinema'),
+    ]))
+    expect(recs.map(r => r.entity.identity.name)).toEqual(['Quán Ăn Ngon'])
+  })
+
+  it('every active domain still admits its own venues', () => {
+    const cases: Array<[string, string, string]> = [
+      ['food', 'restaurant', 'Quán Ăn'],
+      ['spa', 'massage', 'Sen Spa'],
+      ['entertainment', 'cinema', 'CGV'],
+      ['shopping', 'mall', 'Takashimaya'],
+    ]
+    for (const [domain, amenity, name] of cases) {
+      const recs = placeRecommendations(result(domain, [row(name, amenity)]))
+      expect(recs.map(r => r.entity.identity.name), domain).toEqual([name])
+    }
+  })
+})

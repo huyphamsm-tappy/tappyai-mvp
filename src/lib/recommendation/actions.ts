@@ -79,6 +79,48 @@ const SEARCH_PLATFORMS = new Set(['ShopeeFood', 'GrabFood', 'BeFood', 'Booking.c
  * dictionaries, which is what removed the prompt rule requiring the MODEL to
  * translate its own button text into the response language.
  */
+/**
+ * Does this URL land somewhere that names the venue, or on a front door?
+ *
+ * 🚨 THE MEASURED DEFECT: `buildFoodOrderLinks` returns BeFood as the bare site
+ * root for every restaurant, because BeFood publishes no search page. Shown
+ * beside ShopeeFood and GrabFood — both of which carry the venue's name in the
+ * query — it looked like a third way to order this meal and was a homepage.
+ *
+ * 🔑 A SEARCH URL PASSES. This is NOT `isDirectEntityUrl`, which asks the
+ * opposite question for ticket provenance: there a search page proves nothing,
+ * here a search page carrying the venue's name is exactly what an order button
+ * is allowed to be. Same shape, different question — do not merge them.
+ *
+ * The rule is about the destination, not the brand: BeFood support stays in the
+ * builder and the data, and a venue-specific BeFood URL still shows.
+ */
+function namesTheVenue(url: string): boolean {
+  try {
+    const u = new URL(url)
+    return u.pathname.replace(/\/+$/, '').length > 1 || u.search.length > 1
+  } catch { return false }
+}
+
+/** OTA hosts whose own deep page IS the booking. */
+const OTA_HOST = /(^|\.)(booking\.com|agoda\.[a-z.]+)$/i
+
+/**
+ * What the row's own `link` is, given the domain it came from.
+ *
+ * Shopping is the one place a link really is a product. On travel an OTA's own
+ * hotel page is a booking. Everything else — an unknown host, a spa or an
+ * entertainment venue's site — is a website, never guessed into either.
+ */
+function rowLinkKind(link: string | undefined, domain: string): ActionKind {
+  if (!link) return 'website'
+  if (domain === 'shopping') return 'purchase'
+  let host = ''
+  try { host = new URL(link).hostname.replace(/^www\./, '') } catch { return 'website' }
+  if (domain === 'travel' && OTA_HOST.test(host)) return 'booking'
+  return 'website'
+}
+
 const LABEL_KEY: Record<ActionKind, string> = {
   maps: 'v3.action.maps',
   directions: 'v3.action.directions',
@@ -167,7 +209,10 @@ export function buildActions(
   // the food enrichment path still gets the same links the same way. Never
   // hand-assembled: one builder, one set of templates.
   const orderLinks = src.order_links ?? (domain === 'food' && name ? buildFoodOrderLinks(name, src.address, location) : [])
-  for (const l of orderLinks) out.push(action('order', l.url, domain, { platform: l.name, urlKind: 'search' }))
+  for (const l of orderLinks) {
+    if (!namesTheVenue(l.url)) continue
+    out.push(action('order', l.url, domain, { platform: l.name, urlKind: 'search' }))
+  }
 
   // ── Platform links — spa and entertainment: website + maps, nothing more ───
   const platformLinks = src.platform_links ?? (
@@ -184,8 +229,18 @@ export function buildActions(
   out.push(action('booking', src.booking_link, domain, { platform: 'Booking.com', urlKind: 'search' }))
   out.push(action('booking', src.agoda_link, domain, { platform: 'Agoda', urlKind: 'search' }))
 
-  // ── Shopping — the one genuinely direct commerce link in the system ────────
-  out.push(action('purchase', src.link, domain, { urlKind: 'direct' }))
+  // ── The row's own link — and it is not a "product" outside shopping ───────
+  //
+  // 🚨 MEASURED ON A TRAVEL TURN: every hotel carried a `purchase` action
+  // rendering as "Xem sản phẩm" whose URL was
+  // `booking.com/hotel/vn/<hotel>.vi.html` — that hotel's OWN page on Booking.
+  // A room is not a product, and the label said the wrong thing about a
+  // perfectly good destination.
+  //
+  // The link's HOST decides what it is, because that is the only honest source:
+  // an OTA's own hotel page is a booking, anything else is just the venue's
+  // website. Nothing is guessed from the domain alone.
+  out.push(action(rowLinkKind(src.link, domain), src.link, domain, { urlKind: 'direct' }))
 
   // ── Universal ─────────────────────────────────────────────────────────────
   out.push(action('maps', src.maps_link, domain, { urlKind: 'direct' }))
