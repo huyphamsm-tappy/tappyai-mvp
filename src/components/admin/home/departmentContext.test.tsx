@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { CommandHeader } from './CommandHeader'
 import { DepartmentCard } from './DepartmentCard'
 import type { ControllerHomeData } from './types'
@@ -21,6 +22,11 @@ import type { ControllerHomeData } from './types'
 // input exists and none may be added (D11).
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/admin' }))
+// Department names are translated, so the locale decides whether a name matcher can even fire:
+// in Vietnamese `admin.dept.marketing` is "Marketing / Tăng trưởng" (matches /Marketing/i) while
+// `admin.dept.finance` is "Tài chính / Kế toán" (does not match /Finance/i) — which made the
+// "exactly one = invented" check below read an invention that was not there. State the locale.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const dept = (id: string, nameKey: string, moduleCount = 0) =>

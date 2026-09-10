@@ -6,6 +6,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { UsersManager } from './UsersManager'
 import { en as enStrings } from '@/lib/i18n/admin'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // How the session panel is WIRED, as opposed to how it behaves.
 //
@@ -65,7 +66,9 @@ function stubApi() {
   }))
 }
 
-beforeEach(() => { vi.unstubAllGlobals(); stubApi() })
+// English is stated, not inherited: the detail panel is opened by its English accessible name and
+// asserted through `enStrings`, while the product default locale is Vietnamese.
+beforeEach(() => { vi.unstubAllGlobals(); stubApi(); setLocale('en') })
 
 /** Open the detail panel for the seeded user, which is what mounts the panel. */
 async function openDetail(can: Record<string, boolean>) {
